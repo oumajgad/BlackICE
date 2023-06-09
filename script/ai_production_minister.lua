@@ -1341,7 +1341,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		vConsumer = vConsumer + 0.8
 	end
 
-	local ic = ministerCountry:GetTotalIC()
+	local totalIc = ministerCountry:GetTotalIC()
 	-- Performance check make sure its above 0 before we even look at this
 	if vSupply > 0 then
 		local supplyStockpile = ministerCountry:GetPool():Get( CGoodsPool._SUPPLIES_ ):Get()
@@ -1349,7 +1349,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 
 		-- IC based supply production
 		-- https://www.desmos.com/calculator/qiq9xi33wo
-		local targetSupply = 90 * ic + 7500
+		local targetSupply = 90 * totalIc + 7500
 		if targetSupply > 99999 then
 			targetSupply = 99999
 		end
@@ -1476,7 +1476,23 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 					 math.abs(vReinforce - vReinforceOriginal) +
 					 math.abs(vUpgrade - vUpgradeOriginal)
 	if checksum > 0.01 then
-		local command = CChangeInvestmentCommand( ministerCountry:GetCountryTag(), vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade )
+		local countryTag = ministerCountry:GetCountryTag()
+		if Stats.CollectStats == true and Stats.MajorCheck(lbIsMajor, nil, nil) then
+			Stats.AddStat(tostring(countryTag), "totalIc", tostring(string.format('%.0f', totalIc)))
+			Stats.AddStat(tostring(countryTag), "vLendLease_%", tostring(string.format('%.0f', vLendLease * 100)))
+			Stats.AddStat(tostring(countryTag), "vLendLease_IC", tostring(string.format('%.0f', vLendLease * totalIc)))
+			Stats.AddStat(tostring(countryTag), "vConsumer_%", tostring(string.format('%.0f', vConsumer * 100)))
+			Stats.AddStat(tostring(countryTag), "vConsumer_IC", tostring(string.format('%.0f', vConsumer * totalIc)))
+			Stats.AddStat(tostring(countryTag), "vProduction_%", tostring(string.format('%.0f', vProduction * 100)))
+			Stats.AddStat(tostring(countryTag), "vProduction_IC", tostring(string.format('%.0f', vProduction * totalIc)))
+			Stats.AddStat(tostring(countryTag), "vSupply_%", tostring(string.format('%.0f', vSupply * 100)))
+			Stats.AddStat(tostring(countryTag), "vSupply_IC", tostring(string.format('%.0f', vSupply * totalIc)))
+			Stats.AddStat(tostring(countryTag), "vReinforce_%", tostring(string.format('%.0f', vReinforce * 100)))
+			Stats.AddStat(tostring(countryTag), "vReinforce_IC", tostring(string.format('%.0f', vReinforce * totalIc)))
+			Stats.AddStat(tostring(countryTag), "vUpgrade_%", tostring(string.format('%.0f', vUpgrade * 100)))
+			Stats.AddStat(tostring(countryTag), "vUpgrade_IC", tostring(string.format('%.0f', vUpgrade * totalIc)))
+		end
+		local command = CChangeInvestmentCommand( countryTag, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade )
 		ai:Post( command )
 	end
 end

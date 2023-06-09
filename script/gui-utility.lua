@@ -1754,7 +1754,6 @@ if wx ~= nil then
 			if CheckPlayerAllowsSelection(selection) then
 				if PlayerCountries ~= nil then
 					PlayerCountry = selection
-					UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
 					DateOverride = false
 					DaysSinceLastUpdate = 0
 					UpdateInterval = 3
@@ -1772,7 +1771,12 @@ if wx ~= nil then
 					ReadCustomProductionSliderValues()
 					DetermineCustomLsSliderAiStatus()
 					ReadCustomLsSliderValues()
+
+					UI.m_radioBtn_Generals_all:SetValue( true )
+					Parsing.Generals.FillwxChoice(PlayerCountry)
+
 					GuiRefreshLoop(true)
+					UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
 				else
 					UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
 				end
@@ -2007,7 +2011,9 @@ if wx ~= nil then
 	end )
 
 	UI.m_button_ShowGameInfoWindow:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		Parsing.FillTraits()
+		Parsing.Traits.FillData()
+		Parsing.Generals.FillData()
+		Parsing.Techs.FillData()
 		UI.MyFrame4:Show(true)
 	end )
 

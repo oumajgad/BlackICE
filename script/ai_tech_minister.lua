@@ -386,9 +386,13 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	-- Do not post unless set to true as this could be a call from other AIs to get information on the sliders
 	if vbSliders then
 		if Stats.CollectStats == true and Stats.MajorCheck(StandardDataObject.IsMajor, nil, nil) then
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "PercentEspionage", tostring(string.format('%.0f', Leadership.Percent_Espionage * 100)))
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "TotalLeadership", tostring(string.format('%.0f', Leadership.TotalLeadership * 100)))
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "Percent_Research", tostring(string.format('%.0f', Leadership.Percent_Research * 100)))
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "Percent_Espionage", tostring(string.format('%.0f', Leadership.Percent_Espionage * 100)))
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "Percent_Diplomacy", tostring(string.format('%.0f', Leadership.Percent_Diplomacy * 100)))
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "Percent_NCO", tostring(string.format('%.0f', Leadership.Percent_NCO * 100)))
 			Stats.AddStat(tostring(StandardDataObject.ministerTag), "FreeSpies", tostring(string.format('%.0f', Leadership.FreeSpies)))
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "domSpy", tostring(string.format('%.0f', domSpy)))
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "DomesticSpies", tostring(string.format('%.0f', domSpy)))
 			Stats.AddStat(tostring(StandardDataObject.ministerTag), "TotalSpiesAbroad", tostring(string.format('%.0f', Leadership.TotalSpiesAbroad)))
 		end
 

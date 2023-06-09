@@ -28,66 +28,40 @@ local translation_files = {
     'zDD-events_new.csv', 'zDD-Flags.csv', 'zDD-misc.csv', 'zDD-Puppets.csv', 'zDD-tech.csv', 'zDD-Unit.csv'
 }
 
-P.TranslationTable = nil
+local translationTable = nil
 local function createTranslationTable()
-    P.TranslationTable = {}
+    translationTable = {}
     for i, file in pairs(translation_files) do
         local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\localisation\\" .. file
         local temp = CsvParser.parseFile(path)
         for k, v in pairs(temp) do
-            P.TranslationTable[k] = v
+            translationTable[k] = v
         end
     end
 end
 
-local function mapTriggersToTraits()
-    local triggersList = PdxParser.parseFileWithList("tfh\\mod\\BlackICE " .. UI.version .. "\\common\\gainable_traits.txt")
-    triggersList = triggersList[1]
-    for k, v in pairs(triggersList) do
-        if P.TraitsTriggers[v["trait"]] == nil then
-            P.TraitsTriggers[v["trait"]] = {}
-        end
-        table.insert(P.TraitsTriggers[v["trait"]], v)
-        table.removeEntryByKey(v, "trait")
-    end
-end
-
-P.Traits = {}
-P.TraitsChoices = {}
-P.TraitsTriggers = {}
-local traitsFilled = false
-function P.FillTraits()
-    if traitsFilled then
-        return
-    end
-    if P.TranslationTable == nil then
+function P.GetTranslationTable()
+    if translationTable == nil then
         createTranslationTable()
     end
-	P.Traits = PdxParser.parseFile("tfh\\mod\\BlackICE " .. UI.version .. "\\common\\traits.txt")
-    for k, v in pairs(P.Traits) do
-        local trans = P.TranslationTable[k]
-        if trans ~= nil then
-            table.insert(P.TraitsChoices, trans .. " (" .. k .. ")")
-        else
-            table.insert(P.TraitsChoices, "(" .. k .. ")")
-        end
+    if translationTable ~= nil then
+        return translationTable
     end
-    table.sort(P.TraitsChoices)
-    UI.m_choice_Traits:Clear()
-    UI.m_choice_Traits:Append(P.TraitsChoices)
-
-    mapTriggersToTraits()
-
-    traitsFilled = true
+    return {}
 end
 
-function P.GetTraitFromChoice(choice)
-    local start = string.find(choice, "%(")
-    local stop = string.find(choice, "%)")
+-- Keys will be inside parentheses in the choice elements
+function P.GetKeyFromChoice(choice)
+    local start = string.find(choice, "%[")
+    local stop = string.find(choice, "%]")
     if start ~= nil and stop ~= nil then
         return choice:sub(start + 1, stop - 1)
     end
     return choice
 end
 
+
+P.Traits = require('traits')
+P.Generals = require('generals')
+P.Techs = require('techs')
 return Parsing
