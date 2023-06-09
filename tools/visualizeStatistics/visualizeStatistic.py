@@ -84,7 +84,7 @@ def removeduplicates(data: pd.DataFrame, columns: list[str]):
 
 def verify(forceSameChart):
     tag = e_TAG.get()
-    stat = e_STAT.get()
+    stat = lb_STAT.get(lb_STAT.curselection())
     if same_chart.get() == 0 and not forceSameChart:
         plt.figure()
     if len(tag) != 3:
@@ -122,13 +122,28 @@ def quickStart():
     plt.autoscale()
     plt.show()
 
+
+def setPossibleStatSelection():
+    stats = set()
+    for root, dirs, files in os.walk("./"):
+        for file in files:
+            if file in ["visualizeStatistic.py", "zzSetup"]:
+                continue
+            stat_name = file[4:]
+            stats.add(stat_name)
+    stats = list(stats)
+    stats = sorted(stats)
+    for i in range(len(stats)):
+        lb_STAT.insert(i, stats[i])
+
+
 app = tk.Tk()
 app.title("visualizeStatistics.py")
 
 e_TAG = tk.Entry(app, width=25, border=5)
 e_TAG.insert(0, "Enter TAG")
-e_STAT = tk.Entry(app, width=25, border=5)
-e_STAT.insert(0, "Enter Stat")
+
+lb_STAT = tk.Listbox(app, selectmode=tk.SINGLE, width=40, height=20)
 
 same_chart = tk.IntVar()
 same_chart.set(0)
@@ -140,10 +155,11 @@ button_QuickStart = tk.Button(app, text="Party & Spies", width=25, command= lamb
 
 
 
-e_TAG.grid(row=0, column=0)
-e_STAT.grid(row=0, column=1)
-cb.grid(row=0, column=2)
-button_ShowLine.grid(row=1, column=0)
-button_QuickStart.grid(row=1, column=1)
+e_TAG.grid(row=0, column=0, padx=10, pady=10)
+lb_STAT.grid(row=0, column=1, padx=10, pady=10)
+cb.grid(row=0, column=2, padx=10, pady=10)
+button_ShowLine.grid(row=1, column=0, padx=10, pady=10)
+button_QuickStart.grid(row=1, column=1, padx=10, pady=10)
 if __name__ == "__main__":
+    setPossibleStatSelection()
     app.mainloop()
