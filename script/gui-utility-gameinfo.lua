@@ -60,12 +60,12 @@ if wx ~= nil then
     UI.m_choice_Traits:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
         local selectionString = UI.m_choice_Traits:GetString(UI.m_choice_Traits:GetSelection())
         local traitName = Parsing.GetKeyFromChoice(selectionString)
-        local trait = Parsing.TraitsData[traitName]
+        local trait = Parsing.Traits.TraitsData[traitName]
         if trait ~= nil then
             local s = Utils.Dump(trait)
-            if Parsing.TraitsTriggers[traitName] ~= nil then
+            if Parsing.Traits.TraitsTriggers[traitName] ~= nil then
                 s = s .. "\n -------- Triggers -------- \n"
-                s = s .. Utils.Dump(Parsing.TraitsTriggers[traitName])
+                s = s .. Utils.Dump(Parsing.Traits.TraitsTriggers[traitName])
             end
             UI.m_textCtrl_Trait:SetValue(s)
         end

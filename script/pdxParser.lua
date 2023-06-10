@@ -111,7 +111,9 @@ local function parse_object(str, i, doAsList, level)
         if (chr == "{") then
             -- makes sure we enter the object
             i = next_char(str,i + 1, space_chars, true)
+            chr = str:sub(i,i)
         end
+        -- print("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
         if (chr == "}") then
             -- object has ended, return it
             return res, i + 1
@@ -133,18 +135,29 @@ local function parse_object(str, i, doAsList, level)
             if doAsList then
                 table.insert(res, val)
             else
-                if res[key] ~= nil then         -- At many points keys can be repeated to create a list of values, so this turns our key-value into key-list
-                    if type(res[key]) == "table" then
-                        table.insert(res[key], val)
-                    else
-                        local temp = res[key]
-                        res[key] = {}
-                        table.insert(res[key], val)
+                -- print("\n")
+                -- print(key)
+                -- print("val: " .. Utils.TABLE_TO_STRING(val))
+                -- print("res[key]: " .. Utils.TABLE_TO_STRING(res[key]))
+                if res[key] ~= nil then
+                    local temp = res[key]
+                    -- print("temp: " .. Utils.TABLE_TO_STRING(temp))
+                    res[key] = {}
+                    table.insert(res[key], val)
+                    local t_b = false
+                    for k, v in pairs(temp) do
+                        if type(v) == "table" then
+                            t_b = true
+                            table.insert(res[key], v)
+                        end
+                    end
+                    if not t_b then
                         table.insert(res[key], temp)
                     end
                 else
                     res[key] = val
                 end
+                -- print("res[key]: " .. Utils.TABLE_TO_STRING(res[key]))
             end
 
         elseif (value_type == types.list) then
@@ -174,29 +187,15 @@ local function parse_object(str, i, doAsList, level)
     end
 end
 
-local function parse_list_objects(str, i)
-    local res = {}
-    while true do
-        i = next_char(str, i, space_chars, true)
-        local chr = str:sub(i,i)
-        if (chr == "}") then
-            i = i - 1
-            return res, i
-        end
-        local value
-        value, i = parse_object(str, i, true)
-        table.insert(res, value)
-    end
-end
-
 --- Decodes a PdxScript object-string into a LUA table
 --- Make sure the string is wrapped by "{\n" and "\n}"
 function P.parse(str)
-    return parse_object(str, 1)
+    return parse_object(str, 1, nil, 0)
 end
 
 function P.parseFile(filePath)
 	local file, err = io.open(filePath, "r")
+    -- Utils.LUA_DEBUGOUT(filePath)
 	if file ~= nil then
         local linesString = "{\n" .. file:read("*a") .. "\n}"
         local decoded = PdxParser.parse(linesString)
@@ -209,21 +208,5 @@ function P.parseFile(filePath)
 end
 
 
-function P.parseListOfObjects(str)
-    return parse_list_objects(str, 1)
-end
-
-function P.parseFileWithList(filePath)
-    local file, err = io.open(filePath, "r")
-    if file ~= nil then
-        local linesString = "{\n" .. file:read("*a") .. "\n}"
-        local decoded = PdxParser.parseListOfObjects(linesString)
-        file:close()
-        return decoded
-    end
-    if err ~= nil then
-        Utils.LUA_DEBUGOUT(err)
-    end
-end
 
 return PdxParser

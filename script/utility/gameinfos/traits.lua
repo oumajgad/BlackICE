@@ -1,14 +1,15 @@
 local P = {}
 
 local function mapTriggersToTraits()
-    local triggersList = PdxParser.parseFileWithList("tfh\\mod\\BlackICE " .. UI.version .. "\\common\\gainable_traits.txt")
-    triggersList = triggersList[1]
+    local triggersList = PdxParser.parseFile("tfh\\mod\\BlackICE " .. UI.version .. "\\common\\gainable_traits.txt")["gainable_trait"]
     for k, v in pairs(triggersList) do
-        if P.TraitsTriggers[v["trait"]] == nil then
-            P.TraitsTriggers[v["trait"]] = {}
+        if v["trait"] ~= nil then
+            if P.TraitsTriggers[v["trait"]] == nil then
+                P.TraitsTriggers[v["trait"]] = {}
+            end
+            table.insert(P.TraitsTriggers[v["trait"]], v)
+            table.removeEntryByKey(v, "trait")
         end
-        table.insert(P.TraitsTriggers[v["trait"]], v)
-        table.removeEntryByKey(v, "trait")
     end
 end
 
