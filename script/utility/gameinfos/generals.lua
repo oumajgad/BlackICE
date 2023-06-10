@@ -77,7 +77,10 @@ local function createFilteredGeneralsList(playertag)
     end
     local sorted = {}
     for id, general in spairs(unsorted, SortGeneralsBySkill) do
-        local choice_string = general.starting_skill .. " " .. general.type .. " " .. general.name .. " " .. general.available_date .. " [" .. id .. "]"
+        local choice_string = (
+            general.starting_skill .. " (" .. general.max_skill .. ") \t" ..
+            general.type .. " '" .. general.name .. "' " .. general.available_date .. " [" .. id .. "]"
+        )
         table.insert(sorted, choice_string)
         P.CountryGeneralsData[id] = general
     end
@@ -102,6 +105,9 @@ end
 
 -- Update the wxChoice when the playertag changes
 function P.FillwxChoice(playertag)
+    if not dataFilled then
+        P.FillData()
+    end
     local choices = createFilteredGeneralsList(playertag)
     UI.m_choice_Generals:Clear()
     UI.m_choice_Generals:Append(choices)

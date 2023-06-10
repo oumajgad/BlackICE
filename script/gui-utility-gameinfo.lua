@@ -77,7 +77,7 @@ if wx ~= nil then
 		local general = Parsing.Generals.CountryGeneralsData[generalId]
 		if general ~= nil then
 			local s = Utils.Dump(general)
-			UI.m_textCtrl_Trait:SetValue(s)
+			UI.m_textCtrl_Generals:SetValue(s)
 		end
 	end )
 
