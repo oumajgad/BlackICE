@@ -37,6 +37,10 @@ local function determine_type(str, i)
         j = next_char(str, j + 1 , space_chars, true)
         chr = str:sub(j,j)
         if chr == "{" then
+            local closing = string.find(str, "}", j)
+            if not string.find(str:sub(j, closing), "=") then
+                return types.list
+            end
             return types.object
         else
             return types.pair
@@ -59,10 +63,11 @@ local function parse_string(str, i)
         local chr = str:sub(j,j)
         if (space_chars[chr] == true and hasQuote == false)
                 or (chr == "}" and hasQuote == false)
+                or (chr == "=" and hasQuote == false)
                 or (chr == '"' and hasQuote == true)
                 or (chr == "#") then -- End of string variations
             if (hasQuote) then
-                -- with qoutes start 1 character later and return the index 1 character later
+                -- with quotes start 1 character later and return the index 1 character later
                 res = res .. str:sub(k + 1, j - 1)
                 return res , j + 1
             else
@@ -79,8 +84,12 @@ local function parse_list(str, i)
     while true do
         i = next_char(str, i, space_chars, true)
         local chr = str:sub(i,i)
+        if (chr == "{") then
+            i = next_char(str, i + 1, space_chars, true)
+            chr = str:sub(i,i)
+        end
         if (chr == "}") then
-            i = i - 1
+            i = i + 1
             return res, i
         end
         local value
@@ -89,50 +98,64 @@ local function parse_list(str, i)
     end
 end
 
-local function parse_object(str, i, doAsList)
+local function parse_object(str, i, doAsList, level)
     local res = {}
     while true do
+        -- print("level: " .. level .. "\n")
+        -- print(Utils.TABLE_TO_STRING(res))
+
         local key, val
-        i = next_char(str, i + 1, space_chars, true)
+        i = next_char(str, i, space_chars, true)
         local chr = str:sub(i,i)
+        -- print("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
         if (chr == "{") then
+            -- makes sure we enter the object
             i = next_char(str,i + 1, space_chars, true)
         end
         if (chr == "}") then
-            return res, i
+            -- object has ended, return it
+            return res, i + 1
         end
 
         key, i = parse_string(str, i)
+        -- local chr = str:sub(i,i)
+        -- print(key)
+        -- print("i: " .. i .. " = " .. "'" .. chr .. "'")
         local value_type = determine_type(str, i)
-        i = next_char(str, i, space_chars, true)
+        i = next_char(str, i, space_chars, true)    -- should be '=' at all times
+        -- print("value_type: " .. value_type)
+        -- local chr = str:sub(i,i)
+        -- print("i: " .. i .. " = " .. "'" .. chr .. "'")
 
         if (value_type == types.object) then
-            i = next_char(str, i + 1, space_chars, true)
-            val, i = parse_object(str, i)
+            i = next_char(str, i + 1, space_chars, true)    -- i + 1 so we move on to the opening '{' of the object
+            val, i = parse_object(str, i, false, level + 1)
             if doAsList then
                 table.insert(res, val)
             else
-                if res[key] ~= nil then
-                    local temp = res[key]
-                    res[key] = {}
-                    table.insert(res[key], temp)
-                    table.insert(res[key], val)
+                if res[key] ~= nil then         -- At many points keys can be repeated to create a list of values, so this turns our key-value into key-list
+                    if type(res[key]) == "table" then
+                        table.insert(res[key], val)
+                    else
+                        local temp = res[key]
+                        res[key] = {}
+                        table.insert(res[key], val)
+                        table.insert(res[key], temp)
+                    end
                 else
                     res[key] = val
                 end
             end
 
         elseif (value_type == types.list) then
-            i = next_char(str, i, space_chars, true)
+            i = next_char(str, i + 1, space_chars, true)    -- i + 1 so we move on to the opening '{' of the list
             val, i = parse_list(str, i)
-            table.insert(val, key)
-            res = val
+            res[key] = val
 
         elseif (value_type == types.pair) then
-            i = next_char(str, i + 1, space_chars, true)
+            i = next_char(str, i + 1, space_chars, true)    -- i + 1 so we move on to the first character of the value
             val, i = parse_string(str, i)
-            -- Create a list when keys are repeated
-            if res[key] ~= nil then
+            if res[key] ~= nil then             -- At many points keys can be repeated to create a list of values, so this turns our key-value into key-list
                 local temp = res[key]
                 res[key] = {}
                 table.insert(res[key], val)
@@ -147,6 +170,7 @@ local function parse_object(str, i, doAsList)
                 res[key] = val
             end
         end
+        -- print(Utils.TABLE_TO_STRING(res))
     end
 end
 
