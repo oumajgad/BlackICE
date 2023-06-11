@@ -109,8 +109,10 @@ function P.FillwxChoice(playertag)
         P.FillData()
     end
     local choices = createFilteredGeneralsList(playertag)
+    UI.m_choice_Generals:Freeze()
     UI.m_choice_Generals:Clear()
     UI.m_choice_Generals:Append(choices)
+    UI.m_choice_Generals:Thaw()
 end
 
 return P

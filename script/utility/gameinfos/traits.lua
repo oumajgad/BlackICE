@@ -34,8 +34,11 @@ function P.FillData()
         end
     end
     table.sort(P.TraitsChoices)
+
+    UI.m_choice_Traits:Freeze()
     UI.m_choice_Traits:Clear()
     UI.m_choice_Traits:Append(P.TraitsChoices)
+    UI.m_choice_Traits:Thaw()
 
     mapTriggersToTraits()
 

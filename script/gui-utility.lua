@@ -1754,7 +1754,6 @@ if wx ~= nil then
 			if CheckPlayerAllowsSelection(selection) then
 				if PlayerCountries ~= nil then
 					PlayerCountry = selection
-					UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
 					DateOverride = false
 					DaysSinceLastUpdate = 0
 					UpdateInterval = 3
@@ -1774,6 +1773,7 @@ if wx ~= nil then
 					ReadCustomLsSliderValues()
 					Parsing.Generals.FillwxChoice(PlayerCountry)
 					GuiRefreshLoop(true)
+					UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
 				else
 					UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
 				end
