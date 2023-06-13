@@ -144,15 +144,14 @@ local function parse_object(str, i, doAsList, level)
                     -- print("temp: " .. Utils.TABLE_TO_STRING(temp))
                     res[key] = {}
                     table.insert(res[key], val)
-                    local t_b = false
-                    for k, v in pairs(temp) do
-                        if type(v) == "table" then
-                            t_b = true
+                    -- check if this "table" is an array of objects or a single object
+                    -- arrays will not be nil
+                    if temp[1] == nil then
+                        table.insert(res[key], temp)
+                    else
+                        for k, v in pairs(temp) do
                             table.insert(res[key], v)
                         end
-                    end
-                    if not t_b then
-                        table.insert(res[key], temp)
                     end
                 else
                     res[key] = val
