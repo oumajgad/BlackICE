@@ -53,14 +53,14 @@ end
 local function parse_string(str, i)
     local res = ""
     local hasQuote = false
-    local j = i
-    local k = j
+    local current = i
+    local start = current
     if (str:sub(i,i) == '"') then
-        j = i + 1
+        current = i + 1
         hasQuote = true
     end
-    while j <= #str do
-        local chr = str:sub(j,j)
+    while current <= #str do
+        local chr = str:sub(current,current)
         if (space_chars[chr] == true and hasQuote == false)
                 or (chr == "}" and hasQuote == false)
                 or (chr == "=" and hasQuote == false)
@@ -68,14 +68,14 @@ local function parse_string(str, i)
                 or (chr == "#") then -- End of string variations
             if (hasQuote) then
                 -- with quotes start 1 character later and return the index 1 character later
-                res = res .. str:sub(k + 1, j - 1)
-                return res , j + 1
+                res = res .. str:sub(start + 1, current - 1)
+                return res , current + 1
             else
-                res = res .. str:sub(k, j - 1)
-                return res, j
+                res = res .. str:sub(start, current - 1)
+                return res, current
             end
         end
-        j = j + 1
+        current = current + 1
     end
 end
 
