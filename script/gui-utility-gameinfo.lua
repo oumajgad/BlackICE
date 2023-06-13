@@ -39,6 +39,24 @@ if wx ~= nil then
 	UI.m_choice_Generals:SetSelection( 0 )
 	UI.bSizer_GameInfo2:Add( UI.m_choice_Generals, 0, wx.wxALL + wx.wxEXPAND, 5 )
 
+	UI.gSizer_Generals_1 = wx.wxGridSizer( 1, 4, 0, 0 )
+
+	UI.m_radioBtn_Generals_all = wx.wxRadioButton( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "all", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_radioBtn_Generals_all:SetValue( True )
+	UI.gSizer_Generals_1:Add( UI.m_radioBtn_Generals_all, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_radioBtn_Generals_land = wx.wxRadioButton( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "land", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_Generals_1:Add( UI.m_radioBtn_Generals_land, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_radioBtn_Generals_sea = wx.wxRadioButton( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "sea", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_Generals_1:Add( UI.m_radioBtn_Generals_sea, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_radioBtn_Generals_air = wx.wxRadioButton( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "air", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_Generals_1:Add( UI.m_radioBtn_Generals_air, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer_GameInfo2:Add( UI.gSizer_Generals_1, 0, wx.wxEXPAND, 5 )
+
 	UI.m_textCtrl_Generals = wx.wxTextCtrl( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), wx.wxTE_MULTILINE + wx.wxTE_WORDWRAP )
 	UI.m_textCtrl_Generals:SetMinSize( wx.wxSize( -1,395 ) )
 
@@ -81,4 +99,31 @@ if wx ~= nil then
 		end
 	end )
 
+	UI.m_radioBtn_Generals_all:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
+		if PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(PlayerCountry)
+			UI.m_textCtrl_Generals:Clear()
+		end
+	end )
+
+	UI.m_radioBtn_Generals_land:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
+		if PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(PlayerCountry)
+			UI.m_textCtrl_Generals:Clear()
+		end
+	end )
+
+	UI.m_radioBtn_Generals_sea:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
+		if PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(PlayerCountry)
+			UI.m_textCtrl_Generals:Clear()
+		end
+	end )
+
+	UI.m_radioBtn_Generals_air:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
+		if PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(PlayerCountry)
+			UI.m_textCtrl_Generals:Clear()
+		end
+	end )
 end

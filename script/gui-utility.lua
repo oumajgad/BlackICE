@@ -1771,7 +1771,10 @@ if wx ~= nil then
 					ReadCustomProductionSliderValues()
 					DetermineCustomLsSliderAiStatus()
 					ReadCustomLsSliderValues()
+
+					UI.m_radioBtn_Generals_all:SetValue( true )
 					Parsing.Generals.FillwxChoice(PlayerCountry)
+
 					GuiRefreshLoop(true)
 					UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
 				else

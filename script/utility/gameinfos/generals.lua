@@ -16,6 +16,25 @@ local generalsFiles = {
     'VIC.txt', 'YEM.txt', 'YUG.txt'
 }
 
+local generalBranches = {
+    all = 1, land = "land", sea = "sea", air = "air"
+}
+
+local function getGeneralBranchChoice()
+    if UI.m_radioBtn_Generals_all:GetValue() then
+        return generalBranches.all
+    end
+    if UI.m_radioBtn_Generals_land:GetValue() then
+        return generalBranches.land
+    end
+    if UI.m_radioBtn_Generals_sea:GetValue() then
+        return generalBranches.sea
+    end
+    if UI.m_radioBtn_Generals_air:GetValue() then
+        return generalBranches.air
+    end
+end
+
 local function getGeneralDate(leader)
     local earliest_date = nil
     --utils.INSPECT_TABLE(leader)
@@ -64,9 +83,10 @@ local function createGeneral(values)
 end
 
 local function createFilteredGeneralsList(playertag)
+    local selectedBranch = getGeneralBranchChoice()
     local unsorted = {}
     for id, general in pairs(P.GeneralsData) do
-        if general.country == playertag then
+        if general.country == playertag and (general.type == selectedBranch or selectedBranch == generalBranches.all) then
             if general.starting_skill ~= nil then
                 unsorted[id] = general
             else
@@ -108,10 +128,10 @@ function P.FillwxChoice(playertag)
     if not dataFilled then
         P.FillData()
     end
-    local choices = createFilteredGeneralsList(playertag)
+    local generals = createFilteredGeneralsList(playertag)
     UI.m_choice_Generals:Freeze()
     UI.m_choice_Generals:Clear()
-    UI.m_choice_Generals:Append(choices)
+    UI.m_choice_Generals:Append(generals)
     UI.m_choice_Generals:Thaw()
 end
 
