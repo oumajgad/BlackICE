@@ -82,20 +82,20 @@ if wx ~= nil then
 
 	UI.gSizer_GameInfo_Techs_1:Add( UI.m_staticText_GameInfo_Techs_1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_GameInfo_Techs_1 = wx.wxTextCtrl( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
-	UI.m_textCtrl_GameInfo_Techs_1:Enable( False )
+	UI.m_textCtrl_GameInfo_Techs_PlayerLevel = wx.wxTextCtrl( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_GameInfo_Techs_PlayerLevel:Enable( False )
 
-	UI.gSizer_GameInfo_Techs_1:Add( UI.m_textCtrl_GameInfo_Techs_1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer_GameInfo_Techs_1:Add( UI.m_textCtrl_GameInfo_Techs_PlayerLevel, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_staticText_GameInfo_Techs_2 = wx.wxStaticText( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "Shown level", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText_GameInfo_Techs_2:Wrap( -1 )
 
 	UI.gSizer_GameInfo_Techs_1:Add( UI.m_staticText_GameInfo_Techs_2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_GameInfo_Techs_2 = wx.wxTextCtrl( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
-	UI.m_textCtrl_GameInfo_Techs_2:Enable( False )
+	UI.m_textCtrl_GameInfo_Techs_LevelShown = wx.wxTextCtrl( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_GameInfo_Techs_LevelShown:Enable( False )
 
-	UI.gSizer_GameInfo_Techs_1:Add( UI.m_textCtrl_GameInfo_Techs_2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer_GameInfo_Techs_1:Add( UI.m_textCtrl_GameInfo_Techs_LevelShown, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.gSizer47 = wx.wxGridSizer( 0, 2, 0, 0 )
 
@@ -124,13 +124,13 @@ if wx ~= nil then
 
 	UI.fgSizer_GameInfo_Techs_1:Add( UI.m_staticText_GameInfo_Techs_3, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_GameInfo_Techs_4 = wx.wxTextCtrl( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
-	UI.fgSizer_GameInfo_Techs_1:Add( UI.m_textCtrl_GameInfo_Techs_4, 1, wx.wxALL + wx.wxEXPAND, 5 )
+	UI.m_textCtrl_GameInfo_Techs_Triggers = wx.wxTextCtrl( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
+	UI.fgSizer_GameInfo_Techs_1:Add( UI.m_textCtrl_GameInfo_Techs_Triggers, 1, wx.wxALL + wx.wxEXPAND, 5 )
 
 	UI.m_staticText_GameInfo_Techs_4 = wx.wxStaticText( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "Note that triggers may be combined. E.g. 2 \"OR\" clauses can be combined and show as 1 clause with multiple grouped conditions. This only happens if the 2 clauses are identical in the code, i.e.: \"or\" and \"OR\" will not be combined.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText_GameInfo_Techs_4:Wrap( 230 )
 
-	UI.fgSizer_GameInfo_Techs_1:Add( UI.m_staticText_GameInfo_Techs_4, 0, wx.wxALL, 5 )
+	UI.fgSizer_GameInfo_Techs_1:Add( UI.m_staticText_GameInfo_Techs_4, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 
 	UI.gSizer_GameInfo_Techs_2:Add( UI.fgSizer_GameInfo_Techs_1, 1, wx.wxEXPAND, 5 )
@@ -146,8 +146,8 @@ if wx ~= nil then
 
 	UI.fgSizer_GameInfo_Techs_2:Add( UI.m_staticText_GameInfo_Techs_5, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_GameInfo_Techs_5 = wx.wxTextCtrl( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
-	UI.fgSizer_GameInfo_Techs_2:Add( UI.m_textCtrl_GameInfo_Techs_5, 1, wx.wxALL + wx.wxEXPAND, 5 )
+	UI.m_textCtrl_GameInfo_Techs_Effects = wx.wxTextCtrl( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
+	UI.fgSizer_GameInfo_Techs_2:Add( UI.m_textCtrl_GameInfo_Techs_Effects, 1, wx.wxALL + wx.wxEXPAND, 5 )
 
 
 	UI.gSizer_GameInfo_Techs_2:Add( UI.fgSizer_GameInfo_Techs_2, 1, wx.wxEXPAND, 5 )
@@ -217,6 +217,22 @@ if wx ~= nil then
 		if PlayerCountry ~= nil then
 			Parsing.Generals.FillwxChoice(PlayerCountry)
 			UI.m_textCtrl_Generals:Clear()
+		end
+	end )
+
+	UI.m_choice_Techs:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+		Parsing.Techs.HandleSelection()
+	end )
+
+	UI.m_button_GameInfo_Tech_increase:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		local currentShownLevel = tonumber(UI.m_textCtrl_GameInfo_Techs_LevelShown:GetValue())
+		Parsing.Techs.HandleSelection(currentShownLevel + 1)
+	end )
+
+	UI.m_button_GameInfo_Tech_decrease:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		local currentShownLevel = tonumber(UI.m_textCtrl_GameInfo_Techs_LevelShown:GetValue())
+		if currentShownLevel > 1 then
+			Parsing.Techs.HandleSelection(currentShownLevel - 1)
 		end
 	end )
 end

@@ -28,16 +28,26 @@ local translation_files = {
     'zDD-events_new.csv', 'zDD-Flags.csv', 'zDD-misc.csv', 'zDD-Puppets.csv', 'zDD-tech.csv', 'zDD-Unit.csv'
 }
 
-P.TranslationTable = nil
-function P.createTranslationTable()
-    P.TranslationTable = {}
+local translationTable = nil
+local function createTranslationTable()
+    translationTable = {}
     for i, file in pairs(translation_files) do
         local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\localisation\\" .. file
         local temp = CsvParser.parseFile(path)
         for k, v in pairs(temp) do
-            P.TranslationTable[k] = v
+            translationTable[k] = v
         end
     end
+end
+
+function P.GetTranslationTable()
+    if translationTable == nil then
+        createTranslationTable()
+    end
+    if translationTable ~= nil then
+        return translationTable
+    end
+    return {}
 end
 
 -- Keys will be inside parentheses in the choice elements
@@ -53,4 +63,5 @@ end
 
 P.Traits = require('traits')
 P.Generals = require('generals')
+P.Techs = require('techs')
 return Parsing
