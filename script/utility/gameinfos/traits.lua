@@ -21,19 +21,19 @@ function P.FillData()
     if dataFilled then
         return
     end
-    if Parsing.TranslationTable == nil then
-        Parsing.createTranslationTable()
-    end
+    local translationTable = Parsing.GetTranslationTable()
 	P.TraitsData = PdxParser.parseFile("tfh\\mod\\BlackICE " .. UI.version .. "\\common\\traits.txt")
     for k, v in pairs(P.TraitsData) do
-        local trans = Parsing.TranslationTable[k]
+        local trans = translationTable[k]
         if trans ~= nil then
             table.insert(P.TraitsChoices, trans .. " [" .. k .. "]")
         else
             table.insert(P.TraitsChoices, "[" .. k .. "]")
         end
     end
-    table.sort(P.TraitsChoices)
+    table.sort(P.TraitsChoices, function (a, b)
+        return string.upper(a) < string.upper(b)
+    end)
 
     UI.m_choice_Traits:Freeze()
     UI.m_choice_Traits:Clear()

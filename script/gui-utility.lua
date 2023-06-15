@@ -2013,6 +2013,7 @@ if wx ~= nil then
 	UI.m_button_ShowGameInfoWindow:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		Parsing.Traits.FillData()
 		Parsing.Generals.FillData()
+		Parsing.Techs.FillData()
 		UI.MyFrame4:Show(true)
 	end )
 
