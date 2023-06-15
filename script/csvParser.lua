@@ -37,14 +37,16 @@ function P.parseFile(filePath)
     if err ~= nil then
         print(err)
     else
-        for line in file:lines() do
-            local tbl = parseCSVLine(line)
-            if tbl ~= nil then
-                res[tbl[1]] = tbl[2]
+        if file ~= nil then 
+            for line in file:lines() do
+                local tbl = parseCSVLine(line)
+                if tbl ~= nil then
+                    res[tbl[1]] = tbl[2]
+                end
             end
+            file:close()
+            return res
         end
-        file:close()
-        return res
     end
 end
 
