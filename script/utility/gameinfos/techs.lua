@@ -13,7 +13,6 @@ local techsFiles = {
 
 P.TechsData = {}
 P.TechsChoices = {}
-P.CountryTechsLevels = {}
 local dataFilled = false
 function P.FillData()
     if dataFilled then
@@ -89,6 +88,7 @@ function P.DumpEffects(selection)
     data = applyLevelToTech(data, shownLevel)
     -- All non-unit (table) values get put at the start
     local order = {"activate_unit", "on_completion"}
+    -- Insert the remaining keys into the order table alphabetically
     for k, v in Utils.OrderedTable(data) do
         if type(v) ~= "table" then
             if table.getIndex(order, v) == nil then
