@@ -13,6 +13,9 @@ import os
 def getTag():
     return e_TAG.get()
 
+def getIdent():
+    return e_IDENT.get()
+
 def getStats():
     stats = [lb_STAT.get(i) for i in lb_STAT.curselection()]
     return stats
@@ -21,25 +24,28 @@ def plot():
     if same_chart.get() == 0:
         plt.figure()
 
+    ident = getIdent()
     tag = getTag()
     stats = getStats()
+    if not ident:
+        return
     if not tag:
         return
     if not stats:
         return
 
     for stat in stats:
-        if verify(tag=tag, stat=stat):
-            plot_line(tag=tag,stat=stat)
+        if verify(ident=ident, tag=tag, stat=stat):
+            plot_line(ident=ident, tag=tag,stat=stat)
 
     plt.show()
 
 
-def plot_line(tag, stat, title=None):
+def plot_line(ident, tag, stat, title=None):
     if not title:
         title = stat
     
-    data = pd.read_csv(f'{tag}_{stat}')
+    data = pd.read_csv(f'{ident}/{tag}/{stat}')
     data = removeduplicates(data, [stat])
     dates = data["Date"]
     plt.plot(dates, data[stat], label=f"{tag}-{stat}")
@@ -79,22 +85,24 @@ def removeduplicates(data: pd.DataFrame, columns: list[str]):
     return vals
 
 
-def verify(tag, stat):
+def verify(ident, tag, stat):
     if len(tag) != 3:
         return False
-    if os.path.exists(f"{tag}_{stat}"):
+    if os.path.exists(f"{ident}/{tag}/{stat}"):
         return True
     return False
 
 
 def setPossibleStatSelection():
     stats = set()
-    for root, dirs, files in os.walk("./"):
-        for file in files:
-            if file in ["visualizeStatistic.py", "zzSetup"]:
-                continue
-            stat_name = file[4:]
-            stats.add(stat_name)
+    for _, dirs, _ in os.walk("./"):
+        for dir in dirs:
+            for _, _, files in os.walk(f"./{dir}"):
+                for file in files:
+                    if file in ["visualizeStatistic.py", "zzSetup"]:
+                        continue
+                    stat_name = file
+                    stats.add(stat_name)
     stats = list(stats)
     stats = sorted(stats)
     for i in range(len(stats)):
@@ -104,8 +112,11 @@ def setPossibleStatSelection():
 app = tk.Tk()
 app.title("visualizeStatistics.py")
 
-e_TAG = tk.Entry(app, width=25, border=5)
+e_TAG = tk.Entry(app, width=11, border=5)
 e_TAG.insert(0, "Enter TAG")
+
+e_IDENT = tk.Entry(app, width=11, border=5)
+e_IDENT.insert(0, "Enter IDENT")
 
 lb_STAT = tk.Listbox(app, selectmode=tk.EXTENDED, width=40, height=20)
 
@@ -118,10 +129,11 @@ button_Show = tk.Button(app, text="Plot", width=25, command= lambda: plot())
 
 
 
-e_TAG.grid(row=0, column=0, padx=10, pady=10)
-lb_STAT.grid(row=0, column=1, padx=10, pady=10)
-cb.grid(row=0, column=2, padx=10, pady=10)
-button_Show.grid(row=1, column=1, padx=10, pady=10, )
+e_IDENT.grid(row=0, column=0, padx=10, pady=10, rowspan=2)
+e_TAG.grid(row=1, column=0, padx=10, pady=10, rowspan=1)
+lb_STAT.grid(row=0, column=1, padx=10, pady=10, rowspan=3)
+cb.grid(row=0, column=2, padx=10, pady=10, rowspan=3)
+button_Show.grid(row=4, column=1, padx=10, pady=10)
 if __name__ == "__main__":
     setPossibleStatSelection()
     app.mainloop()

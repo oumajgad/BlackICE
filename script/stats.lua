@@ -46,7 +46,7 @@ local function getCurrentIdent()
 end
 
 local statsSetupDone = false
-local function setUpStatisticsFolder()
+local function setUpBaseStatisticsFolder()
 	if statsIdent == nil then
 		statsIdent = getCurrentIdent()
 	end
@@ -57,11 +57,26 @@ local function setUpStatisticsFolder()
 	statsSetupDone = true
 end
 
+local countryStatsFoldersDone = {}
+local function setUpCountryStatisticsFolder(tag)
+	if statsIdent == nil then
+		statsIdent = getCurrentIdent()
+	end
+	if not CheckFileExists("tfh/mod/BlackICE " .. UI.version .. "/stats/" .. statsIdent .. "/" .. tag .. "/zzSetup") then
+		os.execute('mkdir "tfh\\mod\\BlackICE ' .. UI.version .. '\\stats\\' .. statsIdent .. "\\" .. tag .. '"')
+		WriteString("tfh/mod/BlackICE " .. UI.version .. "/stats/" .. statsIdent .. "/" .. tag .. "/zzSetup", "Setup complete")
+		countryStatsFoldersDone[tag] = true
+	end
+end
+
 local function setUpStat(tag, statname)
 	if statsIdent == nil then
 		statsIdent = getCurrentIdent()
 	end
-	local filename = "tfh\\mod\\BlackICE " .. UI.version .. "\\stats\\" .. statsIdent .. "\\" .. tag .. "_" .. statname
+	if not countryStatsFoldersDone[tag] then
+		setUpCountryStatisticsFolder(tag)
+	end
+	local filename = "tfh\\mod\\BlackICE " .. UI.version .. "\\stats\\" .. statsIdent .. "\\" .. tag .. "\\" .. statname
 	if not CheckFileExists(filename) then
 		WriteString(filename, "Date," .. statname)
 	end
@@ -73,9 +88,9 @@ function P.AddStat(tag, statname, value)
 		statsIdent = getCurrentIdent()
 	end
 	if not statsSetupDone then
-		setUpStatisticsFolder()
+		setUpBaseStatisticsFolder()
 	end
 	setUpStat(tag, statname)
-	local file = "tfh\\mod\\BlackICE " .. UI.version .. "\\stats\\" .. statsIdent .. "\\" .. tag .. "_" .. statname
+	local file = "tfh\\mod\\BlackICE " .. UI.version .. "\\stats\\" .. statsIdent .. "\\" .. tag .. "\\" .. statname
 	AppendLine(file, "\n" .. tostring(date) .. "," .. value)
 end
