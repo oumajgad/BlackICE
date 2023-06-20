@@ -15,7 +15,7 @@ if wx ~= nil then
 	UI.m_panel_Statistics_setup = wx.wxPanel( UI.m_notebook_Statistics, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_Statistics_setup1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText_Statistics_setup2 = wx.wxStaticText( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Here you can enable the collection of statistics.\nTo find out which values will be collected check the \"Statistics\" page.\nThis feature is intended for development purposes, as the stat collection will slow down the game, especially when not limiting it to majors.\n\nOnce activated quite a few command prompts will open for a split second. They are needed to set up folders and such.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText_Statistics_setup2 = wx.wxStaticText( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Here you can enable the collection of statistics.\nTo find out which values will be collected check the \"Statistics\" page.\nThis feature is intended for development purposes, as the stat collection will slow down the game, especially when not limiting it to majors.\n\nOnce activated quite a few command prompts will open, in the next days, for a split second. They are needed to set up folders and such.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText_Statistics_setup2:Wrap( 400 )
 
 	UI.bSizer_Statistics_setup1:Add( UI.m_staticText_Statistics_setup2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
