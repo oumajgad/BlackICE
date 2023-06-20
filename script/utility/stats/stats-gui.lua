@@ -24,12 +24,12 @@ function ToggleStatCollection()
 	local omgCountry = omgTag:GetCountry()
 	local statisticsToggle = omgCountry:GetVariables():GetVariable(CString("StatisticsToggle")):Get()
     if statisticsToggle == 1 then
-        UI.m_textCtrl_Statistics_setup_ident:SetValue(tostring(Stats.GetCurrentIdent()))
         local command = CSetVariableCommand(omgTag, CString("StatisticsToggle"), CFixedPoint(0))
         CCurrentGameState.Post(command)
         UI.m_textCtrl_Statistics_setup_toggle:SetValue("off")
         Stats.CollectStats = false
     else
+        UI.m_textCtrl_Statistics_setup_ident:SetValue(tostring(Stats.GetCurrentIdent()))
         local command = CSetVariableCommand(omgTag, CString("StatisticsToggle"), CFixedPoint(1))
         CCurrentGameState.Post(command)
         UI.m_textCtrl_Statistics_setup_toggle:SetValue("on")
