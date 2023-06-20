@@ -1291,6 +1291,16 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 end
 
 
+local function getIcEfficiency(ministerCountry)
+	local icEffraw = ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
+	for tech, effect in pairs(G_TechsIcEffValues) do
+		local level = ministerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+		icEffraw = icEffraw + (effect*level)
+	end
+	local icEff = Utils.RoundDecimal(icEffraw, 3) * 100
+	return icEff
+end
+
 
 -- ###################################
 -- # Main Method called by the EXE
@@ -1478,7 +1488,8 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 	if checksum > 0.01 then
 		local countryTag = ministerCountry:GetCountryTag()
 		if Stats.CollectStats == true and Stats.MajorCheck(lbIsMajor, nil, nil) then
-			Stats.AddStat(tostring(countryTag), "prodTotalIc", tostring(string.format('%.0f', totalIc)))
+			Stats.AddStat(tostring(countryTag), "prod_IcEff", tostring(string.format('%.0f', getIcEfficiency(ministerCountry))))
+			Stats.AddStat(tostring(countryTag), "prod_TotalIc", tostring(string.format('%.0f', totalIc)))
 			Stats.AddStat(tostring(countryTag), "prodLendLease_%", tostring(string.format('%.0f', vLendLease * 100)))
 			Stats.AddStat(tostring(countryTag), "prodLendLease_IC", tostring(string.format('%.0f', vLendLease * totalIc)))
 			Stats.AddStat(tostring(countryTag), "prodConsumer_%", tostring(string.format('%.0f', vConsumer * 100)))
