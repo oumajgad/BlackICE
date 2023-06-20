@@ -122,8 +122,8 @@ if wx ~= nil then
         'polPopularity_fascistic', 'polPopularity_Group_communism', 'polPopularity_Group_democracy', 'polPopularity_Group_fascism',
         'polPopularity_Group_noIdeologygroup', 'polPopularity_left_wing_radical', 'polPopularity_leninist', 'polPopularity_market_liberal',
         'polPopularity_national_socialist', 'polPopularity_noIdeology', 'polPopularity_paternal_autocrat', 'polPopularity_social_conservative',
-        'polPopularity_social_democrat', 'polPopularity_social_liberal', 'polPopularity_stalinist', 'prodTotalIc', 'lsTotalLeadership',
-        'intelTotalSpiesAbroad', 'prodConsumer_%', 'prodConsumer_IC', 'prodLendLease_%', 'prodLendLease_IC', 'prodProduction_%', 'prodProduction_IC', 
+        'polPopularity_social_democrat', 'polPopularity_social_liberal', 'polPopularity_stalinist', 'prod_TotalIc', 'prod_IcEff', 'lsTotalLeadership',
+        'intelTotalSpiesAbroad', 'prodConsumer_%', 'prodConsumer_IC', 'prodLendLease_%', 'prodLendLease_IC', 'prodProduction_%', 'prodProduction_IC',
         'prodReinforce_%', 'prodReinforce_IC', 'prodSupply_%', 'prodSupply_IC', 'prodUpgrade_%', 'prodUpgrade_IC'
     }
     table.sort(statChoices)
