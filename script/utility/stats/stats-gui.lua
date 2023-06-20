@@ -16,6 +16,17 @@ function SetStatCollectionStatus()
     else
         UI.m_textCtrl_Statistics_setup_toggle_majors:SetValue("off")
     end
+    local countries = {}
+    for dip in CCountryDataBase.GetTag("OMG"):GetCountry():GetDiplomacy() do
+        local countryTag = dip:GetTarget()
+        local tag = tostring(countryTag)
+        if tag ~= "REB" and tag ~= "---" then
+            table.insert(countries, tag)
+        end
+    end
+    table.sort(countries)
+    UI.m_comboBox_Statistics_main1:Clear()
+    UI.m_comboBox_Statistics_main1:Append(countries)
 end
 
 
