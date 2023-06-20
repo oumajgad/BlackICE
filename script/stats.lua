@@ -2,7 +2,7 @@ local P = {}
 Stats = P
 
 P.CollectStats = false
-P.MajorOnly = true	-- Only collect stats from majors
+P.MajorOnly = false	-- Only collect stats from majors
 
 
 -- Checks if country is a major incase we only want to collect from majors
@@ -25,8 +25,8 @@ function P.MajorCheck(isMajor, ministerCountry, countryTag)
 end
 
 
-local statsIdent = nil
-local function getCurrentIdent()
+P.StatsIdent = nil
+function P.GetCurrentIdent()
 	if not CheckFileExists("tfh/mod/BlackICE " .. UI.version .. "/stats/identcounter") then
 		os.execute('mkdir "tfh\\mod\\BlackICE ' .. UI.version .. '\\stats"')
 		WriteString("tfh/mod/BlackICE " .. UI.version .. "/stats/identcounter", "1")
@@ -47,36 +47,36 @@ end
 
 local statsSetupDone = false
 local function setUpBaseStatisticsFolder()
-	if statsIdent == nil then
-		statsIdent = getCurrentIdent()
+	if P.StatsIdent == nil then
+		P.StatsIdent = P.GetCurrentIdent()
 	end
-	if not CheckFileExists("tfh/mod/BlackICE " .. UI.version .. "/stats/" .. statsIdent .. "/zzSetup") then
-		os.execute('mkdir "tfh\\mod\\BlackICE ' .. UI.version .. '\\stats\\' .. statsIdent .. '"')
-		WriteString("tfh/mod/BlackICE " .. UI.version .. "/stats/" .. statsIdent .. "/zzSetup", "Setup complete")
+	if not CheckFileExists("tfh/mod/BlackICE " .. UI.version .. "/stats/" .. P.StatsIdent .. "/zzSetup") then
+		os.execute('mkdir "tfh\\mod\\BlackICE ' .. UI.version .. '\\stats\\' .. P.StatsIdent .. '"')
+		WriteString("tfh/mod/BlackICE " .. UI.version .. "/stats/" .. P.StatsIdent .. "/zzSetup", "Setup complete")
 	end
 	statsSetupDone = true
 end
 
 local countryStatsFoldersDone = {}
 local function setUpCountryStatisticsFolder(tag)
-	if statsIdent == nil then
-		statsIdent = getCurrentIdent()
+	if P.StatsIdent == nil then
+		P.StatsIdent = P.GetCurrentIdent()
 	end
-	if not CheckFileExists("tfh/mod/BlackICE " .. UI.version .. "/stats/" .. statsIdent .. "/" .. tag .. "/zzSetup") then
-		os.execute('mkdir "tfh\\mod\\BlackICE ' .. UI.version .. '\\stats\\' .. statsIdent .. "\\" .. tag .. '"')
-		WriteString("tfh/mod/BlackICE " .. UI.version .. "/stats/" .. statsIdent .. "/" .. tag .. "/zzSetup", "Setup complete")
+	if not CheckFileExists("tfh/mod/BlackICE " .. UI.version .. "/stats/" .. P.StatsIdent .. "/" .. tag .. "/zzSetup") then
+		os.execute('mkdir "tfh\\mod\\BlackICE ' .. UI.version .. '\\stats\\' .. P.StatsIdent .. "\\" .. tag .. '"')
+		WriteString("tfh/mod/BlackICE " .. UI.version .. "/stats/" .. P.StatsIdent .. "/" .. tag .. "/zzSetup", "Setup complete")
 		countryStatsFoldersDone[tag] = true
 	end
 end
 
 local function setUpStat(tag, statname)
-	if statsIdent == nil then
-		statsIdent = getCurrentIdent()
+	if P.StatsIdent == nil then
+		P.StatsIdent = P.GetCurrentIdent()
 	end
 	if not countryStatsFoldersDone[tag] then
 		setUpCountryStatisticsFolder(tag)
 	end
-	local filename = "tfh\\mod\\BlackICE " .. UI.version .. "\\stats\\" .. statsIdent .. "\\" .. tag .. "\\" .. statname
+	local filename = "tfh\\mod\\BlackICE " .. UI.version .. "\\stats\\" .. P.StatsIdent .. "\\" .. tag .. "\\" .. statname
 	if not CheckFileExists(filename) then
 		WriteString(filename, "Date," .. statname)
 	end
@@ -84,13 +84,15 @@ end
 
 function P.AddStat(tag, statname, value)
 	local date = CCurrentGameState.GetCurrentDate():GetTotalDays() - 706640
-	if statsIdent == nil then
-		statsIdent = getCurrentIdent()
+	if P.StatsIdent == nil then
+		P.StatsIdent = P.GetCurrentIdent()
 	end
 	if not statsSetupDone then
 		setUpBaseStatisticsFolder()
 	end
 	setUpStat(tag, statname)
-	local file = "tfh\\mod\\BlackICE " .. UI.version .. "\\stats\\" .. statsIdent .. "\\" .. tag .. "\\" .. statname
+	local file = "tfh\\mod\\BlackICE " .. UI.version .. "\\stats\\" .. P.StatsIdent .. "\\" .. tag .. "\\" .. statname
 	AppendLine(file, "\n" .. tostring(date) .. "," .. value)
 end
+
+return Stats

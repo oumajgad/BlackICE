@@ -114,10 +114,10 @@ function IntelligenceMinister_Tick(minister)
 					groupPopularity[group] = groupPopularity[group] + popularity
 				end
 				-- Utils.LUA_DEBUGOUT(tostring(popularity))
-				Stats.AddStat(tostring(IntelligenceData.ministerTag), "Popularity_" .. ideologyString, string.format('%.02f', popularity))
+				Stats.AddStat(tostring(IntelligenceData.ministerTag), "polPopularity_Single_" .. ideologyString, string.format('%.02f', popularity))
 			end
 			for group, popularity in pairs(groupPopularity) do
-				Stats.AddStat(tostring(IntelligenceData.ministerTag), "Popularity_Group_" .. group, string.format('%.02f', popularity))
+				Stats.AddStat(tostring(IntelligenceData.ministerTag), "polPopularity_Group_" .. group, string.format('%.02f', popularity))
 			end
 		end
 
