@@ -118,13 +118,13 @@ if wx ~= nil then
 
 
     local statChoices = {
-        'intelDomesticSpies', 'intelFreeSpies', 'lsPercent_Diplomacy', 'lsPercent_Espionage', 'lsPercent_NCO', 'lsPercent_Research',
-        'polPopularity_fascistic', 'polPopularity_Group_communism', 'polPopularity_Group_democracy', 'polPopularity_Group_fascism',
-        'polPopularity_Group_noIdeologygroup', 'polPopularity_left_wing_radical', 'polPopularity_leninist', 'polPopularity_market_liberal',
-        'polPopularity_national_socialist', 'polPopularity_noIdeology', 'polPopularity_paternal_autocrat', 'polPopularity_social_conservative',
-        'polPopularity_social_democrat', 'polPopularity_social_liberal', 'polPopularity_stalinist', 'prod_TotalIc', 'prod_IcEff', 'lsTotalLeadership',
-        'intelTotalSpiesAbroad', 'prodConsumer_%', 'prodConsumer_IC', 'prodLendLease_%', 'prodLendLease_IC', 'prodProduction_%', 'prodProduction_IC',
-        'prodReinforce_%', 'prodReinforce_IC', 'prodSupply_%', 'prodSupply_IC', 'prodUpgrade_%', 'prodUpgrade_IC'
+        'intel_DomesticSpies', 'intel_FreeSpies', 'ls_Percent_Diplomacy', 'ls_Percent_Espionage', 'ls_Percent_NCO', 'ls_Percent_Research',
+        'pol_Popularity_fascistic', 'pol_Popularity_Group_communism', 'pol_Popularity_Group_democracy', 'pol_Popularity_Group_fascism',
+        'pol_Popularity_Group_noIdeologygroup', 'pol_Popularity_left_wing_radical', 'pol_Popularity_leninist', 'pol_Popularity_market_liberal',
+        'pol_Popularity_national_socialist', 'pol_Popularity_noIdeology', 'pol_Popularity_paternal_autocrat', 'pol_Popularity_social_conservative',
+        'pol_Popularity_social_democrat', 'pol_Popularity_social_liberal', 'pol_Popularity_stalinist', 'prod__TotalIc', 'prod__IcEff', 'ls_TotalLeadership',
+        'intel_TotalSpiesAbroad', 'prod_Consumer_%', 'prod_Consumer_IC', 'prod_LendLease_%', 'prod_LendLease_IC', 'prod_Production_%', 'prod_Production_IC',
+        'prod_Reinforce_%', 'prod_Reinforce_IC', 'prod_Supply_%', 'prod_Supply_IC', 'prod_Upgrade_%', 'prod_Upgrade_IC'
     }
     table.sort(statChoices)
     UI.m_listBox_Statistics_main_stats:Clear()
