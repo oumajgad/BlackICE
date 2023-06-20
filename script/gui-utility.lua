@@ -10,6 +10,7 @@ UI.version = "GitHub"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\main\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\options\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\gameinfos\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\stats\\?.lua"
 
 -- Main utility page
 require('minister_buildings')
@@ -30,6 +31,9 @@ require('options')
 
 -- Gameinfos
 require('parsing')
+
+-- Stats
+require('stats-gui')
 
 if wx ~= nil then
 
@@ -109,7 +113,7 @@ if wx ~= nil then
 
 	UI.bSizer2:Add( UI.gSizer31, 1, wx.wxEXPAND, 5 )
 
-	UI.gSizer_Setup38 = wx.wxGridSizer( 1, 3, 0, 0 )
+	UI.gSizer_Setup38 = wx.wxGridSizer( 1, 4, 0, 0 )
 
 	UI.m_button_ShowHelpWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Help window", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_button_ShowHelpWindow:SetToolTip( "A window with useful information about the mod and game" )
@@ -118,6 +122,9 @@ if wx ~= nil then
 
 	UI.m_button_ShowOptionsWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Options window", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer_Setup38:Add( UI.m_button_ShowOptionsWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ShowStatsWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Stats window", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_Setup38:Add( UI.m_button_ShowStatsWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_button_ShowGameInfoWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Game infos", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer_Setup38:Add( UI.m_button_ShowGameInfoWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -1771,6 +1778,7 @@ if wx ~= nil then
 					ReadCustomProductionSliderValues()
 					DetermineCustomLsSliderAiStatus()
 					ReadCustomLsSliderValues()
+					SetStatCollectionStatus()
 
 					UI.m_radioBtn_Generals_all:SetValue( true )
 					Parsing.Generals.FillwxChoice(PlayerCountry)
@@ -2015,6 +2023,10 @@ if wx ~= nil then
 		Parsing.Generals.FillData()
 		Parsing.Techs.FillData()
 		UI.MyFrame4:Show(true)
+	end )
+
+	UI.m_button_ShowStatsWindow:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		UI.MyFrame5:Show(true)
 	end )
 
 	UI.m_button_ProductionSliderAi_toggle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

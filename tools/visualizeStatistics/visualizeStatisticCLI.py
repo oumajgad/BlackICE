@@ -10,12 +10,12 @@ import argparse
 # Place the script within the Stats folder and run
 #
 
-def plot(version, ident, tag, stats):
+def plot(version, ident, tags, stats):
     basePath = f"tfh\\mod\\BlackICE {version}"
-    for stat in stats:
-        if verify(basePath, ident=ident, tag=tag, stat=stat):
-            plot_line(basePath, ident=ident, tag=tag,stat=stat)
-
+    for tag in tags:
+        for stat in stats:
+            if verify(basePath, ident=ident, tag=tag, stat=stat):
+                plot_line(basePath, ident=ident, tag=tag,stat=stat)
     plt.show()
 
 
@@ -23,7 +23,7 @@ def plot_line(basePath, ident, tag, stat):
     data = pd.read_csv(f".\\{basePath}\\stats\\{ident}\\{tag}\\{stat}")
     data = removeduplicates(data, [stat])
     dates = data["Date"]
-    plt.plot(dates, data[stat], label=f"{tag}-{stat}")
+    plt.plot(dates, data[stat])
     plt.legend()
     plt.xlabel("Day")
     plt.ylabel(stat)
@@ -63,10 +63,11 @@ def removeduplicates(data: pd.DataFrame, columns: list[str]):
 def verify(basePath, ident, tag, stat):
     path = f".\\{basePath}\\stats\\{ident}\\{tag}\\{stat}"
     if len(tag) != 3:
+        print(f"Not found: {tag}")
         return False
     if os.path.exists(path):
         return True
-    print(path)
+    print(f"Not found: {path}")
     return False
 
 
@@ -83,7 +84,8 @@ def main():
         default=None
     )
     CLI.add_argument(
-        "--tag",
+        "--tags",
+        nargs="*",
         type=str,
         default=None
     )
@@ -96,17 +98,17 @@ def main():
     args = CLI.parse_args()
     print(args.version)
     print(args.ident)
-    print(args.tag)
+    print(args.tags)
     print(args.stats)
     version = args.version
     ident = args.ident
-    tag = args.tag
+    tags = args.tags
     stats = args.stats
-    plot(version, ident, tag, stats)
+    plot(version, ident, tags, stats)
 
 if __name__ == "__main__":
     try:
-        print("Closing this window will also close the statistic window!")
+        print("\nClosing this window will also close the statistic window!\n")
         main()
     except Exception as e:
         print(e)

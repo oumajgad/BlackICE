@@ -223,6 +223,7 @@ function OMGHandler(minister)
 		DeterminePlayers()
 		DetermineExePatchStatus()
 		DetermineSpriteDeletionStatus()
+		SetStatCollectionStatus()
 	end
 
 	-- t = os.clock()

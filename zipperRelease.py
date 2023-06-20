@@ -25,6 +25,7 @@ def zipdir(filename):
     addLua51dll(zipf)
     addWxDll(zipf)
     addUtilityResources(zipf)
+    addStatsCLI(zipf)
     addBorderlessWindowDlls(zipf)
     addExePatcher(zipf)
     maxcount = countFiles()
@@ -66,6 +67,9 @@ def createModFile(zipf: zipfile.ZipFile):
 
 def addWxDll(zipf: zipfile.ZipFile):
     zipf.write("./tools/wxWidget/wx.dll", f"{path}/wx.dll")
+
+def addStatsCLI(zipf: zipfile.ZipFile):
+    zipf.write("./tools/visualizeStatistics/visualizeStatisticCLI.exe", f"{path}/BlackICE {version}/stats/visualizeStatisticCLI.exe")
 
 def addLua51dll(zipf: zipfile.ZipFile):
     zipf.write("./ModdedEXE/lua5.1.dll", "lua5.1.dll")
