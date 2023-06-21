@@ -14,11 +14,7 @@ def plot(version, ident, tags, stats):
 def plot_line(basePath, ident, tag, stat: str):
     file = f".\\{basePath}\\stats\\{ident}\\{tag}\\{stat}"
     dates, stats = read_csv(file, stat)
-    print(dates)
-    print(stats)
     dates, stats = removeduplicates(dates, stats)
-    print(dates)
-    print(stats)
     plt.plot(dates, stats)
     plt.legend()
     plt.xlabel("Day")
