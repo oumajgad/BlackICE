@@ -1,14 +1,6 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 import os
-import argparse
-
-################# INFO #################
-# Create Plots of collected statistics #
-########################################
-#
-# Place the script within the Stats folder and run
-#
+import sys
 
 def plot(version, ident, tags, stats):
     basePath = f"tfh\\mod\\BlackICE {version}"
@@ -19,11 +11,15 @@ def plot(version, ident, tags, stats):
     plt.show()
 
 
-def plot_line(basePath, ident, tag, stat):    
-    data = pd.read_csv(f".\\{basePath}\\stats\\{ident}\\{tag}\\{stat}")
-    data = removeduplicates(data, [stat])
-    dates = data["Date"]
-    plt.plot(dates, data[stat])
+def plot_line(basePath, ident, tag, stat: str):
+    file = f".\\{basePath}\\stats\\{ident}\\{tag}\\{stat}"
+    dates, stats = read_csv(file, stat)
+    print(dates)
+    print(stats)
+    dates, stats = removeduplicates(dates, stats)
+    print(dates)
+    print(stats)
+    plt.plot(dates, stats)
     plt.legend()
     plt.xlabel("Day")
     plt.ylabel(stat)
@@ -35,29 +31,39 @@ def plot_line(basePath, ident, tag, stat):
 
 
 # Removes duplicate dates from the dataset which can be introduced due to crashing or save reloading
-def removeduplicates(data: pd.DataFrame, columns: list[str]):
-    ret = {}
-    ret["Date"] = {}
-    for column in columns:
-        ret[column] = {}
+def removeduplicates(dates, stats):
+    ret_dates = list()
+    ret_stats = list()
     highest_day = 0
-    for k in ret.keys():
-        x = 0
-        for day in data["Date"]:
-            if day > highest_day:
-                highest_day = day
-            elif day < highest_day:
-                for j in range(day, highest_day + 1):
-                    ret[k].pop(j, None)
-                highest_day = day
+    x = 0
+    for day in dates:
+        if day > highest_day:
+            highest_day = day
+        elif day < highest_day:
+            for j in range(len(ret_dates)):
+                if ret_dates[j] >= day:
+                    ret_dates = ret_dates[:j]
+                    ret_stats = ret_stats[:j]
+                    break
+            highest_day = day
 
-            ret[k][day] = data[k][x]
-            x += 1
+        ret_dates.append(day)
+        ret_stats.append(stats[x])
+        x += 1
 
-    vals = {}
-    for k in ret.keys():
-        vals[k] = ret[k].values()
-    return vals
+    return ret_dates, ret_stats
+
+
+def read_csv(file, stat):
+    dates = list()
+    stats = list()
+    with open(file, "r") as file:
+        lines = file.readlines()[1:]
+        for line in lines:
+            split = line.split(",")
+            dates.append(int(split[0]))
+            stats.append(float(split[1]))
+    return dates, stats
 
 
 def verify(basePath, ident, tag, stat):
@@ -72,39 +78,16 @@ def verify(basePath, ident, tag, stat):
 
 
 def main():
-    CLI=argparse.ArgumentParser()
-    CLI.add_argument(
-        "--version",
-        type=str,
-        default=None
-    )
-    CLI.add_argument(
-        "--ident",
-        type=int,
-        default=None
-    )
-    CLI.add_argument(
-        "--tags",
-        nargs="*",
-        type=str,
-        default=None
-    )
-    CLI.add_argument(
-        "--stats",
-        nargs="*",
-        type=str,
-        default=None
-    )
-    args = CLI.parse_args()
-    print(args.version)
-    print(args.ident)
-    print(args.tags)
-    print(args.stats)
-    version = args.version
-    ident = args.ident
-    tags = args.tags
-    stats = args.stats
+    print(sys.argv[1])
+    print(sys.argv[2])
+    print(sys.argv[3])
+    print(sys.argv[4])
+    version = sys.argv[1]
+    ident = sys.argv[2]
+    tags = sys.argv[3].split(",")
+    stats = sys.argv[4].split(",")
     plot(version, ident, tags, stats)
+
 
 if __name__ == "__main__":
     try:
