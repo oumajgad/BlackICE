@@ -49,6 +49,26 @@ country_event = {
 			country_event = 2306
 		}
 	}
+	option = {
+		name = "Compromise"   # Compromise
+		relation = {
+			who = ROM
+			value = -5
+		}
+		relation = {
+			who = HUN
+			value = 5
+		}
+		HUN = {
+			country_event = 2305
+		}
+		ROM = {
+			country_event = 2311
+		}
+		GER = {
+			country_event = 2312
+		}
+	}
 }
 # Romania - Reaction event
 country_event = {
@@ -123,7 +143,7 @@ country_event = {
 	picture = "vienna_diktat"
 	option = {
 		name = "EVTOPTA2303"   # Great
-		dissent = -10
+		dissent = -5
 		relation = {
 			who = GER
 			value = 5
@@ -303,5 +323,108 @@ country_event = {
 		}
 		join_faction = axis
 		dissent = 5
+	}
+}
+
+# -------------------------------------------------------------------
+# Anthonest Edits
+
+# Romania - Compromise Reaction event
+country_event = {
+	id = 2311
+	is_triggered_only = yes
+	title = "EVTNAME2302"
+	desc = "EVTDESC2302"
+	picture = "vienna_diktat"
+	option = {
+		name = "Accept this Compromise"   # Accept
+		ai_chance = {
+			factor = 100
+		}
+		relation = {
+			who = HUN
+			value = 10
+		}
+		relation = {
+			who = GER
+			value = 5
+		}
+		hun_comp_region = {
+			add_core = HUN
+			secede_province = HUN
+			remove_core = ROM
+		}
+		set_country_flag = Rom_reaction
+		HUN = {
+			country_event = 2303
+		}
+	}
+}
+
+# Germany - Third Vienna Award
+country_event = {
+	id = 2312
+	is_triggered_only = yes
+	title = "Third Vienna Award"
+	desc = "Should we give Hungary their additional cores?"
+	picture = "vienna_diktat"
+	option = {
+		name = "Accept"   # Force Yugoslavian acceptance
+		ai_chance = {
+			factor = 100
+		}
+		relation = {
+			who = YUG
+			value = -5
+		}
+		relation = {
+			who = HUN
+			value = 5
+		}
+		YUG = {
+			country_event = 2313
+		}
+	}
+	option = {
+		name = "Deny"   # Deny the Hungarian request
+		relation = {
+			who = YUG
+			value = 10
+		}
+		relation = {
+			who = HUN
+			value = -10
+		}
+		HUN = {
+			country_event = 2305
+		}
+	}
+}
+
+# Yugoslavian Reaction
+country_event = {
+	id = 2313
+	is_triggered_only = yes
+	title = "Third Vienna Award"
+	desc = "Should we cede Hungarian core territory?"
+	picture = "vienna_diktat"
+	option = {
+		name = "Accept this cession"   # Accept
+		ai_chance = {
+			factor = 100
+		}
+		relation = {
+			who = HUN
+			value = 10
+		}
+		relation = {
+			who = GER
+			value = 5
+		}
+		hun_yug_claims = {
+			add_core = HUN
+			secede_province = HUN
+			remove_core = YUG
+		}
 	}
 }
