@@ -156,35 +156,33 @@ if wx ~= nil then
     end )
 
 	UI.m_button_Statistics_main_plot:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-        if Stats.StatsIdent ~= nil then
-            local statsSelected = UI.m_listBox_Statistics_main_stats:GetSelections()
-            -- Utils.LUA_DEBUGOUT(statsSelected)
-            local statsString = ""
-            local added = 0
-            for i = 0, #statChoices do
-                if UI.m_listBox_Statistics_main_stats:IsSelected(i) then
-                    statsString = statsString .. UI.m_listBox_Statistics_main_stats:GetString(i) .. ","
-                    added = added + 1
-                end
-                if added >= statsSelected then
-                    i = #statChoices
-                end
-            end
-            local tags = UI.m_listBox_Statistics_main_countries:GetCount()
-            -- Utils.LUA_DEBUGOUT(tags)
-            local tagsString = ""
-            for i = 0, tags - 1 do
-                tagsString = tagsString .. UI.m_listBox_Statistics_main_countries:GetString(i) .. ","
-            end
-            Stats.StatsIdent = Stats.GetCurrentIdent()
-            -- Utils.LUA_DEBUGOUT(statsString)
-            -- Utils.LUA_DEBUGOUT(tagsString)
-            if statsSelected >= 1 and tags >= 1 then
-                local command = 'start "" "tfh\\mod\\BlackICE ' .. UI.version ..'\\stats\\visualizeStatisticCLI.exe" ' ..
-                                UI.version .. ' ' .. Stats.StatsIdent .. ' ' .. tagsString .. ' ' .. statsString
-                -- Utils.LUA_DEBUGOUT(command)
-                os.execute(command)
-            end
-        end
+		local statsSelected = UI.m_listBox_Statistics_main_stats:GetSelections()
+		-- Utils.LUA_DEBUGOUT(statsSelected)
+		local statsString = ""
+		local added = 0
+		for i = 0, #statChoices do
+			if UI.m_listBox_Statistics_main_stats:IsSelected(i) then
+				statsString = statsString .. UI.m_listBox_Statistics_main_stats:GetString(i) .. ","
+				added = added + 1
+			end
+			if added >= statsSelected then
+				i = #statChoices
+			end
+		end
+		local tags = UI.m_listBox_Statistics_main_countries:GetCount()
+		-- Utils.LUA_DEBUGOUT(tags)
+		local tagsString = ""
+		for i = 0, tags - 1 do
+			tagsString = tagsString .. UI.m_listBox_Statistics_main_countries:GetString(i) .. ","
+		end
+		Stats.StatsIdent = Stats.GetCurrentIdent()
+		-- Utils.LUA_DEBUGOUT(statsString)
+		-- Utils.LUA_DEBUGOUT(tagsString)
+		if statsSelected >= 1 and tags >= 1 then
+			local command = 'start "" "tfh\\mod\\BlackICE ' .. UI.version ..'\\stats\\visualizeStatisticCLI.exe" ' ..
+							UI.version .. ' ' .. Stats.StatsIdent .. ' ' .. tagsString .. ' ' .. statsString
+			-- Utils.LUA_DEBUGOUT(command)
+			os.execute(command)
+		end
 	end )
 end
