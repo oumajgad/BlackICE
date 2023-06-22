@@ -15,7 +15,7 @@ def plot_line(basePath, ident, tag, stat: str):
     file = f".\\{basePath}\\stats\\{ident}\\{tag}\\{stat}"
     dates, stats = read_csv(file, stat)
     dates, stats = removeduplicates(dates, stats)
-    plt.plot(dates, stats)
+    plt.plot(dates, stats, label=f"{tag}-{stat}")
     plt.legend()
     plt.xlabel("Day")
     plt.ylabel(stat)
@@ -63,6 +63,8 @@ def read_csv(file, stat):
 
 
 def verify(basePath, ident, tag, stat):
+    if not stat or stat.strip() == "" or not tag or tag == "":
+        return False
     path = f".\\{basePath}\\stats\\{ident}\\{tag}\\{stat}"
     if len(tag) != 3:
         print(f"Not found: {tag}")
