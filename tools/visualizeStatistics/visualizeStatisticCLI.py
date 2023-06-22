@@ -1,6 +1,10 @@
 import matplotlib.pyplot as plt
 import os
 import sys
+import time
+
+from mplcursors import cursor  # separate package must be installed
+
 
 def plot(version, ident, tags, stats):
     basePath = f"tfh\\mod\\BlackICE {version}"
@@ -8,6 +12,7 @@ def plot(version, ident, tags, stats):
         for stat in stats:
             if verify(basePath, ident=ident, tag=tag, stat=stat):
                 plot_line(basePath, ident=ident, tag=tag,stat=stat)
+    cursor(hover=True)
     plt.show()
 
 
@@ -93,3 +98,4 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         print(e)
+        time.sleep(5)
