@@ -15,8 +15,8 @@ if wx ~= nil then
 	UI.m_panel_Statistics_setup = wx.wxPanel( UI.m_notebook_Statistics, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_Statistics_setup1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText_Statistics_setup2 = wx.wxStaticText( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Here you can enable the collection of statistics.\nTo find out which values will be collected check the \"Statistics\" page.\nThis feature is intended for development purposes, as the stat collection will slow down the game, especially when not limiting it to majors.\n\nOnce activated quite a few command prompts will open for a split second in the next days. They are needed to set up folders and such.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticText_Statistics_setup2:Wrap( 400 )
+	UI.m_staticText_Statistics_setup2 = wx.wxStaticText( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Here you can enable the collection of statistics.\nTo find out which values will be collected check the \"Statistics\" page.\nThis feature is intended for development purposes, as the stat collection will slow down the game, especially when not limiting it to a custom country list.\n\nOnce activated quite a few command prompts will open for a split second in the next days. They are needed to set up folders and such.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText_Statistics_setup2:Wrap( 410 )
 
 	UI.bSizer_Statistics_setup1:Add( UI.m_staticText_Statistics_setup2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
@@ -30,16 +30,59 @@ if wx ~= nil then
 
 	UI.gSizer_Statistics_setup1:Add( UI.m_textCtrl_Statistics_setup_toggle, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_button_Statistics_setup_toggle_majors = wx.wxButton( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Toggle majors only", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer_Statistics_setup1:Add( UI.m_button_Statistics_setup_toggle_majors, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.m_button_Statistics_setup_toggle_custom_list = wx.wxButton( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Toggle custom list", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_Statistics_setup1:Add( UI.m_button_Statistics_setup_toggle_custom_list, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_Statistics_setup_toggle_majors = wx.wxTextCtrl( UI.m_panel_Statistics_setup, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_Statistics_setup_toggle_majors:Enable( False )
+	UI.m_textCtrl_Statistics_setup_toggle_custom_list = wx.wxTextCtrl( UI.m_panel_Statistics_setup, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_Statistics_setup_toggle_custom_list:Enable( False )
 
-	UI.gSizer_Statistics_setup1:Add( UI.m_textCtrl_Statistics_setup_toggle_majors, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer_Statistics_setup1:Add( UI.m_textCtrl_Statistics_setup_toggle_custom_list, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
-	UI.bSizer_Statistics_setup1:Add( UI.gSizer_Statistics_setup1, 1, wx.wxEXPAND, 5 )
+	UI.bSizer_Statistics_setup1:Add( UI.gSizer_Statistics_setup1, 0, wx.wxEXPAND, 5 )
+
+	UI.gSizer_Statistics_setup2 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.gSizer_Statistics_setup3 = wx.wxGridSizer( 2, 1, 0, 0 )
+
+	UI.m_comboBox_Statistics_setup1Choices = {}
+	UI.m_comboBox_Statistics_setup1 = wx.wxComboBox( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Enter/select TAG", wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_comboBox_Statistics_setup1Choices, 0 )
+	UI.gSizer_Statistics_setup3:Add( UI.m_comboBox_Statistics_setup1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.gSizer_Statistics_setup4 = wx.wxGridSizer( 0, 2, 0, 0 )
+
+	UI.m_button_Statistics_setup_add = wx.wxButton( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Add", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_Statistics_setup4:Add( UI.m_button_Statistics_setup_add, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_Statistics_setup_remove = wx.wxButton( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Remove", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_Statistics_setup4:Add( UI.m_button_Statistics_setup_remove, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer_Statistics_setup3:Add( UI.gSizer_Statistics_setup4, 1, wx.wxEXPAND, 5 )
+
+
+	UI.gSizer_Statistics_setup2:Add( UI.gSizer_Statistics_setup3, 1, wx.wxEXPAND, 5 )
+
+	UI.fgSizer_Statistics_setup1 = wx.wxFlexGridSizer( 2, 1, 0, 0 )
+	UI.fgSizer_Statistics_setup1:AddGrowableCol( 0 )
+	UI.fgSizer_Statistics_setup1:AddGrowableRow( 1 )
+	UI.fgSizer_Statistics_setup1:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_Statistics_setup1:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_staticText_Statistics_setup3 = wx.wxStaticText( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Country list", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_Statistics_setup3:Wrap( -1 )
+
+	UI.fgSizer_Statistics_setup1:Add( UI.m_staticText_Statistics_setup3, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_listBox_Statistics_country_listChoices = {}
+	UI.m_listBox_Statistics_country_list = wx.wxListBox( UI.m_panel_Statistics_setup, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_listBox_Statistics_country_listChoices, wx.wxLB_ALWAYS_SB )
+	UI.fgSizer_Statistics_setup1:Add( UI.m_listBox_Statistics_country_list, 0, wx.wxALL + wx.wxEXPAND, 2 )
+
+
+	UI.gSizer_Statistics_setup2:Add( UI.fgSizer_Statistics_setup1, 1, wx.wxEXPAND, 5 )
+
+
+	UI.bSizer_Statistics_setup1:Add( UI.gSizer_Statistics_setup2, 1, wx.wxEXPAND, 5 )
 
 	UI.m_staticText_Statistics_setup1 = wx.wxStaticText( UI.m_panel_Statistics_setup, wx.wxID_ANY, "Ident:", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText_Statistics_setup1:Wrap( -1 )
@@ -151,8 +194,31 @@ if wx ~= nil then
         ToggleStatCollection()
 	end )
 
-	UI.m_button_Statistics_setup_toggle_majors:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-        ToggleStatCollectionMajors()
+	UI.m_button_Statistics_setup_toggle_custom_list:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+        ToggleStatCollectionCustomList()
+	end )
+
+	UI.m_button_Statistics_setup_add:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+        local tag = UI.m_comboBox_Statistics_setup1:GetValue()
+        -- Utils.LUA_DEBUGOUT(tag)
+        if tag ~= "" then
+            UI.m_listBox_Statistics_country_list:Append(tag)
+			local omgTag = CCountryDataBase.GetTag("OMG")
+			local command = CSetVariableCommand(omgTag, CString("zStatsCustomList_" .. tag), CFixedPoint(1))
+			CCurrentGameState.Post(command)
+        end
+	end )
+
+	UI.m_button_Statistics_setup_remove:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+        local selection = UI.m_listBox_Statistics_country_list:GetSelection()
+        -- Utils.LUA_DEBUGOUT(selection)
+        if selection ~= nil then
+			local tag = UI.m_listBox_Statistics_country_list:GetString(selection)
+			local omgTag = CCountryDataBase.GetTag("OMG")
+			local command = CSetVariableCommand(omgTag, CString("zStatsCustomList_" .. tag), CFixedPoint(0))
+			CCurrentGameState.Post(command)
+            UI.m_listBox_Statistics_country_list:Delete(selection)
+        end
 	end )
 
 	UI.m_button_Statistics_main_add:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

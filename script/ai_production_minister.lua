@@ -1487,7 +1487,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 					 math.abs(vUpgrade - vUpgradeOriginal)
 	if checksum > 0.01 then
 		local countryTag = ministerCountry:GetCountryTag()
-		if Stats.CollectStats == true and Stats.MajorCheck(lbIsMajor, nil, nil) then
+		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(countryTag)) then
 			Stats.AddStat(tostring(countryTag), "prod__IcEff", tostring(string.format('%.0f', getIcEfficiency(ministerCountry))))
 			Stats.AddStat(tostring(countryTag), "prod__TotalIc", tostring(string.format('%.0f', totalIc)))
 			Stats.AddStat(tostring(countryTag), "prod_LendLease_%", tostring(string.format('%.0f', vLendLease * 100)))

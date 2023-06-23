@@ -1778,7 +1778,7 @@ if wx ~= nil then
 					ReadCustomProductionSliderValues()
 					DetermineCustomLsSliderAiStatus()
 					ReadCustomLsSliderValues()
-					SetStatCollectionStatus()
+					SetUpStatCollectionPage()
 
 					UI.m_radioBtn_Generals_all:SetValue( true )
 					Parsing.Generals.FillwxChoice(PlayerCountry)

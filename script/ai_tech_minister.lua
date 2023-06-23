@@ -385,7 +385,7 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 
 	-- Do not post unless set to true as this could be a call from other AIs to get information on the sliders
 	if vbSliders then
-		if Stats.CollectStats == true and Stats.MajorCheck(StandardDataObject.IsMajor, nil, nil) then
+		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(StandardDataObject.ministerTag)) then
 			Stats.AddStat(tostring(StandardDataObject.ministerTag), "ls_TotalLeadership", tostring(string.format('%.0f', Leadership.TotalLeadership * 100)))
 			Stats.AddStat(tostring(StandardDataObject.ministerTag), "ls_Percent_Research", tostring(string.format('%.0f', Leadership.Percent_Research * 100)))
 			Stats.AddStat(tostring(StandardDataObject.ministerTag), "ls_Percent_Espionage", tostring(string.format('%.0f', Leadership.Percent_Espionage * 100)))

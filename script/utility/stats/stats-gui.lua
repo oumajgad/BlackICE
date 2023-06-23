@@ -1,8 +1,9 @@
-function SetStatCollectionStatus()
+function SetUpStatCollectionPage()
 	local omgTag = CCountryDataBase.GetTag("OMG")
 	local omgCountry = omgTag:GetCountry()
-	local statisticsToggle = omgCountry:GetVariables():GetVariable(CString("StatisticsToggle")):Get()
-	local statisticsMajors = omgCountry:GetVariables():GetVariable(CString("StatisticsMajors")):Get()
+    local variables = omgCountry:GetVariables()
+	local statisticsToggle = variables:GetVariable(CString("StatisticsToggle")):Get()
+	local statisticsCustomList = variables:GetVariable(CString("StatisticsCustomList")):Get()
     if statisticsToggle == 1 then
         UI.m_textCtrl_Statistics_setup_ident:SetValue(tostring(Stats.GetCurrentIdent()))
         Stats.CollectStats = true
@@ -10,23 +11,32 @@ function SetStatCollectionStatus()
     else
         UI.m_textCtrl_Statistics_setup_toggle:SetValue("off")
     end
-    if statisticsMajors == 1 then
+    if statisticsCustomList == 1 then
         Stats.MajorOnly = true
-        UI.m_textCtrl_Statistics_setup_toggle_majors:SetValue("on")
+        UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue("on")
     else
-        UI.m_textCtrl_Statistics_setup_toggle_majors:SetValue("off")
+        UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue("off")
     end
     local countries = {}
-    for dip in CCountryDataBase.GetTag("OMG"):GetCountry():GetDiplomacy() do
-        local countryTag = dip:GetTarget()
+    local customCollectionCountries = {}
+    for country in CCurrentGameState.GetCountries() do
+        local countryTag = country:GetCountryTag()
         local tag = tostring(countryTag)
-        if tag ~= "REB" and tag ~= "---" then
+        if tag ~= "---" then
             table.insert(countries, tag)
+            if variables:GetVariable(CString("zStatsCustomList_" .. tag)):Get() == 1 then
+                table.insert(customCollectionCountries, tag)
+            end
         end
     end
     table.sort(countries)
+    table.sort(customCollectionCountries)
     UI.m_comboBox_Statistics_main1:Clear()
     UI.m_comboBox_Statistics_main1:Append(countries)
+    UI.m_comboBox_Statistics_setup1:Clear()
+    UI.m_comboBox_Statistics_setup1:Append(countries)
+    UI.m_listBox_Statistics_country_list:Clear()
+    UI.m_listBox_Statistics_country_list:Append(customCollectionCountries)
 end
 
 
@@ -49,19 +59,19 @@ function ToggleStatCollection()
 end
 
 
-function ToggleStatCollectionMajors()
+function ToggleStatCollectionCustomList()
 	local omgTag = CCountryDataBase.GetTag("OMG")
 	local omgCountry = omgTag:GetCountry()
-	local statisticsMajors = omgCountry:GetVariables():GetVariable(CString("StatisticsMajors")):Get()
-    if statisticsMajors == 1 then
-        local command = CSetVariableCommand(omgTag, CString("StatisticsMajors"), CFixedPoint(0))
+	local statisticsCustomList = omgCountry:GetVariables():GetVariable(CString("StatisticsCustomList")):Get()
+    if statisticsCustomList == 1 then
+        local command = CSetVariableCommand(omgTag, CString("StatisticsCustomList"), CFixedPoint(0))
         CCurrentGameState.Post(command)
-        UI.m_textCtrl_Statistics_setup_toggle_majors:SetValue("off")
-        Stats.MajorOnly = false
+        UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue("off")
+        Stats.CustomCountryListActive = false
     else
-        local command = CSetVariableCommand(omgTag, CString("StatisticsMajors"), CFixedPoint(1))
+        local command = CSetVariableCommand(omgTag, CString("StatisticsCustomList"), CFixedPoint(1))
         CCurrentGameState.Post(command)
-        UI.m_textCtrl_Statistics_setup_toggle_majors:SetValue("on")
-        Stats.MajorOnly = true
+        UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue("on")
+        Stats.CustomCountryListActive = true
     end
 end

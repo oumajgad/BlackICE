@@ -102,7 +102,7 @@ function IntelligenceMinister_Tick(minister)
 		IntelligenceData.RullingIdeologyGroup = IntelligenceData.RullingIdeology:GetGroup()
 		IntelligenceData.PartyPopularity = IntelligenceData.ministerCountry:AccessIdeologyPopularity():GetValue(IntelligenceData.RullingIdeology):Get()
 
-		if Stats.CollectStats == true and Stats.MajorCheck(IntelligenceData.IsMajor, nil, nil) then
+		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(IntelligenceData.ministerTag)) then
 			setUpIdeologyList()
 			local groupPopularity = {}
 			for ideologyString, ideology in pairs(ideologyList) do
@@ -223,7 +223,7 @@ function OMGHandler(minister)
 		DeterminePlayers()
 		DetermineExePatchStatus()
 		DetermineSpriteDeletionStatus()
-		SetStatCollectionStatus()
+		SetUpStatCollectionPage()
 	end
 
 	-- t = os.clock()
