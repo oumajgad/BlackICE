@@ -76,7 +76,9 @@ if wx ~= nil then
 
 	UI.m_listBox_Statistics_country_listChoices = {}
 	UI.m_listBox_Statistics_country_list = wx.wxListBox( UI.m_panel_Statistics_setup, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 100,-1 ), UI.m_listBox_Statistics_country_listChoices, wx.wxLB_ALWAYS_SB )
-	UI.fgSizer_Statistics_setup1:Add( UI.m_listBox_Statistics_country_list, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL + wx.wxEXPAND, 2 )
+	UI.m_listBox_Statistics_country_list:SetMinSize( wx.wxSize( 100,150 ) )
+
+	UI.fgSizer_Statistics_setup1:Add( UI.m_listBox_Statistics_country_list, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 2 )
 
 
 	UI.gSizer_Statistics_setup2:Add( UI.fgSizer_Statistics_setup1, 1, wx.wxEXPAND, 5 )
@@ -131,7 +133,9 @@ if wx ~= nil then
 
 	UI.m_listBox_Statistics_main_countriesChoices = {}
 	UI.m_listBox_Statistics_main_countries = wx.wxListBox( UI.m_panel_Statistics_main, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 100,-1 ), UI.m_listBox_Statistics_main_countriesChoices, wx.wxLB_ALWAYS_SB )
-	UI.gSizer_Statistics_main1:Add( UI.m_listBox_Statistics_main_countries, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL + wx.wxEXPAND, 5 )
+	UI.m_listBox_Statistics_main_countries:SetMinSize( wx.wxSize( 100,95 ) )
+
+	UI.gSizer_Statistics_main1:Add( UI.m_listBox_Statistics_main_countries, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
 
 	UI.bSizer_Statistics_main1:Add( UI.gSizer_Statistics_main1, 1, wx.wxEXPAND, 5 )
@@ -172,6 +176,7 @@ if wx ~= nil then
 
 
 
+
 	UI.MyFrame5 .m_mgr:Update()
 	UI.MyFrame5:Centre( wx.wxBOTH )
 
@@ -183,7 +188,8 @@ if wx ~= nil then
         'pol_Popularity_national_socialist', 'pol_Popularity_noIdeology', 'pol_Popularity_paternal_autocrat', 'pol_Popularity_social_conservative',
         'pol_Popularity_social_democrat', 'pol_Popularity_social_liberal', 'pol_Popularity_stalinist', 'prod__TotalIc', 'prod__IcEff', 'ls_TotalLeadership',
         'intel_TotalSpiesAbroad', 'prod_Consumer_%', 'prod_Consumer_IC', 'prod_LendLease_%', 'prod_LendLease_IC', 'prod_Production_%', 'prod_Production_IC',
-        'prod_Reinforce_%', 'prod_Reinforce_IC', 'prod_Supply_%', 'prod_Supply_IC', 'prod_Upgrade_%', 'prod_Upgrade_IC'
+        'prod_Reinforce_%', 'prod_Reinforce_IC', 'prod_Supply_%', 'prod_Supply_IC', 'prod_Upgrade_%', 'prod_Upgrade_IC', 'other_u_LandCountTotal', 
+		'other_u_AirCountTotal', 'other_u_NavalCountTotal', 'other_ManpowerTotal'
     }
     table.sort(statChoices)
     UI.m_listBox_Statistics_main_stats:Clear()
