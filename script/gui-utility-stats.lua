@@ -75,8 +75,8 @@ if wx ~= nil then
 	UI.fgSizer_Statistics_setup1:Add( UI.m_staticText_Statistics_setup3, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_listBox_Statistics_country_listChoices = {}
-	UI.m_listBox_Statistics_country_list = wx.wxListBox( UI.m_panel_Statistics_setup, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_listBox_Statistics_country_listChoices, wx.wxLB_ALWAYS_SB )
-	UI.fgSizer_Statistics_setup1:Add( UI.m_listBox_Statistics_country_list, 0, wx.wxALL + wx.wxEXPAND, 2 )
+	UI.m_listBox_Statistics_country_list = wx.wxListBox( UI.m_panel_Statistics_setup, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 100,-1 ), UI.m_listBox_Statistics_country_listChoices, wx.wxLB_ALWAYS_SB )
+	UI.fgSizer_Statistics_setup1:Add( UI.m_listBox_Statistics_country_list, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL + wx.wxEXPAND, 2 )
 
 
 	UI.gSizer_Statistics_setup2:Add( UI.fgSizer_Statistics_setup1, 1, wx.wxEXPAND, 5 )
@@ -130,8 +130,8 @@ if wx ~= nil then
 	UI.gSizer_Statistics_main1:Add( UI.gSizer_Statistics_main2, 1, wx.wxEXPAND, 5 )
 
 	UI.m_listBox_Statistics_main_countriesChoices = {}
-	UI.m_listBox_Statistics_main_countries = wx.wxListBox( UI.m_panel_Statistics_main, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_listBox_Statistics_main_countriesChoices, wx.wxLB_ALWAYS_SB )
-	UI.gSizer_Statistics_main1:Add( UI.m_listBox_Statistics_main_countries, 0, wx.wxALL + wx.wxEXPAND, 5 )
+	UI.m_listBox_Statistics_main_countries = wx.wxListBox( UI.m_panel_Statistics_main, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 100,-1 ), UI.m_listBox_Statistics_main_countriesChoices, wx.wxLB_ALWAYS_SB )
+	UI.gSizer_Statistics_main1:Add( UI.m_listBox_Statistics_main_countries, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL + wx.wxEXPAND, 5 )
 
 
 	UI.bSizer_Statistics_main1:Add( UI.gSizer_Statistics_main1, 1, wx.wxEXPAND, 5 )
@@ -202,6 +202,7 @@ if wx ~= nil then
         local tag = UI.m_comboBox_Statistics_setup1:GetValue()
         -- Utils.LUA_DEBUGOUT(tag)
         if tag ~= "" then
+			tag = string.upper(tag)
             UI.m_listBox_Statistics_country_list:Append(tag)
 			local omgTag = CCountryDataBase.GetTag("OMG")
 			local command = CSetVariableCommand(omgTag, CString("zStatsCustomList_" .. tag), CFixedPoint(1))
@@ -225,6 +226,7 @@ if wx ~= nil then
         local tag = UI.m_comboBox_Statistics_main1:GetValue()
         -- Utils.LUA_DEBUGOUT(tag)
         if tag ~= "" then
+			tag = string.upper(tag)
             UI.m_listBox_Statistics_main_countries:Append(tag)
         end
 	end )
