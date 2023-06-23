@@ -1291,17 +1291,6 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 end
 
 
-local function getIcEfficiency(ministerCountry)
-	local icEffraw = ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
-	for tech, effect in pairs(G_TechsIcEffValues) do
-		local level = ministerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-		icEffraw = icEffraw + (effect*level)
-	end
-	local icEff = Utils.RoundDecimal(icEffraw, 3) * 100
-	return icEff
-end
-
-
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
@@ -1488,20 +1477,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 	if checksum > 0.01 then
 		local countryTag = ministerCountry:GetCountryTag()
 		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(countryTag)) then
-			Stats.AddStat(tostring(countryTag), "prod__IcEff", tostring(string.format('%.0f', getIcEfficiency(ministerCountry))))
-			Stats.AddStat(tostring(countryTag), "prod__TotalIc", tostring(string.format('%.0f', totalIc)))
-			Stats.AddStat(tostring(countryTag), "prod_LendLease_%", tostring(string.format('%.0f', vLendLease * 100)))
-			Stats.AddStat(tostring(countryTag), "prod_LendLease_IC", tostring(string.format('%.0f', vLendLease * totalIc)))
-			Stats.AddStat(tostring(countryTag), "prod_Consumer_%", tostring(string.format('%.0f', vConsumer * 100)))
-			Stats.AddStat(tostring(countryTag), "prod_Consumer_IC", tostring(string.format('%.0f', vConsumer * totalIc)))
-			Stats.AddStat(tostring(countryTag), "prod_Production_%", tostring(string.format('%.0f', vProduction * 100)))
-			Stats.AddStat(tostring(countryTag), "prod_Production_IC", tostring(string.format('%.0f', vProduction * totalIc)))
-			Stats.AddStat(tostring(countryTag), "prod_Supply_%", tostring(string.format('%.0f', vSupply * 100)))
-			Stats.AddStat(tostring(countryTag), "prod_Supply_IC", tostring(string.format('%.0f', vSupply * totalIc)))
-			Stats.AddStat(tostring(countryTag), "prod_Reinforce_%", tostring(string.format('%.0f', vReinforce * 100)))
-			Stats.AddStat(tostring(countryTag), "prod_Reinforce_IC", tostring(string.format('%.0f', vReinforce * totalIc)))
-			Stats.AddStat(tostring(countryTag), "prod_Upgrade_%", tostring(string.format('%.0f', vUpgrade * 100)))
-			Stats.AddStat(tostring(countryTag), "prod_Upgrade_IC", tostring(string.format('%.0f', vUpgrade * totalIc)))
+			Stats.HandleProductionMinisterStats(ministerCountryTag, ministerCountry)
 		end
 		local command = CChangeInvestmentCommand( countryTag, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade )
 		ai:Post( command )

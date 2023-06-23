@@ -386,14 +386,7 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	-- Do not post unless set to true as this could be a call from other AIs to get information on the sliders
 	if vbSliders then
 		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(StandardDataObject.ministerTag)) then
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "ls_TotalLeadership", tostring(string.format('%.0f', Leadership.TotalLeadership * 100)))
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "ls_Percent_Research", tostring(string.format('%.0f', Leadership.Percent_Research * 100)))
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "ls_Percent_Espionage", tostring(string.format('%.0f', Leadership.Percent_Espionage * 100)))
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "ls_Percent_Diplomacy", tostring(string.format('%.0f', Leadership.Percent_Diplomacy * 100)))
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "ls_Percent_NCO", tostring(string.format('%.0f', Leadership.Percent_NCO * 100)))
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "intel_FreeSpies", tostring(string.format('%.0f', Leadership.FreeSpies)))
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "intel_DomesticSpies", tostring(string.format('%.0f', domSpy)))
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "intel_TotalSpiesAbroad", tostring(string.format('%.0f', Leadership.TotalSpiesAbroad)))
+			Stats.HandleTechMinisterStats(StandardDataObject.ministerTag, StandardDataObject.ministerCountry)
 		end
 
 		local command = CChangeLeadershipCommand(StandardDataObject.ministerTag, Leadership.Percent_NCO, Leadership.Percent_Diplomacy, Leadership.Percent_Espionage, Leadership.Percent_Research)
