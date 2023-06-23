@@ -197,3 +197,14 @@ function P.HandleTechMinisterStats(countryTag, country)
 end
 
 --- Remember to add the stat here when adding a new stat collect elsewhere!
+function P.CollectPlayerStatistics()
+	for i, tag in pairs(PlayerCountries) do
+		local countryTag = CCountryDataBase.GetTag(tag)
+		local country = countryTag:GetCountry()
+		P.HandleTechMinisterStats(countryTag, country)
+		P.HandleProductionMinisterStats(countryTag, country)
+		P.HandleIntelligenceMinisterStats(countryTag, country)
+	end
+end
+
+return Stats
