@@ -210,12 +210,14 @@ end
 
 --- Remember to add the stat here when adding a new stat collect elsewhere!
 function P.CollectPlayerStatistics()
-	for i, tag in pairs(PlayerCountries) do
-		local countryTag = CCountryDataBase.GetTag(tag)
-		local country = countryTag:GetCountry()
-		P.HandleTechMinisterStats(countryTag, country)
-		P.HandleProductionMinisterSliderStats(countryTag, country)
-		P.HandleIntelligenceMinisterStats(countryTag, country)
+	if P.CollectStats == true then
+		for i, tag in pairs(PlayerCountries) do
+			local countryTag = CCountryDataBase.GetTag(tag)
+			local country = countryTag:GetCountry()
+			P.HandleTechMinisterStats(countryTag, country)
+			P.HandleProductionMinisterSliderStats(countryTag, country)
+			P.HandleIntelligenceMinisterStats(countryTag, country)
+		end
 	end
 end
 
