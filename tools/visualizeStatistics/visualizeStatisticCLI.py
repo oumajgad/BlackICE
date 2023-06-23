@@ -6,21 +6,21 @@ import time
 from mplcursors import cursor  # separate package must be installed
 
 
-def plot(version, ident, tags, stats):
-    basePath = f"tfh\\mod\\BlackICE {version}"
-    for tag in tags:
-        for stat in stats:
-            if verify(basePath, ident=ident, tag=tag, stat=stat):
-                plot_line(basePath, ident=ident, tag=tag,stat=stat)
+def plot():
+    basePath = f"tfh\\mod\\BlackICE {Version}"
+    for tag in Tags:
+        for stat in Stats:
+            if verify(basePath, tag, stat):
+                plot_line(basePath, tag, stat)
     cursor(hover=True)
     plt.show()
 
 
-def plot_line(basePath, ident, tag, stat: str):
-    file = f".\\{basePath}\\stats\\{ident}\\{tag}\\{stat}"
-    dates, stats = read_csv(file, stat)
+def plot_line(basePath, tag, stat):
+    file = f".\\{basePath}\\stats\\{Ident}\\{tag}\\{stat}"
+    dates, stats = read_csv(file)
     dates, stats = removeduplicates(dates, stats)
-    plt.plot(dates, stats, label=f"{tag}-{stat}")
+    plt.plot(dates, stats, ls="-.", label=f"{tag}-{stat}")
     plt.legend()
     plt.xlabel("Day")
     plt.ylabel(stat)
@@ -55,7 +55,7 @@ def removeduplicates(dates, stats):
     return ret_dates, ret_stats
 
 
-def read_csv(file, stat):
+def read_csv(file):
     dates = list()
     stats = list()
     with open(file, "r") as file:
@@ -67,10 +67,10 @@ def read_csv(file, stat):
     return dates, stats
 
 
-def verify(basePath, ident, tag, stat):
+def verify(basePath, tag, stat):
     if not stat or stat.strip() == "" or not tag or tag == "":
         return False
-    path = f".\\{basePath}\\stats\\{ident}\\{tag}\\{stat}"
+    path = f".\\{basePath}\\stats\\{Ident}\\{tag}\\{stat}"
     if len(tag) != 3:
         print(f"Not found: {tag}")
         return False
@@ -81,19 +81,16 @@ def verify(basePath, ident, tag, stat):
 
 
 def main():
-    print(sys.argv[1])
-    print(sys.argv[2])
-    print(sys.argv[3])
-    print(sys.argv[4])
-    version = sys.argv[1]
-    ident = sys.argv[2]
-    tags = sys.argv[3].split(",")
-    stats = sys.argv[4].split(",")
-    plot(version, ident, tags, stats)
+    plot()
 
 
 if __name__ == "__main__":
     try:
+        print(f"Args: {sys.argv[1]} {sys.argv[2]} {sys.argv[3]} {sys.argv[4]}")
+        Version = sys.argv[1]
+        Ident = sys.argv[2]
+        Tags = sys.argv[3].split(",")
+        Stats = sys.argv[4].split(",")
         print("\nClosing this window will also close the statistic window!\n")
         main()
     except Exception as e:
