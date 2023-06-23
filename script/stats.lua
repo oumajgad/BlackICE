@@ -2,24 +2,31 @@ local P = {}
 Stats = P
 
 P.CollectStats = false
-P.MajorOnly = false	-- Only collect stats from majors
+P.CustomCountryListActive = false
+P.CustomCountryList = nil
 
-
--- Checks if country is a major incase we only want to collect from majors
--- Takes either of the 3 arguments. Only send the one that is most readily available and set the others to nil
-function P.MajorCheck(isMajor, ministerCountry, countryTag)
-	if P.MajorOnly ~= true then
+function P.CustomListCheck(tag)
+	-- early exit if not active
+	if P.CustomCountryListActive ~= true then
 		return true
 	end
-
-	if isMajor ~= nil then
-		return isMajor
+	-- set up list when not yet done
+	if P.CustomCountryList == nil then
+		local omgTag = CCountryDataBase.GetTag("OMG")
+		local omgCountry = omgTag:GetCountry()
+		local variables = omgCountry:GetVariables()
+		P.CustomCountryList = {}
+		for country in CCurrentGameState.GetCountries() do
+			local countryTag = country:GetCountryTag()
+			local _tag = tostring(countryTag)
+			if variables:GetVariable(CString("zStatsCustomList_" .. _tag)):Get() == 1 then
+				P.CustomCountryList[_tag] = true
+			end
+		end
 	end
-	if ministerCountry ~= nil then
-		return ministerCountry:IsMajor()
-	end
-	if countryTag ~= nil then
-		return countryTag:GetCountry():IsMajor()
+	-- actual check
+	if P.CustomCountryList[tag] == true then
+		return true
 	end
 	return false
 end
