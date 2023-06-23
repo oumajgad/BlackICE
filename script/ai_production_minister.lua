@@ -1477,7 +1477,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 	if checksum > 0.01 then
 		local countryTag = ministerCountry:GetCountryTag()
 		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(countryTag)) then
-			Stats.HandleProductionMinisterStats(ministerCountryTag, ministerCountry)
+			Stats.HandleProductionMinisterSliderStats(ministerCountryTag, ministerCountry)
 		end
 		local command = CChangeInvestmentCommand( countryTag, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade )
 		ai:Post( command )
@@ -2235,6 +2235,15 @@ function HandleProductionMinister_Tick(minister)
 		end
 	end
 
+	if Stats.CollectStats == true and Stats.CustomListCheck(tostring(ProductionData.ministerTag)) then
+		local stats = {
+			LandCountTotal = ProductionData.LandCountTotal,
+			AirCountTotal = ProductionData.AirCountTotal,
+			NavalCountTotal = ProductionData.NavalCountTotal,
+			ManpowerTotal = ProductionData.ManpowerTotal
+		}
+		Stats.HandleProductionMinisterGeneralStats(ProductionData.ministerTag, ProductionData.ministerCountry, stats)
+	end
 	if math.mod( CCurrentGameState.GetAIRand(), 7) == 0 then
 		ProductionData.minister:PrioritizeBuildQueue()
 	end
@@ -3324,7 +3333,7 @@ function CheckUnitAmounts(countryTag, isMajor, LandCountTotal, AirCountTotal, Na
 	return laProdWeights
 end
 
-G_LendLeaseMultiplier = 0
+G_LendLeaseMultiplier = 0	-- affected by the difficulty setting
 function GetLendLeaseMultiplier()
 	-- Utils.LUA_DEBUGOUT("G_LendLeaseMultiplier: " .. G_LendLeaseMultiplier)
 	if G_LendLeaseMultiplier ~= 0 then

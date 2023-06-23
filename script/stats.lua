@@ -102,6 +102,9 @@ function P.AddStat(tag, statname, value)
 	AppendLine(file, "\n" .. tostring(date) .. "," .. value)
 end
 
+--- COUNTRY STAT ACQUISITION FUNCTIONS ---
+--- ?????????????????????????????????? ---
+
 local ideologyList = nil
 local function setUpIdeologyList()
 	if ideologyList == nil then
@@ -136,6 +139,15 @@ function P.HandleIntelligenceMinisterStats(countryTag, country)
 end
 
 
+function P.HandleProductionMinisterGeneralStats(countryTag, country, stats)
+	local tag = tostring(countryTag)
+	P.AddStat(tag, "other_u_LandCountTotal", tostring(string.format('%.0f', stats.LandCountTotal)))
+	P.AddStat(tag, "other_u_AirCountTotal", tostring(string.format('%.0f', stats.AirCountTotal)))
+	P.AddStat(tag, "other_u_NavalCountTotal", tostring(string.format('%.0f', stats.NavalCountTotal)))
+	P.AddStat(tag, "other_ManpowerTotal", tostring(string.format('%.0f', stats.ManpowerTotal)))
+end
+
+
 local function getIcEfficiency(ministerCountry)
 	local icEffraw = ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
 	for tech, effect in pairs(G_TechsIcEffValues) do
@@ -147,7 +159,7 @@ local function getIcEfficiency(ministerCountry)
 end
 
 
-function P.HandleProductionMinisterStats(countryTag, country)
+function P.HandleProductionMinisterSliderStats(countryTag, country)
 	local tag = tostring(countryTag)
 	local totalIc = country:GetTotalIC()
 	local assignedPercent = {
@@ -202,7 +214,7 @@ function P.CollectPlayerStatistics()
 		local countryTag = CCountryDataBase.GetTag(tag)
 		local country = countryTag:GetCountry()
 		P.HandleTechMinisterStats(countryTag, country)
-		P.HandleProductionMinisterStats(countryTag, country)
+		P.HandleProductionMinisterSliderStats(countryTag, country)
 		P.HandleIntelligenceMinisterStats(countryTag, country)
 	end
 end
