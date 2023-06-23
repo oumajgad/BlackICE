@@ -12,7 +12,7 @@ function SetUpStatCollectionPage()
         UI.m_textCtrl_Statistics_setup_toggle:SetValue("off")
     end
     if statisticsCustomList == 1 then
-        Stats.MajorOnly = true
+        Stats.CustomCountryListActive = true
         UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue("on")
     else
         UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue("off")
