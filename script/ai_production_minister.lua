@@ -1573,6 +1573,41 @@ function ProductionMinister_Tick(minister)
 	end
 end
 
+--- Copy of the unit counting logic so it can be used for statistics better
+local function countUnits(productionData)
+		-- Get the counts of the unit types currently being produced
+		local laTempProd = productionData.ministerAI:GetProductionSubUnitCounts()
+		local laTempCurrent = productionData.ministerAI:GetDeployedSubUnitCounts()
+		--local laTempTReq = ProductionData.ministerAI:GetTheatreSubUnitNeedCounts()
+
+		-- Get the build counts
+		for subUnit in CSubUnitDataBase.GetSubUnitList() do
+			local lsUnitType = subUnit:GetKey():GetString()
+
+			if not(UnitTypes[lsUnitType] == nil) then
+				local nIndex = subUnit:GetIndex()
+				local liBuildCount = laTempProd:GetAt(nIndex)
+				local liCurrentCount = laTempCurrent:GetAt(nIndex)
+				productionData.BuildingCounts[UnitTypes[lsUnitType].Index] = liBuildCount
+				productionData.CurrentCounts[UnitTypes[lsUnitType].Index] =  liCurrentCount
+				productionData.TotalCounts[UnitTypes[lsUnitType].Index] = liBuildCount + liCurrentCount
+			end
+		end
+
+		-- One loop to do all the counting (Performance)
+		for k, v in pairs(UnitTypes) do
+			if v.Type == "Land" and (v.SubType == "Infantry" or v.SubType == "Armor" or v.SubType == "Mech" or v.SubType == "Motor") then
+				productionData.LandCountTotal = productionData.LandCountTotal + productionData.TotalCounts[v.Index]
+			end
+			if v.Type == "Land" and v.SubType == "Special Forces" then productionData.SpecialForcesCountTotal = productionData.SpecialForcesCountTotal + productionData.TotalCounts[v.Index] end
+			if v.Type == "Air" then productionData.AirCountTotal = productionData.AirCountTotal + productionData.TotalCounts[v.Index] end
+			if v.Type == "Naval" then productionData.NavalCountTotal = productionData.NavalCountTotal + productionData.TotalCounts[v.Index] end
+			if v.Type == "Secret" then productionData.FlyingBombsCountTotal = productionData.FlyingBombsCountTotal + productionData.TotalCounts[v.Index] end
+			if v.CanPara == true then productionData.ParaCountTotal = productionData.ParaCountTotal + productionData.TotalCounts[v.Index] end
+		end
+		-- End of Counting
+end
+
 function HandleProductionMinister_Tick(minister)
 	-- Reset Global Array Container
 	ProductionData = {
@@ -1616,6 +1651,8 @@ function HandleProductionMinister_Tick(minister)
 	ProductionData.ministerCountry = ProductionData.ministerTag:GetCountry()
 	ProductionData.icAllocated = ProductionData.ministerCountry:GetICPart(CDistributionSetting._PRODUCTION_PRODUCTION_):Get()
 	ProductionData.icAvailable = ProductionData.icAllocated - ProductionData.ministerCountry:GetUsedIC():Get()
+	ProductionData.ministerAI = minister:GetOwnerAI()
+	ProductionData.ManpowerTotal = ProductionData.ministerCountry:GetManpower():Get()
 	-- End Initialize Production Object
 	-- #################
 
@@ -1626,6 +1663,18 @@ function HandleProductionMinister_Tick(minister)
 		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - BuildPlayersRequestedBuildings")
 	end
 
+	if Stats.CollectStats == true and Stats.CustomListCheck(tostring(ProductionData.ministerTag)) then
+		Utils.LUA_DEBUGOUT(ProductionData.LandCountTotal)
+		countUnits(ProductionData)
+		Utils.LUA_DEBUGOUT(ProductionData.LandCountTotal)
+		local stats = {
+			LandCountTotal = ProductionData.LandCountTotal,
+			AirCountTotal = ProductionData.AirCountTotal,
+			NavalCountTotal = ProductionData.NavalCountTotal,
+			ManpowerTotal = ProductionData.ManpowerTotal
+		}
+		Stats.HandleProductionMinisterGeneralStats(ProductionData.ministerTag, ProductionData.ministerCountry, stats)
+	end
 
 	-- Performance check
 	--   if no IC just exit completely so no objects get created
@@ -1642,7 +1691,6 @@ function HandleProductionMinister_Tick(minister)
 		ProductionData.UnitNeeds[x] = 0
 	end
 
-	ProductionData.ministerAI = minister:GetOwnerAI()
 	ProductionData.humanTag = CCurrentGameState.GetPlayer()
 	ProductionData.Year = CCurrentGameState.GetCurrentDate():GetYear()
 	ProductionData.Month = CCurrentGameState.GetCurrentDate():GetMonthOfYear()
@@ -1657,7 +1705,6 @@ function HandleProductionMinister_Tick(minister)
 	ProductionData.AirfieldsTotal = ProductionData.ministerCountry:GetNumOfAirfields() * 4 --Include fake_air_bases
 	ProductionData.IsAtWar = ProductionData.ministerCountry:IsAtWar()
 	ProductionData.IsNaval = (ProductionData.PortsTotal > 0 and ProductionData.icTotal >= 20)
-	ProductionData.ManpowerTotal = ProductionData.ministerCountry:GetManpower():Get()
 	-- End Initialize Production Object
 	-- #################
 
@@ -1668,37 +1715,7 @@ function HandleProductionMinister_Tick(minister)
 	if ProductionData.icAvailable > 0.1 then
 		--Utils.LUA_DEBUGOUT("Country: " .. tostring(ProductionData.ministerTag))
 
-		-- Get the counts of the unit types currently being produced
-		local laTempProd = ProductionData.ministerAI:GetProductionSubUnitCounts()
-		local laTempCurrent = ProductionData.ministerAI:GetDeployedSubUnitCounts()
-		--local laTempTReq = ProductionData.ministerAI:GetTheatreSubUnitNeedCounts()
-
-		-- Get the build counts
-		for subUnit in CSubUnitDataBase.GetSubUnitList() do
-			local lsUnitType = subUnit:GetKey():GetString()
-
-			if not(UnitTypes[lsUnitType] == nil) then
-				local nIndex = subUnit:GetIndex()
-				local liBuildCount = laTempProd:GetAt(nIndex)
-				local liCurrentCount = laTempCurrent:GetAt(nIndex)
-				ProductionData.BuildingCounts[UnitTypes[lsUnitType].Index] = liBuildCount
-				ProductionData.CurrentCounts[UnitTypes[lsUnitType].Index] =  liCurrentCount
-				ProductionData.TotalCounts[UnitTypes[lsUnitType].Index] = liBuildCount + liCurrentCount
-			end
-		end
-
-		-- One loop to do all the counting (Performance)
-		for k, v in pairs(UnitTypes) do
-			if v.Type == "Land" and (v.SubType == "Infantry" or v.SubType == "Armor" or v.SubType == "Mech" or v.SubType == "Motor") then
-				ProductionData.LandCountTotal = ProductionData.LandCountTotal + ProductionData.TotalCounts[v.Index]
-			end
-			if v.Type == "Land" and v.SubType == "Special Forces" then ProductionData.SpecialForcesCountTotal = ProductionData.SpecialForcesCountTotal + ProductionData.TotalCounts[v.Index] end
-			if v.Type == "Air" then ProductionData.AirCountTotal = ProductionData.AirCountTotal + ProductionData.TotalCounts[v.Index] end
-			if v.Type == "Naval" then ProductionData.NavalCountTotal = ProductionData.NavalCountTotal + ProductionData.TotalCounts[v.Index] end
-			if v.Type == "Secret" then ProductionData.FlyingBombsCountTotal = ProductionData.FlyingBombsCountTotal + ProductionData.TotalCounts[v.Index] end
-			if v.CanPara == true then ProductionData.ParaCountTotal = ProductionData.ParaCountTotal + ProductionData.TotalCounts[v.Index] end
-		end
-		-- End of Counting
+		countUnits(ProductionData)
 
 		-- Verify Build Ratios against available units
 		local laLandRatio = IsUnitsAvailable(GetBuildRatio("LandRatio"))
@@ -2235,15 +2252,6 @@ function HandleProductionMinister_Tick(minister)
 		end
 	end
 
-	if Stats.CollectStats == true and Stats.CustomListCheck(tostring(ProductionData.ministerTag)) then
-		local stats = {
-			LandCountTotal = ProductionData.LandCountTotal,
-			AirCountTotal = ProductionData.AirCountTotal,
-			NavalCountTotal = ProductionData.NavalCountTotal,
-			ManpowerTotal = ProductionData.ManpowerTotal
-		}
-		Stats.HandleProductionMinisterGeneralStats(ProductionData.ministerTag, ProductionData.ministerCountry, stats)
-	end
 	if math.mod( CCurrentGameState.GetAIRand(), 7) == 0 then
 		ProductionData.minister:PrioritizeBuildQueue()
 	end
