@@ -1664,9 +1664,7 @@ function HandleProductionMinister_Tick(minister)
 	end
 
 	if Stats.CollectStats == true and Stats.CustomListCheck(tostring(ProductionData.ministerTag)) then
-		Utils.LUA_DEBUGOUT(ProductionData.LandCountTotal)
 		countUnits(ProductionData)
-		Utils.LUA_DEBUGOUT(ProductionData.LandCountTotal)
 		local stats = {
 			LandCountTotal = ProductionData.LandCountTotal,
 			AirCountTotal = ProductionData.AirCountTotal,
