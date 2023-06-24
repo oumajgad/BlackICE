@@ -151,10 +151,10 @@ if wx ~= nil then
 
 	UI.gSizer_Statistics_main6:Add( 0, 0, 1, wx.wxEXPAND, 5 )
 
-	UI.m_button_Statistics_main_plot = wx.wxButton( UI.m_panel_Statistics_main, wx.wxID_ANY, "Show Statistic", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_button_Statistics_main_plot = wx.wxButton( UI.m_panel_Statistics_main, wx.wxID_ANY, "Show graph", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer_Statistics_main6:Add( UI.m_button_Statistics_main_plot, 0, wx.wxALIGN_BOTTOM + wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
-	UI.m_staticText_Statistics_main3 = wx.wxStaticText( UI.m_panel_Statistics_main, wx.wxID_ANY, "This will take a few seconds.\nTooltip can be removed by right-clicking.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText_Statistics_main3 = wx.wxStaticText( UI.m_panel_Statistics_main, wx.wxID_ANY, "This will take a few seconds.\nTooltip can be removed by right-clicking.\nYou can select multiple stats. If no data exists for a stat it will not appear in the graph.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText_Statistics_main3:Wrap( 250 )
 
 	UI.gSizer_Statistics_main6:Add( UI.m_staticText_Statistics_main3, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALIGN_TOP + wx.wxALL, 5 )
