@@ -33,7 +33,7 @@ require('options')
 require('parsing')
 
 -- Stats
-require('stats-gui')
+require('stats_gui')
 
 if wx ~= nil then
 
