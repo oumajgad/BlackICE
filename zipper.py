@@ -22,10 +22,14 @@ def addUtilityResources(zipf: zipfile.ZipFile):
         for file in files:
             zipf.write(os.path.join(root, file), f"utility/{file}")
 
+def addStatsCLI(zipf: zipfile.ZipFile):
+    zipf.write("./tools/visualizeStatistics/visualizeStatisticCLI.exe", f"stats/visualizeStatisticCLI.exe")
+
 def zipdir(filename):
     maxcount = countFiles()
     zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     addUtilityResources(zipf)
+    addStatsCLI(zipf)
     zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"utility/TechsIcEffValues.txt")
     zipf.write("./tools/TechFileForLua/TechsResEffValues.txt", f"utility/TechsResEffValues.txt")
     zipf.write("./tools/TechFileForLua/TechsSuppThrouValues.txt", f"utility/TechsSuppThrouValues.txt")

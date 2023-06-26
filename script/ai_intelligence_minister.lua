@@ -1,18 +1,4 @@
 
-local ideologyList = nil
-
-local function setUpIdeologyList()
-	if ideologyList == nil then
-		ideologyList = {}
-		for country in CCurrentGameState.GetCountries() do
-			local ideology = country:GetRulingIdeology()
-			local ideologyString = tostring(ideology:GetKey())
-			ideologyList[ideologyString] = ideology
-		end
-	end
-end
-
-
 
 local IntelligenceData = {} -- Gets reset each time the tick starts
 
@@ -102,23 +88,8 @@ function IntelligenceMinister_Tick(minister)
 		IntelligenceData.RullingIdeologyGroup = IntelligenceData.RullingIdeology:GetGroup()
 		IntelligenceData.PartyPopularity = IntelligenceData.ministerCountry:AccessIdeologyPopularity():GetValue(IntelligenceData.RullingIdeology):Get()
 
-		if Stats.CollectStats == true and Stats.MajorCheck(IntelligenceData.IsMajor, nil, nil) then
-			setUpIdeologyList()
-			local groupPopularity = {}
-			for ideologyString, ideology in pairs(ideologyList) do
-				local popularity = IntelligenceData.ministerCountry:AccessIdeologyPopularity():GetValue(ideology):Get()
-				local group = tostring(ideology:GetGroup():GetKey())
-				if groupPopularity[group] == nil then
-					groupPopularity[group] = popularity
-				else
-					groupPopularity[group] = groupPopularity[group] + popularity
-				end
-				-- Utils.LUA_DEBUGOUT(tostring(popularity))
-				Stats.AddStat(tostring(IntelligenceData.ministerTag), "Popularity_" .. ideologyString, string.format('%.02f', popularity))
-			end
-			for group, popularity in pairs(groupPopularity) do
-				Stats.AddStat(tostring(IntelligenceData.ministerTag), "Popularity_Group_" .. group, string.format('%.02f', popularity))
-			end
+		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(IntelligenceData.ministerTag)) then
+			Stats.HandleIntelligenceMinisterStats(IntelligenceData.ministerTag, IntelligenceData.ministerCountry)
 		end
 
 		-- Are there bad spies in our country
@@ -223,6 +194,7 @@ function OMGHandler(minister)
 		DeterminePlayers()
 		DetermineExePatchStatus()
 		DetermineSpriteDeletionStatus()
+		SetUpStatCollectionPage()
 	end
 
 	-- t = os.clock()
@@ -236,6 +208,10 @@ function OMGHandler(minister)
 	-- t = os.clock()
 	CheckNegativeTradeCounts()
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CheckNegativeTradeCounts")
+
+	-- t = os.clock()
+	Stats.CollectPlayerStatistics()
+	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - Stats.CollectPlayerStatistics")
 
 	-- t = os.clock()
 	GuiRefreshLoop()
