@@ -658,35 +658,23 @@ country_event = {
 		national_unity = 5
 	}
 }
-####################### yugoslawia #######################
+####################### yugoslawia ####################### The only working coup
 ########## leave the axis
 country_event = {
-	id = 14831
+	id = 14828
 	is_triggered_only = yes
 	title = "The Balkan Pakt"
 	desc = "EVTDESC14831" #"YUG leave the axis"
 	picture = "evtpicture14831"
 	option = {
 		name = "Perfect"
-		any_country = {
-			end_war = YUG
-		}
-		coup_by = FROM
+		coup_by = ENG
 		leave_faction = axis
 		head_of_state = 20094
 		set_country_flag = yugo_coup_done
-	}
-}
-################### The only working coup
-country_event = {
-	id = 14828
-	is_triggered_only = yes
-	title = "Coup d'etat"
-	desc = "14828"
-	picture = "evtpicture14828"
-	option = {
-		name = "A new government"
-		coup_by = ENG
+		any_country = {
+			end_war = YUG
+		}
 		ai_chance = {
 			factor = 100
 		}
@@ -702,7 +690,7 @@ country_event = {
 		not = {
 			has_country_flag = yugo_coup
 		}
-		is_subject =  no
+		is_subject = no
 		faction = axis
 		or = {
 			exists = VIC
@@ -717,12 +705,6 @@ country_event = {
 	option = {
 		name = "go ahead"
 		YUG = {
-			set_country_flag = yugo_coup
-		}
-		YUG = {
-			country_event = 14828
-		}
-		ENG = {
 			set_country_flag = yugo_coup
 		}
 		ENG = {
