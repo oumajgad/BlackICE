@@ -1,3 +1,4 @@
+G_TechsIcModValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsIcModValues.txt", "=")
 G_TechsIcEffValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsIcEffValues.txt", "=")
 G_TechsResEffValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsResEffValues.txt", "=")
 G_TechsSuppThrouValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsSuppThrouValues.txt", "=")

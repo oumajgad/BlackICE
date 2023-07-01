@@ -36,7 +36,6 @@ require('parsing')
 require('stats_gui')
 
 if wx ~= nil then
-
 	UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosition, wx.wxSize( 550,550 ), wx.wxCAPTION + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL, "Hoi3 Utility" )
 	UI.MyFrame1:SetSizeHints( wx.wxSize( 550,550 ), wx.wxDefaultSize )
 	UI.MyFrame1.m_mgr = wxaui.wxAuiManager()
@@ -138,7 +137,37 @@ if wx ~= nil then
 	UI.bSizer2:Fit( UI.m_panel_Setup )
 	UI.m_notebook4:AddPage(UI.m_panel_Setup, "Setup", True )
 	UI.m_panel_C_Info = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
-	UI.gSizer2 = wx.wxGridSizer( 5, 2, 0, 0 )
+	UI.gSizer2 = wx.wxGridSizer( 4, 4, 0, 0 )
+
+	UI.m_staticText_cInfo_baseIc = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Base IC", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_cInfo_baseIc:Wrap( -1 )
+
+	UI.gSizer2:Add( UI.m_staticText_cInfo_baseIc, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_baseIc = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_baseIc:Enable( False )
+
+	UI.gSizer2:Add( UI.m_textCtrl_baseIc, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_cInfo_offmapIc = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Offmap IC", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_cInfo_offmapIc:Wrap( -1 )
+
+	UI.gSizer2:Add( UI.m_staticText_cInfo_offmapIc, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_offmapIc = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_offmapIc:Enable( False )
+
+	UI.gSizer2:Add( UI.m_textCtrl_offmapIc, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_cInfo_icModifier = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "IC Modifier", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_cInfo_icModifier:Wrap( -1 )
+
+	UI.gSizer2:Add( UI.m_staticText_cInfo_icModifier, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_icModifier = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_icModifier:Enable( False )
+
+	UI.gSizer2:Add( UI.m_textCtrl_icModifier, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_staticText8 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "IC Efficiency", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText8:Wrap( -1 )
@@ -170,8 +199,8 @@ if wx ~= nil then
 
 	UI.gSizer2:Add( UI.m_textCtrl_SuppThrou, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion change\n\nYou can only gain WE during wartime, regardless of what this value is.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticText34:Wrap( 200 )
+	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion\n(only increases during war)", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText34:Wrap( 150 )
 
 	UI.gSizer2:Add( UI.m_staticText34, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
