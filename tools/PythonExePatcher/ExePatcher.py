@@ -17,7 +17,7 @@ def WriteHex(file: str, offset: int, hex_n: str):
 
 
 def PatchLargeAddressAware():
-    print("PatchLargeAddressAware")
+    print("Patch_LargeAddressAware")
     WriteHex("hoi3_tfh.exe", 0x138, "9165E5")
     WriteHex("hoi3_tfh.exe", 0x146, "22")
     WriteHex("hoi3_tfh.exe", 0x188, "67B1")
@@ -31,18 +31,25 @@ def PatchLargeAddressAware():
 
 
 def PatchMinisterTechDecay():
-    print("PatchMinisterTechDecay")
+    print("Patch_MinisterTechDecay")
     print(f'Old: {ReadHex("hoi3_tfh.exe", 0xDD7ED, 1)}')
     WriteHex("hoi3_tfh.exe", 0xDD7ED, "01")
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xDD7ED, 1)}')
 
 
 def PatchMinisterWarExhaustionNeutralityReset():
-    print("PatchMinisterWarExhaustionNeutralityReset")
+    print("Patch_MinisterWarExhaustionNeutralityReset")
     hex_n = "3BC37E1153518BCC8919E868F3010090909090909083BF6801"
     print(f'Old: {ReadHex("hoi3_tfh.exe", 0xDC009, 25)}')
     WriteHex("hoi3_tfh.exe", 0xDC009, hex_n)
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xDC009, 25)}')
+
+
+def PatchOffmapIC():
+    print("Patch_OffmapIC")
+    print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
+    WriteHex("hoi3_tfh.exe", 0xF03A9, "8B4178909090")
+    print(f'New: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
 
 
 if __name__ == "__main__":
@@ -50,6 +57,7 @@ if __name__ == "__main__":
         PatchLargeAddressAware()
         PatchMinisterTechDecay()
         PatchMinisterWarExhaustionNeutralityReset()
+        PatchOffmapIC()
         print("\nSuccess\n")
         os.system("pause")
     except Exception as e:
