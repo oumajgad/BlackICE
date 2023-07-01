@@ -27,6 +27,13 @@ def run():
                 linesIcEff.append(f"{name}={values.get('ic_efficiency')}\n")
     with open("tools/TechFileForLua/TechsIcEffValues.txt", "w") as file:
         file.writelines(linesIcEff)
+    linesIcMod = []
+    for name, values in t.items():
+        for value in values:
+            if value == 'ic_modifier':
+                linesIcMod.append(f"{name}={values.get('ic_modifier')}\n")
+    with open("tools/TechFileForLua/TechsIcModValues.txt", "w") as file:
+        file.writelines(linesIcMod)
     linesResEff = []
     for name, values in t.items():
         for value in values:

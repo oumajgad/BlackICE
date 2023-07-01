@@ -79,6 +79,7 @@ def addUtilityResources(zipf: zipfile.ZipFile):
         for file in files:
             zipf.write(os.path.join(root, file), f"tfh/mod/BlackICE {version}/utility/{file}")
     zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsIcEffValues.txt")
+    zipf.write("./tools/TechFileForLua/TechsIcModValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsIcModValues.txt")
     zipf.write("./tools/TechFileForLua/TechsResEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsResEffValues.txt")
     zipf.write("./tools/TechFileForLua/TechsSuppThrouValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsSuppThrouValues.txt")
 
