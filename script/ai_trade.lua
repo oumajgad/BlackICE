@@ -1053,7 +1053,7 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 
 	-- custom trade AI will balance its money by selling resources when dropping below the buffer
 	if hasCustomTradeAi == 1 then
-		laResouces.MONEY.CanSpend = laResouces.MONEY.DailyBalance
+		laResouces.MONEY.CanSpend = math.max(10,laResouces.MONEY.DailyBalance) -- can use at least 10 money for trades
 	end
 
 	-- Crude oil needs check, makes sure we don't buy crude and instead spend cash on supplies
