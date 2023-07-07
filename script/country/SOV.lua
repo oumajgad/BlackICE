@@ -479,7 +479,7 @@ function P.ProductionWeights(voProductionData)
 	-- More than 400 brigades so build stuff that does not use manpower
 	if voProductionData.ManpowerTotal < 500 then
 		laArray = {
-			0.0, -- Land
+			0.00, -- Land
 			0.70, -- Air
 			0.00, -- Sea
 			0.30}; -- Other
@@ -489,7 +489,7 @@ function P.ProductionWeights(voProductionData)
 			0.30, -- Land
 			0.30, -- Air
 			0.00, -- Sea
-			0.4}; -- Other
+			0.40}; -- Other
 	elseif loGerSovDiplo:HasWar() then
 		local loWar = loGerSovDiplo:GetWar()
 		local liWarMonths = loWar:GetCurrentRunningTimeInMonths()
@@ -500,21 +500,21 @@ function P.ProductionWeights(voProductionData)
 			laArray = {
 				0.90, -- Land
 				0.10, -- Air
-				0.0, -- Sea
+				0.00, -- Sea
 				0.0}; -- Other
 
 		-- War has been going on for atleast 2 years and we still have Moscow
 		elseif lbControlMoscow and liWarMonths > 23 then
 			laArray = {
-				0.6, -- Land
-				0.2, -- Air
-				0.0, -- Sea
-				0.2}; -- Other
+				0.60, -- Land
+				0.20, -- Air
+				0.00, -- Sea
+				0.20}; -- Other
 		else
 			laArray = {
 				0.83, -- Land
 				0.15, -- Air
-				0.0, -- Sea
+				0.00, -- Sea
 				0.02}; -- Other
 		end
 	-- We are atwar with someone other than Germany
@@ -540,7 +540,7 @@ function P.ProductionWeights(voProductionData)
 			0.15, -- Land
 			0.15, -- Air
 			0.00, -- Sea
-			0.70};
+			0.70}; -- Other
 
 	elseif voProductionData.Year == 1940 then
 		laArray = {
