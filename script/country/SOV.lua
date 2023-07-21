@@ -470,7 +470,6 @@ end
 --   1.0 = 100% the total needs to equal 1.0
 function P.ProductionWeights(voProductionData)
 	local laArray
-	local itaTag = CCountryDataBase.GetTag("ITA")
 	local gerTag = CCountryDataBase.GetTag("GER")
 	local loGerCountry = gerTag:GetCountry()
 	local loGerSovDiplo = voProductionData.ministerCountry:GetRelation(gerTag)
@@ -491,12 +490,10 @@ function P.ProductionWeights(voProductionData)
 			0.00, -- Sea
 			0.4}; -- Other
 	elseif loGerSovDiplo:HasWar() then
-		local loWar = loGerSovDiplo:GetWar()
-		local liWarMonths = loWar:GetCurrentRunningTimeInMonths()
 		local lbControlMoscow = (CCurrentGameState.GetProvince(1409):GetController() == voProductionData.ministerTag)
 
 		-- War is less than 10 months or we lost Moscow build massive land units
-		if liWarMonths < 24 or not(lbControlMoscow) then
+		if not(lbControlMoscow) then
 			laArray = {
 				0.90, -- Land
 				0.10, -- Air
@@ -504,7 +501,7 @@ function P.ProductionWeights(voProductionData)
 				0.0}; -- Other
 
 		-- War has been going on for atleast 2 years and we still have Moscow
-		elseif lbControlMoscow and liWarMonths > 23 then
+		elseif lbControlMoscow and voProductionData.Year >= 1943 then
 			laArray = {
 				0.6, -- Land
 				0.2, -- Air
@@ -537,10 +534,10 @@ function P.ProductionWeights(voProductionData)
 	--   as long as Germany is not at war with anyone
 	elseif voProductionData.Year <= 1938 and not(loGerCountry:IsAtWar()) then
 		laArray = {
-			0.15, -- Land
-			0.15, -- Air
+			0.10, -- Land
+			0.10, -- Air
 			0.00, -- Sea
-			0.70};
+			0.80};
 
 	elseif voProductionData.Year == 1940 then
 		laArray = {
