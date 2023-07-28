@@ -91,6 +91,11 @@ radar = {
 	activate_building = radar_station
 
 	allow = {
+		or = {
+			has_country_flag = medium_large_education_investment_flag
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+		}
 		radio_technology = 1
 	}
 
@@ -140,6 +145,11 @@ mechnical_computing_machine = {
 
 	allow = {
 		census_tabulation_machine = 1
+		or = {
+			has_country_flag = medium_large_education_investment_flag
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+		}
 	}
 
 	research_bonus_from = {
@@ -163,6 +173,11 @@ electronic_computing_machine = {
 
 	allow = {
 		mechnical_computing_machine = 1
+		or = {
+			has_country_flag = medium_large_education_investment_flag
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+		}
 	}
 
 	research_bonus_from = {
@@ -188,6 +203,12 @@ decryption_machine = {
 		OR = {
 			mechnical_computing_machine = 1
 			electronic_computing_machine = 1
+		}
+		or = {
+			has_country_flag = medium_large_education_investment_flag
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+			has_country_flag = decryption_specialist_flag
 		}
 	}
 
@@ -250,6 +271,12 @@ encryption_machine = {
 			mechnical_computing_machine = 1
 			electronic_computing_machine = 1
 		}
+		or = {
+			has_country_flag = medium_large_education_investment_flag
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+			has_country_flag = decryption_specialist_flag
+		}
 	}
 
 	coastal_submarine = {
@@ -293,6 +320,11 @@ land_based_radar = {
 
 	allow = {
 		radar = 1
+		or = {
+			has_country_flag = medium_large_education_investment_flag
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+		}
 	}
 
 	radar_efficiency = 0.01
@@ -320,32 +352,14 @@ plane_airsearch_radar  = {
 	allow = {
 		radar = 2
 		advanced_aircraft_development = 1
+		or = {
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+		}
 	}
 
 	radar_efficiency = 0.01
 	provincial_aa_efficiency = 0.01
-
-	#air_command_fighter_group = {
-	#	air_detection = 2.00
-	#}
-	#air_command_transport_group = {
-	#	air_detection = 1.00
-	#}
-	#air_command_transport_group_heavy = {
-	#	air_detection = 1.00
-	#}
-	#air_command_bomber_light = {
-	#	air_detection = 1.00
-	#}
-	#air_command_bomber_medium = {
-	#	air_detection = 1.00
-	#}
-	#air_command_bomber_heavy = {
-	#	air_detection = 1.00
-	#}
-	#air_command_bomber_naval = {
-	#	air_detection = 1.00
-	#}
 
 	interceptor = {
 		air_detection = 1.00
@@ -414,29 +428,13 @@ plane_navigation_radar  = {
 
 	allow = {
 		plane_airsearch_radar = 1
+		or = {
+			has_country_flag = medium_large_education_investment_flag
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+		}
 	}
 
-	#air_command_fighter_group = {
-	#	surface_detection = 1.00
-	#}
-	#air_command_transport_group = {
-	#	surface_detection = 4.00
-	#}
-	#air_command_transport_group_heavy = {
-	#	surface_detection = 4.00
-	#}
-	#air_command_bomber_light = {
-	#	surface_detection = 6.00
-	#}
-	#air_command_bomber_medium = {
-	#	surface_detection = 6.00
-	#}
-	#air_command_bomber_heavy = {
-	#	surface_detection = 6.00
-	#}
-	#air_command_bomber_naval = {
-	#	surface_detection = 8.00
-	#}
 	interceptor = {
 		surface_detection = 0.50
 	}
@@ -1219,42 +1217,6 @@ air_radios = {
 		advanced_aircraft_development = 1
 	}
 
-	#air_command_fighter_group = {
-	#	surface_detection = 1.0
-	#	air_detection = 1.0
-	#	#build_cost_ic = 0.5
-	#}
-	#air_command_transport_group = {
-	#	surface_detection = 1.0
-	#	air_detection = 1.0
-	#	#build_cost_ic = 0.5
-	#}
-	#air_command_transport_group_heavy = {
-	#	surface_detection = 1.0
-	#	air_detection = 1.0
-	#	#build_cost_ic = 0.5
-	#}
-	#air_command_bomber_light = {
-	#	surface_detection = 1.0
-	#	air_detection = 1.0
-	#	#build_cost_ic = 0.5
-	#}
-	#air_command_bomber_medium = {
-	#	surface_detection = 1.0
-	#	air_detection = 1.0
-	#	#build_cost_ic = 0.5
-	#}
-	#air_command_bomber_heavy = {
-	#	surface_detection = 1.0
-	#	air_detection = 1.0
-	#	#build_cost_ic = 0.5
-	#}
-	#air_command_bomber_naval = {
-	#	surface_detection = 1.0
-	#	air_detection = 1.0
-	#	#build_cost_ic = 0.5
-	#}
-
 	interceptor = {
 		surface_defence = 0.05
 		air_attack = 0.5
@@ -1420,6 +1382,10 @@ small_ship_radar = {
 
 	allow = {
 		radar = 2
+		or = {
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+		}
 	}
 
 	destroyer = {
@@ -1464,6 +1430,11 @@ big_ship_radar = {
 
 	allow = {
 		radar = 1
+		or = {
+			has_country_flag = medium_large_education_investment_flag
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+		}
 	}
 
 	battlecruiser = {
@@ -1532,6 +1503,11 @@ medium_ship_radar = {
 
 	allow = {
 		radar = 1
+		or = {
+			has_country_flag = medium_large_education_investment_flag
+			has_country_flag = big_education_investment_flag
+			has_country_flag = electronics_specialist_flag
+		}
 	}
 
 	light_cruiser = {
