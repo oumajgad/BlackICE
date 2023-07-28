@@ -929,7 +929,7 @@ rodina_one_high = {
 	#leader_defence = 0.15
 	org_regain = -0.05
 	supply_throughput = -0.1
-	land_organisation = -0.2
+	land_organisation = -0.15
 	air_organisation = -0.15
 	combat_movement_speed = -0.05
 }
@@ -939,7 +939,7 @@ rodina_two_high = {
 	#leader_defence = 0.15
 	org_regain = -0.05
 	supply_throughput = -0.1
-	land_organisation = -0.25
+	land_organisation = -0.2
 	air_organisation = -0.15
 	combat_movement_speed = -0.05
 }
@@ -950,7 +950,7 @@ rodina_three_high = {
 	#leader_defence = 0.15
 	org_regain = -0.025
 	supply_throughput = -0.1
-	land_organisation = -0.15
+	land_organisation = -0.1
 	air_organisation = -0.025
 	combat_movement_speed = -0.05
 }
@@ -1004,14 +1004,14 @@ rodina_AI = {
 	#leader_defence = 0.15
 	org_regain = -0.15
 	supply_throughput = 0.2
-	land_organisation = -0.3
+	land_organisation = -0.25
 	combat_movement_speed = -0.05
 	soft_attack = -0.35
 	hard_attack = -0.35
 }
 rodina_long_AI = {
 	global_ic = 0.5
-	land_organisation = -0.4
+	land_organisation = -0.3
 	soft_attack = -0.3
 	hard_attack = -0.3
 	land_build_speed = -0.15
@@ -1343,32 +1343,41 @@ BIS = {
 	global_ic = 0.05
 	global_leadership_modifier = 0.05
 }
-BIS_2000 = {
-	global_money = 0.05
+BIS_MONEY_MINOR = {
+	global_money = 0.125
+	#global_ic = 0.06
+	#global_leadership_modifier = 0.03
+	global_supplies = -0.075
 }
-BIS_1000 = {
-	global_money = 0.025
+BIS_IC_MINOR = {
+	#global_money = 0.1
+	global_ic = 0.05
+	#global_leadership_modifier = 0.05
+	global_supplies = -0.075
 }
-BIS_500 = {
-	global_money = 0.012
+BIS_LS_MINOR = {
+	#global_money = 0.04
+	#global_ic = 0.02
+	global_leadership_modifier = 0.035
+	global_supplies = -0.075
 }
-BIS_20000 = {
-	global_money = 0.1
-	global_ic = 0.04
-	global_leadership_modifier = 0.03
+BIS_MONEY = {
+	global_money = 0.35
+	#global_ic = 0.06
+	#global_leadership_modifier = 0.03
 	global_supplies = -0.15
 }
-BIS_10000 = {
-	global_money = 0.05
-	global_ic = 0.03
-	global_leadership_modifier = 0.02
-	global_supplies = -0.10
+BIS_IC = {
+	#global_money = 0.1
+	global_ic = 0.075
+	#global_leadership_modifier = 0.05
+	global_supplies = -0.15
 }
-BIS_5000 = {
-	global_money = 0.04
-	global_ic = 0.02
-	global_leadership_modifier = 0.01
-	global_supplies = -0.05
+BIS_LS = {
+	#global_money = 0.04
+	#global_ic = 0.02
+	global_leadership_modifier = 0.075
+	global_supplies = -0.15
 }
 BIS_NO = {
 }
@@ -2380,7 +2389,7 @@ women_at_work = {
 	war_consumer_goods_demand = -0.1
 }
 SS_junkerschulen = {
-	officer_recruitment = 0.25
+	officer_recruitment = 0.125
 	peace_consumer_goods_demand = 0.05
 	war_consumer_goods_demand = 0.025
 	global_money = -0.15
@@ -3021,44 +3030,44 @@ IC_Resources = {
 rares_IC = {
 	global_rare_materials = 0.05
 	#industrial_efficiency = 0.1
-	global_ic = -0.05
+	global_ic = -0.015
 }
 steel_IC = {
 	global_metal = 0.05
 	#industrial_efficiency = 0.1
-	global_ic = -0.05
+	global_ic = -0.015
 }
 energy_IC = {
 	global_energy = 0.05
 	#industrial_efficiency = 0.1
-	global_ic = -0.05
+	global_ic = -0.015
 }
 oil_IC = {
 	global_crude_oil = 0.05
 	#industrial_efficiency = 0.1
-	global_ic = -0.05
+	global_ic = -0.015
 }
 IC_Resources_low = {
 }
 low_rares_IC = {
 	global_rare_materials = 0.05
 	#industrial_efficiency = 0.1
-	global_ic = -0.05
+	global_ic = -0.015
 }
 low_steel_IC = {
 	global_metal = 0.05
 	#industrial_efficiency = 0.1
-	global_ic = -0.05
+	global_ic = -0.015
 }
 low_energy_IC = {
 	global_energy = 0.05
 	#industrial_efficiency = 0.1
-	global_ic = -0.05
+	global_ic = -0.015
 }
 low_oil_IC = {
 	global_crude_oil = 0.05
 	#industrial_efficiency = 0.1
-	global_ic = -0.05
+	global_ic = -0.015
 }
 no_IC = {
 }
@@ -4292,48 +4301,47 @@ Social_Legislation = {
 
 ######### MarneMan's Sabotage Modifiers ###########
 Nazi_Sabotage_Niagara_Falls = {
-	global_energy = -0.25
-	dissent = 0.025
+	local_energy = -0.5
+	#dissent = 0.025
 }
 
 Nazi_Sabotage_ALCOA_Factories = {
-	global_metal = -0.25
-	dissent = 0.025
+	local_metal = -0.25
+	#dissent = 0.025
 }
 
 Nazi_Sabotage_River_Locks = {
-	global_supplies = -0.30
-	supply_throughput = -0.25
+	global_supplies = -0.10
+	supply_throughput = -0.025
 	dissent = 0.025
 }
 
 Nazi_Sabotage_Horseshoe_Curve = {
-	global_supplies = -0.20
-	global_energy = -0.20
-	global_metal = -0.20
-	supply_throughput = -0.15
+	global_supplies = -0.10
+	global_energy = -0.10
+	global_metal = -0.10
+	supply_throughput = -0.075
 	dissent = 0.025
 }
 
 Nazi_Sabotage_Repair_Shops = {
-	supply_throughput = -0.15
-	global_supplies = -0.15
-	dissent = 0.025
-}
-
-Nazi_Sabotage_Cryolite_Plant = {
-	global_metal = -0.25
-	dissent = 0.025
-}
-
-Nazi_Sabotage_Hellgate_Bridge = {
-	supply_throughput = -0.15
+	supply_throughput = -0.05
 	global_supplies = -0.05
 	dissent = 0.025
 }
 
+Nazi_Sabotage_Cryolite_Plant = {
+	local_metal = -0.25
+}
+
+Nazi_Sabotage_Hellgate_Bridge = {
+	supply_throughput = -0.05
+	global_supplies = -0.025
+	dissent = 0.025
+}
+
 Nazi_Sabotage_Penn_Station = {
-	supply_throughput = -0.15
+	supply_throughput = -0.05
 	dissent = 0.05
 }
 ############ Training Divisions HQ's ##############
@@ -6336,13 +6344,13 @@ invest_all_mangyo = {
 	global_ic = -0.10
 }
 mangyo = {
-	global_resources = 0.25
+	global_resources = 0.15
 }
 mangyo_extra = {
-	global_resources = 0.35
+	global_resources = 0.25
 }
 krupp_equipment = {
-	local_metal = 0.5
+	local_metal = 0.25
 }
 expand_manchuria_railway = {
 	global_ic = -0.10
@@ -9745,7 +9753,7 @@ province_nuked_II = {
 }
 nuclear_program_cost = {}
 deutsche_physik = {
-	nuke_research = -0.75
+	nuke_research = -0.3
 }
 deutsche_physik_removal = {
 	global_rare_materials = -0.15
@@ -9790,3 +9798,4 @@ request_buildings_check_timer = {}
 province_request_timer = {}
 prox_fuze_timer = {}
 BWC_timer = {}
+education_investment_law_flags_timer = {}
