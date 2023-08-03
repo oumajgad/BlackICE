@@ -2979,3 +2979,86 @@ country_event = {
 		name = "Crush them!"
 	}
 }
+
+country_event = {
+	id = 400137
+	is_triggered_only = yes
+	title = "Ordering of the fleet carrier 'Hiryu'"
+	desc = "EVTDESC400137"
+	picture = "Hiryu"
+	option = {
+		name = "Laid down at the Yokosuka Naval Arsenal"
+		metal = -1500 # steel needed to construct the keel
+		set_country_flag = Hiryu_ship
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				load_oob = JAP/JAP_Hiryu_build.txt
+			}
+		}
+#		OMG = {
+#			any_country = {
+#				limit = {
+#					tag = JAP
+#
+#					not = {
+#						has_country_flag = BlackICE
+#					}
+#				}
+#				load_oob = JAP/JAP_Hiryu.txt
+#				country_event = 400138
+#			}
+#		}
+	}
+	option = {
+		name="No need"
+		set_country_flag = Hiryu_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+
+# Hiryu is launched event
+country_event = {
+	id = 400138
+	is_triggered_only = yes
+	major = yes
+	trigger = {
+		tag = JAP
+		has_country_flag = Hiryu_ship
+
+		not = {
+			has_country_flag = Hiryulaunch
+			has_country_flag = Hiryu_no
+		}
+	}
+	mean_time_to_happen= {
+		days = 1
+	}
+	title = "Hiryu is Launched!"
+	desc = ""
+	picture = "Hiryu"
+	option = {
+		name = "What a Fine Ship !"
+		set_country_flag = Hiryulaunch
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					has_country_flag = Hiryu_ship
+				}
+				remove_brigade = "§RHiryu (FAKE)§b"
+				load_oob = JAP/JAP_Hiryu.txt
+			}
+		}
+	}
+}
