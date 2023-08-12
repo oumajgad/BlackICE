@@ -836,6 +836,7 @@ function TrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 
 				return CLawDataBase.GetLaw(new)
 			end
+		-- we are not spending too much but are on a different law? -> go back to default
 		elseif default ~= voCurrentLaw:GetIndex() then
 			return CLawDataBase.GetLaw(default)
 		end
