@@ -803,11 +803,45 @@ function TrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 	local default = defaultLandTraining[tostring(ministerTag)]
 
 	if default ~= nil then
-		return CLawDataBase.GetLaw(default)
+		local totalIc = ministerCountry:GetTotalIC()
+		local reinforcementsIC = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_REINFORCEMENT_):GetNeeded():Get()
+		local reinforcementsPercent = reinforcementsIC/totalIc
+		local vars = ministerCountry:GetVariables()
+		local want_land_training_law_change_date = vars:GetVariable(CString("want_land_training_law_change_date")):Get()
+		local date = CCurrentGameState.GetCurrentDate():GetTotalDays()
+		local diff = date - want_land_training_law_change_date
+
+		local TRAINING_LAW_CHANGE_HYSTERESIS = 10	-- need at least X days of fullfilling trigger conditions
+		local TRAINING_LAW_IC_TRIGGER_PERCENT = 0.1
+		-- we are spending alot on reinforcement -> consider lowering training laws
+		if reinforcementsPercent >= TRAINING_LAW_IC_TRIGGER_PERCENT then
+			if	-- validate the law change variable
+				-- no date set yet
+				(want_land_training_law_change_date == 0)
+				or
+				-- the saved date is too old because we recovered before triggering a change -> reset
+				(diff > (3 * TRAINING_LAW_CHANGE_HYSTERESIS))
+			then
+				-- set starting date
+				local command = CSetVariableCommand(ministerTag, CString("want_land_training_law_change_date"), CFixedPoint(date))
+				CCurrentGameState.Post(command)
+				return nil
+			elseif diff > TRAINING_LAW_CHANGE_HYSTERESIS then
+				local new = voCurrentLaw:GetIndex() - 1
+				new = math.max(new, _MINIMAL_TRAINING_) -- cant go lower than minimal training
+
+				-- reset the starting date to 0
+				local command = CSetVariableCommand(ministerTag, CString("want_land_training_law_change_date"), CFixedPoint(0))
+				CCurrentGameState.Post(command)
+
+				return CLawDataBase.GetLaw(new)
+			end
+		-- we are not spending too much but are on a different law? -> go back to default
+		elseif default ~= voCurrentLaw:GetIndex() then
+			return CLawDataBase.GetLaw(default)
+		end
 	end
-
 	return nil
-
 end
 function ConscriptionLaws2(ministerTag, ministerCountry, voCurrentLaw)
 
