@@ -803,6 +803,10 @@ function TrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 	local default = defaultLandTraining[tostring(ministerTag)]
 
 	if default ~= nil then
+		if not ministerCountry:GetFlags():IsFlagSet("training_laws_check") then
+			return CLawDataBase.GetLaw(default)
+		end
+		
 		local totalIc = ministerCountry:GetTotalIC()
 		local reinforcementsIC = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_REINFORCEMENT_):GetNeeded():Get()
 		local reinforcementsPercent = reinforcementsIC/totalIc
