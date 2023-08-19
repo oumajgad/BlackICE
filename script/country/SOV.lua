@@ -509,10 +509,10 @@ function P.ProductionWeights(voProductionData)
 				0.2}; -- Other
 		else
 			laArray = {
-				0.83, -- Land
-				0.15, -- Air
+				0.8, -- Land
+				0.2, -- Air
 				0.0, -- Sea
-				0.02}; -- Other
+				0.00}; -- Other
 		end
 	-- We are atwar with someone other than Germany
 	elseif voProductionData.IsAtWar then
@@ -523,28 +523,28 @@ function P.ProductionWeights(voProductionData)
 			0.10}; -- Other
 
 	-- 1936 just build up
-	elseif voProductionData.Year == 1936 then
+	elseif voProductionData.Year <= 1937 then
 		laArray = {
 			0.00, -- Land
-			0.05, -- Air
+			0.00, -- Air
 			0.00, -- Sea
-			0.95}; -- Other
+			1.00}; -- Other
 
-	-- Produce lots of industry in the early years
+	elseif voProductionData.Year <= 1938 then
+		laArray = {
+			0.25, -- Land
+			0.1, -- Air
+			0.00, -- Sea
+			0.65}; -- Other
+		-- Produce lots of industry in the early years
 	--   as long as Germany is not at war with anyone
-	elseif voProductionData.Year <= 1938 and not(loGerCountry:IsAtWar()) then
+	elseif voProductionData.Year <= 1939 and not(loGerCountry:IsAtWar()) then
 		laArray = {
-			0.10, -- Land
-			0.10, -- Air
+			0.5, -- Land
+			0.35, -- Air
 			0.00, -- Sea
-			0.80};
+			0.15};
 
-	elseif voProductionData.Year == 1940 then
-		laArray = {
-			0.65, -- Land
-			0.25, -- Air
-			0.00, -- Sea
-			0.10}; -- Other
 	else
 		laArray = {
 			0.65, -- Land
