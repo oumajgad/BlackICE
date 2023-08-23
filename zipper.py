@@ -31,6 +31,7 @@ def zipdir(filename):
     addUtilityResources(zipf)
     addStatsCLI(zipf)
     zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"utility/TechsIcEffValues.txt")
+    zipf.write("./tools/TechFileForLua/TechsIcModValues.txt", f"utility/TechsIcModValues.txt")
     zipf.write("./tools/TechFileForLua/TechsResEffValues.txt", f"utility/TechsResEffValues.txt")
     zipf.write("./tools/TechFileForLua/TechsSuppThrouValues.txt", f"utility/TechsSuppThrouValues.txt")
     counter = 0

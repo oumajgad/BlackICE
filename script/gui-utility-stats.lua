@@ -104,7 +104,7 @@ if wx ~= nil then
 	UI.m_panel_Statistics_main = wx.wxPanel( UI.m_notebook_Statistics, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_Statistics_main1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText_Statistics_main2 = wx.wxStaticText( UI.m_panel_Statistics_main, wx.wxID_ANY, "Select countries and stats", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_Statistics_main2 = wx.wxStaticText( UI.m_panel_Statistics_main, wx.wxID_ANY, "Select countries and stats for which to show the statistic", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText_Statistics_main2:Wrap( -1 )
 
 	UI.bSizer_Statistics_main1:Add( UI.m_staticText_Statistics_main2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
