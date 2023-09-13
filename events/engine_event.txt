@@ -961,3 +961,39 @@ country_event = {
 		}
 	}
 }
+country_event = {
+	id = 600005
+	trigger = {
+		not = { assault_gun_brigade_activation = 1 }
+		or = {
+			gasoline_engine_design = 2
+			diesel_engine_design = 2
+		}
+		armor_brigade_design = 3
+		tank_chassis_design = 3
+		artillery_support_gun_design = 1
+
+		armor_thickness = 1
+		OR = {
+			welded_armour = 2
+			cast_armour = 2
+		}
+
+		not = {
+			has_country_flag = casemante_turret_choice
+		}
+	}
+	title = "Vehicle Type Choice"
+	desc = "EVTDESC600005"
+	picture = "unitguide_medium_tank_destroyer"
+	option = {
+		name = "Casemate"
+		set_country_flag = casemante_turret_choice
+		casemate_vehicles = 3000
+	}
+	option = {
+		name = "Turret"
+		set_country_flag = casemante_turret_choice
+		turreted_vehicles = 3000
+	}
+}
