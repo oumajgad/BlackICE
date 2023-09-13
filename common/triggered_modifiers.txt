@@ -21,10 +21,10 @@ Stalin_HOG_effect_AI = {
 		ai = yes
 	}
 
-	peace_consumer_goods_demand = -0.8
-	land_build_speed = 0.5
-	tank_build_speed = 0.5
-	air_build_speed = 0.5
+	peace_consumer_goods_demand = -1.0
+	#land_build_speed = 0.5
+	#tank_build_speed = 0.5
+	#air_build_speed = 0.5
 
 	icon = 84
 }
@@ -41,7 +41,7 @@ SOV_AI_BALANCE = {
 
 	icon = 5
 }
-SOV_AI_WAR = {
+SOV_AI_TWEAK = {
 	potential = {
 		tag = SOV
 		ai = yes
@@ -50,15 +50,23 @@ SOV_AI_WAR = {
 		GER = {
 			ai = yes
 		}
-		war_with = GER
-		#not = {
-		#	year = 1942
-		#}
+		or = {
+			not = {
+				exists = EST
+				exists = LIT
+				exists = EST
+				war_with = GER
+			}
+			and = {
+				war_with = GER
+				total_amount_of_brigades = 5500
+			}
+		}
 	}
 
-	land_build_speed = -0.1
-	tank_build_speed = -0.1
-	air_build_speed = -0.1
+	land_build_speed = 0.5
+	tank_build_speed = 0.5
+	air_build_speed = 0.5
 
 	icon = 5
 }
@@ -84,25 +92,25 @@ SOV_AI_WAR = {
 #	icon = 5
 #}
 
-SOV_AI_WAR_II = {
-	potential = {
-		tag = SOV
-		ai = yes
-	}
-	trigger = {
-		war_with = GER
-		year = 1942
-		GER = {
-			ai = no
-		}
-	}
-
-	land_build_speed = -0.35
-	tank_build_speed = -0.35
-	air_build_speed = -0.3
-
-	icon = 5
-}
+#SOV_AI_WAR_II = {
+#	potential = {
+#		tag = SOV
+#		ai = yes
+#	}
+#	trigger = {
+#		war_with = GER
+#		year = 1942
+#		GER = {
+#			ai = no
+#		}
+#	}
+#
+#	land_build_speed = -0.25
+#	tank_build_speed = -0.25
+#	air_build_speed = -0.2
+#
+#	icon = 5
+#}
 #SOV_AI_WAR_III = {
 #	potential = {
 #		tag = SOV
@@ -122,128 +130,6 @@ SOV_AI_WAR_II = {
 #
 #	icon = 5
 #}
-SOV_AI_IC_EFF_NORMAL = {
-	potential = {
-		or = {
-			tag = SOV
-			tag = USA
-		}
-		ai = yes
-	}
-	trigger = {
-		has_country_modifier = NORMAL_AI
-		or = {
-			and = {
-				not = { 
-					year = 1939
-				}
-				tag = SOV
-			}
-			and = {
-				not = { 
-					year = 1941
-				}
-				tag = USA
-			}
-		}
-	}
-
-	industrial_efficiency = 0.3
-
-	icon = 5
-}
-
-SOV_AI_IC_EFF_HARD = {
-	potential = {
-		or = {
-			tag = SOV
-			tag = USA
-		}
-		ai = yes
-	}
-	trigger = {
-		has_country_modifier = HARD_AI
-		or = {
-			and = {
-				not = { 
-					year = 1939
-				}
-				tag = SOV
-			}
-			and = {
-				not = { 
-					year = 1941
-				}
-				tag = USA
-			}
-		}
-	}
-
-	industrial_efficiency = 0.25
-
-	icon = 5
-}
-
-SOV_AI_IC_EFF_VHARD = {
-	potential = {
-		or = {
-			tag = SOV
-			tag = USA
-		}
-		ai = yes
-	}
-	trigger = {
-		has_country_modifier = VERY_HARD_AI
-		or = {
-			and = {
-				not = { 
-					year = 1939
-				}
-				tag = SOV
-			}
-			and = {
-				not = { 
-					year = 1941
-				}
-				tag = USA
-			}
-		}
-	}
-
-	industrial_efficiency = 0.2
-
-	icon = 5
-}
-SOV_AI_IC_EFF_GROFAZ = {
-	potential = {
-		or = {
-			tag = SOV
-			tag = USA
-		}
-		ai = yes
-	}
-	trigger = {
-		has_country_modifier = GROFAZ_AI
-		or = {
-			and = {
-				not = { 
-					year = 1939
-				}
-				tag = SOV
-			}
-			and = {
-				not = { 
-					year = 1941
-				}
-				tag = USA
-			}
-		}
-	}
-
-	industrial_efficiency = 0.15
-
-	icon = 5
-}
 
 ###########################################################
 ###############		 Nat. Focuses 	 	###################
@@ -3334,7 +3220,7 @@ low_trained_army_mass_conscription = {
 	}
 
 	supply_consumption = 0.05
-	reinforcement_bonus = 0.1
+	#reinforcement_bonus = 0.1
 	territorial_pride = 0.075
 	land_build_speed = -0.035
 	tank_build_speed = -0.035
@@ -3358,7 +3244,7 @@ low_trained_army_long_conscription_I = {
 	}
 
 	supply_consumption = 0.075
-	reinforcement_bonus = 0.125
+	#reinforcement_bonus = 0.125
 	territorial_pride = 0.1
 	land_build_speed = -0.05
 	tank_build_speed = -0.05
@@ -3382,7 +3268,7 @@ low_trained_army_long_conscription_II = {
 	}
 
 	supply_consumption = 0.1
-	reinforcement_bonus = 0.165
+	#reinforcement_bonus = 0.165
 	territorial_pride = 0.15
 	land_build_speed = -0.075
 	tank_build_speed = -0.075
@@ -3403,7 +3289,7 @@ basic_trained_army_mass_conscription = {
 	}
 
 	supply_consumption = 0.025
-	reinforcement_bonus = 0.05
+	#reinforcement_bonus = 0.05
 	territorial_pride = 0.04
 	land_build_speed = -0.02
 	tank_build_speed = -0.02
@@ -3430,7 +3316,7 @@ basic_trained_army_long_conscription_I = {
 	}
 
 	supply_consumption = 0.04
-	reinforcement_bonus = 0.06
+	#reinforcement_bonus = 0.06
 	territorial_pride = 0.05
 	land_build_speed = -0.025
 	tank_build_speed = -0.025
@@ -3454,7 +3340,7 @@ basic_trained_army_long_conscription_II = {
 	}
 
 	supply_consumption = 0.05
-	reinforcement_bonus = 0.08
+	#reinforcement_bonus = 0.08
 	territorial_pride = 0.075
 	land_build_speed = -0.04
 	tank_build_speed = -0.04
@@ -3480,7 +3366,7 @@ well_trained_army_long_conscription_I = {
 	}
 
 	supply_consumption = -0.025
-	reinforcement_bonus = 0.05
+	#reinforcement_bonus = 0.05
 	org_regain = 0.025
 
 	icon = 3
@@ -3502,7 +3388,7 @@ well_trained_army_long_conscription_II = {
 	}
 
 	supply_consumption = -0.05
-	reinforcement_bonus = 0.075
+	#reinforcement_bonus = 0.075
 	org_regain = 0.05
 
 	icon = 3
@@ -3527,7 +3413,7 @@ elite_trained_army_long_conscription_I = {
 	}
 
 	supply_consumption = -0.05
-	reinforcement_bonus = -0.075
+	#reinforcement_bonus = -0.075
 	land_build_speed = 0.035
 	tank_build_speed = 0.035
 	org_regain = 0.05
@@ -3551,7 +3437,7 @@ elite_trained_army_long_conscription_II = {
 	}
 
 	supply_consumption = -0.075
-	reinforcement_bonus = -0.125
+	#reinforcement_bonus = -0.125
 	land_build_speed = 0.05
 	tank_build_speed = 0.05
 	org_regain = 0.075
@@ -4182,7 +4068,7 @@ winter_war = {
 	}
 
 	org_regain = 0.025
-	reinforcement_bonus = 0.25
+	#reinforcement_bonus = 0.25
 	land_organisation = 0.025
 
 	icon = 4
@@ -4350,7 +4236,7 @@ lapland_war = {
 	}
 
 	org_regain = 0.1
-	reinforcement_bonus = 0.15
+	#reinforcement_bonus = 0.15
 	land_organisation = 0.05
 
 	icon = 10
@@ -4392,7 +4278,7 @@ general_winter = {
 	territorial_pride = 0.05
 	#defence_modifier = 0.6
 	#offence_modifier = 0.2
-	reinforcement_bonus = 0.5
+	#reinforcement_bonus = 0.5
 
 	icon = 8
 }
@@ -7110,7 +6996,7 @@ Great_Patriotic_War_achievement = {
 		2041 = { controller = { faction = axis } } #Warszawa
 	}
 
-	reinforcement_bonus = 2.0
+	#reinforcement_bonus = 2.0
 	unit_recruitment_time = -0.10
 	global_manpower_modifier = 0.25
 
@@ -7193,8 +7079,9 @@ Sevastopol_loss = {
 		}
 	}
 
-	#national_unity = -0.02
-	unit_recruitment_time = -0.05
+	territorial_pride = 0.01
+	national_unity = -0.01
+	#unit_recruitment_time = -0.05
 
 	icon = 8
 }
@@ -7220,8 +7107,9 @@ Stalingrad_loss = {
 		}
 	}
 
+	territorial_pride = 0.01
 	national_unity = -0.02
-	unit_recruitment_time = -0.05
+	#unit_recruitment_time = -0.05
 
 	icon = 8
 }
@@ -7246,8 +7134,9 @@ Kharkov_loss = {
 		}
 	}
 
-	#national_unity = -0.02
-	unit_recruitment_time = -0.05
+	territorial_pride = 0.01
+	national_unity = -0.01
+	#unit_recruitment_time = -0.05
 	icon = 8
 }
 # 2170 - Kursk
@@ -7268,8 +7157,9 @@ Kursk_loss = {
 		}
 	}
 
-	#national_unity = -0.02
-	unit_recruitment_time = -0.05
+	territorial_pride = 0.01
+	national_unity = -0.01
+	#unit_recruitment_time = -0.05
 
 	icon = 8
 }
@@ -7304,8 +7194,9 @@ Leningrad_loss = {
 		}
 	}
 
+	territorial_pride = 0.025
 	national_unity = -0.02
-	unit_recruitment_time = -0.10
+	#unit_recruitment_time = -0.10
 
 	icon = 8
 }
@@ -7327,8 +7218,9 @@ Arhangel_loss = {
 		}
 	}
 
-	#national_unity = -0.02
-	unit_recruitment_time = -0.05
+	territorial_pride = 0.01
+	national_unity = -0.01
+	#unit_recruitment_time = -0.05
 
 	icon = 8
 }
@@ -7350,8 +7242,9 @@ Murmansk_loss = {
 		}
 	}
 
+	territorial_pride = 0.01
 	global_supplies = -0.02
-	unit_recruitment_time = -0.02
+	#unit_recruitment_time = -0.02
 
 	icon = 8
 }
@@ -7379,8 +7272,9 @@ Vladivostock_loss = {
 		}
 	}
 
-	#national_unity = -0.02
-	unit_recruitment_time = -0.05
+	territorial_pride = 0.01
+	national_unity = -0.01
+	#unit_recruitment_time = -0.05
 
 	icon = 8
 }
@@ -16830,7 +16724,7 @@ ballbearings_bonus = {
 			}
 		}
 	}
-	unit_repair = 0.20		# valuable resource!
+	unit_repair = 0.05		# valuable resource!
 	icon = 75
 }
 prefab_ship_facilities_bonus = {
@@ -38784,5 +38678,326 @@ The_Chiang_Kaishek_effect = {
 	territorial_pride = 0.075
 	national_unity = 0.03
 }
+
+#training_advanced_from_spec = {
+#	potential = {
+#		#ai = yes
+#		#tag = GER
+#	}
+#	trigger = {
+#		or = {
+#			and = {
+#				tag = GER
+#				year = 1942
+#				not = {
+#					1409 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = FIN
+#				year = 1942
+#				not = {
+#					33 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					698 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = JAP
+#				or = {
+#					and = {
+#						year = 1943
+#						not = {
+#							controls = 5825
+#						}
+#					}
+#					and = {
+#						year = 1938
+#						not = {
+#							controls = 4979
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = ENG
+#				year = 1939
+#				not = {
+#					2613 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					5586 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					#controls = 6119
+#					#controls = 14187
+#				}
+#			}
+#			and = {
+#				tag = USA
+#				year = 1944
+#				not = {
+#					10664 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					6119 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					14187 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#				}
+#			}
+#		}
+#	}
+#
+#	unit_recruitment_time = -0.1
+#	unit_repair = 0.3
+#	officer_recruitment = -0.075
+#	global_money = 0.075
+#	unit_start_experience = -10
+#	combat_movement_speed = -0.05
+#	land_organisation = -0.05
+#	air_organisation = -0.05
+#	naval_organisation = -0.05
+#}
+#
+#training_basic_from_advanced = {
+#	potential = {
+#		#ai = yes
+#		#tag = GER
+#	}
+#	trigger = {
+#		or = {
+#			and = {
+#				or = {
+#					tag = GER
+#					tag = HUN
+#					tag = ROM
+#					tag = SLO
+#				}
+#				year = 1943
+#				not = {
+#					1409 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					2170 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = FIN
+#				year = 1943
+#				not = {
+#					400 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					780 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = JAP
+#				or = {
+#					and = {
+#						year = 1944
+#						not = {
+#							controls = 10642
+#							controls = 6142
+#						}
+#					}
+#					and = {
+#						year = 1939
+#						not = {
+#							controls = 4837
+#							controls = 7261
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = ITA
+#				year = 1942
+#				not = {
+#					5445 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					5134 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = AST
+#				year = 1943
+#				not = {
+#					7923 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					7950 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#				}
+#			}
+#		}
+#	}
+#
+#	unit_recruitment_time = -0.1
+#	global_money = 0.15
+#	unit_repair = 0.3
+#	officer_recruitment = -0.075
+#	unit_start_experience = -10
+#	combat_movement_speed = -0.075
+#	land_organisation = -0.05
+#	air_organisation = -0.05
+#	naval_organisation = -0.05
+#}
+#
+#training_minimal_from_basic = {
+#	potential = {
+#		#ai = yes
+#		#tag = GER
+#	}
+#	trigger = {
+#		or = {
+#			and = {
+#				or = {
+#					tag = GER
+#					tag = HUN
+#					tag = ROM
+#					tag = SLO
+#				}
+#				year = 1943
+#				not = {
+#					3309 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					1442 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = FIN
+#				year = 1942
+#				not = {
+#					696 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					504 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = JAP
+#				or = {
+#					and = {
+#						year = 1943
+#						not = {
+#							controls = 5825
+#							controls = 10669
+#							controls = 10664
+#						}
+#					}
+#					and = {
+#						year = 1940
+#						not = {
+#							or = {
+#								controls = 5020
+#								controls = 7139
+#							}
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = ITA
+#				year = 1941
+#				not = {
+#					5484 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = AST
+#				year = 1943
+#				not = {
+#					6596 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					6612 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#				}
+#			}
+#		}
+#	}
+#
+#	unit_recruitment_time = -0.1
+#	global_money = 0.1
+#	unit_repair = 0.2
+#	officer_recruitment = -0.25
+#	unit_start_experience = -10
+#	#combat_movement_speed = -0.075
+#	land_organisation = -0.2
+#	air_organisation = -0.2
+#	naval_organisation = -0.2
+#}
+
 
 ###EOF###
