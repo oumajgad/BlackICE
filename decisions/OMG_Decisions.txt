@@ -1,5 +1,137 @@
 diplomatic_decisions = {
 
+	training_laws_check_flag_decision = {
+		potential = {
+			tag = OMG
+			not = {
+				has_country_modifier = training_laws_check_timer
+			}
+		}
+		allow = {
+			year = 1940
+		}
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						or = {
+							tag = GER
+							tag = HUN
+							tag = ROM
+							tag = SLO
+						}
+						ai = yes
+						year = 1942
+						not = {
+							3309 = {
+								controller = {
+									faction = axis
+								}
+							}
+							1442 = {
+								controller = {
+									faction = axis
+								}
+							}
+						}
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = FIN
+						year = 1942
+						not = {
+							696 = {
+								controller = {
+									faction = axis
+								}
+							}
+							504 = {
+								controller = {
+									faction = axis
+								}
+							}
+						}
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = JAP
+						or = {
+							and = {
+								year = 1943
+								not = {
+									controls = 5825
+									controls = 10669
+									controls = 10664
+								}
+							}
+							and = {
+								year = 1940
+								not = {
+									or = {
+										controls = 5020
+										controls = 7139
+									}
+								}
+							}
+						}
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = ITA
+						year = 1941
+						not = {
+							5484 = {
+								controller = {
+									faction = axis
+								}
+							}
+						}
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = AST
+						year = 1942
+						not = {
+							6596 = {
+								controller = {
+									faction = allies
+								}
+							}
+							6612 = {
+								controller = {
+									faction = allies
+								}
+							}
+						}
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			add_country_modifier = {
+				name = training_laws_check_timer
+				duration = 180
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
 	spanish_1936_riots = {
 		potential = {
 			tag = OMG
