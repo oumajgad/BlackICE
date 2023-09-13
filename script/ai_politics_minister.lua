@@ -73,7 +73,6 @@ defaultLandTraining["NJG"] = 27
 defaultLandTraining["PRK"] = 27
 defaultLandTraining["SIK"] = 27
 defaultLandTraining["SOM"] = 27
-defaultLandTraining["SOV"] = 27
 defaultLandTraining["SUD"] = 27
 defaultLandTraining["SUR"] = 27
 defaultLandTraining["TAN"] = 27
@@ -123,6 +122,7 @@ defaultLandTraining["SAU"] = 28
 defaultLandTraining["SER"] = 28
 defaultLandTraining["SIA"] = 28
 defaultLandTraining["SLV"] = 28
+defaultLandTraining["SOV"] = 28
 defaultLandTraining["SPR"] = 28
 defaultLandTraining["SYR"] = 28
 defaultLandTraining["UKR"] = 28
@@ -151,6 +151,7 @@ defaultLandTraining["INO"] = 29
 defaultLandTraining["IRE"] = 29
 defaultLandTraining["IRQ"] = 29
 defaultLandTraining["ISR"] = 29
+defaultLandTraining["ITA"] = 29
 defaultLandTraining["LUX"] = 29
 defaultLandTraining["MAN"] = 29
 defaultLandTraining["MEN"] = 29
@@ -175,7 +176,6 @@ defaultLandTraining["DFR"] = 30
 defaultLandTraining["ENG"] = 30
 defaultLandTraining["FIN"] = 30
 defaultLandTraining["GER"] = 30
-defaultLandTraining["JAP"] = 30
 defaultLandTraining["JAP"] = 30
 defaultLandTraining["NEP"] = 30
 defaultLandTraining["SCH"] = 30
@@ -815,8 +815,8 @@ function TrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 		local date = CCurrentGameState.GetCurrentDate():GetTotalDays()
 		local diff = date - want_land_training_law_change_date
 
-		local TRAINING_LAW_CHANGE_HYSTERESIS = 10	-- need at least X days of fullfilling trigger conditions
-		local TRAINING_LAW_IC_TRIGGER_PERCENT = 0.1
+		local TRAINING_LAW_CHANGE_HYSTERESIS = 60	-- need at least X days of fullfilling trigger conditions
+		local TRAINING_LAW_IC_TRIGGER_PERCENT = 0.175
 		-- we are spending alot on reinforcement -> consider lowering training laws
 		if reinforcementsPercent >= TRAINING_LAW_IC_TRIGGER_PERCENT then
 			if	-- validate the law change variable
