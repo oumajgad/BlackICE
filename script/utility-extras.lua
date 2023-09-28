@@ -1,8 +1,3 @@
-G_TechsIcModValues = ReadModifierArraysSafe("TechsIcModValues")
-G_TechsIcEffValues = ReadModifierArraysSafe("TechsIcEffValues")
-G_TechsResEffValues = ReadModifierArraysSafe("TechsResEffValues")
-G_TechsSuppThrouValues = ReadModifierArraysSafe("TechsSuppThrouValues")
-
 -- So y'all can use the GitHub repo directly as a game mod again.
 function ReadModifierArraysSafe(arrayName)
     local versionendPath = "tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\" -- Release version path
@@ -22,6 +17,13 @@ function ReadModifierArraysSafe(arrayName)
     ret = {}    -- Init emtpy table so code doesn't error
     return ret
 end
+
+
+
+G_TechsIcModValues = ReadModifierArraysSafe("TechsIcModValues")
+G_TechsIcEffValues = ReadModifierArraysSafe("TechsIcEffValues")
+G_TechsResEffValues = ReadModifierArraysSafe("TechsResEffValues")
+G_TechsSuppThrouValues = ReadModifierArraysSafe("TechsSuppThrouValues")
 
 
 --- Minister tech decay doesn't work because a "+=" is actually a "=" in the source. This fixes it.
