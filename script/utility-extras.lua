@@ -1,9 +1,28 @@
-G_TechsIcModValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsIcModValues.txt", "=")
-G_TechsIcEffValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsIcEffValues.txt", "=")
-G_TechsResEffValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsResEffValues.txt", "=")
-G_TechsSuppThrouValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsSuppThrouValues.txt", "=")
--- Utils.INSPECT_TABLE(G_TechsIcEffValues)
--- Utils.INSPECT_TABLE(G_TechsResEffValues)
+G_TechsIcModValues = ReadModifierArraysSafe("TechsIcModValues")
+G_TechsIcEffValues = ReadModifierArraysSafe("TechsIcEffValues")
+G_TechsResEffValues = ReadModifierArraysSafe("TechsResEffValues")
+G_TechsSuppThrouValues = ReadModifierArraysSafe("TechsSuppThrouValues")
+
+-- So y'all can use the GitHub repo directly as a game mod again.
+function ReadModifierArraysSafe(arrayName)
+    local versionendPath = "tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\" -- Release version path
+    local fromGithubPath = "tfh\\mod\\BlackICE GitHub\\tools\\TechFileForLua\\"
+
+    local ret = ReadFileAsArray(versionendPath .. arrayName .. ".txt", "=")
+    if ret ~= nil then
+        return ret
+    end
+
+    ret = ReadFileAsArray(fromGithubPath .. arrayName .. ".txt", "=")
+    if ret ~= nil then
+        return ret
+    end
+
+    Utils.LUA_DEBUGOUT("Failed to load " .. arrayName)
+    ret = {}    -- Init emtpy table so code doesn't error
+    return ret
+end
+
 
 --- Minister tech decay doesn't work because a "+=" is actually a "=" in the source. This fixes it.
 -- function PatchMinisterTechDecay()

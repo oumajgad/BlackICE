@@ -15,6 +15,7 @@ function ReadFileAsArray(path, delimiter)
         return ret
     else
         Utils.LUA_DEBUGOUT(err)
+        return nil
     end
 end
 
