@@ -2918,7 +2918,7 @@ function BuildPlayersRequestedBuilding(minister, variables, province, provinceId
 		-- Utils.LUA_DEBUGOUT("cActualCount: " .. tostring(cActualCount))
 		-- Utils.LUA_DEBUGOUT("cActualPlanned: " .. tostring(cActualPlanned))
 		if variables:GetVariable(CString("zDsafe_requestedBuilding" .. nameInVariables .. "_" .. provinceId .. "_queuedThisPeriod")):Get() ~= 1 and
-		cActualCount + cActualPlanned <= 10 then
+		cActualCount + cActualPlanned < 10 then
 			-- Utils.LUA_DEBUGOUT("BUILD IT!")
 			local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, cActualBuilding, provinceId, 1 )
 			minister:GetOwnerAI():Post( constructCommand )
