@@ -209,12 +209,6 @@ function OMGHandler(minister)
 	CheckNegativeTradeCounts()
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CheckNegativeTradeCounts")
 
-	if G_CollectStats then
-		-- t = os.clock()
-		CollectStatistics()
-		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CollectStatistics")
-	end
-
 	-- t = os.clock()
 	Stats.CollectPlayerStatistics()
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - Stats.CollectPlayerStatistics")

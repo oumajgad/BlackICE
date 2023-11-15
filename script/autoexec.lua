@@ -99,7 +99,6 @@ require('gui-auxilliary')
 require('utility-extras')
 
 -- Statistics
-G_CollectStats = true
 require('stats')
 
 -- Commented to prevent security patch bugs
