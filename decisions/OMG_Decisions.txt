@@ -1,5 +1,137 @@
 diplomatic_decisions = {
 
+	training_laws_check_flag_decision = {
+		potential = {
+			tag = OMG
+			not = {
+				has_country_modifier = training_laws_check_timer
+			}
+		}
+		allow = {
+			year = 1940
+		}
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						or = {
+							tag = GER
+							tag = HUN
+							tag = ROM
+							tag = SLO
+						}
+						ai = yes
+						year = 1942
+						not = {
+							3309 = {
+								controller = {
+									faction = axis
+								}
+							}
+							1442 = {
+								controller = {
+									faction = axis
+								}
+							}
+						}
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = FIN
+						year = 1942
+						not = {
+							696 = {
+								controller = {
+									faction = axis
+								}
+							}
+							504 = {
+								controller = {
+									faction = axis
+								}
+							}
+						}
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = JAP
+						or = {
+							and = {
+								year = 1943
+								not = {
+									controls = 5825
+									controls = 10669
+									controls = 10664
+								}
+							}
+							and = {
+								year = 1940
+								not = {
+									or = {
+										controls = 5020
+										controls = 7139
+									}
+								}
+							}
+						}
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = ITA
+						year = 1941
+						not = {
+							5484 = {
+								controller = {
+									faction = axis
+								}
+							}
+						}
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = AST
+						year = 1942
+						not = {
+							6596 = {
+								controller = {
+									faction = allies
+								}
+							}
+							6612 = {
+								controller = {
+									faction = allies
+								}
+							}
+						}
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			add_country_modifier = {
+				name = training_laws_check_timer
+				duration = 180
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
 	spanish_1936_riots = {
 		potential = {
 			tag = OMG
@@ -1014,488 +1146,6 @@ diplomatic_decisions = {
 		}
 	}
 
-
-
-	### Germany economical crisis ###
-	####################
-	### 1936 IC SPAM ###
-	####################
-#	German_economical_crisis_I_low = {
-#		potential = {
-#			tag = OMG
-#			GER = {
-#
-#				not = {
-#					has_country_flag = German_economical_crisis_I
-#					has_country_modifier = German_economical_crisis_I_low
-#					has_country_flag = German_economical_crisis_I_low
-#				}
-#			}
-#		}
-#		allow = {
-#			GER = {
-#				total_ic = 400
-#
-#				not = {
-#					total_ic = 435
-#				}
-#			}
-#			year = 1936
-#
-#			not = {
-#				year = 1937
-#				GER = {
-#					controls = 2613
-#				}
-#			}
-#		}
-#		effect = {
-#			GER = {
-#				country_event = 85000
-#				set_country_flag = German_economical_crisis_I
-#				set_country_flag = German_economical_crisis_I_low
-#				add_country_modifier = {
-#					name = "German_economical_crisis_I_low"
-#					duration = -1
-#				}
-#			}
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	German_economical_crisis_I_medium = {
-#		potential = {
-#			tag = OMG
-#			GER = {
-#
-#				not = {
-#					has_country_flag = German_economical_crisis_I
-#					has_country_modifier = German_economical_crisis_I_medium
-#					has_country_flag = German_economical_crisis_I_medium
-#				}
-#			}
-#		}
-#		allow = {
-#			GER = {
-#				total_ic = 435
-#
-#				not = {
-#					total_ic = 475
-#				}
-#			}
-#			year = 1936
-#
-#			not = {
-#				year = 1937
-#				GER = {
-#					controls = 2613
-#				}
-#			}
-#		}
-#		effect = {
-#			GER = {
-#				country_event = 85000
-#				set_country_flag = German_economical_crisis_I
-#				set_country_flag = German_economical_crisis_I_medium
-#				add_country_modifier = {
-#					name = "German_economical_crisis_I_medium"
-#					duration = -1
-#				}
-#				remove_country_modifier = German_economical_crisis_I_low
-#			}
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	German_economical_crisis_I_high = {
-#		potential = {
-#			tag = OMG
-#			GER = {
-#
-#				not = {
-#					has_country_flag = German_economical_crisis_I
-#					has_country_modifier = German_economical_crisis_I_high
-#					has_country_flag = German_economical_crisis_I_high
-#				}
-#			}
-#		}
-#		allow = {
-#			GER = {
-#				total_ic = 475
-#			}
-#			year = 1936
-#
-#			not = {
-#				year = 1938
-#				GER = {
-#					controls = 2613
-#				}
-#			}
-#		}
-#		effect = {
-#			GER = {
-#				country_event = 85000
-#				set_country_flag = German_economical_crisis_I
-#				set_country_flag = German_economical_crisis_I_high
-#				add_country_modifier = {
-#					name = "German_economical_crisis_I_high"
-#					duration = -1
-#				}
-#				remove_country_modifier = German_economical_crisis_I_medium
-#			}
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	####################
-#	### 1937 IC SPAM ###
-#	####################
-#	German_economical_crisis_II_low = {
-#		potential = {
-#			tag = OMG
-#			GER = {
-#
-#				not = {
-#					has_country_flag = German_economical_crisis_II
-#					has_country_modifier = German_economical_crisis_II_low
-#					has_country_flag = German_economical_crisis_II_low
-#				}
-#			}
-#		}
-#		allow = {
-#			GER = {
-#				total_ic = 480
-#
-#				not = {
-#					total_ic = 550
-#				}
-#			}
-#
-#			not = {
-#				year = 1938
-#				GER = {
-#					controls = 2613
-#				}
-#			}
-#		}
-#		effect = {
-#			GER = {
-#				country_event = 85001
-#				set_country_flag = German_economical_crisis_II_low
-#				set_country_flag = German_economical_crisis_II
-#				add_country_modifier = {
-#					name = "German_economical_crisis_II_low"
-#					duration = -1
-#				}
-#			}
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	German_economical_crisis_II_medium = {
-#		potential = {
-#			tag = OMG
-#			GER = {
-#
-#				not = {
-#					has_country_flag = German_economical_crisis_II
-#					has_country_modifier = German_economical_crisis_II_medium
-#					has_country_flag = German_economical_crisis_II_medium
-#				}
-#			}
-#		}
-#		allow = {
-#			GER = {
-#				total_ic = 550
-#
-#				not = {
-#					total_ic = 750
-#				}
-#			}
-#
-#			not = {
-#				year = 1938
-#				GER = {
-#					controls = 2613
-#				}
-#			}
-#		}
-#		effect = {
-#			GER = {
-#				country_event = 85001
-#				set_country_flag = German_economical_crisis_II
-#				set_country_flag = German_economical_crisis_II_medium
-#				add_country_modifier = {
-#					name = "German_economical_crisis_II_medium"
-#					duration = -1
-#				}
-#				remove_country_modifier = German_economical_crisis_II_low
-#			}
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	German_economical_crisis_II_high = {
-#		potential = {
-#			tag = OMG
-#			GER = {
-#
-#				not = {
-#					has_country_flag = German_economical_crisis_II
-#					has_country_modifier = German_economical_crisis_II_high
-#					has_country_flag = German_economical_crisis_II_high
-#				}
-#			}
-#		}
-#		allow = {
-#			GER = {
-#				total_ic = 750
-#			}
-#
-#			not = {
-#				year = 1940
-#				GER = {
-#					controls = 2613
-#				}
-#			}
-#		}
-#		effect = {
-#			GER = {
-#				country_event = 85001
-#				set_country_flag = German_economical_crisis_II
-#				set_country_flag = German_economical_crisis_II_high
-#				add_country_modifier = {
-#					name = "German_economical_crisis_II_high"
-#					duration = -1
-#				}
-#				remove_country_modifier = German_economical_crisis_II_medium
-#			}
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	####################
-#	### 1938 IC SPAM ###
-#	####################
-#	German_economical_crisis_III_low = {
-#		potential = {
-#			tag = OMG
-#			GER = {
-#
-#				not = {
-#					has_country_flag = German_economical_crisis_III
-#					has_country_modifier = German_economical_crisis_III_low
-#					has_country_flag = German_economical_crisis_III_low
-#				}
-#			}
-#		}
-#		allow = {
-#			GER = {
-#				total_ic = 650
-#
-#				not = {
-#					total_ic = 700
-#				}
-#			}
-#
-#			not = {
-#				year = 1940
-#				GER = {
-#					controls = 2613
-#				}
-#			}
-#		}
-#		effect = {
-#			GER = {
-#				country_event = 85002
-#				set_country_flag = German_economical_crisis_III_low
-#				set_country_flag = German_economical_crisis_III
-#				add_country_modifier = {
-#					name = "German_economical_crisis_III_low"
-#					duration = -1
-#				}
-#			}
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	German_economical_crisis_III_medium = {
-#		potential = {
-#			tag = OMG
-#			GER = {
-#
-#				not = {
-#					has_country_flag = German_economical_crisis_III
-#					has_country_modifier = German_economical_crisis_III_medium
-#					has_country_flag = German_economical_crisis_III_medium
-#				}
-#			}
-#		}
-#		allow = {
-#			GER = {
-#				total_ic = 700
-#
-#				not = {
-#					total_ic = 850
-#				}
-#			}
-#
-#			not = {
-#				year = 1940
-#				GER = {
-#					controls = 2613
-#				}
-#			}
-#		}
-#		effect = {
-#			GER = {
-#				country_event = 85002
-#				set_country_flag = German_economical_crisis_III
-#				set_country_flag = German_economical_crisis_III_medium
-#				add_country_modifier = {
-#					name = "German_economical_crisis_III_medium"
-#					duration = -1
-#				}
-#				remove_country_modifier = German_economical_crisis_III_low
-#			}
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	German_economical_crisis_III_high = {
-#		potential = {
-#			tag = OMG
-#			GER = {
-#
-#				not = {
-#					has_country_flag = German_economical_crisis_III
-#					has_country_modifier = German_economical_crisis_III_high
-#					has_country_flag = German_economical_crisis_III_high
-#				}
-#			}
-#		}
-#		allow = {
-#			GER = {
-#				total_ic = 850
-#			}
-#
-#			not = {
-#				GER = {
-#					controls = 2613
-#				}
-#			}
-#
-#			not = {
-#				year = 1940
-#			}
-#		}
-#		effect = {
-#			GER = {
-#				country_event = 85002
-#				set_country_flag = German_economical_crisis_III
-#				set_country_flag = German_economical_crisis_III_high
-#				add_country_modifier = {
-#					name = "German_economical_crisis_III_high"
-#					duration = -1
-#				}
-#				remove_country_modifier = German_economical_crisis_III_medium
-#			}
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	###############################
-#	### Penalties removal event ###
-#	###############################
-#	German_economical_crisis_ends = {
-#		potential = {
-#			tag = OMG
-#			GER = {
-#				or = {
-#					has_country_flag = German_economical_crisis_I
-#					has_country_flag = German_economical_crisis_II
-#					has_country_flag = German_economical_crisis_III
-#
-#					not = {
-#						has_country_flag = German_economical_crisis_ends
-#					}
-#				}
-#			}
-#		}
-#		allow = {
-#			GER = {
-#				or = {
-#					and = {
-#						controls = 1409
-#						controls = 782
-#						controls = 2857
-#					}
-#					and = {
-#						controls = 1964
-#						controls = 2613
-#					}
-#				}
-#			}
-#		}
-#		effect = {
-#			GER = {
-#				set_country_flag = German_economical_crisis_ends
-#				remove_country_modifier = German_economical_crisis_I_low
-#				remove_country_modifier = German_economical_crisis_I_medium
-#				remove_country_modifier = German_economical_crisis_I_high
-#				remove_country_modifier = German_economical_crisis_II_low
-#				remove_country_modifier = German_economical_crisis_II_medium
-#				remove_country_modifier = German_economical_crisis_II_high
-#				remove_country_modifier = German_economical_crisis_III_low
-#				remove_country_modifier = German_economical_crisis_III_medium
-#				remove_country_modifier = German_economical_crisis_III_high
-#				country_event = 85003
-#			}
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-	#naval_game_balance_tech_YES = {
-	#
-	#	potential = {
-	#		tag = OMG
-	#
-	#	}
-	#	allow = {
-	#		date = 1936.1.1
-	#		not = { has_global_flag = naval_game_balance_tech_YES }
-	#		not = { has_country_modifier = naval_game_balance_tech_YES_cooldown }
-	#	}
-	#
-	#	effect = {
-	#		OMG = { country_event = 650010 }
-	#	}
-	#}
-	#naval_game_balance_tech_NO = {
-	#
-	#	potential = {
-	#		tag = OMG
-	#	}
-	#	allow = {
-	#		date = 1936.1.1
-	#		not = { has_global_flag = naval_game_balance_tech_NO }
-	#		not = { has_country_modifier = naval_game_balance_tech_NO_cooldown }
-	#	}
-	#
-	#	effect = {
-	#		OMG = { country_event = 650011 }
-	#	}
-	#}
 	game_balance_tech_stage_1a_decision = {
 		potential = {
 			tag = OMG
@@ -1684,26 +1334,7 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-	##################################################################
-	################### TRAINING LAWS ################################
-	##################################################################
-	units_training = {
-		potential = {
-			tag = OMG
-		}
-		allow = {
-			#any_country = {
-			#	has_country_flag = air_minimal_training_tech_flag
-			#	not = { air_units_training_laws = minimal_training_I }
-			#}
-		}
-		effect = {
-			country_event = 41306
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
+
 	fake_air_base_decision = {
 		potential = {
 			tag = OMG
@@ -3596,6 +3227,223 @@ diplomatic_decisions = {
 			add_country_modifier = {
 				name = prox_fuze_timer
 				duration = 30
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	YUG_NU_HIT = {
+		potential = {
+			tag = YUG
+			ai = yes
+			ITA = {
+				ai = yes
+			}
+			GER = {
+				ai = yes
+			}
+			not = {
+				has_country_flag = YUG_NU_HIT
+			}
+		}
+		allow = {
+			GRE = {
+				war_with = ITA
+			}
+		}
+		effect = {
+			national_unity = -30
+			set_country_flag = YUG_NU_HIT
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	education_investment_law_flags = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			not = {
+				has_country_modifier = education_investment_law_flags_timer
+			}
+		}
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						education_investment_law = medium_large_education_investment
+						not = {
+							has_country_flag = medium_large_education_investment_flag
+							education_investment_law = minimal_education_investment
+							education_investment_law = average_education_investment
+						}
+					}
+					set_country_flag = medium_large_education_investment_flag
+					clr_country_flag = big_education_investment_flag
+				}
+				any_country = {
+					limit = {
+						education_investment_law = big_education_investment
+						not = {
+							has_country_flag = big_education_investment_flag
+							education_investment_law = minimal_education_investment
+							education_investment_law = average_education_investment
+						}
+					}
+					set_country_flag = big_education_investment_flag
+					clr_country_flag = medium_large_education_investment_flag
+				}
+				any_country = {
+					limit = {
+						or = {
+							education_investment_law = minimal_education_investment
+							education_investment_law = average_education_investment
+						}
+					}
+					clr_country_flag = big_education_investment_flag
+					clr_country_flag = medium_large_education_investment_flag
+				}
+				any_country = {
+					limit = {
+						or = {
+							minister_of_science = 263
+							minister_of_science = 508031
+							minister_of_science = 1252
+						}
+						not = {
+							has_country_flag = jet_specialist_flag
+						}
+					}
+					set_country_flag = jet_specialist_flag
+				}
+				any_country = {
+					limit = {
+						has_country_flag = jet_specialist_flag
+						not = {
+							or = {
+								minister_of_science = 263
+								minister_of_science = 508031
+								minister_of_science = 1252
+							}
+						}
+					}
+					clr_country_flag = jet_specialist_flag
+				}
+				any_country = {
+					limit = {
+						minister_of_science = 261
+						not = {
+							has_country_flag = rocket_specialist_flag
+						}
+					}
+					set_country_flag = rocket_specialist_flag
+				}
+				any_country = {
+					limit = {
+						has_country_flag = rocket_specialist_flag
+						not = {
+							minister_of_science = 261
+						}
+					}
+					clr_country_flag = rocket_specialist_flag
+				}
+				any_country = {
+					limit = {
+						or = {
+							minister_of_science = 5241
+							minister_of_science = 1248
+						}
+						not = {
+							has_country_flag = electronics_specialist_flag
+						}
+					}
+					set_country_flag = electronics_specialist_flag
+				}
+				any_country = {
+					limit = {
+						has_country_flag = electronics_specialist_flag
+						not = {
+							minister_of_science = 5241
+							minister_of_science = 1248
+						}
+					}
+					clr_country_flag = electronics_specialist_flag
+				}
+				any_country = {
+					limit = {
+						or = {
+							minister_of_science = 1253
+							minister_of_science = 13142
+						}
+						not = {
+							has_country_flag = decryption_specialist_flag
+						}
+					}
+					set_country_flag = decryption_specialist_flag
+				}
+				any_country = {
+					limit = {
+						has_country_flag = decryption_specialist_flag
+						not = {
+							minister_of_science = 1253
+							minister_of_science = 13142
+						}
+					}
+					clr_country_flag = decryption_specialist_flag
+				}
+				any_country = {
+					limit = {
+						or = {
+							minister_of_science = 262
+							minister_of_science = 6276
+						}
+						not = {
+							has_country_flag = submarine_specialist_flag
+						}
+					}
+					set_country_flag = submarine_specialist_flag
+				}
+				any_country = {
+					limit = {
+						has_country_flag = submarine_specialist_flag
+						not = {
+							minister_of_science = 262
+							minister_of_science = 6276
+						}
+					}
+					clr_country_flag = submarine_specialist_flag
+				}
+				any_country = {
+					limit = {
+						or = {
+							minister_of_science = 508030
+							minister_of_science = 1246
+							minister_of_science = 6273
+						}
+						not = {
+							has_country_flag = destroyer_specialist_flag
+						}
+					}
+					set_country_flag = destroyer_specialist_flag
+				}
+				any_country = {
+					limit = {
+						has_country_flag = destroyer_specialist_flag
+						not = {
+							minister_of_science = 508030
+							minister_of_science = 1246
+							minister_of_science = 6273
+						}
+					}
+					clr_country_flag = destroyer_specialist_flag
+				}
+				
+				add_country_modifier = {
+					name = "education_investment_law_flags_timer"
+					duration = 7
+				}
 			}
 		}
 		ai_will_do = {

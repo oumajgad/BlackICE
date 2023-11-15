@@ -290,20 +290,9 @@ function ForeignMinister_CallAlly()
 
 			if loTargetTag:IsValid() and loDiploStatus:HasWar() then
 				local loWar = loDiploStatus:GetWar()
-
 				if loWar:IsLimited() then
-					-- do we want to call in help?
-					if loWar:GetCurrentRunningTimeInMonths() > 5 then
-						if ForeignMinisterData.ministerCountry:CalcDesperation():Get() > 0.4 then --strengthFactor < 1.4 then
-							-- Call in all potential allies
-							for k, v in pairs(laAllies) do
-								if not(v.AllyCountry:GetRelation(loTargetTag):HasWar()) then
-									Support.ExecuteCallAlly(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, v, loTargetTag)
-								end
-							end
-						end
-					end
-				else -- not-limited, call in any faction members not there:
+					-- do nothing
+				else
 					-- Call in all potential allies
 					for k, v in pairs(laAllies) do
 						if not(v.AllyCountry:GetRelation(loTargetTag):HasWar()) then

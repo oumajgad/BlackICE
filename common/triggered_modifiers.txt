@@ -21,10 +21,10 @@ Stalin_HOG_effect_AI = {
 		ai = yes
 	}
 
-	peace_consumer_goods_demand = -0.8
-	land_build_speed = 0.65
-	tank_build_speed = 0.65
-	air_build_speed = 0.65
+	peace_consumer_goods_demand = -1.0
+	#land_build_speed = 0.5
+	#tank_build_speed = 0.5
+	#air_build_speed = 0.5
 
 	icon = 84
 }
@@ -35,101 +35,101 @@ SOV_AI_BALANCE = {
 	}
 	trigger = {}
 
-	unit_repair = 0.5
+	#unit_repair = 0.5
 	supply_consumption = -0.5
 	supply_throughput = 1
 
 	icon = 5
 }
-SOV_AI_WAR = {
+SOV_AI_TWEAK = {
 	potential = {
 		tag = SOV
 		ai = yes
 	}
 	trigger = {
-		war_with = GER
-		not = {
-			year = 1942
+		GER = {
+			ai = yes
 		}
-	}
-
-	land_build_speed = -0.35
-	tank_build_speed = -0.35
-	air_build_speed = -0.35
-
-	icon = 5
-}
-
-SOV_AI_WAR_II = {
-	potential = {
-		tag = SOV
-		ai = yes
-	}
-	trigger = {
-		war_with = GER
-		year = 1942
-	}
-
-	land_build_speed = -0.5
-	tank_build_speed = -0.5
-	air_build_speed = -0.2
-
-	icon = 5
-}
-SOV_AI_IC_EFF_NORMAL = {
-	potential = {
-		tag = SOV
-		ai = yes
-	}
-	trigger = {
 		or = {
-			has_country_modifier = HARD_AI
-		}
-		not = {
-			year = 1939
+			not = {
+				exists = EST
+				exists = LIT
+				exists = EST
+				war_with = GER
+			}
+			and = {
+				war_with = GER
+				total_amount_of_brigades = 5500
+			}
 		}
 	}
 
-	industrial_efficiency = 0.275
+	land_build_speed = 0.5
+	tank_build_speed = 0.5
+	air_build_speed = 0.5
 
 	icon = 5
 }
+#SOV_AI_WAR_I = {
+#	potential = {
+#		tag = SOV
+#		ai = yes
+#	}
+#	trigger = {
+#		war_with = GER
+#		GER = {
+#			ai = no
+#		}
+#		not = {
+#			year = 1942
+#		}
+#	}
+#
+#	land_build_speed = -0.25
+#	tank_build_speed = -0.25
+#	air_build_speed = -0.25
+#
+#	icon = 5
+#}
 
-SOV_AI_IC_EFF_HARD = {
-	potential = {
-		tag = SOV
-		ai = yes
-	}
-	trigger = {
-		or = {
-			has_country_modifier = HARD_AI
-		}	
-		not = {
-			year = 1939
-		}
-	}
-
-	industrial_efficiency = 0.2
-
-	icon = 5
-}
-
-SOV_AI_IC_EFF_VHARD = {
-	potential = {
-		tag = SOV
-		ai = yes
-	}
-	trigger = {
-		has_country_modifier = VERY_HARD_AI
-		not = {
-			year = 1939
-		}
-	}
-
-	industrial_efficiency = 0.1
-
-	icon = 5
-}
+#SOV_AI_WAR_II = {
+#	potential = {
+#		tag = SOV
+#		ai = yes
+#	}
+#	trigger = {
+#		war_with = GER
+#		year = 1942
+#		GER = {
+#			ai = no
+#		}
+#	}
+#
+#	land_build_speed = -0.25
+#	tank_build_speed = -0.25
+#	air_build_speed = -0.2
+#
+#	icon = 5
+#}
+#SOV_AI_WAR_III = {
+#	potential = {
+#		tag = SOV
+#		ai = yes
+#	}
+#	trigger = {
+#		war_with = GER
+#		year = 1942
+#		GER = {
+#			ai = yes
+#		}
+#	}
+#
+#	land_build_speed = -0.15
+#	tank_build_speed = -0.15
+#	air_build_speed = -0.15
+#
+#	icon = 5
+#}
 
 ###########################################################
 ###############		 Nat. Focuses 	 	###################
@@ -945,7 +945,7 @@ Nat_focus_science_one = {
 	research_efficiency = 0.04
 	global_leadership_modifier = 0.05
 	global_money = -0.1
-	#industrial_efficiency = -0.015
+	industrial_efficiency = -0.015
 
 	icon = 47
 }
@@ -3220,7 +3220,7 @@ low_trained_army_mass_conscription = {
 	}
 
 	supply_consumption = 0.05
-	reinforcement_bonus = 0.1
+	#reinforcement_bonus = 0.1
 	territorial_pride = 0.075
 	land_build_speed = -0.035
 	tank_build_speed = -0.035
@@ -3244,7 +3244,7 @@ low_trained_army_long_conscription_I = {
 	}
 
 	supply_consumption = 0.075
-	reinforcement_bonus = 0.125
+	#reinforcement_bonus = 0.125
 	territorial_pride = 0.1
 	land_build_speed = -0.05
 	tank_build_speed = -0.05
@@ -3268,7 +3268,7 @@ low_trained_army_long_conscription_II = {
 	}
 
 	supply_consumption = 0.1
-	reinforcement_bonus = 0.165
+	#reinforcement_bonus = 0.165
 	territorial_pride = 0.15
 	land_build_speed = -0.075
 	tank_build_speed = -0.075
@@ -3289,7 +3289,7 @@ basic_trained_army_mass_conscription = {
 	}
 
 	supply_consumption = 0.025
-	reinforcement_bonus = 0.05
+	#reinforcement_bonus = 0.05
 	territorial_pride = 0.04
 	land_build_speed = -0.02
 	tank_build_speed = -0.02
@@ -3316,7 +3316,7 @@ basic_trained_army_long_conscription_I = {
 	}
 
 	supply_consumption = 0.04
-	reinforcement_bonus = 0.06
+	#reinforcement_bonus = 0.06
 	territorial_pride = 0.05
 	land_build_speed = -0.025
 	tank_build_speed = -0.025
@@ -3340,7 +3340,7 @@ basic_trained_army_long_conscription_II = {
 	}
 
 	supply_consumption = 0.05
-	reinforcement_bonus = 0.08
+	#reinforcement_bonus = 0.08
 	territorial_pride = 0.075
 	land_build_speed = -0.04
 	tank_build_speed = -0.04
@@ -3366,7 +3366,7 @@ well_trained_army_long_conscription_I = {
 	}
 
 	supply_consumption = -0.025
-	reinforcement_bonus = 0.05
+	#reinforcement_bonus = 0.05
 	org_regain = 0.025
 
 	icon = 3
@@ -3388,7 +3388,7 @@ well_trained_army_long_conscription_II = {
 	}
 
 	supply_consumption = -0.05
-	reinforcement_bonus = 0.075
+	#reinforcement_bonus = 0.075
 	org_regain = 0.05
 
 	icon = 3
@@ -3413,7 +3413,7 @@ elite_trained_army_long_conscription_I = {
 	}
 
 	supply_consumption = -0.05
-	reinforcement_bonus = -0.075
+	#reinforcement_bonus = -0.075
 	land_build_speed = 0.035
 	tank_build_speed = 0.035
 	org_regain = 0.05
@@ -3437,7 +3437,7 @@ elite_trained_army_long_conscription_II = {
 	}
 
 	supply_consumption = -0.075
-	reinforcement_bonus = -0.125
+	#reinforcement_bonus = -0.125
 	land_build_speed = 0.05
 	tank_build_speed = 0.05
 	org_regain = 0.075
@@ -3445,318 +3445,6 @@ elite_trained_army_long_conscription_II = {
 	icon = 3
 
 }
-
-#low_trained_air_mass_conscription = {
-#	potential = {
-#		#check_variable = { which = "low_trained_air_mass_conscription_variable" value = 4 }
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law_two = massive_conscription
-#			conscription_law_two = emergency_conscription
-#		}
-#		air_units_training_laws = minimal_training_air
-#		check_variable = { which = "low_trained_air_mass_conscription_variable" value = 8 }
-#	}
-#
-#	reinforcement_bonus = 0.05
-#	ruling_party_support = -0.05
-#	global_revolt_risk = 0.25
-#
-#	icon = 7
-#}
-#
-#low_trained_air_long_conscription_I = {
-#	potential = {
-#		#check_variable = { which = "low_trained_air_long_conscription_I_variable" value = 4 }
-#	}
-#	trigger = {
-#		conscription_law_two = extended_conscription
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		air_units_training_laws = minimal_training_air
-#		check_variable = { which = "low_trained_air_long_conscription_I_variable" value = 8 }
-#	}
-#
-#	air_organisation = -0.1
-#	supply_consumption = 0.01
-#	reinforcement_bonus = 0.05
-#	repair_rate = 0.03
-#	global_revolt_risk = 0.5
-#
-#	icon = 7
-#}
-#
-#low_trained_air_long_conscription_II = {
-#	potential = {
-#		#check_variable = { which = "low_trained_air_long_conscription_II_variable" value = 4 }
-#	}
-#	trigger = {
-#		conscription_law_two = massive_conscription
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		air_units_training_laws = minimal_training_air
-#		check_variable = { which = "low_trained_air_long_conscription_II_variable" value = 8 }
-#	}
-#
-#	air_organisation = -0.05
-#	supply_consumption = 0.025
-#	reinforcement_bonus = 0.02
-#	repair_rate = 0.015
-#	global_revolt_risk = 0.75
-#
-#	icon = 7
-#}
-#
-#well_trained_air_long_conscription_I = {
-#	potential = {
-#		#check_variable = { which = "well_trained_air_long_conscription_I_variable" value = 4 }
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		air_units_training_laws = advanced_training_air
-#		not = {
-#			conscription_law_two = volunteer_recruitment
-#		}
-#		check_variable = { which = "well_trained_air_long_conscription_I_variable" value = 8 }
-#	}
-#
-#	supply_consumption = -0.01
-#	reinforcement_bonus = 0.015
-#
-#	icon = 7
-#
-#}
-#well_trained_air_long_conscription_II = {
-#	potential = {
-#		#check_variable = { which = "well_trained_air_long_conscription_II_variable" value = 4 }
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		air_units_training_laws = advanced_training_air
-#		conscription_law_two = volunteer_recruitment
-#		check_variable = { which = "well_trained_air_long_conscription_II_variable" value = 8 }
-#	}
-#
-#	supply_consumption = -0.015
-#	reinforcement_bonus = 0.025
-#
-#	icon = 7
-#
-#}
-#
-#elite_trained_air_long_conscription_I = {
-#	potential = {
-#		#check_variable = { which = "elite_trained_air_long_conscription_I_variable" value = 4 }
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		air_units_training_laws = specialist_training_air
-#		not = {
-#			conscription_law_two = volunteer_recruitment
-#		}
-#		check_variable = { which = "elite_trained_air_long_conscription_I_variable" value = 8 }
-#	}
-#
-#	supply_consumption = -0.015
-#	reinforcement_bonus = 0.035
-#
-#	icon = 7
-#
-#}
-#elite_trained_air_long_conscription_II = {
-#	potential = {
-#		#check_variable = { which = "elite_trained_air_long_conscription_II_variable" value = 4 }
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		air_units_training_laws = specialist_training_air
-#		conscription_law_two = volunteer_recruitment
-#		check_variable = { which = "elite_trained_air_long_conscription_II_variable" value = 8 }
-#	}
-#
-#	supply_consumption = -0.025
-#	reinforcement_bonus = 0.05
-#
-#	icon = 7
-#
-#}
-#low_trained_naval_mass_conscription = {
-#	potential = {
-#		#check_variable = { which = "low_trained_naval_mass_conscription_variable" value = 4 }
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law_two = massive_conscription
-#			conscription_law_two = emergency_conscription
-#		}
-#		naval_units_training_laws = minimal_training_naval
-#		check_variable = { which = "low_trained_naval_mass_conscription_variable" value = 8 }
-#	}
-#
-#	reinforcement_bonus = 0.025
-#	ruling_party_support = -0.025
-#	naval_organisation = -0.075
-#
-#	icon = 50
-#}
-#
-#low_trained_naval_long_conscription_I = {
-#	potential = {
-#		#check_variable = { which = "low_trained_naval_long_conscription_I_variable" value = 4 }
-#	}
-#	trigger = {
-#		conscription_law_two = extended_conscription
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		naval_units_training_laws = minimal_training_naval
-#		check_variable = { which = "low_trained_naval_long_conscription_I_variable" value = 8 }
-#	}
-#
-#	naval_organisation = -0.1
-#	supply_consumption = 0.01
-#	reinforcement_bonus = 0.05
-#
-#	icon = 50
-#}
-#
-#low_trained_naval_long_conscription_II = {
-#	potential = {
-#		#check_variable = { which = "low_trained_naval_long_conscription_II_variable" value = 4 }
-#	}
-#	trigger = {
-#		conscription_law_two = massive_conscription
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		naval_units_training_laws = minimal_training_naval
-#		check_variable = { which = "low_trained_naval_long_conscription_II_variable" value = 8 }
-#	}
-#
-#	naval_organisation = -0.15
-#	supply_consumption = 0.025
-#	reinforcement_bonus = 0.075
-#
-#	icon = 50
-#}
-#
-#well_trained_naval_long_conscription_I = {
-#	potential = {
-#		#check_variable = { which = "well_trained_naval_long_conscription_I_variable" value = 4 }
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		naval_units_training_laws = advanced_training_naval
-#		not = {
-#			conscription_law_two = volunteer_recruitment
-#		}
-#		check_variable = { which = "well_trained_naval_long_conscription_I_variable" value = 8 }
-#	}
-#
-#	supply_consumption = -0.01
-#	reinforcement_bonus = 0.015
-#
-#	icon = 50
-#
-#}
-#well_trained_naval_long_conscription_II = {
-#	potential = {
-#		#check_variable = { which = "well_trained_naval_long_conscription_II_variable" value = 4 }
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		naval_units_training_laws = advanced_training_naval
-#		conscription_law_two = volunteer_recruitment
-#		check_variable = { which = "well_trained_naval_long_conscription_II_variable" value = 8 }
-#	}
-#
-#	supply_consumption = -0.015
-#	reinforcement_bonus = 0.025
-#
-#	icon = 50
-#
-#}
-#
-#elite_trained_naval_long_conscription_I = {
-#	potential = {
-#		#check_variable = { which = "elite_trained_naval_long_conscription_I_variable" value = 4 }
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		naval_units_training_laws = specialist_training_naval
-#		not = {
-#			conscription_law_two = volunteer_recruitment
-#		}
-#		check_variable = { which = "elite_trained_naval_long_conscription_I_variable" value = 8 }
-#	}
-#
-#	supply_consumption = -0.02
-#	reinforcement_bonus = 0.035
-#
-#	icon = 50
-#
-#}
-#elite_trained_naval_long_conscription_II = {
-#	potential = {
-#		#check_variable = { which = "elite_trained_naval_long_conscription_II_variable" value = 4 }
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#			conscription_law = service_by_requirement
-#		}
-#		naval_units_training_laws = specialist_training_naval
-#		conscription_law_two = volunteer_recruitment
-#		check_variable = { which = "elite_trained_naval_long_conscription_II_variable" value = 8 }
-#	}
-#
-#	supply_consumption = -0.03
-#	reinforcement_bonus = 0.05
-#
-#	icon = 50
-#
-#}
-
 
 naval_oil_requirements_I = {
 	potential = {
@@ -4380,7 +4068,7 @@ winter_war = {
 	}
 
 	org_regain = 0.025
-	reinforcement_bonus = 0.25
+	#reinforcement_bonus = 0.25
 	land_organisation = 0.025
 
 	icon = 4
@@ -4548,7 +4236,7 @@ lapland_war = {
 	}
 
 	org_regain = 0.1
-	reinforcement_bonus = 0.15
+	#reinforcement_bonus = 0.15
 	land_organisation = 0.05
 
 	icon = 10
@@ -4590,7 +4278,7 @@ general_winter = {
 	territorial_pride = 0.05
 	#defence_modifier = 0.6
 	#offence_modifier = 0.2
-	reinforcement_bonus = 0.5
+	#reinforcement_bonus = 0.5
 
 	icon = 8
 }
@@ -7234,7 +6922,7 @@ old_fashioned_army = {
 	#global_manpower_modifier = -0.50
 	officer_recruitment = -0.5
 	peace_consumer_goods_demand = 0.025
-	industrial_efficiency = -0.1
+	industrial_efficiency = -0.05
 	global_leadership_modifier = -0.15
 
 	icon = 5
@@ -7308,7 +6996,7 @@ Great_Patriotic_War_achievement = {
 		2041 = { controller = { faction = axis } } #Warszawa
 	}
 
-	reinforcement_bonus = 2.0
+	#reinforcement_bonus = 2.0
 	unit_recruitment_time = -0.10
 	global_manpower_modifier = 0.25
 
@@ -7391,8 +7079,9 @@ Sevastopol_loss = {
 		}
 	}
 
-	#national_unity = -0.02
-	unit_recruitment_time = -0.05
+	territorial_pride = 0.01
+	national_unity = -0.01
+	#unit_recruitment_time = -0.05
 
 	icon = 8
 }
@@ -7418,8 +7107,9 @@ Stalingrad_loss = {
 		}
 	}
 
+	territorial_pride = 0.01
 	national_unity = -0.02
-	unit_recruitment_time = -0.05
+	#unit_recruitment_time = -0.05
 
 	icon = 8
 }
@@ -7444,8 +7134,9 @@ Kharkov_loss = {
 		}
 	}
 
-	#national_unity = -0.02
-	unit_recruitment_time = -0.05
+	territorial_pride = 0.01
+	national_unity = -0.01
+	#unit_recruitment_time = -0.05
 	icon = 8
 }
 # 2170 - Kursk
@@ -7466,8 +7157,9 @@ Kursk_loss = {
 		}
 	}
 
-	#national_unity = -0.02
-	unit_recruitment_time = -0.05
+	territorial_pride = 0.01
+	national_unity = -0.01
+	#unit_recruitment_time = -0.05
 
 	icon = 8
 }
@@ -7502,8 +7194,9 @@ Leningrad_loss = {
 		}
 	}
 
+	territorial_pride = 0.025
 	national_unity = -0.02
-	unit_recruitment_time = -0.10
+	#unit_recruitment_time = -0.10
 
 	icon = 8
 }
@@ -7525,8 +7218,9 @@ Arhangel_loss = {
 		}
 	}
 
-	#national_unity = -0.02
-	unit_recruitment_time = -0.05
+	territorial_pride = 0.01
+	national_unity = -0.01
+	#unit_recruitment_time = -0.05
 
 	icon = 8
 }
@@ -7548,8 +7242,9 @@ Murmansk_loss = {
 		}
 	}
 
+	territorial_pride = 0.01
 	global_supplies = -0.02
-	unit_recruitment_time = -0.02
+	#unit_recruitment_time = -0.02
 
 	icon = 8
 }
@@ -7577,8 +7272,9 @@ Vladivostock_loss = {
 		}
 	}
 
-	#national_unity = -0.02
-	unit_recruitment_time = -0.05
+	territorial_pride = 0.01
+	national_unity = -0.01
+	#unit_recruitment_time = -0.05
 
 	icon = 8
 }
@@ -10094,13 +9790,13 @@ mining = {
 		has_country_flag  = mining
 	}
 
-	global_rare_materials = 0.1
-	global_energy = 0.1
+	global_rare_materials = 0.15
+	global_energy = 0.15
 	global_crude_oil = 0.1
-	global_metal = 0.1
-	global_ic = -0.15
+	global_metal = 0.15
+	global_ic = -0.1
 	global_manpower_modifier = -0.1
-	industrial_efficiency = 0.05
+	industrial_efficiency = 0.035
 
 
 	icon = 32
@@ -12166,7 +11862,7 @@ rail_two  = {
 		railway = 2
 	}
 
-	industrial_efficiency = 0.012
+	industrial_efficiency = 0.015
 	supply_throughput = 0.022
 
 	icon = 30
@@ -12191,7 +11887,7 @@ rail_three  = {
 		railway = 3
 	}
 
-	industrial_efficiency = 0.014
+	industrial_efficiency = 0.02
 	supply_throughput = 0.024
 
 	icon = 30
@@ -12216,7 +11912,7 @@ rail_four  = {
 		railway = 4
 	}
 
-	industrial_efficiency = 0.016
+	industrial_efficiency = 0.025
 	supply_throughput = 0.026
 
 	icon = 30
@@ -12241,7 +11937,7 @@ rail_five  = {
 		railway = 5
 	}
 
-	industrial_efficiency = 0.018
+	industrial_efficiency = 0.03
 	supply_throughput = 0.028
 
 	icon = 30
@@ -12266,7 +11962,7 @@ rail_six  = {
 		railway = 6
 	}
 
-	industrial_efficiency = 0.020
+	industrial_efficiency = 0.035
 	supply_throughput = 0.030
 
 	icon = 30
@@ -12291,7 +11987,7 @@ rail_seven  = {
 		railway = 7
 	}
 
-	industrial_efficiency = 0.022
+	industrial_efficiency = 0.04
 	supply_throughput = 0.032
 
 	icon = 30
@@ -12316,7 +12012,7 @@ rail_eight  = {
 		railway = 8
 	}
 
-	industrial_efficiency = 0.024
+	industrial_efficiency = 0.045
 	supply_throughput = 0.034
 
 	icon = 30
@@ -12341,7 +12037,7 @@ rail_nine  = {
 		railway = 9
 	}
 
-	industrial_efficiency = 0.026
+	industrial_efficiency = 0.05
 	supply_throughput = 0.036
 
 	icon = 30
@@ -12366,7 +12062,7 @@ rail_ten  = {
 		railway = 10
 	}
 
-	industrial_efficiency = 0.028
+	industrial_efficiency = 0.055
 	supply_throughput = 0.038
 
 	icon = 30
@@ -12391,7 +12087,7 @@ rail_eleven  = {
 		railway = 11
 	}
 
-	industrial_efficiency = 0.030
+	industrial_efficiency = 0.06
 	supply_throughput = 0.040
 
 	icon = 30
@@ -12416,7 +12112,7 @@ rail_twelve  = {
 		railway = 12
 	}
 
-	industrial_efficiency = 0.032
+	industrial_efficiency = 0.065
 	supply_throughput = 0.042
 
 	icon = 30
@@ -14232,7 +13928,7 @@ Core_Historical_Axis_III = {
 
 	}
 
-	industrial_efficiency = 0.04
+	industrial_efficiency = 0.02
 	research_efficiency = 0.04
 	global_ic = 0.02
 
@@ -14529,7 +14225,7 @@ Late_Historical_Allies_III = {
 
 	}
 
-	industrial_efficiency = 0.04
+	industrial_efficiency = 0.02
 	research_efficiency = 0.04
 	global_ic = 0.02
 
@@ -14682,7 +14378,7 @@ Early_Historical_Allies_III = {
 				}
 	}
 
-	industrial_efficiency = 0.04
+	industrial_efficiency = 0.02
 	research_efficiency = 0.04
 	global_ic = 0.02
 
@@ -14921,7 +14617,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_II_I = {
 		not = { check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 4} }
 	}
 	global_revolt_risk = -2.5
-	industrial_efficiency = 0.015
+	industrial_efficiency = 0.01
 	global_resources = 0.1
 	global_supplies = 0.05
 	icon = 31
@@ -14949,7 +14645,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_III_I = {
 		not = { check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 5} }
 	}
 	global_revolt_risk = -4
-	industrial_efficiency = 0.025
+	industrial_efficiency = 0.015
 	global_resources = 0.2
 	global_supplies = 0.05
 	icon = 31
@@ -14988,7 +14684,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_IV_I = {
 		check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 5}
 	}
 	global_revolt_risk = -5.5
-	industrial_efficiency = 0.03
+	industrial_efficiency = 0.02
 	global_resources = 0.3
 	global_supplies = 0.1
 	icon = 31
@@ -17028,7 +16724,7 @@ ballbearings_bonus = {
 			}
 		}
 	}
-	unit_repair = 0.20		# valuable resource!
+	unit_repair = 0.05		# valuable resource!
 	icon = 75
 }
 prefab_ship_facilities_bonus = {
@@ -38903,7 +38599,7 @@ The_Stalin_effect = {
 	trigger = {}
 
 	national_unity = 0.03
-	industrial_efficiency = 0.05
+	industrial_efficiency = 0.025
 	research_efficiency = -0.02
 	war_consumer_goods_demand = -0.10
 	global_leadership_modifier = 0.02
@@ -38945,7 +38641,7 @@ The_Roosevelt_effect = {
 	neutrality_change = -0.01
 	global_ic = 0.10
 	global_money = 0.35
-	industrial_efficiency = -0.08
+	industrial_efficiency = -0.05
 	research_efficiency = 0.03
 	global_leadership_modifier = 0.02
 }
@@ -38957,7 +38653,7 @@ The_Mao_Zedong_effect = {
 	trigger = {}
 
 	national_unity = 0.03
-	industrial_efficiency = 0.08
+	industrial_efficiency = 0.05
 	research_efficiency = -0.01
 	war_consumer_goods_demand = -0.25
 	ruling_party_support = 0.1
@@ -38982,5 +38678,326 @@ The_Chiang_Kaishek_effect = {
 	territorial_pride = 0.075
 	national_unity = 0.03
 }
+
+#training_advanced_from_spec = {
+#	potential = {
+#		#ai = yes
+#		#tag = GER
+#	}
+#	trigger = {
+#		or = {
+#			and = {
+#				tag = GER
+#				year = 1942
+#				not = {
+#					1409 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = FIN
+#				year = 1942
+#				not = {
+#					33 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					698 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = JAP
+#				or = {
+#					and = {
+#						year = 1943
+#						not = {
+#							controls = 5825
+#						}
+#					}
+#					and = {
+#						year = 1938
+#						not = {
+#							controls = 4979
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = ENG
+#				year = 1939
+#				not = {
+#					2613 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					5586 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					#controls = 6119
+#					#controls = 14187
+#				}
+#			}
+#			and = {
+#				tag = USA
+#				year = 1944
+#				not = {
+#					10664 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					6119 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					14187 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#				}
+#			}
+#		}
+#	}
+#
+#	unit_recruitment_time = -0.1
+#	unit_repair = 0.3
+#	officer_recruitment = -0.075
+#	global_money = 0.075
+#	unit_start_experience = -10
+#	combat_movement_speed = -0.05
+#	land_organisation = -0.05
+#	air_organisation = -0.05
+#	naval_organisation = -0.05
+#}
+#
+#training_basic_from_advanced = {
+#	potential = {
+#		#ai = yes
+#		#tag = GER
+#	}
+#	trigger = {
+#		or = {
+#			and = {
+#				or = {
+#					tag = GER
+#					tag = HUN
+#					tag = ROM
+#					tag = SLO
+#				}
+#				year = 1943
+#				not = {
+#					1409 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					2170 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = FIN
+#				year = 1943
+#				not = {
+#					400 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					780 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = JAP
+#				or = {
+#					and = {
+#						year = 1944
+#						not = {
+#							controls = 10642
+#							controls = 6142
+#						}
+#					}
+#					and = {
+#						year = 1939
+#						not = {
+#							controls = 4837
+#							controls = 7261
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = ITA
+#				year = 1942
+#				not = {
+#					5445 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					5134 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = AST
+#				year = 1943
+#				not = {
+#					7923 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					7950 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#				}
+#			}
+#		}
+#	}
+#
+#	unit_recruitment_time = -0.1
+#	global_money = 0.15
+#	unit_repair = 0.3
+#	officer_recruitment = -0.075
+#	unit_start_experience = -10
+#	combat_movement_speed = -0.075
+#	land_organisation = -0.05
+#	air_organisation = -0.05
+#	naval_organisation = -0.05
+#}
+#
+#training_minimal_from_basic = {
+#	potential = {
+#		#ai = yes
+#		#tag = GER
+#	}
+#	trigger = {
+#		or = {
+#			and = {
+#				or = {
+#					tag = GER
+#					tag = HUN
+#					tag = ROM
+#					tag = SLO
+#				}
+#				year = 1943
+#				not = {
+#					3309 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					1442 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = FIN
+#				year = 1942
+#				not = {
+#					696 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#					504 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = JAP
+#				or = {
+#					and = {
+#						year = 1943
+#						not = {
+#							controls = 5825
+#							controls = 10669
+#							controls = 10664
+#						}
+#					}
+#					and = {
+#						year = 1940
+#						not = {
+#							or = {
+#								controls = 5020
+#								controls = 7139
+#							}
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = ITA
+#				year = 1941
+#				not = {
+#					5484 = {
+#						controller = {
+#							faction = axis
+#						}
+#					}
+#				}
+#			}
+#			and = {
+#				tag = AST
+#				year = 1943
+#				not = {
+#					6596 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#					6612 = {
+#						controller = {
+#							faction = allies
+#						}
+#					}
+#				}
+#			}
+#		}
+#	}
+#
+#	unit_recruitment_time = -0.1
+#	global_money = 0.1
+#	unit_repair = 0.2
+#	officer_recruitment = -0.25
+#	unit_start_experience = -10
+#	#combat_movement_speed = -0.075
+#	land_organisation = -0.2
+#	air_organisation = -0.2
+#	naval_organisation = -0.2
+#}
+
 
 ###EOF###

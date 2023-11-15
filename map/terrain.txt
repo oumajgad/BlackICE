@@ -1,30 +1,64 @@
 ##########################################
 ### TEXTURE SLOTS IN USE ATM
-#	MOUNTAIN = 4 5 6 7 28 29 30 31
-#	JUNGLE = 104 105
-#	DESERT = 144
-#	PLAINS = 18 23 53 138 177
-#	FOREST = 8 9 10 11
-#	WOODS = 60 120
-#	BOCCAGE = 37
-#	HILLS = 88 89 163 166 168 169
-#	MARSH = 128 130
-#	URBAN = 26
-#	ARCTIC = 218 228
-#	ARCTIC SEA = 152
-#	MED SEA = 136
-#	FIORDS SEA = 3
-#	NORTH SEA = 216
-#	NORTH_ATLANTIC = 223
-#	CENTRAL ATLANTIC = 208
-#	SOUTH ATLANTIC = 56
-#	EQUATORIAL SEA = 32
-# 	SOUTH PACIFIC = 112
-#	NORTH PACIFIC = 51
-#	INDIAN OCEAN = 195
-#	HOT COAST = 35
-#	COLD COAST = 207
-#	NORMAL COAST = 179
+#	arctic_sea			- 240
+#	fiords_sea			- 241
+#	north_atlantic		- 242
+#	north_sea			- 243
+#	cold_coast			- 244
+#	normal_coast		- 245
+#	mediterranean_sea	- 246
+#	central_atlantic	- 247
+#	hot_coast			- 248
+#	equator_sea			- 249
+#	north_pacific		- 250
+#	south_pacific		- 251
+#	indian_ocean		- 252
+#	south_atlantic		- 253
+#
+#	mountain			- 80
+#	mountain_woods		- 28	#
+#	mountain_forests	- 116	#
+#	mountain_jungle		- 148	#
+#	mountain_arctic		- 224	#
+#	mountain_desert		- 52	#
+#
+#	bocage				- 32
+#
+#	marsh				- 76
+#	swamp				- 78	
+#
+#	plains				- 56	
+#	plains_woods		- 8
+#	plains_forest		- 112
+#	plains_jungle		- 128
+#	plains_arctic		- 212
+#	plains_arctic_woods	- 30	#
+#	plains_arctic_forest- 102	#
+#	plains_desert		- 64
+#
+#	highlands			- 188
+#	highlands_woods		- 25
+#	highlands_desert	- 48
+#	highlands_arctic	- 208
+#
+#	urban				- 24
+#
+#	hills				- 60
+#	hills_woods			- 12
+#	hills_forests		- 96
+#	hills_jungle		- 144
+#	hills_desert		- 68
+#	hills_arctic		- 228
+#
+#	forest
+#	woods
+#	jungle
+#	desert
+#	arctic
+#	town
+#	no_terrain
+
+
 terrain = 256
 
 categories =  {
@@ -36,13 +70,13 @@ categories =  {
 	mediterranean_sea = {
 		movement_cost = 1.0
 		is_water = yes
-		color = { 0 255 255 }
+		color = { 0 0 255 }
 	}
 	north_sea = {
 		movement_cost = 1.0
 		attrition = 1
 		is_water = yes
-		color = { 0 255 255 }
+		color = { 0 0 255 }
 	}
 	arctic_sea = {
 		movement_cost = 1.0
@@ -112,110 +146,305 @@ categories =  {
 		color = { 0 0 255 }
 	}
 
-	mountain = {
-		movement_cost = 1.2
-		attack = -0.7
-		defence = 0.7
-		attrition = 2
-		precipitation = 10
-		temperature = -10
-		color = { 117 108 119 }
-	}
-	forest = {
-		movement_cost = 1.15
-		attack = -0.6
-		defence = 0.5
-		color = { 91 123 45 }
 
+	urban = {
+		movement_cost = 1.000
+		attack = -0.500
+		defence = 0.700
+		attrition = 1
+		color = { 250 65 65  }
+	}
+
+	plains = {
+		movement_cost = 1.000
+		attack = 0.000
+		defence = 0.000
+		color = { 241 221 184 }
 	}
 	woods = {
-		movement_cost = 1.05
-		attack = -0.45
-		defence = 0.25
+		movement_cost = 1.2
+		attack = -0.275
+		defence = 0.350
 		color = { 165 205 108 }
 	}
-	marsh = {
-		movement_cost = 1.45
-		attack = -0.8
-		defence = 0.4
-		attrition = 5
-		color = { 76 112 105 }
-
-	}
-	plains = {
-		movement_cost = 1
-		attack = 0.0
-		defence = 0.0
-		color = { 241 221 184 }
-
-	}
-	urban = {
-		movement_cost = 1
-		attack = -0.75
-		defence = 1
-		attrition = 1
-		color = { 137 104 165  }
-	}
-	hills = {
-		movement_cost = 1
-		attack = -0.3
-		defence = 0.1
-		precipitation = 5
-		temperature = -6
-		color = { 135 70 0 }
+	forest = {
+		movement_cost = 1.25
+		attack = -0.350
+		defence = 0.450
+		color = { 91 123 45 }
 	}
 	jungle = {
-		movement_cost = 1.25
-		attack = -0.5
-		defence = 0.6
-		attrition = 6
+		movement_cost = 1.300
+		attack = -0.500
+		defence = -0.450
+		attrition = 8
 		humidity = 0.8
 		temperature = 8
-		color = { 32 151 0 }
+		color = { 35 185 5 }
+	}
+	arctic = {
+		movement_cost = 1.150
+		attack = -0.450
+		defence = -0.400
+		attrition = 7
+		temperature = -20
+		color = { 215 215 215 }
+	}
+	plains_arctic_woods = {
+		movement_cost = 1.250
+		attack = -0.500
+		defence = -0.300
+		attrition = 7
+		temperature = -20
+		color = { 190 235 190 }
+	}
+	plains_arctic_forest = {
+		movement_cost = 1.350
+		attack = -0.600
+		defence = -0.200
+		attrition = 7
+		temperature = -20
+		color = { 175 250 175 }
 	}
 	desert = {
-		movement_cost = 1
-		attrition = 4
-		attack = -0.1
-		defence = 0.1
+		movement_cost = 1.000
+		attack = 0.0
+		defence = 0.0
 		humidity = -50.0
 		precipitation = 50
 		temperature = 12
-		color = { 218 195 0 }
+		color = { 220 185 95 }
 	}
-	arctic = {
-		movement_cost = 1.05
-		attack = -0.9
-		defence = 0.3
+	highlands = {
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
+		color = { 175 185 185 }
+	}
+	highlands_woods = {
+		movement_cost = 1.200
+		attack = -0.275
+		defence = 0.350
+		humidity = 5
+		precipitation = 5
+		temperature = -3
+		color = { 165 255 195 }
+	}
+	highlands_desert = {
+		movement_cost = 1.000
+		attack = 0.000
+		defence = 0.000
+		humidity = -50.0
+		precipitation = 50
+		temperature = 8
+		color = { 220 150 55 }
+	}
+	highlands_arctic = {
+		movement_cost = 1.150
+		attack = -0.450
+		defence = -0.400
 		attrition = 7
 		temperature = -20
-		color = { 235 235 235 }
+		color = { 185 240 200 }
+	}
+
+
+	hills = {
+		movement_cost = 1.200
+		attack = -0.250
+		defence = 0.250
+		precipitation = 5
+		temperature = -5
+		color = { 135 70 0 }
+	}
+	hills_woods = {
+		movement_cost = 1.300
+		attack = -0.350
+		defence = 0.350
+		precipitation = 5
+		temperature = -3
+		color = { 225 225 0 }
+	}
+	hills_forests = {
+		movement_cost = 1.350
+		attack = -0.400
+		defence = 0.425
+		precipitation = 5
+		temperature = -3
+		color = { 185 145 0 }
+	}
+	hills_jungle = {
+		movement_cost = 1.400
+		attack = -0.575
+		defence = -0.450
+		attrition = 6
+		humidity = 1
+		temperature = 6
+		color = { 135 200 10 }
+	}
+	hills_desert = {
+		movement_cost = 1.200
+		attack = -0.250
+		defence = 0.250
+		humidity = -50.0
+		precipitation = 50
+		temperature = 10
+		color = { 218 195 0 }
+	}
+	hills_arctic = {
+		movement_cost = 1.250
+		attack = -0.450
+		defence = -0.350
+		attrition = 7
+		temperature = -22
+		color = { 135 135 170 }
+	}
+
+	mountain = {
+		movement_cost = 1.350
+		attack = -0.375
+		defence = 0.450
+		attrition = 2
+		precipitation = 10
+		temperature = -10
+		color = { 50 50 65 }
+	}
+	mountain_woods = {
+		movement_cost = 1.450
+		attack = -0.450
+		defence = 0.500
+		attrition = 2
+		precipitation = 10
+		temperature = -10
+		color = { 65 180 175 }
+	}
+	mountain_forests = {
+		movement_cost = 1.500
+		attack = -0.500
+		defence = 0.550
+		attrition = 3
+		precipitation = 10
+		temperature = -10
+		color = { 80 155 80 }
+	}
+	mountain_jungle = {
+		movement_cost = 1.550
+		attack = -0.650
+		defence = -0.500
+		attrition = 10
+		humidity = 0.9
+		temperature = 8
+		precipitation = 15
+		color = { 95 180 95 }
+	}
+	mountain_arctic = {
+		movement_cost = 1.400
+		attack = -0.600
+		defence = -0.450
+		attrition = 12
+		precipitation = 10
+		temperature = -20
+		color = { 90 90 90 }
+	}
+	mountain_desert = {
+		movement_cost = 1.350
+		attack = -0.375
+		defence = 0.450
+		attrition = 5
+		humidity = -50.0
+		precipitation = 50
+		temperature = 12
+		color = { 100 85 25 }
 	}
 
 	bocage = {
-		movement_cost = 1.1
-		attack = -0.25
-		defence = 0.05
-		color = { 70 135 0 }
+		movement_cost = 1.200
+		attack = -0.275
+		defence = 0.150
+		color = { 210 240 175 }
 	}
+	marsh = {
+		movement_cost = 1.550
+		attack = -0.575
+		defence = 0.350
+		attrition = 5
+		color = { 76 112 105 }
+	}
+	swamp = {
+		movement_cost = 1.700
+		attack = -0.675
+		defence = 0.400
+		attrition = 5
+		color = { 76 112 185 }
+	}
+
+
+
+
+	#forest = {
+	#	movement_cost = 1.15
+	#	attack = -0.6
+	#	defence = 0.5
+	#	color = { 0 0 255 }
+	#}
+	#woods = {
+	#	movement_cost = 1.05
+	#	attack = -0.45
+	#	defence = 0.25
+	#	color = { 0 0 255 }
+	#}
+	#jungle = {
+	#	movement_cost = 1.25
+	#	attack = -0.5
+	#	defence = 0.6
+	#	attrition = 6
+	#	humidity = 0.8
+	#	temperature = 8
+	#	color = { 0 0 255 }
+	#}
+	#desert = {
+	#	movement_cost = 1
+	#	attrition = 4
+	#	attack = -0.1
+	#	defence = 0.1
+	#	humidity = -50.0
+	#	precipitation = 50
+	#	temperature = 12
+	#	color = { 0 0 255 }
+	#}
+	#arctic = {
+	#	movement_cost = 1.05
+	#	attack = -0.9
+	#	defence = 0.3
+	#	attrition = 7
+	#	temperature = -20
+	#	color = { 0 0 255 }
+	#}
 	town = {
 		movement_cost = 1.0
 		attack = -0.6
 		defence = 0.6
 		attrition = 1
-		color = { 137 165 104  }
+		color = { 0 0 255 }
 	}
+	#no_terrain = {
+	#	movement_cost = 1.0
+	#	attack = -0.6
+	#	defence = 0.6
+	#	attrition = 1
+	#	color = { 0 0 255 }
+	#}
 }
 
 
 
 #white
-ocean1 = {
-
+ocean1 = { 
+	
 	type = ocean
-
+	
 	color = {
-		254
+		254 
 	}
 	has_texture = no
 }
@@ -229,7 +458,7 @@ mountain1 = {
 		0
 	}
 	priority = 0
-
+	
 }
 
 #grey
@@ -240,7 +469,7 @@ mountain2 = {
 		1
 	}
 	priority = 1
-
+	
 }
 
 #grey
@@ -250,19 +479,18 @@ mountain3 = {
 		2
 	}
 	priority = 2
-
+	
 }
 
 #grey
 mountain4 = {
-	type = fiords_sea
+	type = mountain
 
 	color = {
 		3
 	}
-	has_texture = no
 	priority = 3
-
+	
 }
 
 #grey
@@ -271,9 +499,9 @@ mountain5 = {
 	color = {
 		4
 	}
-
+	
 	priority = 4
-
+	
 }
 
 #grey
@@ -282,9 +510,9 @@ mountain6 = {
 	color = {
 		5
 	}
-
+	
 	priority = 5
-
+	
 }
 
 #grey
@@ -293,9 +521,9 @@ mountain7 = {
 	color = {
 		6
 	}
-
+	
 	priority = 6
-
+	
 }
 
 #grey
@@ -304,9 +532,9 @@ mountain8 = {
 	color = {
 		7
 	}
-
+	
 	priority = 7
-
+	
 }
 
 
@@ -318,7 +546,7 @@ decidous_forest1 = {
 	type = forest
 
 	color = {
-		8
+		8 
 	}
 
 	tree = forest
@@ -333,7 +561,7 @@ decidous_forest2 = {
 	type = forest
 
 	color = {
-		9
+		9 
 	}
 	tree = forest
 	tree_density = 2
@@ -364,7 +592,7 @@ decidous_forest4 = {
 		11
 	}
 	tree = forest
-
+	
 	priority = 11
 
 }
@@ -536,7 +764,7 @@ city3 = {
 	color = {
 		26
 	}
-
+	
 
 	priority = 26
 
@@ -558,7 +786,7 @@ snowmount1 = {
 	color = {
 		28
 	}
-
+	
 
 	priority = 28
 
@@ -598,11 +826,10 @@ snowmount4 = {
 }
 
 snowmount5 = {
-	type = equator_sea
+	type = mountain
 	color = {
 		32
 	}
-	has_texture = no
 
 	priority = 32
 
@@ -631,7 +858,7 @@ snowmount7 = {
 }
 
 snowmount8 = {
-	type = hot_coast
+	type = mountain
 	color = {
 		35
 	}
@@ -658,7 +885,6 @@ bocage1 = {
 		37
 	}
 
-
 	priority = 37
 
 }
@@ -668,7 +894,6 @@ bocage2 = {
 	color = {
 		38
 	}
-
 
 	priority = 38
 
@@ -701,7 +926,6 @@ hill2 = {
 		41
 	}
 
-
 	priority = 41
 
 }
@@ -731,7 +955,6 @@ hill5 = {
 	color = {
 		44
 	}
-
 
 	priority = 44
 
@@ -800,11 +1023,10 @@ field11 = {
 }
 
 field12 = {
-	type = north_pacific
+	type = plains
 	color = {
 		51
 	}
-	has_texture = no
 
 	priority = 51
 
@@ -815,7 +1037,7 @@ field13 = {
 	color = {
 		52
 	}
-
+	
 
 	priority = 52
 
@@ -826,7 +1048,7 @@ field14 = {
 	color = {
 		53
 	}
-
+	
 
 	priority = 53
 
@@ -837,7 +1059,7 @@ field15 = {
 	color = {
 		54
 	}
-
+	
 
 	priority = 54
 
@@ -855,14 +1077,12 @@ field16 = {
 }
 
 woods1 = {
-	type = south_atlantic
+	type = woods
 	color = {
 		56
 	}
 
-        tree = woods
-
-	has_texture = no
+    tree = woods
 
 	priority = 56
 
@@ -946,7 +1166,7 @@ woods8 = {
 	color = {
 		63
 	}
-
+	
 	tree = woods
 	tree_density = 3
 
@@ -1458,14 +1678,13 @@ jungle8 = {
 }
 
 desforest1 = {
-	type = south_pacific
+	type = forest
 	color = {
 		112
 	}
 
 	tree = forest2
 	tree_density = 3
-	has_texture = no
 
 	priority = 112
 
@@ -1743,11 +1962,10 @@ desmarsh8 = {
 }
 
 desfield1 = {
-	type = mediterranean_sea
+	type = plains
 	color = {
 		136
 	}
-	has_texture = no
 
 	priority = 136
 
@@ -1904,12 +2122,10 @@ desdarker8 = {
 }
 
 treemoun1 = {
-	type = arctic_sea
+	type = hills
 	color = {
 		152
 	}
-
-	has_texture = no
 
 	priority = 152
 
@@ -2193,11 +2409,11 @@ forestlight3 = {
 }
 
 forestlight4 = {
-	type = normal_coast
+	type = forest
 	color = {
 		179
 	}
-	has_texture = no
+
 	tree = woods
 
 	priority = 179
@@ -2364,7 +2580,7 @@ junglelight3 = {
 }
 
 junglelight4 = {
-	type = indian_ocean
+	type = jungle
 	color = {
 		195
 	}
@@ -2508,21 +2724,20 @@ desforestlight7 = {
 }
 
 desforestlight8 = {
-	type = cold_coast
+	type = forest
 	color = {
 		207
 	}
-	has_texture = no
+
 	priority = 207
 
 }
 
 darkhillsdarker1 = {
-	type = central_atlantic
+	type = forest
 	color = {
 		208
 	}
-	has_texture = no
 
 	priority = 208
 
@@ -2599,8 +2814,7 @@ darkhillsdarker8 = {
 }
 
 snowmix1 = {
-	type = north_sea
-	has_texture = no
+	type = arctic
 	color = {
 		216
 	}
@@ -2670,11 +2884,11 @@ snowmix7 = {
 }
 
 snowmix8 = {
-	type = north_atlantic
+	type = arctic
 	color = {
 		223
 	}
-	has_texture = no
+
 
 	priority = 223
 
@@ -2760,61 +2974,187 @@ snowground4 = {
 
 }
 
-bocage4 = {
-	type = bocage
+town1 = {
+	type = town
 	color = {
 		232
 	}
 	priority = 232
 }
 
-town1 = {
-	type = town
+arcticwoods1 = {
+	type = plains_arctic_woods
 	color = {
 		233
 	}
 	priority = 233
 }
 
-town2 = {
-	type = town
+arcticforest1 = {
+	type = plains_arctic_forest
 	color = {
 		234
 	}
 	priority = 234
 }
 
-town3 = {
-	type = town
+arctichiglands1 = {
+	type = highlands_arctic
 	color = {
 		235
 	}
 	priority = 235
 }
 
-town4 = {
-	type = town
+arctichills1 = {
+	type = hills_arctic
 	color = {
 		236
 	}
 	priority = 236
 }
 
-arctic_town = {
-	type = town
+arctichills2 = {
+	type = hills_arctic
 	color = {
 		237
 	}
 	priority = 237
 }
 
-
-
+oceannull1 = {
+	type = ocean
+	color = {
+		238
+	}
+	has_texture = no
+	priority = 238
+}
+oceannull2 = {
+	type = ocean
+	color = {
+		239
+	}
+	has_texture = no
+	priority = 239
+}
+ocean2 = {
+	type = arctic_sea
+	color = {
+		240
+	}
+	has_texture = no
+	priority = 240
+}
+ocean3 = {
+	type = fiords_sea
+	color = {
+		241
+	}
+	has_texture = no
+	priority = 241
+}
+ocean4 = {
+	type = north_atlantic
+	color = {
+		242
+	}
+	has_texture = no
+	priority = 242
+}
+ocean5 = {
+	type = north_sea
+	color = {
+		243
+	}
+	has_texture = no
+	priority = 243
+}
+ocean6 = {
+	type = cold_coast
+	color = {
+		244
+	}
+	has_texture = no
+	priority = 244
+}
+ocean7 = {
+	type = normal_coast
+	color = {
+		245
+	}
+	has_texture = no
+	priority = 245
+}
+ocean8 = {
+	type = mediterranean_sea
+	color = {
+		246
+	}
+	has_texture = no
+	priority = 246
+}
+ocean9 = {
+	type = central_atlantic
+	color = {
+		247
+	}
+	has_texture = no
+	priority = 247
+}
+ocean10 = {
+	type = hot_coast
+	color = {
+		248
+	}
+	has_texture = no
+	priority = 248
+}
+ocean11 = {
+	type = equator_sea
+	color = {
+		249
+	}
+	has_texture = no
+	priority = 249
+}
+ocean12 = {
+	type = north_pacific
+	color = {
+		250
+	}
+	has_texture = no
+	priority = 250
+}
+ocean13 = {
+	type = south_pacific
+	color = {
+		251
+	}
+	has_texture = no
+	priority = 251
+}
+ocean14 = {
+	type = indian_ocean
+	color = {
+		252
+	}
+	has_texture = no
+	priority = 252
+}
+ocean15 = {
+	type = south_atlantic
+	color = {
+		253
+	}
+	has_texture = no
+	priority = 253
+}
 
 pti = {
 	type = plains
 	color = {
 		255
 	}
-	has_texture = no
+	#has_texture = no
 }

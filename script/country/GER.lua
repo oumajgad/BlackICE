@@ -1214,7 +1214,6 @@ function P.ForeignMinister_CallAlly(voForeignMinisterData)
 
 				if loWar:IsLimited() then
 					local lsTargetTag = tostring(loTargetTag)
-					local liWarMonths = loWar:GetCurrentRunningTimeInMonths()
 					local loTargetCountry = loTargetTag:GetCountry()
 
 					--Utils.LUA_DEBUGOUT("Calling Allies for war with " .. lsTargetTag)

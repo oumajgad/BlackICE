@@ -509,19 +509,31 @@ function P.ProductionWeights(voProductionData)
 
 	-- Not atwar so
 	if not(voProductionData.IsAtWar) and voProductionData.Year < 1942 then
-		if voProductionData.Year <= 1940 then
+		if voProductionData.Year <= 1937 then
 			laArray = {
-				0.05, -- Land
-				0.05, -- Air
+				0.000, -- Land
+				0.000, -- Air
 				0.05, -- Sea
-				0.85}; -- Other
-		elseif voProductionData.Year <= 1941 then
+				0.95}; -- Other
+			elseif voProductionData.Year <= 1938 then
 			laArray = {
-				0.15, -- Land
+				0.2, -- Land
+				0.15, -- Air
+				0.2, -- Sea
+				0.45}; -- Other
+			elseif voProductionData.Year <= 1939 then
+			laArray = {
+				0.5, -- Land
+				0.15, -- Air
+				0.25, -- Sea
+				0.1}; -- Other
+			elseif voProductionData.Year <= 1941 then
+			laArray = {
+				0.45, -- Land
 				0.25, -- Air
 				0.25, -- Sea
-				0.35}; -- Other
-		elseif voProductionData.ManpowerTotal < 400 then
+				0.05}; -- Other
+			elseif voProductionData.ManpowerTotal < 400 then
 			laArray = {
 				0.00, -- Land
 				0.50, -- Air
@@ -534,27 +546,12 @@ function P.ProductionWeights(voProductionData)
 		local lbGERWar = loGerUsaDiplo:HasWar()
 		local lbJAPWar = loJapUsaDiplo:HasWar()
 
-		if lbGERWar or lbJAPWar then
-			local liGERWar = 12
-			local liJAPWar = 12
-
-			if lbGERWar then
-				liGERWar = loGerUsaDiplo:GetWar():GetCurrentRunningTimeInMonths()
-			end
-
-			if lbJAPWar then
-				liJAPWar = loJapUsaDiplo:GetWar():GetCurrentRunningTimeInMonths()
-			end
-
-			local liWarMonths = math.min(liGERWar, liJAPWar)
-
-			if liWarMonths < 48 then
-				laArray = {
-					0.25, -- Land
-					0.25, -- Air
-					0.35, -- Sea
-					0.15}; -- Other
-			end
+		if lbGERWar and lbJAPWar then
+			laArray = {
+				0.3, -- Land
+				0.3, -- Air
+				0.3, -- Sea
+				0.1}; -- Other
 		end
 	end
 
