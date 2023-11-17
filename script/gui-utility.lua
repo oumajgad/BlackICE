@@ -1789,6 +1789,7 @@ if wx ~= nil then
 		if selection ~= "" then
 			if CheckPlayerAllowsSelection(selection) then
 				if PlayerCountries ~= nil then
+					UI.m_textCtrl3:SetValue("Loading...")
 					PlayerCountry = selection
 					DateOverride = false
 					DaysSinceLastUpdate = 0
