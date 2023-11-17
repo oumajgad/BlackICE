@@ -9832,23 +9832,6 @@ Garand_tech = {
 	can_upgrade = yes
 }
 
-#Fletcher_class_tech = {
-#	allow = {
-#        destroyer_class = 4
-#    }
-#
-#    destroyer_actual = {
-#    }
-#
-#	difficulty = 1
-#
-#	start_year = 1940
-#	folder = unit_training_folder
-#	change = no
-#	stealable = no
-#	can_upgrade = yes
-#}
-
 T_34_tech = {
 	allow = {
         armor_brigade_design = 4
@@ -9870,6 +9853,8 @@ T_34_tech = {
         build_cost_ic = -1
         build_time = -10
     }
+
+	casualty_trickleback = -0.02
 
 	research_bonus_from = {
 		automotive_theory = 0.2
@@ -10080,31 +10065,6 @@ katyusha_tech = {
 	stealable = no
 	can_upgrade = yes
 }
-
-#QF17pdr_tech = {
-#	allow = {
-#        has_country_flag = QF17pdr_tech_active
-#        high_velocity_gun = 1
-#    }
-#
-#    heavy_anti_tank_brigade = {
-#        hard_attack = 5
-#    }
-#    armor_brigade = {
-#        hard_attack = 5
-#    }
-#    armor_bat = {
-#        hard_attack = 5
-#    }
-#
-#	difficulty = 1
-#
-#	start_year = 1943
-#	folder = unit_training_folder
-#	change = no
-#	stealable = no
-#	can_upgrade = no
-#}
 
 mosquito_tech = {
 	allow = {
@@ -10533,53 +10493,65 @@ assault_rifles = {
 tiger_tech = {
 	allow = {
         has_country_flag = tiger_tech_active
-        heavy_armor_brigade_design = 4
+		or = {
+			and = {
+				heavy_armor_brigade_design = 4
+				not = {
+					tiger_tech = 1
+				}
+			}
+			and = {
+				heavy_armor_brigade_design = 5
+				tiger_tech = 1
+				armor_sloped_design = 2
+			}
+		}
     }
 
     heavy_armor_brigade = {
-        defensiveness = 4.3
-        toughness = 7.4
-        build_cost_ic = 2.5
-        supply_consumption = 0.25
+        defensiveness = 4
+        toughness = 5.5
+        build_cost_ic = 2
+        supply_consumption = 0.2
 
         plains = {
             attack = 0.2
-            defence = 0.5
+            defence = 0.2
         }
         highlands = {
             attack = 0.2
-            defence = 0.5
+            defence = 0.2
         }
         desert = {
             attack = 0.2
-            defence = 0.5
+            defence = 0.2
         }
         highlands_desert = {
             attack = 0.2
-            defence = 0.5
+            defence = 0.2
         }
     }
     ss_heavy_armor_brigade = {
-        defensiveness = 4.3
-        toughness = 7.4
-        build_cost_ic = 2.5
-        supply_consumption = 0.25
+        defensiveness = 4
+        toughness = 5.5
+        build_cost_ic = 2
+        supply_consumption = 0.2
 
         plains = {
             attack = 0.2
-            defence = 0.5
+            defence = 0.2
         }
         highlands = {
             attack = 0.2
-            defence = 0.5
+            defence = 0.2
         }
         desert = {
             attack = 0.2
-            defence = 0.5
+            defence = 0.2
         }
         highlands_desert = {
             attack = 0.2
-            defence = 0.5
+            defence = 0.2
         }
     }
 
@@ -10771,4 +10743,108 @@ nimrod_tech = {
 	can_upgrade = yes
 }
 
+Fletcher_class_tech = {
+	allow = {
+		has_country_flag = Fletcher_class_active
+        destroyer_class = 4
+    }
 
+    destroyer_actual = {
+		hull = 0.15
+		max_strength = 10
+    }
+
+	difficulty = 1
+
+	start_year = 1940
+	folder = unit_training_folder
+	change = no
+	stealable = no
+	can_upgrade = no
+}
+
+Independence_class_tech = {
+	allow = {
+		has_country_flag = Independence_class_active
+		light_carrier_technology = 5
+    }
+
+    light_carrier = {
+		maximum_speed = 3.5
+    }
+
+	difficulty = 1
+
+	start_year = 1940
+	
+	folder = unit_training_folder
+	change = no
+	stealable = no
+	can_upgrade = no
+}
+
+QF17pdr_tech = {
+	allow = {
+        has_country_flag = QF17pdr_tech_active
+        high_velocity_gun = 1
+    }
+
+    heavy_anti_tank_brigade = {
+        hard_attack = 5
+    }
+    armor_brigade = {
+        hard_attack = 5
+    }
+    armor_bat = {
+        hard_attack = 5
+    }
+
+	difficulty = 1
+
+	start_year = 1943
+	folder = unit_training_folder
+	change = no
+	stealable = no
+	can_upgrade = yes
+}
+
+SAS_tech = {
+	allow = {
+        has_country_flag = SAS_tech_active
+        commando_brigade_activation = 2
+    }
+
+	commando_brigade = {
+		defensiveness = 2.1
+		toughness = 3.5
+
+		desert = {
+			movement = 0.150
+			attack = 0.200
+			defence = 0.300
+		}
+		hills_desert = {
+			movement = 0.150
+			attack = 0.200
+			defence = 0.300
+		}
+		highlands_desert = {
+			movement = 0.150
+			attack = 0.200
+			defence = 0.300
+		}
+		mountain_desert = {
+			movement = 0.150
+			attack = 0.200
+			defence = 0.300
+		}
+	}
+
+	difficulty = 1
+
+	start_year = 1941
+	folder = unit_training_folder
+	change = no
+	stealable = no
+	can_upgrade = yes
+}
