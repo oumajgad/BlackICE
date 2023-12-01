@@ -50,6 +50,11 @@ def PatchOffmapIC():
     print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
     WriteHex("hoi3_tfh.exe", 0xF03A9, "8B4178909090")
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
+    
+    print("Patch_OffmapIC_UI")
+    print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF0390, 3)}')
+    WriteHex("hoi3_tfh.exe", 0xF0390, "F76978")
+    print(f'New: {ReadHex("hoi3_tfh.exe", 0xF0390, 3)}')
 
 
 if __name__ == "__main__":
