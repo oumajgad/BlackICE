@@ -27,7 +27,7 @@ def addStatsCLI(zipf: zipfile.ZipFile):
 
 def zipdir(filename):
     maxcount = countFiles()
-    zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
+    zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_STORED)
     addUtilityResources(zipf)
     addStatsCLI(zipf)
     zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"utility/TechsIcEffValues.txt")
