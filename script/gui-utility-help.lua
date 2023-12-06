@@ -127,6 +127,25 @@ if wx ~= nil then
 
 	UI.gSizerHelpMisc0:Add( UI.bSizerHelpMisc2, 1, wx.wxEXPAND, 5 )
 
+	UI.bSizerHelp50 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticTextHelp23 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Unit Training", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp23:Wrap( 650 )
+
+	UI.m_staticTextHelp23:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, True, "" ) )
+
+	UI.bSizerHelp50:Add( UI.m_staticTextHelp23, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticTextHelp24 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "In BlackICE, unit training level has been reworked slightly. \nSame as in Vanilla, Training Laws are responsible for how much starting experience unit has, but what was changed is speed at which units reinforce. Penalties (or bonuses) are now much higher resulting in much slower Strength regain with Advanced or Specialist Training. As in reality - it takes far longer to get highly trained reinforcements. It might not be possible to keep Specialised or even Advanced Training on for extensive periods of time during war, expecially during long periods of combat.", wx.wxDefaultPosition, wx.wxSize( 350,-1 ), wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp24:Wrap( 650 )
+
+	UI.m_staticTextHelp24:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
+
+	UI.bSizerHelp50:Add( UI.m_staticTextHelp24, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
+
+
+	UI.gSizerHelpMisc0:Add( UI.bSizerHelp50, 1, wx.wxEXPAND, 5 )
+
 
 	UI.gSizerHelpMisc0:Add( 0, 0, 1, wx.wxEXPAND, 5 )
 
@@ -135,83 +154,6 @@ if wx ~= nil then
 	UI.m_scrolledWindow_HelpMisc:Layout()
 	UI.gSizerHelpMisc0:Fit( UI.m_scrolledWindow_HelpMisc )
 	UI.m_notebook2:AddPage(UI.m_scrolledWindow_HelpMisc, "Misc", True )
-	UI.m_scrolledWindow_HelpTraining = wx.wxScrolledWindow( UI.m_notebook2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHSCROLL + wx.wxVSCROLL )
-	UI.m_scrolledWindow_HelpTraining:SetScrollRate( 5, 5 )
-	UI.bSizerHelp50 = wx.wxBoxSizer( wx.wxVERTICAL )
-
-	UI.m_staticTextHelp23 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "In BlackICE, unit training level has a permanent effect on the unit performance.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticTextHelp23:Wrap( 650 )
-
-	UI.m_staticTextHelp23:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, True, "" ) )
-
-	UI.bSizerHelp50:Add( UI.m_staticTextHelp23, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticTextHelp24 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "Units trained with basic training law will always perform as such, even if the law is changed. \nTo increase their training level they have to be properly retrained with the new training law in place.\nCombat Experience is properly distinguished from training level and can only be obtained through combat. \nThe training level impacts the unit's stats while combat experience has a direct impact on combat as a modifier. \nThe effect of each level of training laws can be seen in the Training folder of the Technology screen. \nCombinations of training and conscription laws also trigger certain effects which can be checked in Triggered Modifiers.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticTextHelp24:Wrap( 650 )
-
-	UI.m_staticTextHelp24:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
-
-	UI.bSizerHelp50:Add( UI.m_staticTextHelp24, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
-
-	UI.m_staticTextHelp25 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "Wait at least 2 days after changing the training law before you begin the units training!", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticTextHelp25:Wrap( 650 )
-
-	UI.m_staticTextHelp25:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
-
-	UI.bSizerHelp50:Add( UI.m_staticTextHelp25, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.gSizerHelp35 = wx.wxGridSizer( 4, 2, 10, 100 )
-
-	UI.m_staticText69 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "Minimum Training", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText69:Wrap( -1 )
-
-	UI.m_staticText69:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
-
-	UI.gSizerHelp35:Add( UI.m_staticText69, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticText75 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "-10% unit stats", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText75:Wrap( -1 )
-
-	UI.gSizerHelp35:Add( UI.m_staticText75, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticText63 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "Basic Training", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText63:Wrap( -1 )
-
-	UI.gSizerHelp35:Add( UI.m_staticText63, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticText64 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "no change", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText64:Wrap( -1 )
-
-	UI.gSizerHelp35:Add( UI.m_staticText64, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticText65 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "Advanced Training", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText65:Wrap( -1 )
-
-	UI.gSizerHelp35:Add( UI.m_staticText65, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticText66 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "+5% unit stats", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText66:Wrap( -1 )
-
-	UI.gSizerHelp35:Add( UI.m_staticText66, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticText67 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "Specialist Training", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText67:Wrap( -1 )
-
-	UI.gSizerHelp35:Add( UI.m_staticText67, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticText68 = wx.wxStaticText( UI.m_scrolledWindow_HelpTraining, wx.wxID_ANY, "+10% unit stats", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText68:Wrap( -1 )
-
-	UI.gSizerHelp35:Add( UI.m_staticText68, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-
-	UI.bSizerHelp50:Add( UI.gSizerHelp35, 0, wx.wxALIGN_CENTER, 5 )
-
-
-	UI.m_scrolledWindow_HelpTraining:SetSizer( UI.bSizerHelp50 )
-	UI.m_scrolledWindow_HelpTraining:Layout()
-	UI.bSizerHelp50:Fit( UI.m_scrolledWindow_HelpTraining )
-	UI.m_notebook2:AddPage(UI.m_scrolledWindow_HelpTraining, "Unit Training", False )
 	UI.m_scrolledWindow_Ministers = wx.wxScrolledWindow( UI.m_notebook2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHSCROLL + wx.wxVSCROLL )
 	UI.m_scrolledWindow_Ministers:SetScrollRate( 30, 30 )
 	UI.bSizerHelp1 = wx.wxBoxSizer( wx.wxVERTICAL )
@@ -414,7 +356,7 @@ if wx ~= nil then
 	UI.m_scrolledWindow_NatFocus:SetScrollRate( 30, 30 )
 	UI.bSizerHelpNatFocus1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_bitmap4 = wx.wxStaticBitmap( UI.m_scrolledWindow_NatFocus, wx.wxID_ANY, wx.wxBitmap( "tfh/mod/BlackICE " .. UI.version .. "/utility/Nat Focus table.png", wx.wxBITMAP_TYPE_ANY ), wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_bitmap4 = wx.wxStaticBitmap( UI.m_scrolledWindow_NatFocus, wx.wxID_ANY, wx.wxBitmap( "tfh/mod/BlackICE-utility-resources/Nat Focus table.png", wx.wxBITMAP_TYPE_ANY ), wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.bSizerHelpNatFocus1:Add( UI.m_bitmap4, 0, wx.wxALL, 5 )
 
 
