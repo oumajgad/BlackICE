@@ -144,6 +144,7 @@ function P.HandleProductionMinisterGeneralStats(countryTag, country, stats)
 	P.AddStat(tag, "other_u_LandCountTotal", tostring(string.format('%.0f', stats.LandCountTotal)))
 	P.AddStat(tag, "other_u_AirCountTotal", tostring(string.format('%.0f', stats.AirCountTotal)))
 	P.AddStat(tag, "other_u_NavalCountTotal", tostring(string.format('%.0f', stats.NavalCountTotal)))
+	P.AddStat(tag, "other_u_TotalDivisions", tostring(string.format('%.0f', stats.TotalDivisions)))
 	P.AddStat(tag, "other_ManpowerTotal", tostring(string.format('%.0f', stats.ManpowerTotal)))
 end
 

@@ -1669,7 +1669,8 @@ function HandleProductionMinister_Tick(minister)
 			LandCountTotal = ProductionData.LandCountTotal,
 			AirCountTotal = ProductionData.AirCountTotal,
 			NavalCountTotal = ProductionData.NavalCountTotal,
-			ManpowerTotal = ProductionData.ManpowerTotal
+			ManpowerTotal = ProductionData.ManpowerTotal,
+			TotalDivisions = ProductionData.ministerCountry:GetUnits():GetTotalAmountOfDivisions()
 		}
 		Stats.HandleProductionMinisterGeneralStats(ProductionData.ministerTag, ProductionData.ministerCountry, stats)
 	end
