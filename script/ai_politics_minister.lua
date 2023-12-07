@@ -806,7 +806,7 @@ function TrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 		if not ministerCountry:GetFlags():IsFlagSet("training_laws_check") then
 			return CLawDataBase.GetLaw(default)
 		end
-		
+
 		local totalIc = ministerCountry:GetTotalIC()
 		local reinforcementsIC = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_REINFORCEMENT_):GetNeeded():Get()
 		local reinforcementsPercent = reinforcementsIC/totalIc
@@ -817,6 +817,10 @@ function TrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 
 		local TRAINING_LAW_CHANGE_HYSTERESIS = 60	-- need at least X days of fullfilling trigger conditions
 		local TRAINING_LAW_IC_TRIGGER_PERCENT = 0.175
+		if Utils.HasCountryAIFunction(ministerTag, "TrainingLaws_IcTriggerPercent") then
+			TRAINING_LAW_IC_TRIGGER_PERCENT = Utils.CallCountryAI(ministerTag, "TrainingLaws_IcTriggerPercent")
+		end
+
 		-- we are spending alot on reinforcement -> consider lowering training laws
 		if reinforcementsPercent >= TRAINING_LAW_IC_TRIGGER_PERCENT then
 			if	-- validate the law change variable
