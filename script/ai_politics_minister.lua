@@ -815,8 +815,8 @@ function TrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 		local date = CCurrentGameState.GetCurrentDate():GetTotalDays()
 		local diff = date - want_land_training_law_change_date
 
-		local TRAINING_LAW_CHANGE_HYSTERESIS = 60	-- need at least X days of fullfilling trigger conditions
-		local TRAINING_LAW_IC_TRIGGER_PERCENT = 0.175
+		local TRAINING_LAW_CHANGE_HYSTERESIS = 40	-- need at least X days of fullfilling trigger conditions
+		local TRAINING_LAW_IC_TRIGGER_PERCENT = 0.150
 		if Utils.HasCountryAIFunction(ministerTag, "TrainingLaws_IcTriggerPercent") then
 			TRAINING_LAW_IC_TRIGGER_PERCENT = Utils.CallCountryAI(ministerTag, "TrainingLaws_IcTriggerPercent")
 		end
