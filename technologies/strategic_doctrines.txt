@@ -2592,46 +2592,75 @@ pakfront = {
 	}
 
 	tactic_pakfront = 3
+	direct_fire_unit_type = 0.007
 
 	anti_tank_brigade = {
 		ap_attack = 0
-		maximum_speed = -0.15
-		hard_attack = 1.75
+		hard_attack = 2.5
+		defensiveness = 1.1
 	}
 	heavy_anti_tank_brigade = {
 		ap_attack = 0
-		maximum_speed = -0.15
-		hard_attack = 1.75
+		hard_attack = 2.9
+		defensiveness = 1.6
 	}
 	ss_anti_tank_brigade = {
 		ap_attack = 0
-		maximum_speed = -0.15
-		hard_attack = 1.75
+		hard_attack = 2.5
+		defensiveness = 1.1
 	}
 	ss_heavy_anti_tank_brigade = {
 		ap_attack = 0
-		maximum_speed = -0.15
-		hard_attack = 1.75
+		hard_attack = 2.9
+		defensiveness = 1.6
 	}
 	mixed_support_brigade = {
 		ap_attack = 0
-		maximum_speed = -0.15
-		hard_attack = 1
+		hard_attack = 2
+		defensiveness = 2
 	}
 	motorized_support_brigade = {
 		ap_attack = 0
-		maximum_speed = -0.15
-		hard_attack = 1
+		hard_attack = 2.5
+		defensiveness = 4
 	}
 	ss_mixed_support_brigade = {
 		ap_attack = 0
-		maximum_speed = -0.15
-		hard_attack = 1
+		hard_attack = 2
+		defensiveness = 2
 	}
 	ss_motorized_support_brigade = {
 		ap_attack = 0
-		maximum_speed = -0.15
+		hard_attack = 2.5
+		defensiveness = 4
+	}
+	tank_destroyer_brigade = {
+		hard_attack = 2.3
+		defensiveness = 2
+	}
+	ss_light_tank_destroyer_brigade = {
+		hard_attack = 2.3
+		defensiveness = 2
+	}
+	medium_tank_destroyer_brigade = {
+		hard_attack = 2.5
+		defensiveness = 3.6
+	}
+	ss_tank_destroyer_brigade = {
+		hard_attack = 2.5
+		defensiveness = 3.6
+	}
+	heavy_tank_destroyer_brigade = {
+		hard_attack = 3.5
+		defensiveness = 4.4
+	}
+	assault_gun_brigade = {
 		hard_attack = 1
+		defensiveness = 3.9
+	}
+	heavy_assault_gun_brigade = {
+		hard_attack = 2
+		defensiveness = 4.3
 	}
 
 	change = no
@@ -2659,6 +2688,47 @@ panzerkreil = {
 	}
 
 	tactic_panzerkreil = 2
+	
+	armor_brigade = {
+		default_organisation = 1.5
+		toughness = 1.7
+	}
+    guard_armor_brigade = {
+		default_organisation = 1.5
+		toughness = 1.7
+    }
+	ss_light_armor_brigade = {
+		default_organisation = 1.5
+		toughness = 1.3
+    }
+    ss_armor_brigade = {
+		default_organisation = 1.5
+		toughness = 1.7
+    }
+	light_armor_brigade = {
+		default_organisation = 1.5
+ 		toughness = 1.3
+    }
+   	captured_armor_brigade = {
+		default_organisation = 1.5
+ 		toughness = 1.4
+    }
+   heavy_armor_brigade = {
+		default_organisation = 1.5
+ 		toughness = 1.85
+    }
+   ss_heavy_armor_brigade = {
+		default_organisation = 1.5
+ 		toughness = 1.85
+ 	}
+   guard_heavy_armor_brigade = {
+		default_organisation = 1.5
+ 		toughness = 1.85
+  	 }
+	super_heavy_armor_brigade = {
+		default_organisation = 1.5
+ 		toughness = 2.35
+   	}
 
 
 	change = no
@@ -11068,28 +11138,28 @@ armored_spearhead = {
 		default_organisation = 1.5
 		combat_width = -0.1
  		toughness = 1
-   }
+    }
    	captured_armor_brigade = {
 		default_organisation = 1.5
 		combat_width = -0.1
  		toughness = 1
-   }
+    }
    heavy_armor_brigade = {
 		default_organisation = 1.5
  		toughness = 1
-   }
+    }
    ss_heavy_armor_brigade = {
 		default_organisation = 1.5
  		toughness = 1
-   }
+ 	}
    guard_heavy_armor_brigade = {
 		default_organisation = 1.5
  		toughness = 1
-   }
+  	 }
 	super_heavy_armor_brigade = {
 		default_organisation = 1.5
  		toughness = 1
-   }
+   	}
 
 	change = no
 
@@ -11514,7 +11584,7 @@ divisonal_command_structure_BK = {
 					not = { divisonal_command_structure_BK = 1 }
 					divisonal_command_structure = 3
 					or = {
-						check_variable = { which = "BK_experience" value = 50 }
+						#check_variable = { which = "BK_experience" value = 50 }
 						and = {
 							faction = axis
 							war = yes
@@ -11527,7 +11597,7 @@ divisonal_command_structure_BK = {
 					not = { divisonal_command_structure_BK = 2 }
 					divisonal_command_structure = 5
 					or = {
-						check_variable = { which = "BK_experience" value = 70 }
+						#check_variable = { which = "BK_experience" value = 70 }
 						and = {
 							faction = axis
 							war = yes
@@ -11540,7 +11610,7 @@ divisonal_command_structure_BK = {
 					not = { divisonal_command_structure_BK = 3 }
 					divisonal_command_structure = 7
 					or = {
-						check_variable = { which = "BK_experience" value = 90 }
+						#check_variable = { which = "BK_experience" value = 90 }
 						and = {
 							faction = axis
 							war = yes
@@ -11553,7 +11623,7 @@ divisonal_command_structure_BK = {
 					not = { divisonal_command_structure_BK = 4 }
 					divisonal_command_structure = 9
 					or = {
-						check_variable = { which = "BK_experience" value = 110 }
+						#check_variable = { which = "BK_experience" value = 110 }
 						and = {
 							faction = axis
 							war = yes
@@ -11655,7 +11725,6 @@ elastic_defense = {
 
 	tactic_counterattack = 2
 	tactic_elastic_defence = 2
-	direct_fire_unit_type = 0.005
 
 	change = no
 
