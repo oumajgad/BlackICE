@@ -502,21 +502,21 @@ function P.ProductionWeights(voProductionData)
 
 	if  voProductionData.Year <= 1938 then
 		laArray = {
-			0.65, -- Land
-			0.15, -- Air
-			0.15, -- Sea
-			0.05}; -- Other
+			0.60, -- Land
+			0.325, -- Air
+			0.05, -- Sea
+			0.025}; -- Other
 	elseif  voProductionData.Year >= 1938 then
 		laArray = {
 			0.65, -- Land
-			0.15, -- Air
-			0.15, -- Sea
-			0.05}; -- Other
+			0.225, -- Air
+			0.10, -- Sea
+			0.025}; -- Other
 	-- War time
 	elseif voProductionData.IsAtWar then
 		laArray = {
-			0.70, -- Land
-			0.15, -- Air
+			0.60, -- Land
+			0.25, -- Air
 			0.10, -- Sea
 			0.05}; -- Other
 	end
@@ -638,10 +638,10 @@ end
 function P.AirRatio(voProductionData)
 	local laArray = {
 		interceptor = 10,
-		multi_role = 3,
+		multi_role = 1,
 		rocket_interceptor = 1,
-		cas = 3,
-		light_bomber = 3,
+		cas = 5,
+		light_bomber = 5,
 		tactical_bomber = 3,
 		naval_bomber = 1};
 
@@ -938,7 +938,7 @@ end
 function P.Build_CoastalFort(vIC, voProductionData)
 
 	-- After France, build Coastal Fort in general
-	if voProductionData.Year >= 1940 then
+	if voProductionData.Year >= 1942 then
 		return vIC, true
 	end
 
