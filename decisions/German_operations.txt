@@ -750,21 +750,28 @@ diplomatic_decisions = {
 					}
 				}
 			}
-			or = {
-				and = {
-					#Beograd
+			and = {
+				#Beograd
+				or = {
 					3912 = {
 						controller = {
 							faction = axis
 						}
 					}
-					#Athina
-					5076 = {
-						controller = {
-							faction = axis
+					not = {
+						3912 = {
+							controller = {
+								faction = allies
+							}
 						}
 					}
 				}
+					#Athina
+				#5076 = {
+				#	controller = {
+				#		faction = axis
+				#	}
+				#}
 			}
 		}
 		effect = {
@@ -780,6 +787,30 @@ diplomatic_decisions = {
 			add_country_modifier = {
 				name = "Barbarossa_Timer"
 				duration = 365
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "barbarossa_shock_AI"
+						duration = 350
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = no
+					}
+					add_country_modifier = {
+						name = "barbarossa_shock"
+						duration = 350
+					}
+				}
 			}
 		}
 		ai_will_do = {
@@ -871,11 +902,94 @@ diplomatic_decisions = {
 				}
 			}
 			set_country_flag = operation_barbarossa
+			add_country_modifier = {
+				name = "Barbarossa_Timer"
+				duration = 365
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "barbarossa_shock_AI"
+						duration = 280
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = no
+					}
+					add_country_modifier = {
+						name = "barbarossa_shock"
+						duration = 280
+					}
+				}
+			}
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
+	#######################
+	# OP TYPHOON
+
+	operation_typhoon = {
+		major = yes
+		potential = {
+			tag = GER
+			ai = yes
+			not = {
+				has_country_flag = operation_typhoon
+			}
+			war_with = SOV
+			1409 = {
+				controlled_by = SOV
+			}
+		}
+		allow = {
+			date = 1941.9.30
+		}
+		effect = {
+			set_country_flag = operation_typhoon
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						#ai = yes
+						not = {
+							has_country_modifier = GPW_bonus
+						}
+					}
+					add_country_modifier = {
+						name = "typhoon_shock_no_GPW"
+						duration = 30
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						#ai = yes
+						has_country_modifier = GPW_bonus
+					}
+					add_country_modifier = {
+						name = "typhoon_shock_GPW"
+						duration = 30
+					}
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 	#######################
 	# OP FALL BLAU PREPARATIONS AI
 	Fall_Blau_preparations = {
@@ -927,11 +1041,11 @@ diplomatic_decisions = {
 		}
 		allow = {
 			war_with = SOV
-			1409 = {
-				controller = {
-					faction = comintern
-				}
-			}
+			#1409 = {
+			#	controller = {
+			#		faction = comintern
+			#	}
+			#}
 			not = {
 				has_country_modifier = german_destinyAI
 			}
@@ -966,7 +1080,7 @@ diplomatic_decisions = {
 					}
 					add_country_modifier = {
 						name = "Fall_Blau_ai"
-						duration = 180
+						duration = 300
 					}
 				}
 			}
@@ -1002,7 +1116,7 @@ diplomatic_decisions = {
 					}
 					add_country_modifier = {
 						name = "Fall_Blau_ai"
-						duration = 180
+						duration = 300
 					}
 				}
 			}
@@ -1038,7 +1152,7 @@ diplomatic_decisions = {
 					}
 					add_country_modifier = {
 						name = "Fall_Blau_ai"
-						duration = 180
+						duration = 300
 					}
 				}
 			}
@@ -1058,6 +1172,31 @@ diplomatic_decisions = {
 					add_country_modifier = {
 						name = "Fall_Blau_ai"
 						duration = 300
+					}
+				}
+			}
+
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "fall_blau_shock_ai"
+						duration = 280
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = no
+					}
+					add_country_modifier = {
+						name = "fall_blau_shock"
+						duration = 280
 					}
 				}
 			}
@@ -1215,7 +1354,32 @@ diplomatic_decisions = {
 			officer_pool = 30000
 			add_country_modifier = {
 				name = "Zitadelle_ai"
-				duration = 240
+				duration = 30
+			}
+
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "zitadelle_shock_ai"
+						duration = 30
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = no
+					}
+					add_country_modifier = {
+						name = "Zitadelle_shock"
+						duration = 60
+					}
+				}
 			}
 		}
 		ai_will_do = {

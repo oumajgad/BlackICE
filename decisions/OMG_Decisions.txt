@@ -8,9 +8,32 @@ diplomatic_decisions = {
 			}
 		}
 		allow = {
-			year = 1940
 		}
 		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+						not = {
+							or = {
+								tag = GER
+								tag = HUN
+								tag = ROM
+								tag = SLO
+								tag = FIN
+								tag = JAP
+								tag = ITA
+								tag = AST
+								tag = SOV
+								tag = USA
+								tag = ENG
+							}
+						}
+						war = yes
+					}
+					set_country_flag = training_laws_check
+				}
+			}
 			OMG = {
 				any_country = {
 					limit = {
@@ -21,19 +44,7 @@ diplomatic_decisions = {
 							tag = SLO
 						}
 						ai = yes
-						year = 1942
-						not = {
-							3309 = {
-								controller = {
-									faction = axis
-								}
-							}
-							1442 = {
-								controller = {
-									faction = axis
-								}
-							}
-						}
+						war_with = SOV
 					}
 					set_country_flag = training_laws_check
 				}
@@ -41,8 +52,10 @@ diplomatic_decisions = {
 			OMG = {
 				any_country = {
 					limit = {
+						ai = yes
 						tag = FIN
-						year = 1942
+						#year = 1942
+						war_with = SOV
 						not = {
 							696 = {
 								controller = {
@@ -62,10 +75,12 @@ diplomatic_decisions = {
 			OMG = {
 				any_country = {
 					limit = {
+						ai = yes
 						tag = JAP
+						war_with = USA
 						or = {
 							and = {
-								year = 1943
+								#year = 1943
 								not = {
 									controls = 5825
 									controls = 10669
@@ -73,7 +88,7 @@ diplomatic_decisions = {
 								}
 							}
 							and = {
-								year = 1940
+								#year = 1940
 								not = {
 									or = {
 										controls = 5020
@@ -89,8 +104,10 @@ diplomatic_decisions = {
 			OMG = {
 				any_country = {
 					limit = {
+						ai = yes
 						tag = ITA
-						year = 1941
+						war_with = SOV
+						#year = 1941
 						not = {
 							5484 = {
 								controller = {
@@ -105,8 +122,10 @@ diplomatic_decisions = {
 			OMG = {
 				any_country = {
 					limit = {
+						ai = yes
 						tag = AST
-						year = 1942
+						#year = 1942
+						war_with = JAP
 						not = {
 							6596 = {
 								controller = {
@@ -123,9 +142,39 @@ diplomatic_decisions = {
 					set_country_flag = training_laws_check
 				}
 			}
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+						tag = SOV
+						war_with = GER
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+						tag = USA
+						war_with = JAP
+					}
+					set_country_flag = training_laws_check
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+						tag = ENG
+						war_with = JAP
+					}
+					set_country_flag = training_laws_check
+				}
+			}
 			add_country_modifier = {
 				name = training_laws_check_timer
-				duration = 180
+				duration = 30
 			}
 		}
 		ai_will_do = {
@@ -3465,6 +3514,58 @@ diplomatic_decisions = {
 					duration = 7
 				}
 			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	soviet_winter_reverse_decision_I = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			not = {
+				has_country_flag = soviet_winter_reverse_decision_I
+			}
+			SOV = {
+				has_country_flag = wintercampaign
+				not = {
+					has_country_modifier = Winter_offensive_AI
+					has_country_modifier = Winter_offensive
+				}
+			}
+		}
+		effect = {
+			SOV = {
+				soviet_winter_operations_bonus_tech_reverse = 2000
+			}
+			set_country_flag = soviet_winter_reverse_decision_I
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	soviet_winter_reverse_decision_II = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			not = {
+				has_country_flag = soviet_winter_reverse_decision_I
+			}
+			SOV = {
+				has_country_flag = op_uranus
+				not = {
+					has_country_modifier = Uranus_AI
+					has_country_modifier = Uranus
+				}
+			}
+		}
+		effect = {
+			SOV = {
+				soviet_winter_operations_bonus_tech_reverse = 2000
+			}
+			set_country_flag = soviet_winter_reverse_decision_II
 		}
 		ai_will_do = {
 			factor = 1

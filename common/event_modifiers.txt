@@ -825,7 +825,7 @@ Fall_Blau_ai = {
 	global_crude_oil = 0.5
 	supply_throughput = 1.5
 	defend_reinforce_chance = 0.25
-	#reinforcement_bonus = 1
+	reinforcement_bonus = 0.1
 	soft_attack = 0.5
 	hard_attack = 0.4
 	land_organisation = 0.4
@@ -833,7 +833,7 @@ Fall_Blau_ai = {
 	global_rare_materials = 0.25
 	global_metal = 0.15
 	global_leadership_modifier = 0.05
-	unit_repair = 0.05
+	unit_repair = 0.25
 	casualty_trickleback = 0.1
 }
 Fall_Blau = {
@@ -861,16 +861,10 @@ Zitadelle_ai = {
 	officer_recruitment = 0.50
 	global_crude_oil = 2.5
 	supply_throughput = 0.8
-	defend_reinforce_chance = 0.25
-	reinforcement_bonus = 0.1
 	soft_attack = 0.3
 	hard_attack = 0.3
 	land_organisation = 0.15
-	global_ic = 0.25
-	global_rare_materials = 0.4
-	global_metal = 0.3
-	global_leadership_modifier = 0.05
-	unit_repair = 0.05
+	unit_repair = 0.2
 }
 Zitadelle = {
 
@@ -923,207 +917,235 @@ Spring_Awakening = {
 }
 
 ### Soviet Barbarossa effects - at least some
-rodina_one_high = {
-	global_ic = 0.05
-	global_leadership_modifier = 0.05
-	#leader_defence = 0.15
-	org_regain = -0.05
-	supply_throughput = -0.1
+barbarossa_shock_AI = {
+	land_organisation = -0.5
+	soft_attack = -0.6
+	hard_attack = -0.6
+	org_regain = -0.4
+	combat_movement_speed = -0.15
+	territorial_pride = -0.3
+}
+barbarossa_shock = {
+	land_organisation = -0.5
+	soft_attack = -0.3
+	hard_attack = -0.3
+	org_regain = -0.2
+	combat_movement_speed = -0.15
+	territorial_pride = -0.2
+}
+typhoon_shock_no_GPW = {
 	land_organisation = -0.1
-	air_organisation = -0.1
-	combat_movement_speed = -0.05
+	soft_attack = -0.25
+	hard_attack = -0.25
+	org_regain = -0.2
+	combat_movement_speed = -0.15
+	territorial_pride = -0.15
 }
-rodina_two_high = {
-	global_ic = 0.1
-	global_leadership_modifier = 0.1
-	#leader_defence = 0.15
-	org_regain = -0.05
-	supply_throughput = -0.1
-	land_organisation = -0.2
-	air_organisation = -0.1
-	combat_movement_speed = -0.05
-}
-rodina_three_high = {
-	global_ic = 0.15
-	global_manpower_modifier = 0.25
-	global_leadership_modifier = 0.15
-	#leader_defence = 0.15
-	org_regain = -0.025
-	supply_throughput = -0.1
-	land_organisation = -0.05
-	air_organisation = -0.025
-	combat_movement_speed = -0.05
+typhoon_shock_GPW = {
+	land_organisation = -0.15
+	soft_attack = -0.3
+	hard_attack = -0.3
+	org_regain = -0.3
+	combat_movement_speed = -0.2
+	territorial_pride = -0.3
 }
 
-#rodina_Hard_AI = {
+FTM_bonus = {
+	land_organisation = 0.05
+	soft_attack = 0.15
+	hard_attack = 0.15
+	org_regain = 0.1
+	combat_movement_speed = -0.05
+	land_build_speed = -0.3
+	tank_build_speed = -0.3
+	territorial_pride = 0.2
+}
+GPW_bonus = {
+	land_organisation = 0.1
+	soft_attack = 0.15
+	hard_attack = 0.15
+	org_regain = 0.1
+	combat_movement_speed = 0.05
+	land_build_speed = -0.4
+	tank_build_speed = -0.4
+	territorial_pride = 0.3
+}
+
+#rodina_one_high = {
+#	global_ic = 0.05
+#	global_leadership_modifier = 0.05
+#	#leader_defence = 0.15
+#	org_regain = -0.05
+#	supply_throughput = -0.1
+#	land_organisation = -0.1
+#	air_organisation = -0.1
+#	combat_movement_speed = -0.05
+#}
+#rodina_two_high = {
+#	global_ic = 0.1
+#	global_leadership_modifier = 0.1
+#	#leader_defence = 0.15
+#	org_regain = -0.05
+#	supply_throughput = -0.1
+#	land_organisation = -0.2
+#	air_organisation = -0.1
+#	combat_movement_speed = -0.05
+#}
+#rodina_three_high = {
+#	global_ic = 0.15
+#	global_manpower_modifier = 0.25
+#	global_leadership_modifier = 0.15
+#	#leader_defence = 0.15
+#	org_regain = -0.025
+#	supply_throughput = -0.1
+#	land_organisation = -0.05
+#	air_organisation = -0.025
+#	combat_movement_speed = -0.05
+#}
+#
+#rodina_one_high_AI = {
+#	land_organisation = -0.05
+#	soft_attack = -0.1
+#	hard_attack = -0.1
+#	org_regain = -0.15
+#}
+#rodina_two_high_AI = {
+#	land_organisation = -0.1
+#	soft_attack = -0.1
+#	hard_attack = -0.1
+#	org_regain = -0.1
+#}
+#rodina_three_high_AI = {
 #	global_ic = 0.25
 #	global_manpower_modifier = 0.25
 #	global_leadership_modifier = 0.1
-#	#leader_defence = 0.15
-#	org_regain = -0.35
+#	org_regain = -0.05
 #	supply_throughput = 0.2
+#	land_organisation = -0.1
+#	combat_movement_speed = -0.05
+#	soft_attack = -0.1
+#	hard_attack = -0.1
+#}
+#
+#rodina_long_AI = {
+#	global_ic = 0.25
+#	land_organisation = -0.1
+#	soft_attack = -0.3
+#	hard_attack = -0.3
 #	land_build_speed = -0.15
 #	tank_build_speed = -0.15
-#	land_organisation = -0.15
-#	combat_movement_speed = -0.05
-#	soft_attack = 0.05
-#	hard_attack = 0.05
+#	land_organisation = -0.5
+#	soft_attack = -0.05
+#	hard_attack = -0.05
 #}
 #
-#rodina_Grofaz_AI = {
-#	global_ic = 0.35
-#	global_manpower_modifier = 0.35
-#	global_leadership_modifier = 0.2
-#	#leader_defence = 0.15
-#	org_regain = -0.25
-#	supply_throughput = 0.35
+#patriotic_war_one = {
+#	global_manpower_modifier = 0.25
+#	global_ic = 0.1
+#	territorial_pride = 0.025
+#	org_regain = -0.1
+#	leader_defence = 0.05
+#	soft_attack = -0.05
+#	hard_attack = -0.05
+#	national_unity = 0.05
+#	defend_reinforce_chance = 0.05
+#	#land_organisation = -0.1
+#	air_organisation = -0.05
+#
+#}
+#patriotic_war_two = {
+#	global_manpower_modifier = 0.25
+#	global_ic = 0.05
+#	territorial_pride = 0.025
+#	org_regain = -0.05
+#	leader_defence = 0.05
+#	soft_attack = -0.05
+#	hard_attack = -0.05
+#	national_unity = 0.05
+#	defend_reinforce_chance = 0.05
+#	#land_organisation = -0.025
+#	#air_organisation = -0.05
+#
+#}
+#patriotic_war_three = {
+#	global_manpower_modifier = 0.25
+#	global_ic = 0.05
+#	territorial_pride = 0.05
+#	org_regain = -0.05
+#	leader_defence = 0.1
+#	soft_attack = 0.2
+#	hard_attack = 0.1
+#	national_unity = 0.05
+#	defend_reinforce_chance = 0.05
+#	#land_organisation = -0.025
+#	#air_organisation = -0.05
+#
+#}
+#patriotic_war_one_AI = {
+#	global_manpower_modifier = 0.25
+#	global_ic = 0.1
+#	#industrial_efficiency = 0.05
+#	territorial_pride = 0.025
+#	org_regain = -0.1
+#	#leader_defence = 0.05
+#	soft_attack = -0.05
+#	hard_attack = -0.05
+#	national_unity = 0.05
+#	defend_reinforce_chance = 0.05
+#	land_organisation = -0.05
+#	#air_organisation = -0.05
 #	land_build_speed = -0.2
 #	tank_build_speed = -0.2
-#	land_organisation = -0.1
-#	combat_movement_speed = -0.05
+#}
+#patriotic_war_two_AI = {
+#	global_manpower_modifier = 0.25
+#	global_ic = 0.05
+#	#industrial_efficiency = 0.05
+#	territorial_pride = 0.025
+#	org_regain = -0.05
+#	#leader_defence = 0.05
+#	soft_attack = -0.05
+#	hard_attack = -0.05
+#	national_unity = 0.05
+#	defend_reinforce_chance = 0.05
+#	land_organisation = -0.05
+#	#air_organisation = -0.05
+#	land_build_speed = -0.15
+#	tank_build_speed = -0.15
+#
+#}
+#patriotic_war_three_AI = {
+#	global_manpower_modifier = 0.25
+#	global_ic = 0.05
+#	#industrial_efficiency = 0.05
+#	territorial_pride = 0.05
+#	org_regain = -0.05
+#	#leader_defence = 0.1
+#	soft_attack = 0.2
+#	hard_attack = 0.1
+#	national_unity = 0.05
+#	defend_reinforce_chance = 0.05
+#	land_organisation = -0.05
+#	#air_organisation = -0.05
+#	land_build_speed = -0.1
+#	tank_build_speed = -0.1
+#}
+#patriotic_war = {
+#	global_manpower_modifier = 0.5
+#	global_ic = 0.15
+#	territorial_pride = 0.05
+#	org_regain = 0.2
+#	leader_defence = 0.2
 #	soft_attack = 0.1
 #	hard_attack = 0.1
-#}
+#	#national_unity = 0.05
+#	defend_reinforce_chance = 0.1
+#	officer_recruitment = 0.8
+#	#land_organisation = -0.15
 #
-#rodina_Grofaz_AI_Eco = {
-#	global_ic = 1.0
-#	global_manpower_modifier = 0.25
-#	global_leadership_modifier = 0.1
-#	#leader_defence = 0.15
-#	org_regain = -0.35
-#	supply_throughput = 0.2
-#	land_build_speed = -0.2
-#	tank_build_speed = -0.2
-#	land_organisation = -0.1
+#	air_organisation = -0.15
+#	combat_movement_speed = 0.1
 #}
-
-rodina_AI = {
-	global_ic = 0.5
-	global_manpower_modifier = 0.25
-	global_leadership_modifier = 0.1
-	#leader_defence = 0.15
-	org_regain = -0.15
-	supply_throughput = 0.2
-	land_organisation = -0.35
-	combat_movement_speed = -0.05
-	soft_attack = -0.35
-	hard_attack = -0.35
-}
-rodina_long_AI = {
-	global_ic = 0.5
-	land_organisation = -0.1
-	soft_attack = -0.3
-	hard_attack = -0.3
-	land_build_speed = -0.15
-	tank_build_speed = -0.15
-}
-#rodina_AI_IC_bonus = {
-#	global_ic = 0.75
-#}
-
-patriotic_war_one = {
-	global_manpower_modifier = 0.25
-	global_ic = 0.1
-	territorial_pride = 0.025
-	org_regain = -0.1
-	leader_defence = 0.05
-	soft_attack = -0.05
-	hard_attack = -0.05
-	national_unity = 0.05
-	defend_reinforce_chance = 0.05
-	#land_organisation = -0.1
-	air_organisation = -0.05
-
-}
-patriotic_war_two = {
-	global_manpower_modifier = 0.25
-	global_ic = 0.05
-	territorial_pride = 0.025
-	org_regain = -0.05
-	leader_defence = 0.05
-	soft_attack = -0.05
-	hard_attack = -0.05
-	national_unity = 0.05
-	defend_reinforce_chance = 0.05
-	#land_organisation = -0.025
-	#air_organisation = -0.05
-
-}
-patriotic_war_three = {
-	global_manpower_modifier = 0.25
-	global_ic = 0.05
-	territorial_pride = 0.05
-	org_regain = -0.05
-	leader_defence = 0.1
-	soft_attack = 0.2
-	hard_attack = 0.1
-	national_unity = 0.05
-	defend_reinforce_chance = 0.05
-	#land_organisation = -0.025
-	#air_organisation = -0.05
-
-}
-patriotic_war_one_AI = {
-	global_manpower_modifier = 0.25
-	global_ic = 0.1
-	industrial_efficiency = 0.05
-	territorial_pride = 0.025
-	org_regain = -0.1
-	leader_defence = 0.05
-	soft_attack = -0.05
-	hard_attack = -0.05
-	national_unity = 0.05
-	defend_reinforce_chance = 0.05
-	land_organisation = -0.1
-	air_organisation = -0.05
-	land_build_speed = -0.2
-	tank_build_speed = -0.2
-}
-patriotic_war_two_AI = {
-	global_manpower_modifier = 0.25
-	global_ic = 0.05
-	industrial_efficiency = 0.05
-	territorial_pride = 0.025
-	org_regain = -0.05
-	leader_defence = 0.05
-	soft_attack = -0.05
-	hard_attack = -0.05
-	national_unity = 0.05
-	defend_reinforce_chance = 0.05
-	land_organisation = -0.05
-	air_organisation = -0.05
-
-}
-patriotic_war_three_AI = {
-	global_manpower_modifier = 0.25
-	global_ic = 0.05
-	industrial_efficiency = 0.05
-	territorial_pride = 0.05
-	org_regain = -0.05
-	leader_defence = 0.1
-	soft_attack = 0.2
-	hard_attack = 0.1
-	national_unity = 0.05
-	defend_reinforce_chance = 0.05
-	land_organisation = -0.05
-	air_organisation = -0.05
-}
-patriotic_war = {
-	global_manpower_modifier = 0.5
-	global_ic = 0.15
-	territorial_pride = 0.05
-	org_regain = 0.2
-	leader_defence = 0.2
-	soft_attack = 0.1
-	hard_attack = 0.1
-	#national_unity = 0.05
-	defend_reinforce_chance = 0.1
-	officer_recruitment = 0.8
-	#land_organisation = -0.15
-
-	air_organisation = -0.15
-	combat_movement_speed = 0.1
-}
 
 love_of_freedom = {
 	global_ic = 0.1
@@ -2012,13 +2034,15 @@ Stalin_fights  = {
 	territorial_pride = 0.05
 }
 Winter_offensive_AI = {
-	soft_attack = 0.2
-	hard_attack = 0.2
-	org_regain = 0.25
+	land_organisation = 0.2
+	soft_attack = 0.35
+	hard_attack = 0.35
+	org_regain = 0.55
 	territorial_pride = 0.5
 	global_fuel = 1.5
 	reinforcement_bonus = 0.2
 	global_manpower_modifier = 0.5
+	unit_repair = 0.3
 }
 Winter_offensive = {
 	soft_attack = 0.15
@@ -2029,16 +2053,19 @@ Winter_offensive = {
 	reinforcement_bonus = 0.1
 	global_manpower_modifier = 0.3
 }
+Winter_offensive_shock = {
+	land_organisation = -0.9
+	soft_attack = -0.15
+	hard_attack = -0.15
+}
 Uranus_AI = {
 	soft_attack = 0.3
 	hard_attack = 0.3
-	land_organisation = 0.05
+	land_organisation = 0.4
 	org_regain = 0.25
-	territorial_pride = 0.6
-	global_crude_oil = 1.5
+	territorial_pride = 0.5
+	unit_repair = 0.2
 	reinforcement_bonus = 0.2
-	casualty_trickleback = 0.3
-	global_manpower_modifier = 0.7
 }
 Uranus = {
 	soft_attack = 0.2
@@ -2052,14 +2079,14 @@ Uranus = {
 	global_manpower_modifier = 0.35
 }
 Kutuzov_AI = {
-	soft_attack = 0.5
-	hard_attack = 0.5
-	land_organisation = 0.075
+	soft_attack = 0.4
+	hard_attack = 0.4
+	land_organisation = 0.3
 	org_regain = 0.35
+	unit_repair = 0.1
 	territorial_pride = 0.6
 	global_crude_oil = 1.5
 	reinforcement_bonus = 0.2
-	casualty_trickleback = 0.3
 	global_manpower_modifier = 0.8
 }
 Kutuzov = {
@@ -2078,7 +2105,7 @@ Bagration_AI = {
 	hard_attack = 0.45
 	land_organisation = 0.15
 	org_regain = 0.45
-	territorial_pride = 0.7
+	territorial_pride = 0.5
 	global_crude_oil = 1.5
 	reinforcement_bonus = 0.3
 	casualty_trickleback = 0.2
@@ -3687,31 +3714,38 @@ AI_multirole_research = { }
 Disband_Timer = { }
 
 fall_blau_shock = {
-	org_regain = -0.05
-	land_organisation = -0.25
-	air_organisation = -0.05
-	soft_attack = -0.1
-	hard_attack = -0.1
-}
-zitadelle_shock = {
-	org_regain = -0.05
-	land_organisation = -0.25
-	air_organisation = -0.05
-	soft_attack = -0.1
-	hard_attack = -0.1
+	org_regain = -0.1
+	land_organisation = -0.45
+	air_organisation = -0.15
+	soft_attack = -0.25
+	hard_attack = -0.25
+	territorial_pride = -0.25
 }
 fall_blau_shock_ai = {
 	org_regain = -0.2
-	land_organisation = -0.6
+	land_organisation = -0.2
 	air_organisation = -0.3
 	soft_attack = -0.5
 	hard_attack = -0.5
+	territorial_pride = -0.5
+	land_build_speed = -0.6
+	tank_build_speed = -0.6
+}
+zitadelle_shock = {
+	org_regain = -0.1
+	land_organisation = -0.45
+	air_organisation = -0.15
+	soft_attack = -0.25
+	hard_attack = -0.25
+	territorial_pride = -0.25
 }
 zitadelle_shock_ai = {
 	org_regain = -0.2
-	land_organisation = -0.3
+	land_organisation = -0.2
 	air_organisation = -0.3
-
+	soft_attack = -0.5
+	hard_attack = -0.5
+	territorial_pride = -0.5
 }
 Delay_The_Plan = {
 

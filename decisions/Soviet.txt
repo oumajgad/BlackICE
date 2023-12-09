@@ -1827,4 +1827,29 @@ diplomatic_decisions = {
 			}
 		}
 	}
+	FTM_GPW_removal = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			SOV = {
+				has_country_modifier = FTM_bonus
+				has_country_modifier = GPW_bonus
+				not = {
+					has_country_modifier = barbarossa_shock
+					has_country_modifier = barbarossa_shock_AI
+				}
+			}
+		}
+		effect = {
+			SOV = {
+				remove_country_modifier = FTM_bonus
+				remove_country_modifier = GPW_bonus
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 }

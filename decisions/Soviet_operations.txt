@@ -14,10 +14,10 @@ diplomatic_decisions = {
 		allow = {
 			war_with = GER
 			month = 11
-			not = {
-				has_country_modifier = rodina_three_high
-				has_country_modifier = rodina_AI
-			}
+			#not = {
+			#	has_country_modifier = rodina_three_high
+			#	has_country_modifier = rodina_AI
+			#}
 		}
 		effect = {
 			set_country_flag = wintercampaign
@@ -34,7 +34,7 @@ diplomatic_decisions = {
 					fuel = 40000
 					add_country_modifier = {
 						name = "Winter_offensive_AI"
-						duration = 45
+						duration = 40
 					}
 					add_country_modifier = {
 						name = "Winter_offensive_cooldown"
@@ -50,7 +50,7 @@ diplomatic_decisions = {
 					}
 					add_country_modifier = {
 						name = "Winter_offensive"
-						duration = 45
+						duration = 30
 					}
 					add_country_modifier = {
 						name = "Winter_offensive_cooldown"
@@ -58,6 +58,48 @@ diplomatic_decisions = {
 					}
 				}
 			}
+			OMG = {		### AI PENALTY
+				any_country = {
+					limit = {
+						tag = GER
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
+					add_country_modifier = {
+						name = "Winter_offensive_shock"
+						duration = 30
+					}
+				}
+			}
+			OMG = {		
+				any_country = {
+					limit = {
+						tag = HUN
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
+					add_country_modifier = {
+						name = "Winter_offensive_shock"
+						duration = 30
+					}
+				}
+			}
+			OMG = {		
+				any_country = {
+					limit = {
+						tag = ROM
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
+					add_country_modifier = {
+						name = "Winter_offensive_shock"
+						duration = 30
+					}
+				}
+			}
 			moscowdefence = {
 				limit = {
 					infra = 3
@@ -86,6 +128,7 @@ diplomatic_decisions = {
 				}
 				create_revolt = 3
 			}
+			soviet_winter_operations_bonus_tech = 2000
 		}
 		ai_will_do = {
 			factor = 1
@@ -134,11 +177,11 @@ diplomatic_decisions = {
 						has_country_modifier = Winter_offensive
 						has_country_modifier = Winter_offensive_AI
 					}
-					2857 = {
-						controller = {
-							faction = axis
-						}
-					} #Stalingrad
+					#2857 = {
+					#	controller = {
+					#		faction = axis
+					#	}
+					#} #Stalingrad
 				}
 				and = {
 					GER = {
@@ -156,7 +199,7 @@ diplomatic_decisions = {
 		}
 		allow = {
 			war_with = GER
-			month = 1
+			date = 1942.11.19
 		}
 		effect = {
 			set_country_flag = op_uranus
@@ -197,6 +240,7 @@ diplomatic_decisions = {
 					}
 				}
 			}
+			soviet_winter_operations_bonus_tech = 2000
 		}
 		ai_will_do = {
 			factor = 1

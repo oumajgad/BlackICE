@@ -35,35 +35,93 @@ SOV_AI_BALANCE = {
 	#unit_repair = 0.5
 	supply_consumption = -0.5
 	supply_throughput = 1
+	land_organisation = -0.55
 
 	icon = 5
 }
 SOV_AI_TWEAK = {
 	potential = {
 		tag = SOV
-		ai = yes
+		#ai = yes
 	}
 	trigger = {
-		GER = {
-			ai = yes
+		#GER = {
+		#	ai = yes
+		#}
+		not = {
+			year = 1944
 		}
+		
 		or = {
-			#not = {
-			#	exists = EST
-			#	exists = LIT
-			#	exists = LAT
-			#	war_with = GER
-			#}
 			and = {
 				war_with = GER
-				total_amount_of_brigades = 5500
+				total_amount_of_brigades = 5000
+				PER = {
+					faction = axis
+				}
+				TUR = {
+					faction = axis
+				}
+			}
+			and = {
+				war_with = GER
+				total_amount_of_brigades = 4500
+				or = {
+					and = {
+						PER = {
+							faction = axis
+						}
+						not = {
+							TUR = {
+								faction = axis
+							}
+						}
+					}
+					and = {
+						TUR = {
+							faction = axis
+						}
+						not = {
+							PER = {
+								faction = axis
+							}
+						}
+					}
+					and = {
+						not = {
+							exists = PER
+						}
+						TUR = {
+							faction = axis
+						}
+					}
+				}
+			}
+			and = {
+				war_with = GER
+				total_amount_of_brigades = 4000
+				or = {
+					not = {
+						PER = {
+							faction = axis
+						}
+					}
+					not = {
+						exists = PER
+					}
+				}
+				not = {
+					TUR = {
+						faction = axis
+					}
+				}
 			}
 		}
 	}
 
-	land_build_speed = 0.5
-	tank_build_speed = 0.5
-	air_build_speed = 0.5
+	land_build_speed = 0.8
+	tank_build_speed = 0.8
+	#air_build_speed = 0.65
 
 	icon = 5
 }
@@ -9541,6 +9599,7 @@ GPW = {
 			or = {
 				not = {
 					has_country_flag = for_the_mother_land
+					has_country_flag = for_the_mother_land_AI
 				}
 			}
 			or = {
@@ -9552,8 +9611,8 @@ GPW = {
 	}
 
 	org_regain = -0.3
-	land_organisation = -0.6
-	national_unity = -0.3
+	land_organisation = -0.25
+	national_unity = -0.15
 
 	icon = 3
 }
@@ -9561,7 +9620,7 @@ GPW_AIvsAI = {
 
 	potential = {
 		tag = SOV
-		ai = yes
+		ai = yes		
 		GER = { ai = yes }
 		war_with = GER
 		not = { year = 1942}
@@ -9570,23 +9629,15 @@ GPW_AIvsAI = {
 	}
 
 	trigger = {
-		and = {
-			or = {
-				not = {
-					has_country_flag = for_the_mother_land
-				}
-			}
-			or = {
-				not = {
-					has_country_flag = great_patriotic_war
-				}
-			}
+		not = {
+			has_country_flag = for_the_mother_land_AI
+			has_country_flag = great_patriotic_war
 		}
 	}
 
 	org_regain = -0.15
-	land_organisation = -0.75
-	national_unity = -0.3
+	land_organisation = -0.25
+	national_unity = -0.15
 
 	icon = 3
 }
