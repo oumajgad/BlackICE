@@ -17,6 +17,8 @@ if wx ~= nil then
 
 	UI.m_scrolledWindow_HelpMisc = wx.wxScrolledWindow( UI.m_notebook2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHSCROLL + wx.wxVSCROLL )
 	UI.m_scrolledWindow_HelpMisc:SetScrollRate( 5, 5 )
+	UI.m_scrolledWindow_HelpMisc:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
+
 	UI.gSizerHelpMisc0 = wx.wxGridSizer( 2, 2, 0, 5 )
 
 	UI.bSizerHelpMisc1 = wx.wxBoxSizer( wx.wxVERTICAL )
@@ -29,7 +31,7 @@ if wx ~= nil then
 	UI.bSizerHelpMisc1:Add( UI.m_staticTextHelpMisc, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_staticTextHelpMisc1 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Strategic Resources are crucial for the military production of any nation. If you do not have access to these resources other nations may be open to selling them for a price, if you have them there is much money to be made as an exporter of them. \nTrade deals last for 1 year. \nEach 200 IC requires a resource level to avoid maluses, below 100IC there are no maluses. Puppets give their excess resource to the master, who can also decide to sell it.\nEach trade costs the player 2000 money, between allies the price is halved.\n", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticTextHelpMisc1:Wrap( 350 )
+	UI.m_staticTextHelpMisc1:Wrap( 370 )
 
 	UI.m_staticTextHelpMisc1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
@@ -136,10 +138,10 @@ if wx ~= nil then
 
 	UI.bSizerHelp50:Add( UI.m_staticTextHelp23, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticTextHelp24 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "In BlackICE, unit training level has been reworked slightly. \nSame as in Vanilla, Training Laws are responsible for how much starting experience unit has, but what was changed is speed at which units reinforce. Penalties (or bonuses) are now much higher resulting in much slower Strength regain with Advanced or Specialist Training. As in reality - it takes far longer to get highly trained reinforcements. It might not be possible to keep Specialised or even Advanced Training on for extensive periods of time during war, expecially during long periods of combat.", wx.wxDefaultPosition, wx.wxSize( 350,-1 ), wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticTextHelp24:Wrap( 650 )
+	UI.m_staticTextHelp24 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "In BlackICE, unit training level has been reworked slightly. \nSame as in Vanilla, Training Laws are responsible for how much starting experience unit has, but what was changed is the speed at which units reinforce.\nPenalties (or bonuses) are now much higher, resulting in much slower Strength regain with Advanced or Specialist Training. As in reality - it takes far longer to get highly trained reinforcements. It might not be possible to keep Specialised or even Advanced Training on for extensive periods of time during war, expecially during long periods of combat.", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp24:Wrap( 370 )
 
-	UI.m_staticTextHelp24:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
+	UI.m_staticTextHelp24:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
 	UI.bSizerHelp50:Add( UI.m_staticTextHelp24, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
 
