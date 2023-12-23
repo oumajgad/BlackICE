@@ -564,13 +564,13 @@ function P.LandRatio(voProductionData)
 
 		else
 			laArray = {
-				garrison_brigade = 8,
-				infantry_brigade = 16,
+				garrison_brigade = 6,
+				infantry_brigade = 20,
 				ss_motorized_brigade = 0.4,
 				ss_infantry_brigade = 1,
 				ss_armor_brigade = 0.2,
-				light_armor_brigade = 2,
-				motorized_brigade = 2,
+				light_armor_brigade = 1,
+				motorized_brigade = 1,
 				mechanized_brigade = 4,
 				armor_brigade = 4,
 				heavy_armor_brigade = 1};
@@ -587,10 +587,10 @@ function P.LandRatio(voProductionData)
 			heavy_armor_brigade = 0.5};
 
 
-	elseif voProductionData.Year < 1943 then
+	elseif voProductionData.Year <= 1943 then
 		laArray = {
-			garrison_brigade = 5,
-			infantry_brigade = 12,
+			garrison_brigade = 3,
+			infantry_brigade = 16,
 			ss_motorized_brigade = 0.1,
 			ss_infantry_brigade = 0.1,
 			ss_armor_brigade = 0.1,
