@@ -11,7 +11,7 @@ Stalin_HOG_effect_AI = {
 		head_of_government = 4002
 		industrial_policy_laws = heavy_industry_emphasis
 		not = { war_with = GER }
-		ai = yes
+		#ai = yes
 	}
 	trigger = {
 		tag = SOV
@@ -21,7 +21,7 @@ Stalin_HOG_effect_AI = {
 		ai = yes
 	}
 
-	peace_consumer_goods_demand = -1.0
+	#peace_consumer_goods_demand = -1.0
 
 	icon = 84
 }
@@ -35,7 +35,7 @@ SOV_AI_BALANCE = {
 	#unit_repair = 0.5
 	supply_consumption = -0.5
 	supply_throughput = 1
-	land_organisation = -0.55
+	#land_organisation = -0.55
 
 	icon = 5
 }
@@ -48,13 +48,13 @@ SOV_AI_TWEAK = {
 		#GER = {
 		#	ai = yes
 		#}
-		not = {
-			year = 1944
-		}
+		#not = {
+		#	year = 1944
+		#}
 		
 		or = {
 			and = {
-				war_with = GER
+				#war_with = GER
 				total_amount_of_brigades = 5000
 				PER = {
 					faction = axis
@@ -64,7 +64,7 @@ SOV_AI_TWEAK = {
 				}
 			}
 			and = {
-				war_with = GER
+				#war_with = GER
 				total_amount_of_brigades = 4500
 				or = {
 					and = {
@@ -98,8 +98,8 @@ SOV_AI_TWEAK = {
 				}
 			}
 			and = {
-				war_with = GER
-				total_amount_of_brigades = 4000
+				#war_with = GER
+				total_amount_of_brigades = 4100
 				or = {
 					not = {
 						PER = {
@@ -119,72 +119,65 @@ SOV_AI_TWEAK = {
 		}
 	}
 
-	land_build_speed = 0.8
-	tank_build_speed = 0.8
+	land_build_speed = 5
+	tank_build_speed = 5
 	#air_build_speed = 0.65
 
 	icon = 5
 }
-#SOV_AI_WAR_I = {
-#	potential = {
-#		tag = SOV
-#		ai = yes
-#	}
-#	trigger = {
-#		war_with = GER
-#		GER = {
-#			ai = no
-#		}
-#		not = {
-#			year = 1942
-#		}
-#	}
-#
-#	land_build_speed = -0.25
-#	tank_build_speed = -0.25
-#	air_build_speed = -0.25
-#
-#	icon = 5
-#}
+SOV_AI_WAR_I = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		war_with = GER
+		not = {
+			total_amount_of_brigades = 2000
+		}
+	}
 
-#SOV_AI_WAR_II = {
-#	potential = {
-#		tag = SOV
-#		ai = yes
-#	}
-#	trigger = {
-#		war_with = GER
-#		year = 1942
-#		GER = {
-#			ai = no
-#		}
-#	}
-#
-#	land_build_speed = -0.25
-#	tank_build_speed = -0.25
-#	air_build_speed = -0.2
-#
-#	icon = 5
-#}
-#SOV_AI_WAR_III = {
-#	potential = {
-#		tag = SOV
-#		ai = yes
-#	}
-#	trigger = {
-#		war_with = GER
-#		year = 1942
-#		GER = {
-#			ai = yes
-#		}
-#	}
-#
-#	land_build_speed = -0.15
-#	tank_build_speed = -0.15
-#	air_build_speed = -0.15
-#
-#	icon = 5
-#}
+	land_build_speed = -1.75
+	tank_build_speed = -1.75
+
+	icon = 5
+}
+SOV_AI_WAR_II = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		war_with = GER
+		not = {
+			total_amount_of_brigades = 3000
+		}
+		total_amount_of_brigades = 2000
+	}
+
+	land_build_speed = -1.25
+	tank_build_speed = -1.25
+
+	icon = 5
+}
+SOV_AI_WAR_III = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		war_with = GER
+		not = {
+			total_amount_of_brigades = 4000
+		}
+		total_amount_of_brigades = 3000
+	}
+
+	land_build_speed = -0.75
+	tank_build_speed = -0.75
+
+	icon = 5
+}
 
 ###########################################################
 ###############		 Nat. Focuses 	 	###################
@@ -7042,12 +7035,13 @@ Great_Patriotic_War_achievement = {
 
 	potential = {
 		tag = SOV
+		ai = no
 	}
 
 	trigger = {
 		war_with = GER
 		not =  {has_global_flag = NO_MODIFIERS }
-		has_country_modifier = patriotic_war
+		has_country_modifier = GPW_bonus
 		2041 = { controller = { faction = axis } } #Warszawa
 	}
 
@@ -7063,7 +7057,7 @@ Great_Red_Army_achievement = {
 	potential = {
 		tag = SOV
 		not =  {has_global_flag = NO_MODIFIERS }
-		has_country_modifier = patriotic_war
+		has_country_modifier = GPW_bonus
 	}
 
 	trigger = {

@@ -938,57 +938,61 @@ diplomatic_decisions = {
 	#######################
 	# OP TYPHOON
 
-	operation_typhoon = {
-		major = yes
-		potential = {
-			tag = GER
-			ai = yes
-			not = {
-				has_country_flag = operation_typhoon
-			}
-			war_with = SOV
-			1409 = {
-				controlled_by = SOV
-			}
-		}
-		allow = {
-			date = 1941.9.30
-		}
-		effect = {
-			set_country_flag = operation_typhoon
-			OMG = {
-				any_country = {
-					limit = {
-						tag = SOV
-						#ai = yes
-						not = {
-							has_country_modifier = GPW_bonus
-						}
-					}
-					add_country_modifier = {
-						name = "typhoon_shock_no_GPW"
-						duration = 30
-					}
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						tag = SOV
-						#ai = yes
-						has_country_modifier = GPW_bonus
-					}
-					add_country_modifier = {
-						name = "typhoon_shock_GPW"
-						duration = 30
-					}
-				}
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
+	#operation_typhoon = {
+	#	major = yes
+	#	potential = {
+	#		tag = GER
+	#		ai = yes
+	#		not = {
+	#			has_country_flag = operation_typhoon
+	#		}
+	#		war_with = SOV
+	#		1409 = {
+	#			controlled_by = SOV
+	#		}
+	#	}
+	#	allow = {
+	#		date = 1941.9.30
+	#	}
+	#	effect = {
+	#		set_country_flag = operation_typhoon
+	#		add_country_modifier = {
+	#			name = typhon_bonus
+	#			duration = 45
+	#		}
+	#		OMG = {
+	#			any_country = {
+	#				limit = {
+	#					tag = SOV
+	#					#ai = yes
+	#					not = {
+	#						has_country_modifier = GPW_bonus
+	#					}
+	#				}
+	#				add_country_modifier = {
+	#					name = "typhoon_shock_no_GPW"
+	#					duration = 30
+	#				}
+	#			}
+	#		}
+	#		OMG = {
+	#			any_country = {
+	#				limit = {
+	#					tag = SOV
+	#					#ai = yes
+	#					has_country_modifier = GPW_bonus
+	#				}
+	#				add_country_modifier = {
+	#					name = "typhoon_shock_GPW"
+	#					duration = 30
+	#				}
+	#			}
+	#		}
+	#	}
+	#	ai_will_do = {
+	#		factor = 1
+	#	}
+	#}
 
 	#######################
 	# OP FALL BLAU PREPARATIONS AI
@@ -1063,9 +1067,9 @@ diplomatic_decisions = {
 			ITA = {
 				fuel = 5000
 			}
-			SOV = {
-				country_event = 91202
-			}
+			#SOV = {
+			#	country_event = 91202
+			#}
 			officer_pool = 20000
 			OMG = {
 				any_country = {
@@ -1259,14 +1263,38 @@ diplomatic_decisions = {
 			ITA = {
 				fuel = 5000
 			}
-			SOV = {
-				country_event = 91204
-			}
+			#SOV = {
+			#	country_event = 91204
+			#}
 			#officer_pool = 20000
 			manpower = 300
 			add_country_modifier = {
 				name = "Fall_Blau"
 				duration = 180
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "fall_blau_shock_ai"
+						duration = 280
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = no
+					}
+					add_country_modifier = {
+						name = "fall_blau_shock"
+						duration = 280
+					}
+				}
 			}
 		}
 	}
@@ -1328,7 +1356,7 @@ diplomatic_decisions = {
 		}
 		allow = {
 			war_with = SOV
-			month = 2
+			date = 1943.7.5
 			1409 = {
 				controller = {
 					faction = comintern
@@ -1342,9 +1370,9 @@ diplomatic_decisions = {
 			manpower = 250
 			fuel = 10000
 			rare_materials = 15000
-			SOV = {
-				country_event = 88617
-			}
+			#SOV = {
+			#	country_event = 88617
+			#}
 			HUN = {
 				fuel = 5000
 			}
@@ -1354,7 +1382,7 @@ diplomatic_decisions = {
 			officer_pool = 30000
 			add_country_modifier = {
 				name = "Zitadelle_ai"
-				duration = 30
+				duration = 180
 			}
 
 			OMG = {
@@ -1365,7 +1393,7 @@ diplomatic_decisions = {
 					}
 					add_country_modifier = {
 						name = "zitadelle_shock_ai"
-						duration = 30
+						duration = 90
 					}
 				}
 			}
@@ -1431,9 +1459,9 @@ diplomatic_decisions = {
 			manpower = 300
 			fuel = 10000
 			rare_materials = 15000
-			SOV = {
-				country_event = 88616
-			}
+			#SOV = {
+			#	country_event = 88616
+			#}
 			HUN = {
 				fuel = 5000
 			}
@@ -1444,6 +1472,30 @@ diplomatic_decisions = {
 			add_country_modifier = {
 				name = "Zitadelle"
 				duration = 90
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "zitadelle_shock_ai"
+						duration = 90
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						ai = no
+					}
+					add_country_modifier = {
+						name = "Zitadelle_shock"
+						duration = 60
+					}
+				}
 			}
 		}
 	}
