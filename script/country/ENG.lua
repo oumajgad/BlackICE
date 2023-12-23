@@ -1201,4 +1201,8 @@ function P.DiploScore_RequestLendLease(liScore, voAI, voSenderTag)
 	return liScore
 end
 
+function P.TrainingLaws_IcTriggerPercent()
+	return 0.05
+end
+
 return AI_ENG
