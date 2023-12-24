@@ -1,0 +1,234 @@
+##############################################################################################
+# In this file the variables which count the days a training law has been active get counted.#
+##############################################################################################
+
+diplomatic_decisions = {
+	minimal_training_count = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			tag = OMG
+			not = {
+				has_country_modifier = minimal_training_count_timer
+			}
+		}
+		major = no
+		effect = {
+			add_country_modifier = {
+				name = "minimal_training_count_timer"
+				duration = 1
+			}
+			OMG = {
+				# COUNTING UP
+				any_country = {
+					limit = {
+						exists = yes
+						training_laws = minimal_training
+						not = {
+							check_variable = {
+								which = "minimal_training_days_active"
+								value = 365	# MAXIMUM AMOUNT OF DAYS STACKED
+							}
+						}
+					}
+					change_variable = {
+						which = "minimal_training_days_active"
+						value = +2 # +2 because a cooldown of 1 day means it will fire the day after tomorrow
+					}
+				}
+				# COUNTING DOWN
+				any_country = {
+					limit = {
+						exists = yes
+						not = {
+							training_laws = minimal_training
+						}
+						check_variable = {
+							which = "minimal_training_days_active"
+							value = 1
+						}
+					}
+					change_variable = {
+						which = "minimal_training_days_active"
+						value = -2
+					}
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	basic_training_count = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			tag = OMG
+			not = {
+				has_country_modifier = basic_training_count_timer
+			}
+		}
+		major = no
+		effect = {
+			add_country_modifier = {
+				name = "basic_training_count_timer"
+				duration = 1
+			}
+			OMG = {
+				# COUNTING UP
+				any_country = {
+					limit = {
+						exists = yes
+						training_laws = basic_training
+						not = {
+							check_variable = {
+								which = "basic_training_days_active"
+								value = 365	# MAXIMUM AMOUNT OF DAYS STACKED
+							}
+						}
+					}
+					change_variable = {
+						which = "basic_training_days_active"
+						value = +2 # +2 because a cooldown of 1 day means it will fire the day after tomorrow
+					}
+				}
+				# COUNTING DOWN
+				any_country = {
+					limit = {
+						exists = yes
+						not = {
+							training_laws = basic_training
+						}
+						check_variable = {
+							which = "basic_training_days_active"
+							value = 1
+						}
+					}
+					change_variable = {
+						which = "basic_training_days_active"
+						value = -2
+					}
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	advanced_training_count = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			tag = OMG
+			not = {
+				has_country_modifier = advanced_training_count_timer
+			}
+		}
+		major = no
+		effect = {
+			add_country_modifier = {
+				name = "advanced_training_count_timer"
+				duration = 1
+			}
+			OMG = {
+				# COUNTING UP
+				any_country = {
+					limit = {
+						exists = yes
+						training_laws = advanced_training
+						not = {
+							check_variable = {
+								which = "advanced_training_days_active"
+								value = 365	# MAXIMUM AMOUNT OF DAYS STACKED
+							}
+						}
+					}
+					change_variable = {
+						which = "advanced_training_days_active"
+						value = +2 # +2 because a cooldown of 1 day means it will fire the day after tomorrow
+					}
+				}
+				# COUNTING DOWN
+				any_country = {
+					limit = {
+						exists = yes
+						not = {
+							training_laws = advanced_training
+						}
+						check_variable = {
+							which = "advanced_training_days_active"
+							value = 1
+						}
+					}
+					change_variable = {
+						which = "advanced_training_days_active"
+						value = -2
+					}
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	specialist_training_count = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			tag = OMG
+			not = {
+				has_country_modifier = specialist_training_count_timer
+			}
+		}
+		major = no
+		effect = {
+			add_country_modifier = {
+				name = "specialist_training_count_timer"
+				duration = 1
+			}
+			OMG = {
+				# COUNTING UP
+				any_country = {
+					limit = {
+						exists = yes
+						training_laws = specialist_training
+						not = {
+							check_variable = {
+								which = "specialist_training_days_active"
+								value = 365	# MAXIMUM AMOUNT OF DAYS STACKED
+							}
+						}
+					}
+					change_variable = {
+						which = "specialist_training_days_active"
+						value = +2 # +2 because a cooldown of 1 day means it will fire the day after tomorrow
+					}
+				}
+				# COUNTING DOWN
+				any_country = {
+					limit = {
+						exists = yes
+						not = {
+							training_laws = specialist_training
+						}
+						check_variable = {
+							which = "specialist_training_days_active"
+							value = 1
+						}
+					}
+					change_variable = {
+						which = "specialist_training_days_active"
+						value = -2
+					}
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
