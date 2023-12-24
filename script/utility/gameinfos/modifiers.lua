@@ -48,6 +48,22 @@ local function dumpTriggers(selection)
     return Utils.DumpCustomOrder(data, order)
 end
 
+
+-- special logic to cover the different pre/post-fixes
+local function getTranslation(key)
+    local trans = Parsing.GetTranslation(string.upper(key), "MODIFIER_")
+    if trans == nil then
+        -- "air_intercept_eff"
+        trans = Parsing.GetTranslation(string.lower(key), nil, "_eff")
+    end
+    -- fallback to the key if no translation was found
+    if trans == nil then
+        return key
+    end
+    return trans
+end
+
+
 local function dumpEffects(selection)
     local data = table.deepcopy(P.ModifierData[selection])
     -- remove the triggerKeys
@@ -56,18 +72,18 @@ local function dumpEffects(selection)
     end
     data["icon"] = nil
 
+    local res = {}
     -- Replace the keys with their translations
     for k, v in pairs(data) do
-        local trans = Parsing.GetTranslation(string.upper(k), "MODIFIER_")
+        local trans = getTranslation(k)
         if trans ~= nil then
-            data[trans] = v
-            data[k] = nil
+            res[trans] = Parsing.UnitConversions.GetAndConvertEffect(k, v)
         end
     end
 
     -- Insert the remaining keys into the order table alphabetically
     local order = {}
-    for k, v in Utils.OrderedTable(data) do
+    for k, v in Utils.OrderedTable(res) do
         if type(v) ~= "table" then
             if table.getIndex(order, v) == nil then
                 table.insert(order, k)
@@ -75,7 +91,7 @@ local function dumpEffects(selection)
         end
     end
 
-    return Utils.DumpCustomOrder(data, order)
+    return Utils.DumpCustomOrder(res, order)
 end
 
 function P.HandleSelection()

@@ -33,9 +33,9 @@ local function createTranslationTable()
     translationTable = {}
     for i, file in pairs(translationFiles) do
         local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\localisation\\" .. file
-        local temp = CsvParser.parseFile(path)
+        local temp = CsvParser.parseFile(path, ";", 2)
         for k, v in pairs(temp) do
-            translationTable[k] = v
+            translationTable[k] = v[1]
         end
     end
 end
@@ -58,7 +58,8 @@ function P.GetTranslation(key, prefix, postfix)
         postfix = ""
     end
     local translations = P.GetTranslationTable()
-    return translations[prefix .. key .. postfix]
+    local res = translations[prefix .. key .. postfix]
+    return res
 end
 
 -- Keys will be inside parentheses in the choice elements
@@ -76,4 +77,5 @@ P.Traits = require('traits')
 P.Generals = require('generals')
 P.Techs = require('techs')
 P.Modifiers = require('modifiers')
+P.UnitConversions = require('unitConversion')
 return Parsing
