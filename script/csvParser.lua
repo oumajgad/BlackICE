@@ -37,7 +37,7 @@ function P.parseFile(filePath)
     if err ~= nil then
         print(err)
     else
-        if file ~= nil then 
+        if file ~= nil then
             for line in file:lines() do
                 local tbl = parseCSVLine(line)
                 if tbl ~= nil then
