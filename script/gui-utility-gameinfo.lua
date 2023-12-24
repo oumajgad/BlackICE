@@ -5,8 +5,8 @@ require("wx")
 -- UI = {}
 
 if wx ~= nil then
-	UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 500,500 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
-	UI.MyFrame4:SetSizeHints( wx.wxSize( 500,500 ), wx.wxDefaultSize )
+	UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 600,600 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
+	UI.MyFrame4:SetSizeHints( wx.wxSize( 600,600 ), wx.wxDefaultSize )
 	UI.MyFrame4.m_mgr = wxaui.wxAuiManager()
 	UI.MyFrame4.m_mgr:SetManagedWindow( UI.MyFrame4 )
 
@@ -160,6 +160,77 @@ if wx ~= nil then
 	UI.m_panel_GameInfo_Tech:Layout()
 	UI.bSizer_GameInfo3:Fit( UI.m_panel_GameInfo_Tech )
 	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Tech, "Techs", False )
+	UI.m_panel_GameInfo_Modifiers = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer_GameInfo_Modifiers1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.fgSizer_GameInfo_Modifiers1 = wx.wxFlexGridSizer( 1, 3, 0, 0 )
+	UI.fgSizer_GameInfo_Modifiers1:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_Modifiers1:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_Modifiers1:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_choice_GameInfo_Modifiers1Choices = {}
+	UI.m_choice_GameInfo_Modifiers1 = wx.wxChoice( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 300,-1 ), UI.m_choice_GameInfo_Modifiers1Choices, 0 )
+	UI.m_choice_GameInfo_Modifiers1:SetSelection( 0 )
+	UI.fgSizer_GameInfo_Modifiers1:Add( UI.m_choice_GameInfo_Modifiers1, 5, wx.wxALIGN_CENTER_VERTICAL + wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_textCtrl_GameInfo_Modifiers_Filter = wx.wxTextCtrl( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "name filter (press enter)", wx.wxDefaultPosition, wx.wxSize( 135,-1 ), 0 )
+	UI.fgSizer_GameInfo_Modifiers1:Add( UI.m_textCtrl_GameInfo_Modifiers_Filter, 1, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_button_GameInfo_Modifiers_Filter_Clear = wx.wxButton( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "Clear", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.fgSizer_GameInfo_Modifiers1:Add( UI.m_button_GameInfo_Modifiers_Filter_Clear, 0, wx.wxALL, 5 )
+
+
+	UI.bSizer_GameInfo_Modifiers1:Add( UI.fgSizer_GameInfo_Modifiers1, 0, wx.wxEXPAND, 5 )
+
+	UI.gSizer_GameInfo_Modifiers1 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.fgSizer_GameInfo_Modifiers2 = wx.wxFlexGridSizer( 3, 1, 0, 0 )
+	UI.fgSizer_GameInfo_Modifiers2:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_Modifiers2:AddGrowableRow( 1 )
+	UI.fgSizer_GameInfo_Modifiers2:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_Modifiers2:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_staticText_GameInfo_Modifiers1 = wx.wxStaticText( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "Triggers", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Modifiers1:Wrap( -1 )
+
+	UI.fgSizer_GameInfo_Modifiers2:Add( UI.m_staticText_GameInfo_Modifiers1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_Modifiers_Triggers1 = wx.wxTextCtrl( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
+	UI.fgSizer_GameInfo_Modifiers2:Add( UI.m_textCtrl_GameInfo_Modifiers_Triggers1, 0, wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_staticText_GameInfo_Modifiers2 = wx.wxStaticText( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "Note that triggers may be combined. E.g. 2 \"OR\" clauses can be combined and show as 1 clause with multiple grouped conditions. This only happens if the 2 clauses are identical in the code, i.e.: \"or\" and \"OR\" will not be combined.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Modifiers2:Wrap( 230 )
+
+	UI.fgSizer_GameInfo_Modifiers2:Add( UI.m_staticText_GameInfo_Modifiers2, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
+
+
+	UI.gSizer_GameInfo_Modifiers1:Add( UI.fgSizer_GameInfo_Modifiers2, 1, wx.wxEXPAND, 5 )
+
+	UI.fgSizer_GameInfo_Modifiers3 = wx.wxFlexGridSizer( 2, 1, 0, 0 )
+	UI.fgSizer_GameInfo_Modifiers3:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_Modifiers3:AddGrowableRow( 1 )
+	UI.fgSizer_GameInfo_Modifiers3:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_Modifiers3:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_staticText_GameInfo_Modifiers3 = wx.wxStaticText( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "Effects", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Modifiers3:Wrap( -1 )
+
+	UI.fgSizer_GameInfo_Modifiers3:Add( UI.m_staticText_GameInfo_Modifiers3, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_Modifiers_Effects1 = wx.wxTextCtrl( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
+	UI.fgSizer_GameInfo_Modifiers3:Add( UI.m_textCtrl_GameInfo_Modifiers_Effects1, 0, wx.wxALL + wx.wxEXPAND, 5 )
+
+
+	UI.gSizer_GameInfo_Modifiers1:Add( UI.fgSizer_GameInfo_Modifiers3, 1, wx.wxEXPAND, 5 )
+
+
+	UI.bSizer_GameInfo_Modifiers1:Add( UI.gSizer_GameInfo_Modifiers1, 1, wx.wxEXPAND, 5 )
+
+
+	UI.m_panel_GameInfo_Modifiers:SetSizer( UI.bSizer_GameInfo_Modifiers1 )
+	UI.m_panel_GameInfo_Modifiers:Layout()
+	UI.bSizer_GameInfo_Modifiers1:Fit( UI.m_panel_GameInfo_Modifiers )
+	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Modifiers, "Modifiers", False )
 
 
 	UI.MyFrame4 .m_mgr:Update()
@@ -234,5 +305,17 @@ if wx ~= nil then
 		if currentShownLevel > 1 then
 			Parsing.Techs.HandleSelection(currentShownLevel - 1)
 		end
+	end )
+	UI.m_choice_GameInfo_Modifiers1:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+		Parsing.Modifiers.HandleSelection()
+	end )
+
+	UI.m_textCtrl_GameInfo_Modifiers_Filter:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)
+		Parsing.Modifiers.HandleFilter()
+	end )
+
+	UI.m_button_GameInfo_Modifiers_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		UI.m_textCtrl_GameInfo_Modifiers_Filter:SetValue("")
+		Parsing.Modifiers.HandleFilter()
 	end )
 end

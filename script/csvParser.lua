@@ -2,13 +2,17 @@ local P = {}
 
 CsvParser = P
 
-local function parseCSVLine(line,sep)
+local function parseCSVLine(line,sep,limit)
+    if limit == nil then
+        limit = 999
+    end
+
     local res = {}
     local pos = 1
     sep = sep or ';'
     while true do
-        -- We only care about the english translation so exit early after we have it
-        if #res >= 2 then
+        -- only parse the first X entries
+        if #res >= limit then
             return res
         end
 
@@ -31,17 +35,18 @@ local function parseCSVLine(line,sep)
 end
 
 
-function P.parseFile(filePath)
+function P.parseFile(filePath, sep, limit)
     local res = {}
     local file, err = io.open(filePath, "r")
     if err ~= nil then
         print(err)
     else
-        if file ~= nil then 
+        if file ~= nil then
             for line in file:lines() do
-                local tbl = parseCSVLine(line)
+                local tbl = parseCSVLine(line, sep, limit)
                 if tbl ~= nil then
-                    res[tbl[1]] = tbl[2]
+                    res[tbl[1]] = tbl
+                    table.remove(tbl, 1) -- removes the key from the result
                 end
             end
             file:close()
