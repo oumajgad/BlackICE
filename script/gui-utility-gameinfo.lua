@@ -5,8 +5,8 @@ require("wx")
 -- UI = {}
 
 if wx ~= nil then
-	UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 500,500 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
-	UI.MyFrame4:SetSizeHints( wx.wxSize( 500,500 ), wx.wxDefaultSize )
+	UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 600,600 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
+	UI.MyFrame4:SetSizeHints( wx.wxSize( 600,600 ), wx.wxDefaultSize )
 	UI.MyFrame4.m_mgr = wxaui.wxAuiManager()
 	UI.MyFrame4.m_mgr:SetManagedWindow( UI.MyFrame4 )
 
@@ -171,10 +171,10 @@ if wx ~= nil then
 	UI.m_choice_GameInfo_Modifiers1Choices = {}
 	UI.m_choice_GameInfo_Modifiers1 = wx.wxChoice( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 300,-1 ), UI.m_choice_GameInfo_Modifiers1Choices, 0 )
 	UI.m_choice_GameInfo_Modifiers1:SetSelection( 0 )
-	UI.fgSizer_GameInfo_Modifiers1:Add( UI.m_choice_GameInfo_Modifiers1, 1, wx.wxALIGN_CENTER_VERTICAL + wx.wxALL + wx.wxEXPAND, 5 )
+	UI.fgSizer_GameInfo_Modifiers1:Add( UI.m_choice_GameInfo_Modifiers1, 5, wx.wxALIGN_CENTER_VERTICAL + wx.wxALL + wx.wxEXPAND, 5 )
 
-	UI.m_textCtrl_GameInfo_Modifiers_Filter = wx.wxTextCtrl( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "name filter (press enter)", wx.wxDefaultPosition, wx.wxSize( 110,-1 ), 0 )
-	UI.fgSizer_GameInfo_Modifiers1:Add( UI.m_textCtrl_GameInfo_Modifiers_Filter, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
+	UI.m_textCtrl_GameInfo_Modifiers_Filter = wx.wxTextCtrl( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "name filter (press enter)", wx.wxDefaultPosition, wx.wxSize( 135,-1 ), 0 )
+	UI.fgSizer_GameInfo_Modifiers1:Add( UI.m_textCtrl_GameInfo_Modifiers_Filter, 1, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 	UI.m_button_GameInfo_Modifiers_Filter_Clear = wx.wxButton( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "Clear", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
 	UI.fgSizer_GameInfo_Modifiers1:Add( UI.m_button_GameInfo_Modifiers_Filter_Clear, 0, wx.wxALL, 5 )

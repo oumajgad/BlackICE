@@ -65,6 +65,8 @@ local function getTranslation(key)
             trans = Parsing.GetTranslation("GLOBAL_MANPOWER")
         elseif key == "local_manpower_modifier" then
             trans = Parsing.GetTranslation("LOCAL_MANPOWER")
+        elseif key == "casualty_trickleback" then
+            trans = Parsing.GetTranslation("CASUALTY_TRICKLEBACK_TECH")
         end
     end
 
@@ -130,7 +132,7 @@ function P.HandleFilter()
     P.ModifierChoicesFiltered = {} -- reset the list
 
     for k, v in pairs(P.ModifierChoices) do
-        if string.find(v, filterString) then
+        if string.find(string.lower(v), string.lower(filterString)) then
             table.insert(P.ModifierChoicesFiltered, v)
         end
     end
