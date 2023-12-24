@@ -2,7 +2,7 @@ local P = {}
 
 Parsing = P
 
-local translation_files = {
+local translationFiles = {
     '00_historia_events.csv', 'Backstory.csv', 'bi_version.csv', 'BlackIce_Air_ENG.csv', 'BlackIce_Air_FRA.csv',
     'BlackIce_Air_GER.csv', 'BlackIce_Air_ITA.csv', 'BlackIce_Air_JAP.csv', 'BlackICE_Air_SOV.csv',
     'BlackIce_Air_USA.csv', 'BlackIce_Land_AST.csv', 'BlackIce_Land_CAN.csv', 'BlackIce_Land_ENG.csv',
@@ -31,7 +31,7 @@ local translation_files = {
 local translationTable = nil
 local function createTranslationTable()
     translationTable = {}
-    for i, file in pairs(translation_files) do
+    for i, file in pairs(translationFiles) do
         local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\localisation\\" .. file
         local temp = CsvParser.parseFile(path)
         for k, v in pairs(temp) do
@@ -50,6 +50,17 @@ function P.GetTranslationTable()
     return {}
 end
 
+function P.GetTranslation(key, prefix, postfix)
+    if prefix == nil then
+        prefix = ""
+    end
+    if postfix == nil then
+        postfix = ""
+    end
+    local translations = P.GetTranslationTable()
+    return translations[prefix .. key .. postfix]
+end
+
 -- Keys will be inside parentheses in the choice elements
 function P.GetKeyFromChoice(choice)
     local start = string.find(choice, "%[")
@@ -64,4 +75,5 @@ end
 P.Traits = require('traits')
 P.Generals = require('generals')
 P.Techs = require('techs')
+P.Modifiers = require('modifiers')
 return Parsing

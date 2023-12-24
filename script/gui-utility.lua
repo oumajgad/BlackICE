@@ -2052,6 +2052,7 @@ if wx ~= nil then
 		Parsing.Traits.FillData()
 		Parsing.Generals.FillData()
 		Parsing.Techs.FillData()
+		Parsing.Modifiers.FillData()
 		UI.MyFrame4:Show(true)
 	end )
 
