@@ -173,7 +173,7 @@ if wx ~= nil then
 	UI.m_choice_GameInfo_Modifiers1:SetSelection( 0 )
 	UI.fgSizer_GameInfo_Modifiers1:Add( UI.m_choice_GameInfo_Modifiers1, 1, wx.wxALIGN_CENTER_VERTICAL + wx.wxALL + wx.wxEXPAND, 5 )
 
-	UI.m_textCtrl_GameInfo_Modifiers_Filter = wx.wxTextCtrl( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "press enter to filter", wx.wxDefaultPosition, wx.wxSize( 110,-1 ), 0 )
+	UI.m_textCtrl_GameInfo_Modifiers_Filter = wx.wxTextCtrl( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "name filter (press enter)", wx.wxDefaultPosition, wx.wxSize( 110,-1 ), 0 )
 	UI.fgSizer_GameInfo_Modifiers1:Add( UI.m_textCtrl_GameInfo_Modifiers_Filter, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 	UI.m_button_GameInfo_Modifiers_Filter_Clear = wx.wxButton( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "Clear", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )

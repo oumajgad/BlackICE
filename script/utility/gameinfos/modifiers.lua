@@ -56,6 +56,18 @@ local function getTranslation(key)
         -- "air_intercept_eff"
         trans = Parsing.GetTranslation(string.lower(key), nil, "_eff")
     end
+    if trans == nil then
+        -- "global_revolt_risk"
+        trans = Parsing.GetTranslation(string.upper(key))
+    end
+    if trans == nil then
+        if key == "global_manpower_modifier" then
+            trans = Parsing.GetTranslation("GLOBAL_MANPOWER")
+        elseif key == "local_manpower_modifier" then
+            trans = Parsing.GetTranslation("LOCAL_MANPOWER")
+        end
+    end
+
     -- fallback to the key if no translation was found
     if trans == nil then
         return key
