@@ -91,7 +91,7 @@ function P.DumpEffects(selection)
     -- Insert the remaining keys into the order table alphabetically
     for k, v in Utils.OrderedTable(data) do
         if type(v) ~= "table" then
-            if table.getIndex(order, v) == nil then
+            if table.getIndex(order, k) == nil then
                 table.insert(order, k)
             end
         end

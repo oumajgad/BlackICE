@@ -22,9 +22,11 @@ function P.GetAndConvertEffect(key, value)
     end
 
     if data ~= nil and data[key] ~= nil then
-        local val = value * data[key]["multiplier"]
-        return tostring(val) .. data[key]["unit"]
+        local val = tostring(value * data[key]["multiplier"])
+        return string.format("%.2f", val) .. data[key]["unit"]
     end
+
+    Utils.LUA_DEBUGOUT("Couldnt find unit conversion: " .. key)
     return tostring(value)
 end
 

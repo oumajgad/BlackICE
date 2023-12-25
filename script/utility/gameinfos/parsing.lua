@@ -50,6 +50,8 @@ function P.GetTranslationTable()
     return {}
 end
 
+-- Get the translation from the locs.
+-- May return nil if none was found
 function P.GetTranslation(key, prefix, postfix)
     if prefix == nil then
         prefix = ""

@@ -21,10 +21,49 @@ if wx ~= nil then
 	UI.m_choice_Traits:SetSelection( 0 )
 	UI.bSizer_GameInfo1:Add( UI.m_choice_Traits, 0, wx.wxALL + wx.wxEXPAND, 5 )
 
-	UI.m_textCtrl_Trait = wx.wxTextCtrl( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), wx.wxTE_MULTILINE + wx.wxTE_WORDWRAP )
-	UI.m_textCtrl_Trait:SetMinSize( wx.wxSize( -1,395 ) )
+	UI.gSizer_GameInfo_Traits1 = wx.wxGridSizer( 1, 2, 0, 0 )
 
-	UI.bSizer_GameInfo1:Add( UI.m_textCtrl_Trait, 1, wx.wxALL + wx.wxEXPAND, 5 )
+	UI.fgSizer_GameInfo_Traits1 = wx.wxFlexGridSizer( 3, 1, 0, 0 )
+	UI.fgSizer_GameInfo_Traits1:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_Traits1:AddGrowableRow( 1 )
+	UI.fgSizer_GameInfo_Traits1:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_Traits1:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_staticText_GameInfo_Traits1 = wx.wxStaticText( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, "Triggers", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Traits1:Wrap( -1 )
+
+	UI.fgSizer_GameInfo_Traits1:Add( UI.m_staticText_GameInfo_Traits1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_Traits_Triggers = wx.wxTextCtrl( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
+	UI.fgSizer_GameInfo_Traits1:Add( UI.m_textCtrl_GameInfo_Traits_Triggers, 0, wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_staticText_GameInfo_Traits2 = wx.wxStaticText( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, "Note that triggers may be combined. E.g. 2 \"OR\" clauses can be combined and show as 1 clause with multiple grouped conditions. This only happens if the 2 clauses are identical in the code, i.e.: \"or\" and \"OR\" will not be combined.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Traits2:Wrap( 230 )
+
+	UI.fgSizer_GameInfo_Traits1:Add( UI.m_staticText_GameInfo_Traits2, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
+
+
+	UI.gSizer_GameInfo_Traits1:Add( UI.fgSizer_GameInfo_Traits1, 1, wx.wxEXPAND, 5 )
+
+	UI.fgSizer_GameInfo_Traits2 = wx.wxFlexGridSizer( 2, 1, 0, 0 )
+	UI.fgSizer_GameInfo_Traits2:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_Traits2:AddGrowableRow( 1 )
+	UI.fgSizer_GameInfo_Traits2:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_Traits2:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_staticText_GameInfo_Traits3 = wx.wxStaticText( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, "Effects", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Traits3:Wrap( -1 )
+
+	UI.fgSizer_GameInfo_Traits2:Add( UI.m_staticText_GameInfo_Traits3, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_Traits_Effects = wx.wxTextCtrl( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
+	UI.fgSizer_GameInfo_Traits2:Add( UI.m_textCtrl_GameInfo_Traits_Effects, 0, wx.wxALL + wx.wxEXPAND, 5 )
+
+
+	UI.gSizer_GameInfo_Traits1:Add( UI.fgSizer_GameInfo_Traits2, 1, wx.wxEXPAND, 5 )
+
+
+	UI.bSizer_GameInfo1:Add( UI.gSizer_GameInfo_Traits1, 1, wx.wxEXPAND, 5 )
 
 
 	UI.m_panel_GameInfo_Traits:SetSizer( UI.bSizer_GameInfo1 )
@@ -241,16 +280,7 @@ if wx ~= nil then
 
     UI.m_choice_Traits:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
         local selectionString = UI.m_choice_Traits:GetString(UI.m_choice_Traits:GetSelection())
-        local traitName = Parsing.GetKeyFromChoice(selectionString)
-        local trait = Parsing.Traits.TraitsData[traitName]
-        if trait ~= nil then
-            local s = Utils.Dump(trait)
-            if Parsing.Traits.TraitsTriggers[traitName] ~= nil then
-                s = s .. "\n -------- Triggers -------- \n"
-                s = s .. Utils.Dump(Parsing.Traits.TraitsTriggers[traitName])
-            end
-            UI.m_textCtrl_Trait:SetValue(s)
-        end
+		Parsing.Traits.HandleSelection(selectionString)
     end )
 
 	UI.m_choice_Generals:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)

@@ -97,7 +97,7 @@ local function dumpEffects(selection)
     local order = {}
     for k, v in Utils.OrderedTable(res) do
         if type(v) ~= "table" then
-            if table.getIndex(order, v) == nil then
+            if table.getIndex(order, k) == nil then
                 table.insert(order, k)
             end
         end
