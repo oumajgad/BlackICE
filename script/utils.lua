@@ -572,7 +572,7 @@ end
 function P.OrderedTable(t)
   local a = {}
   for n in pairs(t) do table.insert(a, n) end
-  table.sort(a)
+  table.sort(a, function (x, y) return string.upper(x) < string.upper(y) end)
   local i = 0      -- iterator variable
   local iter = function ()   -- iterator function
     i = i + 1
@@ -581,6 +581,63 @@ function P.OrderedTable(t)
     end
   end
   return iter
+end
+
+-- recursively creates a metatable with an "order" key which is alphabetically sorted and has moved the other "table" values to the end
+function P.PushTablesToEndAndSort(orig)
+  local copy = table.deepcopy(orig)
+  local orderDirectKeyValues = {}
+  local orderTables = {}
+
+  for k, v in P.OrderedTable(orig) do
+      if type(v) ~= "table" then
+        table.insert(orderDirectKeyValues, k)
+      else
+        copy[k] = P.PushTablesToEndAndSort(v)
+        table.insert(orderTables, k)
+      end
+  end
+  local finalOrder = orderDirectKeyValues
+  for k, v in ipairs(orderTables) do
+      table.insert(finalOrder, v)
+  end
+  local newMetaTable = {
+    ["order"] = finalOrder
+  }
+  setmetatable(copy, newMetaTable)
+  return copy
+end
+
+-- Recursively dumps the given table, sorted according to the "order" metatable key.
+-- Use in conjuction with "Utils.PushTablesToEndAndSort".
+function P.DumpByMetatableOrder(orig, indent)
+  if indent == nil then
+    indent = 0
+  end
+  local order = getmetatable(orig)["order"]
+  if type(orig) == 'table' then
+    local copy = table.deepcopy(orig)
+    local s = '{\n'
+    for k, v in ipairs(order) do
+      k = v
+      v = copy[v]
+      -- only do things if the key actually exists in the table
+      if copy[k] ~= nil then
+        copy[k] = nil  -- remove entry from original table
+        if type(k) ~= 'number' then k = '"'..k..'" = ' end
+        if type(k) == "number" then k = "" end
+        s = s .. string.rep("    ", indent + 1) .. k .. P.DumpByMetatableOrder(v, indent + 1) .. '\n'
+        end
+    end
+    for k, v in P.OrderedTable(copy) do
+      if type(k) ~= 'number' then k = '"'..k..'" = ' end
+      if type(k) == "number" then k = "" end
+      s = s .. string.rep("    ", indent + 1) .. k .. P.DumpByMetatableOrder(v, indent + 1) .. '\n'
+    end
+    return s .. string.rep("    ", indent) .. '}'
+  else
+    return tostring(orig)
+  end
 end
 
 function P.Dump(o, indent)

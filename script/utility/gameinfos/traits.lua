@@ -50,14 +50,9 @@ local function translateTraitEffects(trait)
                 res[trans] = Parsing.UnitConversions.GetAndConvertEffect(k, v)
             else -- terrain effects
                 local temp = v
-                for _k, _v in pairs(v) do -- if there is only 1 terrain the "v" needs to be converted to a list
+                for _k, _v in pairs(v) do -- if there is only 1 terrain the "temp" needs to be converted to a list
                     if type(_v) ~= "table" then
-                        temp = {
-                            {
-                                ["type"] = v["type"],
-                                ["value"] = v["value"]
-                            }
-                        }
+                        temp = { v }
                         break
                     end
                 end
@@ -69,7 +64,7 @@ local function translateTraitEffects(trait)
 end
 
 local function dumpTriggers(traitName)
-    if P.TraitsTriggers[traitName] ~= nil then    
+    if P.TraitsTriggers[traitName] ~= nil then
         local sortedTriggers = {}
         for k, v in Utils.OrderedTable(P.TraitsTriggers[traitName]) do
             sortedTriggers[k] = v
@@ -94,7 +89,6 @@ local function dumpEffects(trait)
             table.insert(order, 2, k)
         end
     end
-    Utils.INSPECT_TABLE(order)
     return Utils.DumpCustomOrder(translatedTrait, order)
 end
 

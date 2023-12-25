@@ -74,10 +74,117 @@ local function applyLevelToTech(data, level)
         if type(v) == "table" then
             data[k] = applyLevelToTech(v, level)
         elseif tonumber(v) ~= nil then
-            data[k] = string.format('%.03f', tonumber(v) * level)
+            data[k] = string.format('%.02f', tonumber(v) * level)
         end
     end
     return data
+end
+
+-- special logic to cover the different pre/post-fixes
+local function getTranslation(key)
+    local trans = Parsing.GetTranslation(key)
+    if trans == nil then
+        trans = Parsing.GetTranslation(string.upper(key), "MODIFIER_")
+    end
+    if trans == nil then
+        -- "air_intercept_eff"
+        trans = Parsing.GetTranslation(string.lower(key), nil, "_eff")
+    end
+    if trans == nil then
+        -- "global_revolt_risk"
+        trans = Parsing.GetTranslation(string.upper(key))
+    end
+    -- manual overrides
+    if trans == nil then
+        if key == "manpower_gain" then
+            trans = Parsing.GetTranslation("GLOBAL_MANPOWER")
+        elseif key == "ic_efficiency" then
+            trans = Parsing.GetTranslation("MODIFIER_INDUSTRIAL_EFFICIENCY")
+        elseif key == "casualty_trickleback" then
+            trans = Parsing.GetTranslation("CASUALTY_TRICKLEBACK_TECH")
+        elseif key == "refinery_efficiency" then
+            trans = Parsing.GetTranslation("MODIFIER_FUEL_CONVERSION")
+        elseif key == "energy_to_oil_conversion" then
+            trans = Parsing.GetTranslation("ENERGY_TO_OIL_TECH")
+        elseif key == "ic_to_supplies" then
+            trans = Parsing.GetTranslation("IC_TO_SUPPLIES_TECH")
+        elseif key == "encryption" then
+            trans = Parsing.GetTranslation("ENCRYPTION_TECH")
+        elseif key == "decryption" then
+            trans = Parsing.GetTranslation("DECRYPTION_TECH")
+        elseif key == "energy_production" then
+            trans = Parsing.GetTranslation("ENERGY_PROD_TECH")
+        elseif key == "metal_production" then
+            trans = Parsing.GetTranslation("METAL_PROD_TECH")
+        elseif key == "rares_production" then
+            trans = Parsing.GetTranslation("RARES_PROD_TECH")
+        elseif key == "research_efficiency" then
+            trans = Parsing.GetTranslation("RESEARC_EFF_TECH")
+        elseif key == "leadership_gain" then
+            trans = Parsing.GetTranslation("LEADERSHIP_GAIN_TECH")
+        elseif key == "supply_transfer_cost" then
+            trans = Parsing.GetTranslation("SUPPLY_TRANSFER_COST_TECH")
+        elseif key == "supply_throughput" then
+            trans = Parsing.GetTranslation("SUPPLY_THROUGHPUT_TECH")
+        elseif key == "repair_rate" then
+            trans = Parsing.GetTranslation("REPAIR_RATE_TECH")
+        end
+    end
+
+    -- fallback to the key if no translation was found
+    if trans == nil then
+        return key
+    end
+    return trans
+end
+
+
+local techEffectKeyBlacklist = {
+    ["stealable"] = true,
+    ["can_upgrade"] = true,
+    ["on_completion"] = true,
+    ["activate_building"] = true,
+    ["activate_unit"] = true,
+    ["is_nuclear"] = true,
+    ["max_level"] = true,
+    ["change"] = true,
+    ["difficulty"] = true,
+    ["start_year"] = true,
+    ["first_offset"] = true,
+    ["additional_offset"] = true,
+    ["listening_station"] = true,
+    ["has_country_flag"] = true,
+}
+local terrainEffectsKeywords = {
+    ["movement"] = true,
+    ["attack"] = true,
+    ["defence"] = true,
+    ["attrition"] = true,
+}
+local function translateTechEffect(data)
+    local res = {}
+    for k, v in pairs(data) do
+        local translatedKey = getTranslation(k)
+        if type(v) ~= "table" then
+            if terrainEffectsKeywords[k] ~= nil then
+                -- special case for the terrain effects
+                if k == "attrition" then -- super special case for attrition
+                    res[translatedKey] = string.format("%.2f", v) .. "%"
+                else
+                    res[translatedKey] = string.format("%.2f", v * 100) .. "%"
+                end
+            elseif techEffectKeyBlacklist[k] ~= nil then
+                res[translatedKey] = v
+            else
+                res[translatedKey] = Parsing.UnitConversions.GetAndConvertEffect(
+                    k .. "_tech", v) -- add special key suffix because the key from techs and modifiers are the same but different
+            end
+        else
+            res[translatedKey] = translateTechEffect(v)
+        end
+    end
+
+    return res
 end
 
 function P.DumpEffects(selection)
@@ -86,17 +193,12 @@ function P.DumpEffects(selection)
         data[v] = nil
     end
     data = applyLevelToTech(data, shownLevel)
-    -- All non-unit (table) values get put at the start
-    local order = {"activate_unit", "on_completion"}
-    -- Insert the remaining keys into the order table alphabetically
-    for k, v in Utils.OrderedTable(data) do
-        if type(v) ~= "table" then
-            if table.getIndex(order, k) == nil then
-                table.insert(order, k)
-            end
-        end
+    local translatedTech = {}
+    for k, v in pairs(translateTechEffect(data)) do
+        translatedTech[k] = v
     end
-    return Utils.DumpCustomOrder(data, order)
+    local sortedViaMetatable = Utils.PushTablesToEndAndSort(translatedTech)
+    return Utils.DumpByMetatableOrder(sortedViaMetatable)
 end
 
 

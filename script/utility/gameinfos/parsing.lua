@@ -52,15 +52,15 @@ end
 
 -- Get the translation from the locs.
 -- May return nil if none was found
-function P.GetTranslation(key, prefix, postfix)
+function P.GetTranslation(key, prefix, suffix)
     if prefix == nil then
         prefix = ""
     end
-    if postfix == nil then
-        postfix = ""
+    if suffix == nil then
+        suffix = ""
     end
     local translations = P.GetTranslationTable()
-    local res = translations[prefix .. key .. postfix]
+    local res = translations[prefix .. key .. suffix]
     return res
 end
 
