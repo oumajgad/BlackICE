@@ -35,6 +35,9 @@ local function getGeneralBranchChoice()
     end
 end
 
+-- Generals availability is deterimined by their "history".
+-- There can be multiple history blocks in the definition since the base game has different starting dates.
+-- This function finds the earliest date
 local function getGeneralDate(leader)
     local earliest_date = nil
     --utils.INSPECT_TABLE(leader)
@@ -60,7 +63,7 @@ local function getGeneralDate(leader)
             -- Days
             elseif  current_date_split[1] == earliest_date_split[1] and
                     current_date_split[2] == earliest_date_split[2] and
-                    current_date_split[3] == earliest_date_split[3]
+                    current_date_split[3] < earliest_date_split[3]
             then
                 earliest_date = current_date
             end
@@ -69,12 +72,28 @@ local function getGeneralDate(leader)
     return earliest_date
 end
 
+local function translateTraits(traits)
+    if traits == nil then
+        return {}
+    end
+    local res = {}
+    if type(traits) == "string" then
+        table.insert(res, Parsing.GetTranslation(traits))
+    else
+        for k, v in pairs(traits) do
+            table.insert(res, Parsing.GetTranslation(v))
+        end
+    end
+
+    return res
+end
+
 local function createGeneral(values)
     local general = {
         name = values["name"],
         starting_skill = values["skill"],
         max_skill = values["max_skill"],
-        traits = values["add_trait"],
+        traits = translateTraits(values["add_trait"]),
         available_date = getGeneralDate(values),
         type = values["type"],
         country = values["country"]

@@ -90,9 +90,7 @@ local function dumpEffects(selection)
     -- Replace the keys with their translations
     for k, v in pairs(data) do
         local trans = getTranslation(k)
-        if trans ~= nil then
-            res[trans] = Parsing.UnitConversions.GetAndConvertEffect(k, v)
-        end
+        res[trans] = Parsing.UnitConversions.GetAndConvertEffect(k, v)
     end
 
     -- Insert the remaining keys into the order table alphabetically
