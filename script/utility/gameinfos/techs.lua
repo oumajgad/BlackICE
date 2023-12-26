@@ -128,6 +128,12 @@ local function getTranslation(key)
             trans = Parsing.GetTranslation("SUPPLY_THROUGHPUT_TECH")
         elseif key == "repair_rate" then
             trans = Parsing.GetTranslation("REPAIR_RATE_TECH")
+        elseif key == "reinforce_chance" then
+            trans = Parsing.GetTranslation("REINFORCE_CHANCE_TECH")
+        elseif key == "unit_cooperation" then
+            trans = Parsing.GetTranslation("UNIT_COOP_TECH")
+        elseif key == "attack_delay" then
+            trans = "Delay between attacks"
         end
     end
 
@@ -146,8 +152,8 @@ local techEffectKeyBlacklist = {
     ["activate_building"] = true,
     ["activate_unit"] = true,
     ["is_nuclear"] = true,
-    ["max_level"] = true,
     ["change"] = true,
+    ["max_level"] = true,
     ["difficulty"] = true,
     ["start_year"] = true,
     ["first_offset"] = true,
@@ -198,6 +204,16 @@ function P.DumpEffects(selection)
         translatedTech[k] = v
     end
     local sortedViaMetatable = Utils.PushTablesToEndAndSort(translatedTech)
+
+    -- sort some values to the top so its easier to read
+    local orderMetaTable = getmetatable(sortedViaMetatable)["order"]
+    for k, v in pairs(techEffectKeyBlacklist) do
+        local index = table.getIndex(orderMetaTable, v)
+        if index ~= nil then
+            orderMetaTable[index] = nil
+            table.insert(orderMetaTable, 1, k)
+        end
+    end
     return Utils.DumpByMetatableOrder(sortedViaMetatable)
 end
 
