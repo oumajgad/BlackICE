@@ -4,8 +4,8 @@ import time
 import zipfile
 
 
-Modfolders = ["./battleplans","./cgm","./common","./decisions","./events","./history","./localisation","./map",
-                "./interface","./music","./script","./sound","./technologies","./units","./gfx"]
+Modfolders = ["battleplans","cgm","common","decisions","events","history","localisation","map",
+                "interface","music","script","sound","technologies","units","gfx"]
 newlines = []
 version = str
 
@@ -16,7 +16,7 @@ def countFiles() -> int:
     maxcount = 0
     for root, dirs, files in os.walk("./"):
         for file in files:
-            if root.split("\\")[0] in Modfolders or root.split("/")[1] in Modfolders:
+            if root.split("\\")[0][2:] in Modfolders or root.split("/")[1] in Modfolders:
                 maxcount +=1
     return maxcount
 
@@ -32,7 +32,7 @@ def zipdir(filename):
     maxcount = countFiles()
     counter = 0
     for root, dirs, files in os.walk("./"):
-        if root.split("\\")[0] in Modfolders or root.split("/")[1] in Modfolders:
+        if root.split("\\")[0][2:] in Modfolders or root.split("/")[1] in Modfolders:
             for file in files:
                 print(str(counter) + " - " + str(maxcount) +  "  included " + os.path.join(root, file))
                 counter +=1
