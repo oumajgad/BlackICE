@@ -16,11 +16,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       # Run things
-      - name: Install dependencies
+      - name: Run things
         run: |
-          ls ./
-          ls ./davestuff
-          ls ./Davestuff
           python zipperRelease.py "GitHub"
       - name: Upload zip
         uses: actions/upload-artifact@v3
