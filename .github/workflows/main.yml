@@ -1,0 +1,26 @@
+name: Build test version
+
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python # Set Python version
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      # Run things
+      - name: Install dependencies
+        run: |
+          python zipperRelease.py "GitHub"
+      - name: Upload zip
+        uses: actions/upload-artifact@v3
+        with:
+          name: BlackICE GitHub
+          path: ./BlackICE GitHub.zip
