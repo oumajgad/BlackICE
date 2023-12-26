@@ -87,6 +87,9 @@ local function getTranslation(key)
         trans = Parsing.GetTranslation(string.upper(key), "MODIFIER_")
     end
     if trans == nil then
+        trans = Parsing.GetTranslation(string.upper(key), nil, "_TECH")
+    end
+    if trans == nil then
         -- "air_intercept_eff"
         trans = Parsing.GetTranslation(string.lower(key), nil, "_eff")
     end
@@ -106,12 +109,6 @@ local function getTranslation(key)
             trans = Parsing.GetTranslation("MODIFIER_FUEL_CONVERSION")
         elseif key == "energy_to_oil_conversion" then
             trans = Parsing.GetTranslation("ENERGY_TO_OIL_TECH")
-        elseif key == "ic_to_supplies" then
-            trans = Parsing.GetTranslation("IC_TO_SUPPLIES_TECH")
-        elseif key == "encryption" then
-            trans = Parsing.GetTranslation("ENCRYPTION_TECH")
-        elseif key == "decryption" then
-            trans = Parsing.GetTranslation("DECRYPTION_TECH")
         elseif key == "energy_production" then
             trans = Parsing.GetTranslation("ENERGY_PROD_TECH")
         elseif key == "metal_production" then
@@ -120,18 +117,10 @@ local function getTranslation(key)
             trans = Parsing.GetTranslation("RARES_PROD_TECH")
         elseif key == "research_efficiency" then
             trans = Parsing.GetTranslation("RESEARC_EFF_TECH")
-        elseif key == "leadership_gain" then
-            trans = Parsing.GetTranslation("LEADERSHIP_GAIN_TECH")
-        elseif key == "supply_transfer_cost" then
-            trans = Parsing.GetTranslation("SUPPLY_TRANSFER_COST_TECH")
-        elseif key == "supply_throughput" then
-            trans = Parsing.GetTranslation("SUPPLY_THROUGHPUT_TECH")
-        elseif key == "repair_rate" then
-            trans = Parsing.GetTranslation("REPAIR_RATE_TECH")
-        elseif key == "reinforce_chance" then
-            trans = Parsing.GetTranslation("REINFORCE_CHANCE_TECH")
         elseif key == "unit_cooperation" then
             trans = Parsing.GetTranslation("UNIT_COOP_TECH")
+        elseif key == "provincial_aa_efficiency" then
+            trans = Parsing.GetTranslation("PROV_AA_TECH")
         elseif key == "attack_delay" then
             trans = "Delay between attacks"
         end
@@ -208,9 +197,9 @@ function P.DumpEffects(selection)
     -- sort some values to the top so its easier to read
     local orderMetaTable = getmetatable(sortedViaMetatable)["order"]
     for k, v in pairs(techEffectKeyBlacklist) do
-        local index = table.getIndex(orderMetaTable, v)
+        local index = table.getIndex(orderMetaTable, k)
         if index ~= nil then
-            orderMetaTable[index] = nil
+            table.remove(orderMetaTable, index)
             table.insert(orderMetaTable, 1, k)
         end
     end
