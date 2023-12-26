@@ -5,8 +5,8 @@ require("wx")
 -- UI = {}
 
 if wx ~= nil then
-	UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 600,600 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
-	UI.MyFrame4:SetSizeHints( wx.wxSize( 600,600 ), wx.wxDefaultSize )
+	UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 650,600 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
+	UI.MyFrame4:SetSizeHints( wx.wxSize( 650,600 ), wx.wxDefaultSize )
 	UI.MyFrame4.m_mgr = wxaui.wxAuiManager()
 	UI.MyFrame4.m_mgr:SetManagedWindow( UI.MyFrame4 )
 
