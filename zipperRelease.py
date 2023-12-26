@@ -16,7 +16,7 @@ def countFiles() -> int:
     maxcount = 0
     for root, dirs, files in os.walk("./"):
         for file in files:
-            if root.split("\\")[0] in Modfolders:
+            if root.split("\\")[0] in Modfolders or root.split("/")[0] in Modfolders:
                 maxcount +=1
     return maxcount
 
@@ -32,10 +32,7 @@ def zipdir(filename):
     maxcount = countFiles()
     counter = 0
     for root, dirs, files in os.walk("./"):
-        if root.split("\\")[0] not in Modfolders:
-            print(str(counter) + " - " + str(maxcount) +  "  skipped " + root )
-            continue
-        else:
+        if root.split("\\")[0] in Modfolders or root.split("/")[0] in Modfolders:
             for file in files:
                 print(str(counter) + " - " + str(maxcount) +  "  included " + os.path.join(root, file))
                 counter +=1
@@ -43,6 +40,9 @@ def zipdir(filename):
                 zipPath = f"{path}/BlackICE %s/%s"%(version, root.split("/")[1])
                 zipFilePath = os.path.join(zipPath, file)
                 zipf.write(filePath, zipFilePath)
+        else:
+            print(str(counter) + " - " + str(maxcount) +  "  skipped " + root )
+            continue
     zipf.close()
 
 
