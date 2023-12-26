@@ -37,7 +37,7 @@ def zipdir(filename):
             continue
         else:
             for file in files:
-                print(str(counter) + " - " + str(maxcount) +  "  included " + str(root) + "\\" + str(file))
+                print(str(counter) + " - " + str(maxcount) +  "  included " + os.path.join(root, file))
                 counter +=1
                 filePath = os.path.join(root, file)
                 zipPath = f"{path}/BlackICE %s/%s"%(version, root.split("/")[1])
