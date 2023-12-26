@@ -1,4 +1,4 @@
-name: Build test version
+name: Build "GitHub" version
 
 on: [workflow_dispatch]
 
@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       # Run things
-      - name: Run things
+      - name: Build version zip
         run: |
           python zipperRelease.py "GitHub"
       - name: Upload zip
