@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import zipfile
 
@@ -141,8 +142,12 @@ def zipIt(filename):
     print("\n")
     os.system("pause")
 
+argv = sys.argv[1:]
+print(argv)
+if len(argv) == 1:
+    version = argv[0]
+else:
+    version = input("Enter the version number: ")
 
-print("Enter the version number.")
-version = input()
 zipIt("BlackICE %s.zip"%version)
 
