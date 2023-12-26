@@ -36,10 +36,10 @@ function P.FillData()
         return string.upper(a) < string.upper(b)
     end)
 
-    UI.m_choice_Techs:Freeze()
-    UI.m_choice_Techs:Clear()
-    UI.m_choice_Techs:Append(P.TechsChoices)
-    UI.m_choice_Techs:Thaw()
+    UI.m_choice_GameInfo_Techs:Freeze()
+    UI.m_choice_GameInfo_Techs:Clear()
+    UI.m_choice_GameInfo_Techs:Append(P.TechsChoices)
+    UI.m_choice_GameInfo_Techs:Thaw()
 
     dataFilled = true
 end
@@ -128,6 +128,12 @@ local function getTranslation(key)
             trans = Parsing.GetTranslation("SUPPLY_THROUGHPUT_TECH")
         elseif key == "repair_rate" then
             trans = Parsing.GetTranslation("REPAIR_RATE_TECH")
+        elseif key == "reinforce_chance" then
+            trans = Parsing.GetTranslation("REINFORCE_CHANCE_TECH")
+        elseif key == "unit_cooperation" then
+            trans = Parsing.GetTranslation("UNIT_COOP_TECH")
+        elseif key == "attack_delay" then
+            trans = "Delay between attacks"
         end
     end
 
@@ -146,8 +152,8 @@ local techEffectKeyBlacklist = {
     ["activate_building"] = true,
     ["activate_unit"] = true,
     ["is_nuclear"] = true,
-    ["max_level"] = true,
     ["change"] = true,
+    ["max_level"] = true,
     ["difficulty"] = true,
     ["start_year"] = true,
     ["first_offset"] = true,
@@ -198,12 +204,22 @@ function P.DumpEffects(selection)
         translatedTech[k] = v
     end
     local sortedViaMetatable = Utils.PushTablesToEndAndSort(translatedTech)
+
+    -- sort some values to the top so its easier to read
+    local orderMetaTable = getmetatable(sortedViaMetatable)["order"]
+    for k, v in pairs(techEffectKeyBlacklist) do
+        local index = table.getIndex(orderMetaTable, v)
+        if index ~= nil then
+            orderMetaTable[index] = nil
+            table.insert(orderMetaTable, 1, k)
+        end
+    end
     return Utils.DumpByMetatableOrder(sortedViaMetatable)
 end
 
 
 function P.HandleSelection(shownLevelOverride)
-    local selectionString = UI.m_choice_Techs:GetString(UI.m_choice_Techs:GetSelection())
+    local selectionString = UI.m_choice_GameInfo_Techs:GetString(UI.m_choice_GameInfo_Techs:GetSelection())
     local techIdent = Parsing.GetKeyFromChoice(selectionString)
 
     local level = 0
@@ -228,5 +244,35 @@ function P.HandleSelection(shownLevelOverride)
     local s = Parsing.Techs.DumpEffects(techIdent)
     UI.m_textCtrl_GameInfo_Techs_Effects:SetValue(s)
 end
+
+P.TechsChoicesFiltered = {}
+function P.HandleFilter()
+    local filterString = UI.m_textCtrl_GameInfo_Techs_Filter:GetValue()
+    if filterString == nil or filterString == "" then   -- Reset to default
+        UI.m_choice_GameInfo_Techs:Freeze()
+        UI.m_choice_GameInfo_Techs:Clear()
+        UI.m_choice_GameInfo_Techs:Append(P.TechsChoices)
+        UI.m_choice_GameInfo_Techs:Thaw()
+        return
+    end
+
+    P.TechsChoicesFiltered = {} -- reset the list
+
+    for k, v in pairs(P.TechsChoices) do
+        if string.find(string.lower(v), string.lower(filterString)) then
+            table.insert(P.TechsChoicesFiltered, v)
+        end
+    end
+
+    table.sort(P.TechsChoicesFiltered, function (a, b)
+        return string.upper(a) < string.upper(b)
+    end)
+
+    UI.m_choice_GameInfo_Techs:Freeze()
+    UI.m_choice_GameInfo_Techs:Clear()
+    UI.m_choice_GameInfo_Techs:Append(P.TechsChoicesFiltered)
+    UI.m_choice_GameInfo_Techs:Thaw()
+end
+
 
 return P

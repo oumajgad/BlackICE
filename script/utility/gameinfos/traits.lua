@@ -82,14 +82,17 @@ local function dumpEffects(trait)
         translatedTrait[k] = v
     end
 
-    -- establish order, allowed_leader first, then the terrain stuff
-    local order = {"allowed_leader", "Attack", "Defence", "Speed"}
-    for k, v in Utils.OrderedTable(translatedTrait) do
-        if table.getIndex(order, k) == nil then
-            table.insert(order, 2, k)
+    local sortedViaMetatable = Utils.PushTablesToEndAndSort(translatedTrait)
+
+    -- push "allowed_leader" back to the top again so its easier to read
+    local orderMetaTable = getmetatable(sortedViaMetatable)["order"]
+    for k, v in ipairs(orderMetaTable) do
+        if v == "allowed_leader" then
+            orderMetaTable[v] = nil
         end
     end
-    return Utils.DumpCustomOrder(translatedTrait, order)
+    table.insert(orderMetaTable, 1, "allowed_leader")
+    return Utils.DumpByMetatableOrder(sortedViaMetatable)
 end
 
 function P.HandleSelection(selectionString)
