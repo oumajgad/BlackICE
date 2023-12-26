@@ -1537,3 +1537,67 @@ country_event = {
 		name = "Damn!"
 	}
 }
+
+country_event = {	#SPA/SPR neutrality bribes
+	id = 76500
+	is_triggered_only = yes
+	title = "Let's bribe them!"
+	desc = "EVTDESC76500"
+	picture = "Spain_Bribes"
+	option = {
+		name = "Pay them a lot!"
+		money = -4000
+		add_country_modifier = {
+			name = Spain_Bribes_Timer
+			duration = 90
+		}
+		SPA = {
+			country_event = 76501
+		}
+	}
+	option = {
+		name = "Pay them just a little bit"
+		money = -2000
+		add_country_modifier = {
+			name = Spain_Bribes_Timer
+			duration = 90
+		}
+		SPA = {
+			country_event = 76502
+		}
+	}
+	option = {
+		name = "Keep the money"
+	}
+}
+
+country_event = {	#SPA/SPR reaction
+	id = 76501
+	is_triggered_only = yes
+	title = "United Kingdom has an offer"
+	desc = "EVTDESC76501"
+	picture = "Spain_Bribes"
+	option = {
+		name = "Accept!"
+		money = 4000
+		neutrality = 10
+	}
+	option = {
+		name = "Decline!"
+	}
+}
+country_event = {	#SPA/SPR reaction
+	id = 76502
+	is_triggered_only = yes
+	title = "United Kingdom has an offer"
+	desc = "EVTDESC76501"
+	picture = "Spain_Bribes"
+	option = {
+		name = "Accept!"
+		money = 2000
+		neutrality = 5
+	}
+	option = {
+		name = "Decline!"
+	}
+}
