@@ -9,4 +9,4 @@ See the screenshots if you don't know how to start the action, and where to find
 
 
 ### Where to get older versions?
-Older versions can be downloaded from my ([@Dsafe1](https://github.com/Dsafe1)) [GoogleDrive](https://drive.google.com/drive/folders/17b5sYNkG1sfR8vqJHtatweoxQaWM4icy?usp=drive_link)
+Versions from 10.33 onwards can be downloaded from my ([@Dsafe1](https://github.com/Dsafe1)) [GoogleDrive](https://drive.google.com/drive/folders/17b5sYNkG1sfR8vqJHtatweoxQaWM4icy?usp=drive_link)
