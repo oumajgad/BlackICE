@@ -5,20 +5,83 @@
 # Effects are fully scriptable here.
 ###################################################################
 
-minimal_training_active = {
+minimal_training_active_I = {
 	potential = {
 		check_variable = {
 			which = "minimal_training_days_active"
 			value = 1
 		}
+		not = {
+			check_variable = {
+				which = "minimal_training_days_active"
+				value = 60
+			}
+		}
 	}
 	trigger = {
 		check_variable = {
 			which = "minimal_training_days_active"
-			value = 10
+			value = 30
+		}
+		not = {
+			check_variable = {
+				which = "minimal_training_days_active"
+				value = 60
+			}
 		}
 	}
-	# supply_throughput = 1
+	land_organisation = -0.05
+	air_organisation = -0.05
+	naval_organisation = -0.05
+	org_regain = -0.05
+}
+minimal_training_active_II = {
+	potential = {
+		check_variable = {
+			which = "minimal_training_days_active"
+			value = 30
+		}
+		not = {
+			check_variable = {
+				which = "minimal_training_days_active"
+				value = 90
+			}
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "minimal_training_days_active"
+			value = 60
+		}
+		not = {
+			check_variable = {
+				which = "minimal_training_days_active"
+				value = 90
+			}
+		}
+	}
+	land_organisation = -0.1
+	air_organisation = -0.1
+	naval_organisation = -0.1
+	org_regain = -0.1
+}
+minimal_training_active_III = {
+	potential = {
+		check_variable = {
+			which = "minimal_training_days_active"
+			value = 60
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "minimal_training_days_active"
+			value = 90
+		}
+	}
+	land_organisation = -0.15
+	air_organisation = -0.15
+	naval_organisation = -0.15
+	org_regain = -0.15
 }
 basic_training_active = {
 	potential = {
@@ -35,37 +98,163 @@ basic_training_active = {
 	}
 	# supply_throughput = 1
 }
-advanced_training_active = {
+advanced_training_active_I = {
 	potential = {
 		check_variable = {
 			which = "advanced_training_days_active"
 			value = 1
 		}
+		not = {
+			check_variable = {
+				which = "advanced_training_days_active"
+				value = 60
+			}
+		}
 	}
 	trigger = {
 		check_variable = {
 			which = "advanced_training_days_active"
-			value = 10
+			value = 30
+		}
+		not = {
+			check_variable = {
+				which = "advanced_training_days_active"
+				value = 60
+			}
 		}
 	}
-	# supply_throughput = 1
+	combat_movement_speed = 0.025
+	land_organisation = 0.02
+	air_organisation = 0.2
+	naval_organisation = 0.2
 }
-specialist_training_active = {
+advanced_training_active_II = {
+	potential = {
+		check_variable = {
+			which = "advanced_training_days_active"
+			value = 30
+		}
+		not = {
+			check_variable = {
+				which = "advanced_training_days_active"
+				value = 90
+			}
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "advanced_training_days_active"
+			value = 60
+		}
+		not = {
+			check_variable = {
+				which = "advanced_training_days_active"
+				value = 90
+			}
+		}
+	}
+	combat_movement_speed = 0.05
+	land_organisation = 0.035
+	air_organisation = 0.035
+	naval_organisation = 0.035
+}
+advanced_training_active_III = {
+	potential = {
+		check_variable = {
+			which = "advanced_training_days_active"
+			value = 60
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "advanced_training_days_active"
+			value = 90
+		}
+	}
+		combat_movement_speed = 0.075
+ 		land_organisation = 0.05
+ 		air_organisation = 0.05
+ 		naval_organisation = 0.05
+}
+specialist_training_active_I = {
 	potential = {
 		check_variable = {
 			which = "specialist_training_days_active"
 			value = 1
 		}
+		not = {
+			check_variable = {
+				which = "specialist_training_days_active"
+				value = 60
+			}
+		}
 	}
 	trigger = {
 		check_variable = {
 			which = "specialist_training_days_active"
-			value = 10
+			value = 30
+		}
+		not = {
+			check_variable = {
+				which = "specialist_training_days_active"
+				value = 60
+			}
 		}
 	}
-	# supply_throughput = 1
+	combat_movement_speed = 0.025
+	land_organisation = 0.025
+	air_organisation = 0.025
+	naval_organisation = 0.025
 }
-
+specialist_training_active_II = {
+	potential = {
+		check_variable = {
+			which = "specialist_training_days_active"
+			value = 30
+		}
+		not = {
+			check_variable = {
+				which = "specialist_training_days_active"
+				value = 90
+			}
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "specialist_training_days_active"
+			value = 60
+		}
+		not = {
+			check_variable = {
+				which = "specialist_training_days_active"
+				value = 90
+			}
+		}
+	}
+	combat_movement_speed = 0.075
+	land_organisation = 0.05
+	air_organisation = 0.05
+	naval_organisation = 0.05
+}
+specialist_training_active_III = {
+	potential = {
+		check_variable = {
+			which = "specialist_training_days_active"
+			value = 60
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "specialist_training_days_active"
+			value = 90
+		}
+	}
+	combat_movement_speed = 0.125
+	land_organisation = 0.1
+	air_organisation = 0.1
+	naval_organisation = 0.1
+}
+			
 Stalin_HOG_effect_AI = {
 	potential = {
 		tag = SOV
@@ -112,6 +301,9 @@ SOV_AI_TWEAK = {
 		#not = {
 		#	year = 1944
 		#}
+		not = {
+			war_with = JAP
+		}
 		
 		or = {
 			and = {
@@ -192,9 +384,23 @@ SOV_AI_WAR_I = {
 		ai = yes
 	}
 	trigger = {
-		war_with = GER
-		not = {
-			total_amount_of_brigades = 2000
+		or = {
+			and = {
+				war_with = GER
+				not = {
+					war_with = JAP
+				}
+				not = {
+					total_amount_of_brigades = 2000
+				}
+			}
+			and = {
+				war_with = GER
+				war_with = JAP
+				not = {
+					total_amount_of_brigades = 3000
+				}
+			}
 		}
 	}
 
@@ -209,11 +415,26 @@ SOV_AI_WAR_II = {
 		ai = yes
 	}
 	trigger = {
-		war_with = GER
-		not = {
-			total_amount_of_brigades = 3000
+		or = {
+			and = {
+				war_with = GER
+				not = {
+					war_with = JAP
+				}
+				not = {
+					total_amount_of_brigades = 3000
+				}
+				total_amount_of_brigades = 2000
+			}
+			and = {
+				war_with = GER
+				war_with = JAP
+				not = {
+					total_amount_of_brigades = 4000
+				}
+				total_amount_of_brigades = 3000
+			}
 		}
-		total_amount_of_brigades = 2000
 	}
 
 	land_build_speed = -1.25
@@ -228,10 +449,26 @@ SOV_AI_WAR_III = {
 	}
 	trigger = {
 		war_with = GER
-		not = {
-			total_amount_of_brigades = 4000
+		or = {
+			and = {
+				war_with = GER
+				not = {
+					war_with = JAP
+				}
+				not = {
+					total_amount_of_brigades = 4000
+				}
+				total_amount_of_brigades = 3000
+			}
+			and = {
+				war_with = GER
+				war_with = JAP
+				not = {
+					total_amount_of_brigades = 5000
+				}
+				total_amount_of_brigades = 4000
+			}
 		}
-		total_amount_of_brigades = 3000
 	}
 
 	land_build_speed = -0.75
@@ -4769,6 +5006,45 @@ mediterranean_control = {
 
 	trigger = {
 		or = {
+			controls = 5586
+			5586 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5586 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 5134
+			5134 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5134 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 5191
+			5191 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5191 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
 			controls = 5002
 			5002 = {
 				controller = {
@@ -8491,6 +8767,7 @@ puppet_master_I = {
 	global_money = 0.025
 	global_resources = 0.02
 	global_manpower_modifier = 0.025
+	global_leadership_modifier = 0.025
 
 	icon = 40
 }
@@ -8510,6 +8787,7 @@ puppet_master_II = {
 	global_money = 0.05
 	global_resources = 0.04
 	global_manpower_modifier = 0.05
+	global_leadership_modifier = 0.035
 
 	icon = 40
 }
@@ -8529,6 +8807,7 @@ puppet_master_III = {
 	global_money = 0.075
 	global_resources = 0.075
 	global_manpower_modifier = 0.075
+	global_leadership_modifier = 0.05
 
 	icon = 40
 }
@@ -8547,6 +8826,7 @@ puppet_master_IV = {
 	global_money = 0.15
 	global_resources = 0.15
 	global_manpower_modifier = 0.15
+	global_leadership_modifier = 0.065
 
 	icon = 40
 }
