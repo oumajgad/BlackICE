@@ -1811,7 +1811,7 @@ if wx ~= nil then
 					SetUpStatCollectionPage()
 
 					UI.m_radioBtn_Generals_all:SetValue( true )
-					Parsing.Generals.FillwxChoice(PlayerCountry)
+					Parsing.Generals.FillwxChoice(PlayerCountry, true)
 
 					GuiRefreshLoop(true)
 					UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)

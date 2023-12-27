@@ -68,10 +68,24 @@ if wx ~= nil then
 	UI.m_panel_GameInfo_Generals = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_GameInfo2 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_choice_GeneralsChoices = {}
-	UI.m_choice_Generals = wx.wxChoice( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 350,-1 ), UI.m_choice_GeneralsChoices, 0 )
-	UI.m_choice_Generals:SetSelection( 0 )
-	UI.bSizer_GameInfo2:Add( UI.m_choice_Generals, 0, wx.wxALL + wx.wxEXPAND, 5 )
+	UI.fgSizer_GameInfo_Generals_1 = wx.wxFlexGridSizer( 1, 3, 0, 0 )
+	UI.fgSizer_GameInfo_Generals_1:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_Generals_1:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_Generals_1:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_choice_GameInfo_GeneralsChoices = {}
+	UI.m_choice_GameInfo_Generals = wx.wxChoice( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 350,-1 ), UI.m_choice_GameInfo_GeneralsChoices, 0 )
+	UI.m_choice_GameInfo_Generals:SetSelection( 0 )
+	UI.fgSizer_GameInfo_Generals_1:Add( UI.m_choice_GameInfo_Generals, 0, wx.wxALIGN_CENTER_VERTICAL + wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_textCtrl_GameInfo_Generals_Filter = wx.wxTextCtrl( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "name filter (press enter)", wx.wxDefaultPosition, wx.wxSize( 135,-1 ), 0 )
+	UI.fgSizer_GameInfo_Generals_1:Add( UI.m_textCtrl_GameInfo_Generals_Filter, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_button_GameInfo_Generals_Filter_Clear = wx.wxButton( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "Clear", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.fgSizer_GameInfo_Generals_1:Add( UI.m_button_GameInfo_Generals_Filter_Clear, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer_GameInfo2:Add( UI.fgSizer_GameInfo_Generals_1, 0, wx.wxEXPAND, 5 )
 
 	UI.gSizer_Generals_1 = wx.wxGridSizer( 1, 4, 0, 0 )
 
@@ -118,7 +132,7 @@ if wx ~= nil then
 	UI.fgSizer_GameInfo_Techs_3:Add( UI.m_textCtrl_GameInfo_Techs_Filter, 1, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 	UI.m_button_GameInfo_Techs_Filter_Clear = wx.wxButton( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "Clear", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
-	UI.fgSizer_GameInfo_Techs_3:Add( UI.m_button_GameInfo_Techs_Filter_Clear, 0, wx.wxALL, 5 )
+	UI.fgSizer_GameInfo_Techs_3:Add( UI.m_button_GameInfo_Techs_Filter_Clear, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.bSizer_GameInfo3:Add( UI.fgSizer_GameInfo_Techs_3, 0, wx.wxEXPAND, 5 )
@@ -282,13 +296,28 @@ if wx ~= nil then
 		Parsing.Traits.HandleSelection(selectionString)
     end )
 
-	UI.m_choice_Generals:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
-        local selectionString = UI.m_choice_Generals:GetString(UI.m_choice_Generals:GetSelection())
+	UI.m_choice_GameInfo_Generals:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+        local selectionString = UI.m_choice_GameInfo_Generals:GetString(UI.m_choice_GameInfo_Generals:GetSelection())
 		local generalId = Parsing.GetKeyFromChoice(selectionString)
 		local general = Parsing.Generals.CountryGeneralsData[generalId]
 		if general ~= nil then
 			local s = Utils.Dump(general)
 			UI.m_textCtrl_Generals:SetValue(s)
+		end
+	end )
+
+	UI.m_textCtrl_GameInfo_Generals_Filter:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)
+		if PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(PlayerCountry)
+			UI.m_textCtrl_Generals:Clear()
+		end
+	end )
+
+	UI.m_button_GameInfo_Generals_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		UI.m_textCtrl_GameInfo_Generals_Filter:SetValue("")
+		if PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(PlayerCountry)
+			UI.m_textCtrl_Generals:Clear()
 		end
 	end )
 

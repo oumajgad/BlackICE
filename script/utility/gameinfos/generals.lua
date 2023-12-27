@@ -103,11 +103,32 @@ end
 
 local SortGeneralsBySkill = function(t,a,b) return t[b]["starting_skill"] < t[a]["starting_skill"] end
 
-local function createFilteredGeneralsList(playertag)
+local function checkNameFilter(general, filterString)
+    if filterString ~= "" then
+        if string.find(string.lower(general.name), string.lower(filterString)) then
+            return true
+        end
+        return false
+    else -- no filter
+        return true
+
+    end
+end
+
+local function createFilteredGeneralsList(playertag, filterOverride)
+    local filterString = UI.m_textCtrl_GameInfo_Generals_Filter:GetValue()
+    if filterOverride ~= nil then
+        -- since the filter textctrl has a default value it has to be overriden so it doesn't interfere with with the list creation when choosing a country
+        filterString = ""
+    end
     local selectedBranch = getGeneralBranchChoice()
     local unsorted = {}
     for id, general in pairs(P.GeneralsData) do
-        if general.country == playertag and (general.type == selectedBranch or selectedBranch == generalBranches.all) then
+        if (
+            general.country == playertag
+            and (selectedBranch == generalBranches.all or general.type == selectedBranch)
+            and checkNameFilter(general, filterString)
+        ) then
             if general.starting_skill ~= nil then
                 unsorted[id] = general
             else
@@ -144,16 +165,15 @@ function P.FillData()
     dataFilled = true
 end
 
--- Update the wxChoice when the playertag changes
-function P.FillwxChoice(playertag)
+function P.FillwxChoice(playertag, filterOverride)
     if not dataFilled then
         P.FillData()
     end
-    local generals = createFilteredGeneralsList(playertag)
-    UI.m_choice_Generals:Freeze()
-    UI.m_choice_Generals:Clear()
-    UI.m_choice_Generals:Append(generals)
-    UI.m_choice_Generals:Thaw()
+    local generals = createFilteredGeneralsList(playertag, filterOverride)
+    UI.m_choice_GameInfo_Generals:Freeze()
+    UI.m_choice_GameInfo_Generals:Clear()
+    UI.m_choice_GameInfo_Generals:Append(generals)
+    UI.m_choice_GameInfo_Generals:Thaw()
 end
 
 return P
