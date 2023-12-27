@@ -114,18 +114,18 @@ if wx ~= nil then
 
 	UI.gSizer_Setup38 = wx.wxGridSizer( 1, 4, 0, 0 )
 
-	UI.m_button_ShowHelpWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Help window", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_button_ShowHelpWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "BICE Help", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_button_ShowHelpWindow:SetToolTip( "A window with useful information about the mod and game" )
 
 	UI.gSizer_Setup38:Add( UI.m_button_ShowHelpWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_button_ShowOptionsWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Options window", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_button_ShowOptionsWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Options", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer_Setup38:Add( UI.m_button_ShowOptionsWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_button_ShowStatsWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Stats window", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_button_ShowStatsWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Stats", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer_Setup38:Add( UI.m_button_ShowStatsWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_button_ShowGameInfoWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Game infos", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_button_ShowGameInfoWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "GameInfos", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer_Setup38:Add( UI.m_button_ShowGameInfoWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
@@ -199,7 +199,7 @@ if wx ~= nil then
 
 	UI.gSizer2:Add( UI.m_textCtrl_SuppThrou, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion\n(only increases during war)", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion \n(only increases during war)", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText34:Wrap( 150 )
 
 	UI.gSizer2:Add( UI.m_staticText34, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
