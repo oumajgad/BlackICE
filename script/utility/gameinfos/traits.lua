@@ -128,15 +128,43 @@ function P.FillData()
         return string.upper(a) < string.upper(b)
     end)
 
-    UI.m_choice_Traits:Freeze()
-    UI.m_choice_Traits:Clear()
-    UI.m_choice_Traits:Append(P.TraitsChoices)
-    UI.m_choice_Traits:Thaw()
+    UI.m_choice_GameInfo_Traits:Freeze()
+    UI.m_choice_GameInfo_Traits:Clear()
+    UI.m_choice_GameInfo_Traits:Append(P.TraitsChoices)
+    UI.m_choice_GameInfo_Traits:Thaw()
 
     mapTriggersToTraits()
 
     dataFilled = true
 end
 
+P.TraitsChoicesFiltered = {}
+function P.HandleFilter()
+    local filterString = UI.m_textCtrl_GameInfo_Traits_Filter:GetValue()
+    if filterString == nil or filterString == "" then   -- Reset to default
+        UI.m_choice_GameInfo_Traits:Freeze()
+        UI.m_choice_GameInfo_Traits:Clear()
+        UI.m_choice_GameInfo_Traits:Append(P.TraitsChoices)
+        UI.m_choice_GameInfo_Traits:Thaw()
+        return
+    end
+
+    P.TraitsChoicesFiltered = {} -- reset the list
+
+    for k, v in pairs(P.TraitsChoices) do
+        if string.find(string.lower(v), string.lower(filterString)) then
+            table.insert(P.TraitsChoicesFiltered, v)
+        end
+    end
+
+    table.sort(P.TraitsChoicesFiltered, function (a, b)
+        return string.upper(a) < string.upper(b)
+    end)
+
+    UI.m_choice_GameInfo_Traits:Freeze()
+    UI.m_choice_GameInfo_Traits:Clear()
+    UI.m_choice_GameInfo_Traits:Append(P.TraitsChoicesFiltered)
+    UI.m_choice_GameInfo_Traits:Thaw()
+end
 
 return P

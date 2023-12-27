@@ -16,10 +16,24 @@ if wx ~= nil then
 	UI.m_panel_GameInfo_Traits = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_GameInfo1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_choice_TraitsChoices = {}
-	UI.m_choice_Traits = wx.wxChoice( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 350,-1 ), UI.m_choice_TraitsChoices, 0 )
-	UI.m_choice_Traits:SetSelection( 0 )
-	UI.bSizer_GameInfo1:Add( UI.m_choice_Traits, 0, wx.wxALL + wx.wxEXPAND, 5 )
+	UI.fgSizer_GameInfo_Traits3 = wx.wxFlexGridSizer( 1, 3, 0, 0 )
+	UI.fgSizer_GameInfo_Traits3:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_Traits3:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_Traits3:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_choice_GameInfo_TraitsChoices = {}
+	UI.m_choice_GameInfo_Traits = wx.wxChoice( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 350,-1 ), UI.m_choice_GameInfo_TraitsChoices, 0 )
+	UI.m_choice_GameInfo_Traits:SetSelection( 0 )
+	UI.fgSizer_GameInfo_Traits3:Add( UI.m_choice_GameInfo_Traits, 0, wx.wxALIGN_CENTER_VERTICAL + wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_textCtrl_GameInfo_Traits_Filter = wx.wxTextCtrl( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, "name filter (press enter)", wx.wxDefaultPosition, wx.wxSize( 135,-1 ), 0 )
+	UI.fgSizer_GameInfo_Traits3:Add( UI.m_textCtrl_GameInfo_Traits_Filter, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_GameInfo_Traits_Filter_Clear = wx.wxButton( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, "Clear", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.fgSizer_GameInfo_Traits3:Add( UI.m_button_GameInfo_Traits_Filter_Clear, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer_GameInfo1:Add( UI.fgSizer_GameInfo_Traits3, 0, wx.wxEXPAND, 5 )
 
 	UI.gSizer_GameInfo_Traits1 = wx.wxGridSizer( 1, 2, 0, 0 )
 
@@ -291,10 +305,19 @@ if wx ~= nil then
 	UI.MyFrame4:Show(false)
 	-- Connect Events
 
-    UI.m_choice_Traits:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
-        local selectionString = UI.m_choice_Traits:GetString(UI.m_choice_Traits:GetSelection())
+    UI.m_choice_GameInfo_Traits:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+        local selectionString = UI.m_choice_GameInfo_Traits:GetString(UI.m_choice_GameInfo_Traits:GetSelection())
 		Parsing.Traits.HandleSelection(selectionString)
     end )
+
+	UI.m_textCtrl_GameInfo_Traits_Filter:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)
+		Parsing.Traits.HandleFilter()
+	end )
+
+	UI.m_button_GameInfo_Traits_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		UI.m_textCtrl_GameInfo_Traits_Filter:SetValue("")
+		Parsing.Traits.HandleFilter()
+	end )
 
 	UI.m_choice_GameInfo_Generals:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
         local selectionString = UI.m_choice_GameInfo_Generals:GetString(UI.m_choice_GameInfo_Generals:GetSelection())
