@@ -11521,8 +11521,8 @@ brigade_command_structure_BK = {
     difficulty = 2
 
     # common for all techs.
-    start_year = 1918
-    first_offset = 1933 	# 2nd model is from 1936
+    start_year = 1933
+    first_offset = 1936 	# 2nd model is from 1936
     additional_offset = 3   # one new every 2 years
 	max_level = 6
     folder = blitzkrieg_folder
@@ -11582,7 +11582,7 @@ divisonal_command_structure_BK = {
 				and = {
 					divisonal_command_structure_BK = 0
 					not = { divisonal_command_structure_BK = 1 }
-					divisonal_command_structure = 3
+					#divisonal_command_structure = 3
 					or = {
 						#check_variable = { which = "BK_experience" value = 50 }
 						and = {
@@ -11595,7 +11595,7 @@ divisonal_command_structure_BK = {
 				and = {
 					divisonal_command_structure_BK = 1
 					not = { divisonal_command_structure_BK = 2 }
-					divisonal_command_structure = 5
+					#divisonal_command_structure = 5
 					or = {
 						#check_variable = { which = "BK_experience" value = 70 }
 						and = {
@@ -11608,7 +11608,7 @@ divisonal_command_structure_BK = {
 				and = {
 					divisonal_command_structure_BK = 2
 					not = { divisonal_command_structure_BK = 3 }
-					divisonal_command_structure = 7
+					#divisonal_command_structure = 7
 					or = {
 						#check_variable = { which = "BK_experience" value = 90 }
 						and = {
@@ -11621,7 +11621,7 @@ divisonal_command_structure_BK = {
 				and = {
 					divisonal_command_structure_BK = 3
 					not = { divisonal_command_structure_BK = 4 }
-					divisonal_command_structure = 9
+					#divisonal_command_structure = 9
 					or = {
 						#check_variable = { which = "BK_experience" value = 110 }
 						and = {
@@ -11640,9 +11640,9 @@ divisonal_command_structure_BK = {
 	attack_delay = 3
 	radio_strength = 3
 
-	division_HQ_unit_type = 0.01
-	veteran_division_HQ_unit_type = 0.01
-	elite_division_HQ_unit_type = 0.01
+	division_HQ_unit_type = 0.007
+	veteran_division_HQ_unit_type = 0.007
+	elite_division_HQ_unit_type = 0.007
 
 	change = no
 
@@ -11656,8 +11656,8 @@ divisonal_command_structure_BK = {
     difficulty = 2
 
     # common for all techs.
-    start_year = 1932
-    first_offset = 1933 	# 2nd model is from 1936
+    start_year = 1636
+    first_offset = 1638 	# 2nd model is from 1936
     additional_offset = 2   # one new every 1 years
 	max_level = 8
     folder = blitzkrieg_folder
@@ -12147,18 +12147,52 @@ advanced_training_tech = {
 
     # common for all techs.
     start_year = 1936
-	first_offset = 1938
-	additional_offset = 4
-	max_level = 3
+	first_offset = 1937
+	additional_offset = 2
+	max_level = 8
     folder = blitzkrieg_folder
 }
 
 kampfgruppe = {
 
 	allow = {
-		blitzkrieg = 1
-		combined_arms_integration = 1
-		advanced_training_tech = 3
+		or = {
+			and = {
+				blitzkrieg = 1
+				advanced_training_tech = 2
+				not = {
+					advanced_training_tech = 3
+					kampfgruppe = 1
+				}
+			}
+			and = {
+				blitzkrieg = 1
+				advanced_training_tech = 3
+				kampfgruppe = 1
+				not = {
+					advanced_training_tech = 4
+					kampfgruppe = 2
+				}
+			}
+			and = {
+				blitzkrieg = 1
+				advanced_training_tech = 4
+				kampfgruppe = 2
+				not = {
+					advanced_training_tech = 5
+					kampfgruppe = 3
+				}
+			}
+			and = {
+				blitzkrieg = 1
+				advanced_training_tech = 5
+				kampfgruppe = 3
+				not = {
+					advanced_training_tech = 6
+					kampfgruppe = 4
+				}
+			}
+		}
 	}
 
 	kampfgruppe_unit_type = 0.01
