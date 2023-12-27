@@ -101,6 +101,8 @@ local function createGeneral(values)
     return general
 end
 
+local SortGeneralsBySkill = function(t,a,b) return t[b]["starting_skill"] < t[a]["starting_skill"] end
+
 local function createFilteredGeneralsList(playertag)
     local selectedBranch = getGeneralBranchChoice()
     local unsorted = {}

@@ -23,7 +23,7 @@ if wx ~= nil then
 
 	UI.gSizer_GameInfo_Traits1 = wx.wxGridSizer( 1, 2, 0, 0 )
 
-	UI.fgSizer_GameInfo_Traits1 = wx.wxFlexGridSizer( 3, 1, 0, 0 )
+	UI.fgSizer_GameInfo_Traits1 = wx.wxFlexGridSizer( 2, 1, 0, 0 )
 	UI.fgSizer_GameInfo_Traits1:AddGrowableCol( 0 )
 	UI.fgSizer_GameInfo_Traits1:AddGrowableRow( 1 )
 	UI.fgSizer_GameInfo_Traits1:SetFlexibleDirection( wx.wxBOTH )
@@ -36,11 +36,6 @@ if wx ~= nil then
 
 	UI.m_textCtrl_GameInfo_Traits_Triggers = wx.wxTextCtrl( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
 	UI.fgSizer_GameInfo_Traits1:Add( UI.m_textCtrl_GameInfo_Traits_Triggers, 0, wx.wxALL + wx.wxEXPAND, 5 )
-
-	UI.m_staticText_GameInfo_Traits2 = wx.wxStaticText( UI.m_panel_GameInfo_Traits, wx.wxID_ANY, "Note that triggers may be combined. E.g. 2 \"OR\" clauses can be combined and show as 1 clause with multiple grouped conditions. This only happens if the 2 clauses are identical in the code, i.e.: \"or\" and \"OR\" will not be combined.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText_GameInfo_Traits2:Wrap( 230 )
-
-	UI.fgSizer_GameInfo_Traits1:Add( UI.m_staticText_GameInfo_Traits2, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 
 	UI.gSizer_GameInfo_Traits1:Add( UI.fgSizer_GameInfo_Traits1, 1, wx.wxEXPAND, 5 )
@@ -166,7 +161,7 @@ if wx ~= nil then
 
 	UI.gSizer_GameInfo_Techs_2 = wx.wxGridSizer( 1, 2, 0, 0 )
 
-	UI.fgSizer_GameInfo_Techs_1 = wx.wxFlexGridSizer( 3, 1, 0, 0 )
+	UI.fgSizer_GameInfo_Techs_1 = wx.wxFlexGridSizer( 2, 1, 0, 0 )
 	UI.fgSizer_GameInfo_Techs_1:AddGrowableCol( 0 )
 	UI.fgSizer_GameInfo_Techs_1:AddGrowableRow( 1 )
 	UI.fgSizer_GameInfo_Techs_1:SetFlexibleDirection( wx.wxBOTH )
@@ -179,11 +174,6 @@ if wx ~= nil then
 
 	UI.m_textCtrl_GameInfo_Techs_Triggers = wx.wxTextCtrl( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
 	UI.fgSizer_GameInfo_Techs_1:Add( UI.m_textCtrl_GameInfo_Techs_Triggers, 1, wx.wxALL + wx.wxEXPAND, 5 )
-
-	UI.m_staticText_GameInfo_Techs_4 = wx.wxStaticText( UI.m_panel_GameInfo_Tech, wx.wxID_ANY, "Note that triggers may be combined. E.g. 2 \"OR\" clauses can be combined and show as 1 clause with multiple grouped conditions. This only happens if the 2 clauses are identical in the code, i.e.: \"or\" and \"OR\" will not be combined.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText_GameInfo_Techs_4:Wrap( 230 )
-
-	UI.fgSizer_GameInfo_Techs_1:Add( UI.m_staticText_GameInfo_Techs_4, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 
 	UI.gSizer_GameInfo_Techs_2:Add( UI.fgSizer_GameInfo_Techs_1, 1, wx.wxEXPAND, 5 )
@@ -237,7 +227,7 @@ if wx ~= nil then
 
 	UI.gSizer_GameInfo_Modifiers1 = wx.wxGridSizer( 1, 2, 0, 0 )
 
-	UI.fgSizer_GameInfo_Modifiers2 = wx.wxFlexGridSizer( 3, 1, 0, 0 )
+	UI.fgSizer_GameInfo_Modifiers2 = wx.wxFlexGridSizer( 2, 1, 0, 0 )
 	UI.fgSizer_GameInfo_Modifiers2:AddGrowableCol( 0 )
 	UI.fgSizer_GameInfo_Modifiers2:AddGrowableRow( 1 )
 	UI.fgSizer_GameInfo_Modifiers2:SetFlexibleDirection( wx.wxBOTH )
@@ -250,11 +240,6 @@ if wx ~= nil then
 
 	UI.m_textCtrl_GameInfo_Modifiers_Triggers1 = wx.wxTextCtrl( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
 	UI.fgSizer_GameInfo_Modifiers2:Add( UI.m_textCtrl_GameInfo_Modifiers_Triggers1, 0, wx.wxALL + wx.wxEXPAND, 5 )
-
-	UI.m_staticText_GameInfo_Modifiers2 = wx.wxStaticText( UI.m_panel_GameInfo_Modifiers, wx.wxID_ANY, "Note that triggers may be combined. E.g. 2 \"OR\" clauses can be combined and show as 1 clause with multiple grouped conditions. This only happens if the 2 clauses are identical in the code, i.e.: \"or\" and \"OR\" will not be combined.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText_GameInfo_Modifiers2:Wrap( 230 )
-
-	UI.fgSizer_GameInfo_Modifiers2:Add( UI.m_staticText_GameInfo_Modifiers2, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 
 	UI.gSizer_GameInfo_Modifiers1:Add( UI.fgSizer_GameInfo_Modifiers2, 1, wx.wxEXPAND, 5 )

@@ -110,8 +110,6 @@ end
 SortDescending = function(t,a,b) return t[b] < t[a] end
 SortAscending = function(t,a,b) return t[b] > t[a] end
 
-SortGeneralsBySkill = function(t,a,b) return t[b]["starting_skill"] < t[a]["starting_skill"] end
-
 --===================================================
 -- call GLOBAL_unlock(_G)
 -- to change things back to normal.

@@ -98,6 +98,17 @@ local function parse_list(str, i)
     end
 end
 
+-- some keys can be lower or uppercase -> use this table to normalize them
+local caseOverrides = {
+    ["not"] = "NOT",
+    ["or"] = "OR",
+    ["and"] = "AND",
+    ["tag"] = "TAG",
+    ["this"] = "THIS",
+    ["from"] = "FROM",
+    ["limit"] = "LIMIT",
+}
+
 local function parse_object(str, i, doAsList, level)
     local res = {}
     while true do
@@ -120,6 +131,11 @@ local function parse_object(str, i, doAsList, level)
         end
 
         key, i = parse_string(str, i)
+
+        if caseOverrides[string.lower(key)] ~= nil then
+            key = caseOverrides[string.lower(key)]
+        end
+
         -- local chr = str:sub(i,i)
         -- print(key)
         -- print("i: " .. i .. " = " .. "'" .. chr .. "'")
