@@ -14,7 +14,7 @@ minimal_training_active_I = {
 		not = {
 			check_variable = {
 				which = "minimal_training_days_active"
-				value = 60
+				value = 180
 			}
 		}
 	}
@@ -26,7 +26,7 @@ minimal_training_active_I = {
 		not = {
 			check_variable = {
 				which = "minimal_training_days_active"
-				value = 60
+				value = 180
 			}
 		}
 	}
@@ -44,19 +44,19 @@ minimal_training_active_II = {
 		not = {
 			check_variable = {
 				which = "minimal_training_days_active"
-				value = 90
+				value = 360
 			}
 		}
 	}
 	trigger = {
 		check_variable = {
 			which = "minimal_training_days_active"
-			value = 60
+			value = 180
 		}
 		not = {
 			check_variable = {
 				which = "minimal_training_days_active"
-				value = 90
+				value = 360
 			}
 		}
 	}
@@ -69,13 +69,13 @@ minimal_training_active_III = {
 	potential = {
 		check_variable = {
 			which = "minimal_training_days_active"
-			value = 60
+			value = 180
 		}
 	}
 	trigger = {
 		check_variable = {
 			which = "minimal_training_days_active"
-			value = 90
+			value = 360
 		}
 	}
 	land_organisation = -0.15
@@ -83,20 +83,74 @@ minimal_training_active_III = {
 	naval_organisation = -0.15
 	org_regain = -0.15
 }
-basic_training_active = {
+basic_training_active_I = {
 	potential = {
 		check_variable = {
 			which = "basic_training_days_active"
 			value = 1
 		}
+		not = {
+			check_variable = {
+				which = "basic_training_days_active"
+				value = 180
+			}
+		}
 	}
 	trigger = {
 		check_variable = {
 			which = "basic_training_days_active"
-			value = 10
+			value = 30
+		}
+		not = {
+			check_variable = {
+				which = "basic_training_days_active"
+				value = 180
+			}
 		}
 	}
-	# supply_throughput = 1
+	unit_start_experience = 3
+}
+basic_training_active_II = {
+	potential = {
+		check_variable = {
+			which = "basic_training_days_active"
+			value = 30
+		}
+		not = {
+			check_variable = {
+				which = "basic_training_days_active"
+				value = 360
+			}
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "basic_training_days_active"
+			value = 180
+		}
+		not = {
+			check_variable = {
+				which = "basic_training_days_active"
+				value = 360
+			}
+		}
+	}
+	unit_start_experience = 6
+}
+basic_training_active_III = {
+	potential = {
+		check_variable = {
+			which = "basic_training_days_active"
+			value = 180
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "basic_training_days_active"
+			value = 360
+		}
+	}
+	unit_start_experience = 10
 }
 advanced_training_active_I = {
 	potential = {
@@ -107,7 +161,7 @@ advanced_training_active_I = {
 		not = {
 			check_variable = {
 				which = "advanced_training_days_active"
-				value = 60
+				value = 180
 			}
 		}
 	}
@@ -119,14 +173,15 @@ advanced_training_active_I = {
 		not = {
 			check_variable = {
 				which = "advanced_training_days_active"
-				value = 60
+				value = 180
 			}
 		}
 	}
+	unit_start_experience = 5
 	combat_movement_speed = 0.025
 	land_organisation = 0.02
-	air_organisation = 0.2
-	naval_organisation = 0.2
+	air_organisation = 0.02
+	naval_organisation = 0.02
 }
 advanced_training_active_II = {
 	potential = {
@@ -137,22 +192,23 @@ advanced_training_active_II = {
 		not = {
 			check_variable = {
 				which = "advanced_training_days_active"
-				value = 90
+				value = 360
 			}
 		}
 	}
 	trigger = {
 		check_variable = {
 			which = "advanced_training_days_active"
-			value = 60
+			value = 180
 		}
 		not = {
 			check_variable = {
 				which = "advanced_training_days_active"
-				value = 90
+				value = 360
 			}
 		}
 	}
+	unit_start_experience = 10
 	combat_movement_speed = 0.05
 	land_organisation = 0.035
 	air_organisation = 0.035
@@ -162,15 +218,16 @@ advanced_training_active_III = {
 	potential = {
 		check_variable = {
 			which = "advanced_training_days_active"
-			value = 60
+			value = 180
 		}
 	}
 	trigger = {
 		check_variable = {
 			which = "advanced_training_days_active"
-			value = 90
+			value = 360
 		}
 	}
+		unit_start_experience = 20
 		combat_movement_speed = 0.075
  		land_organisation = 0.05
  		air_organisation = 0.05
@@ -185,7 +242,7 @@ specialist_training_active_I = {
 		not = {
 			check_variable = {
 				which = "specialist_training_days_active"
-				value = 60
+				value = 180
 			}
 		}
 	}
@@ -197,10 +254,11 @@ specialist_training_active_I = {
 		not = {
 			check_variable = {
 				which = "specialist_training_days_active"
-				value = 60
+				value = 180
 			}
 		}
 	}
+	unit_start_experience = 10	
 	combat_movement_speed = 0.025
 	land_organisation = 0.025
 	air_organisation = 0.025
@@ -215,22 +273,23 @@ specialist_training_active_II = {
 		not = {
 			check_variable = {
 				which = "specialist_training_days_active"
-				value = 90
+				value = 360
 			}
 		}
 	}
 	trigger = {
 		check_variable = {
 			which = "specialist_training_days_active"
-			value = 60
+			value = 180
 		}
 		not = {
 			check_variable = {
 				which = "specialist_training_days_active"
-				value = 90
+				value = 360
 			}
 		}
 	}
+	unit_start_experience = 20	
 	combat_movement_speed = 0.075
 	land_organisation = 0.05
 	air_organisation = 0.05
@@ -240,15 +299,16 @@ specialist_training_active_III = {
 	potential = {
 		check_variable = {
 			which = "specialist_training_days_active"
-			value = 60
+			value = 180
 		}
 	}
 	trigger = {
 		check_variable = {
 			which = "specialist_training_days_active"
-			value = 90
+			value = 360
 		}
 	}
+	unit_start_experience = 30	
 	combat_movement_speed = 0.125
 	land_organisation = 0.1
 	air_organisation = 0.1
@@ -16660,7 +16720,7 @@ advanced_training_strategic_effect_I = { ### 5 levels ###
 		not = { advanced_training_tech = 2 }
 	}
 
-	officer_recruitment = -0.025
+	officer_recruitment = 0.025
 	icon = 61
 }
 advanced_training_strategic_effect_II = { ### 5 levels ###
@@ -16673,7 +16733,7 @@ advanced_training_strategic_effect_II = { ### 5 levels ###
 		not = { advanced_training_tech = 3 }
 	}
 
-	officer_recruitment = -0.035
+	officer_recruitment = 0.035
 	icon = 61
 }
 advanced_training_strategic_effect_III = { ### 5 levels ###
@@ -16684,7 +16744,7 @@ advanced_training_strategic_effect_III = { ### 5 levels ###
 		advanced_training_tech = 3
 	}
 
-	officer_recruitment = -0.05
+	officer_recruitment = 0.05
 	icon = 61
 }
 tank_crews_training_strategic_effect_I = { ### 5 levels ###
