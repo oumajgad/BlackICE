@@ -73,3 +73,39 @@ function SetEventPopUpLeft()
     ret = ReplaceLineAtCommentMark(name1, mark1, new1)
     UI.m_textCtrl_OptionActions_Output:SetValue(text .. ret)
 end
+
+local function applyFontRecursivelyToWxWindows(_wx_window, change)
+    -- Utils.LUA_DEBUGOUT("applyFontRecursivelyToWxWindows: " .. _wx_window:GetName())
+    local children = _wx_window:GetChildren()
+    local count = children:GetCount() - 1
+    for i = 0, count do
+        -- Utils.LUA_DEBUGOUT(i .. "/" .. count)
+        local item = children:Item(i):GetData():DynamicCast("wxWindow")
+
+        if _wx_window:GetChildren() ~= nil then
+            applyFontRecursivelyToWxWindows(item, change)
+        end
+
+        -- Utils.LUA_DEBUGOUT(i .. ": " .. item:GetName())
+
+        local font = item:GetFont()
+        font:SetPointSize(font:GetPointSize() + change)
+        item:SetFont(font)
+    end
+end
+
+function DecreaseFontSize()
+    applyFontRecursivelyToWxWindows(UI.MyFrame1, -1)
+    applyFontRecursivelyToWxWindows(UI.MyFrame2, -1)
+    applyFontRecursivelyToWxWindows(UI.MyFrame3, -1)
+    applyFontRecursivelyToWxWindows(UI.MyFrame4, -1)
+    applyFontRecursivelyToWxWindows(UI.MyFrame5, -1)
+end
+
+function IncreaseFontSize()
+    applyFontRecursivelyToWxWindows(UI.MyFrame1, 1)
+    applyFontRecursivelyToWxWindows(UI.MyFrame2, 1)
+    applyFontRecursivelyToWxWindows(UI.MyFrame3, 1)
+    applyFontRecursivelyToWxWindows(UI.MyFrame4, 1)
+    applyFontRecursivelyToWxWindows(UI.MyFrame5, 1)
+end

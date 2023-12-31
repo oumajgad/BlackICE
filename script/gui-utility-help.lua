@@ -6,7 +6,6 @@ require("wx")
 -- UI = {}
 
 if wx ~= nil then
-
 	UI.MyFrame2 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Help", wx.wxDefaultPosition, wx.wxSize( 800,700 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSTAY_ON_TOP + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
 	UI.MyFrame2:SetSizeHints( wx.wxDefaultSize, wx.wxDefaultSize )
 	UI.MyFrame2.m_mgr = wxaui.wxAuiManager()
@@ -148,8 +147,38 @@ if wx ~= nil then
 
 	UI.gSizerHelpMisc0:Add( UI.bSizerHelp50, 1, wx.wxEXPAND, 5 )
 
+	UI.bSizerHelp51 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.gSizerHelpMisc0:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+	UI.m_staticTextHelp271 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Event Spawned Units", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp271:Wrap( 650 )
+
+	UI.m_staticTextHelp271:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, True, "" ) )
+
+	UI.bSizerHelp51:Add( UI.m_staticTextHelp271, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticTextHelp27 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Due to game engine limitations, event spawned units are spawned directly on the map instead of in the production queue. ", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp27:Wrap( 320 )
+
+	UI.m_staticTextHelp27:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
+
+	UI.bSizerHelp51:Add( UI.m_staticTextHelp27, 0, wx.wxALIGN_CENTER + wx.wxALL, 1 )
+
+	UI.m_staticTextHelp26 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Each unit adds its cost to the ICDays variable, which, if it is greater than 1, will activate an IC penalty.\nThat IC penalty represents your countries investment into building those units and each week the ICDays variable gets counted down, scaled to your IC and investment value, until it reaches 0.\nAt that point the penalty will disappear.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp26:Wrap( 320 )
+
+	UI.m_staticTextHelp26:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
+
+	UI.bSizerHelp51:Add( UI.m_staticTextHelp26, 0, wx.wxALIGN_CENTER + wx.wxALL, 1 )
+
+	UI.m_staticTextHelp29 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "\nUnits that will be removed by events have yellow coloured names.\n", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp29:Wrap( 320 )
+
+	UI.m_staticTextHelp29:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
+
+	UI.bSizerHelp51:Add( UI.m_staticTextHelp29, 0, wx.wxALIGN_CENTER + wx.wxALL, 1 )
+
+
+	UI.gSizerHelpMisc0:Add( UI.bSizerHelp51, 1, wx.wxEXPAND, 5 )
 
 
 	UI.m_scrolledWindow_HelpMisc:SetSizer( UI.gSizerHelpMisc0 )
@@ -317,43 +346,6 @@ if wx ~= nil then
 	UI.m_scrolledWindow_Ministers:Layout()
 	UI.bSizerHelp1:Fit( UI.m_scrolledWindow_Ministers )
 	UI.m_notebook2:AddPage(UI.m_scrolledWindow_Ministers, "Ministers + Buildings", False )
-	UI.m_scrolledWindow_EventUnits = wx.wxScrolledWindow( UI.m_notebook2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHSCROLL + wx.wxVSCROLL )
-	UI.m_scrolledWindow_EventUnits:SetScrollRate( 5, 5 )
-	UI.bSizerHelp2 = wx.wxBoxSizer( wx.wxVERTICAL )
-
-	UI.m_staticTextHelp27 = wx.wxStaticText( UI.m_scrolledWindow_EventUnits, wx.wxID_ANY, "Due to game engine limitations, event spawned units are spawned directly on the map instead of in the production queue. ", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticTextHelp27:Wrap( 500 )
-
-	UI.m_staticTextHelp27:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
-
-	UI.bSizerHelp2:Add( UI.m_staticTextHelp27, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
-
-	UI.m_staticTextHelp26 = wx.wxStaticText( UI.m_scrolledWindow_EventUnits, wx.wxID_ANY, "Each unit adds its cost to the ICDays variable, which, if it is greater than 1, will activate an IC penalty.\nThat IC penalty represents your countries investment into building those units and each week the ICDays variable gets counted down, scaled to your IC and investment value, until it reaches 0.\nAt that point the penalty will disappear.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticTextHelp26:Wrap( 650 )
-
-	UI.m_staticTextHelp26:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
-
-	UI.bSizerHelp2:Add( UI.m_staticTextHelp26, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
-
-	UI.m_staticTextHelp29 = wx.wxStaticText( UI.m_scrolledWindow_EventUnits, wx.wxID_ANY, "\nUnits that will be removed by events will have coloured names.\n", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticTextHelp29:Wrap( 650 )
-
-	UI.m_staticTextHelp29:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
-
-	UI.bSizerHelp2:Add( UI.m_staticTextHelp29, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
-
-	UI.m_staticTextHelp28 = wx.wxStaticText( UI.m_scrolledWindow_EventUnits, wx.wxID_ANY, "Event spawned ships will have a dummy unit placed it the production queue. Once you finish it and deploy it on the map you can activate a decision that will replace it with the real ship.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticTextHelp28:Wrap( 650 )
-
-	UI.m_staticTextHelp28:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
-
-	UI.bSizerHelp2:Add( UI.m_staticTextHelp28, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
-
-
-	UI.m_scrolledWindow_EventUnits:SetSizer( UI.bSizerHelp2 )
-	UI.m_scrolledWindow_EventUnits:Layout()
-	UI.bSizerHelp2:Fit( UI.m_scrolledWindow_EventUnits )
-	UI.m_notebook2:AddPage(UI.m_scrolledWindow_EventUnits, "Event Units", False )
 	UI.m_scrolledWindow_NatFocus = wx.wxScrolledWindow( UI.m_notebook2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHSCROLL + wx.wxVSCROLL )
 	UI.m_scrolledWindow_NatFocus:SetScrollRate( 30, 30 )
 	UI.bSizerHelpNatFocus1 = wx.wxBoxSizer( wx.wxVERTICAL )
