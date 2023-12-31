@@ -137,7 +137,7 @@ if wx ~= nil then
 	UI.bSizer2:Fit( UI.m_panel_Setup )
 	UI.m_notebook4:AddPage(UI.m_panel_Setup, "Setup", True )
 	UI.m_panel_C_Info = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
-	UI.gSizer2 = wx.wxGridSizer( 4, 4, 0, 0 )
+	UI.gSizer2 = wx.wxGridSizer( 5, 4, 0, 0 )
 
 	UI.m_staticText_cInfo_baseIc = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Base IC", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText_cInfo_baseIc:Wrap( -1 )
@@ -198,6 +198,26 @@ if wx ~= nil then
 	UI.m_textCtrl_SuppThrou:Enable( False )
 
 	UI.gSizer2:Add( UI.m_textCtrl_SuppThrou, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_repairEff = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Repair Speed Modifier", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_repairEff:Wrap( -1 )
+
+	UI.gSizer2:Add( UI.m_staticText_repairEff, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_RepairEff = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_RepairEff:Enable( False )
+
+	UI.gSizer2:Add( UI.m_textCtrl_RepairEff, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_StartingExp = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Unit Starting Experience", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_StartingExp:Wrap( -1 )
+
+	UI.gSizer2:Add( UI.m_staticText_StartingExp, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_StartingExp = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_StartingExp:Enable( False )
+
+	UI.gSizer2:Add( UI.m_textCtrl_StartingExp, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion \n(only increases during war)", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText34:Wrap( 150 )
