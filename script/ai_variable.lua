@@ -972,7 +972,7 @@ function CountryModifiers(minister)
 	-- if dayOfMonth ~= 5 and dayOfMonth ~= 15 and dayOfMonth ~= 25 then
 	-- 	return
 	-- end
-
+	local techModifierValues = Parsing.Techs.GetTechModifierValues()
 	for tag, countryTag in pairs(CountryIterCacheDict) do
 		-- local countryTag = CCountryDataBase.GetTag(player)
 		local country = countryTag:GetCountry()
@@ -982,7 +982,7 @@ function CountryModifiers(minister)
 			local icEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
 			-- Utils.LUA_DEBUGOUT(player)
 			-- Utils.LUA_DEBUGOUT("icEffraw: " .. icEffraw)
-			for tech, effect in pairs(G_TechsIcEffValues) do
+			for tech, effect in pairs(techModifierValues["ic_efficiency"]) do
 				local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
 				icEffraw = icEffraw + (effect*level)
 				-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
@@ -995,7 +995,7 @@ function CountryModifiers(minister)
 			local resEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get()
 			-- Utils.LUA_DEBUGOUT(player)
 			-- Utils.LUA_DEBUGOUT("resEffraw: " .. resEffraw)
-			for tech, effect in pairs(G_TechsResEffValues) do
+			for tech, effect in pairs(techModifierValues["research_efficiency"]) do
 				local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
 				resEffraw = resEffraw + (effect*level)
 				-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
@@ -1008,7 +1008,7 @@ function CountryModifiers(minister)
 			local suppthrouRaw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_THROUGHPUT_):Get()
 			-- Utils.LUA_DEBUGOUT(player)
 			-- Utils.LUA_DEBUGOUT("supplythrouRaw: " .. supplythrouRaw)
-			for tech, effect in pairs(G_TechsSuppThrouValues) do
+			for tech, effect in pairs(techModifierValues["supply_throughput"]) do
 				local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
 				suppthrouRaw = suppthrouRaw + (effect*level)
 				-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))

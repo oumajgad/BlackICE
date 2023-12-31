@@ -11,13 +11,13 @@ local techsFiles = {
 }
 
 
-P.TechsData = {}
+P.TechsData = nil
 P.TechsChoices = {}
-local dataFilled = false
 function P.FillData()
-    if dataFilled then
+    if P.TechsData ~= nil then
         return
     end
+    P.TechsData = {}
     local translationTable = Parsing.GetTranslationTable()
     for i, file in pairs(techsFiles) do
         local res = PdxParser.parseFile("tfh\\mod\\BlackICE " .. UI.version .. "\\technologies\\" .. file)
@@ -40,8 +40,6 @@ function P.FillData()
     UI.m_choice_GameInfo_Techs:Clear()
     UI.m_choice_GameInfo_Techs:Append(P.TechsChoices)
     UI.m_choice_GameInfo_Techs:Thaw()
-
-    dataFilled = true
 end
 
 local shownLevel = 0
@@ -263,5 +261,36 @@ function P.HandleFilter()
     UI.m_choice_GameInfo_Techs:Thaw()
 end
 
+
+P.TechModifierValues = nil
+local function loadTechModifiers()
+    local techModifierValues = {
+        ["ic_efficiency"] = {},
+        ["ic_modifier"] = {},
+        ["research_efficiency"] = {},
+        ["supply_throughput"] = {},
+        ["repair_rate"] = {},
+    }
+    if P.TechsData == nil then
+        P.FillData()
+    end
+
+    for techName, techValues in pairs(P.TechsData) do
+        for k, v in pairs(techValues) do
+            if techModifierValues[k] ~= nil then
+                techModifierValues[k][techName] = tonumber(v)
+            end
+        end
+    end
+    P.TechModifierValues = techModifierValues
+end
+
+function P.GetTechModifierValues()
+    if P.TechModifierValues == nil then
+        P.TechModifierValues = {}
+        loadTechModifiers()
+    end
+    return P.TechModifierValues
+end
 
 return P

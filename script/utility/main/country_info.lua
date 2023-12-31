@@ -1,11 +1,12 @@
 -- Called each refresh
 function GetPlayerModifiers()
+    local techModifierValues = Parsing.Techs.GetTechModifierValues()
     local playerCountry = CCountryDataBase.GetTag(PlayerCountry):GetCountry()
 
     local baseIC = playerCountry:GetMaxIC()
     local baseICWithOffmap = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_IC_):Get()
     local icModifier = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_IC_):Get()
-    for tech, effect in pairs(G_TechsIcModValues) do
+    for tech, effect in pairs(techModifierValues["ic_modifier"]) do
         local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
         icModifier = icModifier + (effect*level)
         -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))

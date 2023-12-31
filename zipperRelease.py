@@ -79,10 +79,6 @@ def addUtilityResources(zipf: zipfile.ZipFile):
     for root, dirs, files in os.walk(f"./tools/wxWidget/projects/tfh/mod/BlackICE-utility-resources/"):
         for file in files:
             zipf.write(os.path.join(root, file), f"tfh/mod/BlackICE {version}/utility/{file}")
-    zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsIcEffValues.txt")
-    zipf.write("./tools/TechFileForLua/TechsIcModValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsIcModValues.txt")
-    zipf.write("./tools/TechFileForLua/TechsResEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsResEffValues.txt")
-    zipf.write("./tools/TechFileForLua/TechsSuppThrouValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsSuppThrouValues.txt")
 
 def addBorderlessWindowDlls(zipf: zipfile.ZipFile):
     zipf.write("./DaveStuff/borderless_window_v2winfix/original/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/patches/borderless_mouse_fix/dinput8.dll")

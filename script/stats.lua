@@ -151,7 +151,7 @@ end
 
 local function getIcEfficiency(ministerCountry)
 	local icEffraw = ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
-	for tech, effect in pairs(G_TechsIcEffValues) do
+	for tech, effect in pairs(Parsing.Techs.GetTechModifierValues()["ic_efficiency"]) do
 		local level = ministerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
 		icEffraw = icEffraw + (effect*level)
 	end
