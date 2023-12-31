@@ -71,12 +71,21 @@ function IsPatchLargeAddressAwareApplied()
     return fixed_hex == current
 end
 
+function IsPatchSubOnePercentUnitReinforcementApplied()
+    local fixed_hex = "90 90 90 90 90 90"
+    local current = ReadHex("hoi3_tfh.exe", 0x11B5DB, 6)
+    return fixed_hex == current
+end
+
 --- Check for EXE patch status and set a variable to fire an ingame event
 function DetermineExePatchStatus()
     -- Utils.LUA_DEBUGOUT(tostring(IsPatchLargeAddressAwareApplied()))
     -- Utils.LUA_DEBUGOUT(tostring(IsPatchMinisterTechDecayApplied()))
     -- Utils.LUA_DEBUGOUT(tostring(IsPatchMinisterWarExhaustionNeutralityResetApplied()))
-    if not IsPatchLargeAddressAwareApplied() or not IsPatchMinisterTechDecayApplied() or not IsPatchMinisterWarExhaustionNeutralityResetApplied() then
+    if not IsPatchLargeAddressAwareApplied() or
+        not IsPatchMinisterTechDecayApplied() or
+        not IsPatchMinisterWarExhaustionNeutralityResetApplied() or
+        not IsPatchSubOnePercentUnitReinforcementApplied() then
         local omgTag = CCountryDataBase.GetTag("OMG")
         local alreadyFired = omgTag:GetCountry():GetVariables():GetVariable(CString("OmgExePatchStatusTrigger")):Get()
         if alreadyFired ~= 2 then

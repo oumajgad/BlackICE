@@ -18,6 +18,7 @@ def WriteHex(file: str, offset: int, hex_n: str):
 
 def PatchLargeAddressAware():
     print("Patch_LargeAddressAware")
+    print("\tThis will make the EXE able to use up to 4GB of RAM")
     WriteHex("hoi3_tfh.exe", 0x138, "9165E5")
     WriteHex("hoi3_tfh.exe", 0x146, "22")
     WriteHex("hoi3_tfh.exe", 0x188, "67B1")
@@ -32,6 +33,7 @@ def PatchLargeAddressAware():
 
 def PatchMinisterTechDecay():
     print("Patch_MinisterTechDecay")
+    print("\tThis makes the tech decay effect ministers have work")
     print(f'Old: {ReadHex("hoi3_tfh.exe", 0xDD7ED, 1)}')
     WriteHex("hoi3_tfh.exe", 0xDD7ED, "01")
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xDD7ED, 1)}')
@@ -39,6 +41,7 @@ def PatchMinisterTechDecay():
 
 def PatchMinisterWarExhaustionNeutralityReset():
     print("Patch_MinisterWarExhaustionNeutralityReset")
+    print("\tThis makes it so that war exhaustion is not added to neutrality after a war")
     hex_n = "3BC37E1153518BCC8919E868F3010090909090909083BF6801"
     print(f'Old: {ReadHex("hoi3_tfh.exe", 0xDC009, 25)}')
     WriteHex("hoi3_tfh.exe", 0xDC009, hex_n)
@@ -47,14 +50,26 @@ def PatchMinisterWarExhaustionNeutralityReset():
 
 def PatchOffmapIC():
     print("Patch_OffmapIC")
+    print("\tThis fixes the 'ic' effect so modders can use it. It is basically offmap IC")
+
     print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
     WriteHex("hoi3_tfh.exe", 0xF03A9, "8B4178909090")
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
     
     print("Patch_OffmapIC_UI")
+    print("\tThis makes the ingame display of IC account for offmap IC")
     print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF0390, 3)}')
     WriteHex("hoi3_tfh.exe", 0xF0390, "F76978")
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xF0390, 3)}')
+
+
+def PatchSubOnePercentUnitReinforcement():
+    print("Patch PatchSubOnePercentUnitReinforcement")
+    print("\tThis makes units receive reinforcement, even if they would have received less than 1%")
+    print("\t(Yes, previously units would receive nothing if it was below 1%")
+    print(f'Old: {ReadHex("hoi3_tfh.exe", 0x11B5DB, 6)}')
+    WriteHex("hoi3_tfh.exe", 0x11B5DB, "909090909090")
+    print(f'New: {ReadHex("hoi3_tfh.exe", 0x11B5DB, 6)}')
 
 
 if __name__ == "__main__":
@@ -63,6 +78,7 @@ if __name__ == "__main__":
         PatchMinisterTechDecay()
         PatchMinisterWarExhaustionNeutralityReset()
         PatchOffmapIC()
+        PatchSubOnePercentUnitReinforcement()
         print("\nSuccess\n")
         os.system("pause")
     except Exception as e:

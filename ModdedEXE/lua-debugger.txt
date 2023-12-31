@@ -1,0 +1,23 @@
+function debugger_onBreakpoint()
+  print("BREAKPOINT")
+  local found = false
+
+  -- scanning through the stack for a specific value
+  for i = 0x0, 0xff do
+    local x = readInteger(ESP+i)
+    if (x==0xc6771868) then
+      print("unit at: " .. string.format("%x", i))
+      found = true
+    end
+    if (x==0x4F8) then
+      print("strength at: " .. string.format("%x", i))
+      found = true
+    end
+  end
+  if (found == true) then
+    return 0
+  end
+  return 1
+end
+
+debug_setBreakpoint("hoi3_tfh.exe+11C198")
