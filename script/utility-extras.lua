@@ -44,8 +44,8 @@ function IsPatchLargeAddressAwareApplied()
 end
 
 function IsPatchSubOnePercentUnitReinforcementApplied()
-    local fixed_hex = "90 90 90 90 90 90"
-    local current = ReadHex("hoi3_tfh.exe", 0x11B5DB, 6)
+    local fixed_hex = "10 27"
+    local current = ReadHex("hoi3_tfh.exe", 0x11B5BA, 2)
     return fixed_hex == current
 end
 
