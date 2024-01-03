@@ -61,44 +61,44 @@ country_event = {
 		ai_chance = {
 			factor = 90
 		}
-		random_list = {
-			# 80% chance of marginal success
-			80 =  {
-				# ENG gets The Blitz effect
-				ENG = {
-					add_country_modifier = {
-						name = "The_Blitz_Low"
-						duration = 240
-					}
-				}
-			}
-			# 15% chance of moderate success
-			15 = {
-				# ENG gets The Blitz effect
-				ENG = {
-					add_country_modifier = {
-						name = "The_Blitz_Medium"
-						duration = 240
-					}
-				}
-			}
-			# 5% chance of resounding success
-			5 = {
-				# ENG gets The Blitz effect
-				ENG = {
-					add_country_modifier = {
-						name = "The_Blitz_High"
-						duration = 240
-					}
-				}
-			}
-		}
+		#random_list = {
+		#	# 80% chance of marginal success
+		#	80 =  {
+		#		# ENG gets The Blitz effect
+		#		ENG = {
+		#			add_country_modifier = {
+		#				name = "The_Blitz_Low"
+		#				duration = 240
+		#			}
+		#		}
+		#	}
+		#	# 15% chance of moderate success
+		#	15 = {
+		#		# ENG gets The Blitz effect
+		#		ENG = {
+		#			add_country_modifier = {
+		#				name = "The_Blitz_Medium"
+		#				duration = 240
+		#			}
+		#		}
+		#	}
+		#	# 5% chance of resounding success
+		#	5 = {
+		#		# ENG gets The Blitz effect
+		#		ENG = {
+		#			add_country_modifier = {
+		#				name = "The_Blitz_High"
+		#				duration = 240
+		#			}
+		#		}
+		#	}
+		#}
 		# GER has to pay for this decision, whatever the outcome, for the
 		# historical long haul
 		GER = {
 			add_country_modifier = {
 				name = "Paying_for_the_Blitz"
-				duration = 240
+				duration = 180
 			}
 		}
 		# Notify any player-controlled allies that GER is bombing the shit out of the UK
@@ -138,160 +138,160 @@ country_event = {
 # Periodic bombing raid by GER
 #
 #################################################################################################
-country_event = {
-	id = 999752
-	trigger = {
-		tag = ENG
-		has_global_flag = blitz_yes
-		GER = {
-			has_country_modifier = Paying_for_the_Blitz
-		}
-	}
-	mean_time_to_happen = {
-		days = 25
-	}
-	title = "EVTNAMEMARNE0216"
-	desc = "EVTDESCMARNE0216"
-	picture = "blitz-raid-eng"
-	option = {
-		name = "EVTOPTAMARNE0216"
-		# Choose target province based on lightly defended ones in the mainland of
-		# the UK, that have some minimum level of IC in them
-		# Light bombing raid
-		random_owned = {
-			limit = {
-				region = mainland_england
-				industry = 1
-
-				not = {
-					anti_air = 6
-				}
-				ENG = {
-					has_country_modifier = The_Blitz_Low
-				}
-			}
-			industry = -1
-			GER = {
-				country_event = 999753
-			}
-		}
-		# Moderate bombing raid
-		random_owned = {
-			limit = {
-				region = mainland_england
-				industry = 2
-
-				not = {
-					anti_air = 6
-				}
-				ENG = {
-					has_country_modifier = The_Blitz_Medium
-				}
-			}
-			industry = -2
-			GER = {
-				country_event = 999754
-			}
-		}
-		# Heavy bombing raid
-		random_owned = {
-			limit = {
-				region = mainland_england
-				industry = 3
-
-				not = {
-					anti_air = 6
-				}
-				ENG = {
-					has_country_modifier = The_Blitz_High
-				}
-			}
-			industry = -3
-			GER = {
-				country_event = 999755
-			}
-		}
-	}
-}
-#################################################################################################
+#country_event = {
+#	id = 999752
+#	trigger = {
+#		tag = ENG
+#		has_global_flag = blitz_yes
+#		GER = {
+#			has_country_modifier = Paying_for_the_Blitz
+#		}
+#	}
+#	mean_time_to_happen = {
+#		days = 25
+#	}
+#	title = "EVTNAMEMARNE0216"
+#	desc = "EVTDESCMARNE0216"
+#	picture = "blitz-raid-eng"
+#	option = {
+#		name = "EVTOPTAMARNE0216"
+#		# Choose target province based on lightly defended ones in the mainland of
+#		# the UK, that have some minimum level of IC in them
+#		# Light bombing raid
+#		random_owned = {
+#			limit = {
+#				region = mainland_england
+#				industry = 1
 #
-# GER gets notified of the results of their bombing for this period
+#				not = {
+#					anti_air = 6
+#				}
+#				ENG = {
+#					has_country_modifier = The_Blitz_Low
+#				}
+#			}
+#			industry = -1
+#			GER = {
+#				country_event = 999753
+#			}
+#		}
+#		# Moderate bombing raid
+#		random_owned = {
+#			limit = {
+#				region = mainland_england
+#				industry = 2
 #
-#################################################################################################
-country_event = {
-	id = 999753
-	is_triggered_only = yes
-	title = "EVTNAMEMARNE0217"
-	desc = "EVTDESCMARNE0217"
-	picture = "blitz-raid-light"
-	option = {
-		name = "EVTOPTAMARNE0217"
-	}
-}
-country_event = {
-	id = 999754
-	is_triggered_only = yes
-	title = "EVTNAMEMARNE0218"
-	desc = "EVTDESCMARNE0218"
-	picture = "blitz-raid-moderate"
-	option = {
-		name = "EVTOPTAMARNE0218"
-	}
-}
-country_event = {
-	id = 999755
-	is_triggered_only = yes
-	title = "EVTNAMEMARNE0219"
-	desc = "EVTDESCMARNE0219"
-	picture = "blitz-raid-heavy"
-	option = {
-		name = "EVTOPTAMARNE0219"
-	}
-}
-#################################################################################################
+#				not = {
+#					anti_air = 6
+#				}
+#				ENG = {
+#					has_country_modifier = The_Blitz_Medium
+#				}
+#			}
+#			industry = -2
+#			GER = {
+#				country_event = 999754
+#			}
+#		}
+#		# Heavy bombing raid
+#		random_owned = {
+#			limit = {
+#				region = mainland_england
+#				industry = 3
 #
-# GER no longer blitz bombing the UK
+#				not = {
+#					anti_air = 6
+#				}
+#				ENG = {
+#					has_country_modifier = The_Blitz_High
+#				}
+#			}
+#			industry = -3
+#			GER = {
+#				country_event = 999755
+#			}
+#		}
+#	}
+#}
+##################################################################################################
+##
+## GER gets notified of the results of their bombing for this period
+##
+##################################################################################################
+#country_event = {
+#	id = 999753
+#	is_triggered_only = yes
+#	title = "EVTNAMEMARNE0217"
+#	desc = "EVTDESCMARNE0217"
+#	picture = "blitz-raid-light"
+#	option = {
+#		name = "EVTOPTAMARNE0217"
+#	}
+#}
+#country_event = {
+#	id = 999754
+#	is_triggered_only = yes
+#	title = "EVTNAMEMARNE0218"
+#	desc = "EVTDESCMARNE0218"
+#	picture = "blitz-raid-moderate"
+#	option = {
+#		name = "EVTOPTAMARNE0218"
+#	}
+#}
+#country_event = {
+#	id = 999755
+#	is_triggered_only = yes
+#	title = "EVTNAMEMARNE0219"
+#	desc = "EVTDESCMARNE0219"
+#	picture = "blitz-raid-heavy"
+#	option = {
+#		name = "EVTOPTAMARNE0219"
+#	}
+#}
+##################################################################################################
+##
+## GER no longer blitz bombing the UK
+##
+##################################################################################################
+#country_event = {
+#	id = 999756
+#	fire_only_once = yes
+#	trigger = {
+#		tag = ENG
+#		has_global_flag = blitz_yes
 #
-#################################################################################################
-country_event = {
-	id = 999756
-	fire_only_once = yes
-	trigger = {
-		tag = ENG
-		has_global_flag = blitz_yes
-
-		not = {
-			GER = {
-				has_country_modifier = Paying_for_the_Blitz
-			}
-		}
-	}
-	title = "EVTNAMEMARNE0220"
-	desc = "EVTDESCMARNE0220"
-	picture = "blitz-eng-over"
-	option = {
-		name = "EVTOPTAMARNE0220"
-		clr_global_flag = blitz_yes
-	}
-}
-country_event = {
-	id = 999757
-	fire_only_once = yes
-	trigger = {
-		tag = GER
-		has_global_flag = blitz_yes
-
-		not = {
-			GER = {
-				has_country_modifier = Paying_for_the_Blitz
-			}
-		}
-	}
-	title = "EVTNAMEMARNE0221"
-	desc = "EVTDESCMARNE0221"
-	picture = "blitz-ger-over"
-	option = {
-		name = "EVTOPTAMARNE0221"
-		clr_global_flag = blitz_yes
-	}
-}
+#		not = {
+#			GER = {
+#				has_country_modifier = Paying_for_the_Blitz
+#			}
+#		}
+#	}
+#	title = "EVTNAMEMARNE0220"
+#	desc = "EVTDESCMARNE0220"
+#	picture = "blitz-eng-over"
+#	option = {
+#		name = "EVTOPTAMARNE0220"
+#		clr_global_flag = blitz_yes
+#	}
+#}
+#country_event = {
+#	id = 999757
+#	fire_only_once = yes
+#	trigger = {
+#		tag = GER
+#		has_global_flag = blitz_yes
+#
+#		not = {
+#			GER = {
+#				has_country_modifier = Paying_for_the_Blitz
+#			}
+#		}
+#	}
+#	title = "EVTNAMEMARNE0221"
+#	desc = "EVTDESCMARNE0221"
+#	picture = "blitz-ger-over"
+#	option = {
+#		name = "EVTOPTAMARNE0221"
+#		clr_global_flag = blitz_yes
+#	}
+#}
