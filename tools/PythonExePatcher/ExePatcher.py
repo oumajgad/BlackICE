@@ -72,6 +72,10 @@ def PatchSubOnePercentUnitReinforcement():
     WriteHex("hoi3_tfh.exe", 0x11B5BA, "1027")
     print(f'New: {ReadHex("hoi3_tfh.exe", 0x11B5BA, 2)}')
 
+    print(f'Old: {ReadHex("hoi3_tfh.exe", 0x11B5AB, 2)}')
+    WriteHex("hoi3_tfh.exe", 0x11B5AB, "6400")
+    print(f'New: {ReadHex("hoi3_tfh.exe", 0x11B5AB, 2)}')
+
 
 if __name__ == "__main__":
     try:
