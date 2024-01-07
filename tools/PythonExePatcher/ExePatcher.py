@@ -63,23 +63,12 @@ def PatchOffmapIC():
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xF0390, 3)}')
 
 
-def PatchSubOnePercentUnitReinforcement():
-    print("Patch_SubOnePercentUnitReinforcement")
-    print("\tThis makes units receive reinforcement, even if they would have received less than 1%")
-    print("\t(Yes, previously units would receive nothing if it was below 1%)")
-
-    print(f'Old: {ReadHex("hoi3_tfh.exe", 0x11B5BA, 2)}')
-    WriteHex("hoi3_tfh.exe", 0x11B5BA, "1027")
-    print(f'New: {ReadHex("hoi3_tfh.exe", 0x11B5BA, 2)}')
-
-
 if __name__ == "__main__":
     try:
         PatchLargeAddressAware()
         PatchMinisterTechDecay()
         PatchMinisterWarExhaustionNeutralityReset()
         PatchOffmapIC()
-        PatchSubOnePercentUnitReinforcement()
         print("\nSuccess\n")
         os.system("pause")
     except Exception as e:
