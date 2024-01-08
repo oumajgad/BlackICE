@@ -262,7 +262,7 @@ function P.HandleFilter()
 end
 
 
-P.TechModifierValues = nil
+P.TechModifierValues = nil  -- these are the modifiers which we show in the utility, but for which the LUA endpoint is missing the tech levels
 local function loadTechModifiers()
     local techModifierValues = {
         ["ic_efficiency"] = {},

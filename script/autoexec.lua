@@ -101,6 +101,8 @@ require('utility-extras')
 -- Statistics
 require('stats')
 
+require('ai_omg_handlers')
+
 -- Commented to prevent security patch bugs
 --Utils.resetLog()
 

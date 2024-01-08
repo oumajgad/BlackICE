@@ -1566,6 +1566,10 @@ function ProductionMinister_Tick(minister)
 		t = os.clock()
 	end
 
+	if isOMG then
+		OMGHandlerProductionMinister(minister)
+	end
+
 	HandleProductionMinister_Tick(minister)
 
 	if benchmarkLUA then

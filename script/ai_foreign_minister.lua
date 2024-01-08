@@ -120,6 +120,10 @@ function ForeignMinister_Tick(minister)
 		t = os.clock()
 	end
 
+	if isOMG then
+		OMGHandlerForeignMinister(minister)
+	end
+
 	-- Execute Decisions
 	minister:ExecuteDiploDecisions()
 

@@ -34,8 +34,8 @@ function IntelligenceMinister_Tick(minister)
 	end
 
 	--OMG Variable Handler
-	if tostring(minister:GetCountryTag()) == "OMG" then
-		OMGHandler(minister)
+	if isOMG then
+		OMGHandlerIntelligenceMinister(minister)
 	end
 
 	if benchmarkLUA then
@@ -110,114 +110,6 @@ function IntelligenceMinister_Tick(minister)
 	if benchmarkLUA then
 		Utils.addTime("Spies", os.clock() - t, isOMG)
 	end
-
-end
-
-function OMGHandler(minister)
-	-- local tOmg = os.clock()
-	-- Utils.LUA_DEBUGOUT('OMG var handler start')
-
-	-- local t = nil
-	-- t = os.clock()
-	CountryIterCache()
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CountryIterCache")
-
-	-- t = os.clock()
-	InitTradingData()
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - InitTradingData")
-
-	-- t = os.clock()
-	CheckPendingTrades()
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CheckPendingTrades")
-
-	-- t = os.clock()
-	CheckExpiredTrades()
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CheckExpiredTrades")
-
-	-- t = os.clock()
-	BuildingsCountSetup(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - BuildingsCountSetup")
-
-	-- t = os.clock()
-	GreaterEastAsiaCoProsperitySphere(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - GreaterEastAsiaCoProsperitySphere")
-
-	-- t = os.clock()
-	BaseICbyMinister(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - baseICbyMinister")
-
-	-- t = os.clock()
-	BuildingsCount(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - BuildingsCount")
-
-	-- t = os.clock()
-	ResourceCount(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - ResourceCount")
-
-	-- t = os.clock()
-	StratResourceBalance(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - StratResourceBalance")
-
-	-- t = os.clock()
-	RealStratResourceBalance(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - RealStratResourceBalance")
-
-	-- t = os.clock()
-	RandomNumberGenerator(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - RandomNumberGenerator")
-
-	-- t = os.clock()
-	PuppetMoneyAndFuelCheck(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - PuppetMoneyCheck")
-
-	-- t = os.clock()
-	ControlledMinesCheck(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - ControlledMinesCheck")
-
-	-- t = os.clock()
-	CalculateFocuses(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CalculateFocuses")
-
-	-- t = os.clock()
-	CalculateMinisters(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CalculateMinisters")
-
-	-- t = os.clock()
-	CheckCountryWantsToChangeCustomTradeAi()
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CheckCountryWantsToChangeCustomTradeAi")
-
-	-- One time setup stuff for the GUI
-	if SaveLoaded ~= true then
-		-- Utils.LUA_DEBUGOUT("SAVELOADED")
-		SaveLoaded = true
-		DaysSinceLastUpdate = 0
-		DeterminePlayers()
-		DetermineExePatchStatus()
-		DetermineSpriteDeletionStatus()
-		SetUpStatCollectionPage()
-	end
-
-	-- t = os.clock()
-	CountryModifiers(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - GetIcEff")
-
-	-- t = os.clock()
-	ICDaysSpentCalculation(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - ICDaysSpentCalculation")
-
-	-- t = os.clock()
-	CheckNegativeTradeCounts()
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CheckNegativeTradeCounts")
-
-	-- t = os.clock()
-	Stats.CollectPlayerStatistics()
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - Stats.CollectPlayerStatistics")
-
-	-- t = os.clock()
-	GuiRefreshLoop()
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - GuiRefreshLoop")
-
-	-- Utils.LUA_DEBUGOUT("Day: " .. CCurrentGameState.GetCurrentDate():GetDayOfMonth() .. " OMG var handler time: " .. string.format("%.04f", os.clock() - tOmg))
 
 end
 

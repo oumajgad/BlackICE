@@ -29,10 +29,13 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 		isOMG = true
 	end
 
-
 	local t = nil
 	if benchmarkLUA then
 		t = os.clock()
+	end
+
+	if isOMG then
+		OMGHandlerTechMinister(minister)
 	end
 
 	-- Reset Global Array Container

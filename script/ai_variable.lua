@@ -31,6 +31,29 @@ function table.sum(table)
 	return s
 end
 
+function table.shallow_copy(t)
+	local t2 = {}
+	for k,v in pairs(t) do
+		t2[k] = v
+	end
+	return t2
+end
+
+function table.deepcopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[table.deepcopy(orig_key)] = table.deepcopy(orig_value)
+        end
+        setmetatable(copy, table.deepcopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
+end
+
 CountryIterCacheDict = {}
 CountryIterCacheCheck = 0
 -- Cache the Country Tags once at the start of a session so we dont have to use API calls a million times each time
@@ -188,7 +211,7 @@ function BaseICCount(minister)
 end
 ]]
 
-function BaseICbyMinister(minister)
+function BaseICbyMinister()
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
@@ -214,34 +237,10 @@ function BaseICbyMinister(minister)
 
 			-- local command = CSetVariableCommand(countryTag, CString("BaseIC_minister"), CFixedPoint(totalIC))
 			local command = CSetVariableCommand(countryTag, CString("BaseIC"), CFixedPoint(totalIC))
-			local ai = minister:GetOwnerAI()
-			ai:Post(command)
+			CCurrentGameState.Post(command)
 
 		end
 	end
-end
-
-function table.shallow_copy(t)
-	local t2 = {}
-	for k,v in pairs(t) do
-		t2[k] = v
-	end
-	return t2
-end
-
-function table.deepcopy(orig)
-    local orig_type = type(orig)
-    local copy
-    if orig_type == 'table' then
-        copy = {}
-        for orig_key, orig_value in next, orig, nil do
-            copy[table.deepcopy(orig_key)] = table.deepcopy(orig_value)
-        end
-        setmetatable(copy, table.deepcopy(getmetatable(orig)))
-    else -- number, string, boolean, etc
-        copy = orig
-    end
-    return copy
 end
 
 
@@ -263,12 +262,11 @@ local country_current_count = {}
 local country_cumulative_gain_count = {}
 local country_cumulative_loss_count = {}
 local buildingsData = {}
-local buildingsCountSetup = true
+local buildingsCountSetupNeeded = true
 
 -- Get all the Variables from the Save, save them in local LUA arrays.
 -- LUA variables/arrays get lost each restart, so this only needs to run once at the start of a session.
-function BuildingsCountSetup(minister)
-
+local function buildingsCountSetup()
 	local buildings = {
 		"air_base",
 		"naval_base",
@@ -326,52 +324,42 @@ function BuildingsCountSetup(minister)
 		"heavy_water_nuclear_reactor"
 	}
 
-	-- Setup buildings
-	if buildingsCountSetup then
+	for k, v in pairs(buildings) do
+		buildingsData[v] = CBuildingDataBase.GetBuilding(v)
+	end
 
-		for k, v in pairs(buildings) do
-			buildingsData[v] = CBuildingDataBase.GetBuilding(v)
-		end
+	-- Iterate each country (using Cached TAGs)
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
 
-		-- Iterate each country (using Cached TAGs)
-		for k, v in pairs(CountryIterCacheDict) do
-			local countryTag = v
-			local tag = k
+		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+			country_current_count[tag] = {}
+			country_cumulative_gain_count[tag] = {}
+			country_cumulative_loss_count[tag] = {}
+			local countryVars = countryTag:GetCountry():GetVariables()
+			for i, z in pairs(buildings) do
+				-- Current count
+				country_current_count[tag][z] = countryVars:GetVariable(CString(z .. "_count")):Get()
 
-			--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
-			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
-				country_current_count[tag] = {}
-				country_cumulative_gain_count[tag] = {}
-				country_cumulative_loss_count[tag] = {}
-				local countryVars = countryTag:GetCountry():GetVariables()
-				for i, z in pairs(buildings) do
-					-- Current count
-					country_current_count[tag][z] = countryVars:GetVariable(CString(z .. "_count")):Get()
+				-- Cumulative gain
+				country_cumulative_gain_count[tag][z] = countryVars:GetVariable(CString(z .. "_count_TECH")):Get()
 
-					-- Cumulative gain
-					country_cumulative_gain_count[tag][z] = countryVars:GetVariable(CString(z .. "_count_TECH")):Get()
-
-					-- Cumulative loss
-					country_cumulative_loss_count[tag][z] = countryVars:GetVariable(CString(z .. "_count_TECH_MALUS")):Get()
-				end
+				-- Cumulative loss
+				country_cumulative_loss_count[tag][z] = countryVars:GetVariable(CString(z .. "_count_TECH_MALUS")):Get()
 			end
 		end
-		buildingsCountSetup = false
 	end
+	buildingsCountSetupNeeded = false
 end
 
-local BuildingsCountCount = 0
-function BuildingsCount(minister)
-	BuildingsCountCount = BuildingsCountCount + 1
-	-- Utils.LUA_DEBUGOUT("BuildingsCountCount - " .. BuildingsCountCount)
-
-	--Utils.LUA_DEBUGOUT("Enter building count")
-
-	-- No need to make it spread out over many days. It takes less than 0.01 seconds!
-	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	-- if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
-	-- 	return
-	-- end
+local buildingsCountCount = 0
+function BuildingsCount()
+	buildingsCountCount = buildingsCountCount + 1
+	if buildingsCountSetupNeeded then
+		buildingsCountSetup()
+	end
 
 	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
@@ -454,7 +442,7 @@ function BuildingsCount(minister)
 				-- ONLY set things IF we have a Variation
 				-- always on the 4th run because when we skipped the earlier iterations due to the inaccuracies we now have no variaton
 				-- so just ignore that on the 4th and set the variables
-				if variation ~= 0 or BuildingsCountCount == 4 then
+				if variation ~= 0 or buildingsCountCount == 4 then
 					-- Update local variables -- set to Variables later
 					country_current_count[tag][buildingtype] = buildingcount
 					country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
@@ -463,17 +451,16 @@ function BuildingsCount(minister)
 					--Utils.LUA_DEBUGOUT("buildingcount " .. buildingtype .. " : " .. buildingcount)
 					-- Set Variables
 					-- Only after a few times because the values are wrong in the beginning
-					if BuildingsCountCount > 3 then
-						local ai = minister:GetOwnerAI()
+					if buildingsCountCount > 3 then
 						--Count for Triggered Effect
 						local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
-						ai:Post(command)
+						CCurrentGameState.Post(command)
 						--Count for bonus tech
 						local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
-						ai:Post(command)
+						CCurrentGameState.Post(command)
 						--Count for malus tech
 						local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH_MALUS"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
-						ai:Post(command)
+						CCurrentGameState.Post(command)
 					end
 				end
 			end
@@ -482,7 +469,7 @@ function BuildingsCount(minister)
 end
 
 --Copy of BuildingsCount, only for the resource buildings since they get counted by controlled provinces not core
-function ResourceCount(minister)
+function ResourceCount()
 	-- count daily for players only
 	for i, playerTag in pairs(PlayerCountries) do
 		local countryTag = CCountryDataBase.GetTag(playerTag)
@@ -605,7 +592,7 @@ function ResourceCountInner(countryTag, tag)
 end
 
 -- Uses the resource count and baseIC to set the variable which has the reduction due to IC demand baked in.
-function StratResourceBalance(minister)
+function StratResourceBalance()
 	local resourceBuildings = {
 		"chromite";
 		"aluminium";
@@ -696,7 +683,7 @@ function StratResourceBalanceInner(countryTag, tag, resourceBuildings)
 end
 
 -- Calculates the actual bonus from the resources with sales and buys accounted
-function RealStratResourceBalance(minister)
+function RealStratResourceBalance()
 	local resources = {
 		"chromite";
 		"aluminium";
@@ -813,7 +800,7 @@ function RealStratResourceBalanceInner(countryTag, tag, resources)
 	end
 end
 
-function RandomNumberGenerator(minister)
+function RandomNumberGenerator()
 
 	-- Set a Variable to use in events to get a truly random experience.
 
@@ -838,8 +825,7 @@ function RandomNumberGenerator(minister)
 			local RandomNumber = math.random(100)
 
 			local command = CSetVariableCommand(countryTag, CString("RandomNumber"), CFixedPoint(RandomNumber))
-			local ai = minister:GetOwnerAI()
-			ai:Post(command)
+			CCurrentGameState.Post(command)
 		end
 	end
 
@@ -908,7 +894,7 @@ function PuppetMoneyAndFuelCheck(minister)
 	end
 end
 
-function ControlledMinesCheck(minister)
+function ControlledMinesCheck()
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 5 and dayOfMonth ~= 20 and DateOverride ~= true then
@@ -956,8 +942,7 @@ function ControlledMinesCheck(minister)
 			if minesFound == true then
 			-- Set Variable
 			local command = CSetVariableCommand(countryTag, CString("ControlsEnemyMines"), CFixedPoint(1))
-			local ai = minister:GetOwnerAI()
-			ai:Post(command)
+			CCurrentGameState.Post(command)
 			end
 		end
 	end
@@ -966,7 +951,7 @@ end
 
 
 -- Get and correct the IC and Reseach efficiency values
-function CountryModifiers(minister)
+function CountryModifiers()
 
 	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	-- if dayOfMonth ~= 5 and dayOfMonth ~= 15 and dayOfMonth ~= 25 then
@@ -1022,8 +1007,7 @@ function CountryModifiers(minister)
 end
 
 
-
-function ICDaysSpentCalculation(minister)
+function ICDaysSpentCalculation()
 	if PlayerCountries ~= nil then
 		-- only check for playercountries since AI doesnt get the effects
 		for index,player in pairs(PlayerCountries) do
@@ -1035,8 +1019,7 @@ function ICDaysSpentCalculation(minister)
 			-- if no value has been set yet default to 20
 			if investmentMult < 20 then
 				local command = CSetVariableCommand(playerTag, CString("event_unit_investment"), CFixedPoint(20))
-				local ai = minister:GetOwnerAI()
-				ai:Post(command)
+				CCurrentGameState.Post(command)
 				investmentMult = 20
 			end
 
@@ -1045,8 +1028,7 @@ function ICDaysSpentCalculation(minister)
 				icDaysSpent = icDaysSpent - reductionValue
 
 				local command = CSetVariableCommand(playerTag, CString("IC_days_spent"), CFixedPoint(icDaysSpent))
-				local ai = minister:GetOwnerAI()
-				ai:Post(command)
+				CCurrentGameState.Post(command)
 
 				if player == PlayerCountry then
 					SetCurrentDailyICDaysReductionText(reductionValue)
@@ -1066,7 +1048,7 @@ end
 --   5 = science
 --   6 = health_education
 --   7 = natural_resources
-function CalculateFocuses(minister)
+function CalculateFocuses()
 	local date = CCurrentGameState.GetCurrentDate()
 	local dayOfMonth = date:GetDayOfMonth()
 
@@ -1118,7 +1100,7 @@ end
 
 MinisterListFilled = false
 MinisterTypes = {}
-function CalculateMinisters(minister)
+function CalculateMinisters()
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 2 and  dayOfMonth ~= 7 and dayOfMonth ~= 12 and dayOfMonth ~= 17 and dayOfMonth ~= 22 and dayOfMonth ~= 27 then
 		return
@@ -1197,16 +1179,14 @@ function CalculateMinisters(minister)
 				if ministerAlreadySet == false then
 					-- Utils.LUA_DEBUGOUT(tag .. " - Setting: " .. currentMinister)
 					local command = CSetVariableCommand(countryTag, CString(currentMinister), CFixedPoint(1))
-					local ai = minister:GetOwnerAI()
-					ai:Post(command)
+					CCurrentGameState.Post(command)
 				end
 			end
 			-- Remove the variable for the ministers remaining in removedMinisters
 			for i, removedMinister in pairs(removedMinisters) do
 				-- Utils.LUA_DEBUGOUT(tag .. " - Removing: " .. removedMinister)
 				local command = CSetVariableCommand(countryTag, CString(removedMinister), CFixedPoint(0))
-				local ai = minister:GetOwnerAI()
-				ai:Post(command)
+				CCurrentGameState.Post(command)
 			end
 		end
 	end

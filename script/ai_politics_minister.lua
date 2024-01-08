@@ -200,6 +200,10 @@ function PoliticsMinister_Tick(minister)
 		t = os.clock()
 	end
 
+	if isOMG then
+		OMGHandlerPoliticsMinister()
+	end
+
     if math.mod( CCurrentGameState.GetAIRand(), 7) == 0 then
 		Mobilization(minister)
 	end
