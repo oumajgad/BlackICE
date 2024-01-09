@@ -28,6 +28,7 @@ function OMGHandlerIntelligenceMinister(minister)
 	for index, func in ipairs(G_LUA_SCHEDULE["IntelligenceMinister_Tick"]) do
 		-- local t = nil
 		-- t = os.clock()
+		---@diagnostic disable-next-line:redundant-parameter
 		func(minister)
 		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
 	end
@@ -42,6 +43,7 @@ function OMGHandlerForeignMinister(minister)
 	for index, func in ipairs(G_LUA_SCHEDULE["ForeignMinister_Tick"]) do
 		-- local t = nil
 		-- t = os.clock()
+		---@diagnostic disable-next-line:redundant-parameter
 		func(minister)
 		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
 	end
@@ -56,6 +58,7 @@ function OMGHandlerPoliticsMinister(minister)
 	for index, func in ipairs(G_LUA_SCHEDULE["PoliticsMinister_Tick"]) do
 		-- local t = nil
 		-- t = os.clock()
+		---@diagnostic disable-next-line:redundant-parameter
 		func(minister)
 		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
 	end
@@ -70,6 +73,7 @@ function OMGHandlerProductionMinister(minister)
 	for index, func in ipairs(G_LUA_SCHEDULE["ProductionMinister_Tick"]) do
 		-- local t = nil
 		-- t = os.clock()
+		---@diagnostic disable-next-line:redundant-parameter
 		func(minister)
 		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
 	end
@@ -84,6 +88,7 @@ function OMGHandlerTechMinister(minister)
 	for index, func in ipairs(G_LUA_SCHEDULE["TechMinister_Tick"]) do
 		-- local t = nil
 		-- t = os.clock()
+		---@diagnostic disable-next-line:redundant-parameter
 		func(minister)
 		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
 	end
