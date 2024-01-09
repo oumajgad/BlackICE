@@ -76,6 +76,7 @@ end
 
 local function applyFontRecursivelyToWxWindows(_wx_window, change)
     -- Utils.LUA_DEBUGOUT("applyFontRecursivelyToWxWindows: " .. _wx_window:GetName())
+    _wx_window:Freeze()
     local children = _wx_window:GetChildren()
     local count = children:GetCount() - 1
     for i = 0, count do
@@ -92,6 +93,8 @@ local function applyFontRecursivelyToWxWindows(_wx_window, change)
         font:SetPointSize(font:GetPointSize() + change)
         item:SetFont(font)
     end
+    _wx_window:Layout()
+    _wx_window:Thaw()
 end
 
 function DecreaseFontSize()
