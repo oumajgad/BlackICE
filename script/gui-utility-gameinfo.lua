@@ -346,28 +346,28 @@ if wx ~= nil then
 
 	UI.m_radioBtn_Generals_all:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
 		if PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(PlayerCountry)
+			Parsing.Generals.FillwxChoice(PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
 		end
 	end )
 
 	UI.m_radioBtn_Generals_land:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
 		if PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(PlayerCountry)
+			Parsing.Generals.FillwxChoice(PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
 		end
 	end )
 
 	UI.m_radioBtn_Generals_sea:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
 		if PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(PlayerCountry)
+			Parsing.Generals.FillwxChoice(PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
 		end
 	end )
 
 	UI.m_radioBtn_Generals_air:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
 		if PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(PlayerCountry)
+			Parsing.Generals.FillwxChoice(PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
 		end
 	end )
