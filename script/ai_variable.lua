@@ -1050,7 +1050,7 @@ end
 --   7 = natural_resources
 function CalculateFocuses()
 	local date = CCurrentGameState.GetCurrentDate()
-	local dayOfMonth = date:GetDayOfMonth()
+	-- local dayOfMonth = date:GetDayOfMonth()
 
 	-- if dayOfMonth % 3 ~= 0 then
 	-- 	return
