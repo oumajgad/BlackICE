@@ -1,7 +1,7 @@
 -- Called from button press
 function TogglePuppetFocusDecision(desiredState)
-    if PlayerCountry ~= nil then
-        local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
+    if G_PlayerCountry ~= nil then
+        local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry)
         if desiredState == true then
             local command = CSetVariableCommand(playerCountry, CString("disable_pupped_focus_decision"), CFixedPoint(0))
             CCurrentGameState.Post(command)
@@ -15,7 +15,7 @@ end
 -- Called each refresh
 function GetAndAddPuppets()
     local playerVassals = {}
-    local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
+    local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry)
     local puppets = playerCountry:GetCountry():GetVassals()
     if puppets then
         for puppet in puppets do

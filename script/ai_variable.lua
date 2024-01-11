@@ -214,7 +214,7 @@ end
 function BaseICbyMinister()
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and G_DateOverride ~= true then
 		return
 	end
 
@@ -228,7 +228,7 @@ function BaseICbyMinister()
 			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
 			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
-		) or DateOverride == true )
+		) or G_DateOverride == true )
 		then
 			local totalIC = countryTag:GetCountry():GetMaxIC()
 
@@ -478,7 +478,7 @@ function ResourceCount()
 
 	-- Exit early for AI countries, unless its the defined date
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and G_DateOverride ~= true then
 		return
 	end
 
@@ -489,7 +489,7 @@ function ResourceCount()
 			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
 			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
-		) or DateOverride == true )
+		) or G_DateOverride == true )
 		then
 			ResourceCountInner(countryTag, tag)
 		end
@@ -615,7 +615,7 @@ function StratResourceBalance()
 
 	-- Exit early for AI countries, unless its the defined date
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 3 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and dayOfMonth ~= 18 and DateOverride ~= true then
+	if dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 3 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and dayOfMonth ~= 18 and G_DateOverride ~= true then
 		return
 	end
 
@@ -628,7 +628,7 @@ function StratResourceBalance()
 			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListA, tag)) or
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListB, tag)) or
 			((dayOfMonth == 3 or dayOfMonth == 18) and table.true_check(CountryListC, tag))
-		) or DateOverride == true)
+		) or G_DateOverride == true)
 		then
 			StratResourceBalanceInner(countryTag, tag, resourceBuildings)
 		end
@@ -706,7 +706,7 @@ function RealStratResourceBalance()
 
 	-- Exit early for AI countries, unless its the defined date
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 1 and dayOfMonth ~= 6 and dayOfMonth ~= 11 and dayOfMonth ~= 16 and dayOfMonth ~= 21 and dayOfMonth ~= 26 and DateOverride ~= true then
+	if dayOfMonth ~= 1 and dayOfMonth ~= 6 and dayOfMonth ~= 11 and dayOfMonth ~= 16 and dayOfMonth ~= 21 and dayOfMonth ~= 26 and G_DateOverride ~= true then
 		return
 	end
 
@@ -897,7 +897,7 @@ end
 function ControlledMinesCheck()
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 5 and dayOfMonth ~= 20 and DateOverride ~= true then
+	if dayOfMonth ~= 5 and dayOfMonth ~= 20 and G_DateOverride ~= true then
 		return
 	end
 
@@ -1030,7 +1030,7 @@ function ICDaysSpentCalculation()
 				local command = CSetVariableCommand(playerTag, CString("IC_days_spent"), CFixedPoint(icDaysSpent))
 				CCurrentGameState.Post(command)
 
-				if player == PlayerCountry then
+				if player == G_PlayerCountry then
 					SetCurrentDailyICDaysReductionText(reductionValue)
 				end
 			end
@@ -1052,9 +1052,9 @@ function CalculateFocuses()
 	local date = CCurrentGameState.GetCurrentDate()
 	local dayOfMonth = date:GetDayOfMonth()
 
-	if dayOfMonth % 3 ~= 0 then
-		return
-	end
+	-- if dayOfMonth % 3 ~= 0 then
+	-- 	return
+	-- end
 
 	local currentDate = date:GetTotalDays()
 	local omgTag = CCountryDataBase.GetTag("OMG")

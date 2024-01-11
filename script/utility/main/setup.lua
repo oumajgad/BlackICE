@@ -22,7 +22,7 @@ end
 function CheckPlayerAllowsSelection(player)
     local playerCountry = CCountryDataBase.GetTag(player)
     if playerCountry:GetCountry():GetVariables():GetVariable(CString("disable_gui_access")):Get() == 1 then
-        PlayerCountry = nil
+        G_PlayerCountry = nil
         return false
     end
 

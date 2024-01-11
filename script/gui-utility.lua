@@ -96,7 +96,7 @@ if wx ~= nil then
 
 	UI.gSizer31:Add( UI.m_staticText11, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl6 = wx.wxTextCtrl( UI.m_panel_Setup, wx.wxID_ANY, "3", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl6 = wx.wxTextCtrl( UI.m_panel_Setup, wx.wxID_ANY, "1", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl6:SetMinSize( wx.wxSize( 25,-1 ) )
 
 	UI.gSizer31:Add( UI.m_textCtrl6, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -1802,6 +1802,8 @@ if wx ~= nil then
 	UI.m_htmlWin_CustomTradeAi:LoadPage("tfh/mod/BlackICE " .. UI.version .. "/utility/CustomTradeAi.html")
 	UI.m_customProdSlider_htmlWin1:LoadPage("tfh/mod/BlackICE " .. UI.version .. "/utility/CustomProdSliderAi.html")
 	UI.m_htmlWin_customLsSliderAi1:LoadPage("tfh/mod/BlackICE " .. UI.version .. "/utility/CustomLsSliderAi.html")
+
+
 	-- Connect Events
 
 	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
@@ -1810,11 +1812,11 @@ if wx ~= nil then
 			if CheckPlayerAllowsSelection(selection) then
 				if PlayerCountries ~= nil then
 					UI.m_textCtrl3:SetValue("Loading...")
-					PlayerCountry = selection
-					DateOverride = false
-					DaysSinceLastUpdate = 0
-					UpdateInterval = 3
-					UI.m_textCtrl6:SetValue("3")
+					G_PlayerCountry = selection
+					G_DateOverride = false
+					G_DaysSinceLastUpdate = 0
+					G_UpdateInterval = 1
+					UI.m_textCtrl6:SetValue("1")
 
 					SetTradeDecisionHiddenText()
 					SetMinesDecisionHiddenText()
@@ -1831,10 +1833,10 @@ if wx ~= nil then
 					SetUpStatCollectionPage()
 
 					UI.m_radioBtn_Generals_all:SetValue( true )
-					Parsing.Generals.FillwxChoice(PlayerCountry, true)
+					Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
 
 					GuiRefreshLoop(true)
-					UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
+					UI.m_textCtrl3:SetValue("Country set to " .. G_PlayerCountry)
 				else
 					UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
 				end
@@ -1871,18 +1873,18 @@ if wx ~= nil then
 	end )
 
 	UI.set_Interval_Button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		UpdateInterval = tonumber(UI.m_textCtrl6:GetValue())
-		DaysSinceLastUpdate = 0
+		G_UpdateInterval = tonumber(UI.m_textCtrl6:GetValue())
+		G_DaysSinceLastUpdate = 0
 		GuiRefreshLoop(true)
 	end )
 
 	UI.m_button_manualRefresh:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		DaysSinceLastUpdate = 0
+		G_DaysSinceLastUpdate = 0
 		GuiRefreshLoop(true)
 	end )
 
 	UI.m_button_trade_1:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if PlayerCountry ~= nil and next(GlobalTradesData) ~= nil then
+		if G_PlayerCountry ~= nil and next(GlobalTradesData) ~= nil then
 			FillTradesGrid()
 		end
 	end )
@@ -1900,12 +1902,12 @@ if wx ~= nil then
 	end )
 
 	UI.m_buttonDailyOn:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		DateOverride = true
+		G_DateOverride = true
 		UpdateDailyCountsTextCtrl()
 	end )
 
 	UI.m_buttonDailyOff:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		DateOverride = false
+		G_DateOverride = false
 		UpdateDailyCountsTextCtrl()
 	end )
 
@@ -2049,13 +2051,13 @@ if wx ~= nil then
 	end )
 
 	UI.m_button_customTradeAi1:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
+		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomTradeAiStatus()
 		end
 	end )
 
 	UI.m_button_customTradeAi_setValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
+		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomTradeAiValues()
 		end
 	end )
@@ -2081,25 +2083,25 @@ if wx ~= nil then
 	end )
 
 	UI.m_button_ProductionSliderAi_toggle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
+		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomProductionSliderAiStatus()
 		end
 	end )
 
 	UI.m_button_ProductionSliderAi_setValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
+		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomProductionSliderValues()
 		end
 	end )
 
 	UI.m_button_customLsSliderAi_toggle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
+		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomLsSliderAiStatus()
 		end
 	end )
 
 	UI.m_button_customLsSliderAi_setValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
+		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomLsSliderValues()
 		end
 	end )

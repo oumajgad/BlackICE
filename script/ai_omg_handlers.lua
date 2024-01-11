@@ -7,7 +7,7 @@ function IntelligenceMinisterUtilityThings()
 	if SaveLoaded ~= true then
 		-- Utils.LUA_DEBUGOUT("SAVELOADED")
 		SaveLoaded = true
-		DaysSinceLastUpdate = 0
+		G_DaysSinceLastUpdate = 0
 		DeterminePlayers()
 		DetermineExePatchStatus()
 		DetermineSpriteDeletionStatus()
@@ -23,7 +23,7 @@ function IntelligenceMinisterUtilityThings()
 end
 
 function OMGHandlerIntelligenceMinister(minister)
-	local tOmg = os.clock()
+	-- local tOmg = os.clock()
 	-- Utils.LUA_DEBUGOUT("OMGHandler 'IntelligenceMinister_Tick' start")
 	for index, func in ipairs(G_LUA_SCHEDULE["IntelligenceMinister_Tick"]) do
 		-- local t = nil
@@ -38,7 +38,7 @@ function OMGHandlerIntelligenceMinister(minister)
 end
 
 function OMGHandlerForeignMinister(minister)
-	local tOmg = os.clock()
+	-- local tOmg = os.clock()
 	-- Utils.LUA_DEBUGOUT("OMGHandler 'ForeignMinister_Tick' start")
 	for index, func in ipairs(G_LUA_SCHEDULE["ForeignMinister_Tick"]) do
 		-- local t = nil
@@ -53,7 +53,7 @@ function OMGHandlerForeignMinister(minister)
 end
 
 function OMGHandlerPoliticsMinister(minister)
-	local tOmg = os.clock()
+	-- local tOmg = os.clock()
 	-- Utils.LUA_DEBUGOUT("OMGHandler 'PoliticsMinister_Tick' start")
 	for index, func in ipairs(G_LUA_SCHEDULE["PoliticsMinister_Tick"]) do
 		-- local t = nil
@@ -68,7 +68,7 @@ function OMGHandlerPoliticsMinister(minister)
 end
 
 function OMGHandlerProductionMinister(minister)
-	local tOmg = os.clock()
+	-- local tOmg = os.clock()
 	-- Utils.LUA_DEBUGOUT("OMGHandler 'ProductionMinister_Tick' start")
 	for index, func in ipairs(G_LUA_SCHEDULE["ProductionMinister_Tick"]) do
 		-- local t = nil
@@ -83,7 +83,7 @@ function OMGHandlerProductionMinister(minister)
 end
 
 function OMGHandlerTechMinister(minister)
-	local tOmg = os.clock()
+	-- local tOmg = os.clock()
 	-- Utils.LUA_DEBUGOUT("OMGHandler 'TechMinister_Tick' start")
 	for index, func in ipairs(G_LUA_SCHEDULE["TechMinister_Tick"]) do
 		-- local t = nil

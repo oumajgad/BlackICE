@@ -1,7 +1,7 @@
 -- Called from button press
 function SetNatFocus(focus)
-    if PlayerCountry ~= nil then
-        local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    if G_PlayerCountry ~= nil then
+        local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
         local command = CSetVariableCommand(playerCountryTag, CString("national_focus"), CFixedPoint(focus))
         CCurrentGameState.Post(command)
     end
@@ -19,8 +19,8 @@ function GetNatFocusDays()
 		"natural_resources"
 	}
 
-    if PlayerCountry ~= nil then
-        local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
+    if G_PlayerCountry ~= nil then
+        local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry)
         local variables = playerCountry:GetCountry():GetVariables()
         for i, focus in pairs(focuses) do
             local days = variables:GetVariable(CString(focus .. "_national_focus_days_active")):Get()

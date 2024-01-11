@@ -34,8 +34,8 @@ function GetStratResourceValues()
 		["molybdenum"] = 0
 	}
 
-    if PlayerCountry ~= nil then
-        local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
+    if G_PlayerCountry ~= nil then
+        local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry)
         local variables = playerCountry:GetCountry():GetVariables()
         for resource, count in pairs(resources) do
             resources[resource] = variables:GetVariable(CString(resource .. "_ActualBalance")):Get() - 1000
@@ -79,8 +79,8 @@ end
 
 -- Called from button press
 function DeactivateResourceSelling(desiredState, resource)
-    if PlayerCountry ~= nil then
-        local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    if G_PlayerCountry ~= nil then
+        local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
         if desiredState == true then
             local command = CSetVariableCommand(playerCountryTag, CString(resource .. "_deactivate_sales"), CFixedPoint(1))
             CCurrentGameState.Post(command)
@@ -96,7 +96,7 @@ end
 -- Called each refresh and once at country selection
 function GetAndSetResourceSaleStates()
     local resources = {"chromite","aluminium","rubber","tungsten","nickel","copper","zinc","manganese","molybdenum"}
-    local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
     local playerVariables = playerCountryTag:GetCountry():GetVariables()
     for index, resource in pairs(resources) do
         if playerVariables:GetVariable(CString(resource .. "_deactivate_sales")):Get() == 1 then

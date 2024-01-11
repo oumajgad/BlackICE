@@ -46,7 +46,7 @@ local shownLevel = 0
 local countryLevel = 0
 local function setCountryLevel(techIdent)
     local cTech = CTechnologyDataBase.GetTechnology(techIdent)
-    local techStatus = CCountryDataBase.GetTag(PlayerCountry):GetCountry():GetTechnologyStatus()
+    local techStatus = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry():GetTechnologyStatus()
     countryLevel = techStatus:GetLevel(cTech)
     return countryLevel
 end
@@ -210,7 +210,7 @@ function P.HandleSelection(shownLevelOverride)
     local techIdent = Parsing.GetKeyFromChoice(selectionString)
 
     local level = 0
-    if PlayerCountry ~= nil then
+    if G_PlayerCountry ~= nil then
         level = setCountryLevel(techIdent)
         UI.m_textCtrl_GameInfo_Techs_PlayerLevel:SetValue(tostring(level))
     end

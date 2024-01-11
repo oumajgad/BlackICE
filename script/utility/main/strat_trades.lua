@@ -7,10 +7,10 @@ function FillTradesGrid()
     local sales = {}
     for tag, trades in pairs(GlobalTradesData) do
         for tradeName, trade in pairs(GlobalTradesData[tag]["trades"]) do
-            if trade["buyer"] == PlayerCountry then
+            if trade["buyer"] == G_PlayerCountry then
                 table.insert(buys, trade)
             end
-            if trade["seller"] == PlayerCountry then
+            if trade["seller"] == G_PlayerCountry then
                 table.insert(sales, trade)
             end
         end

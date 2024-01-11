@@ -1,6 +1,6 @@
 function SetCustomTradeAiStatus()
-    if wx ~= nil and PlayerCountry ~= nil then
-        local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    if wx ~= nil and G_PlayerCountry ~= nil then
+        local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
 		if UI.m_textCtrl_customTradeAi1:GetValue() == "Active" then
             local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_CustomTradeAiActive"), CFixedPoint(0))
             CCurrentGameState.Post(command)
@@ -25,7 +25,7 @@ function SetCustomTradeAiStatusText(status)
 end
 
 function DetermineCustomTradeAiStatus()
-    local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
     local country = countryTag:GetCountry()
     local variables = country:GetVariables()
 
@@ -80,7 +80,7 @@ function SetCustomTradeAiValues()
             BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap:GetValue()),
         }
     }
-    local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
     local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MaxDailySell"), CFixedPoint(Values.MONEY.MaxDailySell))
     CCurrentGameState.Post(command)
     local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MONEY_Buffer"), CFixedPoint(Values.MONEY.Buffer))
@@ -104,7 +104,7 @@ function SetCustomTradeAiValues()
 end
 
 function ReadCustomTradeAiValues()
-    local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
     local country = countryTag:GetCountry()
     local variables = country:GetVariables()
     if variables:GetVariable(CString("zzDsafe_usesCustomTradeAi")):Get() == 0 then

@@ -21,7 +21,7 @@ function GetMinisterBuildingsProgress()
         ["tank_factory"] = 110,
         ["smallarms_factory"] = 80
     }
-    local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
     local playerVariables = playerCountryTag:GetCountry():GetVariables()
     for building, trigger in pairs(buildings) do
         local count = playerVariables:GetVariable(CString(building .. "_variable_count_minister")):Get()

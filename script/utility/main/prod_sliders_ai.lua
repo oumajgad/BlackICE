@@ -1,6 +1,6 @@
 function SetCustomProductionSliderAiStatus()
-    if wx ~= nil and PlayerCountry ~= nil then
-        local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    if wx ~= nil and G_PlayerCountry ~= nil then
+        local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
 		if UI.m_textCtrl_customProdSlider_state:GetValue() == "Active" then
             local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_CustomProductionSliders_isActive"), CFixedPoint(0))
             CCurrentGameState.Post(command)
@@ -25,7 +25,7 @@ function SetCustomProductionSliderAiStatusText(status)
 end
 
 function DetermineCustomProductionSliderAiStatus()
-    local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
     local country = countryTag:GetCountry()
     local variables = country:GetVariables()
 
@@ -63,8 +63,8 @@ function CheckCustomProductionSliderPrioConflict()
 end
 
 function SetCustomProductionSliderValues()
-    if wx ~= nil and PlayerCountry ~= nil then
-        local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    if wx ~= nil and G_PlayerCountry ~= nil then
+        local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
         -- local country = countryTag:GetCountry()
         -- local variables = country:GetVariables()
         local categories = {
@@ -116,8 +116,8 @@ function SetCustomProductionSliderValues()
 end
 
 function ReadCustomProductionSliderValues()
-    if wx ~= nil and PlayerCountry ~= nil then
-        local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    if wx ~= nil and G_PlayerCountry ~= nil then
+        local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
         local country = countryTag:GetCountry()
         local variables = country:GetVariables()
         local categories = {

@@ -1,6 +1,6 @@
 -- Called from internal and each day
 function SetICDaysLeftText()
-    local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
     local icDaysleft = playerCountryTag:GetCountry():GetVariables():GetVariable(CString("IC_days_spent")):Get()
     local baseIC = playerCountryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
     local investmentMult = playerCountryTag:GetCountry():GetVariables():GetVariable(CString("event_unit_investment")):Get()
@@ -25,8 +25,8 @@ end
 
 -- Called from button press
 function SetICInvestmentValue(investmentMult)
-    if PlayerCountry ~= nil then
-        local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    if G_PlayerCountry ~= nil then
+        local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
         local playerCountry = playerCountryTag:GetCountry()
         local baseIC = playerCountry:GetVariables():GetVariable(CString("BaseIC")):Get()
 
@@ -39,7 +39,7 @@ end
 
 -- Called once at start
 function DetermineICInvestmentValue()
-    local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
     local currentInvestment = playerCountryTag:GetCountry():GetVariables():GetVariable(CString("event_unit_investment")):Get()
     if currentInvestment > 0 then
         SetCurrentInvestmentText(currentInvestment)

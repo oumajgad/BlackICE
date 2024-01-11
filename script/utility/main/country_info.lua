@@ -2,7 +2,7 @@
 function GetPlayerModifiers()
     local techModifierValues = Parsing.Techs.GetTechModifierValues()
 
-    local playerCountry = CCountryDataBase.GetTag(PlayerCountry):GetCountry()
+    local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry()
 
     local baseIC = playerCountry:GetMaxIC()
     local baseICWithOffmap = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_IC_):Get()

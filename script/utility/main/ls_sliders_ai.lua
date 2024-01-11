@@ -1,5 +1,5 @@
 function DetermineCustomLsSliderAiStatus()
-    local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
     local country = countryTag:GetCountry()
     local variables = country:GetVariables()
 
@@ -19,8 +19,8 @@ function SetCustomLsSliderAiStatusText(status)
 end
 
 function SetCustomLsSliderAiStatus()
-    if wx ~= nil and PlayerCountry ~= nil then
-        local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    if wx ~= nil and G_PlayerCountry ~= nil then
+        local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
 		if UI.m_textCtrl_customLsSliderAi_state:GetValue() == "Active" then
             local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_CustomLeadershipSliders_isActive"), CFixedPoint(0))
             CCurrentGameState.Post(command)
@@ -37,8 +37,8 @@ function SetCustomLsSliderAiStatus()
 end
 
 function SetCustomLsSliderValues()
-    if wx ~= nil and PlayerCountry ~= nil then
-        local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    if wx ~= nil and G_PlayerCountry ~= nil then
+        local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
         local categories = {
             "officers",
             "spies",
@@ -70,8 +70,8 @@ function SetCustomLsSliderValues()
 end
 
 function ReadCustomLsSliderValues()
-    if wx ~= nil and PlayerCountry ~= nil then
-        local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    if wx ~= nil and G_PlayerCountry ~= nil then
+        local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
         local country = countryTag:GetCountry()
         local variables = country:GetVariables()
         local categories = {

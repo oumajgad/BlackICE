@@ -330,44 +330,44 @@ if wx ~= nil then
 	end )
 
 	UI.m_textCtrl_GameInfo_Generals_Filter:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)
-		if PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(PlayerCountry)
+		if G_PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(G_PlayerCountry)
 			UI.m_textCtrl_Generals:Clear()
 		end
 	end )
 
 	UI.m_button_GameInfo_Generals_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		UI.m_textCtrl_GameInfo_Generals_Filter:SetValue("")
-		if PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(PlayerCountry)
+		if G_PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(G_PlayerCountry)
 			UI.m_textCtrl_Generals:Clear()
 		end
 	end )
 
 	UI.m_radioBtn_Generals_all:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
-		if PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(PlayerCountry, true)
+		if G_PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
 		end
 	end )
 
 	UI.m_radioBtn_Generals_land:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
-		if PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(PlayerCountry, true)
+		if G_PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
 		end
 	end )
 
 	UI.m_radioBtn_Generals_sea:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
-		if PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(PlayerCountry, true)
+		if G_PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
 		end
 	end )
 
 	UI.m_radioBtn_Generals_air:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
-		if PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(PlayerCountry, true)
+		if G_PlayerCountry ~= nil then
+			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
 		end
 	end )

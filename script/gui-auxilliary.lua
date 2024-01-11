@@ -1,7 +1,7 @@
 function GuiRefreshLoop(skipInterval)
-    DaysSinceLastUpdate = DaysSinceLastUpdate + 1
-    if wx ~= nil and PlayerCountry ~= nil and (skipInterval == true or DaysSinceLastUpdate >= UpdateInterval) then
-        DaysSinceLastUpdate = 0
+    G_DaysSinceLastUpdate = G_DaysSinceLastUpdate + 1
+    if wx ~= nil and G_PlayerCountry ~= nil and (skipInterval == true or G_DaysSinceLastUpdate >= G_UpdateInterval) then
+        G_DaysSinceLastUpdate = 0
         GetAndAddPuppets()
         GetPlayerModifiers()
         GetStratResourceValues()
