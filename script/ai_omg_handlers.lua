@@ -22,10 +22,10 @@ function IntelligenceMinisterUtilityThings()
 
 end
 
-function OMGHandlerIntelligenceMinister(minister)
+function OMGMinisterHandler(minister_tick, minister)
 	-- local tOmg = os.clock()
-	-- Utils.LUA_DEBUGOUT("OMGHandler 'IntelligenceMinister_Tick' start")
-	for index, func in ipairs(G_LUA_SCHEDULE["IntelligenceMinister_Tick"]) do
+	-- Utils.LUA_DEBUGOUT("OMGHandler '" .. minister_tick .. "' start")
+	for index, func in ipairs(G_LUA_SCHEDULE[minister_tick]) do
 		-- local t = nil
 		-- t = os.clock()
 		---@diagnostic disable-next-line:redundant-parameter
@@ -33,67 +33,7 @@ function OMGHandlerIntelligenceMinister(minister)
 		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
 	end
 	-- Utils.LUA_DEBUGOUT(
-	-- 	"Day: " .. CCurrentGameState.GetCurrentDate():GetDayOfMonth() .. " OMGHandler 'IntelligenceMinister_Tick' time: "
-	-- 	.. string.format("%.04f", os.clock() - tOmg))
-end
-
-function OMGHandlerForeignMinister(minister)
-	-- local tOmg = os.clock()
-	-- Utils.LUA_DEBUGOUT("OMGHandler 'ForeignMinister_Tick' start")
-	for index, func in ipairs(G_LUA_SCHEDULE["ForeignMinister_Tick"]) do
-		-- local t = nil
-		-- t = os.clock()
-		---@diagnostic disable-next-line:redundant-parameter
-		func(minister)
-		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
-	end
-	-- Utils.LUA_DEBUGOUT(
-	-- 	"Day: " .. CCurrentGameState.GetCurrentDate():GetDayOfMonth() .. " OMGHandler 'ForeignMinister_Tick' time: "
-	-- 	.. string.format("%.04f", os.clock() - tOmg))
-end
-
-function OMGHandlerPoliticsMinister(minister)
-	-- local tOmg = os.clock()
-	-- Utils.LUA_DEBUGOUT("OMGHandler 'PoliticsMinister_Tick' start")
-	for index, func in ipairs(G_LUA_SCHEDULE["PoliticsMinister_Tick"]) do
-		-- local t = nil
-		-- t = os.clock()
-		---@diagnostic disable-next-line:redundant-parameter
-		func(minister)
-		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
-	end
-	-- Utils.LUA_DEBUGOUT(
-	-- 	"Day: " .. CCurrentGameState.GetCurrentDate():GetDayOfMonth() .. " OMGHandler 'PoliticsMinister_Tick' time: "
-	-- 	.. string.format("%.04f", os.clock() - tOmg))
-end
-
-function OMGHandlerProductionMinister(minister)
-	-- local tOmg = os.clock()
-	-- Utils.LUA_DEBUGOUT("OMGHandler 'ProductionMinister_Tick' start")
-	for index, func in ipairs(G_LUA_SCHEDULE["ProductionMinister_Tick"]) do
-		-- local t = nil
-		-- t = os.clock()
-		---@diagnostic disable-next-line:redundant-parameter
-		func(minister)
-		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
-	end
-	-- Utils.LUA_DEBUGOUT(
-	-- 	"Day: " .. CCurrentGameState.GetCurrentDate():GetDayOfMonth() .. " OMGHandler 'ProductionMinister_Tick' time: "
-	-- 	.. string.format("%.04f", os.clock() - tOmg))
-end
-
-function OMGHandlerTechMinister(minister)
-	-- local tOmg = os.clock()
-	-- Utils.LUA_DEBUGOUT("OMGHandler 'TechMinister_Tick' start")
-	for index, func in ipairs(G_LUA_SCHEDULE["TechMinister_Tick"]) do
-		-- local t = nil
-		-- t = os.clock()
-		---@diagnostic disable-next-line:redundant-parameter
-		func(minister)
-		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
-	end
-	-- Utils.LUA_DEBUGOUT(
-	-- 	"Day: " .. CCurrentGameState.GetCurrentDate():GetDayOfMonth() .. " OMGHandler 'TechMinister_Tick' time: "
+	-- 	"Day: " .. CCurrentGameState.GetCurrentDate():GetDayOfMonth() .. " OMGHandler '" .. minister_tick .. "' time: "
 	-- 	.. string.format("%.04f", os.clock() - tOmg))
 end
 

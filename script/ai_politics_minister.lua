@@ -201,7 +201,7 @@ function PoliticsMinister_Tick(minister)
 	end
 
 	if isOMG then
-		OMGHandlerPoliticsMinister()
+		OMGMinisterHandler("PoliticsMinister_Tick", minister)
 	end
 
     if math.mod( CCurrentGameState.GetAIRand(), 7) == 0 then

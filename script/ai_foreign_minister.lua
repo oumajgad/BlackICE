@@ -121,7 +121,7 @@ function ForeignMinister_Tick(minister)
 	end
 
 	if isOMG then
-		OMGHandlerForeignMinister(minister)
+		OMGMinisterHandler("ForeignMinister_Tick", minister)
 	end
 
 	-- Execute Decisions

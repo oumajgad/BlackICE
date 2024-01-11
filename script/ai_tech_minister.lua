@@ -35,7 +35,7 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 	end
 
 	if isOMG then
-		OMGHandlerTechMinister(minister)
+		OMGMinisterHandler("TechMinister_Tick", minister)
 	end
 
 	-- Reset Global Array Container

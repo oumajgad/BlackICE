@@ -35,7 +35,7 @@ function IntelligenceMinister_Tick(minister)
 
 	--OMG Variable Handler
 	if isOMG then
-		OMGHandlerIntelligenceMinister(minister)
+		OMGMinisterHandler("IntelligenceMinister_Tick", minister)
 	end
 
 	if benchmarkLUA then

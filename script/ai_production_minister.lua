@@ -1567,7 +1567,7 @@ function ProductionMinister_Tick(minister)
 	end
 
 	if isOMG then
-		OMGHandlerProductionMinister(minister)
+		OMGMinisterHandler("ProductionMinister_Tick", minister)
 	end
 
 	HandleProductionMinister_Tick(minister)
