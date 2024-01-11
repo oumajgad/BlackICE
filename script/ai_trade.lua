@@ -1155,11 +1155,8 @@ end
 -- This creates an array in memory with defaultvalues for every country, and then calls GetCustomTradeAiDataFromVariables to put the real values in
 function InitCustomTradeAiData()
 	-- Utils.LUA_DEBUGOUT("InitCustomTradeAiData")
-	if CountryIterCacheCheck == 0 then
-		CountryIterCache()
-	end
 
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
@@ -1197,7 +1194,7 @@ function CheckCountryWantsToChangeCustomTradeAi()
 	if CustomTradeAiLimitsInitialized == false then
 		InitCustomTradeAiData()
 	end
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then

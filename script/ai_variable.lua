@@ -54,21 +54,22 @@ function table.deepcopy(orig)
     return copy
 end
 
-CountryIterCacheDict = {}
-CountryIterCacheCheck = 0
+local countryIterCacheDict = {}
+local countryIterCacheCheck = 0
 -- Cache the Country Tags once at the start of a session so we dont have to use API calls a million times each time
-function CountryIterCache()
-	if CountryIterCacheCheck == 0 then
+function GetCountryIterCacheDict()
+	if countryIterCacheCheck == 0 then
 		for dip in CCountryDataBase.GetTag("OMG"):GetCountry():GetDiplomacy() do
 			local countryTag = dip:GetTarget()
 			local tag = tostring(countryTag)
 			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
 				--Utils.LUA_DEBUGOUT("Tag - " .. tag)
-				CountryIterCacheDict[tag] = countryTag
+				countryIterCacheDict[tag] = countryTag
 			end
 		end
-		CountryIterCacheCheck = 1
+		countryIterCacheCheck = 1
 	end
+	return countryIterCacheDict
 end
 
 --[[
@@ -172,7 +173,7 @@ function BaseICCount(minister)
 	local heavy_industry = CBuildingDataBase.GetBuilding("heavy_industry")
 
 	-- Iterate each country (using Cached TAGs)
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 
@@ -219,7 +220,7 @@ function BaseICbyMinister()
 	end
 
 	-- Utils.LUA_DEBUGOUT("BaseIC_minister")
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 
@@ -329,7 +330,7 @@ local function buildingsCountSetup()
 	end
 
 	-- Iterate each country (using Cached TAGs)
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 
@@ -361,7 +362,7 @@ function BuildingsCount()
 		buildingsCountSetup()
 	end
 
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 		local country = countryTag:GetCountry()
@@ -483,7 +484,7 @@ function ResourceCount()
 	end
 
 	-- Iterate each country (using the Cached TAGs)
-	for tag, countryTag in pairs(CountryIterCacheDict) do
+	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and (
 		(
 			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
@@ -619,7 +620,7 @@ function StratResourceBalance()
 		return
 	end
 
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 
@@ -710,7 +711,7 @@ function RealStratResourceBalance()
 		return
 	end
 
-	for tag, countryTag in pairs(CountryIterCacheDict) do
+	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
 		RealStratResourceBalanceInner(countryTag, tag, resources)
 	end
 end
@@ -810,7 +811,7 @@ function RandomNumberGenerator()
 	end
 
 	-- Iterate each country (using CDiplomacyStatus)
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 
@@ -838,7 +839,7 @@ function PuppetMoneyAndFuelCheck(minister)
 		return
 	end
 
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 		local puppet_country = countryTag:GetCountry()
@@ -918,7 +919,7 @@ function ControlledMinesCheck()
 	minesData["molybdenum_building"] = CBuildingDataBase.GetBuilding("molybdenum_building")
 
 	-- Iterate each country (using Cached TAGs)
-	for tag, countryTag in pairs(CountryIterCacheDict) do
+	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
 
 		local minesFound = false
@@ -958,7 +959,7 @@ function CountryModifiers()
 	-- 	return
 	-- end
 	local techModifierValues = Parsing.Techs.GetTechModifierValues()
-	for tag, countryTag in pairs(CountryIterCacheDict) do
+	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
 		-- local countryTag = CCountryDataBase.GetTag(player)
 		local country = countryTag:GetCountry()
 		if country:Exists() == true then
@@ -1076,7 +1077,7 @@ function CalculateFocuses()
 		"natural_resources"
 	}
 
-	for k, countryTag in pairs(CountryIterCacheDict) do
+	for k, countryTag in pairs(GetCountryIterCacheDict()) do
 		local playerCountry = countryTag:GetCountry()
 		local variables = playerCountry:GetVariables()
 		local activeFocus = variables:GetVariable(CString("national_focus")):Get()
@@ -1112,7 +1113,7 @@ function CalculateMinisters()
 		end
 	end
 
-	for tag, countryTag in pairs(CountryIterCacheDict) do
+	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
 		local country = countryTag:GetCountry()
 		local cVariables = country:GetVariables()
 		local previousMinisters = {}
@@ -1199,7 +1200,7 @@ function InitTradingData()
 		return
 	end
 
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
@@ -1237,7 +1238,7 @@ function CheckPendingTrades()
 	-- 	return
 	-- end
 
-	for k, v in pairs(CountryIterCacheDict) do
+	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
 		local tag = k
 
@@ -1319,7 +1320,7 @@ function CheckExpiredTrades()
 	-- Utils.INSPECT_TABLE(GlobalTradesData)
 
 	local currentDate = CCurrentGameState.GetCurrentDate():GetTotalDays()
-	for tag, countryTag in pairs(CountryIterCacheDict) do
+	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and next(GlobalTradesData[tag]["trades"]) ~= nil then
 			-- Utils.LUA_DEBUGOUT("Checking: " .. tag)
 			for tradeName, trade in pairs(GlobalTradesData[tag]["trades"]) do
@@ -1400,7 +1401,7 @@ function CheckNegativeTradeCounts()
 		"molybdenum"
 	}
 
-	for tag, countryTag in pairs(CountryIterCacheDict) do
+	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
 			for i, resource in pairs(resources) do
 				local buysString = CString(resource .. "_trade_buy")

@@ -41,7 +41,6 @@ end
 G_LUA_SCHEDULE = {
 	-- 01:00
 	["IntelligenceMinister_Tick"] = {
-		CountryIterCache,
 		IntelligenceMinisterUtilityThings,
 	},
 	-- 03:00
