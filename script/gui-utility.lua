@@ -8,6 +8,7 @@ UI = {}
 UI.version = "GitHub"
 
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\main\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\help\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\options\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\gameinfos\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\stats\\?.lua"
@@ -25,6 +26,9 @@ require('strat_trades')
 require('prod_sliders_ai')
 require('ls_sliders_ai')
 require('trade_ai')
+
+-- Help
+require('help')
 
 -- Utility options
 require('options')
@@ -2063,6 +2067,8 @@ if wx ~= nil then
 	end )
 
 	UI.m_button_ShowHelpWindow:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		Parsing.Modifiers.FillData()
+		SetupNationalFocusTable()
 		UI.MyFrame2:Show(true)
 	end )
 

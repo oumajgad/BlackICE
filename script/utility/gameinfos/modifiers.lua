@@ -50,7 +50,7 @@ end
 
 
 -- special logic to cover the different pre/post-fixes
-local function getTranslation(key)
+function P.GetTranslation(key)
     local trans = Parsing.GetTranslation(string.upper(key), "MODIFIER_")
     if trans == nil then
         -- "air_intercept_eff"
@@ -89,7 +89,7 @@ local function dumpEffects(selection)
     local res = {}
     -- Replace the keys with their translations
     for k, v in pairs(data) do
-        local trans = getTranslation(k)
+        local trans = P.GetTranslation(k)
         res[trans] = Parsing.UnitConversions.GetAndConvertEffect(k, v)
     end
 

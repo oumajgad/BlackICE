@@ -1,7 +1,8 @@
 
 package.cpath = package.cpath..";./tfh/mod/?.dll;"
 require("wx")
-
+local True = true
+local False = false
 
 -- UI = {}
 
@@ -350,8 +351,42 @@ if wx ~= nil then
 	UI.m_scrolledWindow_NatFocus:SetScrollRate( 30, 30 )
 	UI.bSizerHelpNatFocus1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_bitmap4 = wx.wxStaticBitmap( UI.m_scrolledWindow_NatFocus, wx.wxID_ANY, wx.wxBitmap( "tfh/mod/BlackICE-utility-resources/Nat Focus table.png", wx.wxBITMAP_TYPE_ANY ), wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.bSizerHelpNatFocus1:Add( UI.m_bitmap4, 0, wx.wxALL, 5 )
+	UI.m_grid_nat_focuses = wx.wxGrid( UI.m_scrolledWindow_NatFocus, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( -1,-1 ), 0 )
+
+	-- Grid
+	UI.m_grid_nat_focuses:CreateGrid( 1, 7 )
+	UI.m_grid_nat_focuses:EnableEditing( False )
+	UI.m_grid_nat_focuses:EnableGridLines( True )
+	UI.m_grid_nat_focuses:SetGridLineColour( wx.wxColour( 0, 0, 0 ) )
+	UI.m_grid_nat_focuses:EnableDragGridSize( False )
+	UI.m_grid_nat_focuses:SetMargins( 1, 1 )
+
+	-- Columns
+	UI.m_grid_nat_focuses:AutoSizeColumns()
+	UI.m_grid_nat_focuses:EnableDragColSize( True )
+	UI.m_grid_nat_focuses:SetColLabelValue( 0, "-" )
+	UI.m_grid_nat_focuses:SetColLabelValue( 1, "-" )
+	UI.m_grid_nat_focuses:SetColLabelValue( 2, "-" )
+	UI.m_grid_nat_focuses:SetColLabelValue( 3, "-" )
+	UI.m_grid_nat_focuses:SetColLabelValue( 4, "-" )
+	UI.m_grid_nat_focuses:SetColLabelValue( 5, "-" )
+	UI.m_grid_nat_focuses:SetColLabelValue( 6, "-" )
+	UI.m_grid_nat_focuses:SetColLabelValue( 7, "-" )
+	UI.m_grid_nat_focuses:SetColLabelSize( 1 )
+	UI.m_grid_nat_focuses:SetColLabelAlignment( wx.wxALIGN_CENTER, wx.wxALIGN_CENTER )
+
+	-- Rows
+	UI.m_grid_nat_focuses:EnableDragRowSize( True )
+	UI.m_grid_nat_focuses:SetRowLabelSize( 1 )
+	UI.m_grid_nat_focuses:SetRowLabelAlignment( wx.wxALIGN_CENTER, wx.wxALIGN_CENTER )
+
+	-- Label Appearance
+	UI.m_grid_nat_focuses:SetLabelBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
+
+	-- Cell Defaults
+	UI.m_grid_nat_focuses:SetDefaultCellBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
+	UI.m_grid_nat_focuses:SetDefaultCellAlignment( wx.wxALIGN_CENTER, wx.wxALIGN_CENTER )
+	UI.bSizerHelpNatFocus1:Add( UI.m_grid_nat_focuses, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.m_scrolledWindow_NatFocus:SetSizer( UI.bSizerHelpNatFocus1 )

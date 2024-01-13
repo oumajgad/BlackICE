@@ -8,6 +8,14 @@ function table.true_check(table, tag)
 	end
 end
 
+function table.getLength(tbl)
+	local count = 0
+	for k, v in pairs(tbl) do
+		count = count + 1
+	end
+	return count
+end
+
 function table.getIndex(table, value)
     for i, v in ipairs(table) do
         if v == value then
