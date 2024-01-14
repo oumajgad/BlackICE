@@ -127,6 +127,7 @@ local function setupTable()
 
     local row = 2
     local focus_header_font = levels_font
+    local focus_header_rows = {}
     for i, focus in ipairs(order) do
         local levels = modifiers[focus]
         local maxSize = getMaxSize(levels)
@@ -135,8 +136,10 @@ local function setupTable()
         -- Create leftside header cell with focus name
         UI.m_grid_nat_focuses:SetCellSize(row,0,maxSize,1)
         UI.m_grid_nat_focuses:SetCellValue(row,0,focus_translations[focus])
-        UI.m_grid_nat_focuses:SetCellFont(row,0,focus_header_font)
         UI.m_grid_nat_focuses:SetCellBackgroundColour(row,0,focus_header_bg_colour)
+
+        table.insert(focus_header_rows, row)
+        -- UI.m_grid_nat_focuses:SetCellFont(row,0,focus_header_font) -- set font later due to AutoSize things
 
         local column = 1
         for j, level in ipairs(levels) do
@@ -169,9 +172,13 @@ local function setupTable()
         end
     end
 
-
-
     UI.m_grid_nat_focuses:AutoSize()
+
+    -- set the focus headers font after autosizing so the first row of each focus is the same size as the other.
+    -- The autosizing would make them bigger due to bigger font
+    for i, r in ipairs(focus_header_rows) do
+        UI.m_grid_nat_focuses:SetCellFont(r,0,focus_header_font)
+    end
 end
 
 function SetupNationalFocusTable()
