@@ -1,8 +1,8 @@
 package.cpath = package.cpath..";./tfh/mod/?.dll;"
 require("wx")
 
-
--- UI = {}
+local True = true
+local False = false
 
 if wx ~= nil then
 	UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 650,600 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )

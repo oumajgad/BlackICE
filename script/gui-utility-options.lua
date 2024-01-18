@@ -1,8 +1,8 @@
 package.cpath = package.cpath..";./tfh/mod/?.dll;"
 require("wx")
 
--- UI = {}
-
+local True = true
+local False = false
 
 if wx ~= nil then
 	UI.MyFrame3 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 550,550 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )

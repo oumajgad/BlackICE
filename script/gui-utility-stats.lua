@@ -1,8 +1,9 @@
 package.cpath = package.cpath..";./tfh/mod/?.dll;"
 require("wx")
 
+local True = true
+local False = false
 
--- UI = {}
 if wx ~= nil then
 	UI.MyFrame5 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Statistics", wx.wxDefaultPosition, wx.wxSize( 500,500 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
 	UI.MyFrame5:SetSizeHints( wx.wxSize( 500,500 ), wx.wxDefaultSize )
