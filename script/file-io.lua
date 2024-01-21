@@ -69,6 +69,35 @@ function ReadLine(file, index)
     return false
 end
 
+function ReadLines(file)
+    local f, err = io.open(file, "r")
+    local lines = {}
+    if f ~= nil then
+        for line in f:lines() do
+            table.insert(lines, line)
+        end
+        io.close(f)
+    else
+        return nil, err
+    end
+    return lines, nil
+end
+
+function WriteLines(filename, lines)
+    local f2, err2 = io.open(filename, 'w')
+    if f2 ~= nil then
+        for i, v in ipairs(lines) do
+            f2:write(v..'\n')
+        end
+        io.close(f2)
+    end
+    if err2 then
+        Utils.LUA_DEBUGOUT(err2)
+        return err2
+    end
+    return nil
+end
+
 function AppendLine(file, str)
     local f, err = io.open(file, "a")
     if f ~= nil then
@@ -103,6 +132,24 @@ function CheckFileExists(file)
         Utils.LUA_DEBUGOUT(err)
     end    -- Utils.LUA_DEBUGOUT("false")
     return false
+end
+
+function ReplaceLines(filename, replaceLines)
+    local lines, err1 = ReadLines(filename)
+    if err1 then
+        Utils.LUA_DEBUGOUT(err1)
+        return err1
+    end
+
+    for lineNumber, line in pairs(replaceLines) do
+        lines[lineNumber] = line
+    end
+
+    local err2 = WriteLines(filename, lines)
+    if err2 then
+        return err2
+    end
+    return "Edited: " .. filename
 end
 
 function ReplaceLineAtCommentMark(filename, commentMark, newLine)

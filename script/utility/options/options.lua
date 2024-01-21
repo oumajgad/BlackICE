@@ -1,4 +1,8 @@
-function SetDialogPopUpCenter()
+local P = {}
+
+Options = P
+
+function P.SetDialogPopUpCenter()
     local text = "Center popups - "
     local ret = nil
     local name1 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eu3dialog.gui"
@@ -26,7 +30,7 @@ function SetDialogPopUpCenter()
     UI.m_textCtrl_OptionActions_Output:SetValue(text .. ret)
 end
 
-function SetDialogPopUpLeft()
+function P.SetDialogPopUpLeft()
     local text = "Leftside popups - "
     local ret = nil
     local name1 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eu3dialog.gui"
@@ -54,7 +58,7 @@ function SetDialogPopUpLeft()
     UI.m_textCtrl_OptionActions_Output:SetValue(text .. ret)
 end
 
-function SetEventPopUpCenter()
+function P.SetEventPopUpCenter()
     local text = "Center events - "
     local ret = nil
     local name1 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eventwindow.gui"
@@ -64,7 +68,7 @@ function SetEventPopUpCenter()
     UI.m_textCtrl_OptionActions_Output:SetValue(text .. ret)
 end
 
-function SetEventPopUpLeft()
+function P.SetEventPopUpLeft()
     local text = "Leftside events - "
     local ret = nil
     local name1 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eventwindow.gui"
@@ -97,7 +101,7 @@ local function applyFontRecursivelyToWxWindows(_wx_window, change)
     _wx_window:Thaw()
 end
 
-function DecreaseFontSize()
+function P.DecreaseFontSize()
     applyFontRecursivelyToWxWindows(UI.MyFrame1, -1)
     applyFontRecursivelyToWxWindows(UI.MyFrame2, -1)
     applyFontRecursivelyToWxWindows(UI.MyFrame3, -1)
@@ -105,10 +109,15 @@ function DecreaseFontSize()
     applyFontRecursivelyToWxWindows(UI.MyFrame5, -1)
 end
 
-function IncreaseFontSize()
+function P.IncreaseFontSize()
     applyFontRecursivelyToWxWindows(UI.MyFrame1, 1)
     applyFontRecursivelyToWxWindows(UI.MyFrame2, 1)
     applyFontRecursivelyToWxWindows(UI.MyFrame3, 1)
     applyFontRecursivelyToWxWindows(UI.MyFrame4, 1)
     applyFontRecursivelyToWxWindows(UI.MyFrame5, 1)
 end
+
+
+P.Provinces = require("provinces")
+
+return P

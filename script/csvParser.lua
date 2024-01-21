@@ -2,7 +2,7 @@ local P = {}
 
 CsvParser = P
 
-local function parseCSVLine(line,sep,limit)
+function P.ParseCSVLine(line,sep,limit)
     if limit == nil then
         limit = 999
     end
@@ -43,7 +43,7 @@ function P.parseFile(filePath, sep, limit)
     else
         if file ~= nil then
             for line in file:lines() do
-                local tbl = parseCSVLine(line, sep, limit)
+                local tbl = P.ParseCSVLine(line, sep, limit)
                 if tbl ~= nil then
                     res[tbl[1]] = tbl
                     table.remove(tbl, 1) -- removes the key from the result

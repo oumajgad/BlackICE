@@ -2076,6 +2076,7 @@ if wx ~= nil then
 	end )
 
 	UI.m_button_ShowOptionsWindow:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		Options.Provinces.Setup()
 		UI.MyFrame3:Show(true)
 	end )
 
