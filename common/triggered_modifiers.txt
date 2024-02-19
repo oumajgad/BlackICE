@@ -9245,10 +9245,162 @@ jungle_coloniser = {
 	icon = 43
 }
 
-air_power = {
+air_power_I = {
 
 	potential = {
+	}
 
+	trigger = {
+		or = { #  Oil_reffinery
+			or = {
+				7307 = { controlled_by = this }
+                7307 = { controller = { vassal_of = this } }
+			}
+            or = {
+				6459 = { controlled_by = this }
+                6459 = { controller = { vassal_of = this } }
+			}
+            or = {
+				3778 = { controlled_by = this }
+                3778 = { controller = { vassal_of = this } }
+			}
+            or = {
+				9239 = { controlled_by = this }
+                9239 = { controller = { vassal_of = this } }
+			}
+            any_owned_province = {
+				and = {
+					strategic_resource = oil_refinery
+                    controlled_by = this
+				}
+			}
+        }
+		#check_variable = { which = aluminium_ActualBalance value = 1001 }
+		check_variable = { which = light_aircraft_factory_count value = 10 }
+		or = {
+			check_variable = { which = medium_aircraft_factory_count value = 5 }
+			check_variable = { which = heavy_aircraft_factory_count value = 5 }
+		}
+		not = { check_variable = { which = BaseIC value = 400 } }
+	}
+
+	global_money = 0.05
+	air_build_speed = -0.05
+
+	icon = 49
+}
+
+air_power_II = {
+
+	potential = {
+		or = { #  Oil_reffinery
+			or = {
+				7307 = { controlled_by = this }
+                7307 = { controller = { vassal_of = this } }
+			}
+            or = {
+				6459 = { controlled_by = this }
+                6459 = { controller = { vassal_of = this } }
+			}
+            or = {
+				3778 = { controlled_by = this }
+                3778 = { controller = { vassal_of = this } }
+			}
+            or = {
+				9239 = { controlled_by = this }
+                9239 = { controller = { vassal_of = this } }
+			}
+            any_owned_province = {
+				and = {
+					strategic_resource = oil_refinery
+                    controlled_by = this
+				}
+			}
+        }
+		#check_variable = { which = aluminium_ActualBalance value = 1001 }
+		check_variable = { which = light_aircraft_factory_count value = 10 }
+		or = {
+			check_variable = { which = medium_aircraft_factory_count value = 5 }
+			check_variable = { which = heavy_aircraft_factory_count value = 5 }
+		}
+		not = { check_variable = { which = BaseIC value = 800 } }
+	}
+
+	trigger = {
+		or = { #  Oil_reffinery
+			or = {
+				7307 = { controlled_by = this }
+                7307 = { controller = { vassal_of = this } }
+			}
+            or = {
+				6459 = { controlled_by = this }
+                6459 = { controller = { vassal_of = this } }
+			}
+            or = {
+				3778 = { controlled_by = this }
+                3778 = { controller = { vassal_of = this } }
+			}
+            or = {
+				9239 = { controlled_by = this }
+                9239 = { controller = { vassal_of = this } }
+			}
+            any_owned_province = {
+				and = {
+					strategic_resource = oil_refinery
+                    controlled_by = this
+				}
+			}
+        }
+		check_variable = { which = aluminium_ActualBalance value = 1001 }
+		check_variable = { which = light_aircraft_factory_count value = 15 }
+		or = {
+			check_variable = { which = medium_aircraft_factory_count value = 10 }
+			check_variable = { which = heavy_aircraft_factory_count value = 10 }
+		}
+		check_variable = { which = BaseIC value = 400 } 
+		not = { check_variable = { which = BaseIC value = 800 } }
+	}
+
+	global_money = 0.1
+	air_build_speed = -0.1
+
+	icon = 49
+}
+
+air_power_III = {
+
+	potential = {
+		or = { #  Oil_reffinery
+			or = {
+				7307 = { controlled_by = this }
+                7307 = { controller = { vassal_of = this } }
+			}
+            or = {
+				6459 = { controlled_by = this }
+                6459 = { controller = { vassal_of = this } }
+			}
+            or = {
+				3778 = { controlled_by = this }
+                3778 = { controller = { vassal_of = this } }
+			}
+            or = {
+				9239 = { controlled_by = this }
+                9239 = { controller = { vassal_of = this } }
+			}
+            any_owned_province = {
+				and = {
+					strategic_resource = oil_refinery
+                    controlled_by = this
+				}
+			}
+        }
+		check_variable = { which = aluminium_ActualBalance value = 1001 }
+		check_variable = { which = light_aircraft_factory_count value = 15 }
+		or = {
+			check_variable = { which = medium_aircraft_factory_count value = 10 }
+			check_variable = { which = heavy_aircraft_factory_count value = 10 }
+		}
+		check_variable = { which = BaseIC value = 400 }
 	}
 
 	trigger = {
@@ -9280,16 +9432,18 @@ air_power = {
 		check_variable = { which = light_aircraft_factory_count value = 20 }
 		or = {
 			check_variable = { which = medium_aircraft_factory_count value = 15 }
-			check_variable = { which = heavy_aircraft_factory_count value = 10 }
+			check_variable = { which = heavy_aircraft_factory_count value = 15 }
 		}
+		check_variable = { which = BaseIC value = 800 } 
 	}
 
-	global_money = 0.1
-	air_build_speed = -0.075
+	global_money = 0.15
+	air_build_speed = -0.15
 
 	icon = 49
 }
-naval_power = {
+
+naval_power_I = {
 
 	potential = {
 
@@ -9336,54 +9490,325 @@ naval_power = {
 				}
 			}
 		}
+		not = { check_variable = { which = BaseIC value = 500 } }
 	}
 
-	naval_build_speed = -0.035
+	naval_build_speed = -0.5
 	naval_organisation = 0.05
 
 	icon = 50
 }
 
-armour_power = {
+naval_power_II = {
 
 	potential = {
-
-	}
-
-	trigger = {
-		check_variable = { which = tank_factory_count value = 15 }
-		check_variable = { which = tungsten_ActualBalance value = 1001 }
-		check_variable = { which = molybdenum_ActualBalance value = 1001 }
-		check_variable = { which = manganese_ActualBalance value = 1001 }
-
-		or = { #  Oil reffinery
+		or = { #  Prefab ship facilities
 			or = {
-				7307 = { controlled_by = this }
-				7307 = { controller = { vassal_of = this } }
+				1341 = { controlled_by = this }
+				1341 = { controller = { vassal_of = this } }
 			}
-			or = {
-				6459 = { controlled_by = this }
-				6459 = { controller = { vassal_of = this } }
-			}
-			or = {
-				3778 = { controlled_by = this }
-				3778 = { controller = { vassal_of = this } }
-			}
-			or = {
-				9239 = { controlled_by = this }
-				9239 = { controller = { vassal_of = this } }
+			  or = {
+				7428 = { controlled_by = this }
+				7428 = { controller = { vassal_of = this } }
 			}
 			any_owned_province = {
 				and = {
-					strategic_resource = oil_refinery
+					strategic_resource = prefab_ship_facilities
 					controlled_by = this
 				}
 			}
 		}
+		or = { #  Dockyard facilities
+			or = {
+				3971 = { controlled_by = this }
+				3971 = { controller = { vassal_of = this } }
+			}
+			or = {
+				4900 = { controlled_by = this }
+				4900 = { controller = { vassal_of = this } }
+			}
+			or = {
+				1127 = { controlled_by = this }
+				1127 = { controller = { vassal_of = this } }
+			}
+			or = {
+				5315 = { controlled_by = this }
+				5315 = { controller = { vassal_of = this } }
+			}
+			any_owned_province = {
+				and = {
+					strategic_resource = dockyard_facilities
+					controlled_by = this
+				}
+			}
+		}
+		not = { check_variable = { which = BaseIC value = 1000 } }
+	}
+
+	trigger = {
+		or = { #  Prefab ship facilities
+			or = {
+				1341 = { controlled_by = this }
+				1341 = { controller = { vassal_of = this } }
+			}
+			  or = {
+				7428 = { controlled_by = this }
+				7428 = { controller = { vassal_of = this } }
+			}
+			any_owned_province = {
+				and = {
+					strategic_resource = prefab_ship_facilities
+					controlled_by = this
+				}
+			}
+		}
+		or = { #  Dockyard facilities
+			or = {
+				3971 = { controlled_by = this }
+				3971 = { controller = { vassal_of = this } }
+			}
+			or = {
+				4900 = { controlled_by = this }
+				4900 = { controller = { vassal_of = this } }
+			}
+			or = {
+				1127 = { controlled_by = this }
+				1127 = { controller = { vassal_of = this } }
+			}
+			or = {
+				5315 = { controlled_by = this }
+				5315 = { controller = { vassal_of = this } }
+			}
+			any_owned_province = {
+				and = {
+					strategic_resource = dockyard_facilities
+					controlled_by = this
+				}
+			}
+		}
+		or = {
+			and = {
+				Special_treatment_steel  = 1
+				check_variable = { which = chromite_ActualBalance value = 1002 }
+				check_variable = { which = nickel_ActualBalance value = 1002 }
+				not = {
+					check_variable = { which = chromite_ActualBalance value = 1004 }
+					check_variable = { which = nickel_ActualBalance value = 1004 }	
+				}
+			}
+			and = {
+				Cemented_armor  = 1
+				check_variable = { which = chromite_ActualBalance value = 1004 }
+				check_variable = { which = manganese_ActualBalance value = 1004 }
+				not = {
+					check_variable = { which = chromite_ActualBalance value = 1004 }
+					check_variable = { which = manganese_ActualBalance value = 1004 }	
+				}
+			}
+			and = {
+				Vickers_steel  = 1
+				check_variable = { which = copper_ActualBalance value = 1004 }
+				not = {
+					check_variable = { which = copper_ActualBalance value = 1004 }
+				}
+			}
+		}
+		check_variable = { which = BaseIC value = 500 }
+		not = { check_variable = { which = BaseIC value = 1000 } }
+	}
+
+	naval_build_speed = -0.1
+	naval_organisation = 0.05
+
+	icon = 50
+}
+naval_power_III = {
+
+	potential = {
+		or = { #  Prefab ship facilities
+			or = {
+				1341 = { controlled_by = this }
+				1341 = { controller = { vassal_of = this } }
+			}
+			  or = {
+				7428 = { controlled_by = this }
+				7428 = { controller = { vassal_of = this } }
+			}
+			any_owned_province = {
+				and = {
+					strategic_resource = prefab_ship_facilities
+					controlled_by = this
+				}
+			}
+		}
+		or = { #  Dockyard facilities
+			or = {
+				3971 = { controlled_by = this }
+				3971 = { controller = { vassal_of = this } }
+			}
+			or = {
+				4900 = { controlled_by = this }
+				4900 = { controller = { vassal_of = this } }
+			}
+			or = {
+				1127 = { controlled_by = this }
+				1127 = { controller = { vassal_of = this } }
+			}
+			or = {
+				5315 = { controlled_by = this }
+				5315 = { controller = { vassal_of = this } }
+			}
+			any_owned_province = {
+				and = {
+					strategic_resource = dockyard_facilities
+					controlled_by = this
+				}
+			}
+		}
+		or = {
+			and = {
+				Special_treatment_steel  = 1
+				check_variable = { which = chromite_ActualBalance value = 1002 }
+				check_variable = { which = nickel_ActualBalance value = 1002 }
+			}
+			and = {
+				Cemented_armor  = 1
+				check_variable = { which = chromite_ActualBalance value = 1002 }
+				check_variable = { which = manganese_ActualBalance value = 1002 }
+			}
+			and = {
+				Vickers_steel  = 1
+				check_variable = { which = copper_ActualBalance value = 1002 }
+			}
+		}
+		check_variable = { which = BaseIC value = 500 }
+	}
+
+	trigger = {
+		or = { #  Prefab ship facilities
+			or = {
+				1341 = { controlled_by = this }
+				1341 = { controller = { vassal_of = this } }
+			}
+			  or = {
+				7428 = { controlled_by = this }
+				7428 = { controller = { vassal_of = this } }
+			}
+			any_owned_province = {
+				and = {
+					strategic_resource = prefab_ship_facilities
+					controlled_by = this
+				}
+			}
+		}
+		or = { #  Dockyard facilities
+			or = {
+				3971 = { controlled_by = this }
+				3971 = { controller = { vassal_of = this } }
+			}
+			or = {
+				4900 = { controlled_by = this }
+				4900 = { controller = { vassal_of = this } }
+			}
+			or = {
+				1127 = { controlled_by = this }
+				1127 = { controller = { vassal_of = this } }
+			}
+			or = {
+				5315 = { controlled_by = this }
+				5315 = { controller = { vassal_of = this } }
+			}
+			any_owned_province = {
+				and = {
+					strategic_resource = dockyard_facilities
+					controlled_by = this
+				}
+			}
+		}
+		or = {
+			and = {
+				Special_treatment_steel  = 1
+				check_variable = { which = chromite_ActualBalance value = 1004 }
+				check_variable = { which = nickel_ActualBalance value = 1004 }
+			}
+			and = {
+				Cemented_armor  = 1
+				check_variable = { which = chromite_ActualBalance value = 1004 }
+				check_variable = { which = manganese_ActualBalance value = 1004 }
+			}
+			and = {
+				Vickers_steel  = 1
+				check_variable = { which = copper_ActualBalance value = 1004 }
+			}
+		}
+		check_variable = { which = BaseIC value = 1000 }
+	}
+
+	naval_build_speed = -0.15
+	naval_organisation = 0.05
+
+	icon = 50
+}
+
+armour_power_I = {
+
+	potential = {
+	}
+
+	trigger = {
+		check_variable = { which = tank_factory_count value = 15 }
+		check_variable = { which = BaseIC value = 400 }
+		check_variable = { which = manganese_ActualBalance value = 1001 }
+		not = { check_variable = { which = BaseIC value = 800 } }
+	}
+
+	global_money = 0.05
+	tank_build_speed = -0.05
+
+	icon = 48
+}
+
+armour_power_II = {
+
+	potential = {
+		check_variable = { which = tank_factory_count value = 15 }
+		check_variable = { which = BaseIC value = 400 }
+		not = { check_variable = { which = BaseIC value = 800 } }
+	}
+
+	trigger = {
+		check_variable = { which = tank_factory_count value = 20 }
+		check_variable = { which = manganese_ActualBalance value = 1001 }
+		check_variable = { which = chromite_ActualBalance value = 1001 }
+		check_variable = { which = BaseIC value = 800 }
+		not = { check_variable = { which = BaseIC value = 1200 } }
 	}
 
 	global_money = 0.1
-	tank_build_speed = -0.075
+	tank_build_speed = -0.1
+
+	icon = 48
+}
+armour_power_III = {
+
+	potential = {
+		check_variable = { which = tank_factory_count value = 20 }
+		check_variable = { which = manganese_ActualBalance value = 1001 }
+		check_variable = { which = chromite_ActualBalance value = 1001 }
+		check_variable = { which = BaseIC value = 800 }
+	}
+
+	trigger = {
+		check_variable = { which = tank_factory_count value = 25 }
+		check_variable = { which = manganese_ActualBalance value = 1001 }
+		check_variable = { which = chromite_ActualBalance value = 1001 }
+		check_variable = { which = molybdenum_ActualBalance value = 1001 }
+
+		check_variable = { which = BaseIC value = 1200 }
+	}
+
+	global_money = 0.15
+	tank_build_speed = -0.15
 
 	icon = 48
 }
@@ -17295,6 +17720,7 @@ dockyard_facilities_bonus = {
 		}
 	}
 	naval_base_efficiency = 0.20
+	naval_organisation = 0.1
 	icon = 77
 }
 oil_refinery_bonus = {
