@@ -1454,39 +1454,42 @@ function CalculateLogisticsNeed()
 	local cInfra = CBuildingDataBase.GetBuilding("infra")
 
 	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
-		-- local total_owned_with_infra = 0
-		-- local total_controlled_with_infra = 0 -- only controlled, not owned
-		local logistics_need = 0
+		local country = countryTag:GetCountry()
+		if country:Exists() == true then
+			-- local total_owned_with_infra = 0
+			-- local total_controlled_with_infra = 0 -- only controlled, not owned
+			local logistics_need = 0
 
-		for provinceID in countryTag:GetCountry():GetControlledProvinces() do
-			-- Get province
-			local province = CCurrentGameState.GetProvince(provinceID)
-			local infra_level = province:GetBuilding(cInfra):GetCurrent():Get()
+			for provinceID in country:GetControlledProvinces() do
+				-- Get province
+				local province = CCurrentGameState.GetProvince(provinceID)
+				local infra_level = province:GetBuilding(cInfra):GetCurrent():Get()
 
-			-- ignore 0/1 infra level provinces
-			if infra_level >= 2 then
-				-- Check under control
-				if province:GetController() == countryTag then
-					-- total_owned_with_infra = total_owned_with_infra + 1
-					logistics_need = logistics_need + (infra_level)
-				else
-					-- total_controlled_with_infra = total_controlled_with_infra + 1
-					logistics_need = logistics_need + (infra_level * controlled_multiplier)
+				-- ignore 0/1 infra level provinces
+				if infra_level >= 2 then
+					-- Check under control
+					if province:GetController() == countryTag then
+						-- total_owned_with_infra = total_owned_with_infra + 1
+						logistics_need = logistics_need + (infra_level)
+					else
+						-- total_controlled_with_infra = total_controlled_with_infra + 1
+						logistics_need = logistics_need + (infra_level * controlled_multiplier)
+					end
 				end
 			end
+			logistics_need = math.floor(logistics_need / 10) + logistics_needs_country_offsets[tag]
+
+			-- local command = CSetVariableCommand(countryTag, CString("total_owned_with_infra"), CFixedPoint(total_owned_with_infra))
+			-- CCurrentGameState.Post(command)
+			-- local command = CSetVariableCommand(countryTag, CString("total_controlled_with_infra"), CFixedPoint(total_controlled_with_infra))
+			-- CCurrentGameState.Post(command)
+			local command = CSetVariableCommand(countryTag, CString("logistics_need"), CFixedPoint(logistics_need))
+			CCurrentGameState.Post(command)
+
+			-- Utils.LUA_DEBUGOUT(tag.. " total_owned_with_infra = ".. total_owned_with_infra)
+			-- Utils.LUA_DEBUGOUT(tag.. " total_controlled_with_infra = ".. total_controlled_with_infra)
+			-- Utils.LUA_DEBUGOUT(tag.. " logistics_need = ".. logistics_need)
 		end
-		logistics_need = math.floor(logistics_need / 10) + logistics_needs_country_offsets[tag]
-
-		-- local command = CSetVariableCommand(countryTag, CString("total_owned_with_infra"), CFixedPoint(total_owned_with_infra))
-		-- CCurrentGameState.Post(command)
-		-- local command = CSetVariableCommand(countryTag, CString("total_controlled_with_infra"), CFixedPoint(total_controlled_with_infra))
-		-- CCurrentGameState.Post(command)
-		local command = CSetVariableCommand(countryTag, CString("logistics_need"), CFixedPoint(logistics_need))
-		CCurrentGameState.Post(command)
-
-		-- Utils.LUA_DEBUGOUT(tag.. " total_owned_with_infra = ".. total_owned_with_infra)
-		-- Utils.LUA_DEBUGOUT(tag.. " total_controlled_with_infra = ".. total_controlled_with_infra)
-		Utils.LUA_DEBUGOUT(tag.. " logistics_need = ".. logistics_need)
 	end
 	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 end
