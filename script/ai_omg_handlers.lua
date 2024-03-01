@@ -42,6 +42,7 @@ G_LUA_SCHEDULE = {
 	-- 01:00
 	["IntelligenceMinister_Tick"] = {
 		IntelligenceMinisterUtilityThings,
+		-- CalculateLogisticsNeed
 	},
 	-- 03:00
 	["TechMinister_Tick"] = {
