@@ -1467,8 +1467,8 @@ function CalculateLogisticsNeed()
 
 				-- ignore 0/1 infra level provinces
 				if infra_level >= 2 then
-					-- Check under control
-					if province:GetController() == countryTag then
+					-- Check owned
+					if province:GetOwner() == countryTag then
 						-- total_owned_with_infra = total_owned_with_infra + 1
 						logistics_need = logistics_need + (infra_level)
 					else
