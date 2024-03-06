@@ -3,8 +3,8 @@ guiTypes = {
 	windowType = {
 		name = "topcolor_technology"
 		backGround =""
-		position = { x=0 y=0 }
-		size = { x=1120 y=768 }
+		position = { x = 0 y = 0 }
+		size = { x = 1120 y = 768 }
 		moveable = 0
 		dontRender = ""
 		horizontalBorder = "0"
@@ -25,8 +25,8 @@ guiTypes = {
 	windowType = {
 		name = "country_technology"
 		backGround =""
-		position = { x=-555 y=-330 }
-		size = { x=1280 y=768 }
+		position = { x = -555 y = -330 }
+		size = { x = 1120 y = 768 }
 		moveable = 0
 		dontRender = ""
 		horizontalBorder = "0"
@@ -37,25 +37,37 @@ guiTypes = {
 		iconType = {
 			name ="bg_mainshadow"
 			spriteType = "GFX_bg_mainshadow"
-			position = { x=-130 y=-44 }
+			position = { x = -130 y= -44 }
 			orientation = "UPPER_LEFT"
 		}
 		iconType = {
 			name ="bg_countryskin"
 			spriteType = "GFX_country_bg"
-			position = { x=-85 y=-2 }
+			position = { x = -85 y = -2 }
 			orientation = "UPPER_LEFT"
 		}
 		iconType = {
 			name ="bg_technology"
 			spriteType = "GFX_bg_technology"
-			position = { x=-85 y=8 }
+			position = { x = -85 y = -27 }
 			orientation = "UPPER_LEFT"
+		}
+		guiButtonType = {
+			name = "close_button"
+			position = { x=40 y=24 }
+			quadTextureSprite = "GFX_close_button"
+			tooltip = ""
+			tooltipText =""
+			delayedTooltipText = ""
+			buttonText = ""
+			buttonFont = "Arial12_bold_black"
+			orientation = "UPPER_RIGHT"
+			shortcut = "ESCAPE"
 		}
 		iconType = {
 			name ="bg_tech_nation_folder"
 			spriteType = "GFX_bg_tech_nation"
-			position = { x=172 y=77 }
+			position = { x = 172 y = 77 }
 			orientation = "UPPER_LEFT"
 		}
 		iconType = {
@@ -281,22 +293,9 @@ guiTypes = {
 			position = { x=167 y=77 }
 			orientation = "UPPER_LEFT"
 		}
-
-		guiButtonType = {
-			name = "close_button"
-			position = { x=-123 y=25 }
-			quadTextureSprite = "GFX_close_button"
-			tooltip = ""
-			tooltipText =""
-			delayedTooltipText = ""
-			buttonText = ""
-			buttonFont = "Arial12_bold_black"
-			orientation = "UPPER_RIGHT"
-			shortcut = "ESCAPE"
-		}
 		textBoxType = {
 			name = "headline_tech"
-			position = { x=850 y=5 }
+			position = { x=850 y=8 }
 			textureFile = ""
 			font = "impact"
 			borderSize = { x=0 y=4 }
@@ -307,7 +306,7 @@ guiTypes = {
 		}
 		instantTextBoxType = {
 			name = "automation_setting"
-			position = { x=944 y=43 }
+			position = { x=944 y=41}
 			textureFile = ""
 			font = "arial_18"
 			borderSize = { x=0 y=4 }
@@ -319,13 +318,13 @@ guiTypes = {
 		guiButtonType = {
 			name ="mode_arrow_left"
 			quadTextureSprite = "GFX_mode_arrow_left"
-			position = { x=1036 y=45 }
+			position = { x=1036 y=43 }
 			orientation = "UPPER_LEFT"
 		}
 		guiButtonType = {
 			name ="mode_arrow_right"
 			quadTextureSprite = "GFX_mode_arrow_right"
-			position = { x=1136 y=45 }
+			position = { x=1136 y=43 }
 			orientation = "UPPER_LEFT"
 		}
 		# #########################################
@@ -396,9 +395,9 @@ guiTypes = {
 		# ##########################
 		listboxType = {
 			name = "current_research"
-			position = { x=940 y=118 }
+			position = { x=939 y=114 }
 			backGround=""
-			size = { x=230 y=600 }
+			size = { x=231 y=351 }
 			orientation = "UPPER_LEFT"
 			spacing = 2
 			scrollbartype = "standardlistbox_slider"
@@ -409,10 +408,22 @@ guiTypes = {
 		# #########################
 		# Nation #
 		textBoxType = {
-			name = "nation_tech_text"
-			position = { x=-70 y=75 }
+			name = "tech_cat_name" # new
+			position = { x=-87 y=74 }
 			textureFile = ""
-			font = "Main_16_orange"
+			font = "Arial12_headline"
+			borderSize = { x=4 y=0 }
+			text = "Technology Categories"
+			maxWidth = 240
+			maxHeight = 32
+			format = centre
+			orientation = "UPPER_LEFT"
+		}
+		textBoxType = {
+			name = "nation_tech_text"
+			position = { x=-78 y=88 }
+			textureFile = ""
+			font = "Arial14"
 			borderSize = { x=4 y=0 }
 			text = "NATION_TECH"
 			maxWidth = 240
@@ -422,111 +433,46 @@ guiTypes = {
 		}
 		guiButtonType = {
 			name = "techtree_nation_folder"
-			position = { x=-70 y=90 }
+			position = { x=-75 y=102 }
 			quadTextureSprite ="GFX_tech_button_nation"
 			tooltip = ""
 			tooltipText =""
 			delayedTooltipText = ""
 		}
-		# textBoxType = {
-			# name = "nation_text"
-			# position = { x=-70 y=104 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_NATION"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_construction_folder"
-			position = { x=-70 y=128 }
+			position = { x=-75 y=140 }
 			quadTextureSprite ="GFX_tech_button_construction"
 		}
-		# textBoxType = {
-			# name = "construction_text"
-			# position = { x=-70 y=142 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_CONSTR"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_industry_folder"
-			position = { x=1 y=90 }
+			position = { x=0 y=102 }
 			quadTextureSprite ="GFX_tech_button_industry"
 		}
-		# textBoxType = {
-			# name = "industry_text"
-			# position = { x=3 y=104 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_INDUSTRY"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_theory_folder"
-			position = { x=72 y=90 }
+			position = { x=75 y=102 }
 			quadTextureSprite ="GFX_tech_button_theory"
 		}
-		# textBoxType = {
-			# name = "theory_text"
-			# position = { x=73 y=104 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_THEORY"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_secretweapon_folder"
-			position = { x=1 y=128 }
+			position = { x=0 y=140 }
 			quadTextureSprite ="GFX_tech_button_secret"
 		}
-		# textBoxType = {
-			# name = "secret_text"
-			# position = { x=1 y=142 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_SECRET"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_special_folder"
-			position = { x=72 y=128 }
+			position = { x=75 y=140 }
 			quadTextureSprite ="GFX_tech_button_special"
 		}
-		# textBoxType = {
-			# name = "special_text"
-			# position = { x=1 y=142 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_SPECIAL"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
+		
 		# Land forces #
 		textBoxType = {
 			name = "land_forces_tech_text"
-			position = { x=-70 y=165 }
+			position = { x=-78 y=178 }
 			textureFile = ""
-			font = "Main_16_orange"
+			font = "Arial14"
 			borderSize = { x=4 y=0 }
-			text = "LAND_FORCES"
+			text = "Land Forces" # changed
 			maxWidth = 240
 			maxHeight = 32
 			format = left
@@ -534,109 +480,43 @@ guiTypes = {
 		}
 		guiButtonType = {
 			name = "techtree_infantry_folder"
-			position = { x=-70 y=179 }
+			position = { x=-75 y=192 }
 			quadTextureSprite ="GFX_tech_button_inf"
 		}
-		# textBoxType = {
-			# name = "infantry_text"
-			# position = { x=-70 y=193 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x = 0 y = 4 }
-			# text = "TECH_INFANTRY"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_artillery_folder"
-			position = { x=1 y=179 }
+			position = { x=0 y=192 }
 			quadTextureSprite ="GFX_tech_button_artillery"
 		}
-		# textBoxType = {
-			# name = "artillery_text"
-			# position = { x=1 y=193 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_ARTILLERY"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_armour_folder"
-			position = { x=72 y=179 }
+			position = { x=75 y=192 }
 			quadTextureSprite ="GFX_tech_button_armour"
 		}
-		# textBoxType = {
-			# name = "armour_text"
-			# position = { x=72 y=193 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_ARMOUR"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_special_forces_folder"
-			position = { x=-70 y=217 }
+			position = { x=-75 y=230 }
 			quadTextureSprite ="GFX_tech_button_sf"
 		}
-		# textBoxType = {
-			# name = "special_forces_text"
-			# position = { x=-70 y=227 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_SF"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
-		guiButtonType = {
-			name = "techtree_armourII_folder"
-			position = { x=72 y=217 }
-			quadTextureSprite ="GFX_tech_button_armourII"
-		}
-		# textBoxType = {
-			# name = "armourII_text"
-			# position = { x=72 y=227 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_ARMOURII"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_antitank_folder"
-			position = { x=1 y=217 }
+			position = { x=0 y=230 }
 			quadTextureSprite ="GFX_tech_button_antitank"
 		}
-		# textBoxType = {
-			# name = "antitank_text"
-			# position = { x=72 y=227 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_ANTI_TANK"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
+		guiButtonType = {
+			name = "techtree_armourII_folder"
+			position = { x=75 y=230 }
+			quadTextureSprite ="GFX_tech_button_armourII"
+		}
 
 		# Air forces #
 		textBoxType = {
 			name = "air_forces_tech_text"
-			position = { x=-70 y=255 }
+			position = { x=-78 y=268 }
 			textureFile = ""
-			font = "Main_16_orange"
+			font = "Arial14"
 			borderSize = { x=4 y=0 }
-			text = "AIR_FORCES"
+			text = "Air Forces"
 			maxWidth = 240
 			maxHeight = 32
 			format = left
@@ -644,108 +524,43 @@ guiTypes = {
 		}
 		guiButtonType = {
 			name = "techtree_aircraft_folder"
-			position = { x=-70 y=269 }
+			position = { x=-75 y=282 }
 			quadTextureSprite ="GFX_tech_btn_airair"
 		}
-		# textBoxType = {
-			# name = "aircraft_text"
-			# position = { x=-69 y=283 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_AIRCRAFT"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_armament_folder"
-			position = { x=1 y=269 }
+			position = { x=0 y=282 }
 			quadTextureSprite ="GFX_tech_btn_airgrnd"
 		}
-		# textBoxType = {
-			# name = "armament_text"
-			# position = { x=1 y=283 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_ARMAMENT"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_payload_folder"
-			position = { x=72 y=269 }
+			position = { x=75 y=282 }
 			quadTextureSprite ="GFX_tech_btn_navalair"
 		}
-		# textBoxType = {
-			# name = "payload_text"
-			# position = { x=73 y=283 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_PAYLOAD"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_aircraftsystems_folder"
-			position = { x=-70 y=307 }
+			position = { x=-75 y=320 }
 			quadTextureSprite ="GFX_tech_btn_aircraftsystems"
 		}
-		# textBoxType = {
-			# name = "aircraftsystems_text"
-			# position = { x=-70 y=317 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_AIRCRAFTSYSTEMS"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_avionics_folder"
-			position = { x=1 y=307 }
+			position = { x=0 y=320 }
 			quadTextureSprite ="GFX_tech_btn_avionics"
 		}
-		# textBoxType = {
-			# name = "avionics_text"
-			# position = { x=1 y=317 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_AVIONICS"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_jet_folder"
-			position = { x=72 y=307 }
+			position = { x=75 y=320 }
 			quadTextureSprite ="GFX_tech_btn_jet"
 		}
-		# textBoxType = {
-			# name = "jet_text"
-			# position = { x=72 y=317 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_JET"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
+
 		# Naval forces #
 		textBoxType = {
 			name = "naval_forces_tech_text"
-			position = { x=-70 y=345 }
+			position = { x=-78 y=358 }
 			textureFile = ""
-			font = "Main_16_orange"
+			font = "Arial14"
 			borderSize = { x=4 y=0 }
-			text = "NAV_FORCES"
+			text = "Naval Forces"
 			maxWidth = 240
 			maxHeight = 32
 			format = left
@@ -753,122 +568,46 @@ guiTypes = {
 		}
 		guiButtonType = {
 			name = "techtree_submarine_folder"
-			position = { x=-70 y=359 }
+			position = { x=-75 y=372 }
 			quadTextureSprite ="GFX_tech_button_sub"
 		}
-		# textBoxType = {
-			# name = "submarine_text"
-			# position = { x=-68 y=373 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_SUB"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_smallship_folder"
-			position = { x=1 y=359 }
+			position = { x=0 y=372 }
 			quadTextureSprite ="GFX_tech_button_escorts"
 		}
-		# textBoxType = {
-			# name = "escorts_text"
-			# position = { x=1 y=373 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_ESCORTS"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_transports_folder"
-			position = { x=72 y=359 }
+			position = { x=75 y=372 }
 			quadTextureSprite ="GFX_tech_button_transports"
 		}
-		# textBoxType = {
-			# name = "transports_text"
-			# position = { x=72 y=373 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_TRANSPORTS"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_cruiser_folder"
-			position = { x=-76 y=397 }
+			position = { x=-76 y=417 }
 			quadTextureSprite ="GFX_tech_button_cruiser"
 		}
-		# textBoxType = {
-			# name = "cruiser_text"
-			# position = { x=-70 y=407 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_CRUISER"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_capitalship_folder"
-			position = { x=-21 y=397 }
+			position = { x=-21 y=417 }
 			quadTextureSprite ="GFX_tech_button_capital"
 		}
-		# textBoxType = {
-			# name = "capital_text"
-			# position = { x=1 y=407 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x = 0 y = 4 }
-			# text = "TECH_CAPITAL"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_capitalship_II_folder"
-			position = { x=34 y=397 }
-			quadTextureSprite ="GFX_tech_button_capital"
+			position = { x=34 y=417 }
+			quadTextureSprite ="GFX_tech_button_capital_II"
 		}
-		# textBoxType = {
-			# name = "capital_text"
-			# position = { x=1 y=407 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x = 0 y = 4 }
-			# text = "TECH_CAPITAL"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_carrier_folder"
-			position = { x=89 y=397 }
+			position = { x=89 y=417 }
 			quadTextureSprite ="GFX_tech_button_carrier"
 		}
-		# textBoxType = {
-			# name = "carrier_text"
-			# position = { x=89 y=407 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_CARRIER"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
+
 		# Doctrines #
 		textBoxType = {
 			name = "doctrines_tech_text"
-			position = { x=-70 y=435 }
+			position = { x=-78 y=448 }
 			textureFile = ""
-			font = "Main_16_orange"
+			font = "Arial14"
 			borderSize = { x=4 y=0 }
 			text = "DOCTRINE"
 			maxWidth = 240
@@ -876,157 +615,55 @@ guiTypes = {
 			format = left
 			orientation = "UPPER_LEFT"
 		}
-		guiButtonType = {
-			name = "techtree_land_doctrine_folder"
-			position = { x=34 y=487 }
-			quadTextureSprite ="GFX_tech_button_land"
-		}
-		# textBoxType = {
-			# name = "land_text"
-			# position = { x=-70 y=463 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_LAND"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
-		guiButtonType = {
-			name = "techtree_unit_training_folder"
-			position = { x=89 y=487 }
-			quadTextureSprite ="GFX_tech_button_unit_training"
-		}
-		# textBoxType = {
-			# name = "land_text"
-			# position = { x=-70 y=463 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_LAND"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
-		guiButtonType = {
-			name = "techtree_blitzkrieg_folder"
-			position = { x=-76 y=449 }
-			quadTextureSprite ="GFX_tech_button_blitzkrieg"
-		}
-		# textBoxType = {
-			# name = "strategic_text"
-			# position = { x=1 y=463 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_STRATEGIC"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
-#		guiButtonType = {
-#			name = "techtree_special_forces_doctrine_folder"
-#			position = { x=72 y=487 }
-#			quadTextureSprite ="GFX_tech_button_special_forces_doctr"
-#		}
-		# textBoxType = {
-			# name = "special_forces_doctrine_text"
-			# position = { x=1 y=463 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_SFDOCTR"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
-		guiButtonType = {
-			name = "techtree_naval_doctrine_folder"
-			position = { x=-76 y=487 }
-			quadTextureSprite ="GFX_tech_button_naval"
-		}
-		# textBoxType = {
-			# name = "naval_text"
-			# position = { x=-69 y=497 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_NAVAL"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
-		guiButtonType = {
-			name = "techtree_deep_battle_folder"
-			position = { x=-21 y=449 }
-			quadTextureSprite ="GFX_tech_button_deep_battle"
-		}
-		# textBoxType = {
-			# name = "strategic_text"
-			# position = { x=1 y=463 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_STRATEGIC"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
-		guiButtonType = {
-			name = "techtree_grand_battle_plan_folder"
-			position = { x=34 y=449 }
-			quadTextureSprite ="GFX_tech_button_grand_battle"
-		}
-		# textBoxType = {
-			# name = "strategic_text"
-			# position = { x=1 y=463 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_STRATEGIC"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
-		guiButtonType = {
-			name = "techtree_superior_firepower_folder"
-			position = { x=89 y=449 }
-			quadTextureSprite ="GFX_tech_button_superior_firepower"
-		}
-		# textBoxType = {
-			# name = "strategic_text"
-			# position = { x=1 y=463 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_STRATEGIC"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 
 		guiButtonType = {
-			name = "techtree_air_doctrine_folder"
-			position = { x=-21 y=487 }
-			quadTextureSprite ="GFX_tech_button_air"
+			name = "techtree_blitzkrieg_folder"
+			position = { x=-76 y=462 }
+			quadTextureSprite ="GFX_tech_button_blitzkrieg"
 		}
-		# textBoxType = {
-			# name = "air_text"
-			# position = { x=72 y=497 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_AIR"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
+		guiButtonType = {
+			name = "techtree_deep_battle_folder"
+			position = { x=-21 y=462 }
+			quadTextureSprite ="GFX_tech_button_deep_battle"
+		}
+		guiButtonType = {
+			name = "techtree_grand_battle_plan_folder"
+			position = { x=34 y=462 }
+			quadTextureSprite ="GFX_tech_button_grand_battle"
+		}
+		guiButtonType = {
+			name = "techtree_superior_firepower_folder"
+			position = { x=89 y=462 }
+			quadTextureSprite ="GFX_tech_button_superior_firepower"
+		}
+		
+		guiButtonType = {
+			name = "techtree_naval_doctrine_folder"
+			position = { x=-76 y=500 }
+			quadTextureSprite ="GFX_tech_button_naval"
+		}
+		guiButtonType = {
+			name = "techtree_air_doctrine_folder"
+			position = { x=-21 y=500 }
+			quadTextureSprite ="GFX_tech_button_air"
+		}	
+		guiButtonType = {
+			name = "techtree_land_doctrine_folder"
+			position = { x=34 y=500 }
+			quadTextureSprite ="GFX_tech_button_land"
+		}
+		guiButtonType = {
+			name = "techtree_unit_training_folder"
+			position = { x=89 y=500 }
+			quadTextureSprite ="GFX_tech_button_unit_training"
+		}
+
 		#Chain of Command
 		textBoxType = {
 			name = "coc_tech_text"
-			position = { x=-70 y=525 }
+			position = { x=-78 y=531 }
 			textureFile = ""
-			font = "Main_16_orange"
+			font = "Arial14"
 			borderSize = { x=4 y=0 }
 			text = "CoC"
 			maxWidth = 240
@@ -1036,52 +673,20 @@ guiTypes = {
 		}
 		guiButtonType = {
 			name = "techtree_command_structure_folder"
-			position = { x=-70 y=539 }
+			position = { x=-75 y=545 }
 			quadTextureSprite ="GFX_tech_btn_cmd_structure"
 		}
-		# textBoxType = {
-			# name = "cmd_structure_text"
-			# position = { x=-70 y=553 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_CMD"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_division_increase_folder"
-			position = { x=1 y=539 }
+			position = { x=0 y=545 }
 			quadTextureSprite ="GFX_tech_button_div_inc"
 		}
-		# textBoxType = {
-			# name = "division_increase_text"
-			# position = { x=1 y=553 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_DIV_INC"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
 		guiButtonType = {
 			name = "techtree_division_decrease_folder"
-			position = { x=72 y=539 }
+			position = { x=75 y=545 }
 			quadTextureSprite ="GFX_tech_button_div_decr"
 		}
-		# textBoxType = {
-			# name = "division_decrease_text"
-			# position = { x=72 y=553 }
-			# textureFile = ""
-			# font = "Arial12_alpha"
-			# borderSize = { x=0 y=4 }
-			# text = "TECH_DIV_DECR"
-			# maxWidth = 64
-			# maxHeight = 64
-			# format = centre
-		# }
+
 		###################
 		# TECHNOLOGY TREE #
 		###################
@@ -1184,7 +789,7 @@ guiTypes = {
 		windowType = {
 			name = "tech_details"
 			backGround =""
-			position = { x=-98 y=514 }
+			position = { x=-77 y=590 }
 			size = { x=1120 y=200 }
 			moveable = 0
 			dontRender = ""
@@ -1195,25 +800,32 @@ guiTypes = {
 			iconType = {
 				name = "bg_selected_tech"
 				spriteType = "GFX_bg_selected_tech"
-				position = { x=16 y=0 }
+				position = { x=0 y=0 }
 				orientation = "UPPER_LEFT"
 			}
+			#iconType = {
+			#	name = "bg_tech_effects" # NEW
+			#	spriteType = "GFX_bg_tech_effects"
+			#	position = { x=1020  y=-123 }
+			#	orientation = "UPPER_LEFT"
+			#}
+			
 			iconType =	{
 				name ="photo"
 				spriteType = "GFX_no_tech_image"
-				position = { x=40 y=15 }
+				position = { x=5 y=5 }
 				orientation = "UPPER_LEFT"
 				scale = 0.46
 			}
 			iconType =	{
 				name ="tech_photo_overlay"
 				spriteType = "GFX_tech_photo_overlay"
-				position = { x=33 y=7 }
+				position = { x=-2 y=-3 }
 				orientation = "UPPER_LEFT"
 			}
 			instantTextBoxType = {
 				name = "name"
-				position = { x=210 y=3 }
+				position = { x=170 y=3 }
 				textureFile = ""
 				font = "Arial14"	#Arial_17
 				borderSize = { x=0 y=4 }
@@ -1224,7 +836,7 @@ guiTypes = {
 			}
 			instantTextBoxType = {
 				name = "name_expl"
-				position = { x=211 y=21 }
+				position = { x=170 y=21 }
 				textureFile = ""
 				font = "Arial12_headline"
 				borderSize = { x=0 y=4 }
@@ -1234,37 +846,37 @@ guiTypes = {
 				format = left
 			}
 			instantTextBoxType = {
-				position = { x=206 y=40 }
+				position = { x=166 y=39 }
 				name = "desc"
-				font = "Arial12_bold"
+				font = "Arial12"
 				borderSize = { x=4 y=2}
 				text = "1936"
-				maxWidth = 440
+				maxWidth = 620
 				maxHeight = 128
 				orientation = "UPPER_LEFT"
 			}
 			listboxType = {
 				name = "effects"
-				position = { x=680 y=9 }
+				position = { x=1026 y=-116 }
 				backGround=""
-				size = { x=320 y=155 }
+				size = { x=221 y=240 }
 				orientation = "UPPER_LEFT"
 				spacing = 1
 				scrollbartype = "standardlistbox_slider"
-				borderSize = { x=0 y=10}
+				borderSize = { x=0 y=0}
 			}
 			OverlappingElementsBoxType = {
-				name = "input_box"
-				position = { x=651 y=154 }
-				size = { x=300 y=32 }
+				name = "input_box" # input theo/prac
+				position = { x=780 y=85 }
+				size = { x=110 y=32 }
 				orientation = "UPPER_LEFT"
 				format = left
 				spacing = 7.0
 			}
 			instantTextBoxType = {
-				position = { x=816 y=174 }
+				position = { x=941 y=105 }
 				name = "difficulty"
-				font = "Arial12_bold"
+				font = "Arial14"
 				borderSize = { x=4 y=2 }
 				text = "7"
 				maxWidth = 24
@@ -1273,9 +885,9 @@ guiTypes = {
 				orientation = "UPPER_LEFT"
 			}
 			instantTextBoxType = {
-				position = { x=823 y=173 }
+				position = { x=954 y=103 }
 				name = "year"
-				font = "arial_18"
+				font = "Arial_17"
 				borderSize = { x=4 y=2 }
 				text = "1936"
 				maxWidth = 60
@@ -1286,34 +898,47 @@ guiTypes = {
 			iconType = {
 				name ="icon_finish_type"
 				spriteType = "GFX_unit_supplies_icon"
-				position = { x=789 y=170 }
+				position = { x=914 y=101 }
 				orientation = "UPPER_LEFT"
 			}
 			guiButtonType = {
 				name = "start"
-				position = { x=885 y=163 }
+				position = { x=836 y=57 }
 				quadTextureSprite ="GFX_tech_start_button"
 				buttonText = "ITEM_RESEARCH_START"
 				buttonFont = "Arial14"
-				shortcut = "r" # This toggles the research.
+			    shortcut = "r" # This toggles the research.
+			}
+			instantTextBoxType = {
+				position = { x=851 y=10 }
+				name = "tech_status_not_researched" # NEW
+				font = "Arial_17"
+				borderSize = { x=0 y=2 }
+				text = "Not Researching"
+				maxWidth = 100
+				maxHeight = 10
+				format = centre
+				orientation = "UPPER_LEFT"
 			}
 			iconType =	{
 				name ="tech_status_researching"
-				spriteType = "GFX_tech_status_researching"
-				position = { x=642 y=7 }
+				spriteType = "GFX_tech_status_researching_large"
+				position = { x=838 y=5 }
 				orientation = "UPPER_LEFT"
 			}
 			iconType =	{
 				name ="tech_status_finnished"
-				spriteType = "GFX_tech_status_finnished"
-				position = { x=642 y=7 }
+				spriteType = "GFX_tech_status_finnished_large"
+				position = { x=838 y=5 }
 				orientation = "UPPER_LEFT"
+				scale = 1.0
 			}
 			guiButtonType = {
 				name = "close"
-				position = { x=1016 y=2 }
+				position = { x=985 y=0 }
 				quadTextureSprite ="GFX_tech_selected_close"
 				orientation = "UPPER_LEFT"
+				shortcut = "c"
 			}
 		}
 	}
@@ -1324,7 +949,7 @@ guiTypes = {
 		name = "detail_entry"
 		backGround=""
 		position = { x=0 y=0 }
-		size = { x=1024 y=16 }
+		size = { x=221 y=14 }
 		moveable = 0
 		dontRender = ""
 		horizontalBorder= ""
@@ -1337,7 +962,7 @@ guiTypes = {
 			font = "Arial12"
 			borderSize = { x=0 y=0 }
 			text = ""
-			maxWidth = 330
+			maxWidth = 228
 			maxHeight = 16
 			format = left
 			orientation = "UPPER_LEFT"
@@ -1739,75 +1364,75 @@ guiTypes = {
 	# Eductional technologies
 	positionType = {
 		name = "basic_education_position"
-		position = { x=310 y=89 }
+		position = { x=324 y=99 } # 15 10
 	}
 	positionType = {
 		name = "university_position"
-		position = { x=310 y=124 }
+		position = { x=324 y=134 }
 	}
 	# Architectical techniques
     positionType = {
 		name = "monumental_architecture_position"
-		position = { x=310 y=188 }
+		position = { x=324 y=198 }
 	}
 	positionType = {
 		name = "gigant_infrastructure_projects_position"
-		position = { x=310 y=223 }
+		position = { x=324 y=233 }
 	}
 	# Popaganda techniques
 	positionType = {
 		name = "secretary_of_public_information_and_education_position"
-		position = { x=310 y=287 }
+		position = { x=324 y=297 }
 	}
 	positionType = {
 		name = "mass_events_position"
-		position = { x=310 y=322 }
+		position = { x=324 y=332 }
 	}
 	positionType = {
 		name = "broadcasting_position"
-		position = { x=310 y=357 }
-	}
-	# Medical science technologies
-	positionType = {
-		name = "civil_medicine_position"
-		position = { x=810 y=87 }
-	}
-	positionType = {
-		name = "first_aid_position"
-		position = { x=820 y=137 }
-	}
-	positionType = {
-		name = "combat_medicine_position"
-		position = { x=820 y=172 }
-	}
-	positionType = {
-		name = "medical_evacuation_position"
-		position = { x=820 y=207 }
-	}
-	positionType = {
-		name = "pilot_rescue_position"
-		position = { x=820 y=242 }
+		position = { x=324 y=367 }
 	}
 	# Supply / Repair technlogies
 	positionType = {
 		name = "supply_transportation_position"
-		position = { x=561 y=89 }
+		position = { x=575 y=99 }
 	}
 	positionType = {
 		name = "supply_organisation_position"
-		position = { x=561 y=124 }
+		position = { x=575 y=134 }
 	}
 	positionType = {
 		name = "civil_defence_position"
-		position = { x=561 y=159 }
+		position = { x=575 y=169 }
 	}
 	positionType = {
 		name = "logistical_warfare_focus_position"
-		position = { x=561 y=199 }
+		position = { x=575 y=209 }
 	}
 	positionType = {
 		name = "home_front_focus_position"
-		position = { x=561 y=234 }
+		position = { x=575 y=244 }
+	}
+	# Medical science technologies
+	positionType = {
+		name = "civil_medicine_position"
+		position = { x=823 y=99 }
+	}
+	positionType = {
+		name = "first_aid_position"
+		position = { x=834 y=149 }
+	}
+	positionType = {
+		name = "combat_medicine_position"
+		position = { x=834 y=184 }
+	}
+	positionType = {
+		name = "medical_evacuation_position"
+		position = { x=834 y=219 }
+	}
+	positionType = {
+		name = "pilot_rescue_position"
+		position = { x=834 y=254 }
 	}
 #######################################################
 # Construction Tech Tree
@@ -1815,94 +1440,94 @@ guiTypes = {
 	# Production technologies
 	positionType = {
 		name = "construction_engineering_position"
-		position = { x=310 y=87 }
+		position = { x=327 y=108 }
 	}
 	positionType = {
 		name = "industry_tech_position"
-		position = { x=320 y=130 }
+		position = { x=337 y=151 }
 	}
 	positionType = {
 		name = "heavy_industry_tech_position"
-		position = { x=320 y=165 }
+		position = { x=337 y=186 }
 	}
 	positionType = {
 		name = "agriculture_position"
-		position = { x=320 y=200 }
+		position = { x=337 y=221 }
 	}
 	# Infrastructure
 	positionType = {
 		name = "road_highway_position"
-		position = { x=310 y=262 }
+		position = { x=337 y=283 }
 	}
 	positionType = {
 		name = "railway_position"
-		position = { x=310 y=297 }
+		position = { x=337 y=318 }
 	}
 	positionType = {
 		name = "seaport_position"
-		position = { x=310 y=332 }
+		position = { x=337 y=353 }
 	}
 	positionType = {
 		name = "airport_position"
-		position = { x=310 y=367 }
+		position = { x=337 y=388 }
 	}
 	#Building security
 	positionType = {
 		name = "installation_security_position"
-		position = { x=310 y=429 }
+		position = { x=337 y=450 } # 27 21
 	}
 	# Contruction engineering
 	positionType = {
 		name = "advanced_construction_engineering_position"
-		position = { x=560 y=88 }
+		position = { x=577 y=108 }
 	}
 	positionType = {
 		name = "land_defence_engineering_position"
-		position = { x=570 y=132 }
+		position = { x=592 y=152 }
 	}
 	positionType = {
 		name = "adv_land_defence_engineering_position"
-		position = { x=820 y=132 }
+		position = { x=827 y=152 }
 	}
 	positionType = {
 		name = "airfield_construction_position"
-		position = { x=570 y=176 }
+		position = { x=592 y=196 }
 	}
 	positionType = {
 		name = "expand_airbases_position"
-		position = { x=582 y=221 }
+		position = { x=604 y=241 }
 	}
 	positionType = {
 		name = "Hangar_Maintenance_position"
-		position = { x=582 y=256 }
+		position = { x=604 y=276 }
 	}
 	positionType = {
 		name = "hardended_airstrip_position"
-		position = { x=582 y=291 }
+		position = { x=604 y=311 }
 	}
 	positionType = {
 		name = "control_tower_position"
-		position = { x=582 y=326 }
+		position = { x=604 y=346 }
 	}
 	positionType = {
 		name = "port_construction_position"
-		position = { x=570 y=369 }
+		position = { x=592 y=389 }
 	}
 	positionType = {
 		name = "coastal_defence_engineering_position"
-		position = { x=582 y=413 }
+		position = { x=607 y=433 }
 	}
 	positionType = {
 		name = "adv_coastal_defence_engineering_position"
-		position = { x=820 y=413 }
+		position = { x=827 y=433 }
 	}
 	positionType = {
 		name = "drydock_construction_position"
-		position = { x=582 y=448 }
+		position = { x=607 y=468 }
 	}
 	positionType = {
 		name = "basing_position"
-		position = { x=582 y=483 }
+		position = { x=607 y=503 }
 	}
 #######################################################
 # Industry Tech Tree
@@ -2498,75 +2123,77 @@ guiTypes = {
 	# Chassis
 	positionType = {
 		name = "tank_chassis_design_position"
-		position = { x=300 y=125 }
+		position = { x=302 y=124 }
 	}
 	positionType = {
 		name = "advanced_tank_chassis_design_position"
-		position = { x=320 y=165 }
+		position = { x=323 y=167  }
 	}
 	# Engine technologies
 	positionType = {
 		name = "gasoline_engine_design_position"
-		position = { x=381 y=293 }
+		position = { x=457 y=263 }
 	}
 	positionType = {
 		name = "diesel_engine_design_position"
-		position = { x=779 y=293 }
+		position = { x=707 y=263 }
 	}
-	# Infantry support
+	
 	positionType = {
 		name = "light_armor_recon_activation_position"
-		position = { x=779 y=125 }
+		position = { x=781 y=124 }
 	}
+	
+	# Infantry support (I COL)
 	positionType = {
 		name = "infantry_tank_design_position"
-		position = { x=330 y=365 }
+		position = { x=332 y=335 }
 	}
 	positionType = {
 		name = "assault_gun_brigade_activation_position"
-		position = { x=330 y=415 }
+		position = { x=332 y=395 }
 	}
 	positionType = {
 		name = "heavy_assault_gun_brigade_activation_position"
-		position = { x=330 y=465 }
+		position = { x=332 y=455 }
 	}
 	positionType = {
 		name = "amph_armour_brigade_activation_position"
-		position = { x=330 y=515 }
+		position = { x=332 y=515 }
 	}
-	# Armour design technologies
+	# Armour design technologies (II COL)
 	positionType = {
 		name = "light_armor_brigade_design_position"
-		position = { x=580 y=365 }
+		position = { x=582 y=335 }
 	}
 	positionType = {
 		name = "armor_brigade_design_position"
-		position = { x=580 y=415 }
+		position = { x=582 y=395 }
 	}
 	positionType = {
 		name = "heavy_armor_brigade_design_position"
-		position = { x=580 y=465 }
+		position = { x=582 y=455 }
 	}
 	positionType = {
 		name = "super_heavy_tank_design_position"
-		position = { x=580 y=515 }
+		position = { x=582 y=515 }
 	}
-	# Tank Destroyer technologies
+	# Tank Destroyer technologies (III COL)
 	positionType = {
 		name = "tank_destroyer_brigade_activation_position"
-		position = { x=830 y=365 }
+		position = { x=832 y=335 }
 	}
 	positionType = {
 		name = "medium_tank_destroyer_brigade_activation_position"
-		position = { x=830 y=415 }
+		position = { x=832 y=395 }
 	}
 	positionType = {
 		name = "heavy_tank_destroyer_brigade_activation_position"
-		position = { x=830 y=465 }
+		position = { x=832 y=455 }
 	}
 	positionType = {
 		name = "armored_car_design_position"
-		position = { x=830 y=515 }
+		position = { x=832 y=515 }
 	}
 #######################################################
 # Armour II Tech Tree
@@ -5702,7 +5329,7 @@ guiTypes = {
 	}
 	positionType = {
 		name = "SAS_tech_position"
-		position = { x=300 y=195 }
+		position = { x=300 y=440 }
 	}
 	positionType = {
 		name = "QF17pdr_tech_position"
@@ -5730,7 +5357,7 @@ guiTypes = {
 	}
 	positionType = {
 		name = "charb1_tech_position"
-		position = { x=300 y=440 }
+		position = { x=300 y=195 }
 	}
 	positionType = {
 		name = "motobomba_tech_position"
