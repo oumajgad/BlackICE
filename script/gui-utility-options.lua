@@ -144,7 +144,7 @@ if wx ~= nil then
 
 	UI.bSizer_OptionProvinceNames1:Add( UI.fgSizer_OptionProvinceNames2, 0, wx.wxEXPAND, 5 )
 
-	UI.fgSizer_OptionProvinceNames3 = wx.wxFlexGridSizer( 0, 3, 0, 0 )
+	UI.fgSizer_OptionProvinceNames3 = wx.wxFlexGridSizer( 2, 3, 0, 0 )
 	UI.fgSizer_OptionProvinceNames3:AddGrowableCol( 0 )
 	UI.fgSizer_OptionProvinceNames3:AddGrowableCol( 2 )
 	UI.fgSizer_OptionProvinceNames3:SetFlexibleDirection( wx.wxBOTH )
@@ -164,7 +164,7 @@ if wx ~= nil then
 	UI.fgSizer_OptionProvinceNames3:Add( UI.m_staticText_OptionProvinceName_CurrentSituation, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_listBox_OptionProvinceName_TemplateProvsChoices = {}
-	UI.m_listBox_OptionProvinceName_TemplateProvs = wx.wxListBox( UI.m_panel_OptionProvinceNames, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 200,300 ), UI.m_listBox_OptionProvinceName_TemplateProvsChoices, 0 )
+	UI.m_listBox_OptionProvinceName_TemplateProvs = wx.wxListBox( UI.m_panel_OptionProvinceNames, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 200,300 ), UI.m_listBox_OptionProvinceName_TemplateProvsChoices, wx.wxLB_ALWAYS_SB + wx.wxLB_SINGLE )
 	UI.fgSizer_OptionProvinceNames3:Add( UI.m_listBox_OptionProvinceName_TemplateProvs, 1, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 	UI.fgSizer_OptionProvinceName4 = wx.wxFlexGridSizer( 4, 1, 0, 0 )
@@ -187,7 +187,7 @@ if wx ~= nil then
 	UI.fgSizer_OptionProvinceNames3:Add( UI.fgSizer_OptionProvinceName4, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_listBox_OptionProvinceName_CurrentProvsChoices = {}
-	UI.m_listBox_OptionProvinceName_CurrentProvs = wx.wxListBox( UI.m_panel_OptionProvinceNames, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 200,300 ), UI.m_listBox_OptionProvinceName_CurrentProvsChoices, 0 )
+	UI.m_listBox_OptionProvinceName_CurrentProvs = wx.wxListBox( UI.m_panel_OptionProvinceNames, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 200,300 ), UI.m_listBox_OptionProvinceName_CurrentProvsChoices, wx.wxLB_ALWAYS_SB + wx.wxLB_SINGLE )
 	UI.fgSizer_OptionProvinceNames3:Add( UI.m_listBox_OptionProvinceName_CurrentProvs, 1, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 
@@ -231,61 +231,48 @@ if wx ~= nil then
 		Options.IncreaseFontSize()
 	end )
 
-	UI.m_choice_OptionProvinceNames_Search:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+	UI.m_choice_OptionProvinceNames_Search:Connect( wx.wxEVT_COMMAND_CHOICE_SELECTED, function(event)
 		Options.Provinces.HandleProvinceSelection()
 	end )
 
 	UI.m_textCtrl__OptionProvinceNames_Filter:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)
-	--implements m_textCtrl__OptionProvinceNames_FilterOnTextEnter
-
-	event:Skip()
+		Options.Provinces.UpdateChoice(true)
 	end )
 
 	UI.m_button_OptionProvinceNames_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-	--implements m_button_OptionProvinceNames_ClearOnButtonClick
-
-	event:Skip()
+		Options.Provinces.UpdateChoice(false)
+		UI.m_textCtrl__OptionProvinceNames_Filter:SetValue("")
 	end )
 
 	UI.m_button_OptionProvinceNames_AddSingle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-	--implements m_button_OptionProvinceNames_AddSingleOnButtonClick
-
-	event:Skip()
+		Options.Provinces.AddNewProvince()
 	end )
 
 	UI.m_button_OptionProvinceNames_ResetSingle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-	--implements m_button_OptionProvinceNames_ResetSingleOnButtonClick
-
-	event:Skip()
+		Options.Provinces.ResetProvince()
 	end )
 
-	UI.m_choice_OptionProvinceName_Template:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
-	--implements m_choice_OptionProvinceName_TemplateOnChoice
-
-	event:Skip()
+	UI.m_choice_OptionProvinceName_Template:Connect( wx.wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+		Options.Provinces.HandleTemplateChoiceSelection()
 	end )
 
 	UI.m_button_OptionProvinceName_AddSingleFromTemplate:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-	--implements m_button_OptionProvinceName_AddSingleFromTemplateOnButtonClick
-
-	event:Skip()
+		Options.Provinces.AddSingleFromTemplate()
 	end )
 
 	UI.m_button_OptionProvinceName_AddAllFromTemplate:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-	--implements m_button_OptionProvinceName_AddAllFromTemplateOnButtonClick
-
-	event:Skip()
+		Options.Provinces.AddAllFromTemplate()
 	end )
 
 	UI.m_button_OptionProvinceName_AddSingleToTemplate:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-	--implements m_button_OptionProvinceName_AddSingleToTemplateOnButtonClick
-
-	event:Skip()
+		Options.Provinces.AddSingleToTemplate()
 	end )
 
 	UI.m_button_OptionProvinceName_AddAllToTemplate:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-	--implements m_button_OptionProvinceName_AddAllToTemplateOnButtonClick
+		Options.Provinces.AddAllToTemplate()
+	end )
 
-	event:Skip()
+	UI.m_listBox_OptionProvinceName_CurrentProvs:Connect( wx.wxEVT_COMMAND_LISTBOX_SELECTED, function(event)
+		Options.Provinces.HandleCurrentEditSelection()
 	end )
 end
