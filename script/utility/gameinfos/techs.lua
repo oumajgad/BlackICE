@@ -1,13 +1,17 @@
 local P = {}
 
 local techsFiles = {
-    '00_unique_unit_techs.txt', '01_Aircraft Technologies.txt', '01_Armor Technologies.txt', '01_ArtilleryTechnologies.txt',
-    '01_Infantry Technologies.txt', '01_Special_Forces Technologies.txt', '02_Naval_Technology_TP_LC_AS.txt', 'Aircraftsystems Technologies.txt',
-    'Aircraftz Doctrines.txt', 'Aircraft_Armament Technologies.txt', 'Aircraft_Payload Technologies.txt', 'Antitank.txt',
-    'ArmourII Technologies.txt', 'Avionics Technologies.txt', 'Command-structure Technologies.txt', 'Construction Technologies.txt',
-    'Division_size Technologies.txt', 'Electronics Technolgies.txt', 'Industry Technologies.txt', 'Jet Technologies.txt', 'Land Doctrines.txt',
-    'Nation Technologies.txt', 'Naval Techs.txt', 'Secret Weapons.txt', 'Special Forces Doctrines.txt', 'strategic_doctrines.txt', 'Theories.txt',
-    'zDD-invisible_techs.txt', 'zNaval Doctrines.txt', 'zOMGtechs.txt'
+    '00_unique_unit_techs.txt',  '01_Aircraft Technologies.txt',
+    '01_Armor Technologies.txt',  '01_ArtilleryTechnologies.txt',  '01_Infantry Technologies.txt',
+    '01_Special_Forces Technologies.txt',  '02_Naval_Technology_TP_LC_AS.txt',  'Aircraftsystems Technologies.txt',
+    'Aircraftz Doctrines.txt',  'Aircraft_Armament Technologies.txt',  'Aircraft_Payload Technologies.txt',
+    'Antitank.txt',  'ArmourII Technologies.txt',  'Avionics Technologies.txt',
+    'Command-structure Technologies.txt',  'Construction Technologies.txt',  'Division_size Technologies.txt',
+    'Electronics Technolgies.txt',  'Industry Technologies.txt',  'Jet Technologies.txt',
+    'Land Doctrines.txt',  'Nation Technologies.txt',  'Naval Techs.txt',
+    'Secret Weapons.txt',  'Special Forces Doctrines.txt',  'strategic_doctrines.txt',
+    'Theories.txt',  'zDD-invisible_techs.txt',  'zNaval Doctrines.txt',
+    'zOMGtechs.txt'
 }
 
 
