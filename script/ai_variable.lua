@@ -1493,3 +1493,35 @@ function CalculateLogisticsNeed()
 	end
 	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 end
+
+function CalculateHeavyIcEffect()
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth % 4 ~= 0 then
+		return
+	end
+
+	local controlled_multiplier = 0.2
+	local cIndustry = CBuildingDataBase.GetBuilding("industry")
+	local cHeavyIndustry = CBuildingDataBase.GetBuilding("heavy_industry")
+
+	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
+		local country = countryTag:GetCountry()
+		if country:Exists() == true then
+			local heavy_ic_effect = 0
+			for provinceID in country:GetControlledProvinces() do
+				-- Get province
+				local province = CCurrentGameState.GetProvince(provinceID)
+				local industry_level = province:GetBuilding(cIndustry):GetCurrent():Get()
+				local heavy_ic_level = province:GetBuilding(cHeavyIndustry):GetCurrent():Get()
+
+				if province:GetOwner() == countryTag then
+					heavy_ic_effect = heavy_ic_effect + (industry_level * (heavy_ic_level * 0.25))
+				else
+					heavy_ic_effect = heavy_ic_effect + ((industry_level * (heavy_ic_level * 0.25)) * controlled_multiplier)
+				end
+			end
+			local command = CSetVariableCommand(countryTag, CString("heavy_ic_effect"), CFixedPoint(heavy_ic_effect))
+			CCurrentGameState.Post(command)
+		end
+	end
+end
