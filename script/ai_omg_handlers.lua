@@ -30,11 +30,11 @@ function OMGMinisterHandler(minister_tick, minister)
 		-- t = os.clock()
 		---@diagnostic disable-next-line:redundant-parameter
 		func(minister)
-		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - " .. index)
+		-- Utils.LUA_DEBUGOUT("  " .. index .. " - " .. os.clock() - t)
 	end
 	-- Utils.LUA_DEBUGOUT(
-	-- 	"Day: " .. CCurrentGameState.GetCurrentDate():GetDayOfMonth() .. " OMGHandler '" .. minister_tick .. "' time: "
-	-- 	.. string.format("%.04f", os.clock() - tOmg))
+		-- "Day: " .. CCurrentGameState.GetCurrentDate():GetDayOfMonth() .. " OMGHandler '" .. minister_tick .. "' time: "
+		-- .. string.format("%.04f", os.clock() - tOmg))
 end
 
 -- Holds which scripts run in which minister_tick
