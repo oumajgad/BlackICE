@@ -144,7 +144,7 @@ if wx ~= nil then
 	UI.bSizer2:Fit( UI.m_panel_Setup )
 	UI.m_notebook4:AddPage(UI.m_panel_Setup, "Setup", True )
 	UI.m_panel_C_Info = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
-	UI.gSizer2 = wx.wxGridSizer( 5, 4, 0, 0 )
+	UI.gSizer2 = wx.wxGridSizer( 6, 4, 0, 0 )
 
 	UI.m_staticText_cInfo_baseIc = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Base IC", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText_cInfo_baseIc:Wrap( -1 )
@@ -225,6 +225,22 @@ if wx ~= nil then
 	UI.m_textCtrl_StartingExp:Enable( False )
 
 	UI.gSizer2:Add( UI.m_textCtrl_StartingExp, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_orgRegain = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Org regain modifier", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_orgRegain:Wrap( -1 )
+
+	UI.gSizer2:Add( UI.m_staticText_orgRegain, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_orgRegain = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_orgRegain:Enable( False )
+
+	UI.gSizer2:Add( UI.m_textCtrl_orgRegain, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+
+
+	UI.gSizer2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
 
 	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion \n(only increases during war)", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText34:Wrap( 150 )

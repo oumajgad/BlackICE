@@ -20,6 +20,13 @@ function GetPlayerModifiers()
         -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
     end
 
+    local orgRegain = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_ORG_REGAIN_):Get()
+    for tech, effect in pairs(techModifierValues["org_regain"]) do
+        local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+        orgRegain = orgRegain + (effect*level)
+        -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
+    end
+
     -- IC efficiency
     local icEffRaw = playerCountry:GetVariables():GetVariable(CString("IcEffVariable")):Get()
 
@@ -49,6 +56,7 @@ function GetPlayerModifiers()
     UI.m_textCtrl_SuppThrou:SetValue(string.format('%.02f', supplyEffRaw))
     UI.m_textCtrl_RepairEff:SetValue(string.format('%.02f', repairModifier * 100))
     UI.m_textCtrl_StartingExp:SetValue(string.format('%.02f', startingExp))
+    UI.m_textCtrl_orgRegain:SetValue(string.format('%.02f', orgRegain * 100))
     UI.m_textCtrl_WarExhaustion:SetValue(string.format('%.02f', warExhautionRaw))
     UI.m_textCtrl_currentWarExhaustion:SetValue(string.format('%.1f', currentWarExhaustion))
 end

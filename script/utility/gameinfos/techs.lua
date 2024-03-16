@@ -274,6 +274,7 @@ local function loadTechModifiers()
         ["research_efficiency"] = {},
         ["supply_throughput"] = {},
         ["repair_rate"] = {},
+        ["org_regain"] = {},
     }
     if P.TechsData == nil then
         P.FillData()
