@@ -44,6 +44,10 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 		return 0
 	end
 
+	if tostring(loDiploScoreObj.SubUnit:GetKey()) == "marine_brigade" and loDiploScoreObj.Seller.Country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology("AI_Marines_bonus_tech")) ~= 0 then
+		return 0
+	end
+
 	loDiploScoreObj.Buyer.Faction = loDiploScoreObj.Buyer.Country:GetFaction()
 	loDiploScoreObj.Seller.Faction = loDiploScoreObj.Seller.Country:GetFaction()
 	loDiploScoreObj.Buyer.Ideology = tostring(loDiploScoreObj.Buyer.Country:GetRulingIdeology():GetGroup():GetKey())
