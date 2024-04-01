@@ -163,24 +163,13 @@ country_event = {
 	option = {
 		name = "Good"
 		set_country_flag = Soviet_peace
-		end_war = ENG
-		end_war = FRA
-		end_war = SAF
-		end_war = AST
-		end_war = NZL
-		end_war = CAN
-		end_war = USA
-		end_war = DEN
-		end_war = BEL
-		end_war = HOL
-		any_country = {
-			limit = {
-				faction = allies
+		SOV = {
+			war = {
+				target = POL
 			}
-			end_war = SOV
 		}
-		ENG = {
-			country_event = 1402
+		POL = {
+			join_faction = allies
 		}
 		ai_chance = {
 			factor = 100
@@ -189,9 +178,21 @@ country_event = {
 	option = {
 		name = "Fight the Allies"
 		set_country_flag = Soviet_peace
-		ENG = {
-			country_event = 1402
+		SOV = {
+			war = {
+				target = POL
+			}
+			war = {
+				target = ENG
+			}
+			war = {
+				target = FRA
+			}
 		}
+		POL = {
+			join_faction = allies
+		}
+
 		ai_chance = {
 			factor = 0
 		}
@@ -199,14 +200,8 @@ country_event = {
 	option = {
 		name = "Give Peace a chance"
 		set_country_flag = Soviet_peace
-		any_country = {
-			limit = {
-				faction = allies
-			}
-			end_war = SOV
-		}
-		ENG = {
-			country_event = 1402
+		POL = {
+			join_faction = allies
 		}
 		ai_chance = {
 			factor = 0

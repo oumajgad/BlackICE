@@ -67,6 +67,44 @@ function P.Build_Radar(ic, voProductionData)
 	return ic, false
 end
 
+function P.ForeignMinister_CallAlly(voForeignMinisterData)
+	-- almost the same as normal logic, but with an exception for the "Soviet invasion of Poland"
+
+	-- Get a list of all your allies
+	local laAllies = {}
+	for loAllyTag in voForeignMinisterData.ministerCountry:GetAllies() do
+		local loAllyCountry = loAllyTag:GetCountry()
+
+		-- Exclude Puppets from this list /dont
+		--if not(loAllyCountry:IsPuppet()) then
+		local loAlly = {
+			AllyTag = loAllyTag,
+			AllyCountry = loAllyCountry
+		}
+
+		laAllies[tostring(loAllyTag)] = loAlly
+		--end
+	end
+
+	for loDiploStatus in voForeignMinisterData.ministerCountry:GetDiplomacy() do
+		local loTargetTag = loDiploStatus:GetTarget()
+
+		if loTargetTag:IsValid() and loDiploStatus:HasWar() then
+			local loWar = loDiploStatus:GetWar()
+			if loWar:IsLimited() or tostring(loTargetTag) == "SOV" then
+				-- do nothing
+			else
+				-- Call in all potential allies
+				for k, v in pairs(laAllies) do
+					if not(v.AllyCountry:GetRelation(loTargetTag):HasWar()) then
+						Support.ExecuteCallAlly(voForeignMinisterData.ministerAI, voForeignMinisterData.ministerTag, v, loTargetTag)
+					end
+				end
+			end
+		end
+	end
+end
+
 function P.HandleMobilization(minister)
 	local ai = minister:GetOwnerAI()
 	local ministerTag =  minister:GetCountryTag()
