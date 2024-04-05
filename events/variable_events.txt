@@ -1,0 +1,72 @@
+########################################################################
+# Decisions which get triggerd by decisions which get triggered by LUA #
+########################################################################
+
+country_event = {
+	id = 1433
+	is_triggered_only = yes
+
+	title = "End military access I"
+	desc = "This event is needed to remove military access between faction members. Having military access and faction membership blocks you from attacking via their territory during limited wars. 1/2"
+	picture = "political_storm"
+	option = {
+		name = "OK"
+		ai_chance = {
+			factor = 1
+		}
+		OMG = {
+			any_country = {
+				limit = {
+                    or = {
+                        AND = {
+                            faction = axis
+                            THIS = {
+                                faction = axis
+                            }
+                        }
+                        AND = {
+                            faction = allies
+                            THIS = {
+                                faction = allies
+                            }
+                        }
+                        AND = {
+                            faction = comintern
+                            THIS = {
+                                faction = comintern
+                            }
+                        }
+                    }
+                    check_variable = {
+                        which = "intra_faction_access_target"
+                        value = 1
+                    }
+				}
+				country_event = 1432
+			}
+		}
+	}
+}
+country_event = {
+	id = 1432
+	is_triggered_only = yes
+
+	title = "End military access II"
+	desc = "This event is needed to remove military access between faction members. Having military access and faction membership blocks you from attacking via their territory during limited wars. 2/2"
+	picture = "political_storm"
+	option = {
+		name = "OK"
+        end_military_access = FROM
+        FROM = {
+            end_military_access = THIS
+        }
+        set_variable = {
+            which = "intra_faction_access_target"
+            value = 0
+        }
+		ai_chance = {
+			factor = 1
+		}
+
+	}
+}

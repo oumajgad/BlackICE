@@ -1,0 +1,26 @@
+#######################################
+# Decisions which get triggerd by LUA #
+#######################################
+diplomatic_decisions = {
+    end_intra_faction_military_access = {
+		potential = {
+		}
+		allow = {
+            check_variable = {
+				which = "intra_faction_access"
+				value = 1
+			}
+		}
+		effect = {
+            country_event = 1433
+            set_variable = {
+                which = "intra_faction_access"
+                value = 0
+            }
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
+#EOF#
