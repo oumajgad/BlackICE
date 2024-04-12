@@ -1527,7 +1527,7 @@ function CalculateHeavyIcEffect()
 end
 
 -- Intra-Faction military access breaks attacking from their provinces. You can't attack from your ally if you have military access!
-function CheckForIntrafactionMilitaryAccess()
+function CheckForIntraFactionMilitaryAccess()
 	for faction in CCurrentGameState.GetFactions() do
 		local members = {}
 		-- Utils.LUA_DEBUGOUT("faction: " .. tostring(faction:GetTag()))
