@@ -1430,6 +1430,8 @@ function CheckNegativeTradeCounts()
 end
 
 -- Iterates all controlled provinces and sets the "logistics_need" variable which represents the needed transport capability in the country
+-- This var is supposed to be used to simulate shortcomings of transportation inside a country. For example Germanys coal shortage was due to
+-- inability to transport. Mines had to reduce work hours during times of coal shortage.
 function CalculateLogisticsNeed()
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth % 3 ~= 0 then

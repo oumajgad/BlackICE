@@ -420,7 +420,7 @@ country_event = {
 					has_country_flag = overlord_dest_calais
 					2194 = {
 						controller = {
-						faction = allies
+							faction = allies
 						}
 					}
 				}
@@ -439,7 +439,7 @@ country_event = {
 					has_country_flag = overlord_dest_normandy
 					2422 = {
 						controller = {
-						faction = allies
+							faction = allies
 						}
 					}
 				}
@@ -458,7 +458,7 @@ country_event = {
 					has_country_flag = overlord_dest_brest
 					2605 = {
 						controller = {
-						faction = allies
+							faction = allies
 						}
 					}
 				}
@@ -477,7 +477,7 @@ country_event = {
 					has_country_flag = overlord_dest_bordeaux
 					3479 = {
 						controller = {
-						faction = allies
+							faction = allies
 						}
 					}
 				}
@@ -488,8 +488,37 @@ country_event = {
 				load_oob = USA/DDay_Reinforcements_week1Bordeaux.txt
 			}
 		}
+		OMG = {
+			any_country = {
+				limit = {	# Only fire Dragoon if either Suez or Gibraltar is under allied control
+					tag = USA
+					OR = {
+						# Gibraltar
+						5191 = {
+							controller = {
+								faction = allies
+							}
+						}
+						AND = {
+							# Bur Said
+							5563 = {
+								controller = {
+									faction = allies
+								}
+							}
+							# Romani
+							5589 = {
+								controller = {
+									faction = allies
+								}
+							}
+						}
+					}
+				}
+				country_event = 940005
+			}
+		}
 		USA = {
-			country_event = 940005
 			add_country_modifier = {
 				name = "Reinforcements_timer"
 				duration = 15
