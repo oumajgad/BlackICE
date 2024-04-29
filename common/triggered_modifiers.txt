@@ -9281,7 +9281,6 @@ air_power_I = {
 			check_variable = { which = medium_aircraft_factory_count value = 5 }
 			check_variable = { which = heavy_aircraft_factory_count value = 5 }
 		}
-		not = { check_variable = { which = BaseIC value = 400 } }
 	}
 
 	global_money = 0.05
@@ -9323,7 +9322,7 @@ air_power_II = {
 			check_variable = { which = medium_aircraft_factory_count value = 5 }
 			check_variable = { which = heavy_aircraft_factory_count value = 5 }
 		}
-		not = { check_variable = { which = BaseIC value = 800 } }
+		#not = { check_variable = { which = BaseIC value = 800 } }
 	}
 
 	trigger = {
@@ -9358,11 +9357,11 @@ air_power_II = {
 			check_variable = { which = heavy_aircraft_factory_count value = 10 }
 		}
 		check_variable = { which = BaseIC value = 400 } 
-		not = { check_variable = { which = BaseIC value = 800 } }
+		#not = { check_variable = { which = BaseIC value = 800 } }
 	}
 
-	global_money = 0.1
-	air_build_speed = -0.1
+	global_money = 0.05
+	air_build_speed = -0.05
 
 	icon = 49
 }
@@ -9437,8 +9436,8 @@ air_power_III = {
 		check_variable = { which = BaseIC value = 800 } 
 	}
 
-	global_money = 0.15
-	air_build_speed = -0.15
+	global_money = 0.05
+	air_build_speed = -0.05
 
 	icon = 49
 }
@@ -9490,11 +9489,11 @@ naval_power_I = {
 				}
 			}
 		}
-		not = { check_variable = { which = BaseIC value = 500 } }
+		#not = { check_variable = { which = BaseIC value = 500 } }
 	}
 
 	naval_build_speed = -0.05
-	naval_organisation = 0.05
+	naval_organisation = 0.025
 
 	icon = 50
 }
@@ -9542,7 +9541,7 @@ naval_power_II = {
 				}
 			}
 		}
-		not = { check_variable = { which = BaseIC value = 1000 } }
+		check_variable = { which = BaseIC value = 300 }
 	}
 
 	trigger = {
@@ -9591,34 +9590,22 @@ naval_power_II = {
 				Special_treatment_steel  = 1
 				check_variable = { which = chromite_ActualBalance value = 1002 }
 				check_variable = { which = nickel_ActualBalance value = 1002 }
-				not = {
-					check_variable = { which = chromite_ActualBalance value = 1004 }
-					check_variable = { which = nickel_ActualBalance value = 1004 }	
-				}
 			}
 			and = {
 				Cemented_armor  = 1
 				check_variable = { which = chromite_ActualBalance value = 1004 }
 				check_variable = { which = manganese_ActualBalance value = 1004 }
-				not = {
-					check_variable = { which = chromite_ActualBalance value = 1004 }
-					check_variable = { which = manganese_ActualBalance value = 1004 }	
-				}
 			}
 			and = {
 				Vickers_steel  = 1
 				check_variable = { which = copper_ActualBalance value = 1004 }
-				not = {
-					check_variable = { which = copper_ActualBalance value = 1004 }
-				}
 			}
 		}
 		check_variable = { which = BaseIC value = 500 }
-		not = { check_variable = { which = BaseIC value = 1000 } }
 	}
 
-	naval_build_speed = -0.1
-	naval_organisation = 0.05
+	naval_build_speed = -0.05
+	naval_organisation = 0.025
 
 	icon = 50
 }
@@ -9744,7 +9731,7 @@ naval_power_III = {
 		check_variable = { which = BaseIC value = 1000 }
 	}
 
-	naval_build_speed = -0.15
+	naval_build_speed = -0.05
 	naval_organisation = 0.05
 
 	icon = 50
@@ -9759,7 +9746,7 @@ armour_power_I = {
 		check_variable = { which = tank_factory_count value = 15 }
 		check_variable = { which = BaseIC value = 400 }
 		check_variable = { which = manganese_ActualBalance value = 1001 }
-		not = { check_variable = { which = BaseIC value = 800 } }
+		#not = { check_variable = { which = BaseIC value = 800 } }
 	}
 
 	global_money = 0.05
@@ -9773,7 +9760,6 @@ armour_power_II = {
 	potential = {
 		check_variable = { which = tank_factory_count value = 15 }
 		check_variable = { which = BaseIC value = 400 }
-		not = { check_variable = { which = BaseIC value = 800 } }
 	}
 
 	trigger = {
@@ -9781,11 +9767,10 @@ armour_power_II = {
 		check_variable = { which = manganese_ActualBalance value = 1001 }
 		check_variable = { which = chromite_ActualBalance value = 1001 }
 		check_variable = { which = BaseIC value = 800 }
-		not = { check_variable = { which = BaseIC value = 1200 } }
 	}
 
-	global_money = 0.1
-	tank_build_speed = -0.1
+	global_money = 0.05
+	tank_build_speed = -0.05
 
 	icon = 48
 }
@@ -9803,12 +9788,11 @@ armour_power_III = {
 		check_variable = { which = manganese_ActualBalance value = 1001 }
 		check_variable = { which = chromite_ActualBalance value = 1001 }
 		check_variable = { which = molybdenum_ActualBalance value = 1001 }
-
 		check_variable = { which = BaseIC value = 1200 }
 	}
 
-	global_money = 0.15
-	tank_build_speed = -0.15
+	global_money = 0.05
+	tank_build_speed = -0.05
 
 	icon = 48
 }
