@@ -1,3 +1,6 @@
+package.cpath = package.cpath..";./tfh/mod/?.dll;"
+require("lfs")
+
 function ReadFileAsArray(path, delimiter)
     local f_open, err = io.open(path, "r")
     local ret = {}
@@ -134,4 +137,25 @@ function ReplaceLineAtCommentMark(filename, commentMark, newLine)
         return err2
     end
     return "Edited: " .. filename
+end
+
+function GetFilesFromPath(path)
+    local res = {}
+    for entry in lfs.dir(path) do
+        if entry ~= "." and entry ~= ".." then
+            local full_path = path..'\\'..entry
+            -- Utils.LUA_DEBUGOUT("absolute_path: " .. absolute_path)
+            local attr = lfs.attributes(full_path)
+            if (type(attr) ~= "table") then
+                Utils.LUA_DEBUGOUT("attrs not table: " .. type(attr))
+            end
+            if attr.mode == "directory" then
+                -- Utils.LUA_DEBUGOUT("directory: " .. entry)
+            else
+                -- Utils.LUA_DEBUGOUT("file: " .. entry)
+                table.insert(res, entry)
+            end
+        end
+    end
+    return res
 end
