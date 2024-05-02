@@ -101,28 +101,58 @@ if wx ~= nil then
 
 	UI.bSizer_GameInfo2:Add( UI.fgSizer_GameInfo_Generals_1, 0, wx.wxEXPAND, 5 )
 
-	UI.gSizer_Generals_1 = wx.wxGridSizer( 1, 4, 0, 0 )
+	UI.gSizer_GameInfo_Generals_1 = wx.wxGridSizer( 1, 4, 0, 0 )
 
 	UI.m_radioBtn_Generals_all = wx.wxRadioButton( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "all", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_radioBtn_Generals_all:SetValue( True )
-	UI.gSizer_Generals_1:Add( UI.m_radioBtn_Generals_all, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer_GameInfo_Generals_1:Add( UI.m_radioBtn_Generals_all, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_radioBtn_Generals_land = wx.wxRadioButton( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "land", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer_Generals_1:Add( UI.m_radioBtn_Generals_land, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer_GameInfo_Generals_1:Add( UI.m_radioBtn_Generals_land, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_radioBtn_Generals_sea = wx.wxRadioButton( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "sea", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer_Generals_1:Add( UI.m_radioBtn_Generals_sea, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer_GameInfo_Generals_1:Add( UI.m_radioBtn_Generals_sea, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_radioBtn_Generals_air = wx.wxRadioButton( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "air", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer_Generals_1:Add( UI.m_radioBtn_Generals_air, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer_GameInfo_Generals_1:Add( UI.m_radioBtn_Generals_air, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
-	UI.bSizer_GameInfo2:Add( UI.gSizer_Generals_1, 0, wx.wxEXPAND, 5 )
+	UI.bSizer_GameInfo2:Add( UI.gSizer_GameInfo_Generals_1, 0, wx.wxEXPAND, 5 )
+
+	UI.gSizer_GameInfo_Generals_2 = wx.wxGridSizer( 1, 2, 0, 0 )
 
 	UI.m_textCtrl_Generals = wx.wxTextCtrl( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), wx.wxTE_MULTILINE + wx.wxTE_WORDWRAP )
 	UI.m_textCtrl_Generals:SetMinSize( wx.wxSize( -1,395 ) )
 
-	UI.bSizer_GameInfo2:Add( UI.m_textCtrl_Generals, 1, wx.wxALL + wx.wxEXPAND, 5 )
+	UI.gSizer_GameInfo_Generals_2:Add( UI.m_textCtrl_Generals, 1, wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.fgSizer12 = wx.wxFlexGridSizer( 3, 1, 0, 0 )
+	UI.fgSizer12:AddGrowableCol( 0 )
+	UI.fgSizer12:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer12:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_staticText_GameInfo_Generals_1 = wx.wxStaticText( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "Traits", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Generals_1:Wrap( -1 )
+
+	UI.fgSizer12:Add( UI.m_staticText_GameInfo_Generals_1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_choice_GameInfo_Generals_TraitsChoices = {}
+	UI.m_choice_GameInfo_Generals_Traits = wx.wxChoice( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_choice_GameInfo_Generals_TraitsChoices, 0 )
+	UI.m_choice_GameInfo_Generals_Traits:SetSelection( 0 )
+	UI.m_choice_GameInfo_Generals_Traits:SetMinSize( wx.wxSize( 200,-1 ) )
+
+	UI.fgSizer12:Add( UI.m_choice_GameInfo_Generals_Traits, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_Generals_Traits = wx.wxTextCtrl( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE + wx.wxTE_WORDWRAP )
+	UI.m_textCtrl_GameInfo_Generals_Traits:SetMinSize( wx.wxSize( -1,300 ) )
+
+	UI.fgSizer12:Add( UI.m_textCtrl_GameInfo_Generals_Traits, 0, wx.wxALL + wx.wxEXPAND, 5 )
+
+
+	UI.gSizer_GameInfo_Generals_2:Add( UI.fgSizer12, 1, wx.wxEXPAND, 5 )
+
+
+	UI.bSizer_GameInfo2:Add( UI.gSizer_GameInfo_Generals_2, 1, wx.wxEXPAND, 5 )
 
 
 	UI.m_panel_GameInfo_Generals:SetSizer( UI.bSizer_GameInfo2 )
@@ -317,16 +347,12 @@ if wx ~= nil then
 	UI.m_button_GameInfo_Traits_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		UI.m_textCtrl_GameInfo_Traits_Filter:SetValue("")
 		Parsing.Traits.HandleFilter()
+        UI.m_textCtrl_GameInfo_Traits_Effects:Clear()
+        UI.m_textCtrl_GameInfo_Traits_Triggers:Clear()
 	end )
 
-	UI.m_choice_GameInfo_Generals:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
-        local selectionString = UI.m_choice_GameInfo_Generals:GetString(UI.m_choice_GameInfo_Generals:GetSelection())
-		local generalId = Parsing.GetKeyFromChoice(selectionString)
-		local general = Parsing.Generals.CountryGeneralsData[generalId]
-		if general ~= nil then
-			local s = Utils.Dump(general)
-			UI.m_textCtrl_Generals:SetValue(s)
-		end
+	UI.m_choice_GameInfo_Generals:Connect( wx.wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+		Parsing.Generals.HandleSelection()
 	end )
 
 	UI.m_textCtrl_GameInfo_Generals_Filter:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)
@@ -341,6 +367,8 @@ if wx ~= nil then
 		if G_PlayerCountry ~= nil then
 			Parsing.Generals.FillwxChoice(G_PlayerCountry)
 			UI.m_textCtrl_Generals:Clear()
+			UI.m_choice_GameInfo_Generals_Traits:Clear()
+			UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
 		end
 	end )
 
@@ -348,6 +376,8 @@ if wx ~= nil then
 		if G_PlayerCountry ~= nil then
 			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
+			UI.m_choice_GameInfo_Generals_Traits:Clear()
+			UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
 		end
 	end )
 
@@ -355,6 +385,8 @@ if wx ~= nil then
 		if G_PlayerCountry ~= nil then
 			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
+			UI.m_choice_GameInfo_Generals_Traits:Clear()
+			UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
 		end
 	end )
 
@@ -362,6 +394,8 @@ if wx ~= nil then
 		if G_PlayerCountry ~= nil then
 			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
+			UI.m_choice_GameInfo_Generals_Traits:Clear()
+			UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
 		end
 	end )
 
@@ -369,10 +403,16 @@ if wx ~= nil then
 		if G_PlayerCountry ~= nil then
 			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
 			UI.m_textCtrl_Generals:Clear()
+			UI.m_choice_GameInfo_Generals_Traits:Clear()
+			UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
 		end
 	end )
 
-	UI.m_choice_GameInfo_Techs:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+	UI.m_choice_GameInfo_Generals_Traits:Connect( wx.wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+		Parsing.Generals.HandleTraitSelection()
+	end )
+
+	UI.m_choice_GameInfo_Techs:Connect( wx.wxEVT_COMMAND_CHOICE_SELECTED, function(event)
 		Parsing.Techs.HandleSelection()
 	end )
 
@@ -383,6 +423,8 @@ if wx ~= nil then
 	UI.m_button_GameInfo_Techs_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		UI.m_textCtrl_GameInfo_Techs_Filter:SetValue("")
 		Parsing.Techs.HandleFilter()
+        UI.m_textCtrl_GameInfo_Techs_Triggers:Clear()
+        UI.m_textCtrl_GameInfo_Techs_Effects:Clear()
 	end )
 
 	UI.m_button_GameInfo_Tech_increase:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
@@ -407,5 +449,7 @@ if wx ~= nil then
 	UI.m_button_GameInfo_Modifiers_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		UI.m_textCtrl_GameInfo_Modifiers_Filter:SetValue("")
 		Parsing.Modifiers.HandleFilter()
+        UI.m_textCtrl_GameInfo_Modifiers_Triggers1:Clear()
+        UI.m_textCtrl_GameInfo_Modifiers_Effects1:Clear()
 	end )
 end

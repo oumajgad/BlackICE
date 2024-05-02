@@ -62,10 +62,10 @@ local function translateTraits(traits)
     end
     local res = {}
     if type(traits) == "string" then
-        table.insert(res, Parsing.GetTranslation(traits))
+        table.insert(res, Parsing.GetTranslation(traits) .. " [" .. traits .. "]")
     else
         for k, v in pairs(traits) do
-            table.insert(res, Parsing.GetTranslation(v))
+            table.insert(res, Parsing.GetTranslation(v) .. " [" .. v .. "]")
         end
     end
 
@@ -159,6 +159,32 @@ function P.FillwxChoice(playertag, filterOverride)
     UI.m_choice_GameInfo_Generals:Clear()
     UI.m_choice_GameInfo_Generals:Append(generals)
     UI.m_choice_GameInfo_Generals:Thaw()
+end
+
+function P.HandleSelection()
+    local selectionString = UI.m_choice_GameInfo_Generals:GetString(UI.m_choice_GameInfo_Generals:GetSelection())
+    local generalId = Parsing.GetKeyFromChoice(selectionString)
+    local general = P.CountryGeneralsData[generalId]
+    UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
+    UI.m_choice_GameInfo_Generals_Traits:Freeze()
+    UI.m_choice_GameInfo_Generals_Traits:Clear()
+    if general ~= nil then
+        local s = Utils.Dump(general)
+        UI.m_textCtrl_Generals:SetValue(s)
+        UI.m_choice_GameInfo_Generals_Traits:Append(general.traits)
+        if UI.m_choice_GameInfo_Generals_Traits:GetCount() >= 1 then
+            UI.m_choice_GameInfo_Generals_Traits:SetSelection(0)
+            P.HandleTraitSelection()
+        end
+    end
+    UI.m_choice_GameInfo_Generals_Traits:Thaw()
+end
+
+function P.HandleTraitSelection()
+    local selectionString = UI.m_choice_GameInfo_Generals_Traits:GetString(UI.m_choice_GameInfo_Generals_Traits:GetSelection())
+    local trait = Parsing.GetKeyFromChoice(selectionString)
+    local s = Parsing.Traits.DumpEffects(Parsing.Traits.TraitsData[trait], true)
+    UI.m_textCtrl_GameInfo_Generals_Traits:SetValue(s)
 end
 
 return P

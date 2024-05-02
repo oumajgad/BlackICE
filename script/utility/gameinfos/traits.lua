@@ -75,7 +75,7 @@ local function dumpTriggers(traitName)
     end
 end
 
-local function dumpEffects(trait)
+function P.DumpEffects(trait, noAllowedLeader)
     local translatedTrait = {}
     translatedTrait["allowed_leader"] = trait["allowed_leader"]
     for k, v in pairs(translateTraitEffects(trait)) do
@@ -91,7 +91,11 @@ local function dumpEffects(trait)
             orderMetaTable[v] = nil
         end
     end
-    table.insert(orderMetaTable, 1, "allowed_leader")
+    if noAllowedLeader == true then
+        sortedViaMetatable["allowed_leader"] = nil
+    else
+        table.insert(orderMetaTable, 1, "allowed_leader")
+    end
     return Utils.DumpByMetatableOrder(sortedViaMetatable)
 end
 
@@ -99,7 +103,7 @@ function P.HandleSelection(selectionString)
     local traitName = Parsing.GetKeyFromChoice(selectionString)
     local trait = P.TraitsData[traitName]
     if trait ~= nil then
-        local s = dumpEffects(trait)
+        local s = P.DumpEffects(trait)
         UI.m_textCtrl_GameInfo_Traits_Effects:SetValue(s)
         s = dumpTriggers(traitName)
         UI.m_textCtrl_GameInfo_Traits_Triggers:SetValue(s)
