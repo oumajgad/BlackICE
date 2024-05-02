@@ -224,12 +224,17 @@ end
 
 P.TechsChoicesFiltered = {}
 function P.HandleFilter()
+    P.ClearText()
     local filterString = UI.m_textCtrl_GameInfo_Techs_Filter:GetValue()
     if filterString == nil or filterString == "" then   -- Reset to default
         UI.m_choice_GameInfo_Techs:Freeze()
         UI.m_choice_GameInfo_Techs:Clear()
         UI.m_choice_GameInfo_Techs:Append(P.TechsChoices)
         UI.m_choice_GameInfo_Techs:Thaw()
+        if UI.m_choice_GameInfo_Techs:GetCount() >= 1 then
+            UI.m_choice_GameInfo_Techs:SetSelection(0)
+            P.HandleSelection()
+        end
         return
     end
 
@@ -249,6 +254,10 @@ function P.HandleFilter()
     UI.m_choice_GameInfo_Techs:Clear()
     UI.m_choice_GameInfo_Techs:Append(P.TechsChoicesFiltered)
     UI.m_choice_GameInfo_Techs:Thaw()
+    if UI.m_choice_GameInfo_Techs:GetCount() >= 1 then
+        UI.m_choice_GameInfo_Techs:SetSelection(0)
+        P.HandleSelection()
+    end
 end
 
 
@@ -282,6 +291,13 @@ function P.GetTechModifierValues()
         loadTechModifiers()
     end
     return P.TechModifierValues
+end
+
+function P.ClearText()
+    UI.m_panel_GameInfo_Tech:Freeze()
+    UI.m_textCtrl_GameInfo_Techs_Triggers:Clear()
+    UI.m_textCtrl_GameInfo_Techs_Effects:Clear()
+    UI.m_panel_GameInfo_Tech:Thaw()
 end
 
 return P

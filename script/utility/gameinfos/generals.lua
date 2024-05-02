@@ -161,6 +161,14 @@ function P.FillwxChoice(playertag, filterOverride)
     UI.m_choice_GameInfo_Generals:Thaw()
 end
 
+function P.HandleFilter(playertag)
+    P.FillwxChoice(playertag)
+    if UI.m_choice_GameInfo_Generals:GetCount() >= 1 then
+        UI.m_choice_GameInfo_Generals:SetSelection(0)
+        P.HandleSelection()
+    end
+end
+
 function P.HandleSelection()
     local selectionString = UI.m_choice_GameInfo_Generals:GetString(UI.m_choice_GameInfo_Generals:GetSelection())
     local generalId = Parsing.GetKeyFromChoice(selectionString)
@@ -185,6 +193,14 @@ function P.HandleTraitSelection()
     local trait = Parsing.GetKeyFromChoice(selectionString)
     local s = Parsing.Traits.DumpEffects(Parsing.Traits.TraitsData[trait], true)
     UI.m_textCtrl_GameInfo_Generals_Traits:SetValue(s)
+end
+
+function P.ClearText()
+    UI.m_panel_GameInfo_Generals:Freeze()
+    UI.m_textCtrl_Generals:Clear()
+    UI.m_choice_GameInfo_Generals_Traits:Clear()
+    UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
+    UI.m_panel_GameInfo_Generals:Thaw()
 end
 
 return P

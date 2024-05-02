@@ -336,8 +336,7 @@ if wx ~= nil then
 	-- Connect Events
 
     UI.m_choice_GameInfo_Traits:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
-        local selectionString = UI.m_choice_GameInfo_Traits:GetString(UI.m_choice_GameInfo_Traits:GetSelection())
-		Parsing.Traits.HandleSelection(selectionString)
+		Parsing.Traits.HandleSelection()
     end )
 
 	UI.m_textCtrl_GameInfo_Traits_Filter:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)
@@ -346,9 +345,8 @@ if wx ~= nil then
 
 	UI.m_button_GameInfo_Traits_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		UI.m_textCtrl_GameInfo_Traits_Filter:SetValue("")
+		Parsing.Traits.ClearText()
 		Parsing.Traits.HandleFilter()
-        UI.m_textCtrl_GameInfo_Traits_Effects:Clear()
-        UI.m_textCtrl_GameInfo_Traits_Triggers:Clear()
 	end )
 
 	UI.m_choice_GameInfo_Generals:Connect( wx.wxEVT_COMMAND_CHOICE_SELECTED, function(event)
@@ -357,54 +355,44 @@ if wx ~= nil then
 
 	UI.m_textCtrl_GameInfo_Generals_Filter:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)
 		if G_PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(G_PlayerCountry)
-			UI.m_textCtrl_Generals:Clear()
+			Parsing.Generals.ClearText()
+			Parsing.Generals.HandleFilter(G_PlayerCountry)
 		end
 	end )
 
 	UI.m_button_GameInfo_Generals_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		UI.m_textCtrl_GameInfo_Generals_Filter:SetValue("")
 		if G_PlayerCountry ~= nil then
-			Parsing.Generals.FillwxChoice(G_PlayerCountry)
-			UI.m_textCtrl_Generals:Clear()
-			UI.m_choice_GameInfo_Generals_Traits:Clear()
-			UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
+			Parsing.Generals.ClearText()
+			Parsing.Generals.HandleFilter(G_PlayerCountry)
 		end
 	end )
 
 	UI.m_radioBtn_Generals_all:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
 		if G_PlayerCountry ~= nil then
+			Parsing.Generals.ClearText()
 			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
-			UI.m_textCtrl_Generals:Clear()
-			UI.m_choice_GameInfo_Generals_Traits:Clear()
-			UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
 		end
 	end )
 
 	UI.m_radioBtn_Generals_land:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
 		if G_PlayerCountry ~= nil then
+			Parsing.Generals.ClearText()
 			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
-			UI.m_textCtrl_Generals:Clear()
-			UI.m_choice_GameInfo_Generals_Traits:Clear()
-			UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
 		end
 	end )
 
 	UI.m_radioBtn_Generals_sea:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
 		if G_PlayerCountry ~= nil then
+			Parsing.Generals.ClearText()
 			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
-			UI.m_textCtrl_Generals:Clear()
-			UI.m_choice_GameInfo_Generals_Traits:Clear()
-			UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
 		end
 	end )
 
 	UI.m_radioBtn_Generals_air:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)
 		if G_PlayerCountry ~= nil then
+			Parsing.Generals.ClearText()
 			Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
-			UI.m_textCtrl_Generals:Clear()
-			UI.m_choice_GameInfo_Generals_Traits:Clear()
-			UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
 		end
 	end )
 
@@ -422,9 +410,8 @@ if wx ~= nil then
 
 	UI.m_button_GameInfo_Techs_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		UI.m_textCtrl_GameInfo_Techs_Filter:SetValue("")
+		Parsing.Techs.ClearText()
 		Parsing.Techs.HandleFilter()
-        UI.m_textCtrl_GameInfo_Techs_Triggers:Clear()
-        UI.m_textCtrl_GameInfo_Techs_Effects:Clear()
 	end )
 
 	UI.m_button_GameInfo_Tech_increase:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
@@ -448,8 +435,7 @@ if wx ~= nil then
 
 	UI.m_button_GameInfo_Modifiers_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		UI.m_textCtrl_GameInfo_Modifiers_Filter:SetValue("")
+		Parsing.Modifiers.ClearText()
 		Parsing.Modifiers.HandleFilter()
-        UI.m_textCtrl_GameInfo_Modifiers_Triggers1:Clear()
-        UI.m_textCtrl_GameInfo_Modifiers_Effects1:Clear()
 	end )
 end
