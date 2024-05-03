@@ -128,6 +128,7 @@ if wx ~= nil then
 
 	UI.fgSizer12 = wx.wxFlexGridSizer( 3, 1, 0, 0 )
 	UI.fgSizer12:AddGrowableCol( 0 )
+	UI.fgSizer12:AddGrowableRow( 2 )
 	UI.fgSizer12:SetFlexibleDirection( wx.wxBOTH )
 	UI.fgSizer12:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
 
