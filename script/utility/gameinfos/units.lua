@@ -238,9 +238,8 @@ function P.ChangeTechLevel(change)
     selected_tech.values.level = selected_tech.values.level + change
     P.HandleUnitSelection()
 
-    UI.m_listBox_GameInfo_Units_Techs:SetSelection(selection_int)
-    UI.m_listBox_GameInfo_Units_Techs:SetScrollPos(wx.wxVERTICAL, scrollpos)
     UI.m_listBox_GameInfo_Units_Techs:ScrollLines(scrollpos)
+    UI.m_listBox_GameInfo_Units_Techs:SetSelection(selection_int)
 
     P.HandleTechSelection()
     UI.m_panel_GameInfo_Units:Thaw()
@@ -255,9 +254,8 @@ function P.ResetTechLevels()
     P.BuildUnitsToTechsMapping()
     P.HandleUnitSelection()
 
-    UI.m_listBox_GameInfo_Units_Techs:SetSelection(selection_int)
-    UI.m_listBox_GameInfo_Units_Techs:SetScrollPos(wx.wxVERTICAL, scrollpos)
     UI.m_listBox_GameInfo_Units_Techs:ScrollLines(scrollpos)
+    UI.m_listBox_GameInfo_Units_Techs:SetSelection(selection_int)
 
     P.HandleTechSelection()
     UI.m_panel_GameInfo_Units:Thaw()
