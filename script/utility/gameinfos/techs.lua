@@ -35,9 +35,7 @@ end
 local shownLevel = 0
 local countryLevel = 0
 local function setCountryLevel(techIdent)
-    local cTech = CTechnologyDataBase.GetTechnology(techIdent)
-    local techStatus = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry():GetTechnologyStatus()
-    countryLevel = techStatus:GetLevel(cTech)
+    countryLevel = P.GetPlayerTechLevel(techIdent)
     return countryLevel
 end
 
@@ -111,6 +109,8 @@ local function getTranslation(key)
             trans = Parsing.GetTranslation("PROV_AA_TECH")
         elseif key == "attack_delay" then
             trans = "Delay between attacks"
+        elseif key == "default_organisation" then
+            trans = Parsing.GetTranslation("DEFAULT_ORG")
         end
     end
 
@@ -194,6 +194,15 @@ function P.DumpEffects(selection)
     return Utils.DumpByMetatableOrder(sortedViaMetatable)
 end
 
+function P.GetPlayerTechLevel(tech)
+    local level = 0
+    if G_PlayerCountry ~= nil then
+        local cTech = CTechnologyDataBase.GetTechnology(tech)
+        local techStatus = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry():GetTechnologyStatus()
+        level = techStatus:GetLevel(cTech)
+    end
+    return level
+end
 
 function P.HandleSelection(shownLevelOverride)
     local selectionString = UI.m_choice_GameInfo_Techs:GetString(UI.m_choice_GameInfo_Techs:GetSelection())
