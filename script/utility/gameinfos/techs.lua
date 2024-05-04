@@ -55,10 +55,10 @@ function P.DumpTriggers(selection)
     return Utils.DumpCustomOrder(data, order)
 end
 
-local function applyLevelToTech(data, level)
+function P.ApplyLevelToTech(data, level)
     for k, v in pairs(data) do
         if type(v) == "table" then
-            data[k] = applyLevelToTech(v, level)
+            data[k] = P.ApplyLevelToTech(v, level)
         elseif tonumber(v) ~= nil then
             data[k] = string.format('%.02f', tonumber(v) * level)
         end
@@ -111,6 +111,8 @@ local function getTranslation(key)
             trans = "Delay between attacks"
         elseif key == "default_organisation" then
             trans = Parsing.GetTranslation("DEFAULT_ORG")
+        elseif key == "build_cost_manpower" then
+            trans = Parsing.GetTranslation("BUILD_COST_MP")
         end
     end
 
@@ -144,7 +146,7 @@ local terrainEffectsKeywords = {
     ["defence"] = true,
     ["attrition"] = true,
 }
-local function translateTechEffect(data)
+function P.TranslateTechEffect(data)
     local res = {}
     for k, v in pairs(data) do
         local translatedKey = getTranslation(k)
@@ -163,7 +165,7 @@ local function translateTechEffect(data)
                     k .. "_tech", v) -- add special key suffix because the key from techs and modifiers are the same but different
             end
         else
-            res[translatedKey] = translateTechEffect(v)
+            res[translatedKey] = P.TranslateTechEffect(v)
         end
     end
 
@@ -175,9 +177,34 @@ function P.DumpEffects(selection)
     for k, v in pairs(triggerKeys) do
         data[v] = nil
     end
-    data = applyLevelToTech(data, shownLevel)
+    data = P.ApplyLevelToTech(data, shownLevel)
     local translatedTech = {}
-    for k, v in pairs(translateTechEffect(data)) do
+    for k, v in pairs(P.TranslateTechEffect(data)) do
+        translatedTech[k] = v
+    end
+    local sortedViaMetatable = Utils.PushTablesToEndAndSort(translatedTech)
+
+    -- sort some values to the top so its easier to read
+    local orderMetaTable = getmetatable(sortedViaMetatable)["order"]
+    for k, v in pairs(techEffectKeyBlacklist) do
+        local index = table.getIndex(orderMetaTable, k)
+        if index ~= nil then
+            table.remove(orderMetaTable, index)
+            table.insert(orderMetaTable, 1, k)
+        end
+    end
+    return Utils.DumpByMetatableOrder(sortedViaMetatable)
+end
+
+-- Takes in a prepared tech table which it sorts and translates
+function P.DumpEffectsForUnitTab(tech, level)
+    local copy = table.deepcopy(tech)
+    for k, v in pairs(triggerKeys) do
+        copy[v] = nil
+    end
+    copy = P.ApplyLevelToTech(copy, level)
+    local translatedTech = {}
+    for k, v in pairs(P.TranslateTechEffect(copy)) do
         translatedTech[k] = v
     end
     local sortedViaMetatable = Utils.PushTablesToEndAndSort(translatedTech)

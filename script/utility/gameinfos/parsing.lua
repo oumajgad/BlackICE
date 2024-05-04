@@ -95,6 +95,7 @@ end
 P.Traits = require('traits')
 P.Generals = require('generals')
 P.Techs = require('techs')
+P.Units = require('units')
 P.Modifiers = require('modifiers')
 P.UnitConversions = require('unitConversion')
 return Parsing
