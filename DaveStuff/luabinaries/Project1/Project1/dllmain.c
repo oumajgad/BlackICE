@@ -19,7 +19,7 @@ __declspec(dllexport) int goodbye(lua_State* L)
     return 0;
 }
 
-__declspec(dllexport) luaL_Reg bice_dll[] = {
+__declspec(dllexport) luaL_Reg bice[] = {
     {"goodbye", goodbye},
     {"hello", hello},
     {NULL, NULL}
@@ -27,10 +27,10 @@ __declspec(dllexport) luaL_Reg bice_dll[] = {
 
 #define new_lib(L, l) (lua_newtable(L), luaL_register(L, NULL, l))
 
-__declspec(dllexport) int luaopen_test(lua_State* L)
+__declspec(dllexport) int luaopen_bice(lua_State* L)
 {
     //    new_lib(L, test);
     lua_newtable(L);
-    luaL_register(L, NULL, bice_dll);
+    luaL_register(L, NULL, bice);
     return 1;
 }
