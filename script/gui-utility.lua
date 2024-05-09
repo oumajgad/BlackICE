@@ -1902,6 +1902,10 @@ if wx ~= nil then
 	end )
 
 	UI.m_button_manualRefresh:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		local bice_dll = require("bice")
+		local a, b = bice_dll.hello()
+		Utils.LUA_DEBUGOUT(a)
+		Utils.LUA_DEBUGOUT(b)
 		G_DaysSinceLastUpdate = 0
 		GuiRefreshLoop(true)
 	end )
