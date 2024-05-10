@@ -1,21 +1,25 @@
-#include <lauxlib.h>
-#include <lua.h>
+#include <lua.hpp>
 #include <Windows.h>
+#include <processthreadsapi.h>
+#include <memoryapi.h>
 
-// Because This is Lua I do not think you need a DLLMain function
-// https://learn.microsoft.com/en-us/cpp/build/reference/md-mt-ld-use-run-time-library?view=msvc-170&source=recommendations
+
 __declspec(dllexport) int hello(lua_State* L)
 {
-    printf("hello!\n");
+    auto handle = GetCurrentProcess();
+    SIZE_T bytes_written;
+    int address = 0xF0390;
+    char buffer[] = { 0xF7, 0x69, 0x78 };
+    WriteProcessMemory(handle, &address, &buffer, 3, &bytes_written);
+
     MessageBoxA(NULL, "homo", "yo", MB_OK); // Testing and shit.
-    lua_pushnumber(L, 1234); // Add a value to the function stack
-    lua_pushstring(L, "testy"); // Add a value to the function stack
+    lua_pushnumber(L, bytes_written); // Add a value to the function stack
+    lua_pushstring(L, ":^)"); // Add a value to the function stack
     return 2; // Return N values from the function stack to the caller (LUA)
 }
 
 __declspec(dllexport) int goodbye(lua_State* L)
 {
-    printf("goodbye!\n");
     return 0;
 }
 
