@@ -24,7 +24,7 @@ def zipdir(filename):
     zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     createModFile(zipf)
     addLua51dll(zipf)
-    addWxDll(zipf)
+    addLuaBinaries(zipf)
     addUtilityResources(zipf)
     addStatsCLI(zipf)
     addBorderlessWindowDlls(zipf)
@@ -66,8 +66,9 @@ def createModFile(zipf: zipfile.ZipFile):
     zipf.write("./Mod File/BlackICE %s.mod"% version, f"{path}/BlackICE %s.mod"% version)
     os.remove("./Mod File/BlackICE %s.mod"% version)
 
-def addWxDll(zipf: zipfile.ZipFile):
-    zipf.write("./tools/wxWidget/wx.dll", f"{path}/wx.dll")
+def addLuaBinaries(zipf: zipfile.ZipFile):
+    zipf.write("./DaveStuff/luabinaries/wx.dll", f"{path}/wx.dll")
+    zipf.write("./DaveStuff/luabinaries/lfs.dll", f"{path}/lfs.dll")
 
 def addStatsCLI(zipf: zipfile.ZipFile):
     zipf.write("./tools/visualizeStatistics/visualizeStatisticCLI.exe", f"{path}/BlackICE {version}/stats/visualizeStatisticCLI.exe")

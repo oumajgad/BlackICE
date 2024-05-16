@@ -1,20 +1,5 @@
 local P = {}
 
-local techsFiles = {
-    '00_unique_unit_techs.txt',  '01_Aircraft Technologies.txt',
-    '01_Armor Technologies.txt',  '01_ArtilleryTechnologies.txt',  '01_Infantry Technologies.txt',
-    '01_Special_Forces Technologies.txt',  '02_Naval_Technology_TP_LC_AS.txt',  'Aircraftsystems Technologies.txt',
-    'Aircraftz Doctrines.txt',  'Aircraft_Armament Technologies.txt',  'Aircraft_Payload Technologies.txt',
-    'Antitank.txt',  'ArmourII Technologies.txt',  'Avionics Technologies.txt',
-    'Command-structure Technologies.txt',  'Construction Technologies.txt',  'Division_size Technologies.txt',
-    'Electronics Technolgies.txt',  'Industry Technologies.txt',  'Jet Technologies.txt',
-    'Land Doctrines.txt',  'Nation Technologies.txt',  'Naval Techs.txt',
-    'Secret Weapons.txt',  'Special Forces Doctrines.txt',  'strategic_doctrines.txt',
-    'Theories.txt',  'zDD-invisible_techs.txt',  'zNaval Doctrines.txt',
-    'zOMGtechs.txt'
-}
-
-
 P.TechsData = nil
 P.TechsChoices = {}
 function P.FillData()
@@ -23,8 +8,9 @@ function P.FillData()
     end
     P.TechsData = {}
     local translationTable = Parsing.GetTranslationTable()
-    for i, file in pairs(techsFiles) do
-        local res = PdxParser.parseFile("tfh\\mod\\BlackICE " .. UI.version .. "\\technologies\\" .. file)
+    local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\technologies"
+    for i, file in pairs(GetFilesFromPath(path)) do
+        local res = PdxParser.parseFile(path .. "\\" .. file)
         for name, values in pairs(res) do
             P.TechsData[name] = values
             values["folder"] = nil
@@ -49,9 +35,7 @@ end
 local shownLevel = 0
 local countryLevel = 0
 local function setCountryLevel(techIdent)
-    local cTech = CTechnologyDataBase.GetTechnology(techIdent)
-    local techStatus = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry():GetTechnologyStatus()
-    countryLevel = techStatus:GetLevel(cTech)
+    countryLevel = P.GetPlayerTechLevel(techIdent)
     return countryLevel
 end
 
@@ -71,10 +55,10 @@ function P.DumpTriggers(selection)
     return Utils.DumpCustomOrder(data, order)
 end
 
-local function applyLevelToTech(data, level)
+function P.ApplyLevelToTech(data, level)
     for k, v in pairs(data) do
         if type(v) == "table" then
-            data[k] = applyLevelToTech(v, level)
+            data[k] = P.ApplyLevelToTech(v, level)
         elseif tonumber(v) ~= nil then
             data[k] = string.format('%.02f', tonumber(v) * level)
         end
@@ -125,6 +109,10 @@ local function getTranslation(key)
             trans = Parsing.GetTranslation("PROV_AA_TECH")
         elseif key == "attack_delay" then
             trans = "Delay between attacks"
+        elseif key == "default_organisation" then
+            trans = Parsing.GetTranslation("DEFAULT_ORG")
+        elseif key == "build_cost_manpower" then
+            trans = Parsing.GetTranslation("BUILD_COST_MP")
         end
     end
 
@@ -158,7 +146,7 @@ local terrainEffectsKeywords = {
     ["defence"] = true,
     ["attrition"] = true,
 }
-local function translateTechEffect(data)
+function P.TranslateTechEffect(data)
     local res = {}
     for k, v in pairs(data) do
         local translatedKey = getTranslation(k)
@@ -177,7 +165,7 @@ local function translateTechEffect(data)
                     k .. "_tech", v) -- add special key suffix because the key from techs and modifiers are the same but different
             end
         else
-            res[translatedKey] = translateTechEffect(v)
+            res[translatedKey] = P.TranslateTechEffect(v)
         end
     end
 
@@ -189,9 +177,9 @@ function P.DumpEffects(selection)
     for k, v in pairs(triggerKeys) do
         data[v] = nil
     end
-    data = applyLevelToTech(data, shownLevel)
+    data = P.ApplyLevelToTech(data, shownLevel)
     local translatedTech = {}
-    for k, v in pairs(translateTechEffect(data)) do
+    for k, v in pairs(P.TranslateTechEffect(data)) do
         translatedTech[k] = v
     end
     local sortedViaMetatable = Utils.PushTablesToEndAndSort(translatedTech)
@@ -208,6 +196,40 @@ function P.DumpEffects(selection)
     return Utils.DumpByMetatableOrder(sortedViaMetatable)
 end
 
+-- Takes in a prepared tech table which it sorts and translates
+function P.DumpEffectsForUnitTab(tech, level)
+    local copy = table.deepcopy(tech)
+    for k, v in pairs(triggerKeys) do
+        copy[v] = nil
+    end
+    copy = P.ApplyLevelToTech(copy, level)
+    local translatedTech = {}
+    for k, v in pairs(P.TranslateTechEffect(copy)) do
+        translatedTech[k] = v
+    end
+    local sortedViaMetatable = Utils.PushTablesToEndAndSort(translatedTech)
+
+    -- sort some values to the top so its easier to read
+    local orderMetaTable = getmetatable(sortedViaMetatable)["order"]
+    for k, v in pairs(techEffectKeyBlacklist) do
+        local index = table.getIndex(orderMetaTable, k)
+        if index ~= nil then
+            table.remove(orderMetaTable, index)
+            table.insert(orderMetaTable, 1, k)
+        end
+    end
+    return Utils.DumpByMetatableOrder(sortedViaMetatable)
+end
+
+function P.GetPlayerTechLevel(tech)
+    local level = 0
+    if G_PlayerCountry ~= nil then
+        local cTech = CTechnologyDataBase.GetTechnology(tech)
+        local techStatus = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry():GetTechnologyStatus()
+        level = techStatus:GetLevel(cTech)
+    end
+    return level
+end
 
 function P.HandleSelection(shownLevelOverride)
     local selectionString = UI.m_choice_GameInfo_Techs:GetString(UI.m_choice_GameInfo_Techs:GetSelection())
@@ -238,12 +260,17 @@ end
 
 P.TechsChoicesFiltered = {}
 function P.HandleFilter()
+    P.ClearText()
     local filterString = UI.m_textCtrl_GameInfo_Techs_Filter:GetValue()
     if filterString == nil or filterString == "" then   -- Reset to default
         UI.m_choice_GameInfo_Techs:Freeze()
         UI.m_choice_GameInfo_Techs:Clear()
         UI.m_choice_GameInfo_Techs:Append(P.TechsChoices)
         UI.m_choice_GameInfo_Techs:Thaw()
+        if UI.m_choice_GameInfo_Techs:GetCount() >= 1 then
+            UI.m_choice_GameInfo_Techs:SetSelection(0)
+            P.HandleSelection()
+        end
         return
     end
 
@@ -263,6 +290,10 @@ function P.HandleFilter()
     UI.m_choice_GameInfo_Techs:Clear()
     UI.m_choice_GameInfo_Techs:Append(P.TechsChoicesFiltered)
     UI.m_choice_GameInfo_Techs:Thaw()
+    if UI.m_choice_GameInfo_Techs:GetCount() >= 1 then
+        UI.m_choice_GameInfo_Techs:SetSelection(0)
+        P.HandleSelection()
+    end
 end
 
 
@@ -296,6 +327,13 @@ function P.GetTechModifierValues()
         loadTechModifiers()
     end
     return P.TechModifierValues
+end
+
+function P.ClearText()
+    UI.m_panel_GameInfo_Tech:Freeze()
+    UI.m_textCtrl_GameInfo_Techs_Triggers:Clear()
+    UI.m_textCtrl_GameInfo_Techs_Effects:Clear()
+    UI.m_panel_GameInfo_Tech:Thaw()
 end
 
 return P

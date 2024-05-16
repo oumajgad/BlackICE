@@ -26,7 +26,7 @@ function P.GetAndConvertEffect(key, value)
         return string.format("%.2f", val) .. data[key]["unit"]
     end
 
-    Utils.LUA_DEBUGOUT("Couldnt find unit conversion: " .. key)
+    -- Utils.LUA_DEBUGOUT("Couldnt find unit conversion: " .. key)
     return tostring(value)
 end
 

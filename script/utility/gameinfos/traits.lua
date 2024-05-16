@@ -75,7 +75,7 @@ local function dumpTriggers(traitName)
     end
 end
 
-local function dumpEffects(trait)
+function P.DumpEffects(trait, noAllowedLeader)
     local translatedTrait = {}
     translatedTrait["allowed_leader"] = trait["allowed_leader"]
     for k, v in pairs(translateTraitEffects(trait)) do
@@ -91,15 +91,20 @@ local function dumpEffects(trait)
             orderMetaTable[v] = nil
         end
     end
-    table.insert(orderMetaTable, 1, "allowed_leader")
+    if noAllowedLeader == true then
+        sortedViaMetatable["allowed_leader"] = nil
+    else
+        table.insert(orderMetaTable, 1, "allowed_leader")
+    end
     return Utils.DumpByMetatableOrder(sortedViaMetatable)
 end
 
-function P.HandleSelection(selectionString)
+function P.HandleSelection()
+    local selectionString = UI.m_choice_GameInfo_Traits:GetString(UI.m_choice_GameInfo_Traits:GetSelection())
     local traitName = Parsing.GetKeyFromChoice(selectionString)
     local trait = P.TraitsData[traitName]
     if trait ~= nil then
-        local s = dumpEffects(trait)
+        local s = P.DumpEffects(trait)
         UI.m_textCtrl_GameInfo_Traits_Effects:SetValue(s)
         s = dumpTriggers(traitName)
         UI.m_textCtrl_GameInfo_Traits_Triggers:SetValue(s)
@@ -140,12 +145,17 @@ end
 
 P.TraitsChoicesFiltered = {}
 function P.HandleFilter()
+    P.ClearText()
     local filterString = UI.m_textCtrl_GameInfo_Traits_Filter:GetValue()
     if filterString == nil or filterString == "" then   -- Reset to default
         UI.m_choice_GameInfo_Traits:Freeze()
         UI.m_choice_GameInfo_Traits:Clear()
         UI.m_choice_GameInfo_Traits:Append(P.TraitsChoices)
         UI.m_choice_GameInfo_Traits:Thaw()
+        if UI.m_choice_GameInfo_Traits:GetCount() >= 1 then
+            UI.m_choice_GameInfo_Traits:SetSelection(0)
+            P.HandleSelection()
+        end
         return
     end
 
@@ -165,6 +175,17 @@ function P.HandleFilter()
     UI.m_choice_GameInfo_Traits:Clear()
     UI.m_choice_GameInfo_Traits:Append(P.TraitsChoicesFiltered)
     UI.m_choice_GameInfo_Traits:Thaw()
+    if UI.m_choice_GameInfo_Traits:GetCount() >= 1 then
+        UI.m_choice_GameInfo_Traits:SetSelection(0)
+        P.HandleSelection()
+    end
+end
+
+function P.ClearText()
+    UI.m_panel_GameInfo_Traits:Freeze()
+    UI.m_textCtrl_GameInfo_Traits_Effects:Clear()
+    UI.m_textCtrl_GameInfo_Traits_Triggers:Clear()
+    UI.m_panel_GameInfo_Traits:Thaw()
 end
 
 return P

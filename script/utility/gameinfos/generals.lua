@@ -1,37 +1,5 @@
 local P = {}
 
-local generalsFiles = {
-    'AFG.txt',  'ALB.txt',  'ARG.txt',  'ARM.txt',
-    'AST-blackice.txt',  'AST.txt',  'AUS.txt',  'AZB.txt',  'BBU.txt',
-    'BEL.txt',  'BHU.txt',  'BIN.txt',  'BLR.txt',  'BOL.txt',
-    'BRA.txt',  'BUL.txt',  'CAN.txt',  'CGX-Add.txt',  'CGX.txt',
-    'CHC.txt',  'CHI.txt',  'CHL.txt',  'COL.txt',  'COS.txt',
-    'CRO.txt',  'CSX.txt',  'CUB.txt',  'CXB.txt',  'CYN.txt',
-    'CYP.txt',  'CZE.txt',  'DDR.txt',  'DEN.txt',  'DFR.txt',
-    'DOM.txt',  'ECU.txt',  'EGY.txt',  'ENG RAF RN.txt',  'ENG-blackice.txt',
-    'ENG.txt',  'EST.txt',  'ETH.txt',  'FIN.txt',  'FRA - additional generals.txt',
-    'FRA.txt',  'GEO.txt',  'GER - Addition.txt',  'GER - Air.txt',  'GER - blackice.txt',
-    'GER - Naval.txt',  'GER - SS.txt',  'GER-SA.txt',  'GER.txt',  'GRE.txt',
-    'GUA.txt',  'GUY.txt',  'HAI.txt',  'HOL.txt',  'HON.txt',
-    'HUN.txt',  'ICL.txt',  'IDC.txt',  'IND.txt',  'INO.txt',
-    'IRE-blackice.txt',  'IRE.txt',  'IRQ.txt',  'ISR.txt',  'ITA.txt',
-    'JAP IJN.txt',  'JAP.txt',  'JOR.txt',  'KOR.txt',  'KWT.txt',
-    'LAT.txt',  'LEB.txt',  'LIB.txt',  'LIT.txt',  'LUX.txt',
-    'MAD.txt',  'MAN.txt',  'MEN.txt',  'MEX.txt',  'MON.txt',
-    'MTA.txt',  'NEP.txt',  'NIC.txt',  'NJG.txt',  'NOR.txt',
-    'NZL.txt',  'OMG.txt',  'OMN.txt',  'PAK.txt',  'PAL.txt',
-    'PAN.txt',  'PAP.txt',  'PAR.txt',  'PER.txt',  'PHI.txt',
-    'POL.txt',  'POR.txt',  'PRK.txt',  'PRU.txt',  'reb.txt',
-    'RKK.txt',  'RKM.txt',  'RKO.txt',  'RKU.txt',  'ROM.txt',
-    'RSI.txt',  'SAF.txt',  'SAL.txt',  'SAU.txt',  'SCH.txt',
-    'SER.txt',  'SIA.txt',  'SIK.txt',  'SLO.txt',  'SOM.txt',
-    'SOV-Airforces.txt',  'SOV-NKVD.txt',  'SOV-Red Fleet.txt',  'SOV.txt',  'SPA.txt',
-    'SPR.txt',  'SUR.txt',  'SWE.txt',  'SYR.txt',  'TAN.txt',
-    'TIB.txt',  'TIM.txt',  'TUR - blackice.txt',  'TUR.txt',  'UKR.txt',
-    'URU.txt',  'USA-blackice.txt',  'USA-temp-sea.txt',  'USA-temp.txt',  'USA.txt',
-    'VEN.txt',  'VIC.txt',  'YEM.txt',  'YUG.txt'
-}
-
 local generalBranches = {
     all = 1, land = "land", sea = "sea", air = "air"
 }
@@ -94,10 +62,10 @@ local function translateTraits(traits)
     end
     local res = {}
     if type(traits) == "string" then
-        table.insert(res, Parsing.GetTranslation(traits))
+        table.insert(res, Parsing.GetTranslation(traits) .. " [" .. traits .. "]")
     else
         for k, v in pairs(traits) do
-            table.insert(res, Parsing.GetTranslation(v))
+            table.insert(res, Parsing.GetTranslation(v) .. " [" .. v .. "]")
         end
     end
 
@@ -172,8 +140,9 @@ function P.FillData()
     if dataFilled then
         return
     end
-    for i, file in pairs(generalsFiles) do
-        local res = PdxParser.parseFile("tfh\\mod\\BlackICE " .. UI.version .. "\\history\\leaders\\" .. file)
+    local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\history\\leaders"
+    for i, file in pairs(GetFilesFromPath(path)) do
+        local res = PdxParser.parseFile(path .. "\\" .. file)
         for id, values in pairs(res) do
             P.GeneralsData[id] = createGeneral(values)
         end
@@ -190,6 +159,48 @@ function P.FillwxChoice(playertag, filterOverride)
     UI.m_choice_GameInfo_Generals:Clear()
     UI.m_choice_GameInfo_Generals:Append(generals)
     UI.m_choice_GameInfo_Generals:Thaw()
+end
+
+function P.HandleFilter(playertag)
+    P.FillwxChoice(playertag)
+    if UI.m_choice_GameInfo_Generals:GetCount() >= 1 then
+        UI.m_choice_GameInfo_Generals:SetSelection(0)
+        P.HandleSelection()
+    end
+end
+
+function P.HandleSelection()
+    local selectionString = UI.m_choice_GameInfo_Generals:GetString(UI.m_choice_GameInfo_Generals:GetSelection())
+    local generalId = Parsing.GetKeyFromChoice(selectionString)
+    local general = P.CountryGeneralsData[generalId]
+    UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
+    UI.m_choice_GameInfo_Generals_Traits:Freeze()
+    UI.m_choice_GameInfo_Generals_Traits:Clear()
+    if general ~= nil then
+        local s = Utils.Dump(general)
+        UI.m_textCtrl_Generals:SetValue(s)
+        UI.m_choice_GameInfo_Generals_Traits:Append(general.traits)
+        if UI.m_choice_GameInfo_Generals_Traits:GetCount() >= 1 then
+            UI.m_choice_GameInfo_Generals_Traits:SetSelection(0)
+            P.HandleTraitSelection()
+        end
+    end
+    UI.m_choice_GameInfo_Generals_Traits:Thaw()
+end
+
+function P.HandleTraitSelection()
+    local selectionString = UI.m_choice_GameInfo_Generals_Traits:GetString(UI.m_choice_GameInfo_Generals_Traits:GetSelection())
+    local trait = Parsing.GetKeyFromChoice(selectionString)
+    local s = Parsing.Traits.DumpEffects(Parsing.Traits.TraitsData[trait], true)
+    UI.m_textCtrl_GameInfo_Generals_Traits:SetValue(s)
+end
+
+function P.ClearText()
+    UI.m_panel_GameInfo_Generals:Freeze()
+    UI.m_textCtrl_Generals:Clear()
+    UI.m_choice_GameInfo_Generals_Traits:Clear()
+    UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
+    UI.m_panel_GameInfo_Generals:Thaw()
 end
 
 return P

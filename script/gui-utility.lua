@@ -1914,6 +1914,9 @@ if wx ~= nil then
 
 	UI.m_button_GetPlayers:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		DeterminePlayers()
+		if UI.player_choice:GetCount() >= 1 then
+			UI.player_choice:SetSelection(0)
+		end
 	end )
 
 	UI.button_set_puppet:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
@@ -2100,6 +2103,7 @@ if wx ~= nil then
 		Parsing.Generals.FillData()
 		Parsing.Techs.FillData()
 		Parsing.Modifiers.FillData()
+		Parsing.Units.FillData()
 		UI.MyFrame4:Show(true)
 	end )
 
