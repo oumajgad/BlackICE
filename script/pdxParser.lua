@@ -149,7 +149,7 @@ local function parse_object(str, i, doAsList, level)
             i = next_char(str, i + 1, space_chars, true)    -- i + 1 so we move on to the opening '{' of the object
             val, i = parse_object(str, i, false, level + 1)
             if doAsList then
-                table.insert(res, val)
+                table.insert(res, {[key]=val})
             else
                 -- print("\n")
                 -- print(key)
@@ -204,16 +204,16 @@ end
 
 --- Decodes a PdxScript object-string into a LUA table
 --- Make sure the string is wrapped by "{\n" and "\n}"
-function P.parse(str)
-    return parse_object(str, 1, nil, 0)
+function P.parse(str, asList)
+    return parse_object(str, 1, asList, 0)
 end
 
-function P.parseFile(filePath)
+function P.parseFile(filePath, asList)
 	local file, err = io.open(filePath, "r")
     -- Utils.LUA_DEBUGOUT(filePath)
 	if file ~= nil then
         local linesString = "{\n" .. file:read("*a") .. "\n}"
-        local decoded = PdxParser.parse(linesString)
+        local decoded = PdxParser.parse(linesString, asList)
 		file:close()
         return decoded
 	end

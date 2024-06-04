@@ -309,6 +309,9 @@ if wx ~= nil then
 
 	UI.bSizer_GameInfo_Units_2:Add( UI.g_Sizer_GameInfo_Units_2, 0, wx.wxEXPAND, 5 )
 
+	UI.m_textCtrl_GameInfo_Units_Model = wx.wxTextCtrl( UI.m_panel_GameInfo_Units, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.bSizer_GameInfo_Units_2:Add( UI.m_textCtrl_GameInfo_Units_Model, 0, wx.wxALL + wx.wxEXPAND, 5 )
+
 
 	UI.gSizer_GameInfo_Units_1:Add( UI.bSizer_GameInfo_Units_2, 1, wx.wxEXPAND, 5 )
 

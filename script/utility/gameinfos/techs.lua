@@ -2,6 +2,7 @@ local P = {}
 
 P.TechsData = nil
 P.TechsChoices = {}
+P.TechsIndexes = {}
 function P.FillData()
     if P.TechsData ~= nil then
         return
@@ -9,10 +10,17 @@ function P.FillData()
     P.TechsData = {}
     local translationTable = Parsing.GetTranslationTable()
     local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\technologies"
-    for i, file in pairs(GetFilesFromPath(path)) do
-        local res = PdxParser.parseFile(path .. "\\" .. file)
-        for name, values in pairs(res) do
+    local i = 0
+    for x, file in pairs(GetFilesFromPath(path)) do
+        local res = PdxParser.parseFile(path .. "\\" .. file, true)
+        for y, entry in ipairs(res) do
+            local name, values
+            for k, v in pairs(entry) do
+                name = k
+                values = v
+            end
             P.TechsData[name] = values
+            P.TechsIndexes[name] = i
             values["folder"] = nil
             local trans = translationTable[name]
             if trans ~= nil then
@@ -20,6 +28,7 @@ function P.FillData()
             else
                 table.insert(P.TechsChoices, "[" .. name .. "]")
             end
+            i = i + 1
         end
     end
     table.sort(P.TechsChoices, function (a, b)

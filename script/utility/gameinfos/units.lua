@@ -100,7 +100,8 @@ function P.BuildUnitsToTechsMapping()
                 if tech_unit == unit then
                     P.UnitsToTechs[unit][tech] = {
                         raw_effects = tech_unit_effects,
-                        level = Parsing.Techs.GetPlayerTechLevel(tech)
+                        level = Parsing.Techs.GetPlayerTechLevel(tech),
+                        index = Parsing.Techs.TechsIndexes[tech]
                     }
                 end
             end
@@ -140,10 +141,26 @@ function P.BuildTechList(unit)
 
     UI.m_listBox_GameInfo_Units_Techs:Clear()
     UI.m_listBox_GameInfo_Units_Techs:Append(res)
+    P.BuildModelString(unit)
+end
+
+function P.BuildModelString(unit)
+    local res = ""
+    local sort_by_index = function(t,a,b)
+        return t[a].index < t[b].index
+    end
+    for tech, values in spairs(P.UnitsToTechs[unit], sort_by_index) do
+        res = res .. tostring(values.level) .. " "
+    end
+    UI.m_textCtrl_GameInfo_Units_Model:SetValue(res)
 end
 
 function P.HandleTechSelection()
-    local selection = UI.m_listBox_GameInfo_Units_Techs:GetString(UI.m_listBox_GameInfo_Units_Techs:GetSelection())
+    local _selection = UI.m_listBox_GameInfo_Units_Techs:GetSelection()
+    if _selection < 0 then
+        return
+    end
+    local selection = UI.m_listBox_GameInfo_Units_Techs:GetString(_selection)
     local techIdent = Parsing.GetKeyFromChoice(selection)
     local tech = P.UnitsToTechs[selected_unit_name][techIdent]
     selected_tech = {
