@@ -109,12 +109,24 @@ diplomatic_decisions = {
 		allow = {
 			date = 1942.11.8
 			# Gibraltar
-			5191 = {
-				controller = {
+			or = {
+				and = {
+					5191 = {
+						controller = {
+							faction = allies
+						}
+					}
+					faction = allies
+				}
+				and = {
+					5612 = {
+						controller = {
+							faction = allies
+						}
+					}
 					faction = allies
 				}
 			}
-			faction = allies
 		}
 		effect = {
 			set_country_flag = operation_torch_decision
