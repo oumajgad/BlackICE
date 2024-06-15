@@ -95,15 +95,15 @@ end
 function P.BuildUnitsToTechsMapping()
     for unit, unit_values in pairs(P.UnitsData) do
         P.UnitsToTechs[unit] = {}
-        for tech, tech_values in pairs(Parsing.Techs.TechsData) do
-            for tech_unit, tech_unit_effects in pairs(tech_values) do
-                if tech_unit == unit then
-                    P.UnitsToTechs[unit][tech] = {
-                        raw_effects = tech_unit_effects,
-                        level = Parsing.Techs.GetPlayerTechLevel(tech),
-                        index = Parsing.Techs.TechsIndexes[tech]
-                    }
-                end
+    end
+    for tech, tech_values in pairs(Parsing.Techs.TechsData) do
+        for tech_unit, tech_unit_effects in pairs(tech_values) do
+            if P.UnitsToTechs[tech_unit] ~= nil then
+                P.UnitsToTechs[tech_unit][tech] = {
+                    raw_effects = tech_unit_effects,
+                    level = Parsing.Techs.GetPlayerTechLevel(tech),
+                    index = Parsing.Techs.TechsIndexes[tech]
+                }
             end
         end
     end
