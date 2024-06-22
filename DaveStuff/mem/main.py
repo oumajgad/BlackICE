@@ -1,59 +1,46 @@
-import time
-import json
-
 from pymem import Pymem
 
-from CProvince import (
+from classes.CProvince import (
     PROVINCE_PATTERN_A,
-    make_province,
-    dump_province_four_bytes,
-    PROVINCE_BUILDINGS_ARRAY_PATTERN_COAL,
     CProvince,
 )
-from utils import check_id, get_array_element_lengths, to_number
+from classes.CProvinceBuilding import CProvinceBuilding
+from utils import get_array_element_lengths, to_number
 
-PROVINCE_ID = 1973
-# 36902f08 – 36874300 = 8EC08
+PROVINCE_ID = 2207
 
 
-def do_provinces(pm):
+def get_provinces(pm: Pymem):
     provinces = pm.pattern_scan_all(pattern=PROVINCE_PATTERN_A, return_multiple=True)
     print(f"{len(provinces)=}")
-    for p in provinces:
-        if check_id(pm, p, PROVINCE_ID):
-            c_province = make_province(pm, p)
-            dump_province_four_bytes(pm, p)
-            # pm.write_bytes(p + 0x334, "GER".encode(), 3)
-            # pm.write_bytes(p + 0x338, b"\x03\x00\x00\x00", 4)
-            print(json.dumps(c_province.dict(), indent=2))
     get_array_element_lengths(provinces)
+    return provinces
 
 
-def get_province(pm, _id):
-    provinces = pm.pattern_scan_all(pattern=PROVINCE_PATTERN_A, return_multiple=True)
-    print(f"{len(provinces)=}")
+def get_province(pm: Pymem, provinces: list, _id: int):
     for p in provinces:
-        if check_id(pm, p, _id):
-            c_province = make_province(pm, p)
+        if CProvince.check_id_from_ptr(pm, p, _id):
+            c_province = CProvince.make(pm, p)
             return c_province
 
 
-def do_province_building(pm: Pymem, province: CProvince, building_index: int):
+def get_province_building(pm: Pymem, province: CProvince, building_index: int):
     # print(hex(province.building_pointer_list_pointer))
-    building_pointer = to_number(pm.read_bytes(province.building_pointer_list_pointer + (building_index * 4), 4))
-    # print(hex(building_pointer))
-    # print(hex(building_pointer + 0x32))
-    # print(hex(building_pointer + 0x36))
-    print(f"Max = {to_number(pm.read_bytes(building_pointer + 32, 4))}")
-    print(f"Current = {to_number(pm.read_bytes(building_pointer + 36, 4))}")
+    building_ptr = to_number(pm.read_bytes(province.building_array_ptr + (building_index * 4), 4))
+    building = CProvinceBuilding.make(pm, building_ptr)
+    print(hex(building.self_ptr))
+    print(building)
+
+    x = 0
+    # pm.write_bytes(building_ptr + 0x20, x.to_bytes(length=4, byteorder="little", signed=True), 4)
 
 
 def main():
     pm = Pymem("hoi3_tfh.exe")
-    # do_province_buildings(pm)
-    # do_provinces(pm)
-    do_province_building(pm, get_province(pm, PROVINCE_ID), 1)  # Airbase
-    do_province_building(pm, get_province(pm, PROVINCE_ID), 21)  # infra
+    provinces = get_provinces(pm)
+    province = get_province(pm, provinces, PROVINCE_ID)
+    print(province)
+    get_province_building(pm, province, 11)
 
 
 if __name__ == "__main__":

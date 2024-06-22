@@ -14,19 +14,3 @@ def get_array_element_lengths(array):
 
 def to_number(_in: bytes):
     return int.from_bytes(_in, byteorder="little", signed=True)
-
-
-def check_id(pm, p_province, target_id):
-    id = to_number(pm.read_bytes(p_province + 0xD0, 4))
-    return id == target_id
-
-
-def to_pymem_hex(input: str):
-    split = input.split(" ")
-    res = ""
-    for x in split:
-        y = x
-        y.replace("?", ".")
-        res = res + f"\\x{y}"
-
-    return res
