@@ -15,6 +15,11 @@ class CBuilding(pydantic.BaseModel):
     index: int  # 0x54
     name_raw: str  # 0x1c
     name_pretty: str  # 0x38
+    cost: int  # 0x58
+    time: int  # 0x5c
+    max_level: int  # 0x68
+    completion_size: int  # 0x8c
+    damage_factor: int  # 0x90
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -24,6 +29,11 @@ class CBuilding(pydantic.BaseModel):
             "effect_value": to_number(pm.read_bytes(ptr + 0x8, 4)),
             "name_raw": cls.get_string(pm, ptr + 0x1C),
             "name_pretty": cls.get_string(pm, ptr + 0x38),
+            "cost": to_number(pm.read_bytes(ptr + 0x58, 4)),
+            "time": to_number(pm.read_bytes(ptr + 0x5C, 4)),
+            "max_level": to_number(pm.read_bytes(ptr + 0x68, 4)),
+            "completion_size": to_number(pm.read_bytes(ptr + 0x8C, 4)),
+            "damage_factor": to_number(pm.read_bytes(ptr + 0x90, 4)),
         }
 
         return cls(**temp)
