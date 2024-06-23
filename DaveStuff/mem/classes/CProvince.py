@@ -1,12 +1,15 @@
 import pydantic
 from pymem import Pymem
 from typing import ClassVar
+
+from classes.CProvinceBuilding import CProvinceBuilding
 from utils import to_number
 
 
 class CProvince(pydantic.BaseModel):
     PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00"
     LENGTH: ClassVar[int] = 936
+    PROVINCES: ClassVar[list] = None
     self_ptr: int
     id: int  # 0xd0
     owner: str  # 0x32c
@@ -21,7 +24,7 @@ class CProvince(pydantic.BaseModel):
     metal: int  # 0x280
     rares: int  # 0x288
     oil: int  # 0x27c
-    building_array_ptr: int  # 0x310
+    CProvinceBuilding_array_ptr: int  # 0x310
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -40,7 +43,7 @@ class CProvince(pydantic.BaseModel):
             "metal": to_number(pm.read_bytes(ptr + 0x280, 4)),
             "rares": to_number(pm.read_bytes(ptr + 0x288, 4)),
             "oil": to_number(pm.read_bytes(ptr + 0x27C, 4)),
-            "building_array_ptr": to_number(pm.read_bytes(ptr + 0x310, 4)),
+            "CProvinceBuilding_array_ptr": to_number(pm.read_bytes(ptr + 0x310, 4)),
         }
 
         return cls(**temp)
@@ -57,7 +60,32 @@ class CProvince(pydantic.BaseModel):
             )
             current += 4
 
+    @classmethod
+    def get_provinces(cls, pm: Pymem) -> list[int]:
+        provinces = pm.pattern_scan_all(pattern=cls.PATTERN, return_multiple=True)
+        cls.PROVINCES = provinces
+        return provinces
+
+    @classmethod
+    def get_province(cls, pm: Pymem, _id: int):
+        if not cls.PROVINCES:
+            raise Exception("Provinces have not been read yet. Use 'CProvince.get_provinces' first!")
+        for p in cls.PROVINCES:
+            if cls.check_id_from_ptr(pm, p, _id):
+                c_province = cls.make(pm, p)
+                return c_province
+
     @staticmethod
     def check_id_from_ptr(pm, province_ptr, target_id):
         _id = to_number(pm.read_bytes(province_ptr + 0xD0, 4))
         return _id == target_id
+
+    def get_province_building(self, pm: Pymem, building_index: int):
+        building_ptr = to_number(pm.read_bytes(self.CProvinceBuilding_array_ptr + (building_index * 4), 4))
+        building = CProvinceBuilding.make(pm, building_ptr)
+        # print(hex(building.self_ptr))
+        # print(building)
+        x = 0
+        # pm.write_bytes(building_ptr + 0x20, x.to_bytes(length=4, byteorder="little", signed=True), 4)
+
+        return building
