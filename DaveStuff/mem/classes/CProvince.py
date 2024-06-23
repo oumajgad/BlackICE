@@ -1,16 +1,12 @@
 import pydantic
 from pymem import Pymem
-
+from typing import ClassVar
 from utils import to_number
 
 
-PROVINCE_PATTERN_A = rb"\xF8\xEB..\x8D\x01\x00\x00"
-PROVINCE_PATTERN_B = rb"\xF8\xEB..\x8D\x01\x00\x00\x1C\xEC..\x00\x00\x00\x00"
-PROVINCE_PATTERN_C = rb"\xF8\xEB..\x8D\x01\x00\x00\x1C\xEC..\x00\x00\x00\x00\x9F\x86\x01\x00\x00\x00\x00\x00"
-PROVINCE_LENGTH_BYTES = 936
-
-
 class CProvince(pydantic.BaseModel):
+    PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00"
+    LENGTH: ClassVar[int] = 936
     self_ptr: int
     id: int  # 0xd0
     owner: str  # 0x32c
@@ -49,11 +45,11 @@ class CProvince(pydantic.BaseModel):
 
         return cls(**temp)
 
-    @staticmethod
-    def dump_province_four_bytes(pm: Pymem, province_ptr: int):
+    @classmethod
+    def dump_province_four_bytes(cls, pm: Pymem, province_ptr: int):
         print(f"Dumping {hex(province_ptr)}")
         current = province_ptr
-        for _ in range(0, int(PROVINCE_LENGTH_BYTES / 4)):
+        for _ in range(0, int(cls.LENGTH / 4)):
             res = pm.read_bytes(current, 4)
 
             print(

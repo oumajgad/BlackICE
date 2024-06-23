@@ -1,6 +1,5 @@
 import pydantic
 from pymem import Pymem
-
 from utils import to_number
 
 
