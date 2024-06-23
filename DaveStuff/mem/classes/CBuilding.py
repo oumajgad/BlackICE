@@ -48,8 +48,9 @@ class CBuilding(pydantic.BaseModel):
 
     @classmethod
     def get_buildings(cls, pm: Pymem):
+        if cls.BUILDINGS:
+            return cls.BUILDINGS
         building_ptrs = pm.pattern_scan_all(pattern=cls.PATTERN, return_multiple=True)
-        print(f"{len(building_ptrs)=}")
         res = []
         for ptr in building_ptrs:
             x = cls.make(pm, ptr)

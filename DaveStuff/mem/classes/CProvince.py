@@ -7,10 +7,11 @@ from utils import to_number
 
 
 class CProvince(pydantic.BaseModel):
-    PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00"
+    PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00\x1C\xEC\x9B\x01."
     LENGTH: ClassVar[int] = 936
     PROVINCES: ClassVar[list] = None
     self_ptr: int
+    is_selected: bool  # 0xc
     id: int  # 0xd0
     owner: str  # 0x32c
     owner_id: int  # 0x330
@@ -30,6 +31,7 @@ class CProvince(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
+            "is_selected": pm.read_bool(ptr + 0xC),
             "id": to_number(pm.read_bytes(ptr + 0xD0, 4)),
             "owner": pm.read_bytes(ptr + 0x32C, 3),
             "owner_id": to_number(pm.read_bytes(ptr + 0x330, 4)),
@@ -62,6 +64,8 @@ class CProvince(pydantic.BaseModel):
 
     @classmethod
     def get_provinces(cls, pm: Pymem) -> list[int]:
+        if cls.PROVINCES:
+            return cls.PROVINCES
         provinces = pm.pattern_scan_all(pattern=cls.PATTERN, return_multiple=True)
         cls.PROVINCES = provinces
         return provinces
@@ -69,7 +73,7 @@ class CProvince(pydantic.BaseModel):
     @classmethod
     def get_province(cls, pm: Pymem, _id: int):
         if not cls.PROVINCES:
-            raise Exception("Provinces have not been read yet. Use 'CProvince.get_provinces' first!")
+            cls.get_provinces(pm)
         for p in cls.PROVINCES:
             if cls.check_id_from_ptr(pm, p, _id):
                 c_province = cls.make(pm, p)
