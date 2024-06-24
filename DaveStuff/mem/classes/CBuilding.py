@@ -20,6 +20,11 @@ class CBuilding(pydantic.BaseModel):
     max_level: int  # 0x68
     completion_size: int  # 0x8c
     damage_factor: int  # 0x90
+    on_map: bool  # 0x94
+    visibility: bool  # 0x95
+    repair: bool  # 0x96
+    capital: bool  # 0x60
+    port: bool  # 0x61
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -34,6 +39,11 @@ class CBuilding(pydantic.BaseModel):
             "max_level": to_number(pm.read_bytes(ptr + 0x68, 4)),
             "completion_size": to_number(pm.read_bytes(ptr + 0x8C, 4)),
             "damage_factor": to_number(pm.read_bytes(ptr + 0x90, 4)),
+            "on_map": pm.read_bool(ptr + 0x94),
+            "visibility": pm.read_bool(ptr + 0x95),
+            "repair": pm.read_bool(ptr + 0x96),
+            "capital": pm.read_bool(ptr + 0x60),
+            "port": pm.read_bool(ptr + 0x61),
         }
 
         return cls(**temp)

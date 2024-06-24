@@ -7,7 +7,7 @@ from utils import to_number
 
 
 class CProvince(pydantic.BaseModel):
-    PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00\x1C\xEC\x9B\x01."
+    PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00\x1C\xEC.\x01"
     LENGTH: ClassVar[int] = 936
     PROVINCES: ClassVar[list] = None
     self_ptr: int
