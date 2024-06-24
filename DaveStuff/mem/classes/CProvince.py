@@ -51,18 +51,6 @@ class CProvince(pydantic.BaseModel):
         return cls(**temp)
 
     @classmethod
-    def dump_province_four_bytes(cls, pm: Pymem, province_ptr: int):
-        print(f"Dumping {hex(province_ptr)}")
-        current = province_ptr
-        for _ in range(0, int(cls.LENGTH / 4)):
-            res = pm.read_bytes(current, 4)
-
-            print(
-                f"addr: +{hex(current - province_ptr)} hex: {hex(to_number(res))} - {to_number(res)} - {res.decode(encoding='cp1252', errors='ignore')}"
-            )
-            current += 4
-
-    @classmethod
     def get_provinces(cls, pm: Pymem) -> list[int]:
         if cls.PROVINCES:
             return cls.PROVINCES
@@ -87,8 +75,6 @@ class CProvince(pydantic.BaseModel):
     def get_province_building(self, pm: Pymem, building_index: int):
         building_ptr = to_number(pm.read_bytes(self.CProvinceBuilding_array_ptr + (building_index * 4), 4))
         building = CProvinceBuilding.make(pm, building_ptr)
-        # print(hex(building.self_ptr))
-        # print(building)
         x = 0
         # pm.write_bytes(building_ptr + 0x20, x.to_bytes(length=4, byteorder="little", signed=True), 4)
 

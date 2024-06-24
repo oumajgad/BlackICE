@@ -33,3 +33,24 @@ def read_string(pm: Pymem, ptr: int, terminator: int = 0):
                 return str(res)
             else:
                 res = res + chr(x)
+
+
+def get_string_maybe_ptr(pm: Pymem, ptr: int):
+    for i in range(4):
+        x = pm.read_bytes(ptr + i, 1)
+        # print(f"{i} - {x} - {x.isalpha()} {x.isspace()}")
+        if not x.isalpha() and not x.isspace():
+            return read_string(pm, to_number(pm.read_bytes(ptr, 4)))
+    return read_string(pm, ptr)
+
+
+def dump_bytes(pm: Pymem, ptr: int, length: int):
+    print(f"Dumping {hex(ptr)}")
+    current = ptr
+    for _ in range(0, int(length / 4)):
+        res = pm.read_bytes(current, 4)
+
+        print(
+            f"addr: +{hex(current - ptr)} hex: {hex(to_number(res))} - {to_number(res)} - {res.decode(encoding='cp1252', errors='ignore')}"
+        )
+        current += 4

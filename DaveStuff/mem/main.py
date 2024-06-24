@@ -4,7 +4,8 @@ from pymem import Pymem
 
 from classes.CProvince import CProvince
 from classes.CBuilding import CBuilding
-from utils import get_array_element_lengths
+from classes.CProvinceModifier import CProvinceModifier
+from utils import get_array_element_lengths, dump_bytes, get_string_maybe_ptr
 
 
 # debug_setBreakpoint('00E9F4A7', function()
@@ -35,7 +36,11 @@ def main():
     print(province_building)
     buildings = CBuilding.get_buildings(pm)
     print(f"{len(buildings)=}")
-    print(json.dumps(buildings[10].dict(), indent=2))
+    bld = buildings[57]
+    print(json.dumps(bld.dict(), indent=2))
+    cp_modifier = CProvinceModifier.make(pm, bld.CProvinceModifier_ptr)
+    print(f"{cp_modifier.name_raw}")
+    dump_bytes(pm, cp_modifier.self_ptr, cp_modifier.LENGTH)
 
 
 if __name__ == "__main__":

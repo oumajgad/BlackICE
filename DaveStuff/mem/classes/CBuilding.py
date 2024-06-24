@@ -1,17 +1,18 @@
 import pydantic
 from pymem import Pymem
 from typing import ClassVar
-from utils import to_number, read_string
 
-
-# CBuildingPATTERN = rb"\xF8\x09\x8A\x01\x8D\x01\x00\x00"
+from classes.CProvinceModifier import CProvinceModifier
+from utils import to_number, get_string_maybe_ptr
 
 
 class CBuilding(pydantic.BaseModel):
     PATTERN: ClassVar[bytes] = rb"\xF8\x09.\x01\x8D\x01\x00\x00"
     BUILDINGS: ClassVar[list] = None
+    LENGTH: ClassVar[int] = 232
     self_ptr: int
     effect_value: int  # 0x8
+    CProvinceModifier_ptr: int  # 0xC
     index: int  # 0x54
     name_raw: str  # 0x1c
     name_pretty: str  # 0x38
@@ -32,8 +33,9 @@ class CBuilding(pydantic.BaseModel):
             "self_ptr": ptr,
             "index": to_number(pm.read_bytes(ptr + 0x54, 4)),
             "effect_value": to_number(pm.read_bytes(ptr + 0x8, 4)),
-            "name_raw": cls.get_string(pm, ptr + 0x1C),
-            "name_pretty": cls.get_string(pm, ptr + 0x38),
+            "CProvinceModifier_ptr": to_number(pm.read_bytes(ptr + 0xC, 4)),
+            "name_raw": get_string_maybe_ptr(pm, ptr + 0x1C),
+            "name_pretty": get_string_maybe_ptr(pm, ptr + 0x38),
             "cost": to_number(pm.read_bytes(ptr + 0x58, 4)),
             "time": to_number(pm.read_bytes(ptr + 0x5C, 4)),
             "max_level": to_number(pm.read_bytes(ptr + 0x68, 4)),
@@ -49,14 +51,6 @@ class CBuilding(pydantic.BaseModel):
         return cls(**temp)
 
     @classmethod
-    def get_string(cls, pm: Pymem, ptr: int):
-        x = pm.read_bytes(ptr, 4)
-        if x.isascii():
-            return read_string(pm, ptr)
-        else:
-            return read_string(pm, to_number(x))
-
-    @classmethod
     def get_buildings(cls, pm: Pymem):
         if cls.BUILDINGS:
             return cls.BUILDINGS
@@ -68,3 +62,7 @@ class CBuilding(pydantic.BaseModel):
         res = sorted(res, key=lambda bld: bld.index)
         cls.BUILDINGS = res
         return res
+
+    def get_province_modifier(self, pm: Pymem):
+        modifier = CProvinceModifier.make(pm, to_number(pm.read_bytes(self.CProvinceModifier_ptr, 4)))
+        return modifier
