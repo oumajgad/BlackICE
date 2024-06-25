@@ -38,59 +38,41 @@ end
 function SetMinisterBuildingsProgressText(building, progress)
     if building == "hospital" then
         UI.m_textCtrl_Hospital:SetValue(progress .. "%")
-    end
-    if building == "rail_terminous" then
+    elseif building == "rail_terminous" then
         UI.m_textCtrl_RailTerminus:SetValue(progress .. "%")
-    end
-    if building == "resource_buildings" then
+    elseif building == "resource_buildings" then
         UI.m_textCtrl_ResourceBuildings:SetValue(progress .. "%")
-    end
-    if building == "automotive_factory" then
+    elseif building == "automotive_factory" then
         UI.m_textCtrl_AutomotiveFactory:SetValue(progress .. "%")
-    end
-    if building == "radar_station" then
+    elseif building == "radar_station" then
         UI.m_textCtrl_RadarStation:SetValue(progress .. "%")
-    end
-    if building == "artillery_factory" then
+    elseif building == "artillery_factory" then
         UI.m_textCtrl_ArtilleryFactory:SetValue(progress .. "%")
-    end
-    if building == "military_college" then
+    elseif building == "military_college" then
         UI.m_textCtrl_TrainingCenters:SetValue(progress .. "%")
-    end
-    if building == "research_lab" then
+    elseif building == "research_lab" then
         UI.m_textCtrl_ResearchCenters:SetValue(progress .. "%")
-    end
-    if building == "supplies_factory" then
+    elseif building == "supplies_factory" then
         UI.m_textCtrl_SupplyFactory:SetValue(progress .. "%")
-    end
-    if building == "heavy_industry" then
+    elseif building == "heavy_industry" then
         UI.m_textCtrl_HeavyIndustry:SetValue(progress .. "%")
-    end
-    if building == "submarine_shipyard" then
+    elseif building == "submarine_shipyard" then
         UI.m_textCtrl_SubmarineShipyard:SetValue(progress .. "%")
-    end
-    if building == "capital_ship_shipyard" then
+    elseif building == "capital_ship_shipyard" then
         UI.m_textCtrl_CapitalShipyard:SetValue(progress .. "%")
-    end
-    if building == "medium_ship_shipyard" then
+    elseif building == "medium_ship_shipyard" then
         UI.m_textCtrl_MediumShipyard:SetValue(progress .. "%")
-    end
-    if building == "small_ship_shipyard" then
+    elseif building == "small_ship_shipyard" then
         UI.m_textCtrl_SmallShipyard:SetValue(progress .. "%")
-    end
-    if building == "heavy_aircraft_factory" then
+    elseif building == "heavy_aircraft_factory" then
         UI.m_textCtrl_HeavyAircraftFactory:SetValue(progress .. "%")
-    end
-    if building == "medium_aircraft_factory" then
+    elseif building == "medium_aircraft_factory" then
         UI.m_textCtrl_MediumAircraftFactory:SetValue(progress .. "%")
-    end
-    if building == "light_aircraft_factory" then
+    elseif building == "light_aircraft_factory" then
         UI.m_textCtrl_LightAircraftFactory:SetValue(progress .. "%")
-    end
-    if building == "tank_factory" then
+    elseif building == "tank_factory" then
         UI.m_textCtrl_TankFactory:SetValue(progress .. "%")
-    end
-    if building == "smallarms_factory" then
+    elseif building == "smallarms_factory" then
         UI.m_textCtrl_SmlArmsFactory:SetValue(progress .. "%")
     end
 end

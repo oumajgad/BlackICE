@@ -1,17 +1,17 @@
 import pydantic
 from pymem import Pymem
+from typing import ClassVar
 
+from classes.CProvinceBuilding import CProvinceBuilding
 from utils import to_number
 
 
-PROVINCE_PATTERN_A = rb"\xF8\xEB..\x8D\x01\x00\x00"
-PROVINCE_PATTERN_B = rb"\xF8\xEB..\x8D\x01\x00\x00\x1C\xEC..\x00\x00\x00\x00"
-PROVINCE_PATTERN_C = rb"\xF8\xEB..\x8D\x01\x00\x00\x1C\xEC..\x00\x00\x00\x00\x9F\x86\x01\x00\x00\x00\x00\x00"
-PROVINCE_LENGTH_BYTES = 936
-
-
 class CProvince(pydantic.BaseModel):
+    PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00\x1C\xEC.\x01"
+    LENGTH: ClassVar[int] = 936
+    PROVINCES: ClassVar[list] = None
     self_ptr: int
+    is_selected: bool  # 0xc
     id: int  # 0xd0
     owner: str  # 0x32c
     owner_id: int  # 0x330
@@ -25,12 +25,13 @@ class CProvince(pydantic.BaseModel):
     metal: int  # 0x280
     rares: int  # 0x288
     oil: int  # 0x27c
-    building_array_ptr: int  # 0x310
+    CProvinceBuilding_array_ptr: int  # 0x310
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
+            "is_selected": pm.read_bool(ptr + 0xC),
             "id": to_number(pm.read_bytes(ptr + 0xD0, 4)),
             "owner": pm.read_bytes(ptr + 0x32C, 3),
             "owner_id": to_number(pm.read_bytes(ptr + 0x330, 4)),
@@ -44,24 +45,37 @@ class CProvince(pydantic.BaseModel):
             "metal": to_number(pm.read_bytes(ptr + 0x280, 4)),
             "rares": to_number(pm.read_bytes(ptr + 0x288, 4)),
             "oil": to_number(pm.read_bytes(ptr + 0x27C, 4)),
-            "building_array_ptr": to_number(pm.read_bytes(ptr + 0x310, 4)),
+            "CProvinceBuilding_array_ptr": to_number(pm.read_bytes(ptr + 0x310, 4)),
         }
 
         return cls(**temp)
 
-    @staticmethod
-    def dump_province_four_bytes(pm: Pymem, province_ptr: int):
-        print(f"Dumping {hex(province_ptr)}")
-        current = province_ptr
-        for _ in range(0, int(PROVINCE_LENGTH_BYTES / 4)):
-            res = pm.read_bytes(current, 4)
+    @classmethod
+    def get_provinces(cls, pm: Pymem) -> list[int]:
+        if cls.PROVINCES:
+            return cls.PROVINCES
+        provinces = pm.pattern_scan_all(pattern=cls.PATTERN, return_multiple=True)
+        cls.PROVINCES = provinces
+        return provinces
 
-            print(
-                f"addr: +{hex(current - province_ptr)} hex: {hex(to_number(res))} - {to_number(res)} - {res.decode(encoding='cp1252', errors='ignore')}"
-            )
-            current += 4
+    @classmethod
+    def get_province(cls, pm: Pymem, _id: int):
+        if not cls.PROVINCES:
+            cls.get_provinces(pm)
+        for p in cls.PROVINCES:
+            if cls.check_id_from_ptr(pm, p, _id):
+                c_province = cls.make(pm, p)
+                return c_province
 
     @staticmethod
     def check_id_from_ptr(pm, province_ptr, target_id):
         _id = to_number(pm.read_bytes(province_ptr + 0xD0, 4))
         return _id == target_id
+
+    def get_province_building(self, pm: Pymem, building_index: int):
+        building_ptr = to_number(pm.read_bytes(self.CProvinceBuilding_array_ptr + (building_index * 4), 4))
+        building = CProvinceBuilding.make(pm, building_ptr)
+        x = 0
+        # pm.write_bytes(building_ptr + 0x20, x.to_bytes(length=4, byteorder="little", signed=True), 4)
+
+        return building
