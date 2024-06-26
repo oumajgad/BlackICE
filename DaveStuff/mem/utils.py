@@ -44,6 +44,15 @@ def get_string_maybe_ptr(pm: Pymem, ptr: int):
     return read_string(pm, ptr)
 
 
+def read_nested_pointers(pm: Pymem, start_ptr: int, depth: int):
+    ptr = start_ptr
+    for i in range(depth):
+        ptr = pm.read_uint(ptr)
+        if ptr == 0:
+            return 0
+    return ptr
+
+
 def dump_bytes(pm: Pymem, ptr: int, length: int):
     print(f"Dumping {hex(ptr)}")
     current = ptr
