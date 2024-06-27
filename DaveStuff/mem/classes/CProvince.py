@@ -11,6 +11,7 @@ class CProvince(pydantic.BaseModel):
     LENGTH: ClassVar[int] = 936
     PROVINCES: ClassVar[list] = None
     self_ptr: int
+    # unknown_function_pointer: int  # 0x8 // always return 3
     is_selected: bool  # 0xc
     id: int  # 0xd0
     owner: str  # 0x32c
@@ -45,7 +46,7 @@ class CProvince(pydantic.BaseModel):
             "metal": to_number(pm.read_bytes(ptr + 0x280, 4)),
             "rares": to_number(pm.read_bytes(ptr + 0x288, 4)),
             "oil": to_number(pm.read_bytes(ptr + 0x27C, 4)),
-            "CProvinceBuilding_array_ptr": to_number(pm.read_bytes(ptr + 0x310, 4)),
+            "CProvinceBuilding_array_ptr": pm.read_uint(ptr + 0x310),
         }
 
         return cls(**temp)
@@ -63,17 +64,16 @@ class CProvince(pydantic.BaseModel):
         if not cls.PROVINCES:
             cls.get_provinces(pm)
         for p in cls.PROVINCES:
-            if cls.check_id_from_ptr(pm, p, _id):
+            if cls.get_id_from_ptr(pm, p) == _id:
                 c_province = cls.make(pm, p)
                 return c_province
 
     @staticmethod
-    def check_id_from_ptr(pm, province_ptr, target_id):
-        _id = to_number(pm.read_bytes(province_ptr + 0xD0, 4))
-        return _id == target_id
+    def get_id_from_ptr(pm, province_ptr):
+        return to_number(pm.read_bytes(province_ptr + 0xD0, 4))
 
     def get_province_building(self, pm: Pymem, building_index: int):
-        building_ptr = to_number(pm.read_bytes(self.CProvinceBuilding_array_ptr + (building_index * 4), 4))
+        building_ptr = pm.read_uint(self.CProvinceBuilding_array_ptr + (building_index * 4))
         building = CProvinceBuilding.make(pm, building_ptr)
         x = 0
         # pm.write_bytes(building_ptr + 0x20, x.to_bytes(length=4, byteorder="little", signed=True), 4)
