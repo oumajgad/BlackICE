@@ -14,9 +14,9 @@ class CProvince(pydantic.BaseModel):
     # unknown_function_pointer: int  # 0x8 // always return 3
     is_selected: bool  # 0xc
     id: int  # 0xd0
-    owner: str  # 0x32c
+    owner_tag: str  # 0x32c
     owner_id: int  # 0x330
-    controller: str  # 0x334
+    controller_tag: str  # 0x334
     controller_id: int  # 0x338
     supply_pool: int  # 0x1b4
     supply_depot_province: int  # 0x48
@@ -34,9 +34,9 @@ class CProvince(pydantic.BaseModel):
             "self_ptr": ptr,
             "is_selected": pm.read_bool(ptr + 0xC),
             "id": to_number(pm.read_bytes(ptr + 0xD0, 4)),
-            "owner": pm.read_bytes(ptr + 0x32C, 3),
+            "owner_tag": pm.read_bytes(ptr + 0x32C, 3),
             "owner_id": to_number(pm.read_bytes(ptr + 0x330, 4)),
-            "controller": pm.read_bytes(ptr + 0x334, 3),
+            "controller_tag": pm.read_bytes(ptr + 0x334, 3),
             "controller_id": to_number(pm.read_bytes(ptr + 0x338, 4)),
             "supply_pool": to_number(pm.read_bytes(ptr + 0x1B4, 4)),
             "supply_depot_province": to_number(pm.read_bytes(ptr + 0x48, 4)),

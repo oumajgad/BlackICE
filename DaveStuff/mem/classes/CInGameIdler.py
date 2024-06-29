@@ -11,7 +11,7 @@ class CInGameIdler(pydantic.BaseModel):
     Virtual function number 16 gets used by the GUI every frame.
     """
 
-    PATTERN: ClassVar[bytes] = rb"\x54\xEB\x34\x01\x00\x00\x00\x00"
+    PATTERN: ClassVar[bytes] = rb"\x54\xEB.\x01\x00\x00\x00\x00\x00...\x00\x00\x00\x00"
     self_ptr: int
     selected_province_ptr_ptr: int  # 0x1304 // Points into the 3rd double word of the province; nested pointers!
     selected_province_ptr_ptr_2: int  # 0x1308 // Copied into this field too for some reason
@@ -34,6 +34,7 @@ class CInGameIdler(pydantic.BaseModel):
     def _read_province_ptrs(cls, pm: Pymem, ptr):
         province_ptr_1 = read_nested_pointers(pm, ptr + 0x1304, 2)
         province_ptr_2 = read_nested_pointers(pm, ptr + 0x1308, 2)
+        # -8 to get the actual head of the province.
         if province_ptr_1:
             province_ptr_1 -= 8
         if province_ptr_2:
