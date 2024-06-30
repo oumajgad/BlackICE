@@ -6,11 +6,6 @@ from utils import to_number, get_string_maybe_ptr
 
 
 class CLeader(pydantic.BaseModel):
-    """
-    No idea what this thing does, probably does alot of things.
-    Virtual function number 16 gets used by the GUI every frame.
-    """
-
     PATTERN: ClassVar[bytes] = rb"\x20\x52.\x01\x8D\x01\x00\x00\x25\x00\x00\x00"
     LENGTH: ClassVar[int] = 216
     LEADERS: ClassVar[list[int]] = None

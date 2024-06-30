@@ -6,12 +6,7 @@ from utils import to_number, get_string_maybe_ptr
 
 
 class CUnit(pydantic.BaseModel):
-    """
-    No idea what this thing does, probably does alot of things.
-    Virtual function number 16 gets used by the GUI every frame.
-    """
-
-    PATTERN: ClassVar[bytes] = rb"\x0C\xDE.\x01.\x00\x00\x00"
+    PATTERN: ClassVar[bytes] = rb"\x0C\xDE.\x01....\xB8\xDE\x22\x01\x8D\x01\x00\x00"
     LENGTH: ClassVar[int] = 808
     UNITS: ClassVar[list[int]] = None
     self_ptr: int
@@ -34,7 +29,10 @@ class CUnit(pydantic.BaseModel):
     name: str  # 0x16C
     name_length: int  # 0x17C
     dig_in_level: int  # 0x1C8 // 1000 = 1
+    base_ca_bonus: int  # 0x1CC // 450 = 45% // does not include leader, techs, maybe other stuff
     higher_oob_unit_ptr: int  # 0x1E0
+    lower_oob_unit_ptr: int  # 0x1E8
+    lower_oob_unit_amount: int  # 0x1EC
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -59,7 +57,10 @@ class CUnit(pydantic.BaseModel):
             "name": get_string_maybe_ptr(pm, ptr + 0x16C),
             "name_length": to_number(pm.read_bytes(ptr + 0x17C, 4)),
             "dig_in_level": to_number(pm.read_bytes(ptr + 0x1C8, 4)),
+            "base_ca_bonus": to_number(pm.read_bytes(ptr + 0x1CC, 4)),
             "higher_oob_unit_ptr": pm.read_uint(ptr + 0x1E0),
+            "lower_oob_unit_ptr": pm.read_uint(ptr + 0x1E8),
+            "lower_oob_unit_amount": to_number(pm.read_bytes(ptr + 0x1EC, 4)),
         }
 
         return cls(**temp)
@@ -71,3 +72,7 @@ class CUnit(pydantic.BaseModel):
         res = pm.pattern_scan_all(pattern=cls.PATTERN, return_multiple=True)
         cls.UNITS = res
         return res
+
+    @classmethod
+    def get_name_from_ptr(cls, pm: Pymem, ptr: int):
+        return get_string_maybe_ptr(pm, ptr + 0x16C)

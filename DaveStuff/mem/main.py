@@ -8,6 +8,7 @@ from classes.CLeader import CLeader
 from classes.CProvince import CProvince
 from classes.CBuilding import CBuilding
 from classes.CProvinceModifier import CProvinceModifier
+from classes.CSubUnit import CSubUnit
 from classes.CUnit import CUnit
 from utils import get_array_element_lengths, dump_bytes, get_string_maybe_ptr
 
@@ -27,13 +28,17 @@ def search_pattern(pm: Pymem, pattern):
     return res
 
 
-PROVINCE_ID = 2319
+PROVINCE_ID = 1528
 
 
 def main():
     pm = Pymem("hoi3_tfh.exe")
-    # x = pm.pattern_scan_all(pattern=rb"\x20\x52.\x01\x8D\x01\x00\x00\x25\x00\x00\x00", return_multiple=True)
-    # y = pm.pattern_scan_all(pattern=rb"\x20\x52\x23\x01\x8D\x01\x00\x00\x25\x00\x00\x00", return_multiple=True)
+    # x = pm.pattern_scan_all(
+    #     pattern=rb"\x0C\xDE\x22\x01\x00\x00\x00\x00\xB8\xDE\x22\x01\x8D\x01\x00\x00", return_multiple=True
+    # )
+    # y = pm.pattern_scan_all(
+    #     pattern=rb"\x0C\xDE.\x01.\x00\x00\x00\xB8\xDE\x22\x01\x8D\x01\x00\x00", return_multiple=True
+    # )
     # print(len(x))
     # print(len(y))
     # get_array_element_lengths(y)
@@ -59,12 +64,15 @@ def main():
     #     if in_game_idler.selected_province_ptr_ptr != 0:
     #         print(CProvince.get_id_from_ptr(pm, in_game_idler.selected_province_ptr_ptr))
 
-    unit = CUnit.make(pm=pm, ptr=0xC6F75E68)
-    print(json.dumps(unit.dict(), indent=2))
-    dump_bytes(pm, unit.self_ptr, unit.LENGTH)
-    leader = CLeader.make(pm=pm, ptr=unit.leader_ptr)
-    print(json.dumps(leader.dict(), indent=2))
-    dump_bytes(pm, leader.self_ptr, leader.LENGTH)
+    for unit_ptr in CUnit.get_units(pm):
+        name = CUnit.get_name_from_ptr(pm, unit_ptr)
+        # BD2ABCF8 1. inf
+        # BD2B2848 1. kav
+        if name == "I. A.K." or name == "1. Infanterie-Division" or name == "§Y1. Kavallerie-Brigade§W":
+            unit = CUnit.make(pm, unit_ptr)
+            if unit.owner_tag == "GER":
+                print(f"{name} - {unit.self_ptr}")
+                # print(json.dumps(unit.dict(), indent=2))
 
 
 if __name__ == "__main__":
