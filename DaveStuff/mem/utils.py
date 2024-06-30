@@ -38,9 +38,10 @@ def read_string(pm: Pymem, ptr: int, terminator: int = 0):
 def get_string_maybe_ptr(pm: Pymem, ptr: int):
     for i in range(4):
         x = pm.read_bytes(ptr + i, 1)
-        # print(f"{i} - {x} - {x.isalpha()} {x.isspace()}")
         if not x.isalpha() and not x.isspace():
-            return read_string(pm, to_number(pm.read_bytes(ptr, 4)))
+            # Its a pointer
+            return read_string(pm, pm.read_uint(ptr))
+    # Its a string
     return read_string(pm, ptr)
 
 

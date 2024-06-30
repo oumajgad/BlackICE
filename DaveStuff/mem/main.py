@@ -27,17 +27,20 @@ def search_pattern(pm: Pymem, pattern):
     return res
 
 
-PROVINCE_ID = 2091
+PROVINCE_ID = 2319
 
 
 def main():
     pm = Pymem("hoi3_tfh.exe")
-    # y = pm.pattern_scan_all(pattern=rb"\x0C\xDE\x4C\x01", return_multiple=True)
+    # x = pm.pattern_scan_all(pattern=rb"\x20\x52.\x01\x8D\x01\x00\x00\x25\x00\x00\x00", return_multiple=True)
+    # y = pm.pattern_scan_all(pattern=rb"\x20\x52\x23\x01\x8D\x01\x00\x00\x25\x00\x00\x00", return_multiple=True)
+    # print(len(x))
+    # print(len(y))
     # get_array_element_lengths(y)
-    provinces = CProvince.get_provinces(pm)
-    print(f"{len(provinces)=}")
-    province = CProvince.get_province(pm, PROVINCE_ID)
-    print(json.dumps(province.dict(), indent=2))
+    # provinces = CProvince.get_provinces(pm)
+    # print(f"{len(provinces)=}")
+    # province = CProvince.get_province(pm, PROVINCE_ID)
+    # print(json.dumps(province.dict(), indent=2))
     # province_building = province.get_province_building(pm, 11)
     # print(json.dumps(province_building.dict(), indent=2))
     # buildings = CBuilding.get_buildings(pm)
@@ -56,10 +59,10 @@ def main():
     #     if in_game_idler.selected_province_ptr_ptr != 0:
     #         print(CProvince.get_id_from_ptr(pm, in_game_idler.selected_province_ptr_ptr))
 
-    unit = CUnit.make(pm=pm, ptr=0xC472A098)
+    unit = CUnit.make(pm=pm, ptr=0xC6F75E68)
     print(json.dumps(unit.dict(), indent=2))
     dump_bytes(pm, unit.self_ptr, unit.LENGTH)
-    leader = CLeader.make(pm=pm, ptr=0x9C16B620)
+    leader = CLeader.make(pm=pm, ptr=unit.leader_ptr)
     print(json.dumps(leader.dict(), indent=2))
     dump_bytes(pm, leader.self_ptr, leader.LENGTH)
 

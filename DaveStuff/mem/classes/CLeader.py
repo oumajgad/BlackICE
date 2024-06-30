@@ -11,8 +11,9 @@ class CLeader(pydantic.BaseModel):
     Virtual function number 16 gets used by the GUI every frame.
     """
 
-    PATTERN: ClassVar[bytes] = rb"\x20\x52\x4D\x01\x8D\x01\x00\x00\x25\x00\x00\x00"
-    LENGTH: int = 216
+    PATTERN: ClassVar[bytes] = rb"\x20\x52.\x01\x8D\x01\x00\x00\x25\x00\x00\x00"
+    LENGTH: ClassVar[int] = 216
+    LEADERS: ClassVar[list[int]] = None
     self_ptr: int
     id: int  # 0xC
     number_of_traits: int  # 0x38
@@ -36,3 +37,11 @@ class CLeader(pydantic.BaseModel):
         }
 
         return cls(**temp)
+
+    @classmethod
+    def get_leaders(cls, pm: Pymem) -> list[int]:
+        if cls.LEADERS:
+            return cls.LEADERS
+        res = pm.pattern_scan_all(pattern=cls.PATTERN, return_multiple=True)
+        cls.LEADERS = res
+        return res
