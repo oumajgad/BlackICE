@@ -3,10 +3,12 @@ from pymem import Pymem
 from typing import ClassVar
 
 from classes.CProvinceBuilding import CProvinceBuilding
+from constants import DATA_SECTION_START
 from utils import to_number
 
 
-class CProvince(pydantic.BaseModel):
+class CMapProvince(pydantic.BaseModel):
+    VFTABLE: ClassVar[bytes] = rb"\x1C\xEC\x3B\x01"
     PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00\x1C\xEC.\x01"
     LENGTH: ClassVar[int] = 936
     PROVINCES: ClassVar[list[int]] = None
@@ -55,9 +57,9 @@ class CProvince(pydantic.BaseModel):
     def get_provinces(cls, pm: Pymem) -> list[int]:
         if cls.PROVINCES:
             return cls.PROVINCES
-        provinces = pm.pattern_scan_all(pattern=cls.PATTERN, return_multiple=True)
-        cls.PROVINCES = provinces
-        return provinces
+        res = pm.pattern_scan_all(pattern=cls.VFTABLE, return_multiple=True)
+        cls.PROVINCES = [ptr - 8 for ptr in res if ptr >= DATA_SECTION_START]
+        return cls.PROVINCES
 
     @classmethod
     def get_province(cls, pm: Pymem, _id: int):

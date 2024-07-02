@@ -5,7 +5,7 @@ from pymem import Pymem
 
 from classes.CInGameIdler import CInGameIdler
 from classes.CLeader import CLeader
-from classes.CProvince import CProvince
+from classes.CMapProvince import CMapProvince
 from classes.CBuilding import CBuilding
 from classes.CProvinceModifier import CProvinceModifier
 from classes.CSubUnit import CSubUnit
@@ -42,9 +42,13 @@ def main():
     # print(len(x))
     # print(len(y))
     # get_array_element_lengths(y)
-    # provinces = CProvince.get_provinces(pm)
-    # print(f"{len(provinces)=}")
-    # province = CProvince.get_province(pm, PROVINCE_ID)
+    provinces = CMapProvince.get_provinces(pm)
+    print(f"{len(provinces)=}")
+    for ptr in provinces:
+        # print(ptr)
+        province = CMapProvince.make(pm, ptr)
+
+    # province = CMapProvince.get_province(pm, PROVINCE_ID)
     # print(json.dumps(province.dict(), indent=2))
     # province_building = province.get_province_building(pm, 11)
     # print(json.dumps(province_building.dict(), indent=2))
@@ -64,15 +68,27 @@ def main():
     #     if in_game_idler.selected_province_ptr_ptr != 0:
     #         print(CProvince.get_id_from_ptr(pm, in_game_idler.selected_province_ptr_ptr))
 
-    for unit_ptr in CUnit.get_units(pm):
-        name = CUnit.get_name_from_ptr(pm, unit_ptr)
-        # BD2ABCF8 1. inf
-        # BD2B2848 1. kav
-        if name == "I. A.K." or name == "1. Infanterie-Division" or name == "§Y1. Kavallerie-Brigade§W":
-            unit = CUnit.make(pm, unit_ptr)
-            if unit.owner_tag == "GER":
-                print(f"{name} - {unit.self_ptr}")
-                # print(json.dumps(unit.dict(), indent=2))
+    # for unit_ptr in CUnit.get_units(pm):
+    #     name = CUnit.get_name_from_ptr(pm, unit_ptr)
+    #     # BD2ABCF8 1. inf
+    #     # BD2B2848 1. kav
+    #     if name == "I. A.K." or name == "1. Infanterie-Division" or name == "§Y1. Kavallerie-Brigade§W":
+    #         unit = CUnit.make(pm, unit_ptr)
+    #         if unit.owner_tag == "GER":
+    #             print(f"{name} - {unit.self_ptr}")
+    #             # print(json.dumps(unit.dict(), indent=2))
+
+    # sub_unit = CSubUnit.make(pm, 0x92C823E8)
+    # print(json.dumps(sub_unit.dict(), indent=2))
+
+    # x = CUnit.make(pm, 0xBD2AC020)
+    # print(x.name)
+    # x = CUnit.make(pm, 0xBD2ABCF8)
+    # print(x.name)
+    # x = CUnit.make(pm, 0xBD2A9A40)
+    # print(x.name)
+    # x = CUnit.make(pm, 0x92C825A8)
+    # print(x.name)
 
 
 if __name__ == "__main__":
