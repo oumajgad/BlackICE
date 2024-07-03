@@ -7,7 +7,7 @@ from classes.CInGameIdler import CInGameIdler
 from classes.CLeader import CLeader
 from classes.CMapProvince import CMapProvince
 from classes.CBuilding import CBuilding
-from classes.CProvinceModifier import CProvinceModifier
+from classes.CModifierDefinition import CModifierDefinition
 from classes.CSubUnit import CSubUnit
 from classes.CArmy import CArmy
 from utils import get_array_element_lengths, dump_bytes, get_string_maybe_ptr
@@ -50,17 +50,21 @@ def main():
     #     province = CMapProvince.make(pm, ptr)
     #
 
-    # province = CMapProvince.get_province(pm, PROVINCE_ID)
-    # print(json.dumps(province.dict(), indent=2))
-    # province_building = province.get_province_building(pm, 21)
-    # print(json.dumps(province_building.dict(), indent=2))
+    province = CMapProvince.get_province(pm, PROVINCE_ID)
+    print(json.dumps(province.dict(), indent=2))
+    province_building = province.get_province_building(pm, 21)
+    print(json.dumps(province_building.dict(), indent=2))
     buildings_ptrs, buildings = CBuilding.get_buildings(pm)
     print(f"{len(buildings)=}")
-    bld = buildings[57]
+    bld = buildings[10]
     print(json.dumps(bld.dict(), indent=2))
-    # cp_modifier = CProvinceModifier.make(pm, bld.CProvinceModifier_ptr)
-    # print(f"{cp_modifier.name_raw=}")
-    # # dump_bytes(pm, cp_modifier.self_ptr, cp_modifier.LENGTH)
+    cp_modifier = CModifierDefinition.make(pm, bld.CProvinceModifier_ptr)
+    print(json.dumps(cp_modifier.dict(), indent=2))
+    modifiers = CModifierDefinition.get_modifier_definitions(pm)
+    for mod in modifiers:
+        cp_modifier = CModifierDefinition.make(pm, mod)
+        print(json.dumps(cp_modifier.dict(), indent=2))
+    # dump_bytes(pm, cp_modifier.self_ptr, cp_modifier.LENGTH)
     # in_game_idler = CInGameIdler.make(pm)
     # print(json.dumps(in_game_idler.dict(), indent=2))
     # for i in range(5):

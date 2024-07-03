@@ -2,7 +2,7 @@ import pydantic
 from pymem import Pymem
 from typing import ClassVar
 
-from classes.CProvinceModifier import CProvinceModifier
+from classes.CModifierDefinition import CModifierDefinition
 from constants import DATA_SECTION_START
 from utils import to_number, get_string_maybe_ptr, read_string
 
@@ -81,5 +81,5 @@ class CBuilding(pydantic.BaseModel):
         return cls.BUILDINGS_PTRS, cls.BUILDINGS
 
     def get_province_modifier(self, pm: Pymem):
-        modifier = CProvinceModifier.make(pm, to_number(pm.read_bytes(self.CProvinceModifier_ptr, 4)))
+        modifier = CModifierDefinition.make(pm, to_number(pm.read_bytes(self.CProvinceModifier_ptr, 4)))
         return modifier
