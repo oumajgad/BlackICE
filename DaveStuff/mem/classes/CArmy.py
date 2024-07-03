@@ -2,11 +2,14 @@ from typing import ClassVar
 
 import pydantic
 from pymem import Pymem
-from utils import to_number, get_string_maybe_ptr
+
+from constants import DATA_SECTION_START
+from utils import to_number, get_string_maybe_ptr, read_string
 
 
-class CUnit(pydantic.BaseModel):
-    PATTERN: ClassVar[bytes] = rb"\x0C\xDE.\x01....\xB8\xDE\x22\x01\x8D\x01\x00\x00"
+class CArmy(pydantic.BaseModel):
+    VFTABLE_OFFSET: ClassVar[int] = 0x11BDEB8
+    PATTERN: ClassVar[bytes] = rb"\x0C\xDE.\x01...."
     LENGTH: ClassVar[int] = 808
     UNITS: ClassVar[list[int]] = None
     self_ptr: int
@@ -54,7 +57,6 @@ class CUnit(pydantic.BaseModel):
             "current_province_ptr": pm.read_uint(ptr + 0x130),
             "supplied_from_province_ptr": pm.read_uint(ptr + 0x134),
             "path_length": to_number(pm.read_bytes(ptr + 0x140, 4)),
-            "name": get_string_maybe_ptr(pm, ptr + 0x16C),
             "name_length": to_number(pm.read_bytes(ptr + 0x17C, 4)),
             "dig_in_level": to_number(pm.read_bytes(ptr + 0x1C8, 4)),
             "base_ca_bonus": to_number(pm.read_bytes(ptr + 0x1CC, 4)),
@@ -62,17 +64,26 @@ class CUnit(pydantic.BaseModel):
             "lower_oob_unit_ptr": pm.read_uint(ptr + 0x1E8),
             "lower_oob_unit_amount": to_number(pm.read_bytes(ptr + 0x1EC, 4)),
         }
-
+        if temp["name_length"] <= 16:
+            temp["name"] = read_string(pm, ptr + 0x16C)
+        else:
+            temp["name"] = get_string_maybe_ptr(pm, ptr + 0x16C)
         return cls(**temp)
 
     @classmethod
     def get_units(cls, pm: Pymem) -> list[int]:
         if cls.UNITS:
             return cls.UNITS
-        res = pm.pattern_scan_all(pattern=cls.PATTERN, return_multiple=True)
-        cls.UNITS = res
+        res = pm.pattern_scan_all(
+            pattern=(pm.base_address + cls.VFTABLE_OFFSET).to_bytes(length=4, byteorder="little", signed=False),
+            return_multiple=True,
+        )
+        cls.UNITS = [ptr - 8 for ptr in res if ptr >= DATA_SECTION_START]
         return res
 
     @classmethod
     def get_name_from_ptr(cls, pm: Pymem, ptr: int):
-        return get_string_maybe_ptr(pm, ptr + 0x16C)
+        if to_number(pm.read_bytes(ptr + 0x17C, 4)) <= 16:
+            return read_string(pm, ptr + 0x16C)
+        else:
+            return get_string_maybe_ptr(pm, ptr + 0x16C)

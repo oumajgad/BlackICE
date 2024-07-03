@@ -8,8 +8,8 @@ from utils import to_number
 
 
 class CMapProvince(pydantic.BaseModel):
-    VFTABLE: ClassVar[bytes] = rb"\x1C\xEC\x3B\x01"
-    PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00\x1C\xEC.\x01"
+    VFTABLE_OFFSET: ClassVar[int] = 0x11BEC1C
+    PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00"
     LENGTH: ClassVar[int] = 936
     PROVINCES: ClassVar[list[int]] = None
     self_ptr: int
@@ -57,7 +57,10 @@ class CMapProvince(pydantic.BaseModel):
     def get_provinces(cls, pm: Pymem) -> list[int]:
         if cls.PROVINCES:
             return cls.PROVINCES
-        res = pm.pattern_scan_all(pattern=cls.VFTABLE, return_multiple=True)
+        res = pm.pattern_scan_all(
+            pattern=(pm.base_address + cls.VFTABLE_OFFSET).to_bytes(length=4, byteorder="little", signed=False),
+            return_multiple=True,
+        )
         cls.PROVINCES = [ptr - 8 for ptr in res if ptr >= DATA_SECTION_START]
         return cls.PROVINCES
 
