@@ -1,9 +1,12 @@
+from typing import ClassVar
+
 import pydantic
 from pymem import Pymem
 from utils import to_number
 
 
 class CProvinceBuilding(pydantic.BaseModel):
+    VFTABLE_OFFSET: ClassVar[int] = 0x11C0A78
     self_ptr: int
     effect: int  # 0x10
     CBuilding_ptr: int  # 0x18

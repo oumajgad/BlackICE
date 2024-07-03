@@ -67,7 +67,7 @@ class CArmy(pydantic.BaseModel):
         if temp["name_length"] <= 16:
             temp["name"] = read_string(pm, ptr + 0x16C)
         else:
-            temp["name"] = get_string_maybe_ptr(pm, ptr + 0x16C)
+            temp["name"] = read_string(pm, pm.read_uint(ptr + 0x16C))
         return cls(**temp)
 
     @classmethod

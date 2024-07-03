@@ -43,23 +43,21 @@ def main():
     # print(len(y))
     # get_array_element_lengths(y)
 
-    provinces = CMapProvince.get_provinces(pm)
-    print(f"{len(provinces)=}")
-    for ptr in provinces:
-        # print(ptr)
-        province = CMapProvince.make(pm, ptr)
-
-    units = CArmy.get_units(pm)
-    print(len(units))
+    # provinces = CMapProvince.get_provinces(pm)
+    # print(f"{len(provinces)=}")
+    # for ptr in provinces:
+    #     # print(ptr)
+    #     province = CMapProvince.make(pm, ptr)
+    #
 
     # province = CMapProvince.get_province(pm, PROVINCE_ID)
     # print(json.dumps(province.dict(), indent=2))
-    # province_building = province.get_province_building(pm, 11)
+    # province_building = province.get_province_building(pm, 21)
     # print(json.dumps(province_building.dict(), indent=2))
-    # buildings = CBuilding.get_buildings(pm)
-    # print(f"{len(buildings)=}")
-    # bld = buildings[57]
-    # print(json.dumps(bld.dict(), indent=2))
+    buildings_ptrs, buildings = CBuilding.get_buildings(pm)
+    print(f"{len(buildings)=}")
+    bld = buildings[57]
+    print(json.dumps(bld.dict(), indent=2))
     # cp_modifier = CProvinceModifier.make(pm, bld.CProvinceModifier_ptr)
     # print(f"{cp_modifier.name_raw=}")
     # # dump_bytes(pm, cp_modifier.self_ptr, cp_modifier.LENGTH)
@@ -72,16 +70,18 @@ def main():
     #     if in_game_idler.selected_province_ptr_ptr != 0:
     #         print(CProvince.get_id_from_ptr(pm, in_game_idler.selected_province_ptr_ptr))
 
-    for unit_ptr in CArmy.get_units(pm):
-        # print(unit_ptr)
-        name = CArmy.get_name_from_ptr(pm, unit_ptr)
-        # BD2ABCF8 1. inf
-        # BD2B2848 1. kav
-        if name == "I. A.K." or name == "1. Infanterie-Division" or name == "§Y1. Kavallerie-Brigade§W":
-            army = CArmy.make(pm, unit_ptr)
-            if army.owner_tag == "GER":
-                print(f"{name} - {army.self_ptr}")
-                # print(json.dumps(army.dict(), indent=2))
+    # units = CArmy.get_units(pm)
+    # print(len(units))
+    # for unit_ptr in CArmy.get_units(pm):
+    #     # print(unit_ptr)
+    #     name = CArmy.get_name_from_ptr(pm, unit_ptr)
+    #     # BD2ABCF8 1. inf
+    #     # BD2B2848 1. kav
+    #     if name == "I. A.K." or name == "1. Infanterie-Division" or name == "§Y1. Kavallerie-Brigade§W":
+    #         army = CArmy.make(pm, unit_ptr)
+    #         if army.owner_tag == "GER":
+    #             print(f"{name} - {army.self_ptr}")
+    #             # print(json.dumps(army.dict(), indent=2))
 
     # sub_unit = CSubUnit.make(pm, 0x92C823E8)
     # print(json.dumps(sub_unit.dict(), indent=2))
