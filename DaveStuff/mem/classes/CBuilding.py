@@ -15,7 +15,7 @@ class CBuilding(pydantic.BaseModel):
     LENGTH: ClassVar[int] = 232
     self_ptr: int
     effect_value: int  # 0x8
-    CProvinceModifier_ptr: int  # 0xC
+    CModifierDefinition_ptr: int  # 0xC
     index: int  # 0x54
     name_raw: str  # 0x1c
     name_raw_length: int  # 0x30
@@ -38,7 +38,7 @@ class CBuilding(pydantic.BaseModel):
             "self_ptr": ptr,
             "index": to_number(pm.read_bytes(ptr + 0x54, 4)),
             "effect_value": to_number(pm.read_bytes(ptr + 0x8, 4)),
-            "CProvinceModifier_ptr": to_number(pm.read_bytes(ptr + 0xC, 4)),
+            "CModifierDefinition_ptr": to_number(pm.read_bytes(ptr + 0xC, 4)),
             "name_raw_length": to_number(pm.read_bytes(ptr + 0x30, 4)),
             "name_pretty_length": to_number(pm.read_bytes(ptr + 0x48, 4)),
             "cost": to_number(pm.read_bytes(ptr + 0x58, 4)),

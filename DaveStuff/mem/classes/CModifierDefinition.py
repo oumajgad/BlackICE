@@ -3,7 +3,7 @@ from pymem import Pymem
 from typing import ClassVar
 
 from constants import DATA_SECTION_START
-from utils import get_string_maybe_ptr, read_string, to_number
+from utils import read_string, to_number
 
 
 class CModifierDefinition(pydantic.BaseModel):

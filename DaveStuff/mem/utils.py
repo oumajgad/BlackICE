@@ -1,3 +1,5 @@
+import struct
+
 from pymem import Pymem
 
 
@@ -13,6 +15,28 @@ def get_array_element_lengths(array):
         i += 1
     lengths = dict(sorted(lengths.items(), key=lambda item: item[1], reverse=True))
     print(f"{lengths=}")
+
+
+def rawbytes(s_in):
+    """Convert a string to raw bytes without encoding"""
+    outlist = []
+    s = s_in.upper()
+    for cp in s:
+        num = ord(cp)
+        if num < 255:
+            outlist.append(struct.pack("B", num))
+        elif num < 65535:
+            outlist.append(struct.pack(">H", num))
+        else:
+            b = (num & 0xFF0000) >> 16
+            H = num & 0xFFFF
+            outlist.append(struct.pack(">bH", b, H))
+
+    res = b""
+    for x in range(0, len(outlist) - 1):
+        if x % 2 == 0:
+            res += b"\\x" + outlist[x] + outlist[x + 1]
+    return res
 
 
 def to_number(_in: bytes):
