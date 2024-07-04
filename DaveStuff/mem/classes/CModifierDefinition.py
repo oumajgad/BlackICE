@@ -3,7 +3,7 @@ from pymem import Pymem
 from typing import ClassVar
 
 from constants import DATA_SECTION_START
-from utils import read_string, to_number, rawbytes
+from utils import read_string, to_number, rawbytes, get_string_maybe_ptr
 
 
 class CModifierDefinitionOffsets:
@@ -23,12 +23,9 @@ class CModifierDefinition(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
+            "name_raw": get_string_maybe_ptr(pm, ptr + CModifierDefinitionOffsets.name_raw),
             "name_raw_length": to_number(pm.read_bytes(ptr + CModifierDefinitionOffsets.name_raw_length, 4)),
         }
-        if temp["name_raw_length"] <= 16:
-            temp["name_raw"] = read_string(pm, ptr + CModifierDefinitionOffsets.name_raw)
-        else:
-            temp["name_raw"] = read_string(pm, pm.read_uint(ptr + CModifierDefinitionOffsets.name_raw))
 
         return cls(**temp)
 

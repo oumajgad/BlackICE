@@ -62,8 +62,12 @@ def read_string(pm: Pymem, ptr: int, terminator: int = 0):
 def get_string_maybe_ptr(pm: Pymem, ptr: int):
     for i in range(4):
         x = pm.read_bytes(ptr + i, 1)
-        # print(f"{x} - {x.isalpha()=} - {x.isspace()=} - {x.isascii()=}")
-        if not x.isalpha() and not x.isspace() and not x.isascii():
+        is_windows_1252 = False
+        if not (int.from_bytes(x) < 0x1F or (0x7F < int.from_bytes(x) < 0x9F)):  # unused characters in the set
+            is_windows_1252 = True
+        print(f"{x} - {x.isalpha()=} - {x.isspace()=} - {x.isascii()=} - {is_windows_1252=}")
+        if not x.isalpha() and not x.isspace() and not x.isascii() and not is_windows_1252:
+            print("It's a pointer")
             # It's a pointer
             return read_string(pm, pm.read_uint(ptr))
     # It's a string

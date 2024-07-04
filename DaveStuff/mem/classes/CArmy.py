@@ -82,6 +82,7 @@ class CArmy(pydantic.BaseModel):
             "current_province_ptr": pm.read_uint(ptr + CArmyOffsets.current_province_ptr),
             "supplied_from_province_ptr": pm.read_uint(ptr + CArmyOffsets.supplied_from_province_ptr),
             "path_length": to_number(pm.read_bytes(ptr + CArmyOffsets.path_length, 4)),
+            "name": get_string_maybe_ptr(pm, ptr + CArmyOffsets.name),
             "name_length": to_number(pm.read_bytes(ptr + CArmyOffsets.name_length, 4)),
             "dig_in_level": to_number(pm.read_bytes(ptr + CArmyOffsets.dig_in_level, 4)),
             "base_ca_bonus": to_number(pm.read_bytes(ptr + CArmyOffsets.base_ca_bonus, 4)),
@@ -89,10 +90,6 @@ class CArmy(pydantic.BaseModel):
             "lower_oob_unit_ptr": pm.read_uint(ptr + CArmyOffsets.lower_oob_unit_ptr),
             "lower_oob_unit_amount": to_number(pm.read_bytes(ptr + CArmyOffsets.lower_oob_unit_amount, 4)),
         }
-        if temp["name_length"] <= 16:
-            temp["name"] = read_string(pm, ptr + CArmyOffsets.name)
-        else:
-            temp["name"] = read_string(pm, pm.read_uint(ptr + CArmyOffsets.name))
         return cls(**temp)
 
     @classmethod
@@ -112,10 +109,7 @@ class CArmy(pydantic.BaseModel):
 
     @classmethod
     def get_name_from_ptr(cls, pm: Pymem, ptr: int):
-        if to_number(pm.read_bytes(ptr + CArmyOffsets.name_length, 4)) <= 16:
-            return read_string(pm, ptr + CArmyOffsets.name)
-        else:
-            return read_string(pm, pm.read_uint(ptr + CArmyOffsets.name))
+        return get_string_maybe_ptr(pm, ptr + CArmyOffsets.name)
 
 
 if __name__ == "__main__":

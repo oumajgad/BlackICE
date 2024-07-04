@@ -39,15 +39,12 @@ class CRegiment(pydantic.BaseModel):
             "strength_a": to_number(pm.read_bytes(ptr + CRegimentOffsets.strength_a, 4)),
             "strength_b": to_number(pm.read_bytes(ptr + CRegimentOffsets.strength_b, 4)),
             "organisation": to_number(pm.read_bytes(ptr + CRegimentOffsets.organisation, 4)),
+            "name": get_string_maybe_ptr(pm, ptr + CRegimentOffsets.name),
             "name_length": to_number(pm.read_bytes(ptr + CRegimentOffsets.name_length, 4)),
             "owner_tag": pm.read_bytes(ptr + CRegimentOffsets.owner_tag, 3),
             "owner_id": to_number(pm.read_bytes(ptr + CRegimentOffsets.owner_id, 4)),
             "division_ptr": pm.read_uint(ptr + CRegimentOffsets.division_ptr),
         }
-        if temp["name_length"] <= 16:
-            temp["name"] = read_string(pm, ptr + CRegimentOffsets.name)
-        else:
-            temp["name"] = read_string(pm, pm.read_uint(ptr + CRegimentOffsets.name))
 
         return cls(**temp)
 
@@ -68,17 +65,21 @@ class CRegiment(pydantic.BaseModel):
 
     @classmethod
     def get_name_from_ptr(cls, pm: Pymem, ptr: int):
-        if to_number(pm.read_bytes(ptr + CRegimentOffsets.name_length, 4)) <= 16:
-            return read_string(pm, ptr + CRegimentOffsets.name)
-        else:
-            return read_string(pm, pm.read_uint(ptr + CRegimentOffsets.name))
+        return get_string_maybe_ptr(pm, ptr + CRegimentOffsets.name)
+        # if to_number(pm.read_bytes(ptr + CRegimentOffsets.name_length, 4)) <= 16:
+        #     return read_string(pm, ptr + CRegimentOffsets.name)
+        # else:
+        #     return read_string(pm, pm.read_uint(ptr + CRegimentOffsets.name))
 
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     regiments = CRegiment.get_regiments(pm)
     print(f"{len(regiments)=}")
-    for reg in regiments:
-        if CRegiment.get_name_from_ptr(pm, reg) == "Kav.-Rgt. 3":
-            x = CRegiment.make(pm, reg)
-            print(x)
+    # for reg in regiments:
+    #     print(reg)
+    #     if CRegiment.get_name_from_ptr(pm, reg) == "Stab 1. Infant":
+    #         x = CRegiment.make(pm, reg)
+    #         print(x)
+    y = CRegiment.make(pm, 0x90999FE8)
+    print(y)

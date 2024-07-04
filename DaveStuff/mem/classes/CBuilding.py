@@ -4,7 +4,7 @@ from typing import ClassVar
 
 from classes.CModifierDefinition import CModifierDefinition
 from constants import DATA_SECTION_START
-from utils import to_number, read_string, rawbytes
+from utils import to_number, read_string, rawbytes, get_string_maybe_ptr
 
 
 class CBuildingOffsets:
@@ -59,7 +59,9 @@ class CBuilding(pydantic.BaseModel):
             "index": to_number(pm.read_bytes(ptr + CBuildingOffsets.index, 4)),
             "effect_value": to_number(pm.read_bytes(ptr + CBuildingOffsets.effect_value, 4)),
             "CModifierDefinition_ptr": to_number(pm.read_bytes(ptr + CBuildingOffsets.CModifierDefinition_ptr, 4)),
+            "name_raw": get_string_maybe_ptr(pm, ptr + CBuildingOffsets.name_raw),
             "name_raw_length": to_number(pm.read_bytes(ptr + CBuildingOffsets.name_raw_length, 4)),
+            "name_pretty": get_string_maybe_ptr(pm, ptr + CBuildingOffsets.name_pretty),
             "name_pretty_length": to_number(pm.read_bytes(ptr + CBuildingOffsets.name_pretty_length, 4)),
             "cost": to_number(pm.read_bytes(ptr + CBuildingOffsets.cost, 4)),
             "time": to_number(pm.read_bytes(ptr + CBuildingOffsets.time, 4)),
@@ -72,14 +74,6 @@ class CBuilding(pydantic.BaseModel):
             "capital": pm.read_bool(ptr + CBuildingOffsets.capital),
             "port": pm.read_bool(ptr + CBuildingOffsets.port),
         }
-        if temp["name_raw_length"] <= 16:
-            temp["name_raw"] = read_string(pm, ptr + CBuildingOffsets.name_raw)
-        else:
-            temp["name_raw"] = read_string(pm, pm.read_uint(ptr + CBuildingOffsets.name_raw))
-        if temp["name_pretty_length"] <= 16:
-            temp["name_pretty"] = read_string(pm, ptr + CBuildingOffsets.name_pretty)
-        else:
-            temp["name_pretty"] = read_string(pm, pm.read_uint(ptr + CBuildingOffsets.name_pretty))
 
         return cls(**temp)
 
