@@ -115,4 +115,21 @@ class CArmy(pydantic.BaseModel):
         if to_number(pm.read_bytes(ptr + CArmyOffsets.name_length, 4)) <= 16:
             return read_string(pm, ptr + CArmyOffsets.name)
         else:
-            return get_string_maybe_ptr(pm, ptr + CArmyOffsets.name)
+            return read_string(pm, pm.read_uint(ptr + CArmyOffsets.name))
+
+
+if __name__ == "__main__":
+    pm = Pymem("hoi3_tfh.exe")
+    units = CArmy.get_units(pm)
+    print(f"{len(units)=}")
+    for unit_ptr in CArmy.get_units(pm):
+        # print(unit_ptr)
+        name = CArmy.get_name_from_ptr(pm, unit_ptr)
+        # BD2ABCF8 1. inf
+        # BD2B2848 1. kav
+        if name == "I. A.K." or name == "1. Infanterie-Division" or name == "§Y1. Kavallerie-Brigade§W":
+            army = CArmy.make(pm, unit_ptr)
+            if army.owner_tag == "GER":
+                print(f"{name} - {army.self_ptr}")
+                print(f"{army.leader_ptr=}")
+                # print(json.dumps(army.dict(), indent=2))

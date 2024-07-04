@@ -107,3 +107,11 @@ class CBuilding(pydantic.BaseModel):
     def get_province_modifier(self, pm: Pymem):
         modifier = CModifierDefinition.make(pm, to_number(pm.read_bytes(self.CModifierDefinition_ptr, 4)))
         return modifier
+
+
+if __name__ == "__main__":
+    pm = Pymem("hoi3_tfh.exe")
+    buildings_ptrs, buildings = CBuilding.get_buildings(pm)
+    print(f"{len(buildings)=}")
+    bld = buildings[10]
+    print(bld)

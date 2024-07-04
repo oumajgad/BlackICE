@@ -4,51 +4,67 @@ from typing import ClassVar
 
 from classes.CProvinceBuilding import CProvinceBuilding
 from constants import DATA_SECTION_START
-from utils import to_number
+from utils import to_number, rawbytes
+
+
+class CMapProvinceOffsets:
+    VFTABLE_OFFSET: ClassVar[int] = 0x11BEC1C
+    is_selected: int = 0xC
+    id: int = 0xD0
+    owner_tag: int = 0x32C
+    owner_id: int = 0x330
+    controller_tag: int = 0x334
+    controller_id: int = 0x338
+    supply_pool: int = 0x1B4
+    supply_depot_province: int = 0x48
+    manpower: int = 0x320
+    leadership: int = 0x324
+    energy: int = 0x284
+    metal: int = 0x280
+    rares: int = 0x288
+    oil: int = 0x27C
+    CProvinceBuilding_array_ptr: int = 0x310
 
 
 class CMapProvince(pydantic.BaseModel):
-    VFTABLE_OFFSET: ClassVar[int] = 0x11BEC1C
-    PATTERN: ClassVar[bytes] = rb"\xF8\xEB..\x8D\x01\x00\x00"
     LENGTH: ClassVar[int] = 936
     PROVINCES: ClassVar[list[int]] = None
     self_ptr: int
-    # unknown_function_pointer: int  # 0x8 // always return 3
-    is_selected: bool  # 0xc
-    id: int  # 0xd0
-    owner_tag: str  # 0x32c
-    owner_id: int  # 0x330
-    controller_tag: str  # 0x334
-    controller_id: int  # 0x338
-    supply_pool: int  # 0x1b4
-    supply_depot_province: int  # 0x48
-    manpower: int  # 0x320
-    leadership: int  # 0x324
-    energy: int  # 0x284
-    metal: int  # 0x280
-    rares: int  # 0x288
-    oil: int  # 0x27c
-    CProvinceBuilding_array_ptr: int  # 0x310
+    is_selected: bool
+    id: int
+    owner_tag: str
+    owner_id: int
+    controller_tag: str
+    controller_id: int
+    supply_pool: int
+    supply_depot_province: int
+    manpower: int
+    leadership: int
+    energy: int
+    metal: int
+    rares: int
+    oil: int
+    CProvinceBuilding_array_ptr: int
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
-            "is_selected": pm.read_bool(ptr + 0xC),
-            "id": to_number(pm.read_bytes(ptr + 0xD0, 4)),
-            "owner_tag": pm.read_bytes(ptr + 0x32C, 3),
-            "owner_id": to_number(pm.read_bytes(ptr + 0x330, 4)),
-            "controller_tag": pm.read_bytes(ptr + 0x334, 3),
-            "controller_id": to_number(pm.read_bytes(ptr + 0x338, 4)),
-            "supply_pool": to_number(pm.read_bytes(ptr + 0x1B4, 4)),
-            "supply_depot_province": to_number(pm.read_bytes(ptr + 0x48, 4)),
-            "manpower": to_number(pm.read_bytes(ptr + 0x320, 4)),
-            "leadership": to_number(pm.read_bytes(ptr + 0x324, 4)),
-            "energy": to_number(pm.read_bytes(ptr + 0x284, 4)),
-            "metal": to_number(pm.read_bytes(ptr + 0x280, 4)),
-            "rares": to_number(pm.read_bytes(ptr + 0x288, 4)),
-            "oil": to_number(pm.read_bytes(ptr + 0x27C, 4)),
-            "CProvinceBuilding_array_ptr": pm.read_uint(ptr + 0x310),
+            "is_selected": pm.read_bool(ptr + CMapProvinceOffsets.is_selected),
+            "id": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.id, 4)),
+            "owner_tag": pm.read_bytes(ptr + CMapProvinceOffsets.owner_tag, 3),
+            "owner_id": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.owner_id, 4)),
+            "controller_tag": pm.read_bytes(ptr + CMapProvinceOffsets.controller_tag, 3),
+            "controller_id": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.controller_id, 4)),
+            "supply_pool": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.supply_pool, 4)),
+            "supply_depot_province": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.supply_depot_province, 4)),
+            "manpower": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.manpower, 4)),
+            "leadership": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.leadership, 4)),
+            "energy": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.energy, 4)),
+            "metal": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.metal, 4)),
+            "rares": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.rares, 4)),
+            "oil": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.oil, 4)),
+            "CProvinceBuilding_array_ptr": pm.read_uint(ptr + CMapProvinceOffsets.CProvinceBuilding_array_ptr),
         }
 
         return cls(**temp)
@@ -58,10 +74,14 @@ class CMapProvince(pydantic.BaseModel):
         if cls.PROVINCES:
             return cls.PROVINCES
         res = pm.pattern_scan_all(
-            pattern=(pm.base_address + cls.VFTABLE_OFFSET).to_bytes(length=4, byteorder="little", signed=False),
+            pattern=rawbytes(
+                (pm.base_address + CMapProvinceOffsets.VFTABLE_OFFSET)
+                .to_bytes(length=4, byteorder="little", signed=False)
+                .hex()
+            ),
             return_multiple=True,
         )
-        cls.PROVINCES = [ptr - 8 for ptr in res if ptr >= DATA_SECTION_START]
+        cls.PROVINCES = [ptr - 8 for ptr in res if ptr >= pm.base_address + DATA_SECTION_START]
         return cls.PROVINCES
 
     @classmethod
@@ -84,3 +104,12 @@ class CMapProvince(pydantic.BaseModel):
         # pm.write_bytes(building_ptr + 0x20, x.to_bytes(length=4, byteorder="little", signed=True), 4)
 
         return building
+
+
+if __name__ == "__main__":
+    pm = Pymem("hoi3_tfh.exe")
+    provinces = CMapProvince.get_provinces(pm)
+    print(f"{len(provinces)=}")
+    # for ptr in provinces:
+    #     # print(ptr)
+    #     province = CMapProvince.make(pm, ptr)

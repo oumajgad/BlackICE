@@ -8,7 +8,7 @@ from classes.CLeader import CLeader
 from classes.CMapProvince import CMapProvince
 from classes.CBuilding import CBuilding
 from classes.CModifierDefinition import CModifierDefinition
-from classes.CSubUnit import CSubUnit
+from classes.CRegiment import CRegiment
 from classes.CArmy import CArmy
 from utils import get_array_element_lengths, dump_bytes, get_string_maybe_ptr
 
@@ -43,8 +43,8 @@ def main():
     # print(len(y))
     # get_array_element_lengths(y)
 
-    # provinces = CMapProvince.get_provinces(pm)
-    # print(f"{len(provinces)=}")
+    provinces = CMapProvince.get_provinces(pm)
+    print(f"{len(provinces)=}")
     # for ptr in provinces:
     #     # print(ptr)
     #     province = CMapProvince.make(pm, ptr)
@@ -74,7 +74,7 @@ def main():
     #     if in_game_idler.selected_province_ptr_ptr != 0:
     #         print(CProvince.get_id_from_ptr(pm, in_game_idler.selected_province_ptr_ptr))
     units = CArmy.get_units(pm)
-    print(len(units))
+    print(f"{len(units)=}")
     for unit_ptr in CArmy.get_units(pm):
         # print(unit_ptr)
         name = CArmy.get_name_from_ptr(pm, unit_ptr)
@@ -84,7 +84,11 @@ def main():
             army = CArmy.make(pm, unit_ptr)
             if army.owner_tag == "GER":
                 print(f"{name} - {army.self_ptr}")
+                print(f"{army.leader_ptr=}")
                 # print(json.dumps(army.dict(), indent=2))
+
+    leaders = CLeader.get_leaders(pm)
+    print(f"{len(leaders)=}")
 
     # sub_unit = CSubUnit.make(pm, 0x92C823E8)
     # print(json.dumps(sub_unit.dict(), indent=2))
