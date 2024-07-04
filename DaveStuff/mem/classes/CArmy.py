@@ -112,7 +112,7 @@ class CArmy(pydantic.BaseModel):
 
     @classmethod
     def get_name_from_ptr(cls, pm: Pymem, ptr: int):
-        if to_number(pm.read_bytes(ptr + CArmyOffsets.name_length, 4)) < 16:
+        if to_number(pm.read_bytes(ptr + CArmyOffsets.name_length, 4)) <= 16:
             return read_string(pm, ptr + CArmyOffsets.name)
         else:
             return get_string_maybe_ptr(pm, ptr + CArmyOffsets.name)

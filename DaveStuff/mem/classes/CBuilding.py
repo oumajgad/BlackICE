@@ -4,62 +4,82 @@ from typing import ClassVar
 
 from classes.CModifierDefinition import CModifierDefinition
 from constants import DATA_SECTION_START
-from utils import to_number, get_string_maybe_ptr, read_string
+from utils import to_number, read_string, rawbytes
+
+
+class CBuildingOffsets:
+    VFTABLE_OFFSET: ClassVar[int] = 0x11C09F8
+    effect_value: int = 0x8
+    CModifierDefinition_ptr: int = 0xC
+    index: int = 0x54
+    name_raw: int = 0x1C
+    name_raw_length: int = 0x30
+    name_pretty: int = 0x38
+    name_pretty_length: int = 0x48
+    cost: int = 0x58
+    time: int = 0x5C
+    max_level: int = 0x68
+    completion_size: int = 0x8C
+    damage_factor: int = 0x90
+    on_map: int = 0x94
+    visibility: int = 0x95
+    repair: int = 0x96
+    capital: int = 0x60
+    port: int = 0x61
 
 
 class CBuilding(pydantic.BaseModel):
     VFTABLE_OFFSET: ClassVar[int] = 0x11C09F8
-    PATTERN: ClassVar[bytes] = rb"\xF8\x09.\x01\x8D\x01\x00\x00"
     BUILDINGS_PTRS: ClassVar[list[int]] = None
     BUILDINGS: ClassVar[list] = None
     LENGTH: ClassVar[int] = 232
     self_ptr: int
-    effect_value: int  # 0x8
-    CModifierDefinition_ptr: int  # 0xC
-    index: int  # 0x54
-    name_raw: str  # 0x1c
-    name_raw_length: int  # 0x30
-    name_pretty: str  # 0x38
-    name_pretty_length: int  # 0x48
-    cost: int  # 0x58
-    time: int  # 0x5c
-    max_level: int  # 0x68
-    completion_size: int  # 0x8c
-    damage_factor: int  # 0x90
-    on_map: bool  # 0x94
-    visibility: bool  # 0x95
-    repair: bool  # 0x96
-    capital: bool  # 0x60
-    port: bool  # 0x61
+    effect_value: int
+    CModifierDefinition_ptr: int
+    index: int
+    name_raw: str
+    name_raw_length: int
+    name_pretty: str
+    name_pretty_length: int
+    cost: int
+    time: int
+    max_level: int
+    completion_size: int
+    damage_factor: int
+    on_map: bool
+    visibility: bool
+    repair: bool
+    capital: bool
+    port: bool
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
-            "index": to_number(pm.read_bytes(ptr + 0x54, 4)),
-            "effect_value": to_number(pm.read_bytes(ptr + 0x8, 4)),
-            "CModifierDefinition_ptr": to_number(pm.read_bytes(ptr + 0xC, 4)),
-            "name_raw_length": to_number(pm.read_bytes(ptr + 0x30, 4)),
-            "name_pretty_length": to_number(pm.read_bytes(ptr + 0x48, 4)),
-            "cost": to_number(pm.read_bytes(ptr + 0x58, 4)),
-            "time": to_number(pm.read_bytes(ptr + 0x5C, 4)),
-            "max_level": to_number(pm.read_bytes(ptr + 0x68, 4)),
-            "completion_size": to_number(pm.read_bytes(ptr + 0x8C, 4)),
-            "damage_factor": to_number(pm.read_bytes(ptr + 0x90, 4)),
-            "on_map": pm.read_bool(ptr + 0x94),
-            "visibility": pm.read_bool(ptr + 0x95),
-            "repair": pm.read_bool(ptr + 0x96),
-            "capital": pm.read_bool(ptr + 0x60),
-            "port": pm.read_bool(ptr + 0x61),
+            "index": to_number(pm.read_bytes(ptr + CBuildingOffsets.index, 4)),
+            "effect_value": to_number(pm.read_bytes(ptr + CBuildingOffsets.effect_value, 4)),
+            "CModifierDefinition_ptr": to_number(pm.read_bytes(ptr + CBuildingOffsets.CModifierDefinition_ptr, 4)),
+            "name_raw_length": to_number(pm.read_bytes(ptr + CBuildingOffsets.name_raw_length, 4)),
+            "name_pretty_length": to_number(pm.read_bytes(ptr + CBuildingOffsets.name_pretty_length, 4)),
+            "cost": to_number(pm.read_bytes(ptr + CBuildingOffsets.cost, 4)),
+            "time": to_number(pm.read_bytes(ptr + CBuildingOffsets.time, 4)),
+            "max_level": to_number(pm.read_bytes(ptr + CBuildingOffsets.max_level, 4)),
+            "completion_size": to_number(pm.read_bytes(ptr + CBuildingOffsets.completion_size, 4)),
+            "damage_factor": to_number(pm.read_bytes(ptr + CBuildingOffsets.damage_factor, 4)),
+            "on_map": pm.read_bool(ptr + CBuildingOffsets.on_map),
+            "visibility": pm.read_bool(ptr + CBuildingOffsets.visibility),
+            "repair": pm.read_bool(ptr + CBuildingOffsets.repair),
+            "capital": pm.read_bool(ptr + CBuildingOffsets.capital),
+            "port": pm.read_bool(ptr + CBuildingOffsets.port),
         }
         if temp["name_raw_length"] <= 16:
-            temp["name_raw"] = read_string(pm, ptr + 0x1C)
+            temp["name_raw"] = read_string(pm, ptr + CBuildingOffsets.name_raw)
         else:
-            temp["name_raw"] = read_string(pm, pm.read_uint(ptr + 0x1C))
+            temp["name_raw"] = read_string(pm, pm.read_uint(ptr + CBuildingOffsets.name_raw))
         if temp["name_pretty_length"] <= 16:
-            temp["name_pretty"] = read_string(pm, ptr + 0x38)
+            temp["name_pretty"] = read_string(pm, ptr + CBuildingOffsets.name_pretty)
         else:
-            temp["name_pretty"] = read_string(pm, pm.read_uint(ptr + 0x38))
+            temp["name_pretty"] = read_string(pm, pm.read_uint(ptr + CBuildingOffsets.name_pretty))
 
         return cls(**temp)
 
@@ -68,10 +88,14 @@ class CBuilding(pydantic.BaseModel):
         if cls.BUILDINGS_PTRS:
             return cls.BUILDINGS_PTRS
         res = pm.pattern_scan_all(
-            pattern=(pm.base_address + cls.VFTABLE_OFFSET).to_bytes(length=4, byteorder="little", signed=False),
+            pattern=rawbytes(
+                (pm.base_address + CBuildingOffsets.VFTABLE_OFFSET)
+                .to_bytes(length=4, byteorder="little", signed=False)
+                .hex()
+            ),
             return_multiple=True,
         )
-        cls.BUILDINGS_PTRS = [ptr for ptr in res if ptr >= DATA_SECTION_START]
+        cls.BUILDINGS_PTRS = [ptr for ptr in res if ptr >= pm.base_address + DATA_SECTION_START]
 
         res2 = []
         for ptr in cls.BUILDINGS_PTRS:
@@ -81,5 +105,5 @@ class CBuilding(pydantic.BaseModel):
         return cls.BUILDINGS_PTRS, cls.BUILDINGS
 
     def get_province_modifier(self, pm: Pymem):
-        modifier = CModifierDefinition.make(pm, to_number(pm.read_bytes(self.CProvinceModifier_ptr, 4)))
+        modifier = CModifierDefinition.make(pm, to_number(pm.read_bytes(self.CModifierDefinition_ptr, 4)))
         return modifier
