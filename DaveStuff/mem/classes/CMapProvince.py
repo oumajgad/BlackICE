@@ -1,6 +1,7 @@
+from typing import ClassVar
+
 import pydantic
 from pymem import Pymem
-from typing import ClassVar
 
 from classes.CProvinceBuilding import CProvinceBuilding
 from constants import DATA_SECTION_START

@@ -1,21 +1,29 @@
+import json
 from typing import ClassVar
 
 import pydantic
 from pymem import Pymem
 
 from constants import DATA_SECTION_START
-from utils import to_number, get_string_maybe_ptr, read_string, rawbytes
+from utils import to_number, get_string_maybe_ptr, rawbytes
 
 
 class CArmyOffsets:
     VFTABLE_OFFSET: ClassVar[int] = 0x11BDEB8
+    VFTABLE_PTR_1: int = 0x0
+    VFTABLE_PTR_2: int = 0x8
+    VFTABLE_CUnitPlan_PTR: int = 0x1FC
     is_selected: int = 0x4
     type: int = 0x10
     id: int = 0x14
-    sub_unit_amount: int = 0x40
+    regiments_linked_list_first_ptr: int = 0x38
+    regiments_linked_list_last_ptr: int = 0x3C
+    regiments_amount: int = 0x40
     upgrade_prio: int = 0xA4
     upgrade_active: int = 0xA5
     reinforcements_active: int = 0xA6
+    order_ptr: int = 0xB0
+    army_sub_unit_definition_ptr: int = 0xC8  # This is the CSubUnitDefinition definition for the whole CArmy
     combat_cooldown: int = 0xD4
     supply_received_percentage: int = 0xFC
     fuel_received_percentage: int = 0x100
@@ -25,6 +33,8 @@ class CArmyOffsets:
     current_province_ptr: int = 0x130
     supplied_from_province_ptr: int = 0x134
     path_length: int = 0x140
+    in_game_idler_ptr: int = 0x160
+    hoi_avatar_ptr: int = 0x164
     name: int = 0x16C
     name_length: int = 0x17C
     dig_in_level: int = 0x1C8
@@ -41,10 +51,14 @@ class CArmy(pydantic.BaseModel):
     is_selected: bool
     type: int
     id: int
-    sub_unit_amount: int
+    regiments_linked_list_first_ptr: int
+    regiments_linked_list_last_ptr: int
+    regiments_amount: int
     upgrade_prio: bool
     upgrade_active: bool
     reinforcements_active: bool
+    order_ptr: int
+    army_sub_unit_definition_ptr: int
     combat_cooldown: int  # 76000 = 76 hours
     supply_received_percentage: int  # 1000 = 100%
     fuel_received_percentage: int  # 1000 = 100%
@@ -54,6 +68,8 @@ class CArmy(pydantic.BaseModel):
     current_province_ptr: int
     supplied_from_province_ptr: int
     path_length: int  # Amount of provinces left in the current movement order
+    in_game_idler_ptr: int
+    hoi_avatar_ptr: int
     name: str
     name_length: int
     dig_in_level: int  # 1000 = 1
@@ -69,10 +85,14 @@ class CArmy(pydantic.BaseModel):
             "is_selected": pm.read_bool(ptr + CArmyOffsets.is_selected),
             "type": to_number(pm.read_bytes(ptr + CArmyOffsets.type, 4)),
             "id": to_number(pm.read_bytes(ptr + CArmyOffsets.id, 4)),
-            "sub_unit_amount": to_number(pm.read_bytes(ptr + CArmyOffsets.sub_unit_amount, 4)),
+            "regiments_linked_list_first_ptr": pm.read_uint(ptr + CArmyOffsets.regiments_linked_list_first_ptr),
+            "regiments_linked_list_last_ptr": pm.read_uint(ptr + CArmyOffsets.regiments_linked_list_last_ptr),
+            "regiments_amount": to_number(pm.read_bytes(ptr + CArmyOffsets.regiments_amount, 4)),
             "upgrade_prio": pm.read_bool(ptr + CArmyOffsets.upgrade_prio),
             "upgrade_active": pm.read_bool(ptr + CArmyOffsets.upgrade_active),
             "reinforcements_active": pm.read_bool(ptr + CArmyOffsets.reinforcements_active),
+            "order_ptr": pm.read_uint(ptr + CArmyOffsets.order_ptr),
+            "army_sub_unit_definition_ptr": pm.read_uint(ptr + CArmyOffsets.army_sub_unit_definition_ptr),
             "combat_cooldown": to_number(pm.read_bytes(ptr + CArmyOffsets.combat_cooldown, 4)),
             "supply_received_percentage": to_number(pm.read_bytes(ptr + CArmyOffsets.supply_received_percentage, 4)),
             "fuel_received_percentage": to_number(pm.read_bytes(ptr + CArmyOffsets.fuel_received_percentage, 4)),
@@ -82,6 +102,8 @@ class CArmy(pydantic.BaseModel):
             "current_province_ptr": pm.read_uint(ptr + CArmyOffsets.current_province_ptr),
             "supplied_from_province_ptr": pm.read_uint(ptr + CArmyOffsets.supplied_from_province_ptr),
             "path_length": to_number(pm.read_bytes(ptr + CArmyOffsets.path_length, 4)),
+            "in_game_idler_ptr": pm.read_uint(ptr + CArmyOffsets.in_game_idler_ptr),
+            "hoi_avatar_ptr": pm.read_uint(ptr + CArmyOffsets.hoi_avatar_ptr),
             "name": get_string_maybe_ptr(pm, ptr + CArmyOffsets.name),
             "name_length": to_number(pm.read_bytes(ptr + CArmyOffsets.name_length, 4)),
             "dig_in_level": to_number(pm.read_bytes(ptr + CArmyOffsets.dig_in_level, 4)),
@@ -116,14 +138,16 @@ if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     units = CArmy.get_units(pm)
     print(f"{len(units)=}")
-    for unit_ptr in CArmy.get_units(pm):
-        # print(unit_ptr)
-        name = CArmy.get_name_from_ptr(pm, unit_ptr)
-        # BD2ABCF8 1. inf
-        # BD2B2848 1. kav
-        if name == "I. A.K." or name == "1. Infanterie-Division" or name == "§Y1. Kavallerie-Brigade§W":
-            army = CArmy.make(pm, unit_ptr)
-            if army.owner_tag == "GER":
-                print(f"{name} - {army.self_ptr}")
-                print(f"{army.leader_ptr=}")
-                # print(json.dumps(army.dict(), indent=2))
+    # for unit_ptr in CArmy.get_units(pm):
+    #     # print(unit_ptr)
+    #     name = CArmy.get_name_from_ptr(pm, unit_ptr)
+    #     # BD2ABCF8 1. inf
+    #     # BD2B2848 1. kav
+    #     if name == "I. A.K." or name == "1. Infanterie-Division" or name == "§Y1. Kavallerie-Brigade§W":
+    #         army = CArmy.make(pm, unit_ptr)
+    #         if army.owner_tag == "GER":
+    #             print(f"{name} - {army.self_ptr}")
+    #             print(f"{army.leader_ptr=}")
+    #             # print(json.dumps(army.dict(), indent=2))
+    x = CArmy.make(pm, ptr=0xBD3FF430)
+    print(json.dumps(x.dict(), indent=2))

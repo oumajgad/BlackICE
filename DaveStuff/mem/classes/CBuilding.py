@@ -1,10 +1,11 @@
+from typing import ClassVar
+
 import pydantic
 from pymem import Pymem
-from typing import ClassVar
 
 from classes.CModifierDefinition import CModifierDefinition
 from constants import DATA_SECTION_START
-from utils import to_number, read_string, rawbytes, get_string_maybe_ptr
+from utils import to_number, rawbytes, get_string_maybe_ptr
 
 
 class CBuildingOffsets:

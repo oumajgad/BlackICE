@@ -43,6 +43,10 @@ def to_number(_in: bytes):
     return int.from_bytes(_in, byteorder="little", signed=True)
 
 
+def int_to_pointer(x: int):
+    return rawbytes(x.to_bytes(length=4, byteorder="big", signed=False).hex()).replace(rb"\x", rb"")
+
+
 def read_string(pm: Pymem, ptr: int, terminator: int = 0):
     max = 512
     current = 0
@@ -65,9 +69,9 @@ def get_string_maybe_ptr(pm: Pymem, ptr: int):
         is_windows_1252 = False
         if not (int.from_bytes(x) < 0x1F or (0x7F < int.from_bytes(x) < 0x9F)):  # unused characters in the set
             is_windows_1252 = True
-        print(f"{x} - {x.isalpha()=} - {x.isspace()=} - {x.isascii()=} - {is_windows_1252=}")
+        # print(f"{x} - {x.isalpha()=} - {x.isspace()=} - {x.isascii()=} - {is_windows_1252=}")
         if not x.isalpha() and not x.isspace() and not x.isascii() and not is_windows_1252:
-            print("It's a pointer")
+            # print("It's a pointer")
             # It's a pointer
             return read_string(pm, pm.read_uint(ptr))
     # It's a string

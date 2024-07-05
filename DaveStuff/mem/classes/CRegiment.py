@@ -4,7 +4,7 @@ import pydantic
 from pymem import Pymem
 
 from constants import DATA_SECTION_START
-from utils import to_number, get_string_maybe_ptr, read_string, rawbytes
+from utils import to_number, get_string_maybe_ptr, rawbytes, int_to_pointer
 
 
 class CRegimentOffsets:
@@ -71,15 +71,24 @@ class CRegiment(pydantic.BaseModel):
         # else:
         #     return read_string(pm, pm.read_uint(ptr + CRegimentOffsets.name))
 
+    @classmethod
+    def get_division_ptr_from_ptr(cls, pm: Pymem, ptr: int):
+        return pm.read_uint(ptr + CRegimentOffsets.division_ptr)
+
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     regiments = CRegiment.get_regiments(pm)
     print(f"{len(regiments)=}")
-    # for reg in regiments:
-    #     print(reg)
-    #     if CRegiment.get_name_from_ptr(pm, reg) == "Stab 1. Infant":
-    #         x = CRegiment.make(pm, reg)
-    #         print(x)
-    y = CRegiment.make(pm, 0x90999FE8)
-    print(y)
+    for reg in regiments:
+        # print(reg)
+        # if CRegiment.get_name_from_ptr(pm, reg) in ["Stab 1. Infanterie-Division", "Inf.-Rgt. 1/22/43"]:
+        #     x = CRegiment.make(pm, reg)
+        #     print(x)
+        #     print(f"{int_to_pointer(x.self_ptr)=}")
+        #     print(f"{int_to_pointer(x.division_ptr)=}")
+        if CRegiment.get_division_ptr_from_ptr(pm, reg) == 0xBD3FF430:
+            x = CRegiment.make(pm, reg)
+            print(f"{int_to_pointer(x.division_ptr)=} - {int_to_pointer(x.self_ptr)=} - {x.name}")
+    # y = CRegiment.make(pm, 0x90916F10)
+    # print(y)

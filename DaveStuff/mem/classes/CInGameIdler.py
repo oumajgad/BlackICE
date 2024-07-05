@@ -2,6 +2,7 @@ from typing import ClassVar
 
 import pydantic
 from pymem import Pymem
+
 from utils import read_nested_pointers
 
 
