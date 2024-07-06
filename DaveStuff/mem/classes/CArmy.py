@@ -5,6 +5,7 @@ import pydantic
 from pymem import Pymem
 
 from constants import DATA_SECTION_START
+from structs.LinkedListNode import LinkedListNode
 from utils import to_number, get_string_maybe_ptr, rawbytes
 
 
@@ -40,7 +41,7 @@ class CArmyOffsets:
     dig_in_level: int = 0x1C8
     base_ca_bonus: int = 0x1CC
     higher_oob_unit_ptr: int = 0x1E0
-    lower_oob_unit_ptr: int = 0x1E8
+    lower_oob_unit_linked_list_ptr: int = 0x1E8
     lower_oob_unit_amount: int = 0x1EC
 
 
@@ -75,7 +76,7 @@ class CArmy(pydantic.BaseModel):
     dig_in_level: int  # 1000 = 1
     base_ca_bonus: int  # 450 = 45% // does not include leader, techs, maybe other stuff
     higher_oob_unit_ptr: int
-    lower_oob_unit_ptr: int
+    lower_oob_unit_linked_list_ptr: int
     lower_oob_unit_amount: int
 
     @classmethod
@@ -109,7 +110,7 @@ class CArmy(pydantic.BaseModel):
             "dig_in_level": to_number(pm.read_bytes(ptr + CArmyOffsets.dig_in_level, 4)),
             "base_ca_bonus": to_number(pm.read_bytes(ptr + CArmyOffsets.base_ca_bonus, 4)),
             "higher_oob_unit_ptr": pm.read_uint(ptr + CArmyOffsets.higher_oob_unit_ptr),
-            "lower_oob_unit_ptr": pm.read_uint(ptr + CArmyOffsets.lower_oob_unit_ptr),
+            "lower_oob_unit_linked_list_ptr": pm.read_uint(ptr + CArmyOffsets.lower_oob_unit_linked_list_ptr),
             "lower_oob_unit_amount": to_number(pm.read_bytes(ptr + CArmyOffsets.lower_oob_unit_amount, 4)),
         }
         return cls(**temp)
