@@ -134,6 +134,23 @@ class CArmy(pydantic.BaseModel):
     def get_name_from_ptr(cls, pm: Pymem, ptr: int):
         return get_string_maybe_ptr(pm, ptr + CArmyOffsets.name)
 
+    def build_oob(self, pm: Pymem):
+        def get_oob_units_recursive(pm: Pymem, unit: CArmy):
+            res = {unit.name: unit.dict()}
+            if unit.lower_oob_unit_linked_list_ptr != 0:
+                res["units"] = []
+                list_node = LinkedListNode.make(pm, unit.lower_oob_unit_linked_list_ptr)
+                while True:
+                    lower_unit = CArmy.make(pm, list_node.this)
+                    res["units"].append(get_oob_units_recursive(pm, lower_unit))
+                    if list_node.previous == 0:
+                        res["units"].reverse()
+                        break
+                    list_node = LinkedListNode.make(pm, list_node.previous)
+            return res
+
+        return get_oob_units_recursive(pm, self)
+
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
