@@ -9,7 +9,8 @@ from utils import to_number, rawbytes
 
 
 class CMapProvinceOffsets:
-    VFTABLE_OFFSET: ClassVar[int] = 0x11BEC1C
+    VFTABLE_OFFSET_1: ClassVar[int] = 0x11BEBF8  # this one return  extra provinces, needs investigation
+    VFTABLE_OFFSET_2: ClassVar[int] = 0x11BEC1C
     is_selected: int = 0xC
     id: int = 0xD0
     owner_tag: int = 0x32C
@@ -76,7 +77,7 @@ class CMapProvince(pydantic.BaseModel):
             return cls.PROVINCES
         res = pm.pattern_scan_all(
             pattern=rawbytes(
-                (pm.base_address + CMapProvinceOffsets.VFTABLE_OFFSET)
+                (pm.base_address + CMapProvinceOffsets.VFTABLE_OFFSET_2)
                 .to_bytes(length=4, byteorder="little", signed=False)
                 .hex()
             ),

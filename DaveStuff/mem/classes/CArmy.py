@@ -1,4 +1,3 @@
-import json
 from typing import ClassVar
 
 import pydantic
@@ -6,11 +5,12 @@ from pymem import Pymem
 
 from constants import DATA_SECTION_START
 from structs.LinkedListNode import LinkedListNode
-from utils import to_number, get_string_maybe_ptr, rawbytes
+from utils import to_number, get_string_maybe_ptr, rawbytes, int_to_pointer
 
 
 class CArmyOffsets:
-    VFTABLE_OFFSET: ClassVar[int] = 0x11BDEB8
+    VFTABLE_OFFSET: int = 0x11BDE0C
+    VFTABLE_OFFSET_2: int = 0x11BDEB8
     VFTABLE_PTR_1: int = 0x0
     VFTABLE_PTR_2: int = 0x8
     VFTABLE_CUnitPlan_PTR: int = 0x1FC
@@ -127,7 +127,7 @@ class CArmy(pydantic.BaseModel):
             ),
             return_multiple=True,
         )
-        cls.UNITS = [ptr - 8 for ptr in res if ptr >= pm.base_address + DATA_SECTION_START]
+        cls.UNITS = [ptr for ptr in res if ptr >= pm.base_address + DATA_SECTION_START]
         return cls.UNITS
 
     @classmethod
@@ -154,18 +154,29 @@ class CArmy(pydantic.BaseModel):
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
+    print(pm.base_address)
     units = CArmy.get_units(pm)
     print(f"{len(units)=}")
-    # for unit_ptr in CArmy.get_units(pm):
-    #     # print(unit_ptr)
-    #     name = CArmy.get_name_from_ptr(pm, unit_ptr)
-    #     # BD2ABCF8 1. inf
-    #     # BD2B2848 1. kav
-    #     if name == "I. A.K." or name == "1. Infanterie-Division" or name == "§Y1. Kavallerie-Brigade§W":
-    #         army = CArmy.make(pm, unit_ptr)
-    #         if army.owner_tag == "GER":
-    #             print(f"{name} - {army.self_ptr}")
-    #             print(f"{army.leader_ptr=}")
-    #             # print(json.dumps(army.dict(), indent=2))
-    x = CArmy.make(pm, ptr=0xBD3FF430)
-    print(json.dumps(x.dict(), indent=2))
+    for unit_ptr in CArmy.get_units(pm):
+        # print(unit_ptr)
+        name = CArmy.get_name_from_ptr(pm, unit_ptr)
+        # BD2ABCF8 1. inf
+        # BD2B2848 1. kav
+        if name in [
+            "I. Test Armee",
+            "I. A.K.",
+            "11. Infanterie-Division",
+            "21. Infanterie-Division",
+            "1. Infanterie-Division",
+            "§Y1. Kavallerie-Brigade§W",
+        ]:
+            army = CArmy.make(pm, unit_ptr)
+            print(
+                f"{name} - {int_to_pointer(army.self_ptr)} - {int_to_pointer(army.higher_oob_unit_ptr)} - {int_to_pointer(army.lower_oob_unit_linked_list_ptr)}"
+            )
+    # print(json.dumps(army.dict(), indent=2))
+    # army = CArmy.make(pm, ptr=0xDED42178)
+    # print(json.dumps(army.dict(), indent=2))
+    # oob = army.build_oob(pm)
+    # print(json.dumps(oob, ensure_ascii=False))
+    print(rawbytes((33155924).to_bytes(length=4, byteorder="little", signed=False).hex()))

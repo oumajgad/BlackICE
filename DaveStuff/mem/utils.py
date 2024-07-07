@@ -81,8 +81,10 @@ def get_string_maybe_ptr(pm: Pymem, ptr: int):
 
 def read_nested_pointers(pm: Pymem, start_ptr: int, depth: int):
     ptr = start_ptr
+    # print(f"{start_ptr=}")
     for i in range(depth):
         ptr = pm.read_uint(ptr)
+        # print(f"{ptr=}")
         if ptr == 0:
             return 0
     return ptr
