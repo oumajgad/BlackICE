@@ -1010,7 +1010,8 @@ function P.DiploScore_Embargo(voDiploScoreObj)
 	-- Embargo Americas if at war
 	if voDiploScoreObj.IsAtWar then
 		local continent = tostring(voDiploScoreObj.EmbargoCountry:GetCapitalLocation():GetContinent():GetTag())
-		if continent == "north_america" or continent == "south_america" then
+		local isPlayer = CCurrentGameState.IsPlayer(voDiploScoreObj.EmbargoCountry.GetCountryTag())
+		if (continent == "north_america" or continent == "south_america") and not isPlayer then
 			voDiploScoreObj.Score = 200
 		else
 			voDiploScoreObj.Score = 0
