@@ -1,3 +1,4 @@
+import json
 from typing import ClassVar
 
 import pydantic
@@ -112,6 +113,8 @@ if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     provinces = CMapProvince.get_provinces(pm)
     print(f"{len(provinces)=}")
+    prov = CMapProvince.make(pm, provinces[1000])
+    print(json.dumps(prov.dict(), indent=2))
     # for ptr in provinces:
     #     # print(ptr)
     #     province = CMapProvince.make(pm, ptr)

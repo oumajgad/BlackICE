@@ -1,5 +1,7 @@
+import json
 import struct
 
+import pydantic
 from pymem import Pymem
 
 
@@ -100,3 +102,7 @@ def dump_bytes(pm: Pymem, ptr: int, length: int):
             f"addr: +{hex(current - ptr)} hex: {hex(to_number(res))} - {to_number(res)} - {res.decode(encoding='cp1252', errors='ignore')}"
         )
         current += 4
+
+
+def dump_model(x: pydantic.BaseModel) -> str:
+    return json.dumps(x.dict(), indent=2, ensure_ascii=False)
