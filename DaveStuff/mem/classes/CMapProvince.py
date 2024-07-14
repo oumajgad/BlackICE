@@ -6,7 +6,7 @@ from pymem import Pymem
 
 from classes.CProvinceBuilding import CProvinceBuilding
 from constants import DATA_SECTION_START
-from utils import to_number, rawbytes
+from utils.utils import to_number, rawbytes
 
 
 class CMapProvinceOffsets:

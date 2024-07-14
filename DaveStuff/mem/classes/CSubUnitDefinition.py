@@ -4,7 +4,7 @@ import pydantic
 from pymem import Pymem
 
 from constants import DATA_SECTION_START
-from utils import rawbytes, to_number
+from utils.utils import rawbytes, to_number
 
 
 class CSubUnitDefinitionOffsets:

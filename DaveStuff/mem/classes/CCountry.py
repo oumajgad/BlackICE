@@ -1,12 +1,13 @@
-import json
 from typing import ClassVar
 
 import pydantic
 from pymem import Pymem
 
-import utils
 from constants import DATA_SECTION_START
+from structs.CountryFlag import CountryFlag
+from structs.CountryVariable import CountryVariable
 from structs.LinkedLists import LinkedListNode
+from utils import utils
 
 
 class CCountryOffsets:
@@ -22,11 +23,13 @@ class CCountryOffsets:
     CFlags_amount: int = 0x18C
     CFlags_VFTABLE_PTR_2: int = 0x1A4
     CVariables_VFTABLE_PTR_1: int = 0x1AC
+    CVariables_ptr: int = 0x1B0
     CVariables_VFTABLE_PTR_2: int = 0x1D0
     CEU3AI_ptr: int = 0x1D8
     CAIStrategy: int = 0x1DC
     tag: int = 0x1E4
     tag_id: int = 0x1E8
+    controlled_provinces_linked_list_ptr: int = 0xD00
 
 
 class CCountry(pydantic.BaseModel):
@@ -44,6 +47,8 @@ class CCountry(pydantic.BaseModel):
     CFlags_amount: int
     CFlags_VFTABLE_PTR_2: int  # 2nd VFTABLE of the embedded class
     CVariables_VFTABLE_PTR_1: int  # embedded into the class
+    CVariables_ptr: int  # Flags are single chars saved as a Tree, offsets for each Node: +0x4 = current char, +0xc = the next node on the same level, +0x10 = the next deeper node
+    # So a depth first algorithm needs to be implemented to build the names for each flag individually
     CVariables_VFTABLE_PTR_2: int  # 2nd VFTABLE of the embedded class
     CEU3AI_ptr: int
     CAIStrategy: int  # embedded into the class
@@ -73,6 +78,7 @@ class CCountry(pydantic.BaseModel):
             "CFlags_amount": pm.read_uint(ptr + CCountryOffsets.CFlags_amount),
             "CFlags_VFTABLE_PTR_2": ptr + CCountryOffsets.CFlags_VFTABLE_PTR_2,
             "CVariables_VFTABLE_PTR_1": ptr + CCountryOffsets.CVariables_VFTABLE_PTR_1,
+            "CVariables_ptr": pm.read_uint(ptr + CCountryOffsets.CVariables_ptr),
             "CVariables_VFTABLE_PTR_2": ptr + CCountryOffsets.CVariables_VFTABLE_PTR_2,
             "CEU3AI_ptr": pm.read_uint(ptr + CCountryOffsets.CEU3AI_ptr),
             "CAIStrategy": ptr + CCountryOffsets.CAIStrategy,
@@ -112,24 +118,52 @@ class CCountry(pydantic.BaseModel):
                 return res
             list_node = LinkedListNode.make(pm, list_node.next)
 
+    @staticmethod
+    def _build_names_from_tree_recursive(pm: Pymem, res: list, node_ptr: int, current_name: str = ""):
+        character = pm.read_char(node_ptr + 0x4)
+        next_sibling_node = pm.read_uint(node_ptr + 0xC)
+        child_node = pm.read_uint(node_ptr + 0x10)
+        # print(f"{node_ptr=} - {current_name=} - {character=} - {next_sibling_node=} - {child_node=}")
+        new_name = current_name + character
+        if child_node != 0:
+            CCountry._build_names_from_tree_recursive(pm, res, child_node, new_name)
+        if child_node == 0:
+            # print(f"{node_ptr=} - {new_name=}")
+            res.append(new_name)
+        if next_sibling_node != 0:
+            CCountry._build_names_from_tree_recursive(pm, res, next_sibling_node, current_name)
+
+    @staticmethod
+    def _traverse_tree_depth_first(pm: Pymem, res: list, node_ptr: int):
+        character = pm.read_char(node_ptr + 0x4)
+        next_sibling_node = pm.read_uint(node_ptr + 0xC)
+        child_node = pm.read_uint(node_ptr + 0x10)
+        element_ptr = pm.read_uint(node_ptr)
+        # print(f"{node_ptr=} - {character=} - {next_sibling_node=} - {child_node=}")
+        if element_ptr != 0:
+            # print(f"{node_ptr=} - {element_ptr=}")
+            res.append(element_ptr)
+        if child_node != 0:
+            CCountry._traverse_tree_depth_first(pm, res, child_node)
+        if next_sibling_node != 0:
+            CCountry._traverse_tree_depth_first(pm, res, next_sibling_node)
+
     def get_country_flags(self, pm: Pymem) -> list[str]:
+        temp = []
         res = []
-
-        def build_flag_names_recursive(node_ptr, current_name: str = ""):
-            character = pm.read_char(node_ptr + 0x4)
-            next_sibling_node = pm.read_uint(node_ptr + 0xC)
-            child_node = pm.read_uint(node_ptr + 0x10)
-            # print(f"{node_ptr=} - {current_name=} - {character=} - {next_sibling_node=} - {child_node=}")
-            new_name = current_name + character
-            if child_node != 0:
-                build_flag_names_recursive(child_node, new_name)
-            if child_node == 0:
-                res.append(new_name)
-            if next_sibling_node != 0:
-                build_flag_names_recursive(next_sibling_node, current_name)
-
         if self.CFlags_ptr != 0:
-            build_flag_names_recursive(self.CFlags_ptr)
+            CCountry._traverse_tree_depth_first(pm, temp, self.CFlags_ptr)
+            for ptr in temp:
+                res.append(CountryFlag.make(pm, ptr))
+        return res
+
+    def get_country_variables(self, pm: Pymem) -> list[str]:
+        temp = []
+        res = []
+        if self.CVariables_ptr != 0:
+            CCountry._traverse_tree_depth_first(pm, temp, self.CVariables_ptr)
+            for ptr in temp:
+                res.append(CountryVariable.make(pm, ptr))
         return res
 
 
@@ -142,8 +176,11 @@ if __name__ == "__main__":
     for ptr in countries:
         country = CCountry.make(pm, ptr)
         if country.tag == "GER":
-            print(json.dumps(country.dict(), indent=2))
-            print(len(country.get_ministers(available_only=True)))
-            for x in country.get_country_flags(pm):
-                print(x)
-        # print(f"{country.tag} - {country.tag_id}")
+            print(utils.dump_model(country))
+            print(f"{len(country.get_ministers(available_only=True))=}")
+            flags = country.get_country_flags(pm)
+            vars = country.get_country_variables(pm)
+            print(f"{len(flags)=}")
+            print(f"{len(vars)=}")
+            for var in vars:
+                print(var)

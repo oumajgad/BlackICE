@@ -3,8 +3,8 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
-import utils
 from constants import DATA_SECTION_START
+from utils import utils
 
 
 class CGovernmentPositionOffsets:

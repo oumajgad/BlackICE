@@ -4,7 +4,7 @@ import pydantic
 from pymem import Pymem
 
 from constants import DATA_SECTION_START
-from utils import to_number, get_string_maybe_ptr, rawbytes, int_to_pointer
+from utils.utils import to_number, get_string_maybe_ptr, rawbytes, int_to_pointer
 
 
 class CRegimentOffsets:

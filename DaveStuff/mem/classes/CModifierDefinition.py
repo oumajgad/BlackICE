@@ -4,7 +4,7 @@ import pydantic
 from pymem import Pymem
 
 from constants import DATA_SECTION_START
-from utils import to_number, rawbytes, get_string_maybe_ptr
+from utils.utils import to_number, rawbytes, get_string_maybe_ptr
 
 
 class CModifierDefinitionOffsets:

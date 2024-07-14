@@ -6,7 +6,7 @@ from pymem import Pymem
 from classes.CArmy import CArmy, CArmyOffsets
 from classes.CMapProvince import CMapProvince, CMapProvinceOffsets
 from constants import DATA_SECTION_START
-from utils import read_nested_pointers, rawbytes
+from utils.utils import read_nested_pointers, rawbytes
 
 
 class CIngameIdlerOffsets:

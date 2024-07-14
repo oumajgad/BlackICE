@@ -3,11 +3,11 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
-import utils
 from classes.CGovernmentPosition import CGovernmentPosition
 from classes.CMinisterType import CMinisterType
 from constants import DATA_SECTION_START
 from structs.LinkedLists import LinkedList2Node
+from utils import utils
 
 
 class CMinisterOffsets:
