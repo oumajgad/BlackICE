@@ -3,6 +3,7 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
+from classes.CArmy import CArmy
 from classes.CFlag import CFlag
 from classes.CVariable import CVariable
 from constants import DATA_SECTION_START
@@ -29,7 +30,7 @@ class CCountryOffsets:
     CAIStrategy: int = 0x1DC
     tag: int = 0x1E4
     tag_id: int = 0x1E8
-    units_ll: int = 0xBAC
+    units_ll_ptr: int = 0xBAC
     owned_provinces_ll_ptr: int = 0xCF0
     controlled_provinces_ll_ptr: int = 0xD00
 
@@ -56,6 +57,7 @@ class CCountry(pydantic.BaseModel):
     CAIStrategy: int  # embedded into the class
     tag: str
     tag_id: int
+    units_ll_ptr: int
     owned_provinces_ll_ptr: int
     controlled_provinces_ll_ptr: int
 
@@ -84,6 +86,7 @@ class CCountry(pydantic.BaseModel):
             "CAIStrategy": ptr + CCountryOffsets.CAIStrategy,
             "tag": pm.read_bytes(ptr + CCountryOffsets.tag, 3),
             "tag_id": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.tag_id, 4)),
+            "units_ll_ptr": pm.read_uint(ptr + CCountryOffsets.units_ll_ptr),
             "owned_provinces_ll_ptr": pm.read_uint(ptr + CCountryOffsets.owned_provinces_ll_ptr),
             "controlled_provinces_ll_ptr": pm.read_uint(ptr + CCountryOffsets.controlled_provinces_ll_ptr),
         }
@@ -168,6 +171,17 @@ class CCountry(pydantic.BaseModel):
                 res.append(CVariable.make(pm, ptr))
         return res
 
+    def get_units(self, pm: Pymem) -> list[CArmy]:
+        res = []
+        list_node = LinkedListNode.make(pm, self.units_ll_ptr)
+        while True:
+            unit = CArmy.make(pm, list_node.this)
+            res.append(unit)
+            if list_node.next == 0:
+                break
+            list_node = LinkedListNode.make(pm, list_node.next)
+        return res
+
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
@@ -184,5 +198,6 @@ if __name__ == "__main__":
             vars = country.get_country_variables(pm)
             print(f"{len(flags)=}")
             print(f"{len(vars)=}")
-            for var in vars:
-                print(var)
+            units = country.get_units(pm)
+            for unit in units:
+                print(unit.name)

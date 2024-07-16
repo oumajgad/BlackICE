@@ -66,19 +66,40 @@ def read_string(pm: Pymem, ptr: int, terminator: int = 0):
 
 
 def get_string_maybe_ptr(pm: Pymem, ptr: int, ascii_only: bool = False):
+    iso88591_exceptions = [
+        0xA0,
+        0xA1,
+        0xA2,
+        0xA4,
+        0xA6,
+        0xA8,
+        0xA0,
+        0xAA,
+        0xAB,
+        0xAC,
+        0xAD,
+        0xAF,
+        0xB5,
+        0xB6,
+        0xB7,
+        0xB8,
+        0xBA,
+        0xBB,
+    ]
     # print(ptr)
     for i in range(4):
         x = pm.read_bytes(ptr + i, 1)
         characterset_match = False
         if not ascii_only:
-            if not (int.from_bytes(x) < 0x1F or (0x7F < int.from_bytes(x) < 0x9F)):  # unused characters in the set
+            if (
+                not (int.from_bytes(x) < 0x1F or (0x7F < int.from_bytes(x) < 0x9F))
+                and int.from_bytes(x) not in iso88591_exceptions
+            ):  # unused characters in the set
                 characterset_match = True
         else:
             characterset_match = x.isascii()
-        # print(
-        #     f"{x} - {x.isalpha()=} - {x.isspace()=} - {characterset_match=} - {int.from_bytes(x)!=0=} - {x.isascii()=}"
-        # )
-        if not x.isalpha() and not x.isspace() and not characterset_match and int.from_bytes(x) != 0:
+        # print(f"{x} - {x.isalpha()=} - {x.isspace()=} - {characterset_match=}")
+        if not x.isalpha() and not x.isspace() and not characterset_match:
             # print("It's a pointer")
             # It's a pointer
             return read_string(pm, pm.read_uint(ptr))
