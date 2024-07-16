@@ -4,12 +4,12 @@ from pymem import Pymem
 from utils import utils
 
 
-class CountryVariableOffsets:
+class CVariableOffsets:
     name: int = 0x0
     value: int = 0x1C
 
 
-class CountryVariable(pydantic.BaseModel):
+class CVariable(pydantic.BaseModel):
     self_ptr: int
     name: str
     value: int  # x1000
@@ -18,8 +18,8 @@ class CountryVariable(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
-            "name": utils.get_string_maybe_ptr(pm, ptr + CountryVariableOffsets.name, True),
-            "value": utils.to_number(pm.read_bytes(ptr + CountryVariableOffsets.value, 4)),
+            "name": utils.get_string_maybe_ptr(pm, ptr + CVariableOffsets.name, True),
+            "value": utils.to_number(pm.read_bytes(ptr + CVariableOffsets.value, 4)),
         }
 
         return cls(**temp)

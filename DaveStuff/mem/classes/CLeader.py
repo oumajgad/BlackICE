@@ -4,7 +4,7 @@ import pydantic
 from pymem import Pymem
 
 from constants import DATA_SECTION_START
-from utils.utils import to_number, get_string_maybe_ptr, rawbytes
+from utils import utils
 
 
 class CLeaderOffsets:
@@ -34,13 +34,13 @@ class CLeader(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
-            "id": to_number(pm.read_bytes(ptr + CLeaderOffsets.id, 4)),
-            "number_of_traits": to_number(pm.read_bytes(ptr + CLeaderOffsets.number_of_traits, 4)),
+            "id": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.id, 4)),
+            "number_of_traits": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.number_of_traits, 4)),
             "unit_ptr": pm.read_uint(ptr + CLeaderOffsets.unit_ptr),
             "country_tag": pm.read_bytes(ptr + CLeaderOffsets.country_tag, 3),
-            "country_id": to_number(pm.read_bytes(ptr + CLeaderOffsets.country_id, 4)),
-            "name": get_string_maybe_ptr(pm, ptr + CLeaderOffsets.name),
-            "rank": to_number(pm.read_bytes(ptr + CLeaderOffsets.rank, 4)),
+            "country_id": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.country_id, 4)),
+            "name": utils.get_string_maybe_ptr(pm, ptr + CLeaderOffsets.name),
+            "rank": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.rank, 4)),
         }
 
         return cls(**temp)
@@ -50,7 +50,7 @@ class CLeader(pydantic.BaseModel):
         if cls.LEADERS:
             return cls.LEADERS
         res = pm.pattern_scan_all(
-            pattern=rawbytes(
+            pattern=utils.rawbytes(
                 (pm.base_address + CLeaderOffsets.VFTABLE_OFFSET)
                 .to_bytes(length=4, byteorder="little", signed=False)
                 .hex()

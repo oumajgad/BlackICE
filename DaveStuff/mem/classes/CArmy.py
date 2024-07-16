@@ -1,3 +1,4 @@
+import json
 from typing import ClassVar
 
 import pydantic
@@ -5,7 +6,7 @@ from pymem import Pymem
 
 from constants import DATA_SECTION_START
 from structs.LinkedLists import LinkedListNode
-from utils.utils import to_number, get_string_maybe_ptr, rawbytes, int_to_pointer
+from utils import utils
 
 
 class CArmyOffsets:
@@ -84,34 +85,36 @@ class CArmy(pydantic.BaseModel):
         temp = {
             "self_ptr": ptr,
             "is_selected": pm.read_bool(ptr + CArmyOffsets.is_selected),
-            "type": to_number(pm.read_bytes(ptr + CArmyOffsets.type, 4)),
-            "id": to_number(pm.read_bytes(ptr + CArmyOffsets.id, 4)),
+            "type": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.type, 4)),
+            "id": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.id, 4)),
             "regiments_linked_list_first_ptr": pm.read_uint(ptr + CArmyOffsets.regiments_linked_list_first_ptr),
             "regiments_linked_list_last_ptr": pm.read_uint(ptr + CArmyOffsets.regiments_linked_list_last_ptr),
-            "regiments_amount": to_number(pm.read_bytes(ptr + CArmyOffsets.regiments_amount, 4)),
+            "regiments_amount": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.regiments_amount, 4)),
             "upgrade_prio": pm.read_bool(ptr + CArmyOffsets.upgrade_prio),
             "upgrade_active": pm.read_bool(ptr + CArmyOffsets.upgrade_active),
             "reinforcements_active": pm.read_bool(ptr + CArmyOffsets.reinforcements_active),
             "order_ptr": pm.read_uint(ptr + CArmyOffsets.order_ptr),
             "army_sub_unit_definition_ptr": pm.read_uint(ptr + CArmyOffsets.army_sub_unit_definition_ptr),
-            "combat_cooldown": to_number(pm.read_bytes(ptr + CArmyOffsets.combat_cooldown, 4)),
-            "supply_received_percentage": to_number(pm.read_bytes(ptr + CArmyOffsets.supply_received_percentage, 4)),
-            "fuel_received_percentage": to_number(pm.read_bytes(ptr + CArmyOffsets.fuel_received_percentage, 4)),
+            "combat_cooldown": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.combat_cooldown, 4)),
+            "supply_received_percentage": utils.to_number(
+                pm.read_bytes(ptr + CArmyOffsets.supply_received_percentage, 4)
+            ),
+            "fuel_received_percentage": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.fuel_received_percentage, 4)),
             "owner_tag": pm.read_bytes(ptr + CArmyOffsets.owner_tag, 3),
-            "owner_id": to_number(pm.read_bytes(ptr + CArmyOffsets.owner_id, 4)),
+            "owner_id": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.owner_id, 4)),
             "leader_ptr": pm.read_uint(ptr + CArmyOffsets.leader_ptr),
             "current_province_ptr": pm.read_uint(ptr + CArmyOffsets.current_province_ptr),
             "supplied_from_province_ptr": pm.read_uint(ptr + CArmyOffsets.supplied_from_province_ptr),
-            "path_length": to_number(pm.read_bytes(ptr + CArmyOffsets.path_length, 4)),
+            "path_length": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.path_length, 4)),
             "in_game_idler_ptr": pm.read_uint(ptr + CArmyOffsets.in_game_idler_ptr),
             "hoi_avatar_ptr": pm.read_uint(ptr + CArmyOffsets.hoi_avatar_ptr),
-            "name": get_string_maybe_ptr(pm, ptr + CArmyOffsets.name),
-            "name_length": to_number(pm.read_bytes(ptr + CArmyOffsets.name_length, 4)),
-            "dig_in_level": to_number(pm.read_bytes(ptr + CArmyOffsets.dig_in_level, 4)),
-            "base_ca_bonus": to_number(pm.read_bytes(ptr + CArmyOffsets.base_ca_bonus, 4)),
+            "name": utils.get_string_maybe_ptr(pm, ptr + CArmyOffsets.name),
+            "name_length": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.name_length, 4)),
+            "dig_in_level": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.dig_in_level, 4)),
+            "base_ca_bonus": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.base_ca_bonus, 4)),
             "higher_oob_unit_ptr": pm.read_uint(ptr + CArmyOffsets.higher_oob_unit_ptr),
             "lower_oob_unit_linked_list_ptr": pm.read_uint(ptr + CArmyOffsets.lower_oob_unit_linked_list_ptr),
-            "lower_oob_unit_amount": to_number(pm.read_bytes(ptr + CArmyOffsets.lower_oob_unit_amount, 4)),
+            "lower_oob_unit_amount": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.lower_oob_unit_amount, 4)),
         }
         return cls(**temp)
 
@@ -120,7 +123,7 @@ class CArmy(pydantic.BaseModel):
         if cls.UNITS:
             return cls.UNITS
         res = pm.pattern_scan_all(
-            pattern=rawbytes(
+            pattern=utils.rawbytes(
                 (pm.base_address + CArmyOffsets.VFTABLE_OFFSET)
                 .to_bytes(length=4, byteorder="little", signed=False)
                 .hex()
@@ -132,7 +135,7 @@ class CArmy(pydantic.BaseModel):
 
     @classmethod
     def get_name_from_ptr(cls, pm: Pymem, ptr: int):
-        return get_string_maybe_ptr(pm, ptr + CArmyOffsets.name)
+        return utils.get_string_maybe_ptr(pm, ptr + CArmyOffsets.name)
 
     def build_oob(self, pm: Pymem):
         def get_oob_units_recursive(pm: Pymem, unit: CArmy):
@@ -172,11 +175,9 @@ if __name__ == "__main__":
         ]:
             army = CArmy.make(pm, unit_ptr)
             print(
-                f"{name} - {int_to_pointer(army.self_ptr)} - {int_to_pointer(army.higher_oob_unit_ptr)} - {int_to_pointer(army.lower_oob_unit_linked_list_ptr)}"
+                f"{name} - {utils.int_to_pointer(army.self_ptr)} - {utils.int_to_pointer(army.higher_oob_unit_ptr)} - {utils.int_to_pointer(army.lower_oob_unit_linked_list_ptr)}"
             )
-    # print(json.dumps(army.dict(), indent=2))
-    # army = CArmy.make(pm, ptr=0xDED42178)
-    # print(json.dumps(army.dict(), indent=2))
-    # oob = army.build_oob(pm)
-    # print(json.dumps(oob, ensure_ascii=False))
-    print(rawbytes((33155924).to_bytes(length=4, byteorder="little", signed=False).hex()))
+    army = CArmy.make(pm, ptr=0xBB90F440)
+    print(json.dumps(army.dict(), indent=2))
+    oob = army.build_oob(pm)
+    print(json.dumps(oob, indent=2, ensure_ascii=False))

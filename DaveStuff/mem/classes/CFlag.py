@@ -4,11 +4,11 @@ from pymem import Pymem
 from utils import utils
 
 
-class CountryFlagOffsets:
+class CFlagOffsets:
     name: int = 0x0
 
 
-class CountryFlag(pydantic.BaseModel):
+class CFlag(pydantic.BaseModel):
     self_ptr: int
     name: str
 
@@ -16,7 +16,7 @@ class CountryFlag(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
-            "name": utils.get_string_maybe_ptr(pm, ptr + CountryFlagOffsets.name, True),
+            "name": utils.get_string_maybe_ptr(pm, ptr + CFlagOffsets.name, True),
         }
 
         return cls(**temp)

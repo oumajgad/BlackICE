@@ -6,7 +6,7 @@ from pymem import Pymem
 from classes.CArmy import CArmy, CArmyOffsets
 from classes.CMapProvince import CMapProvince, CMapProvinceOffsets
 from constants import DATA_SECTION_START
-from utils.utils import read_nested_pointers, rawbytes
+from utils import utils
 
 
 class CIngameIdlerOffsets:
@@ -30,7 +30,7 @@ class CInGameIdler(pydantic.BaseModel):
     @classmethod
     def make(cls, pm: Pymem):
         res = pm.pattern_scan_all(
-            pattern=rawbytes(
+            pattern=utils.rawbytes(
                 (pm.base_address + CIngameIdlerOffsets.VFTABLE_OFFSET_1)
                 .to_bytes(length=4, byteorder="little", signed=False)
                 .hex()
@@ -53,8 +53,8 @@ class CInGameIdler(pydantic.BaseModel):
 
     @classmethod
     def _read_province_ptrs(cls, pm: Pymem, ptr):
-        province_ptr_1 = read_nested_pointers(pm, ptr + CIngameIdlerOffsets.selected_thing_ptr_ptr, 2)
-        province_ptr_2 = read_nested_pointers(pm, ptr + CIngameIdlerOffsets.selected_thing_ptr_ptr_2, 2)
+        province_ptr_1 = utils.read_nested_pointers(pm, ptr + CIngameIdlerOffsets.selected_thing_ptr_ptr, 2)
+        province_ptr_2 = utils.read_nested_pointers(pm, ptr + CIngameIdlerOffsets.selected_thing_ptr_ptr_2, 2)
         return province_ptr_1, province_ptr_2
 
     def update_selected_thing_ptr(self, pm: Pymem) -> int:
@@ -67,7 +67,7 @@ class CInGameIdler(pydantic.BaseModel):
         if self.selected_thing_ptr_ptr == 0:
             return None
         else:
-            first_bytes = read_nested_pointers(pm, self.selected_thing_ptr_ptr, 2)
+            first_bytes = utils.read_nested_pointers(pm, self.selected_thing_ptr_ptr, 2)
             print(first_bytes)
             print(pm.base_address + CArmyOffsets.VFTABLE_OFFSET)
             if first_bytes == (pm.base_address + CMapProvinceOffsets.VFTABLE_OFFSET_2):

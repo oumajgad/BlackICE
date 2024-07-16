@@ -6,7 +6,7 @@ from pymem import Pymem
 
 from classes.CProvinceBuilding import CProvinceBuilding
 from constants import DATA_SECTION_START
-from utils.utils import to_number, rawbytes
+from utils import utils
 
 
 class CMapProvinceOffsets:
@@ -54,19 +54,19 @@ class CMapProvince(pydantic.BaseModel):
         temp = {
             "self_ptr": ptr,
             "is_selected": pm.read_bool(ptr + CMapProvinceOffsets.is_selected),
-            "id": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.id, 4)),
+            "id": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.id, 4)),
             "owner_tag": pm.read_bytes(ptr + CMapProvinceOffsets.owner_tag, 3),
-            "owner_id": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.owner_id, 4)),
+            "owner_id": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.owner_id, 4)),
             "controller_tag": pm.read_bytes(ptr + CMapProvinceOffsets.controller_tag, 3),
-            "controller_id": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.controller_id, 4)),
-            "supply_pool": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.supply_pool, 4)),
-            "supply_depot_province": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.supply_depot_province, 4)),
-            "manpower": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.manpower, 4)),
-            "leadership": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.leadership, 4)),
-            "energy": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.energy, 4)),
-            "metal": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.metal, 4)),
-            "rares": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.rares, 4)),
-            "oil": to_number(pm.read_bytes(ptr + CMapProvinceOffsets.oil, 4)),
+            "controller_id": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.controller_id, 4)),
+            "supply_pool": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.supply_pool, 4)),
+            "supply_depot_province": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.supply_depot_province, 4)),
+            "manpower": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.manpower, 4)),
+            "leadership": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.leadership, 4)),
+            "energy": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.energy, 4)),
+            "metal": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.metal, 4)),
+            "rares": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.rares, 4)),
+            "oil": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.oil, 4)),
             "CProvinceBuilding_array_ptr": pm.read_uint(ptr + CMapProvinceOffsets.CProvinceBuilding_array_ptr),
         }
 
@@ -77,7 +77,7 @@ class CMapProvince(pydantic.BaseModel):
         if cls.PROVINCES:
             return cls.PROVINCES
         res = pm.pattern_scan_all(
-            pattern=rawbytes(
+            pattern=utils.rawbytes(
                 (pm.base_address + CMapProvinceOffsets.VFTABLE_OFFSET_2)
                 .to_bytes(length=4, byteorder="little", signed=False)
                 .hex()
@@ -98,7 +98,7 @@ class CMapProvince(pydantic.BaseModel):
 
     @staticmethod
     def get_id_from_ptr(pm, province_ptr):
-        return to_number(pm.read_bytes(province_ptr + 0xD0, 4))
+        return utils.to_number(pm.read_bytes(province_ptr + 0xD0, 4))
 
     def get_province_building(self, pm: Pymem, building_index: int):
         building_ptr = pm.read_uint(self.CProvinceBuilding_array_ptr + (building_index * 4))

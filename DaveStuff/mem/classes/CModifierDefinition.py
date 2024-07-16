@@ -4,7 +4,7 @@ import pydantic
 from pymem import Pymem
 
 from constants import DATA_SECTION_START
-from utils.utils import to_number, rawbytes, get_string_maybe_ptr
+from utils import utils
 
 
 class CModifierDefinitionOffsets:
@@ -24,8 +24,8 @@ class CModifierDefinition(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
-            "name_raw": get_string_maybe_ptr(pm, ptr + CModifierDefinitionOffsets.name_raw),
-            "name_raw_length": to_number(pm.read_bytes(ptr + CModifierDefinitionOffsets.name_raw_length, 4)),
+            "name_raw": utils.get_string_maybe_ptr(pm, ptr + CModifierDefinitionOffsets.name_raw),
+            "name_raw_length": utils.to_number(pm.read_bytes(ptr + CModifierDefinitionOffsets.name_raw_length, 4)),
         }
 
         return cls(**temp)
@@ -35,7 +35,7 @@ class CModifierDefinition(pydantic.BaseModel):
         if cls.MODIFIERS:
             return cls.MODIFIERS
         res = pm.pattern_scan_all(
-            pattern=rawbytes(
+            pattern=utils.rawbytes(
                 (pm.base_address + CModifierDefinitionOffsets.VFTABLE_OFFSET)
                 .to_bytes(length=4, byteorder="little", signed=False)
                 .hex()

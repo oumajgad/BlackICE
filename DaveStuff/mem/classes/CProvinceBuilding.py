@@ -4,7 +4,7 @@ import pydantic
 from pymem import Pymem
 
 from constants import DATA_SECTION_START
-from utils.utils import to_number, rawbytes
+from utils import utils
 
 
 class CProvinceBuildingOffsets:
@@ -27,10 +27,10 @@ class CProvinceBuilding(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
-            "effect": to_number(pm.read_bytes(ptr + CProvinceBuildingOffsets.effect, 4)),
-            "CBuilding_ptr": to_number(pm.read_bytes(ptr + CProvinceBuildingOffsets.CBuilding_ptr, 4)),
-            "level_max": to_number(pm.read_bytes(ptr + CProvinceBuildingOffsets.level_max, 4)),
-            "level_current": to_number(pm.read_bytes(ptr + CProvinceBuildingOffsets.level_current, 4)),
+            "effect": utils.to_number(pm.read_bytes(ptr + CProvinceBuildingOffsets.effect, 4)),
+            "CBuilding_ptr": utils.to_number(pm.read_bytes(ptr + CProvinceBuildingOffsets.CBuilding_ptr, 4)),
+            "level_max": utils.to_number(pm.read_bytes(ptr + CProvinceBuildingOffsets.level_max, 4)),
+            "level_current": utils.to_number(pm.read_bytes(ptr + CProvinceBuildingOffsets.level_current, 4)),
         }
 
         return cls(**temp)
@@ -40,7 +40,7 @@ class CProvinceBuilding(pydantic.BaseModel):
         if cls.BUILDINGS:
             return cls.BUILDINGS
         res = pm.pattern_scan_all(
-            pattern=rawbytes(
+            pattern=utils.rawbytes(
                 (pm.base_address + CProvinceBuildingOffsets.VFTABLE_OFFSET)
                 .to_bytes(length=4, byteorder="little", signed=False)
                 .hex()

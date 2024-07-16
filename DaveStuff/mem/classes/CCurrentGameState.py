@@ -4,7 +4,7 @@ import pydantic
 from pymem import Pymem
 
 from constants import DATA_SECTION_START
-from utils.utils import rawbytes
+from utils import utils
 
 
 class CCurrentGameStateOffsets:
@@ -21,7 +21,7 @@ class CCurrentGameState(pydantic.BaseModel):
     @classmethod
     def make(cls, pm: Pymem):
         res = pm.pattern_scan_all(
-            pattern=rawbytes(
+            pattern=utils.rawbytes(
                 (pm.base_address + CCurrentGameStateOffsets.VFTABLE_OFFSET_1)
                 .to_bytes(length=4, byteorder="little", signed=False)
                 .hex()

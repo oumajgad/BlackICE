@@ -3,9 +3,9 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
+from classes.CFlag import CFlag
+from classes.CVariable import CVariable
 from constants import DATA_SECTION_START
-from structs.CountryFlag import CountryFlag
-from structs.CountryVariable import CountryVariable
 from structs.LinkedLists import LinkedListNode
 from utils import utils
 
@@ -14,10 +14,10 @@ class CCountryOffsets:
     VFTABLE_OFFSET: int = 0x11C1BA8
     CDivisionTemplate_initial_array_ptr: int = 0x138
     CDivisionTemplate_current_array_ptr: int = 0x148
-    available_CMinisters_linked_list_first_ptr: int = 0x160
-    available_CMinisters_linked_list_last_ptr: int = 0x164
-    CMinisters_linked_list_first_ptr: int = 0x170
-    CMinisters_linked_list_last_ptr: int = 0x174
+    available_CMinisters_ll_first_ptr: int = 0x160
+    available_CMinisters_ll_last_ptr: int = 0x164
+    CMinisters_ll_first_ptr: int = 0x170
+    CMinisters_ll_last_ptr: int = 0x174
     CFlags_VFTABLE_PTR_1: int = 0x180
     CFlags_ptr: int = 0x184
     CFlags_amount: int = 0x18C
@@ -29,7 +29,9 @@ class CCountryOffsets:
     CAIStrategy: int = 0x1DC
     tag: int = 0x1E4
     tag_id: int = 0x1E8
-    controlled_provinces_linked_list_ptr: int = 0xD00
+    units_ll: int = 0xBAC
+    owned_provinces_ll_ptr: int = 0xCF0
+    controlled_provinces_ll_ptr: int = 0xD00
 
 
 class CCountry(pydantic.BaseModel):
@@ -37,10 +39,10 @@ class CCountry(pydantic.BaseModel):
     self_ptr: int
     CDivisionTemplate_initial_array_ptr: int  # has the umodified templates
     CDivisionTemplate_current_array_ptr: int  # has the template the way the player changed them
-    available_CMinisters_linked_list_first_ptr: int
-    available_CMinisters_linked_list_last_ptr: int
-    CMinisters_linked_list_first_ptr: int
-    CMinisters_linked_list_last_ptr: int
+    available_CMinisters_ll_first_ptr: int
+    available_CMinisters_ll_last_ptr: int
+    CMinisters_ll_first_ptr: int
+    CMinisters_ll_last_ptr: int
     CFlags_VFTABLE_PTR_1: int  # embedded into the class
     CFlags_ptr: int  # Flags are single chars saved as a Tree, offsets for each Node: +0x4 = current char, +0xc = the next node on the same level, +0x10 = the next deeper node
     # So a depth first algorithm needs to be implemented to build the names for each flag individually
@@ -54,6 +56,8 @@ class CCountry(pydantic.BaseModel):
     CAIStrategy: int  # embedded into the class
     tag: str
     tag_id: int
+    owned_provinces_ll_ptr: int
+    controlled_provinces_ll_ptr: int
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -65,14 +69,10 @@ class CCountry(pydantic.BaseModel):
             "CDivisionTemplate_current_array_ptr": pm.read_uint(
                 ptr + CCountryOffsets.CDivisionTemplate_current_array_ptr
             ),
-            "available_CMinisters_linked_list_first_ptr": pm.read_uint(
-                ptr + CCountryOffsets.available_CMinisters_linked_list_first_ptr
-            ),
-            "available_CMinisters_linked_list_last_ptr": pm.read_uint(
-                ptr + CCountryOffsets.available_CMinisters_linked_list_last_ptr
-            ),
-            "CMinisters_linked_list_first_ptr": pm.read_uint(ptr + CCountryOffsets.CMinisters_linked_list_first_ptr),
-            "CMinisters_linked_list_last_ptr": pm.read_uint(ptr + CCountryOffsets.CMinisters_linked_list_last_ptr),
+            "available_CMinisters_ll_first_ptr": pm.read_uint(ptr + CCountryOffsets.available_CMinisters_ll_first_ptr),
+            "available_CMinisters_ll_last_ptr": pm.read_uint(ptr + CCountryOffsets.available_CMinisters_ll_last_ptr),
+            "CMinisters_ll_first_ptr": pm.read_uint(ptr + CCountryOffsets.CMinisters_ll_first_ptr),
+            "CMinisters_ll_last_ptr": pm.read_uint(ptr + CCountryOffsets.CMinisters_ll_first_ptr),
             "CFlags_VFTABLE_PTR_1": ptr + CCountryOffsets.CFlags_VFTABLE_PTR_1,
             "CFlags_ptr": pm.read_uint(ptr + CCountryOffsets.CFlags_ptr),
             "CFlags_amount": pm.read_uint(ptr + CCountryOffsets.CFlags_amount),
@@ -84,6 +84,8 @@ class CCountry(pydantic.BaseModel):
             "CAIStrategy": ptr + CCountryOffsets.CAIStrategy,
             "tag": pm.read_bytes(ptr + CCountryOffsets.tag, 3),
             "tag_id": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.tag_id, 4)),
+            "owned_provinces_ll_ptr": pm.read_uint(ptr + CCountryOffsets.owned_provinces_ll_ptr),
+            "controlled_provinces_ll_ptr": pm.read_uint(ptr + CCountryOffsets.controlled_provinces_ll_ptr),
         }
         return cls(**temp)
 
@@ -105,9 +107,9 @@ class CCountry(pydantic.BaseModel):
     def get_ministers(self, available_only: bool = False):
         res = []
         if available_only:
-            ptr = self.available_CMinisters_linked_list_first_ptr
+            ptr = self.available_CMinisters_ll_first_ptr
         else:
-            ptr = self.CMinisters_linked_list_first_ptr
+            ptr = self.CMinisters_ll_first_ptr
 
         if ptr == 0:
             return res
@@ -154,7 +156,7 @@ class CCountry(pydantic.BaseModel):
         if self.CFlags_ptr != 0:
             CCountry._traverse_tree_depth_first(pm, temp, self.CFlags_ptr)
             for ptr in temp:
-                res.append(CountryFlag.make(pm, ptr))
+                res.append(CFlag.make(pm, ptr))
         return res
 
     def get_country_variables(self, pm: Pymem) -> list[str]:
@@ -163,7 +165,7 @@ class CCountry(pydantic.BaseModel):
         if self.CVariables_ptr != 0:
             CCountry._traverse_tree_depth_first(pm, temp, self.CVariables_ptr)
             for ptr in temp:
-                res.append(CountryVariable.make(pm, ptr))
+                res.append(CVariable.make(pm, ptr))
         return res
 
 

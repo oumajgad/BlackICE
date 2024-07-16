@@ -5,7 +5,7 @@ from pymem import Pymem
 
 from classes.CModifierDefinition import CModifierDefinition
 from constants import DATA_SECTION_START
-from utils.utils import to_number, rawbytes, get_string_maybe_ptr
+from utils import utils
 
 
 class CBuildingOffsets:
@@ -57,18 +57,20 @@ class CBuilding(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
-            "index": to_number(pm.read_bytes(ptr + CBuildingOffsets.index, 4)),
-            "effect_value": to_number(pm.read_bytes(ptr + CBuildingOffsets.effect_value, 4)),
-            "CModifierDefinition_ptr": to_number(pm.read_bytes(ptr + CBuildingOffsets.CModifierDefinition_ptr, 4)),
-            "name_raw": get_string_maybe_ptr(pm, ptr + CBuildingOffsets.name_raw),
-            "name_raw_length": to_number(pm.read_bytes(ptr + CBuildingOffsets.name_raw_length, 4)),
-            "name_pretty": get_string_maybe_ptr(pm, ptr + CBuildingOffsets.name_pretty),
-            "name_pretty_length": to_number(pm.read_bytes(ptr + CBuildingOffsets.name_pretty_length, 4)),
-            "cost": to_number(pm.read_bytes(ptr + CBuildingOffsets.cost, 4)),
-            "time": to_number(pm.read_bytes(ptr + CBuildingOffsets.time, 4)),
-            "max_level": to_number(pm.read_bytes(ptr + CBuildingOffsets.max_level, 4)),
-            "completion_size": to_number(pm.read_bytes(ptr + CBuildingOffsets.completion_size, 4)),
-            "damage_factor": to_number(pm.read_bytes(ptr + CBuildingOffsets.damage_factor, 4)),
+            "index": utils.to_number(pm.read_bytes(ptr + CBuildingOffsets.index, 4)),
+            "effect_value": utils.to_number(pm.read_bytes(ptr + CBuildingOffsets.effect_value, 4)),
+            "CModifierDefinition_ptr": utils.to_number(
+                pm.read_bytes(ptr + CBuildingOffsets.CModifierDefinition_ptr, 4)
+            ),
+            "name_raw": utils.get_string_maybe_ptr(pm, ptr + CBuildingOffsets.name_raw),
+            "name_raw_length": utils.to_number(pm.read_bytes(ptr + CBuildingOffsets.name_raw_length, 4)),
+            "name_pretty": utils.get_string_maybe_ptr(pm, ptr + CBuildingOffsets.name_pretty),
+            "name_pretty_length": utils.to_number(pm.read_bytes(ptr + CBuildingOffsets.name_pretty_length, 4)),
+            "cost": utils.to_number(pm.read_bytes(ptr + CBuildingOffsets.cost, 4)),
+            "time": utils.to_number(pm.read_bytes(ptr + CBuildingOffsets.time, 4)),
+            "max_level": utils.to_number(pm.read_bytes(ptr + CBuildingOffsets.max_level, 4)),
+            "completion_size": utils.to_number(pm.read_bytes(ptr + CBuildingOffsets.completion_size, 4)),
+            "damage_factor": utils.to_number(pm.read_bytes(ptr + CBuildingOffsets.damage_factor, 4)),
             "on_map": pm.read_bool(ptr + CBuildingOffsets.on_map),
             "visibility": pm.read_bool(ptr + CBuildingOffsets.visibility),
             "repair": pm.read_bool(ptr + CBuildingOffsets.repair),
@@ -83,7 +85,7 @@ class CBuilding(pydantic.BaseModel):
         if cls.BUILDINGS_PTRS:
             return cls.BUILDINGS_PTRS
         res = pm.pattern_scan_all(
-            pattern=rawbytes(
+            pattern=utils.rawbytes(
                 (pm.base_address + CBuildingOffsets.VFTABLE_OFFSET)
                 .to_bytes(length=4, byteorder="little", signed=False)
                 .hex()
@@ -100,7 +102,7 @@ class CBuilding(pydantic.BaseModel):
         return cls.BUILDINGS_PTRS, cls.BUILDINGS
 
     def get_province_modifier(self, pm: Pymem):
-        modifier = CModifierDefinition.make(pm, to_number(pm.read_bytes(self.CModifierDefinition_ptr, 4)))
+        modifier = CModifierDefinition.make(pm, utils.to_number(pm.read_bytes(self.CModifierDefinition_ptr, 4)))
         return modifier
 
 
