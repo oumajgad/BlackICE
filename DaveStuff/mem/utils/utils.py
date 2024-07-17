@@ -16,7 +16,7 @@ def get_array_element_lengths(array):
             lengths[str(res)] += 1
         i += 1
     lengths = dict(sorted(lengths.items(), key=lambda item: item[1], reverse=True))
-    print(f"{lengths=}")
+    return lengths
 
 
 def rawbytes(s_in):

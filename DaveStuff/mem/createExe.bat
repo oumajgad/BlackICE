@@ -1,5 +1,5 @@
 del /q memBICE.exe
-pyinstaller --noconfirm --onefile --console --name "memBICE" "main.py"
+pyinstaller --noconfirm --noconsole --onefile --console --name "memBICE" "main.py"
 copy /b dist\memBICE.exe memBICE.exe
 del /q memBICE.spec
 rmdir /s /q build
