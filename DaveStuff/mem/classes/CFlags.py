@@ -18,13 +18,13 @@ class CFlagsOffsets:
 class CFlags(pydantic.BaseModel):
     FLAGS: ClassVar[list[int]] = None
     self_ptr: int
-    CFlag_tree_ptr: int
+    flags: list[CFlag]
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
-            "CFlag_tree_ptr": pm.read_uint(ptr + CFlagsOffsets.CFlag_tree_ptr),
+            "flags": cls.get_flags(pm, ptr),
         }
         return cls(**temp)
 
@@ -43,12 +43,15 @@ class CFlags(pydantic.BaseModel):
         cls.FLAGS = [ptr for ptr in res if ptr >= pm.base_address + DATA_SECTION_START]
         return cls.FLAGS
 
-    def get_flags(self, pm: Pymem) -> list[CFlag]:
+    @staticmethod
+    def get_flags(pm: Pymem, ptr) -> list[CFlag]:
         res = []
         ptrs = []
-        FlagsAndVarsTree.traverse_tree_depth_first(pm=pm, node_ptr=self.CFlag_tree_ptr, res=ptrs)
-        for ptr in ptrs:
-            res.append(CFlag.make(pm, ptr))
+        tree_ptr = pm.read_uint(ptr + CFlagsOffsets.CFlag_tree_ptr)
+        if tree_ptr != 0:
+            FlagsAndVarsTree.traverse_tree_depth_first(pm=pm, node_ptr=tree_ptr, res=ptrs)
+            for ptr in ptrs:
+                res.append(CFlag.make(pm, ptr))
         return res
 
 

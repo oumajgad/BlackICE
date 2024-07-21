@@ -20,16 +20,17 @@ class FlagsAndVarsTree:
 
     @classmethod
     def traverse_tree_depth_first(cls, pm: Pymem, node_ptr: int, res: list) -> list[int]:
-        next_sibling_node = pm.read_uint(node_ptr + 0xC)
-        child_node = pm.read_uint(node_ptr + 0x10)
-        element_ptr = pm.read_uint(node_ptr)
-        # character = pm.read_char(node_ptr + 0x4)
-        # print(f"{node_ptr=} - {character=} - {next_sibling_node=} - {child_node=}")
-        if element_ptr != 0:
-            # print(f"{node_ptr=} - {element_ptr=}")
-            res.append(element_ptr)
-        if child_node != 0:
-            cls.traverse_tree_depth_first(pm=pm, node_ptr=child_node, res=res)
-        if next_sibling_node != 0:
-            cls.traverse_tree_depth_first(pm=pm, node_ptr=next_sibling_node, res=res)
+        if node_ptr != 0:
+            next_sibling_node = pm.read_uint(node_ptr + 0xC)
+            child_node = pm.read_uint(node_ptr + 0x10)
+            element_ptr = pm.read_uint(node_ptr)
+            # character = pm.read_char(node_ptr + 0x4)
+            # print(f"{node_ptr=} - {character=} - {next_sibling_node=} - {child_node=}")
+            if element_ptr != 0:
+                # print(f"{node_ptr=} - {element_ptr=}")
+                res.append(element_ptr)
+            if child_node != 0:
+                cls.traverse_tree_depth_first(pm=pm, node_ptr=child_node, res=res)
+            if next_sibling_node != 0:
+                cls.traverse_tree_depth_first(pm=pm, node_ptr=next_sibling_node, res=res)
         return res

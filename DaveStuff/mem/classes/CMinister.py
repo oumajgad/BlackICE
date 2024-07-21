@@ -118,7 +118,8 @@ if __name__ == "__main__":
     print(f"{len(ministers)=}")
     for ptr in ministers:
         minister = CMinister.make(pm, ptr)
-        if minister.id in [246, 266]:
+        if minister.id in [116]:
             print(utils.dump_model(minister))
             for x in minister.get_position_types_mapping(pm):
                 print(x)
+            exit(0)

@@ -56,6 +56,7 @@ def read_string(pm: Pymem, ptr: int, terminator: int = 0):
     res = ""
     while current < max:
         new = pm.read_bytes(ptr + current, step)
+        # print(f"{new=}")
         current += step
         for i in range(step):
             x = new[i]
@@ -66,27 +67,17 @@ def read_string(pm: Pymem, ptr: int, terminator: int = 0):
 
 
 def get_string_maybe_ptr(pm: Pymem, ptr: int, ascii_only: bool = False):
+    if ptr == 0:
+        return ""
+    # fmt: off
     iso88591_exceptions = [
-        0xA0,
-        0xA1,
-        0xA2,
-        0xA4,
-        0xA6,
-        0xA8,
-        0xA0,
-        0xAA,
-        0xAB,
-        0xAC,
-        0xAD,
-        0xAF,
-        0xB5,
-        0xB6,
-        0xB7,
-        0xB8,
-        0xBA,
-        0xBB,
+        0xA0, 0xA1, 0xA2, 0xA4, 0xA6, 0xA8, 0xA0, 0xAA, 0xAB, 0xAC, 0xAD,
+        0xAE, 0xAF, 0xB1, 0xB2, 0xB3, 0xB4,  0xB5, 0xB6, 0xB7, 0xB8, 0xB9,
+        0xBA, 0xBB, 0xF0,
     ]
-    # print(ptr)
+    # fmt: on
+
+    # logger.trace(ptr)
     for i in range(4):
         x = pm.read_bytes(ptr + i, 1)
         characterset_match = False
@@ -98,11 +89,12 @@ def get_string_maybe_ptr(pm: Pymem, ptr: int, ascii_only: bool = False):
                 characterset_match = True
         else:
             characterset_match = x.isascii()
-        # print(f"{x} - {x.isalpha()=} - {x.isspace()=} - {characterset_match=}")
-        if not x.isalpha() and not x.isspace() and not characterset_match:
-            # print("It's a pointer")
+        # print.trace(f"{x} - {x.isalpha()=} - {x.isspace()=} - {characterset_match=} - {int.from_bytes(x) == 0x0 =}")
+        if not x.isalpha() and not x.isspace() and not characterset_match and not int.from_bytes(x) == 0x0:
+            # logger.trace("It's a pointer")
             # It's a pointer
             return read_string(pm, pm.read_uint(ptr))
+    # logger.trace("It's a string")
     # It's a string
     return read_string(pm, ptr)
 
@@ -130,5 +122,7 @@ def dump_bytes(pm: Pymem, ptr: int, length: int):
         current += 4
 
 
-def dump_model(x: pydantic.BaseModel) -> str:
-    return json.dumps(x.dict(), indent=2, ensure_ascii=False)
+def dump_model(x: pydantic.BaseModel, exlusions=None) -> str:
+    if exlusions is None:
+        exlusions = []
+    return json.dumps(x.dict(exclude=exlusions), indent=2, ensure_ascii=False)

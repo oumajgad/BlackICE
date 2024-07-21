@@ -18,13 +18,13 @@ class CVariablesOffsets:
 class CVariables(pydantic.BaseModel):
     VARIABLES: ClassVar[list[int]] = None
     self_ptr: int
-    CVariable_tree_ptr: int
+    variables: list[CVariable]
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
-            "CVariable_tree_ptr": pm.read_uint(ptr + CVariablesOffsets.CVariable_tree_ptr),
+            "variables": cls.get_variables(pm, ptr),
         }
         return cls(**temp)
 
@@ -43,12 +43,17 @@ class CVariables(pydantic.BaseModel):
         cls.VARIABLES = [ptr for ptr in res if ptr >= pm.base_address + DATA_SECTION_START]
         return cls.VARIABLES
 
-    def get_variables(self, pm: Pymem) -> list[CVariable]:
+    @staticmethod
+    def get_variables(pm: Pymem, ptr) -> list[CVariable]:
         res = []
         ptrs = []
-        FlagsAndVarsTree.traverse_tree_depth_first(pm=pm, node_ptr=self.CVariable_tree_ptr, res=ptrs)
-        for ptr in ptrs:
-            res.append(CVariable.make(pm, ptr))
+        tree_ptr = pm.read_uint(ptr + CVariablesOffsets.CVariable_tree_ptr)
+        if tree_ptr != 0:
+            FlagsAndVarsTree.traverse_tree_depth_first(pm=pm, node_ptr=tree_ptr, res=ptrs)
+            for ptr in ptrs:
+                variable = CVariable.make(pm, ptr)
+                if variable.value != 0:
+                    res.append(variable)
         return res
 
 

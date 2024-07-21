@@ -44,6 +44,7 @@ class CArmyOffsets:
     higher_oob_unit_ptr: int = 0x1E0
     lower_oob_unit_linked_list_ptr: int = 0x1E8
     lower_oob_unit_amount: int = 0x1EC
+    oob_level: int = 0x1F4  # 0 -> Theatre, 4 -> Division (includes single brigades)
 
 
 class CArmy(pydantic.BaseModel):
