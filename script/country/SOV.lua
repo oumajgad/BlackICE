@@ -525,32 +525,32 @@ function P.ProductionWeights(voProductionData)
 	-- 1936 just build up
 	elseif voProductionData.Year <= 1936 then
 		laArray = {
+			0.0, -- Land
+			0.0, -- Air
+			0.00, -- Sea
+			1.0}; -- Other
+
+	elseif voProductionData.Year <= 1937 then
+		laArray = {
 			0.1, -- Land
 			0.05, -- Air
 			0.00, -- Sea
 			0.85}; -- Other
 
-	elseif voProductionData.Year <= 1937 then
-		laArray = {
-			0.2, -- Land
-			0.1, -- Air
-			0.00, -- Sea
-			0.7}; -- Other
-
 elseif voProductionData.Year <= 1938 then
 		laArray = {
-			0.3, -- Land
+			0.1, -- Land
 			0.1, -- Air
 			0.00, -- Sea
-			0.6}; -- Other
+			0.8}; -- Other
 		-- Produce lots of industry in the early years
 	--   as long as Germany is not at war with anyone
 	elseif voProductionData.Year <= 1939 and not(loGerCountry:IsAtWar()) then
 		laArray = {
-			0.5, -- Land
-			0.2, -- Air
+			0.2, -- Land
+			0.1, -- Air
 			0.00, -- Sea
-			0.3};
+			0.7};
 
 	else
 		laArray = {
