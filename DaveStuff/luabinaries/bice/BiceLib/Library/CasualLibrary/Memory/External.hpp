@@ -29,7 +29,7 @@ namespace Memory {
     {
     public:
         External(void) noexcept = default;
-        External(const char* proc, bool debug = false) noexcept;
+        External(int procID, bool debug = false) noexcept;
         ~External(void) noexcept;
 
         /*
@@ -199,7 +199,7 @@ namespace Memory {
         @param proc Name of the target process ("target.exe")
         @param access Desired access right to the process
         @returns whether or not initialization was successful*/
-        bool init(const char* proc, const DWORD access = PROCESS_ALL_ACCESS) noexcept;
+        bool init(int procID, const DWORD access = PROCESS_ALL_ACCESS) noexcept;
 
         // Sadly, only C++17 feature because of the folding
 //#ifdef CPP17GRT

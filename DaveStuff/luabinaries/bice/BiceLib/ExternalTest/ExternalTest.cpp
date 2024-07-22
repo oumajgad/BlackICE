@@ -2,6 +2,7 @@
 #include <intrin.h>
 
 #include <CasualLibrary.hpp>
+#include <processthreadsapi.h>
 
 int DATA_SECTION_START = 0x12F5000;
 
@@ -34,7 +35,7 @@ std::string toSignature(std::string &str) {
 int main() {
     std::cout << "Running tests ...\n\n";
 
-    Memory::External external = Memory::External("hoi3_tfh.exe", true);
+    Memory::External external = Memory::External(GetCurrentProcessId(), true);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     std::cout << modulePtr.get() << std::endl;
 

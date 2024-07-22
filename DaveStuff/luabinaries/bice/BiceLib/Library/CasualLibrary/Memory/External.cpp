@@ -1,7 +1,7 @@
 #include "External.hpp"
 
-Memory::External::External(const char* proc, const bool debug) noexcept {
-    if (!init(proc)) {
+Memory::External::External(int procID, const bool debug) noexcept {
+    if (!init(procID)) {
         std::cerr << "Could not init Memory object.\n";
         std::cerr << getLastErrorAsString() << std::endl;
     }
@@ -35,23 +35,10 @@ Memory::External::~External(void) noexcept {
     return name;
 }
 
-bool Memory::External::init(const char* proc, const DWORD access) noexcept {
-    HANDLE hProcessId = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    this->processID = 0;
-    PROCESSENTRY32 pEntry;
-    pEntry.dwSize = sizeof(pEntry);
+bool Memory::External::init(int procID, const DWORD access) noexcept {
+    this->processID = procID;
+    this->handle = OpenProcess(access, false, this->processID);
 
-    do {
-        if (!strcmp(static_cast<char*> (pEntry.szExeFile), proc)) {
-            this->processID = pEntry.th32ProcessID;
-            CloseHandle(hProcessId);
-            this->handle = OpenProcess(access, false, this->processID);
-            return true;
-        }
-
-    } while (Process32Next(hProcessId, &pEntry));
-    if (this->processID == 0)
-        CloseHandle(hProcessId);
     return this->processID != 0;
 }
 

@@ -1905,9 +1905,10 @@ if wx ~= nil then
 		GuiRefreshLoop(true)
 
 		BiceLib = require("BiceLib")
-		local a, b = BiceLib.hello()
+		local a, b, c = BiceLib.hello()
 		Utils.LUA_DEBUGOUT(a)
 		Utils.LUA_DEBUGOUT(b)
+		Utils.LUA_DEBUGOUT(c)
 
 		-- local command = '"tfh\\mod\\BlackICE ' .. UI.version ..'\\memBICE.exe" '.. winapi.get_current_pid() .. " country" .. " GER"
 		-- Utils.LUA_DEBUGOUT(command)
