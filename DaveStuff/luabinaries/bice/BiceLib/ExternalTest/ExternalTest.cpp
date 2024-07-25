@@ -1,5 +1,10 @@
 #include <iostream>
 #include <intrin.h>
+#include <thread>
+#include <windows.h>
+#include <chrono>
+#include <Heapapi.h>
+#include <Minwinbase.h>
 
 #include <CasualLibrary.hpp>
 #include <processthreadsapi.h>
@@ -31,48 +36,83 @@ std::string toSignature(std::string &str) {
     return res;
 }
 
+std::string ptrToSignature(uintptr_t ptr) {
+    std::string x = n2hexstr(_byteswap_ulong(ptr));
+    return toSignature(x);
+}
+
+void heapWalkInternal() {
+    PROCESS_HEAP_ENTRY heapEntry;
+    heapEntry.lpData = NULL;
+    while (HeapWalk(GetProcessHeap(), &heapEntry) != FALSE) {
+        if ((heapEntry.wFlags & PROCESS_HEAP_ENTRY_BUSY) != 0) {
+            std::cout << "Allocated block" << std::endl;
+        }
+        else if ((heapEntry.wFlags & PROCESS_HEAP_REGION) != 0) {
+            std::cout << "heapEntry.Region.dwCommittedSize " << heapEntry.Region.dwCommittedSize << std::endl;
+            std::cout << "heapEntry.Region.dwUnCommittedSize " << heapEntry.Region.dwUnCommittedSize << std::endl;
+            std::cout << "heapEntry.Region.lpFirstBlock " << heapEntry.Region.lpFirstBlock << std::endl;
+            std::cout << "heapEntry.Region.lpLastBlock " << heapEntry.Region.lpLastBlock << std::endl;
+        }
+        else if ((heapEntry.wFlags & PROCESS_HEAP_UNCOMMITTED_RANGE) != 0) {
+            std::cout << "Uncommitted range" << std::endl;
+        }
+        std::cout << "heapEntry.lpData " << heapEntry.lpData << std::endl;
+        std::cout << "heapEntry.cbData " << heapEntry.cbData << std::endl;
+        std::cout << "heapEntry.iRegionIndex " << heapEntry.iRegionIndex << std::endl;
+
+        DWORD lastError = GetLastError();
+        if (lastError != ERROR_NO_MORE_ITEMS && lastError != 0) {
+            std::cout << "HeapWalk failed with LastError: " << lastError << std::endl;
+        }
+    }
+}
+struct MemoryRegion
+{
+    uintptr_t start;
+    size_t size;
+};
+
+std::vector<MemoryRegion>* heapWalkExternal(HANDLE process) {
+    unsigned long usage = 0;
+    unsigned char* p = NULL;
+    MEMORY_BASIC_INFORMATION info;
+    std::vector<MemoryRegion>* mappedRegions = new std::vector<MemoryRegion>;
+
+    for (p = NULL;
+        VirtualQueryEx(process, p, &info, sizeof(info)) == sizeof(info);
+        p += info.RegionSize)
+    {
+
+        if (info.State & MEM_COMMIT && info.Type & MEM_PRIVATE) {
+            MemoryRegion x;
+            x.start = (uintptr_t) info.BaseAddress;
+            x.size = info.RegionSize;
+            //std::cout << x.start << " - " << x.size << std::endl;
+            mappedRegions->push_back(x);
+        }
+    }
+    std::cout << mappedRegions->size() << std::endl;
+    return mappedRegions;
+}
 
 int main() {
     std::cout << "Running tests ...\n\n";
 
-    Memory::External external = Memory::External(GetCurrentProcessId(), true);
+    Memory::External external = Memory::External(4204, false);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
-    std::cout << modulePtr.get() << std::endl;
+    std::cout << "modulePtr: " << n2hexstr(modulePtr.get()) << std::endl;
+
+    heapWalkExternal(external.handle);
 
     /*
-    long x = external.read<long>(modulePtr.get() + 0x11C1BA8, true);
-    std::cout << x << std::endl;
-    std::cout << n2hexstr(x) << std::endl;
-    std::cout << n2hexstr(_byteswap_ulong(x)) << std::endl;
+    uintptr_t mapProvinceVFTable = modulePtr.get() + 0x11BEBF8;
+    std::cout << mapProvinceVFTable << std::endl;
+    std::string mapProvinceSig = ptrToSignature(mapProvinceVFTable);
+    std::cout << mapProvinceSig << std::endl;
+    std::vector<uintptr_t>* provs = external.findSignatures(modulePtr.get() + DATA_SECTION_START, mapProvinceSig.c_str(), 4, 14190);
+    std::cout << provs->size() << std::endl;
     */
 
-    std::string hex_string = "28C55301";
-
-    // std::string hex_string = n2hexstr(_byteswap_ulong(modulePtr.get() + 0x11C1BA8));
-    std::cout << hex_string << std::endl;;
-
-    std::string signature = toSignature(hex_string);
-    std::cout << signature << std::endl;
-    Address sig_address = external.findSignature(modulePtr.get() + DATA_SECTION_START, signature.c_str(), 256);
-    std::cout << n2hexstr(sig_address.get()) << std::endl;
-    
-
-    /*
-    Address namePtr = external.getAddress(modulePtr + 0x11C1BA8, { 0x40 }).get();
-
-    std::cout << "Status external.read<std::string>(addToBeRead):       ";
-    std::cout << BoolToString(external.read<std::string>(namePtr) == "CasualGamer") << std::endl;
-
-    //std::cout << "Status readString(addToBeRead, size): ";
-    //std::cout << BoolToString(external.readString(namePtr, 5) == "Casua") << std::endl;
-
-    std::cout << "Status external.read<T>(addToBeRead):   ";
-    std::cout << BoolToString(external.read<int>(namePtr) == 1970495811) << std::endl;
-
-    Address address = external.findSignature(modulePtr, "BA ? ? ? ? CD", 100);
-    std::cout << "Status findSignature(...):            ";
-    std::cout << BoolToString(address.get()) << std::endl;
-
-    std::cin.get();
-    */
+    // std::cin.get();
 }

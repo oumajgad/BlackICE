@@ -1,4 +1,5 @@
 #include "External.hpp"
+#include <Sysinfoapi.h>
 
 Memory::External::External(int procID, const bool debug) noexcept {
     if (!init(procID)) {
@@ -38,8 +39,11 @@ Memory::External::~External(void) noexcept {
 bool Memory::External::init(int procID, const DWORD access) noexcept {
     this->processID = procID;
     this->handle = OpenProcess(access, false, this->processID);
+    if (!this->handle && debug) {
+        std::cout << getLastErrorAsString() << std::endl;
+    }
 
-    return this->processID != 0;
+    return this->handle != NULL;
 }
 
 [[nodiscard]] DWORD Memory::External::getProcessID(void) noexcept {
@@ -106,4 +110,88 @@ bool Memory::External::init(int procID, const DWORD access) noexcept {
 
 [[nodiscard]] Address Memory::External::findSignature(const Address& start, const char* sig, const size_t size) noexcept {
     return findSignature(start.get(), sig, size);
+}
+
+
+template <typename I> std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1) {
+    static const char* digits = "0123456789ABCDEF";
+    std::string rc(hex_len, '0');
+    for (size_t i = 0, j = (hex_len - 1) * 4; i < hex_len; ++i, j -= 4)
+        rc[i] = digits[(w >> j) & 0x0f];
+    return rc;
+}
+
+struct MemoryRegion
+{
+    uintptr_t start;
+    size_t size;
+};
+
+std::vector<MemoryRegion>* heapWalkExternal(HANDLE process) {
+    unsigned long usage = 0;
+    unsigned char* p = NULL;
+    MEMORY_BASIC_INFORMATION info;
+    std::vector<MemoryRegion>* mappedRegions = new std::vector<MemoryRegion>;
+
+    for (p = NULL;
+        VirtualQueryEx(process, p, &info, sizeof(info)) == sizeof(info);
+        p += info.RegionSize)
+    {
+
+        if (info.State & MEM_COMMIT && info.Type & MEM_PRIVATE) {
+            MemoryRegion x;
+            x.start = (uintptr_t)info.BaseAddress;
+            x.size = info.RegionSize;
+            //std::cout << x.start << " - " << x.size << std::endl;
+            mappedRegions->push_back(x);
+        }
+    }
+    std::cout << mappedRegions->size() << std::endl;
+    return mappedRegions;
+}
+
+
+[[nodiscard]] std::vector<uintptr_t>* Memory::External::findSignatures(const uintptr_t start, const char* signature, size_t signature_size, int expected_results) noexcept {
+    //size_t chunk_size = 1024 * 1024; // read 1 MibiByte chunks
+    size_t chunk_size = 1024;
+
+    //SYSTEM_INFO sys_info;
+    //GetSystemInfo(&sys_info);
+    //size_t chunk_size = sys_info.dwPageSize;
+    std::cout << "chunk_size: " << chunk_size << std::endl;
+    //std::vector<uintptr_t> results(1024 * 1024/4); // 1MiBi in size, space for 260k pointers
+
+    std::vector<uintptr_t>* results = new std::vector<uintptr_t>;
+    results->reserve(expected_results);
+
+    std::vector<int>patternBytes = patternToBytes(signature);
+    BYTE* data = new BYTE[chunk_size];
+
+    auto regions = heapWalkExternal(this->handle);
+
+    for (uintptr_t cur = start; cur < 0xffffffff - chunk_size - signature_size; cur += chunk_size - signature_size) {
+        //std::cout << "Read at: " << cur << std::endl;
+        if (!ReadProcessMemory(handle, reinterpret_cast<LPVOID>(cur), data, chunk_size, nullptr)) {
+            if (debug) {
+                std::cout << getLastErrorAsString() << std::endl;
+            }
+            continue;
+        }
+
+        for (uintptr_t i = 0; i < chunk_size - signature_size; ++i) {
+            //std::cout << "Check at: " << cur + i << std::endl;
+            if (memoryCompare(static_cast<const BYTE*>(data + i), patternBytes)) {
+                results->push_back(cur + i);
+                //std::cout << "Found at: " << n2hexstr(cur + i) << " " << results->size() << std::endl;
+                std::cout << n2hexstr(cur + i) << std::endl;
+            }
+        }
+        if (results->size() >= expected_results) {
+            std::cout << "Early exit!" << std::endl;
+            delete[] data;
+            return results;
+        }
+    }
+
+    return results;
 }

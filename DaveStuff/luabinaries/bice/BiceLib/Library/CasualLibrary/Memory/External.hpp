@@ -185,9 +185,10 @@ namespace Memory {
         */
         [[nodiscard]] Address findSignature(const uintptr_t start, const char* sig, const size_t size) noexcept;
         [[nodiscard]] Address findSignature(const Address& start, const char* sig, const size_t size) noexcept;
-    private:
+        [[nodiscard]] std::vector<uintptr_t>* findSignatures(const uintptr_t start, const char* sig, size_t signature_size, int expected_results) noexcept;
         /** @brief handle of the target process */
         HANDLE handle = nullptr;
+    private:
 
         /** @brief ID of the target process */
         DWORD processID = 0;
