@@ -162,6 +162,7 @@ namespace Memory {
         }
 
         [[deprecated("use read function with std::string/const char* template argument")]] [[nodiscard]] std::string readString(const uintptr_t addToBeRead, std::size_t size = 0) noexcept;
+        [[nodiscard]] std::string readStringMaybePtr(uintptr_t addToBeRead, std::size_t size = 0) noexcept;
 
         /**@brief returns process id of the target process*/
         [[nodiscard]] DWORD getProcessID(void) noexcept;

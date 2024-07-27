@@ -1904,11 +1904,8 @@ if wx ~= nil then
 		G_DaysSinceLastUpdate = 0
 		GuiRefreshLoop(true)
 
-		BiceLib = require("BiceLib")
-		local a, b, c = BiceLib.hello()
-		Utils.LUA_DEBUGOUT(a)
-		Utils.LUA_DEBUGOUT(b)
-		Utils.LUA_DEBUGOUT(c)
+		local a = BiceLib.getCountryFlags("GER")
+		Utils.INSPECT_TABLE(a)
 
 		-- local command = '"tfh\\mod\\BlackICE ' .. UI.version ..'\\memBICE.exe" '.. winapi.get_current_pid() .. " country" .. " GER"
 		-- Utils.LUA_DEBUGOUT(command)

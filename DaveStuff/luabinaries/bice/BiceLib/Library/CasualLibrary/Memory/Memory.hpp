@@ -26,10 +26,18 @@
 #define TH32CS_SNAPMODULE32 0x00000010
 #endif
 
+struct MemoryRegion
+{
+    uintptr_t start;
+    size_t size;
+};
+
 namespace Memory {
 	[[nodiscard]] std::vector<int> patternToBytes(const char* pattern) noexcept;
 	[[nodiscard]] std::string getLastErrorAsString(void) noexcept;
     [[nodiscard]] std::string convertToString(char* a, int size) noexcept;
+    [[nodiscard]] std::vector<MemoryRegion>* heapWalkExternal(HANDLE process);
+    [[nodiscard]] std::vector<MemoryRegion>* heapWalkInternal();
 
     // Sadly, only C++17 feature because of the folding
 #ifdef CPP17GRT

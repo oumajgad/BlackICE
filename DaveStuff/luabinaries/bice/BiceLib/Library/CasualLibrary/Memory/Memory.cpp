@@ -55,3 +55,45 @@
     }
     return bytes;
 }
+
+[[nodiscard]] std::vector<MemoryRegion>* Memory::heapWalkExternal(HANDLE process) {
+    unsigned char* p = NULL;
+    MEMORY_BASIC_INFORMATION info;
+    std::vector<MemoryRegion>* mappedRegions = new std::vector<MemoryRegion>;
+
+    for (p = NULL;
+        VirtualQueryEx(process, p, &info, sizeof(info)) == sizeof(info);
+        p += info.RegionSize)
+    {
+        if (info.State & MEM_COMMIT && info.Type & MEM_PRIVATE && info.Protect & PAGE_READWRITE && !(info.Protect & PAGE_GUARD)) {
+            MemoryRegion x;
+            x.start = (uintptr_t)info.BaseAddress;
+            x.size = info.RegionSize;
+            //std::cout << x.start << " - " << x.size << std::endl;
+            mappedRegions->push_back(x);
+        }
+    }
+    // std::cout << mappedRegions->size() << std::endl;
+    return mappedRegions;
+}
+
+[[nodiscard]] std::vector<MemoryRegion>* Memory::heapWalkInternal() {
+    unsigned char* p = NULL;
+    MEMORY_BASIC_INFORMATION info;
+    std::vector<MemoryRegion>* mappedRegions = new std::vector<MemoryRegion>;
+
+    for (p = NULL;
+        VirtualQuery(p, &info, sizeof(info)) == sizeof(info);
+        p += info.RegionSize)
+    {
+        if (info.State & MEM_COMMIT && info.Type & MEM_PRIVATE && info.Protect & PAGE_READWRITE && !(info.Protect & PAGE_GUARD)) {
+            MemoryRegion x;
+            x.start = (uintptr_t)info.BaseAddress;
+            x.size = info.RegionSize;
+            //std::cout << x.start << " - " << x.size << std::endl;
+            mappedRegions->push_back(x);
+        }
+    }
+    // std::cout << mappedRegions->size() << std::endl;
+    return mappedRegions;
+}

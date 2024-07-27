@@ -5,22 +5,14 @@
 #include <chrono>
 #include <Heapapi.h>
 #include <Minwinbase.h>
+#include <processthreadsapi.h>
 
 #include <CasualLibrary.hpp>
-#include <processthreadsapi.h>
 
 int DATA_SECTION_START = 0x12F5000;
 
 inline const char* const BoolToString(bool b) {
     return b ? "OK" : "Failed";
-}
-
-template <typename I> std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1) {
-    static const char* digits = "0123456789ABCDEF";
-    std::string rc(hex_len, '0');
-    for (size_t i = 0, j = (hex_len - 1) * 4; i < hex_len; ++i, j -= 4)
-        rc[i] = digits[(w >> j) & 0x0f];
-    return rc;
 }
 
 std::string toSignature(std::string &str) {
@@ -36,83 +28,105 @@ std::string toSignature(std::string &str) {
     return res;
 }
 
+
+template <typename I> std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1) {
+    static const char* digits = "0123456789ABCDEF";
+    std::string rc(hex_len, '0');
+    for (size_t i = 0, j = (hex_len - 1) * 4; i < hex_len; ++i, j -= 4)
+        rc[i] = digits[(w >> j) & 0x0f];
+    return rc;
+}
+
 std::string ptrToSignature(uintptr_t ptr) {
     std::string x = n2hexstr(_byteswap_ulong(ptr));
     return toSignature(x);
 }
 
-void heapWalkInternal() {
-    PROCESS_HEAP_ENTRY heapEntry;
-    heapEntry.lpData = NULL;
-    while (HeapWalk(GetProcessHeap(), &heapEntry) != FALSE) {
-        if ((heapEntry.wFlags & PROCESS_HEAP_ENTRY_BUSY) != 0) {
-            std::cout << "Allocated block" << std::endl;
-        }
-        else if ((heapEntry.wFlags & PROCESS_HEAP_REGION) != 0) {
-            std::cout << "heapEntry.Region.dwCommittedSize " << heapEntry.Region.dwCommittedSize << std::endl;
-            std::cout << "heapEntry.Region.dwUnCommittedSize " << heapEntry.Region.dwUnCommittedSize << std::endl;
-            std::cout << "heapEntry.Region.lpFirstBlock " << heapEntry.Region.lpFirstBlock << std::endl;
-            std::cout << "heapEntry.Region.lpLastBlock " << heapEntry.Region.lpLastBlock << std::endl;
-        }
-        else if ((heapEntry.wFlags & PROCESS_HEAP_UNCOMMITTED_RANGE) != 0) {
-            std::cout << "Uncommitted range" << std::endl;
-        }
-        std::cout << "heapEntry.lpData " << heapEntry.lpData << std::endl;
-        std::cout << "heapEntry.cbData " << heapEntry.cbData << std::endl;
-        std::cout << "heapEntry.iRegionIndex " << heapEntry.iRegionIndex << std::endl;
+int HOI3_PID = 16960;
 
-        DWORD lastError = GetLastError();
-        if (lastError != ERROR_NO_MORE_ITEMS && lastError != 0) {
-            std::cout << "HeapWalk failed with LastError: " << lastError << std::endl;
-        }
-    }
-}
-struct MemoryRegion
-{
-    uintptr_t start;
-    size_t size;
-};
-
-std::vector<MemoryRegion>* heapWalkExternal(HANDLE process) {
-    unsigned long usage = 0;
-    unsigned char* p = NULL;
-    MEMORY_BASIC_INFORMATION info;
-    std::vector<MemoryRegion>* mappedRegions = new std::vector<MemoryRegion>;
-
-    for (p = NULL;
-        VirtualQueryEx(process, p, &info, sizeof(info)) == sizeof(info);
-        p += info.RegionSize)
-    {
-
-        if (info.State & MEM_COMMIT && info.Type & MEM_PRIVATE) {
-            MemoryRegion x;
-            x.start = (uintptr_t) info.BaseAddress;
-            x.size = info.RegionSize;
-            //std::cout << x.start << " - " << x.size << std::endl;
-            mappedRegions->push_back(x);
-        }
-    }
-    std::cout << mappedRegions->size() << std::endl;
-    return mappedRegions;
-}
-
-int main() {
-    std::cout << "Running tests ...\n\n";
-
-    Memory::External external = Memory::External(4204, false);
+void provinces() {
+    Memory::External external = Memory::External(HOI3_PID, true);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     std::cout << "modulePtr: " << n2hexstr(modulePtr.get()) << std::endl;
 
-    heapWalkExternal(external.handle);
-
-    /*
     uintptr_t mapProvinceVFTable = modulePtr.get() + 0x11BEBF8;
-    std::cout << mapProvinceVFTable << std::endl;
+    std::cout << n2hexstr(mapProvinceVFTable) << std::endl;
     std::string mapProvinceSig = ptrToSignature(mapProvinceVFTable);
     std::cout << mapProvinceSig << std::endl;
     std::vector<uintptr_t>* provs = external.findSignatures(modulePtr.get() + DATA_SECTION_START, mapProvinceSig.c_str(), 4, 14190);
     std::cout << provs->size() << std::endl;
-    */
+}
+
+static void traverseFlagsAndVarTreeDepthFirst(Memory::External &external, std::vector<std::uintptr_t>* res, uintptr_t nodePtr) {
+    if (nodePtr == 0) {
+        return;
+    }
+    uintptr_t element = external.read<uintptr_t>(nodePtr);
+    char character = external.read<char>(nodePtr + 0x4);
+    uintptr_t sibling = external.read<uintptr_t>(nodePtr + 0xC);
+    uintptr_t child = external.read<uintptr_t>(nodePtr + 0x10);
+    std::cout << "nodePtr: " << n2hexstr(nodePtr) << " char: " << character << " element: " << n2hexstr(element) << " sibling: " << n2hexstr(sibling) << " child: " << n2hexstr(child) << std::endl;
+    if (element != 0) {
+        //std::cout << "element" << std::endl;
+        res->push_back(element);
+    }
+    if (child != 0) {
+        //std::cout << "child" << std::endl;
+        traverseFlagsAndVarTreeDepthFirst(external, res, child);
+    }
+    if (sibling != 0) {
+        //std::cout << "sibling " << sibling << std::endl;
+        traverseFlagsAndVarTreeDepthFirst(external, res, sibling);
+    }
+}
+
+
+std::vector<std::string>* getFlags(Memory::External &external, uintptr_t nodePtr) {
+    std::vector<std::uintptr_t>* ptrs = new std::vector<std::uintptr_t>;
+    traverseFlagsAndVarTreeDepthFirst(external, ptrs, nodePtr);
+    std::cout << "ptrs->size(): " << ptrs->size() << std::endl;
+    std::vector<std::string>* res = new std::vector<std::string>;
+    for (auto& i : *ptrs) {
+        std::string x = external.readStringMaybePtr(i);
+        res->push_back(x);
+        std::cout << n2hexstr(i) << " - " << x << std::endl;
+    }
+    return res;
+}
+
+void countries() {
+    Memory::External external = Memory::External(HOI3_PID, true);
+    Address modulePtr = external.getModule("hoi3_tfh.exe");
+    std::cout << "modulePtr: " << n2hexstr(modulePtr.get()) << std::endl;
+
+    std::cout << "getCountryFlags called" << std::endl;
+    std::string searchTag = "GER";
+    std::cout << "searchTag: " << searchTag << std::endl;
+
+    uintptr_t CCountryVFTableAddr = modulePtr.get() + 0x11C1BA8;
+    std::string x = n2hexstr(_byteswap_ulong(CCountryVFTableAddr));
+    std::cout << "x: " << x << std::endl;
+    std::vector<uintptr_t>* sigs = external.findSignatures(modulePtr.get() + DATA_SECTION_START, toSignature(x).c_str(), 4, 128);
+    std::cout << "sigs->size(): " << sigs->size() << std::endl;
+
+    for (auto& country : *sigs) {
+        std::string tag = external.readString(country + 0x1E4, 3);
+        std::cout << n2hexstr(country) << " " << tag << std::endl;
+        if (strcmp(tag.c_str(), searchTag.c_str()) == 0) {
+            uintptr_t flagsOffset = country + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
+            uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
+            std::cout << "flagsPtr: " << n2hexstr(flagsPtr) << std::endl;
+
+            auto flags = getFlags(external, flagsPtr);
+            std::cout << "flags->size(): " << flags->size() << std::endl;
+            break;
+        }
+    }
+}
+
+int main() {
+    std::cout << "Running tests for PID: " << HOI3_PID << "\n\n";
+    countries();
 
     // std::cin.get();
 }

@@ -7,6 +7,7 @@
 package.path = package.path .. ";script\\?.lua"
 package.path = package.path .. ";script\\country\\?.lua"
 package.path = package.path .. ";common\\?.lua"
+package.cpath = package.cpath..";./tfh/mod/?.dll;"
 
 --require('hoi') -- already imported by game, contains all exported classes
 require('ai_globals')
@@ -26,6 +27,8 @@ require('ai_license')
 require('ai_variable')
 require('csvParser')
 require('pdxParser')
+BiceLib = require("BiceLib")
+BiceLib.startConsole() -- Creates a console for debug information // Comment out for releases
 
 -- Make sure these exist, if something is require() but doesnt exist LUA dies and doesn't load the rest!
 -- Defaults are at the bottom so it's easier to spot if something is wrong (some nations won't do anything since defaults wont be loaded)
