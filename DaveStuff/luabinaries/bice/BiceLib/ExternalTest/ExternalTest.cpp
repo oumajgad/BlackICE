@@ -105,30 +105,28 @@ void countries() {
     std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
     //std::cout << "getCountryFlags called" << std::endl;
-    std::string searchTag = "GER";
+    std::string searchTag = "PAR";
     //std::cout << "searchTag: " << searchTag << std::endl;
 
-    uintptr_t CCountryVFTableAddr = modulePtr.get() + 0x11C1BA8;
-    std::string x = Memory::n2hexstr(_byteswap_ulong(CCountryVFTableAddr));
+    uintptr_t CCombatHistoryVFTableAddr = modulePtr.get() + 0x11B68DC;
+    std::string x = Memory::n2hexstr(_byteswap_ulong(CCombatHistoryVFTableAddr));
     //std::cout << "x: " << x << std::endl;
-    std::vector<uintptr_t>* sigs = external.findSignatures(modulePtr.get() + DATA_SECTION_START, Memory::toSignature(x).c_str(), 4, 128);
+    std::vector<uintptr_t>* sigs = external.findSignatures(modulePtr.get() + DATA_SECTION_START, Memory::toSignature(x).c_str(), 4, 1);
     std::cout << "sigs->size(): " << sigs->size() << std::endl;
-    
-    for (auto& country : *sigs) {
-        std::string tag = external.readString(country + 0x1E4, 3);
-        std::cout << Memory::n2hexstr(country) << " " << tag << std::endl;
-        /*
+    uintptr_t CCombatHistory = sigs->at(0);
+    uintptr_t CCountryArrayAddr = external.read<uintptr_t>(CCombatHistory + 0x48);
+    uintptr_t CCountryPtr = external.read<uintptr_t>(CCountryArrayAddr);
+    while (CCountryPtr != 0) {
+        std::string tag = external.readString(CCountryPtr + +0x1E4, 3);
+        //std::cout << tag << std::endl;
         if (strcmp(tag.c_str(), searchTag.c_str()) == 0) {
-            uintptr_t flagsOffset = country + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
-            uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
-            //std::cout << "flagsPtr: " << Memory::n2hexstr(flagsPtr) << std::endl;
-
-            auto flags = getFlags(external, flagsPtr);
-            std::cout << "flags->size(): " << flags->size() << std::endl;
-            break;
+            std::cout << tag << std::endl;
+            return;
         }
-        */
+        CCountryArrayAddr += 0x4;
+        CCountryPtr = external.read<uintptr_t>(CCountryArrayAddr);
     }
+    std::cout << "None found" << std::endl;
 }
 
 void country() {
@@ -142,6 +140,10 @@ void country() {
 
 
     auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
+    if (ctr == 0) {
+        std::cout << "Country instance not found: " << searchTag << std::endl;
+        return;
+    }
 
     uintptr_t flagsOffset = ctr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
     uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);

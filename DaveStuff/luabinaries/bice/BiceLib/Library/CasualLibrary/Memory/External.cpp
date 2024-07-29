@@ -202,7 +202,7 @@ bool Memory::External::init(int procID, const DWORD access) noexcept {
                 }
                 continue;
             }
-            for (uintptr_t i = 0; i <= chunk_size - signature_size; ++i) {
+            for (uintptr_t i = 0; i <= chunk_size - signature_size; i += 4) { // i += 4 - data should be aligned
                 //std::cout << "Check at: " << cur + i << std::endl;
                 if (memoryCompare(static_cast<const BYTE*>(data + i), patternBytes)) {
                     auto curTag = this->readString(cur + i + 0x1E4, 3);
@@ -217,6 +217,7 @@ bool Memory::External::init(int procID, const DWORD access) noexcept {
             }
         }
     }
+    return 0;
 }
 
 
@@ -249,7 +250,7 @@ bool Memory::External::init(int procID, const DWORD access) noexcept {
                 }
                 continue;
             }
-            for (uintptr_t i = 0; i <= chunk_size - signature_size; ++i) {
+            for (uintptr_t i = 0; i <= chunk_size - signature_size; i += 4) { // i += 4 - data should be aligned
                 //std::cout << "Check at: " << cur + i << std::endl;
                 if (memoryCompare(static_cast<const BYTE*>(data + i), patternBytes)) {
                     results->push_back(cur + i);

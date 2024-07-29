@@ -191,7 +191,19 @@ namespace Memory {
         */
         [[nodiscard]] Address findSignature(const uintptr_t start, const char* sig, const size_t size) noexcept;
         [[nodiscard]] Address findSignature(const Address& start, const char* sig, const size_t size) noexcept;
+        /**
+        @brief a basic signature scanner
+        @param start Address where to start scanning.
+        @param sig Signature to search, for example: "? 39 05 F0 A2 F6 FF" where "?" (-1) is a wildcard.
+        @param size Size of the area to search within.
+        @param expected_results amount of results expected, exits early if reached.
+        */
         [[nodiscard]] std::vector<uintptr_t>* findSignatures(const uintptr_t start, const char* sig, size_t signature_size, int expected_results) noexcept;
+        /**
+        @brief finds a CCountry instance by walking the heap. (Heapwalking is just as fast as getting one of the 2 CountryArrays)
+        @param start Address where to start scanning.
+        @param searchTag TAG to search for
+        */
         [[nodiscard]] uintptr_t findCountryInstance(const uintptr_t start, std::string searchTag);
         /** @brief handle of the target process */
         HANDLE handle = nullptr;
