@@ -10,7 +10,7 @@
 #include <CasualLibrary.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
-int HOI3_PID = 22352;
+int HOI3_PID = 25596;
 
 inline const char* const BoolToString(bool b) {
     return b ? "OK" : "Failed";
@@ -86,7 +86,7 @@ static void traverseFlagsAndVarTreeDepthFirst(Memory::External &external, std::v
 }
 
 
-std::vector<std::string>* getFlags(Memory::External &external, uintptr_t nodePtr) {
+std::vector<std::string>* getFlags(Memory::External& external, uintptr_t nodePtr) {
     std::vector<std::uintptr_t>* ptrs = new std::vector<std::uintptr_t>;
     traverseFlagsAndVarTreeDepthFirst(external, ptrs, nodePtr);
     //std::cout << "ptrs->size(): " << ptrs->size() << std::endl;
@@ -99,34 +99,25 @@ std::vector<std::string>* getFlags(Memory::External &external, uintptr_t nodePtr
     return res;
 }
 
-void countries() {
-    Memory::External external = Memory::External(HOI3_PID, true);
-    Address modulePtr = external.getModule("hoi3_tfh.exe");
-    std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
-
-    //std::cout << "getCountryFlags called" << std::endl;
-    std::string searchTag = "PAR";
-    //std::cout << "searchTag: " << searchTag << std::endl;
-
-    uintptr_t CCombatHistoryVFTableAddr = modulePtr.get() + 0x11B68DC;
-    std::string x = Memory::n2hexstr(_byteswap_ulong(CCombatHistoryVFTableAddr));
-    //std::cout << "x: " << x << std::endl;
-    std::vector<uintptr_t>* sigs = external.findSignatures(modulePtr.get() + DATA_SECTION_START, Memory::toSignature(x).c_str(), 4, 1);
-    std::cout << "sigs->size(): " << sigs->size() << std::endl;
-    uintptr_t CCombatHistory = sigs->at(0);
-    uintptr_t CCountryArrayAddr = external.read<uintptr_t>(CCombatHistory + 0x48);
-    uintptr_t CCountryPtr = external.read<uintptr_t>(CCountryArrayAddr);
-    while (CCountryPtr != 0) {
-        std::string tag = external.readString(CCountryPtr + +0x1E4, 3);
-        //std::cout << tag << std::endl;
-        if (strcmp(tag.c_str(), searchTag.c_str()) == 0) {
-            std::cout << tag << std::endl;
-            return;
-        }
-        CCountryArrayAddr += 0x4;
-        CCountryPtr = external.read<uintptr_t>(CCountryArrayAddr);
+struct CVariable
+{
+    std::string name;
+    int32_t value;
+};
+std::vector<CVariable>* getVars(Memory::External& external, uintptr_t nodePtr) {
+    std::vector<std::uintptr_t>* ptrs = new std::vector<std::uintptr_t>;
+    traverseFlagsAndVarTreeDepthFirst(external, ptrs, nodePtr);
+    //std::cout << "ptrs->size(): " << ptrs->size() << std::endl;
+    std::vector<CVariable>* res = new std::vector<CVariable>;
+    for (auto& i : *ptrs) {
+        CVariable x;
+        x.name = external.readStringMaybePtr(i);
+        x.value = external.read<int32_t>(i + 0x1C);
+        res->push_back(x);
+        std::cout << Memory::n2hexstr(i) << " - " << x.name << " - " << x.value << std::endl;
     }
-    std::cout << "None found" << std::endl;
+    delete ptrs;
+    return res;
 }
 
 void country() {
@@ -145,13 +136,12 @@ void country() {
         return;
     }
 
-    uintptr_t flagsOffset = ctr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
-    uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
-    //std::cout << "flagsPtr: " << Memory::n2hexstr(flagsPtr) << std::endl;
+    uintptr_t varsOffset = ctr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning
+    uintptr_t varsPtr = external.read<uintptr_t>(varsOffset);
+    std::cout << "varsPtr: " << Memory::n2hexstr(varsPtr) << std::endl;
 
-    auto flags = getFlags(external, flagsPtr);
-    std::cout << "flags->size(): " << flags->size() << std::endl;
-
+    auto vars = getVars(external, varsPtr);
+    std::cout << "vars->size(): " << vars->size() << std::endl;
 }
 
 int main() {
@@ -161,12 +151,6 @@ int main() {
     auto stop1 = std::chrono::high_resolution_clock::now();
     auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(stop1 - start1);
     std::cout << "A: " << duration1.count() << std::endl;
-
-    auto start2 = std::chrono::high_resolution_clock::now();
-    countries();
-    auto stop2 = std::chrono::high_resolution_clock::now();
-    auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(stop2 - start2);
-    std::cout << "B: " << duration2.count() << std::endl;
 
     // std::cin.get();
 }

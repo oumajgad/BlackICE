@@ -65,6 +65,7 @@ Memory::External::~External(void) noexcept {
 [[nodiscard]] std::string Memory::External::readStringMaybePtr(uintptr_t addToBeRead, std::size_t size) noexcept {
     std::vector<uint8_t> firstFour(4);
     if (!ReadProcessMemory(handle, reinterpret_cast<LPBYTE*>(addToBeRead), firstFour.data(), 4, NULL) && debug) {
+        std::cout << "firstFour: " << addToBeRead << std::endl;
         std::cout << getLastErrorAsString() << std::endl;
     };
     //std::cout << "PRE addToBeRead: " << addToBeRead << std::endl;
@@ -85,6 +86,7 @@ Memory::External::~External(void) noexcept {
     std::vector<char> chars(size);
 
     if (!ReadProcessMemory(handle, reinterpret_cast<LPBYTE*>(addToBeRead), chars.data(), size, NULL) && debug) {
+        std::cout << "readStringMaybePtr: " << addToBeRead << std::endl;
         std::cout << getLastErrorAsString() << std::endl;
     };
 

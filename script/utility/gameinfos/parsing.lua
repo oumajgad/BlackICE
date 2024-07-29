@@ -56,4 +56,6 @@ P.Techs = require('techs')
 P.Units = require('units')
 P.Modifiers = require('modifiers')
 P.UnitConversions = require('unitConversion')
+P.Flags = require('flags')
+P.Vars = require('vars')
 return Parsing

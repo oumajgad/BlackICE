@@ -1903,32 +1903,6 @@ if wx ~= nil then
 	UI.m_button_manualRefresh:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		G_DaysSinceLastUpdate = 0
 		GuiRefreshLoop(true)
-
-		local a = BiceLib.getCountryFlags("GER")
-		Utils.INSPECT_TABLE(a)
-
-		-- local command = '"tfh\\mod\\BlackICE ' .. UI.version ..'\\memBICE.exe" '.. winapi.get_current_pid() .. " country" .. " GER"
-		-- Utils.LUA_DEBUGOUT(command)
-		-- os.execute(command)
-
-		-- local lines = ReadFileContents("tfh\\mod\\out.json")
-		-- if lines ~= nil then
-		-- 	local decoded = json.decode(lines)
-		-- 	local flags = {}
-		-- 	for i, flag in ipairs(decoded["CFlags"]["flags"]) do
-		-- 		table.insert(flags, flag["name"])
-		-- 	end
-		-- 	Utils.INSPECT_TABLE(flags)
-		-- 	local variables = {}
-		-- 	for i, variable in ipairs(decoded["CVariables"]["variables"]) do
-		-- 		table.insert(variables, {
-		-- 			["name"] = variable["name"];
-		-- 			["value"] = variable["value"];
-		-- 		})
-		-- 	end
-		-- 	Utils.INSPECT_TABLE(variables)
-		-- 	os.remove("./tfh/mod/out.json")
-		-- end
 	end )
 
 	UI.m_button_trade_1:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

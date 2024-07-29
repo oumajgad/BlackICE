@@ -6,7 +6,10 @@
 #include <processthreadsapi.h>
 #include <chrono>
 
+#include <CCountry.hpp>
+
 int DATA_SECTION_START = 0x12F5000;
+bool DEBUG = true;
 
 void testHeaps(Memory::External external) {
     auto start1 = std::chrono::high_resolution_clock::now();
@@ -25,7 +28,7 @@ void testHeaps(Memory::External external) {
 
 __declspec(dllexport) int hello(lua_State* L)
 {
-    Memory::External external = Memory::External(GetCurrentProcessId(), true);
+    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     std::cout << modulePtr.get() << std::endl;
 
@@ -38,54 +41,13 @@ __declspec(dllexport) int hello(lua_State* L)
     return 3; // Return N values from the function stack to the caller (LUA)
 }
 
-static void traverseFlagsAndVarTreeDepthFirst(Memory::External& external, std::vector<std::uintptr_t>* res, uintptr_t nodePtr) {
-    if (nodePtr == 0) {
-        return;
-    }
-    uintptr_t element = external.read<uintptr_t>(nodePtr);
-    char character = external.read<char>(nodePtr + 0x4);
-    uintptr_t sibling = external.read<uintptr_t>(nodePtr + 0xC);
-    uintptr_t child = external.read<uintptr_t>(nodePtr + 0x10);
-    //std::cout << "nodePtr: " << Memory::n2hexstr(nodePtr) 
-    //    << " char: " << character 
-    //    << " element: " << Memory::n2hexstr(element) 
-    //    << " sibling: " << Memory::n2hexstr(sibling) 
-    //    << " child: " << Memory::n2hexstr(child) << std::endl;
-    if (element != 0) {
-        //std::cout << "element" << std::endl;
-        res->push_back(element);
-    }
-    if (child != 0) {
-        //std::cout << "child" << std::endl;
-        traverseFlagsAndVarTreeDepthFirst(external, res, child);
-    }
-    if (sibling != 0) {
-        //std::cout << "sibling " << sibling << std::endl;
-        traverseFlagsAndVarTreeDepthFirst(external, res, sibling);
-    }
-}
-
-std::vector<std::string>* getFlags(Memory::External& external, uintptr_t nodePtr) {
-    std::vector<std::uintptr_t>* ptrs = new std::vector<std::uintptr_t>;
-    traverseFlagsAndVarTreeDepthFirst(external, ptrs, nodePtr);
-    //std::cout << "ptrs->size(): " << ptrs->size() << std::endl;
-    std::vector<std::string>* res = new std::vector<std::string>;
-    for (auto& i : *ptrs) {
-        std::string x = external.readStringMaybePtr(i);
-        res->push_back(x);
-        //std::cout << n2hexstr(i) << " - " << x << std::endl;
-    }
-    delete ptrs;
-    return res;
-}
-
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
     //std::cout << "getCountryFlags called" << std::endl;
     std::string searchTag = luaL_checklstring(L, 1, NULL);
     //std::cout << "searchTag: " << searchTag << std::endl;
 
-    Memory::External external = Memory::External(GetCurrentProcessId(), true);
+    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
@@ -95,7 +57,7 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
     uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
     //std::cout << "flagsPtr: " << Memory::n2hexstr(flagsPtr) << std::endl;
 
-    auto flags = getFlags(external, flagsPtr);
+    auto flags = CCountry::getFlags(external, flagsPtr);
     //std::cout << "flags->size(): " << flags->size() << std::endl;
 
     lua_createtable(L, flags->size(), 0);
@@ -103,7 +65,38 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
         lua_pushstring(L, flags->at(i).c_str());
         lua_rawseti(L, -2, i + 1); /* In lua indices start at 1 */
     }
+
     delete flags;
+    return 1;
+}
+
+__declspec(dllexport) int getCountryVariables(lua_State* L)
+{
+    //std::cout << "getCountryFlags called" << std::endl;
+    std::string searchTag = luaL_checklstring(L, 1, NULL);
+    //std::cout << "searchTag: " << searchTag << std::endl;
+
+    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
+    Address modulePtr = external.getModule("hoi3_tfh.exe");
+    //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
+
+    auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
+
+    uintptr_t varsOffset = ctr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning
+    uintptr_t varsPtr = external.read<uintptr_t>(varsOffset);
+    //std::cout << "varsPtr: " << Memory::n2hexstr(varsPtr) << std::endl;
+
+    auto vars = CCountry::getVars(external, varsPtr);
+    std::cout << "vars->size(): " << vars->size() << std::endl;
+
+    lua_newtable(L, 0, vars->size());
+    for (int i = 0; i < vars->size(); i++) {
+        lua_pushstring(L, vars->at(i).name.c_str());
+        lua_pushinteger(L, vars->at(i).value);
+        lua_settable(L, -3);
+    }
+
+    delete vars;
     return 1;
 }
 
@@ -119,6 +112,7 @@ __declspec(dllexport) int startConsole(lua_State* L)
 
 __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"getCountryFlags", getCountryFlags},
+    {"getCountryVariables", getCountryVariables},
     {"hello", hello},
     {"startConsole", startConsole},
     {NULL, NULL}
