@@ -392,6 +392,102 @@ if wx ~= nil then
 	UI.m_panel_GameInfo_Modifiers:Layout()
 	UI.bSizer_GameInfo_Modifiers1:Fit( UI.m_panel_GameInfo_Modifiers )
 	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Modifiers, "Modifiers", False )
+	UI.m_panel_GameInfo_Flags = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer_GameInfo_Flags1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticText_GameInfo_Flags1 = wx.wxStaticText( UI.m_panel_GameInfo_Flags, wx.wxID_ANY, "Country Flags", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Flags1:Wrap( -1 )
+
+	UI.m_staticText_GameInfo_Flags1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
+
+	UI.bSizer_GameInfo_Flags1:Add( UI.m_staticText_GameInfo_Flags1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_grid_GameInfo_Flags1 = wx.wxGrid( UI.m_panel_GameInfo_Flags, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+
+	-- Grid
+	UI.m_grid_GameInfo_Flags1:CreateGrid( 23, 1 )
+	UI.m_grid_GameInfo_Flags1:EnableEditing( False )
+	UI.m_grid_GameInfo_Flags1:EnableGridLines( True )
+	UI.m_grid_GameInfo_Flags1:EnableDragGridSize( False )
+	UI.m_grid_GameInfo_Flags1:SetMargins( 0, 0 )
+
+	-- Columns
+	UI.m_grid_GameInfo_Flags1:SetColSize( 0, 450 )
+	UI.m_grid_GameInfo_Flags1:EnableDragColSize( True )
+	UI.m_grid_GameInfo_Flags1:SetColLabelValue( 0, "Flag Name" )
+	UI.m_grid_GameInfo_Flags1:SetColLabelSize( 30 )
+	UI.m_grid_GameInfo_Flags1:SetColLabelAlignment( wx.wxALIGN_CENTER, wx.wxALIGN_CENTER )
+
+	-- Rows
+	UI.m_grid_GameInfo_Flags1:EnableDragRowSize( False )
+	UI.m_grid_GameInfo_Flags1:SetRowLabelSize( 1 )
+	UI.m_grid_GameInfo_Flags1:SetRowLabelAlignment( wx.wxALIGN_LEFT, wx.wxALIGN_CENTER )
+
+	-- Label Appearance
+	UI.m_grid_GameInfo_Flags1:SetLabelBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
+
+	-- Cell Defaults
+	UI.m_grid_GameInfo_Flags1:SetDefaultCellBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
+	UI.m_grid_GameInfo_Flags1:SetDefaultCellAlignment( wx.wxALIGN_LEFT, wx.wxALIGN_TOP )
+	UI.bSizer_GameInfo_Flags1:Add( UI.m_grid_GameInfo_Flags1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_GameInfo_Flags = wx.wxButton( UI.m_panel_GameInfo_Flags, wx.wxID_ANY, "Refresh", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.bSizer_GameInfo_Flags1:Add( UI.m_button_GameInfo_Flags, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panel_GameInfo_Flags:SetSizer( UI.bSizer_GameInfo_Flags1 )
+	UI.m_panel_GameInfo_Flags:Layout()
+	UI.bSizer_GameInfo_Flags1:Fit( UI.m_panel_GameInfo_Flags )
+	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Flags, "Flags", False )
+	UI.m_panel_GameInfo_Vars = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer_GameInfo_Vars1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticText_GameInfo_Flags1 = wx.wxStaticText( UI.m_panel_GameInfo_Vars, wx.wxID_ANY, "Country Variables", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Flags1:Wrap( -1 )
+
+	UI.m_staticText_GameInfo_Flags1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
+
+	UI.bSizer_GameInfo_Vars1:Add( UI.m_staticText_GameInfo_Flags1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_grid_GameInfo_Vars1 = wx.wxGrid( UI.m_panel_GameInfo_Vars, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+
+	-- Grid
+	UI.m_grid_GameInfo_Vars1:CreateGrid( 23, 2 )
+	UI.m_grid_GameInfo_Vars1:EnableEditing( False )
+	UI.m_grid_GameInfo_Vars1:EnableGridLines( True )
+	UI.m_grid_GameInfo_Vars1:EnableDragGridSize( False )
+	UI.m_grid_GameInfo_Vars1:SetMargins( 0, 0 )
+
+	-- Columns
+	UI.m_grid_GameInfo_Vars1:SetColSize( 0, 400 )
+	UI.m_grid_GameInfo_Vars1:SetColSize( 1, 100 )
+	UI.m_grid_GameInfo_Vars1:EnableDragColSize( True )
+	UI.m_grid_GameInfo_Vars1:SetColLabelValue( 0, "Country Variables" )
+	UI.m_grid_GameInfo_Vars1:SetColLabelValue( 1, "Value" )
+	UI.m_grid_GameInfo_Vars1:SetColLabelSize( 30 )
+	UI.m_grid_GameInfo_Vars1:SetColLabelAlignment( wx.wxALIGN_CENTER, wx.wxALIGN_CENTER )
+
+	-- Rows
+	UI.m_grid_GameInfo_Vars1:EnableDragRowSize( False )
+	UI.m_grid_GameInfo_Vars1:SetRowLabelSize( 1 )
+	UI.m_grid_GameInfo_Vars1:SetRowLabelAlignment( wx.wxALIGN_LEFT, wx.wxALIGN_CENTER )
+
+	-- Label Appearance
+	UI.m_grid_GameInfo_Vars1:SetLabelBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
+
+	-- Cell Defaults
+	UI.m_grid_GameInfo_Vars1:SetDefaultCellBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
+	UI.m_grid_GameInfo_Vars1:SetDefaultCellAlignment( wx.wxALIGN_LEFT, wx.wxALIGN_TOP )
+	UI.bSizer_GameInfo_Vars1:Add( UI.m_grid_GameInfo_Vars1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_GameInfo_Vars1 = wx.wxButton( UI.m_panel_GameInfo_Vars, wx.wxID_ANY, "Refresh", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.bSizer_GameInfo_Vars1:Add( UI.m_button_GameInfo_Vars1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panel_GameInfo_Vars:SetSizer( UI.bSizer_GameInfo_Vars1 )
+	UI.m_panel_GameInfo_Vars:Layout()
+	UI.bSizer_GameInfo_Vars1:Fit( UI.m_panel_GameInfo_Vars )
+	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Vars, "Variables", False )
 
 
 	UI.MyFrame4 .m_mgr:Update()
@@ -533,4 +629,13 @@ if wx ~= nil then
 		Parsing.Modifiers.ClearText()
 		Parsing.Modifiers.HandleFilter()
 	end )
+
+	UI.m_button_GameInfo_Flags:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		Parsing.Flags.FillGrid()
+	end )
+
+	UI.m_button_GameInfo_Vars1:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		Parsing.Vars.FillGrid()
+	end )
+
 end

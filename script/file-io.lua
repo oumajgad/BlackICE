@@ -159,3 +159,16 @@ function GetFilesFromPath(path)
     end
     return res
 end
+
+function ReadFileContents(path)
+    local file, err = io.open(path, "r")
+    if err ~= nil then
+        Utils.LUA_DEBUGOUT(err)
+        return nil
+    end
+    if file ~= nil then
+        local lines = file:read("*a")
+        file:close()
+        return lines
+    end
+end

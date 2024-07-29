@@ -69,7 +69,7 @@ def createModFile(zipf: zipfile.ZipFile):
 def addLuaBinaries(zipf: zipfile.ZipFile):
     zipf.write("./DaveStuff/luabinaries/wx.dll", f"{path}/wx.dll")
     zipf.write("./DaveStuff/luabinaries/lfs.dll", f"{path}/lfs.dll")
-    zipf.write("./DaveStuff/luabinaries/winapi.dll", f"{path}/winapi.dll")
+    zipf.write("./DaveStuff/luabinaries/BiceLib.dll", f"{path}/BiceLib.dll")
 
 def addStatsCLI(zipf: zipfile.ZipFile):
     zipf.write("./tools/visualizeStatistics/visualizeStatisticCLI.exe", f"{path}/BlackICE {version}/stats/visualizeStatisticCLI.exe")

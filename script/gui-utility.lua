@@ -2,7 +2,6 @@
 package.cpath = package.cpath..";./tfh/mod/?.dll;"
 require("wx")
 
-
 UI = {}
 
 UI.version = "GitHub"
