@@ -10,11 +10,13 @@
 #include <CasualLibrary.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
+int HOI3_PID = 22352;
 
 inline const char* const BoolToString(bool b) {
     return b ? "OK" : "Failed";
 }
 
+/*
 std::string toSignature(std::string &str) {
     std::string res(8 + 3, '0'); // 8 chars + 3 spaces
     int offset = 0;
@@ -41,17 +43,16 @@ std::string ptrToSignature(uintptr_t ptr) {
     std::string x = n2hexstr(_byteswap_ulong(ptr));
     return toSignature(x);
 }
-
-int HOI3_PID = 16960;
+*/
 
 void provinces() {
     Memory::External external = Memory::External(HOI3_PID, true);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
-    std::cout << "modulePtr: " << n2hexstr(modulePtr.get()) << std::endl;
+    std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
     uintptr_t mapProvinceVFTable = modulePtr.get() + 0x11BEBF8;
-    std::cout << n2hexstr(mapProvinceVFTable) << std::endl;
-    std::string mapProvinceSig = ptrToSignature(mapProvinceVFTable);
+    std::cout << Memory::n2hexstr(mapProvinceVFTable) << std::endl;
+    std::string mapProvinceSig = Memory::ptrToSignature(mapProvinceVFTable);
     std::cout << mapProvinceSig << std::endl;
     std::vector<uintptr_t>* provs = external.findSignatures(modulePtr.get() + DATA_SECTION_START, mapProvinceSig.c_str(), 4, 14190);
     std::cout << provs->size() << std::endl;
@@ -65,7 +66,11 @@ static void traverseFlagsAndVarTreeDepthFirst(Memory::External &external, std::v
     char character = external.read<char>(nodePtr + 0x4);
     uintptr_t sibling = external.read<uintptr_t>(nodePtr + 0xC);
     uintptr_t child = external.read<uintptr_t>(nodePtr + 0x10);
-    std::cout << "nodePtr: " << n2hexstr(nodePtr) << " char: " << character << " element: " << n2hexstr(element) << " sibling: " << n2hexstr(sibling) << " child: " << n2hexstr(child) << std::endl;
+    //std::cout << "nodePtr: " << Memory::n2hexstr(nodePtr) 
+    //    << " char: " << character 
+    //    << " element: " << Memory::n2hexstr(element) 
+    //    << " sibling: " << Memory::n2hexstr(sibling) 
+    //    << " child: " << Memory::n2hexstr(child) << std::endl;
     if (element != 0) {
         //std::cout << "element" << std::endl;
         res->push_back(element);
@@ -84,12 +89,12 @@ static void traverseFlagsAndVarTreeDepthFirst(Memory::External &external, std::v
 std::vector<std::string>* getFlags(Memory::External &external, uintptr_t nodePtr) {
     std::vector<std::uintptr_t>* ptrs = new std::vector<std::uintptr_t>;
     traverseFlagsAndVarTreeDepthFirst(external, ptrs, nodePtr);
-    std::cout << "ptrs->size(): " << ptrs->size() << std::endl;
+    //std::cout << "ptrs->size(): " << ptrs->size() << std::endl;
     std::vector<std::string>* res = new std::vector<std::string>;
     for (auto& i : *ptrs) {
         std::string x = external.readStringMaybePtr(i);
         res->push_back(x);
-        std::cout << n2hexstr(i) << " - " << x << std::endl;
+        //std::cout << Memory::n2hexstr(i) << " - " << x << std::endl;
     }
     return res;
 }
@@ -97,36 +102,69 @@ std::vector<std::string>* getFlags(Memory::External &external, uintptr_t nodePtr
 void countries() {
     Memory::External external = Memory::External(HOI3_PID, true);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
-    std::cout << "modulePtr: " << n2hexstr(modulePtr.get()) << std::endl;
+    std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
-    std::cout << "getCountryFlags called" << std::endl;
+    //std::cout << "getCountryFlags called" << std::endl;
     std::string searchTag = "GER";
-    std::cout << "searchTag: " << searchTag << std::endl;
+    //std::cout << "searchTag: " << searchTag << std::endl;
 
     uintptr_t CCountryVFTableAddr = modulePtr.get() + 0x11C1BA8;
-    std::string x = n2hexstr(_byteswap_ulong(CCountryVFTableAddr));
-    std::cout << "x: " << x << std::endl;
-    std::vector<uintptr_t>* sigs = external.findSignatures(modulePtr.get() + DATA_SECTION_START, toSignature(x).c_str(), 4, 128);
+    std::string x = Memory::n2hexstr(_byteswap_ulong(CCountryVFTableAddr));
+    //std::cout << "x: " << x << std::endl;
+    std::vector<uintptr_t>* sigs = external.findSignatures(modulePtr.get() + DATA_SECTION_START, Memory::toSignature(x).c_str(), 4, 128);
     std::cout << "sigs->size(): " << sigs->size() << std::endl;
-
+    
     for (auto& country : *sigs) {
         std::string tag = external.readString(country + 0x1E4, 3);
-        std::cout << n2hexstr(country) << " " << tag << std::endl;
+        std::cout << Memory::n2hexstr(country) << " " << tag << std::endl;
+        /*
         if (strcmp(tag.c_str(), searchTag.c_str()) == 0) {
             uintptr_t flagsOffset = country + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
             uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
-            std::cout << "flagsPtr: " << n2hexstr(flagsPtr) << std::endl;
+            //std::cout << "flagsPtr: " << Memory::n2hexstr(flagsPtr) << std::endl;
 
             auto flags = getFlags(external, flagsPtr);
             std::cout << "flags->size(): " << flags->size() << std::endl;
             break;
         }
+        */
     }
+}
+
+void country() {
+    Memory::External external = Memory::External(HOI3_PID, true);
+    Address modulePtr = external.getModule("hoi3_tfh.exe");
+    std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
+
+    //std::cout << "getCountryFlags called" << std::endl;
+    std::string searchTag = "GER";
+    //std::cout << "searchTag: " << searchTag << std::endl;
+
+
+    auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
+
+    uintptr_t flagsOffset = ctr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
+    uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
+    //std::cout << "flagsPtr: " << Memory::n2hexstr(flagsPtr) << std::endl;
+
+    auto flags = getFlags(external, flagsPtr);
+    std::cout << "flags->size(): " << flags->size() << std::endl;
+
 }
 
 int main() {
     std::cout << "Running tests for PID: " << HOI3_PID << "\n\n";
+    auto start1 = std::chrono::high_resolution_clock::now();
+    country();
+    auto stop1 = std::chrono::high_resolution_clock::now();
+    auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(stop1 - start1);
+    std::cout << "A: " << duration1.count() << std::endl;
+
+    auto start2 = std::chrono::high_resolution_clock::now();
     countries();
+    auto stop2 = std::chrono::high_resolution_clock::now();
+    auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(stop2 - start2);
+    std::cout << "B: " << duration2.count() << std::endl;
 
     // std::cin.get();
 }

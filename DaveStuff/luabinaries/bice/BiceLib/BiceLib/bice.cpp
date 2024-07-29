@@ -8,28 +8,6 @@
 
 int DATA_SECTION_START = 0x12F5000;
 
-
-template <typename I> std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1) {
-    static const char* digits = "0123456789ABCDEF";
-    std::string rc(hex_len, '0');
-    for (size_t i = 0, j = (hex_len - 1) * 4; i < hex_len; ++i, j -= 4)
-        rc[i] = digits[(w >> j) & 0x0f];
-    return rc;
-}
-
-std::string toSignature(std::string& str) {
-    std::string res(8 + 3, '0'); // 8 chars + 3 spaces
-    int offset = 0;
-    for (int i = 0; i < 8; i++) {
-        res[i + offset] = str[i];
-        if (i == 1 || i == 3 || i == 5) {
-            res[i + offset + 1] = ' ';
-            offset++;
-        }
-    }
-    return res;
-}
-
 void testHeaps(Memory::External external) {
     auto start1 = std::chrono::high_resolution_clock::now();
     auto regions1 = Memory::heapWalkExternal(external.handle);
@@ -68,7 +46,11 @@ static void traverseFlagsAndVarTreeDepthFirst(Memory::External& external, std::v
     char character = external.read<char>(nodePtr + 0x4);
     uintptr_t sibling = external.read<uintptr_t>(nodePtr + 0xC);
     uintptr_t child = external.read<uintptr_t>(nodePtr + 0x10);
-    //std::cout << "nodePtr: " << n2hexstr(nodePtr) << " char: " << character << " element: " << n2hexstr(element) << " sibling: " << n2hexstr(sibling) << " child: " << n2hexstr(child) << std::endl;
+    //std::cout << "nodePtr: " << Memory::n2hexstr(nodePtr) 
+    //    << " char: " << character 
+    //    << " element: " << Memory::n2hexstr(element) 
+    //    << " sibling: " << Memory::n2hexstr(sibling) 
+    //    << " child: " << Memory::n2hexstr(child) << std::endl;
     if (element != 0) {
         //std::cout << "element" << std::endl;
         res->push_back(element);
@@ -99,45 +81,29 @@ std::vector<std::string>* getFlags(Memory::External& external, uintptr_t nodePtr
 
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
+    //std::cout << "getCountryFlags called" << std::endl;
+    std::string searchTag = luaL_checklstring(L, 1, NULL);
+    //std::cout << "searchTag: " << searchTag << std::endl;
+
     Memory::External external = Memory::External(GetCurrentProcessId(), true);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
-    std::cout << "Modulebase: " << n2hexstr(modulePtr.get()) << std::endl;
+    //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
-    std::cout << "getCountryFlags called" << std::endl;
-    std::string searchTag = luaL_checklstring(L, 1, NULL);
-    std::cout << "searchTag: " << searchTag << std::endl;
+    auto ctry = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
 
-    uintptr_t CCountryVFTableAddr = modulePtr.get() + 0x11C1BA8;
-    std::string x = n2hexstr(_byteswap_ulong(CCountryVFTableAddr));
-    std::cout << "x: " << x << std::endl;
-    auto sig = toSignature(x);
-    std::cout << "sig: " << sig << std::endl;
+    uintptr_t flagsOffset = ctry + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
+    uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
+    //std::cout << "flagsPtr: " << Memory::n2hexstr(flagsPtr) << std::endl;
 
-    std::vector<uintptr_t>* sigs = external.findSignatures(modulePtr.get() + DATA_SECTION_START, sig.c_str(), 4, 128);
-    std::cout << "sigs->size(): " << sigs->size() << std::endl;
+    auto flags = getFlags(external, flagsPtr);
+    //std::cout << "flags->size(): " << flags->size() << std::endl;
 
-    std::vector<std::string>* flags = new std::vector<std::string>;
-
-    for (auto& country : *sigs) {
-        std::string tag = external.readString(country + 0x1E4, 3);
-        std::cout << n2hexstr(country) << " " << tag << std::endl;
-        if (strcmp(tag.c_str(), searchTag.c_str()) == 0) {
-            uintptr_t flagsOffset = country + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
-            uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
-            std::cout << "flagsPtr: " << n2hexstr(flagsPtr) << std::endl;
-
-            auto flags = getFlags(external, flagsPtr);
-            std::cout << "flags->size(): " << flags->size() << std::endl;
-
-            lua_createtable(L, flags->size(), 0);
-            for (int i = 0; i < flags->size(); i++) {
-                lua_pushstring(L, flags->at(i).c_str());
-                lua_rawseti(L, -2, i + 1); /* In lua indices start at 1 */
-            }
-            delete flags;
-            break;
-        }
+    lua_createtable(L, flags->size(), 0);
+    for (int i = 0; i < flags->size(); i++) {
+        lua_pushstring(L, flags->at(i).c_str());
+        lua_rawseti(L, -2, i + 1); /* In lua indices start at 1 */
     }
+    delete flags;
     return 1;
 }
 

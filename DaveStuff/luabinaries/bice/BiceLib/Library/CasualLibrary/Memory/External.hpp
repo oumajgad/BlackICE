@@ -18,6 +18,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <functional>
 
 #include "../Helper.hpp"
 #include "../Address.hpp"
@@ -25,12 +26,16 @@
 
 
 namespace Memory {
+    template <typename I> std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1);
+    std::string toSignature(std::string& str);
+    std::string ptrToSignature(uintptr_t ptr);
     class External final
     {
     public:
         External(void) noexcept = default;
         External(int procID, bool debug = false) noexcept;
         ~External(void) noexcept;
+
 
         /*
         @brief uses loadlibrary from kernal32 to inject a dll into another process
@@ -187,6 +192,7 @@ namespace Memory {
         [[nodiscard]] Address findSignature(const uintptr_t start, const char* sig, const size_t size) noexcept;
         [[nodiscard]] Address findSignature(const Address& start, const char* sig, const size_t size) noexcept;
         [[nodiscard]] std::vector<uintptr_t>* findSignatures(const uintptr_t start, const char* sig, size_t signature_size, int expected_results) noexcept;
+        [[nodiscard]] uintptr_t findCountryInstance(const uintptr_t start, std::string searchTag);
         /** @brief handle of the target process */
         HANDLE handle = nullptr;
     private:
