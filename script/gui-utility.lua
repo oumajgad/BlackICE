@@ -1,9 +1,10 @@
-
 package.cpath = package.cpath..";./tfh/mod/?.dll;"
 require("wx")
 
 UI = {}
 
+
+-- Keep this at line #8 for the "zipperRelease.py" script
 UI.version = "GitHub"
 
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\main\\?.lua"
