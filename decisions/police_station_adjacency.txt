@@ -1,0 +1,425 @@
+diplomatic_decisions = {
+    # Testing decisions
+    #add_police = {
+    #    potential = {
+	#		tag = GER
+	#	}
+    #    allow = {}
+    #    effect = {
+    #        2207 = {
+    #            police_station = 1
+    #        }
+    #    }
+    #}
+    #remove_police = {
+    #    potential = {
+	#		tag = GER
+	#	}
+    #    allow = {}
+    #    effect = {
+    #        2207 = {
+    #            police_station = -1
+    #        }
+    #    }
+    #}
+
+    omg_police_building_province_effect = {
+        #major = yes
+        potential = {
+            tag = OMG
+            date = 1936.1.10
+            not = {
+                has_country_modifier = omg_adjacent_police_station_effect_timer
+            }
+        }
+        allow = {}
+        effect = {
+            add_country_modifier = {
+                name = omg_adjacent_police_station_effect_timer
+                duration = 7
+            }
+            OMG = {
+                any_country = {
+                    ##################
+                    # CLEANUP BLOCKS #
+                    ######################################################################
+                    # Putting them all into one block doesnt work for whatever reason... #
+                    ######################################################################
+                    any_controlled = {
+                        limit = {
+                            has_province_modifier = adjacent_police_station_I
+                            NOT = {
+                                any_neighbor_province = {
+                                    police_station = 1
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_I
+                    }
+                    any_controlled = {
+                        limit = {
+                            has_province_modifier = adjacent_police_station_II
+                            NOT = {
+                                any_neighbor_province = {
+                                    police_station = 1
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_II
+                    }
+                    any_controlled = {
+                        limit = {
+                            has_province_modifier = adjacent_police_station_III
+                            NOT = {
+                                any_neighbor_province = {
+                                    police_station = 1
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_III
+                    }
+                    any_controlled = {
+                        limit = {
+                            has_province_modifier = adjacent_police_station_IV
+                            NOT = {
+                                any_neighbor_province = {
+                                    police_station = 1
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_IV
+                    }
+                    any_controlled = {
+                        limit = {
+                            has_province_modifier = adjacent_police_station_V
+                            NOT = {
+                                any_neighbor_province = {
+                                    police_station = 1
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_V
+                    }
+                    any_controlled = {
+                        limit = {
+                            has_province_modifier = adjacent_police_station_VI
+                            NOT = {
+                                any_neighbor_province = {
+                                    police_station = 1
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_VI
+                    }
+                    any_controlled = {
+                        limit = {
+                            has_province_modifier = adjacent_police_station_VII
+                            NOT = {
+                                any_neighbor_province = {
+                                    police_station = 1
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_VII
+                    }
+                    any_controlled = {
+                        limit = {
+                            has_province_modifier = adjacent_police_station_IIX
+                            NOT = {
+                                any_neighbor_province = {
+                                    police_station = 1
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_IIX
+                    }
+                    any_controlled = {
+                        limit = {
+                            has_province_modifier = adjacent_police_station_IX
+                            NOT = {
+                                any_neighbor_province = {
+                                    police_station = 1
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_IX
+                    }
+                    any_controlled = {
+                        limit = {
+                            has_province_modifier = adjacent_police_station_X
+                            NOT = {
+                                any_neighbor_province = {
+                                    police_station = 1
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_X
+                    }
+                    #################
+                    # Effect Blocks #
+                    #################
+                    any_controlled = {
+                        limit = {
+                            NOT = {
+                                has_province_modifier = adjacent_police_station_I
+                            }
+                            any_neighbor_province = {
+                                police_station = 1
+                                NOT = {
+                                    police_station = 2
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_II
+                        remove_province_modifier = adjacent_police_station_III
+                        remove_province_modifier = adjacent_police_station_IV
+                        remove_province_modifier = adjacent_police_station_V
+                        remove_province_modifier = adjacent_police_station_VI
+                        remove_province_modifier = adjacent_police_station_VII
+                        remove_province_modifier = adjacent_police_station_IIX
+                        remove_province_modifier = adjacent_police_station_IX
+                        remove_province_modifier = adjacent_police_station_X
+                        add_province_modifier = {
+                            name = adjacent_police_station_I
+                            duration = -1
+                        }
+                    }
+                    any_controlled = {
+                        limit = {
+                            NOT = {
+                                has_province_modifier = adjacent_police_station_II
+                            }
+                            any_neighbor_province = {
+                                police_station = 2
+                                NOT = {
+                                    police_station = 3
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_I
+                        remove_province_modifier = adjacent_police_station_III
+                        remove_province_modifier = adjacent_police_station_IV
+                        remove_province_modifier = adjacent_police_station_V
+                        remove_province_modifier = adjacent_police_station_VI
+                        remove_province_modifier = adjacent_police_station_VII
+                        remove_province_modifier = adjacent_police_station_IIX
+                        remove_province_modifier = adjacent_police_station_IX
+                        remove_province_modifier = adjacent_police_station_X
+                        add_province_modifier = {
+                            name = adjacent_police_station_II
+                            duration = -1
+                        }
+                    }
+                    any_controlled = {
+                        limit = {
+                            NOT = {
+                                has_province_modifier = adjacent_police_station_III
+                            }
+                            any_neighbor_province = {
+                                police_station = 3
+                                NOT = {
+                                    police_station = 4
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_I
+                        remove_province_modifier = adjacent_police_station_II
+                        remove_province_modifier = adjacent_police_station_IV
+                        remove_province_modifier = adjacent_police_station_V
+                        remove_province_modifier = adjacent_police_station_VI
+                        remove_province_modifier = adjacent_police_station_VII
+                        remove_province_modifier = adjacent_police_station_IIX
+                        remove_province_modifier = adjacent_police_station_IX
+                        remove_province_modifier = adjacent_police_station_X
+                        add_province_modifier = {
+                            name = adjacent_police_station_III
+                            duration = -1
+                        }
+                    }
+                    any_controlled = {
+                        limit = {
+                            NOT = {
+                                has_province_modifier = adjacent_police_station_IV
+                            }
+                            any_neighbor_province = {
+                                police_station = 4
+                                NOT = {
+                                    police_station = 5
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_I
+                        remove_province_modifier = adjacent_police_station_II
+                        remove_province_modifier = adjacent_police_station_III
+                        remove_province_modifier = adjacent_police_station_V
+                        remove_province_modifier = adjacent_police_station_VI
+                        remove_province_modifier = adjacent_police_station_VII
+                        remove_province_modifier = adjacent_police_station_IIX
+                        remove_province_modifier = adjacent_police_station_IX
+                        remove_province_modifier = adjacent_police_station_X
+                        add_province_modifier = {
+                            name = adjacent_police_station_IV
+                            duration = -1
+                        }
+                    }
+                    any_controlled = {
+                        limit = {
+                            NOT = {
+                                has_province_modifier = adjacent_police_station_V
+                            }
+                            any_neighbor_province = {
+                                police_station = 5
+                                NOT = {
+                                    police_station = 6
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_I
+                        remove_province_modifier = adjacent_police_station_II
+                        remove_province_modifier = adjacent_police_station_III
+                        remove_province_modifier = adjacent_police_station_IV
+                        remove_province_modifier = adjacent_police_station_VI
+                        remove_province_modifier = adjacent_police_station_VII
+                        remove_province_modifier = adjacent_police_station_IIX
+                        remove_province_modifier = adjacent_police_station_IX
+                        remove_province_modifier = adjacent_police_station_X
+                        add_province_modifier = {
+                            name = adjacent_police_station_V
+                            duration = -1
+                        }
+                    }
+                    any_controlled = {
+                        limit = {
+                            NOT = {
+                                has_province_modifier = adjacent_police_station_VI
+                            }
+                            any_neighbor_province = {
+                                police_station = 6
+                                NOT = {
+                                    police_station = 7
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_I
+                        remove_province_modifier = adjacent_police_station_II
+                        remove_province_modifier = adjacent_police_station_III
+                        remove_province_modifier = adjacent_police_station_IV
+                        remove_province_modifier = adjacent_police_station_V
+                        remove_province_modifier = adjacent_police_station_VII
+                        remove_province_modifier = adjacent_police_station_IIX
+                        remove_province_modifier = adjacent_police_station_IX
+                        remove_province_modifier = adjacent_police_station_X
+                        add_province_modifier = {
+                            name = adjacent_police_station_VI
+                            duration = -1
+                        }
+                    }
+                    any_controlled = {
+                        limit = {
+                            NOT = {
+                                has_province_modifier = adjacent_police_station_VII
+                            }
+                            any_neighbor_province = {
+                                police_station = 7
+                                NOT = {
+                                    police_station = 8
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_I
+                        remove_province_modifier = adjacent_police_station_II
+                        remove_province_modifier = adjacent_police_station_III
+                        remove_province_modifier = adjacent_police_station_IV
+                        remove_province_modifier = adjacent_police_station_V
+                        remove_province_modifier = adjacent_police_station_VI
+                        remove_province_modifier = adjacent_police_station_IIX
+                        remove_province_modifier = adjacent_police_station_IX
+                        remove_province_modifier = adjacent_police_station_X
+                        add_province_modifier = {
+                            name = adjacent_police_station_VII
+                            duration = -1
+                        }
+                    }
+                    any_controlled = {
+                        limit = {
+                            NOT = {
+                                has_province_modifier = adjacent_police_station_IIX
+                            }
+                            any_neighbor_province = {
+                                police_station = 8
+                                NOT = {
+                                    police_station = 9
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_I
+                        remove_province_modifier = adjacent_police_station_II
+                        remove_province_modifier = adjacent_police_station_III
+                        remove_province_modifier = adjacent_police_station_IV
+                        remove_province_modifier = adjacent_police_station_V
+                        remove_province_modifier = adjacent_police_station_VI
+                        remove_province_modifier = adjacent_police_station_VII
+                        remove_province_modifier = adjacent_police_station_IX
+                        remove_province_modifier = adjacent_police_station_X
+                        add_province_modifier = {
+                            name = adjacent_police_station_IIX
+                            duration = -1
+                        }
+                    }
+                    any_controlled = {
+                        limit = {
+                            NOT = {
+                                has_province_modifier = adjacent_police_station_IX
+                            }
+                            any_neighbor_province = {
+                                police_station = 9
+                                NOT = {
+                                    police_station = 10
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_I
+                        remove_province_modifier = adjacent_police_station_II
+                        remove_province_modifier = adjacent_police_station_III
+                        remove_province_modifier = adjacent_police_station_IV
+                        remove_province_modifier = adjacent_police_station_V
+                        remove_province_modifier = adjacent_police_station_VI
+                        remove_province_modifier = adjacent_police_station_VII
+                        remove_province_modifier = adjacent_police_station_IIX
+                        remove_province_modifier = adjacent_police_station_X
+                        add_province_modifier = {
+                            name = adjacent_police_station_IX
+                            duration = -1
+                        }
+                    }
+                    any_controlled = {
+                        limit = {
+                            NOT = {
+                                has_province_modifier = adjacent_police_station_X
+                            }
+                            any_neighbor_province = {
+                                police_station = 10
+                                NOT = {
+                                    police_station = 11
+                                }
+                            }
+                        }
+                        remove_province_modifier = adjacent_police_station_I
+                        remove_province_modifier = adjacent_police_station_II
+                        remove_province_modifier = adjacent_police_station_III
+                        remove_province_modifier = adjacent_police_station_IV
+                        remove_province_modifier = adjacent_police_station_V
+                        remove_province_modifier = adjacent_police_station_VI
+                        remove_province_modifier = adjacent_police_station_VII
+                        remove_province_modifier = adjacent_police_station_IIX
+                        remove_province_modifier = adjacent_police_station_IX
+                        add_province_modifier = {
+                            name = adjacent_police_station_X
+                            duration = -1
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
