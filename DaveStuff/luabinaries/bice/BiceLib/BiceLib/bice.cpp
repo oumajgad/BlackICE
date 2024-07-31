@@ -11,36 +11,6 @@
 int DATA_SECTION_START = 0x12F5000;
 bool DEBUG = true;
 
-void testHeaps(Memory::External external) {
-    auto start1 = std::chrono::high_resolution_clock::now();
-    auto regions1 = Memory::heapWalkExternal(external.handle);
-    auto stop1 = std::chrono::high_resolution_clock::now();
-    auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(stop1 - start1);
-    std::cout << "External: " << regions1->size() << " - " << duration1.count() << std::endl;
-
-    auto start2 = std::chrono::high_resolution_clock::now();
-    auto regions2 = Memory::heapWalkInternal();
-    auto stop2 = std::chrono::high_resolution_clock::now();
-    auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(stop2 - start2);
-    std::cout << "Internal: " << regions2->size() << " - " << duration2.count() << std::endl;
-}
-
-
-__declspec(dllexport) int hello(lua_State* L)
-{
-    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
-    Address modulePtr = external.getModule("hoi3_tfh.exe");
-    std::cout << modulePtr.get() << std::endl;
-
-    long x = external.read<long>(modulePtr.get() + 0x11C1BA8, true);
-    testHeaps(external);
-
-    lua_pushstring(L, "a");
-    lua_pushstring(L, "b");
-    lua_pushstring(L, "c");
-    return 3; // Return N values from the function stack to the caller (LUA)
-}
-
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
     //std::cout << "getCountryFlags called" << std::endl;
@@ -113,7 +83,6 @@ __declspec(dllexport) int startConsole(lua_State* L)
 __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"getCountryFlags", getCountryFlags},
     {"getCountryVariables", getCountryVariables},
-    {"hello", hello},
     {"startConsole", startConsole},
     {NULL, NULL}
 };
