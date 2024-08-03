@@ -6,6 +6,12 @@ function P.FillGrid()
     end
 
     local vars = BiceLib.getCountryVariables(G_PlayerCountry)
+
+    if vars == nil then
+        Utils.LUA_DEBUGOUT("vars nil")
+        return
+    end
+
     -- Utils.INSPECT_TABLE(vars)
 
     UI.m_grid_GameInfo_Vars1:ClearGrid()

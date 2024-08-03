@@ -6,6 +6,12 @@ function P.FillGrid()
     end
 
     local flags = BiceLib.getCountryFlags(G_PlayerCountry)
+
+    if flags == nil then
+        Utils.LUA_DEBUGOUT("flags nil")
+        return
+    end
+
     -- Utils.INSPECT_TABLE(flags)
 
     UI.m_grid_GameInfo_Flags1:ClearGrid()

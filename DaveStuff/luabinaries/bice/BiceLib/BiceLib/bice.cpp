@@ -21,22 +21,27 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
-    auto ctry = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
+    auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
 
-    uintptr_t flagsOffset = ctry + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
-    uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
-    //std::cout << "flagsPtr: " << Memory::n2hexstr(flagsPtr) << std::endl;
+    if (ctr != 0) {
+        uintptr_t flagsOffset = ctr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
+        uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
+        //std::cout << "flagsPtr: " << Memory::n2hexstr(flagsPtr) << std::endl;
 
-    auto flags = CCountry::getFlags(external, flagsPtr);
-    //std::cout << "flags->size(): " << flags->size() << std::endl;
+        auto flags = CCountry::getFlags(external, flagsPtr);
+        //std::cout << "flags->size(): " << flags->size() << std::endl;
 
-    lua_createtable(L, flags->size(), 0);
-    for (int i = 0; i < flags->size(); i++) {
-        lua_pushstring(L, flags->at(i).c_str());
-        lua_rawseti(L, -2, i + 1); /* In lua indices start at 1 */
+        lua_createtable(L, flags->size(), 0);
+        for (int i = 0; i < flags->size(); i++) {
+            lua_pushstring(L, flags->at(i).c_str());
+            lua_rawseti(L, -2, i + 1); /* In lua indices start at 1 */
+        }
+
+        delete flags;
+        return 1;
+
     }
-
-    delete flags;
+    lua_pushnil(L);
     return 1;
 }
 
@@ -52,21 +57,25 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
 
     auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
 
-    uintptr_t varsOffset = ctr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning
-    uintptr_t varsPtr = external.read<uintptr_t>(varsOffset);
-    //std::cout << "varsPtr: " << Memory::n2hexstr(varsPtr) << std::endl;
+    if (ctr != 0) {
+        uintptr_t varsOffset = ctr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning
+        uintptr_t varsPtr = external.read<uintptr_t>(varsOffset);
+        //std::cout << "varsPtr: " << Memory::n2hexstr(varsPtr) << std::endl;
 
-    auto vars = CCountry::getVars(external, varsPtr);
-    std::cout << "vars->size(): " << vars->size() << std::endl;
+        auto vars = CCountry::getVars(external, varsPtr);
+        std::cout << "vars->size(): " << vars->size() << std::endl;
 
-    lua_newtable(L, 0, vars->size());
-    for (int i = 0; i < vars->size(); i++) {
-        lua_pushstring(L, vars->at(i).name.c_str());
-        lua_pushinteger(L, vars->at(i).value);
-        lua_settable(L, -3);
+        lua_newtable(L, 0, vars->size());
+        for (int i = 0; i < vars->size(); i++) {
+            lua_pushstring(L, vars->at(i).name.c_str());
+            lua_pushinteger(L, vars->at(i).value);
+            lua_settable(L, -3);
+        }
+
+        delete vars;
+        return 1;
     }
-
-    delete vars;
+    lua_pushnil(L);
     return 1;
 }
 
