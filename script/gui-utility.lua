@@ -695,7 +695,7 @@ if wx ~= nil then
 
 	UI.bSizer_trades_1:Add( UI.m_staticText_trades_1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_grid_trades_1 = wx.wxGrid( UI.m_panel_trades, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 425,-1 ), 0 )
+	UI.m_grid_trades_1 = wx.wxGrid( UI.m_panel_trades, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 425,300 ), 0 )
 
 	-- Grid
 	UI.m_grid_trades_1:CreateGrid( 15, 4 )
@@ -728,7 +728,7 @@ if wx ~= nil then
 	-- Cell Defaults
 	UI.m_grid_trades_1:SetDefaultCellBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
 	UI.m_grid_trades_1:SetDefaultCellAlignment( wx.wxALIGN_CENTER, wx.wxALIGN_TOP )
-	UI.m_grid_trades_1:SetMaxSize( wx.wxSize( 425,250 ) )
+	UI.m_grid_trades_1:SetMaxSize( wx.wxSize( 425,300 ) )
 
 	UI.bSizer_trades_1:Add( UI.m_grid_trades_1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
@@ -1831,44 +1831,45 @@ if wx ~= nil then
 
 	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		local selection = UI.player_choice:GetValue()
-		if selection ~= "" then
-			if CheckPlayerAllowsSelection(selection) then
-				if PlayerCountries ~= nil then
-					UI.m_textCtrl3:SetValue("Loading...")
-					G_PlayerCountry = selection
-					G_DateOverride = false
-					G_DaysSinceLastUpdate = 0
-					G_UpdateInterval = 1
-					UI.m_textCtrl6:SetValue("1")
-
-					SetTradeDecisionHiddenText()
-					SetMinesDecisionHiddenText()
-					SetICDaysLeftText()
-					DetermineICInvestmentValue()
-					GetAndSetResourceSaleStates()
-					GetMinisterBuildingsProgress()
-					DetermineCustomTradeAiStatus()
-					ReadCustomTradeAiValues()
-					DetermineCustomProductionSliderAiStatus()
-					ReadCustomProductionSliderValues()
-					DetermineCustomLsSliderAiStatus()
-					ReadCustomLsSliderValues()
-					SetUpStatCollectionPage()
-
-					UI.m_radioBtn_Generals_all:SetValue( true )
-					Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
-
-					GuiRefreshLoop(true)
-					UI.m_textCtrl3:SetValue("Country set to " .. G_PlayerCountry)
-				else
-					UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
-				end
-			else
-				UI.m_textCtrl3:SetValue("Player disabled control")
-			end
-		else
+		if selection == "" then
 			UI.m_textCtrl3:SetValue("No country selected")
 		end
+		if not CheckPlayerAllowsSelection(selection) then
+			UI.m_textCtrl3:SetValue("Player disabled control")
+		end
+		if PlayerCountries == nil then
+			UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
+		end
+		-- if not CCountryDataBase.GetTag(selection):GetCountry():Exists() then
+		-- 	UI.m_textCtrl3:SetValue("Country doesn't exist")
+		-- end
+
+		UI.m_textCtrl3:SetValue("Loading...")
+		G_PlayerCountry = selection
+		G_DateOverride = false
+		G_DaysSinceLastUpdate = 0
+		G_UpdateInterval = 1
+		UI.m_textCtrl6:SetValue("1")
+
+		SetTradeDecisionHiddenText()
+		SetMinesDecisionHiddenText()
+		SetICDaysLeftText()
+		DetermineICInvestmentValue()
+		GetAndSetResourceSaleStates()
+		GetMinisterBuildingsProgress()
+		DetermineCustomTradeAiStatus()
+		ReadCustomTradeAiValues()
+		DetermineCustomProductionSliderAiStatus()
+		ReadCustomProductionSliderValues()
+		DetermineCustomLsSliderAiStatus()
+		ReadCustomLsSliderValues()
+		SetUpStatCollectionPage()
+
+		UI.m_radioBtn_Generals_all:SetValue( true )
+		Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
+
+		GuiRefreshLoop(true)
+		UI.m_textCtrl3:SetValue("Country set to " .. G_PlayerCountry)
 	end )
 
 	UI.m_buttonEnablePuppetDecision:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

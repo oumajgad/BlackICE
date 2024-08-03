@@ -402,17 +402,17 @@ if wx ~= nil then
 
 	UI.bSizer_GameInfo_Flags1:Add( UI.m_staticText_GameInfo_Flags1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_grid_GameInfo_Flags1 = wx.wxGrid( UI.m_panel_GameInfo_Flags, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_grid_GameInfo_Flags1 = wx.wxGrid( UI.m_panel_GameInfo_Flags, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 450,400 ), wx.wxALWAYS_SHOW_SB + wx.wxVSCROLL )
 
 	-- Grid
-	UI.m_grid_GameInfo_Flags1:CreateGrid( 23, 1 )
+	UI.m_grid_GameInfo_Flags1:CreateGrid( 10, 1 )
 	UI.m_grid_GameInfo_Flags1:EnableEditing( False )
 	UI.m_grid_GameInfo_Flags1:EnableGridLines( True )
 	UI.m_grid_GameInfo_Flags1:EnableDragGridSize( False )
 	UI.m_grid_GameInfo_Flags1:SetMargins( 0, 0 )
 
 	-- Columns
-	UI.m_grid_GameInfo_Flags1:SetColSize( 0, 450 )
+	UI.m_grid_GameInfo_Flags1:SetColSize( 0, 430 )
 	UI.m_grid_GameInfo_Flags1:EnableDragColSize( True )
 	UI.m_grid_GameInfo_Flags1:SetColLabelValue( 0, "Flag Name" )
 	UI.m_grid_GameInfo_Flags1:SetColLabelSize( 30 )
@@ -429,6 +429,8 @@ if wx ~= nil then
 	-- Cell Defaults
 	UI.m_grid_GameInfo_Flags1:SetDefaultCellBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
 	UI.m_grid_GameInfo_Flags1:SetDefaultCellAlignment( wx.wxALIGN_LEFT, wx.wxALIGN_TOP )
+	UI.m_grid_GameInfo_Flags1:SetMaxSize( wx.wxSize( 450,400 ) )
+
 	UI.bSizer_GameInfo_Flags1:Add( UI.m_grid_GameInfo_Flags1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_button_GameInfo_Flags = wx.wxButton( UI.m_panel_GameInfo_Flags, wx.wxID_ANY, "Refresh", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
@@ -449,17 +451,17 @@ if wx ~= nil then
 
 	UI.bSizer_GameInfo_Vars1:Add( UI.m_staticText_GameInfo_Flags1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_grid_GameInfo_Vars1 = wx.wxGrid( UI.m_panel_GameInfo_Vars, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_grid_GameInfo_Vars1 = wx.wxGrid( UI.m_panel_GameInfo_Vars, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 450,400 ), wx.wxALWAYS_SHOW_SB + wx.wxVSCROLL )
 
 	-- Grid
-	UI.m_grid_GameInfo_Vars1:CreateGrid( 23, 2 )
+	UI.m_grid_GameInfo_Vars1:CreateGrid( 10, 2 )
 	UI.m_grid_GameInfo_Vars1:EnableEditing( False )
 	UI.m_grid_GameInfo_Vars1:EnableGridLines( True )
 	UI.m_grid_GameInfo_Vars1:EnableDragGridSize( False )
 	UI.m_grid_GameInfo_Vars1:SetMargins( 0, 0 )
 
 	-- Columns
-	UI.m_grid_GameInfo_Vars1:SetColSize( 0, 400 )
+	UI.m_grid_GameInfo_Vars1:SetColSize( 0, 330 )
 	UI.m_grid_GameInfo_Vars1:SetColSize( 1, 100 )
 	UI.m_grid_GameInfo_Vars1:EnableDragColSize( True )
 	UI.m_grid_GameInfo_Vars1:SetColLabelValue( 0, "Country Variables" )
@@ -478,6 +480,8 @@ if wx ~= nil then
 	-- Cell Defaults
 	UI.m_grid_GameInfo_Vars1:SetDefaultCellBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
 	UI.m_grid_GameInfo_Vars1:SetDefaultCellAlignment( wx.wxALIGN_LEFT, wx.wxALIGN_TOP )
+	UI.m_grid_GameInfo_Vars1:SetMaxSize( wx.wxSize( 450,400 ) )
+
 	UI.bSizer_GameInfo_Vars1:Add( UI.m_grid_GameInfo_Vars1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_button_GameInfo_Vars1 = wx.wxButton( UI.m_panel_GameInfo_Vars, wx.wxID_ANY, "Refresh", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
