@@ -88,11 +88,88 @@ __declspec(dllexport) int startConsole(lua_State* L)
     return 0;
 }
 
+bool hook(void* hookAddress, void* hookFunc, int len, int NOPs) {
+    if (len < 5) {
+        return false;
+    }
+    else {
+        DWORD protection;
+        VirtualProtect(hookAddress, len, PAGE_EXECUTE_READWRITE, &protection);
+
+        DWORD relativeHookFuncAddress = ((DWORD)hookFunc - (DWORD)hookAddress) - 5;
+
+        *(BYTE*)hookAddress = 0xE9; // JMP
+        *(DWORD*)((DWORD)hookAddress + 1) = relativeHookFuncAddress;
+
+        for (int i = 0; i < NOPs; i++) {
+            *(BYTE*)((DWORD)hookAddress + len + i) = 0x90;
+        }
+
+        DWORD trash;
+        VirtualProtect(hookAddress, len, protection, &trash);
+        return true;
+    }
+}
+
+DWORD jumpBackPatchLeaderSkillLossOnPromotion;
+
+__declspec(naked) void patchLeaderSkillLossOnPromotion() {
+    DWORD* leaderAddress;
+    DWORD* CPromoteLeaderCommand;
+    _asm {
+        mov[leaderAddress], edi
+        mov[CPromoteLeaderCommand], esi
+        pushad
+    }
+
+    std::cout << "patchLeaderSkillLossOnPromotion hook called" << std::endl;
+    std::cout << jumpBackPatchLeaderSkillLossOnPromotion << std::endl;
+
+    DWORD currentSkill;
+    currentSkill = *((BYTE*)leaderAddress + 0x70);
+    std::cout << "Current skill: " << currentSkill << std::endl;
+    DWORD direction; // 0 = Higher ; 1 = Lower Rank
+    direction = *((BYTE*)CPromoteLeaderCommand + 0x64);
+    std::cout << "direction: " << direction << std::endl;
+    if (direction == 1) { // Demotion
+        *((BYTE*)leaderAddress + 0x70) = currentSkill + 1;
+    }
+    else if (currentSkill != 0) { // Promotion
+        *((BYTE*)leaderAddress + 0x70) = currentSkill - 1;
+    }
+
+    _asm {
+        popad
+        mov[edi + 0x6c], eax
+        cmp[edi + 0x68], ebx
+        jmp [jumpBackPatchLeaderSkillLossOnPromotion]
+    }
+}
+
+__declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
+{
+    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
+    Address modulePtr = external.getModule("hoi3_tfh.exe");
+
+    DWORD hookAddress = modulePtr + 0x1d7cdc;
+    jumpBackPatchLeaderSkillLossOnPromotion = hookAddress + 6;
+
+    if (!hook((void*)hookAddress, patchLeaderSkillLossOnPromotion, 5, 1)) {
+        std::cout << "Patch 'activateLeaderPromotionSkillLoss' failed" << std::endl;
+    }
+    else {
+        std::cout << "Patch 'activateLeaderPromotionSkillLoss' succeeded" << std::endl;
+    }
+
+    return 0;
+}
+
 
 __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"getCountryFlags", getCountryFlags},
     {"getCountryVariables", getCountryVariables},
     {"startConsole", startConsole},
+    {"activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss },
     {NULL, NULL}
 };
 

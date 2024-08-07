@@ -16,6 +16,7 @@ class CLeaderOffsets:
     country_id: int = 0x48
     name: int = 0x4C
     rank: int = 0x6C
+    skill: int = 0x70
 
 
 class CLeader(pydantic.BaseModel):
@@ -29,6 +30,7 @@ class CLeader(pydantic.BaseModel):
     country_id: int
     name: str
     rank: int
+    skill: int
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -41,6 +43,7 @@ class CLeader(pydantic.BaseModel):
             "country_id": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.country_id, 4)),
             "name": utils.get_string_maybe_ptr(pm, ptr + CLeaderOffsets.name),
             "rank": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.rank, 4)),
+            "skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.skill, 4)),
         }
 
         return cls(**temp)
@@ -63,6 +66,10 @@ class CLeader(pydantic.BaseModel):
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
+    print(pm.base_address)
     leaders = CLeader.get_leaders(pm)
     print(f"{len(leaders)=}")
-    print(leaders[111])
+    for leader in leaders:
+        x = CLeader.make(pm, leader)
+        if ("Kesselring" in x.name or "Vlasov" in x.name) and x.country_tag == "GER":
+            print(x)
