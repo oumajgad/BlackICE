@@ -116,25 +116,37 @@ DWORD jumpBackPatchLeaderSkillLossOnPromotion;
 __declspec(naked) void patchLeaderSkillLossOnPromotion() {
     DWORD* leaderAddress;
     DWORD* CPromoteLeaderCommand;
+    DWORD newRank;
     _asm {
         mov[leaderAddress], edi
         mov[CPromoteLeaderCommand], esi
+        mov newRank, eax
         pushad
     }
 
+    //std::vector<int>* x;
+    //x = new std::vector<int>;
+
     std::cout << "patchLeaderSkillLossOnPromotion hook called" << std::endl;
-    std::cout << jumpBackPatchLeaderSkillLossOnPromotion << std::endl;
+    std::cout << "leaderAddress: " << leaderAddress << std::endl;
+    std::cout << "newRank: " << newRank << std::endl;
 
     DWORD currentSkill;
+    DWORD startingSkill;
+    DWORD direction; // 0 = Higher Rank ; 1 = Lower Rank
+
     currentSkill = *((BYTE*)leaderAddress + 0x70);
-    std::cout << "Current skill: " << currentSkill << std::endl;
-    DWORD direction; // 0 = Higher ; 1 = Lower Rank
+    startingSkill = *((BYTE*)leaderAddress + 0x84 + 0x44);
     direction = *((BYTE*)CPromoteLeaderCommand + 0x64);
+
+    std::cout << "currentSkill: " << currentSkill << std::endl;
+    std::cout << "startingSkill: " << startingSkill << std::endl;
     std::cout << "direction: " << direction << std::endl;
-    if (direction == 1) { // Demotion
+
+    if (direction == 1 && currentSkill < startingSkill) { // Demotion
         *((BYTE*)leaderAddress + 0x70) = currentSkill + 1;
     }
-    else if (currentSkill != 0) { // Promotion
+    else if (direction == 0 && currentSkill != 0) { // Promotion
         *((BYTE*)leaderAddress + 0x70) = currentSkill - 1;
     }
 
@@ -159,6 +171,7 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
     }
     else {
         std::cout << "Patch 'activateLeaderPromotionSkillLoss' succeeded" << std::endl;
+        std::cout << "jumpBackPatchLeaderSkillLossOnPromotion: " << Memory::n2hexstr(jumpBackPatchLeaderSkillLossOnPromotion) << std::endl;
     }
 
     return 0;

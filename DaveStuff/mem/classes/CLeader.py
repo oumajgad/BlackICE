@@ -1,8 +1,10 @@
+import json
 from typing import ClassVar
 
 import pydantic
 from pymem import Pymem
 
+from classes.CLeaderHistory import CLeaderHistory
 from constants import DATA_SECTION_START
 from utils import utils
 
@@ -10,6 +12,8 @@ from utils import utils
 class CLeaderOffsets:
     VFTABLE_OFFSET: int = 0x11C5220
     id: int = 0xC
+    trait_ll_start: int = 0x30
+    trait_ll_end: int = 0x34
     number_of_traits: int = 0x38
     unit_ptr: int = 0x40
     country_tag: int = 0x44
@@ -17,6 +21,7 @@ class CLeaderOffsets:
     name: int = 0x4C
     rank: int = 0x6C
     skill: int = 0x70
+    CLeaderHistoryOffset: int = 0x84
 
 
 class CLeader(pydantic.BaseModel):
@@ -31,6 +36,7 @@ class CLeader(pydantic.BaseModel):
     name: str
     rank: int
     skill: int
+    history: CLeaderHistory
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -44,6 +50,7 @@ class CLeader(pydantic.BaseModel):
             "name": utils.get_string_maybe_ptr(pm, ptr + CLeaderOffsets.name),
             "rank": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.rank, 4)),
             "skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.skill, 4)),
+            "history": CLeaderHistory.make(pm, ptr + CLeaderOffsets.CLeaderHistoryOffset),
         }
 
         return cls(**temp)
@@ -70,6 +77,7 @@ if __name__ == "__main__":
     leaders = CLeader.get_leaders(pm)
     print(f"{len(leaders)=}")
     for leader in leaders:
+        # print(f"{leader=}")
         x = CLeader.make(pm, leader)
-        if ("Kesselring" in x.name or "Vlasov" in x.name) and x.country_tag == "GER":
-            print(x)
+        if "Adam" in x.name and x.country_tag == "GER":
+            print(json.dumps(x.dict(), indent=2, default=str))
