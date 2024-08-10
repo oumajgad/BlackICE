@@ -31,6 +31,7 @@ BiceLib = require("BiceLib")
 BiceLib.startConsole() -- Creates a console for debug information // Comment out for releases
 BiceLib.setModuleBase()
 -- BiceLib.activateLeaderPromotionSkillLoss()
+BiceLib.activateLeaderListShowMaxSkill()
 BiceLib.activateOffmapICPatch()
 BiceLib.activateMinisterTechDecayPatch()
 BiceLib.activateWarExhaustionNeutralityResetPatch()

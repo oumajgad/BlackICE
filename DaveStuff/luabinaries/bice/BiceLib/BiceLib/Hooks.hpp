@@ -30,8 +30,8 @@ namespace Hooks {
         DWORD* CPromoteLeaderCommand;
         DWORD newRank;
         _asm {
-            mov[leaderAddress], edi
-            mov[CPromoteLeaderCommand], esi
+            mov [leaderAddress], edi
+            mov [CPromoteLeaderCommand], esi
             mov newRank, eax
             pushad
         }
@@ -64,9 +64,48 @@ namespace Hooks {
 
         _asm {
             popad
-            mov[edi + 0x6c], eax
-            cmp[edi + 0x68], ebx
-            jmp[jumpBackPatchLeaderSkillLossOnPromotion]
+            mov [edi + 0x6c], eax
+            cmp [edi + 0x68], ebx
+            jmp [jumpBackPatchLeaderSkillLossOnPromotion]
+        }
+    }
+
+    DWORD jumpBackpatchLeaderListShowMaxSkill;
+    __declspec(naked) void patchLeaderListShowMaxSkill() {
+        DWORD* leaderAddress;
+        CHAR* currentSkillCharArray;
+        _asm {
+            mov [currentSkillCharArray], eax
+            mov eax, [esp + 0xC]
+            mov [leaderAddress], eax
+            mov eax, [currentSkillCharArray]
+            pushad
+        }
+
+        //std::cout << "patchLeaderListShowMaxSkill" << std::endl;
+        //std::cout << "leaderAddress: " << leaderAddress << std::endl;
+        //std::cout << "currentSkillCharArray: " << currentSkillCharArray << std::endl;
+
+        DWORD currentSkill;
+        DWORD maxSkill;
+        currentSkill = *((BYTE*)leaderAddress + 0x70);
+        maxSkill = *((BYTE*)leaderAddress + 0x74);
+
+        //std::cout << "currentSkill: " << currentSkill << std::endl;
+        //std::cout << "maxSkill: " << maxSkill << std::endl;
+
+        sprintf(currentSkillCharArray, "%d (%d)", currentSkill, maxSkill);
+
+        //std::cout << "currentSkillCharArray: " << currentSkillCharArray << std::endl;
+
+
+        //mov eax, newSkillString
+        _asm {
+            popad
+            mov esi,eax
+            mov ecx,esi
+            add esp,0xC
+            jmp [jumpBackpatchLeaderListShowMaxSkill]
         }
     }
 }
