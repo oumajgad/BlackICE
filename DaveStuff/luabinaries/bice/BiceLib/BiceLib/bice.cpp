@@ -8,9 +8,11 @@
 
 #include <CCountry.hpp>
 #include <Hooks.hpp>
+#include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
 bool DEBUG = true;
+DWORD MODULE_BASE;
 
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
@@ -81,24 +83,14 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
 }
 
 
-__declspec(dllexport) int startConsole(lua_State* L)
-{
-    AllocConsole();
-    FILE* fp;
-    freopen_s(&fp, "CONOUT$", "w", stdout); // output only
-    return 0;
-}
-
 BOOL activateLeaderPromotionSkillLossDone = false;
 __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
 {
     if (activateLeaderPromotionSkillLossDone) {
         return 0;
     }
-    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
-    Address modulePtr = external.getModule("hoi3_tfh.exe");
 
-    DWORD hookAddress = modulePtr + 0x1d7cdc;
+    DWORD hookAddress = MODULE_BASE + 0x1D7CDC;
     Hooks::jumpBackPatchLeaderSkillLossOnPromotion = hookAddress + 6;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::patchLeaderSkillLossOnPromotion, 5, 1)) {
@@ -113,11 +105,78 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
 }
 
 
+BOOL activateOffmapICPatchDone = false;
+__declspec(dllexport) int activateOffmapICPatch(lua_State* L)
+{
+    if (activateOffmapICPatchDone) {
+        return 0;
+    }
+    std::cout << "activateOffmapICPatch" << std::endl;
+
+    Patches::patchOffMapIC(MODULE_BASE);
+
+    activateOffmapICPatchDone = TRUE;
+    return 0;
+}
+
+
+BOOL activateMinisterTechDecayPatchDone = false;
+__declspec(dllexport) int activateMinisterTechDecayPatch(lua_State* L)
+{
+    if (activateMinisterTechDecayPatchDone) {
+        return 0;
+    }
+    std::cout << "activateMinisterTechDecayPatch" << std::endl;
+
+    Patches::patchMinisterTechDecay(MODULE_BASE);
+
+    activateMinisterTechDecayPatchDone = TRUE;
+    return 0;
+}
+
+
+BOOL activateWarExhaustionNeutralityResetPatchDone = false;
+__declspec(dllexport) int activateWarExhaustionNeutralityResetPatch(lua_State* L)
+{
+    if (activateWarExhaustionNeutralityResetPatchDone) {
+        return 0;
+    }
+    std::cout << "activateWarExhaustionNeutralityResetPatch" << std::endl;
+
+    Patches::patchWarExhaustionNeutralityReset(MODULE_BASE);
+
+    activateWarExhaustionNeutralityResetPatchDone = TRUE;
+    return 0;
+}
+
+
+__declspec(dllexport) int setModuleBase(lua_State* L)
+{
+    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
+    Address modulePtr = external.getModule("hoi3_tfh.exe");
+    MODULE_BASE = modulePtr.get();
+    return 0;
+}
+
+
+__declspec(dllexport) int startConsole(lua_State* L)
+{
+    AllocConsole();
+    FILE* fp;
+    freopen_s(&fp, "CONOUT$", "w", stdout); // output only
+    return 0;
+}
+
+
 __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"getCountryFlags", getCountryFlags},
     {"getCountryVariables", getCountryVariables},
     {"startConsole", startConsole},
-    {"activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss },
+    {"setModuleBase", setModuleBase},
+    {"activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss},
+    {"activateOffmapICPatch", activateOffmapICPatch},
+    {"activateMinisterTechDecayPatch", activateMinisterTechDecayPatch},
+    {"activateWarExhaustionNeutralityResetPatch", activateWarExhaustionNeutralityResetPatch},
     {NULL, NULL}
 };
 

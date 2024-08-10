@@ -1,4 +1,4 @@
-#include <memoryapi.h>
+#include <Windows.h>
 
 namespace Hooks {
     bool hook(void* hookAddress, void* hookFunc, int len, int NOPs) {
@@ -69,5 +69,4 @@ namespace Hooks {
             jmp[jumpBackPatchLeaderSkillLossOnPromotion]
         }
     }
-
 }

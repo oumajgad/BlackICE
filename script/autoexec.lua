@@ -29,7 +29,11 @@ require('csvParser')
 require('pdxParser')
 BiceLib = require("BiceLib")
 BiceLib.startConsole() -- Creates a console for debug information // Comment out for releases
-BiceLib.activateLeaderPromotionSkillLoss()
+BiceLib.setModuleBase()
+-- BiceLib.activateLeaderPromotionSkillLoss()
+BiceLib.activateOffmapICPatch()
+BiceLib.activateMinisterTechDecayPatch()
+BiceLib.activateWarExhaustionNeutralityResetPatch()
 
 -- Make sure these exist, if something is require() but doesnt exist LUA dies and doesn't load the rest!
 -- Defaults are at the bottom so it's easier to spot if something is wrong (some nations won't do anything since defaults wont be loaded)
