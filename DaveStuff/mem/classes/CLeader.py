@@ -21,6 +21,7 @@ class CLeaderOffsets:
     name: int = 0x4C
     rank: int = 0x6C
     skill: int = 0x70
+    max_skill: int = 0x74
     CLeaderHistoryOffset: int = 0x84
 
 
@@ -36,6 +37,7 @@ class CLeader(pydantic.BaseModel):
     name: str
     rank: int
     skill: int
+    max_skill: int
     history: CLeaderHistory
 
     @classmethod
@@ -50,6 +52,7 @@ class CLeader(pydantic.BaseModel):
             "name": utils.get_string_maybe_ptr(pm, ptr + CLeaderOffsets.name),
             "rank": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.rank, 4)),
             "skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.skill, 4)),
+            "max_skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.max_skill, 4)),
             "history": CLeaderHistory.make(pm, ptr + CLeaderOffsets.CLeaderHistoryOffset),
         }
 
