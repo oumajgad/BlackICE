@@ -120,21 +120,21 @@ namespace Hooks {
             pushad
         }
 
-        std::cout << "patchLeaderListShowMaxSkill" << std::endl;
-        std::cout << "leaderAddress: " << leaderAddress << std::endl;
-        std::cout << "currentSkillCharArray: " << currentSkillCharArray << std::endl;
+        //std::cout << "patchLeaderListShowMaxSkill" << std::endl;
+        //std::cout << "leaderAddress: " << leaderAddress << std::endl;
+        //std::cout << "currentSkillCharArray: " << currentSkillCharArray << std::endl;
 
         DWORD currentSkill;
         DWORD maxSkill;
         currentSkill = *((BYTE*)leaderAddress + 0x70);
         maxSkill = *((BYTE*)leaderAddress + 0x74);
 
-        std::cout << "currentSkill: " << currentSkill << std::endl;
-        std::cout << "maxSkill: " << maxSkill << std::endl;
+        //std::cout << "currentSkill: " << currentSkill << std::endl;
+        //std::cout << "maxSkill: " << maxSkill << std::endl;
 
         sprintf(currentSkillCharArray, "%d (%d)", currentSkill, maxSkill);
 
-        std::cout << "currentSkillCharArray: " << currentSkillCharArray << std::endl;
+        //std::cout << "currentSkillCharArray: " << currentSkillCharArray << std::endl;
 
 
         _asm {
