@@ -70,14 +70,14 @@ namespace Hooks {
         }
     }
 
-    DWORD jumpBackpatchLeaderListShowMaxSkill;
+    DWORD jumpBack_patchLeaderListShowMaxSkill;
     __declspec(naked) void patchLeaderListShowMaxSkill() {
         DWORD* leaderAddress;
         CHAR* currentSkillCharArray;
         _asm {
-            mov [currentSkillCharArray], eax
+            mov[currentSkillCharArray], eax
             mov eax, [esp + 0xC]
-            mov [leaderAddress], eax
+            mov[leaderAddress], eax
             mov eax, [currentSkillCharArray]
             pushad
         }
@@ -99,13 +99,50 @@ namespace Hooks {
         //std::cout << "currentSkillCharArray: " << currentSkillCharArray << std::endl;
 
 
-        //mov eax, newSkillString
         _asm {
             popad
-            mov esi,eax
-            mov ecx,esi
-            add esp,0xC
-            jmp [jumpBackpatchLeaderListShowMaxSkill]
+            mov esi, eax
+            mov ecx, esi
+            add esp, 0xC
+            jmp[jumpBack_patchLeaderListShowMaxSkill]
+        }
+    }
+
+    DWORD jumpBack_patchLeaderListShowMaxSkillSelected;
+    __declspec(naked) void patchLeaderListShowMaxSkillSelected() {
+        DWORD* leaderAddress;
+        CHAR* currentSkillCharArray;
+        _asm {
+            mov[currentSkillCharArray], eax
+            mov eax, [ebp + 0xC]
+            mov[leaderAddress], eax
+            mov eax, [currentSkillCharArray]
+            pushad
+        }
+
+        std::cout << "patchLeaderListShowMaxSkill" << std::endl;
+        std::cout << "leaderAddress: " << leaderAddress << std::endl;
+        std::cout << "currentSkillCharArray: " << currentSkillCharArray << std::endl;
+
+        DWORD currentSkill;
+        DWORD maxSkill;
+        currentSkill = *((BYTE*)leaderAddress + 0x70);
+        maxSkill = *((BYTE*)leaderAddress + 0x74);
+
+        std::cout << "currentSkill: " << currentSkill << std::endl;
+        std::cout << "maxSkill: " << maxSkill << std::endl;
+
+        sprintf(currentSkillCharArray, "%d (%d)", currentSkill, maxSkill);
+
+        std::cout << "currentSkillCharArray: " << currentSkillCharArray << std::endl;
+
+
+        _asm {
+            popad
+            mov esi, eax
+            mov ecx, esi
+            add esp, 0xC
+            jmp[jumpBack_patchLeaderListShowMaxSkillSelected]
         }
     }
 }

@@ -94,10 +94,10 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
     Hooks::jumpBackPatchLeaderSkillLossOnPromotion = hookAddress + 6;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::patchLeaderSkillLossOnPromotion, 5, 1)) {
-        std::cout << "Patch 'activateLeaderPromotionSkillLoss' failed" << std::endl;
+        std::cout << "Hook 'activateLeaderPromotionSkillLoss' failed" << std::endl;
     }
     else {
-        std::cout << "Patch 'activateLeaderPromotionSkillLoss' succeeded" << std::endl;
+        std::cout << "Hook 'activateLeaderPromotionSkillLoss' succeeded" << std::endl;
         std::cout << "jumpBackPatchLeaderSkillLossOnPromotion: " << Memory::n2hexstr(Hooks::jumpBackPatchLeaderSkillLossOnPromotion) << std::endl;
     }
     activateLeaderPromotionSkillLossDone = TRUE;
@@ -113,16 +113,38 @@ __declspec(dllexport) int activateLeaderListShowMaxSkill(lua_State* L)
     }
 
     DWORD hookAddress = MODULE_BASE + 0x365688;
-    Hooks::jumpBackpatchLeaderListShowMaxSkill = hookAddress + 7;
+    Hooks::jumpBack_patchLeaderListShowMaxSkill = hookAddress + 7;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::patchLeaderListShowMaxSkill, 5, 2)) {
-        std::cout << "Patch 'activateLeaderListShowMaxSkill' failed" << std::endl;
+        std::cout << "Hook 'activateLeaderListShowMaxSkill' failed" << std::endl;
     }
     else {
-        std::cout << "Patch 'activateLeaderListShowMaxSkill' succeeded" << std::endl;
-        std::cout << "jumpBackpatchLeaderListShowMaxSkill: " << Memory::n2hexstr(Hooks::jumpBackpatchLeaderListShowMaxSkill) << std::endl;
+        std::cout << "Hook 'activateLeaderListShowMaxSkill' succeeded" << std::endl;
+        std::cout << "jumpBack_patchLeaderListShowMaxSkill: " << Memory::n2hexstr(Hooks::jumpBack_patchLeaderListShowMaxSkill) << std::endl;
     }
     activateLeaderListShowMaxSkillDone = TRUE;
+    return 0;
+}
+
+
+BOOL activateLeaderListShowMaxSkillSelectedDone = false;
+__declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
+{
+    if (activateLeaderListShowMaxSkillSelectedDone) {
+        return 0;
+    }
+
+    DWORD hookAddress = MODULE_BASE + 0x3679d4;
+    Hooks::jumpBack_patchLeaderListShowMaxSkillSelected = hookAddress + 7;
+
+    if (!Hooks::hook((void*)hookAddress, Hooks::patchLeaderListShowMaxSkillSelected, 5, 2)) {
+        std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' failed" << std::endl;
+    }
+    else {
+        std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' succeeded" << std::endl;
+        std::cout << "jumpBack_patchLeaderListShowMaxSkillSelected: " << Memory::n2hexstr(Hooks::jumpBack_patchLeaderListShowMaxSkillSelected) << std::endl;
+    }
+    activateLeaderListShowMaxSkillSelectedDone = TRUE;
     return 0;
 }
 
@@ -133,9 +155,13 @@ __declspec(dllexport) int activateOffmapICPatch(lua_State* L)
     if (activateOffmapICPatchDone) {
         return 0;
     }
-    std::cout << "activateOffmapICPatch" << std::endl;
-
-    Patches::patchOffMapIC(MODULE_BASE);
+    
+    if (!Patches::patchOffMapIC(MODULE_BASE)) {
+        std::cout << "Patch 'activateOffmapICPatch' failed" << std::endl;
+    }
+    else {
+        std::cout << "Patch 'activateOffmapICPatch' succeeded" << std::endl;
+    }
 
     activateOffmapICPatchDone = TRUE;
     return 0;
@@ -148,9 +174,14 @@ __declspec(dllexport) int activateMinisterTechDecayPatch(lua_State* L)
     if (activateMinisterTechDecayPatchDone) {
         return 0;
     }
-    std::cout << "activateMinisterTechDecayPatch" << std::endl;
 
-    Patches::patchMinisterTechDecay(MODULE_BASE);
+    if (!Patches::patchMinisterTechDecay(MODULE_BASE)) {
+        std::cout << "Patch 'activateMinisterTechDecayPatch' failed" << std::endl;
+    }
+    else {
+        std::cout << "Patch 'activateMinisterTechDecayPatch' succeeded" << std::endl;
+    }
+
 
     activateMinisterTechDecayPatchDone = TRUE;
     return 0;
@@ -163,9 +194,13 @@ __declspec(dllexport) int activateWarExhaustionNeutralityResetPatch(lua_State* L
     if (activateWarExhaustionNeutralityResetPatchDone) {
         return 0;
     }
-    std::cout << "activateWarExhaustionNeutralityResetPatch" << std::endl;
 
-    Patches::patchWarExhaustionNeutralityReset(MODULE_BASE);
+    if (!Patches::patchWarExhaustionNeutralityReset(MODULE_BASE)) {
+        std::cout << "Patch 'activateWarExhaustionNeutralityResetPatch' failed" << std::endl;
+    }
+    else {
+        std::cout << "Patch 'activateWarExhaustionNeutralityResetPatch' succeeded" << std::endl;
+    }
 
     activateWarExhaustionNeutralityResetPatchDone = TRUE;
     return 0;
@@ -197,6 +232,7 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"setModuleBase", setModuleBase},
     {"activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss},
     {"activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill},
+    {"activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected},
     {"activateOffmapICPatch", activateOffmapICPatch},
     {"activateMinisterTechDecayPatch", activateMinisterTechDecayPatch},
     {"activateWarExhaustionNeutralityResetPatch", activateWarExhaustionNeutralityResetPatch},

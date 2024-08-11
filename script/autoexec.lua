@@ -32,6 +32,7 @@ BiceLib.startConsole() -- Creates a console for debug information // Comment out
 BiceLib.setModuleBase()
 -- BiceLib.activateLeaderPromotionSkillLoss()
 BiceLib.activateLeaderListShowMaxSkill()
+BiceLib.activateLeaderListShowMaxSkillSelected()
 BiceLib.activateOffmapICPatch()
 BiceLib.activateMinisterTechDecayPatch()
 BiceLib.activateWarExhaustionNeutralityResetPatch()
