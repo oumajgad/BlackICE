@@ -1,8 +1,10 @@
+import json
 from typing import ClassVar
 
 import pydantic
 from pymem import Pymem
 
+from classes.CLeaderHistory import CLeaderHistory
 from constants import DATA_SECTION_START
 from utils import utils
 
@@ -10,12 +12,17 @@ from utils import utils
 class CLeaderOffsets:
     VFTABLE_OFFSET: int = 0x11C5220
     id: int = 0xC
+    trait_ll_start: int = 0x30
+    trait_ll_end: int = 0x34
     number_of_traits: int = 0x38
     unit_ptr: int = 0x40
     country_tag: int = 0x44
     country_id: int = 0x48
     name: int = 0x4C
     rank: int = 0x6C
+    skill: int = 0x70
+    max_skill: int = 0x74
+    CLeaderHistoryOffset: int = 0x84
 
 
 class CLeader(pydantic.BaseModel):
@@ -29,6 +36,9 @@ class CLeader(pydantic.BaseModel):
     country_id: int
     name: str
     rank: int
+    skill: int
+    max_skill: int
+    history: CLeaderHistory
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -41,6 +51,9 @@ class CLeader(pydantic.BaseModel):
             "country_id": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.country_id, 4)),
             "name": utils.get_string_maybe_ptr(pm, ptr + CLeaderOffsets.name),
             "rank": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.rank, 4)),
+            "skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.skill, 4)),
+            "max_skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.max_skill, 4)),
+            "history": CLeaderHistory.make(pm, ptr + CLeaderOffsets.CLeaderHistoryOffset),
         }
 
         return cls(**temp)
@@ -63,6 +76,11 @@ class CLeader(pydantic.BaseModel):
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
+    print(pm.base_address)
     leaders = CLeader.get_leaders(pm)
     print(f"{len(leaders)=}")
-    print(leaders[111])
+    for leader in leaders:
+        # print(f"{leader=}")
+        x = CLeader.make(pm, leader)
+        if "Adam" in x.name and x.country_tag == "GER":
+            print(json.dumps(x.dict(), indent=2, default=str))
