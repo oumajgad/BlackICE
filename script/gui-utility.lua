@@ -1,17 +1,7 @@
-package.cpath = package.cpath..";./tfh/mod/?.dll;"
 require("wx")
 
 UI = {}
 
-
--- Keep this at line #8 for the "zipperRelease.py" script
-UI.version = "GitHub"
-
-package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\main\\?.lua"
-package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\help\\?.lua"
-package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\options\\?.lua"
-package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\gameinfos\\?.lua"
-package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\stats\\?.lua"
 
 -- Main utility page
 require('minister_buildings')
@@ -1822,9 +1812,9 @@ if wx ~= nil then
 	UI.MyFrame1:Centre( wx.wxBOTH )
 
 
-	UI.m_htmlWin_CustomTradeAi:LoadPage("tfh/mod/BlackICE " .. UI.version .. "/utility/CustomTradeAi.html")
-	UI.m_customProdSlider_htmlWin1:LoadPage("tfh/mod/BlackICE " .. UI.version .. "/utility/CustomProdSliderAi.html")
-	UI.m_htmlWin_customLsSliderAi1:LoadPage("tfh/mod/BlackICE " .. UI.version .. "/utility/CustomLsSliderAi.html")
+	UI.m_htmlWin_CustomTradeAi:LoadPage("tfh/mod/BlackICE " .. G_MOD_VERSION .. "/utility/CustomTradeAi.html")
+	UI.m_customProdSlider_htmlWin1:LoadPage("tfh/mod/BlackICE " .. G_MOD_VERSION .. "/utility/CustomProdSliderAi.html")
+	UI.m_htmlWin_customLsSliderAi1:LoadPage("tfh/mod/BlackICE " .. G_MOD_VERSION .. "/utility/CustomLsSliderAi.html")
 
 
 	-- Connect Events

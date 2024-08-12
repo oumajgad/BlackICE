@@ -5,7 +5,7 @@ Parsing = P
 local translationTable = nil
 local function createTranslationTable()
     translationTable = {}
-    local folder = "tfh\\mod\\BlackICE " .. UI.version .. "\\localisation"
+    local folder = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\localisation"
     for i, file in pairs(GetFilesFromPath(folder)) do
         local path = folder .. "\\" .. file
         local temp = CsvParser.parseFile(path, ";", 2)

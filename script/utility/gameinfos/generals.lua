@@ -140,7 +140,7 @@ function P.FillData()
     if dataFilled then
         return
     end
-    local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\history\\leaders"
+    local path = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\history\\leaders"
     for i, file in pairs(GetFilesFromPath(path)) do
         local res = PdxParser.parseFile(path .. "\\" .. file)
         for id, values in pairs(res) do
