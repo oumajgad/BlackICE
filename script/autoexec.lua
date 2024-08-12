@@ -44,7 +44,7 @@ require('pdxParser')
 
 -- BICE custom LUA Module
 BiceLib = require("BiceLib")
-BiceLib.startConsole() -- Creates a console for debug information // Comment out for releases
+BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
 BiceLib.setModuleBase()
 -- BiceLib.activateLeaderPromotionSkillLoss()
 BiceLib.activateLeaderListShowMaxSkill()

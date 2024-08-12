@@ -66,7 +66,7 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
         //std::cout << "varsPtr: " << Memory::n2hexstr(varsPtr) << std::endl;
 
         auto vars = CCountry::getVars(external, varsPtr);
-        std::cout << "vars->size(): " << vars->size() << std::endl;
+        //std::cout << "vars->size(): " << vars->size() << std::endl;
 
         lua_newtable(L, 0, vars->size());
         for (int i = 0; i < vars->size(); i++) {
