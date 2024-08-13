@@ -221,6 +221,11 @@ __declspec(dllexport) int startConsole(lua_State* L)
     AllocConsole();
     FILE* fp;
     freopen_s(&fp, "CONOUT$", "w", stdout); // output only
+
+    HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
+    SetConsoleMode(handle, ENABLE_EXTENDED_FLAGS);  // Set mode to this to prevent accidentially selecting something in the console
+                                                    // because that will freeze the entire thing until it is unselected
+
     return 0;
 }
 
