@@ -22,6 +22,10 @@ class CLeaderOffsets:
     rank: int = 0x6C
     skill: int = 0x70
     max_skill: int = 0x74
+    experience: int = (
+        0x78  # lvl 1 = 32_768_000 -> each level needs 2x of the previous, maxes out at 540_672_000 per level (level 6)
+    )
+    loyalty: int = 0x80
     CLeaderHistoryOffset: int = 0x84
 
 
@@ -38,6 +42,8 @@ class CLeader(pydantic.BaseModel):
     rank: int
     skill: int
     max_skill: int
+    experience: int
+    loyalty: int
     history: CLeaderHistory
 
     @classmethod
@@ -53,6 +59,8 @@ class CLeader(pydantic.BaseModel):
             "rank": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.rank, 4)),
             "skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.skill, 4)),
             "max_skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.max_skill, 4)),
+            "experience": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.experience, 4)),
+            "loyalty": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.loyalty, 4)),
             "history": CLeaderHistory.make(pm, ptr + CLeaderOffsets.CLeaderHistoryOffset),
         }
 
