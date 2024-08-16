@@ -69,7 +69,6 @@ artillery_activation = {			### ALL COUNTED
 		defensiveness = 1
 		toughness = 1
 		soft_attack = 0.9
-		#build_time = 3.5
 
 		river = {
 			defence = 0.02
@@ -200,7 +199,6 @@ artillery_activation = {			### ALL COUNTED
 		defensiveness = 1
 		toughness = 1
 		soft_attack = 0.9
-		#build_time = 3.5
 
 		river = {
 			defence = 0.02
@@ -648,7 +646,7 @@ heavy_artillery_activation = {
 		toughness = 0.2
 		soft_attack = 3.9
 		hard_attack = 2.5
-		#build_time = 10
+		maximum_speed = -0.2
 
 		river = {
 			defence = 0.075
@@ -780,7 +778,7 @@ heavy_artillery_activation = {
 		toughness = 0.2
 		hard_attack = 2.5
 		soft_attack = 3.9
-		#build_time = 10
+		maximum_speed = -0.2
 
 		river = {
 			defence = 0.075
@@ -974,7 +972,7 @@ Artillery_motorization = {
 		toughness = 1
 		soft_attack = 2.5
 		hard_attack = 1.5
-		#build_time = 4.5
+		maximum_speed = -0.2
 
 		river = {
 			defence = 0.06
@@ -1106,7 +1104,7 @@ Artillery_motorization = {
 		toughness = 1
 		soft_attack = 2.5
 		hard_attack = 1.5
-		#build_time = 4.5
+		maximum_speed = -0.2
 
 		river = {
 			defence = 0.06
@@ -1337,54 +1335,6 @@ gun_carriage = {
 		infantry_activation = 1
 	}
 
-	hftrack_transport = {
-		default_organisation = 0.5
-	}
-	GER_hftrack_transport = {
-		default_organisation = 0.5
-	}
-	FRA_hftrack_transport = {
-		default_organisation = 0.5
-	}
-	truck_transport = {
-		default_organisation = 0.5
-	}
-	civilian_truck_transport = {
-		default_organisation = 0.5
-	}
-	ENG_truck_transport = {
-		default_organisation = 0.5
-	}
-	GER_truck_transport = {
-		default_organisation = 0.5
-	}
-	USA_truck_transport = {
-		default_organisation = 0.5
-	}
-	FRA_truck_transport = {
-		default_organisation = 0.5
-	}
-	light_transport = {
-		default_organisation = 0.5
-	}
-	GER_light_transport = {
-		default_organisation = 0.5
-	}
-	USA_light_transport = {
-		default_organisation = 0.5
-	}
-	ITA_light_transport = {
-		default_organisation = 0.5
-	}
-	horse_transport = {
-		default_organisation = 1
-	}
-	camel_transport = {
-		default_organisation = 1
-	}
-	SOV_horse_transport = {
-		default_organisation = 1
-	}
 	heavy_anti_air_brigade = {
 		hard_attack = 0.2
 		defensiveness = 0.75
@@ -1686,6 +1636,7 @@ rocket_art_ammo = {
 	rocket_artillery_brigade = {
 		soft_attack = 5
 		supply_consumption = 0.2
+		maximum_speed = -0.2
 
 		river = {
 			defence = 0.015
@@ -1944,6 +1895,7 @@ rocket_art_ammo = {
 	ss_rocket_artillery_brigade = {
 		soft_attack = 5
 		supply_consumption = 0.2
+		maximum_speed = -0.2
 
 		river = {
 			defence = 0.015
@@ -8118,5 +8070,237 @@ proximity_fuze = {
 
     start_year = 1944
     max_level = 1
+	folder = artillery_folder
+}
+
+light_artillery_transport = {
+
+	allow = {
+		or = {
+			and = {
+				light_artillery_transport = 0	#1937
+				Vehicle_reliability = 2
+				not = {
+					light_artillery_transport = 1
+				}
+			}
+			and = {
+				light_artillery_transport = 1	#1938
+				Vehicle_reliability = 3
+				not = {
+					light_artillery_transport = 2
+				}
+			}
+			and = {
+				light_artillery_transport = 2	#1940
+				Vehicle_reliability = 4
+				not = {
+					light_artillery_transport = 3
+				}
+			}
+			and = {
+				light_artillery_transport = 3	#1942
+				Vehicle_reliability = 5
+				not = {
+					light_artillery_transport = 4
+				}
+			}
+			and = {
+				light_artillery_transport = 4	#1944
+				Vehicle_reliability = 6
+				not = {
+					light_artillery_transport = 5
+				}
+			}
+			and = {
+				light_artillery_transport = 5	#1946
+				Vehicle_reliability = 7
+				not = {
+					light_artillery_transport = 6
+				}
+			}
+			and = {
+				light_artillery_transport = 6	#1948
+				Vehicle_reliability = 8
+				not = {
+					light_artillery_transport = 7
+				}
+			}
+			and = {
+				light_artillery_transport = 7	#1950
+				Vehicle_reliability = 9
+				not = {
+					light_artillery_transport = 8
+				}
+			}
+		}
+	}
+
+	artillery_brigade = {
+		maximum_speed = 0.4
+		fuel_consumption = 0.1
+	}
+	ss_artillery_brigade = {
+		maximum_speed = 0.4
+		fuel_consumption = 0.1
+	}
+	rocket_artillery_brigade = {
+		maximum_speed = 0.4
+		fuel_consumption = 0.1
+	}
+	ss_rocket_artillery_brigade = {
+		maximum_speed = 0.4
+		fuel_consumption = 0.1
+	}
+	medium_artillery_brigade = {
+		maximum_speed = 0.35
+		fuel_consumption = 0.075
+	}
+	ss_medium_artillery_brigade = {
+		maximum_speed = 0.35
+		fuel_consumption = 0.075
+	}
+	heavy_anti_air_brigade = {
+		maximum_speed = 0.2
+		fuel_consumption = 0.1
+	}
+	ss_heavy_anti_air_brigade = {
+		maximum_speed = 0.2
+		fuel_consumption = 0.1
+	}
+	anti_air_brigade = {
+		maximum_speed = 0.2
+		fuel_consumption = 0.1
+	}
+	ss_anti_air_brigade = {
+		maximum_speed = 0.2
+		fuel_consumption = 0.1
+	}
+	anti_tank_brigade = {
+		maximum_speed = 0.3
+		fuel_consumption = 0.1
+	}
+	ss_anti_tank_brigade = {
+		maximum_speed = 0.3
+		fuel_consumption = 0.1
+	}
+	heavy_anti_tank_brigade = {
+		maximum_speed = 0.3
+		fuel_consumption = 0.1
+	}
+	ss_heavy_anti_tank_brigade = {
+		maximum_speed = 0.3
+		fuel_consumption = 0.1
+	}
+	pack_artillery_brigade = {
+		maximum_speed = 0.3
+		fuel_consumption = 0.05
+	}
+	ss_pack_artillery_brigade = {
+		maximum_speed = 0.3
+		fuel_consumption = 0.05
+	}
+
+    research_bonus_from = {
+        artillery_theory = 0.1
+		mobile_theory = 0.15
+		mobile_practical = 0.1
+		automotive_theory = 0.1
+		artillery_practical = 0.15
+    }
+
+    on_completion = artillery_theory
+
+    difficulty = 4
+
+    start_year = 1937
+    first_offset = 1938
+    additional_offset = 2
+    max_level = 8
+	folder = artillery_folder
+}
+
+heavy_artillery_transport = {
+
+	allow = {
+		or = {
+			and = {
+				heavy_artillery_transport = 0	#1937
+				Vehicle_reliability = 2
+				not = {
+					heavy_artillery_transport = 1
+				}
+			}
+			and = {
+				heavy_artillery_transport = 1	#1938
+				Vehicle_reliability = 3
+				not = {
+					heavy_artillery_transport = 2
+				}
+			}
+			and = {
+				heavy_artillery_transport = 2	#1940
+				tank_chassis_design = 4
+				not = {
+					heavy_artillery_transport = 3
+				}
+			}
+			and = {
+				heavy_artillery_transport = 3	#1942
+				tank_chassis_design = 5
+				not = {
+					heavy_artillery_transport = 4
+				}
+			}
+			and = {
+				heavy_artillery_transport = 4	#1944
+				tank_chassis_design = 7
+				not = {
+					heavy_artillery_transport = 5
+				}
+			}
+			and = {
+				heavy_artillery_transport = 5	#1946
+				tank_chassis_design = 7
+				not = {
+					heavy_artillery_transport = 6
+				}
+			}
+		}
+	}
+
+	medium_artillery_brigade = {
+		maximum_speed = 0.35
+		fuel_consumption = 0.075
+	}
+	ss_medium_artillery_brigade = {
+		maximum_speed = 0.35
+		fuel_consumption = 0.075
+	}
+	heavy_artillery_brigade = {
+		maximum_speed = 0.45
+		fuel_consumption = 0.4
+	}
+	ss_heavy_artillery_brigade = {
+		maximum_speed = 0.45
+		fuel_consumption = 0.4
+	}
+
+    research_bonus_from = {
+        artillery_theory = 0.1
+		mobile_theory = 0.15
+		mobile_practical = 0.1
+		automotive_theory = 0.1
+		artillery_practical = 0.15
+    }
+
+    on_completion = artillery_theory
+
+    difficulty = 5
+
+    start_year = 1936
+    first_offset = 1938
+    additional_offset = 3
+    max_level = 6
 	folder = artillery_folder
 }
