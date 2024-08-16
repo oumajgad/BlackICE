@@ -1,4 +1,3 @@
-package.cpath = package.cpath..";./tfh/mod/?.dll;"
 require("wx")
 
 local True = true

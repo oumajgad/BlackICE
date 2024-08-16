@@ -13,7 +13,7 @@ function P.FillData()
         return
     end
     P.UnitsData = {}
-    local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\units"
+    local path = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\units"
     for i, file in pairs(GetFilesFromPath(path)) do
         local res = PdxParser.parseFile(path .. "\\" .. file)
         for name, values in pairs(res) do

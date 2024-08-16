@@ -1,4 +1,3 @@
-package.cpath = package.cpath..";./tfh/mod/?.dll;"
 require("wx")
 
 local True = true
@@ -270,8 +269,8 @@ if wx ~= nil then
 		-- Utils.LUA_DEBUGOUT(statsString)
 		-- Utils.LUA_DEBUGOUT(tagsString)
 		if statsSelected >= 1 and tags >= 1 then
-			local command = 'start "" "tfh\\mod\\BlackICE ' .. UI.version ..'\\stats\\visualizeStatisticCLI.exe" ' ..
-							UI.version .. ' ' .. Stats.StatsIdent .. ' ' .. tagsString .. ' ' .. statsString
+			local command = 'start "" "tfh\\mod\\BlackICE ' .. G_MOD_VERSION ..'\\stats\\visualizeStatisticCLI.exe" ' ..
+							G_MOD_VERSION .. ' ' .. Stats.StatsIdent .. ' ' .. tagsString .. ' ' .. statsString
 			-- Utils.LUA_DEBUGOUT(command)
 			os.execute(command)
 		end

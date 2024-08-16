@@ -14,7 +14,7 @@ function P.FillData()
     end
 
     for i, file in pairs(modifierFiles) do
-        local res = PdxParser.parseFile("tfh\\mod\\BlackICE " .. UI.version .. "\\common\\" .. file)
+        local res = PdxParser.parseFile("tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\common\\" .. file)
         for name, values in pairs(res) do
             P.ModifierData[name] = values
             local trans = Parsing.GetTranslation(name)

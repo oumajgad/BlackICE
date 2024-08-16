@@ -24,7 +24,7 @@ def zipdir(filename):
     zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     createModFile(zipf)
     addLua51dll(zipf)
-    addLuaBinaries(zipf)
+    #addLuaBinaries(zipf)
     addUtilityResources(zipf)
     addStatsCLI(zipf)
     addBorderlessWindowDlls(zipf)
@@ -67,9 +67,9 @@ def createModFile(zipf: zipfile.ZipFile):
     os.remove("./Mod File/BlackICE %s.mod"% version)
 
 def addLuaBinaries(zipf: zipfile.ZipFile):
-    zipf.write("./DaveStuff/luabinaries/wx.dll", f"{path}/wx.dll")
-    zipf.write("./DaveStuff/luabinaries/lfs.dll", f"{path}/lfs.dll")
-    zipf.write("./DaveStuff/luabinaries/BiceLib.dll", f"{path}/BiceLib.dll")
+    zipf.write("./script/wx.dll", f"{path}/BlackICE {version}/script/wx.dll")
+    zipf.write("./script/lfs.dll", f"{path}/BlackICE {version}/script/lfs.dll")
+    zipf.write("./script/BiceLib.dll", f"{path}/BlackICE {version}/script/BiceLib.dll")
 
 def addStatsCLI(zipf: zipfile.ZipFile):
     zipf.write("./tools/visualizeStatistics/visualizeStatisticCLI.exe", f"{path}/BlackICE {version}/stats/visualizeStatisticCLI.exe")
@@ -108,19 +108,18 @@ def addEXE(zipf: zipfile.ZipFile):
 
 
 def setLuaUtilityVersion():
-    with open("./script/gui-utility.lua", "r") as file:
+    with open("./script/autoexec.lua", "r") as file:
         lines = file.readlines()
-    lines[7] = f'UI.version = "{version}"\n'
-    with open("./script/gui-utility.lua", "w") as file:
+    lines[6] = f'UI.version = "{version}"\n'
+    with open("./script/autoexec.lua", "w") as file:
         file.writelines(lines)
 
 def resetLuaUtilityVersion():
-    with open("./script/gui-utility.lua", "r") as file:
+    with open("./script/autoexec.lua", "r") as file:
         lines = file.readlines()
-    lines[7] = f'UI.version = "GitHub"\n'
-    with open("./script/gui-utility.lua", "w") as file:
+    lines[6] = f'UI.version = "GitHub"\n'
+    with open("./script/autoexec.lua", "w") as file:
         file.writelines(lines)
-
 
 
 def zipIt(filename):

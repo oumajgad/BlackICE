@@ -9,7 +9,7 @@ function P.FillData()
     end
     P.TechsData = {}
     local translationTable = Parsing.GetTranslationTable()
-    local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\technologies"
+    local path = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\technologies"
     local i = 0
     for x, file in pairs(GetFilesFromPath(path)) do
         local res = PdxParser.parseFile(path .. "\\" .. file, true)

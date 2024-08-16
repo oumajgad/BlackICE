@@ -4,7 +4,7 @@ P = {}
 local data = nil
 local function fillData()
     data = {}
-    local path = "tfh\\mod\\BlackICE " .. UI.version .. "\\script\\utility\\gameinfos\\unitConversion.csv"
+    local path = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\script\\utility\\gameinfos\\unitConversion.csv"
     local temp = CsvParser.parseFile(path, ";")
     for k, v in pairs(temp) do
         data[k] = {

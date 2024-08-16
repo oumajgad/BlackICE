@@ -1,7 +1,7 @@
 local P = {}
 
 local function mapTriggersToTraits()
-    local triggersList = PdxParser.parseFile("tfh\\mod\\BlackICE " .. UI.version .. "\\common\\gainable_traits.txt")["gainable_trait"]
+    local triggersList = PdxParser.parseFile("tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\common\\gainable_traits.txt")["gainable_trait"]
     for k, v in pairs(triggersList) do
         if v["trait"] ~= nil then
             if P.TraitsTriggers[v["trait"]] == nil then
@@ -120,7 +120,7 @@ function P.FillData()
         return
     end
     local translationTable = Parsing.GetTranslationTable()
-	P.TraitsData = PdxParser.parseFile("tfh\\mod\\BlackICE " .. UI.version .. "\\common\\traits.txt")
+	P.TraitsData = PdxParser.parseFile("tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\common\\traits.txt")
     for k, v in pairs(P.TraitsData) do
         local trans = translationTable[k]
         if trans ~= nil then

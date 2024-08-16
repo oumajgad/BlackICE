@@ -3,11 +3,25 @@
 -- 		  the engine (once per context created)
 -----------------------------------------------------------
 
+-- Keep this at line #7 !!!!
+G_MOD_VERSION = "GitHub"
+
+
 -- set up path
 package.path = package.path .. ";script\\?.lua"
 package.path = package.path .. ";script\\country\\?.lua"
 package.path = package.path .. ";common\\?.lua"
 package.cpath = package.cpath..";./tfh/mod/?.dll;"
+
+-- BICE packages paths
+package.cpath = package.cpath..";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\?.dll"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\main\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\help\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\options\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\gameinfos\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\stats\\?.lua"
+
+
 
 --require('hoi') -- already imported by game, contains all exported classes
 require('ai_globals')
@@ -27,8 +41,17 @@ require('ai_license')
 require('ai_variable')
 require('csvParser')
 require('pdxParser')
+
+-- BICE custom LUA Module
 BiceLib = require("BiceLib")
-BiceLib.startConsole() -- Creates a console for debug information // Comment out for releases
+BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
+BiceLib.setModuleBase()
+-- BiceLib.activateLeaderPromotionSkillLoss()
+BiceLib.activateLeaderListShowMaxSkill()
+BiceLib.activateLeaderListShowMaxSkillSelected()
+BiceLib.activateOffmapICPatch()
+BiceLib.activateMinisterTechDecayPatch()
+BiceLib.activateWarExhaustionNeutralityResetPatch()
 
 -- Make sure these exist, if something is require() but doesnt exist LUA dies and doesn't load the rest!
 -- Defaults are at the bottom so it's easier to spot if something is wrong (some nations won't do anything since defaults wont be loaded)
