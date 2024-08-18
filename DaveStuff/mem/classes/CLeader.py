@@ -33,6 +33,7 @@ class CLeader(pydantic.BaseModel):
     LENGTH: ClassVar[int] = 216
     LEADERS: ClassVar[list[int]] = None
     self_ptr: int
+    ptr_str: str
     id: int
     number_of_traits: int
     unit_ptr: int
@@ -50,6 +51,7 @@ class CLeader(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
+            "ptr_str": utils.int_to_pointer(ptr),
             "id": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.id, 4)),
             "number_of_traits": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.number_of_traits, 4)),
             "unit_ptr": pm.read_uint(ptr + CLeaderOffsets.unit_ptr),
@@ -81,14 +83,35 @@ class CLeader(pydantic.BaseModel):
         cls.LEADERS = [ptr for ptr in res if ptr >= pm.base_address + DATA_SECTION_START]
         return cls.LEADERS
 
+    def get_starting_rank_and_date(self):
+        rank = 0
+        date = 0x7FFFFFFF
+        for rank_change in x.history.history:
+            if rank_change.date.EU3Date <= 60759360:
+                if date < rank_change.date.EU3Date or rank_change.rank > rank:
+                    date = rank_change.date.EU3Date
+                    rank = rank_change.rank
+            elif rank_change.date.EU3Date < date:
+                rank = rank_change.rank
+                date = rank_change.date.EU3Date
+        return rank, date
+
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     print(pm.base_address)
     leaders = CLeader.get_leaders(pm)
     print(f"{len(leaders)=}")
+    out = {}
     for leader in leaders:
         # print(f"{leader=}")
         x = CLeader.make(pm, leader)
-        if "Adam" in x.name and x.country_tag == "GER":
+        p_skill = x.history.starting_skill + x.get_starting_rank_and_date()[0] - 1
+        if p_skill < 0:
+            p_skill = 0
+        out[x.id] = p_skill
+        if "Beck" == x.name and x.country_tag == "GER":
             print(json.dumps(x.dict(), indent=2, default=str))
+            print(x.get_starting_rank_and_date())
+    with open("out.txt", "w") as f:
+        f.writelines(json.dumps(out, indent=2))
