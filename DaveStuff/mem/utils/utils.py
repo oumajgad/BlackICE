@@ -69,31 +69,11 @@ def read_string(pm: Pymem, ptr: int, terminator: int = 0):
 def get_string_maybe_ptr(pm: Pymem, ptr: int, ascii_only: bool = False):
     if ptr == 0:
         return ""
-    # fmt: off
-    iso88591_exceptions = [
-        0xA0, 0xA1, 0xA2, 0xA4, 0xA6, 0xA8, 0xA0, 0xAA, 0xAB, 0xAC, 0xAD,
-        0xAE, 0xAF, 0xB1, 0xB2, 0xB3, 0xB4,  0xB5, 0xB6, 0xB7, 0xB8, 0xB9,
-        0xBA, 0xBB, 0xF0,
-    ]
-    # fmt: on
-
-    # logger.trace(ptr)
-    for i in range(4):
-        x = pm.read_bytes(ptr + i, 1)
-        characterset_match = False
-        if not ascii_only:
-            if (
-                not (int.from_bytes(x) < 0x1F or (0x7F < int.from_bytes(x) < 0x9F))
-                and int.from_bytes(x) not in iso88591_exceptions
-            ):  # unused characters in the set
-                characterset_match = True
-        else:
-            characterset_match = x.isascii()
-        # print.trace(f"{x} - {x.isalpha()=} - {x.isspace()=} - {characterset_match=} - {int.from_bytes(x) == 0x0 =}")
-        if not x.isalpha() and not x.isspace() and not characterset_match and not int.from_bytes(x) == 0x0:
-            # logger.trace("It's a pointer")
-            # It's a pointer
-            return read_string(pm, pm.read_uint(ptr))
+    string_size = pm.read_uint(ptr + 16)
+    if string_size > 15:
+        # logger.trace("It's a pointer")
+        # It's a pointer
+        return read_string(pm, pm.read_uint(ptr))
     # logger.trace("It's a string")
     # It's a string
     return read_string(pm, ptr)

@@ -42,18 +42,13 @@ namespace CCountry {
         return res;
     }
 
-    struct CVariable
-    {
-        std::string name;
-        int32_t value;
-    };
-    std::vector<CVariable>* getVars(Memory::External& external, uintptr_t nodePtr) {
+    std::vector<HDS::CVariable>* getVars(Memory::External& external, uintptr_t nodePtr) {
         std::vector<std::uintptr_t>* ptrs = new std::vector<std::uintptr_t>;
         traverseFlagsAndVarTreeDepthFirst(external, ptrs, nodePtr);
         //std::cout << "ptrs->size(): " << ptrs->size() << std::endl;
-        std::vector<CVariable>* res = new std::vector<CVariable>;
+        std::vector<HDS::CVariable>* res = new std::vector<HDS::CVariable>;
         for (auto& i : *ptrs) {
-            CVariable x;
+            HDS::CVariable x;
             x.name = external.readStringMaybePtr(i);
             x.value = external.read<int32_t>(i + 0x1C);
             res->push_back(x);

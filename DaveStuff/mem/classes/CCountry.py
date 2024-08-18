@@ -158,12 +158,11 @@ if __name__ == "__main__":
     # with open("out.json", "w") as f:
     #     out = {countries: get_all_countries(pm)}
     #     f.write(json.dumps(out, indent=2))
-    # # country = get_country(pm, "GER")
-    # # print(
-    # #     utils.dump_model(
-    # #         country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"]
-    # #     )
-    # # )
+    country = get_country(pm, "USA")
+    print(
+        utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
+    )
+    print(utils.int_to_pointer(country.self_ptr))
     # # print(f"{len(country.available_CMinisters)=}")
     # # print(f"{len(country.CFlags.flags)=}")
     # # print(f"{len(country.CVariables.variables)=}")
