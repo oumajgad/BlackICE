@@ -1,0 +1,4377 @@
+#### Motorized, Mechanized and Armor Units
+
+## 1936
+## Historical Upgrades
+country_event = {
+	id = 11000
+	is_triggered_only = yes
+	title = "RKKA Upgrades"
+	desc = "EVTDESC11000"
+	picture = "EarlyTank2"
+	option = {
+		name = "Yes, I want these historical upgrades."
+		set_country_flag = Red_Army_Upgrades
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = Red_Army_Upgrades_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 25th Armored Brigade
+country_event = {
+	id = 11001
+	is_triggered_only = yes
+	title = "25th Armored Brigade"
+	desc = "EVTDESC11001"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form this new armored brigade"
+		set_country_flag = 25AB
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3200
+				}
+				energy = -6400
+				metal = -3200
+				rare_materials = -1600
+				load_oob = SOV/Armored_Brigade_25_1936_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Armored_Brigade_25_1936_Aug.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 25AB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### 1937
+
+## 1st and 2nd Motorized Chemical Brigades
+country_event = {
+	id = 11002
+	is_triggered_only = yes
+	title = "1st and 2nd Motorized Chemical Brigades"
+	desc = "EVTDESC11002"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these new brigades"
+		set_country_flag = 1MCB
+		set_country_flag = 2MCB
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2900
+				}
+				energy = -5800
+				metal = -2900
+				rare_materials = -1450
+				load_oob = SOV/Motorized_Chemical_Brigades_1937_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Motorized_Chemical_Brigades_1937_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 1MCB_no
+		set_country_flag = 2MCB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+## 13th Mechanized Brigade - Special Mechanized Brigade
+country_event = {
+	id = 11003
+	is_triggered_only = yes
+	title = "13th Mechanized Brigade"
+	desc = "EVTDESC11003"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form this new mechanized brigade"
+		set_country_flag = 13MB
+		set_country_flag = SMB
+
+		#Removing 13th Mechanized Brigade
+		remove_brigade = "Shtab-K. 13-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 13-y MB"
+		remove_brigade = "13-y Motostrelkovyy B-n"
+		remove_brigade = "13-y Razvedovatelniy B-n"
+		remove_brigade = "13-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2300
+				}
+				energy = -4600
+				metal = -2300
+				rare_materials = -1150
+				load_oob = SOV/Mechanized_Brigades_1937_August.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Mechanized_Brigades_1937_August.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 13MB_no
+		set_country_flag = SMB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+#### 1938
+
+## 3rd, 18th, 22nd, 26th Light Tank Brigades - January 1938
+country_event = {
+	id = 11004
+	is_triggered_only = yes
+	title = "3rd, 18th, 22nd, 26th Light Tank Brigades"
+	desc = "EVTDESC11004"
+	picture = "EarlyTank2"
+	option = {
+		name = "Reform our Mechanized Brigades into Tank Brigades"
+		set_country_flag = 3LTB
+		set_country_flag = 18LTB
+		set_country_flag = 22LTB
+		set_country_flag = 26LTB
+
+		#Removing 9th Mechanized Brigade
+		remove_brigade = "Shtab-K. 9-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 9-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 9-y Otd. Mekh. Brigady"
+		remove_brigade = "9-y Batal'on Boevogo Obecpecheniya"
+		remove_brigade = "Razvedovatelniy B-n 9-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 9-y Otd. Mekh. Brigady"
+
+		#Removing 16th Mechanized Brigade
+		remove_brigade = "Shtab-K. 16-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 16-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 16-y Otd. Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 16-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 16-y Otd. Mekh. Brigady"
+
+		#Removing 22th Mechanized Brigade
+		remove_brigade = "Shtab-K. 22-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 22-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 22-y Otd. Mekh. Brigady"
+		remove_brigade = "22-y Batal'on Boevogo Obecpecheniya"
+		remove_brigade = "Razvedovatelniy B-n 22-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 22-y Otd. Mekh. Brigady"
+
+		#Removing 23rd Mechanized Brigade
+		remove_brigade = "Shtab-K. 23-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 23-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 23-y Otd. Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 23-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 23-y Otd. Mekh. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1600
+				}
+				energy = -3200
+				metal = -1600
+				rare_materials = -800
+				load_oob = SOV/Light_Armored_Brigades_1938_Jan.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Light_Armored_Brigades_1938_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 3LTB_no
+		set_country_flag = 18LTB_no
+		set_country_flag = 22LTB_no
+		set_country_flag = 26LTB_no
+
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 29th, 30th, 31st, 32nd and 43rd Light Tank Brigades - April 1938
+country_event = {
+	id = 11005
+	is_triggered_only = yes
+	title = "29th, 30th, 31st, 32nd and 43rd Light Tank Brigades"
+	desc = "EVTDESC11005"
+	picture = "EarlyTank2"
+	option = {
+		name = "Reform our Mechanized Brigades into Tank Brigades"
+		set_country_flag = 29LTB
+		set_country_flag = 30CTB
+		set_country_flag = 31CTB
+		set_country_flag = 32LTB
+		set_country_flag = 43LTB
+
+		#Removing 8th Mechanized Brigade
+		remove_brigade = "Shtab-K. 8-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 8-y Mekh. Brigady"
+		remove_brigade = "Motostrelkovyy B-n 8-y Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 8-y Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 8-y Mekh. Brigady"
+
+		#Removing 4th Mechanized Brigade
+		remove_brigade = "Shtab-K. 4-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 4-y Mekh. Brigady"
+		remove_brigade = "Motostrelkovyy B-n 4-y Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 4-y Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 4-y Mekh. Brigady"
+		
+		#Removing 7th Separate Mechanized Brigade
+		remove_brigade = "Shtab-K. 7-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 7-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 2-y Otd. Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 2-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 2-y Otd. Mekh. Brigady"
+
+		#Removing 1st Motorized Chemical Brigade
+		remove_brigade = "Shtab-K. 1-y Mot. Khim. B."
+		remove_brigade = "1/2/3-ye Mot.-Strelk. Polki 1-y MKhB"
+		remove_brigade = "Khim. Tankovyy B-n 1-y MKhB"
+		remove_brigade = "Avtotransportnyy B-n 1-y MKhB"
+
+		#Removing 2nd Motorized Chemical Brigade
+		remove_brigade = "Shtab-K. 2-y Mot. Khim. B."
+		remove_brigade = "4/5/6-ye Mot.-Strelk. Polki 2-y MKhB"
+		remove_brigade = "Khim. Tankovyy B-n 2-y MKhB"
+		remove_brigade = "Avtotransportnyy B-n 2-y MKhB"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2900
+				}
+				energy = -5800
+				metal = -2900
+				rare_materials = -1450
+				load_oob = SOV/Light_Armored_Brigades_1938_Apr.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Light_Armored_Brigades_1938_Apr.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 29LTB_no
+		set_country_flag = 30CTB_no
+		set_country_flag = 31CTB_no
+		set_country_flag = 32LTB_no
+		set_country_flag = 43LTB-no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 24th, 33rd, 35th, 36th, 38th, 42nd and 48th Light Tank Brigades - August 1938
+country_event = {
+	id = 11006
+	is_triggered_only = yes
+	title = "24th, 33rd, 35th, 36th, 38th, 42nd and 48th Light Tank Brigades"
+	desc = "EVTDESC11006"
+	picture = "EarlyTank2"
+	option = {
+		name = "Reform our Mechanized Brigades into Tank Brigades"
+		set_country_flag = 24LTB
+		set_country_flag = 33CTB
+		set_country_flag = 35LTB
+		set_country_flag = 36LTB
+		set_country_flag = 38LTB
+		set_country_flag = 42LTB
+		set_country_flag = 48LTB
+
+		#Removing 12th Mechanized Brigade
+		remove_brigade = "Shtab-K. 12-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 12-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 12-y Otd. Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 12-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 12-y Otd. Mekh. Brigady"
+
+		#Removing 25th Armored Brigade
+		remove_brigade = "Shtab-K. 25-y Bronetankovyy Brigady"
+		remove_brigade = "Tankovyye B-ny 25-y Bron. B."
+		remove_brigade = "Batal'on Boevogo Obecpecheniya 25-y Bron. B."
+		remove_brigade = "Razvedovatelniy B-n 25-y Bron. B."
+		remove_brigade = "Transportnyy B-n 25-y Bron. B."
+
+		#Removing 11th Mechanized Brigade
+		remove_brigade = "Shtab-K. 11-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 11-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 11-y Otd. Mekh. Brigady"
+		remove_brigade = "11-y Batal'on Boevogo Obecpecheniya"
+		remove_brigade = "Razvedovatelniy B-n 11-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 11-y Otd. Mekh. Brigady"
+
+		#Removing 3rd Mechanized Brigade
+		remove_brigade = "Shtab-K. 3-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 3-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 3-y Otd. Mekh. Brigady"
+		remove_brigade = "3-y Batal'on Boevogo Obecpecheniya"
+		remove_brigade = "Razvedovatelniy B-n 3-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 3-y Otd. Mekh. Brigady"
+
+		#Removing 15th Mechanized Brigade
+		remove_brigade = "Shtab-K. 15-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 15-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 15-y Otd. Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 15-y Otd. Mekh. Brigady"
+		remove_brigade = "15-y Batal'on Boevogo Obecpecheniya"
+		remove_brigade = "Avtotransportnyy B-n 15-y Otd. Mekh. Brigady"
+
+		#Removing 2nd Mechanized Brigade
+		remove_brigade = "Shtab-K. 2-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 2-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 2-y Otd. Mekh. Brigady"
+		remove_brigade = "2-y Batal'on Boevogo Obecpecheniya"
+		remove_brigade = "Artilleriyskiy B-n 2-y Otd. Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 2-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 2-y Otd. Mekh. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +5400
+				}
+				energy = -10800
+				metal = -5400
+				rare_materials = -2700
+				load_oob = SOV/Light_Armored_Brigades_1938_Aug.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Light_Armored_Brigades_1938_Aug.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 24LTB_no
+		set_country_flag = 33CTB_no
+		set_country_flag = 35LTB_no
+		set_country_flag = 36LTB_no
+		set_country_flag = 38LTB_no
+		set_country_flag = 42LTB_no
+		set_country_flag = 48LTB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 10th and 25th Tank Corps - May 1938
+country_event = {
+	id = 11007
+	is_triggered_only = yes
+	title = "Form 10th and 25th Tank Corps"
+	desc = "EVTDESC11007"
+	picture = "EarlyTank2"
+	option = {
+		name = "Reform our Mechanized Corps into Tank Corps"
+		set_country_flag = 10_OTC
+		set_country_flag = 25_OTC
+
+		#Removing 7th Mechanized Corps 
+		remove_brigade = "Shtab-K. 7-go Mekh.-Korpusa"
+		remove_brigade = "9-y Razvedovatelniy B-n 7-go MK"
+		remove_brigade = "Avtomobilnyy B-n 7-go Mekh.-Korpus"
+
+		remove_brigade = "Shtab-K. 19-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 19-y MB"
+		remove_brigade = "19-y Motostrelkovyy B-n"
+		remove_brigade = "19-y Razvedovatelniy B-n"
+		remove_brigade = "19-y Avtomobilnyy B-n"
+
+		remove_brigade = "Shtab-K. 31-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 31-y MB"
+		remove_brigade = "31-y Motostrelkovyy B-n"
+		remove_brigade = "31-y Razvedovatelniy B-n"
+		remove_brigade = "31-y Avtotransportnyy B-n"
+
+		remove_brigade = "Shtab-K. 33-y Mot. Brigady"
+		remove_brigade = "1/2/3-ye Motorizovannyye B-ny 33-y MSB"
+		remove_brigade = "33-y Artilleriyskiy D-n"
+		remove_brigade = "33-y Razvedovatelniy B-n"
+		remove_brigade = "33-y Avtotransportnyy B-n"
+
+		#Removing 45th Mechanized Corps 
+		remove_brigade = "Shtab-K. 45-go Mekh. Korpusa"
+		remove_brigade = "Razvedovatelniy B-n 45-go Mekh. Korpusa"
+		remove_brigade = "Avtotransportnyy B-n 45-go Mekh.-Korpusa"
+
+		remove_brigade = "Shtab-K. 133-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 133-y MB"
+		remove_brigade = "133-y Motostrelkovyy B-n"
+		remove_brigade = "133-y Razvedovatelniy B-n" 
+		remove_brigade = "133-y Avtotransportnyy B-n"
+
+		remove_brigade = "Shtab-K. 134-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 134-y MB" 
+		remove_brigade = "134-y Motostrelkovyy B-n"
+		remove_brigade = "134-y Razvedovatelniy B-n"
+		remove_brigade = "134-y Avtotransportnyy B-n"
+
+		remove_brigade = "Shtab-K. 135-y Mot. Brigady"
+		remove_brigade = "1/2/3-ye Motorizovannyye B-ny 135-y MSB"
+		remove_brigade = "135-y Artilleriyskiy D-n"
+		remove_brigade = "135-y Razvedovatelniy B-n"
+		remove_brigade = "135-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +400
+				}
+				energy = -800
+				metal = -400
+				rare_materials = -200
+				load_oob = SOV/Old_Tank_Corps_10_1938_May.txt
+				load_oob = SOV/Old_Tank_Corps_25_1938_May.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Tank_Corps_10_1938_May.txt
+				load_oob = SOV/Old_Tank_Corps_25_1938_May.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 10_OTC_no
+		set_country_flag = 25_OTC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 15th and 20th Tank Corps - June 1938
+country_event = {
+	id = 11008
+	is_triggered_only = yes
+	title = "Form 15th and 20th Tank Corps"
+	desc = "EVTDESC11008"
+	picture = "EarlyTank2"
+	option = {
+		name = "Reform our Mechanized Corps into Tank Corps"
+		set_country_flag = 15_OTC
+		set_country_flag = 20_OTC
+
+		#Removing 5th Mechanized Corps 
+		remove_brigade = "Shtab-K. 5-go Mekh.-Korpusa"
+		remove_brigade = "8-y Razvedovatelniy B-n 5-go MK"
+		remove_brigade = "Avtotransportnyy B-n 5-go Mekh.-Korpusa"
+
+		remove_brigade = "Shtab-K. 5-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 5-y Mekh. Brigady"
+		remove_brigade = "Motostrelkovyy B-n 5-y Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 5-y Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 5-y Mekh. Brigady"
+
+		remove_brigade = "Shtab-K. 10-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 10-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 10-y Otd. Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 10-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 10-y Otd. Mekh. Brigady"
+
+		remove_brigade = "Shtab-K. 50-y Mot. Brigady"
+		remove_brigade = "1/2/3-ye Motostrelkovyye B-ny 50-y MSB"
+		remove_brigade = "50-y Artilleriyskiy D-n"
+		remove_brigade = "50-y Razvedovatelniy B-n"
+		remove_brigade = "50-y Avtotransportnyy B-n"
+
+		#Removing 11th Mechanized Corps 
+		remove_brigade = "Shtab-K. 11-go Mekh. Korpusa"
+		remove_brigade = "16-y Razvedovatelniy B-n 11_go MK"
+		remove_brigade = "1029-y Avtotransportnyy B-n"
+
+		remove_brigade = "Shtab-K. 6-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 6-y MB"
+		remove_brigade = "6-y Motostrelkovyy B-n"
+		remove_brigade = "6-y Razvedovatelniy B-n"
+		remove_brigade = "6-y Avtotransportnyy B-n"
+
+		remove_brigade = "Shtab-K. 32-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 32-y Mekh. Brigady"
+		remove_brigade = "Motostrelkovyy B-n 32-y Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 32-y Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 32-y Mekh. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1400
+				}
+				energy = -2800
+				metal = -1400
+				rare_materials = -700
+				load_oob = SOV/Old_Tank_Corps_15_1938_June.txt
+				load_oob = SOV/Old_Tank_Corps_20_1938_June.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Tank_Corps_10_June_May.txt
+				load_oob = SOV/Old_Tank_Corps_25_June_May.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 15_OTC_no
+		set_country_flag = 20_OTC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 57th Special Corps - August 1938
+country_event = {
+	id = 11009
+	is_triggered_only = yes
+	title = "Form the 57th Special Corps"
+	desc = "EVTDESC11009"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form this new unit to protect our Mongolian brothers!"
+		set_country_flag = 57SC
+
+		#Removing Special Mechanized Brigade
+		remove_brigade = "Shtab-K. Osob. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Otd. Tankovyye B-ny OMB"
+		remove_brigade = "Motostrelkovyy B-n OMB"
+		remove_brigade = "Razvedovatelniy B-n OMB"
+		remove_brigade = "Avtotransportnyy B-n OMB"
+
+		#Removing 36th Rifle Division
+		remove_brigade = "Shtab-K. 36-y Strelk. Zabaikalskoy D."
+		remove_brigade = "106/107/108-ye Strelkovyye Polki"
+		remove_brigade = "36-y Legkiy Tankovyy B-n"
+		remove_brigade = "36-y Artilleriyskiy Polk"
+		remove_brigade = "67-y Protivotankovyy D-n"
+		remove_brigade = "252-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 36-y Strelk. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3500
+				}
+				energy = -7000
+				metal = -3500
+				rare_materials = -1750
+				load_oob = SOV/Old_Tank_Corps_57_Special_1938.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Tank_Corps_57_Special_1938.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 57SC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+#### 1939
+
+## 20th, 23rd and 49th Light Tank Brigades - March 1939
+country_event = {
+	id = 11010
+	is_triggered_only = yes
+	title = "20th, 23rd and 49th Light Tank Brigades"
+	desc = "EVTDESC11010"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form new Light Tank Brigades"
+		set_country_flag = 20LTB
+		set_country_flag = 23LTB
+		set_country_flag = 49LTB
+
+		#Removing 17th Mechanized Brigade
+		remove_brigade = "Shtab-K. 17-y Otd. Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 17-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 17-y Otd. Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 17-y Otd. Mekh. Brigady"
+		remove_brigade = "17-y Batal'on Boevogo Obecpecheniya"
+		remove_brigade = "Avtotransportnyy B-n 17-y Otd. Mekh. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +7200
+				}
+				energy = -14400
+				metal = -7200
+				rare_materials = -3600
+				load_oob = SOV/Light_Armored_Brigades_1939_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Light_Armored_Brigades_1939_March.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 20LTB_no
+		set_country_flag = 23LTB_no
+		set_country_flag = 49LTB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 34th, 37th, 39th et 55th Light Tank Brigades - September 1939
+country_event = {
+	id = 11011
+	is_triggered_only = yes
+	title = "34th, 37th, 39th and 55th Light Tank Brigades"
+	desc = "EVTDESC11011"
+	picture = "EarlyTank2"
+	option = {
+		name = "More Light Tank Brigades!"
+		set_country_flag = 34LTB
+		set_country_flag = 37LTB
+		set_country_flag = 39LTB
+		set_country_flag = 55LTB
+
+		#Removing 13th Mechanized Brigade (Second Formation)
+		remove_brigade = "Shtab-K. 13-y Mekh. Brigady (II)"
+		remove_brigade = "84/87/92/96-ye Tankovyye B-ny"
+		remove_brigade = "13-y Motostrelkovyy B-n (II)"
+		remove_brigade = "13-y Razvedovatelniy B-n (II)"
+		remove_brigade = "13-y Avtotransportnyy B-n (II)"
+
+		#Removing 14th Mechanized Brigade
+		remove_brigade = "Shtab-K. 14-y Mekh. Brigady"
+		remove_brigade = "1/2/3-ye Tankovyye B-ny 14-y MB"
+		remove_brigade = "14-y Motostrelkovyy B-n"
+		remove_brigade = "14-y Razvedovatelniy B-n"
+		remove_brigade = "14-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +7600
+				}
+				energy = -15200
+				metal = -7600
+				rare_materials = -3800
+				load_oob = SOV/Light_Armored_Brigades_1939_Sept.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Light_Armored_Brigades_1939_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 34LTB_no
+		set_country_flag = 37LTB_no
+		set_country_flag = 39LTB_no
+		set_country_flag = 55LTB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Heavy Tank Brigades - May 1939
+country_event = {
+	id = 11012
+	is_triggered_only = yes
+	title = "Heavy Tank Brigades"
+	desc = "EVTDESC11012"
+	picture = "EarlyTank2"
+	option = {
+		name = "Reform or Heavy Tank Brigades!"
+		set_country_flag = HeavyTB
+
+		#Removing 6th Heavy Tank Brigade
+		remove_brigade = "Shtab-K. 6-y Otd. Tiazh. Tankovoy Brigadii"
+		remove_brigade = "Otd. Tankovyye B-ny 6-y OTTB"
+		remove_brigade = "Batal'on Boevogo Obecpecheniya 6-y OTTB"
+		remove_brigade = "Razvedovatelniy B-n 6-y OTTB"
+
+		#Removing 1st Heavy Tank Brigade
+		remove_brigade = "Shtab-K. 1-y Tiazh. Tankovoy Brigadii"
+		remove_brigade = "Otd. Tankovyye B-ny 1-y TTB"
+		remove_brigade = "Batal'on Boevogo Obecpecheniya 1-y TTB"
+		remove_brigade = "Razvedovatelniy B-n 1-y TTB" 
+
+		#Removing 4th Heavy Tank Brigade
+		remove_brigade = "Shtab-K. 4-y Otd. Tiazh. Tankovoy Brigadii"
+		remove_brigade = "Otd. Tankovyye B-ny 4-y OTTB"
+		remove_brigade = "Batal'on Boevogo Obecpecheniya 4-y OTTB"
+		remove_brigade = "Razvedovatelniy B-n 4-y OTTB"
+
+		#Removing 5th Heavy Tank Brigade
+		remove_brigade = "Shtab-K. 5-y Otd. Tiazh. Tankovoy Brigadii"
+		remove_brigade = "Otd. Tankovyye B-ny 5-y OTTB"
+		remove_brigade = "Batal'on Boevogo Obecpecheniya 5-y OTTB"
+		remove_brigade = "Razvedovatelniy B-n 5-y OTTB"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Heavy_Tank_Brigades_1939_upgrade.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Heavy_Tank_Brigades_1939_upgrade.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = HeavyTB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+#### 1940
+
+## 6th and 40th Light Tank Brigades - January 1940
+country_event = {
+	id = 11013
+	is_triggered_only = yes
+	title = "6th and 40th Light Tank Brigades"
+	desc = "EVTDESC11013"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form New Light Tank Brigades!"
+		set_country_flag = 6LTB
+		set_country_flag = 40LTB
+
+		#Removing 8th Light Tank Brigade
+		remove_brigade = "Shtab-K. 8-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 8-y Legk. Tank. Brigady"
+		remove_brigade = "Mot.-Strelkovyy B-n 8-y Legk. Tank. Brigady"
+		remove_brigade = "Otd. Razvedovatelniy B-n 8-y Legk. Tank. Brigady"
+		remove_brigade = "Otd. Transportnyy B-n 8-y Legk. Tank. Brigady"
+	
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3400
+				}
+				energy = -6800
+				metal = -3400
+				rare_materials = -1700
+				load_oob = SOV/Light_Armored_Brigades_1940_Jan.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Light_Armored_Brigades_1940_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 6LTB_no
+		set_country_flag = 40LTB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 17th, and 41st Light Tank Brigades - April 1940
+country_event = {
+	id = 11014
+	is_triggered_only = yes
+	title = "17th and 41st Light Tank Brigades"
+	desc = "EVTDESC11014"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these Light Tank Brigades!"
+		set_country_flag = 17LTB
+		set_country_flag = 41LTB
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +5400
+				}
+				energy = -10800
+				metal = -5400
+				rare_materials = -2700
+				load_oob = SOV/Light_Armored_Brigades_1940_Apr.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Light_Armored_Brigades_1940_Apr.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 17LTB_no
+		set_country_flag = 41LTB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 7th, 30th and 50th Light Tank Brigades - June 1940
+country_event = {
+	id = 11015
+	is_triggered_only = yes
+	title = "7th, 30th and 50th Light Tank Brigades"
+	desc = "EVTDESC11015"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form new Light Tank Brigades!"
+		set_country_flag = 7LTB
+		set_country_flag = 30LTB
+		set_country_flag = 44LTB
+		set_country_flag = 50LTB
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +11400
+				}
+				energy = -22800
+				metal = -11400
+				rare_materials = -5700
+				load_oob = SOV/Light_Armored_Brigades_1940_June.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Light_Armored_Brigades_1940_June.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 7LTB_no
+		set_country_flag = 30LTB_no
+		set_country_flag = 44LTB_no
+		set_country_flag = 50LTB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+## 2nd, 12th, 14th, 31st and 39th Light Tank Brigades - November 1940
+country_event = {
+	id = 11016
+	is_triggered_only = yes
+	title = "Formation of 5 Light Tank Brigades"
+	desc = "EVTDESC11016"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these new Light Tank Brigades!"
+		set_country_flag = 2LTB
+		set_country_flag = 12LTB
+		set_country_flag = 14LTB
+		set_country_flag = 31LTB
+		set_country_flag = 39LTB2
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +16000
+				}
+				energy = -32000
+				metal = -16000
+				rare_materials = -8000
+				load_oob = SOV/Light_Armored_Brigades_1940_Nov.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Light_Armored_Brigades_1940_Nov.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 2LTB_no
+		set_country_flag = 12LTB_no
+		set_country_flag = 14LTB_no
+		set_country_flag = 31LTB_no
+		set_country_flag = 39LTB2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+## Motorization of 1st Moscow Proletarian Division
+country_event = {
+	id = 11017
+	is_triggered_only = yes
+	title = "Rearm and refit the Moskva Proletarian Strelk. Div."
+	desc = "EVTDESC11017"
+	picture = "sov-upgrade-to-motorized"
+	option = {
+		name = "Motorize the Moskva Proletarian Strelk. Div."
+		set_country_flag = MPRD1940
+
+		remove_brigade = "Shtab-K. 1-y Moskovskoy SD"
+		remove_brigade = "1/2/3-ye Strelkovyye Polki 1-y MPSD"
+		remove_brigade = "Moskovskiy Prol. Tankovyy B-n"
+		remove_brigade = "Moskovskiy Prol. Artilleriyskiy Polk"
+		remove_brigade = "1-y Protivotankovyy D-n"
+		remove_brigade = "123-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n Moskovskoy Prol. Strelk. D."
+		
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = SOV/Motorized_Division_1_1940_Jan.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Motorized_Division_1_1940_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = MPRD1940_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+## Motorization of 36th Transbaikal Rifle Division
+country_event = {
+	id = 11018
+	is_triggered_only = yes
+	title = "Rearm and refit the 36th Tansbaikal Rifle Division"
+	desc = "EVTDESC11018"
+	picture = "sov-upgrade-to-motorized"
+	option = {
+		name = "Motorize this division!"
+		set_country_flag = 36MRD
+		remove_brigade = "Shtab-K. 36-ya Strelk. Zabaikalskoy D."
+		remove_brigade = "106/107/108-ye Strelkovyye Polki"
+		remove_brigade = "36-y Legkiy Tankovyy B-n"
+		remove_brigade = "36-y Artilleriyskiy Polk"
+		remove_brigade = "67-y Protivotankovyy D-n"
+		remove_brigade = "252-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 36-y Strelk. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -225
+				load_oob = SOV/Motorized_Division_36_1940_Jan.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Motorized_Division_36_1940_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 36MRD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+## Motorization of 57th Rifle Division
+country_event = {
+	id = 11019
+	is_triggered_only = yes
+	title = "Rearm and refit the 57th Ural Rifle Division"
+	desc = "EVTDESC11019"
+	picture = "sov-upgrade-to-motorized"
+	option = {
+		name = "Motorize this division!"
+		set_country_flag = 57MRD
+
+		remove_brigade = "Shtab-K. 57-ya Strelk. Uralskoy D."
+		remove_brigade = "169/170/171-ye Strelkovyye Polki"
+		remove_brigade = "57-y Legkiy Tankovyy B-n"
+		remove_brigade = "57-y Artilleriyskiy Polk"
+		remove_brigade = "180-y Protivotankovyy D-n"
+		remove_brigade = "24-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 57-y Strelk. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = SOV/Motorized_Division_57_1940_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Motorized_Division_57_1940_March.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 57MRD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### Formation of 30 Mechanized Corps starts in June 1940
+
+## 1st, 2nd, 3rd and 8th Mechanized Corps
+country_event = {
+	id = 11020
+	is_triggered_only = yes
+	title = "Mechanized Corps (1940)"
+	desc = "EVTDESC11020"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form the 1st, 2nd, 3rd and 8th Mechanized Corps"
+		set_country_flag = 1_OMK
+		set_country_flag = 2_OMK
+		set_country_flag = 3_OMK
+		set_country_flag = 8_OMK
+
+		#Formation of 1st Mechanized Corps
+		#Removing 10th Tank Corps (1st LTB, 13th LTB, 15th Mot.B)
+		remove_brigade = "Shtab-K. 10-y Tank. Korpusa"
+		remove_brigade = "Mot.-Signalnyy B-n 10-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 10-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 1-y Legk. Tank. Brigady"
+		remove_brigade = "1/4/8/19-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "167-y Mot.-Strelkovyy B-n"
+		remove_brigade = "202-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "314-y Otd. Transportnyy B-n"
+		remove_brigade = "Shtab-K. 13-y Legk. Tank. Brigady"
+		remove_brigade = "6/9/13/15_ye Otdel'nye Tankovyye B-ny" 
+		remove_brigade = "158-y Mot.-Strelkovyy B-n"
+		remove_brigade = "205-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "566-y Otd. Transportnyy B-n"
+		remove_brigade = "Shtab-K. 15-y Mot. Brigady"
+		remove_brigade = "1/2/3-ye Motorizovannyye B-ny 15-y MSRBR"
+		remove_brigade = "Artilleriyskiy D-n 15-y MSRBR"
+		remove_brigade = "Razvedovatelniy B-n 15-y MSRBR"
+		remove_brigade = "Protivotankovyy B-n 15-y MSRBR"
+		remove_brigade = "Avtotransportnyy B-n 15-y MSRBR"
+		#Removing 20th Heavy Tank Brigade
+		remove_brigade = "Shtab-K. 20-y Otd. Tiazh. Tankovoy Brigadii"
+		remove_brigade = "90/91/93/95-ye Otd. Tankovyye B-ny"
+		remove_brigade = "Batal'on Boevogo Obecpecheniya 20-y TTB"
+		remove_brigade = "215-ya Razvedovatelnaya Rota"
+		remove_brigade = "301-y Avtotransportnyy B-n"
+		#Removing 27th Cavalry Division
+		remove_brigade = "Shtab-K. 27-y Kavaleriyskoy D."
+		remove_brigade = "105/106/107/108-ye Kavaleriyskiye Polki"
+		remove_brigade = "27-y Tankovyy Polk"
+		remove_brigade = "27-y Mekhanizirovannyy Polk"
+		remove_brigade = "27-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "27-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 27-ya Kav. D."
+
+		#Formation of 2nd Mechanized Corps
+		#Removing 25th Tank Corps Command
+		remove_brigade = "Shtab-K. 25-y Tank. Korpusa"
+		remove_brigade = "403-y Mot.-Signalnyy B-n"
+		remove_brigade = "Transportnyy B-n 25-y Tank. Korpusa"
+		#Removing 1st Motorized Brigade
+		remove_brigade = "Shtab-K. 1-y Mot. Brigady"
+		remove_brigade = "172/174/177-ye Motorizovannyye B-ny"
+		remove_brigade = "355-y Artilleriyskiy B-n"
+		remove_brigade = "5-y Otd. Protivotankovyy D-n"
+		remove_brigade = "219-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "319-y Otd. Avtotransportnyy B-n"
+		#Removing 4th LTB
+		remove_brigade = "Shtab-K. 4-y Legk. Tank. Brigady"
+		remove_brigade = "42/43/46/48-ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 4-y Legk. Tank. Brigady"
+		remove_brigade = "214-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "309-y Otd. Transportnyy B-n"
+		#Removing 15th Rifle Division
+		remove_brigade = "Shtab-K. 15-y Strelk. D."
+		remove_brigade = "43/44/45-ye Strelkovyye Polki"
+		remove_brigade = "15-y Legkiy Tankovyy B-n"
+		remove_brigade = "15-y Artilleriyskiy Polk"
+		remove_brigade = "166-y Protivotankovyy D-n"
+		remove_brigade = "75-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 15-y Strelk. D."
+
+		#Formation of 3rd Mechanized Corps
+		#Removing 21st Heavy Tank Brigade 
+		remove_brigade = "Shtab-K. 21-y Tiazh. Tankovoy Brigadii"
+		remove_brigade = "22/26/37/32-ye Otd. Tankovyye B-ny"
+		remove_brigade = "Batal'on Boevogo Obecpecheniya 21-y TTB"
+		remove_brigade = "211-ya Razvedovatelnaya Rota"
+		remove_brigade = "306-y Avtotransportnyy B-n"
+		#Removing 2nd Light Tank Brigade
+		remove_brigade = "Shtab-K. 2-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 2-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 2-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 2-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 2-y LTB"
+		#removing 7th Cavalry Division
+		remove_brigade = "Shtab-K. 7-y Kav. Samarskaya D."
+		remove_brigade = "51/80/116/123-ye Kavaleriyskiye Polki"
+		remove_brigade = "43-y Tankovyy Polk"
+		remove_brigade = "7-y Mekhanizirovannyy Polk"
+		remove_brigade = "19-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "7-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 7-y Kav. D."
+		#Removing 84th Rifle Division
+		remove_brigade = "Shtab-K. 84-y Strelk. D."
+		remove_brigade = "250/251/252-ye Strelkovyye Polki"
+		remove_brigade = "84-ye Legkiy Tankovyy B-n"
+		remove_brigade = "84-y Artilleriyskiy Polk"
+		remove_brigade = "106-y Protivotankovyy D-n"
+		remove_brigade = "122-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 84-y Strelk. D."
+
+		#Formation of 8th Mechanized Corps
+		#Removing 4th Cavalry Corps
+		remove_brigade = "Shtab-K. 4-go Kavaleriyskogo Korpusa"
+		remove_brigade = "4-y Otdel'nyy Zenitno-Artilleriyskiy Divizion"
+		remove_brigade = "Transportnyy B-n 4-go Kav. Korpusa"
+		#Removing 7th Rifle Division
+		remove_brigade = "Shtab-K. 7-y Chernigovskoy SD"
+		remove_brigade = "19/20/21-ye Strelkovyye Polki"
+		remove_brigade = "7-y Legkiy Tankovyy B-n"
+		remove_brigade = "7-y Artilleriyskiy Polk"
+		remove_brigade = "120-y Protivotankovyy D-n"
+		remove_brigade = "45-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 7-y Strelk. D."
+		#Removing 14th Heavy Tank Brigade
+		remove_brigade = "Shtab-K. 14-y Otd. Tiazh. Tankovoy Brigadii"
+		remove_brigade = "28/29/35/41-ye Otd. Tankovyye B-ny"
+		remove_brigade = "Batal'on Boevogo Obecpecheniya 14-y TTB"
+		remove_brigade = "212-ya Razvedovatelnaya Rota"
+		remove_brigade = "53-y Avtotransportnyy B-n"
+		#Removing 23rd Light Tank Brigade
+		remove_brigade = "Shtab-K. 23-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 23-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 23-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 23-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 23-y LTB"
+		#Removing 34th Cavalry Division
+		remove_brigade = "Shtab-K. 34-y Kavaleriyskoy D."
+		remove_brigade = "47/79/148/162-ye Kavaleriyskiye Polki"
+		remove_brigade = "42-y Tankovyy Polk"
+		remove_brigade = "32-y Mekhanizirovannyy Polk"
+		remove_brigade = "10-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "11-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 34-ya Kav. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +14700
+					#1st Mechanized Corps = 1200
+					#2nd Mechanized Corps = 4500
+					#3rd Mechanized Corps = 2400
+					#8th Mechanized Corps = 2200
+				}
+				energy = -20600
+				metal = -10300
+				rare_materials = -50150
+				load_oob = SOV/Old_Mech_Corps_1_1940_June.txt
+				load_oob = SOV/Old_Mech_Corps_2_1940_June.txt
+				load_oob = SOV/Old_Mech_Corps_3_1940_June.txt
+				load_oob = SOV/Old_Mech_Corps_8_1940_June.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_1_1940_June_AI.txt
+				load_oob = SOV/Old_Mech_Corps_2_1940_June_AI.txt
+				load_oob = SOV/Old_Mech_Corps_3_1940_June_AI.txt
+				load_oob = SOV/Old_Mech_Corps_8_1940_June_AI.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 1_OMK_no
+		set_country_flag = 2_OMK_no
+		set_country_flag = 3_OMK_no
+		set_country_flag = 8_OMK_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 4th, 5th, 6th and 7th Mechanized Corps
+country_event = {
+	id = 11021
+	is_triggered_only = yes
+	title = "Mechanized Corps (1940)"
+	desc = "EVTDESC11021"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form the 4th, 5th, 6th and 7th Mechanized Corps"
+		set_country_flag = 4_OMK
+		set_country_flag = 5_OMK
+		set_country_flag = 6_OMK
+		set_country_flag = 7_OMK
+
+		#Formation of 4th Mechanized Corps
+		#Removing 5th LTB
+		remove_brigade = "Shtab-K. 5-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 5-y Legk. Tank. Brigady"
+		remove_brigade = "Mot.-Strelkovyy B-n 5-y Legk. Tank. Brigady"
+		remove_brigade = "Otd. Razvedovatelniy B-n 5-y Legk. Tank. Brigady"
+		remove_brigade = "Otd. Transportnyy B-n 5-y Legk. Tank. Brigady"
+		#removing 24th LTB
+		remove_brigade = "Shtab-K. 29-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 29-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 29-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 29-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 29-y LTB"
+		#Removing 10th Heavy Tank Brigade
+		remove_brigade = "Shtab-K. 10-y Otd. Tiazh. Tankovoy Brigadii"
+		remove_brigade = "51/54/57/62-ye Otd. Tankovyye B-ny"
+		remove_brigade = "Batal'on Boevogo Obecpecheniya 21-y TTB"
+		remove_brigade = "222-ya Razvedovatelnaya Rota"
+		remove_brigade = "312-y Avtotransportnyy B-n"
+		#Removing 81st Rifle Division
+		remove_brigade = "Shtab-K. 81-y Strelk. D."
+		remove_brigade = "241/242/243-ye Strelkovyye Polki"
+		remove_brigade = "81-ye Legkiy Tankovyy B-n"
+		remove_brigade = "81-y Artilleriyskiy Polk"
+		remove_brigade = "84-y Protivotankovyy D-n"
+		remove_brigade = "66-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 81-y StrelK. D."
+
+		#Formation of 5th Mechanized Corps
+		#Removing 20th Tank Corps
+		remove_brigade = "Shtab-K. 20-y Tank. Korpusa"
+		remove_brigade = "404-y Mot.-Signalnyy B-n"
+		remove_brigade = "Transportnyy B-n 20-y Tank. Korpusa"
+		#Removing 15th LTB
+		remove_brigade = "Shtab-K. 15-y Legk. Tank. Brigady"
+		remove_brigade = "31/33/36/40-ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "152-y Mot.-Strelkovyy B-n"
+		remove_brigade = "201-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "320-y Otd. Transportnyy B-n"
+		#Removing 37th LTB
+		remove_brigade = "Shtab-K. 37-y Legk. Tank. Brigady"
+		remove_brigade = "84/87/92/96-ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 37-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 37-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 37-y LTB"
+		#Removing 5th Motorized Rifle Brigade
+		remove_brigade = "Shtab-K. 5-y Mot. Brigady"
+		remove_brigade = "162/165/169-ye Motorizovannyye B-ny"
+		remove_brigade = "356-y Artilleriyskiy D-n"
+		remove_brigade = "8-y Otd. Protivotankovyy B-n"
+		remove_brigade = "245-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "342-y Avtotransportnyy B-n"
+
+		#Formation of 6th Mechanized Corps
+		remove_brigade = "Shtab-K. 3-go Kavaleriyskogo Korpusa"
+		remove_brigade = "7-y Otdel'nyy Zenitno-Artilleriyskiy Divizion"
+		remove_brigade = "Transportnyy B-n 3-go Kavaleriyskogo Korpusa"
+		#Removing 29th Rifle Division
+		remove_brigade = "Shtab-K. 29-y Strelk. D."
+		remove_brigade = "85/86/87-y Strelkovyye Polki"
+		remove_brigade = "29-y Legkiy Tankovyy B-n"
+		remove_brigade = "29-y Artilleriyskiy Polk"
+		remove_brigade = "125-y Protivotankovyy D-n"
+		remove_brigade = "78-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 29-y Strelk. D."
+		#Removing 7th Cavalry Division
+		remove_brigade = "Shtab-K. 7-y Kav. Samarskaya D."
+		remove_brigade = "51/80/116/123-ye Kavaleriyskiye Polki"
+		remove_brigade = "43-y Tankovyy Polk"
+		remove_brigade = "7-y Mekhanizirovannyy Polk"
+		remove_brigade = "19-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "7-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 7-y Kav. D."
+		#Removing 11th Cavalry Division
+		remove_brigade = "Shtab-K. 11-y Kav. Orenburgskoy D."
+		remove_brigade = "6/35/100/117-y Gorno-Kavaleriyskiye Polki"
+		remove_brigade = "31-y Tankovyy Polk"
+		remove_brigade = "11-y Mekhanizirovannyy Polk"
+		remove_brigade = "17-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "11-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 11-y Kav. D."
+		#Removing 30th Chemical Tank Brigades (summer 1940), used to help forming Mechanized Corps
+		remove_brigade = "Shtab-K. 30-y Khim. Tank. Brigady"
+		remove_brigade = "191/201/204/213/217 Otd. Tankovyye B-ny"
+		remove_brigade = "189-y Mot.-Strelk. B-n"
+		remove_brigade = "45-y Otd. Batal'on Boevogo Obecpecheniya"
+		remove_brigade = "Sap'ornaya Rota 30-y KhTB"
+		remove_brigade = "344-ya Otd. Transportnaya Rota"
+
+		#Formation of 7th Mechanized Corps
+		#Removing 39th Light Tank Brigade
+		remove_brigade = "Shtab-K. 39-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 39-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 39-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 39-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 39-y LTB"
+		#Removing 55th Light Tank Division
+		remove_brigade = "Shtab-K. 55-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 55-y LTB" 
+		remove_brigade = "Mot.-Strelkovyy B-n 55-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 55-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 55-y LTB"
+		#Removing 31st Chemical Tank Brigades (summer 1940), used to help forming Mechanized Corps
+		remove_brigade = "Shtab-K. 31-y Khim. Tank. Brigady"
+		remove_brigade = "194/221/224/227 Otd. Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelk. B-n 31-y KhTB"
+		remove_brigade = "Otd. Batal'on Boevogo Obecpecheniya 31-y KhTB"
+		remove_brigade = "Sap'ornaya Rota 31-y KhTB"
+		remove_brigade = "Otd. Transportnaya Rota31-y KhTB"
+		#Removing 20th Motorized Brigade
+		remove_brigade = "Shtab-K. 20-y Mot. Brigady"
+		remove_brigade = "1/2/3-ye Motorizovannyye B-ny 20-y Mot. Brigady"
+		remove_brigade = "Artilleriyskiy B-n 20-y Mot. Brigady"
+		remove_brigade = "Otd. Protivotankovyy D-n 20-y Mot. Brigady"
+		remove_brigade = "Otd. Razvedovatelniy B-n 20-y Mot. Brigady"
+		remove_brigade = "Otd. Avtotransportnyy B-n 20-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +8800
+					#4th Mechanized Corps = 1900 (50% strength)
+					#5th Mechanized Corps = 2100 (50% strength)
+					#6th Mechanized Corps = 3500 (40% strength)
+					#7th Mechanized Corps = 500 (40% strength)
+				}
+				energy = -16000
+				metal = -8000
+				rare_materials = -4000
+				load_oob = SOV/Old_Mech_Corps_4_1940_July.txt
+				load_oob = SOV/Old_Mech_Corps_5_1940_July.txt
+				load_oob = SOV/Old_Mech_Corps_6_1940_July.txt
+				load_oob = SOV/Old_Mech_Corps_7_1940_July.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_4_1940_July_AI.txt
+				load_oob = SOV/Old_Mech_Corps_5_1940_July_AI.txt
+				load_oob = SOV/Old_Mech_Corps_6_1940_July_AI.txt
+				load_oob = SOV/Old_Mech_Corps_7_1940_July_AI.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 4_OMK_no
+		set_country_flag = 5_OMK_no
+		set_country_flag = 6_OMK_no
+		set_country_flag = 7_OMK_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 9th Mechanized Corps
+country_event = {
+	id = 11022
+	is_triggered_only = yes
+	title = "Mechanized Corps (1940)"
+	desc = "EVTDESC11022"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form the 9th Mechanized Corps"
+		set_country_flag = 9_OMK
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +14000 
+					# 10% reduction because formed at 0% strength
+				}
+				energy = -28000
+				metal = -14000
+				rare_materials = -7000
+				load_oob = SOV/Old_Mech_Corps_9_1940_Nov.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_9_1940_Nov.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 9_OMK_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+#### 1941
+
+## Motorization of 69th Rifle Division
+country_event = {
+	id = 11023
+	is_triggered_only = yes
+	title = "Rearm and refit the 69th Rifle Division"
+	desc = "EVTDESC11023"
+	picture = "sov-upgrade-to-motorized"
+	option = {
+		name = "Motorize this division!"
+		set_country_flag = 69MRD
+
+		remove_brigade = "Shtab-K. 3-y Strelk. D."
+		remove_brigade = "4/5/6-ye Strelkovyye Polki"
+		remove_brigade = "2-y Tankovyy B-n"
+		remove_brigade = "2-y Artilleriyskiy Polk"
+		remove_brigade = "118-y Protivotankovyy D-n"
+		remove_brigade = "91-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 3-y Strelk. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = SOV/Motorized_Division_69_1941_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Motorized_Division_69_1941_March_AI.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 69MRD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 10th Mechanized Corps
+country_event = {
+	id = 11024
+	is_triggered_only = yes
+	title = "Mechanized Corps (1941)"
+	desc = "EVTDESC11024"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form the 10th Mechanized Corps in Leningrad Military District"
+		set_country_flag = 10_OMK
+
+		#Removing 34th Light Tank Brigade. Destroyed by the Fins but removed here for game purpose
+		remove_brigade = "Shtab-K. 34-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 34-y LTB" 
+		remove_brigade = "Mot.-Strelkovyy B-n 34-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 34-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 34-y LTB"
+
+		#Removing 40th Light Tank Brigade
+		remove_brigade = "Shtab-K. 40-y Legk. Tank. Brigady"
+		remove_brigade = "155/157/160/161_ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "236-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "336-y Transportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4000
+				}
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
+				load_oob = SOV/Old_Mech_Corps_10_1941_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_10_1941_March_AI.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 10_OMK_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 12th Mechanized Corps
+country_event = {
+	id = 11025
+	is_triggered_only = yes
+	title = "Mechanized Corps (1941)"
+	desc = "EVTDESC11025"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form the 12th Mechanized Corps in Baltic Special Military District"
+		set_country_flag = 12_OMK
+
+		#Removing 15th Tank Corps Command Unit
+		remove_brigade = "Shtab-K. 15-y Tank. Korpusa"
+		remove_brigade = "401-y Mot.-Signalnyy B-n"
+		remove_brigade = "Transportnyy B-n 15-y Tank. Korpusa"
+
+		#Removing 22nd Light Tank Brigade
+		remove_brigade = "Shtab-K. 22-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 22-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 22-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 22-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 22-y LTB"
+
+		#Removing 27th LTB
+		remove_brigade = "Shtab-K. 27-y Legk. Tank. Brigady"
+		remove_brigade = "113/116/118/122-ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 27-y Legk. Tank. Brigady"
+		remove_brigade = "233-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "305-y Otd. Transportnyy B-n"
+
+		#Removing 5th Motorized Brigade
+		remove_brigade = "Shtab-K. 5-y Mot. Brigady"
+		remove_brigade = "162/165/169-ye Motorizovannyye B-ny"
+		remove_brigade = "356-y Artilleriyskiy D-n"
+		remove_brigade = "8-y Otd. Protivotankovyy B-n"
+		remove_brigade = "245-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "342-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1800
+				}
+				energy = -3600
+				metal = -1800
+				rare_materials = -9000
+				load_oob = SOV/Old_Mech_Corps_12_1941_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_12_1941_March_AI.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 12_OMK_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 11th, 13th, 14th, 17th and 20th Mechanized Corps
+country_event = {
+	id = 11026
+	is_triggered_only = yes
+	title = "Mechanized Corps (1941)"
+	desc = "EVTDESC11026"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form 5 new Mechanized Corps in the Belarus Military District"
+		set_country_flag = 11_OMK
+		set_country_flag = 13_OMK
+		set_country_flag = 14_OMK
+		set_country_flag = 17_OMK
+		set_country_flag = 20_OMK
+
+		#Formation of 11th Mechanized Corps
+		#From 15th, 25th Tank Brigades, 9th Motorized Division - not found.
+
+		#Formation of 13th Mechanized Corps
+		#From 1st Tank Brigade - not found
+		#Remove 44th LTB
+		remove_brigade = "Shtab-K. 44-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 44-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 44-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 44-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 44-y LTB"
+
+		#Formation of 14th Mechanized Corps
+		#Removing 29th LTB
+		remove_brigade = "Shtab-K. 29-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 29-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 29-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 29-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 29-y LTB"
+		#Removing 32nd LTB
+		remove_brigade = "Shtab-K. 32-y Legk. Tank. Brigady"
+		remove_brigade = "137/141/142/147_ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 32-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 32-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 32-y LTB"
+
+		#Formation of 17th Mechanized Corps
+		#From 16th Tank Brigade, 13th Motorized Brigade - not found.
+		remove_brigade = "§Y28-y Tankovyy Polk§W"
+
+		#Formation of 20th Mechanized Corps
+		#Removing 12th LTB
+		remove_brigade = "Shtab-K. 12-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 12-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 12-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 12-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 12-y LTB"
+		#Removing 14th LTB
+		remove_brigade = "Shtab-K. 14-y Tank. Brigady"
+		remove_brigade = "33/34/35/36 Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 14-y TB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 14-y TB"
+		remove_brigade = "Otd. Transportnyy B-n 14-y TB"
+		#Removing 20th LTB
+		remove_brigade = "Shtab-K. 20-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 20-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 20-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 20-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 20-y LTB"
+		#Removing 4th Cavalry Division
+		remove_brigade = "Shtab-K. 4-y Leningradskoy Kav. D."
+		remove_brigade = "8/77/109/145-ye Kavaleriyskiye Polki"
+		remove_brigade = "4-y Mekhanizirovannyy Polk"
+		remove_brigade = "26-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "28-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 4-y Kav. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +43300
+					#11th Mechanized Corps: 11500 (10% reduction because formed at 0% strength)
+					#13th Mechanized Corps: 8700
+					#14th Mechanized Corps: 4800
+					#17th Mechanized Corps: 11500 (10% reduction because formed at 0% strength)
+					#20th Mechanized Corps: 1400
+				}
+				energy = -75800
+				metal = -37900
+				rare_materials = -18950
+				load_oob = SOV/Old_Mech_Corps_11_1941_March.txt
+				load_oob = SOV/Old_Mech_Corps_13_1941_March.txt
+				load_oob = SOV/Old_Mech_Corps_14_1941_March.txt
+				load_oob = SOV/Old_Mech_Corps_17_1941_March.txt	
+				load_oob = SOV/Old_Mech_Corps_20_1941_March.txt	
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				
+				load_oob = SOV/Old_Mech_Corps_11_1941_March_AI.txt
+				load_oob = SOV/Old_Mech_Corps_13_1941_March_AI.txt
+				load_oob = SOV/Old_Mech_Corps_14_1941_March_AI.txt
+				load_oob = SOV/Old_Mech_Corps_17_1941_March_AI.txt	
+				load_oob = SOV/Old_Mech_Corps_20_1941_March_AI.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 11_OMK_no
+		set_country_flag = 13_OMK_no
+		set_country_flag = 14_OMK_no
+		set_country_flag = 17_OMK_no
+		set_country_flag = 20_OMK_no
+
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 15th, 16th, 19th, 22th and 24th Mechanized Corps
+country_event = {
+	id = 11027
+	is_triggered_only = yes
+	title = "Mechanized Corps (1941)"
+	desc = "EVTDESC11027"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form 5 new Mechanized Corps in the Kiev Military District"
+		set_country_flag = 15_OMK
+		set_country_flag = 16_OMK
+		set_country_flag = 19_OMK
+		set_country_flag = 22_OMK
+		set_country_flag = 24_OMK
+
+		#Formation of 15th Mechanized Corps
+		#Removing 18th LTB
+		remove_brigade = "Shtab-K. 18-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 18-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 18-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 18-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 18-y LTB"
+		#Removing 30th LTB
+		remove_brigade = "Shtab-K. 30-y Legk. Tank. Brigady"
+		remove_brigade = "72/73/74/75 Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 30-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 30-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 30-y LTB"
+
+		#Formation of 16th Mechanized Corps
+		#Removing 26th LTB
+		remove_brigade = "Shtab-K. 26-y Legk. Tank. Brigady" 
+		remove_brigade = "Otdel'nye Tankovyye B-ny 26-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 26-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 26-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 26-y LTB"
+		#Removing 33rd Chemical Tank Brigade
+		remove_brigade = "Shtab-K. 33-y Khim. Tank. Brigady"
+		remove_brigade = "67/68/69/70 Otd. Tankovyye B-ny"
+		remove_brigade = "Otd. Batal'on Boevogo Obecpecheniya 33-y KhTB"
+		remove_brigade = "64-ya Otd. Khimiskaya Rota"
+		remove_brigade = "KhM 107 Minomotnyy Otryad"
+		remove_brigade = "Otd. Transportnaya Rota 31-y KhTB"
+
+		#Formation of 19th Mechanized Corps
+		#From 22th Motorized Rifle Brigade - Not found.
+		#Removing 39th LTB - Second Formation
+		remove_brigade = "Shtab-K. 39-y Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 39-y TB"
+		remove_brigade = "Mot.-Strelkovyy B-n 30-y TB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 30-y TB"
+		remove_brigade = "Otd. Transportnyy B-n 30-y TB"
+		#Removing 35th LTB
+		remove_brigade = "Shtab-K. 35-y Legk. Tank. Brigady"
+		remove_brigade = "105/108/111/112-ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 35-y LTB"
+		remove_brigade = "230-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "Otd. Transportnyy B-n 35-y LTB"
+
+		#Formation of 22th Mechanized Corps
+		#Removing 36th LTB
+		remove_brigade = "Shtab-K. 36-y Legk. Tank. Brigady"
+		remove_brigade = "148/149/152/159-ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 36-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 36-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 36-y LTB"
+		#Removing 38th LTB
+		remove_brigade = "Shtab-K. 38-y Legk. Tank. Brigady"
+		remove_brigade = "53/55/61/79-ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 38-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 38-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 38-y LTB"
+		#Removing 15th Motorized Brigade
+		remove_brigade = "Shtab-K. 15-y Mot. Brigady"
+		remove_brigade = "1/2/3-ye Motorizovannyye B-ny 15-y MSRBR"
+		remove_brigade = "Artilleriyskiy D-n 15-y MSRBR"
+		remove_brigade = "Razvedovatelniy B-n 15-y MSRBR"
+		remove_brigade = "Avtotransportnyy B-n 15-y MSRBR"
+
+		#Formation of 24th Mechanized Corps
+		#Removing 2nd Tank Brigade
+		remove_brigade = "Shtab-K. 2-y Tank. Brigady"
+		remove_brigade = "97/98/99/101-ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 2-y TB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 2-y TB"
+		remove_brigade = "Otd. Transportnyy B-n 2-y TB"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +33300
+					#15th Mechanized Corps: 8400 
+					#16th Mechanized Corps: 8200
+					#19th Mechanized Corps: 4800
+					#22th Mechanized Corps: 3200 
+					#24th Mechanized Corps: 8700
+				}
+				energy = -66600
+				metal = -33300
+				rare_materials = -16650
+				load_oob = SOV/Old_Mech_Corps_15_1941_March.txt
+				load_oob = SOV/Old_Mech_Corps_16_1941_March.txt
+				load_oob = SOV/Old_Mech_Corps_19_1941_March.txt
+				load_oob = SOV/Old_Mech_Corps_22_1941_March.txt	
+				load_oob = SOV/Old_Mech_Corps_24_1941_March.txt	
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_15_1941_March_AI.txt
+				load_oob = SOV/Old_Mech_Corps_16_1941_March_AI.txt
+				load_oob = SOV/Old_Mech_Corps_19_1941_March_AI.txt
+				load_oob = SOV/Old_Mech_Corps_22_1941_March_AI.txt	
+				load_oob = SOV/Old_Mech_Corps_24_1941_March_AI.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 15_OMK_no
+		set_country_flag = 16_OMK_no
+		set_country_flag = 19_OMK_no
+		set_country_flag = 22_OMK_no
+		set_country_flag = 24_OMK_no
+
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 18th Mechanized Corps
+country_event = {
+	id = 11028
+	is_triggered_only = yes
+	title = "Mechanized Corps (1941)"
+	desc = "EVTDESC11028"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form the 18th Mechanized Corps in the Odessa Special Military District"
+		set_country_flag = 18_OMK
+
+		#Formation of 18th Mechanized Corps
+		#From 23rd Light Tank Brigade, 12th Motorized Rifle Brigade - not found
+		#Removing 49th Light Tank Brigade
+		remove_brigade = "Shtab-K. 49-y Legk. Tank. Brigady" 
+		remove_brigade = "181/184/192/197-ye Otdel'nye Tankovyye B-ny" 
+		remove_brigade = "Mot.-Strelkovyy B-n 49-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 49-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 49-y LTB"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +6000
+				}
+				energy = -12000
+				metal = -6000
+				rare_materials = -3000
+				load_oob = SOV/Old_Mech_Corps_18_1941_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_18_1941_March_AI.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 18_OMK_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 21st Mechanized Corps
+country_event = {
+	id = 11029
+	is_triggered_only = yes
+	title = "Mechanized Corps (1941)"
+	desc = "EVTDESC11029"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form the 21st Mechanized Corps in the Moscow Military District"
+		set_country_flag = 21_OMK
+
+		#Formation of 21th Mechanized Corps
+		#From 185th Rifle Division - not found
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +11500
+					#21st Mechanized Corps = 11500 (10% reduction because formed at 0% strength)
+				}
+				energy = -23000
+				metal = -11500
+				rare_materials = -5750
+				load_oob = SOV/Old_Mech_Corps_21_1941_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_21_1941_March_AI.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 21_OMK_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 23rd Mechanized Corps
+country_event = {
+	id = 11030
+	is_triggered_only = yes
+	title = "Mechanized Corps (1941)"
+	desc = "EVTDESC11030"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form the 23rd Mechanized Corps in Voronezh"
+		set_country_flag = 23_OMK
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value =  +11500
+					#23rd Mechanized Corps = 11500 (10% reduction because formed at 0% strength)
+				}
+				energy = -23000
+				metal = -11500
+				rare_materials = -5750
+				load_oob = SOV/Old_Mech_Corps_23_1941_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_23_1941_March_AI.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 23_OMK_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 25th Mechanized Corps
+country_event = {
+	id = 11031
+	is_triggered_only = yes
+	title = "Mechanized Corps (1941)"
+	desc = "EVTDESC11031"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form the 25th Mechanized Corps in Kharkov"
+		set_country_flag = 25_OMK
+
+		#From 52nd LTB, not found
+		#Removing 31st LTB
+		remove_brigade = "Shtab-K. 31-y Legk. Tank. Brigady"
+		remove_brigade = "1/2/3/4 Otdel'nye Tankovyye B-ny 31-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 31-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 31-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 31-y LTB"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +6000
+				}
+				energy = -12000
+				metal = -6000
+				rare_materials = -3000
+				load_oob = SOV/Old_Mech_Corps_25_1941_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_25_1941_March_AI.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 25_OMK_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 26th, 27th and 28th Mechanized Corps
+country_event = {
+	id = 11032
+	is_triggered_only = yes
+	title = "Mechanized Corps (1941)"
+	desc = "EVTDESC11032"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form 3 new Mechanized Corps in Caucasus and Central Asia"
+		set_country_flag = 26_OMK
+		set_country_flag = 27_OMK
+		set_country_flag = 28_OMK
+
+		#Formation of 26th Mechanized Corps
+		#Removing 10th Cavalry Division
+		remove_brigade = "Shtab-K. 10-y Kavaleriyskoy D."
+		remove_brigade = "19/25/33/120-ye Kavaleriyskiye Polki"
+		remove_brigade = "37-y Tankovyy Polk"
+		remove_brigade = "10-y Mekhanizirovannyy Polk"
+		remove_brigade = "25-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "10-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 10-y Kav. D."
+		#Removing 12th Cavalry Division
+		remove_brigade = "Shtab-K. 12-y Kazachey Kubanskoy KD"
+		remove_brigade = "30/107/141/149-ye Kavaleriyskiye Polki"
+		remove_brigade = "19-y Tankovyy Polk"
+		remove_brigade = "12-y Mekhanizirovannyy Polk"
+		remove_brigade = "1-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "12-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 12-y Kav. D."
+
+		#Formation of 27th Mechanized Corps
+		#Removing 19th Mountain Cavalry Division
+		remove_brigade = "Shtab-K. 19-y Uzbekistanskoy Gorno-Kav. D."
+		remove_brigade = "27/73/159-ye Gorno-Kavaleriyskiye Polki"
+		remove_brigade = "14-y Tankovyy Polk"
+		remove_brigade = "19-y Mekhanizirovannyy Polk"
+		remove_brigade = "9-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "2-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 19-y Kav. D."
+
+		#Formation of 28th Mechanized Corps
+		#Removing 17th LTB
+		remove_brigade = "Shtab-K. 17-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 17-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 17-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 17-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 17-y LTB"
+		#Removing 41st LTB
+		remove_brigade = "Shtab-K. 41-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 41-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 41-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 41-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 41-y LTB"
+		#Removing 7th LTB 
+		remove_brigade = "Shtab-K. 7-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 7-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 7-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 7-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 7-y LTB"
+		#Removing 16th Cavalry Division
+		remove_brigade = "Shtab-K. 16-y Sibirskoy Kavaleriyskoy D."
+		remove_brigade = "9/41/53-ye Kavaleriyskiye Polki"
+		remove_brigade = "39-y Tankovyy Polk"
+		remove_brigade = "16-y Mekhanizirovannyy Polk"
+		remove_brigade = "23-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "16-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 16-ya Kav. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +17000
+					#26th Mechanized Corps: 5800
+					#27th Mechanized Corps: 9200
+					#28th Mechanized Corps: 2000
+				}
+				energy = -34000
+				metal = -17000
+				rare_materials = -8500
+				load_oob = SOV/Old_Mech_Corps_26_1941_March.txt
+				load_oob = SOV/Old_Mech_Corps_27_1941_March.txt
+				load_oob = SOV/Old_Mech_Corps_28_1941_March.txt	
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_26_1941_March_AI.txt
+				load_oob = SOV/Old_Mech_Corps_27_1941_March_AI.txt
+				load_oob = SOV/Old_Mech_Corps_28_1941_March_AI.txt	
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 26_OMK_no
+		set_country_flag = 27_OMK_no
+		set_country_flag = 28_OMK_no
+
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 29th, 30th Mechanized Corps
+country_event = {
+	id = 11033
+	is_triggered_only = yes
+	title = "Mechanized Corps (1941)"
+	desc = "EVTDESC11033"
+	picture = "EarlyMech1"
+	option = {
+		name = "Form 2 new Mechanized Corps in the East"
+		set_country_flag = 29_OMK
+		set_country_flag = 30_OMK
+
+		#Formation of 29th Mechanized Corps
+		#Removing 50th LTB
+		remove_brigade = "Shtab-K. 50-y Legk. Tank. Brigady"
+		remove_brigade = "78/88/127/179-ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Otd. Razvedovatelniy B-n 50-y LTB"
+		remove_brigade = "325-y Otd. Transportnyy B-n 50-y LTB"
+		#Removing 8th Motor-Armored Brigade
+		remove_brigade = "234-y Otd. Tankovyy B-n"
+		remove_brigade = "171-y Otd. Mot.-Strelk."
+		remove_brigade = "223-y Otd. Razvedovatelniy B-n"
+		remove_brigade = "332-y Avtotransportnyy B-n"
+		#Removing 11th LTB
+		remove_brigade = "Shtab-K. 11-y Legk. Tank. Brigady"
+		remove_brigade = "Tankovyye B-ny 11-y Legk. Tank. Brigady"
+		remove_brigade = "Batal'on Boevogo Obecpecheniya 11-y LTB"
+		remove_brigade = "Razvedovatelniy B-n 11-y LTB"
+		remove_brigade = "Transportnyy B-n 11-y LTB"
+		#Removing 7th Motor-Armored Brigade
+		remove_brigade = "Otd. Tankovyy B-n 7-y MBB"
+		remove_brigade = "Otd. Mot.-Strelk. B-n 7-y MBB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 7-y MBB"
+		remove_brigade = "Avtotransportnyy B-n 7-y MBB"
+		#Removing 9th Motor-Armored Brigade
+		remove_brigade = "Otd. Tankovyy B-n 9-y MBB"
+		remove_brigade = "Otd. Mot.-Strelk. B-n 9-y MBB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 9-y MBB"
+		remove_brigade = "Avtotransportnyy B-n 9-y MBB"
+		#Removing 15th Cavalry Division
+		remove_brigade = "Shtab-K. 15-y Kavaleriyskoy D."
+		remove_brigade = "23/61/118/143-y Kavaleriyskiye Polki"
+		remove_brigade = "20-y Tankovyy Polk"
+		remove_brigade = "15-y Mekhanizirovannyy Polk"
+		remove_brigade = "15-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "15-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 15-y Kav. D."
+		#Removing 82nd Rifle Division
+		remove_brigade = "Shtab-K. 82-y Strelk. D."
+		remove_brigade = "244/245/246-ye Strelkovyye Polki"
+		remove_brigade = "82-y Legkiy Tankovyy B-n"
+		remove_brigade = "82-y Artilleriyskiy Polk"
+		remove_brigade = "196-y Protivotankovyy D-n"
+		remove_brigade = "244-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 82-y Strelk. D."
+
+		#Formation of 30th Mechanized Corps
+		#Removing 57th Special Corps
+		remove_brigade = "Shtab-K. 57-go Osobogo Korpusa"
+		remove_brigade = "Zenitno-Art. D-n 57-go Osobogo Korpusa"
+		remove_brigade = "Transportnyy B-n 57-go Osobogo Korpusa"
+		#Removing 3rd LTB
+		remove_brigade = "Shtab-K. 3-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 3-y LTB" 
+		remove_brigade = "Mot.-Strelkovyy B-n 3-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 3-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 3-y LTB"
+		#Removing 48th LTB
+		remove_brigade = "Shtab-K. 48-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 48-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 48-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 48-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 48-y LTB"
+		#Removing 6th LTB
+		remove_brigade = "Shtab-K. 6-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 6-y LTB" 
+		remove_brigade = "Mot.-Strelkovyy B-n 6-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 6-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 6-y LTB"
+		#Removing 42nd LTB
+		remove_brigade = "Shtab-K. 42-y Legk. Tank. Brigady" 
+		remove_brigade = "131/136/140/134-ye Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 42-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 42-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 42-y LTB"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+					#29th Mechanized Corps: 500
+					#30th Mechanized Corps: 500
+					
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Old_Mech_Corps_29_1941_March.txt
+				load_oob = SOV/Old_Mech_Corps_30_1941_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Old_Mech_Corps_29_1941_March_AI.txt
+				load_oob = SOV/Old_Mech_Corps_30_1941_March_AI.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 29_OMK_no
+		set_country_flag = 30_OMK_no
+
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Formation of 59th Independant Tank Division
+country_event = {
+	id = 11034
+	is_triggered_only = yes
+	title = "59th Independant Tank Division"
+	desc = "EVTDESC11034"
+	picture = "sov-upgrade-to-motorized"
+	option = {
+		name = "Form this division!"
+		set_country_flag = 59TD
+
+		#Removing 43rd LTB
+		remove_brigade = "Shtab-K. 43-y Legk. Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 43-y LTB"
+		remove_brigade = "Mot.-Strelkovyy B-n 43-y LTB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 43-y LTB"
+		remove_brigade = "Otd. Transportnyy B-n 43-y LTB"
+		#Removing 31st Cavalry Division
+		remove_brigade = "Shtab-K. 31-y Kavaleriyskoy D."
+		remove_brigade = "75/79/84/121-y Kavaleriyskiye Polki"
+		remove_brigade = "45-y Tankovyy Polk"
+		remove_brigade = "31-y Mekhanizirovannyy Polk"
+		remove_brigade = "31-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "31-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 31-y Kav. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = SOV/Tank_Division_59_1941_March.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Tank_Division_59_1941_March.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 59TD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}	
+## Formation of 108th and 109th Tank Divisions
+country_event = {
+	id = 11035
+	is_triggered_only = yes
+	title = "108th and 109th Tank Divisions"
+	desc = "EVTDESC11035"
+	picture = "sov-upgrade-to-motorized"
+	option = {
+		name = "Form these divisions!"
+		set_country_flag = 108_109TD
+
+		#Removing 59th Tank Division
+		remove_brigade = "Shtab-K. 59-y Tankovoy Divizii"
+		remove_brigade = "118-y/119-y Tankovye Polki"
+		remove_brigade = "59-y Motostrelkovyy Polk"
+		remove_brigade = "59-y Mot.-Artilleriyskiy Polk"
+		remove_brigade = "59-y Mot.-Sap'ornyy B-n"
+		remove_brigade = "59-y PT/Zen.Art./Raz. Bataliony"
+		remove_brigade = "59-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = 1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = SOV/Tank_Division_108_109_1941_July.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Tank_Division_108_109_1941_July.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 108_109TD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Formation of 107th Motorized Division
+country_event = {
+	id = 11036
+	is_triggered_only = yes
+	title = "107th Motorized Division"
+	desc = "EVTDESC11036"
+	picture = "sov-upgrade-to-motorized"
+	option = {
+		name = "To the Front!"
+		set_country_flag = 107MRD
+
+		#Removing 69th Motorized Division
+		remove_brigade = "Shtab-K. 69-y Mot. Divizii"
+		remove_brigade = "Motostrelkovye Polki 69-y MD"
+		remove_brigade = "Legkiy Tankovyy Polk69-y MD"
+		remove_brigade = "688-y Mot.-Artilleriyskiy Polk 69-y MD"
+		remove_brigade = "99-y Mot.-Sap'ornyy B-n 69-y MD"
+		remove_brigade = "Raz./Zen.Art./PT Bataliony 69-y MD"
+		remove_brigade = "Avtotransportnyy B-n 69-y MD"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = SOV/Motorized_Division_107_1941_July.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Motorized_Division_107_1941_July.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 107MRD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### Airborne Forces
+
+## 1936 - Airborne Brigades
+country_event = {
+	id = 11037
+	is_triggered_only = yes
+	title = "Paratroopers!"
+	desc = "EVTDESC11037"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these new airborne brigades"
+		set_country_flag = AB1936
+		paratrooper_brigade_activation = 10000
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2500
+				}
+				energy = -5000
+				metal = -2500
+				rare_materials = -1250
+				load_oob = SOV/Airborne_Brigades_1936_July.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Airborne_Brigades_1936_July.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = AB1936_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+## 1938 - Airborne Brigades
+country_event = {
+	id = 11038
+	is_triggered_only = yes
+	title = "Paratroopers!"
+	desc = "EVTDESC11038"
+	picture = "EarlyTank2"
+	option = {
+		name = "Expand our airborne brigades"
+		set_country_flag = AB1938
+		#Remove 3rd Airborne Brigade
+		remove_brigade = "Shtab-K. 3-y Vozdushno-Desantnoy Br."
+		remove_brigade = "1/2-ye Vozdushno-Desantnyye B-ny"
+		remove_brigade = "3/4-ye Vozdushno-Desantnyye B-ny"
+		remove_brigade = "3-y MTs Razvedovatelniy B-n"
+		
+		#Remove 13th Airborne Brigade
+		remove_brigade = "Shtab-K. 13-y Vozdushno-Desantnoy Br."
+		remove_brigade = "6/7-ye Vozdushno-Desantnyye B-ny"
+		remove_brigade = "8/9-ye Vozdushno-Desantnyye B-ny"
+		remove_brigade = "13-y Vozdushno-Desantnyy Sap'ornyy B-n"
+		remove_brigade = "13-y Voz-D. Razvedovatelniy B-n"
+
+		#Remove 47th Airborne Brigade
+		remove_brigade = "Shtab-K. 47-y Vozdushno-Desantnoy Br."
+		remove_brigade = "10/11-ye Vozdushno-Desantnyye B-ny"
+		remove_brigade = "12/13-ye Vozdushno-Desantnyye B-ny"
+		remove_brigade = "47-y Vozdushno-Desantnyy Sap'ornyy B-n"
+		remove_brigade = "47-y Voz-D. Razvedovatelniy B-n"
+
+		#Remove Far Eastern Airborne Regiments
+		remove_brigade = "Shtab-K. Vozdushno-Desantnye Polki"
+		remove_brigade = "1/2/5-ye Vozdushno-Desantnye Polki"
+		remove_brigade = "Voz-D. Razvedovatelniy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +700
+				}
+				energy = -1400
+				metal = -700
+				rare_materials = -350
+				load_oob = SOV/Airborne_Brigades_1938_July.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Airborne_Brigades_1938_July.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = AB1938_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1941 - Airborne Corps in May
+country_event = {
+	id = 11039
+	is_triggered_only = yes
+	title = "Paratroopers!"
+	desc = "EVTDESC11039"
+	picture = "EarlyTank2"
+	option = {
+		name = "Reform our Airborne Brigades into Airborne Corps"
+		set_country_flag = AC1941
+
+		#Remove 201st Airborne Brigade
+		remove_brigade = "Shtab-K. 201-y Vozdushno-Desantnoy Br."
+		remove_brigade = "Vozdushno-Desantnyye B-ny 201-y V.-D. Br."
+		remove_brigade = "Vozdushno-Desantnyy Polk 201-y V.-D. Br."
+		remove_brigade = "Artilleriyskiy D-n 201-y V.-D. Br."
+		remove_brigade = "Razvedovatelniy B-n 201-y V.-D. Br."
+
+		#Remove 202nd Airborne Brigade
+		remove_brigade = "Shtab-K. 202-y Vozdushno-Desantnoy Br."
+		remove_brigade = "Vozdushno-Desantnyye B-ny 202-y V.-D. Br."
+		remove_brigade = "Vozdushno-Desantnyy Polk 202-y V.-D. Br."
+		remove_brigade = "Artilleriyskiy D-n 202-y V.-D. Br."
+		remove_brigade = "Razvedovatelniy B-n 202-y V.-D. Br."
+
+		#Remove 204th Airborne Brigade
+		remove_brigade = "Shtab-K. 204-y Vozdushno-Desantnoy Br."
+		remove_brigade = "Vozdushno-Desantnyye B-ny 204-y V.-D. Br."
+		remove_brigade = "Vozdushno-Desantnyy Polk 204-y V.-D. Br."
+		remove_brigade = "Artilleriyskiy D-n 204-y V.-D. Br."
+		remove_brigade = "Razvedovatelniy B-n 204-y V.-D. Br."
+	
+		#Remove 211th Airborne Brigade
+		remove_brigade = "Shtab-K. 211-y Vozdushno-Desantnoy Br."
+		remove_brigade = "Vozdushno-Desantnyye B-ny 211-y V.-D. Br."
+		remove_brigade = "Vozdushno-Desantnyy Polk 211-y V.-D. Br."
+		remove_brigade = "Artilleriyskiy D-n 211-y V.-D. Br."
+		remove_brigade = "Razvedovatelniy B-n 211-y V.-D. Br."
+
+		#Remove 212th Airborne Brigade
+		remove_brigade = "Shtab-K. 212-y Vozdushno-Desantnoy Br." 
+		remove_brigade = "Vozdushno-Desantnyye B-ny 212-y V.-D. Br."
+		remove_brigade = "Vozdushno-Desantnyy Polk 212-y V.-D. Br."
+		remove_brigade = "Artilleriyskiy D-n 212-y V.-D. Br."
+		remove_brigade = "Razvedovatelniy B-n 212-y V.-D. Br."
+
+		#Remove 214th Airborne Brigade
+		remove_brigade = "Shtab-K. 214-y Vozdushno-Desantnoy Br."
+		remove_brigade = "Vozdushno-Desantnyye B-ny 214-y V.-D. Br."
+		remove_brigade = "Vozdushno-Desantnyy Polk 214-y V.-D. Br."
+		remove_brigade = "Artilleriyskiy D-n 214-y V.-D. Br."
+		remove_brigade = "Razvedovatelniy B-n 214-y V.-D. Br."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Airborne_Corps_1941_May.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Airborne_Corps_1941_May.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = AC1941_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1941 - Airborne Corps in September
+country_event = {
+	id = 11040
+	is_triggered_only = yes
+	title = "Paratroopers!"
+	desc = "EVTDESC11040"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form 5 more Airborne Corps"
+		set_country_flag = AC1941_2
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +8000
+				}
+				energy = -16000
+				metal = -8000
+				rare_materials = -4000
+				load_oob = SOV/Airborne_Corps_1941_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Airborne_Corps_1941_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = AC1941_2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### NKVD Troops
+## NKVD Historical Upgrades
+country_event = {
+	id = 11041
+	is_triggered_only = yes
+	title = "NKVD Upgrades"
+	desc = "EVTDESC11041"
+	picture = "EarlyTank2"
+	option = {
+		name = "Yes, I want these historical upgrades."
+		set_country_flag = NKVD_Upgrades
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = NKVD_Upgrades_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## NKVD Internal Troops Command
+country_event = {
+	id = 11042
+	is_triggered_only = yes
+	title = "NKVD Internal Troops Command"
+	desc = "EVTDESC11042"
+	picture = "EarlyTank2"
+	option = {
+		name = "Yes, I want this HQ."
+		set_country_flag = Command_VV_NKVD
+		
+		ai_chance = {
+			factor = 100
+		}
+		load_oob = SOV/NKVD_Main-Directorate_Internal_Troops.txt
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = Command_VV_NKVD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1937 - OMSDON
+country_event = {
+	id = 11043
+	is_triggered_only = yes
+	title = "OMSDON"
+	desc = "EVTDESC11043"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form this NKVD special forces!"
+		set_country_flag = OMSDON_1937
+		#Removing DON NKVD
+		remove_brigade = "1/2/3-ye Strelkovye Polki"
+		remove_brigade = "Otd. Tankovyy B-n DON"
+		remove_brigade = "Kavaleriyskyy Polk DON"
+		remove_brigade = "Avtomobilnyy B-n DON"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = SOV/NKVD_Special_Purpose_Division_1_1937_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/NKVD_Special_Purpose_Division_1_1937_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = OMSDON_1937_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## OMSDON Upgrade, 1943
+country_event = {
+	id = 11044
+	is_triggered_only = yes
+	title = "OMSDON"
+	desc = "EVTDESC11044"
+	picture = "EarlyTank2"
+	option = {
+		name = "Upgrade this Special Force!"
+		set_country_flag = MSDN_1943
+		#Removing OMSDON NKVD
+		remove_brigade = "Shtab-K. OMSDON" 
+		remove_brigade = "1/2/3-ye Mot.-Strelkovye Polki"
+		remove_brigade = "Otd. Tankovyy B-n OMSDON"
+		remove_brigade = "Otd. Sap'ornyy D-n OMSDON"
+		remove_brigade = "Kavaleriyskyy Polk OMSDON"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = SOV/NKVD_Special_Purpose_Division_1_1943_Feb.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/NKVD_Special_Purpose_Division_1_1943_Feb.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = MSDN_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 2nd OMSDON unit, 1942
+country_event = {
+	id = 11045
+	is_triggered_only = yes
+	title = "OMSDON"
+	desc = "EVTDESC11045"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form a second Special Forces unit!"
+		set_country_flag = MSDN_1942
+		#Removing elements of OMSDON NKVD
+		remove_brigade = "12-y Osobyy Polk"
+		remove_brigade = "Avtomobilnyy B-n OMSDON"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2000
+				}
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = SOV/NKVD_Special_Purpose_Division_2_1942_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/NKVD_Special_Purpose_Division_2_1942_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = MSDN_2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### NKVD Rifle Divisions
+## 1st and 20th NKVD Rifle Divisions, September 1941
+country_event = {
+	id = 11046
+	is_triggered_only = yes
+	title = "NKVD Rifle Divisions!"
+	desc = "EVTDESC11046"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these units!"
+		set_country_flag = NKVD_RD_1
+		#Removing NKVD Border Guards
+		remove_brigade = "3-y Polk PV NKVD"
+		remove_brigade = "3-y Pogranichnyy Otryad"
+		remove_brigade = "7-y Polk PV NKVD"
+		remove_brigade = "7-y Pogranichnyy Otryad"
+		remove_brigade = "33-y Polk PV NKVD"
+		remove_brigade = "33-y Pogranichnyy Otryad"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 782 #Leningrad
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +600
+				}
+				energy = -1200
+				metal = -600
+				rare_materials = -300
+				load_oob = SOV/NKVD_Rifle_Divisions_1941_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					not = {
+						controls = 782
+					}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +600
+				}
+				energy = -1200
+				metal = -600
+				rare_materials = -300
+				load_oob = SOV/NKVD_Rifle_Divisions_1941_Sept_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 782 #Leningrad
+				}
+				load_oob = SOV/NKVD_Rifle_Divisions_1941_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					not = {
+						controls = 782
+					}
+				}
+				load_oob = SOV/NKVD_Rifle_Divisions_1941_Sept_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = NKVD_RD_1_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 5th, 6th, 10th, and 11th NKVD Rifle Divisions, January 1942
+country_event = {
+	id = 11047
+	is_triggered_only = yes
+	title = "NKVD Rifle Divisions!"
+	desc = "EVTDESC11047"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these units!"
+		set_country_flag = NKVD_RD_2
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 784 #Tikhvin
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2000
+				}
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = SOV/NKVD_Rifle_Divisions_1942_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					not = {
+						controls = 784
+					}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2000
+				}
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = SOV/NKVD_Rifle_Divisions_1942_Jan_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 784
+				}
+				load_oob = SOV/NKVD_Rifle_Divisions_1942_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					not = {
+						controls = 784
+					}
+				}
+				load_oob = SOV/NKVD_Rifle_Divisions_1942_Jan_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = NKVD_RD_2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## NKVD Rifle Divisions, Caucasus (August 1942)
+country_event = {
+	id = 11048
+	is_triggered_only = yes
+	title = "NKVD Rifle Divisions!"
+	desc = "EVTDESC11048"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these units!"
+		set_country_flag = NKVD_RD_3
+		#Removing Georgian NKVD Border Guards
+		remove_brigade = "36-y Polk PV NKVD"
+		remove_brigade = "37-y Polk PV NKVD"
+		remove_brigade = "38-y Polk PV NKVD"
+		#Removing Armenian NKVD Border Guards
+		remove_brigade = "39-y Polk PV NKVD"
+		remove_brigade = "40-y Polk PV NKVD"
+		#Removing Azerbaizhan NKVD Border Guards
+		remove_brigade = "41-y Polk PV NKVD"
+		remove_brigade = "42-y Polk PV NKVD"
+		remove_brigade = "43-y Polk PV NKVD"
+		remove_brigade = "44-y Polk PV NKVD"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
+				load_oob = SOV/NKVD_Rifle_Divisions_1942_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/NKVD_Rifle_Divisions_1942_Aug.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = NKVD_RD_3_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## NKVD Motor Rifle Divisions (Summer 1941)
+country_event = {
+	id = 11049
+	is_triggered_only = yes
+	title = "NKVD Motor Rifle Divisions!"
+	desc = "EVTDESC11049"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these units!"
+		set_country_flag = NKVD_MRD_1
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +6400
+				}
+				energy = -12800
+				metal = -6400
+				rare_materials = -3200
+				load_oob = SOV/NKVD_Motorized_Rifle_Divisions_1941_June.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/NKVD_Motorized_Rifle_Divisions_1941_June.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = NKVD_MRD_1_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## NKVD Motor Rifle Divisions, January 1942
+country_event = {
+	id = 11050
+	is_triggered_only = yes
+	title = "NKVD Motor Rifle Divisions!"
+	desc = "EVTDESC11050"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these units!"
+		set_country_flag = NKVD_MRD_2
+		#Removing 22nd NKVD MRD
+		remove_brigade = "Shtab-K. 22-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "1/3/5-ye Mot.-Strelkovye Polki NKVD"
+		remove_brigade = "Elementiy 22-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "22-ya MSD NKVD Polk"
+		remove_brigade = "Avtotransportnyy B-n 22-y MSD V.V. NKVD"
+
+		#Removing 23rd NKVD MRD
+		remove_brigade = "Shtab-K. 23-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "4/6/16-ye Mot.-Strelkovye Polki NKVD"
+		remove_brigade = "21-y Cavalry Polk NKVD"
+		remove_brigade = "23-ya MSD NKVD Polk"
+		remove_brigade = "Avtotransportnyy B-n 23-y MSD V.V. NKVD"
+
+		#Removing 76th NKVD MRB
+		remove_brigade = "Shtab-K. 76-y Mot.-Strelk. Brigada V.V. NKVD"
+		remove_brigade = "30/8-ye Mot.-Strelkovye Polki NKVD"
+		remove_brigade = "Avtotransportnyy B-n 76-y MSB V.V. NKVD"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
+				load_oob = SOV/NKVD_Motorized_Rifle_Divisions_1942_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/NKVD_Motorized_Rifle_Divisions_1942_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = NKVD_MRD_2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## NKVD Motor Rifle Divisions, January 1942 -Alternative event if GER controls Leningrad, Tula, Voronezh or Rostov
+country_event = {
+	id = 11051
+	is_triggered_only = yes
+	title = "NKVD Motor Rifle Divisions!"
+	desc = "EVTDESC11051"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these units!"
+		set_country_flag = NKVD_MRD_2
+		#Removing 22nd NKVD MRD
+		remove_brigade = "Shtab-K. 22-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "1/3/5-ye Mot.-Strelkovye Polki NKVD"
+		remove_brigade = "Elementiy 22-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "22-ya MSD NKVD Polk"
+		remove_brigade = "Avtotransportnyy B-n 22-y MSD V.V. NKVD"
+
+		#Removing 23rd NKVD MRD
+		remove_brigade = "Shtab-K. 23-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "4/6/16-ye Mot.-Strelkovye Polki NKVD"
+		remove_brigade = "21-y Cavalry Polk NKVD"
+		remove_brigade = "23-ya MSD NKVD Polk"
+		remove_brigade = "Avtotransportnyy B-n 23-y MSD V.V. NKVD"
+
+		#Removing 76th NKVD MRB
+		remove_brigade = "Shtab-K. 76-y Mot.-Strelk. Brigada V.V. NKVD"
+		remove_brigade = "30/8-ye Mot.-Strelkovye Polki NKVD"
+		remove_brigade = "Avtotransportnyy B-n 76-y MSB V.V. NKVD"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
+				load_oob = SOV/NKVD_Motorized_Rifle_Divisions_1942_Jan_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/NKVD_Motorized_Rifle_Divisions_1942_Jan_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = NKVD_MRD_2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## NKVD Motor Rifle Divisions, May 1942
+country_event = {
+	id = 11052
+	is_triggered_only = yes
+	title = "NKVD Motor Rifle Divisions!"
+	desc = "EVTDESC11051"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these units!"
+		set_country_flag = NKVD_MRD_2
+		#Removing 8th NKVD MRD
+		remove_brigade = "Shtab-K. 22-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "1/3/5-ye Mot.-Strelkovye Polki NKVD"
+		remove_brigade = "Elementiy 22-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "22-ya MSD NKVD Polk"
+		remove_brigade = "Avtotransportnyy B-n 22-y MSD V.V. NKVD"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 2857 #Stalingrad
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = SOV/NKVD_Motorized_Rifle_Divisions_1942_May.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					not = {
+						controls = 2857 #Stalingrad
+					}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = SOV/NKVD_Motorized_Rifle_Divisions_1942_May_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					controls = 2857 #Stalingrad
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/NKVD_Motorized_Rifle_Divisions_1942_May.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					not = {
+						controls = 2857 #Stalingrad
+					}
+				}
+				load_oob = SOV/NKVD_Motorized_Rifle_Divisions_1942_May_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = NKVD_MRD_3_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## NKVD Divisions transfered to Red Army - August 1942
+country_event = {
+	id = 11053
+	is_triggered_only = yes
+	title = "NKVD Troops transfered to the Red Army!"
+	desc = "EVTDESC11053"
+	picture = "EarlyTank2"
+	option = {
+		name = "Transfer NKVD Troops to the Red Army!"
+		set_country_flag = NKVD_transfer_1
+		#Removing 1st NKVD RD
+		remove_brigade = "Shtab-K. 1-y SD V.V. NKVD"
+		remove_brigade = "1/2-ye Strelkovyye Polki V.V. NKVD"
+		remove_brigade = "3-y Strelkovyy Polk V.V. NKVD"
+		remove_brigade = "2-y Otd. Minnomotnyy D-n V.V. NKVD"
+		remove_brigade = "Otd. Sap'ornyy B-n V.V. NKVD"
+		remove_brigade = "Otd. Razvedovatelniy B-n 1-y SD V.V. NKVD"
+		remove_brigade = "Transportnaya Rota 1-y SD V.V. NKVD"
+
+		#Removing 21st NKVD MRD
+		remove_brigade = "Shtab-K. 21-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "13/14/15/35-ye Mot.-Strelkovye Polki NKVD"
+		remove_brigade = "21-y Artilleriyskiy Polk V.V. NKVD"
+		remove_brigade = "21-ya MSD NKVD Polk"
+		remove_brigade = "Avtotransportnyy B-n 21-y MSD NKVD"
+
+		#Removing 9th NKVD MRD
+		remove_brigade = "Shtab-K. 9-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "19/30/33/21/267/268 Mot.-Strelkovye Polki NKVD"
+		remove_brigade = "9-ya MSD NKVD Polk"
+		remove_brigade = "Avtotransportnyy B-n 9-y MSD NKVD"
+
+		#Removing 20th NKVD RD
+		remove_brigade = "Shtab-K. 20-y SD V.V. NKVD"
+		remove_brigade = "8/9-ye Strelkovyye Polki V.V. NKVD"
+		remove_brigade = "10-y Strelkovyy Polk V.V. NKVD"
+		remove_brigade = "20-y Artilleriyskiy Polk V.V. NKVD"
+		remove_brigade = "Otd. Razvedovatelniy B-n 20-y SD V.V. NKVD"
+		remove_brigade = "Transportnaya Rota 20-y SD V.V. NKVD"
+
+		#Removing 13th NKVD MRD
+		remove_brigade = "Shtab-K. 13-y Mot.-Strelk. Div. V.V. NKVD"
+		remove_brigade = "4-y Mot.-Strelkovye Polki NKVD"
+		remove_brigade = "266/274/289-ye Strelkovyye Polki V.V. NKVD"
+		remove_brigade = "Avtotransportnyy B-n 9-y MSD NKVD"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = SOV/NKVD_Rifle_Divisions_transfered_to_Red_Army_1942_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/NKVD_Rifle_Divisions_transfered_to_Red_Army_1942_Aug.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = NKVD_transfer_1_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## NKVD Divisions transfered to Red Army - February 1943
+country_event = {
+	id = 11054
+	is_triggered_only = yes
+	title = "NKVD Troops transfered to the Red Army!"
+	desc = "EVTDESC11054"
+	picture = "EarlyTank2"
+	option = {
+		name = "Transfer More NKVD Troops to the Red Army!"
+		set_country_flag = NKVD_transfer_2
+		#Removing Far Eastern NKVD Border Troops to form 102nd RD
+		remove_brigade = "56-y Polk PV NKVD"
+		remove_brigade = "56-y Pogranichnyy Otryad"
+		remove_brigade = "63-y Polk PV NKVD"
+		remove_brigade = "63-y Pogranichnyy Otryad"
+
+		#Removing Transbaikal NKVD Border Troops to form 106th RD
+		remove_brigade = "64-y Polk PV NKVD"
+		remove_brigade = "64-y Pogranichnyy Otryad"
+		remove_brigade = "74-y NKVD Kavaleriyskiy Polk"
+		remove_brigade = "Shtab-K. 74-y NKVD Kav. Polka"
+
+		#Removing Central Asia NKVD Border Troops to form 162nd RD
+		remove_brigade = "66-y Polk PV NKVD"
+		remove_brigade = "66-y Pogranichnyy Otryad"
+		remove_brigade = "81-y Polk PV NKVD"
+		remove_brigade = "81-y Pogranichnyy Otryad"
+
+		#Removing 10th Stalingrad NKVD Rifle Division to form 181st RD
+		remove_brigade = "Shtab-K. 10-y SD V.V. NKVD"
+		remove_brigade = "269/270-ye Strelkovyye Polki V.V. NKVD"
+		remove_brigade = "271/272-ye Strelkovyye Polki V.V. NKVD"
+		remove_brigade = "273-y Strelkovyy Polk V.V. NKVD"
+		remove_brigade = "Artilleriyskiy D-n 10-y SD V.V. NKVD"
+		remove_brigade = "Istr. Protivotankovyy D-n 10-y SD V.V. NKVD"
+		remove_brigade = "Transportnaya Rota 1-y SD V.V. NKVD"
+
+		#Removing Siberian NKVD Border Troops to form 140th RD
+		remove_brigade = "29-y Polk PV NKVD"
+		remove_brigade = "29-y Pogranichnyy Otryad"
+		remove_brigade = "9-y Kavaleriyskiy Polk PV NKVD"
+		remove_brigade = "Shtab-K. 9-y NKVD Kav. Polk"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3500
+				}
+				energy = -7000
+				metal = -3500
+				rare_materials = -1750
+				load_oob = SOV/NKVD_Rifle_Divisions_transfered_to_Red_Army_1943_Feb.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/NKVD_Rifle_Divisions_transfered_to_Red_Army_1943_Feb.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = NKVD_transfer_2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### Various events before Great Patriotic war
+##Long Range Air Command Formation
+country_event = {
+	id = 11055 #Formerevent 92090
+	is_triggered_only = yes
+	title = "Formation Longe Range Air Command"
+	desc = "EVTDESC92090"
+	picture = "soviet-long-range-air-command"
+	option = {
+		name = "Forming Longe Range Air Command"
+		set_country_flag = strat_command
+		load_oob = SOV/SOV_Strat_air_command.txt
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = strat_command_no
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+## Soviet T-35 Heavy Tanks
+country_event = {
+	id = 11056 #Formerevent 49015
+	is_triggered_only = yes
+    title = "5th Separate Heavy Tank Brigade"
+	desc = "EVTDESC11056"
+	picture = "T35_parade"
+    
+    option = {
+		name = "Good"
+		set_country_flag = T35_HT
+		load_oob = SOV/Heavy_Tank_Brigade_5_1936.txt
+		supplies = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = T35_HT_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## TM-3 12" Railway guns model 1938
+country_event = {
+	id = 11057
+	is_triggered_only = yes
+    title = "Soviet Railway Guns"
+	desc = "EVTDESC11057"
+	picture = "T35_parade"
+    
+    option = {
+		name = "Put these naval guns in use!"
+		set_country_flag = 1939_Railway_guns
+		ai_chance = {
+			factor = 100
+		}
+
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/SOV_TM3_guns.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/SOV_TM3_guns_AI.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 1939_Railway_guns_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Rifle Corps from annexed Baltic States (1940)
+country_event = {
+	id = 11058
+	is_triggered_only = yes
+    title = "Baltic Armies annexation"
+	desc = "EVTDESC11058"
+	picture = "T35_parade"
+    
+    option = {
+		name = "Incorporate baltic troops in the Red Army!"
+		set_country_flag = Baltics_Annexation
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2500
+				}
+				energy = -5000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = SOV/Baltic Armies_annexation.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Baltic Armies_annexation.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = Baltics_Annexation_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Lithuanian warship Prezidentas Smetona
+country_event = {
+	id = 11059 #Formerevent 45949
+	is_triggered_only = yes
+    title = "EVTNAME45949"
+	desc = "EVTDESC45949"
+	picture = "prezidentas_smetona"
+	
+	option = {
+		name = "Join the Baltic fleet"
+		set_country_flag = Prezidentas_Smetona
+		load_oob = Prezidentas-Smetona.txt
+		supplies = -200
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+## Hanko Garrison
+country_event = {
+	id = 11060
+	is_triggered_only = yes
+    title = "Hanko Garrison"
+	desc = "EVTDESC11060"
+	picture = "T35_parade"
+    
+    option = {
+		name = "Defend Hanko!"
+		set_country_flag = Hanko_Garrison
+        #Removing TM3 Railway Guns
+        remove_brigade = "Shtab-K. 9-go Otd. Zhelez. Art. Divizii"
+        remove_brigade = "TM-3-12 Obr. 1938 g (1)"
+        remove_brigade = "TM-3-12 Obr. 1938 g (2)"
+        remove_brigade = "TM-3-12 Obr. 1938 g (3)"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Baltic Armies_annexation.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Baltic Armies_annexation.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = Baltics_Annexation_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
