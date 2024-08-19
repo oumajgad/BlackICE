@@ -268,6 +268,7 @@ __declspec(dllexport) int setModuleBase(lua_State* L)
     Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     MODULE_BASE = modulePtr.get();
+    Hooks::MODULE_BASE = MODULE_BASE;
     return 0;
 }
 

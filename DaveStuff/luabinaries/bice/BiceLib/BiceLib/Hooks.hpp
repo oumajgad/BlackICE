@@ -1,6 +1,7 @@
 #include <Windows.h>
 
 namespace Hooks {
+    DWORD MODULE_BASE;
     bool hook(void* hookAddress, void* hookFunc, int len, int NOPs) {
         if (len < 5) {
             return false;
@@ -59,7 +60,6 @@ namespace Hooks {
         return 0;
     }
 
-    DWORD skillExperienceLevels[6] = { 32768000 , 65536000 , 131072000, 262144000 , 524288000 , 540672000 };
     std::vector<DWORD>* skillTraits;
     bool checkTraitSkillLevelConsistency(DWORD* leaderAddress) {
         DWORD currentRank = *((BYTE*)leaderAddress + 0x6C);
@@ -92,13 +92,42 @@ namespace Hooks {
         }
         return true;
     }
-
+    struct skillLevelExp {
+        int level;  // skill level
+        DWORD exp; // first DWORD of the experience / second one should be zeroed. the game does not handle skill above 10 well
+        DWORD exp_50; // experience for 50% to the next level
+    };
+    skillLevelExp skillExperiencePerLevel[16] = { 
+        {0, 0, 16384000},
+        {1, 32768000, 49152000},
+        {2, 65536000, 98304000},
+        {3, 131072000, 196608000},
+        {4, 262144000, 327680000},
+        {5, 393216000, 491520000},
+        {6, 589824000, 704512000},
+        {7, 819200000, 950272000},
+        {8, 1081344000 ,1245184000},
+        {9, 1409024000, 1687552000},
+        {10, 1966080000, 1966080000} 
+    };
+    typedef void(__stdcall* getLeaderExperiencePercentFunction)(int param_1, unsigned int* param_2);
     void adjustSkillLevel(DWORD* leaderAddress, DWORD* CPromoteLeaderCommand, DWORD newRank) {
         DWORD currentSkill = *((BYTE*)leaderAddress + 0x70);
+        DWORD experience = *(DWORD*)((BYTE*)leaderAddress + 0x78);
         DWORD direction = *((BYTE*)CPromoteLeaderCommand + 0x64); // 0 = Higher Rank ; 1 = Lower Rank
+
+        getLeaderExperiencePercentFunction getLeaderExperiencePercent = reinterpret_cast<getLeaderExperiencePercentFunction>(MODULE_BASE + 0x181c50);
+        unsigned int experiencePercent = 0; // 1000 = 100% - 500 = 50%
+        getLeaderExperiencePercent((int)leaderAddress, &experiencePercent);
 
         //std::cout << "currentSkill: " << currentSkill << std::endl;
         //std::cout << "direction: " << direction << std::endl;
+        //std::cout << "newRank: " << newRank << std::endl;
+        //std::cout << "experience: " << experience << std::endl;
+        //std::cout << "experiencePercent: " << experiencePercent << std::endl;
+
+        //int nextLevelPercentage = getNextLevelPercentage(currentSkill, experience);
+        //std::cout << "nextLevelPercentage: " << nextLevelPercentage << std::endl;
 
         HDS::LinkedListNodeSingle* traitListNode = 0;
         int pureSkill = getPureSkilleAndTraitListNode(leaderAddress, &traitListNode);
@@ -107,9 +136,25 @@ namespace Hooks {
 
         if (direction == 1 && (pureSkill - (int) newRank) >= 0) { // Demotion
             *((BYTE*)leaderAddress + 0x70) = currentSkill + 1;
+            if (experiencePercent >= 500 && currentSkill < 10) {
+                *(DWORD*)((BYTE*)leaderAddress + 0x78) = skillExperiencePerLevel[currentSkill + 1].exp_50;
+                *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
+            }
+            else {
+                *(DWORD*)((BYTE*)leaderAddress + 0x78) = skillExperiencePerLevel[currentSkill + 1].exp;
+                *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
+            }
         }
         else if (direction == 0 && currentSkill != 0) { // Promotion
             *((BYTE*)leaderAddress + 0x70) = currentSkill - 1;
+            if (experiencePercent >= 500 && currentSkill < 10) {
+                *(DWORD*)((BYTE*)leaderAddress + 0x78) = skillExperiencePerLevel[currentSkill - 1].exp_50;
+                *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
+            }
+            else {
+                *(DWORD*)((BYTE*)leaderAddress + 0x78) = skillExperiencePerLevel[currentSkill - 1].exp;
+                *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
+            }
         }
     }
 
@@ -127,7 +172,6 @@ namespace Hooks {
 
         //std::cout << "patchLeaderSkillLossOnPromotion hook called" << std::endl;
         //std::cout << "leaderAddress: " << leaderAddress << std::endl;
-        //std::cout << "newRank: " << newRank << std::endl;
 
         if (checkTraitSkillLevelConsistency(leaderAddress)) { // no skill change if the general doesn't have the "pskill" trait
             adjustSkillLevel(leaderAddress, CPromoteLeaderCommand, newRank);

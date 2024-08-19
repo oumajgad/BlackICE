@@ -41,8 +41,8 @@ def rawbytes(s_in):
     return res
 
 
-def to_number(_in: bytes):
-    return int.from_bytes(_in, byteorder="little", signed=True)
+def to_number(_in: bytes, signed=True):
+    return int.from_bytes(_in, byteorder="little", signed=signed)
 
 
 def int_to_pointer(x: int):

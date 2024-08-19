@@ -22,9 +22,8 @@ class CLeaderOffsets:
     rank: int = 0x6C
     skill: int = 0x70
     max_skill: int = 0x74
-    experience: int = (
-        0x78  # lvl 1 = 32_768_000 -> each level needs 2x of the previous, maxes out at 540_672_000 per level (level 6)
-    )
+    experience: int = 0x78
+    experience_2: int = 0x7C
     loyalty: int = 0x80
     CLeaderHistoryOffset: int = 0x84
 
@@ -43,7 +42,9 @@ class CLeader(pydantic.BaseModel):
     rank: int
     skill: int
     max_skill: int
-    experience: int
+    experience: int  # lvl 1 = 32_768_000
+    experience_2: int  # after lvl 10 the game starts using the DWORD next to the experience,
+    # but this field is not saved to the save game properly
     loyalty: int
     history: CLeaderHistory
 
@@ -61,7 +62,8 @@ class CLeader(pydantic.BaseModel):
             "rank": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.rank, 4)),
             "skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.skill, 4)),
             "max_skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.max_skill, 4)),
-            "experience": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.experience, 4)),
+            "experience": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.experience, 4), False),
+            "experience_2": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.experience_2, 4), False),
             "loyalty": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.loyalty, 4)),
             "history": CLeaderHistory.make(pm, ptr + CLeaderOffsets.CLeaderHistoryOffset),
         }
@@ -103,15 +105,20 @@ if __name__ == "__main__":
     leaders = CLeader.get_leaders(pm)
     print(f"{len(leaders)=}")
     out = {}
+    levels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
     for leader in leaders:
         # print(f"{leader=}")
         x = CLeader.make(pm, leader)
-        p_skill = x.history.starting_skill + x.get_starting_rank_and_date()[0] - 1
-        if p_skill < 0:
-            p_skill = 0
-        out[x.id] = p_skill
-        if "Beck" == x.name and x.country_tag == "GER":
+        # p_skill = x.history.starting_skill + x.get_starting_rank_and_date()[0] - 1
+        # if p_skill < 0:
+        #     p_skill = 0
+        # out[x.id] = p_skill
+        if "Arndt" == x.name and x.country_tag == "GER":
             print(json.dumps(x.dict(), indent=2, default=str))
             print(x.get_starting_rank_and_date())
-    with open("out.txt", "w") as f:
-        f.writelines(json.dumps(out, indent=2))
+        # if x.skill in levels and x.id in levels:
+        #     levels.remove(x.skill)
+        #     print(f"{x.skill} - {x.ptr_str} - {x.experience} : {x.experience_2}")
+
+    # with open("out.txt", "w") as f:
+    #     f.writelines(json.dumps(out, indent=2))
