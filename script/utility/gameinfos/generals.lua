@@ -65,7 +65,12 @@ local function translateTraits(traits)
         table.insert(res, Parsing.GetTranslation(traits) .. " [" .. traits .. "]")
     else
         for k, v in pairs(traits) do
-            table.insert(res, Parsing.GetTranslation(v) .. " [" .. v .. "]")
+            local trans = Parsing.GetTranslation(v)
+            if trans == nil then
+                table.insert(res, "[" .. v .. "]")
+            else
+                table.insert(res, trans .. " [" .. v .. "]")
+            end
         end
     end
 
