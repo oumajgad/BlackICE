@@ -10,12 +10,14 @@
 #include <HoiDataStructures.hpp>
 
 #include <CCountry.hpp>
-#include <Hooks.hpp>
+#include <Hooks/Hooks.hpp>
+#include <Hooks/CLeaderHooks.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
 bool DEBUG = true;
 DWORD MODULE_BASE;
+
 
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
@@ -112,7 +114,7 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
     }
 
     auto tempSkillTraits = new std::vector<uintptr_t>; // unsorted vector of the traits which are used to track leader skill
-    Hooks::skillTraits = new std::vector<DWORD>; // sorted vector of the traits
+    Hooks::CLeader::skillTraits = new std::vector<DWORD>; // sorted vector of the traits
     for (auto& trait : *traits) {
         DWORD traitNameLength;
         traitNameLength = *((DWORD*)trait + (0x3C / 4));
@@ -128,7 +130,7 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
         if (traitNameAsString.find("pskill_") == 0) {
             //std::cout << "traitName: " << traitNameAsString << std::endl;
             tempSkillTraits->push_back(trait);
-            Hooks::skillTraits->push_back(trait); // also push back the Hooks::skillTraits vector so the indexes get filled
+            Hooks::CLeader::skillTraits->push_back(trait); // also push back the Hooks::skillTraits vector so the indexes get filled
         }
     }
 
@@ -141,17 +143,17 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
         //std::cout << "substr: " << substr << std::endl;
         auto index = std::stoi(substr, nullptr, 10);
         //std::cout << "index: " << index << std::endl;
-        Hooks::skillTraits->at(index) = (DWORD) trait;
+        Hooks::CLeader::skillTraits->at(index) = (DWORD) trait;
     }
 
     DWORD hookAddress = MODULE_BASE + 0x1D7CDC;
-    Hooks::jumpBack_PatchLeaderSkillLossOnPromotion = hookAddress + 6;
-    if (!Hooks::hook((void*)hookAddress, Hooks::patchLeaderSkillLossOnPromotion, 5, 1)) {
+    Hooks::CLeader::jumpBack_PatchLeaderSkillLossOnPromotion = hookAddress + 6;
+    if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderSkillLossOnPromotion, 5, 1)) {
         std::cout << "Hook 'activateLeaderPromotionSkillLoss' failed" << std::endl;
     }
     else {
         std::cout << "Hook 'activateLeaderPromotionSkillLoss' succeeded" << std::endl;
-        std::cout << "jumpBack_PatchLeaderSkillLossOnPromotion: " << Memory::n2hexstr(Hooks::jumpBack_PatchLeaderSkillLossOnPromotion) << std::endl;
+        std::cout << "jumpBack_PatchLeaderSkillLossOnPromotion: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_PatchLeaderSkillLossOnPromotion) << std::endl;
     }
 
     activateLeaderPromotionSkillLossDone = TRUE;
@@ -169,14 +171,14 @@ __declspec(dllexport) int activateLeaderListShowMaxSkill(lua_State* L)
     }
 
     DWORD hookAddress = MODULE_BASE + 0x365688;
-    Hooks::jumpBack_patchLeaderListShowMaxSkill = hookAddress + 7;
+    Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill = hookAddress + 7;
 
-    if (!Hooks::hook((void*)hookAddress, Hooks::patchLeaderListShowMaxSkill, 5, 2)) {
+    if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderListShowMaxSkill, 5, 2)) {
         std::cout << "Hook 'activateLeaderListShowMaxSkill' failed" << std::endl;
     }
     else {
         std::cout << "Hook 'activateLeaderListShowMaxSkill' succeeded" << std::endl;
-        std::cout << "jumpBack_patchLeaderListShowMaxSkill: " << Memory::n2hexstr(Hooks::jumpBack_patchLeaderListShowMaxSkill) << std::endl;
+        std::cout << "jumpBack_patchLeaderListShowMaxSkill: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill) << std::endl;
     }
     activateLeaderListShowMaxSkillDone = TRUE;
     return 0;
@@ -191,14 +193,14 @@ __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
     }
 
     DWORD hookAddress = MODULE_BASE + 0x3679d4;
-    Hooks::jumpBack_patchLeaderListShowMaxSkillSelected = hookAddress + 7;
+    Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected = hookAddress + 7;
 
-    if (!Hooks::hook((void*)hookAddress, Hooks::patchLeaderListShowMaxSkillSelected, 5, 2)) {
+    if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderListShowMaxSkillSelected, 5, 2)) {
         std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' failed" << std::endl;
     }
     else {
         std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' succeeded" << std::endl;
-        std::cout << "jumpBack_patchLeaderListShowMaxSkillSelected: " << Memory::n2hexstr(Hooks::jumpBack_patchLeaderListShowMaxSkillSelected) << std::endl;
+        std::cout << "jumpBack_patchLeaderListShowMaxSkillSelected: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected) << std::endl;
     }
     activateLeaderListShowMaxSkillSelectedDone = TRUE;
     return 0;
