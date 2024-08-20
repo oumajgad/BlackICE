@@ -95,20 +95,20 @@ namespace Hooks {
     struct skillLevelExp {
         int level;  // skill level
         DWORD exp; // first DWORD of the experience / second one should be zeroed. the game does not handle skill above 10 well
-        DWORD exp_50; // experience for 50% to the next level
+        DWORD exp_1Perc_step; // 1% Point step
     };
     skillLevelExp skillExperiencePerLevel[16] = { 
-        {0, 0, 16384000},
-        {1, 32768000, 49152000},
-        {2, 65536000, 98304000},
-        {3, 131072000, 196608000},
-        {4, 262144000, 327680000},
-        {5, 393216000, 491520000},
-        {6, 589824000, 704512000},
-        {7, 819200000, 950272000},
-        {8, 1081344000 ,1245184000},
-        {9, 1409024000, 1687552000},
-        {10, 1966080000, 1966080000} 
+        {0, 0, 327680},
+        {1, 32768000, 327680},
+        {2, 65536000, 655360},
+        {3, 131072000, 1310720},
+        {4, 262144000, 1310720},
+        {5, 393216000, 1966080},
+        {6, 589824000, 2293760},
+        {7, 819200000, 2621440},
+        {8, 1081344000 ,3276800},
+        {9, 1409024000, 5570560},
+        {10, 1966080000, 0}
     };
     typedef void(__stdcall* getLeaderExperiencePercentFunction)(int param_1, unsigned int* param_2);
     void adjustSkillLevel(DWORD* leaderAddress, DWORD* CPromoteLeaderCommand, DWORD newRank) {
@@ -136,22 +136,22 @@ namespace Hooks {
 
         if (direction == 1 && (pureSkill - (int) newRank) >= 0) { // Demotion
             *((BYTE*)leaderAddress + 0x70) = currentSkill + 1;
-            if (experiencePercent >= 500 && currentSkill < 10) {
-                *(DWORD*)((BYTE*)leaderAddress + 0x78) = skillExperiencePerLevel[currentSkill + 1].exp_50;
+            if (experiencePercent > 0 && experiencePercent < 1000) { // bounds check
+                *(DWORD*)((BYTE*)leaderAddress + 0x78) = (skillExperiencePerLevel[currentSkill + 1].exp) + (experiencePercent / 10 * skillExperiencePerLevel[currentSkill + 1].exp_1Perc_step);
                 *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
             }
-            else {
+            else { // the percentage makes no sense -> fall back to 0
                 *(DWORD*)((BYTE*)leaderAddress + 0x78) = skillExperiencePerLevel[currentSkill + 1].exp;
                 *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
             }
         }
         else if (direction == 0 && currentSkill != 0) { // Promotion
             *((BYTE*)leaderAddress + 0x70) = currentSkill - 1;
-            if (experiencePercent >= 500 && currentSkill < 10) {
-                *(DWORD*)((BYTE*)leaderAddress + 0x78) = skillExperiencePerLevel[currentSkill - 1].exp_50;
+            if (experiencePercent > 0 && experiencePercent < 1000) { // bounds check
+                *(DWORD*)((BYTE*)leaderAddress + 0x78) = (skillExperiencePerLevel[currentSkill - 1].exp) + (experiencePercent / 10 * skillExperiencePerLevel[currentSkill - 1].exp_1Perc_step);
                 *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
             }
-            else {
+            else { // the percentage makes no sense -> fall back to 0
                 *(DWORD*)((BYTE*)leaderAddress + 0x78) = skillExperiencePerLevel[currentSkill - 1].exp;
                 *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
             }
