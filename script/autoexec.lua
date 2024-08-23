@@ -46,6 +46,7 @@ require('pdxParser')
 BiceLib = require("BiceLib")
 BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
 BiceLib.setModuleBase()
+BiceLib.activateRankSpecificTraits()
 BiceLib.activateLeaderPromotionSkillLoss()
 BiceLib.activateLeaderListShowMaxSkill()
 BiceLib.activateLeaderListShowMaxSkillSelected()

@@ -87,6 +87,91 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
     return 1;
 }
 
+void activateLeaderRankChangeHook() {
+    DWORD hookAddress = MODULE_BASE + 0x1D7CDC;
+    Hooks::CLeader::jumpBack_leaderRankChangeHook = hookAddress + 6;
+    if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::leaderRankChangeHook, 5, 1)) {
+        std::cout << "Hook 'LeaderRankChangeHook' failed" << std::endl;
+    }
+    else {
+        std::cout << "Hook 'LeaderRankChangeHook' succeeded" << std::endl;
+        std::cout << "jumpBack_leaderRankChangeHook: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_leaderRankChangeHook) << std::endl;
+    }
+    Hooks::CLeader::isLeaderRankChangeHookActive = true;
+}
+
+std::vector<uintptr_t>* getTraitsData;
+bool getTraitsDone = false;
+std::vector<uintptr_t>* getTraits() {
+    if (!getTraitsDone) {
+        //std::cout << "getTraits" << std::endl;
+        Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
+        Address modulePtr = external.getModule("hoi3_tfh.exe");
+        //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
+
+        uintptr_t CTraitVFTable = modulePtr.get() + 0x11C7DC0;
+        //std::cout << "CTraitVFTable: " << Memory::n2hexstr(CTraitVFTable) << std::endl;
+        std::string CTraitVFTableSig = Memory::ptrToSignature(CTraitVFTable);
+        //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
+        getTraitsData = external.findSignatures(modulePtr.get() + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
+        if (getTraitsData->size() != 0) {
+            std::cout << "Traits vector filled" << std::endl;
+            getTraitsDone = true;
+        }
+    }
+    return getTraitsData;
+}
+
+
+BOOL activateRankSpecificTraitsDone = false;
+__declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
+{
+    if (activateRankSpecificTraitsDone) {
+        return 0;
+    }
+
+    if (!Hooks::CLeader::isLeaderRankChangeHookActive) {
+        activateLeaderRankChangeHook();
+    }
+
+    std::vector<uintptr_t>* traits = getTraits();
+    //std::cout << "traits->size: " << traits->size() << std::endl;
+    if (traits->size() == 0) {
+        // Traits are not set up when the LUA is first run -> defer hooking until the LUA context is reloaded during save loading
+        std::cout << "Hook 'activateRankSpecificTraits' deferred until save load" << std::endl;
+        return 0;
+    }
+
+    auto tempRankTraits = new std::vector<uintptr_t>; // unsorted vector of the traits which are used to track leader skill
+    /*
+    Hooks::CLeader::skillTraits = new std::vector<DWORD>; // sorted vector of the traits
+    for (auto& trait : *traits) {
+        DWORD traitNameLength;
+        traitNameLength = *((DWORD*)trait + (0x3C / 4));
+        char* traitName;
+        if (traitNameLength > 15) {
+            traitName = (char*)*(DWORD*)((BYTE*)trait + 0x2C);
+        }
+        else {
+            traitName = (char*)((BYTE*)trait + 0x2C);
+        }
+
+        std::string traitNameAsString = std::string(traitName);
+        if (traitNameAsString.find("rankSpecificTrait_") == 0) {
+            std::cout << "traitName: " << traitNameAsString << std::endl;
+            tempRankTraits->push_back(trait);
+            Hooks::CLeader::skillTraits->push_back(trait); // also push back the Hooks::skillTraits vector so the indexes get filled
+        }
+    }
+    */
+
+
+    Hooks::CLeader::isRankSpecificTraitsActive = true;
+    activateRankSpecificTraitsDone = TRUE;
+    delete tempRankTraits;
+    return 0;
+}
+
 
 BOOL activateLeaderPromotionSkillLossDone = false;
 __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
@@ -95,21 +180,15 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
         return 0;
     }
 
-    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
-    Address modulePtr = external.getModule("hoi3_tfh.exe");
-    //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
+    if (!Hooks::CLeader::isLeaderRankChangeHookActive) {
+        activateLeaderRankChangeHook();
+    }
 
-    uintptr_t CTraitVFTable = modulePtr.get() + 0x11C7DC0;
-    //std::cout << "CTraitVFTable: " << Memory::n2hexstr(CTraitVFTable) << std::endl;
-    std::string CTraitVFTableSig = Memory::ptrToSignature(CTraitVFTable);
-    //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
-
-    auto traits = external.findSignatures(modulePtr.get() + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
+    std::vector<uintptr_t>* traits = getTraits();
     //std::cout << "traits->size: " << traits->size() << std::endl;
     if (traits->size() == 0) {
         // Traits are not set up when the LUA is first run -> defer hooking until the LUA context is reloaded during save loading
         std::cout << "Hook 'activateLeaderPromotionSkillLoss' deferred until save load" << std::endl;
-        delete traits;
         return 0;
     }
 
@@ -146,18 +225,8 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
         Hooks::CLeader::skillTraits->at(index) = (DWORD) trait;
     }
 
-    DWORD hookAddress = MODULE_BASE + 0x1D7CDC;
-    Hooks::CLeader::jumpBack_PatchLeaderSkillLossOnPromotion = hookAddress + 6;
-    if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderSkillLossOnPromotion, 5, 1)) {
-        std::cout << "Hook 'activateLeaderPromotionSkillLoss' failed" << std::endl;
-    }
-    else {
-        std::cout << "Hook 'activateLeaderPromotionSkillLoss' succeeded" << std::endl;
-        std::cout << "jumpBack_PatchLeaderSkillLossOnPromotion: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_PatchLeaderSkillLossOnPromotion) << std::endl;
-    }
-
+    Hooks::CLeader::isLeaderSkillLossOnPromotionActive = true;
     activateLeaderPromotionSkillLossDone = TRUE;
-    delete traits;
     delete tempSkillTraits;
     return 0;
 }
@@ -294,6 +363,7 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"getCountryVariables", getCountryVariables},
     {"startConsole", startConsole},
     {"setModuleBase", setModuleBase},
+    {"activateRankSpecificTraits", activateRankSpecificTraits},
     {"activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss},
     {"activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill},
     {"activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected},

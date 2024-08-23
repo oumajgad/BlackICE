@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include <string>
+#include <iostream>
 
 #include <HoiDataStructures.hpp>
 
@@ -7,13 +8,16 @@
 #include <Hooks/CLeaderHooks.hpp>
 
 
-DWORD Hooks::CLeader::jumpBack_PatchLeaderSkillLossOnPromotion;
+DWORD Hooks::CLeader::jumpBack_leaderRankChangeHook;
 DWORD Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill;
 DWORD Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected;
-std::vector<DWORD>* Hooks::CLeader::skillTraits;
+
+bool Hooks::CLeader::isLeaderRankChangeHookActive = false;
+bool Hooks::CLeader::isLeaderSkillLossOnPromotionActive = false;
+bool Hooks::CLeader::isRankSpecificTraitsActive = false;
 
 
-int Hooks::CLeader::getPureSkilleAndTraitListNode(DWORD* leaderAddress, HDS::LinkedListNodeSingle** out) {
+int Hooks::CLeader::getPureSkillAndTraitListNode(DWORD* leaderAddress, HDS::LinkedListNodeSingle** out) {
     DWORD pureSkill = 0;
     HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)*((DWORD*)leaderAddress + (0x30 / 4));
     while (traitListNode != 0) {
@@ -48,6 +52,7 @@ int Hooks::CLeader::getPureSkilleAndTraitListNode(DWORD* leaderAddress, HDS::Lin
     return 0;
 }
 
+std::vector<DWORD>* Hooks::CLeader::skillTraits;
 bool Hooks::CLeader::checkTraitSkillLevelConsistency(DWORD* leaderAddress) {
     DWORD currentRank = *((BYTE*)leaderAddress + 0x6C);
     DWORD currentSkill = *((BYTE*)leaderAddress + 0x70);
@@ -58,7 +63,7 @@ bool Hooks::CLeader::checkTraitSkillLevelConsistency(DWORD* leaderAddress) {
     //std::cout << "experience: " << experience << std::endl;
 
     HDS::LinkedListNodeSingle* traitListNode = 0;
-    DWORD pureSkill = getPureSkilleAndTraitListNode(leaderAddress, &traitListNode);
+    DWORD pureSkill = getPureSkillAndTraitListNode(leaderAddress, &traitListNode);
     //std::cout << "pureSkill: " << pureSkill << std::endl;
     if (traitListNode == 0) {
         //std::cout << "traitListNode == 0" << std::endl;
@@ -79,12 +84,12 @@ bool Hooks::CLeader::checkTraitSkillLevelConsistency(DWORD* leaderAddress) {
     }
     return true;
 }
-struct skillLevelExp {
+struct SkillLevelExp {
     int level;  // skill level
     DWORD exp; // first DWORD of the experience / second one should be zeroed. the game does not handle skill above 10 well
     DWORD exp_1Perc_step; // 1% Point step
 };
-skillLevelExp skillExperiencePerLevel[16] = {
+SkillLevelExp skillExperiencePerLevel[16] = {
     {0, 0, 327680},
     {1, 32768000, 327680},
     {2, 65536000, 655360},
@@ -117,7 +122,7 @@ void Hooks::CLeader::adjustSkillLevel(DWORD* leaderAddress, DWORD* CPromoteLeade
     //std::cout << "nextLevelPercentage: " << nextLevelPercentage << std::endl;
 
     HDS::LinkedListNodeSingle* traitListNode = 0;
-    int pureSkill = getPureSkilleAndTraitListNode(leaderAddress, &traitListNode);
+    int pureSkill = getPureSkillAndTraitListNode(leaderAddress, &traitListNode);
     //std::cout << "pureSkill: " << pureSkill << std::endl;
     //std::cout << "pureSkill - (int) newRank: " << pureSkill - (int)newRank << std::endl;
 
@@ -145,7 +150,66 @@ void Hooks::CLeader::adjustSkillLevel(DWORD* leaderAddress, DWORD* CPromoteLeade
     }
 }
 
-__declspec(naked) void Hooks::CLeader::patchLeaderSkillLossOnPromotion() {
+std::unordered_map<std::string, Hooks::CLeader::RankSpecificTrait>* rankSpecificTraitsActive;
+std::unordered_map<std::string, Hooks::CLeader::RankSpecificTrait>* rankSpecificTraitsInActive;
+int getRankSpecificTrait(std::string* traitName, Hooks::CLeader::RankSpecificTrait** out) {
+    if (rankSpecificTraitsActive->find(*traitName) != rankSpecificTraitsActive->end()) {
+        std::cout << "rankSpecificTraitsActive found" << std::endl;
+        *out = &rankSpecificTraitsActive->at(*traitName);
+        return 1;
+    }
+    else if (rankSpecificTraitsInActive->find(*traitName) != rankSpecificTraitsInActive->end()) {
+        std::cout << "rankSpecificTraitsInActive found" << std::endl;
+        *out = &rankSpecificTraitsInActive->at(*traitName);
+        return 2;
+    }
+    return 0;
+}
+
+void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DWORD newRank) {
+    std::cout << "checkRankSpecificTraitsConsistency" << std::endl;
+    HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)*((DWORD*)leaderAddress + (0x30 / 4));
+    while (traitListNode != 0) {
+        //std::cout << "traitListNode: " << traitListNode << std::endl;
+        //std::cout << "data: " << traitListNode->data << std::endl;
+        //std::cout << "prev: " << traitListNode->prev << std::endl;
+        //std::cout << "next: " << traitListNode->next << std::endl;
+
+        DWORD trait = traitListNode->data;
+        DWORD traitNameLength = *((DWORD*)trait + (0x3C / 4));
+        char* traitName;
+        if (traitNameLength > 15) {
+            traitName = (char*)*(DWORD*)((BYTE*)trait + 0x2C);
+        }
+        else {
+            traitName = (char*)((BYTE*)trait + 0x2C);
+        }
+
+        std::string traitNameAsString = std::string(traitName);
+        std::cout << "traitNameAsString: " << traitNameAsString << std::endl;
+        Hooks::CLeader::RankSpecificTrait* rankSpecificTrait;
+        if (traitNameAsString.find("rankSpecificTrait_") == 0) {
+            int state = getRankSpecificTrait(&traitNameAsString, &rankSpecificTrait);
+            std::cout << "state: " << state << std::endl;
+            if (state == 1 && rankSpecificTrait!= 0 && newRank == rankSpecificTrait->rank) { // Trait is inactive - rank matches -> activate
+                std::cout << "activcated" << std::endl;
+                traitListNode->data = rankSpecificTrait->activeTraitPtr;
+            }
+            else if (state == 2 && rankSpecificTrait != 0 && newRank != rankSpecificTrait->rank) { // Trait is active - rank doesn't match -> deactivate
+                std::cout << "de-activcated" << std::endl;
+                traitListNode->data = rankSpecificTrait->inActiveTraitPtr;
+            }
+            else if (state == 0) { // Trait was not found
+                std::cout << "Warning: Rank Specific Trait '" << traitNameAsString << "' was not registered in LUA." <<  std::endl;
+            }
+        }
+        //std::cout << "----------" << std::endl;
+
+        traitListNode = (HDS::LinkedListNodeSingle*)traitListNode->next;
+    }
+}
+
+__declspec(naked) void Hooks::CLeader::leaderRankChangeHook() {
     DWORD* leaderAddress;
     DWORD* CPromoteLeaderCommand;
     DWORD newRank;
@@ -156,20 +220,24 @@ __declspec(naked) void Hooks::CLeader::patchLeaderSkillLossOnPromotion() {
         pushad
     }
 
-    //std::cout << "patchLeaderSkillLossOnPromotion hook called" << std::endl;
+    //std::cout << "leaderRankChangeHook hook called" << std::endl;
     //std::cout << "leaderAddress: " << leaderAddress << std::endl;
 
-    if (checkTraitSkillLevelConsistency(leaderAddress)) { // no skill change if the general doesn't have the "pskill" trait
-        adjustSkillLevel(leaderAddress, CPromoteLeaderCommand, newRank);
+    if (isLeaderSkillLossOnPromotionActive) {
+        if (checkTraitSkillLevelConsistency(leaderAddress)) { // no skill change if the general doesn't have the "pskill" trait
+            adjustSkillLevel(leaderAddress, CPromoteLeaderCommand, newRank);
+        }
     }
 
-
+    if (isRankSpecificTraitsActive) {
+        checkRankSpecificTraitsConsistency(leaderAddress, newRank);
+    }
 
     _asm {
         popad
         mov[edi + 0x6c], eax
         cmp[edi + 0x68], ebx
-        jmp[Hooks::CLeader::jumpBack_PatchLeaderSkillLossOnPromotion]
+        jmp[Hooks::CLeader::jumpBack_leaderRankChangeHook]
     }
 }
 
