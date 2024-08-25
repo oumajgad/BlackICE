@@ -115,13 +115,76 @@ std::vector<uintptr_t>* getTraits() {
         //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
         getTraitsData = external.findSignatures(modulePtr.get() + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
         if (getTraitsData->size() != 0) {
-            std::cout << "Traits vector filled" << std::endl;
+            //std::cout << "Traits vector filled" << std::endl;
             getTraitsDone = true;
         }
     }
     return getTraitsData;
 }
 
+__declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
+    //std::cout << "addRankSpecificTrait called" << std::endl;
+
+    int rank = luaL_checkinteger(L, 1);
+    //std::cout << "rank: " << rank << std::endl;
+    std::string activeName = luaL_checklstring(L, 2, NULL);
+    //std::cout << "activeName: " << activeName << std::endl;
+    std::string inActiveName = luaL_checklstring(L, 3, NULL);
+    //std::cout << "inActiveName: " << inActiveName << std::endl;
+
+    std::vector<uintptr_t>* traits = getTraits();
+    if (traits->size() == 0) {
+        //std::cout << "addRankSpecificTrait for: " << activeName << " not executed due to unitialised traits" << std::endl;
+        lua_pushboolean(L, false);
+        return 1;
+    }
+    if (Hooks::CLeader::rankSpecificTraitsActive->find(activeName) != Hooks::CLeader::rankSpecificTraitsActive->end()) {
+        //std::cout << "addRankSpecificTrait for: " << activeName << " was already added" << std::endl;
+        lua_pushboolean(L, false);
+        return 1;
+    }
+
+    Hooks::CLeader::RankSpecificTrait* rst = new Hooks::CLeader::RankSpecificTrait;
+    rst->rank = rank;
+    rst->activeName = activeName;
+    rst->inactiveName = inActiveName;
+
+    for (auto& trait : *traits) {
+        DWORD traitNameLength;
+        traitNameLength = *((DWORD*)trait + (0x3C / 4));
+        char* traitName;
+        if (traitNameLength > 15) {
+            traitName = (char*)*(DWORD*)((BYTE*)trait + 0x2C);
+        }
+        else {
+            traitName = (char*)((BYTE*)trait + 0x2C);
+        }
+        std::string traitNameAsString = std::string(traitName);
+        if (strcmp(traitNameAsString.c_str(), activeName.c_str()) == 0) {
+            rst->activeTraitPtr = trait;
+            //std::cout << "traitNameAsString: " << traitNameAsString << std::endl;
+            //std::cout << "rst->activeTraitPtr: " << rst->activeTraitPtr << std::endl;
+        }
+        else if (strcmp(traitNameAsString.c_str(), inActiveName.c_str()) == 0) {
+            rst->inActiveTraitPtr = trait;
+            //std::cout << "traitNameAsString: " << traitNameAsString << std::endl;
+            //std::cout << "rst->inActiveTraitPtr: " << rst->inActiveTraitPtr << std::endl;
+        }
+    }
+    
+    Hooks::CLeader::rankSpecificTraitsActive->insert(std::make_pair(activeName, rst));
+    Hooks::CLeader::rankSpecificTraitsInActive->insert(std::make_pair(inActiveName, rst));
+
+    /*
+    for (auto x : *Hooks::CLeader::rankSpecificTraitsActive) {
+        std::cout << "x.first: " << x.first << " - x.second: " << x.second << std::endl;
+    }
+    */
+
+    lua_pushboolean(L, true);
+    //std::cout << "addRankSpecificTrait finished" << std::endl;
+    return 1;
+}
 
 BOOL activateRankSpecificTraitsDone = false;
 __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
@@ -142,8 +205,9 @@ __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
         return 0;
     }
 
-    auto tempRankTraits = new std::vector<uintptr_t>; // unsorted vector of the traits which are used to track leader skill
+
     /*
+    auto tempRankTraits = new std::vector<uintptr_t>; // unsorted vector of the traits which are used to track leader skill
     Hooks::CLeader::skillTraits = new std::vector<DWORD>; // sorted vector of the traits
     for (auto& trait : *traits) {
         DWORD traitNameLength;
@@ -163,12 +227,12 @@ __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
             Hooks::CLeader::skillTraits->push_back(trait); // also push back the Hooks::skillTraits vector so the indexes get filled
         }
     }
+    delete tempRankTraits;
     */
 
 
     Hooks::CLeader::isRankSpecificTraitsActive = true;
-    activateRankSpecificTraitsDone = TRUE;
-    delete tempRankTraits;
+    activateRankSpecificTraitsDone = true;
     return 0;
 }
 
@@ -226,7 +290,7 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
     }
 
     Hooks::CLeader::isLeaderSkillLossOnPromotionActive = true;
-    activateLeaderPromotionSkillLossDone = TRUE;
+    activateLeaderPromotionSkillLossDone = true;
     delete tempSkillTraits;
     return 0;
 }
@@ -249,7 +313,7 @@ __declspec(dllexport) int activateLeaderListShowMaxSkill(lua_State* L)
         std::cout << "Hook 'activateLeaderListShowMaxSkill' succeeded" << std::endl;
         std::cout << "jumpBack_patchLeaderListShowMaxSkill: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill) << std::endl;
     }
-    activateLeaderListShowMaxSkillDone = TRUE;
+    activateLeaderListShowMaxSkillDone = true;
     return 0;
 }
 
@@ -271,7 +335,7 @@ __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
         std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' succeeded" << std::endl;
         std::cout << "jumpBack_patchLeaderListShowMaxSkillSelected: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected) << std::endl;
     }
-    activateLeaderListShowMaxSkillSelectedDone = TRUE;
+    activateLeaderListShowMaxSkillSelectedDone = true;
     return 0;
 }
 
@@ -290,7 +354,7 @@ __declspec(dllexport) int activateOffmapICPatch(lua_State* L)
         std::cout << "Patch 'activateOffmapICPatch' succeeded" << std::endl;
     }
 
-    activateOffmapICPatchDone = TRUE;
+    activateOffmapICPatchDone = true;
     return 0;
 }
 
@@ -310,7 +374,7 @@ __declspec(dllexport) int activateMinisterTechDecayPatch(lua_State* L)
     }
 
 
-    activateMinisterTechDecayPatchDone = TRUE;
+    activateMinisterTechDecayPatchDone = true;
     return 0;
 }
 
@@ -329,7 +393,7 @@ __declspec(dllexport) int activateWarExhaustionNeutralityResetPatch(lua_State* L
         std::cout << "Patch 'activateWarExhaustionNeutralityResetPatch' succeeded" << std::endl;
     }
 
-    activateWarExhaustionNeutralityResetPatchDone = TRUE;
+    activateWarExhaustionNeutralityResetPatchDone = true;
     return 0;
 }
 
@@ -363,6 +427,7 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"getCountryVariables", getCountryVariables},
     {"startConsole", startConsole},
     {"setModuleBase", setModuleBase},
+    {"addRankSpecificTrait", addRankSpecificTrait},
     {"activateRankSpecificTraits", activateRankSpecificTraits},
     {"activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss},
     {"activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill},

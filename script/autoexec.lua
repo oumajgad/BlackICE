@@ -54,6 +54,8 @@ BiceLib.activateOffmapICPatch()
 BiceLib.activateMinisterTechDecayPatch()
 BiceLib.activateWarExhaustionNeutralityResetPatch()
 
+BiceLib.addRankSpecificTrait(3, "rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive")
+
 -- Make sure these exist, if something is require() but doesnt exist LUA dies and doesn't load the rest!
 -- Defaults are at the bottom so it's easier to spot if something is wrong (some nations won't do anything since defaults wont be loaded)
 

@@ -150,24 +150,25 @@ void Hooks::CLeader::adjustSkillLevel(DWORD* leaderAddress, DWORD* CPromoteLeade
     }
 }
 
-std::unordered_map<std::string, Hooks::CLeader::RankSpecificTrait>* rankSpecificTraitsActive;
-std::unordered_map<std::string, Hooks::CLeader::RankSpecificTrait>* rankSpecificTraitsInActive;
+std::unordered_map<std::string, Hooks::CLeader::RankSpecificTrait*>* Hooks::CLeader::rankSpecificTraitsActive = new std::unordered_map<std::string, Hooks::CLeader::RankSpecificTrait*>;
+std::unordered_map<std::string, Hooks::CLeader::RankSpecificTrait*>* Hooks::CLeader::rankSpecificTraitsInActive = new std::unordered_map<std::string, Hooks::CLeader::RankSpecificTrait*>;
 int getRankSpecificTrait(std::string* traitName, Hooks::CLeader::RankSpecificTrait** out) {
-    if (rankSpecificTraitsActive->find(*traitName) != rankSpecificTraitsActive->end()) {
-        std::cout << "rankSpecificTraitsActive found" << std::endl;
-        *out = &rankSpecificTraitsActive->at(*traitName);
-        return 1;
-    }
-    else if (rankSpecificTraitsInActive->find(*traitName) != rankSpecificTraitsInActive->end()) {
-        std::cout << "rankSpecificTraitsInActive found" << std::endl;
-        *out = &rankSpecificTraitsInActive->at(*traitName);
+    //std::cout << "getRankSpecificTrait: " << *traitName << std::endl;
+    if (Hooks::CLeader::rankSpecificTraitsActive->find(*traitName) != Hooks::CLeader::rankSpecificTraitsActive->end()) {
+        //std::cout << "rankSpecificTraitsActive found" << std::endl;
+        *out = Hooks::CLeader::rankSpecificTraitsActive->at(*traitName);
         return 2;
+    }
+    else if (Hooks::CLeader::rankSpecificTraitsInActive->find(*traitName) != Hooks::CLeader::rankSpecificTraitsInActive->end()) {
+        //std::cout << "rankSpecificTraitsInActive found" << std::endl;
+        *out = Hooks::CLeader::rankSpecificTraitsInActive->at(*traitName);
+        return 1;
     }
     return 0;
 }
 
 void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DWORD newRank) {
-    std::cout << "checkRankSpecificTraitsConsistency" << std::endl;
+    //std::cout << "checkRankSpecificTraitsConsistency" << std::endl;
     HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)*((DWORD*)leaderAddress + (0x30 / 4));
     while (traitListNode != 0) {
         //std::cout << "traitListNode: " << traitListNode << std::endl;
@@ -186,17 +187,20 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
         }
 
         std::string traitNameAsString = std::string(traitName);
-        std::cout << "traitNameAsString: " << traitNameAsString << std::endl;
+        //std::cout << "traitNameAsString: " << traitNameAsString << std::endl;
         Hooks::CLeader::RankSpecificTrait* rankSpecificTrait;
         if (traitNameAsString.find("rankSpecificTrait_") == 0) {
             int state = getRankSpecificTrait(&traitNameAsString, &rankSpecificTrait);
-            std::cout << "state: " << state << std::endl;
+            //std::cout << "state: " << state << std::endl;
+            //std::cout << "rankSpecificTrait: " << rankSpecificTrait << std::endl;
+            //std::cout << "rankSpecificTrait->rank: " << rankSpecificTrait->rank << std::endl;
+            //std::cout << "newRank: " << newRank << std::endl;
             if (state == 1 && rankSpecificTrait!= 0 && newRank == rankSpecificTrait->rank) { // Trait is inactive - rank matches -> activate
-                std::cout << "activcated" << std::endl;
+                //std::cout << "activcated" << std::endl;
                 traitListNode->data = rankSpecificTrait->activeTraitPtr;
             }
             else if (state == 2 && rankSpecificTrait != 0 && newRank != rankSpecificTrait->rank) { // Trait is active - rank doesn't match -> deactivate
-                std::cout << "de-activcated" << std::endl;
+                //std::cout << "de-activcated" << std::endl;
                 traitListNode->data = rankSpecificTrait->inActiveTraitPtr;
             }
             else if (state == 0) { // Trait was not found

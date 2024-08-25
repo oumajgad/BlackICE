@@ -25,9 +25,9 @@ namespace Hooks {
 		// Vars
 		// Pure Skill
 		extern std::vector<DWORD>* skillTraits;
-		// Rank Specific 
+		// Rank Specific
 		extern std::unordered_map<std::string, RankSpecificTrait*>* rankSpecificTraitsActive; // active name -> trait
-		extern std::unordered_map<std::string, RankSpecificTrait*>* rankSpecificTraitsInActive; // inactive name->trait
+		extern std::unordered_map<std::string, RankSpecificTrait*>* rankSpecificTraitsInActive; // inactive name -> trait
 
 		// Functions
 		// Pure Skill

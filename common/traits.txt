@@ -4307,8 +4307,12 @@ test_trait = {
 #############################################
 # Special traits needed for the BiceLib.dll #
 #############################################
+#############################################
+#            PURE SKILL TRAITS              #
+#############################################
 # If the "BiceLib.activateLeaderPromotionSkillLoss()" patch is active then a leader loses/gains skill when he gets promoted/demoted. 
 # To keep track of a leaders "pure" skill this trait gets used. If a leader gains a skill level the trait is adjusted the next time the rank gets changed
+# For simplicity, and because the game is pure spaghetti in this regard, the experience PERCENTAGE is KEPT between skill levels.
 # IF a leader doesn't have this trait his skill will not be adjusted at all.
 
 pskill_0 = {
@@ -4346,7 +4350,27 @@ pskill_10 = {
 }
 
 
+#############################################
+#           RANK SPECIFIC TRAITS            #
+#############################################
+# If the "BiceLib.activateRankSpecificTraits()" patch is active then specific traits will be replaced during Leader promotion/demotion. 
 
+rankSpecificTrait_test_inactive = {
+	allowed_leader = { land sea air }
+}
+
+rankSpecificTrait_test_active = {
+	allowed_leader = { land sea air }
+
+	xp_gain = 0.02
+	experience_bonus = 0.05
+	supply_consumption = -0.075
+	out_of_supply_modifier = -0.025
+	combat_move_speed = 0.1
+	spotting_chance = 0.1
+	naval_attack = 0.05
+	tactical_attack = 0.05
+}
 
 
 #EOF#
