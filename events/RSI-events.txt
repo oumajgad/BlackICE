@@ -272,6 +272,29 @@ country_event = {
 		RSI = {
 			join_faction = axis
 		}
+		ITA = {
+			any_owned = {
+				limit = {
+					not = {
+						is_core = ITA
+					}
+					controlled_by = ITA
+				}
+				secede_province = GER
+			}	
+			any_owned = {
+				limit = {
+					owned_by = ITA
+					controlled_by = ITA
+				}
+				secede_province = RSI
+			}	
+		}
+		ITA = {
+			RSI = {
+				split_troops = 0.5
+			}
+		}
 		RSI = {
 			country_event = 48890
 		}
@@ -284,16 +307,16 @@ country_event = {
 			}
 		}
 		ai_chance = {
-			factor = 0
-		}
-	}
-	option = {
-		name = "No"
-		set_country_flag = RSI_Created
-		ai_chance = {
 			factor = 100
 		}
 	}
+	#option = {
+	#	name = "No"
+	#	set_country_flag = RSI_Created
+	#	ai_chance = {
+	#		factor = 0
+	#	}
+	#}
 }
 ####RSI OOB
 country_event = {

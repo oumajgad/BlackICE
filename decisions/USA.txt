@@ -107,7 +107,14 @@ diplomatic_decisions = {
 			}
 		}
 		allow = {
-			date = 1942.11.8
+			or = {
+				5445 = {
+					controller = {
+						faction = allies
+					}
+				}
+				date = 1942.11.8
+			}
 			# Gibraltar
 			or = {
 				and = {
@@ -508,12 +515,38 @@ diplomatic_decisions = {
 			load_oob = USA/zDD_Operation_Husky_Force_oob.txt
 			add_country_modifier = {
 				name = "Operation_Husky"
-				duration = 90
+				duration = 120
 			}
 			ITA = {
 				add_country_modifier = {
 					name = "Operation_Husky_shock"
 					duration = -1
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = ITA
+						has_country_flag = blackICE
+					}
+					add_country_modifier = {
+						name = "Operation_Husky_shock"
+						duration = 356
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = ITA
+						not = {
+							has_country_flag = blackICE
+						}
+					}
+					add_country_modifier = {
+						name = "Operation_Husky_shock_AI"
+						duration = -1
+					}
 				}
 			}
 			5330 = {
@@ -929,50 +962,99 @@ diplomatic_decisions = {
 			}
 		}
 		allow = {
-			5236 = {
-				controller = {
-					faction = allies
-				}
+			not = {
+				has_country_modifier = "Operation_Husky"
 			}
-			#Messina
 		}
 		effect = {
 			set_country_flag = Italy_Campaign
-			load_oob = zDD_Italy_campaign_Force_oob.txt
 			add_country_modifier = {
 				name = "Italian_Campaign"
 				duration = 180
 			}
-			4815 = {
-				naval_base = 10
-				supplies = 5000
-				fuel = 500
+			OMG = {
+				any_country = {
+					limit = {
+						tag = USA
+						5203 = {
+							controller = {
+								faction = axis
+							}
+						}
+					}
+					load_oob = zDD_Italy_campaign_Force_oob_I.txt
+					5038 = {
+						naval_base = 10
+						supplies = 5000
+						fuel = 500
+					}
+					5074 = {
+						naval_base = 10
+						supplies = 5000
+						fuel = 500
+					}
+					5003 = {
+						naval_base = 10
+						supplies = 5000
+						fuel = 500
+					}
+					50039 = {
+						supplies = 15000
+						fuel = 15000
+					}
+					10572 = {
+						supplies = 15000
+						fuel = 15000
+					}
+					10579 = {
+						supplies = 15000
+						fuel = 15000
+					}
+				}
 			}
-			4868 = {
-				naval_base = 10
-				supplies = 5000
-				fuel = 500
-			}
-			5105 = {
-				naval_base = 10
-				supplies = 5000
-				fuel = 500
-			}
-			10572 = {
-				supplies = 15000
-				fuel = 15000
-			}
-			10579 = {
-				supplies = 15000
-				fuel = 15000
-			}
-			10456 = {
-				supplies = 15000
-				fuel = 15000
-			}
-			10571 = {
-				supplies = 15000
-				fuel = 15000
+			OMG = {
+				any_country = {
+					limit = {
+						tag = USA
+						5203 = {
+							controller = {
+								faction = allies
+							}
+						}
+					}
+					load_oob = zDD_Italy_campaign_Force_oob_II.txt
+					4815 = {
+						naval_base = 10
+						supplies = 5000
+						fuel = 500
+					}
+					4916 = {
+						naval_base = 10
+						supplies = 5000
+						fuel = 500
+					}
+					4866 = {
+						naval_base = 10
+						supplies = 5000
+						fuel = 500
+					}
+					10572 = {
+						supplies = 15000
+						fuel = 15000
+					}
+					10579 = {
+						supplies = 15000
+						fuel = 15000
+					}
+					10456 = {
+						supplies = 15000
+						fuel = 15000
+					}
+					10571 = {
+						supplies = 15000
+						fuel = 15000
+					}
+				}
 			}
 		}
 		ai_will_do = {
