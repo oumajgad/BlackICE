@@ -315,9 +315,9 @@ country_event = {
 		#Removing 7th Separate Mechanized Brigade
 		remove_brigade = "Shtab-K. 7-y Otd. Mekh. Brigady"
 		remove_brigade = "1/2/3-ye Tankovyye B-ny 7-y Otd. Mekh. Brigady"
-		remove_brigade = "Otd. Motostrelkovyy B-n 2-y Otd. Mekh. Brigady"
-		remove_brigade = "Razvedovatelniy B-n 2-y Otd. Mekh. Brigady"
-		remove_brigade = "Avtotransportnyy B-n 2-y Otd. Mekh. Brigady"
+		remove_brigade = "Otd. Motostrelkovyy B-n 7-y Otd. Mekh. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 7-y Otd. Mekh. Brigady"
+		remove_brigade = "Avtotransportnyy B-n 7-y Otd. Mekh. Brigady"
 
 		#Removing 1st Motorized Chemical Brigade
 		remove_brigade = "Shtab-K. 1-y Mot. Khim. B."
@@ -1836,7 +1836,7 @@ country_event = {
 		set_country_flag = 69MRD
 
 		remove_brigade = "Shtab-K. 3-y Strelk. D."
-		remove_brigade = "4/5/6-ye Strelkovyye Polki"
+		remove_brigade = "Strelkovyye Polki 3-y Strelk. D."
 		remove_brigade = "2-y Tankovyy B-n"
 		remove_brigade = "2-y Artilleriyskiy Polk"
 		remove_brigade = "118-y Protivotankovyy D-n"
@@ -2095,6 +2095,7 @@ country_event = {
 		#Removing 4th Cavalry Division
 		remove_brigade = "Shtab-K. 4-y Leningradskoy Kav. D."
 		remove_brigade = "8/77/109/145-ye Kavaleriyskiye Polki"
+		remove_brigade = "28-y Tankovyy Polk"
 		remove_brigade = "4-y Mekhanizirovannyy Polk"
 		remove_brigade = "26-y Konno-Artilleriyskiy Divizion"
 		remove_brigade = "28-y Konno-Sap'ornyy B-n"
@@ -2601,7 +2602,7 @@ country_event = {
 		remove_brigade = "9/41/53-ye Kavaleriyskiye Polki"
 		remove_brigade = "39-y Tankovyy Polk"
 		remove_brigade = "16-y Mekhanizirovannyy Polk"
-		remove_brigade = "23-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "16-y Konno-Artilleriyskiy Divizion"
 		remove_brigade = "16-y Konno-Sap'ornyy B-n"
 		remove_brigade = "Transportnyy B-n 16-ya Kav. D."
 
@@ -3055,7 +3056,7 @@ country_event = {
 		remove_brigade = "8/9-ye Vozdushno-Desantnyye B-ny"
 		remove_brigade = "13-y Vozdushno-Desantnyy Sap'ornyy B-n"
 		remove_brigade = "13-y Voz-D. Razvedovatelniy B-n"
-
+        
 		#Remove 47th Airborne Brigade
 		remove_brigade = "Shtab-K. 47-y Vozdushno-Desantnoy Br."
 		remove_brigade = "10/11-ye Vozdushno-Desantnyye B-ny"
@@ -3290,7 +3291,7 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-		load_oob = SOV/NKVD_Main-Directorate_Internal_Troops.txt
+		load_oob = SOV/NKVD_Main_Directorate_Internal_Troops.txt
 	}
 	option = {
 		name = "No Need"  # no
@@ -4265,6 +4266,7 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
+
 		OMG = {
 			any_country = {
 				limit = {
@@ -4276,11 +4278,12 @@ country_event = {
 					value = +2500
 				}
 				energy = -5000
-				metal = -2000
-				rare_materials = -1000
-				load_oob = SOV/Baltic Armies_annexation.txt
+				metal = -2500
+				rare_materials = -1250
+				load_oob = SOV/Baltic_Armies_annexation.txt
 			}
 		}
+		
 		OMG = {
 			any_country = {
 				limit = {
@@ -4289,10 +4292,11 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = SOV/Baltic Armies_annexation.txt
+				load_oob = SOV/Baltic_Armies_annexation.txt
 			}
 		}
 	}
+
 	option = {
 		name = "No Need"  # no
 		set_country_flag = Baltics_Annexation_no
@@ -4309,13 +4313,45 @@ country_event = {
 	desc = "EVTDESC45949"
 	picture = "prezidentas_smetona"
 	
-	option = {
+ 	option = {
 		name = "Join the Baltic fleet"
 		set_country_flag = Prezidentas_Smetona
-		load_oob = Prezidentas-Smetona.txt
-		supplies = -200
 		ai_chance = {
 			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = SOV/Prezidentas_Smetona.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Prezidentas_Smetona.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = Prezidentas_Smetona_no
+		ai_chance = {
+			factor = 0
 		}
 	}
 }
@@ -4352,7 +4388,7 @@ country_event = {
 				energy = -8800
 				metal = -4400
 				rare_materials = -2200
-				load_oob = SOV/Baltic Armies_annexation.txt
+				load_oob = SOV/Hanko_Garrison.txt
 			}
 		}
 		OMG = {
@@ -4363,13 +4399,13 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = SOV/Baltic Armies_annexation.txt
+				load_oob = SOV/Hanko_Garrison.txt
 			}
 		}
 	}
 	option = {
 		name = "No Need"  # no
-		set_country_flag = Baltics_Annexation_no
+		set_country_flag = Hanko_Garrison_no
 		ai_chance = {
 			factor = 0
 		}
