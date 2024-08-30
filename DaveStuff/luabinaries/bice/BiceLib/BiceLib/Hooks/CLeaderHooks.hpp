@@ -5,7 +5,8 @@ namespace Hooks {
 	namespace CLeader {
 		// Structs
 		struct RankSpecificTrait {
-			int rank;
+			int lowerRank;
+			int upperRank;
 			std::string inactiveName;
 			DWORD inActiveTraitPtr;
 			std::string activeName;

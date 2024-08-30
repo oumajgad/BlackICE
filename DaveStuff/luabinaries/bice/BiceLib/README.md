@@ -56,9 +56,10 @@ These features are activated and configured via LUA.
     * Register a trait pair to a rank.
     * Traits **MUST** be prefixed with **rankSpecificTrait_**
     * **Params**:
-        * *rank*: The rank at which the trait should be in the *active* state
         * *activeName*: The full name of the rank in its active state
         * *inActiveName*: The full name of the rank in its inactive state
+        * *lowerRank*: The first rank at which the trait should be in the *active* state
+        * *upperRank*: The last rank at which the trait should be in the *active* state
     * **Return values**:
         * *success*: boolean
     * **Notes**:
