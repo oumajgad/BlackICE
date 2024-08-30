@@ -212,7 +212,7 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
                 traitListNode->data = rankSpecificTrait->inActiveTraitPtr;
             }
             else if (state == RANK_STATE::NOT_FOUND) { // Trait was not found
-                DEBUG_OUT(std::cout << "Warning: Rank Specific Trait '" << traitNameAsString << "' was not registered in LUA." <<  std::endl);
+                WARNING_OUT(std::cout << "Rank Specific Trait '" << traitNameAsString << "' was not registered in LUA." <<  std::endl);
             }
         }
         DEBUG_OUT(std::cout << "----------" << std::endl);

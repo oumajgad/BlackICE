@@ -6,3 +6,4 @@
 #define DEBUG_OUT(x)
 #endif
 #define INFO_OUT(x) {printf("INFO: ") ; x;}
+#define WARNING_OUT(x) {printf("WARNING: ") ; x;}
