@@ -41,7 +41,7 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
         DEBUG_OUT(std::cout << "flags->size(): " << flags->size() << std::endl);
 
         lua_createtable(L, flags->size(), 0);
-        for (int i = 0; i < flags->size(); i++) {
+        for (size_t i = 0; i < flags->size(); i++) {
             lua_pushstring(L, flags->at(i).c_str());
             lua_rawseti(L, -2, i + 1); /* In lua indices start at 1 */
         }
@@ -75,7 +75,7 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
         DEBUG_OUT(std::cout << "vars->size(): " << vars->size() << std::endl);
 
         lua_newtable(L, 0, vars->size());
-        for (int i = 0; i < vars->size(); i++) {
+        for (size_t i = 0; i < vars->size(); i++) {
             lua_pushstring(L, vars->at(i).name.c_str());
             lua_pushinteger(L, vars->at(i).value);
             lua_settable(L, -3);

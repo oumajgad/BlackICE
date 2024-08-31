@@ -108,9 +108,9 @@ typedef void(__stdcall* getLeaderExperiencePercentFunction)(int param_1, unsigne
 void Hooks::CLeader::adjustSkillLevel(DWORD* leaderAddress, DWORD* CPromoteLeaderCommand, DWORD newRank) {
     DEBUG_OUT(std::cout << "adjustSkillLevel called" << std::endl);
 
-    DWORD currentSkill = *((BYTE*)leaderAddress + 0x70);
+    UINT8 currentSkill = *((BYTE*)leaderAddress + 0x70);
     DWORD experience = *(DWORD*)((BYTE*)leaderAddress + 0x78);
-    DWORD direction = *((BYTE*)CPromoteLeaderCommand + 0x64); // 0 = Higher Rank ; 1 = Lower Rank
+    UINT8 direction = *((BYTE*)CPromoteLeaderCommand + 0x64); // 0 = Higher Rank ; 1 = Lower Rank
 
     getLeaderExperiencePercentFunction getLeaderExperiencePercent = reinterpret_cast<getLeaderExperiencePercentFunction>(Hooks::MODULE_BASE + 0x181c50);
     unsigned int experiencePercent = 0; // 1000 = 100% - 500 = 50%
@@ -308,8 +308,8 @@ __declspec(naked) void Hooks::CLeader::patchLeaderListShowMaxSkillSelected() {
     //std::cout << "leaderAddress: " << leaderAddress << std::endl;
     //std::cout << "currentSkillCharArray: " << currentSkillCharArray << std::endl;
 
-    DWORD currentSkill;
-    DWORD maxSkill;
+    UINT8 currentSkill;
+    UINT8 maxSkill;
     currentSkill = *((BYTE*)leaderAddress + 0x70);
     maxSkill = *((BYTE*)leaderAddress + 0x74);
 
