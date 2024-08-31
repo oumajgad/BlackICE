@@ -1,4 +1,3 @@
-import json
 from typing import ClassVar
 
 import pydantic
@@ -51,6 +50,7 @@ class CArmy(pydantic.BaseModel):
     LENGTH: ClassVar[int] = 808
     UNITS: ClassVar[list[int]] = None
     self_ptr: int
+    ptr_str: str
     is_selected: bool
     type: int
     id: int
@@ -85,6 +85,7 @@ class CArmy(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
+            "ptr_str": utils.int_to_pointer(ptr),
             "is_selected": pm.read_bool(ptr + CArmyOffsets.is_selected),
             "type": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.type, 4)),
             "id": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.id, 4)),
@@ -167,18 +168,8 @@ if __name__ == "__main__":
         # BD2ABCF8 1. inf
         # BD2B2848 1. kav
         if name in [
-            "I. Test Armee",
-            "I. A.K.",
-            "11. Infanterie-Division",
-            "21. Infanterie-Division",
-            "1. Infanterie-Division",
-            "§Y1. Kavallerie-Brigade§W",
+            "Test A.K.",
         ]:
             army = CArmy.make(pm, unit_ptr)
-            print(
-                f"{name} - {utils.int_to_pointer(army.self_ptr)} - {utils.int_to_pointer(army.higher_oob_unit_ptr)} - {utils.int_to_pointer(army.lower_oob_unit_linked_list_ptr)}"
-            )
-    army = CArmy.make(pm, ptr=0xBB90F440)
-    print(json.dumps(army.dict(), indent=2))
-    oob = army.build_oob(pm)
-    print(json.dumps(oob, indent=2, ensure_ascii=False))
+            print(army)
+    print(CArmy.make(pm, 0xB35685F8))
