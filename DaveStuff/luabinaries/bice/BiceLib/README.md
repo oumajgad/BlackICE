@@ -52,7 +52,7 @@ These features are activated and configured via LUA.
     * **Return values**: /
     * **Notes**:
         * The traits display will only be updated after reopening the leader list.
-* **addRankSpecificTrait(number rank, string activeName, string inActiveName)**
+* **addRankSpecificTrait(string activeName, string inActiveName, number lowerRank, number upperRank)**
     * Register a trait pair to a rank.
     * Traits **MUST** be prefixed with **rankSpecificTrait_**
     * **Params**:
@@ -61,7 +61,7 @@ These features are activated and configured via LUA.
         * *lowerRank*: The first rank at which the trait should be in the *active* state
         * *upperRank*: The last rank at which the trait should be in the *active* state
     * **Return values**:
-        * *success*: boolean
+        * *success* (boolean): If the specified rank can't be found this will be *false*
     * **Notes**:
         * The traits display will only be updated after reopening the leader list.
 * **activateLeaderPromotionSkillLoss()**
