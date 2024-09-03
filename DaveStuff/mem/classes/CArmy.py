@@ -172,4 +172,4 @@ if __name__ == "__main__":
         ]:
             army = CArmy.make(pm, unit_ptr)
             print(army)
-    print(CArmy.make(pm, 0xB35685F8))
+    print(CArmy.make(pm, 0xB32FE6C0))

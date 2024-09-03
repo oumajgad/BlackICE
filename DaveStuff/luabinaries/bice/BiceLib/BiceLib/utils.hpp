@@ -1,3 +1,5 @@
+#include <wtypes.h>
+
 #include <cstdio>
 
 #ifdef BICE_LIB_DEBUG
@@ -7,3 +9,7 @@
 #endif
 #define INFO_OUT(x) {printf("[INFO] ") ; x;}
 #define WARNING_OUT(x) {printf("[WARNING] ") ; x;}
+
+namespace utils {
+	char* getCString(DWORD* addr);
+}
