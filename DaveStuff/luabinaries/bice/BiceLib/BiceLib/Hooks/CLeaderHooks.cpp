@@ -8,11 +8,12 @@
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
 
-
+// Jumpbacks
 DWORD Hooks::CLeader::jumpBack_leaderRankChangeHook;
 DWORD Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill;
 DWORD Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected;
 
+// Activation vars
 bool Hooks::CLeader::isLeaderRankChangeHookActive = false;
 bool Hooks::CLeader::isLeaderSkillLossOnPromotionActive = false;
 bool Hooks::CLeader::isRankSpecificTraitsActive = false;
@@ -232,10 +233,6 @@ __declspec(naked) void Hooks::CLeader::leaderRankChangeHook() {
         mov newRank, eax
         pushad
     }
-
-    //std::cout << "leaderRankChangeHook hook called" << std::endl;
-    //std::cout << "leaderAddress: " << leaderAddress << std::endl;
-    //std::cout << "CPromoteLeaderCommand: " << CPromoteLeaderCommand << std::endl;
 
     if (isLeaderSkillLossOnPromotionActive) {
         if (checkTraitSkillLevelConsistency(leaderAddress)) { // no skill change if the general doesn't have the "pskill" trait

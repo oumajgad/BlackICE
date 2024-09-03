@@ -13,6 +13,7 @@
 #include <CCountry.hpp>
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
+#include <Hooks/CArmyHooks.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
@@ -20,6 +21,9 @@ bool DEBUG = true;
 DWORD MODULE_BASE;
 
 
+/////////////////////////////////////
+//         INFO FUNCTIONS          //
+/////////////////////////////////////
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
     DEBUG_OUT(std::cout << "getCountryFlags called" << std::endl);
@@ -88,6 +92,9 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
     return 1;
 }
 
+/////////////////////////////////////
+//        LEADER FUNCTIONS         //
+/////////////////////////////////////
 void activateLeaderRankChangeHook() {
     DWORD hookAddress = MODULE_BASE + 0x1D7CDC;
     Hooks::CLeader::jumpBack_leaderRankChangeHook = hookAddress + 6;
@@ -323,6 +330,34 @@ __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
     return 0;
 }
 
+/////////////////////////////////////
+//          UNIT FUNCTIONS         //
+/////////////////////////////////////
+__declspec(dllexport) int activateUnitAttachmentLimitHook(lua_State* L)
+{
+    if (Hooks::CArmy::isUnitAttachmentLimitHookActive) {
+        return 0;
+    }
+
+    DWORD hookAddress = MODULE_BASE + 0x1b9733;
+    Hooks::CArmy::jumpBack_unitAttachmentLimitHook = hookAddress + 5;
+
+    if (!Hooks::hook((void*)hookAddress, Hooks::CArmy::unitAttachmentLimitHook, 5, 0)) {
+        INFO_OUT(std::cout << "Hook 'activateUnitAttachmentLimitHook' failed" << std::endl);
+    }
+    else {
+        INFO_OUT(std::cout << "Hook 'activateUnitAttachmentLimitHook' succeeded" << std::endl);
+        INFO_OUT(std::cout << "jumpBack_unitAttachmentLimitHook: " << Memory::n2hexstr(Hooks::CArmy::jumpBack_unitAttachmentLimitHook) << std::endl);
+    }
+
+    Hooks::CArmy::isUnitAttachmentLimitHookActive = true;
+    return 0;
+}
+
+
+/////////////////////////////////////
+//          GAME PATCHES           //
+/////////////////////////////////////
 
 BOOL activateOffmapICPatchDone = false;
 __declspec(dllexport) int activateOffmapICPatch(lua_State* L)
@@ -382,6 +417,9 @@ __declspec(dllexport) int activateWarExhaustionNeutralityResetPatch(lua_State* L
 }
 
 
+/////////////////////////////////////
+//         MISC FUNCTIONS          //
+/////////////////////////////////////
 __declspec(dllexport) int setModuleBase(lua_State* L)
 {
     Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
@@ -407,28 +445,31 @@ __declspec(dllexport) int startConsole(lua_State* L)
 
 
 __declspec(dllexport) luaL_Reg BiceLib[] = {
-    {"getCountryFlags", getCountryFlags},
-    {"getCountryVariables", getCountryVariables},
+    // Misc
     {"startConsole", startConsole},
     {"setModuleBase", setModuleBase},
+    // Info Functions
+    {"getCountryFlags", getCountryFlags},
+    {"getCountryVariables", getCountryVariables},
+    // Leader Functions
     {"addRankSpecificTrait", addRankSpecificTrait},
     {"activateRankSpecificTraits", activateRankSpecificTraits},
     {"activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss},
     {"activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill},
     {"activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected},
+    // Unit Functions
+    {"activateUnitAttachmentLimitHook", activateUnitAttachmentLimitHook},
+    // Patches
     {"activateOffmapICPatch", activateOffmapICPatch},
     {"activateMinisterTechDecayPatch", activateMinisterTechDecayPatch},
     {"activateWarExhaustionNeutralityResetPatch", activateWarExhaustionNeutralityResetPatch},
     {NULL, NULL}
 };
 
-// #define new_lib(L, l) (lua_newtable(L), luaL_register(L, NULL, l))
 
 extern "C"
 __declspec(dllexport) int luaopen_BiceLib(lua_State* L)
 {
-
-    //    new_lib(L, test);
     lua_newtable(L);
     luaL_register(L, NULL, BiceLib);
     return 1;

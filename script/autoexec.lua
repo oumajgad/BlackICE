@@ -46,15 +46,22 @@ require('pdxParser')
 BiceLib = require("BiceLib")
 BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
 BiceLib.setModuleBase()
+
+-- OOB Unit Limit
+BiceLib.activateUnitAttachmentLimitHook()
+
+-- Leaders
 BiceLib.activateRankSpecificTraits()
 BiceLib.activateLeaderPromotionSkillLoss()
 BiceLib.activateLeaderListShowMaxSkill()
 BiceLib.activateLeaderListShowMaxSkillSelected()
+BiceLib.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
+
+-- Patches
 BiceLib.activateOffmapICPatch()
 BiceLib.activateMinisterTechDecayPatch()
 BiceLib.activateWarExhaustionNeutralityResetPatch()
 
-BiceLib.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
 
 -- Make sure these exist, if something is require() but doesnt exist LUA dies and doesn't load the rest!
 -- Defaults are at the bottom so it's easier to spot if something is wrong (some nations won't do anything since defaults wont be loaded)
