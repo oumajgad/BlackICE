@@ -98,7 +98,7 @@ __declspec(naked) void Hooks::CArmy::unitAttachmentLimitHook() {
     DWORD newLimit;
     DWORD* unitToAttach; // EBX
     DWORD* lastCountedUnit; // ECX 
-    // The attached unit of the higher unit which was last counted -> use it to get a pointer to the higher unit // If it is 0 then the function has already exited (0x1b9705)
+    // The attached unit of the higher unit which was last counted -> use it to get a pointer to the higher unit // Cant be 0 since the function has exits early in that case (0x1b9705)
 
     _asm {
         pushad
