@@ -17,7 +17,7 @@
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
-bool DEBUG = true;
+bool EXTERNAL_DEBUG = false; // debug mode for the CasualLib::External Class
 DWORD MODULE_BASE;
 
 
@@ -30,7 +30,7 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
     std::string searchTag = luaL_checklstring(L, 1, NULL);
     DEBUG_OUT(std::cout << "searchTag: " << searchTag << std::endl);
 
-    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
+    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
@@ -64,7 +64,7 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
     std::string searchTag = luaL_checklstring(L, 1, NULL);
     DEBUG_OUT(std::cout << "searchTag: " << searchTag << std::endl);
 
-    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
+    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
@@ -113,7 +113,7 @@ bool getTraitsDone = false;
 std::vector<uintptr_t>* getTraits() {
     if (!getTraitsDone) {
         //std::cout << "getTraits" << std::endl;
-        Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
+        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
         Address modulePtr = external.getModule("hoi3_tfh.exe");
         //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
@@ -150,7 +150,7 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     }
     if (Hooks::CLeader::rankSpecificTraitsActive->find(activeName) != Hooks::CLeader::rankSpecificTraitsActive->end()) {
         DEBUG_OUT(std::cout << "addRankSpecificTrait for: " << activeName << " was already added" << std::endl);
-        lua_pushboolean(L, false);
+        lua_pushboolean(L, true);
         return 1;
     }
 
@@ -354,6 +354,52 @@ __declspec(dllexport) int activateUnitAttachmentLimitHook(lua_State* L)
     return 0;
 }
 
+__declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
+{
+    int newLimit = luaL_checkinteger(L, 1);
+    Hooks::CArmy::corpsUnitLimit = newLimit;
+    INFO_OUT(std::cout << "Corps unit limit set to: " << newLimit << std::endl);
+    return 0;
+}
+
+__declspec(dllexport) int setArmyUnitLimit(lua_State* L)
+{
+    int newLimit = luaL_checkinteger(L, 1);
+    Hooks::CArmy::armyUnitLimit = newLimit;
+    INFO_OUT(std::cout << "Army unit limit set to: " << newLimit << std::endl);
+    return 0;
+}
+
+__declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
+{
+    int newLimit = luaL_checkinteger(L, 1);
+    Hooks::CArmy::armyGroupUnitLimit = newLimit;
+    INFO_OUT(std::cout << "Armygroup unit limit set to: " << newLimit << std::endl);
+    return 0;
+}
+
+__declspec(dllexport) int addCommandLimitTrait(lua_State* L)
+{
+    std::string traitName = luaL_checkstring(L, 1);
+    int effect = luaL_checkinteger(L, 2);
+    DEBUG_OUT(std::cout << "addCommandLimitTrait: '" << traitName << "' - effect: " << effect << std::endl);
+
+    if (Hooks::CArmy::commandLimitTraits->find(traitName) != Hooks::CArmy::commandLimitTraits->end()) {
+        DEBUG_OUT(std::cout << "addCommandLimitTrait for: " << traitName << " was already added" << std::endl);
+        return 0;
+    }
+
+    Hooks::CArmy::CommandLimitTrait* clt = new Hooks::CArmy::CommandLimitTrait;
+    clt->traitName = traitName;
+    clt->limitEffect = effect;
+
+    Hooks::CArmy::commandLimitTraits->insert(std::make_pair(traitName, clt));
+
+    DEBUG_OUT(std::cout << "Hooks::CArmy::commandLimitTraits->size(): " << Hooks::CArmy::commandLimitTraits->size() << std::endl);
+    DEBUG_OUT(std::cout << "addCommandLimitTrait finished" << std::endl);
+    return 0;
+}
+
 
 /////////////////////////////////////
 //          GAME PATCHES           //
@@ -422,7 +468,7 @@ __declspec(dllexport) int activateWarExhaustionNeutralityResetPatch(lua_State* L
 /////////////////////////////////////
 __declspec(dllexport) int setModuleBase(lua_State* L)
 {
-    Memory::External external = Memory::External(GetCurrentProcessId(), DEBUG);
+    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     MODULE_BASE = modulePtr.get();
     Hooks::MODULE_BASE = MODULE_BASE;
@@ -459,6 +505,10 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected},
     // Unit Functions
     {"activateUnitAttachmentLimitHook", activateUnitAttachmentLimitHook},
+    {"setCorpsUnitLimit", setCorpsUnitLimit},
+    {"setArmyUnitLimit", setArmyUnitLimit},
+    {"setArmyGroupUnitLimit", setArmyGroupUnitLimit},
+    {"addCommandLimitTrait", addCommandLimitTrait},
     // Patches
     {"activateOffmapICPatch", activateOffmapICPatch},
     {"activateMinisterTechDecayPatch", activateMinisterTechDecayPatch},
