@@ -134,25 +134,26 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     DEBUG_OUT(std::cout << "addRankSpecificTrait called" << std::endl);
 
     std::string activeName = luaL_checklstring(L, 1, NULL);
-    DEBUG_OUT(std::cout << "activeName: " << activeName << std::endl);
     std::string inActiveName = luaL_checklstring(L, 2, NULL);
-    DEBUG_OUT(std::cout << "inActiveName: " << inActiveName << std::endl);
     int lowerRank = luaL_checkinteger(L, 3);
-    DEBUG_OUT(std::cout << "lowerRank: " << lowerRank << std::endl);
     int upperRank = luaL_checkinteger(L, 4);
-    DEBUG_OUT(std::cout << "upperRank: " << upperRank << std::endl);
 
     std::vector<uintptr_t>* traits = getTraits();
     if (traits->size() == 0) {
-        INFO_OUT(std::cout << "addRankSpecificTrait for: " << activeName << " not executed due to unitialised traits" << std::endl);
+        INFO_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' not executed due to unitialised traits" << std::endl);
         lua_pushboolean(L, false);
         return 1;
     }
     if (Hooks::CLeader::rankSpecificTraitsActive->find(activeName) != Hooks::CLeader::rankSpecificTraitsActive->end()) {
-        DEBUG_OUT(std::cout << "addRankSpecificTrait for: " << activeName << " was already added" << std::endl);
+        DEBUG_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' was already added" << std::endl);
         lua_pushboolean(L, true);
         return 1;
     }
+
+    DEBUG_OUT(std::cout << "activeName: " << activeName << std::endl);
+    DEBUG_OUT(std::cout << "inActiveName: " << inActiveName << std::endl);
+    DEBUG_OUT(std::cout << "lowerRank: " << lowerRank << std::endl);
+    DEBUG_OUT(std::cout << "upperRank: " << upperRank << std::endl);
 
     Hooks::CLeader::RankSpecificTrait* rst = new Hooks::CLeader::RankSpecificTrait;
     rst->lowerRank = lowerRank;
@@ -333,10 +334,10 @@ __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
 /////////////////////////////////////
 //          UNIT FUNCTIONS         //
 /////////////////////////////////////
-__declspec(dllexport) int activateUnitAttachmentLimitHook(lua_State* L)
+void activateUnitAttachmentLimitHook()
 {
     if (Hooks::CArmy::isUnitAttachmentLimitHookActive) {
-        return 0;
+        return;
     }
 
     DWORD hookAddress = MODULE_BASE + 0x1b9733;
@@ -351,30 +352,60 @@ __declspec(dllexport) int activateUnitAttachmentLimitHook(lua_State* L)
     }
 
     Hooks::CArmy::isUnitAttachmentLimitHookActive = true;
-    return 0;
+    return;
 }
 
+bool setCorpsUnitLimitDone = false;
 __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
 {
+    if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
+        activateUnitAttachmentLimitHook();
+    }
+
     int newLimit = luaL_checkinteger(L, 1);
-    Hooks::CArmy::corpsUnitLimit = newLimit;
-    INFO_OUT(std::cout << "Corps unit limit set to: " << newLimit << std::endl);
+    bool force = lua_toboolean(L, 2);
+
+    if (force || setCorpsUnitLimitDone == false) {
+        Hooks::CArmy::corpsUnitLimit = newLimit;
+        setCorpsUnitLimitDone = true;
+        INFO_OUT(std::cout << "Corps unit limit set to: " << newLimit << std::endl);
+    }
     return 0;
 }
 
+bool setArmyUnitLimitDone = false;
 __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
 {
+    if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
+        activateUnitAttachmentLimitHook();
+    }
+
     int newLimit = luaL_checkinteger(L, 1);
-    Hooks::CArmy::armyUnitLimit = newLimit;
-    INFO_OUT(std::cout << "Army unit limit set to: " << newLimit << std::endl);
+    bool force = lua_toboolean(L, 2);
+
+    if (force || setArmyUnitLimitDone == false) {
+        Hooks::CArmy::armyUnitLimit = newLimit;
+        setArmyUnitLimitDone = true;
+        INFO_OUT(std::cout << "Army unit limit set to: " << newLimit << std::endl);
+    }
     return 0;
 }
 
+bool setArmyGroupUnitLimitDone = false;
 __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
 {
+    if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
+        activateUnitAttachmentLimitHook();
+    }
+
     int newLimit = luaL_checkinteger(L, 1);
-    Hooks::CArmy::armyGroupUnitLimit = newLimit;
-    INFO_OUT(std::cout << "Armygroup unit limit set to: " << newLimit << std::endl);
+    bool force = lua_toboolean(L, 2);
+
+    if (force || setArmyGroupUnitLimitDone == false) {
+        Hooks::CArmy::armyGroupUnitLimit = newLimit;
+        setArmyGroupUnitLimitDone = true;
+        INFO_OUT(std::cout << "Armygroup unit limit set to: " << newLimit << std::endl);
+    }
     return 0;
 }
 
@@ -504,7 +535,6 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill},
     {"activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected},
     // Unit Functions
-    {"activateUnitAttachmentLimitHook", activateUnitAttachmentLimitHook},
     {"setCorpsUnitLimit", setCorpsUnitLimit},
     {"setArmyUnitLimit", setArmyUnitLimit},
     {"setArmyGroupUnitLimit", setArmyGroupUnitLimit},

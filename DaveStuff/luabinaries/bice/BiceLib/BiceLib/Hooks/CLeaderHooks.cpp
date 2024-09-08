@@ -117,8 +117,8 @@ void Hooks::CLeader::adjustSkillLevel(DWORD* leaderAddress, DWORD* CPromoteLeade
     unsigned int experiencePercent = 0; // 1000 = 100% - 500 = 50%
     getLeaderExperiencePercent((int)leaderAddress, &experiencePercent);
 
-    DEBUG_OUT(std::cout << "currentSkill: " << currentSkill << std::endl);
-    DEBUG_OUT(std::cout << "direction: " << direction << std::endl);
+    DEBUG_OUT(std::cout << "currentSkill: " << (int) currentSkill << std::endl);
+    DEBUG_OUT(std::cout << "direction: " << (int) direction << std::endl);
     DEBUG_OUT(std::cout << "newRank: " << newRank << std::endl);
     DEBUG_OUT(std::cout << "experience: " << experience << std::endl);
     DEBUG_OUT(std::cout << "experiencePercent: " << experiencePercent << std::endl);

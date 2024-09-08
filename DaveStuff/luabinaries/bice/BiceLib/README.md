@@ -24,7 +24,7 @@ These features are activated and configured via LUA.
     * **Return values**:
         1. *vars*: Mapping of *name (string)* -> *value (number)*
     * **Notes**:
-        * The values are in the fixed point number format. E.g. Value of 12.05 = 12050
+        * The values are in the fixed point number format. E.g. if the returned value is 12050, then the ingame representation is 12.05
 
 ## Bugfixes
 * **activateOffmapICPatch()**
@@ -75,6 +75,30 @@ These features are activated and configured via LUA.
     * **Notes**:
         * The game actually tracks the total experience amount gained, and each level requires a different amount of total exp. Due to number overflow this causes the entire skill progression system to break past lvl 10. There are some extremely complicated instructions in the code which appear to accomodate values above lvl 10, by saving the value as a 64 bit number, but inside a savefile it only saves a 32 bit number. The 64 bit number also appears to be very much broken.
         * The skill number display will only be updated after reopening the leader list.
+* **setCorpsUnitLimit**
+    * set the limit of unit attachements for corps 
+    * **Params**:
+        *newLimit*: The new limit
+        *force* (boolean): If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+    * **Return values**: /
+* **setArmyUnitLimit**
+    * set the limit of unit attachements for armies 
+    * **Params**:
+        *newLimit*: The new limit
+        *force* (boolean): If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+    * **Return values**: /
+* **setArmyGroupUnitLimit**
+    * set the limit of unit attachements for army groups 
+    * **Params**:
+        *newLimit*: The new limit
+        *force* (boolean): If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+    * **Return values**: /
+* **addCommandLimitTrait**
+    * register a trait which should have an effect on the unit limit
+    * **Params**:
+        *traitName*: The name of the trait
+        *effect*: How many more (or less) units should be able to be attached
+    * **Return values**: /
 ## Other patches
 * **activateLeaderListShowMaxSkill()**
     * This will make the ingame leader list also display a leaders max skill.
