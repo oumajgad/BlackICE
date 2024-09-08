@@ -47,15 +47,21 @@ BiceLib = require("BiceLib")
 BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
 BiceLib.setModuleBase()
 
--- OOB Unit Limit
-BiceLib.activateUnitAttachmentLimitHook()
-
 -- Leaders
 BiceLib.activateRankSpecificTraits()
 BiceLib.activateLeaderPromotionSkillLoss()
 BiceLib.activateLeaderListShowMaxSkill()
 BiceLib.activateLeaderListShowMaxSkillSelected()
 BiceLib.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
+
+-- Units
+-- BiceLib.activateUnitAttachmentLimitHook()
+-- BiceLib.setCorpsUnitLimit(6, false)
+-- BiceLib.setArmyUnitLimit(7, false)
+-- BiceLib.setArmyGroupUnitLimit(8, false)
+
+-- BiceLib.addCommandLimitTrait("pskill_1", -1)
+-- BiceLib.addCommandLimitTrait("pskill_4", 1)
 
 -- Patches
 BiceLib.activateOffmapICPatch()
