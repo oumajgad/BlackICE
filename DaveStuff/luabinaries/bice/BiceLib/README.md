@@ -20,7 +20,7 @@ These features are activated and configured via LUA.
 * **getVariables(string countryTag)**:
     * Get a map of all current countryVariables
     * **Params**:
-        * *countryTag*: The TAG for which to retrieve the variables
+        1. *countryTag*: The TAG for which to retrieve the variables
     * **Return values**:
         1. *vars*: Mapping of *name (string)* -> *value (number)*
     * **Notes**:
@@ -57,12 +57,12 @@ These features are activated and configured via LUA.
     * Register a trait pair to a rank.
     * Traits **MUST** be prefixed with **rankSpecificTrait_**
     * **Params**:
-        * *activeName*: The full name of the rank in its active state
-        * *inActiveName*: The full name of the rank in its inactive state
-        * *lowerRank*: The first rank at which the trait should be in the *active* state
-        * *upperRank*: The last rank at which the trait should be in the *active* state
+        1. *activeName*: The full name of the rank in its active state
+        2. *inActiveName*: The full name of the rank in its inactive state
+        3. *lowerRank*: The first rank at which the trait should be in the *active* state
+        4. *upperRank*: The last rank at which the trait should be in the *active* state
     * **Return values**:
-        * *success* (boolean): If the specified rank can't be found this will be *false*
+        1. *success* (boolean): If the specified rank can't be found this will be *false*
     * **Notes**:
         * The traits display will only be updated after reopening the leader list.
 * **activateLeaderPromotionSkillLoss()**
@@ -80,26 +80,26 @@ These features are activated and configured via LUA.
 * **setCorpsUnitLimit**
     * set the limit of unit attachements for corps 
     * **Params**:
-        *newLimit*: The new limit
-        *force* (boolean): If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+        1. *newLimit*: The new limit
+        2. *force* (boolean): If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
     * **Return values**: /
 * **setArmyUnitLimit**
     * set the limit of unit attachements for armies 
     * **Params**:
-        *newLimit*: The new limit
-        *force* (boolean): If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+        1. *newLimit*: The new limit
+        2. *force* (boolean): If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
     * **Return values**: /
 * **setArmyGroupUnitLimit**
     * set the limit of unit attachements for army groups 
     * **Params**:
-        *newLimit*: The new limit
-        *force* (boolean): If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+        1. *newLimit*: The new limit
+        2. *force* (boolean): If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
     * **Return values**: /
 * **addCommandLimitTrait**
     * register a trait which should have an effect on the unit limit
     * **Params**:
-        *traitName*: The name of the trait
-        *effect*: How many more (or less) units should be able to be attached
+        1. *traitName*: The name of the trait
+        2. *effect*: How many more (or less) units should be able to be attached
     * **Return values**: /
 ## Other patches
 * **activateLeaderListShowMaxSkill()**
