@@ -58,6 +58,10 @@ diplomatic_decisions = {
 					}
 				}
 			}
+			threat = {
+				who = ENG
+				value = 10
+			}
 			relation = {
 				who = USA
 				value = -10
@@ -142,6 +146,10 @@ diplomatic_decisions = {
 						casus_belli = conquer
 					}
 				}
+			}
+			threat = {
+				who = ENG
+				value = 10
 			}
 			relation = {
 				who = USA
@@ -623,93 +631,55 @@ diplomatic_decisions = {
 				war_with = USA
 				war_with = SOV
 			}
+			USA = {
+				ai = no
+			}
 		}
 		allow = {
 			## Japan loses control of any  Homeland
+
 			or = {
-
-				not = {
-					7189 = {
-						controlled_by = JAP
-					}
+				7189 = {
+					controlled_by = USA
 				}
-
-				not = {
-					7238 = {
-						controlled_by = JAP
-					}
+				7238 = {
+					controlled_by = USA
 				}
-
-				not = {
-					4986 = {
-						controlled_by = JAP
-					}
+				4986 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5150 = {
-						controlled_by = JAP
-					}
+				5150 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5120 = {
-						controlled_by = JAP
-					}
+				5120 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5187 = {
-						controlled_by = JAP
-					}
+				5187 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5315 = {
-						controlled_by = JAP
-					}
+				5315 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5346 = {
-						controlled_by = JAP
-					}
+				5346 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5370 = {
-						controlled_by = JAP
-					}
+				5370 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5218 = {
-						controlled_by = JAP
-					}
+				5218 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5478 = {
-						controlled_by = JAP
-					}
+				5478 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5543 = {
-						controlled_by = JAP
-					}
+				5543 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5641 = {
-						controlled_by = JAP
-					}
+				5641 = {
+					controlled_by = USA
 				}
-
-				not = {
-					5425 = {
-						controlled_by = JAP
-					}
+				5425 = {
+					controlled_by = USA
 				}
 			}
 		}
@@ -828,6 +798,9 @@ diplomatic_decisions = {
 			has_country_flag = japanese_pressure_on_siam
 			ai = yes
 			war_with = ENG
+			ENG = {
+				ai = no
+			}
 		}
 		allow = {
 		}
@@ -841,141 +814,6 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-	### JAP AI vs AI kill decisions - attempt to make JAP actualy lose against AI USA ###
-	#japan_death_decision_43 = {
-	#	potential = {
-	#		tag = JAP
-	#		ai = yes
-	#		or = {
-	#			GER = {
-	#				ai = no
-	#			}
-	#			ITA = {
-	#				ai = no
-	#			}
-	#		}
-	#		SOV = {
-	#			ai = yes
-	#		}
-	#		USA = {
-	#			ai = yes
-	#		}
-	#		ENG = {
-	#			ai = yes
-	#		}
-	#		CHC = {
-	#			ai = yes
-	#		}
-	#		CHI = {
-	#			ai = yes
-	#		}
-	#		CAN = {
-	#			ai = yes
-	#		}
-	#		AST = {
-	#			ai = yes
-	#		}
-	#		NZL = {
-	#			ai = yes
-	#		}
-#
-	#		not = {
-	#			has_country_flag = japan_death_decision_43
-	#		}
-	#	}
-	#	allow = {
-	#		date = 1942.6.1
-	#	}
-	#	effect = {
-	#		add_country_modifier = {
-	#			name = "japan_death_1943"
-	#			duration = -1
-	#		}
-	#		set_country_flag = japan_death_decision_43
-	#		japan_lack_of_training_hidden = 6000
-	#	}
-	#	ai_will_do = {
-	#		factor = 1
-	#	}
-	#}
-	#japan_death_decision_44 = {
-	#	potential = {
-	#		tag = JAP
-	#		ai = yes
-	#		or = {
-	#			GER = {
-	#				ai = no
-	#			}
-	#			ITA = {
-	#				ai = no
-	#			}
-	#		}
-	#		SOV = {
-	#			ai = yes
-	#		}
-	#		USA = {
-	#			ai = yes
-	#		}
-	#		ENG = {
-	#			ai = yes
-	#		}
-	#		CHC = {
-	#			ai = yes
-	#		}
-	#		CHI = {
-	#			ai = yes
-	#		}
-	#		CAN = {
-	#			ai = yes
-	#		}
-	#		AST = {
-	#			ai = yes
-	#		}
-	#		NZL = {
-	#			ai = yes
-	#		}
-#
-	#		not = {
-	#			has_country_flag = japan_death_decision_44
-	#		}
-	#	}
-	#	allow = {
-	#		date = 1944.1.1
-	#	}
-	#	effect = {
-	#		add_country_modifier = {
-	#			name = "japan_death_1944"
-	#			duration = -1
-	#		}
-	#		set_country_flag = japan_death_decision_44
-	#	}
-	#	ai_will_do = {
-	#		factor = 1
-	#	}
-	#}
-	#japan_resurrection = {
-	#	potential = {
-	#		tag = JAP
-	#		ai = yes
-	#		has_country_modifier = japan_death_1943
-	#	}
-	#	allow = {
-	#		exists = USA
-	#		not = {
-	#			war_with = USA
-	#		}
-	#	}
-	#	effect = {
-	#		remove_country_modifier  = japan_death_1944
-	#		remove_country_modifier  = japan_death_1943
-	#		JAP = {
-	#			join_faction = allies
-	#		}
-	#	}
-	#	ai_will_do = {
-	#		factor = 1
-	#	}
-	#}
 	japan_rebel_hack_1 = {
 		potential = {
 			tag = JAP
@@ -1060,4 +898,97 @@ diplomatic_decisions = {
 	#		factor = 1
 	#	}
 	#}
+	japan_MAN_MEN_cores = {
+		potential = {
+			tag = JAP
+			ai = yes
+		}
+		allow = {
+			not = {
+				has_country_flag = japan_MAN_MEN_cores
+			}
+			war = yes
+		}
+		effect = {
+			set_country_flag = japan_MAN_MEN_cores
+			MEN = {
+				any_owned = {
+					limit = {
+						is_core = MEN
+					}
+					add_core = JAP
+				}
+			}
+			MAN = {
+				any_owned = {
+					limit = {
+						is_core = MAN
+					}
+					add_core = JAP
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	JAP_CHI_truce = {
+		potential = {
+			tag = JAP
+			ai = yes
+			CHI = {
+				ai = yes
+			}
+			USA = {
+				ai = yes
+			}
+		}
+		allow = {
+			war = yes
+			has_country_flag = tora_tora
+			war_with = USA
+			not = {
+				has_country_flag = JAP_CHI_truce
+			}
+		}
+		effect = {
+			CHI = {
+				leave_faction = allies
+			}
+			end_war = CHI
+			end_war = CHC
+			end_war = CXB
+			end_war = CGX
+			end_war = CYN
+			end_war = CSX
+			non_aggression_pact = CHI
+			non_aggression_pact = CHC
+			non_aggression_pact = CXB
+			non_aggression_pact = CGX
+			non_aggression_pact = CYN
+			non_aggression_pact = CSX
+			OMG = {
+				any_country = {
+					any_owned = {
+						limit = {
+							or = {
+								is_core = CHI
+								is_core = CHC
+								is_core = CXB
+								is_core = CGX
+								is_core = CYN
+								is_core = CSX
+							}
+							controlled_by = JAP
+						}
+						secede_province = JAP
+					}
+				}
+			}
+			set_country_flag = JAP_CHI_truce
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
 }
