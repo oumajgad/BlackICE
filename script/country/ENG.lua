@@ -554,26 +554,26 @@ function P.ProductionWeights(voProductionData)
 		laArray = {
 			0.20, -- Land
 			0.10, -- Air
-			0.60, -- Sea
-			0.20}; -- Other
+			0.30, -- Sea
+			0.40}; -- Other
 	elseif voProductionData.Year == 1937 then
 		laArray = {
 			0.10, -- Land
 			0.10, -- Air
-			0.80, -- Sea
-			0.00}; -- Other
+			0.30, -- Sea
+			0.50}; -- Other
 	elseif voProductionData.Year >= 1938 and not voProductionData.IsAtWar then
 		laArray = {
 			0.35, -- Land
 			0.30, -- Air
-			0.30, -- Sea
-			0.05}; -- Other
+			0.20, -- Sea
+			0.15}; -- Other
 	else
 		if voProductionData.Year <= 1942 then
 			laArray = {
-				0.25, -- Land
-				0.20, -- Air
-				0.50, -- Sea
+				0.30, -- Land
+				0.25, -- Air
+				0.40, -- Sea
 				0.05}; -- Other
 		else
 			laArray = {
@@ -693,7 +693,7 @@ function P.NavalRatio(voProductionData)
 		heavy_cruiser = 3,
 		escort_carrier = 1,
 		light_carrier = 0.25,
-		battleship = 0.25
+		battleship = 0.00
 	};
 
 	return laArray
@@ -724,7 +724,7 @@ end
 --- NOTE: If goverment is in Exile these parms are ignored
 function P.ConvoyRatio(voProductionData)
 	local laArray = {
-		0, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
+		100, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
 		0, -- If Percentage extra is less than this it will force it up to the amount entered
 		0, -- If Percentage extra is greater than this it will force it down to this
 		8} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
@@ -917,6 +917,10 @@ end
 
 -- Do not build coastal forts
 function P.Build_CoastalFort(vIC, voProductionData)
+	return vIC, false
+end
+-- Do not build infra
+function P.Build_Infrastructure(vIC, voProductionData)
 	return vIC, false
 end
 
