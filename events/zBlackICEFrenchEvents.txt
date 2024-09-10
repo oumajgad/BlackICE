@@ -1131,6 +1131,9 @@ country_event = {
 	trigger = {
 		tag = FRA
 		government_in_exile = yes
+		#USA = {
+		#	has_country_flag = Operation_Husky
+		#}
 		or = {
 			and = {
 				war_with = VIC
@@ -1151,6 +1154,11 @@ country_event = {
 
 				not = {
 					5160 = {
+						controlled_by = VIC
+					}
+				}
+				not = {
+					5134 = {
 						controlled_by = VIC
 					}
 				}
@@ -1194,6 +1202,27 @@ country_event = {
 		#FRA = { country_event = 72550}
 		ai_chance = {
 			factor = 100
+		}
+		USA = {
+			any_owned = {
+				limit = {
+					is_core = FRA
+					controlled_by = USA
+				}
+				secede_province = FRA
+			}
+		}
+		ENG = {
+			any_owned = {
+				limit = {
+					is_core = FRA
+					controlled_by = ENG
+				}
+				secede_province = FRA
+			}
+		}
+		5198 = {
+			secede_province = FRA
 		}
 	}
 }
