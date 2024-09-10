@@ -62,16 +62,16 @@ function P.ProductionWeights(voProductionData)
 				0.50}; -- Other
 		elseif JapWar then
 			laArray = {
-				0.80, -- Land
+				0.90, -- Land
 				0.10, -- Air
 				0.0, -- Sea
-				0.10}; -- Other
+				0.0}; -- Other
 		else
 			laArray = {
-				0.60, -- Land
-				0.0, -- Air
+				0.90, -- Land
+				0.10, -- Air
 				0.0, -- Sea
-				0.40}; -- Other
+				0.00}; -- Other
 		end
 	end
 
@@ -84,10 +84,10 @@ function P.LandRatio(voProductionData)
 	-- More basic stuff to survive against JAP
 	if voProductionData.IsAtWar or voProductionData.Year < 1940 then
 		local laArray = {
-			infantry_brigade = 1,
-			infantry_bat = 2,
-			militia_brigade = 6,
-			garrison_brigade = 4,
+			infantry_brigade = 4,
+			infantry_bat = 1,
+			militia_brigade = 8,
+			garrison_brigade = 1,
 			cavalry_brigade = 2
 		};
 
@@ -128,6 +128,30 @@ function P.ConvoyRatio(voProductionData)
 		0} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
 
 	return laArray
+end
+
+function P.Build_militia_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
+	voType.TransportMain = "horse_transport"
+	voType.TertiaryMain = "division_hq_standard"
+	voType.second = "artillery_brigade"
+	voType.third = "Recon_cavalry_brigade"
+	voType.Support = 0
+	voType.SupportVariation = 0
+
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
+end
+
+function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
+	voType.TransportMain = "horse_transport"
+	voType.TertiaryMain = "division_hq_standard"
+	voType.first = "anti_tank_brigade"
+	voType.second = "artillery_brigade"
+	voType.third = "Recon_cavalry_brigade"
+	voType.SecondaryMain = "engineer_brigade"
+	voType.Support = 0
+	voType.SupportVariation = 0
+
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
