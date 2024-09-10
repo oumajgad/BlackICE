@@ -9,7 +9,7 @@ function IntelligenceMinisterUtilityThings()
 		SaveLoaded = true
 		G_DaysSinceLastUpdate = 0
 		DeterminePlayers()
-		DetermineExePatchStatus()
+		-- DetermineExePatchStatus()
 		DetermineSpriteDeletionStatus()
 		SetUpStatCollectionPage()
 	end

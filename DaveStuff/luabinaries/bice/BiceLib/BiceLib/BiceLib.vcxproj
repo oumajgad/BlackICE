@@ -104,7 +104,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BICE_LIB_DEBUG</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)deps\Lua 5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
@@ -152,15 +152,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bice.cpp" />
+    <ClCompile Include="Hooks\CArmyHooks.cpp" />
     <ClCompile Include="Hooks\CLeaderHooks.cpp" />
     <ClCompile Include="Hooks\Hooks.cpp" />
     <ClCompile Include="Patches.hpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCountry.hpp" />
     <ClInclude Include="HoiDataStructures.hpp" />
+    <ClInclude Include="Hooks\CArmyHooks.hpp" />
     <ClInclude Include="Hooks\CLeaderHooks.hpp" />
     <ClInclude Include="Hooks\Hooks.hpp" />
+    <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
