@@ -1,11 +1,11 @@
 #### Motorized, Mechanized and Armor Units
 
 ## 1936
-## Historical Upgrades
+## Red Army Historical Upgrades
 country_event = {
 	id = 11000
 	is_triggered_only = yes
-	title = "Historical Upgrades"
+	title = "Red Army Historical Upgrades"
 	desc = "EVTDESC11000"
 	picture = "EarlyTank2"
 	option = {
@@ -4148,22 +4148,22 @@ country_event = {
 country_event = {
 	id = 11055
 	is_triggered_only = yes
-	title = "Formation Longe Range Air Command"
+	title = "Long Range Air Command Formation"
 	desc = "EVTDESC11055"
 	picture = "soviet-long-range-air-command"
 	option = {
-		name = "Forming Longe Range Air Command"
+		name = "Forming Long Range Air Command"
 		set_country_flag = strat_command
 		load_oob = SOV/SOV_Strat_air_command.txt
 		ai_chance = {
-			factor = 99
+			factor = 100
 		}
 	}
 	option = {
 		name = "No need"
 		set_country_flag = strat_command_no
 		ai_chance = {
-			factor = 1
+			factor = 0
 		}
 	}
 }
@@ -6593,7 +6593,7 @@ country_event = {
 				limit = {
 					tag = SOV
 					has_country_flag = BlackICE
-					controls = 3379 #Taman Peninsula (Anapa) #Taman Peninsula (Anapa)
+					controls = 3379 #Taman Peninsula (Anapa)
 				}
 				change_variable = {
 					which = IC_days_spent
@@ -6659,6 +6659,258 @@ country_event = {
 	option = {
 		name = "No Need"  # no
 		set_country_flag = GRD_32_33_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Guards Rifle Divisions (34,36,37,38), August 1942 - Moscow
+country_event = {
+	id = 14025
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14025"
+	picture = "guardsinf"
+	option = {
+		name = "Form these units!"
+		set_country_flag = GRD_34_36_37_38
+		#Formation of 34th Guards Rifle Division - Removing 7th Airborne Corps
+		remove_brigade = "Shtab-K. 7-go V.-D. Korpusa"
+		remove_brigade = "14-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "15-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "16-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "Artilleriyskiy D-n 7-go V.-D. Korpusa"
+		remove_brigade = "Otd. Tankovyy B-n 7-go V.-D. Korpusa"
+		remove_brigade = "Avtomobilnyy B-n 7-go V.-D. Korpusa"
+
+		#Formation of 36th Guards Rifle Division - Removing 9th Airborne Corps
+		remove_brigade = "Shtab-K. 9-go V.-D. Korpusa"
+		remove_brigade = "20-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "21-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "22-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "Artilleriyskiy D-n 9-go V.-D. Korpusa"
+		remove_brigade = "Otd. Tankovyy B-n 9-go V.-D. Korpusa"
+		remove_brigade = "Avtomobilnyy B-n 9-go V.-D. Korpusa"
+
+		#Formation of 37th Guards Rifle Division - Removing 1st Airborne Corps
+		remove_brigade = "Shtab-K. 1-go V.-D. Korpusa"
+		remove_brigade = "1-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "204-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "211-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "Artilleriyskiy D-n 1-go V.-D. Korpusa"
+		remove_brigade = "Otd. Tankovyy B-n 1-go V.-D. Korpusa"
+		remove_brigade = "Avtomobilnyy B-n 1-go V.-D. Korpusa"
+
+		#Formation of 38th Guards Rifle Division - Removing 4th Airborne Corps
+		remove_brigade = "Shtab-K. 4-go V.-D. Korpusa"
+		remove_brigade = "7-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "8-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "214-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "Artilleriyskiy D-n 4-go V.-D. Korpusa"
+		remove_brigade = "Otd. Tankovyy B-n 4-go V.-D. Korpusa"
+		remove_brigade = "Avtomobilnyy B-n 4-go V.-D. Korpusa"
+
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 1409 #Moscow
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Rifle_Divisions_34-36-37-38_1942_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+
+						1409 = {
+							controller = {
+							faction = axis 
+							}
+						}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -5000
+				load_oob = SOV/Guards_Rifle_Divisions_34-36-37-38_1942_Aug_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 1409
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_34-36-37-38_1942_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					3379 = {
+						controller = {
+						faction = axis 
+						}
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_34-36-37-38_1942_Aug_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_34_36_37_38_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Guards Rifle Divisions (35,39,40,41), August 1942 - Stalingrad
+country_event = {
+	id = 14026
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14026"
+	picture = "guardsinf"
+	option = {
+		name = "Form these units!"
+		set_country_flag = GRD_35_39_40_41
+		#Formation of 35th Guards Rifle Division - Removing 8th Airborne Corps
+		remove_brigade = "Shtab-K. 8-go V.-D. Korpusa"
+		remove_brigade = "17-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "18-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "19-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "Artilleriyskiy D-n 8-go V.-D. Korpusa"
+		remove_brigade = "Otd. Tankovyy B-n 8-go V.-D. Korpusa"
+		remove_brigade = "Avtomobilnyy B-n 8-go V.-D. Korpusa"
+
+		#Formation of 39th Guards Rifle Division - Removing 5th Airborne Corps
+		remove_brigade = "Shtab-K. 5-go V.-D. Korpusa"
+		remove_brigade = "9-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "10-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "201-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "Artilleriyskiy D-n 5-go V.-D. Korpusa"
+		remove_brigade = "Otd. Tankovyy B-n 5-go V.-D. Korpusa"
+		remove_brigade = "Avtomobilnyy B-n 5-go V.-D. Korpusa"
+
+		#Formation of 40th Guards Rifle Division - Removing 6th Airborne Corps
+		remove_brigade = "Shtab-K. 6-go V.-D. Korpusa"
+		remove_brigade = "11-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "12-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "13-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "Artilleriyskiy D-n 6-go V.-D. Korpusa"
+		remove_brigade = "Otd. Tankovyy B-n 6-go V.-D. Korpusa"
+		remove_brigade = "Avtomobilnyy B-n 6-go V.-D. Korpusa"
+
+		#Formation of 41st Guards Rifle Division - Removing 10th Airborne Corps
+		remove_brigade = "Shtab-K. 10-go V.-D. Korpusa"
+		remove_brigade = "23-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "24-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "25-ya Vozdushno-Desantnyy Brigada"
+		remove_brigade = "Artilleriyskiy D-n 10-go V.-D. Korpusa"
+		remove_brigade = "Otd. Tankovyy B-n 10-go V.-D. Korpusa"
+		remove_brigade = "Avtomobilnyy B-n 10-go V.-D. Korpusa"
+
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 2857 #Stalingrad
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Rifle_Divisions_35-39-40-41_1942_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+
+						2857 = {
+							controller = {
+							faction = axis 
+							}
+						}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -5000
+				load_oob = SOV/Guards_Rifle_Divisions_35-39-40-41_1942_Aug_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 2857
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_35-39-40-41_1942_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					2857 = {
+						controller = {
+						faction = axis 
+						}
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_35-39-40-41_1942_Aug_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_35_39_40_41_no
 		ai_chance = {
 			factor = 0
 		}

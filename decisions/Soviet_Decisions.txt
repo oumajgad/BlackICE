@@ -3,7 +3,7 @@
 ########################
 diplomatic_decisions = {
 ### Red Army Upgrades
-    Historical_upgrades = {
+    Historical_upgrades_decision = {
 		potential = {
 			tag = SOV
 			year = 1936
@@ -1480,15 +1480,15 @@ diplomatic_decisions = {
 		}
 	}	
 #### Various events before Great Patriotic war
-	## Longe Range Air Command
+	## Long Range Air Command
 	strategic_command_decision = {
 		potential = {
 			tag = SOV
 			controls = 1409 #Moscow
 			year = 1936
+			has_country_flag = Red_Army_Upgrades
 
 			not = {
-				has_country_flag = Red_Army_Upgrades
 				has_country_flag = strat_command
 				has_country_flag = strat_command_no
 			}
@@ -1497,7 +1497,7 @@ diplomatic_decisions = {
 			date = 1936.3.1
 		}
 		effect = {
-			country_event = 11055 #Formerevent 92090
+			country_event = 11055
 		}
 		ai_will_do = {
 			factor = 1
@@ -2266,6 +2266,7 @@ diplomatic_decisions = {
 		potential = {
 			tag = SOV
 			has_country_flag = Red_Army_Upgrades
+			has_country_flag = AC1941
 			war_with = GER
             year = 1942
 
@@ -2279,6 +2280,54 @@ diplomatic_decisions = {
 		}
 		effect = {
 			country_event = 14024
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Guards_RD_34_36_37_38_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = AC1941
+			has_country_flag = AC1941_2
+			war_with = GER
+            year = 1942
+
+			not = {
+				has_country_flag = GRD_34_36_37_38
+				has_country_flag = GRD_34_36_37_38_no
+			}
+		}
+		allow = {
+            date = 1942.8.2
+		}
+		effect = {
+			country_event = 14025
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Guards_RD_35_39_40_41_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = AC1941
+			has_country_flag = AC1941_2
+			war_with = GER
+            year = 1942
+
+			not = {
+				has_country_flag = GRD_35_39_40_41
+				has_country_flag = GRD_35_39_41_41_no
+			}
+		}
+		allow = {
+            date = 1942.8.3
+		}
+		effect = {
+			country_event = 14026
 		}
 		ai_will_do = {
 			factor = 1
