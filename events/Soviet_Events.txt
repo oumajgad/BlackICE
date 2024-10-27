@@ -6916,3 +6916,609 @@ country_event = {
 		}
 	}
 }
+## Guards Rifle Divisions (42,47,48,49), October 1942 - Moscow
+country_event = {
+	id = 14027
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14027"
+	picture = "guardsinf"
+	option = {
+		name = "Form these units!"
+		set_country_flag = GRD_42_47_48_49
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 1409 #Moscow
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Rifle_Divisions_42-47-48-49_1942_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+
+						1409 = {
+							controller = {
+							faction = axis 
+							}
+						}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -5000
+				load_oob = SOV/Guards_Rifle_Divisions_42-47-48-49_1942_Oct_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 1409
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_42-47-48-49_1942_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					1409 = {
+						controller = {
+						faction = axis 
+						}
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_42-47-48-49_1942_Oct_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_42_47_48_49_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Guards Rifle Divisions (43,45,46), October 1942 - Kalinin
+country_event = {
+	id = 14028
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14028"
+	picture = "guardsinf"
+	option = {
+		name = "Form these units!"
+		set_country_flag = GRD_43_45_46
+		#Formation of 45th Guards Rifle Division - Removing 70th Rifle Division
+		remove_brigade = "Shtab-K. 70-y Strelk. D."
+		remove_brigade = "208/209/210-ye Strelk. Tatarskiye Polki"
+		remove_brigade = "70-y Legkiy Tankovyy B-n"
+		remove_brigade = "70-y Artilleriyskiy Polk"
+		remove_brigade = "94-y Protivotankovyy D-n"
+		remove_brigade = "110-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 70-y Strelk. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 1231 #Kalinin
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Rifle_Divisions_43-45-46_1942_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+
+						1231 = {
+							controller = {
+							faction = axis 
+							}
+						}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -5000
+				load_oob = SOV/Guards_Rifle_Divisions_43-45-46_1942_Oct_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 1231
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_43-45-46_1942_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					1231 = {
+						controller = {
+						faction = axis 
+						}
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_43-45-46_1942_Oct_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_43_45_46_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Guards Rifle Divisions (44), October 1942 - Stalingrad
+country_event = {
+	id = 14029
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14029"
+	picture = "guardsinf"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = GRD_44
+		#Formation of 44th Guards Rifle Division - Removing 5th Rifle Division
+		remove_brigade = "Shtab-K. 5-y Vitebskoy SD"
+		remove_brigade = "13/14/15-y Strelkovyye Polk"
+		remove_brigade = "5-y Legkiy Tankovyy B-n"
+		remove_brigade = "5-y Artilleriyskiy Polk"
+		remove_brigade = "61-y Protivotankovyy D-n"
+		remove_brigade = "54-y Sapernoyy B-n"
+		remove_brigade = "Avtotransportnyy B-n 5-y Strelk. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Rifle_Divisions_44_1942_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_44_1942_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_44_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Guards Rifle Divisions (50,51,52), November 1942 - Stalingrad
+country_event = {
+	id = 14030
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14030"
+	picture = "guardsinf"
+	option = {
+		name = "Form these units!"
+		set_country_flag = GRD_50_51_52
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 2857 #Stalingrad
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Rifle_Divisions_50-51-52_1942_Nov.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+
+						2857 = {
+							controller = {
+							faction = axis 
+							}
+						}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -5000
+				load_oob = SOV/Guards_Rifle_Divisions_50-51-52_1942_Nov_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 2857
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_50-51-52_1942_Nov.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					2857 = {
+						controller = {
+						faction = axis 
+						}
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_50-51-52_1942_Nov_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_50_51_52_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Guards Rifle Divisions (53,54,55,57,58), December 1942 - Moscow
+country_event = {
+	id = 14031
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14031"
+	picture = "guardsinf"
+	option = {
+		name = "Form these units!"
+		set_country_flag = GRD_53_54_55_57_58
+		#Formation of 55th Guards Rifle Division - Removing 30th Rifle Division
+		remove_brigade = "Shtab-K. 30-y Irkutskoy SD"
+		remove_brigade = "88/89/90-ye Strelkovyye Polki"
+		remove_brigade = "30-y Legkiy Tankovyy B-n"
+		remove_brigade = "30-y Artilleriyskiy Polk"
+		remove_brigade = "147-y Protivotankovyy D-n"
+		remove_brigade = "101-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 30-y Strelk. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 1409 #Moscow
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Rifle_Divisions_53-54-55-57-58_1942_Dec.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+
+						1409 = {
+							controller = {
+							faction = axis 
+							}
+						}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -5000
+				load_oob = SOV/Guards_Rifle_Divisions_53-54-55-57-58_1942_Dec_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 1409
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_53-54-55-57-58_1942_Dec.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					1409 = {
+						controller = {
+						faction = axis 
+						}
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_53-54-55-57-58_1942_Dec_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_53_54_55_57_58_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Guards Rifle Divisions (63), January 1943 - Leningrad
+country_event = {
+	id = 14032
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14032"
+	picture = "guardsinf"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = GRD_63
+		#Formation of 63rd Guards Rifle Division - Removing 136th Rifle Division
+		remove_brigade = "Shtab-K. 136-y Strelk. Divizii"
+		remove_brigade = "269/270/342-ye Strelk. Polki"
+		remove_brigade = "343-y Art. Polk/556-y Minomotnyy Polk"
+		remove_brigade = "296-y Otd. Protivotankovyy D-n"
+		remove_brigade = "194-y Razvedovatelniy B-n"
+		remove_brigade = "42-y Otd. Sap'ornyy B-n"
+		remove_brigade = "Avtomobilnyy B-n 136-y Strelk. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Rifle_Divisions_63_1943_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_63_1943_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_63_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Guards Rifle Divisions (75), March 1943 - Stalingrad
+country_event = {
+	id = 14033
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14033"
+	picture = "guardsinf"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = GRD_75
+		#Formation of 63rd Guards Rifle Division - Removing 95th Rifle Division
+		remove_brigade = "Shtab-K. 95-y Strelk. Div."
+		remove_brigade = "90/161/241-ye Strelkovyye Polki"
+		remove_brigade = "57-y Artilleriyskiy Polk"
+		remove_brigade = "97-y Otd. I. Protivotankovyy D-n"
+		remove_brigade = "48-y Otd. Sap'ornyy B-n"
+		remove_brigade = "13-ya Otd. Razvedovatelnaya Rota"
+		remove_brigade = "283-ya Avtotransportnaya Rota"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Rifle_Divisions_75_1943_March.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_75_1943_March.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_75_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Guards Rifle Divisions (120), September 1943 - Stalingrad
+country_event = {
+	id = 14034
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14034"
+	picture = "guardsinf"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = GRD_120
+		#Formation of 120th Guards Rifle Division - Removing 308th Rifle Division
+		remove_brigade = "Shtab-K. 308-y Strelk. Div."
+		remove_brigade = "339/347/351-ye Strelkovye Polki"
+		remove_brigade = "1011-y Artileriyskiy Polk"
+		remove_brigade = "430-y Protivotankoviy B-n"
+		remove_brigade = "699-y Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 'kuznechik'"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Rifle_Divisions_120_1943_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_120_1943_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_120_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
