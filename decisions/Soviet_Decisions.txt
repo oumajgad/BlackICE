@@ -2,7 +2,7 @@
 ### SOVIET DECISIONS ###
 ########################
 diplomatic_decisions = {
-### Red Army Upgrades
+### Red Army Upgrades ###
     Historical_upgrades_decision = {
 		potential = {
 			tag = SOV
@@ -23,6 +23,9 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+#################################	
+### Armored Units before 1941 ###
+#################################
 	25th_Armored_Brigade_decision = {
 		potential = {
 			tag = SOV
@@ -1003,7 +1006,9 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-### Red Army Upgrades for Airborne Troops
+##############################################
+### Red Army Upgrades for Airborne Troops ####
+##############################################
 	Para_1936_decision = {
 		potential = {
 			tag = SOV
@@ -1098,7 +1103,9 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-### NKVD Troops
+###################
+### NKVD Troops ###
+###################
     NKVD_Historical_upgrades_decision = {
 		potential = {
 			tag = SOV
@@ -1478,8 +1485,10 @@ diplomatic_decisions = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
-#### Various events before Great Patriotic war
+	}
+##################################################
+#### Various events before Great Patriotic war ###
+##################################################
 	## Long Range Air Command
 	strategic_command_decision = {
 		potential = {
@@ -1622,6 +1631,9 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+###########################
+### Great Patriotic War ###
+###########################
 ### Cavalry Corps
 	## 8th Cavalry Corps
 	8_Cav_Corps_decision = {
@@ -1695,6 +1707,192 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+### Naval Rifle/Infantry Brigades
+	## 7th Naval Rifle Brigade
+	7_Naval_Rifle_decision = {
+		potential = {
+			tag = SOV
+			controls = 782 #Leningrad
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1941
+
+			not = {
+				has_country_flag = 7_NRB
+				has_country_flag = 7_NRB_no
+			}
+		}
+		allow = {
+			date = 1941.9.1
+		}
+		effect = {
+			country_event = 12003
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## 83rd Naval Infantry Brigade 
+	83_Naval_Infantry_decision = {
+		potential = {
+			tag = SOV
+			controls = 3380 #Novorossisk
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 83_NIB
+				has_country_flag = 83_NIB_no
+			}
+		}
+		allow = {
+			date = 1942.8.1
+		}
+		effect = {
+			country_event = 12004
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## 92nd Naval Infantry Brigade 
+	92_Naval_Infantry_decision = {
+		potential = {
+			tag = SOV
+			controls = 2857 #Stalingrad
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 92_NIB
+				has_country_flag = 92_NIB_no
+			}
+		}
+		allow = {
+			date = 1942.8.1
+		}
+		effect = {
+			country_event = 12005
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+### Various Armies and units for Red Army
+	## Soviet 2nd Shock Army 
+	Second_shock_army_decision = {
+		potential = {
+			tag = SOV
+			war_with = GER
+			has_country_flag = Red_Army_Upgrades
+			controls = 820 #Narva
+			not = {
+				has_country_flag = 2_SA
+				has_country_flag = 2_SA_no
+			}
+		}	
+		allow = {
+
+			not = {
+				864 = {
+					controlled_by = SOV
+				}
+			}
+			#Kohtla Jarve
+		}
+		effect = {
+			country_event = 13050
+
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+## 72nd Rifle Division
+	72nd_Rifle_Division_decision = {
+		potential = {
+			tag = SOV
+			controls = 782 #Leningrad
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1941
+
+			not = {
+				has_country_flag = 72_RD
+				has_country_flag = 72_RD_no
+			}
+		}
+		allow = {
+			date = 1941.12.1
+		}
+		effect = {
+			country_event = 13051
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+## 136th Rifle Division
+	136th_Rifle_Division_decision = {
+		potential = {
+			tag = SOV
+			controls = 782 #Leningrad
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 136_RD
+				has_country_flag = 136_RD_no
+			}
+		}
+		allow = {
+			date = 1942.3.12
+		}
+		effect = {
+			country_event = 13052
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+## 308th Rifle Division
+	308th_Rifle_Division_decision = {
+		potential = {
+			tag = SOV
+			controls = 2068 #Saratov
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1941
+
+			not = {
+				has_country_flag = 308_RD
+				has_country_flag = 308_RD_no
+			}
+		}
+		allow = {
+			date = 1942.6.1
+		}
+		effect = {
+			country_event = 13053
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+
+### Estonian Corps (1942) ############################
+### Polish Armies (LWP) ##############################
+### Romanian Volunteers ##############################
+### French 'Normandie-Niemen' ########################
+
+#####################
+### Guards Units ####
+#####################
+
 ### Guards Cavalry Corps
 	## 1st and 2nd Guards Cavalry Corps
 	1_2_Guards_Cav_Corps_decision = {

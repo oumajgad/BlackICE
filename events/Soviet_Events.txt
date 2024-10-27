@@ -4580,6 +4580,380 @@ country_event = {
 		}
 	}
 }
+### Naval Rifle/Infantry Brigades
+## 7th Naval Rifle Brigade
+country_event = {
+	id = 12003
+	is_triggered_only = yes
+    title = "7th Naval Rifle Brigade"
+	desc = "EVTDESC12003"
+	picture = "Naval_infantry"
+    
+    option = {
+		name = "Form this brigade!"
+		set_country_flag = 7_NRB
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Naval_Rifle_Brigade_7_1941_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Naval_Rifle_Brigade_7_1941_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 7_NRB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 83rd Naval Infantry Brigade
+country_event = {
+	id = 12004
+	is_triggered_only = yes
+    title = "83rd Naval Infantry Brigade"
+	desc = "EVTDESC12004"
+	picture = "Naval_infantry"
+    
+    option = {
+		name = "Form this brigade!"
+		set_country_flag = 83_NIB
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Naval_Infantry_Brigade_83_1942_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Naval_Infantry_Brigade_83_1942_Aug.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 83_NIB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 92nd Naval Infantry Brigade
+country_event = {
+	id = 12005
+	is_triggered_only = yes
+    title = "83rd Naval Infantry Brigade"
+	desc = "EVTDESC12005"
+	picture = "Naval_infantry"
+    
+    option = {
+		name = "Form this brigade!"
+		set_country_flag = 92_NIB
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Naval_Infantry_Brigade_92_1942_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Naval_Infantry_Brigade_92_1942_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 92_NIB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+### Various Armies and units for Red Army
+## 2nd Shock Army
+country_event = {
+	id = 13050
+	is_triggered_only = yes
+    title = "Second Shock Army"
+	desc = "EVTDESC13050"
+	picture = "Naval_infantry"
+    
+    option = {
+		name = "Form this Army!"
+		set_country_flag = 2_SA
+		officer_pool = 10000
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/2nd_Shock_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/2nd_Shock_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 2_SA_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 72nd Rifle Division
+country_event = {
+	id = 13051
+	is_triggered_only = yes
+    title = "72nd Rifle Division"
+	desc = "EVTDESC13051"
+	picture = "Naval_infantry"
+    
+    option = {
+		name = "Form this division!"
+		set_country_flag = 72_RD
+		#Removing 7th Naval Rifle Brigade
+		remove_brigade = "Shtab-K. 7-y BMS"
+		remove_brigade = "1. Morskoye Strelkovye B-ny 7-y MBS"
+		remove_brigade = "2. Morskoye Strelkovye B-ny 7-y MBS"
+		remove_brigade = "Smeshannaya Brigada 7-y MBS"
+		remove_brigade = "Tankovyy B-n 7-y MBS"
+		remove_brigade = "Transportnyy B-n 7-y MBS"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Rifle_Division_72_1941_Dec.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Rifle_Division_72_1941_Dec.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 72_RD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 136th Rifle Division
+country_event = {
+	id = 13052
+	is_triggered_only = yes
+    title = "136th Rifle Division"
+	desc = "EVTDESC13052"
+	picture = "Naval_infantry"
+    
+    option = {
+		name = "Form this division!"
+		set_country_flag = 136_RD
+		#Removing 8th Naval Rifle Brigade
+		remove_brigade = "Shtab-K. 8-y BMS"
+		remove_brigade = "1. Morskoye Strelkovye B-ny 8-y MBS"
+		remove_brigade = "2. Morskoye Strelkovye B-ny 8-y MBS"
+		remove_brigade = "Smeshannaya Brigada 8-y MBS"
+		remove_brigade = "Tankovyy B-n 8-y MBS"
+		remove_brigade = "Transportnyy B-n 8-y MBS"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Rifle_Division_136_1942_March.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Rifle_Division_136_1942_March.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 136_RD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 308th Rifle Division
+country_event = {
+	id = 13053
+	is_triggered_only = yes
+    title = "308th Rifle Division"
+	desc = "EVTDESC13053"
+	picture = "Naval_infantry"
+    
+    option = {
+		name = "Form this division!"
+		set_country_flag = 308_RD
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Rifle_Division_308_1942_June.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Rifle_Division_308_1942_June.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 136_RD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 ### Guards Cavalry Corps
 ## 1st and 2nd Guards Cavalry Corps
 country_event = {
