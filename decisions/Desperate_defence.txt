@@ -1394,249 +1394,256 @@ diplomatic_decisions = {
 	#		factor = 1
 	#	}
 	#}
-	SJW_stelmate = {
-		potential = {
-			tag = OMG
-			CHI = {
-				ai = yes
-			}
-			JAP = {
-				ai = yes
-			}
-
-		}
-		allow = {
-			or = {
-				CHI = {
-					surrender_progress = 50
-				}
-				CHI = {
-					has_country_flag = SJW_stelmate
-				}
-			}
-			JAP = {
-				war_with = CHI
-			}
-		}
-		effect = {
-			OMG = {
-				any_country = {
-					limit = {
-						tag = CHI
-						surrender_progress = 50
-					}
-					set_country_flag = SJW_stelmate
-				}
-			}
-			OMG = {
-				any_country = {
-					any_controlled = {
-						limit = {
-							is_core = CHI
-							not = {
-								controlled_by = CHI
-							}
-							any_neighbor_province = {
-								is_core = CHI
-								controlled_by = CHI			
-							}
-							not = {
-								has_province_flag = SJW_stelmate_prov_flag
-							}	
-						}
-						desperate_defence = 12
-						set_province_flag = SJW_stelmate_prov_flag
-					}
-				}
-			}	
-			OMG = {
-				any_country = {
-					any_owned = {
-						limit = {
-							is_core = CHI
-							controlled_by = CHI
-							any_neighbor_province = {
-								is_core = CHI
-								controlled_by = JAP
-							}	
-							not = {
-								has_province_flag = SJW_stelmate_prov_flag
-							}	
-						}
-						desperate_defence = 12
-						set_province_flag = SJW_stelmate_prov_flag
-					}
-				}
-			}
-
-			OMG = {
-				any_country = {
-					any_controlled = {
-						limit = {
-							is_core = CSX
-							not = {
-								controlled_by = CSX
-							}
-							any_neighbor_province = {
-								is_core = CSX
-								controlled_by = CSX			
-							}
-							not = {
-								has_province_flag = SJW_stelmate_prov_flag
-							}	
-						}
-						desperate_defence = 12
-						set_province_flag = SJW_stelmate_prov_flag
-					}
-				}
-			}	
-			OMG = {
-				any_country = {
-					any_owned = {
-						limit = {
-							is_core = CSX
-							controlled_by = CSX
-							any_neighbor_province = {
-								is_core = CSX
-								controlled_by = JAP
-							}	
-							not = {
-								has_province_flag = SJW_stelmate_prov_flag
-							}	
-						}
-						desperate_defence = 12
-						set_province_flag = SJW_stelmate_prov_flag
-					}
-				}
-			}
-			OMG = {
-				any_country = {
-					any_controlled = {
-						limit = {
-							is_core = MEN
-							not = {
-								controlled_by = MEN
-							}
-							any_neighbor_province = {
-								is_core = MEN
-								controlled_by = MEN			
-							}
-							not = {
-								has_province_flag = SJW_stelmate_prov_flag
-							}	
-						}
-						desperate_defence = 12
-						set_province_flag = SJW_stelmate_prov_flag
-					}
-				}
-			}	
-			OMG = {
-				any_country = {
-					any_owned = {
-						limit = {
-							is_core = MEN
-							controlled_by = MEN
-							any_neighbor_province = {
-								is_core = MEN
-								controlled_by = JAP
-							}	
-							not = {
-								has_province_flag = SJW_stelmate_prov_flag
-							}	
-						}
-						desperate_defence = 12
-						set_province_flag = SJW_stelmate_prov_flag
-					}
-				}
-			}
-			OMG = {
-				any_country = {
-					any_controlled = {
-						limit = {
-							is_core = MAN
-							not = {
-								controlled_by = MAN
-							}
-							any_neighbor_province = {
-								is_core = MAN
-								controlled_by = MAN			
-							}
-							not = {
-								has_province_flag = SJW_stelmate_prov_flag
-							}	
-						}
-						desperate_defence = 12
-						set_province_flag = SJW_stelmate_prov_flag
-					}
-				}
-			}	
-			OMG = {
-				any_country = {
-					any_owned = {
-						limit = {
-							is_core = MAN
-							controlled_by = MAN
-							any_neighbor_province = {
-								is_core = MAN
-								controlled_by = JAP
-							}	
-							not = {
-								has_province_flag = SJW_stelmate_prov_flag
-							}	
-						}
-						desperate_defence = 12
-						set_province_flag = SJW_stelmate_prov_flag
-					}
-				}
-			}
-			OMG = {
-				any_country = {
-					any_controlled = {
-						limit = {
-							not = {
-								CHI = {
-									war_with = JAP
-								}
-							}
-							is_core = CHI
-							controlled_by = CHI
-							any_neighbor_province = {
-								is_core = CHI
-								controlled_by = CHI					
-							}
-							has_province_flag = SJW_stelmate_prov_flag
-						}
-						desperate_defence = -12
-						clr_province_flag = SJW_stelmate_prov_flag
-					}
-				}
-			}
-			OMG = {
-				any_country = {
-					any_controlled = {
-						limit = {
-							not  {
-								JAP = {
-									war_with = CHI
-								}
-							}
-							is_core = CHI
-							controlled_by = JAP
-							any_neighbor_province = {
-								is_core = JAP
-								controlled_by = JAP			
-							}	
-							has_province_flag = SJW_stelmate_prov_flag
-						}
-						desperate_defence = -12
-						clr_province_flag = SJW_stelmate_prov_flag
-					}
-				}
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
+#	SJW_stelmate = {
+#		potential = {
+#			tag = OMG
+#			CHI = {
+#				ai = yes
+#			}
+#			JAP = {
+#				ai = yes
+#			}
+#
+#		}
+#		allow = {
+#			or = {
+#				CHI = {
+#					surrender_progress = 50
+#				}
+#				CHI = {
+#					has_country_flag = SJW_stelmate
+#				}
+#			}
+#			JAP = {
+#				war_with = CHI
+#			}
+#		}
+#		effect = {
+#			OMG = {
+#				any_country = {
+#					limit = {
+#						tag = CHI
+#						surrender_progress = 50
+#					}
+#					set_country_flag = SJW_stelmate
+#				}
+#			}
+#			OMG = {
+#				any_country = {
+#					any_controlled = {
+#						limit = {
+#							is_core = CHI
+#							not = {
+#								controlled_by = CHI
+#							}
+#							any_neighbor_province = {
+#								is_core = CHI
+#								controlled_by = CHI			
+#							}
+#							not = {
+#								has_province_flag = SJW_stelmate_prov_flag
+#							}	
+#						}
+#						desperate_defence = 12
+#						set_province_flag = SJW_stelmate_prov_flag
+#					}
+#				}
+#			}	
+#			OMG = {
+#				any_country = {
+#					any_owned = {
+#						limit = {
+#							is_core = CHI
+#							controlled_by = CHI
+#							any_neighbor_province = {
+#								is_core = CHI
+#								controlled_by = JAP
+#							}	
+#							not = {
+#								has_province_flag = SJW_stelmate_prov_flag
+#							}	
+#						}
+#						desperate_defence = 12
+#						set_province_flag = SJW_stelmate_prov_flag
+#					}
+#				}
+#			}
+#
+#			OMG = {
+#				any_country = {
+#					any_controlled = {
+#						limit = {
+#							is_core = CSX
+#							not = {
+#								controlled_by = CSX
+#							}
+#							any_neighbor_province = {
+#								is_core = CSX
+#								controlled_by = CSX			
+#							}
+#							not = {
+#								has_province_flag = SJW_stelmate_prov_flag
+#							}	
+#						}
+#						desperate_defence = 12
+#						set_province_flag = SJW_stelmate_prov_flag
+#					}
+#				}
+#			}	
+#			OMG = {
+#				any_country = {
+#					any_owned = {
+#						limit = {
+#							is_core = CSX
+#							controlled_by = CSX
+#							any_neighbor_province = {
+#								is_core = CSX
+#								controlled_by = JAP
+#							}	
+#							not = {
+#								has_province_flag = SJW_stelmate_prov_flag
+#							}	
+#						}
+#						desperate_defence = 12
+#						set_province_flag = SJW_stelmate_prov_flag
+#					}
+#				}
+#			}
+#			OMG = {
+#				any_country = {
+#					any_controlled = {
+#						limit = {
+#							is_core = MEN
+#							not = {
+#								controlled_by = MEN
+#							}
+#							any_neighbor_province = {
+#								is_core = MEN
+#								controlled_by = MEN			
+#							}
+#							not = {
+#								has_province_flag = SJW_stelmate_prov_flag
+#							}	
+#						}
+#						desperate_defence = 12
+#						set_province_flag = SJW_stelmate_prov_flag
+#					}
+#				}
+#			}	
+#			OMG = {
+#				any_country = {
+#					any_owned = {
+#						limit = {
+#							is_core = MEN
+#							controlled_by = MEN
+#							any_neighbor_province = {
+#								is_core = MEN
+#								controlled_by = JAP
+#							}	
+#							not = {
+#								has_province_flag = SJW_stelmate_prov_flag
+#							}	
+#						}
+#						desperate_defence = 12
+#						set_province_flag = SJW_stelmate_prov_flag
+#					}
+#				}
+#			}
+#			OMG = {
+#				any_country = {
+#					any_controlled = {
+#						limit = {
+#							is_core = MAN
+#							not = {
+#								controlled_by = MAN
+#							}
+#							any_neighbor_province = {
+#								is_core = MAN
+#								controlled_by = MAN			
+#							}
+#							not = {
+#								has_province_flag = SJW_stelmate_prov_flag
+#							}	
+#						}
+#						desperate_defence = 12
+#						set_province_flag = SJW_stelmate_prov_flag
+#					}
+#				}
+#			}	
+#			OMG = {
+#				any_country = {
+#					any_owned = {
+#						limit = {
+#							is_core = MAN
+#							controlled_by = MAN
+#							any_neighbor_province = {
+#								is_core = MAN
+#								controlled_by = JAP
+#							}	
+#							not = {
+#								has_province_flag = SJW_stelmate_prov_flag
+#							}	
+#						}
+#						desperate_defence = 12
+#						set_province_flag = SJW_stelmate_prov_flag
+#					}
+#				}
+#			}
+#			OMG = {
+#				any_country = {
+#					any_owned = {
+#						limit = {
+#							not = {
+#								CHI = {
+#									war_with = JAP
+#								}
+#							}
+#							is_core = CHI
+#							controlled_by = CHI
+#							any_neighbor_province = {
+#								is_core = CHI
+#								controlled_by = CHI					
+#							}
+#							has_province_flag = SJW_stelmate_prov_flag
+#						}
+#						desperate_defence = -12
+#						clr_province_flag = SJW_stelmate_prov_flag
+#					}
+#				}
+#			}
+#			#OMG = {
+#			#	any_country = {
+#			#		any_owned = {
+#			#			limit = {
+#			#				not = {
+#			#					JAP = {
+#			#						war_with = CHI
+#			#					}
+#			#				}
+#			#				is_core = CHI
+#			#				controlled_by = JAP
+#			#				any_neighbor_province = {
+#			#					is_core = CHI
+#			#					not = {
+#			#						controlled_by = CHI		
+#			#						controlled_by = CHC		
+#			#						controlled_by = CXB		
+#			#						controlled_by = CGX		
+#			#						controlled_by = CYN		
+#			#						controlled_by = CSX		
+#			#					}	
+#			#				}	
+#			#				has_province_flag = SJW_stelmate_prov_flag
+#			#			}
+#			#			desperate_defence = -12
+#			#			clr_province_flag = SJW_stelmate_prov_flag
+#			#		}
+#			#	}
+#			#}
+#		}
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
 }
 ###EOF
