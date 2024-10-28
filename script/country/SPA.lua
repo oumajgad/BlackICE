@@ -37,8 +37,9 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 		if voDiploScoreObj.Faction == loAxis
 		and not(engTag:GetCountry():GetFaction() == loAxis) then
 			if CCurrentGameState.GetProvince(1964):GetController() == engTag -- London check
-			and CCurrentGameState.GetProvince(5191):GetController() == engTag then -- Gibraltar check
-				voDiploScoreObj.Score = voDiploScoreObj.Score - 50
+			and CCurrentGameState.GetProvince(5191):GetController() == engTag  -- Gibraltar check
+			and CCurrentGameState.GetProvince(5586):GetController() == engTag then -- Alexandria check
+				voDiploScoreObj.Score = voDiploScoreObj.Score - 10000
 			end
 		elseif voDiploScoreObj.Faction == CCurrentGameState.GetFaction("comintern") then
 			voDiploScoreObj.Score = 0
