@@ -1240,7 +1240,6 @@ diplomatic_decisions = {
 				year = 1942
 				has_country_modifier = game_balance_tech_stage_1b_cooldown
 				has_global_flag = game_balance_tech_stage_2_started
-				year = 1942
 			}
 		}
 		effect = {
@@ -3620,7 +3619,395 @@ diplomatic_decisions = {
 #		}
 #	}
 
+######################################################
+############	EARLY OVERLORD FOR AI	##############
+######################################################
 
+	DDay_week_1_early = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway_early
+			not = {
+				has_country_flag = overlord_reinforcement_complete_week1_early
+			}
+		}
+		allow = {
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 98301
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
+	DDay_wave_1 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway_early
+			has_country_flag = overlord_reinforcement_complete_week1_early
+			not = {
+				has_country_flag = overlord_reinforcement_complete_wave1_early
+			}
+		}
+		allow = {
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 98311
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
+	DDay_wave_2 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway_early
+			has_country_flag = overlord_reinforcement_complete_wave1_early
+			not = {
+				has_country_flag = overlord_reinforcement_complete_wave2_early
+			}
+		}
+		allow = {
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 98321
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
+	DDay_wave_3 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway_early
+			has_country_flag = overlord_reinforcement_complete_wave2_early
+			not = {
+				has_country_flag = overlord_reinforcement_complete_wave3_early
+			}
+		}
+		allow = {
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 98331
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
+	port_removal = {
+		potential = {
+			tag = OMG
+			GER = {
+				has_country_flag = sealow_raid_one
+			}
+			not = {
+				has_country_flag = naval_bases_removed
+			}
+		}
+		allow = {
+			1726 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			1129 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			849 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			2075 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			1670 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			2079 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			1344 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			723 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			1295 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			1252 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			1017 = {
+				not = {
+					controlled_by = GER
+				}
+			}
+			not = {
+				has_country_modifier = Sealion_Invasion_Timer
+			}
+		}
+		effect = {
+			1726 = {
+				naval_base = -5
+			}
+			1129 = {
+				naval_base = -5
+			}
+			849 = {
+				naval_base = -5
+			}
+			2075 = {
+				naval_base = -5
+			}
+			1670 = {
+				naval_base = -5
+			}
+			2079 = {
+				naval_base = -5
+			}
+			1344 = {
+				naval_base = -5
+			}
+			723 = {
+				naval_base = -5
+			}
+			1295 = {
+				naval_base = -5
+			}
+			1252 = {
+				naval_base = -5
+			}
+			1017 = {
+				naval_base = -5
+			}
+			set_country_flag = naval_bases_removed
+		}
+	}
+
+	africa_ENG_units fix = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			5264 = {
+				controlled_by = ENG
+				units_in_province = 5
+			}
+			5378 = {
+				controlled_by = ENG
+			}
+		}
+		effect = {
+			5413 = {
+				change_controller = ITA
+			}
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
 
 }
 #EOF#

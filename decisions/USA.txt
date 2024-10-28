@@ -512,7 +512,34 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = Operation_Husky
+
 			load_oob = USA/zDD_Operation_Husky_Force_oob.txt
+			OMG = {
+				any_country = {
+					limit = {
+						tag = USA
+						ai = yes
+						ENG = {
+							ai = no
+						}
+					}
+					load_oob = USA/zDD_Operation_Husky_Force_oob.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = ENG
+						ai = yes
+						USA = {
+							ai = yes
+						}
+					}
+					load_oob = USA/zDD_Operation_Husky_Force_oob.txt
+				}
+			}
+
+
 			add_country_modifier = {
 				name = "Operation_Husky"
 				duration = 120
@@ -998,7 +1025,7 @@ diplomatic_decisions = {
 						supplies = 5000
 						fuel = 500
 					}
-					50039 = {
+					5039 = {
 						supplies = 15000
 						fuel = 15000
 					}
@@ -3079,5 +3106,224 @@ diplomatic_decisions = {
 				}
 			}
 		}
+		ai_will_do = {
+			factor = 1
+		}
 	}
+	Early_DDAY_prep = {
+		potential = {
+			#ai = yes
+			tag = USA
+		}
+		allow = {
+			year = 1943
+			#ai = yes
+			tag = USA
+			not = {
+				has_country_flag = early_overlord_prep
+				has_country_flag = overlord_underway_early
+				has_country_flag = Early_DDAY_prep_decision
+			}
+			or = {
+				2605 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#    country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2608 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#    country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2422 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2482 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2483 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2423 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2194 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2195 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2137 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2080 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2194 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2197 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2081 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				2022 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+				1910 = {
+					or = {
+						controlled_by = ENG
+						controlled_by = USA
+					}
+					#or = {
+					#   country_units_in_province = ENG
+					#    country_units_in_province = USA
+					#}
+					#units_in_province = 30
+				}
+			}
+		}
+		effect = {
+			country_event = 65900
+			set_country_flag = Early_DDAY_prep_decision
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	Early_DDAY_launch = {
+		potential = {
+			#ai = yes
+			tag = USA
+		}
+		allow = {
+			or = {
+				has_country_flag = overlord_dest_calais_early
+				has_country_flag = overlord_dest_normandy_early
+				has_country_flag = overlord_dest_brest_early
+				has_country_flag = overlord_dest_bordeaux_early
+			}
+			not = {
+				has_country_flag = Early_DDAY_launch_decision
+			}
+		}
+		effect = {
+			country_event = 65901
+			set_country_flag = Early_DDAY_launch_decision
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
 }
