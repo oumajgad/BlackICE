@@ -932,63 +932,300 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-	JAP_CHI_truce = {
-		potential = {
-			tag = JAP
-			ai = yes
-			CHI = {
-				ai = yes
-			}
-			USA = {
-				ai = yes
-			}
-		}
-		allow = {
-			war = yes
-			has_country_flag = tora_tora
-			war_with = USA
-			not = {
-				has_country_flag = JAP_CHI_truce
-			}
-		}
-		effect = {
-			CHI = {
-				leave_faction = allies
-			}
-			end_war = CHI
-			end_war = CHC
-			end_war = CXB
-			end_war = CGX
-			end_war = CYN
-			end_war = CSX
-			non_aggression_pact = CHI
-			non_aggression_pact = CHC
-			non_aggression_pact = CXB
-			non_aggression_pact = CGX
-			non_aggression_pact = CYN
-			non_aggression_pact = CSX
-			OMG = {
-				any_country = {
-					any_owned = {
-						limit = {
-							or = {
-								is_core = CHI
-								is_core = CHC
-								is_core = CXB
-								is_core = CGX
-								is_core = CYN
-								is_core = CSX
-							}
-							controlled_by = JAP
-						}
-						secede_province = JAP
-					}
-				}
-			}
-			set_country_flag = JAP_CHI_truce
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
+	#JAP_CHI_truce = {
+	#	potential = {
+	#		tag = JAP
+	#		ai = yes
+	#		CHI = {
+	#			ai = yes
+	#		}
+	#		USA = {
+	#			ai = yes
+	#		}
+	#	}
+	#	allow = {
+	#		war = yes
+	#		has_country_flag = tora_tora
+	#		war_with = USA
+	#		not = {
+	#			has_country_flag = JAP_CHI_truce
+	#		}
+	#		or = {
+	#			and = {
+	#				has_country_modifier = JAP_CHI_truce_timer
+	#				not = {
+	#					date = 1944.4.19
+	#				}
+	#			}
+	#			not = {
+	#				has_country_modifier = JAP_CHI_truce_timer
+	#			}
+	#		}
+	#	}
+	#	effect = {
+	#		CHI = {
+	#			leave_faction = allies
+	#		}
+	#		CHC = {
+	#			leave_faction = allies
+	#		}
+	#		CHI = {
+	#			leave_faction = allies
+	#		}
+	#		CXB = {
+	#			leave_faction = allies
+	#		}
+	#		CGX = {
+	#			leave_faction = allies
+	#		}
+	#		CYN = {
+	#			leave_faction = allies
+	#		}
+	#		CSX = {
+	#			leave_faction = allies
+	#		}
+	#		end_war = CHI
+	#		end_war = CHC
+	#		end_war = CXB
+	#		end_war = CGX
+	#		end_war = CYN
+	#		end_war = CSX
+	#		NJG = {
+	#			end_war = CHI
+	#			end_war = CHC
+	#			end_war = CXB
+	#			end_war = CGX
+	#			end_war = CYN
+	#			end_war = CSX	
+	#		}
+	#		MAN = {
+	#			end_war = CHI
+	#			end_war = CHC
+	#			end_war = CXB
+	#			end_war = CGX
+	#			end_war = CYN
+	#			end_war = CSX	
+	#		}
+	#		MEN = {
+	#			end_war = CHI
+	#			end_war = CHC
+	#			end_war = CXB
+	#			end_war = CGX
+	#			end_war = CYN
+	#			end_war = CSX	
+	#		}
+	#		non_aggression_pact = CHI
+	#		non_aggression_pact = CHC
+	#		non_aggression_pact = CXB
+	#		non_aggression_pact = CGX
+	#		non_aggression_pact = CYN
+	#		non_aggression_pact = CSX
+	#		NJG = {
+	#			non_aggression_pact = CHI
+	#			non_aggression_pact = CHC
+	#			non_aggression_pact = CXB
+	#			non_aggression_pact = CGX
+	#			non_aggression_pact = CYN
+	#			non_aggression_pact = CSX	
+	#		}
+	#		MAN = {
+	#			non_aggression_pact = CHI
+	#			non_aggression_pact = CHC
+	#			non_aggression_pact = CXB
+	#			non_aggression_pact = CGX
+	#			non_aggression_pact = CYN
+	#			non_aggression_pact = CSX	
+	#		}
+	#		MEN = {
+	#			non_aggression_pact = CHI
+	#			non_aggression_pact = CHC
+	#			non_aggression_pact = CXB
+	#			non_aggression_pact = CGX
+	#			non_aggression_pact = CYN
+	#			non_aggression_pact = CSX	
+	#		}
+
+#			JAP = {
+#				threat = {
+#					who = CHI
+#					value = -2000
+#				}
+#			}
+#			JAP = {
+#				threat = {
+#					who = CHC
+#					value = -2000
+#				}
+#			}
+#			JAP = {
+#				threat = {
+#					who = CXB
+#					value = -2000
+#				}
+#			}
+#			JAP = {
+#				threat = {
+#					who = CGX
+#					value = -2000
+#				}
+#			}
+#			JAP = {
+#				threat = {
+#					who = CYN
+#					value = -2000
+#				}
+#			}
+#			JAP = {
+#				threat = {
+#					who = CSX
+#					value = -2000
+#				}
+#			}
+#
+#			CHI = {
+#				threat = {
+#					who = JAP
+#					value = -2000
+#				}
+#			}
+#			CHC = {
+#				threat = {
+#					who = JAP
+#					value = -2000
+#				}
+#			}
+#			CXB = {
+#				threat = {
+#					who = JAP
+#					value = -2000
+#				}
+#			}
+#			CGX = {
+#				threat = {
+#					who = JAP
+#					value = -2000
+#				}
+#			}
+#			CYN = {
+#				threat = {
+#					who = JAP
+#					value = -2000
+#				}
+#			}
+#			CSX = {
+#				threat = {
+#					who = JAP
+#					value = -2000
+#				}
+#			}
+#
+#			OMG = {
+#				any_country = {
+#					any_owned = {
+#						limit = {
+#							or = {
+#								is_core = CHI
+#								is_core = CHC
+#								is_core = CXB
+#								is_core = CGX
+#								is_core = CYN
+#								is_core = CSX
+#							}
+#							controlled_by = JAP
+#						}
+#						secede_province = JAP
+#					}
+#				}
+#			}
+#			set_country_flag = JAP_CHI_truce
+#			add_country_modifier = {
+#				name = JAP_CHI_truce_timer
+#				duration = -1
+#			}
+#		}
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
+#
+#	JAP_CHI_truce_end = {
+#		potential = {
+#			tag = JAP
+#			ai = yes
+#			CHI = {
+#				ai = yes
+#			}
+#			USA = {
+#				ai = yes
+#			}
+#			war_with = USA
+#		}
+#		allow = {
+#			has_country_modifier = JAP_CHI_truce_timer
+#			date = 1944.4.19
+#			not = {
+#				has_country_flag = JAP_CHI_truce_end
+#			} 
+#		}
+#		effect = {
+#			war = {
+#				target = CHI
+#				attacker_goal = {
+#					casus_belli = conquer
+#				}
+#				defender_goal = {
+#					casus_belli = conquer
+#				}
+#			}
+#			war = {
+#				target = CHC
+#				attacker_goal = {
+#					casus_belli = conquer
+#				}
+#				defender_goal = {
+#					casus_belli = conquer
+#				}
+#			}
+#			war = {
+#				target = CXB
+#				attacker_goal = {
+#					casus_belli = conquer
+#				}
+#				defender_goal = {
+#					casus_belli = conquer
+#				}
+#			}
+#			war = {
+#				target = CGX
+#				attacker_goal = {
+#					casus_belli = conquer
+#				}
+#				defender_goal = {
+#					casus_belli = conquer
+#				}
+#			}
+#			war = {
+#				target = CYN
+#				attacker_goal = {
+#					casus_belli = conquer
+#				}
+#				defender_goal = {
+#					casus_belli = conquer
+#				}
+#			}
+#			war = {
+#				target = CSX
+#				attacker_goal = {
+#					casus_belli = conquer
+#				}
+#				defender_goal = {
+#					casus_belli = conquer
+#				}
+#			}
+#			set_country_flag = JAP_CHI_truce_end
+#		}
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
 }
