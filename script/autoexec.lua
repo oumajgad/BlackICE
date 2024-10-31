@@ -55,7 +55,6 @@ BiceLib.activateLeaderListShowMaxSkillSelected()
 BiceLib.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
 
 -- Units
--- BiceLib.activateUnitAttachmentLimitHook()
 -- BiceLib.setCorpsUnitLimit(6, false)
 -- BiceLib.setArmyUnitLimit(7, false)
 -- BiceLib.setArmyGroupUnitLimit(8, false)
