@@ -6,8 +6,8 @@
 #include <intrin.h>
 #include <processthreadsapi.h>
 #include <chrono>
-#include <utils.hpp>
 
+#include <utils.hpp>
 #include <HoiDataStructures.hpp>
 
 #include <CCountry.hpp>
@@ -103,7 +103,7 @@ void activateLeaderRankChangeHook() {
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateLeaderRankChangeHook' succeeded" << std::endl);
-        INFO_OUT(std::cout << "jumpBack_leaderRankChangeHook: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_leaderRankChangeHook) << std::endl);
+        DEBUG_OUT(std::cout << "jumpBack_leaderRankChangeHook: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_leaderRankChangeHook) << std::endl);
     }
     Hooks::CLeader::isLeaderRankChangeHookActive = true;
 }
@@ -198,6 +198,7 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     DEBUG_OUT(std::cout << "Hooks::CLeader::rankSpecificTraitsInActive->size(): " << Hooks::CLeader::rankSpecificTraitsInActive->size() << std::endl);
 
     lua_pushboolean(L, true);
+    INFO_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' done" << std::endl);
     DEBUG_OUT(std::cout << "addRankSpecificTrait finished" << std::endl);
     return 1;
 }
@@ -303,7 +304,7 @@ __declspec(dllexport) int activateLeaderListShowMaxSkill(lua_State* L)
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkill' succeeded" << std::endl);
-        INFO_OUT(std::cout << "jumpBack_patchLeaderListShowMaxSkill: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill) << std::endl);
+        DEBUG_OUT(std::cout << "jumpBack_patchLeaderListShowMaxSkill: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill) << std::endl);
     }
     activateLeaderListShowMaxSkillDone = true;
     return 0;
@@ -325,7 +326,7 @@ __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' succeeded" << std::endl);
-        INFO_OUT(std::cout << "jumpBack_patchLeaderListShowMaxSkillSelected: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected) << std::endl);
+        DEBUG_OUT(std::cout << "jumpBack_patchLeaderListShowMaxSkillSelected: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected) << std::endl);
     }
     activateLeaderListShowMaxSkillSelectedDone = true;
     return 0;
@@ -348,7 +349,7 @@ void activateUnitAttachmentLimitHook()
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateUnitAttachmentLimitHook' succeeded" << std::endl);
-        INFO_OUT(std::cout << "jumpBack_unitAttachmentLimitHook: " << Memory::n2hexstr(Hooks::CArmy::jumpBack_unitAttachmentLimitHook) << std::endl);
+        DEBUG_OUT(std::cout << "jumpBack_unitAttachmentLimitHook: " << Memory::n2hexstr(Hooks::CArmy::jumpBack_unitAttachmentLimitHook) << std::endl);
     }
 
     Hooks::CArmy::isUnitAttachmentLimitHookActive = true;

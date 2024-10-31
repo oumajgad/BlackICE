@@ -110,14 +110,14 @@ def addEXE(zipf: zipfile.ZipFile):
 def setLuaUtilityVersion():
     with open("./script/autoexec.lua", "r") as file:
         lines = file.readlines()
-    lines[6] = f'UI.version = "{version}"\n'
+    lines[6] = f'G_MOD_VERSION = "{version}"\n'
     with open("./script/autoexec.lua", "w") as file:
         file.writelines(lines)
 
 def resetLuaUtilityVersion():
     with open("./script/autoexec.lua", "r") as file:
         lines = file.readlines()
-    lines[6] = f'UI.version = "GitHub"\n'
+    lines[6] = f'G_MOD_VERSION = "GitHub"\n'
     with open("./script/autoexec.lua", "w") as file:
         file.writelines(lines)
 
