@@ -58,7 +58,7 @@ int getTraitsEffect(DWORD leaderAddress) {
     return res;
 }
 
-DWORD handle(DWORD currentlyAttachedUnitAmount, DWORD* unitToAttach, DWORD* lastCountedUnit) {
+DWORD handleUnitAttachmentLimit(DWORD currentlyAttachedUnitAmount, DWORD* unitToAttach, DWORD* lastCountedUnit) {
     DEBUG_OUT(printf("attachedUnitAmount: %d \n", (unsigned int)currentlyAttachedUnitAmount));
     DEBUG_OUT(printf("unitToAttachName: %s \n", utils::getCString(unitToAttach + (0x16c / 4))));
     DEBUG_OUT(printf("lastCountedUnitName: %s \n", utils::getCString(lastCountedUnit + (0x16c / 4))));
@@ -112,7 +112,7 @@ __declspec(naked) void Hooks::CArmy::unitAttachmentLimitHook() {
     }
 
     if (Hooks::CArmy::isUnitAttachmentLimitHookActive) {
-        newLimit = handle(currentlyAttachedUnitAmount, unitToAttach, lastCountedUnit);
+        newLimit = handleUnitAttachmentLimit(currentlyAttachedUnitAmount, unitToAttach, lastCountedUnit);
     }
 
     _asm {

@@ -228,10 +228,13 @@ __declspec(naked) void Hooks::CLeader::leaderRankChangeHook() {
     DWORD* CPromoteLeaderCommand;
     DWORD newRank;
     _asm {
+        pushad
+        push ebp
+        mov ebp, esp
+        sub esp, __LOCAL_SIZE
         mov[leaderAddress], edi
         mov[CPromoteLeaderCommand], esi
         mov newRank, eax
-        pushad
     }
 
     if (isLeaderSkillLossOnPromotionActive) {
@@ -245,6 +248,8 @@ __declspec(naked) void Hooks::CLeader::leaderRankChangeHook() {
     }
 
     _asm {
+        mov esp, ebp
+        pop ebp
         popad
         mov[edi + 0x6c], eax
         cmp[edi + 0x68], ebx
