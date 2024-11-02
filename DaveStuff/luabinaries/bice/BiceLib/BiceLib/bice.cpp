@@ -31,10 +31,7 @@ uintptr_t getCountry(Memory::External &external, std::string tag) {
         return countryCache->at(tag);
     }
 
-    Address modulePtr = external.getModule("hoi3_tfh.exe");
-    //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
-
-    uintptr_t ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, tag);
+    uintptr_t ctr = external.findCountryInstance(MODULE_BASE + DATA_SECTION_START, tag);
     if (ctr != 0) {
         countryCache->insert(std::make_pair(tag, ctr));
         DEBUG_OUT(std::cout << "added to countryCache: " << tag << std::endl);
@@ -43,7 +40,6 @@ uintptr_t getCountry(Memory::External &external, std::string tag) {
 
     return 0;
 }
-
 
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
@@ -133,14 +129,12 @@ std::vector<uintptr_t>* getTraits() {
     if (!getTraitsDone) {
         //std::cout << "getTraits" << std::endl;
         Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-        Address modulePtr = external.getModule("hoi3_tfh.exe");
-        //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
-        uintptr_t CTraitVFTable = modulePtr.get() + 0x11C7DC0;
+        uintptr_t CTraitVFTable = MODULE_BASE + 0x11C7DC0;
         //std::cout << "CTraitVFTable: " << Memory::n2hexstr(CTraitVFTable) << std::endl;
         std::string CTraitVFTableSig = Memory::ptrToSignature(CTraitVFTable);
         //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
-        getTraitsData = external.findSignatures(modulePtr.get() + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
+        getTraitsData = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
         if (getTraitsData->size() != 0) {
             INFO_OUT(std::cout << "Traits vector filled" << std::endl);
             getTraitsDone = true;
@@ -517,12 +511,18 @@ __declspec(dllexport) int activateWarExhaustionNeutralityResetPatch(lua_State* L
 /////////////////////////////////////
 //         MISC FUNCTIONS          //
 /////////////////////////////////////
+bool moduleBaseAlreadySet = false;
 __declspec(dllexport) int setModuleBase(lua_State* L)
 {
+    if (moduleBaseAlreadySet == true) {
+        return 0;
+    }
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     MODULE_BASE = modulePtr.get();
     Hooks::MODULE_BASE = MODULE_BASE;
+    INFO_OUT(std::cout << "MODULE_BASE at: " << Memory::n2hexstr(MODULE_BASE) << std::endl);
+    moduleBaseAlreadySet = true;
     return 0;
 }
 
