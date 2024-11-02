@@ -65,7 +65,7 @@ These features are activated and configured via LUA.
         3. *lowerRank*: The first rank at which the trait should be in the *active* state
         4. *upperRank*: The last rank at which the trait should be in the *active* state
     * **Return values**:
-        1. *success* (boolean): If the specified rank can't be found this will be *false*
+        1. *success* (boolean): If the specified trait can't be found this will be *false*
     * **Notes**:
         * The traits display will only be updated after reopening the leader list.
 * **activateLeaderPromotionSkillLoss()**

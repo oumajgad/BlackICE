@@ -514,7 +514,7 @@ __declspec(dllexport) int activateWarExhaustionNeutralityResetPatch(lua_State* L
 bool moduleBaseAlreadySet = false;
 __declspec(dllexport) int setModuleBase(lua_State* L)
 {
-    if (moduleBaseAlreadySet == true) {
+    if (moduleBaseAlreadySet) {
         return 0;
     }
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
