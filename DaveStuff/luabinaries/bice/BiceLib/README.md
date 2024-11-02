@@ -17,6 +17,8 @@ These features are activated and configured via LUA.
         * *countryTag*: The TAG for which to retrieve the flags
     * **Return values**:
         1. *flags*: List of strings
+    * **Notes**:
+        * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *getFlags* and *getVariables*.
 * **getVariables(string countryTag)**:
     * Get a map of all current countryVariables
     * **Params**:
@@ -25,6 +27,7 @@ These features are activated and configured via LUA.
         1. *vars*: Mapping of *name (string)* -> *value (number)*
     * **Notes**:
         * The values are in the fixed point number format. E.g. if the returned value is 12050, then the ingame representation is 12.05
+        * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *getFlags* and *getVariables*.
 
 ## Bugfixes
 * **activateOffmapICPatch()**

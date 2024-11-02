@@ -24,6 +24,27 @@ DWORD MODULE_BASE;
 /////////////////////////////////////
 //         INFO FUNCTIONS          //
 /////////////////////////////////////
+
+std::unordered_map<std::string, uintptr_t>* countryCache = new std::unordered_map<std::string, uintptr_t>;
+uintptr_t getCountry(Memory::External &external, std::string tag) {
+    if (countryCache->find(tag) != countryCache->end()) {
+        return countryCache->at(tag);
+    }
+
+    Address modulePtr = external.getModule("hoi3_tfh.exe");
+    //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
+
+    uintptr_t ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, tag);
+    if (ctr != 0) {
+        countryCache->insert(std::make_pair(tag, ctr));
+        DEBUG_OUT(std::cout << "added to countryCache: " << tag << std::endl);
+        return ctr;
+    }
+
+    return 0;
+}
+
+
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
     DEBUG_OUT(std::cout << "getCountryFlags called" << std::endl);
@@ -31,10 +52,8 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
     DEBUG_OUT(std::cout << "searchTag: " << searchTag << std::endl);
 
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-    Address modulePtr = external.getModule("hoi3_tfh.exe");
-    //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
-    auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
+    uintptr_t ctr = getCountry(external, searchTag);
     DEBUG_OUT(std::cout << "ctr: " << Memory::n2hexstr(ctr) << std::endl);
 
     if (ctr != 0) {
@@ -66,10 +85,8 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
     DEBUG_OUT(std::cout << "searchTag: " << searchTag << std::endl);
 
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-    Address modulePtr = external.getModule("hoi3_tfh.exe");
-    //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
-    auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
+    uintptr_t ctr = getCountry(external, searchTag);
     DEBUG_OUT(std::cout << "ctr: " << Memory::n2hexstr(ctr) << std::endl);
 
     if (ctr != 0) {
