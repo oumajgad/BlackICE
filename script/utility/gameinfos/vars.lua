@@ -17,7 +17,7 @@ function P.FillGrid()
     UI.m_grid_GameInfo_Vars1:ClearGrid()
     UI.m_grid_GameInfo_Vars1:DeleteRows(0, UI.m_grid_GameInfo_Vars1:GetNumberRows(), true )
     local i = 1
-    for k, v in spairs(vars) do
+    for k, v in spairs(vars, SortByKeyAscendingCaseInsensitive) do
         if v ~= 0 then
             v = v/1000
         end

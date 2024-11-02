@@ -109,6 +109,9 @@ end
 
 SortDescending = function(t,a,b) return t[b] < t[a] end
 SortAscending = function(t,a,b) return t[b] > t[a] end
+SortByKeyDescendingCaseInsensitive = function(t,a,b) return string.lower(b) < string.lower(a) end
+SortByKeyAscendingCaseInsensitive = function(t,a,b) return string.lower(b) > string.lower(a) end
+
 
 --===================================================
 -- call GLOBAL_unlock(_G)

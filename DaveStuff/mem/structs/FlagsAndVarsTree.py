@@ -21,10 +21,15 @@ class FlagsAndVarsTree:
     @classmethod
     def traverse_tree_depth_first(cls, pm: Pymem, node_ptr: int, res: list) -> list[int]:
         if node_ptr != 0:
+            character = pm.read_char(node_ptr + 0x4)
+            parent_node = pm.read_uint(node_ptr + 0x8)
+            if parent_node != 0:
+                # if a new flag/var is added the first node pointer is not changed, instead it has a parent pointer set
+                cls.traverse_tree_depth_first(pm=pm, node_ptr=parent_node, res=res)
+
             next_sibling_node = pm.read_uint(node_ptr + 0xC)
             child_node = pm.read_uint(node_ptr + 0x10)
             element_ptr = pm.read_uint(node_ptr)
-            # character = pm.read_char(node_ptr + 0x4)
             # print(f"{node_ptr=} - {character=} - {next_sibling_node=} - {child_node=}")
             if element_ptr != 0:
                 # print(f"{node_ptr=} - {element_ptr=}")

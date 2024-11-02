@@ -35,6 +35,7 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
     //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
     auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
+    DEBUG_OUT(std::cout << "ctr: " << Memory::n2hexstr(ctr) << std::endl);
 
     if (ctr != 0) {
         uintptr_t flagsOffset = ctr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
@@ -69,6 +70,7 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
     //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
     auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
+    DEBUG_OUT(std::cout << "ctr: " << Memory::n2hexstr(ctr) << std::endl);
 
     if (ctr != 0) {
         uintptr_t varsOffset = ctr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning

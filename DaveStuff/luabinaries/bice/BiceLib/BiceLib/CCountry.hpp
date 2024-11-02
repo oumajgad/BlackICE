@@ -7,13 +7,20 @@ namespace CCountry {
         }
         uintptr_t element = external.read<uintptr_t>(nodePtr);
         char character = external.read<char>(nodePtr + 0x4);
+        uintptr_t parent = external.read<uintptr_t>(nodePtr + 0x8);
         uintptr_t sibling = external.read<uintptr_t>(nodePtr + 0xC);
         uintptr_t child = external.read<uintptr_t>(nodePtr + 0x10);
         //std::cout << "nodePtr: " << Memory::n2hexstr(nodePtr) 
         //    << " char: " << character 
         //    << " element: " << Memory::n2hexstr(element) 
+        //    << " parent: " << Memory::n2hexstr(parent) 
         //    << " sibling: " << Memory::n2hexstr(sibling) 
         //    << " child: " << Memory::n2hexstr(child) << std::endl;
+        if (parent != 0) {
+            //std::cout << "parent" << std::endl;
+            traverseFlagsAndVarTreeDepthFirst(external, res, parent);
+        }
+
         if (element != 0) {
             //std::cout << "element" << std::endl;
             res->push_back(element);
@@ -51,8 +58,10 @@ namespace CCountry {
             HDS::CVariable x;
             x.name = external.readStringMaybePtr(i);
             x.value = external.read<int32_t>(i + 0x1C);
-            res->push_back(x);
-            //std::cout << Memory::n2hexstr(i) << " - " << x.name << " - " << x.value << std::endl;
+            if (x.value != 0) {
+                res->push_back(x);
+                //std::cout << Memory::n2hexstr(i) << " - " << x.name << " - " << x.value << std::endl;
+            }
         }
         delete ptrs;
         return res;
