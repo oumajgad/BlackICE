@@ -228,10 +228,13 @@ __declspec(naked) void Hooks::CLeader::leaderRankChangeHook() {
     DWORD* CPromoteLeaderCommand;
     DWORD newRank;
     _asm {
+        pushad
+        push ebp
+        mov ebp, esp
+        sub esp, __LOCAL_SIZE
         mov[leaderAddress], edi
         mov[CPromoteLeaderCommand], esi
         mov newRank, eax
-        pushad
     }
 
     if (isLeaderSkillLossOnPromotionActive) {
@@ -245,6 +248,8 @@ __declspec(naked) void Hooks::CLeader::leaderRankChangeHook() {
     }
 
     _asm {
+        mov esp, ebp
+        pop ebp
         popad
         mov[edi + 0x6c], eax
         cmp[edi + 0x68], ebx
@@ -256,11 +261,14 @@ __declspec(naked) void Hooks::CLeader::patchLeaderListShowMaxSkill() {
     DWORD* leaderAddress;
     CHAR* currentSkillCharArray;
     _asm {
+        pushad
+        push ebp
+        mov ebp, esp
+        sub esp, __LOCAL_SIZE
         mov[currentSkillCharArray], eax
-        mov eax, [esp + 0xC]
+        mov eax, [ebp + 0x30]
         mov[leaderAddress], eax
         mov eax, [currentSkillCharArray]
-        pushad
     }
 
     //std::cout << "patchLeaderListShowMaxSkill" << std::endl;
@@ -282,6 +290,8 @@ __declspec(naked) void Hooks::CLeader::patchLeaderListShowMaxSkill() {
     }
 
     _asm {
+        mov esp, ebp
+        pop ebp
         popad
         mov esi, eax
         mov ecx, esi
@@ -294,11 +304,14 @@ __declspec(naked) void Hooks::CLeader::patchLeaderListShowMaxSkillSelected() {
     DWORD* leaderAddress;
     CHAR* currentSkillCharArray;
     _asm {
-        mov[currentSkillCharArray], eax
-        mov eax, [ebp + 0xC]
-        mov[leaderAddress], eax
-        mov eax, [currentSkillCharArray]
         pushad
+        push ebp
+        mov ecx, [ebp + 0xC]    // save leader pointer before we mess with the stackframe pointer
+        mov ebp, esp
+        sub esp, __LOCAL_SIZE
+        mov[currentSkillCharArray], eax
+        mov[leaderAddress], ecx
+        mov eax, [currentSkillCharArray]
     }
 
     //std::cout << "patchLeaderListShowMaxSkillSelected" << std::endl;
@@ -319,6 +332,8 @@ __declspec(naked) void Hooks::CLeader::patchLeaderListShowMaxSkillSelected() {
 
 
     _asm {
+        mov esp, ebp
+        pop ebp
         popad
         mov esi, eax
         mov ecx, esi

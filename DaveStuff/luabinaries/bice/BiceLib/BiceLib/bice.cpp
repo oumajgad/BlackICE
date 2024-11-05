@@ -6,8 +6,8 @@
 #include <intrin.h>
 #include <processthreadsapi.h>
 #include <chrono>
-#include <utils.hpp>
 
+#include <utils.hpp>
 #include <HoiDataStructures.hpp>
 
 #include <CCountry.hpp>
@@ -24,6 +24,23 @@ DWORD MODULE_BASE;
 /////////////////////////////////////
 //         INFO FUNCTIONS          //
 /////////////////////////////////////
+
+std::unordered_map<std::string, uintptr_t>* countryCache = new std::unordered_map<std::string, uintptr_t>;
+uintptr_t getCountry(Memory::External &external, std::string tag) {
+    if (countryCache->find(tag) != countryCache->end()) {
+        return countryCache->at(tag);
+    }
+
+    uintptr_t ctr = external.findCountryInstance(MODULE_BASE + DATA_SECTION_START, tag);
+    if (ctr != 0) {
+        countryCache->insert(std::make_pair(tag, ctr));
+        DEBUG_OUT(std::cout << "added to countryCache: " << tag << std::endl);
+        return ctr;
+    }
+
+    return 0;
+}
+
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
     DEBUG_OUT(std::cout << "getCountryFlags called" << std::endl);
@@ -31,10 +48,9 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
     DEBUG_OUT(std::cout << "searchTag: " << searchTag << std::endl);
 
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-    Address modulePtr = external.getModule("hoi3_tfh.exe");
-    //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
-    auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
+    uintptr_t ctr = getCountry(external, searchTag);
+    DEBUG_OUT(std::cout << "ctr: " << Memory::n2hexstr(ctr) << std::endl);
 
     if (ctr != 0) {
         uintptr_t flagsOffset = ctr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
@@ -65,10 +81,9 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
     DEBUG_OUT(std::cout << "searchTag: " << searchTag << std::endl);
 
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-    Address modulePtr = external.getModule("hoi3_tfh.exe");
-    //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
-    auto ctr = external.findCountryInstance(modulePtr.get() + DATA_SECTION_START, searchTag);
+    uintptr_t ctr = getCountry(external, searchTag);
+    DEBUG_OUT(std::cout << "ctr: " << Memory::n2hexstr(ctr) << std::endl);
 
     if (ctr != 0) {
         uintptr_t varsOffset = ctr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning
@@ -103,7 +118,7 @@ void activateLeaderRankChangeHook() {
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateLeaderRankChangeHook' succeeded" << std::endl);
-        INFO_OUT(std::cout << "jumpBack_leaderRankChangeHook: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_leaderRankChangeHook) << std::endl);
+        DEBUG_OUT(std::cout << "jumpBack_leaderRankChangeHook: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_leaderRankChangeHook) << std::endl);
     }
     Hooks::CLeader::isLeaderRankChangeHookActive = true;
 }
@@ -114,14 +129,12 @@ std::vector<uintptr_t>* getTraits() {
     if (!getTraitsDone) {
         //std::cout << "getTraits" << std::endl;
         Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-        Address modulePtr = external.getModule("hoi3_tfh.exe");
-        //std::cout << "modulePtr: " << Memory::n2hexstr(modulePtr.get()) << std::endl;
 
-        uintptr_t CTraitVFTable = modulePtr.get() + 0x11C7DC0;
+        uintptr_t CTraitVFTable = MODULE_BASE + 0x11C7DC0;
         //std::cout << "CTraitVFTable: " << Memory::n2hexstr(CTraitVFTable) << std::endl;
         std::string CTraitVFTableSig = Memory::ptrToSignature(CTraitVFTable);
         //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
-        getTraitsData = external.findSignatures(modulePtr.get() + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
+        getTraitsData = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
         if (getTraitsData->size() != 0) {
             INFO_OUT(std::cout << "Traits vector filled" << std::endl);
             getTraitsDone = true;
@@ -198,6 +211,7 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     DEBUG_OUT(std::cout << "Hooks::CLeader::rankSpecificTraitsInActive->size(): " << Hooks::CLeader::rankSpecificTraitsInActive->size() << std::endl);
 
     lua_pushboolean(L, true);
+    INFO_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' done" << std::endl);
     DEBUG_OUT(std::cout << "addRankSpecificTrait finished" << std::endl);
     return 1;
 }
@@ -303,7 +317,7 @@ __declspec(dllexport) int activateLeaderListShowMaxSkill(lua_State* L)
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkill' succeeded" << std::endl);
-        INFO_OUT(std::cout << "jumpBack_patchLeaderListShowMaxSkill: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill) << std::endl);
+        DEBUG_OUT(std::cout << "jumpBack_patchLeaderListShowMaxSkill: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill) << std::endl);
     }
     activateLeaderListShowMaxSkillDone = true;
     return 0;
@@ -325,7 +339,7 @@ __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' succeeded" << std::endl);
-        INFO_OUT(std::cout << "jumpBack_patchLeaderListShowMaxSkillSelected: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected) << std::endl);
+        DEBUG_OUT(std::cout << "jumpBack_patchLeaderListShowMaxSkillSelected: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected) << std::endl);
     }
     activateLeaderListShowMaxSkillSelectedDone = true;
     return 0;
@@ -348,7 +362,7 @@ void activateUnitAttachmentLimitHook()
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateUnitAttachmentLimitHook' succeeded" << std::endl);
-        INFO_OUT(std::cout << "jumpBack_unitAttachmentLimitHook: " << Memory::n2hexstr(Hooks::CArmy::jumpBack_unitAttachmentLimitHook) << std::endl);
+        DEBUG_OUT(std::cout << "jumpBack_unitAttachmentLimitHook: " << Memory::n2hexstr(Hooks::CArmy::jumpBack_unitAttachmentLimitHook) << std::endl);
     }
 
     Hooks::CArmy::isUnitAttachmentLimitHookActive = true;
@@ -497,12 +511,18 @@ __declspec(dllexport) int activateWarExhaustionNeutralityResetPatch(lua_State* L
 /////////////////////////////////////
 //         MISC FUNCTIONS          //
 /////////////////////////////////////
+bool moduleBaseAlreadySet = false;
 __declspec(dllexport) int setModuleBase(lua_State* L)
 {
+    if (moduleBaseAlreadySet) {
+        return 0;
+    }
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
     Address modulePtr = external.getModule("hoi3_tfh.exe");
     MODULE_BASE = modulePtr.get();
     Hooks::MODULE_BASE = MODULE_BASE;
+    INFO_OUT(std::cout << "MODULE_BASE at: " << Memory::n2hexstr(MODULE_BASE) << std::endl);
+    moduleBaseAlreadySet = true;
     return 0;
 }
 
