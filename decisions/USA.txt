@@ -602,9 +602,37 @@ diplomatic_decisions = {
 	#######################
 	Overlord_buildup = {
 		potential = {
-			tag = USA
-			ai = yes
-			faction = allies
+			#tag = USA
+			#ai = yes
+			#faction = allies
+
+			or = {
+				and = {
+					tag = USA
+					ai = yes
+					faction = allies
+					ENG = {
+						ai = no
+					}
+				}
+				and = {
+					tag = ENG
+					ai = yes
+					USA = {
+						ai = no
+						faction = allies
+					}
+				}
+				and = {
+					tag = ENG
+					ai = yes
+					USA = {
+						ai = yes
+						faction = allies
+					}
+				}
+			}
+
 			ENG = {
 				has_country_flag = overlord_cossac_appointed
 			}
@@ -629,9 +657,37 @@ diplomatic_decisions = {
 	}
 	Overlord_where_to = {
 		potential = {
-			tag = USA
-			ai =yes
-			faction = allies
+			#tag = USA
+			#ai =yes
+			#faction = allies
+
+			or = {
+				and = {
+					tag = USA
+					ai = yes
+					faction = allies
+					ENG = {
+						ai = no
+					}
+				}
+				and = {
+					tag = ENG
+					ai = yes
+					USA = {
+						ai = no
+						faction = allies
+					}
+				}
+				and = {
+					tag = ENG
+					ai = yes
+					USA = {
+						ai = yes
+						faction = allies
+					}
+				}
+			}
+
 			not = {
 				has_country_flag = overlord_dest_chosen
 			}
@@ -653,9 +709,37 @@ diplomatic_decisions = {
 	}
 	calm_before_the_storm = {
 		potential = {
-			tag = USA
-			ai = yes
-			faction = allies
+			#tag = USA
+			#ai = yes
+			#faction = allies
+
+			or = {
+				and = {
+					tag = USA
+					ai = yes
+					faction = allies
+					ENG = {
+						ai = no
+					}
+				}
+				and = {
+					tag = ENG
+					ai = yes
+					USA = {
+						ai = no
+						faction = allies
+					}
+				}
+				and = {
+					tag = ENG
+					ai = yes
+					USA = {
+						ai = yes
+						faction = allies
+					}
+				}
+			}
+
 			not = {
 				has_country_flag = overlord_ready
 			}
@@ -678,9 +762,37 @@ diplomatic_decisions = {
 	}
 	DDay_Invasion = {
 		potential = {
-			tag = USA
-			ai = yes
-			faction = allies
+			#tag = USA
+			#ai = yes
+			#faction = allies
+
+			or = {
+				and = {
+					tag = USA
+					ai = yes
+					faction = allies
+					ENG = {
+						ai = no
+					}
+				}
+				and = {
+					tag = ENG
+					ai = yes
+					USA = {
+						ai = no
+						faction = allies
+					}
+				}
+				and = {
+					tag = ENG
+					ai = yes
+					USA = {
+						ai = yes
+						faction = allies
+					}
+				}
+			}
+
 			not = {
 				has_country_flag = overlord_underway
 			}
@@ -3347,7 +3459,7 @@ diplomatic_decisions = {
 	
 	Early_DDAY_launch = {
 		potential = {
-			#ai = yes
+			ai = yes
 			tag = USA
 		}
 		allow = {
@@ -3359,6 +3471,23 @@ diplomatic_decisions = {
 			}
 			not = {
 				has_country_flag = Early_DDAY_launch_decision
+			}
+			or = {
+				GER = {
+					ai = no
+				}
+				ITA = {
+					ai = no
+				}
+				JAP = {
+					ai = no
+				}
+			}
+			ENG = {
+				ai = yes
+			}
+			SOV = {
+				ai = yes
 			}
 		}
 		effect = {
