@@ -162,53 +162,61 @@ country_event = {
 		name = "EVTOPTAMARNE0102"
 		random_list = {
 			2 = {
-				USA = {
-					limit = {
-						has_country_flag = overlord_dest_calais
+				OMG = {
+					any_country = {
+						limit = {
+							has_country_flag = overlord_dest_calais
+						}
+						GER = {
+							country_event = 999819
+						}
+						set_global_flag = overlord_defend_calais
+						clr_global_flag = overlord_defend_normandy
+						clr_global_flag = overlord_defend_brest
+						clr_global_flag = overlord_defend_bordeaux
 					}
-					GER = {
-						country_event = 999819
-					}
-					set_global_flag = overlord_defend_calais
-					clr_global_flag = overlord_defend_normandy
-					clr_global_flag = overlord_defend_brest
-					clr_global_flag = overlord_defend_bordeaux
 				}
-				USA = {
-					limit = {
-						has_country_flag = overlord_dest_normandy
+				OMG = {
+					any_country = {
+						limit = {
+							has_country_flag = overlord_dest_normandy
+						}
+						GER = {
+							country_event = 999820
+						}
+						clr_global_flag = overlord_defend_calais
+						set_global_flag = overlord_defend_normandy
+						clr_global_flag = overlord_defend_brest
+						clr_global_flag = overlord_defend_bordeaux
 					}
-					GER = {
-						country_event = 999820
-					}
-					clr_global_flag = overlord_defend_calais
-					set_global_flag = overlord_defend_normandy
-					clr_global_flag = overlord_defend_brest
-					clr_global_flag = overlord_defend_bordeaux
 				}
-				USA = {
-					limit = {
-						has_country_flag = overlord_dest_brest
+				OMG = {
+					any_country = {
+						limit = {
+							has_country_flag = overlord_dest_brest
+						}
+						GER = {
+							country_event = 999821
+						}
+						clr_global_flag = overlord_defend_calais
+						clr_global_flag = overlord_defend_normandy
+						set_global_flag = overlord_defend_brest
+						clr_global_flag = overlord_defend_bordeaux
 					}
-					GER = {
-						country_event = 999821
-					}
-					clr_global_flag = overlord_defend_calais
-					clr_global_flag = overlord_defend_normandy
-					set_global_flag = overlord_defend_brest
-					clr_global_flag = overlord_defend_bordeaux
 				}
-				USA = {
-					limit = {
-						has_country_flag = overlord_dest_bordeaux
+				OMG = {
+					any_country = {
+						limit = {
+							has_country_flag = overlord_dest_bordeaux
+						}
+						GER = {
+							country_event = 999822
+						}
+						clr_global_flag = overlord_defend_calais
+						clr_global_flag = overlord_defend_normandy
+						clr_global_flag = overlord_defend_brest
+						set_global_flag = overlord_defend_bordeaux
 					}
-					GER = {
-						country_event = 999822
-					}
-					clr_global_flag = overlord_defend_calais
-					clr_global_flag = overlord_defend_normandy
-					clr_global_flag = overlord_defend_brest
-					set_global_flag = overlord_defend_bordeaux
 				}
 				set_global_flag = overlord_plans_discovered
 			}
@@ -302,10 +310,27 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = {
-					tag = USA
+					tag = ENG
+					ai = yes
 					has_country_flag = overlord_dest_calais
 				}
-			load_oob = USA/DDAYCalais.txt
+				#load_oob = USA/DDAYCalaisUSA.txt
+				ENG = {
+					load_oob = ENG/DDAYCalaisENG.txt
+				}
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					ai = yes
+					has_country_flag = overlord_dest_calais
+				}
+				load_oob = USA/DDAYCalaisUSA.txt
+				#ENG = {
+				#	load_oob = ENG/DDAYCalaisENG.txt
+				#}
 			}
 		}
 		OMG = {
@@ -314,7 +339,22 @@ country_event = {
 					tag = USA
 					has_country_flag = overlord_dest_normandy
 				}
-			load_oob = USA/DDAYNormandy.txt
+				load_oob = USA/DDAYNormandyUSA.txt
+				#ENG = {
+				#	load_oob = ENG/DDAYNormandyENG.txt
+				#}
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = overlord_dest_normandy
+				}
+				#load_oob = USA/DDAYNormandyUSA.txt
+				ENG = {
+					load_oob = ENG/DDAYNormandyENG.txt
+				}
 			}
 		}
 		OMG = {
@@ -323,7 +363,22 @@ country_event = {
 					tag = USA
 					has_country_flag = overlord_dest_brest
 				}
-			load_oob = USA/DDAYBrest.txt
+				load_oob = USA/DDAYBrestUSA.txt
+				#ENG = {
+				#	load_oob = ENG/DDAYBrestENG.txt
+				#}
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = overlord_dest_brest
+				}
+				#load_oob = USA/DDAYBrestUSA.txt
+				ENG = {
+					load_oob = ENG/DDAYBrestENG.txt
+				}
 			}
 		}
 		OMG = {
@@ -332,7 +387,22 @@ country_event = {
 					tag = USA
 					has_country_flag = overlord_dest_bordeaux
 				}
-			load_oob = USA/DDAYBordeaux.txt
+				load_oob = USA/DDAYBordeauxUSA.txt
+				#ENG = {
+				#	load_oob = ENG/DDAYBordeauxENG.txt
+				#}
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = overlord_dest_bordeaux
+				}
+				#load_oob = USA/DDAYBordeauxUSA.txt
+				ENG = {
+					load_oob = ENG/DDAYBordeauxENG.txt
+				}
 			}
 		}
 		USA = {
