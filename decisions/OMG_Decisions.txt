@@ -4005,7 +4005,7 @@ diplomatic_decisions = {
 			}
 		}
 		ai_will_do = {
-		factor =1
+		factor = 1
 		}
 	}
 	IDC_access_from_CHI = {
@@ -4033,7 +4033,37 @@ diplomatic_decisions = {
 			set_country_flag = IDC_infra_done
 		}
 		ai_will_do = {
-		factor =1
+		factor = 1
+		}
+	}
+	ENG_BBU_cores_player_JAP = {
+		potential = {
+			tag = OMG
+			not = {
+				has_country_flag = ENG_BBU_cores_player_JAP
+			}
+		}
+		allow = {
+			JAP = {
+				ai = no
+			}
+			#ENG = {
+			#	ai = yes
+			#}
+		}
+		effect = {
+			BBU = {
+				any_owned = {
+					limit = {
+						is_core = BBU
+					}
+					add_core = ENG
+				}
+			}
+			set_country_flag = ENG_BBU_cores_player_JAP
+		}
+		ai_will_do = {
+			factor = 1
 		}
 	}
 
