@@ -48,7 +48,7 @@ BiceLib.startConsole() -- Creates a console for debug information // Maybe comme
 BiceLib.setModuleBase()
 
 -- Leaders
-BiceLib.activateLeaderPromotionSkillLoss()
+-- BiceLib.activateLeaderPromotionSkillLoss()
 BiceLib.activateLeaderListShowMaxSkill()
 BiceLib.activateLeaderListShowMaxSkillSelected()
 
