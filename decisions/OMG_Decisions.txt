@@ -4067,5 +4067,43 @@ diplomatic_decisions = {
 		}
 	}
 
+	MAN_MEN_CHI_cores_player_JAP = {
+		potential = {
+			tag = OMG
+			not = {
+				has_country_flag = MAN_MEN_CHI_cores_player_JAP
+			}
+		}
+		allow = {
+			JAP = {
+				ai = no
+			}
+			#ENG = {
+			#	ai = yes
+			#}
+		}
+		effect = {
+			MAN = {
+				any_owned = {
+					limit = {
+						is_core = MAN
+					}
+					add_core = CHI
+				}
+			}
+			MEN = {
+				any_owned = {
+					limit = {
+						is_core = MEN
+					}
+					add_core = CHI
+				}
+			}
+			set_country_flag = MAN_MEN_CHI_cores_player_JAP
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
 }
 #EOF#
