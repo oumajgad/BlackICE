@@ -109,6 +109,7 @@ __declspec(naked) void Hooks::CArmy::unitAttachmentLimitHook() {
         mov[currentlyAttachedUnitAmount], esi
         mov[unitToAttach], ebx
         mov[lastCountedUnit], ecx
+        mov newLimit, 5
     }
 
     if (Hooks::CArmy::isUnitAttachmentLimitHookActive) {
@@ -116,7 +117,7 @@ __declspec(naked) void Hooks::CArmy::unitAttachmentLimitHook() {
     }
 
     _asm {
-        mov edi, [newLimit]
+        mov edi, newLimit
         mov esp, ebp
         pop ebp
         cmp[ebp + 0x8],edi
