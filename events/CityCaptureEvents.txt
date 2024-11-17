@@ -828,6 +828,27 @@ country_event = {
 		set_country_flag = fall_of_cairo
 	}
 }
+### Italy takes Cairo
+country_event = {
+	id = 45078
+	title = "EVTNAME45078"
+	desc = "EVTDESC45078"
+	picture = "germany_cairo"
+	trigger = {
+		5611 = {
+			controlled_by = ITA
+		}
+
+		not = {
+			has_country_flag = fall_of_cairo
+		}
+		ai = no
+	}
+	option = {
+		name = "EVTOPTA10021"
+		set_country_flag = fall_of_cairo
+	}
+}
 ### Germany takes Washington
 country_event = {
 	id = 45063
@@ -1457,6 +1478,50 @@ country_event = {
 		}
 	}
 }
+
+### The Fall of Detroit
+country_event = {
+	id = 45077
+	fire_only_once = yes
+	trigger = {
+		3797 = {
+			controlled_by = GER
+		}
+	}
+	title = "EVTNAME45077"
+	desc = "EVTDESC45077"
+	picture = "japan_panama_canal"
+	option = {
+		name = "EVTOPTAMARNE0087"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					not = {
+						has_country_flag = germany_takes_detroit
+					}
+				}
+				set_country_flag = germany_takes_detroit
+				dissent = 2.5
+				national_unity = -2.5
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = germany_takes_detroit
+					}
+				}
+				set_country_flag = germany_takes_detroit
+				dissent = -2.5
+				national_unity = 2.5
+			}
+		}
+	}
+}
+
 country_event = {
 	id = 45079
 	title = ""
