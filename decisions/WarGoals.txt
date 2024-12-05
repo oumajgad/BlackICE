@@ -163,163 +163,163 @@ diplomatic_decisions = {
 	# For Germany #
 	###############
 	# Phase 1 - Liberation
-	common_wargoal_germany = {
-		potential = {
-			tag = ENG
-			GER = {
-				faction = axis
-			}
-
-			not = {
-				has_country_flag = wargoal_liberation_UK
-				war_with = GER
-				this = {
-
-					not = {
-						has_wargoal = GER
-					}
-				}
-			}
-		}
-		allow = {
-			this = {
-
-				not = {
-					has_wargoal = GER
-				}
-			}
-		}
-		effect = {
-			set_country_flag = wargoal_liberation_UK
-			this = {
-				country_event = 94504
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	# Phase 2 - Reorganization of Postwar Germany
-	yalta_conference_historical = {
-		potential = {
-			tag = SOV
-			war_with = GER
-
-			not = {
-				has_country_flag = yalta_conference
-			}
-		}
-		allow = {
-			2613 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Paris
-			1928 = {
-				controller = {
-					faction = comintern
-				}
-			}
-			# Warszawa
-		}
-		effect = {
-			this = {
-				country_event = 94505
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	yalta_conference_comintern = {
-		potential = {
-			tag = SOV
-			GER = {
-				faction = axis
-			}
-			war_with = GER
-
-			not = {
-				has_country_flag = yalta_conference
-			}
-		}
-		allow = {
-			1861 = {
-				controller = {
-					faction = comintern
-				}
-			}
-			# Berlin in the Soviets hand.
-			#2372 = { controller = { faction = comintern } }   # Bonn in the Soviets hand.
-			OR = {
-				2613 = {
-					controller = {
-						faction = axis
-					}
-				}
-				# Paris still in the german hand.
-				2613 = {
-					controller = {
-						faction = comintern
-					}
-				}
-				# Paris in the Soviets hand.
-			}
-		}
-		effect = {
-			this = {
-				country_event = 94506
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	yalta_conference_allies = {
-		potential = {
-			tag = ENG
-			GER = {
-				faction = axis
-			}
-			war_with = GER
-
-			not = {
-				has_country_flag = yalta_conference
-			}
-		}
-		allow = {
-			1861 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Berlin in the Allies hand.
-			#2372 = { controller = { faction = allies } }  # Bonn in the Allies hand.X
-			OR = {
-				1928 = {
-					controller = {
-						faction = axis
-					}
-				}
-				# Warszawa still in the german hand.
-				1928 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Warszawa in the Allies hand.
-			}
-		}
-		effect = {
-			this = {
-				country_event = 94507
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
+#	common_wargoal_germany = {
+#		potential = {
+#			tag = ENG
+#			GER = {
+#				faction = axis
+#			}
+#
+#			not = {
+#				has_country_flag = wargoal_liberation_UK
+#				war_with = GER
+#				this = {
+#
+#					not = {
+#						has_wargoal = GER
+#					}
+#				}
+#			}
+#		}
+#		allow = {
+#			this = {
+#
+#				not = {
+#					has_wargoal = GER
+#				}
+#			}
+#		}
+#		effect = {
+#			set_country_flag = wargoal_liberation_UK
+#			this = {
+#				country_event = 94504
+#			}
+#		}
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
+#	# Phase 2 - Reorganization of Postwar Germany
+#	yalta_conference_historical = {
+#		potential = {
+#			tag = SOV
+#			war_with = GER
+#
+#			not = {
+#				has_country_flag = yalta_conference
+#			}
+#		}
+#		allow = {
+#			2613 = {
+#				controller = {
+#					faction = allies
+#				}
+#			}
+#			# Paris
+#			1928 = {
+#				controller = {
+#					faction = comintern
+#				}
+#			}
+#			# Warszawa
+#		}
+#		effect = {
+#			this = {
+#				country_event = 94505
+#			}
+#		}
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
+#	yalta_conference_comintern = {
+#		potential = {
+#			tag = SOV
+#			GER = {
+#				faction = axis
+#			}
+#			war_with = GER
+#
+#			not = {
+#				has_country_flag = yalta_conference
+#			}
+#		}
+#		allow = {
+#			1861 = {
+#				controller = {
+#					faction = comintern
+#				}
+#			}
+#			# Berlin in the Soviets hand.
+#			#2372 = { controller = { faction = comintern } }   # Bonn in the Soviets hand.
+#			OR = {
+#				2613 = {
+#					controller = {
+#						faction = axis
+#					}
+#				}
+#				# Paris still in the german hand.
+#				2613 = {
+#					controller = {
+#						faction = comintern
+#					}
+#				}
+#				# Paris in the Soviets hand.
+#			}
+#		}
+#		effect = {
+#			this = {
+#				country_event = 94506
+#			}
+#		}
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
+#	yalta_conference_allies = {
+#		potential = {
+#			tag = ENG
+#			GER = {
+#				faction = axis
+#			}
+#			war_with = GER
+#
+#			not = {
+#				has_country_flag = yalta_conference
+#			}
+#		}
+#		allow = {
+#			1861 = {
+#				controller = {
+#					faction = allies
+#				}
+#			}
+#			# Berlin in the Allies hand.
+#			#2372 = { controller = { faction = allies } }  # Bonn in the Allies hand.X
+#			OR = {
+#				1928 = {
+#					controller = {
+#						faction = axis
+#					}
+#				}
+#				# Warszawa still in the german hand.
+#				1928 = {
+#					controller = {
+#						faction = allies
+#					}
+#				}
+#				# Warszawa in the Allies hand.
+#			}
+#		}
+#		effect = {
+#			this = {
+#				country_event = 94507
+#			}
+#		}
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
 	#############
 	# For Japan #
 	#############
