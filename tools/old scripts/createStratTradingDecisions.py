@@ -1,19 +1,17 @@
-import os
-
-
+bugged_countries = ["PAN", "PHI"] # Skip those because they produce broken decisions (the game just stops reading the file after their events)
 countryTags = [
-    "AFG",  "ALB",    "ARG",  "ARM",    "AST",  "AUS",    "AZB",  "BBU",
-    "BEL",  "BHU",    "BIN",  "BLR",    "BOL",  "BRA",    "BUL",  "CAN",
+    "AFG",  "ALB",    "ARG",  "___",    "AST",  "AUS",    "___",  "BBU",
+    "BEL",  "BHU",    "___",  "BLR",    "BOL",  "BRA",    "BUL",  "CAN",
     "CGX",  "CHC",    "CHI",  "CHL",    "COL",  "COS",    "CRO",  "CSX",
-    "CUB",  "CXB",    "CYN",  "CYP",    "CZE",  "DDR",    "DEN",  "DFR",
+    "CUB",  "CXB",    "CYN",  "CYP",    "CZE",  "___",    "DEN",  "___",
     "DOM",  "ECU",    "EGY",  "ENG",    "EST",  "ETH",    "FIN",  "FRA",
-    "GEO",  "GER",    "GRE",  "GUA",    "GUY",  "HAI",    "HOL",  "HON",
+    "___",  "GER",    "GRE",  "GUA",    "GUY",  "HAI",    "HOL",  "HON",
     "HUN",  "ICL",    "IDC",  "IND",    "INO",  "IRE",    "IRQ",  "ISR",
     "ITA",  "JAP",    "JOR",  "KOR",    "KWT",  "LAT",    "LEB",  "LIB",
     "LIT",  "LUX",    "MAD",  "MAN",    "MEN",  "MEX",    "MON",  "MTA",
-    "MTN",  "NEP",    "NIC",  "NJG",    "NOR",  "NZL",    "OMG",  "OMN",
+    "___",  "NEP",    "NIC",  "NJG",    "NOR",  "NZL",    "OMG",  "OMN",
     "PAK",  "PAL",    "PAN",  "PAP",    "PAR",  "PER",    "PHI",  "POL",
-    "POR",  "PRK",    "PRU",  "REB",    "RKK",  "RKM",    "RKO",  "RKU",
+    "POR",  "___",    "PRU",  "REB",    "RKK",  "RKM",    "RKO",  "RKU",
     "ROM",  "RSI",    "RUR",  "SAF",    "SAL",  "SAU",    "SCH",  "SER",
     "SIA",  "SIK",    "SLO",  "SLV",    "SOM",  "SOV",    "SPA",  "SPR",
     "SUD",  "SUR",    "SWE",  "SYR",    "TAN",  "TIB",    "TIM",  "TUR",
@@ -128,8 +126,7 @@ def make_decisions():
         i = 0
         for tag in countryTags:
             i += 1  # start at 1!
-            if tag in ["PAN", "PHI"]:
-                # Skip those 2 because they produce broken decisions (the game just stops reading the file after their events)
+            if tag in bugged_countries or tag == "___":
                 continue
             decision = decisionTemplate.format(tag=tag, tag_index=i,resource=resource, event_id=resources[resource])
             # print(decision)
