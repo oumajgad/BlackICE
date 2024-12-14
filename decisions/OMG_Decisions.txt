@@ -4106,203 +4106,59 @@ diplomatic_decisions = {
 		}
 	}
 
-	port_strike_mission_variable_increase = {
+#########################################################
+############ PORT STRIKE MISSIONS #######################
+#########################################################
+
+	port_strike_mission_preparation = {
+		potential = {
+			ai = no
+			war = yes
+			or = {
+				cag_design = 1
+				naval_bomber_design = 1
+			}
+			portstrike_tactics = 5
+		}
+		allow = {
+			not = {
+				has_country_modifier = port_strike_mission_cooldown
+				has_country_flag = port_strike_mission_preparation_start
+				has_country_flag = port_strike_mission_ready_flag
+			}
+		}
+		effect = {
+			add_country_modifier = {
+				name = port_strike_mission_preparation
+				duration = 30
+			}
+			set_country_flag = port_strike_mission_preparation_start
+	}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	port_strike_mission_ready_OMG = {
 		potential = {
 			tag = OMG
 		}
 		allow = {
-			not = {
-				has_country_modifier = port_strike_mission_variable_increase_cooldown
-			}
 		}
 		effect = {
 			any_country = {
 				limit = {
-					war = yes
-					portstrike_tactics = 5
+					has_country_flag = port_strike_mission_preparation_start
 					not = {
-						portstrike_tactics = 6
-					}
-					not = {
-						has_country_flag = portstrike_tactics_5
+						has_country_modifier = port_strike_mission_preparation
 					}
 				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +1
+				add_country_modifier = {
+					name = port_strike_mission_ready
+					duration = 15
 				}
-				set_country_flag = portstrike_tactics_5
-			}
-			any_country = {
-				limit = {
-					war = yes
-					portstrike_tactics = 6
-					not = {
-						portstrike_tactics = 7
-					}
-					not = {
-						has_country_flag = portstrike_tactics_6
-					}
-				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +1
-				}
-				set_country_flag = portstrike_tactics_6
-			}
-			any_country = {
-				limit = {
-					war = yes
-					portstrike_tactics = 7
-					not = {
-						portstrike_tactics = 8
-					}
-					not = {
-						has_country_flag = portstrike_tactics_7
-					}
-				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +1
-				}
-				set_country_flag = portstrike_tactics_7
-			}
-			any_country = {
-				limit = {
-					war = yes
-					portstrike_tactics = 8
-					not = {
-						portstrike_tactics = 9
-					}
-					not = {
-						has_country_flag = portstrike_tactics_8
-					}
-				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +2
-				}
-				set_country_flag = portstrike_tactics_8
-			}
-			any_country = {
-				limit = {
-					war = yes
-					portstrike_tactics = 9
-					not = {
-						portstrike_tactics = 10
-					}
-					not = {
-						has_country_flag = portstrike_tactics_9
-					}
-				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +3
-				}
-				set_country_flag = portstrike_tactics_9
-			}
-			any_country = {
-				limit = {
-					war = yes
-					portstrike_tactics = 10
-					not = {
-						portstrike_tactics = 11
-					}
-					not = {
-						has_country_flag = portstrike_tactics_10
-					}
-				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +3
-				}
-				set_country_flag = portstrike_tactics_10
-			}
-			any_country = {
-				limit = {
-					war = yes
-					portstrike_tactics = 11
-					not = {
-						portstrike_tactics = 12
-					}
-					not = {
-						has_country_flag = portstrike_tactics_11
-					}
-				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +4
-				}
-				set_country_flag = portstrike_tactics_11
-			}
-			any_country = {
-				limit = {
-					war = yes
-					portstrike_tactics = 12
-					not = {
-						portstrike_tactics = 13
-					}
-					not = {
-						has_country_flag = portstrike_tactics_12
-					}
-				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +4
-				}
-				set_country_flag = portstrike_tactics_12
-			}
-			any_country = {
-				limit = {
-					war = yes
-					portstrike_tactics = 13
-					not = {
-						portstrike_tactics = 14
-					}
-					not = {
-						has_country_flag = portstrike_tactics_13
-					}
-				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +4
-				}
-				set_country_flag = portstrike_tactics_13
-			}
-			any_country = {
-				limit = {
-					war = yes
-					portstrike_tactics = 14
-					not = {
-						portstrike_tactics = 15
-					}
-					not = {
-						has_country_flag = portstrike_tactics_14
-					}
-				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +5
-				}
-				set_country_flag = portstrike_tactics_14
-			}
-			any_country = {
-				limit = {
-					war = yes
-					portstrike_tactics = 15
-					not = {
-						has_country_flag = portstrike_tactics_15
-					}
-				}
-				change_variable = {
-					which = port_strike_mission_variable
-					value = +5
-				}
-				set_country_flag = portstrike_tactics_15
-			}
-			add_country_modifier = {
-				name = port_strike_mission_variable_increase_cooldown
-				duration = 30
+				set_country_flag = port_strike_mission_ready_flag
+				country_event = 1113
 			}
 		}
 		ai_will_do = {
@@ -4310,31 +4166,392 @@ diplomatic_decisions = {
 		}
 	}
 
-	port_strike_mission_launch = {
+	port_strike_mission_attack = {
 		potential = {
-			tag = THIS
-			ai = no
+			has_country_modifier = port_strike_mission_ready
+			not = {
+				has_country_modifier = port_strike_mission_cooldown
+			}
+			has_country_flag = port_strike_mission_preparation_start
+			has_country_flag = port_strike_mission_ready_flag
 		}
 		allow = {
-			war = yes
-			not = {
-				has_country_modifier = port_strike_mission_launched
-			}
-			check_variable = {
-				which = "port_strike_mission_variable"
-				value = 1
-			}
 		}
 		effect = {
-			change_variable = {
-				which = port_strike_mission_variable
-				value = -1
-			}
 			add_country_modifier = {
 				name = port_strike_mission_launched
 				duration = 1
 			}
+			any_country = {
+				limit = {
+					tag = THIS
+					portstrike_tactics = 5
+					not = {
+						portstrike_tactics = 6
+					}
+				}
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 120
+				}	
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					portstrike_tactics = 6
+					not = {
+						portstrike_tactics = 7
+					}
+				}
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 110
+				}	
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					portstrike_tactics = 7
+					not = {
+						portstrike_tactics = 8
+					}
+				}
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 100
+				}	
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					portstrike_tactics = 8
+					not = {
+						portstrike_tactics = 9
+					}
+				}
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 90
+				}	
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					portstrike_tactics = 9
+					not = {
+						portstrike_tactics = 10
+					}
+				}
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 80
+				}	
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					portstrike_tactics = 10
+					not = {
+						portstrike_tactics = 11
+					}
+				}
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 70
+				}	
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					portstrike_tactics = 11
+					not = {
+						portstrike_tactics = 12
+					}
+				}
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 60
+				}	
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					portstrike_tactics = 12
+					not = {
+						portstrike_tactics = 13
+					}
+				}
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 50
+				}	
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					portstrike_tactics = 13
+					not = {
+						portstrike_tactics = 14
+					}
+				}
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 40
+				}	
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					portstrike_tactics = 14
+				}
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 30
+				}	
+			}
 
+			clr_country_flag = port_strike_mission_preparation_start
+			clr_country_flag = port_strike_mission_ready_flag
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	port_strike_mission_expired = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+		}
+		effect = {
+			any_country = {
+				limit = {
+					portstrike_tactics = 5
+					not = {
+						portstrike_tactics = 6
+					}
+					has_country_flag = port_strike_mission_preparation_start
+					has_country_flag = port_strike_mission_ready_flag
+					not = {
+						has_country_modifier = port_strike_mission_ready
+					}
+				}
+
+				clr_country_flag = port_strike_mission_preparation_start
+				clr_country_flag = port_strike_mission_ready_flag
+		
+				country_event = 1114
+
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 120
+				}	
+			}
+			any_country = {
+				limit = {
+					portstrike_tactics = 6
+					not = {
+						portstrike_tactics = 7
+					}
+					has_country_flag = port_strike_mission_preparation_start
+					has_country_flag = port_strike_mission_ready_flag
+					not = {
+						has_country_modifier = port_strike_mission_ready
+					}
+				}
+				
+				clr_country_flag = port_strike_mission_preparation_start
+				clr_country_flag = port_strike_mission_ready_flag
+		
+				country_event = 1114
+
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 110
+				}	
+			}
+			any_country = {
+				limit = {
+					portstrike_tactics = 7
+					not = {
+						portstrike_tactics = 8
+					}
+					has_country_flag = port_strike_mission_preparation_start
+					has_country_flag = port_strike_mission_ready_flag
+					not = {
+						has_country_modifier = port_strike_mission_ready
+					}
+				}
+				
+				clr_country_flag = port_strike_mission_preparation_start
+				clr_country_flag = port_strike_mission_ready_flag
+		
+				country_event = 1114
+
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 100
+				}	
+			}
+			any_country = {
+				limit = {
+					portstrike_tactics = 8
+					not = {
+						portstrike_tactics = 9
+					}
+					has_country_flag = port_strike_mission_preparation_start
+					has_country_flag = port_strike_mission_ready_flag
+					not = {
+						has_country_modifier = port_strike_mission_ready
+					}
+				}
+				
+				clr_country_flag = port_strike_mission_preparation_start
+				clr_country_flag = port_strike_mission_ready_flag
+		
+				country_event = 1114
+
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 90
+				}	
+			}
+			any_country = {
+				limit = {
+					portstrike_tactics = 9
+					not = {
+						portstrike_tactics = 10
+					}
+					has_country_flag = port_strike_mission_preparation_start
+					has_country_flag = port_strike_mission_ready_flag
+					not = {
+						has_country_modifier = port_strike_mission_ready
+					}
+				}
+				
+				clr_country_flag = port_strike_mission_preparation_start
+				clr_country_flag = port_strike_mission_ready_flag
+		
+				country_event = 1114
+
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 80
+				}	
+			}
+			any_country = {
+				limit = {
+					portstrike_tactics = 10
+					not = {
+						portstrike_tactics = 11
+					}
+					has_country_flag = port_strike_mission_preparation_start
+					has_country_flag = port_strike_mission_ready_flag
+					not = {
+						has_country_modifier = port_strike_mission_ready
+					}
+				}
+				
+				clr_country_flag = port_strike_mission_preparation_start
+				clr_country_flag = port_strike_mission_ready_flag
+		
+				country_event = 1114
+
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 70
+				}	
+			}
+			any_country = {
+				limit = {
+					portstrike_tactics = 11
+					not = {
+						portstrike_tactics = 12
+					}
+					has_country_flag = port_strike_mission_preparation_start
+					has_country_flag = port_strike_mission_ready_flag
+					not = {
+						has_country_modifier = port_strike_mission_ready
+					}
+				}
+				
+				clr_country_flag = port_strike_mission_preparation_start
+				clr_country_flag = port_strike_mission_ready_flag
+		
+				country_event = 1114
+
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 60
+				}	
+			}
+			any_country = {
+				limit = {
+					portstrike_tactics = 12
+					not = {
+						portstrike_tactics = 13
+					}
+					has_country_flag = port_strike_mission_preparation_start
+					has_country_flag = port_strike_mission_ready_flag
+					not = {
+						has_country_modifier = port_strike_mission_ready
+					}
+				}
+				
+				clr_country_flag = port_strike_mission_preparation_start
+				clr_country_flag = port_strike_mission_ready_flag
+		
+				country_event = 1114
+
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 50
+				}	
+			}
+			any_country = {
+				limit = {
+					portstrike_tactics = 13
+					not = {
+						portstrike_tactics = 14
+					}
+					has_country_flag = port_strike_mission_preparation_start
+					has_country_flag = port_strike_mission_ready_flag
+					not = {
+						has_country_modifier = port_strike_mission_ready
+					}
+				}
+				
+				clr_country_flag = port_strike_mission_preparation_start
+				clr_country_flag = port_strike_mission_ready_flag
+		
+				country_event = 1114
+
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 40
+				}	
+			}
+			any_country = {
+				limit = {
+					portstrike_tactics = 14
+					has_country_flag = port_strike_mission_preparation_start
+					has_country_flag = port_strike_mission_ready_flag
+					not = {
+						has_country_modifier = port_strike_mission_ready
+					}
+				}
+				
+				clr_country_flag = port_strike_mission_preparation_start
+				clr_country_flag = port_strike_mission_ready_flag
+		
+				country_event = 1114
+
+				add_country_modifier = {
+					name = port_strike_mission_cooldown
+					duration = 30
+				}	
+			}
 		}
 		ai_will_do = {
 			factor = 1
