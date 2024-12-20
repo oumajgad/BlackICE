@@ -41,7 +41,8 @@ class CArmyOffsets:
     dig_in_level: int = 0x1C8
     base_ca_bonus: int = 0x1CC
     higher_oob_unit_ptr: int = 0x1E0
-    lower_oob_unit_linked_list_ptr: int = 0x1E8
+    lower_oob_unit_linked_list_first_ptr: int = 0x1E4
+    lower_oob_unit_linked_list_last_ptr: int = 0x1E8
     lower_oob_unit_amount: int = 0x1EC
     oob_level: int = 0x1F4  # 0 -> Theatre, 4 -> Division (includes single brigades)
 
@@ -78,7 +79,8 @@ class CArmy(pydantic.BaseModel):
     dig_in_level: int  # 1000 = 1
     base_ca_bonus: int  # 450 = 45% // does not include leader, techs, maybe other stuff
     higher_oob_unit_ptr: int
-    lower_oob_unit_linked_list_ptr: int
+    lower_oob_unit_linked_list_first_ptr: int
+    lower_oob_unit_linked_list_last_ptr: int
     lower_oob_unit_amount: int
 
     @classmethod
@@ -115,7 +117,10 @@ class CArmy(pydantic.BaseModel):
             "dig_in_level": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.dig_in_level, 4)),
             "base_ca_bonus": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.base_ca_bonus, 4)),
             "higher_oob_unit_ptr": pm.read_uint(ptr + CArmyOffsets.higher_oob_unit_ptr),
-            "lower_oob_unit_linked_list_ptr": pm.read_uint(ptr + CArmyOffsets.lower_oob_unit_linked_list_ptr),
+            "lower_oob_unit_linked_list_first_ptr": pm.read_uint(
+                ptr + CArmyOffsets.lower_oob_unit_linked_list_first_ptr
+            ),
+            "lower_oob_unit_linked_list_last_ptr": pm.read_uint(ptr + CArmyOffsets.lower_oob_unit_linked_list_last_ptr),
             "lower_oob_unit_amount": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.lower_oob_unit_amount, 4)),
         }
         return cls(**temp)
