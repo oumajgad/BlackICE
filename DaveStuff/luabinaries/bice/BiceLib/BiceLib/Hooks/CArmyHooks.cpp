@@ -120,7 +120,7 @@ __declspec(naked) void Hooks::CArmy::unitAttachmentLimitHook() {
         mov edi, newLimit
         mov esp, ebp
         pop ebp
-        cmp[ebp + 0x8],edi
+        cmp[ebp + 0x8],edi // the original compare, flags are preserved during the following code
         popad
         pop edi
         jmp[Hooks::CArmy::jumpBack_unitAttachmentLimitHook]
