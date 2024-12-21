@@ -2,7 +2,7 @@
 ### SOVIET DECISIONS ###
 ########################
 diplomatic_decisions = {
-### Red Army Upgrades ###
+	### Red Army Historical units and upgrades ###
     Historical_upgrades_decision = {
 		potential = {
 			tag = SOV
@@ -23,9 +23,307 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-#################################	
-### Armored Units before 1941 ###
-#################################
+	##################################################
+	#### Various events before Great Patriotic war ###
+	##################################################
+	## Long Range Air Command
+	strategic_command_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow
+			year = 1936
+			has_country_flag = Red_Army_Upgrades
+
+			not = {
+				has_country_flag = strat_command
+				has_country_flag = strat_command_no
+			}
+		}
+		allow = {
+			date = 1936.3.1
+		}
+		effect = {
+			country_event = 11001
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## Soviet T-35 Heavy Tanks
+	T-35_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow
+			year = 1936
+
+			not = {
+				has_country_flag = T35_HT
+				has_country_flag = T35_HT
+			}
+		}
+		allow = {
+			date = 1936.5.1
+		}
+		effect = {
+			country_event = 11002
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## TM-3 12" Railway guns model 1938
+	1938_Railway_guns_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow
+			has_country_flag = Red_Army_Upgrades
+			year = 1939
+
+			not = {
+				has_country_flag = 1939_Railway_guns
+				has_country_flag = 1939_Railway_guns_no
+			}
+		}
+		allow = {
+			date = 1939.1.10
+		}
+		effect = {
+			country_event = 11003
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## 109th Rifle Division - April 1939
+	109RD_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow
+			has_country_flag = Red_Army_Upgrades
+			year = 1939
+
+			not = {
+				has_country_flag = 109RD
+				has_country_flag = 109RD_no
+			}
+		}
+		allow = {
+			date = 1939.4.1
+		}
+		effect = {
+			country_event = 11004
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## Rifle Divisions raised in September 1939
+	Rifle_Divisions_1939_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow
+			has_country_flag = Red_Army_Upgrades
+			year = 1939
+
+			not = {
+				has_country_flag = 131RD
+				has_country_flag = 146RD
+				has_country_flag = 163RD
+				has_country_flag = 173RD
+				has_country_flag = 185RD
+				has_country_flag = 131RD_no
+				has_country_flag = 146RD_no
+				has_country_flag = 163RD_no
+				has_country_flag = 173RD_no
+				has_country_flag = 185RD_no
+			}
+		}
+		allow = {
+			date = 1939.9.10
+		}
+		effect = {
+			country_event = 11005
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## Rifle Corps from annexed Baltic States (1940)
+	Baltics_Annexation_decision = {
+		potential = {
+			tag = SOV
+
+			not = {
+				exists = EST
+				exists = LAT
+				exists = LIT
+				has_country_flag = Baltics_Annexation
+				has_country_flag = Baltics_Annexation_no
+			}
+			year = 1940
+		}
+		allow = {
+			date = 1940.8.1
+		}
+		effect = {
+			country_event = 11006
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## Lithuanian warship Prezidentas Smetona (1940)
+	Prezidentas_Smetona_decision = {
+		potential = {
+			tag = SOV
+			GER = {
+			has_country_flag = claims_on_memel
+			}
+
+			not = {
+				exists = LIT
+				has_country_flag = Prezidentas_Smetona
+				has_country_flag = Prezidentas_Smetona_no
+			}
+			year = 1940
+		}
+		allow = {
+			date = 1940.7.1
+		}
+		effect = {
+			country_event = 11007
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## Hanko Garrison (1941)
+	Hanko_Garrison_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow
+			controls = 779 #Hanko
+			has_country_flag = Red_Army_Upgrades
+			year = 1940
+
+			not = {
+				war_with = FIN
+				has_country_flag = Hanko_Garrison
+				has_country_flag = Hanko_Garrison_no
+			}
+		}
+		allow = {
+			date = 1940.5.1
+		}
+		effect = {
+			country_event = 11008
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	##############################################
+	### Red Army Upgrades for Airborne Troops ####
+	##############################################
+	Para_1936_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow 
+			has_country_flag = Red_Army_Upgrades
+            year = 1936
+
+			not = {
+				has_country_flag = AB1936
+				has_country_flag = AB1936_no
+			}
+		}
+		allow = {
+            date = 1936.7.1
+		}
+		effect = {
+			country_event = 11009
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Para_1938_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow 
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = AB1936
+
+            year = 1938
+
+			not = {
+				has_country_flag = AB1938
+				has_country_flag = AB1938_no
+			}
+		}
+		allow = {
+            date = 1938.7.1
+		}
+		effect = {
+			country_event = 11010
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Para_1941_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow 
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = AB1938
+
+            year = 1938
+
+			not = {
+				has_country_flag = AC1941
+				has_country_flag = AC1941_no
+			}
+		}
+		allow = {
+            date = 1941.5.1
+		}
+		effect = {
+			country_event = 11011
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Para2_1941_decision = {
+		potential = {
+			tag = SOV
+			controls = 2068 #Saratov
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = AC1941
+
+            year = 1938
+
+			not = {
+				has_country_flag = AC1941_2
+				has_country_flag = AC1941_2_no
+			}
+		}
+		allow = {
+            date = 1941.9.1
+		}
+		effect = {
+			country_event = 11012
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	##################################################	
+	### Armored and motorized units before the GPW ###
+	##################################################
 	25th_Armored_Brigade_decision = {
 		potential = {
 			tag = SOV
@@ -42,7 +340,7 @@ diplomatic_decisions = {
             date = 1936.8.1
 		}
 		effect = {
-			country_event = 11001
+			country_event = 11013
 		}
 		ai_will_do = {
 			factor = 1
@@ -67,7 +365,7 @@ diplomatic_decisions = {
             date = 1937.1.1
 		}
 		effect = {
-			country_event = 11002
+			country_event = 11014
 		}
 		ai_will_do = {
 			factor = 1
@@ -91,7 +389,7 @@ diplomatic_decisions = {
             date = 1937.8.1
 		}
 		effect = {
-			country_event = 11003
+			country_event = 11015
 		}
 		ai_will_do = {
 			factor = 1
@@ -111,10 +409,12 @@ diplomatic_decisions = {
 				has_country_flag = 3LTB
                 has_country_flag = 18LTB
 				has_country_flag = 22LTB
+				has_country_flag = 25LTB
                 has_country_flag = 26LTB
 				has_country_flag = 3LTB_no
                 has_country_flag = 18LTB_no
 				has_country_flag = 22LTB_no
+				has_country_flag = 25LTB_no
                 has_country_flag = 26LTB_no
 			}
 		}
@@ -122,7 +422,7 @@ diplomatic_decisions = {
             date = 1938.1.1
 		}
 		effect = {
-			country_event = 11004
+			country_event = 11016
 		}
 		ai_will_do = {
 			factor = 1
@@ -156,7 +456,7 @@ diplomatic_decisions = {
             date = 1938.4.1
 		}
 		effect = {
-			country_event = 11005
+			country_event = 11017
 		}
 		ai_will_do = {
 			factor = 1
@@ -193,57 +493,95 @@ diplomatic_decisions = {
             date = 1938.8.1
 		}
 		effect = {
-			country_event = 11006
+			country_event = 11018
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	10th_25th_Tank_Corps_decision = {
+	10th_Tank_Corps_decision = {
 		potential = {
 			tag = SOV
 			controls = 908 #Luga
-			controls = 2279 #Zhitomir
 			has_country_flag = Red_Army_Upgrades
             year = 1938
 
 			not = {
 				has_country_flag = 10_OTC
-                has_country_flag = 25_OTC
 				has_country_flag = 10_OTC_no
-                has_country_flag = 25_OTC_no
 			}
 		}
 		allow = {
             date = 1938.5.1
 		}
 		effect = {
-			country_event = 11007
+			country_event = 11019
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	15th_20th_Tank_Corps_decision = {
+	25th_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2279 #Zhitomir
+			has_country_flag = Red_Army_Upgrades
+            year = 1938
+
+			not = {
+                has_country_flag = 25_OTC
+                has_country_flag = 25_OTC_no
+			}
+		}
+		allow = {
+            date = 1938.5.5
+		}
+		effect = {
+			country_event = 11020
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	15th_Tank_Corps_decision = {
 		potential = {
 			tag = SOV
 			controls = 1365 #Naro-Fominsk
-			controls = 8719 #Chita
 			has_country_flag = Red_Army_Upgrades
             year = 1938
 
 			not = {
 				has_country_flag = 15_OTC
-                has_country_flag = 20_OTC
 				has_country_flag = 15_OTC_no
-                has_country_flag = 20_OTC_no
 			}
 		}
 		allow = {
             date = 1938.6.1
 		}
 		effect = {
-			country_event = 11008
+			country_event = 11021
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	20th_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 8719 #Chita
+			has_country_flag = Red_Army_Upgrades
+            year = 1938
+
+			not = {
+				has_country_flag = 20_OTC
+                has_country_flag = 20_OTC_no
+			}
+		}
+		allow = {
+            date = 1938.6.5
+		}
+		effect = {
+			country_event = 11022
 		}
 		ai_will_do = {
 			factor = 1
@@ -253,6 +591,7 @@ diplomatic_decisions = {
 		potential = {
 			tag = SOV
 			has_country_flag = Red_Army_Upgrades
+			controls = 8719 #Chita
             year = 1938
 
 			not = {
@@ -264,7 +603,7 @@ diplomatic_decisions = {
             date = 1938.8.1
 		}
 		effect = {
-			country_event = 11009
+			country_event = 11023
 		}
 		ai_will_do = {
 			factor = 1
@@ -292,7 +631,7 @@ diplomatic_decisions = {
             date = 1939.3.1
 		}
 		effect = {
-			country_event = 11010
+			country_event = 11024
 		}
 		ai_will_do = {
 			factor = 1
@@ -312,10 +651,12 @@ diplomatic_decisions = {
 				has_country_flag = 34LTB
                 has_country_flag = 37LTB
 				has_country_flag = 39LTB
+				has_country_flag = 52LTB
 				has_country_flag = 55LTB
 				has_country_flag = 34LTB_no
                 has_country_flag = 37LTB_no
 				has_country_flag = 39LTB_no
+				has_country_flag = 52LTB_no
 				has_country_flag = 55LTB_no
 			}
 		}
@@ -323,7 +664,7 @@ diplomatic_decisions = {
             date = 1939.9.1
 		}
 		effect = {
-			country_event = 11011
+			country_event = 11025
 		}
 		ai_will_do = {
 			factor = 1
@@ -347,7 +688,27 @@ diplomatic_decisions = {
             date = 1939.5.1
 		}
 		effect = {
-			country_event = 11012
+			country_event = 11026
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Reorganization_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow
+			has_country_flag = Red_Army_Upgrades
+            year = 1940
+			not = {
+				has_country_flag = Mech_Reorganization
+			}
+		}
+		allow = {
+            date = 1940.1.1
+		}
+		effect = {
+			country_event = 11027
 		}
 		ai_will_do = {
 			factor = 1
@@ -369,10 +730,10 @@ diplomatic_decisions = {
 			}
 		}
 		allow = {
-            date = 1940.1.1
+            date = 1940.1.10
 		}
 		effect = {
-			country_event = 11013
+			country_event = 11028
 		}
 		ai_will_do = {
 			factor = 1
@@ -397,7 +758,7 @@ diplomatic_decisions = {
             date = 1940.4.1
 		}
 		effect = {
-			country_event = 11014
+			country_event = 11029
 		}
 		ai_will_do = {
 			factor = 1
@@ -427,7 +788,7 @@ diplomatic_decisions = {
             date = 1940.6.1
 		}
 		effect = {
-			country_event = 11015
+			country_event = 11030
 		}
 		ai_will_do = {
 			factor = 1
@@ -447,20 +808,26 @@ diplomatic_decisions = {
 				has_country_flag = 2LTB
                 has_country_flag = 12LTB
 				has_country_flag = 14LTB
+				has_country_flag = 16LTB
+				has_country_flag = 24LTB2
 				has_country_flag = 31LTB
                 has_country_flag = 39LTB2
+				has_country_flag = 70LTB
 				has_country_flag = 2LTB_no
                 has_country_flag = 12LTB_no
 				has_country_flag = 14LTB_no
+				has_country_flag = 16LTB_no
+				has_country_flag = 24LTB2_no
 				has_country_flag = 31LTB_no
                 has_country_flag = 39LTB2_no
+				has_country_flag = 70LTB_no
 			}
 		}
 		allow = {
             date = 1940.11.1
 		}
 		effect = {
-			country_event = 11016
+			country_event = 11031
 		}
 		ai_will_do = {
 			factor = 1
@@ -482,7 +849,7 @@ diplomatic_decisions = {
             date = 1940.1.1
 		}
 		effect = {
-			country_event = 11017
+			country_event = 11032
 		}
 		ai_will_do = {
 			factor = 1
@@ -504,7 +871,7 @@ diplomatic_decisions = {
             date = 1940.1.3
 		}
 		effect = {
-			country_event = 11018
+			country_event = 11033
 		}
 		ai_will_do = {
 			factor = 1
@@ -526,7 +893,264 @@ diplomatic_decisions = {
             date = 1940.3.1
 		}
 		effect = {
-			country_event = 11019
+			country_event = 11034
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	##Formation of Mechanized Corps - 1940
+	1_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 989 #Pskov
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 10_OTC
+			has_country_flag = HeavyTB
+			has_country_flag = 163RD
+
+            year = 1940
+
+			not = {
+				has_country_flag = 1_OMC
+				has_country_flag = 1_OMC_no
+			}
+		}
+		allow = {
+            date = 1940.6.1
+		}
+		effect = {
+			country_event = 11035
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	2_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 3174 #Tiraspol
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 25_OTC
+			has_country_flag = 173RD
+
+            year = 1940
+
+			not = {
+				has_country_flag = 2_OMC
+				has_country_flag = 2_OMC_no
+			}
+		}
+		allow = {
+            date = 1940.6.1
+		}
+		effect = {
+			country_event = 11036
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	3_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1532 #Vilnius
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = HeavyTB
+			has_country_flag = 2LTB
+
+            year = 1940
+
+			not = {
+				has_country_flag = 3_OMC
+				has_country_flag = 3_OMC_no
+			}
+		}
+		allow = {
+            date = 1940.6.1
+		}
+		effect = {
+			country_event = 11037
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	8_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2637 #Stry
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = HeavyTB
+			has_country_flag = 23LTB
+
+            year = 1940
+
+			not = {
+				has_country_flag = 8_OMC
+				has_country_flag = 8_OMC_no
+			}
+		}
+		allow = {
+            date = 1940.6.1
+		}
+		effect = {
+			country_event = 11038
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	4_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2509 #Lwow
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = HeavyTB
+			has_country_flag = 25_OTC
+			has_country_flag = 24LTB
+			
+            year = 1940
+
+			not = {
+				has_country_flag = 4_OMC
+				has_country_flag = 4_OMC_no
+			}
+		}
+		allow = {
+            date = 1940.7.1
+		}
+		effect = {
+			country_event = 11039
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	5_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 8719 # Chita, Transbaikal Military District
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = HeavyTB
+			has_country_flag = 20_OTC
+			has_country_flag = 24LTB
+			has_country_flag = 37LTB
+			has_country_flag = 109RD
+			
+            year = 1940
+
+			not = {
+				has_country_flag = 5_OMC
+				has_country_flag = 5_OMC_no
+			}
+		}
+		allow = {
+            date = 1940.7.1
+		}
+		effect = {
+			country_event = 11040
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	6_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1810 #Belostok
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = HeavyTB
+			has_country_flag = 30CTB
+			has_country_flag = 6LTB
+            year = 1940
+
+			not = {
+				has_country_flag = 6_OMC
+				has_country_flag = 6_OMC_no
+			}
+		}
+		allow = {
+            date = 1940.7.1
+		}
+		effect = {
+			country_event = 11041
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	7_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow Military District
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 39LTB
+			has_country_flag = 55LTB
+            year = 1940
+
+			not = {
+				has_country_flag = 7_OMC
+				has_country_flag = 7_OMC_no
+			}
+		}
+		allow = {
+            date = 1940.7.1
+		}
+		effect = {
+			country_event = 11042
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}		
+	9_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2394 #Novograd-Volynski
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 131RD
+			has_country_flag = 31CTB
+
+            year = 1940
+
+			not = {
+				has_country_flag = 9_OMC
+				has_country_flag = 9_OMC_no
+			}
+		}
+		allow = {
+            date = 1940.11.1
+		}
+		effect = {
+			country_event = 11043
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Motorized_Brigades_1940_Nov_decision = {
+		potential = {
+			tag = SOV
+			controls = 2394 #Novograd-Volynski
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 10_OMC
+			has_country_flag = 15_OMC
+			has_country_flag = 20_OMC
+			has_country_flag = 25_OMC
+
+            year = 1940
+
+			not = {
+				has_country_flag = MB_1940
+				has_country_flag = MB_1940_no
+			}
+		}
+		allow = {
+            date = 1940.11.1
+		}
+		effect = {
+			country_event = 11044
 		}
 		ai_will_do = {
 			factor = 1
@@ -548,387 +1172,7 @@ diplomatic_decisions = {
             date = 1941.3.1
 		}
 		effect = {
-			country_event = 11023
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-##Formation of 1940-1941 Mechanized Corps
-	1_2_3_8_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 989 #Pskov
-			controls = 3174 #Tiraspol
-			controls = 1532 #Vilnius
-			controls = 2637 #Stry
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 10_OTC
-			has_country_flag = HeavyTB
-			has_country_flag = 23LTB
-
-            year = 1940
-
-			not = {
-				has_country_flag = 1_OMC
-                has_country_flag = 2_OMC
-				has_country_flag = 3_OMC
-                has_country_flag = 8_OMC
-				has_country_flag = 1_OMC_no
-                has_country_flag = 2_OMC_no
-				has_country_flag = 3_OMC_no
-                has_country_flag = 8_OMC_no
-			}
-		}
-		allow = {
-            date = 1940.6.1
-		}
-		effect = {
-			country_event = 11020
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	4_5_6_7_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 2509 #Lwow
-			controls = 8719 # Chita, Transbaikal Military District
-			controls = 1810 #Belostok
-			controls = 1409 #Moscow Military District
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = HeavyTB
-			has_country_flag = 20_OTC
-			has_country_flag = 24LTB
-			has_country_flag = 39LTB
-			has_country_flag = 55LTB
-			has_country_flag = 30CTB
-			has_country_flag = 31CTB
-			
-            year = 1940
-
-			not = {
-				has_country_flag = 4_OMC
-                has_country_flag = 5_OMC
-				has_country_flag = 6_OMC
-                has_country_flag = 7_OMC
-				has_country_flag = 4_OMC_no
-                has_country_flag = 5_OMC_no
-				has_country_flag = 6_OMC_no
-                has_country_flag = 7_OMC_no
-			}
-		}
-		allow = {
-            date = 1940.7.1
-		}
-		effect = {
-			country_event = 11021
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	9_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 2394 #Novograd-Volynski
-			has_country_flag = Red_Army_Upgrades	
-            year = 1940
-
-			not = {
-				has_country_flag = 9_OMC
-				has_country_flag = 9_OMC_no
-			}
-		}
-		allow = {
-            date = 1940.11.1
-		}
-		effect = {
-			country_event = 11022
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	10_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 782 #Leningrad
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 34LTB
-			has_country_flag = 40LTB
-            year = 1941
-
-			not = {
-				has_country_flag = 10_OMC
-				has_country_flag = 10_OMC_no
-			}
-		}
-		allow = {
-            date = 1941.3.1
-		}
-		effect = {
-			country_event = 11024
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	12_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 1308 #Siauliai
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 22LTB
-			has_country_flag = 15_OTC
-			has_country_flag = 20_OTC
-            year = 1941
-
-			not = {
-				has_country_flag = 12_OMC
-				has_country_flag = 12_OMC_no
-			}
-		}
-		allow = {
-            date = 1941.3.1
-		}
-		effect = {
-			country_event = 11025
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	11_13_14_17_20_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 1811 #Volkovysk
-			controls = 1870 #Bielsk Podlaski
-			controls = 1931 #Kobrin
-			controls = 1813 #Baranovichi
-			controls = 1635 #Borisov
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 44LTB
-			has_country_flag = 29LTB
-			has_country_flag = 32LTB
-			has_country_flag = 12LTB
-			has_country_flag = 20LTB
-			
-            year = 1941
-
-			not = {
-				has_country_flag = 11_OMC
-                has_country_flag = 13_OMC
-				has_country_flag = 14_OMC
-                has_country_flag = 17_OMC
-				has_country_flag = 20_OMC
-				has_country_flag = 11_OMC_no
-                has_country_flag = 13_OMC_no
-				has_country_flag = 14_OMC_no
-                has_country_flag = 17_OMC_no
-				has_country_flag = 20_OMC_no
-			}
-		}
-		allow = {
-            date = 1941.3.1
-		}
-		effect = {
-			country_event = 11026
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	15_16_19_22_24_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 2510 #Brody
-			controls = 2703 #Tjernovsty
-			controls = 2279 #Zhitomir
-			controls = 2334 #Lutsk
-			controls = 2640 #Preskurov
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 18LTB
-			has_country_flag = 30LTB
-			has_country_flag = 26LTB
-			has_country_flag = 33CTB
-			has_country_flag = 39LTB2
-			has_country_flag = 35LTB
-			
-            year = 1941
-
-			not = {
-				has_country_flag = 15_OMC
-                has_country_flag = 16_OMC
-				has_country_flag = 19_OMC
-                has_country_flag = 22_OMC
-				has_country_flag = 24_OMC
-				has_country_flag = 15_OMC_no
-                has_country_flag = 16_OMC_no
-				has_country_flag = 19_OMC_no
-                has_country_flag = 22_OMC_no
-				has_country_flag = 24_OMC_no
-			}
-		}
-		allow = {
-            date = 1941.3.1
-		}
-		effect = {
-			country_event = 11027
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	18_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 3377 #Akkerman
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 49LTB
-            year = 1941
-
-			not = {
-				has_country_flag = 18_OMC
-				has_country_flag = 18_OMC_no
-			}
-		}
-		allow = {
-            date = 1941.3.1
-		}
-		effect = {
-			country_event = 11028
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	21_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 1409 #Moscow
-			has_country_flag = Red_Army_Upgrades
-            year = 1941
-
-			not = {
-				has_country_flag = 21_OMC
-				has_country_flag = 21_OMC_no
-			}
-		}
-		allow = {
-            date = 1941.4.1
-		}
-		effect = {
-			country_event = 11029
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	23_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 1941 #Orel 
-			has_country_flag = Red_Army_Upgrades
-            year = 1941
-
-			not = {
-				has_country_flag = 23_OMC
-				has_country_flag = 23_OMC_no
-			}
-		}
-		allow = {
-            date = 1941.4.1
-		}
-		effect = {
-			country_event = 11030
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	25_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 2401 #Kharkov
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 31LTB
-            year = 1941
-
-			not = {
-				has_country_flag = 25_OMC
-				has_country_flag = 25_OMC_no
-			}
-		}
-		allow = {
-            date = 1941.4.1
-		}
-		effect = {
-			country_event = 11031
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	26_27_28_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 2913 #North Caucasus Military District
-			controls = 9025 #Central Asia Military District
-			controls = 7287 #Yerevan
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 17LTB
-			has_country_flag = 41LTB
-			has_country_flag = 7LTB
-			
-            year = 1941
-
-			not = {
-				has_country_flag = 26_OMC
-                has_country_flag = 27_OMC
-				has_country_flag = 28_OMC
-				has_country_flag = 26_OMC_no
-                has_country_flag = 27_OMC_no
-				has_country_flag = 28_OMC_no
-			}
-		}
-		allow = {
-            date = 1941.4.1
-		}
-		effect = {
-			country_event = 11032
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	29_30_Mechanized_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 8719 #Transbaikal Military District
-			controls = 7045 #Far East Military District
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 57SC
-			has_country_flag = 3LTB
-			has_country_flag = 42LTB
-			has_country_flag = 48LTB
-			has_country_flag = 50LTB
-
-            year = 1941
-
-			not = {
-				has_country_flag = 29_OMC
-                has_country_flag = 30_OMC
-                has_country_flag = 29_OMC_no
-				has_country_flag = 30_OMC_no
-			}
-		}
-		allow = {
-            date = 1941.4.1
-		}
-		effect = {
-			country_event = 11033
+			country_event = 11045
 		}
 		ai_will_do = {
 			factor = 1
@@ -952,7 +1196,816 @@ diplomatic_decisions = {
             date = 1941.4.1
 		}
 		effect = {
-			country_event = 11034
+			country_event = 11046
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	10_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 782 #Leningrad
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 34LTB
+			has_country_flag = 40LTB
+			has_country_flag = MB_1940
+            year = 1941
+
+			not = {
+				has_country_flag = 10_OMC
+				has_country_flag = 10_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11047
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	12_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1308 #Siauliai
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 22LTB
+			has_country_flag = 15_OTC
+			has_country_flag = MB_1940
+            year = 1941
+
+			not = {
+				has_country_flag = 12_OMC
+				has_country_flag = 12_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11048
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	11_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1811 #Volkovysk
+
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 25LTB
+			has_country_flag = MB_1940
+
+            year = 1941
+
+			not = {
+				has_country_flag = 11_OMC
+				has_country_flag = 11_OMC_no
+
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11049
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	13_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1870 #Bielsk Podlaski
+
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 44LTB
+			has_country_flag = MB_1940
+			
+            year = 1941
+
+			not = {
+				has_country_flag = 13_OMC
+				has_country_flag = 13_OMC_no
+
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11050
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	14_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1931 #Kobrin
+
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 29LTB
+			has_country_flag = 32LTB
+			has_country_flag = MB_1940
+			
+            year = 1941
+
+			not = {
+				has_country_flag = 14_OMC
+				has_country_flag = 14_OMC_no
+
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11051
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	17_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1813 #Baranovichi
+
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 16LTB
+			has_country_flag = MB_1940
+			
+            year = 1941
+
+			not = {
+				has_country_flag = 17_OMC
+				has_country_flag = 17_OMC_no
+
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11052
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	20_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1635 #Borisov
+
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 12LTB
+			has_country_flag = 20LTB
+			
+            year = 1941
+
+			not = {
+				has_country_flag = 20_OMC
+				has_country_flag = 20_OMC_no
+
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11053
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	15_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2510 #Brody
+
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 18LTB
+			has_country_flag = 30LTB
+			has_country_flag = MB_1940
+			
+            year = 1941
+
+			not = {
+				has_country_flag = 15_OMC
+				has_country_flag = 15_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11054
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	16_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2703 #Tjernovsty
+
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 26LTB
+			has_country_flag = 33CTB #Placed here to reduce IC costs a bit
+			
+            year = 1941
+
+			not = {
+				has_country_flag = 16_OMC
+				has_country_flag = 16_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11055
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	19_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2279 #Zhitomir
+
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 39LTB2
+			has_country_flag = 35LTB
+			has_country_flag = MB_1940
+			
+            year = 1941
+
+			not = {
+				has_country_flag = 19_OMC
+				has_country_flag = 19_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11056
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	22_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2334 #Lutsk
+
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 36LTB
+			has_country_flag = 38LTB
+			has_country_flag = MB_1940
+			
+            year = 1941
+
+			not = {
+				has_country_flag = 22_OMC
+				has_country_flag = 22_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11057
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	24_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2640 #Preskurov
+
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 2TB
+			has_country_flag = 14LTB
+			has_country_flag = MB_1940
+			
+            year = 1941
+
+			not = {
+				has_country_flag = 24_OMC
+				has_country_flag = 24_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11058
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	18_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 3377 #Akkerman
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 49LTB
+			has_country_flag = MB_1940
+            year = 1941
+
+			not = {
+				has_country_flag = 18_OMC
+				has_country_flag = 18_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11059
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	21_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 24LTB2
+			has_country_flag = 185RD
+            year = 1941
+
+			not = {
+				has_country_flag = 21_OMC
+				has_country_flag = 21_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11060
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	23_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1941 #Orel 
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 70LTB
+            year = 1941
+
+			not = {
+				has_country_flag = 23_OMC
+				has_country_flag = 23_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11061
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	25_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2401 #Kharkov
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 31LTB
+			has_country_flag = 52LTB
+            year = 1941
+
+			not = {
+				has_country_flag = 25_OMC
+				has_country_flag = 25_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11062
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	26_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 2913 #North Caucasus Military District
+			has_country_flag = Red_Army_Upgrades
+
+			
+            year = 1941
+
+			not = {
+				has_country_flag = 26_OMC
+				has_country_flag = 26_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11063
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	27_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 9025 #Central Asia Military District
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 146RD
+			has_country_flag = 7LTB #In fact used for 28th Mechanized Corps, but placed here to reduce a bit IC costs
+
+            year = 1941
+
+			not = {
+				has_country_flag = 27_OMC
+				has_country_flag = 27_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11064
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	28_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 7287 #Yerevan
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 17LTB
+			has_country_flag = 41LTB
+
+            year = 1941
+
+			not = {
+				has_country_flag = 28_OMC
+				has_country_flag = 28_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11065
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	29_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 8719 #Transbaikal Military District
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 57SC
+			has_country_flag = 50LTB
+			has_country_flag = MB_1940
+            year = 1941
+
+			not = {
+				has_country_flag = 29_OMC
+                has_country_flag = 29_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11066
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	30_Mechanized_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 7045 #Far East Military District
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 3LTB
+			has_country_flag = 42LTB
+			has_country_flag = 48LTB
+			has_country_flag = MB_1940
+
+            year = 1941
+
+			not = {
+                has_country_flag = 30_OMC
+				has_country_flag = 30_OMC_no
+			}
+		}
+		allow = {
+            date = 1941.3.1
+		}
+		effect = {
+			country_event = 11067
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Rifle_Divisions_1941_decision_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = MB_1940
+
+            year = 1941
+
+			not = {
+                has_country_flag = 177RD
+				has_country_flag = 188RD
+				has_country_flag = 191RD
+				has_country_flag = 177RD_no
+				has_country_flag = 188RD_no
+				has_country_flag = 191RD_no
+			}
+		}
+		allow = {
+            date = 1941.4.1
+		}
+		effect = {
+			country_event = 11068
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	###########################
+	### Great Patriotic War ###
+	###########################
+	## Soviet 2nd Shock Army 
+	Second_shock_army_decision = {
+		potential = {
+			tag = SOV
+			war_with = GER
+			has_country_flag = Red_Army_Upgrades
+			controls = 820 #Narva
+			not = {
+				controls = 864 #Kohtla Jarve is lost
+			}
+			not = {
+				has_country_flag = 2_SA
+				has_country_flag = 2_SA_no
+			}
+		}	
+		allow = {
+		}
+		effect = {
+			country_event = 12000
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## 72nd Rifle Division
+	72nd_Rifle_Division_decision = {
+		potential = {
+			tag = SOV
+			controls = 782 #Leningrad
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1941
+
+			not = {
+				has_country_flag = 72_RD
+				has_country_flag = 72_RD_no
+			}
+		}
+		allow = {
+			date = 1941.12.1
+		}
+		effect = {
+			country_event = 12001
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## 136th Rifle Division
+	136th_Rifle_Division_decision = {
+		potential = {
+			tag = SOV
+			controls = 782 #Leningrad
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 136_RD
+				has_country_flag = 136_RD_no
+			}
+		}
+		allow = {
+			date = 1942.3.12
+		}
+		effect = {
+			country_event = 12002
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## 308th Rifle Division
+	308th_Rifle_Division_decision = {
+		potential = {
+			tag = SOV
+			controls = 2068 #Saratov
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 308_RD
+				has_country_flag = 308_RD_no
+			}
+		}
+		allow = {
+			date = 1942.6.1
+		}
+		effect = {
+			country_event = 12003
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	### Cavalry Corps
+	8_Cav_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1589 #Tula
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 8_CC
+				has_country_flag = 8_CC_no
+			}
+		}
+		allow = {
+			date = 1942.1.18
+		}
+		effect = {
+			country_event = 12004
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	11_Cav_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 1231 #Kalinin
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 11_CC
+				has_country_flag = 11_CC_no
+			}
+		}
+		allow = {
+			date = 1942.1.12
+		}
+		effect = {
+			country_event = 12005
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	4_Cav_Corps_decision = {
+		potential = {
+			tag = SOV
+			controls = 3464 #Astrahan
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 4_CC
+				has_country_flag = 4_CC_no
+			}
+		}
+		allow = {
+			date = 1942.9.1
+		}
+		effect = {
+			country_event = 12006
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	### Naval Rifle/Infantry Brigades
+	7_Naval_Rifle_decision = {
+		potential = {
+			tag = SOV
+			controls = 782 #Leningrad
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1941
+
+			not = {
+				has_country_flag = 7_NRB
+				has_country_flag = 7_NRB_no
+			}
+		}
+		allow = {
+			date = 1941.9.1
+		}
+		effect = {
+			country_event = 12007
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	83_Naval_Infantry_decision = {
+		potential = {
+			tag = SOV
+			controls = 3380 #Novorossisk
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 83_NIB
+				has_country_flag = 83_NIB_no
+			}
+		}
+		allow = {
+			date = 1942.8.1
+		}
+		effect = {
+			country_event = 12008
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	92_Naval_Infantry_decision = {
+		potential = {
+			tag = SOV
+			controls = 2857 #Stalingrad
+			has_country_flag = Red_Army_Upgrades
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 92_NIB
+				has_country_flag = 92_NIB_no
+			}
+		}
+		allow = {
+			date = 1942.8.1
+		}
+		effect = {
+			country_event = 12009
 		}
 		ai_will_do = {
 			factor = 1
@@ -976,7 +2029,7 @@ diplomatic_decisions = {
             date = 1941.7.1
 		}
 		effect = {
-			country_event = 11035
+			country_event = 12010
 		}
 		ai_will_do = {
 			factor = 1
@@ -1000,112 +2053,955 @@ diplomatic_decisions = {
             date = 1941.7.17
 		}
 		effect = {
-			country_event = 11036
+			country_event = 12011
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-##############################################
-### Red Army Upgrades for Airborne Troops ####
-##############################################
-	Para_1936_decision = {
+	### Tank Corps 1942
+	1_Tank_Corps_decision = {
 		potential = {
 			tag = SOV
-			controls = 1409 #Moscow 
 			has_country_flag = Red_Army_Upgrades
-            year = 1936
+			has_country_flag = 1_OMC
+			war_with = GER
+			year = 1942
 
 			not = {
-				has_country_flag = AB1936
-				has_country_flag = AB1936_no
+				has_country_flag = 1_TC
+				has_country_flag = 1_TC_no
 			}
 		}
 		allow = {
-            date = 1936.7.1
+			date = 1942.4.1
 		}
 		effect = {
-			country_event = 11037
+			country_event = 12100
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	Para_1938_decision = {
+	2_Tank_Corps_decision = {
 		potential = {
 			tag = SOV
-			controls = 1409 #Moscow 
 			has_country_flag = Red_Army_Upgrades
-			has_country_flag = AB1936
-
-            year = 1938
+			has_country_flag = 2_OMC
+			war_with = GER
+			year = 1942
 
 			not = {
-				has_country_flag = AB1938
-				has_country_flag = AB1938_no
+				has_country_flag = 2_TC
+				has_country_flag = 2_TC_no
 			}
 		}
 		allow = {
-            date = 1938.7.1
+			date = 1942.4.1
 		}
 		effect = {
-			country_event = 11038
+			country_event = 12101
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	Para_1941_decision = {
+	3_Tank_Corps_decision = {
 		potential = {
 			tag = SOV
-			controls = 1409 #Moscow 
 			has_country_flag = Red_Army_Upgrades
-			has_country_flag = AB1938
-
-            year = 1938
+			has_country_flag = 3_OMC
+			war_with = GER
+			year = 1942
 
 			not = {
-				has_country_flag = AC1941
-				has_country_flag = AC1941_no
+				has_country_flag = 3_TC
+				has_country_flag = 3_TC_no
 			}
 		}
 		allow = {
-            date = 1941.5.1
+			date = 1942.4.1
 		}
 		effect = {
-			country_event = 11039
+			country_event = 12102
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	Para2_1941_decision = {
+	4_Tank_Corps_decision = {
 		potential = {
 			tag = SOV
-			controls = 2068 #Saratov
 			has_country_flag = Red_Army_Upgrades
-			has_country_flag = AC1941
-
-            year = 1938
+			has_country_flag = 4_OMC
+			war_with = GER
+			year = 1942
 
 			not = {
-				has_country_flag = AC1941_2
-				has_country_flag = AC1941_2_no
+				has_country_flag = 4_TC
+				has_country_flag = 4_TC_no
 			}
 		}
 		allow = {
-            date = 1941.9.1
+			date = 1942.4.1
 		}
 		effect = {
-			country_event = 11040
+			country_event = 12103
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-###################
-### NKVD Troops ###
-###################
+	5_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 5_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 5_TC
+				has_country_flag = 5_TC_no
+			}
+		}
+		allow = {
+			date = 1942.4.10
+		}
+		effect = {
+			country_event = 12104
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	6_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 6_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 6_TC
+				has_country_flag = 6_TC_no
+			}
+		}
+		allow = {
+			date = 1942.4.10
+		}
+		effect = {
+			country_event = 12105
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	7_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 7_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 7_TC
+				has_country_flag = 7_TC_no
+			}
+		}
+		allow = {
+			date = 1942.4.10
+		}
+		effect = {
+			country_event = 12106
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	8_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 8_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 8_TC
+				has_country_flag = 8_TC_no
+			}
+		}
+		allow = {
+			date = 1942.5.10
+		}
+		effect = {
+			country_event = 12107
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	9_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 9_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 9_TC
+				has_country_flag = 9_TC_no
+			}
+		}
+		allow = {
+			date = 1942.5.10
+		}
+		effect = {
+			country_event = 12108
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	10_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 10_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 10_TC
+				has_country_flag = 10_TC_no
+			}
+		}
+		allow = {
+			date = 1942.5.15
+		}
+		effect = {
+			country_event = 12109
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	11_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 11_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 11_TC
+				has_country_flag = 11_TC_no
+			}
+		}
+		allow = {
+			date = 1942.5.19
+		}
+		effect = {
+			country_event = 12110
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	12_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 12_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 12_TC
+				has_country_flag = 12_TC_no
+			}
+		}
+		allow = {
+			date = 1942.5.19
+		}
+		effect = {
+			country_event = 12111
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	13_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 13_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 13_TC
+				has_country_flag = 13_TC_no
+			}
+		}
+		allow = {
+			date = 1942.6.9
+		}
+		effect = {
+			country_event = 12112
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	14_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 14_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 14_TC
+				has_country_flag = 14_TC_no
+			}
+		}
+		allow = {
+			date = 1942.6.9
+		}
+		effect = {
+			country_event = 12113
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	15_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 15_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 15_TC
+				has_country_flag = 15_TC_no
+			}
+		}
+		allow = {
+			date = 1942.6.1
+		}
+		effect = {
+			country_event = 12114
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	16_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 16_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 16_TC
+				has_country_flag = 16_TC_no
+			}
+		}
+		allow = {
+			date = 1942.6.1
+		}
+		effect = {
+			country_event = 12115
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	17_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 17_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 17_TC
+				has_country_flag = 17_TC_no
+			}
+		}
+		allow = {
+			date = 1942.6.22
+		}
+		effect = {
+			country_event = 12116
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	18_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 18_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 18_TC
+				has_country_flag = 18_TC_no
+			}
+		}
+		allow = {
+			date = 1942.6.23
+		}
+		effect = {
+			country_event = 12117
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	19_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 19_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 19_TC
+				has_country_flag = 19_TC_no
+			}
+		}
+		allow = {
+			date = 1942.12.12
+		}
+		effect = {
+			country_event = 12118
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	20_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 20_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 20_TC
+				has_country_flag = 20_TC_no
+			}
+		}
+		allow = {
+			date = 1942.12.12
+		}
+		effect = {
+			country_event = 12119
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	21_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 21_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 21_TC
+				has_country_flag = 21_TC_no
+			}
+		}
+		allow = {
+			date = 1942.4.17
+		}
+		effect = {
+			country_event = 12120
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	22_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 22_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 22_TC
+				has_country_flag = 22_TC_no
+			}
+		}
+		allow = {
+			date = 1942.4.10
+		}
+		effect = {
+			country_event = 12121
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	23_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 23_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 23_TC
+				has_country_flag = 23_TC_no
+			}
+		}
+		allow = {
+			date = 1942.5.1
+		}
+		effect = {
+			country_event = 12122
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	24_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 24_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 24_TC
+				has_country_flag = 24_TC_no
+			}
+		}
+		allow = {
+			date = 1942.6.1
+		}
+		effect = {
+			country_event = 12123
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	25_Tank_Corps_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 25_OMC
+			war_with = GER
+			year = 1942
+
+			not = {
+				has_country_flag = 25_TC
+				has_country_flag = 25_TC_no
+			}
+		}
+		allow = {
+			date = 1942.6.23
+		}
+		effect = {
+			country_event = 12124
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	## 26th Tank Corps - Moscow, August 1942. Reorganized into 1st Guards Tank Corps in DEcember 1942
+	## 27th Tank Corps - June 1942. Reorganized into 1st Mechanized Corps in September 1942	
+	## 28th Tank Corps - Stalingrad, July 1942. Reorganized into 4th Mechanized Corps in September 1942
+	### Tank Corps 1943 upgrades and formations
+	1st_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 1949 #Tambov
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 1_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 1_TC_1943
+				has_country_flag = 1_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.2.1
+		}
+		effect = {
+			country_event = 12125
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	3rd_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 1819 #Bryansk
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 3_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 3_TC_1943
+				has_country_flag = 3_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.5.1
+		}
+		effect = {
+			country_event = 12126
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	5th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 1409 #Moscow
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 5_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 5_TC_1943
+				has_country_flag = 5_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.6.1
+		}
+		effect = {
+			country_event = 12127
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	9th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 2233 #Voronezh
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 9_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 9_TC_1943
+				has_country_flag = 9_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.6.1
+		}
+		effect = {
+			country_event = 12128
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	10th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 2230 #Stary Oskol
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 10_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 10_TC_1943
+				has_country_flag = 10_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.6.1
+		}
+		effect = {
+			country_event = 12129
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	11th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 1819 #Bryansk
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 11_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 11_TC_1943
+				has_country_flag = 11_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.6.1
+		}
+		effect = {
+			country_event = 12130
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	16th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 2233 #Voronezh
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 16_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 16_TC_1943
+				has_country_flag = 16_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.6.1
+		}
+		effect = {
+			country_event = 12031
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	18th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 2233 #Voronezh
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 18_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 18_TC_1943
+				has_country_flag = 18_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.6.1
+		}
+		effect = {
+			country_event = 12132
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	19th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 2857 #Stalingrad 
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 19_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 19_TC_1943
+				has_country_flag = 19_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.9.1
+		}
+		effect = {
+			country_event = 12133
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	20th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 2857 #Stalingrad 
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 20_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 20_TC_1943
+				has_country_flag = 20_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.7.1
+		}
+		effect = {
+			country_event = 12134
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	23rd_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 2401 #Kharkov
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 23_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 23_TC_1943
+				has_country_flag = 23_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.7.1
+		}
+		effect = {
+			country_event = 12135
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	25th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 2401 #Kharkov
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 25_TC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 25_TC_1943
+				has_country_flag = 25_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.7.1
+		}
+		effect = {
+			country_event = 12136
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	29th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 29_OMC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 29_TC_1943
+				has_country_flag = 29_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.3.1
+		}
+		effect = {
+			country_event = 12137
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	30th_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 30_OMC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 30_TC_1943
+				has_country_flag = 30_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.4.1
+		}
+		effect = {
+			country_event = 12138
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	31st_Tank_Corps_1943_decision = {
+		potential = {
+			tag = SOV
+			controls = 
+			has_country_flag = Red_Army_Upgrades
+			has_country_flag = 30_OMC
+			war_with = GER
+			year = 1943
+
+			not = {
+				has_country_flag = 31_TC_1943
+				has_country_flag = 31_TC_1943_no
+			}
+		}
+		allow = {
+			date = 1943.6.1
+		}
+		effect = {
+			country_event = 12139
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	###################
+	### NKVD Troops ###
+	###################
     NKVD_Historical_upgrades_decision = {
 		potential = {
 			tag = SOV
@@ -1119,7 +3015,7 @@ diplomatic_decisions = {
 			date = 1937.8.1
 		}
 		effect = {
-			country_event = 11041
+			country_event = 13100
             set_country_flag = NKVD_Upgrades
 		}
 		ai_will_do = {
@@ -1142,7 +3038,7 @@ diplomatic_decisions = {
             date = 1941.7.1
 		}
 		effect = {
-			country_event = 11042
+			country_event = 13101
 		}
 		ai_will_do = {
 			factor = 1
@@ -1164,7 +3060,7 @@ diplomatic_decisions = {
             date = 1937.9.8
 		}
 		effect = {
-			country_event = 11043
+			country_event = 13102
 		}
 		ai_will_do = {
 			factor = 1
@@ -1187,7 +3083,7 @@ diplomatic_decisions = {
             date = 1943.2.14
 		}
 		effect = {
-			country_event = 11044
+			country_event = 13103
 		}
 		ai_will_do = {
 			factor = 1
@@ -1210,7 +3106,7 @@ diplomatic_decisions = {
             date = 1942.1.4
 		}
 		effect = {
-			country_event = 11045
+			country_event = 13104
 		}
 		ai_will_do = {
 			factor = 1
@@ -1232,7 +3128,7 @@ diplomatic_decisions = {
             date = 1941.9.1
 		}
 		effect = {
-			country_event = 11046
+			country_event = 13105
 		}
 		ai_will_do = {
 			factor = 1
@@ -1253,7 +3149,7 @@ diplomatic_decisions = {
             date = 1942.1.1
 		}
 		effect = {
-			country_event = 11047
+			country_event = 13106
 		}
 		ai_will_do = {
 			factor = 1
@@ -1301,7 +3197,7 @@ diplomatic_decisions = {
 			}
 		}	
 		effect = {
-			country_event = 11048
+			country_event = 13107
 		}
 		ai_will_do = {
 			factor = 1
@@ -1325,7 +3221,7 @@ diplomatic_decisions = {
 		allow = {
 		}
 		effect = {
-			country_event = 11049
+			country_event = 13108
 		}
 		ai_will_do = {
 			factor = 1
@@ -1353,7 +3249,7 @@ diplomatic_decisions = {
 			controls = 2913 #Rostov
 		}
 		effect = {
-			country_event = 11050
+			country_event = 13109
 		}
 		ai_will_do = {
 			factor = 1
@@ -1399,7 +3295,7 @@ diplomatic_decisions = {
 			}
 		}
 		effect = {
-			country_event = 11051
+			country_event = 13110
 		}
 		ai_will_do = {
 			factor = 1
@@ -1422,7 +3318,7 @@ diplomatic_decisions = {
 			date = 1942.5.1
 		}
 		effect = {
-			country_event = 11052
+			country_event = 13111
 		}
 		ai_will_do = {
 			factor = 1
@@ -1450,7 +3346,7 @@ diplomatic_decisions = {
 			date = 1942.8.15
 		}
 		effect = {
-			country_event = 11053
+			country_event = 13112
 		}
 		ai_will_do = {
 			factor = 1
@@ -1480,981 +3376,18 @@ diplomatic_decisions = {
 			controls = 2857 #Stalingrad
 		}
 		effect = {
-			country_event = 11054
+			country_event = 13113
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-##################################################
-#### Various events before Great Patriotic war ###
-##################################################
-	## Long Range Air Command
-	strategic_command_decision = {
-		potential = {
-			tag = SOV
-			controls = 1409 #Moscow
-			year = 1936
-			has_country_flag = Red_Army_Upgrades
+	######################
+	##  Foreign Troops  ##
+	######################
 
-			not = {
-				has_country_flag = strat_command
-				has_country_flag = strat_command_no
-			}
-		}
-		allow = {
-			date = 1936.3.1
-		}
-		effect = {
-			country_event = 11055
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	## Soviet T-35 Heavy Tanks
-	T-35_decision = {
-		potential = {
-			tag = SOV
-			controls = 1409 #Moscow
-			year = 1936
-
-			not = {
-				has_country_flag = T35_HT
-				has_country_flag = T35_HT
-			}
-		}
-		allow = {
-			date = 1936.5.1
-		}
-		effect = {
-			country_event = 11056 #Formerevent 49015
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	## TM-3 12" Railway guns model 1938
-	1938_Railway_guns_decision = {
-		potential = {
-			tag = SOV
-			controls = 1409 #Moscow
-			has_country_flag = Red_Army_Upgrades
-			year = 1939
-
-			not = {
-				has_country_flag = 1939_Railway_guns
-				has_country_flag = 1939_Railway_guns_no
-			}
-		}
-		allow = {
-			date = 1939.1.10
-		}
-		effect = {
-			country_event = 11057
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	## Rifle Corps from annexed Baltic States (1940)
-	Baltics_Annexation_decision = {
-		potential = {
-			tag = SOV
-
-			not = {
-				exists = EST
-				exists = LAT
-				exists = LIT
-				has_country_flag = Baltics_Annexation
-				has_country_flag = Baltics_Annexation_no
-			}
-			year = 1940
-		}
-		allow = {
-			date = 1940.8.1
-		}
-		effect = {
-			country_event = 11058
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	## Lithuanian warship Prezidentas Smetona (1940)
-	Prezidentas_Smetona_decision = {
-		potential = {
-			tag = SOV
-			GER = {
-			has_country_flag = claims_on_memel
-			}
-
-			not = {
-				exists = LIT
-				has_country_flag = Prezidentas_Smetona
-				has_country_flag = Prezidentas_Smetona_no
-			}
-			year = 1940
-		}
-		allow = {
-			date = 1940.7.1
-		}
-		effect = {
-			country_event = 11059
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	## Hanko Garrison (1941)
-	Hanko_Garrison_decision = {
-		potential = {
-			tag = SOV
-			controls = 1409 #Moscow
-			controls = 779 #Hanko
-			has_country_flag = Red_Army_Upgrades
-			year = 1940
-
-			not = {
-				war_with = FIN
-				has_country_flag = Hanko_Garrison
-				has_country_flag = Hanko_Garrison_no
-			}
-		}
-		allow = {
-			date = 1940.5.1
-		}
-		effect = {
-			country_event = 11060
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-###########################
-### Great Patriotic War ###
-###########################
-### Cavalry Corps
-	## 8th Cavalry Corps
-	8_Cav_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 1589 #Tula
-			has_country_flag = Red_Army_Upgrades
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 8_CC
-				has_country_flag = 8_CC_no
-			}
-		}
-		allow = {
-			date = 1942.1.18
-		}
-		effect = {
-			country_event = 12000
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	## 11th Cavalry Corps
-	11_Cav_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 1231 #Kalinin
-			has_country_flag = Red_Army_Upgrades
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 11_CC
-				has_country_flag = 11_CC_no
-			}
-		}
-		allow = {
-			date = 1942.1.12
-		}
-		effect = {
-			country_event = 12001
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	## 4th Cavalry Corps - Third Formation.
-	4_Cav_Corps_decision = {
-		potential = {
-			tag = SOV
-			controls = 3464 #Astrahan
-			has_country_flag = Red_Army_Upgrades
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 4_CC
-				has_country_flag = 4_CC_no
-			}
-		}
-		allow = {
-			date = 1942.9.1
-		}
-		effect = {
-			country_event = 12002
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-### Naval Rifle/Infantry Brigades
-	## 7th Naval Rifle Brigade
-	7_Naval_Rifle_decision = {
-		potential = {
-			tag = SOV
-			controls = 782 #Leningrad
-			has_country_flag = Red_Army_Upgrades
-			war_with = GER
-			year = 1941
-
-			not = {
-				has_country_flag = 7_NRB
-				has_country_flag = 7_NRB_no
-			}
-		}
-		allow = {
-			date = 1941.9.1
-		}
-		effect = {
-			country_event = 12003
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	## 83rd Naval Infantry Brigade 
-	83_Naval_Infantry_decision = {
-		potential = {
-			tag = SOV
-			controls = 3380 #Novorossisk
-			has_country_flag = Red_Army_Upgrades
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 83_NIB
-				has_country_flag = 83_NIB_no
-			}
-		}
-		allow = {
-			date = 1942.8.1
-		}
-		effect = {
-			country_event = 12004
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	## 92nd Naval Infantry Brigade 
-	92_Naval_Infantry_decision = {
-		potential = {
-			tag = SOV
-			controls = 2857 #Stalingrad
-			has_country_flag = Red_Army_Upgrades
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 92_NIB
-				has_country_flag = 92_NIB_no
-			}
-		}
-		allow = {
-			date = 1942.8.1
-		}
-		effect = {
-			country_event = 12005
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-### Tank Corps 
-## 1st Tank Corps - April 1942, Bryansk Front
-	1_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 1_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 1_TC
-				has_country_flag = 1_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.1
-		}
-		effect = {
-			country_event = 12006
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 2nd Tank Corps - April 1942, Gorkiy
-	2_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 2_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 2_TC
-				has_country_flag = 2_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.1
-		}
-		effect = {
-			country_event = 12007
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 3rd Tank Corps - April 1942, Tula
-	3_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 3_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 3_TC
-				has_country_flag = 3_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.1
-		}
-		effect = {
-			country_event = 12008
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 4th Tank Corps - April 1942, Bryansk
-	4_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 4_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 4_TC
-				has_country_flag = 4_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.1
-		}
-		effect = {
-			country_event = 12009
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 5th Tank Corps - April 1942, Moscow
-	5_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 5_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 5_TC
-				has_country_flag = 5_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.10
-		}
-		effect = {
-			country_event = 12010
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 6th Tank Corps - April 1942, Maloyaroslavets
-	6_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 6_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 6_TC
-				has_country_flag = 6_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.10
-		}
-		effect = {
-			country_event = 12011
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 7th Tank Corps - April 1942, Kalinin
-	7_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 7_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 7_TC
-				has_country_flag = 7_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.10
-		}
-		effect = {
-			country_event = 12012
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 8th Tank Corps - May 1942, Moscow
-	8_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 8_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 8_TC
-				has_country_flag = 8_TC_no
-			}
-		}
-		allow = {
-			date = 1942.5.10
-		}
-		effect = {
-			country_event = 12013
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 9th Tank Corps - May 1942, Moscow
-	9_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 9_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 9_TC
-				has_country_flag = 9_TC_no
-			}
-		}
-		allow = {
-			date = 1942.5.10
-		}
-		effect = {
-			country_event = 12014
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 10th Tank Corps - May 1942, Gorkiy
-	10_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 10_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 10_TC
-				has_country_flag = 10_TC_no
-			}
-		}
-		allow = {
-			date = 1942.5.15
-		}
-		effect = {
-			country_event = 12015
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 11th Tank Corps - May 1942, Gorkiy
-	11_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 11_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 11_TC
-				has_country_flag = 11_TC_no
-			}
-		}
-		allow = {
-			date = 1942.5.19
-		}
-		effect = {
-			country_event = 12016
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 12th Tank Corps - May 1942, Moscow
-	12_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 12_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 12_TC
-				has_country_flag = 12_TC_no
-			}
-		}
-		allow = {
-			date = 1942.5.19
-		}
-		effect = {
-			country_event = 12017
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 13th Tank Corps - June 1942, Stalingrad
-	13_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 13_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 13_TC
-				has_country_flag = 13_TC_no
-			}
-		}
-		allow = {
-			date = 1942.6.9
-		}
-		effect = {
-			country_event = 12018
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}	
-## 14th Tank Corps - June 1942, Stalingrad
-	14_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 14_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 14_TC
-				has_country_flag = 14_TC_no
-			}
-		}
-		allow = {
-			date = 1942.6.9
-		}
-		effect = {
-			country_event = 12019
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}	
-## 15th Tank Corps - June 1942, Moscow
-	15_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 15_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 15_TC
-				has_country_flag = 15_TC_no
-			}
-		}
-		allow = {
-			date = 1942.6.1
-		}
-		effect = {
-			country_event = 12020
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}	
-## 16th Tank Corps - June 1942, Voronezh
-	16_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 16_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 16_TC
-				has_country_flag = 16_TC_no
-			}
-		}
-		allow = {
-			date = 1942.6.1
-		}
-		effect = {
-			country_event = 12021
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 17th Tank Corps - June 1942, Stalingrad
-	17_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 17_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 17_TC
-				has_country_flag = 17_TC_no
-			}
-		}
-		allow = {
-			date = 1942.6.22
-		}
-		effect = {
-			country_event = 12022
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 18th Tank Corps - June 1942, Stalingrad
-	18_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 18_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 18_TC
-				has_country_flag = 18_TC_no
-			}
-		}
-		allow = {
-			date = 1942.6.23
-		}
-		effect = {
-			country_event = 12023
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 19th Tank Corps - December 1942, Tula
-	19_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 19_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 19_TC
-				has_country_flag = 19_TC_no
-			}
-		}
-		allow = {
-			date = 1942.12.12
-		}
-		effect = {
-			country_event = 12024
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 20th Tank Corps - December 1942, Tula
-	20_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 20_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 20_TC
-				has_country_flag = 20_TC_no
-			}
-		}
-		allow = {
-			date = 1942.12.12
-		}
-		effect = {
-			country_event = 12025
-		}
-		ai_will_do = {
-			factor = 1
-		}
-## 21st Tank Corps - Southwestern Front, April 1942
-	21_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 21_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 21_TC
-				has_country_flag = 21_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.17
-		}
-		effect = {
-			country_event = 12026
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 22nd Tank Corps - Kupyansk, April 1942 
-	22_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 22_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 22_TC
-				has_country_flag = 22_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.10
-		}
-		effect = {
-			country_event = 12027
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 23rd Tank Corps - Krasny Oskol, May 1942
-	23_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 23_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 23_TC
-				has_country_flag = 23_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.12
-		}
-		effect = {
-			country_event = 12028
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 24th Tank Corps - Stalingrad June 1942
-	24_Tank_Corps_decision = {
-		potential = {
-			tag = SOV
-			has_country_flag = Red_Army_Upgrades
-			has_country_flag = 24_OMC
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 24_TC
-				has_country_flag = 24_TC_no
-			}
-		}
-		allow = {
-			date = 1942.4.20
-		}
-		effect = {
-			country_event = 12029
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-### Various Armies and units for Red Army
-	## Soviet 2nd Shock Army 
-	Second_shock_army_decision = {
-		potential = {
-			tag = SOV
-			war_with = GER
-			has_country_flag = Red_Army_Upgrades
-			controls = 820 #Narva
-			not = {
-				controls = 864 #Kohtla Jarve is lost
-			}
-			not = {
-				has_country_flag = 2_SA
-				has_country_flag = 2_SA_no
-			}
-		}	
-		allow = {
-		}
-		effect = {
-			country_event = 13053
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 72nd Rifle Division
-	72nd_Rifle_Division_decision = {
-		potential = {
-			tag = SOV
-			controls = 782 #Leningrad
-			has_country_flag = Red_Army_Upgrades
-			war_with = GER
-			year = 1941
-
-			not = {
-				has_country_flag = 72_RD
-				has_country_flag = 72_RD_no
-			}
-		}
-		allow = {
-			date = 1941.12.1
-		}
-		effect = {
-			country_event = 13054
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 136th Rifle Division
-	136th_Rifle_Division_decision = {
-		potential = {
-			tag = SOV
-			controls = 782 #Leningrad
-			has_country_flag = Red_Army_Upgrades
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 136_RD
-				has_country_flag = 136_RD_no
-			}
-		}
-		allow = {
-			date = 1942.3.12
-		}
-		effect = {
-			country_event = 13055
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## 308th Rifle Division
-	308th_Rifle_Division_decision = {
-		potential = {
-			tag = SOV
-			controls = 2068 #Saratov
-			has_country_flag = Red_Army_Upgrades
-			war_with = GER
-			year = 1942
-
-			not = {
-				has_country_flag = 308_RD
-				has_country_flag = 308_RD_no
-			}
-		}
-		allow = {
-			date = 1942.6.1
-		}
-		effect = {
-			country_event = 13056
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-## Estonian Corps (1942)
-Estonian_Rifle_Corps_8_decision = {
+	## Estonian Corps (1942)
+	Estonian_Rifle_Corps_8_decision = {
 		potential = {
 			tag = SOV
 			has_country_flag = Red_Army_Upgrades
@@ -2469,22 +3402,25 @@ Estonian_Rifle_Corps_8_decision = {
 			date = 1942.11.1
 		}
 		effect = {
-			country_event = 13057
+			country_event = 13200
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-### Polish Armies (LWP) ##############################
-### Romanian Volunteers ##############################
-### French 'Normandie-Niemen' ########################
+	### Polish Armies (LWP) ##############################
+	### Romanian Volunteers ##############################
+	### French 'Normandie-Niemen' ########################
 
-#####################
-### Guards Units ####
-#####################
 
-### Guards Cavalry Corps
-	## 1st and 2nd Guards Cavalry Corps
+
+
+
+	#####################
+	### Guards Units ####
+	#####################
+
+	### Guards Cavalry Corps
 	1_2_Guards_Cav_Corps_decision = {
 		potential = {
 			tag = SOV
@@ -2510,7 +3446,6 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-	## 1st Guards Cavalry Corps Upgrade - January 1943
 	1st_Guards_Cav_Corps_Upgrade_decision = {
 		potential = {
 			tag = SOV
@@ -2535,7 +3470,6 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-	## 3rd Guards Cavalry Corps
 	3_Guards_Cav_Corps_decision = {
 		potential = {
 			tag = SOV
@@ -2559,7 +3493,6 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-	## 4th Guards Cavalry Corps
 	4_Guards_Cav_Corps_decision = {
 		potential = {
 			tag = SOV
@@ -2582,7 +3515,6 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-	## 3rd and 4th Guards Cavalry Corps Upgrade - September 1943
 	3_4_Guards_Cav_Corps_upgrade_decision = {
 		potential = {
 			tag = SOV
@@ -2609,7 +3541,6 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-	## 2nd Guards Cavalry Corps Upgrade - October 1943
 	2_Guards_Cav_Corps_Upgrade_decision = {
 		potential = {
 			tag = SOV
@@ -2634,7 +3565,6 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-	## 5th Guards Cavalry Corps
 	5_Guards_Cav_Corps_decision = {
 		potential = {
 			tag = SOV
@@ -2658,7 +3588,6 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-	## 5th Guards Cavalry Corps Upgrade - August 1943
 	5_Guards_Cav_Corps_Upgrade_decision = {
 		potential = {
 			tag = SOV
@@ -2683,7 +3612,6 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-	## 6th and 7th Guards Cavalry Corps
 	6_7_Guards_Cav_Corps_decision = {
 		potential = {
 			tag = SOV
@@ -2710,8 +3638,7 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-### Guards Motorized Divisions
-	## 1st Guards Motorized Division
+	### Guards Motorized Divisions
 	1_Guards_Mot_Div_decision = {
 		potential = {
 			tag = SOV
@@ -2735,7 +3662,6 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-	## 2nd Guards Motorized Division
 	2_Guards_Mot_Div_decision = {
 		potential = {
 			tag = SOV
@@ -2759,7 +3685,6 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-	## 3rd Guards Motorized Division
 	3_Guards_Mot_Div_decision = {
 		potential = {
 			tag = SOV
@@ -2783,7 +3708,7 @@ Estonian_Rifle_Corps_8_decision = {
 			factor = 1
 		}
 	}
-### Guards Infantry Divisions
+	### Guards Infantry Divisions
 	Guards_RD_1_2_5_decision = {
 		potential = {
 			tag = SOV
