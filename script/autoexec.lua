@@ -43,31 +43,39 @@ require('csvParser')
 require('pdxParser')
 
 -- BICE custom LUA Module
-BiceLib = require("BiceLib")
-BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
-BiceLib.setModuleBase()
+local ok, mod = pcall(require, "BiceLib")
+if not ok then
+    Utils.LUA_DEBUGOUT("Failed to load BiceLib.dll. Some features are not available")
+    Utils.LUA_DEBUGOUT(mod)
+    mod = nil
+end
+if mod then
+    BiceLib = mod
+    BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
+    BiceLib.setModuleBase()
 
--- Leaders
--- BiceLib.activateLeaderPromotionSkillLoss()
-BiceLib.activateLeaderListShowMaxSkill()
-BiceLib.activateLeaderListShowMaxSkillSelected()
+    -- Leaders
+    -- BiceLib.activateLeaderPromotionSkillLoss()
+    BiceLib.activateLeaderListShowMaxSkill()
+    BiceLib.activateLeaderListShowMaxSkillSelected()
 
--- Rank Specific traits
--- BiceLib.activateRankSpecificTraits()
--- BiceLib.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
+    -- Rank Specific traits
+    -- BiceLib.activateRankSpecificTraits()
+    -- BiceLib.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
 
--- Units
--- BiceLib.setCorpsUnitLimit(6, false)
--- BiceLib.setArmyUnitLimit(7, false)
--- BiceLib.setArmyGroupUnitLimit(8, false)
+    -- Units
+    -- BiceLib.setCorpsUnitLimit(6, false)
+    -- BiceLib.setArmyUnitLimit(7, false)
+    -- BiceLib.setArmyGroupUnitLimit(8, false)
 
--- BiceLib.addCommandLimitTrait("pskill_1", -1)
--- BiceLib.addCommandLimitTrait("pskill_4", 1)
+    -- BiceLib.addCommandLimitTrait("pskill_1", -1)
+    -- BiceLib.addCommandLimitTrait("pskill_4", 1)
 
--- Patches
-BiceLib.activateOffmapICPatch()
-BiceLib.activateMinisterTechDecayPatch()
-BiceLib.activateWarExhaustionNeutralityResetPatch()
+    -- Patches
+    BiceLib.activateOffmapICPatch()
+    BiceLib.activateMinisterTechDecayPatch()
+    BiceLib.activateWarExhaustionNeutralityResetPatch()
+end
 
 
 -- Make sure these exist, if something is require() but doesnt exist LUA dies and doesn't load the rest!

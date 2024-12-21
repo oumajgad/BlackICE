@@ -5,6 +5,9 @@ function P.FillGrid()
         return
     end
 
+    if BiceLib == nil then
+        return
+    end
     local vars = BiceLib.getCountryVariables(G_PlayerCountry)
 
     if vars == nil then
