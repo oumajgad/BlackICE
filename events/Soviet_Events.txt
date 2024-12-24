@@ -13915,4 +13915,1041 @@ country_event = {
 	}
 }
 #To do 1st Guards RD 1943
+
+## Guards Tank Corps
+## 1st Guards Tank Corps - December 1942 
+country_event = {
+	id = 14100
+	is_triggered_only = yes
+	title = "1st Guards Tank Corps"
+	desc = "EVTDESC14100"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 1_GTC
+		#Removing 26th Old Mechanized Corps
+		remove_brigade = "Shtab-K. 26-go Mekh. Korpusa"
+		remove_brigade = "548-y Mot.-Signalnyy B-n"
+		remove_brigade = "27-y Mototsikletnyy Polk"
+		remove_brigade = "Avtotransportnyy B-n 26-go Mekh. Korpusa"
+		remove_brigade = "Shtab-K. 52-y Tankovoy Divizii"
+		remove_brigade = "104-y/105-y Tankovye Polki"
+		remove_brigade = "52-y Motostrelkovyy Polk"
+		remove_brigade = "52-y Mot.-Artilleriyskiy Polk"
+		remove_brigade = "52-y Mot.-Sap'ornyy B-n"
+		remove_brigade = "52-y PT/Zen.Art./Raz. Bataliony"
+		remove_brigade = "52-y Avtotransportnyy B-n"
+		remove_brigade = "Shtab-K. 56-y Tankovoy Divizii"
+		remove_brigade = "112-y/113-y Tankovye Polki"
+		remove_brigade = "56-y Motostrelkovyy Polk"
+		remove_brigade = "56-y Mot.-Artilleriyskiy Polk"
+		remove_brigade = "56-y Mot.-Sap'ornyy B-n"
+		remove_brigade = "56-y PT/Zen.Art./Raz. Bataliony"
+		remove_brigade = "56-y Avtotransportnyy B-n"
+		remove_brigade = "Shtab-K. 103-y Mot. Divizii"
+		remove_brigade = "551-y/583-y Motostrelkovye Polki"
+		remove_brigade = "103-y Legkiy Tankovyy Polk"
+		remove_brigade = "271-y Mot.-Artilleriyskiy Polk"
+		remove_brigade = "141-y Mot.-Sap'ornyy B-n"
+		remove_brigade = "98-y Raz./256-iy Zen.Art./155-iy PT Bataliony"
+		remove_brigade = "110-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_1_1942_Dec.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_1_1942_Dec.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 1_GTC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1st Guards Tank Corps Upgrade - June 1943
+country_event = {
+	id = 14101
+	is_triggered_only = yes
+	title = "1st Guards Tank Corps (1943)"
+	desc = "EVTDESC14101"
+	picture = "guardsarm"
+	option = {
+		name = "Upgrade this unit!"
+		set_country_flag = 1_GTC_1943
+		#Removing old version of 1st Guards Tank Corps
+		remove_brigade = "Shtab-K. 1-y Gv. Tank. Korpusa"
+		remove_brigade = "1-y Otd. Gv. Razvedovatelniy B-n"
+		remove_brigade = "80-y Gv. Zen. Art. Polk"
+		remove_brigade = "Transportnyy B-n 1-y Gv. Tank. Korpusa"
+		remove_brigade = "Shtab-K. 15-y Gv. Tank. Brigady"
+		remove_brigade = "580-y/581-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 15-y Gv. Tank. Brigady"
+		remove_brigade = "Elementy Obespecheniya 15-y Gv. Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 15-y Gv. Tank. Brigady"
+		remove_brigade = "Shtab-K. 16-y Gv. Tank. Brigady"
+		remove_brigade = "19-y/237-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 16-y Gv. Tank. Brigady"
+		remove_brigade = "Elementy Obespecheniya 16-y Gv. Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 16-y Gv. Tank. Brigady"
+		remove_brigade = "Shtab-K. 17-y Gv. Tank. Brigady"
+		remove_brigade = "346-y/347-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 17-y Gv. Tank. Brigady"
+		remove_brigade = "Elementy Obespecheniya 17-y Gv. Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 17-y Gv. Tank. Brigady"
+		remove_brigade = "Shtab-K. 1-y Gv. Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 1-y Gv. Mot. B."
+		remove_brigade = "Elementy Obespecheniya 1-y Gv. Mot. Brigady"
+		remove_brigade = "Artilleriyskiy D-n 1-y Gv. Mot. Brigady"
+		remove_brigade = "Transportnyy B-n 1-y Gv. Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_1_1943_June.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_1_1943_June.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 1_GTC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1st Guards Tank Corps Upgrade - January 1944
+country_event = {
+	id = 14102
+	is_triggered_only = yes
+	title = "1st Guards Tank Corps (1944)"
+	desc = "EVTDESC14102"
+	picture = "guardsarm"
+	option = {
+		name = "Upgrade this unit!"
+		set_country_flag = 1_GTC_1944
+		#Removing old version of 1st Guards Tank Corps
+		remove_brigade = "Shtab-K. 1-y Gv. Tank. Korpusa"
+		remove_brigade = "65-y Gv. Mototsikletnyy B-n"
+		remove_brigade = "34-y Gv. Tyazholyy Tank. Polk Proriva"
+		remove_brigade = "1-y Otd. Gv. Razvedovatelniy B-n"
+		remove_brigade = "80-y Gv. Zen. Art. Polk"
+		remove_brigade = "Transportnyy B-n 1-y Gv. Tank. Korpusa"
+
+		remove_brigade = "Shtab-K. 15-y Gv. Tank. Brigady"
+		remove_brigade = "580-y/581-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 15-y Gv. Tank. Brigady"
+		remove_brigade = "455-y Minomotnyy Polk/I-II. B-ny"
+		remove_brigade = "Elementy Obespecheniya 15-y Gv. Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 15-y Gv. Tank. Brigady"
+
+		remove_brigade = "Shtab-K. 16-y Gv. Tank. Brigady"
+		remove_brigade = "19-y/237-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 16-y Gv. Tank. Brigady"
+		remove_brigade = "1001-y Protivotankovyy-Art. Polk/I-II. B-ny"
+		remove_brigade = "Elementy Obespecheniya 16-y Gv. Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 16-y Gv. Tank. Brigady"
+
+		remove_brigade = "Shtab-K. 17-y Gv. Tank. Brigady"
+		remove_brigade = "346-y/347-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 17-y Gv. Tank. Brigady"
+		remove_brigade = "455-y Minomotnyy Polk/III-IV. B-ny"
+		remove_brigade = "1001-y Protivotankovyy-Art. Polk/III-IV. B-ny"
+		remove_brigade = "Elementy Obespecheniya 17-y Gv. Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 17-y Gv. Tank. Brigady"
+
+		remove_brigade = "Shtab-K. 1-y Gv. Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 1-y Gv. Mot. B."
+		remove_brigade = "Elementy Obespecheniya 1-y Gv. Mot. Brigady"
+		remove_brigade = "Artilleriyskiy D-n 1-y Gv. Mot. Brigady"
+		remove_brigade = "121-y Gv. Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "732-y Istr.-Protivotankovyy D-n"
+		remove_brigade = "Transportnyy B-n 1-y Gv. Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_1_1944_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_1_1944_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 1_GTC_1944_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 2nd Guards Tank Corps Upgrade - January 1943
+country_event = {
+	id = 14103
+	is_triggered_only = yes
+	title = "2nd Guards Tank Corps (1943)"
+	desc = "EVTDESC14103"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 2_GTC_1943
+		#Removing 24th Tank Corps
+		remove_brigade = "Shtab-K. 24-y Tank. Korpusa"
+		remove_brigade = "413-y Gv. Minomotnyy Polk"
+		remove_brigade = "658-y Zenitno-Art. Polk"
+		remove_brigade = "Transportnyy B-n 24-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 4-y Gv. Tank. Brigady"
+		remove_brigade = "1-y/2-y Otd. Tank. B-ny 4-y Gv. Tank. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 4-y Gv. Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 4-y Gv. Tank. brigady"
+		remove_brigade = "Transportnyy B-n 4-y Gv. Tank. Brigady"
+		remove_brigade = "Shtab-K. 54-y Tank. Brigady"
+		remove_brigade = "1-y/2-y Tank. B-ny 54-y Tankovyy Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 54-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 54-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 54-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 130-y Tank. Brigady"
+		remove_brigade = "260-y/261-y Tank. B-ny 130-y Tankovyy Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 130-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 130-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 130-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 24-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 24-y Mot. Brigady"
+		remove_brigade = "51-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 24-y Mot. Brigady"
+		remove_brigade = "50-y Otd. Bron. Razvedovatelniy B-n"
+		remove_brigade = "Transportnyy B-n 24-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_2_1943_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_2_1943_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 2_GTC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 3rd Guards Tank Corps Upgrade - January 1943
+country_event = {
+	id = 14104
+	is_triggered_only = yes
+	title = "3rd Guards Tank Corps (1943)"
+	desc = "EVTDESC14104"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 3_GTC_1943
+		#Removing 7th Tank Corps
+		remove_brigade = "Shtab-K. 7-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 7-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 3-y Gv. Tank. Brigady"
+		remove_brigade = "1-y/2-y Tank. B-ny 3-y Gv. T. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 3-y Gv. Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 3-y Gv. T. Brigady"
+		remove_brigade = "Transportnyy B-n 3-y Gv. Tank. Brigady"
+		remove_brigade = "Shtab-K. 62-y Tank. Brigady"
+		remove_brigade = "27-y/164-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 62-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 62-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 62-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 87-y Tank. Brigady"
+		remove_brigade = "167-y/168-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 87-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 87-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 87-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 7-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 7-y Mot. Brigady"
+		remove_brigade = "154-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 7-y Mot. Brigady"
+		remove_brigade = "3-y Gv. Otdel'nyy Razvedyvatel'nyy B-n"
+		remove_brigade = "Transportnyy B-n 7-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_3_1943_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_3_1943_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 3_GTC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 4th Guards Tank Corps Upgrade - January 1943
+country_event = {
+	id = 14105
+	is_triggered_only = yes
+	title = "4th Guards Tank Corps (1943)"
+	desc = "EVTDESC14105"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 4_GTC_1943
+		#Removing 17th Tank Corps
+		remove_brigade = "Shtab-K. 17-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 17-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 67-y Tank. Brigady"
+		remove_brigade = "307-y/308-y Tank. B-ny 67-y Tank. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 67-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 67-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 67-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 174-y Tank. Brigady"
+		remove_brigade = "309-y/310-y Tank. B-ny 174-y Tankovyy Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 174-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 174-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 174-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 66-y Tank. Brigady"
+		remove_brigade = "360-y/361-y Tank. B-ny 66-y Tank. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 66-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 66-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 66-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 31-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 31-y Mot. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 31-y Mot. Brigady"
+		remove_brigade = "Razvedovatelniy B-n 31-y Mot. Brigady"
+		remove_brigade = "Transportnyy B-n 31-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_4_1943_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_4_1943_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 4_GTC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 5th Guards Tank Corps Upgrade - February 1943
+country_event = {
+	id = 14106
+	is_triggered_only = yes
+	title = "4th Guards Tank Corps (1943)"
+	desc = "EVTDESC14106"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 5_GTC_1943
+		#Removing 4th Tank Corps
+		remove_brigade = "Shtab-K. 4-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 4-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 45-y Tank. Brigady"
+		remove_brigade = "45-y/250-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 45-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 45-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 45-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 47-y Tank. Brigady"
+		remove_brigade = "83-y/251-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 47-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 47-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 47-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 102-y Tank. Brigady"
+		remove_brigade = "207-y/208-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 102-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 102-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 102-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 4-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 4-y Mot. Brigady"
+		remove_brigade = "60-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 4-y Mot. Brigady"
+		remove_brigade = "74-y Otdel'nyy Razvedyvatel'nyy B-n"
+		remove_brigade = "Transportnyy B-n 4-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_5_1943_Feb.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_5_1943_Feb.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 5_GTC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 6th Guards Tank Corps Upgrade - July 1943
+country_event = {
+	id = 14107
+	is_triggered_only = yes
+	title = "6th Guards Tank Corps (1943)"
+	desc = "EVTDESC14107"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 6_GTC_1943
+		#Removing 12th Tank Corps
+		remove_brigade = "Shtab-K. 12-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 12-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 30-y Tank. Brigady"
+		remove_brigade = "315-y/316-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 30-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 30-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 30-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 97-y Tank. Brigady"
+		remove_brigade = "288-y/322-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 97-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 97-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 97-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 106-y Tank. Brigady"
+		remove_brigade = "305-y/306-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 106-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 106-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 106-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 13-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 13-y Mot. Brigady"
+		remove_brigade = "127-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 13-y Mot. Brigady"
+		remove_brigade = "6-y Otdel'nyy Razvedyvatel'nyy B-n"
+		remove_brigade = "Transportnyy B-n 13-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_6_1943_July.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_6_1943_July.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 6_GTC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 7th Guards Tank Corps Upgrade - July 1943
+country_event = {
+	id = 14108
+	is_triggered_only = yes
+	title = "7th Guards Tank Corps (1943)"
+	desc = "EVTDESC14108"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 7_GTC_1943
+		#Removing 15th Tank Corps
+		remove_brigade = "Shtab-K. 15-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 15-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 96-y Tank. Brigady"
+		remove_brigade = "228-y/331-y Tank. B-ny 96-y Tank. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 96-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 96-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 96-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 113-y Tank. Brigady"
+		remove_brigade = "219-y/220-y Tank. B-ny 113-y Tankovyy Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 113-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 113-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 113-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 105-y Tank. Brigady"
+		remove_brigade = "221-y/222-y Tank. B-ny 105-y Tank. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 105-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 105-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 105-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 17-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 17-y Mot. Brigady"
+		remove_brigade = "135-y Otd. Sap'ornyy B-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 17-y Mot. Brigady"
+		remove_brigade = "5-y Bron. Razvedovatelniy B-n"
+		remove_brigade = "Transportnyy B-n 17-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_7_1943_July.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_7_1943_July.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 7_GTC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 8th Guards Tank Corps Upgrade - September 1943
+country_event = {
+	id = 14109
+	is_triggered_only = yes
+	title = "8th Guards Tank Corps (1943)"
+	desc = "EVTDESC14109"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 8_GTC_1943
+		#Removing 2nd Tank Corps
+		remove_brigade = "Shtab-K. 2-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 2-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 26-y Tank. Brigady"
+		remove_brigade = "270-y/282-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 26-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 26-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 26-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 27-y Tank. Brigady"
+		remove_brigade = "239-y/436-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 27-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 27-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 27-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 148-y Tank. Brigady"
+		remove_brigade = "89-y/260-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 148-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 148-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 148-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 2-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 2-y Mot. Brigady"
+		remove_brigade = "174-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 2-y Mot. Brigady"
+		remove_brigade = "12-y Otdel'nyy Razvedyvatel'nyy B-n"
+		remove_brigade = "Transportnyy B-n 2-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_8_1943_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_8_1943_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 8_GTC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 9th Guards Tank Corps Upgrade - January 1944
+country_event = {
+	id = 14110
+	is_triggered_only = yes
+	title = "9th Guards Tank Corps (1944)"
+	desc = "EVTDESC14110"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 9_GTC_1944
+		#Removing 3rd Tank Corps
+		remove_brigade = "Shtab-K. 3-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 3-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 50-y Tank. Brigady"
+		remove_brigade = "50-y/254-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 50-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 50-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 50-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 51-y Tank. Brigady"
+		remove_brigade = "94-y/255-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 51-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 51-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 51-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 103-y Tank. Brigady"
+		remove_brigade = "119-y/420-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 103-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 103-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 103-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 3-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 3-y Mot. Brigady"
+		remove_brigade = "90-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 3-y Mot. Brigady"
+		remove_brigade = "74-y Otdel'nyy Razvedyvatel'nyy B-n"
+		remove_brigade = "Transportnyy B-n 3-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_9_1944_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_9_1944_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 9_GTC_1944_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 10th Guards Tank Corps Upgrade - October 1943
+country_event = {
+	id = 14111
+	is_triggered_only = yes
+	title = "10th Guards Tank Corps (1943)"
+	desc = "EVTDESC14111"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 10_GTC_1943
+		#Removing 30th Tank Corps
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_10_1943_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_10_1943_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 10_GTC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 11th Guards Tank Corps Upgrade - September 1943
+country_event = {
+	id = 14112
+	is_triggered_only = yes
+	title = "11th Guards Tank Corps (1943)"
+	desc = "EVTDESC14112"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 11_GTC_1943
+		#Removing 6th Tank Corps
+		remove_brigade = "Shtab-K. 6-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 6-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 22-y Tank. Brigady"
+		remove_brigade = "424-y/425-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 22-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 22-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 22-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 112-y Tank. Brigady"
+		remove_brigade = "124-y/125-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 112-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 112-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 112-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 200-y Tank. Brigady"
+		remove_brigade = "191-y/192-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 200-y Tank. brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 200-y Tank. brigady"
+		remove_brigade = "Transportnyy B-n 200-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 5-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 5-y Mot. Brigady"
+		remove_brigade = "188-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 5-y Mot. Brigady"
+		remove_brigade = "25-y Otdel'nyy Razvedyvatel'nyy B-n"
+		remove_brigade = "Transportnyy B-n 5-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_11_1943_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_11_1943_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 11_GTC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 12th Guards Tank Corps Upgrade - November 1944
+country_event = {
+	id = 14113
+	is_triggered_only = yes
+	title = "12th Guards Tank Corps (1944)"
+	desc = "EVTDESC14113"
+	picture = "guardsarm"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = 12_GTC_1944
+		#Removing 16th Tank Corps
+		remove_brigade = "Shtab-K. 16-y Tank. Korpusa"
+		remove_brigade = "51-y Otd. Mototsikletnyy B-n"
+		remove_brigade = "Zenitnyy Artilleriyskiy B-n 16-y Tank. Korpus"
+		remove_brigade = "Transportnyy B-n 16-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 107-y Tank. Brigady"
+		remove_brigade = "307-y/308-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 107-y Tank. brigady"
+		remove_brigade = "226-y Minometnyy Polk/I.,II. B-ny"
+		remove_brigade = "614-y Istrebitel'no-Protivotankovyy Artilleriyskiy Polk/I.,II. B-ny"
+		remove_brigade = "Transportnyy B-n 107-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 109-y Tank. Brigady"
+		remove_brigade = "309-y/310-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 109-y Tank. brigady"
+		remove_brigade = "226-y Minometnyy Polk/III.,IV. B-ny" 
+		remove_brigade = "614-y Istrebitel'no-Protivotankovyy Artilleriyskiy Polk/III.,IV. B-ny"
+		remove_brigade = "Transportnyy B-n 109-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 164-y Tank. Brigady"
+		remove_brigade = "360-y/361-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 164-y Tank. brigady"
+		remove_brigade = "1441-y Samokhodno-Artilleriyskiy Polk/I.,II. B-ny"
+		remove_brigade = "1441-y Samokhodno-Artilleriyskiy Polk/III.,IV. B-ny"
+		remove_brigade = "Transportnyy B-n 164-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 15-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 15-y Mot. Brigady"
+		remove_brigade = "205-y Otdel'nyy Sap'ornyy Ordena Krasnoy Zvezdy B-n"
+		remove_brigade = "729-y Otd. Istrebitel'no-Protivotankovyy D-n"
+		remove_brigade = "14-y Mototsikletnyy B-n"
+		remove_brigade = "Transportnyy B-n 15-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Tank_Corps_12_1944_Nov.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Tank_Corps_12_1944_Nov.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 12_GTC_1944_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 #EOF
