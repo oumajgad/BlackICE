@@ -41,7 +41,7 @@ namespace CCountry {
         //std::cout << "ptrs->size(): " << ptrs->size() << std::endl;
         std::vector<std::string>* res = new std::vector<std::string>;
         for (auto& i : *ptrs) {
-            std::string x = external.readStringMaybePtr(i);
+            std::string x = std::string(utils::getCString((DWORD*)i));
             res->push_back(x);
             //std::cout << n2hexstr(i) << " - " << x << std::endl;
         }
@@ -56,7 +56,7 @@ namespace CCountry {
         std::vector<HDS::CVariable>* res = new std::vector<HDS::CVariable>;
         for (auto& i : *ptrs) {
             HDS::CVariable x;
-            x.name = external.readStringMaybePtr(i);
+            x.name = std::string(utils::getCString((DWORD*)i));
             x.value = external.read<int32_t>(i + 0x1C);
             if (x.value != 0) {
                 res->push_back(x);

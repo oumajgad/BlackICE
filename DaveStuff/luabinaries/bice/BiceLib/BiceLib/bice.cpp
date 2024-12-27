@@ -110,6 +110,69 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
 /////////////////////////////////////
 //        LEADER FUNCTIONS         //
 /////////////////////////////////////
+std::unordered_map<std::string, uintptr_t>* traitCache = new std::unordered_map<std::string, uintptr_t>;
+uintptr_t getTrait(Memory::External& external, std::string traitName) {
+    if (traitCache->find(traitName) != traitCache->end()) {
+        return traitCache->at(traitName);
+    }
+
+    uintptr_t res = external.findTraitInstance(MODULE_BASE + DATA_SECTION_START, traitName);
+    if (res != 0) {
+        traitCache->insert(std::make_pair(traitName, res));
+        DEBUG_OUT(printf("Added to traitCache: %s - %#010x \n", traitName.c_str(), res));
+        return res;
+    }
+
+    return 0;
+}
+std::unordered_map<unsigned int, uintptr_t>* leaderCache = new std::unordered_map<unsigned int, uintptr_t>;
+uintptr_t getLeader(Memory::External& external, unsigned int leaderId) {
+    if (leaderCache->find(leaderId) != leaderCache->end()) {
+        return leaderCache->at(leaderId);
+    }
+
+    uintptr_t res = external.findLeaderInstance(MODULE_BASE + DATA_SECTION_START, leaderId);
+    if (res != 0) {
+        leaderCache->insert(std::make_pair(leaderId, res));
+        DEBUG_OUT(printf("Added to leaderCache: %u - %#010x \n", leaderId, res));
+        return res;
+    }
+
+    return 0;
+}
+
+typedef void(__stdcall* CLeaderAddTraitFunction)(int leaderAddress, unsigned int* trait);
+__declspec(dllexport) int addTraitToLeader(lua_State* L){
+    DEBUG_OUT(printf("addTraitToLeader called\n"));
+
+    unsigned int leaderId = luaL_checkinteger(L, 1);
+    DEBUG_OUT(printf("leaderId: '%u'\n", leaderId));
+    std::string traitName = luaL_checklstring(L, 2, NULL);
+    DEBUG_OUT(printf("trait: '%s'\n", traitName.c_str()));
+
+    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+
+    auto leaderAddr = getLeader(external, leaderId);
+    auto traitAddr = getTrait(external, traitName);
+    if (leaderAddr == 0) {
+        INFO_OUT(printf("Couldn't find leader with ID '%u'\n", leaderId));
+        lua_pushboolean(L, false);
+        return 1;
+    }
+    else if (traitAddr == 0) {
+        INFO_OUT(printf("Couldn't find trait with name '%s'\n", traitName.c_str()));
+        lua_pushboolean(L, false);
+        return 1;
+    }
+
+    CLeaderAddTraitFunction cLeaderAddTraitFunction = reinterpret_cast<CLeaderAddTraitFunction>(Hooks::MODULE_BASE + 0x181a60);
+    cLeaderAddTraitFunction(leaderAddr, (unsigned int*) traitAddr);
+
+    lua_pushboolean(L, true);
+    DEBUG_OUT(printf("addTraitToLeader finished\n"));
+    return 1;
+}
+
 void activateLeaderRankChangeHook() {
     DWORD hookAddress = MODULE_BASE + 0x1D7CDC;
     Hooks::CLeader::jumpBack_leaderRankChangeHook = hookAddress + 6;
@@ -120,7 +183,18 @@ void activateLeaderRankChangeHook() {
         INFO_OUT(std::cout << "Hook 'activateLeaderRankChangeHook' succeeded" << std::endl);
         DEBUG_OUT(std::cout << "jumpBack_leaderRankChangeHook: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_leaderRankChangeHook) << std::endl);
     }
-    Hooks::CLeader::isLeaderRankChangeHookActive = true;
+}
+
+void activateLeaderDontSaveRankSpecificTraitsHook() {
+    DWORD hookAddress = MODULE_BASE + 0x17FF08;
+    Hooks::CLeader::jumpBack_leaderDontSaveRankSpecificTraitsHook = hookAddress + 7;
+    if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::leaderDontSaveRankSpecificTraitsHook, 5, 2)) {
+        INFO_OUT(std::cout << "Hook 'activateLeaderDontSaveRankSpecificTraitsHook' failed" << std::endl);
+    }
+    else {
+        INFO_OUT(std::cout << "Hook 'activateLeaderDontSaveRankSpecificTraitsHook' succeeded" << std::endl);
+        DEBUG_OUT(std::cout << "jumpBack_leaderDontSaveRankSpecificTraitsHook: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_leaderDontSaveRankSpecificTraitsHook) << std::endl);
+    }
 }
 
 std::vector<uintptr_t>* getTraitsData;
@@ -225,6 +299,8 @@ __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
 
     if (!Hooks::CLeader::isLeaderRankChangeHookActive) {
         activateLeaderRankChangeHook();
+        activateLeaderDontSaveRankSpecificTraitsHook();
+        Hooks::CLeader::isLeaderRankChangeHookActive = true;
     }
 
     std::vector<uintptr_t>* traits = getTraits();
@@ -535,16 +611,26 @@ __declspec(dllexport) int startConsole(lua_State* L)
 
     HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
     SetConsoleMode(handle, ENABLE_EXTENDED_FLAGS);  // Set mode to this to prevent accidentially selecting something in the console
-                                                    // because that will freeze the entire thing until it is unselected
+    // because that will freeze the entire thing until it is unselected
 
     return 0;
 }
+
+
+__declspec(dllexport) int test(lua_State* L)
+{
+    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+    INFO_OUT(std::cout << "MODULE_BASE at: " << Memory::n2hexstr(MODULE_BASE) << std::endl);
+    return 0;
+}
+
 
 
 __declspec(dllexport) luaL_Reg BiceLib[] = {
     // Misc
     {"startConsole", startConsole},
     {"setModuleBase", setModuleBase},
+    {"test", test},
     // Info Functions
     {"getCountryFlags", getCountryFlags},
     {"getCountryVariables", getCountryVariables},
@@ -554,6 +640,7 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss},
     {"activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill},
     {"activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected},
+    {"addTraitToLeader", addTraitToLeader},
     // Unit Functions
     {"setCorpsUnitLimit", setCorpsUnitLimit},
     {"setArmyUnitLimit", setArmyUnitLimit},

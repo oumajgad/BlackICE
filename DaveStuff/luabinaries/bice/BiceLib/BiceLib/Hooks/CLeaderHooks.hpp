@@ -1,5 +1,6 @@
 #include <vector>
 #include <unordered_map>
+#include <HoiDataStructures.hpp>
 
 namespace Hooks {
 	namespace CLeader {
@@ -15,13 +16,14 @@ namespace Hooks {
 
 		// JUMP BACKS
 		extern DWORD jumpBack_leaderRankChangeHook;
+		extern DWORD jumpBack_leaderDontSaveRankSpecificTraitsHook;
 		extern DWORD jumpBack_patchLeaderListShowMaxSkill;
 		extern DWORD jumpBack_patchLeaderListShowMaxSkillSelected;
 
 		// activation Member variables
+		extern bool isRankSpecificTraitsActive;
 		extern bool isLeaderRankChangeHookActive;
 		extern bool isLeaderSkillLossOnPromotionActive;
-		extern bool isRankSpecificTraitsActive;
 
 		// Vars
 		// Pure Skill
@@ -29,6 +31,8 @@ namespace Hooks {
 		// Rank Specific
 		extern std::unordered_map<std::string, RankSpecificTrait*>* rankSpecificTraitsActive; // active name -> trait
 		extern std::unordered_map<std::string, RankSpecificTrait*>* rankSpecificTraitsInActive; // inactive name -> trait
+		// Misc
+		extern HDS::Hoi3CString emptyString;
 
 		// Functions
 		// Pure Skill
@@ -40,6 +44,7 @@ namespace Hooks {
 
 		// NAKED Functions
 		void leaderRankChangeHook();
+		void leaderDontSaveRankSpecificTraitsHook();
 		void patchLeaderListShowMaxSkill();
 		void patchLeaderListShowMaxSkillSelected();
 	}

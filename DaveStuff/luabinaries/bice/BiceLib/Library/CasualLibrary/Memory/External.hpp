@@ -205,6 +205,8 @@ namespace Memory {
         @param searchTag TAG to search for
         */
         [[nodiscard]] uintptr_t findCountryInstance(const uintptr_t start, std::string searchTag);
+        [[nodiscard]] uintptr_t findTraitInstance(const uintptr_t start, std::string traitName);
+        [[nodiscard]] uintptr_t findLeaderInstance(const uintptr_t start, unsigned int leaderId);
         /** @brief handle of the target process */
         HANDLE handle = nullptr;
     private:

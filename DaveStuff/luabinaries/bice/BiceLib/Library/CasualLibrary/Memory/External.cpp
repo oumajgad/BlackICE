@@ -98,6 +98,18 @@ Memory::External::~External(void) noexcept {
     return name;
 }
 
+char* readCString(DWORD* addr) {
+    DWORD stringLength = *(addr + (0x10 / 4));
+    char* res;
+    if (stringLength > 15) {
+        res = (char*)*addr;
+    }
+    else {
+        res = (char*)addr;
+    }
+    return res;
+}
+
 bool Memory::External::init(int procID, const DWORD access) noexcept {
     this->processID = procID;
     this->handle = OpenProcess(access, false, this->processID);
@@ -210,6 +222,101 @@ bool Memory::External::init(int procID, const DWORD access) noexcept {
                     auto curTag = this->readString(cur + i + 0x1E4, 3);
                     //std::cout << "Found at: " << n2hexstr(cur + i) << " - " << curTag << std::endl;
                     if (strcmp(curTag.c_str(), searchTag.c_str()) == 0) {
+                        //std::cout << "Correct instance found!" <<  std::endl;
+                        delete[] data;
+                        delete regions;
+                        return cur + i;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+[[nodiscard]] uintptr_t Memory::External::findTraitInstance(const uintptr_t start, std::string traitName) {
+    SYSTEM_INFO sys_info;
+    GetSystemInfo(&sys_info);
+    size_t chunk_size = sys_info.dwPageSize;
+    //std::cout << "chunk_size: " << chunk_size << std::endl;
+    size_t signature_size = 4;
+
+    //auto modulePtr = getModule("hoi3_tfh.exe");
+    uintptr_t CTraitVFTableAddr = getModule("hoi3_tfh.exe").get() + 0x11C7DC0;
+
+    std::vector<int>patternBytes = patternToBytes(ptrToSignature(CTraitVFTableAddr).c_str());
+    BYTE* data = new BYTE[chunk_size];
+
+    auto regions = heapWalkExternal(this->handle);
+    for (auto& region : *regions) {
+        auto region_end = region.start + region.size;
+        //std::cout << "Region: " << n2hexstr(region.start) << " - " << n2hexstr(region.size) << " - " << n2hexstr(region_end) << std::endl;
+        if (region.start < start) {
+            continue;
+        }
+        for (uintptr_t cur = region.start; cur <= region_end - chunk_size; cur += chunk_size) {
+            //std::cout << "Reading at: " << n2hexstr(cur) << std::endl;
+            if (!ReadProcessMemory(handle, reinterpret_cast<LPVOID>(cur), data, chunk_size, nullptr)) {
+                if (debug) {
+                    std::cout << "Region: " << n2hexstr(region.start) << std::endl;
+                    std::cout << getLastErrorAsString() << std::endl;
+                }
+                continue;
+            }
+            for (uintptr_t i = 0; i <= chunk_size - signature_size; i += 4) { // i += 4 - data should be aligned
+                //std::cout << "Check at: " << cur + i << std::endl;
+                if (memoryCompare(static_cast<const BYTE*>(data + i), patternBytes)) {
+                    auto curName = std::string(readCString((DWORD*)(cur + i + 0x2C)));
+                    //std::cout << "Found at: " << n2hexstr(cur + i) << " - " << curTag << std::endl;
+                    if (strcmp(curName.c_str(), traitName.c_str()) == 0) {
+                        //std::cout << "Correct instance found!" <<  std::endl;
+                        delete[] data;
+                        delete regions;
+                        return cur + i;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+
+[[nodiscard]] uintptr_t Memory::External::findLeaderInstance(const uintptr_t start, unsigned int leaderId) {
+    SYSTEM_INFO sys_info;
+    GetSystemInfo(&sys_info);
+    size_t chunk_size = sys_info.dwPageSize;
+    //std::cout << "chunk_size: " << chunk_size << std::endl;
+    size_t signature_size = 4;
+
+    //auto modulePtr = getModule("hoi3_tfh.exe");
+    uintptr_t CLeaderVFTableAddr = getModule("hoi3_tfh.exe").get() + 0x11C5220;
+
+    std::vector<int>patternBytes = patternToBytes(ptrToSignature(CLeaderVFTableAddr).c_str());
+    BYTE* data = new BYTE[chunk_size];
+
+    auto regions = heapWalkExternal(this->handle);
+    for (auto& region : *regions) {
+        auto region_end = region.start + region.size;
+        //std::cout << "Region: " << n2hexstr(region.start) << " - " << n2hexstr(region.size) << " - " << n2hexstr(region_end) << std::endl;
+        if (region.start < start) {
+            continue;
+        }
+        for (uintptr_t cur = region.start; cur <= region_end - chunk_size; cur += chunk_size) {
+            //std::cout << "Reading at: " << n2hexstr(cur) << std::endl;
+            if (!ReadProcessMemory(handle, reinterpret_cast<LPVOID>(cur), data, chunk_size, nullptr)) {
+                if (debug) {
+                    std::cout << "Region: " << n2hexstr(region.start) << std::endl;
+                    std::cout << getLastErrorAsString() << std::endl;
+                }
+                continue;
+            }
+            for (uintptr_t i = 0; i <= chunk_size - signature_size; i += 4) { // i += 4 - data should be aligned
+                //std::cout << "Check at: " << cur + i << std::endl;
+                if (memoryCompare(static_cast<const BYTE*>(data + i), patternBytes)) {
+                    auto curId = *((unsigned int*) (cur + i + 0xC));
+                    //std::cout << "Found at: " << n2hexstr(cur + i) << " - " << curTag << std::endl;
+                    if (curId == leaderId) {
                         //std::cout << "Correct instance found!" <<  std::endl;
                         delete[] data;
                         delete regions;

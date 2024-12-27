@@ -1,3 +1,5 @@
+#pragma once
+
 namespace HDS {
     struct CVariable
     {
@@ -10,5 +12,12 @@ namespace HDS {
         uintptr_t data;
         uintptr_t prev;
         uintptr_t next;
+        // + 4 bytes (maybe padding)
+    };
+    struct Hoi3CString
+    {
+        char stringData [16];
+        int32_t length;
+        int32_t maxLength = 0xF;
     };
 }

@@ -2,13 +2,13 @@
 #include <string>
 #include <iostream>
 
-#include <HoiDataStructures.hpp>
 #include <utils.hpp>
 
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
 
 // Jumpbacks
+DWORD Hooks::CLeader::jumpBack_leaderDontSaveRankSpecificTraitsHook;
 DWORD Hooks::CLeader::jumpBack_leaderRankChangeHook;
 DWORD Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill;
 DWORD Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected;
@@ -18,6 +18,8 @@ bool Hooks::CLeader::isLeaderRankChangeHookActive = false;
 bool Hooks::CLeader::isLeaderSkillLossOnPromotionActive = false;
 bool Hooks::CLeader::isRankSpecificTraitsActive = false;
 
+// Misc
+HDS::Hoi3CString Hooks::CLeader::emptyString = {" ", 1};
 
 int Hooks::CLeader::getPureSkillAndTraitListNode(DWORD* leaderAddress, HDS::LinkedListNodeSingle** out) {
     DEBUG_OUT(std::cout << "getPureSkillAndTraitListNode called" << std::endl);
@@ -221,6 +223,51 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
         traitListNode = (HDS::LinkedListNodeSingle*)traitListNode->next;
     }
     DEBUG_OUT(std::cout << "traitListNode == 0 " << std::endl);
+}
+
+void hanldeTraitSaving(DWORD* leaderAddress, DWORD* traitAddress, DWORD** out) {
+    std::string traitName = std::string(utils::getCString(traitAddress + 0x2C / 4));
+    if (traitName.find("rankSpecificTrait_") == 0) {
+        int leaderId = *(DWORD*)((BYTE*)leaderAddress + 0xC);
+        *out = (DWORD*) &Hooks::CLeader::emptyString;
+        DEBUG_OUT(printf("LeaderId '%i' NOT saving trait '%s'\n", leaderId, traitName.c_str()))
+    }
+    /*
+    else {
+        DEBUG_OUT(printf("Leader '%i' saving trait '%s'\n", *(DWORD*)leaderAddress + (0xC / 4), traitName.c_str()))
+    }
+    */
+}
+
+__declspec(naked) void Hooks::CLeader::leaderDontSaveRankSpecificTraitsHook() {
+    DWORD* leaderAddress;
+    DWORD* traitAddress;
+    DWORD* finalTraitStringAddress;
+    _asm {
+        pushad
+        push ebp
+        mov ebp, esp
+        sub esp, __LOCAL_SIZE
+        mov eax, [ebp + 0x24]
+        mov[leaderAddress], eax
+        mov[traitAddress], ecx
+        add ecx, 0x2c
+        mov[finalTraitStringAddress], ecx
+    }
+
+    if (isRankSpecificTraitsActive) {
+        hanldeTraitSaving(leaderAddress, traitAddress, &finalTraitStringAddress);
+    }
+
+    _asm {
+        mov eax, finalTraitStringAddress
+        mov esp, ebp                        // restore stack
+        pop ebp                             // restore stack
+        mov [esp + 0x18], eax               // Write address onto stackposition of pushed ecx (because pushad)
+        popad                               // restore registers
+        lea edi, [esp + 0xc]                // original code
+        jmp[Hooks::CLeader::jumpBack_leaderDontSaveRankSpecificTraitsHook]
+    }
 }
 
 __declspec(naked) void Hooks::CLeader::leaderRankChangeHook() {

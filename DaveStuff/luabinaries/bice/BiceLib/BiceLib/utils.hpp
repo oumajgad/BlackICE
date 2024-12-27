@@ -1,5 +1,4 @@
 #include <wtypes.h>
-
 #include <cstdio>
 
 #ifdef BICE_LIB_DEBUG
