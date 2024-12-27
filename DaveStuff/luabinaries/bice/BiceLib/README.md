@@ -79,6 +79,17 @@ These features are activated and configured via LUA.
     * **Notes**:
         * The game actually tracks the total experience amount gained, and each level requires a different amount of total exp. Due to number overflow this causes the entire skill progression system to break past lvl 10. There are some extremely complicated instructions in the code which appear to accomodate values above lvl 10, by saving the value as a 64 bit number, but inside a savefile it only saves a 32 bit number. The 64 bit number also appears to be very much broken.
         * The skill number display will only be updated after reopening the leader list.
+* **addTraitToLeader(int leaderId, string traitName)**
+    * Adds a trait to a leader.
+    * **Params**:
+        1. *leaderId*: The ID of the leader
+        2. *traitName*: The full case-correct in-code name of the trait
+    * **Return values**:
+        1. *success* (boolean): If the specified trait or leader can't be found this will be *false*
+    * **Notes**:
+        * The traits display will only be updated after reopening the leader list.
+        * This can add the same trait multiple times. During a save load the excess traits are removed.
+
 ### Units
 * **setCorpsUnitLimit(int newLimit, bool force)**
     * set the limit of unit attachements for corps 
