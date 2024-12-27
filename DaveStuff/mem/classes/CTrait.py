@@ -13,6 +13,9 @@ class CTraitOffsets:
     name_length: int = 0x3C
     pretty_name: int = 0x48
     pretty_name_length: int = 0x58
+    land: int = 0x2B0
+    sea: int = 0x2B1
+    air: int = 0x2B2
 
 
 class CTrait(pydantic.BaseModel):
@@ -21,6 +24,9 @@ class CTrait(pydantic.BaseModel):
     ptr_str: str
     name: str
     pretty_name: str
+    land: int
+    sea: int
+    air: int
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -29,6 +35,9 @@ class CTrait(pydantic.BaseModel):
             "ptr_str": utils.int_to_pointer(ptr),
             "name": utils.get_string_maybe_ptr(pm, ptr + CTraitOffsets.name, True),
             "pretty_name": utils.get_string_maybe_ptr(pm, ptr + CTraitOffsets.pretty_name, False),
+            "land": pm.read_bool(ptr + CTraitOffsets.land),
+            "sea": pm.read_bool(ptr + CTraitOffsets.sea),
+            "air": pm.read_bool(ptr + CTraitOffsets.air),
         }
 
         return cls(**temp)
@@ -54,5 +63,7 @@ if __name__ == "__main__":
     print(pm.base_address)
     traits = CTrait.get_traits(pm)
     print(len(traits))
-    x = CTrait.make(pm, traits[100])
-    print(x)
+    for x in traits:
+        trait = CTrait.make(pm, x)
+        if trait.name in ["trickster", "old_guard"]:
+            print(trait)
