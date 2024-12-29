@@ -81,3 +81,14 @@ function DetermineSpriteDeletionStatus()
         end
     end
 end
+
+local biceLibLoadStatusAlreadyFired = false
+function DetermineBiceLibLoadStatus()
+    if BiceLib or biceLibLoadStatusAlreadyFired then
+        return
+    end
+    local omgTag = CCountryDataBase.GetTag("OMG")
+    local command = CSetVariableCommand(omgTag, CString("OmgBiceLibLoadStatusTrigger"), CFixedPoint(1))
+    CCurrentGameState.Post(command)
+    biceLibLoadStatusAlreadyFired = true
+end

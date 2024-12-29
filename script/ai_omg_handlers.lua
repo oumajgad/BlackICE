@@ -11,6 +11,7 @@ function IntelligenceMinisterUtilityThings()
 		DeterminePlayers()
 		-- DetermineExePatchStatus()
 		DetermineSpriteDeletionStatus()
+		DetermineBiceLibLoadStatus()
 		SetUpStatCollectionPage()
 	end
 

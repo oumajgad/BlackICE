@@ -3154,6 +3154,35 @@ diplomatic_decisions = {
 			}
 		}
 	}
+	bicelib_load_status = {
+		potential = {
+			tag = OMG
+			check_variable = {
+				which = OmgBiceLibLoadStatusTrigger
+				value = 1
+			}
+			not = {
+				check_variable = {
+					which = OmgBiceLibLoadStatusTrigger
+					value = 2
+				}
+			}
+		}
+		allow = {
+			tag = OMG
+		}
+		effect = {
+			set_variable = {
+				which = OmgBiceLibLoadStatusTrigger
+				value = 2
+			}
+			OMG = {
+				any_country = {
+					country_event = 1108
+				}
+			}
+		}
+	}
 	LendLeaseMultiplier_save_fix = {
 		potential = {
 			tag = OMG
