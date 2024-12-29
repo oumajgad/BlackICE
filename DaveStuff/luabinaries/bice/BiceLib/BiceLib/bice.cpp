@@ -110,6 +110,7 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
 /////////////////////////////////////
 //        LEADER FUNCTIONS         //
 /////////////////////////////////////
+bool cacheTraitsDone = false;
 std::unordered_map<std::string, uintptr_t>* traitCache = new std::unordered_map<std::string, uintptr_t>;
 uintptr_t getTrait(Memory::External& external, std::string traitName) {
     if (traitCache->find(traitName) != traitCache->end()) {
@@ -125,6 +126,36 @@ uintptr_t getTrait(Memory::External& external, std::string traitName) {
 
     return 0;
 }
+void addTraitToCache(std::string traitName, uintptr_t address) {
+    traitCache->insert(std::make_pair(traitName, address));
+    //DEBUG_OUT(printf("Added to traitCache: %s - %#010x \n", traitName.c_str(), address));
+    return;
+}
+void cacheTraits() {
+    if (!cacheTraitsDone) {
+        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+
+        uintptr_t CTraitVFTable = MODULE_BASE + 0x11C7DC0;
+        //std::cout << "CTraitVFTable: " << Memory::n2hexstr(CTraitVFTable) << std::endl;
+        std::string CTraitVFTableSig = Memory::ptrToSignature(CTraitVFTable);
+        //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
+        std::vector<uintptr_t>* traits;
+        traits = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
+        if (traits->size() != 0) {
+            for (auto& traitAddr : *traits) {
+                std::string traitName = utils::getCString((DWORD*)traitAddr + (0x2C / 4));
+                addTraitToCache(traitName, traitAddr);
+            }
+            INFO_OUT(printf("Trait cache filled (%i) \n", traitCache->size()));
+            cacheTraitsDone = true;
+            delete traits;
+            return;
+        }
+    }
+    return;
+}
+
+bool cacheLeadersDone = false;
 std::unordered_map<unsigned int, uintptr_t>* leaderCache = new std::unordered_map<unsigned int, uintptr_t>;
 uintptr_t getLeader(Memory::External& external, unsigned int leaderId) {
     if (leaderCache->find(leaderId) != leaderCache->end()) {
@@ -134,11 +165,39 @@ uintptr_t getLeader(Memory::External& external, unsigned int leaderId) {
     uintptr_t res = external.findLeaderInstance(MODULE_BASE + DATA_SECTION_START, leaderId);
     if (res != 0) {
         leaderCache->insert(std::make_pair(leaderId, res));
-        DEBUG_OUT(printf("Added to leaderCache: %u - %#010x \n", leaderId, res));
+        //DEBUG_OUT(printf("Added to leaderCache: %u - %#010x \n", leaderId, res));
         return res;
     }
 
     return 0;
+}
+void addLeaderToCache(unsigned int leaderId, uintptr_t address) {
+    leaderCache->insert(std::make_pair(leaderId, address));
+    DEBUG_OUT(printf("Added to leaderCache: %u - %#010x \n", leaderId, address));
+    return;
+}
+void cacheLeaders() {
+    if (!cacheLeadersDone) {
+        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+
+        uintptr_t CLeaderVFTable = MODULE_BASE + 0x11C5220;
+        //std::cout << "CLeaderVFTable: " << Memory::n2hexstr(CLeaderVFTable) << std::endl;
+        std::string CLeaderVFTableSig = Memory::ptrToSignature(CLeaderVFTable);
+        //std::cout << "CLeaderVFTableSig: " << CLeaderVFTableSig << std::endl;
+        std::vector<uintptr_t>* leaders;
+        leaders = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CLeaderVFTableSig.c_str(), 4, 99999);
+        if (leaders->size() > 1) { // there is always a "NULL Leader", so check for more than 1
+            for (auto& leaderAddr : *leaders) {
+                unsigned int leaderId = *(DWORD*)((BYTE*)leaderAddr + 0xC);;
+                addLeaderToCache(leaderId, leaderAddr);
+            }
+            INFO_OUT(printf("Leader cache filled (%i) \n", leaderCache->size()));
+            cacheLeadersDone = true;
+            delete leaders;
+            return;
+        }
+    }
+    return;
 }
 
 typedef void(__stdcall* CLeaderAddTraitFunction)(int leaderAddress, unsigned int* trait);
@@ -197,26 +256,6 @@ void activateLeaderDontSaveRankSpecificTraitsHook() {
     }
 }
 
-std::vector<uintptr_t>* getTraitsData;
-bool getTraitsDone = false;
-std::vector<uintptr_t>* getTraits() {
-    if (!getTraitsDone) {
-        //std::cout << "getTraits" << std::endl;
-        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
-        uintptr_t CTraitVFTable = MODULE_BASE + 0x11C7DC0;
-        //std::cout << "CTraitVFTable: " << Memory::n2hexstr(CTraitVFTable) << std::endl;
-        std::string CTraitVFTableSig = Memory::ptrToSignature(CTraitVFTable);
-        //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
-        getTraitsData = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
-        if (getTraitsData->size() != 0) {
-            INFO_OUT(std::cout << "Traits vector filled" << std::endl);
-            getTraitsDone = true;
-        }
-    }
-    return getTraitsData;
-}
-
 __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     DEBUG_OUT(std::cout << "addRankSpecificTrait called" << std::endl);
 
@@ -225,8 +264,9 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     int lowerRank = luaL_checkinteger(L, 3);
     int upperRank = luaL_checkinteger(L, 4);
 
-    std::vector<uintptr_t>* traits = getTraits();
-    if (traits->size() == 0) {
+    cacheTraits();
+
+    if (traitCache->size() == 0) {
         INFO_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' not executed due to unitialised traits" << std::endl);
         lua_pushboolean(L, false);
         return 1;
@@ -234,6 +274,11 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     if (Hooks::CLeader::rankSpecificTraitsActive->find(activeName) != Hooks::CLeader::rankSpecificTraitsActive->end()) {
         DEBUG_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' was already added" << std::endl);
         lua_pushboolean(L, true);
+        return 1;
+    }
+    if (traitCache->find(activeName) == traitCache->end() || traitCache->find(inActiveName) == traitCache->end()) {
+        INFO_OUT(std::cout << "Trait for RankSpecificTrait '" << activeName << "' not found!" << std::endl);
+        lua_pushboolean(L, false);
         return 1;
     }
 
@@ -250,34 +295,10 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     rst->inActiveTraitPtr = 0;
     rst->inactiveName = inActiveName;
 
-    for (auto& trait : *traits) {
-        DWORD traitNameLength;
-        traitNameLength = *((DWORD*)trait + (0x3C / 4));
-        char* traitName;
-        if (traitNameLength > 15) {
-            traitName = (char*)*(DWORD*)((BYTE*)trait + 0x2C);
-        }
-        else {
-            traitName = (char*)((BYTE*)trait + 0x2C);
-        }
-        std::string traitNameAsString = std::string(traitName);
-        if (strcmp(traitNameAsString.c_str(), activeName.c_str()) == 0) {
-            rst->activeTraitPtr = trait;
-            DEBUG_OUT(std::cout << "traitNameAsString: " << traitNameAsString << std::endl);
-            DEBUG_OUT(std::cout << "rst->activeTraitPtr: " << rst->activeTraitPtr << std::endl);
-        }
-        else if (strcmp(traitNameAsString.c_str(), inActiveName.c_str()) == 0) {
-            rst->inActiveTraitPtr = trait;
-            DEBUG_OUT(std::cout << "traitNameAsString: " << traitNameAsString << std::endl);
-            DEBUG_OUT(std::cout << "rst->inActiveTraitPtr: " << rst->inActiveTraitPtr << std::endl);
-        }
-    }
-    if (rst->activeTraitPtr == 0 || rst->inActiveTraitPtr == 0) {
-        INFO_OUT(std::cout << "Trait for RankSpecificTrait '" << rst->activeName << "' not found!" << std::endl);
-        delete rst;
-        lua_pushboolean(L, false);
-        return 1;
-    }
+    rst->activeTraitPtr = traitCache->at(activeName);
+    DEBUG_OUT(std::cout << "rst->activeTraitPtr: " << rst->activeTraitPtr << std::endl);
+    rst->inActiveTraitPtr = traitCache->at(inActiveName);
+    DEBUG_OUT(std::cout << "rst->inActiveTraitPtr: " << rst->inActiveTraitPtr << std::endl);
     
     Hooks::CLeader::rankSpecificTraitsActive->insert(std::make_pair(activeName, rst));
     Hooks::CLeader::rankSpecificTraitsInActive->insert(std::make_pair(inActiveName, rst));
@@ -303,9 +324,8 @@ __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
         Hooks::CLeader::isLeaderRankChangeHookActive = true;
     }
 
-    std::vector<uintptr_t>* traits = getTraits();
-    //std::cout << "traits->size: " << traits->size() << std::endl;
-    if (traits->size() == 0) {
+    cacheTraits();
+    if (traitCache->size() == 0) {
         // Traits are not set up when the LUA is first run -> defer hooking until the LUA context is reloaded during save loading
         INFO_OUT(std::cout << "Hook 'activateRankSpecificTraits' deferred until save load" << std::endl);
         return 0;
@@ -314,6 +334,29 @@ __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
     Hooks::CLeader::isRankSpecificTraitsActive = true;
     activateRankSpecificTraitsDone = true;
     INFO_OUT(std::cout << "Hook 'activateRankSpecificTraits' activated" << std::endl);
+    return 0;
+}
+
+BOOL checkRankSpecificTraitsConsistencyDone = false;
+__declspec(dllexport) int checkRankSpecificTraitsConsistency(lua_State* L)
+{
+    if (checkRankSpecificTraitsConsistencyDone) {
+        return 0;
+    }
+
+
+    cacheTraits();
+    cacheLeaders();
+    if (traitCache->size() == 0 || leaderCache->size() == 0) {
+        return 0;
+    }
+    INFO_OUT(printf("Checking rank specific traits consistency.\n"));
+
+    for (auto entry = leaderCache->begin(); entry != leaderCache->end(); ++entry) {
+        Hooks::CLeader::checkRankSpecificTraitsConsistency((DWORD*) entry->second, -1);
+    }
+
+    checkRankSpecificTraitsConsistencyDone = true;
     return 0;
 }
 
@@ -329,9 +372,8 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
         activateLeaderRankChangeHook();
     }
 
-    std::vector<uintptr_t>* traits = getTraits();
-    //std::cout << "traits->size: " << traits->size() << std::endl;
-    if (traits->size() == 0) {
+    cacheTraits();
+    if (traitCache->size() == 0) {
         // Traits are not set up when the LUA is first run -> defer hooking until the LUA context is reloaded during save loading
         INFO_OUT(std::cout << "Hook 'activateLeaderPromotionSkillLoss' deferred until save load" << std::endl);
         return 0;
@@ -339,7 +381,8 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
 
     auto tempSkillTraits = new std::vector<uintptr_t>; // unsorted vector of the traits which are used to track leader skill
     Hooks::CLeader::skillTraits = new std::vector<DWORD>; // sorted vector of the traits
-    for (auto& trait : *traits) {
+    for (auto entry = traitCache->begin(); entry != traitCache->end(); ++entry) {
+        auto trait = entry->second;
         DWORD traitNameLength;
         traitNameLength = *((DWORD*)trait + (0x3C / 4));
         char* traitName;
@@ -619,8 +662,24 @@ __declspec(dllexport) int startConsole(lua_State* L)
 
 __declspec(dllexport) int test(lua_State* L)
 {
+    INFO_OUT(printf("#### test called ####\n"));
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-    INFO_OUT(std::cout << "MODULE_BASE at: " << Memory::n2hexstr(MODULE_BASE) << std::endl);
+
+    /*
+    printMemory();
+    Memory::heapWalkExternal(external.handle);
+    printMemory();
+
+    uintptr_t CTraitVFTable = MODULE_BASE + 0x1C7DC0;
+    //std::cout << "CTraitVFTable: " << Memory::n2hexstr(CTraitVFTable) << std::endl;
+    std::string CTraitVFTableSig = Memory::ptrToSignature(CTraitVFTable);
+    //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
+    std::vector<uintptr_t>* traits;
+    traits = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
+    printMemory();
+    */
+
+
     return 0;
 }
 
@@ -637,6 +696,7 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     // Leader Functions
     {"addRankSpecificTrait", addRankSpecificTrait},
     {"activateRankSpecificTraits", activateRankSpecificTraits},
+    {"checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency},
     {"activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss},
     {"activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill},
     {"activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected},

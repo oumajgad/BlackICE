@@ -178,13 +178,19 @@ RANK_STATE getRankSpecificTrait(std::string* traitName, Hooks::CLeader::RankSpec
 }
 
 void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DWORD newRank) {
-    DEBUG_OUT(std::cout << "checkRankSpecificTraitsConsistency" << std::endl);
+    DEBUG_OUT(printf("#### checkRankSpecificTraitsConsistency ####\n"));
+    DEBUG_OUT(printf("leaderAddress: %#010x - newRank: %u\n", (uintptr_t)leaderAddress, newRank));
+    if (newRank == -1) {
+        newRank = *(DWORD*)((BYTE*)leaderAddress + 0x6C);
+        DEBUG_OUT(printf("Adjusted newRank: %u\n", newRank));
+    }
+    
     HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)*((DWORD*)leaderAddress + (0x30 / 4));
     while (traitListNode != 0) {
-        DEBUG_OUT(std::cout << "traitListNode: " << traitListNode << std::endl);
-        DEBUG_OUT(std::cout << "data: " << traitListNode->data << std::endl);
-        DEBUG_OUT(std::cout << "prev: " << traitListNode->prev << std::endl);
-        DEBUG_OUT(std::cout << "next: " << traitListNode->next << std::endl);
+        DEBUG_OUT(printf("traitListNode: %#010x \n", (uintptr_t) traitListNode));
+        DEBUG_OUT(printf("data: %#010x \n", (uintptr_t)traitListNode->data));
+        DEBUG_OUT(printf("prev: %#010x \n", (uintptr_t)traitListNode->prev));
+        DEBUG_OUT(printf("next: %#010x \n", (uintptr_t)traitListNode->next));
 
         DWORD trait = traitListNode->data;
         DWORD traitNameLength = *((DWORD*)trait + (0x3C / 4));
@@ -201,21 +207,21 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
         Hooks::CLeader::RankSpecificTrait* rankSpecificTrait;
         if (traitNameAsString.find("rankSpecificTrait_") == 0) {
             RANK_STATE state = getRankSpecificTrait(&traitNameAsString, &rankSpecificTrait);
-            DEBUG_OUT(std::cout << "state: " << static_cast<int>(state) << std::endl);
-            DEBUG_OUT(std::cout << "rankSpecificTrait: " << rankSpecificTrait << std::endl);
-            DEBUG_OUT(std::cout << "rankSpecificTrait->lowerRank: " << rankSpecificTrait->lowerRank << std::endl);
-            DEBUG_OUT(std::cout << "rankSpecificTrait->upperRank: " << rankSpecificTrait->upperRank << std::endl);
-            DEBUG_OUT(std::cout << "newRank: " << newRank << std::endl);
+            DEBUG_OUT(printf("state: %i \n", static_cast<int>(state)));
+            DEBUG_OUT(printf("rankSpecificTrait: %#010x \n", (uintptr_t) rankSpecificTrait));
+            DEBUG_OUT(printf("rankSpecificTrait->lowerRank: %u \n", rankSpecificTrait->lowerRank));
+            DEBUG_OUT(printf("rankSpecificTrait->upperRank: %u \n", rankSpecificTrait->upperRank));
+            DEBUG_OUT(printf("newRank: %u \n", newRank));
             if (state == RANK_STATE::INACTIVE && rankSpecificTrait!= 0 && newRank >= rankSpecificTrait->lowerRank && newRank <= rankSpecificTrait->upperRank) { // Trait is inactive - rank matches -> activate
-                DEBUG_OUT(std::cout << "activcated" << std::endl);
+                INFO_OUT(printf("Activated rankSpecificTrait '%s' for '%s'\n", rankSpecificTrait->activeName.c_str(), utils::getCString(leaderAddress + (0x4C / 4))));
                 traitListNode->data = rankSpecificTrait->activeTraitPtr;
             }
             else if (state == RANK_STATE::ACTIVE && rankSpecificTrait != 0 && (newRank < rankSpecificTrait->lowerRank || newRank > rankSpecificTrait->upperRank)) { // Trait is active - rank doesn't match -> deactivate
-                DEBUG_OUT(std::cout << "de-activcated" << std::endl);
+                INFO_OUT(printf("De-Activated rankSpecificTrait '%s' for '%s'\n", rankSpecificTrait->inactiveName.c_str(), utils::getCString(leaderAddress + (0x4C / 4))));
                 traitListNode->data = rankSpecificTrait->inActiveTraitPtr;
             }
             else if (state == RANK_STATE::NOT_FOUND) { // Trait was not found
-                WARNING_OUT(std::cout << "Rank Specific Trait '" << traitNameAsString << "' was not registered in LUA." <<  std::endl);
+                WARNING_OUT(printf("Rank Specific Trait '%s' was not registered in LUA.\n", traitNameAsString.c_str()));
             }
         }
         DEBUG_OUT(std::cout << "----------" << std::endl);

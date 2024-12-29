@@ -65,7 +65,18 @@
         VirtualQueryEx(process, p, &info, sizeof(info)) == sizeof(info);
         p += info.RegionSize)
     {
-        if (info.State & MEM_COMMIT && info.Type & MEM_PRIVATE && info.Protect & PAGE_READWRITE && !(info.Protect & PAGE_GUARD)) {
+        if (info.State & MEM_COMMIT && 
+            info.Type & MEM_PRIVATE && 
+            (
+                // info.Protect & PAGE_EXECUTE ||
+                info.Protect & PAGE_EXECUTE_READ ||
+                info.Protect & PAGE_EXECUTE_READWRITE ||
+                info.Protect & PAGE_READWRITE ||
+                info.Protect & PAGE_READONLY
+            )
+            && !(info.Protect & PAGE_GUARD) && !(info.Protect & PAGE_WRITECOMBINE) && !(info.Protect & PAGE_NOACCESS)
+            ) 
+        {
             MemoryRegion x;
             x.start = (uintptr_t)info.BaseAddress;
             x.size = info.RegionSize;

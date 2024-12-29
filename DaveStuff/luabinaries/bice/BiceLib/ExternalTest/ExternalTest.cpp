@@ -10,7 +10,7 @@
 #include <CasualLibrary.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
-int HOI3_PID = 25596;
+int HOI3_PID = 23468;
 
 inline const char* const BoolToString(bool b) {
     return b ? "OK" : "Failed";
@@ -145,12 +145,25 @@ void country() {
 }
 
 int main() {
+    /*
     std::cout << "Running tests for PID: " << HOI3_PID << "\n\n";
     auto start1 = std::chrono::high_resolution_clock::now();
     country();
     auto stop1 = std::chrono::high_resolution_clock::now();
     auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(stop1 - start1);
     std::cout << "A: " << duration1.count() << std::endl;
+    */
+    Memory::External external = Memory::External(34436, true);
+    Address MODULE_BASE = external.getModule("hoi3_tfh.exe");
 
-    // std::cin.get();
+    uintptr_t CTraitVFTable = MODULE_BASE + 0x11C7DC0;
+    //std::cout << "CTraitVFTable: " << Memory::n2hexstr(CTraitVFTable) << std::endl;
+    std::string CTraitVFTableSig = Memory::ptrToSignature(CTraitVFTable);
+    //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
+    std::vector<uintptr_t>* traits;
+    traits = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
+    std::cout << "Done: "  << traits->size() << std::endl;
+
+
+    std::cin.get();
 }

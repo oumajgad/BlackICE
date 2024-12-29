@@ -352,7 +352,7 @@ bool Memory::External::init(int procID, const DWORD access) noexcept {
         }
         for (uintptr_t cur = region.start; cur <= region_end - chunk_size; cur += chunk_size) {
             //std::cout << "Reading at: " << n2hexstr(cur) << std::endl;
-            if (!ReadProcessMemory(handle, reinterpret_cast<LPVOID>(cur), data, chunk_size, nullptr)) {
+            if (!ReadProcessMemory(handle, reinterpret_cast<LPVOID>(cur), data, chunk_size, NULL)) {
                 if (debug) {
                     std::cout << "Region: " << n2hexstr(region.start) << std::endl;
                     std::cout << getLastErrorAsString() << std::endl;
@@ -361,7 +361,7 @@ bool Memory::External::init(int procID, const DWORD access) noexcept {
             }
             for (uintptr_t i = 0; i <= chunk_size - signature_size; i += 4) { // i += 4 - data should be aligned
                 //std::cout << "Check at: " << cur + i << std::endl;
-                if (memoryCompare(static_cast<const BYTE*>(data + i), patternBytes)) {
+                if (memoryCompare(reinterpret_cast<BYTE*>(data + i), patternBytes)) {
                     results->push_back(cur + i);
                     //std::cout << "Found at: " << n2hexstr(cur + i) << " " << results->size() << std::endl;
                 }

@@ -60,8 +60,9 @@ if mod then
     BiceLib.activateLeaderListShowMaxSkillSelected()
 
     -- Rank Specific traits
-    -- BiceLib.activateRankSpecificTraits()
-    -- BiceLib.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
+    BiceLib.activateRankSpecificTraits()
+    BiceLib.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
+    BiceLib.checkRankSpecificTraitsConsistency()
 
     -- Units
     -- BiceLib.setCorpsUnitLimit(6, false)
