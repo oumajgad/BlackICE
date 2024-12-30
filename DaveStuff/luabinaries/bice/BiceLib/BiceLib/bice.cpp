@@ -696,6 +696,21 @@ __declspec(dllexport) int test(lua_State* L)
     return 0;
 }
 
+__declspec(dllexport) int deactivateInterAiExpeditionaries(lua_State* L)
+{
+    INFO_OUT(printf("#### deactivateInterAiExpeditionaries called ####\n"));
+
+    BYTE one[2] = { 0x90, 0xE9 };
+    DWORD address1 = MODULE_BASE + 0x4ba8c2;
+    Patches::patchBytes((void*)address1, one, 2);
+
+    BYTE two[2] = { 0x90, 0xE9 };
+    DWORD address2 = MODULE_BASE + 0x4b37e5;
+    Patches::patchBytes((void*)address2, two, 2);
+
+    return 0;
+}
+
 
 
 __declspec(dllexport) luaL_Reg BiceLib[] = {
@@ -703,6 +718,7 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"startConsole", startConsole},
     {"setModuleBase", setModuleBase},
     {"test", test},
+    {"deactivateInterAiExpeditionaries", deactivateInterAiExpeditionaries},
     // Info Functions
     {"getCountryFlags", getCountryFlags},
     {"getCountryVariables", getCountryVariables},
