@@ -645,9 +645,12 @@ __declspec(dllexport) int setModuleBase(lua_State* L)
     return 0;
 }
 
-
+bool consoleStarted = false;
 __declspec(dllexport) int startConsole(lua_State* L)
 {
+    if (consoleStarted) { 
+        return 0;
+    }
     AllocConsole();
     FILE* fp;
     freopen_s(&fp, "CONOUT$", "w", stdout); // output only
@@ -656,14 +659,24 @@ __declspec(dllexport) int startConsole(lua_State* L)
     SetConsoleMode(handle, ENABLE_EXTENDED_FLAGS);  // Set mode to this to prevent accidentially selecting something in the console
     // because that will freeze the entire thing until it is unselected
 
+    HWND window = GetConsoleWindow();
+    RECT r;
+    GetWindowRect(window, &r);
+    MoveWindow(window, r.left + 50, r.top + 50, 1000, 600, TRUE);
+
+    consoleStarted = true;
     return 0;
 }
 
+#include <chrono>
+#include <thread>
 
 __declspec(dllexport) int test(lua_State* L)
 {
     INFO_OUT(printf("#### test called ####\n"));
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+
+    std::this_thread::sleep_for(std::chrono::seconds(20));
 
     /*
     printMemory();
