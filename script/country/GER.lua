@@ -1192,16 +1192,13 @@ function P.ForeignMinister_CallAlly(voForeignMinisterData)
 		for loAllyTag in voForeignMinisterData.ministerCountry:GetAllies() do
 			local loAllyCountry = loAllyTag:GetCountry()
 
-			-- Exclude Puppets from this list
-			if not(loAllyCountry:IsPuppet()) then
-				local loAlly = {
-					AllyTag = loAllyTag,
-					AllyCountry = loAllyCountry,
-					Continent = tostring(loAllyCountry:GetActingCapitalLocation():GetContinent():GetTag()),
-				}
+			local loAlly = {
+				AllyTag = loAllyTag,
+				AllyCountry = loAllyCountry,
+				Continent = tostring(loAllyCountry:GetActingCapitalLocation():GetContinent():GetTag()),
+			}
 
-				laAllies[tostring(loAllyTag)] = loAlly
-			end
+			laAllies[tostring(loAllyTag)] = loAlly
 		end
 
 		local loSOVtag = CCountryDataBase.GetTag("SOV")
