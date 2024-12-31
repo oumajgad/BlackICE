@@ -8,7 +8,7 @@ function P.FillGrid()
     if BiceLib == nil then
         return
     end
-    local vars = BiceLib.getCountryVariables(G_PlayerCountry)
+    local vars = BiceLib.GameInfo.getCountryVariables(G_PlayerCountry)
 
     if vars == nil then
         Utils.LUA_DEBUGOUT("vars nil")

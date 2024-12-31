@@ -22,7 +22,7 @@ DWORD MODULE_BASE;
 
 
 /////////////////////////////////////
-//         INFO FUNCTIONS          //
+//       GAME INFO FUNCTIONS       //
 /////////////////////////////////////
 
 std::unordered_map<std::string, uintptr_t>* countryCache = new std::unordered_map<std::string, uintptr_t>;
@@ -93,7 +93,7 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
         auto vars = CCountry::getVars(external, varsPtr);
         DEBUG_OUT(std::cout << "vars->size(): " << vars->size() << std::endl);
 
-        lua_newtable(L, 0, vars->size());
+        lua_createtable(L, 0, vars->size());
         for (size_t i = 0; i < vars->size(); i++) {
             lua_pushstring(L, vars->at(i).name.c_str());
             lua_pushinteger(L, vars->at(i).value);
@@ -267,7 +267,7 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     cacheTraits();
 
     if (traitCache->size() == 0) {
-        INFO_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' not executed due to unitialised traits" << std::endl);
+        INFO_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' deferred until save load" << std::endl);
         lua_pushboolean(L, false);
         return 1;
     }
@@ -546,12 +546,13 @@ __declspec(dllexport) int addCommandLimitTrait(lua_State* L)
 {
     std::string traitName = luaL_checkstring(L, 1);
     int effect = luaL_checkinteger(L, 2);
-    DEBUG_OUT(std::cout << "addCommandLimitTrait: '" << traitName << "' - effect: " << effect << std::endl);
 
     if (Hooks::CArmy::commandLimitTraits->find(traitName) != Hooks::CArmy::commandLimitTraits->end()) {
         DEBUG_OUT(std::cout << "addCommandLimitTrait for: " << traitName << " was already added" << std::endl);
         return 0;
     }
+
+    INFO_OUT(std::cout << "addCommandLimitTrait: '" << traitName << "' - effect: " << effect << std::endl);
 
     Hooks::CArmy::CommandLimitTrait* clt = new Hooks::CArmy::CommandLimitTrait;
     clt->traitName = traitName;
@@ -566,63 +567,81 @@ __declspec(dllexport) int addCommandLimitTrait(lua_State* L)
 
 
 /////////////////////////////////////
-//          GAME PATCHES           //
+//          BYTE PATCHES           //
 /////////////////////////////////////
 
-BOOL activateOffmapICPatchDone = false;
-__declspec(dllexport) int activateOffmapICPatch(lua_State* L)
+BOOL fixOffMapICDone = false;
+__declspec(dllexport) int fixOffMapIC(lua_State* L)
 {
-    if (activateOffmapICPatchDone) {
+    if (fixOffMapICDone) {
         return 0;
     }
     
-    if (!Patches::patchOffMapIC(MODULE_BASE)) {
-        INFO_OUT(std::cout << "Patch 'activateOffmapICPatch' failed" << std::endl);
+    if (!Patches::fixOffMapIC(MODULE_BASE)) {
+        INFO_OUT(std::cout << "Patch 'fixOffMapIC' failed" << std::endl);
     }
     else {
-        INFO_OUT(std::cout << "Patch 'activateOffmapICPatch' succeeded" << std::endl);
+        INFO_OUT(std::cout << "Patch 'fixOffMapIC' succeeded" << std::endl);
     }
 
-    activateOffmapICPatchDone = true;
+    fixOffMapICDone = true;
     return 0;
 }
 
 
-BOOL activateMinisterTechDecayPatchDone = false;
-__declspec(dllexport) int activateMinisterTechDecayPatch(lua_State* L)
+BOOL fixMinisterTechDecayDone = false;
+__declspec(dllexport) int fixMinisterTechDecay(lua_State* L)
 {
-    if (activateMinisterTechDecayPatchDone) {
+    if (fixMinisterTechDecayDone) {
         return 0;
     }
 
-    if (!Patches::patchMinisterTechDecay(MODULE_BASE)) {
-        INFO_OUT(std::cout << "Patch 'activateMinisterTechDecayPatch' failed" << std::endl);
+    if (!Patches::fixMinisterTechDecay(MODULE_BASE)) {
+        INFO_OUT(std::cout << "Patch 'fixMinisterTechDecay' failed" << std::endl);
     }
     else {
-        INFO_OUT(std::cout << "Patch 'activateMinisterTechDecayPatch' succeeded" << std::endl);
+        INFO_OUT(std::cout << "Patch 'fixMinisterTechDecay' succeeded" << std::endl);
     }
 
 
-    activateMinisterTechDecayPatchDone = true;
+    fixMinisterTechDecayDone = true;
     return 0;
 }
 
 
-BOOL activateWarExhaustionNeutralityResetPatchDone = false;
-__declspec(dllexport) int activateWarExhaustionNeutralityResetPatch(lua_State* L)
+BOOL disableWarExhaustionNeutralityResetDone = false;
+__declspec(dllexport) int disableWarExhaustionNeutralityReset(lua_State* L)
 {
-    if (activateWarExhaustionNeutralityResetPatchDone) {
+    if (disableWarExhaustionNeutralityResetDone) {
         return 0;
     }
 
-    if (!Patches::patchWarExhaustionNeutralityReset(MODULE_BASE)) {
-        INFO_OUT(std::cout << "Patch 'activateWarExhaustionNeutralityResetPatch' failed" << std::endl);
+    if (!Patches::disableWarExhaustionNeutralityReset(MODULE_BASE)) {
+        INFO_OUT(std::cout << "Patch 'disableWarExhaustionNeutralityReset' failed" << std::endl);
     }
     else {
-        INFO_OUT(std::cout << "Patch 'activateWarExhaustionNeutralityResetPatch' succeeded" << std::endl);
+        INFO_OUT(std::cout << "Patch 'disableWarExhaustionNeutralityReset' succeeded" << std::endl);
     }
 
-    activateWarExhaustionNeutralityResetPatchDone = true;
+    disableWarExhaustionNeutralityResetDone = true;
+    return 0;
+}
+
+bool disableInterAiExpeditionariesDone = false;
+__declspec(dllexport) int disableInterAiExpeditionaries(lua_State* L)
+{
+    if (disableInterAiExpeditionariesDone) {
+        return 0;
+    }
+
+    if (!Patches::disableInterAiExpeditionaries(MODULE_BASE)) {
+        INFO_OUT(std::cout << "Patch 'disableInterAiExpeditionaries' failed" << std::endl);
+    }
+    else {
+        INFO_OUT(std::cout << "Patch 'disableInterAiExpeditionaries' succeeded" << std::endl);
+    }
+
+    disableInterAiExpeditionariesDone = true;
     return 0;
 }
 
@@ -670,89 +689,83 @@ __declspec(dllexport) int startConsole(lua_State* L)
 
 #include <chrono>
 #include <thread>
-
 __declspec(dllexport) int test(lua_State* L)
 {
     INFO_OUT(printf("#### test called ####\n"));
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
-    std::this_thread::sleep_for(std::chrono::seconds(20));
-
-    /*
-    printMemory();
-    Memory::heapWalkExternal(external.handle);
-    printMemory();
-
-    uintptr_t CTraitVFTable = MODULE_BASE + 0x1C7DC0;
-    //std::cout << "CTraitVFTable: " << Memory::n2hexstr(CTraitVFTable) << std::endl;
-    std::string CTraitVFTableSig = Memory::ptrToSignature(CTraitVFTable);
-    //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
-    std::vector<uintptr_t>* traits;
-    traits = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
-    printMemory();
-    */
-
-
+    std::this_thread::sleep_for(std::chrono::seconds(5));
     return 0;
 }
-
-bool deactivateInterAiExpeditionariesDone = false;
-__declspec(dllexport) int deactivateInterAiExpeditionaries(lua_State* L)
-{
-    if (deactivateInterAiExpeditionariesDone) {
-        return 0;
-    }
-
-    INFO_OUT(printf("deactivateInterAiExpeditionaries\n"));
-
-    BYTE one[2] = { 0x90, 0xE9 };
-    DWORD address1 = MODULE_BASE + 0x4b348a;
-    Patches::patchBytes((void*)address1, one, 2);
-
-    BYTE two[2] = { 0x90, 0xE9 };
-    DWORD address2 = MODULE_BASE + 0x4b37e5;
-    Patches::patchBytes((void*)address2, two, 2);
-
-    deactivateInterAiExpeditionariesDone = true;
-    return 0;
-}
-
-
 
 __declspec(dllexport) luaL_Reg BiceLib[] = {
     // Misc
     {"startConsole", startConsole},
     {"setModuleBase", setModuleBase},
     {"test", test},
-    {"deactivateInterAiExpeditionaries", deactivateInterAiExpeditionaries},
-    // Info Functions
-    {"getCountryFlags", getCountryFlags},
-    {"getCountryVariables", getCountryVariables},
-    // Leader Functions
-    {"addRankSpecificTrait", addRankSpecificTrait},
-    {"activateRankSpecificTraits", activateRankSpecificTraits},
-    {"checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency},
-    {"activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss},
-    {"activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill},
-    {"activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected},
-    {"addTraitToLeader", addTraitToLeader},
-    // Unit Functions
-    {"setCorpsUnitLimit", setCorpsUnitLimit},
-    {"setArmyUnitLimit", setArmyUnitLimit},
-    {"setArmyGroupUnitLimit", setArmyGroupUnitLimit},
-    {"addCommandLimitTrait", addCommandLimitTrait},
-    // Patches
-    {"activateOffmapICPatch", activateOffmapICPatch},
-    {"activateMinisterTechDecayPatch", activateMinisterTechDecayPatch},
-    {"activateWarExhaustionNeutralityResetPatch", activateWarExhaustionNeutralityResetPatch},
     {NULL, NULL}
 };
 
+void registerFunction(lua_State* L, const char* name, lua_CFunction function) {
+    lua_pushstring(L, name);
+    lua_pushcfunction(L, function);
+    lua_settable(L, -3);
+    return;
+}
+
+void registerGameInfoFunctions(lua_State* L) {
+    lua_pushstring(L, "GameInfo");
+    lua_newtable(L);
+    registerFunction(L, "getCountryFlags", getCountryFlags);
+    registerFunction(L, "getCountryVariables", getCountryVariables);
+    lua_settable(L, -3);
+    return;
+}
+
+void registerLeaderFunctions(lua_State* L) {
+    lua_pushstring(L, "Leaders");
+    lua_newtable(L);
+    registerFunction(L, "addRankSpecificTrait", addRankSpecificTrait);
+    registerFunction(L, "activateRankSpecificTraits", activateRankSpecificTraits);
+    registerFunction(L, "checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency);
+    registerFunction(L, "activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
+    registerFunction(L, "activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
+    registerFunction(L, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
+    registerFunction(L, "addTraitToLeader", addTraitToLeader);
+    lua_settable(L, -3);
+    return;
+}
+
+void registerUnitFunctions(lua_State* L) {
+    lua_pushstring(L, "Units");
+    lua_newtable(L);
+    registerFunction(L, "setCorpsUnitLimit", setCorpsUnitLimit);
+    registerFunction(L, "setArmyUnitLimit", setArmyUnitLimit);
+    registerFunction(L, "setArmyGroupUnitLimit", setArmyGroupUnitLimit);
+    registerFunction(L, "addCommandLimitTrait", addCommandLimitTrait);
+    lua_settable(L, -3);
+    return;
+}
+
+void registerPatchFunctions(lua_State* L) {
+    lua_pushstring(L, "BytePatches");
+    lua_newtable(L);
+    registerFunction(L, "fixOffMapIC", fixOffMapIC);
+    registerFunction(L, "fixMinisterTechDecay", fixMinisterTechDecay);
+    registerFunction(L, "disableWarExhaustionNeutralityReset", disableWarExhaustionNeutralityReset);
+    registerFunction(L, "disableInterAiExpeditionaries", disableInterAiExpeditionaries);
+    lua_settable(L, -3);
+    return;
+}
 
 extern "C"
 __declspec(dllexport) int luaopen_BiceLib(lua_State* L)
 {
     lua_newtable(L);
     luaL_register(L, NULL, BiceLib);
+    registerGameInfoFunctions(L);
+    registerLeaderFunctions(L);
+    registerUnitFunctions(L);
+    registerPatchFunctions(L);
     return 1;
 }

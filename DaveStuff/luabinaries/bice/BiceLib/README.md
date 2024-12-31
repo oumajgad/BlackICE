@@ -7,10 +7,9 @@ This is a LUA module written in C++ to achieve the following:
 * modify/expand existing game mechanics
 * apply other miscellaneous patches
 
-These features are activated and configured via LUA.
+LUA functions are provided to activate and configure the module. They are grouped the following way:
 
-
-## Informational functions
+## BiceLib.GameInfo
 * **getFlags(string countryTag)**:
     * Get a list of all current countryflags
     * **Params**:
@@ -29,25 +28,29 @@ These features are activated and configured via LUA.
         * The values are in the fixed point number format. E.g. if the returned value is 12050, then the ingame representation is 12.05
         * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *getFlags* and *getVariables*.
 
-## Bugfixes
-* **activateOffmapICPatch()**
+## BiceLib.BytePatches
+* **fixOffMapIC()**
     * makes the "IC" modifier usable in event/triggered modifiers, essentially being offmap IC
-    * This breaks the "local_ic" building modifier, so any buildings giving local IC will need a triggered modifier to add their IC effect
+    * This breaks the "local_ic" building modifier, so any buildings giving local IC will need a triggered modifier to add their IC effect, triggered by a building count done in LUA
     * **Params**: /
     * **Return values**: /
-
-* **activateMinisterTechDecayPatch()**
+* **fixMinisterTechDecayDone()**
     * The "Minister tech ability decay" modifier simply does not work. This fixes that.
     * **Params**: /
     * **Return values**: /
-* **activateWarExhaustionNeutralityResetPatch()**
+* **disableWarExhaustionNeutralityReset()**
     * Normally the game adds a countries "War Exhaustion" to its neutrality after a war (when it switches from war to peace)
     * For Black ICE we don't want that.
     * **Params**: /
     * **Return values**: /
+* **disableInterAiExpeditionaries()**
+    * This patch makes the AI never send/retrieve expeditionary units from other AI countries.
+    * AI countries will send expeditionary to each other when the unit is on the territory of its ally. However the AI is likely to send the majority of their units to countries which don't need them, and then won't recall them. 
+    * This happens especially in cases when the AI just conquered a country and immediately after creates a puppet.
+    * **Params**: /
+    * **Return values**: /
 
-## Mechanical changes
-### Leaders
+## BiceLib.Leaders
 * **activateRankSpecificTraits()**
     * Ranks specific traits are traits which exists in 2 states. "Active" and "InActive". The 2 states are 2 different traits, which get exchanged when a rank change to the specific rank occurs.
     * This can be used to represent a leaders ability (or inability) at certain command levels.
@@ -68,7 +71,7 @@ These features are activated and configured via LUA.
         1. *success* (boolean): If the specified trait can't be found this will be *false*
     * **Notes**:
         * The traits display will only be updated after reopening the leader list.
-* **activateLeaderPromotionSkillLoss()**
+* **activateLeaderPromotionSkillLoss() (currently bugged)**
     * This will make leaders lose/gain skill levels when the are promoted/demoted, like it was in older Hoi games.
     * Each leader has to receive a "pskill_XYZ" trait which represents his pure skill level. With the combination of rank + pure skill the game can now determine the appropiate skill level.
     * Percentual progress towards the next skill level is preserved 1:1 between promotions/demotions (rounded down to the nearest whole %).
@@ -89,8 +92,17 @@ These features are activated and configured via LUA.
     * **Notes**:
         * The traits display will only be updated after reopening the leader list.
         * This can add the same trait multiple times. During a save load the excess traits are removed.
+* **activateLeaderListShowMaxSkill()**
+    * This will make the ingame leader list also display a leaders max skill.
+    * Max skill will be displayed inside parentheses following the current skill e.g.: "3 (7)"
+    * **Params**: /
+    * **Return values**: /
+* **activateLeaderListShowMaxSkillSelected()**
+    * Same as *activateLeaderListShowMaxSkill*, except that this applies to the currently active leader in the leader list
+    * **Params**: /
+    * **Return values**: /
 
-### Units
+## BiceLib.Units
 * **setCorpsUnitLimit(int newLimit, bool force)**
     * set the limit of unit attachements for corps 
     * **Params**:
@@ -117,13 +129,3 @@ These features are activated and configured via LUA.
     * **Return values**: /
     * **Notes**:
         * This is more of a soft effect since you can assign a leader with this trait, attach a unit, unassign the leader.
-## Other patches
-* **activateLeaderListShowMaxSkill()**
-    * This will make the ingame leader list also display a leaders max skill.
-    * Max skill will be displayed inside parentheses following the current skill e.g.: "3 (7)"
-    * **Params**: /
-    * **Return values**: /
-* **activateLeaderListShowMaxSkillSelected()**
-    * Same as *activateLeaderListShowMaxSkill*, except that this applies to the currently active leader in the leader list
-    * **Params**: /
-    * **Return values**: /

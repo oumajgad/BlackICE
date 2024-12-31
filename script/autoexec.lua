@@ -53,30 +53,29 @@ if mod then
     BiceLib = mod
     BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
     BiceLib.setModuleBase()
-    -- BiceLib.deactivateInterAiExpeditionaries()
 
     -- Leaders
-    -- BiceLib.activateLeaderPromotionSkillLoss()
-    BiceLib.activateLeaderListShowMaxSkill()
-    BiceLib.activateLeaderListShowMaxSkillSelected()
+    -- BiceLib.Leaders.activateLeaderPromotionSkillLoss()
+    BiceLib.Leaders.activateLeaderListShowMaxSkill()
+    BiceLib.Leaders.activateLeaderListShowMaxSkillSelected()
 
     -- Rank Specific traits
-    BiceLib.activateRankSpecificTraits()
-    BiceLib.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
-    BiceLib.checkRankSpecificTraitsConsistency()
+    BiceLib.Leaders.activateRankSpecificTraits()
+    BiceLib.Leaders.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
+    BiceLib.Leaders.checkRankSpecificTraitsConsistency()
 
     -- Units
-    -- BiceLib.setCorpsUnitLimit(6, false)
-    -- BiceLib.setArmyUnitLimit(7, false)
-    -- BiceLib.setArmyGroupUnitLimit(8, false)
-
-    -- BiceLib.addCommandLimitTrait("pskill_1", -1)
-    -- BiceLib.addCommandLimitTrait("pskill_4", 1)
+    -- BiceLib.Units.setCorpsUnitLimit(6, false)
+    -- BiceLib.Units.setArmyUnitLimit(7, false)
+    -- BiceLib.Units.setArmyGroupUnitLimit(8, false)
+    -- BiceLib.Units.addCommandLimitTrait("pskill_1", -1)
+    -- BiceLib.Units.addCommandLimitTrait("pskill_4", 1)
 
     -- Patches
-    BiceLib.activateOffmapICPatch()
-    BiceLib.activateMinisterTechDecayPatch()
-    BiceLib.activateWarExhaustionNeutralityResetPatch()
+    BiceLib.BytePatches.fixOffMapIC()
+    BiceLib.BytePatches.fixMinisterTechDecay()
+    BiceLib.BytePatches.disableWarExhaustionNeutralityReset()
+    BiceLib.BytePatches.disableInterAiExpeditionaries()
 end
 
 
