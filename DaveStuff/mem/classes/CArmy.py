@@ -82,6 +82,7 @@ class CArmy(pydantic.BaseModel):
     lower_oob_unit_linked_list_first_ptr: int
     lower_oob_unit_linked_list_last_ptr: int
     lower_oob_unit_amount: int
+    oob_level: int  # 0 -> Theatre, 4 -> Division (includes single brigades)
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -122,6 +123,7 @@ class CArmy(pydantic.BaseModel):
             ),
             "lower_oob_unit_linked_list_last_ptr": pm.read_uint(ptr + CArmyOffsets.lower_oob_unit_linked_list_last_ptr),
             "lower_oob_unit_amount": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.lower_oob_unit_amount, 4)),
+            "oob_level": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.oob_level, 4)),
         }
         return cls(**temp)
 
@@ -167,14 +169,14 @@ if __name__ == "__main__":
     print(pm.base_address)
     units = CArmy.get_units(pm)
     print(f"{len(units)=}")
-    for unit_ptr in CArmy.get_units(pm):
+    x = 0
+    for unit_ptr in units:
         # print(unit_ptr)
-        name = CArmy.get_name_from_ptr(pm, unit_ptr)
-        # BD2ABCF8 1. inf
-        # BD2B2848 1. kav
-        if name in [
-            "Test A.K.",
-        ]:
+        try:
             army = CArmy.make(pm, unit_ptr)
-            print(army)
-    print(CArmy.make(pm, 0xB32FE6C0))
+            if army.oob_level == 0:
+                x += 1
+        except Exception:
+            pass
+    # print(CArmy.make(pm, 0xB32FE6C0))
+    print(x)

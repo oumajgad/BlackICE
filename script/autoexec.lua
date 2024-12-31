@@ -53,7 +53,7 @@ if mod then
     BiceLib = mod
     BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
     BiceLib.setModuleBase()
-    BiceLib.deactivateInterAiExpeditionaries()
+    -- BiceLib.deactivateInterAiExpeditionaries()
 
     -- Leaders
     -- BiceLib.activateLeaderPromotionSkillLoss()

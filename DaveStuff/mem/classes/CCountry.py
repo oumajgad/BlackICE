@@ -5,9 +5,7 @@ import pydantic
 from pymem import Pymem
 
 from classes.CArmy import CArmy
-from classes.CFlags import CFlags
 from classes.CMinister import CMinister
-from classes.CVariables import CVariables
 from constants import DATA_SECTION_START
 from structs.LinkedLists import LinkedListNode
 from utils import utils
@@ -33,37 +31,44 @@ class CCountryOffsets:
     units_ll_ptr: int = 0xBAC
     owned_provinces_ll_ptr: int = 0xCF0
     controlled_provinces_ll_ptr: int = 0xD00
+    CDiplomacyStatus_array_ptr: int = 0xE28  # array with pointers to all CDiplomacystatus
 
 
 class CCountry(pydantic.BaseModel):
     COUNTRIES: ClassVar[list[int]] = None
     self_ptr: int
-    available_CMinisters: list[CMinister]
-    all_CMinisters: list[CMinister]
-    CFlags: CFlags
+    ptr_str: str
+    # available_CMinisters: list[CMinister]
+    # all_CMinisters: list[CMinister]
+    # CFlags: CFlags
     CFlags_amount: int
-    CVariables: CVariables
+    # CVariables: CVariables
     tag: str
     tag_id: int
-    units: list[CArmy]
+    # units: list[CArmy]
+    CDiplomacyStatus_array_ptr: str  # array with pointers to all CDiplomacystatus
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
         # print(f"Creating CCountry from {ptr}")
         temp = {
             "self_ptr": ptr,
-            "available_CMinisters": cls.build_minsters_from_linked_list(
-                pm, pm.read_uint(ptr + CCountryOffsets.available_CMinisters_ll_first_ptr)
-            ),
-            "all_CMinisters": cls.build_minsters_from_linked_list(
-                pm, pm.read_uint(ptr + CCountryOffsets.all_CMinisters_ll_first_ptr)
-            ),
-            "CFlags": CFlags.make(pm, ptr + CCountryOffsets.CFlags_VFTABLE_PTR_1),
+            "ptr_str": utils.int_to_pointer(ptr),
+            # "available_CMinisters": cls.build_minsters_from_linked_list(
+            #     pm, pm.read_uint(ptr + CCountryOffsets.available_CMinisters_ll_first_ptr)
+            # ),
+            # "all_CMinisters": cls.build_minsters_from_linked_list(
+            #     pm, pm.read_uint(ptr + CCountryOffsets.all_CMinisters_ll_first_ptr)
+            # ),
+            # "CFlags": CFlags.make(pm, ptr + CCountryOffsets.CFlags_VFTABLE_PTR_1),
             "CFlags_amount": pm.read_uint(ptr + CCountryOffsets.CFlags_amount),
-            "CVariables": CVariables.make(pm, ptr + CCountryOffsets.CVariables_VFTABLE_PTR_1),
+            # "CVariables": CVariables.make(pm, ptr + CCountryOffsets.CVariables_VFTABLE_PTR_1),
             "tag": pm.read_bytes(ptr + CCountryOffsets.tag, 3),
             "tag_id": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.tag_id, 4)),
-            "units": cls.get_units(pm, ptr),
+            # "units": cls.get_units(pm, ptr),
+            "CDiplomacyStatus_array_ptr": utils.int_to_pointer(
+                pm.read_uint(ptr + CCountryOffsets.CDiplomacyStatus_array_ptr)
+            ),
         }
         return cls(**temp)
 
@@ -158,11 +163,15 @@ if __name__ == "__main__":
     # with open("out.json", "w") as f:
     #     out = {countries: get_all_countries(pm)}
     #     f.write(json.dumps(out, indent=2))
-    country = get_country(pm, "USA")
+    country = get_country(pm, "IRE")
     print(
         utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
     )
-    print(utils.int_to_pointer(country.self_ptr))
+    country = get_country(pm, "ENG")
+    print(
+        utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
+    )
+    # print(utils.int_to_pointer(country.self_ptr))
     # # print(f"{len(country.available_CMinisters)=}")
     # # print(f"{len(country.CFlags.flags)=}")
     # # print(f"{len(country.CVariables.variables)=}")

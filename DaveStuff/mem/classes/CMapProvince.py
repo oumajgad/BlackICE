@@ -13,20 +13,21 @@ class CMapProvinceOffsets:
     VFTABLE_OFFSET_1: ClassVar[int] = 0x11BEBF8  # this one return  extra provinces, needs investigation
     VFTABLE_OFFSET_2: ClassVar[int] = 0x11BEC1C
     is_selected: int = 0xC
+    supply_depot_province: int = 0x48
     id: int = 0xD0
+    supply_pool: int = 0x1B4
+    oil: int = 0x27C
+    metal: int = 0x280
+    energy: int = 0x284
+    rares: int = 0x288
+    CProvinceBuilding_array_ptr: int = 0x310
+    manpower: int = 0x320
+    leadership: int = 0x324
     owner_tag: int = 0x32C
     owner_id: int = 0x330
     controller_tag: int = 0x334
     controller_id: int = 0x338
-    supply_pool: int = 0x1B4
-    supply_depot_province: int = 0x48
-    manpower: int = 0x320
-    leadership: int = 0x324
-    energy: int = 0x284
-    metal: int = 0x280
-    rares: int = 0x288
-    oil: int = 0x27C
-    CProvinceBuilding_array_ptr: int = 0x310
+    COwnerArea_ptr: int = 0x2B4
 
 
 class CMapProvince(pydantic.BaseModel):

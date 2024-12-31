@@ -696,9 +696,14 @@ __declspec(dllexport) int test(lua_State* L)
     return 0;
 }
 
+bool deactivateInterAiExpeditionariesDone = false;
 __declspec(dllexport) int deactivateInterAiExpeditionaries(lua_State* L)
 {
-    INFO_OUT(printf("#### deactivateInterAiExpeditionaries called ####\n"));
+    if (deactivateInterAiExpeditionariesDone) {
+        return 0;
+    }
+
+    INFO_OUT(printf("deactivateInterAiExpeditionaries\n"));
 
     BYTE one[2] = { 0x90, 0xE9 };
     DWORD address1 = MODULE_BASE + 0x4b348a;
@@ -708,6 +713,7 @@ __declspec(dllexport) int deactivateInterAiExpeditionaries(lua_State* L)
     DWORD address2 = MODULE_BASE + 0x4b37e5;
     Patches::patchBytes((void*)address2, two, 2);
 
+    deactivateInterAiExpeditionariesDone = true;
     return 0;
 }
 

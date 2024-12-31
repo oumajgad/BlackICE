@@ -1,9 +1,8 @@
-import sys
 import time
 
 from pymem import Pymem
 
-from classes.CCountry import dump_country
+from utils import utils
 
 
 def write_out(out: str):
@@ -12,10 +11,15 @@ def write_out(out: str):
 
 
 def main():
-    pm = Pymem(int(sys.argv[1]))
-    if sys.argv[2] == "country":
-        write_out(dump_country(pm, sys.argv[3]))
-        # print(dump_country(pm, sys.argv[3]))
+    pm = Pymem("hoi3_tfh.exe")
+    print(pm.base_address)
+    res = pm.pattern_scan_all(
+        pattern=utils.rawbytes(
+            (pm.base_address + 0x11EC0B4).to_bytes(length=4, byteorder="little", signed=False).hex()
+        ),
+        return_multiple=True,
+    )
+    print(len(res))
 
 
 if __name__ == "__main__":
