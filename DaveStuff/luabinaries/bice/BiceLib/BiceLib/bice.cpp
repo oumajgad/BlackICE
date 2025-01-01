@@ -241,6 +241,7 @@ void activateLeaderRankChangeHook() {
     else {
         INFO_OUT(std::cout << "Hook 'activateLeaderRankChangeHook' succeeded" << std::endl);
         DEBUG_OUT(std::cout << "jumpBack_leaderRankChangeHook: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_leaderRankChangeHook) << std::endl);
+        Hooks::CLeader::isLeaderRankChangeHookActive = true;
     }
 }
 
@@ -321,7 +322,6 @@ __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
     if (!Hooks::CLeader::isLeaderRankChangeHookActive) {
         activateLeaderRankChangeHook();
         activateLeaderDontSaveRankSpecificTraitsHook();
-        Hooks::CLeader::isLeaderRankChangeHookActive = true;
     }
 
     cacheTraits();
