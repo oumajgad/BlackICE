@@ -42,42 +42,8 @@ require('ai_variable')
 require('csvParser')
 require('pdxParser')
 
--- BICE custom LUA Module
-local ok, mod = pcall(require, "BiceLib")
-if not ok then
-    Utils.LUA_DEBUGOUT("Failed to load BiceLib.dll. Some features are not available")
-    Utils.LUA_DEBUGOUT(mod)
-    mod = nil
-end
-if mod then
-    BiceLib = mod
-    BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
-    BiceLib.setModuleBase()
-
-    -- Leaders
-    -- BiceLib.Leaders.activateLeaderPromotionSkillLoss()
-    BiceLib.Leaders.activateLeaderListShowMaxSkill()
-    BiceLib.Leaders.activateLeaderListShowMaxSkillSelected()
-
-    -- Rank Specific traits
-    BiceLib.Leaders.activateRankSpecificTraits()
-    BiceLib.Leaders.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
-    BiceLib.Leaders.checkRankSpecificTraitsConsistency()
-
-    -- Units
-    -- BiceLib.Units.setCorpsUnitLimit(6, false)
-    -- BiceLib.Units.setArmyUnitLimit(7, false)
-    -- BiceLib.Units.setArmyGroupUnitLimit(8, false)
-    -- BiceLib.Units.addCommandLimitTrait("pskill_1", -1)
-    -- BiceLib.Units.addCommandLimitTrait("pskill_4", 1)
-
-    -- Patches
-    BiceLib.BytePatches.fixOffMapIC()
-    BiceLib.BytePatches.fixMinisterTechDecay()
-    BiceLib.BytePatches.disableWarExhaustionNeutralityReset()
-    BiceLib.BytePatches.disableInterAiExpeditionaries()
-end
-
+-- BICE custom Module
+require('bicelib_lua')
 
 -- Make sure these exist, if something is require() but doesnt exist LUA dies and doesn't load the rest!
 -- Defaults are at the bottom so it's easier to spot if something is wrong (some nations won't do anything since defaults wont be loaded)

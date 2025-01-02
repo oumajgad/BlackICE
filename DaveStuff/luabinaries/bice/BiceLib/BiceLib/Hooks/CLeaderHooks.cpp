@@ -165,12 +165,12 @@ std::unordered_map<std::string, Hooks::CLeader::RankSpecificTrait*>* Hooks::CLea
 RANK_STATE getRankSpecificTrait(std::string* traitName, Hooks::CLeader::RankSpecificTrait** out) {
     //std::cout << "getRankSpecificTrait: " << *traitName << std::endl;
     if (Hooks::CLeader::rankSpecificTraitsActive->find(*traitName) != Hooks::CLeader::rankSpecificTraitsActive->end()) {
-        DEBUG_OUT(std::cout << "rankSpecificTraitsActive found" << std::endl);
+        TRACE_OUT(std::cout << "rankSpecificTraitsActive found" << std::endl);
         *out = Hooks::CLeader::rankSpecificTraitsActive->at(*traitName);
         return RANK_STATE::ACTIVE;
     }
     else if (Hooks::CLeader::rankSpecificTraitsInActive->find(*traitName) != Hooks::CLeader::rankSpecificTraitsInActive->end()) {
-        DEBUG_OUT(std::cout << "rankSpecificTraitsInActive found" << std::endl);
+        TRACE_OUT(std::cout << "rankSpecificTraitsInActive found" << std::endl);
         *out = Hooks::CLeader::rankSpecificTraitsInActive->at(*traitName);
         return RANK_STATE::INACTIVE;
     }
@@ -179,7 +179,7 @@ RANK_STATE getRankSpecificTrait(std::string* traitName, Hooks::CLeader::RankSpec
 
 void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DWORD newRank) {
     DEBUG_OUT(printf("#### checkRankSpecificTraitsConsistency ####\n"));
-    DEBUG_OUT(printf("leaderAddress: %#010x - newRank: %u\n", (uintptr_t)leaderAddress, newRank));
+    DEBUG_OUT(printf("leaderAddress: %#010x - newRank: %i\n", (uintptr_t)leaderAddress, newRank));
     if (newRank == -1) {
         newRank = *(DWORD*)((BYTE*)leaderAddress + 0x6C);
         DEBUG_OUT(printf("Adjusted newRank: %u\n", newRank));
@@ -187,31 +187,24 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
     
     HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)*((DWORD*)leaderAddress + (0x30 / 4));
     while (traitListNode != 0) {
-        DEBUG_OUT(printf("traitListNode: %#010x \n", (uintptr_t) traitListNode));
-        DEBUG_OUT(printf("data: %#010x \n", (uintptr_t)traitListNode->data));
-        DEBUG_OUT(printf("prev: %#010x \n", (uintptr_t)traitListNode->prev));
-        DEBUG_OUT(printf("next: %#010x \n", (uintptr_t)traitListNode->next));
+        TRACE_OUT(printf("traitListNode: %#010x \n", (uintptr_t) traitListNode));
+        TRACE_OUT(printf("data: %#010x \n", (uintptr_t)traitListNode->data));
+        TRACE_OUT(printf("prev: %#010x \n", (uintptr_t)traitListNode->prev));
+        TRACE_OUT(printf("next: %#010x \n", (uintptr_t)traitListNode->next));
 
         DWORD trait = traitListNode->data;
-        DWORD traitNameLength = *((DWORD*)trait + (0x3C / 4));
-        char* traitName;
-        if (traitNameLength > 15) {
-            traitName = (char*)*(DWORD*)((BYTE*)trait + 0x2C);
-        }
-        else {
-            traitName = (char*)((BYTE*)trait + 0x2C);
-        }
+        std::string traitNameAsString = std::string(utils::getCString((DWORD*)trait + (0x2C / 4)));
 
-        std::string traitNameAsString = std::string(traitName);
-        DEBUG_OUT(std::cout << "traitNameAsString: " << traitNameAsString << std::endl);
+        TRACE_OUT(std::cout << "traitNameAsString: " << traitNameAsString << std::endl);
+
         Hooks::CLeader::RankSpecificTrait* rankSpecificTrait;
         if (traitNameAsString.find("rankSpecificTrait_") == 0) {
             RANK_STATE state = getRankSpecificTrait(&traitNameAsString, &rankSpecificTrait);
-            DEBUG_OUT(printf("state: %i \n", static_cast<int>(state)));
-            DEBUG_OUT(printf("rankSpecificTrait: %#010x \n", (uintptr_t) rankSpecificTrait));
-            DEBUG_OUT(printf("rankSpecificTrait->lowerRank: %u \n", rankSpecificTrait->lowerRank));
-            DEBUG_OUT(printf("rankSpecificTrait->upperRank: %u \n", rankSpecificTrait->upperRank));
-            DEBUG_OUT(printf("newRank: %u \n", newRank));
+            TRACE_OUT(printf("state: %i \n", static_cast<int>(state)));
+            TRACE_OUT(printf("rankSpecificTrait: %#010x \n", (uintptr_t) rankSpecificTrait));
+            TRACE_OUT(printf("rankSpecificTrait->lowerRank: %u \n", rankSpecificTrait->lowerRank));
+            TRACE_OUT(printf("rankSpecificTrait->upperRank: %u \n", rankSpecificTrait->upperRank));
+            TRACE_OUT(printf("newRank: %u \n", newRank));
             if (state == RANK_STATE::INACTIVE && rankSpecificTrait!= 0 && newRank >= rankSpecificTrait->lowerRank && newRank <= rankSpecificTrait->upperRank) { // Trait is inactive - rank matches -> activate
                 INFO_OUT(printf("Activated rankSpecificTrait '%s' for '%s'\n", rankSpecificTrait->activeName.c_str(), utils::getCString(leaderAddress + (0x4C / 4))));
                 traitListNode->data = rankSpecificTrait->activeTraitPtr;
@@ -224,11 +217,11 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
                 WARNING_OUT(printf("Rank Specific Trait '%s' was not registered in LUA.\n", traitNameAsString.c_str()));
             }
         }
-        DEBUG_OUT(std::cout << "----------" << std::endl);
+        TRACE_OUT(std::cout << "----------" << std::endl);
 
         traitListNode = (HDS::LinkedListNodeSingle*)traitListNode->next;
     }
-    DEBUG_OUT(std::cout << "traitListNode == 0 " << std::endl);
+    TRACE_OUT(std::cout << "traitListNode == 0 " << std::endl);
 }
 
 void hanldeTraitSaving(DWORD* leaderAddress, DWORD* traitAddress, DWORD** out) {

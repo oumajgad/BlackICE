@@ -20,6 +20,14 @@ int DATA_SECTION_START = 0x12F5000;
 bool EXTERNAL_DEBUG = false; // debug mode for the CasualLib::External Class
 DWORD MODULE_BASE;
 
+lua_State* LUA_STATE;
+
+void logInLua(const char* toLog) {
+    lua_getglobal(LUA_STATE, "BiceLibLuaLog");
+    lua_pushstring(LUA_STATE, toLog);
+    lua_call(LUA_STATE, 1, 0);
+    return;
+}
 
 /////////////////////////////////////
 //       GAME INFO FUNCTIONS       //
@@ -128,7 +136,9 @@ uintptr_t getTrait(Memory::External& external, std::string traitName) {
 }
 void addTraitToCache(std::string traitName, uintptr_t address) {
     traitCache->insert(std::make_pair(traitName, address));
-    //DEBUG_OUT(printf("Added to traitCache: %s - %#010x \n", traitName.c_str(), address));
+    DEBUG_OUT(printf("Added to traitCache: %s - %#010x \n", traitName.c_str(), address));
+    //std::string x = std::format("Added to traitCache : {} - {:x}", traitName.c_str(), address);
+    //logInLua(x.c_str());
     return;
 }
 void cacheTraits() {
@@ -174,6 +184,8 @@ uintptr_t getLeader(Memory::External& external, unsigned int leaderId) {
 void addLeaderToCache(unsigned int leaderId, uintptr_t address) {
     leaderCache->insert(std::make_pair(leaderId, address));
     DEBUG_OUT(printf("Added to leaderCache: %u - %#010x \n", leaderId, address));
+    //std::string x = std::format("Added to leaderCache : {} - {:x}", leaderId, address);
+    //logInLua(x.c_str());
     return;
 }
 void cacheLeaders() {
@@ -214,12 +226,12 @@ __declspec(dllexport) int addTraitToLeader(lua_State* L){
     auto leaderAddr = getLeader(external, leaderId);
     auto traitAddr = getTrait(external, traitName);
     if (leaderAddr == 0) {
-        INFO_OUT(printf("Couldn't find leader with ID '%u'\n", leaderId));
+        ERROR_OUT(printf("Couldn't find leader with ID '%u'\n", leaderId));
         lua_pushboolean(L, false);
         return 1;
     }
     else if (traitAddr == 0) {
-        INFO_OUT(printf("Couldn't find trait with name '%s'\n", traitName.c_str()));
+        ERROR_OUT(printf("Couldn't find trait with name '%s'\n", traitName.c_str()));
         lua_pushboolean(L, false);
         return 1;
     }
@@ -236,7 +248,7 @@ void activateLeaderRankChangeHook() {
     DWORD hookAddress = MODULE_BASE + 0x1D7CDC;
     Hooks::CLeader::jumpBack_leaderRankChangeHook = hookAddress + 6;
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::leaderRankChangeHook, 5, 1)) {
-        INFO_OUT(std::cout << "Hook 'activateLeaderRankChangeHook' failed" << std::endl);
+        ERROR_OUT(std::cout << "Hook 'activateLeaderRankChangeHook' failed" << std::endl);
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateLeaderRankChangeHook' succeeded" << std::endl);
@@ -278,7 +290,7 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
         return 1;
     }
     if (traitCache->find(activeName) == traitCache->end() || traitCache->find(inActiveName) == traitCache->end()) {
-        INFO_OUT(std::cout << "Trait for RankSpecificTrait '" << activeName << "' not found!" << std::endl);
+        ERROR_OUT(std::cout << "Trait for RankSpecificTrait '" << activeName << "' not found!" << std::endl);
         lua_pushboolean(L, false);
         return 1;
     }
@@ -432,7 +444,7 @@ __declspec(dllexport) int activateLeaderListShowMaxSkill(lua_State* L)
     Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill = hookAddress + 7;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderListShowMaxSkill, 5, 2)) {
-        INFO_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkill' failed" << std::endl);
+        ERROR_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkill' failed" << std::endl);
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkill' succeeded" << std::endl);
@@ -454,7 +466,7 @@ __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
     Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected = hookAddress + 7;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderListShowMaxSkillSelected, 5, 2)) {
-        INFO_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' failed" << std::endl);
+        ERROR_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' failed" << std::endl);
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' succeeded" << std::endl);
@@ -477,7 +489,7 @@ void activateUnitAttachmentLimitHook()
     Hooks::CArmy::jumpBack_unitAttachmentLimitHook = hookAddress + 5;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CArmy::unitAttachmentLimitHook, 5, 0)) {
-        INFO_OUT(std::cout << "Hook 'activateUnitAttachmentLimitHook' failed" << std::endl);
+        ERROR_OUT(std::cout << "Hook 'activateUnitAttachmentLimitHook' failed" << std::endl);
     }
     else {
         INFO_OUT(std::cout << "Hook 'activateUnitAttachmentLimitHook' succeeded" << std::endl);
@@ -547,6 +559,10 @@ __declspec(dllexport) int addCommandLimitTrait(lua_State* L)
     std::string traitName = luaL_checkstring(L, 1);
     int effect = luaL_checkinteger(L, 2);
 
+    if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
+        activateUnitAttachmentLimitHook();
+    }
+
     if (Hooks::CArmy::commandLimitTraits->find(traitName) != Hooks::CArmy::commandLimitTraits->end()) {
         DEBUG_OUT(std::cout << "addCommandLimitTrait for: " << traitName << " was already added" << std::endl);
         return 0;
@@ -578,7 +594,7 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
     }
     
     if (!Patches::fixOffMapIC(MODULE_BASE)) {
-        INFO_OUT(std::cout << "Patch 'fixOffMapIC' failed" << std::endl);
+        ERROR_OUT(std::cout << "Patch 'fixOffMapIC' failed" << std::endl);
     }
     else {
         INFO_OUT(std::cout << "Patch 'fixOffMapIC' succeeded" << std::endl);
@@ -597,7 +613,7 @@ __declspec(dllexport) int fixMinisterTechDecay(lua_State* L)
     }
 
     if (!Patches::fixMinisterTechDecay(MODULE_BASE)) {
-        INFO_OUT(std::cout << "Patch 'fixMinisterTechDecay' failed" << std::endl);
+        ERROR_OUT(std::cout << "Patch 'fixMinisterTechDecay' failed" << std::endl);
     }
     else {
         INFO_OUT(std::cout << "Patch 'fixMinisterTechDecay' succeeded" << std::endl);
@@ -617,7 +633,7 @@ __declspec(dllexport) int disableWarExhaustionNeutralityReset(lua_State* L)
     }
 
     if (!Patches::disableWarExhaustionNeutralityReset(MODULE_BASE)) {
-        INFO_OUT(std::cout << "Patch 'disableWarExhaustionNeutralityReset' failed" << std::endl);
+        ERROR_OUT(std::cout << "Patch 'disableWarExhaustionNeutralityReset' failed" << std::endl);
     }
     else {
         INFO_OUT(std::cout << "Patch 'disableWarExhaustionNeutralityReset' succeeded" << std::endl);
@@ -635,7 +651,7 @@ __declspec(dllexport) int disableInterAiExpeditionaries(lua_State* L)
     }
 
     if (!Patches::disableInterAiExpeditionaries(MODULE_BASE)) {
-        INFO_OUT(std::cout << "Patch 'disableInterAiExpeditionaries' failed" << std::endl);
+        ERROR_OUT(std::cout << "Patch 'disableInterAiExpeditionaries' failed" << std::endl);
     }
     else {
         INFO_OUT(std::cout << "Patch 'disableInterAiExpeditionaries' succeeded" << std::endl);
@@ -706,66 +722,71 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {NULL, NULL}
 };
 
-void registerFunction(lua_State* L, const char* name, lua_CFunction function) {
-    lua_pushstring(L, name);
-    lua_pushcfunction(L, function);
-    lua_settable(L, -3);
+void registerFunction(const char* name, lua_CFunction function) {
+    lua_pushstring(LUA_STATE, name);
+    lua_pushcfunction(LUA_STATE, function);
+    lua_settable(LUA_STATE, -3);
     return;
 }
 
-void registerGameInfoFunctions(lua_State* L) {
-    lua_pushstring(L, "GameInfo");
-    lua_newtable(L);
-    registerFunction(L, "getCountryFlags", getCountryFlags);
-    registerFunction(L, "getCountryVariables", getCountryVariables);
-    lua_settable(L, -3);
+void registerGameInfoFunctions() {
+    lua_pushstring(LUA_STATE, "GameInfo");
+    lua_newtable(LUA_STATE);
+    registerFunction("getCountryFlags", getCountryFlags);
+    registerFunction("getCountryVariables", getCountryVariables);
+    lua_settable(LUA_STATE, -3);
     return;
 }
 
-void registerLeaderFunctions(lua_State* L) {
-    lua_pushstring(L, "Leaders");
-    lua_newtable(L);
-    registerFunction(L, "addRankSpecificTrait", addRankSpecificTrait);
-    registerFunction(L, "activateRankSpecificTraits", activateRankSpecificTraits);
-    registerFunction(L, "checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency);
-    registerFunction(L, "activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
-    registerFunction(L, "activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
-    registerFunction(L, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
-    registerFunction(L, "addTraitToLeader", addTraitToLeader);
-    lua_settable(L, -3);
+void registerLeaderFunctions() {
+    lua_pushstring(LUA_STATE, "Leaders");
+    lua_newtable(LUA_STATE);
+    registerFunction("addRankSpecificTrait", addRankSpecificTrait);
+    registerFunction("activateRankSpecificTraits", activateRankSpecificTraits);
+    registerFunction("checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency);
+    registerFunction("activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
+    registerFunction("activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
+    registerFunction("activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
+    registerFunction("addTraitToLeader", addTraitToLeader);
+    lua_settable(LUA_STATE, -3);
     return;
 }
 
-void registerUnitFunctions(lua_State* L) {
-    lua_pushstring(L, "Units");
-    lua_newtable(L);
-    registerFunction(L, "setCorpsUnitLimit", setCorpsUnitLimit);
-    registerFunction(L, "setArmyUnitLimit", setArmyUnitLimit);
-    registerFunction(L, "setArmyGroupUnitLimit", setArmyGroupUnitLimit);
-    registerFunction(L, "addCommandLimitTrait", addCommandLimitTrait);
-    lua_settable(L, -3);
+void registerUnitFunctions() {
+    lua_pushstring(LUA_STATE, "Units");
+    lua_newtable(LUA_STATE);
+    registerFunction("setCorpsUnitLimit", setCorpsUnitLimit);
+    registerFunction("setArmyUnitLimit", setArmyUnitLimit);
+    registerFunction("setArmyGroupUnitLimit", setArmyGroupUnitLimit);
+    registerFunction("addCommandLimitTrait", addCommandLimitTrait);
+    lua_settable(LUA_STATE, -3);
     return;
 }
 
-void registerPatchFunctions(lua_State* L) {
-    lua_pushstring(L, "BytePatches");
-    lua_newtable(L);
-    registerFunction(L, "fixOffMapIC", fixOffMapIC);
-    registerFunction(L, "fixMinisterTechDecay", fixMinisterTechDecay);
-    registerFunction(L, "disableWarExhaustionNeutralityReset", disableWarExhaustionNeutralityReset);
-    registerFunction(L, "disableInterAiExpeditionaries", disableInterAiExpeditionaries);
-    lua_settable(L, -3);
+void registerPatchFunctions() {
+    lua_pushstring(LUA_STATE, "BytePatches");
+    lua_newtable(LUA_STATE);
+    registerFunction("fixOffMapIC", fixOffMapIC);
+    registerFunction("fixMinisterTechDecay", fixMinisterTechDecay);
+    registerFunction("disableWarExhaustionNeutralityReset", disableWarExhaustionNeutralityReset);
+    registerFunction("disableInterAiExpeditionaries", disableInterAiExpeditionaries);
+    lua_settable(LUA_STATE, -3);
     return;
 }
 
 extern "C"
 __declspec(dllexport) int luaopen_BiceLib(lua_State* L)
 {
-    lua_newtable(L);
-    luaL_register(L, NULL, BiceLib);
-    registerGameInfoFunctions(L);
-    registerLeaderFunctions(L);
-    registerUnitFunctions(L);
-    registerPatchFunctions(L);
+    LUA_STATE = L;
+    DEBUG_OUT(printf("LUA_STATE: %#010x\n", (uintptr_t)LUA_STATE));
+
+    logInLua("Loaded BiceLib");
+    lua_newtable(LUA_STATE);
+    luaL_register(LUA_STATE, NULL, BiceLib);
+    registerGameInfoFunctions();
+    registerLeaderFunctions();
+    registerUnitFunctions();
+    registerPatchFunctions();
+
     return 1;
 }
