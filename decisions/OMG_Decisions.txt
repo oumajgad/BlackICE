@@ -3005,10 +3005,7 @@ diplomatic_decisions = {
 	Introduction_event = {
 		potential = {
 			ai = no
-
-			not = {
-				has_country_modifier = Disabled_Intro_Help
-			}
+			has_country_flag = enabled_intro_help_decision
 		}
 		allow = {
 			ai = no
@@ -3017,6 +3014,29 @@ diplomatic_decisions = {
 			country_event = 59999
 		}
 	}
+	Introduction_event_game_start = {
+		potential = {
+			tag = OMG
+			date = 1936.1.1
+			not = {
+				has_country_flag = Introduction_event_game_start_done
+			}
+		}
+		allow = {
+		}
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						ai = no
+					}
+					country_event = 59999
+				}
+				set_country_flag = Introduction_event_game_start_done
+			}
+		}
+	}
+
 	fuck_your_conquests = {
 		potential = {
 			tag = OMG
