@@ -47,6 +47,12 @@ def PatchMinisterWarExhaustionNeutralityReset():
     WriteHex("hoi3_tfh.exe", 0xDC009, hex_n)
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xDC009, 25)}')
 
+    print(f'Old: {ReadHex("hoi3_tfh.exe", 0xDBFD3, 14)}')
+    WriteHex("hoi3_tfh.exe", 0xDBFD3, "C786D00A00000000000090909090")
+    print(f'New: {ReadHex("hoi3_tfh.exe", 0xDBFD3, 14)}')
+
+    
+
 
 def PatchOffmapIC():
     print("Patch_OffmapIC")

@@ -20,14 +20,8 @@ int DATA_SECTION_START = 0x12F5000;
 bool EXTERNAL_DEBUG = false; // debug mode for the CasualLib::External Class
 DWORD MODULE_BASE;
 
-lua_State* LUA_STATE;
-
-void logInLua(const char* toLog) {
-    lua_getglobal(LUA_STATE, "BiceLibLuaLog");
-    lua_pushstring(LUA_STATE, toLog);
-    lua_call(LUA_STATE, 1, 0);
-    return;
-}
+lua_State* LUA_STATE = nullptr;
+std::vector<lua_State*> *LUA_STATES = new std::vector<lua_State*>;
 
 /////////////////////////////////////
 //       GAME INFO FUNCTIONS       //
@@ -722,71 +716,82 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {NULL, NULL}
 };
 
-void registerFunction(const char* name, lua_CFunction function) {
-    lua_pushstring(LUA_STATE, name);
-    lua_pushcfunction(LUA_STATE, function);
-    lua_settable(LUA_STATE, -3);
+void registerFunction(lua_State* this_state, const char* name, lua_CFunction function) {
+    lua_pushstring(this_state, name);
+    lua_pushcfunction(this_state, function);
+    lua_settable(this_state, -3);
     return;
 }
 
-void registerGameInfoFunctions() {
-    lua_pushstring(LUA_STATE, "GameInfo");
-    lua_newtable(LUA_STATE);
-    registerFunction("getCountryFlags", getCountryFlags);
-    registerFunction("getCountryVariables", getCountryVariables);
-    lua_settable(LUA_STATE, -3);
+void registerGameInfoFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "GameInfo");
+    lua_newtable(this_state);
+    registerFunction(this_state, "getCountryFlags", getCountryFlags);
+    registerFunction(this_state, "getCountryVariables", getCountryVariables);
+    lua_settable(this_state, -3);
     return;
 }
 
-void registerLeaderFunctions() {
-    lua_pushstring(LUA_STATE, "Leaders");
-    lua_newtable(LUA_STATE);
-    registerFunction("addRankSpecificTrait", addRankSpecificTrait);
-    registerFunction("activateRankSpecificTraits", activateRankSpecificTraits);
-    registerFunction("checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency);
-    registerFunction("activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
-    registerFunction("activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
-    registerFunction("activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
-    registerFunction("addTraitToLeader", addTraitToLeader);
-    lua_settable(LUA_STATE, -3);
+void registerLeaderFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Leaders");
+    lua_newtable(this_state);
+    registerFunction(this_state, "addRankSpecificTrait", addRankSpecificTrait);
+    registerFunction(this_state, "activateRankSpecificTraits", activateRankSpecificTraits);
+    registerFunction(this_state, "checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency);
+    registerFunction(this_state, "activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
+    registerFunction(this_state, "activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
+    registerFunction(this_state, "activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
+    registerFunction(this_state, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
+    registerFunction(this_state, "addTraitToLeader", addTraitToLeader);
+    lua_settable(this_state, -3);
     return;
 }
 
-void registerUnitFunctions() {
-    lua_pushstring(LUA_STATE, "Units");
-    lua_newtable(LUA_STATE);
-    registerFunction("setCorpsUnitLimit", setCorpsUnitLimit);
-    registerFunction("setArmyUnitLimit", setArmyUnitLimit);
-    registerFunction("setArmyGroupUnitLimit", setArmyGroupUnitLimit);
-    registerFunction("addCommandLimitTrait", addCommandLimitTrait);
-    lua_settable(LUA_STATE, -3);
+void registerUnitFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Units");
+    lua_newtable(this_state);
+    registerFunction(this_state, "getCountryVariables", getCountryVariables);
+    registerFunction(this_state, "setCorpsUnitLimit", setCorpsUnitLimit);
+    registerFunction(this_state, "setArmyUnitLimit", setArmyUnitLimit);
+    registerFunction(this_state, "setArmyGroupUnitLimit", setArmyGroupUnitLimit);
+    registerFunction(this_state, "addCommandLimitTrait", addCommandLimitTrait);
+    lua_settable(this_state, -3);
     return;
 }
 
-void registerPatchFunctions() {
-    lua_pushstring(LUA_STATE, "BytePatches");
-    lua_newtable(LUA_STATE);
-    registerFunction("fixOffMapIC", fixOffMapIC);
-    registerFunction("fixMinisterTechDecay", fixMinisterTechDecay);
-    registerFunction("disableWarExhaustionNeutralityReset", disableWarExhaustionNeutralityReset);
-    registerFunction("disableInterAiExpeditionaries", disableInterAiExpeditionaries);
-    lua_settable(LUA_STATE, -3);
+void registerPatchFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "BytePatches");
+    lua_newtable(this_state);
+    registerFunction(this_state, "fixOffMapIC", fixOffMapIC);
+    registerFunction(this_state, "fixMinisterTechDecay", fixMinisterTechDecay);
+    registerFunction(this_state, "disableWarExhaustionNeutralityReset", disableWarExhaustionNeutralityReset);
+    registerFunction(this_state, "disableInterAiExpeditionaries", disableInterAiExpeditionaries);
+    lua_settable(this_state, -3);
     return;
 }
 
 extern "C"
-__declspec(dllexport) int luaopen_BiceLib(lua_State* L)
+__declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
 {
-    LUA_STATE = L;
-    DEBUG_OUT(printf("LUA_STATE: %#010x\n", (uintptr_t)LUA_STATE));
+    if (LUA_STATE == nullptr) {
+        // Set main lua state
+        LUA_STATE = this_state;
+        utils::LUA_STATE = this_state;
+    }
+    DEBUG_OUT(printf("this_state: %#010x\n", (uintptr_t)this_state));
+    LUA_STATES->push_back(this_state);
+    DEBUG_OUT(printf("LUA_STATES: %i\n", LUA_STATES->size()));
 
-    logInLua("Loaded BiceLib");
-    lua_newtable(LUA_STATE);
-    luaL_register(LUA_STATE, NULL, BiceLib);
-    registerGameInfoFunctions();
-    registerLeaderFunctions();
-    registerUnitFunctions();
-    registerPatchFunctions();
+    lua_newtable(this_state);
+    luaL_register(this_state, NULL, BiceLib);
+    registerGameInfoFunctions(this_state);
+    registerLeaderFunctions(this_state);
+    registerUnitFunctions(this_state);
+    registerPatchFunctions(this_state);
 
+    utils::logInLua(this_state,"Loaded BiceLib");
+    char buf[100];
+    snprintf(buf, 100, "LUA_STATES: %i", LUA_STATES->size());
+    utils::logInLua(this_state, buf);
     return 1;
 }

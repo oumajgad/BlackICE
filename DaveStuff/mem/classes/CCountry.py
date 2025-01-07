@@ -28,6 +28,9 @@ class CCountryOffsets:
     CAIStrategy: int = 0x1DC  # embedded into the class
     tag: int = 0x1E4
     tag_id: int = 0x1E8
+    neutrality: int = 0xA8C
+    at_war: bool = 0xACC
+    war_exhaustion: int = 0xAD0
     units_ll_ptr: int = 0xBAC
     owned_provinces_ll_ptr: int = 0xCF0
     controlled_provinces_ll_ptr: int = 0xD00
@@ -45,6 +48,9 @@ class CCountry(pydantic.BaseModel):
     # CVariables: CVariables
     tag: str
     tag_id: int
+    neutrality: int
+    at_war: bool
+    war_exhaustion: int
     # units: list[CArmy]
     CDiplomacyStatus_array_ptr: str  # array with pointers to all CDiplomacystatus
 
@@ -65,6 +71,9 @@ class CCountry(pydantic.BaseModel):
             # "CVariables": CVariables.make(pm, ptr + CCountryOffsets.CVariables_VFTABLE_PTR_1),
             "tag": pm.read_bytes(ptr + CCountryOffsets.tag, 3),
             "tag_id": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.tag_id, 4)),
+            "neutrality": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.neutrality, 4)),
+            "at_war": pm.read_bool(ptr + CCountryOffsets.at_war),
+            "war_exhaustion": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.war_exhaustion, 4)),
             # "units": cls.get_units(pm, ptr),
             "CDiplomacyStatus_array_ptr": utils.int_to_pointer(
                 pm.read_uint(ptr + CCountryOffsets.CDiplomacyStatus_array_ptr)
@@ -167,7 +176,7 @@ if __name__ == "__main__":
     print(
         utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
     )
-    country = get_country(pm, "ENG")
+    country = get_country(pm, "ITA")
     print(
         utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
     )

@@ -61,6 +61,13 @@ bool Patches::disableWarExhaustionNeutralityReset(uintptr_t moduleBase) {
     if (!patchBytes((void*)address2, two, 6)) {
         return 0;
     }
+ 
+    BYTE three[14] = { 0xC7, 0x86, 0xD0, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x90, 0x90, 0x90, 0x90 };
+    DWORD address3 = moduleBase + 0xdcbd3;
+    if (!patchBytes((void*)address3, three, 14)) {
+        return 0;
+    }
+  
     return 1;
 }
 
