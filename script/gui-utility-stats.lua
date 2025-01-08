@@ -198,11 +198,14 @@ if wx ~= nil then
 	-- Connect Events
 
 	UI.m_button_Statistics_setup_toggle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-        ToggleStatCollection()
+        Stats.ToggleStatCollection()
 	end )
 
 	UI.m_button_Statistics_setup_toggle_custom_list:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-        ToggleStatCollectionCustomList()
+        Stats.ToggleStatCollectionCustomList()
+		if Stats.CustomCountryListActive == true then
+			Stats.UpdateCustomCountryListInStatSelection()
+		end
 	end )
 
 	UI.m_button_Statistics_setup_add:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
@@ -214,6 +217,10 @@ if wx ~= nil then
 			local omgTag = CCountryDataBase.GetTag("OMG")
 			local command = CSetVariableCommand(omgTag, CString("zStatsCustomList_" .. tag), CFixedPoint(1))
 			CCurrentGameState.Post(command)
+
+			if Stats.CustomCountryListActive == true then
+				Stats.UpdateCustomCountryListInStatSelection()
+			end
         end
 	end )
 
@@ -226,6 +233,10 @@ if wx ~= nil then
 			local command = CSetVariableCommand(omgTag, CString("zStatsCustomList_" .. tag), CFixedPoint(0))
 			CCurrentGameState.Post(command)
             UI.m_listBox_Statistics_country_list:Delete(selection)
+
+			if Stats.CustomCountryListActive == true then
+				Stats.UpdateCustomCountryListInStatSelection()
+			end
         end
 	end )
 

@@ -26,9 +26,6 @@ require('options')
 -- Gameinfos
 require('parsing')
 
--- Stats
-require('stats_gui')
-
 local True = true
 local False = false
 
@@ -1853,7 +1850,7 @@ if wx ~= nil then
 		ReadCustomProductionSliderValues()
 		DetermineCustomLsSliderAiStatus()
 		ReadCustomLsSliderValues()
-		SetUpStatCollectionPage()
+		Stats.SetUpStatCollectionPage()
 
 		UI.m_radioBtn_Generals_all:SetValue( true )
 		Parsing.Generals.FillwxChoice(G_PlayerCountry, true)

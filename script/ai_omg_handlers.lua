@@ -12,7 +12,7 @@ function IntelligenceMinisterUtilityThings()
 		-- DetermineExePatchStatus()
 		DetermineSpriteDeletionStatus()
 		DetermineBiceLibLoadStatus()
-		SetUpStatCollectionPage()
+		Stats.SetUpStatCollectionPage()
 	end
 
 	-- t = os.clock()
