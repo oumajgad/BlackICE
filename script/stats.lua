@@ -122,6 +122,9 @@ function P.HandleIntelligenceMinisterStats(countryTag, country)
 	setUpIdeologyList()
 	local groupPopularity = {}
 	local tag = tostring(countryTag)
+	if ideologyList == nil then
+		return
+	end
 	for ideologyString, ideology in pairs(ideologyList) do
 		local popularity = country:AccessIdeologyPopularity():GetValue(ideology):Get()
 		local group = tostring(ideology:GetGroup():GetKey())
@@ -198,6 +201,8 @@ function P.HandleTechMinisterStats(countryTag, country)
 	local freeSpies = country:GetNumberOfFreeSpies()
 	local domSpy = country:GetSpyPresence(countryTag):GetLevel():Get()
 	local totalSpiesAbroad  = GetTotalSpiesAbroad(country, countryTag)
+	local neutrality = country:GetNeutrality():Get()
+	local effective_neutrality = country:GetNeutrality():Get()
 
 	P.AddStat(tag, "ls_TotalLeadership", tostring(string.format('%.0f', totalLeadership)))
 	P.AddStat(tag, "ls_Percent_Research", tostring(string.format('%.0f', percent_research * 100)))
@@ -207,6 +212,8 @@ function P.HandleTechMinisterStats(countryTag, country)
 	P.AddStat(tag, "intel_FreeSpies", tostring(string.format('%.0f', freeSpies)))
 	P.AddStat(tag, "intel_DomesticSpies", tostring(string.format('%.0f', domSpy)))
 	P.AddStat(tag, "intel_TotalSpiesAbroad", tostring(string.format('%.0f', totalSpiesAbroad)))
+	P.AddStat(tag, "diplo_Neutrality", tostring(string.format('%.0f', neutrality)))
+	P.AddStat(tag, "diplo_EffectiveNeutrality", tostring(string.format('%.0f', effective_neutrality)))
 end
 
 --- Remember to add the stat here when adding a new stat collect elsewhere!
@@ -221,5 +228,21 @@ function P.CollectPlayerStatistics()
 		end
 	end
 end
+
+-- Since there are multiple LUA threads the global vars need to be initialized in each thread seperately
+function P.SetUpStatCollectionLuaVars()
+	local omgTag = CCountryDataBase.GetTag("OMG")
+	local omgCountry = omgTag:GetCountry()
+    local variables = omgCountry:GetVariables()
+	local statisticsToggle = variables:GetVariable(CString("StatisticsToggle")):Get()
+	local statisticsCustomList = variables:GetVariable(CString("StatisticsCustomList")):Get()
+    if statisticsToggle == 1 then
+        Stats.CollectStats = true
+		if statisticsCustomList == 1 then
+			Stats.CustomCountryListActive = true
+		end
+    end
+end
+
 
 return Stats

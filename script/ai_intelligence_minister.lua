@@ -16,6 +16,7 @@ local IntelligenceMissions = {
 	}
 }
 
+local isOmgThread = false
 -- ##################################
 -- # Called by the EXE
 -- ##################################
@@ -35,6 +36,7 @@ function IntelligenceMinister_Tick(minister)
 
 	--OMG Variable Handler
 	if isOMG then
+		isOmgThread = true
 		OMGMinisterHandler("IntelligenceMinister_Tick", minister)
 	end
 
@@ -43,6 +45,9 @@ function IntelligenceMinister_Tick(minister)
 		t = os.clock()
 	end
 
+	if isOmgThread == false then
+		Stats.SetUpStatCollectionLuaVars()
+	end
 
 	if math.mod( CCurrentGameState.GetAIRand(), 9) == 0 then
 		-- Reset Global Array Container

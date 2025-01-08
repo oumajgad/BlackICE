@@ -1476,11 +1476,13 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 					 math.abs(vUpgrade - vUpgradeOriginal)
 	if checksum > 0.01 then
 		local countryTag = ministerCountry:GetCountryTag()
-		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(countryTag)) then
-			Stats.HandleProductionMinisterSliderStats(ministerCountryTag, ministerCountry)
-		end
 		local command = CChangeInvestmentCommand( countryTag, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade )
 		ai:Post( command )
+	end
+	if checksum > 00.1 then
+		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(ministerCountry:GetCountryTag())) then
+			Stats.HandleProductionMinisterSliderStats(ministerCountryTag, ministerCountry)
+		end
 	end
 end
 

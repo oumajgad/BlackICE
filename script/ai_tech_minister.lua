@@ -64,6 +64,13 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 	local ResearchSlotsAllowed = 0
 
 	if vbSliders then
+		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(TechnologyData.ministerTag)) then
+			-- Utils.LUA_DEBUGOUT("HandleTechMinisterStats: " .. tostring(TechnologyData.ministerTag))
+			Stats.HandleTechMinisterStats(TechnologyData.ministerTag, TechnologyData.ministerCountry)
+		end
+	end
+
+	if vbSliders then
 		-- Calling balance sliders like this allows me to get what the new Research slot count would be
 		--    once the sliders are shifted
 		local loLeaderSliders = BalanceLeadershipSliders(TechnologyData, vbSliders)
@@ -388,10 +395,6 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 
 	-- Do not post unless set to true as this could be a call from other AIs to get information on the sliders
 	if vbSliders then
-		if Stats.CollectStats == true and Stats.CustomListCheck(tostring(StandardDataObject.ministerTag)) then
-			Stats.HandleTechMinisterStats(StandardDataObject.ministerTag, StandardDataObject.ministerCountry)
-		end
-
 		local command = CChangeLeadershipCommand(StandardDataObject.ministerTag, Leadership.Percent_NCO, Leadership.Percent_Diplomacy, Leadership.Percent_Espionage, Leadership.Percent_Research)
 		StandardDataObject.ministerAI:Post(command)
 	end

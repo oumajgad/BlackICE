@@ -187,9 +187,10 @@ if wx ~= nil then
         'pol_Popularity_Group_noIdeologygroup', 'pol_Popularity_left_wing_radical', 'pol_Popularity_leninist', 'pol_Popularity_market_liberal',
         'pol_Popularity_national_socialist', 'pol_Popularity_noIdeology', 'pol_Popularity_paternal_autocrat', 'pol_Popularity_social_conservative',
         'pol_Popularity_social_democrat', 'pol_Popularity_social_liberal', 'pol_Popularity_stalinist', 'prod__TotalIc', 'prod__IcEff', 'ls_TotalLeadership',
-        'intel_TotalSpiesAbroad', 'prod_Consumer_%', 'prod_Consumer_IC', 'prod_LendLease_%', 'prod_LendLease_IC', 'prod_Production_%', 'prod_Production_IC',
-        'prod_Reinforce_%', 'prod_Reinforce_IC', 'prod_Supply_%', 'prod_Supply_IC', 'prod_Upgrade_%', 'prod_Upgrade_IC', 'other_u_LandCountTotal', 
-		'other_u_AirCountTotal', 'other_u_NavalCountTotal', 'other_u_TotalDivisions', 'other_ManpowerTotal'
+        'intel_TotalSpiesAbroad', 'diplo_Neutrality', 'diplo_EffectiveNeutrality', 'prod_Consumer_%', 'prod_Consumer_IC', 'prod_LendLease_%',
+		'prod_LendLease_IC', 'prod_Production_%', 'prod_Production_IC', 'prod_Reinforce_%', 'prod_Reinforce_IC', 'prod_Supply_%', 'prod_Supply_IC',
+		'prod_Upgrade_%', 'prod_Upgrade_IC', 'other_u_LandCountTotal', 'other_u_AirCountTotal', 'other_u_NavalCountTotal', 'other_u_TotalDivisions',
+		'other_ManpowerTotal'
     }
     table.sort(statChoices)
     UI.m_listBox_Statistics_main_stats:Clear()
