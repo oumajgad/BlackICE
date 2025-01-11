@@ -15,11 +15,13 @@ class CMapProvinceOffsets:
     is_selected: int = 0xC
     supply_depot_province: int = 0x48
     id: int = 0xD0
+    province_modifiers_array_ptr: int = 0x114  # Array of CModifierDefinition
     supply_pool: int = 0x1B4
     oil: int = 0x27C
     metal: int = 0x280
     energy: int = 0x284
     rares: int = 0x288
+    COwnerArea_ptr: int = 0x2B4
     CProvinceBuilding_array_ptr: int = 0x310
     manpower: int = 0x320
     leadership: int = 0x324
@@ -27,7 +29,6 @@ class CMapProvinceOffsets:
     owner_id: int = 0x330
     controller_tag: int = 0x334
     controller_id: int = 0x338
-    COwnerArea_ptr: int = 0x2B4
 
 
 class CMapProvince(pydantic.BaseModel):

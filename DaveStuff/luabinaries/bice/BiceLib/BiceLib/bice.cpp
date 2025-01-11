@@ -14,6 +14,7 @@
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
 #include <Hooks/CArmyHooks.hpp>
+#include <Hooks/HookedPatches.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
@@ -586,13 +587,38 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
     if (fixOffMapICDone) {
         return 0;
     }
-    
+
+    DWORD hookAddress1 = MODULE_BASE + 0xf0f22;
+    Hooks::Patches::jumpback_fixOffmapIc_CountLocalIc = hookAddress1 + 6;
+
+    if (!Hooks::hook((void*)hookAddress1, Hooks::Patches::fixOffmapIc_CountLocalIc, 5, 1)) {
+        ERROR_OUT(std::cout << "Hook 'fixOffmapIc_CountLocalIc' failed" << std::endl);
+    }
+    else {
+        INFO_OUT(std::cout << "Hook 'fixOffmapIc_CountLocalIc' succeeded" << std::endl);
+        DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_CountLocalIc: " << Memory::n2hexstr(Hooks::CArmy::jumpback_fixOffmapIc_CountLocalIc) << std::endl);
+    }
+
+    DWORD hookAddress2 = MODULE_BASE + 0xf0f9d;
+    Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc = hookAddress2 + 6;
+
+    if (!Hooks::hook((void*)hookAddress2, Hooks::Patches::fixOffmapIc_SetBaseIc, 5, 1)) {
+        ERROR_OUT(std::cout << "Hook 'fixOffmapIc_SetBaseIc' failed" << std::endl);
+    }
+    else {
+        INFO_OUT(std::cout << "Hook 'fixOffmapIc_SetBaseIc' succeeded" << std::endl);
+        DEBUG_OUT(std::cout << "fixOffmapIc_SetBaseIc: " << Memory::n2hexstr(Hooks::CArmy::fixOffmapIc_SetBaseIc) << std::endl);
+    }
+
+
+    /*
     if (!Patches::fixOffMapIC(MODULE_BASE)) {
         ERROR_OUT(std::cout << "Patch 'fixOffMapIC' failed" << std::endl);
     }
     else {
         INFO_OUT(std::cout << "Patch 'fixOffMapIC' succeeded" << std::endl);
     }
+    */
 
     fixOffMapICDone = true;
     return 0;

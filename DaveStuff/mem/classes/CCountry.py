@@ -28,12 +28,16 @@ class CCountryOffsets:
     CAIStrategy: int = 0x1DC  # embedded into the class
     tag: int = 0x1E4
     tag_id: int = 0x1E8
+    effective_ic: int = 0x604
+    exact_base_ic_x1000: int = 0x610
+    base_ic: int = 0x60C
     neutrality: int = 0xA8C
     at_war: bool = 0xACC
     war_exhaustion: int = 0xAD0
     units_ll_ptr: int = 0xBAC
     owned_provinces_ll_ptr: int = 0xCF0
-    controlled_provinces_ll_ptr: int = 0xD00
+    country_modifiers_array_ptr: int = 0xDA8
+    controlled_provinces_ID_ll_ptr: int = 0xD00
     CDiplomacyStatus_array_ptr: int = 0xE28  # array with pointers to all CDiplomacystatus
 
 
@@ -48,6 +52,9 @@ class CCountry(pydantic.BaseModel):
     # CVariables: CVariables
     tag: str
     tag_id: int
+    effective_ic: int
+    exact_base_ic_x1000: int
+    base_ic: int
     neutrality: int
     at_war: bool
     war_exhaustion: int
@@ -71,6 +78,9 @@ class CCountry(pydantic.BaseModel):
             # "CVariables": CVariables.make(pm, ptr + CCountryOffsets.CVariables_VFTABLE_PTR_1),
             "tag": pm.read_bytes(ptr + CCountryOffsets.tag, 3),
             "tag_id": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.tag_id, 4)),
+            "effective_ic": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.effective_ic, 4)),
+            "exact_base_ic_x1000": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.exact_base_ic_x1000, 4)),
+            "base_ic": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.base_ic, 4)),
             "neutrality": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.neutrality, 4)),
             "at_war": pm.read_bool(ptr + CCountryOffsets.at_war),
             "war_exhaustion": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.war_exhaustion, 4)),
@@ -176,7 +186,7 @@ if __name__ == "__main__":
     print(
         utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
     )
-    country = get_country(pm, "ITA")
+    country = get_country(pm, "GER")
     print(
         utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
     )

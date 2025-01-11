@@ -48,7 +48,7 @@ function GetPlayerModifiers()
     local startingExp = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_UNIT_START_EXPERIENCE_):Get()
 
     UI.m_textCtrl_baseIc:SetValue(string.format('%.0f', baseIC))
-    UI.m_textCtrl_offmapIc:SetValue(string.format('%.0f', (baseICWithOffmap - baseIC)))
+    UI.m_textCtrl_offmapIc:SetValue(string.format('%.0f', (baseICWithOffmap)))
     UI.m_textCtrl_icModifier:SetValue(string.format('%.02f', (icModifier * 100)))
 
     UI.m_textCtrl_IcEff:SetValue(string.format('%.02f', icEffRaw))

@@ -51,30 +51,12 @@ def PatchMinisterWarExhaustionNeutralityReset():
     WriteHex("hoi3_tfh.exe", 0xDBFD3, "C786D00A00000000000090909090")
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xDBFD3, 14)}')
 
-    
-
-
-def PatchOffmapIC():
-    print("Patch_OffmapIC")
-    print("\tThis fixes the 'ic' effect so modders can use it. It is basically offmap IC")
-
-    print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
-    WriteHex("hoi3_tfh.exe", 0xF03A9, "8B4178909090")
-    print(f'New: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
-    
-    print("Patch_OffmapIC_UI")
-    print("\tThis makes the ingame display of IC account for offmap IC")
-    print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF0390, 3)}')
-    WriteHex("hoi3_tfh.exe", 0xF0390, "F76978")
-    print(f'New: {ReadHex("hoi3_tfh.exe", 0xF0390, 3)}')
-
 
 if __name__ == "__main__":
     try:
         PatchLargeAddressAware()
         PatchMinisterTechDecay()
         PatchMinisterWarExhaustionNeutralityReset()
-        PatchOffmapIC()
         print("\nSuccess\n")
         os.system("pause")
     except Exception as e:
