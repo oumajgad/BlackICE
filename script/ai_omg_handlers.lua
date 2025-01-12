@@ -44,7 +44,7 @@ G_LUA_SCHEDULE = {
 	["IntelligenceMinister_Tick"] = {
 		IntelligenceMinisterUtilityThings,
 		-- CalculateLogisticsNeed
-		CalculateHeavyIcEffect,
+		-- CalculateHeavyIcEffect,
 		CheckForIntraFactionMilitaryAccess
 	},
 	-- 03:00
