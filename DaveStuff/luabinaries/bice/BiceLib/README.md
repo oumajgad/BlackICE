@@ -27,28 +27,14 @@ LUA functions are provided to activate and configure the module. They are groupe
     * **Notes**:
         * The values are in the fixed point number format. E.g. if the returned value is 12050, then the ingame representation is 12.05
         * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *getFlags* and *getVariables*.
-
-## BiceLib.BytePatches
-* **fixOffMapIC()**
-    * makes the "IC" modifier usable in event/triggered modifiers, essentially being offmap IC
-    * This breaks the "local_ic" building modifier, so any buildings giving local IC will need a triggered modifier to add their IC effect, triggered by a building count done in LUA
-    * **Params**: /
-    * **Return values**: /
-* **fixMinisterTechDecayDone()**
-    * The "Minister tech ability decay" modifier simply does not work. This fixes that.
-    * **Params**: /
-    * **Return values**: /
-* **disableWarExhaustionNeutralityReset()**
-    * Normally the game adds a countries "War Exhaustion" to its neutrality after a war (when it switches from war to peace)
-    * For Black ICE we don't want that.
-    * **Params**: /
-    * **Return values**: /
-* **disableInterAiExpeditionaries()**
-    * This patch makes the AI never send/retrieve expeditionary units from other AI countries.
-    * AI countries will send expeditionary to each other when the unit is on the territory of its ally. However the AI is likely to send the majority of their units to countries which don't need them, and then won't recall them. 
-    * This happens especially in cases when the AI just conquered a country and immediately after creates a puppet.
-    * **Params**: /
-    * **Return values**: /
+* **getCountryOffmapIc(string countryTag)**:
+    * Gets the offmap ic value of a country
+    * **Params**:
+        1. *countryTag*: The TAG for which to retrieve the variables
+    * **Return values**:
+        1. *offmapIC*: integer / nil if the countryTag wasn't found
+    * **Notes**:
+        * requires the offmap IC patch to be active
 
 ## BiceLib.Leaders
 * **activateRankSpecificTraits()**
@@ -129,3 +115,28 @@ LUA functions are provided to activate and configure the module. They are groupe
     * **Return values**: /
     * **Notes**:
         * This is more of a soft effect since you can assign a leader with this trait, attach a unit, unassign the leader.
+
+## BiceLib.BytePatches
+Patches which only need a few bytes to be changed.
+* **fixMinisterTechDecayDone()**
+    * The "Minister tech ability decay" modifier simply does not work. This fixes that.
+    * **Params**: /
+    * **Return values**: /
+* **disableWarExhaustionNeutralityReset()**
+    * Normally the game adds a countries "War Exhaustion" to its neutrality after a war (when it switches from war to peace)
+    * For Black ICE we don't want that.
+    * **Params**: /
+    * **Return values**: /
+* **disableInterAiExpeditionaries()**
+    * This patch makes the AI never send/retrieve expeditionary units from other AI countries.
+    * AI countries will send expeditionary to each other when the unit is on the territory of its ally. However the AI is likely to send the majority of their units to countries which don't need them, and then won't recall them. 
+    * This happens especially in cases when the AI just conquered a country and immediately after creates a puppet.
+    * **Params**: /
+    * **Return values**: /
+
+## BiceLib.ComplexPatches
+Patches which require some extra logic and hooking.
+* **fixOffMapIC()**
+    * makes the "IC" modifier usable in event/triggered modifiers, essentially being offmap IC
+    * **Params**: /
+    * **Return values**: /

@@ -633,15 +633,6 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
     }
 
 
-    /*
-    if (!Patches::fixOffMapIC(MODULE_BASE)) {
-        ERROR_OUT(std::cout << "Patch 'fixOffMapIC' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Patch 'fixOffMapIC' succeeded" << std::endl);
-    }
-    */
-
     fixOffMapICDone = true;
     return 0;
 }
@@ -811,10 +802,17 @@ void registerUnitFunctions(lua_State* this_state) {
 void registerPatchFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "BytePatches");
     lua_newtable(this_state);
-    registerFunction(this_state, "fixOffMapIC", fixOffMapIC);
     registerFunction(this_state, "fixMinisterTechDecay", fixMinisterTechDecay);
     registerFunction(this_state, "disableWarExhaustionNeutralityReset", disableWarExhaustionNeutralityReset);
     registerFunction(this_state, "disableInterAiExpeditionaries", disableInterAiExpeditionaries);
+    lua_settable(this_state, -3);
+    return;
+}
+
+void registerComplexPatchFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "ComplexPatches");
+    lua_newtable(this_state);
+    registerFunction(this_state, "fixOffMapIC", fixOffMapIC);
     lua_settable(this_state, -3);
     return;
 }
@@ -837,6 +835,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerLeaderFunctions(this_state);
     registerUnitFunctions(this_state);
     registerPatchFunctions(this_state);
+    registerComplexPatchFunctions(this_state);
 
     utils::logInLua(this_state,"Loaded BiceLib");
     char buf[100];

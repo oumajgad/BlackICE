@@ -41,9 +41,11 @@ if mod then
     -- BiceLib.Units.addCommandLimitTrait("pskill_1", -1)
     -- BiceLib.Units.addCommandLimitTrait("pskill_4", 1)
 
-    -- Patches
-    BiceLib.BytePatches.fixOffMapIC()
+    -- Byte Patches
     BiceLib.BytePatches.fixMinisterTechDecay()
     BiceLib.BytePatches.disableWarExhaustionNeutralityReset()
     BiceLib.BytePatches.disableInterAiExpeditionaries()
+
+    -- Complex Patches
+    BiceLib.ComplexPatches.fixOffMapIC()
 end
