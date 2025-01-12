@@ -12,21 +12,21 @@ class CBuildingOffsets:
     VFTABLE_OFFSET: ClassVar[int] = 0x11C09F8
     effect_value: int = 0x8
     CModifierDefinition_ptr: int = 0xC
-    index: int = 0x54
     name_raw: int = 0x1C
     name_raw_length: int = 0x30
     name_pretty: int = 0x38
     name_pretty_length: int = 0x48
-    cost: int = 0x58
     time: int = 0x5C
+    index: int = 0x54
+    cost: int = 0x58
+    capital: int = 0x60
+    port: int = 0x61
     max_level: int = 0x68
     completion_size: int = 0x8C
     damage_factor: int = 0x90
     on_map: int = 0x94
     visibility: int = 0x95
     repair: int = 0x96
-    capital: int = 0x60
-    port: int = 0x61
 
 
 class CBuilding(pydantic.BaseModel):

@@ -73,42 +73,36 @@ __declspec(naked) void Hooks::Patches::fixOffmapIc_SetBaseIc() {
         mov[ebx + 0x604], eax
         jmp[Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc]
     }
+}
 
-    /*
+DWORD Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings;
+DWORD Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings_OriginalReturn;
+__declspec(naked) void Hooks::Patches::enablePlacingNonResearchedBuildings() {
     _asm {
+
+        // EAX
+        // EBX = CMapProvince
+        // ECX
+        // EDX
+        // ESI = CCountry
+        // EDI = CBuildingDeployment ( + 0x38 = CBuilding)
         pushad
-        mov ebx, [ebx + 0xca8]                          // get country id
-        mov eax, [localIcEffectPerCountry + ebx * 4]    // get local ic effects
-        mov ecx, [ecx + 0x78]                           // get base ic + offmap ic value
-        mov edx, [ebp + 0x8]                            // get base ic + local ic value
-        sub edx, eax                                    // get pure base ic
-        sub ecx, edx                                    // get pure offmap ic value
-        add[ebp + 0x8], ecx                             // add pure offmap ic to base ic + local ic
+        mov eax, [edi + 0x38]       // Get building (CBuilding)
+        mov ecx, [eax + 0x54]       // Get index
+        mov eax, [eax + 0x68]       // Get max allowed level
+        imul eax,eax,0x3e8
+        mov ebx, [ebx + 0x310]      // Get province buildings array
+        mov ebx, [ebx + ecx * 4]    // Get building in province (CProvinceBuilding)
+        mov ebx, [ebx + 0x20]       // Get max building level in province
 
-        mov[localIcEffectPerCountry + ebx * 4], 0x0     // zero local ic effect array for tomorrows iteration
+        cmp ebx, eax // compare max allowed to current max
+
+
         popad
-        mov eax, 0x10624dd3
-        imul[ebp + 0x8]
-        jmp[Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc]
-    }
-    _asm {
-        pushad
-        pushfd
-        mov ebx, [ebx + 0xca8]                          // get country id
-        mov eax, [localIcEffectPerCountry + ebx * 4]    // get local ic effects
-        mov ecx, [ecx + 0x78]                           // get base ic + offmap ic value
-        mov edx, [ebp + 0x8]                            // get base ic + local ic value
-        sub edx, eax                                    // get pure base ic
-        sub ecx, edx                                    // get pure offmap ic value
-        add[ebp + 0x8], ecx                             // add pure offmap ic to base ic + local ic
+        jge[jmpToOrig] // Dont allow placing if above limit
+        jmp[Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings]
 
-        mov[localIcEffectPerCountry + ebx * 4], 0x0     // zero local ic effect array for tomorrows iteration
-        popfd
-        popad
-        mov eax, 0x10624dd3
-        imul[ebp + 0x8]
-        jmp[Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc]
+        jmpToOrig:
+            jmp[Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings_OriginalReturn] // Dont allow placing if above limit
     }
-    */
-
 }

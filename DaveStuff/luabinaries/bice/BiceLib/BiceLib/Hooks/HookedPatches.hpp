@@ -10,5 +10,10 @@ namespace Hooks {
 		extern int offmapIcPerCountry[300];         // offmap IC to be used in Utility display
 		void fixOffmapIc_CountLocalIc();
 		void fixOffmapIc_SetBaseIc();
+
+		// Placing Buildings
+		extern DWORD jumpback_enablePlacingNonResearchedBuildings;
+		extern DWORD jumpback_enablePlacingNonResearchedBuildings_OriginalReturn; // Where it jumps if you are not allowed to place the building
+		void enablePlacingNonResearchedBuildings();
 	}
 }

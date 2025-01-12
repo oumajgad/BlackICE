@@ -48,4 +48,5 @@ if mod then
 
     -- Complex Patches
     BiceLib.ComplexPatches.fixOffMapIC()
+    BiceLib.ComplexPatches.enablePlacingNonResearchedBuildings()
 end

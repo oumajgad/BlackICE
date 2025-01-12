@@ -140,3 +140,8 @@ Patches which require some extra logic and hooking.
     * makes the "IC" modifier usable in event/triggered modifiers, essentially being offmap IC
     * **Params**: /
     * **Return values**: /
+* **enablePlacingNonResearchedBuildings()**
+    * This enables the placement of building by the player for which has not researched the technology yet.
+    * This is needed for when an event give the player buildings which he can manually place.
+    * **Params**: /
+    * **Return values**: /

@@ -600,7 +600,7 @@ __declspec(dllexport) int addCommandLimitTrait(lua_State* L)
 
 
 /////////////////////////////////////
-//          BYTE PATCHES           //
+//        COMPLEX PATCHES          //
 /////////////////////////////////////
 
 BOOL fixOffMapICDone = false;
@@ -636,6 +636,34 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
     fixOffMapICDone = true;
     return 0;
 }
+
+bool enablePlacingNonResearchedBuildingsDone = false;
+__declspec(dllexport) int enablePlacingNonResearchedBuildings(lua_State* L)
+{
+    if (enablePlacingNonResearchedBuildingsDone) {
+        return 0;
+    }
+
+    DWORD hookAddress = MODULE_BASE + 0x17e4e5;
+    Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings = hookAddress + 6;
+    Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings_OriginalReturn = hookAddress + 210;
+
+    if (!Hooks::hook((void*)hookAddress, Hooks::Patches::enablePlacingNonResearchedBuildings, 5, 3)) {
+        ERROR_OUT(std::cout << "Hook 'enablePlacingNonResearchedBuildings' failed" << std::endl);
+    }
+    else {
+        INFO_OUT(std::cout << "Hook 'enablePlacingNonResearchedBuildings' succeeded" << std::endl);
+        DEBUG_OUT(std::cout << "enablePlacingNonResearchedBuildings: " << Memory::n2hexstr(Hooks::CArmy::jumpback_enablePlacingNonResearchedBuildings) << std::endl);
+    }
+
+    enablePlacingNonResearchedBuildingsDone = true;
+    return 0;
+}
+
+
+/////////////////////////////////////
+//          BYTE PATCHES           //
+/////////////////////////////////////
 
 
 BOOL fixMinisterTechDecayDone = false;
@@ -813,6 +841,7 @@ void registerComplexPatchFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "ComplexPatches");
     lua_newtable(this_state);
     registerFunction(this_state, "fixOffMapIC", fixOffMapIC);
+    registerFunction(this_state, "enablePlacingNonResearchedBuildings", enablePlacingNonResearchedBuildings);
     lua_settable(this_state, -3);
     return;
 }
