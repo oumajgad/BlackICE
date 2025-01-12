@@ -5,7 +5,10 @@ function GetPlayerModifiers()
     local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry()
 
     local baseIC = playerCountry:GetMaxIC()
-    local baseICWithOffmap = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_IC_):Get()
+    local offmapIC = 0
+    if BiceLib ~= nil then
+        offmapIC = BiceLib.GameInfo.getCountryOffmapIc(G_PlayerCountry)
+    end
     local icModifier = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_IC_):Get()
     for tech, effect in pairs(techModifierValues["ic_modifier"]) do
         local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
@@ -48,7 +51,7 @@ function GetPlayerModifiers()
     local startingExp = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_UNIT_START_EXPERIENCE_):Get()
 
     UI.m_textCtrl_baseIc:SetValue(string.format('%.0f', baseIC))
-    UI.m_textCtrl_offmapIc:SetValue(string.format('%.0f', (baseICWithOffmap)))
+    UI.m_textCtrl_offmapIc:SetValue(string.format('%.0f', (offmapIC)))
     UI.m_textCtrl_icModifier:SetValue(string.format('%.02f', (icModifier * 100)))
 
     UI.m_textCtrl_IcEff:SetValue(string.format('%.02f', icEffRaw))

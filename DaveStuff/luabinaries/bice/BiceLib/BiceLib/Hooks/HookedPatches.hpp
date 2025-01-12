@@ -6,7 +6,8 @@ namespace Hooks {
 		// Offmap IC
 		extern DWORD jumpback_fixOffmapIc_CountLocalIc;
 		extern DWORD jumpback_fixOffmapIc_SetBaseIc;
-		extern int localIcEffectPerCountry[300];
+		extern int localIcEffectPerCountry[300];    // x1000
+		extern int offmapIcPerCountry[300];         // offmap IC to be used in Utility display
 		void fixOffmapIc_CountLocalIc();
 		void fixOffmapIc_SetBaseIc();
 	}

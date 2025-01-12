@@ -4,7 +4,8 @@
 DWORD Hooks::Patches::jumpback_fixOffmapIc_CountLocalIc;
 DWORD Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc;
 
-int Hooks::Patches::localIcEffectPerCountry[300]; // x1000
+int Hooks::Patches::localIcEffectPerCountry[300];   // x1000
+int Hooks::Patches::offmapIcPerCountry[300];        // offmap IC to be used in Utility display
 __declspec(naked) void Hooks::Patches::fixOffmapIc_CountLocalIc() {
     _asm {
         pushad
@@ -34,6 +35,7 @@ int handle(DWORD* country, int baseIcWithOffmapButNoLocalx1000, int baseIcWithLo
     //DEBUG_OUT(printf("baseBaseIC: %i\n", baseBaseIC));
 
     int offmapIc = (baseIcWithOffmapButNoLocalx1000 / 1000) - baseBaseIC;
+    Hooks::Patches::offmapIcPerCountry[countryId] = offmapIc;
     DEBUG_OUT(printf("offmapIc: %i\n", offmapIc));
 
     DWORD* countryModifierIc = (DWORD*)(*(country + 0xda8 / 4) + 0x78);

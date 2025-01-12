@@ -110,6 +110,28 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
     return 1;
 }
 
+__declspec(dllexport) int getCountryOffmapIc(lua_State* L)
+{
+    DEBUG_OUT(std::cout << "getCountryOffmapIc called" << std::endl);
+    std::string searchTag = luaL_checklstring(L, 1, NULL);
+    DEBUG_OUT(std::cout << "searchTag: " << searchTag << std::endl);
+
+    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+
+    uintptr_t ctr = getCountry(external, searchTag);
+    DEBUG_OUT(std::cout << "ctr: " << Memory::n2hexstr(ctr) << std::endl);
+
+    if (ctr != 0) {
+        int countryId = external.read<int>(ctr + 0x1e8);
+        DEBUG_OUT(std::cout << "countryId: " << countryId << std::endl);
+        lua_pushinteger(L, Hooks::Patches::offmapIcPerCountry[countryId]);
+        return 1;
+    }
+    lua_pushnil(L);
+    return 1;
+}
+
+
 /////////////////////////////////////
 //        LEADER FUNCTIONS         //
 /////////////////////////////////////
@@ -754,6 +776,7 @@ void registerGameInfoFunctions(lua_State* this_state) {
     lua_newtable(this_state);
     registerFunction(this_state, "getCountryFlags", getCountryFlags);
     registerFunction(this_state, "getCountryVariables", getCountryVariables);
+    registerFunction(this_state, "getCountryOffmapIc", getCountryOffmapIc);
     lua_settable(this_state, -3);
     return;
 }
