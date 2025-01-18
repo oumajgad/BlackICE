@@ -141,7 +141,7 @@ Patches which require some extra logic and hooking.
     * **Params**: /
     * **Return values**: /
 * **enablePlacingNonResearchedBuildings()**
-    * This enables the placement of building by the player for which has not researched the technology yet.
-    * This is needed for when an event give the player buildings which he can manually place.
+    * This enables the placement of buildings by the player for which he has not researched the technology yet.
+    * This is needed for when an event gives the player buildings which he should place manually.
     * **Params**: /
     * **Return values**: /
