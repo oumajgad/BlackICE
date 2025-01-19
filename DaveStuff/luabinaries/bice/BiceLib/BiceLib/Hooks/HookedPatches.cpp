@@ -21,7 +21,7 @@ __declspec(naked) void Hooks::Patches::fixOffmapIc_CountLocalIc() {
     }
 }
 
-int handle(DWORD* country, int baseIcWithOffmapButNoLocalx1000, int baseIcWithLocalButNoOffmap) {
+int handleOffmapIc(DWORD* country, int baseIcWithOffmapButNoLocalx1000, int baseIcWithLocalButNoOffmap) {
     int countryId = *(country + 0xca8 / 4);
     DEBUG_OUT(printf("countryId: %i\n", countryId));
     //DEBUG_OUT(printf("baseIcWithOffmapButNoLocalx1000: %i\n", baseIcWithOffmapButNoLocalx1000));
@@ -62,7 +62,7 @@ __declspec(naked) void Hooks::Patches::fixOffmapIc_SetBaseIc() {
         mov[baseIcWithLocalButNoOffmap], eax
     }
 
-    result = handle(country, baseIcWithOffmapButNoLocalx1000, baseIcWithLocalButNoOffmap);
+    result = handleOffmapIc(country, baseIcWithOffmapButNoLocalx1000, baseIcWithLocalButNoOffmap);
 
     _asm {
         mov eax, result
