@@ -24,7 +24,7 @@ def zipdir(filename):
     zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     createModFile(zipf)
     addLua51dll(zipf)
-    #addLuaBinaries(zipf)
+    addDxvkArchive(zipf)
     addUtilityResources(zipf)
     addStatsCLI(zipf)
     addBorderlessWindowDlls(zipf)
@@ -66,11 +66,6 @@ def createModFile(zipf: zipfile.ZipFile):
     zipf.write("./Mod File/BlackICE %s.mod"% version, f"{path}/BlackICE %s.mod"% version)
     os.remove("./Mod File/BlackICE %s.mod"% version)
 
-def addLuaBinaries(zipf: zipfile.ZipFile):
-    zipf.write("./script/wx.dll", f"{path}/BlackICE {version}/script/wx.dll")
-    zipf.write("./script/lfs.dll", f"{path}/BlackICE {version}/script/lfs.dll")
-    zipf.write("./script/BiceLib.dll", f"{path}/BlackICE {version}/script/BiceLib.dll")
-
 def addStatsCLI(zipf: zipfile.ZipFile):
     zipf.write("./tools/visualizeStatistics/visualizeStatisticCLI.exe", f"{path}/BlackICE {version}/stats/visualizeStatisticCLI.exe")
 
@@ -88,6 +83,9 @@ def addBorderlessWindowDlls(zipf: zipfile.ZipFile):
 
 def addExePatcher(zipf: zipfile.ZipFile):
     zipf.write("./tools/PythonExePatcher/zDsafe_ExePatcher.exe", f"zDsafe_ExePatcher.exe")
+
+def addDxvkArchive(zipf: zipfile.ZipFile):
+    zipf.write("./dxvk.rar", f"dxvk.rar")
 
 def setLocsVersion():
     with open("./localisation/bi_version.csv", "r") as versionFile1:
