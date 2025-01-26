@@ -10956,18 +10956,17 @@ country_event = {
 #########################
 
 ### Guards Cavalry Corps
-## 1st and 2nd Guards Cavalry Corps
+## 1st Guards Cavalry Corps
 country_event = {
 	id = 14000
 	is_triggered_only = yes
-    title = "1st and 2nd Guards Cavalry Corps"
+    title = "1st Guards Cavalry Corps"
 	desc = "EVTDESC14000"
 	picture = "guardscav"
     
     option = {
-		name = "Form these corps!"
+		name = "Form this corps!"
 		set_country_flag = 1_GCC
-		set_country_flag = 2_GCC
 		#Formation of 1st Guards Cavalry Corps
 		#Removing 2nd Cavalry Corps
 		remove_brigade = "Shtab-K. 2-go Kavaleriyskogo Korpusa"
@@ -10990,6 +10989,56 @@ country_event = {
 		remove_brigade = "40-y Konno-Sap'ornyy B-n"
 		remove_brigade = "Transportnyy B-n 9-y Kav. D."
 
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Cavalry_Corps_1_1941_Nov.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Cavalry_Corps_1_1941_Nov.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 1_GCC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 2nd Guards Cavalry Corps
+country_event = {
+	id = 14001
+	is_triggered_only = yes
+    title = "2nd Guards Cavalry Corps"
+	desc = "EVTDESC14001"
+	picture = "guardscav"
+    
+    option = {
+		name = "Form this corps!"
+		set_country_flag = 2_GCC
 		#Formation of 2nd Guards Cavalry Corps
 		#Removing 20th Mountain Cavalry Division
 		remove_brigade = "Shtab-K. 20-y Turkestanskoy Gorno-Kav. D."
@@ -11016,7 +11065,6 @@ country_event = {
 				energy = -2000
 				metal = -1000
 				rare_materials = -500
-				load_oob = SOV/Guards_Cavalry_Corps_1_1941_Nov.txt
 				load_oob = SOV/Guards_Cavalry_Corps_2_1941_Nov.txt
 			}
 		}
@@ -11028,83 +11076,13 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = SOV/Guards_Cavalry_Corps_1_1941_Nov.txt
 				load_oob = SOV/Guards_Cavalry_Corps_2_1941_Nov.txt
 			}
 		}
 	}
 	option = {
 		name = "No Need"  # no
-		set_country_flag = 1_GCC_no
 		set_country_flag = 2_GCC_no
-		ai_chance = {
-			factor = 0
-		}
-	}
-}
-## 1st Guards Cavalry Corps Upgrade - January 1943
-country_event = {
-	id = 14001
-	is_triggered_only = yes
-    title = "1st Guards Cavalry Corps Upgrade"
-	desc = "EVTDESC14001"
-	picture = "guardscav"
-    
-    option = {
-		name = "Upgrade this corps!"
-		set_country_flag = 1_GCC_UP43
-		#Removing older version
-		remove_brigade = "Shtab-K. 1-go Gv. Kav. Korpusa"
-		remove_brigade = "2-y Minomotnyy Art. D-n"
-		remove_brigade = "26/33-y Zenitno-Art. D-ny"
-		remove_brigade = "Avtotransportnyy B-n 1-go Gv. Kav. Korpusa"
-		remove_brigade = "Shtab-K 1-y Gv. Kav. Div."
-		remove_brigade = "1/3/5/6-ye Gv. Kavaleriyskiye Polki"
-		remove_brigade = "1-y Gv. Konno-Artilleriyskiy D-n"
-		remove_brigade = "1-y Gv. Sap'ornyy B-n"
-		remove_brigade = "1-y Gv. Razvedovatelniy B-n"
-		remove_brigade = "18-y Avtotransportnyy B-n"
-		remove_brigade = "Shtab-K 2-y Gv. Kav. Div."
-		remove_brigade = "2/4/7/8-ye Gv. Kavaleriyskiye Polki"
-		remove_brigade = "2-y Gv. Konno-Artilleriyskiy D-n"
-		remove_brigade = "2-y Gv. Sap'ornyy B-n"
-		remove_brigade = "2-y Gv. Razvedovatelniy B-n"
-		remove_brigade = "23-y Avtotransportnyy B-n"
-
-		ai_chance = {
-			factor = 100
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = SOV
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +4400
-				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
-				load_oob = SOV/Guards_Cavalry_Corps_1_1943_Jan.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = SOV
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = SOV/Guards_Cavalry_Corps_1_1943_Jan.txt
-			}
-		}
-	}
-	option = {
-		name = "No Need"  # no
-		set_country_flag = 1_GCC_UP43_no
 		ai_chance = {
 			factor = 0
 		}
@@ -11291,184 +11269,12 @@ country_event = {
 		}
 	}
 }
-## 3rd and 4th Guards Cavalry Corps Upgrade
+## 5th Guards Cavalry Corps
 country_event = {
 	id = 14004
 	is_triggered_only = yes
-    title = "3rd and 4th Guards Cavalry Corps Upgrade"
-	desc = "EVTDESC14004"
-	picture = "guardscav"
-    
-    option = {
-		name = "Upgrade these corps!"
-		set_country_flag = 3_4_GCC_UP43
-		#Removing 3rd Guards Cavalry Corps older version
-		remove_brigade = "Shtab-K. 3-go Gv. Kav. Korpusa"
-		remove_brigade = "39/41-y Zenitno-Art. D-ny"
-		remove_brigade = "Avtotransportnyy B-n 3-go Gv. Kav. Korpusa"
-		remove_brigade = "Shtab-K 5-ya Gv. Kav. Div."
-		remove_brigade = "17/20/22/24-ye Gv. Kavaleriyskiye Polki"
-		remove_brigade = "7-y Gv. Konno-Artilleriyskiy D-n"
-		remove_brigade = "6-y Gv. Sap'ornyy B-n"
-		remove_brigade = "5-y Gv. Razvedovatelniy B-n"
-		remove_brigade = "Avtotransportnyy B-n 5-ya Gv. Kav. Div."
-		remove_brigade = "Shtab-K 6-ya Gv. Kav. Div."
-		remove_brigade = "18/23/25/28-ye Gv. Kavaleriyskiye Polki"
-		remove_brigade = "5-y Gv. Konno-Artilleriyskiy D-n"
-		remove_brigade = "7-y Gv. Sap'ornyy B-n"
-		remove_brigade = "6-y Gv. Razvedovatelniy B-n"
-		remove_brigade = "Avtotransportnyy B-n 6-ya Gv. Kav. Div."
-		remove_brigade = "Shtab-K. 32-y Kavaleriyskoy D."
-		remove_brigade = "65/86/121/153-ye Kavaleriyskiye Polki"
-		remove_brigade = "18-y Tankovyy Polk"
-		remove_brigade = "40-y Konno-Artilleriyskiy Divizion"
-		remove_brigade = "27-y Konno-Sap'ornyy B-n"
-		remove_brigade = "Razvedovatelniy B-n 32-y Kav. D."
-		remove_brigade = "Transportnyy B-n 32-y Kav. D."
-
-		#Removing 4th Guards Cavalry Corps older version
-		remove_brigade = "Shtab-K. 4-go Gv. Kav. Korpusa"
-		remove_brigade = "28/65/520-y Zenitno-Art. D-ny"
-		remove_brigade = "191-y Avtotransportnyy B-n 4-go Gv. Kav. Korpusa"
-		remove_brigade = "Shtab-K 9-ya Gv. Kav. Div."
-		remove_brigade = "30/32/34-ye Gv. Kavaleriyskiye Polki"
-		remove_brigade = "8-y Gv. Konno-Artilleriyskiy D-n"
-		remove_brigade = "11-y Gv. Sap'ornyy B-n"
-		remove_brigade = "9-y Gv. Razvedovatelniy B-n"
-		remove_brigade = "Avtotransportnyy B-n 9-ya Gv. Kav. Div."
-		remove_brigade = "Shtab-K 10-ya Gv. Kav. Div."
-		remove_brigade = "36/40/42-ye Gv. Kavaleriyskiye Polki"
-		remove_brigade = "12-y Gv. Konno-Artilleriyskiy D-n"
-		remove_brigade = "8-y Gv. Sap'ornyy B-n"
-		remove_brigade = "10-y Gv. Razvedovatelniy B-n"
-		remove_brigade = "Avtotransportnyy B-n 10-ya Gv. Kav. Div."
-		remove_brigade = "Shtab-K. 30-y Kavaleriyskoy D."
-		remove_brigade = "127/133/138-ye Kavaleriyskiye Polki"
-		remove_brigade = "47-y Konno-Artilleriyskiy Divizion"
-		remove_brigade = "4-y Konno-Sap'ornyy B-n"
-		remove_brigade = "51-y Bron. Razvedovatelniy B-n"
-		remove_brigade = "Transportnyy B-n 30-y Kav. D."
-
-		ai_chance = {
-			factor = 100
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = SOV
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +4400
-				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
-				load_oob = SOV/Guards_Cavalry_Corps_3_1943_Sept.txt
-				load_oob = SOV/Guards_Cavalry_Corps_4_1943_Sept.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = SOV
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = SOV/Guards_Cavalry_Corps_3_1943_Sept.txt
-				load_oob = SOV/Guards_Cavalry_Corps_4_1943_Sept.txt
-			}
-		}
-	}
-	option = {
-		name = "No Need"  # no
-		set_country_flag = 3_4_GCC_UP43_no
-		ai_chance = {
-			factor = 0
-		}
-	}
-}
-## 2nd Guards Cavalry Corps Upgrade - October 1943
-country_event = {
-	id = 14005
-	is_triggered_only = yes
-    title = "2nd Guards Cavalry Corps Upgrade"
-	desc = "EVTDESC14005"
-	picture = "guardscav"
-    
-    option = {
-		name = "Upgrade this corps!"
-		set_country_flag = 2_GCC_UP43
-		#Removing older version
-		remove_brigade = "Shtab-K. 2-go Gv. Kav. Korpusa"
-		remove_brigade = "53/37-y Zenitno-Art. D-ny"
-		remove_brigade = "191-y Avtotransportnyy B-n"
-		remove_brigade = "Shtab-K 3-y Gv. Kav. Div."
-		remove_brigade = "9/10/12/14-ye Gv. Kavaleriyskiye Polki"
-		remove_brigade = "3-y Gv. Konno-Artilleriyskiy D-n"
-		remove_brigade = "4-y Gv. Sap'ornyy B-n"
-		remove_brigade = "3-y Gv. Razvedovatelniy B-n"
-		remove_brigade = "Avtotransportnyy B-n 3-y Gv. Kav. Div."
-		remove_brigade = "Shtab-K 4-y Gv. Kav. Div."
-		remove_brigade = "11/13/15/16-ye Gv. Kavaleriyskiye Polki"
-		remove_brigade = "4-y Gv. Konno-Artilleriyskiy D-n"
-		remove_brigade = "3-y Gv. Sap'ornyy B-n"
-		remove_brigade = "4-y Gv. Razvedovatelniy B-n"
-		remove_brigade = "Avtotransportnyy B-n 4-y Gv. Kav. Div."
-		remove_brigade = "Shtab-K. 20-y Turkestanskoy Gorno-Kav. D."
-		remove_brigade = "22/103/124-y Gorno-Kavaleriyskiye Polki"
-		remove_brigade = "27-y Mekhanizirovannyy Polk"
-		remove_brigade = "14-y Konno-Artilleriyskiy Divizion"
-		remove_brigade = "36-y Konno-Sap'ornyy B-n"
-		remove_brigade = "Transportnyy B-n 20-y Kav. D."
-
-		ai_chance = {
-			factor = 100
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = SOV
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +4400
-				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
-				load_oob = SOV/Guards_Cavalry_Corps_2_1943_Oct.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = SOV
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = SOV/Guards_Cavalry_Corps_2_1943_Oct.txt
-			}
-		}
-	}
-	option = {
-		name = "No Need"  # no
-		set_country_flag = 2_GCC_UP43_no
-		ai_chance = {
-			factor = 0
-		}
-	}
-}
-## 5th Guards Cavalry Corps
-country_event = {
-	id = 14006
-	is_triggered_only = yes
 	title = "5th Guards Cavalry Corps"
-	desc = "EVTDESC14006"
+	desc = "EVTDESC14004"
 	picture = "guardscav"
 	option = {
 		name = "Form this corps!"
@@ -11548,12 +11354,450 @@ country_event = {
 		}
 	}
 }
-## 5th Guards Cavalry Corps Upgrade - August 1943
+## 6th Guards Cavalry Corps
+country_event = {
+	id = 14005
+	is_triggered_only = yes
+	title = "6th Guards Cavalry Corps"
+	desc = "EVTDESC14005"
+	picture = "guardscav"
+
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 6_GCC
+
+		#Formation of 6th Guards Cavalry Corps
+		#Removing 7th Cavalry Corps
+		remove_brigade = "Shtab-K. 7-go Kavaleriyskogo Korpusa"
+		remove_brigade = "7-y Otdel'nyy Zenitno-Artilleriyskiy Divizion"
+		remove_brigade = "Transportnyy B-n 7-go Kavaleriyskogo Korpusa"
+		#Removing 8th Far Eastern Cavalry Division
+		remove_brigade = "Shtab-K. 8-y Kav. Dalnevostochnoy D."
+		remove_brigade = "49/115/154/163-y Kavaleriyskiye Polki"
+		remove_brigade = "7-y Tankovyy Polk"
+		remove_brigade = "8-y Mekhanizirovannyy Polk"
+		remove_brigade = "37-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "Sap'ornyy B-n 8-y Kav. D."
+		remove_brigade = "Transportnyy B-n 8-y Kav. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Guards_Cavalry_Corps_6_1943_Feb.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Cavalry_Corps_6_1943_Feb.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 6_GCC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 7th Guards Cavalry Corps
+country_event = {
+	id = 14006
+	is_triggered_only = yes
+	title = "7th Guards Cavalry Corps"
+	desc = "EVTDESC14006"
+	picture = "guardscav"
+
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 7_GCC
+
+		#Formation of 7th Guards Cavalry Corps
+		#Removing 8th Cavalry Corps
+		remove_brigade = "Shtab-K. 8-go Kav. Korpusa"
+		remove_brigade = "Tankovyy B-n 8-go Kav. Korpusa"
+		remove_brigade = "586-y Zenitno-Artilleriyskiy Polk"
+		remove_brigade = "263-y Konno-Artilleriyskiy B-n"
+		remove_brigade = "148-y Minomotnyy Polk"
+		remove_brigade = "8-y Otd. Protivotankovyy D-n"
+		remove_brigade = "Avtotransportnyy B-n 8-go Kav. Korpusa"
+		#Removing 21st Mountain Cavalry Division
+		remove_brigade = "Shtab-K. 21-y Turkestanskoy Gorno-Kav. D."
+		remove_brigade = "17/67/112-y Gorno-Kavaleriyskiye Polki"
+		remove_brigade = "510-y/511-y Ognemetno-Tankovyye Polki"
+		remove_brigade = "23-y Otd. Bron. Razvedovatelniy B-n"
+		remove_brigade = "22-y Otd. Konno-Artilleriyskiy Divizion"
+		remove_brigade = "35-y Gv. Minomotnyy Polk"
+		remove_brigade = "Transportnyy B-n 21-y Kav. D."
+		#Removing 55th Cavalry Division
+		remove_brigade = "Shtab-K. 55-y Kav. Div."
+		remove_brigade = "78/84/87-ye Kavaleriyskiye Polki"
+		remove_brigade = "59-y Konno-Artilleriysky D-n"
+		remove_brigade = "179-y Protivotankovyy Polk/I,II B-ny"
+		remove_brigade = "55-y Razvedovatelniy B-n"
+		remove_brigade = "Transportnyy B-n 55-y Kav. Div."
+		#Removing 112th Cavalry Division
+		remove_brigade = "Shtab-K. 112-y Kav. Div."
+		remove_brigade = "78/84/87-ye Kavaleriyskiye Polki"
+		remove_brigade = "101-y Konno-Artilleriysky D-n"
+		remove_brigade = "152-y Gaub. Artilleriyskiy Polk"
+		remove_brigade = "179-y Protivotankovyy Polk/III,IV B-ny"
+		remove_brigade = "112-y Razvedovatelniy B-n"
+		remove_brigade = "Transportnyy B-n 112-y Kav. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Guards_Cavalry_Corps_7_1943_Feb.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Cavalry_Corps_7_1943_Feb.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 7_GCC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1st Guards Cavalry Corps Upgrade - January 1943
 country_event = {
 	id = 14007
 	is_triggered_only = yes
-	title = "5th Guards Cavalry Corps Upgrade"
+    title = "1st Guards Cavalry Corps Upgrade"
 	desc = "EVTDESC14007"
+	picture = "guardscav"
+    
+    option = {
+		name = "Upgrade this corps!"
+		set_country_flag = 1_GCC_UP43
+		#Removing older version
+		remove_brigade = "Shtab-K. 1-go Gv. Kav. Korpusa"
+		remove_brigade = "2-y Minomotnyy Art. D-n"
+		remove_brigade = "26/33-y Zenitno-Art. D-ny"
+		remove_brigade = "Avtotransportnyy B-n 1-go Gv. Kav. Korpusa"
+		remove_brigade = "Shtab-K 1-y Gv. Kav. Div."
+		remove_brigade = "1/3/5/6-ye Gv. Kavaleriyskiye Polki"
+		remove_brigade = "1-y Gv. Konno-Artilleriyskiy D-n"
+		remove_brigade = "1-y Gv. Sap'ornyy B-n"
+		remove_brigade = "1-y Gv. Razvedovatelniy B-n"
+		remove_brigade = "18-y Avtotransportnyy B-n"
+		remove_brigade = "Shtab-K 2-y Gv. Kav. Div."
+		remove_brigade = "2/4/7/8-ye Gv. Kavaleriyskiye Polki"
+		remove_brigade = "2-y Gv. Konno-Artilleriyskiy D-n"
+		remove_brigade = "2-y Gv. Sap'ornyy B-n"
+		remove_brigade = "2-y Gv. Razvedovatelniy B-n"
+		remove_brigade = "23-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Guards_Cavalry_Corps_1_1943_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Cavalry_Corps_1_1943_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 1_GCC_UP43_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 2nd Guards Cavalry Corps Upgrade - October 1943
+country_event = {
+	id = 14008
+	is_triggered_only = yes
+    title = "2nd Guards Cavalry Corps Upgrade"
+	desc = "EVTDESC14008"
+	picture = "guardscav"
+    
+    option = {
+		name = "Upgrade this corps!"
+		set_country_flag = 2_GCC_UP43
+		#Removing older version
+		remove_brigade = "Shtab-K. 2-go Gv. Kav. Korpusa"
+		remove_brigade = "53/37-y Zenitno-Art. D-ny"
+		remove_brigade = "191-y Avtotransportnyy B-n"
+		remove_brigade = "Shtab-K 3-y Gv. Kav. Div."
+		remove_brigade = "9/10/12/14-ye Gv. Kavaleriyskiye Polki"
+		remove_brigade = "3-y Gv. Konno-Artilleriyskiy D-n"
+		remove_brigade = "4-y Gv. Sap'ornyy B-n"
+		remove_brigade = "3-y Gv. Razvedovatelniy B-n"
+		remove_brigade = "Avtotransportnyy B-n 3-y Gv. Kav. Div."
+		remove_brigade = "Shtab-K 4-y Gv. Kav. Div."
+		remove_brigade = "11/13/15/16-ye Gv. Kavaleriyskiye Polki"
+		remove_brigade = "4-y Gv. Konno-Artilleriyskiy D-n"
+		remove_brigade = "3-y Gv. Sap'ornyy B-n"
+		remove_brigade = "4-y Gv. Razvedovatelniy B-n"
+		remove_brigade = "Avtotransportnyy B-n 4-y Gv. Kav. Div."
+		remove_brigade = "Shtab-K. 20-y Turkestanskoy Gorno-Kav. D."
+		remove_brigade = "22/103/124-y Gorno-Kavaleriyskiye Polki"
+		remove_brigade = "27-y Mekhanizirovannyy Polk"
+		remove_brigade = "14-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "36-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 20-y Kav. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Guards_Cavalry_Corps_2_1943_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Cavalry_Corps_2_1943_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 2_GCC_UP43_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 3rd Guards Cavalry Corps Upgrade
+country_event = {
+	id = 14009
+	is_triggered_only = yes
+    title = "3rd Guards Cavalry Corps Upgrade"
+	desc = "EVTDESC14009"
+	picture = "guardscav"
+    
+    option = {
+		name = "Upgrade this corps!"
+		set_country_flag = 3_GCC_UP43
+		#Removing 3rd Guards Cavalry Corps older version
+		remove_brigade = "Shtab-K. 3-go Gv. Kav. Korpusa"
+		remove_brigade = "39/41-y Zenitno-Art. D-ny"
+		remove_brigade = "Avtotransportnyy B-n 3-go Gv. Kav. Korpusa"
+		remove_brigade = "Shtab-K 5-ya Gv. Kav. Div."
+		remove_brigade = "17/20/22/24-ye Gv. Kavaleriyskiye Polki"
+		remove_brigade = "7-y Gv. Konno-Artilleriyskiy D-n"
+		remove_brigade = "6-y Gv. Sap'ornyy B-n"
+		remove_brigade = "5-y Gv. Razvedovatelniy B-n"
+		remove_brigade = "Avtotransportnyy B-n 5-ya Gv. Kav. Div."
+		remove_brigade = "Shtab-K 6-ya Gv. Kav. Div."
+		remove_brigade = "18/23/25/28-ye Gv. Kavaleriyskiye Polki"
+		remove_brigade = "5-y Gv. Konno-Artilleriyskiy D-n"
+		remove_brigade = "7-y Gv. Sap'ornyy B-n"
+		remove_brigade = "6-y Gv. Razvedovatelniy B-n"
+		remove_brigade = "Avtotransportnyy B-n 6-ya Gv. Kav. Div."
+		remove_brigade = "Shtab-K. 32-y Kavaleriyskoy D."
+		remove_brigade = "65/86/121/153-ye Kavaleriyskiye Polki"
+		remove_brigade = "18-y Tankovyy Polk"
+		remove_brigade = "40-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "27-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Razvedovatelniy B-n 32-y Kav. D."
+		remove_brigade = "Transportnyy B-n 32-y Kav. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Guards_Cavalry_Corps_3_1943_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Cavalry_Corps_3_1943_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 3_GCC_UP43_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 4th Guards Cavalry Corps Upgrade
+country_event = {
+	id = 14010
+	is_triggered_only = yes
+    title = "4th Guards Cavalry Corps Upgrade"
+	desc = "EVTDESC14010"
+	picture = "guardscav"
+    
+    option = {
+		name = "Upgrade this corps!"
+		set_country_flag = 4_GCC_UP43
+
+		#Removing 4th Guards Cavalry Corps older version
+		remove_brigade = "Shtab-K. 4-go Gv. Kav. Korpusa"
+		remove_brigade = "28/65/520-y Zenitno-Art. D-ny"
+		remove_brigade = "191-y Avtotransportnyy B-n 4-go Gv. Kav. Korpusa"
+		remove_brigade = "Shtab-K 9-ya Gv. Kav. Div."
+		remove_brigade = "30/32/34-ye Gv. Kavaleriyskiye Polki"
+		remove_brigade = "8-y Gv. Konno-Artilleriyskiy D-n"
+		remove_brigade = "11-y Gv. Sap'ornyy B-n"
+		remove_brigade = "9-y Gv. Razvedovatelniy B-n"
+		remove_brigade = "Avtotransportnyy B-n 9-ya Gv. Kav. Div."
+		remove_brigade = "Shtab-K 10-ya Gv. Kav. Div."
+		remove_brigade = "36/40/42-ye Gv. Kavaleriyskiye Polki"
+		remove_brigade = "12-y Gv. Konno-Artilleriyskiy D-n"
+		remove_brigade = "8-y Gv. Sap'ornyy B-n"
+		remove_brigade = "10-y Gv. Razvedovatelniy B-n"
+		remove_brigade = "Avtotransportnyy B-n 10-ya Gv. Kav. Div."
+		remove_brigade = "Shtab-K. 30-y Kavaleriyskoy D."
+		remove_brigade = "127/133/138-ye Kavaleriyskiye Polki"
+		remove_brigade = "47-y Konno-Artilleriyskiy Divizion"
+		remove_brigade = "4-y Konno-Sap'ornyy B-n"
+		remove_brigade = "51-y Bron. Razvedovatelniy B-n"
+		remove_brigade = "Transportnyy B-n 30-y Kav. D."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = SOV/Guards_Cavalry_Corps_4_1943_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Cavalry_Corps_4_1943_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 4_GCC_UP43_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 5th Guards Cavalry Corps Upgrade - August 1943
+country_event = {
+	id = 14011
+	is_triggered_only = yes
+	title = "5th Guards Cavalry Corps Upgrade"
+	desc = "EVTDESC14011"
 	picture = "guardscav"
 
 	option = {
@@ -11623,115 +11867,14 @@ country_event = {
 		}
 	}
 }
-## 6th and 7th Guards Cavalry Corps
-country_event = {
-	id = 14008
-	is_triggered_only = yes
-	title = "6th and 7th Guards Cavalry Corps"
-	desc = "EVTDESC14008"
-	picture = "guardscav"
 
-	option = {
-		name = "Form these corps!"
-		set_country_flag = 6_GCC
-		set_country_flag = 7_GCC
-
-		#Formation of 6th Guards Cavalry Corps
-		#Removing 7th Cavalry Corps
-		remove_brigade = "Shtab-K. 7-go Kavaleriyskogo Korpusa"
-		remove_brigade = "7-y Otdel'nyy Zenitno-Artilleriyskiy Divizion"
-		remove_brigade = "Transportnyy B-n 7-go Kavaleriyskogo Korpusa"
-		#Removing 8th Far Eastern Cavalry Division
-		remove_brigade = "Shtab-K. 8-y Kav. Dalnevostochnoy D."
-		remove_brigade = "49/115/154/163-y Kavaleriyskiye Polki"
-		remove_brigade = "7-y Tankovyy Polk"
-		remove_brigade = "8-y Mekhanizirovannyy Polk"
-		remove_brigade = "37-y Konno-Artilleriyskiy Divizion"
-		remove_brigade = "Sap'ornyy B-n 8-y Kav. D."
-		remove_brigade = "Transportnyy B-n 8-y Kav. D."
-
-		#Formation of 7th Guards Cavalry Corps
-		#Removing 8th Cavalry Corps
-		remove_brigade = "Shtab-K. 8-go Kav. Korpusa"
-		remove_brigade = "Tankovyy B-n 8-go Kav. Korpusa"
-		remove_brigade = "586-y Zenitno-Artilleriyskiy Polk"
-		remove_brigade = "263-y Konno-Artilleriyskiy B-n"
-		remove_brigade = "148-y Minomotnyy Polk"
-		remove_brigade = "8-y Otd. Protivotankovyy D-n"
-		remove_brigade = "Avtotransportnyy B-n 8-go Kav. Korpusa"
-		#Removing 21st Mountain Cavalry Division
-		remove_brigade = "Shtab-K. 21-y Turkestanskoy Gorno-Kav. D."
-		remove_brigade = "17/67/112-y Gorno-Kavaleriyskiye Polki"
-		remove_brigade = "510-y/511-y Ognemetno-Tankovyye Polki"
-		remove_brigade = "23-y Otd. Bron. Razvedovatelniy B-n"
-		remove_brigade = "22-y Otd. Konno-Artilleriyskiy Divizion"
-		remove_brigade = "35-y Gv. Minomotnyy Polk"
-		remove_brigade = "Transportnyy B-n 21-y Kav. D."
-		#Removing 55th Cavalry Division
-		remove_brigade = "Shtab-K. 55-y Kav. Div."
-		remove_brigade = "78/84/87-ye Kavaleriyskiye Polki"
-		remove_brigade = "59-y Konno-Artilleriysky D-n"
-		remove_brigade = "179-y Protivotankovyy Polk/I,II B-ny"
-		remove_brigade = "55-y Razvedovatelniy B-n"
-		remove_brigade = "Transportnyy B-n 55-y Kav. Div."
-		#Removing 112th Cavalry Division
-		remove_brigade = "Shtab-K. 112-y Kav. Div."
-		remove_brigade = "78/84/87-ye Kavaleriyskiye Polki"
-		remove_brigade = "101-y Konno-Artilleriysky D-n"
-		remove_brigade = "152-y Gaub. Artilleriyskiy Polk"
-		remove_brigade = "179-y Protivotankovyy Polk/III,IV B-ny"
-		remove_brigade = "112-y Razvedovatelniy B-n"
-		remove_brigade = "Transportnyy B-n 112-y Kav. Div."
-
-		ai_chance = {
-			factor = 100
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = SOV
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +4400
-				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
-				load_oob = SOV/Guards_Cavalry_Corps_6_1943_Feb.txt
-				load_oob = SOV/Guards_Cavalry_Corps_7_1943_Feb.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = SOV
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = SOV/Guards_Cavalry_Corps_6_1943_Feb.txt
-				load_oob = SOV/Guards_Cavalry_Corps_7_1943_Feb.txt
-			}
-		}
-	}
-	option = {
-		name = "No Need"  # no
-		set_country_flag = 6_GCC_no
-		set_country_flag = 7_GCC_no
-		ai_chance = {
-			factor = 0
-		}
-	}
-}
 ### Guards Motorized Divisions
 ## 1st Guards Motorized Division
 country_event = {
-	id = 14009
+	id = 14012
 	is_triggered_only = yes
     title = "1st Guards Motorized Division"
-	desc = "EVTDESC14009"
+	desc = "EVTDESC14012"
 	picture = "sov-upgrade-guards"
     
     option = {
@@ -11787,10 +11930,10 @@ country_event = {
 }
 ## 2nd Guards Motorized Division
 country_event = {
-	id = 14010
+	id = 14013
 	is_triggered_only = yes
     title = "2nd Guards Motorized Division"
-	desc = "EVTDESC14010"
+	desc = "EVTDESC14013"
 	picture = "sov-upgrade-guards"
     
     option = {
@@ -11846,10 +11989,10 @@ country_event = {
 }
 ## 3rd Guards Motorized Division
 country_event = {
-	id = 14011
+	id = 14014
 	is_triggered_only = yes
     title = "3rd Guards Motorized Division"
-	desc = "EVTDESC14011"
+	desc = "EVTDESC14014"
 	picture = "sov-upgrade-guards"
     
     option = {
@@ -11906,10 +12049,10 @@ country_event = {
 #### Guards Rifle Divisions
 ## Guards Rifle Divisions (1,2,5), September 1941 - Moscow
 country_event = {
-	id = 14012
+	id = 14015
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14012"
+	desc = "EVTDESC14015"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -12004,10 +12147,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (3,4), September 1941 - Leningrad
 country_event = {
-	id = 14013
+	id = 14016
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14013"
+	desc = "EVTDESC14016"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -12094,10 +12237,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (6,7), September 1941 - Bryansk
 country_event = {
-	id = 14014
+	id = 14017
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14014"
+	desc = "EVTDESC14017"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -12191,10 +12334,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (8,9), November 1941 - Moscow
 country_event = {
-	id = 14015
+	id = 14018
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14015"
+	desc = "EVTDESC14018"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -12289,10 +12432,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (10), December 1941 - Murmansk
 country_event = {
-	id = 14016
+	id = 14019
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14016"
+	desc = "EVTDESC14019"
 	picture = "guardsinf"
 	option = {
 		name = "Form this unit!"
@@ -12338,10 +12481,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (11,12,13), January 1942 - Moscow
 country_event = {
-	id = 14017
+	id = 14020
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14017"
+	desc = "EVTDESC14020"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -12427,10 +12570,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (14,15), January 1942 - Rostov
 country_event = {
-	id = 14018
+	id = 14021
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14018"
+	desc = "EVTDESC14021"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -12525,10 +12668,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (16,18,20,21), March 1942 - Moscow
 country_event = {
-	id = 14019
+	id = 14022
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14019"
+	desc = "EVTDESC14022"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -12615,10 +12758,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (17,19,22,24,25), March 1942 - Kalinin
 country_event = {
-	id = 14020
+	id = 14023
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14020"
+	desc = "EVTDESC14023"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -12721,10 +12864,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (23), December 1941 - Moscow
 country_event = {
-	id = 14021
+	id = 14024
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14021"
+	desc = "EVTDESC14024"
 	picture = "guardsinf"
 	option = {
 		name = "Form this unit!"
@@ -12770,10 +12913,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (26,27,28,29), May 1942 - Moscow
 country_event = {
-	id = 14022
+	id = 14025
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14022"
+	desc = "EVTDESC14025"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -12860,10 +13003,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (30,31), May 1942 - Bryansk
 country_event = {
-	id = 14023
+	id = 14026
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14023"
+	desc = "EVTDESC14026"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -12950,10 +13093,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (32,33), May 1942 - Taman Peninsula
 country_event = {
-	id = 14024
+	id = 14027
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14024"
+	desc = "EVTDESC14027"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -13057,10 +13200,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (34,36,37,38), August 1942 - Moscow
 country_event = {
-	id = 14025
+	id = 14028
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14025"
+	desc = "EVTDESC14028"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -13183,10 +13326,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (35,39,40,41), August 1942 - Stalingrad
 country_event = {
-	id = 14026
+	id = 14029
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14026"
+	desc = "EVTDESC14029"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -13309,10 +13452,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (42,47,48,49), October 1942 - Moscow
 country_event = {
-	id = 14027
+	id = 14030
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14027"
+	desc = "EVTDESC14030"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -13399,10 +13542,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (43,45,46), October 1942 - Kalinin
 country_event = {
-	id = 14028
+	id = 14031
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14028"
+	desc = "EVTDESC14031"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -13497,10 +13640,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (44), October 1942 - Stalingrad
 country_event = {
-	id = 14029
+	id = 14032
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14029"
+	desc = "EVTDESC14032"
 	picture = "guardsinf"
 	option = {
 		name = "Form this unit!"
@@ -13555,10 +13698,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (50,51,52), November 1942 - Stalingrad
 country_event = {
-	id = 14030
+	id = 14033
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14030"
+	desc = "EVTDESC14033"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -13644,10 +13787,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (53,54,55,57,58), December 1942 - Moscow
 country_event = {
-	id = 14031
+	id = 14034
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14031"
+	desc = "EVTDESC14034"
 	picture = "guardsinf"
 	option = {
 		name = "Form these units!"
@@ -13740,24 +13883,16 @@ country_event = {
 		}
 	}
 }
-## Guards Rifle Divisions (63), January 1943 - Leningrad
+## Guards Rifle Divisions (59,60,61,62,66,67), January 1943 - Stalingrad
 country_event = {
-	id = 14032
+	id = 14036
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14032"
+	desc = "EVTDESC14036"
 	picture = "guardsinf"
 	option = {
 		name = "Form this unit!"
-		set_country_flag = GRD_63
-		#Formation of 63rd Guards Rifle Division - Removing 136th Rifle Division
-		remove_brigade = "Shtab-K. 136-y Strelk. Divizii"
-		remove_brigade = "269/270/342-ye Strelk. Polki"
-		remove_brigade = "343-y Art. Polk/556-y Minomotnyy Polk"
-		remove_brigade = "296-y Otd. Protivotankovyy D-n"
-		remove_brigade = "194-y Razvedovatelniy B-n"
-		remove_brigade = "42-y Otd. Sap'ornyy B-n"
-		remove_brigade = "Avtomobilnyy B-n 136-y Strelk. Div."
+		set_country_flag = GRD_59_60_61_62_66_67
 
 		ai_chance = {
 			factor = 100
@@ -13770,12 +13905,12 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +6000
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
-				load_oob = SOV/Guards_Rifle_Divisions_63_1943_Jan.txt
+				energy = -12000
+				metal = -6000
+				rare_materials = -3000
+				load_oob = SOV/Guards_Rifle_Divisions_59-60-61-62-66-67_1943_Jan.txt
 			}
 		}
 		OMG = {
@@ -13786,13 +13921,80 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = SOV/Guards_Rifle_Divisions_63_1943_Jan.txt
+				load_oob = SOV/Guards_Rifle_Divisions_59-60-61-62-66-67_1943_Jan.txt
 			}
 		}
 	}
 	option = {
 		name = "No Need"  # no
-		set_country_flag = GRD_63_no
+		set_country_flag = GRD_59_60_61_62_66_67_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+## Guards Rifle Divisions (63,64), January 1943 - Leningrad
+country_event = {
+	id = 14036
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14036"
+	picture = "guardsinf"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = GRD_63
+		#Formation of 63rd Guards Rifle Division - Removing 136th Rifle Division
+		remove_brigade = "Shtab-K. 136-y Strelk. Divizii"
+		remove_brigade = "269/270/342-ye Strelk. Polki"
+		remove_brigade = "343-y Art. Polk/556-y Minomotnyy Polk"
+		remove_brigade = "296-y Otd. Protivotankovyy D-n"
+		remove_brigade = "194-y Razvedovatelniy B-n"
+		remove_brigade = "42-y Otd. Sap'ornyy B-n"
+		remove_brigade = "Avtomobilnyy B-n 136-y Strelk. Div."
+		#Formation of 64th Guards Rifle Division - Removing 327th Rifle Division
+		remove_brigade = "Shtab-K. 327-y Strelk. D."
+		remove_brigade = "1098/1100/1102-ye Strelkovyye Polki"
+		remove_brigade = "661-y Otd. Sap'ornyy B-n"
+		remove_brigade = "379-y Otd. Protivotankovyy D-n"
+		remove_brigade = "894-y Artilleriyskiy Polk"
+		remove_brigade = "Sam.-Art. Polk 327-y SD" 
+		remove_brigade = "396-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = SOV/Guards_Rifle_Divisions_63_64_1943_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_63_64_1943_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_63_64_no
 		ai_chance = {
 			factor = 0
 		}
@@ -13800,10 +14002,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (75), March 1943 - Stalingrad
 country_event = {
-	id = 14033
+	id = 14037
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14033"
+	desc = "EVTDESC14037"
 	picture = "guardsinf"
 	option = {
 		name = "Form this unit!"
@@ -13858,10 +14060,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (120), September 1943 - Stalingrad
 country_event = {
-	id = 14034
+	id = 14038
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14034"
+	desc = "EVTDESC14038"
 	picture = "guardsinf"
 	option = {
 		name = "Form this unit!"
@@ -13913,7 +14115,58 @@ country_event = {
 		}
 	}
 }
-#To do 1st Guards RD 1943
+## Guards Rifle Divisions (1), September 1943 - Moscow
+country_event = {
+	id = 14039
+	is_triggered_only = yes
+	title = "Guards Rifle Divisions!"
+	desc = "EVTDESC14039"
+	picture = "guardsinf"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = GRD_1_1943
+		#Formation of 1st Guards Rifle Division - Removing 1st Guards Motorized Rifle Division
+		remove_brigade = "Shtab-K. 1-y Gv. Moskovskoy Mot. Div."
+		remove_brigade = "1/3-ye Motostrelkovye Polki"
+		remove_brigade = "6-y Gv. Tankovyy B-n"
+		remove_brigade = "35-y Gv. Mot.-Artilleriyskiy Polk"
+		remove_brigade = "17-y Otdelniy Mot.-Protivotankovyy D-n"
+		remove_brigade = "20-y Otdelniy Sap'ornyy B-n"
+		remove_brigade = "4-y Otdelniy Avtomobilnyy B-n" 
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				supplies = -500
+				load_oob = SOV/Guards_Rifle_Divisions_1_1943_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Rifle_Divisions_1_1943_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRD_1_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 
 ## Guards Tank Corps
 ## 1st Guards Tank Corps - December 1942 
