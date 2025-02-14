@@ -9960,6 +9960,1490 @@ country_event = {
 		}
 	}
 }
+
+### Mechanized Corps
+
+### Artillery Units
+## IPTAD (Tank Extermination Artillery Divisions), May 1942
+country_event = {
+	id = 12300
+	is_triggered_only = yes
+	title = "Tank Extermination Divisions!"
+	desc = "EVTDESC12300"
+	picture = "SOV_IPTAD"
+	option = {
+		name = "Form these units!"
+		set_country_flag = IPTAD
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 1409 #Moscow
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +5000
+				}
+				energy = -10000
+				metal = -5000
+				rare_materials = -2500
+				load_oob = SOV/Artillery_Divisions_IPTAD_1942_May.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+
+						1409 = {
+							controller = {
+							faction = axis 
+							}
+						}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +5000
+				}
+				energy = -10000
+				metal = -5000
+				rare_materials = -2500
+				load_oob = SOV/Artillery_Divisions_IPTAD_1942_May_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 1409
+				}
+				load_oob = SOV/Artillery_Divisions_IPTAD_1942_May.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					1409 = {
+						controller = {
+						faction = axis 
+						}
+					}
+				}
+				load_oob = SOV/Artillery_Divisions_IPTAD_1942_May_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = IPTAD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1st Artillery Division - October 1942
+country_event = {
+	id = 12301
+	is_triggered_only = yes
+	title = "1st Artillery Division"
+	desc = "EVTDESC12301"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this division!"
+		set_country_flag = ArtDiv1
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Division_1_1942_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Division_1_1942_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = ArtDiv1_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 19th Heavy Artillery Division - November 1942
+country_event = {
+	id = 12302
+	is_triggered_only = yes
+	title = "19th Heavy Artillery Division"
+	desc = "EVTDESC12302"
+	picture = "SOV_Artillery_2"
+	option = {
+		name = "Form this division!"
+		set_country_flag = ArtDiv19
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Division_19_1942_Nov.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Division_19_1942_Nov.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = ArtDiv19_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Artillery Divisions 2 to 13, December 1942
+country_event = {
+	id = 12303
+	is_triggered_only = yes
+	title = "Artillery Divisions - December 1942"
+	desc = "EVTDESC12303"
+	picture = "SOV_Artillery_2"
+	option = {
+		name = "Form these units!"
+		set_country_flag = ArtDiv2-13
+
+		#Removing 1942 IPTAD
+		remove_brigade = "Shtab-K. 1-go IPTAD" 
+		remove_brigade = "Mot. Strelkovyy B-n 1-go IPTAD"
+		remove_brigade = "1-ya Artilleriyskaya Brigada 1-go IPTAD"
+		remove_brigade = "2-ya Artilleriyskaya Brigada 1-go IPTAD"
+		remove_brigade = "3-ya Artilleriyskaya Brigada 1-go IPTAD"
+		remove_brigade = "Sap'ornyy B-n 1-go IPTAD"
+		remove_brigade = "Avtotransportnyy B-n 1-go IPTAD"
+		remove_brigade = "Shtab-K. 2-go IPTAD"
+		remove_brigade = "Mot. Strelkovyy B-n 2-go IPTAD"
+		remove_brigade = "1-ya Artilleriyskaya Brigada 2-go IPTAD"
+		remove_brigade = "2-ya Artilleriyskaya Brigada 2-go IPTAD"
+		remove_brigade = "3-ya Artilleriyskaya Brigada 2-go IPTAD"
+		remove_brigade = "Sap'ornyy B-n 2-go IPTAD"
+		remove_brigade = "Avtotransportnyy B-n 2-go IPTAD"
+		remove_brigade = "Shtab-K. 3-go IPTAD" 
+		remove_brigade = "Mot. Strelkovyy B-n 3-go IPTAD"
+		remove_brigade = "1-ya Artilleriyskaya Brigada 3-go IPTAD"
+		remove_brigade = "2-ya Artilleriyskaya Brigada 3-go IPTAD"
+		remove_brigade = "3-ya Artilleriyskaya Brigada 3-go IPTAD"
+		remove_brigade = "Sap'ornyy B-n 3-go IPTAD"
+		remove_brigade = "Avtotransportnyy B-n 3-go IPTAD"
+		remove_brigade = "Shtab-K. 4-go IPTAD"
+		remove_brigade = "Mot. Strelkovyy B-n 4-go IPTAD"
+		remove_brigade = "1-ya Artilleriyskaya Brigada 4-go IPTAD"
+		remove_brigade = "2-ya Artilleriyskaya Brigada 4-go IPTAD"
+		remove_brigade = "3-ya Artilleriyskaya Brigada 4-go IPTAD"
+		remove_brigade = "Sap'ornyy B-n 4-go IPTAD"
+		remove_brigade = "Avtotransportnyy B-n 4-go IPTAD"
+		remove_brigade = "Shtab-K. 5-go IPTAD"
+		remove_brigade = "Mot. Strelkovyy B-n 5-go IPTAD"
+		remove_brigade = "1-ya Artilleriyskaya Brigada 5-go IPTAD"
+		remove_brigade = "2-ya Artilleriyskaya Brigada 5-go IPTAD"
+		remove_brigade = "3-ya Artilleriyskaya Brigada 5-go IPTAD"
+		remove_brigade = "Sap'ornyy B-n 5-go IPTAD"
+		remove_brigade = "Avtotransportnyy B-n 5-go IPTAD"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 1409 #Moscow
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +6000
+				}
+				energy = -12000
+				metal = -6000
+				rare_materials = -3000
+				load_oob = SOV/Artillery_Divisions_2-13_1942_Dec.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+
+						1409 = {
+							controller = {
+							faction = axis 
+							}
+						}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +6000
+				}
+				energy = -12000
+				metal = -6000
+				rare_materials = -3000
+				load_oob = SOV/Artillery_Divisions_2-13_1942_Dec_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 1409
+				}
+				load_oob = SOV/Artillery_Divisions_2-13_1942_Dec.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					1409 = {
+						controller = {
+						faction = axis 
+						}
+					}
+				}
+				load_oob = SOV/Artillery_Divisions_2-13_1942_Dec_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = ArtDiv2-13_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 26th and 27th Artillery Divisions, December 1942
+country_event = {
+	id = 12304
+	is_triggered_only = yes
+	title = "Artillery Divisions - December 1942"
+	desc = "EVTDESC12304"
+	picture = "SOV_Artillery_2"
+	option = {
+		name = "Form these units!"
+		set_country_flag = ArtDiv26-27
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 1231 #Kalinin
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2000
+				}
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = SOV/Artillery_Divisions_26-27_1942_Dec.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+
+						1231 = {
+							controller = {
+							faction = axis 
+							}
+						}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2000
+				}
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = SOV/Artillery_Divisions_26-27_1942_Dec_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 1231
+				}
+				load_oob = SOV/Artillery_Divisions_26-27_1942_Dec.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					1231 = {
+						controller = {
+						faction = axis 
+						}
+					}
+				}
+				load_oob = SOV/Artillery_Divisions_26-27_1942_Dec_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = ArtDiv26-27_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+##Artillery Divisions 14 to 25, January 1943
+country_event = {
+	id = 12305
+	is_triggered_only = yes
+	title = "Artillery Divisions - January 1943"
+	desc = "EVTDESC12305"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form these units!"
+		set_country_flag = ArtDiv14-25
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+					controls = 1409 #Moscow
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +9000
+				}
+				energy = -18000
+				metal = -9000
+				rare_materials = -4500
+				load_oob = SOV/Artillery_Divisions_14-25_1943_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+
+						1409 = {
+							controller = {
+							faction = axis 
+							}
+						}
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +9000
+				}
+				energy = -18000
+				metal = -9000
+				rare_materials = -4500
+				load_oob = SOV/Artillery_Divisions_14-25_1943_Jan_Alternate.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					controls = 1409
+				}
+				load_oob = SOV/Artillery_Divisions_14-25_1943_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+					1409 = {
+						controller = {
+						faction = axis 
+						}
+					}
+				}
+				load_oob = SOV/Artillery_Divisions_14-25_1943_Jan_Alternate.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = ArtDiv14-25_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Artillery Division - November 1942
+country_event = {
+	id = 12306
+	is_triggered_only = yes
+	title = "Leningrad Artillery Divisions"
+	desc = "EVTDESC12306"
+	picture = "SOV_Artillery_2"
+	option = {
+		name = "Form these divisions!"
+		set_country_flag = ArtDiv18-28
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2000
+				}
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = SOV/Artillery_Divisions_18-28_1943_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Divisions_18-28_1943_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = ArtDiv18-28_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 7th and 9th Breakthough Artillery Divisions
+country_event = {
+	id = 12307
+	is_triggered_only = yes
+	title = "7th and 9th Breakthrough Artillery Divisions"
+	desc = "EVTDESC12307"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form these divisions!"
+		set_country_flag = BreakArtDiv7-9
+
+		#Removing 7th Artillery Division
+		remove_brigade = "Shtab-K. 7-y Art. Div."
+		remove_brigade = "11-ya Legkaya Art. Brigada"
+		remove_brigade = "17-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "25-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "525-y IPTAP"
+		remove_brigade = "3-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 7-y Art. Div."
+
+		#Removing 9th Artillery Division
+		remove_brigade = "Shtab-K. 9-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 9-y Art. Div."
+		remove_brigade = "26-ya Legkaya Art. Brigada"
+		remove_brigade = "30-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "23-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "10-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 9-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Divisions_7_9_1943_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Divisions_7_9_1943_Aug.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtDiv7-9_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 13th and 15th Breakthough Artillery Divisions
+country_event = {
+	id = 12308
+	is_triggered_only = yes
+	title = "13th and 15th Breakthrough Artillery Divisions"
+	desc = "EVTDESC12308"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form these divisions!"
+		set_country_flag = BreakArtDiv13-15
+
+		#Removing 13th Artillery Division
+		remove_brigade = "Shtab-K. 13-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 13-y Art. Div."
+		remove_brigade = "42-ya Legkaya Art. Brigada"
+		remove_brigade = "33-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "47-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "17-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 13-y Art. Div."
+
+		#Removing 15th Artillery Division
+		remove_brigade = "Shtab-K. 15-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 15-y Art. Div."
+		remove_brigade = "69-ya Legkaya Art. Brigada"
+		remove_brigade = "44-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "35-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "18-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 15-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Divisions_13_15_1943_May.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Divisions_13_15_1943_May.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtDiv13-15_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 3rd Breakthough Artillery Corps
+country_event = {
+	id = 12309
+	is_triggered_only = yes
+	title = "3rd Breakthrough Artillery Corps"
+	desc = "EVTDESC12309"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = BreakArtCorps3
+
+		#Removing 18th Artillery Division
+		remove_brigade = "Shtab-K. 18-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 18-y Art. Div."
+		remove_brigade = "51-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "38-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "15-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 25-y Art. Div."
+
+		#Removing 23rd Artillery Division
+		remove_brigade = "Shtab-K. 23-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 23-y Art. Div."
+		remove_brigade = "57-ya Legkaya Art. Brigada"
+		remove_brigade = "63-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "21-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 23-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Corps_3_1943_May.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Corps_3_1943_May.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtCorps3_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 7th Breakthough Artillery Corps
+country_event = {
+	id = 12310
+	is_triggered_only = yes
+	title = "7th Breakthrough Artillery Corps"
+	desc = "EVTDESC12310"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = BreakArtCorps7
+
+		#Removing 16th Artillery Division
+		remove_brigade = "Shtab-K. 16-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 16-y Art. Div."
+		remove_brigade = "36-ya Legkaya Art. Brigada"
+		remove_brigade = "52-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "14-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 16-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Corps_7_1943_May.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Corps_7_1943_May.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtCorps7_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 4th Breakthough Artillery Corps
+country_event = {
+	id = 12311
+	is_triggered_only = yes
+	title = "4th Breakthrough Artillery Corps"
+	desc = "EVTDESC12311"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = BreakArtCorps4
+
+		#Removing 5th Artillery Division
+		remove_brigade = "Shtab-K. 5-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 5-y Art. Div."
+		remove_brigade = "16-ya Legkaya Art. Brigada"
+		remove_brigade = "24-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "9-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "1-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 5-y Art. Div."
+
+		#Removing 12th Artillery Division
+		remove_brigade = "Shtab-K. 12-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 12-y Art. Div."
+		remove_brigade = "46-ya Legkaya Art. Brigada"
+		remove_brigade = "41-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "32-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "11-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 12-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Corps_4_1943_June.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Corps_4_1943_June.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtCorps4_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 5th Breakthough Artillery Corps
+country_event = {
+	id = 12312
+	is_triggered_only = yes
+	title = "5th Breakthrough Artillery Corps"
+	desc = "EVTDESC12312"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = BreakArtCorps5
+
+		#Removing 20th Artillery Division
+		remove_brigade = "Shtab-K. 20-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 20-y Art. Div."
+		remove_brigade = "34-ya Legkaya Art. Brigada"
+		remove_brigade = "53-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "60-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "19-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 20-y Art. Div."
+
+		#Removing 22nd Artillery Division
+		remove_brigade = "Shtab-K. 22-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 22-y Art. Div."
+		remove_brigade = "62-ya Legkaya Art. Brigada"
+		remove_brigade = "67-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "20-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 22-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Corps_5_1943_June.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Corps_5_1943_June.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtCorps5_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 8th Breakthough Artillery Corps
+country_event = {
+	id = 12313
+	is_triggered_only = yes
+	title = "5th Breakthrough Artillery Corps"
+	desc = "EVTDESC12313"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = BreakArtCorps8
+
+		#Removing 3rd Artillery Division
+		remove_brigade = "Shtab-K. 3-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 3-y Art. Div."
+		remove_brigade = "15-ya Legkaya Art. Brigada"
+		remove_brigade = "5-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "1-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "7-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 3-y Art. Div."
+
+		#Removing 6th Artillery Division
+		remove_brigade = "Shtab-K. 6-y Art. Div."
+		remove_brigade = "21-ya Legkaya Art. Brigada"
+		remove_brigade = "10-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "18-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "868-y IPTAP"
+		remove_brigade = "2-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 6-y Art. Div."
+
+		#Removing 21st Artillery Division
+		remove_brigade = "Shtab-K. 21-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 21-y Art. Div."
+		remove_brigade = "66-ya Legkaya Art. Brigada"
+		remove_brigade = "55-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "25-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 21-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Corps_8_1943_July.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Corps_8_1943_July.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtCorps8_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 8th Cannon Artillery Division - October 1943
+country_event = {
+	id = 12314
+	is_triggered_only = yes
+	title = "8th Cannon Artillery Division"
+	desc = "EVTDESC12314"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this division!"
+		set_country_flag = ArtDiv8
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Division_8_1943_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Division_8_1943_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = ArtDiv8_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 2nd Breakthough Artillery Division
+country_event = {
+	id = 12315
+	is_triggered_only = yes
+	title = "2nd Breakthrough Artillery Division"
+	desc = "EVTDESC12315"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this division!"
+		set_country_flag = BreakArtDiv2
+
+		#Removing 2nd Artillery Division
+		remove_brigade = "Shtab-K. 2-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 2-y Art. Div."
+		remove_brigade = "20-ya Legkaya Art. Brigada"
+		remove_brigade = "7-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "4-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "871-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Division_2_1944_April.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Division_2_1944_April.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtDiv2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 10th Breakthough Artillery Division
+country_event = {
+	id = 12316
+	is_triggered_only = yes
+	title = "10th Breakthrough Artillery Division"
+	desc = "EVTDESC12316"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this division!"
+		set_country_flag = BreakArtDiv10
+
+		#Removing 10th Artillery Division
+		remove_brigade = "Shtab-K. 10-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 10-y Art. Div."
+		remove_brigade = "22-ya Legkaya Art. Brigada"
+		remove_brigade = "27-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "29-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "12-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 10-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Division_10_1944_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Division_10_1944_Aug.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtDiv2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1st Breakthough Artillery Corps
+country_event = {
+	id = 12317
+	is_triggered_only = yes
+	title = "1st Breakthrough Artillery Corps"
+	desc = "EVTDESC12317"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = BreakArtCorps1
+
+		#Removing 24th Artillery Division
+		remove_brigade = "Shtab-K. 24-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 24-y Art. Div."
+		remove_brigade = "70-ya Legkaya Art. Brigada"
+		remove_brigade = "59-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "58-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "22-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 24-y Art. Div."
+
+		#Removing 25th Artillery Division
+		remove_brigade = "Shtab-K. 25-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 25-y Art. Div."
+		remove_brigade = "73-ya Legkaya Art. Brigada"
+		remove_brigade = "68-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "71-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "23-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 25-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Corps_1_1944_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Corps_1_1944_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtCorps1_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 2nd Breakthough Artillery Corps
+country_event = {
+	id = 12318
+	is_triggered_only = yes
+	title = "2nd Breakthrough Artillery Corps"
+	desc = "EVTDESC12318"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = BreakArtCorps2
+
+		#Removing 28th Artillery Division
+		remove_brigade = "Shtab-K. 28-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 28-y Art. Div."
+		remove_brigade = "79-ya Legkaya Art. Brigada"
+		remove_brigade = "81-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "80-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "42-ya Minomotnaya Art. Brigada BM"
+		remove_brigade = "Avtotransportnyy B-n 28-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Corps_2_1944_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Corps_2_1944_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtCorps2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 6th Breakthough Artillery Corps
+country_event = {
+	id = 12319
+	is_triggered_only = yes
+	title = "6th Breakthrough Artillery Corps"
+	desc = "EVTDESC12319"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = BreakArtCorps6
+
+		#Removing 14th Artillery Division
+		remove_brigade = "Shtab-K. 14-y Art. Div." 
+		remove_brigade = "Strelkovyy B-n 14-y Art. Div."
+		remove_brigade = "34-ya Legkaya Art. Brigada"
+		remove_brigade = "48-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "43-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "16-ya Minomotnaya Art. Brigada"
+		remove_brigade = "883-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Corps_6_1944_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Corps_6_1944_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtCorps6_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 9th Breakthough Artillery Corps
+country_event = {
+	id = 12320
+	is_triggered_only = yes
+	title = "9th Breakthrough Artillery Corps"
+	desc = "EVTDESC12320"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = BreakArtCorps9
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Corps_9_1944_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Corps_9_1944_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtCorps9_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 10th Breakthough Artillery Corps
+country_event = {
+	id = 12321
+	is_triggered_only = yes
+	title = "10th Breakthrough Artillery Corps"
+	desc = "EVTDESC12321"
+	picture = "SOV_Artillery_1"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = BreakArtCorps10
+
+		#Removing 4th Artillery Division
+		remove_brigade = "Shtab-K. 4-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 4-y Art. Div."
+		remove_brigade = "6-ya Legkaya Art. Brigada"
+		remove_brigade = "3-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "14-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "8-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 4-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Artillery_Breakthrough_Corps_10_1944_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Artillery_Breakthrough_Corps_10_1944_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = BreakArtCorps10_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 #### NKVD Troops
 ## NKVD Historical Upgrades
 country_event = {
@@ -9984,6 +11468,7 @@ country_event = {
 		}
 	}
 }
+
 ## NKVD Internal Troops Command
 country_event = {
 	id = 13101
@@ -10946,6 +12431,356 @@ country_event = {
 	option = {
 		name = "No Need"  # no
 		set_country_flag = 8_ERC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1st Polish Rifle Division
+country_event = {
+	id = 13201
+	is_triggered_only = yes
+	title = "1st Polish Rifle Division"
+	desc = "EVTDESC13201"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form this division!"
+		set_country_flag = 1_PRD
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +900
+				}
+				energy = -1800
+				metal = -900
+				rare_materials = -450
+				load_oob = SOV/Polish_Division_1_1943_May.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Polish_Division_1_1943_May.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 1_PRD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1st Polish Rifle Corps
+country_event = {
+	id = 13202
+	is_triggered_only = yes
+	title = "1st Polish Rifle Corps"
+	desc = "EVTDESC13202"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 1_PRC
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +5000
+				}
+				energy = -10000
+				metal = -5000
+				rare_materials = -2500
+				load_oob = SOV/Polish_Corps_1_1943_August.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Polish_Corps_1_1943_August.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 1_PRC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1st Polish Army
+country_event = {
+	id = 13203
+	is_triggered_only = yes
+	title = "1st Polish Army"
+	desc = "EVTDESC13203"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form this army!"
+		set_country_flag = 1_PRA
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +5000
+				}
+				energy = -10000
+				metal = -5000
+				rare_materials = -2500
+				load_oob = SOV/Polish_Army_1_1944_March.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Polish_Army_1_1944_March.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 1_PRA_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 2nd Polish Army
+country_event = {
+	id = 13204
+	is_triggered_only = yes
+	title = "2nd Polish Army"
+	desc = "EVTDESC13204"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form this Army!"
+		set_country_flag = 2_PRA
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +5000
+				}
+				energy = -10000
+				metal = -5000
+				rare_materials = -2500
+				load_oob = SOV/Polish_Army_2_1944_Nov.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Polish_Army_2_1944_Nov.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 2_PRA_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 2nd Polish Army Reinforcements
+country_event = {
+	id = 13205
+	is_triggered_only = yes
+	title = "2nd Polish Army reinforcements"
+	desc = "EVTDESC13205"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form this Army!"
+		set_country_flag = 2_PRA_Reinforcements
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2000
+				}
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = SOV/Polish_Army_2_1945_Feb.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Polish_Army_2_1945_Feb.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 2_PRA_Reinforcements_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Romanian Volunteers
+country_event = {
+	id = 13206
+	is_triggered_only = yes
+	title = "Romanian Volunteers"
+	desc = "EVTDESC13206"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form these divisions!"
+		set_country_flag = Rom_Div
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2000
+				}
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = SOV/Romanian_Divisions_1_2_1944_March.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Romanian_Divisions_1_2_1944_March.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = Rom_Div_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## French Normandie Niemen
+country_event = {
+	id = 13207
+	is_triggered_only = yes
+	title = "French Volunteers"
+	desc = "EVTDESC13207"
+	picture = "EarlyTank2"
+	option = {
+		name = "Form this air unit!"
+		set_country_flag = Normandie_Niemen
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3000
+				}
+				energy = -6000
+				metal = -3000
+				rare_materials = -1500
+				load_oob = SOV/French_Normandie_Niemen.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/French_Normandie_Niemen.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = Normandie_Niemen_no
 		ai_chance = {
 			factor = 0
 		}
@@ -15479,5 +17314,359 @@ country_event = {
 		}
 	}
 }
+### Guards Artillery Decisions
+## Guards Rocket Artillery Divisions - January 1943
+country_event = {
+	id = 14300
+	is_triggered_only = yes
+	title = "Guards Rocket Artillery"
+	desc = "EVTDESC14300"
+	picture = "guardsarm"
+	option = {
+		name = "Form these units!"
+		set_country_flag = GRAD
 
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +7000
+				}
+				energy = -14000
+				metal = -7000
+				rare_materials = -3500
+				load_oob = SOV/Guards_Rocket_Artillery_Divisions_January_1943.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Rocket_Artillery_Divisions_January_1943.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GRAD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 2nd Guards Artillery Division
+country_event = {
+	id = 14301
+	is_triggered_only = yes
+	title = "2nd Guards Artillery Division"
+	desc = "EVTDESC14301"
+	picture = "guardsarm"
+	option = {
+		name = "Form this division!"
+		set_country_flag = GBAD_2
+		
+		#Removing 4th Artillery Division
+		remove_brigade = "Shtab-K. 4-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 4-y Art. Div."
+		remove_brigade = "6-ya Legkaya Art. Brigada"
+		remove_brigade = "3-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "14-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "8-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 4-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Artillery_Divisions_2_1943_March.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Artillery_Divisions_2_1943_March.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GBAD_2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1st Guards Artillery Division
+country_event = {
+	id = 14302
+	is_triggered_only = yes
+	title = "1st Guards Artillery Division"
+	desc = "EVTDESC14302"
+	picture = "guardsarm"
+	option = {
+		name = "Form this division!"
+		set_country_flag = GBAD_1
+		
+		#Removing 1st Artillery Division
+		remove_brigade = "Shtab-K. 1-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 1-y Art. Div."
+		remove_brigade = "468/501/1189-ye Legkiy-Art. Polki"
+		remove_brigade = "1107/1166-ye Pucheshny-Art. Polki"
+		remove_brigade = "275-y Gaubichnyy-Art. Polk"
+		remove_brigade = "126/143-ye Minomotnye Polki"
+		remove_brigade = "Avtotransportnyy B-n 1-y Art. Div."
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Artillery_Divisions_1_1943_May.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Artillery_Divisions_1_1943_May.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GBAD_1_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 3rd, 4th and 5th Guards Artillery Division
+country_event = {
+	id = 14303
+	is_triggered_only = yes
+	title = "3rd, 4th and 5th Guards Artillery Division"
+	desc = "EVTDESC14303"
+	picture = "guardsarm"
+	option = {
+		name = "Form these divisions!"
+		set_country_flag = GBAD_3_4_5
+		
+		#Removing 8th Artillery Division
+		remove_brigade = "Shtab-K. 8-y Art. Div."
+		remove_brigade = "2-ya Legkaya Art. Brigada"
+		remove_brigade = "12-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "28-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "368-y IPTAP"
+		remove_brigade = "6-ya Minomotnaya Art. Brigada"
+		remove_brigade = "Avtotransportnyy B-n 8-y Art. Div."
+
+		#Removing 19th Heavy Artillery Division
+		remove_brigade = "Shtab-K. 19-y Tiazh.-Art. Div."
+		remove_brigade = "Strelkovyy B-n 19-y Tiazh.-Art. Div."
+		remove_brigade = "123-y Armeiskiy-Art. Polk"
+		remove_brigade = "457/1108-y Pucheshny-Art. Polki"
+		remove_brigade = "5/110-y Gaubichnyy-Art. Polki"
+		remove_brigade = "400 OPADN BM"
+		remove_brigade = "Avtotransportnyy B-n 19-y Tiazh.-Art. Div."
+
+		#Removing 14th Artillery Division
+		remove_brigade = "Shtab-K. 14-y Art. Div."
+		remove_brigade = "Strelkovyy B-n 14-y Art. Div."
+		remove_brigade = "34-ya Legkaya Art. Brigada"
+		remove_brigade = "48-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "43-ya Gaubichnaya Art. Brigada"
+		remove_brigade = "16-ya Minomotnaya Art. Brigada"
+		remove_brigade = "883-y Avtotransportnyy B-n"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Artillery_Divisions_3-5_1943_July.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Artillery_Divisions_3-5_1943_July.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GBAD_3_4_5_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 6th Guards Heavy Cannon Artillery Division
+country_event = {
+	id = 14304
+	is_triggered_only = yes
+	title = "6th Guards Heavy Cannon Artillery Division"
+	desc = "EVTDESC14304"
+	picture = "guardsarm"
+	option = {
+		name = "Form this division!"
+		set_country_flag = GHAD_6
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Artillery_Divisions_6_1943_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Artillery_Divisions_6_1943_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GHAD_6_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 6th Guards Breakthrough Artillery Division
+country_event = {
+	id = 14305
+	is_triggered_only = yes
+	title = "6th Guards Breakthrough Artillery Division"
+	desc = "EVTDESC14305"
+	picture = "guardsarm"
+	option = {
+		name = "Form this division!"
+		set_country_flag = GBAD_6
+		
+		#Removing 6th Guards Cannon Artillery Division
+		remove_brigade = "Shtab-K. 6-y Gv. Tiazh. Puch. Art. Divizii"
+		remove_brigade = "Gv. Mot. Strelkovyy B-n 6GvTPAD"
+		remove_brigade = "15-ya Gv. Pucheshnaya Art. Brigada"
+		remove_brigade = "29-ya Gv. Pucheshnaya Art. Brigada"
+		remove_brigade = "40-ya Gv. Pucheshnaya Art. Brigada"
+		remove_brigade = "4-ya Pucheshnaya Art. Brigada"
+		remove_brigade = "Otd. Avtotransportnyy B-n 6GvTPAD"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = SOV/Guards_Artillery_Divisions_6_1944_June.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Artillery_Divisions_6_1944_June.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = GBAD_6_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 #EOF
