@@ -16689,10 +16689,10 @@ country_event = {
 }
 ## Guards Rifle Divisions (59,60,61,62,66,67), January 1943 - Stalingrad
 country_event = {
-	id = 14036
+	id = 14035
 	is_triggered_only = yes
 	title = "Guards Rifle Divisions!"
-	desc = "EVTDESC14036"
+	desc = "EVTDESC14035"
 	picture = "guardsinf"
 	option = {
 		name = "Form this unit!"
@@ -18085,6 +18085,27 @@ country_event = {
 		remove_brigade = "17-y Gv. Otd. Sap'ornyy B-n"
 		remove_brigade = "24-ya Gv. Otd. Razvedovatelnaya Rota"
 		remove_brigade = "Avtotransportnyy B-n 22-y Gv. Strelk. Div."
+		
+		#Removing 131st Tank Brigade from 23rd Tank Corps
+		remove_brigade = "Shtab-K. 131-y Tank. Brigady"
+		remove_brigade = "319-y/320-y Tank. B-ny 131-y Tank. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 131-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 131-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 131-y Tank. Brigady"
+
+		#Removing 217th Tank Brigade
+		remove_brigade = "Shtab-K. 217-y Tank. Brigady"
+		remove_brigade = "454-y/455-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 217-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 217-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 217-y Tank. Brigady"
+
+		#Removing 246th Tank Brigade
+		remove_brigade = "Shtab-K. 246-y Tank. Brigady"
+		remove_brigade = "180-y/181-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 246-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 246-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 246-y Tank. Brigady"
 
 		ai_chance = {
 			factor = 100
@@ -18097,11 +18118,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +500
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1000
+				metal = -500
+				rare_materials = -250
 				load_oob = SOV/Guards_Mech_Corps_2_1942_Nov.txt
 			}
 		}
@@ -18278,6 +18299,694 @@ country_event = {
 	option = {
 		name = "No Need"  # no
 		set_country_flag = 2_GMC_1944_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 3rd Guards Mechanized Corps - January 1943
+country_event = {
+	id = 14204
+	is_triggered_only = yes
+	title = "3rd Guards Mechanized Corps (1943)"
+	desc = "EVTDESC14204"
+	picture = "guardsarm"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 3_GMC_1943
+		#Removing 4th Mechanized Corps
+		remove_brigade = "Shtab-K. 4-y Mech. Korpusa"
+		remove_brigade = "61-y Mototsikletnyy B-n"
+		remove_brigade = "44-y Otd. Bron. Razvedovatelniy B-n"
+		remove_brigade = "168-y/188-y Otdel'nye Tankovyye Polky"
+		remove_brigade = "71-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 4-y Mech. Korpusa"
+		remove_brigade = "Shtab-K. 36-y Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 36-y Mekh. Brigady"
+		remove_brigade = "26-y Tankovyy Polk"
+		remove_brigade = "Artilleriyskiy D-n 36-y Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 36-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 36-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 36-y Mekh. Brigady"
+		remove_brigade = "Shtab-K. 59-y Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 59-y Mekh. Brigady"
+		remove_brigade = "20-y Tankovyy Polk" 
+		remove_brigade = "Artilleriyskiy D-n 59-y Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 59-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 59-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 59-y Mekh. Brigady"
+		remove_brigade = "Shtab-K. 60-y Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 60-y Mekh. Brigady"
+		remove_brigade = "21-y Tankovyy Polk"
+		remove_brigade = "Artilleriyskiy D-n 60-y Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 60-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 60-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 60-y Mekh. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Mech_Corps_3_1943_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Mech_Corps_3_1943_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 3_GMC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 3rd Guards Mechanized Corps upgrade - April 1944
+country_event = {
+	id = 14205
+	is_triggered_only = yes
+	title = "3rd Guards Mechanized Corps (1944)"
+	desc = "EVTDESC14205"
+	picture = "guardsarm"
+	option = {
+		name = "Upgrade this corps!"
+		set_country_flag = 3_GMC_1944
+		#Removing 1943 version of 3rd GMC
+		remove_brigade = "Shtab-K. 3-y Gv. Mekh. Korpusa"
+		remove_brigade = "1-y Gv. Mototsikletnyy B-n"
+		remove_brigade = "175-y Gv. Otd. Bron. Razvedovatelniy B-n"
+		remove_brigade = "1705-y Zen. Artilleriyskiy Polk"
+		remove_brigade = "173-y Otd. Istrebitel'no-Protivotankovyy D-n"
+		remove_brigade = "Transportnyy B-n 3-y Gv. Mech. Korpusa"
+		remove_brigade = "Shtab-K. 35-y Gv. Tank. Brigady"
+		remove_brigade = "1-y/2-y Otdel'nye Tank. B-ny 35-y Gv. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 35-y Gv. Tank. Brigady"
+		remove_brigade = "334-y Otdel'nyy Gv. Minomotnyy D-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 35-y Tank. Brigady"
+		remove_brigade = "62-y Gv. Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 35-y Gv. Tank. Brigady"
+		remove_brigade = "Shtab-K. 7-y Gv. Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 7-y Gv. Mekh. Brigady"
+		remove_brigade = "43-y Gv. Tankovyy Polk"
+		remove_brigade = "Artilleriyskiy D-n 7-y Gv. Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 7-y Gv. Mekh. Brigady"
+		remove_brigade = "Razv. Rota 7-y Gv. Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 7-y Gv. Mekh. Brigady"
+		remove_brigade = "Shtab-K. 8-y Gv. Mekh. Brigady" 
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 8-y Gv. Mekh. Brigady"
+		remove_brigade = "44-y Gv. Tankovyy Polk"
+		remove_brigade = "Artilleriyskiy D-n 8-y Gv. Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 8-y Gv. Mekh. Brigady"
+		remove_brigade = "Razv. Rota 8-y Gv. Mekh. Brigady" 
+		remove_brigade = "Transportnyy B-n 8-y Gv. Mekh. Brigady"
+		remove_brigade = "Shtab-K. 9-y Gv. Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 9-y Gv. Mekh. Brigady"
+		remove_brigade = "45-y Gv. Tankovyy Polk"
+		remove_brigade = "1831-y Tyazholyy Sam.-Art. Polk/I.,II. D-ny"
+		remove_brigade = "1831-y Tyazholyy Sam.-Art. Polk/III.,IV. D-ny"
+		remove_brigade = "Razv. Rota 9-y Gv. Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 9-y Gv. Mekh. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Mech_Corps_3_1944_April.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Mech_Corps_3_1944_April.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 3_GMC_1944_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 4th Guards Mechanized Corps - November 1943
+country_event = {
+	id = 14206
+	is_triggered_only = yes
+	title = "4th Guards Mechanized Corps (1943)"
+	desc = "EVTDESC14206"
+	picture = "guardsarm"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 4_GMC_1943
+		#Removing 13th Tank Corps
+		remove_brigade = "Shtab-K. 13-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 13-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 65-y Tank. Brigady"
+		remove_brigade = "213-y/214-y Tank. B-ny 65-y Tank. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 65-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 65-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 65-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 85-y Tank. Brigady"
+		remove_brigade = "199-y/205-y Tank. B-ny 85-y Tankovyy Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 85-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 85-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 85-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 88-y Tank. Brigady"
+		remove_brigade = "209-y/210-y Tank. B-ny 88-y Tank. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 88-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 88-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 88-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 20-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 20-y Mot. Brigady"
+		remove_brigade = "34-y Otd. Sap'ornyy B-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 20-y Mot. Brigady"
+		remove_brigade = "Transportnyy B-n 20-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Mech_Corps_4_1943_Nov.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Mech_Corps_4_1943_Nov.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 4_GMC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 5th Guards Mechanized Corps - January 1944
+country_event = {
+	id = 14207
+	is_triggered_only = yes
+	title = "5th Guards Mechanized Corps (1944)"
+	desc = "EVTDESC14207"
+	picture = "guardsarm"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 5_GMC_1944
+		#Removing 14th Tank Corps, used to form 6th Mechanized Corps, rapidly turned into 5th Guards Mechanized Corps
+		remove_brigade = "Shtab-K. 14-y Tank. Korpusa"
+		remove_brigade = "Transportnyy B-n 14-y Tank. Korpusa"
+		remove_brigade = "Shtab-K. 138-y Tank. Brigady"
+		remove_brigade = "225-y/226-y Tank. B-ny 138-y Tank. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 138-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 138-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 138-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 139-y Tank. Brigady"
+		remove_brigade = "219-y/220-y Tank. B-ny 139-y Tankovyy Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 139-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 139-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 139-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 136-y Tank. Brigady" 
+		remove_brigade = "221-y/222-y Tank. B-ny 136-y Tank. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 136-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 136-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 136-y Tank. Brigady" 
+		remove_brigade = "Shtab-K. 21-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 21-y Mot. Brigady"
+		remove_brigade = "21-y Otd. Sap'ornyy B-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 21-y Mot. Brigady"
+		remove_brigade = "Transportnyy B-n 21-y Mot. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Mech_Corps_5_1944_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Mech_Corps_5_1944_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 5_GMC_1944_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 6th Guards Mechanized Corps - June 1943
+country_event = {
+	id = 14208
+	is_triggered_only = yes
+	title = "6th Guards Mechanized Corps (1943)"
+	desc = "EVTDESC14208"
+	picture = "guardsarm"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 6_GMC_1943
+		#Removing 3rd Guards Motorized Division
+		remove_brigade = "Shtab-K. 3-y Gv. Mot.-Strelk. Div."
+		remove_brigade = "5/6/250-ye Motostrelkovye Polki"
+		remove_brigade = "1-y Gv. Tankovyy B-n"
+		remove_brigade = "51-y Gv. Mot.-Artilleriyskiy Polk/82-y Minnomotny B-n"
+		remove_brigade = "22-y Gv. Otd. Sap'ornyy B-n"
+		remove_brigade = "24-y Otd. I. Protivotankovyy D-n"
+		remove_brigade = "2-y Avtomobilnyy B-n"
+
+		#Removing 49th Mechanized Brigade from 5th Mechanized Corps
+		remove_brigade = "Shtab-K. 49-y Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 49-y Mekh. Brigady"
+		remove_brigade = "127-y Tankovyy Polk"
+		remove_brigade = "Artilleriyskiy D-n 49-y Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 49-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 49-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 49-y Mekh. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2000
+				}
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = SOV/Guards_Mech_Corps_6_1943_June.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Mech_Corps_6_1943_June.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 6_GMC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 6th Guards Mechanized Corps Upgrade - January 1945
+country_event = {
+	id = 14209
+	is_triggered_only = yes
+	title = "6th Guards Mechanized Corps (1945)"
+	desc = "EVTDESC14209"
+	picture = "guardsarm"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 6_GMC_1945
+		#Removing former version of 6th Guards Mechanized Corps
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Mech_Corps_6_1945_Jan.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Mech_Corps_6_1945_Jan.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 6_GMC_1945_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 7th Guards Mechanized Corps - August 1943
+country_event = {
+	id = 14210
+	is_triggered_only = yes
+	title = "7th Guards Mechanized Corps (1943)"
+	desc = "EVTDESC14210"
+	picture = "guardsarm"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 7_GMC_1943
+		#Removing the 2nd Mechanized Corps
+		remove_brigade = "Shtab-K. 2-y Mech. Korpusa"
+		remove_brigade = "68-y Mototsikletnyy B-n"
+		remove_brigade = "410-y Gv. Minomotnyy Polk"
+		remove_brigade = "33-y Otd. Bron. Razvedovatelniy B-n"
+		remove_brigade = "Transportnyy B-n 2-y Mech. Korpusa"
+		remove_brigade = "Shtab-K. 18-y Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 18-y Mekh. Brigady"
+		remove_brigade = "13-y Tankovyy Polk"
+		remove_brigade = "Artilleriyskiy D-n 18-y Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 18-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 18-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 18-y Mekh. Brigady"
+		remove_brigade = "Shtab-K. 34-y Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 34-y Mekh. Brigady"
+		remove_brigade = "12-y Tankovyy Polk"
+		remove_brigade = "Artilleriyskiy D-n 34-y Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 34-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 34-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 34-y Mekh. Brigady"
+		remove_brigade = "Shtab-K. 43-y Mekh. Brigady" 
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 43-y Mekh. Brigady"
+		remove_brigade = "215-y Tankovyy Polk"
+		remove_brigade = "Artilleriyskiy D-n 43-y Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 43-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 43-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 43-y Mekh. Brigady"
+		remove_brigade = "Shtab-K. 33-y Tank. Brigady"
+		remove_brigade = "33-y/243-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "33-y Mot.-Pulemetnyy B-n"
+		remove_brigade = "79-y Istrebitel'no-Protivotankovyy Polk/I-II B-ny"
+		remove_brigade = "19-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 33-y Tank. Brigady" 
+		remove_brigade = "Shtab-K. 36-y Tank. Brigady"
+		remove_brigade = "36-y/244-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 36-y Tank. Brigady"
+		remove_brigade = "79-y Istrebitel'no-Protivotankovyy Polk/III-IV B-ny"
+		remove_brigade = "Transportnyy B-n 219-y Tank. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Mech_Corps_7_1943_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Mech_Corps_7_1943_Aug.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 7_GMC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 8th Guards Mechanized Corps - October 1943
+country_event = {
+	id = 14211
+	is_triggered_only = yes
+	title = "8th Guards Mechanized Corps (1943)"
+	desc = "EVTDESC14211"
+	picture = "guardsarm"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 8_GMC_1943
+		#Removing the 3rd Mechanized Corps
+		remove_brigade = "Shtab-K. 3-y Mech. Korpusa"
+		remove_brigade = "25-y Mototsikletnyy B-n" 
+		remove_brigade = "Transportnyy B-n 3-y Mech. Korpusa"
+		remove_brigade = "Shtab-K. 1-y Gv. Tank. Brigady"
+		remove_brigade = "1-y/2-y Tank. B-ny 1-y Gv. T. Brigady"
+		remove_brigade = "Mot.-Pulemetnyy B-n 1-y Gv. Tank. Brigady"
+		remove_brigade = "Elementy Obespecheniya 1-y Gv. Tank. Brigady"
+		remove_brigade = "405-y Otdel'nyy Gv. Minomotnyy D-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 1-y Gv. T. Brigady"
+		remove_brigade = "Transportnyy B-n 1-y Gv. Tank. Brigady"
+		remove_brigade = "Shtab-K. 49-y Tank. Brigady"
+		remove_brigade = "49-y/254-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 49-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 49-y Tank. Brigady"
+		remove_brigade = "27-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 49-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 1-y Mekh. Brigady"
+		remove_brigade = "445-y/446-y/447-y Mekh. B-ny 1-y Mekh. Brigady"
+		remove_brigade = "14-y Tankovyy Polk"
+		remove_brigade = "461-y Artilleriyskiy D-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 1-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 1-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 1-y Mekh. Brigady"
+		remove_brigade = "Shtab-K. 3-y Mekh. Brigady"
+		remove_brigade = "451-y/452-y/453-y Mekh. B-ny 3-y Mekh. Brigady"
+		remove_brigade = "16-y Tankovyy Polk"
+		remove_brigade = "463-y Artilleriyskiy D-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 3-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 3-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 3-y Mekh. Brigady"
+		remove_brigade = "Shtab-K. 10-y Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 10-y Mekh. Brigady"
+		remove_brigade = "17-y Tankovyy Polk" 
+		remove_brigade = "461-y Artilleriyskiy D-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 10-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 10-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 10-y Mekh. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Mech_Corps_8_1943_Oct.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Mech_Corps_8_1943_Oct.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 8_GMC_1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 9th Guards Mechanized Corps - September 1944
+country_event = {
+	id = 14212
+	is_triggered_only = yes
+	title = "9th Guards Mechanized Corps (1944)"
+	desc = "EVTDESC14212"
+	picture = "guardsarm"
+	option = {
+		name = "Form this corps!"
+		set_country_flag = 9_GMC_1943
+		#Removing the 5th Mechanized Corps (1943)
+		remove_brigade = "Shtab-K. 5-y Mech. Korpusa"
+		remove_brigade = "64-y Mototsikletnyy B-n"
+		remove_brigade = "45-y Otd. Bron. Razvedovatelniy B-n"
+		remove_brigade = "1700-y Zenitnyy Artilleriyskiy Polk"
+		remove_brigade = "745-y Otd. Istrebitel'no-Protivotankovyy D-n"
+		remove_brigade = "Transportnyy B-n 5-y Mech. Korpusa"
+		remove_brigade = "Shtab-K. 233-y Tank. Brigady"
+		remove_brigade = "168-y/188-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 233-y Tank. Brigady"
+		remove_brigade = "406-y Otdel'nyy Gv. Minomotnyy D-n"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 233-y Tank. Brigady"
+		remove_brigade = "39-y Otdel'nyy Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 233-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 2-y Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 2-y Mekh. Brigady"
+		remove_brigade = "252-y Tankovyy Polk"
+		remove_brigade = "Artilleriyskiy D-n 2-y Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 2-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 2-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 2-y Mekh. Brigady"
+		remove_brigade = "Shtab-K. 9-y Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 9-y Mekh. Brigady"
+		remove_brigade = "46-y Tankovyy Polk"
+		remove_brigade = "Artilleriyskiy D-n 9-y Mekh. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 9-y Mekh. Brigady"
+		remove_brigade = "Razv. Rota 9-y Mekh. Brigady" 
+		remove_brigade = "Transportnyy B-n 9-y Mekh. Brigady"
+		remove_brigade = "Shtab-K. 45-y Mekh. Brigady"
+		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 45-y Mekh. Brigady"
+		remove_brigade = "156-y Tankovyy Polk"
+		remove_brigade = "1827-y Tyazholyy Sam.-Art. Polk/I.,II. D-ny"
+		remove_brigade = "1827-y Tyazholyy Sam.-Art. Polk/III.,IV. D-ny"
+		remove_brigade = "Razv. Rota 45-y Mekh. Brigady"
+		remove_brigade = "Transportnyy B-n 45-y Mekh. Brigady"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = SOV/Guards_Mech_Corps_9_1944_Sept.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Guards_Mech_Corps_9_1944_Sept.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 9_GMC_1944_no
 		ai_chance = {
 			factor = 0
 		}
