@@ -26,7 +26,7 @@ if wx ~= nil then
 
 	UI.bSizer_OptionActions1:Add( UI.m_staticText_OptionActions1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.gSizer_OptionActions1 = wx.wxGridSizer( 3, 2, 0, 0 )
+	UI.gSizer_OptionActions1 = wx.wxGridSizer( 4, 2, 0, 0 )
 
 	UI.m_button_OptionActions_LeftPopups = wx.wxButton( UI.m_panel_OptionActions, wx.wxID_ANY, "Leftside message popups", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer_OptionActions1:Add( UI.m_button_OptionActions_LeftPopups, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -45,6 +45,12 @@ if wx ~= nil then
 
 	UI.m_button_OptionActions_IncreaseFont = wx.wxButton( UI.m_panel_OptionActions, wx.wxID_ANY, "Increase utility font size", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer_OptionActions1:Add( UI.m_button_OptionActions_IncreaseFont, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_OptionsActions_CloseDebugConsole = wx.wxButton( UI.m_panel_OptionActions, wx.wxID_ANY, "Detach debug console", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_OptionActions1:Add( UI.m_button_OptionsActions_CloseDebugConsole, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_OptionsActions_OpenDebugConsole = wx.wxButton( UI.m_panel_OptionActions, wx.wxID_ANY, "Open debug console", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_OptionActions1:Add( UI.m_button_OptionsActions_OpenDebugConsole, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.bSizer_OptionActions1:Add( UI.gSizer_OptionActions1, 1, wx.wxEXPAND, 5 )
@@ -87,4 +93,15 @@ if wx ~= nil then
 		IncreaseFontSize()
 	end )
 
+	UI.m_button_OptionsActions_CloseDebugConsole:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		if BiceLib ~= nil then
+			BiceLib.stopConsole()
+		end
+	end )
+
+	UI.m_button_OptionsActions_OpenDebugConsole:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		if BiceLib ~= nil then
+			BiceLib.startConsole()
+		end
+	end )
 end

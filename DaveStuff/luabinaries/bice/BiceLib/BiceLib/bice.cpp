@@ -37,7 +37,7 @@ uintptr_t getCountry(Memory::External &external, std::string tag) {
     uintptr_t ctr = external.findCountryInstance(MODULE_BASE + DATA_SECTION_START, tag);
     if (ctr != 0) {
         countryCache->insert(std::make_pair(tag, ctr));
-        DEBUG_OUT(std::cout << "added to countryCache: " << tag << std::endl);
+        DEBUG_OUT(printf("added to countryCache: %s", tag.c_str()));
         return ctr;
     }
 
@@ -46,29 +46,19 @@ uintptr_t getCountry(Memory::External &external, std::string tag) {
 
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
-    DEBUG_OUT(std::cout << "getCountryFlags called" << std::endl);
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    DEBUG_OUT(std::cout << "searchTag: " << searchTag << std::endl);
-
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
     uintptr_t ctr = getCountry(external, searchTag);
-    DEBUG_OUT(std::cout << "ctr: " << Memory::n2hexstr(ctr) << std::endl);
-
     if (ctr != 0) {
         uintptr_t flagsOffset = ctr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
         uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
-        DEBUG_OUT(std::cout << "flagsPtr: " << Memory::n2hexstr(flagsPtr) << std::endl);
-
         auto flags = CCountry::getFlags(external, flagsPtr);
-        DEBUG_OUT(std::cout << "flags->size(): " << flags->size() << std::endl);
-
         lua_createtable(L, flags->size(), 0);
         for (size_t i = 0; i < flags->size(); i++) {
             lua_pushstring(L, flags->at(i).c_str());
             lua_rawseti(L, -2, i + 1); /* In lua indices start at 1 */
         }
-
         delete flags;
         return 1;
 
@@ -79,30 +69,20 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
 
 __declspec(dllexport) int getCountryVariables(lua_State* L)
 {
-    DEBUG_OUT(std::cout << "getCountryVariables called" << std::endl);
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    DEBUG_OUT(std::cout << "searchTag: " << searchTag << std::endl);
-
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
     uintptr_t ctr = getCountry(external, searchTag);
-    DEBUG_OUT(std::cout << "ctr: " << Memory::n2hexstr(ctr) << std::endl);
-
     if (ctr != 0) {
         uintptr_t varsOffset = ctr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning
         uintptr_t varsPtr = external.read<uintptr_t>(varsOffset);
-        DEBUG_OUT(std::cout << "varsPtr: " << Memory::n2hexstr(varsPtr) << std::endl);
-
         auto vars = CCountry::getVars(external, varsPtr);
-        DEBUG_OUT(std::cout << "vars->size(): " << vars->size() << std::endl);
-
         lua_createtable(L, 0, vars->size());
         for (size_t i = 0; i < vars->size(); i++) {
             lua_pushstring(L, vars->at(i).name.c_str());
             lua_pushinteger(L, vars->at(i).value);
             lua_settable(L, -3);
         }
-
         delete vars;
         return 1;
     }
@@ -112,18 +92,11 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
 
 __declspec(dllexport) int getCountryOffmapIc(lua_State* L)
 {
-    DEBUG_OUT(std::cout << "getCountryOffmapIc called" << std::endl);
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    DEBUG_OUT(std::cout << "searchTag: " << searchTag << std::endl);
-
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
     uintptr_t ctr = getCountry(external, searchTag);
-    DEBUG_OUT(std::cout << "ctr: " << Memory::n2hexstr(ctr) << std::endl);
-
     if (ctr != 0) {
         int countryId = external.read<int>(ctr + 0x1e8);
-        DEBUG_OUT(std::cout << "countryId: " << countryId << std::endl);
         lua_pushinteger(L, Hooks::Patches::offmapIcPerCountry[countryId]);
         return 1;
     }
@@ -210,9 +183,7 @@ void cacheLeaders() {
         Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
         uintptr_t CLeaderVFTable = MODULE_BASE + 0x11C5220;
-        //std::cout << "CLeaderVFTable: " << Memory::n2hexstr(CLeaderVFTable) << std::endl;
         std::string CLeaderVFTableSig = Memory::ptrToSignature(CLeaderVFTable);
-        //std::cout << "CLeaderVFTableSig: " << CLeaderVFTableSig << std::endl;
         std::vector<uintptr_t>* leaders;
         leaders = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CLeaderVFTableSig.c_str(), 4, 99999);
         if (leaders->size() > 1) { // there is always a "NULL Leader", so check for more than 1
@@ -265,11 +236,11 @@ void activateLeaderRankChangeHook() {
     DWORD hookAddress = MODULE_BASE + 0x1D7CDC;
     Hooks::CLeader::jumpBack_leaderRankChangeHook = hookAddress + 6;
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::leaderRankChangeHook, 5, 1)) {
-        ERROR_OUT(std::cout << "Hook 'activateLeaderRankChangeHook' failed" << std::endl);
+        ERROR_OUT(printf("Hook 'activateLeaderRankChangeHook' failed \n"));
     }
     else {
-        INFO_OUT(std::cout << "Hook 'activateLeaderRankChangeHook' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpBack_leaderRankChangeHook: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_leaderRankChangeHook) << std::endl);
+        INFO_OUT(printf("Hook 'activateLeaderRankChangeHook' succeeded \n"));
+        DEBUG_OUT(printf("jumpBack_leaderRankChangeHook: %#010x \n", Hooks::CLeader::jumpBack_leaderRankChangeHook));
         Hooks::CLeader::isLeaderRankChangeHookActive = true;
     }
 }
@@ -278,16 +249,16 @@ void activateLeaderDontSaveRankSpecificTraitsHook() {
     DWORD hookAddress = MODULE_BASE + 0x17FF08;
     Hooks::CLeader::jumpBack_leaderDontSaveRankSpecificTraitsHook = hookAddress + 7;
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::leaderDontSaveRankSpecificTraitsHook, 5, 2)) {
-        INFO_OUT(std::cout << "Hook 'activateLeaderDontSaveRankSpecificTraitsHook' failed" << std::endl);
+        INFO_OUT(printf("Hook 'activateLeaderDontSaveRankSpecificTraitsHook' failed\n"));
     }
     else {
-        INFO_OUT(std::cout << "Hook 'activateLeaderDontSaveRankSpecificTraitsHook' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpBack_leaderDontSaveRankSpecificTraitsHook: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_leaderDontSaveRankSpecificTraitsHook) << std::endl);
+        INFO_OUT(printf("Hook 'activateLeaderDontSaveRankSpecificTraitsHook' succeeded\n"));
+        DEBUG_OUT(printf("jumpBack_leaderDontSaveRankSpecificTraitsHook: %#010x \n", Hooks::CLeader::jumpBack_leaderDontSaveRankSpecificTraitsHook));
     }
 }
 
 __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
-    DEBUG_OUT(std::cout << "addRankSpecificTrait called" << std::endl);
+    DEBUG_OUT(printf("addRankSpecificTrait called\n"));
 
     std::string activeName = luaL_checklstring(L, 1, NULL);
     std::string inActiveName = luaL_checklstring(L, 2, NULL);
@@ -297,25 +268,25 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     cacheTraits();
 
     if (traitCache->size() == 0) {
-        INFO_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' deferred until save load" << std::endl);
+        INFO_OUT(printf("addRankSpecificTrait for: '%s' deferred until save load \n", activeName.c_str()));
         lua_pushboolean(L, false);
         return 1;
     }
     if (Hooks::CLeader::rankSpecificTraitsActive->find(activeName) != Hooks::CLeader::rankSpecificTraitsActive->end()) {
-        DEBUG_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' was already added" << std::endl);
+        DEBUG_OUT(printf("addRankSpecificTrait for: '%s' was already added \n", activeName.c_str()));
         lua_pushboolean(L, true);
         return 1;
     }
     if (traitCache->find(activeName) == traitCache->end() || traitCache->find(inActiveName) == traitCache->end()) {
-        ERROR_OUT(std::cout << "Trait for RankSpecificTrait '" << activeName << "' not found!" << std::endl);
+        ERROR_OUT(printf("Trait for RankSpecificTrait '%s' not found!", activeName.c_str()));
         lua_pushboolean(L, false);
         return 1;
     }
 
-    DEBUG_OUT(std::cout << "activeName: " << activeName << std::endl);
-    DEBUG_OUT(std::cout << "inActiveName: " << inActiveName << std::endl);
-    DEBUG_OUT(std::cout << "lowerRank: " << lowerRank << std::endl);
-    DEBUG_OUT(std::cout << "upperRank: " << upperRank << std::endl);
+    DEBUG_OUT(printf("activeName: %s \n", activeName.c_str()));
+    DEBUG_OUT(printf("inActiveName: %s \n", inActiveName.c_str()));
+    DEBUG_OUT(printf("lowerRank: %i \n", lowerRank));
+    DEBUG_OUT(printf("upperRank: %i \n", upperRank));
 
     Hooks::CLeader::RankSpecificTrait* rst = new Hooks::CLeader::RankSpecificTrait;
     rst->lowerRank = lowerRank;
@@ -326,18 +297,18 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     rst->inactiveName = inActiveName;
 
     rst->activeTraitPtr = traitCache->at(activeName);
-    DEBUG_OUT(std::cout << "rst->activeTraitPtr: " << rst->activeTraitPtr << std::endl);
+    DEBUG_OUT(printf("rst->activeTraitPtr: %#010x \n", rst->activeTraitPtr));
     rst->inActiveTraitPtr = traitCache->at(inActiveName);
-    DEBUG_OUT(std::cout << "rst->inActiveTraitPtr: " << rst->inActiveTraitPtr << std::endl);
+    DEBUG_OUT(printf("rst->inActiveTraitPtr: %#010x \n", rst->inActiveTraitPtr));
     
     Hooks::CLeader::rankSpecificTraitsActive->insert(std::make_pair(activeName, rst));
     Hooks::CLeader::rankSpecificTraitsInActive->insert(std::make_pair(inActiveName, rst));
 
-    DEBUG_OUT(std::cout << "Hooks::CLeader::rankSpecificTraitsInActive->size(): " << Hooks::CLeader::rankSpecificTraitsInActive->size() << std::endl);
+    DEBUG_OUT(printf("Hooks::CLeader::rankSpecificTraitsInActive->size(): %i \n", Hooks::CLeader::rankSpecificTraitsInActive->size()));
 
     lua_pushboolean(L, true);
-    INFO_OUT(std::cout << "addRankSpecificTrait for: '" << activeName << "' done" << std::endl);
-    DEBUG_OUT(std::cout << "addRankSpecificTrait finished" << std::endl);
+    INFO_OUT(printf("addRankSpecificTrait for: '%s' done\n", activeName.c_str()));
+    DEBUG_OUT(printf("addRankSpecificTrait finished\n"));
     return 1;
 }
 
@@ -356,13 +327,13 @@ __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
     cacheTraits();
     if (traitCache->size() == 0) {
         // Traits are not set up when the LUA is first run -> defer hooking until the LUA context is reloaded during save loading
-        INFO_OUT(std::cout << "Hook 'activateRankSpecificTraits' deferred until save load" << std::endl);
+        INFO_OUT(printf("Hook 'activateRankSpecificTraits' deferred until save load \n"));
         return 0;
     }
 
     Hooks::CLeader::isRankSpecificTraitsActive = true;
     activateRankSpecificTraitsDone = true;
-    INFO_OUT(std::cout << "Hook 'activateRankSpecificTraits' activated" << std::endl);
+    INFO_OUT(printf("Hook 'activateRankSpecificTraits' activated \n"));
     return 0;
 }
 
@@ -404,7 +375,7 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
     cacheTraits();
     if (traitCache->size() == 0) {
         // Traits are not set up when the LUA is first run -> defer hooking until the LUA context is reloaded during save loading
-        INFO_OUT(std::cout << "Hook 'activateLeaderPromotionSkillLoss' deferred until save load" << std::endl);
+        INFO_OUT(printf("Hook 'activateLeaderPromotionSkillLoss' deferred until save load \n"));
         return 0;
     }
 
@@ -424,7 +395,6 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
 
         std::string traitNameAsString = std::string(traitName);
         if (traitNameAsString.find("pskill_") == 0) {
-            //std::cout << "traitName: " << traitNameAsString << std::endl;
             tempSkillTraits->push_back(trait);
             Hooks::CLeader::skillTraits->push_back(trait); // also push back the Hooks::skillTraits vector so the indexes get filled
         }
@@ -434,18 +404,15 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
         char* traitName;
         traitName = (char*)((BYTE*)trait + 0x2C);
         std::string traitNameAsString = std::string(traitName);
-        //std::cout << "traitName: " << traitNameAsString << std::endl;
         auto substr = traitNameAsString.substr(7);
-        //std::cout << "substr: " << substr << std::endl;
         auto index = std::stoi(substr, nullptr, 10);
-        //std::cout << "index: " << index << std::endl;
         Hooks::CLeader::skillTraits->at(index) = (DWORD) trait;
     }
 
     Hooks::CLeader::isLeaderSkillLossOnPromotionActive = true;
     activateLeaderPromotionSkillLossDone = true;
     delete tempSkillTraits;
-    INFO_OUT(std::cout << "Hook 'activateLeaderPromotionSkillLoss' activated" << std::endl);
+    INFO_OUT(printf("Hook 'activateLeaderPromotionSkillLoss' activated \n"));
     return 0;
 }
 
@@ -461,11 +428,11 @@ __declspec(dllexport) int activateLeaderListShowMaxSkill(lua_State* L)
     Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill = hookAddress + 7;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderListShowMaxSkill, 5, 2)) {
-        ERROR_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkill' failed" << std::endl);
+        ERROR_OUT(printf("Hook 'activateLeaderListShowMaxSkill' failed \n"));
     }
     else {
-        INFO_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkill' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpBack_patchLeaderListShowMaxSkill: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill) << std::endl);
+        INFO_OUT(printf("Hook 'activateLeaderListShowMaxSkill' succeeded \n"));
+        DEBUG_OUT(printf("jumpBack_patchLeaderListShowMaxSkill: %#010x \n", Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkill));
     }
     activateLeaderListShowMaxSkillDone = true;
     return 0;
@@ -483,11 +450,11 @@ __declspec(dllexport) int activateLeaderListShowMaxSkillSelected(lua_State* L)
     Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected = hookAddress + 7;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CLeader::patchLeaderListShowMaxSkillSelected, 5, 2)) {
-        ERROR_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' failed" << std::endl);
+        ERROR_OUT(printf("Hook 'activateLeaderListShowMaxSkillSelected' failed \n"));
     }
     else {
-        INFO_OUT(std::cout << "Hook 'activateLeaderListShowMaxSkillSelected' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpBack_patchLeaderListShowMaxSkillSelected: " << Memory::n2hexstr(Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected) << std::endl);
+        INFO_OUT(printf("Hook 'activateLeaderListShowMaxSkillSelected' succeeded \n"));
+        DEBUG_OUT(printf("jumpBack_patchLeaderListShowMaxSkillSelected: %#010x \n", Hooks::CLeader::jumpBack_patchLeaderListShowMaxSkillSelected));
     }
     activateLeaderListShowMaxSkillSelectedDone = true;
     return 0;
@@ -506,11 +473,11 @@ void activateUnitAttachmentLimitHook()
     Hooks::CArmy::jumpBack_unitAttachmentLimitHook = hookAddress + 5;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CArmy::unitAttachmentLimitHook, 5, 0)) {
-        ERROR_OUT(std::cout << "Hook 'activateUnitAttachmentLimitHook' failed" << std::endl);
+        ERROR_OUT(printf("Hook 'activateUnitAttachmentLimitHook' failed \n"));
     }
     else {
-        INFO_OUT(std::cout << "Hook 'activateUnitAttachmentLimitHook' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpBack_unitAttachmentLimitHook: " << Memory::n2hexstr(Hooks::CArmy::jumpBack_unitAttachmentLimitHook) << std::endl);
+        INFO_OUT(printf("Hook 'activateUnitAttachmentLimitHook' succeeded \n"));
+        DEBUG_OUT(printf("jumpBack_unitAttachmentLimitHook: %#010x \n", Hooks::CArmy::jumpBack_unitAttachmentLimitHook));
     }
 
     Hooks::CArmy::isUnitAttachmentLimitHookActive = true;
@@ -530,7 +497,7 @@ __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
     if (force || setCorpsUnitLimitDone == false) {
         Hooks::CArmy::corpsUnitLimit = newLimit;
         setCorpsUnitLimitDone = true;
-        INFO_OUT(std::cout << "Corps unit limit set to: " << newLimit << std::endl);
+        INFO_OUT(printf("Corps unit limit set to: %i \n", newLimit));
     }
     return 0;
 }
@@ -548,7 +515,7 @@ __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
     if (force || setArmyUnitLimitDone == false) {
         Hooks::CArmy::armyUnitLimit = newLimit;
         setArmyUnitLimitDone = true;
-        INFO_OUT(std::cout << "Army unit limit set to: " << newLimit << std::endl);
+        INFO_OUT(printf("Army unit limit set to: %i \n", newLimit));
     }
     return 0;
 }
@@ -566,7 +533,7 @@ __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
     if (force || setArmyGroupUnitLimitDone == false) {
         Hooks::CArmy::armyGroupUnitLimit = newLimit;
         setArmyGroupUnitLimitDone = true;
-        INFO_OUT(std::cout << "Armygroup unit limit set to: " << newLimit << std::endl);
+        INFO_OUT(printf("Armygroup unit limit set to: %i \n", newLimit));
     }
     return 0;
 }
@@ -581,11 +548,11 @@ __declspec(dllexport) int addCommandLimitTrait(lua_State* L)
     }
 
     if (Hooks::CArmy::commandLimitTraits->find(traitName) != Hooks::CArmy::commandLimitTraits->end()) {
-        DEBUG_OUT(std::cout << "addCommandLimitTrait for: " << traitName << " was already added" << std::endl);
+        DEBUG_OUT(printf("addCommandLimitTrait for: '%s' was already added \n", traitName.c_str()));
         return 0;
     }
 
-    INFO_OUT(std::cout << "addCommandLimitTrait: '" << traitName << "' - effect: " << effect << std::endl);
+    INFO_OUT(printf("addCommandLimitTrait: '%s' - effect: %i \n", traitName.c_str(), effect));
 
     Hooks::CArmy::CommandLimitTrait* clt = new Hooks::CArmy::CommandLimitTrait;
     clt->traitName = traitName;
@@ -593,8 +560,8 @@ __declspec(dllexport) int addCommandLimitTrait(lua_State* L)
 
     Hooks::CArmy::commandLimitTraits->insert(std::make_pair(traitName, clt));
 
-    DEBUG_OUT(std::cout << "Hooks::CArmy::commandLimitTraits->size(): " << Hooks::CArmy::commandLimitTraits->size() << std::endl);
-    DEBUG_OUT(std::cout << "addCommandLimitTrait finished" << std::endl);
+    DEBUG_OUT(printf("Hooks::CArmy::commandLimitTraits->size(): %i \n", Hooks::CArmy::commandLimitTraits->size()));
+    DEBUG_OUT(printf("addCommandLimitTrait finished \n"));
     return 0;
 }
 
@@ -618,7 +585,7 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
     }
     else {
         INFO_OUT(std::cout << "Hook 'fixOffmapIc_CountLocalIc' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_CountLocalIc: " << Memory::n2hexstr(Hooks::CArmy::jumpback_fixOffmapIc_CountLocalIc) << std::endl);
+        DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_CountLocalIc: " << Memory::n2hexstr(Hooks::Patches::jumpback_fixOffmapIc_CountLocalIc) << std::endl);
     }
 
     DWORD hookAddress2 = MODULE_BASE + 0xf0f9d;
@@ -629,7 +596,7 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
     }
     else {
         INFO_OUT(std::cout << "Hook 'fixOffmapIc_SetBaseIc' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "fixOffmapIc_SetBaseIc: " << Memory::n2hexstr(Hooks::CArmy::fixOffmapIc_SetBaseIc) << std::endl);
+        DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_SetBaseIc: " << Memory::n2hexstr(Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc) << std::endl);
     }
 
 
@@ -653,7 +620,7 @@ __declspec(dllexport) int enablePlacingNonResearchedBuildings(lua_State* L)
     }
     else {
         INFO_OUT(std::cout << "Hook 'enablePlacingNonResearchedBuildings' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "enablePlacingNonResearchedBuildings: " << Memory::n2hexstr(Hooks::CArmy::jumpback_enablePlacingNonResearchedBuildings) << std::endl);
+        DEBUG_OUT(std::cout << "jumpback_enablePlacingNonResearchedBuildings: " << Memory::n2hexstr(Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings) << std::endl);
     }
 
     enablePlacingNonResearchedBuildingsDone = true;
@@ -744,7 +711,7 @@ __declspec(dllexport) int setModuleBase(lua_State* L)
 bool consoleStarted = false;
 __declspec(dllexport) int startConsole(lua_State* L)
 {
-    if (consoleStarted) { 
+    if (consoleStarted) {
         return 0;
     }
     AllocConsole();
@@ -763,6 +730,17 @@ __declspec(dllexport) int startConsole(lua_State* L)
     consoleStarted = true;
     return 0;
 }
+__declspec(dllexport) int stopConsole(lua_State* L)
+{
+    if (!consoleStarted) {
+        return 0;
+    }
+    printf("\nConsole has been detached! You can now close the console window.\n");
+    FreeConsole();
+
+    consoleStarted = false;
+    return 0;
+}
 
 #include <chrono>
 #include <thread>
@@ -778,6 +756,7 @@ __declspec(dllexport) int test(lua_State* L)
 __declspec(dllexport) luaL_Reg BiceLib[] = {
     // Misc
     {"startConsole", startConsole},
+    {"stopConsole", stopConsole},
     {"setModuleBase", setModuleBase},
     {"test", test},
     {NULL, NULL}

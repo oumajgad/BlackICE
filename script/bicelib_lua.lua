@@ -21,7 +21,7 @@ if not ok then
 end
 if mod then
     BiceLib = mod
-    BiceLib.startConsole() -- Creates a console for debug information // Maybe comment out for releases?
+    -- BiceLib.startConsole() -- Creates a console for debug information
     BiceLib.setModuleBase()
 
     -- Leaders

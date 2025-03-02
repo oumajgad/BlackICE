@@ -26,10 +26,10 @@ int getTraitsEffect(DWORD leaderAddress) {
     int res = 0;
     HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)*((DWORD*)leaderAddress + (0x30 / 4));
     while (traitListNode != 0) {
-        DEBUG_OUT(std::cout << "traitListNode: " << traitListNode << std::endl);
-        DEBUG_OUT(std::cout << "data: " << traitListNode->data << std::endl);
-        DEBUG_OUT(std::cout << "prev: " << traitListNode->prev << std::endl);
-        DEBUG_OUT(std::cout << "next: " << traitListNode->next << std::endl);
+        DEBUG_OUT(printf("traitListNode: %#010x \n", (uintptr_t) traitListNode));
+        DEBUG_OUT(printf("data: %#010x \n", (uintptr_t) traitListNode->data));
+        DEBUG_OUT(printf("prev: %#010x \n", (uintptr_t) traitListNode->prev));
+        DEBUG_OUT(printf("next: %#010x \n", (uintptr_t) traitListNode->next));
 
         DWORD trait = traitListNode->data;
         DWORD traitNameLength = *((DWORD*)trait + (0x3C / 4));
@@ -42,18 +42,18 @@ int getTraitsEffect(DWORD leaderAddress) {
         }
 
         std::string traitNameAsString = std::string(traitName);
-        DEBUG_OUT(std::cout << "traitNameAsString: " << traitNameAsString << std::endl);
+        DEBUG_OUT(printf("traitNameAsString: %s \n", traitNameAsString.c_str()));
         if (Hooks::CArmy::commandLimitTraits->find(traitNameAsString) != Hooks::CArmy::commandLimitTraits->end()) {
             auto clt = Hooks::CArmy::commandLimitTraits->at(traitNameAsString);
             res += clt->limitEffect;
-            DEBUG_OUT(std::cout << "clt->limitEffect: " << clt->limitEffect << std::endl);
-            DEBUG_OUT(std::cout << "res: " << res << std::endl);
+            DEBUG_OUT(printf("clt->limitEffect: %i \n", clt->limitEffect));
+            DEBUG_OUT(printf("res: %i \n", res));
         }
-        DEBUG_OUT(std::cout << "----------" << std::endl);
+        DEBUG_OUT(printf("----------\n"));
 
         traitListNode = (HDS::LinkedListNodeSingle*)traitListNode->next;
     }
-    DEBUG_OUT(std::cout << "traitListNode == 0 " << std::endl);
+    DEBUG_OUT(printf("traitListNode == 0 \n"));
 
     return res;
 }
