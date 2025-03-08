@@ -1,4 +1,3 @@
-import json
 from typing import ClassVar
 
 import pydantic
@@ -16,6 +15,8 @@ class CMapProvinceOffsets:
     supply_depot_province: int = 0x48
     id: int = 0xD0
     province_modifiers_array_ptr: int = 0x114  # Array of CModifierDefinition
+    province_timed_modifiers_list_start_ptr: int = 0x13C
+    province_timed_modifiers_list_end_ptr: int = 0x140
     supply_pool: int = 0x1B4
     oil: int = 0x27C
     metal: int = 0x280
@@ -113,10 +114,12 @@ class CMapProvince(pydantic.BaseModel):
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
+    print(pm.base_address)
     provinces = CMapProvince.get_provinces(pm)
     print(f"{len(provinces)=}")
-    prov = CMapProvince.make(pm, provinces[1000])
-    print(json.dumps(prov.dict(), indent=2))
+    # prov = CMapProvince.make(pm, provinces[1000])
+    # print(json.dumps(prov.dict(), indent=2))
     # for ptr in provinces:
     #     # print(ptr)
     #     province = CMapProvince.make(pm, ptr)
+    print(CMapProvince.get_province(pm, 2087))

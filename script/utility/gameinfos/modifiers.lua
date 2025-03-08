@@ -7,6 +7,8 @@ local modifierFiles = {
 
 P.ModifierData = {}
 P.ModifierChoices = {}
+P.EventModifiers = {}
+P.TriggeredModifiers = {}
 local dataFilled = false
 function P.FillData()
     if dataFilled then
@@ -23,6 +25,11 @@ function P.FillData()
             else
                 table.insert(P.ModifierChoices, "[" .. name .. "]")
             end
+            if file == "event_modifiers.txt" then
+                P.EventModifiers[name] = true
+            elseif file == "triggered_modifiers.txt" then
+                P.TriggeredModifiers[name] = true
+            end
         end
     end
     table.sort(P.ModifierChoices, function (a, b)
@@ -38,7 +45,7 @@ function P.FillData()
 end
 
 local triggerKeys = {"potential", "trigger"}
-local function dumpTriggers(selection)
+function P.DumpTriggers(selection)
     local temp = table.deepcopy(P.ModifierData[selection])
     local order = triggerKeys
     local data = {}
@@ -78,7 +85,7 @@ function P.GetTranslation(key)
 end
 
 
-local function dumpEffects(selection)
+function P.DumpEffects(selection)
     local data = table.deepcopy(P.ModifierData[selection])
     -- remove the triggerKeys
     for k, v in pairs(triggerKeys) do
@@ -110,9 +117,9 @@ function P.HandleSelection()
     local selectionString = UI.m_choice_GameInfo_Modifiers1:GetString(UI.m_choice_GameInfo_Modifiers1:GetSelection())
     local modifierIdent = Parsing.GetKeyFromChoice(selectionString)
 
-    local s = dumpTriggers(modifierIdent)
+    local s = P.DumpTriggers(modifierIdent)
     UI.m_textCtrl_GameInfo_Modifiers_Triggers1:SetValue(s)
-    local s = dumpEffects(modifierIdent)
+    local s = P.DumpEffects(modifierIdent)
     UI.m_textCtrl_GameInfo_Modifiers_Effects1:SetValue(s)
 end
 

@@ -6,6 +6,7 @@ from pymem import Pymem
 
 from classes.CArmy import CArmy
 from classes.CMinister import CMinister
+from classes.CModifier import CModifier
 from constants import DATA_SECTION_START
 from structs.LinkedLists import LinkedListNode
 from utils import utils
@@ -31,13 +32,14 @@ class CCountryOffsets:
     effective_ic: int = 0x604
     exact_base_ic_x1000: int = 0x610
     base_ic: int = 0x60C
+    timed_modifiers_list_start_ptr: int = 0x648
     neutrality: int = 0xA8C
     at_war: bool = 0xACC
     war_exhaustion: int = 0xAD0
     units_ll_ptr: int = 0xBAC
     owned_provinces_ll_ptr: int = 0xCF0
-    country_modifiers_array_ptr: int = 0xDA8
     controlled_provinces_ID_ll_ptr: int = 0xD00
+    modifier_definitions_array_ptr: int = 0xDA8
     CDiplomacyStatus_array_ptr: int = 0xE28  # array with pointers to all CDiplomacystatus
 
 
@@ -145,6 +147,15 @@ class CCountry(pydantic.BaseModel):
                 list_node = LinkedListNode.make(pm, list_node.next)
         return res
 
+    def get_active_modifiers(self):
+        res = []
+        node_ptr = pm.read_uint(self.self_ptr + CCountryOffsets.timed_modifiers_list_start_ptr)
+        while node_ptr != 0:
+            node = LinkedListNode.make(pm=pm, ptr=node_ptr)
+            modifier = CModifier.make(pm=pm, ptr=node.this)
+            res.append(modifier)
+        return res
+
 
 def get_all_countries(pm: Pymem) -> list[CCountry]:
     res = []
@@ -190,6 +201,8 @@ if __name__ == "__main__":
     print(
         utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
     )
+    # modifiers = country.get_active_modifiers()
+    # print(modifiers)
     # print(utils.int_to_pointer(country.self_ptr))
     # # print(f"{len(country.available_CMinisters)=}")
     # # print(f"{len(country.CFlags.flags)=}")

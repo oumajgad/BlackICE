@@ -70,8 +70,8 @@ def get_string_maybe_ptr(pm: Pymem, ptr: int, ascii_only: bool = False):
     if ptr == 0:
         return ""
     string_size = pm.read_uint(ptr + 16)
-    max_string_size = pm.read_uint(ptr + 20)
-    if string_size > 15 or max_string_size != 16:
+    # reserved_string_size = pm.read_uint(ptr + 20)
+    if string_size > 15:
         # logger.trace("It's a pointer")
         # It's a pointer
         return read_string(pm, pm.read_uint(ptr))

@@ -17,7 +17,8 @@ LUA functions are provided to activate and configure the module. They are groupe
     * **Return values**:
         1. *flags*: List of strings
     * **Notes**:
-        * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *getFlags* and *getVariables*.
+        * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *GameInfo* functions.
+ariables*.
 * **getVariables(string countryTag)**:
     * Get a map of all current countryVariables
     * **Params**:
@@ -26,7 +27,15 @@ LUA functions are provided to activate and configure the module. They are groupe
         1. *vars*: Mapping of *name (string)* -> *value (number)*
     * **Notes**:
         * The values are in the fixed point number format. E.g. if the returned value is 12050, then the ingame representation is 12.05
-        * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *getFlags* and *getVariables*.
+        * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *GameInfo* functions.
+* **getActiveEventModifiers(string countryTag)**:
+    * Get a map of all current event modifiers and their expiry date
+    * **Params**:
+        1. *countryTag*: The TAG for which to retrieve the variables
+    * **Return values**:
+        1. *modifiers*: Mapping of *name (string)* -> *expiry date (string)*
+    * **Notes**:
+        * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *GameInfo* functions.
 * **getCountryOffmapIc(string countryTag)**:
     * Gets the offmap ic value of a country
     * **Params**:

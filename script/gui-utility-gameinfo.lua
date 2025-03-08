@@ -394,7 +394,7 @@ if wx ~= nil then
 	UI.m_panel_GameInfo_Flags = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_GameInfo_Flags1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText_GameInfo_Flags1 = wx.wxStaticText( UI.m_panel_GameInfo_Flags, wx.wxID_ANY, "Country Flags", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Flags1 = wx.wxStaticText( UI.m_panel_GameInfo_Flags, wx.wxID_ANY, "Active Country Flags", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText_GameInfo_Flags1:Wrap( -1 )
 
 	UI.m_staticText_GameInfo_Flags1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
@@ -439,11 +439,11 @@ if wx ~= nil then
 	UI.m_panel_GameInfo_Flags:SetSizer( UI.bSizer_GameInfo_Flags1 )
 	UI.m_panel_GameInfo_Flags:Layout()
 	UI.bSizer_GameInfo_Flags1:Fit( UI.m_panel_GameInfo_Flags )
-	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Flags, "Flags", False )
+	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Flags, "Active Flags", False )
 	UI.m_panel_GameInfo_Vars = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_GameInfo_Vars1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText_GameInfo_Flags1 = wx.wxStaticText( UI.m_panel_GameInfo_Vars, wx.wxID_ANY, "Country Variables", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Flags1 = wx.wxStaticText( UI.m_panel_GameInfo_Vars, wx.wxID_ANY, "Active Country Variables", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText_GameInfo_Flags1:Wrap( -1 )
 
 	UI.m_staticText_GameInfo_Flags1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
@@ -490,7 +490,81 @@ if wx ~= nil then
 	UI.m_panel_GameInfo_Vars:SetSizer( UI.bSizer_GameInfo_Vars1 )
 	UI.m_panel_GameInfo_Vars:Layout()
 	UI.bSizer_GameInfo_Vars1:Fit( UI.m_panel_GameInfo_Vars )
-	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Vars, "Variables", False )
+	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Vars, "Active Variables", False )
+	UI.m_panel_GameInfo_ActiveModifiers = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer_GameInfo_ActiveModifiers1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticText_GameInfo_ActiveModifiers1 = wx.wxStaticText( UI.m_panel_GameInfo_ActiveModifiers, wx.wxID_ANY, "Currently Active Event Modifiers", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_ActiveModifiers1:Wrap( -1 )
+
+	UI.m_staticText_GameInfo_ActiveModifiers1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
+
+	UI.bSizer_GameInfo_ActiveModifiers1:Add( UI.m_staticText_GameInfo_ActiveModifiers1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.fgSizer_GameInfo_ActiveModifiers1 = wx.wxFlexGridSizer( 1, 3, 0, 0 )
+	UI.fgSizer_GameInfo_ActiveModifiers1:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_ActiveModifiers1:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_ActiveModifiers1:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_choice_GameInfo_ActiveModifiers1Choices = {}
+	UI.m_choice_GameInfo_ActiveModifiers1 = wx.wxChoice( UI.m_panel_GameInfo_ActiveModifiers, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 300,-1 ), UI.m_choice_GameInfo_ActiveModifiers1Choices, 0 )
+	UI.m_choice_GameInfo_ActiveModifiers1:SetSelection( 0 )
+	UI.fgSizer_GameInfo_ActiveModifiers1:Add( UI.m_choice_GameInfo_ActiveModifiers1, 5, wx.wxALIGN_CENTER_VERTICAL + wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_textCtrl_GameInfo_ActiveModifiers_Filter = wx.wxTextCtrl( UI.m_panel_GameInfo_ActiveModifiers, wx.wxID_ANY, "name filter (press enter)", wx.wxDefaultPosition, wx.wxSize( 135,-1 ), 0 )
+	UI.fgSizer_GameInfo_ActiveModifiers1:Add( UI.m_textCtrl_GameInfo_ActiveModifiers_Filter, 1, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_button_GameInfo_ActiveModifiers_Filter_Clear = wx.wxButton( UI.m_panel_GameInfo_ActiveModifiers, wx.wxID_ANY, "Clear", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.fgSizer_GameInfo_ActiveModifiers1:Add( UI.m_button_GameInfo_ActiveModifiers_Filter_Clear, 0, wx.wxALL, 5 )
+
+
+	UI.bSizer_GameInfo_ActiveModifiers1:Add( UI.fgSizer_GameInfo_ActiveModifiers1, 0, wx.wxEXPAND, 5 )
+
+	UI.fgSizer_GameInfo_ActiveModifiers3 = wx.wxFlexGridSizer( 2, 1, 0, 0 )
+	UI.fgSizer_GameInfo_ActiveModifiers3:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_ActiveModifiers3:AddGrowableRow( 1 )
+	UI.fgSizer_GameInfo_ActiveModifiers3:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_ActiveModifiers3:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_staticText_GameInfo_ActiveModifiers3 = wx.wxStaticText( UI.m_panel_GameInfo_ActiveModifiers, wx.wxID_ANY, "Effects", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_ActiveModifiers3:Wrap( -1 )
+
+	UI.fgSizer_GameInfo_ActiveModifiers3:Add( UI.m_staticText_GameInfo_ActiveModifiers3, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_ActiveModifiers_Effects1 = wx.wxTextCtrl( UI.m_panel_GameInfo_ActiveModifiers, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
+	UI.fgSizer_GameInfo_ActiveModifiers3:Add( UI.m_textCtrl_GameInfo_ActiveModifiers_Effects1, 0, wx.wxALL + wx.wxEXPAND, 5 )
+
+
+	UI.bSizer_GameInfo_ActiveModifiers1:Add( UI.fgSizer_GameInfo_ActiveModifiers3, 7, wx.wxEXPAND, 5 )
+
+	UI.fgSizer_GameInfo_ActiveModifiers2 = wx.wxFlexGridSizer( 1, 2, 0, 0 )
+	UI.fgSizer_GameInfo_ActiveModifiers2:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_ActiveModifiers2:AddGrowableCol( 1 )
+	UI.fgSizer_GameInfo_ActiveModifiers2:AddGrowableRow( 0 )
+	UI.fgSizer_GameInfo_ActiveModifiers2:SetFlexibleDirection( wx.wxVERTICAL )
+	UI.fgSizer_GameInfo_ActiveModifiers2:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_staticText_GameInfo_ActiveModifiers_ExpiryText = wx.wxStaticText( UI.m_panel_GameInfo_ActiveModifiers, wx.wxID_ANY, "Expires:", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_ActiveModifiers_ExpiryText:Wrap( -1 )
+
+	UI.fgSizer_GameInfo_ActiveModifiers2:Add( UI.m_staticText_GameInfo_ActiveModifiers_ExpiryText, 0, wx.wxALIGN_CENTER_VERTICAL + wx.wxALIGN_RIGHT + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_ActiveModifiers_Expiry = wx.wxTextCtrl( UI.m_panel_GameInfo_ActiveModifiers, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_GameInfo_ActiveModifiers_Expiry:Enable( False )
+
+	UI.fgSizer_GameInfo_ActiveModifiers2:Add( UI.m_textCtrl_GameInfo_ActiveModifiers_Expiry, 0, wx.wxALIGN_CENTER_VERTICAL + wx.wxALIGN_LEFT + wx.wxALL, 5 )
+
+
+	UI.bSizer_GameInfo_ActiveModifiers1:Add( UI.fgSizer_GameInfo_ActiveModifiers2, 1, wx.wxEXPAND, 5 )
+
+	UI.m_button_GameInfo_ActiveModifiers_Refresh = wx.wxButton( UI.m_panel_GameInfo_ActiveModifiers, wx.wxID_ANY, "Refresh", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.bSizer_GameInfo_ActiveModifiers1:Add( UI.m_button_GameInfo_ActiveModifiers_Refresh, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panel_GameInfo_ActiveModifiers:SetSizer( UI.bSizer_GameInfo_ActiveModifiers1 )
+	UI.m_panel_GameInfo_ActiveModifiers:Layout()
+	UI.bSizer_GameInfo_ActiveModifiers1:Fit( UI.m_panel_GameInfo_ActiveModifiers )
+	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_ActiveModifiers, "Active Event Modifiers", False )
 
 
 	UI.MyFrame4 .m_mgr:Update()
@@ -631,6 +705,24 @@ if wx ~= nil then
 		UI.m_textCtrl_GameInfo_Modifiers_Filter:SetValue("")
 		Parsing.Modifiers.ClearText()
 		Parsing.Modifiers.HandleFilter()
+	end )
+
+	UI.m_choice_GameInfo_ActiveModifiers1:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+		Parsing.ActiveEventModifiers.HandleSelection()
+	end )
+
+	UI.m_textCtrl_GameInfo_ActiveModifiers_Filter:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)
+		Parsing.ActiveEventModifiers.HandleFilter()
+	end )
+
+	UI.m_button_GameInfo_ActiveModifiers_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		UI.m_textCtrl_GameInfo_ActiveModifiers_Filter:SetValue("")
+		Parsing.ActiveEventModifiers.ClearText()
+		Parsing.ActiveEventModifiers.HandleFilter()
+	end )
+
+	UI.m_button_GameInfo_ActiveModifiers_Refresh:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		Parsing.ActiveEventModifiers.Refresh()
 	end )
 
 	UI.m_button_GameInfo_Flags:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

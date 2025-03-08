@@ -37,11 +37,35 @@ uintptr_t getCountry(Memory::External &external, std::string tag) {
     uintptr_t ctr = external.findCountryInstance(MODULE_BASE + DATA_SECTION_START, tag);
     if (ctr != 0) {
         countryCache->insert(std::make_pair(tag, ctr));
-        DEBUG_OUT(printf("added to countryCache: %s", tag.c_str()));
+        DEBUG_OUT(printf("added to countryCache: %s\n", tag.c_str()));
         return ctr;
     }
 
     return 0;
+}
+
+__declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
+{
+    std::string searchTag = luaL_checklstring(L, 1, NULL);
+    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+
+    uintptr_t ctr = getCountry(external, searchTag);
+    if (ctr != 0) {
+        uintptr_t timedModifiersListOffset = ctr + 0x648;
+        uintptr_t timedModifiersList = external.read<uintptr_t>(timedModifiersListOffset);
+        if (timedModifiersList != 0) {
+            auto activeModifiers = CCountry::getActiveEventModifiers(external, timedModifiersList);
+            lua_createtable(L, activeModifiers.size(), 0);
+            for (size_t i = 0; i < activeModifiers.size(); i++) {
+                lua_pushstring(L, activeModifiers.at(i).first.c_str());
+                lua_pushstring(L, activeModifiers.at(i).second.c_str());
+                lua_settable(L, -3);
+            }
+            return 1;
+        }
+    }
+    lua_pushnil(L);
+    return 1;
 }
 
 __declspec(dllexport) int getCountryFlags(lua_State* L)
@@ -57,7 +81,7 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
         lua_createtable(L, flags->size(), 0);
         for (size_t i = 0; i < flags->size(); i++) {
             lua_pushstring(L, flags->at(i).c_str());
-            lua_rawseti(L, -2, i + 1); /* In lua indices start at 1 */
+            lua_rawseti(L, -2, i + 1);
         }
         delete flags;
         return 1;
@@ -775,6 +799,7 @@ void registerGameInfoFunctions(lua_State* this_state) {
     registerFunction(this_state, "getCountryFlags", getCountryFlags);
     registerFunction(this_state, "getCountryVariables", getCountryVariables);
     registerFunction(this_state, "getCountryOffmapIc", getCountryOffmapIc);
+    registerFunction(this_state, "getCountryActiveEventModifiers", getCountryActiveEventModifiers);
     lua_settable(this_state, -3);
     return;
 }

@@ -1,3 +1,4 @@
+#include <string>
 #include <wtypes.h>
 #include <cstdio>
 #include <lua.hpp>
@@ -15,4 +16,5 @@ namespace utils {
 	extern lua_State* LUA_STATE;
 	char* getCString(DWORD* addr);
 	void logInLua(lua_State* state, const char* toLog);
+	std::string gameTickToDate(int gameTick);
 }
