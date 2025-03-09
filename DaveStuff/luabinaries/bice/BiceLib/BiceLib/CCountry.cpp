@@ -35,8 +35,9 @@ void CCountry::traverseFlagsAndVarTreeDepthFirst(Memory::External& external, std
     }
 }
 
-std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifiers(Memory::External& external, uintptr_t listNodePtr) {
+std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifiers(Memory::External& external, uintptr_t countryPtr) {
     std::vector<std::pair<std::string,std::string>> res;
+    uintptr_t listNodePtr = external.read<uintptr_t>(countryPtr + 0x648);
     while (listNodePtr != 0) {
         HDS::LinkedListNodeSingle* listNode = (HDS::LinkedListNodeSingle*)listNodePtr;
 
@@ -55,24 +56,29 @@ std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifie
     return res;
 }
 
-std::vector<std::string>* CCountry::getFlags(Memory::External& external, uintptr_t nodePtr) {
+std::vector<std::string>* CCountry::getFlags(Memory::External& external, uintptr_t countryPtr) {
     std::vector<std::uintptr_t>* ptrs = new std::vector<std::uintptr_t>;
-    CCountry::traverseFlagsAndVarTreeDepthFirst(external, ptrs, nodePtr);
-    //std::cout << "ptrs->size(): " << ptrs->size() << std::endl;
+
+    uintptr_t flagsOffset = countryPtr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
+    uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
+
+    CCountry::traverseFlagsAndVarTreeDepthFirst(external, ptrs, flagsPtr);
     std::vector<std::string>* res = new std::vector<std::string>;
     for (auto& i : *ptrs) {
         std::string x = std::string(utils::getCString((DWORD*)i));
         res->push_back(x);
-        //std::cout << n2hexstr(i) << " - " << x << std::endl;
     }
     delete ptrs;
     return res;
 }
 
-std::vector<HDS::CVariable>* CCountry::getVars(Memory::External& external, uintptr_t nodePtr) {
+std::vector<HDS::CVariable>* CCountry::getVars(Memory::External& external, uintptr_t countryPtr) {
     std::vector<std::uintptr_t>* ptrs = new std::vector<std::uintptr_t>;
-    CCountry::traverseFlagsAndVarTreeDepthFirst(external, ptrs, nodePtr);
-    //std::cout << "ptrs->size(): " << ptrs->size() << std::endl;
+
+    uintptr_t varsOffset = countryPtr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning
+    uintptr_t varsPtr = external.read<uintptr_t>(varsOffset);
+
+    CCountry::traverseFlagsAndVarTreeDepthFirst(external, ptrs, varsPtr);
     std::vector<HDS::CVariable>* res = new std::vector<HDS::CVariable>;
     for (auto& i : *ptrs) {
         HDS::CVariable x;
@@ -80,7 +86,6 @@ std::vector<HDS::CVariable>* CCountry::getVars(Memory::External& external, uintp
         x.value = external.read<int32_t>(i + 0x1C);
         if (x.value != 0) {
             res->push_back(x);
-            //std::cout << Memory::n2hexstr(i) << " - " << x.name << " - " << x.value << std::endl;
         }
     }
     delete ptrs;

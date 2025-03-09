@@ -51,18 +51,14 @@ __declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
 
     uintptr_t ctr = getCountry(external, searchTag);
     if (ctr != 0) {
-        uintptr_t timedModifiersListOffset = ctr + 0x648;
-        uintptr_t timedModifiersList = external.read<uintptr_t>(timedModifiersListOffset);
-        if (timedModifiersList != 0) {
-            auto activeModifiers = CCountry::getActiveEventModifiers(external, timedModifiersList);
-            lua_createtable(L, activeModifiers.size(), 0);
-            for (size_t i = 0; i < activeModifiers.size(); i++) {
-                lua_pushstring(L, activeModifiers.at(i).first.c_str());
-                lua_pushstring(L, activeModifiers.at(i).second.c_str());
-                lua_settable(L, -3);
-            }
-            return 1;
+        auto activeModifiers = CCountry::getActiveEventModifiers(external, ctr);
+        lua_createtable(L, activeModifiers.size(), 0);
+        for (size_t i = 0; i < activeModifiers.size(); i++) {
+            lua_pushstring(L, activeModifiers.at(i).first.c_str());
+            lua_pushstring(L, activeModifiers.at(i).second.c_str());
+            lua_settable(L, -3);
         }
+        return 1;
     }
     lua_pushnil(L);
     return 1;
@@ -75,9 +71,7 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
 
     uintptr_t ctr = getCountry(external, searchTag);
     if (ctr != 0) {
-        uintptr_t flagsOffset = ctr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
-        uintptr_t flagsPtr = external.read<uintptr_t>(flagsOffset);
-        auto flags = CCountry::getFlags(external, flagsPtr);
+        auto flags = CCountry::getFlags(external, ctr);
         lua_createtable(L, flags->size(), 0);
         for (size_t i = 0; i < flags->size(); i++) {
             lua_pushstring(L, flags->at(i).c_str());
@@ -98,9 +92,7 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
 
     uintptr_t ctr = getCountry(external, searchTag);
     if (ctr != 0) {
-        uintptr_t varsOffset = ctr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning
-        uintptr_t varsPtr = external.read<uintptr_t>(varsOffset);
-        auto vars = CCountry::getVars(external, varsPtr);
+        auto vars = CCountry::getVars(external, ctr);
         lua_createtable(L, 0, vars->size());
         for (size_t i = 0; i < vars->size(); i++) {
             lua_pushstring(L, vars->at(i).name.c_str());

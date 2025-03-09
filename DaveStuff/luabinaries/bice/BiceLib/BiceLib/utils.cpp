@@ -40,5 +40,5 @@ std::string utils::gameTickToDate(int gameTick) {
     }
     month += 1; // human months begin counting at 1
 
-    return std::format("{}.{}.{}.{}", year, month, dayOfMonth, hourOfDay);
+    return std::format("{}.{}.{} {}:00", year, month, dayOfMonth, hourOfDay);
 }
