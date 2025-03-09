@@ -97,7 +97,13 @@ function P.DumpEffects(selection)
     -- Replace the keys with their translations
     for k, v in pairs(data) do
         local trans = P.GetTranslation(k)
-        res[trans] = Parsing.UnitConversions.GetAndConvertEffect(k, v)
+        if type(v) == "table" then
+            -- Game tolerates doubled keys in modifiers, but my pdxParser doesnt handle it
+            -- So it needs to be checked here
+            res[trans] = Parsing.UnitConversions.GetAndConvertEffect(k, v[#v])
+        else
+            res[trans] = Parsing.UnitConversions.GetAndConvertEffect(k, v)
+        end
     end
 
     -- Insert the remaining keys into the order table alphabetically

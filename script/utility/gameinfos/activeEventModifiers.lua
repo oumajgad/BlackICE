@@ -38,6 +38,10 @@ function P.Refresh()
     UI.m_choice_GameInfo_ActiveModifiers1:Thaw()
 
     P.ClearText()
+    if UI.m_choice_GameInfo_ActiveModifiers1:GetCount() >= 1 then
+        UI.m_choice_GameInfo_ActiveModifiers1:SetSelection(0)
+        P.HandleSelection()
+    end
 end
 
 function P.HandleSelection()
