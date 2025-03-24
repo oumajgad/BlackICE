@@ -145,11 +145,14 @@ function P.FillData()
     if dataFilled then
         return
     end
+    -- local csvPath = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\leadersData.csv"
+    -- WriteString(csvPath, "id,tag")
     local path = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\history\\leaders"
     for i, file in pairs(GetFilesFromPath(path)) do
         local res = PdxParser.parseFile(path .. "\\" .. file)
         for id, values in pairs(res) do
             P.GeneralsData[id] = createGeneral(values)
+            -- AppendLine(csvPath, "\n" .. tostring(id) .. "," .. P.GeneralsData[id].country)
         end
     end
     dataFilled = true
