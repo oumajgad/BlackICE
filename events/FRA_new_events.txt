@@ -628,3 +628,77 @@ country_event = {
 		manpower = 100
 	}
 }
+country_event = {
+    id = 32500
+    title = "EVTNAME32500"
+    desc = "EVTDESC32500"
+    picture = "flag_FRA"
+
+    trigger = {
+		tag = FRA
+		date = 1943.11.8
+        controls = 5360
+        controls = 5299
+        controls = 5238
+     	faction = allies
+        not = {
+			has_country_flag = independence_of_lebanon
+			war_with = USA
+			war_with = ENG
+			war_with = SOV
+		}
+	}
+
+    option = {
+		name = "Grant Lebanon Independence"
+		set_country_flag = independence_of_lebanon
+        release = LEB
+		5360 = {
+			secede_province = LEB
+		}
+		5299 = {
+			secede_province = LEB
+		}
+		5238 = {
+			secede_province = LEB
+		}
+		LEB = {
+			join_faction = allies
+		}
+        dissent = 1
+        ai_chance = {
+			factor = 100 
+		}
+    }
+
+    option = {
+        name = "Maintain French Control Over Lebanon"
+		set_country_flag = independence_of_lebanon
+        dissent = 5
+		relation = {
+			who = ENG
+			value = -50
+		}
+        random_owned = {
+			limit = {
+				is_core = LEB
+			}
+			create_revolt = 3
+		}
+     	random_owned = {
+			limit = {
+				is_core = LEB
+			}
+			create_revolt = 3
+		}
+     	random_owned = {
+			limit = {
+				is_core = LEB
+			}
+			create_revolt = 3
+        }
+        ai_chance = {
+			factor = 0
+		}
+    }
+}
