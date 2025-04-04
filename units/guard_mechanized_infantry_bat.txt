@@ -2,7 +2,10 @@ guard_mechanized_infantry_bat = {			###marked land
 	type = land
 	sprite = Mech
 	active = no
-	unit_group = infantry_unit_type
+	unit_group = mobile_unit_type
+	available_trigger = {
+		has_country_flag = guard_mechanized_infantry_bat_activation
+	}
 	is_mobile = yes
 	usable_by = { SOV }
 
@@ -39,60 +42,178 @@ guard_mechanized_infantry_bat = {			###marked land
 	air_attack = 3
 	ap_attack = 5
 
-	plains = {
-		attack = 0.15
-		movement = -0.075
-	}
 	river = {
-		attack = -0.1
-		defence = 0.1
-		movement = -0.175
+		attack = -0.35
+		defence = 0.3
+		movement = -0.6
+	}
+	amphibious = {
+		attack = -0.35
+		defence = -0.35
+	}
+	fort = {
+		attack = 0.4
+		defence = 0.4
 	}
 
-	urban = {
-		attack = -0.05
-		defence = -0.05
-		movement = -0.075
-	}
-	arctic = {
-		attack = -0.1
-		defence = -0.1
-		movement = -0.15
-	}
-	desert = {
+	plains = {
+		movement = -0.3
 		attack = 0.25
-		defence = 0.2
-		movement = -0.075
+		defence = 0.4
 	}
 	woods = {
-		attack = 0.05
-		defence = 0.05
-		movement = -0.15
+		movement = -0.6
+		attack = -0.375
+		defence = -0.050
 	}
 	forest = {
-		attack = -0.05
-		defence = -0.05
-		movement = -0.2
+		movement = -0.675
+		attack = -0.425
+		defence = 0.0
 	}
 	jungle = {
-		movement = -0.25
+		movement = -0.75
+		attack = -0.5
+		defence = -0.35
+		attrition = 8
 	}
-	hills = {
-		movement = -0.15
-	}
-	mountain = {
+	arctic = {
+		movement = -0.35
 		attack = -0.1
-		defence = -0.1
-		movement = -0.2
+		defence = 0.1
+		attrition = 7
 	}
-	marsh = {
-		attack = -0.1
+	desert = {
+		movement = -0.35
+		attack = 0.2
+		defence = 0.35
+	}
+	plains_arctic_woods = {
+		movement = -0.35
+		attack = -0.65
+		defence = -0.2
+		attrition = 7
+	}
+	plains_arctic_forest = {
+		movement = -0.625
+		attack = -0.75
 		defence = -0.1
-		movement = -0.45
+		attrition = 7
+	}
+	highlands = {
+		movement = -0.3
+		attack = 0.25
+		defence = 0.4
+	}
+	highlands_woods = {
+		movement = -0.6
+		attack = -0.375
+		defence = -0.050
+	}
+	highlands_desert = {
+		movement = -0.3
+		attack = 0.25
+		defence = 0.4
+	}
+	highlands_arctic = {
+		movement = -0.35
+		attack = -0.1
+		defence = 0.1
+		attrition = 7
 	}
 
-	fort = {
-		attack = 0.45
+	hills = {
+		movement = -0.3
+		attack = 0.125
+		defence = 0.4
+	}
+	hills_woods = {
+		movement = -0.7
+		attack = -0.425
+		defence = 0.05
+	}
+	hills_forests = {
+		movement = -0.775
+		attack = -0.5
+		defence = 0.1
+	}
+	hills_jungle = {
+		movement = -0.85
+		attack = -0.55
+		defence = -0.3
+		attrition = 6
+	}
+	hills_desert = {
+		movement = -0.3
+		attack = 0.125
+		defence = 0.4
+	}
+	hills_arctic = {
+		movement = -0.5
+		attack = -0.15
+		defence = -0.05
+	}
+
+
+	mountain = {
+		movement = -0.8
+		attack = -0.325
+		defence = 0.050
+		attrition = 2
+	}
+	mountain_woods = {
+		movement = -1.05
+		attack = -0.5
+		defence = 0.1
+		attrition = 2
+	}
+	mountain_forests = {
+		movement = -1.125
+		attack = -0.55
+		defence = 0.15
+		attrition = 3
+	}
+	mountain_jungle = {
+		movement = -1.2
+		attack = -0.65
+		defence = -0.2
+		attrition = 10
+	}
+	mountain_arctic = {
+		movement = -0.95
+		attack = -0.6
+		defence = -0.45
+		attrition = 12
+	}
+	mountain_desert = {
+		movement = -0.8
+		attack = -0.325
+		defence = 0.050
+		attrition = 2
+	}
+	urban = {
+		movement = -0.3
+		attack = 0.4
+		defence = 0.65
+		attrition = 1
+	}
+
+	bocage = {
+		movement = -0.85
+		attack = -0.35
+		defence = -0.2
+	}
+	marsh = {
+		movement = -0.75
+		attack = -0.275
+		defence = 0.125
+		attrition = 5
+	}
+	swamp = {
+		movement = -0.9
+		attack = -0.350
+		defence = 0.2
+		attrition = 5
 	}
 
 	combat_width = 0.2
