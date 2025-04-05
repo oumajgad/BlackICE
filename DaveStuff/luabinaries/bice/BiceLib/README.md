@@ -18,7 +18,6 @@ LUA functions are provided to activate and configure the module. They are groupe
         1. *flags*: List of strings
     * **Notes**:
         * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *GameInfo* functions.
-ariables*.
 * **getVariables(string countryTag)**:
     * Get a map of all current countryVariables
     * **Params**:
