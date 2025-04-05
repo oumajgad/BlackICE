@@ -802,8 +802,7 @@ void registerLeaderFunctions(lua_State* this_state) {
     registerFunction(this_state, "addRankSpecificTrait", addRankSpecificTrait);
     registerFunction(this_state, "activateRankSpecificTraits", activateRankSpecificTraits);
     registerFunction(this_state, "checkRankSpecificTraitsConsistency", checkRankSpecificTraitsConsistency);
-    registerFunction(this_state, "activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
-    registerFunction(this_state, "activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
+    // registerFunction(this_state, "activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
     registerFunction(this_state, "activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
     registerFunction(this_state, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
     registerFunction(this_state, "addTraitToLeader", addTraitToLeader);

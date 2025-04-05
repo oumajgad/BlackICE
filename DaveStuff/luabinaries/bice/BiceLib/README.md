@@ -66,7 +66,7 @@ ariables*.
         1. *success* (boolean): If the specified trait can't be found this will be *false*
     * **Notes**:
         * The traits display will only be updated after reopening the leader list.
-* **activateLeaderPromotionSkillLoss() (currently bugged)**
+* **~~activateLeaderPromotionSkillLoss()~~ (currently bugged)**
     * This will make leaders lose/gain skill levels when the are promoted/demoted, like it was in older Hoi games.
     * Each leader has to receive a "pskill_XYZ" trait which represents his pure skill level. With the combination of rank + pure skill the game can now determine the appropiate skill level.
     * Percentual progress towards the next skill level is preserved 1:1 between promotions/demotions (rounded down to the nearest whole %).
