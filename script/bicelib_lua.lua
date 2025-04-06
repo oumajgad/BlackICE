@@ -30,14 +30,15 @@ if mod then
     BiceLib.Leaders.activateLeaderListShowMaxSkillSelected()
 
     -- Rank Specific traits
-    BiceLib.Leaders.activateRankSpecificTraits()
-    BiceLib.Leaders.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
-    BiceLib.Leaders.checkRankSpecificTraitsConsistency()
+    -- BiceLib.Leaders.activateRankSpecificTraits()
+    -- BiceLib.Leaders.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
+    -- BiceLib.Leaders.checkRankSpecificTraitsConsistency()
 
     -- Units
-    -- BiceLib.Units.setCorpsUnitLimit(6, false)
-    -- BiceLib.Units.setArmyUnitLimit(7, false)
-    -- BiceLib.Units.setArmyGroupUnitLimit(8, false)
+    -- BiceLib.Units.setCorpsUnitLimit(6, "---")
+    -- BiceLib.Units.setArmyUnitLimit(7, "---")
+    -- BiceLib.Units.setArmyGroupUnitLimit(8, "---")
+    -- BiceLib.Units.setArmyGroupUnitLimit(10, "GER")
     -- BiceLib.Units.addCommandLimitTrait("pskill_1", -1)
     -- BiceLib.Units.addCommandLimitTrait("pskill_4", 1)
 

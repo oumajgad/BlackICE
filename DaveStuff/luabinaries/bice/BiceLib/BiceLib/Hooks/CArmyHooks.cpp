@@ -19,6 +19,10 @@ DWORD Hooks::CArmy::armyGroupUnitLimit = 5;
 DWORD Hooks::CArmy::armyUnitLimit = 5;
 DWORD Hooks::CArmy::corpsUnitLimit = 5;
 
+int Hooks::CArmy::armyGroupUnitLimitPerCountry[300];
+int Hooks::CArmy::armyUnitLimitPerCountry[300];
+int Hooks::CArmy::corpsUnitLimitPerCountry[300];
+
 std::unordered_map<std::string, Hooks::CArmy::CommandLimitTrait*>* Hooks::CArmy::commandLimitTraits = new std::unordered_map<std::string, Hooks::CArmy::CommandLimitTrait*>;
 
 
@@ -65,6 +69,8 @@ DWORD handleUnitAttachmentLimit(DWORD currentlyAttachedUnitAmount, DWORD* unitTo
 
     DWORD newLimit = 5;
 
+    DWORD tagId = *(unitToAttach + (0x128 / 4));
+    DEBUG_OUT(printf("tagId: %d \n", tagId));
     DWORD* higherUnit = (DWORD*)*(lastCountedUnit + (0x1e0 / 4));
     DEBUG_OUT(printf("higherUnit: %#010x \n", (unsigned int) higherUnit));
     if (higherUnit != 0) {
@@ -74,13 +80,28 @@ DWORD handleUnitAttachmentLimit(DWORD currentlyAttachedUnitAmount, DWORD* unitTo
         DEBUG_OUT(printf("higherUnitOobLevel: %u \n", higherUnitOobLevel));
 
         if (higherUnitOobLevel == 1) { // Army Group
-            newLimit = Hooks::CArmy::armyGroupUnitLimit;
+            if (Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] != 0) {
+                newLimit = Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId];
+            }
+            else {
+                newLimit = Hooks::CArmy::armyGroupUnitLimit;
+            }
         }
         else if (higherUnitOobLevel == 2) { // Army
-            newLimit = Hooks::CArmy::armyUnitLimit;
+            if (Hooks::CArmy::armyUnitLimitPerCountry[tagId] != 0) {
+                newLimit = Hooks::CArmy::armyUnitLimitPerCountry[tagId];
+            }
+            else {
+                newLimit = Hooks::CArmy::armyUnitLimit;
+            }
         }
         else if (higherUnitOobLevel == 3) { // Corps
-            newLimit = Hooks::CArmy::corpsUnitLimit;
+            if (Hooks::CArmy::corpsUnitLimitPerCountry[tagId] != 0) {
+                newLimit = Hooks::CArmy::corpsUnitLimitPerCountry[tagId];
+            }
+            else {
+                newLimit = Hooks::CArmy::corpsUnitLimit;
+            }
         }
 
         DWORD leaderAddress = *(higherUnit + (0x12c / 4));
@@ -88,7 +109,6 @@ DWORD handleUnitAttachmentLimit(DWORD currentlyAttachedUnitAmount, DWORD* unitTo
             newLimit += getTraitsEffect(leaderAddress);
         }
     }
-
 
     return newLimit;
 }

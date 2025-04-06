@@ -500,7 +500,6 @@ void activateUnitAttachmentLimitHook()
     return;
 }
 
-bool setCorpsUnitLimitDone = false;
 __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
 {
     if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
@@ -508,17 +507,24 @@ __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
     }
 
     int newLimit = luaL_checkinteger(L, 1);
-    bool force = lua_toboolean(L, 2);
+    std::string tag = luaL_checklstring(L, 2, NULL);
 
-    if (force || setCorpsUnitLimitDone == false) {
+    if (tag.compare("---") == 0) {
         Hooks::CArmy::corpsUnitLimit = newLimit;
-        setCorpsUnitLimitDone = true;
         INFO_OUT(printf("Corps unit limit set to: %i \n", newLimit));
+    }
+    else {
+        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+        auto ctr = getCountry(external, tag);
+        if (ctr != 0) {
+            int tagId = *(DWORD*)(ctr + 0x1E8);
+            Hooks::CArmy::corpsUnitLimitPerCountry[tagId] = newLimit;
+            INFO_OUT(printf("Corps unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+        }
     }
     return 0;
 }
 
-bool setArmyUnitLimitDone = false;
 __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
 {
     if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
@@ -526,17 +532,24 @@ __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
     }
 
     int newLimit = luaL_checkinteger(L, 1);
-    bool force = lua_toboolean(L, 2);
-
-    if (force || setArmyUnitLimitDone == false) {
+    std::string tag = luaL_checklstring(L, 2, NULL);
+    
+    if (tag.compare("---") == 0) {
         Hooks::CArmy::armyUnitLimit = newLimit;
-        setArmyUnitLimitDone = true;
         INFO_OUT(printf("Army unit limit set to: %i \n", newLimit));
+    }
+    else {
+        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+        auto ctr = getCountry(external, tag);
+        if (ctr != 0) {
+            int tagId = *(DWORD*)(ctr + 0x1E8);
+            Hooks::CArmy::armyUnitLimitPerCountry[tagId] = newLimit;
+            INFO_OUT(printf("Army unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+        }
     }
     return 0;
 }
 
-bool setArmyGroupUnitLimitDone = false;
 __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
 {
     if (!Hooks::CArmy::isUnitAttachmentLimitHookActive) {
@@ -544,12 +557,20 @@ __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
     }
 
     int newLimit = luaL_checkinteger(L, 1);
-    bool force = lua_toboolean(L, 2);
+    std::string tag = luaL_checklstring(L, 2, NULL);
 
-    if (force || setArmyGroupUnitLimitDone == false) {
+    if (tag.compare("---") == 0) {
         Hooks::CArmy::armyGroupUnitLimit = newLimit;
-        setArmyGroupUnitLimitDone = true;
         INFO_OUT(printf("Armygroup unit limit set to: %i \n", newLimit));
+    }
+    else {
+        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+        auto ctr = getCountry(external, tag);
+        if (ctr != 0) {
+            int tagId = *(DWORD*)(ctr + 0x1E8);
+            Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] = newLimit;
+            INFO_OUT(printf("Armygroup unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+        }
     }
     return 0;
 }
@@ -766,6 +787,17 @@ __declspec(dllexport) int test(lua_State* L)
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
+
+    /*
+    HWND gameWindow = FindWindowW(L"HoI3", NULL);
+
+    RECT r;
+    GetWindowRect(gameWindow, &r);
+    DEBUG_OUT(
+        printf("r.left: %i r.right: %i r.top: %i r.bottom: %i \n",r.left, r.right, r.top, r.bottom)
+    );
+    MoveWindow(gameWindow, r.left, r.top, 1000, 600, TRUE);
+    */
     return 0;
 }
 

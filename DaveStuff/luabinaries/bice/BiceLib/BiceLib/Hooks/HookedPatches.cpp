@@ -36,7 +36,7 @@ int handleOffmapIc(DWORD* country, int baseIcWithOffmapButNoLocalx1000, int base
 
     int offmapIc = (baseIcWithOffmapButNoLocalx1000 / 1000) - baseBaseIC;
     Hooks::Patches::offmapIcPerCountry[countryId] = offmapIc;
-    DEBUG_OUT(printf("offmapIc: %i\n", offmapIc));
+    //DEBUG_OUT(printf("offmapIc: %i\n", offmapIc));
 
     DWORD* countryModifierIc = (DWORD*)(*(country + 0xda8 / 4) + 0x78);
     *countryModifierIc = offmapIc * 1000;

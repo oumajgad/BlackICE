@@ -97,23 +97,23 @@ LUA functions are provided to activate and configure the module. They are groupe
     * **Return values**: /
 
 ## BiceLib.Units
-* **setCorpsUnitLimit(int newLimit, bool force)**
-    * set the limit of unit attachements for corps 
+* **setCorpsUnitLimit(int newLimit, string countryTag)**
+    * set the limit of unit attachements for corps
     * **Params**:
         1. *newLimit*: The new limit
-        2. *force*: If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+        2. *countryTag*: The country for which this limit should apply. To set a default use the "---" tag.
     * **Return values**: /
-* **setArmyUnitLimit(int newLimit, bool force)**
-    * set the limit of unit attachements for armies 
+* **setArmyUnitLimit(int newLimit, string countryTag)**
+    * set the limit of unit attachements for armies
     * **Params**:
         1. *newLimit*: The new limit
-        2. *force*: If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+        2. *countryTag*: The country for which this limit should apply. To set a default use the "---" tag.
     * **Return values**: /
-* **setArmyGroupUnitLimit(int newLimit, bool force)**
-    * set the limit of unit attachements for army groups 
+* **setArmyGroupUnitLimit(int newLimit, string countryTag)**
+    * set the limit of unit attachements for army groups
     * **Params**:
         1. *newLimit*: The new limit
-        2. *force*: If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+        2. *countryTag*: The country for which this limit should apply. To set a default use the "---" tag.
     * **Return values**: /
 * **addCommandLimitTrait(string traitName, int effect)**
     * register a trait which should have an effect on the unit limit
