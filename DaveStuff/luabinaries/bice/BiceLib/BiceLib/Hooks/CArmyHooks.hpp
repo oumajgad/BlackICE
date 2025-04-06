@@ -17,6 +17,9 @@ namespace Hooks {
 		extern DWORD armyGroupUnitLimit;
 		extern DWORD armyUnitLimit;
 		extern DWORD corpsUnitLimit;
+		extern int armyGroupUnitLimitPerCountry[300];
+		extern int armyUnitLimitPerCountry[300];
+		extern int corpsUnitLimitPerCountry[300];
 
 		extern std::unordered_map<std::string, CommandLimitTrait*>* commandLimitTraits;
 
