@@ -1,17 +1,16 @@
-PlayerCountries = {} -- init globally to avoid errors in other functions
 -- Called once at start
 function DeterminePlayers()
-    PlayerCountries = {} -- Reset this each time so we don't grow the list each time GetPlayers is pressed
+    G_PlayerCountries = {} -- Reset this each time so we don't grow the list each time GetPlayers is pressed
     local playercount = 0
     for tag, countryTag in pairs(GetCountryIterCacheDict()) do
         if CCurrentGameState.IsPlayer( countryTag ) then
             -- Utils.LUA_DEBUGOUT("Player --- " .. playercount .. " --- " .. tag )
             playercount = playercount + 1
-            table.insert(PlayerCountries, tag)
+            table.insert(G_PlayerCountries, tag)
         end
     end
     UI.player_choice:Clear()
-    UI.player_choice:Append(PlayerCountries)
+    UI.player_choice:Append(G_PlayerCountries)
 end
 
 -- Function to check if a player has disabled the hosts ability to check out his country during a MP game

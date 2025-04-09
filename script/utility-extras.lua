@@ -54,7 +54,7 @@ function DetermineExePatchStatus()
         local omgTag = CCountryDataBase.GetTag("OMG")
         local alreadyFired = omgTag:GetCountry():GetVariables():GetVariable(CString("OmgExePatchStatusTrigger")):Get()
         if alreadyFired ~= 2 then
-            for i, player in pairs(PlayerCountries) do -- fire it for everybody so people in MP can shame the one who fucked up
+            for i, player in pairs(G_PlayerCountries) do -- fire it for everybody so people in MP can shame the one who fucked up
                 local countryTag = CCountryDataBase.GetTag(player)
                 local command = CSetVariableCommand(countryTag, CString("ExePatchStatus"), CFixedPoint(1))
                 CCurrentGameState.Post(command)
@@ -71,7 +71,7 @@ function DetermineSpriteDeletionStatus()
         local omgTag = CCountryDataBase.GetTag("OMG")
         local alreadyFired = omgTag:GetCountry():GetVariables():GetVariable(CString("OmgSpriteDeletionStatusTrigger")):Get()
         if alreadyFired ~= 2 then
-            for i, player in pairs(PlayerCountries) do -- fire it for everybody so people in MP can shame the one who fucked up
+            for i, player in pairs(G_PlayerCountries) do -- fire it for everybody so people in MP can shame the one who fucked up
                 local countryTag = CCountryDataBase.GetTag(player)
                 local command = CSetVariableCommand(countryTag, CString("SpriteDeletionStatus"), CFixedPoint(1))
                 CCurrentGameState.Post(command)

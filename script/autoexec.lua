@@ -107,15 +107,17 @@ require('DEFAULT_LAND')
 require('DEFAULT_MIXED')
 
 
--- Hoi 3 Utility
-require('gui-utility')
-require('gui-utility-help')
-require('gui-utility-options')
-require('gui-utility-gameinfo')
-require('gui-utility-stats')
-require('gui-auxilliary')
-require('utility-extras')
-
+G_UtilityEnabled = true
+if G_UtilityEnabled then
+    -- Hoi 3 Utility
+    require('gui-utility')
+    require('gui-utility-help')
+    require('gui-utility-options')
+    require('gui-utility-gameinfo')
+    require('gui-utility-stats')
+    require('gui-auxilliary')
+    require('utility-extras')
+end
 -- Statistics
 require('stats')
 

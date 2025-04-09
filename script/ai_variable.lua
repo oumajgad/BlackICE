@@ -480,7 +480,7 @@ end
 --Copy of BuildingsCount, only for the resource buildings since they get counted by controlled provinces not core
 function ResourceCount()
 	-- count daily for players only
-	for i, playerTag in pairs(PlayerCountries) do
+	for i, playerTag in pairs(G_PlayerCountries) do
 		local countryTag = CCountryDataBase.GetTag(playerTag)
 		ResourceCountInner(countryTag, playerTag)
 	end
@@ -617,7 +617,7 @@ function StratResourceBalance()
 	}
 
 	-- count daily for players only
-	for i, playerTag in pairs(PlayerCountries) do
+	for i, playerTag in pairs(G_PlayerCountries) do
 		local countryTag = CCountryDataBase.GetTag(playerTag)
 		StratResourceBalanceInner(countryTag, playerTag, resourceBuildings)
 	end
@@ -708,7 +708,7 @@ function RealStratResourceBalance()
 	}
 
 	-- count daily for players only
-	for i, playerTag in pairs(PlayerCountries) do
+	for i, playerTag in pairs(G_PlayerCountries) do
 		local countryTag = CCountryDataBase.GetTag(playerTag)
 		RealStratResourceBalanceInner(countryTag, playerTag, resources)
 	end
@@ -787,9 +787,9 @@ function RealStratResourceBalanceInner(countryTag, tag, resources)
 			-- Utils.LUA_DEBUGOUT("LUA_DEBUG_ActualBalance '" .. tostring(ActualBalance) .. "' \n")
 
 			-- Check if sales have been disabled by the player
-			if PlayerCountries ~= nil then
+			if G_PlayerCountries ~= nil then
 				-- only check for playercountries since AI doesnt get the effects
-				for index,player in pairs(PlayerCountries) do
+				for index,player in pairs(G_PlayerCountries) do
 					if player == tag then
 						local isDeactivated = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_deactivate_sales")):Get()
 						if isDeactivated == 1 then
@@ -962,10 +962,10 @@ end
 -- Get and correct the IC and Reseach efficiency values
 function CountryModifiers()
 
-	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	-- if dayOfMonth ~= 5 and dayOfMonth ~= 15 and dayOfMonth ~= 25 then
-	-- 	return
-	-- end
+	if G_UtilityEnabled ~= true then
+		return
+	end
+
 	local techModifierValues = Parsing.Techs.GetTechModifierValues()
 	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
 		-- local countryTag = CCountryDataBase.GetTag(player)
@@ -1017,9 +1017,9 @@ end
 
 
 function ICDaysSpentCalculation()
-	if PlayerCountries ~= nil then
+	if G_PlayerCountries ~= nil then
 		-- only check for playercountries since AI doesnt get the effects
-		for index,player in pairs(PlayerCountries) do
+		for index,player in pairs(G_PlayerCountries) do
 			local playerTag = CCountryDataBase.GetTag(player)
 			local playerCountry = playerTag:GetCountry()
 			local icDaysSpent = playerCountry:GetVariables():GetVariable(CString("IC_days_spent")):Get()
