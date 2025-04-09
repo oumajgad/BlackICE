@@ -53,6 +53,7 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 	or unitName == "ss_armored_support_brigade"
 	or unitName == "ss_mixed_support_brigade"
 	or unitName == "ss_motorized_support_brigade"
+	or unitName == "transport_ship"
 	then
 		return 0
 	end
