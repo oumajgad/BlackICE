@@ -107,7 +107,7 @@ require('DEFAULT_LAND')
 require('DEFAULT_MIXED')
 
 
-G_UtilityEnabled = true
+G_UtilityEnabled = true -- disabling saves about 50 MiB
 if G_UtilityEnabled then
     -- Hoi 3 Utility
     require('gui-utility')
