@@ -1676,9 +1676,18 @@ function HandleProductionMinister_Tick(minister)
 			AirCountTotal = ProductionData.AirCountTotal,
 			NavalCountTotal = ProductionData.NavalCountTotal,
 			ManpowerTotal = ProductionData.ManpowerTotal,
-			TotalDivisions = ProductionData.ministerCountry:GetUnits():GetTotalAmountOfDivisions()
+			TotalDivisions = ProductionData.ministerCountry:GetUnits():GetTotalAmountOfDivisions(),
+
+			SuppliesPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._SUPPLIES_):Get(),
+			FuelPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._FUEL_):Get(),
+			MoneyPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._MONEY_):Get(),
+			OilPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._CRUDE_OIL_):Get(),
+			MetalPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._METAL_):Get(),
+			EnergyPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._ENERGY_):Get(),
+			RaresPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._RARE_MATERIALS_):Get()
 		}
-		Stats.HandleProductionMinisterGeneralStats(ProductionData.ministerTag, ProductionData.ministerCountry, stats)
+
+		Stats.HandleProductionMinisterGeneralStats(ProductionData.ministerTag, stats)
 	end
 
 	-- Performance check

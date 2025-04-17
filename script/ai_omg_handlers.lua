@@ -2,6 +2,9 @@ function IntelligenceMinisterUtilityThings()
 	-- local tOmg = os.clock()
 	-- Utils.LUA_DEBUGOUT('OMG var handler start')
 
+	if G_UtilityEnabled ~= true then
+		return
+	end
 
 	-- One time setup stuff for the GUI
 	if SaveLoaded ~= true then

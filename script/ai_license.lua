@@ -45,7 +45,7 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 	end
 
 	local unitName = tostring(loDiploScoreObj.SubUnit:GetKey())
-	if unitName == "marine_brigade" and loDiploScoreObj.Seller.Country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology("AI_Marines_bonus_tech")) ~= 0
+	if (unitName == "marine_brigade" and loDiploScoreObj.Seller.Country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology("AI_Marines_bonus_tech")) ~= 0)
 	or unitName == "airborne_artillery_brigade"
 	or unitName == "armored_support_brigade"
 	or unitName == "mixed_support_brigade"
@@ -53,6 +53,7 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 	or unitName == "ss_armored_support_brigade"
 	or unitName == "ss_mixed_support_brigade"
 	or unitName == "ss_motorized_support_brigade"
+	or unitName == "transport_ship"
 	then
 		return 0
 	end

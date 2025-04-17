@@ -142,13 +142,20 @@ function P.HandleIntelligenceMinisterStats(countryTag, country)
 end
 
 
-function P.HandleProductionMinisterGeneralStats(countryTag, country, stats)
+function P.HandleProductionMinisterGeneralStats(countryTag, stats)
 	local tag = tostring(countryTag)
 	P.AddStat(tag, "other_u_LandCountTotal", tostring(string.format('%.0f', stats.LandCountTotal)))
 	P.AddStat(tag, "other_u_AirCountTotal", tostring(string.format('%.0f', stats.AirCountTotal)))
 	P.AddStat(tag, "other_u_NavalCountTotal", tostring(string.format('%.0f', stats.NavalCountTotal)))
 	P.AddStat(tag, "other_u_TotalDivisions", tostring(string.format('%.0f', stats.TotalDivisions)))
 	P.AddStat(tag, "other_ManpowerTotal", tostring(string.format('%.0f', stats.ManpowerTotal)))
+	P.AddStat(tag, "pool_energy", tostring(string.format('%.0f', stats.EnergyPool)))
+	P.AddStat(tag, "pool_metal", tostring(string.format('%.0f', stats.MetalPool)))
+	P.AddStat(tag, "pool_rares", tostring(string.format('%.0f', stats.RaresPool)))
+	P.AddStat(tag, "pool_oil", tostring(string.format('%.0f', stats.OilPool)))
+	P.AddStat(tag, "pool_supplies", tostring(string.format('%.0f', stats.SuppliesPool)))
+	P.AddStat(tag, "pool_fuel", tostring(string.format('%.0f', stats.FuelPool)))
+	P.AddStat(tag, "pool_money", tostring(string.format('%.0f', stats.MoneyPool)))
 end
 
 
@@ -219,12 +226,28 @@ end
 --- Remember to add the stat here when adding a new stat collect elsewhere!
 function P.CollectPlayerStatistics()
 	if P.CollectStats == true then
-		for i, tag in pairs(PlayerCountries) do
+		for i, tag in pairs(G_PlayerCountries) do
 			local countryTag = CCountryDataBase.GetTag(tag)
 			local country = countryTag:GetCountry()
 			P.HandleTechMinisterStats(countryTag, country)
 			P.HandleProductionMinisterSliderStats(countryTag, country)
 			P.HandleIntelligenceMinisterStats(countryTag, country)
+			local stats = {
+				LandCountTotal = country:GetUnits():GetTotalNumOfRegiments(),
+				AirCountTotal = country:GetUnits():GetTotalNumOfPlanes(),
+				NavalCountTotal = country:GetUnits():GetTotalNumOfShips(),
+				ManpowerTotal = country:GetManpower():Get(),
+				TotalDivisions = country:GetUnits():GetTotalAmountOfDivisions(),
+
+				SuppliesPool = country:GetPool():Get(CGoodsPool._SUPPLIES_):Get(),
+				FuelPool = country:GetPool():Get(CGoodsPool._FUEL_):Get(),
+				MoneyPool = country:GetPool():Get(CGoodsPool._MONEY_):Get(),
+				OilPool = country:GetPool():Get(CGoodsPool._CRUDE_OIL_):Get(),
+				MetalPool = country:GetPool():Get(CGoodsPool._METAL_):Get(),
+				EnergyPool = country:GetPool():Get(CGoodsPool._ENERGY_):Get(),
+				RaresPool = country:GetPool():Get(CGoodsPool._RARE_MATERIALS_):Get()
+			}
+			P.HandleProductionMinisterGeneralStats(countryTag, stats)
 		end
 	end
 end

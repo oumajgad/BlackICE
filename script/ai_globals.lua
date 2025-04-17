@@ -1,4 +1,5 @@
 G_AiStrategicTradeAggression = 4
+G_PlayerCountries = {} -- init globally to avoid errors in other functions
 
 CountryListA = {
 	["AFG"]=true;	["ALB"]=true;	["ARG"]=true;	["ARM"]=true;	["AST"]=true;	["AUS"]=true;	["AZB"]=true;	["BBU"]=true;

@@ -1824,7 +1824,7 @@ if wx ~= nil then
 		if not CheckPlayerAllowsSelection(selection) then
 			UI.m_textCtrl3:SetValue("Player disabled control")
 		end
-		if PlayerCountries == nil then
+		if G_PlayerCountries == nil then
 			UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
 		end
 		-- if not CCountryDataBase.GetTag(selection):GetCountry():Exists() then
@@ -2065,13 +2065,13 @@ if wx ~= nil then
 	end )
 
 	UI.m_button_customTradeAi1:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
+		if wx ~= nil and G_PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomTradeAiStatus()
 		end
 	end )
 
 	UI.m_button_customTradeAi_setValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
+		if wx ~= nil and G_PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomTradeAiValues()
 		end
 	end )
@@ -2100,25 +2100,25 @@ if wx ~= nil then
 	end )
 
 	UI.m_button_ProductionSliderAi_toggle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
+		if wx ~= nil and G_PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomProductionSliderAiStatus()
 		end
 	end )
 
 	UI.m_button_ProductionSliderAi_setValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
+		if wx ~= nil and G_PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomProductionSliderValues()
 		end
 	end )
 
 	UI.m_button_customLsSliderAi_toggle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
+		if wx ~= nil and G_PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomLsSliderAiStatus()
 		end
 	end )
 
 	UI.m_button_customLsSliderAi_setValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil and G_PlayerCountry ~= nil then
+		if wx ~= nil and G_PlayerCountries ~= nil and G_PlayerCountry ~= nil then
 			SetCustomLsSliderValues()
 		end
 	end )

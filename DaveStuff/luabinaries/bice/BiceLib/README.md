@@ -18,7 +18,6 @@ LUA functions are provided to activate and configure the module. They are groupe
         1. *flags*: List of strings
     * **Notes**:
         * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *GameInfo* functions.
-ariables*.
 * **getVariables(string countryTag)**:
     * Get a map of all current countryVariables
     * **Params**:
@@ -66,7 +65,7 @@ ariables*.
         1. *success* (boolean): If the specified trait can't be found this will be *false*
     * **Notes**:
         * The traits display will only be updated after reopening the leader list.
-* **activateLeaderPromotionSkillLoss() (currently bugged)**
+* **~~activateLeaderPromotionSkillLoss()~~ (currently bugged)**
     * This will make leaders lose/gain skill levels when the are promoted/demoted, like it was in older Hoi games.
     * Each leader has to receive a "pskill_XYZ" trait which represents his pure skill level. With the combination of rank + pure skill the game can now determine the appropiate skill level.
     * Percentual progress towards the next skill level is preserved 1:1 between promotions/demotions (rounded down to the nearest whole %).
@@ -98,23 +97,23 @@ ariables*.
     * **Return values**: /
 
 ## BiceLib.Units
-* **setCorpsUnitLimit(int newLimit, bool force)**
-    * set the limit of unit attachements for corps 
+* **setCorpsUnitLimit(int newLimit, string countryTag)**
+    * set the limit of unit attachements for corps
     * **Params**:
         1. *newLimit*: The new limit
-        2. *force*: If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+        2. *countryTag*: The country for which this limit should apply. To set a default use the "---" tag.
     * **Return values**: /
-* **setArmyUnitLimit(int newLimit, bool force)**
-    * set the limit of unit attachements for armies 
+* **setArmyUnitLimit(int newLimit, string countryTag)**
+    * set the limit of unit attachements for armies
     * **Params**:
         1. *newLimit*: The new limit
-        2. *force*: If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+        2. *countryTag*: The country for which this limit should apply. To set a default use the "---" tag.
     * **Return values**: /
-* **setArmyGroupUnitLimit(int newLimit, bool force)**
-    * set the limit of unit attachements for army groups 
+* **setArmyGroupUnitLimit(int newLimit, string countryTag)**
+    * set the limit of unit attachements for army groups
     * **Params**:
         1. *newLimit*: The new limit
-        2. *force*: If you call this function a 2nd time it will not do anything. Use force to overwrite this behaviour
+        2. *countryTag*: The country for which this limit should apply. To set a default use the "---" tag.
     * **Return values**: /
 * **addCommandLimitTrait(string traitName, int effect)**
     * register a trait which should have an effect on the unit limit
