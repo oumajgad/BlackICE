@@ -44,6 +44,36 @@ uintptr_t getCountry(Memory::External &external, std::string tag) {
     return 0;
 }
 
+void addCountryToCache(std::string tag, uintptr_t address) {
+    countryCache->insert(std::make_pair(tag, address));
+    DEBUG_OUT(printf("Added to countryCache: %s - %#010x \n", tag.c_str(), address));
+    return;
+}
+
+bool cacheCountriesDone = false;
+__declspec(dllexport) int cacheCountries(lua_State* L)
+{
+    if (!cacheCountriesDone) {
+        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+
+        uintptr_t CCountryVFTable = MODULE_BASE + 0x11C1BA8;
+        std::string CCountryVFTableSig = Memory::ptrToSignature(CCountryVFTable);
+        std::vector<uintptr_t>* countries;
+        countries = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CCountryVFTableSig.c_str(), 4, 99999);
+        if (countries->size() != 0) {
+            for (auto& countryAddr : *countries) {
+                std::string countryTag = utils::getCString((DWORD*)countryAddr + (0x1E4 / 4));
+                addCountryToCache(countryTag, countryAddr);
+            }
+            INFO_OUT(printf("Country cache filled (%i) \n", countryCache->size()));
+            cacheCountriesDone = true;
+            delete countries;
+            return 0;
+        }
+    }
+    return 0;
+}
+
 __declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
@@ -806,6 +836,7 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"startConsole", startConsole},
     {"stopConsole", stopConsole},
     {"setModuleBase", setModuleBase},
+    {"cacheCountries", cacheCountries},
     {"test", test},
     {NULL, NULL}
 };

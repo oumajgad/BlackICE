@@ -23,6 +23,7 @@ if mod then
     BiceLib = mod
     -- BiceLib.startConsole() -- Creates a console for debug information
     BiceLib.setModuleBase()
+    BiceLib.cacheCountries()
 
     -- Leaders
     -- BiceLib.Leaders.activateLeaderPromotionSkillLoss()

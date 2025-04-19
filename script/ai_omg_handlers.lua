@@ -16,6 +16,7 @@ function IntelligenceMinisterUtilityThings()
 		DetermineSpriteDeletionStatus()
 		DetermineBiceLibLoadStatus()
 		Stats.SetUpStatCollectionPage()
+		CheckOobUnitLimitTechnologyStatus(true)
 	end
 
 	-- t = os.clock()
@@ -48,7 +49,8 @@ G_LUA_SCHEDULE = {
 		IntelligenceMinisterUtilityThings,
 		-- CalculateLogisticsNeed
 		-- CalculateHeavyIcEffect,
-		CheckForIntraFactionMilitaryAccess
+		CheckForIntraFactionMilitaryAccess,
+		CheckOobUnitLimitTechnologyStatus,
 	},
 	-- 03:00
 	["TechMinister_Tick"] = {

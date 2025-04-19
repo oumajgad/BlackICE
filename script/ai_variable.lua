@@ -1553,3 +1553,128 @@ function CheckForIntraFactionMilitaryAccess()
 		end
 	end
 end
+
+function CheckOobUnitLimitTechnologyStatus(skipDayCheck)
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth % 5 ~= 0 and skipDayCheck ~= true then
+		-- Utils.LUA_DEBUGOUT("dayOfMonth % 5: " .. dayOfMonth % 5)
+		-- Utils.LUA_DEBUGOUT("skipDayCheck: " .. tostring(skipDayCheck))
+		return
+	end
+
+	if BiceLib == nil then
+		return
+	end
+
+	local base = 4
+	local techsAndEffects = {
+		["Corps_command_structure_BK"] = {
+			{
+				["techlevel"] = 2,
+				["effect"] = 1,
+				["ooblevel"] = 3
+			},
+			{
+				["techlevel"] = 4,
+				["effect"] = 1,
+				["ooblevel"] = 3
+			}
+		},
+		["army_HQ_DB"] = {
+			{
+				["techlevel"] = 4,
+				["effect"] = 2,
+				["ooblevel"] = 2
+			}
+		},
+		["army_group_HQ_DB"] = {
+			{
+				["techlevel"] = 3,
+				["effect"] = 1,
+				["ooblevel"] = 1
+			}
+		},
+		["army_command_structure_grand_battle"] = {
+			{
+				["techlevel"] = 2,
+				["effect"] = 1,
+				["ooblevel"] = 2
+			},
+			{
+				["techlevel"] = 4,
+				["effect"] = 1,
+				["ooblevel"] = 2
+			}
+		},
+		["armygroup_command_structure_grand_battle"] = {
+			{
+				["techlevel"] = 2,
+				["effect"] = 1,
+				["ooblevel"] = 1
+			},
+			{
+				["techlevel"] = 4,
+				["effect"] = 1,
+				["ooblevel"] = 1
+			}
+		},
+		["corps_HQ_SF"] = {
+			{
+				["techlevel"] = 4,
+				["effect"] = 1,
+				["ooblevel"] = 3
+			},
+			{
+				["techlevel"] = 5,
+				["effect"] = 1,
+				["ooblevel"] = 3
+			}
+		},
+		["army_HQ_SF"] = {
+			{
+				["techlevel"] = 4,
+				["effect"] = 1,
+				["ooblevel"] = 2
+			},
+			{
+				["techlevel"] = 5,
+				["effect"] = 1,
+				["ooblevel"] = 2
+			}
+		},
+	}
+
+	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
+		-- Utils.LUA_DEBUGOUT("CheckOobUnitLimitTechnologyStatus: " .. tag)
+		local country = countryTag:GetCountry()
+		if country:Exists() == true then
+			local corpsLimit, armyLimit, armyGroupLimit = base, base, base
+			for techName, effects in pairs(techsAndEffects) do
+				local techLevel = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(techName))
+				-- Utils.LUA_DEBUGOUT("techName: " .. techName)
+				-- Utils.LUA_DEBUGOUT("techLevel: " .. techLevel)
+				-- Utils.INSPECT_TABLE(effects)
+				if techLevel > 0 then
+					for i, effect in ipairs(effects) do
+						if techLevel >= effect["techlevel"] then
+							if effect["ooblevel"] == 3 then
+								corpsLimit = corpsLimit + effect["effect"]
+							elseif effect["ooblevel"] == 2 then
+								armyLimit = armyLimit + effect["effect"]
+							elseif effect["ooblevel"] == 1 then
+								armyGroupLimit = armyGroupLimit + effect["effect"]
+							end
+						end
+					end
+				end
+			end
+
+			-- Utils.LUA_DEBUGOUT("corpsLimit: " .. corpsLimit)
+			-- Utils.LUA_DEBUGOUT("corpsLimit: " .. armyLimit)
+			-- Utils.LUA_DEBUGOUT("corpsLimit: " .. armyGroupLimit)
+			BiceLib.Units.setCorpsUnitLimit(corpsLimit, tag)
+			BiceLib.Units.setArmyUnitLimit(armyLimit, tag)
+			BiceLib.Units.setArmyGroupUnitLimit(armyGroupLimit, tag)
+		end
+	end
+end
