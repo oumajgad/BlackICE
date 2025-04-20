@@ -52,11 +52,26 @@ def PatchMinisterWarExhaustionNeutralityReset():
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xDBFD3, 14)}')
 
 
+def RevertOffmapIcPatch():
+    print("RevertOffmapIcPatch")
+    print("\tRevert the old patch since its replaced with a new, better one via BiceLib.dll")
+
+    print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
+    WriteHex("hoi3_tfh.exe", 0xF03A9, "69C0E8030000")
+    print(f'New: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
+    
+    print("\tRevert UI patch")
+    print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF0390, 3)}')
+    WriteHex("hoi3_tfh.exe", 0xF0390, "F76D08")
+    print(f'New: {ReadHex("hoi3_tfh.exe", 0xF0390, 3)}')
+
+
 if __name__ == "__main__":
     try:
         PatchLargeAddressAware()
         PatchMinisterTechDecay()
         PatchMinisterWarExhaustionNeutralityReset()
+        RevertOffmapIcPatch()
         print("\nSuccess\n")
         os.system("pause")
     except Exception as e:
