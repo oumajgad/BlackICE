@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python # Set Python version
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       # Run things
@@ -20,7 +20,7 @@ jobs:
         run: |
           python zipperRelease.py "GitHub"
       - name: Upload zip
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: BlackICE GitHub
           path: ./BlackICE GitHub.zip
