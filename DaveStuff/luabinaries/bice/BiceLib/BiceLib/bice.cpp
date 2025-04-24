@@ -811,14 +811,42 @@ __declspec(dllexport) int stopConsole(lua_State* L)
 
 #include <chrono>
 #include <thread>
+bool periodicsJobStarted = false;
+DWORD WINAPI periodicsJob(void* data) {
+    if (periodicsJobStarted) {
+        return 0;
+    }
+    periodicsJobStarted = true;
+    DEBUG_OUT(printf("periodicsJob started\n"));
+    while (true) {
+        DEBUG_OUT(printf("periodicsJob loop\n"));
+        cacheCountries(LUA_STATE);
+        if (cacheCountriesDone) {
+            lua_getglobal(LUA_STATE, "CheckOobUnitLimitTechnologyStatus");
+            lua_pcall(LUA_STATE, 0, 0, 0);
+        }
+
+        std::this_thread::sleep_for(std::chrono::seconds(60));
+    }
+    return 0;
+}
+
+__declspec(dllexport) int startPeriodics(lua_State* L)
+{
+    HANDLE thread = CreateThread(NULL, 0, periodicsJob, NULL, 0, NULL);
+    return 0;
+}
+
 __declspec(dllexport) int test(lua_State* L)
 {
     INFO_OUT(printf("#### test called ####\n"));
+    HANDLE thread = CreateThread(NULL, 0, periodicsJob, NULL, 0, NULL);
+
+    /*
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    /*
     HWND gameWindow = FindWindowW(L"HoI3", NULL);
 
     RECT r;
@@ -837,6 +865,7 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"stopConsole", stopConsole},
     {"setModuleBase", setModuleBase},
     {"cacheCountries", cacheCountries},
+    {"startPeriodics", startPeriodics},
     {"test", test},
     {NULL, NULL}
 };

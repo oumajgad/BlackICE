@@ -1554,13 +1554,11 @@ function CheckForIntraFactionMilitaryAccess()
 	end
 end
 
-function CheckOobUnitLimitTechnologyStatus(skipDayCheck)
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth % 5 ~= 0 and skipDayCheck ~= true then
-		-- Utils.LUA_DEBUGOUT("dayOfMonth % 5: " .. dayOfMonth % 5)
-		-- Utils.LUA_DEBUGOUT("skipDayCheck: " .. tostring(skipDayCheck))
-		return
-	end
+-- This function will mainly be called periodically directly by bicelib.dll
+-- This is to make sure the limits get set for a multiplayer client
+-- (Since for those no AI is running) 
+function CheckOobUnitLimitTechnologyStatus()
+	-- Utils.LUA_DEBUGOUT("CheckOobUnitLimitTechnologyStatus called")
 
 	if BiceLib == nil then
 		return
