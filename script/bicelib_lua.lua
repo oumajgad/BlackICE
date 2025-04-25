@@ -24,7 +24,6 @@ if mod then
     -- BiceLib.startConsole() -- Creates a console for debug information
     BiceLib.setModuleBase()
     BiceLib.cacheCountries()
-    BiceLib.startPeriodics()
 
     -- Leaders
     -- BiceLib.Leaders.activateLeaderPromotionSkillLoss()
