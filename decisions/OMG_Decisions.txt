@@ -4606,5 +4606,37 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+	stalin_escape_decision = {
+		potential = {
+			tag = OMG
+			GER = {
+				war_with = SOV
+			}
+			SOV = {
+				ai = yes
+			}
+			not = {
+				has_country_flag = stalin_escape_done
+			}
+		}
+		allow = {
+			1233 = {
+				not = {
+					controlled_by = SOV
+				}
+			}
+			1321 = {
+				not = {
+					controlled_by = SOV
+				}
+			}
+		}
+		effect = {
+			SOV = {
+				country_event = 14935
+			}
+			set_country_flag = stalin_escape_done
+		}
+	}
 }
 #EOF#
