@@ -1,11 +1,15 @@
 guard_armor_bat = {			###marked land
+	usable_by = { SOV }
 	type = land
-	sprite = Tank
-	active = no
-	unit_group = armor_unit_type
+	sprite = Tank ##medium armour slightly better attack and defence values
+	active = yes
 	is_mobile = yes
 	is_armor = yes
-	usable_by = { SOV }
+	is_buildable = yes
+	unit_group = armor_unit_type
+	available_trigger = {
+		has_country_flag =  guard_armor_brigade_activation
+	}
 
 	#Size Definitions
 	max_strength = 15
