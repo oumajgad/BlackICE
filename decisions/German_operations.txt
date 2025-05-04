@@ -812,6 +812,10 @@ diplomatic_decisions = {
 						name = "barbarossa_shock_AI"
 						duration = 350
 					}
+					add_country_modifier = {
+						name = "barbarossa_early_shock_AI"
+						duration = 7
+					}
 				}
 			}
 			OMG = {
@@ -944,22 +948,54 @@ diplomatic_decisions = {
 					limit = {
 						tag = SOV
 						ai = yes
+						GER = {
+							ai = yes
+						}
+						ITA = {
+							ai = yes
+						}
+						JAP = {
+							ai = yes
+						}
 					}
 					add_country_modifier = {
 						name = "barbarossa_shock_AI"
-						duration = 280
+						duration = 350
+					}
+					add_country_modifier = {
+						name = "german_op_early_shock_AI"
+						duration = 7
 					}
 				}
 			}
 			OMG = {
 				any_country = {
 					limit = {
-						tag = SOV
-						ai = no
+						or = {
+							and = {
+								tag = SOV
+								ai = no
+							}
+							and = {
+								tag = SOV
+								ai = yes
+								or = {
+									GER = {
+										ai = no
+									}
+									ITA = {
+										ai = no
+									}
+									JAP = {
+										ai = no
+									}
+								}
+							}
+						}
 					}
 					add_country_modifier = {
 						name = "barbarossa_shock"
-						duration = 280
+						duration = 350
 					}
 				}
 			}
@@ -971,61 +1007,42 @@ diplomatic_decisions = {
 	#######################
 	# OP TYPHOON
 
-	#operation_typhoon = {
-	#	major = yes
-	#	potential = {
-	#		tag = GER
-	#		ai = yes
-	#		not = {
-	#			has_country_flag = operation_typhoon
-	#		}
-	#		war_with = SOV
-	#		1409 = {
-	#			controlled_by = SOV
-	#		}
-	#	}
-	#	allow = {
-	#		date = 1941.9.30
-	#	}
-	#	effect = {
-	#		set_country_flag = operation_typhoon
-	#		add_country_modifier = {
-	#			name = typhon_bonus
-	#			duration = 45
-	#		}
-	#		OMG = {
-	#			any_country = {
-	#				limit = {
-	#					tag = SOV
-	#					#ai = yes
-	#					not = {
-	#						has_country_modifier = GPW_bonus
-	#					}
-	#				}
-	#				add_country_modifier = {
-	#					name = "typhoon_shock_no_GPW"
-	#					duration = 30
-	#				}
-	#			}
-	#		}
-	#		OMG = {
-	#			any_country = {
-	#				limit = {
-	#					tag = SOV
-	#					#ai = yes
-	#					has_country_modifier = GPW_bonus
-	#				}
-	#				add_country_modifier = {
-	#					name = "typhoon_shock_GPW"
-	#					duration = 30
-	#				}
-	#			}
-	#		}
-	#	}
-	#	ai_will_do = {
-	#		factor = 1
-	#	}
-	#}
+	operation_typhoon = {
+		major = yes
+		potential = {
+			tag = GER
+			ai = yes
+			SOV = {
+				ai = yes
+			}
+			not = {
+				has_country_flag = operation_typhoon
+			}
+			war_with = SOV
+			1409 = {
+				controlled_by = SOV
+			}
+		}
+		allow = {
+			date = 1941.9.30
+		}
+		effect = {
+			set_country_flag = operation_typhoon
+			add_country_modifier = {
+				name = typhon_bonus
+				duration = 45
+			}
+			SOV = {
+				add_country_modifier = {
+					name = typhoon_shock
+					duration = 45
+				}	
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
 
 	#######################
 	# OP FALL BLAU PREPARATIONS AI
@@ -1236,7 +1253,11 @@ diplomatic_decisions = {
 						name = "fall_blau_shock_ai"
 						duration = 280
 					}
-				}
+					add_country_modifier = {
+						name = "german_op_early_shock_AI"
+						duration = 7
+					}
+			}
 			}
 			OMG = {
 				any_country = {
