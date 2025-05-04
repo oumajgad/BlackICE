@@ -43,6 +43,10 @@ if mod then
     -- BiceLib.Units.addCommandLimitTrait("pskill_1", -1)
     -- BiceLib.Units.addCommandLimitTrait("pskill_4", 1)
 
+    -- Navy
+    -- BiceLib.Navy.setScreenPenalty(500)
+    -- BiceLib.Navy.setScreensPerCapitalRatio(2)
+
     -- Byte Patches
     BiceLib.BytePatches.fixMinisterTechDecay()
     BiceLib.BytePatches.disableWarExhaustionNeutralityReset()
