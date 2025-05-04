@@ -9,21 +9,44 @@ from utils import utils
 
 class CSubUnitDefinitionOffsets:
     VFTABLE_OFFSET: int = 0x11BDC04
+    # General
+    is_buildable: int = 0x36  # bool!
     max_strength: int = 0xEC
     morale: int = 0xF4
     current_speed: int = 0x108
     toughness: int = 0x120
+    max_speed: int = 0x108
+    sprite: int = 0x198  # Name of the sprite
+    # Land units
     soft_attack: int = 0x134
     hard_attack: int = 0x138
     piercing_attack: int = 0x13C
     armor: int = 0x12C
+    # Ships
+    can_be_pride: int = 0x39  # bool!
+    capital: int = 0x47  # bool!
+    air_defence: int = 0x128
+    air_attack: int = 0x140
+    range: int = 0x148
+    firing_distance: int = 0x14C
+    surface_detection: int = 0x150
+    air_detection: int = 0x154
+    visibility: int = 0x15C
+    sea_defence: int = 0x160
+    convoy_attack: int = 0x164
+    sea_attack: int = 0x168
+    shore_bombardment: int = 0x170
     hull: int = 0x178
+    positioning: int = 0x184
 
 
 class CSubUnitDefinition(pydantic.BaseModel):
     SUB_UNIT_DEFS: ClassVar[list[int]] = None
     self_ptr: int
+    is_buildable: bool
+    can_be_pride: bool
     max_strength: int  # 125500 => 12.550 str
+    max_speed: int
     morale: int  # 990 => 99%
     current_speed: int  # 90000 => 90 kph
     toughness: int  # 331340 => 331
@@ -31,13 +54,17 @@ class CSubUnitDefinition(pydantic.BaseModel):
     hard_attack: int  # 87520 => 87
     piercing_attack: int  # 15000 => 15
     armor: int  # 10000 => 10
+    capital: bool
     hull: int
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
+            "is_buildable": pm.read_bool(ptr + CSubUnitDefinitionOffsets.is_buildable),
+            "can_be_pride": pm.read_bool(ptr + CSubUnitDefinitionOffsets.can_be_pride),
             "max_strength": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.max_strength, 4)),
+            "max_speed": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.max_speed, 4)),
             "morale": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.morale, 4)),
             "current_speed": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.current_speed, 4)),
             "toughness": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.toughness, 4)),
@@ -45,6 +72,7 @@ class CSubUnitDefinition(pydantic.BaseModel):
             "hard_attack": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.hard_attack, 4)),
             "piercing_attack": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.piercing_attack, 4)),
             "armor": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.armor, 4)),
+            "capital": pm.read_bool(ptr + CSubUnitDefinitionOffsets.hull),
             "hull": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.hull, 4)),
         }
 
@@ -68,7 +96,11 @@ class CSubUnitDefinition(pydantic.BaseModel):
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
-    defs = CSubUnitDefinition.get_sub_unit_definitions(pm)
-    print(f"{len(defs)=}")
+    # defs = CSubUnitDefinition.get_sub_unit_definitions(pm)
+    # print(f"{len(defs)=}")
+    addr = 0xBC4E0A58
+    ent = CSubUnitDefinition.make(pm=pm, ptr=addr)
+    print(ent)
+    # utils.dump_bytes(pm=pm, ptr=addr, length=0x200)
     # x = CSubUnitDefinition.make(pm, 0xB12DB3E8)
     # print(x)

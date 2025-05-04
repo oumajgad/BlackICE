@@ -10,6 +10,7 @@ from utils import utils
 class CShipOffsets:
     VFTABLE_OFFSET: int = 0x11C7A74
     name: int = 0x68
+    sub_unit_definition: int = 0x58
 
 
 class CShip(pydantic.BaseModel):
@@ -17,6 +18,7 @@ class CShip(pydantic.BaseModel):
     self_ptr: int
     ptr_str: str
     name: str
+    sub_unit_definition: str
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -24,6 +26,7 @@ class CShip(pydantic.BaseModel):
             "self_ptr": ptr,
             "ptr_str": utils.int_to_pointer(ptr),
             "name": utils.get_string_maybe_ptr(pm, ptr + CShipOffsets.name),
+            "sub_unit_definition": utils.int_to_pointer(pm.read_uint(ptr + CShipOffsets.sub_unit_definition)),
         }
         return cls(**temp)
 
