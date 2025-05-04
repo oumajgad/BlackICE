@@ -14,6 +14,7 @@
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
 #include <Hooks/CArmyHooks.hpp>
+#include <Hooks/CNavyHooks.hpp>
 #include <Hooks/HookedPatches.hpp>
 #include <Patches.hpp>
 
@@ -541,7 +542,7 @@ __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
 
     if (tag.compare("---") == 0) {
         Hooks::CArmy::corpsUnitLimit = newLimit;
-        INFO_OUT(printf("Corps unit limit set to: %i \n", newLimit));
+        DEBUG_OUT(printf("Corps unit limit set to: %i \n", newLimit));
     }
     else {
         Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
@@ -549,7 +550,7 @@ __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + 0x1E8);
             Hooks::CArmy::corpsUnitLimitPerCountry[tagId] = newLimit;
-            INFO_OUT(printf("Corps unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+            DEBUG_OUT(printf("Corps unit limit set to: %i for %s \n", newLimit, tag.c_str()));
         }
     }
     return 0;
@@ -566,7 +567,7 @@ __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
     
     if (tag.compare("---") == 0) {
         Hooks::CArmy::armyUnitLimit = newLimit;
-        INFO_OUT(printf("Army unit limit set to: %i \n", newLimit));
+        DEBUG_OUT(printf("Army unit limit set to: %i \n", newLimit));
     }
     else {
         Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
@@ -574,7 +575,7 @@ __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + 0x1E8);
             Hooks::CArmy::armyUnitLimitPerCountry[tagId] = newLimit;
-            INFO_OUT(printf("Army unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+            DEBUG_OUT(printf("Army unit limit set to: %i for %s \n", newLimit, tag.c_str()));
         }
     }
     return 0;
@@ -591,7 +592,7 @@ __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
 
     if (tag.compare("---") == 0) {
         Hooks::CArmy::armyGroupUnitLimit = newLimit;
-        INFO_OUT(printf("Armygroup unit limit set to: %i \n", newLimit));
+        DEBUG_OUT(printf("Armygroup unit limit set to: %i \n", newLimit));
     }
     else {
         Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
@@ -599,7 +600,7 @@ __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + 0x1E8);
             Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] = newLimit;
-            INFO_OUT(printf("Armygroup unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+            DEBUG_OUT(printf("Armygroup unit limit set to: %i for %s \n", newLimit, tag.c_str()));
         }
     }
     return 0;
@@ -629,6 +630,74 @@ __declspec(dllexport) int addCommandLimitTrait(lua_State* L)
 
     DEBUG_OUT(printf("Hooks::CArmy::commandLimitTraits->size(): %i \n", Hooks::CArmy::commandLimitTraits->size()));
     DEBUG_OUT(printf("addCommandLimitTrait finished \n"));
+    return 0;
+}
+
+
+/////////////////////////////////////
+//         NAVY FUNCTIONS          //
+/////////////////////////////////////
+
+void activateScreenPenaltyCalculationHook()
+{
+    if (Hooks::CNavy::isNavyScreenPenaltyHookActive) {
+        return;
+    }
+
+    DWORD hookAddress = MODULE_BASE + 0x166568;
+    Hooks::CNavy::origJmp_screenPenaltyHook = MODULE_BASE + 0x166560;
+
+    if (!Hooks::hook((void*)hookAddress, Hooks::CNavy::screenPenaltyCalulation, 5, 0)) {
+        ERROR_OUT(printf("Hook 'screenPenaltyCalulation' failed \n"));
+    }
+    else {
+        INFO_OUT(printf("Hook 'screenPenaltyCalulation' succeeded \n"));
+        DEBUG_OUT(printf("origJmp_screenPenaltyHook: %#010x \n", Hooks::CNavy::origJmp_screenPenaltyHook));
+    }
+
+    Hooks::CNavy::isNavyScreenPenaltyHookActive = true;
+    return;
+}
+
+bool screenPenaltySet = false;
+__declspec(dllexport) int setScreenPenalty(lua_State* L)
+{
+    if (screenPenaltySet) {
+        return 0;
+    }
+
+    int screenPenalty = luaL_checkinteger(L, 1);
+
+    if (!Hooks::CNavy::isNavyScreenPenaltyHookActive) {
+        activateScreenPenaltyCalculationHook();
+    }
+
+    DEBUG_OUT(printf("Set screen penalty to %i\n", screenPenalty));
+    Hooks::CNavy::screenPenalty = screenPenalty;
+
+    screenPenaltySet = true;
+
+    return 0;
+}
+
+bool screenRatioSet = false;
+__declspec(dllexport) int setScreensPerCapitalRatio(lua_State* L)
+{
+    if (screenRatioSet) {
+        return 0;
+    }
+
+    int ratio = luaL_checkinteger(L, 1);
+
+    if (!Hooks::CNavy::isNavyScreenPenaltyHookActive) {
+        activateScreenPenaltyCalculationHook();
+    }
+
+    DEBUG_OUT(printf("Set screen to capital ratio to %i\n", ratio));
+    Hooks::CNavy::screensPerCapital = ratio;
+
+    screenRatioSet = true;
+
     return 0;
 }
 
@@ -914,6 +983,15 @@ void registerUnitFunctions(lua_State* this_state) {
     return;
 }
 
+void registerNavyFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Navy");
+    lua_newtable(this_state);
+    registerFunction(this_state, "setScreenPenalty", setScreenPenalty);
+    registerFunction(this_state, "setScreensPerCapitalRatio", setScreensPerCapitalRatio);
+    lua_settable(this_state, -3);
+    return;
+}
+
 void registerPatchFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "BytePatches");
     lua_newtable(this_state);
@@ -950,6 +1028,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerGameInfoFunctions(this_state);
     registerLeaderFunctions(this_state);
     registerUnitFunctions(this_state);
+    registerNavyFunctions(this_state);
     registerPatchFunctions(this_state);
     registerComplexPatchFunctions(this_state);
 

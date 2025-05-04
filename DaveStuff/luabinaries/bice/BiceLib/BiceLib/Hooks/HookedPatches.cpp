@@ -95,7 +95,7 @@ __declspec(naked) void Hooks::Patches::enablePlacingNonResearchedBuildings() {
         mov ebx, [ebx + ecx * 4]    // Get building in province (CProvinceBuilding)
         mov ebx, [ebx + 0x20]       // Get max building level in province
 
-        cmp ebx, eax // compare max allowed to current max
+        cmp ebx, eax // compare current max to max allowed
 
 
         popad

@@ -23,8 +23,10 @@ class CSubUnitDefinitionOffsets:
     piercing_attack: int = 0x13C
     armor: int = 0x12C
     # Ships
+    is_transport: int = 0x30  # bool!
+    is_sub: int = 0x31
     can_be_pride: int = 0x39  # bool!
-    capital: int = 0x2F  # bool!
+    is_capital: int = 0x2F  # bool!
     air_defence: int = 0x128
     air_attack: int = 0x140
     range: int = 0x148
@@ -38,6 +40,7 @@ class CSubUnitDefinitionOffsets:
     shore_bombardment: int = 0x170
     hull: int = 0x178
     positioning: int = 0x184
+    unk_2e: int = 0x2E
 
 
 class CSubUnitDefinition(pydantic.BaseModel):
@@ -54,7 +57,10 @@ class CSubUnitDefinition(pydantic.BaseModel):
     hard_attack: int  # 87520 => 87
     piercing_attack: int  # 15000 => 15
     armor: int  # 10000 => 10
-    capital: bool
+    unk_2e: bool
+    is_sub: bool
+    is_transport: bool
+    is_capital: bool
     hull: int
 
     @classmethod
@@ -72,8 +78,11 @@ class CSubUnitDefinition(pydantic.BaseModel):
             "hard_attack": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.hard_attack, 4)),
             "piercing_attack": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.piercing_attack, 4)),
             "armor": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.armor, 4)),
-            "capital": pm.read_bool(ptr + CSubUnitDefinitionOffsets.capital),
+            "is_transport": pm.read_bool(ptr + CSubUnitDefinitionOffsets.is_transport),
+            "is_capital": pm.read_bool(ptr + CSubUnitDefinitionOffsets.is_capital),
             "hull": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.hull, 4)),
+            "is_sub": pm.read_bool(ptr + CSubUnitDefinitionOffsets.is_sub),
+            "unk_2e": pm.read_bool(ptr + CSubUnitDefinitionOffsets.unk_2e),
         }
 
         return cls(**temp)

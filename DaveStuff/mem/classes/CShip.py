@@ -3,6 +3,7 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
+from classes.CSubUnitDefinition import CSubUnitDefinition
 from constants import DATA_SECTION_START
 from utils import utils
 
@@ -60,7 +61,9 @@ if __name__ == "__main__":
         # print(unit_ptr)
         try:
             ship = CShip.make(pm, unit_ptr)
-            print(ship)
+            # print(ship)
+            subUnitDef = CSubUnitDefinition.make(pm=pm, ptr=pm.read_uint(unit_ptr + CShipOffsets.sub_unit_definition))
+            print(f"{ship.sub_unit_definition=} - {ship.name=} - {subUnitDef.is_capital=}")
         except Exception as e:
             print(e)
             continue
