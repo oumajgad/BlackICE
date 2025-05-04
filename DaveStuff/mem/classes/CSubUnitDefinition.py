@@ -24,7 +24,7 @@ class CSubUnitDefinitionOffsets:
     armor: int = 0x12C
     # Ships
     can_be_pride: int = 0x39  # bool!
-    capital: int = 0x47  # bool!
+    capital: int = 0x2F  # bool!
     air_defence: int = 0x128
     air_attack: int = 0x140
     range: int = 0x148
@@ -72,7 +72,7 @@ class CSubUnitDefinition(pydantic.BaseModel):
             "hard_attack": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.hard_attack, 4)),
             "piercing_attack": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.piercing_attack, 4)),
             "armor": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.armor, 4)),
-            "capital": pm.read_bool(ptr + CSubUnitDefinitionOffsets.hull),
+            "capital": pm.read_bool(ptr + CSubUnitDefinitionOffsets.capital),
             "hull": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.hull, 4)),
         }
 
@@ -98,9 +98,12 @@ if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     # defs = CSubUnitDefinition.get_sub_unit_definitions(pm)
     # print(f"{len(defs)=}")
-    addr = 0xBC4E0A58
-    ent = CSubUnitDefinition.make(pm=pm, ptr=addr)
-    print(ent)
+    dtl = 0xBC4E0A58
+    dtl = CSubUnitDefinition.make(pm=pm, ptr=dtl)
+    print(dtl)
+    spe = 0xBC4DFEF0
+    spe = CSubUnitDefinition.make(pm=pm, ptr=spe)
+    print(spe)
     # utils.dump_bytes(pm=pm, ptr=addr, length=0x200)
     # x = CSubUnitDefinition.make(pm, 0xB12DB3E8)
     # print(x)
