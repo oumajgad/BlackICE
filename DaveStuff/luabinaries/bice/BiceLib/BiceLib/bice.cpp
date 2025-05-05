@@ -644,8 +644,8 @@ void activateScreenPenaltyCalculationHook()
         return;
     }
 
-    DWORD hookAddress = MODULE_BASE + 0x166568;
-    Hooks::CNavy::origJmp_screenPenaltyHook = MODULE_BASE + 0x166560;
+    DWORD hookAddress = MODULE_BASE + 0x166560;
+    Hooks::CNavy::origJmp_screenPenaltyHook = MODULE_BASE + 0x1665f6;
 
     if (!Hooks::hook((void*)hookAddress, Hooks::CNavy::screenPenaltyCalulation, 5, 0)) {
         ERROR_OUT(printf("Hook 'screenPenaltyCalulation' failed \n"));
