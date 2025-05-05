@@ -15,7 +15,7 @@ bool Hooks::CNavy::isNavyScreenPenaltyHookActive = false;
 
 // Vars defaults
 DWORD Hooks::CNavy::screenPenalty = 333; // => 33.3%
-DWORD Hooks::CNavy::screensPerCapital = 3;
+DWORD Hooks::CNavy::screensPerCapital = 1;
 
 
 __declspec(naked) void Hooks::CNavy::screenPenaltyCalulation() {
