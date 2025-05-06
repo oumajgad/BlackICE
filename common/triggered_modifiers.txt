@@ -14366,12 +14366,18 @@ has_all_strat_resource_tank_armor_techs = {
 	icon = 45
 }
 
+############################################################
+################      LACK OF MONEY      ###################
+############################################################
 lack_of_money_strategic_effect = {
 	potential = {
 		ai = no
 		check_variable = {
 			which = "BaseIC"
 			value = 150
+		}
+		not = {
+			money = 3000
 		}
 	}
 	trigger = {
@@ -14388,6 +14394,7 @@ lack_of_money_strategic_effect = {
 
 	icon = 41
 }
+
 lack_of_money_strategic_effect_I = {
 	potential = {
 		ai = no
@@ -14404,20 +14411,31 @@ lack_of_money_strategic_effect_I = {
 			which = "BaseIC"
 			value = 150
 		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 1
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 2
+            }    
+        }
 		has_country_flag = budget_over_2000
 		not = {
 			money = 2000
 		}
-		money = 1000
 		date = 1936.7.1
 	}
+
 	dissent = 0.04
 	ruling_party_support = -0.1
-	global_revolt_risk = 4
+	global_revolt_risk = 3
+    industrial_efficiency = -0.02
+    org_regain = -0.2
 
 	icon = 41
 }
-
 lack_of_money_strategic_effect_II = {
 	potential = {
 		ai = no
@@ -14425,25 +14443,496 @@ lack_of_money_strategic_effect_II = {
 			which = "BaseIC"
 			value = 150
 		}
-		not = {
-			money = 3000
+		check_variable = {
+			which = "money_deficit_count"
+			value = 1
 		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 2
+            }    
+        }
 	}
 	trigger = {
 		check_variable = {
 			which = "BaseIC"
 			value = 150
 		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 2
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 3
+            }    
+        }
 		has_country_flag = budget_over_2000
 		not = {
-			money = 1000
+			money = 2000
 		}
 		date = 1936.7.1
 	}
-	dissent = 0.08
-	ruling_party_support = -0.2
-	global_revolt_risk = 8
 
+	dissent = 0.055
+	ruling_party_support = -0.15
+	global_revolt_risk = 4.5
+    industrial_efficiency = -0.035
+    org_regain = -0.3
+
+	icon = 41
+}
+lack_of_money_strategic_effect_III = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 2
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 3
+            }    
+        }
+	}
+	trigger = {
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 3
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 4
+            }    
+        }
+		has_country_flag = budget_over_2000
+		not = {
+			money = 2000
+		}
+		date = 1936.7.1
+	}
+
+	dissent = 0.07
+	ruling_party_support = -0.2
+	global_revolt_risk = 6
+    industrial_efficiency = -0.05
+    org_regain = -0.4
+
+	icon = 41
+}
+lack_of_money_strategic_effect_IV = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 3
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 4
+            }    
+        }
+	}
+	trigger = {
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 4
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 6
+            }    
+        }
+		has_country_flag = budget_over_2000
+		not = {
+			money = 2000
+		}
+		date = 1936.7.1
+	}
+
+	dissent = 0.1
+	ruling_party_support = -0.3
+	global_revolt_risk = 10
+    industrial_efficiency = -0.075
+    org_regain = -0.5
+
+	icon = 41
+}
+lack_of_money_strategic_effect_V = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 4
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 6
+            }    
+        }
+	}
+	trigger = {
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 6
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 8
+            }    
+        }
+		has_country_flag = budget_over_2000
+		not = {
+			money = 2000
+		}
+		date = 1936.7.1
+	}
+
+	dissent = 0.125
+	ruling_party_support = -0.4
+	global_revolt_risk = 12
+    industrial_efficiency = -0.1
+    org_regain = -0.6
+
+	icon = 41
+}
+lack_of_money_strategic_effect_VI = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 6
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 8
+            }    
+        }
+	}
+	trigger = {
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 8
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 10
+            }    
+        }
+		has_country_flag = budget_over_2000
+		not = {
+			money = 2000
+		}
+		date = 1936.7.1
+	}
+
+	dissent = 0.15
+	ruling_party_support = -0.5
+	global_revolt_risk = 15
+    industrial_efficiency = -0.125
+    org_regain = -0.7
+
+	icon = 41
+}
+lack_of_money_strategic_effect_VII = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 8
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 10
+            }    
+        }
+	}
+	trigger = {
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 10
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 12
+            }    
+        }
+		has_country_flag = budget_over_2000
+		not = {
+			money = 2000
+		}
+		date = 1936.7.1
+	}
+
+	dissent = 0.2
+	ruling_party_support = -0.6
+	global_revolt_risk = 17.5
+    industrial_efficiency = -0.15
+    org_regain = -0.8
+
+	icon = 41
+}
+lack_of_money_strategic_effect_VIII = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 10
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 12
+            }    
+        }
+	}
+	trigger = {
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 12
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 14
+            }    
+        }
+		has_country_flag = budget_over_2000
+		not = {
+			money = 2000
+		}
+		date = 1936.7.1
+	}
+
+	dissent = 0.25
+	ruling_party_support = -0.7
+	global_revolt_risk = 20
+    industrial_efficiency = -0.2
+    org_regain = -0.9
+
+	icon = 41
+}
+lack_of_money_strategic_effect_IX = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 12
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 14
+            }    
+        }
+	}
+	trigger = {
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 14
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 16
+            }    
+        }
+		has_country_flag = budget_over_2000
+		not = {
+			money = 2000
+		}
+		date = 1936.7.1
+	}
+
+	dissent = 0.3
+	ruling_party_support = -0.8
+	global_revolt_risk = 25
+    industrial_efficiency = -0.3
+    org_regain = -1
+
+	icon = 41
+}
+lack_of_money_strategic_effect_X = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 14
+		}
+        not = {
+            check_variable = {
+                which = "money_deficit_count"
+                value = 16
+            }    
+        }
+	}
+	trigger = {
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		check_variable = {
+			which = "money_deficit_count"
+			value = 16
+		}
+        #not = {
+        #    check_variable = {
+        #        which = "money_deficit_count"
+        #        value = 16
+        #    }    
+        #}
+		has_country_flag = budget_over_2000
+		not = {
+			money = 2000
+		}
+		date = 1936.7.1
+	}
+
+	dissent = 0.4
+	ruling_party_support = -0.9
+	global_revolt_risk = 30
+    industrial_efficiency = -0.4
+    org_regain = -1.25
+
+	icon = 41
+}
+
+money_printing_penalty_I = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "money_deficit_count"
+			value = 1
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "money_printing_penalty"
+			value = 1
+		}
+        not = {
+            check_variable = {
+                which = "money_printing_penalty"
+                value = 2
+            }    
+        }
+	}
+
+	global_money = -1
+	icon = 41
+}
+money_printing_penalty_II = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "money_deficit_count"
+			value = 1
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "money_printing_penalty"
+			value = 2
+		}
+        not = {
+            check_variable = {
+                which = "money_printing_penalty"
+                value = 3
+            }    
+        }
+	}
+
+	global_money = -1.5
+	icon = 41
+}
+money_printing_penalty_III = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "money_deficit_count"
+			value = 2
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "money_printing_penalty"
+			value = 3
+		}
+	}
+
+	global_money = -2
 	icon = 41
 }
 
