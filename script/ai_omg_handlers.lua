@@ -16,7 +16,8 @@ function IntelligenceMinisterUtilityThings()
 		DetermineSpriteDeletionStatus()
 		DetermineBiceLibLoadStatus()
 		Stats.SetUpStatCollectionPage()
-		CheckOobUnitLimitTechnologyStatus(true)
+		RunBiceLibPeriodicsManually()
+		MultiplayerBiceLibCheckInitialSetup()
 	end
 
 	-- t = os.clock()

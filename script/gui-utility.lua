@@ -1892,6 +1892,7 @@ if wx ~= nil then
 	UI.m_button_manualRefresh:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		G_DaysSinceLastUpdate = 0
 		GuiRefreshLoop(true)
+		MultiplayerBiceLibJob()
 	end )
 
 	UI.m_button_trade_1:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
