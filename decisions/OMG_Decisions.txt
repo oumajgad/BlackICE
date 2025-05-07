@@ -3049,6 +3049,21 @@ diplomatic_decisions = {
 			not = {
 				has_country_modifier = captured_provinces_timer
 			}
+			2857 = {
+				not = {
+					controlled_by = SOV
+				}
+			}
+			1409 = {
+				not = {
+					controlled_by = SOV
+				}
+			}
+			782 = {
+				not = {
+					controlled_by = SOV
+				}
+			}
 		}
 		effect = {
 			country_event = 666999
@@ -3203,6 +3218,75 @@ diplomatic_decisions = {
 			}
 		}
 	}
+	bicelib_multiplayer_check = {
+		potential = {
+			tag = OMG
+			check_variable = {
+				which = needs_to_run_multiplayer_bicelib_check
+				value = 1
+			}
+			not = {
+				has_country_modifier = bicelib_multiplayer_check_timer
+				has_country_flag = bicelib_multiplayer_check_done
+			}
+		}
+		allow = {
+			tag = OMG
+		}
+		effect = {
+			add_country_modifier = {
+				name = bicelib_multiplayer_check_timer
+				duration = 30
+			}
+			set_country_flag = bicelib_multiplayer_check_done
+			set_variable = {
+				which = needs_to_run_multiplayer_bicelib_check
+				value = 0
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						ai = no
+					}
+					country_event = 1107
+				}
+			}
+		}
+	}
+	bicelib_multiplayer_check_reset = {
+		potential = {
+			tag = OMG
+			not = {
+				has_country_modifier = bicelib_multiplayer_check_timer
+			}
+			has_country_flag = bicelib_multiplayer_check_done
+		}
+		allow = {
+			tag = OMG
+		}
+		effect = {
+			clr_country_flag = bicelib_multiplayer_check_done
+			set_variable = {
+				which = needs_to_run_multiplayer_bicelib_check
+				value = 1
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						ai = no
+					}
+					set_variable = {
+						which = ran_bicelib_periodics_manually
+						value = 0
+					}
+					set_variable = {
+						which = failed_to_load_bicelib
+						value = 0
+					}
+				}
+			}
+		}
+	}
 	LendLeaseMultiplier_save_fix = {
 		potential = {
 			tag = OMG
@@ -3347,13 +3431,15 @@ diplomatic_decisions = {
 			}
 		}
 		allow = {
-			GRE = {
-				war_with = ITA
-			}
+			war_with = GER
 		}
 		effect = {
 			national_unity = -30
 			set_country_flag = YUG_NU_HIT
+			add_country_modifier = {
+				name = "marita_shock"
+				duration = 90
+			}
 		}
 		ai_will_do = {
 			factor = 1
@@ -4611,6 +4697,7 @@ diplomatic_decisions = {
 			tag = OMG
 			GER = {
 				war_with = SOV
+				ai = no
 			}
 			SOV = {
 				ai = yes
@@ -4618,6 +4705,7 @@ diplomatic_decisions = {
 			not = {
 				has_country_flag = stalin_escape_done
 			}
+			
 		}
 		allow = {
 			1233 = {
@@ -4636,6 +4724,85 @@ diplomatic_decisions = {
 				country_event = 14935
 			}
 			set_country_flag = stalin_escape_done
+		}
+	}
+	money_deficit_duration_count = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			not = {
+				has_country_modifier = money_deficit_duration_timer
+			}
+			date = 1936.7.1
+		}
+		effect = {
+			add_country_modifier = {
+				name = "money_deficit_duration_timer"
+				duration = 7
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						ai = no
+						money = 2000
+						check_variable = {
+							which = "BaseIC"
+							value = 150
+						}
+					}
+					change_variable = {
+						which = "money_deficit_count"
+						value = -1
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						ai = no
+						not = {
+							money = 2000
+						}
+						check_variable = {
+							which = "BaseIC"
+							value = 150
+						}
+					}
+					change_variable = {
+						which = "money_deficit_count"
+						value = +1
+					}
+				}
+			}
+		}
+	}
+
+	money_printing_decision = {
+		potential = {
+			ai = no
+			date = 1936.7.1
+			has_country_flag = pay_goddamn_rent_start
+			check_variable = {
+				which = "money_deficit_count"
+				value = 1
+			}
+		}
+		allow = {
+			check_variable = {
+				which = "money_deficit_count"
+				value = 1
+			}
+			not = {
+				has_country_modifier = money_printing_timer
+				check_variable = {
+					which = "money_printing_penalty"
+					value = 3
+				}    
+			}
+		}
+		effect = {
+			country_event = 1666
 		}
 	}
 }

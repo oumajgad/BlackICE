@@ -3,6 +3,7 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
+from classes.CSubUnitDefinition import CSubUnitDefinition
 from constants import DATA_SECTION_START
 from utils import utils
 
@@ -10,6 +11,7 @@ from utils import utils
 class CShipOffsets:
     VFTABLE_OFFSET: int = 0x11C7A74
     name: int = 0x68
+    sub_unit_definition: int = 0x58
 
 
 class CShip(pydantic.BaseModel):
@@ -17,6 +19,7 @@ class CShip(pydantic.BaseModel):
     self_ptr: int
     ptr_str: str
     name: str
+    sub_unit_definition: str
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -24,6 +27,7 @@ class CShip(pydantic.BaseModel):
             "self_ptr": ptr,
             "ptr_str": utils.int_to_pointer(ptr),
             "name": utils.get_string_maybe_ptr(pm, ptr + CShipOffsets.name),
+            "sub_unit_definition": utils.int_to_pointer(pm.read_uint(ptr + CShipOffsets.sub_unit_definition)),
         }
         return cls(**temp)
 
@@ -57,7 +61,9 @@ if __name__ == "__main__":
         # print(unit_ptr)
         try:
             ship = CShip.make(pm, unit_ptr)
-            print(ship)
+            # print(ship)
+            subUnitDef = CSubUnitDefinition.make(pm=pm, ptr=pm.read_uint(unit_ptr + CShipOffsets.sub_unit_definition))
+            print(f"{ship.sub_unit_definition=} - {ship.name=} - {subUnitDef.is_capital=}")
         except Exception as e:
             print(e)
             continue

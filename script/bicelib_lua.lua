@@ -43,6 +43,10 @@ if mod then
     -- BiceLib.Units.addCommandLimitTrait("pskill_1", -1)
     -- BiceLib.Units.addCommandLimitTrait("pskill_4", 1)
 
+    -- Navy
+    -- BiceLib.Navy.setScreenPenalty(500)
+    -- BiceLib.Navy.setScreensPerCapitalRatio(2)
+
     -- Byte Patches
     BiceLib.BytePatches.fixMinisterTechDecay()
     BiceLib.BytePatches.disableWarExhaustionNeutralityReset()
@@ -51,4 +55,50 @@ if mod then
     -- Complex Patches
     BiceLib.ComplexPatches.fixOffMapIC()
     BiceLib.ComplexPatches.enablePlacingNonResearchedBuildings()
+end
+
+function HasLoadedBiceLibSuccessfully()
+    if ok then
+        return true
+    end
+    return false
+end
+
+function RunBiceLibPeriodicsManually()
+    if BiceLib ~= nil then
+        BiceLib.cacheCountries()
+		CheckOobUnitLimitTechnologyStatus(true)
+    end
+end
+
+function MultiplayerBiceLibJob()
+    local playerTag = CCurrentGameState.GetPlayer()
+    Utils.LUA_DEBUGOUT("MultiplayerBiceLibJob: " .. tostring(playerTag))
+    if HasLoadedBiceLibSuccessfully() then
+        Utils.LUA_DEBUGOUT("HasLoadedBiceLibSuccessfully(): " .. tostring(playerTag))
+        RunBiceLibPeriodicsManually()
+
+        local command = CSetVariableCommand(playerTag, CString("ran_bicelib_periodics_manually"), CFixedPoint(1))
+        CCurrentGameState.Post(command)
+        local command = CSetVariableCommand(playerTag, CString("failed_to_load_bicelib"), CFixedPoint(0))
+        CCurrentGameState.Post(command)
+    else
+        local command = CSetVariableCommand(playerTag, CString("failed_to_load_bicelib"), CFixedPoint(1))
+        CCurrentGameState.Post(command)
+        local command = CSetVariableCommand(playerTag, CString("ran_bicelib_periodics_manually"), CFixedPoint(0))
+        CCurrentGameState.Post(command)
+    end
+end
+
+
+-- Sets the variable which will trigger the OMG decision for the periodic event to tell the player to press the "Refresh Values" button
+-- After that the triggers for the decision are handled entirely in decisons/events scripts
+function MultiplayerBiceLibCheckInitialSetup()
+    Utils.LUA_DEBUGOUT("MultiplayerBiceLibCheckInitialSetup")
+    if #G_PlayerCountries > 1 then
+        Utils.LUA_DEBUGOUT("#G_PlayerCountries > 1")
+        local omgTag = CCountryDataBase.GetTag("OMG")
+        local command = CSetVariableCommand(omgTag, CString("needs_to_run_multiplayer_bicelib_check"), CFixedPoint(1))
+        CCurrentGameState.Post(command)
+    end
 end

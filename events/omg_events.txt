@@ -1179,6 +1179,44 @@ country_event = {
 	}
 }
 country_event = {
+	id = 1107
+	is_triggered_only = yes
+	title = "Manual bicelib.dll setup."
+	desc = "EVTDESC1107"
+	picture = "scorched_earth"
+	option = {
+		name = "I pressed the button."
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					check_variable = {
+						which = "failed_to_load_bicelib"
+						value = 1
+					}
+				}
+				country_event = 1108
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {
+						check_variable = {
+							which = "failed_to_load_bicelib"
+							value = 1
+						}
+						check_variable = {
+							which = "ran_bicelib_periodics_manually"
+							value = 1
+						}
+					}
+				}
+				country_event = 1107
+			}
+		}
+	}
+}
+country_event = {
 	id = 1112
 	is_triggered_only = yes
 	title = "province_request_timer event"

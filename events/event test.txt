@@ -5144,10 +5144,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -450
 		add_country_modifier = {
-			name = "pay_soldiers_I"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_soldiers_cooldown"
 			duration = 90
 		}
@@ -5225,10 +5221,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -675
-		add_country_modifier = {
-			name = "pay_soldiers_II"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_soldiers_cooldown"
 			duration = 90
@@ -5308,10 +5300,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -900
 		add_country_modifier = {
-			name = "pay_soldiers_III"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_soldiers_cooldown"
 			duration = 90
 		}
@@ -5389,10 +5377,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -1125
-		add_country_modifier = {
-			name = "pay_soldiers_IV"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_soldiers_cooldown"
 			duration = 90
@@ -5472,10 +5456,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -1350
 		add_country_modifier = {
-			name = "pay_soldiers_V"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_soldiers_cooldown"
 			duration = 90
 		}
@@ -5553,10 +5533,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -1575
-		add_country_modifier = {
-			name = "pay_soldiers_VI"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_soldiers_cooldown"
 			duration = 90
@@ -5636,10 +5612,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -1800
 		add_country_modifier = {
-			name = "pay_soldiers_VII"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_soldiers_cooldown"
 			duration = 90
 		}
@@ -5717,10 +5689,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -2025
-		add_country_modifier = {
-			name = "pay_soldiers_VIII"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_soldiers_cooldown"
 			duration = 90
@@ -5800,10 +5768,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -2250
 		add_country_modifier = {
-			name = "pay_soldiers_IX"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_soldiers_cooldown"
 			duration = 90
 		}
@@ -5837,12 +5801,12 @@ country_event = {
 					tag = CHI
 				}
 				total_amount_of_brigades = 1900
-				#not = { total_amount_of_brigades = 2000 }
+				not = { total_amount_of_brigades = 2000 }
 			}
 			and = {
 				faction = comintern
 				total_amount_of_brigades = 2600
-				#not = { total_amount_of_brigades = 2700 }
+				not = { total_amount_of_brigades = 2700 }
 			}
 			and = {
 				or = {
@@ -5858,7 +5822,7 @@ country_event = {
 					}
 				}
 				total_amount_of_brigades = 1600
-				#not = { total_amount_of_brigades = 1600 }
+				not = { total_amount_of_brigades = 1700 }
 			}
 		}
 
@@ -5872,10 +5836,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -2475
-		add_country_modifier = {
-			name = "pay_soldiers_X"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_soldiers_cooldown"
 			duration = 90
@@ -5893,6 +5853,706 @@ country_event = {
 		}
 	}
 }
+country_event = {
+	#11th
+	id = 79101
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				or = {
+					faction = axis
+					tag = CHI
+				}
+				total_amount_of_brigades = 2000
+				not = { total_amount_of_brigades = 2100 }
+			}
+			and = {
+				faction = comintern
+				total_amount_of_brigades = 2700
+				not = { total_amount_of_brigades = 2800 }
+			}
+			and = {
+				or = {
+					faction = allies
+					and = {
+
+						not = {
+							faction = allies
+							faction = axis
+							faction = comintern
+							tag = CHI
+						}
+					}
+				}
+				total_amount_of_brigades = 1700
+				not = { total_amount_of_brigades = 1800 }
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	title = "Our Army asks for more money"
+	desc = "EVTDESC79101"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -2700
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_soldiers_XI_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#12th
+	id = 79102
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				or = {
+					faction = axis
+					tag = CHI
+				}
+				total_amount_of_brigades = 2100
+				not = { total_amount_of_brigades = 2200 }
+			}
+			and = {
+				faction = comintern
+				total_amount_of_brigades = 2800
+				not = { total_amount_of_brigades = 2900 }
+			}
+			and = {
+				or = {
+					faction = allies
+					and = {
+
+						not = {
+							faction = allies
+							faction = axis
+							faction = comintern
+							tag = CHI
+						}
+					}
+				}
+				total_amount_of_brigades = 1700
+				not = { total_amount_of_brigades = 1800 }
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	title = "Our Army asks for more money"
+	desc = "EVTDESC79102"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -2925
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_soldiers_XII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#13th
+	id = 79103
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				or = {
+					faction = axis
+					tag = CHI
+				}
+				total_amount_of_brigades = 2200
+				not = { total_amount_of_brigades = 2300 }
+			}
+			and = {
+				faction = comintern
+				total_amount_of_brigades = 2900
+				not = { total_amount_of_brigades = 3000 }
+			}
+			and = {
+				or = {
+					faction = allies
+					and = {
+
+						not = {
+							faction = allies
+							faction = axis
+							faction = comintern
+							tag = CHI
+						}
+					}
+				}
+				total_amount_of_brigades = 1800
+				not = { total_amount_of_brigades = 1900 }
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	title = "Our Army asks for more money"
+	desc = "EVTDESC79103"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3150
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_soldiers_XIII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#14th
+	id = 79104
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				or = {
+					faction = axis
+					tag = CHI
+				}
+				total_amount_of_brigades = 2300
+				not = { total_amount_of_brigades = 2400 }
+			}
+			and = {
+				faction = comintern
+				total_amount_of_brigades = 3000
+				not = { total_amount_of_brigades = 3100 }
+			}
+			and = {
+				or = {
+					faction = allies
+					and = {
+
+						not = {
+							faction = allies
+							faction = axis
+							faction = comintern
+							tag = CHI
+						}
+					}
+				}
+				total_amount_of_brigades = 1900
+				not = { total_amount_of_brigades = 2000 }
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	title = "Our Army asks for more money"
+	desc = "EVTDESC79104"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3375
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_soldiers_XIV_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#15th
+	id = 79105
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				or = {
+					faction = axis
+					tag = CHI
+				}
+				total_amount_of_brigades = 2400
+				not = { total_amount_of_brigades = 2500 }
+			}
+			and = {
+				faction = comintern
+				total_amount_of_brigades = 3100
+				not = { total_amount_of_brigades = 3200 }
+			}
+			and = {
+				or = {
+					faction = allies
+					and = {
+
+						not = {
+							faction = allies
+							faction = axis
+							faction = comintern
+							tag = CHI
+						}
+					}
+				}
+				total_amount_of_brigades = 2000
+				not = { total_amount_of_brigades = 2100 }
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	title = "Our Army asks for more money"
+	desc = "EVTDESC79105"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3600
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_soldiers_XV_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#16th
+	id = 79106
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				or = {
+					faction = axis
+					tag = CHI
+				}
+				total_amount_of_brigades = 2500
+				not = { total_amount_of_brigades = 2600 }
+			}
+			and = {
+				faction = comintern
+				total_amount_of_brigades = 3200
+				not = { total_amount_of_brigades = 3300 }
+			}
+			and = {
+				or = {
+					faction = allies
+					and = {
+
+						not = {
+							faction = allies
+							faction = axis
+							faction = comintern
+							tag = CHI
+						}
+					}
+				}
+				total_amount_of_brigades = 2100
+				not = { total_amount_of_brigades = 2200 }
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	title = "Our Army asks for more money"
+	desc = "EVTDESC79106"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3825
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_soldiers_XVI_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#15th
+	id = 79107
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				or = {
+					faction = axis
+					tag = CHI
+				}
+				total_amount_of_brigades = 2600
+				not = { total_amount_of_brigades = 2700 }
+			}
+			and = {
+				faction = comintern
+				total_amount_of_brigades = 3300
+				not = { total_amount_of_brigades = 3400 }
+			}
+			and = {
+				or = {
+					faction = allies
+					and = {
+
+						not = {
+							faction = allies
+							faction = axis
+							faction = comintern
+							tag = CHI
+						}
+					}
+				}
+				total_amount_of_brigades = 2200
+				not = { total_amount_of_brigades = 2300 }
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	title = "Our Army asks for more money"
+	desc = "EVTDESC79107"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4050
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_soldiers_XVII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#15th
+	id = 79108
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				or = {
+					faction = axis
+					tag = CHI
+				}
+				total_amount_of_brigades = 2700
+				not = { total_amount_of_brigades = 2800 }
+			}
+			and = {
+				faction = comintern
+				total_amount_of_brigades = 3400
+				not = { total_amount_of_brigades = 3500 }
+			}
+			and = {
+				or = {
+					faction = allies
+					and = {
+
+						not = {
+							faction = allies
+							faction = axis
+							faction = comintern
+							tag = CHI
+						}
+					}
+				}
+				total_amount_of_brigades = 2300
+				not = { total_amount_of_brigades = 2400 }
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	title = "Our Army asks for more money"
+	desc = "EVTDESC79108"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4275
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_soldiers_XVIII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#15th
+	id = 79109
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				or = {
+					faction = axis
+					tag = CHI
+				}
+				total_amount_of_brigades = 2800
+				not = { total_amount_of_brigades = 2900 }
+			}
+			and = {
+				faction = comintern
+				total_amount_of_brigades = 3500
+				not = { total_amount_of_brigades = 3600 }
+			}
+			and = {
+				or = {
+					faction = allies
+					and = {
+
+						not = {
+							faction = allies
+							faction = axis
+							faction = comintern
+							tag = CHI
+						}
+					}
+				}
+				total_amount_of_brigades = 2400
+				not = { total_amount_of_brigades = 2500 }
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	title = "Our Army asks for more money"
+	desc = "EVTDESC79109"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4500
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_soldiers_XIX_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#15th
+	id = 79110
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				or = {
+					faction = axis
+					tag = CHI
+				}
+				total_amount_of_brigades = 2900
+				#not = { total_amount_of_brigades = 3000 }
+			}
+			and = {
+				faction = comintern
+				total_amount_of_brigades = 3600
+				#not = { total_amount_of_brigades = 3700 }
+			}
+			and = {
+				or = {
+					faction = allies
+					and = {
+
+						not = {
+							faction = allies
+							faction = axis
+							faction = comintern
+							tag = CHI
+						}
+					}
+				}
+				total_amount_of_brigades = 2500
+				#not = { total_amount_of_brigades = 2600 }
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	title = "Our Army asks for more money"
+	desc = "EVTDESC79110"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4725
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_soldiers_XX_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 90
+		}
+	}
+}
+
 ##########################
 ######## AIR ARMY ########
 ##########################
@@ -5935,10 +6595,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -450
-		add_country_modifier = {
-			name = "pay_airmen_I"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_airmen_cooldown"
 			duration = 90
@@ -5996,10 +6652,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -675
 		add_country_modifier = {
-			name = "pay_airmen_II"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_airmen_cooldown"
 			duration = 90
 		}
@@ -6055,10 +6707,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -900
-		add_country_modifier = {
-			name = "pay_airmen_III"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_airmen_cooldown"
 			duration = 90
@@ -6116,10 +6764,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -1125
 		add_country_modifier = {
-			name = "pay_airmen_IV"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_airmen_cooldown"
 			duration = 90
 		}
@@ -6175,10 +6819,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -1350
-		add_country_modifier = {
-			name = "pay_airmen_V"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_airmen_cooldown"
 			duration = 90
@@ -6236,10 +6876,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -1575
 		add_country_modifier = {
-			name = "pay_airmen_VI"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_airmen_cooldown"
 			duration = 90
 		}
@@ -6295,10 +6931,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -1800
-		add_country_modifier = {
-			name = "pay_airmen_VII"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_airmen_cooldown"
 			duration = 90
@@ -6356,10 +6988,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -2025
 		add_country_modifier = {
-			name = "pay_airmen_VIII"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_airmen_cooldown"
 			duration = 90
 		}
@@ -6416,10 +7044,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -2250
 		add_country_modifier = {
-			name = "pay_airmen_IX"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_airmen_cooldown"
 			duration = 90
 		}
@@ -6449,7 +7073,7 @@ country_event = {
 		or = {
 			and = {
 				total_amount_of_planes  = 325
-				#not = { total_amount_of_planes = 325 }
+				not = { total_amount_of_planes = 350 }
 
 				not = {
 					tag = SOV
@@ -6457,7 +7081,7 @@ country_event = {
 			}
 			and = {
 				total_amount_of_planes  = 375
-				#not = { total_amount_of_planes = 375 }
+				not = { total_amount_of_planes = 390 }
 				tag = SOV
 			}
 		}
@@ -6472,10 +7096,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -2475
-		add_country_modifier = {
-			name = "pay_airmen_X"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_airmen_cooldown"
 			duration = 90
@@ -6493,6 +7113,456 @@ country_event = {
 		}
 	}
 }
+
+country_event = {
+	#10th
+	id = 79201
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				total_amount_of_planes  = 350
+				not = { total_amount_of_planes = 375 }
+
+				not = {
+					tag = SOV
+				}
+			}
+			and = {
+				total_amount_of_planes  = 390
+				not = { total_amount_of_planes = 405 }
+				tag = SOV
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC79201"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -2700
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_XI_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79202
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				total_amount_of_planes  = 375
+				not = { total_amount_of_planes = 400 }
+
+				not = {
+					tag = SOV
+				}
+			}
+			and = {
+				total_amount_of_planes  = 405
+				not = { total_amount_of_planes = 420 }
+				tag = SOV
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC79202"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -2925
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_XII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79203
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		or = {
+			and = {
+				total_amount_of_planes  = 400
+				not = { total_amount_of_planes = 425 }
+
+				not = {
+					tag = SOV
+				}
+			}
+			and = {
+				total_amount_of_planes  = 420
+				not = { total_amount_of_planes = 435 }
+				tag = SOV
+			}
+		}
+
+		not = {
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC79203"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3150
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_XIII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79204
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 425
+		not = { total_amount_of_planes = 450 }
+
+		not = {
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC79204"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3375
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_XIV_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79205
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 450
+		not = { total_amount_of_planes = 475 }
+
+		not = {
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC79205"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3600
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_XV_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79206
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 475
+		not = { total_amount_of_planes = 500 }
+
+		not = {
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC79206"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3825
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_XVI_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79207
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 500
+		not = { total_amount_of_planes = 525 }
+
+		not = {
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC79207"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4050
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_XVII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79208
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 525
+		not = { total_amount_of_planes = 550 }
+
+		not = {
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC79208"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4275
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_XVIII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79209
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 550
+		not = { total_amount_of_planes = 575 }
+
+		not = {
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC79209"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4500
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_XIX_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79210
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 575
+		#not = { total_amount_of_planes = 575 }
+
+		not = {
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC79210"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4725
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_XX_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
 ##########################
 ########## NAVY ##########
 ##########################
@@ -6525,10 +7595,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -450
-		add_country_modifier = {
-			name = "pay_seamen_I"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
@@ -6576,10 +7642,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -675
 		add_country_modifier = {
-			name = "pay_seamen_II"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
 		}
@@ -6625,10 +7687,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -900
-		add_country_modifier = {
-			name = "pay_seamen_III"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
@@ -6676,10 +7734,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -1125
 		add_country_modifier = {
-			name = "pay_seamen_IV"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
 		}
@@ -6725,10 +7779,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -1350
-		add_country_modifier = {
-			name = "pay_seamen_V"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
@@ -6776,10 +7826,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -1575
 		add_country_modifier = {
-			name = "pay_seamen_VI"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
 		}
@@ -6802,11 +7848,6 @@ country_event = {
 	trigger = {
 		ai = no
 
-		not = {
-			tag = USA
-			tag = ENG
-			tag = JAP
-		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -6825,10 +7866,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -1800
-		add_country_modifier = {
-			name = "pay_seamen_VII"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
@@ -6852,11 +7889,6 @@ country_event = {
 	trigger = {
 		ai = no
 
-		not = {
-			tag = USA
-			tag = ENG
-			tag = JAP
-		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -6875,10 +7907,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -2025
-		add_country_modifier = {
-			name = "pay_seamen_VIII"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
@@ -6902,11 +7930,6 @@ country_event = {
 	trigger = {
 		ai = no
 
-		not = {
-			tag = USA
-			tag = ENG
-			tag = JAP
-		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -6925,10 +7948,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -2250
-		add_country_modifier = {
-			name = "pay_seamen_IX"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
@@ -6952,18 +7971,13 @@ country_event = {
 	trigger = {
 		ai = no
 
-		not = {
-			tag = USA
-			tag = ENG
-			tag = JAP
-		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
 		total_amount_of_ships  = 425
-		#not = { total_amount_of_ships = 450 }
+		not = { total_amount_of_ships = 450 }
 
 		not = {
 			has_country_modifier = pay_seamen_cooldown
@@ -6975,10 +7989,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -2475
-		add_country_modifier = {
-			name = "pay_seamen_X"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
@@ -6996,6 +8006,426 @@ country_event = {
 		}
 	}
 }
+
+country_event = {
+	#10th
+	id = 79401
+	trigger = {
+		ai = no
+
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 450
+		not = { total_amount_of_ships = 475 }
+
+		not = {
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC79401"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -2700
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_XI_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79402
+	trigger = {
+		ai = no
+
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 475
+		not = { total_amount_of_ships = 500 }
+
+		not = {
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC79402"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -2925
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_XII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79403
+	trigger = {
+		ai = no
+
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 500
+		not = { total_amount_of_ships = 525 }
+
+		not = {
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC79403"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3150
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_XIII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = {
+	#10th
+	id = 79404
+	trigger = {
+		ai = no
+
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 525
+		not = { total_amount_of_ships = 550 }
+
+		not = {
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC79404"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3375
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_XIV_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79405
+	trigger = {
+		ai = no
+
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 550
+		not = { total_amount_of_ships = 575 }
+
+		not = {
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC79405"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3600
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_XV_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79406
+	trigger = {
+		ai = no
+
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 575
+		not = { total_amount_of_ships = 600 }
+
+		not = {
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC79406"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3825
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_XVI_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79407
+	trigger = {
+		ai = no
+
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 600
+		not = { total_amount_of_ships = 625 }
+
+		not = {
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC79407"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4050
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_XVII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79408
+	trigger = {
+		ai = no
+
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 625
+		not = { total_amount_of_ships = 650 }
+
+		not = {
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC79408"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4275
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_XVIII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79409
+	trigger = {
+		ai = no
+
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 650
+		not = { total_amount_of_ships = 675 }
+
+		not = {
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC79409"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4500
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_XIX_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79410
+	trigger = {
+		ai = no
+
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 675
+		#not = { total_amount_of_ships = 675 }
+
+		not = {
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC79410"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4725
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_XX_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+
 ### USA/ENG/JAP ###
 country_event = {
 	#1st
@@ -7025,10 +8455,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -450
-		add_country_modifier = {
-			name = "pay_seamen_I"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
@@ -7075,10 +8501,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -675
 		add_country_modifier = {
-			name = "pay_seamen_II"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
 		}
@@ -7123,10 +8545,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -900
-		add_country_modifier = {
-			name = "pay_seamen_III"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
@@ -7173,10 +8591,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -1125
 		add_country_modifier = {
-			name = "pay_seamen_IV"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_seamen_cooldown"
 			duration = 90
 		}
@@ -7185,300 +8599,6 @@ country_event = {
 		name = "NO - don't pay this time"
 		add_country_modifier = {
 			name = "pay_seamen_IV_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = {
-	#5th
-	id = 7945
-	trigger = {
-		ai = no
-		or = {
-			tag = USA
-			tag = ENG
-			tag = JAP
-		}
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_ships  = 360
-
-		not = {
-			total_amount_of_ships = 375
-			has_country_modifier = pay_seamen_cooldown
-		}
-	}
-	title = "Our Navy asks for more money"
-	desc = "EVTDESC7935"
-	picture = "salary_events"
-	option = {
-		name = "OK - pay this time"
-		money = -1350
-		add_country_modifier = {
-			name = "pay_seamen_V"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_seamen_V_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = {
-	#6th
-	id = 7946
-	trigger = {
-		ai = no
-		or = {
-			tag = USA
-			tag = ENG
-			tag = JAP
-		}
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_ships  = 375
-
-		not = {
-			total_amount_of_ships = 390
-			has_country_modifier = pay_seamen_cooldown
-		}
-	}
-	title = "Our Navy asks for more money"
-	desc = "EVTDESC7936"
-	picture = "salary_events"
-	option = {
-		name = "OK - pay this time"
-		money = -1575
-		add_country_modifier = {
-			name = "pay_seamen_VI"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_seamen_VI_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = {
-	#7th
-	id = 7947
-	trigger = {
-		ai = no
-		or = {
-			tag = USA
-			tag = ENG
-			tag = JAP
-		}
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_ships  = 390
-
-		not = {
-			total_amount_of_ships = 415
-			has_country_modifier = pay_seamen_cooldown
-		}
-	}
-	title = "Our Navy asks for more money"
-	desc = "EVTDESC7937"
-	picture = "salary_events"
-	option = {
-		name = "OK - pay this time"
-		money = -1800
-		add_country_modifier = {
-			name = "pay_seamen_VII"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_seamen_VII_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = {
-	#8th
-	id = 7948
-	trigger = {
-		ai = no
-		or = {
-			tag = USA
-			tag = ENG
-			tag = JAP
-		}
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_ships  = 415
-
-		not = {
-			total_amount_of_ships = 430
-			has_country_modifier = pay_seamen_cooldown
-		}
-	}
-	title = "Our Navy asks for more money"
-	desc = "EVTDESC7938"
-	picture = "salary_events"
-	option = {
-		name = "OK - pay this time"
-		money = -2025
-		add_country_modifier = {
-			name = "pay_seamen_VIII"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_seamen_VIII_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = {
-	#9th
-	id = 7949
-	trigger = {
-		ai = no
-		or = {
-			tag = USA
-			tag = ENG
-			tag = JAP
-		}
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_ships  = 430
-
-		not = {
-			total_amount_of_ships = 445
-			has_country_modifier = pay_seamen_cooldown
-		}
-	}
-	title = "Our Navy asks for more money"
-	desc = "EVTDESC7939"
-	picture = "salary_events"
-	option = {
-		name = "OK - pay this time"
-		money = -2250
-		add_country_modifier = {
-			name = "pay_seamen_IX"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_seamen_IX_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = {
-	#10th
-	id = 7950
-	trigger = {
-		ai = no
-		or = {
-			tag = USA
-			tag = ENG
-			tag = JAP
-		}
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_ships  = 445
-		#not = { total_amount_of_ships = 350 }
-
-		not = {
-			has_country_modifier = pay_seamen_cooldown
-		}
-	}
-	title = "Our Navy asks for more money"
-	desc = "EVTDESC7940"
-	picture = "salary_events"
-	option = {
-		name = "OK - pay this time"
-		money = -2475
-		add_country_modifier = {
-			name = "pay_seamen_X"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_seamen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_seamen_X_NO"
 			duration = 90
 		}
 		add_country_modifier = {
@@ -7513,10 +8633,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -450
-		add_country_modifier = {
-			name = "pay_workers_I"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_workers_cooldown"
 			duration = 90
@@ -7558,10 +8674,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -675
 		add_country_modifier = {
-			name = "pay_workers_II"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_workers_cooldown"
 			duration = 90
 		}
@@ -7601,10 +8713,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -900
-		add_country_modifier = {
-			name = "pay_workers_III"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_workers_cooldown"
 			duration = 90
@@ -7646,10 +8754,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -1125
 		add_country_modifier = {
-			name = "pay_workers_IV"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_workers_cooldown"
 			duration = 90
 		}
@@ -7689,10 +8793,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -1350
-		add_country_modifier = {
-			name = "pay_workers_V"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_workers_cooldown"
 			duration = 90
@@ -7734,10 +8834,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -1575
 		add_country_modifier = {
-			name = "pay_workers_VI"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_workers_cooldown"
 			duration = 90
 		}
@@ -7777,10 +8873,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -1800
-		add_country_modifier = {
-			name = "pay_workers_VII"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_workers_cooldown"
 			duration = 90
@@ -7822,10 +8914,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -2025
 		add_country_modifier = {
-			name = "pay_workers_VIII"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_workers_cooldown"
 			duration = 90
 		}
@@ -7866,10 +8954,6 @@ country_event = {
 		name = "OK - pay this time"
 		money = -2250
 		add_country_modifier = {
-			name = "pay_workers_IX"
-			duration = 90
-		}
-		add_country_modifier = {
 			name = "pay_workers_cooldown"
 			duration = 90
 		}
@@ -7897,7 +8981,7 @@ country_event = {
 			has_country_flag = Multiplayer
 		}
 		total_ic  = 860
-		#not = { total_ic = 350 }
+		not = { total_ic = 900 }
 
 		not = {
 			has_country_modifier = pay_workers_cooldown
@@ -7909,10 +8993,6 @@ country_event = {
 	option = {
 		name = "OK - pay this time"
 		money = -2475
-		add_country_modifier = {
-			name = "pay_workers_X"
-			duration = 90
-		}
 		add_country_modifier = {
 			name = "pay_workers_cooldown"
 			duration = 90
@@ -7930,6 +9010,421 @@ country_event = {
 		}
 	}
 }
+
+country_event = {
+	#10th
+	id = 79601
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_ic  = 900
+		not = { total_ic = 950 }
+
+		not = {
+			has_country_modifier = pay_workers_cooldown
+		}
+	}
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79601"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -2700
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_workers_XI_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79602
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_ic  = 950
+		not = { total_ic = 1000 }
+
+		not = {
+			has_country_modifier = pay_workers_cooldown
+		}
+	}
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79602"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -2925
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_workers_XII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79603
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_ic  = 1000
+		not = { total_ic = 1050 }
+
+		not = {
+			has_country_modifier = pay_workers_cooldown
+		}
+	}
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79603"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3150
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_workers_XIII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79604
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_ic  = 1050
+		not = { total_ic = 1100 }
+
+		not = {
+			has_country_modifier = pay_workers_cooldown
+		}
+	}
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79604"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3375
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_workers_XIV_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79605
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_ic  = 1100
+		not = { total_ic = 1150 }
+
+		not = {
+			has_country_modifier = pay_workers_cooldown
+		}
+	}
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79605"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3600
+		add_country_modifier = {
+			name = "pay_workers_XV"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_workers_XV_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79606
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_ic  = 1150
+		not = { total_ic = 1200 }
+
+		not = {
+			has_country_modifier = pay_workers_cooldown
+		}
+	}
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79606"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -3825
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_workers_XVI_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79607
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_ic  = 1200
+		not = { total_ic = 1250 }
+
+		not = {
+			has_country_modifier = pay_workers_cooldown
+		}
+	}
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79607"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4050
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_workers_XVII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79608
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_ic  = 1250
+		not = { total_ic = 1300 }
+
+		not = {
+			has_country_modifier = pay_workers_cooldown
+		}
+	}
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79608"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4275
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_workers_XVIII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79609
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_ic  = 1300
+		not = { total_ic = 1350 }
+
+		not = {
+			has_country_modifier = pay_workers_cooldown
+		}
+	}
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79609"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4500
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_workers_XIX_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+}
+
+country_event = {
+	#10th
+	id = 79610
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_ic  = 1350
+		#not = { total_ic = 1400 }
+
+		not = {
+			has_country_modifier = pay_workers_cooldown
+		}
+	}
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79610"
+	picture = "salary_events"
+	option = {
+		name = "OK - pay this time"
+		money = -4725
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_workers_XX_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_workers_cooldown"
+			duration = 90
+		}
+	}
+}
+
 ### Doctrine pick events ###
 country_event = {
 	id = 8950
@@ -12338,5 +13833,29 @@ country_event = {
 			}
 		}
 	ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = 1666
+
+	is_triggered_only = yes
+	
+	title = "Just print more money... what can go wrong?"
+	desc = "EVTDESC1666"
+	picture = "great_depression"
+	option = {
+		name = "Ok..."
+		change_variable = {
+			which = "money_printing_penalty"
+			value = +1
+		}
+		add_country_modifier = {
+			name = "money_printing_timer"
+			duration = 180
+		}
+	}
+	option = {
+		name = "NO - we can't risk it!"
 	}
 }
