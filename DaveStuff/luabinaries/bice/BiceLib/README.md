@@ -124,6 +124,18 @@ LUA functions are provided to activate and configure the module. They are groupe
     * **Notes**:
         * This is more of a soft effect since you can assign a leader with this trait, attach a unit, unassign the leader.
 
+## BiceLib.Navy
+* **setScreenPenalty(int newPenalty)**
+    * set the defence penalty capital ships will receive if they don't have enough screens in their fleet (vanilla is 33%)
+    * **Params**:
+        1. *newPenalty*: The new penalty
+    * **Return values**: /
+* **setScreensPerCapitalRatio(int newRatio)**
+    * set the ration of screens needed per capital ship (vanilla is 1)
+    * **Params**:
+        1. *newRatio*: The new ratio
+    * **Return values**: /
+
 ## BiceLib.BytePatches
 Patches which only need a few bytes to be changed.
 * **fixMinisterTechDecayDone()**
