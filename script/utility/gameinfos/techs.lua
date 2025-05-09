@@ -315,6 +315,7 @@ local function loadTechModifiers()
         ["supply_throughput"] = {},
         ["repair_rate"] = {},
         ["org_regain"] = {},
+        ["attack_delay"] = {},
     }
     if P.TechsData == nil then
         P.FillData()

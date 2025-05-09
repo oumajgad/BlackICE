@@ -223,11 +223,15 @@ if wx ~= nil then
 
 	UI.gSizer2:Add( UI.m_textCtrl_orgRegain, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
+	UI.m_staticText_attackDelay = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Attack delay (hours)", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_attackDelay:Wrap( -1 )
 
-	UI.gSizer2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+	UI.gSizer2:Add( UI.m_staticText_attackDelay, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
+	UI.m_textCtrl_attackDelay = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_attackDelay:Enable( False )
 
-	UI.gSizer2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+	UI.gSizer2:Add( UI.m_textCtrl_attackDelay, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion \n(only increases during war)", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText34:Wrap( 150 )

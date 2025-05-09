@@ -30,6 +30,13 @@ function GetPlayerModifiers()
         -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
     end
 
+    local attackDelay = defines.military.UNIT_ATTACK_DELAY
+    for tech, effect in pairs(techModifierValues["attack_delay"]) do
+        local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+        attackDelay = attackDelay - (effect*level)
+        Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level))
+    end
+
     -- IC efficiency
     local icEffRaw = playerCountry:GetVariables():GetVariable(CString("IcEffVariable")):Get()
 
@@ -60,6 +67,7 @@ function GetPlayerModifiers()
     UI.m_textCtrl_RepairEff:SetValue(string.format('%.02f', repairModifier * 100))
     UI.m_textCtrl_StartingExp:SetValue(string.format('%.02f', startingExp))
     UI.m_textCtrl_orgRegain:SetValue(string.format('%.02f', orgRegain * 100))
+    UI.m_textCtrl_attackDelay:SetValue(string.format('%.0f', attackDelay))
     UI.m_textCtrl_WarExhaustion:SetValue(string.format('%.02f', warExhautionRaw))
     UI.m_textCtrl_currentWarExhaustion:SetValue(string.format('%.1f', currentWarExhaustion))
 end
