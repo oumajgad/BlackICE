@@ -37,6 +37,16 @@ function GetPlayerModifiers()
         -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level))
     end
 
+    local icToSupplies = 1
+    for tech, effect in pairs(techModifierValues["ic_to_supplies"]) do
+        local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+        icToSupplies = icToSupplies + (effect*level)
+        -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level))
+    end
+    local supplyFactoriesEffect = playerCountry:GetVariables():GetVariable(CString("supplies_factory_count")):Get() * 0.035
+    local suppliesPerIc = (icToSupplies + supplyFactoriesEffect) * defines.economy.IC_TO_SUPPLIES
+    -- Utils.LUA_DEBUGOUT("suppliesPerIc: " .. suppliesPerIc)
+
     -- IC efficiency
     local icEffRaw = playerCountry:GetVariables():GetVariable(CString("IcEffVariable")):Get()
 
@@ -68,6 +78,7 @@ function GetPlayerModifiers()
     UI.m_textCtrl_StartingExp:SetValue(string.format('%.02f', startingExp))
     UI.m_textCtrl_orgRegain:SetValue(string.format('%.02f', orgRegain * 100))
     UI.m_textCtrl_attackDelay:SetValue(string.format('%.0f', attackDelay))
+    UI.m_textCtrl_suppliesPerIc:SetValue(string.format('%.2f', suppliesPerIc))
     UI.m_textCtrl_WarExhaustion:SetValue(string.format('%.02f', warExhautionRaw))
     UI.m_textCtrl_currentWarExhaustion:SetValue(string.format('%.1f', currentWarExhaustion))
 end
