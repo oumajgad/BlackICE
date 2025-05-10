@@ -34,7 +34,7 @@ function GetPlayerModifiers()
     for tech, effect in pairs(techModifierValues["attack_delay"]) do
         local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
         attackDelay = attackDelay - (effect*level)
-        Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level))
+        -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level))
     end
 
     -- IC efficiency
