@@ -77,7 +77,7 @@ class CSubUnitDefinition(pydantic.BaseModel):
     width: int  # 4800 => 4.8
     weight: int  # 124000 => 124
     softness: int  # 496 => 49.6%
-    toughness: int  # 331340 => 331
+    toughness: int  # 331340 => 331 // 2x the value than ingame
     soft_attack: int  # 117600 => 117
     hard_attack: int  # 87520 => 87
     piercing_attack: int  # 15000 => 15
