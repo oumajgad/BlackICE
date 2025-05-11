@@ -161,7 +161,7 @@ class CSubUnitDefinition(pydantic.BaseModel):
                 "id": terrain.id,
                 "attack": unit_adjuster.attack + terrain.attack,
                 "defence": unit_adjuster.defence + terrain.defence,
-                "movement": unit_adjuster.movement + terrain.movement_cost,
+                "movement": unit_adjuster.movement,
                 "attrition": unit_adjuster.attrition + terrain.attrition,
             }
             stats = CSubUnitDefinition.TerrainStats(**temp)
