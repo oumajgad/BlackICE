@@ -98,7 +98,7 @@ def dump_bytes(pm: Pymem, ptr: int, length: int):
         res = pm.read_bytes(current, 4)
 
         print(
-            f"addr: +{hex(current - ptr)} hex: {hex(to_number(res))} - {to_number(res)} - {res.decode(encoding='cp1252', errors='ignore')}"
+            f"addr: +{hex(current - ptr)} hex: {hex(to_number(res, False))} - {to_number(res)} - {res.decode(encoding='cp1252', errors='ignore')}"
         )
         current += 4
 

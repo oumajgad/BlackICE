@@ -14,6 +14,7 @@ class CMapProvinceOffsets:
     is_selected: int = 0xC
     supply_depot_province: int = 0x48
     id: int = 0xD0
+    CTerrain_ptr: int = 0xD4
     province_modifiers_array_ptr: int = 0x114  # Array of CModifierDefinition
     province_timed_modifiers_list_start_ptr: int = 0x13C
     province_timed_modifiers_list_end_ptr: int = 0x140
@@ -38,6 +39,7 @@ class CMapProvince(pydantic.BaseModel):
     self_ptr: int
     is_selected: bool
     id: int
+    CTerrain_ptr: int
     owner_tag: str
     owner_id: int
     controller_tag: str
@@ -58,6 +60,7 @@ class CMapProvince(pydantic.BaseModel):
             "self_ptr": ptr,
             "is_selected": pm.read_bool(ptr + CMapProvinceOffsets.is_selected),
             "id": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.id, 4)),
+            "CTerrain_ptr": pm.read_uint(ptr + CMapProvinceOffsets.CTerrain_ptr),
             "owner_tag": pm.read_bytes(ptr + CMapProvinceOffsets.owner_tag, 3),
             "owner_id": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.owner_id, 4)),
             "controller_tag": pm.read_bytes(ptr + CMapProvinceOffsets.controller_tag, 3),

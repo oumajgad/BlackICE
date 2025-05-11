@@ -164,7 +164,7 @@ class CArmy(pydantic.BaseModel):
         return get_oob_units_recursive(pm, self)
 
 
-if __name__ == "__main__":
+def test1():
     pm = Pymem("hoi3_tfh.exe")
     print(pm.base_address)
     units = CArmy.get_units(pm)
@@ -180,3 +180,23 @@ if __name__ == "__main__":
             pass
     # print(CArmy.make(pm, 0xB32FE6C0))
     print(x)
+
+
+def test2():
+    pm = Pymem("hoi3_tfh.exe")
+    print(pm.base_address)
+    unit_1_ptr = 0xC16535D0
+    army_1 = CArmy.make(pm, unit_1_ptr)
+    print(army_1)
+    print(army_1.army_sub_unit_definition_ptr)
+    utils.dump_bytes(pm=pm, ptr=unit_1_ptr, length=0x200)
+    unit_2_ptr = 0x9021B658
+    army_2 = CArmy.make(pm, unit_2_ptr)
+    print(army_2)
+    print(army_2.army_sub_unit_definition_ptr)
+    utils.dump_bytes(pm=pm, ptr=unit_2_ptr, length=0x200)
+
+
+if __name__ == "__main__":
+    # test1()
+    test2()

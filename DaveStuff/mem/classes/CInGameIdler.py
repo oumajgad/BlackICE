@@ -63,17 +63,16 @@ class CInGameIdler(pydantic.BaseModel):
         self.selected_thing_window_open = pm.read_bool(self.self_ptr + CIngameIdlerOffsets.selected_thing_window_open)
         return self.selected_thing_ptr_ptr
 
-    def get_selected_thing_type(self, pm: Pymem):
+    def get_selected_thing_type(self, pm: Pymem) -> []:
         if self.selected_thing_ptr_ptr == 0:
             return None
         else:
+            addr = pm.read_uint(self.selected_thing_ptr_ptr)
             first_bytes = utils.read_nested_pointers(pm, self.selected_thing_ptr_ptr, 2)
-            print(first_bytes)
-            print(pm.base_address + CArmyOffsets.VFTABLE_OFFSET)
             if first_bytes == (pm.base_address + CMapProvinceOffsets.VFTABLE_OFFSET_2):
-                return CMapProvince
+                return [CMapProvince, addr]
             elif first_bytes == (pm.base_address + CArmyOffsets.VFTABLE_OFFSET):
-                return CArmy
+                return [CArmy, addr]
 
 
 if __name__ == "__main__":
@@ -82,5 +81,15 @@ if __name__ == "__main__":
     print(idler.self_ptr)
     while True:
         idler.update_selected_thing_ptr(pm)
-        print(idler.get_selected_thing_type(pm))
-        time.sleep(1)
+        x = idler.get_selected_thing_type(pm)
+        if x is not None:
+            selected_type = x[0]
+            addr = x[1]
+            print(f"{selected_type = } - {addr = }")
+            if selected_type == CArmy:
+                army = CArmy.make(pm, addr)
+                print(army)
+            elif selected_type == CMapProvince:
+                province = CMapProvince.make(pm, addr)
+                print(province)
+            time.sleep(1)
