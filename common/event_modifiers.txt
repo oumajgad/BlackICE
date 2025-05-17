@@ -3603,21 +3603,23 @@ political_spies = {
 naval_spies = {
 	offmap_naval_intel = 0.2
 	naval_organisation = 0.01
+	convoy_raid = 0.1
 }
 army_spies = {
 	offmap_land_intel = 0.2
 	land_organisation = 0.01
+	combat_movement_speed = 0.075
 }
 airforce_spies = {
 	offmap_air_intel = 0.2
-	air_organisation = 0.01
+	air_organisation = 0.05	
 }
 reduce_spies = {
 	counter_espionage = 0.2
 	counter_intelligence = 0.2
 }
 reduce_threat = {
-	threat_impact = -0.025
+	threat_impact = -0.05
 }
 reduce_neutrality = {
 	neutrality_change = -0.025
@@ -5206,7 +5208,7 @@ backstory_mother_D = {
 # Respected Leader - The people could think of no one else as their leader but you - the trust is immense!  However, some members of the
 # intelligence community may desire a change in leadership.
 backstory_mother_E = {
-	national_unity = 0.07	# bonus
+	national_unity = 0.1	# bonus
 
 	espionage_bonus = -0.01 # malus
 }
@@ -5214,7 +5216,7 @@ backstory_mother_E = {
 # Gave you up for adoption - the bitch! - As someone who is fiercely independent, you've developed a sixth sense when it comes to keeping tabs on
 # your enemies, foreign and domestic.  The general population simply doesn't approve of your strong-armed tactics.
 backstory_mother_F = {
-	espionage_bonus = 0.05 # bonus
+	espionage_bonus = 0.1 # bonus
 
 	national_unity = -0.01	# malus
 }
@@ -5243,6 +5245,7 @@ backstory_father_B = {
 
 	org_regain = 0.05					# bonus
 	naval_organisation = 0.075			# bonus
+	naval_base_efficiency = 0.05
 
 	air_organisation = -0.03			# malus
 	land_organisation = -0.03			# malus
@@ -5255,7 +5258,8 @@ backstory_father_C = {
 
 	org_regain = 0.05					# bonus
 	air_organisation = 0.075		    	# bonus
-
+	air_intercept = 0.05
+	
 	naval_organisation = -0.03			# malus
 	land_organisation = -0.03			# malus
 	#global_leadership_modifier = -0.03	# malus
@@ -5267,6 +5271,7 @@ backstory_father_D = {
 
 	org_regain = 0.05					# bonus
 	land_organisation = 0.05			# bonus
+	global_manpower_modifier = 0.035
 
 	air_organisation = -0.03			# malus
 	naval_organisation = -0.03			# malus
@@ -5315,7 +5320,7 @@ backstory_childhood_C = {
 	war_consumer_goods_demand = -0.05	# bonus
 	supply_consumption = -0.01			# bonus
 
-	global_manpower_modifier = -0.01	# malus
+	global_manpower_modifier = -0.035	# malus
 }
 
 # Bookworm - Young leaders now hang on your every word, but by-and-large, big business thinks your full of shit!
@@ -5327,15 +5332,15 @@ backstory_childhood_D = {
 
 # Loved to Daydream and Build Things - Big business and innovators will follow you to a fault!  However, not everyone is happy with your "episodes"
 backstory_childhood_E = {
-	global_ic = 0.04					# bonus
+	global_ic = 0.065					# bonus
 
 	global_leadership_modifier = -0.06	# malus
 }
 
 # Military School - You strike like a hot knife through butter, all while mismanaging your country's resources.
 backstory_childhood_F = {
-	soft_attack = 0.02				# bonus
-	hard_attack = 0.02				# bonus
+	soft_attack = 0.05				# bonus
+	hard_attack = 0.03				# bonus
 
 	global_metal = -0.01			# malus
 	global_crude_oil = -0.02		# malus
@@ -5345,10 +5350,10 @@ backstory_childhood_F = {
 
 # Child Apprentice - You've turned out to be quite a crafty and resourceful one, though your lack of military experience is rather obvious.
 backstory_childhood_G = {
-	global_metal = 0.01				# bonus
+	global_metal = 0.035				# bonus
 	global_crude_oil = 0.02		    # bonus
-	global_energy = 0.01			# bonus
-	global_rare_materials = 0.03	# bonus
+	global_energy = 0.035			# bonus
+	global_rare_materials = 0.035	# bonus
 
 	soft_attack = -0.02	# malus
 	hard_attack = -0.02	# malus
@@ -5366,7 +5371,7 @@ backstory_childhood_G = {
 backstory_childhood_hero_A = {
 	org_regain = 0.05				# bonus
 
-	ruling_party_support = -0.05	# malus
+	ruling_party_support = -0.015	# malus
 }
 
 # A famous politician - politicians love you, but the soldiers aren't terribly motivated by your speeches
@@ -5385,9 +5390,9 @@ backstory_childhood_hero_C = {
 
 # A famous industrialist - Big business loves you, but the some of the population sees right through your facade.
 backstory_childhood_hero_D = {
-	global_ic = 0.02					# bonus
+	global_ic = 0.05					# bonus
 
-	global_manpower_modifier = -0.05	# malus
+	global_manpower_modifier = -0.03	# malus
 }
 
 # A wealthy businessman - businesses strive to emulate your process-driven approach to things, but this costs money.  The people's money!
@@ -5414,8 +5419,8 @@ backstory_childhood_hero_F = {
 
 # A Sailor - Your passion for the seas puts the focus squarely on your naval contractors, while other contractors are feeling a little left out.
 backstory_young_adult_A = {
-	officer_recruitment = 0.01 	# bonus
-	naval_build_speed = -0.02	# bonus
+	officer_recruitment = 0.025 	# bonus
+	naval_build_speed = -0.035	# bonus
 
 	land_build_speed = 0.01		# malus
 	air_build_speed = 0.01  	# malus
@@ -5423,8 +5428,8 @@ backstory_young_adult_A = {
 
 # A Pilot - Your passion for the skies puts the focus squarely on your aerospace contractors, while other contractors are feeling a little left out.
 backstory_young_adult_B = {
-	officer_recruitment = 0.01 	# bonus
-	air_build_speed = -0.02		# bonus
+	officer_recruitment = 0.025 	# bonus
+	air_build_speed = -0.035		# bonus
 
 	naval_build_speed = 0.01	# malus
 	land_build_speed = 0.01		# malus
@@ -5432,8 +5437,8 @@ backstory_young_adult_B = {
 
 # A Soldier - Your passion for ground strategy puts the focus squarely on your army contractors, while other contractors are feeling a little left out.
 backstory_young_adult_C = {
-	officer_recruitment = 0.01 # bonus
-	land_build_speed = -0.02	# bonus
+	officer_recruitment = 0.025 # bonus
+	land_build_speed = -0.035	# bonus
 
 	air_build_speed = 0.01		# malus
 	naval_build_speed = 0.01	# malus
@@ -6826,3 +6831,4 @@ marita_shock = {
 }
 money_printing_timer = {}
 bicelib_multiplayer_check_timer = {}
+leader_death_check_decision_timer = {}
