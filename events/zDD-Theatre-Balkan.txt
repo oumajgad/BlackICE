@@ -52,87 +52,6 @@ country_event = {
 		}
 	}
 }
-##### SERBIA PUPPET #####
-country_event = {
-	id = 91014
-	trigger = {
-		tag = GER
-
-		not = {
-			exists = SER
-		}
-		or = {
-			has_country_flag = crotia_created
-			exists = CRO
-			has_country_flag = yug_partition
-		}
-
-		not = {
-			has_country_flag = serbia_puppet_decision_no
-			has_country_flag = serbia_puppet_decision
-		}
-		or = {
-			GRE = {
-				government_in_exile = yes
-			}
-
-			not = {
-				exists = GRE
-			}
-			GRE = {
-				non_aggression_pact = this
-			}
-			GRE = {
-				faction = axis
-			}
-			GRE = {
-				alliance_with = this
-			}
-		}
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
-	title = "EVTNAME91014"
-	desc = "EVTDESC91014"
-	picture = "yug_partition"
-	option = {
-		name = "Create Serbia as a Puppet"
-		ai_chance = {
-			factor = 100
-		}
-		yug_serbia = {
-			add_core = SER
-		}
-		yug_serbia = {
-			secede_province = SER
-		}
-		create_vassal = SER
-		SER = {
-			country_event = 48649
-		}
-		SER = {
-			load_oob = Serbian_defence.txt
-		}
-		set_country_flag = serbia_puppet_decision
-		SER = {
-			join_faction = axis
-		}
-		SER = {
-			add_country_modifier = {
-				name = "revolutionary_movements"
-				duration = -1
-			}
-		}
-	}
-	option = {
-		name = "EVTOPTB91014"
-		set_country_flag = serbia_puppet_decision_no
-		ai_chance = {
-			factor = 0
-		}
-	}
-}
 ##### CROATIA PUPPET   after fall of zagreb  #####
 country_event = {
 	id = 91015
@@ -181,49 +100,26 @@ country_event = {
 		}
 	}
 }
-##### SERBIA PUPPET after fall of zagreb #####
+##### Territory of the Military Commander in Serbia #####
 country_event = {
 	id = 14871
 	is_triggered_only = yes
-	title = "Serbia Restored"
+	title = "The future of Serbia"
 	desc = "EVTDESC14871"
 	picture = "yug_partition"
 	option = {
-		name = "Create Serbia as a Puppet"
+		name = "Have the military administer Serbia"
 		ai_chance = {
 			factor = 100
 		}
+		set_country_flag = serbia_control
 		yug_serbia = {
-			add_core = SER
-		}
-		yug_serbia = {
-			secede_province = SER
-		}
-		create_vassal = SER
-		SER = {
-			country_event = 48649
-		}
-		set_country_flag = serbia_puppet_decision
-		SER = {
-			join_faction = axis
-		}
-		SER = {
+		change_controller = GER
+			}
+        }
+		GER = {
 			load_oob = Serbian_defence.txt
 		}
-		SER = {
-			add_country_modifier = {
-				name = "revolutionary_movements"
-				duration = -1
-			}
-		}
-	}
-	option = {
-		name = "EVTOPTB91014"
-		set_country_flag = serbia_puppet_decision_no
-		ai_chance = {
-			factor = 0
-		}
-	}
 }
 ##### CROATIA PUPPET after fall of zagreb #####
 country_event = {
@@ -1624,7 +1520,7 @@ country_event = {
 	desc = "EVTDESC48649"
 	picture = "Serb_partisans"
 	trigger = {
-		tag = SER
+		tag = GER
 		ai = yes
 
 		not = {
@@ -1682,43 +1578,6 @@ country_event = {
 			name = "Serwait"
 			duration = 30
 		}
-		ai_chance = {
-			factor = 100
-		}
-	}
-}
-country_event = {
-	id = 85004
-	title = ""
-	desc = ""
-	picture = ""
-	trigger = {
-		tag = SER
-		ai = yes
-
-		not = {
-			has_country_flag = DOW_everyone
-		}
-		GER = {
-			war_with = SOV
-		}
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
-	option = {
-		name = "Ok"
-		SER = {
-			war = {
-				target = ENG
-			}
-		}
-		SER = {
-			war = {
-				target = SOV
-			}
-		}
-		set_country_flag = DOW_everyone
 		ai_chance = {
 			factor = 100
 		}
