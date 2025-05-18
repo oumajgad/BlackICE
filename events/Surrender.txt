@@ -15,7 +15,7 @@ country_event = {
 	desc = "EVTDESC99330"
 	picture = "soviet_countries"
 	option = {
-		name = "Conquer Them All !" #Rosenberg-Schulendorf Plan
+		name = "Conquer Them All!" #Rosenberg-Schulendorf Plan
 		set_country_flag = reichkommissariats_ok
 		SOV = {
 			set_country_flag = reichkommissariats_ok
@@ -25,7 +25,7 @@ country_event = {
 		}
 	}
 	option = {
-		name = "Puppet The Russian States !" #Ribbentrop Plan
+		name = "Puppet The Russian States!" #Ribbentrop Plan
 		set_country_flag = soviet_countries_ok
 		SOV = {
 			national_unity = -15
@@ -38,46 +38,140 @@ country_event = {
 		}
 	}
 }
-######################### set up of the future of the eastern countries#######################################
-##################### Ukraine ################
+
+#Followup event
 country_event = {
-	id = 31013
+	id = 99331
+	picture = "soviet_countries"
 	fire_only_once = yes
 	trigger = {
 		tag = GER
 		has_country_flag = soviet_countries_ok
+		date = 1942.1.1
+		war_with = SOV
+		}
 		2223 = {
 			controller = {
 				faction = axis
 			}
 		}
-		#Kyiv
-		war_with = SOV
-	}
-	title = "Ukraine"
-	desc = "EVTDESC31013"
-	picture = "divide_soviet"
+		1694 = {
+			controller = {
+				faction = axis
+			}
+		}
+		1409 = {
+			controller = {
+				faction = comintern
+			}
+		}
+	title = "The Future of Ukraine and Belarus"
+	desc = "EVTDESC99331"
 	option = {
-		name = "EVTOPTA31013"    ## full support
+		name = "Hitler has made his decision"
+		set_country_flag = reichkommissariats_ok
+		random_owned = {
+			limit = {
+				infra = 2
+				controlled_by = GER
+				region = ukraine_railways
+			}
+			create_revolt = 3
+			}
+		random_owned = {
+			limit = {
+				infra = 2
+				controlled_by = GER
+				region = ukraine_railways
+			}
+			create_revolt = 2
+			}
+		random_owned = {
+			limit = {
+				infra = 2
+				controlled_by = GER
+				region = ukraine_railways
+			}
+			create_revolt = 1
+			}
+		random_owned = {
+			limit = {
+				infra = 2
+				controlled_by = GER
+				region = ukraine_railways
+			}
+			create_revolt = 1
+
+		random_owned = {
+			limit = {
+				infra = 2
+				controlled_by = GER
+				region = belarus_railways
+			}
+			create_revolt = 2
+			}
+		random_owned = {
+			limit = {
+				infra = 2
+				controlled_by = GER
+				region = belarus_railways
+			}
+			create_revolt = 1
+			}
+		random_owned = {
+			limit = {
+				infra = 2
+				controlled_by = GER
+				region = belarus_railways
+			}
+			create_revolt = 1
+			}
 		SOV = {
-			set_country_flag = ukraine_free
-		}
-		set_country_flag = ukraine_free
-		ukraine_region = {
-			add_core = UKR
-		}
-	}
-	option = {
-		name = "EVTOPTB31013"    ## independent,but under our control
-		set_country_flag = ukraine_puppet
-		SOV = {
-			set_country_flag = ukraine_puppet
-		}
-		ukraine_region = {
-			add_core = UKR
+		national unity = 15
+			}
 		}
 	}
 }
+######################### set up of the future of the eastern countries #######################################
+##################### Ukraine ################
+#country_event = {
+#	id = 31013
+#	fire_only_once = yes
+#	trigger = {
+#		tag = GER
+#		has_country_flag = soviet_countries_ok
+#		2223 = {
+#			controller = {
+#				faction = axis
+#			}
+#		}
+#		#Kyiv
+#		war_with = SOV
+#	}
+#	title = "Ukraine"
+#	desc = "EVTDESC31013"
+#	picture = "divide_soviet"
+#	option = {
+#		name = "EVTOPTA31013"    ## full support
+#		SOV = {
+#			set_country_flag = ukraine_free
+#		}
+#		set_country_flag = ukraine_free
+#		ukraine_region = {
+#			add_core = UKR
+#		}
+#	}
+#	option = {
+#		name = "EVTOPTB31013"    ## independent,but under our control
+#		set_country_flag = ukraine_puppet
+#		SOV = {
+#			set_country_flag = ukraine_puppet
+#		}
+#		ukraine_region = {
+#			add_core = UKR
+#		}
+#	}
+#}
 ##################### Baltic states ################
 country_event = {
 	id = 14851
@@ -130,44 +224,44 @@ country_event = {
 	}
 }
 ##################### Belarussia ################
-country_event = {
-	id = 14852
-	fire_only_once = yes
-	trigger = {
-		tag = GER
-		has_country_flag = soviet_countries_ok
-		1694 = {
-			controller = {
-				faction = axis
-			}
-		}
-		#Minsk
-		war_with = SOV
-	}
-	title = "Belarussia"
-	desc = "EVTDESC31013"
-	picture = "divide_soviet"
-	option = {
-		name = "EVTOPTA31013"    ## full support
-		SOV = {
-			set_country_flag = belarussia_free
-		}
-		set_country_flag = belarussia_free
-		belarus_region = {
-			add_core = BLR
-		}
-	}
-	option = {
-		name = "EVTOPTB31013"    ## independent,but under our control
-		set_country_flag = belarussia_puppet
-		SOV = {
-			set_country_flag = belarussia_puppet
-		}
-		belarus_region = {
-			add_core = BLR
-		}
-	}
-}
+#country_event = {
+#	id = 14852
+#	fire_only_once = yes
+#	trigger = {
+#		tag = GER
+#		has_country_flag = soviet_countries_ok
+#		1694 = {
+#			controller = {
+#				faction = axis
+#			}
+#		}
+#		#Minsk
+#		war_with = SOV
+#	}
+#	title = "Belarussia"
+#	desc = "EVTDESC31013"
+#	picture = "divide_soviet"
+#	option = {
+#		name = "EVTOPTA31013"    ## full support
+#		SOV = {
+#			set_country_flag = belarussia_free
+#		}
+#		set_country_flag = belarussia_free
+#		belarus_region = {
+#			add_core = BLR
+#		}
+#	}
+#	option = {
+#		name = "EVTOPTB31013"    ## independent,but under our control
+#		set_country_flag = belarussia_puppet
+#		SOV = {
+#			set_country_flag = belarussia_puppet
+#		}
+#		belarus_region = {
+#			add_core = BLR
+#		}
+#	}
+#}
 ##################### southern caucasus ################
 ##################### general terms of peace ################
 country_event = {
