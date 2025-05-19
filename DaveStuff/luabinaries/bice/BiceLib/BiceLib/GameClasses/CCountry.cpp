@@ -1,4 +1,4 @@
-#include <CCountry.hpp>
+#include <GameClasses/CCountry.hpp>
 #include <Hooks/Hooks.hpp>
 
 void CCountry::traverseFlagsAndVarTreeDepthFirst(Memory::External& external, std::vector<std::uintptr_t>* res, uintptr_t nodePtr) {

@@ -59,4 +59,5 @@ P.ActiveEventModifiers = require('activeEventModifiers')
 P.UnitConversions = require('unitConversion')
 P.Flags = require('flags')
 P.Vars = require('vars')
+P.Inspector = require('inspector')
 return Parsing

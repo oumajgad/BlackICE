@@ -17,8 +17,11 @@ for root, dirs, files in os.walk(folderUnits):
         with open(os.path.join(root, file), "r", encoding="UTF-8", errors="ignore") as unit:
             for line in unit:
                 if "location" in line:
-                    location = int(line.split("location")[1].split("=")[1].split("#")[0].strip().split(" ")[0].split("\t")[0])
-                    units[unit.name] = location
+                    try:
+                        location = int(line.split("location")[1].split("=")[1].split("#")[0].strip().split(" ")[0].split("\t")[0])
+                        units[unit.name] = location
+                    except Exception as e:
+                        print(f"{file:} {line}")
 
 ### Get all lvl 0/1 provinces
 

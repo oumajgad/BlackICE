@@ -10,7 +10,9 @@
 #include <utils.hpp>
 #include <HoiDataStructures.hpp>
 
-#include <CCountry.hpp>
+#include <GameClasses/CCountry.hpp>
+#include <GameClasses/CUnit.hpp>
+#include <GameClasses/CSubUnitDefinition.hpp>
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
 #include <Hooks/CArmyHooks.hpp>
@@ -549,8 +551,10 @@ __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
         auto ctr = getCountry(external, tag);
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + 0x1E8);
-            Hooks::CArmy::corpsUnitLimitPerCountry[tagId] = newLimit;
-            DEBUG_OUT(printf("Corps unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+            if (Hooks::CArmy::corpsUnitLimitPerCountry[tagId] != newLimit) {
+                Hooks::CArmy::corpsUnitLimitPerCountry[tagId] = newLimit;
+                DEBUG_OUT(printf("Corps unit limit set to: %i for %s \n", newLimit, tag.c_str()))
+            }
         }
     }
     return 0;
@@ -574,8 +578,10 @@ __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
         auto ctr = getCountry(external, tag);
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + 0x1E8);
-            Hooks::CArmy::armyUnitLimitPerCountry[tagId] = newLimit;
-            DEBUG_OUT(printf("Army unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+            if (Hooks::CArmy::armyUnitLimitPerCountry[tagId] != newLimit) {
+                Hooks::CArmy::armyUnitLimitPerCountry[tagId] = newLimit;
+                DEBUG_OUT(printf("Army unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+            }
         }
     }
     return 0;
@@ -599,8 +605,10 @@ __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
         auto ctr = getCountry(external, tag);
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + 0x1E8);
-            Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] = newLimit;
-            DEBUG_OUT(printf("Armygroup unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+            if (Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] != newLimit) {
+                Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] = newLimit;
+                DEBUG_OUT(printf("Armygroup unit limit set to: %i for %s \n", newLimit, tag.c_str()));
+            }
         }
     }
     return 0;
@@ -824,7 +832,94 @@ __declspec(dllexport) int disableInterAiExpeditionaries(lua_State* L)
     disableInterAiExpeditionariesDone = true;
     return 0;
 }
+/////////////////////////////////////
+//      INSPECTOR FUNCTIONS        //
+/////////////////////////////////////
+uintptr_t* CIngameIdlerPtr = 0;
 
+__declspec(dllexport) int getSelectedEntity(lua_State* L)
+{
+    if (CIngameIdlerPtr == 0) {
+        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+
+        uintptr_t CIngameIdlerVFTable = MODULE_BASE + 0x11CEB54;
+        std::string sig = Memory::ptrToSignature(CIngameIdlerVFTable);
+        auto res = external.findSignatures(MODULE_BASE + DATA_SECTION_START, sig.c_str(), 4, 99);
+        DEBUG_OUT(printf("res->size(): %i \n", res->size()));
+        if (res->size() != 0) {
+            CIngameIdlerPtr = (uintptr_t*) res->at(res->size() - 1);
+            DEBUG_OUT(printf("CIngameIdlerPtr set to: %#010x \n", (uintptr_t) CIngameIdlerPtr));
+            delete res;
+        }
+    }
+
+
+    if (CIngameIdlerPtr != 0) {
+        lua_newtable(L); // Create the table which will hold the selected items
+        uintptr_t selectedThingsListStartPtr = *(CIngameIdlerPtr + (0x1304 / 4));
+        uintptr_t selectedThingsListEndPtr = *(CIngameIdlerPtr + (0x1308 / 4));
+        int8_t amountOfSelectedThings = *(CIngameIdlerPtr + (0x1308 / 4 + 1));
+        DEBUG_OUT(printf("selectedThingsListStartPtr: %#010x \n", selectedThingsListStartPtr));
+        DEBUG_OUT(printf("selectedThingsListEndPtr: %#010x \n", selectedThingsListEndPtr));
+        DEBUG_OUT(printf("amountOfSelectedThings: %i \n", amountOfSelectedThings));
+
+        HDS::LinkedListNodeSingle* currentNode = (HDS::LinkedListNodeSingle*)selectedThingsListStartPtr;
+
+        int i = 1; // Index for our table. Remember LUA starts at 1
+        while (currentNode != 0) {
+            uintptr_t CArmyVFTABLE = MODULE_BASE + 0x11BDE0C;
+            uintptr_t CNavyVFTABLE = MODULE_BASE + 0x11C869C;
+            uintptr_t CAirVFTABLE = MODULE_BASE + 0x011C8774;
+            uintptr_t CMapProvinceVFTABLE = MODULE_BASE + 0x11BEC1C;
+
+            // DEBUG_OUT(printf("currentNode->data: %#010x \n", currentNode->data));
+            uintptr_t entityType = *((uintptr_t*)currentNode->data);
+            lua_pushinteger(L, i);
+            lua_newtable(L); // Create the table for the item
+            if (entityType == CArmyVFTABLE) {
+                DEBUG_OUT(printf("CArmy \n"));
+                lua_pushstring(L, "type");
+                lua_pushstring(L, "Army");
+                lua_settable(L, -3);
+                CUnit::pushCUnitToStack(L, currentNode->data);
+                CSubUnitDefinition::pushCSubUnitDefinitionToStack(L, currentNode->data);
+            } else if (entityType == CNavyVFTABLE) {
+                DEBUG_OUT(printf("CNavy \n"));
+                lua_pushstring(L, "type");
+                lua_pushstring(L, "Navy");
+                lua_settable(L, -3);
+                CUnit::pushCUnitToStack(L, currentNode->data);
+                CSubUnitDefinition::pushCSubUnitDefinitionToStack(L, currentNode->data);
+            } else if (entityType == CAirVFTABLE) {
+                DEBUG_OUT(printf("CAir \n"));
+                lua_pushstring(L, "type");
+                lua_pushstring(L, "Air");
+                lua_settable(L, -3);
+                CUnit::pushCUnitToStack(L, currentNode->data);
+                CSubUnitDefinition::pushCSubUnitDefinitionToStack(L, currentNode->data);
+            } else if (entityType == CMapProvinceVFTABLE) {
+                DEBUG_OUT(printf("CMapProvince \n"));
+                lua_pushstring(L, "type");
+                lua_pushstring(L, "Province");
+                lua_settable(L, -3);
+                CUnit::pushCUnitToStack(L, currentNode->data);
+            } else {
+                DEBUG_OUT(printf("Unknown Type \n"));
+                lua_pushstring(L, "type");
+                lua_pushstring(L, "Unknown");
+                lua_settable(L, -3);
+            }
+            currentNode = (HDS::LinkedListNodeSingle*)currentNode->next;
+            i++;
+            lua_settable(L, -3);
+        }
+    }
+    else {
+        lua_pushnil(L);
+    }
+
+    return 1;
+}
 
 /////////////////////////////////////
 //         MISC FUNCTIONS          //
@@ -1011,6 +1106,14 @@ void registerComplexPatchFunctions(lua_State* this_state) {
     return;
 }
 
+void registerInspectorFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Inspector");
+    lua_newtable(this_state);
+    registerFunction(this_state, "getSelectedEntity", getSelectedEntity);
+    lua_settable(this_state, -3);
+    return;
+}
+
 extern "C"
 __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
 {
@@ -1031,6 +1134,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerNavyFunctions(this_state);
     registerPatchFunctions(this_state);
     registerComplexPatchFunctions(this_state);
+    registerInspectorFunctions(this_state);
 
     utils::logInLua(this_state,"Loaded BiceLib");
     char buf[100];

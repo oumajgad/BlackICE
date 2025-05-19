@@ -14,17 +14,19 @@ class CSubUnitDefinitionOffsets:
     VFTABLE_OFFSET: int = 0x11BDC04
     # General
     is_buildable: int = 0x36  # bool!
-    terrain_modifiers_CUnitAdjuster_ptr: int = 0x54
+    CUnitAdjuster_ptr: int = 0x54  # Terrain modifiers
     max_strength: int = 0xEC
     max_organisation: int = 0xF0
     morale: int = 0xF4
+    manpower: int = 0xFC
     supply_consumption: int = 0x110
     fuel_consumption: int = 0x114
     officers: int = 0x118
     max_speed: int = 0x108
     air_defence: int = 0x128
     air_attack: int = 0x140
-    manpower: int = 0xFC
+    transport_capacity: int = 0x144
+    sub_unit_amount: int = 0x180
     sprite: int = 0x198  # Name of the sprite
     # Land units
     width: int = 0xE8
@@ -39,7 +41,7 @@ class CSubUnitDefinitionOffsets:
     toughness: int = 0x120
     # Ships
     is_transport: int = 0x30  # bool!
-    is_sub: int = 0x31
+    is_sub: int = 0x31  # bool!
     can_be_pride: int = 0x39  # bool!
     is_capital: int = 0x2F  # bool!
     range: int = 0x148
@@ -50,11 +52,14 @@ class CSubUnitDefinitionOffsets:
     sea_defence: int = 0x160
     convoy_attack: int = 0x164
     sea_attack: int = 0x168
+    sub_attack: int = 0x16C
     shore_bombardment: int = 0x170
     hull: int = 0x178
-    sub_unit_amount: int = 0x180
     positioning: int = 0x184
     unk_2e: int = 0x2E
+    # Air
+    surface_defence: int = 0x174
+    strategic_attack: int = 0x17C
 
 
 class CSubUnitDefinition(pydantic.BaseModel):
@@ -62,7 +67,7 @@ class CSubUnitDefinition(pydantic.BaseModel):
     self_ptr: int
     # General
     is_buildable: bool
-    terrain_modifiers_CUnitAdjuster_ptr: int
+    CUnitAdjuster_ptr: int  # Terrain modifiers
     sub_unit_amount: int
     supply_consumption: int  # 5000 => 5.0
     fuel_consumption: int  # 5000 => 5.0
@@ -96,9 +101,7 @@ class CSubUnitDefinition(pydantic.BaseModel):
             "self_ptr": ptr,
             "is_buildable": pm.read_bool(ptr + CSubUnitDefinitionOffsets.is_buildable),
             "sub_unit_amount": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.sub_unit_amount, 4)),
-            "terrain_modifiers_CUnitAdjuster_ptr": pm.read_uint(
-                ptr + CSubUnitDefinitionOffsets.terrain_modifiers_CUnitAdjuster_ptr
-            ),
+            "CUnitAdjuster_ptr": pm.read_uint(ptr + CSubUnitDefinitionOffsets.CUnitAdjuster_ptr),
             "can_be_pride": pm.read_bool(ptr + CSubUnitDefinitionOffsets.can_be_pride),
             "max_strength": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.max_strength, 4)),
             "supply_consumption": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.supply_consumption, 4)),
@@ -178,10 +181,11 @@ if __name__ == "__main__":
     # a = CSubUnitDefinition.make(pm=pm, ptr=a_ptr)
     # print(a)
     # utils.dump_bytes(pm=pm, ptr=a_ptr, length=0x200)
-    b_ptr = 0xD86DD3E8
+    # b_ptr = 0xEE8E2CA8
+    b_ptr = 0xC45FE6F0
     b = CSubUnitDefinition.make(pm=pm, ptr=b_ptr)
     print(b)
-    # utils.dump_bytes(pm=pm, ptr=b_ptr, length=0x200)
-    terrain_stats = b.get_terrain_stats(pm)
-    for terrain in terrain_stats:
-        print(terrain)
+    utils.dump_bytes(pm=pm, ptr=b_ptr, length=0x200)
+    # terrain_stats = b.get_terrain_stats(pm)
+    # for terrain in terrain_stats:
+    #     print(terrain)
