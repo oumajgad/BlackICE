@@ -1,6 +1,8 @@
 #include <GameClasses/CSubUnitDefinition.hpp>
 #include <GameClasses/CUnit.hpp>
+#include <GameClasses/CTerrain.hpp>
 #include <utils.hpp>
+#include <HoiDataStructures.hpp>
 
 namespace CSubUnitDefinition {
     namespace Offsets {
@@ -58,12 +60,57 @@ namespace CSubUnitDefinition {
         uintptr_t strategic_attack = 0x17C;
     }
 
+    void pushTerrainStatsToStack(lua_State* L, uintptr_t unitAdjusterArrayPtr) {
+        DEBUG_OUT(printf("unitAdjusterArrayPtr: %#010x\n", unitAdjusterArrayPtr));
+
+        for (int i = 0; i < CTerrain::Terrains->size(); i++) {
+            auto terrain = CTerrain::Terrains->at(i);
+            HDS::CUnitAdjuster* unitAdjuster = (HDS::CUnitAdjuster*) (unitAdjusterArrayPtr + (terrain->id * 24)); // 24 => Length of the CUnidAdjuster object
+            DEBUG_OUT(printf("unitAdjusterArrayPtr + (terrain->id * 24): %#010x\n", unitAdjusterArrayPtr + (terrain->id * 24)));
+            
+            DEBUG_OUT(printf("terrain->name: %s\n", terrain->name));
+            DEBUG_OUT(printf("terrain->id: %i\n", terrain->id));
+            DEBUG_OUT(printf("terrain->attack: %i\n", terrain->attack));
+            DEBUG_OUT(printf("terrain->defence: %i\n", terrain->defence));
+            DEBUG_OUT(printf("terrain->attrition: %i\n", terrain->attrition));
+            DEBUG_OUT(printf("unitAdjuster->attack: %i\n", unitAdjuster->attack));
+            DEBUG_OUT(printf("unitAdjuster->defence: %i\n", unitAdjuster->defence));
+            DEBUG_OUT(printf("unitAdjuster->movement: %i\n", unitAdjuster->movement));
+            DEBUG_OUT(printf("unitAdjuster->attrition: %i\n", unitAdjuster->attrition));
+
+            lua_pushstring(L, terrain->name); // push key for the terrain in the unit stats table
+            lua_newtable(L); // create new table for terrain stats
+            lua_pushstring(L, "is_water");
+            lua_pushboolean(L, terrain->is_water);
+            lua_settable(L, -3);
+
+            // push terrain stats
+            lua_pushstring(L, "attrition");
+            lua_pushinteger(L, unitAdjuster->attrition + terrain->attrition);
+            lua_settable(L, -3);
+            lua_pushstring(L, "attack");
+            lua_pushinteger(L, unitAdjuster->attack + terrain->attack);
+            lua_settable(L, -3);
+            lua_pushstring(L, "defence");
+            lua_pushinteger(L, unitAdjuster->defence + terrain->defence);
+            lua_settable(L, -3);
+            lua_pushstring(L, "movement");
+            lua_pushinteger(L, unitAdjuster->movement);
+            lua_settable(L, -3);
+
+            // set terrain key in the unit stats table
+            lua_settable(L, -3);
+        }
+    }
+
     void pushCSubUnitDefinitionToStack(lua_State* L, uintptr_t unitPtr) {
         DEBUG_OUT(printf("unitPtr: %#010x\n", unitPtr));
 
         uintptr_t subUnitDefinitionPtr = * (uintptr_t *) (unitPtr + CUnit::Offsets::CSubUnitDefinitionPtr);
 
         DEBUG_OUT(printf("subUnitDefinitionPtr: %#010x\n", subUnitDefinitionPtr));
+
+        pushTerrainStatsToStack(L, *(uintptr_t*)(subUnitDefinitionPtr + Offsets::CUnitAdjuster_ptr));
 
         // GENERAL
         int sub_unit_amount = *(uintptr_t*)(subUnitDefinitionPtr + Offsets::sub_unit_amount);

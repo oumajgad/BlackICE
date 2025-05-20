@@ -13,6 +13,7 @@
 #include <GameClasses/CCountry.hpp>
 #include <GameClasses/CUnit.hpp>
 #include <GameClasses/CSubUnitDefinition.hpp>
+#include <GameClasses/CTerrain.hpp>
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
 #include <Hooks/CArmyHooks.hpp>
@@ -835,10 +836,11 @@ __declspec(dllexport) int disableInterAiExpeditionaries(lua_State* L)
 /////////////////////////////////////
 //      INSPECTOR FUNCTIONS        //
 /////////////////////////////////////
-uintptr_t* CIngameIdlerPtr = 0;
 
+uintptr_t* CIngameIdlerPtr = 0;
 __declspec(dllexport) int getSelectedEntity(lua_State* L)
 {
+    // Find CIngameIdler
     if (CIngameIdlerPtr == 0) {
         Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
@@ -853,8 +855,14 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
         }
     }
 
+    // Find CTerrains to get indices for each units CUnitAdjusterArray
+    if (CTerrain::Terrains->size() == 0) {
+        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+        CTerrain::CacheTerrains(external);
+    }
 
-    if (CIngameIdlerPtr != 0) {
+
+    if (CIngameIdlerPtr != 0 && CTerrain::Terrains->size() != 0) {
         lua_newtable(L); // Create the table which will hold the selected items
         uintptr_t selectedThingsListStartPtr = *(CIngameIdlerPtr + (0x1304 / 4));
         uintptr_t selectedThingsListEndPtr = *(CIngameIdlerPtr + (0x1308 / 4));

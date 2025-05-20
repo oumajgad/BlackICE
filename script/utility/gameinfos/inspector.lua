@@ -40,6 +40,13 @@ local properties = {
     ["width"] = {               factor = 0.001, unit = "", translation = "Width" },
 }
 
+local terrainProperties = {
+    ["attack"] = {factor = 0.1, unit = "%"},
+    ["defence"] = {factor = 0.1, unit = "%"},
+    ["attrition"] = {factor = 0.001, unit = "%"},
+    ["movement"] = {factor = 0.1, unit = "%"},
+}
+
 local blacklists = {
     ["Army"] = {
         "type", "name",
@@ -117,21 +124,46 @@ local function createDetailsPage(unitName, unitType, unitData)
 end
 
 local function convertValue(key, val)
-    local numberVal = tonumber(val)
-    if numberVal == nil then
-        return val
+    if type(val) == "table" then
+        local transTerrain = {}
+        for k, v in pairs(val) do
+            if k ~= "is_water" then
+                local numberVal = tonumber(v)
+                local convertedNumberVal = numberVal * terrainProperties[k].factor
+                transTerrain[k] = string.format('%.02f', convertedNumberVal) .. terrainProperties[k].unit
+            end
+        end
+        return transTerrain
+    else
+        local numberVal = tonumber(val)
+        if numberVal == nil then
+            return val
+        end
+        local convertedNumberVal = numberVal * properties[key].factor
+        return string.format('%.02f', convertedNumberVal) .. properties[key].unit
     end
+end
 
-    local convertedNumberVal = numberVal * properties[key].factor
-
-    return string.format('%.02f', convertedNumberVal) .. properties[key].unit
+local function shouldIncludeTerrainType(unitType, terrain)
+    if unitType == "Navy" and terrain["is_water"] == true then
+        return true
+    end
+    if unitType == "Army" and terrain["is_water"] == false then
+        return true
+    end
+    -- Air doesnt get any terrain
+    return false
 end
 
 function P.dumpUnitData(unitType, data)
     local translated = {}
     for k, v in pairs(data) do
         if table.getIndex(blacklists[unitType], k) == nil then
-            local trans = properties[k].translation
+            local prop = properties[k]
+            local trans = nil
+            if type(v) ~= "table" then
+                trans = prop.translation
+            end
 
             if trans == nil then
             trans = Parsing.GetTranslation(string.upper(k))
@@ -142,8 +174,9 @@ function P.dumpUnitData(unitType, data)
             if trans == nil then
                 trans = k
             end
-
-            translated[trans] = convertValue(k, v)
+            if type(v) ~= "table" or shouldIncludeTerrainType(unitType, v) then
+                translated[trans] = convertValue(k, v)
+            end
         end
     end
     return Utils.DumpByMetatableOrder(Utils.PushTablesToEndAndSort(translated))
