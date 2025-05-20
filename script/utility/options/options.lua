@@ -74,7 +74,7 @@ function SetEventPopUpLeft()
     UI.m_textCtrl_OptionActions_Output:SetValue(text .. ret)
 end
 
-local function applyFontRecursivelyToWxWindows(_wx_window, change)
+function ApplyFontRecursivelyToWxWindows(_wx_window, change)
     -- Utils.LUA_DEBUGOUT("applyFontRecursivelyToWxWindows: " .. _wx_window:GetName())
     _wx_window:Freeze()
     local children = _wx_window:GetChildren()
@@ -84,7 +84,7 @@ local function applyFontRecursivelyToWxWindows(_wx_window, change)
         local item = children:Item(i):GetData():DynamicCast("wxWindow")
 
         if _wx_window:GetChildren() ~= nil then
-            applyFontRecursivelyToWxWindows(item, change)
+            ApplyFontRecursivelyToWxWindows(item, change)
         end
 
         -- Utils.LUA_DEBUGOUT(i .. ": " .. item:GetName())
@@ -98,17 +98,23 @@ local function applyFontRecursivelyToWxWindows(_wx_window, change)
 end
 
 function DecreaseFontSize()
-    applyFontRecursivelyToWxWindows(UI.MyFrame1, -1)
-    applyFontRecursivelyToWxWindows(UI.MyFrame2, -1)
-    applyFontRecursivelyToWxWindows(UI.MyFrame3, -1)
-    applyFontRecursivelyToWxWindows(UI.MyFrame4, -1)
-    applyFontRecursivelyToWxWindows(UI.MyFrame5, -1)
+    ApplyFontRecursivelyToWxWindows(UI.MyFrame1, -1)
+    ApplyFontRecursivelyToWxWindows(UI.MyFrame2, -1)
+    ApplyFontRecursivelyToWxWindows(UI.MyFrame3, -1)
+    ApplyFontRecursivelyToWxWindows(UI.MyFrame4, -1)
+    ApplyFontRecursivelyToWxWindows(UI.MyFrame5, -1)
+    for i, window in ipairs(Parsing.Inspector.ActiveWindows) do
+        ApplyFontRecursivelyToWxWindows(window, -1)
+    end
 end
 
 function IncreaseFontSize()
-    applyFontRecursivelyToWxWindows(UI.MyFrame1, 1)
-    applyFontRecursivelyToWxWindows(UI.MyFrame2, 1)
-    applyFontRecursivelyToWxWindows(UI.MyFrame3, 1)
-    applyFontRecursivelyToWxWindows(UI.MyFrame4, 1)
-    applyFontRecursivelyToWxWindows(UI.MyFrame5, 1)
+    ApplyFontRecursivelyToWxWindows(UI.MyFrame1, 1)
+    ApplyFontRecursivelyToWxWindows(UI.MyFrame2, 1)
+    ApplyFontRecursivelyToWxWindows(UI.MyFrame3, 1)
+    ApplyFontRecursivelyToWxWindows(UI.MyFrame4, 1)
+    ApplyFontRecursivelyToWxWindows(UI.MyFrame5, 1)
+    for i, window in ipairs(Parsing.Inspector.ActiveWindows) do
+        ApplyFontRecursivelyToWxWindows(window, 1)
+    end
 end

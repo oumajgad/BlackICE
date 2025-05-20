@@ -3,48 +3,18 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
+from classes.CUnit import CUnitOffsets
 from constants import DATA_SECTION_START
 from structs.LinkedLists import LinkedListNode
 from utils import utils
 
 
-class CArmyOffsets:
+class CArmyOffsets(CUnitOffsets):
     VFTABLE_OFFSET: int = 0x11BDE0C
     VFTABLE_OFFSET_2: int = 0x11BDEB8
     VFTABLE_PTR_1: int = 0x0
     VFTABLE_PTR_2: int = 0x8
     VFTABLE_CUnitPlan_PTR: int = 0x1FC
-    is_selected: int = 0x4
-    type: int = 0x10
-    id: int = 0x14
-    regiments_linked_list_first_ptr: int = 0x38
-    regiments_linked_list_last_ptr: int = 0x3C
-    regiments_amount: int = 0x40
-    upgrade_prio: int = 0xA4
-    upgrade_active: int = 0xA5
-    reinforcements_active: int = 0xA6
-    order_ptr: int = 0xB0
-    army_sub_unit_definition_ptr: int = 0xC8  # This is the CSubUnitDefinition definition for the whole CArmy
-    combat_cooldown: int = 0xD4
-    supply_received_percentage: int = 0xFC
-    fuel_received_percentage: int = 0x100
-    owner_tag: int = 0x124
-    owner_id: int = 0x128
-    leader_ptr: int = 0x12C
-    current_province_ptr: int = 0x130
-    supplied_from_province_ptr: int = 0x134
-    path_length: int = 0x140
-    in_game_idler_ptr: int = 0x160
-    hoi_avatar_ptr: int = 0x164
-    name: int = 0x16C
-    name_length: int = 0x17C
-    dig_in_level: int = 0x1C8
-    base_ca_bonus: int = 0x1CC
-    higher_oob_unit_ptr: int = 0x1E0
-    lower_oob_unit_linked_list_first_ptr: int = 0x1E4
-    lower_oob_unit_linked_list_last_ptr: int = 0x1E8
-    lower_oob_unit_amount: int = 0x1EC
-    oob_level: int = 0x1F4  # 0 -> Theatre, 4 -> Division (includes single brigades)
 
 
 class CArmy(pydantic.BaseModel):
@@ -71,7 +41,7 @@ class CArmy(pydantic.BaseModel):
     leader_ptr: int
     current_province_ptr: int
     supplied_from_province_ptr: int
-    path_length: int  # Amount of provinces left in the current movement order
+    movement_order_remaining_provinces_count: int  # Amount of provinces left in the current movement order
     in_game_idler_ptr: int
     hoi_avatar_ptr: int
     name: str
@@ -99,7 +69,7 @@ class CArmy(pydantic.BaseModel):
             "upgrade_active": pm.read_bool(ptr + CArmyOffsets.upgrade_active),
             "reinforcements_active": pm.read_bool(ptr + CArmyOffsets.reinforcements_active),
             "order_ptr": pm.read_uint(ptr + CArmyOffsets.order_ptr),
-            "army_sub_unit_definition_ptr": pm.read_uint(ptr + CArmyOffsets.army_sub_unit_definition_ptr),
+            "army_sub_unit_definition_ptr": pm.read_uint(ptr + CArmyOffsets.CSubUnitDefinitionPtr),
             "combat_cooldown": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.combat_cooldown, 4)),
             "supply_received_percentage": utils.to_number(
                 pm.read_bytes(ptr + CArmyOffsets.supply_received_percentage, 4)
@@ -110,7 +80,9 @@ class CArmy(pydantic.BaseModel):
             "leader_ptr": pm.read_uint(ptr + CArmyOffsets.leader_ptr),
             "current_province_ptr": pm.read_uint(ptr + CArmyOffsets.current_province_ptr),
             "supplied_from_province_ptr": pm.read_uint(ptr + CArmyOffsets.supplied_from_province_ptr),
-            "path_length": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.path_length, 4)),
+            "movement_order_remaining_provinces_count": utils.to_number(
+                pm.read_bytes(ptr + CArmyOffsets.movement_order_remaining_provinces_count, 4)
+            ),
             "in_game_idler_ptr": pm.read_uint(ptr + CArmyOffsets.in_game_idler_ptr),
             "hoi_avatar_ptr": pm.read_uint(ptr + CArmyOffsets.hoi_avatar_ptr),
             "name": utils.get_string_maybe_ptr(pm, ptr + CArmyOffsets.name),

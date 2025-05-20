@@ -565,6 +565,29 @@ if wx ~= nil then
 	UI.m_panel_GameInfo_ActiveModifiers:Layout()
 	UI.bSizer_GameInfo_ActiveModifiers1:Fit( UI.m_panel_GameInfo_ActiveModifiers )
 	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_ActiveModifiers, "Active Event Modifiers", False )
+	UI.m_panel_GameInfo_Inspector = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer_GameInfo_Inspector1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticText_GameInfo_Inspector1 = wx.wxStaticText( UI.m_panel_GameInfo_Inspector, wx.wxID_ANY, "Selection Inspector", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Inspector1:Wrap( -1 )
+
+	UI.m_staticText_GameInfo_Inspector1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
+
+	UI.bSizer_GameInfo_Inspector1:Add( UI.m_staticText_GameInfo_Inspector1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_GameInfo_Inspector2 = wx.wxStaticText( UI.m_panel_GameInfo_Inspector, wx.wxID_ANY, "The selection inspector will create a window with detail information about the entities you have currently selected ingame.\nAs an example you can use it to see the exact stats of a deployed unit, something which is not posssible ingame.\nSupported entites are:\nLand Units\nNaval Units\nAir Units", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText_GameInfo_Inspector2:Wrap( 400 )
+
+	UI.bSizer_GameInfo_Inspector1:Add( UI.m_staticText_GameInfo_Inspector2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_GameInfo_Inspector_ShowDetails = wx.wxButton( UI.m_panel_GameInfo_Inspector, wx.wxID_ANY, "Show details", wx.wxDefaultPosition, wx.wxSize( 100,-1 ), 0 )
+	UI.bSizer_GameInfo_Inspector1:Add( UI.m_button_GameInfo_Inspector_ShowDetails, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panel_GameInfo_Inspector:SetSizer( UI.bSizer_GameInfo_Inspector1 )
+	UI.m_panel_GameInfo_Inspector:Layout()
+	UI.bSizer_GameInfo_Inspector1:Fit( UI.m_panel_GameInfo_Inspector )
+	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Inspector, "Inspector", False )
 
 
 	UI.MyFrame4 .m_mgr:Update()
@@ -733,4 +756,7 @@ if wx ~= nil then
 		Parsing.Vars.FillGrid()
 	end )
 
+	UI.m_button_GameInfo_Inspector_ShowDetails:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		Parsing.Inspector.createDetailsPageForSelection()
+	end )
 end
