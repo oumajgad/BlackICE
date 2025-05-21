@@ -615,8 +615,8 @@ function P.DumpByMetatableOrder(orig, indent)
   if indent == nil then
     indent = 0
   end
-  local order = getmetatable(orig)["order"]
   if type(orig) == 'table' then
+    local order = getmetatable(orig)["order"]
     local copy = table.deepcopy(orig)
     local s = '{\n'
     for k, v in ipairs(order) do
