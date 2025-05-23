@@ -13,7 +13,7 @@ bool Hooks::hook(void* hookAddress, void* hookFunc, int len, int NOPs) {
     }
     else {
         DWORD protection;
-        VirtualProtect(hookAddress, len, PAGE_EXECUTE_READWRITE, &protection);
+        VirtualProtect(hookAddress, len + NOPs, PAGE_EXECUTE_READWRITE, &protection);
 
         DWORD relativeHookFuncAddress = ((DWORD)hookFunc - (DWORD)hookAddress) - 5;
 
@@ -25,7 +25,7 @@ bool Hooks::hook(void* hookAddress, void* hookFunc, int len, int NOPs) {
         }
 
         DWORD trash;
-        VirtualProtect(hookAddress, len, protection, &trash);
+        VirtualProtect(hookAddress, len + NOPs, protection, &trash);
         return true;
     }
 }

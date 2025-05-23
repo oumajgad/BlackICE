@@ -13,37 +13,34 @@ from utils import utils
 class CSubUnitDefinitionOffsets:
     VFTABLE_OFFSET: int = 0x11BDC04
     # General
+    unk_2e: int = 0x2E  # bool!
+    is_capital: int = 0x2F  # bool!
+    is_transport: int = 0x30  # bool!
+    is_sub: int = 0x31  # bool!
     is_buildable: int = 0x36  # bool!
+    can_be_pride: int = 0x39  # bool!
     CUnitAdjuster_ptr: int = 0x54  # Terrain modifiers
+    width: int = 0xE8
     max_strength: int = 0xEC
     max_organisation: int = 0xF0
     morale: int = 0xF4
     manpower: int = 0xFC
+    max_speed: int = 0x108
     supply_consumption: int = 0x110
+    weight: int = 0x10C
+    defensiveness: int = 0x11C
     fuel_consumption: int = 0x114
     officers: int = 0x118
-    max_speed: int = 0x108
-    air_defence: int = 0x128
-    air_attack: int = 0x140
-    transport_capacity: int = 0x144
-    sub_unit_amount: int = 0x180
-    sprite: int = 0x198  # Name of the sprite
-    # Land units
-    width: int = 0xE8
-    weight: int = 0x10C
+    toughness: int = 0x120
     softness: int = 0x124
+    air_defence: int = 0x128
+    armor: int = 0x12C
     suppression: int = 0x130
     soft_attack: int = 0x134
     hard_attack: int = 0x138
     piercing_attack: int = 0x13C
-    armor: int = 0x12C
-    defensiveness: int = 0x11C
-    toughness: int = 0x120
-    # Ships
-    is_transport: int = 0x30  # bool!
-    is_sub: int = 0x31  # bool!
-    can_be_pride: int = 0x39  # bool!
-    is_capital: int = 0x2F  # bool!
+    air_attack: int = 0x140
+    transport_capacity: int = 0x144
     range: int = 0x148
     firing_distance: int = 0x14C
     surface_detection: int = 0x150
@@ -54,12 +51,12 @@ class CSubUnitDefinitionOffsets:
     sea_attack: int = 0x168
     sub_attack: int = 0x16C
     shore_bombardment: int = 0x170
-    hull: int = 0x178
-    positioning: int = 0x184
-    unk_2e: int = 0x2E
-    # Air
     surface_defence: int = 0x174
+    hull: int = 0x178
     strategic_attack: int = 0x17C
+    sub_unit_amount: int = 0x180
+    positioning: int = 0x184
+    sprite: int = 0x198  # Name of the sprite
 
 
 class CSubUnitDefinition(pydantic.BaseModel):
@@ -182,7 +179,7 @@ if __name__ == "__main__":
     # print(a)
     # utils.dump_bytes(pm=pm, ptr=a_ptr, length=0x200)
     # b_ptr = 0xEE8E2CA8
-    b_ptr = 0xC45FE6F0
+    b_ptr = 0x91BD6160
     b = CSubUnitDefinition.make(pm=pm, ptr=b_ptr)
     print(b)
     utils.dump_bytes(pm=pm, ptr=b_ptr, length=0x200)

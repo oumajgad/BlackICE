@@ -1,6 +1,9 @@
 #include <GameClasses/CCountry.hpp>
 #include <Hooks/Hooks.hpp>
 
+
+uintptr_t CCountry::CountryPtrs[300];
+
 void CCountry::traverseFlagsAndVarTreeDepthFirst(Memory::External& external, std::vector<std::uintptr_t>* res, uintptr_t nodePtr) {
     if (nodePtr == 0) {
         return;

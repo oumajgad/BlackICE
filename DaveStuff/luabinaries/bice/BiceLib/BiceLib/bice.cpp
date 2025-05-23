@@ -19,6 +19,7 @@
 #include <Hooks/CArmyHooks.hpp>
 #include <Hooks/CNavyHooks.hpp>
 #include <Hooks/HookedPatches.hpp>
+#include <Hooks/ConstructorHooks.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
@@ -33,16 +34,9 @@ std::vector<lua_State*> *LUA_STATES = new std::vector<lua_State*>;
 /////////////////////////////////////
 
 std::unordered_map<std::string, uintptr_t>* countryCache = new std::unordered_map<std::string, uintptr_t>;
-uintptr_t getCountry(Memory::External &external, std::string tag) {
+uintptr_t getCountry(std::string tag) {
     if (countryCache->find(tag) != countryCache->end()) {
         return countryCache->at(tag);
-    }
-
-    uintptr_t ctr = external.findCountryInstance(MODULE_BASE + DATA_SECTION_START, tag);
-    if (ctr != 0) {
-        countryCache->insert(std::make_pair(tag, ctr));
-        DEBUG_OUT(printf("added to countryCache: %s\n", tag.c_str()));
-        return ctr;
     }
 
     return 0;
@@ -58,21 +52,17 @@ bool cacheCountriesDone = false;
 __declspec(dllexport) int cacheCountries(lua_State* L)
 {
     if (!cacheCountriesDone) {
-        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
-        uintptr_t CCountryVFTable = MODULE_BASE + 0x11C1BA8;
-        std::string CCountryVFTableSig = Memory::ptrToSignature(CCountryVFTable);
-        std::vector<uintptr_t>* countries;
-        countries = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CCountryVFTableSig.c_str(), 4, 99999);
-        if (countries->size() != 0) {
-            for (auto& countryAddr : *countries) {
-                std::string countryTag = utils::getCString((DWORD*)countryAddr + (0x1E4 / 4));
-                addCountryToCache(countryTag, countryAddr);
+        for (int i = 0; i < 300; i++) {
+            uintptr_t countryPtr = CCountry::CountryPtrs[i];
+            if (countryPtr == 0) { // Array not yet initialized OR end of array reached
+                break;
             }
-            INFO_OUT(printf("Country cache filled (%i) \n", countryCache->size()));
+            std::string countryTag = utils::getCString((DWORD*)(countryPtr + 0x1E4));
+            addCountryToCache(countryTag, countryPtr);
             cacheCountriesDone = true;
-            delete countries;
-            return 0;
+        }
+        if (cacheCountriesDone) {
+            INFO_OUT(printf("Country cache filled (%i) \n", countryCache->size()));
         }
     }
     return 0;
@@ -83,7 +73,7 @@ __declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
     std::string searchTag = luaL_checklstring(L, 1, NULL);
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
-    uintptr_t ctr = getCountry(external, searchTag);
+    uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
         auto activeModifiers = CCountry::getActiveEventModifiers(external, ctr);
         lua_createtable(L, activeModifiers.size(), 0);
@@ -103,7 +93,7 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
     std::string searchTag = luaL_checklstring(L, 1, NULL);
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
-    uintptr_t ctr = getCountry(external, searchTag);
+    uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
         auto flags = CCountry::getFlags(external, ctr);
         lua_createtable(L, flags->size(), 0);
@@ -124,7 +114,7 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
     std::string searchTag = luaL_checklstring(L, 1, NULL);
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
-    uintptr_t ctr = getCountry(external, searchTag);
+    uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
         auto vars = CCountry::getVars(external, ctr);
         lua_createtable(L, 0, vars->size());
@@ -143,10 +133,9 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
 __declspec(dllexport) int getCountryOffmapIc(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-    uintptr_t ctr = getCountry(external, searchTag);
+    uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
-        int countryId = external.read<int>(ctr + 0x1e8);
+        int countryId = *(int *)(ctr + 0x1e8);
         lua_pushinteger(L, Hooks::Patches::offmapIcPerCountry[countryId]);
         return 1;
     }
@@ -548,8 +537,7 @@ __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
         DEBUG_OUT(printf("Corps unit limit set to: %i \n", newLimit));
     }
     else {
-        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-        auto ctr = getCountry(external, tag);
+        auto ctr = getCountry(tag);
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + 0x1E8);
             if (Hooks::CArmy::corpsUnitLimitPerCountry[tagId] != newLimit) {
@@ -575,8 +563,7 @@ __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
         DEBUG_OUT(printf("Army unit limit set to: %i \n", newLimit));
     }
     else {
-        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-        auto ctr = getCountry(external, tag);
+        auto ctr = getCountry(tag);
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + 0x1E8);
             if (Hooks::CArmy::armyUnitLimitPerCountry[tagId] != newLimit) {
@@ -602,8 +589,7 @@ __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
         DEBUG_OUT(printf("Armygroup unit limit set to: %i \n", newLimit));
     }
     else {
-        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-        auto ctr = getCountry(external, tag);
+        auto ctr = getCountry(tag);
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + 0x1E8);
             if (Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] != newLimit) {
@@ -746,6 +732,27 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
 
 
     fixOffMapICDone = true;
+    return 0;
+}
+
+BOOL countryHookDone = false;
+__declspec(dllexport) int hookCountryConstructor(lua_State* L)
+{
+    if (countryHookDone) {
+        return 0;
+    }
+
+    DWORD hookAddress = MODULE_BASE + 0xca653;
+    Hooks::Constructors::jumpback_CCountryHook = hookAddress + 5;
+
+    if (!Hooks::hook((void*)hookAddress, Hooks::Constructors::CCountryHook, 5, 0)) {
+        ERROR_OUT(std::cout << "Hook 'hookCountryConstructor' failed" << std::endl);
+    }
+    else {
+        INFO_OUT(std::cout << "Hook 'hookCountryConstructor' succeeded" << std::endl);
+    }
+
+    countryHookDone = true;
     return 0;
 }
 
@@ -1037,6 +1044,7 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"stopConsole", stopConsole},
     {"setModuleBase", setModuleBase},
     {"cacheCountries", cacheCountries},
+    {"hookCountryConstructor", hookCountryConstructor},
     {"startPeriodics", startPeriodics},
     {"test", test},
     {NULL, NULL}

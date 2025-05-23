@@ -7,7 +7,10 @@ function GetPlayerModifiers()
     local baseIC = playerCountry:GetMaxIC()
     local offmapIC = 0
     if BiceLib ~= nil then
-        offmapIC = BiceLib.GameInfo.getCountryOffmapIc(G_PlayerCountry)
+        x = BiceLib.GameInfo.getCountryOffmapIc(G_PlayerCountry)
+        if x ~= nil then
+            offmapIC = x
+        end
     end
     local icModifier = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_IC_):Get()
     for tech, effect in pairs(techModifierValues["ic_modifier"]) do
