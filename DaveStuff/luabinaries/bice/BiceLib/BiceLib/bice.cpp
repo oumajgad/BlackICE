@@ -71,11 +71,9 @@ __declspec(dllexport) int cacheCountries(lua_State* L)
 __declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
     uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
-        auto activeModifiers = CCountry::getActiveEventModifiers(external, ctr);
+        auto activeModifiers = CCountry::getActiveEventModifiers(ctr);
         lua_createtable(L, activeModifiers.size(), 0);
         for (size_t i = 0; i < activeModifiers.size(); i++) {
             lua_pushstring(L, activeModifiers.at(i).first.c_str());
@@ -91,11 +89,9 @@ __declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
     uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
-        auto flags = CCountry::getFlags(external, ctr);
+        auto flags = CCountry::getFlags(ctr);
         lua_createtable(L, flags->size(), 0);
         for (size_t i = 0; i < flags->size(); i++) {
             lua_pushstring(L, flags->at(i).c_str());
@@ -112,11 +108,9 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
 __declspec(dllexport) int getCountryVariables(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
     uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
-        auto vars = CCountry::getVars(external, ctr);
+        auto vars = CCountry::getVars(ctr);
         lua_createtable(L, 0, vars->size());
         for (size_t i = 0; i < vars->size(); i++) {
             lua_pushstring(L, vars->at(i).name.c_str());
