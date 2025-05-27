@@ -148,7 +148,8 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		end
 	end
 
-	--Utils.LUA_DEBUGOUT("Base trade score: " .. loDiploScoreObj.Score)
+	-- Utils.LUA_DEBUGOUT("Base trade score: " .. loDiploScoreObj.Score)
+	-- Utils.INSPECT_TABLE(loDiploScoreObj)
 
 	-- Now shift the score based on Diplomatic relations!
 	if loDiploScoreObj.Score > 0 then

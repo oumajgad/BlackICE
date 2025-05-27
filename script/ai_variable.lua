@@ -1391,42 +1391,58 @@ function CheckExpiredTrades()
 	end
 end
 
-function CheckNegativeTradeCounts()
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 11 then
+function CheckTradeBuySellConsistency()
+	if InitTradingDataDone ~= true then
 		return
 	end
 
-	local resources = {
-		"chromite";
-		"aluminium";
-		"rubber";
-		"tungsten";
-		"nickel";
-		"copper";
-		"zinc";
-		"manganese";
-		"molybdenum"
-	}
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth % 5 ~= 0 then
+		return
+	end
 
-	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
-			for i, resource in pairs(resources) do
-				local buysString = CString(resource .. "_trade_buy")
-				local currentBuys = countryTag:GetCountry():GetVariables():GetVariable(buysString):Get()
-				if currentBuys < 0 then
-					local command = CSetVariableCommand(countryTag, buysString, CFixedPoint(0))
-					CCurrentGameState.Post(command)
-				end
-				local salesString = CString(resource .. "_trade_sell")
-				local currentSells = countryTag:GetCountry():GetVariables():GetVariable(salesString):Get()
-				if currentSells < 0 then
-					local command = CSetVariableCommand(countryTag, salesString, CFixedPoint(0))
-					CCurrentGameState.Post(command)
-				end
-			end
+	-- Utils.LUA_DEBUGOUT("CheckTradeConsistency start!")
+	local countryTradesTotals = {}
+
+	for tag, _ in pairs(GetCountryIterCacheDict()) do
+		countryTradesTotals[tag] = {}
+		countryTradesTotals[tag]["buy"] = {}
+		countryTradesTotals[tag]["sell"] = {}
+		for i, res in ipairs(G_StratResourceListGlobal) do
+			countryTradesTotals[tag]["buy"][res] = 0
+			countryTradesTotals[tag]["sell"][res] = 0
 		end
 	end
+
+    for tag, trades in pairs(GlobalTradesData) do
+		Utils.LUA_DEBUGOUT("CheckTradeConsistency: " .. tag)
+        for tradeName, trade in pairs(GlobalTradesData[tag]["trades"]) do
+			-- Utils.LUA_DEBUGOUT(tradeName)
+			-- Utils.INSPECT_TABLE(trade)
+			local buyerTag = trade["buyer"]
+			local sellerTag = trade["seller"]
+			local resource = trade["resource"]
+			countryTradesTotals[buyerTag]["buy"][resource] = countryTradesTotals[buyerTag]["buy"][resource] + 1
+			countryTradesTotals[sellerTag]["sell"][resource] = countryTradesTotals[sellerTag]["sell"][resource] + 1
+        end
+    end
+
+	-- Utils.INSPECT_TABLE(countryTradesTotals)
+
+	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
+		for resource, v in pairs(countryTradesTotals[tag]["buy"]) do
+			local buyerVariableString = CString(resource .. "_trade_buy")
+			local command = CSetVariableCommand(countryTag, buyerVariableString, CFixedPoint(v))
+			CCurrentGameState.Post(command)
+		end
+		for resource, v in pairs(countryTradesTotals[tag]["sell"])  do
+			local sellerVariableString = CString(resource .. "_trade_sell")
+			local command = CSetVariableCommand(countryTag, sellerVariableString, CFixedPoint(v))
+			CCurrentGameState.Post(command)
+		end
+	end
+
+	-- Utils.LUA_DEBUGOUT("CheckTradeConsistency end!")
 end
 
 -- Iterates all controlled provinces and sets the "logistics_need" variable which represents the needed transport capability in the country

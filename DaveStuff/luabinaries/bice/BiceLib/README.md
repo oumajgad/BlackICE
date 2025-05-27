@@ -138,7 +138,7 @@ LUA functions are provided to activate and configure the module. They are groupe
 
 ## BiceLib.BytePatches
 Patches which only need a few bytes to be changed.
-* **fixMinisterTechDecayDone()**
+* **fixMinisterTechDecay()**
     * The "Minister tech ability decay" modifier simply does not work. This fixes that.
     * **Params**: /
     * **Return values**: /

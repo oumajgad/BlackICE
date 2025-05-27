@@ -188,7 +188,7 @@ function P.createDetailsPageForSelection()
     end
 
     local entities = BiceLib.Inspector.getSelectedEntity()
-    Utils.INSPECT_TABLE(entities)
+    -- Utils.INSPECT_TABLE(entities)
     if entities == nil then
         return
     end
