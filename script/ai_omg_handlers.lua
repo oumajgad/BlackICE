@@ -81,7 +81,6 @@ G_LUA_SCHEDULE = {
 		InitTradingData,
 		CheckPendingTrades,
 		CheckExpiredTrades,
-		CheckNegativeTradeCounts,
 		CheckTradeBuySellConsistency,
 		CalculateFocuses,
 	},
