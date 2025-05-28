@@ -132,46 +132,6 @@ country_event = {
 		}
 	}
 }
-######################### set up of the future of the eastern countries #######################################
-##################### Ukraine ################
-#country_event = {
-#	id = 31013
-#	fire_only_once = yes
-#	trigger = {
-#		tag = GER
-#		has_country_flag = soviet_countries_ok
-#		2223 = {
-#			controller = {
-#				faction = axis
-#			}
-#		}
-#		#Kyiv
-#		war_with = SOV
-#	}
-#	title = "Ukraine"
-#	desc = "EVTDESC31013"
-#	picture = "divide_soviet"
-#	option = {
-#		name = "EVTOPTA31013"    ## full support
-#		SOV = {
-#			set_country_flag = ukraine_free
-#		}
-#		set_country_flag = ukraine_free
-#		ukraine_region = {
-#			add_core = UKR
-#		}
-#	}
-#	option = {
-#		name = "EVTOPTB31013"    ## independent,but under our control
-#		set_country_flag = ukraine_puppet
-#		SOV = {
-#			set_country_flag = ukraine_puppet
-#		}
-#		ukraine_region = {
-#			add_core = UKR
-#		}
-#	}
-#}
 ##################### Baltic states ################
 country_event = {
 	id = 14851
@@ -223,45 +183,6 @@ country_event = {
 		}
 	}
 }
-##################### Belarussia ################
-#country_event = {
-#	id = 14852
-#	fire_only_once = yes
-#	trigger = {
-#		tag = GER
-#		has_country_flag = soviet_countries_ok
-#		1694 = {
-#			controller = {
-#				faction = axis
-#			}
-#		}
-#		#Minsk
-#		war_with = SOV
-#	}
-#	title = "Belarussia"
-#	desc = "EVTDESC31013"
-#	picture = "divide_soviet"
-#	option = {
-#		name = "EVTOPTA31013"    ## full support
-#		SOV = {
-#			set_country_flag = belarussia_free
-#		}
-#		set_country_flag = belarussia_free
-#		belarus_region = {
-#			add_core = BLR
-#		}
-#	}
-#	option = {
-#		name = "EVTOPTB31013"    ## independent,but under our control
-#		set_country_flag = belarussia_puppet
-#		SOV = {
-#			set_country_flag = belarussia_puppet
-#		}
-#		belarus_region = {
-#			add_core = BLR
-#		}
-#	}
-#}
 ##################### southern caucasus ################
 ##################### general terms of peace ################
 country_event = {
@@ -712,104 +633,6 @@ country_event = {
 		}
 	}
 }
-##################### behind this line only legacy events,they got all a isfireonly to avoid problems(iwont delete them	##
-################################################################################################################
-country_event = {
-	id = 31014
-	trigger = {
-		tag = GER
-		has_country_flag = soviet_countries_ok
-		belarus_region = {
-			controller = {
-				faction = axis
-			}
-		}
-		1694 = {
-			controller = {
-				faction = axis
-			}
-		}
-		#Minsk
-
-		not = {
-			has_country_flag = belarus_setup_decision
-		}
-		war_with = SOV
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
-	title = "Belarus"
-	desc = "EVTDESC31002"
-	picture = "divide_soviet"
-	option = {
-		name = "EVTOPTA31001"
-		ai_chance = {
-			factor = 0
-		}
-		set_country_flag = belarus_setup_decision
-		belarus_region = {
-			add_core = BLR
-		}
-		belarus_region = {
-			any_country = {
-				secede_province = BLR
-			}
-		}
-		create_vassal = BLR
-		random_owned = {
-			limit = {
-				infra = 3
-				is_core = BLR
-			}
-			create_revolt = 3
-		}
-		BLR = {
-			end_war = GER
-			join_faction = axis
-			BLR = {
-				war = {
-					target = SOV
-					attacker_goal = {
-						casus_belli = conquer
-					}
-				}
-			}
-			government = national_socialism
-			head_of_state = 904673
-			head_of_government = 904677
-			foreign_minister = 904661
-			armament_minister = 904661
-			minister_of_security = 904656
-			minister_of_intelligence = 904661
-			chief_of_staff = 904679
-			chief_of_army = 904655
-			chief_of_navy = 904658
-			chief_of_air = 904660
-			national_socialist = {
-				organisation = 80
-				popularity = 40
-			}
-			load_oob = zDD-Belarus.txt
-			manpower = 500
-			capital = 1694
-		}
-	}
-	option = {
-		name = "Nein"
-		random_owned = {
-			limit = {
-				infra = 3
-				is_core = BLR
-			}
-			create_revolt = 10
-		}
-		set_country_flag = belarus_setup_decision
-		ai_chance = {
-			factor = 100
-		}
-	}
-}
 country_event = {
 	id = 31015
 	trigger = {
@@ -863,29 +686,9 @@ country_event = {
 				add_core = ROM
 			}
 		}
-		rom_bessarabia = {
-			limit = {
-				owned_by = SOV
-			}
-			any_country = {
-				limit = {
-					ROM = {
-
-						not = {
-							faction = axis
-						}
-					}
-				}
-				secede_province = UKR
-				add_core = UKR
-			}
-		}
 		sov_to_rom41 = {
 			limit = {
-				or = {
-					owned_by = SOV
-					owned_by = UKR
-				}
+				owned_by = SOV
 			}
 			any_country = {
 				limit = {
@@ -896,30 +699,6 @@ country_event = {
 				secede_province = ROM
 				add_core = ROM
 			}
-		}
-		sov_to_rom41 = {
-			limit = {
-				owned_by = SOV
-			}
-			any_country = {
-				limit = {
-					ROM = {
-
-						not = {
-							faction = axis
-						}
-					}
-				}
-				secede_province = UKR
-				add_core = UKR
-			}
-		}
-		random_owned = {
-			limit = {
-				infra = 3
-				is_core = UKR
-			}
-			create_revolt = 10
 		}
 		sov_to_rom41 = {
 			create_revolt = 1
