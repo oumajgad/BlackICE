@@ -50,6 +50,19 @@ function P.GetKeyFromChoice(choice)
 end
 
 
+
+function P.DoRegionsthing()
+    local regionsData = PdxParser.parseFile("tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\map\\region.txt")
+    local missing = {}
+    for name, provinces in pairs(regionsData) do
+        if P.GetTranslation(name) == nil and table.getLength(provinces) > 6 then
+            table.insert(missing,name)
+        end
+    end
+    Utils.INSPECT_TABLE(missing)
+end
+
+
 P.Traits = require('traits')
 P.Generals = require('generals')
 P.Techs = require('techs')
