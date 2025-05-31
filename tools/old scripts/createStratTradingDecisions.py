@@ -13,7 +13,7 @@ countryTags = [
     "PAK",  "PAL",    "PAN",  "PAP",    "PAR",  "PER",    "PHI",  "POL",
     "POR",  "___",    "PRU",  "REB",    "RKK",  "RKM",    "RKO",  "RKU",
     "ROM",  "RSI",    "RUR",  "SAF",    "SAL",  "SAU",    "SCH",  "___",
-    "SIA",  "SIK",    "SLO",  "SLV",    "SOM",  "SOV",    "SPA",  "SPR",
+    "SIA",  "SIK",    "SLO",  "___",    "SOM",  "SOV",    "SPA",  "SPR",
     "SUD",  "SUR",    "SWE",  "SYR",    "TAN",  "TIB",    "TIM",  "TUR",
     "___",  "URU",    "USA",  "VEN",    "VIC",  "YEM",    "YUG"
 ]
