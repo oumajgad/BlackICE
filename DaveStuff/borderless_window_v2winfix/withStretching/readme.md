@@ -12,7 +12,7 @@ Almost all code is from: https://github.com/horsenit/v2winfix. Only the "strecht
 1. To get borderless you simply set borderless to "1" and set "fullScreen=no" in your Hoi3 "settings.txt" (located for example at "C:\Users\YOUR USERNAME\Documents\Paradox Interactive\Hearts of Iron III\BlackICE 12.1.1")
 
 #### Stretched window with fixed cursor
-If you use a tool like "winexplorer" (https://www.nirsoft.net/utils/winexp.html) to edit the window size the mouse cursor will be offset.
+If you want to play in windowed mode but your monitor resolution is larger than 1080p the game UI will not look right, and using a tool like "winexplorer" (https://www.nirsoft.net/utils/winexp.html) to edit the window size will cause the mouse cursor to be offset ingame.
 
 Instead use the settings in the "dsafe" category of the v2winfix.ini. "original" X and Y should be the same as in your Hoi3 settings, "stretched" should be the actual resolution of your monitor.
 
