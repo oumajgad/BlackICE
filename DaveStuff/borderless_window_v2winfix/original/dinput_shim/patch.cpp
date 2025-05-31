@@ -284,10 +284,51 @@ and I know I tried the same thing before I learned about ScreenToClient too
 
 reimplement as:
 */
+
+int g_original_x = 0;
+int g_original_y = 0;
+int g_stretched_x = 0;
+int g_stretched_y = 0;
+bool adjusted_window = false;
+
+void __stdcall FixStretchedPosition(HWND hwnd, POINT* pt) {
+	// Don't do anything if values aren't setup
+	if (g_stretched_x <= 0 || g_stretched_y <= 0 || g_original_x <= 0 || g_original_y <= 0) {
+		return;
+	}
+	
+	// Avoid division by 0
+	if (pt->x <= 0 || pt->y <= 0) {
+		return;
+	}
+
+	if (!adjusted_window) {
+		adjusted_window = true;
+		RECT rect;
+		GetWindowRect(hwnd, &rect);
+		// Calculate relative values to avoid changing the window origin (top left corner) in case the user has more displays in that direction
+		int change_x = g_stretched_x - g_original_x;
+		int change_y = g_stretched_y - g_original_y;
+		rect.bottom += change_y;
+		rect.right += change_x;
+		MoveWindow(hwnd, rect.left, rect.top, rect.right, rect.bottom, false);
+	}
+
+	int pre_x = pt->x;
+	int pre_y = pt->y;
+
+	double ratio_x = pre_x / (double) g_stretched_x;
+	double ratio_y = pre_y / (double) g_stretched_y;
+
+	pt->x = ratio_x * g_original_x;
+	pt->y = ratio_y * g_original_y;
+}
+
 void __stdcall doGetCursorPos(HWND hwnd, int isFullscreen, POINT* pt)
 {
 	GetCursorPos(pt);
 	ScreenToClient(hwnd, pt);
+	FixStretchedPosition(hwnd, pt);
 }
 
 /*
@@ -324,8 +365,16 @@ void readSettings()
 	if (!PathFileExistsW(settings_path))
 	{
 		WritePrivateProfileStringW(L"v2winfix", L"borderless", L"1", settings_path);
+		WritePrivateProfileStringW(L"dsafe", L"original_X", L"0", settings_path);
+		WritePrivateProfileStringW(L"dsafe", L"original_Y", L"0", settings_path);
+		WritePrivateProfileStringW(L"dsafe", L"stretched_X", L"0", settings_path);
+		WritePrivateProfileStringW(L"dsafe", L"stretched_Y", L"0", settings_path);
 	}
 	g_borderless = GetPrivateProfileIntW(L"v2winfix", L"borderless", 0, settings_path);
+	g_original_x = GetPrivateProfileIntW(L"dsafe", L"original_X", 0, settings_path);
+	g_original_y = GetPrivateProfileIntW(L"dsafe", L"original_Y", 0, settings_path);
+	g_stretched_x = GetPrivateProfileIntW(L"dsafe", L"stretched_X", 0, settings_path);
+	g_stretched_y = GetPrivateProfileIntW(L"dsafe", L"stretched_Y", 0, settings_path);
 }
 
 template<size_t N>

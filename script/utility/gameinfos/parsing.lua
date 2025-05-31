@@ -49,8 +49,6 @@ function P.GetKeyFromChoice(choice)
     return choice
 end
 
-
-
 function P.DoRegionsthing()
     local regionsData = PdxParser.parseFile("tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\map\\region.txt")
     local missing = {}
@@ -61,7 +59,6 @@ function P.DoRegionsthing()
     end
     Utils.INSPECT_TABLE(missing)
 end
-
 
 P.Traits = require('traits')
 P.Generals = require('generals')

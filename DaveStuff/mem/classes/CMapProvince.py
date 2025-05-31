@@ -37,6 +37,7 @@ class CMapProvince(pydantic.BaseModel):
     LENGTH: ClassVar[int] = 936
     PROVINCES: ClassVar[list[int]] = None
     self_ptr: int
+    self_ptr_str: str
     is_selected: bool
     id: int
     CTerrain_ptr: int
@@ -58,6 +59,7 @@ class CMapProvince(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
+            "self_ptr_str": utils.int_to_pointer(ptr),
             "is_selected": pm.read_bool(ptr + CMapProvinceOffsets.is_selected),
             "id": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.id, 4)),
             "CTerrain_ptr": pm.read_uint(ptr + CMapProvinceOffsets.CTerrain_ptr),
@@ -125,4 +127,7 @@ if __name__ == "__main__":
     # for ptr in provinces:
     #     # print(ptr)
     #     province = CMapProvince.make(pm, ptr)
-    print(CMapProvince.get_province(pm, 2087))
+    prov = CMapProvince.get_province(pm, 2207)
+    print(prov)
+    mods_ptr = pm.read_uint(prov.self_ptr + CMapProvinceOffsets.province_modifiers_array_ptr)
+    utils.dump_bytes(pm, mods_ptr, 0x200)

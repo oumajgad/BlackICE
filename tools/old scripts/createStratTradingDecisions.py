@@ -1,7 +1,7 @@
 bugged_countries = ["PAN", "PHI"] # Skip those because they produce broken decisions (the game just stops reading the file after their events)
 countryTags = [
     "AFG",  "ALB",    "ARG",  "___",    "AST",  "AUS",    "___",  "BBU",
-    "BEL",  "BHU",    "___",  "BLR",    "BOL",  "BRA",    "BUL",  "CAN",
+    "BEL",  "BHU",    "___",  "___",    "BOL",  "BRA",    "BUL",  "CAN",
     "CGX",  "CHC",    "CHI",  "CHL",    "COL",  "COS",    "CRO",  "CSX",
     "CUB",  "CXB",    "CYN",  "CYP",    "CZE",  "___",    "DEN",  "___",
     "DOM",  "ECU",    "EGY",  "ENG",    "EST",  "ETH",    "FIN",  "FRA",
@@ -15,7 +15,7 @@ countryTags = [
     "ROM",  "RSI",    "RUR",  "SAF",    "SAL",  "SAU",    "SCH",  "SER",
     "SIA",  "SIK",    "SLO",  "SLV",    "SOM",  "SOV",    "SPA",  "SPR",
     "SUD",  "SUR",    "SWE",  "SYR",    "TAN",  "TIB",    "TIM",  "TUR",
-    "UKR",  "URU",    "USA",  "VEN",    "VIC",  "YEM",    "YUG"
+    "___",  "URU",    "USA",  "VEN",    "VIC",  "YEM",    "YUG"
 ]
 resources = {
     "chromite": "13308",
