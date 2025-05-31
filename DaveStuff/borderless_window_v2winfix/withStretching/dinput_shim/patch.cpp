@@ -285,6 +285,8 @@ and I know I tried the same thing before I learned about ScreenToClient too
 reimplement as:
 */
 
+// settings
+BOOL g_borderless = FALSE;
 int g_original_x = 0;
 int g_original_y = 0;
 int g_stretched_x = 0;
@@ -328,7 +330,9 @@ void __stdcall doGetCursorPos(HWND hwnd, int isFullscreen, POINT* pt)
 {
 	GetCursorPos(pt);
 	ScreenToClient(hwnd, pt);
-	FixStretchedPosition(hwnd, pt);
+	if (g_borderless) {
+		FixStretchedPosition(hwnd, pt);
+	}
 }
 
 /*
@@ -353,8 +357,6 @@ __asm {
 }
 }
 
-// settings
-BOOL g_borderless = FALSE;
 
 void readSettings()
 {
