@@ -316,11 +316,8 @@ void __stdcall FixStretchedPosition(HWND hwnd, POINT* pt) {
 		MoveWindow(hwnd, rect.left, rect.top, rect.right, rect.bottom, false);
 	}
 
-	int pre_x = pt->x;
-	int pre_y = pt->y;
-
-	double ratio_x = pre_x / (double) g_stretched_x;
-	double ratio_y = pre_y / (double) g_stretched_y;
+	double ratio_x = pt->x / (double) g_stretched_x;
+	double ratio_y = pt->y / (double) g_stretched_y;
 
 	pt->x = ratio_x * g_original_x;
 	pt->y = ratio_y * g_original_y;
