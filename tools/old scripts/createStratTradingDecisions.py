@@ -5,16 +5,16 @@ countryTags = [
     "CGX",  "CHC",    "CHI",  "CHL",    "COL",  "COS",    "CRO",  "CSX",
     "CUB",  "CXB",    "CYN",  "CYP",    "CZE",  "___",    "DEN",  "___",
     "DOM",  "ECU",    "EGY",  "ENG",    "EST",  "ETH",    "FIN",  "FRA",
-    "___",  "GER",    "GRE",  "GUA",    "GUY",  "HAI",    "HOL",  "HON",
+    "___",  "GER",    "GRE",  "GUA",    "___",  "HAI",    "HOL",  "HON",
     "HUN",  "ICL",    "IDC",  "IND",    "INO",  "IRE",    "IRQ",  "ISR",
-    "ITA",  "JAP",    "JOR",  "KOR",    "KWT",  "LAT",    "LEB",  "LIB",
-    "LIT",  "LUX",    "MAD",  "MAN",    "MEN",  "MEX",    "MON",  "MTA",
+    "ITA",  "JAP",    "JOR",  "KOR",    "___",  "LAT",    "LEB",  "LIB",
+    "LIT",  "LUX",    "___",  "MAN",    "MEN",  "MEX",    "MON",  "MTA",
     "___",  "NEP",    "NIC",  "NJG",    "NOR",  "NZL",    "OMG",  "OMN",
     "PAK",  "PAL",    "PAN",  "PAP",    "PAR",  "PER",    "PHI",  "POL",
     "POR",  "___",    "PRU",  "REB",    "RKK",  "RKM",    "RKO",  "RKU",
     "ROM",  "RSI",    "RUR",  "SAF",    "SAL",  "SAU",    "SCH",  "___",
     "SIA",  "SIK",    "SLO",  "___",    "SOM",  "SOV",    "SPA",  "SPR",
-    "SUD",  "SUR",    "SWE",  "SYR",    "TAN",  "TIB",    "TIM",  "TUR",
+    "SUD",  "___",    "SWE",  "SYR",    "TAN",  "TIB",    "___",  "TUR",
     "___",  "URU",    "USA",  "VEN",    "VIC",  "YEM",    "YUG"
 ]
 resources = {
