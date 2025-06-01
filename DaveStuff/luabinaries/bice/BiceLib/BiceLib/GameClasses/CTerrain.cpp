@@ -32,8 +32,11 @@ namespace CTerrain {
         DEBUG_OUT(printf("res->size(): %i \n", res->size()));
         if (res->size() != 0) {
             for (int i = 0; i < res->size(); i++) {
-                CTerrain* x = Make(res->at(i));
-                Terrains->push_back(x);
+                int magicNumber = * (int *) (res->at(i) + 0x4); // for some reason there are some false hits, but we can check the magic number
+                if (magicNumber == 397) {
+                    CTerrain* x = Make(res->at(i));
+                    Terrains->push_back(x);
+                }
             }
             delete res;
         }

@@ -75,6 +75,7 @@ if __name__ == "__main__":
     terrains = CTerrain.get_terrains(pm)
     print(f"{len(terrains) = }")
     for terrain in terrains:
+        print(utils.int_to_pointer(terrain))
         x = CTerrain.make(pm, terrain)
         print(x)
         # if x.name == "normal_coast":
