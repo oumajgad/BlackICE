@@ -65,7 +65,11 @@ class CTerrain(pydantic.BaseModel):
             ),
             return_multiple=True,
         )
-        cls.TERRAINS = [ptr for ptr in res if ptr >= pm.base_address + DATA_SECTION_START and ptr % 2 == 0]
+        cls.TERRAINS = [
+            ptr
+            for ptr in res
+            if ptr >= pm.base_address + DATA_SECTION_START and ptr % 2 == 0 and pm.read_uint(ptr + 4) == 397
+        ]
         return cls.TERRAINS
 
 
