@@ -13,6 +13,7 @@ country_event = {
 			not = {
 				faction = allies
 				faction = comintern
+				faction = axis
 			}
 			controls = 9158
 		}
@@ -24,6 +25,9 @@ country_event = {
 		}
 		ENG = {
 			controls = 1964
+			not = {
+				war_with = PER
+			}
 		}
 		#London
 		#IRAQ IS NOT ENNEMY
@@ -69,15 +73,15 @@ country_event = {
 			factor = 100
 		}
 	}
-	option = {
-		name = "EVTOPTB91008"
-		ENG = {
-			set_country_flag = persia_invasion
-		}
-		ai_chance = {
-			factor = 0
-		}
-	}
+	#option = {
+	#	name = "EVTOPTB91008"
+	#	ENG = {
+	#		set_country_flag = persia_invasion
+	#	}
+	#	ai_chance = {
+	#		factor = 0
+	#	}
+	#}
 }
 ## PERSIA ACCEPTS
 country_event = {
@@ -145,9 +149,9 @@ country_event = {
 				}
 			}
 		}
-		ENG = {
-			country_event = 91708
-		}
+		#ENG = {
+		#	country_event = 91708
+		#}
 		ai_chance = {
 			factor = 70
 		}
@@ -235,13 +239,65 @@ country_event = {
 }
 country_event = {
 	id = 91708
-	is_triggered_only = yes
-	title = "EVTNAME91707"
-	desc = "EVTDESC91707"
+	trigger = {
+		tag = ENG
+		ai = yes
+		year = 1941
+		month = 8
+		exists = PER
+		PER = {
+			faction = axis
+			controls = 9158
+		}
+		SOV = {
+			controls = 1409 #Moscow
+			#controls = 3581 #Sevastopol
+			#controls = 782	#Leningrad
+			controls = 2857 #Stalingrad
+		}
+		ENG = {
+			controls = 1964
+		}
+		#London
+		#IRAQ IS NOT ENNEMY
+
+		not = {
+			9213 = {
+				controller = {
+					faction = axis
+				}
+			}
+		}
+		#Baghdad
+
+		not = {
+			9213 = {
+				controller = {
+					war_with = ENG
+				}
+			}
+		}
+		#Baghdad
+		#has_global_flag = operation_barbarossa
+
+		not = {
+			has_country_flag = persia_invasion
+		}
+	}
+	title = ""
+	desc = ""
 	picture = "anglosovietiraninvasion"
 	option = {
 		name = "Invade !"
 		load_oob = zDD-ENG_Persia_annexation.txt
+		ENG = {
+			war = {
+				target = PER
+				attacker_goal = {
+					casus_belli = conquer
+				}
+			}
+		}
 		random_owned = {
 			limit = {
 				infra = 3
