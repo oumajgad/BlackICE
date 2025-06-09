@@ -189,7 +189,7 @@ if wx ~= nil then
         'pol_Popularity_social_democrat', 'pol_Popularity_social_liberal', 'pol_Popularity_stalinist', 'prod__TotalIc', 'prod__IcEff', 'ls_TotalLeadership',
         'intel_TotalSpiesAbroad', 'diplo_Neutrality', 'diplo_EffectiveNeutrality', 'prod_Consumer_%', 'prod_Consumer_IC', 'prod_LendLease_%',
 		'prod_LendLease_IC', 'prod_Production_%', 'prod_Production_IC', 'prod_Reinforce_%', 'prod_Reinforce_IC', 'prod_Supply_%', 'prod_Supply_IC',
-		'prod_Upgrade_%', 'prod_Upgrade_IC', 'pool_energy', 'pool_metals', 'pool_rares', 'pool_oil', 'pool_supplies', 'pool_fuel', 'pool_money',
+		'prod_Upgrade_%', 'prod_Upgrade_IC', 'pool_energy', 'pool_metal', 'pool_rares', 'pool_oil', 'pool_supplies', 'pool_fuel', 'pool_money',
 		'other_u_LandCountTotal', 'other_u_AirCountTotal', 'other_u_NavalCountTotal', 'other_u_TotalDivisions',
 		'other_ManpowerTotal'
     }
