@@ -1415,7 +1415,7 @@ function CheckTradeBuySellConsistency()
 	end
 
     for tag, trades in pairs(GlobalTradesData) do
-		Utils.LUA_DEBUGOUT("CheckTradeConsistency: " .. tag)
+		-- Utils.LUA_DEBUGOUT("CheckTradeConsistency: " .. tag)
         for tradeName, trade in pairs(GlobalTradesData[tag]["trades"]) do
 			-- Utils.LUA_DEBUGOUT(tradeName)
 			-- Utils.INSPECT_TABLE(trade)
