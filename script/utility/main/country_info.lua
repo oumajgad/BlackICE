@@ -40,14 +40,15 @@ function GetPlayerModifiers()
         -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level))
     end
 
-    local icToSupplies = 1
+    local otherIcToSupplies = 0
     for tech, effect in pairs(techModifierValues["ic_to_supplies"]) do
         local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-        icToSupplies = icToSupplies + (effect*level)
+        otherIcToSupplies = otherIcToSupplies + (effect*level)
         -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level))
     end
+    local globalSuppliesMod = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_SUPPLIES_):Get()
     local supplyFactoriesEffect = playerCountry:GetVariables():GetVariable(CString("supplies_factory_count")):Get() * 0.035
-    local suppliesPerIc = (icToSupplies + supplyFactoriesEffect) * defines.economy.IC_TO_SUPPLIES
+    local suppliesPerIc = (1 + globalSuppliesMod + otherIcToSupplies + supplyFactoriesEffect) * defines.economy.IC_TO_SUPPLIES
     -- Utils.LUA_DEBUGOUT("suppliesPerIc: " .. suppliesPerIc)
 
     -- IC efficiency
