@@ -33,4 +33,32 @@ country_event = {
 		load_oob =  TUR_Pres_IsmetInonu.txt
 	}
 }
-#EOF#
+
+country_event = {
+	id = 980001
+	title = "Dersim Uprising"
+	desc = "EVTDESC980001"
+	picture = "major_worker_strike"
+	trigger = {
+		tag = TUR
+		date = 1937.5.1
+		not = {
+		has_country_flag = kurdish_uprising
+		}
+option = {
+		name = "Suppress them!"
+				dissent = 6
+				national_unity = -3
+				5048 = {
+					create_revolt = 5
+				}
+				4513 = {
+					create_revolt = 5
+				}
+				7303 = {
+					create_revolt = 5
+				}
+		set_country_flag = kurdish_uprising
+			}
+	}
+}
