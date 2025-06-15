@@ -1,0 +1,323 @@
+country_event = {
+	id = 91710
+	is_triggered_only = yes
+	title = "EVTNAME91710"
+	desc = "EVTDESC91710"
+	picture = "annexation_of_egypt"
+	option = {
+		name = "EVTOPTB91710"
+		set_country_flag = egypt_annex
+		ENG = {
+			split_troops = 1.0
+		}
+		ENG = {
+			load_oob = ENG/zDD-UK_Africa_1940.txt
+		}
+		ENG = {
+			country_event = 91711
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTC91710"
+		set_country_flag = no_egypt_annex
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# UK REACTION
+country_event = {
+	id = 91711
+	is_triggered_only = yes
+	title = "EVTNAME91710"
+	desc = "EVTDESC91710"
+	picture = "annexation_of_egypt"
+	option = {
+		name = "EVTOPTD91710"
+		inherit = EGY
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		}
+		set_country_flag = egypt_annex
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		}
+		set_country_flag = no_egypt_annex
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 48823
+	trigger = {
+		tag = ENG
+		year = 1942
+		month = 1
+
+		not = {
+			has_country_flag = Farouk_removed
+		}
+	}
+	mean_time_to_happen = {
+		days = 2
+	}
+	title = "King Farouk removed"
+	desc = "EVTDESC48823"
+	picture = "annexation_of_egypt"
+	option = {
+		name = "Install Pasha"
+		set_country_flag = Farouk_removed
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 48824
+	trigger = {
+		tag = EGY
+		exists = EGY
+		year = 1944
+		month = 1
+
+		not = {
+			has_country_flag = Pasha_dead
+		}
+	}
+	mean_time_to_happen = {
+		days = 24
+	}
+	title = "Pasha assassinated"
+	desc = "EVTDESC48824"
+	picture = "annexation_of_egypt"
+	option = {
+		name = "Bastards!"
+		war = {
+			target = GER
+			attacker_goal = {
+				casus_belli = conquer
+			}
+		}
+		set_country_flag = Pasha_dead
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "Lets Not"
+		set_country_flag = Pasha_dead
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 36005
+	fire_only_once = yes
+	trigger = {
+		tag = ITA
+		or = {
+		tag = GER
+		}
+		5559 = {
+			controller = {
+			faction = axis
+			}
+		}
+	}
+	title = "The Future of Egypt"
+	desc = "EVTDESC36005"
+	picture = "Farouk"
+	option = {
+		name = "Once the Middle East is stable"
+		set_country_flag = egypt_yes
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+			}
+		ai_chance = {
+		factor = 0
+		}
+	}
+}
+	option = {
+		name = "They will experience our benevolent rule"
+		set_country_flag = egypt_no
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		ai_chance = {
+		factor = 100
+			}
+		}
+	}
+}
+
+country_event = {
+	id = 36006
+	fire_only_once = yes
+	trigger = {
+		tag = ITA
+		or = {
+		tag = GER
+		}
+	}
+	has_country_flag = egypt_yes
+ 	not = {
+	has_country_flag = free_egypt
+		}
+		5559 = {
+			controller = {
+			faction = axis
+			}
+		}
+		5586 = {
+			controller = {
+			faction = axis
+			}
+		}	
+		5611 = {
+			controller = {
+			faction = axis
+			}
+		}
+		5563 = {
+			controller = {
+			faction = axis
+			}
+		}
+		5589 = {
+			controller = {
+			faction = axis
+			}
+		}
+		5535 = {
+			controller = {
+			faction = axis
+			}
+		}
+		9213 = {
+			controller = {
+			faction = axis
+			}
+		}
+		9427 = {
+			controller = {
+			faction = axis
+			}
+		}
+	title = "The Middle East is Stable!"
+	desc = "EVTDESC36006"
+	picture = "Farouk"
+	option = {
+		name = "Release an independent Egypt"
+		set_country_flag = free_egypt
+		any_owned = {
+			limit = {
+				is_core = EGY
+				controlled_by = GER
+			}
+			secede_province = EGY
+		}
+		any_owned = {
+			limit = {
+				is_core = EGY
+				controlled_by = ITA
+			}
+			secede_province = EGY
+		}
+		EGY = {
+		join_faction = Axis
+			war = {
+				target = ENG
+				attacker_goal = {
+					casus_belli = conquer
+				}
+			}
+		}
+	}
+}
+	option = {
+		name = "Sorry, we're going back on the deal"
+		set_country_flag = occupy_egypt
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 3
+		}
+	}
+}
