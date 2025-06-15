@@ -151,6 +151,18 @@ destroyer_class = {
 				light_warship_engine = 10
 				light_warship_screws_rudder_optimalisation = 6
 			}
+			AND = {
+				NOT = { destroyer_class = 7 }	# 1950
+				light_naval_guns = 11
+				light_warship_engine = 11
+				light_warship_screws_rudder_optimalisation = 7
+			}
+			AND = {
+				NOT = { destroyer_class = 8 }	# 1952
+				light_naval_guns = 12
+				light_warship_engine = 12
+				light_warship_screws_rudder_optimalisation = 8
+			}
 		}
 	}
 	#6% all stats
@@ -782,6 +794,14 @@ light_warship_engine = {
 					destroyer_class = 6
 					frigate_class = 10
 					torpedo_boat_class = 10
+				}
+			}
+			AND = {
+				NOT = { light_warship_engine = 12 }	#1951
+				or = {
+					destroyer_class = 7
+					frigate_class = 11
+					torpedo_boat_class = 11
 				}
 			}
 		}
@@ -5542,6 +5562,14 @@ capitalship_secondary = {
 					light_cruiser_naval_guns = 8
 				}
 			}
+			and = {
+				capitalship_secondary = 8
+				not = { capitalship_secondary = 9 }
+				or = {
+					light_naval_guns = 12
+					light_cruiser_naval_guns = 9
+				}
+			}
 		}
 	}
 
@@ -5578,7 +5606,7 @@ capitalship_secondary = {
 	start_year = 1918
 	first_offset = 1930		# 2nd model is from 1934
 	additional_offset = 3	# one new every 3 year
-	max_level = 8
+	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
 }
@@ -11991,7 +12019,7 @@ coastal_submarine_class = {
 	start_year = 1918
 	first_offset = 1933		# 2nd model is from 1934
 	additional_offset = 2	# one new every 2 year
-	max_level = 11
+	max_level = 7
 	folder = submarine_folder
 	can_upgrade = no
 }
@@ -12090,6 +12118,54 @@ submarine_class = {
 				submarine_torpedo_tubes = 6
 				submarine_periscope = 6
 				submarine_battery = 6
+				NOT =  { has_country_flag = LondonNavalTreaty }
+				NOT =  { has_country_flag = 2nd_London_Treaty }
+			}
+			AND = {
+				NOT = { submarine_class = 9 }	# 1948
+				submarine_thick_pressure_hull = 1
+				submarine_hull = 9
+				submarine_engine = 9
+				submarine_crew_berthing = 9
+				submarine_torpedo_tubes = 7
+				submarine_periscope = 7
+				submarine_battery = 7
+				NOT =  { has_country_flag = LondonNavalTreaty }
+				NOT =  { has_country_flag = 2nd_London_Treaty }
+			}
+			AND = {
+				NOT = { submarine_class = 10 }	# 1950
+				submarine_thick_pressure_hull = 1
+				submarine_hull = 10
+				submarine_engine = 10
+				submarine_crew_berthing = 10
+				submarine_torpedo_tubes = 8
+				submarine_periscope = 8
+				submarine_battery = 8
+				NOT =  { has_country_flag = LondonNavalTreaty }
+				NOT =  { has_country_flag = 2nd_London_Treaty }
+			}
+			AND = {
+				NOT = { submarine_class = 11 }	# 1950
+				submarine_thick_pressure_hull = 1
+				submarine_hull = 11
+				submarine_engine = 11
+				submarine_crew_berthing = 11
+				submarine_torpedo_tubes = 9
+				submarine_periscope = 9
+				submarine_battery = 9
+				NOT =  { has_country_flag = LondonNavalTreaty }
+				NOT =  { has_country_flag = 2nd_London_Treaty }
+			}
+			AND = {
+				NOT = { submarine_class = 12 }	# 1950
+				submarine_thick_pressure_hull = 1
+				submarine_hull = 12
+				submarine_engine = 12
+				submarine_crew_berthing = 12
+				submarine_torpedo_tubes = 9
+				submarine_periscope = 9
+				submarine_battery = 9
 				NOT =  { has_country_flag = LondonNavalTreaty }
 				NOT =  { has_country_flag = 2nd_London_Treaty }
 			}
@@ -12197,6 +12273,30 @@ long_range_submarine_class = {
 				submarine_torpedo_tubes = 6
 				submarine_periscope = 6
 				submarine_battery = 6
+				NOT =  { has_country_flag = LondonNavalTreaty }
+				NOT =  { has_country_flag = 2nd_London_Treaty }
+			}
+			AND = {
+				NOT = { long_range_submarine_class = 7 }	#1945
+				submarine_thick_pressure_hull = 1
+				submarine_hull = 9
+				submarine_engine = 9
+				submarine_crew_berthing = 9
+				submarine_torpedo_tubes = 7
+				submarine_periscope = 7
+				submarine_battery = 7
+				NOT =  { has_country_flag = LondonNavalTreaty }
+				NOT =  { has_country_flag = 2nd_London_Treaty }
+			}
+			AND = {
+				NOT = { long_range_submarine_class = 8 }	#1945
+				submarine_thick_pressure_hull = 1
+				submarine_hull = 10
+				submarine_engine = 10
+				submarine_crew_berthing = 10
+				submarine_torpedo_tubes = 8
+				submarine_periscope = 8
+				submarine_battery = 8
 				NOT =  { has_country_flag = LondonNavalTreaty }
 				NOT =  { has_country_flag = 2nd_London_Treaty }
 			}
