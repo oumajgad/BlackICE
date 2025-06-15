@@ -455,3 +455,51 @@ country_event = {
 		}
 	}
 }
+
+country_event = {
+	id = 43018
+	title = "Wellington Dock Workers Strike"
+	desc = "EVTDESC43018"
+	picture = "major_worker_strike"
+	trigger = {
+		tag = NZL
+		date = 1942.7.1
+		not = {
+		has_country_flag = wellington_strike
+		}
+	}
+option = {
+		name = "Give them what they want"
+				dissent = 2
+				money = -200
+		set_country_flag = wellington_strike
+		add_country_modifier = {
+			name = "wellington_dock_strike"
+			duration = 30
+		}
+		USA = {
+		country_event = 43019
+		}
+	}
+}
+
+
+country_event = {
+	id = 43019
+	title = "Wellington Dock Workers Strike"
+	desc = "EVTDESC43019"
+	picture = "major_worker_strike"
+	trigger = {
+		tag = USA
+		date = 1942.7.1
+		is_triggered_only = yes
+		}
+option = {
+		name = "The Kiwis need to sort this out, fast!"
+		set_country_flag = wellington_strike_us
+		add_country_modifier = {
+			name = "wellington_dock_strike"
+			duration = 30
+		}
+	}
+}
