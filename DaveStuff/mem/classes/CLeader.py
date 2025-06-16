@@ -1,3 +1,4 @@
+import enum
 import json
 from typing import ClassVar
 
@@ -7,6 +8,12 @@ from pymem import Pymem
 from classes.CLeaderHistory import CLeaderHistory
 from constants import DATA_SECTION_START
 from utils import utils
+
+
+class LeaderTypeEnum(enum.Enum):
+    LAND = 0
+    SEA = 1
+    AIR = 2
 
 
 class CLeaderOffsets:
@@ -19,6 +26,7 @@ class CLeaderOffsets:
     country_tag: int = 0x44
     country_id: int = 0x48
     name: int = 0x4C
+    type: int = 0x68
     rank: int = 0x6C
     skill: int = 0x70
     max_skill: int = 0x74
@@ -39,6 +47,7 @@ class CLeader(pydantic.BaseModel):
     country_tag: str
     country_id: int
     name: str
+    type: LeaderTypeEnum
     rank: int
     skill: int
     max_skill: int
@@ -59,6 +68,7 @@ class CLeader(pydantic.BaseModel):
             "country_tag": pm.read_bytes(ptr + CLeaderOffsets.country_tag, 3),
             "country_id": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.country_id, 4)),
             "name": utils.get_string_maybe_ptr(pm, ptr + CLeaderOffsets.name),
+            "type": LeaderTypeEnum(pm.read_uint(ptr + CLeaderOffsets.type)),
             "rank": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.rank, 4)),
             "skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.skill, 4)),
             "max_skill": utils.to_number(pm.read_bytes(ptr + CLeaderOffsets.max_skill, 4)),
@@ -113,7 +123,7 @@ if __name__ == "__main__":
         # if p_skill < 0:
         #     p_skill = 0
         # out[x.id] = p_skill
-        if "Arndt" == x.name and x.country_tag == "GER":
+        if "Sperrle" == x.name and x.country_tag == "GER":
             print(json.dumps(x.dict(), indent=2, default=str))
             print(x.get_starting_rank_and_date())
         # if x.skill in levels and x.id in levels:
