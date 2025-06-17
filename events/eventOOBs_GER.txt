@@ -2329,6 +2329,7 @@ country_event = {
 	trigger = {
 		tag = GER
 		year = 1943
+		exists = CRO
 		month = 7
 		3633 = {
 			controller = {
@@ -2475,7 +2476,11 @@ country_event = {
 		year = 1943
 		month = 9
 		controls = 1482 # Copenhagen
-
+		DEN = {
+			not = {
+				faction = alies
+			}
+		}
 		not = {
 			has_country_flag = foreign_wehrmacht_Danish
 		}
@@ -2502,6 +2507,11 @@ country_event = {
 		month = 6
 		controls = 1482 # Copenhagen
 		war_with = SOV
+		DEN = {
+			not = {
+				faction = alies
+			}
+		}
 
 		not = {
 			has_country_flag = foreign_wehrmacht_Denmark
@@ -2613,6 +2623,7 @@ country_event = {
 		war_with = SOV
 		controls = 1976
 		controls = 1694
+		controls = 2613
 
 		not = {
 			has_country_flag = foreign_wehrmacht_LVF
@@ -2641,6 +2652,7 @@ country_event = {
 		war_with = SOV
 		controls = 1861
 		controls = 1694
+		controls = 2311
 
 		not = {
 			has_country_flag = foreign_wehrmacht_Wall
@@ -2705,6 +2717,7 @@ country_event = {
 		war_with = SOV
 		controls = 1861
 		controls = 1694
+		controls = 2311
 
 		not = {
 			has_country_flag = Sturmbrigade_Wallonien
@@ -2938,6 +2951,9 @@ country_event = {
 		year = 1941
 		war_with = SOV
 		controls = 1976
+		862 = {
+			controlled_by = SWE
+		}
 
 		not = {
 			has_country_flag = foreign_wehrmacht_Swedish
@@ -2974,6 +2990,19 @@ country_event = {
 		1861 = {
 			controller = {
 				faction = axis
+			}
+		}
+		or = {
+			4540 = {
+				controlled_by = SPA
+			}
+			and = {
+				4540 = {
+					controlled_by = SPR
+				}
+				SPR = {
+					faction = axis
+				}
 			}
 		}
 
