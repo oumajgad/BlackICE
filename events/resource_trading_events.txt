@@ -1445,6 +1445,29 @@ country_event = {
 }
 
 country_event = {
+	id = 6503
+	trigger = {
+		controls = 9025
+		year = 1945
+
+		not = {
+			has_global_flag = taboshar_uranium_added
+		}
+	}
+	title = "New resource discovered!"
+	desc = "We have discovered new Uranium deposit in Taboshar (near Tashkent). Mining on a small scale will start right away."
+	picture = "uranium_trade"
+	option = {
+		name = "Yes!"
+		9025 = {
+			strategic_resource = uranium
+			uranium_building = 1
+		}
+		set_global_flag = taboshar_uranium_added
+	}
+}
+
+country_event = {
 	id = 1413
 
 	is_triggered_only = yes
