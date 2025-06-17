@@ -4878,6 +4878,224 @@ diplomatic_decisions = {
 			}
 		}
 	}
-	
+
+	SOV_border_war_check = {
+		potential = {
+			tag = SOV
+			ai = yes
+		}
+		allow = {
+			not = {
+				has_country_modifier = SOV_border_war_check_timer
+			}
+		}
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						not = {
+							has_country_flag = TUR_war
+							TUR = {
+								faction = axis
+							}
+						}
+						or = {
+							4503 = {
+								controller = {
+									faction = axis
+								}
+							}
+							4441 = {
+								controller = {
+									faction = axis
+								}
+							}
+							4187 = {
+								controller = {
+									faction = axis
+								}
+							}
+							4974 = {
+								controller = {
+									faction = axis
+								}
+							}
+							5045 = {
+								controller = {
+									faction = axis
+								}
+							}
+							5046 = {
+								controller = {
+									faction = axis
+								}
+							}
+						}
+					}
+					set_country_flag = TUR_war
+					country_event = 1004
+				}
+				any_country = {
+					limit = {
+						tag = SOV
+						not = {
+							has_country_flag = TUR_war
+							TUR = {
+								faction = allies
+							}
+						}
+						or = {
+							4503 = {
+								controller = {
+									faction = allies
+								}
+							}
+							4441 = {
+								controller = {
+									faction = allies
+								}
+							}
+							4187 = {
+								controller = {
+									faction = allies
+								}
+							}
+							4974 = {
+								controller = {
+									faction = allies
+								}
+							}
+							5045 = {
+								controller = {
+									faction = allies
+								}
+							}
+							5046 = {
+								controller = {
+									faction = allies
+								}
+							}
+						}
+					}
+					set_country_flag = TUR_war
+					country_event = 1005
+				}
+				any_country = {
+					limit = {
+						tag = SOV
+						not = {
+							has_country_flag = TUR_war
+							TUR = {
+								faction = axis
+							}
+							ITA = {
+								not = {
+									faction = axis
+								}
+							}
+						}
+						or = {
+							4503 = {
+								controlled_by = ITA
+							}
+							4441 = {
+								controlled_by = ITA
+							}
+							4187 = {
+								controlled_by = ITA
+							}
+							4974 = {
+								controlled_by = ITA
+							}
+							5045 = {
+								controlled_by = ITA
+							}
+							5046 = {
+								controlled_by = ITA
+							}
+						}
+					}
+					set_country_flag = TUR_war
+					country_event = 1006
+				}
+				any_country = {
+					limit = {
+						tag = SOV
+						not = {
+							has_country_flag = FIN_war
+							FIN = {
+								faction = axis
+							}
+						}
+						or = {
+							739 = {
+								controller = {
+									faction = axis
+								}
+							}
+							779 = {
+								controller = {
+									faction = axis
+								}
+							}
+							736 = {
+								controller = {
+									faction = axis
+								}
+							}
+							234 = {
+								controller = {
+									faction = axis
+								}
+							}
+						}
+					}
+					set_country_flag = FIN_war
+					country_event = 1004
+				}
+				any_country = {
+					limit = {
+						tag = SOV
+						not = {
+							has_country_flag = FIN_war
+							FIN = {
+								faction = allies
+							}
+						}
+						or = {
+							739 = {
+								controller = {
+									faction = allies
+								}
+							}
+							779 = {
+								controller = {
+									faction = allies
+								}
+							}
+							736 = {
+								controller = {
+									faction = allies
+								}
+							}
+							234 = {
+								controller = {
+									faction = allies
+								}
+							}
+						}
+					}
+					set_country_flag = FIN_war
+					country_event = 1005
+				}
+			}
+			add_country_modifier = {
+				name = "SOV_border_war_check_timer"
+				duration = 10
+			}
+		}
+	}
+		
 }
 #EOF#
