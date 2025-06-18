@@ -2511,3 +2511,329 @@ country_event = {
 		}
 	}
 }
+
+#START AST Ship Commission/Sale/Transfer events ID 29200+ and 29300+
+
+#START cruiser sales ID 29200+
+country_event = { #AST Asks to buy Hobart
+    id = 29200
+    is_triggered_only = yes
+    title = "Should we buy HMAS Hobart?"
+    desc = "We can offer to buy the Leander-class Light Cruiser, HMS Apollo from the United Kingdom as a part of our 1938 naval expansion program."
+    picture = "HMAS_Hobart"
+    option = {
+        name = "We'll take her!"
+		ai_chance = {
+			factor = 100
+		}
+		ENG = {
+			country_event = 29201 # Yes offers ENG to buy cruiser
+		}
+    }
+	option = {
+		name = "We don't bloody need her!"
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = { #ENG Event
+    id = 29201
+    is_triggered_only = yes
+    title = "Should we sell our light cruiser, HMS Apollo to the RAN?"
+    desc = "Our Leander-class light cruiser HMAS Apollo is looking to be bought by the Australians. Should we accept?"
+    picture = "HMAS_Hobart"
+    option = {
+        name = "Yes, we accept the Australians' offer."
+		#country_event = 29204 #Start Albatross payment to RN
+        money = 1000
+		remove_brigade = "HMS Apollo"	
+		ai_chance = {
+			factor = 100
+		}
+        AST = {
+			country_event = 29202 #YES
+			country_event = 29204 #Start RAN Albatross payment to RN
+		}
+    }
+	option = {
+		name = "They should be fine without it."
+		ai_chance = {
+			factor = 0
+		}
+		AST = {
+			country_event = 29203 #NO
+		}
+	}
+}
+country_event = {
+    id = 29202
+    is_triggered_only = yes
+    title = "The UK accepted our offer!"
+    desc = "The British government has decided to sell us the ship, HMS Apollo!"
+    picture = "HMAS_Hobart"
+    option = {
+        name = "You beauty! Bloody oath, what a fine vessel!"
+		money = -750
+		supplies = -2000
+		officer_pool = -100
+		manpower = -10
+		load_oob = hobart1938.txt
+		ENG = {
+			country_event = 29205
+		}
+    }
+}
+country_event = {
+    id = 29203
+    is_triggered_only = yes
+    title = "The UK Refuses Our Offer"
+    desc = "The British government has decided not to sell us HMS Apollo!"
+    picture = "HMAS_Hobart"
+    option = {
+        name = "Those useless drongos!"
+    }
+}
+# START Albatross sale to RN
+country_event = {
+    id = 29204
+    is_triggered_only = yes
+    title = "Albatross sold as payment to the United Kingdom!"
+    desc = "As part of the deal transferring HMAS Hobart to the RAN, the seaplane tender HMAS Albatross was transferred to the RN."
+    picture = "HMAS_Albatross"
+    option = {
+        name = "Bye Albatross!"
+		remove_brigade = "HMAS Albatross"
+        set_country_flag = HMAS_Albatross_Sold
+    }
+}
+country_event = {
+    id = 29205
+    is_triggered_only = yes
+    title = "Albatross Received!"
+    desc = "The seaplane tender HMAS Albatross has been transferred as part of Australia's payment to us."
+    picture = "HMAS_Albatross"
+    option = {
+        name = "Thanks!"
+		money = 750
+		load_oob = albatross1939.txt
+        set_country_flag = Albatross_To_RN
+    }
+}
+# END Albatross Sale
+country_event = { #AST Asks to buy HMAS Perth
+    id = 29206
+    is_triggered_only = yes
+    title = "Should we buy HMAS Perth?"
+    desc = "We can offer to buy the Leander-class Light Cruiser, HMS Amphion from the United Kingdom as a part of our 1938 naval expansion program."
+    picture = "HMAS_Perth"
+    option = {
+        name = "We'll take her!"
+		ai_chance = {
+			factor = 100
+		}
+		ENG = {
+			country_event = 29207 # Yes offers ENG to buy cruiser
+		}
+    }
+	option = {
+		name = "We don't bloody need her!"
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = { #ENG Event
+    id = 29207
+    is_triggered_only = yes
+    title = "Should we sell our light cruiser, HMS Amphion to the RAN?"
+    desc = "Our Leander-class light cruiser HMAS Amphion is looking to be bought by the Australians. Should we accept?"
+    picture = "HMAS_Perth"
+    option = {
+        name = "Yes, we accept the Australians' offer."
+        money = 1000
+		remove_brigade = "HMS Amphion"	
+		ai_chance = {
+			factor = 100
+		}
+        AST = {
+			country_event = 29208 #YES
+		}
+    }
+	option = {
+		name = "The Australians should be fine without it."
+		ai_chance = {
+			factor = 0
+		}
+		AST = {
+			country_event = 29209 #NO
+		}
+	}
+}
+country_event = { #Yes sale
+    id = 29208
+    is_triggered_only = yes
+    title = "The UK accepted our offer!"
+    desc = "The British government has decided to sell us the ship, HMS Amphion! We will commission this ship as HMAS Perth."
+    picture = "HMAS_Perth"
+    option = {
+        name = "You beauty! Bloody oath, what a fine vessel!"
+		money = -1000
+		supplies = -2000
+		officer_pool = -100
+		manpower = -10
+		load_oob = perth1939.txt
+    }
+}
+country_event = { #No sale
+    id = 29209
+    is_triggered_only = yes
+    title = "The UK Refuses Our Offer"
+    desc = "The British government has decided not to sell us HMS Amphion."
+    picture = "HMAS_Perth"
+    option = {
+        name = "Those useless drongos!"
+    }
+}
+#END cruiser sales
+
+#START destroyer commissions ID 29300+
+country_event = {
+    id = 29304
+    is_triggered_only = yes
+    title = "The UK has lent us the destroyer, HMS Napier!"
+    desc = "HMAS Napier was the first N-Class Destroyer commisioned into the RAN during WW2. It was built in the UK and was formally launched on the 22nd May 1940 and was then commissioned into the RAN on the 28th November 1940."
+    picture = "HMAS_Napier"
+    option = {
+        name = "Thanks!"
+		load_oob = napier1940.txt
+		manpower = -1
+		officer_pool = -50
+        set_country_flag = HMAS_Napier_Sent
+		ai_chance = {
+			factor = 100
+		}
+    }
+    option = {
+        name = "Nah, we'll be fine without her!"
+        ai_chance = {
+            factor = 0
+        }
+    }
+}
+country_event = {
+    id = 29305
+    is_triggered_only = yes
+    title = "The UK has lent us the destroyer, HMS Nepal!"
+    desc = "HMAS Nizam was the second N-Class Destroyer commisioned into the RAN during WW2. It was built in the UK and was formally launched on the 4th July 1940 and was then commissioned into the RAN on the 19th December 1940."
+    picture = "HMAS_Nizam"
+    option = {
+        name = "Thanks!"
+		load_oob = nizam1940.txt
+		manpower = -1
+		officer_pool = -50
+        set_country_flag = HMAS_Nizam_Sent
+		ai_chance = {
+			factor = 100
+		}
+	}
+    option = {
+        name = "We don't want your bloody ships!"
+        ai_chance = {
+            factor = 0
+        }
+    }
+}
+country_event = {
+    id = 29306
+    is_triggered_only = yes
+    title = "The UK has lent us the destroyer, HMS Nestor!"
+    desc = "HMAS Nestor was the third N-Class Destroyer commisioned into the RAN during WW2. It was built in the UK and was formally launched on the 9th July 1940 and was then commissioned into the RAN on the 3rd February, 1941."
+    picture = "HMAS_Nestor"
+    option = {
+        name = "Thanks!"
+		load_oob = nestor1941.txt
+		manpower = -1
+		officer_pool = -50
+        set_country_flag = HMAS_Nestor_Sent
+		ai_chance = {
+			factor = 100
+		}
+    }
+    option = {
+        name = "No way, mate!"
+        ai_chance = {
+            factor = 0
+        }
+    }
+}
+country_event = {
+    id = 29307
+    is_triggered_only = yes
+    title = "The UK has lent us the destroyer, HMS Norman!"
+    desc = "HMAS Norman was the fourth N-Class Destroyer commisioned into the RAN during WW2. It was built in the UK and was formally launched on the 30th October 1940 and was then commissioned into the RAN on the 29th September 1941."
+    picture = "HMAS_Norman"
+    option = {
+        name = "Cheers!"
+		load_oob = norman1941.txt
+		manpower = -1
+		officer_pool = -50
+        set_country_flag = HMAS_Norman_Sent
+		ai_chance = {
+			factor 100
+		}
+    }
+    option = {
+        name = "Piss off! No!"
+        ai_chance = {
+            factor = 0
+        }
+    }
+}
+country_event = {
+    id = 29308
+    is_triggered_only = yes
+    title = "The UK has lent us the destroyer, HMS Norseman!"
+    desc = "HMAS Nepal was the fifth N-Class Destroyer commisioned into the RAN during WW2. It was built in the UK and was formally launched on the 4th December 1941 and was then commissioned into the RAN on the 11th May 1942."
+    picture = "HMAS_Nepal"
+    option = {
+        name = "Thanks!"
+		load_oob = nepal1941.txt
+		manpower = -1
+		officer_pool = -50
+        set_country_flag = HMAS_Nepal_Sent
+		ai_chance {
+			factor = 100
+		}
+    }
+    option = {
+        name = "You pommies just don't bloody stop! Rack off!"
+        ai_chance = {
+            factor = 0
+        }
+    }
+}
+country_event = {
+    id = 29309
+    is_triggered_only = yes
+    title = "The UK has lent us the destroyers, HMS Quickmatch and Quiberon!"
+    desc = "EVTDESC29309"
+    picture = "HMAS_Quiberon_and_Quickmatch"
+    option = {
+        name = "Thanks, pommies!"
+		load_oob = qclassdestroyersRAN1942.txt
+		manpower = -2
+		officer_pool = -100
+        set_country_flag = HMAS_Quiberon_Quickmatch_Sent
+		ai_chance = {
+			factor = 100
+		}
+    }	
+    option = {
+        name = "For the last time mate, NO!"
+        ai_chance = {
+            factor = 0
+        }
+    }
+}
