@@ -256,3 +256,37 @@ diplomatic_decisions = {
 		}
 	}
 }
+
+diplomatic_decisions = {
+	# BEGIN Aircraft Buying AST
+	Buy_Hudson_Bombers_1938 = { #These were ordered through the British Air Ministry
+		potential = {
+			tag = AST
+			not = {
+				has_country_flag = Hudson_Bombers_Ordered_Decision_1938
+			}
+		}
+		allow = {
+			date = 1938.11.10
+		}
+		effect = {
+			set_country_flag = Hudson_Bombers_Ordered_Decision_1938
+			country_event = 29400
+		}
+	}
+		Buy_Hudson_Bombers_1939 = { #These were ordered and delivered through the British Air Ministry historically, so perhaps should money be transferred to the UK then the USA? Or am i being anal about it..
+		potential = {
+			tag = AST
+			not = {
+				has_country_flag = Hudson_Bombers_Ordered_Decision_1939
+			}
+		}
+		allow = {
+			date = 1939.9.12
+		}
+		effect = {
+			set_country_flag = Hudson_Bombers_Ordered_Decision_1939
+			country_event = 29405
+		}
+	}
+}

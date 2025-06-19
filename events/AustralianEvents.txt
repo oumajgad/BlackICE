@@ -2837,3 +2837,176 @@ country_event = {
         }
     }
 }
+
+#START Aircraft Buying IDs 29400+ AST
+country_event = { #1st AST Buy offer, 1938
+	id = 29400
+	is_triggered_only = yes
+	title = "Should we request to order 50 of the Lockheed Hudson Light Bomber from the USA?"
+	desc = "EVTDESC29400"
+	picture = "Hudson"
+	option = {
+		name = "Sure!"
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = Hudson_Bombers_Ordered_1938
+		USA = {
+			country_event = 29401 # AST asks USA to buy Hudsons
+		}
+	}
+	option = {
+		name = "No thanks!"
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = No_Hudson_Order_1938
+	}
+}
+country_event = {
+	id = 29401
+	is_triggered_only = yes
+	title = "The Australians want to order some of our Hudsons!"
+	desc = "The Australians are looking to order some of our newly-designed Hudson light bombers, should we allow them to?"
+	option = {
+		name = "Sure."
+		money = 900
+		supplies = 2500			
+		ai_chance = {
+			factor = 100
+		}
+		AST = {
+			country_event = 29402 #Same YES event
+		}
+	}
+	option = {
+		name = "No thanks."
+		ai_chance = {
+			factor = 0
+		}
+		AST = {
+			country_event = 29403
+		}
+	}
+}
+country_event = { #USA says Yes to hudson sale, this event will be used each time the USA says yes as it does nothing as of now and purely serves as a notification of acceptance.
+	id = 29402
+	is_triggered_only = yes
+	title = "The Americans accept our offer!"
+	desc = "The Yanks have accepted our offer to purchase 50 of their Hudsons! These should arrive very soon."
+	picture = "Hudson"
+	option = {
+		name = "Great!"
+		money = -900
+		supplies = -2500		
+	}
+}
+country_event = { #USA Says No to hudson sale
+	id = 29403
+	is_triggered_only = yes
+	title = "The Americans refused our offer to buy their Hudsons!"
+	desc = "The Yanks have chosen to not sell us their Hudsons."
+	picture = "Hudson"
+	option = {
+		name = "Ah, blimey!"
+		set_country_flag = No_Hudson_Order_1938
+	}
+}
+country_event = {
+	id = 29404
+	title = "The Hudsons we ordered in 1938 have arrived!"
+	desc = "The Lockheed Hudson Light Bombers we ordered from the USA in November of 1938 have finally arrived!"
+	trigger = {
+		tag = AST
+		has_country_flag = Hudson_Bombers_Ordered_1938
+		date = 1940.6.15 #the first arrived in January of 1940 but just for balance and realism, the full batch arrives in mid 1940
+		not = {
+			has_country_flag = Hudsons_Delivered_1938
+			has_country_flag = No_Hudson_Order_1938
+		}
+	}
+	option = {
+		name = "Great!"
+		load_oob = "Hudsons_AST1938.txt"
+		set_country_flag = Hudsons_Delivered_1938
+	}
+}
+country_event = { #2nd AST Buy offer, 1939
+	id = 29405
+	is_triggered_only = yes
+	title = "Should we request an order for another 50 of the Lockheed Hudson Light Bomber from the USA?"
+	desc = "EVTDESC29400"
+	picture = "Hudson"
+	option = {
+		name = "Sure!"
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = Hudson_Bombers_Ordered_1939
+		USA = {
+			country_event = 29406 # AST asks USA to buy Hudsons
+		}
+	}
+	option = {
+		name = "No, we don't need anymore bloody Hudsons."
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = No_Hudson_Order_1939
+	}
+}
+country_event = {
+	id = 29406
+	is_triggered_only = yes
+	title = "The Australians want to order some of our Hudsons!"
+	desc = "The Australians are looking to order some of our newly-designed Hudson light bombers, should we allow them to?"
+	option = {
+		name = "Sure."
+		money = 900
+		supplies = 2500			
+		ai_chance = {
+			factor = 100
+		}
+		AST = {
+			country_event = 29402 #Same YES event
+		}
+	}
+	option = {
+		name = "No thanks."
+		ai_chance = {
+			factor = 0
+		}
+		AST = {
+			country_event = 29407
+		}
+	}
+}
+country_event = { #USA Says No to hudson sale
+	id = 29407
+	is_triggered_only = yes
+	title = "The Americans refused our offer to buy their Hudsons!"
+	desc = "The Yanks have chosen to not sell us their Hudsons."
+	option = {
+		name = "Ah, blimey!"
+		set_country_flag = No_Hudson_Order_1939
+	}
+}
+country_event = {
+	id = 29408
+	title = "The Hudsons we ordered in 1939 have arrived!"
+	desc = "The Lockheed Hudson Light Bombers we ordered from the USA in September of 1939 have finally arrived!"
+	trigger = {
+		tag = AST
+		has_country_flag = Hudson_Bombers_Ordered_1939
+		date = 1940.10.5
+		not = {
+			has_country_flag = Hudsons_Delivered_1939
+			has_country_flag = No_Hudson_Order_1939
+		}
+	}
+	option = {
+		name = "Great!"
+		load_oob = "Hudsons_AST1939.txt"
+		set_country_flag = Hudsons_Delivered_1939
+	}
+}
