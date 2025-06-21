@@ -702,3 +702,153 @@ country_event = {
 		}
     }
 }
+
+# Event for the creation of Independent Syria
+event = {
+    id = 32501
+    title = "Syria Gains Independence"
+    desc = "EVTDESC32501"
+    picture = "xxxx"
+    
+    trigger = {
+        tag = FRA
+		date = 1946.3.1
+        controls = 5332
+        controls = 7397
+        controls = 7374
+       
+     	faction = allies 
+        not = {
+		has_country_flag = independence_of_syria
+        war_with = USA
+        war_with = ENG
+        war_with = SOV
+    		}
+	}
+    option = {
+        name = "Grant Syria Independence"
+        
+	set_country_flag = independence_of_syria
+        release = SYR
+			7374 = {
+				secede_province = SYR
+			}
+			7355 = {
+				secede_province = SYR
+			}
+			4567 = {
+				secede_province = SYR
+			}
+			7365 = {
+				secede_province = SYR
+			}
+			9073 = {
+				secede_province = SYR
+			}
+			5173 = {
+				secede_province = SYR
+			}
+			5082 = {
+				secede_province = SYR
+			}
+			7382 = {
+				secede_province = SYR
+			}
+			7375 = {
+				secede_province = SYR
+			}
+			4510 = {
+				secede_province = SYR
+			}
+			5140 = {
+				secede_province = SYR
+			}
+			7389 = {
+				secede_province = SYR
+			}
+			4829 = {
+				secede_province = SYR
+			}
+			4881 = {
+				secede_province = SYR
+			}
+			9125 = {
+				secede_province = SYR
+			}
+			4830 = {
+				secede_province = SYR
+			}
+			7397 = {
+				secede_province = SYR
+			}
+			7403 = {
+				secede_province = SYR
+			}
+			7434 = {
+				secede_province = SYR
+			}
+			5382 = {
+				secede_province = SYR
+			}
+			5332 = {
+				secede_province = SYR
+			}
+			7416 = {
+				secede_province = SYR
+			}
+			5270 = {
+				secede_province = SYR
+			}
+			5205 = {
+				secede_province = SYR
+			}
+			5140 = {
+				secede_province = SYR
+			}
+        
+        
+        dissent = 1  
+        
+        ai_chance = { factor = 100 }
+    }
+
+    option = {
+        name = "Maintain French Control Over Syria"
+        dissent = 5
+		relation = {
+			who = ENG
+			value = -50
+		}    
+        random_owned = {
+			limit = {
+				is_core = SYR
+			}
+			create_revolt = 3
+     	random_owned = {
+			limit = {
+				is_core = SYR
+			}
+			create_revolt = 3
+			}
+     	random_owned = {
+			limit = {
+				is_core = SYR
+			}
+			create_revolt = 3
+        	}
+		random_owned = {
+			limit = {
+				is_core = SYR
+			}
+			create_revolt = 3
+        	}
+		random_owned = {
+			limit = {
+				is_core = SYR
+			}
+			create_revolt = 3
+        	}
+        ai_chance = { factor = 0 } 
+    		}
+		}
+	}
