@@ -150,7 +150,7 @@ function P.LandTechs(voTechnologyData)
 		"infantry_guns",
 		"infantry_at",
 		"armor_plate_design",
-		"art_barrell_ammo"};
+		"art_barrel_ammo"};
 
 	return ignoreTech, preferTech
 end
@@ -343,7 +343,7 @@ function P.NavalTechs(voTechnologyData)
 		"frigate_class",
 		"light_naval_guns",
 		"light_warship_engine",
-		"light_warship_screws_rudder_optimalisation",
+		"light_warship_screws_rudder_optimisation",
 		"hydrophone_dev",
 		"small_warship_surface_radar",
 		"small_warship_airsearch_radar",
@@ -368,8 +368,8 @@ function P.NavalTechs(voTechnologyData)
 		"cruiser_naval_guns_HE_ammo",
 		"cruiser_naval_guns_autoloader",
 		"cruiser_engine_and_boilers",
-		"cruiser_screws_and_rudder_optimalisation",
-		"cruiser_hull_shape_optimalisation",
+		"cruiser_screws_and_rudder_optimisation",
+		"cruiser_hull_shape_optimisation",
 		"lightcruiser_armour_thickness",
 		"heavy_cruiser_armour_thickness",
 		"cruiser_bulkheads_layout",
@@ -390,9 +390,9 @@ function P.NavalTechs(voTechnologyData)
 		"carrier_light_anti_air_artilery",
 		"carrier_medium_anti_air_artilery",
 		"carrier_heavy_anti_air_artilery",
-		"carrier_screws_optimalisation",
-		"carrier_rudder_optimalisation",
-		"carrier_hull_shape_optimalisation",
+		"carrier_screws_optimisation",
+		"carrier_rudder_optimisation",
+		"carrier_hull_shape_optimisation",
 		"carrier_armour_thickness",
 		"light_carrier_armour_thickness",
 		"carrier_vertical_protection",

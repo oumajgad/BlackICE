@@ -171,7 +171,7 @@ function P.LandTechs(voTechnologyData)
 		"APCBC_ammo",
 		"apds_ammo",
 		"range_finding",
-		"art_barrell_ammo",
+		"art_barrel_ammo",
 		"gun_carriage",
 		"aa_ammo",
 		"artillery_activation"

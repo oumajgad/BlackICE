@@ -100,3 +100,193 @@ diplomatic_decisions = {
 		}
 	}
 }
+
+diplomatic_decisions = {
+	Commission_HMAS_Hobart = { #AST Request to buy HMAS Hobart from RN, 1938
+		potential = {
+			tag = AST
+			not = { has_country_flag = HMAS_Hobart_Sale }
+		}
+		allow = {
+			date = 1938.9.13
+			has_naval_base = yes
+		}
+		effect = {
+			AST = {
+				country_event = 29200 #Event Should we buy HMAS Hobart?
+			}
+			set_country_flag = HMAS_Hobart_Sale
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	Commission_HMAS_Perth = { #AST Request to buy HMAS Perth from RN, 1939
+		potential = {
+			tag = AST
+			not = { has_country_flag = HMAS_Perth_Sale }
+		}
+		allow = {
+			date = 1939.6.29
+			has_naval_base = yes
+		}
+		effect = {
+			AST = {
+				country_event = 29206 #Event Should we buy HMAS Perth?
+			}
+			set_country_flag = HMAS_Perth_Sale
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	HMAS_Napier_To_RAN = { #Send HMAS Napier to the RAN from RN, 1940
+		potential = {
+			tag = ENG
+			not = { has_country_flag = HMAS_Napier_Sent }
+		}
+		allow = {
+			date = 1940.11.28
+			has_naval_base = yes
+		}
+		effect = {
+			AST = {
+				country_event = 29304
+			}
+			set_country_flag = HMAS_Napier_Sent
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	HMAS_Nizam_To_RAN = { #Send HMAS Nizam to the RAN from RN, 1940
+		potential = {
+			tag = ENG
+			not = { has_country_flag = HMAS_Nizam_Sent }
+		}
+		allow = {
+			date = 1940.12.19
+			has_naval_base = yes
+		}
+		effect = {
+			AST = {
+				country_event = 29305
+			}
+			set_country_flag = HMAS_Nizam_Sent
+
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	HMAS_Nestor_To_RAN = { #Send HMAS Nestor to the RAN from RN, 1941
+		potential = {
+			tag = ENG
+			not = { has_country_flag = HMAS_Nestor_Sent }
+		}
+		allow = {
+			date = 1941.2.3
+			has_naval_base = yes
+		}
+		effect = {
+			AST = {
+				country_event = 29306
+			}
+			set_country_flag = HMAS_Nestor_Sent
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	HMAS_Norman_To_RAN = { #Send HMAS Norman to the RAN from RN, 1941
+		potential = {
+			tag = ENG
+			not = { has_country_flag = HMAS_Norman_Sent }
+		}
+		allow = {
+			date = 1941.9.29
+			has_naval_base = yes
+		}
+		effect = {
+			AST = {
+				country_event = 29307
+			}
+			set_country_flag = HMAS_Norman_Sent
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	HMAS_Nepal_To_RAN = { #Send HMAS Nepal to the RAN from RN, 1942
+		potential = {
+			tag = ENG
+			not = { has_country_flag = HMAS_Nepal_Sent }
+		}
+		allow = {
+			date = 1942.5.11
+			has_naval_base = yes
+		}
+		effect = {
+			AST = {
+				country_event = 29308
+			}
+			set_country_flag = HMAS_Nepal_Sent
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	HMAS_Quiberon_Quickmatch_To_RAN = { #Send Quiberon and Quickmatch to the RAN from RN, 1942
+		potential = {
+			tag = ENG
+			not = { has_country_flag = HMAS_Quiberon_Quickmatch_Sent }
+		}
+		allow = {
+			date = 1942.8.10 # Middle date of roughly when both ships were commissioned, sent close enough together historically so grouped.
+			has_naval_base = yes
+		}
+		effect = {
+			AST = {
+				country_event = 29309
+			}
+			set_country_flag = HMAS_Quiberon_Quickmatch_Sent
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+}
+
+diplomatic_decisions = {
+	# BEGIN Aircraft Buying AST
+	Buy_Hudson_Bombers_1938 = { #These were ordered through the British Air Ministry
+		potential = {
+			tag = AST
+			not = {
+				has_country_flag = Hudson_Bombers_Ordered_Decision_1938
+			}
+		}
+		allow = {
+			date = 1938.11.10
+		}
+		effect = {
+			set_country_flag = Hudson_Bombers_Ordered_Decision_1938
+			country_event = 29400
+		}
+	}
+		Buy_Hudson_Bombers_1939 = { #These were ordered and delivered through the British Air Ministry historically, so perhaps should money be transferred to the UK then the USA? Or am i being anal about it..
+		potential = {
+			tag = AST
+			not = {
+				has_country_flag = Hudson_Bombers_Ordered_Decision_1939
+			}
+		}
+		allow = {
+			date = 1939.9.12
+		}
+		effect = {
+			set_country_flag = Hudson_Bombers_Ordered_Decision_1939
+			country_event = 29405
+		}
+	}
+}
