@@ -157,7 +157,7 @@ function P.LandTechs(voTechnologyData)
 		"engineer_bridging_equipment",
 		"engineer_assault_equipment",
 		"smallarms_technology",
-		"art_barrell_ammo",
+		"art_barrel_ammo",
 		"gun_carriage",
 		"range_finding",
 		"small_calibre_gun_design",

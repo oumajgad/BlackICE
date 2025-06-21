@@ -150,7 +150,7 @@ function P.LandTechs(voTechnologyData)
 		"infantry_guns",
 		"infantry_at",
 		"armor_plate_design",
-		"art_barrell_ammo"};
+		"art_barrel_ammo"};
 
 	return ignoreTech, preferTech
 end

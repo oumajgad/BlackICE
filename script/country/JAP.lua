@@ -107,7 +107,7 @@ function P.LandTechs(voTechnologyData)
 		"extreme_terrain_combat_tactics",
 		"light_armor_brigade_design",
 		"medium_velocity_gun",
-		"art_barrell_ammo"};
+		"art_barrel_ammo"};
 
 	return ignoreTech, preferTech
 end

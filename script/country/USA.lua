@@ -125,7 +125,7 @@ function P.LandTechs(voTechnologyData)
 		"engineer_assault_equipment",
 		"jungle_warfare_equipment",
 		"airlanding_infantry_brigade_activation",
-		"art_barrell_ammo",
+		"art_barrel_ammo",
 		"gun_carriage",
 		"armor_brigade_design",
 		"range_finding",
