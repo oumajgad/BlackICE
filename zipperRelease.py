@@ -27,7 +27,7 @@ def zipdir(filename):
     addDxvkArchive(zipf)
     addUtilityResources(zipf)
     addStatsCLI(zipf)
-    addBorderlessWindowDlls(zipf)
+    # addBorderlessWindowDlls(zipf)
     addExePatcher(zipf)
     maxcount = countFiles()
     counter = 0
