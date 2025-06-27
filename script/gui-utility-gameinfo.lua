@@ -391,6 +391,70 @@ if wx ~= nil then
 	UI.m_panel_GameInfo_Modifiers:Layout()
 	UI.bSizer_GameInfo_Modifiers1:Fit( UI.m_panel_GameInfo_Modifiers )
 	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Modifiers, "Modifiers", False )
+	UI.m_panel_GameInfo_ProvinceBuildings = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer_GameInfo_ProvinceBuildings1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.fgSizer_GameInfo_ProvinceBuildings1 = wx.wxFlexGridSizer( 1, 1, 0, 0 )
+	UI.fgSizer_GameInfo_ProvinceBuildings1:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_ProvinceBuildings1:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_ProvinceBuildings1:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_choice_GameInfo_ProvinceBuildings_BuildingsChoices = {}
+	UI.m_choice_GameInfo_ProvinceBuildings_Buildings = wx.wxChoice( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_choice_GameInfo_ProvinceBuildings_BuildingsChoices, 0 )
+	UI.m_choice_GameInfo_ProvinceBuildings_Buildings:SetSelection( 0 )
+	UI.fgSizer_GameInfo_ProvinceBuildings1:Add( UI.m_choice_GameInfo_ProvinceBuildings_Buildings, 0, wx.wxALIGN_CENTER_VERTICAL + wx.wxALL + wx.wxEXPAND, 5 )
+
+
+	UI.bSizer_GameInfo_ProvinceBuildings1:Add( UI.fgSizer_GameInfo_ProvinceBuildings1, 0, wx.wxEXPAND, 5 )
+
+	UI.gSizer_GameInfo_ProvinceBuildings1 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.fgSizer_GameInfo_ProvinceBuildings2 = wx.wxFlexGridSizer( 2, 1, 0, 0 )
+	UI.fgSizer_GameInfo_ProvinceBuildings2:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_ProvinceBuildings2:AddGrowableRow( 1 )
+	UI.fgSizer_GameInfo_ProvinceBuildings2:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_ProvinceBuildings2:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_staticText_GameInfo_ProvinceBuildings1 = wx.wxStaticText( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, "Provinces\nLevel - Name [ID]", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText_GameInfo_ProvinceBuildings1:Wrap( -1 )
+
+	UI.fgSizer_GameInfo_ProvinceBuildings2:Add( UI.m_staticText_GameInfo_ProvinceBuildings1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_listBox_GameInfo_ProvinceBuildings_ProvincesChoices = {}
+	UI.m_listBox_GameInfo_ProvinceBuildings_Provinces = wx.wxListBox( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_listBox_GameInfo_ProvinceBuildings_ProvincesChoices, wx.wxLB_ALWAYS_SB + wx.wxLB_SINGLE )
+	UI.fgSizer_GameInfo_ProvinceBuildings2:Add( UI.m_listBox_GameInfo_ProvinceBuildings_Provinces, 1, wx.wxALL + wx.wxEXPAND, 5 )
+
+
+	UI.gSizer_GameInfo_ProvinceBuildings1:Add( UI.fgSizer_GameInfo_ProvinceBuildings2, 1, wx.wxEXPAND, 5 )
+
+	UI.fgSizer_GameInfo_ProvinceBuildings3 = wx.wxFlexGridSizer( 2, 1, 0, 0 )
+	UI.fgSizer_GameInfo_ProvinceBuildings3:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_ProvinceBuildings3:AddGrowableRow( 1 )
+	UI.fgSizer_GameInfo_ProvinceBuildings3:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_ProvinceBuildings3:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_staticText_GameInfo_ProvinceBuildings2 = wx.wxStaticText( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, "\nDetails", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText_GameInfo_ProvinceBuildings2:Wrap( -1 )
+
+	UI.fgSizer_GameInfo_ProvinceBuildings3:Add( UI.m_staticText_GameInfo_ProvinceBuildings2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_ProvinceBuildings_Details = wx.wxTextCtrl( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, "Coming soon!", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
+	UI.fgSizer_GameInfo_ProvinceBuildings3:Add( UI.m_textCtrl_GameInfo_ProvinceBuildings_Details, 1, wx.wxALL + wx.wxEXPAND, 5 )
+
+
+	UI.gSizer_GameInfo_ProvinceBuildings1:Add( UI.fgSizer_GameInfo_ProvinceBuildings3, 1, wx.wxEXPAND, 5 )
+
+
+	UI.bSizer_GameInfo_ProvinceBuildings1:Add( UI.gSizer_GameInfo_ProvinceBuildings1, 1, wx.wxEXPAND, 5 )
+
+	UI.m_button_GameInfo_ProvinceBuildings_Refresh = wx.wxButton( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, "Refresh", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.bSizer_GameInfo_ProvinceBuildings1:Add( UI.m_button_GameInfo_ProvinceBuildings_Refresh, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panel_GameInfo_ProvinceBuildings:SetSizer( UI.bSizer_GameInfo_ProvinceBuildings1 )
+	UI.m_panel_GameInfo_ProvinceBuildings:Layout()
+	UI.bSizer_GameInfo_ProvinceBuildings1:Fit( UI.m_panel_GameInfo_ProvinceBuildings )
+	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_ProvinceBuildings, "Province Buildings", False )
 	UI.m_panel_GameInfo_Flags = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_GameInfo_Flags1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
@@ -758,5 +822,17 @@ if wx ~= nil then
 
 	UI.m_button_GameInfo_Inspector_ShowDetails:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		Parsing.Inspector.createDetailsPageForSelection()
+	end )
+
+	UI.m_choice_GameInfo_ProvinceBuildings_Buildings:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+		Parsing.ProvinceBuildings.HandleBuildingSelection()
+	end )
+
+	UI.m_button_GameInfo_ProvinceBuildings_Refresh:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		Parsing.ProvinceBuildings.Refresh()
+	end )
+
+	UI.m_listBox_GameInfo_ProvinceBuildings_Provinces:Connect( wx.wxEVT_COMMAND_LISTBOX_SELECTED, function(event)
+		-- Parsing.ProvinceBuildings.HandleSelection()
 	end )
 end

@@ -70,4 +70,5 @@ P.UnitConversions = require('unitConversion')
 P.Flags = require('flags')
 P.Vars = require('vars')
 P.Inspector = require('inspector')
+P.ProvinceBuildings = require('provinceBuildings')
 return Parsing

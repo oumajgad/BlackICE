@@ -50,3 +50,5 @@ if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     defs = CModifierDefinition.get_modifier_definitions(pm)
     print(f"{len(defs)=}")
+    x = CModifierDefinition.make(pm=pm, ptr=0x223BBD10)
+    print(x)

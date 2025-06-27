@@ -2113,6 +2113,7 @@ if wx ~= nil then
 		Parsing.Techs.FillData()
 		Parsing.Modifiers.FillData()
 		Parsing.Units.FillData()
+		Parsing.ProvinceBuildings.FillwxChoice()
 		UI.MyFrame4:Show(true)
 	end )
 

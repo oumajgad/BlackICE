@@ -911,7 +911,7 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
                 lua_pushstring(L, "type");
                 lua_pushstring(L, "Province");
                 lua_settable(L, -3);
-                CUnit::pushCUnitToStack(L, currentNode->data);
+                // CUnit::pushCUnitToStack(L, currentNode->data);
             } else {
                 DEBUG_OUT(printf("Unknown Type \n"));
                 lua_pushstring(L, "type");

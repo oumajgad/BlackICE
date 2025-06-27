@@ -4,9 +4,11 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
+from arrays.ModifiersArray import ModifiersArray
 from classes.CArmy import CArmy
 from classes.CMinister import CMinister
 from classes.CModifier import CModifier
+from classes.CModifierDefinition import CModifierDefinition
 from constants import DATA_SECTION_START
 from structs.LinkedLists import LinkedListNode
 from utils import utils
@@ -39,8 +41,9 @@ class CCountryOffsets:
     units_ll_ptr: int = 0xBAC
     owned_provinces_ll_ptr: int = 0xCF0
     controlled_provinces_ID_ll_ptr: int = 0xD00
-    modifier_definitions_array_ptr: int = 0xDA8
+    general_modifier_array_ptr: int = 0xDA8
     CDiplomacyStatus_array_ptr: int = 0xE28  # array with pointers to all CDiplomacystatus
+    national_unity: int = 0x10B8
 
 
 class CCountry(pydantic.BaseModel):
@@ -182,33 +185,18 @@ def dump_country(pm: Pymem, tag: str) -> str:
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     print(pm.base_address)
-    print(pm.base_address + DATA_SECTION_START)
-    x = utils.rawbytes(
-        (pm.base_address + CCountryOffsets.VFTABLE_OFFSET).to_bytes(length=4, byteorder="little", signed=False).hex()
-    )
-    print(x)
-    # countries = CCountry.get_countries(pm)
-    # print(len(countries))
-    # print(utils.get_array_element_lengths(countries))
-    # with open("out.json", "w") as f:
-    #     out = {countries: get_all_countries(pm)}
-    #     f.write(json.dumps(out, indent=2))
     country = get_country(pm, "IRE")
     print(
         utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
     )
-    country = get_country(pm, "GER")
-    print(
-        utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
-    )
-    # modifiers = country.get_active_modifiers()
-    # print(modifiers)
-    # print(utils.int_to_pointer(country.self_ptr))
-    # # print(f"{len(country.available_CMinisters)=}")
-    # # print(f"{len(country.CFlags.flags)=}")
-    # # print(f"{len(country.CVariables.variables)=}")
-    # # print(f"{len(country.units)=}")
-    # #
-    # # with open("out.json", "w") as f:
-    # #     f.write(utils.dump_model(country))
-    # # exit(0)
+    modifiers_ptr = pm.read_uint(country.self_ptr + CCountryOffsets.general_modifier_array_ptr)
+    print(utils.int_to_pointer(modifiers_ptr))
+    for i in range(0, 143):
+        offset = i * 8
+        definition_ptr = pm.read_uint(modifiers_ptr + offset + 4)
+        definition = CModifierDefinition.make(pm, definition_ptr)
+        effect = pm.read_int(modifiers_ptr + offset)
+        print(f"{utils.int_to_pointer(offset)} - {definition.name_raw}: {effect}")
+
+    mods_arr = ModifiersArray.make(pm, modifiers_ptr)
+    print(mods_arr)

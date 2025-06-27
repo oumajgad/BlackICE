@@ -3,6 +3,7 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
+from arrays.ModifiersArray import ModifiersArray
 from classes.CProvinceBuilding import CProvinceBuilding
 from constants import DATA_SECTION_START
 from utils import utils
@@ -127,7 +128,9 @@ if __name__ == "__main__":
     # for ptr in provinces:
     #     # print(ptr)
     #     province = CMapProvince.make(pm, ptr)
-    prov = CMapProvince.get_province(pm, 2207)
+    prov = CMapProvince.get_province(pm, 2208)
     print(prov)
     mods_ptr = pm.read_uint(prov.self_ptr + CMapProvinceOffsets.province_modifiers_array_ptr)
-    utils.dump_bytes(pm, mods_ptr, 0x200)
+    # utils.dump_bytes(pm, mods_ptr, 0x200)
+    modifiers = ModifiersArray.make(pm, mods_ptr)
+    print(modifiers)
