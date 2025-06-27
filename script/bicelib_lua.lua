@@ -37,9 +37,9 @@ if mod then
     -- BiceLib.Leaders.checkRankSpecificTraitsConsistency()
 
     -- Units
-    BiceLib.Units.setCorpsUnitLimit(4, "---")
-    BiceLib.Units.setArmyUnitLimit(4, "---")
-    BiceLib.Units.setArmyGroupUnitLimit(4, "---")
+    BiceLib.Units.setCorpsUnitLimit(G_BASE_COC_LIMIT, "---")
+    BiceLib.Units.setArmyUnitLimit(G_BASE_COC_LIMIT, "---")
+    BiceLib.Units.setArmyGroupUnitLimit(G_BASE_COC_LIMIT, "---")
     -- BiceLib.Units.setArmyGroupUnitLimit(10, "GER")
     -- BiceLib.Units.addCommandLimitTrait("pskill_1", -1)
     -- BiceLib.Units.addCommandLimitTrait("pskill_4", 1)

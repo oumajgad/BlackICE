@@ -1582,7 +1582,7 @@ function CheckOobUnitLimitTechnologyStatus(skipDayCheck)
 		return
 	end
 
-	local base = 4
+	local base = G_BASE_COC_LIMIT
 	local techsAndEffects = {
 		["Corps_command_structure_BK"] = {
 			{

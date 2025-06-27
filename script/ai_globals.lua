@@ -102,3 +102,5 @@ CustomTradeAiDefaults = {
 		}
 	}
 }
+
+G_BASE_COC_LIMIT = 4
