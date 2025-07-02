@@ -338,7 +338,7 @@ function P.NavalTechs(voTechnologyData)
 		"cag_bomber",
 		"cag_torpedo",
 		"closed_hangar",
-		"closed_hangar_safety_procedures",
+		"carrier_safety_procedures",
 		"double_hangar",
 		"carrier_hanger"};
 

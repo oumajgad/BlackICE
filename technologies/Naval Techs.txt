@@ -2602,11 +2602,11 @@ cruiser_engine_and_boilers = {
 		range = 100
 		maximum_speed = 0.3
 	}
-	#seaplane_tender = {
-	#	fuel_consumption = 0.007
-	#	range = 100
-	#	maximum_speed = 0.15
-	#}
+	seaplane_tender = {
+		fuel_consumption = 0.1
+		range = 100
+		maximum_speed = 0.3
+	}
 
 	research_bonus_from = {
 		naval_engineering = 0.15
@@ -2762,6 +2762,11 @@ cruiser_screws_and_rudder_optimisation = {
 		maximum_speed = 0.2
 		sea_defence = 4.15
 	}
+	seaplane_tender = {
+		#fuel_consumption = -0.075
+		maximum_speed = 0.2
+		sea_defence = 4.15
+	}
 
 	research_bonus_from = {
 		naval_engineering = 0.15
@@ -2910,6 +2915,10 @@ cruiser_hull_shape_optimisation = {
 		range = 35
 	}
 	anti_air_cruiser = {
+		fuel_consumption = -0.075		
+		range = 35
+	}
+	seaplane_tender = {
 		fuel_consumption = -0.075		
 		range = 35
 	}
@@ -3248,6 +3257,9 @@ cruiser_bulkheads_layout = {
 		max_strength = 2.45
 	}
 	anti_air_cruiser = {
+		max_strength = 2.45
+	}
+	seaplane_tender = {
 		max_strength = 2.45
 	}
 
@@ -10310,7 +10322,9 @@ open_hangar = {
 	escort_carrier = {
 		default_morale = 0.2
 	}
-
+	carrier_protection = {
+		efficiency  = 0.125
+	}
 	research_bonus_from = {
 		naval_engineering = 0.1
 		carrier_practical = 0.1
@@ -10380,32 +10394,107 @@ closed_hangar = {
 	stealable = no
 	change = no
 }
-closed_hangar_safety_procedures = {
+carrier_safety_procedures = {
 
 	allow = {
-		closed_hangar = 1
+		or = {
+			and = {
+				carrier_crew_training = 3
+				carrier_safety_procedures = 0
+				not = {
+					carrier_safety_procedures = 1
+				}
+			}
+			and = {
+				carrier_crew_training = 3
+				carrier_safety_procedures = 1
+				not = {
+					carrier_safety_procedures = 2
+				}
+			}
+			and = {
+				carrier_crew_training = 4
+				carrier_safety_procedures = 2
+				not = {
+					carrier_safety_procedures = 3
+				}
+			}
+			and = {
+				carrier_crew_training = 4
+				carrier_safety_procedures = 3
+				not = {
+					carrier_safety_procedures = 4
+				}
+			}
+			and = {
+				carrier_crew_training = 5
+				carrier_safety_procedures = 4
+				not = {
+					carrier_safety_procedures = 5
+				}
+			}
+			and = {
+				carrier_crew_training = 5
+				carrier_safety_procedures = 5
+				not = {
+					carrier_safety_procedures = 6
+				}
+			}
+			and = {
+				carrier_crew_training = 6
+				carrier_safety_procedures = 6
+				not = {
+					carrier_safety_procedures = 7
+				}
+			}
+			and = {
+				carrier_crew_training = 6
+				carrier_safety_procedures = 7
+				not = {
+					carrier_safety_procedures = 8
+				}
+			}
+			and = {
+				carrier_crew_training = 7
+				carrier_safety_procedures = 8
+				not = {
+					carrier_safety_procedures = 9
+				}
+			}
+			and = {
+				carrier_crew_training = 7
+				carrier_safety_procedures = 9
+				not = {
+					carrier_safety_procedures = 10
+				}
+			}
+		}
 	}
 
 	### 1%
 	carrier = {
-		hull = 0.03
-		default_morale = 0.05
+		hull = 0.05
+		default_morale = 0.025
+		max_strength = 5
 	}
 	command_carrier = {
-		hull = 0.03
-		default_morale = 0.05
+		hull = 0.05
+		default_morale = 0.025
+		max_strength = 5
 	}
 	#super_carrier = {
 	#	hull = 0.04
 	#	default_morale = 0.05
 	#}
 	light_carrier = {
-		hull = 0.024
-		default_morale = 0.05
+		hull = 0.025
+		default_morale = 0.025
+		max_strength = 2.5
 	}
 	escort_carrier = {
-		hull = 0.02
-		default_morale = 0.05
+		hull = 0.025
+		default_morale = 0.025
+		max_strength = 2.5
 	}
 
 	research_bonus_from = {
@@ -10416,12 +10505,12 @@ closed_hangar_safety_procedures = {
 
 	on_completion = naval_engineering
 
-	difficulty = 5
+	difficulty = 8
 
-	start_year = 1936
-	max_level = 4
-	first_offset = 1940
-	additional_offset = 4
+	start_year = 1941
+	max_level = 10
+	first_offset = 1942
+	additional_offset = 1
 	folder = carrier_folder
 	stealable = no
 }

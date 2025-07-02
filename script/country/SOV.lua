@@ -327,7 +327,7 @@ function P.NavalTechs(voTechnologyData)
 		{"carrier_catapults", 0},
 		{"open_hangar", 0},
 		{"closed_hangar", 0},
-		{"closed_hangar_safety_procedures", 0},
+		{"carrier_safety_procedures", 0},
 		{"double_hangar", 0},
 		{"deck_park", 0},
 		{"super_heavy_battleship_technology", 0},

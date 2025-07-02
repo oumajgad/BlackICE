@@ -270,7 +270,7 @@ function P.NavalTechs(voTechnologyData)
 		{"floatplane_dev_torpedo", 0},
 		{"floatplane_dev_fighter", 0},
 		{"closed_hangar", 0},
-		{"closed_hangar_safety_procedures", 0},
+		{"carrier_safety_procedures", 0},
 		{"double_hangar", 0},
 		{"three_three", 0},
 		{"three_three_reverse", 0},
