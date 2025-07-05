@@ -14,6 +14,7 @@
 #include <GameClasses/CUnit.hpp>
 #include <GameClasses/CSubUnitDefinition.hpp>
 #include <GameClasses/CTerrain.hpp>
+#include <GameClasses/CMapProvince.hpp>
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
 #include <Hooks/CArmyHooks.hpp>
@@ -66,6 +67,15 @@ __declspec(dllexport) int cacheCountries(lua_State* L)
         }
     }
     return 0;
+}
+
+__declspec(dllexport) int getProvinceDetails(lua_State* L)
+{
+    int provinceId = luaL_checkint(L, 1, NULL);
+    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+    auto province = CMapProvince::GetMapProvinceById(external, provinceId);
+    CMapProvince::PushCMapProvinceToStack(L, province);
+    return 1;
 }
 
 __declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
@@ -839,7 +849,7 @@ __declspec(dllexport) int disableInterAiExpeditionaries(lua_State* L)
 /////////////////////////////////////
 
 uintptr_t* CIngameIdlerPtr = 0;
-__declspec(dllexport) int getSelectedEntity(lua_State* L)
+__declspec(dllexport) int cacheIngameIdler(lua_State* L)
 {
     // Find CIngameIdler
     if (CIngameIdlerPtr == 0) {
@@ -850,11 +860,16 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
         auto res = external.findSignatures(MODULE_BASE + DATA_SECTION_START, sig.c_str(), 4, 99);
         DEBUG_OUT(printf("res->size(): %i \n", res->size()));
         if (res->size() != 0) {
-            CIngameIdlerPtr = (uintptr_t*) res->at(res->size() - 1);
-            DEBUG_OUT(printf("CIngameIdlerPtr set to: %#010x \n", (uintptr_t) CIngameIdlerPtr));
+            CIngameIdlerPtr = (uintptr_t*)res->at(res->size() - 1);
+            DEBUG_OUT(printf("CIngameIdlerPtr set to: %#010x \n", (uintptr_t)CIngameIdlerPtr));
             delete res;
         }
     }
+}
+
+__declspec(dllexport) int getSelectedEntity(lua_State* L)
+{
+    cacheIngameIdler(L);
 
     // Find CTerrains to get indices for each units CUnitAdjusterArray
     if (CTerrain::Terrains->size() == 0) {
@@ -1038,6 +1053,7 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"stopConsole", stopConsole},
     {"setModuleBase", setModuleBase},
     {"cacheCountries", cacheCountries},
+    {"cacheIngameIdler", cacheIngameIdler},
     {"hookCountryConstructor", hookCountryConstructor},
     {"startPeriodics", startPeriodics},
     {"test", test},
@@ -1054,6 +1070,7 @@ void registerFunction(lua_State* this_state, const char* name, lua_CFunction fun
 void registerGameInfoFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "GameInfo");
     lua_newtable(this_state);
+    registerFunction(this_state, "getProvinceDetails", getProvinceDetails);
     registerFunction(this_state, "getCountryFlags", getCountryFlags);
     registerFunction(this_state, "getCountryVariables", getCountryVariables);
     registerFunction(this_state, "getCountryOffmapIc", getCountryOffmapIc);

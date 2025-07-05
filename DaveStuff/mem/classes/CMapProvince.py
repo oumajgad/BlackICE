@@ -13,13 +13,15 @@ class CMapProvinceOffsets:
     VFTABLE_OFFSET_1: ClassVar[int] = 0x11BEBF8  # this one return  extra provinces, needs investigation
     VFTABLE_OFFSET_2: ClassVar[int] = 0x11BEC1C
     is_selected: int = 0xC
-    supply_depot_province: int = 0x48
+    supply_depot_province_id: int = 0x48
     id: int = 0xD0
     CTerrain_ptr: int = 0xD4
+    pressure: int = 0x74  # air pressure
     province_modifiers_array_ptr: int = 0x114  # Array of CModifierDefinition
     province_timed_modifiers_list_start_ptr: int = 0x13C
     province_timed_modifiers_list_end_ptr: int = 0x140
-    supply_pool: int = 0x1B4
+    supply_pool: int = 0x164
+    fuel_pool: int = 0x168
     oil: int = 0x27C
     metal: int = 0x280
     energy: int = 0x284
@@ -47,7 +49,7 @@ class CMapProvince(pydantic.BaseModel):
     controller_tag: str
     controller_id: int
     supply_pool: int
-    supply_depot_province: int
+    supply_depot_province_id: int
     manpower: int
     leadership: int
     energy: int
@@ -69,7 +71,9 @@ class CMapProvince(pydantic.BaseModel):
             "controller_tag": pm.read_bytes(ptr + CMapProvinceOffsets.controller_tag, 3),
             "controller_id": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.controller_id, 4)),
             "supply_pool": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.supply_pool, 4)),
-            "supply_depot_province": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.supply_depot_province, 4)),
+            "supply_depot_province_id": utils.to_number(
+                pm.read_bytes(ptr + CMapProvinceOffsets.supply_depot_province_id, 4)
+            ),
             "manpower": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.manpower, 4)),
             "leadership": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.leadership, 4)),
             "energy": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.energy, 4)),
@@ -128,9 +132,10 @@ if __name__ == "__main__":
     # for ptr in provinces:
     #     # print(ptr)
     #     province = CMapProvince.make(pm, ptr)
-    prov = CMapProvince.get_province(pm, 2208)
+    prov = CMapProvince.get_province(pm, 1861)
     print(prov)
     mods_ptr = pm.read_uint(prov.self_ptr + CMapProvinceOffsets.province_modifiers_array_ptr)
     # utils.dump_bytes(pm, mods_ptr, 0x200)
     modifiers = ModifiersArray.make(pm, mods_ptr)
     print(modifiers)
+    utils.dump_bytes(pm, prov.self_ptr, 0x200)

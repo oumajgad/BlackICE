@@ -4,7 +4,7 @@ local True = true
 local False = false
 
 if wx ~= nil then
-	UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 650,600 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
+UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 650,600 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
 	UI.MyFrame4:SetSizeHints( wx.wxSize( 650,600 ), wx.wxDefaultSize )
 	UI.MyFrame4.m_mgr = wxaui.wxAuiManager()
 	UI.MyFrame4.m_mgr:SetManagedWindow( UI.MyFrame4 )
@@ -424,6 +424,24 @@ if wx ~= nil then
 	UI.m_listBox_GameInfo_ProvinceBuildings_Provinces = wx.wxListBox( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_listBox_GameInfo_ProvinceBuildings_ProvincesChoices, wx.wxLB_ALWAYS_SB + wx.wxLB_SINGLE )
 	UI.fgSizer_GameInfo_ProvinceBuildings2:Add( UI.m_listBox_GameInfo_ProvinceBuildings_Provinces, 1, wx.wxALL + wx.wxEXPAND, 5 )
 
+	UI.gSizer_GameInfo_ProvinceBuildings2 = wx.wxGridSizer( 1, 3, 0, 0 )
+
+	UI.m_staticText_GameInfo_ProvinceBuildings2 = wx.wxStaticText( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, "Sort by", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_ProvinceBuildings2:Wrap( -1 )
+
+	UI.gSizer_GameInfo_ProvinceBuildings2:Add( UI.m_staticText_GameInfo_ProvinceBuildings2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_choice_GameInfo_ProvinceBuildings_SortChoices = { "Name", "Level" }
+	UI.m_choice_GameInfo_ProvinceBuildings_Sort = wx.wxChoice( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_choice_GameInfo_ProvinceBuildings_SortChoices, 0 )
+	UI.m_choice_GameInfo_ProvinceBuildings_Sort:SetSelection( 0 )
+	UI.gSizer_GameInfo_ProvinceBuildings2:Add( UI.m_choice_GameInfo_ProvinceBuildings_Sort, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer_GameInfo_ProvinceBuildings2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+
+
+	UI.fgSizer_GameInfo_ProvinceBuildings2:Add( UI.gSizer_GameInfo_ProvinceBuildings2, 1, wx.wxEXPAND, 5 )
+
 
 	UI.gSizer_GameInfo_ProvinceBuildings1:Add( UI.fgSizer_GameInfo_ProvinceBuildings2, 1, wx.wxEXPAND, 5 )
 
@@ -438,7 +456,7 @@ if wx ~= nil then
 
 	UI.fgSizer_GameInfo_ProvinceBuildings3:Add( UI.m_staticText_GameInfo_ProvinceBuildings2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_GameInfo_ProvinceBuildings_Details = wx.wxTextCtrl( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, "Coming soon!", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
+	UI.m_textCtrl_GameInfo_ProvinceBuildings_Details = wx.wxTextCtrl( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE )
 	UI.fgSizer_GameInfo_ProvinceBuildings3:Add( UI.m_textCtrl_GameInfo_ProvinceBuildings_Details, 1, wx.wxALL + wx.wxEXPAND, 5 )
 
 
@@ -833,6 +851,10 @@ if wx ~= nil then
 	end )
 
 	UI.m_listBox_GameInfo_ProvinceBuildings_Provinces:Connect( wx.wxEVT_COMMAND_LISTBOX_SELECTED, function(event)
-		-- Parsing.ProvinceBuildings.HandleSelection()
+		Parsing.ProvinceBuildings.HandleProvinceSelection()
+	end )
+
+	UI.m_choice_GameInfo_ProvinceBuildings_Sort:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+		Parsing.ProvinceBuildings.HandleSortUpdate()
 	end )
 end
