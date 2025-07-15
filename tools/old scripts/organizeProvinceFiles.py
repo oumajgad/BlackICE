@@ -62,6 +62,6 @@ province_data = get_province_data()
 print(f"{len(province_data) = }")
 
 for province in province_data:
-    os.makedirs(f"./history/provinces/{province.country_name}/", exist_ok=True)
-    with open(f"./history/provinces/{province.country_name}/{province.id} - {province.name}.txt", "w") as f:
+    os.makedirs(f"./history/provinces/bice_{province.country_name}/", exist_ok=True)
+    with open(f"./history/provinces/bice_{province.country_name}/{province.id} - {province.name}.txt", "w") as f:
         f.writelines(province.lines)
