@@ -1023,22 +1023,22 @@ small_warship_surface_radar = {
 	}
 
 	destroyer_actual = {
-		sub_detection = 1.5
-		surface_detection = 0.5
-		positioning = 0.007
+		sub_detection = 1.1
+		surface_detection = 0.4
+		positioning = 0.005
 		night = {
-			attack = 0.05
-			defence = 0.05
+			attack = 0.035
+			defence = 0.035
 		}
 
 	}
 	frigate = {
-		sub_detection = 1.5
-		surface_detection = 0.5
-		positioning = 0.017
+		sub_detection = 1.1
+		surface_detection = 0.4
+		positioning = 0.012
 		night = {
-			attack = 0.05
-			defence = 0.05
+			attack = 0.035
+			defence = 0.035
 		}
 
 	}
@@ -1055,8 +1055,8 @@ small_warship_surface_radar = {
 
 	start_year = 1940
 	first_offset = 1941
-	additional_offset = 2
-	max_level = 7
+	additional_offset = 1
+	max_level = 11
 	folder = smallship_folder
 }
 
@@ -1086,16 +1086,20 @@ small_warship_airsearch_radar = {
 	}
 
 	escort_carrier = {
-		air_detection = 1.00
+		air_attack = 0.1
+		air_detection = 0.6
 	}
 	destroyer = {
-		air_detection = 1.00
+		air_attack = 0.1
+		air_detection = 0.6
 	}
 	destroyer_actual = {
-		air_detection = 1.00
+		air_attack = 0.1
+		air_detection = 0.6
 	}
 	frigate = {
-		air_detection = 1.00
+		air_attack = 0.1
+		air_detection = 0.6
 	}
 
 	research_bonus_from = {
@@ -1110,8 +1114,8 @@ small_warship_airsearch_radar = {
 
 	start_year = 1940
 	first_offset = 1941
-	additional_offset = 2
-	max_level = 6
+	additional_offset = 1
+	max_level = 10
 	folder = smallship_folder
 }
 
@@ -1259,10 +1263,10 @@ smallwarship_fire_control_computer = {
 
 	### 3%
 	destroyer_actual = {
-		sea_attack = 1.5
-		convoy_attack = 0.27
-		distance = 0.005
-		positioning = 0.004
+		sea_attack = 1
+		convoy_attack = 0.2
+		distance = 0.003
+		positioning = 0.003
 
 		north_sea = {
 			attack = 0.01
@@ -1291,10 +1295,10 @@ smallwarship_fire_control_computer = {
 
 	}
 	frigate = {
-		sea_attack = 0.15
+		sea_attack = 0.1
 		#convoy_attack = 0.135
-		distance = 0.003
-		positioning = 0.010
+		distance = 0.002
+		positioning = 0.007
 
 		north_sea = {
 			attack = 0.01
@@ -1385,9 +1389,9 @@ smallwarship_AAA_control_computer = {
 	}
 
 	start_year = 1940
-	first_offset = 1942
-	additional_offset = 3
-	max_level = 4
+	first_offset = 1941
+	additional_offset = 2
+	max_level = 6
 	folder = smallship_folder
 }
 hdfd_radio_dev = {
@@ -1471,8 +1475,8 @@ hdfd_radio_dev = {
 
 	start_year = 1937
 	first_offset = 1940
-	additional_offset = 3
-	max_level = 5
+	additional_offset = 2
+	max_level = 7
 	folder = smallship_folder
 	change = no
 }
@@ -1485,31 +1489,31 @@ depth_charge = {
 
 	### 4%
 	torpedo_boat = {
-		sub_attack = 2.6
+		sub_attack = 2
 	}
 	motor_torpedo_boat = {
-		sub_attack = 2.6
+		sub_attack = 2
 	}
 	destroyer_actual = {
-		sub_attack = 5.2
+		sub_attack = 4
 	}
 	frigate = {
-		sub_attack = 8
+		sub_attack = 6
 	}
 	#light_cruiser = {
 	#	sub_attack = 4.5
 	#}
 	escort_carrier = {
-		sub_attack = 10
+		sub_attack = 8
 	}
 	naval_bomber = {
-		sub_attack = 4
+		sub_attack = 3
 	}
 	Flying_boat = {
 		#sub_attack = 4
 	}
 	convoy_escort = {
-		efficiency = 0.05
+		efficiency = 0.035
 	}
 
 	escort_efficiency = 0.05
@@ -1524,21 +1528,23 @@ depth_charge = {
 	difficulty = 5
 
 	start_year = 1918
-	first_offset = 1937
-	additional_offset = 4
-	max_level = 5
+	first_offset = 1939
+	additional_offset = 2
+	max_level = 7
 	folder = smallship_folder
 }
 hedgehog_dev = { ###exclude from tech decay?
 
 	allow = {
-		has_country_flag = hedgehog_dev_active
+		or = {
+			has_country_flag = hedgehog_dev_active
+			depth_charge = 5
+		}
 		or = {
 			has_country_flag = medium_large_education_investment_flag
 			has_country_flag = big_education_investment_flag
 			has_country_flag = destroyer_specialist_flag
 		}
-		depth_charge = 3
 	}
 
 	### 6%
@@ -1575,7 +1581,7 @@ hedgehog_dev = { ###exclude from tech decay?
 	start_year = 1943
 	first_offset = 1944
 	additional_offset = 3
-	max_level = 6
+	max_level = 4
 	folder = unit_training_folder
 }
 asw_counter_measures = {
