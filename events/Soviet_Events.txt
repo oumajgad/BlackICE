@@ -148,11 +148,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +900
+					value = +650
 				}
-				energy = -1800
-				metal = -900
-				rare_materials = -450
+				energy = -1300
+				metal = -650
+				rare_materials = -235
 				load_oob = SOV/Rifle_Division_109_1939_April.txt
 			}
 		}
@@ -186,6 +186,7 @@ country_event = {
     
     option = {
 		name = "Form these divisions!"
+		set_country_flag = 103RD
 		set_country_flag = 131RD
 		set_country_flag = 146RD
 		set_country_flag = 163RD
@@ -203,11 +204,12 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +4500
+					value = +3900
 				}
-				energy = -9000
-				metal = -4500
-				rare_materials = -2250
+				energy = -7800
+				metal = -3900
+				rare_materials = -1950
+				load_oob = SOV/Rifle_Division_103_1939_Sept.txt
 				load_oob = SOV/Rifle_Division_131_1939_Sept.txt
 				load_oob = SOV/Rifle_Division_146_1939_Sept.txt
 				load_oob = SOV/Rifle_Division_163_1939_Sept.txt
@@ -223,6 +225,7 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
+				load_oob = SOV/Rifle_Division_103_1939_Sept.txt
 				load_oob = SOV/Rifle_Division_131_1939_Sept.txt
 				load_oob = SOV/Rifle_Division_146_1939_Sept.txt
 				load_oob = SOV/Rifle_Division_163_1939_Sept.txt
@@ -233,6 +236,7 @@ country_event = {
 	}
 	option = {
 		name = "No Need"  # no
+		set_country_flag = 103RD_no
 		set_country_flag = 131RD_no
 		set_country_flag = 146RD_no
 		set_country_flag = 163RD_no
@@ -375,11 +379,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +4400
+					value = +2850
 				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
+				energy = -5700
+				metal = -2850
+				rare_materials = -1425
 				load_oob = SOV/Hanko_Garrison.txt
 			}
 		}
@@ -424,11 +428,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +2500
+					value = +1800
 				}
-				energy = -5000
-				metal = -2500
-				rare_materials = -1250
+				energy = -3600
+				metal = -1800
+				rare_materials = -900
 				load_oob = SOV/Airborne_Brigades_1936_July.txt
 			}
 		}
@@ -500,11 +504,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +700
+					value = +1200
 				}
-				energy = -1400
-				metal = -700
-				rare_materials = -350
+				energy = -2800
+				metal = -1200
+				rare_materials = -600
 				load_oob = SOV/Airborne_Brigades_1938_July.txt
 			}
 		}
@@ -644,11 +648,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +8000
+					value = +6500
 				}
-				energy = -16000
-				metal = -8000
-				rare_materials = -4000
+				energy = -13000
+				metal = -6500
+				rare_materials = -3250
 				load_oob = SOV/Airborne_Corps_1941_Sept.txt
 			}
 		}
@@ -674,16 +678,21 @@ country_event = {
 	}
 }
 ###Armored and Motorized Units
-## 25th Armored Brigade
+## Motor Armored Regiment
 country_event = {
 	id = 11013
 	is_triggered_only = yes
-	title = "25th Armored Brigade"
+	title = "Motor Armored Regiment"
 	desc = "EVTDESC11013"
-	picture = "SOV_BT2"
+	picture = "SOV_Mongolian_Pact"
 	option = {
-		name = "Form this new armored brigade"
-		set_country_flag = 25AB
+		name = "Form this new armored Regiment"
+		set_country_flag = MAR
+		neutrality = -2
+		relation = {
+			who = JAP
+			value = -10
+		}
 
 		ai_chance = {
 			factor = 100
@@ -696,11 +705,124 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +2700
+					value = +600
 				}
-				energy = -5400
-				metal = -2700
-				rare_materials = -1350
+				energy = -1200
+				metal = -600
+				rare_materials = -300
+				load_oob = SOV/Motor_Armored_Regiment_1936_March.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Motor_Armored_Regiment_1936_March.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = MAR_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## Special Motor Armored Brigade
+country_event = {
+	id = 11014
+	is_triggered_only = yes
+	title = "Special Motor Armored Brigade"
+	desc = "EVTDESC11014"
+	picture = "SOV_BT5"
+	option = {
+		name = "Form this new armored Brigade"
+		set_country_flag = SMAB
+		neutrality = -2
+		relation = {
+			who = JAP
+			value = -5
+		}
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +700
+				}
+				energy = -1400
+				metal = -700
+				rare_materials = -350
+				load_oob = SOV/Special_Motor_Armored_Brigade_1936_April.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Special_Motor_Armored_Brigade_1936_April.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = SMAB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 25th Armored Brigade
+country_event = {
+	id = 11015
+	is_triggered_only = yes
+	title = "25th Armored Brigade"
+	desc = "EVTDESC11015"
+	picture = "SOV_BT2"
+	option = {
+		name = "Form this new armored brigade"
+		set_country_flag = 25AB
+
+		#remove the 4th Independant Chemical Brigade
+		remove_brigade = "12-y Otd. Khimicheskiy Bat."
+		remove_brigade = "Tankovyy B-n 12-go OKB"
+		remove_brigade = "Artilleriyskiy Polk 12-go OKB"
+		remove_brigade = "Transportnyy B-n 12-go OKB"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
 				load_oob = SOV/Armored_Brigade_25_1936_Aug.txt
 			}
 		}
@@ -727,15 +849,31 @@ country_event = {
 }
 ## 1st and 2nd Motorized Chemical Brigades - 1937
 country_event = {
-	id = 11014
+	id = 11016
 	is_triggered_only = yes
 	title = "1st and 2nd Motorized Chemical Brigades"
-	desc = "EVTDESC11014"
+	desc = "EVTDESC11016"
 	picture = "SOV_Flame_tank"
 	option = {
 		name = "Form these new brigades"
 		set_country_flag = 1MCB
 		set_country_flag = 2MCB
+
+		#Formation of the 1st Motorized Chemical Brigade - Removing the 1st Independant Chemical Brigade
+		remove_brigade = "1-y Otd. Khimicheskiy Bat."
+		remove_brigade = "Tankovyy B-n 1-go OKB"
+		remove_brigade = "Artilleriyskiy Polk 1-go OKB"
+		remove_brigade = "Transportnyy B-n 1-go OKB"
+
+		#Formation of the 2nd Motorized Chemical Brigade - Removing the 2nd and 12th Independant Chemical Brigades
+		remove_brigade = "2-y Otd. Khimicheskiy Bat."
+		remove_brigade = "Tankovyy B-n 2-go OKB"
+		remove_brigade = "Artilleriyskiy Polk 2-go OKB"
+		remove_brigade = "Transportnyy B-n 2-go OKB"
+		remove_brigade = "12-y Otd. Khimicheskiy Bat."
+		remove_brigade = "Tankovyy B-n 12-go OKB"
+		remove_brigade = "Artilleriyskiy Polk 12-go OKB"
+		remove_brigade = "Transportnyy B-n 12-go OKB"
 
 		ai_chance = {
 			factor = 100
@@ -748,11 +886,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +3200
+					value = +400
 				}
-				energy = -6400
-				metal = -3200
-				rare_materials = -1600
+				energy = -800
+				metal = -400
+				rare_materials = -200
 				load_oob = SOV/Motorized_Chemical_Brigades_1937_Jan.txt
 			}
 		}
@@ -778,12 +916,63 @@ country_event = {
 		}
 	}
 }
+## 7th Motor Armored Brigade
+country_event = {
+	id = 11017
+	is_triggered_only = yes
+	title = "7th Motor Armored Brigade"
+	desc = "EVTDESC11017"
+	picture = "SOV_T26"
+	option = {
+		name = "Form this new armored Brigade"
+		set_country_flag = 7MAB
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +700
+				}
+				energy = -1400
+				metal = -700
+				rare_materials = -350
+				load_oob = SOV/7_Motor_Armored_Brigade_1937_July.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/7_Motor_Armored_Brigade_1937_July.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 7MAB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 ## 13th Mechanized Brigade - Special Mechanized Brigade 1937
 country_event = {
-	id = 11015
+	id = 11018
 	is_triggered_only = yes
 	title = "13th Mechanized Brigade"
-	desc = "EVTDESC11015"
+	desc = "EVTDESC11018"
 	picture = "SOV_BT5"
 	option = {
 		name = "Form this new mechanized brigade"
@@ -808,11 +997,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +2600
+					value = +2000
 				}
-				energy = -5200
-				metal = -2600
-				rare_materials = -1300
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
 				load_oob = SOV/Mechanized_Brigades_1937_August.txt
 			}
 		}
@@ -840,10 +1029,10 @@ country_event = {
 }
 ## 3rd, 18th, 22nd, 25th, and 26th Light Tank Brigades - January 1938
 country_event = {
-	id = 11016
+	id = 11019
 	is_triggered_only = yes
 	title = "3rd, 18th, 22nd, 25th and 26th Light Tank Brigades"
-	desc = "EVTDESC11016"
+	desc = "EVTDESC11019"
 	picture = "SOV_T26"
 	option = {
 		name = "Reform our Mechanized Brigades into Tank Brigades"
@@ -901,11 +1090,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1600
+					value = +400
 				}
-				energy = -3200
-				metal = -1600
-				rare_materials = -800
+				energy = -800
+				metal = -400
+				rare_materials = -200
 				load_oob = SOV/Light_Armored_Brigades_1938_Jan.txt
 			}
 		}
@@ -938,10 +1127,10 @@ country_event = {
 }
 ## 29th, 30th, 31st, 32nd and 43rd Light Tank Brigades - April 1938
 country_event = {
-	id = 11017
+	id = 11020
 	is_triggered_only = yes
 	title = "29th, 30th, 31st, 32nd and 43rd Light Tank Brigades"
-	desc = "EVTDESC11017"
+	desc = "EVTDESC11020"
 	picture = "SOV_Flame_tank_2"
 	option = {
 		name = "Reform our Mechanized Brigades into Tank Brigades"
@@ -995,11 +1184,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +2700
+					value = +1500
 				}
-				energy = -5400
-				metal = -2700
-				rare_materials = -1350
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
 				load_oob = SOV/Light_Armored_Brigades_1938_Apr.txt
 			}
 		}
@@ -1031,10 +1220,10 @@ country_event = {
 }
 ## 24th, 33rd, 35th, 36th, 38th, 42nd and 48th Light Tank Brigades - August 1938
 country_event = {
-	id = 11018
+	id = 11021
 	is_triggered_only = yes
 	title = "24th, 33rd, 35th, 36th, 38th, 42nd and 48th Light Tank Brigades"
-	desc = "EVTDESC11018"
+	desc = "EVTDESC11021"
 	picture = "SOV_BT5_2"
 	option = {
 		name = "Reform our Mechanized Brigades into Tank Brigades"
@@ -1104,11 +1293,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +5000
+					value = +2600
 				}
-				energy = -10000
-				metal = -5000
-				rare_materials = -2500
+				energy = -5200
+				metal = -2600
+				rare_materials = -1300
 				load_oob = SOV/Light_Armored_Brigades_1938_Aug.txt
 			}
 		}
@@ -1142,10 +1331,10 @@ country_event = {
 }
 ## 10th Tank Corps - May 1938
 country_event = {
-	id = 11019
+	id = 11022
 	is_triggered_only = yes
 	title = "Form the 10th Tank Corps"
-	desc = "EVTDESC11019"
+	desc = "EVTDESC11022"
 	picture = "SOV_Tank_Corps_1938_1"
 	option = {
 		name = "Reform our Mechanized Corps into Tank Corps"
@@ -1183,13 +1372,8 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +200
-				}
-				energy = -400
-				metal = -200
-				rare_materials = -100
+				
+				supplies = -1500
 				load_oob = SOV/Old_Tank_Corps_10_1938_May.txt
 			}
 		}
@@ -1217,10 +1401,10 @@ country_event = {
 }
 ## 25th Tank Corps - May 1938
 country_event = {
-	id = 11020
+	id = 11023
 	is_triggered_only = yes
 	title = "Form the 25th Tank Corps"
-	desc = "EVTDESC11020"
+	desc = "EVTDESC11023"
 	picture = "SOV_Tank_Corps_1938_1"
 	option = {
 		name = "Reform our Mechanized Corps into Tank Corps"
@@ -1258,13 +1442,8 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +200
-				}
-				energy = -400
-				metal = -200
-				rare_materials = -100
+				
+				supplies = -1500
 				load_oob = SOV/Old_Tank_Corps_25_1938_May.txt
 			}
 		}
@@ -1292,10 +1471,10 @@ country_event = {
 }
 ## 15th Tank Corps - June 1938
 country_event = {
-	id = 11021
+	id = 11024
 	is_triggered_only = yes
 	title = "Form the 15th Tank Corps"
-	desc = "EVTDESC11021"
+	desc = "EVTDESC11024"
 	picture = "SOV_Tank_Corps_1938_2"
 	option = {
 		name = "Reform our Mechanized Corps into Tank Corps"
@@ -1333,13 +1512,8 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +200
-				}
-				energy = -400
-				metal = -200
-				rare_materials = -100
+
+				supplies = -1500
 				load_oob = SOV/Old_Tank_Corps_15_1938_June.txt
 			}
 		}
@@ -1367,10 +1541,10 @@ country_event = {
 }
 ## 20th Tank Corps - June 1938
 country_event = {
-	id = 11022
+	id = 11025
 	is_triggered_only = yes
 	title = "Form the 20th Tank Corps"
-	desc = "EVTDESC11022"
+	desc = "EVTDESC11025"
 	picture = "SOV_Tank_Corps_1938_2"
 	option = {
 		name = "Reform our Mechanized Corps into Tank Corps"
@@ -1404,11 +1578,12 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +700
+					value = +900
 				}
-				energy = -1400
-				metal = -700
-				rare_materials = -350
+				
+				energy = -1800
+				metal = -900
+				rare_materials = -450
 				load_oob = SOV/Old_Tank_Corps_20_1938_June.txt
 			}
 		}
@@ -1436,16 +1611,38 @@ country_event = {
 }
 ## 57th Special Corps - August 1938
 country_event = {
-	id = 11023
+	id = 11026
 	is_triggered_only = yes
 	title = "Form the 57th Special Corps"
-	desc = "EVTDESC11023"
+	desc = "EVTDESC11026"
 	picture = "SOV_BT5_3"
 	option = {
 		name = "Form this new unit to protect our Mongolian brothers!"
 		set_country_flag = 57SC
+		neutrality = -3
+		relation = {
+			who = JAP
+			value = -5
+		}
 
-		#Removing Special Mechanized Brigade
+		#Removing Motor Armored Regiment
+		remove_brigade = "Tankovyy B-n MP"
+		remove_brigade = "Mot.-Strelk. B-n MP"
+		remove_brigade = "Avtotransportnyy B-n MP"
+
+		#Removing Special Motor Armored Brigade
+		remove_brigade = "241-y Tankovyy B-n"
+		remove_brigade = "196-y Mot.-Strelk. B-n"
+		remove_brigade = "240-y Razvedovatelniy B-n"
+		remove_brigade = "9-y Avtotransportnyy B-n"
+
+		#Removing 7th Motor Armored Brigade
+		remove_brigade = "Otd. Tankovyy B-n 7-y MBB"
+		remove_brigade = "Otd. Mot.-Strelk. B-n 7-y MBB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 7-y MBB"
+		remove_brigade = "Avtotransportnyy B-n 7-y MBB"
+
+		#Removing Special Mechanized Brigade to form the 11th Light Tank Brigade
 		remove_brigade = "Shtab-K. Osob. Mekh. Brigady"
 		remove_brigade = "1/2/3-ye Otd. Tankovyye B-ny OMB"
 		remove_brigade = "Motostrelkovyy B-n OMB"
@@ -1470,13 +1667,7 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +3400
-				}
-				energy = -6800
-				metal = -3400
-				rare_materials = -1700
+				supplies = -500
 				load_oob = SOV/Old_Tank_Corps_57_Special_1938.txt
 			}
 		}
@@ -1504,10 +1695,10 @@ country_event = {
 }
 ## 20th, 23rd and 49th Light Tank Brigades - March 1939
 country_event = {
-	id = 11024
+	id = 11027
 	is_triggered_only = yes
 	title = "20th, 23rd and 49th Light Tank Brigades"
-	desc = "EVTDESC11024"
+	desc = "EVTDESC11027"
 	picture = "SOV_BT5"
 	option = {
 		name = "Form new Light Tank Brigades"
@@ -1534,11 +1725,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +5800
+					value = +4000
 				}
-				energy = -11600
-				metal = -5800
-				rare_materials = -2900
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 				load_oob = SOV/Light_Armored_Brigades_1939_March.txt
 			}
 		}
@@ -1566,12 +1757,12 @@ country_event = {
 		}
 	}
 }
-## 34th, 37th, 39th et 55th Light Tank Brigades - September 1939
+## 34th, 37th, 39th, 52nd and 55th Light Tank Brigades - September 1939
 country_event = {
-	id = 11025
+	id = 11028
 	is_triggered_only = yes
 	title = "34th, 37th, 39th, 52nd and 55th Light Tank Brigades"
-	desc = "EVTDESC11025"
+	desc = "EVTDESC11028"
 	picture = "SOV_BT5_1939"
 	option = {
 		name = "More Light Tank Brigades!"
@@ -1606,11 +1797,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +8000
+					value = +6300
 				}
-				energy = -16000
-				metal = -8000
-				rare_materials = -4000
+				energy = -12600
+				metal = -6300
+				rare_materials = -3150
 				load_oob = SOV/Light_Armored_Brigades_1939_Sept.txt
 			}
 		}
@@ -1642,10 +1833,10 @@ country_event = {
 }
 ## Heavy Tank Brigades - May 1939
 country_event = {
-	id = 11026
+	id = 11029
 	is_triggered_only = yes
 	title = "Heavy Tank Brigades"
-	desc = "EVTDESC11026"
+	desc = "EVTDESC11029"
 	picture = "SOV_T28"
 	option = {
 		name = "Reform or Heavy Tank Brigades!"
@@ -1718,10 +1909,10 @@ country_event = {
 }
 ## Soviet Mechanized Forces reorganization - 1940
 country_event = {
-	id = 11027
+	id = 11030
 	is_triggered_only = yes
 	title = "Reorganize our armored and motorized units"
-	desc = "EVTDESC11027"
+	desc = "EVTDESC11030"
 	picture = "SOV_BT5_1940"
 	option = {
 		name = "Let's do that."
@@ -1734,10 +1925,10 @@ country_event = {
 }
 ## 6th and 40th Light Tank Brigades - January 1940
 country_event = {
-	id = 11028
+	id = 11031
 	is_triggered_only = yes
 	title = "6th and 40th Light Tank Brigades"
-	desc = "EVTDESC11028"
+	desc = "EVTDESC11031"
 	picture = "SOV_T26_1940"
 	option = {
 		name = "Form New Light Tank Brigades!"
@@ -1762,11 +1953,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +2900
+					value = +2000
 				}
-				energy = -5800
-				metal = -2900
-				rare_materials = -1450
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
 				load_oob = SOV/Light_Armored_Brigades_1940_Jan.txt
 			}
 		}
@@ -1795,10 +1986,10 @@ country_event = {
 }
 ## 17th, and 41st Light Tank Brigades - April 1940
 country_event = {
-	id = 11029
+	id = 11032
 	is_triggered_only = yes
 	title = "17th and 41st Light Tank Brigades"
-	desc = "EVTDESC11029"
+	desc = "EVTDESC11032"
 	picture = "SOV_T26_1940"
 	option = {
 		name = "Form these Light Tank Brigades!"
@@ -1816,11 +2007,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +4200
+					value = +3200
 				}
-				energy = -8400
-				metal = -4200
-				rare_materials = -2100
+				energy = -6400
+				metal = -3200
+				rare_materials = -1600
 				load_oob = SOV/Light_Armored_Brigades_1940_Apr.txt
 			}
 		}
@@ -1849,10 +2040,10 @@ country_event = {
 }
 ## 7th, 30th, 44th, 50th and 70th Light Tank Brigades - June 1940
 country_event = {
-	id = 11030
+	id = 11033
 	is_triggered_only = yes
 	title = "7th, 30th, 50th and 70th Light Tank Brigades"
-	desc = "EVTDESC11030"
+	desc = "EVTDESC11033"
 	picture = "SOV_BT5_1940_2"
 	option = {
 		name = "Form new Light Tank Brigades!"
@@ -1873,11 +2064,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +11000
+					value = +9150
 				}
-				energy = -22000
-				metal = -11000
-				rare_materials = -5500
+				energy = -18300
+				metal = -9150
+				rare_materials = -4575
 				load_oob = SOV/Light_Armored_Brigades_1940_June.txt
 			}
 		}
@@ -1908,21 +2099,24 @@ country_event = {
 	}
 }
 
-## 2nd, 12th, 14th, 16th, 24th, 31st and 39th Light Tank Brigades - November 1940
+## 2nd, 12th, 14th, 15th, 16th, 23rd, 24th, 31st, 33rd and 39th Light Tank Brigades - November 1940
 country_event = {
-	id = 11031
+	id = 11034
 	is_triggered_only = yes
-	title = "Formation of 7 Light Tank Brigades"
-	desc = "EVTDESC11031"
+	title = "Formation of 10 Light Tank Brigades"
+	desc = "EVTDESC11034"
 	picture = "SOV_BT7_1"
 	option = {
 		name = "Form these new Light Tank Brigades!"
 		set_country_flag = 2TB
 		set_country_flag = 12LTB
 		set_country_flag = 14LTB
+		set_country_flag = 15LTB2
 		set_country_flag = 16LTB
+		set_country_flag = 23LTB2
 		set_country_flag = 24LTB2
 		set_country_flag = 31LTB
+		set_country_flag = 33LTB
 		set_country_flag = 39LTB2
 
 		#Removing 11th Reserve Tank Regiment, used to form 2nd and 14th LTB
@@ -1940,11 +2134,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +10000
+					value = +15100
 				}
-				energy = -20000
-				metal = -10000
-				rare_materials = -5000
+				energy = -30200
+				metal = -15100
+				rare_materials = -7550
 				load_oob = SOV/Light_Armored_Brigades_1940_Nov.txt
 			}
 		}
@@ -1967,10 +2161,14 @@ country_event = {
 		set_country_flag = 2TB_no
 		set_country_flag = 12LTB_no
 		set_country_flag = 14LTB_no
+		set_country_flag = 15LTB2_no
 		set_country_flag = 16LTB_no
+		set_country_flag = 23LTB2_no
 		set_country_flag = 24LTB2_no
 		set_country_flag = 31LTB_no
+		set_country_flag = 33LTB_no
 		set_country_flag = 39LTB2_no
+		
 		ai_chance = {
 			factor = 0
 		}
@@ -1979,10 +2177,10 @@ country_event = {
 
 ## Motorization of 1st Moscow Proletarian Division
 country_event = {
-	id = 11032
+	id = 11035
 	is_triggered_only = yes
 	title = "Rearm and refit the Moskva Proletarian Strelk. Div."
-	desc = "EVTDESC11032"
+	desc = "EVTDESC11035"
 	picture = "SOV_Mot_1"
 	option = {
 		name = "Motorize the Moskva Proletarian Strelk. Div."
@@ -2040,10 +2238,10 @@ country_event = {
 
 ## Motorization of 36th Transbaikal Rifle Division
 country_event = {
-	id = 11033
+	id = 11036
 	is_triggered_only = yes
 	title = "Rearm and refit the 36th Tansbaikal Rifle Division"
-	desc = "EVTDESC11033"
+	desc = "EVTDESC11036"
 	picture = "SOV_Mot_2"
 	option = {
 		name = "Motorize this division!"
@@ -2100,10 +2298,10 @@ country_event = {
 
 ## Motorization of 57th Rifle Division
 country_event = {
-	id = 11034
+	id = 11037
 	is_triggered_only = yes
 	title = "Rearm and refit the 57th Ural Rifle Division"
-	desc = "EVTDESC11034"
+	desc = "EVTDESC11037"
 	picture = "SOV_Mot_2"
 	option = {
 		name = "Motorize this division!"
@@ -2158,14 +2356,67 @@ country_event = {
 		}
 	}
 }
+## Formation of 17th Army
+country_event = {
+	id = 11038
+	is_triggered_only = yes
+	title = "Form the 17th Army in the Transbaikal Military District"
+	desc = "EVTDESC11038"
+	picture = "SOV_Mot_2"
+	option = {
+		name = "Form this Army!"
+		set_country_flag = 17A
+
+		#Removing 57th Special Corps
+		remove_brigade = "Shtab-K. 57-go Osobogo Korpusa" 
+		remove_brigade = "Zenitno-Art. D-n 57-go Osobogo Korpusa"
+		remove_brigade = "Transportnyy B-n 57-go Osobogo Korpusa"
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				
+				supplies = -500
+				load_oob = SOV/17_Army_1940_June.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/17_Army_1940_June.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 17A_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
 ### Formation of Mechanized Corps - 1940
 
 ## 1st Mechanized Corps
 country_event = {
-	id = 11035
+	id = 11039
 	is_triggered_only = yes
 	title = "1st Mechanized Corps (1940)"
-	desc = "EVTDESC11035"
+	desc = "EVTDESC11039"
 	picture = "SOV_OMC_1"
 	option = {
 		name = "Form the 1st Mechanized Corps"
@@ -2205,7 +2456,7 @@ country_event = {
 		remove_brigade = "Shtab-K. 163-y Strelk. Div."
 		remove_brigade = "529-y/662-y/759-y Strelkovye Polki"
 		remove_brigade = "593-y/81-y Gorno-Strelk. Polk"
-		remove_brigade = "Artileriyskiy Polk 185-y SD"
+		remove_brigade = "Artilleriyskiy Polk 185-y SD"
 		remove_brigade = "Protivotankoviy B-n 185-y SD"
 		remove_brigade = "365-y Razvedovatelniy B-n"
 		remove_brigade = "Transportnyy B-n 163-y SD"
@@ -2221,11 +2472,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +900
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1800
+				metal = -900
+				rare_materials = -450
 				load_oob = SOV/Old_Mech_Corps_1_1940_June.txt
 			}
 		}
@@ -2254,10 +2505,10 @@ country_event = {
 }
 ## 2nd Mechanized Corps
 country_event = {
-	id = 11036
+	id = 11040
 	is_triggered_only = yes
 	title = "2nd Mechanized Corps (1940)"
-	desc = "EVTDESC11036"
+	desc = "EVTDESC11040"
 	picture = "SOV_OMC_2"
 	option = {
 		name = "Form the 2nd Mechanized Corps"
@@ -2302,11 +2553,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1200
+					value = +2000
 				}
-				energy = -4200
-				metal = -2100
-				rare_materials = -1050
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
 				load_oob = SOV/Old_Mech_Corps_2_1940_June.txt
 			}
 		}
@@ -2335,10 +2586,10 @@ country_event = {
 }
 ## 3rd Mechanized Corps
 country_event = {
-	id = 11037
+	id = 11041
 	is_triggered_only = yes
 	title = "3rd Mechanized Corps (1940)"
-	desc = "EVTDESC11037"
+	desc = "EVTDESC11041"
 	picture = "SOV_BT5_1940_2"
 	option = {
 		name = "Form the 3rd Mechanized Corps"
@@ -2385,11 +2636,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +2000
+					value = +1600
 				}
-				energy = -4000
-				metal = -2000
-				rare_materials = -1000
+				energy = -3200
+				metal = -1600
+				rare_materials = -800
 				load_oob = SOV/Old_Mech_Corps_3_1940_June.txt
 			}
 		}
@@ -2418,10 +2669,10 @@ country_event = {
 }
 ## 8th Mechanized Corps
 country_event = {
-	id = 11038
+	id = 11042
 	is_triggered_only = yes
 	title = "8th Mechanized Corps (1940)"
-	desc = "EVTDESC11038"
+	desc = "EVTDESC11042"
 	picture = "SOV_Baltics_1940"
 	option = {
 		name = "Form the 8th Mechanized Corps"
@@ -2472,11 +2723,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1800
+					value = +1600
 				}
-				energy = -3600
-				metal = -1800
-				rare_materials = -900
+				energy = -3800
+				metal = -1600
+				rare_materials = -800
 				load_oob = SOV/Old_Mech_Corps_8_1940_June.txt
 			}
 		}
@@ -2505,10 +2756,10 @@ country_event = {
 }
 ## 4th Mechanized Corps
 country_event = {
-	id = 11039
+	id = 11043
 	is_triggered_only = yes
 	title = "4th Mechanized Corps (1940)"
-	desc = "EVTDESC11039"
+	desc = "EVTDESC11043"
 	picture = "SOV_4_OMC"
 	option = {
 		name = "Form the 4th Mechanized Corps"
@@ -2553,11 +2804,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1500
+					value = +1200
 				}
-				energy = -3000
-				metal = -1500
-				rare_materials = -750
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = SOV/Old_Mech_Corps_4_1940_July.txt
 			}
 		}
@@ -2585,10 +2836,10 @@ country_event = {
 }
 ## 5th Mechanized Corps
 country_event = {
-	id = 11040
+	id = 11044
 	is_triggered_only = yes
 	title = "5th Mechanized Corps (1940)"
-	desc = "EVTDESC11040"
+	desc = "EVTDESC11044"
 	picture = "SOV_BT5_3"
 	option = {
 		name = "Form the 5th Mechanized Corps"
@@ -2611,6 +2862,13 @@ country_event = {
 		remove_brigade = "Mot.-Strelkovyy B-n 37-y LTB"
 		remove_brigade = "Otd. Razvedovatelniy B-n 37-y LTB"
 		remove_brigade = "Otd. Transportnyy B-n 37-y LTB"
+		#Removing 33rd Chemical Tank Brigade
+		remove_brigade = "Shtab-K. 33-y Khim. Tank. Brigady"
+		remove_brigade = "67/68/69/70 Otd. Tankovyye B-ny"
+		remove_brigade = "Otd. Batal'on Boevogo Obecpecheniya 33-y KhTB"
+		remove_brigade = "64-ya Otd. Khimiskaya Rota"
+		remove_brigade = "KhM 107 Minomotnyy Otryad"
+		remove_brigade = "Otd. Transportnaya Rota 31-y KhTB"
 		#Removing 109th Rifle Division
 		remove_brigade = "Shtab-K. 109-y Strelk. Div."
 		remove_brigade = "Strelkovye Polki 109-y SD"
@@ -2631,11 +2889,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1500
+					value = +750
 				}
-				energy = -3000
-				metal = -1500
-				rare_materials = -750
+				energy = -1500
+				metal = -750
+				rare_materials = -375
 				load_oob = SOV/Old_Mech_Corps_5_1940_July.txt
 			}
 		}
@@ -2663,10 +2921,10 @@ country_event = {
 }
 ## 6th Mechanized Corps
 country_event = {
-	id = 11041
+	id = 11045
 	is_triggered_only = yes
 	title = "6th Mechanized Corps (1940)"
-	desc = "EVTDESC11041"
+	desc = "EVTDESC11045"
 	picture = "SOV_Tank_Corps_1938_2"
 	option = {
 		name = "Form the 6th Mechanized Corps"
@@ -2711,11 +2969,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +2400
+					value = +2600
 				}
-				energy = -3200
-				metal = -1600
-				rare_materials = -800
+				energy = -5200
+				metal = -2600
+				rare_materials = -1300
 				load_oob = SOV/Old_Mech_Corps_6_1940_July.txt
 			}
 		}
@@ -2743,10 +3001,10 @@ country_event = {
 }
 ## 7th Mechanized Corps
 country_event = {
-	id = 11042
+	id = 11046
 	is_triggered_only = yes
 	title = "7th Mechanized Corps (1940)"
-	desc = "EVTDESC11042"
+	desc = "EVTDESC11046"
 	picture = "SOV_BT7_2"
 	option = {
 		name = "Form the 7th Mechanized Corps"
@@ -2787,11 +3045,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +3400
+					value = +1000
 				}
-				energy = -6800
-				metal = -3400
-				rare_materials = -1700
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
 				load_oob = SOV/Old_Mech_Corps_7_1940_July.txt
 			}
 		}
@@ -2819,10 +3077,10 @@ country_event = {
 }
 ## 9th Mechanized Corps
 country_event = {
-	id = 11043
+	id = 11047
 	is_triggered_only = yes
 	title = "9th Mechanized Corps (1940)"
-	desc = "EVTDESC11043"
+	desc = "EVTDESC11047"
 	picture = "SOV_BT5_1940"
 	option = {
 		name = "Form the 9th Mechanized Corps"
@@ -2836,14 +3094,14 @@ country_event = {
 		remove_brigade = "Protivotankoviy B-n 131-y SD"
 		remove_brigade = "Sap'ornyy B-n 131-y SD"
 		remove_brigade = "Razvedovatelniy B-n 131-y SD"
-		remove_brigade ="Transportnyy B-n 131-y SD" 
+		remove_brigade = "Transportnyy B-n 131-y SD" 
 		#Removing 31st Chemical Tank Brigades (summer 1940), used to help forming Mechanized Corps
 		remove_brigade = "Shtab-K. 31-y Khim. Tank. Brigady"
 		remove_brigade = "194/221/224/227 Otd. Tankovyye B-ny"
 		remove_brigade = "Mot.-Strelk. B-n 31-y KhTB"
 		remove_brigade = "Otd. Batal'on Boevogo Obecpecheniya 31-y KhTB"
 		remove_brigade = "Sap'ornaya Rota 31-y KhTB"
-		remove_brigade = "Otd. Transportnaya Rota31-y KhTB"
+		remove_brigade = "Otd. Transportnaya Rota 31-y KhTB"
 
 		ai_chance = {
 			factor = 100
@@ -2856,12 +3114,12 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +4400
-					# 10% reduction because formed at 0% strength
+					value = +4050 
+					# In fact 4500, but aplyong a 10% reduction because formed at 0% strength
 				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
+				energy = -8100
+				metal = -4050
+				rare_materials = -2025
 				load_oob = SOV/Old_Mech_Corps_9_1940_Nov.txt
 			}
 		}
@@ -2889,10 +3147,10 @@ country_event = {
 }
 ## Motorized Machine-Gun Artillery Brigades - November 1940
 country_event = {
-	id = 11044
+	id = 11048
 	is_triggered_only = yes
 	title = "Motorized Brigades"
-	desc = "EVTDESC11044"
+	desc = "EVTDESC11048"
 	picture = "SOV_Mot_1"
 	option = {
 		name = "Form these motorized brigades"
@@ -2956,11 +3214,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +10400
+					value = +10600
 				}
-				energy = -20800
-				metal = -10400
-				rare_materials = -5200
+				energy = -21200
+				metal = -10600
+				rare_materials = -5300
 				load_oob = SOV/Motorized_Brigades_1940_Nov.txt
 			}
 		}
@@ -2988,10 +3246,10 @@ country_event = {
 }
 ## Motorization of 69th Rifle Division - March 1941
 country_event = {
-	id = 11045
+	id = 11049
 	is_triggered_only = yes
 	title = "Rearm and refit the 69th Rifle Division"
-	desc = "EVTDESC11045"
+	desc = "EVTDESC11049"
 	picture = "SOV_Mot_3"
 	option = {
 		name = "Motorize this division!"
@@ -3048,10 +3306,10 @@ country_event = {
 }
 ## Formation of 59th Independant Tank Division
 country_event = {
-	id = 11046
+	id = 11050
 	is_triggered_only = yes
 	title = "59th Independant Tank Division"
-	desc = "EVTDESC11046"
+	desc = "EVTDESC11050"
 	picture = "SOV_BT5_1939"
 	option = {
 		name = "Form this division!"
@@ -3083,11 +3341,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +500
+					value = +50
 				}
-				energy = -1000
-				metal = -500
-				rare_materials = -250
+				energy = -100
+				metal = -50
+				rare_materials = -25
 				load_oob = SOV/Tank_Division_59_1941_March.txt
 			}
 		}
@@ -3115,10 +3373,10 @@ country_event = {
 }	
 ## 10th Mechanized Corps
 country_event = {
-	id = 11047
+	id = 11051
 	is_triggered_only = yes
 	title = "10th Mechanized Corps (1941)"
-	desc = "EVTDESC11047"
+	desc = "EVTDESC11051"
 	picture = "SOV_BT5_1940"
 	option = {
 		name = "Form the 10th Mechanized Corps in Leningrad Military District"
@@ -3194,10 +3452,10 @@ country_event = {
 }
 ## 12th Mechanized Corps
 country_event = {
-	id = 11048
+	id = 11052
 	is_triggered_only = yes
 	title = "12th Mechanized Corps (1941)"
-	desc = "EVTDESC11048"
+	desc = "EVTDESC11052"
 	picture = "SOV_Baltics_1940"
 	option = {
 		name = "Form the 12th Mechanized Corps in Baltic Special Military District"
@@ -3278,10 +3536,10 @@ country_event = {
 }
 ## 11th Mechanized Corps
 country_event = {
-	id = 11049
+	id = 11053
 	is_triggered_only = yes
 	title = "11th Mechanized Corps (1941)"
-	desc = "EVTDESC11049"
+	desc = "EVTDESC11053"
 	picture = "SOV_BT5_1939"
 	option = {
 		name = "Form this Corps in the Belarus Military District"
@@ -3308,6 +3566,12 @@ country_event = {
 		remove_brigade = "327-y Otd. Sap'ornyy B-n"
 		remove_brigade = "513-y Otd. Zenitno-Art. D-n"
 		remove_brigade = "248-y Otd. Avtotransportnyy B-n"
+		#Removing 15th Tank Brigade
+		remove_brigade = "Shtab-K. 15-y Tank. Brigady"
+		remove_brigade = "Otdel'nye Tankovyye B-ny 15-y TB"
+		remove_brigade = "Mot.-Strelkovyy B-n 15-y TB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 15-y TB"
+		remove_brigade = "Otd. Transportnyy B-n 15-y TB"
 
 		ai_chance = {
 			factor = 100
@@ -3354,10 +3618,10 @@ country_event = {
 }
 ## 13th Mechanized Corps
 country_event = {
-	id = 11050
+	id = 11054
 	is_triggered_only = yes
 	title = "13th Mechanized Corps (1941)"
-	desc = "EVTDESC11050"
+	desc = "EVTDESC11054"
 	picture = "SOV_OMC_1"
 	option = {
 		name = "Form this Corps in the Belarus Military District"
@@ -3423,10 +3687,10 @@ country_event = {
 }
 ## 14th Mechanized Corps
 country_event = {
-	id = 11051
+	id = 11055
 	is_triggered_only = yes
 	title = "14th Mechanized Corps (1941)"
-	desc = "EVTDESC11051"
+	desc = "EVTDESC11055"
 	picture = "SOV_OMC_2"
 	option = {
 		name = "Form this Corps in the Belarus Military District"
@@ -3498,10 +3762,10 @@ country_event = {
 }
 ## 17th Mechanized Corps
 country_event = {
-	id = 11052
+	id = 11056
 	is_triggered_only = yes
 	title = "17th Mechanized Corps (1941)"
-	desc = "EVTDESC11052"
+	desc = "EVTDESC11056"
 	picture = "SOV_BT5_1940_2"
 	option = {
 		name = "Form this Corps in the Belarus Military District"
@@ -3514,6 +3778,10 @@ country_event = {
 		remove_brigade = "Mot.-Strelkovyy B-n 16-y TB"
 		remove_brigade = "Otd. Razvedovatelniy B-n 16-y TB"
 		remove_brigade = "Otd. Transportnyy B-n 16-y TB"
+		#Removing elements of 4th Cavalry Division
+		remove_brigade = "Tankovyy Polk 4-y Kav. D."
+		remove_brigade = "4-y Mekhanizirovannyy Polk"
+		remove_brigade = "Konno-Sap'ornyy B-n 4-y Kav. D."
 		#Removing 13th Motorized MG Art. Brigade
 		remove_brigade = "Shtab-K. 13-y MPAB"
 		remove_brigade = "Strelk.-Pul. B-ny 13-y MPAB"
@@ -3567,10 +3835,10 @@ country_event = {
 }
 ## 20th Mechanized Corps
 country_event = {
-	id = 11053
+	id = 11057
 	is_triggered_only = yes
 	title = "20th Mechanized Corps (1941)"
-	desc = "EVTDESC11053"
+	desc = "EVTDESC11057"
 	picture = "SOV_BT7_1"
 	option = {
 		name = "Form this Corps in the Belarus Military District"
@@ -3592,10 +3860,7 @@ country_event = {
 		#Removing 4th Cavalry Division
 		remove_brigade = "Shtab-K. 4-y Leningradskoy Kav. D."
 		remove_brigade = "8/77/109/145-ye Kavaleriyskiye Polki"
-		remove_brigade = "Tankovyy Polk 4-y Kav. D."
-		remove_brigade = "4-y Mekhanizirovannyy Polk"
 		remove_brigade = "Konno-Artilleriyskiy Divizion 4-y Kav. D."
-		remove_brigade = "Konno-Sap'ornyy B-n 4-y Kav. D."
 		remove_brigade = "Transportnyy B-n 4-y Kav. D."
 
 		ai_chance = {
@@ -3644,10 +3909,10 @@ country_event = {
 
 ## 15th Mechanized Corps
 country_event = {
-	id = 11054
+	id = 11058
 	is_triggered_only = yes
 	title = "15th Mechanized Corps (1941)"
-	desc = "EVTDESC11054"
+	desc = "EVTDESC11058"
 	picture = "SOV_OMC_1"
 	option = {
 		name = "Form this Mechanized Corps in the Kiev Military District"
@@ -3719,10 +3984,10 @@ country_event = {
 }
 ## 16th Mechanized Corps
 country_event = {
-	id = 11055
+	id = 11059
 	is_triggered_only = yes
 	title = "16th Mechanized Corps (1941)"
-	desc = "EVTDESC11055"
+	desc = "EVTDESC11059"
 	picture = "SOV_OMC_2"
 	option = {
 		name = "Form this Mechanized Corps in the Kiev Military District"
@@ -3735,13 +4000,12 @@ country_event = {
 		remove_brigade = "Mot.-Strelkovyy B-n 26-y LTB"
 		remove_brigade = "Otd. Razvedovatelniy B-n 26-y LTB"
 		remove_brigade = "Otd. Transportnyy B-n 26-y LTB"
-		#Removing 33rd Chemical Tank Brigade
-		remove_brigade = "Shtab-K. 33-y Khim. Tank. Brigady"
-		remove_brigade = "67/68/69/70 Otd. Tankovyye B-ny"
-		remove_brigade = "Otd. Batal'on Boevogo Obecpecheniya 33-y KhTB"
-		remove_brigade = "64-ya Otd. Khimiskaya Rota"
-		remove_brigade = "KhM 107 Minomotnyy Otryad"
-		remove_brigade = "Otd. Transportnaya Rota 31-y KhTB"
+		#Removing 33rd TB
+		remove_brigade = "Shtab-K. 33-y Tank. Brigady"
+		remove_brigade = "1/2/3/4 Otdel'nye Tankovyye B-ny 33-y TB"
+		remove_brigade = "Mot.-Strelkovyy B-n 33-y TB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 33-y TB"
+		remove_brigade = "Otd. Transportnyy B-n 33-y TB"
 
 		ai_chance = {
 			factor = 100
@@ -3788,10 +4052,10 @@ country_event = {
 }
 ## 19th Mechanized Corps
 country_event = {
-	id = 11056
+	id = 11060
 	is_triggered_only = yes
 	title = "19th Mechanized Corps (1941)"
-	desc = "EVTDESC11056"
+	desc = "EVTDESC11060"
 	picture = "SOV_Tank_Corps_1938_2"
 	option = {
 		name = "Form this Mechanized Corps in the Kiev Military District"
@@ -3863,10 +4127,10 @@ country_event = {
 }
 ## 22nd Mechanized Corps
 country_event = {
-	id = 11057
+	id = 11061
 	is_triggered_only = yes
 	title = "22nd Mechanized Corps (1941)"
-	desc = "EVTDESC11057"
+	desc = "EVTDESC11061"
 	picture = "SOV_22_OMC"
 	option = {
 		name = "Form this Mechanized Corps in the Kiev Military District"
@@ -3938,10 +4202,10 @@ country_event = {
 }
 ## 24th Mechanized Corps
 country_event = {
-	id = 11058
+	id = 11062
 	is_triggered_only = yes
 	title = "24th Mechanized Corps (1941)"
-	desc = "EVTDESC11058"
+	desc = "EVTDESC11062"
 	picture = "SOV_BT5_1939"
 	option = {
 		name = "Form this Mechanized Corps in the Kiev Military District"
@@ -4019,10 +4283,10 @@ country_event = {
 }
 ## 18th Mechanized Corps
 country_event = {
-	id = 11059
+	id = 11063
 	is_triggered_only = yes
 	title = "Mechanized Corps (1941)"
-	desc = "EVTDESC11059"
+	desc = "EVTDESC11063"
 	picture = "SOV_BT5_1940_2"
 	option = {
 		name = "Form the 18th Mechanized Corps in the Odessa Special Military District"
@@ -4035,6 +4299,12 @@ country_event = {
 		remove_brigade = "Mot.-Strelkovyy B-n 49-y LTB"
 		remove_brigade = "Otd. Razvedovatelniy B-n 49-y LTB"
 		remove_brigade = "Otd. Transportnyy B-n 49-y LTB"
+		#Removing 23rd Tank Brigade
+		remove_brigade = "Shtab-K. 23-y Tank. Brigady"
+		remove_brigade = "52/54/57/60-ye Tankovyye B-ny"
+		remove_brigade = "Mot.-Strelkovyy B-n 23-y TB"
+		remove_brigade = "Otd. Razvedovatelniy B-n 23-y TB"
+		remove_brigade = "Otd. Transportnyy B-n 23-y TB"
 		#Removing 12th Motorized MG Art. Brigade
 		remove_brigade = "Shtab-K. 12-y MPAB"
 		remove_brigade = "Strelk.-Pul. B-ny 12-y MPAB"
@@ -4086,10 +4356,10 @@ country_event = {
 }
 ## 21st Mechanized Corps
 country_event = {
-	id = 11060
+	id = 11064
 	is_triggered_only = yes
 	title = "Mechanized Corps (1941)"
-	desc = "EVTDESC11060"
+	desc = "EVTDESC11064"
 	picture = "SOV_21_OMC"
 	option = {
 		name = "Form the 21st Mechanized Corps in the Moscow Military District"
@@ -4102,6 +4372,14 @@ country_event = {
 		remove_brigade = "Mot.-Strelkovyy B-n 24-y TB"
 		remove_brigade = "Otd. Razvedovatelniy B-n 24-y TB"
 		remove_brigade = "Otd. Transportnyy B-n 24-y TB"
+		#Removing 36th Cavalry Division
+		remove_brigade = "Shtab-K. 36-y Osob. Kav. D. im. Stalina"
+		remove_brigade = "24/42/102/144-ye Kavaleriyskiye Polki"
+		remove_brigade = "8-y Tankovyy Polk"
+		remove_brigade = "29-y Mekhanizirovannyy Polk"
+		remove_brigade = "3-y Konno-Artilleriyskiy Divizion" 
+		remove_brigade = "33-y Konno-Sap'ornyy B-n"
+		remove_brigade = "Transportnyy B-n 36-y Kav. D."
 		#Removing 185th Rifle Division
 		remove_brigade = "Shtab-K. 185-y Strelk. Div."
 		remove_brigade = "Strelkovye Polki 185-y SD"
@@ -4155,10 +4433,10 @@ country_event = {
 }
 ## 23rd Mechanized Corps
 country_event = {
-	id = 11061
+	id = 11065
 	is_triggered_only = yes
 	title = "Mechanized Corps (1941)"
-	desc = "EVTDESC11061"
+	desc = "EVTDESC11065"
 	picture = "SOV_OMC_1"
 	option = {
 		name = "Form the 23rd Mechanized Corps in Voronezh"
@@ -4220,10 +4498,10 @@ country_event = {
 }
 ## 25th Mechanized Corps
 country_event = {
-	id = 11062
+	id = 11066
 	is_triggered_only = yes
 	title = "Mechanized Corps (1941)"
-	desc = "EVTDESC11062"
+	desc = "EVTDESC11066"
 	picture = "SOV_BT5_2"
 	option = {
 		name = "Form the 25th Mechanized Corps in Kharkov"
@@ -4285,10 +4563,10 @@ country_event = {
 }
 ## 26th Mechanized Corps
 country_event = {
-	id = 11063
+	id = 11067
 	is_triggered_only = yes
 	title = "26th Mechanized Corps (1941)"
-	desc = "EVTDESC11063"
+	desc = "EVTDESC11067"
 	picture = "SOV_T26_1940"
 	option = {
 		name = "Form this new Mechanized Corps in Caucasus"
@@ -4311,7 +4589,14 @@ country_event = {
 		remove_brigade = "1-y Konno-Artilleriyskiy Divizion"
 		remove_brigade = "12-y Konno-Sap'ornyy B-n"
 		remove_brigade = "Transportnyy B-n 12-y Kav. D."
-
+		#Removing 103rd Rifle Division
+		remove_brigade = "Shtab-K. 103-y Strelk. Div."
+		remove_brigade = "Strelkovye Polki 103-y SD"
+		remove_brigade = "Artileriyskiy Polk 103-y SD"
+		remove_brigade = "Protivotankoviy B-n 103-y SD"
+		remove_brigade = "Sap'ornyy B-n 103-y SD"
+		remove_brigade = "Razvedovatelniy B-n 103-y SD"
+		remove_brigade = "Transportnyy B-n 103-y SD"
 
 		ai_chance = {
 			factor = 100
@@ -4358,10 +4643,10 @@ country_event = {
 }
 ## 27th Mechanized Corps
 country_event = {
-	id = 11064
+	id = 11068
 	is_triggered_only = yes
 	title = "27th Mechanized Corps (1941)"
-	desc = "EVTDESC11064"
+	desc = "EVTDESC11068"
 	picture = "SOV_BT5_1940_2"
 	option = {
 		name = "Form this new Mechanized Corps in Central Asia"
@@ -4436,10 +4721,10 @@ country_event = {
 }
 ## 28th Mechanized Corps
 country_event = {
-	id = 11065
+	id = 11069
 	is_triggered_only = yes
 	title = "28th Mechanized Corps (1941)"
-	desc = "EVTDESC11065"
+	desc = "EVTDESC11069"
 	picture = "SOV_OMC_1"
 	option = {
 		name = "Form this new Mechanized Corps in Caucasus"
@@ -4512,10 +4797,10 @@ country_event = {
 
 ## 29th Mechanized Corps
 country_event = {
-	id = 11066
+	id = 11070
 	is_triggered_only = yes
 	title = "29th Mechanized Corps (1941)"
-	desc = "EVTDESC11066"
+	desc = "EVTDESC11070"
 	picture = "SOV_BT5_3"
 	option = {
 		name = "Form this new Mechanized Corps in the East"
@@ -4601,10 +4886,10 @@ country_event = {
 }
 ## 30th Mechanized Corps
 country_event = {
-	id = 11067
+	id = 11071
 	is_triggered_only = yes
 	title = "30th Mechanized Corps (1941)"
-	desc = "EVTDESC11067"
+	desc = "EVTDESC11071"
 	picture = "SOV_Mot_2"
 	option = {
 		name = "Form this new Mechanized Corps in the East"
@@ -4691,10 +4976,10 @@ country_event = {
 }
 ## Rifle Divisions formed from remaining Motorized MG Art. Brigades
 country_event = {
-	id = 11068
+	id = 11072
 	is_triggered_only = yes
 	title = "Rifle Divisions (1941)"
-	desc = "EVTDESC11068"
+	desc = "EVTDESC11072"
 	picture = "SOV_Infantry_2"
 	option = {
 		name = "Form these divisions"
@@ -14001,6 +14286,180 @@ country_event = {
 		set_country_flag = Normandie_Niemen_no
 		ai_chance = {
 			factor = 0
+		}
+	}
+}
+
+#######################################
+### Soviet Interventions before War ###
+#######################################
+## Operation Zet - Early Withdrawal
+country_event = {
+	id = 13400
+	is_triggered_only = yes
+	title = "Operation Zet - Early Withdrawal"
+	desc = "EVTDESC13400"
+	picture = "SOV_Volunteer_1"
+	option = {
+		name = "Welcome home!"
+		set_country_flag = Operation_Zet_Ends_Early
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+
+				supplies = -2500
+				load_oob = SOV/SOV_Operation_Zet_Earlywithdrawal.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/SOV_Operation_Zet_Earlywithdrawal.txt
+			}
+		}
+	}
+}
+## Operation Zet Cancelled
+country_event = {
+	id = 13401
+	is_triggered_only = yes
+	title = "Operation Zet is cancelled"
+	desc = "EVTDESC13400"
+	picture = "SOV_Volunteer_1"
+	option = {
+		name = "Welcome home!"
+		set_country_flag = Operation_Zet_Ends
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+
+				supplies = -5000
+				load_oob = SOV/SOV_Operation_Zet_Ends.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/SOV_Operation_Zet_Ends.txt
+			}
+		}
+	}
+}
+## Operation Zet Early Benefits
+country_event = {
+	id = 13402
+	is_triggered_only = yes
+	title = "Benefits from Operation Zet"
+	desc = "EVTDESC13402"
+	picture = "SOV_Volunteer_2"
+	option = {
+		name = "Interesting..."
+		set_country_flag = Zet_Benefits_1
+		aeroengine = 30
+		small_fueltank = 30
+		single_engine_airframe = 30
+		single_engine_aircraft_armament = 30
+		medium_fueltank = 30
+		twin_engine_airframe = 30
+		twin_engine_aircraft_armament = 30
+		two_engine_bombbay = 30
+		twin_engine_bomber_crew_layout = 30
+		twin_engine_airframe = 30
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				supplies = -1500
+				load_oob = SOV/SOV_Operation_Zet_Benefits1.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/SOV_Operation_Zet_Benefits1.txt
+			}
+		}
+	}
+}
+## Operation Zet Benefits
+country_event = {
+	id = 13403
+	is_triggered_only = yes
+	title = "Benefits from Operation Zet"
+	desc = "EVTDESC13402"
+	picture = "SOV_Volunteer_2"
+	option = {
+		name = "Interesting..."
+		set_country_flag = Zet_Benefits_2
+		aeroengine = 60
+		small_fueltank = 60
+		single_engine_airframe = 60
+		single_engine_aircraft_armament = 60
+		medium_fueltank = 60
+		twin_engine_airframe = 60
+		twin_engine_aircraft_armament = 60
+		two_engine_bombbay = 60
+		twin_engine_bomber_crew_layout = 60
+		twin_engine_airframe = 60
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				supplies = -3000
+				load_oob = SOV/SOV_Operation_Zet_Benefits2.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/SOV_Operation_Zet_Benefits2.txt
+			}
 		}
 	}
 }
