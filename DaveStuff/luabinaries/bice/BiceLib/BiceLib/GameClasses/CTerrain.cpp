@@ -14,11 +14,18 @@ namespace CTerrain {
     CTerrain* Make(uintptr_t addr) {
         CTerrain* res = new CTerrain;
         res->id = *(int*)(addr + Offsets::id);
-        res->is_water = (bool) *(int*)(addr + Offsets::is_water);
+        res->is_water = *(bool*)(addr + Offsets::is_water);
         res->defence = *(int*)(addr + Offsets::defence);
         res->attack = *(int*)(addr + Offsets::attack);
         res->attrition = *(int*)(addr + Offsets::attrition);
         res->name = utils::getCString((DWORD*)(addr + Offsets::name));
+
+        DEBUG_OUT(printf("Made Terrain:\n"));
+        DEBUG_OUT(printf("  name: %s \n", res->name));
+        DEBUG_OUT(printf("  is_water: %d \n", res->is_water));
+        DEBUG_OUT(printf("  defence: %i \n", res->defence));
+        DEBUG_OUT(printf("  attack: %i \n", res->attack));
+        DEBUG_OUT(printf("  attrition: %i \n", res->attrition));
         return res;
     }
 
