@@ -107,3 +107,12 @@ def dump_model(x: pydantic.BaseModel, exlusions=None) -> str:
     if exlusions is None:
         exlusions = []
     return json.dumps(x.dict(exclude=exlusions), indent=2, ensure_ascii=False)
+
+
+def get_class_name_from_rtti(pm: Pymem, vtable_addr) -> str:
+    meta_pointer = pm.read_uint(vtable_addr - 4)
+    type_desc_pointer = pm.read_uint(meta_pointer + 12)
+    name_pointer = type_desc_pointer + 8
+    name = read_string(pm, name_pointer)
+    name = name[4:-2]  # Strip name mangling
+    return name
