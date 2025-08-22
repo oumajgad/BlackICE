@@ -1913,8 +1913,6 @@ if wx ~= nil then
 		G_DaysSinceLastUpdate = 0
 		GuiRefreshLoop(true)
 		MultiplayerBiceLibJob()
-		local x = BiceLib.GameInfo.getProvinceDetails(2208)
-		Utils.INSPECT_TABLE(x)
 	end )
 
 	UI.m_button_trade_1:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
