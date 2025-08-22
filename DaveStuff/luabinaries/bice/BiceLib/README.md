@@ -10,7 +10,7 @@ This is a LUA module written in C++ to achieve the following:
 LUA functions are provided to activate and configure the module. They are grouped the following way:
 
 ## BiceLib.GameInfo
-* **getFlags(string countryTag)**:
+* **getCountryFlags(string countryTag)**:
     * Get a list of all current countryflags
     * **Params**:
         * *countryTag*: The TAG for which to retrieve the flags
@@ -18,7 +18,7 @@ LUA functions are provided to activate and configure the module. They are groupe
         1. *flags*: List of strings
     * **Notes**:
         * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *GameInfo* functions.
-* **getVariables(string countryTag)**:
+* **getCountryVariables(string countryTag)**:
     * Get a map of all current countryVariables
     * **Params**:
         1. *countryTag*: The TAG for which to retrieve the variables
@@ -27,7 +27,7 @@ LUA functions are provided to activate and configure the module. They are groupe
     * **Notes**:
         * The values are in the fixed point number format. E.g. if the returned value is 12050, then the ingame representation is 12.05
         * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *GameInfo* functions.
-* **getActiveEventModifiers(string countryTag)**:
+* **getCountryActiveEventModifiers(string countryTag)**:
     * Get a map of all current event modifiers and their expiry date
     * **Params**:
         1. *countryTag*: The TAG for which to retrieve the variables
@@ -43,6 +43,28 @@ LUA functions are provided to activate and configure the module. They are groupe
         1. *offmapIC*: integer / nil if the countryTag wasn't found
     * **Notes**:
         * requires the offmap IC patch to be active
+* **getProvinceDetails(number provinceId)**:
+    * Gets details of a province
+    * **Params**:
+        1. *provinceId*: The ID of the province
+    * **Return values**:
+        1. *details*: A table with the following entries: 
+            - id            -> number
+            - supply_pool   -> number
+            - fuel_pool     -> number
+            - oil           -> number
+            - metal         -> number
+            - energy        -> number
+            - rares         -> number
+            - manpower      -> number
+            - leadership    -> number
+            - modifiers     -> table with the following entries
+                - local_ic          -> number
+                - local_oil         -> number
+                - local_energy      -> number
+                - local_metal       -> number
+                - local_rares       -> number
+                - local_leadership  -> number
 
 ## BiceLib.Leaders
 * **activateRankSpecificTraits()**
@@ -65,6 +87,10 @@ LUA functions are provided to activate and configure the module. They are groupe
         1. *success* (boolean): If the specified trait can't be found this will be *false*
     * **Notes**:
         * The traits display will only be updated after reopening the leader list.
+* **checkRankSpecificTraitsConsistency()**
+    * Goes through all leaders and checks if their rank specific traits match their current rank.
+    * **Params**: /
+    * **Return values**: /
 * **~~activateLeaderPromotionSkillLoss()~~ (currently bugged)**
     * This will make leaders lose/gain skill levels when the are promoted/demoted, like it was in older Hoi games.
     * Each leader has to receive a "pskill_XYZ" trait which represents his pure skill level. With the combination of rank + pure skill the game can now determine the appropiate skill level.
@@ -165,3 +191,10 @@ Patches which require some extra logic and hooking.
     * This is needed for when an event gives the player buildings which he should place manually.
     * **Params**: /
     * **Return values**: /
+
+## BiceLib.Inspector
+* **getSelectedEntity()**
+    * Returns objects of what the player has selected ingame.
+    * **Params**: /
+    * **Return values**: A list of tables.
+
