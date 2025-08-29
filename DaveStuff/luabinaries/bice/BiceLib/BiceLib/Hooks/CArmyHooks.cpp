@@ -62,12 +62,43 @@ int getTraitsEffect(DWORD leaderAddress) {
     return res;
 }
 
+int getAttachedBrigadesAmount(DWORD* higherUnitAddress) {
+    int res = 0;
+
+    DEBUG_OUT(printf("getAttachedBrigadesAmount higherUnitAddress: %#010x \n", (uintptr_t)higherUnitAddress));
+    HDS::LinkedListNodeSingle* unitListNode = (HDS::LinkedListNodeSingle*)*((DWORD*)higherUnitAddress + (0x1e4 / 4));
+    while (unitListNode != 0) {
+        DEBUG_OUT(printf("unitListNode: %#010x \n", (uintptr_t)unitListNode));
+        DEBUG_OUT(printf("data: %#010x \n", (uintptr_t)unitListNode->data));
+        DEBUG_OUT(printf("prev: %#010x \n", (uintptr_t)unitListNode->prev));
+        DEBUG_OUT(printf("next: %#010x \n", (uintptr_t)unitListNode->next));
+
+        DWORD unit = unitListNode->data;
+        DWORD brigadesAmount = *((DWORD*)unit + (0x40 / 4));
+        DWORD oobLevel = *((DWORD*)unit + (0x1f4 / 4));
+        if (brigadesAmount == 1 && oobLevel == 4) { // oobLevel: 4 = Division (and brigades) / 5 = Navy / 6 = Air
+            res++;
+        }
+        DEBUG_OUT(printf("res %d \n",res));
+
+        unitListNode = (HDS::LinkedListNodeSingle*)unitListNode->next;
+    }
+
+    return res;
+}
+
 DWORD handleUnitAttachmentLimit(DWORD currentlyAttachedUnitAmount, DWORD* unitToAttach, DWORD* lastCountedUnit) {
     DEBUG_OUT(printf("attachedUnitAmount: %d \n", (unsigned int)currentlyAttachedUnitAmount));
     DEBUG_OUT(printf("unitToAttachName: %s \n", utils::getCString(unitToAttach + (0x16c / 4))));
     DEBUG_OUT(printf("lastCountedUnitName: %s \n", utils::getCString(lastCountedUnit + (0x16c / 4))));
 
     DWORD newLimit = 5;
+
+    DWORD brigadesAmount = *(unitToAttach + (0x40 / 4));
+    DEBUG_OUT(printf("brigadesAmount: %d \n", brigadesAmount));
+    if (brigadesAmount == 1) {
+        return 999;
+    }
 
     DWORD tagId = *(unitToAttach + (0x128 / 4));
     DEBUG_OUT(printf("tagId: %d \n", tagId));
@@ -108,7 +139,12 @@ DWORD handleUnitAttachmentLimit(DWORD currentlyAttachedUnitAmount, DWORD* unitTo
         if (leaderAddress != 0) {
             newLimit += getTraitsEffect(leaderAddress);
         }
+
+        // Since Brigades can be attached infinitely, we need to exclude their count from the total
+        // To do that we simply add their amount to the limit.
+        newLimit += getAttachedBrigadesAmount(higherUnit);
     }
+
 
     return newLimit;
 }

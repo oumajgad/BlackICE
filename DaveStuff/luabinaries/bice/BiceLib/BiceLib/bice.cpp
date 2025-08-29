@@ -1096,7 +1096,6 @@ void registerLeaderFunctions(lua_State* this_state) {
 void registerUnitFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "Units");
     lua_newtable(this_state);
-    registerFunction(this_state, "getCountryVariables", getCountryVariables);
     registerFunction(this_state, "setCorpsUnitLimit", setCorpsUnitLimit);
     registerFunction(this_state, "setArmyUnitLimit", setArmyUnitLimit);
     registerFunction(this_state, "setArmyGroupUnitLimit", setArmyGroupUnitLimit);
