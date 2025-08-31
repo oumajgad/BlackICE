@@ -37,7 +37,7 @@ class CMapProvinceOffsets:
 
 
 class CMapProvince(pydantic.BaseModel):
-    LENGTH: ClassVar[int] = 936
+    LENGTH: ClassVar[int] = 0x39C
     PROVINCES: ClassVar[list[int]] = None
     self_ptr: int
     self_ptr_str: str

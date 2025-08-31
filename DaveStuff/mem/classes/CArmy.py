@@ -18,7 +18,7 @@ class CArmyOffsets(CUnitOffsets):
 
 
 class CArmy(pydantic.BaseModel):
-    LENGTH: ClassVar[int] = 808
+    LENGTH: ClassVar[int] = 0x308
     UNITS: ClassVar[list[int]] = None
     self_ptr: int
     ptr_str: str
@@ -69,7 +69,7 @@ class CArmy(pydantic.BaseModel):
             "upgrade_active": pm.read_bool(ptr + CArmyOffsets.upgrade_active),
             "reinforcements_active": pm.read_bool(ptr + CArmyOffsets.reinforcements_active),
             "order_ptr": pm.read_uint(ptr + CArmyOffsets.order_ptr),
-            "army_sub_unit_definition_ptr": pm.read_uint(ptr + CArmyOffsets.CSubUnitDefinitionPtr),
+            "army_sub_unit_definition_ptr": pm.read_uint(ptr + CArmyOffsets.CSubUnitDefinition_Ptr),
             "combat_cooldown": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.combat_cooldown, 4)),
             "supply_received_percentage": utils.to_number(
                 pm.read_bytes(ptr + CArmyOffsets.supply_received_percentage, 4)

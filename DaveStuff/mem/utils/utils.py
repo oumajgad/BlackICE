@@ -3,6 +3,7 @@ import struct
 
 import pydantic
 from pymem import Pymem
+from tabulate import tabulate
 
 
 def get_array_element_lengths(array):
@@ -92,15 +93,43 @@ def read_nested_pointers(pm: Pymem, start_ptr: int, depth: int):
 
 
 def dump_bytes(pm: Pymem, ptr: int, length: int):
-    print(f"Dumping {hex(ptr)}")
+    print(f"Dumping Object {hex(ptr)}")
+    table_headers = ["offset (int)", "hex val", "number val", "str val", "class", "list class"]
+    table_entries = []
     current = ptr
     for _ in range(0, int(length / 4)):
         res = pm.read_bytes(current, 4)
 
-        print(
-            f"addr: +{hex(current - ptr)} hex: {hex(to_number(res, False))} - {to_number(res)} - {res.decode(encoding='cp1252', errors='ignore')}"
+        table_entries.append(
+            [
+                f"{hex(current - ptr)} ({current-ptr})",
+                hex(to_number(res, False)),
+                to_number(res),
+                res.decode(encoding="cp1252", errors="ignore"),
+                try_to_get_class(pm, current),
+                try_to_get_class(pm, to_number(res, False)),
+            ]
         )
+
         current += 4
+
+    print(
+        tabulate(
+            table_entries,
+            headers=table_headers,
+            tablefmt="orgtbl",
+        )
+    )
+
+
+def try_to_get_class(pm: Pymem, addr: int):
+    try:
+        obj = pm.read_uint(addr)
+        vtable = pm.read_uint(obj)
+        return get_class_name_from_rtti(pm, vtable)
+    except Exception:
+        pass
+    return None
 
 
 def dump_model(x: pydantic.BaseModel, exlusions=None) -> str:

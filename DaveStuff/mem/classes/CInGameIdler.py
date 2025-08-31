@@ -5,6 +5,7 @@ from pymem import Pymem
 
 from classes.CAir import CAirOffsets, CAir
 from classes.CArmy import CArmy, CArmyOffsets
+from classes.CCombat import CCombatOffsets, CCombat
 from classes.CMapProvince import CMapProvince, CMapProvinceOffsets
 from classes.CNavy import CNavyOffsets, CNavy
 from constants import DATA_SECTION_START
@@ -43,6 +44,8 @@ class CInGameIdler(pydantic.BaseModel):
         print(f"{len(res) = }")
         for x in res:
             if x >= pm.base_address + DATA_SECTION_START:
+                if pm.read_uint(x + 4) != 0:
+                    continue
                 ptr = x
 
                 print(f"{utils.int_to_pointer(pm.base_address + DATA_SECTION_START) = }")
@@ -84,10 +87,15 @@ class CInGameIdler(pydantic.BaseModel):
                 return [CNavy, addr]
             elif first_bytes == (pm.base_address + CAirOffsets.VFTABLE_1):
                 return [CAir, addr]
+            elif first_bytes == (pm.base_address + CCombatOffsets.VFTABLE_OFFSET_2):
+                return [CCombat, addr - 8]
+            else:
+                return ["Not Implemented: " + utils.get_class_name_from_rtti(pm, first_bytes), addr]
 
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
+    print(f"{pm.base_address=}")
     idler = CInGameIdler.make(pm)
     print(idler.self_ptr)
     while True:
@@ -107,4 +115,6 @@ if __name__ == "__main__":
             elif selected_type == CMapProvince:
                 province = CMapProvince.make(pm, addr)
                 print(province)
-            time.sleep(1)
+            else:
+                print(x)
+        time.sleep(1)
