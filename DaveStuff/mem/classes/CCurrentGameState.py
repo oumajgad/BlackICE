@@ -3,7 +3,6 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
-from constants import DATA_SECTION_START
 from utils import utils
 
 
@@ -15,6 +14,7 @@ class CCurrentGameStateOffsets:
 
 
 class CCurrentGameState(pydantic.BaseModel):
+    LENGTH: ClassVar[int] = 0xDA8
     self_ptr: int
     ptr_str: str
     player_tag: str
@@ -23,19 +23,7 @@ class CCurrentGameState(pydantic.BaseModel):
 
     @classmethod
     def make(cls, pm: Pymem):
-        res = pm.pattern_scan_all(
-            pattern=utils.rawbytes(
-                (pm.base_address + CCurrentGameStateOffsets.VFTABLE_OFFSET_1)
-                .to_bytes(length=4, byteorder="little", signed=False)
-                .hex()
-            ),
-            return_multiple=True,
-        )
-        ptr = 0
-        for x in res:
-            if x >= pm.base_address + DATA_SECTION_START:
-                ptr = x
-
+        ptr = pm.base_address + 0x1689790
         temp = {
             "self_ptr": ptr,
             "ptr_str": utils.int_to_pointer(ptr),
@@ -54,5 +42,4 @@ if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     cgamestate = CCurrentGameState.make(pm)
     print(cgamestate)
-    print(cgamestate.is_player(3))
-    print(cgamestate.is_player(20))
+    utils.dump_bytes(pm, cgamestate.self_ptr, CCurrentGameState.LENGTH)

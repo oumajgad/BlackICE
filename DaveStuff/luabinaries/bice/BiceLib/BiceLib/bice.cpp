@@ -1019,34 +1019,6 @@ DWORD WINAPI periodicsJob(void* data) {
     return 0;
 }
 
-__declspec(dllexport) int startPeriodics(lua_State* L)
-{
-    HANDLE thread = CreateThread(NULL, 0, periodicsJob, NULL, 0, NULL);
-    return 0;
-}
-
-__declspec(dllexport) int test(lua_State* L)
-{
-    INFO_OUT(printf("#### test called ####\n"));
-    HANDLE thread = CreateThread(NULL, 0, periodicsJob, NULL, 0, NULL);
-
-    /*
-    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-
-    HWND gameWindow = FindWindowW(L"HoI3", NULL);
-
-    RECT r;
-    GetWindowRect(gameWindow, &r);
-    DEBUG_OUT(
-        printf("r.left: %i r.right: %i r.top: %i r.bottom: %i \n",r.left, r.right, r.top, r.bottom)
-    );
-    MoveWindow(gameWindow, r.left, r.top, 1000, 600, TRUE);
-    */
-    return 0;
-}
-
 __declspec(dllexport) luaL_Reg BiceLib[] = {
     // Misc
     {"startConsole", startConsole},
@@ -1055,8 +1027,6 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"cacheCountries", cacheCountries},
     {"cacheIngameIdler", cacheIngameIdler},
     {"hookCountryConstructor", hookCountryConstructor},
-    {"startPeriodics", startPeriodics},
-    {"test", test},
     {NULL, NULL}
 };
 
@@ -1153,7 +1123,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     DEBUG_OUT(printf("LUA_STATES: %i\n", LUA_STATES->size()));
 
     lua_newtable(this_state);
-    luaL_register(this_state, NULL, BiceLib);
+    luaL_register(this_state, "BiceLib", BiceLib);
     registerGameInfoFunctions(this_state);
     registerLeaderFunctions(this_state);
     registerUnitFunctions(this_state);
