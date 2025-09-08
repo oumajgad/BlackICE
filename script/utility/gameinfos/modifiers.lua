@@ -87,6 +87,10 @@ end
 
 function P.DumpEffects(selection)
     local data = table.deepcopy(P.ModifierData[selection])
+    if data == nil then
+        Utils.LUA_DEBUGOUT("modifiers got nil: " .. selection)
+        return ""
+    end
     -- remove the triggerKeys
     for k, v in pairs(triggerKeys) do
         data[v] = nil
