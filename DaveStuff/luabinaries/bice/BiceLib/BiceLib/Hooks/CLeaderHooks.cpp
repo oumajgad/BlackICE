@@ -52,7 +52,7 @@ int Hooks::CLeader::getPureSkillAndTraitListNode(DWORD* leaderAddress, HDS::Link
         }
         DEBUG_OUT(printf("----------\n"));
 
-        traitListNode = (HDS::LinkedListNodeSingle*)traitListNode->next;
+        traitListNode = traitListNode->next;
     }
     DEBUG_OUT(printf("traitListNode == 0 \n"));
     return 0;
@@ -218,7 +218,7 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
         }
         DEBUG_OUT(printf("----------\n"));
 
-        traitListNode = (HDS::LinkedListNodeSingle*)traitListNode->next;
+        traitListNode = traitListNode->next;
     }
     DEBUG_OUT(printf("traitListNode == 0 \n"));
 }

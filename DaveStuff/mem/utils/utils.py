@@ -94,7 +94,7 @@ def read_nested_pointers(pm: Pymem, start_ptr: int, depth: int):
 
 def dump_bytes(pm: Pymem, ptr: int, length: int):
     print(f"Dumping Object {hex(ptr)}")
-    table_headers = ["offset (int)", "hex val", "number val", "str val", "class", "list class"]
+    table_headers = ["offset (int)", "hex val", "number val", "str val", "class", "class ptr", "list class"]
     table_entries = []
     current = ptr
     for _ in range(0, int(length / 4)):
@@ -107,7 +107,8 @@ def dump_bytes(pm: Pymem, ptr: int, length: int):
                 to_number(res),
                 res.decode(encoding="cp1252", errors="ignore"),
                 try_to_get_class(pm, current),
-                try_to_get_class(pm, to_number(res, False)),
+                try_to_get_class_from_ptr(pm, current),
+                try_to_get_class_from_ptr(pm, to_number(res, False)),
             ]
         )
 
@@ -122,10 +123,19 @@ def dump_bytes(pm: Pymem, ptr: int, length: int):
     )
 
 
-def try_to_get_class(pm: Pymem, addr: int):
+def try_to_get_class_from_ptr(pm: Pymem, addr: int):
     try:
         obj = pm.read_uint(addr)
         vtable = pm.read_uint(obj)
+        return get_class_name_from_rtti(pm, vtable)
+    except Exception:
+        pass
+    return None
+
+
+def try_to_get_class(pm: Pymem, val: int):
+    try:
+        vtable = pm.read_uint(val)
         return get_class_name_from_rtti(pm, vtable)
     except Exception:
         pass

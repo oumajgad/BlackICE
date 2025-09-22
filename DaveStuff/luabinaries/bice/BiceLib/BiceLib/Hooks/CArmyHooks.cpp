@@ -55,7 +55,7 @@ int getTraitsEffect(DWORD leaderAddress) {
         }
         DEBUG_OUT(printf("----------\n"));
 
-        traitListNode = (HDS::LinkedListNodeSingle*)traitListNode->next;
+        traitListNode = traitListNode->next;
     }
     DEBUG_OUT(printf("traitListNode == 0 \n"));
 
@@ -81,7 +81,7 @@ int getAttachedBrigadesAmount(DWORD* higherUnitAddress) {
         }
         DEBUG_OUT(printf("res %d \n",res));
 
-        unitListNode = (HDS::LinkedListNodeSingle*)unitListNode->next;
+        unitListNode = unitListNode->next;
     }
 
     return res;

@@ -8,7 +8,6 @@ from arrays.ModifiersArray import ModifiersArray
 from classes.CArmy import CArmy
 from classes.CMinister import CMinister
 from classes.CModifier import CModifier
-from classes.CModifierDefinition import CModifierDefinition
 from constants import DATA_SECTION_START
 from structs.LinkedLists import LinkedListNode
 from utils import utils
@@ -185,18 +184,13 @@ def dump_country(pm: Pymem, tag: str) -> str:
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     print(pm.base_address)
-    country = get_country(pm, "IRE")
+    country = get_country(pm, "GER")
     print(
         utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
     )
     modifiers_ptr = pm.read_uint(country.self_ptr + CCountryOffsets.general_modifier_array_ptr)
     print(utils.int_to_pointer(modifiers_ptr))
-    for i in range(0, 143):
-        offset = i * 8
-        definition_ptr = pm.read_uint(modifiers_ptr + offset + 4)
-        definition = CModifierDefinition.make(pm, definition_ptr)
-        effect = pm.read_int(modifiers_ptr + offset)
-        print(f"{utils.int_to_pointer(offset)} - {definition.name_raw}: {effect}")
 
     mods_arr = ModifiersArray.make(pm, modifiers_ptr)
-    print(mods_arr)
+    print(country)
+    print(mods_arr.json())

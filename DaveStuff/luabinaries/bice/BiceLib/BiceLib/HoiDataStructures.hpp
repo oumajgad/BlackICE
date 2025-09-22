@@ -10,8 +10,8 @@ namespace HDS {
     struct LinkedListNodeSingle
     {
         uintptr_t data;
-        uintptr_t prev;
-        uintptr_t next;
+        LinkedListNodeSingle* prev;
+        LinkedListNodeSingle* next;
         // + 4 bytes (maybe padding)
     };
     struct Hoi3CString

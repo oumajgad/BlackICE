@@ -933,7 +933,7 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
                 lua_pushstring(L, "Unknown");
                 lua_settable(L, -3);
             }
-            currentNode = (HDS::LinkedListNodeSingle*)currentNode->next;
+            currentNode = currentNode->next;
             i++;
             lua_settable(L, -3);
         }

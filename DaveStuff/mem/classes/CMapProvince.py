@@ -3,7 +3,7 @@ from typing import ClassVar
 import pydantic
 from pymem import Pymem
 
-from arrays.ModifiersArray import ModifiersArray
+from classes.CGoodsPool import CGoodsPool
 from classes.CProvinceBuilding import CProvinceBuilding
 from constants import DATA_SECTION_START
 from utils import utils
@@ -20,12 +20,13 @@ class CMapProvinceOffsets:
     province_modifiers_array_ptr: int = 0x114  # Array of CModifierDefinition
     province_timed_modifiers_list_start_ptr: int = 0x13C
     province_timed_modifiers_list_end_ptr: int = 0x140
-    supply_pool: int = 0x164
-    fuel_pool: int = 0x168
-    oil: int = 0x27C
-    metal: int = 0x280
-    energy: int = 0x284
-    rares: int = 0x288
+    currentTransitGoodsPool: int = 0x15C  # not a pointer
+    yesterdayTransitGoodsPool: int = 0x180  # not a pointer
+    required_supply: int = 0x1B4
+    required_fuel: int = 0x1B8
+    yesterday_required_supply: int = 0x1D4
+    yesterday_required_fuel: int = 0x1DC
+    localBaseResourcesGoodsPool: int = 0x268  # not a pointer
     COwnerArea_ptr: int = 0x2B4
     CProvinceBuilding_array_ptr: int = 0x310
     manpower: int = 0x320
@@ -48,14 +49,16 @@ class CMapProvince(pydantic.BaseModel):
     owner_id: int
     controller_tag: str
     controller_id: int
-    supply_pool: int
     supply_depot_province_id: int
+    currentTransitGoodsPool: CGoodsPool
+    yesterdayTransitGoodsPool: CGoodsPool
+    required_supply: int
+    required_fuel: int
+    yesterday_required_supply: int
+    yesterday_required_fuel: int
+    localBaseResourcesGoodsPool: CGoodsPool
     manpower: int
     leadership: int
-    energy: int
-    metal: int
-    rares: int
-    oil: int
     CProvinceBuilding_array_ptr: int
 
     @classmethod
@@ -70,16 +73,22 @@ class CMapProvince(pydantic.BaseModel):
             "owner_id": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.owner_id, 4)),
             "controller_tag": pm.read_bytes(ptr + CMapProvinceOffsets.controller_tag, 3),
             "controller_id": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.controller_id, 4)),
-            "supply_pool": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.supply_pool, 4)),
+            "currentTransitGoodsPool": CGoodsPool.make(pm, ptr + CMapProvinceOffsets.currentTransitGoodsPool),
+            "yesterdayTransitGoodsPool": CGoodsPool.make(pm, ptr + CMapProvinceOffsets.yesterdayTransitGoodsPool),
+            "localBaseResourcesGoodsPool": CGoodsPool.make(pm, ptr + CMapProvinceOffsets.localBaseResourcesGoodsPool),
+            "required_supply": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.required_supply, 4)),
+            "required_fuel": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.required_fuel, 4)),
+            "yesterday_required_supply": utils.to_number(
+                pm.read_bytes(ptr + CMapProvinceOffsets.yesterday_required_supply, 4)
+            ),
+            "yesterday_required_fuel": utils.to_number(
+                pm.read_bytes(ptr + CMapProvinceOffsets.yesterday_required_fuel, 4)
+            ),
             "supply_depot_province_id": utils.to_number(
                 pm.read_bytes(ptr + CMapProvinceOffsets.supply_depot_province_id, 4)
             ),
             "manpower": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.manpower, 4)),
             "leadership": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.leadership, 4)),
-            "energy": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.energy, 4)),
-            "metal": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.metal, 4)),
-            "rares": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.rares, 4)),
-            "oil": utils.to_number(pm.read_bytes(ptr + CMapProvinceOffsets.oil, 4)),
             "CProvinceBuilding_array_ptr": pm.read_uint(ptr + CMapProvinceOffsets.CProvinceBuilding_array_ptr),
         }
 
@@ -132,10 +141,10 @@ if __name__ == "__main__":
     # for ptr in provinces:
     #     # print(ptr)
     #     province = CMapProvince.make(pm, ptr)
-    prov = CMapProvince.get_province(pm, 1861)
-    print(prov)
+    prov = CMapProvince.get_province(pm, 1527)
+    print(prov.json())
     mods_ptr = pm.read_uint(prov.self_ptr + CMapProvinceOffsets.province_modifiers_array_ptr)
     # utils.dump_bytes(pm, mods_ptr, 0x200)
-    modifiers = ModifiersArray.make(pm, mods_ptr)
-    print(modifiers)
-    utils.dump_bytes(pm, prov.self_ptr, 0x200)
+    # modifiers = ModifiersArray.make(pm, mods_ptr)
+    # print(modifiers.json())
+    utils.dump_bytes(pm, prov.self_ptr, CMapProvince.LENGTH)
