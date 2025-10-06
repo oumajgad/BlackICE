@@ -290,9 +290,9 @@ function P.NavalTechs(voTechnologyData)
 		{"light_carrier_technology", 0},
 		{"carrier_class", 0},
 		{"carrier_technology", 0},
-		{"carrier_light_anti_air_artilery", 0},
-		{"carrier_medium_anti_air_artilery", 0},
-		{"carrier_heavy_anti_air_artilery", 0},
+		{"carrier_light_anti_air_artillery", 0},
+		{"carrier_medium_anti_air_artillery", 0},
+		{"carrier_heavy_anti_air_artillery", 0},
 		{"carrier_screws_optimisation", 0},
 		{"carrier_rudder_optimisation", 0},
 		{"carrier_hull_shape_optimisation", 0},
@@ -356,9 +356,9 @@ function P.NavalTechs(voTechnologyData)
 		"cruiser_horizontal_protection_layout",
 		"cruiser_vertical_protection_layout",
 		"cruiser_damage_control",
-		"cruiser_light_anti_air_artilery",
-		"cruiser_medium_anti_air_artilery",
-		"cruiser_heavy_anti_air_artilery"};
+		"cruiser_light_anti_air_artillery",
+		"cruiser_medium_anti_air_artillery",
+		"cruiser_heavy_anti_air_artillery"};
 	return ignoreTech, preferTech
 end
 
