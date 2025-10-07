@@ -2374,3 +2374,63 @@ country_event = {
 		}
 	}
 }
+
+# Demolition of the Dnieper Dam
+country_event = {
+    id = 37000
+    
+    title = "EVTNAME37000"
+    desc = "EVTDESC37000"
+    picture = "dnieper_dam"
+    
+    fire_only_once = yes
+    
+    trigger = {
+        tag = SOV
+        war_with = GER
+       3244 = {
+			controller = {
+			faction = axis
+			}
+	   	}
+        SOV = {
+			controls = 3245
+		}
+    }
+    
+    option = {
+        name = "EVTOPTA37000" #demolish
+        supplies = -2000
+		dissent = 1
+		national_unity = -0.1
+        GER = { country_event = 37001 }
+		ai_chance = {
+			factor = 100
+		}
+    }
+    
+    option = {
+        name = "EVTOPTB37000" #preserve
+		national_unity = 0.1
+    }
+}
+
+# German Reaction Event
+country_event = {
+    id = 37001
+    
+    title = "EVTNAME37001"
+    desc = "EVTDESC37001"
+    picture = "dnieper_dam"
+    
+    is_triggered_only = yes
+    
+    option = {
+        name = "EVTOPTA37001" 
+        3245 = infra = -2
+		3311 = infra = -2
+		2653 = infra = -2
+		3122 = infra = -2
+		2716 = infra = -2
+    }
+}
