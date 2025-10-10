@@ -242,8 +242,7 @@ function P.AirTechs(voTechnologyData)
 end
 
 function P.AirDoctrineTechs(voTechnologyData)
-	local ignoreTech = {
-		{"logistical_strike_tactics", 0}};
+	local ignoreTech = {};
 
 	local preferTech = {
 		"fighter_pilot_training",
@@ -270,7 +269,6 @@ function P.NavalTechs(voTechnologyData)
 		{"floatplane_dev_torpedo", 0},
 		{"floatplane_dev_fighter", 0},
 		{"closed_hangar", 0},
-		{"carrier_safety_procedures", 0},
 		{"double_hangar", 0},
 		{"three_three", 0},
 		{"three_three_reverse", 0},
@@ -288,6 +286,8 @@ function P.NavalTechs(voTechnologyData)
 		{"three_three_front", 0},
 		{"three_two_two_three", 0},
         {"submarine_electroboat", 0},
+		{"carrier_torpedo_protection", 4},
+		{"capital_ship_torpedo_protection", 5},
         {"milch_submarine", 0}};
 
 	local preferTech = {
@@ -366,7 +366,6 @@ function P.NavalTechs(voTechnologyData)
 		"light_carrier_armour_thickness",
 		"carrier_vertical_protection",
 		"carrier_horizontal_protection",
-		"carrier_torpedo_protection",
 		"carrier_bulkheads_layout",
 		"carrier_hanger",
 		"escort_carrier_technology",
