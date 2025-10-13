@@ -5098,4 +5098,38 @@ diplomatic_decisions = {
 	}
 		
 }
+
+ dnieper_dam = {
+        potential = {
+            tag = OMG
+        }
+
+        allow = {
+            SOV = {
+                exists = yes
+                war_with = GER
+                controls = 3245
+            }
+            3244 = {
+                controller = {
+                    faction = axis
+                }
+            }
+            NOT = {
+                has_country_flag = dnieper_dam_event_fired
+            }
+        }
+
+        effect = {
+            SOV = {
+                country_event = 37000
+            }
+            set_country_flag = dnieper_dam_event_fired
+        }
+
+        ai_will_do = {
+            factor = 1
+        }
+    }
+
 #EOF#
