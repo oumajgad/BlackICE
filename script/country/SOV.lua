@@ -314,7 +314,7 @@ function P.NavalTechs(voTechnologyData)
 		{"carrier_vertical_protection", 0},
 		{"carrier_horizontal_protection", 0},
 		{"carrier_torpedo_protection", 0},
-		{"carrier_bulkheads_layout", 0},
+		{"carrier_bulkheads_thickness", 0},
 		{"escort_carrier_technology", 0},
 		{"seaplane_tender_technology", 0},
 		{"carrier_deck_armour_optimisation", 0},
