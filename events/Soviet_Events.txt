@@ -5317,12 +5317,63 @@ country_event = {
 		}
 	}
 }
-## 8th Cavalry Corps
+## 11th Cavalry Division - 2nd Formation
 country_event = {
 	id = 12005
 	is_triggered_only = yes
-    title = "8th Cavalry Corps"
+    title = "11th Cavalry Division"
 	desc = "EVTDESC12005"
+	picture = "SOV_Cavalry_2"
+    
+    option = {
+		name = "Form this division!"
+		set_country_flag = 11_CD
+
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +900
+				}
+				energy = -1800
+				metal = -900
+				rare_materials = -450
+				load_oob = SOV/Cavalry_Division_11_1941_Aug.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = SOV/Cavalry_Division_11_1941_Aug.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 11_CD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 8th Cavalry Corps
+country_event = {
+	id = 12006
+	is_triggered_only = yes
+    title = "8th Cavalry Corps"
+	desc = "EVTDESC12006"
 	picture = "SOV_Cavalry_2"
     
     option = {
@@ -5378,10 +5429,10 @@ country_event = {
 }
 ## 11th Cavalry Corps
 country_event = {
-	id = 12006
+	id = 12007
 	is_triggered_only = yes
     title = "11th Cavalry Corps"
-	desc = "EVTDESC12006"
+	desc = "EVTDESC12007"
 	picture = "SOV_Cavalry_3"
     
     option = {
@@ -5445,10 +5496,10 @@ country_event = {
 }
 ## 4th Cavalry Corps - Third Formation
 country_event = {
-	id = 12007
+	id = 12008
 	is_triggered_only = yes
     title = "4th Cavalry Corps"
-	desc = "EVTDESC12007"
+	desc = "EVTDESC12008"
 	picture = "SOV_Cavalry_1"
     
     option = {
@@ -5496,10 +5547,10 @@ country_event = {
 }
 ## 7th Naval Rifle Brigade
 country_event = {
-	id = 12008
+	id = 12009
 	is_triggered_only = yes
     title = "7th Naval Rifle Brigade"
-	desc = "EVTDESC12008"
+	desc = "EVTDESC12009"
 	picture = "SOV_Naval_Infantry"
     
     option = {
@@ -5547,10 +5598,10 @@ country_event = {
 }
 ## 83rd Naval Infantry Brigade
 country_event = {
-	id = 12009
+	id = 12010
 	is_triggered_only = yes
     title = "83rd Naval Infantry Brigade"
-	desc = "EVTDESC12009"
+	desc = "EVTDESC12010"
 	picture = "SOV_Naval_Infantry"
     
     option = {
@@ -5598,10 +5649,10 @@ country_event = {
 }
 ## 92nd Naval Infantry Brigade
 country_event = {
-	id = 12010
+	id = 12011
 	is_triggered_only = yes
-    title = "83rd Naval Infantry Brigade"
-	desc = "EVTDESC12010"
+    title = "92nd Naval Infantry Brigade"
+	desc = "EVTDESC12011"
 	picture = "SOV_Naval_Infantry"
     
     option = {
@@ -5650,10 +5701,10 @@ country_event = {
 
 ## Formation of 108th and 109th Tank Divisions
 country_event = {
-	id = 12011
+	id = 12012
 	is_triggered_only = yes
 	title = "108th and 109th Tank Divisions"
-	desc = "EVTDESC12011"
+	desc = "EVTDESC12012"
 	picture = "SOV_22_OMC"
 	option = {
 		name = "Form these divisions!"
@@ -5711,10 +5762,10 @@ country_event = {
 }
 ## Formation of 107th Motorized Division
 country_event = {
-	id = 12012
+	id = 12013
 	is_triggered_only = yes
 	title = "107th Motorized Division"
-	desc = "EVTDESC12012"
+	desc = "EVTDESC12013"
 	picture = "SOV_Mot_3"
 	option = {
 		name = "To the Front!"
@@ -5772,10 +5823,10 @@ country_event = {
 }
 ## Formation of 112th Tank Division and 239th Rifle Division
 country_event = {
-	id = 12013
+	id = 12014
 	is_triggered_only = yes
 	title = "112th Tank Division"
-	desc = "EVTDESC12013"
+	desc = "EVTDESC12014"
 	picture = "SOV_22_OMC"
 	option = {
 		name = "Transfer these units from the Far East!"
@@ -6245,7 +6296,7 @@ country_event = {
 	is_triggered_only = yes
 	title = "112th Tank Brigade"
 	desc = "EVTDESC12028"
-	picture = "Mongolian_Help_1943_Jan"
+	picture = "SOV_112TB"
 	option = {
 		name = "To the Front!"
 		set_country_flag = 112_TB
@@ -7097,7 +7148,7 @@ country_event = {
 		remove_brigade = "Shtab-K. 5-go Mekh. Korpusa"
 		remove_brigade = "225-y Mot.-Signalnyy B-n"
 		remove_brigade = "8-y Mototsikletnyy Polk"
-		remove_brigade = "55-y Mot.-Sap'ornyy B-n"
+		remove_brigade = "Mot.-Sap'ornyy B-n 5-go MK"
 		remove_brigade = "467-y/578-y Korpus-Artilleriyskiye Polki"
 		remove_brigade = "Avtotransportnyy B-n 5-go Mekh. Korpusa"
 		remove_brigade = "Shtab-K. 13-y Tankovoy Divizii"
@@ -9352,11 +9403,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +300
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -600
+				metal = -300
+				rare_materials = -100
 				load_oob = SOV/Tank_Corps_1_1943_Feb.txt
 			}
 		}
@@ -9424,13 +9475,7 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +1000
-				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				supplies = -500 #Cost is absorbed by the formation of 3rd TC(1942)/removal of 2nd OMC (1940)
 				load_oob = SOV/Tank_Corps_3_1943_May.txt
 			}
 		}
@@ -9500,9 +9545,9 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +
 				}
-				energy = -2000
+				supplies = -500 #Cost absorbed by previous upgrade (5th Mechanized Corps > 5th Tank Corps)
 				metal = -1000
 				rare_materials = -500
 				load_oob = SOV/Tank_Corps_5_1943_June.txt
@@ -9574,11 +9619,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +400 #Upgrade cost is partially absorbed by the previous upgrade (9th Mechanized Corps of 1940 > 9th Tank Corps)
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -800
+				metal = -400
+				rare_materials = -200
 				load_oob = SOV/Tank_Corps_9_1943_June.txt
 			}
 		}
@@ -9648,11 +9693,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +100 #Cost is absorbed by the previous upgrade (10th Mechanized Corps of 1941> 10th Tank Corps)
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -200
+				metal = -100
+				rare_materials = -50
 				load_oob = SOV/Tank_Corps_10_1943_June.txt
 			}
 		}
@@ -9722,11 +9767,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +100
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -200
+				metal = -100
+				rare_materials = -50
 				load_oob = SOV/Tank_Corps_11_1943_June.txt
 			}
 		}
@@ -9793,13 +9838,8 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +1000
-				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+
+				supplies = -500 #Cost is absorbed by previous upgrade (16th Mechanized Corps of 1941 > 16th Tank Corps)
 				load_oob = SOV/Tank_Corps_16_1943_June.txt
 			}
 		}
@@ -9865,11 +9905,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +2100
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -4200
+				metal = -2100
+				rare_materials = -1050
 				load_oob = SOV/Tank_Corps_18_1943_June.txt
 			}
 		}
@@ -9940,11 +9980,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +600
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1800
+				metal = -600
+				rare_materials = -300
 				load_oob = SOV/Tank_Corps_19_1943_Sept.txt
 			}
 		}
@@ -9982,11 +10022,6 @@ country_event = {
 		remove_brigade = "Shtab-K. 20-y Tank. Korpusa"
 		remove_brigade = "Otd. Bron. Razvedovatelniy B-n 20-y Tank. Korpusa"
 		remove_brigade = "Transportnyy B-n 20-y Tank. Korpusa"
-		remove_brigade = "Shtab-K. 11-y Gv. Tank. Brigady"
-		remove_brigade = "1-y/2-y Otd. Tank. B-ny 11-y Tank. Brigady"
-		remove_brigade = "Mot.-Pulemetnyy B-n 11-y Gv. Tank. Brigady"
-		remove_brigade = "Elementy Obespecheniya 11-y Gv. Tank. Brigady"
-		remove_brigade = "Transportnyy B-n 11-y Gv. Tank. Brigady"
 		remove_brigade = "Shtab-K. 155-y Tank. Brigady"
 		remove_brigade = "342-y/343-y Tank. B-ny 101-y Tankovyy Brigady"
 		remove_brigade = "Mot.-Pulemetnyy B-n 155-y Tank. Brigady"
@@ -10014,13 +10049,8 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +1000
-				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+
+				supplies = -500 #IC cost is absorbed by previous upgrade (20th Mechanized Corps of 1941 > 20th Tank Corps)
 				load_oob = SOV/Tank_Corps_20_1943_July.txt
 			}
 		}
@@ -10087,13 +10117,7 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +1000
-				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				supplies = -500 #Cost is absorbed by previous upgrade (23rd Mechanized Corps of 1941 > 23rd Tank Corps)
 				load_oob = SOV/Tank_Corps_23_1943_July.txt
 			}
 		}
@@ -10161,13 +10185,7 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +1000
-				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				supplies = -500 #Cost is absorbed by previous upgrade (25th Mechanized Corps of 1941 > 25th Tank Corps)
 				load_oob = SOV/Tank_Corps_25_1943_July.txt
 			}
 		}
@@ -10240,11 +10258,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +750
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1500
+				metal = -750
+				rare_materials = -375
 				load_oob = SOV/Tank_Corps_29_1943_March.txt
 			}
 		}
@@ -10317,11 +10335,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +600
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1200
+				metal = -600
+				rare_materials = -300
 				load_oob = SOV/Tank_Corps_30_1943_April.txt
 			}
 		}
@@ -10370,6 +10388,12 @@ country_event = {
 		remove_brigade = "109-y Mot.-Sap'ornyy B-n"
 		remove_brigade = "109-y PT/Zen.Art./Raz. Bataliony"
 		remove_brigade = "109-y Avtotransportnyy B-n"
+		#Removing 100th Tank Brigade
+		remove_brigade = "Shtab-K. 100-y Tank. Brigady"
+		remove_brigade = "133-y/196-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 100-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 100-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 100-y Tank. Brigady"
 
 		ai_chance = {
 			factor = 100
@@ -10382,11 +10406,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +900
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1800
+				metal = -900
+				rare_materials = -450
 				load_oob = SOV/Tank_Corps_31_1943_June.txt
 			}
 		}
@@ -11483,13 +11507,7 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +1000
-				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				supplies = -500
 				load_oob = SOV/Mech_Corps_1_1943_June.txt
 			}
 		}
@@ -11618,8 +11636,8 @@ country_event = {
 		remove_brigade = "Shtab-K. 36-y Tank. Brigady"
 		remove_brigade = "36-y/244-y Otdel'nye Tankovyye B-ny"
 		remove_brigade = "Mot.-Pulemetnyy B-n 36-y Tank. Brigady"
-		remove_brigade = "79-y Istrebitel'no-Protivotankovyy Polk/III-IV B-ny"
-		remove_brigade = "Transportnyy B-n 219-y Tank. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy B-n 36-y TB"
+		remove_brigade = "Transportnyy B-n 36-y Tank. Brigady"
 
 		ai_chance = {
 			factor = 100
@@ -11915,11 +11933,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000 #IC cost to check because removing 50th Mechanized Brigade
+					value = +300 #Cost is partially absorbed by the remove/upgrade of 22nd Mechanized Coprs of 1941 > 5th Mechanized Corps (1942)
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -600
+				metal = -300
+				rare_materials = -150
 				load_oob = SOV/Mech_Corps_5_1943_Aug.txt
 			}
 		}
@@ -11981,11 +11999,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +11100
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -22200
+				metal = -11100
+				rare_materials = -5500
 				load_oob = SOV/Mech_Corps_7_1943_Sept.txt
 			}
 		}
@@ -12046,11 +12064,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +9900
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -19800
+				metal = -9900
+				rare_materials = -4950
 				load_oob = SOV/Mech_Corps_8_1943_Sept.txt
 			}
 		}
@@ -12096,11 +12114,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +9000
+					value = +13100
 				}
-				energy = -18000
-				metal = -9000
-				rare_materials = -4500
+				energy = -26200
+				metal = -13100
+				rare_materials = -6550
 				load_oob = SOV/Mech_Corps_9_1943_Aug.txt
 			}
 		}
@@ -12138,6 +12156,7 @@ country_event = {
 		remove_brigade = "Shtab-K. 9-y Mech. Korpusa"
 		remove_brigade = "999-y Otdel'nyy B-n Svyaz"
 		remove_brigade = "100-y Mototsikletnyy B-n"
+		remove_brigade = "47-y/59-y Gv. Tyazholyy Tank. Polki"
 		remove_brigade = "1719-y Zen. Art. Polk"
 		remove_brigade = "386-y Istrebitel'no-Protivotankovyy Art. Polk" 
 		remove_brigade = "Transportnyy B-n 9-y Mech. Korpusa"
@@ -12146,21 +12165,21 @@ country_event = {
 		remove_brigade = "53-y Tankovyy Polk"
 		remove_brigade = "39-y Otdel'nyy Sap'ornyy B-n"
 		remove_brigade = "615-y Minometnyy Polk"
-		remove_brigade = "59-y Gv. Tyazholyy Tank. Polk"
+		remove_brigade = "Elementy Obespecheniya 69-y Mekh. B."
 		remove_brigade = "Transportnyy B-n 69-y Mekh. Brigady"
 		remove_brigade = "Shtab-K. 70-y Mekh. Brigady"
 		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 70-y Mekh. Brigady"
 		remove_brigade = "229-y Tankovyy Polk"
 		remove_brigade = "1454-y Sam.-Art. Polk/I.,II. D-ny"
 		remove_brigade = "1454-y Sam.-Art. Polk/III.,IV. D-ny"
-		remove_brigade = "57-y Gv. Tyazholyy Tank. Polk"
+		remove_brigade = "Elementy Obespecheniya 70-y Mekh. B."
 		remove_brigade = "Transportnyy B-n 70-y Mekh. Brigady"
 		remove_brigade = "Shtab-K. 71-y Mekh. Brigady"
 		remove_brigade = "1-y/2-y/3-y Mekh. B-ny 71-y Mekh. Brigady"
 		remove_brigade = "74-y Tankovyy Polk"
 		remove_brigade = "1823-y Sam.-Art. Polk/I.,II. D-ny"
 		remove_brigade = "1823-y Sam.-Art. Polk/III.,IV. D-ny"
-		remove_brigade = "47-y Gv. Tyazholyy Tank. Polk"
+		remove_brigade = "Elementy Obespecheniya 71-y Mekh. B."
 		remove_brigade = "Transportnyy B-n 71-y Mekh. Brigady"
 
 		ai_chance = {
@@ -12840,11 +12859,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +700
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1400
+				metal = -700
+				rare_materials = -350
 				load_oob = SOV/Artillery_Breakthrough_Divisions_7_9_1943_Aug.txt
 			}
 		}
@@ -12908,11 +12927,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +150
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -300
+				metal = -150
+				rare_materials = -75
 				load_oob = SOV/Artillery_Breakthrough_Divisions_13_15_1943_May.txt
 			}
 		}
@@ -12974,11 +12993,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +700
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1400
+				metal = -700
+				rare_materials = -350
 				load_oob = SOV/Artillery_Breakthrough_Corps_3_1943_May.txt
 			}
 		}
@@ -13032,11 +13051,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +1800
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -3600
+				metal = -1800
+				rare_materials = -900
 				load_oob = SOV/Artillery_Breakthrough_Corps_7_1943_May.txt
 			}
 		}
@@ -13100,11 +13119,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +700
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1400
+				metal = -700
+				rare_materials = -350
 				load_oob = SOV/Artillery_Breakthrough_Corps_4_1943_June.txt
 			}
 		}
@@ -13167,11 +13186,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +700
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1400
+				metal = -700
+				rare_materials = -350
 				load_oob = SOV/Artillery_Breakthrough_Corps_5_1943_June.txt
 			}
 		}
@@ -13243,11 +13262,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +600
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1200
+				metal = -600
+				rare_materials = -300
 				load_oob = SOV/Artillery_Breakthrough_Corps_8_1943_July.txt
 			}
 		}
@@ -13293,11 +13312,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +1200
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = SOV/Artillery_Division_8_1943_Oct.txt
 			}
 		}
@@ -13856,11 +13875,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1100
+					value = +1500
 				}
-				energy = -2200
-				metal = -1100
-				rare_materials = -550
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
 				load_oob = SOV/Tank_Army_3_1942_May.txt
 			}
 		}
@@ -14984,11 +15003,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +900
+					value = +1000
 				}
-				energy = -1800
-				metal = -900
-				rare_materials = -450
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
 				load_oob = SOV/Polish_Division_1_1943_May.txt
 			}
 		}
@@ -15034,11 +15053,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +5000
+					value = +5400
 				}
-				energy = -10000
-				metal = -5000
-				rare_materials = -2500
+				energy = -10800
+				metal = -5400
+				rare_materials = -2700
 				load_oob = SOV/Polish_Corps_1_1943_August.txt
 			}
 		}
@@ -15920,6 +15939,13 @@ country_event = {
 		remove_brigade = "Shtab-K. 7-go Kavaleriyskogo Korpusa"
 		remove_brigade = "7-y Otdel'nyy Zenitno-Artilleriyskiy Divizion"
 		remove_brigade = "Transportnyy B-n 7-go Kavaleriyskogo Korpusa"
+		#Removing 11th Cavalry Division
+		remove_brigade = "Shtab-K. 11-y Kavaleriyskoy D."
+		remove_brigade = "250/253/256-ye Kavaleriyskiye Polki"
+		remove_brigade = "Mekhanizirovannyy B-n 11-y Kav. D."
+		remove_brigade = "161-y Konno-Artilleriyskiy D-n"
+		remove_brigade = "Konno-Sap'ornyy B-n 11-y Kav. D."
+		remove_brigade = "Transportnyy B-n 11-y Kav. D."
 		#Removing 8th Far Eastern Cavalry Division
 		remove_brigade = "Shtab-K. 8-y Kav. Dalnevostochnoy D."
 		remove_brigade = "49/115/154/163-y Kavaleriyskiye Polki"
@@ -15940,11 +15966,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +4400
+					value = +3800
 				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
+				energy = -7600
+				metal = -3800
+				rare_materials = -1800
 				load_oob = SOV/Guards_Cavalry_Corps_6_1943_Feb.txt
 			}
 		}
@@ -16031,11 +16057,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +4400
+					value = +1600
 				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
+				energy = -3200
+				metal = -1600
+				rare_materials = -800
 				load_oob = SOV/Guards_Cavalry_Corps_7_1943_Feb.txt
 			}
 		}
@@ -16172,11 +16198,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +600
+					value = +1800
 				}
-				energy = -1200
-				metal = -600
-				rare_materials = -300
+				energy = -3600
+				metal = -1800
+				rare_materials = -900
 				load_oob = SOV/Guards_Cavalry_Corps_2_1943_Oct.txt
 			}
 		}
@@ -16246,11 +16272,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +4400
+					value = +700
 				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
+				energy = -1400
+				metal = -700
+				rare_materials = -350
 				load_oob = SOV/Guards_Cavalry_Corps_3_1943_Sept.txt
 			}
 		}
@@ -16320,11 +16346,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +4400
+					value = +1400
 				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
+				energy = -2800
+				metal = -1400
+				rare_materials = -700
 				load_oob = SOV/Guards_Cavalry_Corps_4_1943_Sept.txt
 			}
 		}
@@ -16394,11 +16420,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +4400
+					value = +1500
 				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
 				load_oob = SOV/Guards_Cavalry_Corps_5_1943_Aug.txt
 
 			}
@@ -18566,7 +18592,7 @@ country_event = {
 	option = {
 		name = "Form this unit!"
 		set_country_flag = GRD_75
-		#Formation of 63rd Guards Rifle Division - Removing 95th Rifle Division
+		#Formation of 75th Guards Rifle Division - Removing 95th Rifle Division
 		remove_brigade = "Shtab-K. 95-y Strelk. Div."
 		remove_brigade = "90/161/241-ye Strelkovyye Polki"
 		remove_brigade = "57-y Artilleriyskiy Polk"
@@ -18584,13 +18610,7 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +500
-				}
-				energy = -1000
-				metal = -500
-				rare_materials = -250
+				supplies = -500
 				load_oob = SOV/Guards_Rifle_Divisions_75_1943_March.txt
 			}
 		}
@@ -18643,11 +18663,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +500
+					value = +200
 				}
-				energy = -1000
-				metal = -500
-				rare_materials = -250
+				energy = -400
+				metal = -200
+				rare_materials = -100
 				load_oob = SOV/Guards_Rifle_Divisions_120_1943_Sept.txt
 			}
 		}
@@ -18723,7 +18743,7 @@ country_event = {
 		}
 	}
 }
-## 7th Guards Cavalry Divisions, January 1942 - Moscow
+## 7th Guards Cavalry Division, January 1942 - Moscow
 country_event = {
 	id = 14040
 	is_triggered_only = yes
@@ -20269,11 +20289,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1050
+					value = +900
 				}
-				energy = -2100
-				metal = -1050
-				rare_materials = -525
+				energy = -1800
+				metal = -900
+				rare_materials = -450
 				load_oob = SOV/Guards_Tank_Corps_1_1942_Dec.txt
 			}
 		}
@@ -20344,11 +20364,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +1200
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = SOV/Guards_Tank_Corps_1_1943_June.txt
 			}
 		}
@@ -20507,11 +20527,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +3700
+					value = +3100
 				}
-				energy = -7400
-				metal = -3700
-				rare_materials = -1850
+				energy = -6200
+				metal = -3100
+				rare_materials = -1550
 				load_oob = SOV/Guards_Tank_Corps_2_1943_Jan.txt
 			}
 		}
@@ -20581,11 +20601,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +2200
+					value = +1600
 				}
-				energy = -4400
-				metal = -2200
-				rare_materials = -1100
+				energy = -3200
+				metal = -1600
+				rare_materials = -800
 				load_oob = SOV/Guards_Tank_Corps_3_1943_Jan.txt
 			}
 		}
@@ -20655,11 +20675,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +3900
+					value = +3400
 				}
-				energy = -7800
-				metal = -3900
-				rare_materials = -1950
+				energy = -6800
+				metal = -3400
+				rare_materials = -1700
 				load_oob = SOV/Guards_Tank_Corps_4_1943_Jan.txt
 			}
 		}
@@ -20729,11 +20749,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +3100
+					value = +2000
 				}
-				energy = -6200
-				metal = -3100
-				rare_materials = -1550
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
 				load_oob = SOV/Guards_Tank_Corps_5_1943_Feb.txt
 			}
 		}
@@ -20803,11 +20823,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +3000
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -6000
+				metal = -3000
+				rare_materials = -1500
 				load_oob = SOV/Guards_Tank_Corps_6_1943_July.txt
 			}
 		}
@@ -20877,11 +20897,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +500 #Cost is absorbed by previous upgrade (15th Mechanized Corps of 1941 > 15th Tank Corps)
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -1000
+				metal = -500
+				rare_materials = -200
 				load_oob = SOV/Guards_Tank_Corps_7_1943_July.txt
 			}
 		}
@@ -20951,11 +20971,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +4100
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -8200
+				metal = -4100
+				rare_materials = -2050
 				load_oob = SOV/Guards_Tank_Corps_8_1943_Sept.txt
 			}
 		}
@@ -21231,22 +21251,21 @@ country_event = {
 		remove_brigade = "Mot.-Pulemetnyy B-n 22-y Tank. Brigady"
 		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 22-y Tank. Brigady"
 		remove_brigade = "Transportnyy B-n 22-y Tank. Brigady"
-		remove_brigade = "Shtab-K. 100-y Tank. Brigady"
-		remove_brigade = "133-y/196-y Otdel'nye Tankovyye B-ny"
-		remove_brigade = "Mot.-Pulemetnyy B-n 100-y Tank. Brigady"
-		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 100-y Tank. Brigady"
-		remove_brigade = "Transportnyy B-n 100-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 112-y Tank. Brigady"
+		remove_brigade = "124-y/125-y Otdel'nye Tankovyye B-ny"
+		remove_brigade = "Mot.-Pulemetnyy B-n 112-y Tank. Brigady"
+		remove_brigade = "Istr.-Protivotankovyy D-n 112-y Tank. Brigady"
+		remove_brigade = "Transportnyy B-n 112-y Tank. Brigady"
 		remove_brigade = "Shtab-K. 200-y Tank. Brigady"
 		remove_brigade = "191-y/192-y Otdel'nye Tankovyye B-ny"
 		remove_brigade = "Mot.-Pulemetnyy B-n 200-y Tank. Brigady"
 		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 200-y Tank. Brigady"
 		remove_brigade = "Transportnyy B-n 200-y Tank. Brigady"
-		remove_brigade = "Shtab-K. 5-y Mot. Brigady"
-		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 5-y Mot. Brigady"
-		remove_brigade = "188-y Otdel'nyy Sap'ornyy B-n"
-		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 5-y Mot. Brigady"
-		remove_brigade = "25-y Otdel'nyy Razvedyvatel'nyy B-n"
-		remove_brigade = "Transportnyy B-n 5-y Mot. Brigady"
+		remove_brigade = "Shtab-K. 6-y Mot. Brigady"
+		remove_brigade = "1-y/2-y/3-y Motostrelkovyye B-ny 6-y Mot. Brigady"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 6-y Mot. Brigady"
+		remove_brigade = "40-y Otdel'nyy Razvedyvatel'nyy B-n"
+		remove_brigade = "Transportnyy B-n 6-y Mot. Brigady"
 
 		ai_chance = {
 			factor = 100
@@ -21257,13 +21276,8 @@ country_event = {
 					tag = SOV
 					has_country_flag = BlackICE
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +1000
-				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+
+				supplies = -1000 #IC cost absorbed when upgrading 6th OMC of 1940 > 6th TC of 1942
 				load_oob = SOV/Guards_Tank_Corps_11_1943_Sept.txt
 			}
 		}
@@ -21676,7 +21690,7 @@ country_event = {
 		remove_brigade = "Shtab-K. 4-y Mech. Korpusa"
 		remove_brigade = "61-y Mototsikletnyy B-n"
 		remove_brigade = "44-y Otd. Bron. Razvedovatelniy B-n"
-		remove_brigade = "168-y/188-y Otdel'nye Tankovyye Polky"
+		remove_brigade = "55-y/158-y Otdel'nye Tankovyye Polky"
 		remove_brigade = "71-y Otdel'nyy Sap'ornyy B-n"
 		remove_brigade = "Transportnyy B-n 4-y Mech. Korpusa"
 		remove_brigade = "Shtab-K. 36-y Mekh. Brigady"
@@ -21838,11 +21852,11 @@ country_event = {
 		#Removing 13th Tank Corps
 		remove_brigade = "Shtab-K. 13-y Tank. Korpusa"
 		remove_brigade = "Transportnyy B-n 13-y Tank. Korpusa"
-		remove_brigade = "Shtab-K. 65-y Tank. Brigady"
-		remove_brigade = "213-y/214-y Tank. B-ny 65-y Tank. Brigady"
-		remove_brigade = "Mot.-Pulemetnyy B-n 65-y Tank. Brigady"
-		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 65-y Tank. Brigady"
-		remove_brigade = "Transportnyy B-n 65-y Tank. Brigady"
+		remove_brigade = "Shtab-K. 65-y TB"
+		remove_brigade = "1-y/2-y Tank. B-ny 65-y TB"
+		remove_brigade = "Mot.-Pulemetnyy B-n 65-y TB"
+		remove_brigade = "Istrebitel'no-Protivotankovyy D-n 65-y TB"
+		remove_brigade = "Transportnyy B-n 65-y TB"
 		remove_brigade = "Shtab-K. 85-y Tank. Brigady"
 		remove_brigade = "199-y/205-y Tank. B-ny 85-y Tankovyy Brigady"
 		remove_brigade = "Mot.-Pulemetnyy B-n 85-y Tank. Brigady"
@@ -21870,11 +21884,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +3200
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -6400
+				metal = -3200
+				rare_materials = -1600
 				load_oob = SOV/Guards_Mech_Corps_4_1943_Nov.txt
 			}
 		}
@@ -22010,11 +22024,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +2000
+					value = +1400
 				}
-				energy = -4000
-				metal = -2000
-				rare_materials = -1000
+				energy = -2800
+				metal = -1400
+				rare_materials = -700
 				load_oob = SOV/Guards_Mech_Corps_6_1943_June.txt
 			}
 		}
@@ -22177,11 +22191,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +5200
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -10400
+				metal = -5200
+				rare_materials = -2600
 				load_oob = SOV/Guards_Mech_Corps_7_1943_Aug.txt
 			}
 		}
@@ -22265,11 +22279,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +7800
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -15600
+				metal = -7800
+				rare_materials = -3900
 				load_oob = SOV/Guards_Mech_Corps_8_1943_Oct.txt
 			}
 		}
@@ -22460,11 +22474,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +300
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -600
+				metal = -300
+				rare_materials = -150
 				load_oob = SOV/Guards_Artillery_Divisions_2_1943_March.txt
 			}
 		}
@@ -22519,11 +22533,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +300
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -600
+				metal = -300
+				rare_materials = -150
 				load_oob = SOV/Guards_Artillery_Divisions_1_1943_May.txt
 			}
 		}
@@ -22596,11 +22610,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +1200
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = SOV/Guards_Artillery_Divisions_3-5_1943_July.txt
 			}
 		}
@@ -22646,11 +22660,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +2000
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
 				load_oob = SOV/Guards_Artillery_Divisions_6_1943_Oct.txt
 			}
 		}
@@ -22884,11 +22898,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +1000
+					value = +100
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -200
+				metal = -100
+				rare_materials = -50
 				load_oob = SOV/Guards_Tank_Army_3_1943_May.txt
 			}
 		}
