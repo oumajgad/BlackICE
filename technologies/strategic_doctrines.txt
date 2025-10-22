@@ -3555,6 +3555,7 @@ artillery_support = {
 				artillery_barrage = 2
 				artillery_support = 1
 				not = { artillery_support = 2 }
+				not = { superior_firepower = 1 }
 				or = {
 					check_variable = { which = "DBD_experience" value = 55 }
 					and = {
@@ -3568,6 +3569,7 @@ artillery_support = {
 				artillery_barrage = 2
 				artillery_support = 2
 				not = { artillery_support = 3 }
+				not = { superior_firepower = 1 }
 				or = {
 					check_variable = { which = "DBD_experience" value = 70 }
 					and = {
@@ -3581,6 +3583,7 @@ artillery_support = {
 				artillery_barrage = 2
 				artillery_support = 3
 				not = { artillery_support = 4 }
+				not = { superior_firepower = 1 }
 				or = {
 					check_variable = { which = "DBD_experience" value = 90 }
 					and = {
@@ -4129,6 +4132,7 @@ air_support = {
 				air_support = 1
 				not = { air_support = 2 }
 				or = {
+					not = { superior_firepower = 1 }
 					check_variable = { which = "DBD_experience" value = 55 }
 					and = {
 						faction = comintern
@@ -4141,6 +4145,7 @@ air_support = {
 				air_support = 2
 				not = { air_support = 3 }
 				or = {
+					not = { superior_firepower = 1 }
 					check_variable = { which = "DBD_experience" value = 70 }
 					and = {
 						faction = comintern
@@ -4153,6 +4158,7 @@ air_support = {
 				air_support = 3
 				not = { air_support = 4 }
 				or = {
+					not = { superior_firepower = 1 }
 					check_variable = { which = "DBD_experience" value = 85 }
 					and = {
 						faction = comintern
@@ -6583,35 +6589,36 @@ superior_firepower = {
 	start_year = 1936
 	folder = superior_firepower_folder
 }
+
 artillery_firepower_focus = {
 
 	allow = {
 		superior_firepower = 1
 	}
 
-	artillery_brigade = {	#change to -CW
-		soft_attack = 0.75
+	artillery_brigade = {
+		combat_width = -0.075
 	}
 	heavy_artillery_brigade = {
-		soft_attack = 1.2
+		combat_width = -0.075
 	}
 	medium_artillery_brigade = {
-		soft_attack = 1
+		combat_width = -0.075
 	}
 	sp_artillery_brigade = {
-		soft_attack = 1.25
+		combat_width = -0.075
 	}
 	pack_artillery_brigade = {
-		soft_attack = 0.45
+		combat_width = -0.075
 	}
 	sp_rct_artillery_brigade = {
-		soft_attack = 1.65
+		combat_width = -0.075
 	}
 	rocket_artillery_brigade = {
-		soft_attack = 1.2
+		combat_width = -0.075
 	}
 	heavy_anti_air_brigade = {
-		soft_attack = 0.5
+		combat_width = -0.075
 	}
 
 	research_bonus_from = {
@@ -6632,59 +6639,59 @@ artillery_firepower_focus = {
 	stealable=no
 }
 
-infantry_firepower_focus = { #add all other units
+infantry_firepower_focus = {
 
 	allow = {
 		superior_firepower = 1
 	}
 
 	infantry_brigade = {
-		soft_attack = 1.5
+		soft_attack = 3
 	}
 	colonial_infantry_brigade = {
-		soft_attack = 1.5
+		soft_attack = 2
 	}
 	infantry_bat = {
-		soft_attack = 1
+		soft_attack = 2
 	}
 	paratrooper_brigade = {
-		soft_attack = 1
+		soft_attack = 2
 	}
 	airlanding_infantry_brigade = {
-		soft_attack = 1
+		soft_attack = 2
 	}
 	marine_brigade = {
-		soft_attack = 1
+		soft_attack = 2
 	}
 	naval_infantry_brigade = {
-		soft_attack = 1
+		soft_attack = 2
 	}
 	bergsjaeger_brigade = {
-		soft_attack = 1
+		soft_attack = 2
 	}
 	colonial_bergsjaeger_brigade = {
-		soft_attack = 1
+		soft_attack = 2
 	}
 	semi_motorized_brigade = {
-		soft_attack = 1.2
+		soft_attack = 2.4
 	}
 	motorized_brigade = {
-		soft_attack = 1.5
+		soft_attack = 3
 	}
 	mechanized_brigade = {
-		soft_attack = 1.8
+		soft_attack = 3.6
 	}
 	combined_arms_brigade = {
-		soft_attack = 1.9
+		soft_attack = 2
 	}
 	elite_light_infantry_brigade = {
-		soft_attack = 1.5
+		soft_attack = 3
 	}
 	motorized_infantry_bat = {
-		soft_attack = 1
+		soft_attack = 2
 	}
 	mechanized_infantry_bat = {
-		soft_attack = 1.2
+		soft_attack = 2.4
 	}
 
 	research_bonus_from = {
@@ -6711,29 +6718,11 @@ air_support_focus = {	#change to mission eff?
 		superior_firepower = 1
 	}
 
-	interceptor = {
-		soft_attack = 2
-		hard_attack = 2
+	ground_attack = {
+		efficiency = 0.045
 	}
-	multi_role = {
-		soft_attack = 2
-		hard_attack = 2
-	}
-	cas = {
-		soft_attack = 2
-		hard_attack = 2	
-	}
-	light_bomber = {
-		soft_attack = 2
-		hard_attack = 2
-	}
-	tactical_bomber = {
-		soft_attack = 2
-		hard_attack = 2		
-	}
-	cag = {
-		soft_attack = 2
-		hard_attack = 2	
+	interdiction = {
+		efficiency = 0.045
 	}
 
 	research_bonus_from = {
@@ -7122,6 +7111,7 @@ artillery_preparation_and_training = {
 				and = {
 					artillery_preparation_and_training = 1
 					not = { artillery_preparation_and_training = 2 }
+					not = { deep_battle_doctrine = 1 }
 					or = {
 						check_variable = { which = "SF_experience" value = 45 }
 						and = {
@@ -7134,6 +7124,7 @@ artillery_preparation_and_training = {
 				and = {
 					artillery_preparation_and_training = 2
 					not = { artillery_preparation_and_training = 3 }
+					not = { deep_battle_doctrine = 1 }
 					or = {
 						check_variable = { which = "SF_experience" value = 60 }
 						and = {
@@ -7150,87 +7141,34 @@ artillery_preparation_and_training = {
 	artillery_brigade = {
 		default_organisation = 1
 		default_morale = 0.02
-		#build_time = 1.5
 	}
 	heavy_artillery_brigade = {
 		default_organisation = 1
 		default_morale = 0.02
-		#build_time = 1.5
-	}
-	ss_artillery_brigade = {
-		default_organisation = 1
-		default_morale = 0.02
-		#build_time = 1.5
-	}
-	ss_heavy_artillery_brigade = {
-		default_organisation = 1
-		default_morale = 0.02
-		#build_time = 1.5
 	}
 	medium_artillery_brigade = {
 		default_organisation = 1
 		default_morale = 0.02
-		#build_time = 1.5
-	}
-	ss_medium_artillery_brigade = {
-		default_organisation = 1
-		default_morale = 0.02
-		#build_time = 1.5
 	}
 	sp_artillery_brigade = {
 		default_organisation = 1
 		default_morale = 0.02
-		#build_time = 1.5
 	}
 	pack_artillery_brigade = {
 		default_organisation = 1
 		default_morale = 0.02
-		#build_time = 1.5
 	}
 	sp_rct_artillery_brigade = {
 		default_organisation = 1
 		default_morale = 0.02
-		#build_time = 1.5
 	}
 	rocket_artillery_brigade = {
 		default_organisation = 1
 		default_morale = 0.02
-		#build_time = 1.5
-	}
-	ss_sp_artillery_brigade = {
-		default_organisation = 1
-		default_morale = 0.02
-		#build_time = 1.5
-	}
-	ss_pack_artillery_brigade = {
-		default_organisation = 1
-		default_morale = 0.02
-		#build_time = 1.5
-	}
-	ss_sp_rct_artillery_brigade = {
-		default_organisation = 1
-		default_morale = 0.02
-		#build_time = 1.5
-	}
-	ss_rocket_artillery_brigade = {
-		default_organisation = 1
-		default_morale = 0.02
-		#build_time = 1.5
-	}
-	guard_sp_rct_artillery_brigade = {
-		default_organisation = 1
-		default_morale = 0.02
-		#build_time = 1.5
 	}
 	heavy_anti_air_brigade = {
 		default_organisation = 1
 		default_morale = 0.02
-		#build_time = 1.5
-	}
-	ss_heavy_anti_air_brigade = {
-		default_organisation = 1
-		default_morale = 0.02
-		#build_time = 1.5
 	}
 	change = no
 
@@ -11808,6 +11746,7 @@ ground_attack_focus = {
 					ground_attack_focus = 4
 					not = { ground_attack_focus = 5 }
 					or = {
+						not = { superior_firepower = 1 }
 						check_variable = { which = "BK_experience" value = 65 }
 						and = {
 							faction = axis
@@ -11820,6 +11759,7 @@ ground_attack_focus = {
 					ground_attack_focus = 5
 					not = { ground_attack_focus = 6 }
 					or = {
+						not = { superior_firepower = 1 }
 						check_variable = { which = "BK_experience" value = 75 }
 						and = {
 							faction = axis
@@ -11832,6 +11772,7 @@ ground_attack_focus = {
 					ground_attack_focus = 6
 					not = { ground_attack_focus = 7 }
 					or = {
+						not = { superior_firepower = 1 }
 						check_variable = { which = "BK_experience" value = 85 }
 						and = {
 							faction = axis
