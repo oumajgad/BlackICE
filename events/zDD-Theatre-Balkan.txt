@@ -3439,3 +3439,314 @@ country_event = {
 		national_unity = 2
 	}
 }
+
+##Anglo-French-Turkish Mutual Assistance Treaty
+
+country_event = {
+	id = 980002
+	trigger = {
+		tag = ENG
+		date = 1939.11.1
+		exists = TUR
+		exists = FRA
+		not = {
+			has_country_flag = engfratur_treaty
+			war_with = TUR
+		}
+	}
+	title = "EVTNAME980002"
+	desc = "EVTDESC980002"
+	picture = "engfratur"
+	option = {
+		name = "Sign the treaty."
+		set_country_flag = engfratur_treaty
+		add_country_modifier = {
+			name = "turkish_supplies"
+			duration = 360
+		}
+		FRA = {
+			country_event = 980004
+		}
+		TUR = {
+			country_event = 980003
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need to."
+		set_country_flag = engfratur_treaty
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+
+country_event = {
+	id = 980003
+	tag = TUR
+	is_triggered_only = yes
+	title = "EVTNAME980003"
+	desc = "EVTDESC980003"
+	picture = "engfratur"
+	option = {
+		name = "Excellent!"
+		set_country_flag = engfratur_treaty
+		add_country_modifier = {
+			name = "allied_exports"
+			duration = 360
+		}
+		ENG = {
+			guarantee = TUR
+		}
+		FRA = {
+			guarantee = TUR
+		}
+		relation = {
+			who = ENG
+			value = 50
+		}
+		relation = {
+			who = TUR
+			value = 50
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need to."
+		set_country_flag = engfratur_treaty
+		relation = {
+			who = ENG
+			value = -50
+		}
+		relation = {
+			who = FRA
+			value = -50
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 980004
+	tag = FRA
+	is_triggered_only = yes
+	title = "EVTNAME980004"
+	desc = "EVTDESC980004"
+	picture = "engfratur"
+	option = {
+		name = "Excellent!"
+		set_country_flag = engfratur_treaty
+		add_country_modifier = {
+			name = "turkish_supplies"
+			duration = 180
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+##German-Turkish Treaty of Friendship and Clodius Agreement
+
+country_event = {
+	id = 980005
+	trigger = {
+		tag = GER
+		date = 1941.7.1
+		exists = TUR
+		not = {
+			has_country_flag = gertur_treaty
+			war_with = TUR
+			ITA = {
+				war_with = TUR
+				}
+			}
+		}
+	title = "EVTNAME980005"
+	desc = "EVTDESC980005"
+	picture = "gertur"
+	option = {
+		name = "This will open up commercial opportunities!"
+		set_country_flag = gertur_treaty
+		TUR = {
+			country_event = 980006
+		}
+		GER = {
+			non_aggression_pact = TUR
+		}
+		relation = {
+			who = GER
+			value = 50
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "We have other things in mind for them..."
+		set_country_flag = gertur_treaty
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 980006
+	tag = TUR
+	is_triggered_only = yes
+	title = "EVTNAME980006"
+	desc = "EVTDESC980006"
+	picture = "gertur"
+	option = {
+		name = "Excellent!"
+		set_country_flag = gertur_treaty
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No thanks."
+		set_country_flag = gertur_treaty
+			relation = {
+			who = GER
+			value = -50
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 980007
+	trigger = {
+		tag = GER
+		date = 1941.9.1
+		exists = TUR
+		has_country_flag = gertur_treaty
+		not = {
+			has_country_flag = clodius_agreement
+			war_with = TUR
+		}
+	}
+	title = "EVTNAME980007"
+	desc = "EVTDESC980007"
+	picture = "gertur"
+	option = {
+		name = "The fruits of our efforts!"
+		set_country_flag = clodius_agreement
+		add_country_modifier = {
+			name = "turkish_resources"
+			duration = 900
+		}
+		TUR = {
+			country_event = 980008
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "We have other things in mind for them..."
+		set_country_flag = clodius_agreement
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 980008
+	tag = TUR
+	is_triggered_only = yes
+	title = "EVTNAME980008"
+	desc = "EVTDESC980008"
+	picture = "gertur"
+	option = {
+		name = "Excellent!"
+		set_country_flag = clodius_agreement
+		add_country_modifier = {
+			name = "german_industry"
+			duration = 900
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+		option = {
+		name = "No thanks."
+		set_country_flag = clodius_treaty
+			relation = {
+			who = GER
+			value = -50
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+#End in case of war
+
+country_event = {
+	id = 980009
+	trigger = {
+		tag = GER
+		exists = TUR
+		has_country_flag = clodius_agreement
+		war_with = TUR
+		or = {
+		TUR = {
+		faction = allies
+		faction = comintern
+			}
+		}
+		fire_only_once = yes
+		not = {
+			has_country_flag = clodius_agreement
+		}
+	}
+	title = "EVTNAME980009"
+	desc = "EVTDESC980009"
+	picture = "gertur"
+	option = {
+		name = "Who needs trade?"
+		set_country_flag = clodius_agreement
+		remove_country_modifier = {
+			name = "turkish_resources"
+		}
+		TUR = {
+			country_event = 
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+country_event = {
+	id = 980010
+	tag = TUR
+	is_triggered_only = yes
+	title = "EVTNAME980010"
+	desc = "EVTDESC980010"
+	picture = "gertur"
+	option = {
+		name = "Unfortunate."
+		set_country_flag = clodius_agreement
+		remove_country_modifier = {
+			name = "german_industry"
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
