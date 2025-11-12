@@ -3472,25 +3472,18 @@ country_event = {
 	id = 99981
 	trigger = {
 		tag = SPA
-
 		not = {
 			exists = SPR
-		}
-		ai = yes
-
-		not = {
 			war_with = GER
 			war_with = ITA
-		}
-		date = 1940.10.23
-
-		not = {
 			has_country_flag = reunion_hendaya
+			faction = axis
 		}
-		SPA = {
-
+		ai = yes
+		date = 1940.10.23
+		GER = {
 			not = {
-				faction = axis
+				has_country_flag = foreign_ministry
 			}
 		}
 	}
@@ -3525,6 +3518,58 @@ country_event = {
 		neutrality = 20
 		ai_chance = {
 			factor = 70
+		}
+	}
+}
+
+country_event = {
+	id = 999811
+	trigger = {
+		tag = SPA
+		not = {
+			exists = SPR
+			war_with = GER
+			war_with = ITA
+			has_country_flag = reunion_hendaya
+			faction = axis
+		}
+		ai = yes
+		date = 1940.10.23
+		GER = {
+			has_country_flag = foreign_ministry
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99981"
+	desc = "EVTDESC99981"
+	picture = "EVT-99217"
+	option = {
+		name = "EVTYES99981"
+		set_country_flag = reunion_hendaya
+		dissent = 15
+		national_unity = -5
+		organisation = -10
+		popularity = -10
+		GER = {
+			country_event = 99980
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTNO99981"
+		set_country_flag = reunion_hendaya
+		set_country_flag = no_reunion_hendaya
+		dissent = -5
+		national_unity = 10
+		organisation = 10
+		popularity = 10
+		neutrality = 20
+		ai_chance = {
+			factor = 0
 		}
 	}
 }
@@ -3583,21 +3628,12 @@ country_event = {
 	trigger = {
 		tag = SPA
 		ai = no
-
 		not = {
 			exists = SPR
-		}
-		date = 1940.10.23
-
-		not = {
+			faction = axis
 			has_country_flag = reunion_hendaya
 		}
-		SPA = {
-
-			not = {
-				faction = axis
-			}
-		}
+		date = 1940.10.23
 	}
 	mean_time_to_happen =  {
 		days = 1
