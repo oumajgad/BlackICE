@@ -44,7 +44,7 @@ def plot():
 def plot_line(ident, tag, stat, title=None):
     if not title:
         title = stat
-    
+
     data = pd.read_csv(f'{ident}/{tag}/{stat}')
     data = removeduplicates(data, [stat])
     dates = data["Date"]

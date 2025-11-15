@@ -58,7 +58,7 @@ decisionTemplate = """
                 }}
             }}
             {tag} = {{
-                check_variable = {{ 
+                check_variable = {{
                     which = {resource}_building_count
                     value = 1
                 }}

@@ -712,7 +712,7 @@ function P.Trade_Dumper(trade)
   local to_RARE_MATERIALS_ = trade:GetTradedToOf(CGoodsPool._RARE_MATERIALS_):Get()
 
   local f = string.format
-  local out = [[ 
+  local out = [[
     ------------ %s ----- %s --
     ENERGY   |  %s  |  %s  |
     METAL    |  %s  |  %s  |

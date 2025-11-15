@@ -107,7 +107,7 @@ write_lines = []
 for tag, dates in res.items():
     header = """###############################
 #            {tag}            #
-############################### 
+###############################
     """
     write_lines.append(header.format(tag=tag))
     print(tag)

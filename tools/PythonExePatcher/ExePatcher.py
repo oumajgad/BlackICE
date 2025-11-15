@@ -59,7 +59,7 @@ def RevertOffmapIcPatch():
     print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
     WriteHex("hoi3_tfh.exe", 0xF03A9, "69C0E8030000")
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xF03A9, 6)}')
-    
+
     print("\tRevert UI patch")
     print(f'Old: {ReadHex("hoi3_tfh.exe", 0xF0390, 3)}')
     WriteHex("hoi3_tfh.exe", 0xF0390, "F76D08")

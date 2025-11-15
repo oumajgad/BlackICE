@@ -170,7 +170,7 @@ Changes
 - Kerning pairs with amount 0 are no longer output.
 - XML font descriptor file now groups the pages, chars, and kerning pairs.
 - The font configuration can be saved to disk, and later reloaded.
-- Added support for generating fonts via command line using a saved configuration. 
+- Added support for generating fonts via command line using a saved configuration.
 - Added support for saving DDS texture files (no compression).
 
 1.7a - 2006/09/12
@@ -209,15 +209,15 @@ Changes
 - Font smoothing is now done without ClearType, so that artifacts are no longer generated in the output texture.
 - Added program icon.
 
-1.1 - 2005/03/05 
+1.1 - 2005/03/05
 - User can now choose to save in 32bit and 8bit TGAs.
 - The spacing between characters can now be manually set.
 - Fixed the bug where some fonts weren't visible in the font list.
 
-1.0a - 2004/11/27 
+1.0a - 2004/11/27
 - Fixed a problem with values that where not adjusted to compensate for antialiasing level.
 
-1.0 - 2004/02/14 
+1.0 - 2004/02/14
 - First public version.
 
 copyright (c) 2004-2021 Andreas Jönsson
