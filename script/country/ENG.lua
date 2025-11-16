@@ -692,7 +692,7 @@ function P.NavalRatio(voProductionData)
 		light_cruiser = 10,
 		heavy_cruiser = 3,
 		escort_carrier = 1,
-		light_carrier = 0.25,
+		light_carrier = 0.0,
 		battleship = 0.00
 	};
 

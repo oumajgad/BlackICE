@@ -541,8 +541,8 @@ function P.NavalRatio(voProductionData)
 		light_cruiser = 10,
 		heavy_cruiser = 4,
 		battleship = 2,
-		light_carrier = 4,
-		carrier = 2};
+		light_carrier = 0,
+		carrier = 0};
 
 	return laArray
 end

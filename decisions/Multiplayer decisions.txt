@@ -1,0 +1,44 @@
+diplomatic_decisions = {
+    multiplayer_china_manpower = {
+		potential  = {
+            tag = OMG
+		}
+		allow  = {
+            not = {
+                has_country_modifier = MP_MP_reduction
+            }
+		}
+		effect = {
+            any_country = {
+                any_owned = {
+                    limit = {
+                        or = {
+                            controlled_by = USA
+                            controlled_by = SOV
+                        }
+                        or = {
+                            is_core = CXB
+                            is_core = CHC
+                            is_core = CSX
+                            is_core = CGX
+                            is_core = CYN
+                            is_core = SIK
+                            is_core = CHI
+                        }
+                    }
+                    add_province_modifier = {
+                        name = manpower_reduction_mp
+                        duration = -1
+                    }
+                    add_province_modifier = {
+                        name = MP_MP_reduction
+                        duration = 10
+                    }
+                }
+            }
+        }
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
