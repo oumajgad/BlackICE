@@ -675,47 +675,76 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 				vIC = vIC - (liUnitCost * voType.Size)
 
 				local loBuildOrder = SubUnitList()
+				local debugString = ""
 				-- Add the amount of brigades requested of the main type
 				for m = 1, voType.Size, 1 do
 					SubUnitList.Append( loBuildOrder, loUnitType )
+					debugString = debugString .. "\n    loUnitType: " .. voType.Name
 				end
 
 				-- Check to see if there is a secondary main
 				if not(loSecUnitType == nil) then
 					SubUnitList.Append( loBuildOrder, loSecUnitType )
+					debugString = debugString .. "\n    loSecUnitType: " .. voType.SecondaryMain
+				else
+					debugString = debugString .. "\n    loSecUnitType: nil"
 				end
 
 				-- Check to see if there is a tertiary main
 				if not(loTerUnitType == nil) then
 					SubUnitList.Append( loBuildOrder, loTerUnitType )
+					debugString = debugString .. "\n    loTerUnitType: " .. voType.TertiaryMain
+				else
+					debugString = debugString .. "\n    loTerUnitType: nil"
 				end
 
 				if not(loTrUnitType == nil) then
 					SubUnitList.Append( loBuildOrder, loTrUnitType )
+					debugString = debugString .. "\n    loTrUnitType: " .. voType.TransportMain
+				else
+					debugString = debugString .. "\n    loTrUnitType: nil"
 				end
 
 				if not(lo1UnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lo1UnitType )
+					debugString = debugString .. "\n    lo1UnitType: " .. voType.first
+				else
+					debugString = debugString .. "\n    lo1UnitType: nil"
 				end
 
 				if not(lo2UnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lo2UnitType )
+					debugString = debugString .. "\n    lo2UnitType: " .. voType.second
+				else
+					debugString = debugString .. "\n    lo2UnitType: nil"
 				end
 
 				if not(lo3UnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lo3UnitType )
+					debugString = debugString .. "\n    lo3UnitType: " .. voType.third
+				else
+					debugString = debugString .. "\n    lo3UnitType: nil"
 				end
 
 				if not(lo4UnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lo4UnitType )
+					debugString = debugString .. "\n    lo4UnitType: " .. voType.fourth
+				else
+					debugString = debugString .. "\n    lo4UnitType: nil"
 				end
 
 				if not(lo5UnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lo5UnitType )
+					debugString = debugString .. "\n    lo5UnitType: " .. voType.fifth
+				else
+					debugString = debugString .. "\n    lo5UnitType: nil"
 				end
 
 				if not(lomasterUnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lomasterUnitType )
+					debugString = debugString .. "\n    lomasterUnitType: " .. voType.sixth
+				else
+					debugString = debugString .. "\n    lomasterUnitType: nil"
 				end
 
 
@@ -750,6 +779,10 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 
 				viUnitQuantity = viUnitQuantity - (voType.Size * liBuildCount)
 				voProductionData.ministerAI:Post(CConstructUnitCommand(voProductionData.ministerTag, loBuildOrder, voProductionData.CapitalPrvID, liBuildCount, lbReserve, CNullTag(), CID()))
+				if loBuildOrder:GetSize() > 7 then
+					Utils.LUA_DEBUGOUT(tostring(voProductionData.ministerTag) .. " building unit of size: " .. tostring(loBuildOrder:GetSize()) .. debugString)
+					Utils.INSPECT_TABLE(voType)
+				end
 
 				-- Process sub unit (used mainly for Carriers to build CAG)
 				if not(voType.SubUnit == nil) and liManpowerLeft > 0 then
