@@ -638,7 +638,7 @@ country_event = {
 		}
 	}
 }
-# Ita acceptance               #
+# Ita acceptance
 country_event = {
 	id = 17022
 	is_triggered_only = yes
@@ -646,10 +646,10 @@ country_event = {
 	desc = "Yemen has accepted our proposal of continued and extended military co-operation."
 	picture = "EVT17020"
 	option = {
-		name = "Right choice"
+		name = "Correct choice"
 	}
 }
-# Ita decline            #
+# Ita decline
 country_event = {
 	id = 17023
 	is_triggered_only = yes
@@ -660,7 +660,7 @@ country_event = {
 		name = "Shame"
 	}
 }
-# UK acceptance              #
+# UK acceptance
 country_event = {
 	id = 17024
 	is_triggered_only = yes
@@ -671,6 +671,75 @@ country_event = {
 		name = "Concerning developments"
 				ENG = {
 			end_guarantee = YEM
+		}
+	}
+}
+
+country_event = {
+	id = 17025
+	trigger = {
+		tag = ENG
+		date = 1938.5.16
+		exists = ITA
+		not = {
+			has_country_flag = engita_treaty
+			war_with = ITA
+			exists = ETH
+			}
+		}
+	title = "EVTNAME17025"
+	desc = "EVTDESC17025"
+	picture = "engita"
+	option = {
+		name = "Propose the agreement"
+		set_country_flag = engita_treaty
+		ITA = {
+			country_event = 17026
+		}
+		relation = {
+			who = ITA
+			value = 25
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "Their course appears set"
+		set_country_flag = engita_treaty
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 17026
+	tag = ITA
+	is_triggered_only = yes
+	title = "EVTNAME17026"
+	desc = "EVTDESC17026"
+	picture = "engita"
+	option = {
+		name = "Sounds reasonable"
+		set_country_flag = engita_treaty
+		relation = {
+			who = ENG
+			value = 25
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "They can go to hell!"
+		set_country_flag = engita_treaty
+			relation = {
+			who = ENG
+			value = -50
+		}
+		ai_chance = {
+			factor = 0
 		}
 	}
 }
