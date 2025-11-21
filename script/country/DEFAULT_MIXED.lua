@@ -465,10 +465,10 @@ function P.ProductionWeights(voProductionData)
 	-- Puppet Check
 	if voProductionData.ministerCountry:IsPuppet() then
 		laArray = {
-			0.0, -- Land
-			0.0, -- Air
-			0.0, -- Sea
-			1.0}; -- Other
+			0.4, -- Land
+			0.1, -- Air
+			0.1, -- Sea
+			0.4}; -- Other
 	end
 
 	return laArray
