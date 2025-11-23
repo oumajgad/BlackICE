@@ -485,6 +485,17 @@ function P.LandRatio(voProductionData)
 		};
 	end
 
+	if voProductionData.Year >= 1941 then
+		if laArray.semi_motorized_brigade ~= nil then
+			laArray.motorized_brigade = laArray.semi_motorized_brigade
+			laArray.semi_motorized_brigade = 0
+		end
+		if laArray.light_armor_brigade ~= nil then
+			laArray.armor_brigade = laArray.light_armor_brigade
+			laArray.light_armor_brigade = 0
+		end
+	end
+
 	-- No militia during peace (countries that want it should specify it in own file)
 	if not voProductionData.IsAtWar then
 		laArray.militia_brigade = 0

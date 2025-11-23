@@ -304,19 +304,6 @@ function P.ProductionWeights(minister)
 
 	return rValue
 end
--- Land ratio distribution
-function P.LandRatio(minister)
-	local laArray = {
-		1, -- Garrison
-		0, -- Infantry
-		0, -- Motorized
-		0, -- Mechanized
-		0, -- Armor
-		0, -- Militia
-		5}; -- Cavalry
-
-	return laArray
-end
 
 function P.Build_Fort(ic, minister, vbGoOver)
 	return ic
