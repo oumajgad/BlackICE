@@ -4476,13 +4476,13 @@ country_event = {
 
 	is_triggered_only = yes
 
-	title = "Brandenburger Raid on Stalin !"
+	title = "Brandenburger Raid on Stalin!"
 	desc = "EVTDESC14937"
 	picture = "commando-units-3-4-brandenburg"
 
 
 	option = {
-		name = "Find Him !"
+		name = "Find Him!"
 		load_oob = Stalin_Brandenburgers.txt
 		set_country_flag = Commando_stalin_GO
 	}
@@ -4497,13 +4497,13 @@ country_event = {
 
 	is_triggered_only = yes
 
-	title = "We Found Stalin !"
+	title = "We Found Stalin!"
 	desc = "EVTDESC14938"
 	picture = "commando-units-3-4-brandenburg"
 
 
 	option = {
-		name = "Kill Him !"
+		name = "Kill Him!"
 
 		set_country_flag = Commando_stalin_kill_I
 		add_country_modifier = {
@@ -4519,13 +4519,13 @@ country_event = {
 
 	is_triggered_only = yes
 
-	title = "We Found Stalin !"
+	title = "We Found Stalin!"
 	desc = "EVTDESC14939"
 	picture = "commando-units-3-4-brandenburg"
 
 
 	option = {
-		name = "Kill Him !"
+		name = "Kill Him!"
 
 		set_country_flag = Commando_stalin_kill_II
 		add_country_modifier = {
@@ -4534,4 +4534,32 @@ country_event = {
 		}
 	}
 
+}
+
+country_event = { 
+id = 15940
+trigger = {
+tag = GER
+date = 1938.12.10
+not = {
+has_country_flag = ger_tib_exped
+		}
+	}
+title = "The German Expedition to Tibet"
+desc = "EVTDESC15940"
+picture = "gertib"
+option = {
+name = "Send them!"
+set_country_flag = ger_tib_exped
+money = -350
+mountain_training = 5
+relation = {
+			who = TIB
+			value = 10
+		}
+	}
+option = {
+name = "No need."
+set_country_flag = ger_tib_exped
+	}
 }
