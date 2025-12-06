@@ -2445,4 +2445,43 @@ country_event = {
 	}
 }
 
+country_event = {
+	id = 53450
+	trigger = {
+		not = {
+			has_country_flag = ENG_JAP_threat_fix
+		}
+		ai = yes
+		or = {
+			tag = JAP
+			tag = ENG
+		}
+		war = yes
+		ENG = {
+			not = {
+				war_with = JAP
+			}
+		}
+		JAP = {
+			not = {
+				war_with = ENG
+			}
+		}
+	}
+	title = "Threat fix"
+	desc = ""
+	picture = ""
+	option = {
+		name = "K"
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = ENG_JAP_threat_fix
+		add_country_modifier = {
+			name = ENG_JAP_threat_fix_modifier
+			duration = 810
+		}
+	}
+}
+
 #EOF#
