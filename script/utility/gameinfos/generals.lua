@@ -205,6 +205,7 @@ function P.HandleSelection()
         local cLeader = BiceLib.Leaders.getLeaderDetails(generalId)
         if cLeader ~= nil then
             -- Utils.INSPECT_TABLE(cLeader)
+
             local provinceId = cLeader["province_id"]
             if provinceId ~= nil then
                 local provinceName = Parsing.GetTranslation(tostring(provinceId),"PROV", nil)
@@ -216,6 +217,13 @@ function P.HandleSelection()
             else
                 UI.m_textCtrl_GameInfo_Generals_Location:SetValue("unknown")
                 UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("unknown")
+            end
+
+            local unitName = cLeader["unit_name"]
+            if unitName ~= nil then
+                UI.m_textCtrl_GameInfo_Generals_Unit_Name:SetValue(unitName)
+            else
+                UI.m_textCtrl_GameInfo_Generals_Unit_Name:SetValue("unknown")
             end
         else
             Utils.LUA_DEBUGOUT("cLeader nil")

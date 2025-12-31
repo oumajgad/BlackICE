@@ -102,5 +102,15 @@ namespace CLeader {
             lua_pushnil(L);
         }
         lua_settable(L, -3);
+
+        lua_pushstring(L, "unit_name");
+        if (leader.unit_ptr != 0) {
+            char* unit_name = utils::getCString((DWORD*)(leader.unit_ptr + CUnit::Offsets::name));
+            lua_pushstring(L, unit_name);
+        }
+        else {
+            lua_pushnil(L);
+        }
+        lua_settable(L, -3);
     }
 }

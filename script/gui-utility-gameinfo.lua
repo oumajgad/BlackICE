@@ -120,7 +120,7 @@ UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxD
 
 	UI.gSizer_GameInfo_Generals_2 = wx.wxGridSizer( 1, 2, 0, 0 )
 
-	UI.fgSizer_GameInfo_Generals_2 = wx.wxFlexGridSizer( 2, 1, 0, 0 )
+	UI.fgSizer_GameInfo_Generals_2 = wx.wxFlexGridSizer( 3, 1, 0, 0 )
 	UI.fgSizer_GameInfo_Generals_2:AddGrowableCol( 0 )
 	UI.fgSizer_GameInfo_Generals_2:AddGrowableRow( 0 )
 	UI.fgSizer_GameInfo_Generals_2:SetFlexibleDirection( wx.wxBOTH )
@@ -150,6 +150,9 @@ UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxD
 
 
 	UI.fgSizer_GameInfo_Generals_2:Add( UI.gSizer_GameInfo_Generals_3, 1, wx.wxEXPAND, 5 )
+
+	UI.m_textCtrl_GameInfo_Generals_Unit_Name = wx.wxTextCtrl( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 270,-1 ), 0 )
+	UI.fgSizer_GameInfo_Generals_2:Add( UI.m_textCtrl_GameInfo_Generals_Unit_Name, 1, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 
 	UI.gSizer_GameInfo_Generals_2:Add( UI.fgSizer_GameInfo_Generals_2, 1, wx.wxEXPAND, 5 )
