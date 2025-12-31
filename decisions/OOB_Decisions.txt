@@ -8472,4 +8472,50 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+### Romanian OOB decisions
+## Allow access to Romanian Historical units
+	Romania_Historical_decision = {
+		potential = {
+			tag = ROM
+			controls = 3917 #Bucarest
+			year = 1936
+
+			not = {
+				has_country_flag = Romania_Historical
+				has_country_flag = Romania_Historical_no
+			}
+		}
+		allow = {
+			date = 1936.1.2
+		}
+		effect = {
+			country_event = 15000
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+## 1st Guard Division - June 1940
+	1GD_decision = {
+		potential = {
+			tag = ROM
+			controls = 3917 #Bucarest
+			year = 1936
+			has_country_flag = Romania_Historical
+
+			not = {
+				has_country_flag = ROM_1GD
+				has_country_flag = ROM_1GD_no
+			}
+		}
+		allow = {
+			date = 1936.1.1
+		}
+		effect = {
+			country_event = 15001
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
 }

@@ -1,0 +1,85 @@
+###########################
+### ROMANIAN OOB EVENTS ###
+###########################
+
+## Romanian Historical Units
+country_event = {
+	id = 15000
+	is_triggered_only = yes
+	title = "Romanian Historical Units"
+	desc = "EVTDESC15000"
+	picture = "Greater_Romania"
+	option = {
+		name = "Yes, I want these historical units."
+		set_country_flag = Romania_Historical
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = Romania_Historical_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## 1st Guard Division
+country_event = {
+	id = 15001
+	is_triggered_only = yes
+	title = "1st Guard Division"
+	desc = "EVTDESC15001"
+	picture = "ROM_1st_Guard_Division"
+	option = {
+		name = "Form the 1st Guard Division"
+		set_country_flag = ROM_1GD
+
+        #Removing Pre-existing Guard elements
+        remove_brigade = "Regimente 1/2 Vanatori Garda"
+        remove_brigade = "Regimente 1 Artilerie Garda"
+        remove_brigade = "Companie Transport Brigada Garda"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = ROM/ROM_1st_Guard_Division.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_1st_Guard_Division.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_1GD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#EOF
