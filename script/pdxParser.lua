@@ -2,6 +2,14 @@ local P = {}
 
 PdxParser = P
 
+local debug = false
+
+local function debug_out(msg)
+    if debug then
+        Utils.LUA_DEBUGOUT(msg)
+    end
+end
+
 local function create_set(...)
     local res = {}
     for i = 1, select("#", ...) do
@@ -112,19 +120,19 @@ local caseOverrides = {
 local function parse_object(str, i, doAsList, level)
     local res = {}
     while true do
-        -- print("level: " .. level .. "\n")
-        -- print(Utils.TABLE_TO_STRING(res))
+        debug_out("level: " .. level .. "\n")
+        -- debug_out(Utils.TABLE_TO_STRING(res))
 
         local key, val
         i = next_char(str, i, space_chars, true)
         local chr = str:sub(i,i)
-        -- print("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
+        debug_out("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
         if (chr == "{") then
             -- makes sure we enter the object
             i = next_char(str,i + 1, space_chars, true)
             chr = str:sub(i,i)
         end
-        -- print("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
+        debug_out("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
         if (chr == "}") then
             -- object has ended, return it
             return res, i + 1
@@ -136,14 +144,14 @@ local function parse_object(str, i, doAsList, level)
             key = caseOverrides[string.lower(key)]
         end
 
+        debug_out("key: " .. key)
         -- local chr = str:sub(i,i)
-        -- print(key)
-        -- print("i: " .. i .. " = " .. "'" .. chr .. "'")
+        -- debug_out("i: " .. i .. " = " .. "'" .. chr .. "'")
         local value_type = determine_type(str, i)
         i = next_char(str, i, space_chars, true)    -- should be '=' at all times
-        -- print("value_type: " .. value_type)
+        -- debug_out("value_type: " .. value_type)
         -- local chr = str:sub(i,i)
-        -- print("i: " .. i .. " = " .. "'" .. chr .. "'")
+        -- debug_out("i: " .. i .. " = " .. "'" .. chr .. "'")
 
         if (value_type == types.object) then
             i = next_char(str, i + 1, space_chars, true)    -- i + 1 so we move on to the opening '{' of the object
@@ -151,13 +159,13 @@ local function parse_object(str, i, doAsList, level)
             if doAsList then
                 table.insert(res, {[key]=val})
             else
-                -- print("\n")
-                -- print(key)
-                -- print("val: " .. Utils.TABLE_TO_STRING(val))
-                -- print("res[key]: " .. Utils.TABLE_TO_STRING(res[key]))
+                -- debug_out("\n")
+                -- debug_out(key)
+                -- debug_out("val: " .. Utils.TABLE_TO_STRING(val))
+                -- debug_out("res[key]: " .. Utils.TABLE_TO_STRING(res[key]))
                 if res[key] ~= nil then
                     local temp = res[key]
-                    -- print("temp: " .. Utils.TABLE_TO_STRING(temp))
+                    -- debug_out("temp: " .. Utils.TABLE_TO_STRING(temp))
                     res[key] = {}
                     table.insert(res[key], val)
                     -- check if this "table" is an array of objects or a single object
@@ -172,7 +180,7 @@ local function parse_object(str, i, doAsList, level)
                 else
                     res[key] = val
                 end
-                -- print("res[key]: " .. Utils.TABLE_TO_STRING(res[key]))
+                -- debug_out("res[key]: " .. Utils.TABLE_TO_STRING(res[key]))
             end
 
         elseif (value_type == types.list) then
@@ -198,7 +206,7 @@ local function parse_object(str, i, doAsList, level)
                 res[key] = val
             end
         end
-        -- print(Utils.TABLE_TO_STRING(res))
+        -- debug_out(Utils.TABLE_TO_STRING(res))
     end
 end
 
@@ -210,7 +218,7 @@ end
 
 function P.parseFile(filePath, asList)
 	local file, err = io.open(filePath, "r")
-    -- Utils.LUA_DEBUGOUT(filePath)
+    -- debug_out(filePath)
 	if file ~= nil then
         local linesString = "{\n" .. file:read("*a") .. "\n}"
         local decoded = PdxParser.parse(linesString, asList)
@@ -218,7 +226,7 @@ function P.parseFile(filePath, asList)
         return decoded
 	end
 	if err ~= nil then
-		Utils.LUA_DEBUGOUT(err)
+		debug_out(err)
 	end
 end
 

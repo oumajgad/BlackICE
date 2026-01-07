@@ -22,15 +22,17 @@ end
 -- Generals availability is deterimined by their "history".
 -- There can be multiple history blocks in the definition since the base game has different starting dates.
 -- This function finds the earliest date
-local function getGeneralDate(leader)
+local function getGeneralDateAndRank(leader)
     local earliest_date = nil
+    local earliest_rank = nil
     --utils.INSPECT_TABLE(leader)
     if leader["history"] == nil then
-        return earliest_date
+        return earliest_date, earliest_rank
     end
-    for current_date, rank in pairs(leader["history"]) do
+    for current_date, rank_val in pairs(leader["history"]) do
         if earliest_date == nil then
             earliest_date = current_date
+            earliest_rank = rank_val["rank"]
         else
             local current_date_split = Utils.SplitString(current_date, ".")
             local earliest_date_split = Utils.SplitString(earliest_date, ".")
@@ -39,21 +41,24 @@ local function getGeneralDate(leader)
             -- Year
             if current_date_split[1] < earliest_date_split[1] then
                 earliest_date = current_date
+                earliest_rank = rank_val["rank"]
             -- Months
             elseif  current_date_split[1] == earliest_date_split[1] and
                     current_date_split[2] < earliest_date_split[2]
             then
                 earliest_date = current_date
+                earliest_rank = rank_val["rank"]
             -- Days
             elseif  current_date_split[1] == earliest_date_split[1] and
                     current_date_split[2] == earliest_date_split[2] and
                     current_date_split[3] < earliest_date_split[3]
             then
                 earliest_date = current_date
+                earliest_rank = rank_val["rank"]
             end
         end
     end
-    return earliest_date
+    return earliest_date, earliest_rank
 end
 
 local function translateTraits(traits)
@@ -78,12 +83,14 @@ local function translateTraits(traits)
 end
 
 local function createGeneral(values)
+    local available_date, rank = getGeneralDateAndRank(values)
     local general = {
         name = values["name"],
         starting_skill = values["skill"],
         max_skill = values["max_skill"],
         traits = translateTraits(values["add_trait"]),
-        available_date = getGeneralDate(values),
+        available_date = available_date,
+        rank = rank,
         type = values["type"],
         country = values["country"]
     }
@@ -193,6 +200,41 @@ function P.HandleSelection()
             P.HandleTraitSelection()
         end
     end
+
+    if BiceLib ~= nil then
+        local cLeader = BiceLib.Leaders.getLeaderDetails(generalId)
+        if cLeader ~= nil then
+            -- Utils.INSPECT_TABLE(cLeader)
+
+            local provinceId = cLeader["province_id"]
+            if provinceId ~= nil then
+                local provinceName = Parsing.GetTranslation(tostring(provinceId),"PROV", nil)
+                if provinceName == nil then
+                    provinceName = "unknown"
+                end
+                UI.m_textCtrl_GameInfo_Generals_Location:SetValue(provinceName)
+                UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue(tostring(provinceId))
+            else
+                UI.m_textCtrl_GameInfo_Generals_Location:SetValue("unknown")
+                UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("unknown")
+            end
+
+            local unitName = cLeader["unit_name"]
+            if unitName ~= nil then
+                UI.m_textCtrl_GameInfo_Generals_Unit_Name:SetValue(unitName)
+            else
+                UI.m_textCtrl_GameInfo_Generals_Unit_Name:SetValue("unknown")
+            end
+        else
+            Utils.LUA_DEBUGOUT("cLeader nil")
+            UI.m_textCtrl_GameInfo_Generals_Location:SetValue("cLeader")
+            UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("nil")
+        end
+    else
+        UI.m_textCtrl_GameInfo_Generals_Location:SetValue("BiceLib")
+        UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("failed")
+    end
+
     UI.m_choice_GameInfo_Generals_Traits:Thaw()
 end
 

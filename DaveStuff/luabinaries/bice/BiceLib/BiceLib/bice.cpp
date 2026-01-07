@@ -15,6 +15,7 @@
 #include <GameClasses/CSubUnitDefinition.hpp>
 #include <GameClasses/CTerrain.hpp>
 #include <GameClasses/CMapProvince.hpp>
+#include <GameClasses/CLeader.hpp>
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
 #include <Hooks/CArmyHooks.hpp>
@@ -241,6 +242,21 @@ void cacheLeaders() {
         }
     }
     return;
+}
+
+__declspec(dllexport) int getLeaderDetails(lua_State* L) {
+    DEBUG_OUT(printf("getLeaderDetails called\n"));
+    unsigned int leaderId = luaL_checkinteger(L, 1);
+    DEBUG_OUT(printf("leaderId: %d\n", leaderId));
+    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
+    auto leader = CLeader::GetLeaderById(external, leaderId);
+    if (leader.id != 0) {
+        CLeader::PushCLeaderToStack(L, leader);
+    }
+    else {
+        lua_pushnil(L);
+    }
+    return 1;
 }
 
 typedef void(__stdcall* CLeaderAddTraitFunction)(int leaderAddress, unsigned int* trait);
@@ -1059,6 +1075,7 @@ void registerLeaderFunctions(lua_State* this_state) {
     registerFunction(this_state, "activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
     registerFunction(this_state, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
     registerFunction(this_state, "addTraitToLeader", addTraitToLeader);
+    registerFunction(this_state, "getLeaderDetails", getLeaderDetails);
     lua_settable(this_state, -3);
     return;
 }
