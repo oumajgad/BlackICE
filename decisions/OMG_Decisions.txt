@@ -5097,9 +5097,7 @@ diplomatic_decisions = {
 		}
 	}
 
-}
-
- dnieper_dam = {
+ 	dnieper_dam = {
         potential = {
             tag = OMG
         }
@@ -5132,4 +5130,67 @@ diplomatic_decisions = {
         }
     }
 
+	istanbul_manpower_fix = {
+		potential = {
+			tag = OMG
+		}
+
+		allow = {
+			TUR = {
+				controls = 4503
+			}
+			not = {
+				has_country_modifier = istanbul_check_timer
+			}
+		}
+
+		effect = {
+			4503 = {
+				add_province_modifier = {
+					name = istanbul_manpower_fix
+					duration = -1
+				}
+			}
+			add_country_modifier = {
+				name = istanbul_check_timer
+				duration = 30
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	istanbul_manpower_fix_revert = {
+		potential = {
+			tag = OMG
+		}
+
+		allow = {
+			TUR = {
+				not = {
+					controls = 4503
+				}
+			}
+			not = {
+				has_country_modifier = istanbul_check_timer
+			}
+		}
+
+		effect = {
+			4503 = {
+				remove_province_modifier = istanbul_manpower_fix
+			}
+			add_country_modifier = {
+				name = istanbul_check_timer
+				duration = 30
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
 #EOF#
