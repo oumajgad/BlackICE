@@ -17,7 +17,10 @@ country_event = {{
     desc = "Some of our leaders have died due to natural causes or retired."
     picture = "politics2"
     option = {{
-        name = "Unfortunate"{text}
+        name = "Unfortunate"{textA}
+	}}
+    option = {{
+        name = "Let me keep them"{textB}
 	}}
 }}
 """
@@ -42,7 +45,7 @@ for tag, dates in leader_deaths.items():
                 handled_leaders.append(leader)
             else:
                 print(f"Duplicate leader death in JSON. Leader ID: {leader}")
-        event_text = event_template.format(event_id=event_id, tag=tag, date=date, text=event_lines)
+        event_text = event_template.format(event_id=event_id, tag=tag, date=date, textA=event_lines, textB=f"\n        officer_pool = -{len(leaders*1000)}\n        money = -{len(leaders*200)}")
         event_id += 1
         write_lines.append(event_text)
 

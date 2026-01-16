@@ -23,7 +23,7 @@ class CUnitOffsets:
     owner_id: int = 0x128
     leader_ptr: int = 0x12C
     current_province_ptr: int = 0x130
-    supplied_from_province_ptr: int = 0x134
+    # supplied_from_province_ptr: int = 0x134
     movement_order_next_province_ptr: int = 0x138
     movement_order_last_current_province_ptr: int = 0x13C
     movement_order_remaining_provinces_count: int = 0x140
@@ -61,7 +61,7 @@ class CUnit(pydantic.BaseModel):
     owner_id: int
     leader_ptr: int
     current_province_ptr: int
-    supplied_from_province_ptr: int
+    # supplied_from_province_ptr: int
     in_game_idler_ptr: int
     hoi_avatar_ptr: int
     name: str
@@ -99,7 +99,7 @@ class CUnit(pydantic.BaseModel):
             "owner_id": utils.to_number(pm.read_bytes(ptr + CUnitOffsets.owner_id, 4)),
             "leader_ptr": pm.read_uint(ptr + CUnitOffsets.leader_ptr),
             "current_province_ptr": pm.read_uint(ptr + CUnitOffsets.current_province_ptr),
-            "supplied_from_province_ptr": pm.read_uint(ptr + CUnitOffsets.supplied_from_province_ptr),
+            # "supplied_from_province_ptr": pm.read_uint(ptr + CUnitOffsets.supplied_from_province_ptr),
             "in_game_idler_ptr": pm.read_uint(ptr + CUnitOffsets.in_game_idler_ptr),
             "hoi_avatar_ptr": pm.read_uint(ptr + CUnitOffsets.hoi_avatar_ptr),
             "name": utils.get_string_maybe_ptr(pm, ptr + CUnitOffsets.name),
@@ -120,11 +120,11 @@ class CUnit(pydantic.BaseModel):
 def test1():
     pm = Pymem("hoi3_tfh.exe")
     print(pm.base_address)
-    unit_1_ptr = 0xBF2A20A0
+    unit_1_ptr = 2703943752
     unit_1 = CUnit.make(pm, unit_1_ptr)
     print(unit_1)
     print(unit_1.CSubUnitDefinition_Ptr)
-    utils.dump_bytes(pm=pm, ptr=unit_1_ptr, length=0x200)
+    utils.dump_bytes(pm=pm, ptr=unit_1_ptr, length=0x308)
     # unit_2_ptr = 0x9021B658
     # unit_2 = CUnit.make(pm, unit_2_ptr)
     # print(unit_2)

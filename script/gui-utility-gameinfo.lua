@@ -120,10 +120,42 @@ UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxD
 
 	UI.gSizer_GameInfo_Generals_2 = wx.wxGridSizer( 1, 2, 0, 0 )
 
+	UI.fgSizer_GameInfo_Generals_2 = wx.wxFlexGridSizer( 3, 1, 0, 0 )
+	UI.fgSizer_GameInfo_Generals_2:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_Generals_2:AddGrowableRow( 0 )
+	UI.fgSizer_GameInfo_Generals_2:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_Generals_2:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
 	UI.m_textCtrl_Generals = wx.wxTextCtrl( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), wx.wxTE_MULTILINE + wx.wxTE_WORDWRAP )
 	UI.m_textCtrl_Generals:SetMinSize( wx.wxSize( -1,395 ) )
 
-	UI.gSizer_GameInfo_Generals_2:Add( UI.m_textCtrl_Generals, 1, wx.wxALL + wx.wxEXPAND, 5 )
+	UI.fgSizer_GameInfo_Generals_2:Add( UI.m_textCtrl_Generals, 1, wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.gSizer_GameInfo_Generals_3 = wx.wxGridSizer( 1, 3, 0, 0 )
+
+	UI.m_staticText_GameInfo_Generals_2 = wx.wxStaticText( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "Location", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_GameInfo_Generals_2:Wrap( -1 )
+
+	UI.gSizer_GameInfo_Generals_3:Add( UI.m_staticText_GameInfo_Generals_2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_Generals_Location = wx.wxTextCtrl( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_GameInfo_Generals_Location:SetMinSize( wx.wxSize( 100,-1 ) )
+
+	UI.gSizer_GameInfo_Generals_3:Add( UI.m_textCtrl_GameInfo_Generals_Location, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_Generals_Location_Id = wx.wxTextCtrl( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_GameInfo_Generals_Location_Id:SetMinSize( wx.wxSize( 60,-1 ) )
+
+	UI.gSizer_GameInfo_Generals_3:Add( UI.m_textCtrl_GameInfo_Generals_Location_Id, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.fgSizer_GameInfo_Generals_2:Add( UI.gSizer_GameInfo_Generals_3, 1, wx.wxEXPAND, 5 )
+
+	UI.m_textCtrl_GameInfo_Generals_Unit_Name = wx.wxTextCtrl( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 270,-1 ), 0 )
+	UI.fgSizer_GameInfo_Generals_2:Add( UI.m_textCtrl_GameInfo_Generals_Unit_Name, 1, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
+
+
+	UI.gSizer_GameInfo_Generals_2:Add( UI.fgSizer_GameInfo_Generals_2, 1, wx.wxEXPAND, 5 )
 
 	UI.fgSizer12 = wx.wxFlexGridSizer( 3, 1, 0, 0 )
 	UI.fgSizer12:AddGrowableCol( 0 )

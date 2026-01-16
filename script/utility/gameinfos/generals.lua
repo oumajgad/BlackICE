@@ -200,6 +200,41 @@ function P.HandleSelection()
             P.HandleTraitSelection()
         end
     end
+
+    if BiceLib ~= nil then
+        local cLeader = BiceLib.Leaders.getLeaderDetails(generalId)
+        if cLeader ~= nil then
+            -- Utils.INSPECT_TABLE(cLeader)
+
+            local provinceId = cLeader["province_id"]
+            if provinceId ~= nil then
+                local provinceName = Parsing.GetTranslation(tostring(provinceId),"PROV", nil)
+                if provinceName == nil then
+                    provinceName = "unknown"
+                end
+                UI.m_textCtrl_GameInfo_Generals_Location:SetValue(provinceName)
+                UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue(tostring(provinceId))
+            else
+                UI.m_textCtrl_GameInfo_Generals_Location:SetValue("unknown")
+                UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("unknown")
+            end
+
+            local unitName = cLeader["unit_name"]
+            if unitName ~= nil then
+                UI.m_textCtrl_GameInfo_Generals_Unit_Name:SetValue(unitName)
+            else
+                UI.m_textCtrl_GameInfo_Generals_Unit_Name:SetValue("unknown")
+            end
+        else
+            Utils.LUA_DEBUGOUT("cLeader nil")
+            UI.m_textCtrl_GameInfo_Generals_Location:SetValue("cLeader")
+            UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("nil")
+        end
+    else
+        UI.m_textCtrl_GameInfo_Generals_Location:SetValue("BiceLib")
+        UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("failed")
+    end
+
     UI.m_choice_GameInfo_Generals_Traits:Thaw()
 end
 

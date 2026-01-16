@@ -2114,6 +2114,9 @@ if wx ~= nil then
 		Parsing.Modifiers.FillData()
 		Parsing.Units.FillData()
 		Parsing.ProvinceBuildings.FillwxChoice()
+		if BiceLib ~= nil then
+			BiceLib.Leaders.getLeaderDetails(1) -- do this to cache the leaders
+		end
 		UI.MyFrame4:Show(true)
 	end )
 

@@ -41,8 +41,8 @@ void CCountry::traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>* re
 std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifiers(uintptr_t countryPtr) {
     std::vector<std::pair<std::string,std::string>> res;
     uintptr_t listNodePtr = *(uintptr_t*)(countryPtr + 0x648);
-    while (listNodePtr != 0) {
-        HDS::LinkedListNodeSingle* listNode = (HDS::LinkedListNodeSingle*)listNodePtr;
+    HDS::LinkedListNodeSingle* listNode = (HDS::LinkedListNodeSingle*)listNodePtr;
+    while (listNode != 0) {
 
         auto modifierPtr = listNode->data;
         auto staticModifier = *(uintptr_t*)(modifierPtr + 0x8);
@@ -54,7 +54,7 @@ std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifie
 
         res.push_back(std::make_pair(name, expiryDate));
 
-        listNodePtr = listNode->next;
+        listNode = listNode->next;
     }
     return res;
 }

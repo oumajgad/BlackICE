@@ -1,11 +1,12 @@
 import enum
-import json
 from typing import ClassVar
 
 import pydantic
 from pymem import Pymem
 
 from classes.CLeaderHistory import CLeaderHistory
+from classes.CMapProvince import CMapProvince
+from classes.CUnit import CUnit
 from constants import DATA_SECTION_START
 from utils import utils
 
@@ -123,9 +124,15 @@ if __name__ == "__main__":
         # if p_skill < 0:
         #     p_skill = 0
         # out[x.id] = p_skill
-        if "Sperrle" == x.name and x.country_tag == "GER":
-            print(json.dumps(x.dict(), indent=2, default=str))
-            print(x.get_starting_rank_and_date())
+        if "von Weichs" == x.name and x.country_tag == "GER":
+            print(x)
+            if x.unit_ptr != 0:
+                unit = CUnit.make(pm, x.unit_ptr)
+                print(unit.name)
+                prov = CMapProvince.make(pm, unit.current_province_ptr)
+                print(prov.id)
+            # print(json.dumps(x.dict(), indent=2, default=str))
+            # print(x.get_starting_rank_and_date())
         # if x.skill in levels and x.id in levels:
         #     levels.remove(x.skill)
         #     print(f"{x.skill} - {x.ptr_str} - {x.experience} : {x.experience_2}")
