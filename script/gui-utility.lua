@@ -1837,7 +1837,7 @@ if wx ~= nil then
 	-- Connect Events
 
 	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		local selection = UI.player_choice:GetValue()
+		local selection = string.upper(UI.player_choice:GetValue())
 		if selection == "" then
 			UI.m_textCtrl3:SetValue("No country selected")
 		end
@@ -1874,6 +1874,7 @@ if wx ~= nil then
 
 		UI.m_radioBtn_Generals_all:SetValue( true )
 		Parsing.Generals.FillwxChoice(G_PlayerCountry, true)
+		Parsing.UnitModels.BuildCountryChoices(G_PlayerCountry)
 
 		GuiRefreshLoop(true)
 		UI.m_textCtrl3:SetValue("Country set to " .. G_PlayerCountry)
@@ -2113,6 +2114,7 @@ if wx ~= nil then
 		Parsing.Techs.FillData()
 		Parsing.Modifiers.FillData()
 		Parsing.Units.FillData()
+		Parsing.UnitModels.FillData()
 		Parsing.ProvinceBuildings.FillwxChoice()
 		if BiceLib ~= nil then
 			BiceLib.Leaders.getLeaderDetails(1) -- do this to cache the leaders
