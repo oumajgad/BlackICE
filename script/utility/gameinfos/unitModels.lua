@@ -7,7 +7,7 @@ local function updateImage(path)
     UI.m_bitmap_GameInfo_UnitModels_Selected:Update()
 
     if gc_counter < 0 then
-        Utils.LUA_DEBUGOUT("gc_counter < 0")
+        -- Utils.LUA_DEBUGOUT("gc_counter < 0")
         collectgarbage()
         collectgarbage()
         gc_counter = 100
@@ -18,19 +18,45 @@ local function updateImage(path)
 end
 
 -- Check for previous models since the game will use them if an explicit image is missing for later levels
-local function getLatestModelImage(base_path, _tag, unit_type, level)
+local function getLatestModelImage(base_path, unit_type, _level)
     local res = nil
-    local tag = ""
-    if _tag ~= nil then
-        tag = _tag .. "_"
-    end
+    local is_exact_level = false
+    local level = tonumber(_level)
     for i=0, tonumber(level) do
-        local path = base_path .. tag .. unit_type .. "_" .. tostring(i) .. ".tga"
+        local path = base_path .. unit_type .. "_" .. tostring(i) .. ".tga"
         if CheckFileExists(path) then
             res = path
+            if i == level then
+                is_exact_level = true
+            end
         end
     end
-    return res
+    return res, is_exact_level
+end
+
+local function getLatestCountrySpecificModelImage(base_path, _tag, unit_type, _level)
+    local res = nil
+    local is_exact_level = false
+    local tag_lower = string.lower(_tag) .. "_"
+    local tag_upper = string.upper(_tag) .. "_"
+    local level = tonumber(_level)
+    for i=0, level do
+        local path = base_path .. tag_lower .. unit_type .. "_" .. tostring(i) .. ".tga"
+        if CheckFileExists(path) then
+            res = path
+            if i == level then
+                is_exact_level = true
+            end
+        end
+        path = base_path .. tag_upper .. unit_type .. "_" .. tostring(i) .. ".tga"
+        if CheckFileExists(path) then
+            res = path
+            if i == level then
+                is_exact_level = true
+            end
+        end
+    end
+    return res, is_exact_level
 end
 
 P.UnitModelsData = {}
@@ -98,19 +124,23 @@ function P.HandleSelection()
     -- Get Model Image
     local base_path = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\gfx\\models\\"
     if G_PlayerCountry ~= nil then
-
-
-        local tag = string.upper(G_PlayerCountry)
-        local path_country_specific = getLatestModelImage(base_path, tag, unit_type, level)
-        local path_generic = getLatestModelImage(base_path, nil, unit_type, level)
+        local path_country_specific, is_exact_country = getLatestCountrySpecificModelImage(base_path, G_PlayerCountry, unit_type, level)
+        local path_generic, is_exact_generic = getLatestModelImage(base_path, unit_type, level)
         local path_blank = base_path .. "\\templates\\Unit template.tga"
 
-        if path_country_specific ~= nil then
+        if path_country_specific ~= nil and is_exact_country then
             updateImage(path_country_specific)
+            UI.m_textCtrl_GameInfo_UnitModels_Status:SetValue("Country Specific (exact level)")
         elseif path_generic ~= nil then
             updateImage(path_generic)
+            if is_exact_generic then
+                UI.m_textCtrl_GameInfo_UnitModels_Status:SetValue("Generic (exact level)")
+            else
+                UI.m_textCtrl_GameInfo_UnitModels_Status:SetValue("Generic (fallback level)")
+            end
         else
             updateImage(path_blank)
+            UI.m_textCtrl_GameInfo_UnitModels_Status:SetValue("No Image")
         end
     end
 end

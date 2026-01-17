@@ -382,6 +382,11 @@ UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxD
 	UI.m_bitmap_GameInfo_UnitModels_Selected = wx.wxStaticBitmap( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, wx.wxBitmap( "test", wx.wxBITMAP_TYPE_ANY ), wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.bSizer_GameInfo_UnitModels_1:Add( UI.m_bitmap_GameInfo_UnitModels_Selected, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
+	UI.m_textCtrl_GameInfo_UnitModels_Status = wx.wxTextCtrl( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 150,-1 ), 0 )
+	UI.m_textCtrl_GameInfo_UnitModels_Status:Enable( False )
+
+	UI.bSizer_GameInfo_UnitModels_1:Add( UI.m_textCtrl_GameInfo_UnitModels_Status, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
 	UI.m_listBox_GameInfo_UnitModels_TechsChoices = {}
 	UI.m_listBox_GameInfo_UnitModels_Techs = wx.wxListBox( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_listBox_GameInfo_UnitModels_TechsChoices, 0 )
 	UI.m_listBox_GameInfo_UnitModels_Techs:SetMinSize( wx.wxSize( 350,-1 ) )

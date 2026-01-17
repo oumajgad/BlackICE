@@ -218,7 +218,7 @@ end
 
 function P.parseFile(filePath, asList)
 	local file, err = io.open(filePath, "r")
-    -- debug_out(filePath)
+    debug_out(filePath)
 	if file ~= nil then
         local linesString = "{\n" .. file:read("*a") .. "\n}"
         local decoded = PdxParser.parse(linesString, asList)
