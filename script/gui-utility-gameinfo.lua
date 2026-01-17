@@ -379,13 +379,14 @@ UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxD
 
 	UI.bSizer_GameInfo_UnitModels_1:Add( UI.fgSizer_GameInfo_UnitModels_1, 0, wx.wxEXPAND, 5 )
 
-	UI.m_bitmap_GameInfo_UnitModels_Selected = wx.wxStaticBitmap( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, wx.wxBitmap( "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\gfx\\models\\templates\\Unit template.tga", wx.wxBITMAP_TYPE_ANY ), wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_bitmap_GameInfo_UnitModels_Selected = wx.wxStaticBitmap( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, wx.wxBitmap( "test", wx.wxBITMAP_TYPE_ANY ), wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.bSizer_GameInfo_UnitModels_1:Add( UI.m_bitmap_GameInfo_UnitModels_Selected, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_GameInfo_UnitModels_Triggers = wx.wxTextCtrl( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE + wx.wxTE_WORDWRAP )
-	UI.m_textCtrl_GameInfo_UnitModels_Triggers:SetMinSize( wx.wxSize( 300,200 ) )
+	UI.m_listBox_GameInfo_UnitModels_TechsChoices = {}
+	UI.m_listBox_GameInfo_UnitModels_Techs = wx.wxListBox( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_listBox_GameInfo_UnitModels_TechsChoices, 0 )
+	UI.m_listBox_GameInfo_UnitModels_Techs:SetMinSize( wx.wxSize( 350,-1 ) )
 
-	UI.bSizer_GameInfo_UnitModels_1:Add( UI.m_textCtrl_GameInfo_UnitModels_Triggers, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.bSizer_GameInfo_UnitModels_1:Add( UI.m_listBox_GameInfo_UnitModels_Techs, 1, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.m_panel_GameInfo_UnitModels:SetSizer( UI.bSizer_GameInfo_UnitModels_1 )

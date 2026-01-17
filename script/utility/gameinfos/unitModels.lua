@@ -14,7 +14,23 @@ local function updateImage(path)
     else
         gc_counter = gc_counter - 1
     end
+    UI.m_panel_GameInfo_UnitModels:Layout()
+end
 
+-- Check for previous models since the game will use them if an explicit image is missing for later levels
+local function getLatestModelImage(base_path, _tag, unit_type, level)
+    local res = nil
+    local tag = ""
+    if _tag ~= nil then
+        tag = _tag .. "_"
+    end
+    for i=0, tonumber(level) do
+        local path = base_path .. tag .. unit_type .. "_" .. tostring(i) .. ".tga"
+        if CheckFileExists(path) then
+            res = path
+        end
+    end
+    return res
 end
 
 P.UnitModelsData = {}
@@ -54,24 +70,49 @@ function P.HandleSelection()
     if string.sub(level, 1, 1) == "0" then -- remove the leading 0 we inserted for sorting purposes
         level = string.sub(level, 2, 2)
     end
-    UI.m_textCtrl_GameInfo_UnitModels_Triggers:SetValue(Utils.Dump(P.UnitModelsData[G_PlayerCountry][unit_type][level]))
 
-    local base_path = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\gfx\\models\\"
-    local file_name = unit_type .. "_" .. level .. ".tga"
-    if G_PlayerCountry ~= nil then
-        local tag = string.upper(G_PlayerCountry)
-        local path_a = base_path .. tag .. "_" .. file_name
-        local path_b = base_path .. file_name
-        local path_c = base_path .. "\\templates\\Unit template.tga"
-        if CheckFileExists(path_a) then
-            updateImage(path_a)
-        elseif CheckFileExists(path_b) then
-            updateImage(path_b)
+    -- Build Tech list
+    local techlist = {}
+    local techs = P.UnitModelsData[G_PlayerCountry][unit_type][level]
+    local translationTable = Parsing.GetTranslationTable()
+    local sort_by_name = function(t,a,b)
+        -- Sorts by translated name, if not found places them at the end and sorts by internal name
+        local temp_a = translationTable[a]
+        local temp_b = translationTable[b]
+        if temp_a == nil then temp_a = "zzzzz" .. a end
+        if temp_b == nil then temp_b = "zzzzz" .. b end
+        return string.upper(temp_b) > string.upper(temp_a)
+    end
+    for tech, tech_level in spairs(techs, sort_by_name) do
+        local trans = translationTable[tech]
+        if trans ~= nil then
+            table.insert(techlist, tech_level .. " - " .. trans .. " [" .. tech .. "]")
         else
-            updateImage(path_c)
+            table.insert(techlist, tech_level .. " - " .. "[" .. tech .. "]")
         end
     end
 
+    UI.m_listBox_GameInfo_UnitModels_Techs:Clear()
+    UI.m_listBox_GameInfo_UnitModels_Techs:Append(techlist)
+
+    -- Get Model Image
+    local base_path = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\gfx\\models\\"
+    if G_PlayerCountry ~= nil then
+
+
+        local tag = string.upper(G_PlayerCountry)
+        local path_country_specific = getLatestModelImage(base_path, tag, unit_type, level)
+        local path_generic = getLatestModelImage(base_path, nil, unit_type, level)
+        local path_blank = base_path .. "\\templates\\Unit template.tga"
+
+        if path_country_specific ~= nil then
+            updateImage(path_country_specific)
+        elseif path_generic ~= nil then
+            updateImage(path_generic)
+        else
+            updateImage(path_blank)
+        end
+    end
 end
 
 function P.BuildCountryChoices(playerTag)
@@ -147,7 +188,7 @@ end
 
 function P.ClearText()
     UI.m_panel_GameInfo_UnitModels:Freeze()
-    UI.m_textCtrl_GameInfo_UnitModels_Triggers:Clear()
+    UI.m_listBox_GameInfo_UnitModels_Techs:Clear()
     UI.m_panel_GameInfo_UnitModels:Thaw()
 end
 
