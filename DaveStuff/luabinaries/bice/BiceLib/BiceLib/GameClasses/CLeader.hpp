@@ -24,6 +24,7 @@ namespace CLeader {
 
     struct CLeader
     {
+        uintptr_t _address;
         unsigned int id;
         uintptr_t trait_ll_start;
         uintptr_t trait_ll_end;
@@ -42,7 +43,10 @@ namespace CLeader {
         // uintptr_t CLeaderHistoryOffset;
     };
 
+    extern std::unordered_map<unsigned int, uintptr_t>* leaderCache;
+
     CLeader Make(uintptr_t addr);
+    void CacheLeaders(Memory::External& external);
     CLeader GetLeaderById(Memory::External& external, unsigned int id);
     void PushCLeaderToStack(lua_State* L, CLeader leader);
 }

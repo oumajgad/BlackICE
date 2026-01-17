@@ -26,6 +26,7 @@ namespace CLeader {
     CLeader Make(uintptr_t addr) {
         //DEBUG_OUT(printf("Making %#010x\n", addr));
         CLeader res = CLeader{};
+        res._address = addr;
         res.id = *(int*)(addr + Offsets::id);
         res.trait_ll_start = *(uintptr_t*)(addr + Offsets::trait_ll_start);
         res.trait_ll_end = *(uintptr_t*)(addr + Offsets::trait_ll_end);
