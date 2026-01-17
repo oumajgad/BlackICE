@@ -357,6 +357,47 @@ UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxD
 	UI.m_panel_GameInfo_Units:Layout()
 	UI.bSizer_GameInfo_Units_1:Fit( UI.m_panel_GameInfo_Units )
 	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_Units, "Units", False )
+	UI.m_panel_GameInfo_UnitModels = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer_GameInfo_UnitModels_1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.fgSizer_GameInfo_UnitModels_1 = wx.wxFlexGridSizer( 1, 3, 0, 0 )
+	UI.fgSizer_GameInfo_UnitModels_1:AddGrowableCol( 0 )
+	UI.fgSizer_GameInfo_UnitModels_1:SetFlexibleDirection( wx.wxBOTH )
+	UI.fgSizer_GameInfo_UnitModels_1:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
+
+	UI.m_choice_GameInfo_UnitModels_1Choices = {}
+	UI.m_choice_GameInfo_UnitModels_1 = wx.wxChoice( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 350,-1 ), UI.m_choice_GameInfo_UnitModels_1Choices, 0 )
+	UI.m_choice_GameInfo_UnitModels_1:SetSelection( 0 )
+	UI.fgSizer_GameInfo_UnitModels_1:Add( UI.m_choice_GameInfo_UnitModels_1, 0, wx.wxALIGN_CENTER_VERTICAL + wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_textCtrl_GameInfo_UnitModels_Filter = wx.wxTextCtrl( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, "name filter (press enter)", wx.wxDefaultPosition, wx.wxSize( 135,-1 ), 0 )
+	UI.fgSizer_GameInfo_UnitModels_1:Add( UI.m_textCtrl_GameInfo_UnitModels_Filter, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.m_button_GameInfo_UnitModels_Filter_Clear = wx.wxButton( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, "Clear", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.fgSizer_GameInfo_UnitModels_1:Add( UI.m_button_GameInfo_UnitModels_Filter_Clear, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer_GameInfo_UnitModels_1:Add( UI.fgSizer_GameInfo_UnitModels_1, 0, wx.wxEXPAND, 5 )
+
+	UI.m_bitmap_GameInfo_UnitModels_Selected = wx.wxStaticBitmap( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, wx.wxBitmap( "test", wx.wxBITMAP_TYPE_ANY ), wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.bSizer_GameInfo_UnitModels_1:Add( UI.m_bitmap_GameInfo_UnitModels_Selected, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_GameInfo_UnitModels_Status = wx.wxTextCtrl( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 150,-1 ), 0 )
+	UI.m_textCtrl_GameInfo_UnitModels_Status:Enable( False )
+
+	UI.bSizer_GameInfo_UnitModels_1:Add( UI.m_textCtrl_GameInfo_UnitModels_Status, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_listBox_GameInfo_UnitModels_TechsChoices = {}
+	UI.m_listBox_GameInfo_UnitModels_Techs = wx.wxListBox( UI.m_panel_GameInfo_UnitModels, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_listBox_GameInfo_UnitModels_TechsChoices, 0 )
+	UI.m_listBox_GameInfo_UnitModels_Techs:SetMinSize( wx.wxSize( 350,-1 ) )
+
+	UI.bSizer_GameInfo_UnitModels_1:Add( UI.m_listBox_GameInfo_UnitModels_Techs, 1, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panel_GameInfo_UnitModels:SetSizer( UI.bSizer_GameInfo_UnitModels_1 )
+	UI.m_panel_GameInfo_UnitModels:Layout()
+	UI.bSizer_GameInfo_UnitModels_1:Fit( UI.m_panel_GameInfo_UnitModels )
+	UI.m_notebook5:AddPage(UI.m_panel_GameInfo_UnitModels, "Unit Models", False )
 	UI.m_panel_GameInfo_Modifiers = wx.wxPanel( UI.m_notebook5, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_GameInfo_Modifiers1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
@@ -888,5 +929,19 @@ UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxD
 
 	UI.m_choice_GameInfo_ProvinceBuildings_Sort:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
 		Parsing.ProvinceBuildings.HandleSortUpdate()
+	end )
+
+	UI.m_choice_GameInfo_UnitModels_1:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
+		Parsing.UnitModels.HandleSelection()
+	end )
+
+	UI.m_textCtrl_GameInfo_UnitModels_Filter:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)
+		Parsing.UnitModels.HandleFilter()
+	end )
+
+	UI.m_button_GameInfo_UnitModels_Filter_Clear:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		UI.m_textCtrl_GameInfo_UnitModels_Filter:SetValue("")
+		Parsing.UnitModels.ClearText()
+		Parsing.UnitModels.HandleFilter()
 	end )
 end

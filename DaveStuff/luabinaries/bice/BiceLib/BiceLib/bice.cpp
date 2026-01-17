@@ -199,51 +199,6 @@ void cacheTraits() {
     return;
 }
 
-bool cacheLeadersDone = false;
-std::unordered_map<unsigned int, uintptr_t>* leaderCache = new std::unordered_map<unsigned int, uintptr_t>;
-uintptr_t getLeader(Memory::External& external, unsigned int leaderId) {
-    if (leaderCache->find(leaderId) != leaderCache->end()) {
-        return leaderCache->at(leaderId);
-    }
-
-    uintptr_t res = external.findLeaderInstance(MODULE_BASE + DATA_SECTION_START, leaderId);
-    if (res != 0) {
-        leaderCache->insert(std::make_pair(leaderId, res));
-        //DEBUG_OUT(printf("Added to leaderCache: %u - %#010x \n", leaderId, res));
-        return res;
-    }
-
-    return 0;
-}
-void addLeaderToCache(unsigned int leaderId, uintptr_t address) {
-    leaderCache->insert(std::make_pair(leaderId, address));
-    DEBUG_OUT(printf("Added to leaderCache: %u - %#010x \n", leaderId, address));
-    //std::string x = std::format("Added to leaderCache : {} - {:x}", leaderId, address);
-    //logInLua(x.c_str());
-    return;
-}
-void cacheLeaders() {
-    if (!cacheLeadersDone) {
-        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
-        uintptr_t CLeaderVFTable = MODULE_BASE + 0x11C5220;
-        std::string CLeaderVFTableSig = Memory::ptrToSignature(CLeaderVFTable);
-        std::vector<uintptr_t>* leaders;
-        leaders = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CLeaderVFTableSig.c_str(), 4, 99999);
-        if (leaders->size() > 1) { // there is always a "NULL Leader", so check for more than 1
-            for (auto& leaderAddr : *leaders) {
-                unsigned int leaderId = *(DWORD*)((BYTE*)leaderAddr + 0xC);;
-                addLeaderToCache(leaderId, leaderAddr);
-            }
-            INFO_OUT(printf("Leader cache filled (%i) \n", leaderCache->size()));
-            cacheLeadersDone = true;
-            delete leaders;
-            return;
-        }
-    }
-    return;
-}
-
 __declspec(dllexport) int getLeaderDetails(lua_State* L) {
     DEBUG_OUT(printf("getLeaderDetails called\n"));
     unsigned int leaderId = luaL_checkinteger(L, 1);
@@ -270,9 +225,9 @@ __declspec(dllexport) int addTraitToLeader(lua_State* L){
 
     Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
-    auto leaderAddr = getLeader(external, leaderId);
+    auto leader = CLeader::GetLeaderById(external, leaderId);
     auto traitAddr = getTrait(external, traitName);
-    if (leaderAddr == 0) {
+    if (leader._address == 0) {
         ERROR_OUT(printf("Couldn't find leader with ID '%u'\n", leaderId));
         lua_pushboolean(L, false);
         return 1;
@@ -284,7 +239,7 @@ __declspec(dllexport) int addTraitToLeader(lua_State* L){
     }
 
     CLeaderAddTraitFunction cLeaderAddTraitFunction = reinterpret_cast<CLeaderAddTraitFunction>(Hooks::MODULE_BASE + 0x181a60);
-    cLeaderAddTraitFunction(leaderAddr, (unsigned int*) traitAddr);
+    cLeaderAddTraitFunction(leader._address, (unsigned int*) traitAddr);
 
     lua_pushboolean(L, true);
     DEBUG_OUT(printf("addTraitToLeader finished\n"));
@@ -403,15 +358,16 @@ __declspec(dllexport) int checkRankSpecificTraitsConsistency(lua_State* L)
         return 0;
     }
 
+    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
 
     cacheTraits();
-    cacheLeaders();
-    if (traitCache->size() == 0 || leaderCache->size() == 0) {
+    CLeader::CacheLeaders(external);
+    if (traitCache->size() == 0 || CLeader::leaderCache->size() == 0) {
         return 0;
     }
     INFO_OUT(printf("Checking rank specific traits consistency.\n"));
 
-    for (auto entry = leaderCache->begin(); entry != leaderCache->end(); ++entry) {
+    for (auto entry = CLeader::leaderCache->begin(); entry != CLeader::leaderCache->end(); ++entry) {
         Hooks::CLeader::checkRankSpecificTraitsConsistency((DWORD*) entry->second, -1);
     }
 

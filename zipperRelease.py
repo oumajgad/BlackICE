@@ -27,7 +27,7 @@ def zipdir(filename):
     addDxvkArchive(zipf)
     addUtilityResources(zipf)
     addStatsCLI(zipf)
-    # addBorderlessWindowDlls(zipf)
+    addBorderlessWindowRars(zipf)
     addExePatcher(zipf)
     maxcount = countFiles()
     counter = 0
@@ -77,9 +77,9 @@ def addUtilityResources(zipf: zipfile.ZipFile):
         for file in files:
             zipf.write(os.path.join(root, file), f"tfh/mod/BlackICE {version}/utility/{file}")
 
-def addBorderlessWindowDlls(zipf: zipfile.ZipFile):
-    zipf.write("./DaveStuff/borderless_window_v2winfix/original/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/patches/borderless_mouse_fix/dinput8.dll")
-    zipf.write("./DaveStuff/borderless_window_v2winfix/only_cursor_fix/Release/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/patches/windowed_mouse_fix/dinput8.dll")
+def addBorderlessWindowRars(zipf: zipfile.ZipFile):
+    zipf.write("./DaveStuff/borderless_window_v2winfix/borderless.rar", f"borderless.rar")
+    zipf.write("./DaveStuff/borderless_window_v2winfix/borderlessWithStretching.rar", f"borderlessWithStretching.rar")
 
 def addExePatcher(zipf: zipfile.ZipFile):
     zipf.write("./tools/PythonExePatcher/zDsafe_ExePatcher.exe", f"zDsafe_ExePatcher.exe")

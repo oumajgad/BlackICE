@@ -102,7 +102,7 @@ function CheckFileExists(file)
         io.close(f)
         return true
     else
-        Utils.LUA_DEBUGOUT(err)
+        -- Utils.LUA_DEBUGOUT(err)
     end    -- Utils.LUA_DEBUGOUT("false")
     return false
 end
