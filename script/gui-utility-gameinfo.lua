@@ -127,7 +127,7 @@ UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxD
 	UI.fgSizer_GameInfo_Generals_2:SetNonFlexibleGrowMode( wx.wxFLEX_GROWMODE_SPECIFIED )
 
 	UI.m_textCtrl_Generals = wx.wxTextCtrl( UI.m_panel_GameInfo_Generals, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), wx.wxTE_MULTILINE + wx.wxTE_WORDWRAP )
-	UI.m_textCtrl_Generals:SetMinSize( wx.wxSize( -1,395 ) )
+	UI.m_textCtrl_Generals:SetMinSize( wx.wxSize( -1,385 ) )
 
 	UI.fgSizer_GameInfo_Generals_2:Add( UI.m_textCtrl_Generals, 1, wx.wxALL + wx.wxEXPAND, 5 )
 
