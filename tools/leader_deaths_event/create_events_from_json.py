@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 header_template = """###############################
 #            {tag}            #
@@ -8,24 +9,28 @@ header_template = """###############################
 event_template = """
 country_event = {{
     id = {event_id}
-    fire_only_once = yes
     trigger = {{
         tag = {tag}
         date = {date}
+        NOT = {{
+            has_country_flag = "{country_flag}"
+        }}
     }}
     title = "Leader removal."
     desc = "Some of our leaders have died due to natural causes or retired."
     picture = "politics2"
     option = {{
         name = "Unfortunate"{textA}
-	}}
+        set_country_flag = "{country_flag}"
+    }}
     option = {{
         name = "Let me keep them"{textB}
-	}}
+        set_country_flag = "{country_flag}"
+    }}
 }}
 """
 
-leader_deaths: dict
+leader_deaths: dict[str,dict[str,list[int]]]
 with open("tools\leader_deaths_event\leader_deaths_sorted.json", "r") as f:
     leader_deaths = json.load(f)
 
@@ -34,7 +39,8 @@ write_lines = []
 handled_leaders = []
 for tag, dates in leader_deaths.items():
     write_lines.append(header_template.format(tag=tag))
-    for date, leaders in dates.items():
+    for _date, leaders in dates.items():
+        date = datetime.strptime(_date, "%Y.%m.%d").strftime("%Y.%m.%d")
         # print(tag)
         # print(date)
         # print(leaders)
@@ -45,7 +51,14 @@ for tag, dates in leader_deaths.items():
                 handled_leaders.append(leader)
             else:
                 print(f"Duplicate leader death in JSON. Leader ID: {leader}")
-        event_text = event_template.format(event_id=event_id, tag=tag, date=date, textA=event_lines, textB=f"\n        officer_pool = -{len(leaders*1000)}\n        money = -{len(leaders*200)}")
+        event_text = event_template.format(
+            event_id=event_id, 
+            tag=tag, 
+            date=date, 
+            country_flag=f"leader_deaths_{date.replace('.','')}", 
+            textA=event_lines, 
+            textB=f"\n        officer_pool = -{len(leaders*1000)}\n        money = -{len(leaders*200)}"
+        )
         event_id += 1
         write_lines.append(event_text)
 
