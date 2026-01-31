@@ -5192,5 +5192,27 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+	# Event "randomness" is suspiciously not very random within each version
+	# hopefully this decision will advance the random generator better since its based on LUA random
+	advance_random = {
+		potential = {
+			tag = OMG
+			check_variable = {
+				which = RandomNumber
+				value = 50
+			}
+		}
+		allow = {
+			tag = OMG
+		}
+		effect = {
+			OMG = {
+				change_variable = {
+					which = RandomNumber
+					value = -2
+				}
+			}
+		}
+	}
 }
 #EOF#
