@@ -1,23 +1,12 @@
-## BICE 8 Revised Trait System v 8.0.000 ##########################
-###################################################################
-# The ENTIRE Trait & Gainable_Trait System is Reworked for BICE 8 #
-### Everything is completely rebalanced and much has been added ###
-# DO NOT MESS WITH THE TRAITS FILES OR RIEVER WILL NERF-AXE YOU! ##
-###################################################################
 # SYNTAX - Provided by PI (paraphrased and grammatically corrected):
-#
 # Triggers use the combat event scope and are evaluated at the
 # end of each combat for every suitable leader.
-#
 # hours_required is the exact number of hours required in such combat
 # to gain the respective trait.
-#
 # Trigger province_temperature = X evaluates if the local temperature
 # in combat is LOWER than X.
 # To check for higher temperature use NOT = { province_temperature = X }
-#
 # has_combat_modifier values - case sensitive! Allowed options are:
-#
 # BM_DISSENT BM_LEADER_BONUS BM_DIFFICULTY BM_ENCIRCLEMENT_PENALTY
 # BM_ENVELOPMENT_PENALTY BM_DIVISION_PENALTY BM_EXPERIENCE
 # BM_MISSION_EFFICIENCY BM_DUGIN_MODIFIER
@@ -27,39 +16,28 @@
 # BM_INTERCEPT BM_AIRCOMBAT BM_TERRAIN BM_WEATHER BM_NIGHT_MODIFIER
 # BM_SURPRISE_PENALTY BM_SURPRISE_BONUS BM_POOR_SCREEN_PENALTY
 # BM_TERRITORIAL_PRIDE BM_RADIO
-#
 # Only 1 gainable_trait per specified trait type may be defined!
-#
-###################################################################
-## BICE 8 Revised Trait System Introduction #######################
-###################################################################
+# BICE Revised Trait System Introduction #
 # OVERVIEW - if a trait seems like it should reasonably "work that way," it pretty much should now
 # NOTE - this means that if a trigger seems like it should apply, it probably does now
 # NOTE - and if a bonus effect seems like it should apply, it probably does as well
 # NERF - some bonuses nerfed-down for game-balance, others nerfed-up for the same reason
-##
 # NOTE - Shorthand: Trait Level = TL, Friendly Leaders (with desired Trait) = Friendlies
-##
 # MECHANIC - 1) if another trait is a pre-requisite, any friendly general in your battle can provide it to all
 # BONUS - well, the game does it, so you should know about it and use it, the AI does by mistake, lol
 # MALUS - hours per TL are no longer identical, they increase, so no more mastery of 3 TLs at once
-##
 # MECHANIC - 2) hours for TL 1 are much more "per Trait-Level" than for subsequent TLs
 # NOTE - hours to achieve TL 1 were equal or slightly more, but even that was not enough
 # MALUS - TL 1 rewards the most of all Levels, but now takes many more hours to achieve
 # NOTE - Result is better balance, since "already-traited" leaders get no hours "credited" for those TLs
-##
 # MECHANIC - 3) many traits, if appropriate, can be gained from Friendlies in same battle who have it
 # BONUS - if you really want a certain general to have a certain trait? pair him in battles with one who does
 # NOTE - idea for this occurred when reading how German generals watched Rommel in France and did this
 # MALUS - this means that all traits that can gain from Friendlies now have increased hours... *nerf-bat*
 # NOTE - the AI won't have to think about it, so it might finally gain some TLs in-game - oops! lol
-##
 # MECHANIC - 4) Gainable_Traits are CLASSed according to base hours: 750-Class, 1000-Class, etc.
-# NOTE - LAND, SEA, AIR and MEDALS all have their own "Class System" as LISTed below
-##
+# NOTE - LAND, SEA, AIR and MEDALS all have their own "Class System" as Listed below
 # LIST - LAND CLASS Categories - 750-Class, 1000-Class, 1500-Class, and 2500-Class
-###################################################################
 # NOTE - LAND 750-Class is so-named b/c it was setup 750/750/750, 1500-Class 1500/1500/1500, etc.
 # NOTE - 750-Class translates to 750/1250/2000 "Standard," or to 1000/1750/2750 if it uses "Friendlies"
 # NOTE - 1000-Class to 1000/1750/2750 "Standard," or to 1250/2250/3500 if it utilizes "Friendlies"
@@ -71,28 +49,20 @@
 # UPDATE - 1000-Class is 1600/2100/2750 "Standard," or to 2000/2700/3500 if it utilizes "Friendlies"
 # UPDATE - 1500-Class is 2000/2700/3500 "Standard," or to 2650/3300/4000 if it utilizes "Friendlies"
 # UPDATE - 2500-Class is 3300/4100/5000 "Standard," or to 3750/4800/6000 if it utilizes "Friendlies"
-##
 # LIST - SEA CLASS Categories include 500-Class, 375-Class, 275-Class, and 175-Class
-###################################################################
 # NOTE - 500-Class is so-named as it was originally setup 580/580/580, etc. etc.
 # NOTE - SEA "Friendlies" are no where near as plentiful as LAND, so no need to tweak this for SEA
 # NOTE - 500-Class is 500/675/875 currently for both "Standard" and "Friendlies"
 # NOTE - 375-Class is 375/500/650 for both "Standard" and "Friendlies"
 # NOTE - 275-Class is 275/375/500 for both "Standard" and "Friendlies"
 # NOTE - 175-Class is 175/245/325 for both "Standard" and "Friendlies"
-##
 # LIST - AIR CLASS Categories include 850-Class, 500-Class, 325-Class, and 200-Class
-###################################################################
 # NOTE - 500-Class was originally setup 500/1000/1500, etc. Most air traits were set to 500-Class
 # NOTE - 850-Class is 850/1100/1400 for both "Standard" and "Friendlies" and replaces old 500-Class
 # NOTE - 500-Class is 500/675/875 currently for both "Standard" and "Friendlies"
 # NOTE - 325-Class is 325/425/550 for both "Standard" and "Friendlies"
 # NOTE - 200-Class is 200/275/375 for both "Standard" and "Friendlies"
-###################################################################
-#
-##################################################
-# UNUSED #########################################
-##################################################
+# UNUSED #
 #gainable_trait = {
 #	combat = land_combat
 #	hours_required = 500
@@ -117,11 +87,8 @@
 #		is_winner = no
 #	}
 #}
-##################################################
 # LAND TRAITS - Technical Traits
-##################################################
 # LAND - LOGISTICS WIZARD - 750-Class, Friendlies
-##################################################
 # NOTE - Added encirclement and envelopment as appropriate triggers
 gainable_trait = {
 	combat = land_combat
@@ -231,7 +198,6 @@ gainable_trait = {
 #	}
 #}
 # LAND - TRICKSTER - 750-Class, Friendlies
-##################################################
 # NOTE - Added surprise penalty and leader bonus as appropriate triggers to practice being "tricky"
 gainable_trait = {
 	combat = land_combat
@@ -288,7 +254,6 @@ gainable_trait = {
 #	}
 #}
 # LAND - NIGHT NINJA - 2500-Class, Standard
-##################################################
 # NOTE - not previously available for land or gain-able for land
 # NOTE - must be at night, period, setup as a 2500-class trait - just because it should be hard
 gainable_trait = {
@@ -316,7 +281,6 @@ gainable_trait = {
 #	}
 #}
 # LAND - TANK BUSTER - 2500-Class, Friendlies
-##################################################
 # NOTE - not previously available for land or gain-able for land
 # NOTE - setup as a 2500-class - making it harder than any other trait, because no one starts with it
 gainable_trait = {
@@ -373,7 +337,6 @@ gainable_trait = {
 #	}
 #}
 # LAND - SPOTTER - 750-Class, Friendlies
-##################################################
 # NOTE - not previously available for land or gain-able for land
 # NOTE - triggers setup to require surprise or leader bonus or Friendlies and be in radio contact
 gainable_trait = {
@@ -414,9 +377,7 @@ gainable_trait = {
 #		has_combat_modifier = BM_RADIO
 #	}
 #}
-########################################################
 # LAND - DEFENSIVE DOCTRINE - 2500-Class, Friendlies
-########################################################
 # NOTE - Added territorial pride, encirclement, envelopment and trait-Friendlies as appropriate triggers
 gainable_trait = {
 	combat = land_combat
@@ -457,9 +418,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-#######################################################
 # LAND - OFFENSIVE DOCTRINE - 2500-Class, Friendlies
-#######################################################
 # NOTE - Added trait-Friendlies as appropriate triggers
 gainable_trait = {
 	combat = land_combat
@@ -485,9 +444,7 @@ gainable_trait = {
 #		is_attacker = yes
 #	}
 #}
-##################################################
 # LAND - ENGINEER - 750-Class, Friendlies
-##################################################
 # NOTE - Added adverse weather as appropriate trigger
 gainable_trait = {
 	combat = land_combat
@@ -522,9 +479,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # LAND - FORTRESS BUSTER - 750-Class, Friendlies
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1600
@@ -549,9 +504,7 @@ gainable_trait = {
 #		has_combat_modifier = BM_FORT_MODIFIER
 #	}
 #}
-##################################################
 # LAND - COMBINED ARMS - 1500-Class, Friendlies
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 3000
@@ -582,7 +535,6 @@ gainable_trait = {
 		}
 	}
 }
-
 #gainable_trait = {
 #	combat = land_combat
 #	hours_required = 12000
@@ -598,9 +550,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # LAND - COMMANDO - 750-Class, Friendlies
-##################################################
 # NOTE - fort as a trigger because commando leaders help a little with them now, as they should
 # NOTE - not previously gain-able, hours set like engineer and fort_buster - 750-Class
 gainable_trait = {
@@ -669,9 +619,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # LAND - PARATROOPER - 600-Class, Friendlies
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 150
@@ -705,9 +653,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # LAND - MARINE - 1500-Class, Friendlies
-##################################################
 # NOTE - Added shore bombard as appropriate triggers to have experience on either side with amphibious attack
 gainable_trait = {
 	combat = land_combat
@@ -744,11 +690,8 @@ gainable_trait = {
 #		trait = marine_II
 #	}
 #}
-##################################################
 # LAND TRAITS - Terrain and Weather Traits
-##################################################
 # LAND - DESERT FOX - 1500-Class, Standard
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1000
@@ -794,9 +737,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # LAND - SWAMP FOX - 750-Class, Standard
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 350
@@ -829,9 +770,7 @@ gainable_trait = {
 #		trait = swamp_fox_II
 #	}
 #}
-##################################################
 # LAND - MOUNTAINEER - 750-Class, Standard
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1125
@@ -880,9 +819,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # LAND - HILL FIGHTER - 1000-Class, Standard
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1600
@@ -928,9 +865,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # LAND - JUNGLE RAT - 1000-Class, Standard
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1000
@@ -982,9 +917,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # LAND - RANGER - 1500-Class, Standard
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1500
@@ -1042,9 +975,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # LAND - URBAN SPECIALIST - 1500-Class, Standard
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 500
@@ -1069,9 +1000,7 @@ gainable_trait = {
 #		terrain = urban
 #	}
 #}
-##################################################
 # LAND - WINTER SPECIALIST - 1500-Class, Standard
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 2000
@@ -1117,11 +1046,8 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # NAVAL - All Naval Traits
-##################################################
 # NAVAL - SUPERIOR TACTICIAN - 500-Class, Standard
-##################################################
 # FLAVOUR - Experienced Admiral, has "seen it all"
 gainable_trait = {
 	combat = naval_combat
@@ -1144,9 +1070,7 @@ gainable_trait = {
 #	trigger = {
 #	}
 #}
-##################################################
 # NAVAL - SEAWOLF - 375-Class, Friendlies
-##################################################
 # FLAVOUR - Successful Naval Attacker, knows when to attack and how to "turn the tables" when attacked
 # NOTE - not previously gain-able, vanilla code did not work
 gainable_trait = {
@@ -1182,9 +1106,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # NAVAL - NIGHT NINJA - 375-Class, Standard
-##################################################
 # FLAVOUR - Dangerous in the Dark, this admiral performs eerily-well in dark of night
 # NOTE - not previously available to SEA generals and not previously gain-able
 gainable_trait = {
@@ -1211,9 +1133,7 @@ gainable_trait = {
 #		has_combat_modifier = BM_NIGHT_MODIFIER
 #	}
 #}
-##################################################
 # NAVAL - SPOTTER - 375-Class, Friendlies
-##################################################
 # FLAVOUR - Diligence on Deck, this admiral always seems to see you before you see him
 # NOTE - not previously gain-able
 gainable_trait = {
@@ -1240,9 +1160,7 @@ gainable_trait = {
 #		is_attacker = yes
 #	}
 #}
-##################################################
 # NAVAL - TRICKSTER - 375-Class, Friendlies
-##################################################
 # FLAVOUR - He Seems to Know What You Will Do Before You Do, and he never seems to do what you expect
 # NOTE - not previously available to SEA generals, not previously gain-able
 gainable_trait = {
@@ -1281,9 +1199,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-####################################################
 # NAVAL - LOGISTICS WIZARD - 175-Class, Friendlies
-####################################################
 # FLAVOUR - Resupply and Never Run Dry, the admiral gets the most mileage from what he's given
 # NOTE - not previously available to SEA generals, not previously gain-able, extremely hard to gain
 gainable_trait = {
@@ -1322,9 +1238,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-####################################################
 # NAVAL - BLOCKADE RUNNER - 175-Class, Friendlies
-####################################################
 # FLAVOUR - Now You See Me, Now You Don't, this admiral's "ghost fleet" seems to disappear at will
 # NOTE - not previously gain-able, hard to gain - unless maybe you're at sea with the French :)
 # NOTE - and if you gain it, well... you probably NEED it!
@@ -1352,12 +1266,8 @@ gainable_trait = {
 #		is_winner = no
 #	}
 #}
-##################################################
 # AIR - All Air Traits
-##################################################
-
 # AIR - CARPET BOMBER - Strategic Bombing, 850-Class
-##################################################
 # NOTE - originally 500-Class, but Strat Bombing is too easy to gain at that level
 gainable_trait = {
 	combat = ground_bombing
@@ -1383,9 +1293,7 @@ gainable_trait = {
 #		is_attacker = yes
 #	}
 #}
-####################################################
 # AIR - FLEET DESTROYER - Naval Bombing, 500-Class
-####################################################
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 500
@@ -1410,9 +1318,9 @@ gainable_trait = {
 #		is_attacker = yes
 #	}
 #}
-#############################################################
+#
 # AIR - SUPERIOR AIR TACTICIAN - Air Combat - 325-Class
-#############################################################
+#
 # NOTE - originally 500-Class, but Air Combat is much harder to gain than other AIR categories
 # air combat is way less train-able than all other air traits
 gainable_trait = {
@@ -1436,9 +1344,7 @@ gainable_trait = {
 #	trigger = {
 #	}
 #}
-####################################################
 # AIR - TANK BUSTER - Tactical Bombing, 850-Class
-####################################################
 # NOTE - originally 500-Class, but Tac Bombing is too easy to gain at that level
 gainable_trait = {
 	combat = land_bombing
@@ -1464,9 +1370,9 @@ gainable_trait = {
 #		is_attacker = yes
 #	}
 #}
-#################################################################
+#
 # AIR - NIGHT NINJA - Night-time Tactical Bombing - 500-Class
-#################################################################
+#
 # NOTE - not previously gain-able, somewhat difficult to gain
 # NOTE - setup is precarious - can choose only one type of AIR combat for it -> land_bombing
 # NOTE - why? each combat-type generates a unique progress path - for this, sticking with land_bombing for now
@@ -1494,9 +1400,7 @@ gainable_trait = {
 #		has_combat_modifier = BM_NIGHT_MODIFIER
 #	}
 #}
-##################################################
 # AIR - TRICKSTER - Air Combat - 200-Class
-##################################################
 # NOTE - not previously available to AIR generals, not previously gain-able, extremely hard to gain
 # NOTE - setup is precarious - need to choose only one type of AIR combat for it -> air_combat
 # NOTE - why? each combat-type generates a unique progress path - for this, sticking with air_combat for now
@@ -1533,9 +1437,9 @@ gainable_trait = {
 #		}
 #	}
 #}
-#########################################################
+#
 # AIR - LOGISTICS WIZARD - Tactical Bombing - 325 Class
-#########################################################
+#
 # NOTE - not previously available to AIR generals, not previously gain-able, hard to gain
 # NOTE - setup is precarious - need to choose only one type of AIR combat for it -> land_bombing
 # NOTE - why? each combat-type generates a unique progress path - for this, sticking with land_bombing for now
@@ -1575,9 +1479,7 @@ gainable_trait = {
 #		}
 #	}
 #}
-##################################################
 # AIR - SPOTTER AIR - Air Combat - 200-Class
-##################################################
 # NOTE - not previously gain-able, extremely hard to gain
 # NOTE - setup is precarious - need to choose only one type of AIR combat for it -> air_combat
 # NOTE - why? each combat-type generates a unique progress path - for this, sticking with air_combat for now
@@ -1605,9 +1507,7 @@ gainable_trait = {
 #		is_attacker = yes
 #	}
 #}
-##################################################
 # MEDALS  - All Gain-Able Medals
-##################################################
 # MECHANIC - 3 Medal Types - Performance, Service, and Defence
 # -Performance Medals - Typically 4 To Award...
 # ...bonuses of 5 10 15 20 on both offence and defence and air-sea bonuses
@@ -1620,16 +1520,12 @@ gainable_trait = {
 # -Misc - TBD
 #
 # NOTE - Medals are now Gain-able by All 3 Branches
-##################################################
 # MEDALS GER - PERFORMANCE MEDALS - 4-Chain
-##################################################
 # NOTE - These are CROSSES - Iron, German, Knights, Grand
 # NOTE - 750-Class, 1500-Class, 3500-Class, and 7000-Class (by Land Hours)
 # NOTE - Basic Performance Medal is Iron Cross - gain-able by winning in combat
 # NOTE - Other 3 Medals require winning and at least one other Performance Medal
-##################################################
 # MEDALS GER - PERFORMANCE - Land
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1000 # off and def bonuses - 5
@@ -1666,9 +1562,8 @@ gainable_trait = {
 		#is_winner = yes
 	}
 }
-##################################################
+
 # MEDALS GER - PERFORMANCE - Naval
-##################################################
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 150 # off and def bonuses - 5
@@ -1705,9 +1600,8 @@ gainable_trait = {
 		#is_winner = yes
 	}
 }
-##################################################
+
 # MEDALS GER - PERFORMANCE - Air - Air Combat
-##################################################
 gainable_trait = {
 	combat = air_combat
 	hours_required = 125 # off and def bonuses - 5
@@ -1744,9 +1638,8 @@ gainable_trait = {
 		#is_winner = yes
 	}
 }
-#####################################################
+
 # MEDALS GER - PERFORMANCE - Air - Tactical Bombing
-#####################################################
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 200 # off and def bonuses - 5
@@ -1783,9 +1676,8 @@ gainable_trait = {
 		#is_winner = yes
 	}
 }
-#######################################################
+
 # MEDALS GER - PERFORMANCE - Air - Strategic Bombing
-#######################################################
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 200 # off and def bonuses - 5
@@ -1822,9 +1714,8 @@ gainable_trait = {
 		#is_winner = yes
 	}
 }
-##################################################
+
 # MEDALS GER - PERFORMANCE - Air - Fleet Bombing
-##################################################
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 125 # off and def bonuses - 5
@@ -1862,16 +1753,13 @@ gainable_trait = {
 		#is_winner = yes
 	}
 }
-##################################################
+
 # MEDALS GER - SERVICE MEDALS - 3-Chain
-##################################################
 # NOTE - These are Military Merit Order, War Merit Cross, Long Service Medal
 # NOTE - 500-Class, 1500-Class, and 8000-Class (by Land-Hours)
 # NOTE - Basic Service Medal is Military Merit Order - gain-able by combat hours
 # NOTE - Other 2 Medals require combat hours and at least one other Service Medal
-##################################################
 # MEDALS GER - SERVICE - Land
-##################################################
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1000
@@ -1896,9 +1784,8 @@ gainable_trait = {
 		trait = german_tag
 	}
 }
-##################################################
+
 # MEDALS GER - SERVICE - Naval
-##################################################
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 300
@@ -1923,9 +1810,8 @@ gainable_trait = {
 		trait = german_tag
 	}
 }
-##################################################
+
 # MEDALS GER - SERVICE - Air - Air Combat
-##################################################
 gainable_trait = {
 	combat = air_combat
 	hours_required = 350
@@ -1950,9 +1836,8 @@ gainable_trait = {
 		trait = german_tag
 	}
 }
-##################################################
+
 # MEDALS GER - SERVICE - Air - Tactical Bombing
-##################################################
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 350
@@ -1977,9 +1862,8 @@ gainable_trait = {
 		trait = german_tag
 	}
 }
-##################################################
+
 # MEDALS GER - SERVICE - Air - Strategic Bombing
-##################################################
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 350
@@ -2004,9 +1888,8 @@ gainable_trait = {
 		trait = german_tag
 	}
 }
-##################################################
+
 # MEDALS GER - SERVICE - Air - Fleet Bombing
-##################################################
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 175
@@ -2031,17 +1914,14 @@ gainable_trait = {
 		trait = german_tag
 	}
 }
-##################################################
 # MEDALS GER - DEFENCE MEDALS - 2-Chain
-##################################################
 # NOTE - These are Pour_le_Merite and Hindenburg_Cross
 # NOTE - Both are 1500-Class Medals (by Land-Hours)
 # Each has defence requirements, both require having a service medal
 # Medal for Defence of Country - Pour_le_Merite
 # Medal for Garrison Defence - Hindenburg_Cross
-##################################################
-# GER LAND DEFENCE ###############################
-##################################################
+
+# GER LAND DEFENCE #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1750
@@ -2071,11 +1951,8 @@ gainable_trait = {
 		}
 	}
 }
-##################################################
-##### NO REVIEW DONE OF OTHER MEDALS YET    ######
-##################################################
-################### RIEVER #######################
-##### ENG ########################################
+
+# ENG 
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 750
@@ -2248,7 +2125,7 @@ gainable_trait = {
 		#is_winner = yes
 	}
 }
-##### USA #####
+# USA #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1000
@@ -2631,7 +2508,7 @@ gainable_trait = {
 		#is_winner = yes
 	}
 }
-##### SOV #####
+# SOV #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1600
@@ -3050,7 +2927,7 @@ gainable_trait = {
 		trait = SOV_tag
 	}
 }
-##### JAP #####
+# JAP #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1800
@@ -3207,7 +3084,7 @@ gainable_trait = {
 		#is_winner = yes
 	}
 }
-##### FRA #####
+# FRA #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 250
@@ -3383,7 +3260,7 @@ gainable_trait = {
 		is_attacker = yes
 	}
 }
-##### ITA #####
+# ITA #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 5000
@@ -3669,7 +3546,7 @@ gainable_trait = {
 		trait = ITA_tag
 	}
 }
-##### ROM #####
+# ROM #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1000
@@ -3938,7 +3815,7 @@ gainable_trait = {
 		trait = ROM_tag
 	}
 }
-##### SPR - Republican Spain #####
+# SPR - Republican Spain #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 500
@@ -3992,7 +3869,7 @@ gainable_trait = {
 		trait = SPR_tag
 	}
 }
-##### SPA - Nationalist Spain #####
+# SPA - Nationalist Spain #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 2500
@@ -4112,13 +3989,11 @@ gainable_trait = {
 	}
 }
 
-#### CHI medals ####
+CHI medals 
 
 #everything is 3x for the different branches
 
-
 #Land
-
 gainable_trait = {
 	combat = land_combat
 	hours_required = 5000
@@ -4231,7 +4106,6 @@ gainable_trait = {
 }
 
 #Naval
-
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 5000
@@ -4344,7 +4218,6 @@ gainable_trait = {
 }
 
 #Air
-
 gainable_trait = {
 	combat = air_combat
 	hours_required = 5000
@@ -4730,10 +4603,9 @@ gainable_trait = {
 	}
 }
 
-### CHC Medals
+# CHC Medals
 
 # Land
-
 gainable_trait = {
 	combat = land_combat
 	hours_required = 500
@@ -4846,7 +4718,6 @@ gainable_trait = {
 #}
 
 # Naval
-
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 500
@@ -5402,7 +5273,7 @@ gainable_trait = {
 #	}
 #}
 
-##### Generic Medals for All Other Nations #####
+# Generic Medals for All Other Nations #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1200
@@ -5441,7 +5312,7 @@ gainable_trait = {
 gainable_trait = {
 	combat = land_combat
 	hours_required = 2500
-	trait = War_Merit_medal ##0.15 Def
+	trait = War_Merit_medal 0.15 Def
 	trigger = {
 		trait = general_tag
 	}
@@ -5455,7 +5326,7 @@ gainable_trait = {
 	}
 }
 
-### HUN medals
+# HUN medals
 
 gainable_trait = {
 	combat = land_combat
@@ -5535,7 +5406,5 @@ gainable_trait = {
 		is_attacker = no
 	}
 }
-
-
 
 #EOF#
