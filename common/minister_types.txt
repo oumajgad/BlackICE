@@ -1,14 +1,8 @@
 # If you add types, and use those tags, do not change them without changing everywhere they are used.
 # Uses all 'modifiers' possible thats exported as a Modifier.
+# Remember to add any new minister type to the MinisterTypes list in the ai_gloabls.lua!#
 
-
-###########################################################################################
-# Remember to add any new minister type to the MinisterTypes list in the ai_gloabls.lua!!!#
-###########################################################################################
-
-###################################################
-#############   Head of State   ###################
-###################################################
+# Head of State #
 
 VIC_no_faction_leader = {
 	threat_impact = -2
@@ -95,9 +89,7 @@ father_his_country = {
 	war_exhaustion = -5
 }
 
-###################################################
-#############   Head of Govt    ###################
-###################################################
+# Head of Govt #
 
 flamboyant_tough_guy = {
 	drift_speed = 0.05
@@ -106,7 +98,7 @@ flamboyant_tough_guy = {
 	dissent = -0.01
 }
 
-silent_workhorse = {							### industry related
+silent_workhorse = {							# industry related
 	global_ic = 0.05
 	industrial_efficiency = 0.02
 	decay = { construction_practical = -0.05 }
@@ -136,11 +128,11 @@ old_general = {						#small armsa +artillery
 
 }
 
-old_admiral = {						### medium/capital
+old_admiral = {						# medium/capital
 	naval_organisation = 0.1
 }
 
-old_air_marshal = {					### small planes
+old_air_marshal = {					# small planes
 	air_organisation = 0.1
 }
 
@@ -159,9 +151,7 @@ corporate_suit = {
 	global_revolt_risk = 3
 }
 
-###################################################
-###########   Foreign Minister  ###################
-###################################################
+# Foreign Minister #
 
 great_compromiser = {
 	suseptibility_axis = 0.1
@@ -170,7 +160,7 @@ great_compromiser = {
 	ruling_party_support = 0.01
 }
 
-biased_intellectual = {					### research centers
+biased_intellectual = {					# research centers
 	suseptibility_comintern = 0.10
 	dissent = 0.025
 	global_leadership_modifier = 0.05
@@ -183,7 +173,7 @@ ideological_crusader = {
 	global_revolt_risk = -1
 }
 
-apologetic_clerk = {					### supplies???		TODO
+apologetic_clerk = {					# supplies?		TODO
 	drift_speed = -0.05
 	dissent = -0.05
 	national_unity_effect = -0.05
@@ -196,7 +186,7 @@ iron_fisted_brute = {
 	war_exhaustion = 10
 }
 
-general_staffer = {						### +military_college
+general_staffer = {						# +military_college
 	org_regain = 0.1
 	land_organisation = 0.1
 	global_leadership_modifier = -0.05
@@ -217,11 +207,9 @@ master_of_smears = {
 	ruling_party_support = 0.05
 }
 
-###################################################
-###########   Armament Minister   #################
-###################################################
+# Armament Minister #
 
-administrative_genius = {				### HIC?
+administrative_genius = {				# HIC?
 	decay = { construction_practical = -0.05 }
 	industrial_efficiency = 0.015
 	global_supplies = 0.05
@@ -254,7 +242,7 @@ laissez_faires_capitalist = {
 	global_resources = -0.1
 }
 
-infantry_proponent = {					### small arms factories
+infantry_proponent = {					# small arms factories
 	global_manpower_modifier = 0.075
 	decay = { infantry_practical = -0.05 }
 	land_organisation = 0.05
@@ -262,7 +250,7 @@ infantry_proponent = {					### small arms factories
 	global_money = -0.01
 }
 
-military_entrepreneur = {				### armament/air/artillery factories
+military_entrepreneur = {				# armament/air/artillery factories
 	land_build_speed = -0.04
 	air_build_speed = -0.04
 	global_money = -0.15
@@ -270,65 +258,63 @@ military_entrepreneur = {				### armament/air/artillery factories
 	decay = { infantry_practical = -0.05 }
 }
 
-tank_proponent = {						### tank factories
+tank_proponent = {						# tank factories
 	tank_build_speed = -0.04
 	decay = { armour_practical = -0.075 }
 	combat_movement_speed = 0.15
 	global_money = -0.1
 }
 
-battle_fleet_proponent = {				### capital/cruiser shipyards
+battle_fleet_proponent = {				# capital/cruiser shipyards
 	naval_base_efficiency = 0.05
 	naval_organisation = 0.1
 	global_money = -0.05
 	decay = { cruiser_practical = -0.1 }
 }
 
-submarine_proponent = {					### SUB shipyards
+submarine_proponent = {					# SUB shipyards
 	decay = { submarine_engineering = -0.1 }
 	convoy_raid = 0.05
 	global_money = -0.015
 }
 
-single_engine_aircraft_proponent = {				### small planes fact	air_to_ground_proponent
+single_engine_aircraft_proponent = {				# small planes fact	air_to_ground_proponent
 	air_organisation = 0.1
 	decay = { single_engine_aircraft_practical = -0.05 }
 }
 
-twin_engine_aircraft_proponent = {					### sea attack plane techs 		air_to_sea_proponent
+twin_engine_aircraft_proponent = {					# sea attack plane techs 		air_to_sea_proponent
 	air_organisation = 0.1
 	decay = { twin_engine_aircraft_practical = -0.075 }
 }
 
-strategic_air_proponent = {				### strat bomb techs
+strategic_air_proponent = {				# strat bomb techs
 	decay = { four_engine_aircraft_practical = -0.15 }
 	#sw_ _effect = 0.1
 	strategic_bomb = 0.1
 }
 
-air_superiority_proponent = {			### small planes + radar
+air_superiority_proponent = {			# small planes + radar
 	decay = { single_engine_aircraft_practical = -0.05 }
 	air_organisation = 0.1
 	air_build_speed = -0.05
 }
 
-###################################################
-#########   Minister of Science    ################
-###################################################
+# Minister of Science #
 
-theoretical_scientist = {				### 2xresearch centers
+theoretical_scientist = {				# 2xresearch centers
 	global_leadership_modifier = -0.025
 	global_ic = -0.02
 	global_rare_materials = -0.01
 }
 
-research_specialist = {					### 1x research centers only with focus ###
+research_specialist = {					# 1x research centers only with focus
 	research_efficiency = 0.1
 	global_leadership_modifier = -0.05
 	global_rare_materials = -0.035
 }
 
-technical_specialist = {				### 1x research center
+technical_specialist = {				# 1x research center
 	#decay = { construction_practical = -0.05 }
 	global_leadership_modifier = 0.1
 	research_efficiency = -0.05
@@ -429,12 +415,9 @@ nuclear_specialist = {				# nuke techs bt
 	global_money = -0.3
 }
 
+# Minister of Security #
 
-###################################################
-#########   Minister of Security   ################
-###################################################
-
-silent_lawyer = {							###science centers
+silent_lawyer = {							#science centers
 	threat_impact = -0.1
 	global_leadership_modifier = 0.05
 	espionage_bonus = -0.05
@@ -472,7 +455,7 @@ back_stabber = {
 	ruling_party_support = -0.05
 }
 
-man_of_the_people = {						###hospitals
+man_of_the_people = {						#hospitals
 	global_manpower_modifier = 0.025
 	territorial_pride = 0.03
 	land_organisation = -0.1
@@ -497,10 +480,7 @@ crooked_kleptocrat = {
 	peace_consumer_goods_demand = -0.06
 }
 
-###################################################
-#########   Head of Intelligence   ################
-###################################################
-
+# Head of Intelligence #
 
 political_specialist = {
 	offmap_political_intel = 0.20
@@ -545,51 +525,47 @@ ruthless_monster = {
 }
 
 
-###################################################
-############   Chief os Staff   ###################
-###################################################
+# Chief of Staff #
 
-school_of_manoeuvre = { 					### +mot/mech/arm factories
+school_of_manoeuvre = { 					# +mot/mech/arm factories
 	combat_movement_speed = 0.2
 	org_regain = 0.1
 	decay = { mobile_practical = -0.075 }
 }
 
-school_of_fire_support = {				### +art(?) factories
+school_of_fire_support = {				# +art(?) factories
 	attack_reinforce_chance = 0.1
 	defend_reinforce_chance = 0.1
 	soft_attack = 0.1
 }
 
-school_of_mass_combat = {				### +inf factories
+school_of_mass_combat = {				# +inf factories
 	land_build_speed = -0.05
 	global_manpower_modifier = 0.1
 	land_organisation = 0.1
 	unit_start_experience = -2.5
 }
 
-school_of_psychology = {					### hospitals/training
+school_of_psychology = {					# hospitals/training
 	org_regain = 0.1
 	officer_recruitment = 0.1
 	unit_start_experience = 5
 }
 
-school_of_defence = {					### +grand battle plan
+school_of_defence = {					# +grand battle plan
 	attack_reinforce_chance = -0.1
 	defend_reinforce_chance = 0.1
 	land_organisation = 0.05
 	decay = { artillery_practical = -0.05 }
 }
 
-logistics_specialist = {					### +railways term + automotive factories + supplies
+logistics_specialist = {					# +railways term + automotive factories + supplies
 	supply_throughput = 0.15
 	org_regain = 0.1
 	decay = { construction_practical = -0.05 }
 }
 
-###################################################
-###########   Chief of the Army   ##################
-###################################################
+# Chief of the Army #
 
 decisive_battle_doctrine = {
 	territorial_pride = 0.05
@@ -618,32 +594,31 @@ armoured_spearhead_doctrine = {						#tank factories
 	supply_consumption = 0.05
 }
 
-guns_and_butter_doctrine = {						# small arms + art factories
+guns_and_butter_doctrine = {						#small arms + art factories
 	supply_consumption = -0.10
 	global_money = -0.1
 }
 
-###################################################
-###########   Chief of the Navy   #################
-###################################################
 
-open_seas_doctrine = {							### small ships shipyard
+# Chief of the Navy #
+
+open_seas_doctrine = {							# small ship shipyard
 	decay = { destroyer_practical = -0.05 }
 	naval_organisation = 0.05
 }
 
-decisive_naval_battle_doctrine = { 				### capital ships shipyard
+decisive_naval_battle_doctrine = { 				# capital ship shipyard
 	decay = { capitalship_practical = -0.15 }
 	naval_organisation = 0.05
 }
 
-power_projection_doctrine = {					### capital ships  shipyard
+power_projection_doctrine = {					# capital ship shipyard
 	carrier_protection = 0.05
 	decay = { carrier_practical= -0.15 }
 	naval_strike = 0.1
 }
 
-indirect_approach_doctrine = {					### subs shipyard
+indirect_approach_doctrine = {					# sub shipyard
 	convoy_raid = 0.1
 }
 
@@ -651,35 +626,33 @@ base_control_doctrine = {
 	naval_base_efficiency = 0.1
 }
 
-###################################################
-########   Chief of the Air Force   ###############
-###################################################
+# Chief of the Air Force #
 
-air_superiority_doctrine = {		### light planes
+air_superiority_doctrine = {		# light planes
 	air_organisation = 0.1
 	air_intercept = 0.125
 	decay = { single_engine_aircraft_practical = -0.05 }
 }
 
-naval_aviation_doctrine = {			### light + med planes
+naval_aviation_doctrine = {			# light + med planes
 	naval_strike = 0.1
 	port_strike = 0.15
 	decay = { twin_engine_aircraft_practical = -0.1 }
 }
 
-army_aviation_doctrine = {			### light + med planes
+army_aviation_doctrine = {			# light + med planes
 	ground_attack = 0.1
 	air_organisation = 0.05
 	decay = { single_engine_aircraft_practical = -0.05 }
 }
 
-carpet_bombing_doctrine = {			### heavy planes
+carpet_bombing_doctrine = {			# heavy planes
 	strategic_bomb = 0.1
 	air_organisation = 0.05
 	decay = { four_engine_aircraft_practical = -0.15 }
 }
 
-vertical_envelopment_doctrine = {	### medium planes
+vertical_envelopment_doctrine = {	# medium planes
 	interdiction = 0.1
 	air_organisation = 0.05
 	decay = { twin_engine_aircraft_practical = -0.1 }
@@ -689,13 +662,10 @@ undistinguished_suit = {
 	ruling_party_support = 0.05
 }
 
-
-###################################################
-###########   UNIQUE MINISTERS   ##################
-###################################################
+# UNIQUE MINISTERS #
 
 Yuzuru_Hiraga = {	#Naval Engineering Genius
-	decay = { destroyer_practical = -0.05 }		###### 13.02.1943 - Death, event ### Effect:
+	decay = { destroyer_practical = -0.05 }		# 13.02.1943 - Death, event # Effect:
 	decay = { cruiser_practical = -0.1}
 	decay = { capitalship_practical = -0.15 }
 }
