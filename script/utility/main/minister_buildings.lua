@@ -2,7 +2,7 @@
 function GetMinisterBuildingsProgress()
     local buildings = {
         ["hospital"] = 40,
-        ["rail_terminous"] = 30,
+        ["rail_terminus"] = 30,
         ["resource_buildings"] = 54,
         ["automotive_factory"] = 54,
         ["radar_station"] = 40,
@@ -38,7 +38,7 @@ end
 function SetMinisterBuildingsProgressText(building, progress)
     if building == "hospital" then
         UI.m_textCtrl_Hospital:SetValue(progress .. "%")
-    elseif building == "rail_terminous" then
+    elseif building == "rail_terminus" then
         UI.m_textCtrl_RailTerminus:SetValue(progress .. "%")
     elseif building == "resource_buildings" then
         UI.m_textCtrl_ResourceBuildings:SetValue(progress .. "%")

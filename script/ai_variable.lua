@@ -299,7 +299,7 @@ local function buildingsCountSetup()
 		"hospital",
 		"police_station",
 		"infra",
-		"rail_terminous",
+		"rail_terminus",
 		"nuclear_reactor",
 		"rocket_test",
 		"small_ship_shipyard",
@@ -384,7 +384,7 @@ function BuildingsCount()
 			currentBuildings["hospital"] = 0
 			--currentBuildings["police_station"] = 0
 			--currentBuildings["infra"] = 0
-			currentBuildings["rail_terminous"] = 0
+			currentBuildings["rail_terminus"] = 0
 			--currentBuildings["nuclear_reactor"] = 0
 			--currentBuildings["rocket_test"] = 0
 			currentBuildings["small_ship_shipyard"] = 0

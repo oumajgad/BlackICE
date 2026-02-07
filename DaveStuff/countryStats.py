@@ -9,7 +9,7 @@ from tkinter import scrolledtext as st
 military_buildings = ["air_base", "anti_air", "desperate_defence", "fortress", "land_fort", "naval_base", "coastal_fort", "beach_defence"]
 industrial = ["artillery_factory", "automotive_factory", "capital_ship_shipyard", "heavy_aircraft_factory", "light_aircraft_factory", "medium_aircraft_factory", "medium_ship_shipyard",
                 "small_ship_shipyard", "smallarms_factory", "submarine_shipyard", "tank_factory"]
-other_industry = ["industry", "military_college", "police_station", "rail_terminous", "research_lab", "supplies_factory"]
+other_industry = ["industry", "military_college", "police_station", "rail_terminus", "research_lab", "supplies_factory"]
 resources = ["energy", "metal", "rare_materials", "crude_oil"]
 strategic_resources = ["chromite_building", "aluminium_building" , "rubber_building" , "tungsten_building" , "uranium_building" , "gold_building" , "nickel_building" ,
                          "copper_building" , "zinc_building" , "manganese_building" , "molybdenum_building" , "graphite_nuclear_reactor", "heavy_water_nuclear_reactor"]
