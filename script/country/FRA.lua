@@ -652,10 +652,10 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 	if voProductionData.humanTag == sovTag then
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
-		voType.first = "mechanized_infantry_bat"
-		voType.second = "sp_artillery_brigade"
-		voType.fourth = "armored_engineers_brigade"
-		voType.sixth = "medium_tank_destroyer_brigade"
+		voType.SecondaryMain = "mechanized_infantry_bat"
+		voType.first = "sp_artillery_brigade"
+		voType.second = "armored_engineers_brigade"
+		voType.third = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 
@@ -663,10 +663,10 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
-		voType.first = "motorized_infantry_bat"
-		voType.second = "medium_artillery_brigade"
-		voType.third = "armored_car_brigade"
-		voType.SecondaryMain = "motorized_engineer_brigade"
+		voType.SecondaryMain = "motorized_infantry_bat"
+		voType.first = "medium_artillery_brigade"
+		voType.second = "armored_car_brigade"
+		voType.third = "motorized_engineer_brigade"
 
 		voType.Support = 0
 		voType.SupportVariation = 0
@@ -676,10 +676,10 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
-		voType.first = "mechanized_infantry_bat"
-		voType.second = "sp_artillery_brigade"
-		voType.fourth = "armored_engineers_brigade"
-		voType.sixth = "tank_destroyer_brigade"
+		voType.SecondaryMain = "mechanized_infantry_bat"
+		voType.first = "sp_artillery_brigade"
+		voType.second = "armored_engineers_brigade"
+		voType.third = "tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
