@@ -3,10 +3,11 @@ local P = {}
 PdxParser = P
 
 local debug = false
+local currentFile = ""
 
 local function debug_out(msg)
     if debug then
-        Utils.LUA_DEBUGOUT(msg)
+        Utils.LUA_DEBUGOUT(currentFile .. ": " .. msg)
     end
 end
 
@@ -120,19 +121,19 @@ local caseOverrides = {
 local function parse_object(str, i, doAsList, level)
     local res = {}
     while true do
-        debug_out("level: " .. level .. "\n")
+        -- debug_out("level: " .. level .. "\n")
         -- debug_out(Utils.TABLE_TO_STRING(res))
 
         local key, val
         i = next_char(str, i, space_chars, true)
         local chr = str:sub(i,i)
-        debug_out("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
+        -- debug_out("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
         if (chr == "{") then
             -- makes sure we enter the object
             i = next_char(str,i + 1, space_chars, true)
             chr = str:sub(i,i)
         end
-        debug_out("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
+        -- debug_out("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
         if (chr == "}") then
             -- object has ended, return it
             return res, i + 1
@@ -187,10 +188,12 @@ local function parse_object(str, i, doAsList, level)
             i = next_char(str, i + 1, space_chars, true)    -- i + 1 so we move on to the opening '{' of the list
             val, i = parse_list(str, i)
             res[key] = val
+            debug_out("types.list val: \n  " .. Utils.TABLE_TO_STRING(val))
 
         elseif (value_type == types.pair) then
             i = next_char(str, i + 1, space_chars, true)    -- i + 1 so we move on to the first character of the value
             val, i = parse_string(str, i)
+            debug_out("types.pair val: " .. key)
             if res[key] ~= nil then             -- At many points keys can be repeated to create a list of values, so this turns our key-value into key-list
                 local temp = res[key]
                 res[key] = {}
@@ -218,7 +221,9 @@ end
 
 function P.parseFile(filePath, asList)
 	local file, err = io.open(filePath, "r")
-    debug_out(filePath)
+    -- debug_out(filePath)
+    local temp = Utils.SplitString(filePath, "\\")
+    currentFile = temp[#temp-1] .. "\\" .. temp[#temp]
 	if file ~= nil then
         local linesString = "{\n" .. file:read("*a") .. "\n}"
         local decoded = PdxParser.parse(linesString, asList)
