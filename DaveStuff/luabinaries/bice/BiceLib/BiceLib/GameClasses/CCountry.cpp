@@ -39,7 +39,7 @@ void CCountry::traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>* re
 }
 
 std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifiers(uintptr_t countryPtr) {
-    std::vector<std::pair<std::string,std::string>> res;
+    std::vector<std::pair<std::string, std::string>> res;
     uintptr_t listNodePtr = *(uintptr_t*)(countryPtr + 0x648);
     HDS::LinkedListNodeSingle* listNode = (HDS::LinkedListNodeSingle*)listNodePtr;
     while (listNode != 0) {
@@ -55,6 +55,19 @@ std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifie
         res.push_back(std::make_pair(name, expiryDate));
 
         listNode = listNode->next;
+    }
+    return res;
+}
+
+std::vector<std::pair<std::string, int>> CCountry::getGeneralModifiers(uintptr_t countryPtr) {
+    std::vector<std::pair<std::string, int>> res;
+    uintptr_t arrayBase = *(uintptr_t*)(countryPtr + 0xDA8);
+    for (int i = 0; i < 143; i++) {
+        uintptr_t entry = arrayBase + (i * 8);
+        uintptr_t modifierDefinitionPtr = *(uintptr_t*)(entry + 0x4);
+        std::string modifierName = std::string(utils::getCString((DWORD*) (modifierDefinitionPtr + 0x4)));
+        int modifierValue = *(int*) entry;
+        res.push_back(std::make_pair(modifierName, modifierValue));
     }
     return res;
 }

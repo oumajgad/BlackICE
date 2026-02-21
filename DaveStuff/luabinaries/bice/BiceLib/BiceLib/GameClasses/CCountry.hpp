@@ -7,6 +7,7 @@ namespace CCountry {
 
     void traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>* res, uintptr_t nodePtr);
     std::vector<std::pair<std::string, std::string>> getActiveEventModifiers(uintptr_t listNodePtr);
+    std::vector<std::pair<std::string, int>> getGeneralModifiers(uintptr_t listNodePtr);
     std::vector<std::string>* getFlags(uintptr_t nodePtr);
     std::vector<HDS::CVariable>* getVars(uintptr_t nodePtr);
 }
