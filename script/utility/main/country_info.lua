@@ -1,17 +1,30 @@
 -- Called each refresh
 function GetPlayerModifiers()
     local techModifierValues = Parsing.Techs.GetTechModifierValues()
-
+    local generalModifiers = {}
     local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry()
 
     local baseIC = playerCountry:GetMaxIC()
     local offmapIC = 0
     if BiceLib ~= nil then
-        x = BiceLib.GameInfo.getCountryOffmapIc(G_PlayerCountry)
+        local x = BiceLib.GameInfo.getCountryOffmapIc(G_PlayerCountry)
         if x ~= nil then
             offmapIC = x
         end
+        generalModifiers = BiceLib.GameInfo.getCountryGeneralModifiers("GER")
     end
+
+    local trickleBack = "Failed to load"
+    if generalModifiers ~= nil then
+        trickleBack = generalModifiers["MODIFIER_TRICKLEBACK"] * 0.001
+        for tech, effect in pairs(techModifierValues["casualty_trickleback"]) do
+            local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+            trickleBack = trickleBack + (effect*level)
+            -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
+        end
+        trickleBack = string.format('%.02f', trickleBack * 100)
+    end
+
     local icModifier = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_IC_):Get()
     for tech, effect in pairs(techModifierValues["ic_modifier"]) do
         local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
@@ -74,15 +87,15 @@ function GetPlayerModifiers()
     UI.m_textCtrl_baseIc:SetValue(string.format('%.0f', baseIC))
     UI.m_textCtrl_offmapIc:SetValue(string.format('%.0f', (offmapIC)))
     UI.m_textCtrl_icModifier:SetValue(string.format('%.02f', (icModifier * 100)))
-
     UI.m_textCtrl_IcEff:SetValue(string.format('%.02f', icEffRaw))
+    UI.m_textCtrl_suppliesPerIc:SetValue(string.format('%.2f', suppliesPerIc))
     UI.m_textCtrl_ResEff:SetValue(string.format('%.02f', researchEffRaw))
     UI.m_textCtrl_SuppThrou:SetValue(string.format('%.02f', supplyEffRaw))
     UI.m_textCtrl_RepairEff:SetValue(string.format('%.02f', repairModifier * 100))
     UI.m_textCtrl_StartingExp:SetValue(string.format('%.02f', startingExp))
     UI.m_textCtrl_orgRegain:SetValue(string.format('%.02f', orgRegain * 100))
     UI.m_textCtrl_attackDelay:SetValue(string.format('%.0f', attackDelay))
-    UI.m_textCtrl_suppliesPerIc:SetValue(string.format('%.2f', suppliesPerIc))
+    UI.m_textCtrl_trickleback:SetValue(trickleBack)
     UI.m_textCtrl_WarExhaustion:SetValue(string.format('%.02f', warExhautionRaw))
     UI.m_textCtrl_currentWarExhaustion:SetValue(string.format('%.1f', currentWarExhaustion))
 end

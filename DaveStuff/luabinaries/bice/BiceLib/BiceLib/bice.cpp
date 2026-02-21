@@ -97,6 +97,24 @@ __declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
     return 1;
 }
 
+__declspec(dllexport) int getCountryGeneralModifiers(lua_State* L)
+{
+    std::string searchTag = luaL_checklstring(L, 1, NULL);
+    uintptr_t ctr = getCountry(searchTag);
+    if (ctr != 0) {
+        auto values = CCountry::getGeneralModifiers(ctr);
+        lua_createtable(L, values.size(), 0);
+        for (size_t i = 0; i < values.size(); i++) {
+            lua_pushstring(L, values.at(i).first.c_str());
+            lua_pushnumber(L, values.at(i).second);
+            lua_settable(L, -3);
+        }
+        return 1;
+    }
+    lua_pushnil(L);
+    return 1;
+}
+
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
@@ -1017,6 +1035,7 @@ void registerGameInfoFunctions(lua_State* this_state) {
     registerFunction(this_state, "getCountryVariables", getCountryVariables);
     registerFunction(this_state, "getCountryOffmapIc", getCountryOffmapIc);
     registerFunction(this_state, "getCountryActiveEventModifiers", getCountryActiveEventModifiers);
+    registerFunction(this_state, "getCountryGeneralModifiers", getCountryGeneralModifiers);
     lua_settable(this_state, -3);
     return;
 }
