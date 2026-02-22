@@ -95,8 +95,9 @@ DWORD handleUnitAttachmentLimit(DWORD currentlyAttachedUnitAmount, DWORD* unitTo
     DWORD newLimit = 5;
 
     DWORD brigadesAmount = *(unitToAttach + (0x40 / 4));
+    DWORD oobLevel = *((DWORD*)unitToAttach + (0x1f4 / 4));
     DEBUG_OUT(printf("brigadesAmount: %d \n", brigadesAmount));
-    if (brigadesAmount == 1) {
+    if (brigadesAmount == 1 && oobLevel == 4) {
         return 999;
     }
 
