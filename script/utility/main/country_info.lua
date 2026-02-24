@@ -15,7 +15,7 @@ function GetPlayerModifiers()
     end
 
     local trickleBack = "Failed to load"
-    if generalModifiers ~= nil then
+    if generalModifiers ~= nil and generalModifiers["MODIFIER_TRICKLEBACK"] ~= nil then
         trickleBack = generalModifiers["MODIFIER_TRICKLEBACK"] * 0.001
         for tech, effect in pairs(techModifierValues["casualty_trickleback"]) do
             local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
