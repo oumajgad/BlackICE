@@ -79,7 +79,7 @@ class CArmy(pydantic.BaseModel):
             "owner_id": utils.to_number(pm.read_bytes(ptr + CArmyOffsets.owner_id, 4)),
             "leader_ptr": pm.read_uint(ptr + CArmyOffsets.leader_ptr),
             "current_province_ptr": pm.read_uint(ptr + CArmyOffsets.current_province_ptr),
-            "supplied_from_province_ptr": pm.read_uint(ptr + CArmyOffsets.supplied_from_province_ptr),
+            # "supplied_from_province_ptr": pm.read_uint(ptr + CArmyOffsets.supplied_from_province_ptr),
             "movement_order_remaining_provinces_count": utils.to_number(
                 pm.read_bytes(ptr + CArmyOffsets.movement_order_remaining_provinces_count, 4)
             ),
@@ -146,10 +146,10 @@ def test1():
         # print(unit_ptr)
         try:
             army = CArmy.make(pm, unit_ptr)
-            if army.oob_level == 0:
-                x += 1
-        except Exception:
-            pass
+            if "11. Infanterie" in army.name:
+                print(army)
+        except Exception as e:
+            print(e)
     # print(CArmy.make(pm, 0xB32FE6C0))
     print(x)
 
@@ -169,6 +169,24 @@ def test2():
     utils.dump_bytes(pm=pm, ptr=unit_2_ptr, length=0x200)
 
 
+def test3():
+    pm = Pymem("hoi3_tfh.exe")
+    print(pm.base_address)
+    unit_1_ptr = 0xB78D5E40
+    army_1 = CArmy.make(pm, unit_1_ptr)
+    print(army_1)
+    print(army_1.name)
+    unit_2_ptr = 0xB78D6AE0
+    army_2 = CArmy.make(pm, unit_2_ptr)
+    print(army_2)
+    print(army_2.name)
+    unit_3_ptr = 0xB78D0F58
+    army_3 = CArmy.make(pm, unit_3_ptr)
+    print(army_3)
+    print(army_3.name)
+
+
 if __name__ == "__main__":
     # test1()
-    test2()
+    # test2()
+    test3()

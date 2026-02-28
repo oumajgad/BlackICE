@@ -12,6 +12,7 @@ from utils import utils
 
 class CSubUnitDefinitionOffsets:
     VFTABLE_OFFSET: int = 0x11BDC04
+    name: int = 0x8
     # General
     unk_2e: int = 0x2E  # bool!
     is_capital: int = 0x2F  # bool!
@@ -62,6 +63,7 @@ class CSubUnitDefinitionOffsets:
 class CSubUnitDefinition(pydantic.BaseModel):
     SUB_UNIT_DEFS: ClassVar[list[int]] = None
     self_ptr: int
+    name: str
     # General
     is_buildable: bool
     CUnitAdjuster_ptr: int  # Terrain modifiers
@@ -96,6 +98,7 @@ class CSubUnitDefinition(pydantic.BaseModel):
     def make(cls, pm: Pymem, ptr: int):
         temp = {
             "self_ptr": ptr,
+            "name": utils.get_string_maybe_ptr(pm, ptr + CSubUnitDefinitionOffsets.name),
             "is_buildable": pm.read_bool(ptr + CSubUnitDefinitionOffsets.is_buildable),
             "sub_unit_amount": utils.to_number(pm.read_bytes(ptr + CSubUnitDefinitionOffsets.sub_unit_amount, 4)),
             "CUnitAdjuster_ptr": pm.read_uint(ptr + CSubUnitDefinitionOffsets.CUnitAdjuster_ptr),

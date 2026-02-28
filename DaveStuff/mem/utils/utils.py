@@ -154,4 +154,6 @@ def get_class_name_from_rtti(pm: Pymem, vtable_addr) -> str:
     name_pointer = type_desc_pointer + 8
     name = read_string(pm, name_pointer)
     name = name[4:-2]  # Strip name mangling
+    if len(name) > 30:
+        name = name[0:29]
     return name

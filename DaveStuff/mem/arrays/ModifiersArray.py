@@ -32,6 +32,12 @@ class ModifiersArray(pydantic.BaseModel):
 
         return cls(**temp)
 
+    def get(self, key) -> ModifierArrayEntry | None:
+        for entry in self.entries:
+            if entry.name == key:
+                return entry
+        return None
+
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")

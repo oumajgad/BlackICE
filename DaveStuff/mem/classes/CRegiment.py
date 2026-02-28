@@ -14,6 +14,7 @@ class CRegimentOffsets:
     organisation: int = 0x60
     name: int = 0x68
     name_length: int = 0x78
+    techsAndLevelsArray: int = 0x84  # array of [(Technology, level, unk4, unk4), <next element>]
     owner_tag: int = 0x94
     owner_id: int = 0x98
     division_ptr: int = 0xB0
@@ -21,7 +22,7 @@ class CRegimentOffsets:
 
 class CRegiment(pydantic.BaseModel):
     REGIMENTS: ClassVar[list[int]] = None
-    LENGTH: ClassVar[int] = 224
+    LENGTH: ClassVar[int] = 0xD8
     self_ptr: int
     strength_a: int
     strength_b: int
@@ -78,17 +79,18 @@ class CRegiment(pydantic.BaseModel):
 
 if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
-    regiments = CRegiment.get_regiments(pm)
-    print(f"{len(regiments)=}")
-    for reg in regiments:
-        # print(reg)
-        if CRegiment.get_name_from_ptr(pm, reg) in ["Stab 1. Infanterie-Division", "Inf.-Rgt. 1/22/43"]:
-            x = CRegiment.make(pm, reg)
-            print(x)
-            print(f"{utils.int_to_pointer(x.self_ptr)=}")
-            print(f"{utils.int_to_pointer(x.division_ptr)=}")
-        # if CRegiment.get_division_ptr_from_ptr(pm, reg) == 0xBD3FF430:
-        #     x = CRegiment.make(pm, reg)
-        #     print(f"{utils.int_to_pointer(x.division_ptr)=} - {utils.int_to_pointer(x.self_ptr)=} - {x.name}")
-    # y = CRegiment.make(pm, 0x90916F10)
-    # print(y)
+    # regiments = CRegiment.get_regiments(pm)
+    # print(f"{len(regiments)=}")
+    # for reg in regiments:
+    #     # print(reg)
+    #     if CRegiment.get_name_from_ptr(pm, reg) in ["Stab 1. Infanterie-Division", "Inf.-Rgt. 1/22/43"]:
+    #         x = CRegiment.make(pm, reg)
+    #         print(x)
+    #         print(f"{utils.int_to_pointer(x.self_ptr)=}")
+    #         print(f"{utils.int_to_pointer(x.division_ptr)=}")
+    #     # if CRegiment.get_division_ptr_from_ptr(pm, reg) == 0xBD3FF430:
+    #     #     x = CRegiment.make(pm, reg)
+    #     #     print(f"{utils.int_to_pointer(x.division_ptr)=} - {utils.int_to_pointer(x.self_ptr)=} - {x.name}")
+    # # y = CRegiment.make(pm, 0x90916F10)
+    # # print(y)
+    utils.dump_bytes(pm, 0x87A2D990, 0xD8)

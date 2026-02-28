@@ -1,20 +1,45 @@
-function debugger_onBreakpoint()
-  print("BREAKPOINT")
-  local found = false
+function handle_count()
+  print("handle_count")
+  local iVar1 = EAX
+  print("iVar1: " .. string.format("%d", iVar1))
+end
 
-  -- scanning through the stack for a specific value
-  for i = 0x0, 0xff do
-    local x = readInteger(ESP+i)
-    if (x==0xc6771868) then
-      print("unit at: " .. string.format("%x", i))
-      found = true
-    end
-    if (x==0x4F8) then
-      print("strength at: " .. string.format("%x", i))
-      found = true
-    end
+function handle_a()
+  print("handle_a")
+  local iVar1 = EAX
+  local local_8 = readInteger(EBP + -0x4)
+  local model_level = readInteger(EBX+0x24)
+  print("iVar1: " .. string.format("%d", iVar1))
+  print("local_8: " .. string.format("%d", local_8))
+  print("model_level: " .. string.format("%d", model_level))
+  if model_level == 8 then
+    return true
   end
-  if (found == true) then
+  return false
+end
+
+function handle_b()
+  print("handle_b")
+  local local_10 = readInteger(EBP + -0xc)
+  local local_14 = readInteger(readInteger(EBP + -0x10) + 0x24)
+  print("local_10: " .. string.format("%d", local_10))
+  print("local_14: " .. string.format("%d", local_14))
+end
+
+function debugger_onBreakpoint()
+  -- print("BREAKPOINT")
+  local _break = false
+  
+  if EIP == 0x006032C5 then
+    handle_b()
+  elseif EIP == 0x006032AE then
+    _break = handle_a()
+  elseif EIP == 0x006032AA then
+    handle_count()
+  end
+
+
+  if (_break == true) then
     return 0
   end
   return 1

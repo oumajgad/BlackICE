@@ -8,6 +8,7 @@ from arrays.ModifiersArray import ModifiersArray
 from classes.CArmy import CArmy
 from classes.CMinister import CMinister
 from classes.CModifier import CModifier
+from classes.CTechnology import CTechnology
 from constants import DATA_SECTION_START
 from structs.LinkedLists import LinkedListNode
 from utils import utils
@@ -41,8 +42,10 @@ class CCountryOffsets:
     owned_provinces_ll_ptr: int = 0xCF0
     controlled_provinces_ID_ll_ptr: int = 0xD00
     general_modifier_array_ptr: int = 0xDA8
+    CTechnologyStatus_ptr: int = 0xDF8
     CDiplomacyStatus_array_ptr: int = 0xE28  # array with pointers to all CDiplomacystatus
     national_unity: int = 0x10B8
+    spies = 0x1170
 
 
 class CCountry(pydantic.BaseModel):
@@ -64,6 +67,7 @@ class CCountry(pydantic.BaseModel):
     war_exhaustion: int
     # units: list[CArmy]
     CDiplomacyStatus_array_ptr: str  # array with pointers to all CDiplomacystatus
+    spies: int
 
     @classmethod
     def make(cls, pm: Pymem, ptr: int):
@@ -92,6 +96,7 @@ class CCountry(pydantic.BaseModel):
             "CDiplomacyStatus_array_ptr": utils.int_to_pointer(
                 pm.read_uint(ptr + CCountryOffsets.CDiplomacyStatus_array_ptr)
             ),
+            "spies": utils.to_number(pm.read_bytes(ptr + CCountryOffsets.spies, 4)),
         }
         return cls(**temp)
 
@@ -193,4 +198,13 @@ if __name__ == "__main__":
 
     mods_arr = ModifiersArray.make(pm, modifiers_ptr)
     print(country)
-    print(mods_arr.json())
+    print(mods_arr)
+    print(mods_arr.get("MODIFIER_ESPIONAGE_BONUS"))
+
+    # print(utils.int_to_pointer(country.self_ptr + CCountryOffsets.CTechnologyStatus_ptr))
+
+    utils.dump_bytes(pm, 0x31B22338, 0x300)
+    print(CTechnology.make(pm, 0x31B22338))
+    # utils.dump_bytes(pm, 0x315C94F8, 0x500)
+
+    # utils.dump_bytes(pm, country.self_ptr, 1000)
