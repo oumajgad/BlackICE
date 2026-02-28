@@ -52,6 +52,7 @@ if mod then
     BiceLib.BytePatches.fixMinisterTechDecay()
     BiceLib.BytePatches.disableWarExhaustionNeutralityReset()
     BiceLib.BytePatches.disableInterAiExpeditionaries()
+    BiceLib.BytePatches.historicalModelLogicFix()
 
     -- Complex Patches
     BiceLib.ComplexPatches.fixOffMapIC()

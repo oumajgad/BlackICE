@@ -85,3 +85,24 @@ bool Patches::disableInterAiExpeditionaries(uintptr_t moduleBase) {
     }
     return 1;
 }
+
+bool Patches::historicalModelLogicFix(uintptr_t moduleBase) {
+    BYTE one[2] = { 0xEB, 0x2A };
+    DWORD address1 = moduleBase + 0x1832A8;
+    if (!patchBytes((void*)address1, one, 2)) {
+        return 0;
+    }
+
+    BYTE two[6] = { 0xC7, 0xC1, 0x00, 0x00, 0x10, 0x00 };
+    DWORD address2 = moduleBase + 0x1832D4;
+    if (!patchBytes((void*)address2, two, 6)) {
+        return 0;
+    }
+
+    BYTE three[2] = { 0xEB, 0xCE };
+    DWORD address3 = moduleBase + 0x1832DA;
+    if (!patchBytes((void*)address3, three, 2)) {
+        return 0;
+    }
+    return 1;
+}

@@ -834,6 +834,24 @@ __declspec(dllexport) int disableInterAiExpeditionaries(lua_State* L)
     disableInterAiExpeditionariesDone = true;
     return 0;
 }
+
+bool historicalModelLogicFixDone = false;
+__declspec(dllexport) int historicalModelLogicFix(lua_State* L)
+{
+    if (historicalModelLogicFixDone) {
+        return 0;
+    }
+
+    if (!Patches::historicalModelLogicFix(MODULE_BASE)) {
+        ERROR_OUT(std::cout << "Patch 'historicalModelLogicFix' failed" << std::endl);
+    }
+    else {
+        INFO_OUT(std::cout << "Patch 'historicalModelLogicFix' succeeded" << std::endl);
+    }
+
+    historicalModelLogicFixDone = true;
+    return 0;
+}
 /////////////////////////////////////
 //      INSPECTOR FUNCTIONS        //
 /////////////////////////////////////
@@ -1081,6 +1099,7 @@ void registerPatchFunctions(lua_State* this_state) {
     registerFunction(this_state, "fixMinisterTechDecay", fixMinisterTechDecay);
     registerFunction(this_state, "disableWarExhaustionNeutralityReset", disableWarExhaustionNeutralityReset);
     registerFunction(this_state, "disableInterAiExpeditionaries", disableInterAiExpeditionaries);
+    registerFunction(this_state, "historicalModelLogicFix", historicalModelLogicFix);
     lua_settable(this_state, -3);
     return;
 }
