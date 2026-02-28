@@ -109,12 +109,14 @@ function P.HandleSelection()
         if temp_b == nil then temp_b = "zzzzz" .. b end
         return string.upper(temp_b) > string.upper(temp_a)
     end
+    local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry()
     for tech, tech_level in spairs(techs, sort_by_name) do
+        local player_level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
         local trans = translationTable[tech]
         if trans ~= nil then
-            table.insert(techlist, tech_level .. " - " .. trans .. " [" .. tech .. "]")
+            table.insert(techlist, tech_level .. " (" .. player_level .. ")" .. " - " .. trans .. " [" .. tech .. "]")
         else
-            table.insert(techlist, tech_level .. " - " .. "[" .. tech .. "]")
+            table.insert(techlist, tech_level .. " (" .. player_level .. ")"  .. " - " .. "[" .. tech .. "]")
         end
     end
 
