@@ -1,44 +1,24 @@
 # Marneman's Port Blockade System
-#
-# First let me say that this is so not how I wanted to implement this thing.
-# However, because of the limitations of the scripting engine, I was forced to
-# resort to some rather lengthy conditionals.
-#
-# In short, the blockade system works like this.  Player parks his naval units
+# The blockade system works like this. Player parks his naval units
 # in a sea province which is adjacent to a land province with a port (naval
-# base).  When the check event fires, each major AI nation who is at war with the
+# base). When the check event fires, each major AI nation who is at war with the
 # player checks to see if the player has moved into this blockade position
-# with his naval forces.  If so, ALL ports that connect to the sea zone will
-# suffer a temporary reduction of its effective port level.  Thus reducing the
+# with his naval forces. If so, ALL ports that connect to the sea zone will
+# suffer a temporary reduction of its effective port level. Thus reducing the
 # amount of supplies and other materials that can be transferred into the
 # port.
-#
 # When the blockade is in effect, a province modifier will be applied to the
-# port, as well as a "blockaded" province flag.  The modifier will keep
+# port, as well as a "blockaded" province flag. The modifier will keep
 # getting applied as long as the player continues to maintain the blockade.
-#
 # When the blockade is lifted by the player's fleet either leaving the
-# province, getting wiped out, etc., the province modifier will expire.  That
+# province, getting wiped out, etc., the province modifier will expire. That
 # makes the port is eligible to be cleaned up by the AI-only "janitorial" event,
-# which will remove the province flag as well.  That is what triggers the port's
+# which will remove the province flag as well. That is what triggers the port's
 # original level to be restored.
-#
 # There is generally a delay from the time the blockading fleet leaves to the
-# time the port's natural level is restored.  This is abtracted as the time it
+# time the port's natural level is restored. This is abtracted as the time it
 # takes for the port to reorganize itself after the blockade.
-#
 # Note: These events will work with ports up to level 20
-#
-# -Marneman
-#
-#
-# TODO LIST:
-#
-# - AI blockading AI
-# - AI blockading players
-# - Multiple levels of blockades depending on how long the blockader has been in place
-#
-# Executes for all AI countries looking for a player blockade of their ports
 country_event = {
 	id = 999640
 	trigger = {
