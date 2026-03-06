@@ -1,17 +1,12 @@
-#################################################################################################
-#
 # Marneman's National Wartime Fiscal Policy Events
-#
 # Note: In the original War Bonds events, things were pretty straightforward.
 # You chose to issue War Bonds, and you got a chunk of money at the expense of
-# some unity and dissent.  This version is a little different.  It offers the
+# some unity and dissent. This version is a little different. It offers the
 # player multiple classications of War Bonds that they can issue, and
 # additionally gives them the option of raising taxes as an alternative
 # approach to raising capital (which historically, was the argument around War
 # Bonds).
-#
 # WAR BONDS
-# ---------
 # The amount of money raised is based on two factors - the first is what
 # classification of War Bonds you are issuing (Series A, B, and C), and the
 # number of provinces you own (both core and non-core).  It doesn't make sense
@@ -20,24 +15,14 @@
 # have larger populations.  By tying the income to the number of provinces
 # a country has, we create a scalable mechanism for generating income from War
 # Bonds.
-#
 # RAISING TAXES
-# -------------
 # Raising taxes applies a country modifier for a year, which boosts income by
 # a percentage.
-#
 # Taxes generate more long-term income, but at a significant hit to dissent.  War
 # Bonds are a less-risky alternative, and also increase unity slightly, but they
 # generate less income than raising taxes.
-#
-# -Marneman
-#
-#################################################################################################
-#################################################################################################
-#
+
 # Yearly event to determine the wartime fiscal policy
-#
-#################################################################################################
 country_event = {
 	id = 999400
 	# Triggers if the country is at war, and has less than 5000 money
@@ -107,17 +92,10 @@ country_event = {
 		}
 	}
 }
-#################################################################################################
-#
+
 # War Bond Monthly Gain Event
-#
 # Fires every 30 days or so and provides War Bond/Tax revenue based on the level the country
-# has chosen, and the numberof provinces they own.
-#
-# Caveat - this event currently fires as OMG, our fake country, and renders payment to the player
-# country.  We do this to avoid popup event spam for the player.
-#
-#################################################################################################
+# has chosen, and the number of provinces they own.
 country_event = {
 	id = 999401
 
