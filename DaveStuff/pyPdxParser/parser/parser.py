@@ -75,7 +75,7 @@ def parse_string(content: str, idx: int) -> tuple[str, int]:
             or (char == "#")
         ):
             if quoted:
-                res = str(content[start + 1 : current - 1])
+                res = str(content[start + 1 : current])
                 current += 1
             else:
                 res = str(content[start:current])
@@ -163,5 +163,5 @@ def parse_file(path: Path) -> dict:
     global CURRENT_FILE_PATH
     CURRENT_FILE_PATH = str(path.parts[-2]) + "/" + str(path.parts[-1])
 
-    parsed, _ = parse_object("{ " + content + " }", 0)
+    parsed, _ = parse_object("{ " + content + " \n}", 0)
     return parsed
