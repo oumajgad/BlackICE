@@ -1,39 +1,5 @@
-#################################################################################################
-#
 # Marneman's Radio Propaganda Broadcast Events
-#
-# These events inject a little radio propaganda into the game.  Mostly for flavor, but also
-# with some effect on things.
-#
-# Currently, the following broadcasters are implemented:
-#
-# JAP - Tokyo Rose - Pacific Theatre
-# ITA - Axis Sally - Italian Theatre
-# GER - Lord Haw Haw - France/Germany Theatre (Western Europe)
-#
-# The way it works is pretty simple.
-#
-# Basically, if the allied player loses a battle with substance within a theatre that has a
-# propagandist radio broadcaster, there is a chance that the appropriate broadcaster will
-# have something to say about it in their show. Each has several different sayings, all tailored
-# to the province that was lost. Losing a battle is never a good thing, but if the broadcasts
-# occur, they give a brief and slight malus to troop morale to the loser. Nothing major, mostly
-# for flavor. If you capture the broadcaster, you will receive a brief and slight boost to
-# troop morale.
-#
-# Each broadcaster also has an initiation event that occurs when they historically appeared,
-# giving a little history and context for each.
-#
-# -Marneman
-#
-#################################################################################################
-#
-# TODO: Research allied broadcasting efforts, as well as those from smaller Axis nations
-#
-#################################################################################################
-#################################################################################################
 # Tokyo Rose - Initial information event for USA player
-#################################################################################################
 country_event = {
 	id = 999700
 	fire_only_once = yes
@@ -63,16 +29,8 @@ country_event = {
 		}
 	}
 }
-#################################################################################################
+
 # Tokyo Rose - broadcasts after battle lost in the Pacific to taunt the player
-#
-# These events are triggered as "battle lost" events via common/on_actions.txt
-#
-# THIS = province that was lost
-# current country is the one who lost (USA)
-# FROM = country they lost to (JAP)
-#
-#################################################################################################
 province_event = {
 	id = 999701
 	is_triggered_only = yes
@@ -207,9 +165,8 @@ province_event = {
 		}
 	}
 }
-#################################################################################################
-# Tokyo Rose (Iva Toguri) arrested once the city of Tokyo falls
-#################################################################################################
+
+# Tokyo Rose (Iva Toguri) arrested once Tokyo falls
 country_event = {
 	id = 999709
 	trigger = {
@@ -242,9 +199,8 @@ country_event = {
 		}
 	}
 }
-#################################################################################################
+
 # Axis Sally (Rita Zucca) - initiation event for USA/ENG player
-#################################################################################################
 country_event = {
 	id = 999710
 	fire_only_once = yes
@@ -277,15 +233,8 @@ country_event = {
 		}
 	}
 }
-#################################################################################################
+
 # Axis Sally (Rita Zucca) - periodic broadcasts if allies lose a battle in Italy
-#
-# These events are triggered as "battle lost" events via common/on_actions.txt
-#
-# THIS = province that was lost
-# current country is the one who lost (USA)
-# FROM = country they lost to (JAP)
-#################################################################################################
 province_event = {
 	id = 999711
 	is_triggered_only = yes
@@ -395,9 +344,8 @@ province_event = {
 		}
 	}
 }
-#################################################################################################
-# Axis Sally (Rita Zucca) - captured in Turin (Torino)
-#################################################################################################
+
+# Axis Sally (Rita Zucca) - captured in Turin
 country_event = {
 	id = 999719
 	trigger = {
@@ -439,9 +387,8 @@ country_event = {
 		}
 	}
 }
-#################################################################################################
+
 # Lord Haw Haw - initiation event for USA/ENG player
-#################################################################################################
 country_event = {
 	id = 999720
 	fire_only_once = yes
@@ -474,15 +421,8 @@ country_event = {
 		}
 	}
 }
-#################################################################################################
+
 # Lord Haw Haw - periodic broadcasts if the allies lose a battle in France/Germany
-#
-# These events are triggered as "battle lost" events via common/on_actions.txt
-#
-# THIS = province that was lost
-# current country is the one who lost (USA)
-# FROM = country they lost to (JAP)
-#################################################################################################
 province_event = {
 	id = 999721
 	is_triggered_only = yes
@@ -634,9 +574,8 @@ province_event = {
 		}
 	}
 }
-#################################################################################################
-# Lord Haw Haw - captured!
-#################################################################################################
+
+# Lord Haw Haw - captured
 country_event = {
 	id = 999729
 	trigger = {
