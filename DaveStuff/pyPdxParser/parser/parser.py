@@ -6,7 +6,7 @@ sys.setrecursionlimit(2000)
 SPACE_CHARS = [" ", "\t", "\n", "\r"]
 CURRENT_FILE_PATH = ""
 CURRENT_FILE_CONTENT = ""
-DEBUG = True
+DEBUG = False
 
 
 def debug_out(message: str, idx: int, throw: bool = False):
@@ -25,14 +25,18 @@ class Types(int, enum.Enum):
 
 
 def next_char(content: str, idx: int) -> tuple[str, int]:
-    for i in range(idx, len(content)):
+    i = idx
+    while i < len(content):
         char: str = content[i]
         if char == "#":
             x = content.find("\n", i)
-            return next_char(content, x)
+            if x == -1:
+                return
+            else:
+                i = x
         elif char not in SPACE_CHARS:
             return content[i], i
-
+        i += 1
     debug_out("Failed to find next char", idx, True)
 
 
@@ -82,7 +86,7 @@ def parse_string(content: str, idx: int) -> tuple[str, int]:
 def parse_list(content: str, idx: int) -> tuple[list, int]:
     res = []
     i = idx
-    for x in range(500):
+    for x in range(10000):
         char, i = next_char(content, i)
         if char == "{":
             char, i = next_char(content, i + 1)
