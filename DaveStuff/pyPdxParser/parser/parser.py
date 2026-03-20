@@ -156,7 +156,7 @@ def parse_object(content: str, idx: int) -> tuple[dict, int]:
 
 
 def parse_file(path: Path) -> dict:
-    with open(path, "r") as f:
+    with open(path, "r", encoding="ISO-8859-1") as f:
         content = f.read()
     global CURRENT_FILE_CONTENT
     CURRENT_FILE_CONTENT = content
