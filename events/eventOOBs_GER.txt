@@ -3467,6 +3467,139 @@ country_event = {
 		set_country_flag = Begleit_Brigade
 	}
 }
+# Führer-Begleit-Division
+country_event = {
+	id = 93682
+		trigger = {
+		tag = GER
+		controls = 1861 #berlin
+		date = 1945.01.26
+		has_country_flag = Begleit_Brigade
+	}
+	mean_time_to_happen =  {
+		days = 10
+	}
+	title = "Führer-Begleit-Division"
+	desc = "EVTDESC93682"
+	picture = "Begleit_Div"
+	option = {
+		name = "Upgrade the Führer-Begleit-Brigade to Führer-Begleit-Division  "
+		set_country_flag = Begleit_Division
+		remove_brigade = "Führer-Begleit-Brigade"
+		remove_brigade = "Führer-Begleit-Pz.-Rgt"
+		remove_brigade = "Führer-Begleit-Artillerie.-Rgt"
+		remove_brigade = "Sturmgeschütz-Brigade 200"
+		remove_brigade = "Gefechtstross-Bat. 'Führer-Begleit'"
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = Fuhrer_Begleit_Division.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = Fuhrer_Begleit_Division.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Begleit_Division
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Führer-Grenadier-Brigade
+country_event = {
+	id = 93683
+	trigger = {
+		tag = GER
+		controls = 1861 #berlin
+		year = 1944
+		month = 10
+
+		not = {
+			has_country_flag = Grenadier_Brigade
+		}
+	}
+	mean_time_to_happen =  {
+		days = 10
+	}
+	title = "Führer-Grenadier-Brigade"
+	desc = "EVTDESC93683"
+	picture = "Begleit_Brig"
+	option = {
+		name = "Deploy Them"         # COMMAND 2 OF THEM
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = Grenadier_Brigade
+		supplies = -1000
+		manpower = -5
+		metal = -250
+		load_oob = Fuhrer_Grenadier_Brigade.txt
+	}
+	option = {
+		name = "No Need"         # NO
+		set_country_flag = Grenadier_Brigade
+	}
+}
+# Panzer-Division 'Müncheberg'
+country_event = {
+	id = 93681
+	trigger = {
+		tag = GER
+		controls = 1861 #berlin
+		date = 1945.03.08
+
+		not = {
+			has_country_flag = Munch_Div
+		}
+	}
+	mean_time_to_happen =  {
+		days = 10
+	}
+	title = "Panzer-Division 'Müncheberg'"
+	desc = "EVTDESC93681"
+	picture = "Munch_Div"
+	option = {
+		name = "Deploy Them"         # COMMAND 2 OF THEM
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = Munch_Div
+		supplies = -1000
+		manpower = -8
+		metal = -400
+		load_oob = GER_Muncheberg_Pz_Div.txt
+	}
+	option = {
+		name = "No Need"         # NO
+		set_country_flag = Munch_Div
+	}
+}
 # RETROCESSION OF CORE TERRITORIES
 # POLAND
 country_event = {
