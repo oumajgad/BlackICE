@@ -1,11 +1,7 @@
-###############################################################
-### 			 HOI3 Allies Cooperation events				###
-### 				By DiDay for DiDay's Mod				###
-####################	93100-93199		#######################
-##############################
-## BRITISH EXPEDITIONNARY FORCES
-##############################
-## BEF - UK SENDS SUPPLIES AND PROMISES
+# Allies Cooperation events	#
+# By DiDay #
+# BRITISH EXPEDITIONNARY FORCES
+# BEF - UK SENDS SUPPLIES AND PROMISES
 country_event = {
 	id = 93100
 	is_triggered_only = yes
@@ -45,7 +41,7 @@ country_event = {
 		}
 	}
 }
-## BEF - FRANCE RECEIVES SUPPLY
+# BEF - FRANCE RECEIVES SUPPLY
 country_event = {
 	id = 93101
 	is_triggered_only = yes
@@ -61,7 +57,7 @@ country_event = {
 		}
 	}
 }
-## BEF - FRANCE DIDN'T RECEIVE
+# BEF - FRANCE DIDN'T RECEIVE
 country_event = {
 	id = 93130
 	is_triggered_only = yes
@@ -84,7 +80,7 @@ country_event = {
 		#20
 	}
 }
-## BEF - FRANCE RECEIVES UNITS - UK EVENT
+# BEF - FRANCE RECEIVES UNITS - UK EVENT
 country_event = {
 	id = 93131
 	is_triggered_only = yes
@@ -113,7 +109,7 @@ country_event = {
 		}
 	}
 }
-## BEF - FRANCE DIDN'T RECEIVE UNITS - UK EVENT
+# BEF - FRANCE DIDN'T RECEIVE UNITS - UK EVENT
 country_event = {
 	id = 93132
 	is_triggered_only = yes
@@ -157,9 +153,8 @@ country_event = {
 		}
 	}
 }
-##############################
-## REMAINS OF THE POLISH ARMY
-##############################
+
+# REMAINS OF THE POLISH ARMY
 # LAND UNITS FOR FRANCE
 country_event = {
 	id = 93102
@@ -660,7 +655,7 @@ country_event = {
 		}
 	}
 }
-## CANADIAN EXPEDITIONARY FORCES
+# CANADIAN EXPEDITIONARY FORCES
 # 1940
 country_event = {
 	id = 93104
@@ -779,9 +774,8 @@ country_event = {
 		}
 	}
 }
-###################################
+
 # FOREIGN TROOPS FOR UK
-###################################
 # 2nd New Zealand
 country_event = {
 	id = 93120
@@ -845,9 +839,8 @@ country_event = {
 		}
 	}
 }
-###############################
+
 # BRAZIL EXPEDITIONARY FORCES #
-###############################
 # BRAZIL SENDS
 country_event = {
 	id = 88153
@@ -911,9 +904,8 @@ country_event = {
 		}
 	}
 }
-####################################
+
 # Various countries join the Allies
-####################################
 # ARGENTINA
 country_event = {
 	id = 90157
@@ -1334,7 +1326,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA90157"
 		join_faction = allies
-		##war = JAP
+		#war = JAP
 		set_country_flag = allies_joining
 		ai_chance = {
 			factor = 100
@@ -1871,6 +1863,49 @@ country_event = {
 	}
 	option = {
 		name = "EVTOPTB90157"
+		set_country_flag = allies_joining
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# HAITI
+country_event = {
+	id = 901790
+	trigger = {
+		tag = HAI
+		not = {
+			faction = axis
+			faction = comintern
+		}
+		war = no
+		USA = {
+			war_with = JAP
+		}
+		not = {
+			has_country_flag = allies_joining
+		}
+		USA = {
+			ai = yes
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "Haiti joins the Allies"
+	desc = "Haiti joined the Allies and declared war on Japan on December 8th, 1941, following the attack on Pearl Harbor."
+	picture = "HaHaHaitians"
+	option = {
+		name = "Support the USA any way we can!"
+		join_faction = allies
+		#war = JAP
+		set_country_flag = allies_joining
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "Let's stay out of it."
 		set_country_flag = allies_joining
 		ai_chance = {
 			factor = 0
@@ -2529,9 +2564,8 @@ country_event = {
 		}
 	}
 }
-#############################  UK MUST BE PLAYED BY A HUMAN PLAYER!
-#Ask the Irish to join event#      #Created by Timasaurus007
-#############################
+
+# Ask the Irish to join by Timasaurus007 #
 country_event = {
 	id = 998000
 	title = "Should we ask the Irish to join the Allies?"
@@ -2575,9 +2609,8 @@ country_event = {
 		}
 	}
 }
-################
-#Irish Response#
-################
+
+# Irish Response #
 country_event = {
 	id = 998001
 	is_triggered_only = yes
@@ -2617,9 +2650,8 @@ country_event = {
 		}
 	}
 }
-##############
-#Irish Accept#
-##############
+
+# Irish Accept #
 country_event = {
 	id = 998002
 	is_triggered_only = yes
@@ -2660,9 +2692,8 @@ country_event = {
 		}
 	}
 }
-################
-#Ireland Denies#
-################
+
+# Ireland Denies #
 country_event = {
 	id = 998003
 	is_triggered_only = yes
