@@ -3564,6 +3564,70 @@ country_event = {
 		set_country_flag = Grenadier_Brigade
 	}
 }
+# Führer-Grenadier-Division
+country_event = {
+	id = 93684
+		trigger = {
+		tag = GER
+		controls = 2093 #Cottbus
+		date = 1945.01.26
+		has_country_flag = Grenadier_Brigade
+	}
+	mean_time_to_happen =  {
+		days = 10
+	}
+	title = "Führer-Grenadier-Division"
+	desc = "EVTDESC93684"
+	picture = "Begleit_Div"
+	option = {
+		name = "Upgrade the Führer-Grenadier-Brigade to Führer-Grenadier-Division  "
+		set_country_flag = Grenadier_Division
+		remove_brigade = "Panzer-Grenadier-Regiment 99"
+		remove_brigade = "Panzer-Regiment 101"
+		remove_brigade = "Artillerie-Regiment 124"
+		remove_brigade = "Sturmgeschütz-Brigade 911"
+		remove_brigade = "Gefechtstross-Bat. 'Führer-Grenadier'"
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = GER/Fuhrer_Grenadier_Division.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/Fuhrer_Grenadier_Division.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Grenadier_Division
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 # Panzer-Division 'Müncheberg'
 country_event = {
 	id = 93681
@@ -3596,6 +3660,40 @@ country_event = {
 	option = {
 		name = "No Need"         # NO
 		set_country_flag = Munch_Div
+	}
+}
+# Panzergrenadier-Division Kurmark
+country_event = {
+	id = 93685
+	trigger = {
+		tag = GER
+		controls = 2093 #Cottbus
+		date = 1945.02.01
+
+		not = {
+			has_country_flag = Kurmark_Div
+		}
+	}
+	mean_time_to_happen =  {
+		days = 10
+	}
+	title = "Panzergrenadier-Division Kurmark"
+	desc = "EVTDESC93685"
+	picture = "Kurmark_Div"
+	option = {
+		name = "Deploy Them"
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = Kurmark_Div
+		supplies = -1000
+		manpower = -4
+		metal = -400
+		load_oob = GER/GER_Kurmark_PzG_Div.txt
+	}
+	option = {
+		name = "No Need"         # NO
+		set_country_flag = Kurmark_Div
 	}
 }
 # RETROCESSION OF CORE TERRITORIES
