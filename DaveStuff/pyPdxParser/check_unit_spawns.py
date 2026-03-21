@@ -121,7 +121,8 @@ class EventReport(pydantic.BaseModel):
     event_title: str
     oob_event: Node
     fired_by_type: str
-    fired_by: Any
+    fired_by: Node
+    fired_by_key: str | int
     unchecked: list[int] = []
 
 
@@ -150,6 +151,7 @@ if __name__ == "__main__":
                         oob_event=oob_event,
                         fired_by_type="decision",
                         fired_by=decision,
+                        fired_by_key=decision.key,
                     )
                 )
                 continue
@@ -162,6 +164,7 @@ if __name__ == "__main__":
                         oob_event=oob_event,
                         fired_by_type="event",
                         fired_by=event,
+                        fired_by_key=event.find_by_key_single("id").scalar_value,
                     )
                 )
                 continue
@@ -176,6 +179,7 @@ if __name__ == "__main__":
                     oob_event=oob_event,
                     fired_by_type="trigger",
                     fired_by=oob_event,
+                    fired_by_key=oob_event_id,
                 )
             )
     print(len(candidates))
@@ -188,7 +192,9 @@ if __name__ == "__main__":
         checked = get_checked_province_ids_from_node(candidate.fired_by)
         candidate.unchecked = [oob_location for oob_location in oob_locations if oob_location not in checked]
         if len(candidate.unchecked) > 0:
-            violators.append(candidate.dict(exclude={"oob_event": True, "fired_by": True}))
+            tmp = candidate.dict(exclude={"oob_event": True, "fired_by": True})
+            violators.append(tmp)
     violators.sort(key=lambda x: x.get("event_id"))
+    print(len(violators))
     with open("check_unit_spawns_result.json", "w") as f:
         f.write(json.dumps(violators, indent=2))
