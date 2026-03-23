@@ -3432,6 +3432,63 @@ country_event = {
 		}
 	}
 }
+#90. Panzergrenadier-Division
+country_event = {
+	id = 93686
+	is_triggered_only = yes
+	title = "90. Panzergrenadier-Division"
+	desc = "EVTDESC93686"
+	picture = "90-PzGren"
+	option = {
+		name = "Create 90. Panzergrenadier-Division  "
+		set_country_flag = XC_Division_1943
+		remove_brigade = "Stab 90. Leichte-Division 'Afrika'"
+		remove_brigade = "Pz.Gren.-Rgt. 155/361/255"
+		remove_brigade = "Pionier.-Bat. 900"
+		remove_brigade = "Art.-Rgt. (mot.) 190"
+		remove_brigade = "Pz.-Art.-Rgt. 157"
+		remove_brigade = "Gefechtstross-Bat.(Pz) 190"
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1250
+				}
+				energy = -2500
+				metal = -1250
+				rare_materials = -625
+				load_oob = GER/GER_XC_PzGren.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_XC_PzGren.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = XC_Division_1943
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 # Führer-Begleit-Brigade
 country_event = {
 	id = 92113
