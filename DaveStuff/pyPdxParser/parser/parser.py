@@ -10,8 +10,11 @@ DEBUG = False
 
 
 def debug_out(message: str, idx: int, throw: bool = False):
-    line_number = CURRENT_FILE_CONTENT.count("\n", 0, idx)
-    msg = f"{CURRENT_FILE_PATH}:{line_number}/{idx}: {message}"
+    line = CURRENT_FILE_CONTENT.count("\n", 0, idx) + 1  # +1 for 0 based indexing
+    # position in line (-3 because of added '{ ' during parse + 1 for 0 based indexing)
+    pos = idx - CURRENT_FILE_CONTENT.rfind("\n", 0, idx) - 3
+    full_line = CURRENT_FILE_CONTENT.split("\n")[line - 1]
+    msg = f"{CURRENT_FILE_PATH}:{line=}/{pos=}: {message} --- {full_line = }"
     if throw:
         raise Exception(msg)
     if DEBUG:
