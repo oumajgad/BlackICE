@@ -3377,7 +3377,7 @@ country_event = {
 country_event = {
 	id = 91177
 	is_triggered_only = yes
-	title = "'Groﬂdeutschland' Armeekorps"
+	title = "'Groﬂdeutschland' Panzergrenadier-Division"
 	desc = "EVTDESC91177"
 	picture = "deutschland_Division_1943"
 	option = {
@@ -3402,12 +3402,12 @@ country_event = {
 				}
                 change_variable = {
 					which = IC_days_spent
-					value = +4700
+					value = +2000
 				}
-				energy = -9400
-				metal = -4700
-				rare_materials = -2350
-				load_oob = GER/GER_G-Deutschland_Korp_1943Prod.txt
+				energy = -5000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = GER/GER_G-Deutschland_Division_1943.txt
 			}
 		}
 		OMG = {
@@ -3420,13 +3420,64 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = GER/GER_G-Deutschland_Korp_1943.txt
+				load_oob = GER/GER_G-Deutschland_Div_1943.txt
 			}
 		}
 	}
 	option = {
 		name = "No Need"
 		set_country_flag = deutschland_Division_1943
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# PANZERKORPS GROﬂDEUTSCHLAND - 1944
+country_event = {
+	id = 93687
+	is_triggered_only = yes
+	title = "Panzerkorps Groﬂdeutschland"
+	desc = "EVTDESC93687"
+	picture = "deutschland_Division_1943"
+	option = {
+		name = "Create the PANZERKORPS GROSSDEUTSCHLAND"
+		set_country_flag = deutschland_pzkorps_1944
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
+				}
+				energy = -7000
+				metal = -3000
+				rare_materials = -1750
+				load_oob = GER/GER_G-Deutschland_Korp_1944.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_G-Deutschland_Korp_1944.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = deutschland_pzkorps_1944
 		ai_chance = {
 			factor = 0
 		}
@@ -3464,6 +3515,7 @@ country_event = {
 				energy = -2500
 				metal = -1250
 				rare_materials = -625
+				manpower = -6
 				load_oob = GER/GER_XC_PzGren.txt
 			}
 		}
