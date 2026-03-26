@@ -28,7 +28,7 @@ local properties = {
     ["softness"] = {            factor = 0.1, unit = "%", translation = nil },
     ["strategic_attack"] = {    factor = 0.001, unit = "", translation = nil },
     ["sub_attack"] = {          factor = 0.001, unit = "", translation = nil },
-    ["sub_unit_amount"] = {     factor = 1, unit = "", translation = "Sub Units" },
+    ["sub_unit_amount"] = {     factor = 0.001, unit = "", translation = "Sub Units" },
     ["supply_consumption"] = {  factor = 0.001, unit = "", translation = nil },
     ["suppression"] = {         factor = 0.001, unit = "", translation = nil },
     ["surface_defence"] = {     factor = 0.001, unit = "", translation = nil },
