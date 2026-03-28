@@ -15,7 +15,13 @@ def debug_out(message: str, idx: int, throw: bool = False):
         # position in line (-3 because of added '{ ' during parse + 1 for 0 based indexing)
         pos = idx - CURRENT_FILE_CONTENT.rfind("\n", 0, idx) - 3
         full_line = CURRENT_FILE_CONTENT.split("\n")[line - 1]
-        msg = f"{CURRENT_FILE_PATH}:{line=}/{pos=}: {message} --- {full_line = }"
+        if pos < 0:
+            line += -1
+            full_line = CURRENT_FILE_CONTENT.split("\n")[line - 1]
+            pos = len(full_line) - pos
+        part_1 = f"{CURRENT_FILE_PATH}:{line=}/{pos=}: {message} --- full line: "
+        chevron = " " * (len(part_1) + pos + 11) + "^"  # + 11 for the 'Exception: '
+        msg = f"{part_1}{full_line}\n{chevron}"
         raise Exception(msg)
     if DEBUG:
         msg = f"{CURRENT_FILE_PATH}: {message}"
