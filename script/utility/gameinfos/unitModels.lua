@@ -111,7 +111,11 @@ function P.HandleSelection()
     end
     local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry()
     for tech, tech_level in spairs(techs, sort_by_name) do
-        local player_level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+        local player_level = 0
+        local cTech = CTechnologyDataBase.GetTechnology(tech)
+        if cTech ~= nil then
+            player_level = playerCountry:GetTechnologyStatus():GetLevel(cTech)
+        end
         local trans = translationTable[tech]
         if trans ~= nil then
             table.insert(techlist, tech_level .. " (" .. player_level .. ")" .. " - " .. trans .. " [" .. tech .. "]")
