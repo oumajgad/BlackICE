@@ -199,7 +199,7 @@ packs["interwar_exp"] = [
 
 #WW1 Armor Experiments (experimented in WW1 armor)
 packs["ww1_armor"] = [
-    "rivetted_armour = 2",
+    "riveted_armour = 2",
 
     "infantry_tank_design = 1",
     "armored_car_design = 1",
@@ -210,7 +210,7 @@ packs["ww1_armor"] = [
 
 #Interwar Armor Development (developed armor significantly in Interwar, ie. Sweden)
 packs["interwar_armor"] = [
-    "rivetted_armour = 5",
+    "riveted_armour = 5",
 
     "steel_casting_capability = 1",
 
