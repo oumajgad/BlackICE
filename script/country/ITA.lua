@@ -251,7 +251,7 @@ function P.IndustrialTechs(voTechnologyData)
 		"Ship_Building_Technologies",
 		"long_range_aircraft_production",
 		"short_range_aircraft_production",
-		"oil_refinning",
+		"oil_refining",
 		"steel_production",
 		"coal_processing_technologies",
 		"supply_production",

@@ -321,7 +321,7 @@ function P.IndustrialTechs(voTechnologyData)
 
 	local preferTech = {
 		"construction_engineering",
-		"oil_refinning",
+		"oil_refining",
 		"steel_production",
 		"raremetal_refinning_techniques",
 		"coal_processing_technologies",

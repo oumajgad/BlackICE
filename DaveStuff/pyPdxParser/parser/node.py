@@ -1,13 +1,16 @@
-import pydantic
 from typing import Optional, Any
 
 
-class Node(pydantic.BaseModel):
-    key: str
-    parent: Optional["Node"] = None
-    children: list["Node"] = []
-    scalar_type: Optional[Any] = None
-    scalar_value: Optional[Any] = None
+class Node:
+    def __init__(self, key: str):
+        self.key: str = key
+        self.parent: Optional["Node"] = None
+        self.children: list["Node"] = []
+        self.scalar_type: Optional[Any] = None
+        self.scalar_value: Optional[Any] = None
+
+    def __str__(self):
+        return f"{self.key=} {self.scalar_value=}"
 
     @classmethod
     def from_parsed(cls, parsed: Any, parent: "Node" = None, key: str = "data") -> "Node":
