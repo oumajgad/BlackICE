@@ -70,7 +70,7 @@ def addStatsCLI(zipf: zipfile.ZipFile):
     zipf.write("./tools/visualizeStatistics/visualizeStatisticCLI.exe", f"{path}/BlackICE {version}/stats/visualizeStatisticCLI.exe")
 
 def addLua51dll(zipf: zipfile.ZipFile):
-    zipf.write("./ModdedEXE/lua5.1.dll", "lua5.1.dll")
+    zipf.write("./DaveStuff/luabinaries/lua5.1.dll", "lua5.1.dll")
 
 def addUtilityResources(zipf: zipfile.ZipFile):
     for root, dirs, files in os.walk(f"./tools/wxWidget/projects/tfh/mod/BlackICE-utility-resources/"):
@@ -100,10 +100,6 @@ def resetLocsVersion():
     lines[1] = "BI_VERSION;BlackICE TestVersion;;;;;;;;;;;;;x"
     with open("./localisation/bi_version.csv", "w") as versionFile4:
         versionFile4.writelines(lines)
-
-def addEXE(zipf: zipfile.ZipFile):
-    zipf.write("./ModdedEXE/hoi3_tfh.exe", "hoi3_tfh.exe")
-
 
 def setLuaUtilityVersion():
     with open("./script/autoexec.lua", "r") as file:
