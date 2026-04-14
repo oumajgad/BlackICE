@@ -665,7 +665,115 @@ country_event = {
 			controlled_by = HUN
 		}
 		# Budapest
-		year = 1943
+		date = 1944.3.1
+		HUN = {
+			is_subject = no
+		}				
+
+		not = {
+			has_country_flag = operation_margarethe
+			has_country_flag = foreign_ministry
+			has_country_flag = intelligence_headquarter			
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88825"
+	desc = "EVTDESC88825"
+	picture = "operation_margarethe"
+	option = {
+		name = "EVTOPTA88825"
+		set_country_flag = operation_margarethe
+		random_list = {
+			70 = {
+				relation = {
+					who = HUN
+					value = -50
+				}
+				HUN = {
+					country_event = 88826
+					head_of_government = 21051
+				}
+			}	
+			30 = {
+				HUN = {
+				country_event = 88829
+				}
+			}
+		}				
+		ai_chance = {
+		factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTB99509"
+		set_country_flag = operation_margarethe
+		random_list = {
+			50 = {
+				relation = {
+					who = HUN
+					value = 10
+				}
+			}	
+			50 = {
+				HUN = {
+				country_event = 88829
+				}
+			}
+		}				
+		ai_chance = {
+		factor = 0
+		}
+	}
+}
+# OPERATION MARGARETHE - GER ACTION UNIQUEBUILDINGS
+country_event = {
+	id = 888251
+	trigger = {
+		tag = GER
+		war_with = SOV
+		or = {
+
+			not = {
+				2573 = {
+					#tarnopol
+					controller = {
+						faction = axis
+					}
+				}
+			}
+
+			not = {
+				2575 = {
+					#vinnytsya
+					controller = {
+						faction = axis
+					}
+				}
+			}
+
+			not = {
+				2509 = {
+					controller = {
+						faction = axis
+					}
+				}
+			}
+			#lwow
+		}
+		3231 = {
+			controlled_by = HUN
+		}
+		# Budapest
+		date = 1944.3.1
+		HUN = {
+			is_subject = no
+		}			
+		or = {
+			has_country_flag = foreign_ministry
+			has_country_flag = intelligence_headquarter
+		}		
 
 		not = {
 			has_country_flag = operation_margarethe
@@ -680,27 +788,45 @@ country_event = {
 	option = {
 		name = "EVTOPTA88825"
 		set_country_flag = operation_margarethe
-		relation = {
-			who = HUN
-			value = -50
-		}
-		HUN = {
-			country_event = 88826
-			head_of_government = 21051
-		}
+		random_list = {
+			100 = {
+				relation = {
+					who = HUN
+					value = -50
+				}
+				HUN = {
+					country_event = 88826
+					head_of_government = 21051
+				}
+			}	
+			0 = {
+				HUN = {
+				country_event = 88829
+				}
+			}
+		}				
 		ai_chance = {
-			factor = 100
+		factor = 100
 		}
 	}
 	option = {
 		name = "EVTOPTB99509"
 		set_country_flag = operation_margarethe
-		relation = {
-			who = HUN
-			value = 10
-		}
+		random_list = {
+			50 = {
+				relation = {
+					who = HUN
+					value = 10
+				}
+			}	
+			50 = {
+				HUN = {
+				country_event = 88829
+				}
+			}
+		}				
 		ai_chance = {
-			factor = 0
+		factor = 0
 		}
 	}
 }
@@ -725,52 +851,7 @@ country_event = {
 # OPERATION MARGARETHE NOT ACHIEVED - HUN SIGN PEACE
 country_event = {
 	id = 88829
-	trigger = {
-		tag = HUN
-		exists = GER
-
-		not = {
-			exists = ITA
-		}
-		# added to prevent Italy going to peace with UK/Soviet at the same time Issue 87
-		faction = axis
-		or = {
-			war_with = ENG
-			war_with = SOV
-			war_with = USA
-		}
-
-		not = {
-			2068 = {
-				# Russian inland
-				controller = {
-					faction = axis
-				}
-			}
-		}
-
-		not = {
-			311 = {
-				# Archangelsk
-				controller = {
-					faction = axis
-				}
-			}
-		}
-		3231 = {
-			controlled_by = HUN
-		}
-		# Budapest
-		date = 1944.5.10
-
-		not = {
-			has_country_flag = operation_margarethe
-			has_country_flag = armistice_with_allies
-		}
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "EVTNAME88829"
 	desc = "EVTDESC88829"
 	picture = "hun-peace"
@@ -810,7 +891,7 @@ country_event = {
 	is_triggered_only = yes
 	title = "EVTNAME88829"
 	desc = "EVTDESC88829"
-	picture = "blank"
+	picture = "HUN_switch"
 	option = {
 		name = "EVTOPTC88829"
 		dissent = 5
@@ -840,37 +921,20 @@ country_event = {
 	trigger = {
 		tag = GER
 		war_with = SOV
-		or = {
-
-			not = {
-				2769 = {
-					controller = {
-						faction = axis
-					}
+		not = {
+			2223 = {
+				# Kiev
+				controller = {
+					faction = axis
 				}
 			}
+		}
 
-			not = {
-				2636 = {
-					controller = {
-						faction = axis
-					}
-				}
-			}
-
-			not = {
-				2833 = {
-					controller = {
-						faction = axis
-					}
-				}
-			}
-
-			not = {
-				2768 = {
-					controller = {
-						faction = axis
-					}
+		not = {
+			1694 = {
+				# Minsk
+				controller = {
+					faction = axis
 				}
 			}
 		}
@@ -880,6 +944,106 @@ country_event = {
 		# Budapest
 		date = 1944.10.5
 		has_country_flag = operation_margarethe
+		HUN = {
+			is_subject = no
+		}	
+
+		not = {
+			has_country_flag = operation_panzerfaust
+			has_country_flag = foreign_ministry
+			has_country_flag = intelligence_headquarter
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88827"
+	desc = "EVTDESC88827"
+	picture = "operation_panzerfaust"
+	option = {
+		name = "EVTOPTA88827"
+		set_country_flag = operation_panzerfaust
+		random_list = {
+			40 = {
+				HUN = {
+					country_event = 88828
+					national_socialist = {
+						organisation = 100
+						popularity = 100
+					}
+				}
+			metal = 15000
+			rare_materials = 5000
+			supplies = 2500
+			create_vassal = HUN
+			}
+			60 = {
+				HUN = {
+				country_event = 88831
+				}
+			}
+		}
+			ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTB99509"
+		set_country_flag = operation_panzerfaust
+		random_list = { 
+			20 = {
+				relation = {
+				who = HUN
+				value = 10
+				}
+			}
+			80 = {
+				HUN = {
+				country_event = 88831
+				}	
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# OPERATION PANZERFAUST - GER ACTIONUNIQUEBUILDINGS
+country_event = {
+	id = 888271
+	trigger = {
+		tag = GER
+		war_with = SOV
+		not = {
+			2223 = {
+				# Kiev
+				controller = {
+					faction = axis
+				}
+			}
+		}
+
+		not = {
+			1694 = {
+				# Minsk
+				controller = {
+					faction = axis
+				}
+			}
+		}
+		3231 = {
+			controlled_by = HUN
+		}
+		# Budapest
+		date = 1944.10.5
+		has_country_flag = operation_margarethe
+		HUN = {
+			is_subject = no
+		}			
+		or = {
+			has_country_flag = foreign_ministry
+			has_country_flag = intelligence_headquarter
+		}
 
 		not = {
 			has_country_flag = operation_panzerfaust
@@ -894,28 +1058,45 @@ country_event = {
 	option = {
 		name = "EVTOPTA88827"
 		set_country_flag = operation_panzerfaust
-		HUN = {
-			country_event = 88828
-			national_socialist = {
-				organisation = 100
-				popularity = 100
+		random_list = {
+			100 = {
+				HUN = {
+					country_event = 88828
+					national_socialist = {
+						organisation = 100
+						popularity = 100
+					}
+				}
+			metal = 15000
+			rare_materials = 5000
+			supplies = 2500
+			create_vassal = HUN
 			}
-			do_election = THIS
+			0 = {
+				HUN = {
+				country_event = 88831
+				}
+			}
 		}
-		metal = 15000
-		rare_materials = 5000
-		supplies = 2500
-		create_vassal = HUN
-		ai_chance = {
+			ai_chance = {
 			factor = 100
 		}
 	}
 	option = {
 		name = "EVTOPTB99509"
 		set_country_flag = operation_panzerfaust
-		relation = {
-			who = HUN
-			value = 10
+		random_list = { 
+			10 = {
+				relation = {
+				who = HUN
+				value = 10
+				}
+			}
+			90 = {
+				HUN = {
+				country_event = 88831
+				}	
+			}
 		}
 		ai_chance = {
 			factor = 0
@@ -979,52 +1160,10 @@ country_event = {
 # OPERATION PANZERFAUST NOT ACHIEVED - HUN SWITCH SIDE TO COMINTERN
 country_event = {
 	id = 88831
-	trigger = {
-		tag = HUN
-		GER = {
-			war_with = SOV
-		}
-		or = {
-			war_with = ENG
-			war_with = SOV
-			war_with = USA
-		}
-		faction = axis
-
-		not = {
-			2223 = {
-				# Kiev
-				controller = {
-					faction = axis
-				}
-			}
-		}
-
-		not = {
-			1694 = {
-				# Minsk
-				controller = {
-					faction = axis
-				}
-			}
-		}
-		3231 = {
-			controlled_by = HUN
-		}
-		# Budapest
-		date = 1944.10.15
-
-		not = {
-			has_country_flag = operation_panzerfaust
-			has_country_flag = switch_side
-		}
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "EVTNAME88831"
 	desc = "EVTDESC88831"
-	picture = "blank"
+	picture = "HUN_switch"
 	option = {
 		name = "EVTOPTA88831"
 		set_country_flag = switch_side
@@ -1057,7 +1196,7 @@ country_event = {
 	is_triggered_only = yes
 	title = "EVTNAME88831"
 	desc = "EVTDESC88831"
-	picture = "blank"
+	picture = "HUN_switch"
 	option = {
 		name = "EVTOPTB88831"
 		ai_chance = {
@@ -1071,7 +1210,7 @@ country_event = {
 	is_triggered_only = yes
 	title = "EVTNAME88831"
 	desc = "EVTDESC88831"
-	picture = "blank"
+	picture = "HUN_switch"
 	option = {
 		name = "EVTOPTC88831"
 		HUN = {
