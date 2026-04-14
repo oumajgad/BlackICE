@@ -139,6 +139,8 @@ function P.HandleIntelligenceMinisterStats(countryTag, country)
 	for group, popularity in pairs(groupPopularity) do
 		P.AddStat(tag, "pol_Popularity_Group_" .. group, string.format('%.02f', popularity))
 	end
+	P.AddStat(tag, "other_ProvincesControlled", tostring(string.format('%.0f', country:GetNumberOfControlledProvinces())))
+	P.AddStat(tag, "other_ProvincesOwned", tostring(string.format('%.0f', country:GetNumberOfOwnedProvinces())))
 end
 
 
@@ -269,12 +271,10 @@ end
 
 function P.UpdateCustomCountryListInStatSelection()
 	local count = UI.m_listBox_Statistics_country_list:GetCount()
-	Utils.LUA_DEBUGOUT("count: " .. count)
 	local countries = {}
 	for i = 0, count - 1 do
 		local _tag = UI.m_listBox_Statistics_country_list:GetString(i)
 		table.insert(countries, _tag)
-		Utils.LUA_DEBUGOUT("_tag: " .. _tag)
 	end
 	table.sort(countries)
 	UI.m_comboBox_Statistics_main1:Clear()

@@ -191,7 +191,7 @@ if wx ~= nil then
 		'prod_LendLease_IC', 'prod_Production_%', 'prod_Production_IC', 'prod_Reinforce_%', 'prod_Reinforce_IC', 'prod_Supply_%', 'prod_Supply_IC',
 		'prod_Upgrade_%', 'prod_Upgrade_IC', 'pool_energy', 'pool_metal', 'pool_rares', 'pool_oil', 'pool_supplies', 'pool_fuel', 'pool_money',
 		'other_u_LandCountTotal', 'other_u_AirCountTotal', 'other_u_NavalCountTotal', 'other_u_TotalDivisions',
-		'other_ManpowerTotal'
+		'other_ManpowerTotal', "other_ProvincesControlled", "other_ProvincesOwned"
     }
     table.sort(statChoices)
     UI.m_listBox_Statistics_main_stats:Clear()
