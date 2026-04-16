@@ -175,29 +175,34 @@ if wx ~= nil then
 	UI.m_notebook_Statistics:AddPage(UI.m_panel_Statistics_main, "Statistics", False )
 
 
-
-
 	UI.MyFrame5 .m_mgr:Update()
 	UI.MyFrame5:Centre( wx.wxBOTH )
 
 
     local statChoices = {
-        'intel_DomesticSpies', 'intel_FreeSpies', 'ls_Percent_Diplomacy', 'ls_Percent_Espionage', 'ls_Percent_NCO', 'ls_Percent_Research',
-        'pol_Popularity_fascistic', 'pol_Popularity_Group_communism', 'pol_Popularity_Group_democracy', 'pol_Popularity_Group_fascism',
-        'pol_Popularity_Group_noIdeologygroup', 'pol_Popularity_left_wing_radical', 'pol_Popularity_leninist', 'pol_Popularity_market_liberal',
+        'intel_DomesticSpies', 'intel_FreeSpies', 'intel_TotalSpiesAbroad',
+		'ls_Percent_Diplomacy', 'ls_Percent_Espionage', 'ls_Percent_NCO', 'ls_Percent_Research', 'ls_TotalLeadership',
+		'pol_Popularity_Group_communism', 'pol_Popularity_Group_democracy', 'pol_Popularity_Group_fascism', 'pol_Popularity_Group_noIdeologygroup',
+        'pol_Popularity_fascistic', 'pol_Popularity_left_wing_radical', 'pol_Popularity_leninist', 'pol_Popularity_market_liberal',
         'pol_Popularity_national_socialist', 'pol_Popularity_noIdeology', 'pol_Popularity_paternal_autocrat', 'pol_Popularity_social_conservative',
-        'pol_Popularity_social_democrat', 'pol_Popularity_social_liberal', 'pol_Popularity_stalinist', 'prod__TotalIc', 'prod__IcEff', 'ls_TotalLeadership',
-        'intel_TotalSpiesAbroad', 'diplo_Neutrality', 'diplo_EffectiveNeutrality', 'prod_Consumer_%', 'prod_Consumer_IC', 'prod_LendLease_%',
-		'prod_LendLease_IC', 'prod_Production_%', 'prod_Production_IC', 'prod_Reinforce_%', 'prod_Reinforce_IC', 'prod_Supply_%', 'prod_Supply_IC',
-		'prod_Upgrade_%', 'prod_Upgrade_IC', 'pool_energy', 'pool_metal', 'pool_rares', 'pool_oil', 'pool_supplies', 'pool_fuel', 'pool_money',
+        'pol_Popularity_social_democrat', 'pol_Popularity_social_liberal', 'pol_Popularity_stalinist',
+		'diplo_Neutrality', 'diplo_EffectiveNeutrality',
+		'prod__TotalIc', 'prod__IcEff',
+		'prod_Consumer_%', 'prod_Consumer_IC',
+		'prod_LendLease_%', 'prod_LendLease_IC',
+		'prod_Production_%', 'prod_Production_IC',
+		'prod_Reinforce_%', 'prod_Reinforce_IC',
+		'prod_Supply_%', 'prod_Supply_IC',
+		'prod_Upgrade_%', 'prod_Upgrade_IC',
+		'pool_energy', 'pool_metal', 'pool_rares', 'pool_oil', 'pool_supplies', 'pool_fuel', 'pool_money',
 		'other_u_LandCountTotal', 'other_u_AirCountTotal', 'other_u_NavalCountTotal', 'other_u_TotalDivisions',
 		'other_ManpowerTotal', "other_ProvincesControlled", "other_ProvincesOwned"
     }
     table.sort(statChoices)
     UI.m_listBox_Statistics_main_stats:Clear()
     UI.m_listBox_Statistics_main_stats:Append(statChoices)
-	-- Connect Events
 
+	-- Connect Events
 	UI.m_button_Statistics_setup_toggle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
         Stats.ToggleStatCollection()
 	end )
@@ -219,6 +224,7 @@ if wx ~= nil then
 			local command = CSetVariableCommand(omgTag, CString("zStatsCustomList_" .. tag), CFixedPoint(1))
 			CCurrentGameState.Post(command)
 
+			Stats.AddTagToCustomList(tag)
 			if Stats.CustomCountryListActive == true then
 				Stats.UpdateCustomCountryListInStatSelection()
 			end
@@ -235,6 +241,7 @@ if wx ~= nil then
 			CCurrentGameState.Post(command)
             UI.m_listBox_Statistics_country_list:Delete(selection)
 
+			Stats.RemoveTagFromCustomList(tag)
 			if Stats.CustomCountryListActive == true then
 				Stats.UpdateCustomCountryListInStatSelection()
 			end

@@ -31,6 +31,18 @@ function P.CustomListCheck(tag)
 	return false
 end
 
+function P.AddTagToCustomList(tag)
+	if P.CustomCountryList ~= nil then
+		P.CustomCountryList[tag] = true
+	end
+end
+
+function P.RemoveTagFromCustomList(tag)
+	if P.CustomCountryList ~= nil then
+		P.CustomCountryList[tag] = false
+	end
+end
+
 
 P.StatsIdent = nil
 function P.GetCurrentIdent()
