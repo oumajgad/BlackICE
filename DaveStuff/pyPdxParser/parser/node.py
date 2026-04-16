@@ -5,7 +5,7 @@ class Node:
     def __init__(self, key: str):
         self.key: str = key
         self.parent: Optional["Node"] = None
-        self.children: list["Node"] = []
+        self.children: list[Node] = []
         self.scalar_type: Optional[Any] = None
         self.scalar_value: Optional[Any] = None
 

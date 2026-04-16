@@ -2,9 +2,8 @@ import json
 import os
 import time
 from pathlib import Path
-from typing import Optional, Any
+from typing import Optional
 
-import pydantic
 from tqdm import tqdm
 
 from parser.node import Node
@@ -111,19 +110,51 @@ def get_checked_province_ids_from_node(node: Node) -> set[int]:
     return set(res)  # deduplicate
 
 
+def determine_country(nodes: list[Node]) -> str:
+    for node in nodes:
+        file = node.scalar_value
+        if "/" in file:
+            tag = file.split("/")[0]
+            if len(tag) == 3:
+                return tag
+    return "---"
+
+
 def load_blacklist() -> list[int]:
     with open("./check_unit_spawns_blacklist.json", "r") as f:
         return json.load(f)
 
 
-class EventReport(pydantic.BaseModel):
-    event_id: int
-    event_title: str
-    oob_event: Node
-    fired_by_type: str
-    fired_by: Node
-    fired_by_key: str | int
-    unchecked: list[int] = []
+class EventReport:
+    def __init__(
+        self,
+        tag: str,
+        event_id: int,
+        event_title: str,
+        oob_event: Node,
+        fired_by_type: str,
+        fired_by: Node,
+        fired_by_key: str | int,
+        unchecked: list[int] = None,
+    ):
+        self.tag: str = tag
+        self.event_id: int = event_id
+        self.event_title: str = event_title
+        self.oob_event: Node = oob_event
+        self.fired_by_type: str = fired_by_type
+        self.fired_by: Node = fired_by
+        self.fired_by_key: str | int = fired_by_key
+        self.unchecked: list[int] = unchecked if unchecked else []
+
+    def dict(self) -> dict:
+        return {
+            "tag": self.tag,
+            "event_id": self.event_id,
+            "event_title": self.event_title,
+            "fired_by_type": self.fired_by_type,
+            "fired_by_key": self.fired_by_key,
+            "unchecked": self.unchecked,
+        }
 
 
 if __name__ == "__main__":
@@ -141,11 +172,14 @@ if __name__ == "__main__":
         oob_event_id = oob_event_id_node.scalar_value
         oob_event_title_node = oob_event.find_by_key_single("title")
         oob_event_title = oob_event_title_node.scalar_value
+        load_oob_nodes = oob_event.find_by_key("load_oob")
+        country = determine_country(load_oob_nodes)
         if oob_event.find_by_key_single("is_triggered_only"):
             decision = find_decision_for_event_id(oob_event_id, decision_nodes)
             if decision:
                 candidates.append(
                     EventReport(
+                        tag=country,
                         event_id=oob_event_id,
                         event_title=oob_event_title,
                         oob_event=oob_event,
@@ -159,6 +193,7 @@ if __name__ == "__main__":
             if event:
                 candidates.append(
                     EventReport(
+                        tag=country,
                         event_id=oob_event_id,
                         event_title=oob_event_title,
                         oob_event=oob_event,
@@ -174,6 +209,7 @@ if __name__ == "__main__":
         else:
             candidates.append(
                 EventReport(
+                    tag=country,
                     event_id=oob_event_id,
                     event_title=oob_event_title,
                     oob_event=oob_event,
@@ -183,7 +219,7 @@ if __name__ == "__main__":
                 )
             )
     print(len(candidates))
-    violators: list[dict] = []
+    violators: dict[str, list[dict]] = {}
     blacklist = load_blacklist()
     for candidate in candidates:
         if candidate.event_id in blacklist:
@@ -192,9 +228,17 @@ if __name__ == "__main__":
         checked = get_checked_province_ids_from_node(candidate.fired_by)
         candidate.unchecked = [oob_location for oob_location in oob_locations if oob_location not in checked]
         if len(candidate.unchecked) > 0:
-            tmp = candidate.dict(exclude={"oob_event": True, "fired_by": True})
-            violators.append(tmp)
-    violators.sort(key=lambda x: x.get("event_id"))
-    print(len(violators))
+            if not violators.get(candidate.tag):
+                violators[candidate.tag] = []
+            tmp = candidate.dict()
+            violators[candidate.tag].append(tmp)
+    violators = dict(sorted(violators.items()))
+    total = 0
+    for tag in violators.keys():
+        x = violators[tag]
+        violators[tag] = sorted(x, key=lambda y: y.get("event_id"))
+        print(f"{tag}: {len(x)}")
+        total += len(x)
+    print(f"total: {total}")
     with open("check_unit_spawns_result.json", "w") as f:
         f.write(json.dumps(violators, indent=2))
