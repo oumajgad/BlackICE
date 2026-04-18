@@ -297,21 +297,21 @@ function P.CollectPlayerStatistics()
 					FuelBalance = country:GetDailyBalance(CGoodsPool._FUEL_):Get(),
 					MoneyBalance = country:GetDailyBalance(CGoodsPool._MONEY_):Get(),
 
-					EnergyTradeFor = tadeAway:GetFloat(CGoodsPool._ENERGY_),
-					MetalTradeFor = tadeAway:GetFloat(CGoodsPool._METAL_),
-					RaresTradeFor = tadeAway:GetFloat(CGoodsPool._RARE_MATERIALS_),
-					OilTradeFor = tadeAway:GetFloat(CGoodsPool._CRUDE_OIL_),
-					SuppliesTradeFor = tadeAway:GetFloat(CGoodsPool._SUPPLIES_),
-					FuelTradeFor = tadeAway:GetFloat(CGoodsPool._FUEL_),
-					MoneyTradeFor = tadeAway:GetFloat(CGoodsPool._MONEY_),
+					EnergyTradeFor = tradeFor:GetFloat(CGoodsPool._ENERGY_),
+					MetalTradeFor = tradeFor:GetFloat(CGoodsPool._METAL_),
+					RaresTradeFor = tradeFor:GetFloat(CGoodsPool._RARE_MATERIALS_),
+					OilTradeFor = tradeFor:GetFloat(CGoodsPool._CRUDE_OIL_),
+					SuppliesTradeFor = tradeFor:GetFloat(CGoodsPool._SUPPLIES_),
+					FuelTradeFor = tradeFor:GetFloat(CGoodsPool._FUEL_),
+					MoneyTradeFor = tradeFor:GetFloat(CGoodsPool._MONEY_),
 
-					EnergyTradeAway = tradeFor:GetFloat(CGoodsPool._ENERGY_),
-					MetalTradeAway = tradeFor:GetFloat(CGoodsPool._METAL_),
-					RaresTradeAway = tradeFor:GetFloat(CGoodsPool._RARE_MATERIALS_),
-					OilTradeAway = tradeFor:GetFloat(CGoodsPool._CRUDE_OIL_),
-					SuppliesTradeAway = tradeFor:GetFloat(CGoodsPool._SUPPLIES_),
-					FuelTradeAway = tradeFor:GetFloat(CGoodsPool._FUEL_),
-					MoneyTradeAway = tradeFor:GetFloat(CGoodsPool._MONEY_)
+					EnergyTradeAway = tadeAway:GetFloat(CGoodsPool._ENERGY_),
+					MetalTradeAway = tadeAway:GetFloat(CGoodsPool._METAL_),
+					RaresTradeAway = tadeAway:GetFloat(CGoodsPool._RARE_MATERIALS_),
+					OilTradeAway = tadeAway:GetFloat(CGoodsPool._CRUDE_OIL_),
+					SuppliesTradeAway = tadeAway:GetFloat(CGoodsPool._SUPPLIES_),
+					FuelTradeAway = tadeAway:GetFloat(CGoodsPool._FUEL_),
+					MoneyTradeAway = tadeAway:GetFloat(CGoodsPool._MONEY_)
 				}
 				P.HandleProductionMinisterGeneralStats(countryTag, stats)
 			end
