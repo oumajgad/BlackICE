@@ -26,6 +26,7 @@ country_event = {
 		officer_pool = 1000
 	}
 }
+<<<<<<< Updated upstream
 
 # MILITARY EVENTS #
 # Polish R35 Tanks
@@ -79,6 +80,62 @@ country_event = {
 	}
 }
 # Superior School of War
+=======
+######################
+## MILITARY EVENTS	##
+######################
+### Polish R35 Tanks
+#country_event = {
+#	id = 99564
+#	trigger = {
+#		tag = ROM
+#		exists = yes
+#		war = no
+#		year = 1939
+#		month = 9
+#		supplies = 500
+#		or = {
+#			POL = {
+#				government_in_exile = yes
+#			}
+#
+#			not = {
+#				exists = POL
+#			}
+#		}
+#
+#		not = {
+#			has_country_flag = Polish_R35_Tanks
+#			year = 1941
+#		}
+#	}
+#	mean_time_to_happen =  {
+#		days = 1
+#	}
+#	title = "EVTNAME99564"
+#	desc = "EVTDESC99564"
+#	picture = "Polish_R35_Tanks"
+#	option = {
+#		name = "Carry on."
+#		ai_chance = {
+#			factor = 100
+#		}
+#		set_country_flag = Polish_R35_Tanks
+#		supplies = -500
+#		#Infantry_tank_brigade = 360
+#		load_oob = ROM/zDD-ROM_R35_Polish_Tanks.txt
+#	}
+#	option = {
+#		name = "We should wait."
+#		set_country_flag = Polish_R35_Tanks
+#		#Infantry_tank_brigade = 360
+#		ai_chance = {
+#			factor = 0
+#		}
+#	}
+#}
+#### Superior School of War
+>>>>>>> Stashed changes
 country_event = {
 	id = 99523
 	trigger = {
@@ -100,6 +157,14 @@ country_event = {
 	picture = "ROM_Superior_School_of_War"
 	option = {
 		name = "Let's put them to good use."
+		3917 = {
+			industry = 1
+			military_college = 2
+			leadership = 0.15
+			anti_air = 2
+			strategic_resource = military_academy
+		}
+		set_country_flag = MilitaryAcademy
 		set_country_flag = Superior_School_of_War
 		add_country_modifier = {
 			name = "Superior_School_of_War"
@@ -224,46 +289,39 @@ country_event = {
 		}
 	}
 }
+<<<<<<< Updated upstream
 # Romania joins Barbarossa
+=======
+#### Antonescu purges the Romanian Forces
+>>>>>>> Stashed changes
 country_event = {
 	id = 99549
-	trigger = {
-		tag = ROM
-		exists = yes
+	is_triggered_only = yes
+	title = "Antonescu purges the Romanian Army"
+	desc = "WIP"
 
-		not = {
-			faction = axis
-			faction = allies
-			faction = comintern
-			war_with = GER
-		}
-		year = 1941
-		war_with = SOV
-		ai = yes
-
-		not = {
-			has_country_flag = Romania_joins_Barbarossa
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "EVTNAME99549"
-	desc = "EVTDESC99549"
-	picture = "ROM_Barbarossa_begins"
+	picture = "ROM_Antonescu"
 	option = {
-		name = "Proceed."
-		manpower = 300
-		load_oob = ROM/zDD-ROM_Rezerve_Infantry_Divisions.txt
-		add_country_modifier = {
-			name = "Full_national_support"
-			duration = 1350
-		}
-		join_faction = axis
-		set_country_flag = Romania_joins_Barbarossa
+		name = "Get rid of them..."
+		set_country_flag = Antonescu_Purges
+
 		ai_chance = {
 			factor = 100
 		}
+		kill_leader = 4721
+		kill_leader = 4309
+		kill_leader = 4323
+		kill_leader = 4406
+		dissent = -1
+		national_unity = 2
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = Antonescu_Purges_no
+		ai_chance = {
+			factor = 0
+		}
+		national_unity = -1
 	}
 }
 # ODESSA HAS FALLEN
@@ -301,6 +359,7 @@ country_event = {
 		}
 	}
 }
+<<<<<<< Updated upstream
 
 # PRODUCTION GIFT #
 # BUCHAREST PURCHASES CZECHOSLOVAKIAN TANKS
@@ -475,6 +534,58 @@ country_event = {
 
 # ROMANIAN PROTOTYPES #
 # DO YOU WANT TO DEVELOP IT ? -- OCT 37
+=======
+############################
+####### PRODUCTION GIFT ####
+############################
+### BUCHAREST PURCHASES CZECHOSLOVAKIAN TANKS
+#country_event = {
+#	id = 99561
+#	trigger = {
+#		tag = ROM
+#		war = no
+#		year = 1936
+#		month = 8
+#		has_country_flag = romania_militarization
+#
+#		not = {
+#			has_country_flag = Bucharest_purchases_Czechoslovakian_tanks
+#			year = 1937
+#		}
+#		supplies = 1500
+#	}
+#	mean_time_to_happen =  {
+#		days = 1
+#	}
+#	title = "EVTNAME99561"
+#	desc = "EVTDESC99561"
+#	picture = "ROM_R2"
+#	option = {
+#		name = "Place an order for 126!"
+#		ai_chance = {
+#			factor = 100
+#		}
+#		set_country_flag = Bucharest_purchases_Czechoslovakian_tanks
+#		supplies = -500
+#		add_country_modifier = {
+#			name = "money_payment"
+#			duration = 180
+#		}
+#		load_oob = ROM/zDD-ROM_R2.txt
+#	}
+#	option = {
+#		name = "We're fine without!"
+#		set_country_flag = Bucharest_purchases_Czechoslovakian_tanks
+#		ai_chance = {
+#			factor = 0
+#		}
+#	}
+#}
+###################################
+####### ROMANIAN PROTOTYPES #######
+###################################
+### DO YOU WANT TO DEVELOP IT ? -- OCT 37
+>>>>>>> Stashed changes
 country_event = {
 	id = 99565
 	trigger = {
