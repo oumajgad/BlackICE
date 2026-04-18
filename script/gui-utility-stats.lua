@@ -180,23 +180,29 @@ if wx ~= nil then
 
 
     local statChoices = {
-        'intel_DomesticSpies', 'intel_FreeSpies', 'intel_TotalSpiesAbroad',
-		'ls_Percent_Diplomacy', 'ls_Percent_Espionage', 'ls_Percent_NCO', 'ls_Percent_Research', 'ls_TotalLeadership',
-		'pol_Popularity_Group_communism', 'pol_Popularity_Group_democracy', 'pol_Popularity_Group_fascism', 'pol_Popularity_Group_noIdeologygroup',
-        'pol_Popularity_fascistic', 'pol_Popularity_left_wing_radical', 'pol_Popularity_leninist', 'pol_Popularity_market_liberal',
-        'pol_Popularity_national_socialist', 'pol_Popularity_noIdeology', 'pol_Popularity_paternal_autocrat', 'pol_Popularity_social_conservative',
-        'pol_Popularity_social_democrat', 'pol_Popularity_social_liberal', 'pol_Popularity_stalinist',
-		'diplo_Neutrality', 'diplo_EffectiveNeutrality',
-		'prod__TotalIc', 'prod__IcEff',
-		'prod_Consumer_%', 'prod_Consumer_IC',
-		'prod_LendLease_%', 'prod_LendLease_IC',
-		'prod_Production_%', 'prod_Production_IC',
-		'prod_Reinforce_%', 'prod_Reinforce_IC',
-		'prod_Supply_%', 'prod_Supply_IC',
-		'prod_Upgrade_%', 'prod_Upgrade_IC',
-		'pool_energy', 'pool_metal', 'pool_rares', 'pool_oil', 'pool_supplies', 'pool_fuel', 'pool_money',
-		'other_u_LandCountTotal', 'other_u_AirCountTotal', 'other_u_NavalCountTotal', 'other_u_TotalDivisions',
-		'other_ManpowerTotal', "other_ProvincesControlled", "other_ProvincesOwned"
+        "intel_DomesticSpies", "intel_FreeSpies", "intel_TotalSpiesAbroad",
+		"ls_Percent_Diplomacy", "ls_Percent_Espionage", "ls_Percent_NCO", "ls_Percent_Research", "ls_TotalLeadership",
+		"pol_Popularity_Group_communism", "pol_Popularity_Group_democracy", "pol_Popularity_Group_fascism", "pol_Popularity_Group_noIdeologygroup",
+        "pol_Popularity_fascistic", "pol_Popularity_left_wing_radical", "pol_Popularity_leninist", "pol_Popularity_market_liberal",
+        "pol_Popularity_national_socialist", "pol_Popularity_noIdeology", "pol_Popularity_paternal_autocrat", "pol_Popularity_social_conservative",
+        "pol_Popularity_social_democrat", "pol_Popularity_social_liberal", "pol_Popularity_stalinist",
+		"diplo_Neutrality", "diplo_EffectiveNeutrality",
+		"prod__TotalIc", "prod__IcEff",
+		"prod_Consumer_%", "prod_Consumer_IC",
+		"prod_LendLease_%", "prod_LendLease_IC",
+		"prod_Production_%", "prod_Production_IC",
+		"prod_Reinforce_%", "prod_Reinforce_IC",
+		"prod_Supply_%", "prod_Supply_IC",
+		"prod_Upgrade_%", "prod_Upgrade_IC",
+		"res_pool_energy", "res_balance_energy", "res_tradeFor_energy", "res_tradeAway_energy",
+		"res_pool_metal", "res_balance_metal", "res_tradeFor_metal", "res_tradeAway_metal",
+		"res_pool_rares", "res_balance_rares", "res_tradeFor_rares", "res_tradeAway_rares",
+		"res_pool_oil", "res_balance_oil", "res_tradeFor_oil", "res_tradeAway_oil",
+		"res_pool_supplies", "res_balance_supplies", "res_tradeFor_supplies", "res_tradeAway_supplies",
+		"res_pool_fuel", "res_balance_fuel", "res_tradeFor_fuel", "res_tradeAway_fuel",
+		"res_pool_money", "res_balance_money", "res_tradeFor_money", "res_tradeAway_money",
+		"other_u_LandCountTotal", "other_u_AirCountTotal", "other_u_NavalCountTotal", "other_u_TotalDivisions",
+		"other_ManpowerTotal", "other_ProvincesControlled", "other_ProvincesOwned"
     }
     table.sort(statChoices)
     UI.m_listBox_Statistics_main_stats:Clear()

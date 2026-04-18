@@ -1669,6 +1669,8 @@ function HandleProductionMinister_Tick(minister)
 
 	if Stats.CollectStats == true and Stats.CustomListCheck(tostring(ProductionData.ministerTag)) then
 		countUnits(ProductionData)
+		local tadeAway = ProductionData.ministerCountry:GetTradedAwaySansAlliedSupply()
+		local tradeFor = ProductionData.ministerCountry:GetTradedForSansAlliedSupply()
 		local stats = {
 			LandCountTotal = ProductionData.LandCountTotal,
 			AirCountTotal = ProductionData.AirCountTotal,
@@ -1682,7 +1684,31 @@ function HandleProductionMinister_Tick(minister)
 			OilPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._CRUDE_OIL_):Get(),
 			MetalPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._METAL_):Get(),
 			EnergyPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._ENERGY_):Get(),
-			RaresPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._RARE_MATERIALS_):Get()
+			RaresPool = ProductionData.ministerCountry:GetPool():Get(CGoodsPool._RARE_MATERIALS_):Get(),
+
+			EnergyBalance = ProductionData.ministerCountry:GetDailyBalance(CGoodsPool._ENERGY_):Get(),
+			MetalBalance = ProductionData.ministerCountry:GetDailyBalance(CGoodsPool._METAL_):Get(),
+			RaresBalance = ProductionData.ministerCountry:GetDailyBalance(CGoodsPool._RARE_MATERIALS_):Get(),
+			OilBalance = ProductionData.ministerCountry:GetDailyBalance(CGoodsPool._CRUDE_OIL_):Get(),
+			SuppliesBalance = ProductionData.ministerCountry:GetDailyBalance(CGoodsPool._SUPPLIES_):Get(),
+			FuelBalance = ProductionData.ministerCountry:GetDailyBalance(CGoodsPool._FUEL_):Get(),
+			MoneyBalance = ProductionData.ministerCountry:GetDailyBalance(CGoodsPool._MONEY_):Get(),
+
+			EnergyTradeFor = tadeAway:GetFloat(CGoodsPool._ENERGY_),
+			MetalTradeFor = tadeAway:GetFloat(CGoodsPool._METAL_),
+			RaresTradeFor = tadeAway:GetFloat(CGoodsPool._RARE_MATERIALS_),
+			OilTradeFor = tadeAway:GetFloat(CGoodsPool._CRUDE_OIL_),
+			SuppliesTradeFor = tadeAway:GetFloat(CGoodsPool._SUPPLIES_),
+			FuelTradeFor = tadeAway:GetFloat(CGoodsPool._FUEL_),
+			MoneyTradeFor = tadeAway:GetFloat(CGoodsPool._MONEY_),
+
+			EnergyTradeAway = tradeFor:GetFloat(CGoodsPool._ENERGY_),
+			MetalTradeAway = tradeFor:GetFloat(CGoodsPool._METAL_),
+			RaresTradeAway = tradeFor:GetFloat(CGoodsPool._RARE_MATERIALS_),
+			OilTradeAway = tradeFor:GetFloat(CGoodsPool._CRUDE_OIL_),
+			SuppliesTradeAway = tradeFor:GetFloat(CGoodsPool._SUPPLIES_),
+			FuelTradeAway = tradeFor:GetFloat(CGoodsPool._FUEL_),
+			MoneyTradeAway = tradeFor:GetFloat(CGoodsPool._MONEY_)
 		}
 
 		Stats.HandleProductionMinisterGeneralStats(ProductionData.ministerTag, stats)
