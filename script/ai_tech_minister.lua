@@ -320,7 +320,14 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 		Leadership.Percent_NCO,
 		Leadership.Slots_Research = CustomBalanceLeadershipSliders(StandardDataObject, Leadership, variables)
 		if vbSliders then
-			local command = CChangeLeadershipCommand(StandardDataObject.ministerTag, Leadership.Percent_NCO, Leadership.Percent_Diplomacy, Leadership.Percent_Espionage, Leadership.Percent_Research)
+			local max = math.max
+			local command = CChangeLeadershipCommand(
+				StandardDataObject.ministerTag,
+				max(0, Leadership.Percent_NCO),
+				max(0, Leadership.Percent_Diplomacy),
+				max(0, Leadership.Percent_Espionage),
+				max(0, Leadership.Percent_Research)
+			)
 			StandardDataObject.ministerAI:Post(command)
 		end
 		-- Utils.LUA_DEBUGOUT("CustomBalanceLeadershipSliders: " .. os.clock() - t)
