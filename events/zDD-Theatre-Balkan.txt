@@ -983,8 +983,8 @@ country_event = {
 				}
 			}
 		}
-			ai_chance = {
-			factor = 100
+		ai_chance = {
+		factor = 100
 		}
 	}
 	option = {
@@ -1242,6 +1242,403 @@ country_event = {
 			chief_of_army = 21150
 			chief_of_navy = 21157
 			chief_of_air = 21163
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# OPERATION MARGARETHE II
+country_event = {
+	id = 999997
+	trigger = {
+		tag = GER
+		war_with = SOV
+		not = {
+			3306 = {
+				# Iasi
+				controller = {
+					faction = axis
+				}
+			}
+		}
+
+		not = {
+			1694 = {
+				# Minsk
+				controller = {
+					faction = axis
+				}
+			}
+		}
+		not = {
+			3375 = {
+				# Husi
+				controller = {
+					faction = axis
+				}
+			}
+		}
+		not = {
+			3444 = {
+				# Bacau
+				controller = {
+					faction = axis
+				}
+			}
+		}				
+		3917 = {
+			controlled_by = ROM
+		}
+		# Bucuresti
+		date = 1944.8.23
+		ROM = {
+			is_subject = no
+		}			
+		not = {
+			has_country_flag = operation_margarethe2
+			has_country_flag = foreign_ministry
+			has_country_flag = intelligence_headquarter
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME999992"
+	desc = "EVTDESC999992"
+	picture = "operation_margarethe2"
+	option = {
+		name = "EVTOPTA999992"
+		set_country_flag = operation_margarethe2
+		random_list = {
+			10 = {
+				ROM = {
+					country_event = 999993
+					national_socialist = {
+						organisation = 100
+						popularity = 100
+					}
+				}
+			metal = 5000
+			rare_materials = 1000
+			fuel = 10000
+			supplies = 2500
+			create_vassal = ROM
+			}
+			90 = {
+				ROM = {
+				country_event = 999994
+				}
+			}
+		}
+			ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTB99509"
+		set_country_flag = operation_margarethe2
+			R0M = {
+			country_event = 999994
+			}	
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# OPERATION MARGARETHE II - GER ACTIONUNIQUEBUILDINGS
+country_event = {
+	id = 999992
+	trigger = {
+		tag = GER
+		war_with = SOV
+		not = {
+			3306 = {
+				# Iasi
+				controller = {
+					faction = axis
+				}
+			}
+		}
+
+		not = {
+			1694 = {
+				# Minsk
+				controller = {
+					faction = axis
+				}
+			}
+		}
+		not = {
+			3375 = {
+				# Husi
+				controller = {
+					faction = axis
+				}
+			}
+		}
+		not = {
+			3444 = {
+				# Bacau
+				controller = {
+					faction = axis
+				}
+			}
+		}				
+		3917 = {
+			controlled_by = ROM
+		}
+		# Bucuresti
+		date = 1944.8.23
+		ROM = {
+			is_subject = no
+		}			
+		or = {
+			has_country_flag = foreign_ministry
+			has_country_flag = intelligence_headquarter
+		}
+
+		not = {
+			has_country_flag = operation_margarethe2
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME999992"
+	desc = "EVTDESC999992"
+	picture = "operation_margarethe2"
+	option = {
+		name = "EVTOPTA999992"
+		set_country_flag = operation_margarethe2
+		random_list = {
+			100 = {
+				ROM = {
+					country_event = 999993
+					national_socialist = {
+						organisation = 100
+						popularity = 100
+					}
+				}
+			metal = 5000
+			rare_materials = 1000
+			fuel = 10000
+			supplies = 2500
+			create_vassal = ROM
+			}
+			0 = {
+				ROM = {
+				country_event = 999994
+				}
+			}
+		}
+			ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTB99509"
+		set_country_flag = operation_margarethe2
+			R0M = {
+			country_event = 999994
+			}	
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# OPERATION MARGARETHE II - ROM REACTION
+country_event = {
+	id = 999993
+	is_triggered_only = yes
+	title = "EVTNAME999992"
+	desc = "EVTDESC999992"
+	picture = "operation_margarethe2"
+	option = {
+		name = "EVTOPTB999992"
+		dissent = 10
+		government = national_socialism
+		head_of_state = 22007
+		head_of_government = 22007
+		manpower = 50
+		metal = -5000
+		rare_materials = -1000
+		supplies = -2500
+		fuel = -10000
+		remove_minister = 22034
+		set_country_flag = operation_margarethe2
+	}
+}
+# OPERATION MARGARETHE II NOT ACHIEVED - ROM SWITCH SIDE TO COMINTERN (KING MIHAI'S COUP)
+country_event = {
+	id = 999994
+	is_triggered_only = yes
+	title = "EVTNAME999994"
+	desc = "EVTDESC999994"
+	picture = "ROM_switch"
+	option = {
+		name = "EVTOPTA999994"
+		set_country_flag = switch_side
+		leave_faction = axis
+		remove_brigade = "Ion Victor Antonescu"
+		remove_brigade = "Ion Victor Antonescu"		
+		remove_minister = 22007		
+		GER = {
+			country_event = 999995
+		}
+		SOV = {
+			country_event = 999996
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# OPERATION Margarethe II NOT ACHIEVED - GER REACTION
+country_event = {
+	id = 999995
+	is_triggered_only = yes
+	title = "EVTNAME999994"
+	desc = "EVTDESC999994"
+	picture = "ROM_switch"
+	option = {
+		name = "EVTOPTB999994"
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# OPERATION MARGARETHE II NOT ACHIEVED - SOV REACTION
+country_event = {
+	id = 999996
+	is_triggered_only = yes
+	title = "EVTNAME999994"
+	desc = "EVTDESC999994"
+	picture = "ROM_switch"
+	option = {
+		name = "EVTOPTC999994"
+		ROM = {
+			join_faction = comintern
+			ROM = {
+				war = {
+					target = GER
+					attacker_goal = {
+						casus_belli = division_germany
+					}
+				}
+			}
+			leninist = {
+				organisation = 20
+				popularity = 10
+			}
+			stalinist = {
+				organisation = 70
+				popularity = 50
+			}
+			government = socialist_republic
+			head_of_state = 22034
+			head_of_government = 22049
+			foreign_minister = 22078
+			armament_minister = 22096
+			minister_of_security = 22109
+			minister_of_intelligence = 22095
+			chief_of_staff = 22130
+			chief_of_army = 22136
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# 1944 Bulgarian coup d'état
+country_event = {
+	id = 999998
+	trigger = {
+		tag = BUL
+		war_with = SOV
+		ROM = {
+			faction = comintern
+		}		
+		4371 = {
+			controlled_by = BUL
+		}
+		# Sofia
+		date = 1944.9.9
+		BUL = {
+			is_subject = no
+		}			
+		not = {
+			has_country_flag = switch_side
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME999998"
+	desc = "EVTDESC999998"
+	picture = "BUL_switch"
+	option = {
+		name = "EVTOPTA999998"
+		set_country_flag = switch_side
+		leave_faction = axis	
+		remove_minister = 19052
+		remove_minister = 19042					
+		GER = {
+			country_event = 999999
+		}
+		SOV = {
+			country_event = 1000001
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# 1944 Bulgarian Coup GER Reaction
+country_event = {
+	id = 999999
+	is_triggered_only = yes
+	title = "EVTNAME999998"
+	desc = "EVTDESC999998"
+	picture = "BUL_switch"
+	option = {
+		name = "EVTOPTB999998"
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# 1944 Bulgarian Coup SOV REACTION
+country_event = {
+	id = 1000001
+	is_triggered_only = yes
+	title = "EVTNAME999998"
+	desc = "EVTDESC999998"
+	picture = "BUL_switch"
+	option = {
+		name = "EVTOPTC999998"
+		BUL = {
+			join_faction = comintern
+			BUL = {
+				war = {
+					target = GER
+					attacker_goal = {
+						casus_belli = division_germany
+					}
+				}
+			}
+			leninist = {
+				organisation = 20
+				popularity = 10
+			}
+			stalinist = {
+				organisation = 70
+				popularity = 50
+			}
+			government = socialist_republic
+			head_of_state = 19050
+			head_of_government = 19059
+			foreign_minister = 19059
 		}
 		ai_chance = {
 			factor = 100
