@@ -31,6 +31,18 @@ function P.CustomListCheck(tag)
 	return false
 end
 
+function P.AddTagToCustomList(tag)
+	if P.CustomCountryList ~= nil then
+		P.CustomCountryList[tag] = true
+	end
+end
+
+function P.RemoveTagFromCustomList(tag)
+	if P.CustomCountryList ~= nil then
+		P.CustomCountryList[tag] = false
+	end
+end
+
 
 P.StatsIdent = nil
 function P.GetCurrentIdent()
@@ -139,6 +151,8 @@ function P.HandleIntelligenceMinisterStats(countryTag, country)
 	for group, popularity in pairs(groupPopularity) do
 		P.AddStat(tag, "pol_Popularity_Group_" .. group, string.format('%.02f', popularity))
 	end
+	P.AddStat(tag, "other_ProvincesControlled", tostring(string.format('%.0f', country:GetNumberOfControlledProvinces())))
+	P.AddStat(tag, "other_ProvincesOwned", tostring(string.format('%.0f', country:GetNumberOfOwnedProvinces())))
 end
 
 
@@ -149,13 +163,38 @@ function P.HandleProductionMinisterGeneralStats(countryTag, stats)
 	P.AddStat(tag, "other_u_NavalCountTotal", tostring(string.format('%.0f', stats.NavalCountTotal)))
 	P.AddStat(tag, "other_u_TotalDivisions", tostring(string.format('%.0f', stats.TotalDivisions)))
 	P.AddStat(tag, "other_ManpowerTotal", tostring(string.format('%.0f', stats.ManpowerTotal)))
-	P.AddStat(tag, "pool_energy", tostring(string.format('%.0f', stats.EnergyPool)))
-	P.AddStat(tag, "pool_metal", tostring(string.format('%.0f', stats.MetalPool)))
-	P.AddStat(tag, "pool_rares", tostring(string.format('%.0f', stats.RaresPool)))
-	P.AddStat(tag, "pool_oil", tostring(string.format('%.0f', stats.OilPool)))
-	P.AddStat(tag, "pool_supplies", tostring(string.format('%.0f', stats.SuppliesPool)))
-	P.AddStat(tag, "pool_fuel", tostring(string.format('%.0f', stats.FuelPool)))
-	P.AddStat(tag, "pool_money", tostring(string.format('%.0f', stats.MoneyPool)))
+	-- Resource pools
+	P.AddStat(tag, "res_pool_energy", tostring(string.format('%.0f', stats.EnergyPool)))
+	P.AddStat(tag, "res_pool_metal", tostring(string.format('%.0f', stats.MetalPool)))
+	P.AddStat(tag, "res_pool_rares", tostring(string.format('%.0f', stats.RaresPool)))
+	P.AddStat(tag, "res_pool_oil", tostring(string.format('%.0f', stats.OilPool)))
+	P.AddStat(tag, "res_pool_supplies", tostring(string.format('%.0f', stats.SuppliesPool)))
+	P.AddStat(tag, "res_pool_fuel", tostring(string.format('%.0f', stats.FuelPool)))
+	P.AddStat(tag, "res_pool_money", tostring(string.format('%.0f', stats.MoneyPool)))
+	-- Resource production
+	P.AddStat(tag, "res_balance_energy", tostring(string.format('%.0f', stats.EnergyBalance)))
+	P.AddStat(tag, "res_balance_metal", tostring(string.format('%.0f', stats.MetalBalance)))
+	P.AddStat(tag, "res_balance_rares", tostring(string.format('%.0f', stats.RaresBalance)))
+	P.AddStat(tag, "res_balance_oil", tostring(string.format('%.0f', stats.OilBalance)))
+	P.AddStat(tag, "res_balance_supplies", tostring(string.format('%.0f', stats.SuppliesBalance)))
+	P.AddStat(tag, "res_balance_fuel", tostring(string.format('%.0f', stats.FuelBalance)))
+	P.AddStat(tag, "res_balance_money", tostring(string.format('%.0f', stats.MoneyBalance)))
+	-- Resource import
+	P.AddStat(tag, "res_tradeFor_energy", tostring(string.format('%.0f', stats.EnergyTradeFor)))
+	P.AddStat(tag, "res_tradeFor_metal", tostring(string.format('%.0f', stats.MetalTradeFor)))
+	P.AddStat(tag, "res_tradeFor_rares", tostring(string.format('%.0f', stats.RaresTradeFor)))
+	P.AddStat(tag, "res_tradeFor_oil", tostring(string.format('%.0f', stats.OilTradeFor)))
+	P.AddStat(tag, "res_tradeFor_supplies", tostring(string.format('%.0f', stats.SuppliesTradeFor)))
+	P.AddStat(tag, "res_tradeFor_fuel", tostring(string.format('%.0f', stats.FuelTradeFor)))
+	P.AddStat(tag, "res_tradeFor_money", tostring(string.format('%.0f', stats.MoneyTradeFor)))
+	-- Resource export
+	P.AddStat(tag, "res_tradeAway_energy", tostring(string.format('%.0f', stats.EnergyTradeAway)))
+	P.AddStat(tag, "res_tradeAway_metal", tostring(string.format('%.0f', stats.MetalTradeAway)))
+	P.AddStat(tag, "res_tradeAway_rares", tostring(string.format('%.0f', stats.RaresTradeAway)))
+	P.AddStat(tag, "res_tradeAway_oil", tostring(string.format('%.0f', stats.OilTradeAway)))
+	P.AddStat(tag, "res_tradeAway_supplies", tostring(string.format('%.0f', stats.SuppliesTradeAway)))
+	P.AddStat(tag, "res_tradeAway_fuel", tostring(string.format('%.0f', stats.FuelTradeAway)))
+	P.AddStat(tag, "res_tradeAway_money", tostring(string.format('%.0f', stats.MoneyTradeAway)))
 end
 
 
@@ -227,27 +266,55 @@ end
 function P.CollectPlayerStatistics()
 	if P.CollectStats == true then
 		for i, tag in pairs(G_PlayerCountries) do
-			local countryTag = CCountryDataBase.GetTag(tag)
-			local country = countryTag:GetCountry()
-			P.HandleTechMinisterStats(countryTag, country)
-			P.HandleProductionMinisterSliderStats(countryTag, country)
-			P.HandleIntelligenceMinisterStats(countryTag, country)
-			local stats = {
-				LandCountTotal = country:GetUnits():GetTotalNumOfRegiments(),
-				AirCountTotal = country:GetUnits():GetTotalNumOfPlanes(),
-				NavalCountTotal = country:GetUnits():GetTotalNumOfShips(),
-				ManpowerTotal = country:GetManpower():Get(),
-				TotalDivisions = country:GetUnits():GetTotalAmountOfDivisions(),
+			if P.CustomListCheck(tag) then
+				local countryTag = CCountryDataBase.GetTag(tag)
+				local country = countryTag:GetCountry()
+				local tadeAway = country:GetTradedAwaySansAlliedSupply()
+				local tradeFor = country:GetTradedForSansAlliedSupply()
+				P.HandleTechMinisterStats(countryTag, country)
+				P.HandleProductionMinisterSliderStats(countryTag, country)
+				P.HandleIntelligenceMinisterStats(countryTag, country)
+				local stats = {
+					LandCountTotal = country:GetUnits():GetTotalNumOfRegiments(),
+					AirCountTotal = country:GetUnits():GetTotalNumOfPlanes(),
+					NavalCountTotal = country:GetUnits():GetTotalNumOfShips(),
+					ManpowerTotal = country:GetManpower():Get(),
+					TotalDivisions = country:GetUnits():GetTotalAmountOfDivisions(),
 
-				SuppliesPool = country:GetPool():Get(CGoodsPool._SUPPLIES_):Get(),
-				FuelPool = country:GetPool():Get(CGoodsPool._FUEL_):Get(),
-				MoneyPool = country:GetPool():Get(CGoodsPool._MONEY_):Get(),
-				OilPool = country:GetPool():Get(CGoodsPool._CRUDE_OIL_):Get(),
-				MetalPool = country:GetPool():Get(CGoodsPool._METAL_):Get(),
-				EnergyPool = country:GetPool():Get(CGoodsPool._ENERGY_):Get(),
-				RaresPool = country:GetPool():Get(CGoodsPool._RARE_MATERIALS_):Get()
-			}
-			P.HandleProductionMinisterGeneralStats(countryTag, stats)
+					SuppliesPool = country:GetPool():Get(CGoodsPool._SUPPLIES_):Get(),
+					FuelPool = country:GetPool():Get(CGoodsPool._FUEL_):Get(),
+					MoneyPool = country:GetPool():Get(CGoodsPool._MONEY_):Get(),
+					OilPool = country:GetPool():Get(CGoodsPool._CRUDE_OIL_):Get(),
+					MetalPool = country:GetPool():Get(CGoodsPool._METAL_):Get(),
+					EnergyPool = country:GetPool():Get(CGoodsPool._ENERGY_):Get(),
+					RaresPool = country:GetPool():Get(CGoodsPool._RARE_MATERIALS_):Get(),
+
+					EnergyBalance = country:GetDailyBalance(CGoodsPool._ENERGY_):Get(),
+					MetalBalance = country:GetDailyBalance(CGoodsPool._METAL_):Get(),
+					RaresBalance = country:GetDailyBalance(CGoodsPool._RARE_MATERIALS_):Get(),
+					OilBalance = country:GetDailyBalance(CGoodsPool._CRUDE_OIL_):Get(),
+					SuppliesBalance = country:GetDailyBalance(CGoodsPool._SUPPLIES_):Get(),
+					FuelBalance = country:GetDailyBalance(CGoodsPool._FUEL_):Get(),
+					MoneyBalance = country:GetDailyBalance(CGoodsPool._MONEY_):Get(),
+
+					EnergyTradeFor = tradeFor:GetFloat(CGoodsPool._ENERGY_),
+					MetalTradeFor = tradeFor:GetFloat(CGoodsPool._METAL_),
+					RaresTradeFor = tradeFor:GetFloat(CGoodsPool._RARE_MATERIALS_),
+					OilTradeFor = tradeFor:GetFloat(CGoodsPool._CRUDE_OIL_),
+					SuppliesTradeFor = tradeFor:GetFloat(CGoodsPool._SUPPLIES_),
+					FuelTradeFor = tradeFor:GetFloat(CGoodsPool._FUEL_),
+					MoneyTradeFor = tradeFor:GetFloat(CGoodsPool._MONEY_),
+
+					EnergyTradeAway = tadeAway:GetFloat(CGoodsPool._ENERGY_),
+					MetalTradeAway = tadeAway:GetFloat(CGoodsPool._METAL_),
+					RaresTradeAway = tadeAway:GetFloat(CGoodsPool._RARE_MATERIALS_),
+					OilTradeAway = tadeAway:GetFloat(CGoodsPool._CRUDE_OIL_),
+					SuppliesTradeAway = tadeAway:GetFloat(CGoodsPool._SUPPLIES_),
+					FuelTradeAway = tadeAway:GetFloat(CGoodsPool._FUEL_),
+					MoneyTradeAway = tadeAway:GetFloat(CGoodsPool._MONEY_)
+				}
+				P.HandleProductionMinisterGeneralStats(countryTag, stats)
+			end
 		end
 	end
 end
@@ -269,12 +336,10 @@ end
 
 function P.UpdateCustomCountryListInStatSelection()
 	local count = UI.m_listBox_Statistics_country_list:GetCount()
-	Utils.LUA_DEBUGOUT("count: " .. count)
 	local countries = {}
 	for i = 0, count - 1 do
 		local _tag = UI.m_listBox_Statistics_country_list:GetString(i)
 		table.insert(countries, _tag)
-		Utils.LUA_DEBUGOUT("_tag: " .. _tag)
 	end
 	table.sort(countries)
 	UI.m_comboBox_Statistics_main1:Clear()

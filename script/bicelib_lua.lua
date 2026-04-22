@@ -6,7 +6,7 @@ function BiceLibLuaLog(toLog)
     end
 end
 function ResetBiceLibLuaLog()
-    local f = io.open("lua_output.txt", "a")
+    local f = io.open("lua_output.txt", "w")
     if f ~= nil then
         f:write("")
         f:close()

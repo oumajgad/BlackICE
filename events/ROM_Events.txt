@@ -1,8 +1,6 @@
-###########################
-### ROMANIAN OOB EVENTS ###
-###########################
+# ROMANIAN OOB EVENTS #
 
-## Romanian Historical Units
+# Romanian Historical Units
 country_event = {
 	id = 15000
 	is_triggered_only = yes
@@ -25,7 +23,7 @@ country_event = {
 		}
 	}
 }
-## 1st Guard Division
+# 1st Guard Division
 country_event = {
 	id = 15001
 	is_triggered_only = yes
@@ -38,7 +36,7 @@ country_event = {
 
         #Removing Pre-existing Guard elements
         remove_brigade = "Regimente 1/2 Vanatori Garda"
-        remove_brigade = "Regimente 1 Artilerie Garda"
+        remove_brigade = "Regiment 1 Artilerie Garda"
         remove_brigade = "Companie Transport Brigada Garda"
 
 		ai_chance = {
@@ -52,11 +50,11 @@ country_event = {
 				}
 				change_variable = {
 					which = IC_days_spent
-					value = +500
+					value = +200
 				}
-				energy = -1000
-				metal = -500
-				rare_materials = -250
+				energy = -400
+				metal = -200
+				rare_materials = -100
 				load_oob = ROM/ROM_1st_Guard_Division.txt
 			}
 		}
@@ -77,6 +75,2330 @@ country_event = {
 	option = {
 		name = "No need"
 		set_country_flag = ROM_1GD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Mixed Border Detachment
+country_event = {
+	id = 15002
+	is_triggered_only = yes
+	title = "Mixed Border Detachment"
+	desc = "EVTDESC15002"
+	picture = "ROM_Garrison"
+	option = {
+		name = "Form the Mixed Border Detachment"
+		set_country_flag = ROM_MBD
+
+        #Removing Pre-existing Border Elements
+        remove_brigade = "Regimente 1/2 Granicieri"
+        remove_brigade = "Regiment 1 Artilerie Gr."
+        remove_brigade = "Companie Transport Brigada 1 Gr."
+		remove_brigade = "Regimente 4/7 Granicieri"
+		remove_brigade = "Companie Transport Brigada 2 Gr."
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +100
+				}
+				energy = -200
+				metal = -100
+				rare_materials = -50
+				load_oob = ROM/ROM_Mixed_Border_Detachment.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Mixed_Border_Detachment.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_MBD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 2nd Guard Division
+country_event = {
+	id = 15003
+	is_triggered_only = yes
+	title = "2nd Guard Division"
+	desc = "EVTDESC15003"
+	picture = "ROM_1st_Guard_Division"
+	option = {
+		name = "Form the 2nd Guard Division"
+		set_country_flag = ROM_2GD
+
+        #Removing the Mixed Border Detachment
+        remove_brigade = "Cartier Detasamentul Mixt Gr."
+        remove_brigade = "Regimente 2/3/4 Graniseresc"
+        remove_brigade = "Regiment 70 Artilerie"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +200
+				}
+				energy = -400
+				metal = -200
+				rare_materials = -100
+				load_oob = ROM/ROM_2nd_Guard_Division.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_2nd_Guard_Division.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_2GD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 1st Border Guards Division
+country_event = {
+	id = 15004
+	is_triggered_only = yes
+	title = "1st Border Guards Division"
+	desc = "EVTDESC15004"
+	picture = "Greater_Romania"
+	option = {
+		name = "Form the 1st Border Guards Division"
+		set_country_flag = ROM_1BG
+
+        #Removing former garrison units
+        remove_brigade = "Regimente 3/5 Granicieri"
+        remove_brigade = "Companie Transport Brigada 3 Gr."
+        remove_brigade = "Regimente 6/8 Granicieri"
+		remove_brigade = "Companie Transport Brigada 4 Gr."
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +400
+				}
+				energy = -800
+				metal = -400
+				rare_materials = -200
+				load_oob = ROM/ROM_1st_Border_Guards.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_1st_Border_Guards.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_1BG_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 4th Mountain Brigade
+country_event = {
+	id = 15005
+	is_triggered_only = yes
+	title = "4th Mountain Brigade"
+	desc = "EVTDESC15005"
+	picture = "ROM_1st_Guard_Division"
+	option = {
+		name = "Form the 4th Moutain Brigade"
+		set_country_flag = ROM_4MB
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1300
+				}
+				energy = -2600
+				metal = -1300
+				rare_materials = -750
+				load_oob = ROM/ROM_4th_Mountain_Brigade.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_4th_Mountain_Brigade.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_4MB_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Reserve Divisions
+country_event = {
+	id = 15006
+	is_triggered_only = yes
+	title = "Reserve Divisions"
+	desc = "EVTDESC15006"
+	picture = "ROM_Garrison"
+	option = {
+		name = "Form 6 Reserve Divisions"
+		set_country_flag = ROM_RD
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +6000 #Cost of a ROM 1939 Infantry Division is 1500 IC, but they come here with models reduced to 0 so I applied a lower IC value
+				}
+				energy = -12000
+				metal = -6000
+				rare_materials = -3000
+				load_oob = ROM/ROM_Reserve_Divisions_1.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Reserve_Divisions_1.txt
+			}
+		}
+	}
+	option = {
+		name = "Form 9 Reserve Divisions"
+		set_country_flag = ROM_RD
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +9000
+				}
+				energy = -18000
+				metal = -9000
+				rare_materials = -4500
+				load_oob = ROM/ROM_Reserve_Divisions_2.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Reserve_Divisions_2.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_RD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 1st Fortification Brigade
+country_event = {
+	id = 15007
+	is_triggered_only = yes
+	title = "1st Fortification Brigade"
+	desc = "EVTDESC15007"
+	picture = "ROM_Fortification"
+	option = {
+		name = "Form the 1st Fortification Brigade"
+		set_country_flag = ROM_FB1
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2000
+				}
+				energy = -4000
+				metal = -2000
+				rare_materials = -1000
+				load_oob = ROM/ROM_1st_Fortification_Brigade.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_1st_Fortification_Brigade.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_FB1_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 2nd Fortification Brigade
+country_event = {
+	id = 15008
+	is_triggered_only = yes
+	title = "2nd Fortification Brigade"
+	desc = "EVTDESC15008"
+	picture = "ROM_Fortification"
+	option = {
+		name = "Form the 2nd Fortification Brigade"
+		set_country_flag = ROM_FB2
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +800
+				}
+				energy = -1600
+				metal = -800
+				rare_materials = -400
+				load_oob = ROM/ROM_2nd_Fortification_Brigade.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_2nd_Fortification_Brigade.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_FB2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Fortification Division
+country_event = {
+	id = 15009
+	is_triggered_only = yes
+	title = "Fortification Division"
+	desc = "EVTDESC15009"
+	picture = "ROM_Fortification"
+	option = {
+		name = "Form the Fortification Division"
+		set_country_flag = ROM_FD
+
+ 		#Removing 1st Fortification Brigade
+        remove_brigade = "Cartier Brigada 1 Fortificatii"
+        remove_brigade = "Regimente 1/2 Fortificatii"
+        remove_brigade = "Regimente 1 Artilerie Grea Fortificatii"
+		remove_brigade = "Regimente 1 Artilerie Fortificatii"
+        remove_brigade = "Bat. AC/Comp. AA/Batalion 81 Pioneri"
+        remove_brigade = "Companie Transport Brig. 1 Fort."
+
+		#Removing 2nd Fortification Brigade
+        remove_brigade = "Cartier Brigada 2 Fortificatii"
+        remove_brigade = "Regimente 28/53/68 Fortificatii"
+        remove_brigade = "Regimente 4 Artilerie Fortificatii"
+		remove_brigade = "Bat. AC/Comp. AA/Batalion 82 Pioneri"
+        remove_brigade = "Companie Transport Brig. 2 Fort."
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +300
+				}
+				energy = -600
+				metal = -300
+				rare_materials = -150
+				load_oob = ROM/ROM_1st_Fortification_Division.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_1st_Fortification_Division.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_FD_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 1st Army
+country_event = {
+	id = 15010
+	is_triggered_only = yes
+	title = "Romanian 1st Army"
+	desc = "EVTDESC15010"
+	picture = "Greater_Romania"
+	option = {
+		name = "Form this Army"
+		set_country_flag = ROM_1Army
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +600
+				}
+				energy = -1200
+				metal = -600
+				rare_materials = -300
+				load_oob = ROM/ROM_1st_Army.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_1st_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_1Army_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 3rd Army
+country_event = {
+	id = 15011
+	is_triggered_only = yes
+	title = "Romanian 3rd Army"
+	desc = "EVTDESC15011"
+	picture = "Greater_Romania"
+	option = {
+		name = "Form this Army"
+		set_country_flag = ROM_3Army
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +600
+				}
+				energy = -1200
+				metal = -600
+				rare_materials = -300
+				load_oob = ROM/ROM_3rd_Army.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_3rd_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_3Army_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 4th Army
+country_event = {
+	id = 15012
+	is_triggered_only = yes
+	title = "Romanian 4th Army"
+	desc = "EVTDESC15012"
+	picture = "Greater_Romania"
+	option = {
+		name = "Form this Army"
+		set_country_flag = ROM_4Army
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +600
+				}
+				energy = -1200
+				metal = -600
+				rare_materials = -300
+				load_oob = ROM/ROM_4th_Army.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_4th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_4Army_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Cavalry Divisions 1941
+country_event = {
+	id = 15013
+	is_triggered_only = yes
+	title = "Motorization of Cavalry Divisions"
+	desc = "EVTDESC15013"
+	picture = "ROM_Cavalry_2"
+	option = {
+		name = "Let's motorize them"
+		set_country_flag = ROM_Cav1941
+
+		#Removing the 6 former Cavalry brigades
+		remove_brigade = "Cartier Brigazii 1 Cavalerie"
+		remove_brigade = "Rgt. 1/2 Rosiori"
+		remove_brigade = "Regiment 1 Artilerie Calareata"
+		remove_brigade = "Companie Transport Brigazii 1 Cavalerie"
+
+		remove_brigade = "Cartier Brigazii 5 Cavalerie"
+		remove_brigade = "Regimente 7/8 Rosiori"
+		remove_brigade = "Regiment 2 Artilerie Calareata"
+		remove_brigade = "Companie Transport Brigazii 5 Cavalerie"
+
+		remove_brigade = "Cartier Brigazii 6 Cavalerie"
+		remove_brigade = "Regimente 9 Rosiori/5 Calarasi"
+		remove_brigade = "Regiment 4 Artilerie Calareata" 
+		remove_brigade = "Companie Transport Brigazii 6 Cavalerie" 
+
+		remove_brigade = "Cartier Brigazii 8 Cavalerie"
+		remove_brigade = "Regimente 4 Rosiori/2 Calarasi"
+		remove_brigade = "Regiment 3 Artilerie Calareata"
+		remove_brigade = "Companie Transport Brigazii 8 Cavalerie"
+
+		remove_brigade = "Cartier Brigazii 7 Cavalerie"
+		remove_brigade = "Regimente 12 Rosiori/9 Calarasi"
+		remove_brigade = "Regiment 5 Artilerie Calareata"
+		remove_brigade = "Companie Transport Brigazii 7 Cavalerie"
+
+		remove_brigade = "Cartier Brigazii 9 Cavalerie"
+		remove_brigade = "Regimente 3 Rosiori/13 Calarasi"
+		remove_brigade = "Regiment 6 Artilerie Calareata"
+		remove_brigade = "Companie Transport Brigazii 9 Cavalerie"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2700
+				}
+				energy = -5400
+				metal = -2700
+				rare_materials = -1350
+				load_oob = ROM/ROM_Cavalry_Divisions_1941.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Cavalry_Divisions_1941.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_Cav1941_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Cavalry Divisions 1943
+country_event = {
+	id = 15014
+	is_triggered_only = yes
+	title = "Motorization of Cavalry Divisions (1943)"
+	desc = "EVTDESC15014"
+	picture = "Greater_Romania"
+	option = {
+		name = "Let's upgrade them"
+		set_country_flag = ROM_Cav1943
+
+		#Removing the 6 former Cavalry brigades
+		remove_brigade = "Cartier Brigazii 5 Cavalerie"
+		remove_brigade = "Regiment 7/8 Calarasi"
+		remove_brigade = "Regiment 6 Rosiori Moto"
+		remove_brigade = "Regiment 2 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 42"
+		remove_brigade = "Companie Transport Brigazii 5 Cavalerie"
+
+		remove_brigade = "Cartier Brigazii 6 Cavalerie"
+		remove_brigade = "Rgt. 5 Calarasi/Rgt. 9 Rosiori"
+		remove_brigade = "Regiment 10 Rosiori Moto"
+		remove_brigade = "Regiment 4 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 43"
+		remove_brigade = "Companie Transport Brigazii 6 Cavalerie"
+
+		remove_brigade = "Cartier Brigazii 8 Cavalerie"
+		remove_brigade = "Regimente 2 Calarasi/4 Rosiori"
+		remove_brigade = "Regiment 3 Calarasi Moto"
+		remove_brigade = "Regiment 3 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 44" 
+		remove_brigade = "Companie Transport Brigazii 8 Cavalerie"
+
+		remove_brigade = "Cartier Brigazii 1 Cavalerie"
+		remove_brigade = "Rgt. 1/2 Rosiori/Rgt. 11 Calarasi"
+		remove_brigade = "Regiment 1 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 41"
+		remove_brigade = "Escadron 41 de rec. motomecanizat"
+		remove_brigade = "Companie Transport Brigazii 1 Cavalerie"
+
+		remove_brigade = "Cartier Brigazii 7 Cavalerie"
+		remove_brigade = "Regimente 12 Rosiori/9 Calarasi"
+		remove_brigade = "Regiment 5 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 45"
+		remove_brigade = "Escadron 45 de rec. motomecanizat"
+		remove_brigade = "Companie Transport Brigazii 7 Cavalerie"
+
+		remove_brigade = "Cartier Brigazii 9 Cavalerie"
+		remove_brigade = "Rgt. 3 Rosiori/Rgt. 13 Calarasi"
+		remove_brigade = "Regiment 6 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 46"
+		remove_brigade = "Escadron 46 de rec. motomecanizat"
+		remove_brigade = "Companie Transport Brigazii 9 Cavalerie"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2500
+				}
+				energy = -5000
+				metal = -2500
+				rare_materials = -1250
+				load_oob = ROM/ROM_Cavalry_Divisions_1943.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Cavalry_Divisions_1943.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_Cav1943_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Cavalry Divisions 1944
+country_event = {
+	id = 15015
+	is_triggered_only = yes
+	title = "Motorization of Cavalry Divisions (1944)"
+	desc = "EVTDESC15015"
+	picture = "Greater_Romania"
+	option = {
+		name = "Go for the historical upgrade"
+		set_country_flag = ROM_Cav1944
+
+		#Removing the 5 Former Cavalry Divisions
+		remove_brigade = "Cartier Diviziei 1 Cavalerie"
+		remove_brigade = "Rgt. 1/2 Rosiori/Rgt. 11 Calarasi"
+		remove_brigade = "Rgt. 5 Rosiori/Garda Calare"
+		remove_brigade = "Regiment 1 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 41"
+		remove_brigade = "Panzer 38t Diviziei 1 Cav."
+		remove_brigade = "Companie Transport Diviziei 1 Cavalerie"
+
+		remove_brigade = "Cartier Diviziei 5 Cavalerie"
+		remove_brigade = "Regiment 7/8 Calarasi"
+		remove_brigade = "Reg. 6 Rosiori/Reg. 11 Calarasi"
+		remove_brigade = "Regiment 2 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 42"
+		remove_brigade = "Panzer 38t Diviziei 5 Cav."
+		remove_brigade = "Companie Transport Diviziei 5 Cavalerie"
+
+		remove_brigade = "Cartier Diviziei 8 Cavalerie"
+		remove_brigade = "Reg. 2/12 Rosiori Moto"
+		remove_brigade = "Reg. 3/4 Calarasi Moto"
+		remove_brigade = "Regiment 3 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 44"
+		remove_brigade = "Panzer 38t Diviziei 8 Cav."
+		remove_brigade = "Companie Transport Diviziei 8 Cavalerie"
+
+		remove_brigade = "Cartier Diviziei 6 Cavalerie"
+		remove_brigade = "Rgt. 5 Calarasi/Rgt. 9 Rosiori"
+		remove_brigade = "Regiment 10 Rosiori Moto"
+		remove_brigade = "Regiment 4 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 43"
+		remove_brigade = "Companie Transport Diviziei 6 Cavalerie"
+		
+		remove_brigade = "Cartier Diviziei 9 Cavalerie"
+		remove_brigade = "Rgt. 3 Rosiori/Rgt. 13 Calarasi"
+		remove_brigade = "Regiment 6 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 46"
+		remove_brigade = "Escadron 46 de rec. motomecanizat"
+		remove_brigade = "Companie Transport Diviziei 9 Cavalerie"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +5000
+				}
+				energy = -10000
+				metal = -5000
+				rare_materials = -2500
+				load_oob = ROM/ROM_Cavalry_Divisions_1944_historical.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Cavalry_Divisions_1944_historical.txt
+			}
+		}
+	}
+	option = {
+		name = "Go for full motorization"
+		set_country_flag = ROM_Cav1944
+
+		#Removing the 5 Former Cavalry Divisions
+		remove_brigade = "Cartier Diviziei 1 Cavalerie"
+		remove_brigade = "Rgt. 1/2 Rosiori/Rgt. 11 Calarasi"
+		remove_brigade = "Rgt. 5 Rosiori/Garda Calare"
+		remove_brigade = "Regiment 1 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 41"
+		remove_brigade = "Panzer 38t Diviziei 1 Cav."
+		remove_brigade = "Companie Transport Diviziei 1 Cavalerie"
+
+		remove_brigade = "Cartier Diviziei 5 Cavalerie"
+		remove_brigade = "Regiment 7/8 Calarasi"
+		remove_brigade = "Reg. 6 Rosiori/Reg. 11 Calarasi"
+		remove_brigade = "Regiment 2 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 42"
+		remove_brigade = "Panzer 38t Diviziei 5 Cav."
+		remove_brigade = "Companie Transport Diviziei 5 Cavalerie"
+
+		remove_brigade = "Cartier Diviziei 8 Cavalerie"
+		remove_brigade = "Reg. 2/12 Rosiori Moto"
+		remove_brigade = "Reg. 3/4 Calarasi Moto"
+		remove_brigade = "Regiment 3 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 44"
+		remove_brigade = "Panzer 38t Diviziei 8 Cav."
+		remove_brigade = "Companie Transport Diviziei 8 Cavalerie"
+
+		remove_brigade = "Cartier Diviziei 6 Cavalerie"
+		remove_brigade = "Rgt. 5 Calarasi/Rgt. 9 Rosiori"
+		remove_brigade = "Regiment 10 Rosiori Moto"
+		remove_brigade = "Regiment 4 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 43"
+		remove_brigade = "Companie Transport Diviziei 6 Cavalerie"
+		
+		remove_brigade = "Cartier Diviziei 9 Cavalerie"
+		remove_brigade = "Rgt. 3 Rosiori/Rgt. 13 Calarasi"
+		remove_brigade = "Regiment 6 Artilerie Calareata"
+		remove_brigade = "Grup motorizat 46"
+		remove_brigade = "Escadron 46 de rec. motomecanizat"
+		remove_brigade = "Companie Transport Diviziei 9 Cavalerie"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +8000
+				}
+				energy = -16000
+				metal = -8000
+				rare_materials = -4000
+				load_oob = ROM/ROM_Cavalry_Divisions_1944_full_mot.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Cavalry_Divisions_1944_full_mot.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_Cav1944_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# R-2 Tanks
+country_event = {
+	id = 15016
+	is_triggered_only = yes
+	title = "R-2 Tanks"
+	desc = "EVTDESC15016"
+	picture = "ROM_R2"
+	option = {
+		name = "Order them!"
+		set_country_flag = ROM_R2
+
+		#removing Renault FT-17 from 1st Tank Regiment
+		remove_brigade = "Cartier Rgt. 1 Care de Lupta"
+		remove_brigade = "Regiment 1 Care de Lupta"
+		remove_brigade = "Companie Auto Transport Rgt. 1 Care de Lupta"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				supplies = -2000
+				money = -2000
+				load_oob = ROM/ROM_R2_Tanks.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_R2_Tanks.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_R2_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# R-35 Tanks
+country_event = {
+	id = 15017
+	is_triggered_only = yes
+	title = "R-35 Tanks"
+	desc = "EVTDESC15017"
+	picture = "Polish_R35_Tanks"
+	option = {
+		name = "Finally!"
+		set_country_flag = ROM_R35
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+				supplies = -2000
+				money = -1500
+				load_oob = ROM/ROM_R35_Tanks.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_R35_Tanks.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_R35_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 1st Armored Division
+country_event = {
+	id = 15018
+	is_triggered_only = yes
+	title = "1st Armored Division"
+	desc = "EVTDESC15018"
+	picture = "ROM_R2"
+	option = {
+		name = "Form this armored division"
+		set_country_flag = ROM_D1B
+
+		#Removing 1st Tank Regiment
+		remove_brigade = "Cartier Rgt. 1 Care de Lupta"
+		remove_brigade = "1/2 Tancurile R-2"
+		remove_brigade = "2/2 Tancurile R-2"
+		remove_brigade = "Tancurile R-1"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+			change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = ROM/ROM_1st_Armored_Division.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_1st_Armored_Division.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_DB1_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Romanian Motomechanized Command
+country_event = {
+	id = 15019
+	is_triggered_only = yes
+	title = "Motomechanized Command"
+	desc = "EVTDESC15019"
+	picture = "Polish_R35_Tanks"
+	option = {
+		name = "Form this armored command"
+		set_country_flag = ROM_MMC
+
+		#Removing 2nd Tank Regiment
+		remove_brigade = "Cartier Rgt. 2 Care de Lupta"
+		remove_brigade = "1/2 Tancurile R-35"
+		remove_brigade = "2/2/Tancurile R-35"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+			change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = ROM/ROM_Motomechanized_Command.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Motomechanized_Command.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_MMC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Mixed Armored Group 'Cantemir'
+country_event = {
+	id = 15023
+	is_triggered_only = yes
+	title = "Armored Group 'Cantemir'"
+	desc = "EVTDESC15023"
+	picture = "ROM_T4"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = ROM_GMB_Cantemir
+
+		#Removing the 1st Armored Instruction Division
+		remove_brigade = "Cartier Diviziei 1 Blindata Inst."
+		remove_brigade = "Regiment 2 Care de Lupta"
+		remove_brigade = "Rgt. 3/4 Vanatori Moto Instructie"
+		remove_brigade = "Companie Transport Div. 1 Blindata Inst."
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+			change_variable = {
+					which = IC_days_spent
+					value = +500 #IC cost is split between Mixed Armored Group Cantemir and Rapid Armored Detachment
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = ROM/ROM_Armored_Group_Cantemir.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Armored_Group_Cantemir.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_GMB_Cantemir_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Rapid Armored Detachment
+country_event = {
+	id = 15021
+	is_triggered_only = yes
+	title = "Rapid Armored Detachment"
+	desc = "EVTDESC15021"
+	picture = "ROM_T4"
+	option = {
+		name = "Form this unit!"
+		set_country_flag = ROM_DBR
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+			change_variable = {
+					which = IC_days_spent
+					value = +500 #IC cost is split between Mixed Armored Group Cantemir and Rapid Armored Detachment
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = ROM/ROM_Detasamentul_Blindat_Rapid.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Detasamentul_Blindat_Rapid.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_DBR_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 1st Armored Division 1944
+country_event = {
+	id = 15022
+	is_triggered_only = yes
+	title = "1st Armored Division - 1944"
+	desc = "EVTDESC15022"
+	picture = "ROM_T4"
+	option = {
+		name = "Reform this armored division"
+		set_country_flag = ROM_D1B_1944
+
+		#Removing the Rapid Armored Detachment - 1944.3.28
+		remove_brigade = "Detasamentul Blindat Rapid"
+		remove_brigade = "Batalion Care de Lupta"
+		remove_brigade = "Bat. Vanatori Moto"
+		remove_brigade = "Bat. Moto Antitanc"
+		remove_brigade = "2/2 TACAM T-60s"
+		remove_brigade = "Grup Cercetare Mot."
+		remove_brigade = "Companie Transport Det. Blindat Rapid"
+		remove_brigade = "Rgt. 8 Pioneri Moto"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+			change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = ROM/ROM_1st_Armored_Division_1944.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_1st_Armored_Division_1944.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_D1B_1944_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+# Royal Romanian Airforce/Aeronautica Regala Romana
+# Licence built Polish P.11
+country_event = {
+	id = 15100
+	is_triggered_only = yes
+	title = "Licence built Polish P.11"
+	desc = "EVTDESC15100"
+	picture = "ROMP11"
+	option = {
+		name = "Build them!"
+		set_country_flag = ROM_PZL11
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+			change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = ROM/ROM_PZL11_1936.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_PZL11_1936.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_PZL11_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Buy Italian S-79B Bombers
+country_event = {
+	id = 15101
+	is_triggered_only = yes
+	title = "Buy some Italian S-79B Bombers"
+	desc = "EVTDESC15101"
+	picture = "ROMS79"
+	option = {
+		name = "Order them!"
+		ITA = {
+			country_event = 51000
+		}
+		money = -900
+		supplies = -3000
+		set_country_flag = ROM_S79B
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_S79B_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 15102
+	trigger = {
+		tag = ROM
+		has_global_flag = go_ahead_ITA
+		has_country_flag = ROM_S79B
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "Italian Bombers"
+	desc = "EVTDESC15102"
+	picture = "ROMS79"
+	option = {
+		name = "Receive the aircraft"
+		load_oob = ROM/ROM_S79B_1937.txt
+		ITA = {
+			country_event = 51001
+		}
+		clr_global_flag = go_ahead_ITA
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# Buy German He-112B Fighters
+country_event = {
+	id = 15103
+	is_triggered_only = yes
+	title = "Buy some German fighters"
+	desc = "EVTDESC15103"
+	picture = "ROMHe112"
+	option = {
+		name = "Order them!"
+		GER = {
+			country_event = 15119
+		}
+		money = -600
+		supplies = -2000
+		set_country_flag = ROM_He112B
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_He112B_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 15104
+	trigger = {
+		tag = ROM
+		date = 1939.03.05
+		has_global_flag = go_ahead_GER1
+		has_country_flag = ROM_He112B
+	}
+
+	title = "German Fighters"
+	desc = "EVTDESC15104"
+	picture = "ROMHe112"
+	option = {
+		name = "Receive the aircraft"
+		load_oob = ROM/ROM_He112B_1939.txt
+		GER = {
+			country_event = 15120
+		}
+		clr_global_flag = go_ahead_GER1
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# Buy British Hurricane Fighters
+country_event = {
+	id = 15105
+	is_triggered_only = yes
+	title = "Buy some British fighters"
+	desc = "EVTDESC15105"
+	picture = "ROMHurricane"
+	option = {
+		name = "Order them!"
+		ENG = {
+			country_event = 51002
+		}
+		money = -300
+		supplies = -1000
+		set_country_flag = ROM_Hurricane
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_Hurricane_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 15106
+		trigger = {
+		tag = ROM
+		has_global_flag = go_ahead_ENG
+		has_country_flag = ROM_Hurricane
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "British Fighters"
+	desc = "EVTDESC15106"
+	picture = "ROMHurricane"
+	option = {
+		name = "Receive the aircraft"
+		load_oob = ROM/ROM_Hurricane_1939.txt
+		ENG = {
+			country_event = 51003
+		}
+		clr_global_flag = go_ahead_ENG
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# Buy French Bombers
+country_event = {
+	id = 15107
+	is_triggered_only = yes
+	title = "Buy some French Bombers"
+	desc = "EVTDESC15107"
+	picture = "ROMPotez633"
+	option = {
+		name = "Order them!"
+		FRA = {
+			country_event = 51004
+		}
+		money = -900
+		supplies = -3000
+		set_country_flag = ROM_Potez633
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_Potez633_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 15108
+		trigger = {
+		tag = ROM
+		date = 1939.05.05
+		has_global_flag = go_ahead_FRA
+		has_country_flag = ROM_Potez633
+	}
+	title = "French Bombers"
+	desc = "EVTDESC15108"
+	picture = "ROMPotez633"
+	option = {
+		name = "Receive the aircraft"
+		load_oob = ROM/ROM_Potez633_1939.txt
+		FRA = {
+			country_event = 51005
+		}
+		clr_global_flag = go_ahead_FRA
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# Buy German Bombers
+country_event = {
+	id = 15109
+	is_triggered_only = yes
+	title = "Buy German Bombers"
+	desc = "EVTDESC15109"
+	picture = "ROMHe111"
+	option = {
+		name = "Order them!"
+		GER = {
+			country_event = 15121
+		}
+		money = -900
+		supplies = -3000
+		set_country_flag = ROM_He111
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_He111_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 15110
+		trigger = {
+		tag = ROM
+		date = 1940.04.05
+		has_global_flag = go_ahead_GER2
+		has_country_flag = ROM_He111
+	}
+	title = "German Bombers"
+	desc = "EVTDESC15110"
+	picture = "ROMHe111"
+	option = {
+		name = "Receive the aircraft"
+		load_oob = ROM/ROM_He111_1940.txt
+		GER = {
+			country_event = 15122
+		}
+		clr_global_flag = go_ahead_GER2
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# Buy German Fighters
+country_event = {
+	id = 15111
+	is_triggered_only = yes
+	title = "Buy German Fighters"
+	desc = "EVTDESC15111"
+	picture = "ROMBf109"
+	option = {
+		name = "Order them!"
+		GER = {
+			country_event = 15123
+		}
+		money = -900
+		supplies = -3000
+		set_country_flag = ROM_Bf109E
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_Bf109E_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 15112
+		trigger = {
+		tag = ROM
+		date = 1941.1.5
+		has_global_flag = go_ahead_GER3
+		has_country_flag = ROM_Bf109E
+	}
+	title = "German Fighters"
+	desc = "EVTDESC15112"
+	picture = "ROMBf109"
+	option = {
+		name = "Receive the aircraft"
+		load_oob = ROM/ROM_Bf109E_1941.txt
+		GER = {
+			country_event = 15124
+		}
+		clr_global_flag = go_ahead_GER3
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# Buy German Ju88 Bombers
+country_event = {
+	id = 15113
+	is_triggered_only = yes
+	title = "Buy German Ju88 Bombers"
+	desc = "EVTDESC15113"
+	picture = "ROMJu88"
+	option = {
+		name = "Order them!"
+		GER = {
+			country_event = 15125
+		}
+		money = -900
+		supplies = -3000
+		set_country_flag = ROM_Ju88A4
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_Ju88A4_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 15114
+		trigger = {
+		tag = ROM
+		 date = 1943.3.5
+		has_global_flag = go_ahead_GER4
+		has_country_flag = ROM_Ju88A4
+	}
+	title = "German Ju88 Bombers"
+	desc = "EVTDESC15114"
+	picture = "ROMJu88"
+	option = {
+		name = "Receive the aircraft"
+		load_oob = ROM/ROM_Ju88A4_1943.txt
+		GER = {
+			country_event = 15126
+		}
+		clr_global_flag = go_ahead_GER4
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# Buy German Ju87 Dive Bombers
+country_event = {
+	id = 15115
+	is_triggered_only = yes
+	title = "Buy German Ju87 Dive Bombers"
+	desc = "EVTDESC15115"
+	picture = "ROMstuka"
+	option = {
+		name = "Order them!"
+		GER = {
+			country_event = 15127
+		}
+		money = -900
+		supplies = -3000
+		set_country_flag = ROM_Ju87
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_Ju87_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 15116
+		trigger = {
+		tag = ROM
+		 date = 1943.6.5
+		has_global_flag = go_ahead_GER5
+		has_country_flag = ROM_Ju87
+	}
+	title = "German Ju87 Dive Bombers"
+	desc = "EVTDESC15116"
+	picture = "ROMstuka"
+	option = {
+		name = "Receive the aircraft"
+		load_oob = ROM/ROM_Ju87_1943.txt
+		GER = {
+			country_event = 15128
+		}
+		clr_global_flag = go_ahead_GER5
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# Buy German Hs129 Attack Aircraft
+country_event = {
+	id = 15117
+	is_triggered_only = yes
+	title = "Buy German Hs129 Ground Attack Aircraft"
+	desc = "EVTDESC15117"
+	picture = "ROM_Hs129"
+	option = {
+		name = "Order them!"
+		GER = {
+			country_event = 15129
+		}
+		money = -900
+		supplies = -3000
+		set_country_flag = ROM_Hs219
+
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ROM_Hs219_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 15118
+		trigger = {
+		tag = ROM
+		 date = 1943.8.5
+		has_global_flag = go_ahead_GER6
+		has_country_flag = ROM_Hs219
+	}
+	title = "German Hs129 Ground Attack Aircraft"
+	desc = "EVTDESC15118"
+	picture = "ROM_Hs129"
+	option = {
+		name = "Receive the aircraft"
+		load_oob = ROM/ROM_Hs129_1943.txt
+		GER = {
+			country_event = 15130
+		}
+		clr_global_flag = go_ahead_GER6
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#GER Events when Romania orders aircrafts
+#Germany gets a new order for He-112
+country_event = {
+	id = 15119
+	is_triggered_only = yes
+	title = "Air Order Placed"
+	desc = "EVTDESC49832"
+	picture = "AircraftFactory"
+	option = {
+		name = "Accept"
+		set_global_flag = go_ahead_GER1
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		ai_chance = {
+			factor = 0
+		}
+		FROM = {
+			money = 900
+			supplies = 3000
+		}
+	}
+}
+#GER gets paid
+country_event = {
+	id = 15120
+	is_triggered_only = yes
+	title = "Payment Received"
+	desc = "EVTDESC49833"
+	picture = "paymentreceivedGER"
+	option = {
+		name = "Start building the aircraft"
+		money = 900
+		supplies = 3000
+		add_country_modifier = {
+			name = "build_aircraft"
+			duration = 180
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#Germany gets a new order for He-111
+country_event = {
+	id = 15121
+	is_triggered_only = yes
+	title = "Air Order Placed"
+	desc = "EVTDESC49832"
+	picture = "AircraftFactory"
+	option = {
+		name = "Accept"
+		set_global_flag = go_ahead_GER2
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		ai_chance = {
+			factor = 0
+		}
+		FROM = {
+			money = 900
+			supplies = 3000
+		}
+	}
+}
+#GER gets paid
+country_event = {
+	id = 15122
+	is_triggered_only = yes
+	title = "Payment Received"
+	desc = "EVTDESC49833"
+	picture = "paymentreceivedGER"
+	option = {
+		name = "Start building the aircraft"
+		money = 900
+		supplies = 3000
+		add_country_modifier = {
+			name = "build_aircraft"
+			duration = 180
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#Germany gets a new order for Bf109
+country_event = {
+	id = 15123
+	is_triggered_only = yes
+	title = "Air Order Placed"
+	desc = "EVTDESC49832"
+	picture = "AircraftFactory"
+	option = {
+		name = "Accept"
+		set_global_flag = go_ahead_GER3
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		ai_chance = {
+			factor = 0
+		}
+		FROM = {
+			money = 900
+			supplies = 3000
+		}
+	}
+}
+#GER gets paid
+country_event = {
+	id = 15124
+	is_triggered_only = yes
+	title = "Payment Received"
+	desc = "EVTDESC49833"
+	picture = "paymentreceivedGER"
+	option = {
+		name = "Start building the aircraft"
+		money = 900
+		supplies = 3000
+		add_country_modifier = {
+			name = "build_aircraft"
+			duration = 180
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#Germany gets a new order for Ju-88
+country_event = {
+	id = 15125
+	is_triggered_only = yes
+	title = "Air Order Placed"
+	desc = "EVTDESC49832"
+	picture = "AircraftFactory"
+	option = {
+		name = "Accept"
+		set_global_flag = go_ahead_GER4
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		ai_chance = {
+			factor = 0
+		}
+		FROM = {
+			money = 900
+			supplies = 3000
+		}
+	}
+}
+#GER gets paid
+country_event = {
+	id = 15126
+	is_triggered_only = yes
+	title = "Payment Received"
+	desc = "EVTDESC49833"
+	picture = "paymentreceivedGER"
+	option = {
+		name = "Start building the aircraft"
+		money = 900
+		supplies = 3000
+		add_country_modifier = {
+			name = "build_aircraft"
+			duration = 180
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#Germany gets a new order for Ju87
+country_event = {
+	id = 15127
+	is_triggered_only = yes
+	title = "Air Order Placed"
+	desc = "EVTDESC49832"
+	picture = "AircraftFactory"
+	option = {
+		name = "Accept"
+		set_global_flag = go_ahead_GER5
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		ai_chance = {
+			factor = 0
+		}
+		FROM = {
+			money = 900
+			supplies = 3000
+		}
+	}
+}
+#GER gets paid
+country_event = {
+	id = 15128
+	is_triggered_only = yes
+	title = "Payment Received"
+	desc = "EVTDESC49833"
+	picture = "paymentreceivedGER"
+	option = {
+		name = "Start building the aircraft"
+		money = 900
+		supplies = 3000
+		add_country_modifier = {
+			name = "build_aircraft"
+			duration = 180
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#Germany gets a new order for Hs129
+country_event = {
+	id = 15129
+	is_triggered_only = yes
+	title = "Air Order Placed"
+	desc = "EVTDESC49832"
+	picture = "AircraftFactory"
+	option = {
+		name = "Accept"
+		set_global_flag = go_ahead_GER6
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		ai_chance = {
+			factor = 0
+		}
+		FROM = {
+			money = 900
+			supplies = 3000
+		}
+	}
+}
+#GER gets paid
+country_event = {
+	id = 15130
+	is_triggered_only = yes
+	title = "Payment Received"
+	desc = "EVTDESC49833"
+	picture = "paymentreceivedGER"
+	option = {
+		name = "Start building the aircraft"
+		money = 900
+		supplies = 3000
+		add_country_modifier = {
+			name = "build_aircraft"
+			duration = 180
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+# Air Combat Group - Gruparea Aeriana de Lupta
+country_event = {
+	id = 15131
+	is_triggered_only = yes
+	title = "Air Combat Group"
+	desc = "EVTDESC15131"
+	picture = "ROM_GAL"
+	option = {
+		name = "Form this Air Corps"
+		set_country_flag = GAL
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+			change_variable = {
+					which = IC_days_spent
+					value = +300
+				}
+				energy = -600
+				metal = -300
+				rare_materials = -150
+				load_oob = ROM/ROM_GAL.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_GAL.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = GAL_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 1st Air Corps - Corpul 1 Aerian
+country_event = {
+	id = 15132
+	is_triggered_only = yes
+	title = "1st Air Corps"
+	desc = "EVTDESC15132"
+	picture = "ROM_1AC"
+	option = {
+		name = "Form this Air Corps"
+		set_country_flag = 1AC
+
+		#Removing Combat Air Group
+		remove_brigade = "Gruparea Aeriana de Lupta"
+		remove_brigade = "Regiment 4 Artilerie Antiaeriana"
+		remove_brigade = "Regiment 5 Artilerie Antiaeriana"
+		remove_brigade = "Companie Auto Transport GAL"
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+			change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = ROM/ROM_1st_Air_Corps.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_1st_Air_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 1AC_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Romania controls Beograd
+country_event = {
+	id = 15133
+	is_triggered_only = yes
+	title = "Beograd is under our control"
+	desc = "EVTDESC15133"
+	picture = "yug_partition"
+	option = {
+		name = "We are the true masters of Balkans!"
+		set_global_flag = Beograd_ROM
+
+		ai_chance = {
+			factor = 100
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+				}
+			change_variable = {
+					which = IC_days_spent
+					value = +250
+				}
+				energy = -500
+				metal = -250
+				rare_materials = -125
+				load_oob = ROM/ROM_Beograd_Legionaires.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = ROM
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = ROM/ROM_Beograd_Legionaires.txt
+			}
+		}
+	}
+	option = {
+		name = "No, we don't want to upset Germany..."
 		ai_chance = {
 			factor = 0
 		}

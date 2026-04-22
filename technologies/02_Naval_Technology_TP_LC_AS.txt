@@ -16,7 +16,7 @@ transport_ship_activation = {
 
 	difficulty = 4
 
-	start_year = 1935
+	start_year = 1936
 	folder = transports_folder
 }
 
@@ -27,20 +27,20 @@ transport_ship_hull = {
 	}
 
 	transport_ship = {
-		hull = 0.1
-		transport_capability = 7.50
+		hull = 0.075
+		transport_capability = 5
 		fuel_consumption = 0.05
 		sea_defence = 0.25
 		air_defence = 0.25
 	}
 	Convoy_raider_ship = {
-		hull = 0.1
+		hull = 0.075
 		fuel_consumption = 0.05
 		sea_defence = 0.5
 		air_defence = 0.33
 	}
 	escort_carrier = {
-		hull = 0.1
+		hull = 0.075
 		fuel_consumption = 0.05
 		sea_defence = 0.25
 		air_defence = 0.25
@@ -55,10 +55,10 @@ transport_ship_hull = {
 
 	difficulty = 4
 
-	start_year = 1936
-	first_offset = 1938
+	start_year = 1935
+	first_offset = 1937
 	additional_offset = 2
-	max_level = 4
+	max_level = 8
 	folder = transports_folder
 }
 
@@ -69,23 +69,23 @@ transport_ship_engine = {
 	}
 
 	transport_ship = {
-		maximum_speed = 2
-		range = 500
+		maximum_speed = 1
+		range = 250
 		air_defence = 0.25
 		fuel_consumption = 0.02
 		positioning = 0.05
 	}
 	Convoy_raider_ship = {
-		maximum_speed = 2
+		maximum_speed = 1
 		fuel_consumption = 0.02
-		range= 500
+		range = 250
 		air_defence = 0.25
 		positioning = 0.05
 	}
 	escort_carrier = {
-		maximum_speed = 2
+		maximum_speed = 1
 		fuel_consumption = 0.02
-		range= 500
+		range = 350
 		air_defence = 0.25
 		positioning = 0.05
 	}
@@ -99,10 +99,10 @@ transport_ship_engine = {
 
 	difficulty = 4
 
-	start_year = 1936
-	first_offset = 1938
+	start_year = 1935
+	first_offset = 1937
 	additional_offset = 2
-	max_level = 4
+	max_level = 8
 	folder = transports_folder
 }
 
@@ -394,6 +394,65 @@ amphibious_structural_improvements = {
 	difficulty = 4
 
 	start_year = 1940
+	folder = transports_folder
+}
+fleet_oilers = {
+
+	allow = {
+		num_of_ports  = 1
+		or = {
+			and = {
+				transport_ship_engine = 1
+				transport_ship_hull = 1
+				fleet_oilers = 0
+				not = { fleet_oilers = 1 }
+			}
+			and = {
+				transport_ship_engine = 2
+				transport_ship_hull = 2
+				fleet_oilers = 1
+				not = { fleet_oilers = 2 }
+			}
+			and = {
+				transport_ship_engine = 4
+				transport_ship_hull = 4
+				fleet_oilers = 2
+				not = { fleet_oilers = 3 }
+			}
+			and = {
+				transport_ship_engine = 5
+				transport_ship_hull = 5
+				fleet_oilers = 3
+				not = { fleet_oilers = 4 }
+			}
+			and = {
+				transport_ship_engine = 7
+				transport_ship_hull = 7
+				fleet_oilers = 4
+				not = { fleet_oilers = 5 }
+			}
+			and = {
+				transport_ship_engine = 8
+				transport_ship_hull = 8
+				fleet_oilers = 5
+				not = { fleet_oilers = 6 }
+			}
+		}
+	}
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1936
+	first_offset = 1939
+	additional_offset = 3
+	max_level = 6
 	folder = transports_folder
 }
 #EOF#
