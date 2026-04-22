@@ -144,7 +144,7 @@ light_cruiser_crew_training = {
 
 	difficulty = 5
 
-	start_year = 1937
+	start_year = 1936
 	first_offset = 1939
 	additional_offset = 2
 	max_level = 8
@@ -192,7 +192,7 @@ carrier_crew_training = {
 
 	difficulty = 10
 
-	start_year = 1937
+	start_year = 1936
 	first_offset = 1939
 	additional_offset = 2
 	max_level = 8
@@ -239,7 +239,92 @@ carrier_task_force = {
 naval_underway_replenishment = {
 
 	allow = {
-		fleet_auxiliary_carrier_doctrine = 1
+		or = {
+			and = {
+				fleet_oilers = 1
+				naval_underway_replenishment = 0
+				not = { naval_underway_replenishment = 1 }
+				and = {
+					light_cruiser_crew_training = 1
+					destroyer_crew_training = 1
+				}
+				or = {
+					cruiser_crew_training = 1
+					carrier_crew_training = 1
+					battleship_crew_training = 1
+				}
+			}
+			and = {
+				fleet_oilers = 2
+				naval_underway_replenishment = 1
+				not = { naval_underway_replenishment = 2 }
+				and = {
+					light_cruiser_crew_training = 2
+					destroyer_crew_training = 2
+				}
+				or = {
+					cruiser_crew_training = 2
+					carrier_crew_training = 2
+					battleship_crew_training = 2
+				}
+			}
+			and = {
+				fleet_oilers = 3
+				naval_underway_replenishment = 2
+				not = { naval_underway_replenishment = 3 }
+				and = {
+					light_cruiser_crew_training = 3
+					destroyer_crew_training = 3
+				}
+				or = {
+					cruiser_crew_training = 3
+					carrier_crew_training = 3
+					battleship_crew_training = 3
+				}
+			}
+			and = {
+				fleet_oilers = 4
+				naval_underway_replenishment = 3
+				not = { naval_underway_replenishment = 4 }
+				and = {
+					light_cruiser_crew_training = 4
+					destroyer_crew_training = 4
+				}
+				or = {
+					cruiser_crew_training = 4
+					carrier_crew_training = 4
+					battleship_crew_training = 4
+				}
+			}
+			and = {
+				fleet_oilers = 5
+				naval_underway_replenishment = 4
+				not = { naval_underway_replenishment = 5 }
+				and = {
+					light_cruiser_crew_training = 5
+					destroyer_crew_training = 5
+				}
+				or = {
+					cruiser_crew_training = 5
+					carrier_crew_training = 5
+					battleship_crew_training = 5
+				}
+			}
+			and = {
+				fleet_oilers = 6
+				naval_underway_replenishment = 5
+				not = { naval_underway_replenishment = 6 }
+				or = {
+					and = {
+						light_cruiser_crew_training = 1
+						destroyer_crew_training = 1
+					}
+					cruiser_crew_training = 1
+					carrier_crew_training = 1
+					battleship_crew_training = 1
+				}
+			}
+		}
 	}
 
 	sortie = {
@@ -319,13 +404,13 @@ naval_underway_replenishment = {
 
 	on_completion = base_strike_doctrine
 
-	difficulty = 10
+	difficulty = 7
 
-	start_year = 1936
+	start_year = 1937
 	first_offset = 1939
 	additional_offset = 3
 	max_level = 6
-	folder = naval_doctrine_folder
+	folder = transports_folder
 }
 
 radar_training = {
@@ -675,7 +760,7 @@ destroyer_crew_training = {
 
 	difficulty = 5
 
-	start_year = 1937
+	start_year = 1936
 	first_offset = 1939
 	additional_offset = 2
 	max_level = 8
@@ -716,7 +801,7 @@ battleship_crew_training = {
 
 	difficulty = 6
 
-	start_year = 1937
+	start_year = 1936
 	first_offset = 1939
 	additional_offset = 2
 	max_level = 8
@@ -1027,7 +1112,7 @@ cruiser_crew_training = {
 
 	difficulty = 6
 
-	start_year = 1937
+	start_year = 1936
 	first_offset = 1939
 	additional_offset = 2
 	max_level = 8
