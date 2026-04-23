@@ -73,7 +73,6 @@ function P.LandTechs(voTechnologyData)
 		{"machine_gun_doctrine", 0},
 		{"Panzerfaust_Bazooka_AT_Tech", 0},
 		{"urban_Fighting_Equipment_and_Training", 0},
-		{"air_cavalry_brigade_activation", 0},
 		{"ski_brigade_activation", 0},
 		{"artic_warfare_equipment", 0},
 		{"commando_brigade_activation", 0},
