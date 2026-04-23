@@ -240,8 +240,6 @@ units = {
     "super_heavy_armor_brigade": "super heavy tank division",
     "infantry_tank_brigade": "infantry tank division",
 
-    "air_cavalry_brigade": "air cavalry division",
-
     "sp_artillery_brigade": "self propelled artillery regiment",
     "sp_anti_air_brigade": "self propelled anti aircraft regiment",
     "sp_rct_artillery_brigade": "self propelled rocket regiment",

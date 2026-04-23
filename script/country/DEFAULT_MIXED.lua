@@ -144,9 +144,6 @@ function P.LandTechs(voTechnologyData)
 		-- Unused Armored Engineer
 		{"armored_engineers_brigade_activation", 0},
 
-		-- Unused Air Cavalry
-		{"air_cavalry_brigade_activation", 0},
-
 		};
 
 	local preferTech = {
