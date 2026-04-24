@@ -72,7 +72,6 @@ function P.LandTechs(voTechnologyData)
 		{"armored_engineers_brigade_activation", 0},
 		{"machine_gun_doctrine", 0},
 		{"urban_Fighting_Equipment_and_Training", 0},
-		{"air_cavalry_brigade_activation", 0},
 		{"commando_brigade_activation", 0},
 		{"air_commando_brigade_activation", 0},
 		{"airbourne_warfare_research", 0},

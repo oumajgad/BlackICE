@@ -294,7 +294,6 @@ local function buildingsCountSetup()
 		"oil_refinery",
 		"supplies_factory",
 		"military_college",
-		"#urbanisation",
 		"research_lab",
 		"hospital",
 		"police_station",

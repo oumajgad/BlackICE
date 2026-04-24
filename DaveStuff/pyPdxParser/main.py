@@ -21,6 +21,3 @@ if __name__ == "__main__":
                 x = parse_file(Path(root).joinpath(Path(file)))
                 # print(x)
                 x_node = Node.from_parsed(parsed=x)
-                colors = x_node.find_by_key("color")
-                print(file)
-                # print(x_node)
