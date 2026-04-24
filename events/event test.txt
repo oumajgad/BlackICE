@@ -13700,3 +13700,55 @@ country_event = {
 		name = "NO - we can't risk it!"
 	}
 }
+
+country_event = {
+	id = 166611
+
+	trigger = {
+		tag = FRA
+		ai = yes
+		ENG = { ai = yes }
+		war_with = GER
+		not = {
+			has_country_flag = AI_ENG_FRA_behaviour_fix_done
+		}
+	}
+	title = ""
+	desc = ""
+	picture = ""
+	option = {
+		name = "Ok"
+		2422 = {
+			add_core = ENG
+			secede_province = ENG
+			remove_core = FRA
+		}
+		set_country_flag = AI_ENG_FRA_behaviour_fix_done
+	}
+}
+country_event = {
+	id = 166612
+
+	trigger = {
+		tag = ENG
+		ai = yes
+		FRA = { ai = yes }
+		date = 1940.7.30
+		has_country_flag = AI_ENG_FRA_behaviour_fix_done
+		not = {
+			has_country_flag = AI_ENG_FRA_behaviour_fix_revert
+		}
+	}
+	title = ""
+	desc = ""
+	picture = ""
+	option = {
+		name = "Ok"
+		2422 = {
+			add_core = FRA
+			secede_province = FRA
+			remove_core = ENG
+		}
+		set_country_flag = AI_ENG_FRA_behaviour_fix_revert
+	}
+}
