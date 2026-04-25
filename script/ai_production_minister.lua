@@ -2224,7 +2224,7 @@ function HandleProductionMinister_Tick(minister)
 			]]
 
 			-- Figure out if we need any CAGs TODO - Make this tech based carrier_size
-			local liCAGsNeeded = ProductionData.TotalCounts[UnitTypes.carrier.Index] * 2 + ProductionData.TotalCounts[UnitTypes.light_carrier.Index] * 1 + ProductionData.TotalCounts[UnitTypes.super_carrier.Index] * 3
+			local liCAGsNeeded = ProductionData.TotalCounts[UnitTypes.carrier.Index] * 2 + ProductionData.TotalCounts[UnitTypes.light_carrier.Index] * 3
 			local liCAGsCount = ProductionData.TotalCounts[UnitTypes.cag.Index]
 
 			if liCAGsNeeded > liCAGsCount then
