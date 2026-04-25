@@ -373,55 +373,50 @@ local UnitTypes = {
 		Serial = 1,
 		Type = "Naval",
 		SubType = "Invasion"},
-	assault_ship = {
-		Index = 44,
-		Serial = 1,
-		Type = "Naval",
-		SubType = "Invasion"},
 
 	-- Air Units
 	cas = {
-		Index = 45,
+		Index = 44,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Ground"},
 	interceptor = {
-		Index = 46,
+		Index = 45,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Fighter"},
 	multi_role = {
-		Index = 47,
+		Index = 46,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Fighter"},
 	rocket_interceptor = {
-		Index = 48,
+		Index = 47,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Fighter"},
 	naval_bomber = {
-		Index = 49,
+		Index = 48,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Naval"},
 	strategic_bomber = {
-		Index = 50,
+		Index = 49,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Strategic"},
 	light_bomber = {
-		Index = 51,
+		Index = 50,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Tactical"},
 	tactical_bomber = {
-		Index = 52,
+		Index = 51,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Tactical"},
 	fascist_militia_brigade = {
-		Index = 53,
+		Index = 52,
 		Serial = 1,
 		Size = 1,
 		Support = 3,
@@ -430,7 +425,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	captured_armor_brigade = {
-		Index = 54,
+		Index = 53,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -438,7 +433,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Armor"},
 	railway_artillery_brigade = {
-		Index = 55,
+		Index = 54,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -446,7 +441,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Armor"},
 	commando_brigade = {
-		Index = 56,
+		Index = 55,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -456,7 +451,7 @@ local UnitTypes = {
 			"Marine1",
 			"EMarine"}},
 	light_infantry_brigade = {
-		Index = 57,
+		Index = 56,
 		Serial = 1,
 		Size = 1,
 		Support = 2,
@@ -468,7 +463,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	semi_motorized_brigade = {
-		Index = 58,
+		Index = 57,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -478,7 +473,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Motor"},
 	guard_armor_brigade = {
-		Index = 59,
+		Index = 58,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -488,7 +483,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Armor"},
 	guard_cavalry_brigade = {
-		Index = 60,
+		Index = 59,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -496,7 +491,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	guard_infantry_brigade = {
-		Index = 61,
+		Index = 60,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -506,7 +501,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	guard_motorized_brigade = {
-		Index = 62,
+		Index = 61,
 		Serial = 1,
 		Size = 1,
 		Support = 3,
@@ -517,7 +512,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Motor"},
 	guard_paratrooper_brigade = {
-		Index = 63,
+		Index = 62,
 		Serial = 1,
 		Size = 1,
 		Type = "Land",
@@ -525,13 +520,13 @@ local UnitTypes = {
 		TransportMain = "light_transport",
 		SubType = "Special Forces"},
 	ss_bergsjaeger_brigade = {
-		Index = 64,
+		Index = 63,
 		Serial = 1,
 		Size = 1,
 		Type = "Land",
 		SubType = "Special Forces"},
 	ss_cavalry_brigade = {
-		Index = 65,
+		Index = 64,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -540,7 +535,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	ss_infantry_brigade = {
-		Index = 66,
+		Index = 65,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -550,7 +545,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Armor"},
 	ss_mechanized_brigade = {
-		Index = 67,
+		Index = 66,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -560,7 +555,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Armor"},
 	ss_motorized_brigade = {
-		Index = 68,
+		Index = 67,
 		Serial = 1,
 		Size = 1,
 		Support = 3,
@@ -571,7 +566,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Motor"},
 	ss_armor_brigade = {
-		Index = 69,
+		Index = 68,
 		Serial = 1,
 		Size = 1,
 		Support = 3,
@@ -582,7 +577,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Armor"},
 	naval_infantry_brigade = {
-		Index = 70,
+		Index = 69,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -590,7 +585,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	NKVD_brigade = {
-		Index = 72,
+		Index = 71,
 		Serial = 1,
 		Size = 1,
 		Support = 3,
@@ -600,7 +595,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Motor"},
 	ski_brigade = {
-		Index = 73,
+		Index = 72,
 		Serial = 1,
 		Size = 1,
 		Support = 3,
@@ -611,7 +606,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Special Forces"},
 	assault_gun_brigade = {
-		Index = 74,
+		Index = 73,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -620,13 +615,13 @@ local UnitTypes = {
 			"Motor",
 			"Armor"}},
 	infantry_tank_brigade = {
-		Index = 75,
+		Index = 74,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"Infantry"}},
 	heavy_anti_air_brigade = {
-		Index = 76,
+		Index = 75,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -638,7 +633,7 @@ local UnitTypes = {
 			"nkvd",
 			"Armor"}},
 	medium_artillery_brigade = {
-		Index = 77,
+		Index = 76,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -647,60 +642,60 @@ local UnitTypes = {
 			"nkvd",
 			"sovh"}},
 	pack_artillery_brigade = {
-		Index = 78,
+		Index = 77,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"Marine",
 			"Mountain"}},
 	coastal_battleship = {
-		Index = 79,
+		Index = 78,
 		Type = "Naval",
 		SubType = "Capital Ship"},
 	pocket_battleship = {
-		Index = 80,
+		Index = 79,
 		Type = "Naval",
 		SubType = "Capital Ship"},
 	anti_air_cruiser = {
-		Index = 81,
+		Index = 80,
 		Type = "Naval",
 		SubType = "Cruiser"},
 
 	Convoy_raider_ship = {
-		Index = 82,
+		Index = 81,
 		Serial = 1,
 		Type = "Naval",
 		SubType = "Escort"},
 	torpedo_boat = {
-		Index = 83,
+		Index = 82,
 		Serial = 1,
 		Type = "Naval",
 		SubType = "Escort"},
 	frigate = {
-		Index = 84,
+		Index = 83,
 		Serial = 1,
 		Type = "Naval",
 		SubType = "Escort"},
 	kamikaze_brigade = {
-		Index = 85,
+		Index = 84,
 		Type = "Air",
 		SubType = "Naval"},
 	air_commando_brigade = {
-		Index = 86,
+		Index = 85,
 		Type = "air",
 		SubType = "Tactical"},
 	twin_engine_fighters = {
-		Index = 87,
+		Index = 86,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Fighter"},
 	Flying_boat = {
-		Index = 88,
+		Index = 87,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Naval"},
 	elite_light_infantry_brigade = {
-		Index = 89,
+		Index = 88,
 		Serial = 1,
 		Size = 1,
 		Support = 3,
@@ -711,32 +706,32 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	amph_armour_brigade = {
-		Index = 90,
+		Index = 89,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"Airborne",
 			"Marine"}},
 	light_carrier = {
-		Index = 91,
+		Index = 90,
 		Type = "Naval",
 		SubType = "Carrier",
 		SubUnit = "cag",
 		SubQuantity = 1},
 	super_carrier = {
-		Index = 92,
+		Index = 91,
 		Type = "Naval",
 		SubType = "Carrier",
 		SubUnit = "cag",
 		SubQuantity = 3},
 	airborne_artillery_brigade = {
-		Index = 93,
+		Index = 92,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"Airborne"}},
 	armored_engineers_brigade = {
-		Index = 94,
+		Index = 93,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -747,25 +742,25 @@ local UnitTypes = {
 			"SSMotor",
 			"Armor"}},
 	sp_anti_air_brigade  = {
-		Index = 95,
+		Index = 94,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"Motor",
 			"Armor"}},
 	Recon_cavalry_brigade  = {
-		Index = 96,
+		Index = 95,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"Infantry",
 			"Cav"}},
 	guard_sp_rct_artillery_brigade = {
-		Index = 97,
+		Index = 96,
 		Type = "Land",
 		SubType = "Support"},
 	heavy_assault_gun_brigade = {
-		Index = 98,
+		Index = 97,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -773,20 +768,20 @@ local UnitTypes = {
 			"Infantry1",
 			"SSMotor"}},
 	medium_tank_destroyer_brigade = {
-		Index = 99,
+		Index = 98,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"Motor",
 			"Armor"}},
 	heavy_tank_destroyer_brigade = {
-		Index = 100,
+		Index = 99,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"Infantry"}},
 	motorcycle_recon_brigade = {
-		Index = 101,
+		Index = 100,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -796,32 +791,32 @@ local UnitTypes = {
 			"Armor",
 			"Cav"}},
 	HQDEF_brigade = {
-		Index = 102,
+		Index = 101,
 		Type = "Land",
 		SubType = "Support"},
 
 	leader_brigade = {
-		Index = 103,
+		Index = 102,
 		Type = "Land",
 		SubType = "Headquarters"},
 
 	guard_heavy_armor_brigade = {
-		Index = 104,
+		Index = 103,
 		Type = "Land",
 		SubType = "Support Motor"},
 
 	ss_tank_destroyer_brigade = {
-		Index = 105,
+		Index = 104,
 		Type = "Land",
 		SubType = "SSMotor"},
 
 	midget_submarine = {
-		Index = 106,
+		Index = 105,
 		Type = "Naval",
 		SubType = "Submarine"},
 
 	guard_mechanized_brigade = {
-		Index = 107,
+		Index = 106,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -830,25 +825,25 @@ local UnitTypes = {
 		SubType = "Armor"},
 
 	jet_bomber = {
-		Index = 108,
+		Index = 107,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Fighter"},
 
 	rocket_interceptor_van = {
-		Index = 109,
+		Index = 108,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Fighter"},
 
 	gliders = {
-		Index = 110,
+		Index = 109,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Transport Plane"},
 
 	airlanding_infantry_brigade = {
-		Index = 111,
+		Index = 110,
 		Serial = 1,
 		Size = 2,
 		SupportGroup = "Infantry",
@@ -858,35 +853,35 @@ local UnitTypes = {
 			"Airborne"}},
 
 	transport_plane = {
-		Index = 112,
+		Index = 111,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Transport Plane"},
 	quad_engine_transport = {
-		Index = 113,
+		Index = 112,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Transport Plane"},
 	-- Secret Weapon
 	flying_bomb = {
-		Index = 114,
+		Index = 113,
 		Serial = 1,
 		Type = "Secret",
 		SubType = "Bomb"},
 
 	flying_rocket = {
-		Index = 115,
+		Index = 114,
 		Serial = 1,
 		Type = "Secret",
 		SubType = "Rocket"},
 
 	armor_bat = {
-		Index = 116,
+		Index = 115,
 		Type = "Land",
 		SubType = "Support Motor"},
 
 	infantry_bat = {
-		Index = 117,
+		Index = 116,
 		Serial = 1,
 		Size = 1,
 		Support = 1,
@@ -898,25 +893,25 @@ local UnitTypes = {
 		SubType = "Infantry"},
 
 	motorized_infantry_bat = {
-		Index = 118,
+		Index = 117,
 		Type = "Land",
 		SubType = "Support Motor"},
 
 
 	mechanized_infantry_bat = {
-		Index = 119,
+		Index = 118,
 		Type = "Land",
 		SubType = "Support Motor",
 		SupportType = Utils.Set {
 			"grind"}},
 
 	light_armor_bat = {
-		Index = 120,
+		Index = 119,
 		Type = "Land",
 		SubType = "Support Motor"},
 
 	mixed_support_brigade = {
-		Index = 121,
+		Index = 120,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -928,63 +923,63 @@ local UnitTypes = {
 			"Infantry1"}},
 
 	motorized_support_brigade = {
-		Index = 122,
+		Index = 121,
 		Type = "Land",
 		SubType = "Support"},
 
 
 	nuclear_submarine = {
-		Index = 123,
+		Index = 122,
 		Type = "Naval",
 		SubType = "Submarine"},
 
 
 	ss_sp_artillery_brigade = {
-		Index = 124,
+		Index = 123,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"ssarm"}},
 
 	ss_heavy_armor_brigade = {
-		Index = 125,
+		Index = 124,
 		Type = "Land",
 		SubType = "Support"},
 
 	ss_artillery_brigade = {
-		Index = 126,
+		Index = 125,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"ssinf"}},
 
 	ss_anti_air_brigade = {
-		Index = 127,
+		Index = 126,
 		Type = "Land",
 		SupportType = Utils.Set {
 			"ssinf"}},
 
 	ss_anti_tank_brigade = {
-		Index = 128,
+		Index = 127,
 		Type = "Land",
 		SubType = "Support"},
 
 	ss_armored_car_brigade = {
-		Index = 129,
+		Index = 128,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"ssarm"}},
 
 	ss_armored_support_brigade = {
-		Index = 130,
+		Index = 129,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"ssinf"}},
 
 	ss_armored_engineers_brigade = {
-		Index = 131,
+		Index = 130,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -992,28 +987,28 @@ local UnitTypes = {
 			"ssmot"}},
 
 	ss_engineer_brigade = {
-		Index = 132,
+		Index = 131,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"ssinf"}},
 
 	ss_armor_bat = {
-		Index = 133,
+		Index = 132,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"ssmot"}},
 
 	ss_motorcycle_recon_brigade = {
-		Index = 134,
+		Index = 133,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"ssmot"}},
 
 	ss_motorized_support_brigade = {
-		Index = 135,
+		Index = 134,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -1021,31 +1016,31 @@ local UnitTypes = {
 
 
 	ss_sp_anti_air_brigade = {
-		Index = 136,
+		Index = 135,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"ssarm"}},
 
 	destroyer = {
-		Index = 137,
+		Index = 136,
 		Serial = 1,
 		Type = "Naval",
 		SubType = "Escort"},
 
 	seaplane_tender = {
-		Index = 138,
+		Index = 137,
 		Serial = 1,
 		Type = "Naval",
 		SubType = "Escort"},
 
 	heavy_artillery_brigade = {
-		Index = 139,
+		Index = 138,
 		Type = "Land"
 		--SubType = "Support",
 	},
 	motorized_engineer_brigade = {
-		Index = 140,
+		Index = 139,
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
@@ -1056,7 +1051,7 @@ local UnitTypes = {
 			"Cav",
 			"Armor"}},
 	Communist_militia_brigade = {
-		Index = 141,
+		Index = 140,
 		Serial = 1,
 		Size = 1,
 		Support = 3,
@@ -1065,24 +1060,24 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	command_carrier = {
-		Index = 142,
+		Index = 141,
 		Type = "Naval",
 		SubType = "Carrier",
 		SubUnit = "cag",
 		SubQuantity = 0},
 	command_battleship = {
-		Index = 143,
+		Index = 142,
 		Type = "Naval",
 		SubType = "Capital Ship"},
 	long_range_submarine = {
-		Index = 144,
+		Index = 143,
 		Serial = 1,
 		Type = "Naval",
 		SubType = "Submarine"},
 
 	-- Colonials
 	colonial_light_infantry_brigade = {
-		Index = 145,
+		Index = 144,
 		Serial = 1,
 		Size = 1,
 		TertiaryMain = "division_hq_standard",
@@ -1093,7 +1088,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	colonial_infantry_brigade = {
-		Index = 146,
+		Index = 145,
 		Serial = 1,
 		Size = 1,
 		TertiaryMain = "division_hq_standard",
@@ -1104,7 +1099,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	colonial_militia_brigade = {
-		Index = 147,
+		Index = 146,
 		Serial = 1,
 		Size = 1,
 		Support = 1,
@@ -1113,7 +1108,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	colonial_garrison_brigade = {
-		Index = 148,
+		Index = 147,
 		Serial = 1,
 		Size = 1,
 		Support = 3,
@@ -1122,7 +1117,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	colonial_cavalry_brigade = {
-		Index = 149,
+		Index = 148,
 		Serial = 1,
 		Size = 1,
 		Support = 1,
@@ -1131,7 +1126,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"},
 	colonial_bergsjaeger_brigade = {
-		Index = 150,
+		Index = 149,
 		Serial = 1,
 		Size = 1,
 		Support = 4,
@@ -1141,7 +1136,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Special Forces"},
 	garrison_detachment = {
-		Index = 151,
+		Index = 150,
 		Serial = 1,
 		Size = 1,
 		Support = 1,
