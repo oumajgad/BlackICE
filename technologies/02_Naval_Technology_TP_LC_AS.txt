@@ -58,7 +58,7 @@ transport_ship_hull = {
 	start_year = 1935
 	first_offset = 1937
 	additional_offset = 2
-	max_level = 8
+	max_level = 9
 	folder = transports_folder
 }
 
@@ -102,7 +102,7 @@ transport_ship_engine = {
 	start_year = 1935
 	first_offset = 1937
 	additional_offset = 2
-	max_level = 8
+	max_level = 9
 	folder = transports_folder
 }
 
@@ -112,17 +112,566 @@ amphibious_invasion_craft = {
 	activate_unit = landing_craft
 
 	allow = {
-		destroyer_technology = 1
-		transport_ship_hull = 2
-		marine_infantry = 1
+		or = {
+			and = {
+				destroyer_technology = 1
+				amphibious_invasion_craft = 0
+				not = { amphibious_invasion_craft = 1 }
+			}
+			and = {
+				amphibious_structural_improvements = 1
+				amphibious_twin_engines = 1 
+				amphibious_invasion_craft = 1
+				not = { amphibious_invasion_craft = 2 }
+			}
+			and = {
+				amphibious_structural_improvements = 1
+				amphibious_twin_engines = 1 
+				amphibious_bow_ramps = 1
+				amphibious_invasion_craft = 2
+				not = { amphibious_invasion_craft = 3 }
+			}
+		}
 		#has_country_flag = blackICE
 	}
 
 	landing_craft = {
-		transport_capability = 5.00
-		fuel_consumption = 0.10
-		maximum_speed = 1.00
-		range = 100.00
+		transport_capability = 1.00
+		fuel_consumption = 0.05
+		maximum_speed = 0.75
+		range = 125.00
+	}
+
+	anzac_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	colonial_infantry_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	colonial_light_infantry_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	guard_infantry_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	Gurkha_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	infantry_bat = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	infantry_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	light_infantry_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	naval_infantry_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	semi_motorized_brigade = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_infantry_bat = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	ss_infantry_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	commando_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	elite_light_infantry_battalion = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	marine_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	ss_commando_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	engineer_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	ss_engineer_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.1
+		}
+	}
+	guard_motorized_brigade = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	guard_motorized_infantry_bat = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	motorized_brigade = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	motorized_engineer_brigade = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	motorized_infantry_bat = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	afrika_brigade = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	goering_brigade = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	grossdeutschland_bat = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	grossdeutschland_brigade = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_motorized_brigade = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_motorized_engineer_brigade = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_motorized_infantry_bat = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	lehr_brigade = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_totenkopf = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_dasreich = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_frundsberg = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_hitlerjugend = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_hohenstaufen = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_lssah = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+	ss_wiking = {
+		amphibious = {
+			attack = 0.1
+			defence = 0.1
+		}
+	}
+
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1937
+	first_offset = 1938
+	folder = transports_folder
+	additional_offset = 1
+	max_level = 3
+}
+
+# Assault Ships
+LSI = {	#advanced_invasion_craft - rename, Infantry
+
+	#activate_unit = assault_ship
+
+	allow = {
+		or = {
+			and = {
+				amphibious_structural_improvements = 2
+				amphibious_twin_engines = 2 
+				amphibious_bow_ramps = 1
+				amphibious_auxiliary_fuel_tanks = 1
+				LSI = 0
+				not = { LSI = 1 }
+			}
+			and = {
+				amphibious_structural_improvements = 3
+				amphibious_twin_engines = 3
+				amphibious_bow_ramps = 2
+				amphibious_auxiliary_fuel_tanks = 2
+				LSI = 1
+				not = { LSI = 2 }
+			}
+			and = {
+				amphibious_structural_improvements = 4
+				amphibious_twin_engines = 4
+				amphibious_bow_ramps = 3
+				amphibious_auxiliary_fuel_tanks = 3
+				LSI = 2
+				not = { LSI = 3 }
+			}
+			and = {
+				amphibious_structural_improvements = 5
+				amphibious_twin_engines = 5
+				amphibious_bow_ramps = 4
+				amphibious_auxiliary_fuel_tanks = 4
+				LSI = 3
+				not = { LSI = 4 }
+			}
+			and = {
+				amphibious_structural_improvements = 6
+				amphibious_twin_engines = 6
+				amphibious_bow_ramps = 5
+				amphibious_auxiliary_fuel_tanks = 5
+				LSI = 4
+				not = { LSI = 5 }
+			}
+			and = {
+				amphibious_structural_improvements = 7
+				amphibious_twin_engines = 6
+				amphibious_bow_ramps = 6
+				amphibious_auxiliary_fuel_tanks = 6
+				LSI = 5
+				not = { LSI = 6 }
+			}
+		}
+	}
+
+	anzac_brigade = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	colonial_infantry_brigade = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	colonial_light_infantry_brigade = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	guard_infantry_brigade = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	Gurkha_brigade = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	infantry_bat = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	infantry_brigade = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	light_infantry_brigade = {
+		amphibious = {
+			attack = 0.4
+			defence = 0.2
+		}
+	}
+	naval_infantry_brigade = {
+		amphibious = {
+			attack = 0.4
+			defence = 0.2
+		}
+	}
+	semi_motorized_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_infantry_bat = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	ss_infantry_brigade = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	commando_brigade = {
+		amphibious = {
+			attack = 0.4
+			defence = 0.2
+		}
+	}
+	elite_light_infantry_battalion = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	marine_brigade = {
+		amphibious = {
+			attack = 0.4
+			defence = 0.2
+		}
+	}
+	ss_commando_brigade = {
+		amphibious = {
+			attack = 0.4
+			defence = 0.2
+		}
+	}
+	engineer_brigade = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	ss_engineer_brigade = {
+		amphibious = {
+			attack = 0.3
+			defence = 0.2
+		}
+	}
+	guard_motorized_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	guard_motorized_infantry_bat = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	motorized_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	motorized_engineer_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	motorized_infantry_bat = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	afrika_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	goering_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	grossdeutschland_bat = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	grossdeutschland_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_motorized_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_motorized_engineer_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_motorized_infantry_bat = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	lehr_brigade = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_totenkopf = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_dasreich = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_frundsberg = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_hitlerjugend = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_hohenstaufen = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_lssah = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
+	}
+	ss_wiking = {
+		amphibious = {
+			attack = 0.2
+			defence = 0.2
+		}
 	}
 
 	research_bonus_from = {
@@ -133,32 +682,333 @@ amphibious_invasion_craft = {
 
 	difficulty = 6
 
-	start_year = 1936
-	first_offset = 1938
+	start_year = 1940
+	first_offset = 1942
 	folder = transports_folder
-	additional_offset = 1
-	max_level = 10
+	additional_offset = 2
+	max_level = 6
 }
+LCT = {	#tanks
 
-# Assault Ships
-advanced_invasion_craft = {
-
-	activate_unit = assault_ship
+	#activate_unit = assault_ship
 
 	allow = {
-		amphibious_invasion_craft = 1
-		amphibious_invasion_tactics = 2
-		amphibious_ship_defenses = 2
-		marine_infantry = 1
-		#has_country_flag = blackICE
+		or = {
+			and = {
+				transport_ship_hull = 4
+				transport_ship_engine = 4
+				amphibious_structural_improvements = 3
+				amphibious_twin_engines = 2 
+				amphibious_bow_ramps = 1
+				amphibious_auxiliary_fuel_tanks = 1
+				LCT = 0
+				not = { LCT = 1 }
+			}
+			and = {
+				transport_ship_hull = 5
+				transport_ship_engine = 5
+				amphibious_structural_improvements = 4
+				amphibious_twin_engines = 3
+				amphibious_bow_ramps = 2
+				amphibious_auxiliary_fuel_tanks = 2
+				LCT = 1
+				not = { LCT = 2 }
+			}
+			and = {
+				transport_ship_hull = 6
+				transport_ship_engine = 6
+				amphibious_structural_improvements = 5
+				amphibious_twin_engines = 4
+				amphibious_bow_ramps = 3
+				amphibious_auxiliary_fuel_tanks = 3
+				LCT = 2
+				not = { LCT = 3 }
+			}
+			and = {
+				transport_ship_hull = 7
+				transport_ship_engine = 7
+				amphibious_structural_improvements = 6
+				amphibious_twin_engines = 5
+				amphibious_bow_ramps = 4
+				amphibious_auxiliary_fuel_tanks = 4
+				LCT = 3
+				not = { LCT = 4 }
+			}
+			and = {
+				transport_ship_hull = 8
+				transport_ship_engine = 8
+				amphibious_structural_improvements = 7
+				amphibious_twin_engines = 6
+				amphibious_bow_ramps = 5
+				amphibious_auxiliary_fuel_tanks = 5
+				LCT = 4
+				not = { LCT = 5 }
+			}
+			and = {
+				transport_ship_hull = 9
+				transport_ship_engine = 9
+				amphibious_structural_improvements = 8
+				amphibious_twin_engines = 6
+				amphibious_bow_ramps = 6
+				amphibious_auxiliary_fuel_tanks = 6
+				LCT = 5
+				not = { LCT = 6 }
+			}
+		}
 	}
 
-	assault_ship = {
-		transport_capability = 5.00
-		fuel_consumption = 0.10
-		maximum_speed = 1.00
-		range = 100.00
-	}
+    amph_armour_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    armor_bat = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    armor_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    armored_car_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    assault_gun_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    captured_armor_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    GER_pzthirtyeight_rgt = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    GER_pzthirtyfive_rgt = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    guard_armor_bat = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    guard_armor_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    guard_heavy_armor_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    guard_mechanized_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    guard_mechanized_infantry_bat = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    heavy_armor_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    infantry_tank_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    lend_lease_armor_bat = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    lend_lease_armor_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    light_armor_bat = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    light_armor_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    light_armor_recon = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    mechanized_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    mechanized_infantry_bat = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    motorcycle_recon_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_armor_bat = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_armor_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_armored_car_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_heavy_armor_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_light_armor_bat = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_light_armor_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_light_armor_recon = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_light_tank_destroyer_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_mechanized_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_mechanized_infantry_bat = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    ss_motorcycle_recon_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+    tank_destroyer_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+	armored_engineers_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+	heavy_assault_gun_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+	heavy_tank_destroyer_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+	lend_lease_medium_tank_destroyer_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+	medium_tank_destroyer_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+	ss_armored_engineers_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
+	ss_tank_destroyer_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.2
+        }
+    }
 
 	research_bonus_from = {
 		naval_engineering = 1.0
@@ -168,11 +1018,99 @@ advanced_invasion_craft = {
 
 	difficulty = 8
 
+	start_year = 1941
+	first_offset = 1943
+	folder = transports_folder
+	additional_offset = 2
+	max_level = 6
+}
+LST = {	#long range, BIG
+
+	#activate_unit = assault_ship
+
+	allow = {
+		or = {
+			and = {
+				transport_ship_hull = 4
+				transport_ship_engine = 4
+				LST = 0
+				not = { LST = 1 }
+			}
+			and = {
+				transport_ship_hull = 5
+				transport_ship_engine = 5
+				LST = 1
+				not = { LST = 2 }
+			}
+			and = {
+				transport_ship_hull = 6
+				transport_ship_engine = 6
+				LST = 2
+				not = { LST = 3 }
+			}
+			and = {
+				transport_ship_hull = 7
+				transport_ship_engine = 7
+				LST = 3
+				not = { LST = 4 }
+			}
+			and = {
+				transport_ship_hull = 8
+				transport_ship_engine = 8
+				LST = 4
+				not = { LST = 5 }
+			}
+			and = {
+				transport_ship_hull = 9
+				transport_ship_engine = 9
+				LST = 5
+				not = { LST = 6 }
+			}
+		}
+	}
+
+	landing_craft = {
+		transport_capability = 30.00
+		fuel_consumption = 0.4
+		maximum_speed = 2
+		range = 400.00
+
+		north_atlantic = {
+			movement = 0.35
+		}
+		central_atlantic = {
+			movement = 0.35
+		}
+		south_atlantic = {
+			movement = 0.35
+		}
+		equator_sea = {
+			movement = 0.35
+		}
+		south_pacific = {
+			movement = 0.35
+		}
+		north_pacific = {
+			movement = 0.35
+		}
+		indian_ocean = {
+			movement = 0.35
+		}
+	}
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+
+	on_completion = naval_engineering
+
+	difficulty = 10
+
 	start_year = 1942
 	first_offset = 1943
 	folder = transports_folder
-	additional_offset = 1
-	max_level = 9
+	additional_offset = 2
+	max_level = 6
 }
 
 amphibious_invasion_tactics = {
@@ -181,16 +1119,42 @@ amphibious_invasion_tactics = {
 		amphibious_invasion_craft = 1
 	}
 
-	# Transport ships don't get to do amphibious operations anymore, so no go for them!
-	#transport_ship = {
+	landing_craft = {
+		amphibious_invasion_speed = 0.025
+	}
+	#assault_ship = {
+	#	amphibious_invasion_speed = 0.025
+	#}
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1939
+	first_offset = 1941
+	additional_offset = 2
+	max_level = 6
+	folder = transports_folder
+}
+
+davit_cargo_net_deployment = {
+
+	allow = {
+		LSI = 1
+		amphibious_invasion_tactics = 1
+	}
+
+	landing_craft = {
+		amphibious_invasion_speed = 0.075
+	}
+	#assault_ship = {
 	#	amphibious_invasion_speed = 0.10
 	#}
-	landing_craft = {
-		amphibious_invasion_speed = 0.10
-	}
-	assault_ship = {
-		amphibious_invasion_speed = 0.10
-	}
 
 	research_bonus_from = {
 		naval_engineering = 1.0
@@ -204,7 +1168,82 @@ amphibious_invasion_tactics = {
 	start_year = 1940
 	first_offset = 1942
 	additional_offset = 2
-	max_level = 6
+	max_level = 3
+	folder = transports_folder
+}
+direct_beaching = {
+
+	allow = {
+		LCT = 1
+		amphibious_invasion_tactics = 2
+	}
+
+	landing_craft = {
+		amphibious_invasion_speed = 0.2
+		amphibious_invasion_defence = 0.2
+	}
+	#assault_ship = {
+	#	amphibious_invasion_speed = 0.10
+	#}
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1942
+	folder = transports_folder
+}
+piggyback_method = {
+
+	allow = {
+		LST = 1
+		amphibious_invasion_tactics = 3
+	}
+
+	landing_craft = {
+		amphibious_invasion_speed = 0.10
+
+		north_atlantic = {
+			movement = 0.15
+		}
+		central_atlantic = {
+			movement = 0.15
+		}
+		south_atlantic = {
+			movement = 0.15
+		}
+		equator_sea = {
+			movement = 0.15
+		}
+		south_pacific = {
+			movement = 0.15
+		}
+		north_pacific = {
+			movement = 0.15
+		}
+		indian_ocean = {
+			movement = 0.15
+		}
+	}
+	#assault_ship = {
+	#	amphibious_invasion_speed = 0.10
+	#}
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1943
 	folder = transports_folder
 }
 # Landing Craft Support
@@ -212,18 +1251,15 @@ amphibious_ship_defenses = {
 
 	allow = {
 		amphibious_invasion_craft = 1
+		LSI = 1
 	}
 
-	# Transport ships don't get to do amphibious operations anymore, so no go for them!
-	#transport_ship = {
-	#	amphibious_invasion_defence = 0.10
-	#}
 	landing_craft = {
 		amphibious_invasion_defence = 0.10
 	}
-	assault_ship = {
-		amphibious_invasion_defence = 0.10
-	}
+	#assault_ship = {
+	#	amphibious_invasion_defence = 0.10
+	#}
 
 	research_bonus_from = {
 		naval_engineering = 1.0
@@ -244,15 +1280,15 @@ amphibious_ship_defenses = {
 amphibious_bow_ramps = {
 
 	allow = {
-		amphibious_invasion_craft = 1
+		amphibious_invasion_craft = 2
 	}
 
 	landing_craft = {
 		amphibious_invasion_speed = 0.10
 	}
-	assault_ship = {
-		amphibious_invasion_speed = 0.10
-	}
+	#assault_ship = {
+	#	amphibious_invasion_speed = 0.10
+	#}
 
 	research_bonus_from = {
 		naval_engineering = 1.0
@@ -263,22 +1299,97 @@ amphibious_bow_ramps = {
 
 	difficulty = 5
 
-	start_year = 1937
+	start_year = 1939
+	first_offset = 1941
+	additional_offset = 2
+	max_level = 4
 	folder = transports_folder
 }
 
 
-fire_support_AS = {
+LCTR = {	#fire_support_AS 
 
 	allow = {
-		advanced_invasion_craft = 1
+		LCT = 1
 		rocket_art_ammo = 2
+		amphibious_invasion_tactics = 2
 	}
 
-	assault_ship = {
-		amphibious_invasion_defence = 0.10
+	landing_craft = {
 		shore_bombardment = 0.75
 	}
+    artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    guard_sp_rct_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    medium_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    rocket_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    pack_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    rocket_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    sp_rct_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    ss_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    ss_medium_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    ss_pack_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    ss_rocket_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
+    ss_sp_rct_artillery_brigade = {
+        amphibious = {
+            attack = 0.2
+            defence = 0.0
+        }
+    }
 
 	research_bonus_from = {
 		naval_engineering = 0.8
@@ -291,6 +1402,9 @@ fire_support_AS = {
 	difficulty = 5
 
 	start_year = 1942
+	first_offset = 1944
+	additional_offset = 2
+	max_level = 3
 	folder = transports_folder
 }
 
@@ -301,88 +1415,14 @@ amphibious_armor_plating = {
 	}
 
 	landing_craft = {
-		amphibious_invasion_defence = 0.10
+		hull = 0.35
+		max_strength = 10
+		range = -50
+		maximum_speed = -1.5
 	}
-	assault_ship = {
-		amphibious_invasion_defence = 0.10
-	}
-
-	research_bonus_from = {
-		naval_engineering = 1.0
-	}
-
-	change = no
-	on_completion = naval_engineering
-
-	difficulty = 4
-
-	start_year = 1938
-	folder = transports_folder
-}
-
-amphibious_twin_engines = {
-
-	allow = {
-		amphibious_invasion_craft = 2
-	}
-
-	landing_craft = {
-		maximum_speed = 2
-	}
-	assault_ship = {
-		maximum_speed = 4
-	}
-
-	research_bonus_from = {
-		naval_engineering = 1.0
-	}
-
-	change = no
-	on_completion = naval_engineering
-
-	difficulty = 5
-
-	start_year = 1939
-	folder = transports_folder
-}
-
-amphibious_auxiliary_fuel_tanks = {
-
-	allow = {
-		amphibious_invasion_craft = 2
-	}
-
-	landing_craft = {
-		range = 100
-	}
-	assault_ship = {
-		range = 250
-	}
-
-	research_bonus_from = {
-		naval_engineering = 1.0
-	}
-
-	change = no
-	on_completion = naval_engineering
-
-	difficulty = 3
-	start_year = 1939
-	folder = transports_folder
-}
-
-amphibious_structural_improvements = {
-
-	allow = {
-		amphibious_invasion_craft = 4
-	}
-
-	landing_craft = {
-		transport_capability = 2.50
-	}
-	assault_ship = {
-		transport_capability = 5.00
-	}
+	#assault_ship = {
+	#	amphibious_invasion_defence = 0.10
+	#}
 
 	research_bonus_from = {
 		naval_engineering = 1.0
@@ -394,6 +1434,98 @@ amphibious_structural_improvements = {
 	difficulty = 4
 
 	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 4
+	folder = transports_folder
+}
+
+amphibious_twin_engines = {
+
+	allow = {
+		amphibious_invasion_craft = 1
+	}
+
+	landing_craft = {
+		maximum_speed = 3
+	}
+	#assault_ship = {
+	#	maximum_speed = 4
+	#}
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 5
+
+	start_year = 1938
+	first_offset = 1940
+	folder = transports_folder
+	additional_offset = 2
+	max_level = 7
+	folder = transports_folder
+}
+
+amphibious_auxiliary_fuel_tanks = {
+
+	allow = {
+		amphibious_invasion_craft = 2
+	}
+
+	landing_craft = {
+		range = 250
+	}
+	#assault_ship = {
+	#	range = 250
+	#}
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 3
+	start_year = 1940
+	first_offset = 1941
+	folder = transports_folder
+	additional_offset = 2
+	max_level = 6
+	folder = transports_folder
+}
+
+amphibious_structural_improvements = {
+
+	allow = {
+		amphibious_invasion_craft = 1
+	}
+
+	landing_craft = {
+		transport_capability = 7.5
+	}
+	#assault_ship = {
+	#	transport_capability = 5.00
+	#}
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 4
+
+	start_year = 1937
+	first_offset = 1939
+	folder = transports_folder
+	additional_offset = 2
+	max_level = 8
 	folder = transports_folder
 }
 fleet_oilers = {
@@ -455,4 +1587,12 @@ fleet_oilers = {
 	max_level = 6
 	folder = transports_folder
 }
+#	LSI: INF, 1940
+#	LCT: tank, 1941
+#	LST: ocean capable 1942
+#	tactics:
+#	Davit & Cargo Net Deployment - LSI - liners - 1940-42
+#	Direct Beaching - LSI+LCT -  - 1942
+#	Piggyback Method - LCT on LST - 1943
+
 #EOF#
