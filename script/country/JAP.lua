@@ -322,6 +322,7 @@ function P.NavalTechs(voTechnologyData)
 		"davit_cargo_net_deployment",
 		"direct_beaching",
 		"piggyback_method",
+		"amphibious_structural_improvements",
 		"fleet_oilers",
 		"cag_development",
 		"torpedo_upgrade",
