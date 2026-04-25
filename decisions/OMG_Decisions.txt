@@ -5200,5 +5200,65 @@ diplomatic_decisions = {
             event = 1043
         }
     }
+    AI_ENG_FRA_behaviour_fix_decision = {
+        potential = {
+            tag = FRA
+			ai = yes
+			ENG = { ai = yes }
+ 			war_with = GER
+			not = {
+				has_country_flag = AI_ENG_FRA_behaviour_fix_done
+			}
+			GER = {
+				ai = no
+			}
+        }
+        allow = {
+			or = {
+				HOL = {
+					any_owned_province = {
+						controlled_by = GER
+					}
+				}
+				FRA = {
+					any_owned_province = {
+						controlled_by = GER
+					}
+				}
+				FRA = {
+					any_owned_province = {
+						controlled_by = ITA
+					}
+				}
+			}
+        }
+        effect = {
+            country_event = 166611
+			set_country_flag = AI_ENG_FRA_behaviour_fix_done
+        }
+    }
+    AI_ENG_FRA_behaviour_fix_decision_revert = {
+        potential = {
+            tag = ENG
+			ai = yes
+			FRA = { ai = yes }
+ 			war_with = GER
+			not = {
+				has_country_flag = AI_ENG_FRA_behaviour_fix_revert_done
+			}
+			FRA = {
+				has_country_flag = AI_ENG_FRA_behaviour_fix_done
+			}
+        }
+        allow = {
+			2613 = {
+				controlled_by = GER
+			}
+        }
+        effect = {
+            country_event = 166612
+			set_country_flag = AI_ENG_FRA_behaviour_fix_revert_done
+        }
+    }
 }
 #EOF#
