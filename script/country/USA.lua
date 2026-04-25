@@ -350,7 +350,6 @@ function P.NavalTechs(voTechnologyData)
 		"transport_ship_hull",
 		"transport_ship_engine",
 		"amphibious_invasion_craft",
-		"advanced_invasion_craft",
 		"amphibious_invasion_tactics",
 		"amphibious_ship_defenses",
 		"LSI",
