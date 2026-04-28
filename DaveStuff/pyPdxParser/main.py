@@ -12,6 +12,7 @@ if __name__ == "__main__":
         rf"{base_path}\history",
         rf"{base_path}\decisions",
         rf"{base_path}\events",
+        rf"{base_path}\units",
     ]:
         for root, dirs, files in os.walk(path):
             for file in files:

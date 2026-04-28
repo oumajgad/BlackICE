@@ -2,14 +2,29 @@ local P = {}
 
 PdxParser = P
 
-local debug = false
-local currentFile = ""
+local DEBUG = false
+local CURRENT_FILE = ""
+local CURRENT_FILE_CONTENT = ""
 
-local function debug_out(msg)
-    if debug then
-        Utils.LUA_DEBUGOUT(currentFile .. ": " .. msg)
+local function debug_out(message, idx, throw)
+    if throw then
+        local sub = CURRENT_FILE_CONTENT:sub(1, idx)
+        local _, line = sub:gsub("\n", "")
+        line = line - 1
+        local temp_current = Utils.SplitString(sub, "\n")
+        local temp_full_line = Utils.SplitString(CURRENT_FILE_CONTENT, "\n")
+        local full_line = temp_full_line[#temp_current]
+        local msg = CURRENT_FILE .. ": "
+            .. "line=" .. tostring(line) .. ": "
+            .. message .. " --- full line:" .. full_line
+        Utils.LUA_DEBUGOUT(msg)
+        error(msg)
+    end
+    if DEBUG then
+        Utils.LUA_DEBUGOUT(CURRENT_FILE .. ": " .. message)
     end
 end
+
 
 local function create_set(...)
     local res = {}
@@ -21,18 +36,24 @@ end
 
 local space_chars   = create_set(" ", "\t", "\r", "\n")
 
-local function next_char(str, idx, set, negate)
-    for i = idx, #str do
+local function next_char(str, idx)
+    local i = idx
+    while i <= #str do
         local chr = str:sub(i, i)
         if (chr == "#") then
             -- Skip until a new line begins
             local x = string.find(str, "\n", i)
-            return next_char(str, x, set, negate)
-        elseif set[chr] ~= negate then
-            return i
+            if x then
+                i = x
+            end
+        elseif space_chars[chr] == nil then
+            debug_out("chr: " .. chr, i, false)
+            return chr, i
+        else
+            i = i + 1
         end
     end
-    return #str + 1
+    debug_out("Failed to find next char", idx, true)
 end
 
 local types = {
@@ -40,13 +61,14 @@ local types = {
 }
 
 local function determine_type(str, i)
-    local j = next_char(str, i, space_chars, true)
-    local chr = str:sub(j,j)
+    local chr, j = next_char(str, i)
     if chr == "=" then
-        j = next_char(str, j + 1 , space_chars, true)
-        chr = str:sub(j,j)
+        chr, j = next_char(str, j + 1)
         if chr == "{" then
             local closing = string.find(str, "}", j)
+            if not closing then
+                debug_out("Closing bracket not found", i, true)
+            end
             if not string.find(str:sub(j, closing), "=") then
                 return types.list
             end
@@ -88,14 +110,16 @@ local function parse_string(str, i)
     end
 end
 
-local function parse_list(str, i)
+local function parse_list(str, idx)
     local res = {}
-    while true do
-        i = next_char(str, i, space_chars, true)
-        local chr = str:sub(i,i)
+    local i = idx
+    local x = 0
+    local chr
+    while x < 10000 do
+        x = x + 1
+        chr, i = next_char(str, i)
         if (chr == "{") then
-            i = next_char(str, i + 1, space_chars, true)
-            chr = str:sub(i,i)
+            chr, i = next_char(str, i + 1)
         end
         if (chr == "}") then
             i = i + 1
@@ -103,8 +127,10 @@ local function parse_list(str, i)
         end
         local value
         value, i = parse_string(str, i)
+        debug_out("parse_list: " .. value, i, false)
         table.insert(res, value)
     end
+    debug_out("parse_list exceeded limit", idx, true)
 end
 
 -- some keys can be lower or uppercase -> use this table to normalize them
@@ -118,24 +144,39 @@ local caseOverrides = {
     ["limit"] = "LIMIT",
 }
 
+local function is_list(val)
+    if type(val) == "table" and val[1] ~= nil then
+        return true
+    end
+    return false
+end
+
+local function _insert(res, key, val)
+    if res[key] ~= nil then
+        if is_list(res[key]) then
+            table.insert(res[key], val)
+        else
+            local temp = res[key]
+            res[key] = {temp, val}
+        end
+    else
+        res[key] = val
+    end
+end
+
 local function parse_object(str, i, doAsList, level)
     local res = {}
+    local chr
     while true do
-        -- debug_out("level: " .. level .. "\n")
-        -- debug_out(Utils.TABLE_TO_STRING(res))
-
         local key, val
-        i = next_char(str, i, space_chars, true)
-        local chr = str:sub(i,i)
-        -- debug_out("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
+        chr, i = next_char(str, i)
         if (chr == "{") then
             -- makes sure we enter the object
-            i = next_char(str,i + 1, space_chars, true)
-            chr = str:sub(i,i)
+            chr, i = next_char(str,i + 1)
         end
-        -- debug_out("i: " .. i .. " = " .. "'" .. str:sub(i,i) .. "'")
         if (chr == "}") then
             -- object has ended, return it
+            debug_out("chr == }: " .. tostring(level), i, false)
             return res, i + 1
         end
 
@@ -145,69 +186,33 @@ local function parse_object(str, i, doAsList, level)
             key = caseOverrides[string.lower(key)]
         end
 
-        debug_out("key: " .. key)
-        -- local chr = str:sub(i,i)
-        -- debug_out("i: " .. i .. " = " .. "'" .. chr .. "'")
+        debug_out("key: " .. key, i, false)
         local value_type = determine_type(str, i)
-        i = next_char(str, i, space_chars, true)    -- should be '=' at all times
-        -- debug_out("value_type: " .. value_type)
-        -- local chr = str:sub(i,i)
-        -- debug_out("i: " .. i .. " = " .. "'" .. chr .. "'")
+        debug_out("value_type: " .. tostring(value_type), i, false)
+        chr, i = next_char(str, i)    -- should be '=' at all times
 
+        if chr ~= "=" then
+            debug_out("Expected '=' but got '" .. chr .. "'", i, true)
+        end
+
+        i = i + 1
         if (value_type == types.object) then
-            i = next_char(str, i + 1, space_chars, true)    -- i + 1 so we move on to the opening '{' of the object
+            chr, i = next_char(str, i)
             val, i = parse_object(str, i, false, level + 1)
             if doAsList then
                 table.insert(res, {[key]=val})
             else
-                -- debug_out("\n")
-                -- debug_out(key)
-                -- debug_out("val: " .. Utils.TABLE_TO_STRING(val))
-                -- debug_out("res[key]: " .. Utils.TABLE_TO_STRING(res[key]))
-                if res[key] ~= nil then
-                    local temp = res[key]
-                    -- debug_out("temp: " .. Utils.TABLE_TO_STRING(temp))
-                    res[key] = {}
-                    table.insert(res[key], val)
-                    -- check if this "table" is an array of objects or a single object
-                    -- arrays will not be nil
-                    if temp[1] == nil then
-                        table.insert(res[key], temp)
-                    else
-                        for k, v in pairs(temp) do
-                            table.insert(res[key], v)
-                        end
-                    end
-                else
-                    res[key] = val
-                end
-                -- debug_out("res[key]: " .. Utils.TABLE_TO_STRING(res[key]))
+                _insert(res, key, val)
             end
-
         elseif (value_type == types.list) then
-            i = next_char(str, i + 1, space_chars, true)    -- i + 1 so we move on to the opening '{' of the list
+            chr, i = next_char(str, i)
             val, i = parse_list(str, i)
-            res[key] = val
-            debug_out("types.list val: \n  " .. Utils.TABLE_TO_STRING(val))
-
+            _insert(res, key, val)
         elseif (value_type == types.pair) then
-            i = next_char(str, i + 1, space_chars, true)    -- i + 1 so we move on to the first character of the value
+            chr, i = next_char(str, i)
             val, i = parse_string(str, i)
-            debug_out("types.pair val: " .. key)
-            if res[key] ~= nil then             -- At many points keys can be repeated to create a list of values, so this turns our key-value into key-list
-                local temp = res[key]
-                res[key] = {}
-                table.insert(res[key], val)
-                if type(temp) == "table" then
-                    for k, v in pairs(temp) do
-                        table.insert(res[key], v)
-                    end
-                else
-                    table.insert(res[key], temp)
-                end
-            else
-                res[key] = val
-            end
+            debug_out("val: " .. val, i, false)
+            _insert(res, key, val)
         end
         -- debug_out(Utils.TABLE_TO_STRING(res))
     end
@@ -223,15 +228,16 @@ function P.parseFile(filePath, asList)
 	local file, err = io.open(filePath, "r")
     -- debug_out(filePath)
     local temp = Utils.SplitString(filePath, "\\")
-    currentFile = temp[#temp-1] .. "\\" .. temp[#temp]
+    CURRENT_FILE = temp[#temp-1] .. "\\" .. temp[#temp]
 	if file ~= nil then
-        local linesString = "{\n" .. file:read("*a") .. "\n}"
+        CURRENT_FILE_CONTENT = "{ \n" .. file:read("*a") .. "\n }"
+        local linesString = CURRENT_FILE_CONTENT
         local decoded = PdxParser.parse(linesString, asList)
 		file:close()
         return decoded
 	end
 	if err ~= nil then
-		debug_out(err)
+		error(err)
 	end
 end
 

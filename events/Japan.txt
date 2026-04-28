@@ -1342,7 +1342,7 @@ country_event = {
 		}
 	}
 }
-# Doolittel Raid on JAPAN
+# Doolittle Raid
 country_event = {
 	id = 48827
 	trigger = {
@@ -2527,7 +2527,7 @@ country_event = {
 		}
 	}
 }
-#Yagi-Uda Antenna Intro https://en.wikipedia.org/wiki/Yagi%E2%80%93Uda_antenna
+#Yagi-Uda Antenna Intro
 country_event = {
 	id = 9300219
 	trigger = {
@@ -2568,7 +2568,7 @@ country_event = {
 		}
 	}
 }
-#Yagi-Uda Antenna question enemy radio technician https://en.wikipedia.org/wiki/Yagi%E2%80%93Uda_antenna#History
+#Yagi-Uda Antenna question enemy radio technician 
 country_event = {
 	id = 9301220
 	trigger = {
@@ -3013,7 +3013,6 @@ country_event = {
 	}
 }
 
-
 # Hiryu is launched event
 country_event = {
 	id = 400138
@@ -3034,5 +3033,113 @@ country_event = {
 	option = {
 		name = "What a Fine Ship!"
 		set_country_flag = Hiryulaunch
+	}
+}
+
+# Japanese "Diet" (Assembly) announces record high budget with half being military investment
+country_event = {
+	id = 962001
+	fire_only_once = yes
+	trigger = {
+
+		not = {
+			tag = JAP 
+		}
+		date = 1940.2.1
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAMEMARNE962001"
+	desc = "EVTDESCMARNE962001"
+	picture = "jap_diet_announces_budget_1940"
+	option = {
+		name = "EVTOPTAMARNE962001"
+	}
+}
+
+country_event = {
+	id = 400139
+	trigger = {
+		tag = JAP
+		controls = 5118 
+		controls = 5315
+		date = 1939.2.2
+		not = {
+			has_country_flag = sado1
+		}
+	}
+	title = "Mining on Sado Island"
+	desc = "EVTDESC400139"
+	picture = "sado_mine"
+	option = {
+		name = "Eager to help"
+		set_country_flag = sado1
+		money = 1000
+	}
+}
+
+country_event = {
+	id = 400140
+	trigger = {
+		tag = JAP
+		controls = 5118 
+		controls = 5315
+		date = 1940.2.2
+		not = {
+			has_country_flag = sado2
+		}
+	}
+	title = "Mining on Sado Island peaks!"
+	desc = "EVTDESC400140"
+	picture = "sado_mine"
+	option = {
+		name = "A profitable venture"
+		set_country_flag = sado2
+		money = 2000
+	}
+}
+
+country_event = {
+	id = 400141
+	trigger = {
+		tag = JAP
+		controls = 5118 
+		controls = 5315
+		date = 1943.5.2
+		not = {
+			has_country_flag = sado3
+		}
+	}
+	title = "Mining on Sado Island declines"
+	desc = "EVTDESC400141"
+	picture = "sado_mine"
+	option = {
+		name = "We have other needs"
+		set_country_flag = sado3
+		money = 500
+		rare_materials = 75
+	}
+}
+
+country_event = {
+	id = 400142
+	trigger = {
+		tag = JAP
+		controls = 5118 
+		controls = 5315
+		date = 1945.3.2
+		not = {
+			has_country_flag = sado4
+	}
+}
+	title = "Mining on Sado Island exhausted"
+	desc = "EVTDESC400142"
+	picture = "sado_mine"
+	option = {
+		name = "We can no longer rely on our mines"
+		set_country_flag = sado4
+		money = 250
+		rare_materials = 250
 	}
 }
