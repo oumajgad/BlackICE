@@ -136,6 +136,7 @@ country_event = {
 	id = 88685
 	trigger = {
 		tag = JAP
+		ai = no
 		date = 1938.7.29
 		or = {
 			controls = 7135
@@ -179,6 +180,118 @@ country_event = {
 			factor = 100
 		}
 	}
+	option = {
+		name = "EVTOPTB88685"
+		JAP = {
+			war = {
+				target = SOV
+				attacker_goal = {
+					casus_belli = conquer
+				}
+			}
+		}
+		MAN = {
+			war = {
+				target = SOV
+				attacker_goal = {
+					casus_belli = conquer
+				}
+			}
+		}
+		set_country_flag = battle_of_lake_Khasan
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 886851
+	trigger = {
+		tag = JAP
+		ai = yes
+		date = 1938.7.29
+		or = {
+			controls = 7135
+			controls = 7276
+			MEN = {
+				controls = 7135
+			}
+			MEN = {
+				controls = 7276
+			}
+		}
+		exists = CHI
+
+		not = {
+			year = 1939
+		}
+		has_country_flag = soviet_border_troops_refused
+
+		not = {
+			has_country_flag = battle_of_lake_Khasan
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88685"
+	desc = "EVTDESC88685"
+	picture = "battle_of_lake_Khasan"
+	option = {
+		name = "EVTOPTA88685"
+		SOV = {
+			country_event = 88686
+		}
+		manpower = -7
+		supplies = -1250
+		relation = {
+			who = SOV
+			value = -10
+		}
+		set_country_flag = battle_of_lake_Khasan
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 886852
+	trigger = {
+		tag = JAP
+		ai = yes
+		date = 1938.7.29
+		or = {
+			controls = 7135
+			controls = 7276
+			MEN = {
+				controls = 7135
+			}
+			MEN = {
+				controls = 7276
+			}
+		}
+		not = {
+			exists = CHI
+		}
+		SOV = {
+			ai = no
+		}
+
+		not = {
+			year = 1939
+		}
+		has_country_flag = soviet_border_troops_refused
+
+		not = {
+			has_country_flag = battle_of_lake_Khasan
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88685"
+	desc = "EVTDESC88685"
+	picture = "battle_of_lake_Khasan"
 	option = {
 		name = "EVTOPTB88685"
 		JAP = {
