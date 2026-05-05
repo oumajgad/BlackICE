@@ -1,7 +1,7 @@
-# Australian Events by Timasaurus007 #
+# Australian Events by Timasaurus007 + additions and modifications by crytoz
 country_event = {
 	id = 88201
-	title = "Military Conscription for unmarried men?"
+	title = "Should we introduce military conscription for unmarried men into the CMF?"
 	desc = "EVENTDESC88201"
 	picture = "AUS_Unmarried_Men_Conscription"
 	trigger = {
@@ -29,42 +29,42 @@ country_event = {
 		}
 
 		not = {
-			has_country_flag = Unmarried_Men_Conscription
+			has_country_flag = CMF_Conscription_Bill
 		}
 	}
 	option = {
-		name = "Conscript unmarried 21 year olds."
+		name = "Conscript unmarried 21 year old men, as according to the bill."
 		dissent = 1
-		officer_pool = 500
-		manpower = 40
-		set_country_flag = Unmarried_Men_Conscription
+		add_country_modifier = {
+			name = "Conscripting_Unmarried_Men_CMF"
+			duration = -1
+		}
+		set_country_flag = CMF_Conscription_Bill
 		ai_chance = {
 			factor = 85
 		}
 	}
 	option = {
-		name = "Conscript married men too."
+		name = "Conscript the married blokes too!"
 		dissent = 5
 		national_unity = -3.5
-		officer_pool = 600
-		manpower = 85
 		popularity = -6
 		add_country_modifier = {
-			name = "Conscripting_Married_Men"
+			name = "Conscripting_Married_Men_CMF"
 			duration = -1
 		}
-		set_country_flag = Unmarried_Men_Conscription
+		set_country_flag = CMF_Conscription_Bill
 		ai_chance = {
 			factor = 5
 		}
 	}
 	option = {
-		name = "We must focus on our war industry!"
+		name = "Forget the bloody conscription chaps, we must focus on our war industry!"
 		add_country_modifier = {
 			name = "Industry_Is_More_Important"
 			duration = -1
 		}
-		set_country_flag = Unmarried_Men_Conscription
+		set_country_flag = CMF_Conscription_Bill
 		ai_chance = {
 			factor = 10
 		}
@@ -72,8 +72,7 @@ country_event = {
 }
 #End of event
 country_event = {
-	id = 88202
-	title = "Full Conscription"
+	title = "Should we introduce some form of mandatory military conscription?"
 	desc = "EVENTDESC88202"
 	picture = "AUS_Conscription"
 	mean_time_to_happen = {
@@ -82,75 +81,25 @@ country_event = {
 	trigger = {
 		tag = AST
 		war = yes
-		has_country_flag = Unmarried_Men_Conscription
+		has_country_flag = CMF_Conscription_Bill
 
 		not = {
-			manpower = 600
+			manpower = 700
 			has_country_flag = Australian_Conscription
 		}
 	}
 	option = {
-		name = "Introduce conscription according to the bill."
+		name = "Introduce conscription!"
 		dissent = 3
-		officer_pool = 4000
-		manpower = 385
+		#officer_pool = 2500
+		#manpower = 225
 		add_country_modifier = {
 			name = "Australian_Full_Conscription"
 			duration = -1
 		}
-		remove_country_modifier = Conscripting_Married_Men
+		remove_country_modifier = Conscripting_Married_Men_CMF
+		remove_country_modifier = Conscripting_Unmarried_Men_CMF
 		popularity = -3
-		8057 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		8062 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		10438 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7989 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7923 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7950 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7967 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		8007 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		6596 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7842 = {
-			militia_brigade = current
-		}
-		7858 = {
-			militia_brigade = current
-		}
-		7897 = {
-			militia_brigade = current
-		}
-		6566 = {
-			militia_brigade = current
-		}
-		6552 = {
-			militia_brigade = current
-		}
 		set_country_flag = Australian_Conscription
 		set_country_flag = Women_In_Industry
 		ai_chance = {
@@ -160,79 +109,13 @@ country_event = {
 	option = {
 		name = "We need all the men we can get, conscript as many as we can!"
 		dissent = 15
-		officer_pool = 9500
-		manpower = 600
 		add_country_modifier = {
 			name = "Australian_Ridiculous_Conscription"
 			duration = -1
 		}
-		remove_country_modifier = Conscripting_Married_Men
+		remove_country_modifier = Conscripting_Married_Men_CMF
+		remove_country_modifier = Conscripting_Unmarried_Men_CMF
 		popularity = -25
-		8057 = {
-			militia_brigade = current
-			militia_brigade = current
-			militia_brigade = current
-		}
-		8062 = {
-			militia_brigade = current
-			militia_brigade = current
-			militia_brigade = current
-		}
-		10438 = {
-			militia_brigade = current
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7989 = {
-			militia_brigade = current
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7923 = {
-			militia_brigade = current
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7950 = {
-			militia_brigade = current
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7967 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		8007 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		6596 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7842 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7858 = {
-			militia_brigade = current
-			militia_brigade = current
-		}
-		7897 = {
-			militia_brigade = current
-		}
-		6566 = {
-			militia_brigade = current
-		}
-		6552 = {
-			militia_brigade = current
-		}
-		10302 = {
-			militia_brigade = current
-		}
-		10328 = {
-			militia_brigade = current
-		}
 		set_country_flag = Australian_Conscription
 		set_country_flag = Women_In_Industry2
 		ai_chance = {
@@ -240,12 +123,7 @@ country_event = {
 		}
 	}
 	option = {
-		name = "We must focus on our war industry!"
-		add_country_modifier = {
-			name = "Industry_Is_More_Important2"
-			duration = -1
-		}
-		remove_country_modifier = Industry_Is_More_Important
+		name = "No more conscription!"
 		set_country_flag = Australian_Conscription
 		ai_chance = {
 			factor = 10
@@ -254,7 +132,6 @@ country_event = {
 }
 #End of event
 country_event = {
-	#Attached to conscription events
 	id = 88203 
 	title = "Women in the industry?!"
 	desc = "EVENTDESC88203"
@@ -286,17 +163,18 @@ country_event = {
 			}
 		}
 		has_country_flag = Women_In_Industry
+		has_country_flag = CMF_Conscription_Bill
 
 		not = {
 			has_country_flag = Women_In_Industry_Decided
 		}
 	}
 	option = {
-		name = "Great idea, make use of the women!"
+		name = "Great idea, make use of the sheilas!"
 		dissent = 3
-		remove_country_modifier = Australian_Full_Conscription
+		manpower = 10
 		add_country_modifier = {
-			name = "Australian_Conscription_Supported"
+			name = "Women_in_the_industry"
 			duration = -1
 		}
 		random_list = {
@@ -348,8 +226,12 @@ country_event = {
 			has_country_flag = Women_setting_up_orgs
 		}
 	}
-	option = {
+	option = { #perhaps a buff here to supply throughput / production?
 		name = "It's for the good of the nation, allow it."
+		add_country_modifier = {
+			name = "Women_support_frontline"
+			duration = -1
+		}		
 		random_list = {
 			20 = {
 				8007 = {
@@ -497,72 +379,8 @@ country_event = {
 }
 #End of event
 country_event = {
-	#Attached to conscription events
-	id = 88208
-	title = "Women in the industry?!"
-	desc = "EVENTDESC88202"
-	picture = "AUS_Women_in_industry"
-	mean_time_to_happen = {
-		days = 16
-	}
-	trigger = {
-		tag = AST
-		war = yes
-		has_country_flag = Women_In_Industry2
-
-		not = {
-			has_country_flag = Women_In_Industry_Decided
-		}
-	}
-	option = {
-		name = "Great idea, make use of the women!"
-		dissent = 3
-		remove_country_modifier = Australian_Ridiculous_Conscription
-		add_country_modifier = {
-			name = "Australian_Ridiculous_Conscription_Supported"
-			duration = -1
-		}
-		random_list = {
-			30 = {
-				8007 = {
-					create_revolt = 2
-				}
-				8057 = {
-					create_revolt = 2
-				}
-				7989 = {
-					create_revolt = 2
-				}
-				10438 = {
-					create_revolt = 2
-				}
-				7923 = {
-					create_revolt = 2
-				}
-				popularity = -8
-				organisation = -4
-			}
-			70 = {
-			}
-		}
-		set_country_flag = Women_In_Industry_Decided
-		ai_chance = {
-			factor = 90
-		}
-	}
-	option = {
-		name = "Women working?! What are you thinking?"
-		dissent = -3
-		popularity = 7
-		ai_chance = {
-			factor = 10
-		}
-	}
-}
-#End of event
-country_event = {
 	id = 88209
-	title = "National Security Act"
+	title = "the National Security Act, 1939"
 	desc = "EVENTDESC88209"
 	picture = "AUS_National_Security_Act"
 	mean_time_to_happen = {
@@ -699,28 +517,8 @@ country_event = {
 	}
 	option = {
 		name = "They could be of some use..."
-		manpower = 6
+		#manpower = 6
 		popularity = -10
-		7831 = {
-			militia_brigade = current
-			cavalry_brigade = current
-			engineer_brigade = current
-			division_hq_veteran = current
-		}
-		6603 = {
-			militia_brigade = current
-			cavalry_brigade = current
-		}
-		7910 = {
-			militia_brigade = current
-			cavalry_brigade = current
-		}
-		10352 = {
-			militia_brigade = current
-			cavalry_brigade = current
-			Recon_cavalry_brigade = current
-			division_hq_veteran = current
-		}
 		add_country_modifier = {
 			name = "Aboriginals_in_army"
 			duration = -1
@@ -770,7 +568,6 @@ country_event = {
 		tag = AST
 		war = yes
 		or = {
-			has_country_flag = White_Australia_Policy
 			has_country_flag = Dismantle_White_Australia_Policy
 		}
 
@@ -1054,7 +851,8 @@ country_event = {
 		tag = AST
 		war = no
 		OR = {
-			has_country_modifier = Conscripting_Married_Men
+			has_country_modifier = Conscripting_Unmarried_Men_CMF
+			has_country_modifier = Conscripting_Married_Men_CMF
 			has_country_modifier = Industry_Is_More_Important
 			has_country_modifier = Australian_Full_Conscription
 			has_country_modifier = Australian_Ridiculous_Conscription
@@ -1069,11 +867,7 @@ country_event = {
 			has_country_modifier = CCC
 			has_country_modifier = AWAS
 			has_country_modifier = WRANS
-			has_country_modifier = Australian_Ridiculous_Conscription_Supported
-			has_country_modifier = Australian_Conscription_Supported
 			has_country_modifier = Women_in_the_industry
-			has_country_modifier = Industry_Is_More_Important2
-			has_country_modifier = Australian_Conscription
 		}
 
 		not = {
@@ -1082,7 +876,7 @@ country_event = {
 	}
 	option = {
 		name = "The war has scarred us all."
-		remove_country_modifier = Conscripting_Married_Men
+		remove_country_modifier = Conscripting_Married_Men_CMF
 		remove_country_modifier = Industry_Is_More_Important
 		remove_country_modifier = Australian_Full_Conscription
 		remove_country_modifier = Australian_Ridiculous_Conscription
@@ -1097,11 +891,7 @@ country_event = {
 		remove_country_modifier = CCC
 		remove_country_modifier = AWAS
 		remove_country_modifier = WRANS
-		remove_country_modifier = Australian_Ridiculous_Conscription_Supported
-		remove_country_modifier = Australian_Conscription_Supported
 		remove_country_modifier = Women_in_the_industry
-		remove_country_modifier = Industry_Is_More_Important2
-		remove_country_modifier = Australian_Conscription
 		set_country_flag = AUS_Peace
 		ai_chance = {
 			factor = 100
@@ -1147,7 +937,7 @@ country_event = {
 	}
 }
 country_event = {
-	#Comes after previous event, was historically on the same day
+	#Comes after previous event, was historically on the same day.
 	id = 88220
 	title = "Aboriginal Day of Mourning"
 	desc = "EVENTDESC88220"
@@ -1357,7 +1147,8 @@ country_event = {
 	trigger = {
 		tag = AST
 		OR = {
-			has_country_modifier = Conscripting_Married_Men
+			has_country_modifier = Conscripting_Unmarried_Men_CMF
+			has_country_modifier = Conscripting_Married_Men_CMF
 			has_country_modifier = Australian_Full_Conscription
 			has_country_modifier = Australian_Ridiculous_Conscription
 			has_country_modifier = WAAAF
@@ -1368,17 +1159,13 @@ country_event = {
 			has_country_modifier = CCC
 			has_country_modifier = AWAS
 			has_country_modifier = WRANS
-			has_country_modifier = Australian_Ridiculous_Conscription_Supported
-			has_country_modifier = Australian_Conscription_Supported
 			has_country_modifier = Women_in_the_industry
-			has_country_modifier = Australian_Conscription
 		}
 
 		not = {
 			OR = {
 				has_country_modifier = AUS_Defence
 				has_country_modifier = Industry_Is_More_Important
-				has_country_modifier = Industry_Is_More_Important2
 			}
 		}
 
@@ -1504,7 +1291,7 @@ country_event = {
 		organisation = -3
 		popularity = 10
 		manpower = -300
-		remove_country_modifier = Conscripting_Married_Men
+		remove_country_modifier = Conscripting_Married_Men_CMF
 		remove_country_modifier = Australian_Full_Conscription
 		remove_country_modifier = Australian_Ridiculous_Conscription
 		remove_country_modifier = WAAAF
@@ -1515,10 +1302,7 @@ country_event = {
 		remove_country_modifier = CCC
 		remove_country_modifier = AWAS
 		remove_country_modifier = WRANS
-		remove_country_modifier = Australian_Ridiculous_Conscription_Supported
-		remove_country_modifier = Australian_Conscription_Supported
 		remove_country_modifier = Women_in_the_industry
-		remove_country_modifier = Australian_Conscription
 	}
 }
 #End of event
@@ -1545,7 +1329,8 @@ country_event = {
 	}
 	option = {
 		name = "We tried our best."
-		remove_country_modifier = Conscripting_Married_Men
+		remove_country_modifier = Conscripting_Unmarried_Men_CMF		
+		remove_country_modifier = Conscripting_Married_Men_CMF
 		remove_country_modifier = Industry_Is_More_Important
 		remove_country_modifier = Australian_Full_Conscription
 		remove_country_modifier = Australian_Ridiculous_Conscription
@@ -1560,11 +1345,8 @@ country_event = {
 		remove_country_modifier = CCC
 		remove_country_modifier = AWAS
 		remove_country_modifier = WRANS
-		remove_country_modifier = Australian_Ridiculous_Conscription_Supported
 		remove_country_modifier = Australian_Conscription_Supported
 		remove_country_modifier = Women_in_the_industry
-		remove_country_modifier = Industry_Is_More_Important2
-		remove_country_modifier = Australian_Conscription
 		set_country_flag = AUS_Has_Fallen
 	}
 }
@@ -1573,7 +1355,7 @@ country_event = {
 	#Dissent event due to militarising pre-war.
 	id = 88230
 	title = "Australians are agreeing with Chamberlain."
-	desc = "'We have no reason to militarise' is often said by our citizens and is causing considerable dissent."
+	desc = "'We have no reason to militarise' is often said by our citizens and is causing considerable dissent amongst our populace."
 	picture = "major_worker_strike"
 	mean_time_to_happen = {
 		days = 20
@@ -1640,13 +1422,13 @@ country_event = {
 		clr_country_flag = Australian_Militarisation1
 		set_country_flag = AUS_Appeasement
 	}
-}
+}	
 #End of event
 country_event = {
 	#CANBERRA AIR DISASTER
 	id = 88231
 	title = "The Canberra Air Disaster"
-	desc = "In 1940 there was an aircraft disaster near Canberra. Three members of the Australian government and the Chief of the General Staff died."
+	desc = "In 1940, there was an aircraft disaster near Canberra. Three members of the Australian government and the Chief of the General Staff died when a Lockheed Hudson carrying them stalled and plummeted to the ground."
 	picture = "Canberra_Crash"
 	trigger = {
 		tag = AST
@@ -1660,7 +1442,9 @@ country_event = {
 		name = "Oh dear..."
 		set_country_flag = AUS_Canberra_Crash
 		kill_leader = 54006
-		manpower = -1
+		remove_minister = 56093 #Cyril Brudenell
+		remove_minister = 56103 #James Fairburn
+		remove_minister = 56043 #Sir Henry Gullett
 	}
 }
 #Australian Militarisation#
@@ -1741,7 +1525,6 @@ country_event = {
 			value = -75
 		}
 		neutrality = 50
-		#clr_country_flag = prepare_for_war
 		ai_chance = {
 			factor = 0
 		}
@@ -1760,6 +1543,7 @@ country_event = {
 
 		not = {
 			has_country_flag = White_Australia_Policy
+			has_country_flag = Dismantle_White_Australia_Policy
 		}
 	}
 	option = {
@@ -1848,7 +1632,6 @@ country_event = {
 			factor = 0
 		}
 		set_country_flag = Dismantle_White_Australia_Policy
-		set_country_flag = White_Australia_Policy
 	}
 	option = {
 		name = "Australia must maintain its British blood."
@@ -2369,7 +2152,7 @@ country_event = {
 		set_country_flag = AST_deploy_coastal_guns
 		add_country_modifier = {
 			name = "AST_deploying_coastal_guns"
-			duration = 120
+			duration = 180
 		}
 		6596 = {
 			coastal_fort = 2
@@ -2433,7 +2216,6 @@ country_event = {
 			7435 = {
 				controlled_by = JAP
 			}
-			#has_country_flag = nanking_massacre
 		}
 
 		not = {
@@ -2451,6 +2233,26 @@ country_event = {
 		}
 	}
 }
+
+#BEGIN crytoz added events IDS 29200-29400#
+
+country_event = { #squires death, minister and general removal, copy from leader death script as a manually firing event
+    id = 29310
+    fire_only_once = yes
+    trigger = {
+        tag = AST
+        date = 1940.2.3
+    }
+    title = "Ernest Squires passes away!."
+    desc = "Unfortunately, due to his health failing him shortly after his cancer treatment. He passed on the 2nd of March 1940."
+    picture = "politics2"
+    option = {
+        name = "Unfortunate"
+        kill_leader = 54050 #Squires
+        remove_minister = 56105 #Squires
+    }
+}
+
 #START AST Ship Commission/Sale/Transfer events ID 29200+ and 29300+
 
 #START cruiser sales ID 29200+
@@ -2639,7 +2441,7 @@ country_event = { #No sale
 
 #START destroyer commissions ID 29300+
 country_event = {
-    id = 29304
+    id = 29300
     is_triggered_only = yes
     title = "The UK has lent us the destroyer, HMS Napier!"
     desc = "HMAS Napier was the first N-Class Destroyer commissioned into the RAN during WW2. It was built in the UK and was formally launched on the 22nd May 1940 and was then commissioned into the RAN on the 28th November 1940."
@@ -2662,10 +2464,10 @@ country_event = {
     }
 }
 country_event = {
-    id = 29305
+    id = 29301
     is_triggered_only = yes
     title = "The UK has lent us the destroyer, HMS Nepal!"
-    desc = "HMAS Nizam was the second N-Class Destroyer commissioned into the RAN during WW2. It was built in the UK and was formally launched on the 4th July 1940 and was then commissioned into the RAN on the 19th December 1940."
+    desc = "EVTDESC29301"
     picture = "HMAS_Nizam"
     option = {
         name = "Thanks!"
@@ -2685,10 +2487,10 @@ country_event = {
     }
 }
 country_event = {
-    id = 29306
+    id = 29302
     is_triggered_only = yes
     title = "The UK has lent us the destroyer, HMS Nestor!"
-    desc = "HMAS Nestor was the third N-Class Destroyer commissioned into the RAN during WW2. It was built in the UK and was formally launched on the 9th July 1940 and was then commissioned into the RAN on the 3rd February, 1941."
+    desc = "EVTDESC29302"
     picture = "HMAS_Nestor"
     option = {
         name = "Thanks!"
@@ -2708,10 +2510,10 @@ country_event = {
     }
 }
 country_event = {
-    id = 29307
+    id = 29303
     is_triggered_only = yes
     title = "The UK has lent us the destroyer, HMS Norman!"
-    desc = "HMAS Norman was the fourth N-Class Destroyer commissioned into the RAN during WW2. It was built in the UK and was formally launched on the 30th October 1940 and was then commissioned into the RAN on the 29th September 1941."
+    desc = "EVTDESC29303"
     picture = "HMAS_Norman"
     option = {
         name = "Cheers!"
@@ -2731,11 +2533,10 @@ country_event = {
     }
 }
 country_event = {
-    id = 29308
+    id = 29304
     is_triggered_only = yes
     title = "The UK has lent us the destroyer, HMS Norseman!"
-    desc = "HMAS Nepal was the fifth N-Class Destroyer commissioned into the RAN during WW2. It was built in the UK and was formally launched on the 4th December 1941 and was then commissioned into the RAN on the 11th May 1942."
-    picture = "HMAS_Nepal"
+    desc = "EVTDESC29304"
     option = {
         name = "Thanks!"
 		load_oob = nepal1941.txt
@@ -2754,10 +2555,10 @@ country_event = {
     }
 }
 country_event = {
-    id = 29309
+    id = 29305
     is_triggered_only = yes
     title = "The UK has lent us the destroyers, HMS Quickmatch and Quiberon!"
-    desc = "EVTDESC29309"
+    desc = "EVTDESC29305"
     picture = "HMAS_Quiberon_and_Quickmatch"
     option = {
         name = "Thanks, pommies!"

@@ -2750,10 +2750,10 @@ Fighting_chance	= {
 }
 The_Alliance = {
 	industrial_efficiency = 0.02
-	officer_recruitment = 0.5
+	officer_recruitment = 0.25
 	global_ic = 0.05
-	global_manpower_modifier = 0.15
-	global_leadership_modifier = 0.15
+	global_manpower_modifier = 0.05
+	global_leadership_modifier = 0.075
 }
 
 # USA MODIFIERS
@@ -4785,26 +4785,18 @@ France_Rallies = {
 }
 
 #Australian Events
-Conscripting_Married_Men = {
+Conscripting_Unmarried_Men_CMF = {
+		dissent = 0.04
+		national_unity = -0.0025
+		land_organisation = -0.0025
+		global_manpower_modifier = 0.0025
+}
+Conscripting_Married_Men_CMF = {
 		dissent = 0.08
 		national_unity = -0.05
 		land_organisation = -0.005
 		industrial_efficiency = -0.01
 		global_manpower_modifier = 0.05
-}
-Industry_Is_More_Important = {
-        global_ic = 0.05
-		industrial_efficiency = 0.01
-		global_manpower_modifier = -0.025
-		global_supplies = 0.05
-		global_crude_oil = 0.05
-		global_energy = 0.05
-		global_rare_materials = 0.05
-	    global_metal = 0.05
-}
-Australian_Conscription = {
-        global_ic = 0.05
-		industrial_efficiency = 0.01
 }
 Australian_Full_Conscription = {
         global_ic = -0.1
@@ -4823,80 +4815,66 @@ Australian_Ridiculous_Conscription = {
 		global_leadership_modifier = -0.25
 		unit_start_experience = -15
 		officer_recruitment = 0.50
-		global_manpower_modifier = 1
+		global_manpower_modifier = 0.75
 		org_regain = -0.05
 	    land_organisation = -0.05
+}
+Industry_Is_More_Important = {
+        global_ic = 0.05
+		industrial_efficiency = 0.01
+		global_manpower_modifier = -0.025
+		global_supplies = 0.05
+		global_energy = 0.05
+		global_rare_materials = 0.05
+	    global_metal = 0.05
 }
 Industry_Is_More_Important2 = {
         global_ic = 0.15
 		industrial_efficiency = 0.05
 		global_manpower_modifier = -0.05
-		global_supplies = 0.10
-		global_crude_oil = 0.10
-		global_energy = 0.10
-		global_rare_materials = 0.10
-	    global_metal = 0.10
+		global_supplies = 0.1
+		global_energy = 0.1
+		global_rare_materials = 0.1
+	    global_metal = 0.1
 }
 Women_in_the_industry = {
         global_ic = 0.05
-		industrial_efficiency = 0.01
 		dissent = 0.05
-		global_money = -0.25
-		global_supplies = 0.15
-		global_crude_oil = 0.15
-		global_energy = 0.10
-		global_rare_materials = 0.05
-	    global_metal = 0.10
+		global_money = -0.1
+		global_supplies = 0.2
 }
-Australian_Conscription_Supported = {
-		industrial_efficiency = -0.025
-		officer_recruitment = 0.20
-		global_manpower_modifier = 0.30
-}
-Australian_Ridiculous_Conscription_Supported = {
-        global_ic = -0.2
-		industrial_efficiency = -0.1
-		dissent = 0.06
-		national_unity = -0.8
-		global_revolt_risk = 4
-		ruling_party_support = -0.18
-		war_consumer_goods_demand = 0.25
-		global_leadership_modifier = -0.10
-		unit_start_experience = -10
-		officer_recruitment = 0.75
-		global_manpower_modifier = 2
-		org_regain = -0.025
-	    land_organisation = -0.025
+Women_support_frontline = {
+	    supply_throughput = 0.1
 }
 WAAAF = {
 		#industrial_efficiency = 0.015
-	    supply_throughput = 0.05
+	    #supply_throughput = 0.05
 		org_regain = 0.025
 		air_intercept = 0.15
 		air_organisation = 0.05
-		repair_rate = 0.10
+		repair_rate = 0.1
 }
 WRANS = {
 		#industrial_efficiency = 0.015
-	    supply_throughput = 0.05
+	    #supply_throughput = 0.05
 		org_regain = 0.025
 		naval_organisation = 0.05
 		convoy_raid = 0.05
 		naval_base_efficiency = 0.25
-		repair_rate = 0.10
+		repair_rate = 0.1
 }
 AWAS = {
 		#industrial_efficiency = 0.015
-	    supply_throughput = 0.10
+	    #supply_throughput = 0.1
 		org_regain = 0.05
 		soft_attack = 0.05
 		land_organisation = 0.05
 		combat_movement_speed = 0.15
-		#reinforcement_bonus = 0.10
-		repair_rate = 0.10
+		#reinforcement_bonus = 0.1
+		repair_rate = 0.1
 }
 CCC = {
-	    supply_throughput = 0.10
+	    supply_throughput = 0.1
 		org_regain = 0.025
 		#reinforcement_bonus = 0.025
 		repair_rate = 0.05
@@ -4907,19 +4885,19 @@ AUS_National_Security_Act = {
 		 global_ic = 0.025
 		 dissent = 0.025
 		 ruling_party_support = 0.15
-		 espionage_bonus = -0.15
+		 espionage_bonus = 0.15
 		 territorial_pride = 0.045
 }
 AUS_Fall_of_France = {   #A short and strong modifier to simulate a rapid recruitment
-	     war_consumer_goods_demand = -0.50
-		 national_unity = 0.30
+	     war_consumer_goods_demand = -0.5
+		 national_unity = 0.3
 		 dissent = -0.255
-		 ruling_party_support = 0.50
+		 ruling_party_support = 0.5
 		 territorial_pride = 0.3
 		 #reinforcement_bonus = 3
 }
 AUS_War_has_reached_us = {   #Similar to Fall of France, but longer and less potent.
-	     war_consumer_goods_demand = -0.10
+	     war_consumer_goods_demand = -0.1
 		 national_unity = 0.05
 		 dissent = -0.05
 		 ruling_party_support = 0.05
@@ -4930,11 +4908,11 @@ AUS_War_has_reached_us = {   #Similar to Fall of France, but longer and less pot
 Aboriginals_in_army = {
 		 national_unity = -0.05
 		 dissent = 0.05
-		 ruling_party_support = -0.050
+		 ruling_party_support = -0.05
 		 global_manpower_modifier = 0.085
 }
 Aboriginals_excluded = {
-		 national_unity = 0.10
+		 national_unity = 0.1
 		 ruling_party_support = 0.05
 		 global_manpower_modifier = -0.1
 }
@@ -4946,7 +4924,7 @@ AUS_No_bias = {
 		 #reinforcement_bonus = 0.025
 }
 AUS_Defence = {
-		 territorial_pride = 0.30
+		 territorial_pride = 0.3
 		 #reinforcement_bonus = 0.15
 }
 AUS_Subjucation_of_Aboriginals = {
@@ -4959,9 +4937,9 @@ AUS_Aboriginal_Rights = {
 	     global_revolt_risk = -1
 		 territorial_pride = -0.01
 	    global_manpower_modifier = 0.03
-		 national_unity = -0.10
+		 national_unity = -0.1
 
-		 ruling_party_support = -0.10
+		 ruling_party_support = -0.1
 
 		 dissent = 0.01
 }
@@ -6557,8 +6535,8 @@ viet_minh = {
 }
 
 AST_deploying_coastal_guns = {
-	global_ic = -0.02
-	global_supplies = -0.02
+	global_ic = -0.05
+	global_supplies = -0.05
 }
 
 ETH_death_modifier = {
