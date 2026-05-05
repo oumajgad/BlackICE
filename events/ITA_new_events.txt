@@ -826,3 +826,88 @@ country_event = {
 	set_country_flag = Guillet_returns
 	}
 }
+
+country_event = {
+	id = 36007
+	trigger = {
+		tag = ITA
+		date = 1937.2.1
+		supplies = 8000
+		controls = 4549
+		ALB = { controls = 6669 }
+		not = {
+			has_country_flag = aipa
+		}
+	}
+	title = "The Concession of Devoli"
+	desc = "EVTDESC36007"
+	picture = "aipa"
+	option = {
+		name = "Drill deeper!"
+		4663 = {
+			#Tirane
+			oil_well = 1
+		}
+		supplies = -2000
+		money = -500
+		set_country_flag = aipa
+		ALB = { country_event = }
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = aipa
+	}
+}
+
+country_event = {
+	id = 36008
+	trigger = {
+		tag = ALB
+		is_triggered_only = yes
+	}
+	title = "The Concession of Devoli"
+	desc = "EVTDESC36008"
+	picture = "aipa"
+	option = {
+		name = "They promised us more..."
+		money = 500
+	}
+}
+
+country_event = {
+	id = 36009
+	trigger = {
+		tag = ITA
+		date = 1939.5.1
+		supplies = 8000
+		money = 5000
+		controls = 4549
+		not = {
+			has_country_flag = agip
+			war_with = ALB
+		}
+	}
+	title = "Albanian Oil"
+	desc = "EVTDESC36009"
+	picture = "agip"
+	option = {
+		name = "Refine the oil!"
+		4768 = {
+			#Bari
+			oil_refinery = 1
+		}
+		supplies = -6000
+		money = -3000
+		set_country_flag = agip
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = agip
+	}
+}
