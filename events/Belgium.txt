@@ -144,3 +144,29 @@ country_event = {
 #		set_country_flag = destroy_Belgports
 #	}
 #}
+
+country_event = {
+	id = 36100
+	title = "The Luluabourg Mutiny"
+	desc = "EVTDESC36100"
+	picture = "force_publique"
+
+	trigger = {
+		tag = BEL
+		date = 1944.2.20
+		war_with = GER
+		controls = 8032
+		not = { has_country_flag = luluabourg }
+	}
+
+	option = {
+		name = "Crush them!"
+		set_country_flag = luluabourg
+		dissent = 2
+		officer_pool = -50
+		manpower = -3
+		8032 = {
+			create_revolt = 2
+		}
+	}
+}
