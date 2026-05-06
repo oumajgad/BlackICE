@@ -83,6 +83,7 @@ function P.FillData()
             P.UnitModelsData[tag][unit_type][level] = values
         end
     end
+    dataFilled = true
 end
 
 P.UnitModelsChoices = {}
