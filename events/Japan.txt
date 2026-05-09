@@ -3143,3 +3143,71 @@ country_event = {
 		rare_materials = 250
 	}
 }
+
+country_event = {
+	id = 36011
+	trigger = {
+		tag = JAP
+		date = 1937.10.15
+		supplies = 10000
+		money = 5000
+		controls = 4522
+		controls = 5315
+		not = {
+			has_country_flag = aoji
+		}
+	}
+	title = "The Chosen Synthetic Oil Company"
+	desc = "EVTDESC36011"
+	picture = "aojichem"
+	option = {
+		name = "Begin production"
+		4522 = {
+			#Chongjin
+			rare_materials = 1
+			crude_oil = 2
+			oil_refinery = 1
+		}
+		supplies = -8000
+		money = -4000
+		set_country_flag = aoji
+		add_country_modifier = { 
+			name = "aoji_synthetic_oil"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = aoji
+	}
+}
+
+country_event = {
+	id = 36012
+	trigger = {
+		tag = JAP
+		controls = 5315
+		not = {
+			controls = 4522
+			controls = 5116
+			controls = 5056
+			controls = 5341
+			has_country_flag = aoji_lost
+		}
+	}
+	title = "We have lost control of our synthetic oil!"
+	desc = "EVTDESC36012"
+	picture = "aojichem"
+	option = {
+		name = "Another blow."
+		set_country_flag = aoji_lost
+		remove_country_modifier = aoji_synthetic_oil
+		4522 = {
+			oil_refinery = -1
+			crude_oil = -2
+		}
+	}
+}
