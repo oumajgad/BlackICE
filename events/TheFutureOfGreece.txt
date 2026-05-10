@@ -58,7 +58,7 @@ country_event = {
 	desc = "EVTDESC3203"
 	picture = "italy_peace_greece"
 	option = {
-		name = "EVTOPTA3203"   # Good
+		name = "Good"
 		relation = {
 			who = GRE
 			value = 5
@@ -69,19 +69,64 @@ country_event = {
 country_event = {
 	id = 4314
 	trigger = {
-			tag = GRE
-			war_with = GER
-			GRE = {
-				controls = 5076
-			}
-			not = { has_country_flag = wilson_force }
+		tag = GRE
+		war_with = GER
+		GRE = {
+			controls = 5076
+		}
+		not = { has_country_flag = wilson_force }
 	}
 	title = "Wilson Force arrives"
 	desc = "The Allies help Greece with a force of ANZACs and British Armour"
 	picture = "british_troops_greece"
 	option = {
-		name = "EVTOPTA3203"			# Good
+		name = "Good"
 		GRE = { load_oob = Wilson_force.txt}
 		set_country_flag = wilson_force
+	}
+}
+
+country_event = {
+	id = 4315
+	trigger = {
+		tag = GRE
+		has_country_flag = wilson_force
+		not = {
+			war_with = GER
+			war_with = ITA
+			faction = allies
+			has_country_flag = wilson_force_disbands
+		}
+	}
+	title = "Wilson Force disbands"
+	desc = "Switching sides means interning the men of W Force"
+	picture = "british_troops_greece"
+	option = {
+		name = "Good"
+		set_country_flag = wilson_force_disbands
+		remove_brigade = "W Force HQ"
+		remove_brigade = "7/64 Royal Artillery"
+		remove_brigade = "106/122/145 Royal Air Force AA"
+		remove_brigade = "2/20 Royal Air Force HAA"
+		remove_brigade = "W Force HQ Recon"
+		remove_brigade = "Australian Division HQ"
+		remove_brigade = "6th Australian Division Brigades"
+		remove_brigade = "6th Australian Division Support Regiment"
+		remove_brigade = "6th Australian Division Engineer Battalion"
+		remove_brigade = "6th Australian Division Artillery Regiment"
+		remove_brigade = "6th Australian Transport Battalion"
+		remove_brigade = "NZ Division HQ"
+		remove_brigade = "2nd New Zealand Division Brigades"
+		remove_brigade = "2nd New Zealand Division Support Regiment"
+		remove_brigade = "2nd New Zealand Division Recon Battalion"
+		remove_brigade = "2nd New Zealand Division Artillery Regiment"
+		remove_brigade = "2nd NZ Transport Battalion"
+		remove_brigade = "1st ABG HQ"
+		remove_brigade = "3rd Royal Tank Regiment"
+		remove_brigade = "1st Rangers"
+		remove_brigade = "4th Hussars"
+		remove_brigade = "2nd Royal Horse Artillery"
+		remove_brigade = "292 Field Engineer Battalion/Palestine Pioneer Corps"
+		remove_brigade = "1st ABG Transport Battalion"
 	}
 }
