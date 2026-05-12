@@ -7,7 +7,7 @@ from typing import Optional
 from tqdm import tqdm
 
 from parser.node import Node
-from parser.parser import parse_file
+from parser.parser_dict import parse_file
 
 BASE_PATH = r"C:\Users\David\GitHub\BlackICE"
 

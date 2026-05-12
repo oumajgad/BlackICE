@@ -2,15 +2,26 @@ from typing import Optional, Any
 
 
 class Node:
-    def __init__(self, key: str):
+    def __init__(
+        self,
+        key: str,
+        parent: Optional["Node"] = None,
+        children: Optional[list["Node"]] = None,
+        scalar_type: Any = None,
+        scalar_value: Any = None,
+        file: str = None,
+        position: int = None,
+    ):
         self.key: str = key
-        self.parent: Optional["Node"] = None
-        self.children: list[Node] = []
-        self.scalar_type: Optional[Any] = None
-        self.scalar_value: Optional[Any] = None
+        self.parent: Optional["Node"] = parent
+        self.children: list[Node] = children or []
+        self.scalar_type: Optional[Any] = scalar_type
+        self.scalar_value: Optional[Any] = scalar_value
+        self.file: Optional[str] = file
+        self.position: Optional[int] = position
 
     def __str__(self):
-        return f"{self.key=} {self.scalar_value=}"
+        return f"{self.key=} {self.scalar_value=} {len(self.children)=}"
 
     @classmethod
     def from_parsed(cls, parsed: Any, parent: "Node" = None, key: str = "data") -> "Node":
