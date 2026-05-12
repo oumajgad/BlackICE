@@ -1,0 +1,193 @@
+import enum
+import sys
+from pathlib import Path
+
+from parser.node import Node
+
+sys.setrecursionlimit(2000)
+SPACE_CHARS = [" ", "\t", "\n", "\r"]
+CURRENT_FILE_PATH = ""
+CURRENT_FILE_CONTENT = ""
+DEBUG = False
+
+
+def debug_out(message: str, idx: int, throw: bool = False):
+    if throw:
+        line = CURRENT_FILE_CONTENT.count("\n", 0, idx) + 1  # +1 for 0 based indexing
+        # position in line (-3 because of added '{ ' during parse + 1 for 0 based indexing)
+        pos = idx - CURRENT_FILE_CONTENT.rfind("\n", 0, idx) - 3
+        full_line = CURRENT_FILE_CONTENT.split("\n")[line - 1]
+        if pos < 0:
+            line += -1
+            full_line = CURRENT_FILE_CONTENT.split("\n")[line - 1]
+            pos = len(full_line) - pos
+        part_1 = f"{CURRENT_FILE_PATH}:{line=}/{pos=}: {message} --- full line: "
+        chevron = " " * (len(part_1) + pos + 11) + "^"  # + 11 for the 'Exception: '
+        msg = f"{part_1}{full_line}\n{chevron}"
+        raise Exception(msg)
+    if DEBUG:
+        msg = f"{CURRENT_FILE_PATH}: {message}"
+        print(msg)
+
+
+class Types(int, enum.Enum):
+    object = 0
+    pair = 1
+    list = 2
+
+
+def next_char(content: str, idx: int) -> tuple[str, int]:
+    i = idx
+    while i < len(content):
+        char: str = content[i]
+        if char == "#":
+            x = content.find("\n", i)
+            if x == -1:
+                return
+            else:
+                i = x
+        elif char not in SPACE_CHARS:
+            return content[i], i
+        i += 1
+    debug_out("Failed to find next char", idx, True)
+
+
+def determine_type(content: str, idx: int) -> int | None:
+    char, i = next_char(content, idx)
+    if char == "=":
+        char, i = next_char(content, i + 1)
+        if char == "{":
+            closing = content.find("}", i)
+            if closing == -1:
+                debug_out("Closing bracket not found", i, True)
+            if content.find("=", i, closing) == -1:
+                return Types.list
+            else:
+                return Types.object
+        else:
+            return Types.pair
+
+    return Types.list
+
+
+def parse_string(content: str, idx: int) -> tuple[str, int]:
+    quoted = False
+    current = idx
+    start = current
+    if content[current] == '"':
+        current += 1
+        quoted = True
+    while current <= len(content):
+        char = content[current]
+        if (
+            (char in SPACE_CHARS and not quoted)
+            or (char == "}" and not quoted)
+            or (char == "=" and not quoted)
+            or (char == '"' and quoted)
+            or (char == "#")
+        ):
+            if quoted:
+                res = str(content[start + 1 : current])
+                current += 1
+            else:
+                res = str(content[start:current])
+            return res, current
+        current += 1
+
+
+def parse_list(content: str, idx: int, key: str) -> tuple[list[Node], int]:
+    res = []
+    i = idx
+    for x in range(10000):
+        char, i = next_char(content, i)
+        if char == "{":
+            char, i = next_char(content, i + 1)
+        if char == "}":
+            return res, i + 1
+        val_position = i
+        val, i = parse_string(content, i)
+        res.append(Node(key=key, scalar_value=val, file=CURRENT_FILE_PATH, position=val_position))
+    debug_out("parse_list exceeded limit", idx, True)
+
+
+CASE_OVERRIDES = {
+    "not": "NOT",
+    "or": "OR",
+    "and": "AND",
+    "tag": "TAG",
+    "this": "THIS",
+    "from": "FROM",
+    "limit": "LIMIT",
+}
+
+
+def insert(_dict: dict, key, val):
+    if _dict.get(key, None) is not None:
+        if isinstance(_dict[key], list):
+            _dict[key].append(val)
+        else:
+            temp = _dict[key]
+            _dict[key] = [temp, val]
+    else:
+        _dict[key] = val
+    return
+
+
+def parse_object(content: str, idx: int, this: Node) -> tuple[Node, int]:
+    i = idx
+    is_list: bool = False
+    while True:
+        char, i = next_char(content, i)
+        if char == "{" and not is_list:
+            char, i = next_char(content, i + 1)
+        if char == "}":
+            return this, i + 1
+
+        position_of_child_key = i
+        if char == "{":  # list of objects
+            i += 1
+            is_list = True
+            child_node, i = parse_object(
+                content, i, Node(key="item", parent=this, file=CURRENT_FILE_PATH, position=position_of_child_key)
+            )
+            this.children.append(child_node)
+            continue
+        else:
+            key, i = parse_string(content, i)
+            if CASE_OVERRIDES.get(key.lower()):
+                key = CASE_OVERRIDES[key.lower()]
+        debug_out(f"{key = }", i)
+
+        value_type = determine_type(content, i)
+        char, i = next_char(content, i)  # should always be "="
+        if char != "=":
+            debug_out(f"Expected '=' but got '{char}'", i, True)
+        i += 1
+
+        child_node = Node(key=key, parent=this, file=CURRENT_FILE_PATH, position=position_of_child_key)
+        if value_type == Types.object:
+            _, i = next_char(content, i)
+            val, i = parse_object(content, i, child_node)
+            this.children.append(child_node)
+        elif value_type == Types.list:
+            _, i = next_char(content, i)
+            vals, i = parse_list(content, i, key)
+            this.children.extend(vals)
+        elif value_type == Types.pair:
+            _, i = next_char(content, i)
+            val, i = parse_string(content, i)
+            child_node.scalar_value = val
+            this.children.append(child_node)
+
+
+def parse_file(path: Path) -> Node:
+    with open(path, "r", encoding="ISO-8859-1") as f:
+        content = f.read()
+    global CURRENT_FILE_CONTENT
+    CURRENT_FILE_CONTENT = content
+    global CURRENT_FILE_PATH
+    CURRENT_FILE_PATH = str(path.parts[-2]) + "/" + str(path.parts[-1])
+
+    root_node = Node(key="root")
+    parsed, _ = parse_object("{ " + content + " \n}", 0, this=root_node)
+    return parsed
