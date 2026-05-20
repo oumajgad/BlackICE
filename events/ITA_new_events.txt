@@ -15,8 +15,22 @@ country_event = {
 	desc = "EVTDESC33492"
 	picture = "ITAevent33408"
 	option = {
-		name = "Allow the events" # ok
+		name = "I want units spawned directly on the map"
 		set_country_flag = ITA_historical_OOB_yes
+		set_country_flag = OOB_spawn
+		add_country_modifier = {
+			name = "unique_ITA_units"
+			duration = 3000
+		}
+		ai_chance = {
+			factor = 100
+		}
+		supplies = -5000
+	}
+	option = {
+		name = "I want units placed in the production queue"
+		set_country_flag = ITA_historical_OOB_yes
+		set_country_flag = OOB_production
 		add_country_modifier = {
 			name = "unique_ITA_units"
 			duration = 3000

@@ -3813,12 +3813,27 @@ country_event = {
 # Führer-Begleit-Division
 country_event = {
 	id = 93682
-		trigger = {
+	trigger = {
 		tag = GER
 		controls = 1861 #berlin
-		date = 1945.01.26
+		or = {
+			and = {
+				date = 1945.01.26
+				has_country_flag = OOB_spawn
+				energy = 10300
+				metal = 5650
+				rare_materials = 3325
+			}
+			and = {
+				date = 1944.09.26
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1945.01.26
+				ai = yes
+			}
+		}
 		has_country_flag = Begleit_Brigade
-
 		not = {
 			has_country_flag = Begleit_Division
 		}		
@@ -3928,7 +3943,23 @@ country_event = {
 		trigger = {
 		tag = GER
 		controls = 2093 #Cottbus
-		date = 1945.01.26
+		or = {
+			and = {
+				date = 1945.01.26
+				has_country_flag = OOB_spawn
+				energy = 9700
+				metal = 5350
+				rare_materials = 3175
+			}
+			and = {
+				date = 1944.09.26
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1945.01.26
+				ai = yes
+			}
+		}
 		has_country_flag = Grenadier_Brigade
 
 		not = {
@@ -4197,9 +4228,23 @@ country_event = {
 	trigger = {
 		tag = GER
 		controls = 1861 #berlin
-		year = 1941
-		month = 3
-
+		or = {
+			and = {
+				date = 1941.03.01
+				has_country_flag = OOB_spawn
+				energy = 6000
+				metal = 3500
+				rare_materials = 2250
+			}
+			and = {
+				date = 1940.11.01
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.03.01
+				ai = yes
+			}
+		}
 		not = {
 			has_country_flag = Lehr_900
 		}
@@ -10652,8 +10697,23 @@ country_event = {
 	trigger = {
 		tag = GER
 		controls = 1861 #berlin
-		year = 1943
-
+		or = {
+			and = {
+				date = 1943.01.01
+				has_country_flag = OOB_spawn
+				energy = 7300
+				metal = 4150
+				rare_materials = 2575
+			}
+			and = {
+				date = 1942.09.01
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.01.01
+				ai = yes
+			}
+		}
 		not = {
 			has_country_flag = sturmDiv
 		}
@@ -10753,6 +10813,18 @@ country_event = {
 country_event = {
 	id = 38746
 	is_triggered_only = yes
+	trigger = {
+		or = {
+			and = {
+				has_country_flag = OOB_spawn
+				energy = 13000
+				metal = 7000
+				rare_materials = 4000
+			}
+			has_country_flag = OOB_production
+			ai = yes
+		}		
+	}
 	title = "Panzershcreck"
 	desc = "EVTDESC38746"   # The arrival of the T 34 increased numbers created increased strain on the Wehrmacht. One solution was increased 88mm guns on the frontlines.
 	picture = "mass_production_t_34"
@@ -12076,8 +12148,23 @@ country_event = {
 	id = 50716
 	trigger = {
 		tag = GER
-		year = 1943
-		month = 9
+		or = {
+			and = {
+				date = 1943.09.01
+				has_country_flag = OOB_spawn
+				energy = 11500
+				metal = 6250
+				rare_materials = 3625
+			}
+			and = {
+				date = 1943.05.01
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.09.01
+				ai = yes
+			}
+		}
 		controls = 1527
 
 		not = {

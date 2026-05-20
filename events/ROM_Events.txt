@@ -8,10 +8,19 @@ country_event = {
 	desc = "EVTDESC15000"
 	picture = "Greater_Romania"
 	option = {
-		name = "Yes, I want these historical units."
+		name = "I want units spawned directly on the map"
 		set_country_flag = Romania_Historical
+		set_country_flag = OOB_spawn
 		ai_chance = {
 			factor = 100
+		}
+	}
+	option = {
+		name = "I want units placed in the production queue"
+		set_country_flag = Romania_Historical
+		set_country_flag = OOB_production
+		ai_chance = {
+			factor = 0
 		}
 	}
 	option = {
@@ -41,35 +50,45 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +200
-				}
-				energy = -400
-				metal = -200
-				rare_materials = -100
-				load_oob = ROM/ROM_1st_Guard_Division.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_1st_Guard_Division.txt
-			}
-		}
-	}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_1st_Guard_Division_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +400
+                }
+                energy = -800
+                metal = -400
+                rare_materials = -200
+                load_oob = ROM/ROM_1st_Guard_Division.txt
+            }
+        }
+        OMG = {
+            #AI
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_1st_Guard_Division.txt
+            }
+        }	}
 	option = {
 		name = "No need"
 		set_country_flag = ROM_1GD_no
@@ -99,34 +118,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +100
-				}
-				energy = -200
-				metal = -100
-				rare_materials = -50
-				load_oob = ROM/ROM_Mixed_Border_Detachment.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_Mixed_Border_Detachment.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_Mixed_Border_Detachment_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +200
+                }
+                energy = -400
+                metal = -200
+                rare_materials = -100
+                load_oob = ROM/ROM_Mixed_Border_Detachment.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_Mixed_Border_Detachment.txt
+            }
+        }	
 	}
 	option = {
 		name = "No need"
@@ -155,34 +184,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +200
-				}
-				energy = -400
-				metal = -200
-				rare_materials = -100
-				load_oob = ROM/ROM_2nd_Guard_Division.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_2nd_Guard_Division.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_2nd_Guard_Division_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +200
+                }
+                energy = -400
+                metal = -200
+                rare_materials = -100
+                load_oob = ROM/ROM_2nd_Guard_Division.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_2nd_Guard_Division.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -212,34 +251,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +400
-				}
-				energy = -800
-				metal = -400
-				rare_materials = -200
-				load_oob = ROM/ROM_1st_Border_Guards.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_1st_Border_Guards.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_1st_Border_Guards_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +350
+                }
+                energy = -700
+                metal = -350
+                rare_materials = -175
+                load_oob = ROM/ROM_1st_Border_Guards.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_1st_Border_Guards.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -262,34 +311,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +1300
-				}
-				energy = -2600
-				metal = -1300
-				rare_materials = -750
-				load_oob = ROM/ROM_4th_Mountain_Brigade.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_4th_Mountain_Brigade.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_4th_Mountain_Brigade_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +800
+                }
+                energy = -1600
+                metal = -800
+                rare_materials = -400
+                load_oob = ROM/ROM_4th_Mountain_Brigade.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_4th_Mountain_Brigade.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -312,34 +371,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +6000 #Cost of a ROM 1939 Infantry Division is 1500 IC, but they come here with models reduced to 0 so I applied a lower IC value
-				}
-				energy = -12000
-				metal = -6000
-				rare_materials = -3000
-				load_oob = ROM/ROM_Reserve_Divisions_1.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_Reserve_Divisions_1.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_Reserve_Divisions_1_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +4800
+                }
+                energy = -9600
+                metal = -4800
+                rare_materials = -2400
+                load_oob = ROM/ROM_Reserve_Divisions_1.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_Reserve_Divisions_1.txt
+            }
+        }
 	}
 	option = {
 		name = "Form 9 Reserve Divisions"
@@ -347,34 +416,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +9000
-				}
-				energy = -18000
-				metal = -9000
-				rare_materials = -4500
-				load_oob = ROM/ROM_Reserve_Divisions_2.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_Reserve_Divisions_2.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_Reserve_Divisions_2_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +7200
+                }
+                energy = -14400
+                metal = -7200
+                rare_materials = -3600
+                load_oob = ROM/ROM_Reserve_Divisions_2.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_Reserve_Divisions_2.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -398,34 +477,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +2000
-				}
-				energy = -4000
-				metal = -2000
-				rare_materials = -1000
-				load_oob = ROM/ROM_1st_Fortification_Brigade.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_1st_Fortification_Brigade.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_1st_Fortification_Brigade_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +1100
+                }
+                energy = -2200
+                metal = -1100
+                rare_materials = -550
+                load_oob = ROM/ROM_1st_Fortification_Brigade.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_1st_Fortification_Brigade.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -448,34 +537,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +800
-				}
-				energy = -1600
-				metal = -800
-				rare_materials = -400
-				load_oob = ROM/ROM_2nd_Fortification_Brigade.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_2nd_Fortification_Brigade.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_2nd_Fortification_Brigade_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +600
+                }
+                energy = -1200
+                metal = -600
+                rare_materials = -300
+                load_oob = ROM/ROM_2nd_Fortification_Brigade.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_2nd_Fortification_Brigade.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -512,34 +611,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +300
-				}
-				energy = -600
-				metal = -300
-				rare_materials = -150
-				load_oob = ROM/ROM_1st_Fortification_Division.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_1st_Fortification_Division.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_1st_Fortification_Division_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +2000
+                }
+                energy = -4000
+                metal = -2000
+                rare_materials = -1000
+                load_oob = ROM/ROM_1st_Fortification_Division.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_1st_Fortification_Division.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -563,33 +672,32 @@ country_event = {
 			factor = 100
 		}
         OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +600
-				}
-				energy = -1200
-				metal = -600
-				rare_materials = -300
-				load_oob = ROM/ROM_1st_Army.txt
-			}
-		}
-		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_1st_Army.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +400
+                }
+                energy = -800
+                metal = -400
+                rare_materials = -200
+                load_oob = ROM/ROM_1st_Army.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_1st_Army.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -613,33 +721,32 @@ country_event = {
 			factor = 100
 		}
         OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +600
-				}
-				energy = -1200
-				metal = -600
-				rare_materials = -300
-				load_oob = ROM/ROM_3rd_Army.txt
-			}
-		}
-		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_3rd_Army.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +450
+                }
+                energy = -900
+                metal = -450
+                rare_materials = -225
+                load_oob = ROM/ROM_3rd_Army.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_3rd_Army.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -663,33 +770,33 @@ country_event = {
 			factor = 100
 		}
         OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +600
-				}
-				energy = -1200
-				metal = -600
-				rare_materials = -300
-				load_oob = ROM/ROM_4th_Army.txt
-			}
-		}
-		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_4th_Army.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +900
+                }
+                energy = -1800
+                metal = -900
+                rare_materials = -450
+                load_oob = ROM/ROM_4th_Army.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_4th_Army.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -739,34 +846,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +2700
-				}
-				energy = -5400
-				metal = -2700
-				rare_materials = -1350
-				load_oob = ROM/ROM_Cavalry_Divisions_1941.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_Cavalry_Divisions_1941.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_Cavalry_Divisions_1941_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +4200
+                }
+                energy = -8400
+                metal = -4200
+                rare_materials = -2100
+                load_oob = ROM/ROM_Cavalry_Divisions_1941.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_Cavalry_Divisions_1941.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -828,34 +945,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +2500
-				}
-				energy = -5000
-				metal = -2500
-				rare_materials = -1250
-				load_oob = ROM/ROM_Cavalry_Divisions_1943.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_Cavalry_Divisions_1943.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_Cavalry_Divisions_1943_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +10400
+                }
+                energy = -20800
+                metal = -10400
+                rare_materials = -5200
+                load_oob = ROM/ROM_Cavalry_Divisions_1943.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_Cavalry_Divisions_1943.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -914,34 +1041,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +5000
-				}
-				energy = -10000
-				metal = -5000
-				rare_materials = -2500
-				load_oob = ROM/ROM_Cavalry_Divisions_1944_historical.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_Cavalry_Divisions_1944_historical.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_Cavalry_Divisions_1944_historical_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +10750
+                }
+                energy = -21500
+                metal = -10750
+                rare_materials = -5375
+                load_oob = ROM/ROM_Cavalry_Divisions_1944_historical.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_Cavalry_Divisions_1944_historical.txt
+            }
+        }
 	}
 	option = {
 		name = "Go for full motorization"
@@ -985,34 +1122,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				change_variable = {
-					which = IC_days_spent
-					value = +8000
-				}
-				energy = -16000
-				metal = -8000
-				rare_materials = -4000
-				load_oob = ROM/ROM_Cavalry_Divisions_1944_full_mot.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_Cavalry_Divisions_1944_full_mot.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_Cavalry_Divisions_1944_full_mot_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +12250
+                }
+                energy = -25000
+                metal = -12250
+                rare_materials = -6125
+                load_oob = ROM/ROM_Cavalry_Divisions_1944_full_mot.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_Cavalry_Divisions_1944_full_mot.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -1041,29 +1188,39 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				supplies = -2000
-				money = -2000
-				load_oob = ROM/ROM_R2_Tanks.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_R2_Tanks.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_R2_Tanks_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                supplies = -2000
+                money = -2000
+                load_oob = ROM/ROM_R2_Tanks.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_R2_Tanks.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -1086,30 +1243,39 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-				supplies = -2000
-				money = -1500
-				load_oob = ROM/ROM_R35_Tanks.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_R35_Tanks.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_R35_Tanks_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                supplies = -2000
+                money = -1500
+                load_oob = ROM/ROM_R35_Tanks.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_R35_Tanks.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -1139,34 +1305,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-			change_variable = {
-					which = IC_days_spent
-					value = +500
-				}
-				energy = -1000
-				metal = -500
-				rare_materials = -250
-				load_oob = ROM/ROM_1st_Armored_Division.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_1st_Armored_Division.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_1st_Armored_Division_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +1000
+                }
+                energy = -2000
+                metal = -1000
+                rare_materials = -500
+                load_oob = ROM/ROM_1st_Armored_Division.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_1st_Armored_Division.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -1195,34 +1371,51 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-			change_variable = {
-					which = IC_days_spent
-					value = +1000
-				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
-				load_oob = ROM/ROM_Motomechanized_Command.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_Motomechanized_Command.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +250
+                }
+                energy = -500
+                metal = -250
+                rare_materials = -125
+                load_oob = ROM/ROM_Motomechanized_Command_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +500
+                }
+                energy = -1000
+                metal = -500
+                rare_materials = -250
+                load_oob = ROM/ROM_Motomechanized_Command.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_Motomechanized_Command.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -1252,34 +1445,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-			change_variable = {
-					which = IC_days_spent
-					value = +500 #IC cost is split between Mixed Armored Group Cantemir and Rapid Armored Detachment
-				}
-				energy = -1000
-				metal = -500
-				rare_materials = -250
-				load_oob = ROM/ROM_Armored_Group_Cantemir.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_Armored_Group_Cantemir.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_Armored_Group_Cantemir_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +1100
+                }
+                energy = -2200
+                metal = -1100
+                rare_materials = -550
+                load_oob = ROM/ROM_Armored_Group_Cantemir.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_Armored_Group_Cantemir.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -1302,34 +1505,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-			change_variable = {
-					which = IC_days_spent
-					value = +500 #IC cost is split between Mixed Armored Group Cantemir and Rapid Armored Detachment
-				}
-				energy = -1000
-				metal = -500
-				rare_materials = -250
-				load_oob = ROM/ROM_Detasamentul_Blindat_Rapid.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_Detasamentul_Blindat_Rapid.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_Detasamentul_Blindat_Rapid_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +2800
+                }
+                energy = -5600
+                metal = -2800
+                rare_materials = -1400
+                load_oob = ROM/ROM_Detasamentul_Blindat_Rapid.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_Detasamentul_Blindat_Rapid.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -1363,34 +1576,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-			change_variable = {
-					which = IC_days_spent
-					value = +500
-				}
-				energy = -1000
-				metal = -500
-				rare_materials = -250
-				load_oob = ROM/ROM_1st_Armored_Division_1944.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_1st_Armored_Division_1944.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_1st_Armored_Division_1944_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +1900
+                }
+                energy = -3800
+                metal = -1900
+                rare_materials = -950
+                load_oob = ROM/ROM_1st_Armored_Division_1944.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_1st_Armored_Division_1944.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -1415,34 +1638,44 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-        OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-			change_variable = {
-					which = IC_days_spent
-					value = +500
-				}
-				energy = -1000
-				metal = -500
-				rare_materials = -250
-				load_oob = ROM/ROM_PZL11_1936.txt
-			}
-		}
 		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_PZL11_1936.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ROM/ROM_PZL11_1936_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +1100
+                }
+                energy = -2200
+                metal = -1100
+                rare_materials = -550
+                load_oob = ROM/ROM_PZL11_1936.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_PZL11_1936.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -2203,34 +2436,32 @@ country_event = {
 			factor = 100
 		}
         OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-			change_variable = {
-					which = IC_days_spent
-					value = +300
-				}
-				energy = -600
-				metal = -300
-				rare_materials = -150
-				load_oob = ROM/ROM_GAL.txt
-			}
-		}
-		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_GAL.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +400
+                }
+                energy = -800
+                metal = -400
+                rare_materials = -200
+                load_oob = ROM/ROM_GAL.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_GAL.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -2261,33 +2492,32 @@ country_event = {
 			factor = 100
 		}
         OMG = {
-			any_country = {
-				limit = {
-					tag = ROM
-					has_country_flag = BlackICE
-				}
-			change_variable = {
-					which = IC_days_spent
-					value = +500
-				}
-				energy = -1000
-				metal = -500
-				rare_materials = -250
-				load_oob = ROM/ROM_1st_Air_Corps.txt
-			}
-		}
-		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = ROM
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ROM/ROM_1st_Air_Corps.txt
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = ROM
+                    has_country_flag = BlackICE
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +1500
+                }
+                energy = -3000
+                metal = -1500
+                rare_materials = -750
+                load_oob = ROM/ROM_1st_Air_Corps.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ROM
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ROM/ROM_1st_Air_Corps.txt
+            }
+        }
 	}
 	option = {
 		name = "No need"
@@ -2316,16 +2546,27 @@ country_event = {
 				limit = {
 					tag = ROM
 					has_country_flag = BlackICE
+					has_country_flag = OOB_production
 				}
-			change_variable = {
-					which = IC_days_spent
-					value = +250
-				}
-				energy = -500
-				metal = -250
-				rare_materials = -125
-				load_oob = ROM/ROM_Beograd_Legionaires.txt
 			}
+			load_oob = ROM/ROM_Beograd_Legionaires_build.txt
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ROM
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+			}
+			change_variable = {
+			    which = IC_days_spent
+			    value = +350
+			}
+			energy = -700
+			metal = -350
+			rare_materials = -175
+			load_oob = ROM/ROM_Beograd_Legionaires.txt
 		}
 		OMG = {
 			#AI
