@@ -108,6 +108,29 @@ country_event = {
 		ai_chance = { factor = 100 }
 	}
 }
+
+country_event = {
+	id = 4220
+	trigger = {
+		tag = USA
+	}
+	fire_only_once = yes
+	title = "US Army and USMC Upgrade Events"
+	desc = "EVTDESC4220"
+	picture = "Detroit"
+	option = {
+		name = "I want units spawned directly on the map"
+		set_country_flag = OOB_spawn
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "I want units placed in the production queue"
+		set_country_flag = OOB_production
+	}
+}
+
 country_event = {
 	id = 48846
 	trigger = {
@@ -139,8 +162,25 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		date = 1940.7.15
+		or = {
+			and = {
+				date = 1940.7.15
+				has_country_flag = OOB_spawn
+				energy = 4300
+				metal = 2650
+				rare_materials = 1825
+			}
+			and = {
+				date = 1940.3.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1940.7.15
+				ai = yes
+			}
+		}	
 	}
+
 	title = "EVTNAMEMARNE9500"
 	desc = "EVTDESCMARNE9500"
 	picture = "usa_first_armor"
@@ -151,32 +191,43 @@ country_event = {
 		remove_brigade = "68th Field Artillery Rgt"
 		set_country_flag = US_div_40
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_first_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1650
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +3500
-				}
-				energy = -7000
-				metal = -3500
-				rare_materials = -1750
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
 				load_oob = USA/usa_first_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Husky OOB
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_first_armor.txt
+            }
+        }		
 		ai_chance = {
 			factor = 100
 		}
@@ -199,21 +250,32 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Husky OOB TODO AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/USA_ninth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/USA_ninth_id.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +1100
+                }
+                energy = -2200
+                metal = -1100
+                rare_materials = -550
+                load_oob = USA/USA_ninth_id.txt
+            }
+        }	
 	}
 	option = {
 		name="No need"
@@ -237,21 +299,32 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_eighth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_eighth_id.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +1100
+                }
+                energy = -2200
+                metal = -1100
+                rare_materials = -550
+                load_oob = USA/usa_eighth_id.txt
+            }
+        }	
 	}
 	option = {
 		name="No need"
@@ -275,21 +348,32 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_fifth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_fifth_id.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +1100
+                }
+                energy = -2200
+                metal = -1100
+                rare_materials = -550
+                load_oob = USA/usa_fifth_id.txt
+            }
+        }
 	}
 	option = {
 		name="No need"
@@ -313,33 +397,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_sixth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_sixth_id.txt
-			}
-		}
-		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = USA
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_sixth_id_AI.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +1100
+                }
+                energy = -2200
+                metal = -1100
+                rare_materials = -550
+                load_oob = USA/usa_sixth_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_sixth_id_AI.txt
+            }
+        }	
 	}
 	option = {
 		name="No need"
@@ -363,21 +457,32 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_fourth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_fourth_id.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +1100
+                }
+                energy = -2200
+                metal = -1100
+                rare_materials = -550
+                load_oob = USA/usa_fourth_id.txt
+            }
+        }
 	}
 	option = {
 		name="No need"
@@ -401,33 +506,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_seventh_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_seventh_id.txt
-			}
-		}
-		OMG = {
-			#AI
-			any_country = {
-				limit = {
-					tag = USA
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_seventh_id_AI.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +1100
+                }
+                energy = -2200
+                metal = -1100
+                rare_materials = -550
+                load_oob = USA/usa_seventh_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_seventh_id_AI.txt
+            }
+        }
 	}
 	option = {
 		name="No need"
@@ -446,7 +561,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_40
-		date = 1940.7.16
+		or = {
+			and = {
+				date = 1940.7.16
+				has_country_flag = OOB_spawn
+				energy = 7600
+				metal = 4300
+				rare_materials = 2650
+			}
+			and = {
+				date = 1940.3.16
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1940.7.16
+				ai = yes
+			}
+		}	
 	}
 	title = "EVTNAMEMARNE9501"
 	desc = "EVTDESCMARNE9501"
@@ -454,21 +585,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "EVTOPTAMARNE9501"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
-				load_oob = USA/usa_second_armor.txt
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_second_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +3500
-				}
-				energy = -7000
-				metal = -3500
-				rare_materials = -1750
-			}
-		}
+                    which = IC_days_spent
+                    value = +3300
+                }
+                energy = -6600
+                metal = -3300
+                rare_materials = -1650
+                load_oob = USA/usa_second_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -484,7 +626,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_41
-		date = 1941.4.15
+		or = {
+			and = {
+				date = 1941.4.15
+				has_country_flag = OOB_spawn
+				energy = 7600
+				metal = 4300
+				rare_materials = 2650
+			}
+			and = {
+				date = 1940.12.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.4.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9502"
 	desc = "EVTDESCMARNE9502"
@@ -492,21 +650,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "EVTOPTAMARNE9502"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
-				load_oob = USA/usa_third_armor.txt
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_third_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +3500
-				}
-				energy = -7000
-				metal = -3500
-				rare_materials = -1750
-			}
-		}
+                    which = IC_days_spent
+                    value = +3300
+                }
+                energy = -6600
+                metal = -3300
+                rare_materials = -1650
+                load_oob = USA/usa_third_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -522,7 +691,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_41
-		date = 1941.4.15
+		or = {
+			and = {
+				date = 1941.4.15
+				has_country_flag = OOB_spawn
+				energy = 7600
+				metal = 4300
+				rare_materials = 2650
+			}
+			and = {
+				date = 1940.12.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.4.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9514"
 	desc = "EVTDESCMARNE9514"
@@ -530,21 +715,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "EVTOPTAMARNE9514"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_fourth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +3300
 				}
-				load_oob = USA/usa_fourth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650    
+                load_oob = USA/usa_fourth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -560,7 +756,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_41
-		date = 1941.10.10
+		or = {
+			and = {
+				date = 1941.10.10
+				has_country_flag = OOB_spawn
+				energy = 7600
+				metal = 4300
+				rare_materials = 2650
+			}
+			and = {
+				date = 1941.6.10
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.10.10
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9515"
 	desc = "EVTDESCMARNE9515"
@@ -568,21 +780,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "EVTOPTAMARNE9515"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_fifth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +3300
 				}
-				load_oob = USA/usa_fifth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+                load_oob = USA/usa_fifth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -597,7 +820,23 @@ country_event = { #TODO Decision
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		date = 1942.2.15
+		or = {
+			and = {
+				date = 1942.2.15
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1941.10.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.2.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9516"
 	desc = "EVTDESCMARNE9516"
@@ -610,21 +849,32 @@ country_event = { #TODO Decision
 		}
 		set_country_flag = US_div_42
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_sixth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_sixth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_sixth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -640,7 +890,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.3.1
+		or = {
+			and = {
+				date = 1942.3.1
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1941.11.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.3.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9517"
 	desc = "EVTDESCMARNE9517"
@@ -648,21 +914,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_seventh_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_seventh_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_seventh_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -678,7 +955,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.4.1
+		or = {
+			and = {
+				date = 1942.4.1
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1941.12.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.4.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9518"
 	desc = "EVTDESCMARNE9518"
@@ -686,21 +979,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_eighth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_eighth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_eighth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -716,7 +1020,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.7.15
+		or = {
+			and = {
+				date = 1942.7.15
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1942.3.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.7.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9519"
 	desc = "EVTDESCMARNE9519"
@@ -724,21 +1044,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_ninth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_ninth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_ninth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -754,7 +1085,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.7.15
+		or = {
+			and = {
+				date = 1942.7.15
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1942.3.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.7.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9840"
 	desc = "EVTDESCMARNE9840"
@@ -762,21 +1109,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_tenth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_tenth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_tenth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -792,7 +1150,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.8.15
+		or = {
+			and = {
+				date = 1942.8.15
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1942.4.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.8.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9841"
 	desc = "EVTDESCMARNE9841"
@@ -800,21 +1174,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_eleventh_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_eleventh_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_eleventh_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -830,7 +1215,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.9.15
+		or = {
+			and = {
+				date = 1942.9.15
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1942.5.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.9.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9842"
 	desc = "EVTDESCMARNE9842"
@@ -838,21 +1239,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_twelfth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_twelfth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_twelfth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -868,7 +1280,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.10.15
+		or = {
+			and = {
+				date = 1942.10.15
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1942.6.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.10.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9843"
 	desc = "EVTDESCMARNE9843"
@@ -876,21 +1304,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_thirteenth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_thirteenth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_thirteenth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -906,7 +1345,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.11.15
+		or = {
+			and = {
+				date = 1942.11.15
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1942.07.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.11.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9844"
 	desc = "EVTDESCMARNE9844"
@@ -914,21 +1369,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_fourteenth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_fourteenth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_fourteenth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -944,7 +1410,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.7.15
+		or = {
+			and = {
+				date = 1942.7.15
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1942.3.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.7.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9845"
 	desc = "EVTDESCMARNE9845"
@@ -952,21 +1434,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_sixteenth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_sixteenth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_sixteenth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -982,7 +1475,23 @@ country_event = {
 	trigger = { #TODO Decision
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.3.15
+		or = {
+			and = {
+				date = 1943.3.15
+				has_country_flag = OOB_spawn
+				energy = 12800
+				metal = 6900
+				rare_materials = 3950
+			}
+			and = {
+				date = 1942.11.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.3.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9846"
 	desc = "EVTDESCMARNE9846"
@@ -990,21 +1499,32 @@ country_event = {
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_twentieth_armor_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +5900
 				}
-				load_oob = USA/usa_twentieth_armor.txt
-                change_variable = {
-					which = IC_days_spent
-					value = +4000
-				}
-				energy = -8000
-				metal = -4000
-				rare_materials = -2000
-			}
-		}
+				energy = -11800
+				metal = -5900
+				rare_materials = -2950
+                load_oob = USA/usa_twentieth_armor.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1020,40 +1540,56 @@ country_event = {
 	trigger = { #TODO Decision
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.10.15
+		or = {
+			and = {
+				date = 1942.10.15
+				has_country_flag = OOB_spawn
+				energy = 4900
+				metal = 2950
+				rare_materials = 1975
+			}
+			and = {
+				date = 1942.6.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.10.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9847"
 	desc = "EVTDESCMARNE9847"
 	picture = "usa_ninetysecond_id"
 	option = {
 		name = "Yes, let's form them!"
-		OMG = { #TODO Decision
-			any_country = {
-				limit = { #AI GETS IN Husky OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_ninetysecond_id.txt
-			}
-		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_ninetysecond_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+                change_variable = {
+                    which = IC_days_spent
+                    value = +1950
+                }
+                energy = -3900
+                metal = -1950
+                rare_materials = -975
+                load_oob = USA/usa_ninetysecond_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1069,7 +1605,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.3.15
+		or = {
+			and = {
+				date = 1943.3.15
+				has_country_flag = OOB_spawn
+				energy = 4900
+				metal = 2950
+				rare_materials = 1975
+			}
+			and = {
+				date = 1942.11.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.3.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9848"
 	desc = "EVTDESCMARNE9848"
@@ -1077,32 +1629,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_onehundredsixth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_onehundredsixth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +1950
+                }
+                energy = -3900
+                metal = -1950
+                rare_materials = -975
+                load_oob = USA/usa_onehundredsixth_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1118,7 +1670,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.6.15
+		or = {
+			and = {
+				date = 1943.6.15
+				has_country_flag = OOB_spawn
+				energy = 4900
+				metal = 2950
+				rare_materials = 1975
+			}
+			and = {
+				date = 1943.2.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.6.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9849"
 	desc = "EVTDESCMARNE9849"
@@ -1126,32 +1694,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Dragoon OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_sixtythird_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_sixtythird_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +1950
+                }
+                energy = -3900
+                metal = -1950
+                rare_materials = -975
+                load_oob = USA/usa_sixtythird_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1167,7 +1735,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.8.15
+		or = {
+			and = {
+				date = 1943.8.15
+				has_country_flag = OOB_spawn
+				energy = 4900
+				metal = 2950
+				rare_materials = 1975
+			}
+			and = {
+				date = 1943.4.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.8.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9850"
 	desc = "EVTDESCMARNE9850"
@@ -1175,32 +1759,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_sixtyfifth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_sixtyfifth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +1950
+                }
+                energy = -3900
+                metal = -1950
+                rare_materials = -975
+                load_oob = USA/usa_sixtyfifth_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1216,7 +1800,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.4.15
+		or = {
+			and = {
+				date = 1943.4.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.12.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.4.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9851"
 	desc = "EVTDESCMARNE9851"
@@ -1224,32 +1824,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_sixtysixth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_sixtysixth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_sixtysixth_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1265,7 +1865,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.5.15
+		or = {
+			and = {
+				date = 1943.5.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1943.1.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.5.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9852"
 	desc = "EVTDESCMARNE9852"
@@ -1273,32 +1889,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_sixtyninth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_sixtyninth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_sixtyninth_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1314,7 +1930,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.6.15
+		or = {
+			and = {
+				date = 1943.6.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1943.2.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.6.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9853"
 	desc = "EVTDESCMARNE9853"
@@ -1322,32 +1954,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Dragoon OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_seventieth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_seventieth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_seventieth_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1363,7 +1995,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.7.15
+		or = {
+			and = {
+				date = 1943.7.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1943.3.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.7.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9854"
 	desc = "EVTDESCMARNE9854"
@@ -1371,32 +2019,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_seventyfirst_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_seventyfirst_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_seventyfirst_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1412,7 +2060,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.4.15
+		or = {
+			and = {
+				date = 1943.4.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.12.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.4.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9855"
 	desc = "EVTDESCMARNE9855"
@@ -1420,32 +2084,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_seventyfifth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_seventyfifth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_seventyfifth_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1461,7 +2125,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.5.15
+		or = {
+			and = {
+				date = 1942.5.15
+				has_country_flag = OOB_spawn
+				energy = 3400
+				metal = 2200
+				rare_materials = 1600
+			}
+			and = {
+				date = 1942.1.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.5.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9856"
 	desc = "EVTDESCMARNE9856"
@@ -1469,33 +2149,41 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_ninetythird_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_ninetythird_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_ninetythird_id_ai.txt
-			}
-		}
+                }
+                energy = -2400
+                metal = -1200
+                rare_materials = -600
+                load_oob = USA/usa_ninetythird_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_ninetythird_id_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1511,7 +2199,23 @@ country_event = { #TODO Decision
 	trigger = { 
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.9.15
+		or = {
+			and = {
+				date = 1942.9.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.5.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.9.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9857"
 	desc = "EVTDESCMARNE9857"
@@ -1519,32 +2223,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_ninetyfourth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_ninetyfourth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_ninetyfourth_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1560,7 +2264,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.7.15
+		or = {
+			and = {
+				date = 1942.7.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.3.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.7.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9858"
 	desc = "EVTDESCMARNE9858"
@@ -1568,32 +2288,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_ninetyfifth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_ninetyfifth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_ninetyfifth_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1609,7 +2329,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.8.15
+		or = {
+			and = {
+				date = 1942.8.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.4.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.8.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9859"
 	desc = "EVTDESCMARNE9859"
@@ -1617,33 +2353,43 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_ninetysixth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_ninetysixth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_ninetysixth_id_ai.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_ninetysixth_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_ninetysixth_id_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1659,7 +2405,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.2.25
+		or = {
+			and = {
+				date = 1943.2.25
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.10.25
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.2.25
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9860"
 	desc = "EVTDESCMARNE9860"
@@ -1667,32 +2429,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_ninetyseventh_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_ninetyseventh_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_ninetyseventh_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1708,7 +2470,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.9.15
+		or = {
+			and = {
+				date = 1942.9.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.5.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.9.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9861"
 	desc = "EVTDESCMARNE9861"
@@ -1716,33 +2494,43 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_ninetyeighth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_ninetyeighth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_ninetyeighth_id_ai.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_ninetyeighth_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_ninetyeighth_id_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1758,7 +2546,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.11.15
+		or = {
+			and = {
+				date = 1942.11.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.07.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.11.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9862"
 	desc = "EVTDESCMARNE9862"
@@ -1766,32 +2570,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_ninetyninth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_ninetyninth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_ninetyninth_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1807,7 +2611,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.9.15
+		or = {
+			and = {
+				date = 1942.9.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.5.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.9.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9863"
 	desc = "EVTDESCMARNE9863"
@@ -1815,32 +2635,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_onehundredsecond_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_onehundredsecond_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_onehundredsecond_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1856,7 +2676,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.11.15
+		or = {
+			and = {
+				date = 1942.11.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.07.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.11.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9864"
 	desc = "EVTDESCMARNE9864"
@@ -1864,32 +2700,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_onehundredthird_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_onehundredthird_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_onehundredthird_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1905,7 +2741,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.9.15
+		or = {
+			and = {
+				date = 1942.9.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1942.5.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.9.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9865"
 	desc = "EVTDESCMARNE9865"
@@ -1913,32 +2765,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_onehundredfourth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_onehundredfourth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_onehundredfourth_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1954,7 +2806,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.2.13
+		or = {
+			and = {
+				date = 1942.2.13
+				has_country_flag = OOB_spawn
+				energy = 6600
+				metal = 3800
+				rare_materials = 2400
+			}
+			and = {
+				date = 1941.10.13
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.2.13
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9503"
 	desc = "EVTDESCMARNE9503"
@@ -1962,32 +2830,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "EVTOPTAMARNE9503"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_eightysecond_airborne_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1400
-				}
-				energy = -2800
-				metal = -1400
-				rare_materials = -700
-				load_oob = USA/usa_eightysecond_airborne.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2800
+                }
+                energy = -5600
+                metal = -2800
+                rare_materials = -1400
+                load_oob = USA/usa_eightysecond_airborne.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2003,7 +2871,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.8.16
+		or = {
+			and = {
+				date = 1942.8.16
+				has_country_flag = OOB_spawn
+				energy = 6600
+				metal = 3800
+				rare_materials = 2400
+			}
+			and = {
+				date = 1942.4.16
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.8.16
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9504"
 	desc = "EVTDESCMARNE9504"
@@ -2011,32 +2895,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "EVTOPTAMARNE9504"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_onehundredfirst_airborne_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1400
-				}
-				energy = -2800
-				metal = -1400
-				rare_materials = -700
-				load_oob = USA/usa_onehundredfirst_airborne.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2800
+                }
+                energy = -5600
+                metal = -2800
+                rare_materials = -1400
+                load_oob = USA/usa_onehundredfirst_airborne.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2052,7 +2936,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.7.15
+		or = {
+			and = {
+				date = 1943.7.15
+				has_country_flag = OOB_spawn
+				energy = 4500
+				metal = 2750
+				rare_materials = 1875
+			}
+			and = {
+				date = 1943.3.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.7.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9505"
 	desc = "EVTDESCMARNE9505"
@@ -2060,32 +2960,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "EVTOPTAMARNE9505"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Husky OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_tenth_mountain_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_tenth_mountain.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +1750
+                }
+                energy = -3500
+                metal = -1750
+                rare_materials = -875
+                load_oob = USA/usa_tenth_mountain.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2101,7 +3001,23 @@ country_event = { #TODO Decision
 	trigger = {
 		tag = USA
 		war_with = JAP
-		date = 1942.5.27
+		or = {
+			and = {
+				date = 1942.5.27
+				has_country_flag = OOB_spawn
+				energy = 4900
+				metal = 2950
+				rare_materials = 1975
+			}
+			and = {
+				date = 1942.1.27
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.5.27
+				ai = yes
+			}
+		}
 		has_country_flag = US_div_42
 		6616 = {
 			controller = {
@@ -2116,33 +3032,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "EVTOPTAMARNE9506"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_twentythird_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_twentythird_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_twentythird_id_ai.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +1950
+                }
+                energy = -3900
+                metal = -1950
+                rare_materials = -975
+                load_oob = USA/usa_twentythird_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2159,7 +3074,23 @@ country_event = { #TODO Decision
 		tag = USA
 		war_with = JAP
 		has_country_flag = US_div_41
-		date = 1941.8.26
+		or = {
+			and = {
+				date = 1941.8.26
+				has_country_flag = OOB_spawn
+				energy = 3400
+				metal = 2200
+				rare_materials = 1600
+			}
+			and = {
+				date = 1941.4.26
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.8.26
+				ai = yes
+			}
+		}
 		5825 = {
 			controller = {
 				faction = allies
@@ -2173,33 +3104,43 @@ country_event = { #TODO Decision
 	option = {
 		name = "EVTOPTAMARNE9507"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_twentyfifth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_twentyfifth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_twentyfifth_id_ai.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +1200
+                }
+                energy = -2400
+                metal = -1200
+                rare_materials = -600
+                load_oob = USA/usa_twentyfifth_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_twentyfifth_id_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2214,7 +3155,23 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		date = 1941.2.1
+		or = {
+			and = {
+				date = 1941.2.1
+				has_country_flag = OOB_spawn
+				energy = 5400
+				metal = 3200
+				rare_materials = 2100
+			}
+			and = {
+				date = 1940.10.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.2.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9508"
 	desc = "EVTDESCMARNE9508"
@@ -2223,33 +3180,43 @@ country_event = {
 		name = "EVTOPTAMARNE9508"
 		set_country_flag = US_div_41
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
-				load_oob = USA/usa_second_marine.txt
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_second_marine_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +2500
-				}
-				energy = -5000
-				metal = -2500
-				rare_materials = -1250
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_second_marine_ai.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +2200
+                }
+                energy = -4400
+                metal = -2200
+                rare_materials = -1100
+                load_oob = USA/usa_second_marine.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_second_marine_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2265,7 +3232,23 @@ country_event = {
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_42
-		date = 1942.9.16
+		or = {
+			and = {
+				date = 1942.9.16
+				has_country_flag = OOB_spawn
+				energy = 5400
+				metal = 3200
+				rare_materials = 2100
+			}
+			and = {
+				date = 1942.5.16
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.9.16
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9509"
 	desc = "EVTDESCMARNE9509"
@@ -2273,33 +3256,43 @@ country_event = {
 	option = {
 		name = "EVTOPTAMARNE9509"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
-				load_oob = USA/usa_third_marine.txt
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_third_marine_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +2500
-				}
-				energy = -5000
-				metal = -2500
-				rare_materials = -1250
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_third_marine_ai.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +2200
+                }
+                energy = -4400
+                metal = -2200
+                rare_materials = -1100
+                load_oob = USA/usa_third_marine.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_third_marine_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2314,7 +3307,23 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		date = 1943.2.1
+		or = {
+			and = {
+				date = 1943.2.1
+				has_country_flag = OOB_spawn
+				energy = 5400
+				metal = 3200
+				rare_materials = 2100
+			}
+			and = {
+				date = 1942.10.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.2.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9510"
 	desc = "EVTDESCMARNE9510"
@@ -2323,33 +3332,43 @@ country_event = {
 		name = "EVTOPTAMARNE9510"
 		set_country_flag = US_div_43
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
-				load_oob = USA/usa_fourth_marine.txt
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_fourth_marine_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +2500
-				}
-				energy = -5000
-				metal = -2500
-				rare_materials = -1250
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_fourth_marine_ai.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +2200
+                }
+                energy = -4400
+                metal = -2200
+                rare_materials = -1100
+                load_oob = USA/usa_fourth_marine.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_fourth_marine_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2365,7 +3384,23 @@ country_event = {
 	trigger = {
 		tag = USA
 		has_country_flag = US_div_43
-		date = 1943.11.11
+		or = {
+			and = {
+				date = 1943.11.11
+				has_country_flag = OOB_spawn
+				energy = 5400
+				metal = 3200
+				rare_materials = 2100
+			}
+			and = {
+				date = 1943.7.11
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.11.11
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAMEMARNE9511"
 	desc = "EVTDESCMARNE9511"
@@ -2373,33 +3408,43 @@ country_event = {
 	option = {
 		name = "EVTOPTAMARNE9511"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
-				load_oob = USA/usa_fifth_marine.txt
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_fifth_marine_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +2500
-				}
-				energy = -5000
-				metal = -2500
-				rare_materials = -1250
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_fifth_marine_ai.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +2200
+                }
+                energy = -4400
+                metal = -2200
+                rare_materials = -1100
+                load_oob = USA/usa_fifth_marine.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_fifth_marine_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2414,7 +3459,23 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		date = 1944.9.7
+		or = {
+			and = {
+				date = 1944.9.7
+				has_country_flag = OOB_spawn
+				energy = 5400
+				metal = 3200
+				rare_materials = 2100
+			}
+			and = {
+				date = 1944.5.7
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1944.9.7
+				ai = yes
+			}
+		}
 		6545 = {
 			controller = {
 				faction = allies
@@ -2433,33 +3494,43 @@ country_event = {
 	option = {
 		name = "EVTOPTAMARNE9512"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
-				load_oob = USA/usa_sixth_marine.txt
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_sixth_marine_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +2500
-				}
-				energy = -5000
-				metal = -2500
-				rare_materials = -1250
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_sixth_marine_ai.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +2200
+                }
+                energy = -4400
+                metal = -2200
+                rare_materials = -1100
+                load_oob = USA/usa_sixth_marine.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_sixth_marine_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2474,7 +3545,23 @@ country_event = { #TODO Decision
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		date = 1943.7.14
+		or = {
+			and = {
+				date = 1943.7.14
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2075
+			}
+			and = {
+				date = 1943.3.14
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.7.14
+				ai = yes
+			}
+		}
 		has_country_flag = US_div_43
 	}
 	title = "EVTNAMEMARNE9513"
@@ -2483,32 +3570,32 @@ country_event = { #TODO Decision
 	option = {
 		name = "EVTOPTAMARNE9513"
 		OMG = {
-			any_country = {
-				limit = { #AI GETS IN Dragoon OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_fortysecond_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
-				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
-				load_oob = USA/usa_fortysecond_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2150
+                }
+                energy = -4300
+                metal = -2150
+                rare_materials = -1075
+                load_oob = USA/usa_fortysecond_id.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2721,8 +3808,23 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		year = 1942
-		month = 3
+		or = {
+			and = {
+				date = 1942.3.1
+				has_country_flag = OOB_spawn
+				energy = 28200
+				metal = 14600
+				rare_materials = 7800
+			}
+			and = {
+				date = 1941.11.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.3.1
+				ai = yes
+			}
+		}
 		OR = {
 			war_with = JAP
 			war_with = GER
@@ -2734,40 +3836,44 @@ country_event = {
 	option = {
 		name = "Call up the boys!"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/1942_reserve_1_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +9600
-				}
-				energy = -19200
-				metal = -9600
-				rare_materials = -4800
-
-				load_oob = USA/1942_reserve_1.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/1942_reserve_AI.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = 13600
+                }
+                energy = -27200
+                metal = -13600
+                rare_materials = -6800
+                load_oob = USA/1942_reserve_1.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/1942_reserve_AI.txt
+            }
+        }
 		manpower = -20
-		supplies = -12000
-		add_country_modifier = {
-			name = "Div_HQ_training_NG"
-			duration = 60
-		}
 		ai_chance = {
 			factor = 100
 		}
@@ -2784,8 +3890,23 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		year = 1942
-		month = 5
+		or = {
+			and = {
+				date = 1942.5.1
+				has_country_flag = OOB_spawn
+				energy = 28200
+				metal = 14600
+				rare_materials = 7800
+			}
+			and = {
+				date = 1942.1.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.5.1
+				ai = yes
+			}
+		}
 		OR = {
 			war_with = JAP
 			war_with = GER
@@ -2797,41 +3918,43 @@ country_event = {
 	option = {
 		name = "Call up the boys!"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/1942_reserve_2_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +9600
-				}
-				energy = -19200
-				metal = -9600
-				rare_materials = -4800
-
-				load_oob = USA/1942_reserve_2.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				manpower = 20
-				supplies = 12000
-			}
-		}
-		manpower = -20
-		supplies = -12000
-		add_country_modifier = {
-			name = "Div_HQ_training_NG"
-			duration = 60
-		}
+                    which = IC_days_spent
+                    value = 13600
+                }
+                energy = -27200
+                metal = -13600
+                rare_materials = -6800
+                load_oob = USA/1942_reserve_2.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/1942_reserve_2.txt
+            }
+        }		manpower = -20
 		ai_chance = {
 			factor = 100
 		}
@@ -2849,7 +3972,23 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		date = 1943.2.25
+		or = {
+			and = {
+				date = 1943.2.25
+				has_country_flag = OOB_spawn
+				energy = 6200
+				metal = 3600
+				rare_materials = 2300
+			}
+			and = {
+				date = 1942.10.25
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.2.25
+				ai = yes
+			}
+		}
 		4899 = {
 			controller = {
 				faction = allies
@@ -2863,33 +4002,43 @@ country_event = {
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-					has_country_flag = BlackICE
-				}
-				load_oob = USA/usa_eleventh_airborne.txt
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_eleventh_airborne_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1500
-				}
-				energy = -3000
-				metal = -1500
-				rare_materials = -750
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = USA/usa_eleventh_airborne_ai.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +2600
+                }
+                energy = -5200
+                metal = -2600
+                rare_materials = -1300
+                load_oob = USA/usa_eleventh_airborne.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = USA/usa_eleventh_airborne_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2904,7 +4053,23 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		date = 1943.8.13
+		or = {
+			and = {
+				date = 1943.8.13
+				has_country_flag = OOB_spawn
+				energy = 6200
+				metal = 3600
+				rare_materials = 2300
+			}
+			and = {
+				date = 1943.4.13
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.8.13
+				ai = yes
+			}
+		}
 		4899 = {
 			controller = {
 				faction = allies
@@ -2918,32 +4083,32 @@ country_event = {
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { # AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
-				load_oob = USA/usa_thirteenth_airborne.txt
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_thirteenth_airborne_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1500
-				}
-				energy = -3000
-				metal = -1500
-				rare_materials = -750
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2600
+                }
+                energy = -5200
+                metal = -2600
+                rare_materials = -1300
+                load_oob = USA/usa_thirteenth_airborne.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2958,7 +4123,23 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-		date = 1943.4.15
+		or = {
+			and = {
+				date = 1943.4.15
+				has_country_flag = OOB_spawn
+				energy = 6200
+				metal = 3600
+				rare_materials = 2300
+			}
+			and = {
+				date = 1942.12.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.4.15
+				ai = yes
+			}
+		}
 		4899 = {
 			controller = {
 				faction = allies
@@ -2972,32 +4153,32 @@ country_event = {
 	option = {
 		name = "Yes, let's form them!"
 		OMG = {
-			any_country = {
-				limit = { # AI GETS IN Overlord OOB
-					tag = USA
-					has_country_flag = BlackICE
-				}
-				load_oob = USA/usa_seventeenth_airborne.txt
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = USA/usa_seventeenth_airborne_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = USA
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +1500
-				}
-				energy = -3000
-				metal = -1500
-				rare_materials = -750
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-			}
-		}
+                    which = IC_days_spent
+                    value = +2600
+                }
+                energy = -5200
+                metal = -2600
+                rare_materials = -1300
+                load_oob = USA/usa_seventeenth_airborne.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}

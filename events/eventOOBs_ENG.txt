@@ -1,6 +1,28 @@
 # Marneman's ENG OOB Events for certain historical units that did not exist at the start of the game (1936)
 # Corps/Army/Army Group OOB once war breaks out
 country_event = {
+	id = 42201
+	trigger = {
+		tag = ENG
+	}
+	fire_only_once = yes
+	title = "British Army Upgrade Events"
+	desc = "EVTDESC42201"
+	picture = "eng_national_service_act"
+	option = {
+		name = "I want units spawned directly on the map"
+		set_country_flag = OOB_spawn
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "I want units placed in the production queue"
+		set_country_flag = OOB_production
+	}
+}
+
+country_event = {
 	id = 920014
 	fire_only_once = yes
 	trigger = {
@@ -857,7 +879,23 @@ country_event = {
 			}
 		}
 		# El Alamein
-		date = 1939.9.2
+		or = {
+			and = {
+				date = 1939.9.2
+				has_country_flag = OOB_spawn
+				energy = 7400
+				metal = 4200
+				rare_materials = 2600
+			}
+			and = {
+				date = 1939.5.2
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1939.9.2
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME91716"
 	desc = "EVTDESC91716"
@@ -872,14 +910,25 @@ country_event = {
 				limit = {
 					tag = ENG
 					has_country_flag = BlackICE
+					has_country_flag = OOB_production
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +2000
+				load_oob = ENG/eng_fourth_indian_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
 				}
-				energy = -4000
-				metal = -2000
-				rare_materials = -1000
+				change_variable = {
+				    which = IC_days_spent
+				    value = +3200
+				}
+				energy = -6400
+				metal = -3200
+				rare_materials = -1600
 				load_oob = ENG/eng_fourth_indian.txt
 			}
 		}
@@ -887,7 +936,6 @@ country_event = {
 			any_country = {
 				limit = {
 					tag = ENG
-
 					not = {
 						has_country_flag = BlackICE
 					}
@@ -920,7 +968,19 @@ country_event = {
 					}
 				}
 				# Hyderabad, India
-				date = 1939.9.2
+				or = {
+					and = {
+						date = 1939.9.2
+						has_country_flag = OOB_spawn
+						energy = 6600
+						metal = 3800
+						rare_materials = 2400
+					}
+					and = {
+						date = 1939.5.2
+						has_country_flag = OOB_production
+					}
+				}
 			}
 			# AI gets the division in El Alamein in 1941
 			AND = {
@@ -949,14 +1009,25 @@ country_event = {
 				limit = {
 					tag = ENG
 					has_country_flag = BlackICE
+					has_country_flag = OOB_production
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1800
+				load_oob = ENG/eng_fifth_indian_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
 				}
-				energy = -3600
-				metal = -1800
-				rare_materials = -900
+				change_variable = {
+				    which = IC_days_spent
+				    value = +2800
+				}
+				energy = -5600
+				metal = -2800
+				rare_materials = -1400
 				load_oob = ENG/eng_fifth_indian.txt
 			}
 		}
@@ -964,7 +1035,6 @@ country_event = {
 			any_country = {
 				limit = {
 					tag = ENG
-
 					not = {
 						has_country_flag = BlackICE
 					}
@@ -1000,7 +1070,19 @@ country_event = {
 					}
 				}
 				# Hyderabad, India
-				date = 1941.3.2
+				or = {
+					and = {
+						date = 1941.3.2
+						has_country_flag = OOB_spawn
+						energy = 6800
+						metal = 3900
+						rare_materials = 2450
+					}
+					and = {
+						date = 1940.11.2
+						has_country_flag = OOB_production
+					}
+				}
 			}
 			# AI gets the division in Tel Aviv later in 1941
 			AND = {
@@ -1029,14 +1111,25 @@ country_event = {
 				limit = {
 					tag = ENG
 					has_country_flag = BlackICE
+					has_country_flag = OOB_production
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1800
+				load_oob = ENG/eng_sixth_indian_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
 				}
-				energy = -3600
-				metal = -1800
-				rare_materials = -900
+				change_variable = {
+				    which = IC_days_spent
+				    value = +2900
+				}
+				energy = -5800
+				metal = -2900
+				rare_materials = -1450
 				load_oob = ENG/eng_sixth_indian.txt
 			}
 		}
@@ -1044,7 +1137,6 @@ country_event = {
 			any_country = {
 				limit = {
 					tag = ENG
-
 					not = {
 						has_country_flag = BlackICE
 					}
@@ -1052,7 +1144,7 @@ country_event = {
 				load_oob = ENG/eng_sixth_indian_ai.txt
 			}
 		}
-		ai_chance = {
+	ai_chance = {
 			factor = 100
 		}
 	}
@@ -1076,7 +1168,23 @@ country_event = {
 			}
 		}
 		# Basal, India
-		date = 1940.10.1
+		or = {
+			and = {
+				date = 1940.10.1
+				has_country_flag = OOB_spawn
+				energy = 6600
+				metal = 3800
+				rare_materials = 2400
+			}
+			and = {
+				date = 1940.6.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1940.10.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93700"
 	desc = "EVTDESC93700"
@@ -1091,14 +1199,25 @@ country_event = {
 				limit = {
 					tag = ENG
 					has_country_flag = BlackICE
+					has_country_flag = OOB_production
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1800
+				load_oob = ENG/eng_seventh_indian_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
 				}
-				energy = -3600
-				metal = -1800
-				rare_materials = -900
+				change_variable = {
+				    which = IC_days_spent
+				    value = +2800
+				}
+				energy = -5600
+				metal = -2800
+				rare_materials = -1400
 				load_oob = ENG/eng_seventh_indian.txt
 			}
 		}
@@ -1106,7 +1225,6 @@ country_event = {
 			any_country = {
 				limit = {
 					tag = ENG
-
 					not = {
 						has_country_flag = BlackICE
 					}
@@ -1139,7 +1257,19 @@ country_event = {
 					}
 				}
 				# Meerut, India
-				date = 1940.10.25
+				or = {
+					and = {
+						date = 1940.10.25
+						has_country_flag = OOB_spawn
+						energy = 6400
+						metal = 3700
+						rare_materials = 2350
+					}
+					and = {
+						date = 1940.6.25
+						has_country_flag = OOB_production
+					}
+				}
 			}
 			# AI gets the division in Basrah in 1941
 			AND = {
@@ -1172,14 +1302,25 @@ country_event = {
 				limit = {
 					tag = ENG
 					has_country_flag = BlackICE
+					has_country_flag = OOB_production
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1700
+				load_oob = ENG/eng_eighth_indian_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
 				}
-				energy = -3400
-				metal = -1700
-				rare_materials = -850
+				change_variable = {
+				    which = IC_days_spent
+				    value = +2700
+				}
+				energy = -5400
+				metal = -2700
+				rare_materials = -1350
 				load_oob = ENG/eng_eighth_indian.txt
 			}
 		}
@@ -1187,7 +1328,6 @@ country_event = {
 			any_country = {
 				limit = {
 					tag = ENG
-
 					not = {
 						has_country_flag = BlackICE
 					}
@@ -1219,7 +1359,23 @@ country_event = {
 			}
 		}
 		# Quetta, India
-		date = 1940.9.15
+		or = {
+			and = {
+				date = 1940.9.15
+				has_country_flag = OOB_spawn
+				energy = 5200
+				metal = 3100
+				rare_materials = 2050
+			}
+			and = {
+				date = 1940.5.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1940.9.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93702"
 	desc = "EVTDESC93702"
@@ -1234,14 +1390,25 @@ country_event = {
 				limit = {
 					tag = ENG
 					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = ENG/eng_ninth_indian_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
 				}
                 change_variable = {
-					which = IC_days_spent
-					value = +1000
+				    which = IC_days_spent
+				    value = +2100
 				}
-				energy = -2000
-				metal = -1000
-				rare_materials = -500
+				energy = -4200
+				metal = -2100
+				rare_materials = -1050
 				load_oob = ENG/eng_ninth_indian.txt
 			}
 		}
@@ -1249,7 +1416,6 @@ country_event = {
 			any_country = {
 				limit = {
 					tag = ENG
-
 					not = {
 						has_country_flag = BlackICE
 					}
@@ -1282,8 +1448,15 @@ country_event = {
 		}
 		or = {
 			and = {
-				has_country_flag = UK_div_1940
 				date = 1941.1.1
+				has_country_flag = OOB_spawn
+				energy = 6600
+				metal = 3800
+				rare_materials = 2400
+			}
+			and = {
+				date = 1940.9.1
+				has_country_flag = OOB_production
 			}
 			and = {
 				ai = yes
@@ -1304,14 +1477,25 @@ country_event = {
 				limit = {
 					tag = ENG
 					has_country_flag = BlackICE
+					has_country_flag = OOB_production
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1800
+				load_oob = ENG/eng_tenth_indian_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
 				}
-				energy = -3600
-				metal = -1800
-				rare_materials = -900
+				change_variable = {
+				    which = IC_days_spent
+				    value = +2800
+				}
+				energy = -5600
+				metal = -2800
+				rare_materials = -1400
 				load_oob = ENG/eng_tenth_indian.txt
 			}
 		}
@@ -1319,7 +1503,6 @@ country_event = {
 			any_country = {
 				limit = {
 					tag = ENG
-
 					not = {
 						has_country_flag = BlackICE
 					}
@@ -1354,7 +1537,23 @@ country_event = {
 			}
 		}
 		# Singapore
-		date = 1940.12.10
+		or = {
+			and = {
+				date = 1940.12.10
+				has_country_flag = OOB_spawn
+				energy = 6200
+				metal = 3600
+				rare_materials = 2300
+			}
+			and = {
+				date = 1940.8.10
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1940.12.10
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93704"
 	desc = "EVTDESC93704"
@@ -1369,14 +1568,25 @@ country_event = {
 				limit = {
 					tag = ENG
 					has_country_flag = BlackICE
+					has_country_flag = OOB_production
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1800
+				load_oob = ENG/eng_eleventh_indian_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
 				}
-				energy = -3600
-				metal = -1800
-				rare_materials = -900
+				change_variable = {
+				    which = IC_days_spent
+				    value = +2600
+				}
+				energy = -5200
+				metal = -2600
+				rare_materials = -1300
 				load_oob = ENG/eng_eleventh_indian.txt
 			}
 		}
@@ -1384,7 +1594,6 @@ country_event = {
 			any_country = {
 				limit = {
 					tag = ENG
-
 					not = {
 						has_country_flag = BlackICE
 					}
@@ -1413,7 +1622,23 @@ country_event = {
 			}
 		}
 		# Quetta
-		date = 1941.6.1
+		or = {
+			and = {
+				date = 1941.6.1
+				has_country_flag = OOB_spawn
+				energy = 4700
+				metal = 2850
+				rare_materials = 1900
+			}
+			and = {
+				date = 1941.2.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.6.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93705"
 	desc = "EVTDESC93705"
@@ -1428,14 +1653,25 @@ country_event = {
 				limit = {
 					tag = ENG
 					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = ENG/eng_fourteenth_indian_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
 				}
                 change_variable = {
-					which = IC_days_spent
-					value = +1200
+				    which = IC_days_spent
+				    value = +1850
 				}
-				energy = -2400
-				metal = -1200
-				rare_materials = -600
+				energy = -3700
+				metal = -1850
+				rare_materials = -900
 				load_oob = ENG/eng_fourteenth_indian.txt
 			}
 		}
@@ -1443,7 +1679,6 @@ country_event = {
 			any_country = {
 				limit = {
 					tag = ENG
-
 					not = {
 						has_country_flag = BlackICE
 					}
@@ -1472,7 +1707,23 @@ country_event = {
 			}
 		}
 		# Ahmadnagar, India
-		date = 1941.7.1
+		or = {
+			and = {
+				date = 1941.7.1
+				has_country_flag = OOB_spawn
+				energy = 6600
+				metal = 3800
+				rare_materials = 2400
+			}
+			and = {
+				date = 1941.3.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.7.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93706"
 	desc = "EVTDESC93706"
@@ -1483,21 +1734,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_seventeenth_indian_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +2800
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +2000
-				}
-				energy = -4000
-				metal = -2000
-				rare_materials = -1000
-				load_oob = ENG/eng_seventeenth_indian.txt
-			}
-		}
+				energy = -5600
+				metal = -2800
+				rare_materials = -1400
+                load_oob = ENG/eng_seventeenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_seventeenth_indian.txt
+            }
+        }	
 	}
 	option = {
 		name = "No, we don't need them"
@@ -1519,7 +1792,23 @@ country_event = {
 			}
 		}
 		# Hyderabad, India
-		date = 1941.10.1
+		or = {
+			and = {
+				date = 1941.10.1
+				has_country_flag = OOB_spawn
+				energy = 6800
+				metal = 3900
+				rare_materials = 2450
+			}
+			and = {
+				date = 1941.6.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.10.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93707"
 	desc = "EVTDESC93707"
@@ -1530,33 +1819,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_nineteenth_indian_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +2900
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1600
-				}
-				energy = -3200
-				metal = -1600
-				rare_materials = -800
-				load_oob = ENG/eng_nineteenth_indian.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_nineteenth_indian.txt
-			}
-		}
+				energy = -5800
+				metal = -2900
+				rare_materials = -1450
+                load_oob = ENG/eng_nineteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_nineteenth_indian.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -1577,7 +1876,23 @@ country_event = {
 			}
 		}
 		# Bangalore
-		date = 1942.4.1
+		or = {
+			and = {
+				date = 1942.4.1
+				has_country_flag = OOB_spawn
+				energy = 7000
+				metal = 4000
+				rare_materials = 2500
+			}
+			and = {
+				date = 1941.12.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.4.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93708"
 	desc = "EVTDESC93708"
@@ -1588,33 +1903,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_twentieth_indian_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +3000
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +2000
-				}
-				energy = -4000
-				metal = -2000
-				rare_materials = -1000
-				load_oob = ENG/eng_twentieth_indian.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_twentieth_indian.txt
-			}
-		}
+				energy = -6000
+				metal = -3000
+				rare_materials = -1500
+                load_oob = ENG/eng_twentieth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_twentieth_indian.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -1635,7 +1960,23 @@ country_event = {
 			}
 		}
 		# Bangalore
-		date = 1942.8.1
+		or = {
+			and = {
+				date = 1942.8.1
+				has_country_flag = OOB_spawn
+				energy = 7800
+				metal = 4400
+				rare_materials = 2700
+			}
+			and = {
+				date = 1942.4.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.8.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93709"
 	desc = "EVTDESC93709"
@@ -1643,33 +1984,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_twentyfifth_indian_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +3400
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1900
-				}
-				energy = -3800
-				metal = -1900
-				rare_materials = -950
-				load_oob = ENG/eng_twentyfifth_indian.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_twentyfifth_indian.txt
-			}
-		}
+				energy = -6800
+				metal = -3400
+				rare_materials = -1700
+                load_oob = ENG/eng_twentyfifth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_twentyfifth_indian.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -1690,7 +2041,23 @@ country_event = {
 			}
 		}
 		# Calcutta, India
-		date = 1942.3.20
+		or = {
+			and = {
+				date = 1942.3.20
+				has_country_flag = OOB_spawn
+				energy = 9100
+				metal = 5050
+				rare_materials = 3050
+			}
+			and = {
+				date = 1941.11.20
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.3.20
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93710"
 	desc = "EVTDESC93710"
@@ -1701,33 +2068,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_twentysixth_indian_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +4050
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +2500
-				}
-				energy = -5000
-				metal = -2500
-				rare_materials = -1250
-				load_oob = ENG/eng_twentysixth_indian.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_twentysixth_indian.txt
-			}
-		}
+				energy = -8100
+				metal = -4050
+				rare_materials = -2050
+                load_oob = ENG/eng_twentysixth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_twentysixth_indian.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -1752,7 +2129,19 @@ country_event = {
 					}
 				}
 				# Jhansi, India
-				date = 1942.1.1
+				or = {
+					and = {
+						date = 1942.1.1
+						has_country_flag = OOB_spawn
+						energy = 6600
+						metal = 3800
+						rare_materials = 2400
+					}
+					and = {
+						date = 1941.9.1
+						has_country_flag = OOB_production
+					}
+				}
 			}
 			# AI gets the division in Imphal in 1942
 			AND = {
@@ -1776,33 +2165,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_twentythird_indian_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +2800
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1800
-				}
-				energy = -3600
-				metal = -1800
-				rare_materials = -900
-				load_oob = ENG/eng_twentythird_indian.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_twentythird_indian_ai.txt
-			}
-		}
+				energy = -5600
+				metal = -2800
+				rare_materials = -1400
+                load_oob = ENG/eng_twentythird_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_twentythird_indian_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1826,7 +2225,26 @@ country_event = {
 			}
 		}
 		# Hyderabad, India
-		date = 1944.4.15
+		or = {
+			and = {
+				date = 1944.4.15
+				has_country_flag = OOB_spawn
+				energy = 8500
+				metal = 4750
+				rare_materials = 2850
+			}
+			and = {
+				date = 1943.12.15
+				has_country_flag = OOB_production
+				energy = 8500
+				metal = 4750
+				rare_materials = 2850
+			}
+			and = {
+				date = 1944.4.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93711"
 	desc = "EVTDESC93711"
@@ -1837,33 +2255,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_fortyfourth_indian_airborne_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +3750
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1800
-				}
-				energy = -3600
-				metal = -1800
-				rare_materials = -900
-				load_oob = ENG/eng_fortyfourth_indian_airborne.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_fortyfourth_indian_airborne.txt
-			}
-		}
+				energy = -7500
+				metal = -3750
+				rare_materials = -1850
+                load_oob = ENG/eng_fortyfourth_indian_airborne.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_fortyfourth_indian_airborne.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -1889,7 +2317,19 @@ country_event = {
 					}
 				}
 				# Hyderabad, India
-				date = 1940.8.1
+				or = {
+					and = {
+						date = 1940.8.1
+						has_country_flag = OOB_spawn
+						energy = 12400
+						metal = 6700
+						rare_materials = 3850
+					}
+					and = {
+						date = 1940.4.1
+						has_country_flag = OOB_production
+					}
+				}
 			}
 			# AI gets the division in Egypt in 1942
 			AND = {
@@ -1914,33 +2354,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    #has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_thirtyfirst_indian_armoured_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				which = IC_days_spent
+				value = +5700
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +3500
-				}
-				energy = -7000
-				metal = -3500
-				rare_materials = -1750
-				load_oob = ENG/eng_thirtyfirst_indian_armoured.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_thirtyfirst_indian_armoured_ai.txt
-			}
-		}
+				energy = -11400
+				metal = -5700
+				rare_materials = -2850
+                load_oob = ENG/eng_thirtyfirst_indian_armoured.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_thirtyfirst_indian_armoured_ai.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -1966,7 +2416,23 @@ country_event = {
 			}
 		}
 		# Toungoo
-		date = 1941.7.14
+		or = {
+			and = {
+				date = 1941.7.14
+				has_country_flag = OOB_spawn
+				energy = 6200
+				metal = 3600
+				rare_materials = 2300
+			}
+			and = {
+				date = 1941.3.14
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.7.14
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93713"
 	desc = "EVTDESC93713"
@@ -1977,33 +2443,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_thirtyninth_indian_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				which = IC_days_spent
+				value = +2600
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1600
-				}
-				energy = -3200
-				metal = -1600
-				rare_materials = -800
-				load_oob = ENG/eng_thirtyninth_indian.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_thirtyninth_indian.txt
-			}
-		}
+				energy = -5200
+				metal = -2600
+				rare_materials = -1300
+                load_oob = ENG/eng_thirtyninth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_thirtyninth_indian.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -2025,7 +2501,23 @@ country_event = {
 			}
 		}
 		# Calcutta
-		date = 1942.12.15
+		or = {
+			and = {
+				date = 1942.12.15
+				has_country_flag = OOB_spawn
+				energy = 6050
+				metal = 3500
+				rare_materials = 2250
+			}
+			and = {
+				date = 1942.8.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.12.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93714"
 	desc = "EVTDESC93714"
@@ -2036,33 +2528,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_thirtysixth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				which = IC_days_spent
+				value = +2500
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +1500
-				}
-				energy = -3000
-				metal = -1500
-				rare_materials = -750
-				load_oob = ENG/eng_thirtysixth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_thirtysixth_id.txt
-			}
-		}
+				energy = -5050
+				metal = -2500
+				rare_materials = -1250
+                load_oob = ENG/eng_thirtysixth_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_thirtysixth_id.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -2084,7 +2586,23 @@ country_event = {
 			}
 		}
 		# Bombay
-		date = 1943.1.15
+		or = {
+			and = {
+				date = 1943.1.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2100
+			}
+			and = {
+				date = 1942.9.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.1.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93715"
 	desc = "EVTDESC93715"
@@ -2095,33 +2613,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_eleventh_east_africa_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +900
+				which = IC_days_spent
+				value = +2150
 				}
-				energy = -1800
-				metal = -900
-				rare_materials = -450
-				load_oob = ENG/eng_eleventh_east_africa_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_eleventh_east_africa_id.txt
-			}
-		}
+				energy = -4300
+				metal = -2150
+				rare_materials = -1100
+                load_oob = ENG/eng_eleventh_east_africa_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_eleventh_east_africa_id.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -2143,7 +2671,23 @@ country_event = {
 			}
 		}
 		# Bombay
-		date = 1943.3.1
+		or = {
+			and = {
+				date = 1943.3.1
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2100
+			}
+			and = {
+				date = 1942.11.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.3.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93716"
 	desc = "EVTDESC93716"
@@ -2154,33 +2698,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_eightyfirst_west_africa_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +900
+				which = IC_days_spent
+				value = +2150
 				}
-				energy = -1800
-				metal = -900
-				rare_materials = -450
-				load_oob = ENG/eng_eightyfirst_west_africa_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_eightyfirst_west_africa_id.txt
-			}
-		}
+				energy = -4300
+				metal = -2150
+				rare_materials = -1100
+                load_oob = ENG/eng_eightyfirst_west_africa_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_eightyfirst_west_africa_id.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -2202,7 +2756,23 @@ country_event = {
 			}
 		}
 		# Bombay
-		date = 1943.7.15
+		or = {
+			and = {
+				date = 1943.7.15
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2100
+			}
+			and = {
+				date = 1943.3.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.7.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93717"
 	desc = "EVTDESC93717"
@@ -2213,33 +2783,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_eightysecond_west_africa_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +900
+				    which = IC_days_spent
+				    value = +2150
 				}
-				energy = -1800
-				metal = -900
-				rare_materials = -450
-				load_oob = ENG/eng_eightysecond_west_africa_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_eightysecond_west_africa_id.txt
-			}
-		}
+				energy = -4300
+				metal = -2150
+				rare_materials = -1100
+                load_oob = ENG/eng_eightysecond_west_africa_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_eightysecond_west_africa_id.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -2261,7 +2841,23 @@ country_event = {
 			}
 		}
 		# Dar es salaam
-		date = 1940.7.24
+		or = {
+			and = {
+				date = 1940.7.24
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2100
+			}
+			and = {
+				date = 1940.3.24
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1940.7.24
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93718"
 	desc = "EVTDESC93718"
@@ -2272,33 +2868,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_eleventh_africa_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +900
+				    which = IC_days_spent
+				    value = +2150
 				}
-				energy = -1800
-				metal = -900
-				rare_materials = -450
-				load_oob = ENG/eng_eleventh_africa_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_eleventh_africa_id.txt
-			}
-		}
+				energy = -4300
+				metal = -2150
+				rare_materials = -1100
+                load_oob = ENG/eng_eleventh_africa_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_eleventh_africa_id.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -2320,7 +2926,23 @@ country_event = {
 			}
 		}
 		# Dar es salaam
-		date = 1940.7.19
+		or = {
+			and = {
+				date = 1940.7.19
+				has_country_flag = OOB_spawn
+				energy = 5300
+				metal = 3150
+				rare_materials = 2100
+			}
+			and = {
+				date = 1940.3.19
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1940.7.19
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93719"
 	desc = "EVTDESC93719"
@@ -2331,33 +2953,43 @@ country_event = {
 			factor = 100
 		}
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_twelfth_africa_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +900
+				    which = IC_days_spent
+				    value = +2150
 				}
-				energy = -1800
-				metal = -900
-				rare_materials = -450
-				load_oob = ENG/eng_twelfth_africa_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_twelfth_africa_id.txt
-			}
-		}
+				energy = -4300
+				metal = -2150
+				rare_materials = -1100
+                load_oob = ENG/eng_twelfth_africa_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_twelfth_africa_id.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -2380,7 +3012,23 @@ country_event = {
 			}
 		}
 		# Abu hagga
-		date = 1939.8.3
+		or = {
+			and = {
+				date = 1939.8.3
+				has_country_flag = OOB_spawn
+				energy = 5950
+				metal = 3450
+				rare_materials = 2250
+			}
+			and = {
+				date = 1939.4.3
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1939.8.3
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93723"
 	desc = "EVTDESC93723"
@@ -2388,33 +3036,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_seventieth_id_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
+				change_variable = {
+				    which = IC_days_spent
+				    value = +2450
 				}
-                change_variable = {
-					which = IC_days_spent
-					value = +850
-				}
-				energy = -1700
-				metal = -850
-				rare_materials = -425
-				load_oob = ENG/eng_seventieth_id.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_seventieth_id.txt
-			}
-		}
+				energy = -4950
+				metal = -2450
+				rare_materials = -1250
+                load_oob = ENG/eng_seventieth_id.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_seventieth_id.txt
+            }
+        }
 	}
 	option = {
 		name = "No, we don't need them"
@@ -2435,7 +3093,23 @@ country_event = {
 			}
 		}
 		# Hyderabad, India
-		date = 1941.2.15
+		or = {
+			and = {
+				date = 1941.2.15
+				has_country_flag = OOB_spawn
+				energy = 14700
+				metal = 7850
+				rare_materials = 4450
+			}
+			and = {
+				date = 1940.10.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.2.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93724"
 	desc = "EVTDESC93724"
@@ -2444,33 +3118,43 @@ country_event = {
 		name = "Yes, let's form these units"
 		set_country_flag = IndianTankBrigades
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_50th_indian_armoured_brigade_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +3600
-				}
-				energy = -7200
-				metal = -3600
-				rare_materials = -1800
-				load_oob = ENG/eng_50th_indian_tank_brigade.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_50th_indian_tank_brigade.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +6850
+                }
+                energy = -13700
+                metal = -6850
+                rare_materials = -3450
+                load_oob = ENG/eng_50th_indian_armoured_brigade.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_50th_indian_armoured_brigade.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2495,7 +3179,23 @@ country_event = {
 			}
 		}
 		# Bombay, India
-		date = 1941.4.15
+		or = {
+			and = {
+				date = 1941.4.15
+				has_country_flag = OOB_spawn
+				energy = 11850
+				metal = 6450
+				rare_materials = 3700
+			}
+			and = {
+				date = 1940.12.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.4.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93725"
 	desc = "EVTDESC93725"
@@ -2503,33 +3203,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_252nd_indian_armoured_brigade_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +3000
-				}
-				energy = -6000
-				metal = -3000
-				rare_materials = -1500
-				load_oob = ENG/eng_252nd_indian_armoured_brigade.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_252nd_indian_armoured_brigade.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +5450
+                }
+                energy = -10850
+                metal = -5450
+                rare_materials = -2700
+                load_oob = ENG/eng_252nd_indian_armoured_brigade.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_252nd_indian_armoured_brigade.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2554,7 +3264,23 @@ country_event = {
 			}
 		}
 		# Hyderabad, India
-		date = 1941.5.15
+		or = {
+			and = {
+				date = 1941.5.15
+				has_country_flag = OOB_spawn
+				energy = 14700
+				metal = 7850
+				rare_materials = 4450
+			}
+			and = {
+				date = 1941.1.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.5.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93726"
 	desc = "EVTDESC93726"
@@ -2562,33 +3288,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_254th_indian_armoured_brigade_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +3600
-				}
-				energy = -7200
-				metal = -3600
-				rare_materials = -1800
-				load_oob = ENG/eng_254th_indian_tank_brigade.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_254th_indian_tank_brigade.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +6850
+                }
+                energy = -13700
+                metal = -6850
+                rare_materials = -3450
+                load_oob = ENG/eng_254th_indian_armoured_brigade.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_254th_indian_armoured_brigade.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2613,7 +3349,23 @@ country_event = {
 			}
 		}
 		# Hyderabad, India
-		date = 1941.6.15
+		or = {
+			and = {
+				date = 1941.6.15
+				has_country_flag = OOB_spawn
+				energy = 16500
+				metal = 8750
+				rare_materials = 4850
+			}
+			and = {
+				date = 1941.2.15
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.6.15
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93727"
 	desc = "EVTDESC93727"
@@ -2621,33 +3373,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_255th_indian_armoured_brigade_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +3800
-				}
-				energy = -7600
-				metal = -3800
-				rare_materials = -1900
-				load_oob = ENG/eng_255th_indian_tank_brigade.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_255th_indian_tank_brigade.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +7750
+                }
+                energy = -15500
+                metal = -7750
+                rare_materials = -3850
+                load_oob = ENG/eng_255th_indian_armoured_brigade.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_255th_indian_armoured_brigade.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2671,8 +3433,23 @@ country_event = {
 			}
 		}
 		# El hammam, Egypt
-		year = 1942
-		month = 5
+		or = {
+			and = {
+				date = 1942.5.1
+				has_country_flag = OOB_spawn
+				energy = 14400
+				metal = 7700
+				rare_materials = 4350
+			}
+			and = {
+				date = 1942.1.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.5.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93740"
 	desc = "EVTDESC93740"
@@ -2680,33 +3457,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_4th_armoured_brigade_group_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +3900
-				}
-				energy = -7800
-				metal = -3900
-				rare_materials = -1950
-				load_oob = ENG/eng_4th_armoured_brigade_group.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_4th_armoured_brigade_group.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +6700
+                }
+                energy = -13400
+                metal = -6700
+                rare_materials = -3350
+                load_oob = ENG/eng_4th_armoured_brigade_group.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_4th_armoured_brigade_group.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2730,8 +3517,23 @@ country_event = {
 			}
 		}
 		# El Iskandira, Egypt
-		year = 1941
-		month = 11
+		or = {
+			and = {
+				date = 1941.11.1
+				has_country_flag = OOB_spawn
+				energy = 17000
+				metal = 9000
+				rare_materials = 5000
+			}
+			and = {
+				date = 1941.7.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1941.11.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93741"
 	desc = "EVTDESC93741"
@@ -2739,33 +3541,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_7th_armoured_brigade_group_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +4400
-				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
-				load_oob = ENG/eng_7th_armoured_brigade_group.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_7th_armoured_brigade_group.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +8000
+                }
+                energy = -16000
+                metal = -8000
+                rare_materials = -4000
+                load_oob = ENG/eng_7th_armoured_brigade_group.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_7th_armoured_brigade_group.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2789,9 +3601,23 @@ country_event = {
 			}
 		}
 		# El Iskandira, Egypt
-		year = 1942
-		month = 1
-
+		or = {
+			and = {
+				date = 1942.1.1
+				has_country_flag = OOB_spawn
+				energy = 16950
+				metal = 9000
+				rare_materials = 5000
+			}
+			and = {
+				date = 1941.9.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.1.1
+				ai = yes
+			}
+		}
 		not = {
 			has_country_flag = ME_reserves
 		}
@@ -2802,33 +3628,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_8th_armoured_brigade_group_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +4400
-				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
-				load_oob = ENG/eng_8th_armoured_brigade_group.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_8th_armoured_brigade_group.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +8000
+                }
+                energy = -15950
+                metal = -8000
+                rare_materials = -4000
+                load_oob = ENG/eng_8th_armoured_brigade_group.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_8th_armoured_brigade_group.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2852,8 +3688,23 @@ country_event = {
 			}
 		}
 		# El Iskandira, Egypt
-		year = 1942
-		month = 2
+		or = {
+			and = {
+				date = 1942.2.1
+				has_country_flag = OOB_spawn
+				energy = 16950
+				metal = 9000
+				rare_materials = 5000
+			}
+			and = {
+				date = 1941.10.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.2.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93743"
 	desc = "EVTDESC93743"
@@ -2861,33 +3712,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_9th_armoured_brigade_group_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +4400
-				}
-				energy = -8800
-				metal = -4400
-				rare_materials = -2200
-				load_oob = ENG/eng_9th_armoured_brigade_group.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_9th_armoured_brigade_group.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +8000
+                }
+                energy = -15950
+                metal = -8000
+                rare_materials = -4000
+                load_oob = ENG/eng_9th_armoured_brigade_group.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_9th_armoured_brigade_group.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2911,8 +3772,23 @@ country_event = {
 			}
 		}
 		# El hammam, Egypt
-		year = 1942
-		month = 4
+		or = {
+			and = {
+				date = 1942.4.1
+				has_country_flag = OOB_spawn
+				energy = 14400
+				metal = 7700
+				rare_materials = 4350
+			}
+			and = {
+				date = 1941.12.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1942.4.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93744"
 	desc = "EVTDESC93744"
@@ -2920,33 +3796,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_23rd_armoured_brigade_group_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +3800
-				}
-				energy = -7600
-				metal = -3800
-				rare_materials = -1900
-				load_oob = ENG/eng_23rd_armoured_brigade_group.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_23rd_armoured_brigade_group.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +6700
+                }
+                energy = -13400
+                metal = -6700
+                rare_materials = -3350
+                load_oob = ENG/eng_23rd_armoured_brigade_group.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_23rd_armoured_brigade_group.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
@@ -2970,8 +3856,23 @@ country_event = {
 			}
 		}
 		# London
-		year = 1943
-		month = 1
+		or = {
+			and = {
+				date = 1943.1.1
+				has_country_flag = OOB_spawn
+				energy = 14400
+				metal = 7700
+				rare_materials = 4350
+			}
+			and = {
+				date = 1942.9.1
+				has_country_flag = OOB_production
+			}
+			and = {
+				date = 1943.1.1
+				ai = yes
+			}
+		}
 	}
 	title = "EVTNAME93745"
 	desc = "EVTDESC93745"
@@ -2979,33 +3880,43 @@ country_event = {
 	option = {
 		name = "EVTOPTA90137"
 		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-					has_country_flag = BlackICE
-				}
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_production
+                }
+                load_oob = ENG/eng_czechoslovak_armoured_brigade_group_build.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    has_country_flag = BlackICE
+                    has_country_flag = OOB_spawn
+                }
                 change_variable = {
-					which = IC_days_spent
-					value = +3800
-				}
-				energy = -7600
-				metal = -3800
-				rare_materials = -1900
-				load_oob = ENG/eng_czechoslovak_armoured_brigade_group.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = ENG
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = ENG/eng_czechoslovak_armoured_brigade_group.txt
-			}
-		}
+                    which = IC_days_spent
+                    value = +6700
+                }
+                energy = -13400
+                metal = -6700
+                rare_materials = -3350
+                load_oob = ENG/eng_czechoslovak_armoured_brigade_group.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = ENG
+                    not = {
+                        has_country_flag = BlackICE
+                    }
+                }
+                load_oob = ENG/eng_czechoslovak_armoured_brigade_group.txt
+            }
+        }
 		ai_chance = {
 			factor = 100
 		}
