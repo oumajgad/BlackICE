@@ -504,7 +504,7 @@ UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxD
 
 	UI.gSizer_GameInfo_ProvinceBuildings2:Add( UI.m_staticText_GameInfo_ProvinceBuildings2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_choice_GameInfo_ProvinceBuildings_SortChoices = { "Name", "Level" }
+	UI.m_choice_GameInfo_ProvinceBuildings_SortChoices = { "Level", "Name" }
 	UI.m_choice_GameInfo_ProvinceBuildings_Sort = wx.wxChoice( UI.m_panel_GameInfo_ProvinceBuildings, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.m_choice_GameInfo_ProvinceBuildings_SortChoices, 0 )
 	UI.m_choice_GameInfo_ProvinceBuildings_Sort:SetSelection( 0 )
 	UI.gSizer_GameInfo_ProvinceBuildings2:Add( UI.m_choice_GameInfo_ProvinceBuildings_Sort, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
