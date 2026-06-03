@@ -74,7 +74,7 @@ if wx ~= nil then
 	UI.m_button_GetPlayers = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Get players", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.bSizer2:Add( UI.m_button_GetPlayers, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however the automatic refreshing of values does only work for the host.\nNon-hosts have to manually refresh them using the \"Refresh values\" button.\nAll actions from the utility can also be found in the covert ops menu of your capital province, you can also disable the hosts access to your country there.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however the automatic refreshing of values only works for the host.\nNon-hosts have to manually refresh them using the \"Refresh values\" button.\nAll actions from the utility can also be found in the covert ops menu of your capital province, you can also disable the host's access to your country there.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText7:Wrap( 405 )
 
 	UI.m_staticText7:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
@@ -763,7 +763,7 @@ if wx ~= nil then
 	UI.m_panel_IC = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer3 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText35 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "On this page you can set the amount of IC you want to invest into event spawned units.\nFor each event spawned unit a counter of the total IcDays that unit would have cost gets counted up.\nDepending on how big your investment is, it gets counted down faster or slower. So you get to choose between a low but longer lasting effect, or short but higher effect.\nThe investment level can be changed anytime, and the reduction value gets scaled with your IC.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText35 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "On this page you can set the amount of IC you want to invest into event spawned units.\nFor each event spawned unit a counter of the total IC Days that unit would have cost gets counted up.\nDepending on how big your investment is, it gets counted down faster or slower. So you get to choose between a low but longer lasting effect, or a short but higher effect.\nThe investment level can be changed at any time, and the reduction value gets scaled with your IC.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText35:Wrap( 350 )
 
 	UI.bSizer3:Add( UI.m_staticText35, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -1819,7 +1819,7 @@ if wx ~= nil then
 	UI.m_buttonRemoveSprites = wx.wxButton( UI.m_panel_Special, wx.wxID_ANY, "Remove Sprites", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer5:Add( UI.m_buttonRemoveSprites, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticText19 = wx.wxStaticText( UI.m_panel_Special, wx.wxID_ANY, "In order to save about 300mb of RAM you can (and should) delete the 3d sprites of units.\nYou can only do this in the main menu right after starting the game!\n\nWhen pressing the button a LUA script will move all of the sprites we don't need into a backup folder.\nA windows command prompt will open and you will see some fast logs of the files being moved.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText19 = wx.wxStaticText( UI.m_panel_Special, wx.wxID_ANY, "In order to save about 300mb of RAM you can (and should) delete the 3D sprites of units.\nYou can only do this in the main menu right after starting the game!\n\nWhen pressing the button a LUA script will move all of the sprites we don't need into a backup folder.\nA windows command prompt will open and you will see some fast logs of the files being moved.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText19:Wrap( 200 )
 
 	UI.gSizer5:Add( UI.m_staticText19, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
