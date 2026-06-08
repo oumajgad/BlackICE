@@ -4515,10 +4515,33 @@ British_Liberty_Ships = {
 prosperous_convoy = {
 
 	trigger = {
-		strat_convoy_impact = 10
+		random_owned = {
+			limit = {
+				continent = north_america
+				has_building = naval_base
+			}
+		}
+		random_owned = {
+			limit = {
+				continent = europe
+				has_building = naval_base
+			}
+		}
+		random_owned = {
+			limit = {
+				continent = asia
+				has_building = naval_base
+			}
+		}
+		random_owned = {
+			limit = {
+				continent = africa
+				has_building = naval_base
+			}
+		}	
 	}
 
-	global_revolt_risk = -0.1
+	global_money = 0.25
 	global_supplies = 0.25
 	global_leadership = 0.15
 
@@ -4550,7 +4573,7 @@ veteran_navy = {
 	}
 
 	trigger = {
-		naval_battles_fought = 80
+		naval_battles_fought = 150
 	}
 
 	naval_organisation = 0.05
