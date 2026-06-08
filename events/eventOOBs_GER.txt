@@ -2799,36 +2799,55 @@ country_event = {
 # 97 light infantry division  redesignated the 97th Jäger Division in July 1942
 country_event = {
 	id = 50785
-	trigger = {
-		tag = GER
-		year = 1942
-		month = 4
-		war_with = SOV
-		controls = 1861
-		controls = 1694
-
-		not = {
-			has_country_flag = 97_Jaeger_Div
-		}
-		has_country_flag = foreign_wehrmacht_Wall
-		has_country_flag = foreign_wehrmacht_units_decision
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "97. Jäger Division"
 	desc = "EVTDESC50785"
 	picture = "97_Jaeger"
 	option = {
-		name = "OK"
-		load_oob = GER/zDD-GER_97_Jaeger_Div.txt
+		name = "Weidmannsheil!"
+		set_country_flag = 97_Jaeger_Div		
 		remove_brigade = "373. (Wallonische) Inf-. Bat"
-		manpower = -25
-		supplies = -1250
-		set_country_flag = 97_Jaeger_Div
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/zDD-GER_97_Jaeger_Div_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1950
+				}
+				energy = -4300
+				metal = -2650
+				rare_materials = -1825
+				load_oob = GER/zDD-GER_97_Jaeger_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-GER_97_Jaeger_Div.txt
+			}
+		}
 	}
 	option = {
-		name = "No Need"
+		name = "No Need" # NO
 		set_country_flag = 97_Jaeger_Div
 	}
 }
@@ -2866,6 +2885,384 @@ country_event = {
 	option = {
 		name = "No Need"
 		set_country_flag = Sturmbrigade_Wallonien
+	}
+}
+# 42. Jäger Division formation
+country_event = {
+	id = 50787
+	is_triggered_only = yes
+	title = "42. Jäger Division"
+	desc = "EVTDESC50787"
+	picture = "42_Jaeger"
+	option = {
+		name = "Weidmannsheil!"
+		set_country_flag = 42_Jaeger_Div		
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/GER_42_Jaeger_Div_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1950
+				}
+				energy = -4300
+				metal = -2650
+				rare_materials = -1825
+				load_oob = GER/GER_42_Jaeger_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_42_Jaeger_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need" # NO
+		set_country_flag = 42_Jaeger_Div
+	}
+}
+# 100 light infantry division  redesignated the 100th Jäger Division in July 1942
+country_event = {
+	id = 50788
+	is_triggered_only = yes
+	title = "100. Jäger Division"
+	desc = "EVTDESC50788"
+	picture = "100_Jaeger"
+	option = {
+		name = "Weidmannsheil!"
+		set_country_flag = 100_Jaeger_Div		
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/GER_100_Jaeger_Div_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1950
+				}
+				energy = -4300
+				metal = -2650
+				rare_materials = -1825
+				load_oob = GER/GER_100_Jaeger_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_100_Jaeger_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need" # NO
+		set_country_flag = 100_Jaeger_Div
+	}
+}
+# 101 light infantry division  redesignated the 101st Jäger Division in July 1942
+country_event = {
+	id = 50789
+	is_triggered_only = yes
+	title = "101. Jäger Division"
+	desc = "EVTDESC50789"
+	picture = "101_Jaeger"
+	option = {
+		name = "Weidmannsheil!"
+		set_country_flag = 101_Jaeger_Div		
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/GER_101_Jaeger_Div_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1950
+				}
+				energy = -4300
+				metal = -2650
+				rare_materials = -1825
+				load_oob = GER/GER_101_Jaeger_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_101_Jaeger_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need" # NO
+		set_country_flag = 101_Jaeger_Div
+	}
+}
+# 104th Jäger Division formation in april 1943
+country_event = {
+	id = 50804
+	is_triggered_only = yes
+	title = "104. Jäger Division"
+	desc = "EVTDESC50804"
+	picture = "104_Jaeger"
+	option = {
+		name = "Weidmannsheil!"
+		set_country_flag = 104_Jaeger_Div		
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/GER_104_Jaeger_Div_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1950
+				}
+				energy = -4300
+				metal = -2650
+				rare_materials = -1825
+				load_oob = GER/GER_104_Jaeger_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_104_Jaeger_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need" # NO
+		set_country_flag = 104_Jaeger_Div
+	}
+}
+# 114th Jäger Division formation in april 1943
+country_event = {
+	id = 50805
+	is_triggered_only = yes
+	title = "114. Jäger Division"
+	desc = "EVTDESC50805"
+	picture = "114_Jaeger"
+	option = {
+		name = "Weidmannsheil!"
+		set_country_flag = 114_Jaeger_Div		
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/GER_114_Jaeger_Div_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1950
+				}
+				energy = -4300
+				metal = -2650
+				rare_materials = -1825
+				load_oob = GER/GER_114_Jaeger_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_114_Jaeger_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need" # NO
+		set_country_flag = 114_Jaeger_Div
+	}
+}
+# 117th Jäger Division formation in april 1943
+country_event = {
+	id = 50806
+	is_triggered_only = yes
+	title = "117. Jäger Division"
+	desc = "EVTDESC50806"
+	picture = "117_Jaeger"
+	option = {
+		name = "Weidmannsheil!"
+		set_country_flag = 117_Jaeger_Div		
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/GER_117_Jaeger_Div_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1950
+				}
+				energy = -4300
+				metal = -2650
+				rare_materials = -1825
+				load_oob = GER/GER_117_Jaeger_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_117_Jaeger_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need" # NO
+		set_country_flag = 117_Jaeger_Div
+	}
+}
+# 118th Jäger Division formation in april 1943
+country_event = {
+	id = 50807
+	is_triggered_only = yes
+	title = "118. Jäger Division"
+	desc = "EVTDESC50807"
+	picture = "118_Jaeger"
+	option = {
+		name = "Weidmannsheil!"
+		set_country_flag = 118_Jaeger_Div		
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/GER_118_Jaeger_Div_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1950
+				}
+				energy = -4300
+				metal = -2650
+				rare_materials = -1825
+				load_oob = GER/GER_118_Jaeger_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_118_Jaeger_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need" # NO
+		set_country_flag = 118_Jaeger_Div
 	}
 }
 # Polnische Wehrmacht
