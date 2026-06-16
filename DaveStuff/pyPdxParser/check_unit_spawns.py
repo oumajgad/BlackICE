@@ -138,7 +138,7 @@ class EventReport:
         unchecked: list[int] = None,
     ):
         self.tag: str = tag
-        self.event_id: int = event_id
+        self.event_id: int = int(event_id)
         self.event_title: str = event_title
         self.oob_event: Node = oob_event
         self.fired_by_type: str = fired_by_type
@@ -162,6 +162,8 @@ if __name__ == "__main__":
     event_nodes = get_events()
     oob_events = filter_for_oob_load(event_nodes)
     candidates = []
+    violators: dict[str, list[dict]] = {}
+    blacklist = load_blacklist()
     time.sleep(0.1)
     for oob_event in tqdm(
         oob_events,
@@ -219,10 +221,13 @@ if __name__ == "__main__":
                 )
             )
     print(len(candidates))
-    violators: dict[str, list[dict]] = {}
-    blacklist = load_blacklist()
-    for candidate in candidates:
+    for candidate in tqdm(
+        candidates,
+        desc=f"'Checking candidates'",
+        unit=" it",
+    ):
         if candidate.event_id in blacklist:
+            blacklist.remove(candidate.event_id)
             continue
         oob_locations = get_oob_locations_from_event(candidate.oob_event)
         checked = get_checked_province_ids_from_node(candidate.fired_by)
@@ -242,3 +247,6 @@ if __name__ == "__main__":
     print(f"total: {total}")
     with open("check_unit_spawns_result.json", "w") as f:
         f.write(json.dumps(violators, indent=2))
+    if len(blacklist) > 0:
+        print(f"Blacklist has events which no longer exists or loads OOB")
+        print(blacklist)
