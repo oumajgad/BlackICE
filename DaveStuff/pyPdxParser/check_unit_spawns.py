@@ -43,6 +43,12 @@ def get_decisions() -> list[Node]:
             unit=" it",
         ):
             x = parse_file(Path(root).joinpath(Path(file)))
+            if isinstance(x.get("diplomatic_decisions", {}), list):
+                merged = {}
+                for d in x.get("diplomatic_decisions"):
+                    for k, v in d.items():
+                        merged[k] = v
+                x["diplomatic_decisions"] = merged
             file_node = Node.from_parsed(x.get("diplomatic_decisions"))
             for child in file_node.children:
                 child.parent = None
