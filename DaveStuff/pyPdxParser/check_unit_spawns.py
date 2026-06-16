@@ -70,22 +70,26 @@ def filter_for_oob_load(events: list[Node]) -> list[Node]:
     return res
 
 
-def find_decision_for_event_id(event_id: int, decisions: list[Node]) -> Optional[Node]:
+def find_decisions_for_event_id(event_id: int, decisions: list[Node]) -> list[Node]:
+    res = []
     for decision in decisions:
         fired_event_nodes = decision.find_by_key("country_event")
         if len(fired_event_nodes) > 0:
             for fired_event_node in fired_event_nodes:
                 if str(fired_event_node.scalar_value) == str(event_id):
-                    return decision
+                    res.append(decision)
+    return res
 
 
-def find_event_for_event_id(event_id: int, events: list[Node]) -> Optional[Node]:
+def find_events_for_event_id(event_id: int, events: list[Node]) -> list[Node]:
+    res = []
     for event in events:
         fired_event_nodes = event.find_by_key("country_event")
         if len(fired_event_nodes) > 0:
             for fired_event_node in fired_event_nodes:
                 if str(fired_event_node.scalar_value) == str(event_id):
-                    return event
+                    res.append(event)
+    return res
 
 
 def get_oob_locations_from_event(event: Node) -> set[int]:
@@ -183,35 +187,41 @@ if __name__ == "__main__":
         load_oob_nodes = oob_event.find_by_key("load_oob")
         country = determine_country(load_oob_nodes)
         if oob_event.find_by_key_single("is_triggered_only"):
-            decision = find_decision_for_event_id(oob_event_id, decision_nodes)
-            if decision:
-                candidates.append(
-                    EventReport(
-                        tag=country,
-                        event_id=oob_event_id,
-                        event_title=oob_event_title,
-                        oob_event=oob_event,
-                        fired_by_type="decision",
-                        fired_by=decision,
-                        fired_by_key=decision.key,
+            decisions = find_decisions_for_event_id(oob_event_id, decision_nodes)
+            if len(decisions) > 1:
+                print(oob_event_id)
+            if decisions:
+                for decision in decisions:
+                    candidates.append(
+                        EventReport(
+                            tag=country,
+                            event_id=oob_event_id,
+                            event_title=oob_event_title,
+                            oob_event=oob_event,
+                            fired_by_type="decision",
+                            fired_by=decision,
+                            fired_by_key=decision.key,
+                        )
                     )
-                )
                 continue
-            event = find_event_for_event_id(oob_event_id, event_nodes)
-            if event:
-                candidates.append(
-                    EventReport(
-                        tag=country,
-                        event_id=oob_event_id,
-                        event_title=oob_event_title,
-                        oob_event=oob_event,
-                        fired_by_type="event",
-                        fired_by=event,
-                        fired_by_key=event.find_by_key_single("id").scalar_value,
+            events = find_events_for_event_id(oob_event_id, event_nodes)
+            if events:
+                if len(events) > 1:
+                    print(oob_event_id)
+                for event in events:
+                    candidates.append(
+                        EventReport(
+                            tag=country,
+                            event_id=oob_event_id,
+                            event_title=oob_event_title,
+                            oob_event=oob_event,
+                            fired_by_type="event",
+                            fired_by=event,
+                            fired_by_key=event.find_by_key_single("id").scalar_value,
+                        )
                     )
-                )
                 continue
-            if not decision and not event:
+            if not decisions and not events:
                 # print(f"None found for {event_id}")
                 continue
         else:
@@ -226,7 +236,6 @@ if __name__ == "__main__":
                     fired_by_key=oob_event_id,
                 )
             )
-    print(len(candidates))
     for candidate in tqdm(
         candidates,
         desc=f"'Checking candidates'",
