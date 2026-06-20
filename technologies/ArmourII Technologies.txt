@@ -4374,3 +4374,217 @@ turreted_vehicles = {
 	start_year = 1936
 	folder = armourII_folder
 }
+
+main_battle_tank_technical_concept = {
+
+	allow = {
+		#armor_integration = 4
+		armor_brigade_design = 8
+		heavy_armor_brigade_design = 4
+		or = {
+			and = {
+				has_country_flag = tiger_tech_active
+				or = {
+					and = {
+						year = 1943
+						not = {
+							tiger_tech = 1
+						}
+					}
+					and = {
+						year = 1944
+						tiger_tech = 1
+						not = {
+							tiger_tech = 2
+						}
+					}
+					and = {
+						year = 1945
+						tiger_tech = 2
+					}
+				}
+			}
+			and = {
+				has_country_flag = T_34_tech_active
+				or = {
+					and = {
+						year = 1944
+						T_34_tech = 1
+					}
+					and = {
+						year = 1945
+						not = {
+							T_34_tech = 1
+						}
+					}
+				}
+			}
+			and = {
+				has_country_flag = sherman_tech
+				or = {
+					and = {
+						year = 1946
+						sherman_tech = 1
+					}
+					and = {
+						year = 1944
+						not = {
+							sherman_tech = 1
+						}
+					}
+				}
+			}
+			and = {
+				tag = ENG
+				year = 1943
+			}
+			and = {
+				not = {
+					tag = ENG
+					tag = SOV
+					tag = GER
+				}
+				year = 1944
+			}
+		}
+	}
+
+	research_bonus_from = {
+		automotive_theory = 0.2
+		armour_practical = 0.2
+	}
+
+	on_completion = automotive_theory
+
+	difficulty = 14
+
+	# common for all techs.
+	start_year = 1944
+	first_offset = 1945
+	additional_offset = 1	# one new every year
+	max_level = 2
+	folder = armourII_folder
+}
+
+main_battle_tank_doctrinal_concept = {
+
+	allow = {
+		armor_integration = 5
+		land_battles_fought = 3000
+	}
+
+	research_bonus_from = {
+		spearhead_theory = 0.1
+		mobile_theory = 0.3
+	}
+
+	on_completion = automotive_theory
+
+	difficulty = 14
+
+	# common for all techs.
+	start_year = 1944
+	max_level = 1
+	folder = armourII_folder
+}
+main_battle_tank_prototype = {
+
+	allow = {
+		main_battle_tank_technical_concept = 2
+		main_battle_tank_doctrinal_concept = 1
+		year = 1945
+		armor_integration = 5
+		armor_brigade_design = 9
+		heavy_armor_brigade_design = 5
+	}
+
+	research_bonus_from = {
+		spearhead_theory = 0.15
+		mobile_theory = 0.15
+		automotive_theory = 0.15
+	}
+
+	on_completion = automotive_theory
+
+	difficulty = 14
+
+	# common for all techs.
+	start_year = 1945
+	first_offset = 1946
+	additional_offset = 1	# one new every year
+	max_level = 2
+	folder = armourII_folder
+}
+main_battle_tank = {
+
+	allow = {
+		main_battle_tank_prototype = 2
+	}
+
+	armor_brigade = {
+		soft_attack = 10
+		hard_attack = 10
+		ap_attack = 10.0
+		armor_value = 12.5
+		softness = -0.25
+		defensiveness = 20
+		toughness = 20
+	}
+	armor_bat = {
+		soft_attack = 10
+		hard_attack = 10
+		ap_attack = 10.0
+		armor_value = 12.5
+		softness = -0.25
+		defensiveness = 12.5
+		toughness = 12.5
+	}
+	ss_armor_brigade = {
+		soft_attack = 10
+		hard_attack = 10
+		ap_attack = 10.0
+		armor_value = 12.5
+		softness = -0.25
+		defensiveness = 20
+		toughness = 20
+	}
+	ss_armor_bat = {
+		soft_attack = 10
+		hard_attack = 10
+		ap_attack = 10.0
+		armor_value = 12.5
+		softness = -0.25
+		defensiveness = 12.5
+		toughness = 12.5
+	}
+	guard_armor_brigade = {
+		soft_attack = 10
+		hard_attack = 10
+		ap_attack = 10.0
+		armor_value = 12.5
+		softness = -0.25
+		defensiveness = 20
+		toughness = 20
+	}
+	guard_armor_bat = {
+		soft_attack = 10
+		hard_attack = 10
+		ap_attack = 10.0
+		armor_value = 12.5
+		softness = -0.25
+		defensiveness = 12.5
+		toughness = 12.5
+	}
+
+	research_bonus_from = {
+		armour_practical = 0.3
+	}
+
+	on_completion = automotive_theory
+
+	difficulty = 14
+
+	# common for all techs.
+	start_year = 1947
+	folder = armourII_folder
+}
