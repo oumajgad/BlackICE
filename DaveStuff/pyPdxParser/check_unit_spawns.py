@@ -159,7 +159,7 @@ class EventReport:
     def dict(self) -> dict:
         return {
             "tag": self.tag,
-            "event_id": self.event_id,
+            "event_id": str(self.event_id),
             "event_title": self.event_title,
             "fired_by_type": self.fired_by_type,
             "fired_by_key": self.fired_by_key,
@@ -188,8 +188,6 @@ if __name__ == "__main__":
         country = determine_country(load_oob_nodes)
         if oob_event.find_by_key_single("is_triggered_only"):
             decisions = find_decisions_for_event_id(oob_event_id, decision_nodes)
-            if len(decisions) > 1:
-                print(oob_event_id)
             if decisions:
                 for decision in decisions:
                     candidates.append(
@@ -206,8 +204,6 @@ if __name__ == "__main__":
                 continue
             events = find_events_for_event_id(oob_event_id, event_nodes)
             if events:
-                if len(events) > 1:
-                    print(oob_event_id)
                 for event in events:
                     candidates.append(
                         EventReport(
