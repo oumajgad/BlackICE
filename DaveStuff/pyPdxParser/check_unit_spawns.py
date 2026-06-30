@@ -43,6 +43,12 @@ def get_decisions() -> list[Node]:
             unit=" it",
         ):
             x = parse_file(Path(root).joinpath(Path(file)))
+            if isinstance(x.get("diplomatic_decisions", {}), list):
+                merged = {}
+                for d in x.get("diplomatic_decisions"):
+                    for k, v in d.items():
+                        merged[k] = v
+                x["diplomatic_decisions"] = merged
             file_node = Node.from_parsed(x.get("diplomatic_decisions"))
             for child in file_node.children:
                 child.parent = None
@@ -64,22 +70,26 @@ def filter_for_oob_load(events: list[Node]) -> list[Node]:
     return res
 
 
-def find_decision_for_event_id(event_id: int, decisions: list[Node]) -> Optional[Node]:
+def find_decisions_for_event_id(event_id: int, decisions: list[Node]) -> list[Node]:
+    res = []
     for decision in decisions:
         fired_event_nodes = decision.find_by_key("country_event")
         if len(fired_event_nodes) > 0:
             for fired_event_node in fired_event_nodes:
                 if str(fired_event_node.scalar_value) == str(event_id):
-                    return decision
+                    res.append(decision)
+    return res
 
 
-def find_event_for_event_id(event_id: int, events: list[Node]) -> Optional[Node]:
+def find_events_for_event_id(event_id: int, events: list[Node]) -> list[Node]:
+    res = []
     for event in events:
         fired_event_nodes = event.find_by_key("country_event")
         if len(fired_event_nodes) > 0:
             for fired_event_node in fired_event_nodes:
                 if str(fired_event_node.scalar_value) == str(event_id):
-                    return event
+                    res.append(event)
+    return res
 
 
 def get_oob_locations_from_event(event: Node) -> set[int]:
@@ -138,7 +148,7 @@ class EventReport:
         unchecked: list[int] = None,
     ):
         self.tag: str = tag
-        self.event_id: int = event_id
+        self.event_id: int = int(event_id)
         self.event_title: str = event_title
         self.oob_event: Node = oob_event
         self.fired_by_type: str = fired_by_type
@@ -149,7 +159,7 @@ class EventReport:
     def dict(self) -> dict:
         return {
             "tag": self.tag,
-            "event_id": self.event_id,
+            "event_id": str(self.event_id),
             "event_title": self.event_title,
             "fired_by_type": self.fired_by_type,
             "fired_by_key": self.fired_by_key,
@@ -162,6 +172,8 @@ if __name__ == "__main__":
     event_nodes = get_events()
     oob_events = filter_for_oob_load(event_nodes)
     candidates = []
+    violators: dict[str, list[dict]] = {}
+    blacklist = load_blacklist()
     time.sleep(0.1)
     for oob_event in tqdm(
         oob_events,
@@ -175,35 +187,37 @@ if __name__ == "__main__":
         load_oob_nodes = oob_event.find_by_key("load_oob")
         country = determine_country(load_oob_nodes)
         if oob_event.find_by_key_single("is_triggered_only"):
-            decision = find_decision_for_event_id(oob_event_id, decision_nodes)
-            if decision:
-                candidates.append(
-                    EventReport(
-                        tag=country,
-                        event_id=oob_event_id,
-                        event_title=oob_event_title,
-                        oob_event=oob_event,
-                        fired_by_type="decision",
-                        fired_by=decision,
-                        fired_by_key=decision.key,
+            decisions = find_decisions_for_event_id(oob_event_id, decision_nodes)
+            if decisions:
+                for decision in decisions:
+                    candidates.append(
+                        EventReport(
+                            tag=country,
+                            event_id=oob_event_id,
+                            event_title=oob_event_title,
+                            oob_event=oob_event,
+                            fired_by_type="decision",
+                            fired_by=decision,
+                            fired_by_key=decision.key,
+                        )
                     )
-                )
                 continue
-            event = find_event_for_event_id(oob_event_id, event_nodes)
-            if event:
-                candidates.append(
-                    EventReport(
-                        tag=country,
-                        event_id=oob_event_id,
-                        event_title=oob_event_title,
-                        oob_event=oob_event,
-                        fired_by_type="event",
-                        fired_by=event,
-                        fired_by_key=event.find_by_key_single("id").scalar_value,
+            events = find_events_for_event_id(oob_event_id, event_nodes)
+            if events:
+                for event in events:
+                    candidates.append(
+                        EventReport(
+                            tag=country,
+                            event_id=oob_event_id,
+                            event_title=oob_event_title,
+                            oob_event=oob_event,
+                            fired_by_type="event",
+                            fired_by=event,
+                            fired_by_key=event.find_by_key_single("id").scalar_value,
+                        )
                     )
-                )
                 continue
-            if not decision and not event:
+            if not decisions and not events:
                 # print(f"None found for {event_id}")
                 continue
         else:
@@ -218,11 +232,13 @@ if __name__ == "__main__":
                     fired_by_key=oob_event_id,
                 )
             )
-    print(len(candidates))
-    violators: dict[str, list[dict]] = {}
-    blacklist = load_blacklist()
-    for candidate in candidates:
+    for candidate in tqdm(
+        candidates,
+        desc=f"'Checking candidates'",
+        unit=" it",
+    ):
         if candidate.event_id in blacklist:
+            blacklist.remove(candidate.event_id)
             continue
         oob_locations = get_oob_locations_from_event(candidate.oob_event)
         checked = get_checked_province_ids_from_node(candidate.fired_by)
@@ -242,3 +258,6 @@ if __name__ == "__main__":
     print(f"total: {total}")
     with open("check_unit_spawns_result.json", "w") as f:
         f.write(json.dumps(violators, indent=2))
+    if len(blacklist) > 0:
+        print(f"Blacklist has events which no longer exists or loads OOB")
+        print(blacklist)

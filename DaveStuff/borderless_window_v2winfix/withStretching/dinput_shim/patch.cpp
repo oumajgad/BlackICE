@@ -148,39 +148,23 @@ const DWORD NEW_STYLE = WS_POPUP;
 
 map<wstring, vector<replacement>> replacements{
 	{ L"v2game.exe", {
-		{ Always, 0x677950, replacement::Jmp, modifiedGetCursorPos, PREV_GETMOUSEPOS },
+		{ Always, 0x67A970, replacement::Jmp, modifiedGetCursorPos, PREV_GETMOUSEPOS },
 		// window styles:
 		// + 1 as 1 byte ins, 4 byte operand
-		{ Borderless, 0x005DD419 + 1, WS_POPUP, WS_OVERLAPPEDWINDOW },  // add, AdjustWindowRect -- necessary??
-		{ Borderless, 0x005DD248 + 1, WS_POPUP, WS_OVERLAPPEDWINDOW }, // push, AdjustWindowRect
-		{ Borderless, 0x00592195 + 1, WS_POPUP, WS_OVERLAPPEDWINDOW }, // push, AdjustWindowRect -- necessary??
+		{ Borderless, 0x005DFB31 + 1, WS_POPUP, WS_OVERLAPPEDWINDOW },  // add, AdjustWindowRect -- necessary??
+		{ Borderless, 0x005DFD94 + 1, WS_POPUP, WS_OVERLAPPEDWINDOW }, // push, AdjustWindowRect
+		// { Borderless, 0x00592195 + 1, WS_POPUP, WS_OVERLAPPEDWINDOW }, // push, AdjustWindowRect -- necessary??
 		//{ 0x005B5BFC+1, WS_POPUP, WS_OVERLAPPEDWINDOW }, // push, CreateWindowEx
-		{ Borderless, 0x005DD297 + 1, WS_POPUP, WS_OVERLAPPEDWINDOW }, // push, CreateWindowEx
+		{ Borderless, 0x005DFB80 + 1, WS_POPUP, WS_OVERLAPPEDWINDOW }, // push, CreateWindowEx
 
 		// dealing with the 30 px offset:
 
 		// nop out
-		{ Borderless, 0x005DD22C, vector<byte>{ 0x90, 0x90, 0x90 }, vector<byte>{ 0x83, 0xC1, 0x1E } }, // add ecx, 0x1e
-		{ Borderless, 0x005DD230, vector<byte>{ 0x90, 0x90, 0x90 }, vector<byte>{ 0x83, 0xC2, 0x1E } }, // add edx, 0x1e
+		{ Borderless, 0x005DFB19, vector<byte>{ 0x90, 0x90, 0x90 }, vector<byte>{ 0x83, 0xC1, 0x1E } }, // add ecx, 0x1e
+		{ Borderless, 0x005DFB1d, vector<byte>{ 0x90, 0x90, 0x90 }, vector<byte>{ 0x83, 0xC2, 0x1E } }, // add edx, 0x1e
 
 		// change from push 0x1E to push 0x00 (twice):
-		{ Borderless, 0x005DD234, vector<byte>{ 0x6a, 0x00, 0x6a, 0x00 }, vector<byte>{ 0x6a, 0x1E, 0x6a, 0x1E } },
-	} },
-
-	// hoi3 3.05
-	{ L"hoi3game.exe", {
-		{ Always, 0x684320, replacement::Jmp, modifiedGetCursorPos, PREV_GETMOUSEPOS },
-
-		// window styles (see above)
-		{ Borderless, 0x005D3F91 + 1, WS_POPUP, WS_OVERLAPPEDWINDOW },
-		{ Borderless, 0x005E74A5 + 2, WS_POPUP, WS_OVERLAPPEDWINDOW },
-		{ Borderless, 0x005E806E + 1, WS_POPUP, WS_OVERLAPPEDWINDOW },
-		{ Borderless, 0x005E80A3 + 1, WS_POPUP, WS_OVERLAPPEDWINDOW },
-		// 005EE235
-
-		{ Borderless, 0x005E8056, vector<byte>{ 0x90, 0x90, 0x90 }, vector<byte>{ 0x83, 0xC3, 0x1E } }, // add ebx, 0x1e
-		{ Borderless, 0x005E805A, vector<byte>{ 0x90, 0x90, 0x90 }, vector<byte>{ 0x83, 0xC0, 0x1E } }, // add eax, 0x1e
-		{ Borderless, 0x005E805E, vector<byte>{ 0x6a, 0x00, 0x6a, 0x00 }, vector<byte>{ 0x6a, 0x1E, 0x6a, 0x1E } } // double push 1e to 00
+		{ Borderless, 0x005DFB21, vector<byte>{ 0x6a, 0x00, 0x6a, 0x00 }, vector<byte>{ 0x6a, 0x1E, 0x6a, 0x1E } },
 	} },
 
 	// Hoi3 4 (tfh)

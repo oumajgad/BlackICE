@@ -40,7 +40,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -56,7 +55,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -91,7 +89,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -107,7 +104,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -127,7 +123,6 @@ country_event = {
 		tag = USA
 		ai = yes
 		year = 1938
-
 		not = {
 			exists = CZE
 		}
@@ -146,7 +141,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -162,7 +156,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -178,7 +171,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -194,7 +186,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -232,7 +223,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -248,7 +238,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -264,7 +253,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -280,7 +268,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -296,7 +283,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -312,7 +298,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -347,7 +332,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -363,7 +347,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -379,7 +362,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -395,7 +377,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -411,7 +392,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -427,7 +407,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -462,7 +441,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -478,7 +456,6 @@ country_event = {
 				is_core = USA
 				controlled_by = USA
 				owned_by = USA
-
 				not = {
 					has_building = industry
 					has_building = heavy_industry
@@ -531,19 +508,20 @@ country_event = {
 		days = 3
 		modifier = {
 			factor = 999999
-
 			not = {
 				war_with = JAP
 			}
 		}
 	}
-	title = "War With Japan"
-	desc = "We are at war with Japan. Open the recruiting stations!"
+	title = "Recruitment Surge"
+	desc = "EVTDESC90001"
 	picture = "SignUp"
 	option = {
 		name = "Sign up, boys!"
-		officer_pool = 5000
-		manpower = 250
+		add_country_modifier = {
+			name = "us_volunteer_surge"
+			duration = 75
+		}
 		ai_chance = {
 			factor = 100
 		}
@@ -559,7 +537,6 @@ country_event = {
 		days = 3
 		modifier = {
 			factor = 999999
-
 			not = {
 				war_with = GER
 			}
@@ -583,7 +560,6 @@ country_event = {
 		tag = USA
 		year = 1942
 		month = 2
-
 		not = {
 			has_country_flag = its_war
 			has_country_flag = hun_threat
@@ -857,34 +833,24 @@ country_event = {
 #			not = { year = 1945 }
 #			not = { year = 1946 }
 #			not = { has_country_flag = leave_war }
-#
 #		}
-#
-#
-#
 #		title = "No war"
 #		desc = "leave"
 #		picture = "blank"
-#
 #		option = {
 #			name = "No war"
 #			set_country_flag = leave_war
 #			leave_faction = allies
-#
 #			ai_chance = { factor = 100 }
 #		}
-#
-#
-#
 #	}
-#
+
 # FAULTY Mk 14 TORPEDOS
 country_event = {
 	id = 91824
 	trigger = {
 		tag = USA
 		war_with = JAP
-
 		not = {
 			has_country_flag = faulty_mk_14
 		}
@@ -912,7 +878,6 @@ country_event = {
 		year = 1943
 		month = 3
 		has_country_flag = faulty_mk_14
-
 		not = {
 			has_country_flag = fixed_mk_14
 		}
@@ -933,8 +898,6 @@ country_event = {
 	}
 }
 # The Malmedy Massacre
-#
-# -Marneman
 country_event = {
 	id = 44431
 	fire_only_once = yes
@@ -959,8 +922,6 @@ country_event = {
 	}
 }
 # The Red Ball Express
-#
-# -Marneman
 country_event = {
 	id = 49249
 	trigger = {
@@ -1036,8 +997,6 @@ country_event = {
 	}
 }
 # Audie Murphy's CMOH in the Colmar Pocket, near Holtzwihr
-#
-# -Marneman
 country_event = {
 	id = 999888
 	trigger = {
@@ -1047,7 +1006,6 @@ country_event = {
 			controls = 3083
 		}
 		# Colmar pocket, Battle of the Bulge
-
 		not = {
 			has_country_flag = audie_murphy
 		}
@@ -1063,13 +1021,10 @@ country_event = {
 	}
 }
 # Capturing Hitler's Eagle's Nest
-#
-# -Marneman
 country_event = {
 	id = 999889
 	trigger = {
 		tag = USA
-
 		not = {
 			has_country_flag = eagles_nest
 		}
@@ -1093,8 +1048,6 @@ country_event = {
 	}
 }
 # Monte Cassino Victory
-#
-# -Marneman
 country_event = {
 	id = 999892
 	fire_only_once = yes
@@ -1111,7 +1064,6 @@ country_event = {
 		days = 1
 		modifier = {
 			factor = 999999
-
 			not = {
 				4660 = {
 					controller = {
@@ -1149,7 +1101,6 @@ country_event = {
 		days = 1
 		modifier = {
 			factor = 999999
-
 			not = {
 				4603 = {
 					controller = {
@@ -1167,14 +1118,11 @@ country_event = {
 	}
 }
 # The Tuskegee Airmen
-# http://en.wikipedia.org/wiki/Tuskegee_Airmen
-# -Marneman
 country_event = {
 	id = 11120
 	fire_only_once = yes
 	trigger = {
 		tag = USA
-
 		not = {
 			has_country_flag = tuskegee_airmen
 		}
@@ -1189,7 +1137,6 @@ country_event = {
 		USA = {
 			faction = allies
 		}
-		# USA has to be in allies, or they end up with troops in foreign territory - doh!
 	}
 	title = "EVTNAMEMARNE0012"
 	desc = "EVTDESCMARNE0012"
@@ -1218,16 +1165,31 @@ country_event = {
 	trigger = {
 		tag = USA
 		war = yes
+		controls = 4273
+		controls = 3943
+		controls = 4899
+		controls = 7430
+		controls = 7422
+		controls = 4333
+		controls = 7245
+		controls = 7197
+		controls = 8993
+		controls = 7104
+		controls = 3797
+		controls = 8834
+		controls = 7386
+		controls = 7281
+		controls = 9329
+		controls = 9121
+		controls = 3533
 		USA = {
 			any_owned_province = {
-
 				not = {
 					controlled_by = USA
 				}
 			}
 		}
 		ai = yes
-
 		not = {
 			has_country_flag = USA_home_guard
 		}
@@ -1254,60 +1216,7 @@ country_event = {
 		load_oob = USA/USA_home_guard.txt
 	}
 }
-# # When war breaks out, the USA AI should upgrade its CAV units to something more appropriate
-# #
-# # TODO - we need to revisit this, since the unit names have changed in the latest OOB
-# #
-# # -Marneman
-# country_event = {
-# id = 48500
-# fire_only_once = yes
-# trigger = {
-# tag = USA
-# ai = yes
-# war = yes
-# }
-# title = "Cavalry Modernization"
-# desc = ""
-# picture = ""
-# option = {
-# name = "Ok"
-# ai_chance = { factor = 100 }
-# # Remove all old CAV brigades
-# remove_brigade = "51st Cavalry Brigade"
-# remove_brigade = "52nd Cavalry Brigade"
-# remove_brigade = "151st Cavalry Brigade"
-# remove_brigade = "152nd Cavalry Brigade"
-# remove_brigade = "153rd Cavalry Brigade"
-# remove_brigade = "154th Cavalry Brigade"
-# remove_brigade = "155th Cavalry Brigade"
-# remove_brigade = "156th Cavalry Brigade"
-# remove_brigade = "55th Cavalry Brigade"
-# remove_brigade = "56th Cavalry Brigade"
-# remove_brigade = "157th Cavalry Brigade"
-# remove_brigade = "158th Cavalry Brigade"
-# remove_brigade = "159th Cavalry Brigade"
-# remove_brigade = "160th Cavalry Brigade"
-# remove_brigade = "2nd Cavalry Brigade"
-# remove_brigade = "5th Cavalry Brigade"
-# remove_brigade = "6th Cavalry Brigade"
-# remove_brigade = "53rd Cavalry Brigade"
-# remove_brigade = "54th Cavalry Brigade"
-# remove_brigade = "3rd Cavalry Brigade"
-# remove_brigade = "4th Cavalry Brigade"
-# remove_brigade = "161st Cavalry Brigade"
-# USA = { remove_brigade = "162nd Cavalry Brigade" }
-# remove_brigade = "1st Cavalry Brigade"
-# remove_brigade = "57th Cavalry Brigade"
-# remove_brigade = "58th Cavalry Brigade"
-# # MP boost to cover the MP needed for reinforcement off of mobilization
-# manpower = 250
-# # Oh, and this shit ain't free either
-# supplies = -5000
-# # Replace with more modern LARM + AC brigades
-# USA = { load_oob = "USA/USA_cavalry_modernization.txt" }
-# }
-# }
+
 # FDR Historical Death on April 12, 1945
 country_event = {
 	id = 48501
@@ -1407,7 +1316,7 @@ country_event = {
 		}
 	}
 }
-# Battle of Brisbane - Marneman
+# Battle of Brisbane
 country_event = {
 	id = 13005
 	fire_only_once = yes
@@ -1425,7 +1334,7 @@ country_event = {
 		name = "Boys will be boys!"
 	}
 }
-# The Four Chaplains - Marneman
+# The Four Chaplains
 country_event = {
 	id = 13009
 	fire_only_once = yes
@@ -1861,6 +1770,8 @@ country_event = {
 		date = 1942.7.1
 		has_country_flag = owi_created
 		war_with = GER
+		controls = 1731
+		controls = 5825
 		supplies = 500
 		money = 500
 	}
@@ -1924,5 +1835,569 @@ country_event = {
 	option = {
 		name = "Damn."
 		remove_country_modifier = usa_voice_of_america_pacific
+	}
+}
+
+# Marneman's Auxiliary Service Events for the USA
+# Civil Air Patrol (CAP)
+country_event = {
+	id = 999620
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1941.12.8
+		supplies = 1000
+		money = 1000
+		controls = 4900
+		controls = 8645
+		controls = 7465
+		controls = 8939
+		controls = 3533
+		controls = 3793
+		controls = 8854
+		controls = 4694
+		controls = 7032
+		controls = 6774
+	}
+	title = "EVTNAMEMARNE0620"
+	desc = "EVTDESCMARNE0620"
+	picture = "civil-air-patrol"
+	option = {
+		name = "EVTOPTAMARNE0620"
+		load_oob = USA/MarneMod_USA_Civil_Air_Patrol.txt
+		supplies = -1000
+		money = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTBMARNE0620"
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Coast Guard Auxiliary
+country_event = {
+	id = 999621
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1941.2.19
+		supplies = 1000
+		money = 1000
+		controls = 3658
+		controls = 4900
+	}
+	title = "EVTNAMEMARNE0621"
+	desc = "EVTDESCMARNE0621"
+	picture = "coast-guard-auxiliary"
+	option = {
+		name = "EVTOPTAMARNE0621"
+		load_oob = USA/MarneMod_USA_Coast_Guard_Auxiliary.txt
+		supplies = -1000
+		money = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTBMARNE0621"
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Merchant Marine Act of 1936
+country_event = {
+	id = 999622
+	fire_only_once = yes
+	trigger = {
+		date = 1936.06.29
+		tag = USA
+	}
+	title = "EVTNAMEMARNE0622"
+	desc = "EVTDESCMARNE0622"
+	picture = "merchant-marine"
+	option = {
+		name = "EVTOPTAMARNE0622"
+		set_country_flag = merchant_marine_act_passed
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTBMARNE0622"
+	}
+}
+# Activate the U.S. Merchant Marine when at war with JAP or GER
+country_event = {
+	id = 999623
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		war = yes
+		OR = {
+			USA = {
+				war_with = GER
+			}
+			USA = {
+				war_with = JAP
+			}
+		}
+		money = 2000
+		supplies = 1000
+		controls = 3658
+		controls = 4900
+	}
+	mean_time_to_happen = {
+		days = 1
+		modifier = {
+			factor = 999999
+			not = {
+				has_country_flag = merchant_marine_act_passed
+			}
+		}
+	}
+	title = "EVTNAMEMARNE0623"
+	desc = "EVTDESCMARNE0623"
+	picture = "merchant-marine"
+	option = {
+		name = "EVTOPTAMARNE0623"
+		load_oob = USA/MarneMod_USA_Merchant_Marine.txt
+		supplies = -1000
+		money = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTBMARNE0623"
+	}
+}
+# Women's Army Auxiliary Corps
+country_event = {
+	id = 999624
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		war = yes
+		OR = {
+			USA = {
+				war_with = GER
+			}
+			USA = {
+				war_with = JAP
+			}
+		}
+		date = 1942.05.15
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0624"
+	desc = "EVTDESCMARNE0624"
+	picture = "usa-waac"
+	option = {
+		name = "EVTOPTAMARNE0624"
+		set_country_flag = waac_formed
+		manpower = 100
+		dissent = 2
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# WAAC converted to from auxiliary to full status in 1943
+country_event = {
+	id = 999625
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		war = yes
+		date = 1943.07.01
+		has_country_flag = waac_formed
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0625"
+	desc = "EVTDESCMARNE0625"
+	picture = "usa-wac"
+	option = {
+		name = "EVTOPTAMARNE0625"
+	}
+	option = {
+		name = "No need"
+	}
+}
+# Merchant Marine Act Ship Subsidies - 1936 (50 ships historically and in game)
+country_event = {
+	id = 999626
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1936.1.1
+		has_country_flag = merchant_marine_act_passed
+		money = 4500
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0626"
+	desc = "EVTDESCMARNE0626"
+	picture = "usa-ship-subsidies"
+	option = {
+		name = "EVTOPTAMARNE0626"
+		money = -1500
+		load_oob = USA/usa-ship-subsidies-1936.txt
+	}
+	option = {
+		name = "EVTOPTBMARNE0626"
+	}
+}
+# Merchant Marine Act Ship Subsidies - 1937 (50 ships historically and in game)
+country_event = {
+	id = 999627
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1937.1.1
+		has_country_flag = merchant_marine_act_passed
+		money = 4500
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0627"
+	desc = "EVTDESCMARNE0627"
+	picture = "usa-ship-subsidies"
+	option = {
+		name = "EVTOPTAMARNE0627"
+		money = -1500
+		load_oob = USA/usa-ship-subsidies-1937.txt
+	}
+	option = {
+		name = "EVTOPTBMARNE0626"
+	}
+}
+# Merchant Marine Act Ship Subsidies - 1938 (50 ships historically and in game)
+country_event = {
+	id = 999628
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1938.1.1
+		has_country_flag = merchant_marine_act_passed
+		money = 4500
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0628"
+	desc = "EVTDESCMARNE0628"
+	picture = "usa-ship-subsidies"
+	option = {
+		name = "EVTOPTAMARNE0628"
+		money = -1500
+		load_oob = USA/usa-ship-subsidies-1938.txt
+	}
+	option = {
+		name = "EVTOPTBMARNE0626"
+	}
+}
+# Merchant Marine Act Ship Subsidies - 1939 (100 ships historically and in game)
+country_event = {
+	id = 999629
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1939.1.01
+		has_country_flag = merchant_marine_act_passed
+		money = 6000
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0629"
+	desc = "EVTDESCMARNE0629"
+	picture = "usa-ship-subsidies"
+	option = {
+		name = "EVTOPTAMARNE0629"
+		money = -3000
+		load_oob = USA/usa-ship-subsidies-1939.txt
+	}
+	option = {
+		name = "EVTOPTBMARNE0626"
+	}
+}
+# Merchant Marine Act Ship Subsidies - 1940 (200 ships historically and in game)
+country_event = {
+	id = 999630
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1940.1.1
+		has_country_flag = merchant_marine_act_passed
+		money = 8500
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0630"
+	desc = "EVTDESCMARNE0630"
+	picture = "usa-ship-subsidies"
+	option = {
+		name = "EVTOPTAMARNE0630"
+		money = -6000
+		load_oob = USA/usa-ship-subsidies-1940.txt
+	}
+	option = {
+		name = "EVTOPTBMARNE0626"
+	}
+}
+# Merchant Marine Act Ship Subsidies - 1941 (200 ships historically and in game)
+country_event = {
+	id = 999631
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1941.1.1
+		has_country_flag = merchant_marine_act_passed
+		money = 8500
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0631"
+	desc = "EVTDESCMARNE0631"
+	picture = "usa-ship-subsidies"
+	option = {
+		name = "EVTOPTAMARNE0630"
+		money = -6000
+		load_oob = USA/usa-ship-subsidies-1941.txt
+	}
+	option = {
+		name = "EVTOPTBMARNE0626"
+	}
+}
+# Lend-Lease Act occurs in between here - in March, 1941
+# Merchant Marine Act Ship Subsidies - Liberty Ships - 1942 (700 ships historically, 400 in-game)
+country_event = {
+	id = 999632
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1942.1.1
+		has_country_flag = merchant_marine_act_passed
+		has_country_flag = lend_lease_act
+		money = 8500
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0632"
+	desc = "EVTDESCMARNE0632"
+	picture = "usa-ship-subsidies"
+	option = {
+		name = "EVTOPTAMARNE0632"
+		money = -6000
+		load_oob = USA/usa-ship-subsidies-1942.txt
+	}
+	option = {
+		name = "EVTOPTAMARNE0625"
+	}
+}
+# Merchant Marine Act Ship Subsidies - Liberty Ships - 1943 (1900 ships historically, 560 in-game)
+country_event = {
+	id = 999633
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1943.1.1
+		has_country_flag = merchant_marine_act_passed
+		has_country_flag = lend_lease_act
+		money = 8500
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0633"
+	desc = "EVTDESCMARNE0633"
+	picture = "usa-ship-subsidies"
+	option = {
+		name = "EVTOPTAMARNE0633"
+		money = -6000
+		load_oob = USA/usa-ship-subsidies-1943.txt
+	}
+	option = {
+		name = "EVTOPTAMARNE0625"
+	}
+}
+# Merchant Marine Act Ship Subsidies - Liberty Ships - 1944 (1700 ships historically, 400 in-game)
+country_event = {
+	id = 999634
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1944.1.1
+		has_country_flag = merchant_marine_act_passed
+		has_country_flag = lend_lease_act
+		money = 8500
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0634"
+	desc = "EVTDESCMARNE0634"
+	picture = "usa-ship-subsidies"
+	option = {
+		name = "EVTOPTAMARNE0634"
+		money = -6000
+		load_oob = USA/usa-ship-subsidies-1944.txt
+	}
+	option = {
+		name = "EVTOPTAMARNE0625"
+	}
+}
+# Merchant Marine Act Ship Subsidies - Liberty Ships - 1945 (1100 ships historically, 400 in-game)
+country_event = {
+	id = 999635
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		date = 1945.1.1
+		has_country_flag = merchant_marine_act_passed
+		has_country_flag = lend_lease_act
+		money = 8500
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAMEMARNE0635"
+	desc = "EVTDESCMARNE0635"
+	picture = "usa-ship-subsidies"
+	option = {
+		name = "EVTOPTAMARNE0635"
+		money = -6000
+		load_oob = USA/usa-ship-subsidies-1945.txt
+	}
+	option = {
+		name = "EVTOPTAMARNE0625"
+	}
+}
+# Marneman's United Service Organization (USO) events
+# Formation of the USO
+country_event = {
+	id = 13000
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		war = yes
+		supplies = 1500
+		money = 500
+	}
+	title = "EVTNAMEMARNE13000"
+	desc = "EVTDESCMARNE13000"
+	picture = "USO"
+	option = {
+		name = "Yes, let's support this organization!"
+		set_country_flag = uso_formed
+		supplies = -1500
+		money = -500
+	}
+	option = {
+		name = "This isn't really needed."
+	}
+}
+# USO Shows
+country_event = {
+	id = 49251
+	trigger = {
+		tag = USA
+		war = yes
+		has_country_flag = uso_formed
+		not = {
+			has_country_modifier = USO_Show_Army
+			has_country_modifier = USO_Show_Navy
+			has_country_modifier = USO_Show_USAAF
+			has_country_modifier = USO_Show_Combined
+			has_country_modifier = USO_Show_No
+			has_country_modifier = USO_Show_Never
+		}
+		money = 10000
+	}
+	mean_time_to_happen = {
+		days = 5
+	}
+	title = "EVTNAMEMARNE0003"
+	desc = "EVTDESCMARNE0003"
+	picture = "USOShow"
+	option = {
+		name = "Send Bing Crosby to entertain the soldiers!"
+		money = -5000
+		add_country_modifier = {
+			name = "USO_Show_Army"
+			duration = 90
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Our sailors love the Andrews Sisters!"
+		money = -5000
+		add_country_modifier = {
+			name = "USO_Show_Navy"
+			duration = 90
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Marlene Dietrich should visit our airmen!"
+		money = -5000
+		add_country_modifier = {
+			name = "USO_Show_USAAF"
+			duration = 90
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "What the hell, send them all!"
+		money = -10000
+		add_country_modifier = {
+			name = "USO_Show_Combined"
+			duration = 90
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Not right now - we should save our money for war materials."
+		add_country_modifier = {
+			name = "USO_Show_No"
+			duration = 90
+		}
+		dissent = 2
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Never. Our boys should fight, not relax!"
+		dissent = 10
+		add_country_modifier = {
+			name = "USO_Show_Never"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
