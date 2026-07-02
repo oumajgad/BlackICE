@@ -5266,5 +5266,53 @@ diplomatic_decisions = {
 			set_country_flag = AI_ENG_FRA_behaviour_fix_revert_done
         }
     }
+	china_manpower_jap_occupation = {
+		potential  = {
+            tag = OMG
+		}
+		allow  = {
+            not = {
+                has_country_modifier = MP_reduction
+            }
+		}
+		effect = {
+            any_country = {
+                any_owned = {
+                    limit = {
+						or = {
+                            controlled_by = JAP
+                            controlled_by = SOV
+                            controlled_by = USA
+                            controlled_by = FRA
+                            controlled_by = GER
+                            controlled_by = FRA
+                            controlled_by = ITA
+						}
+                        or = {
+                            is_core = CXB
+                            is_core = CHC
+                            is_core = CSX
+                            is_core = CGX
+                            is_core = CYN
+                            is_core = SIK
+                            is_core = CHI
+                        }
+                    }
+                    add_province_modifier = {
+                        name = manpower_reduction
+                        duration = -1
+                    }
+                    add_country_modifier = {
+                        name = MP_reduction_timer
+                        duration = 10
+                    }
+                }
+            }
+        }
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 }
 #EOF#
