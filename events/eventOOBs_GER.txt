@@ -361,7 +361,450 @@ country_event = {
 		}
 	}
 }
-
+# 1. Fallschirmkorps - 1944
+country_event = {
+	id = 400099
+	is_triggered_only = yes
+	title = "I Fallschirmkorps"
+	desc = "EVTDESC400099"
+	picture = "I_Fallschirmkorps"
+	option = {
+		name = "Create the I Fallschirmkorps"
+		remove_brigade = "Stab 7. Flieger-Division"
+		remove_brigade = "Luftlande-Sturm-Regiment 1/2"
+		remove_brigade = "Luft-.Inf.-Rgt. 'Feldherrnhalle'"
+		remove_brigade = "Kradsch.Abt. 7. LLD"
+		remove_brigade = "Fallschirmjäger-Rgt. 1-2"
+		remove_brigade = "Fallschirmjäger-Rgt. 3"
+		remove_brigade = "Art.-Rgt. 7. Flieger-Division"
+		remove_brigade = "Pionier-Btl.7. Flieger-Division"
+		remove_brigade = "Gefechtstross-Btl. 7. Flieger-Division"		
+		set_country_flag = I_Fallschirmkorps
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +3750
+				}
+				energy = -7500
+				metal = -3750
+				rare_materials = -1875
+				load_oob = GER/I_Fallschirmkorps_1944_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +7750
+				}
+				energy = -15500
+				metal = -7750
+				rare_materials = -3875
+				load_oob = GER/I_Fallschirmkorps_1944.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/I_Fallschirmkorps_1944.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = I_Fallschirmkorps
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 2. Fallschirmjäger-Division
+country_event = {
+	id = 400100
+	is_triggered_only = yes
+	title = "Form the 2. Fallsch.-Division"
+	desc = "EVTDESC400100"
+	picture = "2FD"
+	option = {
+		name = "Creation of 2. Fallschirmjäger-Division"
+		remove_brigade = "Kampfgruppe Ramcke"
+		set_country_flag = 2FD
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/II_FD_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = GER/II_FD.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/II_FD.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 2FD
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 1. Fallschirmarmee - 1944
+country_event = {
+	id = 400101
+	is_triggered_only = yes
+	title = "1. Fallschirmarmee"
+	desc = "EVTDESC400101"
+	picture = "I_Fallschirmarmee"
+	option = {
+		name = "Create the 1. Fallschirmarmee"	
+		set_country_flag = I_Fallschirmarmee
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +3750
+				}
+				energy = -7500
+				metal = -3750
+				rare_materials = -1875
+				load_oob = GER/I_Fallschirmarmee_1944_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +7750
+				}
+				energy = -15500
+				metal = -7750
+				rare_materials = -3875
+				load_oob = GER/I_Fallschirmarmee_1944.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/I_Fallschirarmee_1944.txt
+			}
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = I_Fallschirmarmee
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 6. Fallschirmjäger-Division
+country_event = {
+	id = 400102
+	is_triggered_only = yes
+	title = "Form the 6. Fallsch.-Division"
+	desc = "EVTDESC400102"
+	picture = "6FD"
+	option = {
+		name = "Creation of 6. Fallschirmjäger-Division"
+		set_country_flag = 6FD
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/VI_FD_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = GER/VI_FD.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/VI_FD.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 6FD
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 7. Fallschirmjäger-Division
+country_event = {
+	id = 400103
+	is_triggered_only = yes
+	title = "Form the 7. Fallsch.-Division"
+	desc = "EVTDESC400103"
+	picture = "7FD"
+	option = {
+		name = "Creation of 7. Fallschirmjäger-Division"
+		set_country_flag = 7FD
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/VII_FD_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = GER/VII_FD.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/VII_FD.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 7FD
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 8. Fallschirmjäger-Division
+country_event = {
+	id = 400104
+	is_triggered_only = yes
+	title = "Form the 8. Fallsch.-Division"
+	desc = "EVTDESC400104"
+	picture = "8FD"
+	option = {
+		name = "Creation of 8. Fallschirmjäger-Division"
+		set_country_flag = 8FD
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/VIII_FD_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = GER/VIII_FD.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/VIII_FD.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 8FD
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# 9. Fallschirmjäger-Division
+country_event = {
+	id = 400105
+	is_triggered_only = yes
+	title = "Form the 9. Fallsch.-Division"
+	desc = "EVTDESC400105"
+	picture = "9FD"
+	option = {
+		name = "Creation of 9. Fallschirmjäger-Division"
+		set_country_flag = 9FD
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_production
+				}
+				load_oob = GER/IX_FD_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					has_country_flag = OOB_spawn
+				}
+				change_variable = {
+				    which = IC_days_spent
+				    value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = GER/IX_FD.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/IX_FD.txt
+			}
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = 9FD
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 # Luftwaffe Creation #
 country_event = {
 	id = 91553
