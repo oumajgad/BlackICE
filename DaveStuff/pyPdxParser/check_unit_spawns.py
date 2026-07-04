@@ -117,6 +117,10 @@ def get_checked_province_ids_from_node(node: Node) -> set[int]:
     for controlled_by_node in controlled_by_nodes:
         if controlled_by_node.parent.key.isnumeric():
             res.append(int(controlled_by_node.parent.key))
+    controller_nodes = node.find_by_key("controller")  # XYZ = { controller = { faction = ABC } } }
+    for controller_node in controller_nodes:
+        if controller_node.parent.key.isnumeric():
+            res.append(int(controller_node.parent.key))
     return set(res)  # deduplicate
 
 
