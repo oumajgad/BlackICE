@@ -135,8 +135,13 @@ def determine_country(nodes: list[Node]) -> str:
 
 
 def load_blacklist() -> list[int]:
+    res = []
     with open("./check_unit_spawns_blacklist.json", "r") as f:
-        return json.load(f)
+        res = json.load(f)
+    with open("./check_unit_spawns_blacklist.json", "w") as f:
+        f.write(json.dumps(sorted(res), indent=2))
+
+    return res
 
 
 class EventReport:
@@ -263,5 +268,5 @@ if __name__ == "__main__":
     with open("check_unit_spawns_result.json", "w") as f:
         f.write(json.dumps(violators, indent=2))
     if len(blacklist) > 0:
-        print(f"Blacklist has events which no longer exists or loads OOB")
+        print(f"Blacklist has events which no longer exist or load OOB")
         print(blacklist)
