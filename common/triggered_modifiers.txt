@@ -336,7 +336,6 @@ AI_WAR_CG = {
 	trigger = {
 		war = yes
 	}
-
 	dissent = -1
 
 	icon = 84
@@ -356,7 +355,6 @@ AI_WAR_CG = {
 #		not = { war_with = GER }
 #		ai = yes
 #	}
-#
 #	#peace_consumer_goods_demand = -1
 #
 #	icon = 84
@@ -392,7 +390,6 @@ SOV_AI_TWEAK = {
 		not = {
 			war_with = JAP
 		}
-
 		or = {
 			and = {
 				#war_with = GER
@@ -577,11 +574,9 @@ Blitz_effect = {
 	trigger = {
 		has_country_modifier = Paying_for_the_Blitz
 	}
-
 	strategic_attack = 0.15
 	air_intercept = 0.1
 	air_organisation = 0.1
-
 	global_ic = -0.05
 	global_money = -0.05
 	global_supplies = -0.05
@@ -1400,7 +1395,6 @@ Nat_focus_science_one = {
 	research_efficiency = 0.05
 	global_leadership_modifier = 0.05
 	global_money = -0.1
-	#industrial_efficiency = -0.015
 
 	icon = 47
 }
@@ -1433,7 +1427,6 @@ Nat_focus_science_two = {
 	research_efficiency = 0.1
 	global_leadership_modifier = 0.075
 	global_money = -0.2
-	#industrial_efficiency = -0.025
 
 	icon = 47
 }
@@ -1454,7 +1447,6 @@ Nat_focus_science_three = {
 	research_efficiency = 0.15
 	global_leadership_modifier = 0.1
 	global_money = -0.3
-	#industrial_efficiency = -0.035
 
 	icon = 47
 }
@@ -1518,7 +1510,6 @@ Nat_focus_health_and_education_one_I = {
 	officer_recruitment = 0.075
 	global_money = -0.1
 	global_revolt_risk = -1
-	#land_build_speed = 0.025
 
 	icon = 45
 }
@@ -1586,7 +1577,6 @@ Nat_focus_health_and_education_two_I = {
 	officer_recruitment = 0.1
 	global_money = -0.2
 	global_revolt_risk = -2
-	#land_build_speed = 0.05
 
 	icon = 45
 }
@@ -1610,7 +1600,6 @@ Nat_focus_health_and_education_three_I = {
 	officer_recruitment = 0.15
 	global_money = -0.3
 	global_revolt_risk = -3
-	#land_build_speed = 0.075
 
 	icon = 45
 }
@@ -1730,7 +1719,6 @@ Nat_focus_natural_resources_three = {
 }
 
 # WAR EXHAUSTION #
-
 WE_low = {
 	potential = {
 		check_variable = {
@@ -1832,7 +1820,6 @@ WE_high = {
 	national_unity = -0.1
 	global_manpower_modifier = -0.3
 	global_revolt_risk = 4
-
 
 	icon = 5
 }
@@ -3966,7 +3953,6 @@ naval_supremacy_in_the_east = {
 
 # Neutrality
 neutrality = {
-
 	potential = {
 		not = {
 			or = {
@@ -3977,7 +3963,6 @@ neutrality = {
 			tag = USA
 		}
 	}
-
 	trigger = {
 		not = {
 			or = {
@@ -3990,7 +3975,6 @@ neutrality = {
 	}
 
 	officer_recruitment = -0.25
-	#global_manpower_modifier = -0.25
 	land_build_speed = 0.02
 	tank_build_speed = 0.02
 	air_build_speed = 0.02
@@ -4002,12 +3986,10 @@ neutrality = {
 
 # Winter War
 winter_war = {
-
 	potential = {
-		not =  {has_global_flag = NO_MODIFIERS }
+		not = {has_global_flag = NO_MODIFIERS }
 		tag = FIN
 	}
-
 	trigger = {
 		tag = FIN
 		not = {
@@ -4029,11 +4011,9 @@ winter_war = {
 
 # Polish Corridor POL
 polish_corridor_pol = {
-
 	potential = {
 		tag = POL
 	}
-
 	trigger = {
 		controls = 1626
 	}
@@ -4045,11 +4025,9 @@ polish_corridor_pol = {
 }
 # Polish Corridor GER
 polish_corridor_ger = {
-
 	potential = {
 		tag = GER
 	}
-
 	trigger = {
 		or = {
 			controls = 1626
@@ -4073,14 +4051,12 @@ polish_corridor_ger = {
 }
 # Polish Corridor
 polish_corridor = {
-
 	potential = {
 		not = {
 			tag = POL
 			tag = GER
 		}
 	}
-
 	trigger = {
 		or = {
 			controls = 1626
@@ -4105,12 +4081,10 @@ polish_corridor = {
 }
 # Pact of Steel
 pact_of_steel = {
-
 	potential = {
 		faction = axis
 		not = { has_global_flag = tripartite_pact }
 	}
-
 	trigger = {
 		GER = { faction = axis }
 		ITA = { faction = axis }
@@ -4123,14 +4097,12 @@ pact_of_steel = {
 }
 # Tripartite pact
 tripartite_pact = {
-
 	potential = {
 		faction = axis
 		exists = ITA
 		exists = JAP
 		has_global_flag = tripartite_pact
 	}
-
 	trigger = {
 		GER = { faction = axis }
 		ITA = { faction = axis }
@@ -4145,11 +4117,9 @@ tripartite_pact = {
 }
 # Lapland War
 lapland_war = {
-
 	potential = {
 		tag = FIN
 	}
-
 	trigger = {
 		GER = { war_with = FIN }
 		or = {
@@ -4168,13 +4138,11 @@ lapland_war = {
 }
 # General Winter
 general_winter = {
-
 	potential = {
-		not =  {has_global_flag = NO_MODIFIERS }
+		not = {has_global_flag = NO_MODIFIERS }
 		tag = SOV
 		has_country_modifier = patriotic_war
 	}
-
 	trigger = {
 		tag = SOV
 		war_with = GER
@@ -4209,7 +4177,6 @@ general_winter = {
 }
 
 Barbarossa_I = {
-
 	potential = {
 		tag = GER
 		war_with = SOV
@@ -4220,7 +4187,6 @@ Barbarossa_I = {
 		#not = { has_global_flag = BINormalAI }
 		not = { date = 1941.06.02 }
 	}
-
 	trigger = {
 		date = 1941.06.01
 	}
@@ -4232,7 +4198,6 @@ Barbarossa_I = {
 	icon = 42
 }
 Stakhanovite_I = {
-
 	potential = {
 		tag = SOV
 		war_with = GER
@@ -4242,7 +4207,6 @@ Stakhanovite_I = {
 		#not = { has_global_flag = BINormalAI }
 		not = { date = 1941.06.02 }
 	}
-
 	trigger = {
 		date = 1941.06.01
 	}
@@ -4255,7 +4219,6 @@ Stakhanovite_I = {
 	icon = 42
 }
 Stakhanovite_II = {
-
 	potential = {
 		tag = SOV
 		war_with = GER
@@ -4264,7 +4227,6 @@ Stakhanovite_II = {
 		not = { has_global_flag = BIEasyAI }
 		not = { date = 1941.11.02 }
 	}
-
 	trigger = {
 		date = 1941.11.01
 	}
@@ -4277,7 +4239,6 @@ Stakhanovite_II = {
 	icon = 42
 }
 Stakhanovite_III = {
-
 	potential = {
 		tag = SOV
 		war_with = GER
@@ -4286,7 +4247,6 @@ Stakhanovite_III = {
 		not = { has_global_flag = BIEasyAI }
 		not = { date = 1942.05.02 }
 	}
-
 	trigger = {
 		date = 1942.05.01
 	}
@@ -4299,7 +4259,6 @@ Stakhanovite_III = {
 	icon = 42
 }
 Stakhanovite_IV = {
-
 	potential = {
 		tag = SOV
 		war_with = GER
@@ -4308,7 +4267,6 @@ Stakhanovite_IV = {
 		not = { has_global_flag = BIEasyAI }
 		not = { date = 1942.10.02 }
 	}
-
 	trigger = {
 		date = 1942.10.01
 	}
@@ -4321,7 +4279,6 @@ Stakhanovite_IV = {
 	icon = 42
 }
 Stakhanovite_V = {
-
 	potential = {
 		tag = SOV
 		war_with = GER
@@ -4330,11 +4287,9 @@ Stakhanovite_V = {
 		not = { has_global_flag = BIEasyAI }
 		not = { date = 1943.06.02 }
 	}
-
 	trigger = {
 		date = 1943.06.01
 	}
-
 	officer_recruitment = 1000
 	global_manpower_modifier = 5
 	global_supplies = 5
@@ -4343,7 +4298,6 @@ Stakhanovite_V = {
 	icon = 42
 }
 Stakhanovite_VI = {
-
 	potential = {
 		tag = SOV
 		war_with = GER
@@ -4352,7 +4306,6 @@ Stakhanovite_VI = {
 		not = { has_global_flag = BIEasyAI }
 		not = { date = 1943.11.02 }
 	}
-
 	trigger = {
 		date = 1943.11.01
 	}
@@ -4365,7 +4318,6 @@ Stakhanovite_VI = {
 	icon = 42
 }
 Stakhanovite_VII = {
-
 	potential = {
 		tag = SOV
 		war_with = GER
@@ -4374,7 +4326,6 @@ Stakhanovite_VII = {
 		not = { has_global_flag = BIEasyAI }
 		not = { date = 1944.05.02 }
 	}
-
 	trigger = {
 		date = 1944.05.01
 	}
@@ -4387,33 +4338,28 @@ Stakhanovite_VII = {
 	icon = 42
 }
 Divine_Wind = {
-
 	potential = {
 		tag = JAP
 		war_with = USA
 		ai = yes
 		has_country_flag = tora_tora
 		has_country_flag = impossible
-		#NOT =  {has_country_modifier = Desp_Rein }
+		#NOT = {has_country_modifier = Desp_Rein }
 		has_country_modifier = Desp_Rein_cooldown_Jap
 		not = { has_global_flag = BIveryEasyAI }
 		not = { has_global_flag = BIEasyAI }
-
 	}
 
 	trigger = {
-
 	}
 
 	officer_recruitment = 1000
-	#global_manpower_modifier = 1
 	global_supplies = 5
 	industrial_efficiency = 100
 
 	icon = 42
 }
 British_Merchant_Fleet = {
-
 	potential = {
 		tag = ENG
 		war_with = GER
@@ -4422,7 +4368,6 @@ British_Merchant_Fleet = {
 		not = { has_global_flag = BIEasyAI }
 		not = { date = 1940.05.02 }
 	}
-
 	trigger = {
 		date = 1940.05.01
 	}
@@ -4435,7 +4380,6 @@ British_Merchant_Fleet = {
 	icon = 42
 }
 British_Lendlease_Fleet = {
-
 	potential = {
 		tag = ENG
 		war_with = GER
@@ -4444,7 +4388,6 @@ British_Lendlease_Fleet = {
 		not = { has_global_flag = BIEasyAI }
 		not = { date = 1941.05.02 }
 	}
-
 	trigger = {
 		date = 1941.05.01
 	}
@@ -4457,7 +4400,6 @@ British_Lendlease_Fleet = {
 	icon = 42
 }
 British_Liberty_Ships = {
-
 	potential = {
 		tag = ENG
 		war_with = GER
@@ -4466,7 +4408,6 @@ British_Liberty_Ships = {
 		not = { has_global_flag = BIEasyAI }
 		not = { date = 1942.05.02 }
 	}
-
 	trigger = {
 		date = 1942.05.01
 	}
@@ -4513,11 +4454,9 @@ British_Liberty_Ships = {
 #}
 # Prosperous Convoy
 prosperous_convoy = {
-
 	potential = {
 		war = no
 	}
-
 	trigger = {
 		any_owned_province = {
 			continent = north_america
@@ -4545,11 +4484,9 @@ prosperous_convoy = {
 }
 # Veteran Army
 veteran_army = {
-
 	potential = {
 		#not = { has_country_flag = spanish_civil_war }
 	}
-
 	trigger = {
 		land_battles_fought = 1000
 	}
@@ -4563,15 +4500,12 @@ veteran_army = {
 }
 # Veteran Navy
 veteran_navy = {
-
 	potential = {
 		not = { has_country_flag = spanish_civil_war }
 	}
-
 	trigger = {
 		naval_battles_fought = 150
 	}
-
 	naval_organisation = 0.05
 	org_regain = 0.025
 	officer_recruitment = 0.15
@@ -4580,7 +4514,6 @@ veteran_navy = {
 }
 # Veteran Air Force
 veteran_air_force = {
-
 	potential = {
 		not = { has_country_flag = spanish_civil_war }
 	}
@@ -4597,11 +4530,8 @@ veteran_air_force = {
 }
 # Control over the Mediterranean
 mediterranean_control = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 5586
@@ -4796,11 +4726,8 @@ mediterranean_control = {
 }
 # Panama Channel
 control_over_panama_channel = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or ={
 			controls = 7717
@@ -4824,11 +4751,8 @@ control_over_panama_channel = {
 }
 # Control over the Black Sea
 control_over_the_black_sea = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or ={
 			controls = 4441
@@ -5034,11 +4958,8 @@ control_over_the_black_sea = {
 }
 # Suez Channel
 control_over_suez_channel = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 5563
@@ -5244,11 +5165,8 @@ control_over_suez_channel = {
 }
 # Makassar Strait
 control_over_makassar_strait = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 6478
@@ -5404,11 +5322,8 @@ control_over_makassar_strait = {
 }
 # Control over Gibraltar
 control_over_gibraltar = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 5191
@@ -5445,11 +5360,8 @@ control_over_gibraltar = {
 }
 # Control over Öresund
 control_over_oresund = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 1526
@@ -5603,11 +5515,8 @@ control_over_oresund = {
 }
 # Control of the English Channel
 control_english_channel = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 2307
@@ -5724,11 +5633,8 @@ control_english_channel = {
 }
 # Persian Gulf
 control_over_persian_gulf = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 9598
@@ -5817,11 +5723,8 @@ control_over_persian_gulf = {
 }
 # Gulf of Tonkin
 control_over_tonkin_gulf = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 6060
@@ -5910,11 +5813,8 @@ control_over_tonkin_gulf = {
 }
 # Gulf of Mexico
 control_over_mexico_gulf = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 8080
@@ -6029,11 +5929,8 @@ control_over_mexico_gulf = {
 }
 # Turkish Strait
 control_over_iskenderun_gulf = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 5047
@@ -6096,11 +5993,8 @@ control_over_iskenderun_gulf = {
 }
 # Gulf of Chihli
 control_over_chihli_gulf = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 5145
@@ -6216,11 +6110,8 @@ control_over_chihli_gulf = {
 }
 # Taiwan Strait
 control_over_taiwan_strait = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 5809
@@ -6291,11 +6182,8 @@ control_over_taiwan_strait = {
 }
 # Mozambique Channel
 control_over_mozambique_channel = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 10340
@@ -6475,11 +6363,8 @@ control_over_mozambique_channel = {
 }
 # Gulf of Finland
 control_finland_gulf = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 985
@@ -6686,11 +6571,8 @@ control_finland_gulf = {
 
 # Monaco
 control_over_monaco = {
-
 	potential = {
-
 	}
-
 	trigger = {
 		or = {
 			controls = 4106
@@ -6710,9 +6592,8 @@ control_over_monaco = {
 
 # military crisis
 military_crisis_I = {
-
 	potential = {
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		or = {
 			GER = { war_with = SOV }
 			not = { year = 1942 }
@@ -6720,7 +6601,6 @@ military_crisis_I = {
 		tag = HOL
 		GER = { has_country_flag = fr_goal_nag_no }
 	}
-
 	trigger = {
 		war_with = GER
 	}
@@ -6733,7 +6613,6 @@ military_crisis_I = {
 	icon = 5
 }
 military_crisis_II = {
-
 	potential = {
 		tag = FRA
 		or = {
@@ -6741,7 +6620,6 @@ military_crisis_II = {
 			not = { year = 1942 }
 		}
 	}
-
 	trigger = {
 		war_with = GER
 		and = {
@@ -6762,7 +6640,6 @@ military_crisis_II = {
 	icon = 5
 }
 military_crisis_III = {
-
 	potential = {
 		tag = BEL
 		or = {
@@ -6770,9 +6647,8 @@ military_crisis_III = {
 		not = { year = 1942 }
 		}
 		GER = { has_country_flag = fr_goal_nag_no }
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 	}
-
 	trigger = {
 		war_with = GER
 	}
@@ -6785,18 +6661,15 @@ military_crisis_III = {
 
 # FRENCH ACHIEVEMENTS #
 old_fashioned_army = {
-
 	potential = {
 		tag = FRA
 	}
-
 	trigger = {
 		ai = no
 		war = no
 		not = { year = 1941 }
 	}
 
-	#global_manpower_modifier = -0.5
 	officer_recruitment = -0.5
 	peace_consumer_goods_demand = 0.025
 	industrial_efficiency = -0.05
@@ -6819,12 +6692,10 @@ FRA_consumer_goods_reduction = {
 
 # JAPANESE ACHIEVEMENTS #
 1911_commercial_achievement = {
-
 	potential = {
 		tag = JAP
 		not = { has_country_flag = end_of_1911_agreement }
 	}
-
 	trigger = {
 		not = { war_with = USA }
 		not = { has_country_flag = end_of_1911_agreement }
@@ -6841,13 +6712,11 @@ FRA_consumer_goods_reduction = {
 }
 #
 steel_embargo_achievement = {
-
 	potential = {
 		tag = JAP
 		has_country_flag = Japan_Indochina
 		not = { war_with = USA }
 	}
-
 	trigger = {
 		not = { war_with = USA }
 		has_country_flag = steel_embargo
@@ -6859,15 +6728,13 @@ steel_embargo_achievement = {
 
 # SOVIET ACHIEVEMENTS #
 Great_Patriotic_War_achievement = {
-
 	potential = {
 		tag = SOV
 		ai = no
 	}
-
 	trigger = {
 		war_with = GER
-		not =  {has_global_flag = NO_MODIFIERS }
+		not = {has_global_flag = NO_MODIFIERS }
 		has_country_modifier = GPW_bonus
 		2041 = { controller = { faction = axis } } #Warszawa
 	}
@@ -6880,13 +6747,11 @@ Great_Patriotic_War_achievement = {
 }
 #
 Great_Red_Army_achievement = {
-
 	potential = {
 		tag = SOV
-		not =  {has_global_flag = NO_MODIFIERS }
+		not = {has_global_flag = NO_MODIFIERS }
 		has_country_modifier = GPW_bonus
 	}
-
 	trigger = {
 		year = 1941
 		war = yes
@@ -6899,13 +6764,11 @@ Great_Red_Army_achievement = {
 }
 #Goering 4 year plan#
 Goering_FourYear_plan = {
-
 	potential = {
 		tag = GER
 		has_country_flag = Goeringplan
 		armament_minister = 10 #Goering
 	}
-
 	trigger = {
 		not = { year = 1941}
 		ai = no
@@ -6917,14 +6780,12 @@ Goering_FourYear_plan = {
 	icon = 42
 }
 Goering_FourYear_plan_AI = {
-
 	potential = {
 		tag = GER
 		has_country_flag = Goeringplan
 		ai = yes
-		#armament_minister =  #Goering
+		#armament_minister = #Goering
 	}
-
 	trigger = {
 		not = { year = 1941}
 		ai = yes
@@ -6939,14 +6800,12 @@ Goering_FourYear_plan_AI = {
 
 # 3581 - Sevastopol
 Sevastopol_loss = {
-
 	potential = {
 		tag = SOV
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		war_with = GER
 		owns = 3581
 	}
-
 	trigger = {
 		not = {
 			3581 = {
@@ -6967,10 +6826,9 @@ Sevastopol_loss = {
 
 # 2857 - Stalingrad
 Stalingrad_loss = {
-
 	potential = {
 		tag = SOV
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		war_with = GER
 		owns = 2857
 	}
@@ -6994,10 +6852,9 @@ Stalingrad_loss = {
 # MIDDLE
 # 2401 - Kharkov
 Kharkov_loss = {
-
 	potential = {
 		tag = SOV
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		war_with = GER
 		owns = 2401
 	}
@@ -7017,14 +6874,12 @@ Kharkov_loss = {
 }
 # 2170 - Kursk
 Kursk_loss = {
-
 	potential = {
 		tag = SOV
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		war_with = GER
 		owns = 2170
 	}
-
 	trigger = {
 		not = {
 			2170 = {
@@ -7054,14 +6909,12 @@ Kursk_loss = {
 
 # 782 - Leningrad
 Leningrad_loss = {
-
 	potential = {
 		tag = SOV
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		war_with = GER
 		owns = 782
 	}
-
 	trigger = {
 		not = {
 			782 = {
@@ -7076,16 +6929,14 @@ Leningrad_loss = {
 
 	icon = 8
 }
-# 311 - Arhangel'sk
+# 311 - Archangelsk
 Arhangel_loss = {
-
 	potential = {
 		tag = SOV
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		war_with = GER
 		owns = 311
 	}
-
 	trigger = {
 		not = {
 			311 = {
@@ -7102,14 +6953,12 @@ Arhangel_loss = {
 }
 # 46 - Murmansk
 Murmansk_loss = {
-
 	potential = {
 		tag = SOV
 		war_with = GER
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		owns = 46
 	}
-
 	trigger = {
 		not = {
 			46 = {
@@ -7129,17 +6978,15 @@ Murmansk_loss = {
 # FAR EAST
 # 4390 - Vladivostok
 Vladivostock_loss = {
-
 	potential = {
 		tag = SOV
-		not =  {has_global_flag = NO_MODIFIERS }
+		not = {has_global_flag = NO_MODIFIERS }
 		or = {
 			war_with = JAP
 			war_with = GER
 		}
 		owns = 4390
 	}
-
 	trigger = {
 		not = {
 			4390 = {
@@ -7156,7 +7003,6 @@ Vladivostock_loss = {
 }
 # SPANISH CIVIL WAR ENDER #
 madrid_loss_SPA = { #Capital Loss
-
 	potential = {
 		tag = SPA
 		exists = SPR
@@ -7164,7 +7010,6 @@ madrid_loss_SPA = { #Capital Loss
 		year = 1939
 		ai = yes
 	}
-
 	trigger = {
 		or = {
 			not = { 4540 = { controlled_by = SPA } } #Madrid
@@ -7185,7 +7030,6 @@ madrid_loss_SPA = { #Capital Loss
 	icon = 5
 }
 madrid_loss_SPR = { #Capital Loss
-
 	potential = {
 		tag = SPR
 		exists = SPA
@@ -7193,7 +7037,6 @@ madrid_loss_SPR = { #Capital Loss
 		year = 1939
 		ai = yes
 	}
-
 	trigger = {
 		or = {
 			not = { 4540 = { controlled_by = SPR } } #Madrid
@@ -7289,13 +7132,11 @@ spanish_civil_war_effect_ai = {
 	land_organisation = -0.35
 }
 republic_still_stands = {
-
 	potential = {
 		tag = SPR
 		war_with = SPA
 		year = 1939
 	}
-
 	trigger = {
 		4540 = { controlled_by = SPR } #Madrid
 		4862 = { controlled_by = SPR }
@@ -7310,7 +7151,6 @@ republic_still_stands = {
 	territorial_pride = 0.1
 }
 post_spanish_civil_war_effect_year_one = {
-
 	potential = {
 		or = {
 			tag = SPR
@@ -7335,7 +7175,6 @@ post_spanish_civil_war_effect_year_one = {
 
 }
 post_spanish_civil_war_effect_year_two = {
-
 	potential = {
 		or = {
 			tag = SPR
@@ -7361,11 +7200,9 @@ post_spanish_civil_war_effect_year_two = {
 
 # Swedish Iron
 Swedish_Iron_Narvik_Route = {
-
 	potential = {
 		tag = GER
 		exists = SWE
-
 		SWE = {
 			not = { faction = comintern }
 			not = { faction = allies }
@@ -7416,7 +7253,6 @@ Swedish_Iron_Narvik_Route = {
 	icon = 13
 }
 Swedish_Iron_Baltic_Route = {
-
 	potential = {
 		tag = GER
 		exists = SWE
@@ -7456,7 +7292,6 @@ Swedish_Iron_Baltic_Route = {
 	icon = 13
 }
 Swedish_Iron_Frozen = {
-
 	potential = {
 		tag = GER
 		exists = SWE
@@ -7481,14 +7316,13 @@ Swedish_Iron_Frozen = {
 		}
 		or = {
 			month = 10
-			not = { month =  3}
+			not = { month = 3}
 		}
 		or = {
 			war_with = ENG
 			war_with = FRA
 		}
 	}
-
 	trigger = {
 		has_country_flag = german_swedish_agreement
 		not = { has_country_flag = german_swedish_agreement_stop }
@@ -7502,17 +7336,15 @@ Swedish_Iron_Frozen = {
 # LOSING FRENCH KEY CITIES WILL GIVE NATIONAL UNITY MALUS
 # 2678 - PARIS
 paris_loss = {
-
 	potential = {
 		tag = FRA
 		war_with = GER
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		not = { exists = VIC }
 		not = { year = 1941 }
 		FRA = { government_in_exile = no }
 		GER = { has_country_flag = fr_goal_nag }
 	}
-
 	trigger = {
 		not = {
 			2678 = {
@@ -7527,17 +7359,15 @@ paris_loss = {
 }
 # 2195 - DUNKERQUE
 dunkerque_loss = {
-
 	potential = {
 		tag = FRA
 		war_with = GER
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		not = { exists = VIC }
 		not = { year = 1941 }
 		FRA = { government_in_exile = no }
 		GER = { has_country_flag = fr_goal_nag }
 	}
-
 	trigger = {
 		not = {
 			2195 = {
@@ -7552,10 +7382,9 @@ dunkerque_loss = {
 }
 #2422 - CHERBOURG
 cherbourg_loss = {
-
 	potential = {
 		tag = FRA
-		not =  { has_global_flag = NO_MODIFIERS }
+		not = { has_global_flag = NO_MODIFIERS }
 		war_with = GER
 		not = { exists = VIC }
 		not = { year = 1941 }
@@ -7577,11 +7406,10 @@ cherbourg_loss = {
 }
 # MAGINOT-LINE OCCUPIED
 maginot_occupied = {
-
 	potential = {
 		tag = FRA
 		war_with = GER
-		not =  {has_global_flag = NO_MODIFIERS }
+		not = {has_global_flag = NO_MODIFIERS }
 		or = {
 			not = { 2618 = { controlled_by = FRA } } #Metz
 			not = { 2881 = { controlled_by = FRA } } #Strasbourg
@@ -7613,15 +7441,12 @@ maginot_occupied = {
 # USA ACHIEVEMENTS #
 # AGRICULTURAL ADJUSTMENT ACT
 Soil_Conservation_and_Domestic_Allotment_Act = {
-
 	potential = {
 		tag = USA
 	}
-
 	trigger = {
 		has_country_flag = Soil_Conservation_and_Domestic_Allotment_Act
 	}
-
 	global_supplies = 0.1
 	global_money = 0.1
 	global_manpower_modifier = 0.05
@@ -7629,30 +7454,24 @@ Soil_Conservation_and_Domestic_Allotment_Act = {
 	icon = 29
 }
 Soil_Conservation_and_Domestic_Allotment_Act_no = {
-
 	potential = {
 		tag = USA
 	}
-
 	trigger = {
 		has_country_flag = Soil_Conservation_and_Domestic_Allotment_Act_no
 	}
-
 	global_supplies = -0.075
 	global_ic = 0.05
 
 	icon = 29
 }
 agricultural_adjustment_act = {
-
 	potential = {
 		tag = USA
 	}
-
 	trigger = {
 		has_country_flag = agricultural_adjustment_act
 	}
-
 	global_supplies = 0.2
 	peace_consumer_goods_demand = -0.035
 	war_consumer_goods_demand = -0.035
@@ -7661,15 +7480,12 @@ agricultural_adjustment_act = {
 	icon = 29
 }
 agricultural_adjustment_act_no = {
-
 	potential = {
 		tag = USA
 	}
-
 	trigger = {
 		has_country_flag = agricultural_adjustment_act_no
 	}
-
 	global_manpower_modifier = -0.075
 	global_ic = 0.075
 
@@ -7677,15 +7493,12 @@ agricultural_adjustment_act_no = {
 }
 # WAGES and HOURS ACT
 wages_and_hours_act = {
-
 	potential = {
 		tag = USA
 	}
-
 	trigger = {
 		has_country_flag = wages_and_hours_act
 	}
-
 	global_resources = -0.025
 	global_money = -0.1
 	industrial_efficiency = 0.025
@@ -7694,15 +7507,12 @@ wages_and_hours_act = {
 	icon = 41
 }
 wages_and_hours_act_no = {
-
 	potential = {
 		tag = USA
 	}
-
 	trigger = {
 		has_country_flag = wages_and_hours_act_no
 	}
-
 	global_money = 0.25
 	global_ic = 0.075
 	global_resources = 0.075
@@ -7712,7 +7522,6 @@ wages_and_hours_act_no = {
 }
 # CASH and CARRY - USA
 cash_and_carry_USA = {
-
 	potential = {
 		tag = USA
 		not = { war_with = ENG }
@@ -7720,7 +7529,6 @@ cash_and_carry_USA = {
 		not = { faction = comintern }
 		not = { has_country_flag = lend_lease_decision }
 	}
-
 	trigger = {
 		has_country_flag = cash_and_carry
 		not = { faction = axis }
@@ -7735,7 +7543,6 @@ cash_and_carry_USA = {
 }
 # CASH and CARRY - ENG/CHI
 cash_and_carry_ENG = {
-
 	potential = {
 		or = {
 			tag = ENG
@@ -7746,7 +7553,6 @@ cash_and_carry_ENG = {
 		not = { faction = comintern }
 		not = { has_country_flag = lend_lease_decision }
 	}
-
 	trigger = {
 		war = yes
 		has_country_flag = cash_and_carry
@@ -7766,12 +7572,10 @@ cash_and_carry_ENG = {
 }
 # Chinese Population
 Chinese_Population = {
-
 	potential = {
 		tag = CHI
 		not = { date = 1936.01.02 }
 	}
-
 	trigger = {
 		date = 1936.01.01
 	}
@@ -7781,12 +7585,10 @@ Chinese_Population = {
 	icon = 3
 }
 Chinese_Population_CHC = {
-
 	potential = {
 		tag = CHC
 		not = { date = 1936.01.02 }
 	}
-
 	trigger = {
 		date = 1936.01.01
 	}
@@ -7796,12 +7598,10 @@ Chinese_Population_CHC = {
 	icon = 3
 }
 Chinese_Population_CXB = {
-
 	potential = {
 		tag = CXB
 		not = { date = 1936.01.02 }
 	}
-
 	trigger = {
 		date = 1936.01.01
 	}
@@ -7811,12 +7611,10 @@ Chinese_Population_CXB = {
 	icon = 3
 }
 Chinese_Population_CGX = {
-
 	potential = {
 		tag = CGX
 		not = { date = 1936.01.02 }
 	}
-
 	trigger = {
 		date = 1936.01.01
 	}
@@ -7826,12 +7624,10 @@ Chinese_Population_CGX = {
 	icon = 3
 }
 Chinese_Population_CYN = {
-
 	potential = {
 		tag = CYN
 		not = { date = 1936.01.02 }
 	}
-
 	trigger = {
 		date = 1936.01.01
 	}
@@ -7841,12 +7637,10 @@ Chinese_Population_CYN = {
 	icon = 3
 }
 Chinese_Population_CSX = {
-
 	potential = {
 		tag = CSX
 		not = { date = 1936.01.02 }
 	}
-
 	trigger = {
 		date = 1936.01.01
 	}
@@ -7858,14 +7652,12 @@ Chinese_Population_CSX = {
 
 # Purges #
 Purge_Delay_36 = {
-
 	potential = {
 		tag = SOV
 		year = 1936
 		month = 7
 		not = { has_country_flag = 1936_purge }
 	}
-
 	trigger = {
 	}
 
@@ -7876,13 +7668,11 @@ Purge_Delay_36 = {
 	icon = 33
 }
 Purge_Delay_37 = {
-
 	potential = {
 		tag = SOV
 		year = 1937
 		not = { has_country_flag = 1937_purge }
 	}
-
 	trigger = {
 	}
 	ruling_party_support = -0.02
@@ -7892,14 +7682,12 @@ Purge_Delay_37 = {
 	icon = 33
 }
 Purge_Delay_38 = {
-
 	potential = {
 		tag = SOV
 		year = 1938
 		month = 2
 		not = { has_country_flag = 1938_purge }
 	}
-
 	trigger = {
 	}
 
@@ -7910,14 +7698,12 @@ Purge_Delay_38 = {
 	icon = 33
 }
 Army_Purge_Delay= {
-
 	potential = {
 		tag = SOV
 		year = 1937
 		month = 4
 		not = { has_country_flag = the_great_officer_purge }
 	}
-
 	trigger = {
 	}
 
@@ -7928,14 +7714,12 @@ Army_Purge_Delay= {
 	icon = 33
 }
 Airforce_Purge_Delay = {
-
 	potential = {
 		tag = SOV
 		year = 1938
 		month = 8
 		not = { has_country_flag = the_great_airforce_purge }
 	}
-
 	trigger = {
 	}
 
@@ -7946,14 +7730,12 @@ Airforce_Purge_Delay = {
 	icon = 33
 }
 Navy_Purge_Delay = {
-
 	potential = {
 		tag = SOV
 		year = 1938
 		month = 4
 		not = { has_country_flag = the_great_navy_purge }
 	}
-
 	trigger = {
 	}
 
@@ -7965,11 +7747,9 @@ Navy_Purge_Delay = {
 }
 # STATE OF EMERGENCY
 state_of_emergency = {
-
 	potential = {
 		tag = USA
 	}
-
 	trigger = {
 		has_country_flag = state_of_emergency
 		not = { has_country_flag = arsenal_of_democracy }
@@ -7982,11 +7762,9 @@ state_of_emergency = {
 	icon = 37
 }
 state_of_emergency_no = {
-
 	potential = {
 		tag = USA
 	}
-
 	trigger = {
 		has_country_flag = state_of_emergency_no
 		not = { has_country_flag = arsenal_of_democracy }
@@ -8002,7 +7780,6 @@ state_of_emergency_no = {
 }
 # ARSENAL OF DEMOCRACY
 arsenal_of_democracy = {
-
 	potential = {
 		tag = USA
 	}
@@ -8019,7 +7796,6 @@ arsenal_of_democracy = {
 }
 # DETROIT PRODUCTION
 detroit_industry = {
-
 	potential = {
 		tag = USA
 		has_country_flag = arsenal_of_democracy
@@ -8037,7 +7813,6 @@ detroit_industry = {
 }
 # USA mobilisation effects
 war_mobilisation_usa_I = {
-
 	potential = {
 		tag = USA
 		check_variable = {
@@ -8064,7 +7839,6 @@ war_mobilisation_usa_I = {
 	icon = 39
 }
 war_mobilisation_usa_II = {
-
 	potential = {
 		tag = USA
 		check_variable = {
@@ -8093,7 +7867,6 @@ war_mobilisation_usa_II = {
 	icon = 39
 }
 war_mobilisation_usa_III = {
-
 	potential = {
 		tag = USA
 		check_variable = {
@@ -8122,7 +7895,6 @@ war_mobilisation_usa_III = {
 	icon = 39
 }
 war_mobilisation_usa_IV = {
-
 	potential = {
 		tag = USA
 		check_variable = {
@@ -8151,7 +7923,6 @@ war_mobilisation_usa_IV = {
 	icon = 39
 }
 war_mobilisation_usa_V = {
-
 	potential = {
 		tag = USA
 		check_variable = {
@@ -8175,9 +7946,8 @@ war_mobilisation_usa_V = {
 }
 
 # WORLD DOMINATION #
-# Puppet master  from RandomHOI
+# Puppet master
 puppet_master_I = {
-
 	potential = {
 		not = { num_of_vassals = 6 }
 		not = { tag = JAP }
@@ -8196,7 +7966,6 @@ puppet_master_I = {
 	icon = 40
 }
 puppet_master_II = {
-
 	potential = {
 		num_of_vassals = 3
         not = { num_of_vassals = 9 }
@@ -8216,7 +7985,6 @@ puppet_master_II = {
 	icon = 40
 }
 puppet_master_III = {
-
 	potential = {
 		num_of_vassals = 6
 		not = { num_of_vassals = 12 }
@@ -8236,7 +8004,6 @@ puppet_master_III = {
 	icon = 40
 }
 puppet_master_IV = {
-
 	potential = {
 		num_of_vassals = 9
 		not = { tag = JAP }
@@ -8257,7 +8024,6 @@ puppet_master_IV = {
 
 # CONTROL OVER EUROPE #
 control_over_europe = {
-
 	potential = {
 		or = {
 			tag = USA
@@ -8310,7 +8076,6 @@ control_over_europe = {
 }
 # CONTROL OVER WESTERN RUSSIA
 control_over_western_russia = {
-
 	potential = {
 		or = {
 			tag = USA
@@ -11712,9 +11477,8 @@ dresden_stalingrad_truppentransport = {
 	icon = 30
 }
 
-
 # Transportation tech strat effects #
-road_one  = {
+road_one = {
 	potential = {
 		has_country_flag = roadI
 		not = { has_country_flag = roadII }
@@ -11729,7 +11493,6 @@ road_one  = {
 		not = { has_country_flag = roadXI }
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 1
 	}
@@ -11739,7 +11502,7 @@ road_one  = {
 
 	icon = 59
 }
-road_two  = {
+road_two = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -11754,7 +11517,6 @@ road_two  = {
 		not = { has_country_flag = roadXI }
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 2
 	}
@@ -11764,7 +11526,7 @@ road_two  = {
 
 	icon = 59
 }
-road_three  = {
+road_three = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -11779,7 +11541,6 @@ road_three  = {
 		not = { has_country_flag = roadXI }
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 3
 	}
@@ -11789,7 +11550,7 @@ road_three  = {
 
 	icon = 59
 }
-road_four  = {
+road_four = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -11804,7 +11565,6 @@ road_four  = {
 		not = { has_country_flag = roadXI }
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 4
 	}
@@ -11814,7 +11574,7 @@ road_four  = {
 
 	icon = 59
 }
-road_five  = {
+road_five = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -11829,7 +11589,6 @@ road_five  = {
 		not = { has_country_flag = roadXI }
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 5
 	}
@@ -11839,7 +11598,7 @@ road_five  = {
 
 	icon = 59
 }
-road_six  = {
+road_six = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -11854,7 +11613,6 @@ road_six  = {
 		not = { has_country_flag = roadXI }
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 6
 	}
@@ -11864,7 +11622,7 @@ road_six  = {
 
 	icon = 59
 }
-road_seven  = {
+road_seven = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -11879,7 +11637,6 @@ road_seven  = {
 		not = { has_country_flag = roadXI }
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 7
 	}
@@ -11889,7 +11646,7 @@ road_seven  = {
 
 	icon = 59
 }
-road_eight  = {
+road_eight = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -11904,7 +11661,6 @@ road_eight  = {
 		not = { has_country_flag = roadXI }
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 8
 	}
@@ -11914,7 +11670,7 @@ road_eight  = {
 
 	icon = 59
 }
-road_nine  = {
+road_nine = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -11929,7 +11685,6 @@ road_nine  = {
 		not = { has_country_flag = roadXI }
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 9
 	}
@@ -11939,7 +11694,7 @@ road_nine  = {
 
 	icon = 59
 }
-road_ten  = {
+road_ten = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -11954,7 +11709,6 @@ road_ten  = {
 		not = { has_country_flag = roadXI }
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 10
 	}
@@ -11964,7 +11718,7 @@ road_ten  = {
 
 	icon = 59
 }
-road_eleven  = {
+road_eleven = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -11979,7 +11733,6 @@ road_eleven  = {
 		has_country_flag = roadXI
 		not = { has_country_flag = roadXII }
 	}
-
 	trigger = {
 		road_highway = 11
 	}
@@ -11989,7 +11742,7 @@ road_eleven  = {
 
 	icon = 59
 }
-road_twelve  = {
+road_twelve = {
 	potential = {
 		has_country_flag = roadI
 		has_country_flag = roadII
@@ -12004,7 +11757,6 @@ road_twelve  = {
 		has_country_flag = roadXI
 		has_country_flag = roadXII
 	}
-
 	trigger = {
 		road_highway = 12
 	}
@@ -12014,7 +11766,7 @@ road_twelve  = {
 
 	icon = 59
 }
-rail_one  = {
+rail_one = {
 	potential = {
 		has_country_flag = railI
 		not = { has_country_flag = railII }
@@ -12029,7 +11781,6 @@ rail_one  = {
 		not = { has_country_flag = railXI }
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 1
 	}
@@ -12039,7 +11790,7 @@ rail_one  = {
 
 	icon = 30
 }
-rail_two  = {
+rail_two = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12054,7 +11805,6 @@ rail_two  = {
 		not = { has_country_flag = railXI }
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 2
 	}
@@ -12064,7 +11814,7 @@ rail_two  = {
 
 	icon = 30
 }
-rail_three  = {
+rail_three = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12079,7 +11829,6 @@ rail_three  = {
 		not = { has_country_flag = railXI }
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 3
 	}
@@ -12089,7 +11838,7 @@ rail_three  = {
 
 	icon = 30
 }
-rail_four  = {
+rail_four = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12104,7 +11853,6 @@ rail_four  = {
 		not = { has_country_flag = railXI }
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 4
 	}
@@ -12114,7 +11862,7 @@ rail_four  = {
 
 	icon = 30
 }
-rail_five  = {
+rail_five = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12129,7 +11877,6 @@ rail_five  = {
 		not = { has_country_flag = railXI }
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 5
 	}
@@ -12139,7 +11886,7 @@ rail_five  = {
 
 	icon = 30
 }
-rail_six  = {
+rail_six = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12154,7 +11901,6 @@ rail_six  = {
 		not = { has_country_flag = railXI }
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 6
 	}
@@ -12164,7 +11910,7 @@ rail_six  = {
 
 	icon = 30
 }
-rail_seven  = {
+rail_seven = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12179,7 +11925,6 @@ rail_seven  = {
 		not = { has_country_flag = railXI }
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 7
 	}
@@ -12189,7 +11934,7 @@ rail_seven  = {
 
 	icon = 30
 }
-rail_eight  = {
+rail_eight = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12204,7 +11949,6 @@ rail_eight  = {
 		not = { has_country_flag = railXI }
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 8
 	}
@@ -12214,7 +11958,7 @@ rail_eight  = {
 
 	icon = 30
 }
-rail_nine  = {
+rail_nine = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12229,7 +11973,6 @@ rail_nine  = {
 		not = { has_country_flag = railXI }
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 9
 	}
@@ -12239,7 +11982,7 @@ rail_nine  = {
 
 	icon = 30
 }
-rail_ten  = {
+rail_ten = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12254,7 +11997,6 @@ rail_ten  = {
 		not = { has_country_flag = railXI }
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 10
 	}
@@ -12264,7 +12006,7 @@ rail_ten  = {
 
 	icon = 30
 }
-rail_eleven  = {
+rail_eleven = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12279,7 +12021,6 @@ rail_eleven  = {
 		has_country_flag = railXI
 		not = { has_country_flag = railXII }
 	}
-
 	trigger = {
 		railway = 11
 	}
@@ -12289,7 +12030,7 @@ rail_eleven  = {
 
 	icon = 30
 }
-rail_twelve  = {
+rail_twelve = {
 	potential = {
 		has_country_flag = railI
 		has_country_flag = railII
@@ -12304,7 +12045,6 @@ rail_twelve  = {
 		has_country_flag = railXI
 		has_country_flag = railXII
 	}
-
 	trigger = {
 		railway = 12
 	}
@@ -12314,7 +12054,7 @@ rail_twelve  = {
 
 	icon = 30
 }
-sea_one  = {
+sea_one = {
 	potential = {
 		has_country_flag = seaI
 		not = { has_country_flag = seaII }
@@ -12329,17 +12069,16 @@ sea_one  = {
 		not = { has_country_flag = seaXI }
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 1
 	}
 
-	global_resources  = 0.010
+	global_resources = 0.010
 	global_money = 0.010
 
 	icon = 9
 }
-sea_two  = {
+sea_two = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12354,17 +12093,16 @@ sea_two  = {
 		not = { has_country_flag = seaXI }
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 2
 	}
 
-	global_resources  = 0.012
+	global_resources = 0.012
 	global_money = 0.012
 
 	icon = 9
 }
-sea_three  = {
+sea_three = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12379,17 +12117,16 @@ sea_three  = {
 		not = { has_country_flag = seaXI }
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 3
 	}
 
-	global_resources  = 0.014
+	global_resources = 0.014
 	global_money = 0.014
 
 	icon = 9
 }
-sea_four  = {
+sea_four = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12404,17 +12141,16 @@ sea_four  = {
 		not = { has_country_flag = seaXI }
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 4
 	}
 
-	global_resources  = 0.016
+	global_resources = 0.016
 	global_money = 0.016
 
 	icon = 9
 }
-sea_five  = {
+sea_five = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12429,17 +12165,16 @@ sea_five  = {
 		not = { has_country_flag = seaXI }
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 5
 	}
 
-	global_resources  = 0.018
+	global_resources = 0.018
 	global_money = 0.018
 
 	icon = 9
 }
-sea_six  = {
+sea_six = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12454,17 +12189,16 @@ sea_six  = {
 		not = { has_country_flag = seaXI }
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 6
 	}
 
-	global_resources  = 0.020
+	global_resources = 0.020
 	global_money = 0.020
 
 	icon = 9
 }
-sea_seven  = {
+sea_seven = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12479,17 +12213,16 @@ sea_seven  = {
 		not = { has_country_flag = seaXI }
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 7
 	}
 
-	global_resources  = 0.022
+	global_resources = 0.022
 	global_money = 0.022
 
 	icon = 9
 }
-sea_eight  = {
+sea_eight = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12504,17 +12237,16 @@ sea_eight  = {
 		not = { has_country_flag = seaXI }
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 8
 	}
 
-	global_resources  = 0.024
+	global_resources = 0.024
 	global_money = 0.024
 
 	icon = 9
 }
-sea_nine  = {
+sea_nine = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12529,17 +12261,16 @@ sea_nine  = {
 		not = { has_country_flag = seaXI }
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 9
 	}
 
-	global_resources  = 0.026
+	global_resources = 0.026
 	global_money = 0.026
 
 	icon = 9
 }
-sea_ten  = {
+sea_ten = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12554,17 +12285,16 @@ sea_ten  = {
 		not = { has_country_flag = seaXI }
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 10
 	}
 
-	global_resources  = 0.028
+	global_resources = 0.028
 	global_money = 0.028
 
 	icon = 9
 }
-sea_eleven  = {
+sea_eleven = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12579,17 +12309,16 @@ sea_eleven  = {
 		has_country_flag = seaXI
 		not = { has_country_flag = seaXII }
 	}
-
 	trigger = {
 		seaport = 11
 	}
 
-	global_resources  = 0.030
+	global_resources = 0.030
 	global_money = 0.030
 
 	icon = 9
 }
-sea_twelve  = {
+sea_twelve = {
 	potential = {
 		has_country_flag = seaI
 		has_country_flag = seaII
@@ -12604,18 +12333,16 @@ sea_twelve  = {
 		has_country_flag = seaXI
 		has_country_flag = seaXII
 	}
-
 	trigger = {
 		seaport = 12
 	}
 
-	global_resources  = 0.032
+	global_resources = 0.032
 	global_money = 0.032
 
 	icon = 9
 }
-air_one  = {
-
+air_one = {
 	potential = {
 		has_country_flag = airI
 		not = { has_country_flag = airII }
@@ -12630,7 +12357,6 @@ air_one  = {
 		not = { has_country_flag = airXI }
 		not = { has_country_flag = airXII }
 	}
-
 	trigger = {
 		airport = 1
 	}
@@ -12639,7 +12365,7 @@ air_one  = {
 
 	icon = 7
 }
-air_two  = {
+air_two = {
 	potential = {
 		has_country_flag = airI
 		has_country_flag = airII
@@ -12654,7 +12380,6 @@ air_two  = {
 		not = { has_country_flag = airXI }
 		not = { has_country_flag = airXII }
 	}
-
 	trigger = {
 		airport = 2
 	}
@@ -12663,7 +12388,7 @@ air_two  = {
 
 	icon = 7
 }
-air_three  = {
+air_three = {
 	potential = {
 		has_country_flag = airI
 		has_country_flag = airII
@@ -12678,7 +12403,6 @@ air_three  = {
 		not = { has_country_flag = airXI }
 		not = { has_country_flag = airXII }
 	}
-
 	trigger = {
 		airport = 3
 	}
@@ -12687,7 +12411,7 @@ air_three  = {
 
 	icon = 7
 }
-air_four  = {
+air_four = {
 	potential = {
 		has_country_flag = airI
 		has_country_flag = airII
@@ -12702,7 +12426,6 @@ air_four  = {
 		not = { has_country_flag = airXI }
 		not = { has_country_flag = airXII }
 	}
-
 	trigger = {
 		airport = 4
 	}
@@ -12711,7 +12434,7 @@ air_four  = {
 
 	icon = 7
 }
-air_five  = {
+air_five = {
 	potential = {
 		has_country_flag = airI
 		has_country_flag = airII
@@ -12726,7 +12449,6 @@ air_five  = {
 		not = { has_country_flag = airXI }
 		not = { has_country_flag = airXII }
 	}
-
 	trigger = {
 		airport = 5
 	}
@@ -12735,7 +12457,7 @@ air_five  = {
 
 	icon = 7
 }
-air_six  = {
+air_six = {
 	potential = {
 		has_country_flag = airI
 		has_country_flag = airII
@@ -12750,7 +12472,6 @@ air_six  = {
 		not = { has_country_flag = airXI }
 		not = { has_country_flag = airaXII }
 	}
-
 	trigger = {
 		airport = 6
 	}
@@ -12759,7 +12480,7 @@ air_six  = {
 
 	icon = 7
 }
-air_seven  = {
+air_seven = {
 	potential = {
 		has_country_flag = airI
 		has_country_flag = airII
@@ -12782,7 +12503,7 @@ air_seven  = {
 
 	icon = 7
 }
-air_eight  = {
+air_eight = {
 	potential = {
 		has_country_flag = airI
 		has_country_flag = airII
@@ -12797,16 +12518,14 @@ air_eight  = {
 		not = { has_country_flag = airXI }
 		not = { has_country_flag = airXII }
 	}
-
 	trigger = {
 		airport = 8
 	}
-
 	air_organisation = 0.012
 
 	icon = 7
 }
-air_nine  = {
+air_nine = {
 	potential = {
 		has_country_flag = airI
 		has_country_flag = airII
@@ -12821,7 +12540,6 @@ air_nine  = {
 		not = { has_country_flag = airXI }
 		not = { has_country_flag = airXII }
 	}
-
 	trigger = {
 		airport = 9
 	}
@@ -12830,7 +12548,7 @@ air_nine  = {
 
 	icon = 7
 }
-air_ten  = {
+air_ten = {
 	potential = {
 		has_country_flag = airI
 		has_country_flag = airII
@@ -14806,12 +14524,12 @@ lack_of_strat_resource_ship_armor_techs = {
 				not = { check_variable = { which = copper_ActualBalance value = 1000 } }
 			}
 			and = {
-				Cemented_armor  = 1
+				Cemented_armor = 1
 				not = { check_variable = { which = manganese_ActualBalance value = 1000 } }
 				not = { check_variable = { which = chromite_ActualBalance value = 1000 } }
 			}
 			and = {
-				Special_treatment_steel  = 1
+				Special_treatment_steel = 1
 				not = { check_variable = { which = nickel_ActualBalance value = 1000 } }
 				not = { check_variable = { which = chromite_ActualBalance value = 1000 } }
 			}
@@ -14826,12 +14544,12 @@ lack_of_strat_resource_ship_armor_techs = {
 				not = { check_variable = { which = copper_ActualBalance value = 1000 } }
 			}
 			and = {
-				Cemented_armor  = 1
+				Cemented_armor = 1
 				not = { check_variable = { which = manganese_ActualBalance value = 1000 } }
 				not = { check_variable = { which = chromite_ActualBalance value = 1000 } }
 			}
 			and = {
-				Special_treatment_steel  = 1
+				Special_treatment_steel = 1
 				not = { check_variable = { which = nickel_ActualBalance value = 1000 } }
 				not = { check_variable = { which = chromite_ActualBalance value = 1000 } }
 			}
@@ -14843,9 +14561,7 @@ lack_of_strat_resource_ship_armor_techs = {
 	icon = 50
 }
 
-
 has_one_strat_resource_ship_armor_techs = {
-
 	potential = {
 		or = {
 			and = {
@@ -14862,7 +14578,7 @@ has_one_strat_resource_ship_armor_techs = {
 				}
 			}
 			and = {
-				Special_treatment_steel  = 1
+				Special_treatment_steel = 1
 				or = {
 					and = {
 						not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
@@ -14892,7 +14608,7 @@ has_one_strat_resource_ship_armor_techs = {
 				}
 			}
 			and = {
-				Special_treatment_steel  = 1
+				Special_treatment_steel = 1
 				or = {
 					and = {
 						not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
@@ -14906,8 +14622,6 @@ has_one_strat_resource_ship_armor_techs = {
 			}
 		}
 	}
-
-	#naval_build_speed = 0.025
 
 	icon = 50
 }
@@ -14921,12 +14635,12 @@ has_all_strat_resource_ship_armor_techs = {
 				check_variable = { which = copper_ActualBalance value = 1000 }
 			}
 			and = {
-				Cemented_armor  = 1
+				Cemented_armor = 1
 				check_variable = { which = manganese_ActualBalance value = 1000 }
 				check_variable = { which = chromite_ActualBalance value = 1000 }
 			}
 			and = {
-				Special_treatment_steel  = 1
+				Special_treatment_steel = 1
 				check_variable = { which = nickel_ActualBalance value = 1000 }
 				check_variable = { which = chromite_ActualBalance value = 1000 }
 			}
@@ -14939,12 +14653,12 @@ has_all_strat_resource_ship_armor_techs = {
 				check_variable = { which = copper_ActualBalance value = 1000 }
 			}
 			and = {
-				Cemented_armor  = 1
+				Cemented_armor = 1
 				check_variable = { which = manganese_ActualBalance value = 1000 }
 				check_variable = { which = chromite_ActualBalance value = 1000 }
 			}
 			and = {
-				Special_treatment_steel  = 1
+				Special_treatment_steel = 1
 				check_variable = { which = nickel_ActualBalance value = 1000 }
 				check_variable = { which = chromite_ActualBalance value = 1000 }
 			}
@@ -14977,7 +14691,6 @@ lack_of_strat_resource_tank_armor_techs = {
 	icon = 48
 }
 
-
 has_one_strat_resource_tank_armor_techs = {
 
 	potential = {
@@ -14990,7 +14703,7 @@ has_one_strat_resource_tank_armor_techs = {
 			}
 			and = {
 				not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
-				check_variable = { which = manganese_ActualBalance value = 1000  }
+				check_variable = { which = manganese_ActualBalance value = 1000 }
 				not = { check_variable = { which = molybdenum_ActualBalance value = 1000 }}
 			}
 			and = {
@@ -29155,5 +28868,3 @@ veteran_expertise_42 = {
 	unit_start_experience = 20
 	icon = 60
 }
-
-#EOF#

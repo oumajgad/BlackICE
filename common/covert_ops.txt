@@ -2,20 +2,17 @@
 
 sabotage_strategic_resource = {
 	cost = 10
-
 	is_valid = {
 		has_strategic_resource = yes
 		controller = {
 			war_with = from
 		}
 	}
-
 	is_selectable = {
 		NOT = {
 			has_province_modifier = covertopsmod_damage_resource
 		}
 	}
-
 	effect = {
 		add_province_modifier = {
 			name = covertopsmod_damage_resource
@@ -26,7 +23,6 @@ sabotage_strategic_resource = {
 
 hide_strat_resource_trade = {
 	cost = 0
-
 	is_valid = {
 		controller = {
 			ai = no
@@ -40,10 +36,8 @@ hide_strat_resource_trade = {
 		is_capital = yes
 		owned_by = from
 	}
-
 	is_selectable = {
 	}
-
 	effect = {
 		from = {
 			set_variable = {
@@ -56,7 +50,6 @@ hide_strat_resource_trade = {
 
 show_strat_resource_trade = {
 	cost = 0
-
 	is_valid = {
 		controller = {
 			ai = no
@@ -68,10 +61,8 @@ show_strat_resource_trade = {
 		is_capital = yes
 		owned_by = from
 	}
-
 	is_selectable = {
 	}
-
 	effect = {
 		from = {
 			set_variable = {
@@ -84,7 +75,6 @@ show_strat_resource_trade = {
 
 hide_mines_expansion = {
 	cost = 0
-
 	is_valid = {
 		controller = {
 			ai = no
@@ -98,10 +88,8 @@ hide_mines_expansion = {
 		is_capital = yes
 		owned_by = from
 	}
-
 	is_selectable = {
 	}
-
 	effect = {
 		from = {
 			set_variable = {
@@ -114,7 +102,6 @@ hide_mines_expansion = {
 
 show_mines_expansion = {
 	cost = 0
-
 	is_valid = {
 		controller = {
 			ai = no
@@ -126,10 +113,8 @@ show_mines_expansion = {
 		is_capital = yes
 		owned_by = from
 	}
-
 	is_selectable = {
 	}
-
 	effect = {
 		from = {
 			set_variable = {
@@ -142,16 +127,13 @@ show_mines_expansion = {
 
 steal_battle_plans = {
 	cost = 10
-
 	is_valid = {
 		controller = {
 			war_with = from
 		}
 	}
-
 	is_selectable = {
 	}
-
 	effect = {
 		local_intel_boost = 60   # local_intel_boost within this distance
 	}
@@ -159,29 +141,24 @@ steal_battle_plans = {
 
 scout_area = {
 	cost = 5
-
 	is_valid = {
 		controller = {
 			war_with = from
 		}
 	}
-
 	is_selectable = {
 		NOT = {
 			has_province_modifier = covertopsmod_scout
 		}
 	}
-
 	effect = {
 		any_nearby_province = {
 			distance = 60
-
 			limit = {
 				NOT = {
 					has_province_modifier = covertopsmod_scout
 				}
 			}
-
 			add_province_modifier = {
 				name = covertopsmod_scout
 				duration = 30
@@ -192,13 +169,11 @@ scout_area = {
 
 partisan_resupply = {
 	cost = 15
-
 	is_valid = {
 		controller = {
 			war_with = from
 		}
 	}
-
 	is_selectable = {
 		NOT = {
 			owned_by = FROM
@@ -208,7 +183,6 @@ partisan_resupply = {
 			has_province_modifier = covertopsmod_partisan_resupply
 		}
 	}
-
 	effect = {
 		add_province_modifier = {
 			name = covertopsmod_partisan_resupply
@@ -219,13 +193,11 @@ partisan_resupply = {
 
 sabotage_area = {
 	cost = 15
-
 	is_valid = {
 		controller = {
 			war_with = from
 		}
 	}
-
 	is_selectable = {
 		NOT = {
 			has_province_modifier = covertopsmod_sabotage
@@ -235,13 +207,11 @@ sabotage_area = {
 	effect = {
 		any_nearby_province = {
 			distance = 60
-
 			limit = {
 				NOT = {
 					has_province_modifier = covertopsmod_sabotage
 				}
 			}
-
 			add_province_modifier = {
 				name = covertopsmod_sabotage
 				duration = 30
@@ -251,29 +221,24 @@ sabotage_area = {
 }
 incite_revolt = {
 	cost = 15
-
 	is_valid = {
 		controller = {
 			war_with = from
 		}
 	}
-
 	is_selectable = {
 		NOT = {
 			has_province_modifier = covertopsmod_sabotage
 		}
 	}
-
 	effect = {
 		any_nearby_province = {
 			distance = 60
-
 			limit = {
 				NOT = {
 					has_province_modifier = covertopsmod_sabotage
 				}
 			}
-
 			add_province_modifier = {
 				name = covertopsmod_revolt
 				duration = 30
@@ -284,13 +249,11 @@ incite_revolt = {
 #Verbrannte Erde: roads#
 scorched_earth_roads = {
 	cost = 0
-
 	is_valid = {
 		from = {
 			ai = no
 		}
 	}
-
 	is_selectable = {
 		controlled_by = from
 	    or = {
@@ -302,7 +265,6 @@ scorched_earth_roads = {
 			}
 		}
 	}
-
 	effect = {
 		any_nearby_province = {
 			distance = 60
@@ -337,11 +299,8 @@ scorched_earth_roads = {
 	}
 }
 
-
-
 evacuate_the_specialists_home = {
 	cost = 0
-
 	is_valid = {
 		from = {
 			ai = no
@@ -349,7 +308,6 @@ evacuate_the_specialists_home = {
 		owned_by = from
 		controlled_by = from
 	}
-
 	is_selectable = {
 		owned_by = from
         controlled_by = from
@@ -361,7 +319,6 @@ evacuate_the_specialists_home = {
 			has_province_modifier = evacuation_home_LS
 		}
 	}
-
 	effect = {
 		add_province_modifier = {
 			name = "evacuation_home_LS"
@@ -382,7 +339,6 @@ evacuate_the_specialists_home = {
 
 evacuate_the_specialists_enemy = {
 	cost = 0
-
 	is_valid = {
 		from = {
 			ai = no
@@ -392,7 +348,6 @@ evacuate_the_specialists_enemy = {
 			war_with = from
 		}
 	}
-
 	is_selectable = {
 		owner = {
 			war_with = from
@@ -406,13 +361,11 @@ evacuate_the_specialists_enemy = {
 			has_province_modifier = evacuation_enemy_LS
 		}
 	}
-
 	effect = {
 		add_province_modifier = {
 			name = "evacuation_enemy_LS"
             duration = 180
 		}
-
         leadership = -0.5
         from = {
 			random_owned = {
@@ -428,7 +381,6 @@ evacuate_the_specialists_enemy = {
 
 evacuate_the_industry_home = {
 	cost = 0
-
 	is_valid = {
 		from = {
 			ai = no
@@ -436,7 +388,6 @@ evacuate_the_industry_home = {
 		owned_by = from
         controlled_by = from
 	}
-
 	is_selectable = {
 		owned_by = from
         controlled_by = from
@@ -448,7 +399,6 @@ evacuate_the_industry_home = {
 			has_province_modifier = evacuation_home_IC
 		}
 	}
-
 	effect = {
 		add_province_modifier = {
 			name = "evacuation_home_IC"
@@ -472,7 +422,6 @@ evacuate_the_industry_home = {
 
 evacuate_the_industry_enemy = {
 	cost = 0
-
 	is_valid = {
 		from = {
 			ai = no
@@ -482,7 +431,6 @@ evacuate_the_industry_enemy = {
 			war_with = from
 		}
 	}
-
 	is_selectable = {
         controlled_by = from
         industry = 1
@@ -496,7 +444,6 @@ evacuate_the_industry_enemy = {
 			has_province_modifier = evacuation_enemy_IC
 		}
 	 }
-
 	effect = {
 		add_province_modifier = {
 			name = "evacuation_enemy_IC"
@@ -508,7 +455,6 @@ evacuate_the_industry_enemy = {
 		}
 	}
 }
-
 
 evacuationpoint= {
     cost = 0
@@ -550,8 +496,8 @@ clr_evacuationpoint= {
 	}
 	effect = {
 		clr_province_flag = evacuation_point
+		}
 	}
-}
     lower_neutrality = {
 	cost = 5
 	is_valid = {
@@ -775,7 +721,6 @@ remove_mark_province_for_province_change = {
 
 mark_province_for_invasion_port = {
 	cost = 0
-
 	is_valid = {
 		from = {
 			ai = no
@@ -786,7 +731,6 @@ mark_province_for_invasion_port = {
 		}
 		port = yes
 	}
-
 	is_selectable = {
 		or = {
 			owner = {
@@ -805,7 +749,6 @@ mark_province_for_invasion_port = {
 			has_province_modifier = invasion_port_cooldown
 		}
 	}
-
 	effect = {
 		from = {
 			set_country_flag = invasion_port_marked
@@ -816,13 +759,11 @@ mark_province_for_invasion_port = {
 
 remove_mark_province_for_invasion_port = {
 	cost = 0
-
 	is_valid = {
 		has_province_flag = invasion_port_province_marked
 	}
 
 	is_selectable = {}
-
 	effect = {
 		from = {
 			clr_country_flag = invasion_port_marked
@@ -830,7 +771,6 @@ remove_mark_province_for_invasion_port = {
 		clr_province_flag = invasion_port_province_marked
 	}
 }
-
 
 activate_event_units_ic_investment_choice = {
 	cost = 0
@@ -941,7 +881,6 @@ hide_export_ban_decisions = {
 		}
 	}
 }
-
 
 disable_gui_acess = {
 	cost = 0
