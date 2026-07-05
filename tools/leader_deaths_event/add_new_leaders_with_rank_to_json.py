@@ -1,9 +1,9 @@
 import json
 import os
 
-###################################################
-# Add new leaders which have a "rank = 0" history
-###################################################
+###########################################################################################################
+# One time script which read the "rank = 0" entries and added the leader_death comment to the leader file #
+###########################################################################################################
 
 leaders_json: dict[str,dict[str,list]]
 with open("tools\leader_deaths_event\leader_deaths_sorted.json", "r") as f:
