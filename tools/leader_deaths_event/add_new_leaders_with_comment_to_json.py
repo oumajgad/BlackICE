@@ -1,9 +1,9 @@
 import json
 import os
 
-########################################################
-# Add new leaders which have a "#leader_death:" history
-########################################################
+#####################################################################
+# Add new leaders which have a "#leader_death:" history to the json #
+#####################################################################
 
 leaders_json: dict[str,dict[str,list]]
 with open("tools\leader_deaths_event\leader_deaths_sorted.json", "r") as f:
