@@ -20,5 +20,5 @@ if __name__ == "__main__":
                     continue
                 print(Path(root).joinpath(Path(file)))
                 b = parse_file(Path(root).joinpath(Path(file)))
-                combat = b.find_by_key_single("combat")
-                print(b)
+                # combat = b.find_by_key_single("combat")
+                # print(b)

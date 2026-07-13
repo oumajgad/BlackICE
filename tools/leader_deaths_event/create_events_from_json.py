@@ -34,13 +34,29 @@ leader_deaths: dict[str,dict[str,list[int]]]
 with open("tools\leader_deaths_event\leader_deaths_sorted.json", "r") as f:
     leader_deaths = json.load(f)
 
+default_cutoff_date = datetime.strptime("1941.06.22", "%Y.%m.%d")
+date_cutoffs = {
+    "GER": datetime.strptime("1939.09.01", "%Y.%m.%d"),
+    "ENG": datetime.strptime("1939.09.01", "%Y.%m.%d"),
+    "FRA": datetime.strptime("1939.09.01", "%Y.%m.%d"),
+    "ITA": datetime.strptime("1940.06.01", "%Y.%m.%d"),
+    "USA": datetime.strptime("1941.12.07", "%Y.%m.%d"),
+    "JAP": datetime.strptime("1941.12.07", "%Y.%m.%d"),
+    "SOV": datetime.strptime("1941.06.22", "%Y.%m.%d"),
+}
+
 event_id = 78000
 write_lines = []
 handled_leaders = []
 for tag, dates in leader_deaths.items():
     write_lines.append(header_template.format(tag=tag))
     for _date, leaders in dates.items():
-        date = datetime.strptime(_date, "%Y.%m.%d").strftime("%Y.%m.%d")
+        date = date_str = datetime.strptime(_date, "%Y.%m.%d")
+        cutoff_date = date_cutoffs.get(tag, default_cutoff_date)
+        if date > cutoff_date:
+            print(f"Skipping {tag} leader deaths on {_date} because it is after the cutoff date of {cutoff_date.strftime('%Y.%m.%d')}.")
+            continue
+        date_str = datetime.strptime(_date, "%Y.%m.%d").strftime("%Y.%m.%d")
         # print(tag)
         # print(date)
         # print(leaders)
@@ -54,10 +70,10 @@ for tag, dates in leader_deaths.items():
         event_text = event_template.format(
             event_id=event_id, 
             tag=tag, 
-            date=date, 
-            country_flag=f"leader_deaths_{date.replace('.','')}", 
+            date=date_str, 
+            country_flag=f"leader_deaths_{date_str.replace('.','')}", 
             textA=event_lines, 
-            textB=f"\n        officer_pool = -{len(leaders*1000)}\n        money = -{len(leaders*200)}"
+            textB=f"\n        officer_pool = -{len(leaders)*1000}\n        money = -{len(leaders)*200}"
         )
         event_id += 1
         write_lines.append(event_text)
