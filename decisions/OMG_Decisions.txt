@@ -4690,10 +4690,6 @@ diplomatic_decisions = {
 			date = 1936.7.1
 		}
 		effect = {
-			add_country_modifier = {
-				name = "money_deficit_duration_timer"
-				duration = 7
-			}
 			OMG = {
 				any_country = {
 					limit = {
@@ -4702,6 +4698,10 @@ diplomatic_decisions = {
 						check_variable = {
 							which = "BaseIC"
 							value = 150
+						}
+						check_variable = {
+							which = "money_deficit_count"
+							value = 1
 						}
 					}
 					change_variable = {
@@ -4727,6 +4727,10 @@ diplomatic_decisions = {
 						value = +1
 					}
 				}
+			}
+			add_country_modifier = {
+				name = "money_deficit_duration_timer"
+				duration = 7
 			}
 		}
 	}
