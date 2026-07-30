@@ -1,11 +1,4 @@
 # Marneman's National Wartime Fiscal Policy Events
-# Note: In the original War Bonds events, things were pretty straightforward.
-# You chose to issue War Bonds, and you got a chunk of money at the expense of
-# some unity and dissent. This version is a little different. It offers the
-# player multiple classications of War Bonds that they can issue, and
-# additionally gives them the option of raising taxes as an alternative
-# approach to raising capital (which historically, was the argument around War
-# Bonds).
 # WAR BONDS
 # The amount of money raised is based on two factors - the first is what
 # classification of War Bonds you are issuing (Series A, B, and C), and the
@@ -28,7 +21,6 @@ country_event = {
 	# Triggers if the country is at war, and has less than 5000 money
 	trigger = {
 		war = yes
-
 		not = {
 			has_country_modifier = "TaxIncreaseMinor"
 			has_country_modifier = "TaxIncreaseModerate"
@@ -98,9 +90,7 @@ country_event = {
 # has chosen, and the number of provinces they own.
 country_event = {
 	id = 999401
-
 	is_triggered_only = yes
-
 	title = "AI: War Bond Monthly Gain Event"
 	desc = ""
 	picture = ""
@@ -184,12 +174,6 @@ country_event = {
 					money = 8
 				}
 			}
-			# Note: We could just add a modifier to boost "money", but in order to make these events scale
-			# according to the country size, we need to tie both War Bonds and Tax Increases to the number
-			# of provinces owned.  Otherwise, we are basically boosting trade income, which makes no sense.
-			# Additionally, if we did that, War Bonds would likely generate more income at a lower penalty
-			# than taxes, which makes no sense.  So we need "apples to apples" here.
-			# Remember, the financial values below are paid *PER PROVINCE OWNED*, every 30 days or so
 			any_owned = {
 				limit = {
 					owner = {
