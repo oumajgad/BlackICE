@@ -829,7 +829,6 @@ country_event = {
 			controlled_by = GER
 		}
 		# Paris
-		#fra_alsace_to_ger = { controlled_by = GER }
 		france_alsace = {
 			controlled_by = GER
 		}
@@ -1899,7 +1898,6 @@ country_event = {
 				}
 			}
 		}
-		#war = FRA # This is redundant as England and France are in Allies together
 		set_country_flag = tripartite_pact_joinITA
 		ai_chance = {
 			factor = 100
@@ -2802,12 +2800,10 @@ country_event = {
 	title = "Partisans"
 	desc = "Everywhere!"
 	picture = "partisans"
-	# Commented out the limits below, as they won't work that way, and will only cause issues.
 	option = {
 		name = "Kill them!"
 		random_list = {
 			20 = {
-				#limit = { controlled_by = GER	}
 				LAT_1220  = {
 					limit = {
 						infra = 3
@@ -2852,7 +2848,6 @@ country_event = {
 				}
 			}
 			40 = {
-				#limit = { controlled_by = GER }
 				POL_2046 = {
 					limit = {
 						infra = 3
@@ -2897,7 +2892,6 @@ country_event = {
 				}
 			}
 			20 = {
-				#limit = { controlled_by = GER }
 				SOV_2278 = {
 					limit = {
 						infra = 3
@@ -2956,7 +2950,6 @@ country_event = {
 				}
 			}
 			20 = {
-				#limit = { controlled_by = GER }
 				SOV_1316 = {
 					limit = {
 						infra = 3
@@ -3059,17 +3052,19 @@ country_event = {
 	picture = "Vichy_annexation"
 	option = {
 		name = "OK"
-		#southern_france_region = { secede_province = GER }
-		#western_france_region = { secede_province = GER }
-		#france_briancon = { secede_province = GER }
+		FRA_4298 = {
+			secede_province = ITA
+		}
 		FRA_4359 = {
 			secede_province = ITA
 		}
+		FRA_4486 = {
+			secede_province = ITA
+		}
+		FRA_4421 = {
+			secede_province = ITA
+		}
 		# Corsica
-		#north_africa_region = { secede_province = ITA }
-		#fra_to_ger42 = { change_controller = GER }
-		#fra_to_ita42 = { change_controller = ITA }
-		#fra_to_ita40 = { change_controller = ITA }
 		ai_chance = {
 			factor = 100
 		}
@@ -4625,7 +4620,6 @@ country_event = {
 		GER = {
 			country_event = 48663
 		}
-		#set_country_flag = resistence_OMG
 		ai_chance = {
 			factor = 100
 		}

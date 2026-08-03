@@ -6,7 +6,6 @@ country_event = {
 	trigger = {
 		tag = FRA
 		war_with = GER
-
 		not = {
 			exists = VIC
 			has_country_flag = fr_signs_peace
@@ -29,7 +28,6 @@ country_event = {
 		}
 		northern_france_region = {
 			limit = {
-
 				not = {
 					controlled_by = ENG
 				}
@@ -42,7 +40,6 @@ country_event = {
 		FRA_4359 = {
 			#Corsica
 			limit = {
-
 				not = {
 					controlled_by = ITA
 				}
@@ -52,7 +49,6 @@ country_event = {
 		}
 		FRA_3959 = {
 			limit = {
-
 				not = {
 					controlled_by = SPA
 				}
@@ -62,7 +58,6 @@ country_event = {
 		}
 		FRA_4099 = {
 			limit = {
-
 				not = {
 					controlled_by = SPA
 				}
@@ -72,7 +67,6 @@ country_event = {
 		}
 		syrian_region = {
 			limit = {
-
 				not = {
 					owned_by = TUR
 				}
@@ -84,11 +78,9 @@ country_event = {
 		VIC = {
 			country_event = 49839
 		}
-		#load_oob = Vichy/zDD-Vichy.txt
 		FRA = {
 			split_troops = 0.05
 		}
-		#ENG = { country_event = 8806 }
 		VIC = {
 			head_of_state = 57001
 			head_of_government = 57002
@@ -172,7 +164,6 @@ country_event = {
 		}
 		southern_france_region = {
 			limit = {
-
 				not = {
 					owned_by = ITA
 				}
@@ -184,7 +175,6 @@ country_event = {
 		}
 		north_africa_region = {
 			limit = {
-
 				not = {
 					controlled_by = ITA
 				}
@@ -245,8 +235,6 @@ country_event = {
 			secede_province = VIC
 		}
 		# Kerguelen Islands
-		#FRA_10320 = {add_core = VIC secede_province = VIC } # St. Pierre et Miquelon
-		#any_owned = { limit = { is_core = VIC }  remove_core = VIC }
 		# Make sure France is set up properly
 		FRA = {
 			national_unity = 90
@@ -294,35 +282,15 @@ country_event = {
 		load_oob = Vichy/zDD-Vichy.txt
 	}
 }
-#country_event = {
-#	id = 8806
-#	#is_triggered_only = yes
-#	trigger = {
-#		tag = ENG
-#		has_country_flag = impossible
-#	}
-#	title = "Channel Defences"
-#	desc = ""
-#	picture = ""
-#	option = {
-#		name = "Defend the Shore!"
-#		ENG = {
-#			load_oob = channel_island.txt
-#		}
-#		set_country_flag = channelforce
-#	}
-#}
+
 # VICHY FRANCE - ITALY GAINS A LITTLE
 country_event = {
 	id = 517
-	#is_triggered_only = yes
 	trigger = {
 		tag = ITA
 		faction = axis
 		war_with = FRA
-		#war_with = SOV
 		exists = VIC
-
 		not = {
 			has_country_flag = VIC_ITA
 		}
@@ -372,17 +340,14 @@ country_event = {
 # VICHY FRANCE - NATIONALIST SPAIN GAINS A LITTLE
 country_event = {
 	id = 550
-	#is_triggered_only = yes
 	trigger = {
 		tag = SPA
 		faction = axis
-
 		not = {
 			exists = SPR
 		}
 		war_with = FRA
 		exists = VIC
-
 		not = {
 			has_country_flag = VIC_SPA
 		}
@@ -649,7 +614,6 @@ country_event = {
 		any_country = {
 			limit = {
 				faction = comintern
-
 				not = {
 					tag = SOV
 				}
@@ -892,7 +856,6 @@ country_event = {
 		any_country = {
 			limit = {
 				faction = comintern
-
 				not = {
 					tag = SOV
 				}
@@ -952,145 +915,12 @@ country_event = {
 }
 
 # ITALY #
-# ALLIES INVADES ITALY - GER AT WAR
-#country_event = {
-#
-#	id = 503
-#
-#	is_triggered_only = yes
-#
-#
-#	title = "EVTNAME503"
-#	desc = "EVTDESC503"
-#	picture = "Ita_Surrender"
-#
-#	option = {
-#		name = "EVTOPTA503"
-#
-#		ai_chance = { factor = 0 }
-#
-#		libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-#		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-#		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-#		northern_italy_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-#		#ita_to_cro43 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = CRO add_core = CRO }
-#		yugoslavia_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
-#		albania_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
-#		south_tyrol_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-#		ITA_3763 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-#		france_briancon = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-#		southern_france_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
-#
-#
-#		relation = { who = USA value = 50 }
-#		relation = { who = ENG value = 50 }
-#		relation = { who = SOV value = 30 }
-#		relation = { who = GER value = -40 }
-#
-#		GER = { create_vassal = RSI }
-#
-#		leave_faction = axis
-#		#join_faction = allies
-#		dissent = -10
-#		ENG = { end_war = ITA }
-#		USA = { end_war = ITA }
-#		military_access = ENG
-#		military_access = USA
-#
-#		RSI = { load_oob = RSI.txt }
-#		RSI = {	war = {
-#				target = ENG
-#				attacker_goal = { casus_belli = conquer }
-#					}
-#				}
-#		RSI = {	war = {
-#				target = USA
-#				attacker_goal = { casus_belli = conquer }
-#					}
-#				}
-#		head_of_state = 3036
-#		head_of_government = 3048
-#		foreign_minister = 3054
-#		armament_minister = 3076
-#		minister_of_security = 3100
-#		minister_of_intelligence = 3118
-#		chief_of_staff = 3130
-#		chief_of_army = 3144
-#		chief_of_navy = 3154
-#		chief_of_air = 3165
-#
-#		ENG = { country_event = 501 }
-#	}
-#	option = {
-#		name = "EVTOPTA503"
-#
-#		ai_chance = { factor = 100 }
-#
-#		libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-#		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-#		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-#		northern_italy_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
-#		#ita_to_cro43 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = CRO add_core = CRO }
-#		yugoslavia_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
-#		albania_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
-#		south_tyrol_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-#		ITA_3763 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-#		france_briancon = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-#		southern_france_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
-#
-#		relation = { who = USA value = 50 }
-#		relation = { who = ENG value = 50 }
-#		relation = { who = SOV value = 30 }
-#		relation = { who = GER value = -40 }
-#
-#		GER = { create_vassal = RSI }
-#
-#		leave_faction = axis
-#		join_faction = allies
-#		dissent = -10
-#		ENG = { end_war = ITA }
-#		USA = { end_war = ITA }
-#		military_access = ENG
-#		military_access = USA
-#
-#		RSI = { load_oob = RSI.txt }
-#		RSI = {	war = {
-#				target = ENG
-#				attacker_goal = { casus_belli = conquer }
-#					}
-#				}
-#		RSI = {	war = {
-#				target = USA
-#				attacker_goal = { casus_belli = conquer }
-#					}
-#				}
-#		head_of_state = 3036
-#		head_of_government = 3048
-#		foreign_minister = 3054
-#		armament_minister = 3076
-#		minister_of_security = 3100
-#		minister_of_intelligence = 3118
-#		chief_of_staff = 3130
-#		chief_of_army = 3144
-#		chief_of_navy = 3154
-#		chief_of_air = 3165
-#
-#		#ENG = { country_event = 501 }
-#	}
-#	option = {
-#		name = "EVTOPTB503"
-#		form_government_in_exile = yes
-#		FROM = { country_event = 515 }
-#		ai_chance = { factor = 0 }
-#	}
-#}
 # VICTOR CHOICE - ANNEX OR CREATE A PUPPET
 # AI WILL ALWAYS ANNEX
 country_event = {
 	id = 501
 	is_triggered_only = yes
 	trigger = {
-
 		not = {
 			has_country_flag = enemy_occupation
 		}
@@ -1116,53 +946,7 @@ country_event = {
 		}
 	}
 }
-# ALLIES INVADES ITALY - GER NOT AT WAR
-#country_event = {
-#
-#	id = 519
-#
-#	is_triggered_only = yes
-#
-#
-#
-#	title = "EVTNAME503"
-#	desc = "EVTDESC503"
-#	picture = "Ita_Surrender"
-#
-#	option = {
-#		name = "EVTOPTA503"
-#		ai_chance = { factor = 100 }
-#		libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-#		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-#		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-#		relation = { who = USA value = 50 }
-#		relation = { who = ENG value = 50 }
-#		relation = { who = SOV value = 30 }
-#		leave_faction = axis
-#		join_faction = allies
-#		dissent = -10
-#		ENG = { end_war = ITA }
-#		military_access = ENG
-#		military_access = USA
-#
-#		head_of_state = 3036
-#		head_of_government = 3048
-#		foreign_minister = 3054
-#		armament_minister = 3076
-#		minister_of_security = 3100
-#		minister_of_intelligence = 3118
-#		chief_of_staff = 3130
-#		chief_of_army = 3144
-#		chief_of_navy = 3154
-#		chief_of_air = 3165
-#		ENG = { country_event = 501 }
-#	}
-#	option = {
-#		name = "EVTOPTB503"
-#		form_government_in_exile = yes
-#		FROM = { country_event = 515 }
-#	}
-#}
+
 # REFUSES TO SURRENDER - GOV IN EXILE
 # AI WILL ALWAYS ACCEPT
 # PLAYER CAN DECIDE TO ANNEX THE COUNTRY ANYWAY
@@ -1173,37 +957,31 @@ country_event = {
 	id = 515
 	is_triggered_only = yes
 	trigger = {
-
 		not = {
 			FROM = {
 				tag = POL
 			}
 		}
-
 		not = {
 			FROM = {
 				tag = FRA
 			}
 		}
-
 		not = {
 			FROM = {
 				tag = ENG
 			}
 		}
-
 		not = {
 			FROM = {
 				tag = HOL
 			}
 		}
-
 		not = {
 			FROM = {
 				tag = POR
 			}
 		}
-
 		not = {
 			FROM = {
 				tag = LUX
@@ -1214,7 +992,7 @@ country_event = {
 	desc = "EVTDESC515"
 	picture = "war_exhaustion"
 	option = {
-		name = "EVTOPTA515" # OK
+		name = "EVTOPTA515"
 		ai_chance = {
 			factor = 100
 		}
@@ -1241,7 +1019,6 @@ country_event = {
 # POL, FRA, ENG, HOL, POR, LUX
 country_event = {
 	id = 540
-	#is_triggered_only = yes
 	trigger = {
 		has_country_flag = impossible
 		or = {
@@ -1317,13 +1094,11 @@ country_event = {
 		anhui_region = {
 			secede_province = JAP
 		}
-		#sino_jap_peace_region = { secede_province = JAP }
 		5946 = {
 			secede_province = JAP
 		}
 		JAP = {
 			end_war = CHI
-			#non_aggression_pact = CHI
 			end_war = CGX
 			end_war = CYN
 			end_war = CXB
