@@ -1582,12 +1582,10 @@ diplomatic_decisions = {
 			year = 1936
 			controls = 1861 # Berlin
 			controls = 1737
-			#has_country_flag = Kriegsmarine_creation
 			not = {
 				has_country_flag = Bismarck_ship
 				has_country_flag = Bismarck_no
 			}
-			#not = { has_country_flag = Kriegsmarine_creation_no }
 			#Make AI get the event + real units around the time of the historical service launch. I dont trust the game with correctly handling the player decisions
 			or = {
 				ai = no
@@ -1634,12 +1632,10 @@ diplomatic_decisions = {
 			year = 1936
 			controls = 1861 # Berlin
 			controls = 1570
-			#has_country_flag = Kriegsmarine_creation
 			not = {
 				has_country_flag = Tirpitz_ship
 				has_country_flag = Tirpitz_no
 			}
-			#not = { has_country_flag = Kriegsmarine_creation_no }
 			#Make AI get the event + real units around the time of the historical service launch. I dont trust the game with correctly handling the player decisions
 			or = {
 				ai = no
@@ -2535,7 +2531,6 @@ diplomatic_decisions = {
 			not =  {
 				has_global_flag = NO_MODIFIERS
 			}
-			#ai = no
 			not = {
 				has_country_flag = winter_clothes_decision
 			}
@@ -2610,7 +2605,6 @@ diplomatic_decisions = {
 	Deutsche_Afrika_Korps_decision = {
 		potential = {
 			tag = GER
-			#ITA = { ai = yes }
 			ITA = {
 				war_with = ENG
 			}
@@ -3546,7 +3540,6 @@ diplomatic_decisions = {
 			tag = GER
 			date = 1937.11.1
 			controls = 1861
-			#not = { has_country_flag = upgrades_no}
 			not = {
 				has_country_flag = 2_LDiv
 			}
@@ -3584,7 +3577,6 @@ diplomatic_decisions = {
 			tag = GER
 			date = 1937.11.1
 			controls = 1861
-			#not = { has_country_flag = upgrades_no}
 			not = {
 				has_country_flag = 3_LDiv
 			}
@@ -3732,33 +3724,7 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-	# 3. Panzer Division forming
-#	PzDiv3_decision = {
-#		potential = {
-#			tag = GER
-#
-#			not = {
-#				has_global_flag = BICE_36
-#				year = 1936
-#			}
-#			controls = 1861
-#			controls = 1856
-#
-#			not = {
-#				has_country_flag = upgrades_no
-#				has_country_flag = 3_PzDiv
-#			}
-#		}
-#		allow = {
-#			date = 1935.10.15
-#		}
-#		effect = {
-#			country_event = 400019
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
+
 	# 3. Panzer Division upgrade to medium armor
 	PzDiv3_upgrade_decision = {
 		potential = {
@@ -7022,8 +6988,6 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-	#This will only trigger the event for invasion
-	#Could have a requirement for GER control of Copenhagen, but would be ahistorical
 	GER_landing_norway = {
 		major = no
 		potential = {
@@ -8492,211 +8456,6 @@ diplomatic_decisions = {
 		}
 	}
 
-#	# Indian Infantry #
-#	Indian_Inf_I = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 1
-#			not = {
-#				has_country_flag =Ind_Inf_I
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91730
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_II = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 2
-#			not = {
-#				has_country_flag =Ind_Inf_II
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91731
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_III = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 3
-#			not = {
-#				has_country_flag =Ind_Inf_III
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91732
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_IV = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 4
-#			not = {
-#				has_country_flag =Ind_Inf_IV
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91733
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_V = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 5
-#			not = {
-#				has_country_flag =Ind_Inf_V
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91734
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_VI = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 6
-#			not = {
-#				has_country_flag =Ind_Inf_VI
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91735
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_VII = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 7
-#			not = {
-#				has_country_flag =Ind_Inf_VII
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91736
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_VIII = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 8
-#			not = {
-#				has_country_flag =Ind_Inf_VIII
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91737
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_IX = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 9
-#			not = {
-#				has_country_flag =Ind_Inf_IX
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91738
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_X = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 10
-#			not = {
-#				has_country_flag =Ind_Inf_X
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91739
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_XI = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 11
-#			not = {
-#				has_country_flag =Ind_Inf_XI
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91740
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#	Indian_Inf_XII = {
-#		potential = {
-#			controls = 9406 # Dehli
-#			indian_infantry_activation = 12
-#			not = {
-#				has_country_flag =Ind_Inf_XII
-#			}
-#		}
-#		allow = {
-#		}
-#		effect = {
-#			country_event = 91741
-#		}
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
 	canada_exp_decision = {
 		potential = {
 			tag = ENG
@@ -9021,7 +8780,6 @@ diplomatic_decisions = {
 		potential = {
 			tag = ENG
 			year = 1941
-			#controls = 1964
 			1964 = {
 				controller = {
 					faction = allies
@@ -9063,7 +8821,6 @@ diplomatic_decisions = {
 		potential = {
 			tag = ENG
 			year = 1943
-			#controls = 1964
 			1964 = {
 				controller = {
 					faction = allies
@@ -9130,7 +8887,6 @@ diplomatic_decisions = {
 				}
 			}
 			war_with = GER
-			#ai = no
 			not = {
 				has_country_flag = polish_army_remains
 			}
