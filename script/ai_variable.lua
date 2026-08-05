@@ -428,9 +428,6 @@ function BuildingsCount()
 
 			for buildingtype, buildingcount in pairs(currentBuildings) do
 				local count = country:GetTotalCoreBuildingLevels(buildingsData[buildingtype]:GetIndex()):Get()
-				if count > 20 then
-					count = 20 + ((count - 20) * 0.5)
-				end
 				currentBuildings[buildingtype] = count
 				-- Utils.LUA_DEBUGOUT(tag .. " - " .. buildingtype .. " : " .. count)
 			end
