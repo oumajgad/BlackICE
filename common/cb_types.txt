@@ -32,8 +32,6 @@ peace_order = {
 	occupation_japan
 	conquer
 	install_communism
-#	liberate_as_democracy
-#	liberate_as_communist
 	install_democracy
 	puppet
 }
@@ -77,7 +75,6 @@ liberate_europe = {
 		FRA = {
 		  any_owned = { limit = { is_core = GER }  remove_core = GER }
 		}
-
 		# Restorations
 		any_owned = { limit = { NOT = { is_core = GER } controller = { faction = allies } } secede_province = ENG }
 		any_owned = { limit = { NOT = { is_core = GER } controller = { faction = comintern } } secede_province = SOV }
@@ -122,7 +119,6 @@ oder_neisse_line = {
 		SOV = { 1930 = { remove_core = SOV  add_core = POL  secede_province = POL } }
 
 		# POL lost eastern Poland & Orlova
-
 		western_poland_region = { add_core = POL secede_province = POL }
 		poland_region = {
 			limit = { is_core = POL }
@@ -156,7 +152,6 @@ division_germany = {
 		any_owned = { limit = { controller = { faction = allies } }     change_controller = ENG }
 		any_owned = { limit = { controller = { faction = comintern } }  change_controller = SOV }
 		any_owned = { limit = { controlled_by = GER }                   change_controller = FRA }
-
 		# Flensburg government
 		head_of_state = 32
 		head_of_government = 49
@@ -168,7 +163,6 @@ division_germany = {
 		chief_of_army = 176
 		chief_of_navy = 93
 		chief_of_air = 204
-
 		# Retiring of some of officials
 		remove_minister = 1
 		remove_minister = 2
@@ -200,20 +194,16 @@ liberate_asia = {
 		# Korea
 		south_korea_region = { remove_core = JAP }
 		north_korea_region = { remove_core = JAP }
-
 		# Dalian
 		5020 = { remove_core = JAP }
-
 		# Taiwan
 		5824 = { remove_core = JAP }
 		5737 = { remove_core = JAP }
-
 		# Sakhalin Island & Kuril Is.
 		7009 = { remove_core = JAP add_core = SOV }
 		6990 = { remove_core = JAP add_core = SOV }
 		8640 = { remove_core = JAP add_core = SOV }
 		6875 = { remove_core = JAP add_core = SOV }
-
 		# Japanese Oceania
 		5966  = { remove_core = JAP add_core = USA }
 		10644 = { remove_core = JAP add_core = USA }
@@ -224,7 +214,6 @@ liberate_asia = {
 		10653 = { remove_core = JAP add_core = USA }
 		6291 = { remove_core = JAP add_core = USA }
 		6319 = { remove_core = JAP add_core = USA }
-
 		# Restorations and Reparations
 		release = CHI
 		any_owned = { limit = { is_core = CHI }  secede_province = CHI }
@@ -238,7 +227,6 @@ liberate_asia = {
 		north_korea_region = { limit = { controller = { faction = allies } }  secede_province = USA }
 		north_korea_region = { limit = { controller = { faction = comintern } } secede_province = SOV }
 		north_korea_region = { limit = { controller = { OR = { faction = axis is_in_any_faction = no } } }  secede_province = USA }
-
 		any_owned = { limit = { NOT = { is_core = JAP } controller = { faction = allies } }    secede_province = USA }
 		any_owned = { limit = { NOT = { is_core = JAP } controller = { faction = comintern } } secede_province = SOV }
 	  any_owned = { limit = { NOT = { is_core = JAP } controller = { OR = { faction = axis is_in_any_faction = no } } }  secede_province = USA }
@@ -339,7 +327,6 @@ chinese_civil_war = {
 	handles_peace = yes
 	on_completion = {
 		country_event = 94513
-		#release = THIS
 	}
 	war_name = CIVIL_WAR_NAME
 }
@@ -390,7 +377,6 @@ aquire_all_cores = {
 			NOT = { faction = allies }
 		}
 	}
-
 	allowed_province = {
 		is_core = THIS
 	}
@@ -547,23 +533,6 @@ japan_USA_goal = {
 	}
 }
 
-#liberate_as_democracy = {
-#	sprite_index = 3
-#	is_triggered_only = yes
-#	always = no
-#	is_valid = {
-#		this = {
-#			faction = allies
-#		}
-#		# non allies only
-#		not = { ideology = social_conservative }
-#		not = { ideology = market_liberal }
-#		not = { ideology = social_democrat }
-#	}
-#	po_change_government = yes
-#	war_name = WAR_LIBERATE_DEMOCRACY
-#}
-
 install_democracy = {
 	sprite_index = 7
 	is_triggered_only = yes
@@ -580,11 +549,6 @@ install_democracy = {
 	po_install_government = yes
 	on_completion = {
 		country_event = 95150
-		#leave_faction = axis
-		#leave_faction = allies
-		#leave_faction = comintern
-		#coup_by = FROM
-		#join_faction = allies
 		relation = { who = FROM value = 200 }
 		organisation = 20
 		popularity = 20
@@ -592,23 +556,6 @@ install_democracy = {
 	}
 	war_name = WAR_INSTALL_DEMOCRACY
 }
-
-#liberate_as_communist = {
-#	sprite_index = 2
-#	is_triggered_only = yes
-#	always = no
-#	is_valid = {
-#		this = {
-#			faction = comintern
-#		}
-#		# non comintern only
-#		not = { ideology = left_wing_radical }
-#		not = { ideology = leninist }
-#		not = { ideology = stalinist }
-#	}
-#	po_change_government = yes
-#	war_name = WAR_LIBERATE_COMMUNIST
-#}
 
 install_communism = {
 	sprite_index = 7
