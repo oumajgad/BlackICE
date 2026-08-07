@@ -62,31 +62,6 @@
 # NOTE - 500-Class is 500/675/875 currently for both "Standard" and "Friendlies"
 # NOTE - 325-Class is 325/425/550 for both "Standard" and "Friendlies"
 # NOTE - 200-Class is 200/275/375 for both "Standard" and "Friendlies"
-# UNUSED #
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 500
-#	trait = bad_general
-#	trigger = {
-#		is_winner = no
-#	}
-#}
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 1000
-#	trait = bad_general_II
-#	trigger = {
-#		is_winner = no
-#	}
-#}
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 2000
-#	trait = bad_general_III
-#	trigger = {
-#		is_winner = no
-#	}
-#}
 # LAND TRAITS - Technical Traits
 # LAND - LOGISTICS WIZARD - 750-Class, Friendlies
 # NOTE - Added encirclement and envelopment as appropriate triggers
@@ -116,19 +91,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 6400
-#	trait = logistics_wizard_III
-#	trigger = {
-#		OR = {
-#			has_combat_modifier = BM_LACK_OF_SUPPLIES
-#			NOT = { has_combat_modifier = BM_RADIO }
-#			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
-#			has_combat_modifier = BM_ENVELOPMENT_PENALTY
-#		}
-#	}
-#}
 gainable_trait = {
 	combat = air_combat
 	hours_required = 325
@@ -142,7 +104,6 @@ gainable_trait = {
 }
 gainable_trait = {
 	combat = air_combat
-	#combat = ground_bombing
 	hours_required = 650
 	trait = logistics_wizard_air_II
 	trigger = {
@@ -152,18 +113,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = air_combat
-#	#combat = ground_bombing
-#	hours_required = 1300
-#	trait = logistics_wizard_air_III
-#	trigger = {
-#		OR = {
-#			has_combat_modifier = BM_LACK_OF_SUPPLIES
-#			NOT = { has_combat_modifier = BM_RADIO }
-#		}
-#	}
-#}
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 400
@@ -186,17 +135,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 1600
-#	trait = logistics_wizard_sea_III
-#	trigger = {
-#		OR = {
-#			has_combat_modifier = BM_LACK_OF_SUPPLIES
-#			NOT = { has_combat_modifier = BM_RADIO }
-#		}
-#	}
-#}
 # LAND - TRICKSTER - 750-Class, Friendlies
 # NOTE - Added surprise penalty and leader bonus as appropriate triggers to practice being "tricky"
 gainable_trait = {
@@ -235,24 +173,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 6500
-#	trait = trickster_III
-#	trigger = {
-#		OR = {
-#			has_combat_modifier = BM_SURPRISE_PENALTY
-#			has_combat_modifier = BM_SURPRISE_BONUS
-#			has_combat_modifier = BM_LEADER_BONUS
-#		}
-#		not = {
-#			or = {
-#				trait = old_guard
-#				trait = bad_general
-#			}
-#		}
-#	}
-#}
 # LAND - NIGHT NINJA - 2500-Class, Standard
 # NOTE - not previously available for land or gainable for land
 # NOTE - must be at night, period, setup as a 2500-class trait - just because it should be hard
@@ -272,14 +192,6 @@ gainable_trait = {
 		has_combat_modifier = BM_NIGHT_MODIFIER
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 12400
-#	trait = night_flyer_III
-#	trigger = {
-#		has_combat_modifier = BM_NIGHT_MODIFIER
-#	}
-#}
 # LAND - TANK BUSTER - 2500-Class, Friendlies
 # NOTE - not previously available for land or gainable for land
 # NOTE - setup as a 2500-class - making it harder than any other trait, because no one starts with it
@@ -321,21 +233,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 14000
-#	trait = tank_buster_III
-#	trigger = {
-#		OR = {
-#			AND = {
-#				trait = panzer_leader_II
-#				trait = offensive_doctrine
-#				trait = trickster
-#			}
-#			has_combat_modifier = BM_ARMOR_ADVANTAGE
-#		}
-#	}
-#}
 # LAND - SPOTTER - 750-Class, Friendlies
 # NOTE - not previously available for land or gainable for land
 # NOTE - triggers setup to require surprise or leader bonus or Friendlies and be in radio contact
@@ -365,18 +262,6 @@ gainable_trait = {
 		has_combat_modifier = BM_RADIO
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 6400
-#	trait = spotter_III
-#	trigger = {
-#		OR = {
-#			has_combat_modifier = BM_LEADER_BONUS
-#			has_combat_modifier = BM_SURPRISE_BONUS
-#		}
-#		has_combat_modifier = BM_RADIO
-#	}
-#}
 # LAND - DEFENSIVE DOCTRINE - 2500-Class, Friendlies
 # NOTE - Added territorial pride, encirclement, envelopment and trait-Friendlies as appropriate triggers
 gainable_trait = {
@@ -405,19 +290,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 12000
-#	trait = defensive_doctrine_III
-#	trigger = {
-#		OR = {
-#			is_attacker = no
-#			#has_combat_modifier = BM_TERRITORIAL_PRIDE
-#			has_combat_modifier = BM_ENVELOPMENT_PENALTY
-#			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
-#		}
-#	}
-#}
 # LAND - OFFENSIVE DOCTRINE - 2500-Class, Friendlies
 # NOTE - Added trait-Friendlies as appropriate triggers
 gainable_trait = {
@@ -436,14 +308,6 @@ gainable_trait = {
 		is_attacker = yes
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 12000
-#	trait = offensive_doctrine_III
-#	trigger = {
-#		is_attacker = yes
-#	}
-#}
 # LAND - ENGINEER - 750-Class, Friendlies
 # NOTE - Added adverse weather as appropriate trigger
 gainable_trait = {
@@ -468,17 +332,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 6500
-#	trait = engineer_III
-#	trigger = {
-#		OR = {
-#			has_combat_modifier = BM_RIVER_PENALTY
-#			has_combat_modifier = BM_WEATHER
-#		}
-#	}
-#}
 # LAND - FORTRESS BUSTER - 750-Class, Friendlies
 gainable_trait = {
 	combat = land_combat
@@ -496,14 +349,6 @@ gainable_trait = {
 		has_combat_modifier = BM_FORT_MODIFIER
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 6400
-#	trait = fortress_buster_III
-#	trigger = {
-#		has_combat_modifier = BM_FORT_MODIFIER
-#	}
-#}
 # LAND - COMBINED ARMS - 1500-Class, Friendlies
 gainable_trait = {
 	combat = land_combat
@@ -535,21 +380,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 12000
-#	trait = panzer_leader_III
-#	trigger = {
-#		or = {
-#			is_attacker = yes
-#			has_combat_modifier = BM_COMBINED_ARMS
-#		}
-#		or = {
-#			trait = offensive_doctrine_II
-#			trait = defensive_doctrine_II
-#		}
-#	}
-#}
 # LAND - COMMANDO - 750-Class, Friendlies
 # NOTE - fort as a trigger because commando leaders help a little with them now, as they should
 # NOTE - not previously gainable, hours set like engineer and fort_buster - 750-Class
@@ -597,28 +427,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 6400
-#	trait = commando_III
-#	trigger = {
-#		OR = {
-#			has_combat_modifier = BM_FORT_MODIFIER
-#			has_combat_modifier = BM_PARATROOP_PENALTY
-#			has_combat_modifier = BM_AMPH_PENALTY
-#		}
-#		OR = {
-#			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
-#			has_combat_modifier = BM_ENVELOPMENT_PENALTY
-#			has_combat_modifier = BM_LACK_OF_SUPPLIES
-#			has_combat_modifier = BM_SURPRISE_BONUS
-#			has_combat_modifier = BM_SURPRISE_PENALTY
-#		}
-#		not = {
-#			trait = old_guard
-#		}
-#	}
-#}
 # LAND - PARATROOPER - 600-Class, Friendlies
 gainable_trait = {
 	combat = land_combat
@@ -642,17 +450,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 600
-#	trait = para_III
-#	trigger = {
-#		has_combat_modifier = BM_PARATROOP_PENALTY
-#		not = {
-#			trait = marine_II
-#		}
-#	}
-#}
 # LAND - MARINE - 1500-Class, Friendlies
 # NOTE - Added shore bombard as appropriate triggers to have experience on either side with amphibious attack
 gainable_trait = {
@@ -681,15 +478,6 @@ gainable_trait = {
 		trait = marine
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 1400
-#	trait = marine_III
-#	trigger = {
-#		has_combat_modifier = BM_AMPH_PENALTY
-#		trait = marine_II
-#	}
-#}
 # LAND TRAITS - Terrain and Weather Traits
 # LAND - DESERT FOX - 1500-Class, Standard
 gainable_trait = {
@@ -722,21 +510,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 4000
-#	trait = desert_fox_III
-#	trigger = {
-#		terrain = desert
-#		not = {
-#			or = {
-#				trait = swamp_fox_II
-#				trait = ranger_II
-#				trait = winter_specialist_II
-#			}
-#		}
-#	}
-#}
 # LAND - SWAMP FOX - 750-Class, Standard
 gainable_trait = {
 	combat = land_combat
@@ -761,15 +534,6 @@ gainable_trait = {
 		trait = swamp_fox
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 1400
-#	trait = swamp_fox_III
-#	trigger = {
-#		terrain = marsh
-#		trait = swamp_fox_II
-#	}
-#}
 # LAND - MOUNTAINEER - 750-Class, Standard
 gainable_trait = {
 	combat = land_combat
@@ -803,22 +567,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 4500
-#	trait = mountaineer_III
-#	trigger = {
-#		terrain = mountain
-#		not = {
-#			or = {
-#				trait = swamp_fox_II
-#				trait = panzer_leader_II
-#				trait = para_II
-#				trait = jungle_rat_II
-#			}
-#		}
-#	}
-#}
 # LAND - HILL FIGHTER - 1000-Class, Standard
 gainable_trait = {
 	combat = land_combat
@@ -850,21 +598,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 6400
-#	trait = hill_fighter_III
-#	trigger = {
-#		terrain = hills
-#		not = {
-#			or = {
-#				trait = swamp_fox_II
-#				trait = jungle_rat_II
-#				trait = marine_II
-#			}
-#		}
-#	}
-#}
 # LAND - JUNGLE RAT - 1000-Class, Standard
 gainable_trait = {
 	combat = land_combat
@@ -900,23 +633,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 4000
-#	trait = jungle_rat_III
-#	trigger = {
-#		terrain = jungle
-#		not = {
-#			or = {
-#				trait = swamp_fox_II
-#				trait = para_II
-#				trait = winter_specialist_II
-#				trait = panzer_leader_II
-#				trait = desert_fox_II
-#			}
-#		}
-#	}
-#}
 # LAND - RANGER - 1500-Class, Standard
 gainable_trait = {
 	combat = land_combat
@@ -956,25 +672,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 6000
-#	trait = ranger_III
-#	trigger = {
-#		OR = {
-#			terrain = woods
-#			terrain = forest
-#		}
-#		not = {
-#			or = {
-#				trait = swamp_fox_II
-#				trait = para_II
-#				trait = winter_specialist_II
-#				trait = desert_fox_II
-#			}
-#		}
-#	}
-#}
 # LAND - URBAN SPECIALIST - 1500-Class, Standard
 gainable_trait = {
 	combat = land_combat
@@ -992,14 +689,6 @@ gainable_trait = {
 		terrain = urban
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 2000
-#	trait = urban_assault_specialist_III
-#	trigger = {
-#		terrain = urban
-#	}
-#}
 # LAND - WINTER SPECIALIST - 1500-Class, Standard
 gainable_trait = {
 	combat = land_combat
@@ -1031,21 +720,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 8000
-#	trait = winter_specialist_III
-#	trigger = {
-#		province_temperature = -2
-#		not = {
-#			or = {
-#				trait = jungle_rat_II
-#				trait = desert_fox_II
-#				trait = marine_II
-#			}
-#		}
-#	}
-#}
 # NAVAL - All Naval Traits
 # NAVAL - SUPERIOR TACTICIAN - 500-Class, Standard
 # FLAVOUR - Experienced Admiral, has "seen it all"
@@ -1063,13 +737,6 @@ gainable_trait = {
 	trigger = {
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 3000
-#	trait = superior_tactician_III
-#	trigger = {
-#	}
-#}
 # NAVAL - SEAWOLF - 375-Class, Friendlies
 # FLAVOUR - Successful Naval Attacker, knows when to attack and how to "turn the tables" when attacked
 # NOTE - not previously gainable, vanilla code did not work
@@ -1080,7 +747,6 @@ gainable_trait = {
 	trigger = {
 		OR = {
 			is_attacker = yes
-			#is_winner = yes
 		}
 	}
 }
@@ -1091,21 +757,9 @@ gainable_trait = {
 	trigger = {
 		OR = {
 			is_attacker = yes
-			#is_winner = yes
 		}
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 1500
-#	trait = seawolf_III
-#	trigger = {
-#		OR = {
-#			is_attacker = yes
-#			#is_winner = yes
-#		}
-#	}
-#}
 # NAVAL - NIGHT NINJA - 375-Class, Standard
 # FLAVOUR - Dangerous in the Dark, this admiral performs eerily-well in dark of night
 # NOTE - not previously available to SEA generals and not previously gainable
@@ -1125,14 +779,6 @@ gainable_trait = {
 		has_combat_modifier = BM_NIGHT_MODIFIER
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 1500
-#	trait = night_flyer_III
-#	trigger = {
-#		has_combat_modifier = BM_NIGHT_MODIFIER
-#	}
-#}
 # NAVAL - SPOTTER - 375-Class, Friendlies
 # FLAVOUR - Diligence on Deck, this admiral always seems to see you before you see him
 # NOTE - not previously gainable
@@ -1152,14 +798,6 @@ gainable_trait = {
 		is_attacker = yes
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 1500
-#	trait = spotter_III
-#	trigger = {
-#		is_attacker = yes
-#	}
-#}
 # NAVAL - TRICKSTER - 375-Class, Friendlies
 # FLAVOUR - He Seems to Know What You Will Do Before You Do, and he never seems to do what you expect
 # NOTE - not previously available to SEA generals, not previously gainable
@@ -1187,18 +825,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 1500
-#	trait = trickster_III
-#	trigger = {
-#		OR = {
-#			has_combat_modifier = BM_SURPRISE_PENALTY
-#			has_combat_modifier = BM_SURPRISE_BONUS
-#			has_combat_modifier = BM_LEADER_BONUS
-#		}
-#	}
-#}
 # NAVAL - LOGISTICS WIZARD - 175-Class, Friendlies
 # FLAVOUR - Resupply and Never Run Dry, the admiral gets the most mileage from what he's given
 # NOTE - not previously available to SEA generals, not previously gainable, extremely hard to gain
@@ -1226,18 +852,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 700
-#	trait = logistics_wizard_sea_III
-#	trigger = {
-#		OR = {
-#			NOT = { has_combat_modifier = BM_RADIO }
-#			has_combat_modifier = BM_LACK_OF_SUPPLIES
-#			has_combat_modifier = BM_POOR_SCREEN_PENALTY
-#		}
-#	}
-#}
 # NAVAL - BLOCKADE RUNNER - 175-Class, Friendlies
 # FLAVOUR - Now You See Me, Now You Don't, this admiral's "ghost fleet" seems to disappear at will
 # NOTE - not previously gainable, hard to gain - unless maybe you're at sea with the French :)
@@ -1258,14 +872,6 @@ gainable_trait = {
 		is_winner = no
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 750
-#	trait = blockade_runner_III
-#	trigger = {
-#		is_winner = no
-#	}
-#}
 # AIR - All Air Traits
 # AIR - CARPET BOMBER - Strategic Bombing, 850-Class
 # NOTE - originally 500-Class, but Strat Bombing is too easy to gain at that level
@@ -1285,14 +891,6 @@ gainable_trait = {
 		is_attacker = yes
 	}
 }
-#gainable_trait = {
-#	combat = ground_bombing
-#	hours_required = 3400
-#	trait = carpet_bomber_III
-#	trigger = {
-#		is_attacker = yes
-#	}
-#}
 # AIR - FLEET DESTROYER - Naval Bombing, 500-Class
 gainable_trait = {
 	combat = naval_bombing
@@ -1310,17 +908,7 @@ gainable_trait = {
 		is_attacker = yes
 	}
 }
-#gainable_trait = {
-#	combat = naval_bombing
-#	hours_required = 2000
-#	trait = fleet_destroyer_III
-#	trigger = {
-#		is_attacker = yes
-#	}
-#}
-#
 # AIR - SUPERIOR AIR TACTICIAN - Air Combat - 325-Class
-#
 # NOTE - originally 500-Class, but Air Combat is much harder to gain than other AIR categories
 # air combat is way less train-able than all other air traits
 gainable_trait = {
@@ -1337,13 +925,6 @@ gainable_trait = {
 	trigger = {
 	}
 }
-#gainable_trait = {
-#	combat = air_combat
-#	hours_required = 2000
-#	trait = superior_air_tactician_III
-#	trigger = {
-#	}
-#}
 # AIR - TANK BUSTER - Tactical Bombing, 850-Class
 # NOTE - originally 500-Class, but Tac Bombing is too easy to gain at that level
 gainable_trait = {
@@ -1362,15 +943,6 @@ gainable_trait = {
 		is_attacker = yes
 	}
 }
-#gainable_trait = {
-#	combat = land_bombing
-#	hours_required = 3400
-#	trait = tank_buster_III
-#	trigger = {
-#		is_attacker = yes
-#	}
-#}
-#
 # AIR - NIGHT NINJA - Night-time Tactical Bombing - 500-Class
 # NOTE - not previously gainable, somewhat difficult to gain
 # NOTE - setup is precarious - can choose only one type of AIR combat for it -> land_bombing
@@ -1391,14 +963,6 @@ gainable_trait = {
 		has_combat_modifier = BM_NIGHT_MODIFIER
 	}
 }
-#gainable_trait = {
-#	combat = land_bombing
-#	hours_required = 2000
-#	trait = night_flyer_III
-#	trigger = {
-#		has_combat_modifier = BM_NIGHT_MODIFIER
-#	}
-#}
 # AIR - TRICKSTER - Air Combat - 200-Class
 # NOTE - not previously available to AIR generals, not previously gainable, extremely hard to gain
 # NOTE - setup is precarious - need to choose only one type of AIR combat for it -> air_combat
@@ -1425,20 +989,7 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = air_combat
-#	hours_required = 800
-#	trait = trickster_III
-#	trigger = {
-#		OR = {
-#			has_combat_modifier = BM_SURPRISE_PENALTY
-#			has_combat_modifier = BM_SURPRISE_BONUS
-#		}
-#	}
-#}
-#
 # AIR - LOGISTICS WIZARD - Tactical Bombing - 325 Class
-#
 # NOTE - not previously available to AIR generals, not previously gainable, hard to gain
 # NOTE - setup is precarious - need to choose only one type of AIR combat for it -> land_bombing
 # NOTE - why? each combat-type generates a unique progress path - for this, sticking with land_bombing for now
@@ -1466,18 +1017,6 @@ gainable_trait = {
 		}
 	}
 }
-#gainable_trait = {
-#	combat = land_bombing
-#	hours_required = 1300
-#	trait = logistics_wizard_air_III
-#	trigger = {
-#		OR = {
-#			has_combat_modifier = BM_LACK_OF_SUPPLIES
-#			NOT = { has_combat_modifier = BM_BASE_PROXIMITY }
-#			NOT = { has_combat_modifier = BM_RADIO }
-#		}
-#	}
-#}
 # AIR - SPOTTER AIR - Air Combat - 200-Class
 # NOTE - not previously gainable, extremely hard to gain
 # NOTE - setup is precarious - need to choose only one type of AIR combat for it -> air_combat
@@ -1498,14 +1037,6 @@ gainable_trait = {
 		is_attacker = yes
 	}
 }
-#gainable_trait = {
-#	combat = air_combat
-#	hours_required = 800
-#	trait = spotter_air_III
-#	trigger = {
-#		is_attacker = yes
-#	}
-#}
 # MEDALS - All Gainable Medals
 # MECHANIC - 3 Medal Types - Performance, Service, and Defence
 # -Performance Medals - Typically 4 To Award...
@@ -1516,8 +1047,6 @@ gainable_trait = {
 # ...Garrison Duty Medal that gives Fort Defence, Defence, and OOS
 # ...Defending the Country Medal to give Digging In, OOS, and something minor
 # -Branches of Service - SS, Waffen SS, NKVD, Kriegsmarine, Luftwaffe
-# -Misc - TBD
-#
 # NOTE - Medals are now Gainable by All 3 Branches
 # MEDALS GER - PERFORMANCE MEDALS - 4-Chain
 # NOTE - These are CROSSES - Iron, German, Knights, Grand
@@ -1531,7 +1060,6 @@ gainable_trait = {
 	trait = Iron_Cross		#rename to Iron Cross 2nd class
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1540,7 +1068,6 @@ gainable_trait = {
 	trait = German_Cross	#rename to Iron Cross 1st Class
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1549,7 +1076,6 @@ gainable_trait = {
 	trait = Knights_Cross
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1558,7 +1084,6 @@ gainable_trait = {
 	trait = Grand_Cross
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 
@@ -1569,7 +1094,6 @@ gainable_trait = {
 	trait = Iron_Cross_sea
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1578,7 +1102,6 @@ gainable_trait = {
 	trait = German_Cross_sea
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1587,7 +1110,6 @@ gainable_trait = {
 	trait = Knights_Cross_sea
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1596,7 +1118,6 @@ gainable_trait = {
 	trait = Grand_Cross_sea
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 
@@ -1607,7 +1128,6 @@ gainable_trait = {
 	trait = Iron_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1616,7 +1136,6 @@ gainable_trait = {
 	trait = German_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1625,7 +1144,6 @@ gainable_trait = {
 	trait = Knights_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1634,7 +1152,6 @@ gainable_trait = {
 	trait = Grand_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 
@@ -1645,7 +1162,6 @@ gainable_trait = {
 	trait = Iron_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1654,7 +1170,6 @@ gainable_trait = {
 	trait = German_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1663,7 +1178,6 @@ gainable_trait = {
 	trait = Knights_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1672,7 +1186,6 @@ gainable_trait = {
 	trait = Grand_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 
@@ -1683,7 +1196,6 @@ gainable_trait = {
 	trait = Iron_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1692,7 +1204,6 @@ gainable_trait = {
 	trait = German_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1701,7 +1212,6 @@ gainable_trait = {
 	trait = Knights_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1710,7 +1220,6 @@ gainable_trait = {
 	trait = Grand_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 
@@ -1721,7 +1230,6 @@ gainable_trait = {
 	trait = Iron_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1730,7 +1238,6 @@ gainable_trait = {
 	trait = German_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 		trait = Iron_Cross
 	}
 }
@@ -1740,7 +1247,6 @@ gainable_trait = {
 	trait = Knights_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1749,7 +1255,6 @@ gainable_trait = {
 	trait = Grand_Cross_air
 	trigger = {
 		trait = german_tag
-		#is_winner = yes
 	}
 }
 
@@ -1958,7 +1463,6 @@ gainable_trait = {
 	trait = Conspicuous_Galantry_Cross	#rename to Medal in loc
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1967,7 +1471,6 @@ gainable_trait = {
 	trait = Victory_Medal #0.05 Off / 0.05 Def
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1976,7 +1479,6 @@ gainable_trait = {
 	trait = Victoria_Cross #0.15 Off / 0.15 Def
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1985,7 +1487,6 @@ gainable_trait = {
 	trait = Victoria_Cross_air
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -1994,7 +1495,6 @@ gainable_trait = {
 	trait = Victoria_Cross_sea
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2003,7 +1503,6 @@ gainable_trait = {
 	trait = Most_Excellent_Order #0.15 Off / 0.15 Def
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2012,7 +1511,6 @@ gainable_trait = {
 	trait = Most_Excellent_Order_air #0.15 Off / 0.15 Def
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2021,7 +1519,6 @@ gainable_trait = {
 	trait = Most_Excellent_Order_sea #0.15 Off / 0.15 Def
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2103,7 +1600,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Order #0.2 XP / 0.15 Mov
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2112,7 +1608,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Order_air #0.2 XP / 0.15 Mov
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2121,7 +1616,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Order_sea #0.2 XP / 0.15 Mov
 	trigger = {
 		trait = ENG_tag
-		#is_winner = yes
 	}
 }
 # USA #
@@ -2187,7 +1681,6 @@ gainable_trait = {
 	trait = Legion_of_Merit #0.05 Off / 0.05 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2196,7 +1689,6 @@ gainable_trait = {
 	trait = Legion_of_Merit_air #0.05 Off / 0.05 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2205,7 +1697,6 @@ gainable_trait = {
 	trait = Legion_of_Merit_air #0.05 Off / 0.05 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2214,7 +1705,6 @@ gainable_trait = {
 	trait = Legion_of_Merit_air #0.05 Off / 0.05 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2223,7 +1713,6 @@ gainable_trait = {
 	trait = Legion_of_Merit_air #0.05 Off / 0.05 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2232,7 +1721,6 @@ gainable_trait = {
 	trait = Legion_of_Merit_sea #0.05 Off / 0.05 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2241,7 +1729,6 @@ gainable_trait = {
 	trait = Medal_of_Honor #0.2 Off / 0.2 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2250,7 +1737,6 @@ gainable_trait = {
 	trait = Medal_of_Honor_air #0.2 Off / 0.2 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2259,7 +1745,6 @@ gainable_trait = {
 	trait = Medal_of_Honor_air #0.2 Off / 0.2 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2268,7 +1753,6 @@ gainable_trait = {
 	trait = Medal_of_Honor_air #0.2 Off / 0.2 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2277,7 +1761,6 @@ gainable_trait = {
 	trait = Medal_of_Honor_air #0.2 Off / 0.2 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2286,7 +1769,6 @@ gainable_trait = {
 	trait = Medal_of_Honor_sea #0.2 Off / 0.2 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2295,7 +1777,6 @@ gainable_trait = {
 	trait = Silver_Star #0.15 Off / 0.15 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2304,7 +1785,6 @@ gainable_trait = {
 	trait = Silver_Star_air #0.15 Off / 0.15 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2313,7 +1793,6 @@ gainable_trait = {
 	trait = Silver_Star_air #0.15 Off / 0.15 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2322,7 +1801,6 @@ gainable_trait = {
 	trait = Silver_Star_air #0.15 Off / 0.15 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2331,7 +1809,6 @@ gainable_trait = {
 	trait = Silver_Star_air #0.15 Off / 0.15 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2340,7 +1817,6 @@ gainable_trait = {
 	trait = Silver_Star_sea #0.15 Off / 0.15 Def
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2405,7 +1881,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Medal #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2414,7 +1889,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Medal_air #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2423,7 +1897,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Medal_air #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2432,7 +1905,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Medal_air #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2441,7 +1913,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Medal_air #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2450,7 +1921,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Medal_sea #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2459,7 +1929,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Cross
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2468,7 +1937,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Cross_sea
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2477,7 +1945,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Cross_air
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2486,7 +1953,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Cross_air
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2495,7 +1961,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Cross_air
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2504,7 +1969,6 @@ gainable_trait = {
 	trait = Distinguished_Service_Cross_air
 	trigger = {
 		trait = USA_tag
-		#is_winner = yes
 	}
 }
 # SOV #
@@ -2611,7 +2075,6 @@ gainable_trait = {
 	trait = Golden_Star #0.05 Off / 0.05 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2620,7 +2083,6 @@ gainable_trait = {
 	trait = Golden_Star_air #0.05 Off / 0.05 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2629,7 +2091,6 @@ gainable_trait = {
 	trait = Golden_Star_air #0.05 Off / 0.05 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2638,7 +2099,6 @@ gainable_trait = {
 	trait = Golden_Star_air #0.05 Off / 0.05 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2647,7 +2107,6 @@ gainable_trait = {
 	trait = Golden_Star_air #0.05 Off / 0.05 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2656,7 +2115,6 @@ gainable_trait = {
 	trait = Golden_Star_sea #0.05 Off / 0.05 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2713,7 +2171,6 @@ gainable_trait = {
 	trait = For_Valor #0.2 Off / 0.2 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2722,7 +2179,6 @@ gainable_trait = {
 	trait = For_Valor_air #0.2 Off / 0.2 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2731,7 +2187,6 @@ gainable_trait = {
 	trait = For_Valor_air #0.2 Off / 0.2 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2740,7 +2195,6 @@ gainable_trait = {
 	trait = For_Valor_air #0.2 Off / 0.2 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2749,7 +2203,6 @@ gainable_trait = {
 	trait = For_Valor_air #0.2 Off / 0.2 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2758,7 +2211,6 @@ gainable_trait = {
 	trait = For_Valor_sea #0.2 Off / 0.2 Def
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2830,7 +2282,6 @@ gainable_trait = {
 	trait = Red_Star_Order #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2839,7 +2290,6 @@ gainable_trait = {
 	trait = Red_Star_Order_air #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2848,7 +2298,6 @@ gainable_trait = {
 	trait = Red_Star_Order_air #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2857,7 +2306,6 @@ gainable_trait = {
 	trait = Red_Star_Order_air #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2866,7 +2314,6 @@ gainable_trait = {
 	trait = Red_Star_Order_air #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2875,7 +2322,6 @@ gainable_trait = {
 	trait = Red_Star_Order_sea #0.1 XP / 0.1 Mov
 	trigger = {
 		trait = SOV_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2948,7 +2394,6 @@ gainable_trait = {
 			trait = IJA_tag
 			trait = IJN_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2960,7 +2405,6 @@ gainable_trait = {
 			trait = IJA_air_tag
 			trait = IJN_air_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2972,7 +2416,6 @@ gainable_trait = {
 			trait = IJA_air_tag
 			trait = IJN_air_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2984,7 +2427,6 @@ gainable_trait = {
 			trait = IJA_air_tag
 			trait = IJN_air_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -2996,7 +2438,6 @@ gainable_trait = {
 			trait = IJA_air_tag
 			trait = IJN_air_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3008,7 +2449,6 @@ gainable_trait = {
 			trait = IJA_tag
 			trait = IJN_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3020,7 +2460,6 @@ gainable_trait = {
 			trait = IJA_tag
 			trait = IJN_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3032,7 +2471,6 @@ gainable_trait = {
 			trait = IJA_air_tag
 			trait = IJN_air_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3044,7 +2482,6 @@ gainable_trait = {
 			trait = IJA_air_tag
 			trait = IJN_air_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3056,7 +2493,6 @@ gainable_trait = {
 			trait = IJA_air_tag
 			trait = IJN_air_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3068,7 +2504,6 @@ gainable_trait = {
 			trait = IJA_air_tag
 			trait = IJN_air_tag
 		}
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3080,7 +2515,6 @@ gainable_trait = {
 			trait = IJA_tag
 			trait = IJN_tag
 		}
-		#is_winner = yes
 	}
 }
 # FRA #
@@ -3202,7 +2636,6 @@ gainable_trait = {
 	trait = Legion_of_Honor #0.15 Off / 0.15 Def
 	trigger = {
 		trait = FRA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3211,7 +2644,6 @@ gainable_trait = {
 	trait = Legion_of_Honor_air #0.15 Off / 0.15 Def
 	trigger = {
 		trait = FRA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3220,7 +2652,6 @@ gainable_trait = {
 	trait = Legion_of_Honor_air #0.15 Off / 0.15 Def
 	trigger = {
 		trait = FRA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3229,7 +2660,6 @@ gainable_trait = {
 	trait = Legion_of_Honor_air #0.15 Off / 0.15 Def
 	trigger = {
 		trait = FRA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3238,7 +2668,6 @@ gainable_trait = {
 	trait = Legion_of_Honor_air #0.15 Off / 0.15 Def
 	trigger = {
 		trait = FRA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3247,7 +2676,6 @@ gainable_trait = {
 	trait = Legion_of_Honor_sea #0.15 Off / 0.15 Def
 	trigger = {
 		trait = FRA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3267,8 +2695,6 @@ gainable_trait = {
 	trigger = {
 		trait = ITA_tag
 		is_attacker = yes
-		#is_winner = yes
-
 	}
 }
 gainable_trait = {
@@ -3278,8 +2704,6 @@ gainable_trait = {
 	trigger = {
 		trait = ITA_tag
 		is_attacker = yes
-		#is_winner = yes
-
 	}
 }
 gainable_trait = {
@@ -3289,8 +2713,6 @@ gainable_trait = {
 	trigger = {
 		trait = ITA_tag
 		is_attacker = yes
-		#is_winner = yes
-
 	}
 }
 gainable_trait = {
@@ -3300,8 +2722,6 @@ gainable_trait = {
 	trigger = {
 		trait = ITA_tag
 		is_attacker = yes
-		#is_winner = yes
-
 	}
 }
 gainable_trait = {
@@ -3311,8 +2731,6 @@ gainable_trait = {
 	trigger = {
 		trait = ITA_tag
 		is_attacker = yes
-		#is_winner = yes
-
 	}
 }
 gainable_trait = {
@@ -3322,8 +2740,6 @@ gainable_trait = {
 	trigger = {
 		trait = ITA_tag
 		is_attacker = yes
-		#is_winner = yes
-
 	}
 }
 gainable_trait = {
@@ -3341,7 +2757,6 @@ gainable_trait = {
 	trait = For_Valor_Silver_Medal
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3350,7 +2765,6 @@ gainable_trait = {
 	trait = For_Valor_Silver_Medal_sea
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3359,7 +2773,6 @@ gainable_trait = {
 	trait = For_Valor_Silver_Medal_air
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3368,7 +2781,6 @@ gainable_trait = {
 	trait = For_Valor_Silver_Medal_air
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3377,7 +2789,6 @@ gainable_trait = {
 	trait = For_Valor_Silver_Medal_air
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3386,7 +2797,6 @@ gainable_trait = {
 	trait = For_Valor_Silver_Medal_air
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3395,7 +2805,6 @@ gainable_trait = {
 	trait = Italian_War_Cross
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3404,7 +2813,6 @@ gainable_trait = {
 	trait = Italian_War_Cross
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3413,7 +2821,6 @@ gainable_trait = {
 	trait = Italian_War_Cross
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3422,7 +2829,6 @@ gainable_trait = {
 	trait = Italian_War_Cross
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3431,7 +2837,6 @@ gainable_trait = {
 	trait = Italian_War_Cross
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3440,7 +2845,6 @@ gainable_trait = {
 	trait = Italian_War_Cross
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3449,7 +2853,6 @@ gainable_trait = {
 	trait = Order_of_Saint_Lazarus
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3458,7 +2861,6 @@ gainable_trait = {
 	trait = Order_of_Saint_Lazarus
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3467,7 +2869,6 @@ gainable_trait = {
 	trait = Order_of_Saint_Lazarus
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3476,7 +2877,6 @@ gainable_trait = {
 	trait = Order_of_Saint_Lazarus
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3485,7 +2885,6 @@ gainable_trait = {
 	trait = Order_of_Saint_Lazarus
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3494,7 +2893,6 @@ gainable_trait = {
 	trait = Order_of_Saint_Lazarus
 	trigger = {
 		trait = ITA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3642,7 +3040,6 @@ gainable_trait = {
 	trait = Order_of_Michael_the_Brave
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3651,7 +3048,6 @@ gainable_trait = {
 	trait = Order_of_Michael_the_Brave_sea
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3660,7 +3056,6 @@ gainable_trait = {
 	trait = Order_of_Michael_the_Brave_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3669,7 +3064,6 @@ gainable_trait = {
 	trait = Order_of_Michael_the_Brave_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3678,7 +3072,6 @@ gainable_trait = {
 	trait = Order_of_Michael_the_Brave_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3687,7 +3080,6 @@ gainable_trait = {
 	trait = Order_of_Michael_the_Brave_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3696,7 +3088,6 @@ gainable_trait = {
 	trait = Order_of_the_Star_of_Romania
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3705,7 +3096,6 @@ gainable_trait = {
 	trait = Order_of_the_Star_of_Romania_sea
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3714,7 +3104,6 @@ gainable_trait = {
 	trait = Order_of_the_Star_of_Romania_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3723,7 +3112,6 @@ gainable_trait = {
 	trait = Order_of_the_Star_of_Romania_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3732,7 +3120,6 @@ gainable_trait = {
 	trait = Order_of_the_Star_of_Romania_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3741,7 +3128,6 @@ gainable_trait = {
 	trait = Order_of_the_Star_of_Romania_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3750,7 +3136,6 @@ gainable_trait = {
 	trait = Order_of_the_Crown_of_Romania
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3759,7 +3144,6 @@ gainable_trait = {
 	trait = Order_of_the_Crown_of_Romania_sea
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3768,7 +3152,6 @@ gainable_trait = {
 	trait = Order_of_the_Crown_of_Romania_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3777,7 +3160,6 @@ gainable_trait = {
 	trait = Order_of_the_Crown_of_Romania_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3786,7 +3168,6 @@ gainable_trait = {
 	trait = Order_of_the_Crown_of_Romania_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3795,7 +3176,6 @@ gainable_trait = {
 	trait = Order_of_the_Crown_of_Romania_air
 	trigger = {
 		trait = ROM_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3830,7 +3210,6 @@ gainable_trait = {
 	trait = Anarquista #-0.16 OOSup
 	trigger = {
 		trait = SPR_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3839,7 +3218,6 @@ gainable_trait = {
 	trait = Milicias_Confederadas #0.05 Off
 	trigger = {
 		trait = SPR_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3876,7 +3254,6 @@ gainable_trait = {
 	trigger = {
 		trait = SPA_tag
 		is_attacker = no
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3885,7 +3262,6 @@ gainable_trait = {
 	trait = Academia_Militar #-0.05 Sup
 	trigger = {
 		trait = SPA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3894,7 +3270,6 @@ gainable_trait = {
 	trait = Corpo_Truppe_Volontarie #0.03 XP
 	trigger = {
 		trait = SPA_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -3989,7 +3364,6 @@ gainable_trait = {
 }
 
 # CHI medals 
-
 #everything is 3x for the different branches
 
 #Land
@@ -3998,7 +3372,6 @@ gainable_trait = {
 	hours_required = 5000
 	trait = National_Glory
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4007,7 +3380,6 @@ gainable_trait = {
 	hours_required = 3000
 	trait = Blue_Sky_and_White_Sun
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4016,7 +3388,6 @@ gainable_trait = {
 	hours_required = 1000
 	trait = Precious_Tripod_I
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4026,21 +3397,9 @@ gainable_trait = {
 	trait = Precious_Tripod_II
 	trigger = {
 		trait = Precious_Tripod_I
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 3500
-#	trait = Precious_Tripod_III
-#	trigger = {
-#		trait = Precious_Tripod_II
-#		#is_winner = yes
-#		trait = CHI_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = land_combat
 	hours_required = 500
@@ -4058,16 +3417,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 1500
-#	trait = Loyalty_and_Valour_III
-#	trigger = {
-#		trait = Loyalty_and_Valour_II
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = land_combat
 	hours_required = 500
@@ -4085,16 +3434,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 1500
-#	trait = Resplendent_Banner_III
-#	trigger = {
-#		trait = Resplendent_Banner_II
-#		trait = CHI_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = land_combat
 	hours_required = 3000
@@ -4110,7 +3449,6 @@ gainable_trait = {
 	hours_required = 5000
 	trait = National_Glory
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4119,7 +3457,6 @@ gainable_trait = {
 	hours_required = 3000
 	trait = Blue_Sky_and_White_Sun_sea
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4128,7 +3465,6 @@ gainable_trait = {
 	hours_required = 1000
 	trait = Precious_Tripod_I
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4138,21 +3474,9 @@ gainable_trait = {
 	trait = Precious_Tripod_II
 	trigger = {
 		trait = Precious_Tripod_I
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 3500
-#	trait = Precious_Tripod_III
-#	trigger = {
-#		trait = Precious_Tripod_II
-#		#is_winner = yes
-#		trait = CHI_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 500
@@ -4170,16 +3494,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 1500
-#	trait = Loyalty_and_Valour_III
-#	trigger = {
-#		trait = Loyalty_and_Valour_II
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 500
@@ -4197,16 +3511,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 1500
-#	trait = Resplendent_Banner_III
-#	trigger = {
-#		trait = Resplendent_Banner_II
-#		trait = CHI_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 3000
@@ -4222,7 +3526,6 @@ gainable_trait = {
 	hours_required = 5000
 	trait = National_Glory
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4231,7 +3534,6 @@ gainable_trait = {
 	hours_required = 3000
 	trait = Blue_Sky_and_White_Sun_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4240,7 +3542,6 @@ gainable_trait = {
 	hours_required = 3000
 	trait = Blue_Sky_and_White_Sun_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4249,7 +3550,6 @@ gainable_trait = {
 	hours_required = 3000
 	trait = Blue_Sky_and_White_Sun_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4258,17 +3558,14 @@ gainable_trait = {
 	hours_required = 3000
 	trait = Blue_Sky_and_White_Sun_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
-
 gainable_trait = {
 	combat = air_combat
 	hours_required = 1000
 	trait = Precious_Tripod_I_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4277,25 +3574,14 @@ gainable_trait = {
 	hours_required = 2000
 	trait = Precious_Tripod_II_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = air_combat
-#	hours_required = 3500
-#	trait = Precious_Tripod_III_air
-#	trigger = {
-#		#is_winner = yes
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 1000
 	trait = Precious_Tripod_I_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4304,25 +3590,14 @@ gainable_trait = {
 	hours_required = 2000
 	trait = Precious_Tripod_II_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_bombing
-#	hours_required = 3500
-#	trait = Precious_Tripod_III_air
-#	trigger = {
-#		#is_winner = yes
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 1000
 	trait = Precious_Tripod_I_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4331,25 +3606,14 @@ gainable_trait = {
 	hours_required = 2000
 	trait = Precious_Tripod_II_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = ground_bombing
-#	hours_required = 3500
-#	trait = Precious_Tripod_III_air
-#	trigger = {
-#		#is_winner = yes
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 1000
 	trait = Precious_Tripod_I_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
@@ -4358,20 +3622,9 @@ gainable_trait = {
 	hours_required = 2000
 	trait = Precious_Tripod_II_air
 	trigger = {
-		#is_winner = yes
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_bombing
-#	hours_required = 3500
-#	trait = Precious_Tripod_III_air
-#	trigger = {
-#		#is_winner = yes
-#		trait = CHI_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = air_combat
 	hours_required = 500
@@ -4388,15 +3641,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-
-#gainable_trait = {
-#	combat = air_combat
-#	hours_required = 1500
-#	trait = Loyalty_and_Valour_III
-#	trigger = {
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 500
@@ -4413,15 +3657,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-
-#gainable_trait = {
-#	combat = ground_bombing
-#	hours_required = 1500
-#	trait = Loyalty_and_Valour_III
-#	trigger = {
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 500
@@ -4438,15 +3673,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-
-#gainable_trait = {
-#	combat = land_bombing
-#	hours_required = 1500
-#	trait = Loyalty_and_Valour_III
-#	trigger = {
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 500
@@ -4463,16 +3689,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-
-#gainable_trait = {
-#	combat = naval_bombing
-#	hours_required = 1500
-#	trait = Loyalty_and_Valour_III
-#	trigger = {
-#		trait = CHI_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = air_combat
 	hours_required = 500
@@ -4489,14 +3705,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = air_combat
-#	hours_required = 1500
-#	trait = Resplendent_Banner_III
-#	trigger = {
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 500
@@ -4513,14 +3721,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_bombing
-#	hours_required = 1500
-#	trait = Resplendent_Banner_III
-#	trigger = {
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 500
@@ -4537,14 +3737,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = ground_bombing
-#	hours_required = 1500
-#	trait = Resplendent_Banner_III
-#	trigger = {
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 500
@@ -4561,14 +3753,6 @@ gainable_trait = {
 		trait = CHI_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_bombing
-#	hours_required = 1500
-#	trait = Resplendent_Banner_III
-#	trigger = {
-#		trait = CHI_tag
-#	}
-#}
 gainable_trait = {
 	combat = air_combat
 	hours_required = 3000
@@ -4603,7 +3787,6 @@ gainable_trait = {
 }
 
 # CHC Medals
-
 # Land
 gainable_trait = {
 	combat = land_combat
@@ -4622,16 +3805,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 1500
-#	trait = red_star_medal_III
-#	trigger = {
-#		trait = red_star_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = land_combat
 	hours_required = 600
@@ -4649,16 +3822,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 1800
-#	trait = Aug1st_medal_III
-#	trigger = {
-#		trait = Aug1st_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = land_combat
 	hours_required = 750
@@ -4676,22 +3839,11 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 2250
-#	trait = freedom_medal_III
-#	trigger = {
-#		trait = freedom_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = land_combat
 	hours_required = 750
 	trait = liberate_medal_I
 	trigger = {
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
@@ -4701,21 +3853,9 @@ gainable_trait = {
 	trait = liberate_medal_II
 	trigger = {
 		trait = liberate_medal_I
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_combat
-#	hours_required = 2250
-#	trait = liberate_medal_III
-#	trigger = {
-#		trait = liberate_medal_II
-#		#is_winner = yes
-#		trait = CHC_tag
-#	}
-#}
-
 # Naval
 gainable_trait = {
 	combat = naval_combat
@@ -4734,16 +3874,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 1500
-#	trait = red_star_medal_III
-#	trigger = {
-#		trait = red_star_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 600
@@ -4761,16 +3891,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 1800
-#	trait = Aug1st_medal_III
-#	trigger = {
-#		trait = Aug1st_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 750
@@ -4788,22 +3908,11 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 2250
-#	trait = freedom_medal_III
-#	trigger = {
-#		trait = freedom_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 750
 	trait = liberate_medal_I
 	trigger = {
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
@@ -4813,23 +3922,11 @@ gainable_trait = {
 	trait = liberate_medal_II
 	trigger = {
 		trait = liberate_medal_I
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_combat
-#	hours_required = 2250
-#	trait = liberate_medal_III
-#	trigger = {
-#		trait = liberate_medal_II
-#		#is_winner = yes
-#		trait = CHC_tag
-#	}
-#}
 
 # Air
-
 gainable_trait = {
 	combat = air_combat
 	hours_required = 500
@@ -4847,16 +3944,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = air_combat
-#	hours_required = 1500
-#	trait = red_star_medal_III
-#	trigger = {
-#		trait = red_star_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = air_combat
 	hours_required = 600
@@ -4874,16 +3961,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = air_combat
-#	hours_required = 1800
-#	trait = Aug1st_medal_III
-#	trigger = {
-#		trait = Aug1st_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = air_combat
 	hours_required = 750
@@ -4901,22 +3978,11 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = air_combat
-#	hours_required = 2250
-#	trait = freedom_medal_III
-#	trigger = {
-#		trait = freedom_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = air_combat
 	hours_required = 750
 	trait = liberate_medal_I
 	trigger = {
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
@@ -4926,21 +3992,9 @@ gainable_trait = {
 	trait = liberate_medal_II
 	trigger = {
 		trait = liberate_medal_I
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = air_combat
-#	hours_required = 2250
-#	trait = liberate_medal_III
-#	trigger = {
-#		trait = liberate_medal_II
-#		#is_winner = yes
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 500
@@ -4958,16 +4012,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = ground_bombing
-#	hours_required = 1500
-#	trait = red_star_medal_III
-#	trigger = {
-#		trait = red_star_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 600
@@ -4985,16 +4029,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = ground_bombing
-#	hours_required = 1800
-#	trait = Aug1st_medal_III
-#	trigger = {
-#		trait = Aug1st_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 750
@@ -5012,22 +4046,11 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = ground_bombing
-#	hours_required = 2250
-#	trait = freedom_medal_III
-#	trigger = {
-#		trait = freedom_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 750
 	trait = liberate_medal_I
 	trigger = {
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
@@ -5037,20 +4060,9 @@ gainable_trait = {
 	trait = liberate_medal_II
 	trigger = {
 		trait = liberate_medal_I
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = ground_bombing
-#	hours_required = 2250
-#	trait = liberate_medal_III
-#	trigger = {
-#		trait = liberate_medal_II
-#		#is_winner = yes
-#		trait = CHC_tag
-#	}
-#}
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 500
@@ -5068,16 +4080,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_bombing
-#	hours_required = 1500
-#	trait = red_star_medal_III
-#	trigger = {
-#		trait = red_star_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 600
@@ -5095,16 +4097,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_bombing
-#	hours_required = 1800
-#	trait = Aug1st_medal_III
-#	trigger = {
-#		trait = Aug1st_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 750
@@ -5122,22 +4114,11 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_bombing
-#	hours_required = 2250
-#	trait = freedom_medal_III
-#	trigger = {
-#		trait = freedom_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 750
 	trait = liberate_medal_I
 	trigger = {
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
@@ -5147,20 +4128,9 @@ gainable_trait = {
 	trait = liberate_medal_II
 	trigger = {
 		trait = liberate_medal_I
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = land_bombing
-#	hours_required = 2250
-#	trait = liberate_medal_III
-#	trigger = {
-#		trait = liberate_medal_II
-#		#is_winner = yes
-#		trait = CHC_tag
-#	}
-#}
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 500
@@ -5178,16 +4148,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_bombing
-#	hours_required = 1500
-#	trait = red_star_medal_III
-#	trigger = {
-#		trait = red_star_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 600
@@ -5205,16 +4165,6 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_bombing
-#	hours_required = 1800
-#	trait = Aug1st_medal_III
-#	trigger = {
-#		trait = Aug1st_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 750
@@ -5232,22 +4182,11 @@ gainable_trait = {
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_bombing
-#	hours_required = 2250
-#	trait = freedom_medal_III
-#	trigger = {
-#		trait = freedom_medal_II
-#		trait = CHC_tag
-#	}
-#}
-
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 750
 	trait = liberate_medal_I
 	trigger = {
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
@@ -5257,29 +4196,17 @@ gainable_trait = {
 	trait = liberate_medal_II
 	trigger = {
 		trait = liberate_medal_I
-		#is_winner = yes
 		trait = CHC_tag
 	}
 }
-#gainable_trait = {
-#	combat = naval_bombing
-#	hours_required = 2250
-#	trait = liberate_medal_III
-#	trigger = {
-#		trait = liberate_medal_II
-#		#is_winner = yes
-#		trait = CHC_tag
-#	}
-#}
 
-# Generic Medals for All Other Nations #
+# Generic Medals for others #
 gainable_trait = {
 	combat = land_combat
 	hours_required = 1200
 	trait = Valor_medal #0.15 Off
 	trigger = {
 		trait = general_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -5288,7 +4215,6 @@ gainable_trait = {
 	trait = National_medal #0.2 Dig
 	trigger = {
 		trait = general_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -5297,7 +4223,6 @@ gainable_trait = {
 	trait = generals_medal #-0.2 Sup
 	trigger = {
 		trait = general_tag
-		#is_winner = yes
 	}
 }
 gainable_trait = {
@@ -5326,7 +4251,6 @@ gainable_trait = {
 }
 
 # HUN medals
-
 gainable_trait = {
 	combat = land_combat
 	hours_required = 3000
