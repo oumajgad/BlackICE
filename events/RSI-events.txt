@@ -11,7 +11,7 @@ country_event = {
 		remove_brigade = "§RBenito Mussolini§W"
 		remove_minister = 3002
 		leave_faction = axis
-		form_government_in_exile = yes
+		form_government_in_exile = no
 		africa = {
 			limit = {
 				owned_by = ITA
@@ -262,11 +262,11 @@ country_event = {
 	picture = "mussolinispeechmunich"
 	option = {
 		name = "Create RSI as puppet"
-		ITA = {
-			RSI = {
-				split_troops = 0.25
-			}
-		}
+		#ITA = {
+		#	RSI = {
+		#		split_troops = 0.25
+		#	}
+		#}
 		GER = {
 			release = RSI
 		}
@@ -274,6 +274,9 @@ country_event = {
 		set_country_flag = RSI_Created
 		RSI = {
 			join_faction = axis
+		}
+		ITA = {
+			country_event = 48890
 		}
 		ITA = {
 			any_owned = {
@@ -326,7 +329,7 @@ country_event = {
 	option = {
 		name = "Load oob"
 		RSI = {
-			load_oob = RSI.txt
+			split_troops = 0.5
 		}
 		ai_chance = {
 			factor = 100
