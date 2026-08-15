@@ -74,7 +74,7 @@ __declspec(dllexport) int cacheCountries(lua_State* L)
 
 __declspec(dllexport) int getProvinceDetails(lua_State* L)
 {
-    int provinceId = luaL_checkint(L, 1, NULL);
+    int provinceId = luaL_checkinteger(L, 1);
     auto province = CMapProvince::GetMapProvinceById(provinceId);
     CMapProvince::PushCMapProvinceToStack(L, province);
     return 1;
