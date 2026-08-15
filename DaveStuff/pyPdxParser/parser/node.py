@@ -12,7 +12,7 @@ class Node:
         file: str = None,
         position: int = None,
     ):
-        self.key: str = key
+        self.key: str = str(key)
         self.parent: Optional["Node"] = parent
         self.children: list[Node] = children or []
         self.scalar_type: Optional[Any] = scalar_type

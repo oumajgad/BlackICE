@@ -19,19 +19,25 @@ UNITS_TO_RANKS = {
     "air": -1,
 }
 
-if __name__ == "__main__":
-    res = {
-        "missing_leaders": [],
-        "inactive_leaders": [],
-    }
-    leaders: dict[str, Node] = {}
+
+def get_leaders():
+    res = {}
     for root, dirs, files in os.walk(Path(BASE_PATH).joinpath(Path(LEADERS_PATH))):
         del dirs[:]  # Dont descend into subdirectories
         for file in files:
             # print(file)
             parsed = parse_file(Path(root).joinpath(Path(file)))
             for leader in parsed.children:
-                leaders[leader.key] = leader
+                res[leader.key] = leader
+    return res
+
+
+if __name__ == "__main__":
+    res = {
+        "missing_leaders": [],
+        "inactive_leaders": [],
+    }
+    leaders: dict[str, Node] = get_leaders()
     for root, dirs, files in os.walk(Path(BASE_PATH).joinpath(Path(OOBS_PATH))):
         for file in files:
             # print(file)
