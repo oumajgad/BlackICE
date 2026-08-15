@@ -1,5 +1,5 @@
 #pragma once
-#include <CasualLibrary.hpp>
+#include <cstdint>
 #include <lua.hpp>
 
 namespace CUnit {

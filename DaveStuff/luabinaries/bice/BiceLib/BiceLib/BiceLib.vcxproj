@@ -99,16 +99,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)deps\Lua 5.1\include;$(SolutionDir)Library</IncludePath>
-    <LibraryPath>$(SolutionDir)\Library\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)deps\Lua 5.1\include</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)deps\Lua 5.1\include;$(SolutionDir)Library</IncludePath>
-    <LibraryPath>$(SolutionDir)\Library\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)deps\Lua 5.1\include</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)deps\Lua 5.1\include;$(SolutionDir)Library</IncludePath>
-    <LibraryPath>$(SolutionDir)\Library\$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)deps\Lua 5.1\include</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)deps\Lua 5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)deps\Lua 5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -127,7 +127,7 @@
       </AdditionalLibraryDirectories>
       <ShowProgress>
       </ShowProgress>
-      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;CasualLibrary.lib;</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -151,7 +151,7 @@
       </AdditionalLibraryDirectories>
       <ShowProgress>
       </ShowProgress>
-      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;CasualLibrary.lib;</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">
@@ -175,7 +175,7 @@
       </AdditionalLibraryDirectories>
       <ShowProgress>
       </ShowProgress>
-      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;CasualLibrary.lib;</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -236,6 +236,7 @@
     <ClCompile Include="Hooks\ConstructorHooks.cpp" />
     <ClCompile Include="Hooks\HookedPatches.cpp" />
     <ClCompile Include="Hooks\Hooks.cpp" />
+    <ClCompile Include="MemScan.cpp" />
     <ClCompile Include="Patches.cpp" />
     <ClCompile Include="Patches.hpp" />
     <ClCompile Include="utils.cpp" />
@@ -253,6 +254,7 @@
     <ClInclude Include="Hooks\ConstructorHooks.hpp" />
     <ClInclude Include="Hooks\HookedPatches.hpp" />
     <ClInclude Include="Hooks\Hooks.hpp" />
+    <ClInclude Include="MemScan.hpp" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <ItemGroup>

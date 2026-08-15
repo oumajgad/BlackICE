@@ -1,5 +1,6 @@
 #pragma once
-#include <CasualLibrary.hpp>
+#include <cstdint>
+#include <vector>
 #include <lua.hpp>
 
 namespace CTerrain {
@@ -26,6 +27,6 @@ namespace CTerrain {
         // int precipitation;
     };
     extern std::vector<CTerrain*>* Terrains;
-    void CacheTerrains(Memory::External& external);
+    void CacheTerrains();
     CTerrain* Make(uintptr_t addr);
 }

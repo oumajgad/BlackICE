@@ -1,11 +1,14 @@
 #include <lua.hpp>
-#include <CasualLibrary.hpp>
+#include <MemScan.hpp> // pulls in Windows.h, which has to precede processthreadsapi.h
 
 #include <string>
 #include <iostream>
 #include <intrin.h>
 #include <processthreadsapi.h>
 #include <chrono>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include <utils.hpp>
 #include <HoiDataStructures.hpp>
@@ -25,7 +28,6 @@
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
-bool EXTERNAL_DEBUG = false; // debug mode for the CasualLib::External Class
 DWORD MODULE_BASE;
 
 lua_State* LUA_STATE = nullptr;
@@ -73,8 +75,7 @@ __declspec(dllexport) int cacheCountries(lua_State* L)
 __declspec(dllexport) int getProvinceDetails(lua_State* L)
 {
     int provinceId = luaL_checkint(L, 1, NULL);
-    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-    auto province = CMapProvince::GetMapProvinceById(external, provinceId);
+    auto province = CMapProvince::GetMapProvinceById(provinceId);
     CMapProvince::PushCMapProvinceToStack(L, province);
     return 1;
 }
@@ -172,12 +173,16 @@ __declspec(dllexport) int getCountryOffmapIc(lua_State* L)
 /////////////////////////////////////
 bool cacheTraitsDone = false;
 std::unordered_map<std::string, uintptr_t>* traitCache = new std::unordered_map<std::string, uintptr_t>;
-uintptr_t getTrait(Memory::External& external, std::string traitName) {
+uintptr_t getTrait(std::string traitName) {
     if (traitCache->find(traitName) != traitCache->end()) {
         return traitCache->at(traitName);
     }
 
-    uintptr_t res = external.findTraitInstance(MODULE_BASE + DATA_SECTION_START, traitName);
+    uintptr_t CTraitVFTable = MODULE_BASE + 0x11C7DC0;
+    uintptr_t res = Mem::findPointerIf(MODULE_BASE + DATA_SECTION_START, CTraitVFTable,
+        [&traitName](uintptr_t candidate) {
+            return traitName == utils::getCString((DWORD*)(candidate + 0x2C));
+        });
     if (res != 0) {
         traitCache->insert(std::make_pair(traitName, res));
         DEBUG_OUT(printf("Added to traitCache: %s - %#010x \n", traitName.c_str(), res));
@@ -195,22 +200,16 @@ void addTraitToCache(std::string traitName, uintptr_t address) {
 }
 void cacheTraits() {
     if (!cacheTraitsDone) {
-        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
         uintptr_t CTraitVFTable = MODULE_BASE + 0x11C7DC0;
-        //std::cout << "CTraitVFTable: " << Memory::n2hexstr(CTraitVFTable) << std::endl;
-        std::string CTraitVFTableSig = Memory::ptrToSignature(CTraitVFTable);
-        //std::cout << "CTraitVFTableSig: " << CTraitVFTableSig << std::endl;
-        std::vector<uintptr_t>* traits;
-        traits = external.findSignatures(MODULE_BASE + DATA_SECTION_START, CTraitVFTableSig.c_str(), 4, 99999);
-        if (traits->size() != 0) {
-            for (auto& traitAddr : *traits) {
+        //std::cout << "CTraitVFTable: " << Mem::toHex(CTraitVFTable) << std::endl;
+        auto traits = Mem::findPointers(MODULE_BASE + DATA_SECTION_START, CTraitVFTable, 99999);
+        if (traits.size() != 0) {
+            for (auto& traitAddr : traits) {
                 std::string traitName = utils::getCString((DWORD*)traitAddr + (0x2C / 4));
                 addTraitToCache(traitName, traitAddr);
             }
             INFO_OUT(printf("Trait cache filled (%i) \n", traitCache->size()));
             cacheTraitsDone = true;
-            delete traits;
             return;
         }
     }
@@ -221,8 +220,7 @@ __declspec(dllexport) int getLeaderDetails(lua_State* L) {
     DEBUG_OUT(printf("getLeaderDetails called\n"));
     unsigned int leaderId = luaL_checkinteger(L, 1);
     DEBUG_OUT(printf("leaderId: %d\n", leaderId));
-    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-    auto leader = CLeader::GetLeaderById(external, leaderId);
+    auto leader = CLeader::GetLeaderById(leaderId);
     if (leader.id != 0) {
         CLeader::PushCLeaderToStack(L, leader);
     }
@@ -241,10 +239,8 @@ __declspec(dllexport) int addTraitToLeader(lua_State* L){
     std::string traitName = luaL_checklstring(L, 2, NULL);
     DEBUG_OUT(printf("trait: '%s'\n", traitName.c_str()));
 
-    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
-    auto leader = CLeader::GetLeaderById(external, leaderId);
-    auto traitAddr = getTrait(external, traitName);
+    auto leader = CLeader::GetLeaderById(leaderId);
+    auto traitAddr = getTrait(traitName);
     if (leader._address == 0) {
         ERROR_OUT(printf("Couldn't find leader with ID '%u'\n", leaderId));
         lua_pushboolean(L, false);
@@ -376,10 +372,8 @@ __declspec(dllexport) int checkRankSpecificTraitsConsistency(lua_State* L)
         return 0;
     }
 
-    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
     cacheTraits();
-    CLeader::CacheLeaders(external);
+    CLeader::CacheLeaders();
     if (traitCache->size() == 0 || CLeader::leaderCache->size() == 0) {
         return 0;
     }
@@ -710,7 +704,7 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
     }
     else {
         INFO_OUT(std::cout << "Hook 'fixOffmapIc_CountLocalIc' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_CountLocalIc: " << Memory::n2hexstr(Hooks::Patches::jumpback_fixOffmapIc_CountLocalIc) << std::endl);
+        DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_CountLocalIc: " << Mem::toHex(Hooks::Patches::jumpback_fixOffmapIc_CountLocalIc) << std::endl);
     }
 
     DWORD hookAddress2 = MODULE_BASE + 0xf0f9d;
@@ -721,7 +715,7 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
     }
     else {
         INFO_OUT(std::cout << "Hook 'fixOffmapIc_SetBaseIc' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_SetBaseIc: " << Memory::n2hexstr(Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc) << std::endl);
+        DEBUG_OUT(std::cout << "jumpback_fixOffmapIc_SetBaseIc: " << Mem::toHex(Hooks::Patches::jumpback_fixOffmapIc_SetBaseIc) << std::endl);
     }
 
 
@@ -766,7 +760,7 @@ __declspec(dllexport) int enablePlacingNonResearchedBuildings(lua_State* L)
     }
     else {
         INFO_OUT(std::cout << "Hook 'enablePlacingNonResearchedBuildings' succeeded" << std::endl);
-        DEBUG_OUT(std::cout << "jumpback_enablePlacingNonResearchedBuildings: " << Memory::n2hexstr(Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings) << std::endl);
+        DEBUG_OUT(std::cout << "jumpback_enablePlacingNonResearchedBuildings: " << Mem::toHex(Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings) << std::endl);
     }
 
     enablePlacingNonResearchedBuildingsDone = true;
@@ -861,16 +855,12 @@ __declspec(dllexport) int cacheIngameIdler(lua_State* L)
 {
     // Find CIngameIdler
     if (CIngameIdlerPtr == 0) {
-        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-
         uintptr_t CIngameIdlerVFTable = MODULE_BASE + 0x11CEB54;
-        std::string sig = Memory::ptrToSignature(CIngameIdlerVFTable);
-        auto res = external.findSignatures(MODULE_BASE + DATA_SECTION_START, sig.c_str(), 4, 99);
-        DEBUG_OUT(printf("res->size(): %i \n", res->size()));
-        if (res->size() != 0) {
-            CIngameIdlerPtr = (uintptr_t*)res->at(res->size() - 1);
+        auto res = Mem::findPointers(MODULE_BASE + DATA_SECTION_START, CIngameIdlerVFTable, 99);
+        DEBUG_OUT(printf("res.size(): %i \n", res.size()));
+        if (res.size() != 0) {
+            CIngameIdlerPtr = (uintptr_t*)res.at(res.size() - 1);
             DEBUG_OUT(printf("CIngameIdlerPtr set to: %#010x \n", (uintptr_t)CIngameIdlerPtr));
-            delete res;
         }
     }
 }
@@ -881,8 +871,7 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
 
     // Find CTerrains to get indices for each units CUnitAdjusterArray
     if (CTerrain::Terrains->size() == 0) {
-        Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-        CTerrain::CacheTerrains(external);
+        CTerrain::CacheTerrains();
     }
 
 
@@ -962,11 +951,9 @@ __declspec(dllexport) int setModuleBase(lua_State* L)
     if (moduleBaseAlreadySet) {
         return 0;
     }
-    Memory::External external = Memory::External(GetCurrentProcessId(), EXTERNAL_DEBUG);
-    Address modulePtr = external.getModule("hoi3_tfh.exe");
-    MODULE_BASE = modulePtr.get();
+    MODULE_BASE = Mem::moduleBase("hoi3_tfh.exe");
     Hooks::MODULE_BASE = MODULE_BASE;
-    INFO_OUT(std::cout << "MODULE_BASE at: " << Memory::n2hexstr(MODULE_BASE) << std::endl);
+    INFO_OUT(std::cout << "MODULE_BASE at: " << Mem::toHex(MODULE_BASE) << std::endl);
     moduleBaseAlreadySet = true;
     return 0;
 }

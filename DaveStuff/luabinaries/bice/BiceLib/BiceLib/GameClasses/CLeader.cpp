@@ -1,6 +1,7 @@
 #include <GameClasses/CLeader.hpp>
 #include <GameClasses/CUnit.hpp>
 #include <GameClasses/CMapProvince.hpp>
+#include <MemScan.hpp>
 #include <utils.hpp>
 
 namespace CLeader {
@@ -44,28 +45,23 @@ namespace CLeader {
     }
 
     std::unordered_map<unsigned int, uintptr_t>* leaderCache = new std::unordered_map<unsigned int, uintptr_t>;
-    void CacheLeaders(Memory::External& external) {
-        Address modulePtr = external.getModule("hoi3_tfh.exe");
-        uintptr_t moduleBase = modulePtr.get();
+    void CacheLeaders() {
+        uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
         uintptr_t CLeaderVFTable = moduleBase + 0x11C5220;
-        std::string sig = Memory::ptrToSignature(CLeaderVFTable);
-        auto res = external.findSignatures(moduleBase + 0x12F5000, sig.c_str(), 4, 99999);
-        if (res->size() != 0) {
-            for (int i = 0; i < res->size(); i++) {
-                int magicNumber = *(int*)(res->at(i) + 0x4); // for some reason there are some false hits, but we can check the magic number
-                if (magicNumber == 397) {
-                    CLeader x = Make(res->at(i));
-                    leaderCache->insert(std::make_pair(x.id, res->at(i)));
-                }
+        auto res = Mem::findPointers(moduleBase + 0x12F5000, CLeaderVFTable, 99999);
+        for (auto& leaderAddr : res) {
+            int magicNumber = *(int*)(leaderAddr + 0x4); // for some reason there are some false hits, but we can check the magic number
+            if (magicNumber == 397) {
+                CLeader x = Make(leaderAddr);
+                leaderCache->insert(std::make_pair(x.id, leaderAddr));
             }
-            delete res;
         }
         return;
     }
 
-    CLeader GetLeaderById(Memory::External& external, unsigned int id) {
+    CLeader GetLeaderById(unsigned int id) {
         if (leaderCache->size() == 0) {
-            CacheLeaders(external);
+            CacheLeaders();
             DEBUG_OUT(printf("leaderCache->size(): %d\n", leaderCache->size()));
         }
         if (leaderCache->find(id) != leaderCache->end()) {

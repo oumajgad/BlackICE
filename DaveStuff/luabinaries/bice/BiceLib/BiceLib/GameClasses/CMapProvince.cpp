@@ -1,4 +1,5 @@
 #include <GameClasses/CMapProvince.hpp>
+#include <MemScan.hpp>
 #include <utils.hpp>
 
 namespace CMapProvince {
@@ -43,9 +44,8 @@ namespace CMapProvince {
         return res;
     }
 
-    CMapProvince GetMapProvinceById(Memory::External& external, int id) {
-        Address modulePtr = external.getModule("hoi3_tfh.exe");
-        uintptr_t moduleBase = modulePtr.get();
+    CMapProvince GetMapProvinceById(int id) {
+        uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
         uintptr_t CCurrentGameStatePtr = *(uintptr_t*)(moduleBase + 0x1689790);
         DEBUG_OUT(printf("CCurrentGameStatePtr: %#010x \n", CCurrentGameStatePtr));
         uintptr_t mapProvincesArray = *(uintptr_t*)(CCurrentGameStatePtr + 0xb8c);

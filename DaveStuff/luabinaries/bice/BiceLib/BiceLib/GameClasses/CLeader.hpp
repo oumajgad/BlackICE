@@ -1,5 +1,6 @@
 #pragma once
-#include <CasualLibrary.hpp>
+#include <cstdint>
+#include <unordered_map>
 #include <lua.hpp>
 
 namespace CLeader {
@@ -46,7 +47,7 @@ namespace CLeader {
     extern std::unordered_map<unsigned int, uintptr_t>* leaderCache;
 
     CLeader Make(uintptr_t addr);
-    void CacheLeaders(Memory::External& external);
-    CLeader GetLeaderById(Memory::External& external, unsigned int id);
+    void CacheLeaders();
+    CLeader GetLeaderById(unsigned int id);
     void PushCLeaderToStack(lua_State* L, CLeader leader);
 }

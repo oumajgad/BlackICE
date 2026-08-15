@@ -1,4 +1,5 @@
 #include <GameClasses/CTerrain.hpp>
+#include <MemScan.hpp>
 #include <utils.hpp>
 
 namespace CTerrain {
@@ -30,22 +31,17 @@ namespace CTerrain {
     }
 
     std::vector<CTerrain*>* Terrains = new std::vector<CTerrain*>;
-    void CacheTerrains(Memory::External& external) {
-        Address modulePtr = external.getModule("hoi3_tfh.exe");
-        uintptr_t moduleBase = modulePtr.get();
+    void CacheTerrains() {
+        uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
         uintptr_t CTerrainVFTable = moduleBase + 0x11C0764;
-        std::string sig = Memory::ptrToSignature(CTerrainVFTable);
-        auto res = external.findSignatures(moduleBase + 0x12F5000, sig.c_str(), 4, 999);
-        DEBUG_OUT(printf("res->size(): %i \n", res->size()));
-        if (res->size() != 0) {
-            for (int i = 0; i < res->size(); i++) {
-                int magicNumber = * (int *) (res->at(i) + 0x4); // for some reason there are some false hits, but we can check the magic number
-                if (magicNumber == 397) {
-                    CTerrain* x = Make(res->at(i));
-                    Terrains->push_back(x);
-                }
+        auto res = Mem::findPointers(moduleBase + 0x12F5000, CTerrainVFTable, 999);
+        DEBUG_OUT(printf("res.size(): %i \n", res.size()));
+        for (auto& terrainAddr : res) {
+            int magicNumber = * (int *) (terrainAddr + 0x4); // for some reason there are some false hits, but we can check the magic number
+            if (magicNumber == 397) {
+                CTerrain* x = Make(terrainAddr);
+                Terrains->push_back(x);
             }
-            delete res;
         }
     }
 }

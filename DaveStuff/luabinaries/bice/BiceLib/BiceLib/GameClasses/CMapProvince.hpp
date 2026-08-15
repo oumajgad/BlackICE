@@ -1,5 +1,5 @@
 #pragma once
-#include <CasualLibrary.hpp>
+#include <cstdint>
 #include <lua.hpp>
 
 namespace CMapProvince {
@@ -24,7 +24,7 @@ namespace CMapProvince {
     };
 
     CMapProvince Make(uintptr_t addr);
-    CMapProvince GetMapProvinceById(Memory::External& external, int id);
+    CMapProvince GetMapProvinceById(int id);
     void PushCMapProvinceToStack(lua_State* L, CMapProvince province);
 
 }

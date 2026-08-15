@@ -13,12 +13,12 @@ void CCountry::traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>* re
     uintptr_t parent = *(uintptr_t*)(nodePtr + 0x8);
     uintptr_t sibling = *(uintptr_t*)(nodePtr + 0xC);
     uintptr_t child = *(uintptr_t*)(nodePtr + 0x10);
-    //std::cout << "nodePtr: " << Memory::n2hexstr(nodePtr) 
+    //std::cout << "nodePtr: " << Mem::toHex(nodePtr) 
     //    << " char: " << character 
-    //    << " element: " << Memory::n2hexstr(element) 
-    //    << " parent: " << Memory::n2hexstr(parent) 
-    //    << " sibling: " << Memory::n2hexstr(sibling) 
-    //    << " child: " << Memory::n2hexstr(child) << std::endl;
+    //    << " element: " << Mem::toHex(element) 
+    //    << " parent: " << Mem::toHex(parent) 
+    //    << " sibling: " << Mem::toHex(sibling) 
+    //    << " child: " << Mem::toHex(child) << std::endl;
     if (parent != 0) {
         //std::cout << "parent" << std::endl;
         CCountry::traverseFlagsAndVarTreeDepthFirst(res, parent);
