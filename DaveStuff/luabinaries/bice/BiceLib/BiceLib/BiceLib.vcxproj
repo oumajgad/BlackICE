@@ -97,7 +97,11 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Label="UserMacros">
+    <!-- Dear ImGui checkout used by the in-game overlay. Override on the command
+         line with /p:ImGuiDir=... if the repo lives somewhere else. -->
+    <ImGuiDir Condition="'$(ImGuiDir)' == ''">C:\Users\David\GitHub\imgui\</ImGuiDir>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)deps\Lua 5.1\include</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
@@ -116,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)deps\Lua 5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)deps\Lua 5.1\include;$(ImGuiDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -127,7 +131,7 @@
       </AdditionalLibraryDirectories>
       <ShowProgress>
       </ShowProgress>
-      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;d3d9.lib;psapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -138,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)deps\Lua 5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)deps\Lua 5.1\include;$(ImGuiDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -151,7 +155,7 @@
       </AdditionalLibraryDirectories>
       <ShowProgress>
       </ShowProgress>
-      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;d3d9.lib;psapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">
@@ -162,7 +166,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BICE_LIB_DEBUG</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)deps\Lua 5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)deps\Lua 5.1\include;$(ImGuiDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
@@ -175,7 +179,7 @@
       </AdditionalLibraryDirectories>
       <ShowProgress>
       </ShowProgress>
-      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(ProjectDir)deps\Lua 5.1\lib\lua5.1.lib;d3d9.lib;psapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -236,9 +240,16 @@
     <ClCompile Include="Hooks\ConstructorHooks.cpp" />
     <ClCompile Include="Hooks\HookedPatches.cpp" />
     <ClCompile Include="Hooks\Hooks.cpp" />
+    <ClCompile Include="Inspector.cpp" />
     <ClCompile Include="MemScan.cpp" />
+    <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="Patches.cpp" />
-    <ClCompile Include="Patches.hpp" />
+    <ClCompile Include="$(ImGuiDir)imgui.cpp" />
+    <ClCompile Include="$(ImGuiDir)imgui_draw.cpp" />
+    <ClCompile Include="$(ImGuiDir)imgui_tables.cpp" />
+    <ClCompile Include="$(ImGuiDir)imgui_widgets.cpp" />
+    <ClCompile Include="$(ImGuiDir)backends\imgui_impl_dx9.cpp" />
+    <ClCompile Include="$(ImGuiDir)backends\imgui_impl_win32.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -254,7 +265,10 @@
     <ClInclude Include="Hooks\ConstructorHooks.hpp" />
     <ClInclude Include="Hooks\HookedPatches.hpp" />
     <ClInclude Include="Hooks\Hooks.hpp" />
+    <ClInclude Include="Inspector.hpp" />
     <ClInclude Include="MemScan.hpp" />
+    <ClInclude Include="Patches.hpp" />
+    <ClInclude Include="Overlay.hpp" />
     <ClInclude Include="utils.hpp" />
   </ItemGroup>
   <ItemGroup>

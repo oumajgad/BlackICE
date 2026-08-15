@@ -11,6 +11,7 @@
 #include <vector>
 
 #include <utils.hpp>
+#include <Overlay.hpp>
 #include <HoiDataStructures.hpp>
 
 #include <GameClasses/CCountry.hpp>
@@ -1014,6 +1015,27 @@ DWORD WINAPI periodicsJob(void* data) {
     return 0;
 }
 
+/////////////////////////////////////
+//        OVERLAY FUNCTIONS        //
+/////////////////////////////////////
+
+__declspec(dllexport) int enableOverlay(lua_State* L)
+{
+    bool ok = Overlay::install();
+    if (!ok) {
+        ERROR_OUT(printf("Could not install the ImGui overlay\n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+__declspec(dllexport) int toggleOverlay(lua_State* L)
+{
+    Overlay::toggle();
+    lua_pushboolean(L, Overlay::isVisible());
+    return 1;
+}
+
 __declspec(dllexport) luaL_Reg BiceLib[] = {
     // Misc
     {"startConsole", startConsole},
@@ -1108,6 +1130,15 @@ void registerInspectorFunctions(lua_State* this_state) {
     return;
 }
 
+void registerOverlayFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Overlay");
+    lua_newtable(this_state);
+    registerFunction(this_state, "enable", enableOverlay);
+    registerFunction(this_state, "toggle", toggleOverlay);
+    lua_settable(this_state, -3);
+    return;
+}
+
 extern "C"
 __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
 {
@@ -1129,6 +1160,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerPatchFunctions(this_state);
     registerComplexPatchFunctions(this_state);
     registerInspectorFunctions(this_state);
+    registerOverlayFunctions(this_state);
 
     utils::logInLua(this_state,"Loaded BiceLib");
     char buf[100];
