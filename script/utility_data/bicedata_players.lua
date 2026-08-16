@@ -31,16 +31,32 @@ function BiceData.Players.AllowsSelection(tag)
     return country:GetCountry():GetVariables():GetVariable(CString("disable_gui_access")):Get() ~= 1
 end
 
---- The country pages report on: the Setup selection, else the actual player.
+-- True while G_PlayerCountry holds an automatic choice rather than a deliberate one.
+local autoSelected = false
+
+--- The country pages report on.
+---
+--- Selects the player's own country automatically when nothing has been chosen, so
+--- every page has a country to work with without visiting Setup first. Pages that read
+--- G_PlayerCountry directly (tech levels, for one) would otherwise report nothing while
+--- pages with their own fallback reported correctly, which looked like a bug.
 function BiceData.Players.CurrentTag()
-    if G_PlayerCountry ~= nil then
-        return tostring(G_PlayerCountry), "Setup"
-    end
     local actual = CCurrentGameState.GetPlayer()
-    if actual == nil then
-        return nil, nil
+    local actualTag = actual ~= nil and tostring(actual) or nil
+
+    if G_PlayerCountry == nil then
+        if actualTag == nil then
+            return nil, nil
+        end
+        G_PlayerCountry = actualTag
+        autoSelected = true
+    elseif autoSelected and actualTag ~= nil and actualTag ~= G_PlayerCountry then
+        -- Loading a different save leaves the automatic choice pointing at the
+        -- previous game's country. A deliberate choice is left alone.
+        G_PlayerCountry = actualTag
     end
-    return tostring(actual), "current player"
+
+    return tostring(G_PlayerCountry), autoSelected and "auto" or "Setup"
 end
 
 --- Sets the country pages report on. Returns false if that player opted out.
@@ -54,6 +70,7 @@ function BiceData.Players.Select(tag)
         return false
     end
     G_PlayerCountry = tag
+    autoSelected = false -- A deliberate choice; stop re-syncing it to the player
 
     -- Keep the wx utility consistent while both UIs exist.
     if GuiRefreshLoop ~= nil then

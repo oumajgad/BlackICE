@@ -25,4 +25,21 @@ namespace Gui {
         const std::vector<std::string>& items,
         char* filter, size_t filterSize,
         std::string& selected);
+
+    /**
+    @brief draggable divider that resizes the pane to its left
+
+    Place between the two panes, after the left one's EndChild. Handles the drag, the
+    resize cursor and drawing the divider, and issues the SameLine calls on both
+    sides, so the caller just draws pane, splitter, pane.
+
+    @param id     unique within the page
+    @param width  in/out, the left pane's width. Clamped so neither side can be
+                  dragged away entirely.
+    @param minWidth     smallest the left pane may become
+    @param minRemaining smallest the right pane may become
+    @returns true while being dragged
+    */
+    bool verticalSplitter(const char* id, float* width,
+        float minWidth = 120.0f, float minRemaining = 200.0f);
 }

@@ -47,6 +47,9 @@ namespace Gui {
         /**@brief as beginTableCall, for a function taking one string argument*/
         bool beginTableCallWithString(const char* dottedPath, const char* value);
 
+        /**@brief as beginTableCall, for a function taking a string and a number*/
+        bool beginTableCallWithStringAndNumber(const char* dottedPath, const char* text, double number);
+
         void endCall();
 
         /**@brief reads a field of the table currently on top of the stack*/

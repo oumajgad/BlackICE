@@ -15,7 +15,13 @@
  * Input is picked up by subclassing the game window; messages ImGui wants are
  * swallowed so the game does not also act on them.
  */
+struct IDirect3DDevice9;
+
 namespace Overlay {
+    /**@brief the device the game is rendering with, null before the first frame.
+       Needed by anything creating its own D3D resources, such as the texture cache.*/
+    IDirect3DDevice9* device();
+
     /**@brief installs the D3D9 hooks. Safe to call more than once.
        @returns false if D3D9 was unavailable or the hooks could not be placed*/
     bool install();

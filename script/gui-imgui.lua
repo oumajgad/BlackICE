@@ -23,6 +23,9 @@ local pages = {
     { module = 'imgui_traits',   key = 'Traits' },
     { module = 'imgui_generals',  key = 'Generals' },
     { module = 'imgui_modifiers', key = 'Modifiers' },
+    { module = 'imgui_techs',     key = 'Techs' },
+    { module = 'imgui_units',      key = 'Units' },
+    { module = 'imgui_unitmodels', key = 'UnitModels' },
 }
 
 local loaded = {}

@@ -958,11 +958,14 @@ end
 -- Get and correct the IC and Reseach efficiency values
 function CountryModifiers()
 
-	if G_UtilityEnabled ~= true then
+	-- Used to require the wxWidgets utility, because the tech modifier table lived
+	-- inside it. It now comes from BiceData, so this correction also runs when only
+	-- the ImGui utility (or neither) is enabled.
+	if BiceData == nil or BiceData.Techs == nil then
 		return
 	end
 
-	local techModifierValues = Parsing.Techs.GetTechModifierValues()
+	local techModifierValues = BiceData.Techs.ModifierValues()
 	for tag, countryTag in pairs(GetCountryIterCacheDict()) do
 		-- local countryTag = CCountryDataBase.GetTag(player)
 		local country = countryTag:GetCountry()

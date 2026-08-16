@@ -29,6 +29,7 @@ namespace {
     WNDPROC originalWndProc = nullptr;
 
     HWND gameWindow = nullptr;
+    IDirect3DDevice9* renderDevice = nullptr;
     bool installed = false;
     bool imguiReady = false;
 
@@ -168,6 +169,7 @@ namespace {
     HRESULT APIENTRY hookedPresent(IDirect3DDevice9* device, const RECT* sourceRect, const RECT* destRect,
         HWND destWindowOverride, const RGNDATA* dirtyRegion) {
         Diagnostics::notePresentThread();
+        renderDevice = device;
 
         if (!imguiReady) {
             initImGui(device);
@@ -256,6 +258,10 @@ namespace {
 
         return vtable;
     }
+}
+
+IDirect3DDevice9* Overlay::device() {
+    return renderDevice;
 }
 
 bool Overlay::install() {

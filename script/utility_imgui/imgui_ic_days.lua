@@ -10,10 +10,11 @@ BiceLibGui.ICDays = {}
 -- The old page only worked once a player was picked on its Setup tab. Falling back
 -- to the actual player makes the page useful without that step.
 local function targetTag()
-    if G_PlayerCountry ~= nil then
-        return CCountryDataBase.GetTag(G_PlayerCountry)
+    local tag = BiceData.Players.CurrentTag()
+    if tag == nil then
+        return nil
     end
-    return CCurrentGameState.GetPlayer()
+    return CCountryDataBase.GetTag(tag)
 end
 
 local function collect()

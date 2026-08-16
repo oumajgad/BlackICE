@@ -18,6 +18,45 @@ namespace {
     }
 }
 
+bool Gui::verticalSplitter(const char* id, float* width, float minWidth, float minRemaining) {
+    const float thickness = 6.0f;
+
+    ImGui::SameLine(0.0f, 0.0f);
+
+    // Measured before the button is placed: afterwards the cursor has moved on and
+    // these would describe the next row instead.
+    const float remaining = ImGui::GetContentRegionAvail().x;
+    const float height = ImGui::GetContentRegionAvail().y;
+
+    ImGui::InvisibleButton(id, ImVec2(thickness, height > 0.0f ? height : 1.0f));
+
+    const bool active = ImGui::IsItemActive();
+    const bool hovered = ImGui::IsItemHovered();
+    if (active || hovered) {
+        ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+    }
+    if (active) {
+        *width += ImGui::GetIO().MouseDelta.x;
+    }
+
+    // The left pane has already been drawn at the old width, so this takes effect on
+    // the next frame - which is what makes the drag feel continuous rather than jumpy.
+    const float maxWidth = *width + remaining - thickness - minRemaining;
+    if (*width > maxWidth) {
+        *width = maxWidth;
+    }
+    if (*width < minWidth) {
+        *width = minWidth;
+    }
+
+    const ImU32 color = ImGui::GetColorU32(
+        active ? ImGuiCol_SeparatorActive : (hovered ? ImGuiCol_SeparatorHovered : ImGuiCol_Separator));
+    ImGui::GetWindowDrawList()->AddRectFilled(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), color);
+
+    ImGui::SameLine(0.0f, 0.0f);
+    return active;
+}
+
 bool Gui::filteredList(const char* id, const ImVec2& size,
     const std::vector<std::string>& items,
     char* filter, size_t filterSize,

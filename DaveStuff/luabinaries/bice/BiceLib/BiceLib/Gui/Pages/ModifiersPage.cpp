@@ -32,6 +32,7 @@ namespace {
     std::string detailError;
 
     char filter[64] = {};
+    float listWidth = 300.0f; // Drag the divider to change
 
     void loadList() {
         modifiers.clear();
@@ -115,12 +116,12 @@ namespace {
 
         ImGui::TextDisabled("%d modifiers", static_cast<int>(modifiers.size()));
 
-        if (Gui::filteredList("list", ImVec2(300.0f, 0), modifiers,
+        if (Gui::filteredList("list", ImVec2(listWidth, 0), modifiers,
             filter, sizeof(filter), selectedChoice)) {
             loadDetails(selectedChoice);
         }
 
-        ImGui::SameLine();
+        Gui::verticalSplitter("##split", &listWidth);
 
         ImGui::BeginChild("details", ImVec2(0, 0));
         if (selectedChoice.empty()) {

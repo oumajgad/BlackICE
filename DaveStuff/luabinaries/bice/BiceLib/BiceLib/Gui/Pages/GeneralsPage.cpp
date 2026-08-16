@@ -52,6 +52,9 @@ namespace {
     std::string selectedTrait;
     std::string traitEffects;
 
+    float listWidth = 420.0f;   // Drag the dividers to change
+    float traitListWidth = 240.0f;
+
     char nameFilter[64] = {};
     char traitFilter[64] = {};
 
@@ -223,12 +226,12 @@ namespace {
         ImGui::TextDisabled("%d of %d generals",
             static_cast<int>(visibleLabels.size()), static_cast<int>(allGenerals.size()));
 
-        if (Gui::filteredList("list", ImVec2(420.0f, 0), visibleLabels,
+        if (Gui::filteredList("list", ImVec2(listWidth, 0), visibleLabels,
             nameFilter, sizeof(nameFilter), selectedLabel)) {
             loadDetails(selectedLabel);
         }
 
-        ImGui::SameLine();
+        Gui::verticalSplitter("##split", &listWidth);
 
         ImGui::BeginChild("details", ImVec2(0, 0));
         if (selectedLabel.empty()) {
@@ -250,11 +253,11 @@ namespace {
                 ImGui::TextDisabled("No traits.");
             }
             else {
-                if (Gui::filteredList("traits", ImVec2(240.0f, 0), detailTraits,
+                if (Gui::filteredList("traits", ImVec2(traitListWidth, 0), detailTraits,
                     traitFilter, sizeof(traitFilter), selectedTrait)) {
                     loadTraitEffects(selectedTrait);
                 }
-                ImGui::SameLine();
+                Gui::verticalSplitter("##traitsplit", &traitListWidth, 120.0f, 150.0f);
                 drawTextBox("##traiteffects",
                     traitEffects.empty() ? std::string("Select a trait.") : traitEffects, -FLT_MIN);
             }
