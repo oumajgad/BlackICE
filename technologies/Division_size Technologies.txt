@@ -184,14 +184,14 @@ airborne_increase = {
 	}
 
    	paratrooper_brigade = {
-		max_strength = 5
-		officers = 10
-		supply_consumption = 0.03
-		build_cost_ic = 0.33
-		build_cost_manpower = 0.35
+		max_strength = 10
+		officers = 15
+		supply_consumption = 0.06
+		build_cost_ic = 0.66
+		build_cost_manpower = 0.7
 		default_morale = -0.1
-		transport_weight = 1.25
-		combat_width = 8
+		transport_weight = 2.5
+		combat_width = 15
 	}
 	airlanding_infantry_brigade = {
 		max_strength = 5
@@ -255,24 +255,24 @@ marine_increase = {
 	}
 
 	marine_brigade = {
-		max_strength = 20
-		officers = 40
-		supply_consumption = 0.1
-		build_cost_ic = 1.5
-		build_cost_manpower = 1.5
+		max_strength = 10
+		officers = 20
+		supply_consumption = 0.05
+		build_cost_ic = 0.9
+		build_cost_manpower = 0.7
 		default_morale = -0.1
-		transport_weight = 3
-		combat_width = 30
+		transport_weight = 1.5
+		combat_width = 15
 	}
 	naval_infantry_brigade = {
-		max_strength = 20
-		officers = 20
-		supply_consumption = 0.1
-		build_cost_ic = 1
-		build_cost_manpower = 1.5
+		max_strength = 10
+		officers = 12
+		supply_consumption = 0.05
+		build_cost_ic = 0.7
+		build_cost_manpower = 0.7
 		default_morale = -0.1
-		transport_weight = 3
-		combat_width = 30
+		transport_weight = 1.5
+		combat_width = 15
 	}
 
 	change = no
@@ -1078,25 +1078,25 @@ aa_at_increase = {
 	}
 	### 1/4 ###
 	anti_tank_brigade = {
-		max_strength = 1.5
-		officers = 10
-		supply_consumption = 0.075
-		build_cost_ic = 0.3
-		build_cost_manpower = 0.1
+		max_strength = 1
+		officers = 7
+		supply_consumption = 0.05
+		build_cost_ic = 0.2
+		build_cost_manpower = 0.07
 		default_morale = -0.1
-		transport_weight = 4
-		combat_width = 2
+		transport_weight = 2.5
+		combat_width = 1.5
 	}
 	heavy_anti_tank_brigade = {
-		max_strength = 1.5
-		officers = 15
-		supply_consumption = 0.075
+		max_strength = 1
+		officers = 10
+		supply_consumption = 0.05
 		fuel_consumption = 0.01
-		build_cost_ic = 1.3
-		build_cost_manpower = 0.1
+		build_cost_ic = 0.7
+		build_cost_manpower = 0.07
 		default_morale = -0.1
-		transport_weight = 5
-		combat_width = 12
+		transport_weight = 3
+		combat_width = 5
 	}
 
 	change = no
@@ -1345,25 +1345,25 @@ SS_guards_airborne_increase = {
 	}
 
    	ss_paratrooper_brigade = {
-		max_strength = 5
-		officers = 10
-		supply_consumption = 0.03
-		build_cost_ic = 0.33
-		build_cost_manpower = 0.35
+		max_strength = 10
+		officers = 15
+		supply_consumption = 0.06
+		build_cost_ic = 0.66
+		build_cost_manpower = 0.7
 		default_morale = -0.1
-		transport_weight = 1.25
-		combat_width = 8
+		transport_weight = 2.5
+		combat_width = 15
 	}
 
 	guard_paratrooper_brigade = {
-		max_strength = 5
-		officers = 10
-		supply_consumption = 0.03
-		build_cost_ic = 0.33
-		build_cost_manpower = 0.35
+		max_strength = 10
+		officers = 15
+		supply_consumption = 0.06
+		build_cost_ic = 0.66
+		build_cost_manpower = 0.7
 		default_morale = -0.1
-		transport_weight = 1.25
-		combat_width = 8
+		transport_weight = 2.5
+		combat_width = 15
 	}
 
 	change = no
@@ -2268,25 +2268,25 @@ SS_guards_aa_at_increase = {
 		combat_width = 15
 	}
 	ss_anti_tank_brigade = {
-		max_strength = 1.5
-		officers = 10
-		supply_consumption = 0.075
-		build_cost_ic = 0.3
-		build_cost_manpower = 0.1
+		max_strength = 1
+		officers = 7
+		supply_consumption = 0.05
+		build_cost_ic = 0.2
+		build_cost_manpower = 0.07
 		default_morale = -0.1
-		transport_weight = 4
-		combat_width = 2
+		transport_weight = 2.5
+		combat_width = 1.5
 	}
 	ss_heavy_anti_tank_brigade = {
-		max_strength = 1.5
-		officers = 15
-		supply_consumption = 0.075
+		max_strength = 1
+		officers = 10
+		supply_consumption = 0.05
 		fuel_consumption = 0.01
-		build_cost_ic = 1.3
-		build_cost_manpower = 0.1
+		build_cost_ic = 0.7
+		build_cost_manpower = 0.07
 		default_morale = -0.1
-		transport_weight = 5
-		combat_width = 12
+		transport_weight = 3
+		combat_width = 5
 	}
 
 	change = no
@@ -2395,6 +2395,15 @@ infantry_decrease = {
 
 	allow = {
 		ai = no
+		or = {
+			not = {
+				tag = JAP
+				infantry_decrease = 3
+			}
+			and = {
+				tag = JAP
+			}
+		}
 	}
 
    	infantry_brigade = {
@@ -2504,7 +2513,7 @@ infantry_decrease = {
     start_year = 1936
 	first_offset = 1938
 	additional_offset = 1
-	max_level = 3
+	max_level = 6
  	stealable = no
 	can_upgrade = yes
     folder = division_decrease_folder
@@ -2516,14 +2525,14 @@ airborne_decrease = {
 	}
 
 	paratrooper_brigade = {
-        max_strength = -5
-        officers = -10
-        supply_consumption = -0.03
-        build_cost_ic = -0.33
-        build_cost_manpower = -0.35
-        default_morale = 0.1
-        transport_weight = -1.25
-        combat_width = -8
+		max_strength = -10
+		officers = -15
+		supply_consumption = -0.06
+		build_cost_ic = -0.66
+		build_cost_manpower = -0.7
+		default_morale = 0.1
+		transport_weight = -2.5
+		combat_width = -15
     }
     airlanding_infantry_brigade = {
         max_strength = -5
@@ -2558,24 +2567,24 @@ marine_decrease = {
 	}
 
 	marine_brigade = {
-		max_strength = 20
-		officers = 40
-		supply_consumption = 0.1
-		build_cost_ic = 1.5
-		build_cost_manpower = 1.5
-		default_morale = -0.1
-		transport_weight = 3
-		combat_width = 30
+		max_strength = -10
+		officers = -20
+		supply_consumption = -0.05
+		build_cost_ic = -0.9
+		build_cost_manpower = -0.7
+		default_morale = 0.1
+		transport_weight = -1.5
+		combat_width = -15
 	}
 	naval_infantry_brigade = {
-		max_strength = 20
-		officers = 20
-		supply_consumption = 0.1
-		build_cost_ic = 1
-		build_cost_manpower = 1.5
-		default_morale = -0.1
-		transport_weight = 3
-		combat_width = 30
+		max_strength = -10
+		officers = -12
+		supply_consumption = -0.05
+		build_cost_ic = -0.7
+		build_cost_manpower = -0.7
+		default_morale = 0.1
+		transport_weight = -1.5
+		combat_width = -15
 	}
 
 	change = no
@@ -3196,25 +3205,25 @@ aa_at_decrease = {
     }
     ### 1/4 ###
     anti_tank_brigade = {
-        max_strength = -1.5
-        officers = -10
-        supply_consumption = -0.075
-        build_cost_ic = -0.3
-        build_cost_manpower = -0.1
-        default_morale = 0.1
-        transport_weight = -4
-        combat_width = -2
+		max_strength = -1
+		officers = -7
+		supply_consumption = -0.05
+		build_cost_ic = -0.2
+		build_cost_manpower = -0.07
+		default_morale = 0.1
+		transport_weight = -2.5
+		combat_width = -1.5
     }
     heavy_anti_tank_brigade = {
-        max_strength = -1.5
-        officers = -15
-        supply_consumption = -0.075
-        fuel_consumption = -0.01
-        build_cost_ic = -1.3
-        build_cost_manpower = -0.1
-        default_morale = 0.1
-        transport_weight = -5
-        combat_width = -12
+		max_strength = -1
+		officers = -10
+		supply_consumption = -0.05
+		fuel_consumption = -0.01
+		build_cost_ic = -0.7
+		build_cost_manpower = -0.07
+		default_morale = 0.1
+		transport_weight = -3
+		combat_width = -5
     }
 
 	change = no
@@ -3386,25 +3395,25 @@ SS_guards_airborne_decrease = {
 	}
 
 	ss_paratrooper_brigade = {
-        max_strength = -5
-        officers = -10
-        supply_consumption = -0.03
-        build_cost_ic = -0.33
-        build_cost_manpower = -0.35
-        default_morale = 0.1
-        transport_weight = -1.25
-        combat_width = -8
+		max_strength = -10
+		officers = -15
+		supply_consumption = -0.06
+		build_cost_ic = -0.66
+		build_cost_manpower = -0.7
+		default_morale = 0.1
+		transport_weight = -2.5
+		combat_width = -15
     }
 
     guard_paratrooper_brigade = {
-        max_strength = -5
-        officers = -10
-        supply_consumption = -0.03
-        build_cost_ic = -0.33
-        build_cost_manpower = -0.35
-        default_morale = 0.1
-        transport_weight = -1.25
-        combat_width = -8
+		max_strength = -10
+		officers = -15
+		supply_consumption = -0.06
+		build_cost_ic = -0.66
+		build_cost_manpower = -0.7
+		default_morale = 0.1
+		transport_weight = -2.5
+		combat_width = -15
     }
 
 	change = no
@@ -4123,25 +4132,25 @@ ss_anti_air_brigade = {
         combat_width = -15
     }
     ss_anti_tank_brigade = {
-        max_strength = -1.5
-        officers = -10
-        supply_consumption = -0.075
-        build_cost_ic = -0.3
-        build_cost_manpower = -0.1
-        default_morale = 0.1
-        transport_weight = -4
-        combat_width = -2
+		max_strength = -1
+		officers = -7
+		supply_consumption = -0.05
+		build_cost_ic = -0.2
+		build_cost_manpower = -0.07
+		default_morale = 0.1
+		transport_weight = -2.5
+		combat_width = -1.5
     }
     ss_heavy_anti_tank_brigade = {
-        max_strength = -1.5
-        officers = -15
-        supply_consumption = -0.075
-        fuel_consumption = -0.01
-        build_cost_ic = -1.3
-        build_cost_manpower = -0.1
-        default_morale = 0.1
-        transport_weight = -5
-        combat_width = -12
+		max_strength = -1
+		officers = -10
+		supply_consumption = -0.05
+		fuel_consumption = -0.01
+		build_cost_ic = -0.7
+		build_cost_manpower = -0.07
+		default_morale = 0.1
+		transport_weight = -3
+		combat_width = -5
     }
 
 	change = no
