@@ -2,17 +2,15 @@
 
 #include <Windows.h>
 #include <d3d9.h>
-#include <psapi.h>
 
-#include <cfloat>
-#include <cstdio>
-#include <vector>
+#include <string>
 
 #include <imgui.h>
 #include <backends/imgui_impl_dx9.h>
 #include <backends/imgui_impl_win32.h>
 
-#include <Inspector.hpp>
+#include <Diagnostics.hpp>
+#include <Gui/GuiPage.hpp>
 #include <utils.hpp>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -64,6 +62,33 @@ namespace {
         return CallWindowProcW(originalWndProc, hWnd, msg, wParam, lParam);
     }
 
+    /**
+    @brief path for the layout file, kept next to BiceLib.dll
+
+    ImGui stores the pointer rather than copying it, so this has to outlive the
+    context. Writing it beside the DLL keeps it out of the game's root directory and
+    puts it somewhere predictable per install.
+    */
+    const char* layoutFilePath() {
+        static std::string path;
+        if (!path.empty()) {
+            return path.c_str();
+        }
+
+        HMODULE self = nullptr;
+        char buffer[MAX_PATH] = {};
+        if (GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+            reinterpret_cast<LPCWSTR>(&layoutFilePath), &self) &&
+            GetModuleFileNameA(self, buffer, MAX_PATH) != 0) {
+            path = buffer;
+            const size_t slash = path.find_last_of("\\/");
+            path = (slash == std::string::npos) ? std::string() : path.substr(0, slash + 1);
+        }
+
+        path += "BiceLibImGui.ini";
+        return path.c_str();
+    }
+
     /**@brief one time ImGui setup, done on the first frame so we know the real device*/
     void initImGui(IDirect3DDevice9* device) {
         D3DDEVICE_CREATION_PARAMETERS params;
@@ -74,7 +99,12 @@ namespace {
 
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO();
-        io.IniFilename = nullptr; // Don't drop an imgui.ini into the game directory
+        io.IniFilename = layoutFilePath(); // Window positions and dock layout persist here
+
+        // Lets the utility pages live as tabs of one window while still allowing a
+        // tab to be torn off and docked elsewhere. Docking only, not viewports: real
+        // OS windows would mean extra swap chains inside a hooked game.
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
         if (!ImGui_ImplWin32_Init(gameWindow) || !ImGui_ImplDX9_Init(device)) {
             ERROR_OUT(printf("Overlay: ImGui backend init failed\n"));
@@ -86,297 +116,6 @@ namespace {
 
         imguiReady = true;
         INFO_OUT(printf("Overlay: ImGui ready - press INSERT to toggle\n"));
-    }
-
-    struct MemoryStats
-    {
-        unsigned __int64 privateBytes = 0;      // Commit charge, what usually hits the wall first
-        unsigned __int64 workingSet = 0;        // Physical RAM currently held
-        unsigned __int64 addressSpaceUsed = 0;  // Committed + reserved
-        unsigned __int64 largestFreeBlock = 0;  // Biggest single allocation still possible
-        unsigned __int64 addressSpaceLimit = 0;
-        bool largeAddressAware = false;
-    };
-
-    MemoryStats memoryStats;
-    ULONGLONG lastMemorySampleMs = 0;
-
-    /**
-    @brief refreshes memoryStats
-
-    Walking the whole address space costs a VirtualQuery per region, so this is
-    thottled rather than run every frame.
-    */
-    void sampleMemory() {
-        PROCESS_MEMORY_COUNTERS_EX counters = {};
-        counters.cb = sizeof(counters);
-        if (GetProcessMemoryInfo(GetCurrentProcess(),
-            reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&counters), sizeof(counters))) {
-            memoryStats.privateBytes = counters.PrivateUsage;
-            memoryStats.workingSet = counters.WorkingSetSize;
-        }
-
-        SYSTEM_INFO sysInfo;
-        GetSystemInfo(&sysInfo);
-
-        // The kernel reports the real ceiling here, so this stays correct whether or
-        // not the exe is patched large address aware (2 GB vs 4 GB).
-        const uintptr_t maxAddress = reinterpret_cast<uintptr_t>(sysInfo.lpMaximumApplicationAddress);
-        memoryStats.addressSpaceLimit = static_cast<unsigned __int64>(maxAddress) + 1;
-        memoryStats.largeAddressAware = memoryStats.addressSpaceLimit > 0x80000000ull;
-
-        unsigned __int64 used = 0;
-        unsigned __int64 largestFree = 0;
-        MEMORY_BASIC_INFORMATION info;
-
-        unsigned char* address = nullptr;
-        while (reinterpret_cast<uintptr_t>(address) < maxAddress &&
-            VirtualQuery(address, &info, sizeof(info)) == sizeof(info)) {
-            if (info.State == MEM_FREE) {
-                if (info.RegionSize > largestFree) {
-                    largestFree = info.RegionSize;
-                }
-            }
-            else {
-                used += info.RegionSize; // MEM_COMMIT and MEM_RESERVE both consume address space
-            }
-
-            unsigned char* next = address + info.RegionSize;
-            if (next <= address) {
-                break; // Wrapped around the top of the address space
-            }
-            address = next;
-        }
-
-        memoryStats.addressSpaceUsed = used;
-        memoryStats.largestFreeBlock = largestFree;
-    }
-
-    const char* formatBytes(unsigned __int64 bytes, char* buffer, size_t bufferSize) {
-        const double megabytes = static_cast<double>(bytes) / (1024.0 * 1024.0);
-        if (megabytes >= 1024.0) {
-            sprintf_s(buffer, bufferSize, "%.2f GB", megabytes / 1024.0);
-        }
-        else {
-            sprintf_s(buffer, bufferSize, "%.0f MB", megabytes);
-        }
-        return buffer;
-    }
-
-    void drawUsageBar(const char* label, unsigned __int64 used, unsigned __int64 limit) {
-        const float fraction = limit > 0 ? static_cast<float>(static_cast<double>(used) / static_cast<double>(limit)) : 0.0f;
-
-        // Green below 60%, amber past that, red once we're near the 32 bit ceiling.
-        ImVec4 barColor = ImVec4(0.26f, 0.59f, 0.35f, 1.0f);
-        if (fraction >= 0.85f) {
-            barColor = ImVec4(0.75f, 0.22f, 0.22f, 1.0f);
-        }
-        else if (fraction >= 0.60f) {
-            barColor = ImVec4(0.80f, 0.60f, 0.20f, 1.0f);
-        }
-
-        char usedText[32];
-        char limitText[32];
-        char overlayText[80];
-        sprintf_s(overlayText, "%s / %s (%.0f%%)",
-            formatBytes(used, usedText, sizeof(usedText)),
-            formatBytes(limit, limitText, sizeof(limitText)),
-            fraction * 100.0f);
-
-        ImGui::Text("%s", label);
-        ImGui::PushStyleColor(ImGuiCol_PlotHistogram, barColor);
-        ImGui::ProgressBar(fraction, ImVec2(-FLT_MIN, 0.0f), overlayText);
-        ImGui::PopStyleColor();
-    }
-
-    void drawMemoryMeter() {
-        const ULONGLONG now = GetTickCount64();
-        if (now - lastMemorySampleMs >= 500 || lastMemorySampleMs == 0) {
-            sampleMemory();
-            lastMemorySampleMs = now;
-        }
-
-        ImGui::SeparatorText("Memory (32 bit process)");
-
-        drawUsageBar("Private bytes (commit)", memoryStats.privateBytes, memoryStats.addressSpaceLimit);
-        ImGui::Spacing();
-        drawUsageBar("Address space (committed + reserved)", memoryStats.addressSpaceUsed, memoryStats.addressSpaceLimit);
-
-        ImGui::Spacing();
-
-        char scratch[32];
-        ImGui::Text("Working set:       %s", formatBytes(memoryStats.workingSet, scratch, sizeof(scratch)));
-        ImGui::Text("Largest free block: %s", formatBytes(memoryStats.largestFreeBlock, scratch, sizeof(scratch)));
-        ImGui::Text("Limit:             %s (%s)",
-            formatBytes(memoryStats.addressSpaceLimit, scratch, sizeof(scratch)),
-            memoryStats.largeAddressAware ? "large address aware" : "not large address aware");
-
-        if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("A 32 bit process gets 2 GB of user address space,\n"
-                "or 4 GB on 64 bit Windows when the exe is flagged\n"
-                "large address aware.");
-        }
-
-        ImGui::Spacing();
-        ImGui::TextWrapped("Out of memory happens when no single free block is large enough, "
-            "so the largest free block can matter more than the totals.");
-    }
-
-    /////////////////////////////////////
-    //          INSPECTOR BOX          //
-    /////////////////////////////////////
-
-    std::vector<Inspector::Entity> selection;
-    ULONGLONG lastSelectionSampleMs = 0;
-    bool showInspector = true;
-
-    void drawStatTable(const char* id, const std::vector<Inspector::Stat>& stats) {
-        if (stats.empty()) {
-            return;
-        }
-        if (!ImGui::BeginTable(id, 2, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
-            return;
-        }
-        ImGui::TableSetupColumn("Stat", ImGuiTableColumnFlags_WidthStretch, 0.62f);
-        ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch, 0.38f);
-
-        for (const Inspector::Stat& stat : stats) {
-            ImGui::TableNextRow();
-            ImGui::TableNextColumn();
-            ImGui::TextUnformatted(stat.name);
-            ImGui::TableNextColumn();
-            ImGui::Text("%.2f%s", stat.rawValue * stat.factor, stat.unit);
-        }
-        ImGui::EndTable();
-    }
-
-    void drawTerrainTable(const char* id, const std::vector<Inspector::TerrainStat>& terrain) {
-        if (terrain.empty()) {
-            return;
-        }
-        if (!ImGui::BeginTable(id, 5, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersInner | ImGuiTableFlags_SizingStretchProp)) {
-            return;
-        }
-        ImGui::TableSetupColumn("Terrain");
-        ImGui::TableSetupColumn("Att");
-        ImGui::TableSetupColumn("Def");
-        ImGui::TableSetupColumn("Move");
-        ImGui::TableSetupColumn("Attr");
-        ImGui::TableHeadersRow();
-
-        for (const Inspector::TerrainStat& stat : terrain) {
-            ImGui::TableNextRow();
-            ImGui::TableNextColumn();
-            ImGui::TextUnformatted(stat.name != nullptr ? stat.name : "?");
-            ImGui::TableNextColumn();
-            ImGui::Text("%.1f%%", stat.attack * 0.1f);
-            ImGui::TableNextColumn();
-            ImGui::Text("%.1f%%", stat.defence * 0.1f);
-            ImGui::TableNextColumn();
-            ImGui::Text("%.1f%%", stat.movement * 0.1f);
-            ImGui::TableNextColumn();
-            ImGui::Text("%.2f%%", stat.attrition * 0.001f);
-        }
-        ImGui::EndTable();
-    }
-
-    void drawInspectorWindow() {
-        if (!showInspector) {
-            return;
-        }
-
-        // Reading the selection allocates, so don't do it every frame.
-        const ULONGLONG now = GetTickCount64();
-        if (now - lastSelectionSampleMs >= 250 || lastSelectionSampleMs == 0) {
-            selection = Inspector::getSelection();
-            lastSelectionSampleMs = now;
-        }
-
-        ImGui::SetNextWindowSize(ImVec2(460, 520), ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowPos(ImVec2(480, 40), ImGuiCond_FirstUseEver);
-
-        if (ImGui::Begin("Inspector", &showInspector)) {
-            const uintptr_t idler = Inspector::idlerAddress();
-
-            if (ImGui::Button("Re-cache idler")) {
-                Inspector::recacheIdler();
-                lastSelectionSampleMs = 0; // Refresh the selection straight away
-            }
-            ImGui::SameLine();
-            if (idler != 0) {
-                ImGui::Text("CIngameIdler: %#010x", static_cast<unsigned>(idler));
-            }
-            else {
-                ImGui::TextDisabled("CIngameIdler: not found");
-            }
-
-            if (idler == 0) {
-                ImGui::Spacing();
-                ImGui::TextWrapped("The idler only exists once a session is running. "
-                    "Load or start a game, then press Re-cache idler.");
-                ImGui::End();
-                return;
-            }
-
-            ImGui::Separator();
-
-            if (selection.empty()) {
-                ImGui::TextDisabled("Nothing selected.");
-            }
-            else {
-                ImGui::Text("%d selected", static_cast<int>(selection.size()));
-                ImGui::Separator();
-            }
-
-            for (size_t i = 0; i < selection.size(); i++) {
-                const Inspector::Entity& entity = selection[i];
-
-                ImGui::PushID(static_cast<int>(i));
-
-                char header[160];
-                sprintf_s(header, "[%s] %s", entity.type,
-                    entity.name.empty() ? "(unnamed)" : entity.name.c_str());
-
-                if (ImGui::CollapsingHeader(header, i == 0 ? ImGuiTreeNodeFlags_DefaultOpen : 0)) {
-                    ImGui::TextDisabled("address %#010x", static_cast<unsigned>(entity.address));
-
-                    if (entity.stats.empty() && entity.terrain.empty()) {
-                        ImGui::TextDisabled("No details for this entity type.");
-                    }
-
-                    drawStatTable("stats", entity.stats);
-
-                    if (!entity.terrain.empty()) {
-                        ImGui::Spacing();
-                        if (ImGui::TreeNode("Terrain modifiers")) {
-                            drawTerrainTable("terrain", entity.terrain);
-                            ImGui::TreePop();
-                        }
-                    }
-                }
-
-                ImGui::PopID();
-            }
-        }
-        ImGui::End();
-    }
-
-    void drawHelloWorld() {
-        ImGui::SetNextWindowSize(ImVec2(420, 0), ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowPos(ImVec2(40, 40), ImGuiCond_FirstUseEver);
-
-        if (ImGui::Begin("BiceLib")) {
-            ImGui::Text("Hello world from inside hoi3_tfh.exe!");
-            ImGui::Separator();
-            ImGui::Text("ImGui %s", IMGUI_VERSION);
-            ImGui::Text("%.1f FPS (%.3f ms/frame)", ImGui::GetIO().Framerate, 1000.0f / ImGui::GetIO().Framerate);
-            ImGui::Spacing();
-            ImGui::TextWrapped("INSERT toggles this overlay.");
-            ImGui::Checkbox("Show inspector", &showInspector);
-
-            drawMemoryMeter();
-        }
-        ImGui::End();
     }
 
     /**
@@ -405,8 +144,7 @@ namespace {
             ImGui_ImplWin32_NewFrame();
             ImGui::NewFrame();
 
-            drawHelloWorld();
-            drawInspectorWindow();
+            Gui::drawAll();
 
             ImGui::EndFrame();
             ImGui::Render();
@@ -425,6 +163,8 @@ namespace {
 
     HRESULT APIENTRY hookedPresent(IDirect3DDevice9* device, const RECT* sourceRect, const RECT* destRect,
         HWND destWindowOverride, const RGNDATA* dirtyRegion) {
+        Diagnostics::notePresentThread();
+
         if (!imguiReady) {
             initImGui(device);
         }

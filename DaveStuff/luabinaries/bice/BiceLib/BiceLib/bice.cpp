@@ -11,6 +11,7 @@
 #include <vector>
 
 #include <utils.hpp>
+#include <Diagnostics.hpp>
 #include <Overlay.hpp>
 #include <HoiDataStructures.hpp>
 
@@ -56,6 +57,7 @@ void addCountryToCache(std::string tag, uintptr_t address) {
 bool cacheCountriesDone = false;
 __declspec(dllexport) int cacheCountries(lua_State* L)
 {
+    Diagnostics::LuaScope luaScope(L);
     if (!cacheCountriesDone) {
         for (int i = 0; i < 300; i++) {
             uintptr_t countryPtr = CCountry::CountryPtrs[i];
@@ -75,6 +77,7 @@ __declspec(dllexport) int cacheCountries(lua_State* L)
 
 __declspec(dllexport) int getProvinceDetails(lua_State* L)
 {
+    Diagnostics::LuaScope luaScope(L);
     int provinceId = luaL_checkinteger(L, 1);
     auto province = CMapProvince::GetMapProvinceById(provinceId);
     CMapProvince::PushCMapProvinceToStack(L, province);
@@ -218,6 +221,7 @@ void cacheTraits() {
 }
 
 __declspec(dllexport) int getLeaderDetails(lua_State* L) {
+    Diagnostics::LuaScope luaScope(L);
     DEBUG_OUT(printf("getLeaderDetails called\n"));
     unsigned int leaderId = luaL_checkinteger(L, 1);
     DEBUG_OUT(printf("leaderId: %d\n", leaderId));
@@ -868,6 +872,7 @@ __declspec(dllexport) int cacheIngameIdler(lua_State* L)
 
 __declspec(dllexport) int getSelectedEntity(lua_State* L)
 {
+    Diagnostics::LuaScope luaScope(L);
     cacheIngameIdler(L);
 
     // Find CTerrains to get indices for each units CUnitAdjusterArray
@@ -1142,6 +1147,7 @@ void registerOverlayFunctions(lua_State* this_state) {
 extern "C"
 __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
 {
+    Diagnostics::LuaScope luaScope(this_state);
     if (LUA_STATE == nullptr) {
         // Set main lua state
         LUA_STATE = this_state;

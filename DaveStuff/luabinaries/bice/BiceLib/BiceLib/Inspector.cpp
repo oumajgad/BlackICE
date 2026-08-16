@@ -82,12 +82,40 @@ namespace {
         return descs;
     }
 
-    uintptr_t ingameIdlerPtr = 0;
+    std::vector<uintptr_t> idlerCandidates;
+    int selectedIdler = -1;
+
+    /**
+    @brief reads a Hoi3 CString: 16 byte inline buffer, length at +0x10, and for
+           anything longer than 15 characters a pointer to the text at +0x0
+    */
+    bool readHoi3String(uintptr_t address, std::string& out) {
+        uint32_t length = 0;
+        if (!Mem::tryRead(address + 0x10, length) || length > 1024) {
+            return false;
+        }
+        if (length == 0) {
+            out.clear();
+            return true;
+        }
+
+        uintptr_t textAddress = address;
+        if (length > 15 && !Mem::tryRead(address, textAddress)) {
+            return false;
+        }
+
+        std::vector<char> buffer(length + 1, '\0');
+        if (!Mem::tryReadBytes(textAddress, buffer.data(), length)) {
+            return false;
+        }
+        out.assign(buffer.data()); // Stops at the first NUL
+        return true;
+    }
 
     void collectStats(Entity& entity, uintptr_t unitPtr, unsigned typeMask) {
-        const uintptr_t subUnitDefinitionPtr =
-            *reinterpret_cast<uintptr_t*>(unitPtr + CUnit::Offsets::CSubUnitDefinitionPtr);
-        if (subUnitDefinitionPtr == 0) {
+        uintptr_t subUnitDefinitionPtr = 0;
+        if (!Mem::tryRead(unitPtr + CUnit::Offsets::CSubUnitDefinitionPtr, subUnitDefinitionPtr) ||
+            subUnitDefinitionPtr == 0) {
             return;
         }
 
@@ -95,9 +123,14 @@ namespace {
             if ((desc.typeMask & typeMask) == 0) {
                 continue;
             }
+            int value = 0;
+            if (!Mem::tryRead(subUnitDefinitionPtr + desc.offset, value)) {
+                entity.stats.clear();
+                return; // Not a real CSubUnitDefinition, don't show half a table
+            }
             Stat stat;
             stat.name = desc.name;
-            stat.rawValue = *reinterpret_cast<int*>(subUnitDefinitionPtr + desc.offset);
+            stat.rawValue = value;
             stat.factor = desc.factor;
             stat.unit = desc.unit;
             entity.stats.push_back(stat);
@@ -108,9 +141,9 @@ namespace {
             return;
         }
 
-        const uintptr_t adjusterArrayPtr =
-            *reinterpret_cast<uintptr_t*>(subUnitDefinitionPtr + CSubUnitDefinition::Offsets::CUnitAdjuster_ptr);
-        if (adjusterArrayPtr == 0) {
+        uintptr_t adjusterArrayPtr = 0;
+        if (!Mem::tryRead(subUnitDefinitionPtr + CSubUnitDefinition::Offsets::CUnitAdjuster_ptr, adjusterArrayPtr) ||
+            adjusterArrayPtr == 0) {
             return;
         }
 
@@ -125,23 +158,27 @@ namespace {
             }
 
             // 24 => sizeof(CUnitAdjuster) in the game
-            const HDS::CUnitAdjuster* adjuster =
-                reinterpret_cast<HDS::CUnitAdjuster*>(adjusterArrayPtr + (terrain->id * 24));
+            HDS::CUnitAdjuster adjuster;
+            if (!Mem::tryRead(adjusterArrayPtr + (terrain->id * 24), adjuster)) {
+                entity.terrain.clear();
+                return;
+            }
 
             TerrainStat stat;
             stat.name = terrain->name;
             stat.isWater = terrain->is_water;
-            stat.attack = adjuster->attack + terrain->attack;
-            stat.defence = adjuster->defence + terrain->defence;
-            stat.attrition = adjuster->attrition + terrain->attrition;
-            stat.movement = adjuster->movement;
+            stat.attack = adjuster.attack + terrain->attack;
+            stat.defence = adjuster.defence + terrain->defence;
+            stat.attrition = adjuster.attrition + terrain->attrition;
+            stat.movement = adjuster.movement;
             entity.terrain.push_back(stat);
         }
     }
 }
 
 bool Inspector::recacheIdler() {
-    ingameIdlerPtr = 0;
+    idlerCandidates.clear();
+    selectedIdler = -1;
 
     const uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
     if (moduleBase == 0) {
@@ -149,15 +186,16 @@ bool Inspector::recacheIdler() {
     }
 
     const uintptr_t CIngameIdlerVFTable = moduleBase + 0x11CEB54;
-    auto hits = Mem::findPointers(moduleBase + DATA_SECTION_START, CIngameIdlerVFTable, 99);
-    if (hits.empty()) {
+    idlerCandidates = Mem::findPointers(moduleBase + DATA_SECTION_START, CIngameIdlerVFTable, 99);
+    if (idlerCandidates.empty()) {
         DEBUG_OUT(printf("Inspector: no CIngameIdler found (is a session running?)\n"));
         return false;
     }
 
-    ingameIdlerPtr = hits.back();
-    DEBUG_OUT(printf("Inspector: CIngameIdler at %#010x (%i candidates)\n",
-        ingameIdlerPtr, static_cast<int>(hits.size())));
+    // The last hit is right most of the time, but not always, hence the switching.
+    selectedIdler = static_cast<int>(idlerCandidates.size()) - 1;
+    DEBUG_OUT(printf("Inspector: %i CIngameIdler candidates, using %#010x\n",
+        static_cast<int>(idlerCandidates.size()), idlerCandidates[selectedIdler]));
 
     // Terrain modifiers are looked up by terrain id, and the terrain objects only
     // exist once a session is running too. Same scan, so do it from the same button
@@ -171,12 +209,33 @@ bool Inspector::recacheIdler() {
 }
 
 uintptr_t Inspector::idlerAddress() {
-    return ingameIdlerPtr;
+    if (selectedIdler < 0 || selectedIdler >= static_cast<int>(idlerCandidates.size())) {
+        return 0;
+    }
+    return idlerCandidates[selectedIdler];
+}
+
+int Inspector::idlerCount() {
+    return static_cast<int>(idlerCandidates.size());
+}
+
+int Inspector::idlerIndex() {
+    return selectedIdler;
+}
+
+void Inspector::selectIdlerIndex(int index) {
+    const int count = static_cast<int>(idlerCandidates.size());
+    if (count == 0) {
+        selectedIdler = -1;
+        return;
+    }
+    selectedIdler = ((index % count) + count) % count; // Wrap in both directions
 }
 
 std::vector<Entity> Inspector::getSelection() {
     std::vector<Entity> selection;
 
+    const uintptr_t ingameIdlerPtr = idlerAddress();
     if (ingameIdlerPtr == 0) {
         return selection;
     }
@@ -187,18 +246,30 @@ std::vector<Entity> Inspector::getSelection() {
     const uintptr_t CAirVFTable = moduleBase + 0x011C8774;
     const uintptr_t CMapProvinceVFTable = moduleBase + 0x11BEC1C;
 
-    uintptr_t* idler = reinterpret_cast<uintptr_t*>(ingameIdlerPtr);
-    HDS::LinkedListNodeSingle* currentNode =
-        reinterpret_cast<HDS::LinkedListNodeSingle*>(*(idler + (0x1304 / 4)));
+    // Everything below walks pointers that are only meaningful if this really is the
+    // live idler. While cycling candidates it usually is not, so every read is
+    // validated and a bad one just ends the walk.
+    uintptr_t nodePtr = 0;
+    if (!Mem::tryRead(ingameIdlerPtr + 0x1304, nodePtr)) {
+        return selection;
+    }
 
     int guard = 0;
-    while (currentNode != nullptr && guard++ < MAX_SELECTED_ENTITIES) {
-        const uintptr_t entityPtr = currentNode->data;
+    while (nodePtr != 0 && guard++ < MAX_SELECTED_ENTITIES) {
+        HDS::LinkedListNodeSingle node;
+        if (!Mem::tryRead(nodePtr, node)) {
+            break;
+        }
+
+        const uintptr_t entityPtr = node.data;
         if (entityPtr == 0) {
             break;
         }
 
-        const uintptr_t entityType = *reinterpret_cast<uintptr_t*>(entityPtr);
+        uintptr_t entityType = 0;
+        if (!Mem::tryRead(entityPtr, entityType)) {
+            break;
+        }
 
         Entity entity;
         entity.address = entityPtr;
@@ -221,16 +292,12 @@ std::vector<Entity> Inspector::getSelection() {
         }
 
         if (typeMask != 0) {
-            const char* name = utils::getCString(
-                reinterpret_cast<DWORD*>(entityPtr + CUnit::Offsets::name));
-            if (name != nullptr) {
-                entity.name = name;
-            }
+            readHoi3String(entityPtr + CUnit::Offsets::name, entity.name);
             collectStats(entity, entityPtr, typeMask);
         }
 
         selection.push_back(entity);
-        currentNode = currentNode->next;
+        nodePtr = reinterpret_cast<uintptr_t>(node.next);
     }
 
     return selection;

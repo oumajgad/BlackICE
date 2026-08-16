@@ -98,8 +98,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
-    <!-- Dear ImGui checkout used by the in-game overlay. Override on the command
-         line with /p:ImGuiDir=... if the repo lives somewhere else. -->
+    <!-- Dear ImGui checkout used by the in-game overlay. Must be on the "docking"
+         branch: docking is what lets the utility pages be tabs of one window that can
+         also be torn off, and it is not part of master. Override on the command line
+         with /p:ImGuiDir=... if the repo lives somewhere else. -->
     <ImGuiDir Condition="'$(ImGuiDir)' == ''">C:\Users\David\GitHub\imgui\</ImGuiDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -239,6 +241,13 @@
     <ClCompile Include="Hooks\CNavyHooks.cpp" />
     <ClCompile Include="Hooks\ConstructorHooks.cpp" />
     <ClCompile Include="Hooks\HookedPatches.cpp" />
+    <ClCompile Include="Diagnostics.cpp" />
+    <ClCompile Include="Gui\LuaBridge.cpp" />
+    <ClCompile Include="Gui\PageRegistry.cpp" />
+    <ClCompile Include="Gui\Pages\ICDaysPage.cpp" />
+    <ClCompile Include="Gui\Pages\InspectorPage.cpp" />
+    <ClCompile Include="Gui\Pages\MemoryPage.cpp" />
+    <ClCompile Include="Gui\Pages\ThreadCheckPage.cpp" />
     <ClCompile Include="Hooks\Hooks.cpp" />
     <ClCompile Include="Inspector.cpp" />
     <ClCompile Include="MemScan.cpp" />
@@ -264,6 +273,9 @@
     <ClInclude Include="Hooks\CLeaderHooks.hpp" />
     <ClInclude Include="Hooks\ConstructorHooks.hpp" />
     <ClInclude Include="Hooks\HookedPatches.hpp" />
+    <ClInclude Include="Diagnostics.hpp" />
+    <ClInclude Include="Gui\GuiPage.hpp" />
+    <ClInclude Include="Gui\LuaBridge.hpp" />
     <ClInclude Include="Hooks\Hooks.hpp" />
     <ClInclude Include="Inspector.hpp" />
     <ClInclude Include="MemScan.hpp" />

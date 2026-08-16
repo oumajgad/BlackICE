@@ -20,6 +20,7 @@ package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\s
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\options\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\gameinfos\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\stats\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility_imgui\\?.lua"
 
 
 
@@ -117,6 +118,14 @@ if G_UtilityEnabled then
     require('gui-utility-stats')
     require('gui-auxilliary')
     require('utility-extras')
+end
+
+-- In-game ImGui utility. Deliberately outside G_UtilityEnabled: this is what the
+-- wxWidgets utility above is being replaced by, and it costs a fraction of the memory.
+-- pcall'd so a problem here cannot abort the requires below it.
+local guiImguiOk, guiImguiErr = pcall(require, 'gui-imgui')
+if not guiImguiOk and BiceLibLuaLog ~= nil then
+    BiceLibLuaLog("gui-imgui failed to load: " .. tostring(guiImguiErr))
 end
 -- Statistics
 require('stats')
