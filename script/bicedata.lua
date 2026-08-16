@@ -15,6 +15,7 @@ require('bicedata_modifiers')
 require('bicedata_techs')
 require('bicedata_units')
 require('bicedata_unitmodels')
+require('bicedata_provincebuildings')
 require('bicedata_generals')
 require('bicedata_players')
 

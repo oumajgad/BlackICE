@@ -26,6 +26,7 @@ local pages = {
     { module = 'imgui_techs',     key = 'Techs' },
     { module = 'imgui_units',      key = 'Units' },
     { module = 'imgui_unitmodels', key = 'UnitModels' },
+    { module = 'imgui_provincebuildings', key = 'ProvinceBuildings' },
 }
 
 local loaded = {}
