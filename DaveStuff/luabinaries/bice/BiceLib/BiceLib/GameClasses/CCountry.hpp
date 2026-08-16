@@ -13,4 +13,8 @@ namespace CCountry {
     std::vector<std::pair<std::string, int>> getGeneralModifiers(uintptr_t listNodePtr);
     std::vector<std::string>* getFlags(uintptr_t nodePtr);
     std::vector<HDS::CVariable>* getVars(uintptr_t nodePtr);
+
+    /**@brief cached CCountry instance for a tag ("GER"), 0 if the cache has no entry
+       @note the cache is filled by cacheCountries() and the CCountry constructor hook*/
+    uintptr_t findByTag(const std::string& tag);
 }

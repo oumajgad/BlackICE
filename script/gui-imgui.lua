@@ -18,6 +18,7 @@ BiceLibGui = BiceLibGui or {}
 
 -- module = file under utility_imgui, key = table it must define on BiceLibGui
 local pages = {
+    { module = 'imgui_setup',   key = 'Setup' },
     { module = 'imgui_ic_days', key = 'ICDays' },
 }
 

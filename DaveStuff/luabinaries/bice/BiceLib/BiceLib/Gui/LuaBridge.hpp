@@ -45,12 +45,33 @@ namespace Gui {
         bool beginTableCall(const char* dottedPath);
         void endCall();
 
-        /**@brief reads a field of the table left on the stack by beginTableCall*/
+        /**@brief reads a field of the table currently on top of the stack*/
         double numberField(const char* key, double fallback = 0.0);
         bool boolField(const char* key, bool fallback = false);
         std::string stringField(const char* key, const char* fallback = "");
 
+        /**@brief number of entries in the array field \p key, 0 if it is not a table*/
+        int arrayLength(const char* key);
+
+        /**@brief reads element \p index (0 based) of a plain array of strings*/
+        std::string arrayStringAt(const char* key, int index);
+
+        /**
+        @brief pushes element \p index (0 based) of an array of tables onto the stack
+
+        While pushed, the field readers above address that row. Pair every true
+        result with popArrayElement().
+        */
+        bool pushArrayElement(const char* key, int index);
+        void popArrayElement();
+
+        /**@brief calls a Lua function with no arguments, discarding results*/
+        bool call(const char* dottedPath);
+
         /**@brief calls a Lua function with one number argument, discarding results*/
         bool callWithNumber(const char* dottedPath, double value);
+
+        /**@brief calls a Lua function with one string argument, discarding results*/
+        bool callWithString(const char* dottedPath, const char* value);
     }
 }

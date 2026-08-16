@@ -1,0 +1,42 @@
+-- Template for a utility page's Lua side. See BiceLib/Gui/Pages/README.md.
+--
+-- Copy to imgui_<page>.lua. The imgui_ prefix is MANDATORY: require caches by module
+-- name and the old wx utility already claims ic_days, country_info, misc, setup,
+-- puppets, techs, traits, units, modifiers, flags, vars, generals, stats, options and
+-- help. Without the prefix require silently returns the old module, this file never
+-- runs, and nothing reports an error.
+
+BiceLibGui = BiceLibGui or {}
+BiceLibGui.Template = {}
+
+-- Collect() runs on the render thread, once per refresh. Keep it cheap, never touch
+-- wx, and return plain data only: no userdata, the C++ side reads numbers, strings,
+-- booleans and arrays of those.
+local function collect()
+    return {
+        available = true,
+        -- scalars
+        some_value = 0,
+        -- arrays of rows read with pushArrayElement:
+        -- rows = { { name = "a", value = 1 }, { name = "b", value = 2 } },
+        -- plain string arrays read with arrayStringAt:
+        -- tags = { "GER", "ENG" },
+    }
+end
+
+-- Wrapped so a Lua level error shows as text on the page rather than a generic
+-- message. This cannot catch a fault inside the game's own code, which is why the
+-- C++ side gates every call on there being a running session.
+function BiceLibGui.Template.Collect()
+    local ok, result = pcall(collect)
+    if not ok then
+        return { available = false, reason = tostring(result) }
+    end
+    return result
+end
+
+-- Actions post commands exactly as the wx page did, so multiplayer is unaffected.
+function BiceLibGui.Template.DoSomething(value)
+    -- local command = CSetVariableCommand(tag, CString("x"), CFixedPoint(value))
+    -- CCurrentGameState.Post(command)
+end

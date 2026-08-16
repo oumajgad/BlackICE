@@ -48,6 +48,11 @@ uintptr_t getCountry(std::string tag) {
     return 0;
 }
 
+// Lets the overlay reach the country cache without a detour through Lua.
+uintptr_t CCountry::findByTag(const std::string& tag) {
+    return getCountry(tag);
+}
+
 void addCountryToCache(std::string tag, uintptr_t address) {
     countryCache->insert(std::make_pair(tag, address));
     DEBUG_OUT(printf("Added to countryCache: %s - %#010x \n", tag.c_str(), address));

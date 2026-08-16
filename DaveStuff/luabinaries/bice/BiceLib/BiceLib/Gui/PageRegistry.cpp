@@ -1,4 +1,5 @@
 #include <Gui/GuiPage.hpp>
+#include <Gui/CountrySelection.hpp>
 
 #include <algorithm>
 #include <cstring>
@@ -104,10 +105,21 @@ void Gui::drawPageMenu() {
 }
 
 void Gui::drawAll() {
+    // Polled here rather than by the Setup page: ImGui only calls draw() on the
+    // visible tab, so pages reading the tag would go stale whenever Setup is hidden.
+    Selection::refreshIfStale();
+
     ImGui::SetNextWindowSize(ImVec2(760, 560), ImGuiCond_FirstUseEver);
     ImGui::SetNextWindowPos(ImVec2(60, 60), ImGuiCond_FirstUseEver);
 
-    if (ImGui::Begin(HOST_WINDOW, nullptr, ImGuiWindowFlags_MenuBar)) {
+    const bool hostVisible = ImGui::Begin(HOST_WINDOW, nullptr, ImGuiWindowFlags_MenuBar);
+
+    // Must be read while the host window is current, so after Begin() and regardless
+    // of what it returned: Begin() pushes the window either way, which is why End()
+    // is unconditional.
+    const ImGuiID dockspaceId = ImGui::GetID(DOCKSPACE_ID);
+
+    if (hostVisible) {
         if (ImGui::BeginMenuBar()) {
             if (ImGui::BeginMenu("Pages")) {
                 drawPageMenu();
@@ -116,7 +128,6 @@ void Gui::drawAll() {
             ImGui::EndMenuBar();
         }
 
-        const ImGuiID dockspaceId = ImGui::GetID(DOCKSPACE_ID);
         if (!layoutBuilt) {
             layoutBuilt = true;
             // Only build a layout when there isn't one already: the saved ini restores
@@ -126,6 +137,12 @@ void Gui::drawAll() {
             }
         }
         ImGui::DockSpace(dockspaceId);
+    }
+    else {
+        // Collapsed, so Begin() returned false and the dockspace is not submitted.
+        // A node that goes unsubmitted counts as gone and every page docked into it
+        // gets expelled into its own floating window, so keep the node alive.
+        ImGui::DockSpace(dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_KeepAliveOnly);
     }
     ImGui::End();
 

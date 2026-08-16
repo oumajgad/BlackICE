@@ -210,6 +210,120 @@ std::string Gui::Lua::stringField(const char* key, const char* fallback) {
     return value;
 }
 
+int Gui::Lua::arrayLength(const char* key) {
+    lua_State* state = renderThreadState();
+    if (state == nullptr) {
+        return 0;
+    }
+
+    lua_pushstring(state, key);
+    lua_gettable(state, -2);
+    const int length = lua_istable(state, -1) ? static_cast<int>(lua_objlen(state, -1)) : 0;
+    lua_pop(state, 1);
+    return length;
+}
+
+std::string Gui::Lua::arrayStringAt(const char* key, int index) {
+    lua_State* state = renderThreadState();
+    if (state == nullptr) {
+        return std::string();
+    }
+
+    lua_pushstring(state, key);
+    lua_gettable(state, -2);
+    if (!lua_istable(state, -1)) {
+        lua_pop(state, 1);
+        return std::string();
+    }
+
+    lua_rawgeti(state, -1, index + 1); // Lua arrays start at 1
+    const char* text = lua_tostring(state, -1);
+    std::string value = (text != nullptr) ? text : "";
+    lua_pop(state, 2);
+    return value;
+}
+
+bool Gui::Lua::pushArrayElement(const char* key, int index) {
+    lua_State* state = renderThreadState();
+    if (state == nullptr) {
+        return false;
+    }
+
+    lua_pushstring(state, key);
+    lua_gettable(state, -2);
+    if (!lua_istable(state, -1)) {
+        lua_pop(state, 1);
+        return false;
+    }
+
+    lua_rawgeti(state, -1, index + 1);
+    if (!lua_istable(state, -1)) {
+        lua_pop(state, 2);
+        return false;
+    }
+
+    lua_remove(state, -2); // Drop the array, leave the row on top
+    return true;
+}
+
+void Gui::Lua::popArrayElement() {
+    lua_State* state = renderThreadState();
+    if (state != nullptr) {
+        lua_pop(state, 1);
+    }
+}
+
+bool Gui::Lua::call(const char* dottedPath) {
+    if (!available()) {
+        return false;
+    }
+
+    lua_State* state = renderThreadState();
+    const int baseTop = lua_gettop(state);
+
+    if (!pushDottedPath(state, dottedPath)) {
+        lua_settop(state, baseTop);
+        return false;
+    }
+
+    if (lua_pcall(state, 0, 0, 0) != 0) {
+        const char* message = lua_tostring(state, -1);
+        ERROR_OUT(printf("LuaBridge: %s failed: %s\n", dottedPath, message != nullptr ? message : "?"));
+        reason = "the Lua call raised an error";
+        lua_settop(state, baseTop);
+        return false;
+    }
+
+    lua_settop(state, baseTop);
+    return true;
+}
+
+bool Gui::Lua::callWithString(const char* dottedPath, const char* value) {
+    if (!available()) {
+        return false;
+    }
+
+    lua_State* state = renderThreadState();
+    const int baseTop = lua_gettop(state);
+
+    if (!pushDottedPath(state, dottedPath)) {
+        lua_settop(state, baseTop);
+        return false;
+    }
+
+    lua_pushstring(state, value);
+    if (lua_pcall(state, 1, 0, 0) != 0) {
+        const char* message = lua_tostring(state, -1);
+        ERROR_OUT(printf("LuaBridge: %s failed: %s\n", dottedPath, message != nullptr ? message : "?"));
+        reason = "the Lua call raised an error";
+        lua_settop(state, baseTop);
+        return false;
+    }
+
+    lua_settop(state, baseTop);
+    return true;
+}
+
 bool Gui::Lua::callWithNumber(const char* dottedPath, double value) {
     if (!available()) {
         return false;
