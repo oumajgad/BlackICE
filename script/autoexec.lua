@@ -21,6 +21,7 @@ package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\s
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\gameinfos\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\stats\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility_imgui\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility_data\\?.lua"
 
 
 
@@ -108,7 +109,11 @@ require('DEFAULT_LAND')
 require('DEFAULT_MIXED')
 
 
-G_UtilityEnabled = true -- disabling saves about 50 MiB
+-- Data provider shared by both utilities. UI free and lazily parsed, so requiring it
+-- costs nothing until something asks for data. Must come before either utility.
+require('bicedata')
+
+G_UtilityEnabled = false -- disabling saves about 50 MiB
 if G_UtilityEnabled then
     -- Hoi 3 Utility
     require('gui-utility')
@@ -120,12 +125,16 @@ if G_UtilityEnabled then
     require('utility-extras')
 end
 
--- In-game ImGui utility. Deliberately outside G_UtilityEnabled: this is what the
--- wxWidgets utility above is being replaced by, and it costs a fraction of the memory.
--- pcall'd so a problem here cannot abort the requires below it.
-local guiImguiOk, guiImguiErr = pcall(require, 'gui-imgui')
-if not guiImguiOk and BiceLibLuaLog ~= nil then
-    BiceLibLuaLog("gui-imgui failed to load: " .. tostring(guiImguiErr))
+-- In-game ImGui utility, the replacement for the wxWidgets one above. Kept on its own
+-- switch rather than G_UtilityEnabled so either can be run without the other during
+-- the migration. Disabling it also skips installing the D3D9 hooks entirely.
+G_ImguiUtilityEnabled = true
+if G_ImguiUtilityEnabled then
+    -- pcall'd so a problem here cannot abort the requires below it.
+    local guiImguiOk, guiImguiErr = pcall(require, 'gui-imgui')
+    if not guiImguiOk and BiceLibLuaLog ~= nil then
+        BiceLibLuaLog("gui-imgui failed to load: " .. tostring(guiImguiErr))
+    end
 end
 -- Statistics
 require('stats')

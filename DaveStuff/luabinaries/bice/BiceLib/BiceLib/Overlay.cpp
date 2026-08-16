@@ -31,7 +31,11 @@ namespace {
     HWND gameWindow = nullptr;
     bool installed = false;
     bool imguiReady = false;
-    bool visible = true;
+
+    // Starts hidden so the overlay never covers the main menu or a loading screen.
+    // ImGui is still initialised on the first Present, so the window subclass that
+    // listens for INSERT is in place before anyone presses it.
+    bool visible = false;
 
     bool isMouseMessage(UINT msg) noexcept {
         return (msg >= WM_MOUSEFIRST && msg <= WM_MOUSELAST) || msg == WM_MOUSEHOVER || msg == WM_MOUSELEAVE;

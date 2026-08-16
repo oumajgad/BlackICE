@@ -1,6 +1,7 @@
 #include <Inspector.hpp>
 
 #include <MemScan.hpp>
+#include <TextEncoding.hpp>
 #include <utils.hpp>
 #include <HoiDataStructures.hpp>
 #include <GameClasses/CUnit.hpp>
@@ -108,7 +109,9 @@ namespace {
         if (!Mem::tryReadBytes(textAddress, buffer.data(), length)) {
             return false;
         }
-        out.assign(buffer.data()); // Stops at the first NUL
+        // Unit names are player entered and full of umlauts in a German game, and the
+        // game stores them as Windows-1252.
+        out = Text::toUtf8(buffer.data(), strlen(buffer.data()));
         return true;
     }
 

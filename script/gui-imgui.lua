@@ -20,7 +20,9 @@ BiceLibGui = BiceLibGui or {}
 local pages = {
     { module = 'imgui_setup',   key = 'Setup' },
     { module = 'imgui_ic_days', key = 'ICDays' },
-    { module = 'imgui_traits',  key = 'Traits' },
+    { module = 'imgui_traits',   key = 'Traits' },
+    { module = 'imgui_generals',  key = 'Generals' },
+    { module = 'imgui_modifiers', key = 'Modifiers' },
 }
 
 local loaded = {}
@@ -46,4 +48,11 @@ if BiceLibLuaLog ~= nil then
     if #failed > 0 then
         BiceLibLuaLog("gui-imgui FAILED pages: " .. table.concat(failed, " | "))
     end
+end
+
+-- Installs the D3D9 hooks. Done here rather than in bicelib_lua.lua so that turning
+-- G_ImguiUtilityEnabled off skips the hooks as well as the pages. The overlay starts
+-- hidden; INSERT shows it.
+if BiceLib ~= nil and BiceLib.Overlay ~= nil then
+    BiceLib.Overlay.enable()
 end

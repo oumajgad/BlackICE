@@ -7,6 +7,7 @@
 
 #include <Diagnostics.hpp>
 #include <MemScan.hpp>
+#include <TextEncoding.hpp>
 #include <utils.hpp>
 
 namespace {
@@ -234,8 +235,10 @@ std::string Gui::Lua::stringField(const char* key, const char* fallback) {
 
     lua_pushstring(state, key);
     lua_gettable(state, -2);
-    const char* text = lua_tostring(state, -1);
-    std::string value = (text != nullptr) ? text : fallback;
+    size_t length = 0;
+    const char* text = lua_tolstring(state, -1, &length);
+    // Game text is Windows-1252; ImGui needs UTF-8.
+    std::string value = (text != nullptr) ? Text::toUtf8(text, length) : std::string(fallback);
     lua_pop(state, 1);
     return value;
 }
@@ -267,8 +270,10 @@ std::string Gui::Lua::arrayStringAt(const char* key, int index) {
     }
 
     lua_rawgeti(state, -1, index + 1); // Lua arrays start at 1
-    const char* text = lua_tostring(state, -1);
-    std::string value = (text != nullptr) ? text : "";
+    size_t length = 0;
+    const char* text = lua_tolstring(state, -1, &length);
+    // Game text is Windows-1252; ImGui needs UTF-8.
+    std::string value = (text != nullptr) ? Text::toUtf8(text, length) : std::string();
     lua_pop(state, 2);
     return value;
 }

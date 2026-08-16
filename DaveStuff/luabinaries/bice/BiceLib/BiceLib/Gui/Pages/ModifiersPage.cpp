@@ -1,33 +1,32 @@
-// Traits: a filterable list of traits on the left, the selected trait's effects and
-// triggers on the right.
+// Modifiers: event and triggered modifiers, with their effects and the conditions
+// under which they apply.
 //
-// The trait data is parsed out of common/traits.txt once per session, so the list is
-// fetched on demand rather than polled. Details are fetched only when the selection
-// changes, because building them runs the effect translation in Lua.
+// Same shape as Traits - static file-parsed data, so the list loads once and details
+// are fetched only when the selection changes.
 
 #include <Gui/GuiPage.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/ListBox.hpp>
 
 #include <Windows.h>
-#include <algorithm>
-#include <cctype>
-#include <cstring>
+#include <cfloat>
 #include <string>
 #include <vector>
 
 #include <imgui.h>
 
 namespace {
-    const char* COLLECT = "BiceLibGui.Traits.Collect";
-    const char* DETAILS = "BiceLibGui.Traits.Details";
+    const char* COLLECT = "BiceLibGui.Modifiers.Collect";
+    const char* DETAILS = "BiceLibGui.Modifiers.Details";
 
-    std::vector<std::string> traits;
+    std::vector<std::string> modifiers;
     bool listLoaded = false;
+    bool triedOnce = false;
     std::string listError;
 
     std::string selectedChoice;
     std::string detailKey;
+    std::string detailKind;
     std::string detailEffects;
     std::string detailTriggers;
     std::string detailError;
@@ -35,7 +34,7 @@ namespace {
     char filter[64] = {};
 
     void loadList() {
-        traits.clear();
+        modifiers.clear();
         listLoaded = false;
 
         if (!Gui::Lua::beginTableCall(COLLECT)) {
@@ -49,10 +48,10 @@ namespace {
             return;
         }
 
-        const int count = Gui::Lua::arrayLength("traits");
-        traits.reserve(static_cast<size_t>(count));
+        const int count = Gui::Lua::arrayLength("modifiers");
+        modifiers.reserve(static_cast<size_t>(count));
         for (int i = 0; i < count; i++) {
-            traits.push_back(Gui::Lua::arrayStringAt("traits", i));
+            modifiers.push_back(Gui::Lua::arrayStringAt("modifiers", i));
         }
 
         Gui::Lua::endCall();
@@ -61,9 +60,10 @@ namespace {
     }
 
     void loadDetails(const std::string& choice) {
+        detailKey.clear();
+        detailKind.clear();
         detailEffects.clear();
         detailTriggers.clear();
-        detailKey.clear();
         detailError.clear();
 
         if (!Gui::Lua::beginTableCallWithString(DETAILS, choice.c_str())) {
@@ -73,6 +73,7 @@ namespace {
 
         if (Gui::Lua::boolField("available")) {
             detailKey = Gui::Lua::stringField("key");
+            detailKind = Gui::Lua::stringField("kind");
             detailEffects = Gui::Lua::stringField("effects");
             detailTriggers = Gui::Lua::stringField("triggers");
         }
@@ -83,15 +84,16 @@ namespace {
         Gui::Lua::endCall();
     }
 
-    /**@brief read only multiline box, so the text stays selectable and copyable*/
+    /**@brief read only multiline box, so the text stays selectable and copyable
+       @param height pixels, or -FLT_MIN to fill the remaining height (0 would mean
+              ImGui's default of 8 lines, which never grows with the pane)*/
     void drawTextBox(const char* id, const std::string& text, float height) {
-        // InputTextMultiline needs a mutable buffer even when read only.
         ImGui::InputTextMultiline(id,
             const_cast<char*>(text.c_str()), text.size() + 1,
             ImVec2(-FLT_MIN, height), ImGuiInputTextFlags_ReadOnly);
     }
 
-    void drawTraits() {
+    void drawModifiers() {
         if (ImGui::Button("Reload")) {
             loadList();
             if (!selectedChoice.empty()) {
@@ -101,15 +103,9 @@ namespace {
         ImGui::SameLine();
 
         if (!listLoaded) {
-            if (listError.empty()) {
-                ImGui::TextDisabled("Press Reload to parse traits.txt.");
-            }
-            else {
-                ImGui::TextDisabled("%s", listError.c_str());
-            }
-            // Try once automatically; after that it is on the Reload button so a
+            ImGui::TextDisabled("%s", listError.empty() ? "Loading..." : listError.c_str());
+            // One automatic attempt; after that it is on the Reload button so a
             // failure doesn't re-parse the files every frame.
-            static bool triedOnce = false;
             if (!triedOnce) {
                 triedOnce = true;
                 loadList();
@@ -117,11 +113,9 @@ namespace {
             return;
         }
 
-        ImGui::TextDisabled("%d traits", static_cast<int>(traits.size()));
+        ImGui::TextDisabled("%d modifiers", static_cast<int>(modifiers.size()));
 
-        const float listWidth = 260.0f;
-
-        if (Gui::filteredList("list", ImVec2(listWidth, 0), traits,
+        if (Gui::filteredList("list", ImVec2(300.0f, 0), modifiers,
             filter, sizeof(filter), selectedChoice)) {
             loadDetails(selectedChoice);
         }
@@ -130,13 +124,17 @@ namespace {
 
         ImGui::BeginChild("details", ImVec2(0, 0));
         if (selectedChoice.empty()) {
-            ImGui::TextDisabled("Select a trait.");
+            ImGui::TextDisabled("Select a modifier.");
         }
         else if (!detailError.empty()) {
             ImGui::TextDisabled("%s", detailError.c_str());
         }
         else {
             ImGui::Text("%s", detailKey.c_str());
+            if (!detailKind.empty()) {
+                ImGui::SameLine();
+                ImGui::TextDisabled("(%s)", detailKind.c_str());
+            }
             ImGui::Separator();
 
             const float half = ImGui::GetContentRegionAvail().y * 0.5f - ImGui::GetTextLineHeightWithSpacing();
@@ -144,21 +142,21 @@ namespace {
             ImGui::TextUnformatted("Effects");
             drawTextBox("##effects", detailEffects, half);
 
-            ImGui::TextUnformatted("Triggers");
+            ImGui::TextUnformatted("Conditions");
             drawTextBox("##triggers",
-                detailTriggers.empty() ? std::string("(none)") : detailTriggers, half);
+                detailTriggers.empty() ? std::string("(none)") : detailTriggers, -FLT_MIN);
         }
         ImGui::EndChild();
     }
 
-    class TraitsPage : public Gui::GuiPage
+    class ModifiersPage : public Gui::GuiPage
     {
     public:
-        const char* title() const override { return "Traits"; }
+        const char* title() const override { return "Modifiers"; }
         const char* group() const override { return "Game Info"; }
-        int order() const override { return 50; }
-        void draw() override { drawTraits(); }
+        int order() const override { return 70; }
+        void draw() override { drawModifiers(); }
     };
 }
 
-REGISTER_GUI_PAGE(TraitsPage);
+REGISTER_GUI_PAGE(ModifiersPage);

@@ -57,9 +57,6 @@ if mod then
     -- Complex Patches
     BiceLib.ComplexPatches.fixOffMapIC()
     BiceLib.ComplexPatches.enablePlacingNonResearchedBuildings()
-
-    -- In-game ImGui overlay. Press INSERT to show/hide it.
-    BiceLib.Overlay.enable()
 end
 
 function HasLoadedBiceLibSuccessfully()

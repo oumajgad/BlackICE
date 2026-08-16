@@ -21,6 +21,7 @@
 #include <imgui.h>
 
 #include <GameClasses/CCountry.hpp>
+#include <TextEncoding.hpp>
 #include <HoiDataStructures.hpp>
 
 namespace {
@@ -79,7 +80,7 @@ namespace {
             if (flags != nullptr) {
                 for (const std::string& flag : *flags) {
                     Row row;
-                    row.name = flag;
+                    row.name = Text::toUtf8(flag);
                     page.rows.push_back(row);
                 }
                 delete flags;
@@ -91,7 +92,7 @@ namespace {
             if (vars != nullptr) {
                 for (const HDS::CVariable& variable : *vars) {
                     Row row;
-                    row.name = variable.name;
+                    row.name = Text::toUtf8(variable.name);
                     // Fixed point: the game stores 12.05 as 12050.
                     row.value = (variable.value != 0) ? variable.value / 1000.0 : 0.0;
                     row.hasValue = true;
@@ -104,8 +105,8 @@ namespace {
         case Source::EventModifiers: {
             for (const auto& entry : CCountry::getActiveEventModifiers(country)) {
                 Row row;
-                row.name = entry.first;
-                row.text = entry.second;
+                row.name = Text::toUtf8(entry.first);
+                row.text = Text::toUtf8(entry.second);
                 page.rows.push_back(row);
             }
             break;
