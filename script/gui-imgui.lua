@@ -21,6 +21,7 @@ local pages = {
     { module = 'imgui_setup',   key = 'Setup' },
     { module = 'imgui_ic_days', key = 'ICDays' },
     { module = 'imgui_countryinfo', key = 'CountryInfo' },
+    { module = 'imgui_puppets', key = 'Puppets' },
     { module = 'imgui_traits',   key = 'Traits' },
     { module = 'imgui_generals',  key = 'Generals' },
     { module = 'imgui_modifiers', key = 'Modifiers' },

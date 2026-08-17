@@ -69,8 +69,11 @@ namespace {
     {
         const char* group = nullptr;
         char title[64] = {};
+
+        // Open to begin with. ImGui only settles a page into its dock once the page
+        // and its host have both been submitted for a few frames, so the windows have
+        // to exist first; they are hidden again by the auto hide below.
         bool open = true;
-        bool layoutBuilt = false;
 
         /**
          * Computed rather than read with GetID() inside the window, because the node
@@ -88,7 +91,34 @@ namespace {
     int groupWindowCount = 0;
     bool groupWindowsReady = false;
 
+    /**
+     * The overlay should come up showing only the control window, but the group
+     * windows cannot simply start closed: a page only takes up its dock position once
+     * it and its host have been submitted together, and a page with no dock yet is a
+     * loose floating window. So they open, settle, and are then hidden once.
+     *
+     * Once, not every frame: after this fires the user owns what is open.
+     */
+    int framesBeforeAutoHide = 3;
+    bool autoHidden = false;
+
     const char* CONTROL_WINDOW = "BiceLib";
+
+    /**@brief docks a group's pages into that group's own dockspace*/
+    void buildGroupLayout(const GroupWindow& window, ImGuiID dockspaceId) {
+        ImGui::DockBuilderRemoveNode(dockspaceId);
+        ImGui::DockBuilderAddNode(dockspaceId, ImGuiDockNodeFlags_DockSpace);
+        ImGui::DockBuilderSetNodeSize(dockspaceId, ImGui::GetMainViewport()->Size);
+
+        // Sorted order, so the tab bar comes out in the order pages declare.
+        for (Gui::GuiPage* page : Gui::pages()) {
+            if (std::strcmp(page->group(), window.group) == 0) {
+                ImGui::DockBuilderDockWindow(page->title(), dockspaceId);
+            }
+        }
+
+        ImGui::DockBuilderFinish(dockspaceId);
+    }
 
     /**@brief builds one window per group that actually has pages*/
     void ensureGroupWindows() {
@@ -107,33 +137,31 @@ namespace {
             GroupWindow& window = groupWindows[groupWindowCount++];
             window.group = page->group();
             window.open = true;
-            window.layoutBuilt = false;
             // The group name alone could collide with a page title, and the prefix
             // makes the windows recognisable once they are floating separately.
             sprintf_s(window.title, "BiceLib - %s", page->group());
             window.dockspaceId = ImHashStr("dockspace", 0, ImHashStr(window.title));
+
+            // Built up front rather than when the group is first shown. Pages are
+            // submitted from the very first frame whether or not their group window is
+            // open, so a page with no dock assignment yet appears as a loose floating
+            // window until it gets one. DockBuilderDockWindow works on windows that do
+            // not exist yet - it writes the dock id into their settings - so this does
+            // not need the group window to be visible.
+            //
+            // Skipped when the ini already described this group, which would otherwise
+            // be overwritten on every launch. Testable only here: submitting a node
+            // with KeepAliveOnly creates it, so from the next frame on a node always
+            // exists and its presence no longer means "restored from the ini".
+            if (ImGui::DockBuilderGetNode(window.dockspaceId) == nullptr) {
+                buildGroupLayout(window, window.dockspaceId);
+            }
 
             if (groupWindowCount >= static_cast<int>(sizeof(groupWindows) / sizeof(groupWindows[0]))) {
                 break;
             }
         }
         groupWindowsReady = true;
-    }
-
-    /**@brief docks a group's pages into that group's own dockspace*/
-    void buildGroupLayout(const GroupWindow& window, ImGuiID dockspaceId) {
-        ImGui::DockBuilderRemoveNode(dockspaceId);
-        ImGui::DockBuilderAddNode(dockspaceId, ImGuiDockNodeFlags_DockSpace);
-        ImGui::DockBuilderSetNodeSize(dockspaceId, ImGui::GetMainViewport()->Size);
-
-        // Sorted order, so the tab bar comes out in the order pages declare.
-        for (Gui::GuiPage* page : Gui::pages()) {
-            if (std::strcmp(page->group(), window.group) == 0) {
-                ImGui::DockBuilderDockWindow(page->title(), dockspaceId);
-            }
-        }
-
-        ImGui::DockBuilderFinish(dockspaceId);
     }
 
     void drawGroupWindow(GroupWindow& window, int index) {
@@ -156,14 +184,6 @@ namespace {
         const bool visible = ImGui::Begin(window.title, &window.open);
 
         if (visible) {
-            if (!window.layoutBuilt) {
-                window.layoutBuilt = true;
-                // Only when there is no saved node, otherwise the ini's arrangement
-                // would be thrown away on every launch.
-                if (ImGui::DockBuilderGetNode(window.dockspaceId) == nullptr) {
-                    buildGroupLayout(window, window.dockspaceId);
-                }
-            }
             ImGui::DockSpace(window.dockspaceId);
         }
         else {
@@ -257,5 +277,19 @@ void Gui::drawAll() {
             page->draw();
         }
         ImGui::End();
+    }
+
+    // Everything has been submitted at least once by now, so the pages are settled
+    // into their docks and the group windows can be put away.
+    if (!autoHidden) {
+        if (framesBeforeAutoHide > 0) {
+            framesBeforeAutoHide--;
+        }
+        else {
+            for (int i = 0; i < groupWindowCount; i++) {
+                groupWindows[i].open = false;
+            }
+            autoHidden = true;
+        }
     }
 }

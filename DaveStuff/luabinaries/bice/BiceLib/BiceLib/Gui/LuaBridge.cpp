@@ -194,6 +194,36 @@ bool Gui::Lua::beginTableCallWithString(const char* dottedPath, const char* valu
     return true;
 }
 
+bool Gui::Lua::beginTableCallWithNumber(const char* dottedPath, double value) {
+    if (!available()) {
+        return false;
+    }
+
+    lua_State* state = renderThreadState();
+    const int baseTop = lua_gettop(state);
+
+    if (!pushDottedPath(state, dottedPath)) {
+        lua_settop(state, baseTop);
+        return false;
+    }
+
+    lua_pushnumber(state, value);
+    if (lua_pcall(state, 1, 1, 0) != 0) {
+        const char* message = lua_tostring(state, -1);
+        ERROR_OUT(printf("LuaBridge: %s failed: %s\n", dottedPath, message != nullptr ? message : "?"));
+        reason = "the Lua call raised an error";
+        lua_settop(state, baseTop);
+        return false;
+    }
+
+    if (!lua_istable(state, -1)) {
+        reason = "the Lua call did not return a table";
+        lua_settop(state, baseTop);
+        return false;
+    }
+    return true;
+}
+
 bool Gui::Lua::beginTableCallWithStringAndNumber(const char* dottedPath, const char* text, double number) {
     if (!available()) {
         return false;
