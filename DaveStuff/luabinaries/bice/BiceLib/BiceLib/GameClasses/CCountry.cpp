@@ -4,7 +4,7 @@
 
 uintptr_t CCountry::CountryPtrs[300];
 
-void CCountry::traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>* res, uintptr_t nodePtr) {
+void CCountry::traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>& res, uintptr_t nodePtr) {
     if (nodePtr == 0) {
         return;
     }
@@ -26,7 +26,7 @@ void CCountry::traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>* re
 
     if (element != 0) {
         //std::cout << "element" << std::endl;
-        res->push_back(element);
+        res.push_back(element);
     }
     if (child != 0) {
         //std::cout << "child" << std::endl;
@@ -72,38 +72,38 @@ std::vector<std::pair<std::string, int>> CCountry::getGeneralModifiers(uintptr_t
     return res;
 }
 
-std::vector<std::string>* CCountry::getFlags(uintptr_t countryPtr) {
-    std::vector<std::uintptr_t>* ptrs = new std::vector<std::uintptr_t>;
+std::vector<std::string> CCountry::getFlags(uintptr_t countryPtr) {
+    std::vector<std::uintptr_t> ptrs;
 
     uintptr_t flagsOffset = countryPtr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
     uintptr_t flagsPtr = *(uintptr_t*)(flagsOffset);
 
     CCountry::traverseFlagsAndVarTreeDepthFirst(ptrs, flagsPtr);
-    std::vector<std::string>* res = new std::vector<std::string>;
-    for (auto& i : *ptrs) {
-        std::string x = std::string(utils::getCString((DWORD*)i));
-        res->push_back(x);
+
+    std::vector<std::string> res;
+    res.reserve(ptrs.size());
+    for (auto& i : ptrs) {
+        res.push_back(std::string(utils::getCString((DWORD*)i)));
     }
-    delete ptrs;
     return res;
 }
 
-std::vector<HDS::CVariable>* CCountry::getVars(uintptr_t countryPtr) {
-    std::vector<std::uintptr_t>* ptrs = new std::vector<std::uintptr_t>;
+std::vector<HDS::CVariable> CCountry::getVars(uintptr_t countryPtr) {
+    std::vector<std::uintptr_t> ptrs;
 
     uintptr_t varsOffset = countryPtr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning
     uintptr_t varsPtr = *(uintptr_t*)varsOffset;
 
     CCountry::traverseFlagsAndVarTreeDepthFirst(ptrs, varsPtr);
-    std::vector<HDS::CVariable>* res = new std::vector<HDS::CVariable>;
-    for (auto& i : *ptrs) {
+
+    std::vector<HDS::CVariable> res;
+    for (auto& i : ptrs) {
         HDS::CVariable x;
         x.name = std::string(utils::getCString((DWORD*)i));
         x.value = *(int32_t*)(i + 0x1C);
         if (x.value != 0) {
-            res->push_back(x);
+            res.push_back(x);
         }
     }
-    delete ptrs;
     return res;
 }

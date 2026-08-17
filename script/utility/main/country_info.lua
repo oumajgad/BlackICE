@@ -11,7 +11,7 @@ function GetPlayerModifiers()
         if x ~= nil then
             offmapIC = x
         end
-        generalModifiers = BiceLib.GameInfo.getCountryGeneralModifiers("GER")
+        generalModifiers = BiceLib.GameInfo.getCountryGeneralModifiers(G_PlayerCountry)
     end
 
     local trickleBack = "Failed to load"

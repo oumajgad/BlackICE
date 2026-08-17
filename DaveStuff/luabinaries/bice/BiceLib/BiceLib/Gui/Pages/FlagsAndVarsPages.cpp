@@ -75,30 +75,21 @@ namespace {
 
         switch (page.source) {
         case Source::Flags: {
-            // getFlags allocates; we own it.
-            std::vector<std::string>* flags = CCountry::getFlags(country);
-            if (flags != nullptr) {
-                for (const std::string& flag : *flags) {
-                    Row row;
-                    row.name = Text::toUtf8(flag);
-                    page.rows.push_back(row);
-                }
-                delete flags;
+            for (const std::string& flag : CCountry::getFlags(country)) {
+                Row row;
+                row.name = Text::toUtf8(flag);
+                page.rows.push_back(row);
             }
             break;
         }
         case Source::Variables: {
-            std::vector<HDS::CVariable>* vars = CCountry::getVars(country);
-            if (vars != nullptr) {
-                for (const HDS::CVariable& variable : *vars) {
-                    Row row;
-                    row.name = Text::toUtf8(variable.name);
-                    // Fixed point: the game stores 12.05 as 12050.
-                    row.value = (variable.value != 0) ? variable.value / 1000.0 : 0.0;
-                    row.hasValue = true;
-                    page.rows.push_back(row);
-                }
-                delete vars;
+            for (const HDS::CVariable& variable : CCountry::getVars(country)) {
+                Row row;
+                row.name = Text::toUtf8(variable.name);
+                // Fixed point: the game stores 12.05 as 12050.
+                row.value = (variable.value != 0) ? variable.value / 1000.0 : 0.0;
+                row.hasValue = true;
+                page.rows.push_back(row);
             }
             break;
         }

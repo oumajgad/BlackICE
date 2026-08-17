@@ -57,23 +57,120 @@ namespace {
         registrySorted = true;
     }
 
-    const char* HOST_WINDOW = "BiceLib Utility";
-    const char* DOCKSPACE_ID = "BiceLibDockspace";
+    /**
+     * One dockable window per group, mirroring the five windows the wxWidgets utility
+     * used. A single shared tab bar would be unusable once every page is ported:
+     * thirty tabs in one row cannot be read, let alone clicked.
+     *
+     * Each group window owns its own dockspace, so its pages tab within it, and any
+     * page can still be dragged between groups or floated on its own.
+     */
+    struct GroupWindow
+    {
+        const char* group = nullptr;
+        char title[64] = {};
+        bool open = true;
+        bool layoutBuilt = false;
 
-    bool layoutBuilt = false;
+        /**
+         * Computed rather than read with GetID() inside the window, because the node
+         * must be kept alive on frames where the window is closed and therefore never
+         * begun. GetID() hashes against the current window's id stack, so outside the
+         * window it would return a different id every time.
+         *
+         * This reproduces what GetID("dockspace") yields inside the window: a window's
+         * id is the hash of its title, and GetID seeds the child hash with it.
+         */
+        ImGuiID dockspaceId = 0;
+    };
 
-    /**@brief docks every page into one node so they start life as tabs of one window*/
-    void buildDefaultLayout(ImGuiID dockspaceId) {
+    GroupWindow groupWindows[Gui::GROUP_COUNT + 1]; // +1 for pages with an unknown group
+    int groupWindowCount = 0;
+    bool groupWindowsReady = false;
+
+    const char* CONTROL_WINDOW = "BiceLib";
+
+    /**@brief builds one window per group that actually has pages*/
+    void ensureGroupWindows() {
+        if (groupWindowsReady) {
+            return;
+        }
+        groupWindowCount = 0;
+
+        const char* previous = nullptr;
+        for (Gui::GuiPage* page : Gui::pages()) {
+            if (previous != nullptr && std::strcmp(previous, page->group()) == 0) {
+                continue;
+            }
+            previous = page->group();
+
+            GroupWindow& window = groupWindows[groupWindowCount++];
+            window.group = page->group();
+            window.open = true;
+            window.layoutBuilt = false;
+            // The group name alone could collide with a page title, and the prefix
+            // makes the windows recognisable once they are floating separately.
+            sprintf_s(window.title, "BiceLib - %s", page->group());
+            window.dockspaceId = ImHashStr("dockspace", 0, ImHashStr(window.title));
+
+            if (groupWindowCount >= static_cast<int>(sizeof(groupWindows) / sizeof(groupWindows[0]))) {
+                break;
+            }
+        }
+        groupWindowsReady = true;
+    }
+
+    /**@brief docks a group's pages into that group's own dockspace*/
+    void buildGroupLayout(const GroupWindow& window, ImGuiID dockspaceId) {
         ImGui::DockBuilderRemoveNode(dockspaceId);
         ImGui::DockBuilderAddNode(dockspaceId, ImGuiDockNodeFlags_DockSpace);
         ImGui::DockBuilderSetNodeSize(dockspaceId, ImGui::GetMainViewport()->Size);
 
-        // Docked in sorted order, so the tab bar comes out grouped and ordered.
+        // Sorted order, so the tab bar comes out in the order pages declare.
         for (Gui::GuiPage* page : Gui::pages()) {
-            ImGui::DockBuilderDockWindow(page->title(), dockspaceId);
+            if (std::strcmp(page->group(), window.group) == 0) {
+                ImGui::DockBuilderDockWindow(page->title(), dockspaceId);
+            }
         }
 
         ImGui::DockBuilderFinish(dockspaceId);
+    }
+
+    void drawGroupWindow(GroupWindow& window, int index) {
+        // Closed, so the window is never begun. The node still has to be submitted or
+        // it counts as gone and every page docked into it is expelled into its own
+        // floating window - and since that rewrites the layout, reopening would not
+        // bring them back. KeepAliveOnly submits nothing and may be called from
+        // anywhere, which is why the id is precomputed rather than read from GetID().
+        if (!window.open) {
+            ImGui::DockSpace(window.dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_KeepAliveOnly);
+            return;
+        }
+
+        // Staggered so the group windows do not land exactly on top of each other on
+        // a first run. After that the saved layout decides.
+        ImGui::SetNextWindowSize(ImVec2(720, 520), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowPos(
+            ImVec2(80.0f + index * 28.0f, 80.0f + index * 28.0f), ImGuiCond_FirstUseEver);
+
+        const bool visible = ImGui::Begin(window.title, &window.open);
+
+        if (visible) {
+            if (!window.layoutBuilt) {
+                window.layoutBuilt = true;
+                // Only when there is no saved node, otherwise the ini's arrangement
+                // would be thrown away on every launch.
+                if (ImGui::DockBuilderGetNode(window.dockspaceId) == nullptr) {
+                    buildGroupLayout(window, window.dockspaceId);
+                }
+            }
+            ImGui::DockSpace(window.dockspaceId);
+        }
+        else {
+            // Collapsed: same reasoning as the closed case above.
+            ImGui::DockSpace(window.dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_KeepAliveOnly);
+        }
+        ImGui::End();
     }
 }
 
@@ -109,18 +206,27 @@ void Gui::drawAll() {
     // visible tab, so pages reading the tag would go stale whenever Setup is hidden.
     Selection::refreshIfStale();
 
-    ImGui::SetNextWindowSize(ImVec2(760, 560), ImGuiCond_FirstUseEver);
-    ImGui::SetNextWindowPos(ImVec2(60, 60), ImGuiCond_FirstUseEver);
+    ensureGroupWindows();
 
-    const bool hostVisible = ImGui::Begin(HOST_WINDOW, nullptr, ImGuiWindowFlags_MenuBar);
+    // Small control window, so there is always a way back to a group window that has
+    // been closed. The group windows themselves carry no menu.
+    ImGui::SetNextWindowPos(ImVec2(40, 40), ImGuiCond_FirstUseEver);
+    if (ImGui::Begin(CONTROL_WINDOW, nullptr,
+        ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoDocking)) {
 
-    // Must be read while the host window is current, so after Begin() and regardless
-    // of what it returned: Begin() pushes the window either way, which is why End()
-    // is unconditional.
-    const ImGuiID dockspaceId = ImGui::GetID(DOCKSPACE_ID);
-
-    if (hostVisible) {
         if (ImGui::BeginMenuBar()) {
+            if (ImGui::BeginMenu("Windows")) {
+                for (int i = 0; i < groupWindowCount; i++) {
+                    ImGui::MenuItem(groupWindows[i].group, nullptr, &groupWindows[i].open);
+                }
+                ImGui::Separator();
+                if (ImGui::MenuItem("Show all")) {
+                    for (int i = 0; i < groupWindowCount; i++) {
+                        groupWindows[i].open = true;
+                    }
+                }
+                ImGui::EndMenu();
+            }
             if (ImGui::BeginMenu("Pages")) {
                 drawPageMenu();
                 ImGui::EndMenu();
@@ -128,23 +234,20 @@ void Gui::drawAll() {
             ImGui::EndMenuBar();
         }
 
-        if (!layoutBuilt) {
-            layoutBuilt = true;
-            // Only build a layout when there isn't one already: the saved ini restores
-            // the previous arrangement, and rebuilding would throw it away every launch.
-            if (ImGui::DockBuilderGetNode(dockspaceId) == nullptr) {
-                buildDefaultLayout(dockspaceId);
+        for (int i = 0; i < groupWindowCount; i++) {
+            if (i > 0) {
+                ImGui::SameLine();
+            }
+            if (ImGui::SmallButton(groupWindows[i].group)) {
+                groupWindows[i].open = !groupWindows[i].open;
             }
         }
-        ImGui::DockSpace(dockspaceId);
-    }
-    else {
-        // Collapsed, so Begin() returned false and the dockspace is not submitted.
-        // A node that goes unsubmitted counts as gone and every page docked into it
-        // gets expelled into its own floating window, so keep the node alive.
-        ImGui::DockSpace(dockspaceId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_KeepAliveOnly);
     }
     ImGui::End();
+
+    for (int i = 0; i < groupWindowCount; i++) {
+        drawGroupWindow(groupWindows[i], i);
+    }
 
     for (GuiPage* page : pages()) {
         if (!page->open) {

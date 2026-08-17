@@ -131,12 +131,11 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
     uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
         auto flags = CCountry::getFlags(ctr);
-        lua_createtable(L, flags->size(), 0);
-        for (size_t i = 0; i < flags->size(); i++) {
-            lua_pushstring(L, flags->at(i).c_str());
+        lua_createtable(L, flags.size(), 0);
+        for (size_t i = 0; i < flags.size(); i++) {
+            lua_pushstring(L, flags.at(i).c_str());
             lua_rawseti(L, -2, i + 1);
         }
-        delete flags;
         return 1;
 
     }
@@ -150,13 +149,12 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
     uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
         auto vars = CCountry::getVars(ctr);
-        lua_createtable(L, 0, vars->size());
-        for (size_t i = 0; i < vars->size(); i++) {
-            lua_pushstring(L, vars->at(i).name.c_str());
-            lua_pushinteger(L, vars->at(i).value);
+        lua_createtable(L, 0, vars.size());
+        for (size_t i = 0; i < vars.size(); i++) {
+            lua_pushstring(L, vars.at(i).name.c_str());
+            lua_pushinteger(L, vars.at(i).value);
             lua_settable(L, -3);
         }
-        delete vars;
         return 1;
     }
     lua_pushnil(L);
