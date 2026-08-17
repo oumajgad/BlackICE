@@ -42,4 +42,15 @@ namespace Gui {
     */
     bool verticalSplitter(const char* id, float* width,
         float minWidth = 120.0f, float minRemaining = 200.0f);
+
+    /**
+    @brief a combo whose selection can also be stepped with the mouse wheel
+
+    Hovering and scrolling moves through the items, clamped at both ends rather than
+    wrapping. The wheel is claimed while over the combo so it does not scroll the page
+    underneath at the same time.
+
+    @returns true if the selection changed, by either means
+    */
+    bool wheelCombo(const char* id, int* index, const char* const items[], int itemCount);
 }

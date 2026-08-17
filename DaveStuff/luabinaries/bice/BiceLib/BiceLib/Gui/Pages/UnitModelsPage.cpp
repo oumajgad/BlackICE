@@ -220,13 +220,16 @@ namespace {
             }
             else if (ImGui::BeginTable("techs", 3,
                 ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersInner |
-                ImGuiTableFlags_ScrollY | ImGuiTableFlags_SizingStretchProp,
+                ImGuiTableFlags_ScrollY | ImGuiTableFlags_SizingFixedFit,
                 ImVec2(0.0f, ImGui::GetContentRegionAvail().y * 0.45f))) {
 
+                // Level columns sized to their content; the name column takes the rest.
+                const float levelWidth = ImGui::CalcTextSize("Needs").x;
+
                 ImGui::TableSetupScrollFreeze(0, 1);
-                ImGui::TableSetupColumn("Technology", ImGuiTableColumnFlags_WidthStretch, 0.7f);
-                ImGui::TableSetupColumn("Needs", ImGuiTableColumnFlags_WidthStretch, 0.15f);
-                ImGui::TableSetupColumn("Has", ImGuiTableColumnFlags_WidthStretch, 0.15f);
+                ImGui::TableSetupColumn("Technology", ImGuiTableColumnFlags_WidthStretch);
+                ImGui::TableSetupColumn("Needs", ImGuiTableColumnFlags_WidthFixed, levelWidth);
+                ImGui::TableSetupColumn("Has", ImGuiTableColumnFlags_WidthFixed, levelWidth);
                 ImGui::TableHeadersRow();
 
                 for (const TechRow& row : techs) {

@@ -245,7 +245,7 @@ namespace {
         ImGui::TextDisabled("%s", tag.empty() ? "no country" : tag.c_str());
         ImGui::SameLine();
         ImGui::SetNextItemWidth(120.0f);
-        if (ImGui::Combo("##sort", &sortMode, SORT_MODES, IM_ARRAYSIZE(SORT_MODES))) {
+        if (Gui::wheelCombo("##sort", &sortMode, SORT_MODES, IM_ARRAYSIZE(SORT_MODES))) {
             rebuildProvinceLabels();
         }
 

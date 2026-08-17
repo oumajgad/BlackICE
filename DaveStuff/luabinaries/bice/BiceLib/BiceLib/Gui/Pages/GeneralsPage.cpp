@@ -214,7 +214,7 @@ namespace {
 
         ImGui::SameLine();
         ImGui::SetNextItemWidth(160.0f);
-        if (ImGui::Combo("##branch", &branchIndex, BRANCHES, IM_ARRAYSIZE(BRANCHES))) {
+        if (Gui::wheelCombo("##branch", &branchIndex, BRANCHES, IM_ARRAYSIZE(BRANCHES))) {
             applyBranchFilter();
         }
 

@@ -22,6 +22,8 @@ local pages = {
     { module = 'imgui_ic_days', key = 'ICDays' },
     { module = 'imgui_countryinfo', key = 'CountryInfo' },
     { module = 'imgui_puppets', key = 'Puppets' },
+    { module = 'imgui_stratresources', key = 'StratResources' },
+    { module = 'imgui_trades', key = 'Trades' },
     { module = 'imgui_traits',   key = 'Traits' },
     { module = 'imgui_generals',  key = 'Generals' },
     { module = 'imgui_modifiers', key = 'Modifiers' },

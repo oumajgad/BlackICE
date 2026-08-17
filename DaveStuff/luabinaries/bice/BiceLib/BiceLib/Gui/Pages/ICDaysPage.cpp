@@ -32,6 +32,15 @@ namespace {
     bool autoRefresh = true;
 
     /**
+     * Investment the game has been asked for but has not applied yet, 0 for none.
+     *
+     * CCurrentGameState.Post queues a command rather than executing it, so reading the
+     * variable straight after posting still returns the old value and the highlight
+     * would not move until the next automatic refresh.
+     */
+    int pendingInvestment = 0;
+
+    /**
     @brief pulls a fresh snapshot from Lua
 
     The underlying values change once per game day, so this is called on a timer
@@ -51,6 +60,11 @@ namespace {
         snapshot.baseIc = Gui::Lua::numberField("base_ic");
         snapshot.investment = Gui::Lua::numberField("investment");
         snapshot.dailyReduction = Gui::Lua::numberField("daily_reduction");
+
+        // A request the game has now applied is no longer pending.
+        if (pendingInvestment != 0 && static_cast<int>(snapshot.investment) == pendingInvestment) {
+            pendingInvestment = 0;
+        }
 
         Gui::Lua::endCall();
     }
@@ -88,9 +102,10 @@ namespace {
         ImGui::Separator();
 
         if (ImGui::BeginTable("icdays", 2,
-            ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
-            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 0.62f);
-            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 0.38f);
+            ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingFixedFit)) {
+            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
+            ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed,
+                ImGui::CalcTextSize("000000").x);
 
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
@@ -108,13 +123,24 @@ namespace {
             ImGui::TableNextColumn();
             ImGui::TextUnformatted("Current investment");
             ImGui::TableNextColumn();
-            ImGui::Text("%.0f%%", snapshot.investment);
+            if (pendingInvestment != 0) {
+                ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "%d%%...", pendingInvestment);
+            }
+            else {
+                ImGui::Text("%.0f%%", snapshot.investment);
+            }
 
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
             ImGui::TextUnformatted("Daily IC days reduction");
             ImGui::TableNextColumn();
-            ImGui::Text("%.0f", snapshot.dailyReduction);
+            if (pendingInvestment != 0) {
+                // Derived from the investment, so it lags with it.
+                ImGui::TextDisabled("...");
+            }
+            else {
+                ImGui::Text("%.0f", snapshot.dailyReduction);
+            }
 
             ImGui::EndTable();
         }
@@ -131,13 +157,16 @@ namespace {
             char label[16];
             sprintf_s(label, "%d%%", step);
 
-            const bool isCurrent = static_cast<int>(snapshot.investment) == step;
+            const int shownInvestment = (pendingInvestment != 0)
+                ? pendingInvestment : static_cast<int>(snapshot.investment);
+            const bool isCurrent = (shownInvestment == step);
             if (isCurrent) {
                 ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.59f, 0.35f, 1.0f));
             }
             if (ImGui::Button(label, ImVec2(56.0f, 0.0f))) {
+                pendingInvestment = step; // Before the read, which cannot see it yet
                 Gui::Lua::callWithNumber(SET_INVESTMENT, step);
-                refresh(); // Show the new value straight away
+                refresh();
             }
             if (isCurrent) {
                 ImGui::PopStyleColor();

@@ -1,7 +1,8 @@
 // Puppets: the country's vassals and the production focus each has been given.
 //
-// Every action posts a command and returns the refreshed state, so the page never has
-// to guess what took effect - the focus shown is always what the game reports back.
+// Actions post a command and re-read, but the game applies commands on its own
+// schedule, so a fresh read still shows the old value. Requests are therefore held as
+// pending and displayed as asked for until the game confirms them.
 
 #include <Gui/GuiPage.hpp>
 #include <Gui/LuaBridge.hpp>
@@ -37,6 +38,17 @@ namespace {
     ULONGLONG lastSampleMs = 0;
     bool autoRefresh = true;
 
+    /**
+     * Values the game has been asked for but has not applied yet.
+     *
+     * CCurrentGameState.Post queues a command rather than executing it, so reading
+     * straight after posting still returns the old value and the UI would appear to
+     * ignore the click. The request is shown, flagged, and dropped once the game
+     * reports the same thing. 0 means nothing pending.
+     */
+    int pendingFocus = 0;
+    int pendingDecision = -1; // -1 none, 0 disabled, 1 enabled
+
     /**@brief reads the state table any of the Lua calls leaves on the stack*/
     void readSnapshot() {
         available = Gui::Lua::boolField("available");
@@ -68,6 +80,14 @@ namespace {
         selected = Gui::Lua::stringField("selected");
         selectedFocus = static_cast<int>(Gui::Lua::numberField("selected_focus"));
         decisionEnabled = Gui::Lua::boolField("decision_enabled");
+
+        // Requests the game has now applied are no longer pending.
+        if (pendingFocus != 0 && pendingFocus == selectedFocus) {
+            pendingFocus = 0;
+        }
+        if (pendingDecision >= 0 && (pendingDecision != 0) == decisionEnabled) {
+            pendingDecision = -1;
+        }
     }
 
     void refresh() {
@@ -81,6 +101,7 @@ namespace {
     }
 
     void selectPuppet(const std::string& tag) {
+        pendingFocus = 0; // Belongs to the puppet being left behind
         if (!Gui::Lua::beginTableCallWithString(SELECT, tag.c_str())) {
             valid = false;
             return;
@@ -91,6 +112,7 @@ namespace {
     }
 
     void setFocus(int focusIndex) {
+        pendingFocus = focusIndex; // Before the read, which cannot see it applied yet
         if (!Gui::Lua::beginTableCallWithNumber(SET_FOCUS, focusIndex)) {
             valid = false;
             return;
@@ -101,6 +123,7 @@ namespace {
     }
 
     void setDecisionEnabled(bool enabled) {
+        pendingDecision = enabled ? 1 : 0;
         if (!Gui::Lua::beginTableCallWithNumber(SET_DECISION, enabled ? 1 : 0)) {
             valid = false;
             return;
@@ -138,13 +161,18 @@ namespace {
         ImGui::TextDisabled("%s", Gui::Selection::tag().c_str());
 
         ImGui::SeparatorText("Puppet focus decision");
-        bool enabled = decisionEnabled;
+        bool enabled = (pendingDecision >= 0) ? (pendingDecision != 0) : decisionEnabled;
         if (ImGui::Checkbox("Available in game", &enabled)) {
             setDecisionEnabled(enabled);
         }
+        // Checked here, while the checkbox is still the last item.
         if (ImGui::IsItemHovered()) {
             ImGui::SetTooltip("Whether the decision for setting a puppet's focus is\n"
                 "offered in game. Turning it off hides the decision.");
+        }
+        if (pendingDecision >= 0) {
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "(pending)");
         }
 
         ImGui::SeparatorText("Vassals");
@@ -166,8 +194,18 @@ namespace {
                     ImGuiSelectableFlags_SpanAllColumns)) {
                     selectPuppet(puppet.tag);
                 }
+
                 ImGui::TableNextColumn();
-                ImGui::TextUnformatted(puppet.focus.c_str());
+                // The row for the selected puppet has to show a pending focus too,
+                // otherwise the buttons below say one thing and the table another.
+                const bool rowPending = (pendingFocus != 0 && puppet.tag == selected);
+                if (rowPending && pendingFocus - 1 < static_cast<int>(focusNames.size())) {
+                    ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "%s...",
+                        focusNames[pendingFocus - 1].c_str());
+                }
+                else {
+                    ImGui::TextUnformatted(puppet.focus.c_str());
+                }
             }
             ImGui::EndTable();
         }
@@ -178,14 +216,22 @@ namespace {
             return;
         }
 
-        ImGui::Text("Set focus for %s", selected.c_str());
+        if (pendingFocus != 0) {
+            ImGui::Text("Set focus for %s", selected.c_str());
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "(waiting for the game)");
+        }
+        else {
+            ImGui::Text("Set focus for %s", selected.c_str());
+        }
         for (int i = 0; i < static_cast<int>(focusNames.size()); i++) {
             const int focusIndex = i + 1; // The variable is 1 based
             if (i > 0 && (i % 4) != 0) {
                 ImGui::SameLine();
             }
 
-            const bool isCurrent = (focusIndex == selectedFocus);
+            const int shownFocus = (pendingFocus != 0) ? pendingFocus : selectedFocus;
+            const bool isCurrent = (focusIndex == shownFocus);
             if (isCurrent) {
                 ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.59f, 0.35f, 1.0f));
             }

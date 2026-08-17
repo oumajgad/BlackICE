@@ -18,6 +18,33 @@ namespace {
     }
 }
 
+bool Gui::wheelCombo(const char* id, int* index, const char* const items[], int itemCount) {
+    if (index == nullptr || items == nullptr || itemCount <= 0) {
+        return false;
+    }
+
+    bool changed = ImGui::Combo(id, index, items, itemCount);
+
+    // Claimed whether or not the wheel moved this frame, otherwise the page would
+    // scroll underneath while the combo is being scrolled.
+    ImGui::SetItemKeyOwner(ImGuiKey_MouseWheelY);
+
+    if (ImGui::IsItemHovered()) {
+        const float wheel = ImGui::GetIO().MouseWheel;
+        if (wheel != 0.0f) {
+            // Wheel up moves towards the top of the list, as in any list.
+            int next = *index - static_cast<int>(wheel);
+            const int last = itemCount - 1;
+            next = (next < 0) ? 0 : (next > last ? last : next);
+            if (next != *index) {
+                *index = next;
+                changed = true;
+            }
+        }
+    }
+    return changed;
+}
+
 bool Gui::verticalSplitter(const char* id, float* width, float minWidth, float minRemaining) {
     const float thickness = 6.0f;
 

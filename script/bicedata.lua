@@ -18,6 +18,8 @@ require('bicedata_unitmodels')
 require('bicedata_provincebuildings')
 require('bicedata_countryinfo')
 require('bicedata_puppets')
+require('bicedata_stratresources')
+require('bicedata_trades')
 require('bicedata_generals')
 require('bicedata_players')
 
