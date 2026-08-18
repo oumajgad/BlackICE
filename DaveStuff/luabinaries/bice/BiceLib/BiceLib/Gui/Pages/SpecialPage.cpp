@@ -18,6 +18,7 @@
 
 #include <Gui/GuiPage.hpp>
 #include <Gui/LuaBridge.hpp>
+#include <Overlay.hpp>
 
 #include <Windows.h>
 #include <string>
@@ -65,37 +66,13 @@ namespace {
      */
     bool inGame = false;
 
-    /**
-    @brief the directory hoi3_tfh.exe sits in, ending in a separator
-
-    Not Overlay::directory(), which resolves to the DLL beside the mod. The sprites
-    belong to the base game, and the cmd version reached them through the working
-    directory - which is the game root only for as long as nothing changes it.
-    */
-    const std::string& gameDirectory() {
-        static std::string path;
-        static bool resolved = false;
-        if (resolved) {
-            return path;
-        }
-        resolved = true;
-
-        char buffer[MAX_PATH] = {};
-        if (GetModuleFileNameA(nullptr, buffer, MAX_PATH) != 0) {
-            path = buffer;
-            const size_t slash = path.find_last_of("\\/");
-            path = (slash == std::string::npos) ? std::string() : path.substr(0, slash + 1);
-        }
-        return path;
-    }
-
     const std::string& animsPath() {
-        static const std::string path = gameDirectory() + "gfx\\anims\\";
+        static const std::string path = Overlay::gameDirectory() + "gfx\\anims\\";
         return path;
     }
 
     const std::string& backupPath() {
-        static const std::string path = gameDirectory() + "gfx\\anims\\backup\\";
+        static const std::string path = Overlay::gameDirectory() + "gfx\\anims\\backup\\";
         return path;
     }
 

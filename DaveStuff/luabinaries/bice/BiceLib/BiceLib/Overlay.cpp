@@ -271,6 +271,24 @@ const std::string& Overlay::directory() {
     return path;
 }
 
+const std::string& Overlay::gameDirectory() {
+    static std::string path;
+    static bool resolved = false;
+    if (resolved) {
+        return path;
+    }
+    resolved = true;
+
+    // The executable, not this module: nullptr means the process image.
+    char buffer[MAX_PATH] = {};
+    if (GetModuleFileNameA(nullptr, buffer, MAX_PATH) != 0) {
+        path = buffer;
+        const size_t slash = path.find_last_of("\\/");
+        path = (slash == std::string::npos) ? std::string() : path.substr(0, slash + 1);
+    }
+    return path;
+}
+
 IDirect3DDevice9* Overlay::device() {
     return renderDevice;
 }

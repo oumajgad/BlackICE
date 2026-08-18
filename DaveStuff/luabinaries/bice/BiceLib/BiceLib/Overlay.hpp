@@ -29,6 +29,15 @@ namespace Overlay {
     */
     const std::string& directory();
 
+    /**
+    @brief the directory hoi3_tfh.exe sits in, ending in a separator
+
+    The game's own root, which is not where the DLL lives - that is inside the mod. Mod
+    content is reached from here, as the utility's Lua reaches it through the working
+    directory, which is the game root only for as long as nothing changes it.
+    */
+    const std::string& gameDirectory();
+
     /**@brief the device the game is rendering with, null before the first frame.
        Needed by anything creating its own D3D resources, such as the texture cache.*/
     IDirect3DDevice9* device();

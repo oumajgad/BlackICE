@@ -32,6 +32,7 @@ local pages = {
     { module = 'imgui_misc', key = 'Misc' },
     { module = 'imgui_options', key = 'Options' },
     { module = 'imgui_help', key = 'Help' },
+    { module = 'imgui_stats', key = 'Stats' },
     { module = 'imgui_console', key = 'Console' },
     { module = 'imgui_traits',   key = 'Traits' },
     { module = 'imgui_generals',  key = 'Generals' },

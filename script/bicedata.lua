@@ -32,6 +32,7 @@ require('bicedata_lssliders')
 require('bicedata_misc')
 require('bicedata_options')
 require('bicedata_help')
+require('bicedata_stats')
 require('bicedata_generals')
 require('bicedata_players')
 

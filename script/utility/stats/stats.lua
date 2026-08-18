@@ -4,6 +4,38 @@ Stats = P
 P.CollectStats = false
 P.CustomCountryListActive = false
 P.CustomCountryList = nil
+P.CustomCountryListVersion = nil
+
+--- Reads the collection switches from the game rather than trusting this context.
+---
+--- The switches live in OMG country variables, and each Lua context used to copy them
+--- into its own globals once. That works while a single utility owns them, but a toggle
+--- flipped in one context left the others running on the old value until something
+--- reinitialised them - and that reinitialisation sits behind G_UtilityEnabled, which is
+--- not always on. Reading them here costs two variable reads a day, and every context
+--- then agrees.
+---
+--- The globals are still written, so anything reading them directly stays correct.
+function P.RefreshCollectionSwitches()
+	local omgCountry = CCountryDataBase.GetTag("OMG"):GetCountry()
+	if omgCountry == nil then
+		return false
+	end
+
+	local variables = omgCountry:GetVariables()
+	P.CollectStats = variables:GetVariable(CString("StatisticsToggle")):Get() == 1
+	P.CustomCountryListActive = variables:GetVariable(CString("StatisticsCustomList")):Get() == 1
+
+	-- The cached country list is dropped only when an editor says it changed, so an
+	-- edit made in another context is picked up without rebuilding the list daily.
+	local version = variables:GetVariable(CString("StatisticsCustomListVersion")):Get()
+	if P.CustomCountryListVersion ~= version then
+		P.CustomCountryListVersion = version
+		P.CustomCountryList = nil
+	end
+
+	return P.CollectStats
+end
 
 function P.CustomListCheck(tag)
 	-- early exit if not active
@@ -264,7 +296,7 @@ end
 
 --- Remember to add the stat here when adding a new stat collect elsewhere!
 function P.CollectPlayerStatistics()
-	if P.CollectStats == true then
+	if P.RefreshCollectionSwitches() then
 		for i, tag in pairs(G_PlayerCountries) do
 			if P.CustomListCheck(tag) then
 				local countryTag = CCountryDataBase.GetTag(tag)
