@@ -12,6 +12,7 @@
 #include <Windows.h>
 #include <cfloat>
 #include <cstdio>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -20,6 +21,27 @@
 namespace {
     const char* COLLECT = "BiceLibGui.NatFocus.Collect";
     const char* SET_FOCUS = "BiceLibGui.NatFocus.Set";
+    const char* EFFECTS = "BiceLibGui.NatFocus.Effects";
+
+    struct Effect
+    {
+        std::string label;
+        std::string value;
+    };
+
+    struct FocusEffects
+    {
+        std::vector<Effect> tiers[3]; // index 0 is tier 1
+    };
+
+    /**
+     * What each focus grants, by focus key.
+     *
+     * Parsed from the mod's modifier files, so it cannot change during a session and is
+     * fetched once rather than on every refresh.
+     */
+    std::map<std::string, FocusEffects> effects;
+    bool effectsLoaded = false;
 
     struct Focus
     {
@@ -87,6 +109,81 @@ namespace {
         }
     }
 
+    /**@brief the focus effect tables, once per session*/
+    void loadEffects() {
+        if (!Gui::Lua::beginTableCall(EFFECTS)) {
+            return;
+        }
+
+        effects.clear();
+        const int count = Gui::Lua::arrayLength("rows");
+        for (int i = 0; i < count; i++) {
+            if (!Gui::Lua::pushArrayElement("rows", i)) {
+                continue;
+            }
+            const std::string key = Gui::Lua::stringField("key");
+            const int tier = static_cast<int>(Gui::Lua::numberField("tier"));
+            Effect effect;
+            effect.label = Gui::Lua::stringField("label");
+            effect.value = Gui::Lua::stringField("value");
+            Gui::Lua::popArrayElement();
+
+            if (tier >= 1 && tier <= 3) {
+                effects[key].tiers[tier - 1].push_back(effect);
+            }
+        }
+
+        Gui::Lua::endCall();
+        effectsLoaded = true;
+    }
+
+    /**@brief "Manpower +30.00%, Supply throughput +12.50%" for one focus and tier*/
+    std::string effectSummary(const std::string& key, int tier) {
+        const auto it = effects.find(key);
+        if (it == effects.end() || tier < 1 || tier > 3) {
+            return std::string();
+        }
+
+        std::string summary;
+        for (const Effect& effect : it->second.tiers[tier - 1]) {
+            if (!summary.empty()) {
+                summary += ", ";
+            }
+            summary += effect.label + " " + effect.value;
+        }
+        return summary;
+    }
+
+    /**@brief every tier's effects, for the tooltip the cell is too narrow to hold*/
+    void drawEffectTooltip(const Focus& focus) {
+        const auto it = effects.find(focus.key);
+        if (it == effects.end()) {
+            return;
+        }
+
+        ImGui::BeginTooltip();
+        ImGui::TextUnformatted(focus.name.c_str());
+        for (int tier = 1; tier <= 3; tier++) {
+            const std::vector<Effect>& rows = it->second.tiers[tier - 1];
+            if (rows.empty()) {
+                continue;
+            }
+
+            char header[64];
+            sprintf_s(header, "Tier %d%s", tier, (tier == focus.tier) ? " (active)" : "");
+            ImGui::SeparatorText(header);
+            for (const Effect& effect : rows) {
+                if (tier == focus.tier) {
+                    ImGui::TextUnformatted((effect.label + "  " + effect.value).c_str());
+                }
+                else {
+                    ImGui::TextDisabled("%s  %s", effect.label.c_str(), effect.value.c_str());
+                }
+            }
+        }
+        ImGui::EndTooltip();
+    }
+
     void refresh() {
         if (!Gui::Lua::beginTableCall(COLLECT)) {
             valid = false;
@@ -149,6 +246,12 @@ namespace {
             return;
         }
         ImGui::TextDisabled("%s (%s)", tag.c_str(), Gui::Selection::source().c_str());
+
+        // Parsing the modifier files is not cheap, so it waits until the page is
+        // actually looked at, and then never happens again.
+        if (!effectsLoaded) {
+            loadEffects();
+        }
 
         ImGui::TextWrapped("The focus can be changed at any time, but the effects are "
             "not instant: a new focus takes about 90 days before it gives anything, and "
@@ -231,15 +334,18 @@ namespace {
             }
 
             ImGui::TableNextColumn();
-            // Placeholder. The bonuses are triggered modifiers in
-            // common/triggered_modifiers.txt, named Nat_focus_<focus>_<tier>. A tier is
-            // split across _I/_II variants where it has more than five effects, because
-            // that is all the game's own modifier tooltip shows - they all apply at
-            // once, so a focus effects table has to merge them rather than choose. Once
-            // it exists, the row's current tier goes here and the full per tier
-            // breakdown into the tooltip.
-            ImGui::TextDisabled("-");
-            ImGui::SetItemTooltip("The focus effects are not read yet");
+            // The cell shows what this focus is giving right now; the tooltip has every
+            // tier, since a column is never wide enough for five effects.
+            if (focus.tier == 0) {
+                ImGui::TextDisabled("below tier 1");
+            }
+            else {
+                const std::string summary = effectSummary(focus.key, focus.tier);
+                ImGui::TextUnformatted(summary.empty() ? "-" : summary.c_str());
+            }
+            if (ImGui::IsItemHovered()) {
+                drawEffectTooltip(focus);
+            }
 
             ImGui::TableNextColumn();
             if (isShown) {

@@ -73,6 +73,87 @@ function BiceData.NatFocus.Collect()
     return { tag = tag, active = active, rows = rows }, nil
 end
 
+-- What each focus gives at each tier, read once from the mod's triggered modifiers.
+local effects = nil
+
+--- Builds focus key -> tier -> { key, label, value } rows.
+---
+--- The modifiers are named Nat_focus_<focus>_one / _two / _three, and a tier holding
+--- more than five effects is split across _I and _II entries, because five is all the
+--- game's own modifier tooltip shows. Both halves apply at once, so they are merged
+--- here - and matched by prefix rather than by an assumed suffix, since the naming is
+--- not consistent from one focus to the next.
+local function collectEffects()
+    if effects ~= nil then
+        return effects
+    end
+
+    local words = { "one", "two", "three" }
+    effects = {}
+
+    for _, focus in ipairs(FOCUSES) do
+        effects[focus.key] = { {}, {}, {} }
+
+        for tier, word in ipairs(words) do
+            local prefix = "Nat_focus_" .. focus.key .. "_" .. word
+            local merged = {}
+
+            for _, choice in ipairs(BiceData.Modifiers.Choices()) do
+                local name = BiceData.Translations.KeyFromChoice(choice)
+                -- Either the whole name or a variant of it, never a longer word that
+                -- merely starts the same way.
+                if name == prefix or string.sub(name, 1, #prefix + 1) == prefix .. "_" then
+                    for key, value in pairs(BiceData.Modifiers.Get(name) or {}) do
+                        if key ~= "potential" and key ~= "trigger" and key ~= "icon" then
+                            -- A key repeated in one modifier parses as a list, and the
+                            -- last one is what the game applies.
+                            merged[key] = (type(value) == "table") and value[#value] or value
+                        end
+                    end
+                end
+            end
+
+            local rows = {}
+            for key, value in pairs(merged) do
+                table.insert(rows, {
+                    key = key,
+                    label = BiceData.Modifiers.TranslateEffectKey(key),
+                    value = BiceData.Translations.ConvertEffect(key, value),
+                })
+            end
+            table.sort(rows, function(a, b) return a.label < b.label end)
+            effects[focus.key][tier] = rows
+        end
+    end
+
+    return effects
+end
+
+--- Every focus with its three tiers of effects, for the help table.
+function BiceData.NatFocus.Effects()
+    local all = collectEffects()
+
+    local rows = {}
+    for index, focus in ipairs(FOCUSES) do
+        table.insert(rows, {
+            index = index,
+            key = focus.key,
+            name = focus.name,
+            tiers = all[focus.key],
+        })
+    end
+    return rows
+end
+
+--- The effects one focus grants at a tier, 1 to 3. Empty for anything else.
+function BiceData.NatFocus.EffectsAt(focusKey, tier)
+    local all = collectEffects()
+    if all[focusKey] == nil or tier == nil or tier < 1 or tier > #TIERS then
+        return {}
+    end
+    return all[focusKey][tier]
+end
+
 --- Switches the focus. Index 0 clears it.
 function BiceData.NatFocus.Set(index)
     local tag = BiceData.Players.CurrentTag()

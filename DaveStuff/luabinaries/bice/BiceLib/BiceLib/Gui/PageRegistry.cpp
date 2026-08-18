@@ -3,6 +3,8 @@
 
 #include <algorithm>
 #include <cstring>
+#include <map>
+#include <string>
 
 #include <imgui.h>
 #include <imgui_internal.h> // DockBuilder, for the default layout
@@ -40,6 +42,30 @@ namespace {
         return Gui::GROUP_COUNT;
     }
 
+    // Page -> the name ImGui knows its window by. Held here rather than built on demand
+    // because ImGui wants a pointer that outlives the call.
+    std::map<const Gui::GuiPage*, std::string> windowNames;
+
+    /**@brief gives every page a unique window name, disturbing as few as possible*/
+    void buildWindowNames() {
+        std::map<std::string, int> titleUses;
+        for (const Gui::GuiPage* page : registry()) {
+            titleUses[page->title()]++;
+        }
+
+        windowNames.clear();
+        for (const Gui::GuiPage* page : registry()) {
+            std::string name = page->title();
+            if (titleUses[name] > 1) {
+                // ImGui hides everything from ## onwards, so the tab still reads as the
+                // title while the window, its dock and its menu item stay distinct.
+                name += "##";
+                name += page->group();
+            }
+            windowNames[page] = name;
+        }
+    }
+
     /**@brief sorts by group, then by the page's own order, then alphabetically*/
     void sortRegistry() {
         std::stable_sort(registry().begin(), registry().end(),
@@ -55,6 +81,7 @@ namespace {
                 return std::strcmp(a->title(), b->title()) < 0;
             });
         registrySorted = true;
+        buildWindowNames();
     }
 
     /**
@@ -113,7 +140,7 @@ namespace {
         // Sorted order, so the tab bar comes out in the order pages declare.
         for (Gui::GuiPage* page : Gui::pages()) {
             if (std::strcmp(page->group(), window.group) == 0) {
-                ImGui::DockBuilderDockWindow(page->title(), dockspaceId);
+                ImGui::DockBuilderDockWindow(windowName(page), dockspaceId);
             }
         }
 
@@ -217,7 +244,7 @@ void Gui::drawPageMenu() {
             currentGroup = page->group();
             ImGui::TextDisabled("%s", currentGroup);
         }
-        ImGui::MenuItem(page->title(), nullptr, &page->open);
+        ImGui::MenuItem(windowName(page), nullptr, &page->open);
     }
 }
 
@@ -273,7 +300,7 @@ void Gui::drawAll() {
         if (!page->open) {
             continue;
         }
-        if (ImGui::Begin(page->title(), &page->open)) {
+        if (ImGui::Begin(windowName(page), &page->open)) {
             page->draw();
         }
         ImGui::End();
@@ -292,4 +319,10 @@ void Gui::drawAll() {
             autoHidden = true;
         }
     }
+}
+
+const char* Gui::windowName(const GuiPage* page) {
+    pages(); // sorts the registry and fills the table on the first call
+    const auto it = windowNames.find(page);
+    return (it != windowNames.end()) ? it->second.c_str() : page->title();
 }

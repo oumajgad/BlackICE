@@ -19,7 +19,13 @@ namespace Gui {
     public:
         virtual ~GuiPage() = default;
 
-        /**@brief stable identifier, also the ImGui window name (e.g. "Inspector")*/
+        /**
+        @brief what the page is called on its tab (e.g. "Inspector")
+
+        Not necessarily unique: the Help group repeats Misc and National Focus from
+        Main, as the wxWidgets utility did. Use windowName() for anything ImGui
+        identifies by name.
+        */
         virtual const char* title() const = 0;
 
         /**
@@ -55,6 +61,19 @@ namespace Gui {
 
     /**@brief every registered page, sorted by group then order then title*/
     const std::vector<GuiPage*>& pages();
+
+    /**
+    @brief the page's ImGui window name: unique, unlike its title
+
+    ImGui identifies a window, a tab and a menu item by name, so two pages sharing a
+    title are one window as far as it is concerned - they fight over the same dock, the
+    same open flag and the same saved position.
+
+    A page keeps its plain title while nothing else uses it, and only a clash appends
+    "##<group>", which ImGui hides from the label. Doing it that way rather than always
+    appending leaves the layouts saved under the old names alone.
+    */
+    const char* windowName(const GuiPage* page);
 
     /**
     @brief draws the host window, its dockspace and every open page
