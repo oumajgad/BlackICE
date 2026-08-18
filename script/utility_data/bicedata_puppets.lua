@@ -29,12 +29,7 @@ end
 
 --- The selected country's vassals, as tag strings.
 function BiceData.Puppets.List()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return {}
-    end
-
-    local country = CCountryDataBase.GetTag(tag):GetCountry()
+    local country = BiceData.Country.Selected()
     if country == nil then
         return {}
     end
@@ -58,11 +53,7 @@ function BiceData.Puppets.Focus(puppetTag)
         return 0
     end
 
-    local country = CCountryDataBase.GetTag(puppetTag):GetCountry()
-    if country == nil then
-        return 0
-    end
-    return country:GetVariables():GetVariable(CString("puppet_focus_variable")):Get()
+    return BiceData.Country.Get(BiceData.Country.VariablesOf(puppetTag), "puppet_focus_variable")
 end
 
 --- Sets a puppet's production focus.
@@ -71,24 +62,17 @@ function BiceData.Puppets.SetFocus(puppetTag, focusIndex)
         return
     end
 
-    local target = CCountryDataBase.GetTag(puppetTag)
-    local command = CSetVariableCommand(target, CString("puppet_focus_variable"), CFixedPoint(focusIndex))
-    CCurrentGameState.Post(command)
+    BiceData.Country.Set(puppetTag, "puppet_focus_variable", focusIndex)
 end
 
 --- Whether the in-game decision for setting puppet focus is available to the player.
 --- The variable is inverted: 1 means disabled.
 function BiceData.Puppets.FocusDecisionEnabled()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
+    local vars = BiceData.Country.Variables()
+    if vars == nil then
         return false
     end
-
-    local country = CCountryDataBase.GetTag(tag):GetCountry()
-    if country == nil then
-        return false
-    end
-    return country:GetVariables():GetVariable(CString("disable_pupped_focus_decision")):Get() ~= 1
+    return BiceData.Country.Get(vars, "disable_pupped_focus_decision") ~= 1
 end
 
 function BiceData.Puppets.SetFocusDecisionEnabled(enabled)
@@ -97,7 +81,5 @@ function BiceData.Puppets.SetFocusDecisionEnabled(enabled)
         return
     end
 
-    local command = CSetVariableCommand(CCountryDataBase.GetTag(tag),
-        CString("disable_pupped_focus_decision"), CFixedPoint(enabled and 0 or 1))
-    CCurrentGameState.Post(command)
+    BiceData.Country.Set(tag, "disable_pupped_focus_decision", enabled and 0 or 1)
 end

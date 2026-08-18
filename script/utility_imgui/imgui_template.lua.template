@@ -5,18 +5,30 @@
 -- puppets, techs, traits, units, modifiers, flags, vars, generals, stats, options and
 -- help. Without the prefix require silently returns the old module, this file never
 -- runs, and nothing reports an error.
+--
+-- This file only shapes data for the overlay. Reading and writing game state belongs
+-- in a BiceData provider under utility_data, so the wx utility can be moved onto the
+-- same code later; use BiceData.Country there rather than reaching for
+-- CCountryDataBase and GetVariables by hand.
+
+local Page = require('imgui_page')
 
 BiceLibGui = BiceLibGui or {}
 BiceLibGui.Template = {}
 
--- Collect() runs on the render thread, once per refresh. Keep it cheap, never touch
+-- collect() runs on the render thread, once per refresh. Keep it cheap, never touch
 -- wx, and return plain data only: no userdata, the C++ side reads numbers, strings,
 -- booleans and arrays of those.
 local function collect()
+    local data, reason = BiceData.Template.Collect()
+    if data == nil then
+        return { available = false, reason = reason or "unavailable" }
+    end
+
     return {
         available = true,
         -- scalars
-        some_value = 0,
+        some_value = data.some_value,
         -- arrays of rows read with pushArrayElement:
         -- rows = { { name = "a", value = 1 }, { name = "b", value = 2 } },
         -- plain string arrays read with arrayStringAt:
@@ -24,19 +36,20 @@ local function collect()
     }
 end
 
--- Wrapped so a Lua level error shows as text on the page rather than a generic
--- message. This cannot catch a fault inside the game's own code, which is why the
--- C++ side gates every call on there being a running session.
+-- Page.Guard turns a Lua level error into text on the page rather than a generic
+-- message. It cannot catch a fault inside the game's own code, which is why the C++
+-- side gates every call on there being a running session.
 function BiceLibGui.Template.Collect()
-    local ok, result = pcall(collect)
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
+    return Page.Guard(collect)
 end
 
--- Actions post commands exactly as the wx page did, so multiplayer is unaffected.
+-- Actions post through the provider, which posts commands exactly as the wx page did,
+-- so multiplayer is unaffected. Returning the refreshed snapshot lets the page show
+-- what the game holds rather than assuming the command landed - though the command is
+-- only queued, so the page still has to show the request as pending until it lands.
 function BiceLibGui.Template.DoSomething(value)
-    -- local command = CSetVariableCommand(tag, CString("x"), CFixedPoint(value))
-    -- CCurrentGameState.Post(command)
+    return Page.Guard(function()
+        BiceData.Template.DoSomething(value)
+        return collect()
+    end)
 end

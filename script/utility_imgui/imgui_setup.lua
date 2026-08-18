@@ -9,6 +9,8 @@
 -- The wx Setup tab also owned a refresh interval for its single global refresh loop.
 -- That has no equivalent here: each ImGui page refreshes itself.
 
+local Page = require('imgui_page')
+
 BiceLibGui = BiceLibGui or {}
 BiceLibGui.Setup = {}
 
@@ -27,28 +29,19 @@ local function collect()
 end
 
 function BiceLibGui.Setup.Collect()
-    local ok, result = pcall(collect)
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
+    return Page.Guard(collect)
 end
 
 -- Just the country every page reports on. Kept separate from Collect() because the
 -- overlay polls this centrally for all pages, so it has to stay as cheap as possible.
 function BiceLibGui.Setup.CurrentTag()
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         local tag, source = BiceData.Players.CurrentTag()
         if tag == nil then
             return { available = false, reason = "No player country" }
         end
         return { available = true, tag = tag, source = source }
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end
 
 function BiceLibGui.Setup.RefreshPlayers()

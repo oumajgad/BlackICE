@@ -1,16 +1,23 @@
 # Adding a utility page
 
-Each page is two files that share a name: one `.cpp` here and one `.lua` under
-`script/utility_imgui`. Nothing else needs editing except the project file and the
-Lua loader, so pages stay independent of each other.
+Each page is up to three files that share a name: one `.cpp` here, one `.lua` under
+`script/utility_imgui` shaping data for it, and, where the page needs game state, one
+provider under `script/utility_data`. Nothing else needs editing except the project
+file and the two Lua loaders, so pages stay independent of each other.
+
+The provider layer is where reading and writing game state belongs: it holds no UI of
+any kind, so the old wx utility can be moved onto the same code later instead of
+keeping a second copy of the logic.
 
 ## Steps
 
 1. Copy `PageTemplate.cpp.template` to `<Name>Page.cpp` and replace `Template`.
 2. Copy `script/utility_imgui/imgui_template.lua.template` to
    `script/utility_imgui/imgui_<name>.lua` and replace `Template`.
-3. Add the `.cpp` to `BiceLib.vcxproj` under the existing `Gui\Pages\` entries.
-4. Register the module in `script/gui-imgui.lua`:
+3. Write `script/utility_data/bicedata_<name>.lua` if the page reads game state, and
+   require it from `script/bicedata.lua`.
+4. Add the `.cpp` to `BiceLib.vcxproj` under the existing `Gui\Pages\` entries.
+5. Register the module in `script/gui-imgui.lua`:
    `{ module = 'imgui_<name>', key = '<Name>' }`
 
 The page registers itself via `REGISTER_GUI_PAGE`, so there is no central list of
@@ -38,6 +45,17 @@ those or of flat tables. No userdata: the C++ side cannot read it.
 **Don't refresh per frame.** Most of this data changes once a game day. The template
 refreshes on a timer with a manual override; raise the interval for anything
 expensive.
+
+## Shared code
+
+Don't hand roll what these already do:
+
+- `BiceData.Country` - resolving the selected country, reading a variable, posting a
+  change. Providers should not reach for `CCountryDataBase` or `GetVariables`.
+- `Page.Guard` in `imgui_page` - the pcall wrapper every page call needs, so a Lua
+  error arrives as text on the page instead of a blank panel.
+- `BiceData.AiSettings` and `imgui_form` - staging, committing and activating a block
+  of AI settings variables. Shared by the three AI pages; a fourth would reuse them.
 
 ## Groups and order
 

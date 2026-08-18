@@ -8,6 +8,8 @@
 -- would mean a new call shape per argument combination; the page always selects a
 -- unit before touching its techs, so holding it is both simpler and safe.
 
+local Page = require('imgui_page')
+
 BiceLibGui = BiceLibGui or {}
 BiceLibGui.Units = {}
 
@@ -33,19 +35,14 @@ local function details()
 end
 
 function BiceLibGui.Units.Collect()
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         return { available = true, units = BiceData.Units.Choices() }
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end
 
 -- Selects a unit and returns its stats, model string and tech list.
 function BiceLibGui.Units.Select(choice)
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         local key = BiceData.Translations.KeyFromChoice(choice)
         if BiceData.Units.Get(key) == nil then
             return { available = false, reason = "Unknown unit: " .. tostring(choice) }
@@ -53,16 +50,11 @@ function BiceLibGui.Units.Select(choice)
         selectedUnit = key
         return details()
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end
 
 -- Effects one tech contributes to the selected unit at its assumed level.
 function BiceLibGui.Units.TechDetails(techChoice)
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         if selectedUnit == nil then
             return { available = false, reason = "No unit selected" }
         end
@@ -79,17 +71,12 @@ function BiceLibGui.Units.TechDetails(techChoice)
             effects = effects,
         }
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end
 
 -- Adjusts one tech's assumed level and returns the refreshed unit details: stats,
 -- model string and the tech list all change with it.
 function BiceLibGui.Units.ChangeTechLevel(techChoice, delta)
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         if selectedUnit == nil then
             return { available = false, reason = "No unit selected" }
         end
@@ -98,22 +85,12 @@ function BiceLibGui.Units.ChangeTechLevel(techChoice, delta)
         BiceData.Units.SetTechLevel(selectedUnit, techKey, current + delta)
         return details()
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end
 
 -- Puts every assumed level back to what the country has actually researched.
 function BiceLibGui.Units.ResetTechLevels()
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         BiceData.Units.ResetTechLevels()
         return details()
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end

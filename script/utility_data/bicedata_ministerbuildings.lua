@@ -33,29 +33,16 @@ local BUILDINGS = {
     { key = "hospital",                name = "Hospital",               trigger = 40 },
 }
 
-local function variables()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return nil, nil
-    end
-
-    local country = CCountryDataBase.GetTag(tag):GetCountry()
-    if country == nil then
-        return nil, nil
-    end
-    return country:GetVariables(), tag
-end
-
 --- Progress towards every minister built building.
 function BiceData.MinisterBuildings.Collect()
-    local vars, tag = variables()
+    local vars, tag = BiceData.Country.Variables()
     if vars == nil then
         return nil, "No country selected"
     end
 
     local rows = {}
     for index, building in ipairs(BUILDINGS) do
-        local count = vars:GetVariable(CString(building.key .. "_variable_count_minister")):Get()
+        local count = BiceData.Country.Get(vars, building.key .. "_variable_count_minister")
         if count < 0 then
             count = 0
         end

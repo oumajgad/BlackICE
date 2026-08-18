@@ -28,19 +28,6 @@ function BiceData.NatFocus.Tiers()
     return TIERS
 end
 
-local function variables()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return nil, nil
-    end
-
-    local country = CCountryDataBase.GetTag(tag):GetCountry()
-    if country == nil then
-        return nil, nil
-    end
-    return country:GetVariables(), tag
-end
-
 local function tierOf(days)
     local tier = 0
     for index, threshold in ipairs(TIERS) do
@@ -53,18 +40,18 @@ end
 
 --- The active focus and the days banked against every focus.
 function BiceData.NatFocus.Collect()
-    local vars, tag = variables()
+    local vars, tag = BiceData.Country.Variables()
     if vars == nil then
         return nil, "No country selected"
     end
 
-    local active = vars:GetVariable(CString("national_focus")):Get()
+    local active = BiceData.Country.Get(vars, "national_focus")
 
     local rows = {}
     for index, focus in ipairs(FOCUSES) do
         -- The counter decays towards zero after a focus is dropped, and can be left
         -- slightly negative by the rounding in CalculateFocuses.
-        local days = vars:GetVariable(CString(focus.key .. "_national_focus_days_active")):Get()
+        local days = BiceData.Country.Get(vars, focus.key .. "_national_focus_days_active")
         if days < 0 then
             days = 0
         end
@@ -93,7 +80,5 @@ function BiceData.NatFocus.Set(index)
         return
     end
 
-    local command = CSetVariableCommand(CCountryDataBase.GetTag(tag),
-        CString("national_focus"), CFixedPoint(index))
-    CCurrentGameState.Post(command)
+    BiceData.Country.Set(tag, "national_focus", index)
 end

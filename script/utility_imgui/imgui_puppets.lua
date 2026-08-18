@@ -1,5 +1,7 @@
 -- Puppets page for the in-game ImGui utility.
 
+local Page = require('imgui_page')
+
 BiceLibGui = BiceLibGui or {}
 BiceLibGui.Puppets = {}
 
@@ -44,48 +46,29 @@ local function snapshot()
 end
 
 function BiceLibGui.Puppets.Collect()
-    local ok, result = pcall(snapshot)
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
+    return Page.Guard(snapshot)
 end
 
 function BiceLibGui.Puppets.Select(tag)
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         selectedPuppet = (tag ~= nil and tag ~= "") and tag or nil
         return snapshot()
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end
 
 function BiceLibGui.Puppets.SetFocus(focusIndex)
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         if selectedPuppet == nil then
             return { available = false, reason = "No puppet selected" }
         end
         BiceData.Puppets.SetFocus(selectedPuppet, focusIndex)
         return snapshot()
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end
 
 function BiceLibGui.Puppets.SetDecisionEnabled(enabled)
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         BiceData.Puppets.SetFocusDecisionEnabled(enabled ~= 0)
         return snapshot()
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end

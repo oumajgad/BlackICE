@@ -4,12 +4,14 @@
 -- utility disabled. Branch and name filtering happen on the C++ side, so typing in
 -- the filter costs no Lua calls.
 
+local Page = require('imgui_page')
+
 BiceLibGui = BiceLibGui or {}
 BiceLibGui.Generals = {}
 
 -- Every general for one country, highest starting skill first.
 function BiceLibGui.Generals.Collect(tag)
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         local rows = {}
         for _, general in ipairs(BiceData.Generals.ForCountry(tag)) do
             table.insert(rows, {
@@ -22,16 +24,11 @@ function BiceLibGui.Generals.Collect(tag)
         end
         return { available = true, tag = tag, generals = rows }
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end
 
 -- Definition plus whatever the running game knows about the leader.
 function BiceLibGui.Generals.Details(id)
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         local general = BiceData.Generals.Get(id)
         if general == nil then
             return { available = false, reason = "Unknown leader: " .. tostring(id) }
@@ -60,9 +57,4 @@ function BiceLibGui.Generals.Details(id)
             unit_name = unitName,
         }
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end

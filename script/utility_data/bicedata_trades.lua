@@ -75,8 +75,8 @@ function BiceData.Trades.Market(resource)
     for tag, countryTag in pairs(GetCountryIterCacheDict()) do
         local variables = countryTag:GetCountry():GetVariables()
         -- Offset by 1000 like the other balances, and includes the country's puppets.
-        local potential = variables:GetVariable(CString(resource .. "_building_balance")):Get() - 1000
-        local sales = variables:GetVariable(CString(resource .. "_trade_sell")):Get()
+        local potential = BiceData.Country.Get(variables, resource .. "_building_balance") - 1000
+        local sales = BiceData.Country.Get(variables, resource .. "_trade_sell")
 
         if potential > 0 then
             local nextExpiry = -1

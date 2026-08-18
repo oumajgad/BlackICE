@@ -24,11 +24,11 @@ end
 
 --- A player can stop the multiplayer host inspecting their country.
 function BiceData.Players.AllowsSelection(tag)
-    local country = CCountryDataBase.GetTag(tag)
-    if country == nil then
+    local vars = BiceData.Country.VariablesOf(tag)
+    if vars == nil then
         return false
     end
-    return country:GetCountry():GetVariables():GetVariable(CString("disable_gui_access")):Get() ~= 1
+    return BiceData.Country.Get(vars, "disable_gui_access") ~= 1
 end
 
 -- True while G_PlayerCountry holds an automatic choice rather than a deliberate one.

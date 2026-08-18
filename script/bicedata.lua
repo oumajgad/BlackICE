@@ -9,6 +9,10 @@
 
 BiceData = BiceData or {}
 
+-- Shared plumbing first: the page providers are all built on these.
+require('bicedata_country')
+require('bicedata_aisettings')
+
 require('bicedata_translations')
 require('bicedata_traits')
 require('bicedata_modifiers')

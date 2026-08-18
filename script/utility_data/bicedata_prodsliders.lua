@@ -50,19 +50,6 @@ end
 
 local staged = {}
 
-local function variables()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return nil, nil
-    end
-
-    local country = CCountryDataBase.GetTag(tag):GetCountry()
-    if country == nil then
-        return nil, nil
-    end
-    return country:GetVariables(), tag
-end
-
 --- The categories and their display names, in page order.
 function BiceData.ProdSliders.Categories()
     return CATEGORIES
@@ -70,15 +57,15 @@ end
 
 --- Current settings, or the wx defaults if this country has never been configured.
 function BiceData.ProdSliders.Collect()
-    local vars, tag = variables()
+    local vars, tag = BiceData.Country.Variables()
     if vars == nil then
         return nil, "No country selected"
     end
 
-    local configured = vars:GetVariable(CString(USES)):Get() == 1
+    local configured = BiceData.Country.Get(vars, USES) == 1
 
     local function read(name)
-        return vars:GetVariable(CString(PREFIX .. name)):Get()
+        return BiceData.Country.Get(vars, PREFIX .. name)
     end
 
     local rows = {}
@@ -125,7 +112,7 @@ function BiceData.ProdSliders.Collect()
 
     return {
         tag = tag,
-        active = vars:GetVariable(CString(ACTIVE)):Get() == 1,
+        active = BiceData.Country.Get(vars, ACTIVE) == 1,
         configured = configured,
         rows = rows,
     }, nil
@@ -133,20 +120,11 @@ end
 
 --- Stages one field. Nothing reaches the game until Commit.
 function BiceData.ProdSliders.SetValue(field, value)
-    if field == nil or not knownFields()[field] then
-        return false, "Unknown field: " .. tostring(field)
-    end
-    staged[field] = value
-    return true, nil
+    return BiceData.AiSettings.Stage(staged, knownFields(), field, value)
 end
 
 --- Posts everything staged, once the priorities check out.
 function BiceData.ProdSliders.Commit()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return false, "No country selected"
-    end
-
     -- Only checked when a full set has been staged; a partial stage cannot be judged
     -- against priorities that were never sent.
     local seen = {}
@@ -161,13 +139,12 @@ function BiceData.ProdSliders.Commit()
         end
     end
 
-    local countryTag = CCountryDataBase.GetTag(tag)
-    for field, value in pairs(staged) do
-        CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(PREFIX .. field), CFixedPoint(value)))
+    local ok, reason = BiceData.AiSettings.Post(PREFIX, staged, USES)
+    if not ok then
+        return false, reason
     end
-    staged = {}
 
-    CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(USES), CFixedPoint(1)))
+    staged = {}
     return true, nil
 end
 
@@ -178,15 +155,5 @@ end
 
 --- Switches the custom production slider AI on or off.
 function BiceData.ProdSliders.SetActive(enabled)
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return
-    end
-
-    local countryTag = CCountryDataBase.GetTag(tag)
-    if enabled then
-        CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(USES), CFixedPoint(1)))
-    end
-    CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(ACTIVE),
-        CFixedPoint(enabled and 1 or 0)))
+    BiceData.AiSettings.SetActive(USES, ACTIVE, enabled)
 end

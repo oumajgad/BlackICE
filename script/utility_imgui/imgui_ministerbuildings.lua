@@ -1,5 +1,7 @@
 -- Minister Buildings page for the in-game ImGui utility.
 
+local Page = require('imgui_page')
+
 BiceLibGui = BiceLibGui or {}
 BiceLibGui.MinisterBuildings = {}
 
@@ -12,9 +14,5 @@ local function snapshot()
 end
 
 function BiceLibGui.MinisterBuildings.Collect()
-    local ok, result = pcall(snapshot)
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
+    return Page.Guard(snapshot)
 end

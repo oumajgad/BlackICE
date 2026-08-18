@@ -40,19 +40,6 @@ end
 
 local staged = {}
 
-local function variables()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return nil, nil
-    end
-
-    local country = CCountryDataBase.GetTag(tag):GetCountry()
-    if country == nil then
-        return nil, nil
-    end
-    return country:GetVariables(), tag
-end
-
 --- The categories and their display names, in page order.
 function BiceData.LsSliders.Categories()
     return CATEGORIES
@@ -60,12 +47,12 @@ end
 
 --- Current settings, or the wx defaults if this country has never been configured.
 function BiceData.LsSliders.Collect()
-    local vars, tag = variables()
+    local vars, tag = BiceData.Country.Variables()
     if vars == nil then
         return nil, "No country selected"
     end
 
-    local configured = vars:GetVariable(CString(USES)):Get() == 1
+    local configured = BiceData.Country.Get(vars, USES) == 1
 
     local rows = {}
     for _, category in ipairs(CATEGORIES) do
@@ -77,8 +64,8 @@ function BiceData.LsSliders.Collect()
         }
 
         if configured then
-            row.lower = vars:GetVariable(CString(PREFIX .. category.key .. "Lower")):Get()
-            row.upper = vars:GetVariable(CString(PREFIX .. category.key .. "Upper")):Get()
+            row.lower = BiceData.Country.Get(vars, PREFIX .. category.key .. "Lower")
+            row.upper = BiceData.Country.Get(vars, PREFIX .. category.key .. "Upper")
         else
             row.lower = category.lower
             row.upper = category.upper
@@ -89,12 +76,12 @@ function BiceData.LsSliders.Collect()
 
     local bufferNco = true -- the wx checkbox started ticked
     if configured then
-        bufferNco = vars:GetVariable(CString(PREFIX .. BUFFER_NCO)):Get() == 1
+        bufferNco = BiceData.Country.Get(vars, PREFIX .. BUFFER_NCO) == 1
     end
 
     return {
         tag = tag,
-        active = vars:GetVariable(CString(ACTIVE)):Get() == 1,
+        active = BiceData.Country.Get(vars, ACTIVE) == 1,
         configured = configured,
         bufferNco = bufferNco,
         rows = rows,
@@ -103,11 +90,7 @@ end
 
 --- Stages one field. Nothing reaches the game until Commit.
 function BiceData.LsSliders.SetValue(field, value)
-    if field == nil or not knownFields()[field] then
-        return false, "Unknown field: " .. tostring(field)
-    end
-    staged[field] = value
-    return true, nil
+    return BiceData.AiSettings.Stage(staged, knownFields(), field, value)
 end
 
 --- Posts everything staged, clamped to what the engine and the AI can work with.
@@ -115,11 +98,6 @@ end
 --- Returns ok, reason, corrections - corrections being the fields whose staged value
 --- was changed, so the caller can show what was actually applied.
 function BiceData.LsSliders.Commit()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return false, "No country selected", nil
-    end
-
     local corrections = {}
     for _, category in ipairs(CATEGORIES) do
         local lowerField = category.key .. "Lower"
@@ -146,13 +124,12 @@ function BiceData.LsSliders.Commit()
         end
     end
 
-    local countryTag = CCountryDataBase.GetTag(tag)
-    for field, value in pairs(staged) do
-        CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(PREFIX .. field), CFixedPoint(value)))
+    local ok, reason = BiceData.AiSettings.Post(PREFIX, staged, USES)
+    if not ok then
+        return false, reason, nil
     end
-    staged = {}
 
-    CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(USES), CFixedPoint(1)))
+    staged = {}
     return true, nil, corrections
 end
 
@@ -163,15 +140,5 @@ end
 
 --- Switches the custom leadership slider AI on or off.
 function BiceData.LsSliders.SetActive(enabled)
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return
-    end
-
-    local countryTag = CCountryDataBase.GetTag(tag)
-    if enabled then
-        CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(USES), CFixedPoint(1)))
-    end
-    CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(ACTIVE),
-        CFixedPoint(enabled and 1 or 0)))
+    BiceData.AiSettings.SetActive(USES, ACTIVE, enabled)
 end

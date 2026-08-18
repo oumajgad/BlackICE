@@ -52,19 +52,6 @@ end
 
 local staged = {}
 
-local function variables()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return nil, nil
-    end
-
-    local country = CCountryDataBase.GetTag(tag):GetCountry()
-    if country == nil then
-        return nil, nil
-    end
-    return country:GetVariables(), tag
-end
-
 --- The resource keys and their display names, in page order.
 function BiceData.TradeAi.Resources()
     return RESOURCES
@@ -72,14 +59,14 @@ end
 
 --- Current settings, or the wx defaults if this country has never been configured.
 function BiceData.TradeAi.Collect()
-    local vars, tag = variables()
+    local vars, tag = BiceData.Country.Variables()
     if vars == nil then
         return nil, "No country selected"
     end
 
     -- Before the first Commit the variables are all zero, and showing those would
     -- invite applying them - which stops the AI trading at all.
-    local configured = vars:GetVariable(CString(USES)):Get() == 1
+    local configured = BiceData.Country.Get(vars, USES) == 1
 
     local rows = {}
     for _, resource in ipairs(RESOURCES) do
@@ -90,10 +77,10 @@ function BiceData.TradeAi.Collect()
         }
 
         if configured then
-            row.buffer = vars:GetVariable(CString(PREFIX .. resource.key .. "_Buffer")):Get()
+            row.buffer = BiceData.Country.Get(vars, PREFIX .. resource.key .. "_Buffer")
             if row.hasCaps then
-                row.saleCap = vars:GetVariable(CString(PREFIX .. resource.key .. "_BufferSaleCap")):Get()
-                row.cancelCap = vars:GetVariable(CString(PREFIX .. resource.key .. "_BufferCancelCap")):Get()
+                row.saleCap = BiceData.Country.Get(vars, PREFIX .. resource.key .. "_BufferSaleCap")
+                row.cancelCap = BiceData.Country.Get(vars, PREFIX .. resource.key .. "_BufferCancelCap")
             end
         else
             row.buffer = resource.buffer
@@ -106,12 +93,12 @@ function BiceData.TradeAi.Collect()
 
     local maxDailySell = MAX_DAILY_SELL_DEFAULT
     if configured then
-        maxDailySell = vars:GetVariable(CString(PREFIX .. "MaxDailySell")):Get()
+        maxDailySell = BiceData.Country.Get(vars, PREFIX .. "MaxDailySell")
     end
 
     return {
         tag = tag,
-        active = vars:GetVariable(CString(ACTIVE)):Get() == 1,
+        active = BiceData.Country.Get(vars, ACTIVE) == 1,
         configured = configured,
         maxDailySell = maxDailySell,
         rows = rows,
@@ -120,37 +107,27 @@ end
 
 --- Stages one field. Nothing reaches the game until Commit.
 function BiceData.TradeAi.SetValue(field, value)
-    if field == nil or not knownFields()[field] then
-        return false, "Unknown field: " .. tostring(field)
+    return BiceData.AiSettings.Stage(staged, knownFields(), field, value)
+end
+
+-- The wx page drove BufferBuyCap from the same control as BufferCancelCap, so the two
+-- are kept equal rather than exposing a field nothing sets.
+local function mirrorBuyCap(countryTag, field, value)
+    local resource = string.match(field, "^(.*)_BufferCancelCap$")
+    if resource ~= nil then
+        BiceData.Country.Set(countryTag, PREFIX .. resource .. "_BufferBuyCap", value)
     end
-    staged[field] = value
-    return true, nil
 end
 
 --- Posts everything staged, then asks the AI to reload it.
 function BiceData.TradeAi.Commit()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return false, "No country selected"
-    end
-
-    local countryTag = CCountryDataBase.GetTag(tag)
-    for field, value in pairs(staged) do
-        CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(PREFIX .. field), CFixedPoint(value)))
-
-        -- The wx page drove BufferBuyCap from the same control as BufferCancelCap, so
-        -- the two are kept equal here rather than exposing a field nothing sets.
-        local resource = string.match(field, "^(.*)_BufferCancelCap$")
-        if resource ~= nil then
-            CCurrentGameState.Post(CSetVariableCommand(countryTag,
-                CString(PREFIX .. resource .. "_BufferBuyCap"), CFixedPoint(value)))
-        end
+    local ok, reason = BiceData.AiSettings.Post(PREFIX, staged, USES, mirrorBuyCap)
+    if not ok then
+        return false, reason
     end
     staged = {}
 
-    -- Marks the country as configured, so Collect stops handing back defaults.
-    CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(USES), CFixedPoint(1)))
-    CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(WANTS_CHANGE), CFixedPoint(1)))
+    BiceData.Country.Set(BiceData.Players.CurrentTag(), WANTS_CHANGE, 1)
     return true, nil
 end
 
@@ -161,15 +138,5 @@ end
 
 --- Switches the custom trade AI on or off.
 function BiceData.TradeAi.SetActive(enabled)
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return
-    end
-
-    local countryTag = CCountryDataBase.GetTag(tag)
-    if enabled then
-        CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(USES), CFixedPoint(1)))
-    end
-    CCurrentGameState.Post(CSetVariableCommand(countryTag, CString(ACTIVE),
-        CFixedPoint(enabled and 1 or 0)))
+    BiceData.AiSettings.SetActive(USES, ACTIVE, enabled)
 end

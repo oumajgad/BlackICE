@@ -26,14 +26,9 @@ end
 
 --- Everything the Country Info page shows, grouped for display.
 function BiceData.CountryInfo.Collect()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return nil, "No country selected"
-    end
-
-    local country = CCountryDataBase.GetTag(tag):GetCountry()
+    local country, tag = BiceData.Country.Selected()
     if country == nil then
-        return nil, "No country for " .. tag
+        return nil, "No country selected"
     end
 
     local variables = country:GetVariables()
@@ -67,7 +62,7 @@ function BiceData.CountryInfo.Collect()
     local attackDelay = defines.military.UNIT_ATTACK_DELAY - techContribution(country, "attack_delay")
 
     local globalSupplies = modifiers:GetValue(CModifier._MODIFIER_GLOBAL_SUPPLIES_):Get()
-    local supplyFactories = variables:GetVariable(CString("supplies_factory_count")):Get() * 0.035
+    local supplyFactories = BiceData.Country.Get(variables, "supplies_factory_count") * 0.035
     local suppliesPerIc = (1 + globalSupplies + techContribution(country, "ic_to_supplies")
         + supplyFactories) * defines.economy.IC_TO_SUPPLIES
 
@@ -92,15 +87,15 @@ function BiceData.CountryInfo.Collect()
                     { label = "Base IC", value = number(baseIc, 0) },
                     { label = "Offmap IC", value = number(offmapIc, 0) },
                     { label = "IC modifier", value = percent(icModifier) },
-                    { label = "IC efficiency", value = number(variables:GetVariable(CString("IcEffVariable")):Get()) },
+                    { label = "IC efficiency", value = number(BiceData.Country.Get(variables, "IcEffVariable")) },
                     { label = "Supplies per IC", value = number(suppliesPerIc) },
                 },
             },
             {
                 name = "Research and supply",
                 rows = {
-                    { label = "Research efficiency", value = number(variables:GetVariable(CString("ResEffVariable")):Get()) },
-                    { label = "Supply throughput", value = number(variables:GetVariable(CString("SuppThrouVariable")):Get()) },
+                    { label = "Research efficiency", value = number(BiceData.Country.Get(variables, "ResEffVariable")) },
+                    { label = "Supply throughput", value = number(BiceData.Country.Get(variables, "SuppThrouVariable")) },
                 },
             },
             {
@@ -117,7 +112,7 @@ function BiceData.CountryInfo.Collect()
                 name = "War exhaustion",
                 rows = {
                     { label = "Monthly", value = number(warExhaustionMonthly) },
-                    { label = "Current", value = string.format('%.1f', variables:GetVariable(CString("war_exhaustion")):Get()) },
+                    { label = "Current", value = string.format('%.1f', BiceData.Country.Get(variables, "war_exhaustion")) },
                 },
             },
         },

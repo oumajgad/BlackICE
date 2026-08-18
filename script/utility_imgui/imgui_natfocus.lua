@@ -1,5 +1,7 @@
 -- National Focus page for the in-game ImGui utility.
 
+local Page = require('imgui_page')
+
 BiceLibGui = BiceLibGui or {}
 BiceLibGui.NatFocus = {}
 
@@ -12,23 +14,14 @@ local function snapshot()
 end
 
 function BiceLibGui.NatFocus.Collect()
-    local ok, result = pcall(snapshot)
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
+    return Page.Guard(snapshot)
 end
 
 -- Sets the focus and returns the refreshed table, so the page shows what the game
 -- holds rather than assuming the command landed.
 function BiceLibGui.NatFocus.Set(index)
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         BiceData.NatFocus.Set(index)
         return snapshot()
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end

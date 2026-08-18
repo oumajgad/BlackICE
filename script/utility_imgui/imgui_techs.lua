@@ -3,25 +3,22 @@
 -- Parsing, level scaling and translation live in BiceData.Techs; this only shapes the
 -- data for the overlay.
 
+local Page = require('imgui_page')
+
 BiceLibGui = BiceLibGui or {}
 BiceLibGui.Techs = {}
 
 function BiceLibGui.Techs.Collect()
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         return { available = true, techs = BiceData.Techs.Choices() }
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end
 
 -- Effects depend on the level being shown, so this takes the level as well as the
 -- tech. A level of 0 means "use the player's researched level, or 1 if they have
 -- none", which is what the page wants when the selection first changes.
 function BiceLibGui.Techs.Details(choice, level)
-    local ok, result = pcall(function()
+    return Page.Guard(function()
         local key = BiceData.Translations.KeyFromChoice(choice)
         if BiceData.Techs.Get(key) == nil then
             return { available = false, reason = "Unknown tech: " .. tostring(choice) }
@@ -43,9 +40,4 @@ function BiceLibGui.Techs.Details(choice, level)
             requirements = BiceData.Techs.DumpRequirements(key),
         }
     end)
-
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
 end

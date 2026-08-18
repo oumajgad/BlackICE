@@ -33,22 +33,9 @@ function BiceData.StratResources.DisplayName(resource)
     return displayName(resource)
 end
 
-local function variables()
-    local tag = BiceData.Players.CurrentTag()
-    if tag == nil then
-        return nil, nil
-    end
-
-    local country = CCountryDataBase.GetTag(tag):GetCountry()
-    if country == nil then
-        return nil, nil
-    end
-    return country:GetVariables(), tag
-end
-
 --- Balance, sales, purchases and sale state for every strategic resource.
 function BiceData.StratResources.Collect()
-    local vars, tag = variables()
+    local vars, tag = BiceData.Country.Variables()
     if vars == nil then
         return nil, "No country selected"
     end
@@ -58,11 +45,11 @@ function BiceData.StratResources.Collect()
         table.insert(rows, {
             key = resource,
             name = displayName(resource),
-            balance = vars:GetVariable(CString(resource .. "_ActualBalance")):Get() - BALANCE_OFFSET,
-            sell = vars:GetVariable(CString(resource .. "_trade_sell")):Get(),
-            buy = vars:GetVariable(CString(resource .. "_trade_buy")):Get(),
+            balance = BiceData.Country.Get(vars, resource .. "_ActualBalance") - BALANCE_OFFSET,
+            sell = BiceData.Country.Get(vars, resource .. "_trade_sell"),
+            buy = BiceData.Country.Get(vars, resource .. "_trade_buy"),
             -- The variable is inverted: 1 means selling is switched off.
-            selling = vars:GetVariable(CString(resource .. "_deactivate_sales")):Get() ~= 1,
+            selling = BiceData.Country.Get(vars, resource .. "_deactivate_sales") ~= 1,
         })
     end
 
@@ -76,7 +63,5 @@ function BiceData.StratResources.SetSelling(resource, enabled)
         return
     end
 
-    local command = CSetVariableCommand(CCountryDataBase.GetTag(tag),
-        CString(resource .. "_deactivate_sales"), CFixedPoint(enabled and 0 or 1))
-    CCurrentGameState.Post(command)
+    BiceData.Country.Set(tag, resource .. "_deactivate_sales", enabled and 0 or 1)
 end

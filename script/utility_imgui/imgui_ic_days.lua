@@ -4,6 +4,8 @@
 -- stay cheap and must never touch wx. Actions post commands exactly as the old
 -- wxWidgets page did, so multiplayer behaviour is unchanged.
 
+local Page = require('imgui_page')
+
 BiceLibGui = BiceLibGui or {}
 BiceLibGui.ICDays = {}
 
@@ -48,11 +50,7 @@ end
 -- cannot catch a fault inside the game's own code, which is why the page does not
 -- refresh until asked.
 function BiceLibGui.ICDays.Collect()
-    local ok, result = pcall(collect)
-    if not ok then
-        return { available = false, reason = tostring(result) }
-    end
-    return result
+    return Page.Guard(collect)
 end
 
 function BiceLibGui.ICDays.SetInvestment(investmentMult)
