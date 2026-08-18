@@ -113,7 +113,13 @@ require('DEFAULT_MIXED')
 -- costs nothing until something asks for data. Must come before either utility.
 require('bicedata')
 
-G_UtilityEnabled = true -- disabling saves about 50 MiB
+-- RAM Usage of the different utility cases
+--             Main menu - country selected - 7 days passed
+-- No utility:    2170   -      2322        -    2538
+-- old utility:   2172   -      2322        -    2624
+-- new utility:   2288   -      2437        -    2626
+
+G_UtilityEnabled = false
 if G_UtilityEnabled then
     -- Hoi 3 Utility
     require('gui-utility')
