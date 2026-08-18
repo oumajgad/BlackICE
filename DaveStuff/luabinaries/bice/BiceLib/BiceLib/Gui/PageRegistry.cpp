@@ -1,6 +1,7 @@
 #include <Gui/GuiPage.hpp>
 #include <Gui/CountrySelection.hpp>
 
+#include <Windows.h>
 #include <algorithm>
 #include <cstring>
 #include <map>
@@ -45,6 +46,23 @@ namespace {
     // Page -> the name ImGui knows its window by. Held here rather than built on demand
     // because ImGui wants a pointer that outlives the call.
     std::map<const Gui::GuiPage*, std::string> windowNames;
+
+    std::map<const Gui::GuiPage*, Gui::PageTiming> timings;
+
+    /**@brief the performance counter in milliseconds; a frame is far too coarse here*/
+    double milliseconds() {
+        static LARGE_INTEGER frequency = {};
+        if (frequency.QuadPart == 0) {
+            QueryPerformanceFrequency(&frequency);
+        }
+
+        LARGE_INTEGER counter = {};
+        QueryPerformanceCounter(&counter);
+        return (frequency.QuadPart == 0)
+            ? 0.0
+            : (static_cast<double>(counter.QuadPart) * 1000.0) /
+              static_cast<double>(frequency.QuadPart);
+    }
 
     /**@brief gives every page a unique window name, disturbing as few as possible*/
     void buildWindowNames() {
@@ -301,7 +319,20 @@ void Gui::drawAll() {
             continue;
         }
         if (ImGui::Begin(windowName(page), &page->open)) {
+            // Timed around draw() only, which is where a page loads what it needs the
+            // first time it is looked at. Begin and End are ImGui's own bookkeeping and
+            // would only blur the number.
+            const double started = milliseconds();
             page->draw();
+            const double elapsed = milliseconds() - started;
+
+            PageTiming& timing = timings[page];
+            if (timing.calls == 0) {
+                timing.firstMs = elapsed;
+            }
+            timing.lastMs = elapsed;
+            timing.worstMs = (elapsed > timing.worstMs) ? elapsed : timing.worstMs;
+            timing.calls++;
         }
         ImGui::End();
     }
@@ -325,4 +356,14 @@ const char* Gui::windowName(const GuiPage* page) {
     pages(); // sorts the registry and fills the table on the first call
     const auto it = windowNames.find(page);
     return (it != windowNames.end()) ? it->second.c_str() : page->title();
+}
+
+const Gui::PageTiming& Gui::timing(const GuiPage* page) {
+    static const PageTiming none;
+    const auto it = timings.find(page);
+    return (it != timings.end()) ? it->second : none;
+}
+
+void Gui::resetTimings() {
+    timings.clear();
 }

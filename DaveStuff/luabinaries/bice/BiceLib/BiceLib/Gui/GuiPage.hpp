@@ -56,6 +56,28 @@ namespace Gui {
     extern const char* const GROUP_ORDER[];
     extern const int GROUP_COUNT;
 
+    /**
+     * How long a page has spent drawing.
+     *
+     * The first draw is the interesting one: a page loads and parses whatever it needs
+     * the first time it is looked at, so that call carries the whole cost of opening it
+     * while every later one is just drawing. Kept for every page so the Timing page can
+     * say where the wait on first opening the overlay actually went.
+     */
+    struct PageTiming
+    {
+        double firstMs = 0.0;
+        double lastMs = 0.0;
+        double worstMs = 0.0;
+        int calls = 0;
+    };
+
+    /**@brief timings for one page; calls is 0 until it has been drawn once*/
+    const PageTiming& timing(const GuiPage* page);
+
+    /**@brief forgets every measurement, so the next draws are recorded as firsts again*/
+    void resetTimings();
+
     /**@brief adds a page to the registry. Use REGISTER_GUI_PAGE rather than calling this.*/
     void registerPage(GuiPage* page);
 

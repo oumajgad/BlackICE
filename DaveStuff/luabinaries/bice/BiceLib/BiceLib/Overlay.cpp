@@ -11,6 +11,7 @@
 
 #include <Diagnostics.hpp>
 #include <Gui/GuiPage.hpp>
+#include <Gui/Warmup.hpp>
 #include <utils.hpp>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -163,8 +164,15 @@ namespace {
             initImGui(device);
         }
 
-        if (imguiReady && visible) {
-            renderOverlay(device);
+        if (imguiReady) {
+            // Before the visibility check: the datasets the pages need are parsed
+            // whether or not anyone is looking, which is the whole point of doing it
+            // while the game sits at the menu.
+            Gui::warmupStep();
+
+            if (visible) {
+                renderOverlay(device);
+            }
         }
 
         return originalPresent(device, sourceRect, destRect, destWindowOverride, dirtyRegion);
