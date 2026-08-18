@@ -29,6 +29,7 @@ local pages = {
     { module = 'imgui_tradeai', key = 'TradeAi' },
     { module = 'imgui_prodsliders', key = 'ProdSliders' },
     { module = 'imgui_lssliders', key = 'LsSliders' },
+    { module = 'imgui_console', key = 'Console' },
     { module = 'imgui_traits',   key = 'Traits' },
     { module = 'imgui_generals',  key = 'Generals' },
     { module = 'imgui_modifiers', key = 'Modifiers' },

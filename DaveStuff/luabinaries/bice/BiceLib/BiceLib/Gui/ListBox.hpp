@@ -53,4 +53,20 @@ namespace Gui {
     @returns true if the selection changed, by either means
     */
     bool wheelCombo(const char* id, int* index, const char* const items[], int itemCount);
+
+    /**
+    @brief draggable divider that resizes the pane above it
+
+    The horizontal counterpart of verticalSplitter: place between two stacked panes,
+    after the upper one. Handles the drag, the resize cursor and drawing the divider.
+
+    @param id     unique within the page
+    @param height in/out, the upper pane height. Clamped so neither pane can be dragged
+                  away entirely.
+    @param minHeight    smallest the upper pane may become
+    @param minRemaining smallest the lower pane may become
+    @returns true while being dragged
+    */
+    bool horizontalSplitter(const char* id, float* height,
+        float minHeight = 60.0f, float minRemaining = 80.0f);
 }

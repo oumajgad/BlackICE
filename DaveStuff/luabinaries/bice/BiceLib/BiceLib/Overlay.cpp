@@ -76,21 +76,9 @@ namespace {
     */
     const char* layoutFilePath() {
         static std::string path;
-        if (!path.empty()) {
-            return path.c_str();
+        if (path.empty()) {
+            path = Overlay::directory() + "BiceLibImGui.ini";
         }
-
-        HMODULE self = nullptr;
-        char buffer[MAX_PATH] = {};
-        if (GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-            reinterpret_cast<LPCWSTR>(&layoutFilePath), &self) &&
-            GetModuleFileNameA(self, buffer, MAX_PATH) != 0) {
-            path = buffer;
-            const size_t slash = path.find_last_of("\\/");
-            path = (slash == std::string::npos) ? std::string() : path.substr(0, slash + 1);
-        }
-
-        path += "BiceLibImGui.ini";
         return path.c_str();
     }
 
@@ -258,6 +246,29 @@ namespace {
 
         return vtable;
     }
+}
+
+const std::string& Overlay::directory() {
+    // Resolved from this function's own address rather than a module name, so it is
+    // still right if the DLL is ever renamed. Cached: ImGui keeps the pointer to the
+    // layout path built from it for the life of the context.
+    static std::string path;
+    static bool resolved = false;
+    if (resolved) {
+        return path;
+    }
+    resolved = true;
+
+    HMODULE self = nullptr;
+    char buffer[MAX_PATH] = {};
+    if (GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+        reinterpret_cast<LPCWSTR>(&Overlay::directory), &self) &&
+        GetModuleFileNameA(self, buffer, MAX_PATH) != 0) {
+        path = buffer;
+        const size_t slash = path.find_last_of("\\/");
+        path = (slash == std::string::npos) ? std::string() : path.substr(0, slash + 1);
+    }
+    return path;
 }
 
 IDirect3DDevice9* Overlay::device() {

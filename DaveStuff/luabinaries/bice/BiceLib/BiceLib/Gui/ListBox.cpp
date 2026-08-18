@@ -158,3 +158,37 @@ bool Gui::filteredList(const char* id, const ImVec2& size,
     ImGui::EndChild();
     return changed;
 }
+
+bool Gui::horizontalSplitter(const char* id, float* height, float minHeight, float minRemaining) {
+    const float thickness = 6.0f;
+
+    // Measured before the button is placed, as in verticalSplitter: afterwards the
+    // cursor has moved on and this would describe the row below.
+    const float remaining = ImGui::GetContentRegionAvail().y;
+    const float width = ImGui::GetContentRegionAvail().x;
+
+    ImGui::InvisibleButton(id, ImVec2(width > 0.0f ? width : 1.0f, thickness));
+
+    const bool active = ImGui::IsItemActive();
+    const bool hovered = ImGui::IsItemHovered();
+    if (active || hovered) {
+        ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeNS);
+    }
+    if (active) {
+        *height += ImGui::GetIO().MouseDelta.y;
+    }
+
+    const float maxHeight = *height + remaining - thickness - minRemaining;
+    if (*height > maxHeight) {
+        *height = maxHeight;
+    }
+    if (*height < minHeight) {
+        *height = minHeight;
+    }
+
+    const ImU32 color = ImGui::GetColorU32(
+        active ? ImGuiCol_SeparatorActive : (hovered ? ImGuiCol_SeparatorHovered : ImGuiCol_Separator));
+    ImGui::GetWindowDrawList()->AddRectFilled(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), color);
+
+    return active;
+}

@@ -13,6 +13,9 @@
 namespace {
     const char* reason = "no Lua call made yet";
 
+    // Lifted only by the console, and only for its own call.
+    bool sessionRequired = true;
+
     // Holds the detailed message reason points at when a lookup fails.
     char reasonBuffer[256] = {};
 
@@ -110,8 +113,12 @@ bool Gui::Lua::sessionActive() {
     return gameState != 0;
 }
 
+void Gui::Lua::setSessionRequired(bool required) {
+    sessionRequired = required;
+}
+
 bool Gui::Lua::available() {
-    if (!sessionActive()) {
+    if (sessionRequired && !sessionActive()) {
         reason = "no game session";
         return false;
     }

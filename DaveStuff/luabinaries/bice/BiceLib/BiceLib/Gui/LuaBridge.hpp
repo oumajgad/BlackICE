@@ -30,6 +30,20 @@ namespace Gui {
         */
         bool sessionActive();
 
+        /**
+        @brief whether a game session is required for a call to be allowed
+
+        On by default, and only the Lua console turns it off: a script that touches
+        nothing but the mod's own Lua runs perfectly well at the main menu, and being
+        able to poke at the parsers there is half the point of having a console. It is
+        the caller's business what the script then reaches for - a game object at the
+        menu still faults where no pcall can help.
+
+        Restore it as soon as the call is done; leaving it off would let every other
+        page fetch data at the menu, which is exactly what the gate exists to stop.
+        */
+        void setSessionRequired(bool required);
+
         /**@brief whether a call may be made right now (session, render thread, known state, not re-entrant)*/
         bool available();
 

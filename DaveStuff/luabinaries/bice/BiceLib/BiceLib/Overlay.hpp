@@ -15,9 +15,20 @@
  * Input is picked up by subclassing the game window; messages ImGui wants are
  * swallowed so the game does not also act on them.
  */
+#include <string>
+
 struct IDirect3DDevice9;
 
 namespace Overlay {
+    /**
+    @brief the directory BiceLib.dll sits in, ending in a separator
+
+    Where everything the overlay owns is kept, rather than the game's root: the docking
+    layout, and the console's saved scripts. Empty only if the module path could not be
+    read at all.
+    */
+    const std::string& directory();
+
     /**@brief the device the game is rendering with, null before the first frame.
        Needed by anything creating its own D3D resources, such as the texture cache.*/
     IDirect3DDevice9* device();
