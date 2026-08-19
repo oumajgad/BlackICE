@@ -14,7 +14,8 @@ local function getAssignmentsFromOob(oob)
     for key, values in pairs(oob) do
         if units_to_ranks[key] ~= nil then
             if values["leader"] ~= nil then
-                local leader_data = Parsing.Generals.GeneralsData[values["leader"]]
+                -- Leader definitions come from BiceData now, keyed the same way.
+                local leader_data = BiceData.Generals.Get(values["leader"])
                 local leader_rank = nil
                 local wrong_rank = false
                 if leader_data ~= nil then
@@ -40,7 +41,8 @@ local function getAssignmentsFromOob(oob)
 end
 
 function P.checkAssignedLeaderRanks()
-    Parsing.Generals.FillData()
+    -- Parsed on demand by the provider; the call is left for clarity.
+    BiceData.Generals.Get(0)
 
     assignments = {}
     -- local file_contents = {}

@@ -78,43 +78,72 @@ function BiceData.CountryInfo.Collect()
         return string.format('%.0' .. (decimals or 2) .. 'f', value)
     end
 
+    -- Every row carries the number as well as the text. The ImGui page shows value and
+    -- ignores raw; the wx page formats raw itself, because its labels already carry the
+    -- unit that percent() writes into the string.
+    local icEfficiency = BiceData.Country.Get(variables, "IcEffVariable")
+    local researchEfficiency = BiceData.Country.Get(variables, "ResEffVariable")
+    local supplyThroughput = BiceData.Country.Get(variables, "SuppThrouVariable")
+    local startingExperience = modifiers:GetValue(CModifier._MODIFIER_UNIT_START_EXPERIENCE_):Get()
+    local currentWarExhaustion = BiceData.Country.Get(variables, "war_exhaustion")
+
     return {
         tag = tag,
         sections = {
             {
                 name = "Industry",
                 rows = {
-                    { label = "Base IC", value = number(baseIc, 0) },
-                    { label = "Offmap IC", value = number(offmapIc, 0) },
-                    { label = "IC modifier", value = percent(icModifier) },
-                    { label = "IC efficiency", value = number(BiceData.Country.Get(variables, "IcEffVariable")) },
-                    { label = "Supplies per IC", value = number(suppliesPerIc) },
+                    { label = "Base IC", value = number(baseIc, 0), raw = baseIc },
+                    { label = "Offmap IC", value = number(offmapIc, 0), raw = offmapIc },
+                    { label = "IC modifier", value = percent(icModifier), raw = icModifier },
+                    { label = "IC efficiency", value = number(icEfficiency), raw = icEfficiency },
+                    { label = "Supplies per IC", value = number(suppliesPerIc), raw = suppliesPerIc },
                 },
             },
             {
                 name = "Research and supply",
                 rows = {
-                    { label = "Research efficiency", value = number(BiceData.Country.Get(variables, "ResEffVariable")) },
-                    { label = "Supply throughput", value = number(BiceData.Country.Get(variables, "SuppThrouVariable")) },
+                    { label = "Research efficiency", value = number(researchEfficiency), raw = researchEfficiency },
+                    { label = "Supply throughput", value = number(supplyThroughput), raw = supplyThroughput },
                 },
             },
             {
                 name = "Military",
                 rows = {
-                    { label = "Repair efficiency", value = percent(repairModifier) },
-                    { label = "Org regain", value = percent(orgRegain) },
-                    { label = "Attack delay", value = number(attackDelay, 0) },
-                    { label = "Starting experience", value = number(modifiers:GetValue(CModifier._MODIFIER_UNIT_START_EXPERIENCE_):Get()) },
-                    { label = "Trickleback", value = trickleback ~= nil and percent(trickleback) or "unavailable" },
+                    { label = "Repair efficiency", value = percent(repairModifier), raw = repairModifier },
+                    { label = "Org regain", value = percent(orgRegain), raw = orgRegain },
+                    { label = "Attack delay", value = number(attackDelay, 0), raw = attackDelay },
+                    { label = "Starting experience", value = number(startingExperience), raw = startingExperience },
+                    -- nil raw where the game would not say, which the pages show as text.
+                    { label = "Trickleback", value = trickleback ~= nil and percent(trickleback) or "unavailable",
+                      raw = trickleback },
                 },
             },
             {
                 name = "War exhaustion",
                 rows = {
-                    { label = "Monthly", value = number(warExhaustionMonthly) },
-                    { label = "Current", value = string.format('%.1f', BiceData.Country.Get(variables, "war_exhaustion")) },
+                    { label = "Monthly", value = number(warExhaustionMonthly), raw = warExhaustionMonthly },
+                    { label = "Current", value = string.format('%.1f', currentWarExhaustion),
+                      raw = currentWarExhaustion },
                 },
             },
         },
     }, nil
+end
+
+--- Every row from Collect, flattened to label -> row, for a UI with one control per
+--- value rather than a list.
+function BiceData.CountryInfo.ByLabel()
+    local data, reason = BiceData.CountryInfo.Collect()
+    if data == nil then
+        return nil, reason
+    end
+
+    local rows = {}
+    for _, section in ipairs(data.sections) do
+        for _, row in ipairs(section.rows) do
+            rows[row.label] = row
+        end
+    end
+    return rows, nil
 end

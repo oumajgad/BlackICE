@@ -1,155 +1,111 @@
-function SetCustomTradeAiStatus()
-    if wx ~= nil and G_PlayerCountry ~= nil then
-        local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-		if UI.m_textCtrl_customTradeAi1:GetValue() == "Active" then
-            local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_CustomTradeAiActive"), CFixedPoint(0))
-            CCurrentGameState.Post(command)
-            SetCustomTradeAiStatusText(false)
-        else
-            local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_CustomTradeAiActive"), CFixedPoint(1))
-            CCurrentGameState.Post(command)
-            local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_usesCustomTradeAi"), CFixedPoint(1))
-            CCurrentGameState.Post(command)
-            SetCustomTradeAiStatusText(true)
-            SetCustomTradeAiValues()
-		end
+-- Trade AI tab.
+--
+-- The variable names, the defaults and the staging live in BiceData.TradeAi, shared
+-- with the ImGui utility. This keeps the wx half: which control holds which field.
+--
+-- The provider takes fields one at a time and posts them as one set on Commit, so a
+-- half applied edit cannot reach the AI.
+
+-- Provider resource key -> the word the controls are named after. They do not match
+-- everywhere: the control for CRUDE_OIL is called Oil.
+local RESOURCE_CONTROLS = {
+    MONEY = "Money",
+    FUEL = "Fuel",
+    ENERGY = "Energy",
+    METAL = "Metal",
+    RARE_MATERIALS = "Rares",
+    CRUDE_OIL = "Oil",
+}
+
+local function control(name)
+    return UI[name]
+end
+
+local function resourceControl(resourceKey, suffix)
+    return control("m_textCtrl_customTradeAi_" .. RESOURCE_CONTROLS[resourceKey] .. "_" .. suffix)
+end
+
+local function readNumber(widget, fallback)
+    if widget == nil then
+        return fallback
     end
+    return tonumber(widget:GetValue()) or fallback
 end
 
 function SetCustomTradeAiStatusText(status)
-    if status then
-		UI.m_textCtrl_customTradeAi1:SetValue("Active")
-    else
-        UI.m_textCtrl_customTradeAi1:SetValue("Inactive")
-    end
+    UI.m_textCtrl_customTradeAi1:SetValue(status and "Active" or "Inactive")
 end
 
 function DetermineCustomTradeAiStatus()
-    local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-    local country = countryTag:GetCountry()
-    local variables = country:GetVariables()
-
-    if variables:GetVariable(CString("zzDsafe_CustomTradeAiActive")):Get() == 1 then
-        SetCustomTradeAiStatusText(true)
-    else
-        SetCustomTradeAiStatusText(false)
+    local data = BiceData.TradeAi.Collect()
+    if data == nil then
+        return
     end
+    SetCustomTradeAiStatusText(data.active)
 end
 
+--- Sends every control's value to the provider and asks it to apply them.
 function SetCustomTradeAiValues()
-    local Values = {
-        MONEY = {
-            MaxDailySell = tonumber(UI.m_textCtrl_CustomTradeAi_MaxDailySell:GetValue()),
-            Buffer = tonumber(UI.m_textCtrl_customTradeAi_Money_Buffer:GetValue()),
-            BufferSaleCap = 20 -- ignored
-        },
-        METAL = {
-            Buffer = tonumber(UI.m_textCtrl_customTradeAi_Metal_Buffer:GetValue()), 			-- Amount extra to keep abouve our needs
-            BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferSaleCap:GetValue()), 	-- Amount we need in reserve before we sell the resource
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:GetValue()), 	-- not used by me! (Amount we need before we stop actively buying (existing trades are NOT cancelled))
-            BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:GetValue()), -- Amount we need before we cancel trades simply because we have to much
-        },
-        ENERGY = {
-            Buffer = tonumber(UI.m_textCtrl_customTradeAi_Energy_Buffer:GetValue()),
-            BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Energy_BufferSaleCap:GetValue()),
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Energy_BufferCancelCap:GetValue()),
-            BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Energy_BufferCancelCap:GetValue()),
-        },
-        RARE_MATERIALS = {
-            Buffer = tonumber(UI.m_textCtrl_customTradeAi_Rares_Buffer:GetValue()),
-            BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Rares_BufferSaleCap:GetValue()),
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Rares_BufferCancelCap:GetValue()),
-            BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Rares_BufferCancelCap:GetValue()),
-        },
-        CRUDE_OIL = {
-            Buffer = tonumber(UI.m_textCtrl_customTradeAi_Oil_Buffer:GetValue()),
-            BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Oil_BufferSaleCap:GetValue()),
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Oil_BufferCancelCap:GetValue()),
-            BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Oil_BufferCancelCap:GetValue()),
-        },
-        SUPPLIES = {
-            Buffer = 1000,          -- Ignored for supplies
-            BufferSaleCap = 5000,   -- Ignored for supplies
-            BufferBuyCap = 5000,    -- Ignored for supplies
-            BufferCancelCap = 5000, -- Ignored for supplies
-        },
-        FUEL = {
-            Buffer = tonumber(UI.m_textCtrl_customTradeAi_Fuel_Buffer:GetValue()),
-            BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Fuel_BufferSaleCap:GetValue()),
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap:GetValue()),
-            BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap:GetValue()),
-        }
-    }
-    local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-    local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MaxDailySell"), CFixedPoint(Values.MONEY.MaxDailySell))
-    CCurrentGameState.Post(command)
-    local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MONEY_Buffer"), CFixedPoint(Values.MONEY.Buffer))
-    CCurrentGameState.Post(command)
-    local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MONEY_BufferSaleCap"), CFixedPoint(Values.MONEY.BufferSaleCap))
-    CCurrentGameState.Post(command)
-    for k, v in pairs(Values) do
-        if k ~= "MONEY" then
-            local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_"..k.."_Buffer"), CFixedPoint(Values[k].Buffer))
-            CCurrentGameState.Post(command)
-            local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_"..k.."_BufferSaleCap"), CFixedPoint(Values[k].BufferSaleCap))
-            CCurrentGameState.Post(command)
-            local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_"..k.."_BufferBuyCap"), CFixedPoint(Values[k].BufferBuyCap))
-            CCurrentGameState.Post(command)
-            local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_"..k.."_BufferCancelCap"), CFixedPoint(Values[k].BufferCancelCap))
-            CCurrentGameState.Post(command)
-        end
-    end
-    local command = CSetVariableCommand(countryTag, CString("zzDsafe_WantsToChangeCustomTradeAi"), CFixedPoint(1))
-    CCurrentGameState.Post(command)
-end
-
-function ReadCustomTradeAiValues()
-    local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-    local country = countryTag:GetCountry()
-    local variables = country:GetVariables()
-    if variables:GetVariable(CString("zzDsafe_usesCustomTradeAi")):Get() == 0 then
+    local data = BiceData.TradeAi.Collect()
+    if data == nil then
         return
     end
 
-    UI.m_textCtrl_CustomTradeAi_MaxDailySell:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_MaxDailySell")):Get())))
+    BiceData.TradeAi.Discard() -- anything staged by an abandoned attempt
+    BiceData.TradeAi.SetValue("MaxDailySell",
+        readNumber(control("m_textCtrl_CustomTradeAi_MaxDailySell"), data.maxDailySell))
 
-    UI.m_textCtrl_customTradeAi_Money_Buffer:SetValue(
-        string.format('%.2f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_MONEY_Buffer")):Get())))
+    for _, row in ipairs(data.rows) do
+        BiceData.TradeAi.SetValue(row.key .. "_Buffer",
+            readNumber(resourceControl(row.key, "Buffer"), row.buffer))
 
-    UI.m_textCtrl_customTradeAi_Metal_Buffer:SetValue(
-        string.format('%.2f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_METAL_Buffer")):Get())))
-    UI.m_textCtrl_customTradeAi_Metal_BufferSaleCap:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_METAL_BufferSaleCap")):Get())))
-    UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_METAL_BufferCancelCap")):Get())))
+        if row.hasCaps then
+            BiceData.TradeAi.SetValue(row.key .. "_BufferSaleCap",
+                readNumber(resourceControl(row.key, "BufferSaleCap"), row.saleCap))
+            -- One control drives both the cancel and the buy cap, as it always has.
+            BiceData.TradeAi.SetValue(row.key .. "_BufferCancelCap",
+                readNumber(resourceControl(row.key, "BufferCancelCap"), row.cancelCap))
+        end
+    end
 
-    UI.m_textCtrl_customTradeAi_Energy_Buffer:SetValue(
-        string.format('%.2f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_ENERGY_Buffer")):Get())))
-    UI.m_textCtrl_customTradeAi_Energy_BufferSaleCap:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_ENERGY_BufferSaleCap")):Get())))
-    UI.m_textCtrl_customTradeAi_Energy_BufferCancelCap:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_ENERGY_BufferCancelCap")):Get())))
+    BiceData.TradeAi.Commit()
+end
 
-    UI.m_textCtrl_customTradeAi_Rares_Buffer:SetValue(
-        string.format('%.2f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_RARE_MATERIALS_Buffer")):Get())))
-    UI.m_textCtrl_customTradeAi_Rares_BufferSaleCap:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_RARE_MATERIALS_BufferSaleCap")):Get())))
-    UI.m_textCtrl_customTradeAi_Rares_BufferCancelCap:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_RARE_MATERIALS_BufferCancelCap")):Get())))
+function SetCustomTradeAiStatus()
+    local data = BiceData.TradeAi.Collect()
+    if data == nil then
+        return
+    end
 
-    UI.m_textCtrl_customTradeAi_Oil_Buffer:SetValue(
-        string.format('%.2f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_CRUDE_OIL_Buffer")):Get())))
-    UI.m_textCtrl_customTradeAi_Oil_BufferSaleCap:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_CRUDE_OIL_BufferSaleCap")):Get())))
-    UI.m_textCtrl_customTradeAi_Oil_BufferCancelCap:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_CRUDE_OIL_BufferCancelCap")):Get())))
+    if data.active then
+        BiceData.TradeAi.SetActive(false)
+        SetCustomTradeAiStatusText(false)
+        return
+    end
 
-    UI.m_textCtrl_customTradeAi_Fuel_Buffer:SetValue(
-        string.format('%.2f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_FUEL_Buffer")):Get())))
-    UI.m_textCtrl_customTradeAi_Fuel_BufferSaleCap:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_FUEL_BufferSaleCap")):Get())))
-    UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap:SetValue(
-        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_FUEL_BufferCancelCap")):Get())))
+    -- Switching on adopts what is on screen, as this page always did.
+    SetCustomTradeAiValues()
+    BiceData.TradeAi.SetActive(true)
+    SetCustomTradeAiStatusText(true)
+end
 
+--- Fills the controls from the game, or from the defaults if it has never been set up.
+function ReadCustomTradeAiValues()
+    local data = BiceData.TradeAi.Collect()
+    if data == nil or not data.configured then
+        -- Unconfigured leaves the designer defaults the controls start with, exactly as
+        -- before: writing zeros in would stop the AI trading at all.
+        return
+    end
+
+    control("m_textCtrl_CustomTradeAi_MaxDailySell"):SetValue(
+        string.format('%.0f', data.maxDailySell))
+
+    for _, row in ipairs(data.rows) do
+        resourceControl(row.key, "Buffer"):SetValue(string.format('%.2f', row.buffer))
+        if row.hasCaps then
+            resourceControl(row.key, "BufferSaleCap"):SetValue(string.format('%.0f', row.saleCap))
+            resourceControl(row.key, "BufferCancelCap"):SetValue(string.format('%.0f', row.cancelCap))
+        end
+    end
 end

@@ -1,75 +1,56 @@
+-- The wx utility's parsing layer.
+--
+-- Almost nothing is parsed here any more: the game info tabs read from BiceData, which
+-- the ImGui utility uses as well, so the mod's files are read once rather than once per
+-- utility. What is left is the translation lookup this utility calls by its old names,
+-- and the tabs BiceData has no counterpart for - flags, variables, active event
+-- modifiers and the inspector, whose ImGui versions are written in C++ instead.
+
 local P = {}
 
 Parsing = P
 
-local translationTable = nil
-local function createTranslationTable()
-    translationTable = {}
-    local folder = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\localisation"
-    for i, file in pairs(GetFilesFromPath(folder)) do
-        local path = folder .. "\\" .. file
-        local temp = CsvParser.parseFile(path, ";", 2)
-        for k, v in pairs(temp) do
-            translationTable[k] = v[1]
-        end
-    end
-end
-
+--- The whole localisation table. Parsed and cached by BiceData.Translations.
 function P.GetTranslationTable()
-    if translationTable == nil then
-        createTranslationTable()
-    end
-    if translationTable ~= nil then
-        return translationTable
-    end
-    return {}
+    return BiceData.Translations.GetTable()
 end
 
--- Get the translation from the locs.
--- May return nil if none was found
+--- The translation for a key, or nil. Prefix and suffix are optional.
 function P.GetTranslation(key, prefix, suffix)
-    if prefix == nil then
-        prefix = ""
-    end
-    if suffix == nil then
-        suffix = ""
-    end
-    local translations = P.GetTranslationTable()
-    local res = translations[prefix .. key .. suffix]
-    return res
+    return BiceData.Translations.Get(key, prefix, suffix)
 end
 
--- Keys will be inside parentheses in the choice elements
+--- Choices read "Translated name [key]"; this gets the key back out.
 function P.GetKeyFromChoice(choice)
-    local start = string.find(choice, "%[")
-    local stop = string.find(choice, "%]")
-    if start ~= nil and stop ~= nil then
-        return choice:sub(start + 1, stop - 1)
-    end
-    return choice
+    return BiceData.Translations.KeyFromChoice(choice)
 end
 
+--- Lists regions with no translation, for whoever is checking the localisation.
 function P.DoRegionsthing()
     local regionsData = PdxParser.parseFile("tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\map\\region.txt")
     local missing = {}
     for name, provinces in pairs(regionsData) do
         if P.GetTranslation(name) == nil and table.getLength(provinces) > 6 then
-            table.insert(missing,name)
+            table.insert(missing, name)
         end
     end
     Utils.INSPECT_TABLE(missing)
 end
 
+-- Thin wrappers over BiceData: the wx controls, with the data coming from there.
 P.Traits = require('traits')
 P.Generals = require('generals')
 P.Techs = require('techs')
 P.Units = require('units')
 P.UnitModels = require('unitModels')
 P.Modifiers = require('modifiers')
+P.ProvinceBuildings = require('provinceBuildings')
+
+-- No BiceData counterpart: these read live game state through BiceLib, and the ImGui
+-- utility does the same in C++ rather than through a provider.
 P.ActiveEventModifiers = require('activeEventModifiers')
-P.UnitConversions = require('unitConversion')
 P.Flags = require('flags')
 P.Vars = require('vars')
 P.Inspector = require('inspector')
-P.ProvinceBuildings = require('provinceBuildings')
+
 return Parsing

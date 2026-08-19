@@ -119,7 +119,7 @@ require('bicedata')
 -- old utility:   2172   -      2322        -    2624
 -- new utility:   2288   -      2437        -    2626
 
-G_UtilityEnabled = false
+G_UtilityEnabled = true
 if G_UtilityEnabled then
     -- Hoi 3 Utility
     require('gui-utility')

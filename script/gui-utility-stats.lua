@@ -226,11 +226,9 @@ if wx ~= nil then
         if tag ~= "" then
 			tag = string.upper(tag)
             UI.m_listBox_Statistics_country_list:Append(tag)
-			local omgTag = CCountryDataBase.GetTag("OMG")
-			local command = CSetVariableCommand(omgTag, CString("zStatsCustomList_" .. tag), CFixedPoint(1))
-			CCurrentGameState.Post(command)
-
-			Stats.AddTagToCustomList(tag)
+			-- The provider posts the variable and bumps the list version, so any Lua
+			-- context caching the list knows to rebuild it.
+			BiceData.Stats.SetCountryCollected(tag, true)
 			if Stats.CustomCountryListActive == true then
 				Stats.UpdateCustomCountryListInStatSelection()
 			end
@@ -242,12 +240,8 @@ if wx ~= nil then
         -- Utils.LUA_DEBUGOUT(selection)
         if selection ~= nil then
 			local tag = UI.m_listBox_Statistics_country_list:GetString(selection)
-			local omgTag = CCountryDataBase.GetTag("OMG")
-			local command = CSetVariableCommand(omgTag, CString("zStatsCustomList_" .. tag), CFixedPoint(0))
-			CCurrentGameState.Post(command)
+			BiceData.Stats.SetCountryCollected(tag, false)
             UI.m_listBox_Statistics_country_list:Delete(selection)
-
-			Stats.RemoveTagFromCustomList(tag)
 			if Stats.CustomCountryListActive == true then
 				Stats.UpdateCustomCountryListInStatSelection()
 			end

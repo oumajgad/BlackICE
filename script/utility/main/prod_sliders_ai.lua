@@ -1,159 +1,142 @@
-function SetCustomProductionSliderAiStatus()
-    if wx ~= nil and G_PlayerCountry ~= nil then
-        local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-		if UI.m_textCtrl_customProdSlider_state:GetValue() == "Active" then
-            local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_CustomProductionSliders_isActive"), CFixedPoint(0))
-            CCurrentGameState.Post(command)
-            SetCustomProductionSliderAiStatusText(false)
-        else
-            local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_usesCustomProductionSliders"), CFixedPoint(1))
-            CCurrentGameState.Post(command)
-            SetCustomProductionSliderValues()
-            local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_CustomProductionSliders_isActive"), CFixedPoint(1))
-            CCurrentGameState.Post(command)
-            SetCustomProductionSliderAiStatusText(true)
-		end
+-- Production sliders AI tab.
+--
+-- The categories, their defaults and the rule that no two may share a priority live in
+-- BiceData.ProdSliders, shared with the ImGui utility. This keeps the wx half: which
+-- control holds which field.
+--
+-- The priority check now happens inside Commit, so a clash leaves the game untouched
+-- rather than posting the categories that happened to be checked first.
+
+local function control(name)
+    return UI[name]
+end
+
+local function readNumber(widget, fallback)
+    if widget == nil then
+        return fallback
     end
+    return tonumber(widget:GetValue()) or fallback
+end
+
+local function readFlag(widget, fallback)
+    if widget == nil then
+        return fallback
+    end
+    return Utils.BoolToNumber(widget:GetValue())
 end
 
 function SetCustomProductionSliderAiStatusText(status)
-    if status then
-		UI.m_textCtrl_customProdSlider_state:SetValue("Active")
-    else
-        UI.m_textCtrl_customProdSlider_state:SetValue("Inactive")
-    end
+    UI.m_textCtrl_customProdSlider_state:SetValue(status and "Active" or "Inactive")
 end
 
 function DetermineCustomProductionSliderAiStatus()
-    local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-    local country = countryTag:GetCountry()
-    local variables = country:GetVariables()
-
-    if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_isActive")):Get() == 1 then
-        SetCustomProductionSliderAiStatusText(true)
-    else
-        SetCustomProductionSliderAiStatusText(false)
+    local data = BiceData.ProdSliders.Collect()
+    if data == nil then
+        return
     end
+    SetCustomProductionSliderAiStatusText(data.active)
 end
 
+--- True when two categories claim the same priority, and marks the offenders.
+---
+--- Commit refuses such a set on its own; this is only so the page still says which
+--- control to look at, as it always did.
 function CheckCustomProductionSliderPrioConflict()
-    local categories = {
-        "upgrade",
-        "reinforce",
-        "supply",
-        "production",
-        "consumer",
-        "lendLease"
-    }
-    local priorities = {}
-    for k, category in pairs(categories) do
-        local prio = tonumber(UI["m_textCtrl_customProdSlider_" .. category .. "Prio"]:GetValue())
-        if prio ~= nil then
-            if priorities[prio] then
-                UI["m_textCtrl_customProdSlider_" .. category .. "Prio"]:SetValue("CONFLICT")
-                return true
-            else
-                priorities[prio] = true
-            end
-        else
+    local data = BiceData.ProdSliders.Collect()
+    if data == nil then
+        return true
+    end
+
+    local seen = {}
+    for _, row in ipairs(data.rows) do
+        local widget = control("m_textCtrl_customProdSlider_" .. row.key .. "Prio")
+        local prio = tonumber(widget ~= nil and widget:GetValue() or nil)
+
+        if prio == nil then
             return true
         end
+        if seen[prio] then
+            widget:SetValue("CONFLICT")
+            return true
+        end
+        seen[prio] = true
     end
     return false
 end
 
 function SetCustomProductionSliderValues()
-    if wx ~= nil and G_PlayerCountry ~= nil then
-        local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-        -- local country = countryTag:GetCountry()
-        -- local variables = country:GetVariables()
-        local categories = {
-            "upgrade",
-            "reinforce",
-            "supply",
-            "production",
-            "consumer",
-            "lendLease"
-        }
+    local data = BiceData.ProdSliders.Collect()
+    if data == nil or CheckCustomProductionSliderPrioConflict() then
+        return
+    end
 
-        if CheckCustomProductionSliderPrioConflict() then
-            return
-        end
+    BiceData.ProdSliders.Discard()
 
-        for k, category in pairs(categories) do
-            local amount = tonumber(UI["m_textCtrl_customProdSlider_" .. category .. "Amount"]:GetValue())
-            local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomProductionSliders_" .. category .. "Amount"), CFixedPoint(amount))
-            CCurrentGameState.Post(command)
-            local prio = tonumber(UI["m_textCtrl_customProdSlider_" .. category .. "Prio"]:GetValue())
-            local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomProductionSliders_" .. category .. "Prio"), CFixedPoint(prio))
-            CCurrentGameState.Post(command)
-            local mode = UI["m_choice_customProdSlider_" .. category .. "Mode"]:GetSelection()
-            local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomProductionSliders_" .. category .. "InvestMode"), CFixedPoint(mode))
-            CCurrentGameState.Post(command)
+    for _, row in ipairs(data.rows) do
+        local prefix = "m_textCtrl_customProdSlider_" .. row.key
+        BiceData.ProdSliders.SetValue(row.key .. "Prio", readNumber(control(prefix .. "Prio"), row.prio))
+        BiceData.ProdSliders.SetValue(row.key .. "Amount", readNumber(control(prefix .. "Amount"), row.amount))
 
-            if category == "upgrade" or category == "reinforce" then
-                local limitActive = UI["m_checkBox_customProdSlider_" .. category .. "Limit"]:GetValue()
-                local command = CSetVariableCommand(
-                    countryTag, CString("zzDsafe_CustomProductionSliders_" .. category .. "Limit_active"), CFixedPoint(Utils.BoolToNumber(limitActive)))
-                CCurrentGameState.Post(command)
-                local limit = tonumber(UI["m_textCtrl_customProdSlider_" .. category .. "Limit"]:GetValue())
-                local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomProductionSliders_" .. category .. "Limit"), CFixedPoint(limit))
-                CCurrentGameState.Post(command)
-            elseif category == "consumer" then
-                local reduceDissent = UI.m_checkBox_customProdSlider_reduceDissent:GetValue()
-                local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomProductionSliders_reduceDissent"), CFixedPoint(Utils.BoolToNumber(reduceDissent)))
-                CCurrentGameState.Post(command)
-            elseif category == "supply" then
-                local supplyGoal = tonumber(UI.m_textCtrl_customProdSlider_supplyGoal:GetValue())
-                local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomProductionSliders_supplyGoal"), CFixedPoint(supplyGoal))
-                CCurrentGameState.Post(command)
-                local supplyGoalActive = UI.m_checkBox_customProdSlider_supplyGoal:GetValue()
-                local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomProductionSliders_supplyGoal_active"), CFixedPoint(Utils.BoolToNumber(supplyGoalActive)))
-                CCurrentGameState.Post(command)
-            end
+        local mode = control("m_choice_customProdSlider_" .. row.key .. "Mode")
+        BiceData.ProdSliders.SetValue(row.key .. "InvestMode",
+            mode ~= nil and mode:GetSelection() or row.mode)
+
+        if row.extra == "limit" then
+            BiceData.ProdSliders.SetValue(row.key .. "Limit",
+                readNumber(control(prefix .. "Limit"), row.limit))
+            BiceData.ProdSliders.SetValue(row.key .. "Limit_active",
+                readFlag(control("m_checkBox_customProdSlider_" .. row.key .. "Limit"), 0))
+        elseif row.extra == "goal" then
+            BiceData.ProdSliders.SetValue("supplyGoal",
+                readNumber(control("m_textCtrl_customProdSlider_supplyGoal"), row.goal))
+            BiceData.ProdSliders.SetValue("supplyGoal_active",
+                readFlag(control("m_checkBox_customProdSlider_supplyGoal"), 0))
+        elseif row.extra == "dissent" then
+            BiceData.ProdSliders.SetValue("reduceDissent",
+                readFlag(control("m_checkBox_customProdSlider_reduceDissent"), 0))
         end
     end
+
+    BiceData.ProdSliders.Commit()
+end
+
+function SetCustomProductionSliderAiStatus()
+    local data = BiceData.ProdSliders.Collect()
+    if data == nil then
+        return
+    end
+
+    if data.active then
+        BiceData.ProdSliders.SetActive(false)
+        SetCustomProductionSliderAiStatusText(false)
+        return
+    end
+
+    SetCustomProductionSliderValues()
+    BiceData.ProdSliders.SetActive(true)
+    SetCustomProductionSliderAiStatusText(true)
 end
 
 function ReadCustomProductionSliderValues()
-    if wx ~= nil and G_PlayerCountry ~= nil then
-        local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-        local country = countryTag:GetCountry()
-        local variables = country:GetVariables()
-        local categories = {
-            "upgrade",
-            "reinforce",
-            "supply",
-            "production",
-            "consumer",
-            "lendLease"
-        }
+    local data = BiceData.ProdSliders.Collect()
+    if data == nil or not data.configured then
+        return -- leaves the defaults the controls start with
+    end
 
-        if variables:GetVariable(CString("zzDsafe_usesCustomProductionSliders")):Get() == 0 then
-            return
-        end
+    for _, row in ipairs(data.rows) do
+        local prefix = "m_textCtrl_customProdSlider_" .. row.key
+        control(prefix .. "Prio"):SetValue(string.format('%.0f', row.prio))
+        control(prefix .. "Amount"):SetValue(string.format('%.0f', row.amount))
+        control("m_choice_customProdSlider_" .. row.key .. "Mode"):SetSelection(row.mode)
 
-        for k, category in pairs(categories) do
-            UI["m_textCtrl_customProdSlider_" .. category .. "Amount"]:SetValue(
-                string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_CustomProductionSliders_" .. category .. "Amount")):Get())))
-            UI["m_textCtrl_customProdSlider_" .. category .. "Prio"]:SetValue(
-                string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_CustomProductionSliders_" .. category .. "Prio")):Get())))
-            UI["m_choice_customProdSlider_" .. category .. "Mode"]:SetSelection(
-                variables:GetVariable(CString("zzDsafe_CustomProductionSliders_" .. category .. "InvestMode")):Get())
-            if category == "upgrade" or category == "reinforce" then
-                UI["m_checkBox_customProdSlider_" .. category .. "Limit"]:SetValue(
-                    variables:GetVariable(CString("zzDsafe_CustomProductionSliders_" .. category .. "Limit_active")):Get())
-                UI["m_textCtrl_customProdSlider_" .. category .. "Limit"]:SetValue(
-                    string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_CustomProductionSliders_" .. category .. "Limit")):Get())))
-            elseif category == "consumer" then
-                UI.m_checkBox_customProdSlider_reduceDissent:SetValue(
-                    variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reduceDissent")):Get())
-            elseif category == "supply" then
-                UI.m_checkBox_customProdSlider_supplyGoal:SetValue(
-                    variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal_active")):Get())
-                UI.m_textCtrl_customProdSlider_supplyGoal:SetValue(
-                    string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal")):Get())))
-            end
+        if row.extra == "limit" then
+            control(prefix .. "Limit"):SetValue(string.format('%.0f', row.limit))
+            control("m_checkBox_customProdSlider_" .. row.key .. "Limit"):SetValue(row.limitActive)
+        elseif row.extra == "goal" then
+            control("m_textCtrl_customProdSlider_supplyGoal"):SetValue(string.format('%.0f', row.goal))
+            control("m_checkBox_customProdSlider_supplyGoal"):SetValue(row.goalActive)
+        elseif row.extra == "dissent" then
+            control("m_checkBox_customProdSlider_reduceDissent"):SetValue(row.reduceDissent)
         end
     end
 end

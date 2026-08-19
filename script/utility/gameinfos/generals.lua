@@ -1,3 +1,10 @@
+-- Generals tab.
+--
+-- Parsing the leader files, working out when each becomes available and from which rank,
+-- and translating their traits all live in BiceData.Generals, shared with the ImGui
+-- utility, so history\leaders is read once for both. This keeps the wx half: the branch
+-- radio buttons, the name filter, the choice control and the live leader details.
+
 local P = {}
 
 local generalBranches = {
@@ -19,157 +26,51 @@ local function getGeneralBranchChoice()
     end
 end
 
--- Generals availability is deterimined by their "history".
--- There can be multiple history blocks in the definition since the base game has different starting dates.
--- This function finds the earliest date
-local function getGeneralDateAndRank(leader)
-    local earliest_date = nil
-    local earliest_rank = nil
-    --utils.INSPECT_TABLE(leader)
-    if leader["history"] == nil then
-        return earliest_date, earliest_rank
-    end
-    for current_date, rank_val in pairs(leader["history"]) do
-        if earliest_date == nil then
-            earliest_date = current_date
-            earliest_rank = rank_val["rank"]
-        else
-            local current_date_split = Utils.SplitString(current_date, ".")
-            local earliest_date_split = Utils.SplitString(earliest_date, ".")
-            --utils.INSPECT_TABLE(current_date_split)
-            --utils.INSPECT_TABLE(earliest_date_split)
-            -- Year
-            if current_date_split[1] < earliest_date_split[1] then
-                earliest_date = current_date
-                earliest_rank = rank_val["rank"]
-            -- Months
-            elseif  current_date_split[1] == earliest_date_split[1] and
-                    current_date_split[2] < earliest_date_split[2]
-            then
-                earliest_date = current_date
-                earliest_rank = rank_val["rank"]
-            -- Days
-            elseif  current_date_split[1] == earliest_date_split[1] and
-                    current_date_split[2] == earliest_date_split[2] and
-                    current_date_split[3] < earliest_date_split[3]
-            then
-                earliest_date = current_date
-                earliest_rank = rank_val["rank"]
-            end
-        end
-    end
-    return earliest_date, earliest_rank
-end
+--- The leaders currently listed, by id, so a selection can be looked back up.
+P.CountryGeneralsData = {}
 
-local function translateTraits(traits)
-    if traits == nil then
-        return {}
-    end
-    local res = {}
-    if type(traits) == "string" then
-        table.insert(res, Parsing.GetTranslation(traits) .. " [" .. traits .. "]")
-    else
-        for k, v in pairs(traits) do
-            local trans = Parsing.GetTranslation(v)
-            if trans == nil then
-                table.insert(res, "[" .. v .. "]")
-            else
-                table.insert(res, trans .. " [" .. v .. "]")
-            end
-        end
-    end
-
-    return res
-end
-
-local function createGeneral(values)
-    local available_date, rank = getGeneralDateAndRank(values)
-    local general = {
-        name = values["name"],
-        starting_skill = values["skill"],
-        max_skill = values["max_skill"],
-        traits = translateTraits(values["add_trait"]),
-        available_date = available_date,
-        rank = rank,
-        type = values["type"],
-        country = values["country"]
-    }
-    return general
-end
-
-local SortGeneralsBySkill = function(t,a,b) return t[b]["starting_skill"] < t[a]["starting_skill"] end
-
-local function checkNameFilter(general, filterString)
-    if filterString ~= "" then
-        if string.find(string.lower(general.name), string.lower(filterString)) then
-            return true
-        end
-        return false
-    else -- no filter
+local function matchesName(general, filterString)
+    if filterString == "" then
         return true
-
     end
+    return string.find(string.lower(tostring(general.name)), string.lower(filterString)) ~= nil
 end
 
+--- The choice strings for one country, filtered by branch and name.
+--- Already ordered by starting skill, highest first, by the provider.
 local function createFilteredGeneralsList(playertag, filterOverride)
     local filterString = UI.m_textCtrl_GameInfo_Generals_Filter:GetValue()
     if filterOverride ~= nil then
-        -- since the filter textctrl has a default value it has to be overriden so it doesn't interfere with with the list creation when choosing a country
+        -- The filter box has a default value in it, which must not narrow the list when
+        -- a country is picked.
         filterString = ""
     end
+
     local selectedBranch = getGeneralBranchChoice()
-    local unsorted = {}
-    for id, general in pairs(P.GeneralsData) do
-        if (
-            general.country == playertag
-            and (selectedBranch == generalBranches.all or general.type == selectedBranch)
-            and checkNameFilter(general, filterString)
-        ) then
-            if general.starting_skill ~= nil then
-                unsorted[id] = general
-            else
-                Utils.LUA_DEBUGOUT(id)
-                Utils.INSPECT_TABLE(general)
-            end
+    local choices = {}
+    P.CountryGeneralsData = {}
+
+    for _, general in ipairs(BiceData.Generals.ForCountry(playertag)) do
+        if (selectedBranch == generalBranches.all or general.type == selectedBranch)
+            and matchesName(general, filterString) then
+            table.insert(choices,
+                general.starting_skill .. " (" .. general.max_skill .. ") \t" ..
+                general.type .. " '" .. general.name .. "' " ..
+                tostring(general.available_date) .. " [" .. general.id .. "]")
+            P.CountryGeneralsData[tostring(general.id)] = general
         end
     end
-    local sorted = {}
-    for id, general in spairs(unsorted, SortGeneralsBySkill) do
-        local choice_string = (
-            general.starting_skill .. " (" .. general.max_skill .. ") \t" ..
-            general.type .. " '" .. general.name .. "' " .. general.available_date .. " [" .. id .. "]"
-        )
-        table.insert(sorted, choice_string)
-        P.CountryGeneralsData[id] = general
-    end
-    return sorted
+    return choices
 end
 
-P.GeneralsData = {}
-P.CountryGeneralsData = {}
-local dataFilled = false
 function P.FillData()
-    if dataFilled then
-        return
-    end
-    -- local csvPath = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\leadersData.csv"
-    -- WriteString(csvPath, "id,tag")
-    local path = "tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\history\\leaders"
-    for i, file in pairs(GetFilesFromPath(path)) do
-        local res = PdxParser.parseFile(path .. "\\" .. file)
-        for id, values in pairs(res) do
-            P.GeneralsData[id] = createGeneral(values)
-            -- AppendLine(csvPath, "\n" .. tostring(id) .. "," .. P.GeneralsData[id].country)
-        end
-    end
-    dataFilled = true
+    -- Parsed on demand by the provider. Kept because the utility calls it.
+    BiceData.Generals.ForCountry(G_PlayerCountry)
 end
 
 function P.FillwxChoice(playertag, filterOverride)
-    if not dataFilled then
-        P.FillData()
-    end
     local generals = createFilteredGeneralsList(playertag, filterOverride)
+
     UI.m_choice_GameInfo_Generals:Freeze()
     UI.m_choice_GameInfo_Generals:Clear()
     UI.m_choice_GameInfo_Generals:Append(generals)
@@ -184,16 +85,46 @@ function P.HandleFilter(playertag)
     end
 end
 
+--- Whatever the running game knows about a leader, which the definition cannot say.
+local function fillLiveDetails(generalId)
+    if BiceLib == nil then
+        UI.m_textCtrl_GameInfo_Generals_Location:SetValue("BiceLib")
+        UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("failed")
+        return
+    end
+
+    local cLeader = BiceLib.Leaders.getLeaderDetails(tonumber(generalId))
+    if cLeader == nil then
+        UI.m_textCtrl_GameInfo_Generals_Location:SetValue("cLeader")
+        UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("nil")
+        return
+    end
+
+    local provinceId = cLeader["province_id"]
+    if provinceId ~= nil then
+        local provinceName = BiceData.Translations.Get(tostring(provinceId), "PROV", nil) or "unknown"
+        UI.m_textCtrl_GameInfo_Generals_Location:SetValue(provinceName)
+        UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue(tostring(provinceId))
+    else
+        UI.m_textCtrl_GameInfo_Generals_Location:SetValue("unknown")
+        UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("unknown")
+    end
+
+    UI.m_textCtrl_GameInfo_Generals_Unit_Name:SetValue(cLeader["unit_name"] or "unknown")
+end
+
 function P.HandleSelection()
-    local selectionString = UI.m_choice_GameInfo_Generals:GetString(UI.m_choice_GameInfo_Generals:GetSelection())
-    local generalId = Parsing.GetKeyFromChoice(selectionString)
+    local selectionString = UI.m_choice_GameInfo_Generals:GetString(
+        UI.m_choice_GameInfo_Generals:GetSelection())
+    local generalId = BiceData.Translations.KeyFromChoice(selectionString)
     local general = P.CountryGeneralsData[generalId]
+
     UI.m_textCtrl_GameInfo_Generals_Traits:Clear()
     UI.m_choice_GameInfo_Generals_Traits:Freeze()
     UI.m_choice_GameInfo_Generals_Traits:Clear()
+
     if general ~= nil then
-        local s = Utils.Dump(general)
-        UI.m_textCtrl_Generals:SetValue(s)
+        UI.m_textCtrl_Generals:SetValue(Utils.Dump(general))
         UI.m_choice_GameInfo_Generals_Traits:Append(general.traits)
         if UI.m_choice_GameInfo_Generals_Traits:GetCount() >= 1 then
             UI.m_choice_GameInfo_Generals_Traits:SetSelection(0)
@@ -201,48 +132,19 @@ function P.HandleSelection()
         end
     end
 
-    if BiceLib ~= nil then
-        local cLeader = BiceLib.Leaders.getLeaderDetails(generalId)
-        if cLeader ~= nil then
-            -- Utils.INSPECT_TABLE(cLeader)
-
-            local provinceId = cLeader["province_id"]
-            if provinceId ~= nil then
-                local provinceName = Parsing.GetTranslation(tostring(provinceId),"PROV", nil)
-                if provinceName == nil then
-                    provinceName = "unknown"
-                end
-                UI.m_textCtrl_GameInfo_Generals_Location:SetValue(provinceName)
-                UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue(tostring(provinceId))
-            else
-                UI.m_textCtrl_GameInfo_Generals_Location:SetValue("unknown")
-                UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("unknown")
-            end
-
-            local unitName = cLeader["unit_name"]
-            if unitName ~= nil then
-                UI.m_textCtrl_GameInfo_Generals_Unit_Name:SetValue(unitName)
-            else
-                UI.m_textCtrl_GameInfo_Generals_Unit_Name:SetValue("unknown")
-            end
-        else
-            Utils.LUA_DEBUGOUT("cLeader nil")
-            UI.m_textCtrl_GameInfo_Generals_Location:SetValue("cLeader")
-            UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("nil")
-        end
-    else
-        UI.m_textCtrl_GameInfo_Generals_Location:SetValue("BiceLib")
-        UI.m_textCtrl_GameInfo_Generals_Location_Id:SetValue("failed")
-    end
-
+    fillLiveDetails(generalId)
     UI.m_choice_GameInfo_Generals_Traits:Thaw()
 end
 
 function P.HandleTraitSelection()
-    local selectionString = UI.m_choice_GameInfo_Generals_Traits:GetString(UI.m_choice_GameInfo_Generals_Traits:GetSelection())
-    local trait = Parsing.GetKeyFromChoice(selectionString)
-    local s = Parsing.Traits.DumpEffects(Parsing.Traits.TraitsData[trait], true)
-    UI.m_textCtrl_GameInfo_Generals_Traits:SetValue(s)
+    local selectionString = UI.m_choice_GameInfo_Generals_Traits:GetString(
+        UI.m_choice_GameInfo_Generals_Traits:GetSelection())
+    local trait = BiceData.Translations.KeyFromChoice(selectionString)
+
+    -- Takes the trait's key: the dump comes from BiceData.Traits, which looks the
+    -- definition up itself. True drops the allowed_leader block, which is about who may
+    -- have the trait rather than what it does.
+    UI.m_textCtrl_GameInfo_Generals_Traits:SetValue(BiceData.Traits.DumpEffects(trait, true))
 end
 
 function P.ClearText()
