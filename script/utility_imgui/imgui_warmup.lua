@@ -51,7 +51,8 @@ function BiceLibGui.Warmup.Step()
     end)
 end
 
---- How far along it is, without doing any of the work.
+--- How far along it is, and whether the player wants it at all, without doing any of
+--- the work. The overlay asks once, before the first step.
 function BiceLibGui.Warmup.State()
     return Page.Guard(function()
         return {
@@ -59,6 +60,9 @@ function BiceLibGui.Warmup.State()
             done = nextStep > #STEPS,
             remaining = #STEPS - nextStep + 1,
             total = #STEPS,
+            -- Set in utility_settings.lua. Only an explicit false turns it off, so a
+            -- player with an older settings file still gets the parsing.
+            enabled = G_ImguiWarmupEnabled ~= false,
         }
     end)
 end

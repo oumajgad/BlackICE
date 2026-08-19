@@ -346,7 +346,9 @@ namespace {
     public:
         const char* title() const override { return "Special"; }
         const char* group() const override { return "Main"; }
-        int order() const override { return 140; }
+        // Second, right after Setup: it is only usable at the main menu, so it wants to
+        // be found before a game is loaded rather than sat at the end of the row.
+        int order() const override { return 15; }
         void draw() override { drawSpecial(); }
     };
 }

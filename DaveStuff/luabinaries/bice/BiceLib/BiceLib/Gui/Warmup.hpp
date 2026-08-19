@@ -31,8 +31,6 @@ namespace Gui {
 
     const WarmupState& warmupState();
 
-    void setWarmupEnabled(bool enabled);
-
     /**@brief parses everything still outstanding, in one go*/
     void warmupNow();
 }

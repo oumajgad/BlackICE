@@ -76,14 +76,13 @@ namespace {
         ImGui::SeparatorText("Warm up");
         const Gui::WarmupState& warmup = Gui::warmupState();
 
-        bool enabled = warmup.enabled;
-        if (ImGui::Checkbox("Parse ahead of time", &enabled)) {
-            Gui::setWarmupEnabled(enabled);
-        }
-        ImGui::SetItemTooltip("Parses one dataset per frame while the game is at the "
-            "menu, so a page is not parsing anything by the time it is opened.");
+        // Reported, not switched here: by the time this page can be looked at the
+        // parsing has usually already happened, so a checkbox would only ever describe
+        // the past. G_ImguiWarmupEnabled in script/utility_settings.lua decides it.
+        ImGui::TextWrapped("Parses one dataset per frame while the game sits at the "
+            "menu, so a page has nothing left to parse by the time it is opened. Set by "
+            "G_ImguiWarmupEnabled in script/utility_settings.lua.");
 
-        ImGui::SameLine();
         if (warmup.finished) {
             ImGui::TextColored(ImVec4(0.45f, 0.85f, 0.45f, 1.0f),
                 "done, %.0f ms spent up front", warmup.totalMs);

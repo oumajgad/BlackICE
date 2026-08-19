@@ -67,7 +67,13 @@ namespace {
         return true;
     }
 
-    /**@brief asks how many datasets there are, without parsing any of them*/
+    /**
+    @brief asks how many datasets there are, without parsing any of them
+
+    Also the one point where the player's setting is read. It is applied once, on the
+    first frame that reaches Lua: the Timing page's checkbox may turn it off or on
+    afterwards, and a setting read every frame would fight it.
+    */
     void readTotal() {
         if (!Gui::Lua::beginTableCall(STATE)) {
             return;
@@ -75,6 +81,7 @@ namespace {
         if (Gui::Lua::boolField("available")) {
             state.total = static_cast<int>(Gui::Lua::numberField("total"));
             state.finished = Gui::Lua::boolField("done");
+            state.enabled = Gui::Lua::boolField("enabled", true);
         }
         Gui::Lua::endCall();
     }
@@ -82,10 +89,6 @@ namespace {
 
 const Gui::WarmupState& Gui::warmupState() {
     return state;
-}
-
-void Gui::setWarmupEnabled(bool enabled) {
-    state.enabled = enabled;
 }
 
 void Gui::warmupStep() {
