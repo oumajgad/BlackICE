@@ -598,15 +598,15 @@ function P.LandRatio(voProductionData)
 			garrison_brigade = 3,
 			semi_motorized_brigade = 2,
 			motorized_brigade = 5,
-			light_armor_brigade = 1,
+			armor_brigade = 1,
 			infantry_brigade = 6};
 	else
 		laArray = {
 			garrison_brigade = 2,
-			infantry_brigade = 2,
+			infantry_brigade = 1,
 			semi_motorized_brigade = 1,
 			motorized_brigade = 6,
-			mechanized_brigade = 2,
+			mechanized_brigade = 4,
 			armor_brigade = 4};
 	end
 
@@ -792,7 +792,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 
 
 	if voProductionData.humanTag == sovTag then
-		voType.SecondaryMain = "mechanized_infantry_bat"
+		voType.SecondaryMain = "mechanized_brigade"
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
@@ -838,7 +838,7 @@ function P.Build_marine_brigade(vIC, viManpowerTotal, voType, voProductionData, 
 
 	voType.SecondaryMain = "motorized_engineer_brigade"
 	voType.TransportMain = "light_transport"
-	voType.TertiaryMain = "division_hq_standard"
+	voType.TertiaryMain = "division_hq_veteran"
 	voType.first = "armor_bat"
 	voType.second = "heavy_artillery_brigade"
 	voType.fourth = "mixed_support_brigade"
