@@ -348,7 +348,7 @@ namespace {
     {
     public:
         const char* title() const override { return "Strategic Trades"; }
-        const char* group() const override { return "Main"; }
+        const char* group() const override { return "Country Info"; }
         int order() const override { return 60; }
         void draw() override { drawTrades(); }
     };
@@ -357,7 +357,7 @@ namespace {
     {
     public:
         const char* title() const override { return "Global Market"; }
-        const char* group() const override { return "Main"; }
+        const char* group() const override { return "Country Info"; }
         int order() const override { return 70; }
         void draw() override { drawMarket(); }
     };

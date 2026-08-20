@@ -351,7 +351,7 @@ namespace {
     {
     public:
         const char* title() const override { return "LS Sliders AI"; }
-        const char* group() const override { return "Main"; }
+        const char* group() const override { return "Country Info"; }
         int order() const override { return 120; }
         void draw() override { drawLsSliders(); }
     };

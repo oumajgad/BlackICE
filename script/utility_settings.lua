@@ -6,7 +6,7 @@
 -- Loaded before either utility, so everything downstream sees the same answers.
 
 -- The wxWidgets utility: the separate windows opened from the game's menu.
-G_UtilityEnabled = true
+G_UtilityEnabled = false
 
 -- The in-game utility drawn over the game itself, opened with INSERT.
 --

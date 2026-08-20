@@ -159,8 +159,8 @@ namespace {
     class InspectorPage : public Gui::GuiPage
     {
     public:
-        const char* title() const override { return "Inspector"; }
-        const char* group() const override { return "Game Info"; }
+        const char* title() const override { return "Unit Inspector"; }
+        const char* group() const override { return "Inspector"; }
         int order() const override { return 10; }
         void draw() override {
             sampleSelection();

@@ -366,7 +366,7 @@ namespace {
     {
     public:
         const char* title() const override { return "National Focus"; }
-        const char* group() const override { return "Main"; }
+        const char* group() const override { return "Country Info"; }
         int order() const override { return 80; }
         void draw() override { drawNatFocus(); }
     };

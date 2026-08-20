@@ -313,8 +313,8 @@ namespace {
     {
     public:
         const char* title() const override { return "Province Buildings"; }
-        const char* group() const override { return "Game Info"; }
-        int order() const override { return 110; }
+        const char* group() const override { return "Inspector"; }
+        int order() const override { return 50; }
         void draw() override { drawProvinceBuildings(); }
     };
 }

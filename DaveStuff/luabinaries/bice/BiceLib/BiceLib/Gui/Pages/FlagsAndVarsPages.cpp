@@ -199,7 +199,7 @@ namespace {
     {
     public:
         const char* title() const override { return "Active Flags"; }
-        const char* group() const override { return "Game Info"; }
+        const char* group() const override { return "Inspector"; }
         int order() const override { return 20; }
         void draw() override { ::draw(flagsPage); }
     };
@@ -208,7 +208,7 @@ namespace {
     {
     public:
         const char* title() const override { return "Active Variables"; }
-        const char* group() const override { return "Game Info"; }
+        const char* group() const override { return "Inspector"; }
         int order() const override { return 30; }
         void draw() override { ::draw(variablesPage); }
     };
@@ -217,7 +217,7 @@ namespace {
     {
     public:
         const char* title() const override { return "Active Event Modifiers"; }
-        const char* group() const override { return "Game Info"; }
+        const char* group() const override { return "Inspector"; }
         int order() const override { return 40; }
         void draw() override { ::draw(modifiersPage); }
     };

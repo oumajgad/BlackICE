@@ -11,8 +11,10 @@
 #include <imgui_internal.h> // DockBuilder, for the default layout
 
 const char* const Gui::GROUP_ORDER[] = {
-    "Main",
-    "Game Info",
+    "Main",         // the utility itself: who it reports on, and what it can do to the install
+    "Country Info", // one country's state, live
+    "Game Info",    // the mod's definitions, the same in every game
+    "Inspector",    // what the running game says about a particular thing
     "Stats",
     "Options",
     "Help",
@@ -164,6 +166,11 @@ namespace {
 
         ImGui::DockBuilderFinish(dockspaceId);
     }
+
+    // Where a page sits is the player's, not ours. group() only decides where a page
+    // starts, on the first launch with no ini to go by; after that the saved layout
+    // wins, including for a page whose group changed in a later build. Deleting
+    // BiceLibImGui.ini is how to take the code's arrangement again.
 
     /**@brief builds one window per group that actually has pages*/
     void ensureGroupWindows() {
