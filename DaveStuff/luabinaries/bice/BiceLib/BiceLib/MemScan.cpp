@@ -91,6 +91,16 @@ namespace {
     return results;
 }
 
+[[nodiscard]] bool Mem::tryReadBytes(uintptr_t address, void* destination, size_t size) noexcept {
+    if (address == 0 || destination == nullptr || size == 0) {
+        return false;
+    }
+
+    SIZE_T bytesRead = 0;
+    return ReadProcessMemory(GetCurrentProcess(), reinterpret_cast<LPCVOID>(address),
+        destination, size, &bytesRead) != FALSE && bytesRead == size;
+}
+
 [[nodiscard]] uintptr_t Mem::findPointerIf(uintptr_t start, uint32_t needle, const std::function<bool(uintptr_t)>& accept) {
     uintptr_t found = 0;
 

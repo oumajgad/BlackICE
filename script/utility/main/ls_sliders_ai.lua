@@ -1,99 +1,94 @@
-function DetermineCustomLsSliderAiStatus()
-    local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-    local country = countryTag:GetCountry()
-    local variables = country:GetVariables()
+-- Leadership sliders AI tab.
+--
+-- The categories, the defaults and the two rules - the engine's 110 officer limit and
+-- a lower threshold never above its upper - live in BiceData.LsSliders, shared with the
+-- ImGui utility. This keeps the wx half: which control holds which threshold.
+--
+-- The clamps happen in Commit, which reports what it had to change; those corrections
+-- are written back into the controls so the page shows what the game was actually told.
 
-    if variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_isActive")):Get() == 1 then
-        SetCustomLsSliderAiStatusText(true)
-    else
-        SetCustomLsSliderAiStatusText(false)
-    end
+local function control(name)
+    return UI[name]
+end
+
+local function thresholdControl(category, bound)
+    return control("m_textCtrl_customLsSliderAi_" .. category .. bound)
 end
 
 function SetCustomLsSliderAiStatusText(status)
-    if status then
-		UI.m_textCtrl_customLsSliderAi_state:SetValue("Active")
-    else
-        UI.m_textCtrl_customLsSliderAi_state:SetValue("Inactive")
+    UI.m_textCtrl_customLsSliderAi_state:SetValue(status and "Active" or "Inactive")
+end
+
+function DetermineCustomLsSliderAiStatus()
+    local data = BiceData.LsSliders.Collect()
+    if data == nil then
+        return
+    end
+    SetCustomLsSliderAiStatusText(data.active)
+end
+
+function SetCustomLsSliderValues()
+    local data = BiceData.LsSliders.Collect()
+    if data == nil then
+        return
+    end
+
+    BiceData.LsSliders.Discard()
+
+    for _, row in ipairs(data.rows) do
+        local lower = thresholdControl(row.key, "Lower")
+        local upper = thresholdControl(row.key, "Upper")
+        BiceData.LsSliders.SetValue(row.key .. "Lower",
+            tonumber(lower ~= nil and lower:GetValue() or nil) or row.lower)
+        BiceData.LsSliders.SetValue(row.key .. "Upper",
+            tonumber(upper ~= nil and upper:GetValue() or nil) or row.upper)
+    end
+
+    local buffer = control("m_checkBox_customLsSliderAi_bufferNco")
+    BiceData.LsSliders.SetValue("bufferProdNco",
+        buffer ~= nil and Utils.BoolToNumber(buffer:GetValue()) or 0)
+
+    local ok, _, corrections = BiceData.LsSliders.Commit()
+    if not ok then
+        return
+    end
+
+    -- A value the provider had to clamp is put back on screen, so the page never shows
+    -- a threshold the game did not get.
+    for field, value in pairs(corrections or {}) do
+        local widget = control("m_textCtrl_customLsSliderAi_" .. field)
+        if widget ~= nil then
+            widget:SetValue(string.format('%.0f', value))
+        end
     end
 end
 
 function SetCustomLsSliderAiStatus()
-    if wx ~= nil and G_PlayerCountry ~= nil then
-        local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-		if UI.m_textCtrl_customLsSliderAi_state:GetValue() == "Active" then
-            local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_CustomLeadershipSliders_isActive"), CFixedPoint(0))
-            CCurrentGameState.Post(command)
-            SetCustomLsSliderAiStatusText(false)
-        else
-            local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_usesCustomLsSliders"), CFixedPoint(1))
-            CCurrentGameState.Post(command)
-            SetCustomLsSliderValues()
-            local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_CustomLeadershipSliders_isActive"), CFixedPoint(1))
-            CCurrentGameState.Post(command)
-            SetCustomLsSliderAiStatusText(true)
-		end
+    local data = BiceData.LsSliders.Collect()
+    if data == nil then
+        return
     end
-end
 
-function SetCustomLsSliderValues()
-    if wx ~= nil and G_PlayerCountry ~= nil then
-        local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-        local categories = {
-            "officers",
-            "spies",
-            "diplo"
-        }
-        -- Check for values above 110 due to engine limit
-        if tonumber(UI.m_textCtrl_customLsSliderAi_officersLower:GetValue()) > 110 then
-            UI.m_textCtrl_customLsSliderAi_officersLower:SetValue("110")
-        end
-        if tonumber(UI.m_textCtrl_customLsSliderAi_officersUpper:GetValue()) > 110 then
-            UI.m_textCtrl_customLsSliderAi_officersUpper:SetValue("110")
-        end
-        for k, category in pairs(categories) do
-            local lower = tonumber(UI["m_textCtrl_customLsSliderAi_" .. category .. "Lower"]:GetValue())
-            local upper = tonumber(UI["m_textCtrl_customLsSliderAi_" .. category .. "Upper"]:GetValue())
-            if lower > upper then
-                lower = upper
-                UI["m_textCtrl_customLsSliderAi_" .. category .. "Lower"]:SetValue(tostring(upper))
-            end
-            local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomLeadershipSliders_".. category .."Lower"), CFixedPoint(lower))
-            CCurrentGameState.Post(command)
-            local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomLeadershipSliders_".. category .."Upper"), CFixedPoint(upper))
-            CCurrentGameState.Post(command)
-        end
-        local bufferNcoBool = UI.m_checkBox_customLsSliderAi_bufferNco:GetValue()
-        local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomLeadershipSliders_bufferProdNco"), CFixedPoint(Utils.BoolToNumber(bufferNcoBool)))
-        CCurrentGameState.Post(command)
+    if data.active then
+        BiceData.LsSliders.SetActive(false)
+        SetCustomLsSliderAiStatusText(false)
+        return
     end
+
+    SetCustomLsSliderValues()
+    BiceData.LsSliders.SetActive(true)
+    SetCustomLsSliderAiStatusText(true)
 end
 
 function ReadCustomLsSliderValues()
-    if wx ~= nil and G_PlayerCountry ~= nil then
-        local countryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-        local country = countryTag:GetCountry()
-        local variables = country:GetVariables()
-        local categories = {
-            "officers",
-            "spies",
-            "diplo"
-        }
-
-        if variables:GetVariable(CString("zzDsafe_usesCustomLsSliders")):Get() == 0 then
-            return
-        end
-
-        for k, category in pairs(categories) do
-            UI["m_textCtrl_customLsSliderAi_" .. category .. "Lower"]:SetValue(
-                string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_".. category .."Lower")):Get()))
-            )
-            UI["m_textCtrl_customLsSliderAi_" .. category .. "Upper"]:SetValue(
-                string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_".. category .."Upper")):Get()))
-            )
-        end
-        UI.m_checkBox_customLsSliderAi_bufferNco:SetValue(
-            variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_bufferProdNco")):Get()
-        )
+    local data = BiceData.LsSliders.Collect()
+    if data == nil or not data.configured then
+        return -- leaves the defaults the controls start with
     end
+
+    for _, row in ipairs(data.rows) do
+        thresholdControl(row.key, "Lower"):SetValue(string.format('%.0f', row.lower))
+        thresholdControl(row.key, "Upper"):SetValue(string.format('%.0f', row.upper))
+    end
+    control("m_checkBox_customLsSliderAi_bufferNco"):SetValue(data.bufferNco)
 end

@@ -11,6 +11,8 @@
 #include <vector>
 
 #include <utils.hpp>
+#include <Diagnostics.hpp>
+#include <Overlay.hpp>
 #include <HoiDataStructures.hpp>
 
 #include <GameClasses/CCountry.hpp>
@@ -46,6 +48,11 @@ uintptr_t getCountry(std::string tag) {
     return 0;
 }
 
+// Lets the overlay reach the country cache without a detour through Lua.
+uintptr_t CCountry::findByTag(const std::string& tag) {
+    return getCountry(tag);
+}
+
 void addCountryToCache(std::string tag, uintptr_t address) {
     countryCache->insert(std::make_pair(tag, address));
     DEBUG_OUT(printf("Added to countryCache: %s - %#010x \n", tag.c_str(), address));
@@ -55,6 +62,7 @@ void addCountryToCache(std::string tag, uintptr_t address) {
 bool cacheCountriesDone = false;
 __declspec(dllexport) int cacheCountries(lua_State* L)
 {
+    Diagnostics::LuaScope luaScope(L);
     if (!cacheCountriesDone) {
         for (int i = 0; i < 300; i++) {
             uintptr_t countryPtr = CCountry::CountryPtrs[i];
@@ -74,6 +82,7 @@ __declspec(dllexport) int cacheCountries(lua_State* L)
 
 __declspec(dllexport) int getProvinceDetails(lua_State* L)
 {
+    Diagnostics::LuaScope luaScope(L);
     int provinceId = luaL_checkinteger(L, 1);
     auto province = CMapProvince::GetMapProvinceById(provinceId);
     CMapProvince::PushCMapProvinceToStack(L, province);
@@ -122,12 +131,11 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
     uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
         auto flags = CCountry::getFlags(ctr);
-        lua_createtable(L, flags->size(), 0);
-        for (size_t i = 0; i < flags->size(); i++) {
-            lua_pushstring(L, flags->at(i).c_str());
+        lua_createtable(L, flags.size(), 0);
+        for (size_t i = 0; i < flags.size(); i++) {
+            lua_pushstring(L, flags.at(i).c_str());
             lua_rawseti(L, -2, i + 1);
         }
-        delete flags;
         return 1;
 
     }
@@ -141,13 +149,12 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
     uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
         auto vars = CCountry::getVars(ctr);
-        lua_createtable(L, 0, vars->size());
-        for (size_t i = 0; i < vars->size(); i++) {
-            lua_pushstring(L, vars->at(i).name.c_str());
-            lua_pushinteger(L, vars->at(i).value);
+        lua_createtable(L, 0, vars.size());
+        for (size_t i = 0; i < vars.size(); i++) {
+            lua_pushstring(L, vars.at(i).name.c_str());
+            lua_pushinteger(L, vars.at(i).value);
             lua_settable(L, -3);
         }
-        delete vars;
         return 1;
     }
     lua_pushnil(L);
@@ -217,6 +224,7 @@ void cacheTraits() {
 }
 
 __declspec(dllexport) int getLeaderDetails(lua_State* L) {
+    Diagnostics::LuaScope luaScope(L);
     DEBUG_OUT(printf("getLeaderDetails called\n"));
     unsigned int leaderId = luaL_checkinteger(L, 1);
     DEBUG_OUT(printf("leaderId: %d\n", leaderId));
@@ -867,6 +875,7 @@ __declspec(dllexport) int cacheIngameIdler(lua_State* L)
 
 __declspec(dllexport) int getSelectedEntity(lua_State* L)
 {
+    Diagnostics::LuaScope luaScope(L);
     cacheIngameIdler(L);
 
     // Find CTerrains to get indices for each units CUnitAdjusterArray
@@ -1014,6 +1023,27 @@ DWORD WINAPI periodicsJob(void* data) {
     return 0;
 }
 
+/////////////////////////////////////
+//        OVERLAY FUNCTIONS        //
+/////////////////////////////////////
+
+__declspec(dllexport) int enableOverlay(lua_State* L)
+{
+    bool ok = Overlay::install();
+    if (!ok) {
+        ERROR_OUT(printf("Could not install the ImGui overlay\n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+__declspec(dllexport) int toggleOverlay(lua_State* L)
+{
+    Overlay::toggle();
+    lua_pushboolean(L, Overlay::isVisible());
+    return 1;
+}
+
 __declspec(dllexport) luaL_Reg BiceLib[] = {
     // Misc
     {"startConsole", startConsole},
@@ -1108,9 +1138,19 @@ void registerInspectorFunctions(lua_State* this_state) {
     return;
 }
 
+void registerOverlayFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Overlay");
+    lua_newtable(this_state);
+    registerFunction(this_state, "enable", enableOverlay);
+    registerFunction(this_state, "toggle", toggleOverlay);
+    lua_settable(this_state, -3);
+    return;
+}
+
 extern "C"
 __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
 {
+    Diagnostics::LuaScope luaScope(this_state);
     if (LUA_STATE == nullptr) {
         // Set main lua state
         LUA_STATE = this_state;
@@ -1129,6 +1169,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerPatchFunctions(this_state);
     registerComplexPatchFunctions(this_state);
     registerInspectorFunctions(this_state);
+    registerOverlayFunctions(this_state);
 
     utils::logInLua(this_state,"Loaded BiceLib");
     char buf[100];

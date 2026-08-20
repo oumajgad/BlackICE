@@ -1,36 +1,20 @@
+-- Minister buildings tab.
+--
+-- The counters and their triggers live in BiceData.MinisterBuildings, shared with the
+-- ImGui utility. What is left here is the wx half: which control shows which building.
+
 -- Called each refresh and once at country selection
 function GetMinisterBuildingsProgress()
-    local buildings = {
-        ["hospital"] = 40,
-        ["rail_terminus"] = 30,
-        ["resource_buildings"] = 54,
-        ["automotive_factory"] = 54,
-        ["radar_station"] = 40,
-        ["artillery_factory"] = 65,
-        ["military_college"] = 50,
-        ["research_lab"] = 42,
-        ["supplies_factory"] = 30,
-        ["heavy_industry"] = 70,
-        ["submarine_shipyard"] = 110,
-        ["capital_ship_shipyard"] = 80,
-        ["medium_ship_shipyard"] = 54,
-        ["small_ship_shipyard"] = 30,
-        ["heavy_aircraft_factory"] = 110,
-        ["medium_aircraft_factory"] = 110,
-        ["light_aircraft_factory"] = 110,
-        ["tank_factory"] = 110,
-        ["smallarms_factory"] = 80
-    }
-    local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-    local playerVariables = playerCountryTag:GetCountry():GetVariables()
-    for building, trigger in pairs(buildings) do
-        local count = playerVariables:GetVariable(CString(building .. "_variable_count_minister")):Get()
-        if count > 0 then
-            local percent = (count / trigger) * 100
-            SetMinisterBuildingsProgressText(building, string.format('%.01f', percent))
-        else
-            SetMinisterBuildingsProgressText(building, "0")
-        end
+    local data = BiceData.MinisterBuildings.Collect()
+    if data == nil then
+        return
+    end
+
+    for _, row in ipairs(data.rows) do
+        -- Nothing built towards yet reads as a plain 0, as it always did, rather than
+        -- as "0.0".
+        local progress = (row.count > 0) and string.format('%.01f', row.percent) or "0"
+        SetMinisterBuildingsProgressText(row.key, progress)
     end
 end
 

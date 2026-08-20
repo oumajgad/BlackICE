@@ -35,4 +35,19 @@ namespace Mem {
     @returns the matching address, or 0 if there was none
     */
     [[nodiscard]] uintptr_t findPointerIf(uintptr_t start, uint32_t needle, const std::function<bool(uintptr_t)>& accept);
+
+    /**
+    @brief reads \p size bytes from \p address, failing instead of crashing
+
+    Goes through ReadProcessMemory so the kernel validates the range: following a
+    wild pointer returns false rather than raising an access violation. Use this
+    whenever walking game structures that might not be what we assume they are.
+    */
+    [[nodiscard]] bool tryReadBytes(uintptr_t address, void* destination, size_t size) noexcept;
+
+    /**@brief typed convenience wrapper around tryReadBytes*/
+    template <typename T>
+    [[nodiscard]] bool tryRead(uintptr_t address, T& out) noexcept {
+        return tryReadBytes(address, &out, sizeof(T));
+    }
 }

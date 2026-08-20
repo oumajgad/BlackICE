@@ -1,101 +1,52 @@
+-- Country info tab.
+--
+-- The values, including the technology contributions the game's API does not expose,
+-- live in BiceData.CountryInfo and are shared with the ImGui utility. This keeps the wx
+-- half: which control shows which value, and in what format.
+--
+-- The provider hands back both a formatted string and the raw number per row. The raw
+-- one is used here because these controls sit beside labels that already carry the
+-- unit, so a "%" in the value would be printed twice.
+
+-- Which control shows which row, by the provider's label. A row it does not know about
+-- is left alone rather than cleared, so a provider gaining a value cannot blank a
+-- control here.
+local CONTROLS = {
+    ["Base IC"] = { control = "m_textCtrl_baseIc", format = '%.0f' },
+    ["Offmap IC"] = { control = "m_textCtrl_offmapIc", format = '%.0f' },
+    ["IC modifier"] = { control = "m_textCtrl_icModifier", format = '%.02f', scale = 100 },
+    ["IC efficiency"] = { control = "m_textCtrl_IcEff", format = '%.02f' },
+    ["Supplies per IC"] = { control = "m_textCtrl_suppliesPerIc", format = '%.2f' },
+    ["Research efficiency"] = { control = "m_textCtrl_ResEff", format = '%.02f' },
+    ["Supply throughput"] = { control = "m_textCtrl_SuppThrou", format = '%.02f' },
+    ["Repair efficiency"] = { control = "m_textCtrl_RepairEff", format = '%.02f', scale = 100 },
+    ["Starting experience"] = { control = "m_textCtrl_StartingExp", format = '%.02f' },
+    ["Org regain"] = { control = "m_textCtrl_orgRegain", format = '%.02f', scale = 100 },
+    ["Attack delay"] = { control = "m_textCtrl_attackDelay", format = '%.0f' },
+    ["Trickleback"] = { control = "m_textCtrl_trickleback", format = '%.02f', scale = 100,
+                        missing = "Failed to load" },
+    ["Monthly"] = { control = "m_textCtrl_WarExhaustion", format = '%.02f' },
+    ["Current"] = { control = "m_textCtrl_currentWarExhaustion", format = '%.1f' },
+}
+
 -- Called each refresh
 function GetPlayerModifiers()
-    local techModifierValues = Parsing.Techs.GetTechModifierValues()
-    local generalModifiers = {}
-    local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry):GetCountry()
+    local rows = BiceData.CountryInfo.ByLabel()
+    if rows == nil then
+        return
+    end
 
-    local baseIC = playerCountry:GetMaxIC()
-    local offmapIC = 0
-    if BiceLib ~= nil then
-        local x = BiceLib.GameInfo.getCountryOffmapIc(G_PlayerCountry)
-        if x ~= nil then
-            offmapIC = x
+    for label, target in pairs(CONTROLS) do
+        local control = UI[target.control]
+        local row = rows[label]
+
+        if control ~= nil and row ~= nil then
+            if row.raw == nil then
+                -- The provider could not work it out; trickleback needs BiceLib.
+                control:SetValue(target.missing or "unavailable")
+            else
+                control:SetValue(string.format(target.format, row.raw * (target.scale or 1)))
+            end
         end
-        generalModifiers = BiceLib.GameInfo.getCountryGeneralModifiers("GER")
     end
-
-    local trickleBack = "Failed to load"
-    if generalModifiers ~= nil and generalModifiers["MODIFIER_TRICKLEBACK"] ~= nil then
-        trickleBack = generalModifiers["MODIFIER_TRICKLEBACK"] * 0.001
-        for tech, effect in pairs(techModifierValues["casualty_trickleback"]) do
-            local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-            trickleBack = trickleBack + (effect*level)
-            -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
-        end
-        trickleBack = string.format('%.02f', trickleBack * 100)
-    end
-
-    local icModifier = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_IC_):Get()
-    for tech, effect in pairs(techModifierValues["ic_modifier"]) do
-        local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-        icModifier = icModifier + (effect*level)
-        -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
-    end
-
-    local repairModifier = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_UNIT_REPAIR_):Get()
-    for tech, effect in pairs(techModifierValues["repair_rate"]) do
-        local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-        repairModifier = repairModifier + (effect*level)
-        -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
-    end
-
-    local orgRegain = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_ORG_REGAIN_):Get()
-    for tech, effect in pairs(techModifierValues["org_regain"]) do
-        local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-        orgRegain = orgRegain + (effect*level)
-        -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
-    end
-
-    local attackDelay = defines.military.UNIT_ATTACK_DELAY
-    for tech, effect in pairs(techModifierValues["attack_delay"]) do
-        local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-        attackDelay = attackDelay - (effect*level)
-        -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level))
-    end
-
-    local otherIcToSupplies = 0
-    for tech, effect in pairs(techModifierValues["ic_to_supplies"]) do
-        local level = playerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-        otherIcToSupplies = otherIcToSupplies + (effect*level)
-        -- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level))
-    end
-    local globalSuppliesMod = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_SUPPLIES_):Get()
-    local supplyFactoriesEffect = playerCountry:GetVariables():GetVariable(CString("supplies_factory_count")):Get() * 0.035
-    local suppliesPerIc = (1 + globalSuppliesMod + otherIcToSupplies + supplyFactoriesEffect) * defines.economy.IC_TO_SUPPLIES
-    -- Utils.LUA_DEBUGOUT("suppliesPerIc: " .. suppliesPerIc)
-
-    -- IC efficiency
-    local icEffRaw = playerCountry:GetVariables():GetVariable(CString("IcEffVariable")):Get()
-
-    -- Research efficiency
-    local researchEffRaw = playerCountry:GetVariables():GetVariable(CString("ResEffVariable")):Get()
-
-    -- Supply throughput
-    local supplyEffRaw = playerCountry:GetVariables():GetVariable(CString("SuppThrouVariable")):Get()
-
-    -- War exhaustion monthly
-    local warExhautionRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_WAR_EXHAUSTION_):Get()
-    if playerCountry:IsAtWar() then
-        warExhautionRaw = warExhautionRaw + 20
-    end
-
-    -- War exhaustion current
-    local currentWarExhaustion = playerCountry:GetVariables():GetVariable(CString("war_exhaustion")):Get()
-
-    local startingExp = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_UNIT_START_EXPERIENCE_):Get()
-
-    UI.m_textCtrl_baseIc:SetValue(string.format('%.0f', baseIC))
-    UI.m_textCtrl_offmapIc:SetValue(string.format('%.0f', (offmapIC)))
-    UI.m_textCtrl_icModifier:SetValue(string.format('%.02f', (icModifier * 100)))
-    UI.m_textCtrl_IcEff:SetValue(string.format('%.02f', icEffRaw))
-    UI.m_textCtrl_suppliesPerIc:SetValue(string.format('%.2f', suppliesPerIc))
-    UI.m_textCtrl_ResEff:SetValue(string.format('%.02f', researchEffRaw))
-    UI.m_textCtrl_SuppThrou:SetValue(string.format('%.02f', supplyEffRaw))
-    UI.m_textCtrl_RepairEff:SetValue(string.format('%.02f', repairModifier * 100))
-    UI.m_textCtrl_StartingExp:SetValue(string.format('%.02f', startingExp))
-    UI.m_textCtrl_orgRegain:SetValue(string.format('%.02f', orgRegain * 100))
-    UI.m_textCtrl_attackDelay:SetValue(string.format('%.0f', attackDelay))
-    UI.m_textCtrl_trickleback:SetValue(trickleBack)
-    UI.m_textCtrl_WarExhaustion:SetValue(string.format('%.02f', warExhautionRaw))
-    UI.m_textCtrl_currentWarExhaustion:SetValue(string.format('%.1f', currentWarExhaustion))
 end

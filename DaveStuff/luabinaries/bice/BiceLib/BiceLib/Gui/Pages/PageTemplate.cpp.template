@@ -1,0 +1,104 @@
+// Template for a utility page. See Gui/Pages/README.md.
+//
+// Copy to <Name>Page.cpp, replace TEMPLATE/Template/template, add the file to
+// BiceLib.vcxproj, and add the matching Lua module to script/gui-imgui.lua.
+
+#include <Gui/GuiPage.hpp>
+#include <Gui/LuaBridge.hpp>
+
+#include <Windows.h>
+#include <string>
+#include <vector>
+
+#include <imgui.h>
+
+namespace {
+    // Dotted paths into the page's Lua module. The imgui_ prefix on the file name is
+    // mandatory (see README), but the BiceLibGui key is the bare page name.
+    const char* COLLECT = "BiceLibGui.Template.Collect";
+
+    /** Mirror of the table Collect() returns. Kept as plain data so drawing never
+        touches Lua: the read happens once per refresh, not once per widget. */
+    struct Snapshot
+    {
+        bool valid = false;      // false when the Lua call could not be made at all
+        bool available = false;  // false when Lua ran but had nothing to report
+        std::string reason;
+    };
+
+    Snapshot snapshot;
+    ULONGLONG lastSampleMs = 0;
+
+    // Safe to leave on: Gui::Lua::available() refuses outside a running session.
+    bool autoRefresh = true;
+
+    void refresh() {
+        if (!Gui::Lua::beginTableCall(COLLECT)) {
+            snapshot.valid = false;
+            return;
+        }
+
+        snapshot.valid = true;
+        snapshot.available = Gui::Lua::boolField("available");
+        snapshot.reason = Gui::Lua::stringField("reason");
+
+        // Scalars:   Gui::Lua::numberField("some_key");
+        // Rows:      for (int i = 0; i < Gui::Lua::arrayLength("rows"); i++) {
+        //                if (Gui::Lua::pushArrayElement("rows", i)) {
+        //                    ... Gui::Lua::stringField("name") ...
+        //                    Gui::Lua::popArrayElement();
+        //                }
+        //            }
+
+        Gui::Lua::endCall();
+    }
+
+    /**@brief refresh controls shared by every page. Returns false if there is nothing to draw.*/
+    bool drawRefreshBar(int intervalMs = 1000) {
+        if (ImGui::Button("Refresh")) {
+            refresh();
+            lastSampleMs = GetTickCount64();
+        }
+        ImGui::SameLine();
+        ImGui::Checkbox("Auto", &autoRefresh);
+
+        if (autoRefresh) {
+            const ULONGLONG now = GetTickCount64();
+            if (now - lastSampleMs >= static_cast<ULONGLONG>(intervalMs)) {
+                refresh();
+                lastSampleMs = now;
+            }
+        }
+
+        ImGui::SameLine();
+        if (!snapshot.valid) {
+            ImGui::TextDisabled("Lua unavailable: %s", Gui::Lua::unavailableReason());
+            return false;
+        }
+        if (!snapshot.available) {
+            ImGui::TextDisabled("%s", snapshot.reason.c_str());
+            return false;
+        }
+        ImGui::NewLine();
+        return true;
+    }
+
+    void drawTemplate() {
+        if (!drawRefreshBar()) {
+            return;
+        }
+
+        ImGui::TextUnformatted("Page body goes here.");
+    }
+
+    class TemplatePage : public Gui::GuiPage
+    {
+    public:
+        const char* title() const override { return "Template"; }
+        const char* group() const override { return "Main"; } // see Gui::GROUP_ORDER
+        int order() const override { return 1000; }
+        void draw() override { drawTemplate(); }
+    };
+}
+
+REGISTER_GUI_PAGE(TemplatePage);

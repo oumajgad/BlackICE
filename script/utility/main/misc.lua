@@ -1,56 +1,53 @@
+-- Misc tab.
+--
+-- The decision switches live in BiceData.Misc, shared with the ImGui utility. The
+-- daily counts switch stays here: it is a Lua global the AI reads, and the ImGui
+-- utility does not offer it.
+
 -- Called from button press
 function UpdateDailyCountsTextCtrl()
     UI.m_textCtrlDailyCount:SetValue(tostring(G_DateOverride))
 end
 
+--- Both decision switches at once, since one read covers them.
+local function refreshDecisionText()
+    local data = BiceData.Misc.Collect()
+    if data == nil then
+        return
+    end
+
+    UI.m_textCtrl_TradeDecisionHide:SetValue(data.tradeHidden and "Hidden" or "Visible")
+    UI.m_textCtrl_MinesDecisionHide:SetValue(data.minesHidden and "Hidden" or "Visible")
+end
+
 -- Called once when player is chosen
 function SetTradeDecisionHiddenText()
-    local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry)
-    if playerCountry:GetCountry():GetVariables():GetVariable(CString("disable_resource_trade_decision")):Get() == 1 then
-        UI.m_textCtrl_TradeDecisionHide:SetValue("Hidden")
-    else
-        UI.m_textCtrl_TradeDecisionHide:SetValue("Visible")
-    end
+    refreshDecisionText()
 end
 
 -- Called from button press
 function ToggleTradeDecisions(desiredState)
-    if G_PlayerCountry ~= nil then
-        local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry)
-        if desiredState == true then
-            local command = CSetVariableCommand(playerCountry, CString("disable_resource_trade_decision"), CFixedPoint(1))
-            CCurrentGameState.Post(command)
-            UI.m_textCtrl_TradeDecisionHide:SetValue("Hidden")
-        elseif desiredState == false then
-            local command = CSetVariableCommand(playerCountry, CString("disable_resource_trade_decision"), CFixedPoint(0))
-            CCurrentGameState.Post(command)
-            UI.m_textCtrl_TradeDecisionHide:SetValue("Visible")
-        end
+    if desiredState ~= true and desiredState ~= false then
+        return
     end
+
+    BiceData.Misc.SetTradeHidden(desiredState)
+    -- Shown straight away rather than read back: the command is only queued, so the
+    -- game still reports the old value for a moment.
+    UI.m_textCtrl_TradeDecisionHide:SetValue(desiredState and "Hidden" or "Visible")
 end
 
 -- Called once when player is chosen
 function SetMinesDecisionHiddenText()
-    local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry)
-    if playerCountry:GetCountry():GetVariables():GetVariable(CString("disable_mines_expansion_decision")):Get() == 1 then
-        UI.m_textCtrl_MinesDecisionHide:SetValue("Hidden")
-    else
-        UI.m_textCtrl_MinesDecisionHide:SetValue("Visible")
-    end
+    refreshDecisionText()
 end
 
 -- Called from button press
 function ToggleMinesDecisions(desiredState)
-    if G_PlayerCountry ~= nil then
-        local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry)
-        if desiredState == true then
-            local command = CSetVariableCommand(playerCountry, CString("disable_mines_expansion_decision"), CFixedPoint(1))
-            CCurrentGameState.Post(command)
-            UI.m_textCtrl_MinesDecisionHide:SetValue("Hidden")
-        elseif desiredState == false then
-            local command = CSetVariableCommand(playerCountry, CString("disable_mines_expansion_decision"), CFixedPoint(0))
-            CCurrentGameState.Post(command)
-            UI.m_textCtrl_MinesDecisionHide:SetValue("Visible")
-        end
+    if desiredState ~= true and desiredState ~= false then
+        return
     end
+
+    BiceData.Misc.SetMinesHidden(desiredState)
+    UI.m_textCtrl_MinesDecisionHide:SetValue(desiredState and "Hidden" or "Visible")
 end

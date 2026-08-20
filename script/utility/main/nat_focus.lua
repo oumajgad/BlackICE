@@ -1,35 +1,25 @@
+-- National focus tab.
+--
+-- Reading and writing live in BiceData.NatFocus, shared with the ImGui utility. What
+-- is left here is the wx half: which control shows which focus.
+
 -- Called from button press
 function SetNatFocus(focus)
-    if G_PlayerCountry ~= nil then
-        local playerCountryTag = CCountryDataBase.GetTag(G_PlayerCountry)
-        local command = CSetVariableCommand(playerCountryTag, CString("national_focus"), CFixedPoint(focus))
-        CCurrentGameState.Post(command)
-    end
+    BiceData.NatFocus.Set(focus)
 end
 
 -- Called each update
 function GetNatFocusDays()
-	local focuses = {
-		"ground_forces",
-		"air_force",
-		"navy",
-		"economy",
-		"science",
-		"health_and_education",
-		"natural_resources"
-	}
+    local data = BiceData.NatFocus.Collect()
+    if data == nil then
+        return
+    end
 
-    if G_PlayerCountry ~= nil then
-        local playerCountry = CCountryDataBase.GetTag(G_PlayerCountry)
-        local variables = playerCountry:GetCountry():GetVariables()
-        for i, focus in pairs(focuses) do
-            local days = variables:GetVariable(CString(focus .. "_national_focus_days_active")):Get()
-            if days > 1 then
-                SetFocusActiveDaysText(focus, tostring(days))
-            else
-                SetFocusActiveDaysText(focus, "0")
-            end
-        end
+    for _, row in ipairs(data.rows) do
+        -- Shown as 0 below a day, as this page always did: the counter is not
+        -- meaningful until it has been running for one.
+        local days = (row.days > 1) and row.days or 0
+        SetFocusActiveDaysText(row.key, tostring(days))
     end
 end
 
@@ -57,4 +47,3 @@ function SetFocusActiveDaysText(focus, days)
         UI.m_textCtrl_FocusResourceDays:SetValue(days)
     end
 end
-

@@ -4,6 +4,38 @@ Stats = P
 P.CollectStats = false
 P.CustomCountryListActive = false
 P.CustomCountryList = nil
+P.CustomCountryListVersion = nil
+
+--- Reads the collection switches from the game rather than trusting this context.
+---
+--- The switches live in OMG country variables, and each Lua context used to copy them
+--- into its own globals once. That works while a single utility owns them, but a toggle
+--- flipped in one context left the others running on the old value until something
+--- reinitialised them - and that reinitialisation sits behind G_UtilityEnabled, which is
+--- not always on. Reading them here costs two variable reads a day, and every context
+--- then agrees.
+---
+--- The globals are still written, so anything reading them directly stays correct.
+function P.RefreshCollectionSwitches()
+	local omgCountry = CCountryDataBase.GetTag("OMG"):GetCountry()
+	if omgCountry == nil then
+		return false
+	end
+
+	local variables = omgCountry:GetVariables()
+	P.CollectStats = variables:GetVariable(CString("StatisticsToggle")):Get() == 1
+	P.CustomCountryListActive = variables:GetVariable(CString("StatisticsCustomList")):Get() == 1
+
+	-- The cached country list is dropped only when an editor says it changed, so an
+	-- edit made in another context is picked up without rebuilding the list daily.
+	local version = variables:GetVariable(CString("StatisticsCustomListVersion")):Get()
+	if P.CustomCountryListVersion ~= version then
+		P.CustomCountryListVersion = version
+		P.CustomCountryList = nil
+	end
+
+	return P.CollectStats
+end
 
 function P.CustomListCheck(tag)
 	-- early exit if not active
@@ -31,16 +63,15 @@ function P.CustomListCheck(tag)
 	return false
 end
 
+--- Kept for anything still calling them, but editing the list goes through
+--- BiceData.Stats.SetCountryCollected now: that posts the variable, bumps the version
+--- other contexts watch, and updates this cache as well.
 function P.AddTagToCustomList(tag)
-	if P.CustomCountryList ~= nil then
-		P.CustomCountryList[tag] = true
-	end
+	BiceData.Stats.SetCountryCollected(tag, true)
 end
 
 function P.RemoveTagFromCustomList(tag)
-	if P.CustomCountryList ~= nil then
-		P.CustomCountryList[tag] = false
-	end
+	BiceData.Stats.SetCountryCollected(tag, false)
 end
 
 
@@ -200,7 +231,9 @@ end
 
 local function getIcEfficiency(ministerCountry)
 	local icEffraw = ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
-	for tech, effect in pairs(Parsing.Techs.GetTechModifierValues()["ic_efficiency"]) do
+	-- Straight from the provider: the collector runs whether or not the wx utility is
+	-- loaded, so it must not go through Parsing.
+	for tech, effect in pairs(BiceData.Techs.ModifierValues()["ic_efficiency"]) do
 		local level = ministerCountry:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
 		icEffraw = icEffraw + (effect*level)
 	end
@@ -264,7 +297,7 @@ end
 
 --- Remember to add the stat here when adding a new stat collect elsewhere!
 function P.CollectPlayerStatistics()
-	if P.CollectStats == true then
+	if P.RefreshCollectionSwitches() then
 		for i, tag in pairs(G_PlayerCountries) do
 			if P.CustomListCheck(tag) then
 				local countryTag = CCountryDataBase.GetTag(tag)
@@ -319,19 +352,11 @@ function P.CollectPlayerStatistics()
 	end
 end
 
--- Since there are multiple LUA threads the global vars need to be initialized in each thread seperately
+-- Kept because the utility calls it at startup. The switches are read from the game on
+-- every collection pass now, so this only has to bring this context up to date rather
+-- than copy them in by hand and hope nothing changes them elsewhere.
 function P.SetUpStatCollectionLuaVars()
-	local omgTag = CCountryDataBase.GetTag("OMG")
-	local omgCountry = omgTag:GetCountry()
-    local variables = omgCountry:GetVariables()
-	local statisticsToggle = variables:GetVariable(CString("StatisticsToggle")):Get()
-	local statisticsCustomList = variables:GetVariable(CString("StatisticsCustomList")):Get()
-    if statisticsToggle == 1 then
-        Stats.CollectStats = true
-		if statisticsCustomList == 1 then
-			Stats.CustomCountryListActive = true
-		end
-    end
+	P.RefreshCollectionSwitches()
 end
 
 function P.UpdateCustomCountryListInStatSelection()
@@ -348,83 +373,54 @@ end
 
 
 function P.SetUpStatCollectionPage()
-	local omgTag = CCountryDataBase.GetTag("OMG")
-	local omgCountry = omgTag:GetCountry()
-    local variables = omgCountry:GetVariables()
-	local statisticsToggle = variables:GetVariable(CString("StatisticsToggle")):Get()
-	local statisticsCustomList = variables:GetVariable(CString("StatisticsCustomList")):Get()
-    if statisticsToggle == 1 then
-        UI.m_textCtrl_Statistics_setup_ident:SetValue(tostring(Stats.GetCurrentIdent()))
-        Stats.CollectStats = true
-        UI.m_textCtrl_Statistics_setup_toggle:SetValue("on")
-    else
-        UI.m_textCtrl_Statistics_setup_toggle:SetValue("off")
+	local data = BiceData.Stats.Collect()
+	if data == nil then
+		return
+	end
+
+    -- The ident is only shown once collection has run and numbered the run; reading it
+    -- is free, but asking for one writes files.
+    if data.collecting and data.ident > 0 then
+        UI.m_textCtrl_Statistics_setup_ident:SetValue(tostring(data.ident))
     end
-    if statisticsCustomList == 1 then
-        Stats.CustomCountryListActive = true
-        UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue("on")
-    else
-        UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue("off")
-    end
-    local countries = {}
-    local customCollectionCountries = {}
-    for country in CCurrentGameState.GetCountries() do
-        local countryTag = country:GetCountryTag()
-        local tag = tostring(countryTag)
-        if tag ~= "---" then
-            table.insert(countries, tag)
-            if variables:GetVariable(CString("zStatsCustomList_" .. tag)):Get() == 1 then
-                table.insert(customCollectionCountries, tag)
-            end
-        end
-    end
-    table.sort(countries)
-    table.sort(customCollectionCountries)
+    UI.m_textCtrl_Statistics_setup_toggle:SetValue(data.collecting and "on" or "off")
+    UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue(data.customListActive and "on" or "off")
+
     UI.m_comboBox_Statistics_main1:Clear()
-    if statisticsCustomList == 1 then
-        UI.m_comboBox_Statistics_main1:Append(customCollectionCountries)
-    else
-        UI.m_comboBox_Statistics_main1:Append(countries)
-    end
+    UI.m_comboBox_Statistics_main1:Append(data.customListActive and data.custom or data.countries)
     UI.m_comboBox_Statistics_setup1:Clear()
-    UI.m_comboBox_Statistics_setup1:Append(countries)
+    UI.m_comboBox_Statistics_setup1:Append(data.countries)
     UI.m_listBox_Statistics_country_list:Clear()
-    UI.m_listBox_Statistics_country_list:Append(customCollectionCountries)
+    UI.m_listBox_Statistics_country_list:Append(data.custom)
 end
 
 function P.ToggleStatCollection()
-	local omgTag = CCountryDataBase.GetTag("OMG")
-	local omgCountry = omgTag:GetCountry()
-	local statisticsToggle = omgCountry:GetVariables():GetVariable(CString("StatisticsToggle")):Get()
-    if statisticsToggle == 1 then
-        local command = CSetVariableCommand(omgTag, CString("StatisticsToggle"), CFixedPoint(0))
-        CCurrentGameState.Post(command)
-        UI.m_textCtrl_Statistics_setup_toggle:SetValue("off")
-        Stats.CollectStats = false
-    else
-        UI.m_textCtrl_Statistics_setup_ident:SetValue(tostring(Stats.GetCurrentIdent()))
-        local command = CSetVariableCommand(omgTag, CString("StatisticsToggle"), CFixedPoint(1))
-        CCurrentGameState.Post(command)
-        UI.m_textCtrl_Statistics_setup_toggle:SetValue("on")
-        Stats.CollectStats = true
+	local data = BiceData.Stats.Collect()
+	if data == nil then
+		return
+	end
+
+    local wanted = not data.collecting
+    BiceData.Stats.SetCollecting(wanted)
+    -- Shown at once: the command is only queued, so reading it back returns the old
+    -- value for a moment. The collection loop reads the variable itself, so this text
+    -- is the only thing that needs telling.
+    UI.m_textCtrl_Statistics_setup_toggle:SetValue(wanted and "on" or "off")
+
+    if wanted and data.ident > 0 then
+        UI.m_textCtrl_Statistics_setup_ident:SetValue(tostring(data.ident))
     end
 end
 
 function P.ToggleStatCollectionCustomList()
-	local omgTag = CCountryDataBase.GetTag("OMG")
-	local omgCountry = omgTag:GetCountry()
-	local statisticsCustomList = omgCountry:GetVariables():GetVariable(CString("StatisticsCustomList")):Get()
-    if statisticsCustomList == 1 then
-        local command = CSetVariableCommand(omgTag, CString("StatisticsCustomList"), CFixedPoint(0))
-        CCurrentGameState.Post(command)
-        UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue("off")
-        Stats.CustomCountryListActive = false
-    else
-        local command = CSetVariableCommand(omgTag, CString("StatisticsCustomList"), CFixedPoint(1))
-        CCurrentGameState.Post(command)
-        UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue("on")
-        Stats.CustomCountryListActive = true
-    end
+	local data = BiceData.Stats.Collect()
+	if data == nil then
+		return
+	end
+
+    local wanted = not data.customListActive
+    BiceData.Stats.SetCustomListActive(wanted)
+    UI.m_textCtrl_Statistics_setup_toggle_custom_list:SetValue(wanted and "on" or "off")
 end
 
 return Stats

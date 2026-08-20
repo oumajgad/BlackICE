@@ -20,6 +20,8 @@ package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\s
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\options\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\gameinfos\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility\\stats\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility_imgui\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility_data\\?.lua"
 
 
 
@@ -107,7 +109,14 @@ require('DEFAULT_LAND')
 require('DEFAULT_MIXED')
 
 
-G_UtilityEnabled = true -- disabling saves about 50 MiB
+-- Both utilities' switches, in one file a player can find without reading this one.
+-- Must come before anything that reads them.
+require('utility_settings')
+
+-- Data provider shared by both utilities. UI free and lazily parsed, so requiring it
+-- costs nothing until something asks for data. Must come before either utility.
+require('bicedata')
+
 if G_UtilityEnabled then
     -- Hoi 3 Utility
     require('gui-utility')
@@ -117,6 +126,16 @@ if G_UtilityEnabled then
     require('gui-utility-stats')
     require('gui-auxilliary')
     require('utility-extras')
+end
+
+-- In-game ImGui utility, the replacement for the wxWidgets one above. Switched in
+-- utility_settings.lua; turning it off skips installing the D3D9 hooks entirely.
+if G_ImguiUtilityEnabled then
+    -- pcall'd so a problem here cannot abort the requires below it.
+    local guiImguiOk, guiImguiErr = pcall(require, 'gui-imgui')
+    if not guiImguiOk and BiceLibLuaLog ~= nil then
+        BiceLibLuaLog("gui-imgui failed to load: " .. tostring(guiImguiErr))
+    end
 end
 -- Statistics
 require('stats')

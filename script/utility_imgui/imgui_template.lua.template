@@ -1,0 +1,55 @@
+-- Template for a utility page's Lua side. See BiceLib/Gui/Pages/README.md.
+--
+-- Copy to imgui_<page>.lua. The imgui_ prefix is MANDATORY: require caches by module
+-- name and the old wx utility already claims ic_days, country_info, misc, setup,
+-- puppets, techs, traits, units, modifiers, flags, vars, generals, stats, options and
+-- help. Without the prefix require silently returns the old module, this file never
+-- runs, and nothing reports an error.
+--
+-- This file only shapes data for the overlay. Reading and writing game state belongs
+-- in a BiceData provider under utility_data, so the wx utility can be moved onto the
+-- same code later; use BiceData.Country there rather than reaching for
+-- CCountryDataBase and GetVariables by hand.
+
+local Page = require('imgui_page')
+
+BiceLibGui = BiceLibGui or {}
+BiceLibGui.Template = {}
+
+-- collect() runs on the render thread, once per refresh. Keep it cheap, never touch
+-- wx, and return plain data only: no userdata, the C++ side reads numbers, strings,
+-- booleans and arrays of those.
+local function collect()
+    local data, reason = BiceData.Template.Collect()
+    if data == nil then
+        return { available = false, reason = reason or "unavailable" }
+    end
+
+    return {
+        available = true,
+        -- scalars
+        some_value = data.some_value,
+        -- arrays of rows read with pushArrayElement:
+        -- rows = { { name = "a", value = 1 }, { name = "b", value = 2 } },
+        -- plain string arrays read with arrayStringAt:
+        -- tags = { "GER", "ENG" },
+    }
+end
+
+-- Page.Guard turns a Lua level error into text on the page rather than a generic
+-- message. It cannot catch a fault inside the game's own code, which is why the C++
+-- side gates every call on there being a running session.
+function BiceLibGui.Template.Collect()
+    return Page.Guard(collect)
+end
+
+-- Actions post through the provider, which posts commands exactly as the wx page did,
+-- so multiplayer is unaffected. Returning the refreshed snapshot lets the page show
+-- what the game holds rather than assuming the command landed - though the command is
+-- only queued, so the page still has to show the request as pending until it lands.
+function BiceLibGui.Template.DoSomething(value)
+    return Page.Guard(function()
+        BiceData.Template.DoSomething(value)
+        return collect()
+    end)
+end

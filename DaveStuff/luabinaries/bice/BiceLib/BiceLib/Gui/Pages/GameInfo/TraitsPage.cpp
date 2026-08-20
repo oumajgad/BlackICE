@@ -1,0 +1,163 @@
+// Traits: a filterable list of traits on the left, the selected trait's effects and
+// triggers on the right.
+//
+// The trait data is parsed out of common/traits.txt once per session, so the list is
+// fetched on demand rather than polled. Details are fetched only when the selection
+// changes, because building them runs the effect translation in Lua.
+
+#include <Gui/GuiPage.hpp>
+#include <Gui/LuaBridge.hpp>
+#include <Gui/ListBox.hpp>
+
+#include <Windows.h>
+#include <algorithm>
+#include <cctype>
+#include <cstring>
+#include <string>
+#include <vector>
+
+#include <imgui.h>
+
+namespace {
+    const char* COLLECT = "BiceLibGui.Traits.Collect";
+    const char* DETAILS = "BiceLibGui.Traits.Details";
+
+    std::vector<std::string> traits;
+    bool listLoaded = false;
+    std::string listError;
+
+    std::string selectedChoice;
+    std::string detailKey;
+    std::string detailEffects;
+    std::string detailTriggers;
+    std::string detailError;
+
+    char filter[64] = {};
+    float listWidth = 260.0f; // Drag the divider to change
+
+    void loadList() {
+        traits.clear();
+        listLoaded = false;
+
+        if (!Gui::Lua::beginTableCall(COLLECT)) {
+            listError = Gui::Lua::unavailableReason();
+            return;
+        }
+
+        if (!Gui::Lua::boolField("available")) {
+            listError = Gui::Lua::stringField("reason", "unavailable");
+            Gui::Lua::endCall();
+            return;
+        }
+
+        const int count = Gui::Lua::arrayLength("traits");
+        traits.reserve(static_cast<size_t>(count));
+        for (int i = 0; i < count; i++) {
+            traits.push_back(Gui::Lua::arrayStringAt("traits", i));
+        }
+
+        Gui::Lua::endCall();
+        listLoaded = true;
+        listError.clear();
+    }
+
+    void loadDetails(const std::string& choice) {
+        detailEffects.clear();
+        detailTriggers.clear();
+        detailKey.clear();
+        detailError.clear();
+
+        if (!Gui::Lua::beginTableCallWithString(DETAILS, choice.c_str())) {
+            detailError = Gui::Lua::unavailableReason();
+            return;
+        }
+
+        if (Gui::Lua::boolField("available")) {
+            detailKey = Gui::Lua::stringField("key");
+            detailEffects = Gui::Lua::stringField("effects");
+            detailTriggers = Gui::Lua::stringField("triggers");
+        }
+        else {
+            detailError = Gui::Lua::stringField("reason", "unavailable");
+        }
+
+        Gui::Lua::endCall();
+    }
+
+    /**@brief read only multiline box, so the text stays selectable and copyable*/
+    void drawTextBox(const char* id, const std::string& text, float height) {
+        // InputTextMultiline needs a mutable buffer even when read only.
+        ImGui::InputTextMultiline(id,
+            const_cast<char*>(text.c_str()), text.size() + 1,
+            ImVec2(-FLT_MIN, height), ImGuiInputTextFlags_ReadOnly);
+    }
+
+    void drawTraits() {
+        if (ImGui::Button("Reload")) {
+            loadList();
+            if (!selectedChoice.empty()) {
+                loadDetails(selectedChoice);
+            }
+        }
+        ImGui::SameLine();
+
+        if (!listLoaded) {
+            if (listError.empty()) {
+                ImGui::TextDisabled("Press Reload to parse traits.txt.");
+            }
+            else {
+                ImGui::TextDisabled("%s", listError.c_str());
+            }
+            // Try once automatically; after that it is on the Reload button so a
+            // failure doesn't re-parse the files every frame.
+            static bool triedOnce = false;
+            if (!triedOnce) {
+                triedOnce = true;
+                loadList();
+            }
+            return;
+        }
+
+        ImGui::TextDisabled("%d traits", static_cast<int>(traits.size()));
+
+        if (Gui::filteredList("list", ImVec2(listWidth, 0), traits,
+            filter, sizeof(filter), selectedChoice)) {
+            loadDetails(selectedChoice);
+        }
+
+        Gui::verticalSplitter("##split", &listWidth);
+
+        ImGui::BeginChild("details", ImVec2(0, 0));
+        if (selectedChoice.empty()) {
+            ImGui::TextDisabled("Select a trait.");
+        }
+        else if (!detailError.empty()) {
+            ImGui::TextDisabled("%s", detailError.c_str());
+        }
+        else {
+            ImGui::Text("%s", detailKey.c_str());
+            ImGui::Separator();
+
+            const float half = ImGui::GetContentRegionAvail().y * 0.5f - ImGui::GetTextLineHeightWithSpacing();
+
+            ImGui::TextUnformatted("Effects");
+            drawTextBox("##effects", detailEffects, half);
+
+            ImGui::TextUnformatted("Triggers");
+            drawTextBox("##triggers",
+                detailTriggers.empty() ? std::string("(none)") : detailTriggers, half);
+        }
+        ImGui::EndChild();
+    }
+
+    class TraitsPage : public Gui::GuiPage
+    {
+    public:
+        const char* title() const override { return "Traits"; }
+        const char* group() const override { return "Game Info"; }
+        int order() const override { return 50; }
+        void draw() override { drawTraits(); }
+    };
+}
+
+REGISTER_GUI_PAGE(TraitsPage);
