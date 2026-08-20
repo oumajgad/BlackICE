@@ -40,7 +40,7 @@ class CArmy(pydantic.BaseModel):
     owner_id: int
     leader_ptr: int
     current_province_ptr: int
-    supplied_from_province_ptr: int
+    # supplied_from_province_ptr: int
     movement_order_remaining_provinces_count: int  # Amount of provinces left in the current movement order
     in_game_idler_ptr: int
     hoi_avatar_ptr: int

@@ -190,6 +190,8 @@ if __name__ == "__main__":
     pm = Pymem("hoi3_tfh.exe")
     print(pm.base_address)
     country = get_country(pm, "GER")
+    oob = CCountry.get_units(pm=pm, ptr=country.self_ptr)
+
     print(
         utils.dump_model(country, exlusions=["available_CMinisters", "all_CMinisters", "CFlags", "CVariables", "units"])
     )
