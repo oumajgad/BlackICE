@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <cstdarg>
 #include <cstdio>
+#include <vector>
 #include <lua.hpp>
 
 #include <Diagnostics.hpp>
@@ -10,7 +11,15 @@
 #include <TextEncoding.hpp>
 #include <utils.hpp>
 
+// Defined in bice.cpp, which appends to it every time a state loads BiceLib. Nothing
+// ever removes from it, and nothing needs to: the game imports luaL_newstate but not
+// lua_close, so a state it opens lives as long as the process does.
+extern std::vector<lua_State*>* LUA_STATES;
+
 namespace {
+    // Only bounds the duplicate check below; states past it are still measured.
+    const int MAX_TRACKED_STATES = 256;
+
     const char* reason = "no Lua call made yet";
 
     // Lifted only by the console, and only for its own call.
@@ -451,4 +460,55 @@ bool Gui::Lua::callWithNumber(const char* dottedPath, double value) {
 
     lua_settop(state, baseTop);
     return true;
+}
+
+Gui::Lua::StateMemory Gui::Lua::stateMemory() {
+    StateMemory result;
+    if (LUA_STATES == nullptr) {
+        return result;
+    }
+
+    result.states = static_cast<int>(LUA_STATES->size());
+
+    // Coroutines share their parent's memory, and its registry table with it, so the
+    // registry's address tells two states apart from two views of one. Without this
+    // a state that happened to be a coroutine would have its megabytes counted twice.
+    const void* seen[MAX_TRACKED_STATES] = {};
+    int seenCount = 0;
+
+    for (size_t i = 0; i < LUA_STATES->size(); i++) {
+        lua_State* state = (*LUA_STATES)[i];
+        if (state == nullptr) {
+            continue;
+        }
+
+        const void* identity = lua_topointer(state, LUA_REGISTRYINDEX);
+        bool duplicate = false;
+        for (int j = 0; j < seenCount; j++) {
+            if (seen[j] == identity) {
+                duplicate = true;
+                break;
+            }
+        }
+        if (duplicate) {
+            continue;
+        }
+        if (seenCount < MAX_TRACKED_STATES) {
+            seen[seenCount++] = identity;
+        }
+
+        // LUA_GCCOUNT is whole kilobytes, LUA_GCCOUNTB the remainder. Both only read
+        // the allocator's running total, so neither disturbs the state.
+        const unsigned __int64 bytes =
+            static_cast<unsigned __int64>(lua_gc(state, LUA_GCCOUNT, 0)) * 1024ull +
+            static_cast<unsigned __int64>(lua_gc(state, LUA_GCCOUNTB, 0));
+
+        result.bytes += bytes;
+        if (bytes > result.largest) {
+            result.largest = bytes;
+        }
+        result.distinct++;
+    }
+
+    return result;
 }

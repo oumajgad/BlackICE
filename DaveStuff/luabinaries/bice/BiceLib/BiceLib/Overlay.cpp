@@ -11,6 +11,7 @@
 
 #include <Diagnostics.hpp>
 #include <Gui/GuiPage.hpp>
+#include <Gui/TextureStats.hpp>
 #include <Gui/Warmup.hpp>
 #include <utils.hpp>
 
@@ -18,15 +19,32 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 namespace {
     // Indices into the IDirect3DDevice9 vtable. The first three slots belong to
-    // IUnknown, so Reset/Present land at 16 and 17 respectively.
+    // IUnknown, so Reset/Present land at 16 and 17 respectively, and CreateTexture
+    // at 23 - counted off the interface declaration in d3d9.h, because patching the
+    // wrong slot would call SetDialogBoxMode with a texture's arguments.
     constexpr int VTABLE_RESET = 16;
     constexpr int VTABLE_PRESENT = 17;
+    constexpr int VTABLE_CREATE_TEXTURE = 23;
 
     typedef HRESULT(APIENTRY* PresentFn)(IDirect3DDevice9*, const RECT*, const RECT*, HWND, const RGNDATA*);
     typedef HRESULT(APIENTRY* ResetFn)(IDirect3DDevice9*, D3DPRESENT_PARAMETERS*);
+    typedef HRESULT(APIENTRY* CreateTextureFn)(IDirect3DDevice9*, UINT, UINT, UINT,
+        DWORD, D3DFORMAT, D3DPOOL, IDirect3DTexture9**, HANDLE*);
+
+    // IUnknown's own three slots come first in every COM vtable, so Release is 2.
+    constexpr int VTABLE_RELEASE = 2;
+    typedef ULONG(APIENTRY* TextureReleaseFn)(IDirect3DTexture9*);
+    TextureReleaseFn originalTextureRelease = nullptr;
+
+    // 0 until a thread claims the job of patching the texture vtable. Claimed with an
+    // interlocked exchange because two loading threads can create their first texture
+    // at the same moment, and the loser reading the slot after the winner wrote it
+    // would take our own hook for the original and recurse for ever.
+    volatile LONG textureVTableClaimed = 0;
 
     PresentFn originalPresent = nullptr;
     ResetFn originalReset = nullptr;
+    CreateTextureFn originalCreateTexture = nullptr;
     WNDPROC originalWndProc = nullptr;
 
     HWND gameWindow = nullptr;
@@ -193,6 +211,79 @@ namespace {
         return result;
     }
 
+    bool patchVTableEntry(void** vtable, int index, void* replacement) noexcept;
+
+    /**
+    @brief notices a texture's last reference going, so it leaves the live totals
+
+    Only the pointer is used, and only as a key: by the time this returns zero the
+    object is gone and touching it would be a use after free.
+    */
+    ULONG APIENTRY hookedTextureRelease(IDirect3DTexture9* texture) {
+        const ULONG remaining = originalTextureRelease(texture);
+        if (remaining == 0) {
+            Gui::TextureStats::noteDestroyed(texture);
+        }
+        return remaining;
+    }
+
+    /**
+    @brief patches Release on the shared IDirect3DTexture9 vtable, once
+
+    d3d9.dll gives every texture of a kind the same vtable, so one patch covers all
+    of them - including the textures that already existed before this ran, which is
+    fine: they are not in the live table and releasing them does nothing.
+    */
+    void hookTextureVTable(IDirect3DTexture9* texture) {
+        if (InterlockedCompareExchange(&textureVTableClaimed, 1, 0) != 0) {
+            return;
+        }
+
+        void** vtable = *reinterpret_cast<void***>(texture);
+
+        // Written before the slot is patched, so the hook always has somewhere to
+        // forward to no matter when another thread first reaches it.
+        originalTextureRelease = reinterpret_cast<TextureReleaseFn>(vtable[VTABLE_RELEASE]);
+
+        if (patchVTableEntry(vtable, VTABLE_RELEASE, hookedTextureRelease)) {
+            Gui::TextureStats::setReleaseHooked();
+        }
+        else {
+            ERROR_OUT(printf("Overlay: could not hook texture Release\n"));
+        }
+    }
+
+    /**
+    @brief counts every texture the game creates, then gets out of the way
+
+    D3DX builds its textures through the device like anything else, so this sees the
+    format a .dds ends up with rather than the one it was stored in - which is the
+    only way to tell whether a compressed file stays compressed in memory.
+
+    The level count is read back from the texture instead of taken from the argument:
+    a request of zero means "however many it takes", and the difference is a third of
+    the size.
+    */
+    HRESULT APIENTRY hookedCreateTexture(IDirect3DDevice9* device, UINT width, UINT height,
+        UINT levels, DWORD usage, D3DFORMAT format, D3DPOOL pool,
+        IDirect3DTexture9** texture, HANDLE* sharedHandle) {
+        const HRESULT result = originalCreateTexture(device, width, height, levels, usage,
+            format, pool, texture, sharedHandle);
+
+        if (SUCCEEDED(result)) {
+            UINT actualLevels = levels;
+            if (texture != nullptr && *texture != nullptr) {
+                actualLevels = (*texture)->GetLevelCount();
+                hookTextureVTable(*texture);
+            }
+            Gui::TextureStats::note(texture != nullptr ? *texture : nullptr,
+                width, height, actualLevels,
+                static_cast<unsigned int>(usage), static_cast<unsigned int>(format),
+                static_cast<unsigned int>(pool));
+        }
+        return result;
+    }
+
     bool patchVTableEntry(void** vtable, int index, void* replacement) noexcept {
         DWORD protection;
         if (!VirtualProtect(&vtable[index], sizeof(void*), PAGE_READWRITE, &protection)) {
@@ -313,11 +404,21 @@ bool Overlay::install() {
 
     originalPresent = reinterpret_cast<PresentFn>(vtable[VTABLE_PRESENT]);
     originalReset = reinterpret_cast<ResetFn>(vtable[VTABLE_RESET]);
+    originalCreateTexture = reinterpret_cast<CreateTextureFn>(vtable[VTABLE_CREATE_TEXTURE]);
 
     if (!patchVTableEntry(vtable, VTABLE_PRESENT, hookedPresent) ||
         !patchVTableEntry(vtable, VTABLE_RESET, hookedReset)) {
         ERROR_OUT(printf("Overlay: could not patch the device vtable\n"));
         return false;
+    }
+
+    // Accounting only, so a failure here is not worth refusing to start over: the
+    // overlay works without it and the Memory page says the numbers are missing.
+    if (patchVTableEntry(vtable, VTABLE_CREATE_TEXTURE, hookedCreateTexture)) {
+        Gui::TextureStats::setHooked();
+    }
+    else {
+        ERROR_OUT(printf("Overlay: could not hook CreateTexture\n"));
     }
 
     installed = true;

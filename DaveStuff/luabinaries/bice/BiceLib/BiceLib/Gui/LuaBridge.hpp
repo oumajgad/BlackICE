@@ -97,5 +97,26 @@ namespace Gui {
 
         /**@brief calls a Lua function with one string argument, discarding results*/
         bool callWithString(const char* dottedPath, const char* value);
+
+        /**
+         * What the game's Lua interpreters are holding.
+         *
+         * The game opens a state per AI context and never closes one - lua_close is
+         * not even among the functions it imports - so every state it has ever
+         * opened is still alive, and each ran autoexec.lua and pulled in the whole
+         * mod's Lua for itself. Whether that is tens of megabytes or hundreds is
+         * worth knowing before anyone tries to do something about it.
+         */
+        struct StateMemory
+        {
+            int states = 0;      // states that have loaded BiceLib
+            int distinct = 0;    // ... of which independent, rather than coroutines
+            unsigned __int64 bytes = 0;
+            unsigned __int64 largest = 0;
+        };
+
+        /**@brief totals Lua's own accounting across every state. Safe at any time:
+           it reads a counter and neither allocates nor collects.*/
+        StateMemory stateMemory();
     }
 }

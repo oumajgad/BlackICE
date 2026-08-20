@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include <algorithm>
+#include <cfloat>
 #include <cstring>
 #include <map>
 #include <string>
@@ -283,8 +284,18 @@ void Gui::drawAll() {
     // Small control window, so there is always a way back to a group window that has
     // been closed. The group windows themselves carry no menu.
     ImGui::SetNextWindowPos(ImVec2(40, 40), ImGuiCond_FirstUseEver);
+    // Sized rather than auto-sized: AlwaysAutoResize would fit the window to the one
+    // row of buttons, and a window that always fits its contents cannot be dragged
+    // any narrower. A width on the first run keeps the compact look it used to have;
+    // after that the saved layout decides, like every other window here.
+    ImGui::SetNextWindowSize(ImVec2(520.0f, 0.0f), ImGuiCond_FirstUseEver);
+
+    // Enough for the menu bar and one button. Below that the title bar is all that
+    // would be left, and it would be a nuisance to grab hold of again.
+    ImGui::SetNextWindowSizeConstraints(ImVec2(160.0f, 0.0f), ImVec2(FLT_MAX, FLT_MAX));
+
     if (ImGui::Begin(CONTROL_WINDOW, nullptr,
-        ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoDocking)) {
+        ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking)) {
 
         if (ImGui::BeginMenuBar()) {
             if (ImGui::BeginMenu("Windows")) {
@@ -306,12 +317,27 @@ void Gui::drawAll() {
             ImGui::EndMenuBar();
         }
 
+        // Wrapped by hand, because ImGui has no flow layout: after each button, ask
+        // whether the next one still fits before putting it on the same line. The
+        // widths have to be worked out rather than measured, since the next button
+        // has not been submitted yet - SmallButton is its label plus the horizontal
+        // frame padding, with no vertical padding.
+        const ImGuiStyle& style = ImGui::GetStyle();
+        const float rightEdge = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
+
         for (int i = 0; i < groupWindowCount; i++) {
-            if (i > 0) {
-                ImGui::SameLine();
-            }
             if (ImGui::SmallButton(groupWindows[i].group)) {
                 groupWindows[i].open = !groupWindows[i].open;
+            }
+
+            if (i + 1 >= groupWindowCount) {
+                continue;
+            }
+
+            const float nextWidth = ImGui::CalcTextSize(groupWindows[i + 1].group).x +
+                style.FramePadding.x * 2.0f;
+            if (ImGui::GetItemRectMax().x + style.ItemSpacing.x + nextWidth < rightEdge) {
+                ImGui::SameLine();
             }
         }
     }
