@@ -148,7 +148,7 @@ namespace {
 
         // A unit nobody is commanding, called out where it can be seen without
         // opening anything.
-        const bool unled = !unit.hasLeader;
+        const bool unled = unit.leaderMissing;
         if (unled) {
             ImGui::PushStyleColor(ImGuiCol_Text, LEADERLESS);
         }
@@ -371,6 +371,9 @@ namespace {
             out += line;
             sprintf_s(line, "  %-16s %d\r\n", "No commander", unit.leaderlessBelow);
             out += line;
+            sprintf_s(line, "  %-16s %.0f%% supply, %.0f%% fuel\r\n", "Average",
+                unit.supplyAverageBelow / 10.0, unit.fuelAverageBelow / 10.0);
+            out += line;
         }
 
         if (!selectedRegiments.empty()) {
@@ -446,6 +449,12 @@ namespace {
             ImGui::Text("%d regiments below", unit->regimentsBelow);
             ImGui::TextColored(unit->leaderlessBelow > 0 ? LEADERLESS : NONE_MISSING,
                 "%d without a commander", unit->leaderlessBelow);
+            ImGui::Text("Supply %.0f%% average, fuel %.0f%% average",
+                unit->supplyAverageBelow / 10.0, unit->fuelAverageBelow / 10.0);
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Averaged over the %d units below this one, each\n"
+                    "counting the same whatever its size.", unit->unitsBelow);
+            }
         }
 
         ImGui::Spacing();

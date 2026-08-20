@@ -23,6 +23,8 @@ namespace {
     Oob::Tree tree;
     std::string readTag;
     bool read = false;
+    bool autoRefresh = false;
+    ULONGLONG lastReadMs = 0;
 
     struct LevelRow
     {
@@ -91,6 +93,7 @@ namespace {
         const std::string& tag = Gui::Selection::tag();
         readTag = tag;
         read = true;
+        lastReadMs = GetTickCount64();
 
         if (tag.empty()) {
             tree = Oob::Tree();
@@ -118,7 +121,10 @@ namespace {
         sprintf_s(line, "%d regiments in %d formations that report to nobody\r\n",
             tree.regimentTotal, static_cast<int>(tree.roots.size()));
         out += line;
-        sprintf_s(line, "%d units without a commander\r\n\r\n", tree.leaderlessTotal);
+        sprintf_s(line, "%d units without a commander\r\n", tree.leaderlessTotal);
+        out += line;
+        sprintf_s(line, "%.0f%% supply, %.0f%% fuel on average\r\n\r\n",
+            tree.supplyAverage / 10.0, tree.fuelAverage / 10.0);
         out += line;
 
         out += "By kind\r\n";
@@ -142,6 +148,18 @@ namespace {
 
     void drawOobReport() {
         if (ImGui::Button("Refresh")) {
+            refresh();
+        }
+        ImGui::SameLine();
+        ImGui::Checkbox("Auto", &autoRefresh);
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Re-reads every five seconds. Reading a whole order of\n"
+                "battle is thousands of small reads, so this is off by default.");
+        }
+
+        // Only once it has been read at all: the first read stays deliberate, so
+        // opening the page does not set thousands of reads going on its own.
+        if (autoRefresh && read && GetTickCount64() - lastReadMs >= 5000) {
             refresh();
         }
         if (readTag != Gui::Selection::tag()) {
@@ -183,6 +201,13 @@ namespace {
             ? ImVec4(0.85f, 0.35f, 0.35f, 1.0f)
             : ImVec4(1.0f, 1.0f, 1.0f, 1.0f),
             "%d units without a commander", tree.leaderlessTotal);
+
+        ImGui::Text("Supply %.0f%% average, fuel %.0f%% average",
+            tree.supplyAverage / 10.0, tree.fuelAverage / 10.0);
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Averaged over every unit, each counting the same\n"
+                "whatever its size.");
+        }
 
         ImGui::Spacing();
         ImGui::SeparatorText("By kind");

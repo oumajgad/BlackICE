@@ -72,6 +72,11 @@ namespace Oob {
         // A unit can carry a leader that is not one: the game names it "(no leader)"
         // rather than leaving the pointer empty, so both have to be checked.
         bool hasLeader = false;
+
+        // Worth reporting as missing, which is not the same as absent: a division of
+        // a single brigade cannot be given a commander at all, so it has none and
+        // nothing is wrong. Counts and highlighting go by this rather than hasLeader.
+        bool leaderMissing = false;
         uintptr_t province = 0;
         int provinceId = 0;
 
@@ -85,7 +90,14 @@ namespace Oob {
         int navalBelow = 0;
         int regimentsBelow = 0;
         int leaderlessBelow = 0;
+        int unitsBelow = 0;
         int depthBelow = 0;
+
+        // Averaged over unitsBelow, on the same x10 scale as the unit's own figures.
+        // Every unit counts the same however big it is: this says how well supplied
+        // the formation is, not how much of the supply it is receiving.
+        int supplyAverageBelow = 0;
+        int fuelAverageBelow = 0;
     };
 
     struct Tree
@@ -105,6 +117,10 @@ namespace Oob {
         int navalTotal = 0;
         int regimentTotal = 0;
         int leaderlessTotal = 0;
+
+        // Across every unit, on the same x10 scale.
+        int supplyAverage = 0;
+        int fuelAverage = 0;
 
         /**@brief units left unread because the cap was hit; 0 when everything fitted*/
         int truncated = 0;

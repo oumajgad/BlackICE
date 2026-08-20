@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <map>
 #include <set>
+#include <vector>
 
 namespace {
     // Offsets into the game's own structures. Every one of them came from the memory
@@ -48,6 +49,9 @@ namespace {
 
     const uintptr_t COUNTRY_UNITS_LIST = 0xBAC;
     const uintptr_t PROVINCE_ID = 0xD0;
+
+    // oob_level for a division, which is also what a lone brigade is held as.
+    const int LEVEL_DIVISION = 4;
 
     // A linked list node: what it holds, then the two links.
     const uintptr_t NODE_DATA = 0x0;
@@ -232,6 +236,13 @@ namespace {
             unit.provinceId = readValue<int32_t>(unit.province + PROVINCE_ID);
         }
 
+        // A division made of a single brigade takes no commander, so it is not
+        // missing one. Exactly one regiment, not "one or fewer": a count we failed to
+        // read comes back as zero, and that should show up as a unit worth looking at
+        // rather than quietly excuse itself.
+        const bool takesNoLeader = (unit.level == LEVEL_DIVISION) && (unit.regimentCount == 1);
+        unit.leaderMissing = !unit.hasLeader && !takesNoLeader;
+
         return unit;
     }
 
@@ -294,16 +305,27 @@ namespace {
             }
         }
 
+        // Running totals for the averages, kept aside rather than on the unit: they
+        // are working state, and a sum of percentages is not a thing worth handing
+        // out afterwards.
+        std::vector<long long> supplySum(tree.units.size(), 0);
+        std::vector<long long> fuelSum(tree.units.size(), 0);
+
         for (size_t at = order.size(); at > 0; at--) {
-            Oob::Unit& unit = tree.units[order[at - 1]];
+            const int self = order[at - 1];
+            Oob::Unit& unit = tree.units[self];
             for (size_t c = 0; c < unit.children.size(); c++) {
                 const Oob::Unit& child = tree.units[unit.children[c]];
+
+                unit.unitsBelow += child.unitsBelow + 1;
+                supplySum[self] += supplySum[unit.children[c]] + child.supplyPercent;
+                fuelSum[self] += fuelSum[unit.children[c]] + child.fuelPercent;
 
                 unit.landBelow += child.landBelow;
                 unit.airBelow += child.airBelow;
                 unit.navalBelow += child.navalBelow;
                 unit.regimentsBelow += child.regimentsBelow + child.regimentCount;
-                unit.leaderlessBelow += child.leaderlessBelow + (child.hasLeader ? 0 : 1);
+                unit.leaderlessBelow += child.leaderlessBelow + (child.leaderMissing ? 1 : 0);
 
                 switch (child.branch) {
                 case Oob::Branch::Land: unit.landBelow++; break;
@@ -315,6 +337,13 @@ namespace {
                 if (child.depthBelow + 1 > unit.depthBelow) {
                     unit.depthBelow = child.depthBelow + 1;
                 }
+            }
+
+            if (unit.unitsBelow > 0) {
+                unit.supplyAverageBelow =
+                    static_cast<int>(supplySum[self] / unit.unitsBelow);
+                unit.fuelAverageBelow =
+                    static_cast<int>(fuelSum[self] / unit.unitsBelow);
             }
         }
     }
@@ -453,9 +482,20 @@ Oob::Tree Oob::read(uintptr_t country) {
         default: break;
         }
         tree.regimentTotal += unit.regimentCount;
-        if (!unit.hasLeader) {
+        if (unit.leaderMissing) {
             tree.leaderlessTotal++;
         }
+    }
+
+    if (!tree.units.empty()) {
+        long long supplySum = 0;
+        long long fuelSum = 0;
+        for (size_t i = 0; i < tree.units.size(); i++) {
+            supplySum += tree.units[i].supplyPercent;
+            fuelSum += tree.units[i].fuelPercent;
+        }
+        tree.supplyAverage = static_cast<int>(supplySum / tree.units.size());
+        tree.fuelAverage = static_cast<int>(fuelSum / tree.units.size());
     }
 
     // Alphabetical at every level. The game holds units in whatever order it built
