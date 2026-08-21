@@ -25,6 +25,12 @@ namespace {
     const ImVec4 LEADERLESS = ImVec4(0.85f, 0.35f, 0.35f, 1.0f);
     const ImVec4 NONE_MISSING = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
+    // The same red, dimmed, for a formation that is only red because of something
+    // underneath it. One unled division turns its whole chain of command red, and
+    // without the difference in shade there is no telling the culprit from the trail
+    // leading to it.
+    const ImVec4 LEADERLESS_BELOW = ImVec4(0.62f, 0.34f, 0.34f, 1.0f);
+
     Oob::Tree tree;
     std::string readTag;
     ULONGLONG lastReadMs = 0;
@@ -146,11 +152,14 @@ namespace {
 
         const char* label = unit.name.empty() ? "(unnamed)" : unit.name.c_str();
 
-        // A unit nobody is commanding, called out where it can be seen without
-        // opening anything.
-        const bool unled = unit.leaderMissing;
+        // Red for a unit nobody is commanding, dimmer red for every formation above
+        // it: the tree opens collapsed, so a missing commander four levels down would
+        // otherwise only be visible to someone who already went looking for it. The
+        // dim shade marks the path, the bright one marks what is at the end of it.
+        const bool unled = unit.leaderMissing || unit.leaderlessBelow > 0;
         if (unled) {
-            ImGui::PushStyleColor(ImGuiCol_Text, LEADERLESS);
+            ImGui::PushStyleColor(ImGuiCol_Text,
+                unit.leaderMissing ? LEADERLESS : LEADERLESS_BELOW);
         }
         const bool open = ImGui::TreeNodeEx("node", flags, "%s", label);
         if (unled) {
@@ -178,8 +187,17 @@ namespace {
             ImGui::SameLine();
             ImGui::TextDisabled("(%d)", unit.landBelow + unit.airBelow + unit.navalBelow);
             if (ImGui::IsItemHovered()) {
-                ImGui::SetTooltip("%d land, %d air, %d naval below",
-                    unit.landBelow, unit.airBelow, unit.navalBelow);
+                // Says why a formation is red when it has a commander of its own.
+                if (unit.leaderlessBelow > 0) {
+                    ImGui::SetTooltip("%d land, %d air, %d naval below\n"
+                        "%d of them without a commander",
+                        unit.landBelow, unit.airBelow, unit.navalBelow,
+                        unit.leaderlessBelow);
+                }
+                else {
+                    ImGui::SetTooltip("%d land, %d air, %d naval below",
+                        unit.landBelow, unit.airBelow, unit.navalBelow);
+                }
             }
         }
 
@@ -334,14 +352,19 @@ namespace {
             rows.push_back(DetailRow{ "Combat cooldown", line });
         }
 
-        sprintf_s(line, "%s%s%s",
-            unit.upgradeActive ? "upgrading " : "",
-            unit.upgradePriority ? "priority " : "",
-            unit.reinforcementsActive ? "reinforcing" : "");
-        if (line[0] == '\0') {
-            strcpy_s(line, "-");
+        // Joined rather than concatenated with trailing spaces, so whichever of them
+        // is last does not leave one behind.
+        std::string orders;
+        if (unit.upgradePriority) {
+            orders += "priority";
         }
-        rows.push_back(DetailRow{ "Orders", line });
+        if (unit.reinforcementsActive) {
+            orders += orders.empty() ? "reinforcing" : " reinforcing";
+        }
+        if (unit.upgradeActive) {
+            orders += orders.empty() ? "upgrading" : " upgrading";
+        }
+        rows.push_back(DetailRow{ "Orders", orders.empty() ? "-" : orders });
 
         return rows;
     }
