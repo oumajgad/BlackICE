@@ -42,6 +42,7 @@ local pages = {
     { module = 'imgui_units',      key = 'Units' },
     { module = 'imgui_unitmodels', key = 'UnitModels' },
     { module = 'imgui_provincebuildings', key = 'ProvinceBuildings' },
+    { module = 'imgui_oob', key = 'Oob' },
 }
 
 local loaded = {}

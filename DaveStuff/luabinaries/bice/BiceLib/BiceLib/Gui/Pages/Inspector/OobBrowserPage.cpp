@@ -8,6 +8,7 @@
 
 #include <Gui/GuiPage.hpp>
 #include <Gui/CountrySelection.hpp>
+#include <Gui/LuaBridge.hpp>
 #include <Oob/OrderOfBattle.hpp>
 
 #include <GameClasses/CCountry.hpp>
@@ -41,6 +42,12 @@ namespace {
     uintptr_t selectedAddress = 0;
     std::vector<Oob::Regiment> selectedRegiments;
     uintptr_t regimentsFor = 0;
+
+    // Province names are not in memory - they are localisation - so this is the one
+    // thing on the page that has to come from Lua. Fetched with the regiments when
+    // the selection changes, since only the selected unit ever shows one.
+    std::string selectedProvinceName;
+    const char* PROVINCE_NAME = "BiceLibGui.Oob.ProvinceName";
 
     // -1 does nothing, 0 collapses every node for one frame, 1 opens them.
     int forceOpenState = -1;
@@ -334,8 +341,13 @@ namespace {
         }
 
         if (unit.provinceId != 0) {
+            // Built as a string rather than into the scratch buffer: a province name
+            // is short, but nothing here has promised that.
             sprintf_s(line, "%d", unit.provinceId);
-            rows.push_back(DetailRow{ "Province", line });
+            const std::string location = selectedProvinceName.empty()
+                ? std::string(line)
+                : selectedProvinceName + " (" + line + ")";
+            rows.push_back(DetailRow{ "Province", location });
         }
 
         rows.push_back(DetailRow{ "Supply", percentText(unit.supplyPercent, scratch, sizeof(scratch)) });
@@ -429,6 +441,17 @@ namespace {
         if (regimentsFor != unit->address) {
             selectedRegiments = Oob::regiments(unit->address);
             regimentsFor = unit->address;
+
+            // Left empty when Lua cannot be reached, at the main menu or before the
+            // page module loaded; the row then shows the id on its own.
+            selectedProvinceName.clear();
+            if (unit->provinceId != 0 &&
+                Gui::Lua::beginTableCallWithNumber(PROVINCE_NAME, unit->provinceId)) {
+                if (Gui::Lua::boolField("available")) {
+                    selectedProvinceName = Gui::Lua::stringField("name");
+                }
+                Gui::Lua::endCall();
+            }
         }
 
         // Built before anything is drawn, so the Copy button can hand over exactly
