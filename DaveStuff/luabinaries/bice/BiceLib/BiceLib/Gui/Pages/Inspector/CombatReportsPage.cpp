@@ -157,6 +157,35 @@ namespace {
         return true;
     }
 
+    /**@brief writes the range's ticks back into the two boxes*/
+    void writeRange() {
+        strncpy_s(customFrom, dateOnly(customFromTick).c_str(), _TRUNCATE);
+        strncpy_s(customTo, dateOnly(customToTick).c_str(), _TRUNCATE);
+    }
+
+    /**@brief moves the end of the range by \p days, never past the start*/
+    void moveEnd(int days) {
+        const long long moved =
+            static_cast<long long>(customToTick) + static_cast<long long>(days) * 24;
+        if (moved < static_cast<long long>(customFromTick)) {
+            return;
+        }
+        customToTick = static_cast<unsigned int>(moved);
+        writeRange();
+    }
+
+    /**@brief slides the whole range a day, keeping its length*/
+    void slideRange(int direction) {
+        const long long step = static_cast<long long>(direction) * 24;
+        if (static_cast<long long>(customFromTick) + step < 0) {
+            return;
+        }
+
+        customFromTick = static_cast<unsigned int>(customFromTick + step);
+        customToTick = static_cast<unsigned int>(customToTick + step);
+        writeRange();
+    }
+
     void drawFigure(const char* label, const Combat::Tally* byBranch,
         const Combat::Tally& total, int which) {
         ImGui::TableNextRow();
@@ -214,19 +243,61 @@ namespace {
                 customFilled = true;
             }
 
+            // Wide enough for 1936.12.31 and no wider.
+            const float dateWidth = ImGui::CalcTextSize("1936.12.31").x +
+                ImGui::GetStyle().FramePadding.x * 2.0f + 4.0f;
+
             ImGui::SameLine();
-            ImGui::SetNextItemWidth(110.0f);
+            ImGui::SetNextItemWidth(dateWidth);
             ImGui::InputText("##from", customFrom, sizeof(customFrom));
             ImGui::SameLine();
             ImGui::TextUnformatted("to");
             ImGui::SameLine();
-            ImGui::SetNextItemWidth(110.0f);
+            ImGui::SetNextItemWidth(dateWidth);
             ImGui::InputText("##to", customTo, sizeof(customTo));
             if (ImGui::IsItemHovered() || ImGui::IsItemActive()) {
                 ImGui::SetTooltip("Dates as the game counts them: year.month.day, the\n"
                     "way they are written in the list below. Both ends are\n"
                     "included, the last one for the whole of its day.");
             }
+
+            // Held down, these repeat - a month is thirty clicks otherwise. They run
+            // before the boxes are read, so a press shows in the same frame.
+            ImGui::PushItemFlag(ImGuiItemFlags_ButtonRepeat, true);
+
+            ImGui::SameLine();
+            if (ImGui::Button("-##endDay")) {
+                moveEnd(-1);
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("A day off the end");
+            }
+
+            ImGui::SameLine();
+            if (ImGui::Button("+##endDay")) {
+                moveEnd(1);
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("A day onto the end");
+            }
+
+            ImGui::SameLine();
+            if (ImGui::Button("<##slide")) {
+                slideRange(-1);
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Both ends back a day");
+            }
+
+            ImGui::SameLine();
+            if (ImGui::Button(">##slide")) {
+                slideRange(1);
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Both ends on a day");
+            }
+
+            ImGui::PopItemFlag();
 
             // A half typed date is not a date, and the figures should not follow it
             // into a year nobody asked for. So the range only moves when both ends
