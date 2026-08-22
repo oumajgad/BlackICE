@@ -57,13 +57,17 @@ namespace {
     const uintptr_t NODE_DATA = 0x0;
     const uintptr_t NODE_NEXT = 0x8;
 
-    // The vtables that say what a unit is. A unit whose vtable is none of these is
-    // not a unit at all, which is the check that keeps a stale pointer from being
-    // read as though it were one.
-    const uintptr_t VFTABLE_LAND = 0x11BDE0C;
-    const uintptr_t VFTABLE_LAND_ALT = 0x11BDEB8;
-    const uintptr_t VFTABLE_NAVAL = 0x11C869C;
-    const uintptr_t VFTABLE_AIR = 0x11C8774;
+    // The vtables that say what a unit is - CArmy, CNavy and CAir, the three classes
+    // an order of battle is made of. A unit whose vtable is none of these is not a
+    // unit at all, which is the check that keeps a stale pointer from being read as
+    // though it were one.
+    //
+    // Each of them has a second vtable as well, for the base it inherits at object
+    // offset 8. Those are not these and never appear at the start of a unit, so there
+    // is nothing to compare against them here.
+    const uintptr_t VFTABLE_LAND = 0x11BDE0C;  // CArmy
+    const uintptr_t VFTABLE_NAVAL = 0x11C869C; // CNavy
+    const uintptr_t VFTABLE_AIR = 0x11C8774;   // CAir
 
     // A country can field thousands of units; these bound the damage if a list turns
     // out to be circular or simply is not a list.
@@ -141,7 +145,7 @@ namespace {
             return Oob::Branch::Unknown;
         }
 
-        if (vftable == base + VFTABLE_LAND || vftable == base + VFTABLE_LAND_ALT) {
+        if (vftable == base + VFTABLE_LAND) {
             return Oob::Branch::Land;
         }
         if (vftable == base + VFTABLE_NAVAL) {

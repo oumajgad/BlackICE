@@ -11,6 +11,7 @@
 
 #include <Diagnostics.hpp>
 #include <Gui/GuiPage.hpp>
+#include <Combat/CombatStore.hpp>
 #include <Gui/TextureStats.hpp>
 #include <Gui/Warmup.hpp>
 #include <utils.hpp>
@@ -187,6 +188,11 @@ namespace {
             // whether or not anyone is looking, which is the whole point of doing it
             // while the game sits at the menu.
             Gui::warmupStep();
+
+        // Files finished combats away. Like the warm up, this happens whether or
+        // not the overlay is showing: the record is of the campaign, not of the
+        // time someone spent looking at it.
+        Combat::Store::update();
 
             if (visible) {
                 renderOverlay(device);

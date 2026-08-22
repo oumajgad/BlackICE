@@ -10,8 +10,8 @@ class CCombatOffsets:
     VFTABLE_OFFSET_1: int = 0x11C4EE4
     VFTABLE_OFFSET_2: int = 0x11C4F34
     is_selected: int = 0xB
-    attacker: int = 0x10
-    defender: int = 0x14
+    winner: int = 0x10
+    loser: int = 0x14
     day: int = 0x1C
     duration: int = 0x20
 
@@ -19,8 +19,8 @@ class CCombatOffsets:
 class CCombat(pydantic.BaseModel):
     LENGTH: ClassVar[int] = 0x44
     self_ptr: int
-    attacker: Optional[CCombatant]
-    defender: Optional[CCombatant]
+    winner: Optional[CCombatant]
+    loser: Optional[CCombatant]
     is_selected: bool
     day: int
     duration: int
@@ -34,8 +34,8 @@ class CCombat(pydantic.BaseModel):
             "duration": pm.read_uint(ptr + CCombatOffsets.duration),
         }
         combat = cls(**temp)
-        combat.attacker = CCombatant.make(pm, pm.read_uint(ptr + CCombatOffsets.attacker))
-        combat.defender = CCombatant.make(pm, pm.read_uint(ptr + CCombatOffsets.defender))
+        combat.winner = CCombatant.make(pm, pm.read_uint(ptr + CCombatOffsets.winner))
+        combat.loser = CCombatant.make(pm, pm.read_uint(ptr + CCombatOffsets.loser))
         return combat
 
 

@@ -35,5 +35,6 @@ require('bicedata_help')
 require('bicedata_stats')
 require('bicedata_generals')
 require('bicedata_players')
+require('bicedata_combat')
 
 return BiceData
