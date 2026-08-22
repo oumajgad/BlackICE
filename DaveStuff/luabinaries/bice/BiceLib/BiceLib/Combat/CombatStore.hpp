@@ -55,8 +55,12 @@ namespace Combat {
         int lost = 0;
         int asAttacker = 0;
         int asDefender = 0;
-        int losses = 0; // thousandths
-        int kills = 0;
+        // Sixty four bits, because these are thousandths of a man added up over a
+        // whole war. Thirty two run out at 2.1 billion, which is only 2.1 million
+        // casualties - a figure the eastern front passes without trying, and one an
+        // int reports as a negative number when it does.
+        int64_t losses = 0; // thousandths
+        int64_t kills = 0;
     };
 
     namespace Store {

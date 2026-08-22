@@ -1,4 +1,5 @@
 #include <Gui/GuiPage.hpp>
+#include <Gui/CountrySelection.hpp>
 #include <Gui/LuaBridge.hpp>
 
 #include <Windows.h>
@@ -26,6 +27,12 @@ namespace {
     ULONGLONG lastSampleMs = 0;
     bool autoRefresh = true;
 
+    // A tag typed in by hand. The wx utility let one be written straight into its
+    // choice control, and a list of human players is no use for looking at Germany's
+    // production in a game where nobody is playing Germany.
+    char typedTag[8] = {};
+    std::string selectFailure;
+
     void refresh() {
         if (!Gui::Lua::beginTableCall(COLLECT)) {
             snapshot.valid = false;
@@ -45,6 +52,33 @@ namespace {
         }
 
         Gui::Lua::endCall();
+    }
+
+    /**
+    @brief points every page at \p tag, and says so when the game will not have it
+
+    Any tag, not only a human player's. The game refuses one that is not a country and
+    one whose player has opted out of being inspected, and it cannot tell the two
+    apart - so neither can the message.
+    */
+    void selectTag(const char* tag) {
+        selectFailure.clear();
+
+        if (!Gui::Lua::beginTableCallWithString(SELECT_PLAYER, tag)) {
+            selectFailure = std::string("Lua unavailable: ") +
+                Gui::Lua::unavailableReason();
+            return;
+        }
+        if (!Gui::Lua::boolField("available")) {
+            selectFailure = std::string(tag) + ": " +
+                Gui::Lua::stringField("reason", "not accepted");
+        }
+        Gui::Lua::endCall();
+
+        // Every page reads the tag through one cached poll, which would otherwise take
+        // a couple of seconds to notice.
+        Gui::Selection::invalidate();
+        refresh();
     }
 
     void drawSetup() {
@@ -86,9 +120,29 @@ namespace {
             ImGui::Text("You are playing: %s", snapshot.actualPlayer.c_str());
             ImGui::SameLine();
             if (ImGui::SmallButton("Select")) {
-                Gui::Lua::callWithString(SELECT_PLAYER, snapshot.actualPlayer.c_str());
-                refresh();
+                selectTag(snapshot.actualPlayer.c_str());
             }
+        }
+
+        ImGui::Spacing();
+        ImGui::SetNextItemWidth(70.0f);
+        const bool entered = ImGui::InputText("##tag", typedTag, sizeof(typedTag),
+            ImGuiInputTextFlags_CharsUppercase | ImGuiInputTextFlags_AutoSelectAll |
+            ImGuiInputTextFlags_EnterReturnsTrue);
+        ImGui::SameLine();
+        const bool pressed = ImGui::Button("Set");
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Any country's tag, whether anyone is playing it or not.");
+        }
+        ImGui::SameLine();
+        ImGui::TextDisabled("or type a tag");
+
+        if ((entered || pressed) && typedTag[0] != 0) {
+            selectTag(typedTag);
+        }
+        if (!selectFailure.empty()) {
+            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "%s",
+                selectFailure.c_str());
         }
 
         ImGui::Spacing();
@@ -112,8 +166,7 @@ namespace {
 
             ImGui::PushID(static_cast<int>(i));
             if (ImGui::RadioButton(tag.c_str(), isSelected) && !isSelected) {
-                Gui::Lua::callWithString(SELECT_PLAYER, tag.c_str());
-                refresh();
+                selectTag(tag.c_str());
             }
             ImGui::PopID();
         }

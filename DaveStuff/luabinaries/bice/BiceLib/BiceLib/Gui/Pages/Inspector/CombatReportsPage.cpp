@@ -111,6 +111,23 @@ namespace {
         into.kills += from.kills;
     }
 
+    /**@brief 1234567 as "1.234.567", since a war's casualties run to seven digits*/
+    std::string grouped(int64_t value) {
+        char digits[32];
+        sprintf_s(digits, "%lld", value < 0 ? -value : value);
+
+        std::string out;
+        const int length = static_cast<int>(strlen(digits));
+        for (int i = 0; i < length; i++) {
+            // A stop every three digits, counted from the right rather than the left.
+            if (i > 0 && ((length - i) % 3) == 0) {
+                out += '.';
+            }
+            out += digits[i];
+        }
+        return (value < 0) ? ("-" + out) : out;
+    }
+
     /**@brief a tick as a date alone, without the hour gameTickToDate adds*/
     std::string dateOnly(unsigned int tick) {
         const std::string text = utils::gameTickToDate(static_cast<int>(tick));
@@ -151,13 +168,15 @@ namespace {
             ImGui::TableNextColumn();
 
             switch (which) {
-            case 0: ImGui::Text("%d", tally.combats); break;
-            case 1: ImGui::Text("%d", tally.won); break;
-            case 2: ImGui::Text("%d", tally.lost); break;
-            case 3: ImGui::Text("%d", tally.asAttacker); break;
-            case 4: ImGui::Text("%d", tally.asDefender); break;
-            case 5: ImGui::Text("%.1f", tally.kills / 1000.0); break;
-            case 6: ImGui::Text("%.1f", tally.losses / 1000.0); break;
+            case 0: ImGui::TextUnformatted(grouped(tally.combats).c_str()); break;
+            case 1: ImGui::TextUnformatted(grouped(tally.won).c_str()); break;
+            case 2: ImGui::TextUnformatted(grouped(tally.lost).c_str()); break;
+            case 3: ImGui::TextUnformatted(grouped(tally.asAttacker).c_str()); break;
+            case 4: ImGui::TextUnformatted(grouped(tally.asDefender).c_str()); break;
+            // Whole men, the way the game itself reports a battle: it divides the
+            // same thousandths by a thousand to say "20 casualties".
+            case 5: ImGui::TextUnformatted(grouped(tally.kills / 1000).c_str()); break;
+            case 6: ImGui::TextUnformatted(grouped(tally.losses / 1000).c_str()); break;
             default: ImGui::TextDisabled("-"); break;
             }
         }
@@ -397,7 +416,7 @@ namespace {
         const bool meaningful = (branch == Combat::Branch::Land ||
             branch == Combat::Branch::Naval);
         if (meaningful && men > 0) {
-            ImGui::Text("%d", men);
+            ImGui::TextUnformatted(grouped(men).c_str());
         }
         else {
             ImGui::TextDisabled("---");
@@ -510,11 +529,11 @@ namespace {
                 const int ourMen = attacked ? entry.attackerMen : entry.defenderMen;
 
                 ImGui::TableNextColumn();
-                ImGui::Text("%.1f", killed / 1000.0);
+                ImGui::TextUnformatted(grouped(killed / 1000).c_str());
                 ImGui::TableNextColumn();
                 drawMen(theirMen, entry.branch);
                 ImGui::TableNextColumn();
-                ImGui::Text("%.1f", lost / 1000.0);
+                ImGui::TextUnformatted(grouped(lost / 1000).c_str());
                 ImGui::TableNextColumn();
                 drawMen(ourMen, entry.branch);
                 ImGui::TableNextColumn();

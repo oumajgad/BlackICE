@@ -48,9 +48,21 @@ function BiceLibGui.Setup.RefreshPlayers()
     pcall(BiceData.Players.Determine)
 end
 
+--- Points every page at a country.
+---
+--- Any tag will do, not only a human player's - the wx utility let one be typed into
+--- its choice control and this keeps that. Select() refuses a tag that is not a
+--- country at all, and one whose player has opted out of being inspected; those look
+--- the same from here, so the reason says both.
 function BiceLibGui.Setup.SelectPlayer(tag)
-    local ok, err = pcall(BiceData.Players.Select, tag)
-    if not ok and BiceLibLuaLog ~= nil then
-        BiceLibLuaLog("Setup.SelectPlayer failed: " .. tostring(err))
-    end
+    return Page.Guard(function()
+        local selected = BiceData.Players.Select(tag)
+        if not selected then
+            return {
+                available = false,
+                reason = "not a country, or its player does not allow it",
+            }
+        end
+        return { available = true, tag = string.upper(tostring(tag)) }
+    end)
 end
