@@ -66,21 +66,45 @@ namespace {
         return (msg >= WM_KEYFIRST && msg <= WM_KEYLAST);
     }
 
+    /**
+    @brief shows or hides the overlay, leaving no input behind on either side of it
+
+    ImGui takes input as a queue and empties it in NewFrame, which only runs while the
+    overlay is drawing. So a hidden overlay that still accepted messages would pile up
+    every key pressed at the game, and play the lot into whatever had keyboard focus
+    the moment it was opened again - arrows scrolled across the map arriving as arrows
+    in a list.
+
+    Nothing is fed to ImGui while hidden, and both the queue and the held keys are
+    dropped on the way through here, so neither side inherits the other's input.
+    */
+    void setVisible(bool show) {
+        visible = show;
+        if (!imguiReady) {
+            return;
+        }
+
+        ImGuiIO& io = ImGui::GetIO();
+        io.ClearEventsQueue();
+        io.ClearInputKeys();
+        io.ClearInputMouse();
+    }
+
     LRESULT CALLBACK hookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         if (msg == WM_KEYDOWN && wParam == VK_INSERT) {
-            visible = !visible;
+            setVisible(!visible);
             return 0;
         }
 
-        if (imguiReady) {
+        // Only while it is on screen. A hidden overlay has no use for input, and
+        // queueing it would only mean replaying it later.
+        if (imguiReady && visible) {
             ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 
-            if (visible) {
-                ImGuiIO& io = ImGui::GetIO();
-                if ((io.WantCaptureMouse && isMouseMessage(msg)) ||
-                    (io.WantCaptureKeyboard && isKeyboardMessage(msg))) {
-                    return 1; // Don't let the game react to input meant for the overlay
-                }
+            ImGuiIO& io = ImGui::GetIO();
+            if ((io.WantCaptureMouse && isMouseMessage(msg)) ||
+                (io.WantCaptureKeyboard && isKeyboardMessage(msg))) {
+                return 1; // Don't let the game react to input meant for the overlay
             }
         }
 
@@ -189,10 +213,10 @@ namespace {
             // while the game sits at the menu.
             Gui::warmupStep();
 
-        // Files finished combats away. Like the warm up, this happens whether or
-        // not the overlay is showing: the record is of the campaign, not of the
-        // time someone spent looking at it.
-        Combat::Store::update();
+            // Files finished combats away. Like the warm up, this happens whether or
+            // not the overlay is showing: the record is of the campaign, not of the
+            // time someone spent looking at it.
+            Combat::Store::update();
 
             if (visible) {
                 renderOverlay(device);
@@ -433,7 +457,7 @@ bool Overlay::install() {
 }
 
 void Overlay::toggle() {
-    visible = !visible;
+    setVisible(!visible);
 }
 
 bool Overlay::isVisible() {
