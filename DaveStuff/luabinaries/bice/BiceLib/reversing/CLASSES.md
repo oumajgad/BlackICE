@@ -155,7 +155,8 @@ combatants both gave up their country and their losses at these offsets (**seen*
 | +0x54 | the country list the game takes a tag from - **emptied on the beaten side** | read |
 | +0x5c | zero when that list is empty, which is how the game decides to write `---` | read |
 | +0x64 | the side's own countries, **kept** when +0x54 is emptied - where the loser's name comes from | read, seen |
-| +0x84 | **losses, in thousandths** - 21 losses read back as 21900. A subunit destroyed outright adds exactly 1000 | seen, read |
+| +0x74, +0x78 | **the men on this side, per subunit type** - summed over a thousand it is the "out of 25700 troops" the battle message prints, and the game builds it exactly that way at 0x005745f4. Only men in a land or naval fight: an air combat counts subunits here, a bombing raid leaves it empty | read, seen |
+| +0x84 | **losses, in thousandths** - 21 losses read back as 21900, and the message prints this over a thousand as its casualties. A subunit destroyed outright adds exactly 1000 | seen, read |
 | +0x88, +0x8c | **subunits destroyed, per type** - a vector with an entry per kind of brigade, ship or plane, each holding 1000 per one destroyed. Its sum over a thousand is how many were lost outright. Nothing in BiceLib reads it | read |
 | +0x98 | damage short of destruction, per type, the same shape | read |
 

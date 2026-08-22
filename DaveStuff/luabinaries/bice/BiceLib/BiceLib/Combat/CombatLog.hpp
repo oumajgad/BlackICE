@@ -9,11 +9,11 @@
  * for: the function that records an entry is handed the CCombat itself, still alive,
  * with both its combatants.
  *
- * This is the capture side. Everything the report needs - both countries, the losses,
- * the province, the branch and who won - is read out by name. Whole blocks of both
- * combatants are kept verbatim as well, and the Combat Reports page offers a search
- * over them: that is how the losses at +0x84 were found, and it is what the next
- * field wanted from a combat will be found with.
+ * Everything the report needs - both countries, the province, the branch, who won,
+ * the losses and the men each side had - is read out by name here. Whole blocks of the
+ * combatants used to be kept beside that, for a search on the page to hunt an unknown
+ * field through; there is nothing left to hunt, and the reversing folder has the
+ * scripts for the next one.
  *
  * The hook runs on whichever thread the game finishes a combat on, so everything here
  * is behind a lock and does no more work than copying bytes.
@@ -22,8 +22,6 @@
 #include <cstdint>
 
 namespace Combat {
-    const int SIDE_BYTES = 0x100;
-    const int COMBAT_BYTES = 0x60;
     const int MAX_RECORDS = 64;
 
     /**
@@ -89,8 +87,13 @@ namespace Combat {
         // needs from a combat.
         int losses = 0;
 
-        bool read = false;
-        unsigned char raw[SIDE_BYTES] = {};
+        // How many men were in the fight on this side.
+        //
+        // Copied from what the game does to print "out of 25700 troops" when a battle
+        // ends: it walks every subunit type there is and adds up the tally kept per
+        // type at +0x74, each divided by a thousand. Numbers rather than pointers, so
+        // unlike the units themselves they are still there once the fight is over.
+        int men = 0;
     };
 
     struct Record
@@ -105,7 +108,6 @@ namespace Combat {
 
         Side attacker;
         Side defender;
-        unsigned char raw[COMBAT_BYTES] = {};
     };
 
     /**@brief starts or stops capturing. Enabling installs the hook, once*/

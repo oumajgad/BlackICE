@@ -13,8 +13,11 @@
 // lost, and so counts for nobody: the report says how many of those a period holds
 // rather than quietly showing a short total.
 //
-// How all of that was worked out - and the workbench it was worked out with, which is
-// no longer here - is in the reversing folder beside the solution.
+// The men each side had in a fight are read the way the game reads them for its own
+// battle message, out of a tally kept per subunit type - so the losses beside them are
+// a share of something rather than a number on their own.
+//
+// How all of that was worked out is in the reversing folder beside the solution.
 
 #include <Gui/GuiPage.hpp>
 #include <Gui/CountrySelection.hpp>
@@ -382,6 +385,26 @@ namespace {
     }
 
     /**
+    @brief the headcount beside a casualty figure, or "---" where it is not one
+
+    The tally the men come from only holds men in a land or naval battle, which is
+    also where the game itself prints them as troops. An air combat counts subunits in
+    it while its losses stay a fraction of strength, so the two do not belong on one
+    line, and a bombing raid leaves it empty altogether. Showing nothing beats showing
+    a number that means something else.
+    */
+    void drawMen(int men, Combat::Branch branch) {
+        const bool meaningful = (branch == Combat::Branch::Land ||
+            branch == Combat::Branch::Naval);
+        if (meaningful && men > 0) {
+            ImGui::Text("%d", men);
+        }
+        else {
+            ImGui::TextDisabled("---");
+        }
+    }
+
+    /**
     @brief the battles this country has fought, most recent first
 
     The figures above say how a war is going; this says which battles made it go that
@@ -432,7 +455,7 @@ namespace {
             ? available
             : wanted;
 
-        if (ImGui::BeginTable("battles", 8, ImGuiTableFlags_RowBg |
+        if (ImGui::BeginTable("battles", 10, ImGuiTableFlags_RowBg |
             ImGuiTableFlags_BordersInner | ImGuiTableFlags_SizingStretchProp |
             ImGuiTableFlags_ScrollY, ImVec2(0.0f, height))) {
             ImGui::TableSetupColumn("Ended", ImGuiTableColumnFlags_WidthStretch, 1.2f);
@@ -441,7 +464,9 @@ namespace {
             ImGui::TableSetupColumn("Role", ImGuiTableColumnFlags_WidthStretch, 0.7f);
             ImGui::TableSetupColumn("Against", ImGuiTableColumnFlags_WidthStretch, 0.7f);
             ImGui::TableSetupColumn("Killed", ImGuiTableColumnFlags_WidthStretch, 0.6f);
+            ImGui::TableSetupColumn("Of", ImGuiTableColumnFlags_WidthStretch, 0.7f);
             ImGui::TableSetupColumn("Lost", ImGuiTableColumnFlags_WidthStretch, 0.6f);
+            ImGui::TableSetupColumn("Of", ImGuiTableColumnFlags_WidthStretch, 0.7f);
             ImGui::TableSetupColumn("Province", ImGuiTableColumnFlags_WidthStretch, 1.4f);
             ImGui::TableHeadersRow();
 
@@ -476,13 +501,22 @@ namespace {
                 ImGui::TableNextColumn();
                 ImGui::TextUnformatted(attacked ? entry.defenderTag : entry.attackerTag);
 
-                // One side's losses are the other's kills, so both come from the pair.
+                // One side's losses are the other's kills, so both come from the
+                // pair - and each is shown against the men that side had in the fight,
+                // since a number of casualties says little on its own.
                 const int killed = attacked ? entry.defenderLosses : entry.attackerLosses;
                 const int lost = attacked ? entry.attackerLosses : entry.defenderLosses;
+                const int theirMen = attacked ? entry.defenderMen : entry.attackerMen;
+                const int ourMen = attacked ? entry.attackerMen : entry.defenderMen;
+
                 ImGui::TableNextColumn();
                 ImGui::Text("%.1f", killed / 1000.0);
                 ImGui::TableNextColumn();
+                drawMen(theirMen, entry.branch);
+                ImGui::TableNextColumn();
                 ImGui::Text("%.1f", lost / 1000.0);
+                ImGui::TableNextColumn();
+                drawMen(ourMen, entry.branch);
                 ImGui::TableNextColumn();
                 ImGui::TextUnformatted(provinceLabel(entry.provinceId).c_str());
             }

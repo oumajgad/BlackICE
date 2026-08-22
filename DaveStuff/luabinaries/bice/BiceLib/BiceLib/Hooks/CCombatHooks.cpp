@@ -84,6 +84,7 @@ bool Hooks::Combat::install() {
     reason = "installed";
     INFO_OUT(printf("Combat: recording hook installed at %#010x\n",
         Hooks::MODULE_BASE + RECORD_FUNCTION));
+
     return true;
 }
 

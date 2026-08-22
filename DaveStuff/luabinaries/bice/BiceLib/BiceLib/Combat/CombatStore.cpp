@@ -21,8 +21,8 @@ namespace {
     // alternative is carrying every past shape of the line forever, and this file is
     // written by one program and read by the same one.
     const char* HEADER = "# BiceLib combat record: tick;branch;province;"
-        "attackerTag;attackerId;attackerLosses;defenderTag;defenderId;defenderLosses;"
-        "winner\n"
+        "attackerTag;attackerId;attackerLosses;attackerMen;"
+        "defenderTag;defenderId;defenderLosses;defenderMen;winner\n"
         "# branch: L land, A air, N naval, and a bombing raid in lower case - g on a "
         "province, l on the land units in one, n on ships\n";
 
@@ -119,12 +119,13 @@ namespace {
             char branch = '?';
             char winner = '?';
             unsigned int tick = 0;
-            if (sscanf_s(line, "%u;%c;%d;%7[^;];%d;%d;%7[^;];%d;%d;%c",
+            if (sscanf_s(line, "%u;%c;%d;%7[^;];%d;%d;%d;%7[^;];%d;%d;%d;%c",
                 &tick, &branch, 1, &entry.provinceId,
                 entry.attackerTag, static_cast<unsigned>(sizeof(entry.attackerTag)),
-                &entry.attackerId, &entry.attackerLosses,
+                &entry.attackerId, &entry.attackerLosses, &entry.attackerMen,
                 entry.defenderTag, static_cast<unsigned>(sizeof(entry.defenderTag)),
-                &entry.defenderId, &entry.defenderLosses, &winner, 1) < 10) {
+                &entry.defenderId, &entry.defenderLosses, &entry.defenderMen,
+                &winner, 1) < 12) {
                 continue; // a line we cannot read is skipped, not fatal
             }
 
@@ -151,10 +152,10 @@ namespace {
             fputs(HEADER, file);
         }
 
-        fprintf(file, "%u;%c;%d;%s;%d;%d;%s;%d;%d;%c\n",
+        fprintf(file, "%u;%c;%d;%s;%d;%d;%d;%s;%d;%d;%d;%c\n",
             entry.tick, branchLetter(entry.branch), entry.provinceId,
-            entry.attackerTag, entry.attackerId, entry.attackerLosses,
-            entry.defenderTag, entry.defenderId, entry.defenderLosses,
+            entry.attackerTag, entry.attackerId, entry.attackerLosses, entry.attackerMen,
+            entry.defenderTag, entry.defenderId, entry.defenderLosses, entry.defenderMen,
             winnerLetter(entry.winner));
         fclose(file);
     }
@@ -269,9 +270,11 @@ void Combat::Store::update() {
         strncpy_s(entry.attackerTag, record.attacker.tag, _TRUNCATE);
         entry.attackerId = record.attacker.countryId;
         entry.attackerLosses = record.attacker.losses;
+        entry.attackerMen = record.attacker.men;
         strncpy_s(entry.defenderTag, record.defender.tag, _TRUNCATE);
         entry.defenderId = record.defender.countryId;
         entry.defenderLosses = record.defender.losses;
+        entry.defenderMen = record.defender.men;
 
         if (!known(entry)) {
             loaded.push_back(entry);

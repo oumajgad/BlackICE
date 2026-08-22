@@ -13,6 +13,11 @@
  *
  * Hooking there rather than at either of the two places a combat can end means one
  * hook catches land, air and naval alike.
+ *
+ * "Still alive" is not quite true of the units: by the time this runs the combatants
+ * have been emptied of them. What the two sides were made of is still there in the
+ * per-type tallies beside them, which is where the size of a force is read from - see
+ * Combat/CombatLog.
  */
 namespace Hooks {
     namespace Combat {

@@ -39,10 +39,12 @@ namespace Combat {
         char attackerTag[8] = {};
         int attackerId = 0;
         int attackerLosses = 0; // thousandths
+        int attackerMen = 0;    // what it had in the fight, whole men
 
         char defenderTag[8] = {};
         int defenderId = 0;
         int defenderLosses = 0;
+        int defenderMen = 0;
     };
 
     /**@brief what one country's fighting came to over a stretch of time*/

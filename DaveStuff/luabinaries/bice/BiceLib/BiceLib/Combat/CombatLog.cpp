@@ -39,6 +39,18 @@ namespace {
     // searching for the figure the game reported: 21 losses read back as 21900.
     const uintptr_t COMBATANT_LOSSES = 0x84;
 
+    // The men on this side, kept per subunit type: a vector of counts at +0x74,
+    // ending at +0x78, each a thousandth-scaled headcount.
+    //
+    // Read off the message the game writes when a battle ends, at 0x005745f4, which
+    // walks every subunit type there is and sums this array over a thousand to print
+    // "out of 25700 troops". Doing the same here rather than hooking that function,
+    // because it only runs for battles the player is told about.
+    const uintptr_t COMBATANT_MEN_BEGIN = 0x74;
+    const uintptr_t COMBATANT_MEN_END = 0x78;
+    const int MAX_SUBUNIT_TYPES = 4096;
+    const int MEN_CHUNK = 256;
+
     // The vftable is what separates the kinds of combat - they are different classes
     // rather than one class with a type field. Addresses from the RTTI export,
     // relative to the module.
@@ -136,6 +148,55 @@ namespace {
         return true;
     }
 
+    /**
+    @brief how many men this side had in the fight
+
+    The same sum the game itself makes to say what a battle was fought with, so the
+    losses beside it can be read as a share of something. Both are in the same
+    currency: a loss of 27200 against 25700 men is the 27 casualties of 25700 troops
+    the game reports.
+    */
+    void readMen(uintptr_t combatant, Combat::Side& side) {
+        if (combatant == 0) {
+            return;
+        }
+
+        uint32_t begin = 0;
+        uint32_t end = 0;
+        if (!Mem::tryRead(combatant + COMBATANT_MEN_BEGIN, begin) ||
+            !Mem::tryRead(combatant + COMBATANT_MEN_END, end)) {
+            return;
+        }
+        if (begin == 0 || end < begin || ((end - begin) % 4) != 0) {
+            return;
+        }
+
+        const uint32_t entries = (end - begin) / 4;
+        if (entries > MAX_SUBUNIT_TYPES) {
+            return; // not the vector it was taken for
+        }
+
+        int total = 0;
+        int32_t chunk[MEN_CHUNK] = {};
+        for (uint32_t at = 0; at < entries; at += MEN_CHUNK) {
+            const uint32_t take = (entries - at < MEN_CHUNK)
+                ? (entries - at)
+                : static_cast<uint32_t>(MEN_CHUNK);
+            if (!Mem::tryReadBytes(begin + at * 4, chunk, take * sizeof(int32_t))) {
+                return;
+            }
+
+            // A thousandth at a time, the way the game divides each entry before
+            // adding it rather than dividing the sum.
+            for (uint32_t i = 0; i < take; i++) {
+                if (chunk[i] > 0) {
+                    total += chunk[i] / 1000;
+                }
+            }
+        }
+        side.men = total;
+    }
+
     /**@brief the tag and id of a side, by the same rule the game itself applies*/
     void readSide(uintptr_t combatant, Combat::Side& side) {
         side.address = combatant;
@@ -143,8 +204,6 @@ namespace {
         if (combatant == 0) {
             return;
         }
-
-        side.read = Mem::tryReadBytes(combatant, side.raw, Combat::SIDE_BYTES);
 
         uint32_t losses = 0;
         if (Mem::tryRead(combatant + COMBATANT_LOSSES, losses)) {
@@ -292,10 +351,6 @@ void Combat::note(uintptr_t combat) {
         record.branch = branchOf(vftable);
     }
 
-    if (!Mem::tryReadBytes(combat, record.raw, COMBAT_BYTES)) {
-        memset(record.raw, 0, COMBAT_BYTES);
-    }
-
     uint8_t flag = 0;
     if (Mem::tryRead(combat + COMBAT_FLAG, flag)) {
         record.flag = flag;
@@ -319,6 +374,8 @@ void Combat::note(uintptr_t combat) {
     }
     readSide(attacker, record.attacker);
     readSide(defender, record.defender);
+    readMen(attacker, record.attacker);
+    readMen(defender, record.defender);
 
     // Who won, which is simply who still had a country in the fight. The game's own
     // recording asks the same question to decide whether to write a tag or "---", so
