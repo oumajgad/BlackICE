@@ -93,6 +93,51 @@ python watch.py CCombatHistoryEntry --instances
 This is the one that finds counters. Fight a battle, press enter, and whatever counts
 combats will have gone up by one while almost nothing else moved.
 
+## Where the memory goes
+
+A second family of scripts, added while chasing a 4 GB address space that kept running
+out. They read the running game from outside and write nothing.
+
+**`memorymap.py`** - the overlay's Memory page, from outside: committed against
+reserved, split by private/mapped/image, the largest free block and the largest single
+allocation. The last two are the pair that matters - a crash is a request bigger than
+anything left, not a percentage.
+
+**`census.py`** - every class's live objects, by scanning for its vftable.
+
+```
+python census.py --top 40
+python census.py --scales-with 108     # what is built per country
+```
+
+`--scales-with` is what found the historical models: 5,323,320 objects turned out to be
+108 country tags x 1,643 unit types x 30 model levels, at 48 bytes each, and the 30 was
+`HISTORICAL_MODEL_MAX` in `common/defines.lua`.
+
+**`regionprofile.py`** - what memory is made of when it is not objects: zeroes,
+pointers, text. Most of it is not objects.
+
+```
+python regionprofile.py --top 12
+python regionprofile.py --save empty.json     # remember what is empty now
+python regionprofile.py --compare empty.json  # what has been written since
+```
+
+The save/compare pair answers "is this pool ever used". It refuses to call a region
+written if the allocator handed the address to something else meanwhile.
+
+**`pointsto.py`** - who holds a pointer into a stretch of memory, and so who owns it.
+Search for an exact base address, not a range: a range wide enough to be interesting
+matches ordinary code bytes constantly.
+
+**`crashdump.py`** - a minidump without a debugger: the exception, the faulting module
+and offset, what address it touched, and which modules the faulting thread's stack
+touches.
+
+**`symbolize.py`** - `BiceLib.dll+0x6c2b` into `enableOverlay+0x3b, bice.cpp:1032`,
+through dbghelp and the pdb beside the dll. Only works for BiceLib; the game has no
+symbols.
+
 ## A workflow that works
 
 1. `findInstances.py CCombatHistory` - how many, and where.
