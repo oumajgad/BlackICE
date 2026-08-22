@@ -82,7 +82,7 @@ economy = {
 
 military = {
 	MAX_MANPOWER = 10,
-	HISTORICAL_MODEL_MAX = 30, 	-- historical models max
+	HISTORICAL_MODEL_MAX = 14, 	-- historical models max. The game builds this many for every unit type in every country, defined or not: at 30 that was 5.3 million objects and 244 MB of the 4 GB address space. The mod's highest model is 13.
 	BASE_CHANCE_TO_AVOID_HIT = 88.0,	-- Base chance to avoid hit if defences left.
 	CHANCE_TO_AVOID_HIT_AT_NO_DEF = 70.0,	-- chance to avoid hit if no defences left.
 	RIVER_CROSSING_PENALTY = -0.8,	-- base river crossing penalty.
