@@ -6,6 +6,7 @@
 #include <psapi.h>
 #include <cfloat>
 #include <cstdio>
+#include <string>
 
 #include <imgui.h>
 
@@ -405,7 +406,16 @@ namespace {
 
         ImGui::Spacing();
         ImGui::TextWrapped("Out of memory happens when no single free block is large enough, "
-            "so the largest free block can matter more than the totals.");
+            "so the largest free block can matter more than the totals - though what "
+            "matters is whether it still clears the largest single allocation the game "
+            "makes, not how far it has fallen.");
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("A shrinking free block cannot be recovered while the game\n"
+                "runs: an allocation cannot be moved, because everything\n"
+                "pointing at it holds its address. Compacting the heaps was\n"
+                "tried and changed nothing - see the largest private region\n"
+                "below for what actually has to fit.");
+        }
 
         drawBreakdown();
         drawLua();

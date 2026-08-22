@@ -13,6 +13,7 @@
 #include <Gui/GuiPage.hpp>
 #include <Combat/CombatStore.hpp>
 #include <Gui/TextureStats.hpp>
+#include <MemScan.hpp>
 #include <Gui/Warmup.hpp>
 #include <utils.hpp>
 
@@ -50,6 +51,15 @@ namespace {
 
     HWND gameWindow = nullptr;
     IDirect3DDevice9* renderDevice = nullptr;
+
+    // The probe device whose vtable was read, kept alive on purpose: on the native
+    // runtime that table is the device's own memory and dies with it.
+    IDirect3DDevice9* probeVTableOwner = nullptr;
+
+    // Whether every device shares one vtable, which decides how the game's device can
+    // be reached at all. DXVK shares; the native runtime gives each device its own,
+    // where patching a table only ever reaches the device it came from.
+    bool sharedDeviceVTable = false;
     bool installed = false;
     bool imguiReady = false;
 
@@ -265,6 +275,14 @@ namespace {
     fine: they are not in the live table and releasing them does nothing.
     */
     void hookTextureVTable(IDirect3DTexture9* texture) {
+        // The same table-per-object question as the device's, and here it is not worth
+        // solving: where each texture has its own table, patching one would only count
+        // that texture, and the table would die with it - leaving the saved Release
+        // pointing at freed memory. Live counts are a nicety; that is not.
+        if (!sharedDeviceVTable) {
+            return;
+        }
+
         if (InterlockedCompareExchange(&textureVTableClaimed, 1, 0) != 0) {
             return;
         }
@@ -314,6 +332,57 @@ namespace {
         return result;
     }
 
+    /**
+    @brief redirects a function itself, for when patching a vtable cannot reach it
+
+    Microsoft builds its DLLs ready for this: every function starts with a two byte
+    `mov edi, edi` that does nothing, and sits behind five bytes of padding. So a five
+    byte jump goes in the padding, the do-nothing instruction becomes a two byte jump
+    back into it, and the original is still there from its third byte on - which is
+    what callers of the original then call.
+
+    Nothing has to be disassembled and nothing is copied, which is why this is worth
+    preferring over a trampoline wherever the padding is there. Where it is not - a
+    DLL built by anything but MSVC, DXVK among them - this refuses rather than
+    guessing at instruction boundaries.
+
+    @param original set to the function as it was, two bytes in
+    */
+    bool hotPatchFunction(void* target, void* replacement, void** original) noexcept {
+        unsigned char* code = reinterpret_cast<unsigned char*>(target);
+
+        if (code[0] != 0x8B || code[1] != 0xFF) {
+            return false; // not the mov edi, edi a hot patchable function begins with
+        }
+        for (int i = -5; i < 0; i++) {
+            if (code[i] != 0x90 && code[i] != 0xCC) {
+                return false; // the padding is in use, so there is nowhere to jump from
+            }
+        }
+
+        DWORD protection;
+        if (!VirtualProtect(code - 5, 7, PAGE_EXECUTE_READWRITE, &protection)) {
+            return false;
+        }
+
+        // jmp rel32, counted from the end of the jump itself, into our function.
+        const long relative = static_cast<long>(
+            reinterpret_cast<unsigned char*>(replacement) - (code - 5) - 5);
+        code[-5] = 0xE9;
+        memcpy(code - 4, &relative, sizeof(relative));
+
+        // jmp rel8 back seven bytes: two for this jump, five for the one above.
+        code[0] = 0xEB;
+        code[1] = 0xF9;
+
+        DWORD trash;
+        VirtualProtect(code - 5, 7, protection, &trash);
+        FlushInstructionCache(GetCurrentProcess(), code - 5, 7);
+
+        *original = code + 2;
+        return true;
+    }
+
     bool patchVTableEntry(void** vtable, int index, void* replacement) noexcept {
         DWORD protection;
         if (!VirtualProtect(&vtable[index], sizeof(void*), PAGE_READWRITE, &protection)) {
@@ -327,8 +396,17 @@ namespace {
     }
 
     /**
-    @brief creates a throwaway device just to read the vtable d3d9.dll shares
-           between every device it hands out
+    @brief creates a device just to read the vtable d3d9.dll gives the ones it hands out
+
+    The device is **kept**, not released. Its vtable is only guaranteed to outlive it
+    where the vtable is static data in the module, which is true of DXVK and not of
+    the native runtime: there the table lives in memory the device owns, so releasing
+    it and then reading Present out of the table is a read of freed memory. That is
+    exactly what used to happen, and why the game would not start without DXVK.
+
+    So the probe stays alive for as long as the process does, along with the window it
+    was given. A null reference device costs almost nothing to keep; a hardware one is
+    only ever the fallback.
     */
     void** acquireDeviceVTable() {
         IDirect3D9* d3d = Direct3DCreate9(D3D_SDK_VERSION);
@@ -353,25 +431,96 @@ namespace {
         presentParams.hDeviceWindow = probeWindow;
         presentParams.BackBufferFormat = D3DFMT_UNKNOWN;
 
-        IDirect3DDevice9* probeDevice = nullptr;
-        HRESULT hr = d3d->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, probeWindow,
-            D3DCREATE_SOFTWARE_VERTEXPROCESSING | D3DCREATE_NOWINDOWCHANGES,
-            &presentParams, &probeDevice);
+        // Hardware first, because the game's device is a hardware one and only devices
+        // of the same kind are guaranteed to share an implementation - and therefore a
+        // vtable to patch.
+        //
+        // A null reference device was tried here first, on the grounds that it owns no
+        // adapter and so cannot disturb anything. It launched and never drew: DXVK
+        // gives every device the same vtable whatever its type, but the native runtime
+        // gives a null reference device its own, so the patch went somewhere the game
+        // never looked. It stays as the fallback, where a table that is never used
+        // beats no overlay at all.
+        const D3DDEVTYPE kinds[] = { D3DDEVTYPE_HAL, D3DDEVTYPE_NULLREF };
 
         void** vtable = nullptr;
-        if (SUCCEEDED(hr) && probeDevice != nullptr) {
-            vtable = *reinterpret_cast<void***>(probeDevice);
-            probeDevice->Release();
-        }
-        else {
-            ERROR_OUT(printf("Overlay: CreateDevice failed (%#010x)\n", hr));
+        for (int i = 0; i < 2 && vtable == nullptr; i++) {
+            IDirect3DDevice9* probeDevice = nullptr;
+            const HRESULT hr = d3d->CreateDevice(D3DADAPTER_DEFAULT, kinds[i],
+                probeWindow, D3DCREATE_SOFTWARE_VERTEXPROCESSING | D3DCREATE_NOWINDOWCHANGES,
+                &presentParams, &probeDevice);
+
+            if (SUCCEEDED(hr) && probeDevice != nullptr) {
+                vtable = *reinterpret_cast<void***>(probeDevice);
+
+                // Held, not released - see above. Nothing else needs it, so it is
+                // only remembered to make the leak deliberate rather than accidental.
+                probeVTableOwner = probeDevice;
+                INFO_OUT(printf("Overlay: device vtable read from a %s probe\n",
+                    kinds[i] == D3DDEVTYPE_NULLREF ? "null reference" : "hardware"));
+
+                // Whether patching this table can reach the game's device at all.
+                //
+                // The whole approach rests on one vtable being shared by every device
+                // of a kind. A second device of the same kind either points at the
+                // same table, in which case so does the game's, or it does not, in
+                // which case nothing patched here will ever be called and the log
+                // should say so rather than leaving an overlay that quietly does
+                // nothing.
+                IDirect3DDevice9* second = nullptr;
+                if (SUCCEEDED(d3d->CreateDevice(D3DADAPTER_DEFAULT, kinds[i],
+                    probeWindow, D3DCREATE_SOFTWARE_VERTEXPROCESSING | D3DCREATE_NOWINDOWCHANGES,
+                    &presentParams, &second)) && second != nullptr) {
+                    void** other = *reinterpret_cast<void***>(second);
+                    sharedDeviceVTable = (other == vtable);
+
+                    if (sharedDeviceVTable) {
+                        INFO_OUT(printf("Overlay: devices share one vtable, so patching "
+                            "it reaches the game's device\n"));
+                    }
+                    else {
+                        // Two tables, but they should still name the same functions -
+                        // and those can be patched instead. If even the entries differ
+                        // there is nothing left that every device goes through.
+                        const bool sameEntries =
+                            other[VTABLE_PRESENT] == vtable[VTABLE_PRESENT] &&
+                            other[VTABLE_RESET] == vtable[VTABLE_RESET] &&
+                            other[VTABLE_CREATE_TEXTURE] == vtable[VTABLE_CREATE_TEXTURE];
+
+                        INFO_OUT(printf("Overlay: every device has its own vtable "
+                            "(%p vs %p), %s\n", vtable, other,
+                            sameEntries ? "but they hold the same functions - hooking those"
+                                        : "and they hold different functions"));
+
+                        if (!sameEntries) {
+                            vtable = nullptr; // nothing here can reach the game
+                        }
+                    }
+                    second->Release();
+                }
+            }
+            else {
+                ERROR_OUT(printf("Overlay: %s CreateDevice failed (%#010x)\n",
+                    kinds[i] == D3DDEVTYPE_NULLREF ? "null reference" : "hardware", hr));
+            }
         }
 
+        // The interface can go; the device holds its own reference to what it needs.
+        // The window and its class stay, because the device was given that window and
+        // outliving its own window is not something a device has to tolerate.
         d3d->Release();
-        if (probeWindow != nullptr) {
-            DestroyWindow(probeWindow);
+
+        // A vtable that cannot be read is not a vtable. Better to find that out here,
+        // where the answer is a message, than three instructions later where it is an
+        // access violation inside the game.
+        void* entries[VTABLE_CREATE_TEXTURE + 1] = {};
+        if (vtable != nullptr &&
+            !Mem::tryReadBytes(reinterpret_cast<uintptr_t>(vtable), entries,
+                sizeof(entries))) {
+            ERROR_OUT(printf("Overlay: the device vtable at %p could not be read\n",
+                vtable));
+            vtable = nullptr;
         }
-        UnregisterClassW(windowClass.lpszClassName, windowClass.hInstance);
 
         return vtable;
     }
@@ -436,15 +585,33 @@ bool Overlay::install() {
     originalReset = reinterpret_cast<ResetFn>(vtable[VTABLE_RESET]);
     originalCreateTexture = reinterpret_cast<CreateTextureFn>(vtable[VTABLE_CREATE_TEXTURE]);
 
-    if (!patchVTableEntry(vtable, VTABLE_PRESENT, hookedPresent) ||
-        !patchVTableEntry(vtable, VTABLE_RESET, hookedReset)) {
-        ERROR_OUT(printf("Overlay: could not patch the device vtable\n"));
-        return false;
+    bool textureHooked = false;
+    if (sharedDeviceVTable) {
+        // One table for every device, so redirecting it is enough and leaves the
+        // runtime's own code untouched.
+        if (!patchVTableEntry(vtable, VTABLE_PRESENT, hookedPresent) ||
+            !patchVTableEntry(vtable, VTABLE_RESET, hookedReset)) {
+            ERROR_OUT(printf("Overlay: could not patch the device vtable\n"));
+            return false;
+        }
+        textureHooked = patchVTableEntry(vtable, VTABLE_CREATE_TEXTURE, hookedCreateTexture);
+    }
+    else {
+        // A table each, so the functions they all point at are what to redirect.
+        if (!hotPatchFunction(originalPresent, hookedPresent,
+                reinterpret_cast<void**>(&originalPresent)) ||
+            !hotPatchFunction(originalReset, hookedReset,
+                reinterpret_cast<void**>(&originalReset))) {
+            ERROR_OUT(printf("Overlay: could not hook Present and Reset\n"));
+            return false;
+        }
+        textureHooked = hotPatchFunction(originalCreateTexture, hookedCreateTexture,
+            reinterpret_cast<void**>(&originalCreateTexture));
     }
 
     // Accounting only, so a failure here is not worth refusing to start over: the
     // overlay works without it and the Memory page says the numbers are missing.
-    if (patchVTableEntry(vtable, VTABLE_CREATE_TEXTURE, hookedCreateTexture)) {
+    if (textureHooked) {
         Gui::TextureStats::setHooked();
     }
     else {
