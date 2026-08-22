@@ -293,7 +293,10 @@ namespace {
                 "%s", status.c_str());
         }
         else if (dirty) {
-            ImGui::TextDisabled("Edited - press Apply to send it to the game");
+            // Amber, the same as every other warning in the utility: what is on screen
+            // is not what the game has.
+            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+                "Edited - press Apply to send it to the game");
         }
 
         ImGui::Spacing();
