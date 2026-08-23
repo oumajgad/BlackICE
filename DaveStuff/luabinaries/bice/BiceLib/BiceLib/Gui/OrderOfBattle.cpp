@@ -1,5 +1,11 @@
-#include <Oob/OrderOfBattle.hpp>
+#include <Gui/OrderOfBattle.hpp>
 
+#include <GameClasses/CCountry.hpp>
+#include <GameClasses/CLeader.hpp>
+#include <GameClasses/CMapProvince.hpp>
+#include <GameClasses/CRegiment.hpp>
+#include <GameClasses/CUnit.hpp>
+#include <HoiDataStructures.hpp>
 #include <MemScan.hpp>
 #include <TextEncoding.hpp>
 
@@ -10,64 +16,9 @@
 #include <vector>
 
 namespace {
-    // Offsets into the game's own structures. Every one of them came from the memory
-    // map in DaveStuff/mem and is only valid for this build of hoi3_tfh.exe - which
-    // is already true of every address in BiceLib.
-    namespace UnitOffset {
-        const uintptr_t selected = 0x4;
-        const uintptr_t type = 0x10;
-        const uintptr_t id = 0x14;
-        const uintptr_t regimentsFirst = 0x38;
-        const uintptr_t regimentCount = 0x40;
-        const uintptr_t upgradePriority = 0xA4;
-        const uintptr_t upgradeActive = 0xA5;
-        const uintptr_t reinforcementsActive = 0xA6;
-        const uintptr_t combatCooldown = 0xD4;
-        const uintptr_t supplyPercent = 0xFC;
-        const uintptr_t fuelPercent = 0x100;
-        const uintptr_t leader = 0x12C;
-        const uintptr_t province = 0x130;
-        const uintptr_t name = 0x16C;
-        const uintptr_t digIn = 0x1C8;
-        const uintptr_t combatArmsBonus = 0x1CC;
-        const uintptr_t higher = 0x1E0;
-        const uintptr_t lowerFirst = 0x1E4;
-        const uintptr_t level = 0x1F4;
-    }
-
-    namespace RegimentOffset {
-        const uintptr_t strength = 0x30;
-        const uintptr_t organisation = 0x60;
-        const uintptr_t name = 0x68;
-    }
-
-    namespace LeaderOffset {
-        const uintptr_t name = 0x4C;
-        const uintptr_t skill = 0x70;
-        const uintptr_t maxSkill = 0x74;
-    }
-
-    const uintptr_t COUNTRY_UNITS_LIST = 0xBAC;
-    const uintptr_t PROVINCE_ID = 0xD0;
-
-    // oob_level for a division, which is also what a lone brigade is held as.
-    const int LEVEL_DIVISION = 4;
-
-    // A linked list node: what it holds, then the two links.
-    const uintptr_t NODE_DATA = 0x0;
-    const uintptr_t NODE_NEXT = 0x8;
-
-    // The vtables that say what a unit is - CArmy, CNavy and CAir, the three classes
-    // an order of battle is made of. A unit whose vtable is none of these is not a
-    // unit at all, which is the check that keeps a stale pointer from being read as
-    // though it were one.
-    //
-    // Each of them has a second vtable as well, for the base it inherits at object
-    // offset 8. Those are not these and never appear at the start of a unit, so there
-    // is nothing to compare against them here.
-    const uintptr_t VFTABLE_LAND = 0x11BDE0C;  // CArmy
-    const uintptr_t VFTABLE_NAVAL = 0x11C869C; // CNavy
-    const uintptr_t VFTABLE_AIR = 0x11C8774;   // CAir
+    // What the game's structures look like is in GameClasses, a header per class, so
+    // that a field is described in one place and everything that reads it agrees.
+    // Only the two limits below belong to this file.
 
     // A country can field thousands of units; these bound the damage if a list turns
     // out to be circular or simply is not a list.
@@ -145,13 +96,13 @@ namespace {
             return Oob::Branch::Unknown;
         }
 
-        if (vftable == base + VFTABLE_LAND) {
+        if (vftable == base + CUnit::VFTable::CArmy) {
             return Oob::Branch::Land;
         }
-        if (vftable == base + VFTABLE_NAVAL) {
+        if (vftable == base + CUnit::VFTable::CNavy) {
             return Oob::Branch::Naval;
         }
-        if (vftable == base + VFTABLE_AIR) {
+        if (vftable == base + CUnit::VFTable::CAir) {
             return Oob::Branch::Air;
         }
         return Oob::Branch::Unknown;
@@ -179,12 +130,12 @@ namespace {
             }
 
             uint32_t data = 0;
-            if (Mem::tryRead(node + NODE_DATA, data) && data != 0) {
+            if (Mem::tryRead(node + HDS::NodeOffsets::data, data) && data != 0) {
                 found.push_back(data);
             }
 
             uint32_t next = 0;
-            if (!Mem::tryRead(node + NODE_NEXT, next)) {
+            if (!Mem::tryRead(node + HDS::NodeOffsets::next, next)) {
                 break;
             }
             node = next;
@@ -196,9 +147,9 @@ namespace {
         if (leader == 0) {
             return;
         }
-        unit.leaderName = readString(leader + LeaderOffset::name);
-        unit.leaderSkill = readValue<int32_t>(leader + LeaderOffset::skill);
-        unit.leaderMaxSkill = readValue<int32_t>(leader + LeaderOffset::maxSkill);
+        unit.leaderName = readString(leader + CLeader::Offsets::name);
+        unit.leaderSkill = readValue<int32_t>(leader + CLeader::Offsets::skill);
+        unit.leaderMaxSkill = readValue<int32_t>(leader + CLeader::Offsets::max_skill);
 
         // An unled unit still has something in the leader slot; the game calls it
         // "(no leader)". So a pointer is not enough to go on.
@@ -210,41 +161,41 @@ namespace {
         Oob::Unit unit;
         unit.address = address;
         unit.branch = branch;
-        unit.name = readString(address + UnitOffset::name);
-        unit.id = readValue<int32_t>(address + UnitOffset::id);
-        unit.type = readValue<int32_t>(address + UnitOffset::type);
-        unit.level = readValue<int32_t>(address + UnitOffset::level);
-        unit.selected = readValue<uint8_t>(address + UnitOffset::selected) != 0;
+        unit.name = readString(address + CUnit::Offsets::name);
+        unit.id = readValue<int32_t>(address + CUnit::Offsets::id);
+        unit.type = readValue<int32_t>(address + CUnit::Offsets::type);
+        unit.level = readValue<int32_t>(address + CUnit::Offsets::oob_level);
+        unit.selected = readValue<uint8_t>(address + CUnit::Offsets::is_selected) != 0;
 
-        unit.supplyPercent = readValue<int32_t>(address + UnitOffset::supplyPercent);
-        unit.fuelPercent = readValue<int32_t>(address + UnitOffset::fuelPercent);
-        unit.digIn = readValue<int32_t>(address + UnitOffset::digIn);
-        unit.combatArmsBonus = readValue<int32_t>(address + UnitOffset::combatArmsBonus);
-        unit.combatCooldown = readValue<int32_t>(address + UnitOffset::combatCooldown);
+        unit.supplyPercent = readValue<int32_t>(address + CUnit::Offsets::supply_received_percentage);
+        unit.fuelPercent = readValue<int32_t>(address + CUnit::Offsets::fuel_received_percentage);
+        unit.digIn = readValue<int32_t>(address + CUnit::Offsets::dig_in_level);
+        unit.combatArmsBonus = readValue<int32_t>(address + CUnit::Offsets::base_ca_bonus);
+        unit.combatCooldown = readValue<int32_t>(address + CUnit::Offsets::combat_cooldown);
 
-        unit.upgradePriority = readValue<uint8_t>(address + UnitOffset::upgradePriority) != 0;
-        unit.upgradeActive = readValue<uint8_t>(address + UnitOffset::upgradeActive) != 0;
+        unit.upgradePriority = readValue<uint8_t>(address + CUnit::Offsets::upgrade_prio) != 0;
+        unit.upgradeActive = readValue<uint8_t>(address + CUnit::Offsets::upgrade_active) != 0;
         unit.reinforcementsActive =
-            readValue<uint8_t>(address + UnitOffset::reinforcementsActive) != 0;
+            readValue<uint8_t>(address + CUnit::Offsets::reinforcements_active) != 0;
 
-        unit.regimentCount = readValue<int32_t>(address + UnitOffset::regimentCount);
+        unit.regimentCount = readValue<int32_t>(address + CUnit::Offsets::regiments_amount);
         if (unit.regimentCount < 0 || unit.regimentCount > 1000) {
             unit.regimentCount = 0;
         }
 
-        unit.leader = readValue<uint32_t>(address + UnitOffset::leader);
+        unit.leader = readValue<uint32_t>(address + CUnit::Offsets::leader_ptr);
         readLeader(unit.leader, unit);
 
-        unit.province = readValue<uint32_t>(address + UnitOffset::province);
+        unit.province = readValue<uint32_t>(address + CUnit::Offsets::current_province_ptr);
         if (unit.province != 0) {
-            unit.provinceId = readValue<int32_t>(unit.province + PROVINCE_ID);
+            unit.provinceId = readValue<int32_t>(unit.province + CMapProvince::Offsets::id);
         }
 
         // A division made of a single brigade takes no commander, so it is not
         // missing one. Exactly one regiment, not "one or fewer": a count we failed to
         // read comes back as zero, and that should show up as a unit worth looking at
         // rather than quietly excuse itself.
-        const bool takesNoLeader = (unit.level == LEVEL_DIVISION) && (unit.regimentCount == 1);
+        const bool takesNoLeader = (unit.level == CUnit::Level::Division) && (unit.regimentCount == 1);
         unit.leaderMissing = !unit.hasLeader && !takesNoLeader;
 
         return unit;
@@ -370,12 +321,12 @@ const char* Oob::levelName(int level, Branch branch) {
     }
 
     switch (level) {
-    case 0: return "Theatre";
-    case 1: return "Army Group";
-    case 2: return "Army";
-    case 3: return "Corps";
-    case 4: return "Division";
-    case 5: return "Navy";
+    case CUnit::Level::Theatre: return "Theatre";
+    case CUnit::Level::ArmyGroup: return "Army Group";
+    case CUnit::Level::Army: return "Army";
+    case CUnit::Level::Corps: return "Corps";
+    case CUnit::Level::Division: return "Division";
+    case CUnit::Level::Navy: return "Navy";
     default: return "Unit";
     }
 }
@@ -404,7 +355,7 @@ Oob::Tree Oob::read(uintptr_t country) {
     };
 
     std::vector<Pending> pending;
-    const std::vector<uintptr_t> topLevel = walkList(country + COUNTRY_UNITS_LIST);
+    const std::vector<uintptr_t> topLevel = walkList(country + CCountry::Offsets::units_linked_list_first_ptr);
     for (size_t i = 0; i < topLevel.size(); i++) {
         pending.push_back(Pending{ topLevel[i], -1 });
     }
@@ -441,7 +392,7 @@ Oob::Tree Oob::read(uintptr_t country) {
         tree.units.push_back(readUnit(address, branch));
         foundUnder.push_back(pending[at].foundUnder);
 
-        const std::vector<uintptr_t> below = walkList(address + UnitOffset::lowerFirst);
+        const std::vector<uintptr_t> below = walkList(address + CUnit::Offsets::lower_oob_unit_linked_list_first_ptr);
         for (size_t c = 0; c < below.size(); c++) {
             pending.push_back(Pending{ below[c], index });
         }
@@ -462,7 +413,7 @@ Oob::Tree Oob::read(uintptr_t country) {
         Unit& unit = tree.units[i];
         int parent = foundUnder[i];
 
-        const uintptr_t higher = readValue<uint32_t>(unit.address + UnitOffset::higher);
+        const uintptr_t higher = readValue<uint32_t>(unit.address + CUnit::Offsets::higher_oob_unit_ptr);
         const std::map<uintptr_t, int>::const_iterator found = indexOf.find(higher);
         if (higher != 0 && found != indexOf.end() && found->second != static_cast<int>(i)) {
             parent = found->second;
@@ -522,14 +473,14 @@ std::vector<Oob::Regiment> Oob::regiments(uintptr_t unit) {
         return found;
     }
 
-    const std::vector<uintptr_t> addresses = walkList(unit + UnitOffset::regimentsFirst);
+    const std::vector<uintptr_t> addresses = walkList(unit + CUnit::Offsets::regiments_linked_list_first_ptr);
     found.reserve(addresses.size());
 
     for (size_t i = 0; i < addresses.size(); i++) {
         Regiment regiment;
-        regiment.name = readString(addresses[i] + RegimentOffset::name);
-        regiment.strength = readValue<int32_t>(addresses[i] + RegimentOffset::strength);
-        regiment.organisation = readValue<int32_t>(addresses[i] + RegimentOffset::organisation);
+        regiment.name = readString(addresses[i] + CRegiment::Offsets::name);
+        regiment.strength = readValue<int32_t>(addresses[i] + CRegiment::Offsets::strength);
+        regiment.organisation = readValue<int32_t>(addresses[i] + CRegiment::Offsets::organisation);
         found.push_back(regiment);
     }
     return found;

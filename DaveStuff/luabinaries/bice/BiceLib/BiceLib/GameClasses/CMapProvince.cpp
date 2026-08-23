@@ -3,26 +3,6 @@
 #include <utils.hpp>
 
 namespace CMapProvince {
-    namespace Offsets {
-        uintptr_t CTerrain_ptr = 0xD4;
-        uintptr_t CModifierDefinitions_ptr = 0x114;
-        uintptr_t CProvinceBuilding_array_ptr = 0x310;
-
-        uintptr_t id = 0xD0;
-        uintptr_t supply_pool = 0x164;
-        uintptr_t fuel_pool = 0x168;
-        uintptr_t oil = 0x27C;
-        uintptr_t metal = 0x280;
-        uintptr_t energy = 0x284;
-        uintptr_t rares = 0x288;
-        uintptr_t manpower = 0x320;
-        uintptr_t leadership = 0x324;
-        uintptr_t owner_tag = 0x32C;
-        uintptr_t owner_id = 0x330;
-        uintptr_t controller_tag = 0x334;
-        uintptr_t controller_id = 0x338;
-    }
-
     CMapProvince Make(uintptr_t addr) {
         CMapProvince res = CMapProvince{};
         res.CTerrain_ptr = addr + Offsets::CTerrain_ptr;

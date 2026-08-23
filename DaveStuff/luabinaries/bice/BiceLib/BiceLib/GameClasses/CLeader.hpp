@@ -5,22 +5,22 @@
 
 namespace CLeader {
     namespace Offsets {
-        extern uintptr_t id;
-        extern uintptr_t trait_ll_start;
-        extern uintptr_t trait_ll_end;
-        extern uintptr_t number_of_traits;
-        extern uintptr_t unit_ptr;
-        // extern uintptr_t country_tag;
-        // extern uintptr_t country_id;
-        extern uintptr_t name;
-        // extern uintptr_t type;
-        extern uintptr_t rank;
-        extern uintptr_t skill;
-        extern uintptr_t max_skill;
-        extern uintptr_t experience;
-        // extern uintptr_t experience_2;
-        // extern uintptr_t loyalty;
-        // extern uintptr_t CLeaderHistoryOffset;
+        constexpr uintptr_t id = 0xC;
+        constexpr uintptr_t trait_ll_start = 0x30;
+        constexpr uintptr_t trait_ll_end = 0x34;
+        constexpr uintptr_t number_of_traits = 0x38;
+        constexpr uintptr_t unit_ptr = 0x40;
+        // constexpr uintptr_t country_tag = 0x44;
+        // constexpr uintptr_t country_id = 0x48;
+        constexpr uintptr_t name = 0x4C;
+        // constexpr uintptr_t type = 0x68;
+        constexpr uintptr_t rank = 0x6C;
+        constexpr uintptr_t skill = 0x70;
+        constexpr uintptr_t max_skill = 0x74;
+        constexpr uintptr_t experience = 0x78;
+        // constexpr uintptr_t experience_2 = 0x7C;
+        // constexpr uintptr_t loyalty = 0x80;
+        // constexpr uintptr_t CLeaderHistoryOffset = 0x84;
     }
 
     struct CLeader

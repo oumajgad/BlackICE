@@ -3,14 +3,13 @@
 /**
  * A country's order of battle, read out of the running game.
  *
- * Standalone rather than built on GameClasses: everything the game's unit structures
- * look like is written down in one place here (OrderOfBattle.cpp), read through
- * Mem::tryRead so a pointer that turns out not to be what we assumed fails instead of
- * taking the process down, and handed back as plain values. Nothing in here holds a
- * game pointer past the call that read it.
+ * What the game's structures look like is in GameClasses - CUnit, CRegiment, CLeader
+ * and the rest, a header per class. This file is the shape rather than the layout: it
+ * works out which unit reports to which, and hands the result back as plain values.
  *
- * The layout came from the memory map in DaveStuff/mem, which is where anything
- * learned about these structures should go back to.
+ * Everything is read through Mem::tryRead, so a pointer that turns out not to be what
+ * we assumed fails instead of taking the process down, and nothing in here holds a
+ * game pointer past the call that read it.
  *
  * A unit is a node in a tree: theatres at the top, then army groups, armies, corps
  * and divisions. The same structure carries land, air and naval units, which are told

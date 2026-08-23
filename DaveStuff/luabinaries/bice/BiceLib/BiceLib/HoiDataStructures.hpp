@@ -17,6 +17,13 @@ namespace HDS {
         LinkedListNodeSingle* next;
         // + 4 bytes (maybe padding)
     };
+
+    /**@brief the same node as offsets, for walking a list without dereferencing it*/
+    namespace NodeOffsets {
+        constexpr uintptr_t data = 0x0;
+        constexpr uintptr_t prev = 0x4;
+        constexpr uintptr_t next = 0x8;
+    }
     struct Hoi3CString
     {
         char stringData [16];

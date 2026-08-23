@@ -5,25 +5,6 @@
 #include <utils.hpp>
 
 namespace CLeader {
-    namespace Offsets {
-        uintptr_t id = 0xC;
-        uintptr_t trait_ll_start = 0x30;
-        uintptr_t trait_ll_end = 0x34;
-        uintptr_t number_of_traits = 0x38;
-        uintptr_t unit_ptr = 0x40;
-        // uintptr_t country_tag = 0x44;
-        // uintptr_t country_id = 0x48;
-        uintptr_t name = 0x4C;
-        // uintptr_t type = 0x68;
-        uintptr_t rank = 0x6C;
-        uintptr_t skill = 0x70;
-        uintptr_t max_skill = 0x74;
-        uintptr_t experience = 0x78;
-        // uintptr_t experience_2 = 0x7C;
-        // uintptr_t loyalty = 0x80;
-        // uintptr_t CLeaderHistoryOffset = 0x84;
-    }
-
     CLeader Make(uintptr_t addr) {
         //DEBUG_OUT(printf("Making %#010x\n", addr));
         CLeader res = CLeader{};

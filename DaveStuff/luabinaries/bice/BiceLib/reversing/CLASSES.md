@@ -177,7 +177,8 @@ gameplay.
 
 ## Units
 
-BiceLib reads these in `Oob/OrderOfBattle.cpp`, which is the authority for the offsets.
+BiceLib keeps these in `GameClasses/CUnit.hpp`, which is the authority for the offsets.
+`Gui/OrderOfBattle.cpp` reads them but no longer holds a copy of its own.
 
 | Class | vftable | at +8 | |
 | --- | --- | --- | --- |
@@ -197,26 +198,31 @@ Two things worth knowing about the vftable check:
 
 - The second vftable of each is the base it inherits **at object offset 8**, and never
   appears at the start of a unit, so only the first is worth comparing against.
-  `OrderOfBattle.cpp` used to also accept `CArmy`'s second as an alternative kind of
+  `OrderOfBattle` used to also accept `CArmy`'s second as an alternative kind of
   land unit, which could not match; it no longer does.
 - Everything in the order of battle is a `CArmy`, `CNavy` or `CAir`, including the
   entries the level field calls theatres. **`CTheatre` is a different class** and what it
   is has not been looked at.
 
 The unit's own fields - name, province, leader, supply, fuel, level, regiments and the
-rest - are in `Oob/OrderOfBattle.cpp` (**mem** originally, **used** since, and the ones
-the OOB browser shows have never looked wrong). `GameClasses/CUnit.cpp` has the older
-copy of the same, along with fields nothing reads.
+rest - are in `GameClasses/CUnit.hpp` (**mem** originally, **used** since, and the ones
+the OOB browser shows have never looked wrong). There used to be a second copy of them
+inside `OrderOfBattle.cpp`, identical offset for offset; the two are now one.
 
-Also in `GameClasses/`, all **mem** unless marked otherwise, and each file its own
-authority: `CLeader.cpp`, `CMapProvince.cpp` (province id at +0xD0 is **used** by the
-combat capture and the OOB browser), `CSubUnitDefinition.cpp`, `CTerrain.cpp` (vftable
+The sub units a unit holds are `CRegiment` (`GameClasses/CRegiment.hpp`): strength at
++0x30, organisation at +0x60 and the name at +0x68, all **used** by the OOB browser.
+Air and naval sub units are read through the same three and have never looked wrong,
+but only the land case is known to be this class.
+
+Also in `GameClasses/`, all **mem** unless marked otherwise, and each header its own
+authority: `CLeader.hpp`, `CMapProvince.hpp` (province id at +0xD0 is **used** by the
+combat capture and the OOB browser), `CSubUnitDefinition.hpp`, `CTerrain.cpp` (vftable
 `0x11C0764`, **used**).
 
 ## Country
 
 `CCountry`, vftable `0x11C1BA8`, base `CPersistent` (**RTTI**). Read in
-`GameClasses/CCountry.cpp` and `Oob/OrderOfBattle.cpp`.
+`GameClasses/CCountry.cpp` and `Gui/OrderOfBattle.cpp`.
 
 | Offset | Holds | |
 | --- | --- | --- |

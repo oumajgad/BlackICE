@@ -1,3 +1,4 @@
+#pragma once
 #include <cstdint>
 #include <string>
 #include <utility>
@@ -6,6 +7,12 @@
 #include <HoiDataStructures.hpp>
 
 namespace CCountry {
+    namespace Offsets {
+        /**@brief head of the country's list of units, at every level rather than the
+                  top one - the shape of an order of battle is not in here*/
+        constexpr uintptr_t units_linked_list_first_ptr = 0xBAC;
+    }
+
     extern uintptr_t CountryPtrs[300]; // Array of countries, index = country id
 
     void traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>& res, uintptr_t nodePtr);
