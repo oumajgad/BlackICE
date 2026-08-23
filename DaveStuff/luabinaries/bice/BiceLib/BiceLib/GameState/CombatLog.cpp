@@ -1,4 +1,4 @@
-#include <Combat/CombatLog.hpp>
+#include <GameState/CombatLog.hpp>
 
 #include <Hooks/CCombatHooks.hpp>
 #include <MemScan.hpp>

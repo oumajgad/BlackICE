@@ -16,6 +16,8 @@
 #include <HoiDataStructures.hpp>
 
 #include <GameClasses/CCountry.hpp>
+#include <GameClasses/CTrait.hpp>
+#include <HoiDataStructures.hpp>
 #include <GameClasses/CUnit.hpp>
 #include <GameClasses/CSubUnitDefinition.hpp>
 #include <GameClasses/CTerrain.hpp>
@@ -69,7 +71,7 @@ __declspec(dllexport) int cacheCountries(lua_State* L)
             if (countryPtr == 0) { // Array not yet initialized OR end of array reached
                 break;
             }
-            std::string countryTag = utils::getCString((DWORD*)(countryPtr + 0x1E4));
+            std::string countryTag = HDS::readTag(countryPtr + CCountry::Offsets::tag);
             addCountryToCache(countryTag, countryPtr);
             cacheCountriesDone = true;
         }
@@ -166,7 +168,7 @@ __declspec(dllexport) int getCountryOffmapIc(lua_State* L)
     std::string searchTag = luaL_checklstring(L, 1, NULL);
     uintptr_t ctr = getCountry(searchTag);
     if (ctr != 0) {
-        int countryId = *(int *)(ctr + 0x1e8);
+        int countryId = *(int *)(ctr + CCountry::Offsets::id);
         lua_pushinteger(L, Hooks::Patches::offmapIcPerCountry[countryId]);
         return 1;
     }
@@ -185,10 +187,10 @@ uintptr_t getTrait(std::string traitName) {
         return traitCache->at(traitName);
     }
 
-    uintptr_t CTraitVFTable = MODULE_BASE + 0x11C7DC0;
+    uintptr_t CTraitVFTable = MODULE_BASE + CTrait::VFTable::CTrait;
     uintptr_t res = Mem::findPointerIf(MODULE_BASE + DATA_SECTION_START, CTraitVFTable,
         [&traitName](uintptr_t candidate) {
-            return traitName == utils::getCString((DWORD*)(candidate + 0x2C));
+            return traitName == HDS::readString(candidate + CTrait::Offsets::name);
         });
     if (res != 0) {
         traitCache->insert(std::make_pair(traitName, res));
@@ -207,12 +209,11 @@ void addTraitToCache(std::string traitName, uintptr_t address) {
 }
 void cacheTraits() {
     if (!cacheTraitsDone) {
-        uintptr_t CTraitVFTable = MODULE_BASE + 0x11C7DC0;
-        //std::cout << "CTraitVFTable: " << Mem::toHex(CTraitVFTable) << std::endl;
+        uintptr_t CTraitVFTable = MODULE_BASE + CTrait::VFTable::CTrait;
         auto traits = Mem::findPointers(MODULE_BASE + DATA_SECTION_START, CTraitVFTable, 99999);
         if (traits.size() != 0) {
             for (auto& traitAddr : traits) {
-                std::string traitName = utils::getCString((DWORD*)traitAddr + (0x2C / 4));
+                std::string traitName = HDS::readString(traitAddr + CTrait::Offsets::name);
                 addTraitToCache(traitName, traitAddr);
             }
             INFO_OUT(printf("Trait cache filled (%i) \n", traitCache->size()));
@@ -418,17 +419,7 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
     Hooks::CLeader::skillTraits = new std::vector<DWORD>; // sorted vector of the traits
     for (auto entry = traitCache->begin(); entry != traitCache->end(); ++entry) {
         auto trait = entry->second;
-        DWORD traitNameLength;
-        traitNameLength = *((DWORD*)trait + (0x3C / 4));
-        char* traitName;
-        if (traitNameLength > 15) {
-            traitName = (char*) *(DWORD*)((BYTE*)trait + 0x2C);
-        }
-        else {
-            traitName = (char*)((BYTE*)trait + 0x2C);
-        }
-
-        std::string traitNameAsString = std::string(traitName);
+        std::string traitNameAsString = HDS::readString(trait + CTrait::Offsets::name);
         if (traitNameAsString.find("pskill_") == 0) {
             tempSkillTraits->push_back(trait);
             Hooks::CLeader::skillTraits->push_back(trait); // also push back the Hooks::skillTraits vector so the indexes get filled
@@ -436,9 +427,7 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
     }
 
     for (auto& trait : *tempSkillTraits) {
-        char* traitName;
-        traitName = (char*)((BYTE*)trait + 0x2C);
-        std::string traitNameAsString = std::string(traitName);
+        std::string traitNameAsString = HDS::readString(trait + CTrait::Offsets::name);
         auto substr = traitNameAsString.substr(7);
         auto index = std::stoi(substr, nullptr, 10);
         Hooks::CLeader::skillTraits->at(index) = (DWORD) trait;
@@ -535,7 +524,7 @@ __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
     else {
         auto ctr = getCountry(tag);
         if (ctr != 0) {
-            int tagId = *(DWORD*)(ctr + 0x1E8);
+            int tagId = *(DWORD*)(ctr + CCountry::Offsets::id);
             if (Hooks::CArmy::corpsUnitLimitPerCountry[tagId] != newLimit) {
                 Hooks::CArmy::corpsUnitLimitPerCountry[tagId] = newLimit;
                 DEBUG_OUT(printf("Corps unit limit set to: %i for %s \n", newLimit, tag.c_str()))
@@ -561,7 +550,7 @@ __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
     else {
         auto ctr = getCountry(tag);
         if (ctr != 0) {
-            int tagId = *(DWORD*)(ctr + 0x1E8);
+            int tagId = *(DWORD*)(ctr + CCountry::Offsets::id);
             if (Hooks::CArmy::armyUnitLimitPerCountry[tagId] != newLimit) {
                 Hooks::CArmy::armyUnitLimitPerCountry[tagId] = newLimit;
                 DEBUG_OUT(printf("Army unit limit set to: %i for %s \n", newLimit, tag.c_str()));
@@ -587,7 +576,7 @@ __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
     else {
         auto ctr = getCountry(tag);
         if (ctr != 0) {
-            int tagId = *(DWORD*)(ctr + 0x1E8);
+            int tagId = *(DWORD*)(ctr + CCountry::Offsets::id);
             if (Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] != newLimit) {
                 Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] = newLimit;
                 DEBUG_OUT(printf("Armygroup unit limit set to: %i for %s \n", newLimit, tag.c_str()));
@@ -871,6 +860,7 @@ __declspec(dllexport) int cacheIngameIdler(lua_State* L)
             DEBUG_OUT(printf("CIngameIdlerPtr set to: %#010x \n", (uintptr_t)CIngameIdlerPtr));
         }
     }
+    return 0;
 }
 
 __declspec(dllexport) int getSelectedEntity(lua_State* L)

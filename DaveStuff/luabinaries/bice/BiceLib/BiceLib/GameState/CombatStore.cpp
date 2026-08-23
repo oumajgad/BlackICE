@@ -1,4 +1,4 @@
-#include <Combat/CombatStore.hpp>
+#include <GameState/CombatStore.hpp>
 
 #include <Gui/LuaBridge.hpp>
 #include <Hooks/CCombatHooks.hpp>

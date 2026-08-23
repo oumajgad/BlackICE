@@ -68,7 +68,7 @@ namespace CSubUnitDefinition {
             HDS::CUnitAdjuster* unitAdjuster = (HDS::CUnitAdjuster*) (unitAdjusterArrayPtr + (terrain->id * 24)); // 24 => Length of the CUnidAdjuster object
             DEBUG_OUT(printf("unitAdjusterArrayPtr + (terrain->id * 24): %#010x\n", unitAdjusterArrayPtr + (terrain->id * 24)));
             
-            DEBUG_OUT(printf("terrain->name: %s\n", terrain->name));
+            DEBUG_OUT(printf("terrain->name: %s\n", terrain->name.c_str()));
             DEBUG_OUT(printf("terrain->id: %i\n", terrain->id));
             DEBUG_OUT(printf("terrain->attack: %i\n", terrain->attack));
             DEBUG_OUT(printf("terrain->defence: %i\n", terrain->defence));
@@ -78,7 +78,7 @@ namespace CSubUnitDefinition {
             DEBUG_OUT(printf("unitAdjuster->movement: %i\n", unitAdjuster->movement));
             DEBUG_OUT(printf("unitAdjuster->attrition: %i\n", unitAdjuster->attrition));
 
-            lua_pushstring(L, terrain->name); // push key for the terrain in the unit stats table
+            lua_pushstring(L, terrain->name.c_str()); // push key for the terrain in the unit stats table
             lua_newtable(L); // create new table for terrain stats
             lua_pushstring(L, "is_water");
             lua_pushboolean(L, terrain->is_water);

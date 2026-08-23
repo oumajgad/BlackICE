@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <string>
 #include <unordered_map>
 #include <lua.hpp>
 
@@ -18,7 +19,7 @@ namespace CLeader {
         constexpr uintptr_t skill = 0x70;
         constexpr uintptr_t max_skill = 0x74;
         constexpr uintptr_t experience = 0x78;
-        // constexpr uintptr_t experience_2 = 0x7C;
+        constexpr uintptr_t experience_2 = 0x7C;
         // constexpr uintptr_t loyalty = 0x80;
         // constexpr uintptr_t CLeaderHistoryOffset = 0x84;
     }
@@ -33,7 +34,9 @@ namespace CLeader {
         uintptr_t unit_ptr;
         // uintptr_t country_tag;
         // int country_id;
-        char* name;
+        // By value: the game's copy is Windows-1252 and lives at the game's pleasure,
+        // so it is converted and copied out rather than pointed at.
+        std::string name;
         // int type;
         int rank;
         int skill;

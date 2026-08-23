@@ -1,4 +1,4 @@
-#include <Inspector.hpp>
+#include <GameState/Inspector.hpp>
 
 #include <MemScan.hpp>
 #include <TextEncoding.hpp>

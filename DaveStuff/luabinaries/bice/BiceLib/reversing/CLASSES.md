@@ -66,7 +66,7 @@ being non-null proves nothing about a game being loaded.
 ## Combat
 
 The whole of how these were found, and what is still open, is in `FINDINGS-combat.md`.
-BiceLib reads them in `Combat/CombatLog.cpp`.
+BiceLib reads them in `GameState/CombatLog.cpp`.
 
 ### The manager and its history
 
@@ -178,7 +178,7 @@ gameplay.
 ## Units
 
 BiceLib keeps these in `GameClasses/CUnit.hpp`, which is the authority for the offsets.
-`Gui/OrderOfBattle.cpp` reads them but no longer holds a copy of its own.
+`GameState/OrderOfBattle.cpp` reads them but no longer holds a copy of its own.
 
 | Class | vftable | at +8 | |
 | --- | --- | --- | --- |
@@ -222,7 +222,7 @@ combat capture and the OOB browser), `CSubUnitDefinition.hpp`, `CTerrain.cpp` (v
 ## Country
 
 `CCountry`, vftable `0x11C1BA8`, base `CPersistent` (**RTTI**). Read in
-`GameClasses/CCountry.cpp` and `Gui/OrderOfBattle.cpp`.
+`GameClasses/CCountry.cpp` and `GameState/OrderOfBattle.cpp`.
 
 | Offset | Holds | |
 | --- | --- | --- |

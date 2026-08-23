@@ -29,7 +29,9 @@ namespace Inspector {
 
     struct TerrainStat
     {
-        const char* name;
+        // By value, like the CTerrain it comes from: a pointer here would outlive
+        // nothing in particular.
+        std::string name;
         bool isWater;
         int attack;
         int defence;

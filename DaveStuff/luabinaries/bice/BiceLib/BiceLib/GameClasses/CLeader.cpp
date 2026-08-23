@@ -1,6 +1,7 @@
 #include <GameClasses/CLeader.hpp>
 #include <GameClasses/CUnit.hpp>
 #include <GameClasses/CMapProvince.hpp>
+#include <HoiDataStructures.hpp>
 #include <MemScan.hpp>
 #include <utils.hpp>
 
@@ -17,8 +18,7 @@ namespace CLeader {
         res.rank = *(int*)(addr + Offsets::rank);
         res.skill = *(int*)(addr + Offsets::skill);
         res.experience = *(int*)(addr + Offsets::experience);
-        res.name = utils::getCString((DWORD*)(addr + Offsets::name));
-        //res.name = (char*) "Test";
+        res.name = HDS::readString(addr + Offsets::name);
 
         //DEBUG_OUT(printf("res.id: %d\n", res.id));
         //DEBUG_OUT(printf("Finished %#010x\n", addr));
@@ -62,7 +62,7 @@ namespace CLeader {
         lua_pushinteger(L, leader.id);
         lua_settable(L, -3);
         lua_pushstring(L, "name");
-        lua_pushstring(L, leader.name);
+        lua_pushstring(L, leader.name.c_str());
         lua_settable(L, -3);
 
         lua_pushstring(L, "province_id");
@@ -83,8 +83,8 @@ namespace CLeader {
 
         lua_pushstring(L, "unit_name");
         if (leader.unit_ptr != 0) {
-            char* unit_name = utils::getCString((DWORD*)(leader.unit_ptr + CUnit::Offsets::name));
-            lua_pushstring(L, unit_name);
+            const std::string unitName = HDS::readString(leader.unit_ptr + CUnit::Offsets::name);
+            lua_pushstring(L, unitName.c_str());
         }
         else {
             lua_pushnil(L);

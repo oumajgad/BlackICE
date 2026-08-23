@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include <Combat/CombatLog.hpp>
+#include <GameState/CombatLog.hpp>
 
 namespace Combat {
     struct Entry

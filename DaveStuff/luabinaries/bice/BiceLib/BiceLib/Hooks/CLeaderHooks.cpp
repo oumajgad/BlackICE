@@ -3,6 +3,9 @@
 #include <iostream>
 
 #include <utils.hpp>
+#include <GameClasses/CLeader.hpp>
+#include <GameClasses/CTrait.hpp>
+#include <HoiDataStructures.hpp>
 
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
@@ -24,7 +27,10 @@ HDS::Hoi3CString Hooks::CLeader::emptyString = {" ", 1};
 int Hooks::CLeader::getPureSkillAndTraitListNode(DWORD* leaderAddress, HDS::LinkedListNodeSingle** out) {
     DEBUG_OUT(printf("getPureSkillAndTraitListNode called \n"));
     DWORD pureSkill = 0;
-    HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)*((DWORD*)leaderAddress + (0x30 / 4));
+    // Walked by hand rather than through HDS::walkList, because the loop below
+    // writes traitListNode->data - it needs the nodes, not what they held.
+    HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)
+        *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::trait_ll_start);
     while (traitListNode != 0) {
         DEBUG_OUT(printf("traitListNode: %#010x \n", (uintptr_t)traitListNode));
         DEBUG_OUT(printf("data: %#010x \n", (uintptr_t)traitListNode->data));
@@ -32,16 +38,7 @@ int Hooks::CLeader::getPureSkillAndTraitListNode(DWORD* leaderAddress, HDS::Link
         DEBUG_OUT(printf("next: %#010x \n", (uintptr_t)traitListNode->next));
 
         DWORD trait = traitListNode->data;
-        DWORD traitNameLength = *((DWORD*)trait + (0x3C / 4));
-        char* traitName;
-        if (traitNameLength > 15) {
-            traitName = (char*)*(DWORD*)((BYTE*)trait + 0x2C);
-        }
-        else {
-            traitName = (char*)((BYTE*)trait + 0x2C);
-        }
-
-        std::string traitNameAsString = std::string(traitName);
+        std::string traitNameAsString = HDS::readString(trait + CTrait::Offsets::name);
         DEBUG_OUT(printf("traitNameAsString: %s \n", traitNameAsString.c_str()));
         if (traitNameAsString.find("pskill_") == 0) {
             auto substr = traitNameAsString.substr(7);
@@ -60,9 +57,9 @@ int Hooks::CLeader::getPureSkillAndTraitListNode(DWORD* leaderAddress, HDS::Link
 
 std::vector<DWORD>* Hooks::CLeader::skillTraits;
 bool Hooks::CLeader::checkTraitSkillLevelConsistency(DWORD* leaderAddress) {
-    DWORD currentRank = *((BYTE*)leaderAddress + 0x6C);
-    DWORD currentSkill = *((BYTE*)leaderAddress + 0x70);
-    DWORD experience = *((BYTE*)leaderAddress + 0x78);
+    DWORD currentRank = *((BYTE*)leaderAddress + ::CLeader::Offsets::rank);
+    DWORD currentSkill = *((BYTE*)leaderAddress + ::CLeader::Offsets::skill);
+    DWORD experience = *((BYTE*)leaderAddress + ::CLeader::Offsets::experience);
 
     DEBUG_OUT(printf("currentRank: %i \n", currentRank));
     DEBUG_OUT(printf("currentSkill: %i \n", currentSkill));
@@ -111,8 +108,8 @@ typedef void(__stdcall* getLeaderExperiencePercentFunction)(int param_1, unsigne
 void Hooks::CLeader::adjustSkillLevel(DWORD* leaderAddress, DWORD* CPromoteLeaderCommand, DWORD newRank) {
     DEBUG_OUT(printf("adjustSkillLevel called \n"));
 
-    UINT8 currentSkill = *((BYTE*)leaderAddress + 0x70);
-    DWORD experience = *(DWORD*)((BYTE*)leaderAddress + 0x78);
+    UINT8 currentSkill = *((BYTE*)leaderAddress + ::CLeader::Offsets::skill);
+    DWORD experience = *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::experience);
     UINT8 direction = *((BYTE*)CPromoteLeaderCommand + 0x64); // 0 = Higher Rank ; 1 = Lower Rank
 
     getLeaderExperiencePercentFunction getLeaderExperiencePercent = reinterpret_cast<getLeaderExperiencePercentFunction>(Hooks::MODULE_BASE + 0x181c50);
@@ -131,25 +128,25 @@ void Hooks::CLeader::adjustSkillLevel(DWORD* leaderAddress, DWORD* CPromoteLeade
     DEBUG_OUT(printf("pureSkill - (int) newRank: %i \n", pureSkill - (int)newRank));
 
     if (direction == 1 && (pureSkill - (int)newRank) >= 0) { // Demotion
-        *((BYTE*)leaderAddress + 0x70) = currentSkill + 1;
+        *((BYTE*)leaderAddress + ::CLeader::Offsets::skill) = currentSkill + 1;
         if (experiencePercent > 0 && experiencePercent < 1000) { // bounds check
-            *(DWORD*)((BYTE*)leaderAddress + 0x78) = (skillExperiencePerLevel[currentSkill + 1].exp) + (experiencePercent / 10 * skillExperiencePerLevel[currentSkill + 1].exp_1Perc_step);
-            *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
+            *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::experience) = (skillExperiencePerLevel[currentSkill + 1].exp) + (experiencePercent / 10 * skillExperiencePerLevel[currentSkill + 1].exp_1Perc_step);
+            *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::experience_2) = 0;
         }
         else { // the percentage makes no sense -> fall back to 0
-            *(DWORD*)((BYTE*)leaderAddress + 0x78) = skillExperiencePerLevel[currentSkill + 1].exp;
-            *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
+            *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::experience) = skillExperiencePerLevel[currentSkill + 1].exp;
+            *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::experience_2) = 0;
         }
     }
     else if (direction == 0 && currentSkill != 0) { // Promotion
-        *((BYTE*)leaderAddress + 0x70) = currentSkill - 1;
+        *((BYTE*)leaderAddress + ::CLeader::Offsets::skill) = currentSkill - 1;
         if (experiencePercent > 0 && experiencePercent < 1000) { // bounds check
-            *(DWORD*)((BYTE*)leaderAddress + 0x78) = (skillExperiencePerLevel[currentSkill - 1].exp) + (experiencePercent / 10 * skillExperiencePerLevel[currentSkill - 1].exp_1Perc_step);
-            *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
+            *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::experience) = (skillExperiencePerLevel[currentSkill - 1].exp) + (experiencePercent / 10 * skillExperiencePerLevel[currentSkill - 1].exp_1Perc_step);
+            *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::experience_2) = 0;
         }
         else { // the percentage makes no sense -> fall back to 0
-            *(DWORD*)((BYTE*)leaderAddress + 0x78) = skillExperiencePerLevel[currentSkill - 1].exp;
-            *(DWORD*)((BYTE*)leaderAddress + 0x7C) = 0;
+            *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::experience) = skillExperiencePerLevel[currentSkill - 1].exp;
+            *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::experience_2) = 0;
         }
     }
 }
@@ -180,11 +177,14 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
     DEBUG_OUT(printf("#### checkRankSpecificTraitsConsistency ####\n"));
     DEBUG_OUT(printf("leaderAddress: %#010x - newRank: %i\n", (uintptr_t)leaderAddress, newRank));
     if (newRank == -1) {
-        newRank = *(DWORD*)((BYTE*)leaderAddress + 0x6C);
+        newRank = *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::rank);
         DEBUG_OUT(printf("Adjusted newRank: %u\n", newRank));
     }
     
-    HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)*((DWORD*)leaderAddress + (0x30 / 4));
+    // Walked by hand rather than through HDS::walkList, because the loop below
+    // writes traitListNode->data - it needs the nodes, not what they held.
+    HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)
+        *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::trait_ll_start);
     while (traitListNode != 0) {
         DEBUG_OUT(printf("traitListNode: %#010x \n", (uintptr_t) traitListNode));
         DEBUG_OUT(printf("data: %#010x \n", (uintptr_t)traitListNode->data));
@@ -192,7 +192,7 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
         DEBUG_OUT(printf("next: %#010x \n", (uintptr_t)traitListNode->next));
 
         DWORD trait = traitListNode->data;
-        std::string traitNameAsString = std::string(utils::getCString((DWORD*)trait + (0x2C / 4)));
+        std::string traitNameAsString = HDS::readString(trait + CTrait::Offsets::name);
 
         DEBUG_OUT(printf("traitNameAsString: %s \n", traitNameAsString.c_str()));
 
@@ -205,11 +205,11 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
             DEBUG_OUT(printf("rankSpecificTrait->upperRank: %u \n", rankSpecificTrait->upperRank));
             DEBUG_OUT(printf("newRank: %u \n", newRank));
             if (state == RANK_STATE::INACTIVE && rankSpecificTrait!= 0 && newRank >= rankSpecificTrait->lowerRank && newRank <= rankSpecificTrait->upperRank) { // Trait is inactive - rank matches -> activate
-                INFO_OUT(printf("Activated rankSpecificTrait '%s' for '%s'\n", rankSpecificTrait->activeName.c_str(), utils::getCString(leaderAddress + (0x4C / 4))));
+                INFO_OUT(printf("Activated rankSpecificTrait '%s' for '%s'\n", rankSpecificTrait->activeName.c_str(), HDS::readString((uintptr_t)leaderAddress + ::CLeader::Offsets::name).c_str()));
                 traitListNode->data = rankSpecificTrait->activeTraitPtr;
             }
             else if (state == RANK_STATE::ACTIVE && rankSpecificTrait != 0 && (newRank < rankSpecificTrait->lowerRank || newRank > rankSpecificTrait->upperRank)) { // Trait is active - rank doesn't match -> deactivate
-                INFO_OUT(printf("De-Activated rankSpecificTrait '%s' for '%s'\n", rankSpecificTrait->inactiveName.c_str(), utils::getCString(leaderAddress + (0x4C / 4))));
+                INFO_OUT(printf("De-Activated rankSpecificTrait '%s' for '%s'\n", rankSpecificTrait->inactiveName.c_str(), HDS::readString((uintptr_t)leaderAddress + ::CLeader::Offsets::name).c_str()));
                 traitListNode->data = rankSpecificTrait->inActiveTraitPtr;
             }
             else if (state == RANK_STATE::NOT_FOUND) { // Trait was not found
@@ -224,9 +224,9 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
 }
 
 void hanldeTraitSaving(DWORD* leaderAddress, DWORD* traitAddress, DWORD** out) {
-    std::string traitName = std::string(utils::getCString(traitAddress + 0x2C / 4));
+    std::string traitName = HDS::readString((uintptr_t)traitAddress + CTrait::Offsets::name);
     if (traitName.find("rankSpecificTrait_") == 0) {
-        int leaderId = *(DWORD*)((BYTE*)leaderAddress + 0xC);
+        int leaderId = *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::id);
         *out = (DWORD*) &Hooks::CLeader::emptyString;
         DEBUG_OUT(printf("LeaderId '%i' NOT saving trait '%s'\n", leaderId, traitName.c_str()))
     }
@@ -319,7 +319,7 @@ __declspec(naked) void Hooks::CLeader::patchLeaderListShowMaxSkill() {
     if (leaderAddress != 0) { // for some reason the trait filtering causes a 0 leaderAddress to appear
         DWORD currentSkill;
         DWORD maxSkill;
-        currentSkill = *((BYTE*)leaderAddress + 0x70);
+        currentSkill = *((BYTE*)leaderAddress + ::CLeader::Offsets::skill);
         maxSkill = *((BYTE*)leaderAddress + 0x74);
         sprintf(currentSkillCharArray, "%d (%d)", currentSkill, maxSkill);
     }

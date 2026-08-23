@@ -17,11 +17,27 @@ namespace CMapProvince {
         constexpr uintptr_t rares = 0x288;
         constexpr uintptr_t manpower = 0x320;
         constexpr uintptr_t leadership = 0x324;
-        constexpr uintptr_t owner_tag = 0x32C;
+        constexpr uintptr_t owner_tag = 0x32C; // four characters, HDS::readTag
         constexpr uintptr_t owner_id = 0x330;
-        constexpr uintptr_t controller_tag = 0x334;
+        constexpr uintptr_t controller_tag = 0x334; // four characters, HDS::readTag
         constexpr uintptr_t controller_id = 0x338;
     }
+
+    /**
+     * The buildings array a province points at. These are the pooled totals the
+     * province shows, not one entry per building.
+     */
+    namespace BuildingOffsets {
+        constexpr uintptr_t ic = 0x80;
+        constexpr uintptr_t oil = 0x90;
+        constexpr uintptr_t energy = 0xA0;
+        constexpr uintptr_t metal = 0xB0;
+        constexpr uintptr_t rares = 0xC0;
+        constexpr uintptr_t leadership = 0x100;
+    }
+
+    /**@brief the province array hangs off the game state, not off a province*/
+    constexpr uintptr_t GAME_STATE_PROVINCE_ARRAY = 0xB8C;
 
     struct CMapProvince
     {

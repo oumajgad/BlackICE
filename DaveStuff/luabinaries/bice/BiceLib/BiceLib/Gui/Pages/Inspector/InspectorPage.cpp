@@ -6,7 +6,7 @@
 
 #include <imgui.h>
 
-#include <Inspector.hpp>
+#include <GameState/Inspector.hpp>
 
 namespace {
     /////////////////////////////////////
@@ -54,7 +54,7 @@ namespace {
         for (const Inspector::TerrainStat& stat : terrain) {
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
-            ImGui::TextUnformatted(stat.name != nullptr ? stat.name : "?");
+            ImGui::TextUnformatted(stat.name.empty() ? "?" : stat.name.c_str());
             ImGui::TableNextColumn();
             ImGui::Text("%.1f%%", stat.attack * 0.1f);
             ImGui::TableNextColumn();

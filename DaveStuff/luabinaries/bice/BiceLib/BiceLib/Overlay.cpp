@@ -11,7 +11,7 @@
 
 #include <Diagnostics.hpp>
 #include <Gui/GuiPage.hpp>
-#include <Combat/CombatStore.hpp>
+#include <GameState/CombatStore.hpp>
 #include <Gui/TextureStats.hpp>
 #include <MemScan.hpp>
 #include <Gui/Warmup.hpp>

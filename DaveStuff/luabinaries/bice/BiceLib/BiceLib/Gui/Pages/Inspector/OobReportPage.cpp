@@ -7,7 +7,7 @@
 
 #include <Gui/GuiPage.hpp>
 #include <Gui/CountrySelection.hpp>
-#include <Gui/OrderOfBattle.hpp>
+#include <GameState/OrderOfBattle.hpp>
 
 #include <GameClasses/CCountry.hpp>
 

@@ -22,8 +22,8 @@
 #include <Gui/GuiPage.hpp>
 #include <Gui/CountrySelection.hpp>
 #include <Gui/LuaBridge.hpp>
-#include <Combat/CombatLog.hpp>
-#include <Combat/CombatStore.hpp>
+#include <GameState/CombatLog.hpp>
+#include <GameState/CombatStore.hpp>
 
 #include <utils.hpp>
 

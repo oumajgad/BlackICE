@@ -1,4 +1,5 @@
 #include <GameClasses/CTerrain.hpp>
+#include <HoiDataStructures.hpp>
 #include <MemScan.hpp>
 #include <utils.hpp>
 
@@ -19,10 +20,10 @@ namespace CTerrain {
         res->defence = *(int*)(addr + Offsets::defence);
         res->attack = *(int*)(addr + Offsets::attack);
         res->attrition = *(int*)(addr + Offsets::attrition);
-        res->name = utils::getCString((DWORD*)(addr + Offsets::name));
+        res->name = HDS::readString(addr + Offsets::name);
 
         DEBUG_OUT(printf("Made Terrain:\n"));
-        DEBUG_OUT(printf("  name: %s \n", res->name));
+        DEBUG_OUT(printf("  name: %s \n", res->name.c_str()));
         DEBUG_OUT(printf("  is_water: %d \n", res->is_water));
         DEBUG_OUT(printf("  defence: %i \n", res->defence));
         DEBUG_OUT(printf("  attack: %i \n", res->attack));

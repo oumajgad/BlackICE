@@ -1,4 +1,5 @@
 #include <GameClasses/CUnit.hpp>
+#include <HoiDataStructures.hpp>
 #include <utils.hpp>
 
 namespace CUnit {
@@ -6,9 +7,9 @@ namespace CUnit {
         DEBUG_OUT(printf("unitPtr: %#010x\n", unitPtr));
         DEBUG_OUT(printf("nameOffset: %#010x\n", unitPtr + CUnit::Offsets::name));
 
-        auto name = utils::getCString((DWORD*) (unitPtr + CUnit::Offsets::name));
+        const std::string name = HDS::readString(unitPtr + CUnit::Offsets::name);
         lua_pushstring(L, "name");
-        lua_pushstring(L, name);
+        lua_pushstring(L, name.c_str());
         lua_settable(L, -3);
 	    return;
     }

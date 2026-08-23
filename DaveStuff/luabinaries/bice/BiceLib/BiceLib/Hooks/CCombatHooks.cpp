@@ -1,7 +1,7 @@
 #include <Hooks/CCombatHooks.hpp>
 
 #include <Hooks/Hooks.hpp>
-#include <Combat/CombatLog.hpp>
+#include <GameState/CombatLog.hpp>
 #include <utils.hpp>
 
 DWORD Hooks::Combat::jumpBack = 0;

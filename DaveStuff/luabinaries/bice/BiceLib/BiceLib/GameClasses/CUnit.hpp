@@ -29,7 +29,7 @@ namespace CUnit {
         constexpr uintptr_t combat_cooldown = 0xD4;
         constexpr uintptr_t supply_received_percentage = 0xFC;
         constexpr uintptr_t fuel_received_percentage = 0x100;
-        constexpr uintptr_t owner_tag = 0x124;
+        constexpr uintptr_t owner_tag = 0x124; // four characters, HDS::readTag
         constexpr uintptr_t owner_id = 0x128;
         constexpr uintptr_t leader_ptr = 0x12C;
         constexpr uintptr_t current_province_ptr = 0x130;

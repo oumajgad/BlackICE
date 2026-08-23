@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <string>
 #include <vector>
 #include <lua.hpp>
 
@@ -16,7 +17,7 @@ namespace CTerrain {
     struct CTerrain
     {
         int id;
-        char* name;
+        std::string name;
         bool is_water;
         int defence;
         int attack;

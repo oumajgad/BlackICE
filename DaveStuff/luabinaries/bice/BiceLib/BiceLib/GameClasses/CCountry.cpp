@@ -1,72 +1,93 @@
 #include <GameClasses/CCountry.hpp>
 #include <Hooks/Hooks.hpp>
 
+#include <MemScan.hpp>
+
 
 uintptr_t CCountry::CountryPtrs[300];
 
-void CCountry::traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>& res, uintptr_t nodePtr) {
-    if (nodePtr == 0) {
-        return;
-    }
-    uintptr_t element = *(uintptr_t*)(nodePtr);
-    char character = *(char*)(nodePtr + 0x4);
-    uintptr_t parent = *(uintptr_t*)(nodePtr + 0x8);
-    uintptr_t sibling = *(uintptr_t*)(nodePtr + 0xC);
-    uintptr_t child = *(uintptr_t*)(nodePtr + 0x10);
-    //std::cout << "nodePtr: " << Mem::toHex(nodePtr) 
-    //    << " char: " << character 
-    //    << " element: " << Mem::toHex(element) 
-    //    << " parent: " << Mem::toHex(parent) 
-    //    << " sibling: " << Mem::toHex(sibling) 
-    //    << " child: " << Mem::toHex(child) << std::endl;
-    if (parent != 0) {
-        //std::cout << "parent" << std::endl;
-        CCountry::traverseFlagsAndVarTreeDepthFirst(res, parent);
+namespace {
+    // The flag and variable trees are only as deep as the mod makes them, but nothing
+    // here has checked that, and a tree read out of something that is not one has no
+    // depth at all. This bounds the recursion either way.
+    const int MAX_TREE_DEPTH = 256;
+
+    template <typename T>
+    T readValue(uintptr_t address, T fallback = T()) {
+        T value = fallback;
+        if (!Mem::tryRead(address, value)) {
+            return fallback;
+        }
+        return value;
     }
 
-    if (element != 0) {
-        //std::cout << "element" << std::endl;
-        res.push_back(element);
+    void traverse(std::vector<std::uintptr_t>& res, uintptr_t nodePtr, int depth) {
+        if (nodePtr == 0 || depth > MAX_TREE_DEPTH) {
+            return;
+        }
+
+        namespace Node = CCountry::TreeNodeOffsets;
+        const uintptr_t element = readValue<uint32_t>(nodePtr + Node::element);
+        const uintptr_t parentNode = readValue<uint32_t>(nodePtr + Node::parent);
+        const uintptr_t siblingNode = readValue<uint32_t>(nodePtr + Node::sibling);
+        const uintptr_t childNode = readValue<uint32_t>(nodePtr + Node::child);
+
+        if (parentNode != 0) {
+            traverse(res, parentNode, depth + 1);
+        }
+        if (element != 0) {
+            res.push_back(element);
+        }
+        if (childNode != 0) {
+            traverse(res, childNode, depth + 1);
+        }
+        if (siblingNode != 0) {
+            traverse(res, siblingNode, depth + 1);
+        }
     }
-    if (child != 0) {
-        //std::cout << "child" << std::endl;
-        CCountry::traverseFlagsAndVarTreeDepthFirst(res, child);
-    }
-    if (sibling != 0) {
-        //std::cout << "sibling " << sibling << std::endl;
-        CCountry::traverseFlagsAndVarTreeDepthFirst(res, sibling);
-    }
+}
+
+void CCountry::traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>& res, uintptr_t nodePtr) {
+    traverse(res, nodePtr, 0);
 }
 
 std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifiers(uintptr_t countryPtr) {
     std::vector<std::pair<std::string, std::string>> res;
-    uintptr_t listNodePtr = *(uintptr_t*)(countryPtr + 0x648);
-    HDS::LinkedListNodeSingle* listNode = (HDS::LinkedListNodeSingle*)listNodePtr;
-    while (listNode != 0) {
 
-        auto modifierPtr = listNode->data;
-        auto staticModifier = *(uintptr_t*)(modifierPtr + 0x8);
+    const std::vector<uintptr_t> modifiers =
+        HDS::walkList(countryPtr + Offsets::active_modifiers_list_first_ptr);
 
-        auto name = std::string(utils::getCString((DWORD*)(staticModifier + 0x2c)));
+    for (size_t i = 0; i < modifiers.size(); i++) {
+        const uintptr_t definition =
+            readValue<uint32_t>(modifiers[i] + ActiveModifierOffsets::definition_ptr);
+        const std::string name =
+            HDS::readString(definition + ActiveModifierOffsets::definition_name);
 
-        int expiryDateTick = *(int*)(modifierPtr + 0xC);
-        auto expiryDate = utils::gameTickToDate(expiryDateTick);
+        const int expiryDateTick =
+            readValue<int32_t>(modifiers[i] + ActiveModifierOffsets::expiry_tick);
 
-        res.push_back(std::make_pair(name, expiryDate));
-
-        listNode = listNode->next;
+        res.push_back(std::make_pair(name, utils::gameTickToDate(expiryDateTick)));
     }
     return res;
 }
 
 std::vector<std::pair<std::string, int>> CCountry::getGeneralModifiers(uintptr_t countryPtr) {
     std::vector<std::pair<std::string, int>> res;
-    uintptr_t arrayBase = *(uintptr_t*)(countryPtr + 0xDA8);
-    for (int i = 0; i < 143; i++) {
-        uintptr_t entry = arrayBase + (i * 8);
-        uintptr_t modifierDefinitionPtr = *(uintptr_t*)(entry + 0x4);
-        std::string modifierName = std::string(utils::getCString((DWORD*) (modifierDefinitionPtr + 0x4)));
-        int modifierValue = *(int*) entry;
+
+    const uintptr_t arrayBase = readValue<uint32_t>(countryPtr + Offsets::general_modifiers_array_ptr);
+    if (arrayBase == 0) {
+        return res;
+    }
+
+    for (int i = 0; i < GeneralModifierOffsets::count; i++) {
+        const uintptr_t entry = arrayBase + (i * GeneralModifierOffsets::entry_size);
+        const uintptr_t definition =
+            readValue<uint32_t>(entry + GeneralModifierOffsets::definition_ptr);
+
+        const std::string modifierName =
+            HDS::readString(definition + GeneralModifierOffsets::definition_name);
+        const int modifierValue = readValue<int32_t>(entry + GeneralModifierOffsets::value);
+
         res.push_back(std::make_pair(modifierName, modifierValue));
     }
     return res;
@@ -75,15 +96,13 @@ std::vector<std::pair<std::string, int>> CCountry::getGeneralModifiers(uintptr_t
 std::vector<std::string> CCountry::getFlags(uintptr_t countryPtr) {
     std::vector<std::uintptr_t> ptrs;
 
-    uintptr_t flagsOffset = countryPtr + 0x180 + 0x4; // CFlagsVFTable + Flag Tree beginning
-    uintptr_t flagsPtr = *(uintptr_t*)(flagsOffset);
-
+    const uintptr_t flagsPtr = readValue<uint32_t>(countryPtr + Offsets::flags_tree_root_ptr);
     CCountry::traverseFlagsAndVarTreeDepthFirst(ptrs, flagsPtr);
 
     std::vector<std::string> res;
     res.reserve(ptrs.size());
     for (auto& i : ptrs) {
-        res.push_back(std::string(utils::getCString((DWORD*)i)));
+        res.push_back(HDS::readString(i + TreeNodeOffsets::name));
     }
     return res;
 }
@@ -91,16 +110,14 @@ std::vector<std::string> CCountry::getFlags(uintptr_t countryPtr) {
 std::vector<HDS::CVariable> CCountry::getVars(uintptr_t countryPtr) {
     std::vector<std::uintptr_t> ptrs;
 
-    uintptr_t varsOffset = countryPtr + 0x1AC + 0x4; // CVariablesVFTable + Vars Tree beginning
-    uintptr_t varsPtr = *(uintptr_t*)varsOffset;
-
+    const uintptr_t varsPtr = readValue<uint32_t>(countryPtr + Offsets::variables_tree_root_ptr);
     CCountry::traverseFlagsAndVarTreeDepthFirst(ptrs, varsPtr);
 
     std::vector<HDS::CVariable> res;
     for (auto& i : ptrs) {
         HDS::CVariable x;
-        x.name = std::string(utils::getCString((DWORD*)i));
-        x.value = *(int32_t*)(i + 0x1C);
+        x.name = HDS::readString(i + TreeNodeOffsets::name);
+        x.value = readValue<int32_t>(i + TreeNodeOffsets::variable_value);
         if (x.value != 0) {
             res.push_back(x);
         }

@@ -28,7 +28,7 @@ namespace CMapProvince {
         uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
         uintptr_t CCurrentGameStatePtr = *(uintptr_t*)(moduleBase + 0x1689790);
         DEBUG_OUT(printf("CCurrentGameStatePtr: %#010x \n", CCurrentGameStatePtr));
-        uintptr_t mapProvincesArray = *(uintptr_t*)(CCurrentGameStatePtr + 0xb8c);
+        uintptr_t mapProvincesArray = *(uintptr_t*)(CCurrentGameStatePtr + GAME_STATE_PROVINCE_ARRAY);
         DEBUG_OUT(printf("mapProvincesArray: %#010x \n", mapProvincesArray));
         uintptr_t CMapProvincePtr = *(uintptr_t*)(mapProvincesArray + id * 4);
         DEBUG_OUT(printf("CMapProvincePtr: %#010x \n", CMapProvincePtr));
@@ -42,27 +42,27 @@ namespace CMapProvince {
 
         uintptr_t CProvinceBuilding_array = *(uintptr_t*)province.CModifierDefinitions_ptr;
 
-        int local_ic = *(uintptr_t*)(CProvinceBuilding_array + 0x80);
+        int local_ic = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::ic);
         lua_pushstring(L, "local_ic");
         lua_pushinteger(L, local_ic);
         lua_settable(L, -3);
-        int local_oil = *(uintptr_t*)(CProvinceBuilding_array + 0x90);
+        int local_oil = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::oil);
         lua_pushstring(L, "local_oil");
         lua_pushinteger(L, local_oil);
         lua_settable(L, -3);
-        int local_energy = *(uintptr_t*)(CProvinceBuilding_array + 0xa0);
+        int local_energy = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::energy);
         lua_pushstring(L, "local_energy");
         lua_pushinteger(L, local_energy);
         lua_settable(L, -3);
-        int local_metal = *(uintptr_t*)(CProvinceBuilding_array + 0xb0);
+        int local_metal = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::metal);
         lua_pushstring(L, "local_metal");
         lua_pushinteger(L, local_metal);
         lua_settable(L, -3);
-        int local_rares = *(uintptr_t*)(CProvinceBuilding_array + 0xc0);
+        int local_rares = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::rares);
         lua_pushstring(L, "local_rares");
         lua_pushinteger(L, local_rares);
         lua_settable(L, -3);
-        int local_leadership = *(uintptr_t*)(CProvinceBuilding_array + 0x100);
+        int local_leadership = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::leadership);
         lua_pushstring(L, "local_leadership");
         lua_pushinteger(L, local_leadership);
         lua_settable(L, -3);

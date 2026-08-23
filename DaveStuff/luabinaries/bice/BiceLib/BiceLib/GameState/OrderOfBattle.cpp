@@ -1,4 +1,4 @@
-#include <Gui/OrderOfBattle.hpp>
+#include <GameState/OrderOfBattle.hpp>
 
 #include <GameClasses/CCountry.hpp>
 #include <GameClasses/CLeader.hpp>
@@ -18,12 +18,11 @@
 namespace {
     // What the game's structures look like is in GameClasses, a header per class, so
     // that a field is described in one place and everything that reads it agrees.
-    // Only the two limits below belong to this file.
+    // Reading its strings and lists is HDS. Only the limit below belongs here.
 
-    // A country can field thousands of units; these bound the damage if a list turns
-    // out to be circular or simply is not a list.
+    // A country can field thousands of units; this bounds the damage if what we are
+    // reading turns out not to be a country.
     const int MAX_UNITS = 20000;
-    const int MAX_LIST_STEPS = 25000;
 
     uintptr_t moduleBase() {
         static uintptr_t base = 0;
@@ -40,49 +39,6 @@ namespace {
             return fallback;
         }
         return value;
-    }
-
-    /**
-    @brief reads a std::string the way the game's compiler laid it out
-
-    Sixteen bytes that are either the characters themselves or a pointer to them,
-    then the length. Past fifteen characters it is a pointer.
-
-    Converted to UTF-8 on the way out, because the game's text is Windows-1252 and
-    ImGui draws anything else as its fallback glyph - which turns every German unit
-    name into a row of question marks. This is the boundary, so it happens here once
-    rather than at each place a name is drawn.
-    */
-    std::string readString(uintptr_t address) {
-        if (address == 0) {
-            return std::string();
-        }
-
-        uint32_t length = 0;
-        if (!Mem::tryRead(address + 0x10, length) || length == 0 || length > 512) {
-            return std::string();
-        }
-
-        uintptr_t characters = address;
-        if (length > 15) {
-            uint32_t pointer = 0;
-            if (!Mem::tryRead(address, pointer) || pointer == 0) {
-                return std::string();
-            }
-            characters = pointer;
-        }
-
-        std::string text(length, '\0');
-        if (!Mem::tryReadBytes(characters, &text[0], length)) {
-            return std::string();
-        }
-
-        // The game is not always tidy about what follows the length.
-        const size_t terminator = text.find('\0');
-        if (terminator != std::string::npos) {
-            text.resize(terminator);
-        }
-        return Text::toUtf8(text);
     }
 
     Oob::Branch branchOf(uintptr_t unit) {
@@ -108,46 +64,11 @@ namespace {
         return Oob::Branch::Unknown;
     }
 
-    /**
-    @brief follows a linked list whose head pointer sits at \p listField
-
-    @returns what each node held, which for these lists is a unit or a regiment
-    */
-    std::vector<uintptr_t> walkList(uintptr_t listField) {
-        std::vector<uintptr_t> found;
-
-        uint32_t node = 0;
-        if (!Mem::tryRead(listField, node)) {
-            return found;
-        }
-
-        std::set<uintptr_t> visited;
-        int steps = 0;
-        while (node != 0 && steps < MAX_LIST_STEPS) {
-            steps++;
-            if (!visited.insert(node).second) {
-                break; // been here before: the list loops
-            }
-
-            uint32_t data = 0;
-            if (Mem::tryRead(node + HDS::NodeOffsets::data, data) && data != 0) {
-                found.push_back(data);
-            }
-
-            uint32_t next = 0;
-            if (!Mem::tryRead(node + HDS::NodeOffsets::next, next)) {
-                break;
-            }
-            node = next;
-        }
-        return found;
-    }
-
     void readLeader(uintptr_t leader, Oob::Unit& unit) {
         if (leader == 0) {
             return;
         }
-        unit.leaderName = readString(leader + CLeader::Offsets::name);
+        unit.leaderName = HDS::readString(leader + CLeader::Offsets::name);
         unit.leaderSkill = readValue<int32_t>(leader + CLeader::Offsets::skill);
         unit.leaderMaxSkill = readValue<int32_t>(leader + CLeader::Offsets::max_skill);
 
@@ -161,7 +82,7 @@ namespace {
         Oob::Unit unit;
         unit.address = address;
         unit.branch = branch;
-        unit.name = readString(address + CUnit::Offsets::name);
+        unit.name = HDS::readString(address + CUnit::Offsets::name);
         unit.id = readValue<int32_t>(address + CUnit::Offsets::id);
         unit.type = readValue<int32_t>(address + CUnit::Offsets::type);
         unit.level = readValue<int32_t>(address + CUnit::Offsets::oob_level);
@@ -355,7 +276,7 @@ Oob::Tree Oob::read(uintptr_t country) {
     };
 
     std::vector<Pending> pending;
-    const std::vector<uintptr_t> topLevel = walkList(country + CCountry::Offsets::units_linked_list_first_ptr);
+    const std::vector<uintptr_t> topLevel = HDS::walkList(country + CCountry::Offsets::units_linked_list_first_ptr);
     for (size_t i = 0; i < topLevel.size(); i++) {
         pending.push_back(Pending{ topLevel[i], -1 });
     }
@@ -392,7 +313,7 @@ Oob::Tree Oob::read(uintptr_t country) {
         tree.units.push_back(readUnit(address, branch));
         foundUnder.push_back(pending[at].foundUnder);
 
-        const std::vector<uintptr_t> below = walkList(address + CUnit::Offsets::lower_oob_unit_linked_list_first_ptr);
+        const std::vector<uintptr_t> below = HDS::walkList(address + CUnit::Offsets::lower_oob_unit_linked_list_first_ptr);
         for (size_t c = 0; c < below.size(); c++) {
             pending.push_back(Pending{ below[c], index });
         }
@@ -473,12 +394,12 @@ std::vector<Oob::Regiment> Oob::regiments(uintptr_t unit) {
         return found;
     }
 
-    const std::vector<uintptr_t> addresses = walkList(unit + CUnit::Offsets::regiments_linked_list_first_ptr);
+    const std::vector<uintptr_t> addresses = HDS::walkList(unit + CUnit::Offsets::regiments_linked_list_first_ptr);
     found.reserve(addresses.size());
 
     for (size_t i = 0; i < addresses.size(); i++) {
         Regiment regiment;
-        regiment.name = readString(addresses[i] + CRegiment::Offsets::name);
+        regiment.name = HDS::readString(addresses[i] + CRegiment::Offsets::name);
         regiment.strength = readValue<int32_t>(addresses[i] + CRegiment::Offsets::strength);
         regiment.organisation = readValue<int32_t>(addresses[i] + CRegiment::Offsets::organisation);
         found.push_back(regiment);
