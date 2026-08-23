@@ -46,6 +46,7 @@ end
 
 function BiceLibGui.Setup.RefreshPlayers()
     pcall(BiceData.Players.Determine)
+    MultiplayerBiceLibJob()
 end
 
 --- Points every page at a country.

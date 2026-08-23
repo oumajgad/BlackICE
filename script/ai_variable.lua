@@ -1038,7 +1038,7 @@ function ICDaysSpentCalculation()
 				local command = CSetVariableCommand(playerTag, CString("IC_days_spent"), CFixedPoint(icDaysSpent))
 				CCurrentGameState.Post(command)
 
-				if player == G_PlayerCountry then
+				if player == G_PlayerCountry and G_UtilityEnabled == true then
 					SetCurrentDailyICDaysReductionText(reductionValue)
 				end
 			end

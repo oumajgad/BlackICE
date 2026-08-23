@@ -1,7 +1,17 @@
+local setupDone = false
 function IntelligenceMinisterUtilityThings()
 	-- local tOmg = os.clock()
 	-- Utils.LUA_DEBUGOUT('OMG var handler start')
 
+	if setupDone == false then
+		setupDone = true
+		-- Utils.LUA_DEBUGOUT("OMG var handler first run")
+		BiceData.Players.Determine()
+		DetermineSpriteDeletionStatus()
+		DetermineBiceLibLoadStatus()
+		RunBiceLibPeriodicsManually()
+		MultiplayerBiceLibCheckInitialSetup()
+	end
 	if G_UtilityEnabled ~= true then
 		return
 	end
@@ -13,11 +23,7 @@ function IntelligenceMinisterUtilityThings()
 		G_DaysSinceLastUpdate = 0
 		DeterminePlayers()
 		-- DetermineExePatchStatus()
-		DetermineSpriteDeletionStatus()
-		DetermineBiceLibLoadStatus()
 		Stats.SetUpStatCollectionPage()
-		RunBiceLibPeriodicsManually()
-		MultiplayerBiceLibCheckInitialSetup()
 	end
 
 	-- t = os.clock()

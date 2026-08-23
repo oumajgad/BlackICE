@@ -125,8 +125,8 @@ if G_UtilityEnabled then
     require('gui-utility-gameinfo')
     require('gui-utility-stats')
     require('gui-auxilliary')
-    require('utility-extras')
 end
+require('utility-extras')
 
 -- In-game ImGui utility, the replacement for the wxWidgets one above. Switched in
 -- utility_settings.lua; turning it off skips installing the D3D9 hooks entirely.
