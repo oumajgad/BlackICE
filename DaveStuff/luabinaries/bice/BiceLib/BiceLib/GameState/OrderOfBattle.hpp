@@ -63,6 +63,12 @@ namespace Oob {
         bool reinforcementsActive = false;
 
         int regimentCount = 0;
+
+        // What this unit's own regiments consume, in thousandths, as the game
+        // works it out - leader and country effects included. Zero for a unit
+        // that holds no regiments itself, which is every level above division.
+        int supplyConsumption = 0;
+        int fuelConsumption = 0;
         uintptr_t leader = 0;
         std::string leaderName;
         int leaderSkill = 0;
@@ -88,6 +94,8 @@ namespace Oob {
         int airBelow = 0;
         int navalBelow = 0;
         int regimentsBelow = 0;
+        int supplyConsumptionBelow = 0;
+        int fuelConsumptionBelow = 0;
         int leaderlessBelow = 0;
         int unitsBelow = 0;
         int depthBelow = 0;
@@ -115,6 +123,8 @@ namespace Oob {
         int airTotal = 0;
         int navalTotal = 0;
         int regimentTotal = 0;
+        int supplyConsumptionTotal = 0;
+        int fuelConsumptionTotal = 0;
         int leaderlessTotal = 0;
 
         // Across every unit, on the same x10 scale.

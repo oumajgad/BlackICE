@@ -123,8 +123,11 @@ namespace {
         out += line;
         sprintf_s(line, "%d units without a commander\r\n", tree.leaderlessTotal);
         out += line;
-        sprintf_s(line, "%.0f%% supply, %.0f%% fuel on average\r\n\r\n",
+        sprintf_s(line, "%.0f%% supply, %.0f%% fuel on average\r\n",
             tree.supplyAverage / 10.0, tree.fuelAverage / 10.0);
+        out += line;
+        sprintf_s(line, "consumes %.2f supply and %.2f fuel a day\r\n\r\n",
+            tree.supplyConsumptionTotal / 1000.0, tree.fuelConsumptionTotal / 1000.0);
         out += line;
 
         out += "By kind\r\n";
@@ -137,10 +140,13 @@ namespace {
         out += "\r\nTop level formations\r\n";
         for (size_t i = 0; i < tree.roots.size(); i++) {
             const Oob::Unit& unit = tree.units[tree.roots[i]];
-            sprintf_s(line, "  %-40s %4d land %4d air %4d naval %5d regiments\r\n",
+            sprintf_s(line,
+                "  %-40s %4d land %4d air %4d naval %5d regiments %8.2f supply %8.2f fuel\r\n",
                 unit.name.empty() ? "(unnamed)" : unit.name.c_str(),
                 unit.landBelow, unit.airBelow, unit.navalBelow,
-                unit.regimentsBelow + unit.regimentCount);
+                unit.regimentsBelow + unit.regimentCount,
+                (unit.supplyConsumptionBelow + unit.supplyConsumption) / 1000.0,
+                (unit.fuelConsumptionBelow + unit.fuelConsumption) / 1000.0);
             out += line;
         }
         return out;
@@ -209,6 +215,14 @@ namespace {
                 "whatever its size.");
         }
 
+        ImGui::Text("Consumes %.2f supply and %.2f fuel a day",
+            tree.supplyConsumptionTotal / 1000.0, tree.fuelConsumptionTotal / 1000.0);
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Asked of the game for each unit rather than added up\n"
+                "from the unit types, so the leader and country effects\n"
+                "are in it - the same figure the game's own tooltip shows.");
+        }
+
         ImGui::Spacing();
         ImGui::SeparatorText("By kind");
         if (ImGui::BeginTable("byKind", 3, ImGuiTableFlags_RowBg |
@@ -244,7 +258,7 @@ namespace {
         const float left = ImGui::GetContentRegionAvail().y - footer;
         const float formationHeight = (left > 140.0f) ? left : 140.0f;
 
-        if (ImGui::BeginTable("formations", 5, ImGuiTableFlags_RowBg |
+        if (ImGui::BeginTable("formations", 7, ImGuiTableFlags_RowBg |
             ImGuiTableFlags_BordersInner | ImGuiTableFlags_SizingStretchProp |
             ImGuiTableFlags_ScrollY, ImVec2(0.0f, formationHeight))) {
             ImGui::TableSetupColumn("Formation", ImGuiTableColumnFlags_WidthStretch, 1.8f);
@@ -252,6 +266,8 @@ namespace {
             ImGui::TableSetupColumn("Air", ImGuiTableColumnFlags_WidthStretch, 0.5f);
             ImGui::TableSetupColumn("Naval", ImGuiTableColumnFlags_WidthStretch, 0.5f);
             ImGui::TableSetupColumn("Regiments", ImGuiTableColumnFlags_WidthStretch, 0.7f);
+            ImGui::TableSetupColumn("Supply", ImGuiTableColumnFlags_WidthStretch, 0.6f);
+            ImGui::TableSetupColumn("Fuel", ImGuiTableColumnFlags_WidthStretch, 0.6f);
             ImGui::TableHeadersRow();
 
             for (size_t i = 0; i < tree.roots.size(); i++) {
@@ -272,6 +288,10 @@ namespace {
                 ImGui::Text("%d", unit.navalBelow);
                 ImGui::TableNextColumn();
                 ImGui::Text("%d", unit.regimentsBelow + unit.regimentCount);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.2f", (unit.supplyConsumptionBelow + unit.supplyConsumption) / 1000.0);
+                ImGui::TableNextColumn();
+                ImGui::Text("%.2f", (unit.fuelConsumptionBelow + unit.fuelConsumption) / 1000.0);
             }
             ImGui::EndTable();
         }

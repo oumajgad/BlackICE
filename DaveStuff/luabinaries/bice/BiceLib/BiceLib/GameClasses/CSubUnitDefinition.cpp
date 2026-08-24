@@ -5,61 +5,6 @@
 #include <HoiDataStructures.hpp>
 
 namespace CSubUnitDefinition {
-    namespace Offsets {
-        // General
-        uintptr_t is_buildable = 0x36;          // boolean
-        uintptr_t CUnitAdjuster_ptr = 0x54;     // Terrain modifiers
-        uintptr_t max_strength = 0xEC;
-        uintptr_t max_organisation = 0xF0;
-        uintptr_t manpower = 0xFC;
-        uintptr_t morale = 0xF4;
-        uintptr_t max_speed = 0x108;
-        uintptr_t supply_consumption = 0x110;
-        uintptr_t fuel_consumption = 0x114;
-        uintptr_t officers = 0x118;
-        uintptr_t air_defence = 0x128;
-        uintptr_t air_attack = 0x140;
-        uintptr_t sub_unit_amount = 0x180;
-        uintptr_t sprite = 0x198;
-
-        // Land units
-        uintptr_t width = 0xE8;
-        uintptr_t weight = 0x10C;
-        uintptr_t defensiveness = 0x11C;
-        uintptr_t toughness = 0x120;
-        uintptr_t softness = 0x124;
-        uintptr_t armor = 0x12C;
-        uintptr_t suppression = 0x130;
-        uintptr_t soft_attack = 0x134;
-        uintptr_t hard_attack = 0x138;
-        uintptr_t piercing_attack = 0x13C;
-
-        // Ships
-        uintptr_t is_transport = 0x30;  // boolean
-        uintptr_t is_sub = 0x31;        // boolean
-        uintptr_t can_be_pride = 0x39;  // boolean
-        uintptr_t is_capital = 0x2F;    // boolean
-        uintptr_t transport_capacity = 0x144;
-        uintptr_t range = 0x148;
-        uintptr_t firing_distance = 0x14C;
-        uintptr_t surface_detection = 0x150;
-        uintptr_t air_detection = 0x154;
-        uintptr_t sub_detection = 0x158;
-        uintptr_t visibility = 0x15C;
-        uintptr_t sea_defence = 0x160;
-        uintptr_t convoy_attack = 0x164;
-        uintptr_t sea_attack = 0x168;
-        uintptr_t sub_attack = 0x16C;
-        uintptr_t shore_bombardment = 0x170;
-        uintptr_t hull = 0x178;
-        uintptr_t positioning = 0x184;
-        uintptr_t unk_2e = 0x2E;
-
-        // Air
-        uintptr_t surface_defence = 0x174;
-        uintptr_t strategic_attack = 0x17C;
-    }
-
     void pushTerrainStatsToStack(lua_State* L, uintptr_t unitAdjusterArrayPtr) {
         DEBUG_OUT(printf("unitAdjusterArrayPtr: %#010x\n", unitAdjusterArrayPtr));
 

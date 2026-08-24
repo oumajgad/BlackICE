@@ -104,6 +104,14 @@ namespace {
             unit.regimentCount = 0;
         }
 
+        // Asked of the game rather than worked out here, so that the leader and
+        // country effects are the ones the game's own tooltip shows. Only worth
+        // asking for a unit that has regiments: the answer is zero otherwise.
+        if (unit.regimentCount > 0) {
+            unit.supplyConsumption = CUnit::supplyConsumption(address);
+            unit.fuelConsumption = CUnit::fuelConsumption(address);
+        }
+
         unit.leader = readValue<uint32_t>(address + CUnit::Offsets::leader_ptr);
         readLeader(unit.leader, unit);
 
@@ -201,6 +209,10 @@ namespace {
                 unit.airBelow += child.airBelow;
                 unit.navalBelow += child.navalBelow;
                 unit.regimentsBelow += child.regimentsBelow + child.regimentCount;
+                unit.supplyConsumptionBelow +=
+                    child.supplyConsumptionBelow + child.supplyConsumption;
+                unit.fuelConsumptionBelow +=
+                    child.fuelConsumptionBelow + child.fuelConsumption;
                 unit.leaderlessBelow += child.leaderlessBelow + (child.leaderMissing ? 1 : 0);
 
                 switch (child.branch) {
@@ -358,6 +370,8 @@ Oob::Tree Oob::read(uintptr_t country) {
         default: break;
         }
         tree.regimentTotal += unit.regimentCount;
+        tree.supplyConsumptionTotal += unit.supplyConsumption;
+        tree.fuelConsumptionTotal += unit.fuelConsumption;
         if (unit.leaderMissing) {
             tree.leaderlessTotal++;
         }

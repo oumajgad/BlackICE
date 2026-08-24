@@ -4,15 +4,6 @@
 #include <utils.hpp>
 
 namespace CTerrain {
-    namespace Offsets {
-        uintptr_t id = 0x8;
-        uintptr_t name = 0x28;
-        uintptr_t is_water = 0x48;
-        uintptr_t defence = 0x4C;
-        uintptr_t attack = 0x50;
-        uintptr_t attrition = 0x5C;
-    }
-
     CTerrain* Make(uintptr_t addr) {
         CTerrain* res = new CTerrain;
         res->id = *(int*)(addr + Offsets::id);
@@ -34,7 +25,7 @@ namespace CTerrain {
     std::vector<CTerrain*>* Terrains = new std::vector<CTerrain*>;
     void CacheTerrains() {
         uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
-        uintptr_t CTerrainVFTable = moduleBase + 0x11C0764;
+        uintptr_t CTerrainVFTable = moduleBase + VFTable::CTerrain;
         auto res = Mem::findPointers(moduleBase + 0x12F5000, CTerrainVFTable, 999);
         DEBUG_OUT(printf("res.size(): %i \n", res.size()));
         for (auto& terrainAddr : res) {

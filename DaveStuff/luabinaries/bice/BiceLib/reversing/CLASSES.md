@@ -209,6 +209,52 @@ rest - are in `GameClasses/CUnit.hpp` (**mem** originally, **used** since, and t
 the OOB browser shows have never looked wrong). There used to be a second copy of them
 inside `OrderOfBattle.cpp`, identical offset for offset; the two are now one.
 
+### What a unit is, by vtable slot
+
+Slots 15, 16 and 17 of `CArmy`, `CNavy` and `CAir` are `isLand`, `isNaval` and `isAir`
+- three predicates where each class has the real one and stubs for the other two:
+
+| | slot 15 (+0x3C) | slot 16 (+0x40) | slot 17 (+0x44) |
+| --- | --- | --- | --- |
+| `CArmy` | `mov al,1; ret` | `xor al,al; ret` | `xor al,al; ret` |
+| `CNavy` | `xor al,al; ret` | `mov al,1; ret` | `xor al,al; ret` |
+| `CAir` | `xor al,al; ret` | `xor al,al; ret` | `mov al,1; ret` |
+
+Worth knowing when a breakpoint says the game is reading a unit's vftable: it is
+usually one of these rather than anything interesting (**used**, disassembly).
+
+### Supply and fuel consumption
+
+`CSubUnitDefinition`'s `supply_consumption` (+0x110) and `fuel_consumption` (+0x114)
+are **base figures for one sub unit**. What the game displays for a unit is a good deal
+more, and BiceLib calls the game's own functions for it rather than reimplementing
+(**used**, disassembly, and the OOB browser matches the game's tooltip):
+
+| RVA | Takes | Gives |
+| --- | --- | --- |
+| `0x1BB560` | `(CUnit*, int* out, bool withoutLeaders)`, stdcall, `ret 0xC` | supply, in thousandths, through `out` |
+| `0x1BB7A0` | unit in **eax**, `(int* out, bool withoutLeaders)` on the stack, `ret 8` | fuel, the same way |
+
+Both return the `out` pointer in eax. The per regiment versions are `0x1AD0F0` (supply)
+and `0x1AD300` (fuel), which take the regiment in eax.
+
+What the unit level pair does, which is why the figure differs from the sum of the base
+values:
+
+- starts a potency at **1000**, and adds the country's general modifier at
+  `CCountry +0xDA8` array, entry `+0x188`;
+- walks **up** the OOB by `higher_oob_unit_ptr` to the unit whose `oob_level` is 1 - the
+  army group - and **subtracts** an amount worked out from that leader's `skill`
+  (`CLeader +0x70`) and the level, so a better army group commander lowers what
+  everything under it consumes;
+- sums each regiment's base figure scaled by how much of its `max_strength` (+0xEC) is
+  left, except for naval units, which are not scaled that way;
+- for land units with a particular order type (the order's virtual at +0x40 returning
+  `0x5A4`) scales the whole by a further modifier.
+
+`withoutLeaders` skips the first two steps, which gives the base figure the unit
+inspector shows.
+
 The sub units a unit holds are `CRegiment` (`GameClasses/CRegiment.hpp`): strength at
 +0x30, organisation at +0x60 and the name at +0x68, all **used** by the OOB browser.
 Air and naval sub units are read through the same three and have never looked wrong,

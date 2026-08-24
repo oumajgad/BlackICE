@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <cstdio>
+#include <cstring>
 #include <vector>
 
 #include <imgui.h>
@@ -16,6 +17,13 @@ namespace {
     std::vector<Inspector::Entity> selection;
     ULONGLONG lastSelectionSampleMs = 0;
     bool showInspector = true;
+
+    /**@brief a unit rather than a province, which is what the stat table describes*/
+    bool isUnitType(const char* type) {
+        return type != nullptr
+            && (strcmp(type, "Army") == 0 || strcmp(type, "Navy") == 0
+                || strcmp(type, "Air") == 0);
+    }
 
     void drawStatTable(const char* id, const std::vector<Inspector::Stat>& stats) {
         if (stats.empty()) {
@@ -131,6 +139,24 @@ namespace {
                 }
 
                 drawStatTable("stats", entity.stats);
+
+                // The stats above come straight off the unit type, so they are what
+                // one sub unit is before anything the game does to it. Worth saying
+                // plainly: supply and fuel in particular read lower here than in the
+                // game's own tooltip, and people notice that and assume a bug.
+                if (!entity.stats.empty() && isUnitType(entity.type)) {
+                    ImGui::Spacing();
+                    ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+                        "Base values for the unit type.");
+                    if (ImGui::IsItemHovered()) {
+                        ImGui::SetTooltip(
+                            "Per sub unit, and before the effects the game applies:\n"
+                            "leader traits, the commanders above the unit, national\n"
+                            "modifiers, terrain, and how much strength is left.\n\n"
+                            "For what a whole unit actually consumes, the OOB Browser\n"
+                            "asks the game itself and matches its tooltip.");
+                    }
+                }
 
                 if (!entity.terrain.empty()) {
                     ImGui::Spacing();

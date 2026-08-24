@@ -6,13 +6,16 @@
 
 namespace CTerrain {
     namespace Offsets {
-        extern uintptr_t id;
-        extern uintptr_t name;          // 0x28
-        extern uintptr_t name_length;   // 0x38
-        extern uintptr_t is_water;
-        extern uintptr_t defence;
-        extern uintptr_t attack;
-        extern uintptr_t attrition;
+        constexpr uintptr_t id = 0x8;
+        constexpr uintptr_t name = 0x28;   // a Hoi3CString, so its length is at 0x38
+        constexpr uintptr_t is_water = 0x48;
+        constexpr uintptr_t defence = 0x4C;
+        constexpr uintptr_t attack = 0x50;
+        constexpr uintptr_t attrition = 0x5C;
+    }
+
+    namespace VFTable {
+        constexpr uintptr_t CTerrain = 0x11C0764; // module relative
     }
     struct CTerrain
     {

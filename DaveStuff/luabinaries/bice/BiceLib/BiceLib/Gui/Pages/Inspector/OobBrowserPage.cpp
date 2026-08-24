@@ -353,6 +353,15 @@ namespace {
         rows.push_back(DetailRow{ "Supply", percentText(unit.supplyPercent, scratch, sizeof(scratch)) });
         rows.push_back(DetailRow{ "Fuel", percentText(unit.fuelPercent, scratch, sizeof(scratch)) });
 
+        // Only for a unit that has regiments of its own. Everything above division
+        // consumes through what is under it, which the section below this reports.
+        if (unit.regimentCount > 0) {
+            sprintf_s(line, "%.2f", unit.supplyConsumption / 1000.0);
+            rows.push_back(DetailRow{ "Supply used", line });
+            sprintf_s(line, "%.2f", unit.fuelConsumption / 1000.0);
+            rows.push_back(DetailRow{ "Fuel used", line });
+        }
+
         sprintf_s(line, "%.1f", unit.digIn / 1000.0);
         rows.push_back(DetailRow{ "Dug in", line });
 
@@ -408,6 +417,10 @@ namespace {
             out += line;
             sprintf_s(line, "  %-16s %.0f%% supply, %.0f%% fuel\r\n", "Average",
                 unit.supplyAverageBelow / 10.0, unit.fuelAverageBelow / 10.0);
+            out += line;
+            sprintf_s(line, "  %-16s %.2f supply, %.2f fuel\r\n", "Consumes",
+                (unit.supplyConsumptionBelow + unit.supplyConsumption) / 1000.0,
+                (unit.fuelConsumptionBelow + unit.fuelConsumption) / 1000.0);
             out += line;
         }
 
@@ -500,6 +513,15 @@ namespace {
             if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("Averaged over the %d units below this one, each\n"
                     "counting the same whatever its size.", unit->unitsBelow);
+            }
+
+            ImGui::Text("Consumes %.2f supply, %.2f fuel",
+                (unit->supplyConsumptionBelow + unit->supplyConsumption) / 1000.0,
+                (unit->fuelConsumptionBelow + unit->fuelConsumption) / 1000.0);
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("What the game itself works out for each unit,\n"
+                    "so the leader and country effects are included -\n"
+                    "not the sum of the unit types' base figures.");
             }
         }
 

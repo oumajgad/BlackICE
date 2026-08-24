@@ -75,5 +75,37 @@ namespace CUnit {
         constexpr int Navy = 5;
     }
 
+    /**
+     * The game's own consumption calculations, called rather than reimplemented.
+     *
+     * The definition's supply_consumption and fuel_consumption are only the base
+     * figures for one sub unit. What the game shows on a unit is those summed over
+     * its regiments, each scaled by how much of its strength is left, and the whole
+     * scaled by a potency that starts at 1000, gains the country's general modifier
+     * at +0x188, and loses an amount for the skill of the leader of the army group
+     * above the unit. Reproducing that would mean owning a copy of it; calling it
+     * means the numbers are the game's.
+     *
+     * Both are module relative addresses, so they are only right for this build.
+     * Neither writes anything to the game.
+     */
+    namespace GameFunction {
+        constexpr uintptr_t supplyConsumption = 0x1BB560;
+        constexpr uintptr_t fuelConsumption = 0x1BB7A0;
+    }
+
+    /**@brief what the unit's own regiments consume, in thousandths - 2910 is 2.91
+
+       Zero for a unit that holds no regiments of its own: a corps consumes through
+       the divisions under it, and the order of battle adds those up separately.
+
+       @param unit a CArmy, CNavy or CAir
+       @param withoutLeaders leaves out the leader and country effects, giving the
+              base figure the unit inspector shows*/
+    [[nodiscard]] int supplyConsumption(uintptr_t unit, bool withoutLeaders = false);
+
+    /**@brief the same for fuel, in thousandths*/
+    [[nodiscard]] int fuelConsumption(uintptr_t unit, bool withoutLeaders = false);
+
     void pushCUnitToStack(lua_State* L, uintptr_t unitPtr);
 }
