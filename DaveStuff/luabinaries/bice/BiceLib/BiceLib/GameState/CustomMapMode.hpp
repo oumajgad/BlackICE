@@ -43,6 +43,15 @@ namespace CustomMapMode {
     bool enabled();
 
     /**
+    @brief whether the mode has been switched on, whatever else is missing
+
+    Not the same as enabled(), which is also false when no building is chosen. A
+    checkbox has to show what was clicked rather than what came of it, or ticking it
+    with nothing selected looks like it did not take.
+    */
+    bool requested();
+
+    /**
     @brief turns the takeover on or off
 
     Turning it on installs the hook the first time. The map only changes when the game

@@ -24,10 +24,13 @@ namespace {
 
     // Who holds the province, as an index into the same country array the loop uses
     // for the fog of war - so it can be compared with the country being drawn for.
-    const uintptr_t PROVINCE_CONTROLLER = 0x338;
+    const uintptr_t PROVINCE_CONTROLLER = CMapProvince::Offsets::controller_id;
 
-    // A province with none of the chosen building.
-    const uint32_t COLOUR_WITHOUT = 0xFFC8C8C8;          // light grey
+    // A province with none of the chosen building: lighter where the player holds it,
+    // darker everywhere else, so the map still reads as the player's own ground even
+    // where nothing of the building is on it.
+    const uint32_t COLOUR_WITHOUT_MINE = 0xFFC8C8C8;     // light grey
+    const uint32_t COLOUR_WITHOUT_OTHER = 0xFF787878;    // darker grey
 
     // The green ramp, level 1 to TOP_LEVEL.
     //
@@ -142,9 +145,19 @@ bool CustomMapMode::enabled() {
     return enabledFlag && selectedIndex >= 0;
 }
 
+bool CustomMapMode::requested() {
+    return enabledFlag;
+}
+
 void CustomMapMode::setEnabled(bool on) {
     if (on) {
         Hooks::MapMode::install();
+
+        // Switching it on with nothing chosen would leave the mode asking for a
+        // second click before it did anything, so it chooses the first building.
+        if (selectedIndex < 0 && !buildings().empty()) {
+            selectedIndex = 0;
+        }
     }
     enabledFlag = on;
     Hooks::MapMode::setActive(enabled());
@@ -214,18 +227,19 @@ uint32_t CustomMapMode::colourFor(uintptr_t province, int viewingCountry) {
         return 0;
     }
 
+    // Who holds it decides both halves of the appearance below.
+    int32_t controller = -1;
+    const bool mine = Mem::tryRead(province + PROVINCE_CONTROLLER, controller)
+        && controller == viewingCountry;
+
     const int level = levelIn(province, all[selectedIndex].index);
     if (level <= 0) {
-        return COLOUR_WITHOUT;
+        return mine ? COLOUR_WITHOUT_MINE : COLOUR_WITHOUT_OTHER;
     }
 
     // Only what the player holds is shaded by level. Anywhere else the building shows
     // up at the lowest shade, so the map says where it is without claiming to know how
     // much of it is there.
-    int32_t controller = -1;
-    const bool mine = Mem::tryRead(province + PROVINCE_CONTROLLER, controller)
-        && controller == viewingCountry;
-
     const int shown = mine ? level : 1;
     const int capped = (shown > TOP_LEVEL) ? TOP_LEVEL : shown;
 
