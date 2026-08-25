@@ -106,3 +106,45 @@ bool Patches::historicalModelLogicFix(uintptr_t moduleBase) {
     }
     return 1;
 }
+
+/**
+ * Makes the Simplified Terrain map mode colour the sea as well as the land.
+ *
+ * The sea is not skipped by that map mode - its colouring loop visits all 3,547 sea
+ * provinces and works out a colour for each. The water simply never uses them, because
+ * the water is drawn by its own shader and that shader comes in two forms. water.fx
+ * compiles every technique twice, once plainly and once with PROVINCE_COLOR defined,
+ * and the second samples the province colour textures and mixes them into the water.
+ *
+ * Which of the two is used comes down to one number the map mode setter writes, and
+ * the renderer tests it in two places - once to decide whether to refill the sea's
+ * colour texture at all, and once to pick WaterNear over WaterNearColor. Both accept
+ * only 16, 18 and 19. Air writes 18 and Naval writes 19, which is why those two are
+ * the modes where the sea is coloured; Simplified Terrain writes 8.
+ *
+ * So the whole change is that 8. 18 is used rather than 16 or 19 because it is the
+ * value that was tried in a running game: the sea takes the terrain colours and the
+ * land is unaffected. Only this map mode's setter is touched - Infrastructure writes
+ * the same 8 from its own setter and keeps it.
+ *
+ * reversing/FINDINGS-mapmode.md has the trail from the colour store to the shader.
+ */
+bool Patches::seaTerrainColourInSimplifiedMapMode(uintptr_t moduleBase) {
+    // mov dword ptr [eax+0xF4], 8 - the last of three settings the Simplified Terrain
+    // setter writes, at the point where it has the settings object in eax.
+    const DWORD address = moduleBase + 0x266E74;
+    const BYTE expected[10] = { 0xC7, 0x80, 0xF4, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
+
+    // Ten bytes into the middle of a function is no place to write blind. A build that
+    // does not have this instruction here is left alone rather than corrupted.
+    for (int i = 0; i < 10; i++) {
+        if (*(BYTE*)(address + i) != expected[i]) {
+            std::cout << "seaTerrainColourInSimplifiedMapMode: the map mode setter is "
+                "not what this build expects" << std::endl;
+            return 0;
+        }
+    }
+
+    BYTE style[1] = { 0x12 };   // 18, the number the air map mode uses
+    return patchBytes((void*)(address + 6), style, 1);
+}

@@ -4,7 +4,12 @@
 
 namespace CMapProvince {
     namespace Offsets {
-        constexpr uintptr_t CTerrain_ptr = 0xD4;
+        // No terrain here. There was a CTerrain_ptr at +0xD4, and it was wrong: that
+        // points at an object of its own per province - 13,999 distinct ones in a
+        // running game, where a terrain type is shared by thousands - and the CTerrain
+        // is one more dereference in, at +0xC of it. Nothing read the field, so it is
+        // gone rather than corrected; reversing/FINDINGS-mapmode.md has the details if
+        // the terrain of a province is ever actually wanted.
         constexpr uintptr_t CModifierDefinitions_ptr = 0x114;
         constexpr uintptr_t CProvinceBuilding_array_ptr = 0x310;
 
@@ -68,7 +73,6 @@ namespace CMapProvince {
 
     struct CMapProvince
     {
-        uintptr_t CTerrain_ptr;
         uintptr_t CModifierDefinitions_ptr;
         uintptr_t CProvinceBuilding_array_ptr;
         int id;

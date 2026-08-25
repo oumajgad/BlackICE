@@ -53,6 +53,7 @@ if mod then
     BiceLib.BytePatches.disableWarExhaustionNeutralityReset()
     BiceLib.BytePatches.disableInterAiExpeditionaries()
     BiceLib.BytePatches.historicalModelLogicFix()
+    BiceLib.BytePatches.seaTerrainColourInSimplifiedMapMode()
 
     -- Complex Patches
     BiceLib.ComplexPatches.fixOffMapIC()

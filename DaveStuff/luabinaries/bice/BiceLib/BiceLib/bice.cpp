@@ -843,6 +843,24 @@ __declspec(dllexport) int historicalModelLogicFix(lua_State* L)
     historicalModelLogicFixDone = true;
     return 0;
 }
+
+bool seaTerrainColourInSimplifiedMapModeDone = false;
+__declspec(dllexport) int seaTerrainColourInSimplifiedMapMode(lua_State* L)
+{
+    if (seaTerrainColourInSimplifiedMapModeDone) {
+        return 0;
+    }
+
+    if (!Patches::seaTerrainColourInSimplifiedMapMode(MODULE_BASE)) {
+        ERROR_OUT(std::cout << "Patch 'seaTerrainColourInSimplifiedMapMode' failed" << std::endl);
+    }
+    else {
+        INFO_OUT(std::cout << "Patch 'seaTerrainColourInSimplifiedMapMode' succeeded" << std::endl);
+    }
+
+    seaTerrainColourInSimplifiedMapModeDone = true;
+    return 0;
+}
 /////////////////////////////////////
 //      INSPECTOR FUNCTIONS        //
 /////////////////////////////////////
@@ -1107,6 +1125,7 @@ void registerPatchFunctions(lua_State* this_state) {
     registerFunction(this_state, "disableWarExhaustionNeutralityReset", disableWarExhaustionNeutralityReset);
     registerFunction(this_state, "disableInterAiExpeditionaries", disableInterAiExpeditionaries);
     registerFunction(this_state, "historicalModelLogicFix", historicalModelLogicFix);
+    registerFunction(this_state, "seaTerrainColourInSimplifiedMapMode", seaTerrainColourInSimplifiedMapMode);
     lua_settable(this_state, -3);
     return;
 }

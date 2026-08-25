@@ -8,4 +8,5 @@ namespace Patches {
     bool disableWarExhaustionNeutralityReset(uintptr_t moduleBase);
     bool disableInterAiExpeditionaries(uintptr_t moduleBase);
     bool historicalModelLogicFix(uintptr_t moduleBase);
+    bool seaTerrainColourInSimplifiedMapMode(uintptr_t moduleBase);
 }

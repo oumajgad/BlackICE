@@ -5,7 +5,6 @@
 namespace CMapProvince {
     CMapProvince Make(uintptr_t addr) {
         CMapProvince res = CMapProvince{};
-        res.CTerrain_ptr = addr + Offsets::CTerrain_ptr;
         res.CModifierDefinitions_ptr = addr + Offsets::CModifierDefinitions_ptr;
         res.CProvinceBuilding_array_ptr = addr + Offsets::CProvinceBuilding_array_ptr;
         res.id = *(int*)(addr + Offsets::id);

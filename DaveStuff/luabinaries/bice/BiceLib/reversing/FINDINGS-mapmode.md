@@ -103,3 +103,209 @@ Two thresholds, both the game's:
 - **6** - the province window starts showing what is built there. Found by testing, not
   read out of the code, so it is worth rechecking if building visibility ever looks
   wrong. `CustomMapMode` uses it to decide whether to show a real level.
+
+## Every map mode, by its own number
+
+The number on the button is not the number the game uses, and the two do not even run in
+the same order. Read off a running game with `reversing/mapmode.py --watch`, by clicking
+the buttons left to right; `mapmode_10` coming out as 7 is the check that the two lists
+are lined up, because that one was already known from the disassembly.
+
+| button | what it is called | mode | coloured by |
+| --- | --- | --- | --- |
+| `mapmode_1` | Terrain | **0** | generic path |
+| `mapmode_2` | Political | **1** | `0x266220` |
+| `mapmode_3` | Weather | **11** | generic path |
+| `mapmode_4` | Intel | **6** | `0x267510` |
+| `mapmode_5` | Revoltrisk | **12** | generic path |
+| `mapmode_6` | Diplomatic | **2** | `0x2668C0` |
+| `mapmode_7` | (no localisation) | **3** | generic path |
+| `mapmode_8` | Supply | **4** | `0x266EE0` |
+| `mapmode_9` | Infrastructure | **5** | `0x2670F0` |
+| `mapmode_10` | VP | **7** | `0x267710` |
+| `mapmode_11` | Theatre | **8** | `0x267920` |
+| `mapmode_12` | Strength | **9** | `0x267B50` |
+| `mapmode_13` | Resources | **10** | generic path |
+| `mapmode_14` | Simplified Terrain | **13** | generic path |
+| `mapmode_15` | Air | **18** | generic path |
+| `mapmode_16` | Naval | **19** | generic path |
+
+The dispatch that picks a routine only runs for a mode whose entry in the table at
+`[map+0x30]` is 1; everything else takes the generic path. It also has a case for mode
+17, which no button produces.
+
+**Simplified Terrain is mode 13, and takes the generic path** - so there is no routine
+of its own to change, and whatever it does about sea provinces it does somewhere shared.
+
+## Simplified Terrain, and why the sea is not coloured
+
+Mode 13. Driver at `0x266CE0`, which calls the colouring loop at `0x465B70` - and that
+loop has exactly one caller, so anything done to it touches this map mode alone.
+
+The loop reads the same intel pair the VP one does for brightness, then takes the
+province's terrain and turns it into a colour:
+
+```
+eax = [province + 0xD4]      ; per province, vftable base+0x11C064C
+      [eax + 0x13D]          ; a flag - 1 for every province in the save, so not a
+                             ;   land/sea test, whatever it is
+ecx = [eax + 0xC]            ; the CTerrain, vftable base+0x11C0764
+call 0x44F290 / 0x243750     ; colour, then combined with the brightness
+call 0x6628B0                ; CColor -> packed dword, the same converter the VP loop
+                             ;   ends with and the one BiceLib already hooks
+```
+
+**Sea provinces are not skipped by this loop.** They are in it: it visits 14,189
+provinces, which is exactly the number in `map/definition.csv`, and the 3,547 sea
+provinces (`sea_starts` in `map/default.map`, ids 10500-14168) are among them. Sea
+provinces have a `CTerrain` like any other - province 11000 resolves through the same
+pair as province 2142.
+
+What actually happens is further down: **the map does not draw sea from the province
+colour at all.** BiceLib's own map mode proved it before this was looked at - painting
+every province magenta through the colour hook turned every *land* province magenta and
+left the sea exactly as it was.
+
+So colouring the sea in the simplified terrain map mode is not a change to the map
+mode. It needs whatever draws the sea to use the province colour, which has not been
+found yet.
+
+## What BiceLib does with all this
+
+`GameState/CustomMapMode.*` and `Hooks/MapModeHooks.*`, shown on the Custom Mapmode
+page under Inspector. It borrows the VP map mode: while it is on, that mode paints
+building levels instead of victory points.
+
+Two hooks, both five byte calls, installed once and never removed:
+
+| where | was | ours does |
+| --- | --- | --- |
+| `0x4666B6` | `mov ecx,[esi+0x34]` + `test ecx,ecx` | answers 0 for the victory points |
+| `0x4666B1` | `call 0x6628B0` | answers with a colour, or 0 to let the game convert its own |
+
+Answering zero for the victory points keeps every province on the loop's no-VP branch,
+which does two things at once: no province gets an owner colour, and the *second* colour
+conversion at `0x46697D` never runs. That leaves `0x4666B1` as the only place a colour
+is decided.
+
+The colour rules, all in `CustomMapMode::colourFor`:
+
+- no building of the chosen kind: light grey, or a darker grey below the intel threshold
+- the player can see it (intel >= 6): green, brighter with the level, fixed 1 to 10
+- below that: green at the lowest shade, so the map says a building is there without
+  saying how much
+
+`Hooks::MapMode::repaint()` calls `0x267710` on the map (from the game state at +0xBE8)
+so a change of building shows immediately, and only when `[map+0xD34]` says the VP map
+mode is the one on screen.
+
+### Four things that cost a day between them
+
+- **The loop converts a colour twice.** `0x4666B1` for every province, `0x46697D` only
+  for one with victory points, and the `jle` after the victory point read jumps *past*
+  the second to store the first one's result. Hooking only the second means hooking a
+  call that mostly does not run.
+- **Replacing an instruction with a call destroys eax.** `mov ecx,[esi+0x34]` left eax
+  alone, and eax was carrying the colour the branch goes on to store. The stub has to
+  push and pop it. This looked exactly like "the colour is wrong", for hours.
+- **A colour with red and blue at zero does not draw.** Pure green showed nothing;
+  the same shade with 20-50 in the other two channels drew fine. Unexplained, but
+  reproducible in both directions.
+- **Off has to mean the hooks do nothing.** With the mode off they used to still call
+  into our code, and something in that path corrupted the owner colours - fogged
+  provinces came out blue instead of yellow. Both stubs now check a flag in assembly
+  and run the original instructions when it is clear.
+
+## The sea: found, and it is the water shader
+
+**Solved.** The sea is not skipped by any map mode. `water.fx` draws it, and that
+shader comes in two forms - `water_include.h` is included six times, three of them with
+`PROVINCE_COLOR` defined, so every technique exists twice:
+
+| plain | province colour |
+| --- | --- |
+| `WaterNear` | `WaterNearColor` |
+| `WaterSimple` | `WaterSimpleColor` |
+| `WaterFar` | `WaterFarColor` |
+
+Under `PROVINCE_COLOR` the pixel shader samples `ColorTexture0` and `ColorTexture1` -
+the same colour pair the colouring loop writes to `entry+0` and `entry+4` - blends them
+by the stripes texture and does `color = lerp( color, ProvinceColor, 0.8f )`.
+
+The six handles are looked up once and kept on the water object:
+
+| field | technique |
+| --- | --- |
+| `+0x234` | the `water.fx` effect itself |
+| `+0x240` / `+0x244` | `WaterFar` / `WaterFarColor` |
+| `+0x248` / `+0x24C` | `WaterSimple` / `WaterSimpleColor` |
+| `+0x250` / `+0x254` | `WaterNear` / `WaterNearColor` |
+
+### One number decides, and it is tested twice
+
+Every map mode setter writes a style number to `settings+0xF4`, where `settings` is the
+singleton at `[hoi3_tfh+0x16863F8]` returned by `0x5FF30`. Two places test it, with the
+same test written out both times:
+
+```
+mov eax, [settings + 0xF4]
+cmp eax, 0x10
+je  yes          ; 16
+cmp eax, 0x11
+jle no           ; 17 or less
+cmp eax, 0x13
+jle yes          ; 18 or 19
+no: xor al, al
+```
+
+| where | what it gates |
+| --- | --- |
+| `0x480DA5` | whether the **WaterTexture update** runs - `0x4821D0`, which refills the sea's province colour texture. Its own error string is *"Locking a texture for WaterTexture update failed."* |
+| `0x45FAE6` | whether the water draws with `WaterNearColor` or `WaterNear`, at `0x45FBF6` / `0x45FBFE` |
+
+So only styles **16, 18 and 19** put province colours on the sea. What each map mode
+writes, read out of its setter:
+
+| style | modes |
+| --- | --- |
+| 0 | Terrain, Theatre |
+| 2 | Political, Diplomatic, mode 3 |
+| 6 | Supply |
+| 8 | Infrastructure, **Simplified Terrain** |
+| 9 | Intel, VP |
+| 0xB, 0xC, 0xD, 0xF | Weather, Strength and friends |
+| **0x12 (18)** | **Air** |
+| **0x13 (19)** | **Naval** |
+| 0x14 (20) | Resources |
+
+Air and Naval are exactly the two modes where the sea is coloured in game, and they are
+exactly the two that pass the test. That is the whole explanation.
+
+A third place reads `+0xF4` - `0x480F1D`, inside the province colour texture builder -
+but only ever compares it against 0, so 8 and 18 behave identically there. It is the
+reason the land is unaffected.
+
+### What BiceLib does
+
+`Patches::seaTerrainColourInSimplifiedMapMode` changes one byte: the immediate of
+`mov dword ptr [eax+0xF4], 8` at **`0x266E74`**, in the Simplified Terrain setter, from
+8 to 18. The ten bytes are checked before the one is written. Infrastructure writes the
+same 8 from its own setter at `0x266C5F` and is left alone.
+
+Confirmed in a running game before the patch was written, by poking `settings+0xF4` to
+18 while mode 13 was on screen: the sea took province colours and the land stayed
+correct. The sea showed the *previous* mode's colours, because the WaterTexture update
+is gated at mode set time and the poke came after it - which is precisely why the fix
+belongs in the setter, before the update runs, rather than anywhere later.
+
+### Two dead ends, recorded so they are not walked again
+
+- **`[province+0xD4] + 0x13D` is not a land/sea flag.** The simplified terrain loop
+  tests it and zeroes the brightness when it is clear, which reads like a sea skip. It
+  is 1 for all 14,190 provinces in a running game. The tile updater at `0x45CA30` tests
+  the same byte across a tile and looks like culling; same answer.
+- **The layer mask at `settings+0xF0` is not it either.** Every setter writes one
+  (`0xFFFF`, `0xFFBE`, `0xFFBA`, `0xFFBB`, `0xFFAA`, `0xFF9A`) and the renderer tests
+  single bits of `[+0xF0] & [+0xEC]`. Air and Naval differ from the rest by bit 5, which
+  made it look like the answer. Holding mode 13's mask at Naval's `0xFF9A` in a running
+  game changed nothing at all. `+0xF4`, written by the same setters, was the real one.
