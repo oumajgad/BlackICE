@@ -70,8 +70,6 @@ namespace {
             labels.push_back(shown + " [" + buildings[i].name + "]");
         }
 
-        // Height of zero, so the list takes whatever is left of the window rather
-        // than a fixed 240 pixels with empty space under it.
         // The model can choose for itself - it does when the mode is switched on with
         // nothing selected - so the highlight follows it rather than the other way.
         const int chosen = CustomMapMode::selected();
@@ -80,6 +78,8 @@ namespace {
             selectedName = labels[chosen];
         }
 
+        // Height of zero, so the list takes whatever is left of the window rather
+        // than a fixed height with empty space under it.
         if (Gui::filteredList("buildings", ImVec2(listWidth, 0.0f), labels,
             buildingFilter, sizeof(buildingFilter), selectedName)) {
             for (size_t i = 0; i < labels.size(); i++) {
@@ -103,7 +103,6 @@ namespace {
             ImGui::TextDisabled("Nothing selected.");
         }
         ImGui::EndGroup();
-
     }
 
     class CustomMapModePage : public Gui::GuiPage

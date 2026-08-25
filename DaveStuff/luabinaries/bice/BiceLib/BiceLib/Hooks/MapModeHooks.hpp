@@ -29,6 +29,18 @@ namespace Hooks {
         */
         void setActive(bool on);
 
+        /**
+        @brief makes the game colour the map again, now
+
+        Calls the routine the game runs when the VP map mode is picked, so a change of
+        building shows up without the player switching map mode by hand. Does nothing
+        unless the VP map mode is the one on screen - repainting any other would be
+        meddling with a mode we have nothing to do with.
+
+        @returns whether it found everything it needed and made the call
+        */
+        bool repaint();
+
         bool installed();
 
         /**@brief why it is not installed, when it is not*/

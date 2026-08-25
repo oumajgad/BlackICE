@@ -15,22 +15,14 @@ namespace {
     // one and the sea ones have none.
     const int MAX_PROVINCE_ID = 20000;
 
-    // The victory point field the loop reads, answered with zero while the mode is on.
-    const uintptr_t PROVINCE_VICTORY_POINTS = 0x34;
-
     // Nothing in the mod builds anywhere near this; it is only here to reject a slot
     // that does not hold a level at all.
     const int MAX_SANE_LEVEL = 100;
 
-    // Who holds the province, as an index into the same country array the loop uses
-    // for the fog of war - so it can be compared with the country being drawn for.
-    const uintptr_t PROVINCE_CONTROLLER = CMapProvince::Offsets::controller_id;
-
-    // A province with none of the chosen building: lighter where the player holds it,
-    // darker everywhere else, so the map still reads as the player's own ground even
-    // where nothing of the building is on it.
-    const uint32_t COLOUR_WITHOUT_MINE = 0xFFC8C8C8;     // light grey
-    const uint32_t COLOUR_WITHOUT_OTHER = 0xFF787878;    // darker grey
+    // A province with none of the chosen building: lighter where the player can see
+    // what is there, darker where they cannot.
+    const uint32_t COLOUR_WITHOUT_SEEN = 0xFFC8C8C8;     // light grey
+    const uint32_t COLOUR_WITHOUT_UNSEEN = 0xFF787878;   // darker grey
 
     // The green ramp, level 1 to TOP_LEVEL.
     //
@@ -161,6 +153,7 @@ void CustomMapMode::setEnabled(bool on) {
     }
     enabledFlag = on;
     Hooks::MapMode::setActive(enabled());
+    Hooks::MapMode::repaint();
 }
 
 int CustomMapMode::selected() {
@@ -170,6 +163,7 @@ int CustomMapMode::selected() {
 void CustomMapMode::select(int buildingIndex) {
     selectedIndex = buildingIndex;
     Hooks::MapMode::setActive(enabled());
+    Hooks::MapMode::repaint();
 }
 
 int CustomMapMode::levelIn(uintptr_t province, int buildingIndex) {
@@ -209,7 +203,7 @@ int CustomMapMode::victoryPointsFor(uintptr_t province) {
     // Off: the VP map mode behaves exactly as it always did.
     if (!enabled() || province == 0) {
         int32_t points = 0;
-        if (province != 0 && Mem::tryRead(province + PROVINCE_VICTORY_POINTS, points)) {
+        if (province != 0 && Mem::tryRead(province + CMapProvince::Offsets::victory_points, points)) {
             return points;
         }
         return 0;
@@ -227,20 +221,34 @@ uint32_t CustomMapMode::colourFor(uintptr_t province, int viewingCountry) {
         return 0;
     }
 
-    // Who holds it decides both halves of the appearance below.
-    int32_t controller = -1;
-    const bool mine = Mem::tryRead(province + PROVINCE_CONTROLLER, controller)
-        && controller == viewingCountry;
+    // How much the player knows about it decides both halves of the appearance below.
+    // Using the game's own intel rather than who owns the province means an ally's
+    // ground, or somewhere scouted, reads as well as the player's own - and somewhere
+    // never seen says only that the building is there.
+    int32_t known = 0;
+    int32_t count = 0;
+    uint32_t intelArray = 0;
+    if (viewingCountry >= 0
+        && Mem::tryRead(province + CMapProvince::Offsets::intel_country_count, count)
+        && count > viewingCountry
+        && Mem::tryRead(province + CMapProvince::Offsets::intel_by_country_ptr, intelArray)
+        && intelArray != 0) {
+        uint8_t intel = 0;
+        if (Mem::tryRead(intelArray + viewingCountry, intel)) {
+            known = intel;
+        }
+    }
+    const bool seen = known >= INTEL_FOR_REAL_LEVEL;
 
     const int level = levelIn(province, all[selectedIndex].index);
     if (level <= 0) {
-        return mine ? COLOUR_WITHOUT_MINE : COLOUR_WITHOUT_OTHER;
+        return seen ? COLOUR_WITHOUT_SEEN : COLOUR_WITHOUT_UNSEEN;
     }
 
-    // Only what the player holds is shaded by level. Anywhere else the building shows
-    // up at the lowest shade, so the map says where it is without claiming to know how
-    // much of it is there.
-    const int shown = mine ? level : 1;
+    // Only somewhere the player knows is shaded by level. Anywhere else the building
+    // shows up at the lowest shade, so the map says where it is without claiming to
+    // know how much of it is there.
+    const int shown = seen ? level : 1;
     const int capped = (shown > TOP_LEVEL) ? TOP_LEVEL : shown;
 
     const int green = GREEN_FLOOR + (GREEN_RANGE * capped) / TOP_LEVEL;

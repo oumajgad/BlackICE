@@ -59,6 +59,18 @@ namespace CustomMapMode {
     */
     void setEnabled(bool on);
 
+    /**
+     * How much intel a province needs before its real level is shown.
+     *
+     * Below it a province is drawn at the lowest shade and a darker grey, so the map
+     * never claims to know more about somewhere than the player does.
+     *
+     * Six is the game's own answer, found by testing: at six the province window
+     * starts showing what is built there, and below it does not. So this map mode
+     * reveals a level exactly where the game is willing to.
+     */
+    constexpr int INTEL_FOR_REAL_LEVEL = 6;
+
     /**@brief which building is shown, as an index into buildings(); -1 for none*/
     int selected();
     void select(int buildingIndex);

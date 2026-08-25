@@ -9,6 +9,33 @@ namespace CMapProvince {
         constexpr uintptr_t CProvinceBuilding_array_ptr = 0x310;
 
         constexpr uintptr_t id = 0xD0;
+        constexpr uintptr_t victory_points = 0x34;
+
+        /**
+         * What each country knows about this province: a pointer to one byte per
+         * country, and how many of them there are.
+         *
+         * Index it by the country's index, the same one controller_id holds and the
+         * same one the map is drawn for. Check the count first - it is the number of
+         * countries in the game, 108 in BlackICE, and a country index past it means
+         * there is nothing to read.
+         *
+         * The values that actually turn up in a running game are 0 for somewhere
+         * never seen, 3 for partial intel, and 9 for a province the country owns -
+         * measured over all 14,000 provinces, where every one of the 262 the player
+         * held read 9.
+         *
+         * Two thresholds matter, both the game's own: at two or more a province counts
+         * as seen and is painted at full brightness rather than dimmed, and at six or
+         * more the province window shows what is built there. The second was found by
+         * testing rather than read out of the code.
+         *
+         * Found from the VP map mode's colouring loop, which reads exactly this pair
+         * to decide how dim a province should be.
+         */
+        constexpr uintptr_t intel_by_country_ptr = 0x370;
+        constexpr uintptr_t intel_country_count = 0x374;
+
         constexpr uintptr_t supply_pool = 0x164;
         constexpr uintptr_t fuel_pool = 0x168;
         constexpr uintptr_t oil = 0x27C;

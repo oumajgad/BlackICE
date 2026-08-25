@@ -21,6 +21,16 @@ namespace {
     const uintptr_t COLOUR_CALL_SITE = 0x4666B1;
     const uintptr_t COLOUR_CONVERTER = 0x6628B0;
 
+    // What the game calls to colour the map for the VP map mode, reached the way its
+    // own dispatch reaches it: a switch on the current mode, where 7 is VP, calling
+    // this with ecx pointing at the map. The map hangs off the game state, and the
+    // mode it is showing is on it.
+    const uintptr_t VP_RECOLOUR = 0x267710;
+    const uintptr_t GAME_STATE_POINTER = 0x1689790;
+    const uintptr_t GAME_STATE_MAP = 0xBE8;
+    const uintptr_t MAP_CURRENT_MODE = 0xD34;
+    const int MAP_MODE_VICTORY_POINTS = 7;
+
     // mov ecx, [esi+0x34] / test ecx, ecx - five bytes, so a call fits exactly.
     const unsigned char EXPECTED_VICTORY_POINTS[5] = { 0x8B, 0x4E, 0x34, 0x85, 0xC9 };
     const unsigned char EXPECTED_COLOUR_CALL[5] = { 0xE8, 0xFA, 0xC1, 0x1F, 0x00 };
@@ -200,6 +210,40 @@ bool Hooks::MapMode::install() {
     INFO_OUT(printf("MapMode hooks installed at %#010x and %#010x\n",
         static_cast<unsigned>(base + VICTORY_POINT_SITE),
         static_cast<unsigned>(base + COLOUR_CALL_SITE)));
+    return true;
+}
+
+bool Hooks::MapMode::repaint() {
+    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    if (base == 0 || !installedFlag) {
+        return false;
+    }
+
+    uint32_t state = 0;
+    if (!Mem::tryRead(base + GAME_STATE_POINTER, state) || state == 0) {
+        return false;   // no session, so nothing to paint
+    }
+
+    uint32_t map = 0;
+    if (!Mem::tryRead(state + GAME_STATE_MAP, map) || map == 0) {
+        return false;
+    }
+
+    // Only when the VP map mode is what is on screen. If this field ever turns out to
+    // be something else the repaint simply never happens, which leaves the player
+    // switching map mode by hand - the way it worked before.
+    int32_t current = -1;
+    if (!Mem::tryRead(map + MAP_CURRENT_MODE, current)
+        || current != MAP_MODE_VICTORY_POINTS) {
+        return false;
+    }
+
+    const uintptr_t recolour = base + VP_RECOLOUR;
+    __asm {
+        mov ecx, map
+        mov eax, recolour
+        call eax
+    }
     return true;
 }
 

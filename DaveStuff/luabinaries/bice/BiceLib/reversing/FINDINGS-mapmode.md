@@ -86,3 +86,20 @@ because bombing damages infrastructure - which is what sent the first attempt wr
 The offsets came from `DaveStuff/mem/classes/CProvinceBuilding.py`, which had them all
 along; the vftables there (`0x11C0A50` at +0, `0x11C0A78` at +8) match what the objects
 actually carry. They are now in `GameClasses/CProvinceBuilding.hpp`.
+
+## Intel, and what it gates
+
+`CMapProvince +0x370` is a pointer to one byte per country and `+0x374` is how many
+there are - the country count, 108 in BlackICE. Index it by country index, the same one
+`controller_id` holds.
+
+Measured over every province, for the player: **0** for somewhere never seen (13,655),
+**3** for partial intel (82), **9** for the country's own provinces (262, all of them).
+
+Two thresholds, both the game's:
+
+- **2** - the VP map mode's colouring loop paints a province at full brightness at two
+  or more and dims it below that.
+- **6** - the province window starts showing what is built there. Found by testing, not
+  read out of the code, so it is worth rechecking if building visibility ever looks
+  wrong. `CustomMapMode` uses it to decide whether to show a real level.
