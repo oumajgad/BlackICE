@@ -1,6 +1,6 @@
-// Custom Mapmode: paints the map with something of our own by taking over what the VP
-// map mode draws. Today that is the level of one building; the hook decides the colour
-// of every province, so there is room for more. See reversing/FINDINGS-mapmode.md.
+// Custom Mapmode: replaces what the VP map mode draws. It shades provinces by the
+// level of one building; the hook underneath decides the colour of every province, so
+// the page has room to grow. See reversing/FINDINGS-mapmode.md.
 
 #include <Gui/GuiPage.hpp>
 #include <Gui/ListBox.hpp>
@@ -18,8 +18,8 @@ namespace {
 
     char buildingFilter[64] = {};
     std::string selectedName;
-    // Wide enough for the longest name with its key after it, which is what makes
-    // the two Air Bases tellable apart.
+    // Wide enough for the longest building name with its key after it, since the key
+    // is what separates the two entries both named "Air Base".
     float listWidth = 380.0f;
 
     void drawCustomMapMode() {
@@ -58,10 +58,10 @@ namespace {
         // window rather than what the mod files happen to be called - with the key in
         // brackets after it.
         //
-        // Not decoration: two buildings share the name "Air Base", and the selection
-        // is carried back as the text that was clicked. Without something to tell them
-        // apart the first of the two always won, and picking the one that actually
-        // carries the air capacity was impossible. Keys are unique, so this is too.
+        // The key is not decoration. Two buildings share the display name "Air Base",
+        // and the selection comes back as the text that was clicked, so identical
+        // labels would always resolve to the first of the two and leave the other
+        // unreachable. Keys are unique, which makes these labels unique.
         std::vector<std::string> labels;
         labels.reserve(buildings.size());
         for (size_t i = 0; i < buildings.size(); i++) {
@@ -70,8 +70,9 @@ namespace {
             labels.push_back(shown + " [" + buildings[i].name + "]");
         }
 
-        // The model can choose for itself - it does when the mode is switched on with
-        // nothing selected - so the highlight follows it rather than the other way.
+        // The model can change the selection on its own, which it does when the mode
+        // is switched on with nothing chosen, so the highlight follows the model
+        // rather than the model following the highlight.
         const int chosen = CustomMapMode::selected();
         if (chosen >= 0 && chosen < static_cast<int>(labels.size())
             && selectedName != labels[chosen]) {

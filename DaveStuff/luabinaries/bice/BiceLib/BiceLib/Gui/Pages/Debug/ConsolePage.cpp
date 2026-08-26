@@ -263,8 +263,8 @@ namespace {
             Gui::Lua::endCall();
         }
 
-        // Kept for recall even when it failed - a script that errored is usually the
-        // one you want back.
+        // Kept for recall even when it failed: a script that errored is usually the
+        // one worth getting back.
         if (history.empty() || history.back() != entry.source) {
             history.push_back(entry.source);
             if (history.size() > 40) {

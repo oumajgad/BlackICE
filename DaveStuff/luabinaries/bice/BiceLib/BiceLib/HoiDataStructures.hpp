@@ -9,8 +9,8 @@
  * way to read them.
  *
  * The structs here describe the layout. Prefer the two functions at the bottom over
- * dereferencing those structs: they go through Mem::tryRead, so a pointer that turns
- * out not to be what we assumed gives back nothing instead of taking the process down,
+ * dereferencing those structs: they go through Mem::tryRead, so a pointer that is not
+ * what it was taken for gives back nothing instead of taking the process down,
  * and readString also converts out of the game's Windows-1252 into the UTF-8 that
  * ImGui and Lua expect.
  */

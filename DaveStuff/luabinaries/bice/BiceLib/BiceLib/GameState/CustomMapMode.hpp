@@ -5,11 +5,11 @@
 #include <vector>
 
 /**
- * A map mode of our own, painted by taking over the VP map mode.
+ * A map mode added by BiceLib, painted by taking over the VP map mode.
  *
- * It shades provinces by the level of one building today; the name is deliberately
- * broader than that, because the hook it rests on decides the colour of every province
- * and could show anything a province knows.
+ * It shades provinces by the level of one building. The name is broader than that
+ * feature because the hook it rests on decides the colour of every province, and can
+ * show anything a province knows.
  *
  * Nothing in the game's data is changed. The colour is replaced at the last moment,
  * after the game has worked out what it would have drawn, so turning this off gives
@@ -65,9 +65,10 @@ namespace CustomMapMode {
      * Below it a province is drawn at the lowest shade and a darker grey, so the map
      * never claims to know more about somewhere than the player does.
      *
-     * Six is the game's own answer, found by testing: at six the province window
-     * starts showing what is built there, and below it does not. So this map mode
-     * reveals a level exactly where the game is willing to.
+     * Six is the game's own threshold: at six the province window shows what is
+     * built there, and below six it does not. This map mode therefore reveals a level
+     * exactly where the game is willing to. The value comes from observing the game
+     * rather than from any definition in its data files.
      */
     constexpr int INTEL_FOR_REAL_LEVEL = 6;
 

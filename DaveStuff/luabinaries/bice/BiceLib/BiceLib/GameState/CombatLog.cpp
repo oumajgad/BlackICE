@@ -377,15 +377,15 @@ void Combat::note(uintptr_t combat) {
     readMen(attacker, record.attacker);
     readMen(defender, record.defender);
 
-    // Who won, which is simply who still had a country in the fight. The game's own
+    // Who won, which is who still had a country in the fight. The game's own
     // recording asks the same question to decide whether to write a tag or "---", so
-    // this is its rule rather than one of ours.
+    // this is the game's rule rather than one imposed here.
     if (record.attacker.standing != record.defender.standing) {
         record.winner = record.attacker.standing
             ? Outcome::AttackerWon
             : Outcome::DefenderWon;
 
-        // And give the beaten side back the name the game left out, from the second
+        // Give the beaten side back the name the game left out, from the second
         // list it still holds at +0x64.
         //
         // Only where the winner's own +0x64 names the winner, though. That answer is

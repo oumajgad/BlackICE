@@ -9,9 +9,8 @@
 // the page can say what actually happened rather than leaving the player to guess.
 // Nothing here touches Lua at all.
 //
-// It is meant to be used at the main menu, but that is advice rather than a rule -
-// there turned out to be no dependable way to tell a menu from a running game. See
-// inGame below.
+// It is meant to be used at the main menu, but that is advice rather than a rule:
+// there is no dependable way to tell a menu from a running game. See inGame below.
 //
 // Nothing is ever deleted. Both directions are moves, so a mistake is undoable by
 // pressing the other button.
@@ -60,9 +59,10 @@ namespace {
      * The mod's own SaveLoaded flag is no better - it is only set from a handler that
      * returns early unless G_UtilityEnabled is on.
      *
-     * So the page warns rather than refuses. Moving a file the game holds open fails
-     * with a sharing violation, which is reported per file, and nothing is deleted, so
-     * the worst case is a partly moved set that the other button puts back.
+     * The page therefore warns rather than refuses. Moving a file the game holds
+     * open fails with a sharing violation, which is reported per file, and nothing is
+     * deleted, so the worst case is a partly moved set that the other button puts
+     * back.
      */
     bool inGame = false;
 

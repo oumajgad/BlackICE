@@ -4,12 +4,11 @@
 
 namespace CMapProvince {
     namespace Offsets {
-        // No terrain here. There was a CTerrain_ptr at +0xD4, and it was wrong: that
-        // points at an object of its own per province - 13,999 distinct ones in a
-        // running game, where a terrain type is shared by thousands - and the CTerrain
-        // is one more dereference in, at +0xC of it. Nothing read the field, so it is
-        // gone rather than corrected; reversing/FINDINGS-mapmode.md has the details if
-        // the terrain of a province is ever actually wanted.
+        // No terrain offset here, and +0xD4 is not one. That field points at an
+        // object of its own per province - 13,999 distinct ones in a running game,
+        // where a terrain type is shared by thousands - and the CTerrain sits one
+        // dereference further in, at +0xC of it. reversing/FINDINGS-mapmode.md covers
+        // it, for whenever a province's terrain is actually needed.
         constexpr uintptr_t CModifierDefinitions_ptr = 0x114;
         constexpr uintptr_t CProvinceBuilding_array_ptr = 0x310;
 
@@ -25,15 +24,14 @@ namespace CMapProvince {
          * countries in the game, 108 in BlackICE, and a country index past it means
          * there is nothing to read.
          *
-         * The values that actually turn up in a running game are 0 for somewhere
-         * never seen, 3 for partial intel, and 9 for a province the country owns -
-         * measured over all 14,000 provinces, where every one of the 262 the player
-         * held read 9.
+         * The values that occur in a running game are 0 for somewhere never seen, 3
+         * for partial intel, and 9 for a province the country owns. That holds across
+         * all 14,000 provinces, and all 262 the player held read 9.
          *
          * Two thresholds matter, both the game's own: at two or more a province counts
          * as seen and is painted at full brightness rather than dimmed, and at six or
-         * more the province window shows what is built there. The second was found by
-         * testing rather than read out of the code.
+         * more the province window shows what is built there. The first is read out of
+         * the colouring loop; the second comes from observing the game.
          *
          * Found from the VP map mode's colouring loop, which reads exactly this pair
          * to decide how dim a province should be.

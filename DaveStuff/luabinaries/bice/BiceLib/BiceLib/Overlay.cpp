@@ -41,7 +41,7 @@ namespace {
     // 0 until a thread claims the job of patching the texture vtable. Claimed with an
     // interlocked exchange because two loading threads can create their first texture
     // at the same moment, and the loser reading the slot after the winner wrote it
-    // would take our own hook for the original and recurse for ever.
+    // would take BiceLib's own hook for the original and recurse for ever.
     volatile LONG textureVTableClaimed = 0;
 
     PresentFn originalPresent = nullptr;
@@ -136,7 +136,7 @@ namespace {
         return path.c_str();
     }
 
-    /**@brief one time ImGui setup, done on the first frame so we know the real device*/
+    /**@brief one time ImGui setup, done on the first frame, when the device is known*/
     void initImGui(IDirect3DDevice9* device) {
         D3DDEVICE_CREATION_PARAMETERS params;
         if (FAILED(device->GetCreationParameters(&params)) || params.hFocusWindow == nullptr) {
@@ -365,7 +365,7 @@ namespace {
             return false;
         }
 
-        // jmp rel32, counted from the end of the jump itself, into our function.
+        // jmp rel32, counted from the end of the jump itself, into the replacement.
         const long relative = static_cast<long>(
             reinterpret_cast<unsigned char*>(replacement) - (code - 5) - 5);
         code[-5] = 0xE9;
@@ -453,7 +453,7 @@ namespace {
             if (SUCCEEDED(hr) && probeDevice != nullptr) {
                 vtable = *reinterpret_cast<void***>(probeDevice);
 
-                // Held, not released - see above. Nothing else needs it, so it is
+                // Held, not released, as above. Nothing else needs it, so it is
                 // only remembered to make the leak deliberate rather than accidental.
                 probeVTableOwner = probeDevice;
                 INFO_OUT(printf("Overlay: device vtable read from a %s probe\n",

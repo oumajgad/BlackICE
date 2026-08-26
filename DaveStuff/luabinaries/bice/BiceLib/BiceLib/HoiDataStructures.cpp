@@ -7,7 +7,7 @@
 
 namespace {
     // A name the game holds is short; anything claiming to be longer than this is a
-    // structure we have misread rather than a string.
+    // misread structure rather than a string.
     const uint32_t MAX_STRING_LENGTH = 512;
 
     // Past fifteen characters a Hoi3CString holds a pointer instead of the characters.

@@ -12,9 +12,8 @@
  * script/utility_data/bicedata_combat.lua. Without that, two campaigns would pour
  * their combats into the same record.
  *
- * The files live beside the DLL, under a folder of their own. Note that a deploy
- * clears that directory, so a developer redeploying loses the record; a player never
- * does.
+ * The files live beside the DLL, under a folder of their own. A deploy clears that
+ * directory, so a developer redeploying loses the record; a player never does.
  */
 
 #include <cstdint>
