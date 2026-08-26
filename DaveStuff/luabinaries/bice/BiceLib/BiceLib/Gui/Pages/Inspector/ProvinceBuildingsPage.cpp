@@ -67,8 +67,8 @@ namespace {
     float provinceWidth = 260.0f;
 
     void rebuildProvinceLabels() {
-        // Owned first, then occupied, each sorted by the chosen key. That grouping is
-        // what makes the list useful: you build in what you own.
+        // Owned first, then occupied, each sorted by the chosen key. That grouping
+        // is what makes the list useful, since building happens in owned territory.
         std::stable_sort(provinces.begin(), provinces.end(),
             [](const Province& a, const Province& b) {
                 if (a.occupied != b.occupied) {

@@ -7,9 +7,9 @@
  * and the rest, a header per class. This file is the shape rather than the layout: it
  * works out which unit reports to which, and hands the result back as plain values.
  *
- * Everything is read through Mem::tryRead, so a pointer that turns out not to be what
- * we assumed fails instead of taking the process down, and nothing in here holds a
- * game pointer past the call that read it.
+ * Everything is read through Mem::tryRead, so a pointer that is not what it was taken
+ * for fails instead of taking the process down, and nothing in here holds a game
+ * pointer past the call that read it.
  *
  * A unit is a node in a tree: theatres at the top, then army groups, armies, corps
  * and divisions. The same structure carries land, air and naval units, which are told
@@ -78,9 +78,9 @@ namespace Oob {
         // rather than leaving the pointer empty, so both have to be checked.
         bool hasLeader = false;
 
-        // Worth reporting as missing, which is not the same as absent: a division of
-        // a single brigade cannot be given a commander at all, so it has none and
-        // nothing is wrong. Counts and highlighting go by this rather than hasLeader.
+        // A leader that is missing, which is not the same as one that is absent: a
+        // division of a single brigade cannot be given a commander at all, so having
+        // none is correct. Counts and highlighting go by this rather than hasLeader.
         bool leaderMissing = false;
         uintptr_t province = 0;
         int provinceId = 0;
@@ -112,8 +112,8 @@ namespace Oob {
         std::vector<Unit> units;
 
         // Indices into units. Roots and each unit's children are sorted by name, so
-        // the tree reads in the order a person would look for a formation in - the
-        // game's own order is whatever it happened to build things in.
+        // the tree reads in the order a person would look for a formation in. The
+        // game's own order follows whenever each unit was created.
         std::vector<int> roots;
 
         bool available = false;

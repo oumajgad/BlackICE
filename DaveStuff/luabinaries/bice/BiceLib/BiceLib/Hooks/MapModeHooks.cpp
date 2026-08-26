@@ -15,8 +15,8 @@ namespace {
     // further down from ever running - so there is exactly one place left where a
     // colour is decided.
     //
-    // That place is the call below, which every province now reaches, and which is
-    // where all of the deciding happens.
+    // That place is the call below. With the victory point read answered as zero,
+    // every province reaches it, and every colour is decided there.
     const uintptr_t VICTORY_POINT_SITE = 0x4666B6;
     const uintptr_t COLOUR_CALL_SITE = 0x4666B1;
     const uintptr_t COLOUR_CONVERTER = 0x6628B0;
@@ -38,9 +38,10 @@ namespace {
     bool installedFlag = false;
     const char* statusText = "not installed yet";
 
-    // Read by the stubs before anything else. Off, and they do in assembly exactly
-    // what the instructions they replaced did - no call into our code, so nothing of
-    // ours can disturb a register, a flag or the floating point state.
+    // Read by the stubs before anything else. While it is clear they reproduce, in
+    // assembly, exactly what the instructions they replaced did, with no call into
+    // BiceLib - so nothing here can disturb a register, a flag or the floating point
+    // state.
     unsigned char active = 0;
 
     uintptr_t originalConverter = 0;
@@ -98,9 +99,9 @@ namespace {
     that. esi holds it here too, but not everywhere in the loop, so the longer route is
     the one that keeps working if this ever has to move.
 
-    edi is the country the map is being drawn for, and nothing in the loop writes it -
-    the game uses it for the fog of war the same way we use it to tell whose provinces
-    are whose.
+    edi is the country the map is being drawn for, and nothing in the loop writes it.
+    The game uses it for the fog of war; this hook uses it to tell whose provinces are
+    whose.
     */
     __declspec(naked) void hookedPackColour() {
         __asm {
@@ -108,7 +109,7 @@ namespace {
             jne takeOver
 
             mov eax, originalConverter   // ecx is the CColor, as the call expected
-            jmp eax                      // its return value and ret become ours
+            jmp eax                      // its return value and ret stand in for this one
 
         takeOver:
             push ebx
@@ -229,9 +230,10 @@ bool Hooks::MapMode::repaint() {
         return false;
     }
 
-    // Only when the VP map mode is what is on screen. If this field ever turns out to
-    // be something else the repaint simply never happens, which leaves the player
-    // switching map mode by hand - the way it worked before.
+    // Only when the VP map mode is what is on screen. Should this field ever hold
+    // something other than the mode, the repaint never happens and the player
+    // switches map mode by hand instead, which is the behaviour without a repaint at
+    // all.
     int32_t current = -1;
     if (!Mem::tryRead(map + MAP_CURRENT_MODE, current)
         || current != MAP_MODE_VICTORY_POINTS) {

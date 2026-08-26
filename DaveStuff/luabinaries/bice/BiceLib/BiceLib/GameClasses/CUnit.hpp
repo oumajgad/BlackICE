@@ -9,9 +9,9 @@
  * unit is is told by its vftable rather than by any field. A unit is a node in a
  * tree: theatres at the top, then army groups, armies, corps and divisions.
  *
- * Everything here is only valid for this build of hoi3_tfh.exe, which is already true
- * of every address in BiceLib. The layout came from the memory map in DaveStuff/mem,
- * which is where anything further learned about these structures should go back to.
+ * Everything here is only valid for this build of hoi3_tfh.exe, as is every address
+ * in BiceLib. The layout comes from the memory map in DaveStuff/mem, which is also
+ * where anything further learned about these structures belongs.
  */
 namespace CUnit {
     namespace Offsets {
@@ -83,8 +83,8 @@ namespace CUnit {
      * its regiments, each scaled by how much of its strength is left, and the whole
      * scaled by a potency that starts at 1000, gains the country's general modifier
      * at +0x188, and loses an amount for the skill of the leader of the army group
-     * above the unit. Reproducing that would mean owning a copy of it; calling it
-     * means the numbers are the game's.
+     * above the unit. Reimplementing that would mean maintaining a copy of it, while
+     * calling it keeps the numbers the game's own.
      *
      * Both are module relative addresses, so they are only right for this build.
      * Neither writes anything to the game.

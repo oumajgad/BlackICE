@@ -26,9 +26,10 @@ namespace {
 
     // The green ramp, level 1 to TOP_LEVEL.
     //
-    // Red and blue are not zero, and that matters: the version of this that set them
-    // to zero showed no green on the map at all, while the same code with them at
-    // 20-50 did. Something downstream does not take a colour with two dead channels.
+    // Red and blue have to stay non zero. A colour with both channels at zero does
+    // not reach the map at all, while the same colour with them between 20 and 50
+    // does. The cause lies somewhere below the colour store and is not understood, so
+    // the floors below are a requirement rather than a preference.
     const int GREEN_FLOOR = 90;
     const int GREEN_RANGE = 165;
     const int SIDE_FLOOR = 24;
@@ -145,8 +146,8 @@ void CustomMapMode::setEnabled(bool on) {
     if (on) {
         Hooks::MapMode::install();
 
-        // Switching it on with nothing chosen would leave the mode asking for a
-        // second click before it did anything, so it chooses the first building.
+        // Switching the mode on with nothing chosen would leave it waiting for a
+        // second click before anything happened, so the first building is selected.
         if (selectedIndex < 0 && !buildings().empty()) {
             selectedIndex = 0;
         }
@@ -188,10 +189,10 @@ int CustomMapMode::levelIn(uintptr_t province, int buildingIndex) {
         return 0;
     }
 
-    // A handful of provinces hold something in this slot that is not a level - four
-    // of fourteen thousand came back in the hundreds of thousands. Whatever they are,
-    // they are not a building, and letting them through would paint them as though
-    // they were the highest level on the map.
+    // A handful of provinces hold something in this slot that is not a level: four
+    // of fourteen thousand carry values in the hundreds of thousands. Whatever those
+    // are, they are not building levels, and letting them through would paint those
+    // provinces as though they held the highest level on the map.
     const int levels = level / CProvinceBuilding::LEVEL_SCALE;
     if (levels > MAX_SANE_LEVEL) {
         return 0;
@@ -200,7 +201,7 @@ int CustomMapMode::levelIn(uintptr_t province, int buildingIndex) {
 }
 
 int CustomMapMode::victoryPointsFor(uintptr_t province) {
-    // Off: the VP map mode behaves exactly as it always did.
+    // Off: the VP map mode keeps the game's own colours.
     if (!enabled() || province == 0) {
         int32_t points = 0;
         if (province != 0 && Mem::tryRead(province + CMapProvince::Offsets::victory_points, points)) {

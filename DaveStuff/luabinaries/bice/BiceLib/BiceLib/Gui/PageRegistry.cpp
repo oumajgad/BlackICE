@@ -168,7 +168,7 @@ namespace {
         ImGui::DockBuilderFinish(dockspaceId);
     }
 
-    // Where a page sits is the player's, not ours. group() only decides where a page
+    // Where a page sits is the player's choice, not the code's. group() decides only
     // starts, on the first launch with no ini to go by; after that the saved layout
     // wins, including for a page whose group changed in a later build. Deleting
     // BiceLibImGui.ini is how to take the code's arrangement again.

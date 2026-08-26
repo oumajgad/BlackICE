@@ -20,8 +20,8 @@ namespace {
     // that a field is described in one place and everything that reads it agrees.
     // Reading its strings and lists is HDS. Only the limit below belongs here.
 
-    // A country can field thousands of units; this bounds the damage if what we are
-    // reading turns out not to be a country.
+    // A country can field thousands of units; this bounds the damage when the thing
+    // being read is not a country after all.
     const int MAX_UNITS = 20000;
 
     uintptr_t moduleBase() {
@@ -121,9 +121,9 @@ namespace {
         }
 
         // A division made of a single brigade takes no commander, so it is not
-        // missing one. Exactly one regiment, not "one or fewer": a count we failed to
-        // read comes back as zero, and that should show up as a unit worth looking at
-        // rather than quietly excuse itself.
+        // missing one. Exactly one regiment, not "one or fewer": a count that failed
+        // to read comes back as zero, and that should show up as a unit worth looking
+        // at rather than quietly excuse itself.
         const bool takesNoLeader = (unit.level == CUnit::Level::Division) && (unit.regimentCount == 1);
         unit.leaderMissing = !unit.hasLeader && !takesNoLeader;
 
@@ -338,9 +338,9 @@ Oob::Tree Oob::read(uintptr_t country) {
     }
 
     // Where each unit belongs, and with it which units are at the top. The unit's own
-    // back pointer is preferred, since it is the game's answer rather than ours; the
-    // list it was found under stands in when that pointer leads nowhere we know, as
-    // it will for a unit attached from another country. A unit with neither is at the
+    // back pointer is preferred, since it is the game's own answer; the list the unit
+    // was found under stands in when that pointer leads somewhere unrecognised, as it
+    // does for a unit attached from another country. A unit with neither is at the
     // top of the tree, which is how the top level is arrived at rather than assumed.
     for (size_t i = 0; i < tree.units.size(); i++) {
         Unit& unit = tree.units[i];

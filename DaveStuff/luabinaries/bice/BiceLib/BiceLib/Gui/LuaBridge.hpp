@@ -104,8 +104,8 @@ namespace Gui {
          * The game opens a state per AI context and never closes one - lua_close is
          * not even among the functions it imports - so every state it has ever
          * opened is still alive, and each ran autoexec.lua and pulled in the whole
-         * mod's Lua for itself. Whether that is tens of megabytes or hundreds is
-         * worth knowing before anyone tries to do something about it.
+         * mod's Lua for itself. What this measures is whether that amounts to tens
+         * of megabytes or to hundreds.
          */
         struct StateMemory
         {

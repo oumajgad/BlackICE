@@ -11,9 +11,9 @@
  * building sits one index later than its position in that file. Read the name off the
  * definition rather than counting lines in the file.
  *
- * Levels are scaled by a thousand: an infrastructure of 4 reads as 4000. Checked
- * against every province in a running game - 1,500 of 1,500 had a level between 1 and
- * 10, which is what infrastructure should look like.
+ * Levels are scaled by a thousand: an infrastructure of 4 reads as 4000. This holds
+ * across a running game - of 1,500 provinces carrying infrastructure, all 1,500 give
+ * a level between 1 and 10 once divided down.
  *
  * Offsets from DaveStuff/mem/classes/CProvinceBuilding.py, confirmed live. Only valid
  * for this build of hoi3_tfh.exe.

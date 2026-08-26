@@ -110,24 +110,24 @@ bool Patches::historicalModelLogicFix(uintptr_t moduleBase) {
 /**
  * Makes the Simplified Terrain map mode colour the sea as well as the land.
  *
- * The sea is not skipped by that map mode - its colouring loop visits all 3,547 sea
- * provinces and works out a colour for each. The water simply never uses them, because
- * the water is drawn by its own shader and that shader comes in two forms. water.fx
- * compiles every technique twice, once plainly and once with PROVINCE_COLOR defined,
- * and the second samples the province colour textures and mixes them into the water.
+ * That map mode's colouring loop already visits all 3,547 sea provinces and works out
+ * a colour for each. The water ignores those colours, because the water is drawn by a
+ * shader of its own that comes in two forms: water.fx compiles every technique twice,
+ * once plainly and once with PROVINCE_COLOR defined, and only the second samples the
+ * province colour textures and mixes them into the water.
  *
- * Which of the two is used comes down to one number the map mode setter writes, and
- * the renderer tests it in two places - once to decide whether to refill the sea's
- * colour texture at all, and once to pick WaterNear over WaterNearColor. Both accept
- * only 16, 18 and 19. Air writes 18 and Naval writes 19, which is why those two are
- * the modes where the sea is coloured; Simplified Terrain writes 8.
+ * Which of the two is used comes down to a single style number the map mode setter
+ * writes to the graphics settings at +0xF4. The renderer tests it in two places - once
+ * to decide whether to refill the sea's colour texture at all, and once to pick
+ * WaterNearColor over WaterNear - and both accept only 16, 18 and 19. Air writes 18
+ * and Naval writes 19, which is why the sea is coloured in those two modes. Simplified
+ * Terrain writes 8.
  *
- * So the whole change is that 8. 18 is used rather than 16 or 19 because it is the
- * value that was tried in a running game: the sea takes the terrain colours and the
- * land is unaffected. Only this map mode's setter is touched - Infrastructure writes
- * the same 8 from its own setter and keeps it.
+ * Changing that 8 is the whole patch. Any of 16, 18 and 19 produces a coloured sea;
+ * 18 is the air map mode's value. Only this map mode's setter is touched, so
+ * Infrastructure, which writes the same 8 from a setter of its own, keeps plain water.
  *
- * reversing/FINDINGS-mapmode.md has the trail from the colour store to the shader.
+ * reversing/FINDINGS-mapmode.md traces the path from the colour store to the shader.
  */
 bool Patches::seaTerrainColourInSimplifiedMapMode(uintptr_t moduleBase) {
     // mov dword ptr [eax+0xF4], 8 - the last of three settings the Simplified Terrain
@@ -135,8 +135,8 @@ bool Patches::seaTerrainColourInSimplifiedMapMode(uintptr_t moduleBase) {
     const DWORD address = moduleBase + 0x266E74;
     const BYTE expected[10] = { 0xC7, 0x80, 0xF4, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
 
-    // Ten bytes into the middle of a function is no place to write blind. A build that
-    // does not have this instruction here is left alone rather than corrupted.
+    // The whole instruction is verified before any of it is changed, so a build that
+    // does not carry it at this address is left alone rather than corrupted.
     for (int i = 0; i < 10; i++) {
         if (*(BYTE*)(address + i) != expected[i]) {
             std::cout << "seaTerrainColourInSimplifiedMapMode: the map mode setter is "
