@@ -69,6 +69,10 @@ namespace {
     // listens for INSERT is in place before anyone presses it.
     bool visible = false;
 
+    // Whether the overlay was showing on the previous frame, so the moment it is put
+    // away can be noticed and the layout written out.
+    bool wasVisible = false;
+
     bool isMouseMessage(UINT msg) noexcept {
         return (msg >= WM_MOUSEFIRST && msg <= WM_MOUSELAST) || msg == WM_MOUSEHOVER || msg == WM_MOUSELEAVE;
     }
@@ -210,6 +214,22 @@ namespace {
     which render target is bound, so bind the back buffer explicitly and put back
     whatever was there afterwards.
     */
+    /**
+    @brief writes the docking layout out now
+
+    ImGui writes its ini from NewFrame, once IniSavingRate seconds of frames have gone
+    by since the last change. Frames only run while the overlay is showing, so a window
+    moved and then hidden within those five seconds would never be written at all - the
+    timer simply stops. Called when the overlay is put away, which is exactly when the
+    countdown would otherwise be abandoned.
+    */
+    void flushLayout() {
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.IniFilename != nullptr) {
+            ImGui::SaveIniSettingsToDisk(io.IniFilename);
+        }
+    }
+
     void renderOverlay(IDirect3DDevice9* device) {
         IDirect3DSurface9* previousTarget = nullptr;
         IDirect3DSurface9* backBuffer = nullptr;
@@ -266,6 +286,12 @@ namespace {
             if (visible) {
                 renderOverlay(device);
             }
+            else if (wasVisible) {
+                // Done here rather than in setVisible: this is the thread that owns
+                // the ImGui context, and the window procedure is not necessarily it.
+                flushLayout();
+            }
+            wasVisible = visible;
         }
 
         return originalPresent(device, sourceRect, destRect, destWindowOverride, dirtyRegion);

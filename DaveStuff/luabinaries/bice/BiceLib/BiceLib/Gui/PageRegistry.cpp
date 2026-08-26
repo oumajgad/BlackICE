@@ -1,5 +1,6 @@
 #include <Gui/GuiPage.hpp>
 #include <Gui/CountrySelection.hpp>
+#include <Settings.hpp>
 
 #include <Windows.h>
 #include <algorithm>
@@ -140,15 +141,69 @@ namespace {
     bool groupWindowsReady = false;
 
     /**
-     * The overlay should come up showing only the control window, but the group
-     * windows cannot simply start closed: a page only takes up its dock position once
-     * it and its host have been submitted together, and a page with no dock yet is a
-     * loose floating window. So they open, settle, and are then hidden once.
+     * What was open last time, restored after everything has had a chance to settle.
      *
-     * Once, not every frame: after this fires the user owns what is open.
+     * The windows cannot simply start in their saved state: a page only takes up its
+     * dock position once it and its host have been submitted together, and a page with
+     * no dock yet is a loose floating window. So everything opens, settles for a few
+     * frames, and is then put into the state that was saved.
+     *
+     * ImGui's ini cannot carry this. It saves where a window is and what it is docked
+     * into, but whether it is open is the application's own flag - the bool handed to
+     * Begin - and ImGui never writes it. Without this, every page came back open and
+     * every group window came back closed on each launch.
+     *
+     * The defaults match what the utility did before anything was saved: group windows
+     * closed, so the overlay comes up showing only the control window, and pages open.
      */
-    int framesBeforeAutoHide = 3;
-    bool autoHidden = false;
+    int framesBeforeRestore = 3;
+    bool visibilityRestored = false;
+
+    const char* GROUP_SETTING_PREFIX = "groups.";
+    const char* PAGE_SETTING_PREFIX = "pages.";
+
+    // What was last written, so a click writes one key rather than every frame writing
+    // all of them.
+    std::map<std::string, bool> savedVisibility;
+
+    std::string groupKey(const char* group) {
+        return std::string(GROUP_SETTING_PREFIX) + group;
+    }
+
+    std::string pageKey(const Gui::GuiPage* page) {
+        return std::string(PAGE_SETTING_PREFIX) + Gui::windowName(page);
+    }
+
+    void restoreVisibility() {
+        for (int i = 0; i < groupWindowCount; i++) {
+            const std::string key = groupKey(groupWindows[i].group);
+            groupWindows[i].open = Settings::getInt(key.c_str(), 0) != 0;
+            savedVisibility[key] = groupWindows[i].open;
+        }
+        for (Gui::GuiPage* page : Gui::pages()) {
+            const std::string key = pageKey(page);
+            page->open = Settings::getInt(key.c_str(), 1) != 0;
+            savedVisibility[key] = page->open;
+        }
+    }
+
+    /**@brief writes the ones that changed, which is normally none*/
+    void saveVisibilityIfChanged() {
+        for (int i = 0; i < groupWindowCount; i++) {
+            const std::string key = groupKey(groupWindows[i].group);
+            if (savedVisibility[key] != groupWindows[i].open) {
+                savedVisibility[key] = groupWindows[i].open;
+                Settings::setInt(key.c_str(), groupWindows[i].open ? 1 : 0);
+            }
+        }
+        for (Gui::GuiPage* page : Gui::pages()) {
+            const std::string key = pageKey(page);
+            if (savedVisibility[key] != page->open) {
+                savedVisibility[key] = page->open;
+                Settings::setInt(key.c_str(), page->open ? 1 : 0);
+            }
+        }
+    }
 
     const char* CONTROL_WINDOW = "BiceLib";
 
@@ -217,6 +272,53 @@ namespace {
         groupWindowsReady = true;
     }
 
+    bool layoutResetRequested = false;
+
+    /**
+    @brief the whole of the reset, run before any window has been submitted this frame
+
+    Clearing a window's settings undocks it and forgets its position, so the dock
+    layout has to be rebuilt afterwards rather than before. What is open is put back to
+    its defaults by way of the settings file, and then the ordinary startup sequence
+    applies it: everything opens, settles into the new docks over a few frames, and is
+    then set to what was saved. Going through that path rather than setting the flags
+    here is what stops the pages coming back as loose floating windows.
+    */
+    void performLayoutReset() {
+        for (Gui::GuiPage* page : Gui::pages()) {
+            ImGui::ClearWindowSettings(Gui::windowName(page));
+        }
+        for (int i = 0; i < groupWindowCount; i++) {
+            ImGui::ClearWindowSettings(groupWindows[i].title);
+        }
+        ImGui::ClearWindowSettings(CONTROL_WINDOW);
+
+        for (int i = 0; i < groupWindowCount; i++) {
+            buildGroupLayout(groupWindows[i], groupWindows[i].dockspaceId);
+        }
+
+        // Only the ones that are not already at their default, so a reset writes the
+        // settings file a handful of times rather than once per page.
+        for (int i = 0; i < groupWindowCount; i++) {
+            const std::string key = groupKey(groupWindows[i].group);
+            if (Settings::getInt(key.c_str(), 0) != 0) {
+                Settings::setInt(key.c_str(), 0);
+            }
+            groupWindows[i].open = true;
+        }
+        for (Gui::GuiPage* page : Gui::pages()) {
+            const std::string key = pageKey(page);
+            if (Settings::getInt(key.c_str(), 1) != 1) {
+                Settings::setInt(key.c_str(), 1);
+            }
+            page->open = true;
+        }
+
+        savedVisibility.clear();
+        framesBeforeRestore = 3;
+        visibilityRestored = false;
+    }
+
     void drawGroupWindow(GroupWindow& window, int index) {
         // Closed, so the window is never begun. The node still has to be submitted or
         // it counts as gone and every page docked into it is expelled into its own
@@ -280,6 +382,13 @@ void Gui::drawAll() {
     Selection::refreshIfStale();
 
     ensureGroupWindows();
+
+    // Before anything is submitted: the reset undocks windows and removes dock nodes,
+    // which is not something to do to a window already begun this frame.
+    if (layoutResetRequested) {
+        layoutResetRequested = false;
+        performLayoutReset();
+    }
 
     // Small control window, so there is always a way back to a group window that has
     // been closed. The group windows themselves carry no menu.
@@ -371,18 +480,23 @@ void Gui::drawAll() {
     }
 
     // Everything has been submitted at least once by now, so the pages are settled
-    // into their docks and the group windows can be put away.
-    if (!autoHidden) {
-        if (framesBeforeAutoHide > 0) {
-            framesBeforeAutoHide--;
+    // into their docks and what was open last time can be put back.
+    if (!visibilityRestored) {
+        if (framesBeforeRestore > 0) {
+            framesBeforeRestore--;
         }
         else {
-            for (int i = 0; i < groupWindowCount; i++) {
-                groupWindows[i].open = false;
-            }
-            autoHidden = true;
+            restoreVisibility();
+            visibilityRestored = true;
         }
     }
+    else {
+        saveVisibilityIfChanged();
+    }
+}
+
+void Gui::requestLayoutReset() {
+    layoutResetRequested = true;
 }
 
 const char* Gui::windowName(const GuiPage* page) {

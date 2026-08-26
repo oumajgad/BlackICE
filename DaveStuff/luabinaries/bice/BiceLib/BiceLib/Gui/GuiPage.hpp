@@ -106,6 +106,16 @@ namespace Gui {
 
     /**@brief the menu entries used to reopen closed pages*/
     void drawPageMenu();
+
+    /**
+    @brief throws the saved arrangement away and rebuilds the one the code describes
+
+    Takes effect at the start of the next frame rather than immediately, so nothing is
+    torn down underneath a window that has already been submitted this frame. Pages go
+    back to being tabs of their own group, every window forgets where it was, and what
+    is open goes back to its defaults.
+    */
+    void requestLayoutReset();
 }
 
 /**

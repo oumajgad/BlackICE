@@ -202,6 +202,34 @@ namespace {
             "buttons did the same for its own windows. This one is not saved: it goes "
             "back to normal size when the game restarts.");
 
+        ImGui::Spacing();
+        if (ImGui::Button("Reset layout...")) {
+            ImGui::OpenPopup("Reset layout?");
+        }
+        ImGui::SameLine();
+        ImGui::TextDisabled("Puts every window back where the code puts it");
+
+        // Behind a confirmation: it throws away an arrangement that took a while to
+        // get right, and there is no undo for it.
+        if (ImGui::BeginPopupModal("Reset layout?", nullptr,
+            ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::TextUnformatted(
+                "Every page goes back to being a tab of its own group, every window\n"
+                "forgets its position and size, and what is open goes back to the\n"
+                "defaults.\n\n"
+                "The building and map mode settings are not touched.");
+            ImGui::Spacing();
+            if (ImGui::Button("Reset", ImVec2(120.0f, 0.0f))) {
+                Gui::requestLayoutReset();
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel", ImVec2(120.0f, 0.0f))) {
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
+
         if (!Settings::path().empty()) {
             ImGui::Spacing();
             ImGui::TextDisabled("Saved settings: %s", Settings::path().c_str());
