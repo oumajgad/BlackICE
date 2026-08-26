@@ -1,18 +1,25 @@
-// Options: where the game puts its popups, how big this overlay draws, and the debug
-// console.
+// Options: where the game puts its event popups, how this overlay is opened and how
+// big it draws, and the debug console.
 //
-// Three unrelated things the wx page had in one grid of buttons, kept together here but
+// Unrelated things the wx page had in one grid of buttons, kept together here but
 // separated on the page. They differ in where the setting actually lives:
-//   - the popup positions are lines in the mod's interface files, rewritten in place,
-//     so they outlive the session and apply to every save;
+//   - the event popup position is a line in the mod's interface files, rewritten in
+//     place, so it outlives the session and applies to every save;
+//   - the toggle key is in BiceLib's own settings file and outlives the session too;
 //   - the font size is this overlay's own, and lasts as long as the game does;
 //   - the console buttons are BiceLib's, unchanged from the wx page.
+//
+// The message and combat popup position was here as well and has been dropped: the mod
+// no longer uses it. BiceData.Options.SetMessagePopups still exists, because the wx
+// utility's own options page calls it.
 //
 // The wx page's font buttons resized wxWidgets controls and have no counterpart; ImGui
 // scales its font instead, which is the same intent by different means.
 
 #include <Gui/GuiPage.hpp>
 #include <Gui/LuaBridge.hpp>
+#include <Overlay.hpp>
+#include <Settings.hpp>
 
 #include <Windows.h>
 #include <string>
@@ -21,7 +28,6 @@
 
 namespace {
     const char* COLLECT = "BiceLibGui.Options.Collect";
-    const char* SET_MESSAGE_POPUPS = "BiceLibGui.Options.SetMessagePopups";
     const char* SET_EVENT_POPUPS = "BiceLibGui.Options.SetEventPopups";
     const char* START_CONSOLE = "BiceLib.startConsole";
     const char* STOP_CONSOLE = "BiceLib.stopConsole";
@@ -32,9 +38,7 @@ namespace {
     bool valid = false;
     bool available = false;
     std::string reason;
-    std::string messagePopups = "unknown";
     std::string eventPopups = "unknown";
-    std::string dialogFile;
     std::string eventFile;
 
     std::string status;
@@ -47,9 +51,9 @@ namespace {
         if (!available) {
             return;
         }
-        messagePopups = Gui::Lua::stringField("messagePopups", "unknown");
+        // Collect also returns messagePopups and dialogFile, which nothing here
+        // reads any more.
         eventPopups = Gui::Lua::stringField("eventPopups", "unknown");
-        dialogFile = Gui::Lua::stringField("dialogFile");
         eventFile = Gui::Lua::stringField("eventFile");
         loaded = true;
     }
@@ -135,7 +139,6 @@ namespace {
             ImGui::TextDisabled("%s", reason.c_str());
         }
         else {
-            drawChoice("Message and combat popups", messagePopups, SET_MESSAGE_POPUPS);
             drawChoice("Event popups", eventPopups, SET_EVENT_POPUPS);
 
             ImGui::Spacing();
@@ -153,14 +156,37 @@ namespace {
                 ImGui::TextDisabled("Restart the game for a change to take effect");
             }
 
-            ImGui::TextWrapped("These rewrite a marked line in the mod's own interface "
-                "files, so the setting outlives the session and applies to every save - "
+            ImGui::TextWrapped("This rewrites a marked line in the mod's own interface "
+                "file, so the setting outlives the session and applies to every save - "
                 "and reinstalling the mod undoes it.");
-            ImGui::TextDisabled("%s", dialogFile.c_str());
             ImGui::TextDisabled("%s", eventFile.c_str());
         }
 
         ImGui::SeparatorText("This overlay");
+
+        ImGui::Text("Open and close with");
+        ImGui::SameLine();
+        if (Overlay::capturingToggleKey()) {
+            // Not a real button: it is the prompt, and the key that answers it is
+            // taken by the window procedure rather than by anything on this page.
+            ImGui::BeginDisabled();
+            ImGui::Button("press a key...##togglekey");
+            ImGui::EndDisabled();
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel##togglekey")) {
+                Overlay::cancelToggleKeyCapture();
+            }
+        }
+        else {
+            const std::string label = Overlay::toggleKeyName() + "###togglekey";
+            if (ImGui::Button(label.c_str())) {
+                Overlay::beginToggleKeyCapture();
+            }
+        }
+        ImGui::TextWrapped("Click it, then press the key to use. Escape cancels. "
+            "A letter still types normally into a text box, so only a key pressed "
+            "outside one opens the overlay.");
+
         ImGuiIO& io = ImGui::GetIO();
         ImGui::SetNextItemWidth(200.0f);
         ImGui::SliderFloat("Font size", &io.FontGlobalScale, 0.6f, 2.0f, "%.2fx");
@@ -171,6 +197,11 @@ namespace {
         ImGui::TextWrapped("Scales the whole overlay's text. The wx utility's font "
             "buttons did the same for its own windows. This one is not saved: it goes "
             "back to normal size when the game restarts.");
+
+        if (!Settings::path().empty()) {
+            ImGui::Spacing();
+            ImGui::TextDisabled("Saved settings: %s", Settings::path().c_str());
+        }
 
         ImGui::SeparatorText("Debug console");
         if (ImGui::Button("Open")) {

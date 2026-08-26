@@ -72,6 +72,25 @@ namespace CustomMapMode {
      */
     constexpr int INTEL_FOR_REAL_LEVEL = 6;
 
+    /**
+     * Which colours the level ramp is drawn in.
+     *
+     * Green is a single hue, dark at level 1 and bright at TOP_LEVEL. Heat runs red,
+     * orange, yellow, green across the same range, so a low level reads as something
+     * to deal with and a high one as finished.
+     */
+    enum class Palette
+    {
+        Green,
+        Heat,
+    };
+
+    /**@brief which ramp colourFor() draws with*/
+    Palette palette();
+
+    /**@brief changes the ramp and repaints, so the map follows at once*/
+    void setPalette(Palette which);
+
     /**@brief which building is shown, as an index into buildings(); -1 for none*/
     int selected();
     void select(int buildingIndex);
@@ -95,8 +114,10 @@ namespace CustomMapMode {
     the whole of the appearance:
 
     - no building of the chosen kind: light grey
-    - the player controls it: green, brighter the higher the level
-    - somebody else controls it: green at the lowest shade, whatever the level
+    - the player controls it: further along the ramp the higher the level
+    - somebody else controls it: the bottom of the ramp, whatever the level
+
+    Which ramp is drawn is palette().
 
     Somebody else's level is not the player's business, so it is not shown; that the
     building is there at all is.

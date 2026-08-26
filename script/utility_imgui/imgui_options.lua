@@ -1,4 +1,8 @@
 -- Options page for the in-game ImGui utility.
+--
+-- Only the event popup position is offered. The message and combat popups were here
+-- too until the mod stopped using them; BiceData.Options.SetMessagePopups is still
+-- there for the wx utility, which does still offer it.
 
 local Page = require('imgui_page')
 
@@ -29,12 +33,6 @@ local function applied(ok, reason)
     result.ok = (ok == true)
     result.reason = reason or ""
     return result
-end
-
-function BiceLibGui.Options.SetMessagePopups(mode)
-    return Page.Guard(function()
-        return applied(BiceData.Options.SetMessagePopups(modeName(mode)))
-    end)
 end
 
 function BiceLibGui.Options.SetEventPopups(mode)

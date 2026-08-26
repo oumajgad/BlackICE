@@ -208,9 +208,12 @@ mode is the one on screen.
 - **Replacing an instruction with a call destroys eax.** `mov ecx,[esi+0x34]` left eax
   alone, and eax was carrying the colour the branch goes on to store. The stub has to
   push and pop it. This looked exactly like "the colour is wrong", for hours.
-- **A colour with red and blue at zero does not draw.** Pure green showed nothing;
-  the same shade with 20-50 in the other two channels drew fine. Unexplained, but
-  reproducible in both directions.
+- **"A colour with red and blue at zero does not draw" was wrong.** Pure green once
+  showed nothing while the same shade with 20-50 in the other channels drew fine, and
+  that was written down as a rule. It is not one: the game's own infrastructure ramp
+  ends on pure green, red and blue both zero, and draws it. Whatever went wrong that
+  day was something else - most likely the eax clobber above, which was still present.
+  BiceLib's green ramp keeps its floors only because it is tuned around them.
 - **Off has to mean the hooks do nothing.** With the mode off they used to still call
   into our code, and something in that path corrupted the owner colours - fogged
   provinces came out blue instead of yellow. Both stubs now check a flag in assembly
@@ -309,3 +312,34 @@ belongs in the setter, before the update runs, rather than anywhere later.
   single bits of `[+0xF0] & [+0xEC]`. Air and Naval differ from the rest by bit 5, which
   made it look like the answer. Holding mode 13's mask at Naval's `0xFF9A` in a running
   game changed nothing at all. `+0xF4`, written by the same setters, was the real one.
+
+## The infrastructure ramp, which is where the heat palette comes from
+
+Mode 5, driver `0x2670F0`, colouring loop **`0x466F80`**. The loop reads
+`[[province+0x114]+0x60]`, divides by 1000 and multiplies by 10 - so the infrastructure
+level, 0 to 10 - then walks ten thresholds from the top down and picks a colour for
+each. Blue is always zero and alpha always one; only two channels ever change.
+
+The packer at `0x6628B0` takes a CColor and returns `0xAARRGGBB`: it reads the fields at
+`+0x14`, `+0x8`, `+0xC`, `+0x10` into the bytes from most significant down, multiplies
+each by 255.0 and **truncates** toward zero (it sets the x87 rounding control to 11
+before each conversion). That confirms the byte order BiceLib's own `pack()` uses.
+
+| level | float R / G | packed |
+| --- | --- | --- |
+| 1 | 0.10 / 0.00 | `25, 0, 0` |
+| 2 | 0.60 / 0.00 | `153, 0, 0` |
+| 3 | 0.80 / 0.10 | `204, 25, 0` |
+| 4 | 1.00 / 0.30 | `255, 76, 0` |
+| 5 | 1.00 / 1.00 | `255, 255, 0` |
+| 6 | 0.65 / 0.75 | `165, 191, 0` |
+| 7 | 0.10 / 0.40 | `25, 102, 0` |
+| 8 | 0.20 / 0.50 | `51, 127, 0` |
+| 9 | 0.25 / 0.73 | `63, 186, 0` |
+| 10 | 0.00 / 1.00 | `0, 255, 0` |
+
+Below 1 the loop leaves the colour alone entirely rather than choosing one.
+
+Note the ladder is not monotonic in brightness: 6 is a bright yellow green and 7 a dark
+one. Reproduced as is in `CustomMapMode`'s heat palette rather than smoothed.
+

@@ -46,9 +46,35 @@ namespace Overlay {
        @returns false if D3D9 was unavailable or the hooks could not be placed*/
     bool install();
 
-    /**@brief shows/hides the overlay windows (also bound to the INSERT key)*/
+    /**@brief shows/hides the overlay windows (also bound to the key below)*/
     void toggle();
 
     /**@brief whether the overlay is currently drawing*/
     bool isVisible();
+
+    /**
+    @brief the virtual key code that shows and hides the overlay
+
+    INSERT unless it has been changed. Kept in the settings file, so it survives a
+    restart, and read the first time it is needed rather than at load time.
+    */
+    unsigned toggleKey();
+
+    /**@brief rebinds the key and saves it*/
+    void setToggleKey(unsigned virtualKey);
+
+    /**@brief what to call the key on screen, e.g. "Insert", from Windows' own table*/
+    std::string toggleKeyName();
+
+    /**
+    @brief waits for the next key press and binds it
+
+    While this is waiting the window procedure swallows key presses instead of acting
+    on them, so binding a key the game uses does not also trigger the game. ESCAPE
+    cancels rather than binds: it opens the game's menu, so it is a poor choice, and
+    being unable to back out of a capture would be worse.
+    */
+    void beginToggleKeyCapture();
+    bool capturingToggleKey();
+    void cancelToggleKeyCapture();
 }

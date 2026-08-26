@@ -57,6 +57,55 @@ def addFiles():
 
     print("Collecting files done")
 
+# What BiceLib writes next to its DLL, which lives in ./script and would therefore be
+# destroyed by clearTarget() along with everything else in there. These are the player's
+# and the developer's, not the mod's: settings, the overlay's dock layout, saved console
+# scripts and the per campaign combat records. Set to [] to go back to losing them.
+PreserveInScript = [
+    "BiceLibSettings.ini",
+    "BiceLibImGui.ini",
+    "BiceLibScripts",
+    "combat_reports",
+]
+
+PreserveStash = os.path.abspath("./.deploy-preserved")
+
+def stashPreserved():
+    """Moves the files worth keeping out of the way, before the target is cleared."""
+    if not PreserveInScript:
+        return
+    shutil.rmtree(PreserveStash, ignore_errors=True)
+    kept = 0
+    for name in PreserveInScript:
+        source = os.path.abspath(os.path.join(BaseModPath, "script", name))
+        if not os.path.exists(source):
+            continue
+        os.makedirs(PreserveStash, exist_ok=True)
+        destination = os.path.join(PreserveStash, name)
+        if os.path.isdir(source):
+            shutil.copytree(source, destination)
+        else:
+            shutil.copy2(source, destination)
+        kept += 1
+    if kept:
+        print(f"Kept {kept} BiceLib file(s) from ./script")
+
+def restorePreserved():
+    """Puts them back, after the copy has recreated ./script."""
+    if not os.path.isdir(PreserveStash):
+        return
+    target = os.path.abspath(os.path.join(BaseModPath, "script"))
+    os.makedirs(target, exist_ok=True)
+    for name in os.listdir(PreserveStash):
+        source = os.path.join(PreserveStash, name)
+        destination = os.path.join(target, name)
+        if os.path.isdir(source):
+            shutil.copytree(source, destination, dirs_exist_ok=True)
+        else:
+            shutil.copy2(source, destination)
+    shutil.rmtree(PreserveStash, ignore_errors=True)
+    print("Restored BiceLib files to ./script")
+
 def clearTarget():
     print("Removing files in target directory...")
     for folder in Modfolders:
@@ -118,6 +167,7 @@ def threads_running():
 
 def moveIt():
     time1 = time.time()
+    stashPreserved()
     clearTarget()
     addFiles()
 
@@ -129,6 +179,8 @@ def moveIt():
     while threads_running():
         print(f"Queue size: {FILE_QUEUE.qsize()} - Active threads: {ACTIVE_THREADS}", flush=True)
         time.sleep(1)
+
+    restorePreserved()
 
     if WARM_CACHE_AFTER_COPY:
         warmCache()

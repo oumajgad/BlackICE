@@ -14,6 +14,7 @@
 #include <GameState/CombatStore.hpp>
 #include <Gui/TextureStats.hpp>
 #include <MemScan.hpp>
+#include <Settings.hpp>
 #include <Gui/Warmup.hpp>
 #include <utils.hpp>
 
@@ -100,10 +101,44 @@ namespace {
         io.ClearInputMouse();
     }
 
+    // The key that shows and hides the overlay, and the state of a rebind waiting
+    // for its key. Loaded on first use rather than at startup, since the settings
+    // file is only reachable once the module path is known.
+    const char* TOGGLE_KEY_SETTING = "overlay.toggleKey";
+    unsigned toggleKeyCode = VK_INSERT;
+    bool toggleKeyLoaded = false;
+    bool capturingKey = false;
+
+    unsigned currentToggleKey() {
+        if (!toggleKeyLoaded) {
+            toggleKeyLoaded = true;
+            const int saved = Settings::getInt(TOGGLE_KEY_SETTING, VK_INSERT);
+            // A hand edited file could hold anything; a virtual key is one byte.
+            toggleKeyCode = (saved > 0 && saved <= 0xFF)
+                ? static_cast<unsigned>(saved) : VK_INSERT;
+        }
+        return toggleKeyCode;
+    }
+
     LRESULT CALLBACK hookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-        if (msg == WM_KEYDOWN && wParam == VK_INSERT) {
-            setVisible(!visible);
-            return 0;
+        if (msg == WM_KEYDOWN) {
+            if (capturingKey) {
+                // Swallowed either way, so the game does not act on the key that was
+                // pressed to bind it.
+                capturingKey = false;
+                if (wParam != VK_ESCAPE) {
+                    Overlay::setToggleKey(static_cast<unsigned>(wParam));
+                }
+                return 0;
+            }
+
+            // Not while a text box has the keyboard, or a toggle key bound to an
+            // ordinary letter would be impossible to type.
+            const bool typing = imguiReady && visible && ImGui::GetIO().WantTextInput;
+            if (!typing && wParam == currentToggleKey()) {
+                setVisible(!visible);
+                return 0;
+            }
         }
 
         // Only while it is on screen. A hidden overlay has no use for input, and
@@ -625,6 +660,61 @@ bool Overlay::install() {
 
 void Overlay::toggle() {
     setVisible(!visible);
+}
+
+unsigned Overlay::toggleKey() {
+    return currentToggleKey();
+}
+
+void Overlay::setToggleKey(unsigned virtualKey) {
+    currentToggleKey();     // so the load does not overwrite this afterwards
+    toggleKeyCode = virtualKey;
+    Settings::setInt(TOGGLE_KEY_SETTING, static_cast<int>(virtualKey));
+}
+
+std::string Overlay::toggleKeyName() {
+    const unsigned key = currentToggleKey();
+
+    // Windows names a key from its scan code, which is what GetKeyNameText wants in
+    // the same bit positions a WM_KEYDOWN lParam would carry it.
+    UINT scanCode = MapVirtualKeyA(key, MAPVK_VK_TO_VSC);
+    LONG param = static_cast<LONG>(scanCode) << 16;
+
+    // The keys that share a scan code with a numpad key need the extended bit, or
+    // Insert comes back named "Num 0" and Home "Num 7".
+    switch (key) {
+    case VK_INSERT: case VK_DELETE: case VK_HOME: case VK_END:
+    case VK_PRIOR: case VK_NEXT:
+    case VK_LEFT: case VK_RIGHT: case VK_UP: case VK_DOWN:
+    case VK_NUMLOCK: case VK_RCONTROL: case VK_RMENU: case VK_DIVIDE:
+        param |= (1L << 24);
+        break;
+    default:
+        break;
+    }
+
+    char name[64] = {};
+    if (GetKeyNameTextA(param, name, sizeof(name)) > 0) {
+        return std::string(name);
+    }
+
+    // No name for it, which happens for keys no layout produces. The number is still
+    // enough to tell one binding from another.
+    char fallback[32] = {};
+    sprintf_s(fallback, "Key %u", key);
+    return std::string(fallback);
+}
+
+void Overlay::beginToggleKeyCapture() {
+    capturingKey = true;
+}
+
+bool Overlay::capturingToggleKey() {
+    return capturingKey;
+}
+
+void Overlay::cancelToggleKeyCapture() {
+    capturingKey = false;
 }
 
 bool Overlay::isVisible() {

@@ -5,6 +5,7 @@
 #include <HoiDataStructures.hpp>
 #include <Hooks/MapModeHooks.hpp>
 #include <MemScan.hpp>
+#include <Settings.hpp>
 
 namespace {
     // The game state, and the province array hanging off it - the same route
@@ -26,24 +27,82 @@ namespace {
 
     // The green ramp, level 1 to TOP_LEVEL.
     //
-    // Red and blue have to stay non zero. A colour with both channels at zero does
-    // not reach the map at all, while the same colour with them between 20 and 50
-    // does. The cause lies somewhere below the colour store and is not understood, so
-    // the floors below are a requirement rather than a preference.
+    // The floors below hold red and blue off zero. That was once taken for a hard
+    // requirement, after a colour with both channels at zero drew nothing while the
+    // same colour with them between 20 and 50 drew correctly. It is not one: the
+    // game's own infrastructure ramp ends on pure green, red and blue both zero, and
+    // draws it. Whatever went wrong on that occasion was something else. The floors
+    // stay because this ramp is tuned around them.
     const int GREEN_FLOOR = 90;
     const int GREEN_RANGE = 165;
     const int SIDE_FLOOR = 24;
     const int SIDE_RANGE = 36;
 
+    // The heat ramp, taken from the game's own infrastructure map mode. Its colouring
+    // loop at 0x466F80 tests the infrastructure level against ten thresholds and picks
+    // one of exactly these colours. Building levels run 1 to TOP_LEVEL, the same range
+    // infrastructure does, so the ladder carries across unchanged and this map mode
+    // reads the way that one does.
+    //
+    // The game keeps them as floats with blue at zero and alpha at one; its packer at
+    // 0x6628B0 multiplies by 255 and truncates toward zero, and these are what comes
+    // out of it.
+    //
+    // Deliberately not smooth: 6 is a bright yellow green and 7 a dark one, so the
+    // ladder steps backwards in brightness there before climbing again. That is the
+    // game's own choice, reproduced rather than tidied up.
+    const int HEAT_RAMP[CustomMapMode::TOP_LEVEL][3] = {
+        {  25,   0, 0 },   // 1   near black red
+        { 153,   0, 0 },   // 2   dark red
+        { 204,  25, 0 },   // 3   red
+        { 255,  76, 0 },   // 4   orange
+        { 255, 255, 0 },   // 5   yellow
+        { 165, 191, 0 },   // 6   yellow green
+        {  25, 102, 0 },   // 7   dark green
+        {  51, 127, 0 },   // 8   green
+        {  63, 186, 0 },   // 9   brighter green
+        {   0, 255, 0 },   // 10  pure green
+    };
+
+    // Kept between sessions, by name rather than by number so the file says which
+    // ramp it means. Anything unrecognised reads as the green one.
+    const char* PALETTE_KEY = "customMapMode.palette";
+    const char* PALETTE_GREEN = "green";
+    const char* PALETTE_HEAT = "heat";
+
     std::vector<CustomMapMode::Building> knownBuildings;
     bool enabledFlag = false;
     int selectedIndex = -1;
+    CustomMapMode::Palette activePalette = CustomMapMode::Palette::Green;
+    bool paletteLoaded = false;
 
     uint32_t pack(int red, int green, int blue) {
         return 0xFF000000u
             | (static_cast<uint32_t>(red & 0xFF) << 16)
             | (static_cast<uint32_t>(green & 0xFF) << 8)
             | static_cast<uint32_t>(blue & 0xFF);
+    }
+
+    /**
+    @brief the chosen palette, reading the saved one the first time it is asked for
+
+    Read on demand rather than at startup: the settings file lives beside the DLL, and
+    the DLL is loaded long before there is any reason to know what colour anything is.
+    */
+    CustomMapMode::Palette currentPalette() {
+        if (!paletteLoaded) {
+            paletteLoaded = true;
+            activePalette = (Settings::getString(PALETTE_KEY, PALETTE_GREEN) == PALETTE_HEAT)
+                ? CustomMapMode::Palette::Heat
+                : CustomMapMode::Palette::Green;
+        }
+        return activePalette;
+    }
+
+    /**@brief the heat ramp at one level, which must be 1 to TOP_LEVEL*/
+    uint32_t heatColour(int capped) {
+        const int* rgb = HEAT_RAMP[capped - 1];
+        return pack(rgb[0], rgb[1], rgb[2]);
     }
 
     uintptr_t gameState() {
@@ -157,6 +216,18 @@ void CustomMapMode::setEnabled(bool on) {
     Hooks::MapMode::repaint();
 }
 
+CustomMapMode::Palette CustomMapMode::palette() {
+    return currentPalette();
+}
+
+void CustomMapMode::setPalette(Palette which) {
+    currentPalette();       // so the load does not overwrite this afterwards
+    activePalette = which;
+    Settings::setString(PALETTE_KEY,
+        (which == Palette::Heat) ? PALETTE_HEAT : PALETTE_GREEN);
+    Hooks::MapMode::repaint();
+}
+
 int CustomMapMode::selected() {
     return selectedIndex;
 }
@@ -251,6 +322,10 @@ uint32_t CustomMapMode::colourFor(uintptr_t province, int viewingCountry) {
     // know how much of it is there.
     const int shown = seen ? level : 1;
     const int capped = (shown > TOP_LEVEL) ? TOP_LEVEL : shown;
+
+    if (currentPalette() == Palette::Heat) {
+        return heatColour(capped);
+    }
 
     const int green = GREEN_FLOOR + (GREEN_RANGE * capped) / TOP_LEVEL;
     const int side = SIDE_FLOOR + (SIDE_RANGE * capped) / TOP_LEVEL;

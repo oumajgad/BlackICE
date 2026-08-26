@@ -52,6 +52,21 @@ namespace {
         }
 
         ImGui::Spacing();
+
+        // One button rather than a pair of radios: there are two ramps, so the label
+        // can name the one in use and a click is enough to get the other.
+        const bool heat = CustomMapMode::palette() == CustomMapMode::Palette::Heat;
+        if (ImGui::Button(heat ? "Palette: red to green" : "Palette: green shades")) {
+            CustomMapMode::setPalette(heat ? CustomMapMode::Palette::Green
+                : CustomMapMode::Palette::Heat);
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Green shades: one colour, brighter with the level.\n"
+                "Red to green: red at level 1, through orange and yellow,\n"
+                "to green at level %d.", CustomMapMode::TOP_LEVEL);
+        }
+
+        ImGui::Spacing();
         ImGui::SeparatorText("Building");
 
         // The names the game itself uses, so the list matches what is in the province
