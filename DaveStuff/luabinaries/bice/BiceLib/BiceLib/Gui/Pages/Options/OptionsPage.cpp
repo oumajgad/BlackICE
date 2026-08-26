@@ -189,7 +189,11 @@ namespace {
 
         ImGuiIO& io = ImGui::GetIO();
         ImGui::SetNextItemWidth(200.0f);
-        ImGui::SliderFloat("Font size", &io.FontGlobalScale, 0.6f, 2.0f, "%.2fx");
+        // AlwaysClamp: a number typed into a Ctrl+clicked slider is otherwise not
+        // held to its ends, and a font scale of 50 leaves nothing on screen to undo
+        // it with.
+        ImGui::SliderFloat("Font size", &io.FontGlobalScale, 0.6f, 2.0f, "%.2fx",
+            ImGuiSliderFlags_AlwaysClamp);
         ImGui::SameLine();
         if (ImGui::Button("Reset##font")) {
             io.FontGlobalScale = 1.0f;

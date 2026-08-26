@@ -10,7 +10,8 @@ namespace {
     const char* COLLECT = "BiceLibGui.ICDays.Collect";
     const char* SET_INVESTMENT = "BiceLibGui.ICDays.SetInvestment";
 
-    const int INVESTMENT_STEPS[] = { 20, 30, 40, 50, 60 };
+    const int INVESTMENT_MIN = 20;
+    const int INVESTMENT_MAX = 90;
 
     struct Snapshot
     {
@@ -39,6 +40,13 @@ namespace {
      * would not move until the next automatic refresh.
      */
     int pendingInvestment = 0;
+
+    // What the slider is showing, and whether the player has hold of it. While it is
+    // not being dragged it follows the game, so an investment changed anywhere else
+    // shows up here; while it is, the handle belongs to the player and writing to it
+    // would fight them.
+    int sliderInvestment = INVESTMENT_MIN;
+    bool sliderActive = false;
 
     /**
     @brief pulls a fresh snapshot from Lua
@@ -148,33 +156,40 @@ namespace {
         ImGui::Spacing();
         ImGui::SeparatorText("Set investment");
 
-        for (int i = 0; i < static_cast<int>(sizeof(INVESTMENT_STEPS) / sizeof(INVESTMENT_STEPS[0])); i++) {
-            const int step = INVESTMENT_STEPS[i];
-            if (i > 0) {
-                ImGui::SameLine();
+        const int shownInvestment = (pendingInvestment != 0)
+            ? pendingInvestment : static_cast<int>(snapshot.investment);
+        if (!sliderActive) {
+            // The game's value can sit outside the range this offers, so it is clamped
+            // for display. Nothing is sent unless the player moves the handle, so a
+            // clamp never becomes a change on its own.
+            sliderInvestment = shownInvestment;
+            if (sliderInvestment < INVESTMENT_MIN) {
+                sliderInvestment = INVESTMENT_MIN;
             }
-
-            char label[16];
-            sprintf_s(label, "%d%%", step);
-
-            const int shownInvestment = (pendingInvestment != 0)
-                ? pendingInvestment : static_cast<int>(snapshot.investment);
-            const bool isCurrent = (shownInvestment == step);
-            if (isCurrent) {
-                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.59f, 0.35f, 1.0f));
-            }
-            if (ImGui::Button(label, ImVec2(56.0f, 0.0f))) {
-                pendingInvestment = step; // Before the read, which cannot see it yet
-                Gui::Lua::callWithNumber(SET_INVESTMENT, step);
-                refresh();
-            }
-            if (isCurrent) {
-                ImGui::PopStyleColor();
+            else if (sliderInvestment > INVESTMENT_MAX) {
+                sliderInvestment = INVESTMENT_MAX;
             }
         }
 
+        // AlwaysClamp because Ctrl+click turns the slider into a text box, and a
+        // number typed there is not held to the ends of the slider without it.
+        ImGui::SetNextItemWidth(260.0f);
+        ImGui::SliderInt("##investment", &sliderInvestment,
+            INVESTMENT_MIN, INVESTMENT_MAX, "%d%%", ImGuiSliderFlags_AlwaysClamp);
+        sliderActive = ImGui::IsItemActive();
+
+        // Sent once, when the handle is let go, rather than every frame of the drag:
+        // each one is a command queued on the game, not a value written directly.
+        if (ImGui::IsItemDeactivatedAfterEdit()) {
+            pendingInvestment = sliderInvestment; // Before the read, which cannot see it yet
+            Gui::Lua::callWithNumber(SET_INVESTMENT, sliderInvestment);
+            refresh();
+        }
+
         ImGui::Spacing();
-        ImGui::TextWrapped("Investment converts base IC into IC days at the shown daily rate.");
+        ImGui::TextWrapped("Drag to choose, and let go to apply. Ctrl+click the slider "
+            "to type a number instead. Investment converts base IC into IC days at the "
+            "shown daily rate.");
     }
 
     class ICDaysPage : public Gui::GuiPage
