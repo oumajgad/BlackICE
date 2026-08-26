@@ -124,6 +124,30 @@ namespace {
         return toggleKeyCode;
     }
 
+    /**
+    @brief decides whether ImGui or the game owns the mouse cursor this frame
+
+    The game sets a cursor of its own, and ImGui's Win32 backend sets one from both
+    NewFrame and WM_SETCURSOR. With both acting, the two overwrite each other as the
+    mouse moves, which is seen as the cursor flickering between the game's and the
+    plain Windows arrow.
+
+    ImGui is therefore allowed near the cursor only while the pointer is over one of
+    its windows, which is also the only place its resize and text shapes are worth
+    having. Anywhere else NoMouseCursorChange keeps it away and the game's cursor
+    stands. That flag is what ImGui documents for this case: use it "if the backend
+    cursor changes are interfering with yours".
+    */
+    void updateCursorOwnership() {
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.WantCaptureMouse) {
+            io.ConfigFlags &= ~ImGuiConfigFlags_NoMouseCursorChange;
+        }
+        else {
+            io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+        }
+    }
+
     LRESULT CALLBACK hookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         if (msg == WM_KEYDOWN) {
             if (capturingKey) {
@@ -151,6 +175,16 @@ namespace {
             ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 
             ImGuiIO& io = ImGui::GetIO();
+
+            // Over an ImGui window the cursor is ImGui's, and the handler above has
+            // just set it, so the game must not see this and set its own immediately
+            // afterwards. Anywhere else the flag has kept ImGui away from the cursor
+            // and the message belongs to the game. WM_SETCURSOR is not in the mouse
+            // message range, so it needs saying separately.
+            if (msg == WM_SETCURSOR && io.WantCaptureMouse && LOWORD(lParam) == HTCLIENT) {
+                return 1;
+            }
+
             if ((io.WantCaptureMouse && isMouseMessage(msg)) ||
                 (io.WantCaptureKeyboard && isKeyboardMessage(msg))) {
                 return 1; // Don't let the game react to input meant for the overlay
@@ -242,6 +276,10 @@ namespace {
         // ImGui draws geometry, so it has to sit inside a scene of its own. The game
         // has already closed its scene by the time Present is called.
         if (SUCCEEDED(device->BeginScene())) {
+            // Before the backend's NewFrame, which is one of the two places it acts
+            // on the cursor.
+            updateCursorOwnership();
+
             ImGui_ImplDX9_NewFrame();
             ImGui_ImplWin32_NewFrame();
             ImGui::NewFrame();
