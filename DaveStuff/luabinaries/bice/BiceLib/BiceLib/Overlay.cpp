@@ -124,28 +124,42 @@ namespace {
         return toggleKeyCode;
     }
 
-    /**
-    @brief decides whether ImGui or the game owns the mouse cursor this frame
-
-    The game sets a cursor of its own, and ImGui's Win32 backend sets one from both
-    NewFrame and WM_SETCURSOR. With both acting, the two overwrite each other as the
-    mouse moves, which is seen as the cursor flickering between the game's and the
-    plain Windows arrow.
-
-    ImGui is therefore allowed near the cursor only while the pointer is over one of
-    its windows, which is also the only place its resize and text shapes are worth
-    having. Anywhere else NoMouseCursorChange keeps it away and the game's cursor
-    stands. That flag is what ImGui documents for this case: use it "if the backend
-    cursor changes are interfering with yours".
-    */
-    void updateCursorOwnership() {
+    /**@brief lets ImGui touch the OS cursor, or keeps it away from it entirely*/
+    void setCursorOwnership(bool imguiOwns) {
         ImGuiIO& io = ImGui::GetIO();
-        if (io.WantCaptureMouse) {
+        if (imguiOwns) {
             io.ConfigFlags &= ~ImGuiConfigFlags_NoMouseCursorChange;
         }
         else {
             io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
         }
+    }
+
+    /**
+    @brief decides whether ImGui or the game owns the mouse cursor
+
+    The game sets a cursor of its own, and ImGui's Win32 backend sets one from both
+    NewFrame and WM_SETCURSOR. With both acting the two overwrite each other as the
+    mouse moves, which is seen as the cursor flickering between them. So ImGui is kept
+    away from the cursor except where it should own it, using the flag ImGui documents
+    for the purpose: use it "if the backend cursor changes are interfering with yours".
+
+    Decided from where the pointer is now rather than from which window wanted it last
+    frame. A page torn off into a window of its own is entirely ImGui's, and nothing
+    else would put a cursor over it - the window class ImGui registers for those
+    carries no cursor - so a frame spent deciding otherwise leaves the game's cursor
+    standing there, and the next frame replaces it. That alternation is the flicker,
+    moved from the game window to the torn off one.
+    */
+    void updateCursorOwnership() {
+        POINT point = {};
+        HWND under = nullptr;
+        if (GetCursorPos(&point)) {
+            under = GetAncestor(WindowFromPoint(point), GA_ROOT);
+        }
+
+        const bool overGame = (under != nullptr && under == gameWindow);
+        setCursorOwnership(!overGame || ImGui::GetIO().WantCaptureMouse);
     }
 
     LRESULT CALLBACK hookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -172,16 +186,24 @@ namespace {
         // Only while it is on screen. A hidden overlay has no use for input, and
         // queueing it would only mean replaying it later.
         if (imguiReady && visible) {
-            ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
-
             ImGuiIO& io = ImGui::GetIO();
+
+            // Taken once, and used both to set the flag the handler reads and to
+            // decide whether the game sees the message. Read twice they could
+            // disagree, and then either both set the cursor or neither does.
+            const bool imguiOwnsCursor = io.WantCaptureMouse;
+            if (msg == WM_SETCURSOR) {
+                setCursorOwnership(imguiOwnsCursor);
+            }
+
+            ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 
             // Over an ImGui window the cursor is ImGui's, and the handler above has
             // just set it, so the game must not see this and set its own immediately
             // afterwards. Anywhere else the flag has kept ImGui away from the cursor
             // and the message belongs to the game. WM_SETCURSOR is not in the mouse
             // message range, so it needs saying separately.
-            if (msg == WM_SETCURSOR && io.WantCaptureMouse && LOWORD(lParam) == HTCLIENT) {
+            if (msg == WM_SETCURSOR && imguiOwnsCursor && LOWORD(lParam) == HTCLIENT) {
                 return 1;
             }
 
