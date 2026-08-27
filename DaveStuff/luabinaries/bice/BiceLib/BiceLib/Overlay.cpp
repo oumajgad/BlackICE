@@ -222,9 +222,45 @@ namespace {
         io.IniFilename = layoutFilePath(); // Window positions and dock layout persist here
 
         // Lets the utility pages live as tabs of one window while still allowing a
-        // tab to be torn off and docked elsewhere. Docking only, not viewports: real
-        // OS windows would mean extra swap chains inside a hooked game.
+        // tab to be torn off and docked elsewhere.
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+        // Viewports promote a window dragged off the game to a real OS window, which
+        // is what lets a page be put on a second monitor or hang over the edge of the
+        // game instead of being clipped to its back buffer.
+        //
+        // Two things have to hold. The device must be windowed, because each detached
+        // window becomes an additional D3D9 swap chain and D3D9 will not create those
+        // for a device in exclusive fullscreen. And the thread that presents must be
+        // the one that owns the game window: viewport windows are created by
+        // UpdatePlatformWindows on the presenting thread, and Windows delivers a
+        // window's messages only to the thread that created it, so a mismatch would
+        // give windows that draw but never respond.
+        //
+        // The thread is checked here rather than assumed. The windowed requirement is
+        // not - it is a setting the player can change - so a device that turns out to
+        // be fullscreen simply fails to create the extra swap chains, and the pages
+        // stay inside the game.
+        const DWORD windowThread = GetWindowThreadProcessId(gameWindow, nullptr);
+        if (windowThread == GetCurrentThreadId()) {
+            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
+            // A page torn off is a window of the utility, not an application, so it
+            // has no place in the task bar or in alt-tab.
+            io.ConfigViewportsNoTaskBarIcon = true;
+
+            // A detached window is its own OS window: rounded corners would show the
+            // desktop through the gaps, and a translucent background would show
+            // whatever is behind it rather than the game.
+            ImGuiStyle& style = ImGui::GetStyle();
+            style.WindowRounding = 0.0f;
+            style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+        }
+        else {
+            INFO_OUT(printf("Overlay: present thread %lu is not the window thread %lu, "
+                "so pages stay inside the game window\n",
+                GetCurrentThreadId(), windowThread));
+        }
 
         if (!ImGui_ImplWin32_Init(gameWindow) || !ImGui_ImplDX9_Init(device)) {
             ERROR_OUT(printf("Overlay: ImGui backend init failed\n"));
@@ -264,7 +300,25 @@ namespace {
         }
     }
 
-    void renderOverlay(IDirect3DDevice9* device) {
+    /**
+     * How many frames to keep drawing after the overlay is put away.
+     *
+     * Only the detached windows need this. ImGui destroys a viewport once its window
+     * has been missing for more than two frames, and destroying a viewport is what
+     * closes the OS window behind it properly. Simply stopping would leave those
+     * windows on the desktop showing the last frame drawn, because nothing would run
+     * to notice they are gone.
+     *
+     * Four, so the count is clear of the two frame test either side.
+     *
+     * Not DestroyPlatformWindows(): that also tears down the main viewport, clearing
+     * the platform handle and user data the backend sets up once at init and never
+     * restores, and the next frame then reads them back as null.
+     */
+    const int TEARDOWN_FRAMES = 4;
+    int teardownFramesLeft = 0;
+
+    void renderOverlay(IDirect3DDevice9* device, bool drawPages) {
         IDirect3DSurface9* previousTarget = nullptr;
         IDirect3DSurface9* backBuffer = nullptr;
 
@@ -284,12 +338,22 @@ namespace {
             ImGui_ImplWin32_NewFrame();
             ImGui::NewFrame();
 
-            Gui::drawAll();
+            if (drawPages) {
+                Gui::drawAll();
+            }
 
             ImGui::EndFrame();
             ImGui::Render();
             ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
             device->EndScene();
+
+            // The detached windows, each with a swap chain of its own. After the main
+            // scene is closed, as the reference backend does it: these open scenes of
+            // their own, and save and restore the render target themselves.
+            if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+                ImGui::UpdatePlatformWindows();
+                ImGui::RenderPlatformWindowsDefault();
+            }
         }
 
         if (backBuffer != nullptr) {
@@ -322,12 +386,28 @@ namespace {
             Combat::Store::update();
 
             if (visible) {
-                renderOverlay(device);
+                teardownFramesLeft = 0;
+                renderOverlay(device, true);
             }
-            else if (wasVisible) {
-                // Done here rather than in setVisible: this is the thread that owns
-                // the ImGui context, and the window procedure is not necessarily it.
-                flushLayout();
+            else {
+                if (wasVisible) {
+                    // Done here rather than in setVisible: this is the thread that
+                    // owns the ImGui context, and the window procedure is not
+                    // necessarily it.
+                    flushLayout();
+
+                    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+                        teardownFramesLeft = TEARDOWN_FRAMES;
+                    }
+                }
+
+                // Frames with nothing in them, so ImGui sees every window gone and
+                // closes the windows it opened for them. Showing the overlay again
+                // builds them back from the positions ImGui still holds.
+                if (teardownFramesLeft > 0) {
+                    teardownFramesLeft--;
+                    renderOverlay(device, false);
+                }
             }
             wasVisible = visible;
         }

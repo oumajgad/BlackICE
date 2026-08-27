@@ -272,6 +272,26 @@ namespace {
         groupWindowsReady = true;
     }
 
+    /**
+    @brief asks for the next window's own OS window not to take focus when it appears
+
+    Only matters for a page that has been dragged out of the game, which ImGui gives an
+    OS window of its own. Those windows are destroyed when the overlay is put away and
+    built again when it comes back, and a window appearing is normally shown with
+    SW_SHOW, which activates it - so opening the utility took focus away from the game.
+    The flag turns that into SW_SHOWNA: the window appears, and the game keeps focus
+    until the window is actually clicked.
+
+    Set per window rather than globally because it travels through the window class,
+    which has no global equivalent. Everything else about the class is left at its
+    default, so windows still dock together as before.
+    */
+    void noFocusOnAppearing() {
+        ImGuiWindowClass windowClass;
+        windowClass.ViewportFlagsOverrideSet = ImGuiViewportFlags_NoFocusOnAppearing;
+        ImGui::SetNextWindowClass(&windowClass);
+    }
+
     bool layoutResetRequested = false;
 
     /**
@@ -336,6 +356,7 @@ namespace {
         ImGui::SetNextWindowPos(
             ImVec2(80.0f + index * 28.0f, 80.0f + index * 28.0f), ImGuiCond_FirstUseEver);
 
+        noFocusOnAppearing();
         const bool visible = ImGui::Begin(window.title, &window.open);
 
         if (visible) {
@@ -403,6 +424,7 @@ void Gui::drawAll() {
     // would be left, and it would be a nuisance to grab hold of again.
     ImGui::SetNextWindowSizeConstraints(ImVec2(160.0f, 0.0f), ImVec2(FLT_MAX, FLT_MAX));
 
+    noFocusOnAppearing();
     if (ImGui::Begin(CONTROL_WINDOW, nullptr,
         ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking)) {
 
@@ -460,6 +482,7 @@ void Gui::drawAll() {
         if (!page->open) {
             continue;
         }
+        noFocusOnAppearing();
         if (ImGui::Begin(windowName(page), &page->open)) {
             // Timed around draw() only, which is where a page loads what it needs the
             // first time it is looked at. Begin and End are ImGui's own bookkeeping and
