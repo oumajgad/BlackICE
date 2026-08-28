@@ -402,6 +402,15 @@ Oob::Tree Oob::read(uintptr_t country) {
     return tree;
 }
 
+/**
+ * Land regiments hold strength in hundredths, air and naval in thousandths. Taken from
+ * how the game reports the same regiments rather than measured here.
+ */
+double Oob::strengthOf(const Regiment& regiment, Branch branch) {
+    const double scale = (branch == Branch::Land) ? 10.0 : 1000.0;
+    return regiment.strength / scale;
+}
+
 std::vector<Oob::Regiment> Oob::regiments(uintptr_t unit) {
     std::vector<Regiment> found;
     if (unit == 0) {
@@ -414,6 +423,9 @@ std::vector<Oob::Regiment> Oob::regiments(uintptr_t unit) {
     for (size_t i = 0; i < addresses.size(); i++) {
         Regiment regiment;
         regiment.name = HDS::readString(addresses[i] + CRegiment::Offsets::name);
+        // Left as the game holds it. What that number means depends on the branch,
+        // which a regiment does not know on its own, so the scaling is strengthOf()'s
+        // job and not this one's.
         regiment.strength = readValue<int32_t>(addresses[i] + CRegiment::Offsets::strength);
         regiment.organisation = readValue<int32_t>(addresses[i] + CRegiment::Offsets::organisation);
         found.push_back(regiment);

@@ -11,16 +11,18 @@ void utils::logInLua(lua_State* state, const char* toLog) {
     lua_pcall(state, 1, 0, 0);
     return;
 }
-std::string utils::gameTickToDate(int gameTick) {
+utils::GameDate utils::gameTickToParts(int gameTick) {
     const int daysPerMonth[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
     const int hours = gameTick - 43800000;
     const int totalDays = hours / 24;
-    const int hourOfDay = hours % 24;
+
+    GameDate date;
+    date.hourOfDay = hours % 24;
 
     // A Clausewitz year is 365 days with no leap day, which is why nothing from a
     // calendar library will do here.
-    const int year = totalDays / 365;
-    int dayOfYear = totalDays - (year * 365);
+    date.year = totalDays / 365;
+    int dayOfYear = totalDays - (date.year * 365);
 
     // Walk the months off, leaving the day within the one it lands in. December takes
     // whatever is left rather than being counted off, so the index cannot run past it.
@@ -31,7 +33,16 @@ std::string utils::gameTickToDate(int gameTick) {
     }
 
     // Both count from one, the way a date is written.
-    return std::format("{}.{}.{} {}:00", year, month + 1, dayOfYear + 1, hourOfDay);
+    date.month = month + 1;
+    date.dayOfMonth = dayOfYear + 1;
+    date.daysInMonth = daysPerMonth[month];
+    return date;
+}
+
+std::string utils::gameTickToDate(int gameTick) {
+    const GameDate date = gameTickToParts(gameTick);
+    return std::format("{}.{}.{} {}:00",
+        date.year, date.month, date.dayOfMonth, date.hourOfDay);
 }
 
 int utils::dateToGameTick(int year, int month, int dayOfMonth, int hourOfDay) {

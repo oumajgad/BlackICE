@@ -368,6 +368,19 @@ function BuildingsCount()
 	if buildingsCountSetupNeeded then
 		buildingsCountSetup()
 	end
+	local capped_buildings = {
+		"small_ship_shipyard",
+		"medium_ship_shipyard",
+		"capital_ship_shipyard",
+		"submarine_shipyard",
+		"smallarms_factory",
+		"automotive_factory",
+		"artillery_factory",
+		"tank_factory",
+		"light_aircraft_factory",
+		"medium_aircraft_factory",
+		"heavy_aircraft_factory",
+	}
 
 	for k, v in pairs(GetCountryIterCacheDict()) do
 		local countryTag = v
@@ -428,6 +441,9 @@ function BuildingsCount()
 
 			for buildingtype, buildingcount in pairs(currentBuildings) do
 				local count = country:GetTotalCoreBuildingLevels(buildingsData[buildingtype]:GetIndex()):Get()
+				if table.getIndex(capped_buildings, buildingtype) and count > 30 then
+					count = 30
+				end
 				currentBuildings[buildingtype] = count
 				-- Utils.LUA_DEBUGOUT(tag .. " - " .. buildingtype .. " : " .. count)
 			end

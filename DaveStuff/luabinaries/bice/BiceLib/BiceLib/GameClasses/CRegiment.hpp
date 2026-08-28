@@ -14,7 +14,9 @@
  */
 namespace CRegiment {
     namespace Offsets {
-        constexpr uintptr_t strength = 0x30;     // x1000
+        // x10 on a land regiment, x1000 on an air or naval one. Oob::strengthOf()
+        // is where that is applied.
+        constexpr uintptr_t strength = 0x30;
         constexpr uintptr_t organisation = 0x60; // x1000
         constexpr uintptr_t name = 0x68;
     }

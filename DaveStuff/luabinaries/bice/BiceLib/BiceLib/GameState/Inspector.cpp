@@ -37,7 +37,12 @@ namespace {
     const std::vector<StatDesc>& statDescs() {
         static const std::vector<StatDesc> descs = {
             // General
-            { "max_strength",        CSubUnitDefinition::Offsets::max_strength,        0.001f, "",     MASK_ALL },
+            // Land holds strength in tens where air and naval hold
+            // thousandths, so the same stat needs two entries. Their masks do not
+            // overlap, so exactly one is ever picked and it keeps its place in
+            // the order stats are listed in.
+            { "max_strength",        CSubUnitDefinition::Offsets::max_strength,        0.1f,  "",     MASK_ARMY },
+            { "max_strength",        CSubUnitDefinition::Offsets::max_strength,        0.001f, "",     MASK_NAVY | MASK_AIR },
             { "max_organisation",    CSubUnitDefinition::Offsets::max_organisation,    0.001f, "",     MASK_ALL },
             { "morale",              CSubUnitDefinition::Offsets::morale,              0.1f,   "%",    MASK_ALL },
             { "manpower",            CSubUnitDefinition::Offsets::manpower,            0.001f, "",     MASK_ALL },
