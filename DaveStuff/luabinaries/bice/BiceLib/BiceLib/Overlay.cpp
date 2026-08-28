@@ -124,44 +124,6 @@ namespace {
         return toggleKeyCode;
     }
 
-    /**@brief lets ImGui touch the OS cursor, or keeps it away from it entirely*/
-    void setCursorOwnership(bool imguiOwns) {
-        ImGuiIO& io = ImGui::GetIO();
-        if (imguiOwns) {
-            io.ConfigFlags &= ~ImGuiConfigFlags_NoMouseCursorChange;
-        }
-        else {
-            io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-        }
-    }
-
-    /**
-    @brief decides whether ImGui or the game owns the mouse cursor
-
-    The game sets a cursor of its own, and ImGui's Win32 backend sets one from both
-    NewFrame and WM_SETCURSOR. With both acting the two overwrite each other as the
-    mouse moves, which is seen as the cursor flickering between them. So ImGui is kept
-    away from the cursor except where it should own it, using the flag ImGui documents
-    for the purpose: use it "if the backend cursor changes are interfering with yours".
-
-    Decided from where the pointer is now rather than from which window wanted it last
-    frame. A page torn off into a window of its own is entirely ImGui's, and nothing
-    else would put a cursor over it - the window class ImGui registers for those
-    carries no cursor - so a frame spent deciding otherwise leaves the game's cursor
-    standing there, and the next frame replaces it. That alternation is the flicker,
-    moved from the game window to the torn off one.
-    */
-    void updateCursorOwnership() {
-        POINT point = {};
-        HWND under = nullptr;
-        if (GetCursorPos(&point)) {
-            under = GetAncestor(WindowFromPoint(point), GA_ROOT);
-        }
-
-        const bool overGame = (under != nullptr && under == gameWindow);
-        setCursorOwnership(!overGame || ImGui::GetIO().WantCaptureMouse);
-    }
-
     LRESULT CALLBACK hookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         if (msg == WM_KEYDOWN) {
             if (capturingKey) {
@@ -188,24 +150,11 @@ namespace {
         if (imguiReady && visible) {
             ImGuiIO& io = ImGui::GetIO();
 
-            // Taken once, and used both to set the flag the handler reads and to
-            // decide whether the game sees the message. Read twice they could
-            // disagree, and then either both set the cursor or neither does.
-            const bool imguiOwnsCursor = io.WantCaptureMouse;
-            if (msg == WM_SETCURSOR) {
-                setCursorOwnership(imguiOwnsCursor);
-            }
-
             ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 
-            // Over an ImGui window the cursor is ImGui's, and the handler above has
-            // just set it, so the game must not see this and set its own immediately
-            // afterwards. Anywhere else the flag has kept ImGui away from the cursor
-            // and the message belongs to the game. WM_SETCURSOR is not in the mouse
-            // message range, so it needs saying separately.
-            if (msg == WM_SETCURSOR && imguiOwnsCursor && LOWORD(lParam) == HTCLIENT) {
-                return 1;
-            }
+            // WM_SETCURSOR is deliberately not claimed here. The cursor is the
+            // game's, always, so the message has to reach it - and the handler above
+            // does nothing with it while NoMouseCursorChange is set.
 
             if ((io.WantCaptureMouse && isMouseMessage(msg)) ||
                 (io.WantCaptureKeyboard && isKeyboardMessage(msg))) {
@@ -242,6 +191,25 @@ namespace {
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO();
         io.IniFilename = layoutFilePath(); // Window positions and dock layout persist here
+
+        // The game owns the mouse cursor, everywhere and always.
+        //
+        // The game re-asserts its own cursor from its frame loop, and ImGui sets one
+        // from WM_SETCURSOR, which Windows sends on every mouse move. Two writers
+        // means whichever wrote last is what shows, and the cursor alternates as the
+        // mouse moves - measured at over three hundred changes each way in forty
+        // seconds, between the game's arrow and IDC_ARROW, the same shape in two
+        // different handles.
+        //
+        // Deciding between them by where the pointer is was tried, and it trades a
+        // flicker for an inconsistency: a page inside the game window keeps the
+        // game's cursor while a torn off one shows whichever writer got there last.
+        // Handing the cursor to the game outright is the one rule with no seam in it.
+        //
+        // What this gives up is the shapes ImGui would otherwise show: the I-beam
+        // over a text field and the arrows on a window edge. Those are worth less
+        // than a cursor that never flickers.
+        io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 
         // Lets the utility pages live as tabs of one window while still allowing a
         // tab to be torn off and docked elsewhere.
@@ -352,10 +320,6 @@ namespace {
         // ImGui draws geometry, so it has to sit inside a scene of its own. The game
         // has already closed its scene by the time Present is called.
         if (SUCCEEDED(device->BeginScene())) {
-            // Before the backend's NewFrame, which is one of the two places it acts
-            // on the cursor.
-            updateCursorOwnership();
-
             ImGui_ImplDX9_NewFrame();
             ImGui_ImplWin32_NewFrame();
             ImGui::NewFrame();
