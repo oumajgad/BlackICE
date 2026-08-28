@@ -10,7 +10,7 @@
 #include <string>
 
 #include <imgui.h>
-#include <imgui_internal.h> // DockBuilder, for the default layout
+#include <imgui_internal.h> // DockBuilder, and the dock node behind each group
 
 const char* const Gui::GROUP_ORDER[] = {
     "Main",         // the utility itself: who it reports on, and what it can do to the install
@@ -156,6 +156,40 @@ namespace {
      * The defaults match what the utility did before anything was saved: group windows
      * closed, so the overlay comes up showing only the control window, and pages open.
      */
+    /**
+     * Which page was the visible tab of each dock node, so it can be put back.
+     *
+     * Nothing of the overlay is submitted while it is hidden, so ImGui takes the pages
+     * out of their nodes and the selection is decided afresh when they come back. It
+     * is decided by whichever window holds the focus: DockNodeUpdateTabBar writes that
+     * window's tab into the node on every frame, so a node whose focused page is not
+     * the one that was showing opens on the wrong page and stays there.
+     *
+     * That is also why this was only ever seen in one group. Only one window can be
+     * the focused one, so only that window's node can be dragged onto the wrong tab;
+     * every other group came back correctly on its own.
+     *
+     * Keyed by dock node rather than by group, so a page moved into a node of its own
+     * is remembered where it actually sits.
+     */
+    std::map<ImGuiID, const Gui::GuiPage*> selectedInNode;
+
+    /**
+     * Frames left in which the remembered tab may still be put back.
+     *
+     * The pages have to be submitted before a tab can be selected, so this cannot be
+     * done in one frame. It stops as soon as the node reports the remembered tab for
+     * two frames running, which with the focus moved as well is immediate.
+     *
+     * The cap is a backstop and nothing more: if some future change fights this the
+     * way the focus rule did, a tab that can never be clicked would be a worse bug
+     * than a tab that opens on the wrong page.
+     */
+    const int SETTLE_FRAME_CAP = 30;
+    int reselectFramesLeft = 0;
+    bool reselectSettled = true;
+    int reselectHeldFrames = 0;
+
     int framesBeforeRestore = 3;
     bool visibilityRestored = false;
 
@@ -335,6 +369,11 @@ namespace {
         }
 
         savedVisibility.clear();
+        // The nodes are being rebuilt, so what was selected in the old ones means
+        // nothing.
+        selectedInNode.clear();
+        reselectFramesLeft = 0;
+        reselectSettled = true;
         framesBeforeRestore = 3;
         visibilityRestored = false;
     }
@@ -368,6 +407,78 @@ namespace {
         }
         ImGui::End();
     }
+}
+
+namespace {
+    /**
+    @brief makes each node show the page it was showing before the overlay was hidden
+
+    Written straight onto the node instead of going through SetNextWindowFocus,
+    which would also raise the window - and for a group torn off into a window of its
+    own that means taking the foreground off the game, which is a bug that has already
+    been fixed once.
+    */
+    bool reselectRememberedTabs() {
+        bool allHolding = true;
+        for (std::map<ImGuiID, const Gui::GuiPage*>::const_iterator it = selectedInNode.begin();
+            it != selectedInNode.end(); ++it) {
+            ImGuiDockNode* node = ImGui::DockBuilderGetNode(it->first);
+            if (node == nullptr) {
+                continue;
+            }
+            ImGuiWindow* window = ImGui::FindWindowByName(Gui::windowName(it->second));
+            if (window == nullptr) {
+                continue;
+            }
+
+            // Both ids are read from ImGui rather than hashed here: its string hash is
+            // CRC32-C, and computing one by hand has produced a confident wrong answer
+            // in this codebase before.
+            const ImGuiID showing = (node->TabBar != nullptr) ? node->TabBar->SelectedTabId
+                : node->SelectedTabId;
+
+            // The focused window decides the tab, every frame. DockNodeUpdateTabBar
+            // ends with
+            //
+            //     if (g.NavWindow && g.NavWindow->RootWindow->DockNode == node)
+            //         tab_bar->SelectedTabId = g.NavWindow->RootWindow->TabId;
+            //
+            // unconditionally, so while the focus sits on another page of this node
+            // the tab written here is taken straight back. That is the whole bug, and
+            // it is why only one group ever showed it: only one window can be the
+            // focused one, so only that window's node is affected.
+            //
+            // SetNavWindow moves the focus and nothing else. FocusWindow would also
+            // raise the window, which for a group torn off into a viewport of its own
+            // means taking the foreground off the game.
+            ImGuiContext& g = *ImGui::GetCurrentContext();
+            if (g.NavWindow != nullptr && g.NavWindow->RootWindow != nullptr
+                && g.NavWindow->RootWindow->DockNode == node
+                && g.NavWindow->RootWindow->TabId != window->TabId) {
+                ImGui::SetNavWindow(window);
+            }
+
+            if (showing == window->TabId) {
+                continue;   // already showing it, so nothing to write
+            }
+            allHolding = false;
+
+            node->SelectedTabId = window->TabId;
+            if (node->TabBar != nullptr) {
+                node->TabBar->SelectedTabId = window->TabId;
+                node->TabBar->NextSelectedTabId = window->TabId;
+            }
+        }
+        return allHolding;
+    }
+}
+
+void Gui::onOverlayShown() {
+    // Two seconds at sixty frames. Not a guess at when the tab is taken away, but a
+    // cap: the writing stops as soon as the selection holds by itself.
+    reselectFramesLeft = SETTLE_FRAME_CAP;
+    reselectSettled = false;
+    reselectHeldFrames = 0;
 }
 
 void Gui::registerPage(GuiPage* page) {
@@ -484,6 +595,14 @@ void Gui::drawAll() {
         }
         noFocusOnAppearing();
         if (ImGui::Begin(windowName(page), &page->open)) {
+            // Begin only returns true for the tab that is actually showing, so this
+            // is the selection, recorded without asking ImGui for it. Not while the
+            // selection is being put back: ImGui's wrong answer is still on screen
+            // for those frames and would overwrite what is being restored.
+            if (reselectSettled && ImGui::IsWindowDocked()) {
+                selectedInNode[ImGui::GetWindowDockID()] = page;
+            }
+
             // Timed around draw() only, which is where a page loads what it needs the
             // first time it is looked at. Begin and End are ImGui's own bookkeeping and
             // would only blur the number.
@@ -500,6 +619,20 @@ void Gui::drawAll() {
             timing.calls++;
         }
         ImGui::End();
+    }
+
+    // After the pages, so the tabs exist to be selected. Kept up until the selection
+    // holds on its own for two frames running, because something was seen taking the
+    // tab back the moment writing stopped.
+    if (!reselectSettled && reselectFramesLeft > 0) {
+        reselectFramesLeft--;
+        reselectHeldFrames = reselectRememberedTabs() ? (reselectHeldFrames + 1) : 0;
+        if (reselectHeldFrames >= 2) {
+            reselectSettled = true;
+        }
+    }
+    else if (!reselectSettled) {
+        reselectSettled = true;     // gave up; a tab must stay clickable
     }
 
     // Everything has been submitted at least once by now, so the pages are settled

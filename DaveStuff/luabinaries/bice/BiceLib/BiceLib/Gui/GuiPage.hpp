@@ -115,6 +115,15 @@ namespace Gui {
     back to being tabs of their own group, every window forgets where it was, and what
     is open goes back to its defaults.
     */
+    /**
+    @brief told each time the overlay is put back on screen
+
+    Nothing of the overlay is submitted while it is hidden, so ImGui takes the pages
+    out of their dock nodes and picks a tab afresh when they all come back. This is
+    what lets the tab that was showing be put back instead.
+    */
+    void onOverlayShown();
+
     void requestLayoutReset();
 }
 

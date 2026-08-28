@@ -372,6 +372,11 @@ namespace {
             Combat::Store::update();
 
             if (visible) {
+                if (!wasVisible) {
+                    // The pages were taken out of their docks while nothing was being
+                    // submitted, so the tab each one was showing has to be put back.
+                    Gui::onOverlayShown();
+                }
                 teardownFramesLeft = 0;
                 renderOverlay(device, true);
             }
