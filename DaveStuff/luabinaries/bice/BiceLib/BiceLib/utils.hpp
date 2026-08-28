@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <wtypes.h>
 #include <cstdio>
@@ -16,6 +18,31 @@ namespace utils {
 	extern lua_State* LUA_STATE;
 	void logInLua(lua_State* state, const char* toLog);
 	std::string gameTickToDate(int gameTick);
+
+	/**
+	 * A tick pulled apart into the parts a date is written from.
+	 *
+	 * Everything counts the way a date is written: month and day from one, hour from
+	 * zero. daysInMonth is the length of the month the tick lands in, which is what
+	 * anything reasoning about the end of a month needs and cannot work out without
+	 * the month table.
+	 */
+	struct GameDate
+	{
+		int year = 0;
+		int month = 0;          // 1 to 12
+		int dayOfMonth = 0;     // 1 to daysInMonth
+		int hourOfDay = 0;      // 0 to 23
+		int daysInMonth = 0;
+	};
+
+	/**
+	@brief the tick as a date
+
+	The Clausewitz calendar: years of 365 days, no leap day. This is the one place
+	that walk is written; gameTickToDate prints what this returns.
+	*/
+	GameDate gameTickToParts(int gameTick);
 
 	/**
 	@brief the tick a date falls on, the exact inverse of gameTickToDate

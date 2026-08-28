@@ -29,6 +29,7 @@
 #include <Hooks/CNavyHooks.hpp>
 #include <Hooks/HookedPatches.hpp>
 #include <Hooks/ConstructorHooks.hpp>
+#include <GameState/AutoSave.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
@@ -1041,6 +1042,10 @@ __declspec(dllexport) int enableOverlay(lua_State* L)
     if (!ok) {
         ERROR_OUT(printf("Could not install the ImGui overlay\n"));
     }
+
+    // Features that keep a setting have to be back in place whether or not their
+    // page is ever opened, so they are asked for here rather than on a first draw.
+    AutoSave::restore();
     lua_pushboolean(L, ok);
     return 1;
 }

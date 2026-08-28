@@ -278,6 +278,29 @@ combat capture and the OOB browser), `CSubUnitDefinition.hpp`, `CTerrain.cpp` (v
 | +0xBAC | **its units** - and not only the top level ones, so the tree has to be walked | used |
 | +0xDA8 | an array read for country statistics | mem, used |
 
+## The in game idler
+
+`CInGameIdler`, vftable `0x11CEB54`, 111 slots (**RTTI**). One instance while a game
+is running (**seen**), found by scanning for that vftable - `cacheIngameIdler` in
+`bice.cpp` already does. It is the in game loop: the timers, the selection, and the
+autosave request.
+
+The autosave fields are read and written by `Hooks/AutoSaveHooks.cpp`; how they were
+found and what the decision does with them is in `FINDINGS-autosave.md`.
+
+| Offset | Holds | |
+| --- | --- | --- |
+| +0x68 | 0 in single player; the branch that reads it looks like multiplayer | seen for the value, inferred for the meaning |
+| +0xAB0 | **an autosave is wanted** - cleared at the top of every decision, and the only thing the writer reads | read |
+| +0xAB1 | the writer has already spent its one frame of delay | read |
+| +0xD34 | which timer is firing; the autosave decision runs on 4, 0x12 and 0x13 | read |
+| +0x1304 | the selected things, as a list start | mem, used |
+
+The autosave settings live on the settings singleton, `module + 0x16863F8`, not here:
+`+0x158` is `debug_saves` and `+0x15C` is the frequency (**seen**, both matched
+against `settings.txt`). `+0xF4` on the same object is the map style
+`FINDINGS-mapmode.md` writes.
+
 ## Tools
 
 | Script | For |
