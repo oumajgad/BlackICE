@@ -430,7 +430,8 @@ namespace {
                 const Oob::Regiment& regiment = selectedRegiments[i];
                 sprintf_s(line, "  %-40s %6.1f strength %6.1f org\r\n",
                     regiment.name.empty() ? "(unnamed)" : regiment.name.c_str(),
-                    regiment.strength / 1000.0, regiment.organisation / 1000.0);
+                    Oob::strengthOf(regiment, unit.branch),
+                    regiment.organisation / 1000.0);
                 out += line;
             }
         }
@@ -552,14 +553,13 @@ namespace {
                 ImGui::TableNextColumn();
                 ImGui::TextUnformatted(regiment.name.empty() ? "(unnamed)" : regiment.name.c_str());
                 ImGui::TableNextColumn();
-                ImGui::Text("%.1f", regiment.strength / 1000.0);
+                ImGui::Text("%.1f", Oob::strengthOf(regiment, unit->branch));
                 ImGui::TableNextColumn();
                 ImGui::Text("%.1f", regiment.organisation / 1000.0);
             }
             ImGui::EndTable();
         }
-        ImGui::TextDisabled("Strength and organisation are the game's thousandths, "
-            "shown as the numbers it displays.");
+        ImGui::TextDisabled("Strength and organisation as the game displays them.");
     }
 
     void drawOobBrowser() {

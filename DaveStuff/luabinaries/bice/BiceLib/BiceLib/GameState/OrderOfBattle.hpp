@@ -38,9 +38,23 @@ namespace Oob {
     struct Regiment
     {
         std::string name;
-        int strength = 0;      // x1000
+        int strength = 0;      // scaled; see strengthOf(), the scale is not the same
+                               // for every branch
         int organisation = 0;  // x1000
     };
+
+    /**
+    @brief a regiment's strength as the game itself shows it
+
+    The raw field is scaled, and not by the same amount for every branch: land
+    regiments hold tens where air and naval hold thousandths. Everything that
+    shows a strength goes through here rather than dividing at the point of display,
+    so there is one place that knows which it is.
+
+    An unknown branch is treated as thousandths, which is what the field was taken for
+    before the land case was known.
+    */
+    double strengthOf(const Regiment& regiment, Branch branch);
 
     struct Unit
     {
