@@ -471,7 +471,9 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"grand_battle_plan_folder",
 									"superior_firepower_folder",
 									"blitzkrieg_folder",
-									"command_structure_folder"
+									"command_structure_folder",
+									"division_increase_folder",
+									"division_decrease_folder"
 								},
 								ResearchWeight = 0,
 								CurrentSlots = 0,
