@@ -15,9 +15,13 @@
  * in `settings.txt` keeps working exactly as before, and switching this off leaves
  * the game deciding on its own.
  *
- * The saves are named for their date with a suffix - `IRE_1937_02_27_14_premonth.hoi3`
- * - and so do not enter the three file rotation the game's own autosave uses. Nothing
- * prunes them; they accumulate until deleted by hand.
+ * The saves rotate among three files the way the game's own autosave does -
+ * `autosave_premonth.hoi3`, `oldautosave_premonth.hoi3` and
+ * `olderautosave_premonth.hoi3` - so they cannot pile up.
+ * It is a separate set from the game's own three, so neither pushes the other out.
+ *
+ * Rotating means the files are renamed as they age, so a name cannot carry the date it
+ * was taken on. The date is still on the save itself, and the load menu shows it.
  *
  * How the game's own decision was found, and why the hook sits where it does, is in
  * reversing/FINDINGS-autosave.md.
@@ -64,14 +68,19 @@ namespace AutoSave {
     void setDaysBefore(int days);
 
     /**
-    @brief what is put on the end of the name, before the extension
+    @brief what the three rotating files are called, before prefix and extension
 
     Written into the game's own name building, so it may hold only what a file name
-    may hold. An empty suffix is allowed and gives a name the game itself could have
-    written.
+    may hold. Empty falls back to a default rather than producing files called
+    `.hoi3`.
     */
-    const std::string& suffix();
-    void setSuffix(const std::string& text);
+    const std::string& saveName();
+    void setSaveName(const std::string& text);
+
+    /**
+    @brief one of the three file names, newest first, for the page to show
+    */
+    std::string fileName(int slot);
 
     /**
     @brief whether this tick is the day the save should be taken on
@@ -99,9 +108,6 @@ namespace AutoSave {
 
     /**@brief how many this has asked for since the DLL was loaded*/
     int requestedCount();
-
-    /**@brief the name the next save would be given, for the page to show*/
-    std::string exampleName();
 
     bool hooked();
 

@@ -20,21 +20,30 @@ namespace {
 
     // Inside the writer: the read of debug_saves that picks between the three file
     // rotation and one dated file per save. Six bytes again, and eax holds the
-    // settings object the read is against.
+    // settings object the read is against. Standing here means the answer can be
+    // decided per save, and it is also the last point before the names are built.
     const uintptr_t DEBUG_SAVES_SITE = 0x2500EB;
     const unsigned char EXPECTED_DEBUG_SAVES[6] = { 0x8B, 0x80, 0x58, 0x01, 0x00, 0x00 };
 
-    // The two string constants the dated name is built from, as the four byte
-    // immediates of the mov that loads each. Repointing an immediate changes only
-    // this one use; the strings themselves are shared and stay as they are.
-    //
-    // The name is directory + prefix + tag + "_" + date + extension, so emptying the
-    // prefix and putting the suffix on the front of the extension gives
-    // IRE_1937_02_27_14_premonth.hoi3.
-    const uintptr_t PREFIX_IMMEDIATE = 0x2502E6;    // was "autosave_"
-    const uintptr_t EXTENSION_IMMEDIATE = 0x250245; // was ".hoi3"
-    const uintptr_t EXPECTED_PREFIX = 0x11CDD1C;    // module relative, as read back
-    const uintptr_t EXPECTED_EXTENSION = 0x11CDD28;
+    /**
+     * The three names the rotation works on, as the immediates that load them.
+     *
+     * The game's own rotation is written just below the read above: if the newest
+     * exists, and the middle one exists, the oldest is deleted, the middle renamed to
+     * the oldest and the newest renamed to the middle - then the save is written to
+     * the newest. Pointing those three names at buffers here gives that whole routine,
+     * unchanged, working on a set of files of ours.
+     *
+     * In rotation order: newest first, oldest last.
+     */
+    const uintptr_t NAME_IMMEDIATES[3] = { 0x25010B, 0x250159, 0x25018D };
+    const uintptr_t EXPECTED_NAMES[3] = { 0x11CDCE4, 0x11CDCF4, 0x11CDD08 };
+    const char* const GAME_NAMES[3] = {
+        "autosave.hoi3", "oldautosave.hoi3", "olderautosave.hoi3"
+    };
+
+    const char* const EXTENSION = ".hoi3";
+    const char* const OLDER_PREFIXES[3] = { "", "old", "older" };
 
     bool installedFlag = false;
     const char* statusText = "not installed yet";
@@ -49,13 +58,52 @@ namespace {
     DWORD jumpBackDebugSaves = 0;
 
     // Pointed at by the game's own name building for as long as the patch is in
-    // place, so they outlive every call that reads them.
-    char prefixBuffer[2] = "";
-    char extensionBuffer[64] = ".hoi3";
+    // place, so they outlive every call that reads them. They hold the game's own
+    // names except while one of our saves is being written.
+    char nameBuffers[3][64] = {};
+
+    // What our three files are called, before the rotation prefixes and the
+    // extension are put on.
+    char saveBaseName[40] = "autosave_premonth";
+
+    /**@brief puts either our names or the game's own into the buffers*/
+    void applyNames(bool ours) {
+        for (int i = 0; i < 3; i++) {
+            if (!ours) {
+                strncpy_s(nameBuffers[i], sizeof(nameBuffers[i]), GAME_NAMES[i], _TRUNCATE);
+                continue;
+            }
+            // Built rather than formatted so the length is bounded by construction and
+            // the result always ends in the extension.
+            strncpy_s(nameBuffers[i], sizeof(nameBuffers[i]), OLDER_PREFIXES[i], _TRUNCATE);
+            strncat_s(nameBuffers[i], sizeof(nameBuffers[i]), saveBaseName, _TRUNCATE);
+            strncat_s(nameBuffers[i], sizeof(nameBuffers[i]), EXTENSION, _TRUNCATE);
+        }
+    }
 
     /**@brief the C side of the decision stub, kept out of the asm*/
     void __cdecl decide(uintptr_t idler, int tick) {
         AutoSave::onDecision(idler, tick);
+    }
+
+    /**
+    @brief names the save about to be written, and answers the read that chose it
+
+    Called in place of the writer's read of debug_saves, with what that read produced.
+    A save of ours is answered with zero however debug_saves is set, because zero is
+    the rotation branch and the rotation is the point; anything else is answered
+    honestly and gets the game's own names back.
+
+    @returns what the read should have produced
+    */
+    int __cdecl chooseSaveNames(int debugSaves) {
+        if (pending != 0) {
+            pending = 0;        // names one save, not the next
+            applyNames(true);
+            return 0;
+        }
+        applyNames(false);
+        return debugSaves;
     }
 
     /**
@@ -94,26 +142,29 @@ namespace {
     /**
     @brief stands in for the read of debug_saves in the writer
 
-    Answers with the real setting unless a save of ours is waiting to be named, in
-    which case it answers one, which is what sends the writer down the dated name
-    branch. The flag is cleared as it is read, so it names one save and not the next.
+    While the feature is off this is the instruction it replaced and nothing else.
+    While it is on the read still happens, and its result is handed to chooseSaveNames,
+    which decides both what the save is called and what the read answers - a call
+    leaves its return value in eax, which is exactly where the read left its own.
 
-    No call, on either path. The flags are put back because the instruction this
-    replaced did not set any, even though what reads them next sets its own.
+    ecx and edx are not preserved: the instructions between here and the compare that
+    reads eax touch neither, and the compare sets its own flags.
     */
     __declspec(naked) void hookedDebugSavesRead() {
         __asm {
-            pushfd
-            mov eax, dword ptr [eax + 0x158]  // the instruction this replaced
+            cmp active, 0
+            jne takeOver
 
-            cmp pending, 0
-            je done
+            mov eax, dword ptr [eax + 0x158]  // exactly the instruction this replaced
+            jmp [jumpBackDebugSaves]
 
-            mov byte ptr pending, 0
-            mov eax, 1                        // one dated file, not the rotation
+        takeOver:
+            mov eax, dword ptr [eax + 0x158]  // the same read, then our own answer
 
-        done:
-            popfd
+            push eax
+            call chooseSaveNames
+            add esp, 4
+
             jmp [jumpBackDebugSaves]
         }
     }
@@ -157,38 +208,47 @@ bool Hooks::AutoSave::install() {
 
     unsigned char* clearSite = reinterpret_cast<unsigned char*>(base + CLEAR_REQUEST_SITE);
     unsigned char* debugSite = reinterpret_cast<unsigned char*>(base + DEBUG_SAVES_SITE);
-    void* prefixSite = reinterpret_cast<void*>(base + PREFIX_IMMEDIATE);
-    void* extensionSite = reinterpret_cast<void*>(base + EXTENSION_IMMEDIATE);
 
     // Everything is checked before anything is written, so a build this does not fit
-    // leaves the game untouched rather than half patched. The two immediates are
-    // checked as well: they are what says the name is still built the way this
+    // leaves the game untouched rather than half patched. The name immediates are
+    // checked as well: they are what says the rotation is still built the way this
     // expects, and repointing the wrong instruction would corrupt a file name rather
     // than fail.
-    uint32_t prefixNow = 0;
-    uint32_t extensionNow = 0;
+    bool namesMatch = true;
+    for (int i = 0; i < 3; i++) {
+        uint32_t now = 0;
+        if (!Mem::tryRead(base + NAME_IMMEDIATES[i], now) || now != base + EXPECTED_NAMES[i]) {
+            namesMatch = false;
+        }
+    }
     if (!bytesMatch(clearSite, EXPECTED_CLEAR, 6)
         || !bytesMatch(debugSite, EXPECTED_DEBUG_SAVES, 6)
-        || !Mem::tryRead(base + PREFIX_IMMEDIATE, prefixNow)
-        || !Mem::tryRead(base + EXTENSION_IMMEDIATE, extensionNow)
-        || prefixNow != base + EXPECTED_PREFIX
-        || extensionNow != base + EXPECTED_EXTENSION) {
+        || !namesMatch) {
         statusText = "the autosave code is not what this build expects";
         ERROR_OUT(printf("AutoSave hook: the code at %#010x is not what was expected\n",
             static_cast<unsigned>(base + CLEAR_REQUEST_SITE)));
         return false;
     }
 
+    // The game's own names, so a vanilla autosave written before ours is ever
+    // requested is named exactly as it always was.
+    applyNames(false);
+
     jumpBackClear = static_cast<DWORD>(base + CLEAR_REQUEST_SITE + 6);
     jumpBackDebugSaves = static_cast<DWORD>(base + DEBUG_SAVES_SITE + 6);
 
     // Six byte instructions, so five bytes of jump and one nop each.
     if (!Hooks::hook(clearSite, &hookedClearRequest, 5, 1)
-        || !Hooks::hook(debugSite, &hookedDebugSavesRead, 5, 1)
-        || !writeDword(prefixSite, reinterpret_cast<uint32_t>(prefixBuffer))
-        || !writeDword(extensionSite, reinterpret_cast<uint32_t>(extensionBuffer))) {
+        || !Hooks::hook(debugSite, &hookedDebugSavesRead, 5, 1)) {
         statusText = "could not make the code writable";
         return false;
+    }
+    for (int i = 0; i < 3; i++) {
+        if (!writeDword(reinterpret_cast<void*>(base + NAME_IMMEDIATES[i]),
+            reinterpret_cast<uint32_t>(nameBuffers[i]))) {
+            statusText = "could not make the code writable";
+            return false;
+        }
     }
 
     installedFlag = true;
@@ -202,7 +262,11 @@ bool Hooks::AutoSave::install() {
 void Hooks::AutoSave::setActive(bool on) {
     active = on ? 1 : 0;
     if (!on) {
-        pending = 0;    // nothing of ours is waiting to be named
+        pending = 0;        // nothing of ours is waiting to be named
+
+        // The immediates still point here, and with the stub inert nothing will put
+        // these back later, so the game's own names have to be what is left behind.
+        applyNames(false);
     }
 }
 
@@ -216,26 +280,27 @@ bool Hooks::AutoSave::releaseClaim() {
     return had;
 }
 
-void Hooks::AutoSave::setNameSuffix(const char* text) {
-    // Built here rather than in the stub, so the game's frame only ever reads it.
-    // The extension is fitted last and the suffix cut to make room, so what comes out
-    // always ends in .hoi3 however long the text is.
-    const char* extension = ".hoi3";
-    const size_t extensionLength = strlen(extension);
-    const size_t room = sizeof(extensionBuffer) - extensionLength - 2;
-
-    size_t length = (text == nullptr) ? 0 : strlen(text);
-    if (length > room) {
-        length = room;
+void Hooks::AutoSave::setSaveName(const char* baseName) {
+    if (baseName == nullptr || baseName[0] == 0) {
+        baseName = "autosave_premonth";  // the files have to be called something
     }
+    strncpy_s(saveBaseName, sizeof(saveBaseName), baseName, _TRUNCATE);
 
-    size_t at = 0;
-    if (length > 0) {
-        extensionBuffer[at++] = '_';
-        memcpy(extensionBuffer + at, text, length);
-        at += length;
+    // Only while one of ours is being written do the buffers hold our names, so there
+    // is nothing to rewrite here: the next save of ours picks the new name up.
+}
+
+const char* Hooks::AutoSave::saveName(int slot) {
+    if (slot < 0 || slot > 2) {
+        return "";
     }
-    memcpy(extensionBuffer + at, extension, extensionLength + 1);
+    // Built on demand rather than read out of the buffers, which hold the game's own
+    // names except during one of our saves.
+    static char text[3][64] = {};
+    strncpy_s(text[slot], sizeof(text[slot]), OLDER_PREFIXES[slot], _TRUNCATE);
+    strncat_s(text[slot], sizeof(text[slot]), saveBaseName, _TRUNCATE);
+    strncat_s(text[slot], sizeof(text[slot]), EXTENSION, _TRUNCATE);
+    return text[slot];
 }
 
 bool Hooks::AutoSave::installed() {

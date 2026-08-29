@@ -10,11 +10,12 @@
  * without the game's own decision, which runs immediately afterwards, wiping it -
  * and the game's decision still runs, so its own schedule is untouched.
  *
- * The second stands in for the read of `debug_saves` inside the writer. Answering it
- * with a one for one save sends that save down the game's own dated name branch,
- * which is already written and already correct, instead of the three file rotation.
- * Two string constants in that branch are pointed at buffers here so the name can be
- * shaped without building a std::string in the game's frame.
+ * The second stands in for the read of `debug_saves` inside the writer, which is both
+ * the branch that picks the naming and the last point before the names are built. It
+ * answers zero for a save of ours - the three file rotation - and the three names that
+ * rotation works on are pointed at buffers here, so the game's own routine runs
+ * unchanged over a set of files of ours. Ours therefore rotate among three the way the
+ * game's own do, and the two sets do not push each other out.
  *
  * While inactive both stubs reproduce, in assembly, exactly the instruction they
  * replaced and call nothing in BiceLib.
@@ -51,12 +52,18 @@ namespace Hooks {
         bool releaseClaim();
 
         /**
-        @brief what goes between the date and the extension
+        @brief what our three rotating files are called
 
-        Stored as `_<text>.hoi3`, or `.hoi3` when the text is empty. Anything longer
-        than the buffer is cut, so the name always ends in the extension.
+        The base of the name only: the rotation prefixes and the extension are put on
+        here, giving `<name>.hoi3`, `old<name>.hoi3` and `older<name>.hoi3`. An empty
+        name falls back to a default rather than producing files called `.hoi3`.
         */
-        void setNameSuffix(const char* text);
+        void setSaveName(const char* baseName);
+
+        /**
+        @brief one of the three names, newest first, for a page that wants to show them
+        */
+        const char* saveName(int slot);
 
         bool installed();
 

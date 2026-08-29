@@ -163,14 +163,30 @@ schedule is untouched. eax is the idler and esi is the tick, both put there by t
 instructions above.
 
 **The name**, standing in for `mov eax, [eax+0x158]` at `0x6500EB` - the writer's read
-of `debug_saves`. Answering it with a one for one save sends that save down the dated
-name branch, which is already written and already correct. Two string constants in
-that branch are repointed at buffers in the DLL, as immediates rather than by editing
-the strings, so the prefix comes out empty and the suffix arrives in front of the
-extension: `IRE_1937_02_27_14_premonth.hoi3`.
+of `debug_saves`. It is both the branch that picks the naming and the last point
+before the names are built, which is why one stub can do both jobs. A save of ours is
+answered with zero, whatever `debug_saves` actually says, so it takes the three file
+rotation branch.
 
-Those saves are outside the three file rotation, so they do not push each other out
-and nothing prunes them.
+The three names that rotation works on are repointed at buffers in the DLL, as the
+immediates that load them rather than by editing the strings:
+
+| Immediate | Was |
+| --- | --- |
+| `0x65010B` | `autosave.hoi3` |
+| `0x650159` | `oldautosave.hoi3` |
+| `0x65018D` | `olderautosave.hoi3` |
+
+The buffers hold the game's own names except during a save of ours, so the game's
+autosave is untouched and ours gets `autosave_premonth.hoi3`,
+`oldautosave_premonth.hoi3` and `olderautosave_premonth.hoi3`. Two independent sets of
+three: neither pushes the other out, and the rotation itself - `0x6501C0` onwards,
+delete the oldest, rename the middle to the oldest, rename the newest to the middle -
+is the game's own code, unchanged.
+
+Rotating means the files are renamed as they age, so the name cannot carry the date
+the save was taken on. An earlier version did name them for their date, and made too
+many saves; the date is on the save itself and the load menu shows it.
 
 While the feature is off both stubs reproduce, in assembly, exactly the instruction
 they replaced and call nothing in BiceLib.
@@ -188,9 +204,11 @@ ask again.
 just before it writes. So one request is one save, and nothing has to clear the flag
 afterwards.
 
-### The one place this leaks
+### What the buffers have to be left holding
 
-The two repointed string constants belong to the game's own `debug_saves` naming, so
-with `debug_saves` set in `settings.txt` the game's debug saves would be named the
-BiceLib way too. It is 0, and the branch is unreachable without it, so nothing is
-affected today.
+The immediates point at the buffers for as long as the patch is in place, which is for
+the rest of the session. So whatever the buffers hold is what the *game's* own autosave
+is called too, and they have to be left holding the game's names: they are filled with
+them at install, put back on every save that is not ours, and put back again when the
+feature is switched off, because the stub goes inert and nothing would restore them
+afterwards.

@@ -15,8 +15,8 @@ namespace {
 
     // Edited in place by the input and only handed on when editing finishes, so the
     // settings file is not rewritten on every keystroke.
-    char suffixBuffer[48] = {};
-    bool suffixLoaded = false;
+    char nameBuffer[40] = {};
+    bool nameLoaded = false;
 
     /**@brief keeps a file name a file name, whatever was typed*/
     bool isNameSafe(const char* text) {
@@ -32,10 +32,10 @@ namespace {
     }
 
     void drawAutoSave() {
-        if (!suffixLoaded) {
-            const std::string& current = AutoSave::suffix();
-            strncpy_s(suffixBuffer, sizeof(suffixBuffer), current.c_str(), _TRUNCATE);
-            suffixLoaded = true;
+        if (!nameLoaded) {
+            const std::string& current = AutoSave::saveName();
+            strncpy_s(nameBuffer, sizeof(nameBuffer), current.c_str(), _TRUNCATE);
+            nameLoaded = true;
         }
 
         ImGui::TextWrapped(
@@ -81,27 +81,27 @@ namespace {
         ImGui::SeparatorText("Name");
 
         ImGui::SetNextItemWidth(220.0f);
-        if (ImGui::InputText("Suffix", suffixBuffer, sizeof(suffixBuffer))) {
+        if (ImGui::InputText("File name", nameBuffer, sizeof(nameBuffer))) {
             // Left alone until editing finishes; only the look of it is checked here.
         }
-        const bool safe = isNameSafe(suffixBuffer);
+        const bool safe = isNameSafe(nameBuffer);
         if (ImGui::IsItemDeactivatedAfterEdit() && safe) {
-            AutoSave::setSuffix(std::string(suffixBuffer));
+            AutoSave::setSaveName(std::string(nameBuffer));
         }
         if (!safe) {
             ImGui::TextColored(AMBER,
                 "Letters, digits, - and _ only. Not saved while it says this.");
         }
 
-        ImGui::TextDisabled("Next one would be called:");
-        ImGui::SameLine();
-        const std::string example = AutoSave::exampleName();
-        ImGui::TextUnformatted(example.c_str());
+        ImGui::TextDisabled("Rotating between, newest first:");
+        for (int slot = 0; slot < 3; slot++) {
+            ImGui::BulletText("%s", AutoSave::fileName(slot).c_str());
+        }
 
         ImGui::TextWrapped(
-            "These sit outside the game's three file autosave rotation, so they do not "
-            "push each other out and nothing deletes them. They accumulate in the save "
-            "games folder until removed by hand.");
+            "Three files, the way the game's own autosave keeps three: the newest is "
+            "written and the older two shift along. This is a separate set from the "
+            "game's, so neither pushes the other out.");
 
         ImGui::Spacing();
         ImGui::SeparatorText("This session");
