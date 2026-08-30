@@ -69,12 +69,28 @@ namespace CInGameIdler {
         /**@brief the selected things, as the start and end of a list*/
         constexpr uintptr_t selection_first = 0x1304;
         constexpr uintptr_t selection_last = 0x1308;
+
+        /**
+         * The word after those two. getSelectedEntity reads it as the number of
+         * selected things and uses it in a debug print only; that reading has not
+         * been checked against a game, and nothing depends on it.
+         */
+        constexpr uintptr_t selection_count = 0x130C;
     }
 
     /**
      * Map modes worth naming, by the game's numbering rather than the button names.
      * The rest are in reversing/mapmode.py.
      */
+    /**
+    @brief the live CInGameIdler, or 0 when there is no session
+
+    One dereference off the game state, checked against this class's vftable, and read
+    fresh every time. Never cached: the object belongs to the session, so a pointer
+    kept across a load would refer to freed memory.
+    */
+    uintptr_t current();
+
     /**
     @brief moves the map to a province, the way the unit panel's location button does
 

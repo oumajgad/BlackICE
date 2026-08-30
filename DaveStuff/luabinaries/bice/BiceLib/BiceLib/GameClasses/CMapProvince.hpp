@@ -67,6 +67,10 @@ namespace CMapProvince {
     }
 
     /**@brief the province array hangs off the game state, not off a province*/
+    namespace VFTable {
+        constexpr uintptr_t CMapProvince = 0x11BEC1C;   // module relative
+    }
+
     constexpr uintptr_t GAME_STATE_PROVINCE_ARRAY = 0xB8C;
 
     struct CMapProvince

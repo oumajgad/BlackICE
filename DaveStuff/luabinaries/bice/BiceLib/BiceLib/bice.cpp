@@ -23,12 +23,12 @@
 #include <GameClasses/CTerrain.hpp>
 #include <GameClasses/CMapProvince.hpp>
 #include <GameClasses/CLeader.hpp>
+#include <GameClasses/CInGameIdler.hpp>
 #include <Hooks/Hooks.hpp>
 #include <Hooks/CLeaderHooks.hpp>
 #include <Hooks/CArmyHooks.hpp>
 #include <Hooks/CNavyHooks.hpp>
 #include <Hooks/HookedPatches.hpp>
-#include <Hooks/ConstructorHooks.hpp>
 #include <GameState/AutoSave.hpp>
 #include <Patches.hpp>
 
@@ -42,46 +42,10 @@ std::vector<lua_State*> *LUA_STATES = new std::vector<lua_State*>;
 //       GAME INFO FUNCTIONS       //
 /////////////////////////////////////
 
-std::unordered_map<std::string, uintptr_t>* countryCache = new std::unordered_map<std::string, uintptr_t>;
-uintptr_t getCountry(std::string tag) {
-    if (countryCache->find(tag) != countryCache->end()) {
-        return countryCache->at(tag);
-    }
-
-    return 0;
-}
-
-// Lets the overlay reach the country cache without a detour through Lua.
-uintptr_t CCountry::findByTag(const std::string& tag) {
-    return getCountry(tag);
-}
-
-void addCountryToCache(std::string tag, uintptr_t address) {
-    countryCache->insert(std::make_pair(tag, address));
-    DEBUG_OUT(printf("Added to countryCache: %s - %#010x \n", tag.c_str(), address));
-    return;
-}
-
-bool cacheCountriesDone = false;
-__declspec(dllexport) int cacheCountries(lua_State* L)
-{
-    Diagnostics::LuaScope luaScope(L);
-    if (!cacheCountriesDone) {
-        for (int i = 0; i < 300; i++) {
-            uintptr_t countryPtr = CCountry::CountryPtrs[i];
-            if (countryPtr == 0) { // Array not yet initialized OR end of array reached
-                break;
-            }
-            std::string countryTag = HDS::readTag(countryPtr + CCountry::Offsets::tag);
-            addCountryToCache(countryTag, countryPtr);
-            cacheCountriesDone = true;
-        }
-        if (cacheCountriesDone) {
-            INFO_OUT(printf("Country cache filled (%i) \n", countryCache->size()));
-        }
-    }
-    return 0;
-}
+// Countries come from the game state, which is the game's own list - CCountry::all().
+// There used to be a cache here, filled once from a 300 slot array that a hook on the
+// CCountry constructor wrote into. The list makes both unnecessary, and unlike the
+// cache it cannot go stale or miss a country that appears later.
 
 __declspec(dllexport) int getProvinceDetails(lua_State* L)
 {
@@ -95,7 +59,7 @@ __declspec(dllexport) int getProvinceDetails(lua_State* L)
 __declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    uintptr_t ctr = getCountry(searchTag);
+    uintptr_t ctr = CCountry::findByTag(searchTag);
     if (ctr != 0) {
         auto activeModifiers = CCountry::getActiveEventModifiers(ctr);
         lua_createtable(L, activeModifiers.size(), 0);
@@ -113,7 +77,7 @@ __declspec(dllexport) int getCountryActiveEventModifiers(lua_State* L)
 __declspec(dllexport) int getCountryGeneralModifiers(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    uintptr_t ctr = getCountry(searchTag);
+    uintptr_t ctr = CCountry::findByTag(searchTag);
     if (ctr != 0) {
         auto values = CCountry::getGeneralModifiers(ctr);
         lua_createtable(L, values.size(), 0);
@@ -131,7 +95,7 @@ __declspec(dllexport) int getCountryGeneralModifiers(lua_State* L)
 __declspec(dllexport) int getCountryFlags(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    uintptr_t ctr = getCountry(searchTag);
+    uintptr_t ctr = CCountry::findByTag(searchTag);
     if (ctr != 0) {
         auto flags = CCountry::getFlags(ctr);
         lua_createtable(L, flags.size(), 0);
@@ -149,7 +113,7 @@ __declspec(dllexport) int getCountryFlags(lua_State* L)
 __declspec(dllexport) int getCountryVariables(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    uintptr_t ctr = getCountry(searchTag);
+    uintptr_t ctr = CCountry::findByTag(searchTag);
     if (ctr != 0) {
         auto vars = CCountry::getVars(ctr);
         lua_createtable(L, 0, vars.size());
@@ -167,7 +131,7 @@ __declspec(dllexport) int getCountryVariables(lua_State* L)
 __declspec(dllexport) int getCountryOffmapIc(lua_State* L)
 {
     std::string searchTag = luaL_checklstring(L, 1, NULL);
-    uintptr_t ctr = getCountry(searchTag);
+    uintptr_t ctr = CCountry::findByTag(searchTag);
     if (ctr != 0) {
         int countryId = *(int *)(ctr + CCountry::Offsets::id);
         lua_pushinteger(L, Hooks::Patches::offmapIcPerCountry[countryId]);
@@ -523,7 +487,7 @@ __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
         DEBUG_OUT(printf("Corps unit limit set to: %i \n", newLimit));
     }
     else {
-        auto ctr = getCountry(tag);
+        auto ctr = CCountry::findByTag(tag);
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + CCountry::Offsets::id);
             if (Hooks::CArmy::corpsUnitLimitPerCountry[tagId] != newLimit) {
@@ -549,7 +513,7 @@ __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
         DEBUG_OUT(printf("Army unit limit set to: %i \n", newLimit));
     }
     else {
-        auto ctr = getCountry(tag);
+        auto ctr = CCountry::findByTag(tag);
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + CCountry::Offsets::id);
             if (Hooks::CArmy::armyUnitLimitPerCountry[tagId] != newLimit) {
@@ -575,7 +539,7 @@ __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
         DEBUG_OUT(printf("Armygroup unit limit set to: %i \n", newLimit));
     }
     else {
-        auto ctr = getCountry(tag);
+        auto ctr = CCountry::findByTag(tag);
         if (ctr != 0) {
             int tagId = *(DWORD*)(ctr + CCountry::Offsets::id);
             if (Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] != newLimit) {
@@ -721,27 +685,6 @@ __declspec(dllexport) int fixOffMapIC(lua_State* L)
     return 0;
 }
 
-BOOL countryHookDone = false;
-__declspec(dllexport) int hookCountryConstructor(lua_State* L)
-{
-    if (countryHookDone) {
-        return 0;
-    }
-
-    DWORD hookAddress = MODULE_BASE + 0xca653;
-    Hooks::Constructors::jumpback_CCountryHook = hookAddress + 5;
-
-    if (!Hooks::hook((void*)hookAddress, Hooks::Constructors::CCountryHook, 5, 0)) {
-        ERROR_OUT(std::cout << "Hook 'hookCountryConstructor' failed" << std::endl);
-    }
-    else {
-        INFO_OUT(std::cout << "Hook 'hookCountryConstructor' succeeded" << std::endl);
-    }
-
-    countryHookDone = true;
-    return 0;
-}
-
 bool enablePlacingNonResearchedBuildingsDone = false;
 __declspec(dllexport) int enablePlacingNonResearchedBuildings(lua_State* L)
 {
@@ -866,38 +809,30 @@ __declspec(dllexport) int seaTerrainColourInSimplifiedMapMode(lua_State* L)
 //      INSPECTOR FUNCTIONS        //
 /////////////////////////////////////
 
-uintptr_t* CIngameIdlerPtr = 0;
-__declspec(dllexport) int cacheIngameIdler(lua_State* L)
-{
-    // Find CIngameIdler
-    if (CIngameIdlerPtr == 0) {
-        uintptr_t CIngameIdlerVFTable = MODULE_BASE + 0x11CEB54;
-        auto res = Mem::findPointers(MODULE_BASE + DATA_SECTION_START, CIngameIdlerVFTable, 99);
-        DEBUG_OUT(printf("res.size(): %i \n", res.size()));
-        if (res.size() != 0) {
-            CIngameIdlerPtr = (uintptr_t*)res.at(res.size() - 1);
-            DEBUG_OUT(printf("CIngameIdlerPtr set to: %#010x \n", (uintptr_t)CIngameIdlerPtr));
-        }
-    }
-    return 0;
-}
+// The in game screen is read from the game state through CInGameIdler::current(),
+// not cached. It used to be found by scanning every committed page for its vftable
+// and kept in a static for the life of the process - which is wrong as well as slow:
+// the object belongs to the session, so loading another game left the pointer aimed
+// at freed memory.
 
 __declspec(dllexport) int getSelectedEntity(lua_State* L)
 {
     Diagnostics::LuaScope luaScope(L);
-    cacheIngameIdler(L);
+    const uintptr_t idler = CInGameIdler::current();
 
     // Find CTerrains to get indices for each units CUnitAdjusterArray
     if (CTerrain::Terrains->size() == 0) {
         CTerrain::CacheTerrains();
     }
 
-
-    if (CIngameIdlerPtr != 0 && CTerrain::Terrains->size() != 0) {
+    if (idler != 0 && CTerrain::Terrains->size() != 0) {
         lua_newtable(L); // Create the table which will hold the selected items
-        uintptr_t selectedThingsListStartPtr = *(CIngameIdlerPtr + (0x1304 / 4));
-        uintptr_t selectedThingsListEndPtr = *(CIngameIdlerPtr + (0x1308 / 4));
-        int8_t amountOfSelectedThings = *(CIngameIdlerPtr + (0x1308 / 4 + 1));
+        uintptr_t selectedThingsListStartPtr =
+            *(uintptr_t*)(idler + CInGameIdler::Offsets::selection_first);
+        uintptr_t selectedThingsListEndPtr =
+            *(uintptr_t*)(idler + CInGameIdler::Offsets::selection_last);
+        int8_t amountOfSelectedThings =
+            *(int8_t*)(idler + CInGameIdler::Offsets::selection_count);
         DEBUG_OUT(printf("selectedThingsListStartPtr: %#010x \n", selectedThingsListStartPtr));
         DEBUG_OUT(printf("selectedThingsListEndPtr: %#010x \n", selectedThingsListEndPtr));
         DEBUG_OUT(printf("amountOfSelectedThings: %i \n", amountOfSelectedThings));
@@ -906,10 +841,10 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
 
         int i = 1; // Index for our table. Remember LUA starts at 1
         while (currentNode != 0) {
-            uintptr_t CArmyVFTABLE = MODULE_BASE + 0x11BDE0C;
-            uintptr_t CNavyVFTABLE = MODULE_BASE + 0x11C869C;
-            uintptr_t CAirVFTABLE = MODULE_BASE + 0x011C8774;
-            uintptr_t CMapProvinceVFTABLE = MODULE_BASE + 0x11BEC1C;
+            uintptr_t CArmyVFTABLE = MODULE_BASE + CUnit::VFTable::CArmy;
+            uintptr_t CNavyVFTABLE = MODULE_BASE + CUnit::VFTable::CNavy;
+            uintptr_t CAirVFTABLE = MODULE_BASE + CUnit::VFTable::CAir;
+            uintptr_t CMapProvinceVFTABLE = MODULE_BASE + CMapProvince::VFTable::CMapProvince;
 
             // DEBUG_OUT(printf("currentNode->data: %#010x \n", currentNode->data));
             uintptr_t entityType = *((uintptr_t*)currentNode->data);
@@ -1021,8 +956,9 @@ DWORD WINAPI periodicsJob(void* data) {
     DEBUG_OUT(printf("periodicsJob started\n"));
     while (true) {
         DEBUG_OUT(printf("periodicsJob loop\n"));
-        cacheCountries(LUA_STATE);
-        if (cacheCountriesDone) {
+        // Only once the game has countries, which is what says a session is
+        // really up. This used to gate on the country cache having been filled.
+        if (!CCountry::all().empty()) {
             lua_getglobal(LUA_STATE, "CheckOobUnitLimitTechnologyStatus");
             lua_pcall(LUA_STATE, 0, 0, 0);
         }
@@ -1062,9 +998,6 @@ __declspec(dllexport) luaL_Reg BiceLib[] = {
     {"startConsole", startConsole},
     {"stopConsole", stopConsole},
     {"setModuleBase", setModuleBase},
-    {"cacheCountries", cacheCountries},
-    {"cacheIngameIdler", cacheIngameIdler},
-    {"hookCountryConstructor", hookCountryConstructor},
     {NULL, NULL}
 };
 

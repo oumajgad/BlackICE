@@ -23,8 +23,6 @@ if mod then
     BiceLib = mod
     -- BiceLib.startConsole() -- Creates a console for debug information
     BiceLib.setModuleBase()
-    BiceLib.cacheCountries()
-    BiceLib.hookCountryConstructor()
 
     -- Leaders
     -- BiceLib.Leaders.activateLeaderPromotionSkillLoss()
@@ -69,7 +67,6 @@ end
 
 function RunBiceLibPeriodicsManually()
     if BiceLib ~= nil then
-        BiceLib.cacheCountries()
 		CheckOobUnitLimitTechnologyStatus(true)
     end
 end

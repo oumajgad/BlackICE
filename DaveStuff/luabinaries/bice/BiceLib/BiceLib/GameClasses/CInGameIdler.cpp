@@ -3,35 +3,32 @@
 #include <GameClasses/CCurrentGameState.hpp>
 #include <MemScan.hpp>
 
-namespace {
-    /**
-    @brief the live CInGameIdler, checked against its own vftable
+/**
+@brief the live CInGameIdler, checked against its own vftable
 
-    Reached through the game state rather than by scanning, and only answered when the
-    object there carries this class's vftable. That check is what makes calling a slot
-    by index safe: it says the table being indexed is the one the index was taken
-    from.
-    */
-    uintptr_t liveIdler() {
-        const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
-        const uintptr_t state = CCurrentGameState::current();
-        if (base == 0 || state == 0) {
-            return 0;
-        }
-
-        uint32_t idler = 0;
-        if (!Mem::tryRead(state + CCurrentGameState::Offsets::in_game_screen, idler)
-            || idler == 0) {
-            return 0;
-        }
-
-        uint32_t vftable = 0;
-        if (!Mem::tryRead(idler, vftable)
-            || vftable != base + CInGameIdler::VFTable::CInGameIdler) {
-            return 0;
-        }
-        return idler;
+Reached through the game state rather than by scanning, and only answered when the
+object there carries this class's vftable. That check is what makes calling a slot by
+index safe: it says the table being indexed is the one the index was taken from.
+*/
+uintptr_t CInGameIdler::current() {
+    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+    const uintptr_t state = CCurrentGameState::current();
+    if (base == 0 || state == 0) {
+        return 0;
     }
+
+    uint32_t idler = 0;
+    if (!Mem::tryRead(state + CCurrentGameState::Offsets::in_game_screen, idler)
+        || idler == 0) {
+        return 0;
+    }
+
+    uint32_t vftable = 0;
+    if (!Mem::tryRead(idler, vftable)
+        || vftable != base + CInGameIdler::VFTable::CInGameIdler) {
+        return 0;
+    }
+    return idler;
 }
 
 bool CInGameIdler::centreOnProvince(uintptr_t province) {
@@ -39,7 +36,7 @@ bool CInGameIdler::centreOnProvince(uintptr_t province) {
         return false;
     }
 
-    const uintptr_t idler = liveIdler();
+    const uintptr_t idler = current();
     if (idler == 0) {
         return false;
     }
