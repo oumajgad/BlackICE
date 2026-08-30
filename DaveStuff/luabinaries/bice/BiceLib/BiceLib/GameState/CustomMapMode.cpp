@@ -1,4 +1,5 @@
 #include <GameState/CustomMapMode.hpp>
+#include <GameClasses/CCurrentGameState.hpp>
 
 #include <GameClasses/CMapProvince.hpp>
 #include <GameClasses/CProvinceBuilding.hpp>
@@ -8,10 +9,6 @@
 #include <Settings.hpp>
 
 namespace {
-    // The game state, and the province array hanging off it - the same route
-    // CMapProvince::GetMapProvinceById takes.
-    const uintptr_t GAME_STATE_POINTER = 0x1689790;
-
     // Enough to find a province that has a building array; provinces are numbered from
     // one and the sea ones have none.
     const int MAX_PROVINCE_ID = 20000;
@@ -110,11 +107,7 @@ namespace {
         if (base == 0) {
             return 0;
         }
-        uint32_t state = 0;
-        if (!Mem::tryRead(base + GAME_STATE_POINTER, state)) {
-            return 0;
-        }
-        return state;
+        return CCurrentGameState::current();
     }
 
     /**@brief any province that has a building array, to read the definitions off*/

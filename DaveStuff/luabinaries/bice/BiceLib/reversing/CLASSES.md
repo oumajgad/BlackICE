@@ -31,6 +31,10 @@ Everything reachable starts from one global.
 [MODULE + 0x1689790]  CCurrentGameState*        read, and it is what sessionActive() reads
 ```
 
+**In code: `BiceLib/GameClasses/CCurrentGameState.hpp`**, which owns the anchor and the
+offsets below and hands the pointer out through `current()`. Nothing else should spell
+the global out.
+
 **`CCurrentGameState`** - vftable `0x11CF674`, `0xda8` bytes, constructed at
 `0x0067D070` (**read**: both callers of the combat recorder allocate `0xda8`, call that
 constructor and store the result in the global). It is created lazily, and **exists at
@@ -43,6 +47,9 @@ being non-null proves nothing about a game being loaded.
 | +0xB5C | **`CCombatManager`, embedded** | read |
 | +0xB74 | the `CCombatHistory` inside it (`+0xB5C` + `0x18`) | read |
 | +0xBDC | **the current tick** | read, and used |
+| +0xBE8 | the in game screen, which holds the map mode and the selection. Very probably the `CInGameIdler` - both hold the map mode at +0xD34 - but the two addresses have not been compared in a running game | read |
+| +0xC30 | the player's tag: three characters and a NUL, then the id | read |
+| +0xD9D | checked before an autosave and has to be zero. It is zero in an ordinary running game, so it is not "a session is loaded" | read |
 
 ## Conventions the game keeps to
 
@@ -285,21 +292,27 @@ is running (**seen**), found by scanning for that vftable - `cacheIngameIdler` i
 `bice.cpp` already does. It is the in game loop: the timers, the selection, and the
 autosave request.
 
-The autosave fields are read and written by `Hooks/AutoSaveHooks.cpp`; how they were
-found and what the decision does with them is in `FINDINGS-autosave.md`.
+**The offsets are in `BiceLib/GameClasses/CInGameIdler.hpp`**, which is the authority
+for them; how the autosave ones were found is in `FINDINGS-autosave.md`.
+
+`+0xD34` was recorded here as a timer id at first. It is the map mode, and the numbers
+the autosave dispatcher compares it against are Supply, Air and Naval - the correction
+is written up in `FINDINGS-autosave.md`.
 
 | Offset | Holds | |
 | --- | --- | --- |
 | +0x68 | 0 in single player; the branch that reads it looks like multiplayer | seen for the value, inferred for the meaning |
 | +0xAB0 | **an autosave is wanted** - cleared at the top of every decision, and the only thing the writer reads | read |
 | +0xAB1 | the writer has already spent its one frame of delay | read |
-| +0xD34 | which timer is firing; the autosave decision runs on 4, 0x12 and 0x13 | read |
+| +0xD34 | **the current map mode**, by the game's own numbering | read, and used |
 | +0x1304 | the selected things, as a list start | mem, used |
 
 The autosave settings live on the settings singleton, `module + 0x16863F8`, not here:
 `+0x158` is `debug_saves` and `+0x15C` is the frequency (**seen**, both matched
 against `settings.txt`). `+0xF4` on the same object is the map style
-`FINDINGS-mapmode.md` writes.
+`FINDINGS-mapmode.md` writes. All three are in
+`BiceLib/GameClasses/GameSettings.hpp` - named for what it holds, because the object
+has no vftable in the RTTI export to name it after.
 
 ## Tools
 

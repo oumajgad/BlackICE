@@ -1,6 +1,8 @@
 #include <Hooks/MapModeHooks.hpp>
 
 #include <GameState/CustomMapMode.hpp>
+#include <GameClasses/CCurrentGameState.hpp>
+#include <GameClasses/CInGameIdler.hpp>
 #include <MemScan.hpp>
 #include <utils.hpp>
 
@@ -26,10 +28,6 @@ namespace {
     // this with ecx pointing at the map. The map hangs off the game state, and the
     // mode it is showing is on it.
     const uintptr_t VP_RECOLOUR = 0x267710;
-    const uintptr_t GAME_STATE_POINTER = 0x1689790;
-    const uintptr_t GAME_STATE_MAP = 0xBE8;
-    const uintptr_t MAP_CURRENT_MODE = 0xD34;
-    const int MAP_MODE_VICTORY_POINTS = 7;
 
     // mov ecx, [esi+0x34] / test ecx, ecx - five bytes, so a call fits exactly.
     const unsigned char EXPECTED_VICTORY_POINTS[5] = { 0x8B, 0x4E, 0x34, 0x85, 0xC9 };
@@ -220,13 +218,14 @@ bool Hooks::MapMode::repaint() {
         return false;
     }
 
-    uint32_t state = 0;
-    if (!Mem::tryRead(base + GAME_STATE_POINTER, state) || state == 0) {
+    const uintptr_t state = CCurrentGameState::current();
+    if (state == 0) {
         return false;   // no session, so nothing to paint
     }
 
     uint32_t map = 0;
-    if (!Mem::tryRead(state + GAME_STATE_MAP, map) || map == 0) {
+    if (!Mem::tryRead(state + CCurrentGameState::Offsets::in_game_screen, map)
+        || map == 0) {
         return false;
     }
 
@@ -235,8 +234,8 @@ bool Hooks::MapMode::repaint() {
     // switches map mode by hand instead, which is the behaviour without a repaint at
     // all.
     int32_t current = -1;
-    if (!Mem::tryRead(map + MAP_CURRENT_MODE, current)
-        || current != MAP_MODE_VICTORY_POINTS) {
+    if (!Mem::tryRead(map + CInGameIdler::Offsets::current_map_mode, current)
+        || current != CInGameIdler::MapMode::VICTORY_POINTS) {
         return false;
     }
 

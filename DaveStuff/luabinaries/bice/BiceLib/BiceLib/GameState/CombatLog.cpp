@@ -1,4 +1,5 @@
 #include <GameState/CombatLog.hpp>
+#include <GameClasses/CCurrentGameState.hpp>
 
 #include <Hooks/CCombatHooks.hpp>
 #include <MemScan.hpp>
@@ -10,9 +11,6 @@ namespace {
     // Offsets read off the constructor of CCombatHistoryEntry at 0x0042f340, which
     // fills every field of an entry from the combat it is given. See
     // reversing/FINDINGS-combat.md.
-    const uintptr_t GAME_STATE_POINTER = 0x1689790; // the global sessionActive() reads
-    const uintptr_t GAME_STATE_TICK = 0xBDC;
-
     const uintptr_t COMBAT_ATTACKER = 0x10;
     const uintptr_t COMBAT_DEFENDER = 0x14;
     const uintptr_t COMBAT_PROVINCE = 0x18;
@@ -96,21 +94,7 @@ namespace {
     }
 
     unsigned int currentTick() {
-        const uintptr_t base = moduleBase();
-        if (base == 0) {
-            return 0;
-        }
-
-        uint32_t state = 0;
-        if (!Mem::tryRead(base + GAME_STATE_POINTER, state) || state == 0) {
-            return 0;
-        }
-
-        uint32_t tick = 0;
-        if (!Mem::tryRead(state + GAME_STATE_TICK, tick)) {
-            return 0;
-        }
-        return tick;
+        return static_cast<unsigned int>(CCurrentGameState::currentTick());
     }
 
     /**@brief true if \p address holds a country tag: three characters and an id*/

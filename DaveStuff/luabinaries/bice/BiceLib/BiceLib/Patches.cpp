@@ -131,7 +131,9 @@ bool Patches::historicalModelLogicFix(uintptr_t moduleBase) {
  */
 bool Patches::seaTerrainColourInSimplifiedMapMode(uintptr_t moduleBase) {
     // mov dword ptr [eax+0xF4], 8 - the last of three settings the Simplified Terrain
-    // setter writes, at the point where it has the settings object in eax.
+    // setter writes, at the point where it has the settings object in eax. The field
+    // is GameSettings::Offsets::map_style; it is a literal here because this is the
+    // game's own instruction being matched byte for byte, not a read of ours.
     const DWORD address = moduleBase + 0x266E74;
     const BYTE expected[10] = { 0xC7, 0x80, 0xF4, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00 };
 

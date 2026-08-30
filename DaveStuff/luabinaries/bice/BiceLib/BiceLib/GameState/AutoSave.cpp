@@ -1,4 +1,5 @@
 #include <GameState/AutoSave.hpp>
+#include <GameClasses/CInGameIdler.hpp>
 
 #include <Hooks/AutoSaveHooks.hpp>
 #include <MemScan.hpp>
@@ -15,9 +16,8 @@ namespace {
     const char* LEGACY_SUFFIX_KEY = "autoSave.suffix";   // what the setting was called
     const char* DEFAULT_SAVE_NAME = "autosave_premonth";
 
-    // Where the request flag sits on the CInGameIdler, and the epoch every tick
-    // counts hours from. Both are in reversing/FINDINGS-autosave.md.
-    const uintptr_t IDLER_AUTOSAVE_REQUESTED = 0xAB0;
+    // The epoch every tick counts hours from. The offsets it is read against are
+    // in GameClasses; this is the one number that is not a field.
     const int TICK_EPOCH = 43800000;
 
     bool loaded = false;
@@ -158,7 +158,7 @@ void AutoSave::onDecision(uintptr_t idler, int tick) {
     // Written directly rather than through a checked read: this is the same address
     // the instruction the hook replaced has just written to, so it was valid a few
     // instructions ago or the game would already have faulted.
-    *reinterpret_cast<unsigned char*>(idler + IDLER_AUTOSAVE_REQUESTED) = 1;
+    *reinterpret_cast<unsigned char*>(idler + CInGameIdler::Offsets::autosave_requested) = 1;
     Hooks::AutoSave::claimNextSave();
 
     lastRequestedText = utils::gameTickToDate(tick);

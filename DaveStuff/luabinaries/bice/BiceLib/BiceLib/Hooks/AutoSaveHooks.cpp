@@ -1,5 +1,7 @@
 #include <Hooks/AutoSaveHooks.hpp>
 
+#include <GameClasses/CInGameIdler.hpp>
+#include <GameClasses/GameSettings.hpp>
 #include <GameState/AutoSave.hpp>
 #include <Hooks/Hooks.hpp>
 #include <MemScan.hpp>
@@ -44,6 +46,14 @@ namespace {
 
     const char* const EXTENSION = ".hoi3";
     const char* const OLDER_PREFIXES[3] = { "", "old", "older" };
+
+    // The stubs below are naked assembly, where a displacement has to be written as a
+    // literal. These are what say those literals are the fields they are meant to be,
+    // so moving one in GameClasses breaks the build instead of the hook.
+    static_assert(CInGameIdler::Offsets::autosave_requested == 0xAB0,
+        "the decision stub writes [eax+0xAB0] as a literal");
+    static_assert(GameSettings::Offsets::debug_saves == 0x158,
+        "the naming stub reads [eax+0x158] as a literal");
 
     bool installedFlag = false;
     const char* statusText = "not installed yet";

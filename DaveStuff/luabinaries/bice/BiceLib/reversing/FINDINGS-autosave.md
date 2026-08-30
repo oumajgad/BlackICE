@@ -13,7 +13,7 @@ Deciding and doing are two different functions, one frame apart, joined by a sin
 byte on `CInGameIdler`:
 
 ```
-CInGameIdler::onTimer      0x661CA0   dispatches on [this+0xD34]; ids 4, 0x12, 0x13
+CInGameIdler::dailyUpdate  0x661CA0   virtual, slot 53; repaints, then always checks
   -> autosaveCheck         0x661D20   decides, and writes [idler+0xAB0]
 CInGameIdler::update       0x6559D0   runs every frame
   -> autosaveWrite         0x64FF80   reads [idler+0xAB0] and writes the file
@@ -98,6 +98,24 @@ branch is the one that runs. The third branch builds an object and makes a virtu
 call, which looks like telling the other end of a multiplayer session to save, but that
 is inference and has not been tested.
 
+### `0x661CA0` is not a timer dispatch
+
+Recorded as one at first, on the strength of `[this+0xD34]` being compared against 4,
+`0x12` and `0x13` with each branch calling the autosave check. That was wrong, and the
+map mode work already had the answer: **`+0xD34` is the current map mode**, and 4, 18
+and 19 are Supply, Air and Naval - the three modes whose colours change with the day.
+The branch for mode 4 calls `0x666EE0`, which `mapmode.py` already lists as mode 4's
+colouring routine.
+
+So the function is a daily update: repaint the map if it is showing one of the three
+that go stale, then check the autosave. The check is **not** conditional on the map
+mode - the fallthrough at `0x661D0C` calls it too, so it runs on every call whatever is
+on screen.
+
+Nothing was built on the wrong reading, because the hook is on the check itself and
+that is reached the same way either way. It is written down because a false "this only
+runs in three map modes" would have been very hard to find later.
+
 ## The write, `0x64FF80`
 
 Called once per frame from `0x6559D0` with the idler as its only argument.
@@ -132,7 +150,7 @@ name" entry point.
 | +0x68 | 0 in single player; the multiplayer branch reads it | seen |
 | +0xAB0 | **autosave requested** | read, and it is the choke point |
 | +0xAB1 | the write has already waited its frame | read |
-| +0xD34 | which timer is firing; the check runs on 4, 0x12 and 0x13 | read |
+| +0xD34 | **the current map mode**, not a timer - see the correction below | read |
 
 ## What is not established
 
@@ -140,8 +158,8 @@ name" entry point.
   "a game is loaded"; more likely "the game is over" or "a save or load is in
   progress". Nothing depends on it yet.
 - `idler + 0x68` as multiplayer. It fits, it has not been tested.
-- Which of the three timer ids `0xD34` takes is the daily one. All three call the check
-  and the check is idempotent, so it does not matter for a hook on the check itself.
+- What calls `0x661CA0`. It is virtual, slot 53 of `CInGameIdler`, and nothing reaches
+  it directly, so the caller has not been traced.
 
 ## What BiceLib does with it
 
