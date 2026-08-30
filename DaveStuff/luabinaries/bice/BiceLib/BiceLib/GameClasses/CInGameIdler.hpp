@@ -5,11 +5,11 @@
  * CInGameIdler - the in game screen: the map view, the selection, and the autosave
  * request.
  *
- * One instance while a game is running. It can be found by scanning for its vftable,
- * which is what `cacheIngameIdler` in bice.cpp does, and it is very probably the same
- * object as CCurrentGameState::Offsets::in_game_screen - both hold the current map
- * mode at +0xD34. That has not been confirmed by comparing the two addresses live, so
- * neither file claims it as fact.
+ * One instance while a game is running, and it is **the object at
+ * CCurrentGameState::Offsets::in_game_screen** - confirmed live, the two addresses are
+ * the same and the object there carries this vftable. So it can be reached by one
+ * dereference off the game state rather than by scanning for the vftable, which is
+ * what `cacheIngameIdler` in bice.cpp still does.
  *
  * The autosave fields, and how the decision that writes them was found, are in
  * `reversing/FINDINGS-autosave.md`. The map mode numbering is in
@@ -20,6 +20,25 @@
 namespace CInGameIdler {
     namespace VFTable {
         constexpr uintptr_t CInGameIdler = 0x11CEB54;   // module relative, 111 slots
+    }
+
+    /**
+     * Virtual slots worth calling, by index into the vftable above.
+     *
+     * Only valid together with that vftable, so anything calling one has to check the
+     * object carries it first - which is what centreOnProvince below does.
+     */
+    namespace Slots {
+        /**
+         * **Centre the map on a province.** thiscall, one argument, a CMapProvince*.
+         *
+         * This is what the unit panel's `unit_location_button` calls, and so what the
+         * `w` shortcut on that button does. Its handler is four instructions: take
+         * the unit's idler from CUnit::Offsets::in_game_idler_ptr, its province from
+         * CUnit::Offsets::current_province_ptr, and call this. The routine itself
+         * reads the province's map x and y and writes the camera position.
+         */
+        constexpr int CENTRE_ON_PROVINCE = 48;    // vftable + 0xC0
     }
 
     namespace Offsets {
@@ -56,6 +75,17 @@ namespace CInGameIdler {
      * Map modes worth naming, by the game's numbering rather than the button names.
      * The rest are in reversing/mapmode.py.
      */
+    /**
+    @brief moves the map to a province, the way the unit panel's location button does
+
+    Answers false rather than doing anything when there is no session, when the object
+    the game state points at is not a CInGameIdler, or when the province is not a
+    readable object.
+
+    @param province a CMapProvince*, as Oob::Unit::province holds
+    */
+    bool centreOnProvince(uintptr_t province);
+
     namespace MapMode {
         constexpr int VICTORY_POINTS = 7;    // the one Custom Mapmode takes over
         constexpr int SIMPLIFIED_TERRAIN = 13;

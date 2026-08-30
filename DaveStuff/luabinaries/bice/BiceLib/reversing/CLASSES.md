@@ -47,8 +47,9 @@ being non-null proves nothing about a game being loaded.
 | +0xB5C | **`CCombatManager`, embedded** | read |
 | +0xB74 | the `CCombatHistory` inside it (`+0xB5C` + `0x18`) | read |
 | +0xBDC | **the current tick** | read, and used |
-| +0xBE8 | the in game screen, which holds the map mode and the selection. Very probably the `CInGameIdler` - both hold the map mode at +0xD34 - but the two addresses have not been compared in a running game | read |
-| +0xC30 | the player's tag: three characters and a NUL, then the id | read |
+| +0xBE8 | **the `CInGameIdler`** - the same address the vftable scan finds, and the object there carries its vftable | seen |
+| +0xBCC | one entry per country id, non zero for one somebody is playing. From `../../../mem`, and the played country's entry reads 1 | mem, seen |
+| +0xC30 | the player's tag: three characters and a NUL, then the id. **Not +0x18** - that is a tag field holding `---` in a running game, and the `../../../mem` note recording the player there reads its fields without dereferencing the global | seen |
 | +0xD9D | checked before an autosave and has to be zero. It is zero in an ordinary running game, so it is not "a session is loaded" | read |
 
 ## Conventions the game keeps to

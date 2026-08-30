@@ -39,18 +39,33 @@ namespace CCurrentGameState {
         constexpr uintptr_t tick = 0xBDC;
 
         /**
-         * The in game screen, which is what holds the current map mode and the
-         * selection. Very probably the CInGameIdler - both expose the map mode at
-         * +0xD34 and both are driven as the same object - but that has not been
-         * confirmed by comparing the two addresses in a running game, so
-         * CInGameIdler.hpp is written as its own class rather than merged into this.
+         * **The CInGameIdler**, which holds the current map mode and the selection.
+         * Confirmed: this pointer and the one instance found by scanning for
+         * CInGameIdler's vftable are the same address, and the object here carries
+         * that vftable. Its fields are in CInGameIdler.hpp.
          */
         constexpr uintptr_t in_game_screen = 0xBE8;
 
         /**
+         * One entry per country id, non zero for a country somebody is playing. From
+         * `DaveStuff/mem/classes/CCurrentGameState.py`, and confirmed live: the entry
+         * for the country being played reads 1.
+         */
+        constexpr uintptr_t played_countries_array = 0xBCC;
+
+        /**
          * The player's country tag: three characters, a NUL, then the country id, the
          * way a tag is held everywhere. The game reads it as a C string when it builds
-         * a save file name.
+         * a save file name, which is how it was found, and it reads as the country
+         * being played in a running game.
+         *
+         * **Not +0x18.** `DaveStuff/mem/classes/CCurrentGameState.py` records the
+         * player tag there, but that script reads its fields from the address of the
+         * global rather than from the object it points at, so its base is one
+         * dereference short. Measured from the object, +0x18 is a tag field holding
+         * `---`, the null tag, in a running single player game - as is +0x90 - while
+         * +0xC30 holds the country actually being played. The offsets in that file are
+         * otherwise good against the object: +0xBCC above came from it and checks out.
          */
         constexpr uintptr_t player_tag = 0xC30;
 
