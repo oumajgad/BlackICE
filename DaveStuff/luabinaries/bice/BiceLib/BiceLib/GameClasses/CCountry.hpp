@@ -27,6 +27,21 @@ namespace CCountry {
 
         /**@brief the country's modifier totals, one entry per general modifier*/
         constexpr uintptr_t general_modifiers_array_ptr = 0xDA8;
+
+        /**
+         * **The country's leaders**, as the usual `{ first, last, count }` list: nodes
+         * of `{ data, prev, next }`, which is what HDS::walkList reads.
+         *
+         * Every leader in the game belongs to exactly one country's list, so walking
+         * all of them is how CLeader::CacheLeaders finds them. Confirmed live: the
+         * count field agrees with the walk, and the walk over all 108 countries
+         * reaches 24,137 of the 24,138 objects a vftable scan turns up. The one it
+         * leaves out has the null tag `---` and sits in the file parser's memory, so
+         * it is a template rather than a leader anybody has.
+         */
+        constexpr uintptr_t leaders_list_first_ptr = 0xE10;
+        constexpr uintptr_t leaders_list_last_ptr = 0xE14;
+        constexpr uintptr_t leaders_count = 0xE18;
     }
 
     /**

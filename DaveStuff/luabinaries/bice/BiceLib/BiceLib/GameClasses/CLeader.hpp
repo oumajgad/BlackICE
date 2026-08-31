@@ -47,6 +47,10 @@ namespace CLeader {
         // uintptr_t CLeaderHistoryOffset;
     };
 
+    namespace VFTable {
+        constexpr uintptr_t CLeader = 0x11C5220;   // module relative
+    }
+
     extern std::unordered_map<unsigned int, uintptr_t>* leaderCache;
 
     CLeader Make(uintptr_t addr);
