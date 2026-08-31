@@ -1,4 +1,5 @@
 #include <GameState/CombatStore.hpp>
+#include <GameClasses/CCurrentGameState.hpp>
 
 #include <Gui/LuaBridge.hpp>
 #include <Hooks/CCombatHooks.hpp>
@@ -25,9 +26,6 @@ namespace {
         "defenderTag;defenderId;defenderLosses;defenderMen;winner\n"
         "# branch: L land, A air, N naval, and a bombing raid in lower case - g on a "
         "province, l on the land units in one, n on ships\n";
-
-    const uintptr_t GAME_STATE_POINTER = 0x1689790;
-    const uintptr_t GAME_STATE_TICK = 0xBDC;
 
     int campaignId = 0;
     std::string filePath;
@@ -360,19 +358,5 @@ Combat::Tally Combat::Store::tally(const std::string& tag, unsigned int fromTick
 }
 
 unsigned int Combat::Store::currentTick() {
-    const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
-    if (base == 0) {
-        return 0;
-    }
-
-    uint32_t state = 0;
-    if (!Mem::tryRead(base + GAME_STATE_POINTER, state) || state == 0) {
-        return 0;
-    }
-
-    uint32_t tick = 0;
-    if (!Mem::tryRead(state + GAME_STATE_TICK, tick)) {
-        return 0;
-    }
-    return tick;
+    return static_cast<unsigned int>(CCurrentGameState::currentTick());
 }

@@ -12,6 +12,7 @@
 #include <GameState/OrderOfBattle.hpp>
 
 #include <GameClasses/CCountry.hpp>
+#include <GameClasses/CInGameIdler.hpp>
 
 #include <Windows.h>
 #include <cstdio>
@@ -40,6 +41,11 @@ namespace {
     // Kept by address rather than by index so a refresh that reorders the units does
     // not quietly move the selection onto a different one.
     uintptr_t selectedAddress = 0;
+
+    // The province the "Move to" button acts on, taken from the unit whose details
+    // are being shown. Zero when the unit has none, which is why the button is only
+    // drawn with a province to move to.
+    uintptr_t moveToProvince = 0;
     std::vector<Oob::Regiment> selectedRegiments;
     uintptr_t regimentsFor = 0;
 
@@ -350,6 +356,8 @@ namespace {
             rows.push_back(DetailRow{ "Province", location });
         }
 
+        moveToProvince = unit.province;
+
         rows.push_back(DetailRow{ "Supply", percentText(unit.supplyPercent, scratch, sizeof(scratch)) });
         rows.push_back(DetailRow{ "Fuel", percentText(unit.fuelPercent, scratch, sizeof(scratch)) });
 
@@ -481,6 +489,21 @@ namespace {
                 "on the clipboard as text");
         }
 
+        // The same thing the unit panel's own location button does, and so the same
+        // thing pressing w in game does. Only offered with a province to move to: a
+        // unit being built has none.
+        ImGui::SameLine();
+        ImGui::BeginDisabled(moveToProvince == 0);
+        if (ImGui::SmallButton("Move to")) {
+            CInGameIdler::centreOnProvince(moveToProvince);
+        }
+        ImGui::EndDisabled();
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+            ImGui::SetTooltip(moveToProvince == 0
+                ? "This unit is not in a province."
+                : "Moves the map to where this unit is, the way the\n"
+                  "location button on the unit panel does.");
+        }
         if (ImGui::BeginTable("unitStats", 2, ImGuiTableFlags_RowBg |
             ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
             ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 0.55f);

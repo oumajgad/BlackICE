@@ -1,4 +1,5 @@
 #include <Gui/LuaBridge.hpp>
+#include <GameClasses/CCurrentGameState.hpp>
 
 #include <Windows.h>
 #include <cstdarg>
@@ -110,16 +111,7 @@ namespace {
 
 bool Gui::Lua::sessionActive() {
     // Same pointer CMapProvince::GetMapProvinceById dereferences to reach the map.
-    const uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
-    if (moduleBase == 0) {
-        return false;
-    }
-
-    uintptr_t gameState = 0;
-    if (!Mem::tryRead(moduleBase + 0x1689790, gameState)) {
-        return false;
-    }
-    return gameState != 0;
+    return CCurrentGameState::current() != 0;
 }
 
 void Gui::Lua::setSessionRequired(bool required) {

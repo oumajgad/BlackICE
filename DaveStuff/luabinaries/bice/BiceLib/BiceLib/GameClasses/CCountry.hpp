@@ -67,7 +67,6 @@ namespace CCountry {
         constexpr int count = 143;
     }
 
-    extern uintptr_t CountryPtrs[300]; // Array of countries, index = country id
 
     void traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>& res, uintptr_t nodePtr);
     std::vector<std::pair<std::string, std::string>> getActiveEventModifiers(uintptr_t listNodePtr);
@@ -77,7 +76,22 @@ namespace CCountry {
     /**@brief the country's non zero variables, by value*/
     std::vector<HDS::CVariable> getVars(uintptr_t nodePtr);
 
-    /**@brief cached CCountry instance for a tag ("GER"), 0 if the cache has no entry
-       @note the cache is filled by cacheCountries() and the CCountry constructor hook*/
+    /**
+    @brief every country in the game, read from the game state each time
+
+    The game's own list, so it is always current: a country that comes into existence
+    later is in it, and nothing has to be told to refresh. Empty outside a session.
+    */
+    std::vector<uintptr_t> all();
+
+    /**
+    @brief the country with this tag ("GER"), or 0
+
+    Walks the list above and compares the three characters in place, without building
+    a string per country, so it is cheap enough to call while drawing.
+    */
     uintptr_t findByTag(const std::string& tag);
+
+    /**@brief the country with this id, or 0*/
+    uintptr_t findById(int id);
 }
