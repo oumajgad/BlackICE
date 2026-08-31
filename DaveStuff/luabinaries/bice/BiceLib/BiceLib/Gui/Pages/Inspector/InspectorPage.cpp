@@ -77,40 +77,14 @@ namespace {
 
     void drawInspectorContents() {
         const uintptr_t idler = Inspector::idlerAddress();
-
-        if (ImGui::Button("Re-cache idler")) {
-            Inspector::recacheIdler();
-            lastSelectionSampleMs = 0; // Refresh the selection straight away
-        }
-
-        const int count = Inspector::idlerCount();
-        if (count == 0) {
-            ImGui::SameLine();
+        if (idler == 0) {
             ImGui::TextDisabled("CIngameIdler: not found");
             ImGui::Spacing();
-            ImGui::TextWrapped("The idler only exists once a session is running. "
-                "Load or start a game, then press Re-cache idler.");
+            ImGui::TextWrapped("The in game screen only exists once a session is running. Load or start a game and this fills in on its own.");
             return;
         }
 
-        // The scan finds several objects sharing the vftable and only one of them is
-        // the live idler, so let the candidates be cycled through until units show up.
-        ImGui::SameLine();
-        if (ImGui::Button("-")) {
-            Inspector::selectIdlerIndex(Inspector::idlerIndex() - 1);
-            lastSelectionSampleMs = 0;
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("+")) {
-            Inspector::selectIdlerIndex(Inspector::idlerIndex() + 1);
-            lastSelectionSampleMs = 0;
-        }
-        ImGui::SameLine();
-        ImGui::Text("%d/%d  %#010x", Inspector::idlerIndex() + 1, count, static_cast<unsigned>(idler));
-
-        if (idler == 0) {
-            return;
-        }
+        ImGui::TextDisabled("CIngameIdler %#010x", static_cast<unsigned>(idler));
 
         ImGui::Separator();
 
