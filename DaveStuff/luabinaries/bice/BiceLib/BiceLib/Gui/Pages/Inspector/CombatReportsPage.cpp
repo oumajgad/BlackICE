@@ -83,8 +83,8 @@ namespace {
         "Lost",
         "As attacker",
         "As defender",
-        "Enemies killed",
-        "Losses",
+        "Enemy casualties",
+        "Own casualties",
     };
     const int FIGURE_COUNT = static_cast<int>(sizeof(FIGURES) / sizeof(FIGURES[0]));
 
@@ -553,9 +553,11 @@ namespace {
             ImGui::TableSetupColumn("Result", ImGuiTableColumnFlags_WidthStretch, 0.6f);
             ImGui::TableSetupColumn("Role", ImGuiTableColumnFlags_WidthStretch, 0.7f);
             ImGui::TableSetupColumn("Against", ImGuiTableColumnFlags_WidthStretch, 0.7f);
-            ImGui::TableSetupColumn("Killed", ImGuiTableColumnFlags_WidthStretch, 0.6f);
+            // The two casualty columns are named and sized alike: each is the men one
+            // side lost, and the "Of" after it is the men that side brought.
+            ImGui::TableSetupColumn("Enemy casualties", ImGuiTableColumnFlags_WidthStretch, 1.1f);
             ImGui::TableSetupColumn("Of", ImGuiTableColumnFlags_WidthStretch, 0.7f);
-            ImGui::TableSetupColumn("Lost", ImGuiTableColumnFlags_WidthStretch, 0.6f);
+            ImGui::TableSetupColumn("Own casualties", ImGuiTableColumnFlags_WidthStretch, 1.1f);
             ImGui::TableSetupColumn("Of", ImGuiTableColumnFlags_WidthStretch, 0.7f);
             ImGui::TableSetupColumn("Province", ImGuiTableColumnFlags_WidthStretch, 1.4f);
             ImGui::TableHeadersRow();
@@ -591,20 +593,21 @@ namespace {
                 ImGui::TableNextColumn();
                 ImGui::TextUnformatted(attacked ? entry.defenderTag : entry.attackerTag);
 
-                // One side's losses are the other's kills, so both come from the
-                // pair - and each is shown against the men that side had in the fight,
-                // since a number of casualties says little on its own.
-                const int killed = attacked ? entry.defenderLosses : entry.attackerLosses;
-                const int lost = attacked ? entry.attackerLosses : entry.defenderLosses;
+                // One side's losses are the casualties it inflicted on the other, so
+                // both come from the pair - and each is shown against the men that
+                // side had in the fight, since a number of casualties says little on
+                // its own.
+                const int theirCasualties = attacked ? entry.defenderLosses : entry.attackerLosses;
+                const int ourCasualties = attacked ? entry.attackerLosses : entry.defenderLosses;
                 const int theirMen = attacked ? entry.defenderMen : entry.attackerMen;
                 const int ourMen = attacked ? entry.attackerMen : entry.defenderMen;
 
                 ImGui::TableNextColumn();
-                ImGui::TextUnformatted(grouped(killed / 1000).c_str());
+                ImGui::TextUnformatted(grouped(theirCasualties / 1000).c_str());
                 ImGui::TableNextColumn();
                 drawMen(theirMen, entry.branch);
                 ImGui::TableNextColumn();
-                ImGui::TextUnformatted(grouped(lost / 1000).c_str());
+                ImGui::TextUnformatted(grouped(ourCasualties / 1000).c_str());
                 ImGui::TableNextColumn();
                 drawMen(ourMen, entry.branch);
                 ImGui::TableNextColumn();
