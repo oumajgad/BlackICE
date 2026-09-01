@@ -49,32 +49,16 @@ namespace Inspector {
     };
 
     /**
-    @brief (re)scans for CIngameIdler, the object holding the current selection
+    @brief where the in game screen is, or 0 when there is no session
 
-    It only exists once a session is running, so scanning from the main menu finds
-    nothing. This is deliberately not called automatically: the scan walks the whole
-    heap, which is far too expensive to retry on a timer.
-
-    The scan usually turns up several objects with a matching vftable and only one of
-    them is the live idler, so every candidate is kept and can be switched between
-    with selectIdlerIndex(). The last one is selected by default.
-    @returns true if at least one candidate was found
+    Read from the game state every time, so it follows a game being loaded or left
+    with nothing to press. It used to be found by scanning the heap for the vftable,
+    which turned up several objects and left the page cycling through them to find
+    the live one; CInGameIdler::current() answers exactly, so none of that is needed.
     */
-    bool recacheIdler();
-
-    /**@brief address of the selected CIngameIdler candidate, 0 if there is none*/
     uintptr_t idlerAddress();
 
-    /**@brief how many candidates the last scan found*/
-    int idlerCount();
-
-    /**@brief index of the selected candidate, -1 if there is none*/
-    int idlerIndex();
-
-    /**@brief selects a candidate by index, wrapping around at both ends*/
-    void selectIdlerIndex(int index);
-
     /**@brief entities currently selected in game
-       @returns the selection, or an empty vector if the idler is not cached yet*/
+       @returns the selection, or an empty vector when there is no session*/
     std::vector<Entity> getSelection();
 }

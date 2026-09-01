@@ -90,8 +90,6 @@ namespace {
         return descs;
     }
 
-    std::vector<uintptr_t> idlerCandidates;
-    int selectedIdler = -1;
 
     /**
     @brief reads a Hoi3 CString: 16 byte inline buffer, length at +0x10, and for
@@ -157,6 +155,13 @@ namespace {
             return;
         }
 
+        // Read on first use. The definitions come off the map in one pass now, so
+        // there is nothing to defer behind a button the way there was while this
+        // meant walking the heap.
+        if (CTerrain::Terrains->empty()) {
+            CTerrain::CacheTerrains();
+        }
+
         for (CTerrain::CTerrain* terrain : *CTerrain::Terrains) {
             if (terrain == nullptr) {
                 continue;
@@ -186,72 +191,8 @@ namespace {
     }
 }
 
-bool Inspector::recacheIdler() {
-    idlerCandidates.clear();
-    selectedIdler = -1;
-
-    const uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
-    if (moduleBase == 0) {
-        return false;
-    }
-
-    // The game state points straight at the real one, so there is nothing to guess:
-    // CInGameIdler::current() dereferences it and checks the vftable before it
-    // answers. The scan below is only a fallback for a state that cannot be read.
-    const uintptr_t authoritative = CInGameIdler::current();
-    if (authoritative != 0) {
-        idlerCandidates.push_back(authoritative);
-        selectedIdler = 0;
-        DEBUG_OUT(printf("Inspector: CIngameIdler %#010x, from the game state\n",
-            static_cast<unsigned>(authoritative)));
-    }
-    else {
-        const uintptr_t CIngameIdlerVFTable = moduleBase + CInGameIdler::VFTable::CInGameIdler;
-        idlerCandidates = Mem::findPointers(moduleBase + DATA_SECTION_START, CIngameIdlerVFTable, 99);
-        if (idlerCandidates.empty()) {
-            DEBUG_OUT(printf("Inspector: no CIngameIdler found (is a session running?)\n"));
-            return false;
-        }
-
-        // The last hit is right most of the time, but not always, hence the switching.
-        selectedIdler = static_cast<int>(idlerCandidates.size()) - 1;
-    }
-    DEBUG_OUT(printf("Inspector: %i CIngameIdler candidates, using %#010x\n",
-        static_cast<int>(idlerCandidates.size()), idlerCandidates[selectedIdler]));
-
-    // Terrain modifiers are looked up by terrain id, and the terrain objects only
-    // exist once a session is running too. Same scan, so do it from the same button
-    // rather than retrying it on the sampling timer.
-    if (CTerrain::Terrains->empty()) {
-        CTerrain::CacheTerrains();
-        DEBUG_OUT(printf("Inspector: cached %i terrains\n", static_cast<int>(CTerrain::Terrains->size())));
-    }
-
-    return true;
-}
-
 uintptr_t Inspector::idlerAddress() {
-    if (selectedIdler < 0 || selectedIdler >= static_cast<int>(idlerCandidates.size())) {
-        return 0;
-    }
-    return idlerCandidates[selectedIdler];
-}
-
-int Inspector::idlerCount() {
-    return static_cast<int>(idlerCandidates.size());
-}
-
-int Inspector::idlerIndex() {
-    return selectedIdler;
-}
-
-void Inspector::selectIdlerIndex(int index) {
-    const int count = static_cast<int>(idlerCandidates.size());
-    if (count == 0) {
-        selectedIdler = -1;
-        return;
-    }
-    selectedIdler = ((index % count) + count) % count; // Wrap in both directions
+    return CInGameIdler::current();
 }
 
 std::vector<Entity> Inspector::getSelection() {

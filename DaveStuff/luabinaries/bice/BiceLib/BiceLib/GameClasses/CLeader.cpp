@@ -1,4 +1,5 @@
 #include <GameClasses/CLeader.hpp>
+#include <GameClasses/CCountry.hpp>
 #include <GameClasses/CUnit.hpp>
 #include <GameClasses/CMapProvince.hpp>
 #include <HoiDataStructures.hpp>
@@ -26,18 +27,32 @@ namespace CLeader {
     }
 
     std::unordered_map<unsigned int, uintptr_t>* leaderCache = new std::unordered_map<unsigned int, uintptr_t>;
+    /**
+    @brief fills the cache from the countries, which is where the leaders actually are
+
+    Every leader belongs to exactly one country's list, so walking all of them finds
+    them all. This used to scan every committed page for the vftable and sift the hits
+    with a magic number - `397`, which is the value CLASSES.md records as sitting at
+    +0x04 on nearly every object, so it rejected almost nothing.
+
+    Walking is also the more correct set: the scan additionally turns up a leader with
+    the null tag `---` that no country owns, built by the file parser rather than
+    belonging to a game.
+    */
     void CacheLeaders() {
-        uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
-        uintptr_t CLeaderVFTable = moduleBase + 0x11C5220;
-        auto res = Mem::findPointers(moduleBase + 0x12F5000, CLeaderVFTable, 99999);
-        for (auto& leaderAddr : res) {
-            int magicNumber = *(int*)(leaderAddr + 0x4); // for some reason there are some false hits, but we can check the magic number
-            if (magicNumber == 397) {
+        const std::vector<uintptr_t> countries = CCountry::all();
+        for (uintptr_t country : countries) {
+            const std::vector<uintptr_t> leaders =
+                HDS::walkList(country + CCountry::Offsets::leaders_list_first_ptr);
+            for (uintptr_t leaderAddr : leaders) {
                 CLeader x = Make(leaderAddr);
+                // insert, not assign: where two leaders share an id the first one
+                // wins, which is what the old cache did as well.
                 leaderCache->insert(std::make_pair(x.id, leaderAddr));
             }
         }
-        return;
+        DEBUG_OUT(printf("CacheLeaders: %d leaders from %d countries\n",
+            static_cast<int>(leaderCache->size()), static_cast<int>(countries.size())));
     }
 
     CLeader GetLeaderById(unsigned int id) {

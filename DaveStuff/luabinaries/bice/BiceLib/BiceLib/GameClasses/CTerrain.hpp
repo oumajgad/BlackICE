@@ -14,6 +14,12 @@ namespace CTerrain {
         constexpr uintptr_t attrition = 0x5C;
     }
 
+    /**
+     * A bound on the terrain list, so a begin/end pair that is not one is refused
+     * rather than walked. The mod defines a few dozen.
+     */
+    constexpr size_t MAX_TERRAINS = 512;
+
     namespace VFTable {
         constexpr uintptr_t CTerrain = 0x11C0764; // module relative
     }

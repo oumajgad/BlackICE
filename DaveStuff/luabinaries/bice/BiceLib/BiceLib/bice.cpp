@@ -145,49 +145,13 @@ __declspec(dllexport) int getCountryOffmapIc(lua_State* L)
 /////////////////////////////////////
 //        LEADER FUNCTIONS         //
 /////////////////////////////////////
-bool cacheTraitsDone = false;
-std::unordered_map<std::string, uintptr_t>* traitCache = new std::unordered_map<std::string, uintptr_t>;
-uintptr_t getTrait(std::string traitName) {
-    if (traitCache->find(traitName) != traitCache->end()) {
-        return traitCache->at(traitName);
-    }
-
-    uintptr_t CTraitVFTable = MODULE_BASE + CTrait::VFTable::CTrait;
-    uintptr_t res = Mem::findPointerIf(MODULE_BASE + DATA_SECTION_START, CTraitVFTable,
-        [&traitName](uintptr_t candidate) {
-            return traitName == HDS::readString(candidate + CTrait::Offsets::name);
-        });
-    if (res != 0) {
-        traitCache->insert(std::make_pair(traitName, res));
-        DEBUG_OUT(printf("Added to traitCache: %s - %#010x \n", traitName.c_str(), res));
-        return res;
-    }
-
-    return 0;
-}
-void addTraitToCache(std::string traitName, uintptr_t address) {
-    traitCache->insert(std::make_pair(traitName, address));
-    DEBUG_OUT(printf("Added to traitCache: %s - %#010x \n", traitName.c_str(), address));
-    //std::string x = std::format("Added to traitCache : {} - {:x}", traitName.c_str(), address);
-    //logInLua(x.c_str());
-    return;
-}
-void cacheTraits() {
-    if (!cacheTraitsDone) {
-        uintptr_t CTraitVFTable = MODULE_BASE + CTrait::VFTable::CTrait;
-        auto traits = Mem::findPointers(MODULE_BASE + DATA_SECTION_START, CTraitVFTable, 99999);
-        if (traits.size() != 0) {
-            for (auto& traitAddr : traits) {
-                std::string traitName = HDS::readString(traitAddr + CTrait::Offsets::name);
-                addTraitToCache(traitName, traitAddr);
-            }
-            INFO_OUT(printf("Trait cache filled (%i) \n", traitCache->size()));
-            cacheTraitsDone = true;
-            return;
-        }
-    }
-    return;
-}
+// Traits come from the game's own list - CTrait::all() and CTrait::findByName().
+// There used to be a cache here, filled by scanning every committed page for the
+// CTrait vftable and sifting the hits with a magic number. The list is reached in
+// three reads and holds exactly the traits the game has.
+//
+// It is empty until the mod's traits are loaded, which is what the deferrals below
+// are waiting for - the same thing the empty cache used to mean.
 
 __declspec(dllexport) int getLeaderDetails(lua_State* L) {
     Diagnostics::LuaScope luaScope(L);
@@ -214,7 +178,7 @@ __declspec(dllexport) int addTraitToLeader(lua_State* L){
     DEBUG_OUT(printf("trait: '%s'\n", traitName.c_str()));
 
     auto leader = CLeader::GetLeaderById(leaderId);
-    auto traitAddr = getTrait(traitName);
+    auto traitAddr = CTrait::findByName(traitName);
     if (leader._address == 0) {
         ERROR_OUT(printf("Couldn't find leader with ID '%u'\n", leaderId));
         lua_pushboolean(L, false);
@@ -267,9 +231,7 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     int lowerRank = luaL_checkinteger(L, 3);
     int upperRank = luaL_checkinteger(L, 4);
 
-    cacheTraits();
-
-    if (traitCache->size() == 0) {
+    if (CTrait::count() == 0) {
         INFO_OUT(printf("addRankSpecificTrait for: '%s' deferred until save load \n", activeName.c_str()));
         lua_pushboolean(L, false);
         return 1;
@@ -279,7 +241,9 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
         lua_pushboolean(L, true);
         return 1;
     }
-    if (traitCache->find(activeName) == traitCache->end() || traitCache->find(inActiveName) == traitCache->end()) {
+    const uintptr_t activeTrait = CTrait::findByName(activeName);
+    const uintptr_t inActiveTrait = CTrait::findByName(inActiveName);
+    if (activeTrait == 0 || inActiveTrait == 0) {
         ERROR_OUT(printf("Trait for RankSpecificTrait '%s' not found!", activeName.c_str()));
         lua_pushboolean(L, false);
         return 1;
@@ -298,9 +262,9 @@ __declspec(dllexport) int addRankSpecificTrait(lua_State* L) {
     rst->inActiveTraitPtr = 0;
     rst->inactiveName = inActiveName;
 
-    rst->activeTraitPtr = traitCache->at(activeName);
+    rst->activeTraitPtr = activeTrait;
     DEBUG_OUT(printf("rst->activeTraitPtr: %#010x \n", rst->activeTraitPtr));
-    rst->inActiveTraitPtr = traitCache->at(inActiveName);
+    rst->inActiveTraitPtr = inActiveTrait;
     DEBUG_OUT(printf("rst->inActiveTraitPtr: %#010x \n", rst->inActiveTraitPtr));
     
     Hooks::CLeader::rankSpecificTraitsActive->insert(std::make_pair(activeName, rst));
@@ -326,8 +290,7 @@ __declspec(dllexport) int activateRankSpecificTraits(lua_State* L)
         activateLeaderDontSaveRankSpecificTraitsHook();
     }
 
-    cacheTraits();
-    if (traitCache->size() == 0) {
+    if (CTrait::count() == 0) {
         // Traits are not set up when the LUA is first run -> defer hooking until the LUA context is reloaded during save loading
         INFO_OUT(printf("Hook 'activateRankSpecificTraits' deferred until save load \n"));
         return 0;
@@ -346,9 +309,8 @@ __declspec(dllexport) int checkRankSpecificTraitsConsistency(lua_State* L)
         return 0;
     }
 
-    cacheTraits();
     CLeader::CacheLeaders();
-    if (traitCache->size() == 0 || CLeader::leaderCache->size() == 0) {
+    if (CTrait::count() == 0 || CLeader::leaderCache->size() == 0) {
         return 0;
     }
     INFO_OUT(printf("Checking rank specific traits consistency.\n"));
@@ -373,8 +335,7 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
         activateLeaderRankChangeHook();
     }
 
-    cacheTraits();
-    if (traitCache->size() == 0) {
+    if (CTrait::count() == 0) {
         // Traits are not set up when the LUA is first run -> defer hooking until the LUA context is reloaded during save loading
         INFO_OUT(printf("Hook 'activateLeaderPromotionSkillLoss' deferred until save load \n"));
         return 0;
@@ -382,8 +343,7 @@ __declspec(dllexport) int activateLeaderPromotionSkillLoss(lua_State* L)
 
     auto tempSkillTraits = new std::vector<uintptr_t>; // unsorted vector of the traits which are used to track leader skill
     Hooks::CLeader::skillTraits = new std::vector<DWORD>; // sorted vector of the traits
-    for (auto entry = traitCache->begin(); entry != traitCache->end(); ++entry) {
-        auto trait = entry->second;
+    for (uintptr_t trait : CTrait::all()) {
         std::string traitNameAsString = HDS::readString(trait + CTrait::Offsets::name);
         if (traitNameAsString.find("pskill_") == 0) {
             tempSkillTraits->push_back(trait);
