@@ -1,5 +1,7 @@
 #include <Overlay.hpp>
 
+#include <CrashReport.hpp>
+
 #include <Windows.h>
 #include <d3d9.h>
 
@@ -351,6 +353,57 @@ namespace {
         }
     }
 
+    /**
+     * Set once the overlay has crashed, and never cleared.
+     *
+     * Whatever went wrong will go wrong again on the next frame, so drawing stops
+     * rather than crashing the game once a frame. The game itself carries on.
+     */
+    bool overlayFailed = false;
+
+    /**@brief writes the report, then lets the handler below run*/
+    int overlayExceptionFilter(EXCEPTION_POINTERS* pointers) {
+        CrashReport::write(pointers, "the overlay");
+        return EXCEPTION_EXECUTE_HANDLER;
+    }
+
+    /**
+    @brief renderOverlay, with its crashes caught and written down
+
+    Separate from renderOverlay because a function using __try may not also hold
+    objects that need unwinding, and that one does.
+
+    Catching here rather than leaving it to the unhandled filter is what keeps the
+    game alive: a crash in the overlay is a crash in code that runs once a frame, and
+    the player would otherwise lose the session to it.
+    */
+    void renderOverlayGuarded(IDirect3DDevice9* device, bool drawPages) {
+        if (overlayFailed) {
+            return;
+        }
+
+        CrashReport::noteFrameStart();
+        __try {
+            renderOverlay(device, drawPages);
+        }
+        __except (overlayExceptionFilter(GetExceptionInformation())) {
+            overlayFailed = true;
+            visible = false;
+
+            // renderOverlay opens a scene of its own. If it died inside one, leaving
+            // it open would break the game's next frame as well, so it is closed
+            // here; EndScene on a device with no scene open simply fails.
+            if (device != nullptr) {
+                device->EndScene();
+            }
+
+            ERROR_OUT(printf("The overlay crashed and has been switched off. "
+                "A report is in %s\n", CrashReport::textPath()));
+            return;
+        }
+        CrashReport::noteFrameEnd();
+    }
+
     HRESULT APIENTRY hookedPresent(IDirect3DDevice9* device, const RECT* sourceRect, const RECT* destRect,
         HWND destWindowOverride, const RGNDATA* dirtyRegion) {
         Diagnostics::notePresentThread();
@@ -378,7 +431,7 @@ namespace {
                     Gui::onOverlayShown();
                 }
                 teardownFramesLeft = 0;
-                renderOverlay(device, true);
+                renderOverlayGuarded(device, true);
             }
             else {
                 if (wasVisible) {
@@ -397,7 +450,7 @@ namespace {
                 // builds them back from the positions ImGui still holds.
                 if (teardownFramesLeft > 0) {
                     teardownFramesLeft--;
-                    renderOverlay(device, false);
+                    renderOverlayGuarded(device, false);
                 }
             }
             wasVisible = visible;

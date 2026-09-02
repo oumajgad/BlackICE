@@ -16,6 +16,7 @@
 // The wx page's font buttons resized wxWidgets controls and have no counterpart; ImGui
 // scales its font instead, which is the same intent by different means.
 
+#include <CrashReport.hpp>
 #include <Gui/GuiPage.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Overlay.hpp>
@@ -233,6 +234,33 @@ namespace {
         if (!Settings::path().empty()) {
             ImGui::Spacing();
             ImGui::TextDisabled("Saved settings: %s", Settings::path().c_str());
+        }
+
+        ImGui::SeparatorText("Crash reports");
+        ImGui::TextWrapped(
+            "If BiceLib crashes, it writes what happened to a file beside itself "
+            "instead of leaving you to find a Windows dump. Send that file and the "
+            ".dmp next to it.");
+
+        if (ImGui::Button("Write a test report")) {
+            CrashReport::writeTestReport();
+            status = "Test report written";
+            statusIsError = false;
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Writes a report for an exception raised on purpose, so\n"
+                "the file can be found and sent before a real crash\n"
+                "happens. Nothing is broken by pressing this.");
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Copy path")) {
+            ImGui::SetClipboardText(CrashReport::textPath());
+            status = "Path copied";
+            statusIsError = false;
+        }
+        ImGui::TextDisabled("%s", CrashReport::textPath());
+        if (CrashReport::written() > 0) {
+            ImGui::Text("%d report(s) written this session", CrashReport::written());
         }
 
         ImGui::SeparatorText("Debug console");

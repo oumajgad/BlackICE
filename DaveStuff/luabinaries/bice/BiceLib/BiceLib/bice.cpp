@@ -12,6 +12,7 @@
 
 #include <utils.hpp>
 #include <Diagnostics.hpp>
+#include <CrashReport.hpp>
 #include <Overlay.hpp>
 #include <HoiDataStructures.hpp>
 
@@ -934,6 +935,10 @@ DWORD WINAPI periodicsJob(void* data) {
 
 __declspec(dllexport) int enableOverlay(lua_State* L)
 {
+    // Armed before the overlay is installed, so a crash while installing it is
+    // reported too.
+    CrashReport::install();
+
     bool ok = Overlay::install();
     if (!ok) {
         ERROR_OUT(printf("Could not install the ImGui overlay\n"));

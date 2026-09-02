@@ -1,5 +1,6 @@
 #include <Gui/GuiPage.hpp>
 #include <Gui/CountrySelection.hpp>
+#include <CrashReport.hpp>
 #include <Settings.hpp>
 
 #include <Windows.h>
@@ -593,6 +594,9 @@ void Gui::drawAll() {
         if (!page->open) {
             continue;
         }
+        // Recorded so a crash report can name the page that was drawing.
+        CrashReport::notePage(page->title());
+
         noFocusOnAppearing();
         if (ImGui::Begin(windowName(page), &page->open)) {
             // Begin only returns true for the tab that is actually showing, so this
@@ -620,6 +624,11 @@ void Gui::drawAll() {
         }
         ImGui::End();
     }
+
+    // Cleared once the pages are done, so a crash in what follows - ImGui's own
+    // rendering, or the detached windows - is not blamed on whichever page happened
+    // to be drawn last.
+    CrashReport::notePage(nullptr);
 
     // After the pages, so the tabs exist to be selected. Kept up until the selection
     // holds on its own for two frames running, because something was seen taking the
