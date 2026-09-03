@@ -9,20 +9,22 @@
  * Windows' own local dumps are switched off unless somebody has added the LocalDumps
  * keys to the registry beforehand, so asking a player for one means asking them to
  * change the registry, reproduce the crash and then send tens of megabytes. This
- * writes both halves itself, next to the DLL:
+ * writes both halves itself, into a `crash_reports` folder beside the DLL:
  *
- *  - `BiceLibCrash.txt` - the exception, where it happened as `module+offset`, the
- *    registers, and what the overlay was doing. Small enough to paste into a chat.
- *  - `BiceLibCrash.dmp` - a minidump, for `reversing/crashdump.py` and
+ *  - `BiceLibCrash_001.txt` - the exception, where it happened as `module+offset`,
+ *    the registers, and what the overlay was doing. Small enough to paste into a chat.
+ *  - `BiceLibCrash_001.dmp` - a minidump, for `reversing/crashdump.py` and
  *    `reversing/symbolize.py`. Only stacks and module lists, so a few megabytes
  *    rather than the ~37 MB of a full Windows dump.
  *
  * The text alone is usually enough: it names the module and offset, which
  * `symbolize.py` turns into a function and line against the pdb beside the build.
  *
- * Each crash replaces the last, so the pair of files is always the most recent one.
- * The report still counts how many have happened in the session, so a file saying
- * "report 3" is the third crash of that run rather than the only one.
+ * **Every crash gets its own number, and nothing already written is touched.** One
+ * crash often causes the next, and the first is the one worth reading; an earlier
+ * version overwrote, and the report that mattered was lost exactly that way. The
+ * numbering continues past whatever the folder already holds, so reports from an
+ * earlier session survive too.
  */
 namespace CrashReport {
     /**
@@ -71,6 +73,9 @@ namespace CrashReport {
     /**@brief how many reports have been written this session*/
     int written();
 
-    /**@brief where the report would go, for a page that wants to say so*/
-    const char* textPath();
+    /**@brief the folder the reports are written into, for a page that wants to say so*/
+    const char* folder();
+
+    /**@brief the newest report written this session, empty if there has been none*/
+    const char* lastReport();
 }

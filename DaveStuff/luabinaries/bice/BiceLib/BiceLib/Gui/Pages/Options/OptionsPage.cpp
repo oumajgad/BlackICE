@@ -238,9 +238,10 @@ namespace {
 
         ImGui::SeparatorText("Crash reports");
         ImGui::TextWrapped(
-            "If BiceLib crashes, it writes what happened to a file beside itself "
-            "instead of leaving you to find a Windows dump. Send that file and the "
-            ".dmp next to it.");
+            "If BiceLib crashes, it writes what happened into a numbered pair of "
+            "files instead of leaving you to find a Windows dump. Send the whole "
+            "folder, or the lowest numbered pair in it - the first crash is usually "
+            "the one that caused the rest.");
 
         if (ImGui::Button("Write a test report")) {
             CrashReport::writeTestReport();
@@ -253,14 +254,15 @@ namespace {
                 "happens. Nothing is broken by pressing this.");
         }
         ImGui::SameLine();
-        if (ImGui::Button("Copy path")) {
-            ImGui::SetClipboardText(CrashReport::textPath());
-            status = "Path copied";
+        if (ImGui::Button("Copy folder path")) {
+            ImGui::SetClipboardText(CrashReport::folder());
+            status = "Folder path copied";
             statusIsError = false;
         }
-        ImGui::TextDisabled("%s", CrashReport::textPath());
+        ImGui::TextDisabled("%s", CrashReport::folder());
         if (CrashReport::written() > 0) {
-            ImGui::Text("%d report(s) written this session", CrashReport::written());
+            ImGui::Text("%d written this session, the last being %s",
+                CrashReport::written(), CrashReport::lastReport());
         }
 
         ImGui::SeparatorText("Debug console");

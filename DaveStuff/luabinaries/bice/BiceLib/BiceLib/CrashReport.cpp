@@ -7,8 +7,12 @@
 #include <cstring>
 
 namespace {
-    const char* TEXT_NAME = "BiceLibCrash.txt";
-    const char* DUMP_NAME = "BiceLibCrash.dmp";
+    const char* FOLDER_NAME = "crash_reports";
+
+    // Somewhere well past what a session could produce. Only a guard against an
+    // unbounded loop if a crash ever manages to repeat: the overlay switches itself
+    // off after one, and the filter only fires as the process dies.
+    const int MAX_REPORTS = 999;
 
     LPTOP_LEVEL_EXCEPTION_FILTER previousFilter = nullptr;
     bool installed = false;
@@ -20,8 +24,13 @@ namespace {
     volatile LONG framesFinished = 0;
     int reportsWritten = 0;
 
-    std::string textPathValue;
-    std::string dumpPathValue;
+    std::string folderValue;
+    std::string lastReportValue;
+
+    // The number the next report takes. Worked out once, while arming, by looking at
+    // what is already in the folder - so reports from an earlier session are added
+    // to rather than written over.
+    int nextIndex = 1;
 
     /**@brief the name of an exception code, for the ones worth naming*/
     const char* exceptionName(DWORD code) {
@@ -140,16 +149,40 @@ namespace {
         CloseHandle(file);
     }
 
+    /**@brief the path of one report, by number and extension*/
+    std::string reportPath(int index, const char* extension) {
+        char leaf[64];
+        snprintf(leaf, sizeof(leaf), "BiceLibCrash_%03d%s", index, extension);
+        return folderValue + leaf;
+    }
+
+    bool exists(const std::string& path) {
+        return GetFileAttributesA(path.c_str()) != INVALID_FILE_ATTRIBUTES;
+    }
+
+    /**
+    @brief works out the folder and the number the next report takes
+
+    Done while arming rather than while crashing: it makes the folder and walks it,
+    neither of which belongs in an exception handler.
+    */
     void ensurePaths() {
-        if (!textPathValue.empty()) {
+        if (!folderValue.empty()) {
             return;
         }
         const std::string& directory = Overlay::directory();
         if (directory.empty()) {
             return;
         }
-        textPathValue = directory + TEXT_NAME;
-        dumpPathValue = directory + DUMP_NAME;
+
+        folderValue = directory + FOLDER_NAME + "\\";
+        CreateDirectoryA(folderValue.c_str(), nullptr);
+
+        // Past whatever is already there, so a report never lands on one that has
+        // not been looked at yet.
+        while (nextIndex <= MAX_REPORTS && exists(reportPath(nextIndex, ".txt"))) {
+            nextIndex++;
+        }
     }
 
     LONG WINAPI onUnhandled(EXCEPTION_POINTERS* pointers) {
@@ -180,7 +213,7 @@ void CrashReport::install() {
 
 void CrashReport::write(EXCEPTION_POINTERS* pointers, const char* what) {
     ensurePaths();
-    if (textPathValue.empty() || pointers == nullptr
+    if (folderValue.empty() || pointers == nullptr
         || pointers->ExceptionRecord == nullptr) {
         return;
     }
@@ -261,8 +294,17 @@ void CrashReport::write(EXCEPTION_POINTERS* pointers, const char* what) {
         known && _stricmp(moduleName, "BiceLib.dll") == 0
             ? "  <-- the fault is inside BiceLib" : "");
 
-    writeText(textPathValue.c_str(), text);
-    writeDump(dumpPathValue.c_str(), pointers);
+    // Its own pair of files. Nothing already written is touched, so a crash that
+    // follows another - which is usually a consequence of it - cannot bury the first
+    // one, and the numbers say what happened in which order.
+    const int index = nextIndex;
+    if (nextIndex < MAX_REPORTS) {
+        nextIndex++;
+    }
+
+    lastReportValue = reportPath(index, ".txt");
+    writeText(lastReportValue.c_str(), text);
+    writeDump(reportPath(index, ".dmp").c_str(), pointers);
 }
 
 namespace {
@@ -302,7 +344,11 @@ int CrashReport::written() {
     return reportsWritten;
 }
 
-const char* CrashReport::textPath() {
+const char* CrashReport::folder() {
     ensurePaths();
-    return textPathValue.c_str();
+    return folderValue.c_str();
+}
+
+const char* CrashReport::lastReport() {
+    return lastReportValue.c_str();
 }
