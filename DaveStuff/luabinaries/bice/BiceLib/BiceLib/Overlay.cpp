@@ -398,7 +398,7 @@ namespace {
             }
 
             ERROR_OUT(printf("The overlay crashed and has been switched off. "
-                "A report is in %s\n", CrashReport::textPath()));
+                "The report is %s\n", CrashReport::lastReport()));
             return;
         }
         CrashReport::noteFrameEnd();

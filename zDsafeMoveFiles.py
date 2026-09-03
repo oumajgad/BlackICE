@@ -68,8 +68,7 @@ PreserveInScript = [
     "combat_reports",
     # Crash reports are the whole evidence of a crash somebody has reported, and a
     # deploy is exactly what happens next after one arrives.
-    "BiceLibCrash.txt",
-    "BiceLibCrash.dmp",
+    "crash_reports",
 ]
 
 PreserveStash = os.path.abspath("./.deploy-preserved")
