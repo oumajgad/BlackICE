@@ -177,12 +177,18 @@ diplomatic_decisions = {
 		}
 		allow = {
 			date = 1942.2.1
-			brigade_exist = "1. Jaakaripataljoona"
-			brigade_exist = "2. Jaakaripataljoona"
-			brigade_exist = "3. Jaakaripataljoona"
-			brigade_exist = "4. Jaakaripataljoona"
-			brigade_exist = "5. Jaakaripataljoona"
-			brigade_exist = "Jaakariprikaati esikunta"
+			or = {
+				and = {
+					ai = no
+					brigade_exist = "1. Jaakaripataljoona"
+					brigade_exist = "2. Jaakaripataljoona"
+					brigade_exist = "3. Jaakaripataljoona"
+					brigade_exist = "4. Jaakaripataljoona"
+					brigade_exist = "5. Jaakaripataljoona"
+					brigade_exist = "Jaakariprikaati esikunta"
+				}
+				ai = yes
+			}
 		}
 		effect = {
 			country_event = 49021
