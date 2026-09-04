@@ -212,6 +212,44 @@ namespace {
         }
     }
 
+    /**
+    @brief says so when the record holds a branch of the campaign that was abandoned
+
+    Loading an old savegame and playing on makes a second version of the same months,
+    and the file keeps both - it has to, since going back to the later savegame has to
+    find its own history intact. Only one of them is the campaign being played, and
+    the figures above are that one. This is where the rest of the file goes, so a
+    total that is smaller than the file is explained rather than suspicious.
+    */
+    void drawTimelineNote() {
+        if (Combat::Store::sessionPending()) {
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
+                "A savegame was just loaded - these are still the figures from before it.");
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip(
+                    "Which run of the campaign a savegame belongs to is kept on OMG,\n"
+                    "and reading it means calling the game's script, which is only\n"
+                    "safe to do once a combat has been caught. The next combat\n"
+                    "anywhere in the world settles it - usually within game hours,\n"
+                    "and in peacetime there is nothing being miscounted meanwhile.");
+            }
+        }
+
+        const int aside = Combat::Store::setAside();
+        if (aside > 0) {
+            ImGui::TextDisabled("%d combats set aside, on branches this campaign left",
+                aside);
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip(
+                    "Combats in the file that this campaign did not fight: they were\n"
+                    "fought after an old savegame was loaded, on a run that was then\n"
+                    "left for another. They stay in the file, because going back to\n"
+                    "that run would make them count again, and they are left out of\n"
+                    "every figure on this page.");
+            }
+        }
+    }
+
     void drawReport() {
         const std::string& tag = Gui::Selection::tag();
         const unsigned int now = Combat::Store::currentTick();
@@ -414,7 +452,10 @@ namespace {
             ImGui::TextDisabled("Campaign %d, %d combats recorded",
                 Combat::Store::campaign(), Combat::Store::count());
             if (ImGui::IsItemHovered() && !Combat::Store::path().empty()) {
-                ImGui::SetTooltip("%s", Combat::Store::path().c_str());
+                ImGui::SetTooltip("%s\n\nSession %u, %d deep in the campaign's history\n%s",
+                    Combat::Store::path().c_str(), Combat::Store::session(),
+                    Combat::Store::timelineDepth(),
+                    Combat::Store::sessionPath().c_str());
             }
         }
         if (!Combat::recording()) {
@@ -422,6 +463,8 @@ namespace {
             ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "- not recording, so nothing is being added");
         }
+
+        drawTimelineNote();
     }
 
     // The last few battles, not a war diary: the figures above are for reading a

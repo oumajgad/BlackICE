@@ -12,8 +12,24 @@
  * script/utility_data/bicedata_combat.lua. Without that, two campaigns would pour
  * their combats into the same record.
  *
- * The files live beside the DLL, under a folder of their own. A deploy clears that
- * directory, so a developer redeploying loses the record; a player never does.
+ * A campaign is not one timeline. Loading a savegame from a year ago and playing on
+ * fights that year's battles again, differently, and the record ends up holding both
+ * runs - so counting a month would add two timelines together. Every load therefore
+ * starts a *session*, whose parent is the session the loaded savegame was written in,
+ * and every combat is filed under the session that fought it. The chain of parents
+ * from the current session back to the root is the timeline being played; a session
+ * off that chain was abandoned and its combats are set aside.
+ *
+ * The chain alone is not enough, because an ancestor kept playing past the point the
+ * branch left it. So a session also records the tick it started at, and an ancestor
+ * counts only up to where its child in the chain branched off.
+ *
+ * The sessions live in a file of their own beside the combats, because they are a
+ * different kind of thing and a reader of either should not have to skip the other.
+ *
+ * The files live beside the DLL, under a folder of their own, which a deploy keeps -
+ * see PreserveInScript in zDsafeMoveFiles.py. A record is months of playing and is
+ * not reproducible, so it outlives the DLL that wrote it.
  */
 
 #include <cstdint>
@@ -44,6 +60,11 @@ namespace Combat {
         int defenderId = 0;
         int defenderLosses = 0;
         int defenderMen = 0;
+
+        // Which run of the campaign fought it. Zero for a combat written before
+        // sessions existed, which the chain treats as the root of every timeline -
+        // so an old record keeps counting rather than disappearing.
+        unsigned int session = 0;
     };
 
     /**@brief what one country's fighting came to over a stretch of time*/
@@ -81,6 +102,30 @@ namespace Combat {
 
         /**@brief where the record is being kept, empty until there is a campaign*/
         const std::string& path();
+
+        /**@brief where the sessions are listed, empty until there is a campaign*/
+        const std::string& sessionPath();
+
+        /**@brief the session combats are being filed under, 0 before one is claimed*/
+        unsigned int session();
+
+        /**@brief how many sessions the timeline being played is made of*/
+        int timelineDepth();
+
+        /**@brief combats in the file that belong to a branch this timeline left*/
+        int setAside();
+
+        /**
+        @brief true when a savegame has been loaded and the session is not known yet
+
+        A load is spotted from the game's clock, which costs nothing, but the session
+        it started can only be read through Lua - and this only talks to Lua once a
+        combat has been captured, since there is no safe way to call it at the main
+        menu. In between, the page is showing the timeline as it was before the load.
+        Combat is near enough constant in a war that the gap closes in game hours;
+        in peace it can be long, and there is nothing in it to get wrong.
+        */
+        bool sessionPending();
 
         /**@brief why there is no record yet, when there is none*/
         const std::string& reason();
