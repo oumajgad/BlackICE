@@ -1,4 +1,5 @@
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 
 #include <Windows.h>
 #include <cstdio>
@@ -120,7 +121,7 @@ namespace {
                 // game's own tooltip, and people notice that and assume a bug.
                 if (!entity.stats.empty() && isUnitType(entity.type)) {
                     ImGui::Spacing();
-                    ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+                    ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                         "Base values for the unit type.");
                     if (ImGui::IsItemHovered()) {
                         ImGui::SetTooltip(

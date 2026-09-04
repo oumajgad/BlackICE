@@ -5,6 +5,7 @@
 // the same thing in one control.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/CountrySelection.hpp>
 
@@ -93,7 +94,7 @@ namespace {
 
         if (isPending) {
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "waiting...");
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "waiting...");
             ImGui::SetItemTooltip("Waiting for the game to apply this");
         }
     }

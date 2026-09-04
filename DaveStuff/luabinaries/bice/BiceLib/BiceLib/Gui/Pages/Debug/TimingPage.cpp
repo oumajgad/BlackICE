@@ -10,6 +10,7 @@
 // reports it.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/Warmup.hpp>
 
 #include <algorithm>
@@ -84,7 +85,7 @@ namespace {
             "G_ImguiWarmupEnabled in script/utility_settings.lua.");
 
         if (warmup.finished) {
-            ImGui::TextColored(ImVec4(0.45f, 0.85f, 0.45f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Success),
                 "done, %.0f ms spent up front", warmup.totalMs);
         }
         else if (warmup.started) {
@@ -145,7 +146,7 @@ namespace {
             // Only the expensive ones are coloured; a table where every row shouts says
             // nothing about which page to look at.
             if (timing.firstMs >= INTERESTING_MS) {
-                ImGui::TextColored(ImVec4(0.85f, 0.55f, 0.35f, 1.0f), "%.1f ms", timing.firstMs);
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "%.1f ms", timing.firstMs);
             }
             else {
                 ImGui::Text("%.1f ms", timing.firstMs);

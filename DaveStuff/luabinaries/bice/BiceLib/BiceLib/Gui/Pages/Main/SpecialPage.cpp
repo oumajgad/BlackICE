@@ -16,6 +16,7 @@
 // pressing the other button.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Overlay.hpp>
 
@@ -210,7 +211,7 @@ namespace {
         ImGui::Spacing();
 
         if (!anims.exists) {
-            ImGui::TextColored(ImVec4(0.85f, 0.35f, 0.35f, 1.0f), "Not found: %s",
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Error), "Not found: %s",
                 animsPath().c_str());
             ImGui::TextWrapped("This is looked up next to hoi3_tfh.exe. If the game "
                 "lives somewhere else, nothing here can be done.");
@@ -244,10 +245,10 @@ namespace {
 
         ImGui::Spacing();
         if (anims.files == 0 && backup.files > 0) {
-            ImGui::TextColored(ImVec4(0.45f, 0.85f, 0.45f, 1.0f), "The sprites are moved aside.");
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Success), "The sprites are moved aside.");
         }
         else if (backup.files > 0) {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "Partly moved: there are sprites in both places.");
         }
         else {
@@ -256,7 +257,7 @@ namespace {
 
         ImGui::Spacing();
         if (inGame) {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "Best done at the main menu.");
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "Best done at the main menu.");
             ImGui::TextWrapped("Once a game has been started the sprites may be open, "
                 "and an open file cannot be moved. Nothing is lost if that happens - the "
                 "files that fail are listed and stay where they are - but a set moved "
@@ -298,7 +299,7 @@ namespace {
             if (inGame) {
                 // Repeated here because this is the click that does it, and the warning
                 // higher up the page may well have scrolled out of sight.
-                ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                     "A game is running: sprites it has open will refuse to move.");
             }
             if (ImGui::Button("Move them")) {
@@ -329,8 +330,8 @@ namespace {
 
         if (!result.empty()) {
             ImGui::Spacing();
-            ImGui::TextColored(resultIsError ? ImVec4(0.85f, 0.35f, 0.35f, 1.0f)
-                                             : ImVec4(0.45f, 0.85f, 0.45f, 1.0f),
+            ImGui::TextColored(resultIsError ? Gui::Theme::mark(Gui::Theme::Mark::Error)
+                                             : Gui::Theme::mark(Gui::Theme::Mark::Success),
                 "%s", result.c_str());
             for (const std::string& failure : failures) {
                 ImGui::TextWrapped("%s", failure.c_str());

@@ -13,6 +13,7 @@
 
 #include <Diagnostics.hpp>
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <GameState/CombatStore.hpp>
 #include <Gui/TextureStats.hpp>
 #include <MemScan.hpp>
@@ -241,18 +242,18 @@ namespace {
             // has no place in the task bar or in alt-tab.
             io.ConfigViewportsNoTaskBarIcon = true;
 
-            // A detached window is its own OS window: rounded corners would show the
-            // desktop through the gaps, and a translucent background would show
-            // whatever is behind it rather than the game.
-            ImGuiStyle& style = ImGui::GetStyle();
-            style.WindowRounding = 0.0f;
-            style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+            // What a detached window needs is put on by Gui::Theme::apply() below,
+            // which has to enforce it whichever theme is chosen.
         }
         else {
             INFO_OUT(printf("Overlay: present thread %lu is not the window thread %lu, "
                 "so pages stay inside the game window\n",
                 GetCurrentThreadId(), windowThread));
         }
+
+        // Before the first frame, so the overlay never appears in one style and then
+        // changes. Applied after the viewport flags, which it reads.
+        Gui::Theme::apply();
 
         if (!ImGui_ImplWin32_Init(gameWindow) || !ImGui_ImplDX9_Init(device)) {
             ERROR_OUT(printf("Overlay: ImGui backend init failed\n"));

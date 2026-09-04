@@ -7,6 +7,7 @@
 // page, so it docks and tabs alongside everything else.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/ListBox.hpp>
 #include <Gui/CountrySelection.hpp>
@@ -190,7 +191,7 @@ namespace {
             ImGui::TableNextColumn();
             // Expiring within a week is worth noticing before it lapses.
             if (trade.expiresIn <= 7) {
-                ImGui::TextColored(ImVec4(0.85f, 0.60f, 0.20f, 1.0f), "%dd", trade.expiresIn);
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "%dd", trade.expiresIn);
             }
             else {
                 ImGui::Text("%dd", trade.expiresIn);
@@ -323,7 +324,7 @@ namespace {
                     ImGui::TableNextColumn();
                     // What can actually be bought right now.
                     if (row.available > 0.0) {
-                        ImGui::TextColored(ImVec4(0.35f, 0.80f, 0.40f, 1.0f), "%.0f", row.available);
+                        ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Success), "%.0f", row.available);
                     }
                     else {
                         ImGui::Text("%.0f", row.available);

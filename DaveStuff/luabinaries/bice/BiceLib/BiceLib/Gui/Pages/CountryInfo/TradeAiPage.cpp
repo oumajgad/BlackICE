@@ -5,6 +5,7 @@
 // and written as one set by Apply. Only the status line is polled.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/CountrySelection.hpp>
 
@@ -255,14 +256,14 @@ namespace {
         }
         ImGui::SameLine();
         if (pendingActive >= 0) {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 shownActive ? "Active..." : "Inactive...");
             if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("Waiting for the game to apply this");
             }
         }
         else if (shownActive) {
-            ImGui::TextColored(ImVec4(0.45f, 0.85f, 0.45f, 1.0f), "Active");
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Success), "Active");
         }
         else {
             ImGui::TextDisabled("Inactive");
@@ -284,18 +285,18 @@ namespace {
         ImGui::TextDisabled("%s (%s)", tag.c_str(), Gui::Selection::source().c_str());
 
         if (!configured) {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "Never configured - showing defaults. Apply to adopt them.");
         }
         if (!status.empty()) {
-            ImGui::TextColored(statusIsError ? ImVec4(0.85f, 0.35f, 0.35f, 1.0f)
-                                             : ImVec4(0.45f, 0.85f, 0.45f, 1.0f),
+            ImGui::TextColored(statusIsError ? Gui::Theme::mark(Gui::Theme::Mark::Error)
+                                             : Gui::Theme::mark(Gui::Theme::Mark::Success),
                 "%s", status.c_str());
         }
         else if (dirty) {
             // Amber, the same as every other warning in the utility: what is on screen
             // is not what the game has.
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "Edited - press Apply to send it to the game");
         }
 

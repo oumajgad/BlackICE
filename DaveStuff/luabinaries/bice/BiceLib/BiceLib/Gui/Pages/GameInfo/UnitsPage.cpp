@@ -6,6 +6,7 @@
 // change re-fetches all three together rather than patching one of them.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/ListBox.hpp>
 
@@ -214,7 +215,7 @@ namespace {
         }
         else if (techLevel != techResearched) {
             // Highlighted so an assumed level is never mistaken for a real one.
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "%s: level %d (researched %d)", techKey.c_str(), techLevel, techResearched);
         }
         else {
@@ -234,7 +235,7 @@ namespace {
         }
         else {
             if (!techApplied) {
-                ImGui::TextColored(ImVec4(0.85f, 0.60f, 0.20f, 1.0f),
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                     "Not researched. Showing level 1 for reference;\nit is not included in the stats above.");
             }
             drawTextBox("##techeffects", techEffects, -FLT_MIN);

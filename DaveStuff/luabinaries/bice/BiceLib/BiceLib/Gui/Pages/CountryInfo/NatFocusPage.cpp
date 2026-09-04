@@ -6,6 +6,7 @@
 // whole run up to it.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/CountrySelection.hpp>
 
@@ -266,7 +267,7 @@ namespace {
         ImGui::Text("Current focus:");
         ImGui::SameLine();
         if (pendingFocus >= 0) {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "%s...", focusName(shown));
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "%s...", focusName(shown));
             if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip("Waiting for the game to apply this");
             }
@@ -310,7 +311,7 @@ namespace {
 
             ImGui::TableNextColumn();
             if (isShown) {
-                ImGui::TextColored(ImVec4(0.45f, 0.85f, 0.45f, 1.0f), "%s", focus.name.c_str());
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Success), "%s", focus.name.c_str());
             }
             else {
                 ImGui::TextUnformatted(focus.name.c_str());

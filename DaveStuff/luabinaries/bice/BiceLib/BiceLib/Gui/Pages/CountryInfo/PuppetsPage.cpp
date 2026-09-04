@@ -5,6 +5,7 @@
 // pending and displayed as asked for until the game confirms them.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/CountrySelection.hpp>
 
@@ -172,7 +173,7 @@ namespace {
         }
         if (pendingDecision >= 0) {
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "(pending)");
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "(pending)");
         }
 
         ImGui::SeparatorText("Vassals");
@@ -200,7 +201,7 @@ namespace {
                 // otherwise the buttons below say one thing and the table another.
                 const bool rowPending = (pendingFocus != 0 && puppet.tag == selected);
                 if (rowPending && pendingFocus - 1 < static_cast<int>(focusNames.size())) {
-                    ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "%s...",
+                    ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "%s...",
                         focusNames[pendingFocus - 1].c_str());
                 }
                 else {
@@ -219,7 +220,7 @@ namespace {
         if (pendingFocus != 0) {
             ImGui::Text("Set focus for %s", selected.c_str());
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "(waiting for the game)");
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "(waiting for the game)");
         }
         else {
             ImGui::Text("Set focus for %s", selected.c_str());
@@ -233,7 +234,7 @@ namespace {
             const int shownFocus = (pendingFocus != 0) ? pendingFocus : selectedFocus;
             const bool isCurrent = (focusIndex == shownFocus);
             if (isCurrent) {
-                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.59f, 0.35f, 1.0f));
+                ImGui::PushStyleColor(ImGuiCol_Button, Gui::Theme::mark(Gui::Theme::Mark::SuccessFill));
             }
             if (ImGui::Button(focusNames[i].c_str(), ImVec2(84.0f, 0.0f))) {
                 setFocus(focusIndex);

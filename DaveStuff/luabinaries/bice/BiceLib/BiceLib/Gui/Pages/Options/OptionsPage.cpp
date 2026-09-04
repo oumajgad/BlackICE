@@ -18,6 +18,7 @@
 
 #include <CrashReport.hpp>
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Overlay.hpp>
 #include <Settings.hpp>
@@ -111,12 +112,12 @@ namespace {
 
         ImGui::SameLine();
         if (current == "custom") {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "edited by hand");
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "edited by hand");
             ImGui::SetItemTooltip("The line is there but holds neither of the two known "
                 "positions, so it was changed outside this utility.");
         }
         else if (current == "unknown") {
-            ImGui::TextColored(ImVec4(0.85f, 0.35f, 0.35f, 1.0f), "not found");
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Error), "not found");
             ImGui::SetItemTooltip("The marked line is missing from the interface file. "
                 "Check that the mod version matches this utility.");
         }
@@ -149,8 +150,8 @@ namespace {
             }
             ImGui::SameLine();
             if (!status.empty()) {
-                ImGui::TextColored(statusIsError ? ImVec4(0.85f, 0.35f, 0.35f, 1.0f)
-                                                 : ImVec4(0.45f, 0.85f, 0.45f, 1.0f),
+                ImGui::TextColored(statusIsError ? Gui::Theme::mark(Gui::Theme::Mark::Error)
+                                                 : Gui::Theme::mark(Gui::Theme::Mark::Success),
                     "%s", status.c_str());
             }
             else {
@@ -235,6 +236,23 @@ namespace {
             ImGui::Spacing();
             ImGui::TextDisabled("Saved settings: %s", Settings::path().c_str());
         }
+
+        ImGui::SeparatorText("Theme");
+        // Driven by the list rather than naming any theme, so one added in Theme.cpp
+        // appears here without this page changing.
+        for (int i = 0; i < Gui::Theme::count(); i++) {
+            const Gui::Theme::Info info = Gui::Theme::at(i);
+            if (i > 0) {
+                ImGui::SameLine();
+            }
+            if (ImGui::RadioButton(info.name, Gui::Theme::currentIndex() == i)) {
+                Gui::Theme::setCurrent(i);
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("%s", info.description);
+            }
+        }
+        ImGui::TextWrapped("Takes effect at once, and is remembered.");
 
         ImGui::SeparatorText("Crash reports");
         ImGui::TextWrapped(

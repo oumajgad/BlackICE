@@ -7,6 +7,7 @@
 // for something only one unit at a time ever shows.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/CountrySelection.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <GameState/OrderOfBattle.hpp>
@@ -24,14 +25,11 @@
 namespace {
     // Red for a unit with nobody commanding it, plain white for none of them: a
     // count of zero is good news and should not be dressed as a warning.
-    const ImVec4 LEADERLESS = ImVec4(0.85f, 0.35f, 0.35f, 1.0f);
-    const ImVec4 NONE_MISSING = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
     // The same red, dimmed, for a formation that is only red because of something
     // underneath it. One unled division turns its whole chain of command red, and
     // without the difference in shade there is no telling the culprit from the trail
     // leading to it.
-    const ImVec4 LEADERLESS_BELOW = ImVec4(0.62f, 0.34f, 0.34f, 1.0f);
 
     Oob::Tree tree;
     std::string readTag;
@@ -172,7 +170,7 @@ namespace {
         const bool unled = unit.leaderMissing || unit.leaderlessBelow > 0;
         if (unled) {
             ImGui::PushStyleColor(ImGuiCol_Text,
-                unit.leaderMissing ? LEADERLESS : LEADERLESS_BELOW);
+                unit.leaderMissing ? Gui::Theme::mark(Gui::Theme::Mark::Error) : Gui::Theme::mark(Gui::Theme::Mark::ErrorDim));
         }
         const bool open = ImGui::TreeNodeEx("node", flags, "%s", label);
         if (unled) {
@@ -530,7 +528,7 @@ namespace {
             ImGui::Text("%d subordinate formations, %d levels deep",
                 static_cast<int>(unit->children.size()), unit->depthBelow);
             ImGui::Text("%d regiments below", unit->regimentsBelow);
-            ImGui::TextColored(unit->leaderlessBelow > 0 ? LEADERLESS : NONE_MISSING,
+            ImGui::TextColored(unit->leaderlessBelow > 0 ? Gui::Theme::mark(Gui::Theme::Mark::Error) : Gui::Theme::mark(Gui::Theme::Mark::Strong),
                 "%d without a commander", unit->leaderlessBelow);
             ImGui::Text("Supply %.0f%% average, fuel %.0f%% average",
                 unit->supplyAverageBelow / 10.0, unit->fuelAverageBelow / 10.0);
@@ -618,7 +616,7 @@ namespace {
             static_cast<int>(tree.units.size()), tree.landTotal, tree.airTotal,
             tree.navalTotal, tree.regimentTotal);
         if (tree.truncated > 0) {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "Stopped after %d units; the rest were not read.",
                 static_cast<int>(tree.units.size()));
         }

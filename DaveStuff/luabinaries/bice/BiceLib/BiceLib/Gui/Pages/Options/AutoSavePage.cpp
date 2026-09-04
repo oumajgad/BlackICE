@@ -3,6 +3,7 @@
 // reversing/FINDINGS-autosave.md.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <GameState/AutoSave.hpp>
 
 #include <cstring>
@@ -11,7 +12,6 @@
 #include <imgui.h>
 
 namespace {
-    const ImVec4 AMBER = ImVec4(0.80f, 0.60f, 0.20f, 1.0f);
 
     // Edited in place by the input and only handed on when editing finishes, so the
     // settings file is not rewritten on every keystroke.
@@ -57,7 +57,7 @@ namespace {
         }
 
         if (on && !AutoSave::hooked()) {
-            ImGui::TextColored(AMBER, "Not hooked: %s", AutoSave::status());
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "Not hooked: %s", AutoSave::status());
         }
 
         ImGui::Spacing();
@@ -89,7 +89,7 @@ namespace {
             AutoSave::setSaveName(std::string(nameBuffer));
         }
         if (!safe) {
-            ImGui::TextColored(AMBER,
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "Letters, digits, - and _ only. Not saved while it says this.");
         }
 

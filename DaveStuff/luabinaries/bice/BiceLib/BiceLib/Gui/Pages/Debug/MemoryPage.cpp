@@ -1,4 +1,5 @@
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/TextureStats.hpp>
 
@@ -144,12 +145,12 @@ namespace {
         const float fraction = limit > 0 ? static_cast<float>(static_cast<double>(used) / static_cast<double>(limit)) : 0.0f;
 
         // Green below 60%, amber past that, red once we're near the 32 bit ceiling.
-        ImVec4 barColor = ImVec4(0.26f, 0.59f, 0.35f, 1.0f);
+        ImVec4 barColor = Gui::Theme::mark(Gui::Theme::Mark::SuccessFill);
         if (fraction >= 0.85f) {
-            barColor = ImVec4(0.75f, 0.22f, 0.22f, 1.0f);
+            barColor = Gui::Theme::mark(Gui::Theme::Mark::ErrorDim);
         }
         else if (fraction >= 0.60f) {
-            barColor = ImVec4(0.80f, 0.60f, 0.20f, 1.0f);
+            barColor = Gui::Theme::mark(Gui::Theme::Mark::Warning);
         }
 
         char usedText[32];
@@ -305,7 +306,7 @@ namespace {
                 ? summary.bytes - summary.liveBytes : 0, scratch2, sizeof(scratch2)));
 
         if (!summary.releaseHooked) {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "Release is not hooked, so nothing ever leaves the live totals.");
         }
 
@@ -356,7 +357,7 @@ namespace {
                 }
                 ImGui::TableNextColumn();
                 if (row.compressed) {
-                    ImGui::TextColored(ImVec4(0.45f, 0.85f, 0.45f, 1.0f), "compressed");
+                    ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Success), "compressed");
                 }
                 else if (row.liveBytes == 0 && row.bytes == 0) {
                     ImGui::TextDisabled("unsized");

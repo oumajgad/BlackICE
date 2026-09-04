@@ -2,6 +2,7 @@
 // each of the mod's strategic resources.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/CountrySelection.hpp>
 
@@ -161,7 +162,7 @@ namespace {
             ImGui::TableNextColumn();
             // A negative balance is a shortage, which is the thing worth spotting.
             if (resource.balance < 0.0) {
-                ImGui::TextColored(ImVec4(0.85f, 0.35f, 0.35f, 1.0f), "%.0f", resource.balance);
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Error), "%.0f", resource.balance);
             }
             else {
                 ImGui::Text("%.0f", resource.balance);
@@ -186,7 +187,7 @@ namespace {
             ImGui::SameLine();
             if (isPending) {
                 // Shown as asked for, but flagged until the game confirms it.
-                ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                     selling ? "Selling..." : "Stopped...");
                 if (ImGui::IsItemHovered()) {
                     ImGui::SetTooltip("Waiting for the game to apply this");

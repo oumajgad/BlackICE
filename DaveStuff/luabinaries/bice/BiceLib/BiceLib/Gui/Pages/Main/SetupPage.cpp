@@ -1,4 +1,5 @@
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/CountrySelection.hpp>
 #include <Gui/LuaBridge.hpp>
 
@@ -141,7 +142,7 @@ namespace {
             selectTag(typedTag);
         }
         if (!selectFailure.empty()) {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "%s",
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "%s",
                 selectFailure.c_str());
         }
 

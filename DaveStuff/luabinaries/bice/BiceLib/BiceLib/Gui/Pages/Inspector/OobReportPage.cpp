@@ -6,6 +6,7 @@
 // the units when both are open, and only when refreshed.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/CountrySelection.hpp>
 #include <GameState/OrderOfBattle.hpp>
 
@@ -204,8 +205,8 @@ namespace {
         // Red when there are any, plain white when there are none: nothing missing is
         // good news and should not look like a warning.
         ImGui::TextColored(tree.leaderlessTotal > 0
-            ? ImVec4(0.85f, 0.35f, 0.35f, 1.0f)
-            : ImVec4(1.0f, 1.0f, 1.0f, 1.0f),
+            ? Gui::Theme::mark(Gui::Theme::Mark::Error)
+            : Gui::Theme::mark(Gui::Theme::Mark::Strong),
             "%d units without a commander", tree.leaderlessTotal);
 
         ImGui::Text("Supply %.0f%% average, fuel %.0f%% average",

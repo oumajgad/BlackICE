@@ -1,4 +1,5 @@
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 
 #include <Windows.h>
@@ -132,7 +133,7 @@ namespace {
             ImGui::TextUnformatted("Current investment");
             ImGui::TableNextColumn();
             if (pendingInvestment != 0) {
-                ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "%d%%...", pendingInvestment);
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "%d%%...", pendingInvestment);
             }
             else {
                 ImGui::Text("%.0f%%", snapshot.investment);

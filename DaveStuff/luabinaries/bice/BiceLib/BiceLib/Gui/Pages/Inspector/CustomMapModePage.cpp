@@ -3,6 +3,7 @@
 // the page has room to grow. See reversing/FINDINGS-mapmode.md.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/ListBox.hpp>
 #include <GameState/CustomMapMode.hpp>
 
@@ -14,7 +15,6 @@
 #include <imgui.h>
 
 namespace {
-    const ImVec4 AMBER = ImVec4(0.80f, 0.60f, 0.20f, 1.0f);
 
     char buildingFilter[64] = {};
     std::string selectedName;
@@ -44,10 +44,10 @@ namespace {
         }
 
         if (on && !CustomMapMode::hooked()) {
-            ImGui::TextColored(AMBER, "Not hooked: %s", CustomMapMode::status());
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "Not hooked: %s", CustomMapMode::status());
         }
         else if (on) {
-            ImGui::TextColored(AMBER,
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "Reselect the VP map mode in game to redraw the map.");
         }
 

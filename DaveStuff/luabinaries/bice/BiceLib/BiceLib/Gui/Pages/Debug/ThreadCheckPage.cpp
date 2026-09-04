@@ -1,4 +1,5 @@
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 
 #include <Windows.h>
 
@@ -39,7 +40,7 @@ namespace {
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
                 if (isRenderThread) {
-                    ImGui::TextColored(ImVec4(0.35f, 0.80f, 0.40f, 1.0f), "%lu (render)", record.threadId);
+                    ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Success), "%lu (render)", record.threadId);
                 }
                 else {
                     ImGui::Text("%lu", record.threadId);
@@ -60,18 +61,18 @@ namespace {
         ImGui::Spacing();
 
         if (!Diagnostics::presentThreadRunsLua()) {
-            ImGui::TextColored(ImVec4(0.85f, 0.30f, 0.30f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Error),
                 "The render thread has never run Lua - snapshot bridge needed.");
             return;
         }
 
         if (Diagnostics::presentDuringOtherThreadLua() == 0) {
-            ImGui::TextColored(ImVec4(0.35f, 0.80f, 0.40f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Success),
                 "The render thread runs Lua and never renders while another thread is\n"
                 "inside Lua - direct calls look safe.");
         }
         else {
-            ImGui::TextColored(ImVec4(0.85f, 0.60f, 0.20f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "The render thread runs Lua, but other threads are in Lua during frames.\n"
                 "Safe only if those threads use a different lua_State (compare above).");
         }

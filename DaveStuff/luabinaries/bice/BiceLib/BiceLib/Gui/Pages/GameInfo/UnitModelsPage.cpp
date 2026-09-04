@@ -6,6 +6,7 @@
 // the game's fallback rules rather than rendering.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/ListBox.hpp>
 #include <Gui/TextureCache.hpp>
@@ -241,7 +242,7 @@ namespace {
                     ImGui::TableNextColumn();
                     // Red when the country cannot field this model yet.
                     if (row.researched < row.required) {
-                        ImGui::TextColored(ImVec4(0.85f, 0.35f, 0.35f, 1.0f), "%d", row.researched);
+                        ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Error), "%d", row.researched);
                     }
                     else {
                         ImGui::Text("%d", row.researched);

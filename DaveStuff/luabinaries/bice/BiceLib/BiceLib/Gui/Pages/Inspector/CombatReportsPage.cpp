@@ -20,6 +20,7 @@
 // How all of that was worked out is in the reversing folder beside the solution.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/CountrySelection.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <GameState/CombatLog.hpp>
@@ -333,7 +334,7 @@ namespace {
                     tag.c_str(), Gui::Selection::source().c_str());
             }
             else {
-                ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                     "not a date - write it as 1936.1.1 | showing %s to %s",
                     dateOnly(from).c_str(), dateOnly(to).c_str());
             }
@@ -392,7 +393,7 @@ namespace {
 
         ImGui::Spacing();
         if (nameless > 0) {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "%d combats in this period name only their winner.", nameless);
             if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip(
@@ -406,7 +407,7 @@ namespace {
             ImGui::Spacing();
         }
         if (Combat::Store::campaign() == 0) {
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "No campaign yet: %s",
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "No campaign yet: %s",
                 Combat::Store::reason().c_str());
         }
         else {
@@ -418,7 +419,7 @@ namespace {
         }
         if (!Combat::recording()) {
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                 "- not recording, so nothing is being added");
         }
     }
@@ -582,10 +583,10 @@ namespace {
                     ImGui::TextDisabled("-");
                 }
                 else if (won) {
-                    ImGui::TextColored(ImVec4(0.45f, 0.85f, 0.45f, 1.0f), "Won");
+                    ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Success), "Won");
                 }
                 else {
-                    ImGui::TextColored(ImVec4(0.85f, 0.45f, 0.45f, 1.0f), "Lost");
+                    ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Error), "Lost");
                 }
 
                 ImGui::TableNextColumn();
@@ -617,7 +618,7 @@ namespace {
         }
 
         if (Combat::Store::lost() > 0) {
-            ImGui::TextColored(ImVec4(0.85f, 0.35f, 0.35f, 1.0f),
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Error),
                 "%u combats were caught but could not be filed, so they are missing "
                 "from all of this.", Combat::Store::lost());
         }

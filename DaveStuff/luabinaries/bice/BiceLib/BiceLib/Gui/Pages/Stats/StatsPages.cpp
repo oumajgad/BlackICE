@@ -8,6 +8,7 @@
 // every Lua context sees the same answer whichever utility flipped them.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/ListBox.hpp>
 #include <Overlay.hpp>
@@ -158,7 +159,7 @@ namespace {
         }
         if (isPending) {
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(0.80f, 0.60f, 0.20f, 1.0f), "waiting...");
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "waiting...");
         }
     }
 
@@ -247,7 +248,7 @@ namespace {
         for (const std::string& tag : shown) {
             const bool waiting = pendingCountries.find(tag) != pendingCountries.end();
             if (waiting) {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.80f, 0.60f, 0.20f, 1.0f));
+                ImGui::PushStyleColor(ImGuiCol_Text, Gui::Theme::mark(Gui::Theme::Mark::Warning));
             }
             if (ImGui::Selectable(tag.c_str(), tag == selectedCountry)) {
                 selectedCountry = tag;

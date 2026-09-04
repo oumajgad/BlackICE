@@ -12,6 +12,7 @@
 //     catches that. The session gate is therefore left on unless deliberately lifted.
 
 #include <Gui/GuiPage.hpp>
+#include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/ListBox.hpp>
 #include <Overlay.hpp>
@@ -479,8 +480,8 @@ namespace {
 
         if (!Scripts::status.empty()) {
             ImGui::SameLine();
-            ImGui::TextColored(Scripts::statusIsError ? ImVec4(0.85f, 0.35f, 0.35f, 1.0f)
-                                                      : ImVec4(0.45f, 0.85f, 0.45f, 1.0f),
+            ImGui::TextColored(Scripts::statusIsError ? Gui::Theme::mark(Gui::Theme::Mark::Error)
+                                                      : Gui::Theme::mark(Gui::Theme::Mark::Success),
                 "%s", Scripts::status.c_str());
         }
 
@@ -525,7 +526,7 @@ namespace {
         }
         for (const Entry& entry : transcript) {
             // The echo keeps the transcript readable once several runs are stacked up.
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.55f, 0.70f, 0.90f, 1.0f));
+            ImGui::PushStyleColor(ImGuiCol_Text, Gui::Theme::mark(Gui::Theme::Mark::Info));
             ImGui::TextUnformatted("> ");
             ImGui::SameLine(0.0f, 0.0f);
             ImGui::TextUnformatted(entry.source.c_str());
@@ -535,7 +536,7 @@ namespace {
                 ImGui::TextUnformatted(entry.output.c_str());
             }
             if (!entry.error.empty()) {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.90f, 0.40f, 0.40f, 1.0f));
+                ImGui::PushStyleColor(ImGuiCol_Text, Gui::Theme::mark(Gui::Theme::Mark::Error));
                 ImGui::TextUnformatted(entry.error.c_str());
                 ImGui::PopStyleColor();
             }
