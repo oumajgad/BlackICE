@@ -77,4 +77,14 @@ namespace Overlay {
     void beginToggleKeyCapture();
     bool capturingToggleKey();
     void cancelToggleKeyCapture();
+
+    /**
+    @brief whether a page may be dragged out of the game window into one of its own
+
+    False in exclusive fullscreen, where D3D9 refuses a detached window the swap chain
+    it needs, and false when the presenting thread does not own the game window. Worth
+    saying on the page rather than leaving a player to find that pages behave one way
+    in a window and another way fullscreen and assume something is broken.
+    */
+    bool canDetachPages();
 }

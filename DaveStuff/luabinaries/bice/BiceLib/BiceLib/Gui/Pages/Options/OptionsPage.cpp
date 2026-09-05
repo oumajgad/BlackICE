@@ -204,6 +204,20 @@ namespace {
             "buttons did the same for its own windows. This one is not saved: it goes "
             "back to normal size when the game restarts.");
 
+        if (!Overlay::canDetachPages()) {
+            ImGui::Spacing();
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
+                "Pages cannot be dragged out of the game window.");
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip(
+                    "A page dragged out becomes a window of its own, which needs a\n"
+                    "second Direct3D swap chain - and the game running in exclusive\n"
+                    "fullscreen does not allow one.\n\n"
+                    "Run the game in windowed or borderless mode and pages can be put\n"
+                    "on a second monitor or hung over the edge of the game.");
+            }
+        }
+
         ImGui::Spacing();
         if (ImGui::Button("Reset layout...")) {
             ImGui::OpenPopup("Reset layout?");
