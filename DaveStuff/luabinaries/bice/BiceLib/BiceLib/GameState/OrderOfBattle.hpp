@@ -37,7 +37,15 @@ namespace Oob {
     /**@brief one regiment, brigade or ship inside a unit*/
     struct Regiment
     {
+        // The regiment's own name, which is historical and its own: "Artillerie
+        // Regiment 12". Counting these tells you nothing - a country of ten thousand
+        // regiments has about ten thousand of them.
         std::string name;
+
+        // What kind of regiment it is, as the mod's files spell it -
+        // "artillery_brigade". This is the one to group by.
+        std::string type;
+
         int strength = 0;      // scaled; see strengthOf(), the scale is not the same
                                // for every branch
         int organisation = 0;  // x1000

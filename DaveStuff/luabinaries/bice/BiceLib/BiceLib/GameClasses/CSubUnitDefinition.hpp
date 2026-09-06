@@ -15,6 +15,11 @@
 namespace CSubUnitDefinition {
     namespace Offsets {
         // General
+
+        // The type's key, as the mod's own files spell it - "infantry_brigade",
+        // "artillery_brigade". A std::string, so read it through HDS::readString.
+        constexpr uintptr_t key = 0x08;
+
         constexpr uintptr_t is_buildable = 0x36;          // boolean
         constexpr uintptr_t CUnitAdjuster_ptr = 0x54;     // Terrain modifiers
         constexpr uintptr_t max_strength = 0xEC;

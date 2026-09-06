@@ -19,6 +19,7 @@ namespace CRegiment {
         constexpr uintptr_t strength = 0x30;
         constexpr uintptr_t organisation = 0x60; // x1000
         constexpr uintptr_t name = 0x68;
+        constexpr uintptr_t sub_unit_definition_ptr = 0x58;
     }
 
     namespace VFTable {

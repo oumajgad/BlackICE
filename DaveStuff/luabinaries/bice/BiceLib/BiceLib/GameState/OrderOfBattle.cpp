@@ -4,6 +4,7 @@
 #include <GameClasses/CLeader.hpp>
 #include <GameClasses/CMapProvince.hpp>
 #include <GameClasses/CRegiment.hpp>
+#include <GameClasses/CSubUnitDefinition.hpp>
 #include <GameClasses/CUnit.hpp>
 #include <HoiDataStructures.hpp>
 #include <MemScan.hpp>
@@ -423,6 +424,16 @@ std::vector<Oob::Regiment> Oob::regiments(uintptr_t unit) {
     for (size_t i = 0; i < addresses.size(); i++) {
         Regiment regiment;
         regiment.name = HDS::readString(addresses[i] + CRegiment::Offsets::name);
+
+        // Two hops, because the type is not on the regiment: every regiment owns a
+        // definition holding its own stats, and only the key inside it says which
+        // kind of regiment this is.
+        const uintptr_t definition =
+            readValue<uint32_t>(addresses[i] + CRegiment::Offsets::sub_unit_definition_ptr);
+        if (definition != 0) {
+            regiment.type = HDS::readString(definition + CSubUnitDefinition::Offsets::key);
+        }
+
         // Left as the game holds it. What that number means depends on the branch,
         // which a regiment does not know on its own, so the scaling is strengthOf()'s
         // job and not this one's.

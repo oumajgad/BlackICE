@@ -268,6 +268,21 @@ The sub units a unit holds are `CRegiment` (`GameClasses/CRegiment.hpp`): streng
 Air and naval sub units are read through the same three and have never looked wrong,
 but only the land case is known to be this class.
 
+**What kind of regiment it is** is two hops, and neither of them is the name. The name
+at +0x68 is historical and unique to the regiment - 10400 distinct across 10860
+regiments of a running game, so counting them says nothing. Instead +0x58 is a
+`CSubUnitDefinition*`, **used** by the OOB report, and the key string at +0x08 of that
+is the type as the mod's files spell it: `artillery_brigade`, `interceptor`,
+`destroyer_actual`.
+
+The definition is per regiment, not per type - it holds that regiment's stats with its
+own country's technology applied - so the *pointer* identifies a regiment and only the
+key identifies a type. Found by taking every `CSubUnitDefinition` RTTI knows of and
+looking for the offset in a regiment holding one: +0x58 did, 4005 of 4005 sampled.
+Every branch carries a key: 7496 regiments across land, air and naval, none blank.
+Not to be confused with `sprite` at +0x198, which is the picture and has four values
+for the whole land branch.
+
 Also in `GameClasses/`, all **mem** unless marked otherwise, and each header its own
 authority: `CLeader.hpp`, `CMapProvince.hpp` (province id at +0xD0 is **used** by the
 combat capture and the OOB browser), `CSubUnitDefinition.hpp`, `CTerrain.cpp` (vftable
