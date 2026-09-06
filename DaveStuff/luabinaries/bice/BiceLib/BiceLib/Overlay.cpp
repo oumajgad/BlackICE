@@ -183,6 +183,83 @@ namespace {
         return path.c_str();
     }
 
+    // Whether pages may be dragged out of the game window. False in exclusive
+    // fullscreen, where D3D9 will not give a detached window a swap chain - see
+    // setViewportsEnabled.
+    bool viewportsAllowed = false;
+
+    // Whether the presenting thread owns the game window, which viewports also need
+    // and which cannot change once the game is running. Kept apart from the mode so a
+    // switch back to windowed does not turn viewports on where the thread forbids it.
+    bool viewportThreadOk = false;
+
+    /**
+    @brief whether the device is windowed, which is what a detached window needs
+
+    Asked of the device rather than of the game's settings file, because the device is
+    what refuses. A device that cannot be asked is treated as fullscreen: the cost of
+    being wrong that way is pages that stay inside the game window, and the cost of
+    being wrong the other way is the crash this exists to prevent.
+    */
+    bool deviceIsWindowed(IDirect3DDevice9* device) {
+        if (device == nullptr) {
+            return false;
+        }
+
+        IDirect3DSwapChain9* chain = nullptr;
+        if (FAILED(device->GetSwapChain(0, &chain)) || chain == nullptr) {
+            return false;
+        }
+
+        D3DPRESENT_PARAMETERS params = {};
+        const bool asked = SUCCEEDED(chain->GetPresentParameters(&params));
+        chain->Release();
+
+        return asked && params.Windowed != FALSE;
+    }
+
+    /**
+    @brief turns dragging pages out of the game window on or off
+
+    A detached window is a D3D9 additional swap chain, and CreateAdditionalSwapChain
+    fails for a device in exclusive fullscreen. The backend does not check: it stores
+    the null swap chain the failure leaves behind, and the next frame that renders the
+    window reads through it. That is an access violation in
+    ImGui_ImplDX9_RenderWindow, and it was reached by dragging a page one pixel past
+    the edge of a fullscreen game.
+
+    Turning the flag off is enough to undo it. ImGui puts the windows of a viewport it
+    is no longer allowed back into the main one and destroys the viewport itself over
+    the following frames, and the swap chains this would have rendered are only ever
+    reached through RenderPlatformWindowsDefault, which Present skips while the flag
+    is clear.
+    */
+    void setViewportsEnabled(bool enabled) {
+        const bool allowed = enabled && viewportThreadOk;
+        if (allowed == viewportsAllowed) {
+            return;
+        }
+        viewportsAllowed = allowed;
+
+        ImGuiIO& io = ImGui::GetIO();
+        if (allowed) {
+            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+        }
+        else {
+            io.ConfigFlags &= ~ImGuiConfigFlags_ViewportsEnable;
+        }
+
+        // Square corners and an opaque background are put on by the theme, and only
+        // when viewports are on - a detached window is its own OS window, so rounded
+        // corners would show the desktop through the gaps. Switching into windowed
+        // mode turns viewports on long after the theme was applied, so it is applied
+        // again. Harmless during setup, where it runs once more a moment later.
+        Gui::Theme::apply();
+
+        INFO_OUT(printf("Overlay: pages may %sbe dragged out of the game window\n",
+            allowed ? "" : "not "));
+    }
+
     /**@brief one time ImGui setup, done on the first frame, when the device is known*/
     void initImGui(IDirect3DDevice9* device) {
         D3DDEVICE_CREATION_PARAMETERS params;
@@ -222,22 +299,25 @@ namespace {
         // is what lets a page be put on a second monitor or hang over the edge of the
         // game instead of being clipped to its back buffer.
         //
-        // Two things have to hold. The device must be windowed, because each detached
-        // window becomes an additional D3D9 swap chain and D3D9 will not create those
-        // for a device in exclusive fullscreen. And the thread that presents must be
-        // the one that owns the game window: viewport windows are created by
-        // UpdatePlatformWindows on the presenting thread, and Windows delivers a
-        // window's messages only to the thread that created it, so a mismatch would
-        // give windows that draw but never respond.
+        // Two things have to hold. The thread that presents must be the one that owns
+        // the game window: viewport windows are created by UpdatePlatformWindows on
+        // the presenting thread, and Windows delivers a window's messages only to the
+        // thread that created it, so a mismatch would give windows that draw but never
+        // respond. That cannot change while the game runs, so it is settled here.
         //
-        // The thread is checked here rather than assumed. The windowed requirement is
-        // not - it is a setting the player can change - so a device that turns out to
-        // be fullscreen simply fails to create the extra swap chains, and the pages
-        // stay inside the game.
+        // And the device must be windowed, because each detached window becomes an
+        // additional D3D9 swap chain and D3D9 will not create those for a device in
+        // exclusive fullscreen. That one the player can change at any time, so it is
+        // asked again after every device reset rather than settled here.
+        //
+        // This used to be left unchecked, on the reasoning that a fullscreen device
+        // would simply fail to create the swap chains and the pages would stay inside
+        // the game. It does not work out that way: only the renderer half of a
+        // viewport fails, the window itself is created, and the backend renders it
+        // through the null the failure left behind. See setViewportsEnabled.
         const DWORD windowThread = GetWindowThreadProcessId(gameWindow, nullptr);
-        if (windowThread == GetCurrentThreadId()) {
-            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-
+        viewportThreadOk = (windowThread == GetCurrentThreadId());
+        if (viewportThreadOk) {
             // A page torn off is a window of the utility, not an application, so it
             // has no place in the task bar or in alt-tab.
             io.ConfigViewportsNoTaskBarIcon = true;
@@ -250,6 +330,7 @@ namespace {
                 "so pages stay inside the game window\n",
                 GetCurrentThreadId(), windowThread));
         }
+        setViewportsEnabled(deviceIsWindowed(device));
 
         // Before the first frame, so the overlay never appears in one style and then
         // changes. Applied after the viewport flags, which it reads.
@@ -470,6 +551,22 @@ namespace {
         HRESULT result = originalReset(device, presentationParameters);
 
         if (imguiReady && SUCCEEDED(result)) {
+            // The other way into the fullscreen crash, and the one the mode check at
+            // startup cannot catch: detach a page while windowed, then switch to
+            // fullscreen. CreateDeviceObjects builds a swap chain for every viewport
+            // that already exists, so the windows that were fine a moment ago come
+            // back holding nothing.
+            //
+            // Read from what the game asked for rather than from the device, because
+            // this is the one moment the device may not have caught up. Nulls that
+            // CreateDeviceObjects leaves behind are harmless once the flag is clear:
+            // they are only ever reached through RenderPlatformWindowsDefault, which
+            // Present then skips, and the viewport that holds one is destroyed over
+            // the next few frames as its windows go back into the game window.
+            if (presentationParameters != nullptr) {
+                setViewportsEnabled(presentationParameters->Windowed != FALSE);
+            }
+
             ImGui_ImplDX9_CreateDeviceObjects();
         }
         return result;
@@ -896,6 +993,10 @@ std::string Overlay::toggleKeyName() {
 
 void Overlay::beginToggleKeyCapture() {
     capturingKey = true;
+}
+
+bool Overlay::canDetachPages() {
+    return viewportsAllowed;
 }
 
 bool Overlay::capturingToggleKey() {
