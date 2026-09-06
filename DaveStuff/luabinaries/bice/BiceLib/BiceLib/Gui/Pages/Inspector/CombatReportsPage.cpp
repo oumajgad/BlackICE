@@ -158,10 +158,28 @@ namespace {
         return true;
     }
 
+    // How far back the custom range reaches when it is put back to the current date.
+    // Thirty days of hours, which reads as thirty one days on the page because both
+    // ends are counted - the same window the range starts at.
+    const unsigned int DEFAULT_RANGE_DAYS = 30;
+
     /**@brief writes the range's ticks back into the two boxes*/
     void writeRange() {
         strncpy_s(customFrom, dateOnly(customFromTick).c_str(), _TRUNCATE);
         strncpy_s(customTo, dateOnly(customToTick).c_str(), _TRUNCATE);
+    }
+
+    /**
+    @brief puts the range back to the default window, ending at \p now
+
+    Both the starting range and the button that returns to it, so the two cannot drift
+    apart into a button that restores a default the page never had.
+    */
+    void resetRange(unsigned int now) {
+        const unsigned int span = DEFAULT_RANGE_DAYS * 24u;
+        customFromTick = (now > span) ? (now - span) : 0u;
+        customToTick = now;
+        writeRange();
     }
 
     /**@brief moves the end of the range by \p days, never past the start*/
@@ -275,10 +293,7 @@ namespace {
             // The last month, as a starting point that shows something rather than an
             // empty table asking to be filled in before it says anything.
             if (!customFilled && now != 0) {
-                const unsigned int month = 30u * 24u;
-                strncpy_s(customFrom, dateOnly(now > month ? now - month : 0u).c_str(),
-                    _TRUNCATE);
-                strncpy_s(customTo, dateOnly(now).c_str(), _TRUNCATE);
+                resetRange(now);
                 customFilled = true;
             }
 
@@ -337,6 +352,30 @@ namespace {
             }
 
             ImGui::PopItemFlag();
+
+            // Outside the repeat flag above: holding this down would only set the
+            // same two dates again, and a button that does nothing when held should
+            // not behave as though it might.
+            ImGui::SameLine();
+            ImGui::BeginDisabled(now == 0);
+            if (ImGui::Button("Now")) {
+                resetRange(now);
+            }
+            ImGui::EndDisabled();
+            // AllowWhenDisabled, or the one case that needs explaining is the one
+            // case with no tooltip.
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+                if (now == 0) {
+                    ImGui::SetTooltip("The game's date cannot be read, so there is no\n"
+                        "current date to move the range to.");
+                }
+                else {
+                    ImGui::SetTooltip("Back to %u days ending today, %s - the range\n"
+                        "the page starts at. Whatever is typed in the two boxes\n"
+                        "is replaced.",
+                        DEFAULT_RANGE_DAYS + 1u, dateOnly(now).c_str());
+                }
+            }
 
             // A half typed date is not a date, and the figures should not follow it
             // into a year nobody asked for. So the range only moves when both ends
