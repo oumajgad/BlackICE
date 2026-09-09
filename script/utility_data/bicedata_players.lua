@@ -37,16 +37,21 @@ local autoSelected = false
 --- The country pages report on.
 ---
 --- Selects the player's own country automatically when nothing has been chosen, so
---- every page has a country to work with without visiting Setup first. Pages that read
---- G_PlayerCountry directly (tech levels, for one) would otherwise report nothing while
---- pages with their own fallback reported correctly, which looked like a bug.
+--- every page has a country to work with without visiting the Country page first.
+--- Pages that read G_PlayerCountry directly (tech levels, for one) would otherwise
+--- report nothing while pages with their own fallback reported correctly, which
+--- looked like a bug.
+---
+--- Whether the choice was automatic or deliberate is not reported: it was only ever
+--- shown as "GER (auto)" beside the tag, and the Country page says it plainly. The
+--- flag itself stays, because it decides whether a new save may move the choice.
 function BiceData.Players.CurrentTag()
     local actual = CCurrentGameState.GetPlayer()
     local actualTag = actual ~= nil and tostring(actual) or nil
 
     if G_PlayerCountry == nil then
         if actualTag == nil then
-            return nil, nil
+            return nil
         end
         G_PlayerCountry = actualTag
         autoSelected = true
@@ -56,7 +61,7 @@ function BiceData.Players.CurrentTag()
         G_PlayerCountry = actualTag
     end
 
-    return tostring(G_PlayerCountry), autoSelected and "auto" or "Setup"
+    return tostring(G_PlayerCountry)
 end
 
 --- Sets the country pages report on. Returns false if that player opted out.

@@ -1,4 +1,4 @@
--- Setup page for the in-game ImGui utility.
+-- Country page for the in-game ImGui utility, first tab of the Setup dock.
 --
 -- Owns G_PlayerCountry, the country every other page reports on. In multiplayer the
 -- host can inspect another player's country, subject to that player's opt out.
@@ -12,10 +12,10 @@
 local Page = require('imgui_page')
 
 BiceLibGui = BiceLibGui or {}
-BiceLibGui.Setup = {}
+BiceLibGui.Country = {}
 
 local function collect()
-    local tag, source = BiceData.Players.CurrentTag()
+    local tag = BiceData.Players.CurrentTag()
     local actual = CCurrentGameState.GetPlayer()
 
     return {
@@ -23,28 +23,27 @@ local function collect()
         players = G_PlayerCountries or {},
         selected = G_PlayerCountry or "",
         current = tag or "",
-        source = source or "",
         actual_player = actual ~= nil and tostring(actual) or "",
     }
 end
 
-function BiceLibGui.Setup.Collect()
+function BiceLibGui.Country.Collect()
     return Page.Guard(collect)
 end
 
 -- Just the country every page reports on. Kept separate from Collect() because the
 -- overlay polls this centrally for all pages, so it has to stay as cheap as possible.
-function BiceLibGui.Setup.CurrentTag()
+function BiceLibGui.Country.CurrentTag()
     return Page.Guard(function()
-        local tag, source = BiceData.Players.CurrentTag()
+        local tag = BiceData.Players.CurrentTag()
         if tag == nil then
             return { available = false, reason = "No player country" }
         end
-        return { available = true, tag = tag, source = source }
+        return { available = true, tag = tag }
     end)
 end
 
-function BiceLibGui.Setup.RefreshPlayers()
+function BiceLibGui.Country.RefreshPlayers()
     pcall(BiceData.Players.Determine)
     MultiplayerBiceLibJob()
 end
@@ -55,7 +54,7 @@ end
 --- its choice control and this keeps that. Select() refuses a tag that is not a
 --- country at all, and one whose player has opted out of being inspected; those look
 --- the same from here, so the reason says both.
-function BiceLibGui.Setup.SelectPlayer(tag)
+function BiceLibGui.Country.SelectPlayer(tag)
     return Page.Guard(function()
         local selected = BiceData.Players.Select(tag)
         if not selected then

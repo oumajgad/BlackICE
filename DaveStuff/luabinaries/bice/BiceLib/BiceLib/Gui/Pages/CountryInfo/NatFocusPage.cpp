@@ -246,7 +246,7 @@ namespace {
             ImGui::TextDisabled("%s", reason.c_str());
             return;
         }
-        ImGui::TextDisabled("%s (%s)", tag.c_str(), Gui::Selection::source().c_str());
+        ImGui::TextDisabled("%s", tag.c_str());
 
         // Parsing the modifier files is not cheap, so it waits until the page is
         // actually looked at, and then never happens again.

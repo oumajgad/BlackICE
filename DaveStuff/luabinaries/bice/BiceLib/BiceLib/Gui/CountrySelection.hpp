@@ -16,9 +16,6 @@ namespace Gui {
         /**@brief the tag, e.g. "GER". Empty when unknown.*/
         const std::string& tag();
 
-        /**@brief where the tag came from, for display ("Setup" or "current player")*/
-        const std::string& source();
-
         /**@brief why tag() is empty*/
         const std::string& reason();
 

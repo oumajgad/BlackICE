@@ -107,7 +107,7 @@ namespace {
             ImGui::TextDisabled("%s", reason.c_str());
             return;
         }
-        ImGui::TextDisabled("%s (%s)", tag.c_str(), Gui::Selection::source().c_str());
+        ImGui::TextDisabled("%s", tag.c_str());
 
         for (const Section& section : sections) {
             ImGui::SeparatorText(section.name.c_str());

@@ -14,7 +14,7 @@
 #include <imgui_internal.h> // DockBuilder, and the dock node behind each group
 
 const char* const Gui::GROUP_ORDER[] = {
-    "Main",         // the utility itself: who it reports on, and what it can do to the install
+    "Setup",        // the utility itself: who it reports on, and what it can do to the install
     "Country Info", // one country's state, live
     "Game Info",    // the mod's definitions, the same in every game
     "Inspector",    // what the running game says about a particular thing

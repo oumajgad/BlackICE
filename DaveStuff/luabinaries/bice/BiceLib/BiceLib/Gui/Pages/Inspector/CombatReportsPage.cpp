@@ -407,8 +407,8 @@ namespace {
         ImGui::SameLine();
         if (selectedPeriod == CUSTOM_PERIOD) {
             if (readable) {
-                ImGui::TextDisabled("%u days | %s (%s)", (to - from) / 24u + 1u,
-                    tag.c_str(), Gui::Selection::source().c_str());
+                ImGui::TextDisabled("%u days | %s", (to - from) / 24u + 1u,
+                    tag.c_str());
             }
             else {
                 ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
@@ -417,8 +417,8 @@ namespace {
             }
         }
         else {
-            ImGui::TextDisabled("last %d days | %s (%s)", PERIODS[selectedPeriod].days,
-                tag.c_str(), Gui::Selection::source().c_str());
+            ImGui::TextDisabled("last %d days | %s", PERIODS[selectedPeriod].days,
+                tag.c_str());
         }
 
         Combat::Tally byBranch[BRANCH_COUNT];

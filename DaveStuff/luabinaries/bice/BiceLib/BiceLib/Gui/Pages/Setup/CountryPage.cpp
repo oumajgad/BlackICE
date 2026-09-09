@@ -10,9 +10,9 @@
 #include <imgui.h>
 
 namespace {
-    const char* COLLECT = "BiceLibGui.Setup.Collect";
-    const char* REFRESH_PLAYERS = "BiceLibGui.Setup.RefreshPlayers";
-    const char* SELECT_PLAYER = "BiceLibGui.Setup.SelectPlayer";
+    const char* COLLECT = "BiceLibGui.Country.Collect";
+    const char* REFRESH_PLAYERS = "BiceLibGui.Country.RefreshPlayers";
+    const char* SELECT_PLAYER = "BiceLibGui.Country.SelectPlayer";
 
     struct Snapshot
     {
@@ -82,7 +82,7 @@ namespace {
         refresh();
     }
 
-    void drawSetup() {
+    void drawCountry() {
         if (ImGui::Button("Refresh")) {
             refresh();
             lastSampleMs = GetTickCount64();
@@ -177,14 +177,14 @@ namespace {
             "the selection silently stays put in that case.");
     }
 
-    class SetupPage : public Gui::GuiPage
+    class CountryPage : public Gui::GuiPage
     {
     public:
-        const char* title() const override { return "Setup"; }
-        const char* group() const override { return "Main"; }
+        const char* title() const override { return "Country"; }
+        const char* group() const override { return "Setup"; }
         int order() const override { return 10; }
-        void draw() override { drawSetup(); }
+        void draw() override { drawCountry(); }
     };
 }
 
-REGISTER_GUI_PAGE(SetupPage);
+REGISTER_GUI_PAGE(CountryPage);

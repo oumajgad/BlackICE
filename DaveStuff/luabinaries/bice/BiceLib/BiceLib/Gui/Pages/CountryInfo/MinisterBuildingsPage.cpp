@@ -124,7 +124,7 @@ namespace {
             ImGui::TextDisabled("%s", reason.c_str());
             return;
         }
-        ImGui::TextDisabled("%s (%s)", tag.c_str(), Gui::Selection::source().c_str());
+        ImGui::TextDisabled("%s", tag.c_str());
 
         ImGui::TextWrapped("Progress towards the next building each of your ministers "
             "will place. The counters are maintained by the AI, so nothing on this page "

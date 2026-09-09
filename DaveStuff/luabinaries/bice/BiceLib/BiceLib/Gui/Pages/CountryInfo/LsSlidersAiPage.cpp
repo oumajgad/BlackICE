@@ -271,7 +271,7 @@ namespace {
         }
 
         ImGui::SameLine();
-        ImGui::TextDisabled("%s (%s)", tag.c_str(), Gui::Selection::source().c_str());
+        ImGui::TextDisabled("%s", tag.c_str());
 
         if (!configured) {
             ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),

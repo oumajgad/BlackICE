@@ -142,7 +142,7 @@ namespace {
             ImGui::TextDisabled("%s", page.reason.c_str());
             return;
         }
-        ImGui::TextDisabled("%s (%s)", page.tag.c_str(), Gui::Selection::source().c_str());
+        ImGui::TextDisabled("%s", page.tag.c_str());
 
         ImGui::SetNextItemWidth(-120.0f);
         ImGui::InputTextWithHint("##filter", "Filter", page.filter, sizeof(page.filter));

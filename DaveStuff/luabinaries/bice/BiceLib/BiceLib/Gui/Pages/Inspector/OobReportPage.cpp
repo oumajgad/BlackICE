@@ -373,8 +373,7 @@ namespace {
         }
 
         ImGui::SameLine();
-        ImGui::TextDisabled("%s (%s)", Gui::Selection::tag().c_str(),
-            Gui::Selection::source().c_str());
+        ImGui::TextDisabled("%s", Gui::Selection::tag().c_str());
 
         if (!read) {
             ImGui::TextDisabled("Press Refresh to read the order of battle.");

@@ -132,7 +132,7 @@ namespace {
             ImGui::TextDisabled("%s", reason.c_str());
             return;
         }
-        ImGui::TextDisabled("%s (%s)", tag.c_str(), Gui::Selection::source().c_str());
+        ImGui::TextDisabled("%s", tag.c_str());
 
         if (!ImGui::BeginTable("resources", 5, ImGuiTableFlags_RowBg |
             ImGuiTableFlags_BordersInner | ImGuiTableFlags_SizingFixedFit)) {

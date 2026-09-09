@@ -22,19 +22,23 @@ namespace Gui {
         /**
         @brief what the page is called on its tab (e.g. "Inspector")
 
-        Not necessarily unique: the Help group repeats Misc and National Focus from
-        Main, as the wxWidgets utility did. Use windowName() for anything ImGui
-        identifies by name.
+        Not necessarily unique: the Help group repeats Misc and National Focus, as the
+        wxWidgets utility did. Use windowName() for anything ImGui identifies by name.
+
+        Renaming a page can rename a *different* page's window, because windowName()
+        only appends "##<group>" to titles that clash. Give a page a title no one else
+        has and the page that used to clash with it goes back to its plain title, and
+        forgets where it was docked.
         */
         virtual const char* title() const = 0;
 
         /**
-        @brief group the page belongs to, e.g. "Main" or "Game Info"
+        @brief group the page belongs to, e.g. "Setup" or "Game Info"
 
         Groups are listed in the order given by Gui::GROUP_ORDER; anything not named
         there sorts last, so a new group shows up without breaking the build.
         */
-        virtual const char* group() const { return "Main"; }
+        virtual const char* group() const { return "Setup"; }
 
         /**
         @brief sort key within the group, low first

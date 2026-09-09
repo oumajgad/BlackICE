@@ -602,8 +602,7 @@ namespace {
         }
 
         ImGui::SameLine();
-        ImGui::TextDisabled("%s (%s)", Gui::Selection::tag().c_str(),
-            Gui::Selection::source().c_str());
+        ImGui::TextDisabled("%s", Gui::Selection::tag().c_str());
 
         if (!tree.available) {
             ImGui::TextDisabled("%s", tree.reason.empty()

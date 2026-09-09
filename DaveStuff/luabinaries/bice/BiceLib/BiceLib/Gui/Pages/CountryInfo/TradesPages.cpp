@@ -225,7 +225,7 @@ namespace {
             ImGui::TextDisabled("%s", tradesReason.c_str());
             return;
         }
-        ImGui::TextDisabled("%s (%s)", tradesTag.c_str(), Gui::Selection::source().c_str());
+        ImGui::TextDisabled("%s", tradesTag.c_str());
 
         ImGui::SeparatorText("Buying");
         drawTradeTable("buys", "Seller", buys, true);

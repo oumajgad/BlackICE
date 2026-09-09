@@ -124,7 +124,7 @@ namespace {
             ImGui::TextDisabled("%s", reason.c_str());
             return;
         }
-        ImGui::TextDisabled("%s (%s)", tag.c_str(), Gui::Selection::source().c_str());
+        ImGui::TextDisabled("%s", tag.c_str());
 
         ImGui::SeparatorText("Decisions");
         drawPendingCheckbox("Hide the resource trading decisions", SET_TRADE,
@@ -140,7 +140,7 @@ namespace {
     {
     public:
         const char* title() const override { return "Misc"; }
-        const char* group() const override { return "Main"; }
+        const char* group() const override { return "Setup"; }
         int order() const override { return 130; }
         void draw() override { drawMisc(); }
     };
