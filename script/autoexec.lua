@@ -23,7 +23,13 @@ package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\s
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility_imgui\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. G_MOD_VERSION .. "\\script\\utility_data\\?.lua"
 
-
+local imgui_docks = {
+    "Setup", "CountryInfo", "GameInfo", "Inspector",
+    "Stats", "Options", "Help", "Debug"
+}
+for _, dock in ipairs(imgui_docks) do
+    package.path = package.path .. ";.\\tfh\\mod\\BlackICE " .. G_MOD_VERSION .. "\\script\\utility_imgui\\" .. dock .. "\\?.lua"
+end
 
 --require('hoi') -- already imported by game, contains all exported classes
 require('ai_globals')
