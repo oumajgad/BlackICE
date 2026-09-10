@@ -70,7 +70,6 @@ namespace CMapProvince {
         constexpr uintptr_t leadership = 0x100;
     }
 
-    /**@brief the province array hangs off the game state, not off a province*/
     /**
      * **Two vftables, and the one named CMapProvince is the second.**
      *
@@ -91,7 +90,8 @@ namespace CMapProvince {
         constexpr uintptr_t Primary = 0x11BEBF8;        // module relative, at object +0x0
     }
 
-    constexpr uintptr_t GAME_STATE_PROVINCE_ARRAY = 0xB8C;
+    // Every province by id is CCurrentGameState::Offsets::provinces_begin - a vector, read
+    // through CCurrentGameState::province() so nothing walks past its end.
 
     struct CMapProvince
     {

@@ -58,6 +58,28 @@ namespace CCurrentGameState {
         constexpr uintptr_t countries_end = 0xBC0;
 
         /**
+         * **Every province**, as a vector of CMapProvince* indexed by id: begin, end,
+         * and the end of what is allocated. The count is (end - begin) / 4, and it is
+         * the map's `max_provinces` - 14190 in BlackICE's map/default.map, and 14190
+         * read live. The map's provinces are 1 to 14189. **Id 0 holds a province too,
+         * but not a place**: id 0, owned by nobody (`---`), nothing in it - the map's
+         * definition.csv starts at 1. Loops over the map start at 1.
+         *
+         * **Read to `provinces_end` and no further.** The allocation runs on past it -
+         * room for 18207 in a running game - and that spare capacity holds whatever
+         * was left in the memory: non-null pointers that read without faulting and
+         * return junk. The custom map mode walked to a hardcoded 20000 and counted 20
+         * of them as provinces with energy, some holding hundreds of millions, which
+         * put its top shade at a billion. The first junk entry that time was at
+         * 15348, but where it starts depends on what the memory last held.
+         *
+         * provinceCount() and province() below read it that way.
+         */
+        constexpr uintptr_t provinces_begin = 0xB8C;
+        constexpr uintptr_t provinces_end = 0xB90;
+        constexpr uintptr_t provinces_capacity_end = 0xB94;
+
+        /**
          * One entry per country id, non zero for a country somebody is playing. From
          * `DaveStuff/mem/classes/CCurrentGameState.py`, and confirmed live: the entry
          * for the country being played reads 1.
@@ -103,4 +125,21 @@ namespace CCurrentGameState {
     nothing to read".
     */
     int currentTick();
+
+    /**
+    @brief how many entries the province vector holds, ids 0 to this less one
+
+    0 when there is no game, or when the vector does not read as one - an end before
+    its begin, or a count past anything a map could have.
+    */
+    int provinceCount();
+
+    /**
+    @brief the CMapProvince with id \p id, or 0 for an id outside the vector
+
+    Bounded by the vector's end, which is what keeps this out of the junk past it. Id 0
+    answers a province, the placeholder described at Offsets::provinces_begin, which
+    is not a place on the map.
+    */
+    uintptr_t province(int id);
 }

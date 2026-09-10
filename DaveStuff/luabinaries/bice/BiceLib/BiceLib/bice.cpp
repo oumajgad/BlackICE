@@ -23,6 +23,7 @@
 #include <GameClasses/CSubUnitDefinition.hpp>
 #include <GameClasses/CTerrain.hpp>
 #include <GameClasses/CMapProvince.hpp>
+#include <GameClasses/CCurrentGameState.hpp>
 #include <GameClasses/CLeader.hpp>
 #include <GameClasses/CInGameIdler.hpp>
 #include <Hooks/Hooks.hpp>
@@ -52,6 +53,15 @@ __declspec(dllexport) int getProvinceDetails(lua_State* L)
 {
     Diagnostics::LuaScope luaScope(L);
     int provinceId = luaL_checkinteger(L, 1);
+
+    // Nil for an id the map does not have, which the one caller -
+    // BiceData.ProvinceBuildings.Details - already reports as "no details". Pushing the
+    // empty province instead would fault on the next line: the modifiers are read
+    // through a pointer an empty province does not have.
+    if (CCurrentGameState::province(provinceId) == 0) {
+        lua_pushnil(L);
+        return 1;
+    }
     auto province = CMapProvince::GetMapProvinceById(provinceId);
     CMapProvince::PushCMapProvinceToStack(L, province);
     return 1;

@@ -1,4 +1,5 @@
 #include <GameClasses/CMapProvince.hpp>
+#include <GameClasses/CCurrentGameState.hpp>
 #include <MemScan.hpp>
 #include <utils.hpp>
 
@@ -24,15 +25,12 @@ namespace CMapProvince {
     }
 
     CMapProvince GetMapProvinceById(int id) {
-        uintptr_t moduleBase = Mem::moduleBase("hoi3_tfh.exe");
-        uintptr_t CCurrentGameStatePtr = *(uintptr_t*)(moduleBase + 0x1689790);
-        DEBUG_OUT(printf("CCurrentGameStatePtr: %#010x \n", CCurrentGameStatePtr));
-        uintptr_t mapProvincesArray = *(uintptr_t*)(CCurrentGameStatePtr + GAME_STATE_PROVINCE_ARRAY);
-        DEBUG_OUT(printf("mapProvincesArray: %#010x \n", mapProvincesArray));
-        uintptr_t CMapProvincePtr = *(uintptr_t*)(mapProvincesArray + id * 4);
-        DEBUG_OUT(printf("CMapProvincePtr: %#010x \n", CMapProvincePtr));
-        auto province = Make(CMapProvincePtr);
-        return province;
+        // Through the bounded lookup, which stops at the province vector's end. This
+        // used to index the array raw with an id straight from Lua, so one past the map
+        // read the junk in the vector's spare capacity or faulted outright.
+        const uintptr_t province = CCurrentGameState::province(id);
+        DEBUG_OUT(printf("CMapProvincePtr: %#010x \n", static_cast<unsigned>(province)));
+        return (province != 0) ? Make(province) : CMapProvince{};
     }
 
     void pushModifiers(lua_State* L, CMapProvince province) {
