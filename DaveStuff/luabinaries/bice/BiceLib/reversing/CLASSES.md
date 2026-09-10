@@ -288,6 +288,33 @@ authority: `CLeader.hpp`, `CMapProvince.hpp` (province id at +0xD0 is **used** b
 combat capture and the OOB browser), `CSubUnitDefinition.hpp`, `CTerrain.cpp` (vftable
 `0x11C0764`, **used**).
 
+**`CMapProvince` has two vftables**: `0x11BEBF8` at +0x0 and `0x11BEC1C` at +0x8.
+`CMapProvince::VFTable::CMapProvince` is the +0x8 one - what the selection holds a
+pointer to - so a province pointer's first dword never matches it; that is `Primary`.
+**RTTI**, and the primary checked **live** against both province arrays.
+
+## Movement and routing
+
+Worked out for a strategic redeployment that preferred good infrastructure, which was
+**abandoned**: replacing the route finder's step cost changed nothing about the route taken,
+in two tests. The layout stands; the conclusions about what decides a route do not. All of
+it, and what was tried, is in `FINDINGS-redeploy.md`. None of it is used.
+
+| Class | vftable | |
+| --- | --- | --- |
+| `CPathFind` | `0x11BE414` | RTTI, 4 slots |
+| `CSafePathFind` | `0x11C884C` | RTTI, overrides slot 2 |
+| `CVerySafePathFind` | `0x11C5B6C` | RTTI, overrides slot 2 |
+| `CPlannedPathFind` | `0x11C8860` | RTTI, overrides slots 1, 2 |
+| `CSafeNavalPathFind` | `0x11C7304` | RTTI, overrides slot 0 |
+| `CMoveCommand` | `0x11C8C1C` | RTTI; slot 6 routes the unit |
+| `CStrategicRedeploymentOrder` | `0x11C5ADC` | RTTI, 35 slots |
+
+Headers: `CPathFind.hpp`, `CMoveCommand.hpp`, `CStrategicRedeploymentOrder.hpp`. Two
+province facts came out of it, both **live**: a province's path node, holding one edge per
+neighbour, is at `CMapProvince + 0xD4`; and `CMap + 0x2200` is an array of every province
+by id, the same pointers as the game state's.
+
 ## Country
 
 `CCountry`, vftable `0x11C1BA8`, base `CPersistent` (**RTTI**). Read in
