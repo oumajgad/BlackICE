@@ -13,6 +13,10 @@ namespace CMapProvince {
         constexpr uintptr_t CProvinceBuilding_array_ptr = 0x310;
 
         constexpr uintptr_t id = 0xD0;
+
+        // The province's node in the route finder's graph, holding its edges - one per
+        // neighbour. See CPathFind::GraphOffsets. Confirmed live.
+        constexpr uintptr_t path_node_ptr = 0xD4;
         constexpr uintptr_t victory_points = 0x34;
 
         /**
@@ -67,8 +71,24 @@ namespace CMapProvince {
     }
 
     /**@brief the province array hangs off the game state, not off a province*/
+    /**
+     * **Two vftables, and the one named CMapProvince is the second.**
+     *
+     * CMapProvince derives from CProvince and carries a table at object +0x0 and another
+     * at +0x8, for a base subobject. `CMapProvince` below is the +0x8 one - which is what
+     * its only user, the selection in bice.cpp, reads, since the selection holds its
+     * pointer to that subobject rather than to the start of the province.
+     *
+     * So checking **the first dword of a province pointer** against it never matches.
+     * Everything that hands out a whole province - the game state's array, the map's -
+     * points at the start, where the table is `Primary`. That mismatch looked for a
+     * moment like the map's province array held something other than provinces.
+     *
+     * Both from RTTI, and the primary confirmed live against the arrays.
+     */
     namespace VFTable {
-        constexpr uintptr_t CMapProvince = 0x11BEC1C;   // module relative
+        constexpr uintptr_t CMapProvince = 0x11BEC1C;   // module relative, at object +0x8
+        constexpr uintptr_t Primary = 0x11BEBF8;        // module relative, at object +0x0
     }
 
     constexpr uintptr_t GAME_STATE_PROVINCE_ARRAY = 0xB8C;

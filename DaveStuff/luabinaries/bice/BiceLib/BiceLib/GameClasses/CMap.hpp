@@ -40,6 +40,18 @@ namespace CMap {
         constexpr uintptr_t terrains_end = 0x2214;
 
         /**
+         * **Every province**, as a plain array of CMapProvince* indexed by province id.
+         *
+         * Read off two pieces of the game's own code that agree on it - the route
+         * finder's slot 0 (`0x5A2A00`) looks a step's destination up here, and strategic
+         * redeployment (`0x5887C6`) the first province of a unit's path - and confirmed
+         * live: it holds the very same pointers as CCurrentGameState's array,
+         * CMapProvince::GAME_STATE_PROVINCE_ARRAY, which is what BiceLib walks. Not read
+         * by BiceLib.
+         */
+        constexpr uintptr_t provinces = 0x2200;
+
+        /**
          * The player's tag and id, from `DaveStuff/mem/classes/CMap.py`. Not read by
          * BiceLib - CCurrentGameState::Offsets::player_tag is the one that has been
          * checked against a running game - and recorded here so the two are not
