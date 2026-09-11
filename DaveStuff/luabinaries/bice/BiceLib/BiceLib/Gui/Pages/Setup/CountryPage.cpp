@@ -2,6 +2,8 @@
 #include <Gui/Theme.hpp>
 #include <Gui/CountrySelection.hpp>
 #include <Gui/LuaBridge.hpp>
+#include <GameState/Periodics.hpp>
+#include <utils.hpp>
 
 #include <Windows.h>
 #include <string>
@@ -56,6 +58,46 @@ namespace {
     }
 
     /**
+    @brief whether BiceLib's own daily setup has run in this game, and what it left
+
+    It replaces the wx utility's "Refresh Values" button, which every multiplayer player
+    had to press: Periodics now does the same by itself, so there is nothing to press,
+    only something to check.
+    */
+    void drawSetup() {
+        ImGui::SeparatorText("BiceLib setup");
+
+        const Periodics::Status status = Periodics::status();
+        if (status.lastRunTick == 0) {
+            ImGui::TextDisabled("Not run yet in this game.");
+        }
+        else if (!status.lastRunOk) {
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Error),
+                "Last run %s failed: %s", utils::gameTickToDate(status.lastRunTick).c_str(),
+                status.lastError.c_str());
+        }
+        else {
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Success), "Last run %s",
+                utils::gameTickToDate(status.lastRunTick).c_str());
+        }
+
+        if (status.limitsCheckedTick != 0) {
+            ImGui::Text("HQ unit limits checked %s",
+                utils::gameTickToDate(status.limitsCheckedTick).c_str());
+        }
+        if (status.limitsKnown) {
+            ImGui::Text("%s may attach: corps %d, army %d, army group %d",
+                status.playerTag.c_str(), status.corpsLimit, status.armyLimit,
+                status.armyGroupLimit);
+        }
+
+        ImGui::TextWrapped("Runs by itself once a game day, in every player's game - the "
+            "mod's scripts only run on the host, so this is how each game gets the HQ unit "
+            "limits. It first runs a couple of game hours after a load is unpaused, and "
+            "checks the limits then and on every fifth day of the month.");
+    }
+
+    /**
     @brief points every page at \p tag, and says so when the game will not have it
 
     Any tag, not only a human player's. The game refuses one that is not a country and
@@ -81,6 +123,8 @@ namespace {
         Gui::Selection::invalidate();
         refresh();
     }
+
+    void drawPlayers();
 
     void drawCountry() {
         if (ImGui::Button("Refresh")) {
@@ -147,6 +191,13 @@ namespace {
         }
 
         ImGui::Spacing();
+        drawPlayers();
+
+        ImGui::Spacing();
+        drawSetup();
+    }
+
+    void drawPlayers() {
         ImGui::SeparatorText("Human players");
 
         if (ImGui::Button("Get players")) {

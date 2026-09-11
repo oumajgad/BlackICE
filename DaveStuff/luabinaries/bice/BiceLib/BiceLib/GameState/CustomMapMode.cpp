@@ -5,6 +5,7 @@
 #include <GameClasses/CInGameIdler.hpp>
 #include <GameClasses/CMapProvince.hpp>
 #include <GameClasses/CProvinceBuilding.hpp>
+#include <GameState/GameClock.hpp>
 #include <HoiDataStructures.hpp>
 #include <Hooks/MapModeHooks.hpp>
 #include <MemScan.hpp>
@@ -208,13 +209,8 @@ namespace {
     // lock on a function every province passes through.
     CustomMapMode::Scale activeScale;
 
-    // update()'s view of the game clock: the tick it last saw, how many forward steps
-    // of under a day it has seen in a row, and the day it last painted.
-    const int TICKS_PER_DAY = 24;
+    // update() paints once a game day, from this hour on, and remembers the day it did.
     const int PAINT_FROM_HOUR = 1;
-    const int STEPS_FOR_PROOF = 2;
-    int lastTick = 0;
-    int steadySteps = 0;
     int paintedDay = 0;
 
     CustomMapMode::Palette activePalette = CustomMapMode::Palette::Green;
@@ -740,33 +736,15 @@ void CustomMapMode::setEnabled(bool on) {
 }
 
 void CustomMapMode::update() {
-    const int tick = CCurrentGameState::currentTick();
-    const int previous = lastTick;
-    lastTick = tick;
-
-    // Only ever on a frame where the clock has just moved. A paused game and the main
-    // menu look the same - a clock standing still - so neither may paint.
-    const int step = tick - previous;
-    if (step == 0) {
-        return;
-    }
-
-    // Moving forward by less than a day is play; jumping or going back is a load, or a
-    // new game, and starts the count again.
-    if (tick == 0 || previous == 0 || step < 0 || step >= TICKS_PER_DAY) {
-        steadySteps = 0;
-        return;
-    }
-    if (steadySteps < STEPS_FOR_PROOF) {
-        steadySteps++;
-    }
-    if (steadySteps < STEPS_FOR_PROOF || !enabled()) {
+    // Only ever on a frame where the clock has just moved in play. A paused game and
+    // the main menu look the same - a clock standing still - so neither may paint.
+    if (!GameClock::movedInPlay() || !enabled()) {
         return;
     }
 
     // Once a day, after the midnight processing has run.
-    const int day = tick / TICKS_PER_DAY;
-    if (day == paintedDay || tick % TICKS_PER_DAY < PAINT_FROM_HOUR) {
+    const int day = GameClock::day();
+    if (day == paintedDay || GameClock::hour() < PAINT_FROM_HOUR) {
         return;
     }
     paintedDay = day;

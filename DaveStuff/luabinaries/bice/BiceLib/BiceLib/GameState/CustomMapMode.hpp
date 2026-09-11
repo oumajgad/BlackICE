@@ -139,9 +139,7 @@ namespace CustomMapMode {
     scale - or for the load sources, every province's supply capacity - first.
 
     Safe from the Present hook, which also runs at the main menu: it only paints on a
-    frame where the game clock has just moved forward by less than a day, having done
-    so at least once before since the last jump. That only happens in play - not at
-    the menu, where the clock stands still, and not across a load, where it jumps.
+    frame where GameClock::movedInPlay() says the clock has just moved in play.
     */
     void update();
 

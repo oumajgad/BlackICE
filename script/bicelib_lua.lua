@@ -71,34 +71,23 @@ function RunBiceLibPeriodicsManually()
     end
 end
 
-function MultiplayerBiceLibJob()
-    local playerTag = CCurrentGameState.GetPlayer()
-    Utils.LUA_DEBUGOUT("MultiplayerBiceLibJob: " .. tostring(playerTag))
-    if HasLoadedBiceLibSuccessfully() then
-        Utils.LUA_DEBUGOUT("HasLoadedBiceLibSuccessfully(): " .. tostring(playerTag))
-        RunBiceLibPeriodicsManually()
+-- Called by BiceLib.dll itself once a game day, in every game of a session - in
+-- multiplayer the clients too, which run none of the scheduled scripts. The checks keep
+-- their own days, so a client changes its values on the same days the host does.
+-- firstDay is 1 on the first day after a load, which sets everything up at once.
+-- Answers what it did, which BiceLib prints to its console.
+function BiceLibDailyPeriodics(firstDay)
+    local report = {
+        bicelib_loaded = BiceLib ~= nil,
+        first_day = firstDay == 1,
+        day_of_month = CCurrentGameState.GetCurrentDate():GetDayOfMonth(),
+    }
+    -- The same day rule CheckOobUnitLimitTechnologyStatus applies to itself, for the report
+    report.oob_limits_checked = report.bicelib_loaded
+        and (report.first_day or report.day_of_month % 5 == 0)
 
-        local command = CSetVariableCommand(playerTag, CString("ran_bicelib_periodics_manually"), CFixedPoint(1))
-        CCurrentGameState.Post(command)
-        local command = CSetVariableCommand(playerTag, CString("failed_to_load_bicelib"), CFixedPoint(0))
-        CCurrentGameState.Post(command)
-    else
-        local command = CSetVariableCommand(playerTag, CString("failed_to_load_bicelib"), CFixedPoint(1))
-        CCurrentGameState.Post(command)
-        local command = CSetVariableCommand(playerTag, CString("ran_bicelib_periodics_manually"), CFixedPoint(0))
-        CCurrentGameState.Post(command)
+    if report.bicelib_loaded then
+        CheckOobUnitLimitTechnologyStatus(report.first_day)
     end
-end
-
-
--- Sets the variable which will trigger the OMG decision for the periodic event to tell the player to press the "Refresh Values" button
--- After that the triggers for the decision are handled entirely in decisons/events scripts
-function MultiplayerBiceLibCheckInitialSetup()
-    Utils.LUA_DEBUGOUT("MultiplayerBiceLibCheckInitialSetup")
-    if #G_PlayerCountries > 1 then
-        Utils.LUA_DEBUGOUT("#G_PlayerCountries > 1")
-        local omgTag = CCountryDataBase.GetTag("OMG")
-        local command = CSetVariableCommand(omgTag, CString("needs_to_run_multiplayer_bicelib_check"), CFixedPoint(1))
-        CCurrentGameState.Post(command)
-    end
+    return report
 end

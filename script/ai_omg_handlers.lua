@@ -10,7 +10,6 @@ function IntelligenceMinisterUtilityThings()
 		DetermineSpriteDeletionStatus()
 		DetermineBiceLibLoadStatus()
 		RunBiceLibPeriodicsManually()
-		MultiplayerBiceLibCheckInitialSetup()
 	end
 	if G_UtilityEnabled ~= true then
 		return

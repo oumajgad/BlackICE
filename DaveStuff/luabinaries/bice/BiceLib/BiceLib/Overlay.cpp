@@ -16,6 +16,8 @@
 #include <Gui/Theme.hpp>
 #include <GameState/CombatStore.hpp>
 #include <GameState/CustomMapMode.hpp>
+#include <GameState/GameClock.hpp>
+#include <GameState/Periodics.hpp>
 #include <Gui/TextureStats.hpp>
 #include <MemScan.hpp>
 #include <Settings.hpp>
@@ -507,9 +509,16 @@ namespace {
             // time someone spent looking at it.
             Combat::Store::update();
 
-            // Repaints the custom map mode once a game day while it is on. It paints
-            // only on a frame where the game clock has just moved, so never at the menu.
+            // Read once a frame, before the two below: they touch the game only on a
+            // frame where it says the clock has just moved in play, so never at the menu.
+            GameClock::update();
+
+            // Repaints the custom map mode once a game day while it is on.
             CustomMapMode::update();
+
+            // Runs the mod's BiceLib setup once a game day, in every game in a
+            // session - the multiplayer clients run none of the mod's scripts.
+            Periodics::update();
 
             if (visible) {
                 if (!wasVisible) {
