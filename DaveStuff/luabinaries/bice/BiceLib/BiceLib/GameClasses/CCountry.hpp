@@ -54,10 +54,10 @@ namespace CCountry {
 
         /**
          * **The capital, as a province id** - index it into the game state's province
-         * vector. The game's own "capital province" (`0x42F100`) reads this.
+         * vector. The game's own "capital province" (`0x2F100`) reads this.
          *
          * The country's stockpile is the capital's pool: `CCountry:GetPool()`
-         * (`0x4F4DE0`) answers `&capital->pool` (CMapProvince::Offsets::pool), unless
+         * (`0xF4DE0`) answers `&capital->pool` (CMapProvince::Offsets::pool), unless
          * the byte at `+0x95` is set, when it answers the pool held here at `+0x9F8`.
          * What sets that byte is not known. The country holds 23 pools of its own,
          * `+0x74C` to `+0xA64`; only the first is worked out, below.

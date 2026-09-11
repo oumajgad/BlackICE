@@ -78,7 +78,7 @@ namespace CCurrentGameState {
          * **Every province again, sorted by distance from its supply depot, farthest
          * first** (CMapProvince::Offsets::supply_depot_distance): a plain array of
          * CMapProvince*, as long as the vector above. The daily supply pass
-         * (`0x6872D0`) walks it in this order, so a province passes its unmet demand on
+         * (`0x2872D0`) walks it in this order, so a province passes its unmet demand on
          * to the one closer to the depot before that one takes its turn. See
          * CMapProvince::Offsets::pool.
          */

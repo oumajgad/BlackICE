@@ -9,7 +9,7 @@
  * reached through that country's list, CCountry::Offsets::convoys_list_first_ptr.
  * Convoys are created and removed as the game runs.
  *
- * **The saved fields are read out of the convoy's save writer**, `0x4C5600`; the names
+ * **The saved fields are read out of the convoy's save writer**, `0xC5600`; the names
  * below are its keys. The unsaved ones were worked out by watching them change.
  *
  * **Three kinds, told apart by the goods mask:**

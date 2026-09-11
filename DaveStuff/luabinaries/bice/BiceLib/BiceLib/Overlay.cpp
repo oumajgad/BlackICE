@@ -15,6 +15,7 @@
 #include <Gui/GuiPage.hpp>
 #include <Gui/Theme.hpp>
 #include <GameState/CombatStore.hpp>
+#include <GameState/CustomMapMode.hpp>
 #include <Gui/TextureStats.hpp>
 #include <MemScan.hpp>
 #include <Settings.hpp>
@@ -505,6 +506,10 @@ namespace {
             // not the overlay is showing: the record is of the campaign, not of the
             // time someone spent looking at it.
             Combat::Store::update();
+
+            // Repaints the custom map mode once a game day while it is on. It paints
+            // only on a frame where the game clock has just moved, so never at the menu.
+            CustomMapMode::update();
 
             if (visible) {
                 if (!wasVisible) {

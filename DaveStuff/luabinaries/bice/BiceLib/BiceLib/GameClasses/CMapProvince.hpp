@@ -63,11 +63,11 @@ namespace CMapProvince {
          * `pool + CGoodsPool::Goods::supplies`.
          *
          * Seven of them are saved, and the save names them: the province writer
-         * (`0x495020`, CProvince slot 2) writes each under its key, and skips any pool
+         * (`0x95020`, CProvince slot 2) writes each under its key, and skips any pool
          * that is all zero - which is why a save's province block has some and not others.
          * Two are working state, rebuilt every day and never saved.
          *
-         * Most of what they mean comes from **the daily supply pass**, `0x6872D0`. It runs
+         * Most of what they mean comes from **the daily supply pass**, `0x2872D0`. It runs
          * once a day over every province, in the order of
          * CCurrentGameState::Offsets::provinces_by_supply_order - farthest from the depot
          * first - and for each one:
@@ -83,8 +83,22 @@ namespace CMapProvince {
          * A good taken from a neighbour counts on that neighbour as both drawn and
          * throughput, so the gap between the two is demand it could not meet.
          *
-         * The pass's per province limits - how much a province can pass on in a day, and
-         * what is lost on the way - come in as arrays from its caller and are not traced.
+         * The pass's per province figures come in as four arrays by province id, which its
+         * caller fills just before and throws away after, so nothing keeps them:
+         *
+         *   capacity      `0x9DD00`, __stdcall(province, int* out): how much a province
+         *                 can pass on in a day. A single pull from it is capped at this,
+         *                 and demand passed on to it is only accepted up to it. Worked
+         *                 out from the local modifiers at +0x114 (+0x60, scaled by
+         *                 +0x68 and +0x70), two defines (CDefines + 0xAC, + 0x220 and
+         *                 + 0x224), and the controller's modifiers; unlimited where the
+         *                 byte at `unlimited_supply_capacity` is set. It only reads.
+         *   supply need   `0x9E020`
+         *   loss          `0x9DE80`, what is lost per step on the way
+         *   fuel need     filled in the same loop, not traced
+         *
+         * Only the capacity function has been read through; the other two are named by
+         * the argument they fill.
          */
 
         /**
@@ -92,7 +106,7 @@ namespace CMapProvince {
          * where there are depots and units, resources where they wait for a convoy.
          *
          * **In the capital it is the country's national stockpile**: `CCountry:GetPool()`
-         * (`0x4F4DE0`) answers `&capital->pool`, unless the byte at `country + 0x95` is
+         * (`0xF4DE0`) answers `&capital->pool`, unless the byte at `country + 0x95` is
          * set, when it answers a pool held on the country instead.
          */
         constexpr uintptr_t pool = 0x15C;
@@ -162,6 +176,13 @@ namespace CMapProvince {
          * `current_producing` recovers towards.
          */
         constexpr uintptr_t max_producing = 0x28C;
+
+        /**
+         * A byte: while set, the game's supply capacity for the province (see the pools
+         * above) is unlimited. Set in most capitals and some other land provinces; what
+         * decides it is not known.
+         */
+        constexpr uintptr_t unlimited_supply_capacity = 0x2B0;
 
         constexpr uintptr_t manpower = 0x320;
         constexpr uintptr_t leadership = 0x324;
