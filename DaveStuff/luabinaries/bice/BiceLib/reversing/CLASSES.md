@@ -302,11 +302,11 @@ authority for the offsets. A good in a province is two offsets added: the pool's
 `CGoodsPool`, vftable `0x11C1BD4` (**RTTI**; `../../../mem` has `0x11C1BD0`, four bytes
 short), `0x24` bytes: seven amounts in thousandths from +0x8, in the order supplies,
 fuel, money, crude oil, metal, energy, rare materials. **Read** out of the pool's own
-save reader (slot 4, `0x523A90`), which stores each key into its slot, with the keys'
+save reader (slot 4, `0x123A90`), which stores each key into its slot, with the keys'
 token ids matched to their strings where the game registers them.
 
 Every province embeds **nine** of them, at the same offsets in all 14,189 (**seen**).
-The province writer (`0x495020`) saves seven and names them (**read**):
+The province writer (`0x95020`) saves seven and names them (**read**):
 
 | Offset | Save key | Holds | |
 | --- | --- | --- | --- |
@@ -318,7 +318,7 @@ The province writer (`0x495020`) saves seven and names them (**read**):
 | +0x268 | `current_producing` | resources it yields now - what the custom map mode shades by | read, seen |
 | +0x28C | `max_producing` | resources it could yield | read, seen |
 
-The two pointer pairs are **double buffers**: the daily supply pass (`0x6872D0`) swaps
+The two pointer pairs are **double buffers**: the daily supply pass (`0x2872D0`) swaps
 each pair at the start of the day, then zeroes and refills today's. Read them through
 the pointers; which buffer is today's depends on the day. **Seen** across a midnight,
 snapshotting every province hour by hour: both pairs flipped everywhere at once, the old
@@ -340,7 +340,7 @@ capitals).
 `CConvoy`, vftable `0x11C0D44`, base `CReferenceObject` (**RTTI**). A country's convoys
 are the list at `CCountry + 0xA0` / `+0xA4` / `+0xA8`, nodes `{ data, prev, next }`
 (**seen**: all 108 lists together hold exactly the 339 instances a scan finds, each in
-its owner's). The saved fields come out of the convoy's save writer, `0x4C5600`
+its owner's). The saved fields come out of the convoy's save writer, `0xC5600`
 (**read**): `daily` (a pool, +0x38), `ship` (a seven-int goods mask, +0x5C), `convoys`
 (transports assigned, +0x98), `escorts` (+0x9C), `trade` / `lend_lease` (bytes +0xA0 /
 +0xA1), `path` (a list at +0xB0, province ids), `start` / `end` (+0xC0 / +0xC4),
@@ -361,19 +361,27 @@ showed the pile up: its port's stock grew by a day's load a day, and the one day
 transport was assigned the convoy took the whole backlog - `daily` read five days'
 worth - and the port dropped back to one day's.
 
-`CCountry:GetPool()` (`0x4F4DE0`) answers the capital's `pool` unless the byte at
+`CCountry:GetPool()` (`0xF4DE0`) answers the capital's `pool` unless the byte at
 `country + 0x95` is set (**read**). All 100 capitals of a running game hold money and
 resources there, and none of the country's own 23 pools holds anything like the
 stockpile (**seen**). The capital is `country + 0xE24`, a province id (**read**, from
-`0x42F100`).
+`0x2F100`).
 
 The pass itself, **read**: it walks `CCurrentGameState + 0x54`, every province sorted by
 distance from its depot, farthest first (**seen**). Each province tops its pool up
 towards `SUPPLYPOOL_DAYS` (35) of its need, by taking from the neighbours one step closer
 to its depot (`+0x48` the same depot, `+0x4C` a smaller distance); what it cannot get is
 added to those neighbours' `drawn`, so they ask for it on their turn. A good taken counts
-on the giver as both drawn and throughput. The per province limits come in as arrays from
-the caller and are **not traced**.
+on the giver as both drawn and throughput. The per province figures come in as four arrays
+the caller fills and discards (**read**): capacity from `0x9DD00`, supply need from
+`0x9E020`, loss from `0x9DE80`, fuel need from the same loop. Only the capacity function
+has been read through - the province's local modifiers, two defines and the controller's
+modifiers, unlimited where the byte at `+0x2B0` is set - and BiceLib calls it for the
+custom map mode's line load.
+
+So **throughput ÷ drawn does not measure shortfall**: a province's own request is in its
+`drawn`, but its `throughput` only counts what others take from it, so every line end reads
+0 % (**seen**: 530 of 1,040 provinces with units, in peacetime).
 
 Along the way: `+0x68` is a `CWeather`, saved as `weather` (**read**), and the
 `+0xD4` path node is a `CProvinceTemplate` in every province (**RTTI**, **seen**).

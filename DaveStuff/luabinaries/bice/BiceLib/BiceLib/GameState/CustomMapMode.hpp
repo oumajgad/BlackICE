@@ -7,10 +7,11 @@
 /**
  * A map mode added by BiceLib, painted by taking over the VP map mode.
  *
- * It shades provinces by one thing a province has: the level of a building, or the
- * amount of a resource. The hook it rests on decides the colour of every province, so
- * anything a province knows can be shown - adding a kind of source is a list and a way
- * of reading one value, and everything from there to the colour is shared.
+ * It shades provinces by one thing a province has: the level of a building, the amount
+ * of a resource, or something about its supply. The hook it rests on decides the colour
+ * of every province, so anything a province knows can be shown - adding a kind of
+ * source is a list and a way of reading one value, and everything from there to the
+ * colour is shared.
  *
  * Nothing in the game's data is changed. The colour is replaced at the last moment,
  * after the game has worked out what it would have drawn, so turning this off gives
@@ -22,21 +23,71 @@ namespace CustomMapMode {
     /**@brief how many shades a value is drawn in; the brightest is the top one*/
     constexpr int TOP_LEVEL = 10;
 
-    /**@brief what a source reads: a building's level, or a resource's amount*/
+    /**@brief what a source reads: a building's level, a resource's amount, or supply*/
     enum class Kind
     {
         Building,
         Resource,
+        Supply,
     };
+
+    /**@brief how a source's values become shades*/
+    enum class Scaling
+    {
+        Level,      // the value is the shade: building levels, 1 to TOP_LEVEL
+        Map,        // a Scale worked out from the map's own values
+        Bands,      // fixed shade starts, the same whatever the map holds
+    };
+
+    /**@brief what the legend prints the start of a shade as*/
+    enum class Unit
+    {
+        Level,      // as it is
+        Amount,     // thousandths, printed as units
+        Days,       // thousandths of a day, printed as days
+        Steps,      // as it is, with CUT_OFF printed as words
+        Percent,    // thousandths, printed as a percentage
+    };
+
+    /**@brief what the supply sources measure; a Source's `where` for Kind::Supply*/
+    enum class SupplyMeasure
+    {
+        DaysOfSupplies,     // the province's supplies over what its units need a day
+        DaysOfFuel,
+        SupplyTraffic,      // supplies moved on through the province today
+        FuelTraffic,
+        SupplyStock,        // supplies in the province
+        FuelStock,
+        DepotDistance,      // steps to the depot the province draws from
+        SupplyLoad,         // supplies asked of the province over what it can pass on a day
+        FuelLoad,
+    };
+
+    /**@brief DepotDistance's value for a province cut off from every depot*/
+    constexpr int CUT_OFF = 100000;
 
     /**@brief one thing the map can be shaded by*/
     struct Source
     {
         // Where the value is. For a building, its slot in the province's building
-        // array; for a resource, the field's offset on the province.
+        // array; for a resource, the field's offset on the province; for supply, a
+        // SupplyMeasure.
         uintptr_t where = 0;
         std::string name;      // the key, "air_base" or "energy"
         std::string label;     // what the game calls it, "Air Base" or "Energy"
+
+        Scaling scaling = Scaling::Level;
+        Unit unit = Unit::Level;
+
+        // Where a higher value is the worse one, so the shades run the other way and
+        // the bottom shade is still the one to worry about.
+        bool higherIsWorse = false;
+
+        // For Scaling::Bands: the raw value each shade starts at, lowest first.
+        std::vector<int> bands;
+
+        // What the shades mean, for the legend. Empty where the legend says it itself.
+        std::string explanation;
     };
 
     /**
@@ -50,7 +101,10 @@ namespace CustomMapMode {
     /**@brief the resources a province holds; a fixed list, since they are fields on it*/
     const std::vector<Source>& resources();
 
-    /**@brief buildings() or resources()*/
+    /**@brief what can be shown about supply; a fixed list*/
+    const std::vector<Source>& supplies();
+
+    /**@brief buildings(), resources() or supplies()*/
     const std::vector<Source>& sources(Kind kind);
 
     /**@brief drops what buildings() cached, so the next call reads the game again*/
@@ -77,6 +131,21 @@ namespace CustomMapMode {
     void setEnabled(bool on);
 
     /**
+    @brief repaints the map once a game day while the mode is on; call every frame
+
+    The game repaints the VP map mode by itself as days pass, but not reliably, and
+    supply changes every day. This repaints in the first frame of each day at one
+    o'clock or later, after the game's midnight processing, working out the day's
+    scale - or for the load sources, every province's supply capacity - first.
+
+    Safe from the Present hook, which also runs at the main menu: it only paints on a
+    frame where the game clock has just moved forward by less than a day, having done
+    so at least once before since the last jump. That only happens in play - not at
+    the menu, where the clock stands still, and not across a load, where it jumps.
+    */
+    void update();
+
+    /**
      * How much intel a province needs before its real value is shown.
      *
      * Below it a province is drawn at the lowest shade and a darker grey, so the map
@@ -86,6 +155,10 @@ namespace CustomMapMode {
      * what is built there, and below six it does not. It is applied to resources as
      * well, which is an assumption - whether the game hides a foreign province's
      * resources the same way has not been checked.
+     *
+     * Supply goes further: below it a province shows nothing at all, not even that
+     * there is something to show, since whether a province has units needing supplies
+     * would say where they are.
      */
     constexpr int INTEL_FOR_REAL_LEVEL = 6;
 
@@ -162,8 +235,16 @@ namespace CustomMapMode {
         int starts[TOP_LEVEL] = {};
     };
 
-    /**@brief the scale the selected resource is shaded on; invalid for a building*/
+    /**
+    @brief the scale the selected source is shaded on; invalid for a building
+
+    For Scaling::Map, worked out from the map when the source is chosen, and for supply
+    again every day, before update() repaints. For Scaling::Bands, the source's bands.
+    */
     const Scale& scale();
+
+    /**@brief the source being shown, or nullptr when there is none*/
+    const Source* shownSource();
 
     /**
     @brief what one unit of a resource is, as the province holds it: thousandths
@@ -176,10 +257,21 @@ namespace CustomMapMode {
     */
     constexpr int RESOURCE_SCALE = 1000;
 
+    /**@brief what one day is in a Unit::Days value: they are held in thousandths of one*/
+    constexpr int DAYS_SCALE = 1000;
+
     /**@brief the level in one province, 0 when it has none of that building*/
     int levelIn(uintptr_t province, int buildingIndex);
 
-    /**@brief the selected source's value in \p province, raw; 0 or less when it has none*/
+    /**
+    @brief what valueIn() answers for a province with nothing to show
+
+    Not 0: a province whose units have no supplies left has 0 days of supply, which is
+    the one thing that map most needs to show.
+    */
+    constexpr int NO_VALUE = -1;
+
+    /**@brief the selected source's value in \p province, raw; NO_VALUE when it has none*/
     int valueIn(uintptr_t province);
 
     /**@brief which shade, 1 to TOP_LEVEL, a value of the selected source is drawn in*/
@@ -210,7 +302,8 @@ namespace CustomMapMode {
 
     - none of the chosen source: light grey where the player can see it, darker where not
     - the player knows the province: the shade for its value
-    - the player does not: the bottom shade, whatever the value
+    - the player does not: the bottom shade, whatever the value - or for supply, the
+      darker grey, as though there were nothing
 
     Which ramp is drawn is palette().
 

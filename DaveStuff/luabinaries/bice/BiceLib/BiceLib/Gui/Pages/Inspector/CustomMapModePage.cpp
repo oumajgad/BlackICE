@@ -1,6 +1,6 @@
 // Custom Mapmode: replaces what the VP map mode draws. It shades provinces by the
-// level of a building or the amount of a resource; the hook underneath decides the
-// colour of every province, so the page has room to grow. See
+// level of a building, the amount of a resource, or their supply; the hook underneath
+// decides the colour of every province, so the page has room to grow. See
 // reversing/FINDINGS-mapmode.md.
 
 #include <Gui/GuiPage.hpp>
@@ -20,6 +20,7 @@ namespace {
     // One filter per kind, so switching kind and back finds the list as it was left.
     char buildingFilter[64] = {};
     char resourceFilter[64] = {};
+    char supplyFilter[64] = {};
     std::string selectedName;
     // Wide enough for the longest building name with its key after it, since the key
     // is what separates the two entries both named "Air Base".
@@ -57,24 +58,46 @@ namespace {
         return out;
     }
 
+    /**@brief the start of a shade as the legend prints it, in the source's unit*/
+    std::string startText(const CustomMapMode::Source& source, int raw) {
+        switch (source.unit) {
+        case CustomMapMode::Unit::Amount:
+            return amount(raw);
+        case CustomMapMode::Unit::Days:
+            return amount(raw * (CustomMapMode::RESOURCE_SCALE / CustomMapMode::DAYS_SCALE));
+        case CustomMapMode::Unit::Steps:
+            return (raw >= CustomMapMode::CUT_OFF) ? "cut off" : std::to_string(raw);
+        case CustomMapMode::Unit::Percent:
+            return std::to_string(raw / 10) + "%";
+        default:
+            return std::to_string(raw);
+        }
+    }
+
     /**
     @brief what each shade means, in the colours the map draws them in
 
     Drawn from CustomMapMode::shadeColour, the same function colourFor paints with, so
     a swatch here cannot drift from the province it describes.
 
-    A building's shade is its level. A resource's is a place on the scale worked out
-    from the map, so under each swatch is the amount that shade starts at - which is
-    the only way a shade on a resource map can be read as a quantity.
+    A building's shade is its level. Anything else sits on a scale - worked out from the
+    map, or fixed bands - so under each swatch is the value that shade starts at, which
+    is the only way such a shade can be read as a quantity. Where a higher value is the
+    worse one the shades run the other way, and so do the values under them.
     */
     void drawLegend() {
-        const bool resource = CustomMapMode::kind() == CustomMapMode::Kind::Resource;
+        const CustomMapMode::Source* source = CustomMapMode::shownSource();
+        if (source == nullptr) {
+            return;
+        }
+        const bool level = source->scaling == CustomMapMode::Scaling::Level;
+        const bool fromMap = source->scaling == CustomMapMode::Scaling::Map;
         const CustomMapMode::Scale& scale = CustomMapMode::scale();
 
         ImGui::Spacing();
         ImGui::SeparatorText("Shades");
 
-        if (resource && !scale.valid) {
+        if (!level && !scale.valid) {
             ImGui::TextDisabled("No province has any of this.");
             return;
         }
@@ -93,12 +116,13 @@ namespace {
             ImGui::TableNextRow();
             for (int shade = 1; shade <= CustomMapMode::TOP_LEVEL; shade++) {
                 ImGui::TableNextColumn();
-                if (resource) {
-                    ImGui::TextDisabled("%s", amount(scale.starts[shade - 1]).c_str());
-                }
-                else {
+                if (level) {
                     ImGui::TextDisabled("%d", shade);
+                    continue;
                 }
+                const int band = source->higherIsWorse
+                    ? CustomMapMode::TOP_LEVEL - shade : shade - 1;
+                ImGui::TextDisabled("%s", startText(*source, scale.starts[band]).c_str());
             }
             ImGui::EndTable();
         }
@@ -108,24 +132,35 @@ namespace {
         // this the grey lines ran off the side. Pushed after the table rather than
         // before it: inside a cell it would wrap the amounts under the swatches too.
         ImGui::PushTextWrapPos(0.0f);
-        if (resource) {
+        if (!source->explanation.empty()) {
+            ImGui::TextWrapped("%s", source->explanation.c_str());
+        }
+        if (fromMap) {
             ImGui::TextWrapped("Each shade starts at the amount under it. %d provinces "
                 "have any; the scale runs from the 1%% with the least to the 1%% with the "
                 "most, so everything above %s shares the top shade.",
-                scale.producing, amount(scale.starts[CustomMapMode::TOP_LEVEL - 1]).c_str());
+                scale.producing,
+                startText(*source, scale.starts[CustomMapMode::TOP_LEVEL - 1]).c_str());
             if (ImGui::IsItemHovered()) {
                 ImGui::SetTooltip(
                     "Logarithmic, so each shade covers about the same step up rather than\n"
-                    "the same amount. Resources are lopsided: a scale running evenly to\n"
-                    "the largest producer puts most provinces that have any in the bottom\n"
-                    "shade. Worked out from the map each time a resource is chosen.");
+                    "the same amount. Amounts like these are lopsided: a scale running\n"
+                    "evenly to the largest puts most provinces that have any in the bottom\n"
+                    "shade. Worked out from the map when chosen, and for supply again\n"
+                    "every day.");
             }
         }
-        else {
+        else if (level) {
             ImGui::TextDisabled("Levels 1 to %d, the same ladder the game's infrastructure map climbs.",
                 CustomMapMode::TOP_LEVEL);
         }
-        ImGui::TextDisabled("Grey: none here - light where you can see the province, dark where not.");
+        if (CustomMapMode::kind() == CustomMapMode::Kind::Supply) {
+            ImGui::TextDisabled("Grey: nothing to show. Only provinces you have the intel "
+                "for - your own and your allies' - show any supply; the rest are dark grey.");
+        }
+        else {
+            ImGui::TextDisabled("Grey: none here - light where you can see the province, dark where not.");
+        }
         ImGui::PopTextWrapPos();
     }
 
@@ -193,13 +228,19 @@ namespace {
             && kind != CustomMapMode::Kind::Resource) {
             CustomMapMode::showKind(CustomMapMode::Kind::Resource);
         }
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Supply", kind == CustomMapMode::Kind::Supply)
+            && kind != CustomMapMode::Kind::Supply) {
+            CustomMapMode::showKind(CustomMapMode::Kind::Supply);
+        }
 
         const CustomMapMode::Kind shown = CustomMapMode::kind();
         const std::vector<CustomMapMode::Source>& sources = CustomMapMode::sources(shown);
         const bool resource = shown == CustomMapMode::Kind::Resource;
+        const bool supply = shown == CustomMapMode::Kind::Supply;
 
         ImGui::Spacing();
-        ImGui::SeparatorText(resource ? "Resource" : "Building");
+        ImGui::SeparatorText(supply ? "Supply" : resource ? "Resource" : "Building");
 
         // The names the game itself uses, so the list matches what is in the province
         // window rather than what the mod files happen to be called - with the key in
@@ -228,13 +269,15 @@ namespace {
             selectedName.clear();
         }
 
-        char* filter = resource ? resourceFilter : buildingFilter;
-        const size_t filterSize = resource ? sizeof(resourceFilter) : sizeof(buildingFilter);
+        char* filter = supply ? supplyFilter : resource ? resourceFilter : buildingFilter;
+        const size_t filterSize = sizeof(buildingFilter);
+        static_assert(sizeof(buildingFilter) == sizeof(resourceFilter)
+            && sizeof(buildingFilter) == sizeof(supplyFilter), "the filters share one size");
 
         // Height of zero, so the list takes whatever is left of the window rather
         // than a fixed height with empty space under it.
-        if (Gui::filteredList(resource ? "resources" : "buildings", ImVec2(listWidth, 0.0f),
-            labels, filter, filterSize, selectedName)) {
+        if (Gui::filteredList(supply ? "supply" : resource ? "resources" : "buildings",
+            ImVec2(listWidth, 0.0f), labels, filter, filterSize, selectedName)) {
             for (size_t i = 0; i < labels.size(); i++) {
                 if (labels[i] == selectedName) {
                     CustomMapMode::select(shown, static_cast<int>(i));

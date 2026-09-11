@@ -27,7 +27,7 @@ namespace CGoodsPool {
 
     /**
      * Where each good sits in a pool, named by its save key. Read out of the pool's save
-     * reader (slot 4, `0x523A90`), which stores each key into its slot.
+     * reader (slot 4, `0x123A90`), which stores each key into its slot.
      */
     namespace Goods {
         constexpr uintptr_t supplies = 0x08;
