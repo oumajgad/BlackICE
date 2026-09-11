@@ -1,5 +1,6 @@
 #include <GameClasses/CMapProvince.hpp>
 #include <GameClasses/CCurrentGameState.hpp>
+#include <GameClasses/CGoodsPool.hpp>
 #include <MemScan.hpp>
 #include <utils.hpp>
 
@@ -9,12 +10,17 @@ namespace CMapProvince {
         res.CModifierDefinitions_ptr = addr + Offsets::CModifierDefinitions_ptr;
         res.CProvinceBuilding_array_ptr = addr + Offsets::CProvinceBuilding_array_ptr;
         res.id = *(int*)(addr + Offsets::id);
-        res.supply_pool = *(int*)(addr + Offsets::supply_pool);
-        res.fuel_pool = *(int*)(addr + Offsets::fuel_pool);
-        res.oil = *(int*)(addr + Offsets::oil);
-        res.metal = *(int*)(addr + Offsets::metal);
-        res.energy = *(int*)(addr + Offsets::energy);
-        res.rares = *(int*)(addr + Offsets::rares);
+
+        const uintptr_t pool = addr + Offsets::pool;
+        res.supply_pool = *(int*)(pool + CGoodsPool::Goods::supplies);
+        res.fuel_pool = *(int*)(pool + CGoodsPool::Goods::fuel);
+
+        const uintptr_t producing = addr + Offsets::current_producing;
+        res.oil = *(int*)(producing + CGoodsPool::Goods::crude_oil);
+        res.metal = *(int*)(producing + CGoodsPool::Goods::metal);
+        res.energy = *(int*)(producing + CGoodsPool::Goods::energy);
+        res.rares = *(int*)(producing + CGoodsPool::Goods::rare_materials);
+
         res.manpower = *(int*)(addr + Offsets::manpower);
         res.leadership = *(int*)(addr + Offsets::leadership);
         //res.owner_tag = utils::getCString((DWORD*)(addr + Offsets::owner_tag));
