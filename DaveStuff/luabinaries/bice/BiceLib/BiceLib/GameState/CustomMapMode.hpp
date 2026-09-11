@@ -295,6 +295,22 @@ namespace CustomMapMode {
     int victoryPointsFor(uintptr_t province);
 
     /**
+    @brief the map mode whose province tooltip the game should show
+
+    The game builds the tooltip for a province by switching on the map mode, so while
+    this mode is on, answering with another mode borrows that mode's tooltip: supply
+    shows the Supply map mode's, resources the Resources map mode's. Buildings keep the
+    VP one, since no map mode's tooltip lists buildings. Any mode but VP, and anything
+    while this mode is off, comes back unchanged.
+
+    The Resources tooltip covers crude oil, metal, energy and rare materials only, so
+    manpower and leadership are not in it.
+
+    @param mode the mode the game is showing
+    */
+    int tooltipModeFor(int mode);
+
+    /**
     @brief the colour to draw a province, 0xAARRGGBB, or 0 to leave the game's alone
 
     Every province the map paints comes through here while the mode is on, so this is

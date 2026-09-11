@@ -183,6 +183,9 @@ Two hooks, both five byte calls, installed once and never removed:
 | `0x4666B6` | `mov ecx,[esi+0x34]` + `test ecx,ecx` | answers 0 for the victory points |
 | `0x4666B1` | `call 0x6628B0` | answers with a colour, or 0 to let the game convert its own |
 
+A third, in the province tooltip rather than the colouring, is described under "The
+province tooltip follows the mode" below.
+
 Answering zero for the victory points keeps every province on the loop's no-VP branch,
 which does two things at once: no province gets an owner colour, and the *second* colour
 conversion at `0x46697D` never runs. That leaves `0x4666B1` as the only place a colour
@@ -218,6 +221,61 @@ mode is the one on screen.
   into our code, and something in that path corrupted the owner colours - fogged
   provinces came out blue instead of yellow. Both stubs now check a flag in assembly
   and run the original instructions when it is clear.
+
+## The province tooltip follows the mode
+
+The tooltip for the province under the mouse is built by one large function, **`0x973E0`**
+(a 0x2244 byte frame, reached through a vtable, so it has no direct callers). Its start
+deals with unit movement (`UTM_NO_INFRA`, `UTM_LACK_OF_FUEL` and the rest); then it asks
+the map for the mode and switches on it **once**:
+
+```
+0x9841A  mov ecx, [eax+0xBE8]        ; the map, off the game state
+0x98420  mov edx, [ecx]
+0x98422  mov eax, [edx+0x164]        ; vtable slot 0x164 = 0x2439D0: mov eax,[ecx+0xD34]; ret
+0x98428  call eax
+0x9842A  cmp eax, 0x13
+0x9842D  ja  (no mode lines)
+0x98433  jmp [eax*4 + 0x49DCA4]      ; VA - the table is in .text, 20 entries
+```
+
+The slot 0x164 getter is in exactly one vtable, at VA `0x15CEB54`.
+
+| mode | branch (VA) | what it shows |
+| --- | --- | --- |
+| 0, 13 | `0x49843A` | terrain |
+| 1 | `0x498784` | political |
+| 2 | `0x498A67` | diplomatic (`ATWARWITHUS`, `OURWARALLY`, ...) |
+| 3 | `0x49924F` | |
+| **4** | `0x4993DB` | **supply**: `LOGTT_1..7` (supplied from, nodes away, local supply and fuel, required, received), `PORT_SHIPS`, and at sea `LOGTT_8..10` (convoys passing) |
+| 5 | `0x49B8F2` | infrastructure, from `[province+0x114]` |
+| 6 | `0x49AF68` | intel |
+| **7** | `0x49AFDA` | **VP**: `PROV_POINTS` |
+| 8, 17 | `0x49B160` | theatre |
+| **10** | `0x49BA59` | **resources**: crude oil, metal, energy, rare materials, current against max |
+| 11 | `0x49B2B1` | weather |
+| 18 | `0x49C3DE` | air (`AIR_TOOLTIP_*`) |
+| 19 | `0x49C6AC` | naval (`NAVAL_TOOLTIP_*`) |
+| 9, 12, 14-16 | - | nothing mode specific |
+
+Inside the branches the province register (edi) points at the province's **+8
+subobject**, so every offset there is 8 short of `CMapProvince::Offsets`: intel reads as
+`+0x368`, the supply pool as `+0x15C`. Read that way the resources branch reads
+`current_producing` and `max_producing` slot for slot, behind its own intel gate
+(`>= 1`).
+
+The one other mode read in the function, at `0x9CF8B`, only tests for 18 and 19.
+
+**Nothing in the supply or resources branch depends on its map mode being on screen** -
+read, not tested beyond BiceLib's own use: they read the province, the game state's
+province vector (for the depot), the defines, and a function-local static set on first
+use. So answering the mode fetch with 4 or 10 while the VP mode is shown gives the full
+supply or resources tooltip.
+
+BiceLib does exactly that: `0x98422` (`mov eax,[edx+0x164]` + `call eax`, eight bytes)
+becomes a call to a stub and three nops. Off, the stub loads the getter and jumps to it,
+so its `ret` comes back to the site. On, it calls the getter and passes the answer
+through `CustomMapMode::tooltipModeFor`.
 
 ## The sea: found, and it is the water shader
 

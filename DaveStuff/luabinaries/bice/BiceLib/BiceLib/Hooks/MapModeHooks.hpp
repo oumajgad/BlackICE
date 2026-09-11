@@ -9,6 +9,9 @@
  * building map mode is on, and with what the game itself would have produced while it
  * is off.
  *
+ * A third hook changes which map mode the province tooltip is built for, so the tooltip
+ * can follow what the map shows rather than always being the VP one.
+ *
  * Nothing is written to the game's data, so the VP map mode behaves normally the
  * moment the mode is switched off. The patch is written once and left in place:
  * repeatedly patching code in a running process carries more risk than leaving an

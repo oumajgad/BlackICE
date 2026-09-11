@@ -2,6 +2,7 @@
 #include <GameClasses/CCurrentGameState.hpp>
 
 #include <GameClasses/CGoodsPool.hpp>
+#include <GameClasses/CInGameIdler.hpp>
 #include <GameClasses/CMapProvince.hpp>
 #include <GameClasses/CProvinceBuilding.hpp>
 #include <HoiDataStructures.hpp>
@@ -907,6 +908,17 @@ int CustomMapMode::victoryPointsFor(uintptr_t province) {
         return 0;
     }
     return 0;
+}
+
+int CustomMapMode::tooltipModeFor(int mode) {
+    if (mode != CInGameIdler::MapMode::VICTORY_POINTS || !enabled()) {
+        return mode;
+    }
+    switch (shownKind) {
+    case Kind::Supply: return CInGameIdler::MapMode::SUPPLY;
+    case Kind::Resource: return CInGameIdler::MapMode::RESOURCES;
+    default: return mode;
+    }
 }
 
 uint32_t CustomMapMode::colourFor(uintptr_t province, int viewingCountry) {

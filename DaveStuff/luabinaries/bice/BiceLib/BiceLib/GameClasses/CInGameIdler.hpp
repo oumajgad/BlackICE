@@ -103,7 +103,9 @@ namespace CInGameIdler {
     bool centreOnProvince(uintptr_t province);
 
     namespace MapMode {
+        constexpr int SUPPLY = 4;
         constexpr int VICTORY_POINTS = 7;    // the one Custom Mapmode takes over
+        constexpr int RESOURCES = 10;
         constexpr int SIMPLIFIED_TERRAIN = 13;
         constexpr int AIR = 18;
         constexpr int NAVAL = 19;

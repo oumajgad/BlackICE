@@ -29,9 +29,18 @@ namespace {
     // mode it is showing is on it.
     const uintptr_t VP_RECOLOUR = 0x267710;
 
+    // Inside the function that builds the tooltip for the province under the mouse. It
+    // asks the map which mode is on screen - a virtual call, which answers
+    // current_map_mode - and switches on the answer once to pick the mode's lines, so
+    // changing the answer here changes which tooltip is shown and nothing else.
+    const uintptr_t TOOLTIP_MODE_SITE = 0x98422;
+
     // mov ecx, [esi+0x34] / test ecx, ecx - five bytes, so a call fits exactly.
     const unsigned char EXPECTED_VICTORY_POINTS[5] = { 0x8B, 0x4E, 0x34, 0x85, 0xC9 };
     const unsigned char EXPECTED_COLOUR_CALL[5] = { 0xE8, 0xFA, 0xC1, 0x1F, 0x00 };
+
+    // mov eax, [edx+0x164] / call eax - eight bytes, a call and three nops.
+    const unsigned char EXPECTED_TOOLTIP_MODE[8] = { 0x8B, 0x82, 0x64, 0x01, 0x00, 0x00, 0xFF, 0xD0 };
 
     bool installedFlag = false;
     const char* statusText = "not installed yet";
@@ -52,6 +61,11 @@ namespace {
     /**@brief the colour for the province being painted, or 0 to keep the game's*/
     uint32_t __cdecl decideColour(uintptr_t province, int viewingCountry) {
         return CustomMapMode::colourFor(province, viewingCountry);
+    }
+
+    /**@brief the map mode whose tooltip the game should build*/
+    int __cdecl tooltipMode(int mode) {
+        return CustomMapMode::tooltipModeFor(mode);
     }
 
     /**
@@ -140,9 +154,35 @@ namespace {
         }
     }
 
+    /**
+    @brief stands in for `mov eax,[edx+0x164]` and the `call eax` after it
+
+    edx is the map's vftable and ecx the map, as the game left them for the call. The
+    game's code after it only reads eax, the mode, and the cmp there sets the flags
+    afresh; ecx and edx are the callee's to clobber in any case.
+
+    Off, the getter is jumped to rather than called, so its ret comes straight back to
+    the site, as the original call would have.
+    */
+    __declspec(naked) void hookedTooltipMode() {
+        __asm {
+            mov eax, [edx + 0x164]      // the getter, as the replaced load had it
+            cmp active, 0
+            jne takeOver
+            jmp eax
+
+        takeOver:
+            call eax                    // ecx is the map, as the call expected
+            push eax
+            call tooltipMode
+            add esp, 4
+            ret
+        }
+    }
+
     /**@brief refuses unless the bytes are exactly what this build should have there*/
-    bool bytesMatch(unsigned char* site, const unsigned char* expected) {
-        for (int i = 0; i < 5; i++) {
+    bool bytesMatch(unsigned char* site, const unsigned char* expected, int length = 5) {
+        for (int i = 0; i < length; i++) {
             unsigned char byte = 0;
             if (!Mem::tryRead(reinterpret_cast<uintptr_t>(site + i), byte)
                 || byte != expected[i]) {
@@ -152,20 +192,23 @@ namespace {
         return true;
     }
 
-    /**@brief writes a five byte call, whatever was there before*/
-    bool writeCall(unsigned char* site, void* target) {
+    /**@brief writes a five byte call, whatever was there before, and nops to fill length*/
+    bool writeCall(unsigned char* site, void* target, int length = 5) {
         const uintptr_t relative = reinterpret_cast<uintptr_t>(target)
             - reinterpret_cast<uintptr_t>(site) - 5;
 
         DWORD protection = 0;
-        if (!VirtualProtect(site, 5, PAGE_EXECUTE_READWRITE, &protection)) {
+        if (!VirtualProtect(site, length, PAGE_EXECUTE_READWRITE, &protection)) {
             return false;
         }
         site[0] = 0xE8;
         *reinterpret_cast<uint32_t*>(site + 1) = static_cast<uint32_t>(relative);
+        for (int i = 5; i < length; i++) {
+            site[i] = 0x90;
+        }
         DWORD ignored = 0;
-        VirtualProtect(site, 5, protection, &ignored);
-        FlushInstructionCache(GetCurrentProcess(), site, 5);
+        VirtualProtect(site, length, protection, &ignored);
+        FlushInstructionCache(GetCurrentProcess(), site, length);
         return true;
     }
 }
@@ -183,11 +226,13 @@ bool Hooks::MapMode::install() {
 
     unsigned char* victoryPoints = reinterpret_cast<unsigned char*>(base + VICTORY_POINT_SITE);
     unsigned char* colourCall = reinterpret_cast<unsigned char*>(base + COLOUR_CALL_SITE);
+    unsigned char* tooltipSite = reinterpret_cast<unsigned char*>(base + TOOLTIP_MODE_SITE);
 
-    // Both are checked before either is written, so a build this does not fit leaves
-    // the game untouched rather than half patched.
+    // All are checked before any is written, so a build this does not fit leaves the
+    // game untouched rather than half patched.
     if (!bytesMatch(victoryPoints, EXPECTED_VICTORY_POINTS)
-        || !bytesMatch(colourCall, EXPECTED_COLOUR_CALL)) {
+        || !bytesMatch(colourCall, EXPECTED_COLOUR_CALL)
+        || !bytesMatch(tooltipSite, EXPECTED_TOOLTIP_MODE, sizeof(EXPECTED_TOOLTIP_MODE))) {
         statusText = "the code is not what this build expects";
         ERROR_OUT(printf("MapMode hook: the map mode code at %#010x is not what was "
             "expected\n", static_cast<unsigned>(base + VICTORY_POINT_SITE)));
@@ -199,16 +244,18 @@ bool Hooks::MapMode::install() {
     // The colour call sits five bytes before the victory point read, so it goes first
     // and neither write lands inside the other.
     if (!writeCall(colourCall, &hookedPackColour)
-        || !writeCall(victoryPoints, &hookedVictoryPoints)) {
+        || !writeCall(victoryPoints, &hookedVictoryPoints)
+        || !writeCall(tooltipSite, &hookedTooltipMode, sizeof(EXPECTED_TOOLTIP_MODE))) {
         statusText = "could not make the code writable";
         return false;
     }
 
     installedFlag = true;
     statusText = "installed";
-    INFO_OUT(printf("MapMode hooks installed at %#010x and %#010x\n",
+    INFO_OUT(printf("MapMode hooks installed at %#010x, %#010x and %#010x\n",
         static_cast<unsigned>(base + VICTORY_POINT_SITE),
-        static_cast<unsigned>(base + COLOUR_CALL_SITE)));
+        static_cast<unsigned>(base + COLOUR_CALL_SITE),
+        static_cast<unsigned>(base + TOOLTIP_MODE_SITE)));
     return true;
 }
 
