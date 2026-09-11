@@ -59,25 +59,30 @@ namespace CCurrentGameState {
 
         /**
          * **Every province**, as a vector of CMapProvince* indexed by id: begin, end,
-         * and the end of what is allocated. The count is (end - begin) / 4, and it is
-         * the map's `max_provinces` - 14190 in BlackICE's map/default.map, and 14190
-         * read live. The map's provinces are 1 to 14189. **Id 0 holds a province too,
-         * but not a place**: id 0, owned by nobody (`---`), nothing in it - the map's
-         * definition.csv starts at 1. Loops over the map start at 1.
+         * and the end of what is allocated. The count is (end - begin) / 4, which is the
+         * map's `max_provinces` from map/default.map. **Id 0 holds a placeholder
+         * province** owned by nobody (`---`) - the map's definition.csv starts at 1 - so
+         * loops over the map start at 1.
          *
-         * **Read to `provinces_end` and no further.** The allocation runs on past it -
-         * room for 18207 in a running game - and that spare capacity holds whatever
-         * was left in the memory: non-null pointers that read without faulting and
-         * return junk. The custom map mode walked to a hardcoded 20000 and counted 20
-         * of them as provinces with energy, some holding hundreds of millions, which
-         * put its top shade at a billion. The first junk entry that time was at
-         * 15348, but where it starts depends on what the memory last held.
+         * **Read to `provinces_end` and no further.** The allocation runs on past it,
+         * and that spare capacity holds whatever the memory last held: non-null
+         * pointers that read without faulting and return junk.
          *
          * provinceCount() and province() below read it that way.
          */
         constexpr uintptr_t provinces_begin = 0xB8C;
         constexpr uintptr_t provinces_end = 0xB90;
         constexpr uintptr_t provinces_capacity_end = 0xB94;
+
+        /**
+         * **Every province again, sorted by distance from its supply depot, farthest
+         * first** (CMapProvince::Offsets::supply_depot_distance): a plain array of
+         * CMapProvince*, as long as the vector above. The daily supply pass
+         * (`0x6872D0`) walks it in this order, so a province passes its unmet demand on
+         * to the one closer to the depot before that one takes its turn. See
+         * CMapProvince::Offsets::pool.
+         */
+        constexpr uintptr_t provinces_by_supply_order = 0x54;
 
         /**
          * One entry per country id, non zero for a country somebody is playing. From

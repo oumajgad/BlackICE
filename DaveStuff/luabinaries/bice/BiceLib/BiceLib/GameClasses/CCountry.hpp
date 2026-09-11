@@ -18,6 +18,15 @@ namespace CCountry {
         constexpr uintptr_t flags_tree_root_ptr = 0x180 + 0x4;
         constexpr uintptr_t variables_tree_root_ptr = 0x1AC + 0x4;
 
+        /**
+         * **The country's convoys**, as the usual `{ first, last, count }` list with
+         * nodes of `{ data, prev, next }`, each data a CConvoy* - HDS::walkList reads
+         * it. Every convoy is in exactly one list, its owner's.
+         */
+        constexpr uintptr_t convoys_list_first_ptr = 0xA0;
+        constexpr uintptr_t convoys_list_last_ptr = 0xA4;
+        constexpr uintptr_t convoys_count = 0xA8;
+
         /**@brief head of the list of modifiers currently on the country*/
         constexpr uintptr_t active_modifiers_list_first_ptr = 0x648;
 
@@ -42,6 +51,27 @@ namespace CCountry {
         constexpr uintptr_t leaders_list_first_ptr = 0xE10;
         constexpr uintptr_t leaders_list_last_ptr = 0xE14;
         constexpr uintptr_t leaders_count = 0xE18;
+
+        /**
+         * **The capital, as a province id** - index it into the game state's province
+         * vector. The game's own "capital province" (`0x42F100`) reads this.
+         *
+         * The country's stockpile is the capital's pool: `CCountry:GetPool()`
+         * (`0x4F4DE0`) answers `&capital->pool` (CMapProvince::Offsets::pool), unless
+         * the byte at `+0x95` is set, when it answers the pool held here at `+0x9F8`.
+         * What sets that byte is not known. The country holds 23 pools of its own,
+         * `+0x74C` to `+0xA64`; only the first is worked out, below.
+         */
+        constexpr uintptr_t capital_province_id = 0xE24;
+
+        /**
+         * **A day's resource income**, a CGoodsPool: what arrives in the capital's pool
+         * each midnight, before anything is spent. It is what the connected provinces
+         * yield, with modifiers, plus what the country's resource convoys carried in
+         * from networks cut off from the capital (CConvoy::Offsets::daily). Established
+         * by comparing it with the capital's pool and throughput, not from the code.
+         */
+        constexpr uintptr_t daily_resource_income = 0x74C;
     }
 
     /**

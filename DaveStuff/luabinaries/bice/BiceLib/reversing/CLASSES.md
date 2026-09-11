@@ -293,6 +293,97 @@ combat capture and the OOB browser), `CSubUnitDefinition.hpp`, `CTerrain.cpp` (v
 pointer to - so a province pointer's first dword never matches it; that is `Primary`.
 **RTTI**, and the primary checked **live** against both province arrays.
 
+## Provinces, goods and supply
+
+**In code: `BiceLib/GameClasses/CMapProvince.hpp` and `CGoodsPool.hpp`**, which are the
+authority for the offsets. A good in a province is two offsets added: the pool's from
+`CMapProvince::Offsets`, the good's from `CGoodsPool::Goods`. This is where they came from.
+
+`CGoodsPool`, vftable `0x11C1BD4` (**RTTI**; `../../../mem` has `0x11C1BD0`, four bytes
+short), `0x24` bytes: seven amounts in thousandths from +0x8, in the order supplies,
+fuel, money, crude oil, metal, energy, rare materials. **Read** out of the pool's own
+save reader (slot 4, `0x523A90`), which stores each key into its slot, with the keys'
+token ids matched to their strings where the game registers them.
+
+Every province embeds **nine** of them, at the same offsets in all 14,189 (**seen**).
+The province writer (`0x495020`) saves seven and names them (**read**):
+
+| Offset | Save key | Holds | |
+| --- | --- | --- | --- |
+| +0x15C | `pool` | what is in the province; **in the capital, the national stockpile** | read, seen |
+| +0x180 | - | the pool as the last daily pass left it; caps the next day's outflow | read |
+| +0x1A4 / +0x1A8 | `last_drawn` / `drawn` | **pointers**, into +0x1AC and +0x1D0 | read, seen |
+| +0x1F4 / +0x1F8 | `last_throughput` / `throughput` | **pointers**, into +0x1FC and +0x220 | read, seen |
+| +0x244 | - | what the units there need today, supplies and fuel | read; the name inferred |
+| +0x268 | `current_producing` | resources it yields now - what the custom map mode shades by | read, seen |
+| +0x28C | `max_producing` | resources it could yield | read, seen |
+
+The two pointer pairs are **double buffers**: the daily supply pass (`0x6872D0`) swaps
+each pair at the start of the day, then zeroes and refills today's. Read them through
+the pointers; which buffer is today's depends on the day. **Seen** across a midnight,
+snapshotting every province hour by hour: both pairs flipped everywhere at once, the old
+today's buffer became `last_` unchanged, and between midnights neither buffer, `need`
+nor `last_pool` moved. `current_producing` does move: resources step up towards
+`max_producing` after midnight, and its supply and fuel slots hold something only
+during the midnight processing.
+
+**Networks cut off from their capital** (their depot is not the capital) were watched
+for 21 game days (**seen**): no resources in any of their throughput, and their
+production arriving in the capital's pool every midnight anyway. **Convoys carry it.**
+The day's total is `CCountry + 0x74C`, a pool (**seen**, matched against three
+capitals).
+
+### Convoys
+
+**In code: `BiceLib/GameClasses/CConvoy.hpp`**, and the list in `CCountry.hpp`.
+
+`CConvoy`, vftable `0x11C0D44`, base `CReferenceObject` (**RTTI**). A country's convoys
+are the list at `CCountry + 0xA0` / `+0xA4` / `+0xA8`, nodes `{ data, prev, next }`
+(**seen**: all 108 lists together hold exactly the 339 instances a scan finds, each in
+its owner's). The saved fields come out of the convoy's save writer, `0x4C5600`
+(**read**): `daily` (a pool, +0x38), `ship` (a seven-int goods mask, +0x5C), `convoys`
+(transports assigned, +0x98), `escorts` (+0x9C), `trade` / `lend_lease` (bytes +0xA0 /
++0xA1), `path` (a list at +0xB0, province ids), `start` / `end` (+0xC0 / +0xC4),
+`start_date` / `last_attack` (+0xC8 / +0xCC).
+
+Two unsaved fields, **seen** over four and a half game days of hourly snapshots: +0x90
+is the transports wanted (steady while +0x98 went up and down), and +0x6C is a pool of
+what the loading end produces in a day - the loading network's `current_producing`
+summed, exactly, on 322 of 361 convoys. It is not a second buffer of `daily`. Every
+convoy field that changes does so in the hour after midnight.
+
+The goods mask sorts them: 202 supply convoys, 58 resource convoys, 79 carrying money
+and one good - trade, presumably. **A cut off network's production waits in the
+loading port's pool for its convoy** (**seen**): in 53 of the 58 resource ports the
+stock is exactly one day's load, and Holland's resource income is its resource
+convoys' loads added up. A Danish convoy that wanted one transport and mostly had none
+showed the pile up: its port's stock grew by a day's load a day, and the one day a
+transport was assigned the convoy took the whole backlog - `daily` read five days'
+worth - and the port dropped back to one day's.
+
+`CCountry:GetPool()` (`0x4F4DE0`) answers the capital's `pool` unless the byte at
+`country + 0x95` is set (**read**). All 100 capitals of a running game hold money and
+resources there, and none of the country's own 23 pools holds anything like the
+stockpile (**seen**). The capital is `country + 0xE24`, a province id (**read**, from
+`0x42F100`).
+
+The pass itself, **read**: it walks `CCurrentGameState + 0x54`, every province sorted by
+distance from its depot, farthest first (**seen**). Each province tops its pool up
+towards `SUPPLYPOOL_DAYS` (35) of its need, by taking from the neighbours one step closer
+to its depot (`+0x48` the same depot, `+0x4C` a smaller distance); what it cannot get is
+added to those neighbours' `drawn`, so they ask for it on their turn. A good taken counts
+on the giver as both drawn and throughput. The per province limits come in as arrays from
+the caller and are **not traced**.
+
+Along the way: `+0x68` is a `CWeather`, saved as `weather` (**read**), and the
+`+0xD4` path node is a `CProvinceTemplate` in every province (**RTTI**, **seen**).
+
+`../../../mem`'s `CMapProvince.py` reads `required_supply` / `required_fuel` at +0x1B4 /
++0x1B8 and `yesterday_required_supply` / `_fuel` at +0x1D4 / +0x1DC. Those are the two
+`drawn` buffers, read by offset, so which one is today's changes every day.
+`yesterday_required_supply` is also four bytes short: +0x1D4 is the `0x18d`, and the
+supplies are at +0x1D8.
+
 ## Movement and routing
 
 Worked out for a strategic redeployment that preferred good infrastructure, which was

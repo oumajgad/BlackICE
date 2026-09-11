@@ -1,6 +1,7 @@
 #include <GameState/CustomMapMode.hpp>
 #include <GameClasses/CCurrentGameState.hpp>
 
+#include <GameClasses/CGoodsPool.hpp>
 #include <GameClasses/CMapProvince.hpp>
 #include <GameClasses/CProvinceBuilding.hpp>
 #include <HoiDataStructures.hpp>
@@ -72,12 +73,13 @@ namespace {
     // game. Keys as the mod's history files spell them. Deliberately not the
     // province's `local_` modifiers at +0x114, which is what CMapProvince::BuildingOffsets
     // - despite the name - reads: those change what a province produces, and are not
-    // what it has.
+    // what it has. The four goods are slots of what the province yields now.
+    const uintptr_t PRODUCING = CMapProvince::Offsets::current_producing;
     const std::vector<CustomMapMode::Source> RESOURCES = {
-        { CMapProvince::Offsets::energy, "energy", "Energy" },
-        { CMapProvince::Offsets::metal, "metal", "Metal" },
-        { CMapProvince::Offsets::rares, "rare_materials", "Rare Materials" },
-        { CMapProvince::Offsets::oil, "crude_oil", "Crude Oil" },
+        { PRODUCING + CGoodsPool::Goods::energy, "energy", "Energy" },
+        { PRODUCING + CGoodsPool::Goods::metal, "metal", "Metal" },
+        { PRODUCING + CGoodsPool::Goods::rare_materials, "rare_materials", "Rare Materials" },
+        { PRODUCING + CGoodsPool::Goods::crude_oil, "crude_oil", "Crude Oil" },
         { CMapProvince::Offsets::manpower, "manpower", "Manpower" },
         { CMapProvince::Offsets::leadership, "leadership", "Leadership" },
     };
