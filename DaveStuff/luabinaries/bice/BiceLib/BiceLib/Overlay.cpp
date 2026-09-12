@@ -489,6 +489,37 @@ namespace {
         CrashReport::noteFrameEnd();
     }
 
+    /**
+    @brief whether the game window is in no state to be drawn on
+
+    **Minimizing is what loses a layout.** ImGui keeps its windows inside whatever it
+    is told the display is, and the backend reads that from the game window's client
+    area - which Windows reports as 160x28 for a minimized window, whatever the game
+    was running at. A single frame drawn in that state squeezes every window into the
+    corner, and restoring the window does not put them back: the positions are the
+    ones they were clamped to, and they are what gets saved.
+
+    Alt-tabbing out of an exclusive fullscreen game minimizes it, so this cost a
+    layout every time the overlay was open at the time. ImGui's own guard does not
+    cover it, because that only skips a display of exactly zero.
+
+    Frames are skipped entirely while this holds, which is what the reference
+    backends do. Nothing is lost by it: a minimized window has nothing to show.
+    */
+    bool windowCannotBeDrawnOn() {
+        if (gameWindow == nullptr) {
+            return false;       // no window known, so nothing to go on: draw as before
+        }
+        if (IsIconic(gameWindow)) {
+            return true;
+        }
+        RECT client = {};
+        if (!GetClientRect(gameWindow, &client)) {
+            return false;
+        }
+        return client.right <= client.left || client.bottom <= client.top;
+    }
+
     HRESULT APIENTRY hookedPresent(IDirect3DDevice9* device, const RECT* sourceRect, const RECT* destRect,
         HWND destWindowOverride, const RGNDATA* dirtyRegion) {
         Diagnostics::notePresentThread();
@@ -519,6 +550,14 @@ namespace {
             // Runs the mod's BiceLib setup once a game day, in every game in a
             // session - the multiplayer clients run none of the mod's scripts.
             Periodics::update();
+
+            // Minimized: no frame at all, and the layout is left exactly as it is.
+            // wasVisible is left alone too, so a toggle made while the window was away
+            // still gets its transition on the first frame back.
+            if (windowCannotBeDrawnOn()) {
+                return originalPresent(device, sourceRect, destRect, destWindowOverride,
+                    dirtyRegion);
+            }
 
             if (visible) {
                 if (!wasVisible) {
