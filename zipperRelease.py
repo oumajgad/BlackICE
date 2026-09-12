@@ -3,13 +3,13 @@ import sys
 import time
 import zipfile
 
+import releaseCommon
 
-Modfolders = ["battleplans","cgm","common","decisions","events","history","localisation","map",
-                "interface","music","script","sound","technologies","units","gfx"]
-newlines = []
+# Shared with installer/buildInstaller.py so the two release paths cannot drift.
+Modfolders = releaseCommon.MOD_FOLDERS
 version = str
 
-path = "tfh/mod"
+path = releaseCommon.MOD_PARENT
 
 
 def countFiles() -> int:
@@ -47,24 +47,9 @@ def zipdir(filename):
 
 
 def createModFile(zipf: zipfile.ZipFile):
-    with open("./Mod File/BlackICE GitHub.mod", "r") as file1:
-        lines = file1.readlines()
-
-    for line in lines:
-        if line.split("=")[0].strip() == "name":
-            newlines.append('name = "BlackICE %s"\n'% version)
-        elif line.split("=")[0].strip() == "path":
-            newlines.append('path = "tfh/mod/BlackICE %s"\n'% version)
-        elif line.split("=")[0].strip() == "user_dir":
-            newlines.append('user_dir = "BlackICE %s"\n'% version)
-        else:
-            newlines.append(line)
-
-    with open("./Mod File/BlackICE %s.mod"% version, "w") as file2:
-        file2.writelines(newlines)
-
-    zipf.write("./Mod File/BlackICE %s.mod"% version, f"{path}/BlackICE %s.mod"% version)
-    os.remove("./Mod File/BlackICE %s.mod"% version)
+    modPath = releaseCommon.writeModFile(version, "./Mod File")
+    zipf.write(modPath, f"{path}/{releaseCommon.modFileName(version)}")
+    os.remove(modPath)
 
 def addStatsCLI(zipf: zipfile.ZipFile):
     zipf.write("./tools/visualizeStatistics/visualizeStatisticCLI.exe", f"{path}/BlackICE {version}/stats/visualizeStatisticCLI.exe")
@@ -88,32 +73,16 @@ def addDxvkArchive(zipf: zipfile.ZipFile):
     zipf.write("./dxvk.rar", f"dxvk.rar")
 
 def setLocsVersion():
-    with open("./localisation/bi_version.csv", "r") as versionFile1:
-        lines = versionFile1.readlines()
-    lines[1] = "BI_VERSION;BlackICE %s;;;;;;;;;;;;;x"%version
-    with open("./localisation/bi_version.csv", "w") as versionFile2:
-        versionFile2.writelines(lines)
+    releaseCommon.setLocsVersion(version)
 
 def resetLocsVersion():
-    with open("./localisation/bi_version.csv", "r") as versionFile3:
-        lines = versionFile3.readlines()
-    lines[1] = "BI_VERSION;BlackICE TestVersion;;;;;;;;;;;;;x"
-    with open("./localisation/bi_version.csv", "w") as versionFile4:
-        versionFile4.writelines(lines)
+    releaseCommon.resetLocsVersion()
 
 def setLuaUtilityVersion():
-    with open("./script/autoexec.lua", "r") as file:
-        lines = file.readlines()
-    lines[6] = f'G_MOD_VERSION = "{version}"\n'
-    with open("./script/autoexec.lua", "w") as file:
-        file.writelines(lines)
+    releaseCommon.setLuaUtilityVersion(version)
 
 def resetLuaUtilityVersion():
-    with open("./script/autoexec.lua", "r") as file:
-        lines = file.readlines()
-    lines[6] = f'G_MOD_VERSION = "GitHub"\n'
-    with open("./script/autoexec.lua", "w") as file:
-        file.writelines(lines)
+    releaseCommon.resetLuaUtilityVersion()
 
 
 def zipIt(filename):

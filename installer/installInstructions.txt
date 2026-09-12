@@ -1,0 +1,60 @@
+Installation:
+
+1) Download the installer and run it.
+2) Point it at your Hearts of Iron 3 folder - the one with hoi3_tfh.exe in it.
+   It will usually have found it already. If you pick the wrong folder it tells
+   you so instead of installing into it.
+3) Press Install, then launch the game from the BlackICE shortcut it creates.
+
+That is all. The installer does the rest for you:
+ - patches hoi3_tfh.exe so the game can use 4 GB of memory
+ - moves the unused 3D unit sprites aside (frees around 300 MB)
+ - installs any missing Microsoft runtimes (C++, DirectX 9.0c, .NET 3.5)
+ - sets up the mod and a shortcut that launches straight into BlackICE
+
+You no longer need to download Podcat's LAA exe, run the ExePatcher, or press
+"Remove Sprites" in the Utility. Those steps are done during the install.
+
+
+If you already have an older BlackICE installed:
+
+Just install the new one over it. The installer lists the older versions it
+finds, shows how much space each takes, and offers to remove them - ticked by
+default. Your saved games are not touched: they live outside the game folder, so
+you can reinstall an old version later and carry on where you left off.
+
+Only the newest version appears in Windows' installed apps list. If you want to
+drop an old version later without reinstalling, start the uninstaller: it asks
+which versions to remove, and removing only some of them leaves BlackICE
+installed and the game untouched.
+
+
+Options in the installer:
+
+ - DXVK: reduces RAM usage by up to 700 MB, which helps stability a lot. Needs a
+   GPU supporting Vulkan 1.3 - you can look yours up online, and you may need to
+   update your drivers. Off by default.
+ - Borderless window. Off by default.
+
+
+If you use the Steam version:
+
+The installer will warn you and then carry on. It works, but Steam replaces
+files it owns when it verifies the install, which would undo the memory patch.
+If the game becomes unstable again later, move the game folder out of Steam,
+launch it with launcher.exe in future, and run the installer once more.
+
+
+Removing it:
+
+Use "BlackICE" in Windows' installed apps list. It asks which versions to
+remove, and then whether to put the original hoi3_tfh.exe, the 3D sprites and
+the game's lua5.1.dll back, so you can return the game to exactly how it was.
+
+
+Troubleshooting:
+
+The installer shows a "System check" page listing what it found and what is
+missing. If the game will not start, that page is the first thing to look at -
+the most common cause is a missing Microsoft runtime, which it will install for
+you.
