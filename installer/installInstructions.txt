@@ -20,8 +20,16 @@ If you already have an older BlackICE installed:
 
 Just install the new one over it. The installer lists the older versions it
 finds, shows how much space each takes, and offers to remove them - ticked by
-default. Your saved games are not touched: they live outside the game folder, so
-you can reinstall an old version later and carry on where you left off.
+default.
+
+Your saved games are not touched. They are not kept in the game folder at all,
+but here:
+
+    Documents\Paradox Interactive\Hearts of Iron III\BlackICE <version>\
+
+Each version has its own folder there, holding its saves and its settings.txt.
+Removing a version from the game folder leaves that alone, so you can reinstall
+it later and carry on where you left off.
 
 Only the newest version appears in Windows' installed apps list. If you want to
 drop an old version later without reinstalling, start the uninstaller: it asks
@@ -34,7 +42,44 @@ Options in the installer:
  - DXVK: reduces RAM usage by up to 700 MB, which helps stability a lot. Needs a
    GPU supporting Vulkan 1.3 - you can look yours up online, and you may need to
    update your drivers. Off by default.
- - Borderless window. Off by default.
+
+ - Borderless window: lets the game run in a window with no border, filling the
+   screen, and fixes the mouse cursor in windowed mode. Off by default.
+
+   Ticking it only puts the file in place. It does nothing until you switch the
+   game to windowed mode and turn it on, which takes two edits:
+
+   1. In your settings.txt, set:
+
+          fullScreen=no
+
+      settings.txt is per version, in
+      Documents\Paradox Interactive\Hearts of Iron III\BlackICE <version>\
+      NOT the settings.txt in the game folder - that one is not the one the
+      game reads.
+
+   2. Start the game once. That creates
+      Documents\Paradox Interactive\v2winfix.ini
+      Open it and set:
+
+          [v2winfix]
+          borderless=1
+
+   Optional, if your monitor is larger than the resolution you play at: the
+   window can be stretched to fill the screen with the cursor still lining up.
+   Add the resolution you play at as "original" and your monitor's as
+   "stretched":
+
+          [dsafe]
+          original_X=1920
+          original_Y=1080
+          stretched_X=2560
+          stretched_Y=1440
+
+   The game still renders at the original resolution, so it may look slightly
+   blurry.
+
+   To turn borderless off again, set borderless=0 in v2winfix.ini.
 
 
 If you use the Steam version:

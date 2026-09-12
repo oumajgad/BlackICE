@@ -126,8 +126,10 @@ begin
     Note.Top := ScaleY(232);
     Note.Width := Form.ClientWidth - ScaleX(32);
     Note.AutoSize := False;
-    Note.Height := ScaleY(16);
-    Note.Caption := 'Your saved games are never touched.';
+    Note.Height := ScaleY(30);
+    Note.WordWrap := True;
+    Note.Caption := 'Saved games are never touched - they are kept in '
+      + 'Documents\Paradox Interactive\Hearts of Iron III\, not in the game folder.';
 
     OkButton := TNewButton.Create(Form);
     OkButton.Parent := Form;

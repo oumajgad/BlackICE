@@ -40,7 +40,14 @@ INNO_SINGLE_FILE_LIMIT = 2100000000
 ARCHIVES = [
     # (archive, staging subfolder, what it is)
     (os.path.join(REPO, "dxvk.rar"), "dxvk", "DXVK d3d9/dxgi"),
-    (os.path.join(REPO, "DaveStuff", "borderless_window_v2winfix", "borderless.rar"),
+
+    # The stretching build rather than plain borderless.rar. Both drop the same
+    # dinput8.dll into the game folder so only one can be installed, and this
+    # one is a superset: borderless=1 alone behaves exactly like the plain
+    # build, and the [dsafe] section additionally allows stretching the window
+    # with the cursor still lining up. It is also the newer of the two.
+    (os.path.join(REPO, "DaveStuff", "borderless_window_v2winfix",
+                  "borderlessWithStretching.rar"),
      "borderless", "borderless window"),
 ]
 

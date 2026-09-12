@@ -115,7 +115,10 @@ Name: "custom"; Description: "Custom"; Flags: iscustom
 Name: "mod";      Description: "{#ModName} {#ModVersion} game files"; Types: full custom; Flags: fixed
 Name: "runtimes"; Description: "Missing Microsoft runtimes (C++, DirectX, .NET)"; Types: full custom
 Name: "dxvk";     Description: "DXVK - lower memory use, needs a Vulkan 1.3 GPU"; Types: custom
-Name: "border";   Description: "Borderless window"; Types: custom
+; Needs two edits afterwards to actually switch on - fullScreen=no in the mod's
+; settings.txt, and borderless=1 in v2winfix.ini - so the description says so
+; rather than leaving people with a file that appears to do nothing.
+Name: "border";   Description: "Borderless window (needs settings.txt edited afterwards - see the readme it installs)"; Types: custom
 
 [Tasks]
 Name: "patchexe";  Description: "Patch hoi3_tfh.exe so the game can use 4 GB of memory"; GroupDescription: "Fixes applied to the game:"
@@ -216,8 +219,10 @@ begin
   OldVersionPage := CreateInputOptionPage(wpSelectTasks,
     'Older versions found', 'Remove the versions you no longer want',
     'These older BlackICE versions are still in the game folder. Removing one '
-    + 'deletes only its files - your saved games live outside the game folder '
-    + 'and are never touched, so you can reinstall a version and carry on.',
+    + 'deletes only its files.' + #13#10 + #13#10
+    + 'Your saved games are not touched. They are not kept in the game folder '
+    + 'at all, but in Documents\Paradox Interactive\Hearts of Iron III\, one '
+    + 'folder per version, so you can reinstall a version later and carry on.',
     False, False);
 
   // A read only page rather than a set of checkboxes: it reports, the install

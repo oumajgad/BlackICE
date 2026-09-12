@@ -116,6 +116,38 @@ working directory is the base folder.
 
 `Mod File/BICE.bat` shows the same unquoted shape.
 
+### Where saves live
+
+Not in the game folder:
+
+```
+Documents\Paradox Interactive\Hearts of Iron III\BlackICE <version>\
+```
+
+One folder per version, holding that version's saves **and its `settings.txt`**.
+The `settings.txt` in the game folder is not the one the game reads.
+
+This is why removing a version is safe, and why the installer, the uninstaller
+and the forum instructions all name the path rather than just promising saves
+are untouched.
+
+### Borderless window
+
+The component only places `dinput8.dll` and its readme. It does nothing until
+the player makes two edits, so the component description and the instructions
+both say so — otherwise it looks like a feature that silently fails:
+
+1. `fullScreen=no` in the **per-version** `settings.txt` named above.
+2. Run the game once to generate
+   `Documents\Paradox Interactive\v2winfix.ini`, then set `borderless=1` in it.
+
+Optionally the window can be stretched to a larger monitor with the cursor still
+lining up, via a `[dsafe]` section giving the played and actual resolutions.
+
+The build stages `borderlessWithStretching.rar`, not `borderless.rar`. Both drop
+the same `dinput8.dll` so only one can be installed; the stretching build is a
+superset (`borderless=1` alone behaves exactly like the plain one) and is newer.
+
 ### Versions
 
 Every version shares one `AppId`, so there is a single entry in Windows'
