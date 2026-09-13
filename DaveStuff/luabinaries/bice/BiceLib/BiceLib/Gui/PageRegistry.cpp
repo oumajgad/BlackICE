@@ -240,7 +240,7 @@ namespace {
         }
     }
 
-    const char* CONTROL_WINDOW = "BiceLib";
+    const char* CONTROL_WINDOW = "Utility";
 
     /**@brief docks a group's pages into that group's own dockspace*/
     void buildGroupLayout(const GroupWindow& window, ImGuiID dockspaceId) {
@@ -282,7 +282,7 @@ namespace {
             window.open = true;
             // The group name alone could collide with a page title, and the prefix
             // makes the windows recognisable once they are floating separately.
-            sprintf_s(window.title, "BiceLib - %s", page->group());
+            sprintf_s(window.title, "Utility - %s", page->group());
             window.dockspaceId = ImHashStr("dockspace", 0, ImHashStr(window.title));
 
             // Built up front rather than when the group is first shown. Pages are
