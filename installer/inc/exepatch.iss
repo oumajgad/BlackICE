@@ -21,6 +21,7 @@
 const
   EXE_SIZE = 21011968;
   PATCH_SITES = 9;
+  PATCH_ATTEMPTS = 3;
 
   // Set by ClassifyExe.
   EXE_MISSING   = 0;
@@ -111,7 +112,8 @@ end;
 function ApplyLargeAddressAware(const GameDir: String; var Message: String): Boolean;
 var
   ExePath, BackupPath: String;
-  I, State: Integer;
+  I, State, Attempt: Integer;
+  WriteFailed: Boolean;
 begin
   ExePath := AddBackslash(GameDir) + 'hoi3_tfh.exe';
   BackupPath := AddBackslash(GameDir) + 'hoi3_tfh.exe.preBlackICE';
@@ -155,29 +157,41 @@ begin
     Log('LAA: backed up to ' + BackupPath);
   end;
 
-  for I := 0 to PATCH_SITES - 1 do
+  // Retried, because the failure this guards against is transient: something
+  // else holding the exe open for a moment. Antivirus scanning a file the
+  // installer has just written is the usual cause, and it was seen for real
+  // during testing. Every attempt either finishes and verifies, or puts the
+  // original back before trying again - the exe is never left half written.
+  for Attempt := 1 to PATCH_ATTEMPTS do
   begin
-    if not WriteFileBytes(ExePath, PatchOffset[I], HexToBytes(PatchLAA[I])) then
+    WriteFailed := False;
+    for I := 0 to PATCH_SITES - 1 do
     begin
-      // Put the original back rather than leave a half written exe behind.
-      CopyFile(BackupPath, ExePath, False);
-      Message := 'Writing the patch failed, so the original exe was restored.' + #13#10 +
-                 'Make sure the game is closed and that hoi3_tfh.exe is not read only.';
-      Result := False;
+      if not WriteFileBytes(ExePath, PatchOffset[I], HexToBytes(PatchLAA[I])) then
+      begin
+        WriteFailed := True;
+        Break;
+      end;
+    end;
+
+    if not WriteFailed and (ClassifyExe(ExePath) = EXE_PATCHED) then
+    begin
+      Message := 'Patched for 4 GB. The original is kept as hoi3_tfh.exe.preBlackICE.';
+      Result := True;
       Exit;
     end;
-  end;
 
-  if ClassifyExe(ExePath) <> EXE_PATCHED then
-  begin
+    Log(Format('LAA: attempt %d of %d did not take, restoring and retrying', [Attempt,
+      PATCH_ATTEMPTS]));
     CopyFile(BackupPath, ExePath, False);
-    Message := 'The patched exe did not verify, so the original was restored.';
-    Result := False;
-    Exit;
+    if Attempt < PATCH_ATTEMPTS then
+      Sleep(750);
   end;
 
-  Message := 'Patched for 4 GB. The original is kept as hoi3_tfh.exe.preBlackICE.';
-  Result := True;
+  Message := 'hoi3_tfh.exe could not be patched, so the original was put back.' + #13#10 +
+             'Something is holding it open - close the game and any launcher, and' + #13#10 +
+             'check the file is not read only, then run the installer again.';
+  Result := False;
 end;
 
 { Undo, used by the uninstaller. }

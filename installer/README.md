@@ -73,6 +73,21 @@ when they all hold the patched bytes, and refuses to touch anything else — the
 are absolute offsets, and a different build would be corrupted silently. The
 original is kept as `hoi3_tfh.exe.preBlackICE`.
 
+The write is attempted up to three times. The failure it guards against is
+transient — something holding the exe open for a moment, typically antivirus
+scanning a file the installer has just written, which was seen for real during
+testing. Each attempt either completes and verifies, or restores the original
+before retrying, so the exe is never left half written.
+
+### The uninstaller's name
+
+Inno hardcodes it as `unins000.exe` and has no directive to change it. Renaming
+it afterwards would stop Setup finding the previous install's log, which is how
+reinstalling merges versions, so instead it lives in `{app}\BlackICE uninstall\`
+rather than loose in the game folder where it reads like it might be the game's
+own. The Start menu also gets a plainly named `Uninstall BlackICE` icon, and the
+apps list entry is `BlackICE <version>`.
+
 ### Which runtimes, and why
 
 Read off the import tables and SxS manifests of the shipped binaries, not from
@@ -253,6 +268,11 @@ Things that cost time once and would again:
   from the command line; `--fast` switches them through a `FastBuild` define.
 - Calling `ISCC.exe` from Git Bash mangles `/D...` arguments into paths. Go
   through `buildInstaller.py`, which uses `subprocess` directly.
+- **`/SUPPRESSMSGBOXES` does not reach a `MsgBox` called from code.** It only
+  silences Inno's own prompts. A code `MsgBox` will stop a `/VERYSILENT` run
+  dead and wait for a click, which is invisible in a scripted test and makes
+  results depend on whatever got clicked. Guard every one with
+  `UninstallSilent()` / `WizardSilent()`.
 - Editing these files through a shell heredoc eats backslash escapes: `inc\b...`
   becomes a backspace byte and `gfx\a...` a bell. Use an editor, or a Python
   script reading the pattern from `argv`, for anything containing a path.

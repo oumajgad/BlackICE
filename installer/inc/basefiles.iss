@@ -17,6 +17,15 @@ const
   BASE_FILE_COUNT = 1;
   BACKUP_SUFFIX = '.preBlackICE';
 
+{ Where this install records itself in the apps list. Lives here rather than
+  next to the uninstall code because Pascal Script is single pass and this file
+  is included first. }
+function UninstallRegKey(): String;
+begin
+  Result := 'Software\Microsoft\Windows\CurrentVersion\Uninstall\'
+            + ExpandConstant('{#SetupSetting("AppId")}') + '_is1';
+end;
+
 { The base folder files the mod overwrites and the game also ships. }
 function BaseFileName(Index: Integer): String;
 begin

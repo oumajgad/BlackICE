@@ -56,6 +56,14 @@ DirExistsWarning=no
 AppendDefaultDirName=no
 UsePreviousAppDir=yes
 
+; Inno hardcodes the uninstaller's name as unins000.exe and offers no directive
+; to change it - renaming it afterwards would stop Setup finding the previous
+; install's log, which is how reinstalling merges versions. So it goes in a
+; folder that names it instead of sitting loose in the game folder looking like
+; it might be the game's own. The Start menu gets a plainly named icon for it,
+; and the apps list entry is called "BlackICE <version>" either way.
+UninstallFilesDir={app}\BlackICE uninstall
+
 DefaultGroupName={#ModName}
 AllowNoIcons=yes
 OutputDir=output
@@ -176,6 +184,7 @@ Source: "redist\*"; DestDir: "{tmp}\redist"; Components: runtimes; Flags: recurs
 ; mod. The path is relative to tfh\, while WorkingDir is the base folder.
 Name: "{group}\{#ModName} {#ModVersion}"; Filename: "{app}\hoi3_tfh.exe"; Parameters: "-mod=mod/{#ModFolder}.mod"; WorkingDir: "{app}"; Tasks: startmenu
 Name: "{group}\Hearts of Iron 3 launcher"; Filename: "{app}\launcher.exe"; WorkingDir: "{app}"; Tasks: startmenu
+Name: "{group}\Uninstall {#ModName}"; Filename: "{uninstallexe}"; Tasks: startmenu
 Name: "{autodesktop}\{#ModName} {#ModVersion}"; Filename: "{app}\hoi3_tfh.exe"; Parameters: "-mod=mod/{#ModFolder}.mod"; WorkingDir: "{app}"; Tasks: desktop
 
 [Run]
@@ -429,6 +438,19 @@ begin
     Exit;
 
   GameDir := ExpandConstant('{app}');
+
+  // /SUPPRESSMSGBOXES only silences Inno's own prompts, not a MsgBox called
+  // from code, so without this guard a "silent" uninstall would stop dead and
+  // wait for a click. Silent means silent: do the complete job, which is to
+  // leave the game as it was found.
+  if UninstallSilent() then
+  begin
+    Log('Uninstall: silent, so the game is restored without asking');
+    RestoreSprites(GameDir);
+    RestoreStockExe(GameDir);
+    RestoreBaseFiles(GameDir);
+    Exit;
+  end;
 
   if MsgBox('Put the game back the way it was before BlackICE?' + #13#10 + #13#10 +
             'This restores:' + #13#10 +

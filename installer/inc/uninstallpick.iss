@@ -24,15 +24,8 @@
 // Saves are never touched either way - they live outside the game folder.
 // ---------------------------------------------------------------------------
 
-{ Where this install recorded itself, so a partial removal can relabel it.
-  Which hive depends on whether it was installed for all users or just one. }
-function UninstallRegKey(): String;
-begin
-  Result := 'Software\Microsoft\Windows\CurrentVersion\Uninstall\'
-            + ExpandConstant('{#SetupSetting("AppId")}') + '_is1';
-end;
-
-{ Point the apps list entry at the newest version still on disk. }
+{ Point the apps list entry at the newest version still on disk.
+  UninstallRegKey lives in basefiles.iss - the installer needs it too. }
 procedure RelabelUninstallEntry(const GameDir: String);
 var
   Newest: String;
