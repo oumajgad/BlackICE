@@ -75,19 +75,18 @@ end
 -- multiplayer the clients too, which run none of the scheduled scripts. The checks keep
 -- their own days, so a client changes its values on the same days the host does.
 -- firstDay is 1 on the first day after a load, which sets everything up at once.
--- Answers what it did, which BiceLib prints to its console.
+-- Answers what it did, which the Setup > Country page shows.
 function BiceLibDailyPeriodics(firstDay)
-    local report = {
-        bicelib_loaded = BiceLib ~= nil,
-        first_day = firstDay == 1,
-        day_of_month = CCurrentGameState.GetCurrentDate():GetDayOfMonth(),
-    }
-    -- The same day rule CheckOobUnitLimitTechnologyStatus applies to itself, for the report
-    report.oob_limits_checked = report.bicelib_loaded
-        and (report.first_day or report.day_of_month % 5 == 0)
+    local loaded = BiceLib ~= nil
+    local first = firstDay == 1
+    local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 
-    if report.bicelib_loaded then
-        CheckOobUnitLimitTechnologyStatus(report.first_day)
+    if loaded then
+        CheckOobUnitLimitTechnologyStatus(first)
     end
-    return report
+    return {
+        bicelib_loaded = loaded,
+        -- The same day rule CheckOobUnitLimitTechnologyStatus applies to itself
+        oob_limits_checked = loaded and (first or dayOfMonth % 5 == 0),
+    }
 end

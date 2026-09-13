@@ -5,7 +5,6 @@
 #include <Gui/LuaBridge.hpp>
 #include <HoiDataStructures.hpp>
 #include <MemScan.hpp>
-#include <utils.hpp>
 
 #include <Windows.h>
 #include <string>
@@ -38,17 +37,12 @@ namespace {
         int32_t id = -1;
         if (country == 0 || !Mem::tryRead(country + CCountry::Offsets::id, id)
             || id < 0 || id >= 300) {
-            INFO_OUT(printf("Periodics: no country found for the player tag '%s'\n",
-                current.playerTag.c_str()));
             return;
         }
         current.limitsKnown = true;
         current.corpsLimit = Hooks::CArmy::corpsUnitLimitPerCountry[id];
         current.armyLimit = Hooks::CArmy::armyUnitLimitPerCountry[id];
         current.armyGroupLimit = Hooks::CArmy::armyGroupUnitLimitPerCountry[id];
-        INFO_OUT(printf("Periodics: %s (id %d) now has corps %d, army %d, army group %d\n",
-            current.playerTag.c_str(), id, current.corpsLimit, current.armyLimit,
-            current.armyGroupLimit));
     }
 }
 
@@ -61,15 +55,11 @@ void Periodics::update() {
     if (day == ranDay || GameClock::hour() < RUN_FROM_HOUR) {
         return;
     }
-    INFO_OUT(printf("Periodics: day %d due at tick %d (hour %d)\n", day, GameClock::tick(),
-        GameClock::hour()));
 
     // Busy, or not the render thread: the next frame the clock moves tries again. A
     // call that is made counts for the day even if the script fails - the bridge logs
     // the error, and once a day is enough to read it.
     if (!Gui::Lua::available()) {
-        INFO_OUT(printf("Periodics: Lua not available (%s), trying again next hour\n",
-            Gui::Lua::unavailableReason()));
         return;
     }
 
@@ -84,20 +74,12 @@ void Periodics::update() {
     ranSession = GameClock::session();
     current.lastRunTick = GameClock::tick();
 
-    INFO_OUT(printf("Periodics: calling %s(%d)\n", DAILY_PERIODICS, firstDay ? 1 : 0));
     if (!Gui::Lua::beginTableCallWithNumber(DAILY_PERIODICS, firstDay ? 1.0 : 0.0)) {
         current.lastRunOk = false;
         current.lastError = Gui::Lua::unavailableReason();
-        INFO_OUT(printf("Periodics: the call failed: %s\n", current.lastError.c_str()));
         return;
     }
     const bool limitsChecked = Gui::Lua::boolField("oob_limits_checked");
-    INFO_OUT(printf("Periodics: Lua says BiceLib loaded %s, first day %s, day of month %d, "
-        "OOB unit limits checked %s\n",
-        Gui::Lua::boolField("bicelib_loaded") ? "yes" : "no",
-        Gui::Lua::boolField("first_day") ? "yes" : "no",
-        static_cast<int>(Gui::Lua::numberField("day_of_month", -1)),
-        limitsChecked ? "yes" : "no"));
     Gui::Lua::endCall();
 
     current.lastRunOk = true;
