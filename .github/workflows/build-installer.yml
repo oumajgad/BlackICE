@@ -72,3 +72,10 @@ jobs:
           # nothing and costs several minutes of upload time.
           compression-level: 0
           if-no-files-found: error
+          # Costs nothing while this repo is public - Actions minutes and
+          # artifact storage are both free for public repositories on standard
+          # runners - but the default is 90 days, and a ~920 MB artifact per run
+          # is worth clearing sooner. It also means that if the repo were ever
+          # made private, these would not quietly eat the storage allowance
+          # (500 MB on the Free plan, so one build would exceed it).
+          retention-days: 30

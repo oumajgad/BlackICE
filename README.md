@@ -15,8 +15,12 @@ workflow**. Two options:
 | **version** | Stamped into the build. Leave it as `GitHub` for a test version, or give a release number like `15.2`. |
 | **bundle_runtimes** | Includes the Microsoft runtimes (C++, DirectX) so the installer can fix a machine that is missing them. Adds about 56 MB and a few minutes. Untick it for a quicker test build. |
 
-When it finishes, download the artifact from the run's summary page. The
-screenshots below show where to start an action and where the download is.
+When it finishes, download the artifact from the run's summary page. It is kept
+for 30 days. The screenshots below show where to start an action and where the
+download is.
+
+Running it costs nothing: Actions minutes and artifact storage are both free for
+public repositories on GitHub's standard runners.
 
 ![First](https://github.com/oumajgad/BlackICE/blob/master/DaveStuff/action1.png?raw=true "How to start an action")
 ![Second](https://github.com/oumajgad/BlackICE/blob/master/DaveStuff/action2.png?raw=true "Where to download the file")
