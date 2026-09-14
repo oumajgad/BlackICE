@@ -1,0 +1,74 @@
+name: Build installer
+
+# Started by hand from the Actions tab. Produces the same single
+# "BlackICE <version> Setup.exe" that installer/buildInstaller.py builds
+# locally - nothing to extract, no zip inside a zip.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to stamp into the build, e.g. 15.2. "GitHub" for a test build.'
+        required: true
+        default: 'GitHub'
+      bundle_runtimes:
+        description: 'Bundle the Microsoft runtimes (C++, DirectX). Adds ~56 MB and a few minutes.'
+        type: boolean
+        default: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    # LZMA2 over the 2.4 GB mod tree is slow on a two core runner. The build
+    # takes well under this, but a timeout that bites halfway through a
+    # compression pass wastes the whole run.
+    timeout-minutes: 120
+
+    steps:
+      - name: Check out the mod
+        uses: actions/checkout@v4
+        with:
+          # The working tree is what gets packaged; the history is 2 GB of files
+          # we would only throw away.
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Inno Setup
+        # buildInstaller.py finds ISCC.exe through Inno's registry entry and
+        # falls back to the standard install paths, so nothing needs configuring.
+        run: choco install innosetup --no-progress --yes
+
+      - name: Check the compiler was found
+        # Fails here with one clear line rather than deep inside the build if
+        # Chocolatey ever moves where it installs Inno.
+        run: |
+          python -c "import sys; sys.path.insert(0, 'installer'); import buildInstaller; p = buildInstaller.findIscc(); print('ISCC:', p or 'NOT FOUND'); sys.exit(0 if p else 1)"
+
+      - name: Fetch the Microsoft runtimes
+        if: ${{ inputs.bundle_runtimes }}
+        # Downloaded from Microsoft, not committed. Without this step the build
+        # still succeeds; the installer then reports what is missing on the
+        # system check page instead of installing it.
+        run: python installer/fetchRedists.py
+
+      - name: Build the installer
+        run: python installer/buildInstaller.py "${{ inputs.version }}"
+
+      - name: Show what was built
+        run: |
+          Get-ChildItem "installer/output" |
+            Select-Object Name, @{n='MB';e={[int]($_.Length / 1MB)}} |
+            Format-Table -AutoSize
+
+      - name: Upload the installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlackICE ${{ inputs.version }} Setup
+          path: installer/output/BlackICE ${{ inputs.version }} Setup.exe
+          # The exe is already LZMA2 compressed, so zipping it again buys
+          # nothing and costs several minutes of upload time.
+          compression-level: 0
+          if-no-files-found: error

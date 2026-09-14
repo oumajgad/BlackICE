@@ -10,8 +10,13 @@ python installer/fetchRedists.py          # once, or when Microsoft ships update
 python installer/buildInstaller.py 15.2
 ```
 
-The result lands in `installer/output/`. Nothing else is needed — no converting
-to SFX, no pasting `SFXArchiveText.txt` into WinRAR.
+The result lands in `installer/output/`. Nothing else is needed — no zip, no
+converting it to a self extracting archive.
+
+Or run it on a runner: the **Build installer** action
+(`.github/workflows/build-installer.yml`) does the same thing from the Actions
+tab and uploads the exe as the run's artifact. It takes a version and a
+"bundle the runtimes" tickbox. See the [root README](../README.md).
 
 ### Requirements
 
@@ -258,9 +263,15 @@ installer/
   output/             gitignored, the built installer
 ```
 
-`releaseCommon.py` in the repo root holds the mod folder list and the version
-stamping shared with `zipperRelease.py`, so the zip and the installer cannot
-disagree about what ships or what version it claims to be.
+`releaseCommon.py` in the repo root holds the definition of what a release is:
+the folders the mod is made of, where it goes inside the game, and the two lines
+that carry the version.
+
+`BlackICE.iss` lists those folders one by one rather than walking the tree, so
+`buildInstaller.py` checks the two agree before compiling (`checkIssCoverage`)
+and refuses to build if they do not. Without that, adding a new top level folder
+to the mod would leave it silently out of the installer — the build would
+succeed and the mod would be broken with nothing pointing at why.
 
 ## Gotchas
 

@@ -1,8 +1,12 @@
-"""Shared release plumbing for zipperRelease.py and installer/buildInstaller.py.
+"""What the mod consists of, and how a version number is stamped into it.
 
-Both of them ship the same tree under a version number, so the rules for what
-counts as a mod folder and which lines carry the version live here rather than
-being copied into each script and drifting apart.
+Kept apart from installer/buildInstaller.py because these are facts about the
+mod rather than about building an installer: which folders make up a release,
+where it goes inside the game, and which two lines carry the version.
+
+MOD_FOLDERS is the list the installer is checked against at build time - see
+checkIssCoverage in buildInstaller.py - so a new top level folder cannot be
+added to the mod and silently left out of what ships.
 """
 import os
 

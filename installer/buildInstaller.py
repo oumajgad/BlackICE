@@ -1,9 +1,8 @@
 """Builds the BlackICE installer.
 
-Does what zipperRelease.py does to the tree - stamps the version into
-bi_version.csv and autoexec.lua, writes the versioned .mod - and then hands the
-repo to the Inno Setup compiler instead of a zip writer. The tree is always put
-back afterwards, including when the compile fails.
+Stamps the version into bi_version.csv and autoexec.lua, writes the versioned
+.mod, and hands the repo to the Inno Setup compiler. The tree is always put back
+afterwards, including when the compile fails.
 
     python installer/buildInstaller.py 15.2
 
@@ -16,6 +15,7 @@ installer that detects missing runtimes but does not carry them.
 """
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -133,6 +133,42 @@ def stageArchives():
         print("  stage %-12s %s" % (folder, ", ".join(names)))
 
 
+def checkIssCoverage():
+    """Every folder the mod is made of must have a Source line in the .iss.
+
+    BlackICE.iss lists the folders one by one rather than walking the tree, so
+    adding a new top level folder to the mod would otherwise leave it silently
+    out of the installer - the build would succeed and the mod would be broken
+    in a way nothing points at. Compared against releaseCommon.MOD_FOLDERS,
+    which is the definition of what a release contains.
+
+    Returns a list of problems, empty when the two agree.
+    """
+    with open(ISS, encoding="utf-8") as handle:
+        text = handle.read()
+
+    # Source: "{#RepoRoot}\<folder>\*"
+    listed = set(re.findall(r'Source:\s*"\{#RepoRoot\}\\([^\\"]+)\\\*"', text))
+
+    problems = []
+    for folder in releaseCommon.MOD_FOLDERS:
+        if folder not in listed:
+            problems.append("  %s is part of the mod but has no Source line in %s"
+                            % (folder, os.path.basename(ISS)))
+
+    # The reverse: a Source line for a folder that is no longer part of the mod
+    # would ship stale files. Only checked for top level repo folders, since the
+    # .iss also pulls in tools/ paths that are not mod folders.
+    for folder in sorted(listed):
+        if folder in releaseCommon.MOD_FOLDERS:
+            continue
+        if os.path.isdir(os.path.join(REPO, folder)):
+            problems.append("  %s is in %s but is not one of MOD_FOLDERS"
+                            % (folder, os.path.basename(ISS)))
+
+    return problems
+
+
 def emptyStaging():
     if os.path.exists(STAGING):
         shutil.rmtree(STAGING)
@@ -165,6 +201,14 @@ def build(version, useRedist, fast):
 
     print("Building BlackICE %s\n" % version)
     print("  compiler: %s" % iscc)
+
+    problems = checkIssCoverage()
+    if problems:
+        print("\nThe installer does not match what the mod is made of:")
+        for problem in problems:
+            print(problem)
+        print("\nFix BlackICE.iss or releaseCommon.MOD_FOLDERS and build again.")
+        return 1
 
     emptyStaging()
     releaseCommon.writeModFile(version, STAGING)
