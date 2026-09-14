@@ -166,8 +166,12 @@ Source: "{#RepoRoot}\DaveStuff\luabinaries\lua5.1.dll"; DestDir: "{app}"; Compon
 
 ; --- optional extras ------------------------------------------------------
 ; Unpacked at build time, so nobody has to find "extract here" in a context menu.
-Source: "staging\dxvk\*";       DestDir: "{app}"; Components: dxvk;   Flags: ignoreversion
-Source: "staging\borderless\*"; DestDir: "{app}"; Components: border; Flags: ignoreversion
+; uninsneveruninstall: Inno must NOT delete these on uninstall. Both are worth
+; keeping even without the mod - DXVK and the borderless fix help plain HoI3
+; just as much - so the uninstaller asks rather than taking them away. Their
+; removal is handled in extras.iss instead.
+Source: "staging\dxvk\*";       DestDir: "{app}"; Components: dxvk;   Flags: ignoreversion uninsneveruninstall
+Source: "staging\borderless\*"; DestDir: "{app}"; Components: border; Flags: ignoreversion uninsneveruninstall
 
 ; --- runtimes -------------------------------------------------------------
 ; Extracted to {tmp} only when that component is selected, and deleted after.
@@ -200,6 +204,7 @@ Type: files;          Name: "{app}\tfh\mod\{#ModFolder}.mod"
 #include "inc\basefiles.iss"
 #include "inc\exepatch.iss"
 #include "inc\sprites.iss"
+#include "inc\extras.iss"
 #include "inc\oldversions.iss"
 #include "inc\uninstallpick.iss"
 #include "inc\redist.iss"
@@ -445,10 +450,11 @@ begin
   // leave the game as it was found.
   if UninstallSilent() then
   begin
-    Log('Uninstall: silent, so the game is restored without asking');
+    Log('Uninstall: silent, so everything is undone without asking');
     RestoreSprites(GameDir);
     RestoreStockExe(GameDir);
     RestoreBaseFiles(GameDir);
+    RemoveExtras(GameDir);
     Exit;
   end;
 
@@ -463,5 +469,22 @@ begin
     RestoreSprites(GameDir);
     RestoreStockExe(GameDir);
     RestoreBaseFiles(GameDir);
+  end;
+
+  // Asked separately, and only when they are actually there. These are not
+  // really part of the mod: they work just as well on plain HoI3, so removing
+  // BlackICE is no reason to assume they are unwanted.
+  if ExtrasInstalled(GameDir) then
+  begin
+    if MsgBox('Remove these as well?' + #13#10 + #13#10 +
+              DescribeExtras(GameDir) + #13#10 +
+              'They are not part of the mod and keep working without it - DXVK ' +
+              'lowers memory use in plain Hearts of Iron 3 too, and the borderless ' +
+              'fix is a general windowed mode fix.' + #13#10 + #13#10 +
+              'Choose No to keep them.',
+              mbConfirmation, MB_YESNO) = IDYES then
+      RemoveExtras(GameDir)
+    else
+      Log('Uninstall: DXVK / borderless kept at the player''s request');
   end;
 end;

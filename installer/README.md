@@ -225,6 +225,17 @@ The restore runs at `usPostUninstall`, **after** Inno deletes the files it
 installed. Doing it at `usUninstall` puts `lua5.1.dll` back only for Inno to
 delete it a moment later.
 
+DXVK and the borderless fix are asked about **separately**, and only when they
+are actually present. Neither is really part of the mod — both work just as well
+on plain HoI3 — so removing BlackICE is no reason to assume they are unwanted.
+Their `[Files]` entries carry `uninsneveruninstall` so Inno does not delete them
+with everything else, and `extras.iss` removes them only on a yes. A silent
+uninstall removes them, like everything else it does without asking.
+
+`Documents\Paradox Interactive\v2winfix.ini` is deliberately left alone: the
+borderless DLL writes it, but it is shared with the other Paradox games v2winfix
+supports, so deleting it could take another game's settings with it.
+
 ## Layout
 
 ```
@@ -236,6 +247,7 @@ installer/
     basefiles.iss     backing up base folder files the mod replaces
     exepatch.iss      the LAA patch, with build fingerprinting
     sprites.iss       moving gfx\anims aside, as the Utility's button does
+    extras.iss        DXVK and borderless: removed only if asked for
     oldversions.iss   finding and removing older BlackICE versions
     uninstallpick.iss which versions to remove, asked on the way out
     redist.iss        runtime detection and silent install
