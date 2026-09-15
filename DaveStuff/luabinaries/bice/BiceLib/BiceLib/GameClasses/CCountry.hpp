@@ -13,6 +13,24 @@ namespace CCountry {
         constexpr uintptr_t tag = 0x1E4;
         constexpr uintptr_t id = 0x1E8;
 
+        /**
+         * A second tag and id in the same layout, a CCountryTag. It is the one the game's
+         * own `GetCountryTag` answers. Why the country holds two has not been established.
+         */
+        constexpr uintptr_t country_tag = 0xCA4;
+
+        /**
+         * A bool, the game's `IsGovernmentInExile`. While it is set, the country's
+         * stockpile is the pool it holds at `+0x9F8` rather than its capital's - see
+         * capital_province_id.
+         */
+        constexpr uintptr_t is_government_in_exile = 0x95;
+
+        /**@brief the country's industrial capacity now and at most, the game's
+                  `GetTotalIC` and `GetMaxIC`; the offmap IC fix writes the first*/
+        constexpr uintptr_t total_ic = 0x604;
+        constexpr uintptr_t max_ic = 0x60C;
+
         // Both are trees rather than lists, and both start one word past the vftable
         // of the CFlags / CVariables the country holds inline.
         constexpr uintptr_t flags_tree_root_ptr = 0x180 + 0x4;
@@ -21,7 +39,8 @@ namespace CCountry {
         /**
          * **The country's convoys**, as the usual `{ first, last, count }` list with
          * nodes of `{ data, prev, next }`, each data a CConvoy* - HDS::walkList reads
-         * it. Every convoy is in exactly one list, its owner's.
+         * it. Every convoy is in exactly one list, its owner's. The game's own
+         * `GetConvoys` answers it, as a `CList<CConvoy*>`.
          */
         constexpr uintptr_t convoys_list_first_ptr = 0xA0;
         constexpr uintptr_t convoys_list_last_ptr = 0xA4;
@@ -31,7 +50,8 @@ namespace CCountry {
         constexpr uintptr_t active_modifiers_list_first_ptr = 0x648;
 
         /**@brief head of the country's list of units, at every level rather than the
-                  top one - the shape of an order of battle is not in here*/
+                  top one - the shape of an order of battle is not in here. The start of
+                  the CUnitList the game's `GetUnits` answers.*/
         constexpr uintptr_t units_linked_list_first_ptr = 0xBAC;
 
         /**@brief the country's modifier totals, one entry per general modifier*/
@@ -54,24 +74,39 @@ namespace CCountry {
 
         /**
          * **The capital, as a province id** - index it into the game state's province
-         * vector. The game's own "capital province" (`0x2F100`) reads this.
+         * vector. The game's own "capital province" (`0x2F100`) reads this, and so does
+         * its `GetActingCapital` - which by that name is where the government sits now,
+         * rather than the capital it started with; not checked.
          *
          * The country's stockpile is the capital's pool: `CCountry:GetPool()`
-         * (`0xF4DE0`) answers `&capital->pool` (CMapProvince::Offsets::pool), unless
-         * the byte at `+0x95` is set, when it answers the pool held here at `+0x9F8`.
-         * What sets that byte is not known. The country holds 23 pools of its own,
-         * `+0x74C` to `+0xA64`; only the first is worked out, below.
+         * (`0xF4DE0`) answers `&capital->pool` (CMapProvince::Offsets::pool), unless the
+         * country is a government in exile (is_government_in_exile), when it answers the
+         * pool held here at `+0x9F8`.
          */
         constexpr uintptr_t capital_province_id = 0xE24;
 
         /**
-         * **A day's resource income**, a CGoodsPool: what arrives in the capital's pool
+         * **The country's goods pools**, each a CGoodsPool. It holds 23, `+0x74C` to
+         * `+0xA64`; these are the ones the game's own accessors name.
+         *
+         * `total_produced` is a day's resource income: what arrives in the capital's pool
          * each midnight, before anything is spent. It is what the connected provinces
          * yield, with modifiers, plus what the country's resource convoys carried in
-         * from networks cut off from the capital (CConvoy::Offsets::daily). Established
-         * by comparing it with the capital's pool and throughput, not from the code.
+         * from networks cut off from the capital (CConvoy::Offsets::daily) - which is
+         * presumably the split `home_produced` and `convoyed_in` record; only
+         * `total_produced` has been checked against a running game.
+         *
+         * The `sans_allied_supply` pair presumably leave out what went to or came from
+         * allies as supply help; that is read from the names, not from the game.
          */
-        constexpr uintptr_t daily_resource_income = 0x74C;
+        constexpr uintptr_t total_produced = 0x74C;
+        constexpr uintptr_t home_produced = 0x770;
+        constexpr uintptr_t convoyed_in = 0x794;
+        constexpr uintptr_t convoyed_out = 0x7B8;
+        constexpr uintptr_t traded_away = 0x7DC;
+        constexpr uintptr_t traded_away_sans_allied_supply = 0x800;
+        constexpr uintptr_t traded_for = 0x86C;
+        constexpr uintptr_t traded_for_sans_allied_supply = 0x890;
     }
 
     /**

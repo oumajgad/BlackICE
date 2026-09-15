@@ -14,7 +14,7 @@ The loop, per province:
 ```
 esi = province                       ; [[arg+0x2c][ebx*4] + 0xC]
 xmm1 = intel level >= 2 ? 1.0 : 0.5  ; [province+0x370][country], counted at +0x374
-if ([province+0xD4 terrain] +0x13D) == 0: xmm1 = 0     ; water gets nothing
+if ([province+0xD4 template] +0x13D) == 0: xmm1 = 0    ; water gets nothing
 CColor at [esp+0x2C] = { r=g=b = xmm1 * 0.9, a = 1 }   ; the grey base
 if ([province+0x34] victory points) > 0:
     brightness = clamp((points / 15) * 0.3 + 0.7, 1.0)
@@ -56,7 +56,7 @@ and is worth calling from the hook for the provinces we do not want to recolour.
 | Offset | Holds | How it is known |
 | --- | --- | --- |
 | +0x34 | victory points | 825 of 825 provinces match the `points` lines in `history/provinces`, and the 2,846 without one all read 0 |
-| +0xD4 | `CTerrain` | already in `GameClasses/CMapProvince.hpp` |
+| +0xD4 | the `CProvinceTemplate`, with the `CTerrain` at its +0xC | already in `GameClasses/CMapProvince.hpp` |
 | +0x310 | building array | 60 `CProvinceBuilding*`, `nobuilding` first - see below. +0x1C on an entry points back at the province |
 | +0x334 / +0x338 | controller tag and id | already named |
 | +0x370 / +0x374 | per country intel, and its length | used for the fog shading above |
@@ -236,26 +236,26 @@ the map for the mode and switches on it **once**:
 0x98428  call eax
 0x9842A  cmp eax, 0x13
 0x9842D  ja  (no mode lines)
-0x98433  jmp [eax*4 + 0x49DCA4]      ; VA - the table is in .text, 20 entries
+0x98433  jmp [eax*4 + table]         ; the table is at 0x9DCA4, in .text, 20 entries
 ```
 
-The slot 0x164 getter is in exactly one vtable, at VA `0x15CEB54`.
+The slot 0x164 getter is in exactly one vtable, at `0x11CEB54`.
 
-| mode | branch (VA) | what it shows |
+| mode | branch | what it shows |
 | --- | --- | --- |
-| 0, 13 | `0x49843A` | terrain |
-| 1 | `0x498784` | political |
-| 2 | `0x498A67` | diplomatic (`ATWARWITHUS`, `OURWARALLY`, ...) |
-| 3 | `0x49924F` | |
-| **4** | `0x4993DB` | **supply**: `LOGTT_1..7` (supplied from, nodes away, local supply and fuel, required, received), `PORT_SHIPS`, and at sea `LOGTT_8..10` (convoys passing) |
-| 5 | `0x49B8F2` | infrastructure, from `[province+0x114]` |
-| 6 | `0x49AF68` | intel |
-| **7** | `0x49AFDA` | **VP**: `PROV_POINTS` |
-| 8, 17 | `0x49B160` | theatre |
-| **10** | `0x49BA59` | **resources**: crude oil, metal, energy, rare materials, current against max |
-| 11 | `0x49B2B1` | weather |
-| 18 | `0x49C3DE` | air (`AIR_TOOLTIP_*`) |
-| 19 | `0x49C6AC` | naval (`NAVAL_TOOLTIP_*`) |
+| 0, 13 | `0x9843A` | terrain |
+| 1 | `0x98784` | political |
+| 2 | `0x98A67` | diplomatic (`ATWARWITHUS`, `OURWARALLY`, ...) |
+| 3 | `0x9924F` | |
+| **4** | `0x993DB` | **supply**: `LOGTT_1..7` (supplied from, nodes away, local supply and fuel, required, received), `PORT_SHIPS`, and at sea `LOGTT_8..10` (convoys passing) |
+| 5 | `0x9B8F2` | infrastructure, from `[province+0x114]` |
+| 6 | `0x9AF68` | intel |
+| **7** | `0x9AFDA` | **VP**: `PROV_POINTS` |
+| 8, 17 | `0x9B160` | theatre |
+| **10** | `0x9BA59` | **resources**: crude oil, metal, energy, rare materials, current against max |
+| 11 | `0x9B2B1` | weather |
+| 18 | `0x9C3DE` | air (`AIR_TOOLTIP_*`) |
+| 19 | `0x9C6AC` | naval (`NAVAL_TOOLTIP_*`) |
 | 9, 12, 14-16 | - | nothing mode specific |
 
 Inside the branches the province register (edi) points at the province's **+8

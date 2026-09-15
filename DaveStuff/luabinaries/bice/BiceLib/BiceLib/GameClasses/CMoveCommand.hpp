@@ -5,8 +5,8 @@
  * CMoveCommand - "move this unit there", as it is sent between the machines of a
  * multiplayer game.
  *
- * The command's slot 6 (`0x5D88C0`) routes the unit when the command runs and hands it
- * the path (`Find` at `0x5D8F08`, then `SetUnitPath` at `0x5D8F1C`). That much is read off
+ * The command's slot 6 (`0x1D88C0`) routes the unit when the command runs and hands it
+ * the path (`Find` at `0x1D8F08`, then `SetUnitPath` at `0x1D8F1C`). That much is read off
  * the code.
  *
  * **What it is not known to do is decide a strategic redeployment's route.** Replacing
@@ -30,7 +30,7 @@
  * `+0x68` picks between two ways of routing that end in the same Find call with the same
  * choice of finder; every player move sets it.
  *
- * **Who sets "very safe" is not settled.** The GUI reaches the command through `0x89A840`,
+ * **Who sets "very safe" is not settled.** The GUI reaches the command through `0x49A840`,
  * which forwards its fifth argument as `+0x6A`. Of its 26 callers, 13 pass 1 - always
  * together with "safe". That may be one window handling each kind of order, or it may
  * mean the game routes ordinary moves very safely too.

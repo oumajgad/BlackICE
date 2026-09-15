@@ -62,7 +62,7 @@ allocation follows it.
 
 ### Read off the constructor, not guessed
 
-`0x0042f340` fills the entry, and it is short enough to read in full. With `esi` as the
+`0x2F340` fills the entry, and it is short enough to read in full. With `esi` as the
 new entry, `edi` as the combat and `eax` as the game clock:
 
 ```
@@ -213,29 +213,30 @@ a number and maintaining a record.
 
 Found by searching the executable for the vftable address - only a constructor writes
 one - and then for calls to what that turned up. `findRefs.py` does both. Addresses are
-file addresses, based at 0x400000; add `MODULE_BASE - 0x400000` at runtime.
+module relative, like everywhere else in BiceLib; `findRefs.py` prints them based at
+0x400000, so take that off.
 
 ```
-0x0042f340   CCombatHistoryEntry::CCombatHistoryEntry
+0x2F340      CCombatHistoryEntry::CCombatHistoryEntry
              writes the vftable, and writes 0x18d to +0x04 as a literal
-             called only from 0x0042f9fe, inside:
+             called only from 0x2F9FE, inside:
 
-0x0042f960   records an entry into the history
-             fetches the game state from [0x1a89790] - the same global BiceLib's
+0x2F960      records an entry into the history
+             fetches the game state from [module + 0x1689790] - the same global BiceLib's
              sessionActive() reads - then operator new(0x34) and copies the fields
              of a source entry into the new one
-             called from exactly two places: 0x0043170b and 0x005d2904
+             called from exactly two places: 0x3170B and 0x1D2904
 
-0x00434140   builds an entry on the stack and calls a virtual through its vftable
-0x004341f0   the same shape again
-             reached from CCombatHistory's own virtual at 0x0042fad0, so these are
+0x34140      builds an entry on the stack and calls a virtual through its vftable,
+             and further in, from 0x341C8, builds a second one the same way
+             reached from CCombatHistory's own virtual at 0x2FAD0, so these are
              almost certainly save and load rather than gameplay
 ```
 
-**`0x0042f960` is the hook, and its second argument is the combat itself.**
+**`0x2F960` is the hook, and its second argument is the combat itself.**
 
 ```
-0x0042f960(arg1 = the list to append to, arg2 = the CCombat that just ended)
+0x2F960(arg1 = the list to append to, arg2 = the CCombat that just ended)
 ```
 
 `arg2` reaches the constructor as `ecx` and is where every field of the entry comes
@@ -274,7 +275,7 @@ country was the defender:  lost = defender[0x84],  killed = attacker[0x84]
 
 The strength figure cannot say how many ships went down, because it counts damage to the
 survivors in the same number. The game keeps that separately, and **read** off its loss
-accounting at `0x00566267`:
+accounting at `0x166267`:
 
 ```
 for each unit on this side, for each subunit in it:
@@ -314,7 +315,7 @@ vftable. Each also has a second vftable for its `CSelectable` base at object off
 
 Both sides of an air combat are a `CAirCombatant` and both sides of a naval one a
 `CNavalCombatant` - read off each combat's **slot 6**, which is where a combat builds
-its two combatants (`0x0057b4d0` land, `0x0057b770` naval, `0x0057bba0` air). The
+its two combatants (`0x17B4D0` land, `0x17B770` naval, `0x17BBA0` air). The
 `CBomberCombatant` and `C*TargetCombatant` classes in the RTTI export are something
 else's; `CAirCombat` does not make them.
 
@@ -323,12 +324,12 @@ else's; `CAirCombat` does not make them.
 `CCombat`'s slot 11 is `_purecall`, and every kind overrides it with a constant:
 
 ```
-CLandCombat    0x00bf9b90   mov eax, 1 ; ret
-CNavalCombat   0x00c037d0   mov eax, 2 ; ret
-CAirCombat     0x0057bc80   mov eax, 3 ; ret
-CGroundBombing 0x00563e60   mov eax, 4 ; ret
-CLandBombing   0x00563f30   mov eax, 5 ; ret
-CNavalBombing  0x00564000   mov eax, 6 ; ret
+CLandCombat    0x7F9B90     mov eax, 1 ; ret
+CNavalCombat   0x8037D0     mov eax, 2 ; ret
+CAirCombat     0x17BC80     mov eax, 3 ; ret
+CGroundBombing 0x163E60     mov eax, 4 ; ret
+CLandBombing   0x163F30     mov eax, 5 ; ret
+CNavalBombing  0x164000     mov eax, 6 ; ret
 ```
 
 So **1 is land, 2 naval, 3 air** and 4 to 6 are the bombings, and that settles what a
@@ -342,7 +343,7 @@ vftables and asking the object come to the same thing; BiceLib compares vftables
 
 The important one, because it says the capture should work for air and naval unchanged.
 Everything BiceLib reads off a combatant is initialised by the **base** `CCombatant`
-constructor at `0x00564550`, which every kind runs:
+constructor at `0x164550`, which every kind runs:
 
 ```
 [edi+0x54] [edi+0x58] [edi+0x5c]   the country list the game reads a tag from
@@ -367,8 +368,8 @@ not layout.
 
 ### What is not known
 
-- **Whether the hook fires for them at all.** `0x0042f960` has two callers: `0x0043170b`,
-  in the combat manager's own code, and `0x005d2904`, which sits among the `CArmy`,
+- **Whether the hook fires for them at all.** `0x2F960` has two callers: `0x3170B`,
+  in the combat manager's own code, and `0x1D2904`, which sits among the `CArmy`,
   `CNavy` and `CAir` virtuals - unit code. Both fetch the game state and append to the
   same history. Which kinds of combat reach which caller has not been traced.
 - **What losses mean for them.** `+0x84` is strength in thousandths for a land

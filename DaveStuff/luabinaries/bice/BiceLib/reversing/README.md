@@ -8,6 +8,10 @@ identified on it and how far each one can be trusted. This folder is the working
 that file is the record. `FINDINGS-combat.md` is the long form for the combat classes,
 which are the ones that have had the most attention.
 
+**`ghidra/` puts all of it into a Ghidra program**, together with every C++ function
+behind the Lua API and its signature, recovered from the executable. Its README says how
+to run it and how to add to it.
+
 The first job was the Combat Reports page: combats, wins, losses, kills and losses over
 the last day, week, month, half year and year, split into land, air and naval.
 

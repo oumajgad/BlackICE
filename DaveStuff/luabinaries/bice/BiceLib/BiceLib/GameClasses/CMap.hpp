@@ -43,8 +43,8 @@ namespace CMap {
          * **Every province**, as a plain array of CMapProvince* indexed by province id.
          *
          * Read off two pieces of the game's own code that agree on it - the route
-         * finder's slot 0 (`0x5A2A00`) looks a step's destination up here, and strategic
-         * redeployment (`0x5887C6`) the first province of a unit's path - and confirmed
+         * finder's slot 0 (`0x1A2A00`) looks a step's destination up here, and strategic
+         * redeployment (`0x1887C6`) the first province of a unit's path - and confirmed
          * live: it holds the very same pointers as CCurrentGameState's province vector
          * (CCurrentGameState::Offsets::provinces_begin), which is what BiceLib walks.
          * Not read by BiceLib.

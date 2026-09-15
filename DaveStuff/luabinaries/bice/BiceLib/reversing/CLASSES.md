@@ -18,6 +18,7 @@ can be trusted.
 | **seen** | Watched in a running game and matched against a number the game itself displayed. |
 | **used** | BiceLib reads it and has done for a while with nothing looking wrong, but it has never been checked against the game's own display. |
 | **mem** | From `../../../../mem`, and nothing more. A lead, not a fact - it has been wrong before. |
+| **named** | The game's own name for it: a Lua accessor whose whole body reads this one field (`lea eax,[ecx+N]; ret` and the like), recovered by `ghidra/luabindExtract.py`. Certain about the offset and the game's name; says no more about the meaning than the name does. |
 
 Addresses are relative to the module, the way BiceLib uses them. The RTTI export writes
 them absolute against an image base of `0x400000`, so subtract that when copying one
@@ -36,7 +37,7 @@ offsets below and hands the pointer out through `current()`. Nothing else should
 the global out.
 
 **`CCurrentGameState`** - vftable `0x11CF674`, `0xda8` bytes, constructed at
-`0x0067D070` (**read**: both callers of the combat recorder allocate `0xda8`, call that
+`0x27D070` (**read**: both callers of the combat recorder allocate `0xda8`, call that
 constructor and store the result in the global). It is created lazily, and **exists at
 the main menu** - see `present-hook-must-not-call-game-lua` and `README-imgui.md`. Its
 being non-null proves nothing about a game being loaded.
@@ -100,7 +101,7 @@ are the entries. **seen**, and it cost an hour.
 
 `CCombatHistoryEntry` is `0x34` bytes and holds a tick, a province, one country tag and
 the kind - no casualties, and the game prunes them after a few days. **read** off its
-constructor at `0x0042F340`. That is why BiceLib keeps its own record.
+constructor at `0x2F340`. That is why BiceLib keeps its own record.
 
 ### The combats
 
@@ -152,7 +153,7 @@ entry's constructor takes a plain `CCombat*` and dispatches on nothing):
 | `CNavalTargetCombatant` | `0x11C46BC` | 26 | RTTI |
 
 **Every field BiceLib reads is on the base**, initialised by `CCombatant`'s constructor
-at `0x00564550` which all of them run (**read**) - so they are at the same offsets
+at `0x164550` which all of them run (**read**) - so they are at the same offsets
 whatever the combatant is. A bombing raid bears that out: its bomber and target
 combatants both gave up their country and their losses at these offsets (**seen**).
 
@@ -163,7 +164,7 @@ combatants both gave up their country and their losses at these offsets (**seen*
 | +0x54 | the country list the game takes a tag from - **emptied on the beaten side** | read |
 | +0x5c | zero when that list is empty, which is how the game decides to write `---` | read |
 | +0x64 | the side's own countries, **kept** when +0x54 is emptied - where the loser's name comes from | read, seen |
-| +0x74, +0x78 | **the men on this side, per subunit type** - summed over a thousand it is the "out of 25700 troops" the battle message prints, and the game builds it exactly that way at 0x005745f4. Only men in a land or naval fight: an air combat counts subunits here, a bombing raid leaves it empty | read, seen |
+| +0x74, +0x78 | **the men on this side, per subunit type** - summed over a thousand it is the "out of 25700 troops" the battle message prints, and the game builds it exactly that way at 0x1745F4. Only men in a land or naval fight: an air combat counts subunits here, a bombing raid leaves it empty | read, seen |
 | +0x84 | **losses, in thousandths** - 21 losses read back as 21900, and the message prints this over a thousand as its casualties. A subunit destroyed outright adds exactly 1000 | seen, read |
 | +0x88, +0x8c | **subunits destroyed, per type** - a vector with an entry per kind of brigade, ship or plane, each holding 1000 per one destroyed. Its sum over a thousand is how many were lost outright. Nothing in BiceLib reads it | read |
 | +0x98 | damage short of destruction, per type, the same shape | read |
@@ -174,12 +175,12 @@ its constructor writes +0x10b4 (**read**).
 
 ### Where it is recorded
 
-`0x0042F960` appends an entry, and **its second argument is the live `CCombat`** - which
-is what BiceLib hooks. Called from `0x0043170B` (the manager's own code) and
-`0x005D2904` (among the `CArmy`, `CNavy` and `CAir` virtuals, so unit code). Both fetch
+`0x2F960` appends an entry, and **its second argument is the live `CCombat`** - which
+is what BiceLib hooks. Called from `0x3170B` (the manager's own code) and
+`0x1D2904` (among the `CArmy`, `CNavy` and `CAir` virtuals, so unit code). Both fetch
 the game state and append to the same history at `gameState + 0xB74`. **read.**
 
-`0x00434140` and `0x004341F0` build an entry on the stack and go through a virtual;
+`0x34140` builds an entry on the stack and goes through a virtual, and a second one the same way further in;
 reached from `CCombatHistory`'s own, so almost certainly save and load rather than
 gameplay.
 
@@ -288,6 +289,12 @@ authority: `CLeader.hpp`, `CMapProvince.hpp` (province id at +0xD0 is **used** b
 combat capture and the OOB browser), `CSubUnitDefinition.hpp`, `CTerrain.cpp` (vftable
 `0x11C0764`, **used**).
 
+`CSubUnitDefinition`'s kind flags are **named**, all bytes: `IsRegiment` +0x2D,
+`IsShip` +0x2E (recorded as unknown until then), `IsCapitalShip` +0x2F, `IsTransport`
++0x30, `IsSub` +0x31, `IsCag` +0x32, `IsBuildable` +0x36, `IsBomber` +0x37,
+`CanParadrop` +0x38; and `GetIndex` +0x24 is the type index the combat vectors are
+indexed by.
+
 **`CMapProvince` has two vftables**: `0x11BEBF8` at +0x0 and `0x11BEC1C` at +0x8.
 `CMapProvince::VFTable::CMapProvince` is the +0x8 one - what the selection holds a
 pointer to - so a province pointer's first dword never matches it; that is `Primary`.
@@ -347,10 +354,13 @@ its owner's). The saved fields come out of the convoy's save writer, `0xC5600`
 `start_date` / `last_attack` (+0xC8 / +0xCC).
 
 Two unsaved fields, **seen** over four and a half game days of hourly snapshots: +0x90
-is the transports wanted (steady while +0x98 went up and down), and +0x6C is a pool of
+is the transports wanted (steady while +0x98 went up and down; the game's
+`GetDesiredTransports`, **named**), and +0x6C is a pool of
 what the loading end produces in a day - the loading network's `current_producing`
 summed, exactly, on 322 of 361 convoys. It is not a second buffer of `daily`. Every
-convoy field that changes does so in the hour after midnight.
+convoy field that changes does so in the hour after midnight. +0x94, which sits where
+an escorts wanted would, is the game's `GetDesiredEscorts` (**named**), and the `trade`
+byte at +0xA0 is its `IsForTradeRoute` (**named**).
 
 The goods mask sorts them: 202 supply convoys, 58 resource convoys, 79 carrying money
 and one good - trade, presumably. **A cut off network's production waits in the
@@ -362,7 +372,8 @@ transport was assigned the convoy took the whole backlog - `daily` read five day
 worth - and the port dropped back to one day's.
 
 `CCountry:GetPool()` (`0xF4DE0`) answers the capital's `pool` unless the byte at
-`country + 0x95` is set (**read**). All 100 capitals of a running game hold money and
+`country + 0x95` is set (**read**) - which is the game's `IsGovernmentInExile`
+(**named**), so an exiled government keeps its stockpile on the country at `+0x9F8`. All 100 capitals of a running game hold money and
 resources there, and none of the country's own 23 pools holds anything like the
 stockpile (**seen**). The capital is `country + 0xE24`, a province id (**read**, from
 `0x2F100`).
@@ -424,8 +435,36 @@ by id, the same pointers as the game state's.
 | +0x180 | flags, a tree four bytes past the vftable | mem, used |
 | +0x1AC | variables, the same shape | mem, used |
 | +0x648 | static modifiers, a list | mem, used |
-| +0xBAC | **its units** - and not only the top level ones, so the tree has to be walked | used |
+| +0x95 | `IsGovernmentInExile`, a bool; decides whose pool `GetPool` answers (see Provinces) | named, read |
+| +0xA0 | its convoys, a `CList<CConvoy*>` (`GetConvoys`) | seen, named |
+| +0x604 / +0x60C | `GetTotalIC` / `GetMaxIC`; the offmap IC fix writes the first | named, used |
+| +0x74C | `TotalProduced`, a goods pool: a day's resource income | seen, named |
+| +0x770 ... +0x890 | more goods pools: `HomeProduced` +0x770, `ConvoyedIn` +0x794, `ConvoyedOut` +0x7B8, `TradedAway` +0x7DC, `TradedAwaySansAlliedSupply` +0x800, `TradedFor` +0x86C, `TradedForSansAlliedSupply` +0x890 | named |
+| +0xBAC | **its units** - and not only the top level ones, so the tree has to be walked. The start of the `CUnitList` `GetUnits` answers | used, named |
+| +0xCA4 | a `CCountryTag`, the one `GetCountryTag` answers; the tag at +0x1E4 is a second copy, for a reason not established. The offmap IC hook reads its id half, +0xCA8 | named, used |
 | +0xDA8 | an array read for country statistics | mem, used |
+| +0xE24 | the capital as a province id - by the game's name `GetActingCapital`, where the government sits now | read, named |
+
+### The country database
+
+**In code: `BiceLib/GameClasses/CCountryDataBase.hpp`**; nothing reads it yet.
+
+`CCountryDataBase`, `0x57C` bytes, **no vftable** - so not in the RTTI export, and only a
+`DAT_` in a disassembler. Its pointer is `module + 0x16855A4`, null until the first use
+creates it (**read**: `new(0x57C)`, constructor `0x24D0`, store). The name comes from the
+Lua API: `CCountryDataBase_GetTag` (`0x4EA930`), the wrapper registered as
+`CCountryDataBase.GetTag`, fetches exactly this global and passes it to `0x118480`, which
+does the lookup (**read**). About 2,460 places in the game read the global.
+
+| Offset | Holds | |
+| --- | --- | --- |
+| +0x0 ... +0x167 | 45 pairs of dwords; the constructor zeroes the second of each. Not worked out | read |
+| +0x16C / +0x170 / +0x174 | **every country by id**, a vector of `CCountry*` (first, last, end). `CCountryTag::GetCountry` (`0x2610`) is `countries[tag.id]` and nothing more | read |
+| +0x17C | 64 hash buckets of 16 bytes, each a vector of `CCountryTag` (first +0, last +4). `GetTag` sums the three letters, takes it modulo 64, and searches that bucket; not found gives `---` with id 0 | read |
+
+This is a second country array beside the game state's list at `+0xBBC` (which
+`CCurrentGameState.GetCountries` hands out, and BiceLib walks). Whether the two hold the
+same pointers has not been checked.
 
 ## The in game idler
 

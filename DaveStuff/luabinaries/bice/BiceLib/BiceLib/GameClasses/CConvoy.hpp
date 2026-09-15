@@ -22,7 +22,7 @@
  * across the map. Each day's production is put in the pool of the port its resource
  * convoy loads at - not always the network's own depot - and waits there. A sailing
  * takes everything waiting; the load then reaches the capital and counts towards
- * CCountry::Offsets::daily_resource_income.
+ * CCountry::Offsets::total_produced.
  *
  * With a transport every day, the port holds exactly one day's load. **Without one, the
  * stock piles up, and the next sailing takes the whole backlog.** For a port producing
@@ -78,20 +78,23 @@ namespace CConvoy {
 
         /**
          * **Transports: wanted, and assigned.** `transports` is save key `convoys`;
-         * `transports_wanted` is not saved. A new convoy starts with both at 0 and gets
-         * both on its first day; after that, assigned can fall short of wanted.
+         * `transports_wanted` is not saved, and is what the game's `GetDesiredTransports`
+         * answers. A new convoy starts with both at 0 and gets both on its first day;
+         * after that, assigned can fall short of wanted.
          */
         constexpr uintptr_t transports_wanted = 0x90;
         constexpr uintptr_t transports = 0x98;
 
         /**
-         * **Escorts** - save key `escorts`. `+0x94` sits where an escorts wanted would, in
-         * the same layout as the transports, and it does change; not established.
+         * **Escorts: wanted, and assigned**, in the same layout as the transports.
+         * `escorts` is save key `escorts`; `escorts_wanted` is not saved, and is the
+         * game's `GetDesiredEscorts`.
          */
-        constexpr uintptr_t escorts_wanted_maybe = 0x94;
+        constexpr uintptr_t escorts_wanted = 0x94;
         constexpr uintptr_t escorts = 0x9C;
 
-        /**@brief bools, one byte each - save keys `trade` and `lend_lease`*/
+        /**@brief bools, one byte each - save keys `trade` and `lend_lease`; the first is
+                  the game's `IsForTradeRoute`*/
         constexpr uintptr_t is_trade = 0xA0;
         constexpr uintptr_t is_lend_lease = 0xA1;
 

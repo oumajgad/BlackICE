@@ -4,8 +4,8 @@ Worked out for the Custom Auto-Saves feature. Read statically out of `hoi3_tfh.e
 and then checked against the running game; what was checked and what was not is marked
 on each claim.
 
-Addresses are absolute against an image base of `0x400000`, the way the RTTI export
-writes them. Subtract `0x400000` for a module relative address.
+Addresses are module relative, as everywhere in BiceLib. The RTTI export and the
+disassembly scripts write them against an image base of `0x400000`; take that off.
 
 ## The short version
 
@@ -13,23 +13,23 @@ Deciding and doing are two different functions, one frame apart, joined by a sin
 byte on `CInGameIdler`:
 
 ```
-CInGameIdler::dailyUpdate  0x661CA0   virtual, slot 53; repaints, then always checks
-  -> autosaveCheck         0x661D20   decides, and writes [idler+0xAB0]
-CInGameIdler::update       0x6559D0   runs every frame
-  -> autosaveWrite         0x64FF80   reads [idler+0xAB0] and writes the file
+CInGameIdler::dailyUpdate  0x261CA0   virtual, slot 53; repaints, then always checks
+  -> autosaveCheck         0x261D20   decides, and writes [idler+0xAB0]
+CInGameIdler::update       0x2559D0   runs every frame
+  -> autosaveWrite         0x24FF80   reads [idler+0xAB0] and writes the file
 ```
 
-**`0x66202D` - `mov byte ptr [edi+0xAB0], 1` - is the only place in the executable that
+**`0x26202D` - `mov byte ptr [edi+0xAB0], 1` - is the only place in the executable that
 raises the flag** (**read**: the byte pattern for a `0xAB0` displacement appears 31
 times, and this is the only one that stores a 1). That makes it the choke point: set
 that byte and the game autosaves, clear it and it does not.
 
-## The decision, `0x661D20`
+## The decision, `0x261D20`
 
 One argument, the `CInGameIdler*`, pushed on the stack; `ret 4`.
 
 ```
-1  ensure CCurrentGameState exists      global 0x1A89790  (module + 0x1689790)
+1  ensure CCurrentGameState exists      global module + 0x1689790
 2  tick = gameState[0xBDC]              the current tick
 3  idler[0xAB0] = 0                     clear first, every time
 4  if (gameState[0xD9D] != 0) return    a gate, meaning not established
@@ -44,7 +44,7 @@ ever live for the part of a frame between the decision and the write.
 
 ### Where the two settings live
 
-`0x45FF30` is the settings singleton's getter - `[0x1A863F8]`, `module + 0x16863F8`,
+`0x5FF30` is the settings singleton's getter - `[module + 0x16863F8]`,
 `0x18C` bytes, the same object `settings+0xF4` in `FINDINGS-mapmode.md` belongs to.
 
 | Field | Is | |
@@ -52,8 +52,8 @@ ever live for the part of a frame between the decision and the write.
 | `settings + 0x158` | `debug_saves` from `settings.txt` | **seen**: 0 live, and the file says `debug_saves=0` |
 | `settings + 0x15C` | the autosave frequency, as the enum below | **seen**: 3 live, and the file says `autosave="HALFYEAR"` |
 
-`0x45FFB0` turns the string into the number and `0x4600C0` turns it back; the parser at
-`0x460383` is what stores it (**read**).
+`0x5FFB0` turns the string into the number and `0x600C0` turns it back; the parser at
+`0x60383` is what stores it (**read**).
 
 | Value | `settings.txt` | Fires on |
 | --- | --- | --- |
@@ -64,28 +64,28 @@ ever live for the part of a frame between the decision and the write.
 | 4 | `YEARLY` | the 1st of January |
 | 5 | `FIVE_YEAR` | the 1st of January of a year divisible by 5 |
 
-The default the constructor writes is 4, `YEARLY` (`0x45FB7E`, **read**).
+The default the constructor writes is 4, `YEARLY` (`0x5FB7E`, **read**).
 
 `debug_saves = N` is not a boolean: with it set the frequency is ignored entirely and
-the game saves on the 1st of every Nth month (`idiv edi` at `0x661FDB`, **read**).
+the game saves on the 1st of every Nth month (`idiv edi` at `0x261FDB`, **read**).
 
 ### The date helpers
 
 All four take the tick and start with `(tick - 0x29C55C0) / 24`, which is
 `(tick - 43800000) / 24` - days since the epoch `CLASSES.md` already records. The year
-is 365 days with no leap day, and the month lengths are the table at `0x1713294`:
+is 365 days with no leap day, and the month lengths are the table at `0x1313294`:
 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 (**read**).
 
 | | Returns |
 | --- | --- |
-| `0xAAABA0` | `(days - 1) % 7`, the day of the week |
-| `0x44C5C0` | the day of the month, 0 based |
-| `0x42EEF0` | the day of the year, 0 based |
-| `0x42EF40` | the year, absolute - 1937 in the running game, not an offset from 1936 |
+| `0x6AABA0` | `(days - 1) % 7`, the day of the week |
+| `0x4C5C0` | the day of the month, 0 based |
+| `0x2EEF0` | the day of the year, 0 based |
+| `0x2EF40` | the year, absolute - 1937 in the running game, not an offset from 1936 |
 
 ### The two gates before the flag is set
 
-Reached at `0x661E19` once the date matches:
+Reached at `0x261E19` once the date matches:
 
 ```
 if (idler[0x68] == 0)          -> set the flag
@@ -98,27 +98,27 @@ branch is the one that runs. The third branch builds an object and makes a virtu
 call, which looks like telling the other end of a multiplayer session to save, but that
 is inference and has not been tested.
 
-### `0x661CA0` is not a timer dispatch
+### `0x261CA0` is not a timer dispatch
 
 Recorded as one at first, on the strength of `[this+0xD34]` being compared against 4,
 `0x12` and `0x13` with each branch calling the autosave check. That was wrong, and the
 map mode work already had the answer: **`+0xD34` is the current map mode**, and 4, 18
 and 19 are Supply, Air and Naval - the three modes whose colours change with the day.
-The branch for mode 4 calls `0x666EE0`, which `mapmode.py` already lists as mode 4's
+The branch for mode 4 calls `0x266EE0`, which `mapmode.py` already lists as mode 4's
 colouring routine.
 
 So the function is a daily update: repaint the map if it is showing one of the three
 that go stale, then check the autosave. The check is **not** conditional on the map
-mode - the fallthrough at `0x661D0C` calls it too, so it runs on every call whatever is
+mode - the fallthrough at `0x261D0C` calls it too, so it runs on every call whatever is
 on screen.
 
 Nothing was built on the wrong reading, because the hook is on the check itself and
 that is reached the same way either way. It is written down because a false "this only
 runs in three map modes" would have been very hard to find later.
 
-## The write, `0x64FF80`
+## The write, `0x24FF80`
 
-Called once per frame from `0x6559D0` with the idler as its only argument.
+Called once per frame from `0x2559D0` with the idler as its only argument.
 
 ```
 if (idler[0xAB0] == 0) return
@@ -126,7 +126,7 @@ if (idler[0xAB1] == 0) { idler[0xAB1] = 1; return }   ; one frame of delay
 ...build the name and write...
 ```
 
-So a raised flag costs one extra frame before anything is written. `0x675090` is the
+So a raised flag costs one extra frame before anything is written. `0x275090` is the
 virtual setter for the pair (slot 92 of `CInGameIdler`'s vftable) and clears `0xAB1`
 whenever `0xAB0` is set to 0.
 
@@ -136,13 +136,13 @@ The name depends on `debug_saves` (**read**, and the files on disk agree):
   `olderautosave.hoi3`, shifted along on each save.
 - otherwise - `<gameState+0xC30>` + `autosave_` + ... + `.hoi3`, one file per save.
 
-`0x671370` also writes a save and also owns the string `Failed to write save file `,
+`0x271370` also writes a save and also owns the string `Failed to write save file `,
 but it takes the save dialog rather than a name, so it is not a usable "save as this
 name" entry point.
 
 ## The class
 
-`CInGameIdler`, vftable `0x15CEB54`, 111 slots (**RTTI**). One live instance
+`CInGameIdler`, vftable `0x11CEB54`, 111 slots (**RTTI**). One live instance
 (**seen**). Fields that matter here:
 
 | Offset | Holds | |
@@ -158,7 +158,7 @@ name" entry point.
   "a game is loaded"; more likely "the game is over" or "a save or load is in
   progress". Nothing depends on it yet.
 - `idler + 0x68` as multiplayer. It fits, it has not been tested.
-- What calls `0x661CA0`. It is virtual, slot 53 of `CInGameIdler`, and nothing reaches
+- What calls `0x261CA0`. It is virtual, slot 53 of `CInGameIdler`, and nothing reaches
   it directly, so the caller has not been traced.
 
 ## What BiceLib does with it
@@ -173,14 +173,14 @@ working untouched, and switching the feature off leaves the game deciding on its
 
 Two stubs, in `Hooks/AutoSaveHooks.cpp`:
 
-**The decision**, standing in for `mov byte ptr [eax+0xAB0], bl` at `0x661DBA` - the
+**The decision**, standing in for `mov byte ptr [eax+0xAB0], bl` at `0x261DBA` - the
 clear at step 3. Six bytes, so five of jump and one nop. Standing there rather than at
 the entry is what makes it work: the flag can be raised without the decision that runs
 immediately afterwards wiping it, and the game's own decision still runs, so its
 schedule is untouched. eax is the idler and esi is the tick, both put there by the two
 instructions above.
 
-**The name**, standing in for `mov eax, [eax+0x158]` at `0x6500EB` - the writer's read
+**The name**, standing in for `mov eax, [eax+0x158]` at `0x2500EB` - the writer's read
 of `debug_saves`. It is both the branch that picks the naming and the last point
 before the names are built, which is why one stub can do both jobs. A save of ours is
 answered with zero, whatever `debug_saves` actually says, so it takes the three file
@@ -191,14 +191,14 @@ immediates that load them rather than by editing the strings:
 
 | Immediate | Was |
 | --- | --- |
-| `0x65010B` | `autosave.hoi3` |
-| `0x650159` | `oldautosave.hoi3` |
-| `0x65018D` | `olderautosave.hoi3` |
+| `0x25010B` | `autosave.hoi3` |
+| `0x250159` | `oldautosave.hoi3` |
+| `0x25018D` | `olderautosave.hoi3` |
 
 The buffers hold the game's own names except during a save of ours, so the game's
 autosave is untouched and ours gets `autosave_premonth.hoi3`,
 `oldautosave_premonth.hoi3` and `olderautosave_premonth.hoi3`. Two independent sets of
-three: neither pushes the other out, and the rotation itself - `0x6501C0` onwards,
+three: neither pushes the other out, and the rotation itself - `0x2501C0` onwards,
 delete the oldest, rename the middle to the oldest, rename the newest to the middle -
 is the game's own code, unchanged.
 
@@ -218,7 +218,7 @@ on whichever save the game writes next, months later. `releaseClaim()` does that
 the top of every decision, and says whether there was one, so the day is allowed to
 ask again.
 
-**The writer clears both bytes at once**, `mov word ptr [esi+0xAB0], bx` at `0x650005`,
+**The writer clears both bytes at once**, `mov word ptr [esi+0xAB0], bx` at `0x250005`,
 just before it writes. So one request is one save, and nothing has to clear the flag
 afterwards.
 

@@ -8,7 +8,7 @@
 #include <cstring>
 
 namespace {
-    // Offsets read off the constructor of CCombatHistoryEntry at 0x0042f340, which
+    // Offsets read off the constructor of CCombatHistoryEntry at 0x2F340, which
     // fills every field of an entry from the combat it is given. See
     // reversing/FINDINGS-combat.md.
     const uintptr_t COMBAT_ATTACKER = 0x10;
@@ -40,7 +40,7 @@ namespace {
     // The men on this side, kept per subunit type: a vector of counts at +0x74,
     // ending at +0x78, each a thousandth-scaled headcount.
     //
-    // Read off the message the game writes when a battle ends, at 0x005745f4, which
+    // Read off the message the game writes when a battle ends, at 0x1745F4, which
     // walks every subunit type there is and sums this array over a thousand to print
     // "out of 25700 troops". Doing the same here rather than hooking that function,
     // because it only runs for battles the player is told about.

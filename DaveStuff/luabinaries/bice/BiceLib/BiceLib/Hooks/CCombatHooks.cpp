@@ -7,19 +7,18 @@
 DWORD Hooks::Combat::jumpBack = 0;
 
 namespace {
-    // Addresses in the executable are based at 0x400000, which is what the RTTI export
-    // and the reversing scripts use; the module is relocated, so only the difference
-    // is useful here.
+    // Module relative, like every address in BiceLib; the module is relocated, so this is
+    // added to its base at install time.
     //
-    //   0x0042f960  push ebp            1 byte
-    //   0x0042f961  mov  ebp, esp       2 bytes
-    //   0x0042f963  mov  eax, fs:[0]    6 bytes
+    //   0x2F960     push ebp            1 byte
+    //   0x2F961     mov  ebp, esp       2 bytes
+    //   0x2F963     mov  eax, fs:[0]    6 bytes
     //
     // Nine bytes over three instructions, which is what the jump replaces and what the
     // trampoline has to put back. The fs:[0] read is the function setting up its
     // exception frame, so it has to happen exactly as it would have.
-    const DWORD RECORD_FUNCTION = 0x0042F960 - 0x400000;
-    const DWORD RESUME_AT = 0x0042F969 - 0x400000;
+    const DWORD RECORD_FUNCTION = 0x2F960;
+    const DWORD RESUME_AT = 0x2F969;
     const int JUMP_BYTES = 5;
     const int SPARE_BYTES = 4; // the rest of the nine, blanked so nothing half decodes
 

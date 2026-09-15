@@ -50,9 +50,10 @@ namespace CCurrentGameState {
          * **Every country in the game**, as a vector of CCountry*: begin and end, with
          * four byte elements, so the count is (end - begin) / 4.
          *
-         * This is the game's own list - `CCountryDataBase.GetCountries` in Lua hands
+         * This is the game's own list - `CCurrentGameState.GetCountries` in Lua hands
          * out the address of exactly this - so it is always current and cannot miss a
-         * country. CCountry::all() reads it.
+         * country. CCountry::all() reads it. The country database keeps a second array,
+         * by id (CCountryDataBase::Offsets::countries_first).
          */
         constexpr uintptr_t countries_begin = 0xBBC;
         constexpr uintptr_t countries_end = 0xBC0;

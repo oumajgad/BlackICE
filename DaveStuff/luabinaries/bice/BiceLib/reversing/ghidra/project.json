@@ -1,0 +1,4731 @@
+{
+ "about": "Findings about hoi3_tfh.exe from BiceLib's headers, hooks and reversing notes. rva is module relative. Checked against the executable by buildFindings.py. A global may carry a type, which the script gives the data there (\"string\" for a C string).",
+ "addresses": [
+  {
+   "rva": "0x24D0",
+   "kind": "function",
+   "name": "CCountryDataBase::CCountryDataBase",
+   "signature": "CCountryDataBase* __stdcall CCountryDataBase::CCountryDataBase(CCountryDataBase* object)",
+   "comment": "Constructor: takes the freshly allocated 0x57C bytes as its one stack argument and answers them.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountryDataBase.hpp:32"
+  },
+  {
+   "rva": "0x2EEF0",
+   "kind": "function",
+   "name": "Date_DayOfYear",
+   "signature": null,
+   "comment": "From a tick: day of the year, 0 based.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:83"
+  },
+  {
+   "rva": "0x2EF40",
+   "kind": "function",
+   "name": "Date_Year",
+   "signature": null,
+   "comment": "From a tick: the absolute year.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:84"
+  },
+  {
+   "rva": "0x2F100",
+   "kind": "function",
+   "name": "CCountry::GetCapitalProvince",
+   "signature": null,
+   "comment": "The game's capital province lookup; reads CCountry +0xE24.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:57"
+  },
+  {
+   "rva": "0x2F340",
+   "kind": "function",
+   "name": "CCombatHistoryEntry::CCombatHistoryEntry",
+   "signature": null,
+   "comment": "CCombatHistoryEntry constructor; fills the entry from a CCombat (tick, kind, winner tag, flag, province).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:219"
+  },
+  {
+   "rva": "0x2F960",
+   "kind": "function",
+   "name": "CCombatHistory::RecordCombat",
+   "signature": null,
+   "comment": "Appends an entry to the combat history when a combat ends; arg1 the list, arg2 the finished CCombat. Hooked at its first instruction.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/CCombatHooks.cpp:21"
+  },
+  {
+   "rva": "0x2F969",
+   "kind": "instruction",
+   "name": "CCombatHistory::RecordCombat_AfterPrologue",
+   "signature": null,
+   "comment": "First instruction after RecordCombat's nine byte prologue (push ebp; mov ebp,esp; mov eax,fs:[0]).",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/CCombatHooks.cpp:22"
+  },
+  {
+   "rva": "0x2F9FE",
+   "kind": "instruction",
+   "name": "CCombatHistory::RecordCombat_CallEntryCtor",
+   "signature": null,
+   "comment": "The only call to the CCombatHistoryEntry constructor, inside RecordCombat.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:221"
+  },
+  {
+   "rva": "0x2FAD0",
+   "kind": "function",
+   "name": "CCombatHistory_Virtual_0042fad0",
+   "signature": null,
+   "comment": "A CCombatHistory virtual that reaches the two stack entry builders.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-combat.md:231"
+  },
+  {
+   "rva": "0x3170B",
+   "kind": "instruction",
+   "name": "CCombatManager_CallRecordCombat",
+   "signature": null,
+   "comment": "Call to RecordCombat from the combat manager's own code.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:227"
+  },
+  {
+   "rva": "0x34140",
+   "kind": "function",
+   "name": "CCombatHistory_BuildEntry_A",
+   "signature": null,
+   "comment": "Builds a history entry on the stack and calls a virtual; almost certainly save or load.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-combat.md:229"
+  },
+  {
+   "rva": "0x4C5C0",
+   "kind": "function",
+   "name": "Date_DayOfMonth",
+   "signature": null,
+   "comment": "From a tick: day of the month, 0 based.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:82"
+  },
+  {
+   "rva": "0x5FB7E",
+   "kind": "instruction",
+   "name": "GameSettings_Ctor_DefaultAutosave",
+   "signature": null,
+   "comment": "Settings constructor writing the default frequency 4 (YEARLY).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:67"
+  },
+  {
+   "rva": "0x5FF30",
+   "kind": "function",
+   "name": "GetGameSettings",
+   "signature": null,
+   "comment": "Getter for the settings singleton (also written 0x45FF30 in FINDINGS-autosave.md). Settings singleton getter (same function as RVA 0x5FF30 in GameSettings.hpp).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/GameSettings.hpp:10; reversing/FINDINGS-autosave.md:47"
+  },
+  {
+   "rva": "0x5FFB0",
+   "kind": "function",
+   "name": "AutosaveFrequency_FromString",
+   "signature": null,
+   "comment": "Turns an autosave frequency string into its enum value.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:55"
+  },
+  {
+   "rva": "0x600C0",
+   "kind": "function",
+   "name": "AutosaveFrequency_ToString",
+   "signature": null,
+   "comment": "Turns an autosave frequency enum value back into its string.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:55"
+  },
+  {
+   "rva": "0x60383",
+   "kind": "instruction",
+   "name": "GameSettings_Parse_StoreAutosave",
+   "signature": null,
+   "comment": "Where the settings parser stores the autosave frequency.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:56"
+  },
+  {
+   "rva": "0x883A0",
+   "kind": "function",
+   "name": "CMap::CMap",
+   "signature": null,
+   "comment": "CMap constructor (object 0x2A94 bytes).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMap.hpp:7"
+  },
+  {
+   "rva": "0x95020",
+   "kind": "function",
+   "name": "CProvince::WriteSave",
+   "signature": null,
+   "comment": "Province save writer (CProvince slot 2); writes each non-zero goods pool under its key.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMapProvince.hpp:66"
+  },
+  {
+   "rva": "0x973E0",
+   "kind": "function",
+   "name": "ProvinceTooltip_Build",
+   "signature": null,
+   "comment": "Builds the tooltip for the province under the mouse (0x2244 byte frame, reached through a vtable); switches once on the map mode.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:227"
+  },
+  {
+   "rva": "0x9841A",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_LoadIdler",
+   "signature": null,
+   "comment": "mov ecx, [eax+0xBE8] - loads the in game idler off the game state in the tooltip builder.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:233"
+  },
+  {
+   "rva": "0x98422",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_GetMapMode",
+   "signature": null,
+   "comment": "mov eax,[edx+0x164]; call eax - the tooltip builder asking the idler for the map mode. Hooked.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/MapModeHooks.cpp:36"
+  },
+  {
+   "rva": "0x98433",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_ModeSwitch",
+   "signature": null,
+   "comment": "jmp [eax*4 + 0x49DCA4] - the tooltip builder's switch on the map mode.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:239"
+  },
+  {
+   "rva": "0x9843A",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode0_13",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 0 and 13: terrain lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:246"
+  },
+  {
+   "rva": "0x98784",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode1",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 1: political lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:247"
+  },
+  {
+   "rva": "0x98A67",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode2",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 2: diplomatic lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:248"
+  },
+  {
+   "rva": "0x9924F",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode3",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 3: map mode 3 lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:249"
+  },
+  {
+   "rva": "0x993DB",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode4",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 4: supply (LOGTT_*, PORT_SHIPS) lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:250"
+  },
+  {
+   "rva": "0x9AF68",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode6",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 6: intel lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:252"
+  },
+  {
+   "rva": "0x9AFDA",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode7",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 7: victory points (PROV_POINTS) lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:253"
+  },
+  {
+   "rva": "0x9B160",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode8_17",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 8 and 17: theatre lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:254"
+  },
+  {
+   "rva": "0x9B2B1",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode11",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 11: weather lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:256"
+  },
+  {
+   "rva": "0x9B8F2",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode5",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 5: infrastructure lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:251"
+  },
+  {
+   "rva": "0x9BA59",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode10",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 10: resources, current against max lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:255"
+  },
+  {
+   "rva": "0x9C3DE",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode18",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 18: air (AIR_TOOLTIP_*) lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:257"
+  },
+  {
+   "rva": "0x9C6AC",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_Mode19",
+   "signature": null,
+   "comment": "Tooltip builder branch for map mode 19: naval (NAVAL_TOOLTIP_*) lines.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:258"
+  },
+  {
+   "rva": "0x9CF8B",
+   "kind": "instruction",
+   "name": "ProvinceTooltip_TestAirNavalMode",
+   "signature": null,
+   "comment": "The tooltip builder's other map mode read, testing only for modes 18 and 19.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:267"
+  },
+  {
+   "rva": "0x9DCA4",
+   "kind": "jumptable",
+   "name": "ProvinceTooltip_ModeJumpTable",
+   "signature": null,
+   "comment": "20-entry jump table in .text for the tooltip builder's map mode switch.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:239",
+   "type": "void*[20]"
+  },
+  {
+   "rva": "0x9DD00",
+   "kind": "function",
+   "name": "SupplyCapacity",
+   "signature": "int* __stdcall SupplyCapacity(CMapProvince* province, int* out)",
+   "comment": "How much a province can pass on in a day, in thousandths, written through out; unlimited where the province byte +0x2B0 is set. Only reads.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameState/CustomMapMode.cpp:377"
+  },
+  {
+   "rva": "0x9DE80",
+   "kind": "function",
+   "name": "SupplyLoss",
+   "signature": null,
+   "comment": "Fills the per-province supply loss per step used by the daily supply pass; named by the argument it fills.",
+   "confidence": "inferred",
+   "source": "BiceLib/GameClasses/CMapProvince.hpp:97"
+  },
+  {
+   "rva": "0x9E020",
+   "kind": "function",
+   "name": "SupplyNeed",
+   "signature": null,
+   "comment": "Fills the per-province supply need array used by the daily supply pass; named by the argument it fills.",
+   "confidence": "inferred",
+   "source": "BiceLib/GameClasses/CMapProvince.hpp:96"
+  },
+  {
+   "rva": "0xC5600",
+   "kind": "function",
+   "name": "CConvoy::WriteSave",
+   "signature": null,
+   "comment": "Convoy save writer; the source of the convoy's saved field names.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CConvoy.hpp:12"
+  },
+  {
+   "rva": "0xDCBD3",
+   "kind": "instruction",
+   "name": "Patch_WarExhaustionNeutralityReset_3",
+   "signature": null,
+   "comment": "Replaced with mov dword ptr [esi+0xAD0], 0 by disableWarExhaustionNeutralityReset.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:66"
+  },
+  {
+   "rva": "0xDCC12",
+   "kind": "instruction",
+   "name": "Patch_WarExhaustionNeutralityReset_1",
+   "signature": null,
+   "comment": "One byte patched to 0x01 by disableWarExhaustionNeutralityReset.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:54"
+  },
+  {
+   "rva": "0xDCC18",
+   "kind": "instruction",
+   "name": "Patch_WarExhaustionNeutralityReset_2",
+   "signature": null,
+   "comment": "Six bytes nopped by disableWarExhaustionNeutralityReset.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:60"
+  },
+  {
+   "rva": "0xDE3ED",
+   "kind": "instruction",
+   "name": "Patch_MinisterTechDecay",
+   "signature": null,
+   "comment": "One byte patched to 0x01 by fixMinisterTechDecay.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:45"
+  },
+  {
+   "rva": "0xF0F22",
+   "kind": "instruction",
+   "name": "Hook_OffmapIc_CountLocalIc",
+   "signature": null,
+   "comment": "In the daily IC calculation, per province (esi province, ebx country); replaced instruction is mov ecx,[esi+0x330]. Hooked.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:632"
+  },
+  {
+   "rva": "0xF0F90",
+   "kind": "instruction",
+   "name": "Patch_OffmapIc_1",
+   "signature": null,
+   "comment": "Byte patch site of the old offmap IC fix (writes F7 69 78).",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:30"
+  },
+  {
+   "rva": "0xF0F9D",
+   "kind": "instruction",
+   "name": "Hook_OffmapIc_SetBaseIc",
+   "signature": null,
+   "comment": "In the daily IC calculation, the store of the country's base IC (mov [ebx+0x604], eax). Hooked.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:643"
+  },
+  {
+   "rva": "0xF0FA9",
+   "kind": "instruction",
+   "name": "Patch_OffmapIc_2",
+   "signature": null,
+   "comment": "Byte patch site of the old offmap IC fix (writes mov eax,[ecx+0x78] and nops).",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:36"
+  },
+  {
+   "rva": "0xF4DE0",
+   "kind": "function",
+   "name": "CCountry::GetPool",
+   "signature": null,
+   "comment": "Answers the capital province's pool, or the country's own pool at +0x9F8 when the country is a government in exile (+0x95).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:60"
+  },
+  {
+   "rva": "0x118480",
+   "kind": "function",
+   "name": "CCountryDataBase::GetTag",
+   "signature": "CCountryTag* __stdcall CCountryDataBase::GetTag(CCountryDataBase* database, CCountryTag* out, char const* tag)",
+   "comment": "The tag whose three letters are the string, found through the hash buckets; --- with id 0 when there is none.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountryDataBase.hpp:33"
+  },
+  {
+   "rva": "0x123A90",
+   "kind": "function",
+   "name": "CGoodsPool::ReadSave",
+   "signature": null,
+   "comment": "Goods pool save reader (vftable slot 4); stores each good's key into its slot.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGoodsPool.hpp:30"
+  },
+  {
+   "rva": "0x163E60",
+   "kind": "function",
+   "name": "CGroundBombing::GetKind",
+   "signature": "int __thiscall GetKind(CGroundBombing* this)",
+   "comment": "Slot 11: mov eax, 4; ret.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:329"
+  },
+  {
+   "rva": "0x163F30",
+   "kind": "function",
+   "name": "CLandBombing::GetKind",
+   "signature": "int __thiscall GetKind(CLandBombing* this)",
+   "comment": "Slot 11: mov eax, 5; ret.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:330"
+  },
+  {
+   "rva": "0x164000",
+   "kind": "function",
+   "name": "CNavalBombing::GetKind",
+   "signature": "int __thiscall GetKind(CNavalBombing* this)",
+   "comment": "Slot 11: mov eax, 6; ret.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:331"
+  },
+  {
+   "rva": "0x164550",
+   "kind": "function",
+   "name": "CCombatant::CCombatant",
+   "signature": null,
+   "comment": "CCombatant base constructor, run by every combatant kind; initialises the country lists and losses.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:345"
+  },
+  {
+   "rva": "0x166267",
+   "kind": "instruction",
+   "name": "CCombatant_LossAccounting",
+   "signature": null,
+   "comment": "Loss accounting: a destroyed subunit adds 1000 to combatant +0x88[type] and +0x84, damage goes to +0x98[type].",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:277"
+  },
+  {
+   "rva": "0x166560",
+   "kind": "instruction",
+   "name": "Hook_NavyScreenPenalty",
+   "signature": null,
+   "comment": "Naval screen penalty calculation (edx capital ships, esi screens, [esp+0x1c] the penalty). Hooked.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:563"
+  },
+  {
+   "rva": "0x1665F6",
+   "kind": "instruction",
+   "name": "NavyScreenPenalty_Continue",
+   "signature": null,
+   "comment": "Where the screen penalty calculation continues after the hooked block.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:564"
+  },
+  {
+   "rva": "0x1745F4",
+   "kind": "instruction",
+   "name": "CombatEnded_WriteMessage",
+   "signature": null,
+   "comment": "Writes the battle-ended message; sums each side's per-subunit-type men over a thousand for \"out of N troops\".",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameState/CombatLog.cpp:43"
+  },
+  {
+   "rva": "0x17B4D0",
+   "kind": "function",
+   "name": "CLandCombat::CreateCombatants",
+   "signature": null,
+   "comment": "CLandCombat slot 6; builds its two CLandCombatants.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:317"
+  },
+  {
+   "rva": "0x17B770",
+   "kind": "function",
+   "name": "CNavalCombat::CreateCombatants",
+   "signature": null,
+   "comment": "CNavalCombat slot 6; builds its two CNavalCombatants.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:317"
+  },
+  {
+   "rva": "0x17BBA0",
+   "kind": "function",
+   "name": "CAirCombat::CreateCombatants",
+   "signature": null,
+   "comment": "CAirCombat slot 6; builds its two CAirCombatants.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:317"
+  },
+  {
+   "rva": "0x17BC80",
+   "kind": "function",
+   "name": "CAirCombat::GetKind",
+   "signature": "int __thiscall GetKind(CAirCombat* this)",
+   "comment": "Slot 11: mov eax, 3; ret.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:328"
+  },
+  {
+   "rva": "0x17E4E5",
+   "kind": "instruction",
+   "name": "Hook_PlaceBuildingCheck",
+   "signature": null,
+   "comment": "Building placement permission check (ebx province, esi country, edi CBuildingDeployment); the refusal path is 210 bytes further on. Hooked.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:666"
+  },
+  {
+   "rva": "0x17FF08",
+   "kind": "instruction",
+   "name": "Hook_LeaderSaveTrait",
+   "signature": null,
+   "comment": "In the leader save writer, where a trait's name is taken for saving (ecx is the trait; replaced 7 bytes end in lea edi,[esp+0xc]). Hooked.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:226"
+  },
+  {
+   "rva": "0x181A60",
+   "kind": "function",
+   "name": "CLeader::AddTrait",
+   "signature": "void __stdcall AddTrait(CLeader* leader, CTrait* trait)",
+   "comment": "Adds a trait to a leader.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:204"
+  },
+  {
+   "rva": "0x181C50",
+   "kind": "function",
+   "name": "CLeader::GetExperiencePercent",
+   "signature": "void __stdcall GetExperiencePercent(CLeader* leader, unsigned int* out)",
+   "comment": "Leader's progress towards the next skill level, 1000 = 100 %, written through out.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/CLeaderHooks.cpp:115"
+  },
+  {
+   "rva": "0x1832A8",
+   "kind": "instruction",
+   "name": "Patch_HistoricalModelLogic_1",
+   "signature": null,
+   "comment": "Patched to jmp short +0x2A by historicalModelLogicFix.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:91"
+  },
+  {
+   "rva": "0x1832D4",
+   "kind": "instruction",
+   "name": "Patch_HistoricalModelLogic_2",
+   "signature": null,
+   "comment": "Patched to mov ecx, 0x100000 by historicalModelLogicFix.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:97"
+  },
+  {
+   "rva": "0x1832DA",
+   "kind": "instruction",
+   "name": "Patch_HistoricalModelLogic_3",
+   "signature": null,
+   "comment": "Patched to jmp short -0x32 by historicalModelLogicFix.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:103"
+  },
+  {
+   "rva": "0x188700",
+   "kind": "function",
+   "name": "CStrategicRedeploymentOrder::RouteUnit",
+   "signature": null,
+   "comment": "Re-routes a strategically redeploying unit with a CVerySafePathFind; the order is passed in edi, answers a bool. Re-route helper (same function as RVA 0x188700).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:30; reversing/FINDINGS-redeploy.md:103"
+  },
+  {
+   "rva": "0x1887C6",
+   "kind": "instruction",
+   "name": "CStrategicRedeploymentOrder_ReadFirstPathProvince",
+   "signature": null,
+   "comment": "Strategic redeployment code reading the first province of a unit's path out of CMap +0x2200.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMap.hpp:47"
+  },
+  {
+   "rva": "0x1887FE",
+   "kind": "instruction",
+   "name": "CStrategicRedeploymentOrder::RouteUnit_PickFinder",
+   "signature": null,
+   "comment": "mov dword ptr [esp+14h], CVerySafePathFind vftable - picks the finder for the re-route. Same site as RVA 0x1887FE.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:46; reversing/FINDINGS-redeploy.md:108"
+  },
+  {
+   "rva": "0x188802",
+   "kind": "instruction",
+   "name": "CStrategicRedeploymentOrder::RouteUnit_FinderImmediate",
+   "signature": null,
+   "comment": "Address of the imm32 operand of the instruction at 0x1887FE.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:47"
+  },
+  {
+   "rva": "0x1A12B0",
+   "kind": "function",
+   "name": "CPathFind::Find",
+   "signature": null,
+   "comment": "Finds a route: Find(finder, unit, from, to, out path) with the finder on the stack, answering a bool. Route finder entry (same function as RVA 0x1A12B0).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPathFind.hpp:64; reversing/FINDINGS-redeploy.md:52"
+  },
+  {
+   "rva": "0x1A25B0",
+   "kind": "function",
+   "name": "CPathFind::MayUse",
+   "signature": null,
+   "comment": "CPathFind slot 1; looks like whether this finder may be used.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-redeploy.md:34"
+  },
+  {
+   "rva": "0x1A2700",
+   "kind": "function",
+   "name": "CPathFind::MayStep",
+   "signature": null,
+   "comment": "CPathFind slot 2; looks like whether a step may be taken, answering a bool.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-redeploy.md:34"
+  },
+  {
+   "rva": "0x1A2A00",
+   "kind": "function",
+   "name": "CPathFind::StepCost",
+   "signature": "void __stdcall StepCost(CFixedPoint* out, CProvinceTemplate* from, int edge, CMap* map, CUnit* unit)",
+   "comment": "CPathFind slot 0, apparently the cost of one step (edge distance scaled by a controller/intel constant); __thiscall that never reads ecx, ret 0x14. Its effect on routes is unconfirmed. CPathFind slot 0 (same function as RVA 0x1A2A00).",
+   "confidence": "inferred",
+   "source": "BiceLib/GameClasses/CPathFind.hpp:77; reversing/FINDINGS-redeploy.md:34"
+  },
+  {
+   "rva": "0x1A2AE0",
+   "kind": "function",
+   "name": "CSafePathFind::MayStep",
+   "signature": null,
+   "comment": "CSafePathFind slot 2; calls the base and refuses more.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-redeploy.md:35"
+  },
+  {
+   "rva": "0x1A2C40",
+   "kind": "function",
+   "name": "CVerySafePathFind::MayStep",
+   "signature": null,
+   "comment": "CVerySafePathFind slot 2; calls the base and refuses more.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-redeploy.md:36"
+  },
+  {
+   "rva": "0x1A2D20",
+   "kind": "function",
+   "name": "CPlannedPathFind::MayUse",
+   "signature": null,
+   "comment": "CPlannedPathFind slot 1 (mov al,1).",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-redeploy.md:37"
+  },
+  {
+   "rva": "0x1A2D30",
+   "kind": "function",
+   "name": "CPlannedPathFind::MayStep",
+   "signature": null,
+   "comment": "CPlannedPathFind slot 2.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-redeploy.md:37"
+  },
+  {
+   "rva": "0x1A2E00",
+   "kind": "function",
+   "name": "CSafeNavalPathFind::StepCost",
+   "signature": null,
+   "comment": "CSafeNavalPathFind slot 0; calls the base cost and adds to it.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-redeploy.md:38"
+  },
+  {
+   "rva": "0x1AD0F0",
+   "kind": "function",
+   "name": "CRegiment::SupplyConsumption",
+   "signature": null,
+   "comment": "Per-regiment supply consumption; takes the regiment in eax.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:246"
+  },
+  {
+   "rva": "0x1AD300",
+   "kind": "function",
+   "name": "CRegiment::FuelConsumption",
+   "signature": null,
+   "comment": "Per-regiment fuel consumption; takes the regiment in eax.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:247"
+  },
+  {
+   "rva": "0x1B4640",
+   "kind": "function",
+   "name": "GetTraitDataBase",
+   "signature": null,
+   "comment": "Getter that creates on first use and returns the object holding every trait.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTrait.hpp:31"
+  },
+  {
+   "rva": "0x1B9705",
+   "kind": "instruction",
+   "name": "UnitAttachmentLimit_EarlyExit",
+   "signature": null,
+   "comment": "Early exit of the attachment limit function taken when no attached unit was counted.",
+   "confidence": "inferred",
+   "source": "BiceLib/Hooks/CArmyHooks.cpp:160"
+  },
+  {
+   "rva": "0x1B9733",
+   "kind": "instruction",
+   "name": "Hook_UnitAttachmentLimit",
+   "signature": null,
+   "comment": "The compare against the attachment limit when a unit is attached to a higher unit (cmp [ebp+0x8], edi); ebx is the unit to attach, ecx the last counted attached unit. Hooked.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:432"
+  },
+  {
+   "rva": "0x1BB560",
+   "kind": "function",
+   "name": "CUnit::SupplyConsumption",
+   "signature": "int* __stdcall SupplyConsumption(CUnit* unit, int* out, bool withoutLeaders)",
+   "comment": "Unit supply consumption in thousandths, written through out and returned in eax; ret 0xC.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:243"
+  },
+  {
+   "rva": "0x1BB7A0",
+   "kind": "function",
+   "name": "CUnit::FuelConsumption",
+   "signature": null,
+   "comment": "Unit fuel consumption in thousandths; unit in eax, (int* out, bool withoutLeaders) on the stack, ret 8, returns out in eax.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:244"
+  },
+  {
+   "rva": "0x1C9AC0",
+   "kind": "function",
+   "name": "SetUnitPath",
+   "signature": null,
+   "comment": "Gives a found route to a unit: (unit, path, 1). Gives a route to a unit (same function as RVA 0x1C9AC0).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:33; reversing/FINDINGS-redeploy.md:106"
+  },
+  {
+   "rva": "0x1D2904",
+   "kind": "instruction",
+   "name": "CUnit_CallRecordCombat",
+   "signature": null,
+   "comment": "Call to RecordCombat from among the CArmy/CNavy/CAir virtuals.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:227"
+  },
+  {
+   "rva": "0x1D7CDC",
+   "kind": "instruction",
+   "name": "Hook_LeaderRankChange",
+   "signature": null,
+   "comment": "Where a leader's rank is written on promotion or demotion (mov [edi+0x6c], eax; cmp [edi+0x68], ebx); edi is the leader, esi the CPromoteLeaderCommand, eax the new rank. Hooked.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:213"
+  },
+  {
+   "rva": "0x1D86F0",
+   "kind": "function",
+   "name": "CMoveCommand::CMoveCommand_default",
+   "signature": null,
+   "comment": "CMoveCommand constructor that leaves every field zero.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:63"
+  },
+  {
+   "rva": "0x1D87F0",
+   "kind": "function",
+   "name": "CMoveCommand::CMoveCommand",
+   "signature": null,
+   "comment": "CMoveCommand constructor (a, target, mode68, safe, verySafe), ret 0x14. Constructor (same function as RVA 0x1D87F0).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:65; reversing/FINDINGS-redeploy.md:100"
+  },
+  {
+   "rva": "0x1D88C0",
+   "kind": "function",
+   "name": "CMoveCommand::RouteUnit",
+   "signature": null,
+   "comment": "CMoveCommand vftable slot 6: works the unit's route out with one of three finders and gives it to the unit. CMoveCommand slot 6 (same function as RVA 0x1D88C0).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:58; reversing/FINDINGS-redeploy.md:90"
+  },
+  {
+   "rva": "0x1D8A96",
+   "kind": "instruction",
+   "name": "CMoveCommand::RouteUnit_PutCPathFind",
+   "signature": null,
+   "comment": "C7 44 24 20 imm32 - puts a CPathFind (its vftable) on the stack. Same site as RVA 0x1D8A96.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:75; reversing/FINDINGS-redeploy.md:93"
+  },
+  {
+   "rva": "0x1D8A9E",
+   "kind": "instruction",
+   "name": "CMoveCommand::RouteUnit_PutCSafePathFind",
+   "signature": null,
+   "comment": "C7 44 24 1C imm32 - puts a CSafePathFind (its vftable) on the stack. Same site as RVA 0x1D8A9E.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:76; reversing/FINDINGS-redeploy.md:94"
+  },
+  {
+   "rva": "0x1D8AA6",
+   "kind": "instruction",
+   "name": "CMoveCommand::RouteUnit_PutCVerySafePathFind",
+   "signature": null,
+   "comment": "C7 44 24 18 imm32 - puts a CVerySafePathFind (its vftable) on the stack. Same site as RVA 0x1D8AA6.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:83; reversing/FINDINGS-redeploy.md:95"
+  },
+  {
+   "rva": "0x1D8AAA",
+   "kind": "instruction",
+   "name": "CMoveCommand::RouteUnit_VerySafeImmediate",
+   "signature": null,
+   "comment": "Address of the imm32 operand (CVerySafePathFind vftable) of the instruction at 0x1D8AA6.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:84"
+  },
+  {
+   "rva": "0x1D8F08",
+   "kind": "instruction",
+   "name": "CMoveCommand::RouteUnit_CallFind",
+   "signature": null,
+   "comment": "RouteUnit's call to CPathFind::Find.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-redeploy.md:99"
+  },
+  {
+   "rva": "0x1D8F1C",
+   "kind": "instruction",
+   "name": "CMoveCommand::RouteUnit_CallSetUnitPath",
+   "signature": null,
+   "comment": "RouteUnit's call to SetUnitPath.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-redeploy.md:99"
+  },
+  {
+   "rva": "0x1D93F0",
+   "kind": "function",
+   "name": "CMoveCommand::CMoveCommand_copy",
+   "signature": null,
+   "comment": "CMoveCommand copy constructor; copies the routing mode bytes. Copy constructor (same function as RVA 0x1D93F0).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:63; reversing/FINDINGS-redeploy.md:101"
+  },
+  {
+   "rva": "0x243750",
+   "kind": "function",
+   "name": "CombineColourBrightness",
+   "signature": null,
+   "comment": "Called by the Simplified Terrain loop after the terrain colour; combines it with the brightness.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-mapmode.md:153"
+  },
+  {
+   "rva": "0x2439D0",
+   "kind": "function",
+   "name": "CInGameIdler::GetCurrentMapMode",
+   "signature": "int __thiscall GetCurrentMapMode(CInGameIdler* this)",
+   "comment": "Virtual getter at vtable offset 0x164: mov eax,[ecx+0xD34]; ret.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:235"
+  },
+  {
+   "rva": "0x24FF80",
+   "kind": "function",
+   "name": "CInGameIdler::AutosaveWrite",
+   "signature": null,
+   "comment": "Writes the autosave when idler +0xAB0 is set, after one frame of delay; builds the file name from debug_saves.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:19"
+  },
+  {
+   "rva": "0x250005",
+   "kind": "instruction",
+   "name": "AutosaveWrite_ClearFlags",
+   "signature": null,
+   "comment": "mov word ptr [esi+0xAB0], bx - clears both autosave bytes just before writing.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:221"
+  },
+  {
+   "rva": "0x2500EB",
+   "kind": "instruction",
+   "name": "AutoSave_ReadDebugSaves",
+   "signature": null,
+   "comment": "mov eax, [eax+0x158] - the autosave writer's read of debug_saves that picks the naming. Hooked. The writer's read of debug_saves hooked by BiceLib (same site as RVA 0x2500EB).",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/AutoSaveHooks.cpp:27; reversing/FINDINGS-autosave.md:183"
+  },
+  {
+   "rva": "0x25010B",
+   "kind": "instruction",
+   "name": "AutoSave_NameImmediate_Newest",
+   "signature": null,
+   "comment": "Address of the imm32 operand that loads \"autosave.hoi3\" in the autosave writer. Repointed by BiceLib. Immediate loading \"autosave.hoi3\" (same site as RVA 0x25010B).",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/AutoSaveHooks.cpp:41; reversing/FINDINGS-autosave.md:194"
+  },
+  {
+   "rva": "0x250159",
+   "kind": "instruction",
+   "name": "AutoSave_NameImmediate_Middle",
+   "signature": null,
+   "comment": "Address of the imm32 operand that loads \"oldautosave.hoi3\" in the autosave writer. Repointed by BiceLib. Immediate loading \"oldautosave.hoi3\" (same site as RVA 0x250159).",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/AutoSaveHooks.cpp:41; reversing/FINDINGS-autosave.md:195"
+  },
+  {
+   "rva": "0x25018D",
+   "kind": "instruction",
+   "name": "AutoSave_NameImmediate_Oldest",
+   "signature": null,
+   "comment": "Address of the imm32 operand that loads \"olderautosave.hoi3\" in the autosave writer. Repointed by BiceLib. Immediate loading \"olderautosave.hoi3\" (same site as RVA 0x25018D).",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/AutoSaveHooks.cpp:41; reversing/FINDINGS-autosave.md:196"
+  },
+  {
+   "rva": "0x2501C0",
+   "kind": "instruction",
+   "name": "AutosaveWrite_RotateFiles",
+   "signature": null,
+   "comment": "Start of the three-file rotation: delete oldest, rename middle to oldest, newest to middle.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:201"
+  },
+  {
+   "rva": "0x2559D0",
+   "kind": "function",
+   "name": "CInGameIdler::Update",
+   "signature": null,
+   "comment": "Per-frame update of the in game idler; calls the autosave writer.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:18"
+  },
+  {
+   "rva": "0x261CA0",
+   "kind": "function",
+   "name": "CInGameIdler::DailyUpdate",
+   "signature": null,
+   "comment": "CInGameIdler virtual slot 53: repaints the map in modes 4/18/19, then always runs the autosave check.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:16"
+  },
+  {
+   "rva": "0x261D0C",
+   "kind": "instruction",
+   "name": "DailyUpdate_CallAutosaveCheck",
+   "signature": null,
+   "comment": "Fallthrough in DailyUpdate that calls the autosave check whatever the map mode.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:112"
+  },
+  {
+   "rva": "0x261D20",
+   "kind": "function",
+   "name": "CInGameIdler::AutosaveCheck",
+   "signature": "undefined __stdcall AutosaveCheck(CInGameIdler* idler)",
+   "comment": "Decides whether to autosave: clears idler +0xAB0, then sets it when the date matches the frequency; ret 4.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:17"
+  },
+  {
+   "rva": "0x261DBA",
+   "kind": "instruction",
+   "name": "AutoSave_ClearRequest",
+   "signature": null,
+   "comment": "mov byte ptr [eax+0xAB0], bl - clears the autosave request flag at the top of the autosave decision; eax is the idler, esi the tick. Hooked. The autosave flag clear hooked by BiceLib (same site as RVA 0x261DBA).",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/AutoSaveHooks.cpp:20; reversing/FINDINGS-autosave.md:176"
+  },
+  {
+   "rva": "0x261E19",
+   "kind": "instruction",
+   "name": "AutosaveCheck_DateMatched",
+   "signature": null,
+   "comment": "Reached once the date matches; the multiplayer gates before setting the flag.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:88"
+  },
+  {
+   "rva": "0x261FDB",
+   "kind": "instruction",
+   "name": "AutosaveCheck_DebugSavesMonthDivide",
+   "signature": null,
+   "comment": "idiv edi - the every-Nth-month test when debug_saves is set.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:70"
+  },
+  {
+   "rva": "0x26202D",
+   "kind": "instruction",
+   "name": "AutosaveCheck_RaiseFlag",
+   "signature": null,
+   "comment": "mov byte ptr [edi+0xAB0], 1 - the only place that raises the autosave request flag.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:22"
+  },
+  {
+   "rva": "0x266220",
+   "kind": "function",
+   "name": "MapMode_Political_Colour",
+   "signature": null,
+   "comment": "Colouring routine for map mode 1 (Political).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:117"
+  },
+  {
+   "rva": "0x2668C0",
+   "kind": "function",
+   "name": "MapMode_Diplomatic_Colour",
+   "signature": null,
+   "comment": "Colouring routine for map mode 2 (Diplomatic).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:121"
+  },
+  {
+   "rva": "0x266C5F",
+   "kind": "instruction",
+   "name": "MapMode_Infrastructure_SetMapStyle",
+   "signature": null,
+   "comment": "The Infrastructure map mode setter writing map style 8.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:354"
+  },
+  {
+   "rva": "0x266CE0",
+   "kind": "function",
+   "name": "MapMode_SimplifiedTerrain_Driver",
+   "signature": null,
+   "comment": "Driver for map mode 13 (Simplified Terrain); calls its colouring loop.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:142"
+  },
+  {
+   "rva": "0x266E74",
+   "kind": "instruction",
+   "name": "MapMode_SimplifiedTerrain_SetMapStyle",
+   "signature": null,
+   "comment": "mov dword ptr [eax+0xF4], 8 - the Simplified Terrain setter writing the map style. Patched to 18.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:137"
+  },
+  {
+   "rva": "0x266EE0",
+   "kind": "function",
+   "name": "MapMode_Supply_Colour",
+   "signature": null,
+   "comment": "Colouring routine for map mode 4 (Supply). Map mode 4's colouring routine, called from DailyUpdate (listed as 0x266EE0 in FINDINGS-mapmode.md).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:123; reversing/FINDINGS-autosave.md:107"
+  },
+  {
+   "rva": "0x2670F0",
+   "kind": "function",
+   "name": "MapMode_Infrastructure_Colour",
+   "signature": null,
+   "comment": "Colouring driver for map mode 5 (Infrastructure).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:124"
+  },
+  {
+   "rva": "0x267510",
+   "kind": "function",
+   "name": "MapMode_Intel_Colour",
+   "signature": null,
+   "comment": "Colouring routine for map mode 6 (Intel).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:119"
+  },
+  {
+   "rva": "0x267710",
+   "kind": "function",
+   "name": "MapMode_VictoryPoints_Recolour",
+   "signature": "void __thiscall MapMode_VictoryPoints_Recolour(CInGameIdler* this)",
+   "comment": "Recolours the map for the VP map mode (mode 7); called with ecx pointing at the in game idler.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/MapModeHooks.cpp:30"
+  },
+  {
+   "rva": "0x267920",
+   "kind": "function",
+   "name": "MapMode_Theatre_Colour",
+   "signature": null,
+   "comment": "Colouring routine for map mode 8 (Theatre).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:126"
+  },
+  {
+   "rva": "0x267B50",
+   "kind": "function",
+   "name": "MapMode_Strength_Colour",
+   "signature": null,
+   "comment": "Colouring routine for map mode 9 (Strength).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:127"
+  },
+  {
+   "rva": "0x271370",
+   "kind": "function",
+   "name": "SaveGameFromDialog",
+   "signature": null,
+   "comment": "Writes a save from the save dialog; owns \"Failed to write save file \".",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:139"
+  },
+  {
+   "rva": "0x275090",
+   "kind": "function",
+   "name": "CInGameIdler::SetAutosaveRequested",
+   "signature": null,
+   "comment": "Virtual setter (slot 92) for the autosave request pair; clears +0xAB1 whenever +0xAB0 is set to 0.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:129"
+  },
+  {
+   "rva": "0x27D070",
+   "kind": "function",
+   "name": "CCurrentGameState::CCurrentGameState",
+   "signature": null,
+   "comment": "CCurrentGameState constructor (object 0xDA8 bytes). CCurrentGameState constructor as written in CLASSES.md (the header gives 0x27D070).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCurrentGameState.hpp:9; reversing/CLASSES.md:39"
+  },
+  {
+   "rva": "0x2872D0",
+   "kind": "function",
+   "name": "CSupply::DailySupplyPass",
+   "signature": null,
+   "comment": "Daily supply pass: walks provinces farthest from the depot first, tops up pools from closer neighbours and passes unmet demand on.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMapProvince.hpp:70"
+  },
+  {
+   "rva": "0x365688",
+   "kind": "instruction",
+   "name": "Hook_LeaderListShowSkill",
+   "signature": null,
+   "comment": "In the leader list, where the skill text is formatted (eax is the text buffer). Hooked to show skill and max skill.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:387"
+  },
+  {
+   "rva": "0x3679D4",
+   "kind": "instruction",
+   "name": "Hook_LeaderListShowSkillSelected",
+   "signature": null,
+   "comment": "In the selected leader display, where the skill text is formatted. Hooked to show skill and max skill.",
+   "confidence": "confirmed",
+   "source": "BiceLib/bice.cpp:409"
+  },
+  {
+   "rva": "0x44F290",
+   "kind": "function",
+   "name": "TerrainColour",
+   "signature": null,
+   "comment": "Called by the Simplified Terrain loop to get a colour for the province's terrain.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-mapmode.md:153"
+  },
+  {
+   "rva": "0x45CA30",
+   "kind": "instruction",
+   "name": "MapTile_Update",
+   "signature": null,
+   "comment": "Map tile updater; tests the province template byte +0x13D across a tile, apparently culling.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-mapmode.md:366"
+  },
+  {
+   "rva": "0x45FAE6",
+   "kind": "instruction",
+   "name": "MapStyle_TestForWaterColourTechnique",
+   "signature": null,
+   "comment": "Tests GameSettings +0xF4 for styles 16/18/19 to pick WaterNearColor over WaterNear.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:325"
+  },
+  {
+   "rva": "0x45FBF6",
+   "kind": "instruction",
+   "name": "Water_UseWaterNearColor",
+   "signature": null,
+   "comment": "Branch that draws the water with the WaterNearColor technique.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:325"
+  },
+  {
+   "rva": "0x45FBFE",
+   "kind": "instruction",
+   "name": "Water_UseWaterNear",
+   "signature": null,
+   "comment": "Branch that draws the water with the plain WaterNear technique.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:325"
+  },
+  {
+   "rva": "0x465B70",
+   "kind": "function",
+   "name": "MapMode_SimplifiedTerrain_ColourLoop",
+   "signature": null,
+   "comment": "Colouring loop for map mode 13; colours each province from its terrain. One caller.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:142"
+  },
+  {
+   "rva": "0x4665A0",
+   "kind": "function",
+   "name": "MapMode_VictoryPoints_ColourLoop",
+   "signature": null,
+   "comment": "Colours every province for the VP map mode (mode 7).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:8"
+  },
+  {
+   "rva": "0x4666B1",
+   "kind": "instruction",
+   "name": "MapMode_VP_PackColourCall",
+   "signature": null,
+   "comment": "call 0x6628B0 - the first CColor to dword conversion in the VP loop, reached by every province. Hooked.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/MapModeHooks.cpp:23"
+  },
+  {
+   "rva": "0x4666B6",
+   "kind": "instruction",
+   "name": "MapMode_VP_ReadVictoryPoints",
+   "signature": null,
+   "comment": "mov ecx,[esi+0x34]; test ecx,ecx - the only read of a province's victory points, inside the VP colouring loop. Hooked.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/MapModeHooks.cpp:22"
+  },
+  {
+   "rva": "0x46682B",
+   "kind": "instruction",
+   "name": "MapMode_VP_LoadController",
+   "signature": null,
+   "comment": "mov esi, [esi+0x338] - clobbers the province register on the branch for provinces with victory points.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:47"
+  },
+  {
+   "rva": "0x46697D",
+   "kind": "instruction",
+   "name": "MapMode_VP_PackColourCall2",
+   "signature": null,
+   "comment": "call 0x6628B0 - the second colour conversion in the VP loop, only for provinces with victory points.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:41"
+  },
+  {
+   "rva": "0x466F80",
+   "kind": "function",
+   "name": "MapMode_Infrastructure_ColourLoop",
+   "signature": null,
+   "comment": "Colouring loop for map mode 5; picks one of ten colours from the infrastructure level.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:376"
+  },
+  {
+   "rva": "0x480DA5",
+   "kind": "instruction",
+   "name": "MapStyle_TestForWaterTextureUpdate",
+   "signature": null,
+   "comment": "Tests GameSettings +0xF4 for styles 16/18/19 to decide whether the WaterTexture update runs.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:324"
+  },
+  {
+   "rva": "0x480F1D",
+   "kind": "instruction",
+   "name": "MapStyle_TestInColourTextureBuilder",
+   "signature": null,
+   "comment": "Reads GameSettings +0xF4 inside the province colour texture builder, comparing only against 0.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:345"
+  },
+  {
+   "rva": "0x4821D0",
+   "kind": "function",
+   "name": "WaterTexture_Update",
+   "signature": null,
+   "comment": "Refills the sea's province colour texture (\"Locking a texture for WaterTexture update failed.\").",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:324"
+  },
+  {
+   "rva": "0x49A840",
+   "kind": "function",
+   "name": "CMoveCommand::IssueFromInterface",
+   "signature": null,
+   "comment": "What the GUI calls to issue a move; hardcodes mode68 = 1 and forwards its fourth and fifth arguments as safe and very safe; ret 0x18. GUI entry to issue a move (same function as RVA 0x49A840).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:68; reversing/FINDINGS-redeploy.md:114"
+  },
+  {
+   "rva": "0x4B348A",
+   "kind": "instruction",
+   "name": "Patch_InterAiExpeditionaries_1",
+   "signature": null,
+   "comment": "Conditional jump turned into nop + jmp by disableInterAiExpeditionaries.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:76"
+  },
+  {
+   "rva": "0x4B37E5",
+   "kind": "instruction",
+   "name": "Patch_InterAiExpeditionaries_2",
+   "signature": null,
+   "comment": "Conditional jump turned into nop + jmp by disableInterAiExpeditionaries.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Patches.cpp:82"
+  },
+  {
+   "rva": "0x6628B0",
+   "kind": "function",
+   "name": "CColor::ToPackedArgb",
+   "signature": "uint32_t __thiscall ToPackedArgb(CColor* this)",
+   "comment": "Packs a CColor into 0xAARRGGBB in eax, scaling each float by 255 and truncating.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:51"
+  },
+  {
+   "rva": "0x6AABA0",
+   "kind": "function",
+   "name": "Date_DayOfWeek",
+   "signature": null,
+   "comment": "From a tick: (days - 1) % 7.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:81"
+  },
+  {
+   "rva": "0x7F9B90",
+   "kind": "function",
+   "name": "CLandCombat::GetKind",
+   "signature": "int __thiscall GetKind(CLandCombat* this)",
+   "comment": "Slot 11: mov eax, 1; ret.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:326"
+  },
+  {
+   "rva": "0x8037D0",
+   "kind": "function",
+   "name": "CNavalCombat::GetKind",
+   "signature": "int __thiscall GetKind(CNavalCombat* this)",
+   "comment": "Slot 11: mov eax, 2; ret.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md:327"
+  },
+  {
+   "rva": "0x11B68C0",
+   "kind": "vftable",
+   "name": "CCombatHistoryEntry",
+   "signature": null,
+   "comment": "CCombatHistoryEntry vftable (RTTI).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:85"
+  },
+  {
+   "rva": "0x11B68DC",
+   "kind": "vftable",
+   "name": "CCombatHistory",
+   "signature": null,
+   "comment": "CCombatHistory vftable (RTTI).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:84"
+  },
+  {
+   "rva": "0x11B68F8",
+   "kind": "vftable",
+   "name": "CCombatManager",
+   "signature": null,
+   "comment": "CCombatManager vftable (RTTI).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:83"
+  },
+  {
+   "rva": "0x11B6934",
+   "kind": "vftable",
+   "name": "CGroundBombing",
+   "signature": null,
+   "comment": "CGroundBombing vftable; slot 11 returns combat kind 4.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameState/CombatLog.cpp:63"
+  },
+  {
+   "rva": "0x11B6984",
+   "kind": "vftable",
+   "name": "CGroundBombing_at8",
+   "signature": null,
+   "comment": "CGroundBombing vftable for the CSelectable base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:114"
+  },
+  {
+   "rva": "0x11B69AC",
+   "kind": "vftable",
+   "name": "CLandBombing",
+   "signature": null,
+   "comment": "CLandBombing vftable; slot 11 returns combat kind 5.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameState/CombatLog.cpp:64"
+  },
+  {
+   "rva": "0x11B69FC",
+   "kind": "vftable",
+   "name": "CLandBombing_at8",
+   "signature": null,
+   "comment": "CLandBombing vftable for the CSelectable base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:115"
+  },
+  {
+   "rva": "0x11B6A24",
+   "kind": "vftable",
+   "name": "CNavalBombing",
+   "signature": null,
+   "comment": "CNavalBombing vftable; slot 11 returns combat kind 6.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameState/CombatLog.cpp:65"
+  },
+  {
+   "rva": "0x11B6A74",
+   "kind": "vftable",
+   "name": "CNavalBombing_at8",
+   "signature": null,
+   "comment": "CNavalBombing vftable for the CSelectable base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:116"
+  },
+  {
+   "rva": "0x11BDD7C",
+   "kind": "vftable",
+   "name": "CRegiment",
+   "signature": null,
+   "comment": "CRegiment vftable (RTTI).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CRegiment.hpp:26"
+  },
+  {
+   "rva": "0x11BDE0C",
+   "kind": "vftable",
+   "name": "CArmy",
+   "signature": null,
+   "comment": "CArmy vftable at object +0x0; also matched in the Inspector.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CUnit.hpp:63"
+  },
+  {
+   "rva": "0x11BDEB8",
+   "kind": "vftable",
+   "name": "CArmy_at8",
+   "signature": null,
+   "comment": "CArmy vftable for the base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:194"
+  },
+  {
+   "rva": "0x11BE3EC",
+   "kind": "vftable",
+   "name": "CMap",
+   "signature": null,
+   "comment": "CMap vftable (6 slots); slot 5 parses map/terrain.txt.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMap.hpp:27"
+  },
+  {
+   "rva": "0x11BE408",
+   "kind": "vftable",
+   "name": "CMap_secondary",
+   "signature": null,
+   "comment": "CMap vftable for the base subobject at object +0x1C.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMap.hpp:28"
+  },
+  {
+   "rva": "0x11BE414",
+   "kind": "vftable",
+   "name": "CPathFind",
+   "signature": null,
+   "comment": "CPathFind vftable (4 slots: step cost, may use, may step, unknown).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPathFind.hpp:36"
+  },
+  {
+   "rva": "0x11BEBF8",
+   "kind": "vftable",
+   "name": "CMapProvince",
+   "signature": null,
+   "comment": "CMapProvince primary vftable at object +0x0.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMapProvince.hpp:225"
+  },
+  {
+   "rva": "0x11BEC1C",
+   "kind": "vftable",
+   "name": "CMapProvince_at8",
+   "signature": null,
+   "comment": "CMapProvince vftable for the base subobject at object +0x8 (what the selection points at).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMapProvince.hpp:224"
+  },
+  {
+   "rva": "0x11C064C",
+   "kind": "vftable",
+   "name": "CProvinceTemplate",
+   "signature": null,
+   "comment": "vftable of the per-province template object at CMapProvince +0xD4.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-mapmode.md:149"
+  },
+  {
+   "rva": "0x11C0764",
+   "kind": "vftable",
+   "name": "CTerrain",
+   "signature": null,
+   "comment": "CTerrain vftable.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTerrain.hpp:24"
+  },
+  {
+   "rva": "0x11C0788",
+   "kind": "vftable",
+   "name": "CTheatre",
+   "signature": null,
+   "comment": "CTheatre vftable (RTTI).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:199"
+  },
+  {
+   "rva": "0x11C0A50",
+   "kind": "vftable",
+   "name": "CProvinceBuilding",
+   "signature": null,
+   "comment": "CProvinceBuilding vftable at object +0x0.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:30"
+  },
+  {
+   "rva": "0x11C0A78",
+   "kind": "vftable",
+   "name": "CProvinceBuilding_at8",
+   "signature": null,
+   "comment": "CProvinceBuilding vftable for the base subobject at object +0x8.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:31"
+  },
+  {
+   "rva": "0x11C0D44",
+   "kind": "vftable",
+   "name": "CConvoy",
+   "signature": null,
+   "comment": "CConvoy vftable (RTTI, 8 slots).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CConvoy.hpp:40"
+  },
+  {
+   "rva": "0x11C1BA8",
+   "kind": "vftable",
+   "name": "CCountry",
+   "signature": null,
+   "comment": "CCountry vftable (RTTI, base CPersistent).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:419"
+  },
+  {
+   "rva": "0x11C1BD4",
+   "kind": "vftable",
+   "name": "CGoodsPool",
+   "signature": null,
+   "comment": "CGoodsPool vftable (RTTI, 6 slots).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGoodsPool.hpp:23"
+  },
+  {
+   "rva": "0x11C45DC",
+   "kind": "vftable",
+   "name": "CBomberCombatant",
+   "signature": null,
+   "comment": "CBomberCombatant vftable (RTTI, 26 slots).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:149"
+  },
+  {
+   "rva": "0x11C464C",
+   "kind": "vftable",
+   "name": "CGroundTargetCombatant",
+   "signature": null,
+   "comment": "CGroundTargetCombatant vftable (RTTI, 26 slots).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:150"
+  },
+  {
+   "rva": "0x11C46BC",
+   "kind": "vftable",
+   "name": "CNavalTargetCombatant",
+   "signature": null,
+   "comment": "CNavalTargetCombatant vftable (RTTI, 26 slots).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:152"
+  },
+  {
+   "rva": "0x11C472C",
+   "kind": "vftable",
+   "name": "CLandTargetCombatant",
+   "signature": null,
+   "comment": "CLandTargetCombatant vftable (RTTI, 26 slots).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:151"
+  },
+  {
+   "rva": "0x11C4CA4",
+   "kind": "vftable",
+   "name": "CCombatant",
+   "signature": null,
+   "comment": "CCombatant base vftable (RTTI, 26 slots).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:145"
+  },
+  {
+   "rva": "0x11C4D14",
+   "kind": "vftable",
+   "name": "CCombat",
+   "signature": null,
+   "comment": "CCombat base vftable (RTTI); slot 11 is pure virtual, the combat kind.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:109"
+  },
+  {
+   "rva": "0x11C4D64",
+   "kind": "vftable",
+   "name": "CCombat_at8",
+   "signature": null,
+   "comment": "CCombat vftable for the CSelectable base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:109"
+  },
+  {
+   "rva": "0x11C4D8C",
+   "kind": "vftable",
+   "name": "CNavalCombatant",
+   "signature": null,
+   "comment": "CNavalCombatant vftable (RTTI, 26 slots).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:147"
+  },
+  {
+   "rva": "0x11C4DFC",
+   "kind": "vftable",
+   "name": "CLandCombatant",
+   "signature": null,
+   "comment": "CLandCombatant vftable (RTTI, 28 slots).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:146"
+  },
+  {
+   "rva": "0x11C4E74",
+   "kind": "vftable",
+   "name": "CAirCombatant",
+   "signature": null,
+   "comment": "CAirCombatant vftable (RTTI, 26 slots).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:148"
+  },
+  {
+   "rva": "0x11C4EE4",
+   "kind": "vftable",
+   "name": "CLandCombat",
+   "signature": null,
+   "comment": "CLandCombat vftable; slot 11 returns combat kind 1.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameState/CombatLog.cpp:60"
+  },
+  {
+   "rva": "0x11C4F34",
+   "kind": "vftable",
+   "name": "CLandCombat_at8",
+   "signature": null,
+   "comment": "CLandCombat vftable for the CSelectable base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:110"
+  },
+  {
+   "rva": "0x11C4F5C",
+   "kind": "vftable",
+   "name": "CNavalCombat",
+   "signature": null,
+   "comment": "CNavalCombat vftable; slot 11 returns combat kind 2.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameState/CombatLog.cpp:62"
+  },
+  {
+   "rva": "0x11C4FAC",
+   "kind": "vftable",
+   "name": "CNavalCombat_at8",
+   "signature": null,
+   "comment": "CNavalCombat vftable for the CSelectable base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:111"
+  },
+  {
+   "rva": "0x11C4FD4",
+   "kind": "vftable",
+   "name": "CAirCombat",
+   "signature": null,
+   "comment": "CAirCombat vftable; slot 11 returns combat kind 3.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameState/CombatLog.cpp:61"
+  },
+  {
+   "rva": "0x11C5024",
+   "kind": "vftable",
+   "name": "CAirCombat_at8",
+   "signature": null,
+   "comment": "CAirCombat vftable for the CSelectable base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:112"
+  },
+  {
+   "rva": "0x11C5220",
+   "kind": "vftable",
+   "name": "CLeader",
+   "signature": null,
+   "comment": "CLeader vftable.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CLeader.hpp:51"
+  },
+  {
+   "rva": "0x11C5ADC",
+   "kind": "vftable",
+   "name": "CStrategicRedeploymentOrder",
+   "signature": null,
+   "comment": "CStrategicRedeploymentOrder vftable (35 slots).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:25"
+  },
+  {
+   "rva": "0x11C5B6C",
+   "kind": "vftable",
+   "name": "CVerySafePathFind",
+   "signature": null,
+   "comment": "CVerySafePathFind vftable; overrides slot 2.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPathFind.hpp:38"
+  },
+  {
+   "rva": "0x11C7304",
+   "kind": "vftable",
+   "name": "CSafeNavalPathFind",
+   "signature": null,
+   "comment": "CSafeNavalPathFind vftable; overrides slot 0.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPathFind.hpp:40"
+  },
+  {
+   "rva": "0x11C7DC0",
+   "kind": "vftable",
+   "name": "CTrait",
+   "signature": null,
+   "comment": "CTrait vftable.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTrait.hpp:26"
+  },
+  {
+   "rva": "0x11C7DFC",
+   "kind": "vftable",
+   "name": "CNullTrait",
+   "signature": null,
+   "comment": "CNullTrait vftable; the entry at index 0 of the trait list.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTrait.hpp:27"
+  },
+  {
+   "rva": "0x11C85CC",
+   "kind": "vftable",
+   "name": "CUnit",
+   "signature": null,
+   "comment": "CUnit base vftable (RTTI).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:193"
+  },
+  {
+   "rva": "0x11C8678",
+   "kind": "vftable",
+   "name": "CUnit_at8",
+   "signature": null,
+   "comment": "CUnit vftable for the base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:193"
+  },
+  {
+   "rva": "0x11C869C",
+   "kind": "vftable",
+   "name": "CNavy",
+   "signature": null,
+   "comment": "CNavy vftable at object +0x0.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CUnit.hpp:64"
+  },
+  {
+   "rva": "0x11C8750",
+   "kind": "vftable",
+   "name": "CNavy_at8",
+   "signature": null,
+   "comment": "CNavy vftable for the base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:195"
+  },
+  {
+   "rva": "0x11C8774",
+   "kind": "vftable",
+   "name": "CAir",
+   "signature": null,
+   "comment": "CAir vftable at object +0x0 (also written 0x011C8774 in the Inspector).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CUnit.hpp:65"
+  },
+  {
+   "rva": "0x11C8828",
+   "kind": "vftable",
+   "name": "CAir_at8",
+   "signature": null,
+   "comment": "CAir vftable for the base at object +0x8.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:196"
+  },
+  {
+   "rva": "0x11C884C",
+   "kind": "vftable",
+   "name": "CSafePathFind",
+   "signature": null,
+   "comment": "CSafePathFind vftable; overrides slot 2.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPathFind.hpp:37"
+  },
+  {
+   "rva": "0x11C8860",
+   "kind": "vftable",
+   "name": "CPlannedPathFind",
+   "signature": null,
+   "comment": "CPlannedPathFind vftable; overrides slots 1 and 2.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPathFind.hpp:39"
+  },
+  {
+   "rva": "0x11C8C1C",
+   "kind": "vftable",
+   "name": "CMoveCommand",
+   "signature": null,
+   "comment": "CMoveCommand vftable; slot 6 routes the unit.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:42"
+  },
+  {
+   "rva": "0x11C9BEC",
+   "kind": "vftable",
+   "name": "CCurrentGameState_B3C_object",
+   "signature": null,
+   "comment": "vftable of an unidentified object embedded in CCurrentGameState at +0xB3C.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:46"
+  },
+  {
+   "rva": "0x11CDCE4",
+   "kind": "string",
+   "name": "str_autosave_hoi3",
+   "signature": null,
+   "comment": "The string \"autosave.hoi3\", newest of the three rotating autosave names.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/AutoSaveHooks.cpp:42",
+   "type": "string"
+  },
+  {
+   "rva": "0x11CDCF4",
+   "kind": "string",
+   "name": "str_oldautosave_hoi3",
+   "signature": null,
+   "comment": "The string \"oldautosave.hoi3\", middle of the three rotating autosave names.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/AutoSaveHooks.cpp:42",
+   "type": "string"
+  },
+  {
+   "rva": "0x11CDD08",
+   "kind": "string",
+   "name": "str_olderautosave_hoi3",
+   "signature": null,
+   "comment": "The string \"olderautosave.hoi3\", oldest of the three rotating autosave names.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/AutoSaveHooks.cpp:42",
+   "type": "string"
+  },
+  {
+   "rva": "0x11CEB54",
+   "kind": "vftable",
+   "name": "CInGameIdler",
+   "signature": null,
+   "comment": "CInGameIdler vftable (111 slots); slot 48 centres the map on a province. CInGameIdler vftable written as a VA (same table as module + 0x11CEB54); its slot 0x164 is the map mode getter.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CInGameIdler.hpp:22; reversing/FINDINGS-mapmode.md:242"
+  },
+  {
+   "rva": "0x11CF674",
+   "kind": "vftable",
+   "name": "CCurrentGameState",
+   "signature": null,
+   "comment": "CCurrentGameState vftable.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCurrentGameState.hpp:25"
+  },
+  {
+   "rva": "0x1313294",
+   "kind": "global",
+   "name": "MonthLengthTable",
+   "signature": null,
+   "comment": "Table of month lengths in days (31, 28, 31, ...) used by the date helpers.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-autosave.md:76",
+   "type": "int[12]"
+  },
+  {
+   "rva": "0x168557C",
+   "kind": "global",
+   "name": "g_CMap",
+   "signature": null,
+   "comment": "Pointer to the single CMap instance (the map and the definitions loaded with it).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMap.hpp:24",
+   "type": "CMap*"
+  },
+  {
+   "rva": "0x16855A4",
+   "kind": "global",
+   "name": "g_CCountryDataBase",
+   "signature": null,
+   "comment": "Pointer to the CCountryDataBase; null until the first use creates it.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountryDataBase.hpp:20",
+   "type": "CCountryDataBase*"
+  },
+  {
+   "rva": "0x16855EC",
+   "kind": "global",
+   "name": "g_CTraitDataBase",
+   "signature": null,
+   "comment": "Pointer to the lazily made object holding every CTrait (0x1C bytes); filled once traits load.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTrait.hpp:37",
+   "type": "CTraitDataBase*"
+  },
+  {
+   "rva": "0x16863F8",
+   "kind": "global",
+   "name": "g_GameSettings",
+   "signature": null,
+   "comment": "Pointer to the settings singleton that settings.txt is read into (0x18C bytes). Pointer to the settings singleton (the same global as module + 0x16863F8).",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/GameSettings.hpp:19; reversing/FINDINGS-autosave.md:47",
+   "type": "GameSettings*"
+  },
+  {
+   "rva": "0x1689790",
+   "kind": "global",
+   "name": "g_CCurrentGameState",
+   "signature": null,
+   "comment": "Pointer to the live CCurrentGameState; created lazily and already non-null at the main menu. Pointer to the live CCurrentGameState (the same global as module + 0x1689790); also fetched by RecordCombat, written 0x1a89790 in FINDINGS-combat.md.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCurrentGameState.hpp:22; reversing/FINDINGS-autosave.md:32",
+   "type": "CCurrentGameState*"
+  }
+ ],
+ "structs": [
+  {
+   "name": "CConvoy",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the save's id pair; always 42",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:45"
+    },
+    {
+     "offset": "0xC",
+     "name": "id",
+     "type": "int",
+     "comment": "convoy id",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:46"
+    },
+    {
+     "offset": "0x30",
+     "name": "owner_tag",
+     "type": "char[4]",
+     "comment": "owner country tag, three characters and a NUL",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:49"
+    },
+    {
+     "offset": "0x34",
+     "name": "owner_id",
+     "type": "int",
+     "comment": "owner country id",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:50"
+    },
+    {
+     "offset": "0x38",
+     "name": "daily",
+     "type": "CGoodsPool",
+     "comment": "what it carried at its last sailing (save key daily)",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:57"
+    },
+    {
+     "offset": "0x5C",
+     "name": "goods_mask_begin",
+     "type": "int*",
+     "comment": "begin of a seven-int vector, 1 per good carried (save key ship)",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:64"
+    },
+    {
+     "offset": "0x60",
+     "name": "goods_mask_end",
+     "type": "int*",
+     "comment": "end of the goods mask vector",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:65"
+    },
+    {
+     "offset": "0x6C",
+     "name": "loading_production",
+     "type": "CGoodsPool",
+     "comment": "what the loading end's network produces in a day; not saved",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:77"
+    },
+    {
+     "offset": "0x90",
+     "name": "transports_wanted",
+     "type": "int",
+     "comment": "transports wanted; not saved",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:84"
+    },
+    {
+     "offset": "0x94",
+     "name": "escorts_wanted",
+     "type": "int",
+     "comment": "possibly escorts wanted; not established",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:91"
+    },
+    {
+     "offset": "0x98",
+     "name": "transports",
+     "type": "int",
+     "comment": "transports assigned (save key convoys)",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:85"
+    },
+    {
+     "offset": "0x9C",
+     "name": "escorts",
+     "type": "int",
+     "comment": "escorts (save key escorts)",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:92"
+    },
+    {
+     "offset": "0xA0",
+     "name": "is_trade",
+     "type": "uint8_t",
+     "comment": "bool, save key trade",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:95"
+    },
+    {
+     "offset": "0xA1",
+     "name": "is_lend_lease",
+     "type": "uint8_t",
+     "comment": "bool, save key lend_lease",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:96"
+    },
+    {
+     "offset": "0xB0",
+     "name": "path_first_ptr",
+     "type": "pointer",
+     "comment": "route list first node {province id, prev, next} (save key path)",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:102"
+    },
+    {
+     "offset": "0xB4",
+     "name": "path_last_ptr",
+     "type": "pointer",
+     "comment": "route list last node",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:103"
+    },
+    {
+     "offset": "0xB8",
+     "name": "path_count",
+     "type": "int",
+     "comment": "route list node count",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:104"
+    },
+    {
+     "offset": "0xC0",
+     "name": "start_province_id",
+     "type": "int",
+     "comment": "loading port province id (save key start)",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:107"
+    },
+    {
+     "offset": "0xC4",
+     "name": "end_province_id",
+     "type": "int",
+     "comment": "unloading port province id (save key end)",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:108"
+    },
+    {
+     "offset": "0xC8",
+     "name": "start_date",
+     "type": "int",
+     "comment": "tick the convoy started",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:111"
+    },
+    {
+     "offset": "0xCC",
+     "name": "last_attack",
+     "type": "int",
+     "comment": "tick of the last attack",
+     "source": "BiceLib/GameClasses/CConvoy.hpp:112"
+    }
+   ],
+   "vftable_rva": "0x11C0D44"
+  },
+  {
+   "name": "CCountry",
+   "fields": [
+    {
+     "offset": "0x95",
+     "name": "use_own_pool",
+     "type": "uint8_t",
+     "comment": "when set, GetPool answers the country's pool at +0x9F8 instead of the capital's",
+     "source": "BiceLib/GameClasses/CCountry.hpp:61"
+    },
+    {
+     "offset": "0xA0",
+     "name": "convoys_list_first_ptr",
+     "type": "pointer",
+     "comment": "list of CConvoy* {first, last, count}, nodes {data, prev, next}",
+     "source": "BiceLib/GameClasses/CCountry.hpp:26"
+    },
+    {
+     "offset": "0xA4",
+     "name": "convoys_list_last_ptr",
+     "type": "pointer",
+     "comment": "convoy list last node",
+     "source": "BiceLib/GameClasses/CCountry.hpp:27"
+    },
+    {
+     "offset": "0xA8",
+     "name": "convoys_count",
+     "type": "int",
+     "comment": "convoy count",
+     "source": "BiceLib/GameClasses/CCountry.hpp:28"
+    },
+    {
+     "offset": "0x184",
+     "name": "flags_tree_root_ptr",
+     "type": "pointer",
+     "comment": "root of the flags tree, one word past the vftable of the CFlags held inline at +0x180",
+     "source": "BiceLib/GameClasses/CCountry.hpp:18"
+    },
+    {
+     "offset": "0x1B0",
+     "name": "variables_tree_root_ptr",
+     "type": "pointer",
+     "comment": "root of the variables tree, one word past the vftable of the CVariables held inline at +0x1AC",
+     "source": "BiceLib/GameClasses/CCountry.hpp:19"
+    },
+    {
+     "offset": "0x1E4",
+     "name": "tag",
+     "type": "char[4]",
+     "comment": "country tag, three characters and a NUL",
+     "source": "BiceLib/GameClasses/CCountry.hpp:13"
+    },
+    {
+     "offset": "0x1E8",
+     "name": "id",
+     "type": "int",
+     "comment": "country id",
+     "source": "BiceLib/GameClasses/CCountry.hpp:14"
+    },
+    {
+     "offset": "0x604",
+     "name": "base_ic",
+     "type": "int",
+     "comment": "base IC written by the daily IC calculation",
+     "source": "BiceLib/Hooks/HookedPatches.cpp:73"
+    },
+    {
+     "offset": "0x648",
+     "name": "active_modifiers_list_first_ptr",
+     "type": "pointer",
+     "comment": "head of the list of modifiers currently on the country",
+     "source": "BiceLib/GameClasses/CCountry.hpp:31"
+    },
+    {
+     "offset": "0x74C",
+     "name": "total_produced",
+     "type": "CGoodsPool",
+     "comment": "a day's resource income arriving in the capital's pool; first of 23 pools up to +0xA64",
+     "source": "BiceLib/GameClasses/CCountry.hpp:74"
+    },
+    {
+     "offset": "0x9F8",
+     "name": "own_pool",
+     "type": "CGoodsPool",
+     "comment": "pool GetPool answers for a government in exile",
+     "source": "BiceLib/GameClasses/CCountry.hpp:61"
+    },
+    {
+     "offset": "0xBAC",
+     "name": "units_linked_list_first_ptr",
+     "type": "pointer",
+     "comment": "head of the list of the country's units at every level",
+     "source": "BiceLib/GameClasses/CCountry.hpp:35"
+    },
+    {
+     "offset": "0xCA8",
+     "name": "country_id_ca8",
+     "type": "int",
+     "comment": "read as the country id by the offmap IC hook; not otherwise checked",
+     "source": "BiceLib/Hooks/HookedPatches.cpp:15"
+    },
+    {
+     "offset": "0xDA8",
+     "name": "general_modifiers_array_ptr",
+     "type": "GeneralModifierEntry*",
+     "comment": "modifier totals, one {value, definition} pair per general modifier (143)",
+     "source": "BiceLib/GameClasses/CCountry.hpp:38"
+    },
+    {
+     "offset": "0xE10",
+     "name": "leaders_list_first_ptr",
+     "type": "pointer",
+     "comment": "list of CLeader* {first, last, count}",
+     "source": "BiceLib/GameClasses/CCountry.hpp:51"
+    },
+    {
+     "offset": "0xE14",
+     "name": "leaders_list_last_ptr",
+     "type": "pointer",
+     "comment": "leader list last node",
+     "source": "BiceLib/GameClasses/CCountry.hpp:52"
+    },
+    {
+     "offset": "0xE18",
+     "name": "leaders_count",
+     "type": "int",
+     "comment": "leader count",
+     "source": "BiceLib/GameClasses/CCountry.hpp:53"
+    },
+    {
+     "offset": "0xE24",
+     "name": "capital_province_id",
+     "type": "int",
+     "comment": "capital as a province id",
+     "source": "BiceLib/GameClasses/CCountry.hpp:65"
+    }
+   ],
+   "vftable_rva": "0x11C1BA8"
+  },
+  {
+   "name": "CCountryTreeNode",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "name",
+     "type": "undefined4",
+     "comment": "node name (start of the node); also the element",
+     "source": "BiceLib/GameClasses/CCountry.hpp:84"
+    },
+    {
+     "offset": "0x8",
+     "name": "parent",
+     "type": "pointer",
+     "comment": "parent node",
+     "source": "BiceLib/GameClasses/CCountry.hpp:86"
+    },
+    {
+     "offset": "0xC",
+     "name": "sibling",
+     "type": "pointer",
+     "comment": "sibling node",
+     "source": "BiceLib/GameClasses/CCountry.hpp:87"
+    },
+    {
+     "offset": "0x10",
+     "name": "child",
+     "type": "pointer",
+     "comment": "child node",
+     "source": "BiceLib/GameClasses/CCountry.hpp:88"
+    },
+    {
+     "offset": "0x1C",
+     "name": "variable_value",
+     "type": "int",
+     "comment": "value of a variable node",
+     "source": "BiceLib/GameClasses/CCountry.hpp:89"
+    }
+   ]
+  },
+  {
+   "name": "ActiveModifier",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "definition_ptr",
+     "type": "ActiveModifierDefinition*",
+     "comment": "definition of the active modifier",
+     "source": "BiceLib/GameClasses/CCountry.hpp:97"
+    },
+    {
+     "offset": "0xC",
+     "name": "expiry_tick",
+     "type": "int",
+     "comment": "tick the modifier expires",
+     "source": "BiceLib/GameClasses/CCountry.hpp:98"
+    }
+   ]
+  },
+  {
+   "name": "ActiveModifierDefinition",
+   "fields": [
+    {
+     "offset": "0x2C",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "modifier name",
+     "source": "BiceLib/GameClasses/CCountry.hpp:99"
+    }
+   ]
+  },
+  {
+   "name": "GeneralModifierEntry",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "value",
+     "type": "int",
+     "comment": "modifier total",
+     "source": "BiceLib/GameClasses/CCountry.hpp:108"
+    },
+    {
+     "offset": "0x4",
+     "name": "definition_ptr",
+     "type": "GeneralModifierDefinition*",
+     "comment": "the modifier's definition",
+     "source": "BiceLib/GameClasses/CCountry.hpp:109"
+    }
+   ]
+  },
+  {
+   "name": "GeneralModifierDefinition",
+   "fields": [
+    {
+     "offset": "0x4",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "modifier name",
+     "source": "BiceLib/GameClasses/CCountry.hpp:110"
+    }
+   ]
+  },
+  {
+   "name": "CCurrentGameState",
+   "fields": [
+    {
+     "offset": "0x54",
+     "name": "provinces_by_supply_order",
+     "type": "CMapProvince**",
+     "comment": "every province sorted by supply depot distance, farthest first",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:85"
+    },
+    {
+     "offset": "0x18",
+     "name": "tag_18",
+     "type": "char[4]",
+     "comment": "a tag field holding the null tag --- in a running game; not the player tag",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:103"
+    },
+    {
+     "offset": "0x90",
+     "name": "tag_90",
+     "type": "char[4]",
+     "comment": "a tag field holding the null tag --- in a running game",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:104"
+    },
+    {
+     "offset": "0xB3C",
+     "name": "unknown_b3c",
+     "type": "undefined4",
+     "comment": "start of an embedded object with vftable 0x11C9BEC",
+     "source": "reversing/CLASSES.md:46"
+    },
+    {
+     "offset": "0xB5C",
+     "name": "combat_manager",
+     "type": "CCombatManager",
+     "comment": "embedded CCombatManager",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:30"
+    },
+    {
+     "offset": "0xB74",
+     "name": "combat_history",
+     "type": "undefined4",
+     "comment": "the CCombatHistory inside combat_manager (+0x18)",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:33"
+    },
+    {
+     "offset": "0xB8C",
+     "name": "provinces_begin",
+     "type": "CMapProvince**",
+     "comment": "province vector begin, indexed by id; id 0 is a placeholder",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:73"
+    },
+    {
+     "offset": "0xB90",
+     "name": "provinces_end",
+     "type": "CMapProvince**",
+     "comment": "province vector end",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:74"
+    },
+    {
+     "offset": "0xB94",
+     "name": "provinces_capacity_end",
+     "type": "CMapProvince**",
+     "comment": "province vector allocation end",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:75"
+    },
+    {
+     "offset": "0xBBC",
+     "name": "countries_begin",
+     "type": "CCountry**",
+     "comment": "vector of every country, begin",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:57"
+    },
+    {
+     "offset": "0xBC0",
+     "name": "countries_end",
+     "type": "CCountry**",
+     "comment": "vector of every country, end",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:58"
+    },
+    {
+     "offset": "0xBCC",
+     "name": "played_countries_array",
+     "type": "undefined4",
+     "comment": "one entry per country id, non zero for a played country",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:92"
+    },
+    {
+     "offset": "0xBDC",
+     "name": "tick",
+     "type": "int",
+     "comment": "current tick: hours since 43800000",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:39"
+    },
+    {
+     "offset": "0xBE8",
+     "name": "in_game_screen",
+     "type": "CInGameIdler*",
+     "comment": "the in game idler",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:47"
+    },
+    {
+     "offset": "0xC30",
+     "name": "player_tag",
+     "type": "char[4]",
+     "comment": "player country tag, followed by its id",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:108"
+    },
+    {
+     "offset": "0xD9D",
+     "name": "autosave_blocked",
+     "type": "uint8_t",
+     "comment": "must be zero before the game considers an autosave; meaning not established",
+     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:115"
+    }
+   ],
+   "vftable_rva": "0x11CF674"
+  },
+  {
+   "name": "CGoodsPool",
+   "fields": [
+    {
+     "offset": "0x4",
+     "name": "persistent_meta",
+     "type": "int",
+     "comment": "0x18D, carried by every CPersistent",
+     "source": "BiceLib/GameClasses/CGoodsPool.hpp:7"
+    },
+    {
+     "offset": "0x8",
+     "name": "supplies",
+     "type": "int",
+     "comment": "thousandths",
+     "source": "BiceLib/GameClasses/CGoodsPool.hpp:33"
+    },
+    {
+     "offset": "0xC",
+     "name": "fuel",
+     "type": "int",
+     "comment": "thousandths",
+     "source": "BiceLib/GameClasses/CGoodsPool.hpp:34"
+    },
+    {
+     "offset": "0x10",
+     "name": "money",
+     "type": "int",
+     "comment": "thousandths",
+     "source": "BiceLib/GameClasses/CGoodsPool.hpp:35"
+    },
+    {
+     "offset": "0x14",
+     "name": "crude_oil",
+     "type": "int",
+     "comment": "thousandths",
+     "source": "BiceLib/GameClasses/CGoodsPool.hpp:36"
+    },
+    {
+     "offset": "0x18",
+     "name": "metal",
+     "type": "int",
+     "comment": "thousandths",
+     "source": "BiceLib/GameClasses/CGoodsPool.hpp:37"
+    },
+    {
+     "offset": "0x1C",
+     "name": "energy",
+     "type": "int",
+     "comment": "thousandths",
+     "source": "BiceLib/GameClasses/CGoodsPool.hpp:38"
+    },
+    {
+     "offset": "0x20",
+     "name": "rare_materials",
+     "type": "int",
+     "comment": "thousandths",
+     "source": "BiceLib/GameClasses/CGoodsPool.hpp:39"
+    }
+   ],
+   "vftable_rva": "0x11C1BD4"
+  },
+  {
+   "name": "CInGameIdler",
+   "fields": [
+    {
+     "offset": "0x30",
+     "name": "map_mode_table",
+     "type": "undefined4",
+     "comment": "table with an entry per map mode; the colouring dispatch only runs a mode's routine where its entry is 1",
+     "source": "reversing/FINDINGS-mapmode.md:134"
+    },
+    {
+     "offset": "0x68",
+     "name": "multiplayer",
+     "type": "undefined4",
+     "comment": "zero in single player; the autosave decision branches on it, apparently multiplayer (untested)",
+     "source": "BiceLib/GameClasses/CInGameIdler.hpp:50"
+    },
+    {
+     "offset": "0xAB0",
+     "name": "autosave_requested",
+     "type": "uint8_t",
+     "comment": "an autosave is wanted",
+     "source": "BiceLib/GameClasses/CInGameIdler.hpp:57"
+    },
+    {
+     "offset": "0xAB1",
+     "name": "autosave_delayed",
+     "type": "uint8_t",
+     "comment": "the writer has spent its one frame of delay",
+     "source": "BiceLib/GameClasses/CInGameIdler.hpp:60"
+    },
+    {
+     "offset": "0xD34",
+     "name": "current_map_mode",
+     "type": "int",
+     "comment": "map mode on screen, game numbering",
+     "source": "BiceLib/GameClasses/CInGameIdler.hpp:67"
+    },
+    {
+     "offset": "0x1304",
+     "name": "selection_first",
+     "type": "pointer",
+     "comment": "selection list start",
+     "source": "BiceLib/GameClasses/CInGameIdler.hpp:70"
+    },
+    {
+     "offset": "0x1308",
+     "name": "selection_last",
+     "type": "pointer",
+     "comment": "selection list end",
+     "source": "BiceLib/GameClasses/CInGameIdler.hpp:71"
+    },
+    {
+     "offset": "0x130C",
+     "name": "selection_count",
+     "type": "int",
+     "comment": "probably the number of selected things; unchecked",
+     "source": "BiceLib/GameClasses/CInGameIdler.hpp:78"
+    }
+   ],
+   "vftable_rva": "0x11CEB54"
+  },
+  {
+   "name": "CLeader",
+   "fields": [
+    {
+     "offset": "0xC",
+     "name": "id",
+     "type": "int",
+     "comment": "leader id",
+     "source": "BiceLib/GameClasses/CLeader.hpp:9"
+    },
+    {
+     "offset": "0x30",
+     "name": "trait_ll_start",
+     "type": "pointer",
+     "comment": "trait list first node {data, prev, next}",
+     "source": "BiceLib/GameClasses/CLeader.hpp:10"
+    },
+    {
+     "offset": "0x34",
+     "name": "trait_ll_end",
+     "type": "pointer",
+     "comment": "trait list last node",
+     "source": "BiceLib/GameClasses/CLeader.hpp:11"
+    },
+    {
+     "offset": "0x38",
+     "name": "number_of_traits",
+     "type": "int",
+     "comment": "trait count",
+     "source": "BiceLib/GameClasses/CLeader.hpp:12"
+    },
+    {
+     "offset": "0x40",
+     "name": "unit_ptr",
+     "type": "pointer",
+     "comment": "the unit the leader commands",
+     "source": "BiceLib/GameClasses/CLeader.hpp:13"
+    },
+    {
+     "offset": "0x44",
+     "name": "country_tag",
+     "type": "char[4]",
+     "comment": "country tag (disabled in source, unverified)",
+     "source": "BiceLib/GameClasses/CLeader.hpp:14"
+    },
+    {
+     "offset": "0x48",
+     "name": "country_id",
+     "type": "int",
+     "comment": "country id (disabled in source, unverified)",
+     "source": "BiceLib/GameClasses/CLeader.hpp:15"
+    },
+    {
+     "offset": "0x4C",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "leader name, Windows-1252",
+     "source": "BiceLib/GameClasses/CLeader.hpp:16"
+    },
+    {
+     "offset": "0x68",
+     "name": "type",
+     "type": "int",
+     "comment": "leader type (disabled in source, unverified); compared in the rank change code",
+     "source": "BiceLib/GameClasses/CLeader.hpp:17"
+    },
+    {
+     "offset": "0x6C",
+     "name": "rank",
+     "type": "int",
+     "comment": "rank",
+     "source": "BiceLib/GameClasses/CLeader.hpp:18"
+    },
+    {
+     "offset": "0x70",
+     "name": "skill",
+     "type": "uint8_t",
+     "comment": "current skill",
+     "source": "BiceLib/GameClasses/CLeader.hpp:19"
+    },
+    {
+     "offset": "0x74",
+     "name": "max_skill",
+     "type": "uint8_t",
+     "comment": "maximum skill",
+     "source": "BiceLib/GameClasses/CLeader.hpp:20"
+    },
+    {
+     "offset": "0x78",
+     "name": "experience",
+     "type": "int",
+     "comment": "experience, low word",
+     "source": "BiceLib/GameClasses/CLeader.hpp:21"
+    },
+    {
+     "offset": "0x7C",
+     "name": "experience_2",
+     "type": "int",
+     "comment": "experience, high word",
+     "source": "BiceLib/GameClasses/CLeader.hpp:22"
+    },
+    {
+     "offset": "0x80",
+     "name": "loyalty",
+     "type": "int",
+     "comment": "loyalty (disabled in source, unverified)",
+     "source": "BiceLib/GameClasses/CLeader.hpp:23"
+    },
+    {
+     "offset": "0x84",
+     "name": "CLeaderHistoryOffset",
+     "type": "undefined4",
+     "comment": "leader history (disabled in source, unverified)",
+     "source": "BiceLib/GameClasses/CLeader.hpp:24"
+    }
+   ],
+   "vftable_rva": "0x11C5220"
+  },
+  {
+   "name": "CPromoteLeaderCommand",
+   "fields": [
+    {
+     "offset": "0x64",
+     "name": "direction",
+     "type": "uint8_t",
+     "comment": "0 = promote to higher rank, 1 = demote",
+     "source": "BiceLib/Hooks/CLeaderHooks.cpp:113"
+    }
+   ]
+  },
+  {
+   "name": "CMap",
+   "fields": [
+    {
+     "offset": "0x1C",
+     "name": "secondary_vftable",
+     "type": "pointer",
+     "comment": "vftable of the base subobject (0x11BE408)",
+     "source": "BiceLib/GameClasses/CMap.hpp:28"
+    },
+    {
+     "offset": "0x21FC",
+     "name": "province_count",
+     "type": "int",
+     "comment": "14190, the map's max_provinces; presumably the length of provinces",
+     "source": "BiceLib/GameClasses/CMap.hpp:56"
+    },
+    {
+     "offset": "0x2200",
+     "name": "provinces",
+     "type": "CMapProvince**",
+     "comment": "every province by id, the same pointers as the game state's vector",
+     "source": "BiceLib/GameClasses/CMap.hpp:57"
+    },
+    {
+     "offset": "0x2210",
+     "name": "terrains_begin",
+     "type": "CTerrain**",
+     "comment": "vector of every terrain, begin",
+     "source": "BiceLib/GameClasses/CMap.hpp:39"
+    },
+    {
+     "offset": "0x2214",
+     "name": "terrains_end",
+     "type": "CTerrain**",
+     "comment": "vector of every terrain, end",
+     "source": "BiceLib/GameClasses/CMap.hpp:40"
+    },
+    {
+     "offset": "0x2A64",
+     "name": "unknown_2a64",
+     "type": "int",
+     "comment": "also holds 14190; purpose not known",
+     "source": "BiceLib/GameClasses/CMap.hpp:54"
+    },
+    {
+     "offset": "0x2A88",
+     "name": "player_tag",
+     "type": "char[4]",
+     "comment": "player tag, unverified",
+     "source": "BiceLib/GameClasses/CMap.hpp:65"
+    },
+    {
+     "offset": "0x2A8C",
+     "name": "player_id",
+     "type": "int",
+     "comment": "player id, unverified",
+     "source": "BiceLib/GameClasses/CMap.hpp:66"
+    }
+   ],
+   "vftable_rva": "0x11BE3EC"
+  },
+  {
+   "name": "CMapProvince",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "secondary_vftable",
+     "type": "pointer",
+     "comment": "vftable of the base subobject (0x11BEC1C)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:224"
+    },
+    {
+     "offset": "0x34",
+     "name": "victory_points",
+     "type": "int",
+     "comment": "victory points",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:22"
+    },
+    {
+     "offset": "0x48",
+     "name": "supply_depot_id",
+     "type": "int",
+     "comment": "province id of the depot it draws from",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:30"
+    },
+    {
+     "offset": "0x4C",
+     "name": "supply_depot_distance",
+     "type": "int",
+     "comment": "steps to the depot; 100000 when cut off",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:31"
+    },
+    {
+     "offset": "0x68",
+     "name": "weather",
+     "type": "CWeather",
+     "comment": "embedded CWeather (save key weather)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:34"
+    },
+    {
+     "offset": "0xD0",
+     "name": "id",
+     "type": "int",
+     "comment": "province id",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:12"
+    },
+    {
+     "offset": "0xD4",
+     "name": "path_node_ptr",
+     "type": "CProvinceTemplate*",
+     "comment": "the province's template: edges to neighbours and terrain",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:21"
+    },
+    {
+     "offset": "0x114",
+     "name": "CModifierDefinitions_ptr",
+     "type": "CModifierDefinitions*",
+     "comment": "the province's local modifiers",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:9"
+    },
+    {
+     "offset": "0x15C",
+     "name": "pool",
+     "type": "CGoodsPool",
+     "comment": "goods in the province; the national stockpile in a capital (save key pool)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:112"
+    },
+    {
+     "offset": "0x180",
+     "name": "last_pool",
+     "type": "CGoodsPool",
+     "comment": "pool as the last daily supply pass left it; not saved",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:120"
+    },
+    {
+     "offset": "0x1A4",
+     "name": "last_drawn_ptr",
+     "type": "CGoodsPool*",
+     "comment": "points at one of the drawn buffers (save key last_drawn)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:143"
+    },
+    {
+     "offset": "0x1A8",
+     "name": "drawn_ptr",
+     "type": "CGoodsPool*",
+     "comment": "points at today's drawn buffer (save key drawn)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:144"
+    },
+    {
+     "offset": "0x1AC",
+     "name": "drawn_buffer_a",
+     "type": "CGoodsPool",
+     "comment": "drawn double buffer A",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:145"
+    },
+    {
+     "offset": "0x1D0",
+     "name": "drawn_buffer_b",
+     "type": "CGoodsPool",
+     "comment": "drawn double buffer B",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:146"
+    },
+    {
+     "offset": "0x1F4",
+     "name": "last_throughput_ptr",
+     "type": "CGoodsPool*",
+     "comment": "points at one of the throughput buffers (save key last_throughput)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:148"
+    },
+    {
+     "offset": "0x1F8",
+     "name": "throughput_ptr",
+     "type": "CGoodsPool*",
+     "comment": "points at today's throughput buffer (save key throughput)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:149"
+    },
+    {
+     "offset": "0x1FC",
+     "name": "throughput_buffer_a",
+     "type": "CGoodsPool",
+     "comment": "throughput double buffer A",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:150"
+    },
+    {
+     "offset": "0x220",
+     "name": "throughput_buffer_b",
+     "type": "CGoodsPool",
+     "comment": "throughput double buffer B",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:151"
+    },
+    {
+     "offset": "0x244",
+     "name": "need",
+     "type": "CGoodsPool",
+     "comment": "supplies and fuel the units there need today; name inferred",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:159"
+    },
+    {
+     "offset": "0x268",
+     "name": "current_producing",
+     "type": "CGoodsPool",
+     "comment": "resources it yields now (save key current_producing)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:172"
+    },
+    {
+     "offset": "0x28C",
+     "name": "max_producing",
+     "type": "CGoodsPool",
+     "comment": "resources it could yield (save key max_producing)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:178"
+    },
+    {
+     "offset": "0x2B0",
+     "name": "unlimited_supply_capacity",
+     "type": "uint8_t",
+     "comment": "while set the province's supply capacity is unlimited",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:185"
+    },
+    {
+     "offset": "0x310",
+     "name": "CProvinceBuilding_array_ptr",
+     "type": "CProvinceBuilding**",
+     "comment": "one CProvinceBuilding* per defined building, index 0 nobuilding",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:10"
+    },
+    {
+     "offset": "0x320",
+     "name": "manpower",
+     "type": "int",
+     "comment": "manpower",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:187"
+    },
+    {
+     "offset": "0x324",
+     "name": "leadership",
+     "type": "int",
+     "comment": "leadership",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:188"
+    },
+    {
+     "offset": "0x32C",
+     "name": "owner_tag",
+     "type": "char[4]",
+     "comment": "owner country tag",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:189"
+    },
+    {
+     "offset": "0x330",
+     "name": "owner_id",
+     "type": "int",
+     "comment": "owner country id",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:190"
+    },
+    {
+     "offset": "0x334",
+     "name": "controller_tag",
+     "type": "char[4]",
+     "comment": "controller country tag",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:191"
+    },
+    {
+     "offset": "0x338",
+     "name": "controller_id",
+     "type": "int",
+     "comment": "controller country id",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:192"
+    },
+    {
+     "offset": "0x370",
+     "name": "intel_by_country_ptr",
+     "type": "uint8_t*",
+     "comment": "one intel byte per country index (0 unseen, 3 partial, 9 own)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:54"
+    },
+    {
+     "offset": "0x374",
+     "name": "intel_country_count",
+     "type": "int",
+     "comment": "number of entries in the intel array",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:55"
+    }
+   ],
+   "vftable_rva": "0x11BEBF8"
+  },
+  {
+   "name": "CModifierDefinitions",
+   "fields": [
+    {
+     "offset": "0x60",
+     "name": "local_infrastructure",
+     "type": "int",
+     "comment": "infrastructure as a fraction in thousandths; the Infrastructure loop scales it to level 0-10; also read for supply capacity",
+     "source": "reversing/FINDINGS-mapmode.md:377"
+    },
+    {
+     "offset": "0x68",
+     "name": "supply_capacity_scale_68",
+     "type": "int",
+     "comment": "scales +0x60 in the supply capacity calculation",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:93"
+    },
+    {
+     "offset": "0x70",
+     "name": "supply_capacity_scale_70",
+     "type": "int",
+     "comment": "scales +0x60 in the supply capacity calculation",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:93"
+    },
+    {
+     "offset": "0x78",
+     "name": "base_ic",
+     "type": "int",
+     "comment": "province base IC",
+     "source": "BiceLib/Hooks/HookedPatches.cpp:13"
+    },
+    {
+     "offset": "0x80",
+     "name": "local_ic",
+     "type": "int",
+     "comment": "local IC modifier",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:200"
+    },
+    {
+     "offset": "0x90",
+     "name": "local_oil",
+     "type": "int",
+     "comment": "local oil modifier",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:201"
+    },
+    {
+     "offset": "0xA0",
+     "name": "local_energy",
+     "type": "int",
+     "comment": "local energy modifier",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:202"
+    },
+    {
+     "offset": "0xB0",
+     "name": "local_metal",
+     "type": "int",
+     "comment": "local metal modifier",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:203"
+    },
+    {
+     "offset": "0xC0",
+     "name": "local_rares",
+     "type": "int",
+     "comment": "local rare materials modifier",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:204"
+    },
+    {
+     "offset": "0x100",
+     "name": "local_leadership",
+     "type": "int",
+     "comment": "local leadership modifier",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:205"
+    }
+   ]
+  },
+  {
+   "name": "CProvinceTemplate",
+   "fields": [
+    {
+     "offset": "0xC",
+     "name": "terrain",
+     "type": "CTerrain*",
+     "comment": "the province's terrain",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:7"
+    },
+    {
+     "offset": "0x90",
+     "name": "edges_begin",
+     "type": "ProvinceEdge*",
+     "comment": "vector of edges to neighbours, begin",
+     "source": "BiceLib/GameClasses/CPathFind.hpp:91"
+    },
+    {
+     "offset": "0x94",
+     "name": "edges_end",
+     "type": "ProvinceEdge*",
+     "comment": "vector of edges to neighbours, end",
+     "source": "BiceLib/GameClasses/CPathFind.hpp:92"
+    },
+    {
+     "offset": "0x13D",
+     "name": "unknown_flag_13d",
+     "type": "uint8_t",
+     "comment": "tested by the supply pass and the Simplified Terrain loop; 1 in every province seen; not a land/sea flag",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:18"
+    }
+   ],
+   "vftable_rva": "0x11C064C"
+  },
+  {
+   "name": "ProvinceEdge",
+   "fields": [
+    {
+     "offset": "0x4",
+     "name": "to_province",
+     "type": "int",
+     "comment": "neighbour province id, index into CMap::provinces; edge is 20 bytes",
+     "source": "BiceLib/GameClasses/CPathFind.hpp:99"
+    },
+    {
+     "offset": "0xC",
+     "name": "distance",
+     "type": "int",
+     "comment": "distance in thousandths",
+     "source": "BiceLib/GameClasses/CPathFind.hpp:100"
+    }
+   ]
+  },
+  {
+   "name": "CMoveCommand",
+   "fields": [
+    {
+     "offset": "0x64",
+     "name": "target_province",
+     "type": "int",
+     "comment": "target province id",
+     "source": "BiceLib/GameClasses/CMoveCommand.hpp:50"
+    },
+    {
+     "offset": "0x68",
+     "name": "mode_68",
+     "type": "uint8_t",
+     "comment": "picks between two ways of routing; set by every player move",
+     "source": "BiceLib/GameClasses/CMoveCommand.hpp:51"
+    },
+    {
+     "offset": "0x69",
+     "name": "safe",
+     "type": "uint8_t",
+     "comment": "route with CSafePathFind",
+     "source": "BiceLib/GameClasses/CMoveCommand.hpp:52"
+    },
+    {
+     "offset": "0x6A",
+     "name": "very_safe",
+     "type": "uint8_t",
+     "comment": "route with CVerySafePathFind",
+     "source": "BiceLib/GameClasses/CMoveCommand.hpp:53"
+    }
+   ],
+   "vftable_rva": "0x11C8C1C"
+  },
+  {
+   "name": "CStrategicRedeploymentOrder",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "unit",
+     "type": "pointer",
+     "comment": "the unit being redeployed",
+     "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:9"
+    },
+    {
+     "offset": "0xC",
+     "name": "target_province",
+     "type": "undefined4",
+     "comment": "the province it is going to",
+     "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:9"
+    }
+   ],
+   "vftable_rva": "0x11C5ADC"
+  },
+  {
+   "name": "CProvinceBuilding",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "base_vftable",
+     "type": "pointer",
+     "comment": "vftable of the base subobject (0x11C0A78)",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:31"
+    },
+    {
+     "offset": "0x10",
+     "name": "effect",
+     "type": "int",
+     "comment": "effect",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:23"
+    },
+    {
+     "offset": "0x18",
+     "name": "definition_ptr",
+     "type": "CBuilding*",
+     "comment": "building definition",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:24"
+    },
+    {
+     "offset": "0x1C",
+     "name": "province_ptr",
+     "type": "CMapProvince*",
+     "comment": "back to the province",
+     "source": "reversing/FINDINGS-mapmode.md:60"
+    },
+    {
+     "offset": "0x20",
+     "name": "level_max",
+     "type": "int",
+     "comment": "maximum level x1000",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:25"
+    },
+    {
+     "offset": "0x24",
+     "name": "level_current",
+     "type": "int",
+     "comment": "current level x1000",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:26"
+    }
+   ],
+   "vftable_rva": "0x11C0A50"
+  },
+  {
+   "name": "CBuilding",
+   "fields": [
+    {
+     "offset": "0x1C",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "building key, e.g. air_base",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:49"
+    },
+    {
+     "offset": "0x38",
+     "name": "displayName",
+     "type": "Hoi3CString",
+     "comment": "localised name shown by the game",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:50"
+    },
+    {
+     "offset": "0x54",
+     "name": "index",
+     "type": "int",
+     "comment": "index into a province's building array",
+     "source": "BiceLib/Hooks/HookedPatches.cpp:91"
+    },
+    {
+     "offset": "0x68",
+     "name": "max_allowed_level",
+     "type": "int",
+     "comment": "maximum allowed level, whole levels",
+     "source": "BiceLib/Hooks/HookedPatches.cpp:92"
+    }
+   ]
+  },
+  {
+   "name": "CBuildingDeployment",
+   "fields": [
+    {
+     "offset": "0x38",
+     "name": "building",
+     "type": "CBuilding*",
+     "comment": "building being placed",
+     "source": "BiceLib/Hooks/HookedPatches.cpp:90"
+    }
+   ]
+  },
+  {
+   "name": "CRegiment",
+   "fields": [
+    {
+     "offset": "0x30",
+     "name": "strength",
+     "type": "int",
+     "comment": "strength, x10 on land, x1000 on air or naval",
+     "source": "BiceLib/GameClasses/CRegiment.hpp:19"
+    },
+    {
+     "offset": "0x58",
+     "name": "sub_unit_definition_ptr",
+     "type": "CSubUnitDefinition*",
+     "comment": "this regiment's definition, with its country's tech applied",
+     "source": "BiceLib/GameClasses/CRegiment.hpp:22"
+    },
+    {
+     "offset": "0x60",
+     "name": "organisation",
+     "type": "int",
+     "comment": "organisation x1000",
+     "source": "BiceLib/GameClasses/CRegiment.hpp:20"
+    },
+    {
+     "offset": "0x68",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "historical regiment name",
+     "source": "BiceLib/GameClasses/CRegiment.hpp:21"
+    }
+   ],
+   "vftable_rva": "0x11BDD7C"
+  },
+  {
+   "name": "CSubUnitDefinition",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "unit type key as in the mod files",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:21"
+    },
+    {
+     "offset": "0x24",
+     "name": "type_index",
+     "type": "int",
+     "comment": "sub unit type index, used to index per-type combat vectors",
+     "source": "reversing/FINDINGS-combat.md:291"
+    },
+    {
+     "offset": "0x2E",
+     "name": "is_ship",
+     "type": "uint8_t",
+     "comment": "unknown",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:69"
+    },
+    {
+     "offset": "0x2F",
+     "name": "is_capital",
+     "type": "uint8_t",
+     "comment": "bool, capital ship",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:51"
+    },
+    {
+     "offset": "0x30",
+     "name": "is_transport",
+     "type": "uint8_t",
+     "comment": "bool",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:52"
+    },
+    {
+     "offset": "0x31",
+     "name": "is_sub",
+     "type": "uint8_t",
+     "comment": "bool",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:53"
+    },
+    {
+     "offset": "0x36",
+     "name": "is_buildable",
+     "type": "uint8_t",
+     "comment": "bool",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:23"
+    },
+    {
+     "offset": "0x39",
+     "name": "can_be_pride",
+     "type": "uint8_t",
+     "comment": "bool",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:54"
+    },
+    {
+     "offset": "0x54",
+     "name": "CUnitAdjuster_ptr",
+     "type": "CUnitAdjuster*",
+     "comment": "terrain modifiers, one 24 byte CUnitAdjuster per terrain id",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:24"
+    },
+    {
+     "offset": "0xE8",
+     "name": "width",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:39"
+    },
+    {
+     "offset": "0xEC",
+     "name": "max_strength",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:25"
+    },
+    {
+     "offset": "0xF0",
+     "name": "max_organisation",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:26"
+    },
+    {
+     "offset": "0xF4",
+     "name": "morale",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:27"
+    },
+    {
+     "offset": "0xFC",
+     "name": "manpower",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:28"
+    },
+    {
+     "offset": "0x108",
+     "name": "max_speed",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:29"
+    },
+    {
+     "offset": "0x10C",
+     "name": "weight",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:40"
+    },
+    {
+     "offset": "0x110",
+     "name": "supply_consumption",
+     "type": "int",
+     "comment": "base figure for one sub unit",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:30"
+    },
+    {
+     "offset": "0x114",
+     "name": "fuel_consumption",
+     "type": "int",
+     "comment": "base figure for one sub unit",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:31"
+    },
+    {
+     "offset": "0x118",
+     "name": "officers",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:32"
+    },
+    {
+     "offset": "0x11C",
+     "name": "defensiveness",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:41"
+    },
+    {
+     "offset": "0x120",
+     "name": "toughness",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:42"
+    },
+    {
+     "offset": "0x124",
+     "name": "softness",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:43"
+    },
+    {
+     "offset": "0x128",
+     "name": "air_defence",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:33"
+    },
+    {
+     "offset": "0x12C",
+     "name": "armor",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44"
+    },
+    {
+     "offset": "0x130",
+     "name": "suppression",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:45"
+    },
+    {
+     "offset": "0x134",
+     "name": "soft_attack",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:46"
+    },
+    {
+     "offset": "0x138",
+     "name": "hard_attack",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:47"
+    },
+    {
+     "offset": "0x13C",
+     "name": "piercing_attack",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:48"
+    },
+    {
+     "offset": "0x140",
+     "name": "air_attack",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:34"
+    },
+    {
+     "offset": "0x144",
+     "name": "transport_capacity",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:55"
+    },
+    {
+     "offset": "0x148",
+     "name": "range",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:56"
+    },
+    {
+     "offset": "0x14C",
+     "name": "firing_distance",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:57"
+    },
+    {
+     "offset": "0x150",
+     "name": "surface_detection",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:58"
+    },
+    {
+     "offset": "0x154",
+     "name": "air_detection",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:59"
+    },
+    {
+     "offset": "0x158",
+     "name": "sub_detection",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:60"
+    },
+    {
+     "offset": "0x15C",
+     "name": "visibility",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:61"
+    },
+    {
+     "offset": "0x160",
+     "name": "sea_defence",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:62"
+    },
+    {
+     "offset": "0x164",
+     "name": "convoy_attack",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:63"
+    },
+    {
+     "offset": "0x168",
+     "name": "sea_attack",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:64"
+    },
+    {
+     "offset": "0x16C",
+     "name": "sub_attack",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:65"
+    },
+    {
+     "offset": "0x170",
+     "name": "shore_bombardment",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:66"
+    },
+    {
+     "offset": "0x174",
+     "name": "surface_defence",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:72"
+    },
+    {
+     "offset": "0x178",
+     "name": "hull",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:67"
+    },
+    {
+     "offset": "0x17C",
+     "name": "strategic_attack",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:73"
+    },
+    {
+     "offset": "0x180",
+     "name": "sub_unit_amount",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:35"
+    },
+    {
+     "offset": "0x184",
+     "name": "positioning",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:68"
+    },
+    {
+     "offset": "0x198",
+     "name": "sprite",
+     "type": "int",
+     "comment": "unit picture",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:36"
+    }
+   ]
+  },
+  {
+   "name": "CUnitAdjuster",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "vftable",
+     "type": "pointer",
+     "comment": "vftable; the object is 24 bytes",
+     "source": "BiceLib/HoiDataStructures.hpp:47"
+    },
+    {
+     "offset": "0x4",
+     "name": "pad_1",
+     "type": "undefined4",
+     "comment": "unknown",
+     "source": "BiceLib/HoiDataStructures.hpp:48"
+    },
+    {
+     "offset": "0x8",
+     "name": "attack",
+     "type": "int",
+     "comment": "terrain attack modifier",
+     "source": "BiceLib/HoiDataStructures.hpp:49"
+    },
+    {
+     "offset": "0xC",
+     "name": "defence",
+     "type": "int",
+     "comment": "terrain defence modifier",
+     "source": "BiceLib/HoiDataStructures.hpp:50"
+    },
+    {
+     "offset": "0x10",
+     "name": "movement",
+     "type": "int",
+     "comment": "terrain movement modifier",
+     "source": "BiceLib/HoiDataStructures.hpp:51"
+    },
+    {
+     "offset": "0x14",
+     "name": "attrition",
+     "type": "int",
+     "comment": "terrain attrition modifier",
+     "source": "BiceLib/HoiDataStructures.hpp:52"
+    }
+   ]
+  },
+  {
+   "name": "CTerrain",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "id",
+     "type": "int",
+     "comment": "terrain id",
+     "source": "BiceLib/GameClasses/CTerrain.hpp:9"
+    },
+    {
+     "offset": "0x28",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "terrain name; length at +0x38",
+     "source": "BiceLib/GameClasses/CTerrain.hpp:10"
+    },
+    {
+     "offset": "0x48",
+     "name": "is_water",
+     "type": "uint8_t",
+     "comment": "bool",
+     "source": "BiceLib/GameClasses/CTerrain.hpp:11"
+    },
+    {
+     "offset": "0x4C",
+     "name": "defence",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CTerrain.hpp:12"
+    },
+    {
+     "offset": "0x50",
+     "name": "attack",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CTerrain.hpp:13"
+    },
+    {
+     "offset": "0x5C",
+     "name": "attrition",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CTerrain.hpp:14"
+    }
+   ],
+   "vftable_rva": "0x11C0764"
+  },
+  {
+   "name": "CTrait",
+   "fields": [
+    {
+     "offset": "0x2C",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "trait name",
+     "source": "BiceLib/GameClasses/CTrait.hpp:22"
+    }
+   ],
+   "vftable_rva": "0x11C7DC0"
+  },
+  {
+   "name": "CTraitDataBase",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "count",
+     "type": "int",
+     "comment": "number of entries",
+     "source": "BiceLib/GameClasses/CTrait.hpp:41"
+    },
+    {
+     "offset": "0xC",
+     "name": "traits_begin",
+     "type": "CTrait**",
+     "comment": "trait vector begin; index 0 is a CNullTrait",
+     "source": "BiceLib/GameClasses/CTrait.hpp:49"
+    },
+    {
+     "offset": "0x10",
+     "name": "traits_end",
+     "type": "CTrait**",
+     "comment": "trait vector end",
+     "source": "BiceLib/GameClasses/CTrait.hpp:50"
+    }
+   ]
+  },
+  {
+   "name": "CUnit",
+   "fields": [
+    {
+     "offset": "0x4",
+     "name": "is_selected",
+     "type": "undefined4",
+     "comment": "selected",
+     "source": "BiceLib/GameClasses/CUnit.hpp:18"
+    },
+    {
+     "offset": "0x10",
+     "name": "type",
+     "type": "int",
+     "comment": "type",
+     "source": "BiceLib/GameClasses/CUnit.hpp:19"
+    },
+    {
+     "offset": "0x14",
+     "name": "id",
+     "type": "int",
+     "comment": "unit id",
+     "source": "BiceLib/GameClasses/CUnit.hpp:20"
+    },
+    {
+     "offset": "0x38",
+     "name": "regiments_linked_list_first_ptr",
+     "type": "pointer",
+     "comment": "__CList of CRegiment, first",
+     "source": "BiceLib/GameClasses/CUnit.hpp:21"
+    },
+    {
+     "offset": "0x3C",
+     "name": "regiments_linked_list_last_ptr",
+     "type": "pointer",
+     "comment": "__CList of CRegiment, last",
+     "source": "BiceLib/GameClasses/CUnit.hpp:22"
+    },
+    {
+     "offset": "0x40",
+     "name": "regiments_amount",
+     "type": "int",
+     "comment": "regiment count",
+     "source": "BiceLib/GameClasses/CUnit.hpp:23"
+    },
+    {
+     "offset": "0xA4",
+     "name": "upgrade_prio",
+     "type": "uint8_t",
+     "comment": "bool",
+     "source": "BiceLib/GameClasses/CUnit.hpp:24"
+    },
+    {
+     "offset": "0xA5",
+     "name": "upgrade_active",
+     "type": "uint8_t",
+     "comment": "bool",
+     "source": "BiceLib/GameClasses/CUnit.hpp:25"
+    },
+    {
+     "offset": "0xA6",
+     "name": "reinforcements_active",
+     "type": "uint8_t",
+     "comment": "bool",
+     "source": "BiceLib/GameClasses/CUnit.hpp:26"
+    },
+    {
+     "offset": "0xB0",
+     "name": "order_ptr",
+     "type": "pointer",
+     "comment": "current order",
+     "source": "BiceLib/GameClasses/CUnit.hpp:27"
+    },
+    {
+     "offset": "0xC8",
+     "name": "CSubUnitDefinitionPtr",
+     "type": "CSubUnitDefinition*",
+     "comment": "sub unit definition",
+     "source": "BiceLib/GameClasses/CUnit.hpp:28"
+    },
+    {
+     "offset": "0xD4",
+     "name": "combat_cooldown",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CUnit.hpp:29"
+    },
+    {
+     "offset": "0xFC",
+     "name": "supply_received_percentage",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CUnit.hpp:30"
+    },
+    {
+     "offset": "0x100",
+     "name": "fuel_received_percentage",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CUnit.hpp:31"
+    },
+    {
+     "offset": "0x124",
+     "name": "owner_tag",
+     "type": "char[4]",
+     "comment": "owner country tag",
+     "source": "BiceLib/GameClasses/CUnit.hpp:32"
+    },
+    {
+     "offset": "0x128",
+     "name": "owner_id",
+     "type": "int",
+     "comment": "owner country id",
+     "source": "BiceLib/GameClasses/CUnit.hpp:33"
+    },
+    {
+     "offset": "0x12C",
+     "name": "leader_ptr",
+     "type": "CLeader*",
+     "comment": "commanding leader",
+     "source": "BiceLib/GameClasses/CUnit.hpp:34"
+    },
+    {
+     "offset": "0x130",
+     "name": "current_province_ptr",
+     "type": "CMapProvince*",
+     "comment": "province the unit is in",
+     "source": "BiceLib/GameClasses/CUnit.hpp:35"
+    },
+    {
+     "offset": "0x134",
+     "name": "supplied_from_province_ptr",
+     "type": "CMapProvince*",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CUnit.hpp:36"
+    },
+    {
+     "offset": "0x138",
+     "name": "movement_order_next_province_ptr",
+     "type": "CMapProvince*",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CUnit.hpp:37"
+    },
+    {
+     "offset": "0x13C",
+     "name": "movement_order_last_current_province_ptr",
+     "type": "CMapProvince*",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CUnit.hpp:38"
+    },
+    {
+     "offset": "0x140",
+     "name": "movement_order_remaining_provinces_count",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CUnit.hpp:39"
+    },
+    {
+     "offset": "0x160",
+     "name": "in_game_idler_ptr",
+     "type": "CInGameIdler*",
+     "comment": "the in game idler",
+     "source": "BiceLib/GameClasses/CUnit.hpp:40"
+    },
+    {
+     "offset": "0x16C",
+     "name": "name",
+     "type": "char[16]",
+     "comment": "Hoi3CString buffer of the unit name",
+     "source": "BiceLib/GameClasses/CUnit.hpp:41"
+    },
+    {
+     "offset": "0x17C",
+     "name": "name_length",
+     "type": "int",
+     "comment": "Hoi3CString length of the unit name",
+     "source": "BiceLib/GameClasses/CUnit.hpp:42"
+    },
+    {
+     "offset": "0x1C8",
+     "name": "dig_in_level",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CUnit.hpp:43"
+    },
+    {
+     "offset": "0x1CC",
+     "name": "base_ca_bonus",
+     "type": "int",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CUnit.hpp:44"
+    },
+    {
+     "offset": "0x1E0",
+     "name": "higher_oob_unit_ptr",
+     "type": "CUnit*",
+     "comment": "parent unit in the order of battle",
+     "source": "BiceLib/GameClasses/CUnit.hpp:45"
+    },
+    {
+     "offset": "0x1E4",
+     "name": "lower_oob_unit_linked_list_first_ptr",
+     "type": "pointer",
+     "comment": "child units list, first",
+     "source": "BiceLib/GameClasses/CUnit.hpp:46"
+    },
+    {
+     "offset": "0x1E8",
+     "name": "lower_oob_unit_linked_list_last_ptr",
+     "type": "pointer",
+     "comment": "child units list, last",
+     "source": "BiceLib/GameClasses/CUnit.hpp:47"
+    },
+    {
+     "offset": "0x1EC",
+     "name": "lower_oob_unit_amount",
+     "type": "int",
+     "comment": "child unit count",
+     "source": "BiceLib/GameClasses/CUnit.hpp:48"
+    },
+    {
+     "offset": "0x1F4",
+     "name": "oob_level",
+     "type": "int",
+     "comment": "0 theatre .. 4 division, 5 navy",
+     "source": "BiceLib/GameClasses/CUnit.hpp:49"
+    }
+   ],
+   "vftable_rva": "0x11C85CC"
+  },
+  {
+   "name": "GameSettings",
+   "fields": [
+    {
+     "offset": "0xEC",
+     "name": "layer_mask_ec",
+     "type": "int",
+     "comment": "ANDed with +0xF0 by the renderer",
+     "source": "reversing/FINDINGS-mapmode.md:370"
+    },
+    {
+     "offset": "0xF0",
+     "name": "layer_mask",
+     "type": "int",
+     "comment": "layer mask written by every map mode setter",
+     "source": "reversing/FINDINGS-mapmode.md:368"
+    },
+    {
+     "offset": "0xF4",
+     "name": "map_style",
+     "type": "int",
+     "comment": "style the water shader picks its technique from; 16, 18, 19 colour the sea",
+     "source": "BiceLib/GameClasses/GameSettings.hpp:29"
+    },
+    {
+     "offset": "0x158",
+     "name": "debug_saves",
+     "type": "int",
+     "comment": "0 rotates three autosave files; N saves a dated file every Nth month",
+     "source": "BiceLib/GameClasses/GameSettings.hpp:36"
+    },
+    {
+     "offset": "0x15C",
+     "name": "autosave_frequency",
+     "type": "int",
+     "comment": "0 never .. 5 five-yearly",
+     "source": "BiceLib/GameClasses/GameSettings.hpp:39"
+    }
+   ]
+  },
+  {
+   "name": "Hoi3CString",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "stringData",
+     "type": "char[16]",
+     "comment": "inline characters, or a pointer to them when longer than 15",
+     "source": "BiceLib/HoiDataStructures.hpp:40"
+    },
+    {
+     "offset": "0x10",
+     "name": "length",
+     "type": "int",
+     "comment": "length",
+     "source": "BiceLib/HoiDataStructures.hpp:41"
+    },
+    {
+     "offset": "0x14",
+     "name": "maxLength",
+     "type": "int",
+     "comment": "capacity",
+     "source": "BiceLib/HoiDataStructures.hpp:42"
+    }
+   ]
+  },
+  {
+   "name": "LinkedListNode",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "data",
+     "type": "undefined4",
+     "comment": "what the node holds, usually a pointer",
+     "source": "BiceLib/HoiDataStructures.hpp:34"
+    },
+    {
+     "offset": "0x4",
+     "name": "prev",
+     "type": "LinkedListNode*",
+     "comment": "previous node",
+     "source": "BiceLib/HoiDataStructures.hpp:35"
+    },
+    {
+     "offset": "0x8",
+     "name": "next",
+     "type": "LinkedListNode*",
+     "comment": "next node",
+     "source": "BiceLib/HoiDataStructures.hpp:36"
+    }
+   ]
+  },
+  {
+   "name": "CCombatManager",
+   "fields": [
+    {
+     "offset": "0x4",
+     "name": "persistent_meta",
+     "type": "int",
+     "comment": "0x18D",
+     "source": "reversing/FINDINGS-combat.md:16"
+    },
+    {
+     "offset": "0x8",
+     "name": "combats_first",
+     "type": "LinkedListNode*",
+     "comment": "live combats, first node",
+     "source": "reversing/CLASSES.md:89"
+    },
+    {
+     "offset": "0xC",
+     "name": "combats_last",
+     "type": "LinkedListNode*",
+     "comment": "live combats, last node",
+     "source": "reversing/CLASSES.md:90"
+    },
+    {
+     "offset": "0x10",
+     "name": "combats_count",
+     "type": "int",
+     "comment": "live combat count",
+     "source": "reversing/CLASSES.md:91"
+    },
+    {
+     "offset": "0x18",
+     "name": "history",
+     "type": "CCombatHistory",
+     "comment": "embedded combat history",
+     "source": "reversing/CLASSES.md:92"
+    }
+   ],
+   "vftable_rva": "0x11B68F8"
+  },
+  {
+   "name": "CCombatHistory",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "first_entry",
+     "type": "CCombatHistoryEntry*",
+     "comment": "first finished combat; entries link through themselves",
+     "source": "reversing/CLASSES.md:93"
+    },
+    {
+     "offset": "0xC",
+     "name": "last_entry",
+     "type": "CCombatHistoryEntry*",
+     "comment": "last finished combat",
+     "source": "reversing/CLASSES.md:94"
+    },
+    {
+     "offset": "0x10",
+     "name": "count",
+     "type": "int",
+     "comment": "entry count",
+     "source": "reversing/CLASSES.md:95"
+    }
+   ],
+   "vftable_rva": "0x11B68DC"
+  },
+  {
+   "name": "CCombatHistoryEntry",
+   "fields": [
+    {
+     "offset": "0x4",
+     "name": "persistent_meta",
+     "type": "int",
+     "comment": "0x18D",
+     "source": "reversing/FINDINGS-combat.md:48"
+    },
+    {
+     "offset": "0x8",
+     "name": "tick",
+     "type": "int",
+     "comment": "tick the combat ended",
+     "source": "reversing/FINDINGS-combat.md:49"
+    },
+    {
+     "offset": "0xC",
+     "name": "kind",
+     "type": "int",
+     "comment": "1 land, 2 naval, 3 air, 4-6 bombings",
+     "source": "reversing/FINDINGS-combat.md:50"
+    },
+    {
+     "offset": "0x10",
+     "name": "attacker_tag",
+     "type": "char[4]",
+     "comment": "attacker tag when it won, else ---",
+     "source": "reversing/FINDINGS-combat.md:51"
+    },
+    {
+     "offset": "0x14",
+     "name": "attacker_id",
+     "type": "int",
+     "comment": "attacker id, 0 when ---",
+     "source": "reversing/FINDINGS-combat.md:52"
+    },
+    {
+     "offset": "0x18",
+     "name": "defender_tag",
+     "type": "char[4]",
+     "comment": "defender tag when it won, else ---",
+     "source": "reversing/FINDINGS-combat.md:53"
+    },
+    {
+     "offset": "0x1C",
+     "name": "defender_id",
+     "type": "int",
+     "comment": "defender id",
+     "source": "reversing/FINDINGS-combat.md:54"
+    },
+    {
+     "offset": "0x20",
+     "name": "flag",
+     "type": "int",
+     "comment": "copied from the combat's byte +0x2B",
+     "source": "reversing/FINDINGS-combat.md:72"
+    },
+    {
+     "offset": "0x24",
+     "name": "province_id",
+     "type": "int",
+     "comment": "province fought over",
+     "source": "reversing/FINDINGS-combat.md:56"
+    },
+    {
+     "offset": "0x28",
+     "name": "previous",
+     "type": "CCombatHistoryEntry*",
+     "comment": "previous entry",
+     "source": "reversing/FINDINGS-combat.md:57"
+    },
+    {
+     "offset": "0x2C",
+     "name": "next",
+     "type": "CCombatHistoryEntry*",
+     "comment": "next entry",
+     "source": "reversing/FINDINGS-combat.md:58"
+    }
+   ],
+   "vftable_rva": "0x11B68C0"
+  },
+  {
+   "name": "CCombat",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "selectable_vftable",
+     "type": "pointer",
+     "comment": "vftable of the CSelectable base",
+     "source": "reversing/FINDINGS-combat.md:150"
+    },
+    {
+     "offset": "0x10",
+     "name": "attacker",
+     "type": "CCombatant*",
+     "comment": "attacking side",
+     "source": "BiceLib/GameState/CombatLog.cpp:14"
+    },
+    {
+     "offset": "0x14",
+     "name": "defender",
+     "type": "CCombatant*",
+     "comment": "defending side",
+     "source": "BiceLib/GameState/CombatLog.cpp:15"
+    },
+    {
+     "offset": "0x18",
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "province fought over",
+     "source": "BiceLib/GameState/CombatLog.cpp:16"
+    },
+    {
+     "offset": "0x1C",
+     "name": "unknown_1c",
+     "type": "int",
+     "comment": "tracks +0x20; meaning unknown",
+     "source": "reversing/CLASSES.md:138"
+    },
+    {
+     "offset": "0x20",
+     "name": "unknown_20",
+     "type": "int",
+     "comment": "tracks +0x1C; meaning unknown",
+     "source": "reversing/CLASSES.md:138"
+    },
+    {
+     "offset": "0x24",
+     "name": "terrain",
+     "type": "CTerrain*",
+     "comment": "terrain, unverified",
+     "source": "reversing/CLASSES.md:139"
+    },
+    {
+     "offset": "0x2B",
+     "name": "flag",
+     "type": "uint8_t",
+     "comment": "flag the history entry keeps at its +0x20",
+     "source": "BiceLib/GameState/CombatLog.cpp:17"
+    }
+   ],
+   "vftable_rva": "0x11C4D14"
+  },
+  {
+   "name": "CCombatant",
+   "fields": [
+    {
+     "offset": "0x3C",
+     "name": "combat",
+     "type": "CCombat*",
+     "comment": "back to the combat",
+     "source": "reversing/CLASSES.md:161"
+    },
+    {
+     "offset": "0x40",
+     "name": "units_begin",
+     "type": "CUnit**",
+     "comment": "units on this side, begin",
+     "source": "reversing/CLASSES.md:162"
+    },
+    {
+     "offset": "0x44",
+     "name": "units_end",
+     "type": "CUnit**",
+     "comment": "units on this side, end",
+     "source": "reversing/CLASSES.md:162"
+    },
+    {
+     "offset": "0x54",
+     "name": "countries_begin",
+     "type": "pointer",
+     "comment": "countries the tag is taken from (tag + id each); emptied on the beaten side",
+     "source": "BiceLib/GameState/CombatLog.cpp:24"
+    },
+    {
+     "offset": "0x58",
+     "name": "countries_end",
+     "type": "pointer",
+     "comment": "second word of the country list triple",
+     "source": "reversing/FINDINGS-combat.md:348"
+    },
+    {
+     "offset": "0x5C",
+     "name": "countries_count",
+     "type": "int",
+     "comment": "zero when the country list is empty; may be the capacity pointer",
+     "source": "BiceLib/GameState/CombatLog.cpp:25"
+    },
+    {
+     "offset": "0x64",
+     "name": "own_countries_begin",
+     "type": "pointer",
+     "comment": "the side's own countries, kept when +0x54 is emptied",
+     "source": "BiceLib/GameState/CombatLog.cpp:34"
+    },
+    {
+     "offset": "0x68",
+     "name": "own_countries_end",
+     "type": "pointer",
+     "comment": "second word of the own country list",
+     "source": "reversing/FINDINGS-combat.md:349"
+    },
+    {
+     "offset": "0x6C",
+     "name": "own_countries_capacity",
+     "type": "pointer",
+     "comment": "third word of the own country list",
+     "source": "reversing/FINDINGS-combat.md:349"
+    },
+    {
+     "offset": "0x74",
+     "name": "men_begin",
+     "type": "int*",
+     "comment": "men per subunit type in thousandths, begin",
+     "source": "BiceLib/GameState/CombatLog.cpp:47"
+    },
+    {
+     "offset": "0x78",
+     "name": "men_end",
+     "type": "int*",
+     "comment": "men per subunit type, end",
+     "source": "BiceLib/GameState/CombatLog.cpp:48"
+    },
+    {
+     "offset": "0x84",
+     "name": "losses",
+     "type": "int",
+     "comment": "strength lost in thousandths",
+     "source": "BiceLib/GameState/CombatLog.cpp:38"
+    },
+    {
+     "offset": "0x88",
+     "name": "destroyed_begin",
+     "type": "int*",
+     "comment": "subunits destroyed per type (1000 each), begin",
+     "source": "reversing/CLASSES.md:168"
+    },
+    {
+     "offset": "0x8C",
+     "name": "destroyed_end",
+     "type": "int*",
+     "comment": "subunits destroyed per type, end",
+     "source": "reversing/CLASSES.md:168"
+    },
+    {
+     "offset": "0x98",
+     "name": "damage_begin",
+     "type": "int*",
+     "comment": "damage short of destruction per type, begin",
+     "source": "reversing/CLASSES.md:169"
+    }
+   ],
+   "vftable_rva": "0x11C4CA4"
+  },
+  {
+   "name": "CColor",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "r",
+     "type": "float",
+     "comment": "red, 0-1",
+     "source": "reversing/FINDINGS-mapmode.md:382"
+    },
+    {
+     "offset": "0xC",
+     "name": "g",
+     "type": "float",
+     "comment": "green, 0-1",
+     "source": "reversing/FINDINGS-mapmode.md:382"
+    },
+    {
+     "offset": "0x10",
+     "name": "b",
+     "type": "float",
+     "comment": "blue, 0-1",
+     "source": "reversing/FINDINGS-mapmode.md:382"
+    },
+    {
+     "offset": "0x14",
+     "name": "a",
+     "type": "float",
+     "comment": "alpha, 0-1",
+     "source": "reversing/FINDINGS-mapmode.md:382"
+    }
+   ]
+  },
+  {
+   "name": "WaterObject",
+   "fields": [
+    {
+     "offset": "0x234",
+     "name": "effect",
+     "type": "pointer",
+     "comment": "the water.fx effect",
+     "source": "reversing/FINDINGS-mapmode.md:300"
+    },
+    {
+     "offset": "0x240",
+     "name": "tech_WaterFar",
+     "type": "undefined4",
+     "comment": "technique handle",
+     "source": "reversing/FINDINGS-mapmode.md:301"
+    },
+    {
+     "offset": "0x244",
+     "name": "tech_WaterFarColor",
+     "type": "undefined4",
+     "comment": "technique handle",
+     "source": "reversing/FINDINGS-mapmode.md:301"
+    },
+    {
+     "offset": "0x248",
+     "name": "tech_WaterSimple",
+     "type": "undefined4",
+     "comment": "technique handle",
+     "source": "reversing/FINDINGS-mapmode.md:302"
+    },
+    {
+     "offset": "0x24C",
+     "name": "tech_WaterSimpleColor",
+     "type": "undefined4",
+     "comment": "technique handle",
+     "source": "reversing/FINDINGS-mapmode.md:302"
+    },
+    {
+     "offset": "0x250",
+     "name": "tech_WaterNear",
+     "type": "undefined4",
+     "comment": "technique handle",
+     "source": "reversing/FINDINGS-mapmode.md:303"
+    },
+    {
+     "offset": "0x254",
+     "name": "tech_WaterNearColor",
+     "type": "undefined4",
+     "comment": "technique handle",
+     "source": "reversing/FINDINGS-mapmode.md:303"
+    }
+   ]
+  },
+  {
+   "name": "CDefines",
+   "fields": [
+    {
+     "offset": "0xAC",
+     "name": "supply_defines_ptr",
+     "type": "CDefinesSupply*",
+     "comment": "pointer to the block holding SUPPLYPOOL_DAYS and the supply capacity defines",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:76"
+    }
+   ]
+  },
+  {
+   "name": "CDefinesSupply",
+   "fields": [
+    {
+     "offset": "0x3C",
+     "name": "SUPPLYPOOL_DAYS",
+     "type": "int",
+     "comment": "days of need a province pool is topped up towards (35)",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:76"
+    },
+    {
+     "offset": "0x220",
+     "name": "supply_capacity_define_220",
+     "type": "int",
+     "comment": "define used by the supply capacity function",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:93"
+    },
+    {
+     "offset": "0x224",
+     "name": "supply_capacity_define_224",
+     "type": "int",
+     "comment": "define used by the supply capacity function",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:93"
+    }
+   ]
+  },
+  {
+   "name": "CCountryDataBaseTagBucket",
+   "size": "0x10",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "first",
+     "type": "CCountryTag*",
+     "comment": "first tag in the bucket",
+     "source": "BiceLib/GameClasses/CCountryDataBase.hpp:46"
+    },
+    {
+     "offset": "0x4",
+     "name": "last",
+     "type": "CCountryTag*",
+     "comment": "one past the last",
+     "source": "BiceLib/GameClasses/CCountryDataBase.hpp:46"
+    }
+   ]
+  },
+  {
+   "name": "CCountryDataBase",
+   "size": "0x57C",
+   "fields": [
+    {
+     "offset": "0x16C",
+     "name": "countries_first",
+     "type": "CCountry**",
+     "comment": "every country by id; a CCountryTag's id indexes it",
+     "source": "BiceLib/GameClasses/CCountryDataBase.hpp:42"
+    },
+    {
+     "offset": "0x170",
+     "name": "countries_last",
+     "type": "CCountry**",
+     "comment": "one past the last country",
+     "source": "BiceLib/GameClasses/CCountryDataBase.hpp:43"
+    },
+    {
+     "offset": "0x174",
+     "name": "countries_end",
+     "type": "CCountry**",
+     "comment": "end of the storage",
+     "source": "BiceLib/GameClasses/CCountryDataBase.hpp:44"
+    },
+    {
+     "offset": "0x17C",
+     "name": "tag_buckets",
+     "type": "CCountryDataBaseTagBucket[64]",
+     "comment": "tags hashed by the sum of their three letters, modulo 64",
+     "source": "BiceLib/GameClasses/CCountryDataBase.hpp:52"
+    }
+   ]
+  }
+ ]
+}

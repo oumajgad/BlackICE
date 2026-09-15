@@ -17,7 +17,7 @@ means checked against the running game.
 The hook itself was never committed and has been deleted. "What was tried" describes it
 closely enough to rebuild.
 
-Addresses are the RTTI export's, based at `0x400000`. **The exe is built with
+Addresses are module relative, as everywhere in BiceLib. **The exe is built with
 `DYNAMIC_BASE` and does get relocated** - it was loaded at `0x00A00000` when checked (live)
 - so anything that patches it has to add the module base to everything.
 
@@ -31,11 +31,11 @@ overrides only the ones it changes:
 
 | class | slot 0 | slot 1 | slot 2 |
 |---|---|---|---|
-| `CPathFind` | `0x5A2A00` | `0x5A25B0` | `0x5A2700` |
-| `CSafePathFind` | | | `0x5A2AE0` |
-| `CVerySafePathFind` | | | `0x5A2C40` |
-| `CPlannedPathFind` | | `0x5A2D20` | `0x5A2D30` |
-| `CSafeNavalPathFind` | `0x5A2E00` | | |
+| `CPathFind` | `0x1A2A00` | `0x1A25B0` | `0x1A2700` |
+| `CSafePathFind` | | | `0x1A2AE0` |
+| `CVerySafePathFind` | | | `0x1A2C40` |
+| `CPlannedPathFind` | | `0x1A2D20` | `0x1A2D30` |
+| `CSafeNavalPathFind` | `0x1A2E00` | | |
 
 What the slots are for is **inferred from their shape, not confirmed by behaviour**:
 
@@ -49,7 +49,7 @@ What the slots are for is **inferred from their shape, not confirmed by behaviou
 - **Slot 2 looks like "may this step be taken"**, a bool; the safe variants call the base
   and refuse more.
 
-`Find` is `0x5A12B0`, called as `Find(finder, unit, from, to, out path)` with the finder
+`Find` is `0x1A12B0`, called as `Find(finder, unit, from, to, out path)` with the finder
 on the stack, answering a bool.
 
 ## Slot 0's arguments - static, and live for the graph
@@ -87,31 +87,31 @@ something other than provinces. The header now carries both.
 
 The executable writes `CVerySafePathFind`'s vftable in exactly two places.
 
-**`CMoveCommand` slot 6 (`0x5D88C0`)** routes a unit when the command runs. It puts all
+**`CMoveCommand` slot 6 (`0x1D88C0`)** routes a unit when the command runs. It puts all
 three finders on the stack side by side:
 
-    0x5D8A96   C7 44 24 20 <imm32>    CPathFind
-    0x5D8A9E   C7 44 24 1C <imm32>    CSafePathFind
-    0x5D8AA6   C7 44 24 18 <imm32>    CVerySafePathFind
+    0x1D8A96   C7 44 24 20 <imm32>    CPathFind
+    0x1D8A9E   C7 44 24 1C <imm32>    CSafePathFind
+    0x1D8AA6   C7 44 24 18 <imm32>    CVerySafePathFind
 
 and picks one from bytes on the command: `+0x6A` very safe, `+0x69` safe, neither plain.
 `+0x68` picks between two ways of routing that choose among the same three objects and
-end at the same `Find` (`0x5D8F08`) and `SetUnitPath` (`0x5D8F1C`). The bytes are set by
-the constructor (`0x5D87F0`, `ret 0x14`: `a, target, mode68, safe, verySafe`) and copied
-by the copy constructor (`0x5D93F0`).
+end at the same `Find` (`0x1D8F08`) and `SetUnitPath` (`0x1D8F1C`). The bytes are set by
+the constructor (`0x1D87F0`, `ret 0x14`: `a, target, mode68, safe, verySafe`) and copied
+by the copy constructor (`0x1D93F0`).
 
-**`CStrategicRedeploymentOrder`'s re-route (`0x588700`)**, called from the order's own
+**`CStrategicRedeploymentOrder`'s re-route (`0x188700`)**, called from the order's own
 slots 13 and 14, taking the order in edi (unit at `+8`, target province at `+0xC`). It
 returns early when the unit's path begins at the province it is going to; only otherwise
-does it build a very safe finder, route, and hand the result over (`0x5C9AC0`):
+does it build a very safe finder, route, and hand the result over (`0x1C9AC0`):
 
-    0x5887FE   C7 44 24 14 6C 5B 5C 01    mov dword ptr [esp+14h], offset CVerySafePathFind::vftable
+    0x1887FE   C7 44 24 14 6C 5B 5C 01    mov dword ptr [esp+14h], offset CVerySafePathFind::vftable
 
 That early return is what keeps a route the player painted by hand, and is wanted.
 
 ## Who asks the move command for very safe - static, not settled
 
-The interface reaches `CMoveCommand` through `0x89A840` (`ret 0x18`), which hardcodes
+The interface reaches `CMoveCommand` through `0x49A840` (`ret 0x18`), which hardcodes
 `mode68 = 1` and forwards its fourth and fifth arguments as safe and very safe. Of its 26
 callers, 13 pass very safe = 1, always together with safe = 1; 2 pass safe alone; 11 pass
 neither. The constructor's other callers pass zero. Which order types those 13 are was not

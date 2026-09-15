@@ -4,7 +4,7 @@
 /**
  * CStrategicRedeploymentOrder - a unit taken off the map and moved by rail and road.
  *
- * Derives from COrder. How it routes the unit is one helper, `0x588700`, called from the
+ * Derives from COrder. How it routes the unit is one helper, `0x188700`, called from the
  * order's own virtual methods - slots 13 and 14, from three call sites. That helper
  * takes the order in edi, not ecx: the unit at +8, the province it is going to at +0xC.
  *
@@ -12,7 +12,7 @@
  * returns without routing when the path's first entry is the province the unit is going
  * to. That early return is what keeps a route the player painted by hand, and is wanted.
  * Only when it falls through does this build a CVerySafePathFind on the stack, route, and
- * hand the result to the unit (`0x5C9AC0`). All read off the code.
+ * hand the result to the unit (`0x1C9AC0`). All read off the code.
  *
  * **Where a redeployment's route actually comes from is not known.** Replacing the very
  * safe finder's step cost here changed nothing in a game; replacing it in CMoveCommand as

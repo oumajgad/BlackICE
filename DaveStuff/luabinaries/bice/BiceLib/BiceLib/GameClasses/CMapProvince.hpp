@@ -106,8 +106,9 @@ namespace CMapProvince {
          * where there are depots and units, resources where they wait for a convoy.
          *
          * **In the capital it is the country's national stockpile**: `CCountry:GetPool()`
-         * (`0xF4DE0`) answers `&capital->pool`, unless the byte at `country + 0x95` is
-         * set, when it answers a pool held on the country instead.
+         * (`0xF4DE0`) answers `&capital->pool`, unless the country is a government in
+         * exile (CCountry::Offsets::is_government_in_exile), when it answers a pool held
+         * on the country instead.
          */
         constexpr uintptr_t pool = 0x15C;
 

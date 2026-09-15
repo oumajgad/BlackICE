@@ -20,6 +20,18 @@ namespace CSubUnitDefinition {
         // "artillery_brigade". A std::string, so read it through HDS::readString.
         constexpr uintptr_t key = 0x08;
 
+        // The type's index among all unit types, as the game's GetIndex answers it -
+        // what per-type vectors, such as a combatant's losses, are indexed by.
+        constexpr uintptr_t index = 0x24;
+
+        // Which kind of unit it is. Booleans, named as the game's own accessors name them
+        // (IsRegiment, IsShip, IsCag, IsBomber, CanParadrop).
+        constexpr uintptr_t is_regiment = 0x2D;
+        constexpr uintptr_t is_ship = 0x2E;
+        constexpr uintptr_t is_cag = 0x32;                // carrier air group
+        constexpr uintptr_t is_bomber = 0x37;
+        constexpr uintptr_t can_paradrop = 0x38;
+
         constexpr uintptr_t is_buildable = 0x36;          // boolean
         constexpr uintptr_t CUnitAdjuster_ptr = 0x54;     // Terrain modifiers
         constexpr uintptr_t max_strength = 0xEC;
@@ -66,7 +78,6 @@ namespace CSubUnitDefinition {
         constexpr uintptr_t shore_bombardment = 0x170;
         constexpr uintptr_t hull = 0x178;
         constexpr uintptr_t positioning = 0x184;
-        constexpr uintptr_t unk_2e = 0x2E;
 
         // Air
         constexpr uintptr_t surface_defence = 0x174;
