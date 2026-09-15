@@ -1,9 +1,8 @@
 import json
 from datetime import datetime
 
-header_template = """###############################
-#            {tag}            #
-###############################
+header_template = """
+# {tag} #
 """
 
 event_template = """
@@ -16,8 +15,8 @@ country_event = {{
             has_country_flag = "{country_flag}"
         }}
     }}
-    title = "Leader removal."
-    desc = "Some of our leaders have died due to natural causes or retired."
+    title = "Leader removal"
+    desc = "Some of our leaders have died of natural causes or retired."
     picture = "politics2"
     option = {{
         name = "Unfortunate"{textA}

@@ -29,7 +29,7 @@ for root, subdirs, files in os.walk("./history/leaders"):
             if "}" in line:
                 in_count -= 1
             if _line.find("#leader_death:") != -1:
-                date = _line.split("#leader_death:")[1].strip()
+                date = _line.split("#leader_death:")[1].strip().split(" ")[0]
             if in_count == 0:
                 if date:
                     if not leaders_json.get(tag):
