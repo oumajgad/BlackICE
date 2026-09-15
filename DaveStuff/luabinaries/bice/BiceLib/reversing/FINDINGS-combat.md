@@ -471,7 +471,7 @@ mistake above on the first battle rather than the second. Where it fails the los
 period holds.
 
 `+0x40` and `+0x44` are the units on a side, a vector of `CUnit*`, and `CUnit+0x124` is
-the owner tag with the id after it - both from `../../../../mem`. That was the other way
+the owner, a `CCountryTag` - both from `../../../../mem`. That was the other way
 at the loser's name and it is not needed, so nothing in BiceLib reads them; noted here
 because they are worth knowing.
 

@@ -1,13 +1,15 @@
 #include <GameClasses/CMapProvince.hpp>
+#include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CCurrentGameState.hpp>
 #include <GameClasses/CGoodsPool.hpp>
+#include <GameClasses/CModifier.hpp>
 #include <MemScan.hpp>
 #include <utils.hpp>
 
 namespace CMapProvince {
     CMapProvince Make(uintptr_t addr) {
         CMapProvince res = CMapProvince{};
-        res.CModifierDefinitions_ptr = addr + Offsets::CModifierDefinitions_ptr;
+        res.modifier = addr + Offsets::modifier;
         res.CProvinceBuilding_array_ptr = addr + Offsets::CProvinceBuilding_array_ptr;
         res.id = *(int*)(addr + Offsets::id);
 
@@ -23,10 +25,10 @@ namespace CMapProvince {
 
         res.manpower = *(int*)(addr + Offsets::manpower);
         res.leadership = *(int*)(addr + Offsets::leadership);
-        //res.owner_tag = utils::getCString((DWORD*)(addr + Offsets::owner_tag));
-        //res.owner_id = *(int*)(addr + Offsets::owner_id);
-        //res.controller_tag = utils::getCString((DWORD*)(addr + Offsets::controller_tag));
-        //res.controller_id = *(int*)(addr + Offsets::controller_id);
+        //res.owner_tag = HDS::readTag(addr + Offsets::owner);
+        //res.owner_id = *(int*)(addr + Offsets::owner + CCountryTag::Offsets::id);
+        //res.controller_tag = HDS::readTag(addr + Offsets::controller);
+        //res.controller_id = *(int*)(addr + Offsets::controller + CCountryTag::Offsets::id);
         return res;
     }
 
@@ -39,36 +41,26 @@ namespace CMapProvince {
         return (province != 0) ? Make(province) : CMapProvince{};
     }
 
+    /**@brief one value of the province's modifier, pushed into the table on top of the stack*/
+    void pushModifierValue(lua_State* L, uintptr_t values, const char* key, int type) {
+        const int value = *(int*)(values + CModifier::entryOffset(type) + CModifier::Entry::value);
+        lua_pushstring(L, key);
+        lua_pushinteger(L, value);
+        lua_settable(L, -3);
+    }
+
     void pushModifiers(lua_State* L, CMapProvince province) {
         lua_pushstring(L, "modifiers");
         lua_newtable(L);
 
-        uintptr_t CProvinceBuilding_array = *(uintptr_t*)province.CModifierDefinitions_ptr;
+        const uintptr_t values = *(uintptr_t*)(province.modifier + CModifier::Offsets::values);
 
-        int local_ic = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::ic);
-        lua_pushstring(L, "local_ic");
-        lua_pushinteger(L, local_ic);
-        lua_settable(L, -3);
-        int local_oil = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::oil);
-        lua_pushstring(L, "local_oil");
-        lua_pushinteger(L, local_oil);
-        lua_settable(L, -3);
-        int local_energy = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::energy);
-        lua_pushstring(L, "local_energy");
-        lua_pushinteger(L, local_energy);
-        lua_settable(L, -3);
-        int local_metal = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::metal);
-        lua_pushstring(L, "local_metal");
-        lua_pushinteger(L, local_metal);
-        lua_settable(L, -3);
-        int local_rares = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::rares);
-        lua_pushstring(L, "local_rares");
-        lua_pushinteger(L, local_rares);
-        lua_settable(L, -3);
-        int local_leadership = *(uintptr_t*)(CProvinceBuilding_array + BuildingOffsets::leadership);
-        lua_pushstring(L, "local_leadership");
-        lua_pushinteger(L, local_leadership);
-        lua_settable(L, -3);
+        pushModifierValue(L, values, "local_ic", CModifier::LOCAL_IC);
+        pushModifierValue(L, values, "local_oil", CModifier::LOCAL_CRUDE_OIL);
+        pushModifierValue(L, values, "local_energy", CModifier::LOCAL_ENERGY);
+        pushModifierValue(L, values, "local_metal", CModifier::LOCAL_METAL);
+        pushModifierValue(L, values, "local_rares", CModifier::LOCAL_RARE_MATERIALS);
+        pushModifierValue(L, values, "local_leadership", CModifier::LOCAL_LEADERSHIP);
 
         lua_settable(L, -3);
     }

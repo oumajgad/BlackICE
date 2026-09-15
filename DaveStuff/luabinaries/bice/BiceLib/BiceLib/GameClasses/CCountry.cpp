@@ -1,5 +1,8 @@
 #include <GameClasses/CCountry.hpp>
+#include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CCurrentGameState.hpp>
+#include <GameClasses/CFlags.hpp>
+#include <GameClasses/CModifier.hpp>
 #include <Hooks/Hooks.hpp>
 
 #include <MemScan.hpp>
@@ -64,7 +67,7 @@ namespace {
             return;
         }
 
-        namespace Node = CCountry::TreeNodeOffsets;
+        namespace Node = CTernary::NodeOffsets;
         const uintptr_t element = readValue<uint32_t>(nodePtr + Node::element);
         const uintptr_t parentNode = readValue<uint32_t>(nodePtr + Node::parent);
         const uintptr_t siblingNode = readValue<uint32_t>(nodePtr + Node::sibling);
@@ -93,7 +96,7 @@ std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifie
     std::vector<std::pair<std::string, std::string>> res;
 
     const std::vector<uintptr_t> modifiers =
-        HDS::walkList(countryPtr + Offsets::active_modifiers_list_first_ptr);
+        HDS::walkList(countryPtr + Offsets::active_modifiers);
 
     for (size_t i = 0; i < modifiers.size(); i++) {
         const uintptr_t definition =
@@ -112,19 +115,20 @@ std::vector<std::pair<std::string, std::string>> CCountry::getActiveEventModifie
 std::vector<std::pair<std::string, int>> CCountry::getGeneralModifiers(uintptr_t countryPtr) {
     std::vector<std::pair<std::string, int>> res;
 
-    const uintptr_t arrayBase = readValue<uint32_t>(countryPtr + Offsets::general_modifiers_array_ptr);
-    if (arrayBase == 0) {
+    const uintptr_t values = readValue<uint32_t>(
+        countryPtr + Offsets::global_modifier + CModifier::Offsets::values);
+    if (values == 0) {
         return res;
     }
 
-    for (int i = 0; i < GeneralModifierOffsets::count; i++) {
-        const uintptr_t entry = arrayBase + (i * GeneralModifierOffsets::entry_size);
+    for (int i = 0; i < CModifier::COUNT; i++) {
+        const uintptr_t entry = values + CModifier::entryOffset(i);
         const uintptr_t definition =
-            readValue<uint32_t>(entry + GeneralModifierOffsets::definition_ptr);
+            readValue<uint32_t>(entry + CModifier::Entry::definition_ptr);
 
         const std::string modifierName =
-            HDS::readString(definition + GeneralModifierOffsets::definition_name);
-        const int modifierValue = readValue<int32_t>(entry + GeneralModifierOffsets::value);
+            HDS::readString(definition + CModifierDefinition::Offsets::name);
+        const int modifierValue = readValue<int32_t>(entry + CModifier::Entry::value);
 
         res.push_back(std::make_pair(modifierName, modifierValue));
     }
@@ -134,13 +138,14 @@ std::vector<std::pair<std::string, int>> CCountry::getGeneralModifiers(uintptr_t
 std::vector<std::string> CCountry::getFlags(uintptr_t countryPtr) {
     std::vector<std::uintptr_t> ptrs;
 
-    const uintptr_t flagsPtr = readValue<uint32_t>(countryPtr + Offsets::flags_tree_root_ptr);
+    const uintptr_t flagsPtr =
+        readValue<uint32_t>(countryPtr + Offsets::flags + CTernary::Offsets::root);
     CCountry::traverseFlagsAndVarTreeDepthFirst(ptrs, flagsPtr);
 
     std::vector<std::string> res;
     res.reserve(ptrs.size());
     for (auto& i : ptrs) {
-        res.push_back(HDS::readString(i + TreeNodeOffsets::name));
+        res.push_back(HDS::readString(i + CFlags::ElementOffsets::name));
     }
     return res;
 }
@@ -148,14 +153,15 @@ std::vector<std::string> CCountry::getFlags(uintptr_t countryPtr) {
 std::vector<HDS::CVariable> CCountry::getVars(uintptr_t countryPtr) {
     std::vector<std::uintptr_t> ptrs;
 
-    const uintptr_t varsPtr = readValue<uint32_t>(countryPtr + Offsets::variables_tree_root_ptr);
+    const uintptr_t varsPtr =
+        readValue<uint32_t>(countryPtr + Offsets::variables + CTernary::Offsets::root);
     CCountry::traverseFlagsAndVarTreeDepthFirst(ptrs, varsPtr);
 
     std::vector<HDS::CVariable> res;
     for (auto& i : ptrs) {
         HDS::CVariable x;
-        x.name = HDS::readString(i + TreeNodeOffsets::name);
-        x.value = readValue<int32_t>(i + TreeNodeOffsets::variable_value);
+        x.name = HDS::readString(i + CVariables::ElementOffsets::name);
+        x.value = readValue<int32_t>(i + CVariables::ElementOffsets::value);
         if (x.value != 0) {
             res.push_back(x);
         }
@@ -202,7 +208,7 @@ uintptr_t CCountry::findByTag(const std::string& tag) {
         // Compared in place. A tag is three characters and a NUL, so there is nothing
         // to build and nothing to free per country.
         char have[3] = {};
-        if (!Mem::tryReadBytes(country + Offsets::tag, have, sizeof(have))) {
+        if (!Mem::tryReadBytes(country + Offsets::tag + CCountryTag::Offsets::tag, have, sizeof(have))) {
             continue;
         }
         if (have[0] == tag[0] && have[1] == tag[1] && have[2] == tag[2]) {
@@ -227,7 +233,7 @@ uintptr_t CCountry::findById(int id) {
             continue;
         }
         int32_t have = 0;
-        if (Mem::tryRead(country + Offsets::id, have) && have == id) {
+        if (Mem::tryRead(country + Offsets::tag + CCountryTag::Offsets::id, have) && have == id) {
             return country;
         }
     }

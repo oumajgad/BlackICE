@@ -74,9 +74,9 @@ namespace {
 
     // Fields on the province itself, so the list is fixed rather than read from the
     // game. Keys as the mod's history files spell them. Deliberately not the
-    // province's `local_` modifiers at +0x114, which is what CMapProvince::BuildingOffsets
-    // - despite the name - reads: those change what a province produces, and are not
-    // what it has. The four goods are slots of what the province yields now.
+    // province's `local_` modifiers (CMapProvince::Offsets::modifier): those change what
+    // a province produces, and are not what it has. The four goods are slots of what the
+    // province yields now.
     CustomMapMode::Source resource(uintptr_t where, const char* name, const char* label) {
         CustomMapMode::Source source;
         source.where = where;

@@ -62,8 +62,7 @@ namespace CMap {
          * checked against a running game - and recorded here so the two are not
          * confused for each other.
          */
-        constexpr uintptr_t player_tag = 0x2A88;   // mem, unverified here
-        constexpr uintptr_t player_id = 0x2A8C;    // mem, unverified here
+        constexpr uintptr_t player = 0x2A88;   // a CCountryTag; mem, unverified here
     }
 
     /**

@@ -12,9 +12,9 @@ namespace CLeader {
         CLeader res = CLeader{};
         res._address = addr;
         res.id = *(int*)(addr + Offsets::id);
-        res.trait_ll_start = *(uintptr_t*)(addr + Offsets::trait_ll_start);
-        res.trait_ll_end = *(uintptr_t*)(addr + Offsets::trait_ll_end);
-        res.number_of_traits = *(int*)(addr + Offsets::number_of_traits);
+        res.trait_ll_start = *(uintptr_t*)(addr + Offsets::traits + HDS::ListOffsets::first);
+        res.trait_ll_end = *(uintptr_t*)(addr + Offsets::traits + HDS::ListOffsets::last);
+        res.number_of_traits = *(int*)(addr + Offsets::traits + HDS::ListOffsets::count);
         res.unit_ptr = *(uintptr_t*)(addr + Offsets::unit_ptr);
         res.rank = *(int*)(addr + Offsets::rank);
         res.skill = *(int*)(addr + Offsets::skill);
@@ -43,7 +43,7 @@ namespace CLeader {
         const std::vector<uintptr_t> countries = CCountry::all();
         for (uintptr_t country : countries) {
             const std::vector<uintptr_t> leaders =
-                HDS::walkList(country + CCountry::Offsets::leaders_list_first_ptr);
+                HDS::walkList(country + CCountry::Offsets::leaders);
             for (uintptr_t leaderAddr : leaders) {
                 CLeader x = Make(leaderAddr);
                 // insert, not assign: where two leaders share an id the first one

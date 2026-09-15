@@ -18,9 +18,12 @@ namespace CUnit {
         constexpr uintptr_t is_selected = 0x4;
         constexpr uintptr_t type = 0x10;
         constexpr uintptr_t id = 0x14;
-        constexpr uintptr_t regiments_linked_list_first_ptr = 0x38;
-        constexpr uintptr_t regiments_linked_list_last_ptr = 0x3C;
-        constexpr uintptr_t regiments_amount = 0x40;
+        /**
+         * **The unit's own regiments**, a list (HDS::ListOffsets) of CRegiment*. Not a
+         * field but a base class: CUnit derives from `CList<CSubUnit*>` at this offset
+         * (RTTI). The count is `regiments + HDS::ListOffsets::count`.
+         */
+        constexpr uintptr_t regiments = 0x38;
         constexpr uintptr_t upgrade_prio = 0xA4;          // boolean!
         constexpr uintptr_t upgrade_active = 0xA5;        // boolean!
         constexpr uintptr_t reinforcements_active = 0xA6; // boolean!
@@ -29,8 +32,7 @@ namespace CUnit {
         constexpr uintptr_t combat_cooldown = 0xD4;
         constexpr uintptr_t supply_received_percentage = 0xFC;
         constexpr uintptr_t fuel_received_percentage = 0x100;
-        constexpr uintptr_t owner_tag = 0x124; // four characters, HDS::readTag
-        constexpr uintptr_t owner_id = 0x128;
+        constexpr uintptr_t owner = 0x124;     // a CCountryTag
         constexpr uintptr_t leader_ptr = 0x12C;
         constexpr uintptr_t current_province_ptr = 0x130;
         constexpr uintptr_t supplied_from_province_ptr = 0x134;
@@ -38,14 +40,13 @@ namespace CUnit {
         constexpr uintptr_t movement_order_last_current_province_ptr = 0x13C;
         constexpr uintptr_t movement_order_remaining_provinces_count = 0x140;
         constexpr uintptr_t in_game_idler_ptr = 0x160;
-        constexpr uintptr_t name = 0x16C;
-        constexpr uintptr_t name_length = 0x17C;
+        constexpr uintptr_t name = 0x16C;      // a Hoi3CString
         constexpr uintptr_t dig_in_level = 0x1C8;
         constexpr uintptr_t base_ca_bonus = 0x1CC;
         constexpr uintptr_t higher_oob_unit_ptr = 0x1E0;
-        constexpr uintptr_t lower_oob_unit_linked_list_first_ptr = 0x1E4;
-        constexpr uintptr_t lower_oob_unit_linked_list_last_ptr = 0x1E8;
-        constexpr uintptr_t lower_oob_unit_amount = 0x1EC;
+        /**@brief the units directly below this one in the order of battle, a CUnitList
+                  (HDS::ListOffsets) - the game's `GetChildren`*/
+        constexpr uintptr_t children = 0x1E4;
         constexpr uintptr_t oob_level = 0x1F4;
     }
 
@@ -81,8 +82,8 @@ namespace CUnit {
      * The definition's supply_consumption and fuel_consumption are only the base
      * figures for one sub unit. What the game shows on a unit is those summed over
      * its regiments, each scaled by how much of its strength is left, and the whole
-     * scaled by a potency that starts at 1000, gains the country's general modifier
-     * at +0x188, and loses an amount for the skill of the leader of the army group
+     * scaled by a potency that starts at 1000, gains the country's global modifier
+     * CModifier::SUPPLY_CONSUMPTION, and loses an amount for the skill of the leader of the army group
      * above the unit. Reimplementing that would mean maintaining a copy of it, while
      * calling it keeps the numbers the game's own.
      *

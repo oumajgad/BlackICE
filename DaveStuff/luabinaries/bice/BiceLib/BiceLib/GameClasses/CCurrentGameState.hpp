@@ -26,11 +26,11 @@ namespace CCurrentGameState {
     }
 
     namespace Offsets {
-        /**@brief a CCombatManager, embedded rather than pointed at*/
+        /**
+         * **The CCombatManager**, held by value. The history of finished combats is inside
+         * it, at CCombatManager::Offsets::history.
+         */
         constexpr uintptr_t combat_manager = 0xB5C;
-
-        /**@brief the CCombatHistory inside that manager (combat_manager + 0x18)*/
-        constexpr uintptr_t combat_history = 0xB74;
 
         /**
          * The current tick: hours since 43800000, in years of 365 days with no leap
@@ -93,7 +93,7 @@ namespace CCurrentGameState {
         constexpr uintptr_t played_countries_array = 0xBCC;
 
         /**
-         * The player's country tag: three characters, a NUL, then the country id, the
+         * The player's country, a CCountryTag: three characters, a NUL, then the id, the
          * way a tag is held everywhere. The game reads it as a C string when it builds
          * a save file name, which is how it was found, and it reads as the country
          * being played in a running game.

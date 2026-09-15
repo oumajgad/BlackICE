@@ -46,7 +46,7 @@ being non-null proves nothing about a game being loaded.
 | --- | --- | --- |
 | +0xB3C | something with vftable `0x11C9BEC` | read |
 | +0xB5C | **`CCombatManager`, embedded** | read |
-| +0xB74 | the `CCombatHistory` inside it (`+0xB5C` + `0x18`) | read |
+| +0xB74 | the `CCombatHistory` inside it (`+0xB5C` + `0x18`); the constructor writes the two vftables at `+0xB5C` and `+0xB74` | read |
 | +0xBDC | **the current tick** | read, and used |
 | +0xBE8 | **the `CInGameIdler`** - the same address the vftable scan finds, and the object there carries its vftable | seen |
 | +0xBCC | one entry per country id, non zero for one somebody is playing. From `../../../mem`, and the played country's entry reads 1 | mem, seen |
@@ -61,12 +61,18 @@ being non-null proves nothing about a game being loaded.
   `Text::toUtf8` or umlauts come out as `?`.
 - **A country tag is three characters, a NUL, then the country id** - eight bytes,
   wherever one appears.
-- **Two list shapes.** Standalone nodes of `{ data +0x00, next +0x08 }`, and embedded
-  `__CList` bases of `{ first, last, count }` - `CUnit` has one of those at +0x38, which
-  is why its regiments are read from there.
+- **Objects held by value.** Much of what a class holds is another object in place -
+  a tag, a list, a goods pool, a modifier - and BiceLib writes that as two offsets: the
+  object's in its owner (`CCountry::Offsets::tag`) and the field's in the object
+  (`CCountryTag::Offsets::id`), each in its own header. Which classes, and how each was
+  established, is under *Held by value* below.
+- **Two list shapes.** Standalone nodes of `{ data +0x00, next +0x08 }`, and the
+  game's `CList<T>` of `{ first, last, count }`, held by value (`HDS::ListOffsets`) -
+  `CUnit` derives from one at +0x38, which is why its regiments are read from there.
 - **Vector-ish triples** of `{ begin, end, capacity }` and often a byte after them.
   `CCombatant` has several in a row. An offset first read as a count may be the third
-  pointer of one of these.
+  pointer of one of these - and three words and a byte is also exactly a `CList`, which
+  counts rather than ends, so look at what the third word holds.
 - **Dates are ticks**: hours since `43800000`, years of 365 days with no leap day.
   `utils::gameTickToDate` and `utils::dateToGameTick`, `hoi3.tickToDate` here.
 - **`+0x04` is `0x18d` (397) on nearly every object.** Metadata on a shared base. It is
@@ -251,7 +257,7 @@ What the unit level pair does, which is why the figure differs from the sum of t
 values:
 
 - starts a potency at **1000**, and adds the country's general modifier at
-  `CCountry +0xDA8` array, entry `+0x188`;
+  country's global modifier, `SUPPLY_CONSUMPTION` (entry 49, `+0x188` of its values);
 - walks **up** the OOB by `higher_oob_unit_ptr` to the unit whose `oob_level` is 1 - the
   army group - and **subtracts** an amount worked out from that leader's `skill`
   (`CLeader +0x70`) and the level, so a better army group commander lowers what
@@ -396,12 +402,56 @@ So **throughput ÷ drawn does not measure shortfall**: a province's own request 
 
 Along the way: `+0x68` is a `CWeather`, saved as `weather` (**read**), and the
 `+0xD4` path node is a `CProvinceTemplate` in every province (**RTTI**, **seen**).
+`+0xFC` is the province's `CProvinceModifier` (**read**, see *Modifiers*), and `+0x32C` /
+`+0x334` its owner and controller, `CCountryTag`s (**named**: `GetOwner`,
+`GetController`).
 
 `../../../mem`'s `CMapProvince.py` reads `required_supply` / `required_fuel` at +0x1B4 /
 +0x1B8 and `yesterday_required_supply` / `_fuel` at +0x1D4 / +0x1DC. Those are the two
 `drawn` buffers, read by offset, so which one is today's changes every day.
 `yesterday_required_supply` is also four bytes short: +0x1D4 is the `0x18d`, and the
 supplies are at +0x1D8.
+
+## Held by value
+
+The classes BiceLib reads inside other objects, each with its own header, so an owner
+records only where the object starts.
+
+| Class | Header | Held in | |
+| --- | --- | --- | --- |
+| `CCountryTag`, 8 bytes: letters +0x0, id +0x4 | `CCountryTag.hpp` | a country (twice), a province's owner and controller, a unit's and a convoy's owner, the player in the game state | named (`GetIndex` +0x4, `GetCountryTag`, `GetOwner`, `GetController`), used |
+| `CList<T>`, 16 bytes: first, last, count and a byte | `HoiDataStructures.hpp`, `HDS::ListOffsets` | a country's convoys, units and leaders; a unit's regiments and children; a leader's traits; a convoy's path; the selection | named (`OwnedProvinces` +0xCF0 with `NumberOfOwnedProvinces` +0xCF8, `AirBases` +0xD70 with `NumOfAirfields` +0xD78, a province's `Units` +0x2B8 with `NumberOfUnits` +0x2C0), RTTI (the `__CList` bases), read (the country's constructor clears three dwords and a byte for each of its lists, 0x10 apart), seen |
+| `CGoodsPool` | `CGoodsPool.hpp` | nine in a province, two in a convoy, 23 in a country | read, seen |
+| `CModifier` | `CModifier.hpp` | a country's global modifier +0xD90, a province's modifier +0xFC | read, named |
+| `CFlags`, `CVariables` | `CFlags.hpp` | a country, +0x180 and +0x1AC | named, used |
+| `CCombatManager` and the `CCombatHistory` in it | `CCombatManager.hpp` | the game state, +0xB5C | read |
+
+### Modifiers
+
+`CModifier`, vftable `0x11BC4F8`, base `CPersistent` (**RTTI**), with laws, ministers,
+ideologies, traits and the province's `CProvinceModifier` (`0x11BC530`) deriving from it.
+It does not hold its values: **+0x18 points at an array of `{ CFixedPoint value,
+CModifierDefinition* }` pairs, one per modifier type**. Read off the game's own
+`CModifier::GetValue` (`0x179E0`), which is `[this+0x18][type*8]` and nothing more
+(**read**). The type is the `ModifierType` enum the Lua API registers on `CModifier`, so
+its values give each entry its game name (**named**): `+0x60` is 12,
+`_MODIFIER_INFRASTRUCTURE_`; `+0x78` is 15, `_MODIFIER_IC_`; `+0x80` is 16,
+`_MODIFIER_LOCAL_IC_`.
+
+Where the two BiceLib reads are (**read**): `CCountry::GetGlobalModifier` (`0xDFAF0`) is
+`lea eax,[ecx+0xD90]`, and the country's constructor calls `CModifier`'s constructor
+(`0x593F0`) on `+0xD90`; the province's constructor does the same on `+0xFC` (at
+`0x94848`), then writes the `CProvinceModifier` vftable and stores the province at
+`+0x2C` of it. `CModifier`'s constructor zeroes `+0x8`..`+0x10` and `+0x18`..`+0x20`
+and sets the `0x18d`.
+
+That makes `[province+0x114]`, which the infrastructure map mode, the supply capacity
+function and the offmap IC fix all read, the province modifier's values pointer, and
+`CCountry +0xDA8` the country's. BiceLib used to spell both out as bare arrays - the
+province one as `BuildingOffsets`, though it holds no buildings.
+
+Not registered to Lua, and so not named: type 57, and everything from 83 to the 142
+`../../../mem` counts.
 
 ## Movement and routing
 
@@ -432,8 +482,9 @@ by id, the same pointers as the game state's.
 
 | Offset | Holds | |
 | --- | --- | --- |
-| +0x180 | flags, a tree four bytes past the vftable | mem, used |
-| +0x1AC | variables, the same shape | mem, used |
+| +0x180 | `CFlags`, held by value (`GetFlags`); a tree, its root at +0x4 of it | named, used |
+| +0x1AC | `CVariables`, the same shape (`GetVariables`) | named, used |
+| +0x1E4 | a `CCountryTag`, the one BiceLib reads the tag and id from | mem, used |
 | +0x648 | static modifiers, a list | mem, used |
 | +0x95 | `IsGovernmentInExile`, a bool; decides whose pool `GetPool` answers (see Provinces) | named, read |
 | +0xA0 | its convoys, a `CList<CConvoy*>` (`GetConvoys`) | seen, named |
@@ -442,7 +493,7 @@ by id, the same pointers as the game state's.
 | +0x770 ... +0x890 | more goods pools: `HomeProduced` +0x770, `ConvoyedIn` +0x794, `ConvoyedOut` +0x7B8, `TradedAway` +0x7DC, `TradedAwaySansAlliedSupply` +0x800, `TradedFor` +0x86C, `TradedForSansAlliedSupply` +0x890 | named |
 | +0xBAC | **its units** - and not only the top level ones, so the tree has to be walked. The start of the `CUnitList` `GetUnits` answers | used, named |
 | +0xCA4 | a `CCountryTag`, the one `GetCountryTag` answers; the tag at +0x1E4 is a second copy, for a reason not established. The offmap IC hook reads its id half, +0xCA8 | named, used |
-| +0xDA8 | an array read for country statistics | mem, used |
+| +0xD90 | **the global modifier**, a `CModifier` held by value (`GetGlobalModifier`; the constructor builds it there). Its values pointer is `+0xDA8`, which is what `../../../mem` and BiceLib used to read as a bare array; the offmap IC fix writes entry `IC` of it | named, read, used |
 | +0xE24 | the capital as a province id - by the game's name `GetActingCapital`, where the government sits now | read, named |
 
 ### The country database

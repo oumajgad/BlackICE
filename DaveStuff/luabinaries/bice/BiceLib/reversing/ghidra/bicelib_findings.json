@@ -620,13 +620,13 @@
    ]
   },
   {
-   "name": "IntelLevel",
+   "name": "SLIDER_AUTOMATION_LEVEL",
    "size": 4,
    "comment": "an enum the Lua API passes; values not registered",
    "values": []
   },
   {
-   "name": "SLIDER_AUTOMATION_LEVEL",
+   "name": "IntelLevel",
    "size": 4,
    "comment": "an enum the Lua API passes; values not registered",
    "values": []
@@ -800,6 +800,36 @@
    ]
   },
   {
+   "name": "CList<int>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
    "name": "CConvoy",
    "size": null,
    "fields": [
@@ -835,15 +865,9 @@
     },
     {
      "offset": 48,
-     "name": "owner_tag",
-     "type": "char[4]",
-     "comment": "owner country tag, three characters and a NUL (BiceLib/GameClasses/CConvoy.hpp:49)"
-    },
-    {
-     "offset": 52,
-     "name": "owner_id",
-     "type": "int",
-     "comment": "owner country id (BiceLib/GameClasses/CConvoy.hpp:50)"
+     "name": "owner",
+     "type": "CCountryTag",
+     "comment": "the owner (BiceLib/GameClasses/CConvoy.hpp:49)"
     },
     {
      "offset": 56,
@@ -889,21 +913,9 @@
     },
     {
      "offset": 176,
-     "name": "path_first_ptr",
-     "type": "undefined4",
-     "comment": "route list first node {province id, prev, next} (save key path) (BiceLib/GameClasses/CConvoy.hpp:102)"
-    },
-    {
-     "offset": 180,
-     "name": "path_last_ptr",
-     "type": "undefined4",
-     "comment": "route list last node (BiceLib/GameClasses/CConvoy.hpp:103)"
-    },
-    {
-     "offset": 184,
-     "name": "path_count",
-     "type": "int",
-     "comment": "route list node count (BiceLib/GameClasses/CConvoy.hpp:104)"
+     "name": "path",
+     "type": "CList<int>",
+     "comment": "the route, save key path; nodes hold province ids (BiceLib/GameClasses/CConvoy.hpp:104)"
     },
     {
      "offset": 192,
@@ -987,6 +999,36 @@
      "name": "Index",
      "type": "int",
      "comment": "read by CMinisterType::GetIndex"
+    }
+   ]
+  },
+  {
+   "name": "CList<CResearchBonus>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
     }
    ]
   },
@@ -1242,6 +1284,36 @@
    ]
   },
   {
+   "name": "CUnitList",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
    "name": "CAIIntel",
    "size": null,
    "fields": [
@@ -1428,6 +1500,36 @@
    ]
   },
   {
+   "name": "CList<CCombat*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
    "name": "CCombatHistory",
    "size": null,
    "fields": [
@@ -1456,28 +1558,16 @@
    "size": null,
    "fields": [
     {
+     "offset": 8,
+     "name": "combats",
+     "type": "CList<CCombat*>",
+     "comment": "the combats going on now (BiceLib/GameClasses/CCombatManager.hpp:26)"
+    },
+    {
      "offset": 4,
      "name": "persistent_meta",
      "type": "int",
      "comment": "0x18D (reversing/FINDINGS-combat.md:16)"
-    },
-    {
-     "offset": 8,
-     "name": "combats_first",
-     "type": "LinkedListNode*",
-     "comment": "live combats, first node (reversing/CLASSES.md:89)"
-    },
-    {
-     "offset": 12,
-     "name": "combats_last",
-     "type": "LinkedListNode*",
-     "comment": "live combats, last node (reversing/CLASSES.md:90)"
-    },
-    {
-     "offset": 16,
-     "name": "combats_count",
-     "type": "int",
-     "comment": "live combat count (reversing/CLASSES.md:91)"
     },
     {
      "offset": 24,
@@ -1513,7 +1603,7 @@
      "offset": 2908,
      "name": "combat_manager",
      "type": "CCombatManager",
-     "comment": "embedded CCombatManager (BiceLib/GameClasses/CCurrentGameState.hpp:30)\n+0x18 inside it: combat_history (undefined4) - the CCombatHistory inside combat_manager (+0x18) (BiceLib/GameClasses/CCurrentGameState.hpp:33)"
+     "comment": "embedded CCombatManager (BiceLib/GameClasses/CCurrentGameState.hpp:30)"
     },
     {
      "offset": 2956,
@@ -1565,9 +1655,9 @@
     },
     {
      "offset": 3120,
-     "name": "player_tag",
-     "type": "char[4]",
-     "comment": "player country tag, followed by its id (BiceLib/GameClasses/CCurrentGameState.hpp:108)"
+     "name": "player",
+     "type": "CCountryTag",
+     "comment": "the country being played (BiceLib/GameClasses/CCurrentGameState.hpp:109)"
     },
     {
      "offset": 3485,
@@ -1580,6 +1670,36 @@
      "name": "unknown_b3c",
      "type": "undefined4",
      "comment": "start of an embedded object with vftable 0x11C9BEC (reversing/CLASSES.md:46)"
+    }
+   ]
+  },
+  {
+   "name": "CList<CCountryTag>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
     }
    ]
   },
@@ -1603,13 +1723,7 @@
      "offset": 40,
      "name": "Members",
      "type": "CList<CCountryTag>",
-     "comment": "read by CFaction::GetMembers"
-    },
-    {
-     "offset": 48,
-     "name": "NumberOfMembers",
-     "type": "int",
-     "comment": "read by CFaction::GetNumberOfMembers"
+     "comment": "read by CFaction::GetMembers\n+0x8 inside it: NumberOfMembers (int) - read by CFaction::GetNumberOfMembers"
     },
     {
      "offset": 172,
@@ -1680,6 +1794,36 @@
    ]
   },
   {
+   "name": "CList<CTradeRoute*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
    "name": "CDiplomacyStatus",
    "size": null,
    "fields": [
@@ -1710,7 +1854,7 @@
     {
      "offset": 96,
      "name": "TradeRoutes",
-     "type": "CList<CTradeRoute *>",
+     "type": "CList<CTradeRoute*>",
      "comment": "read by CDiplomacyStatus::GetTradeRoutes"
     },
     {
@@ -1735,13 +1879,7 @@
      "offset": 696,
      "name": "Units",
      "type": "CUnitList",
-     "comment": "read by CProvince::GetUnits"
-    },
-    {
-     "offset": 704,
-     "name": "NumberOfUnits",
-     "type": "int const",
-     "comment": "read by CProvince::GetNumberOfUnits"
+     "comment": "read by CProvince::GetUnits\n+0x8 inside it: NumberOfUnits (int const) - read by CProvince::GetNumberOfUnits"
     },
     {
      "offset": 812,
@@ -1770,6 +1908,36 @@
    ]
   },
   {
+   "name": "CList<CRegiment*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
    "name": "CUnit",
    "size": null,
    "fields": [
@@ -1777,7 +1945,7 @@
      "offset": 484,
      "name": "Children",
      "type": "CUnitList",
-     "comment": "read by CUnit::GetChildren\nBiceLib: lower_oob_unit_linked_list_first_ptr (undefined4) - child units list, first (BiceLib/GameClasses/CUnit.hpp:46)"
+     "comment": "read by CUnit::GetChildren"
     },
     {
      "offset": 4,
@@ -1799,21 +1967,9 @@
     },
     {
      "offset": 56,
-     "name": "regiments_linked_list_first_ptr",
-     "type": "undefined4",
-     "comment": "__CList of CRegiment, first (BiceLib/GameClasses/CUnit.hpp:21)"
-    },
-    {
-     "offset": 60,
-     "name": "regiments_linked_list_last_ptr",
-     "type": "undefined4",
-     "comment": "__CList of CRegiment, last (BiceLib/GameClasses/CUnit.hpp:22)"
-    },
-    {
-     "offset": 64,
-     "name": "regiments_amount",
-     "type": "int",
-     "comment": "regiment count (BiceLib/GameClasses/CUnit.hpp:23)"
+     "name": "regiments",
+     "type": "CList<CRegiment*>",
+     "comment": "the unit's own regiments; a CList<CSubUnit*> base in RTTI (BiceLib/GameClasses/CUnit.hpp:26)"
     },
     {
      "offset": 164,
@@ -1865,15 +2021,9 @@
     },
     {
      "offset": 292,
-     "name": "owner_tag",
-     "type": "char[4]",
-     "comment": "owner country tag (BiceLib/GameClasses/CUnit.hpp:32)"
-    },
-    {
-     "offset": 296,
-     "name": "owner_id",
-     "type": "int",
-     "comment": "owner country id (BiceLib/GameClasses/CUnit.hpp:33)"
+     "name": "owner",
+     "type": "CCountryTag",
+     "comment": "the owner (BiceLib/GameClasses/CUnit.hpp:35)"
     },
     {
      "offset": 300,
@@ -1920,14 +2070,8 @@
     {
      "offset": 364,
      "name": "name",
-     "type": "char[16]",
-     "comment": "Hoi3CString buffer of the unit name (BiceLib/GameClasses/CUnit.hpp:41)"
-    },
-    {
-     "offset": 380,
-     "name": "name_length",
-     "type": "int",
-     "comment": "Hoi3CString length of the unit name (BiceLib/GameClasses/CUnit.hpp:42)"
+     "type": "Hoi3CString",
+     "comment": "the unit's name (BiceLib/GameClasses/CUnit.hpp:43)"
     },
     {
      "offset": 456,
@@ -1946,18 +2090,6 @@
      "name": "higher_oob_unit_ptr",
      "type": "CUnit*",
      "comment": "parent unit in the order of battle (BiceLib/GameClasses/CUnit.hpp:45)"
-    },
-    {
-     "offset": 488,
-     "name": "lower_oob_unit_linked_list_last_ptr",
-     "type": "undefined4",
-     "comment": "child units list, last (BiceLib/GameClasses/CUnit.hpp:47)"
-    },
-    {
-     "offset": 492,
-     "name": "lower_oob_unit_amount",
-     "type": "int",
-     "comment": "child unit count (BiceLib/GameClasses/CUnit.hpp:48)"
     },
     {
      "offset": 500,
@@ -2280,6 +2412,66 @@
    ]
   },
   {
+   "name": "CList<CTheatre*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
+   "name": "CList<CCountryWarTargetValue*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
    "name": "CAIStrategy",
    "size": null,
    "fields": [
@@ -2292,14 +2484,32 @@
     {
      "offset": 228,
      "name": "Theatres",
-     "type": "CList<CTheatre *>",
+     "type": "CList<CTheatre*>",
      "comment": "read by CAIStrategy::GetTheatres"
     },
     {
      "offset": 328,
      "name": "WarTargets",
-     "type": "CList<CCountryWarTargetValue *>",
+     "type": "CList<CCountryWarTargetValue*>",
      "comment": "read by CAIStrategy::GetWarTargets"
+    }
+   ]
+  },
+  {
+   "name": "CModifier",
+   "size": 44,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "persistent_meta",
+     "type": "int",
+     "comment": "0x18D (BiceLib/GameClasses/CModifier.hpp:29)"
+    },
+    {
+     "offset": 24,
+     "name": "values",
+     "type": "CModifierEntry*",
+     "comment": "one entry per ModifierType, indexed by it; CModifier::GetValue reads [this+0x18][type*8] (BiceLib/GameClasses/CModifier.hpp:45)"
     }
    ]
   },
@@ -2346,6 +2556,30 @@
    ]
   },
   {
+   "name": "CFlags",
+   "size": null,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "root",
+     "type": "CTernaryNode*",
+     "comment": "the tree's root node (BiceLib/GameClasses/CFlags.hpp:20)"
+    }
+   ]
+  },
+  {
+   "name": "CVariables",
+   "size": null,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "root",
+     "type": "CTernaryNode*",
+     "comment": "the tree's root node (BiceLib/GameClasses/CFlags.hpp:20)"
+    }
+   ]
+  },
+  {
    "name": "CBrigadeConstructionDefinition",
    "size": null,
    "fields": [
@@ -2358,13 +2592,43 @@
    ]
   },
   {
+   "name": "CList<CBrigadeConstructionDefinition*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
    "name": "CMilitaryConstruction",
    "size": null,
    "fields": [
     {
      "offset": 124,
      "name": "Brigades",
-     "type": "CList<CBrigadeConstructionDefinition *>",
+     "type": "CList<CBrigadeConstructionDefinition*>",
      "comment": "read by CMilitaryConstruction::GetBrigades"
     }
    ]
@@ -2378,6 +2642,216 @@
      "name": "Size",
      "type": "int",
      "comment": "read by CConstruction::GetSize"
+    }
+   ]
+  },
+  {
+   "name": "CList<CConvoy*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
+   "name": "CList<CMinister*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
+   "name": "CList<CTechnology const*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
+   "name": "CList<CProvince*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
+   "name": "CList<CConstruction*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
+   "name": "CList",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
+   "name": "CList<CLeader*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
     }
    ]
   },
@@ -2400,8 +2874,8 @@
     {
      "offset": 160,
      "name": "Convoys",
-     "type": "CList<CConvoy *>",
-     "comment": "read by CCountry::GetConvoys\nBiceLib: convoys_list_first_ptr (undefined4) - list of CConvoy* {first, last, count}, nodes {data, prev, next} (BiceLib/GameClasses/CCountry.hpp:26)"
+     "type": "CList<CConvoy*>",
+     "comment": "read by CCountry::GetConvoys"
     },
     {
      "offset": 176,
@@ -2454,13 +2928,13 @@
     {
      "offset": 352,
      "name": "PossibleMinisters",
-     "type": "CList<CMinister *>",
+     "type": "CList<CMinister*>",
      "comment": "read by CCountry::GetPossibleMinisters"
     },
     {
      "offset": 368,
      "name": "HistoricalMinisters",
-     "type": "CList<CMinister *>",
+     "type": "CList<CMinister*>",
      "comment": "read by CCountry::GetHistoricalMinisters"
     },
     {
@@ -2496,20 +2970,14 @@
     {
      "offset": 1560,
      "name": "Ministers",
-     "type": "CArray<CMinister *>",
+     "type": "CArray<CMinister*>",
      "comment": "read by CCountry::GetMinisters"
     },
     {
      "offset": 1592,
      "name": "CurrentResearch",
-     "type": "CList<CTechnology const *>",
-     "comment": "read by CCountry::GetCurrentResearch"
-    },
-    {
-     "offset": 1600,
-     "name": "NumberOfCurrentResearch",
-     "type": "int",
-     "comment": "read by CCountry::GetNumberOfCurrentResearch"
+     "type": "CList<CTechnology const*>",
+     "comment": "read by CCountry::GetCurrentResearch\n+0x8 inside it: NumberOfCurrentResearch (int) - read by CCountry::GetNumberOfCurrentResearch"
     },
     {
      "offset": 1868,
@@ -2569,37 +3037,25 @@
      "offset": 2988,
      "name": "Units",
      "type": "CUnitList",
-     "comment": "read by CCountry::GetUnits\nBiceLib: units_linked_list_first_ptr (undefined4) - head of the list of the country's units at every level (BiceLib/GameClasses/CCountry.hpp:35)"
+     "comment": "read by CCountry::GetUnits"
     },
     {
      "offset": 3236,
      "name": "CountryTag",
      "type": "CCountryTag",
-     "comment": "read by CCountry::GetCountryTag\n+0x4 inside it: country_id_ca8 (int) - read as the country id by the offmap IC hook; not otherwise checked (BiceLib/Hooks/HookedPatches.cpp:15)"
+     "comment": "read by CCountry::GetCountryTag"
     },
     {
      "offset": 3312,
      "name": "OwnedProvinces",
      "type": "CList<int>",
-     "comment": "read by CCountry::GetOwnedProvinces"
-    },
-    {
-     "offset": 3320,
-     "name": "NumberOfOwnedProvinces",
-     "type": "int",
-     "comment": "read by CCountry::GetNumberOfOwnedProvinces"
+     "comment": "read by CCountry::GetOwnedProvinces\n+0x8 inside it: NumberOfOwnedProvinces (int) - read by CCountry::GetNumberOfOwnedProvinces"
     },
     {
      "offset": 3328,
      "name": "ControlledProvinces",
      "type": "CList<int>",
-     "comment": "read by CCountry::GetControlledProvinces"
-    },
-    {
-     "offset": 3336,
-     "name": "NumberOfControlledProvinces",
-     "type": "int",
-     "comment": "read by CCountry::GetNumberOfControlledProvinces"
+     "comment": "read by CCountry::GetControlledProvinces\n+0x8 inside it: NumberOfControlledProvinces (int) - read by CCountry::GetNumberOfControlledProvinces"
     },
     {
      "offset": 3344,
@@ -2610,26 +3066,20 @@
     {
      "offset": 3440,
      "name": "AirBases",
-     "type": "CList<CProvince *>",
-     "comment": "read by CCountry::GetAirBases"
-    },
-    {
-     "offset": 3448,
-     "name": "NumOfAirfields",
-     "type": "int",
-     "comment": "read by CCountry::GetNumOfAirfields"
+     "type": "CList<CProvince*>",
+     "comment": "read by CCountry::GetAirBases\n+0x8 inside it: NumOfAirfields (int) - read by CCountry::GetNumOfAirfields"
     },
     {
      "offset": 3456,
      "name": "NavalBases",
-     "type": "CList<CProvince *>",
+     "type": "CList<CProvince*>",
      "comment": "read by CCountry::GetNavalBases"
     },
     {
      "offset": 3472,
      "name": "GlobalModifier",
      "type": "CModifier",
-     "comment": "read by CCountry::GetGlobalModifier"
+     "comment": "read by CCountry::GetGlobalModifier\nBiceLib: global_modifier (CModifier) - the country's modifier totals (BiceLib/GameClasses/CCountry.hpp:70)"
     },
     {
      "offset": 3516,
@@ -2658,7 +3108,7 @@
     {
      "offset": 3624,
      "name": "Diplomacy",
-     "type": "CArray<CDiplomacyStatus *>",
+     "type": "CArray<CDiplomacyStatus*>",
      "comment": "read by CCountry::GetDiplomacy"
     },
     {
@@ -2670,7 +3120,7 @@
     {
      "offset": 3904,
      "name": "Constructions",
-     "type": "CList<CConstruction *>",
+     "type": "CList<CConstruction*>",
      "comment": "read by CCountry::GetConstructions"
     },
     {
@@ -2752,46 +3202,16 @@
      "comment": "read by CCountry::GetHighestThreat"
     },
     {
-     "offset": 164,
-     "name": "convoys_list_last_ptr",
-     "type": "undefined4",
-     "comment": "convoy list last node (BiceLib/GameClasses/CCountry.hpp:27)"
-    },
-    {
-     "offset": 168,
-     "name": "convoys_count",
-     "type": "int",
-     "comment": "convoy count (BiceLib/GameClasses/CCountry.hpp:28)"
-    },
-    {
-     "offset": 388,
-     "name": "flags_tree_root_ptr",
-     "type": "undefined4",
-     "comment": "root of the flags tree, one word past the vftable of the CFlags held inline at +0x180 (BiceLib/GameClasses/CCountry.hpp:18)"
-    },
-    {
-     "offset": 432,
-     "name": "variables_tree_root_ptr",
-     "type": "undefined4",
-     "comment": "root of the variables tree, one word past the vftable of the CVariables held inline at +0x1AC (BiceLib/GameClasses/CCountry.hpp:19)"
-    },
-    {
      "offset": 484,
      "name": "tag",
-     "type": "char[4]",
-     "comment": "country tag, three characters and a NUL (BiceLib/GameClasses/CCountry.hpp:13)"
-    },
-    {
-     "offset": 488,
-     "name": "id",
-     "type": "int",
-     "comment": "country id (BiceLib/GameClasses/CCountry.hpp:14)"
+     "type": "CCountryTag",
+     "comment": "the country's tag and id, as BiceLib reads them (BiceLib/GameClasses/CCountry.hpp:21)"
     },
     {
      "offset": 1608,
-     "name": "active_modifiers_list_first_ptr",
-     "type": "undefined4",
-     "comment": "head of the list of modifiers currently on the country (BiceLib/GameClasses/CCountry.hpp:31)"
+     "name": "active_modifiers",
+     "type": "CList",
+     "comment": "the modifiers on the country, a list (BiceLib/GameClasses/CCountry.hpp:58)"
     },
     {
      "offset": 2552,
@@ -2800,28 +3220,10 @@
      "comment": "pool GetPool answers for a government in exile (BiceLib/GameClasses/CCountry.hpp:61)"
     },
     {
-     "offset": 3496,
-     "name": "general_modifiers_array_ptr",
-     "type": "GeneralModifierEntry*",
-     "comment": "modifier totals, one {value, definition} pair per general modifier (143) (BiceLib/GameClasses/CCountry.hpp:38)"
-    },
-    {
      "offset": 3600,
-     "name": "leaders_list_first_ptr",
-     "type": "undefined4",
-     "comment": "list of CLeader* {first, last, count} (BiceLib/GameClasses/CCountry.hpp:51)"
-    },
-    {
-     "offset": 3604,
-     "name": "leaders_list_last_ptr",
-     "type": "undefined4",
-     "comment": "leader list last node (BiceLib/GameClasses/CCountry.hpp:52)"
-    },
-    {
-     "offset": 3608,
-     "name": "leaders_count",
-     "type": "int",
-     "comment": "leader count (BiceLib/GameClasses/CCountry.hpp:53)"
+     "name": "leaders",
+     "type": "CList<CLeader*>",
+     "comment": "the country's leaders (BiceLib/GameClasses/CCountry.hpp:83)"
     }
    ]
   },
@@ -2875,7 +3277,7 @@
   },
   {
    "name": "CList<CSubUnitConstructionEntry>",
-   "size": null,
+   "size": 16,
    "fields": [
     {
      "offset": 4,
@@ -3018,42 +3420,6 @@
    ]
   },
   {
-   "name": "CCountryTreeNode",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "name",
-     "type": "undefined4",
-     "comment": "node name (start of the node); also the element (BiceLib/GameClasses/CCountry.hpp:84)"
-    },
-    {
-     "offset": 8,
-     "name": "parent",
-     "type": "undefined4",
-     "comment": "parent node (BiceLib/GameClasses/CCountry.hpp:86)"
-    },
-    {
-     "offset": 12,
-     "name": "sibling",
-     "type": "undefined4",
-     "comment": "sibling node (BiceLib/GameClasses/CCountry.hpp:87)"
-    },
-    {
-     "offset": 16,
-     "name": "child",
-     "type": "undefined4",
-     "comment": "child node (BiceLib/GameClasses/CCountry.hpp:88)"
-    },
-    {
-     "offset": 28,
-     "name": "variable_value",
-     "type": "int",
-     "comment": "value of a variable node (BiceLib/GameClasses/CCountry.hpp:89)"
-    }
-   ]
-  },
-  {
    "name": "ActiveModifier",
    "size": null,
    "fields": [
@@ -3080,36 +3446,6 @@
      "name": "name",
      "type": "Hoi3CString",
      "comment": "modifier name (BiceLib/GameClasses/CCountry.hpp:99)"
-    }
-   ]
-  },
-  {
-   "name": "GeneralModifierEntry",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "value",
-     "type": "int",
-     "comment": "modifier total (BiceLib/GameClasses/CCountry.hpp:108)"
-    },
-    {
-     "offset": 4,
-     "name": "definition_ptr",
-     "type": "GeneralModifierDefinition*",
-     "comment": "the modifier's definition (BiceLib/GameClasses/CCountry.hpp:109)"
-    }
-   ]
-  },
-  {
-   "name": "GeneralModifierDefinition",
-   "size": null,
-   "fields": [
-    {
-     "offset": 4,
-     "name": "name",
-     "type": "Hoi3CString",
-     "comment": "modifier name (BiceLib/GameClasses/CCountry.hpp:110)"
     }
    ]
   },
@@ -3143,27 +3479,45 @@
     },
     {
      "offset": 4868,
-     "name": "selection_first",
-     "type": "undefined4",
-     "comment": "selection list start (BiceLib/GameClasses/CInGameIdler.hpp:70)"
-    },
-    {
-     "offset": 4872,
-     "name": "selection_last",
-     "type": "undefined4",
-     "comment": "selection list end (BiceLib/GameClasses/CInGameIdler.hpp:71)"
-    },
-    {
-     "offset": 4876,
-     "name": "selection_count",
-     "type": "int",
-     "comment": "probably the number of selected things; unchecked (BiceLib/GameClasses/CInGameIdler.hpp:78)"
+     "name": "selection",
+     "type": "CList",
+     "comment": "the selected things (BiceLib/GameClasses/CInGameIdler.hpp:74)"
     },
     {
      "offset": 48,
      "name": "map_mode_table",
      "type": "undefined4",
      "comment": "table with an entry per map mode; the colouring dispatch only runs a mode's routine where its entry is 1 (reversing/FINDINGS-mapmode.md:134)"
+    }
+   ]
+  },
+  {
+   "name": "CList<CTrait*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
     }
    ]
   },
@@ -3179,21 +3533,9 @@
     },
     {
      "offset": 48,
-     "name": "trait_ll_start",
-     "type": "undefined4",
-     "comment": "trait list first node {data, prev, next} (BiceLib/GameClasses/CLeader.hpp:10)"
-    },
-    {
-     "offset": 52,
-     "name": "trait_ll_end",
-     "type": "undefined4",
-     "comment": "trait list last node (BiceLib/GameClasses/CLeader.hpp:11)"
-    },
-    {
-     "offset": 56,
-     "name": "number_of_traits",
-     "type": "int",
-     "comment": "trait count (BiceLib/GameClasses/CLeader.hpp:12)"
+     "name": "traits",
+     "type": "CList<CTrait*>",
+     "comment": "the leader's traits (BiceLib/GameClasses/CLeader.hpp:10)"
     },
     {
      "offset": 64,
@@ -3203,15 +3545,9 @@
     },
     {
      "offset": 68,
-     "name": "country_tag",
-     "type": "char[4]",
-     "comment": "country tag (disabled in source, unverified) (BiceLib/GameClasses/CLeader.hpp:14)"
-    },
-    {
-     "offset": 72,
-     "name": "country_id",
-     "type": "int",
-     "comment": "country id (disabled in source, unverified) (BiceLib/GameClasses/CLeader.hpp:15)"
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "the leader's country (mem) (BiceLib/GameClasses/CLeader.hpp:12)"
     },
     {
      "offset": 76,
@@ -3323,15 +3659,33 @@
     },
     {
      "offset": 10888,
-     "name": "player_tag",
-     "type": "char[4]",
-     "comment": "player tag, unverified (BiceLib/GameClasses/CMap.hpp:65)"
+     "name": "player",
+     "type": "CCountryTag",
+     "comment": "the player (mem, unverified) (BiceLib/GameClasses/CMap.hpp:65)"
+    }
+   ]
+  },
+  {
+   "name": "CProvinceModifier",
+   "size": 48,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "persistent_meta",
+     "type": "int",
+     "comment": "0x18D (BiceLib/GameClasses/CModifier.hpp:29)"
     },
     {
-     "offset": 10892,
-     "name": "player_id",
-     "type": "int",
-     "comment": "player id, unverified (BiceLib/GameClasses/CMap.hpp:66)"
+     "offset": 24,
+     "name": "values",
+     "type": "CModifierEntry*",
+     "comment": "one entry per ModifierType, indexed by it (the CModifier base) (BiceLib/GameClasses/CModifier.hpp:45)"
+    },
+    {
+     "offset": 44,
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "the province it belongs to (BiceLib/GameClasses/CModifier.hpp:51)"
     }
    ]
   },
@@ -3382,10 +3736,10 @@
      "comment": "the province's template: edges to neighbours and terrain (BiceLib/GameClasses/CMapProvince.hpp:21)"
     },
     {
-     "offset": 276,
-     "name": "CModifierDefinitions_ptr",
-     "type": "CModifierDefinitions*",
-     "comment": "the province's local modifiers (BiceLib/GameClasses/CMapProvince.hpp:9)"
+     "offset": 252,
+     "name": "modifier",
+     "type": "CProvinceModifier",
+     "comment": "the province's local modifiers (BiceLib/GameClasses/CMapProvince.hpp:23)"
     },
     {
      "offset": 348,
@@ -3491,27 +3845,15 @@
     },
     {
      "offset": 812,
-     "name": "owner_tag",
-     "type": "char[4]",
-     "comment": "owner country tag (BiceLib/GameClasses/CMapProvince.hpp:189)"
-    },
-    {
-     "offset": 816,
-     "name": "owner_id",
-     "type": "int",
-     "comment": "owner country id (BiceLib/GameClasses/CMapProvince.hpp:190)"
+     "name": "owner",
+     "type": "CCountryTag",
+     "comment": "the owner (BiceLib/GameClasses/CMapProvince.hpp:210)"
     },
     {
      "offset": 820,
-     "name": "controller_tag",
-     "type": "char[4]",
-     "comment": "controller country tag (BiceLib/GameClasses/CMapProvince.hpp:191)"
-    },
-    {
-     "offset": 824,
-     "name": "controller_id",
-     "type": "int",
-     "comment": "controller country id (BiceLib/GameClasses/CMapProvince.hpp:192)"
+     "name": "controller",
+     "type": "CCountryTag",
+     "comment": "the controller (BiceLib/GameClasses/CMapProvince.hpp:211)"
     },
     {
      "offset": 880,
@@ -3524,72 +3866,6 @@
      "name": "intel_country_count",
      "type": "int",
      "comment": "number of entries in the intel array (BiceLib/GameClasses/CMapProvince.hpp:55)"
-    }
-   ]
-  },
-  {
-   "name": "CModifierDefinitions",
-   "size": null,
-   "fields": [
-    {
-     "offset": 104,
-     "name": "supply_capacity_scale_68",
-     "type": "int",
-     "comment": "scales +0x60 in the supply capacity calculation (BiceLib/GameClasses/CMapProvince.hpp:93)"
-    },
-    {
-     "offset": 112,
-     "name": "supply_capacity_scale_70",
-     "type": "int",
-     "comment": "scales +0x60 in the supply capacity calculation (BiceLib/GameClasses/CMapProvince.hpp:93)"
-    },
-    {
-     "offset": 128,
-     "name": "local_ic",
-     "type": "int",
-     "comment": "local IC modifier (BiceLib/GameClasses/CMapProvince.hpp:200)"
-    },
-    {
-     "offset": 144,
-     "name": "local_oil",
-     "type": "int",
-     "comment": "local oil modifier (BiceLib/GameClasses/CMapProvince.hpp:201)"
-    },
-    {
-     "offset": 160,
-     "name": "local_energy",
-     "type": "int",
-     "comment": "local energy modifier (BiceLib/GameClasses/CMapProvince.hpp:202)"
-    },
-    {
-     "offset": 176,
-     "name": "local_metal",
-     "type": "int",
-     "comment": "local metal modifier (BiceLib/GameClasses/CMapProvince.hpp:203)"
-    },
-    {
-     "offset": 192,
-     "name": "local_rares",
-     "type": "int",
-     "comment": "local rare materials modifier (BiceLib/GameClasses/CMapProvince.hpp:204)"
-    },
-    {
-     "offset": 256,
-     "name": "local_leadership",
-     "type": "int",
-     "comment": "local leadership modifier (BiceLib/GameClasses/CMapProvince.hpp:205)"
-    },
-    {
-     "offset": 96,
-     "name": "local_infrastructure",
-     "type": "int",
-     "comment": "infrastructure as a fraction in thousandths; the Infrastructure loop scales it to level 0-10; also read for supply capacity (reversing/FINDINGS-mapmode.md:377)"
-    },
-    {
-     "offset": 120,
-     "name": "base_ic",
-     "type": "int",
-     "comment": "province base IC (BiceLib/Hooks/HookedPatches.cpp:13)"
     }
    ]
   },
@@ -3916,6 +4192,18 @@
    "size": null,
    "fields": [
     {
+     "offset": 16,
+     "name": "attacker",
+     "type": "CCountryTag",
+     "comment": "the attacking side's country, or --- (BiceLib/GameClasses/CCombatManager.hpp:54)"
+    },
+    {
+     "offset": 24,
+     "name": "defender",
+     "type": "CCountryTag",
+     "comment": "the defending side's country, or --- (BiceLib/GameClasses/CCombatManager.hpp:55)"
+    },
+    {
      "offset": 4,
      "name": "persistent_meta",
      "type": "int",
@@ -3932,30 +4220,6 @@
      "name": "kind",
      "type": "int",
      "comment": "1 land, 2 naval, 3 air, 4-6 bombings (reversing/FINDINGS-combat.md:50)"
-    },
-    {
-     "offset": 16,
-     "name": "attacker_tag",
-     "type": "char[4]",
-     "comment": "attacker tag when it won, else --- (reversing/FINDINGS-combat.md:51)"
-    },
-    {
-     "offset": 20,
-     "name": "attacker_id",
-     "type": "int",
-     "comment": "attacker id, 0 when --- (reversing/FINDINGS-combat.md:52)"
-    },
-    {
-     "offset": 24,
-     "name": "defender_tag",
-     "type": "char[4]",
-     "comment": "defender tag when it won, else --- (reversing/FINDINGS-combat.md:53)"
-    },
-    {
-     "offset": 28,
-     "name": "defender_id",
-     "type": "int",
-     "comment": "defender id (reversing/FINDINGS-combat.md:54)"
     },
     {
      "offset": 32,
@@ -4244,6 +4508,108 @@
      "name": "supply_capacity_define_224",
      "type": "int",
      "comment": "define used by the supply capacity function (BiceLib/GameClasses/CMapProvince.hpp:93)"
+    }
+   ]
+  },
+  {
+   "name": "CModifierEntry",
+   "size": 8,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "value",
+     "type": "int",
+     "comment": "a CFixedPoint, thousandths (BiceLib/GameClasses/CModifier.hpp:57)"
+    },
+    {
+     "offset": 4,
+     "name": "definition_ptr",
+     "type": "CModifierDefinition*",
+     "comment": "which modifier this is (BiceLib/GameClasses/CModifier.hpp:60)"
+    }
+   ]
+  },
+  {
+   "name": "CModifierDefinition",
+   "size": null,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "the modifier's key, local_ic (BiceLib/GameClasses/CModifier.hpp:178)"
+    }
+   ]
+  },
+  {
+   "name": "CTernaryNode",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "element",
+     "type": "undefined4",
+     "comment": "the CFlag or CVariable ending here, or 0 (BiceLib/GameClasses/CFlags.hpp:29)"
+    },
+    {
+     "offset": 4,
+     "name": "character",
+     "type": "char",
+     "comment": "the character this node stands for (mem) (BiceLib/GameClasses/CFlags.hpp:32)"
+    },
+    {
+     "offset": 8,
+     "name": "parent",
+     "type": "CTernaryNode*",
+     "comment": "where a name added later hangs (mem) (BiceLib/GameClasses/CFlags.hpp:36)"
+    },
+    {
+     "offset": 12,
+     "name": "sibling",
+     "type": "CTernaryNode*",
+     "comment": "sibling node (BiceLib/GameClasses/CFlags.hpp:37)"
+    },
+    {
+     "offset": 16,
+     "name": "child",
+     "type": "CTernaryNode*",
+     "comment": "child node (BiceLib/GameClasses/CFlags.hpp:38)"
+    }
+   ]
+  },
+  {
+   "name": "CFlag",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "the flag's name (BiceLib/GameClasses/CFlags.hpp:49)"
+    },
+    {
+     "offset": 28,
+     "name": "is_set",
+     "type": "unsigned char",
+     "comment": "what CFlags::IsFlagSet answers (BiceLib/GameClasses/CFlags.hpp:53)"
+    }
+   ]
+  },
+  {
+   "name": "CVariable",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "the variable's name (BiceLib/GameClasses/CFlags.hpp:49)"
+    },
+    {
+     "offset": 28,
+     "name": "value",
+     "type": "int",
+     "comment": "a CFixedPoint; what CVariables::GetVariable answers (BiceLib/GameClasses/CFlags.hpp:67)"
     }
    ]
   }

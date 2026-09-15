@@ -467,6 +467,19 @@ def main():
             header = fld["source"].split(":")[0].endswith(".hpp")
             s["fields"].append({"offset": int(fld["offset"], 16), "name": fld["name"], "type": fld["type"],
                                 "comment": "%s (%s)" % (fld["comment"], fld["source"]), "priority": 2 if header else 3})
+    # Every instantiation of the game's CList has the one layout, recorded once in
+    # project.json as "CList"; CUnitList is a CList with nothing added (RTTI: its only
+    # base, at 0, and no vftable). Lay each one the Lua API names out the same way.
+    if "CList" in structs:
+        shape = structs["CList"]
+        lists = {f["type"] for s in structs.values() for f in s["fields"]}
+        for text in lists:
+            base = LX.parse_type(re.sub(r"\[\d+\]$", "", text).replace(" &", "&").replace(" *", "*"), enums)["base"]
+            if base != "CList" and (re.match(r"^CList<.*>$", base) or base == "CUnitList"):
+                s = struct(base)
+                s["size"] = shape["size"]
+                if not s["fields"]:
+                    s["fields"] = [dict(f) for f in shape["fields"]]
     TYPE_MAP = {"pointer": "undefined4", "uintptr_t": "undefined4", "uint8_t": "unsigned char", "int8_t": "signed char",
                 "uint16_t": "unsigned short", "int16_t": "short", "uint32_t": "unsigned int", "int32_t": "int",
                 "DWORD": "unsigned int", "BYTE": "unsigned char", "WORD": "unsigned short"}
@@ -475,7 +488,10 @@ def main():
         if s["size"]:
             struct_sizes[s["name"]] = s["size"]
         for fld in s["fields"]:
-            fld["type"] = TYPE_MAP.get(fld["type"], fld["type"])
+            # One spelling per type, the one structures are named by: `CList<CConvoy *>` and
+            # `CList<CConvoy*>` would otherwise be two names, one of them never laid out.
+            spelled = re.sub(r"\s+([*&])", r"\1", fld["type"])
+            fld["type"] = TYPE_MAP.get(spelled, spelled)
     # How far a structure reaches when no size is recorded: to the end of its furthest
     # field. Only for folding a field into the one that contains it - the script lays a
     # structure out to at least that extent, so what lies inside it is already there.

@@ -2,11 +2,27 @@
 #include <cstdint>
 #include <lua.hpp>
 
+/**
+ * A province holds several objects by value - its goods pools, its modifier, its weather
+ * and the tags of its owner and controller. For those the offset here is where the
+ * object starts, and what is inside it is a second offset from that object's header.
+ */
 namespace CMapProvince {
     namespace Offsets {
         // No terrain offset here: the CTerrain is at +0xC of the province's template,
         // path_node_ptr below. reversing/FINDINGS-mapmode.md covers it.
-        constexpr uintptr_t CModifierDefinitions_ptr = 0x114;
+
+        /**
+         * **The province's local modifiers**, a CProvinceModifier held by value: one
+         * value per CModifier::ModifierType, behind the pointer at
+         * CModifier::Offsets::values. The province's constructor builds it in place
+         * (`0x94848`: CModifier's constructor on `province + 0xFC`, then the
+         * CProvinceModifier vftable). These change what a province produces -
+         * `LOCAL_IC`, `LOCAL_METAL` and the rest - and are not what it has.
+         */
+        constexpr uintptr_t modifier = 0xFC;
+
+        /**@brief the buildings, a pointer to an array of CProvinceBuilding*, see there*/
         constexpr uintptr_t CProvinceBuilding_array_ptr = 0x310;
 
         constexpr uintptr_t id = 0xD0;
@@ -37,8 +53,8 @@ namespace CMapProvince {
          * What each country knows about this province: a pointer to one byte per
          * country, and how many of them there are.
          *
-         * Index it by the country's index, the same one controller_id holds and the
-         * same one the map is drawn for. Check the count first - it is the number of
+         * Index it by the country's id, the one a CCountryTag holds and the same one
+         * the map is drawn for. Check the count first - it is the number of
          * countries in the game, 108 in BlackICE, and a country index past it means
          * there is nothing to read.
          *
@@ -89,8 +105,10 @@ namespace CMapProvince {
          *   capacity      `0x9DD00`, __stdcall(province, int* out): how much a province
          *                 can pass on in a day. A single pull from it is capped at this,
          *                 and demand passed on to it is only accepted up to it. Worked
-         *                 out from the local modifiers at +0x114 (+0x60, scaled by
-         *                 +0x68 and +0x70), two defines (CDefines + 0xAC, + 0x220 and
+         *                 out from the local modifiers (`modifier`: `INFRASTRUCTURE`,
+         *                 scaled by `LOCAL_INFRASTRUCTURE` and `GLOBAL_INFRASTRUCTURE`,
+         *                 which is where the offsets +0x60, +0x68 and +0x70 it reads
+         *                 fall), two defines (CDefines + 0xAC, + 0x220 and
          *                 + 0x224), and the controller's modifiers; unlimited where the
          *                 byte at `unlimited_supply_capacity` is set. It only reads.
          *   supply need   `0x9E020`
@@ -187,23 +205,10 @@ namespace CMapProvince {
 
         constexpr uintptr_t manpower = 0x320;
         constexpr uintptr_t leadership = 0x324;
-        constexpr uintptr_t owner_tag = 0x32C; // four characters, HDS::readTag
-        constexpr uintptr_t owner_id = 0x330;
-        constexpr uintptr_t controller_tag = 0x334; // four characters, HDS::readTag
-        constexpr uintptr_t controller_id = 0x338;
-    }
 
-    /**
-     * The buildings array a province points at. These are the pooled totals the
-     * province shows, not one entry per building.
-     */
-    namespace BuildingOffsets {
-        constexpr uintptr_t ic = 0x80;
-        constexpr uintptr_t oil = 0x90;
-        constexpr uintptr_t energy = 0xA0;
-        constexpr uintptr_t metal = 0xB0;
-        constexpr uintptr_t rares = 0xC0;
-        constexpr uintptr_t leadership = 0x100;
+        /**@brief CCountryTags, the game's `CProvince::GetOwner` and `GetController`*/
+        constexpr uintptr_t owner = 0x32C;
+        constexpr uintptr_t controller = 0x334;
     }
 
     /**
@@ -231,7 +236,7 @@ namespace CMapProvince {
 
     struct CMapProvince
     {
-        uintptr_t CModifierDefinitions_ptr;
+        uintptr_t modifier;
         uintptr_t CProvinceBuilding_array_ptr;
         int id;
         int supply_pool;

@@ -30,7 +30,7 @@ int Hooks::CLeader::getPureSkillAndTraitListNode(DWORD* leaderAddress, HDS::Link
     // Walked by hand rather than through HDS::walkList, because the loop below
     // writes traitListNode->data - it needs the nodes, not what they held.
     HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)
-        *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::trait_ll_start);
+        *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::traits + HDS::ListOffsets::first);
     while (traitListNode != 0) {
         DEBUG_OUT(printf("traitListNode: %#010x \n", (uintptr_t)traitListNode));
         DEBUG_OUT(printf("data: %#010x \n", (uintptr_t)traitListNode->data));
@@ -184,7 +184,7 @@ void Hooks::CLeader::checkRankSpecificTraitsConsistency(DWORD* leaderAddress, DW
     // Walked by hand rather than through HDS::walkList, because the loop below
     // writes traitListNode->data - it needs the nodes, not what they held.
     HDS::LinkedListNodeSingle* traitListNode = (HDS::LinkedListNodeSingle*)
-        *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::trait_ll_start);
+        *(DWORD*)((BYTE*)leaderAddress + ::CLeader::Offsets::traits + HDS::ListOffsets::first);
     while (traitListNode != 0) {
         DEBUG_OUT(printf("traitListNode: %#010x \n", (uintptr_t) traitListNode));
         DEBUG_OUT(printf("data: %#010x \n", (uintptr_t)traitListNode->data));

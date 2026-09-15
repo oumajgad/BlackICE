@@ -6,7 +6,7 @@
  * carries and how much of them it last took.
  *
  * Base CReferenceObject, vftable from RTTI. Every convoy belongs to one country and is
- * reached through that country's list, CCountry::Offsets::convoys_list_first_ptr.
+ * reached through that country's list, CCountry::Offsets::convoys.
  * Convoys are created and removed as the game runs.
  *
  * **The saved fields are read out of the convoy's save writer**, `0xC5600`; the names
@@ -45,9 +45,8 @@ namespace CConvoy {
         constexpr uintptr_t id_type = 0x08;
         constexpr uintptr_t id = 0x0C;
 
-        /**@brief the owner: three characters and a NUL, then the country id*/
-        constexpr uintptr_t owner_tag = 0x30;
-        constexpr uintptr_t owner_id = 0x34;
+        /**@brief the owner, a CCountryTag*/
+        constexpr uintptr_t owner = 0x30;
 
         /**
          * **What it carried at its last sailing**, a CGoodsPool - save key `daily`. One
@@ -99,12 +98,10 @@ namespace CConvoy {
         constexpr uintptr_t is_lend_lease = 0xA1;
 
         /**
-         * **The route**, save key `path`: a `{ first, last, count }` list of nodes
-         * `{ province id, prev, next }`, from the start port to the end port.
+         * **The route**, save key `path`: a list (HDS::ListOffsets) whose nodes each hold
+         * a province id rather than a pointer, from the start port to the end port.
          */
-        constexpr uintptr_t path_first_ptr = 0xB0;
-        constexpr uintptr_t path_last_ptr = 0xB4;
-        constexpr uintptr_t path_count = 0xB8;
+        constexpr uintptr_t path = 0xB0;
 
         /**@brief the ports, as province ids - save keys `start` and `end`*/
         constexpr uintptr_t start_province_id = 0xC0;

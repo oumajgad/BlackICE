@@ -100,7 +100,7 @@ namespace {
         unit.reinforcementsActive =
             readValue<uint8_t>(address + CUnit::Offsets::reinforcements_active) != 0;
 
-        unit.regimentCount = readValue<int32_t>(address + CUnit::Offsets::regiments_amount);
+        unit.regimentCount = readValue<int32_t>(address + CUnit::Offsets::regiments + HDS::ListOffsets::count);
         if (unit.regimentCount < 0 || unit.regimentCount > 1000) {
             unit.regimentCount = 0;
         }
@@ -289,7 +289,7 @@ Oob::Tree Oob::read(uintptr_t country) {
     };
 
     std::vector<Pending> pending;
-    const std::vector<uintptr_t> topLevel = HDS::walkList(country + CCountry::Offsets::units_linked_list_first_ptr);
+    const std::vector<uintptr_t> topLevel = HDS::walkList(country + CCountry::Offsets::units);
     for (size_t i = 0; i < topLevel.size(); i++) {
         pending.push_back(Pending{ topLevel[i], -1 });
     }
@@ -326,7 +326,7 @@ Oob::Tree Oob::read(uintptr_t country) {
         tree.units.push_back(readUnit(address, branch));
         foundUnder.push_back(pending[at].foundUnder);
 
-        const std::vector<uintptr_t> below = HDS::walkList(address + CUnit::Offsets::lower_oob_unit_linked_list_first_ptr);
+        const std::vector<uintptr_t> below = HDS::walkList(address + CUnit::Offsets::children);
         for (size_t c = 0; c < below.size(); c++) {
             pending.push_back(Pending{ below[c], index });
         }
@@ -418,7 +418,7 @@ std::vector<Oob::Regiment> Oob::regiments(uintptr_t unit) {
         return found;
     }
 
-    const std::vector<uintptr_t> addresses = HDS::walkList(unit + CUnit::Offsets::regiments_linked_list_first_ptr);
+    const std::vector<uintptr_t> addresses = HDS::walkList(unit + CUnit::Offsets::regiments);
     found.reserve(addresses.size());
 
     for (size_t i = 0; i < addresses.size(); i++) {

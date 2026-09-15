@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 
+#include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CLeader.hpp>
 #include <GameClasses/CTrait.hpp>
 #include <GameClasses/CUnit.hpp>
@@ -54,7 +55,7 @@ std::unordered_map<std::string, Hooks::CArmy::CommandLimitTrait*>* Hooks::CArmy:
 int getTraitsEffect(DWORD leaderAddress) {
     int res = 0;
     const std::vector<uintptr_t> traits =
-        HDS::walkList(leaderAddress + CLeader::Offsets::trait_ll_start);
+        HDS::walkList(leaderAddress + CLeader::Offsets::traits);
     for (size_t i = 0; i < traits.size(); i++) {
         const uintptr_t trait = traits[i];
         std::string traitNameAsString = HDS::readString(trait + CTrait::Offsets::name);
@@ -76,10 +77,10 @@ int getAttachedBrigadesAmount(DWORD* higherUnitAddress) {
 
     DEBUG_OUT(printf("getAttachedBrigadesAmount higherUnitAddress: %#010x \n", (uintptr_t)higherUnitAddress));
     const std::vector<uintptr_t> attached = HDS::walkList(
-        (uintptr_t)higherUnitAddress + CUnit::Offsets::lower_oob_unit_linked_list_first_ptr);
+        (uintptr_t)higherUnitAddress + CUnit::Offsets::children);
     for (size_t i = 0; i < attached.size(); i++) {
         const uintptr_t unit = attached[i];
-        DWORD brigadesAmount = unitField(unit, CUnit::Offsets::regiments_amount);
+        DWORD brigadesAmount = unitField(unit, CUnit::Offsets::regiments + HDS::ListOffsets::count);
         DWORD oobLevel = unitField(unit, CUnit::Offsets::oob_level);
         if (brigadesAmount == 1 && oobLevel == CUnit::Level::Division) { // brigades are held as divisions
             res++;
@@ -97,14 +98,14 @@ DWORD handleUnitAttachmentLimit(DWORD currentlyAttachedUnitAmount, DWORD* unitTo
 
     DWORD newLimit = 5;
 
-    DWORD brigadesAmount = unitField(unitToAttach, CUnit::Offsets::regiments_amount);
+    DWORD brigadesAmount = unitField(unitToAttach, CUnit::Offsets::regiments + HDS::ListOffsets::count);
     DWORD oobLevel = unitField(unitToAttach, CUnit::Offsets::oob_level);
     DEBUG_OUT(printf("brigadesAmount: %d \n", brigadesAmount));
     if (brigadesAmount == 1 && oobLevel == CUnit::Level::Division) {
         return 999;
     }
 
-    DWORD tagId = unitField(unitToAttach, CUnit::Offsets::owner_id);
+    DWORD tagId = unitField(unitToAttach, CUnit::Offsets::owner + CCountryTag::Offsets::id);
     DEBUG_OUT(printf("tagId: %d \n", tagId));
     DWORD* higherUnit = (DWORD*)unitField(lastCountedUnit, CUnit::Offsets::higher_oob_unit_ptr);
     DEBUG_OUT(printf("higherUnit: %#010x \n", (unsigned int) higherUnit));

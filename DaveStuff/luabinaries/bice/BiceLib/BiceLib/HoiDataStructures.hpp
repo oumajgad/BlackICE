@@ -35,6 +35,39 @@ namespace HDS {
         constexpr uintptr_t prev = 0x4;
         constexpr uintptr_t next = 0x8;
     }
+
+    /**
+     * **The game's `CList<T>`**, which classes hold by value rather than point at: the
+     * first node, the last node, how many there are and a byte, sixteen bytes and no
+     * vftable. The nodes are LinkedListNodeSingle. walkList takes the address of the
+     * list itself.
+     *
+     * An owner's offset for one of these is where the list starts; the fields are this
+     * second offset. The game's own accessors bear the layout out: its Lua API reads a
+     * country's `OwnedProvinces` list at `+0xCF0` and `NumberOfOwnedProvinces` at
+     * `+0xCF8`, and a province's `Units` at `+0x2B8` and `NumberOfUnits` at `+0x2C0`. The
+     * country's named lists sit 0x10 apart, its constructor clears three dwords and a byte
+     * for each, and luabind allocates 0x10 bytes for the one list it constructs.
+     */
+    namespace ListOffsets {
+        constexpr uintptr_t first = 0x0;
+        constexpr uintptr_t last = 0x4;
+        constexpr uintptr_t count = 0x8;
+
+        /**@brief a byte the constructors clear; what it means is not known*/
+        constexpr uintptr_t flag = 0xC;
+
+        constexpr uintptr_t SIZE = 0x10;
+    }
+
+    /**@brief where the parts of a Hoi3CString sit, for a string held inside an object*/
+    namespace StringOffsets {
+        constexpr uintptr_t text = 0x0;       // the characters, or a pointer past fifteen
+        constexpr uintptr_t length = 0x10;
+        constexpr uintptr_t capacity = 0x14;
+
+        constexpr uintptr_t SIZE = 0x18;
+    }
     struct Hoi3CString
     {
         char stringData [16];

@@ -1,6 +1,7 @@
 #include <GameState/Periodics.hpp>
 #include <GameState/GameClock.hpp>
 #include <GameClasses/CCountry.hpp>
+#include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CCurrentGameState.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <HoiDataStructures.hpp>
@@ -35,7 +36,7 @@ namespace {
         current.playerTag = HDS::readTag(state + CCurrentGameState::Offsets::player_tag);
         const uintptr_t country = CCountry::findByTag(current.playerTag);
         int32_t id = -1;
-        if (country == 0 || !Mem::tryRead(country + CCountry::Offsets::id, id)
+        if (country == 0 || !Mem::tryRead(country + CCountry::Offsets::tag + CCountryTag::Offsets::id, id)
             || id < 0 || id >= 300) {
             return;
         }

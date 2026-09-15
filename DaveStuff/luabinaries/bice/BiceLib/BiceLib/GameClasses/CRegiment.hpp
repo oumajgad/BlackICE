@@ -4,8 +4,7 @@
 /**
  * CRegiment - one regiment, brigade or ship inside a unit.
  *
- * The unit holds them in the list at CUnit::Offsets::regiments_linked_list_first_ptr,
- * with the count beside it. The order of battle reads air and naval sub units through
+ * The unit holds them in the list at CUnit::Offsets::regiments. The order of battle reads air and naval sub units through
  * these same offsets and has never shown anything that looked wrong, but only the land
  * case is known to be CRegiment: the class name comes from RTTI, the layout from the
  * memory map in DaveStuff/mem.

@@ -7,13 +7,10 @@
 namespace CLeader {
     namespace Offsets {
         constexpr uintptr_t id = 0xC;
-        constexpr uintptr_t trait_ll_start = 0x30;
-        constexpr uintptr_t trait_ll_end = 0x34;
-        constexpr uintptr_t number_of_traits = 0x38;
+        constexpr uintptr_t traits = 0x30;           // a list (HDS::ListOffsets) of CTrait*
         constexpr uintptr_t unit_ptr = 0x40;
-        // constexpr uintptr_t country_tag = 0x44;
-        // constexpr uintptr_t country_id = 0x48;
-        constexpr uintptr_t name = 0x4C;
+        // constexpr uintptr_t country = 0x44;       // a CCountryTag
+        constexpr uintptr_t name = 0x4C;             // a Hoi3CString
         // constexpr uintptr_t type = 0x68;
         constexpr uintptr_t rank = 0x6C;
         constexpr uintptr_t skill = 0x70;

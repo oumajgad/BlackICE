@@ -17,6 +17,7 @@
 #include <HoiDataStructures.hpp>
 
 #include <GameClasses/CCountry.hpp>
+#include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CTrait.hpp>
 #include <HoiDataStructures.hpp>
 #include <GameClasses/CUnit.hpp>
@@ -144,7 +145,7 @@ __declspec(dllexport) int getCountryOffmapIc(lua_State* L)
     std::string searchTag = luaL_checklstring(L, 1, NULL);
     uintptr_t ctr = CCountry::findByTag(searchTag);
     if (ctr != 0) {
-        int countryId = *(int *)(ctr + CCountry::Offsets::id);
+        int countryId = *(int *)(ctr + CCountry::Offsets::tag + CCountryTag::Offsets::id);
         lua_pushinteger(L, Hooks::Patches::offmapIcPerCountry[countryId]);
         return 1;
     }
@@ -460,7 +461,7 @@ __declspec(dllexport) int setCorpsUnitLimit(lua_State* L)
     else {
         auto ctr = CCountry::findByTag(tag);
         if (ctr != 0) {
-            int tagId = *(DWORD*)(ctr + CCountry::Offsets::id);
+            int tagId = *(DWORD*)(ctr + CCountry::Offsets::tag + CCountryTag::Offsets::id);
             if (Hooks::CArmy::corpsUnitLimitPerCountry[tagId] != newLimit) {
                 Hooks::CArmy::corpsUnitLimitPerCountry[tagId] = newLimit;
                 DEBUG_OUT(printf("Corps unit limit set to: %i for %s \n", newLimit, tag.c_str()))
@@ -486,7 +487,7 @@ __declspec(dllexport) int setArmyUnitLimit(lua_State* L)
     else {
         auto ctr = CCountry::findByTag(tag);
         if (ctr != 0) {
-            int tagId = *(DWORD*)(ctr + CCountry::Offsets::id);
+            int tagId = *(DWORD*)(ctr + CCountry::Offsets::tag + CCountryTag::Offsets::id);
             if (Hooks::CArmy::armyUnitLimitPerCountry[tagId] != newLimit) {
                 Hooks::CArmy::armyUnitLimitPerCountry[tagId] = newLimit;
                 DEBUG_OUT(printf("Army unit limit set to: %i for %s \n", newLimit, tag.c_str()));
@@ -512,7 +513,7 @@ __declspec(dllexport) int setArmyGroupUnitLimit(lua_State* L)
     else {
         auto ctr = CCountry::findByTag(tag);
         if (ctr != 0) {
-            int tagId = *(DWORD*)(ctr + CCountry::Offsets::id);
+            int tagId = *(DWORD*)(ctr + CCountry::Offsets::tag + CCountryTag::Offsets::id);
             if (Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] != newLimit) {
                 Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] = newLimit;
                 DEBUG_OUT(printf("Armygroup unit limit set to: %i for %s \n", newLimit, tag.c_str()));
@@ -798,12 +799,13 @@ __declspec(dllexport) int getSelectedEntity(lua_State* L)
 
     if (idler != 0 && CTerrain::Terrains->size() != 0) {
         lua_newtable(L); // Create the table which will hold the selected items
+        const uintptr_t selection = idler + CInGameIdler::Offsets::selection;
         uintptr_t selectedThingsListStartPtr =
-            *(uintptr_t*)(idler + CInGameIdler::Offsets::selection_first);
+            *(uintptr_t*)(selection + HDS::ListOffsets::first);
         uintptr_t selectedThingsListEndPtr =
-            *(uintptr_t*)(idler + CInGameIdler::Offsets::selection_last);
+            *(uintptr_t*)(selection + HDS::ListOffsets::last);
         int8_t amountOfSelectedThings =
-            *(int8_t*)(idler + CInGameIdler::Offsets::selection_count);
+            *(int8_t*)(selection + HDS::ListOffsets::count);
         DEBUG_OUT(printf("selectedThingsListStartPtr: %#010x \n", selectedThingsListStartPtr));
         DEBUG_OUT(printf("selectedThingsListEndPtr: %#010x \n", selectedThingsListEndPtr));
         DEBUG_OUT(printf("amountOfSelectedThings: %i \n", amountOfSelectedThings));

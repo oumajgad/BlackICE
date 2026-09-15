@@ -90,8 +90,8 @@ actually carry. They are now in `GameClasses/CProvinceBuilding.hpp`.
 ## Intel, and what it gates
 
 `CMapProvince +0x370` is a pointer to one byte per country and `+0x374` is how many
-there are - the country count, 108 in BlackICE. Index it by country index, the same one
-`controller_id` holds.
+there are - the country count, 108 in BlackICE. Index it by country index, the id the
+controller's `CCountryTag` holds.
 
 Measured over every province, for the player: **0** for somewhere never seen (13,655),
 **3** for partial intel (82), **9** for the country's own provinces (262, all of them).
@@ -248,7 +248,7 @@ The slot 0x164 getter is in exactly one vtable, at `0x11CEB54`.
 | 2 | `0x98A67` | diplomatic (`ATWARWITHUS`, `OURWARALLY`, ...) |
 | 3 | `0x9924F` | |
 | **4** | `0x993DB` | **supply**: `LOGTT_1..7` (supplied from, nodes away, local supply and fuel, required, received), `PORT_SHIPS`, and at sea `LOGTT_8..10` (convoys passing) |
-| 5 | `0x9B8F2` | infrastructure, from `[province+0x114]` |
+| 5 | `0x9B8F2` | infrastructure, from the province's modifier values, `[province+0x114]` |
 | 6 | `0x9AF68` | intel |
 | **7** | `0x9AFDA` | **VP**: `PROV_POINTS` |
 | 8, 17 | `0x9B160` | theatre |
@@ -374,7 +374,9 @@ belongs in the setter, before the update runs, rather than anywhere later.
 ## The infrastructure ramp, which is where the heat palette comes from
 
 Mode 5, driver `0x2670F0`, colouring loop **`0x466F80`**. The loop reads
-`[[province+0x114]+0x60]`, divides by 1000 and multiplies by 10 - so the infrastructure
+`[[province+0x114]+0x60]` - the province's `CProvinceModifier` sits at `+0xFC`, its values
+pointer at `+0x18` of that, and `0x60` is entry 12, `_MODIFIER_INFRASTRUCTURE_` (see
+`CLASSES.md`, *Modifiers*) - divides by 1000 and multiplies by 10 - so the infrastructure
 level, 0 to 10 - then walks ten thresholds from the top down and picks a colour for
 each. Blue is always zero and alpha always one; only two channels ever change.
 

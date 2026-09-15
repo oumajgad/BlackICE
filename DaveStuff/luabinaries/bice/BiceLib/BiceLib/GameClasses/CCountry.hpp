@@ -6,16 +6,23 @@
 #include <utils.hpp>
 #include <HoiDataStructures.hpp>
 
+/**
+ * Several of the country's fields are objects held by value - its tags, its lists, its
+ * flags, variables, goods pools and global modifier. For those the offset here is where
+ * the object starts, and what is inside it is a second offset from that object's own
+ * header: the country's id is `tag + CCountryTag::Offsets::id`.
+ */
 namespace CCountry {
     namespace Offsets {
-        // Four characters in place, not a Hoi3CString - the id starts right
-        // after it. Read it with HDS::readTag.
+        /**
+         * **The country's tag and id**, a CCountryTag. Read the letters with
+         * HDS::readTag and the id at `tag + CCountryTag::Offsets::id`.
+         */
         constexpr uintptr_t tag = 0x1E4;
-        constexpr uintptr_t id = 0x1E8;
 
         /**
-         * A second tag and id in the same layout, a CCountryTag. It is the one the game's
-         * own `GetCountryTag` answers. Why the country holds two has not been established.
+         * A second CCountryTag. It is the one the game's own `GetCountryTag` answers. Why
+         * the country holds two has not been established.
          */
         constexpr uintptr_t country_tag = 0xCA4;
 
@@ -31,35 +38,40 @@ namespace CCountry {
         constexpr uintptr_t total_ic = 0x604;
         constexpr uintptr_t max_ic = 0x60C;
 
-        // Both are trees rather than lists, and both start one word past the vftable
-        // of the CFlags / CVariables the country holds inline.
-        constexpr uintptr_t flags_tree_root_ptr = 0x180 + 0x4;
-        constexpr uintptr_t variables_tree_root_ptr = 0x1AC + 0x4;
-
         /**
-         * **The country's convoys**, as the usual `{ first, last, count }` list with
-         * nodes of `{ data, prev, next }`, each data a CConvoy* - HDS::walkList reads
-         * it. Every convoy is in exactly one list, its owner's. The game's own
-         * `GetConvoys` answers it, as a `CList<CConvoy*>`.
+         * **The country's flags and variables**, a CFlags and a CVariables held by value -
+         * the addresses the game's `GetFlags` and `GetVariables` answer. Each is a tree
+         * whose root is at CTernary::Offsets::root; see CFlags.hpp.
          */
-        constexpr uintptr_t convoys_list_first_ptr = 0xA0;
-        constexpr uintptr_t convoys_list_last_ptr = 0xA4;
-        constexpr uintptr_t convoys_count = 0xA8;
-
-        /**@brief head of the list of modifiers currently on the country*/
-        constexpr uintptr_t active_modifiers_list_first_ptr = 0x648;
-
-        /**@brief head of the country's list of units, at every level rather than the
-                  top one - the shape of an order of battle is not in here. The start of
-                  the CUnitList the game's `GetUnits` answers.*/
-        constexpr uintptr_t units_linked_list_first_ptr = 0xBAC;
-
-        /**@brief the country's modifier totals, one entry per general modifier*/
-        constexpr uintptr_t general_modifiers_array_ptr = 0xDA8;
+        constexpr uintptr_t flags = 0x180;
+        constexpr uintptr_t variables = 0x1AC;
 
         /**
-         * **The country's leaders**, as the usual `{ first, last, count }` list: nodes
-         * of `{ data, prev, next }`, which is what HDS::walkList reads.
+         * **The country's convoys**, a list (HDS::ListOffsets) whose nodes each hold a
+         * CConvoy*; HDS::walkList reads it. Every convoy is in exactly one list, its
+         * owner's. The game's own `GetConvoys` answers it, as a `CList<CConvoy*>`.
+         */
+        constexpr uintptr_t convoys = 0xA0;
+
+        /**@brief the modifiers currently on the country, a list (HDS::ListOffsets);
+                  the entries are ActiveModifierOffsets*/
+        constexpr uintptr_t active_modifiers = 0x648;
+
+        /**@brief the country's units, a CUnitList - a list of CUnit* at every level
+                  rather than the top one, so the shape of an order of battle is not in
+                  here. The address the game's `GetUnits` answers.*/
+        constexpr uintptr_t units = 0xBAC;
+
+        /**
+         * **The country's modifier totals**, a CModifier held by value - the address the
+         * game's `GetGlobalModifier` answers. One value per ModifierType, behind the
+         * pointer at CModifier::Offsets::values.
+         */
+        constexpr uintptr_t global_modifier = 0xD90;
+
+        /**
+         * **The country's leaders**, a list (HDS::ListOffsets), which is what
+         * HDS::walkList reads.
          *
          * Every leader in the game belongs to exactly one country's list, so walking
          * all of them is how CLeader::CacheLeaders finds them. Confirmed live: the
@@ -68,9 +80,7 @@ namespace CCountry {
          * leaves out has the null tag `---` and sits in the file parser's memory, so
          * it is a template rather than a leader anybody has.
          */
-        constexpr uintptr_t leaders_list_first_ptr = 0xE10;
-        constexpr uintptr_t leaders_list_last_ptr = 0xE14;
-        constexpr uintptr_t leaders_count = 0xE18;
+        constexpr uintptr_t leaders = 0xE10;
 
         /**
          * **The capital, as a province id** - index it into the game state's province
@@ -110,21 +120,6 @@ namespace CCountry {
     }
 
     /**
-     * A node of the flag and variable trees.
-     *
-     * The name sits at the start of the node, so a node address reads as a string
-     * directly; only a variable carries a value with it.
-     */
-    namespace TreeNodeOffsets {
-        constexpr uintptr_t name = 0x0;
-        constexpr uintptr_t element = 0x0;
-        constexpr uintptr_t parent = 0x8;
-        constexpr uintptr_t sibling = 0xC;
-        constexpr uintptr_t child = 0x10;
-        constexpr uintptr_t variable_value = 0x1C;
-    }
-
-    /**
      * What the active modifier list holds. Which class this is has not been
      * established, so it is described by where it is reached from rather than named.
      */
@@ -134,27 +129,16 @@ namespace CCountry {
         constexpr uintptr_t definition_name = 0x2C; // on the definition, not the entry
     }
 
-    /**
-     * The general modifier array: pairs of a value and the definition it belongs to.
-     * The count is the number of general modifiers the game defines, which is fixed
-     * for a build.
-     */
-    namespace GeneralModifierOffsets {
-        constexpr uintptr_t value = 0x0;
-        constexpr uintptr_t definition_ptr = 0x4;
-        constexpr uintptr_t definition_name = 0x4; // on the definition, not the entry
-        constexpr uintptr_t entry_size = 0x8;
-        constexpr int count = 143;
-    }
 
-
+    /**@brief every element in the tree under \p nodePtr, a CTernary node*/
     void traverseFlagsAndVarTreeDepthFirst(std::vector<std::uintptr_t>& res, uintptr_t nodePtr);
-    std::vector<std::pair<std::string, std::string>> getActiveEventModifiers(uintptr_t listNodePtr);
-    std::vector<std::pair<std::string, int>> getGeneralModifiers(uintptr_t listNodePtr);
+    std::vector<std::pair<std::string, std::string>> getActiveEventModifiers(uintptr_t country);
+    /**@brief every value of the country's global modifier, by the definition's name*/
+    std::vector<std::pair<std::string, int>> getGeneralModifiers(uintptr_t country);
     /**@brief the country's flags, by value: the caller owns nothing*/
-    std::vector<std::string> getFlags(uintptr_t nodePtr);
+    std::vector<std::string> getFlags(uintptr_t country);
     /**@brief the country's non zero variables, by value*/
-    std::vector<HDS::CVariable> getVars(uintptr_t nodePtr);
+    std::vector<HDS::CVariable> getVars(uintptr_t country);
 
     /**
     @brief every country in the game, read from the game state each time

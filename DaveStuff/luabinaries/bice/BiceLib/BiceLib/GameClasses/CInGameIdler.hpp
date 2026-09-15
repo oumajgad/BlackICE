@@ -66,16 +66,12 @@ namespace CInGameIdler {
          */
         constexpr uintptr_t current_map_mode = 0xD34;
 
-        /**@brief the selected things, as the start and end of a list*/
-        constexpr uintptr_t selection_first = 0x1304;
-        constexpr uintptr_t selection_last = 0x1308;
-
         /**
-         * The word after those two. getSelectedEntity reads it as the number of
-         * selected things and uses it in a debug print only; that reading has not
-         * been checked against a game, and nothing depends on it.
+         * **The selected things**, read as a list (HDS::ListOffsets) from its first node.
+         * getSelectedEntity also reads the count, in a debug print only; that reading has
+         * not been checked against a game, and nothing depends on it.
          */
-        constexpr uintptr_t selection_count = 0x130C;
+        constexpr uintptr_t selection = 0x1304;
     }
 
     /**

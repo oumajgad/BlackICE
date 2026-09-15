@@ -1,4 +1,7 @@
 #include <Hooks/HookedPatches.hpp>
+#include <GameClasses/CCountry.hpp>
+#include <GameClasses/CCountryTag.hpp>
+#include <GameClasses/CModifier.hpp>
 #include <utils.hpp>
 
 DWORD Hooks::Patches::jumpback_fixOffmapIc_CountLocalIc;
@@ -9,10 +12,10 @@ int Hooks::Patches::offmapIcPerCountry[300];        // offmap IC to be used in U
 __declspec(naked) void Hooks::Patches::fixOffmapIc_CountLocalIc() {
     _asm {
         pushad
-        mov esi, [esi + 0x114] // province modifiers
-        mov esi, [esi + 0x78]  // province base_ic
+        mov esi, [esi + 0x114] // the province modifier's values: CMapProvince::Offsets::modifier + CModifier::Offsets::values
+        mov esi, [esi + 0x78]  // its CModifier::IC entry, the province's base IC
         sub eax, esi           // sub base_ic from total_ic to get the local_ic effect value
-        mov ebx, [ebx + 0xca8] // get country id
+        mov ebx, [ebx + 0xca8] // get country id: CCountry::Offsets::country_tag + CCountryTag::Offsets::id
         add [localIcEffectPerCountry + ebx * 4], eax // add local_ic effect value to array
 
         popad
@@ -22,7 +25,8 @@ __declspec(naked) void Hooks::Patches::fixOffmapIc_CountLocalIc() {
 }
 
 int handleOffmapIc(DWORD* country, int baseIcWithOffmapButNoLocalx1000, int baseIcWithLocalButNoOffmap) {
-    int countryId = *(country + 0xca8 / 4);
+    const uintptr_t countryAddress = (uintptr_t)country;
+    int countryId = *(int*)(countryAddress + CCountry::Offsets::country_tag + CCountryTag::Offsets::id);
     //DEBUG_OUT(printf("countryId: %i\n", countryId));
     //DEBUG_OUT(printf("baseIcWithOffmapButNoLocalx1000: %i\n", baseIcWithOffmapButNoLocalx1000));
     //DEBUG_OUT(printf("baseIcWithLocalButNoOffmap: %i\n", baseIcWithLocalButNoOffmap));
@@ -38,7 +42,9 @@ int handleOffmapIc(DWORD* country, int baseIcWithOffmapButNoLocalx1000, int base
     Hooks::Patches::offmapIcPerCountry[countryId] = offmapIc;
     //DEBUG_OUT(printf("offmapIc: %i\n", offmapIc));
 
-    DWORD* countryModifierIc = (DWORD*)(*(country + 0xda8 / 4) + 0x78);
+    const uintptr_t values =
+        *(uintptr_t*)(countryAddress + CCountry::Offsets::global_modifier + CModifier::Offsets::values);
+    DWORD* countryModifierIc = (DWORD*)(values + CModifier::entryOffset(CModifier::IC) + CModifier::Entry::value);
     *countryModifierIc = offmapIc * 1000;
 
     return baseIcWithLocalButNoOffmap + offmapIc;
