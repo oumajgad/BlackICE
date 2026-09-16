@@ -352,9 +352,12 @@ constructor at `0x164550`, which every kind runs:
 ```
 
 They are laid out as groups of three pointers and a byte - `0x28`, `0x40`, `0x54`,
-`0x64`, `0x74` all have that shape - which suggests begin/end/capacity rather than the
-begin/count the offsets were first read as. It makes no difference to the test the game
-itself applies: whatever `+0x5c` is, zero means the side has no country left.
+`0x64` all have that shape - which suggested begin/end/capacity rather than the
+begin/count the offsets were first read as. **Corrected since:** three words and a byte is
+the game's `CList` (first, last, count, byte; see `CLASSES.md`, *Held by value*), so
+`+0x5c` is a count after all. `+0x74` is different: the constructor pushes into it with a
+grow call when `+0x78` reaches `+0x7c`, which is a real vector, and so are `+0x88` and
+`+0x98`.
 
 Combat-level offsets are base fields too, by the same argument: the history entry's
 constructor reads the attacker, defender, province and flag off a plain `CCombat*`

@@ -620,13 +620,13 @@
    ]
   },
   {
-   "name": "SLIDER_AUTOMATION_LEVEL",
+   "name": "IntelLevel",
    "size": 4,
    "comment": "an enum the Lua API passes; values not registered",
    "values": []
   },
   {
-   "name": "IntelLevel",
+   "name": "SLIDER_AUTOMATION_LEVEL",
    "size": 4,
    "comment": "an enum the Lua API passes; values not registered",
    "values": []
@@ -4252,52 +4252,52 @@
    "size": null,
    "fields": [
     {
-     "offset": 8,
-     "name": "selectable_vftable",
-     "type": "undefined4",
-     "comment": "vftable of the CSelectable base (reversing/FINDINGS-combat.md:150)"
-    },
-    {
      "offset": 16,
      "name": "attacker",
      "type": "CCombatant*",
-     "comment": "attacking side (BiceLib/GameState/CombatLog.cpp:14)"
+     "comment": "attacking side (BiceLib/GameClasses/CCombat.hpp:56)"
     },
     {
      "offset": 20,
      "name": "defender",
      "type": "CCombatant*",
-     "comment": "defending side (BiceLib/GameState/CombatLog.cpp:15)"
+     "comment": "defending side (BiceLib/GameClasses/CCombat.hpp:57)"
     },
     {
      "offset": 24,
      "name": "province",
      "type": "CMapProvince*",
-     "comment": "province fought over (BiceLib/GameState/CombatLog.cpp:16)"
+     "comment": "province fought over (BiceLib/GameClasses/CCombat.hpp:60)"
     },
     {
      "offset": 28,
      "name": "unknown_1c",
      "type": "int",
-     "comment": "tracks +0x20; meaning unknown (reversing/CLASSES.md:138)"
+     "comment": "tracks +0x20; meaning unknown (BiceLib/GameClasses/CCombat.hpp:67)"
     },
     {
      "offset": 32,
      "name": "unknown_20",
      "type": "int",
-     "comment": "tracks +0x1C; meaning unknown (reversing/CLASSES.md:138)"
+     "comment": "tracks +0x1C; meaning unknown (BiceLib/GameClasses/CCombat.hpp:68)"
     },
     {
      "offset": 36,
      "name": "terrain",
      "type": "CTerrain*",
-     "comment": "terrain, unverified (reversing/CLASSES.md:139)"
+     "comment": "terrain, unverified (BiceLib/GameClasses/CCombat.hpp:71)"
     },
     {
      "offset": 43,
      "name": "flag",
      "type": "unsigned char",
-     "comment": "flag the history entry keeps at its +0x20 (BiceLib/GameState/CombatLog.cpp:17)"
+     "comment": "flag the history entry keeps at its +0x20 (BiceLib/GameClasses/CCombat.hpp:74)"
+    },
+    {
+     "offset": 8,
+     "name": "selectable_vftable",
+     "type": "undefined4",
+     "comment": "vftable of the CSelectable base (reversing/FINDINGS-combat.md:150)"
     }
    ]
   },
@@ -4309,91 +4309,61 @@
      "offset": 60,
      "name": "combat",
      "type": "CCombat*",
-     "comment": "back to the combat (reversing/CLASSES.md:161)"
+     "comment": "back to the combat (BiceLib/GameClasses/CCombat.hpp:100)"
     },
     {
      "offset": 64,
-     "name": "units_begin",
-     "type": "CUnit**",
-     "comment": "units on this side, begin (reversing/CLASSES.md:162)"
-    },
-    {
-     "offset": 68,
-     "name": "units_end",
-     "type": "CUnit**",
-     "comment": "units on this side, end (reversing/CLASSES.md:162)"
+     "name": "units",
+     "type": "CList",
+     "comment": "the units on this side (mem); a CList by the constructor (BiceLib/GameClasses/CCombat.hpp:106)"
     },
     {
      "offset": 84,
-     "name": "countries_begin",
-     "type": "undefined4",
-     "comment": "countries the tag is taken from (tag + id each); emptied on the beaten side (BiceLib/GameState/CombatLog.cpp:24)"
-    },
-    {
-     "offset": 88,
-     "name": "countries_end",
-     "type": "undefined4",
-     "comment": "second word of the country list triple (reversing/FINDINGS-combat.md:348)"
-    },
-    {
-     "offset": 92,
-     "name": "countries_count",
-     "type": "int",
-     "comment": "zero when the country list is empty; may be the capacity pointer (BiceLib/GameState/CombatLog.cpp:25)"
+     "name": "countries",
+     "type": "CList<CCountryTag>",
+     "comment": "the countries still in the fight; emptied on the beaten side (BiceLib/GameClasses/CCombat.hpp:114)"
     },
     {
      "offset": 100,
-     "name": "own_countries_begin",
-     "type": "undefined4",
-     "comment": "the side's own countries, kept when +0x54 is emptied (BiceLib/GameState/CombatLog.cpp:34)"
-    },
-    {
-     "offset": 104,
-     "name": "own_countries_end",
-     "type": "undefined4",
-     "comment": "second word of the own country list (reversing/FINDINGS-combat.md:349)"
-    },
-    {
-     "offset": 108,
-     "name": "own_countries_capacity",
-     "type": "undefined4",
-     "comment": "third word of the own country list (reversing/FINDINGS-combat.md:349)"
+     "name": "own_countries",
+     "type": "CList<CCountryTag>",
+     "comment": "this side's own countries, kept when the list above is emptied (BiceLib/GameClasses/CCombat.hpp:121)"
     },
     {
      "offset": 116,
      "name": "men_begin",
      "type": "int*",
-     "comment": "men per subunit type in thousandths, begin (BiceLib/GameState/CombatLog.cpp:47)"
+     "comment": "men per subunit type in thousandths, begin (BiceLib/GameClasses/CCombat.hpp:131)"
     },
     {
      "offset": 120,
      "name": "men_end",
      "type": "int*",
-     "comment": "men per subunit type, end (BiceLib/GameState/CombatLog.cpp:48)"
+     "comment": "men per subunit type, end (BiceLib/GameClasses/CCombat.hpp:132)"
     },
     {
      "offset": 132,
      "name": "losses",
      "type": "int",
-     "comment": "strength lost in thousandths (BiceLib/GameState/CombatLog.cpp:38)"
+     "comment": "strength lost in thousandths (BiceLib/GameClasses/CCombat.hpp:138)"
     },
     {
      "offset": 136,
      "name": "destroyed_begin",
      "type": "int*",
-     "comment": "subunits destroyed per type (1000 each), begin (reversing/CLASSES.md:168)"
+     "comment": "subunits destroyed per type (1000 each), begin (BiceLib/GameClasses/CCombat.hpp:144)"
     },
     {
      "offset": 140,
      "name": "destroyed_end",
      "type": "int*",
-     "comment": "subunits destroyed per type, end (reversing/CLASSES.md:168)"
+     "comment": "subunits destroyed per type, end (BiceLib/GameClasses/CCombat.hpp:145)"
     },
     {
      "offset": 152,
      "name": "damage_begin",
      "type": "int*",
-     "comment": "damage short of destruction per type, begin (reversing/CLASSES.md:169)"
+     "comment": "damage short of destruction per type, begin (BiceLib/GameClasses/CCombat.hpp:148)"
     }
    ]
   },

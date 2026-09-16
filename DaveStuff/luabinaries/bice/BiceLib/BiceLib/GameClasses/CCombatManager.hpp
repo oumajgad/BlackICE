@@ -50,7 +50,7 @@ namespace CCombatHistory {
     /**@brief a CCombatHistoryEntry, as its constructor (`0x2F340`) fills it*/
     namespace EntryOffsets {
         constexpr uintptr_t tick = 0x8;          // when the combat ended
-        constexpr uintptr_t kind = 0xC;          // the combat's slot 11
+        constexpr uintptr_t kind = 0xC;          // CCombat::Slots::KIND
         constexpr uintptr_t attacker = 0x10;     // a CCountryTag
         constexpr uintptr_t defender = 0x18;     // a CCountryTag
         constexpr uintptr_t province_id = 0x24;

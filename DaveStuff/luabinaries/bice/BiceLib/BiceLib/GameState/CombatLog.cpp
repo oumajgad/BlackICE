@@ -1,5 +1,9 @@
 #include <GameState/CombatLog.hpp>
+#include <GameClasses/CCombat.hpp>
+#include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CCurrentGameState.hpp>
+#include <GameClasses/CMapProvince.hpp>
+#include <HoiDataStructures.hpp>
 
 #include <Hooks/CCombatHooks.hpp>
 #include <MemScan.hpp>
@@ -8,61 +12,11 @@
 #include <cstring>
 
 namespace {
-    // Offsets read off the constructor of CCombatHistoryEntry at 0x2F340, which
-    // fills every field of an entry from the combat it is given. See
-    // reversing/FINDINGS-combat.md.
-    const uintptr_t COMBAT_ATTACKER = 0x10;
-    const uintptr_t COMBAT_DEFENDER = 0x14;
-    const uintptr_t COMBAT_PROVINCE = 0x18;
-    const uintptr_t COMBAT_FLAG = 0x2B;
-
-    const uintptr_t PROVINCE_ID = 0xD0;
-
-    // A combatant's countries: a pointer at +0x54 and how many at +0x5c. The game
-    // writes "---" into an entry when the count is zero, which is how a beaten side
-    // ends up nameless - and, confirmed in game, that empty side is the one that lost.
-    const uintptr_t COMBATANT_COUNTRIES = 0x54;
-    const uintptr_t COMBATANT_COUNTRY_COUNT = 0x5C;
-
-    // A second list of the same shape, holding this side's own countries and keeping
-    // them when the one at +0x54 is emptied. That is where the beaten side's name
-    // comes from, since by the time a combat is recorded it has no other.
-    //
-    // Found by scanning a combatant for anything shaped like a country tag. It was
-    // first read as the countries on the *other* side, which a battle disproved: ITA
-    // attacked ETH and retreated, and the winning ETH combatant had ETH at +0x64.
-    const uintptr_t COMBATANT_OWN_COUNTRIES = 0x64;
-
-    // Strength this side lost, in thousandths. Found by capturing a battle and
-    // searching for the figure the game reported: 21 losses read back as 21900.
-    const uintptr_t COMBATANT_LOSSES = 0x84;
-
-    // The men on this side, kept per subunit type: a vector of counts at +0x74,
-    // ending at +0x78, each a thousandth-scaled headcount.
-    //
-    // Read off the message the game writes when a battle ends, at 0x1745F4, which
-    // walks every subunit type there is and sums this array over a thousand to print
-    // "out of 25700 troops". Doing the same here rather than hooking that function,
-    // because it only runs for battles the player is told about.
-    const uintptr_t COMBATANT_MEN_BEGIN = 0x74;
-    const uintptr_t COMBATANT_MEN_END = 0x78;
+    // Bounds on the per subunit type vector of men (CCombatant::Offsets::men_begin),
+    // which is summed here the way the game's end of battle message sums it, rather
+    // than hooking that message: it only runs for battles the player is told about.
     const int MAX_SUBUNIT_TYPES = 4096;
     const int MEN_CHUNK = 256;
-
-    // The vftable is what separates the kinds of combat - they are different classes
-    // rather than one class with a type field. Addresses from the RTTI export,
-    // relative to the module.
-    //
-    // The game numbers them itself, in the virtual at slot 11 that every one of these
-    // overrides with a constant: 1 land, 2 naval, 3 air, 4 ground bombing, 5 land
-    // bombing, 6 naval bombing. Comparing vftables comes to the same thing and costs
-    // no call.
-    const uintptr_t VFTABLE_LAND_COMBAT = 0x11C4EE4;
-    const uintptr_t VFTABLE_AIR_COMBAT = 0x11C4FD4;
-    const uintptr_t VFTABLE_NAVAL_COMBAT = 0x11C4F5C;
-    const uintptr_t VFTABLE_GROUND_BOMBING = 0x11B6934;
-    const uintptr_t VFTABLE_LAND_BOMBING = 0x11B69AC;
-    const uintptr_t VFTABLE_NAVAL_BOMBING = 0x11B6A24;
 
     CRITICAL_SECTION lock;
     bool lockReady = false;
@@ -147,8 +101,8 @@ namespace {
 
         uint32_t begin = 0;
         uint32_t end = 0;
-        if (!Mem::tryRead(combatant + COMBATANT_MEN_BEGIN, begin) ||
-            !Mem::tryRead(combatant + COMBATANT_MEN_END, end)) {
+        if (!Mem::tryRead(combatant + CCombatant::Offsets::men_begin, begin) ||
+            !Mem::tryRead(combatant + CCombatant::Offsets::men_end, end)) {
             return;
         }
         if (begin == 0 || end < begin || ((end - begin) % 4) != 0) {
@@ -190,19 +144,24 @@ namespace {
         }
 
         uint32_t losses = 0;
-        if (Mem::tryRead(combatant + COMBATANT_LOSSES, losses)) {
+        if (Mem::tryRead(combatant + CCombatant::Offsets::losses, losses)) {
             side.losses = static_cast<int>(losses);
         }
 
+        const uintptr_t countryList = combatant + CCombatant::Offsets::countries;
         uint32_t countryCount = 0;
-        if (!Mem::tryRead(combatant + COMBATANT_COUNTRY_COUNT, countryCount)) {
+        if (!Mem::tryRead(countryList + HDS::ListOffsets::count, countryCount)) {
             return;
         }
         // Read for both sides. On the loser it is the only thing left naming it; on
         // the winner it can be checked against a name already known.
+        //
+        // Found by scanning a combatant for anything shaped like a country tag. It was
+        // first read as the countries on the *other* side, which a battle disproved: ITA
+        // attacked ETH and retreated, and the winning ETH combatant had ETH in this list.
         uint32_t own = 0;
-        if (Mem::tryRead(combatant + COMBATANT_OWN_COUNTRIES, own)) {
-            readTagAt(own, side.retainedTag, side.retainedId);
+        if (Mem::tryRead(combatant + CCombatant::Offsets::own_countries + HDS::ListOffsets::first, own)) {
+            readTagAt(own + CCountryTag::Offsets::tag, side.retainedTag, side.retainedId);
         }
 
         side.countryCount = static_cast<int>(countryCount);
@@ -211,18 +170,20 @@ namespace {
             return; // no country left in the fight, which is what "---" means
         }
 
+        // The first node, whose CCountryTag is where the game's own history entry takes
+        // the side's tag from.
         uint32_t countries = 0;
-        if (!Mem::tryRead(combatant + COMBATANT_COUNTRIES, countries) || countries == 0) {
+        if (!Mem::tryRead(countryList + HDS::ListOffsets::first, countries) || countries == 0) {
             return;
         }
 
         char tag[4] = {};
-        if (Mem::tryReadBytes(countries, tag, 3)) {
+        if (Mem::tryReadBytes(countries + CCountryTag::Offsets::tag, tag, 3)) {
             strncpy_s(side.tag, tag, 3);
         }
 
         uint32_t id = 0;
-        if (Mem::tryRead(countries + 4, id)) {
+        if (Mem::tryRead(countries + CCountryTag::Offsets::id, id)) {
             side.countryId = static_cast<int>(id);
         }
     }
@@ -232,22 +193,24 @@ namespace {
         if (base == 0 || vftable == 0) {
             return Combat::Branch::Unknown;
         }
-        if (vftable == base + VFTABLE_LAND_COMBAT) {
+        // The kinds are classes of their own rather than one class with a type field,
+        // and comparing vftables answers what CCombat::Slots::KIND would without a call.
+        if (vftable == base + CCombat::VFTable::CLandCombat) {
             return Combat::Branch::Land;
         }
-        if (vftable == base + VFTABLE_AIR_COMBAT) {
+        if (vftable == base + CCombat::VFTable::CAirCombat) {
             return Combat::Branch::Air;
         }
-        if (vftable == base + VFTABLE_NAVAL_COMBAT) {
+        if (vftable == base + CCombat::VFTable::CNavalCombat) {
             return Combat::Branch::Naval;
         }
-        if (vftable == base + VFTABLE_GROUND_BOMBING) {
+        if (vftable == base + CCombat::VFTable::CGroundBombing) {
             return Combat::Branch::GroundBombing;
         }
-        if (vftable == base + VFTABLE_LAND_BOMBING) {
+        if (vftable == base + CCombat::VFTable::CLandBombing) {
             return Combat::Branch::LandBombing;
         }
-        if (vftable == base + VFTABLE_NAVAL_BOMBING) {
+        if (vftable == base + CCombat::VFTable::CNavalBombing) {
             return Combat::Branch::NavalBombing;
         }
         return Combat::Branch::Unknown;
@@ -336,24 +299,24 @@ void Combat::note(uintptr_t combat) {
     }
 
     uint8_t flag = 0;
-    if (Mem::tryRead(combat + COMBAT_FLAG, flag)) {
+    if (Mem::tryRead(combat + CCombat::Offsets::flag, flag)) {
         record.flag = flag;
     }
 
     uint32_t province = 0;
-    if (Mem::tryRead(combat + COMBAT_PROVINCE, province) && province != 0) {
+    if (Mem::tryRead(combat + CCombat::Offsets::province, province) && province != 0) {
         uint32_t id = 0;
-        if (Mem::tryRead(province + PROVINCE_ID, id)) {
+        if (Mem::tryRead(province + CMapProvince::Offsets::id, id)) {
             record.provinceId = static_cast<int>(id);
         }
     }
 
     uint32_t attacker = 0;
     uint32_t defender = 0;
-    if (!Mem::tryRead(combat + COMBAT_ATTACKER, attacker)) {
+    if (!Mem::tryRead(combat + CCombat::Offsets::attacker, attacker)) {
         attacker = 0;
     }
-    if (!Mem::tryRead(combat + COMBAT_DEFENDER, defender)) {
+    if (!Mem::tryRead(combat + CCombat::Offsets::defender, defender)) {
         defender = 0;
     }
     readSide(attacker, record.attacker);
@@ -370,10 +333,10 @@ void Combat::note(uintptr_t combat) {
             : Outcome::DefenderWon;
 
         // Give the beaten side back the name the game left out, from the second
-        // list it still holds at +0x64.
+        // list it still holds (CCombatant::Offsets::own_countries).
         //
-        // Only where the winner's own +0x64 names the winner, though. That answer is
-        // already known, from the list the winner still has at +0x54, so it costs
+        // Only where the winner's own list names the winner, though. That answer is
+        // already known, from the countries list the winner still has, so it costs
         // nothing to ask and it is the difference between reading a field and hoping
         // about one - this offset has been misread once already. Failing leaves the
         // loser "---" and the combat counted for nobody, which beats a wrong country
