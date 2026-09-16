@@ -81,7 +81,9 @@ being non-null proves nothing about a game being loaded.
 ## Combat
 
 The whole of how these were found, and what is still open, is in `FINDINGS-combat.md`.
-BiceLib reads them in `GameState/CombatLog.cpp`.
+**In code: `BiceLib/GameClasses/CCombat.hpp`** (the combats and combatants) and
+`CCombatManager.hpp`, which are the authority for the offsets; `GameState/CombatLog.cpp`
+reads them.
 
 ### The manager and its history
 
@@ -166,10 +168,12 @@ combatants both gave up their country and their losses at these offsets (**seen*
 | Offset | Holds | |
 | --- | --- | --- |
 | +0x3c | back to the combat | mem |
-| +0x40, +0x44 | the units on this side, a vector of `CUnit*` | mem |
-| +0x54 | the country list the game takes a tag from - **emptied on the beaten side** | read |
-| +0x5c | zero when that list is empty, which is how the game decides to write `---` | read |
-| +0x64 | the side's own countries, **kept** when +0x54 is emptied - where the loser's name comes from | read, seen |
+| +0x28 | a `CList`, by the constructor's shape; what it holds is not known | read |
+| +0x3c | back to the combat; the constructor stores ecx here | mem, seen |
+| +0x40 | the units on this side, by `mem` - which took it for a vector, but the constructor sets it up as a `CList` | mem, read |
+| +0x54 | the country list the game takes a tag from, a `CList` whose first node starts with a `CCountryTag` - **emptied on the beaten side** | read |
+| +0x5c | its count: zero when the list is empty, which is how the game decides to write `---` | read |
+| +0x64 | the side's own countries, a `CList` of the same kind, **kept** when +0x54 is emptied - where the loser's name comes from | read, seen |
 | +0x74, +0x78 | **the men on this side, per subunit type** - summed over a thousand it is the "out of 25700 troops" the battle message prints, and the game builds it exactly that way at 0x1745F4. Only men in a land or naval fight: an air combat counts subunits here, a bombing raid leaves it empty | read, seen |
 | +0x84 | **losses, in thousandths** - 21 losses read back as 21900, and the message prints this over a thousand as its casualties. A subunit destroyed outright adds exactly 1000 | seen, read |
 | +0x88, +0x8c | **subunits destroyed, per type** - a vector with an entry per kind of brigade, ship or plane, each holding 1000 per one destroyed. Its sum over a thousand is how many were lost outright. Nothing in BiceLib reads it | read |
