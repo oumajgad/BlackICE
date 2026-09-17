@@ -38,6 +38,15 @@
    "source": "BiceLib/GameClasses/CCountry.hpp:57"
   },
   {
+   "rva": "0x2F210",
+   "kind": "function",
+   "name": "CCountry::IsEnemy",
+   "signature": "bool __stdcall IsEnemy(CCountry* country@ESI, CCountryTag* tag@EDX, CMapProvince* province@EDI) @AL",
+   "comment": "The IsEnemy overload taking a province: the same diplomacy test as the one the Lua API registers (0x2F1B0) - the status at +0xE28 by country id, and the REB rebels case - with a further branch that reads +0x24 of the status and asks the province. Its address is taken nowhere, so the compiler gave it a register convention: country in esi, tag in edx, province in edi. Its arguments are written out with the register each arrives in, so a call to it decompiles with the right values rather than whatever sits in the standard places.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:516"
+  },
+  {
    "rva": "0x2F340",
    "kind": "function",
    "name": "CCombatHistoryEntry::CCombatHistoryEntry",
@@ -768,6 +777,15 @@
    "source": "reversing/FINDINGS-redeploy.md:38"
   },
   {
+   "rva": "0x1AB680",
+   "kind": "function",
+   "name": "CRegiment::GetMaxStrength",
+   "signature": null,
+   "comment": "Virtual slot 12: the definition's max_strength (+0xEC), scaled by the owner's RESERVES_PENALTY_SIZE modifier where the regiment's reserve byte at +0xA4 is set, floored at a global minimum. Answers through a hidden return pointer, ret 0xC. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:260"
+  },
+  {
    "rva": "0x1AD0F0",
    "kind": "function",
    "name": "CRegiment::SupplyConsumption",
@@ -831,6 +849,33 @@
    "source": "reversing/CLASSES.md:244"
   },
   {
+   "rva": "0x1C6550",
+   "kind": "function",
+   "name": "CUnit::GetTotalStrengthCeiling",
+   "signature": "CFixedPoint* __thiscall GetTotalStrengthCeiling(CUnit* this, CFixedPoint* result)",
+   "comment": "Virtual slot 24: adds up the regiments' +0x30 ceilings, without dividing. The name is BiceLib's, and what the game shows this as has not been established.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:260"
+  },
+  {
+   "rva": "0x1C6580",
+   "kind": "function",
+   "name": "CUnit::GetAverageOrganisation",
+   "signature": "CFixedPoint* __thiscall GetAverageOrganisation(CUnit* this, CFixedPoint* result)",
+   "comment": "Virtual slot 20, shared by CUnit, CArmy, CNavy and CAir: adds up the regiments' organisation (CRegiment +0x60) and divides by the regiment count. Answers a CFixedPoint through a hidden return pointer. The name is BiceLib's - the game does not register this one to Lua.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:260"
+  },
+  {
+   "rva": "0x1C65F0",
+   "kind": "function",
+   "name": "CUnit::GetAverageStrength",
+   "signature": "CFixedPoint* __thiscall GetAverageStrength(CUnit* this, CFixedPoint* result)",
+   "comment": "Virtual slot 21, the same shape as slot 20 over the regiments' strength (CRegiment +0x5C). Answers a CFixedPoint through a hidden return pointer. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:260"
+  },
+  {
    "rva": "0x1C9AC0",
    "kind": "function",
    "name": "SetUnitPath",
@@ -847,6 +892,24 @@
    "comment": "Call to RecordCombat from among the CArmy/CNavy/CAir virtuals.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:227"
+  },
+  {
+   "rva": "0x1D67C0",
+   "kind": "function",
+   "name": "EnemyLandStrengthIn",
+   "signature": "int __stdcall EnemyLandStrengthIn(CList* units@EAX, CCountryTag asking@stack:4) @EAX",
+   "comment": "How much enemy land strength stands in a province: over the province's Units list (CProvince +0x2B8), skipping naval and air units (slots 16 and 17), keeping those whose owner CCountry::IsEnemy answers for, and adding up each regiment's strength (CRegiment +0x5C); the total comes back over a thousand. Takes the list in eax and the asking country's tag on the stack, and cleans it itself. CUnit's vtable slot 19 uses it.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:554"
+  },
+  {
+   "rva": "0x1D69C0",
+   "kind": "function",
+   "name": "EnemyAirStrengthIn",
+   "signature": "int __stdcall EnemyAirStrengthIn(CList* units@EAX, CCountryTag asking@stack:4) @EAX",
+   "comment": "The same count over the air units in a province instead (slot 17 kept rather than skipped). CAir's vtable slot 19 uses it.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:554"
   },
   {
    "rva": "0x1D7CDC",
@@ -2668,13 +2731,6 @@
    "name": "CMap",
    "fields": [
     {
-     "offset": "0x1C",
-     "name": "secondary_vftable",
-     "type": "pointer",
-     "comment": "vftable of the base subobject (0x11BE408)",
-     "source": "BiceLib/GameClasses/CMap.hpp:28"
-    },
-    {
      "offset": "0x21FC",
      "name": "province_count",
      "type": "int",
@@ -2722,13 +2778,6 @@
   {
    "name": "CMapProvince",
    "fields": [
-    {
-     "offset": "0x8",
-     "name": "secondary_vftable",
-     "type": "pointer",
-     "comment": "vftable of the base subobject (0x11BEC1C)",
-     "source": "BiceLib/GameClasses/CMapProvince.hpp:224"
-    },
     {
      "offset": "0x34",
      "name": "victory_points",
@@ -2875,6 +2924,13 @@
      "type": "uint8_t",
      "comment": "while set the province's supply capacity is unlimited",
      "source": "BiceLib/GameClasses/CMapProvince.hpp:185"
+    },
+    {
+     "offset": "0x2B8",
+     "name": "units",
+     "type": "CUnitList",
+     "comment": "the units in the province, what CProvince::GetUnits answers",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:214"
     },
     {
      "offset": "0x310",
@@ -3039,13 +3095,6 @@
    "name": "CProvinceBuilding",
    "fields": [
     {
-     "offset": "0x8",
-     "name": "base_vftable",
-     "type": "pointer",
-     "comment": "vftable of the base subobject (0x11C0A78)",
-     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:31"
-    },
-    {
      "offset": "0x10",
      "name": "effect",
      "type": "int",
@@ -3133,10 +3182,10 @@
    "fields": [
     {
      "offset": "0x30",
-     "name": "strength",
+     "name": "strength_ceiling",
      "type": "int",
-     "comment": "strength, x10 on land, x1000 on air or naval",
-     "source": "BiceLib/GameClasses/CRegiment.hpp:19"
+     "comment": "set to the regiment's strength when it is built and afterwards only raised to it, never lowered; CUnit slot 24 totals it. Not what the regiment has left - that is +0x5C",
+     "source": "BiceLib/GameClasses/CRegiment.hpp:37"
     },
     {
      "offset": "0x58",
@@ -3144,6 +3193,13 @@
      "type": "CSubUnitDefinition*",
      "comment": "this regiment's definition, with its country's tech applied",
      "source": "BiceLib/GameClasses/CRegiment.hpp:22"
+    },
+    {
+     "offset": "0x5C",
+     "name": "strength",
+     "type": "int",
+     "comment": "what the regiment has left, in the scale of its definition's max_strength; the supply consumption scales by it, CUnit slot 21 averages it",
+     "source": "BiceLib/GameClasses/CRegiment.hpp:26"
     },
     {
      "offset": "0x60",
@@ -3499,13 +3555,6 @@
   {
    "name": "CUnitAdjuster",
    "fields": [
-    {
-     "offset": "0x0",
-     "name": "vftable",
-     "type": "pointer",
-     "comment": "vftable; the object is 24 bytes",
-     "source": "BiceLib/HoiDataStructures.hpp:47"
-    },
     {
      "offset": "0x4",
      "name": "pad_1",
@@ -4036,13 +4085,6 @@
   {
    "name": "CCombat",
    "fields": [
-    {
-     "offset": "0x8",
-     "name": "selectable_vftable",
-     "type": "pointer",
-     "comment": "vftable of the CSelectable base",
-     "source": "reversing/FINDINGS-combat.md:150"
-    },
     {
      "offset": "0x10",
      "name": "attacker",
@@ -4589,6 +4631,99 @@
      "source": "BiceLib/GameClasses/CFlags.hpp:67"
     }
    ]
+  },
+  {
+   "name": "CConstruction",
+   "fields": [
+    {
+     "offset": "0x30",
+     "name": "cost",
+     "type": "int",
+     "comment": "what it costs in IC, a CFixedPoint: the game's GetCost (0x837C0), which CCountry::GetUsedIC sums over the country's constructions",
+     "source": "reversing/CLASSES.md:502"
+    }
+   ]
   }
- ]
+ ],
+ "vftable_slots": {
+  "_about": "Slot names BiceLib has established but that cannot be read off the slot's body - the linker folds identical bodies together, so the three unit predicates are one `mov al,1; ret` and one `xor al,al; ret` between them. Keyed by class, then slot.",
+  "CUnit": {
+   "15": "IsLand",
+   "16": "IsNaval",
+   "17": "IsAir",
+   "20": "GetAverageOrganisation",
+   "21": "GetAverageStrength",
+   "24": "GetTotalStrengthCeiling"
+  },
+  "CArmy": {
+   "15": "IsLand",
+   "16": "IsNaval",
+   "17": "IsAir"
+  },
+  "CNavy": {
+   "15": "IsLand",
+   "16": "IsNaval",
+   "17": "IsAir"
+  },
+  "CAir": {
+   "15": "IsLand",
+   "16": "IsNaval",
+   "17": "IsAir"
+  },
+  "CPathFind": {
+   "0": "StepCost",
+   "1": "MayUse",
+   "2": "MayStep"
+  },
+  "CSafePathFind": {
+   "0": "StepCost",
+   "1": "MayUse",
+   "2": "MayStep"
+  },
+  "CVerySafePathFind": {
+   "0": "StepCost",
+   "1": "MayUse",
+   "2": "MayStep"
+  },
+  "CPlannedPathFind": {
+   "0": "StepCost",
+   "1": "MayUse",
+   "2": "MayStep"
+  },
+  "CSafeNavalPathFind": {
+   "0": "StepCost",
+   "1": "MayUse",
+   "2": "MayStep"
+  },
+  "CInGameIdler": {
+   "48": "CentreOnProvince"
+  },
+  "CCombat": {
+   "11": "GetKind"
+  },
+  "CLandCombat": {
+   "11": "GetKind"
+  },
+  "CNavalCombat": {
+   "11": "GetKind"
+  },
+  "CAirCombat": {
+   "11": "GetKind"
+  },
+  "CGroundBombing": {
+   "11": "GetKind"
+  },
+  "CLandBombing": {
+   "11": "GetKind"
+  },
+  "CNavalBombing": {
+   "11": "GetKind"
+  },
+  "CMoveCommand": {
+   "6": "RouteUnit"
+  },
+  "CRegiment": {
+   "12": "GetMaxStrength"
+  }
+ }
 }

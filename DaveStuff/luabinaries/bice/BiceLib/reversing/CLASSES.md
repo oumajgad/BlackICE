@@ -242,6 +242,28 @@ Slots 15, 16 and 17 of `CArmy`, `CNavy` and `CAir` are `isLand`, `isNaval` and `
 Worth knowing when a breakpoint says the game is reading a unit's vftable: it is
 usually one of these rather than anything interesting (**used**, disassembly).
 
+### Strength, and the field that is not it
+
+A regiment's strength is **+0x5C** (**read**, four ways): the unit's supply consumption
+scales it against the definition's `max_strength` (`0x1BB6CB`), the builder fills it from
+`max_strength` times a percentage when a regiment is made (`0x484F7B`), `CUnit`'s slot 21
+averages it over the regiments, and the enemy strength counter (`0x5D67C0`) adds it up over
+the enemy units in a province.
+
+**+0x30 is a ceiling, not the strength**: the builder sets it to that same starting figure
+and afterwards only ever raises it to the strength, never lowers it (`0x484F7E`), and
+`CUnit`'s slot 24 totals it without averaging. BiceLib read +0x30 as the strength until
+2026-09-16; at full strength the two are equal, which is why the OOB browser looked right.
+**The scale is the same either way**, so the tens and thousandths `Oob::strengthOf` applies
+still hold.
+
+Three `CUnit` slots go with it, shared by all four unit classes and each answering a
+CFixedPoint through a hidden return pointer (**read**): **slot 20** the average
+organisation, **slot 21** the average strength, **slot 24** the total of the +0x30
+ceilings. A regiment's own slot 12 answers its maximum strength: the definition's
+`max_strength`, scaled by the owner's `RESERVES_PENALTY_SIZE` modifier where the regiment's
+reserve byte at +0xA4 is set, floored at a global minimum.
+
 ### Supply and fuel consumption
 
 `CSubUnitDefinition`'s `supply_consumption` (+0x110) and `fuel_consumption` (+0x114)
@@ -274,8 +296,8 @@ values:
 `withoutLeaders` skips the first two steps, which gives the base figure the unit
 inspector shows.
 
-The sub units a unit holds are `CRegiment` (`GameClasses/CRegiment.hpp`): strength at
-+0x30, organisation at +0x60 and the name at +0x68, all **used** by the OOB browser.
+The sub units a unit holds are `CRegiment` (`GameClasses/CRegiment.hpp`): **strength at
++0x5C**, organisation at +0x60 and the name at +0x68, all **used** by the OOB browser.
 Air and naval sub units are read through the same three and have never looked wrong,
 but only the land case is known to be this class.
 
@@ -499,6 +521,41 @@ by id, the same pointers as the game state's.
 | +0xCA4 | a `CCountryTag`, the one `GetCountryTag` answers; the tag at +0x1E4 is a second copy, for a reason not established. The offmap IC hook reads its id half, +0xCA8 | named, used |
 | +0xD90 | **the global modifier**, a `CModifier` held by value (`GetGlobalModifier`; the constructor builds it there). Its values pointer is `+0xDA8`, which is what `../../../mem` and BiceLib used to read as a bare array; the offmap IC fix writes entry `IC` of it | named, read, used |
 | +0xE24 | the capital as a province id - by the game's name `GetActingCapital`, where the government sits now | read, named |
+| +0xF40 | what it is building, a `CList<CConstruction*>` (`GetConstructions`). `GetUsedIC` (`0xF4B60`) walks it and adds up each construction's cost, which is `CConstruction +0x30` - the game's `GetCost` (`0x837C0`), a `CFixedPoint`. Its `GetSize` is `+0x40` | named, read |
+
+### Is that country an enemy
+
+`CCountry::IsEnemy` is **two overloads**, not one function built twice. The Lua API says so
+itself: its `.def` casts the member pointer,
+`(bool(CCountry::*)(const CCountryTag&) const)&CCountry::IsEnemy`, which is only needed
+where the name is ambiguous - and nearly every other `.def` in that file is a bare
+`&Class::Method`. Both are live, with 112 and 101 call sites (**read**).
+
+The one the Lua API registers, `0x2F1B0`, takes a tag: it answers true when the diplomacy status for that country
+(`CCountry +0xE28`, indexed by the country's id) has a flag set at `+0x20`, and always for
+the rebels tag `REB`, on either side.
+
+`0x2F210` is the same test with **a province as well**, and one further branch: where the
+status alone says no, it reads `+0x24` of the status and asks the province about it. The
+compiler gave it a register convention - **the country in `esi`, the tag in `edx`, the
+province in `edi`** - so it cannot be called like an ordinary function and no signature is
+recorded for it. Why only this one: the registered overload has its address taken, stored
+into luabind's registration object at `0x4F8838`, so it had to keep a callable `__thiscall`
+form; this one's address is taken nowhere in the image, which left the compiler free to
+pass its arguments wherever it liked.
+
+Both are used to decide who a unit may fight. `CUnit`'s vtable slot 19 asks it about the
+province it is looking at, and the enemy strength counters ask it about every unit standing
+there: `0x5D67C0` over the land units, `0x5D69C0` over the air ones (slots 16 and 17 tell
+them apart). Each adds up the strength (`CRegiment +0x5C`) of every regiment of every enemy
+unit in a province's `Units` list and answers it over a thousand. They take the list in
+`eax` with the asking country's tag on the stack, and clean it themselves (`ret 8`).
+
+**Written out with where each argument is passed** (`@ESI`, `@stack:4`), so the decompiler
+shows a call to one with the right values in it. Without that it reads the call as an
+ordinary one and prints whatever happens to be in the standard places - for `IsEnemy` that
+came out as `IsEnemy(g_CCountryDataBase->countries_first, tag)`, which says the first
+country in the array rather than the province's controller.
 
 ### The country database
 

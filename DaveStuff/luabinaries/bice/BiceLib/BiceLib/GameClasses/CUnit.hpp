@@ -66,6 +66,26 @@ namespace CUnit {
         constexpr uintptr_t CAir = 0x11C8774;
     }
 
+    /**
+     * Virtual slots worth calling, by index into the vftable above. All four unit
+     * classes share these three, and each answers a CFixedPoint through a hidden return
+     * pointer: `int* __thiscall slot(CUnit* unit, int* result)`, cleaning four bytes.
+     *
+     * The first two are what the game shows for a unit: it walks the regiments at
+     * Offsets::regiments, adds the field up, and divides by the regiment count
+     * (Offsets::regiments + HDS::ListOffsets::count). **read.**
+     */
+    namespace Slots {
+        /**@brief the average of the regiments' CRegiment::Offsets::organisation*/
+        constexpr int AVERAGE_ORGANISATION = 20;
+
+        /**@brief the average of the regiments' CRegiment::Offsets::strength*/
+        constexpr int AVERAGE_STRENGTH = 21;
+
+        /**@brief the regiments' CRegiment::Offsets::strength_ceiling added up, not averaged*/
+        constexpr int TOTAL_STRENGTH_CEILING = 24;
+    }
+
     /**@brief the values oob_level takes; only land units use the whole ladder*/
     namespace Level {
         constexpr int Theatre = 0;

@@ -206,6 +206,13 @@ namespace CMapProvince {
         constexpr uintptr_t manpower = 0x320;
         constexpr uintptr_t leadership = 0x324;
 
+        /**
+         * **The units standing in the province**, a CUnitList (HDS::ListOffsets) - the
+         * address the game's `CProvince::GetUnits` answers, with `GetNumberOfUnits` reading
+         * its count. The enemy strength counters walk it; BiceLib does not.
+         */
+        constexpr uintptr_t units = 0x2B8;
+
         /**@brief CCountryTags, the game's `CProvince::GetOwner` and `GetController`*/
         constexpr uintptr_t owner = 0x32C;
         constexpr uintptr_t controller = 0x334;

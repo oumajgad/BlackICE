@@ -302,18 +302,33 @@ def build_signature(ftype, enums, sizes):
 
 
 def parse_prototype(text):
-    """'int* __stdcall SupplyCapacity(CMapProvince* province, int* out)' -> signature dict"""
-    m = re.match(r"^\s*(.+?)\s+(__\w+)\s+([\w:~<>]+)\s*\((.*)\)\s*;?\s*$", text or "")
+    """
+    'int* __stdcall SupplyCapacity(CMapProvince* province, int* out)' -> signature dict.
+
+    A parameter, or the return, may say where it is passed: `CCountry* country@ESI`, or
+    `@stack:4`. That is for a function the compiler kept to itself and gave a convention of
+    its own; Ghidra reads such a call as a standard one and shows the wrong arguments unless
+    it is told. The return's place goes after the parameter list: `...) @AL`.
+    """
+    m = re.match(r"^\s*(.+?)\s+(__\w+)\s+([\w:~<>]+)\s*\((.*)\)\s*(?:@\s*([\w:]+))?\s*;?\s*$", text or "")
     if not m:
         return None
     params = []
     for p in [x.strip() for x in LX.split_top(m.group(4)) if x.strip() and x.strip() != "void"]:
+        storage = None
+        at = re.match(r"^(.*?)@\s*([\w:]+)$", p)
+        if at:
+            p, storage = at.group(1).strip(), at.group(2)
         pm = re.match(r"^(.*?[\s*&])(\w+)$", p)
-        if pm and pm.group(1).strip():
-            params.append({"name": pm.group(2), "type": pm.group(1).strip()})
-        else:
-            params.append({"name": None, "type": p})
-    return {"convention": m.group(2), "return": m.group(1).strip(), "hiddenReturn": False, "params": params}
+        entry = {"name": pm.group(2), "type": pm.group(1).strip()} if pm and pm.group(1).strip() \
+            else {"name": None, "type": p}
+        if storage:
+            entry["storage"] = storage
+        params.append(entry)
+    out = {"convention": m.group(2), "return": m.group(1).strip(), "hiddenReturn": False, "params": params}
+    if m.group(5):
+        out["returnStorage"] = m.group(5)
+    return out
 
 
 def main():
@@ -480,6 +495,25 @@ def main():
                 s["size"] = shape["size"]
                 if not s["fields"]:
                     s["fields"] = [dict(f) for f in shape["fields"]]
+                # A list of pointers gets a node type of its own, so a walk reads
+                # `node->data->field` rather than stopping at an untyped word. Only for
+                # pointer elements: where the element is a class held by value the node
+                # is wider than one word and where prev and next then sit is not known.
+                element = "CUnit*" if base == "CUnitList" else base[len("CList<"):-1]
+                if not element.endswith("*"):
+                    continue
+                node = struct("CListNode<%s>" % element)
+                if not node["fields"]:
+                    node["fields"] = [
+                        {"offset": 0, "name": "data", "type": element, "priority": 2,
+                         "comment": "what the node holds (%s)" % shape["fields"][0]["comment"].split(" (")[-1].rstrip(")")},
+                        {"offset": 4, "name": "prev", "type": "CListNode<%s>*" % element, "priority": 2,
+                         "comment": "the previous node"},
+                        {"offset": 8, "name": "next", "type": "CListNode<%s>*" % element, "priority": 2,
+                         "comment": "the next node"}]
+                for f in s["fields"]:
+                    if f["name"] in ("first", "last"):
+                        f["type"] = "CListNode<%s>*" % element
     TYPE_MAP = {"pointer": "undefined4", "uintptr_t": "undefined4", "uint8_t": "unsigned char", "int8_t": "signed char",
                 "uint16_t": "unsigned short", "int16_t": "short", "uint32_t": "unsigned int", "int32_t": "int",
                 "DWORD": "unsigned int", "BYTE": "unsigned char", "WORD": "unsigned short"}
@@ -527,12 +561,15 @@ def main():
     for e in enums:
         enum_out.setdefault(e, {"name": e, "size": 4, "comment": "an enum the Lua API passes; values not registered", "values": []})
 
+    vftables = virtual_tables(checker, structs, functions, labels, project.get("vftable_slots"))
+
     out = {"about": "Built by buildFindings.py from luabind.json and project.json. Applied by ApplyBiceLibFindings.java.",
            "image_base": IMAGE_BASE,
            "enums": list(enum_out.values()),
            "structs": embedded_first([s for s in structs.values() if s["fields"] or s["size"]], enums),
            "functions": sorted(functions.values(), key=lambda f: f["rva"]),
-           "labels": sorted(labels, key=lambda l: l["rva"])}
+           "labels": sorted(labels, key=lambda l: l["rva"]),
+           "vftables": vftables}
     json.dump(out, open(OUT, "w", encoding="utf-8"), indent=1)
     counts = collections.Counter(f["confidence"] for f in functions.values())
     print("wrote %s: %d functions %s, %d with signatures, %d labels, %d structs (%d fields), %d enums" % (
@@ -540,6 +577,116 @@ def main():
         len(out["structs"]), sum(len(s["fields"]) for s in out["structs"]), len(enum_out)))
     for p in problems:
         print("  " + p)
+
+
+def virtual_tables(checker, structs, functions, labels, overrides=None):
+    """
+    One structure per virtual table, so a call through one reads as a name rather than an
+    offset: `unit->vftable->GetAverageOrganisation(...)` instead of `(**(*unit + 0x50))()`.
+
+    The tables are read out of the executable and their length comes from the RTTI export.
+    A slot whose function the findings name takes that name; the rest are `vf_<slot>`, which
+    still says which slot a call went through. Only classes the findings already describe -
+    a structure, or a vftable of their own - are laid out, since those are the ones anyone
+    is reading.
+    """
+    rtti = LX.load_rtti()
+    known_functions = {f["rva"]: f for f in functions.values()}
+    known_labels = {l["rva"]: l for l in labels}
+    wanted = set(structs) | {l.get("namespace") for l in labels if l["kind"] == "vftable"}
+
+    def ancestors(name, seen=None):
+        """The class and everything it derives from: whose methods its table may hold."""
+        seen = seen if seen is not None else set()
+        if name in seen or name not in rtti:
+            return seen
+        seen.add(name)
+        for b in rtti[name]["bases"]:
+            ancestors(b["name"], seen)
+        return seen
+
+    tables = []
+    for name, cls in sorted(rtti.items()):
+        if name not in wanted or not cls["vftables"]:
+            continue
+        for vft in cls["vftables"]:
+            rva = int(vft["address"], 16) - IMAGE_BASE
+            slots = vft["slots"]
+            if slots <= 0 or not checker.is_vftable(rva + IMAGE_BASE):
+                continue
+            targets = [checker.image.u32(rva + IMAGE_BASE + 4 * i) - IMAGE_BASE for i in range(slots)]
+            tables.append((name, vft["object_offset"], rva, targets))
+    # How many of these tables each body fills: more than one and it is folded or inherited.
+    appearances = collections.Counter(t for _, _, _, targets in tables for t in set(targets))
+
+    out = []
+    for name, at, rva, targets in tables:
+        family = ancestors(name)
+        struct_name = "%s_vftable" % name if at == 0 else "%s_vftable_at%X" % (name, at)
+        by_slot = (overrides or {}).get(name, {})
+        entries, taken = [], collections.Counter()
+        for i, target in enumerate(targets):
+            known = known_functions.get(target) or known_labels.get(target)
+            # A name goes on a slot only when it can only mean this class: a method of the
+            # class or one it derives from, or a name of ours that fills a slot in no other
+            # table. The linker folds identical bodies together - every `mov al,1; ret` in
+            # the game is one address - so anything else would say something false here.
+            mine = bool(known) and (known.get("namespace") in family
+                                    or (not known.get("namespace") and appearances[target] == 1))
+            slot_name = by_slot.get(str(i)) or (split_name(known["name"])[1] if mine else "vf_%d" % i)
+            taken[slot_name] += 1
+            if taken[slot_name] > 1:                    # one body filling several slots
+                slot_name = "%s_%d" % (slot_name, i)
+            comment = "slot %d, %08X" % (i, target + IMAGE_BASE)
+            if str(i) in by_slot:
+                comment += " - named by BiceLib"
+            elif known and not mine:
+                comment += " - a body shared with %s, so not named here" % qualified_name(known)
+            # Only a body that is this class's own gets its signature put on the slot: a
+            # folded body carries whatever signature the class it was named for has, and
+            # typing the slot from that would read as a call on the wrong class.
+            #
+            # `own` says the body belongs to this class alone or to the family it was
+            # inherited through, so a name you give it in Ghidra means the same thing in
+            # this slot and the script may take it. A folded body fills slots in classes
+            # with nothing in common, and gets neither its name nor its signature.
+            entries.append({"slot": i, "rva": target, "name": slot_name,
+                            "named": mine or str(i) in by_slot, "typed": mine,
+                            "own": inherited_only(target, tables, rtti),
+                            "comment": comment})
+        out.append({"name": struct_name, "class": name, "rva": rva,
+                    "objectOffset": at, "slots": entries})
+    return out
+
+
+def qualified_name(item):
+    ns = item.get("namespace")
+    return "%s::%s" % (ns, item["name"]) if ns else item["name"]
+
+
+def inherited_only(target, tables, rtti):
+    """
+    Whether every table holding this body belongs to one line of descent - so the body is
+    the class's own, or inherited from the class the others derive from.
+
+    That tells an inherited implementation, which `CArmy`, `CNavy` and `CUnit` rightly
+    share, from a body the linker folded, which turns up in classes with nothing to do
+    with each other.
+    """
+    owners = {name for name, _, _, targets in tables if target in targets}
+    if len(owners) == 1:
+        return True
+
+    def ancestors(name, seen=None):
+        seen = seen if seen is not None else set()
+        if name in seen or name not in rtti:
+            return seen
+        seen.add(name)
+        for b in rtti[name]["bases"]:
+            ancestors(b["name"], seen)
+        return seen
+
+    return any(all(candidate in ancestors(owner) for owner in owners) for candidate in owners)
 
 
 SCALAR_SIZES = {"bool": 1, "char": 1, "signed char": 1, "unsigned char": 1, "short": 2, "unsigned short": 2,
