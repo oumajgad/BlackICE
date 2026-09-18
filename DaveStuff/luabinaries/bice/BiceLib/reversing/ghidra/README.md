@@ -86,6 +86,12 @@ in the game is one address - so a name from elsewhere would say something false 
 class. What BiceLib knows but cannot read off a folded slot (`isLand`, `isNaval`, `isAir`
 and the rest) is named in `project.json` under `vftable_slots`.
 
+A slot its own class leaves **pure virtual** points at `_purecall`, which says nothing
+about the call, so neither its name nor its type can come from there. `vftable_slots` takes
+a record instead of a name for those - `{"name": "GetTypeId", "signature": "int __thiscall
+GetTypeId(COrder* this)"}` - and the slot is typed from the signature. `COrder`'s slot 16,
+the order type id, is the one that needed it.
+
 **A slot the findings cannot name takes the name you gave the function**, and its signature
 with it, so naming a virtual in the listing and re-running puts that name in every table
 holding it - `CUnit`, `CArmy` and `CNavy` share one implementation of slot 19, and all three
@@ -116,6 +122,21 @@ CERTAIN, LIKELY or TENTATIVE - and the evidence.
 - **Shared code.** The linker folds identical functions into one, so one address can be
   `CMinister::IsValid`, `CLaw::IsValid` and five more. Those get a neutral name
   (`IsValid`, or `Shared_GetKey_GetReqProdQueue`) and a comment listing all of them.
+- **Bodies too small to belong to anyone.** `xor al,al; ret` is written once in the whole
+  executable, and that one address fills a virtual table slot in 407 classes; `mov al,1; ret`
+  in 259, `mov eax,[ecx+0x24]; ret` in 155. A Lua registration still names one of them, and
+  `CSubUnitDefinition::IsSecondRank` on the address would be a lie about the other 406. Those
+  are named for what the body does - `ReturnFalse`, `ReturnTrue`, `GetDword_0x24`,
+  `FieldAt_0x30`, `SetByte_0x4d`, `ReturnThis` - and every method registered there is kept as
+  a label on the address. **In a class's own table the real name comes back**: a slot takes
+  the label whose class this table belongs to, so `CMinister`'s slot 8 still reads `IsValid`
+  while the other 258 read `vf_<slot>`. A name written out in `project.json` is left alone,
+  and `buildFindings.py` says when one of them sits on a folded body.
+- **`_purecall` is not shared code either.** A method a class leaves pure virtual has the CRT
+  stub in that class's own vftable, so a Lua registration followed through the table lands
+  there; three of them do. Naming the stub after them put `Shared_GetAIAcceptance_IsValid` on
+  the address 26 vftable slots point at. Registrations that resolve to it are now left unnamed
+  and listed by `buildFindings.py`, and the address is named `_purecall`.
 - **Virtual methods** are registered through MSVC vcall thunks, which every class using
   that vftable slot shares: the thunk is named for the slot (`vcall_0xC`), and the
   implementation is looked up in the class's vftable from the RTTI export.

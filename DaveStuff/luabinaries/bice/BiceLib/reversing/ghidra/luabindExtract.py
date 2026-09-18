@@ -582,16 +582,49 @@ ACCESSORS = [
 ]
 
 
+# A class of one dword returned by value comes back through a pointer the caller passes,
+# so such an accessor cannot be two instructions: it needs a frame to reach that argument.
+# CFixedPoint is the one that matters - most of a unit definition is read this way.
+BY_VALUE_ACCESSOR = re.compile(
+    r"^push ebp; mov ebp, esp; "
+    r"(?:mov (e\w\w), dword ptr \[ecx(?: \+ (0x[0-9a-f]+|\d+))?\]; "
+    r"mov (e\w\w), dword ptr \[ebp \+ 8\]"
+    r"|mov (?P<p2>e\w\w), dword ptr \[ebp \+ 8\]; "
+    r"mov (?P<r2>e\w\w), dword ptr \[ecx(?: \+ (?P<o2>0x[0-9a-f]+|\d+))?\])"
+    r"; mov dword ptr \[(?P<into>e\w\w)\], (?P<from>e\w\w); pop ebp$")
+
+
+# The same for a class of two dwords - fpml::fixed_point<__int64,48,15>, which the
+# leadership distribution and anything else counted in 64 bits is made of.
+BY_VALUE_ACCESSOR8 = re.compile(
+    r"^mov (?P<lo>e\w\w), dword ptr \[ecx \+ (?P<at>0x[0-9a-f]+|\d+)\]; "
+    r"mov (?P<into>e\w\w), dword ptr \[ebp \+ 8\]; "
+    r"mov (?P<hi>e\w\w), dword ptr \[ecx \+ (?P<at4>0x[0-9a-f]+|\d+)\]; "
+    r"mov dword ptr \[(?P=into)\], (?P=lo); mov dword ptr \[(?P=into) \+ 4\], (?P=hi)$")
+
+
 def accessor_field(image, target):
     """(offset, how) when target is nothing but a read of one member and a ret."""
-    code = image.body(target, 3)
-    if len(code) != 2 or code[1][1] != "ret" or code[1][2]:
+    code = image.body(target, 11)
+    if len(code) == 2 and code[1][1] == "ret" and not code[1][2]:
+        ops = "%s %s" % (code[0][1], code[0][2])
+        for pattern, how in ACCESSORS:
+            m = pattern.match(ops)
+            if m:
+                return (0 if how == "address0" else int(m.group(1), 0)), how
         return None
-    ops = "%s %s" % (code[0][1], code[0][2])
-    for pattern, how in ACCESSORS:
-        m = pattern.match(ops)
+    if len(code) == 7 and code[6][1] == "ret" and code[6][2] == "4":
+        m = BY_VALUE_ACCESSOR.match("; ".join(("%s %s" % (i[1], i[2])).strip() for i in code[:6]))
         if m:
-            return (0 if how == "address0" else int(m.group(1), 0)), how
+            value, pointer = m.group(1) or m.group("r2"), m.group(3) or m.group("p2")
+            if m.group("into") == pointer and m.group("from") == value:
+                return int(m.group(2) or m.group("o2") or "0", 0), "byvalue"
+    if len(code) == 9 and code[8][1] == "ret" and code[8][2] == "4" \
+            and [i[1:] for i in code[:2]] == [("push", "ebp"), ("mov", "ebp, esp")] \
+            and code[7][1:] == ("pop", "ebp"):
+        m = BY_VALUE_ACCESSOR8.match("; ".join(("%s %s" % (i[1], i[2])).strip() for i in code[2:7]))
+        if m and int(m.group("at4"), 0) == int(m.group("at"), 0) + 4:
+            return int(m.group("at"), 0), "byvalue"
     return None
 
 
@@ -771,8 +804,16 @@ def main():
                 else:
                     ftype = ret["text"]
                 target = by_lua[f["class"]]
+                # Where the C++ name says more than the Lua one - `GetActingCapital` against
+                # `GetCapital`, `GetBasePercentage` against `GetPercentage` - the field takes
+                # the C++ name. Anything differing only in case keeps the Lua spelling.
+                name = field_name(f["lua_name"])
+                cpp = f["cpp"].rsplit("::", 1)[-1]
+                bare = cpp[3:] if cpp.startswith("Get") and len(cpp) > 3 else cpp
+                if bare and bare.lower() != name.lower():
+                    name = bare
                 if all(x["offset"] != offset for x in target["fields"]):
-                    target["fields"].append({"name": field_name(f["lua_name"]), "offset": offset, "type": ftype,
+                    target["fields"].append({"name": name, "offset": offset, "type": ftype,
                                              "evidence": "accessor %s at %08X" % (f["cpp"], f["address"])})
 
     shared = collections.defaultdict(list)

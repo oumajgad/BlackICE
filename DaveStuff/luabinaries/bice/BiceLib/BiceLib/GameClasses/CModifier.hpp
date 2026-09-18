@@ -64,24 +64,35 @@ namespace CModifier {
 
     /**
      * How many entries the array holds, and so how many kinds of modifier this build
-     * has. From `DaveStuff/mem`, not checked against the array's end.
+     * has. **Read live**: entry 143 has no definition, and the next country's array
+     * begins two entries after it.
      */
     constexpr int COUNT = 143;
 
     /**
-     * **Which modifier an entry is**, by the game's own numbering: the values its Lua API
-     * registers on CModifier as `ModifierType`, each named there `_MODIFIER_LOCAL_IC_`
-     * and so on. Only the ones registered to Lua are here - 57 is not registered, nor is
-     * anything from 83 up.
+     * **Which modifier an entry is**, by the game's own numbering.
+     *
+     * Names come from two places and mostly agree. Where the Lua API registers one on
+     * CModifier as `ModifierType` (`_MODIFIER_LOCAL_IC_` and so on) that is the name used
+     * here; the rest - 57, and everything from 83 up, which Lua does not register - are
+     * named from the key the modifier's own CModifierDefinition carries, **read live** off
+     * a running game and agreeing across twelve countries.
+     *
+     * The two disagree in five places, noted below; 3 to 6 are the interesting ones, where
+     * the keys call the pair at 3 and 4 `MANPOWER` and the Lua names put `LOCAL_MANPOWER`
+     * and `GLOBAL_MANPOWER` there while the keys use those for 5 and 6.
+     *
+     * That the array is exactly COUNT long is **read live** as well: entry 143 is null and
+     * the next country's array begins two entries later.
      */
     enum ModifierType : int {
         MINIMUM_REVOLT_RISK = 0,
         LOCAL_REVOLT_RISK = 1,
         GLOBAL_REVOLT_RISK = 2,
-        LOCAL_MANPOWER = 3,
-        GLOBAL_MANPOWER = 4,
-        LOCAL_MANPOWER_MODIFIER = 5,
-        GLOBAL_MANPOWER_MODIFIER = 6,
+        LOCAL_MANPOWER = 3,   // key: MANPOWER
+        GLOBAL_MANPOWER = 4,   // key: MANPOWER
+        LOCAL_MANPOWER_MODIFIER = 5,   // key: LOCAL_MANPOWER
+        GLOBAL_MANPOWER_MODIFIER = 6,   // key: GLOBAL_MANPOWER
         ATTRITION = 7,
         WAR_EXHAUSTION = 8,
         MAX_WAR_EXHAUSTION = 9,
@@ -132,6 +143,7 @@ namespace CModifier {
         COUNTER_INTELLIGENCE = 54,
         COUNTER_ESPIONAGE = 55,
         THREAT_IMPACT = 56,
+        THREAT_RESISTANCE = 57,
         PEACE_OFFMAP_INTEL = 58,
         OFFMAP_LAND_INTEL = 59,
         OFFMAP_NAVAL_INTEL = 60,
@@ -149,7 +161,7 @@ namespace CModifier {
         NAVAL_ORGANISATION = 72,
         RESEARCH_EFFICIENCY = 73,
         INDUSTRIAL_EFFICIENCY = 74,
-        LOCAL_ANTI_AIR = 75,
+        LOCAL_ANTI_AIR = 75,   // key: MODIFIER_LOCAL_AA
         LOCAL_PARTISAN_SUPPORT = 76,
         RESERVES_PENALTY_SIZE = 77,
         NEUTRALITY_CHANGE = 78,
@@ -157,6 +169,66 @@ namespace CModifier {
         NAVAL_BASE_EFFICIENCY = 80,
         SUPPLY_THROUGHPUT = 81,
         OFFICER_RECRUITMENT = 82,
+        NEUTRALITY = 83,
+        GLOBAL_RESOURCES = 84,
+        LOCAL_RESOURCES = 85,
+        REINFORCEMENT_BONUS = 86,
+        AIR_BUILD_SPEED = 87,
+        LAND_BUILD_SPEED = 88,
+        ROCKET_BUILD_SPEED = 89,
+        TANK_BUILD_SPEED = 90,
+        NAVAL_BUILD_SPEED = 91,
+        FUEL_CONVERSION = 92,
+        TRICKLEBACK = 93,
+        HARD_ATTACK = 94,
+        SOFT_ATTACK = 95,
+        NUKE_RESEARCH = 96,
+        AMM_MOVEMENT_SPEED = 97,
+        WINTER_EFFECTS = 98,
+        JUNGLE_EFFECTS = 99,
+        LEADER_DEFENCE = 100,
+        SW_NATIONAL_UNITY_EFFECT = 101,
+        LAND_INTEL_BOOST = 102,
+        NAVAL_INTEL_BOOST = 103,
+        LOCAL_UNDERGROUND = 104,
+        NAVAL_INTEL_BOOST_105 = 105,
+        STRATEGIC_RESOURCE_EFFICIENCY = 106,
+        LOCAL_UNIT_SPEED = 107,
+        support_attack_eff = 108,
+        strategic_redeployment_eff = 109,
+        move_order_eff = 110,
+        rebase_eff = 111,
+        reserves_eff = 112,
+        patrol_eff = 113,
+        intercept_eff = 114,
+        sortie_eff = 115,
+        convoy_escort_eff = 116,
+        convoy_raid_eff = 117,
+        air_convoy_raid_eff = 118,
+        transport_eff = 119,
+        invasion_eff = 120,
+        strategic_bomb_eff = 121,
+        logistical_strike_eff = 122,
+        runway_cratering_eff = 123,
+        installation_strike_eff = 124,
+        ground_attack_eff = 125,
+        interdiction_eff = 126,
+        air_intercept_eff = 127,
+        carrier_protection_eff = 128,
+        paradrop_mission_eff = 129,
+        port_strike_eff = 130,
+        naval_strike_eff = 131,
+        rebase_to_carrier_eff = 132,
+        nuke_mission_eff = 133,
+        transport_supplies_mission_eff = 134,
+        rebase_air_eff = 135,
+        air_reserve_eff = 136,
+        air_superiority_eff = 137,
+        join_fleet_eff = 138,
+        join_air_eff = 139,
+        suseptibility_axis = 140,
+        suseptibility_allies = 141,
+        suseptibility_comintern = 142,
     };
 
     /**@brief where the entry for \p type sits in the values array*/

@@ -301,6 +301,114 @@ def build_signature(ftype, enums, sizes):
     return sig, note
 
 
+# A body of one or two instructions is a folding magnet: `xor al,al; ret` and
+# `mov eax,[ecx+0x24]; ret` are written once each in the whole executable however many
+# classes declare such a method, so the one address ends up in hundreds of virtual tables.
+# A Lua registration still names one of them, and that name would be a lie everywhere else,
+# so these are named for what the body does. Every method registered there stays as a label.
+TRIVIAL_BODIES = [
+    (re.compile(r"^mov al, 1$"), "ReturnTrue"),
+    (re.compile(r"^xor al, al$"), "ReturnFalse"),
+    (re.compile(r"^mov eax, (0x[0-9a-f]+|\d+)$"), "Return_%s"),
+    (re.compile(r"^xor eax, eax$"), "Return_0"),
+    (re.compile(r"^mov eax, ecx$"), "ReturnThis"),
+    (re.compile(r"^mov eax, dword ptr \[ecx \+ (0x[0-9a-f]+|\d+)\]$"), "GetDword_%s"),
+    (re.compile(r"^mov eax, dword ptr \[ecx\]$"), "GetDword_0"),
+    (re.compile(r"^mov al, byte ptr \[ecx \+ (0x[0-9a-f]+|\d+)\]$"), "GetByte_%s"),
+    (re.compile(r"^lea eax, \[ecx \+ (0x[0-9a-f]+|\d+)\]$"), "FieldAt_%s"),
+    (re.compile(r"^lea eax, \[ecx\]$"), "FieldAt_0"),
+    (re.compile(r"^fld dword ptr \[ecx \+ (0x[0-9a-f]+|\d+)\]$"), "GetFloat_%s"),
+]
+
+
+SETTER_ARGUMENT = re.compile(r"^mov (\w+), (?:dword|byte) ptr \[ebp \+ 8\]$")
+SETTER_STORE = re.compile(r"^mov (dword|byte) ptr \[ecx \+ (0x[0-9a-f]+|\d+)\], (\w+)$")
+
+
+def trivial_name(image, va):
+    """
+    What a body too small to be about any one class does, as a name - or None when the body
+    says more than that. A frame around it is not part of what it does, so it is dropped.
+    """
+    seen = []
+    for address, _, mnemonic, operands in image.cs.disasm_lite(image.read(va, 48) or b"", va):
+        if mnemonic.startswith("ret"):
+            break
+        seen.append(("%s %s" % (mnemonic, operands)).strip())
+        if len(seen) > 6:
+            return None
+    if seen[:2] == ["push ebp", "mov ebp, esp"]:
+        seen = seen[2:]
+    while seen and seen[-1] in ("pop ebp", "mov esp, ebp"):
+        seen.pop()
+    if len(seen) == 1:
+        for pattern, shape in TRIVIAL_BODIES:
+            m = pattern.match(seen[0])
+            if m:
+                return shape % m.group(1) if "%s" in shape else shape
+    if len(seen) == 2:
+        argument, store = SETTER_ARGUMENT.match(seen[0]), SETTER_STORE.match(seen[1])
+        if argument and store and argument.group(1) == store.group(3):
+            return "Set%s_%s" % (store.group(1).capitalize(), store.group(2))
+    return None
+
+
+def vftable_holders(image, rtti):
+    """Every address any class's virtual table points at, and which classes those are."""
+    holders = collections.defaultdict(set)
+    for name, cls in rtti.items():
+        for vft in cls.get("vftables") or []:
+            address, slots = int(vft["address"], 16), vft["slots"]
+            if slots <= 0 or slots > 1024:
+                continue
+            for i in range(slots):
+                target = image.u32(address + 4 * i)
+                if target:
+                    holders[target].add(name)
+    return holders
+
+
+def folded_across_classes(holders, rtti, va):
+    """
+    Whether this body fills slots in classes with nothing to do with each other.
+
+    One line of descent is not folding - that is an implementation the derived classes
+    inherit, and the class that introduced it may rightly name it.
+    """
+    owners = holders.get(va) or set()
+    if len(owners) < 2:
+        return False
+    return not any(all(candidate in ancestors_of(rtti, owner) for owner in owners)
+                   for candidate in owners)
+
+
+def ancestors_of(rtti, name, seen=None):
+    seen = seen if seen is not None else set()
+    if name in seen or name not in rtti:
+        return seen
+    seen.add(name)
+    for b in rtti[name]["bases"]:
+        ancestors_of(rtti, b["name"], seen)
+    return seen
+
+
+PURECALL = 0x7961D5
+"""
+The CRT's `_purecall`, which is what a class's own vftable holds for a method it leaves
+pure virtual. Following such a slot lands here rather than on any implementation, so a
+name taken from the method would put one class's name on the stub every abstract class in
+the game shares. Checked against the executable by `is_purecall` before it is relied on.
+"""
+
+
+def is_purecall(image, rva=PURECALL):
+    """Whether that address is the CRT stub: the installed handler if there is one, and
+    `_amsg_exit(_RT_PUREVIRT)` - the R6025 message, then the process ends - if there is not."""
+    b = image.read(rva + IMAGE_BASE, 20) or b""
+    return (len(b) == 20 and b[0:2] == b"\xff\x35" and b[6:8] == b"\xff\x15"
+            and b[12:14] == b"\x85\xc0" and b[16:18] == b"\xff\xd0" and b[18:20] == b"\x6a\x19")
+
+
 def parse_prototype(text):
     """
     'int* __stdcall SupplyCapacity(CMapProvince* province, int* out)' -> signature dict.
@@ -347,7 +455,13 @@ def main():
         if c["size"]:
             sizes[c["rtti"] or c["cpp"]] = c["size"]
 
+    rtti = LX.load_rtti()
+    holders = vftable_holders(checker.image, rtti)
+
     functions, labels, problems = {}, [], []
+    if not is_purecall(checker.image):
+        problems.append("%08X is not the _purecall stub any more - pure virtual slots will be "
+                        "named after whatever Lua method resolves to them" % (PURECALL + IMAGE_BASE))
 
     def add_function(rva, namespace, name, confidence, evidence, signature=None, extra_labels=(), proven=False):
         va = rva + IMAGE_BASE
@@ -407,6 +521,27 @@ def main():
                 confidence = "TENTATIVE"
                 evidence.append("Which class introduced this implementation is not in the RTTI export; named after "
                                 "the declaring class.")
+        folded = f["address"] and folded_across_classes(holders, rtti, f["address"]) \
+            and trivial_name(checker.image, f["address"])
+        if folded:
+            # The body is one instruction and the linker gave every class that declares such
+            # a method the same copy of it. Whose method it is belongs in the labels, not in
+            # the name a call site shows.
+            evidence.append("The whole body is one instruction, which the linker folds: this "
+                            "address fills virtual table slots in %d classes (%s and others), "
+                            "so it is named for what it does. The methods registered here are "
+                            "labels on it."
+                            % (len(holders[f["address"]]),
+                               ", ".join(sorted(holders[f["address"]])[:3])))
+            add_function(f["address"] - IMAGE_BASE, "", folded, "LIKELY", "\n".join(evidence),
+                         None, [{"namespace": owner, "name": name}], proven=True)
+            continue
+        if f["address"] and f["address"] - IMAGE_BASE == PURECALL:
+            # Pure virtual: the slot holds _purecall, so there is no implementation here to
+            # name. The derived classes that fill the slot are named from their own tables.
+            problems.append("pure virtual, nothing to name at the stub: %s::%s (%s:%s)"
+                            % (owner, name, f["class"], f["lua_name"]))
+            continue
         if f.get("shared_with") and len(set(f["shared_with"])) > 1:
             names = sorted(set(u.split("::")[-1] for u in f["shared_with"]))
             shared_name = names[0] if len(names) == 1 else "Shared_" + "_".join(names[:3])
@@ -433,6 +568,15 @@ def main():
                      "luabind runtime: %s. Identified from its use in SetupAI." % what, proven=True)
 
     # ---- the rest of the project ----
+    # A name written out by hand wins over anything worked out here, but it is worth saying
+    # when one of them sits on a body the linker folded: the name is then about one of the
+    # classes sharing the address and misleading about the rest.
+    for a in project["addresses"]:
+        if a["kind"] == "function" and "::" in a["name"]:
+            va = int(a["rva"], 16) + IMAGE_BASE
+            if folded_across_classes(holders, rtti, va) and trivial_name(checker.image, va):
+                problems.append("%s names a body folded into %d classes; %s is what it does"
+                                % (a["name"], len(holders[va]), trivial_name(checker.image, va)))
     for a in project["addresses"]:
         rva = int(a["rva"], 16)
         conf = CONFIDENCE.get(a["confidence"], "TENTATIVE")
@@ -516,7 +660,11 @@ def main():
                         f["type"] = "CListNode<%s>*" % element
     TYPE_MAP = {"pointer": "undefined4", "uintptr_t": "undefined4", "uint8_t": "unsigned char", "int8_t": "signed char",
                 "uint16_t": "unsigned short", "int16_t": "short", "uint32_t": "unsigned int", "int32_t": "int",
-                "DWORD": "unsigned int", "BYTE": "unsigned char", "WORD": "unsigned short"}
+                "DWORD": "unsigned int", "BYTE": "unsigned char", "WORD": "unsigned short",
+                # The compiler's own name for the game's 64 bit fixed point, from RTTI: 48
+                # integer bits and 15 fractional ones, so 32768 is 1. A structure of that
+                # name would only get in the way of reading it.
+                "fpml::fixed_point<__int64,48,15>": "longlong"}
     struct_sizes = dict(sizes)
     for s in structs.values():
         if s["size"]:
@@ -586,7 +734,9 @@ def virtual_tables(checker, structs, functions, labels, overrides=None):
 
     The tables are read out of the executable and their length comes from the RTTI export.
     A slot whose function the findings name takes that name; the rest are `vf_<slot>`, which
-    still says which slot a call went through. Only classes the findings already describe -
+    still says which slot a call went through. An override in `vftable_slots` may be a name
+    on its own, or `{"name": ..., "signature": ...}` where the signature is what the slot is
+    typed from. Only classes the findings already describe -
     a structure, or a vftable of their own - are laid out, since those are the ones anyone
     is reading.
     """
@@ -633,13 +783,29 @@ def virtual_tables(checker, structs, functions, labels, overrides=None):
             # the game is one address - so anything else would say something false here.
             mine = bool(known) and (known.get("namespace") in family
                                     or (not known.get("namespace") and appearances[target] == 1))
-            slot_name = by_slot.get(str(i)) or (split_name(known["name"])[1] if mine else "vf_%d" % i)
+            # An override is a name, or a record with a name and the signature to type the
+            # slot from - for a slot the class leaves pure virtual, where the body at the
+            # address is _purecall and says nothing about the call.
+            override = by_slot.get(str(i))
+            override = {"name": override} if isinstance(override, str) else override
+            # A body too small to belong to anyone is named for what it does, and the
+            # classes that declare such a method are kept on it as labels. One of those
+            # labels may be this class's, and in this table that name is right - it is
+            # only the address that cannot carry it.
+            declared = next((l for l in (known or {}).get("labels") or []
+                             if l.get("namespace") in family), None)
+            slot_name = ((override or {}).get("name")
+                         or (split_name(known["name"])[1] if mine
+                             else declared["name"] if declared else "vf_%d" % i))
             taken[slot_name] += 1
             if taken[slot_name] > 1:                    # one body filling several slots
                 slot_name = "%s_%d" % (slot_name, i)
             comment = "slot %d, %08X" % (i, target + IMAGE_BASE)
-            if str(i) in by_slot:
+            if override:
                 comment += " - named by BiceLib"
+            elif declared:
+                comment += (" - a body the linker folded, named for this class from %s::%s"
+                            % (declared["namespace"], declared["name"]))
             elif known and not mine:
                 comment += " - a body shared with %s, so not named here" % qualified_name(known)
             # Only a body that is this class's own gets its signature put on the slot: a
@@ -650,10 +816,14 @@ def virtual_tables(checker, structs, functions, labels, overrides=None):
             # inherited through, so a name you give it in Ghidra means the same thing in
             # this slot and the script may take it. A folded body fills slots in classes
             # with nothing in common, and gets neither its name nor its signature.
-            entries.append({"slot": i, "rva": target, "name": slot_name,
-                            "named": mine or str(i) in by_slot, "typed": mine,
-                            "own": inherited_only(target, tables, rtti),
-                            "comment": comment})
+            entry = {"slot": i, "rva": target, "name": slot_name,
+                     "named": mine or bool(override) or bool(declared), "typed": mine,
+                     "own": inherited_only(target, tables, rtti),
+                     "comment": comment}
+            if override and override.get("signature"):
+                entry["signature"] = parse_prototype(override["signature"])
+                entry["comment"] += ", typed from the findings"
+            entries.append(entry)
         out.append({"name": struct_name, "class": name, "rva": rva,
                     "objectOffset": at, "slots": entries})
     return out

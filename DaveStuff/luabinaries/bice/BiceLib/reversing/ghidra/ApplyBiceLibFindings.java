@@ -507,8 +507,17 @@ public class ApplyBiceLibFindings extends GhidraScript {
 					typed |= f.getSignatureSource() != SourceType.DEFAULT;
 				}
 			}
-			DataType type = typed ? slotType(name, fname, target)
-				: new PointerDataType(VoidDataType.dataType, dtm);
+			// A slot the class itself leaves pure virtual has _purecall at its address, which
+			// says nothing about the call; where the findings write the signature out, that is
+			// what the slot is typed from.
+			DataType type;
+			if (slot.has("signature") && !slot.get("signature").isJsonNull()) {
+				type = slotType(name, fname, slot.getAsJsonObject("signature"));
+			}
+			else {
+				type = typed ? slotType(name, fname, target)
+					: new PointerDataType(VoidDataType.dataType, dtm);
+			}
 			placeField(table, index * 4, fname, type, comment, "a function pointer");
 		}
 		Structure cls = structFor(owner, true);
@@ -516,6 +525,39 @@ public class ApplyBiceLibFindings extends GhidraScript {
 		placeField(cls, at, field, new PointerDataType(table, dtm),
 			"the virtual table, " + name, name + "*");
 		vftables++;
+	}
+
+	/**
+	 * The same, from a signature the findings carry rather than from the body at the address.
+	 * That is for a slot its own class leaves pure virtual: every derived class fills it, and
+	 * what the base's table points at is _purecall, which would type the slot as taking
+	 * nothing and answering nothing.
+	 */
+	private DataType slotType(String table, String fname, JsonObject sig) {
+		FunctionDefinitionDataType definition =
+			new FunctionDefinitionDataType(VFTABLE_CATEGORY, table + "_" + fname, dtm);
+		definition.setReturnType(resolve(sig.get("return").getAsString()));
+		List<ParameterDefinition> params = new ArrayList<>();
+		int n = 1;
+		for (JsonElement e : sig.getAsJsonArray("params")) {
+			JsonObject p = e.getAsJsonObject();
+			String pname = p.has("name") && !p.get("name").isJsonNull() ? p.get("name").getAsString()
+				: "arg" + n;
+			params.add(new ParameterDefinitionImpl(pname, resolve(p.get("type").getAsString()), null));
+			n++;
+		}
+		definition.setArguments(params.toArray(new ParameterDefinition[0]));
+		try {
+			definition.setCallingConvention(sig.get("convention").getAsString());
+		}
+		catch (Exception ignored) {
+			// A convention the program does not know is not worth losing the signature over.
+		}
+		DataType kept = dtm.getDataType(VFTABLE_CATEGORY, definition.getName());
+		if (kept != null && kept.isEquivalent(definition)) {
+			return new PointerDataType(kept, dtm);
+		}
+		return new PointerDataType(dtm.addDataType(definition, DataTypeConflictHandler.REPLACE_HANDLER), dtm);
 	}
 
 	/**

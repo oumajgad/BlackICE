@@ -11,6 +11,15 @@
    "source": "BiceLib/GameClasses/CCountryDataBase.hpp:32"
   },
   {
+   "rva": "0x17AF0",
+   "kind": "function",
+   "name": "CCountry::GetCapitalLocation",
+   "signature": null,
+   "comment": "The capital's province: the game state's province vector (+0xB8C) indexed by CCountry +0xE20. Byte for byte the same function as GetActingCapitalLocation (0x2F100) but for the offset it reads, which is what settles which field is which.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:173"
+  },
+  {
    "rva": "0x2EEF0",
    "kind": "function",
    "name": "Date_DayOfYear",
@@ -110,6 +119,15 @@
    "source": "reversing/FINDINGS-combat.md:229"
   },
   {
+   "rva": "0x45D90",
+   "kind": "function",
+   "name": "GetDefines",
+   "signature": "CDefines* __cdecl GetDefines(void)",
+   "comment": "Getter for the defines object read from defines.lua; makes it on first use and keeps it at 0x1686040. Its +0xAC is the block holding SUPPLYPOOL_DAYS and the leader distance defines.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:267"
+  },
+  {
    "rva": "0x4C5C0",
    "kind": "function",
    "name": "Date_DayOfMonth",
@@ -164,6 +182,15 @@
    "source": "reversing/FINDINGS-autosave.md:56"
   },
   {
+   "rva": "0x63D40",
+   "kind": "function",
+   "name": "GetTotalBuildCost",
+   "signature": "void __cdecl GetTotalBuildCost(CSubUnitDefinition* definition, CCountry* country, longlong* ic, longlong* manpower)",
+   "comment": "What a unit type will cost this country in all - the whole build, not a day of it. Four arguments: the definition, the country, and somewhere to put an IC figure and a manpower one, either of which may be null to skip that half; both come back as fpml::fixed_point<__int64,48,15>. It adds up CTechnologyStatus +0x218 over the definition's own technology list (+0x44..+0x48), hands that total to CCountry::GetBuildTime (0xE19A0) for the days, works the daily cost out with the same terms as CCountry::GetBuildCostIC - but without its reserves step, which this does not have - and multiplies the two. The manpower half does the same from +0xFC with CTechnologyStatus +0x25C and a floor from a global. Its three callers all add the two figures onto running totals. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:156"
+  },
+  {
    "rva": "0x883A0",
    "kind": "function",
    "name": "CMap::CMap",
@@ -171,6 +198,15 @@
    "comment": "CMap constructor (object 0x2A94 bytes).",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CMap.hpp:7"
+  },
+  {
+   "rva": "0x94650",
+   "kind": "function",
+   "name": "CSubUnitDefinition::IsCarrier",
+   "signature": null,
+   "comment": "`cmp [ecx+0x190], 0; setg al; ret` - a carrier is a ship whose carrier_size is above zero, not a flag byte like the other kind tests.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:427"
   },
   {
    "rva": "0x95020",
@@ -426,6 +462,69 @@
    "source": "BiceLib/Patches.cpp:45"
   },
   {
+   "rva": "0xDFDA0",
+   "kind": "function",
+   "name": "CCountry::GetBuildCost",
+   "signature": null,
+   "comment": "What this country pays for a building: the building's own cost (CBuilding +0x58) scaled by the discount its technology category earns, cost x (1000 - discount) / 1000. The slot 2 call on the category that guards it is the folded `mov al,1; ret` at 0xA92590, true for a real category and for the nocategory object alike, so the discount is always applied. That matters for a building whose category is nocategory - its index is 0, where every country's ability is 0, and an ability below 5.000 raises the cost: A building whose category is nocategory therefore costs about half as much again.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:62"
+  },
+  {
+   "rva": "0xE0170",
+   "kind": "function",
+   "name": "CCountry::GetAllowedResearchSlots",
+   "signature": null,
+   "comment": "round(base_percentage x factor x TotalLeadership) - the research slider (LeadershipDistribution->Research, the fourth of the four) times the country's total leadership. Reads the two as fpml::fixed_point<__int64,48,15>, so the shifts by 15 and 30 and the 0x1F40000 are only the fixed point arithmetic.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:50"
+  },
+  {
+   "rva": "0xE0290",
+   "kind": "function",
+   "name": "CCountry::GetAbility",
+   "signature": null,
+   "comment": "The country's effective level in a technology category: its own (+0x698), or the level of the country sharing that category with it (+0x6A8) where that is higher.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:99"
+  },
+  {
+   "rva": "0xE06C0",
+   "kind": "function",
+   "name": "CCountry::GetLeadershipDistributionAt",
+   "signature": null,
+   "comment": "[this+0x5E4][i] - the leadership slider at that index: 0 officers, 1 diplomacy, 2 espionage, 3 research, the order of the game's LeadershipCategory enum.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:50"
+  },
+  {
+   "rva": "0xE18F0",
+   "kind": "function",
+   "name": "CCountry::GetBuildCostIC",
+   "signature": null,
+   "comment": "What a unit type costs this country. base is the definition's BuildCostIC (+0xF8); the multiplier is 1000, plus CTechnologyStatus +0x24C for the type, plus the third argument times 10 (so 1% a point), less the discount the definition's technology category (+0x3C) earns - the same 0xE1AC0 buildings use. Then, where the fourth argument is set, times (1000 + the country's RESERVES_PENALTY_SIZE modifier, 77) over 1000. The third argument is the caller's: the game works it out at 0x63D40 by adding up CTechnologyStatus +0x218 over the definition's own technology list (+0x44..+0x48). Only Lua calls this entry point; the game's own path is GetTotalBuildCost (0x63D40), which works the same cost out inline without the reserves step and multiplies it by GetBuildTime.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44"
+  },
+  {
+   "rva": "0xE19A0",
+   "kind": "function",
+   "name": "CCountry::GetBuildTime",
+   "signature": null,
+   "comment": "How long a unit type takes this country to build. The definition's BuildTime (+0x100) times two factors over a million. The first is 1000, plus CTechnologyStatus +0x26C for the type, plus the second argument times 10, plus the country's UNIT_RECRUITMENT_TIME modifier (51), less the discount the definition's technology category earns (0xE1AC0, the same one the costs use); it is floored at 50. The second is 1000 plus one build speed modifier, chosen by the definition's kind flags in this order: is_rocket (+0x33) ROCKET_BUILD_SPEED, is_tank (+0x34) TANK_BUILD_SPEED, is_air (+0x2C) AIR_BUILD_SPEED, is_ship (+0x2E) NAVAL_BUILD_SPEED, else LAND_BUILD_SPEED.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44"
+  },
+  {
+   "rva": "0xE1AC0",
+   "kind": "function",
+   "name": "CCountry::GetCategoryBuildDiscount",
+   "signature": "int* __stdcall GetCategoryBuildDiscount(CCountry* country, int* out, CTechnologyCategory* category)",
+   "comment": "The discount a technology category earns, in thousandths, which the build cost is scaled by as (1000 - this). Takes the country's ability in that category - its own level at +0x698, or the sharer's if a tag at +0x6A8 names one with a higher level, the same lookup GetAbility makes - floors it at 0 and measures it against 5.000: below that the result is negative and the cost goes up, at 100 per point; above it 50 per point with everything past 1.000 halved first. Then adds the country's INDUSTRIAL_EFFICIENCY modifier (74) and CTechnologyStatus +0x94, and caps the whole at 990, so at most 99% off. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:62"
+  },
+  {
    "rva": "0xF0F22",
    "kind": "instruction",
    "name": "Hook_OffmapIc_CountLocalIc",
@@ -462,6 +561,60 @@
    "source": "BiceLib/Patches.cpp:36"
   },
   {
+   "rva": "0xF1830",
+   "kind": "function",
+   "name": "CCountry::GetDailyIncome",
+   "signature": null,
+   "comment": "A day's income of one good: home_produced plus, for anything but supplies and fuel, convoyed_in, plus the five pools at +0x848, +0x8B4, +0x8FC, +0x9D4 and +0xA64. Each read as pool + 8 + category * 4.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:247"
+  },
+  {
+   "rva": "0xF18A0",
+   "kind": "function",
+   "name": "CCountry::GetDailyBalance",
+   "signature": null,
+   "comment": "A day's balance of one good: GetDailyIncome less GetDailyExpense, worked out inline rather than by calling either. The convoyed_in skip for supplies and fuel is here too.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:247"
+  },
+  {
+   "rva": "0xF1950",
+   "kind": "function",
+   "name": "CCountry::GetDailyExpense",
+   "signature": null,
+   "comment": "A day's spending of one good: traded_away, convoyed_out and the three pools at +0x8D8, +0x98C and +0x9B0, less the two at +0x824 and +0x920 - which is what makes it the need less what was wanted and not got.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:247"
+  },
+  {
+   "rva": "0xF19A0",
+   "kind": "function",
+   "name": "CCountry::GetDailyNeed",
+   "signature": null,
+   "comment": "The same seven pools GetDailyExpense uses, all added: what the country wanted of one good, where the expense is what it actually spent.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:247"
+  },
+  {
+   "rva": "0xF4B90",
+   "kind": "function",
+   "name": "CCountry::GetSpareICIn",
+   "signature": "int* __stdcall GetSpareICIn(CCountry* country, int* out, ProductionCategory category)",
+   "comment": "How much of what a production slider allocates is not needed by it, in thousandths of IC and never negative. Allocated is the setting's percentage times its factor times TotalIC (+0x604); what is taken off depends on the category (a jump table at 0x0F4D54): CONSUMER nothing if there is any dissent, otherwise the setting's own GetNeeded scaled by a define; PRODUCTION the production queue, GetUsedIC; REINFORCEMENT the country's +0xA98; UPGRADE its +0xAA4; SUPPLY and LENDLEASE fall through to zero. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:68"
+  },
+  {
+   "rva": "0xF4D70",
+   "kind": "function",
+   "name": "CCountry::GetAvailableIC",
+   "signature": null,
+   "comment": "Spare industrial capacity: GetSpareICIn summed over the five ProductionCategory values from _PRODUCTION_CONSUMER_ to _PRODUCTION_UPGRADE_ - lend lease, category 0, is left out - and divided by 1000. So it is IC a slider has been given but does not need, not IC that is unallocated.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:68"
+  },
+  {
    "rva": "0xF4DE0",
    "kind": "function",
    "name": "CCountry::GetPool",
@@ -469,6 +622,42 @@
    "comment": "Answers the capital province's pool, or the country's own pool at +0x9F8 when the country is a government in exile (+0x95).",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:60"
+  },
+  {
+   "rva": "0xFD590",
+   "kind": "function",
+   "name": "CCountry::GetConvoyBuildCost",
+   "signature": null,
+   "comment": "The CONVOY_BUILD_COST define (CDefines economy block, CONVOY_BUILD_COST) times (1000 + CTechnologyStatus 0x44) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CDefines.hpp:46"
+  },
+  {
+   "rva": "0xFD600",
+   "kind": "function",
+   "name": "CCountry::GetConvoyBuildTime",
+   "signature": null,
+   "comment": "The CONVOY_BUILD_TIME define (CDefines economy block, CONVOY_BUILD_TIME) times (1000 + CTechnologyStatus 0x48) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CDefines.hpp:47"
+  },
+  {
+   "rva": "0xFD670",
+   "kind": "function",
+   "name": "CCountry::GetEscortBuildCost",
+   "signature": null,
+   "comment": "The ESCORT_BUILD_COST define (CDefines economy block, ESCORT_BUILD_COST) times (1000 + CTechnologyStatus 0x4C) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CDefines.hpp:48"
+  },
+  {
+   "rva": "0xFD6E0",
+   "kind": "function",
+   "name": "CCountry::GetEscortBuildTime",
+   "signature": null,
+   "comment": "The ESCORT_BUILD_TIME define (CDefines economy block, ESCORT_BUILD_TIME) times (1000 + CTechnologyStatus 0x50) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CDefines.hpp:49"
   },
   {
    "rva": "0x118480",
@@ -491,27 +680,27 @@
   {
    "rva": "0x163E60",
    "kind": "function",
-   "name": "CGroundBombing::GetKind",
-   "signature": "int __thiscall GetKind(CGroundBombing* this)",
-   "comment": "Slot 11: mov eax, 4; ret.",
+   "name": "Return_4",
+   "signature": null,
+   "comment": "`mov eax, 4; ret` - the whole body, so the linker folded it and this one address fills a virtual table slot in several classes that have nothing to do with each other. It is slot 11 of CGroundBombing, where it answers the combat kind 4, and that is written on CGroundBombing's own slot rather than on the address.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:329"
   },
   {
    "rva": "0x163F30",
    "kind": "function",
-   "name": "CLandBombing::GetKind",
-   "signature": "int __thiscall GetKind(CLandBombing* this)",
-   "comment": "Slot 11: mov eax, 5; ret.",
+   "name": "Return_5",
+   "signature": null,
+   "comment": "`mov eax, 5; ret` - the whole body, so the linker folded it and this one address fills a virtual table slot in several classes that have nothing to do with each other. It is slot 11 of CLandBombing, where it answers the combat kind 5, and that is written on CLandBombing's own slot rather than on the address.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:330"
   },
   {
    "rva": "0x164000",
    "kind": "function",
-   "name": "CNavalBombing::GetKind",
-   "signature": "int __thiscall GetKind(CNavalBombing* this)",
-   "comment": "Slot 11: mov eax, 6; ret.",
+   "name": "Return_6",
+   "signature": null,
+   "comment": "`mov eax, 6; ret` - the whole body, so the linker folded it and this one address fills a virtual table slot in several classes that have nothing to do with each other. It is slot 11 of CNavalBombing, where it answers the combat kind 6, and that is written on CNavalBombing's own slot rather than on the address.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:331"
   },
@@ -590,9 +779,9 @@
   {
    "rva": "0x17BC80",
    "kind": "function",
-   "name": "CAirCombat::GetKind",
-   "signature": "int __thiscall GetKind(CAirCombat* this)",
-   "comment": "Slot 11: mov eax, 3; ret.",
+   "name": "Return_3",
+   "signature": null,
+   "comment": "`mov eax, 3; ret` - the whole body, so the linker folded it and this one address fills a virtual table slot in several classes that have nothing to do with each other. It is slot 11 of CAirCombat, where it answers the combat kind 3, and that is written on CAirCombat's own slot rather than on the address.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:328"
   },
@@ -660,6 +849,33 @@
    "source": "BiceLib/Patches.cpp:103"
   },
   {
+   "rva": "0x183690",
+   "kind": "function",
+   "name": "CNullOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x18D, the id that marks a CNullOrder. `mov eax, 0x18D; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x183780",
+   "kind": "function",
+   "name": "CSupportAttackOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x4E5, the id that marks a CSupportAttackOrder. `mov eax, 0x4E5; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x183800",
+   "kind": "function",
+   "name": "CStrategicRedeploymentOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x5A4, the id that marks a CStrategicRedeploymentOrder. `mov eax, 0x5A4; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
    "rva": "0x188700",
    "kind": "function",
    "name": "CStrategicRedeploymentOrder::RouteUnit",
@@ -694,6 +910,267 @@
    "comment": "Address of the imm32 operand of the instruction at 0x1887FE.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:47"
+  },
+  {
+   "rva": "0x188990",
+   "kind": "function",
+   "name": "CStrategicBombOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6F9, the id that marks a CStrategicBombOrder. `mov eax, 0x6F9; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x1889A0",
+   "kind": "function",
+   "name": "CBombLogisiticsOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6FD, the id that marks a CBombLogisiticsOrder. `mov eax, 0x6FD; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x1889B0",
+   "kind": "function",
+   "name": "CBombRunwayOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6FE, the id that marks a CBombRunwayOrder. `mov eax, 0x6FE; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x1889C0",
+   "kind": "function",
+   "name": "CBombInstallationOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6FF, the id that marks a CBombInstallationOrder. `mov eax, 0x6FF; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x1889D0",
+   "kind": "function",
+   "name": "CAirInterdictionOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6FC, the id that marks a CAirInterdictionOrder. `mov eax, 0x6FC; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x1889E0",
+   "kind": "function",
+   "name": "CGroundAttackOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6FB, the id that marks a CGroundAttackOrder. `mov eax, 0x6FB; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188AB0",
+   "kind": "function",
+   "name": "CAirInterceptOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x718, the id that marks a CAirInterceptOrder. `mov eax, 0x718; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188AC0",
+   "kind": "function",
+   "name": "CCarrierProtection::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x56C, the id that marks a CCarrierProtection. `mov eax, 0x56C; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188AE0",
+   "kind": "function",
+   "name": "CParadropMission::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x570, the id that marks a CParadropMission. `mov eax, 0x570; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188AF0",
+   "kind": "function",
+   "name": "CPortStrikeOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x701, the id that marks a CPortStrikeOrder. `mov eax, 0x701; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188B00",
+   "kind": "function",
+   "name": "CNavalStrikeOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x700, the id that marks a CNavalStrikeOrder. `mov eax, 0x700; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188B10",
+   "kind": "function",
+   "name": "CRebaseToCarrierMission::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x573, the id that marks a CRebaseToCarrierMission. `mov eax, 0x573; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188B20",
+   "kind": "function",
+   "name": "CNukeMission::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x579, the id that marks a CNukeMission. `mov eax, 0x579; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188B40",
+   "kind": "function",
+   "name": "CTransportSuppliesOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x57A, the id that marks a CTransportSuppliesOrder. `mov eax, 0x57A; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188B50",
+   "kind": "function",
+   "name": "CRebaseAirOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x574, the id that marks a CRebaseAirOrder. `mov eax, 0x574; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188B60",
+   "kind": "function",
+   "name": "CAirReserveOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x716, the id that marks a CAirReserveOrder. `mov eax, 0x716; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188B70",
+   "kind": "function",
+   "name": "CJoinAirOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x717, the id that marks a CJoinAirOrder. `mov eax, 0x717; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188B80",
+   "kind": "function",
+   "name": "CAirPatrol::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6FA, the id that marks a CAirPatrol. `mov eax, 0x6FA; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188B90",
+   "kind": "function",
+   "name": "CAirConvoyRaid::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x592, the id that marks a CAirConvoyRaid. `mov eax, 0x592; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19A5A0",
+   "kind": "function",
+   "name": "CRebaseOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6DE, the id that marks a CRebaseOrder. `mov eax, 0x6DE; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19A5B0",
+   "kind": "function",
+   "name": "CReserveOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x398, the id that marks a CReserveOrder. `mov eax, 0x398; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19A5C0",
+   "kind": "function",
+   "name": "CJoinFleetOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6E5, the id that marks a CJoinFleetOrder. `mov eax, 0x6E5; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19A5D0",
+   "kind": "function",
+   "name": "CPatrolOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x42E, the id that marks a CPatrolOrder. `mov eax, 0x42E; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19A5E0",
+   "kind": "function",
+   "name": "CNavalInterceptOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6E6, the id that marks a CNavalInterceptOrder. `mov eax, 0x6E6; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19A5F0",
+   "kind": "function",
+   "name": "CNavalSortieOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6E7, the id that marks a CNavalSortieOrder. `mov eax, 0x6E7; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19A600",
+   "kind": "function",
+   "name": "CConvoyEscortOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6E8, the id that marks a CConvoyEscortOrder. `mov eax, 0x6E8; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19A610",
+   "kind": "function",
+   "name": "CConvoyRaid::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x6E9, the id that marks a CConvoyRaid. `mov eax, 0x6E9; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19A620",
+   "kind": "function",
+   "name": "CNavalTransportOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x3A8, the id that marks a CNavalTransportOrder. `mov eax, 0x3A8; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19A630",
+   "kind": "function",
+   "name": "CNavalInvasionOrder::GetTypeId",
+   "signature": "int __thiscall GetTypeId(COrder* this)",
+   "comment": "Virtual slot 16: answers 0x3A5, the id that marks a CNavalInvasionOrder. `mov eax, 0x3A5; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
   },
   {
    "rva": "0x1A12B0",
@@ -789,19 +1266,19 @@
    "rva": "0x1AD0F0",
    "kind": "function",
    "name": "CRegiment::SupplyConsumption",
-   "signature": null,
-   "comment": "Per-regiment supply consumption; takes the regiment in eax.",
+   "signature": "int* __stdcall SupplyConsumption(CRegiment* regiment@ESI, int* out@stack:4)",
+   "comment": "Per regiment supply consumption; the regiment in esi, not eax, ret 4.",
    "confidence": "confirmed",
-   "source": "reversing/CLASSES.md:246"
+   "source": "reversing/CLASSES.md:267"
   },
   {
    "rva": "0x1AD300",
    "kind": "function",
    "name": "CRegiment::FuelConsumption",
-   "signature": null,
-   "comment": "Per-regiment fuel consumption; takes the regiment in eax.",
+   "signature": "int* __stdcall FuelConsumption(CRegiment* regiment@EAX, int* out@stack:4)",
+   "comment": "Per regiment fuel consumption; the regiment in eax, ret 4. The same shape as the unit level one, reached through the regiment's own unit at +0xB0.",
    "confidence": "confirmed",
-   "source": "reversing/CLASSES.md:247"
+   "source": "reversing/CLASSES.md:267"
   },
   {
    "rva": "0x1B4640",
@@ -811,6 +1288,24 @@
    "comment": "Getter that creates on first use and returns the object holding every trait.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CTrait.hpp:31"
+  },
+  {
+   "rva": "0x1B67B0",
+   "kind": "function",
+   "name": "CUnit::CommandReachFrom",
+   "signature": "int* __stdcall CommandReachFrom(CUnit* unit, int* out, CUnit* hq)",
+   "comment": "How much of one HQ's command reaches a unit, in thousandths: 1000 at the HQ's own province, falling with the square of the distance to it (province +0x2C and +0x30, wrapped by CMap + 0x2A74) against a radius from the HQ's first regiment's definition +0x180 scaled by the RADIO_*_LEADER_DISTANCE define for the HQ's oob_level, and 0 out of range or where either unit is off the map. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:267"
+  },
+  {
+   "rva": "0x1B6980",
+   "kind": "function",
+   "name": "CUnit::CommandReach",
+   "signature": "int* __stdcall CommandReach(CUnit* unit@EAX, int* out@stack:4, int hqLevel@stack:8)",
+   "comment": "The same compounded over every HQ from the unit up to the given oob_level: 1000 when the unit is itself at that level, and each step multiplies by that HQ's reach. Unit in eax, ret 8. What the consumption functions scale the army group leader's skill by. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:267"
   },
   {
    "rva": "0x1B9705",
@@ -843,10 +1338,10 @@
    "rva": "0x1BB7A0",
    "kind": "function",
    "name": "CUnit::FuelConsumption",
-   "signature": null,
-   "comment": "Unit fuel consumption in thousandths; unit in eax, (int* out, bool withoutLeaders) on the stack, ret 8, returns out in eax.",
+   "signature": "int* __stdcall FuelConsumption(CUnit* unit@EAX, int* out@stack:4, bool withoutLeaders@stack:8)",
+   "comment": "Unit fuel consumption in thousandths, written through out and answered in eax; unit in eax, ret 8. A land unit on a strategic redeployment (order slot 16 answering 0x5A4) gives 0. Otherwise a potency of 1000 plus the country's SUPPLY_CONSUMPTION modifier, less the army group leader's skill x 50 scaled by how far that HQ's command reaches, plus the chain of command's own effect of type 2; then per regiment (potency + regiment[+0xCC] x 10) x the definition's fuel_consumption / 1000. Unlike supply it does not scale by the regiments' strength.",
    "confidence": "confirmed",
-   "source": "reversing/CLASSES.md:244"
+   "source": "reversing/CLASSES.md:267"
   },
   {
    "rva": "0x1C6550",
@@ -883,6 +1378,15 @@
    "comment": "Gives a found route to a unit: (unit, path, 1). Gives a route to a unit (same function as RVA 0x1C9AC0).",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:33; reversing/FINDINGS-redeploy.md:106"
+  },
+  {
+   "rva": "0x1D1120",
+   "kind": "function",
+   "name": "CUnit::CommandEffect",
+   "signature": "int* __thiscall CommandEffect(CUnit* this, int* out, int effectType)",
+   "comment": "Adds up one kind of effect reaching a unit from its chain of command: recurses up higher_oob_unit_ptr, scales each superior's contribution by CommandReachFrom, and adds the values of the unit's own leader's traits whose type matches effectType (trait +0x68 holds the values, +0xA8 their types, +0x2A8 how many). Type 2 is what the supply and fuel functions ask for. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:267"
   },
   {
    "rva": "0x1D2904",
@@ -1000,6 +1504,15 @@
    "comment": "RouteUnit's call to SetUnitPath.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-redeploy.md:99"
+  },
+  {
+   "rva": "0x1D9150",
+   "kind": "function",
+   "name": "Return_0x255",
+   "signature": null,
+   "comment": "`mov eax, 0x255; ret` - the whole body, which CMoveOrder and CMoveCommand share. It is CMoveOrder's slot 16, the order type id; that is written on CMoveOrder's own slot rather than on the address.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
   },
   {
    "rva": "0x1D93F0",
@@ -1497,22 +2010,51 @@
    "source": "reversing/FINDINGS-autosave.md:81"
   },
   {
+   "rva": "0x7961D5",
+   "kind": "function",
+   "name": "_purecall",
+   "signature": null,
+   "comment": "The CRT stub a class's own vftable holds for a method it leaves pure virtual - COrder's slot 16, the order type id, among many. It calls the installed _purecall_handler if there is one and otherwise ends the process through _amsg_exit(_RT_PUREVIRT), the R6025 \"pure virtual function call\" message, so reaching it is fatal. Nothing reaches it in a working game: every concrete class fills the slot. Three Lua registrations resolve here - CCommand::IsValid, CDiplomaticAction::IsValid and CDiplomaticAction::GetAIAcceptance - because those methods are pure virtual in the class that declares them; the findings used to name this address after them (Shared_GetAIAcceptance_IsValid) and no longer do.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
    "rva": "0x7F9B90",
    "kind": "function",
-   "name": "CLandCombat::GetKind",
-   "signature": "int __thiscall GetKind(CLandCombat* this)",
-   "comment": "Slot 11: mov eax, 1; ret.",
+   "name": "Return_1",
+   "signature": null,
+   "comment": "`mov eax, 1; ret` - the whole body, so the linker folded it and this one address fills a virtual table slot in several classes that have nothing to do with each other. It is slot 11 of CLandCombat, where it answers the combat kind 1, and that is written on CLandCombat's own slot rather than on the address.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:326"
   },
   {
    "rva": "0x8037D0",
    "kind": "function",
-   "name": "CNavalCombat::GetKind",
-   "signature": "int __thiscall GetKind(CNavalCombat* this)",
-   "comment": "Slot 11: mov eax, 2; ret.",
+   "name": "Return_2",
+   "signature": null,
+   "comment": "`mov eax, 2; ret` - the whole body, so the linker folded it and this one address fills a virtual table slot in several classes that have nothing to do with each other. It is slot 11 of CNavalCombat, where it answers the combat kind 2, and that is written on CNavalCombat's own slot rather than on the address.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:327"
+  },
+  {
+   "rva": "0x108746C",
+   "kind": "global",
+   "name": "Define10_BuildCost",
+   "signature": null,
+   "comment": "A define, 10 - the floor of the float 10.5, taken at startup, the same literal as Define10 but a global of its own. The build cost and build time calculations multiply their technology total by it, so each point is 1% on the cost.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44",
+   "type": "int"
+  },
+  {
+   "rva": "0x10874C0",
+   "kind": "global",
+   "name": "Define50_BuildFloor",
+   "signature": null,
+   "comment": "A define, 50 - the floor of the float 50.5 taken at startup, the same literal as Define50 but a global of its own. GetBuildTime will not let its first factor fall below it, and the manpower half of GetTotalBuildCost uses it the same way.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44",
+   "type": "int"
   },
   {
    "rva": "0x11B68C0",
@@ -1893,6 +2435,15 @@
    "source": "BiceLib/GameClasses/CLeader.hpp:51"
   },
   {
+   "rva": "0x11C589C",
+   "kind": "vftable",
+   "name": "COrder::vftable",
+   "signature": null,
+   "comment": "COrder's virtual table, 35 slots. Slot 16 is the order type id every concrete order fills in.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:347"
+  },
+  {
    "rva": "0x11C5ADC",
    "kind": "vftable",
    "name": "CStrategicRedeploymentOrder",
@@ -2116,6 +2667,16 @@
    "type": "CTraitDataBase*"
   },
   {
+   "rva": "0x1686040",
+   "kind": "global",
+   "name": "g_CDefines",
+   "signature": null,
+   "comment": "The single CDefines, made on first use by GetDefines (0x45D90).",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:267",
+   "type": "CDefines*"
+  },
+  {
    "rva": "0x16863F8",
    "kind": "global",
    "name": "g_GameSettings",
@@ -2124,6 +2685,36 @@
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/GameSettings.hpp:19; reversing/FINDINGS-autosave.md:47",
    "type": "GameSettings*"
+  },
+  {
+   "rva": "0x16886E8",
+   "kind": "global",
+   "name": "Define50_Regiment",
+   "signature": null,
+   "comment": "A define, 50, from the same float 50.5 as Define50 but a global of its own. Only the two per regiment consumption functions read it (0x1AD0F0, 0x1AD300), as the factor on the army group leader's skill. Which define it is has not been established.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:267",
+   "type": "int"
+  },
+  {
+   "rva": "0x168873C",
+   "kind": "global",
+   "name": "Define10",
+   "signature": null,
+   "comment": "A define, 10 - the floor of the float 10.5, taken at startup. Thousandths, so 0.010. Ten places read it and they do not agree on a purpose, so the name only says what it holds. CUnit's supply and fuel consumption (0x1BB560, 0x1BB7A0) add `CRegiment +0xCC x this` to a potency whose base is 1000, so each point of that field is 1% more consumption. Elsewhere it is a floor on a multiplier (0x1C30B6 clamps 1000 + x up to it before scaling max_strength), a threshold (0x1C638A) and an additive base (0x1CDA8C). Which define it is has not been established.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:267",
+   "type": "int"
+  },
+  {
+   "rva": "0x168879C",
+   "kind": "global",
+   "name": "Define50",
+   "signature": null,
+   "comment": "A define, 50 - the floor of the float 50.5, taken at startup. Thousandths, so 0.050. Five places read it and they do not agree on a purpose. CUnit's supply and fuel consumption multiply the army group leader's skill (CLeader +0x70) by it, scaled by how far that HQ's command reaches; the other three compare it against a unit's supply_received_percentage (+0xFC) and fuel_received_percentage (+0x100) to flag a unit that is short. 0x16886E8 is a separate global holding the same value from the same float. One name for it fits the consumption use and not the other three; which define it is has not been established.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:267",
+   "type": "int"
   },
   {
    "rva": "0x1689790",
@@ -2220,14 +2811,14 @@
     {
      "offset": "0xA0",
      "name": "is_trade",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool, save key trade",
      "source": "BiceLib/GameClasses/CConvoy.hpp:95"
     },
     {
      "offset": "0xA1",
      "name": "is_lend_lease",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool, save key lend_lease",
      "source": "BiceLib/GameClasses/CConvoy.hpp:96"
     },
@@ -2275,7 +2866,7 @@
     {
      "offset": "0x95",
      "name": "use_own_pool",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "when set, GetPool answers the country's pool at +0x9F8 instead of the capital's",
      "source": "BiceLib/GameClasses/CCountry.hpp:61"
     },
@@ -2308,6 +2899,48 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:21"
     },
     {
+     "offset": "0x5E4",
+     "name": "LeadershipDistribution",
+     "type": "CLeadershipDistribution*",
+     "comment": "the four leadership sliders, a vector: this is its first element, +0x5E8 the end and +0x5EC the capacity. Typed as a structure of the four in their live order so a read is a name; the game's GetLeadershipDistributionAt(i) is [this+0x5E4][i]",
+     "source": "BiceLib/GameClasses/CCountry.hpp:50"
+    },
+    {
+     "offset": "0x5E8",
+     "name": "LeadershipDistributionEnd",
+     "type": "CLeadershipDistribution*",
+     "comment": "one past the last of the four",
+     "source": "BiceLib/GameClasses/CCountry.hpp:51"
+    },
+    {
+     "offset": "0x5EC",
+     "name": "LeadershipDistributionCapacity",
+     "type": "CLeadershipDistribution*",
+     "comment": "the vector's capacity",
+     "source": "BiceLib/GameClasses/CCountry.hpp:52"
+    },
+    {
+     "offset": "0x5F4",
+     "name": "ProductionDistribution",
+     "type": "CProductionDistribution*",
+     "comment": "the six production sliders, a vector: this is its first element, +0x5F8 the end and +0x5FC the capacity. Typed as a structure of the six in ProductionCategory order so a read is a name rather than an index",
+     "source": "BiceLib/GameClasses/CCountry.hpp:68"
+    },
+    {
+     "offset": "0x5F8",
+     "name": "ProductionDistributionEnd",
+     "type": "CProductionDistribution*",
+     "comment": "one past the last of the six",
+     "source": "BiceLib/GameClasses/CCountry.hpp:68"
+    },
+    {
+     "offset": "0x5FC",
+     "name": "ProductionDistributionCapacity",
+     "type": "CProductionDistribution*",
+     "comment": "the vector's capacity",
+     "source": "BiceLib/GameClasses/CCountry.hpp:68"
+    },
+    {
      "offset": "0x604",
      "name": "base_ic",
      "type": "int",
@@ -2322,6 +2955,20 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:58"
     },
     {
+     "offset": "0x698",
+     "name": "category_levels",
+     "type": "int*",
+     "comment": "the country's level in each technology category, thousandths, indexed by the category's +0x5C - the theories and practicals",
+     "source": "BiceLib/GameClasses/CCountry.hpp:87"
+    },
+    {
+     "offset": "0x6A8",
+     "name": "category_shared_from",
+     "type": "CCountryTag*",
+     "comment": "a country tag per technology category; where one is set the build cost discount takes the higher of that country's level and this one's. Every tag was empty in the game looked at",
+     "source": "BiceLib/GameClasses/CCountry.hpp:88"
+    },
+    {
      "offset": "0x74C",
      "name": "total_produced",
      "type": "CGoodsPool",
@@ -2329,11 +2976,95 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:74"
     },
     {
-     "offset": "0x9F8",
-     "name": "own_pool",
+     "offset": "0x824",
+     "name": "unused_pool_824",
      "type": "CGoodsPool",
-     "comment": "pool GetPool answers for a government in exile",
-     "source": "BiceLib/GameClasses/CCountry.hpp:61"
+     "comment": "a CGoodsPool nothing fills; GetDailyNeed and GetDailyExpense read it and always get zero",
+     "source": "BiceLib/GameClasses/CCountry.hpp:241"
+    },
+    {
+     "offset": "0x848",
+     "name": "unused_pool_848",
+     "type": "CGoodsPool",
+     "comment": "a CGoodsPool nothing fills; GetDailyIncome reads it and always gets zero",
+     "source": "BiceLib/GameClasses/CCountry.hpp:242"
+    },
+    {
+     "offset": "0x8B4",
+     "name": "conversion_made",
+     "type": "CGoodsPool",
+     "comment": "a CGoodsPool: what converting goods produced - fuel from crude oil, and oil from energy where a country makes synthetic. GetDailyIncome counts it",
+     "source": "BiceLib/GameClasses/CCountry.hpp:249"
+    },
+    {
+     "offset": "0x8D8",
+     "name": "conversion_used",
+     "type": "CGoodsPool",
+     "comment": "a CGoodsPool: what converting goods consumed, the input side of conversion_made. GetDailyExpense counts it",
+     "source": "BiceLib/GameClasses/CCountry.hpp:250"
+    },
+    {
+     "offset": "0x8FC",
+     "name": "tribute_received",
+     "type": "CGoodsPool",
+     "comment": "a CGoodsPool: what this country's subjects hand it, the receiving side of the puppet tribute. GetDailyIncome counts it",
+     "source": "BiceLib/GameClasses/CCountry.hpp:264"
+    },
+    {
+     "offset": "0x920",
+     "name": "tribute_sent",
+     "type": "CGoodsPool",
+     "comment": "a CGoodsPool: what this country hands its overlord, held as a negative. The overlord is the tag at +0xF38. GetDailyNeed adds it and GetDailyExpense subtracts it",
+     "source": "BiceLib/GameClasses/CCountry.hpp:265"
+    },
+    {
+     "offset": "0x98C",
+     "name": "usage",
+     "type": "CGoodsPool",
+     "comment": "a CGoodsPool - saved under the key \"usage\"; GetDailyExpense counts it. The good is pool + 8 + category * 4",
+     "source": "BiceLib/GameClasses/CCountry.hpp:219"
+    },
+    {
+     "offset": "0x9B0",
+     "name": "sent_to",
+     "type": "CGoodsPool",
+     "comment": "a CGoodsPool - saved under the key \"to\"; GetDailyExpense counts it. The good is pool + 8 + category * 4",
+     "source": "BiceLib/GameClasses/CCountry.hpp:220"
+    },
+    {
+     "offset": "0x9D4",
+     "name": "sent_back",
+     "type": "CGoodsPool",
+     "comment": "a CGoodsPool - saved under the key \"back\"; GetDailyIncome counts it. The good is pool + 8 + category * 4",
+     "source": "BiceLib/GameClasses/CCountry.hpp:221"
+    },
+    {
+     "offset": "0x9F8",
+     "name": "pool_in_exile",
+     "type": "CGoodsPool",
+     "comment": "a CGoodsPool - the stockpile a government in exile holds itself. The good is pool + 8 + category * 4",
+     "source": "BiceLib/GameClasses/CCountry.hpp:229"
+    },
+    {
+     "offset": "0xA64",
+     "name": "unused_pool_A64",
+     "type": "CGoodsPool",
+     "comment": "a CGoodsPool GetDailyIncome reads; it has writes but is empty in practice",
+     "source": "BiceLib/GameClasses/CCountry.hpp:244"
+    },
+    {
+     "offset": "0xA98",
+     "name": "reinforcement_cost",
+     "type": "int",
+     "comment": "what reinforcement currently costs; the spare IC calculation subtracts it from what the reinforcement slider allocates",
+     "source": "BiceLib/GameClasses/CCountry.hpp:81"
+    },
+    {
+     "offset": "0xAA4",
+     "name": "upgrade_cost",
+     "type": "int",
+     "comment": "what upgrading currently costs; the spare IC calculation subtracts it from what the upgrade slider allocates",
+     "source": "BiceLib/GameClasses/CCountry.hpp:82"
     },
     {
      "offset": "0xBAC",
@@ -2357,11 +3088,18 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:83"
     },
     {
-     "offset": "0xE24",
+     "offset": "0xE20",
      "name": "capital_province_id",
      "type": "int",
-     "comment": "capital as a province id",
-     "source": "BiceLib/GameClasses/CCountry.hpp:65"
+     "comment": "the capital, as a province id - index it into the game state's province vector. CCountry::GetCapitalLocation (0x17AF0) reads it and is otherwise identical to GetActingCapitalLocation, which reads +0xE24",
+     "source": "BiceLib/GameClasses/CCountry.hpp:173"
+    },
+    {
+     "offset": "0xE24",
+     "name": "acting_capital_province_id",
+     "type": "int",
+     "comment": "where the government sits now, as a province id; the game's GetActingCapital, registered to Lua under the name GetCapital",
+     "source": "BiceLib/GameClasses/CCountry.hpp:174"
     }
    ],
    "vftable_rva": "0x11C1BA8"
@@ -2404,7 +3142,7 @@
      "offset": "0x18",
      "name": "tag_18",
      "type": "char[4]",
-     "comment": "a tag field holding the null tag --- in a running game; not the player tag",
+     "comment": "a tag field holding the null tag ---; not the player tag",
      "source": "BiceLib/GameClasses/CCurrentGameState.hpp:103"
     },
     {
@@ -2418,7 +3156,7 @@
      "offset": "0x90",
      "name": "tag_90",
      "type": "char[4]",
-     "comment": "a tag field holding the null tag --- in a running game",
+     "comment": "a tag field holding the null tag ---",
      "source": "BiceLib/GameClasses/CCurrentGameState.hpp:104"
     },
     {
@@ -2673,14 +3411,14 @@
     {
      "offset": "0x70",
      "name": "skill",
-     "type": "uint8_t",
+     "type": "int",
      "comment": "current skill",
      "source": "BiceLib/GameClasses/CLeader.hpp:19"
     },
     {
      "offset": "0x74",
      "name": "max_skill",
-     "type": "uint8_t",
+     "type": "int",
      "comment": "maximum skill",
      "source": "BiceLib/GameClasses/CLeader.hpp:20"
     },
@@ -3157,11 +3895,25 @@
      "source": "BiceLib/Hooks/HookedPatches.cpp:91"
     },
     {
+     "offset": "0x58",
+     "name": "cost",
+     "type": "int",
+     "comment": "what it costs to build, x1000 - the `cost` key in common/buildings.txt, checked against the mod's file for three buildings",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:62"
+    },
+    {
      "offset": "0x68",
      "name": "max_allowed_level",
      "type": "int",
      "comment": "maximum allowed level, whole levels",
      "source": "BiceLib/Hooks/HookedPatches.cpp:92"
+    },
+    {
+     "offset": "0x88",
+     "name": "technology_category_ptr",
+     "type": "CTechnologyCategory*",
+     "comment": "the category whose level discounts this building's cost",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:71"
     }
    ]
   },
@@ -3214,9 +3966,24 @@
      "type": "Hoi3CString",
      "comment": "historical regiment name",
      "source": "BiceLib/GameClasses/CRegiment.hpp:21"
+    },
+    {
+     "offset": "0xB0",
+     "name": "unit_ptr",
+     "type": "CUnit*",
+     "comment": "the unit this regiment belongs to; how the per regiment consumption functions reach the unit's order and the order of battle above it",
+     "source": "BiceLib/GameClasses/CRegiment.hpp:47"
+    },
+    {
+     "offset": "0xCC",
+     "name": "extra_consumption",
+     "type": "int",
+     "comment": "each point adds 1% to this regiment's supply and fuel consumption (times the constant 10 at 0x168873C, against a potency of 1000). A cached total the game recomputes at 0x1ABFC0 by summing the second dword of every element of the list at +0x84; what that list holds is not established, so the name says what the field does, not what it counts",
+     "source": "BiceLib/GameClasses/CRegiment.hpp:60"
     }
    ],
-   "vftable_rva": "0x11BDD7C"
+   "vftable_rva": "0x11BDD7C",
+   "size": "0xD8"
   },
   {
    "name": "CSubUnitDefinition",
@@ -3236,319 +4003,368 @@
      "source": "reversing/FINDINGS-combat.md:291"
     },
     {
+     "offset": "0x2C",
+     "name": "is_air",
+     "type": "bool",
+     "comment": "an aircraft type; GetBuildTime gives it AIR_BUILD_SPEED (87)",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44"
+    },
+    {
      "offset": "0x2E",
      "name": "is_ship",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "unknown",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:69"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:30"
     },
     {
      "offset": "0x2F",
      "name": "is_capital",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool, capital ship",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:51"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:74"
     },
     {
      "offset": "0x30",
      "name": "is_transport",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:52"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:75"
     },
     {
      "offset": "0x31",
      "name": "is_sub",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:53"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:76"
+    },
+    {
+     "offset": "0x33",
+     "name": "is_rocket",
+     "type": "bool",
+     "comment": "a rocket type; GetBuildTime gives it ROCKET_BUILD_SPEED (89), and tests this before is_air, which a rocket also has",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:45"
+    },
+    {
+     "offset": "0x34",
+     "name": "is_tank",
+     "type": "bool",
+     "comment": "an armour type; GetBuildTime gives it TANK_BUILD_SPEED (90)",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:46"
     },
     {
      "offset": "0x36",
      "name": "is_buildable",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:23"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:35"
     },
     {
      "offset": "0x39",
      "name": "can_be_pride",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:54"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:77"
+    },
+    {
+     "offset": "0x3C",
+     "name": "technology_category_ptr",
+     "type": "CTechnologyCategory*",
+     "comment": "the category whose ability discounts this type's build cost - infantry_brigade points at infantry_practical, carrier at carrier_practical",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44"
+    },
+    {
+     "offset": "0x44",
+     "name": "technologies",
+     "type": "CTechnology**",
+     "comment": "the technologies bearing on this type; end at +0x48. 45 to 56 of them on a loaded definition",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:52"
+    },
+    {
+     "offset": "0x48",
+     "name": "technologies_end",
+     "type": "CTechnology**",
+     "comment": "one past the last technology",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:53"
     },
     {
      "offset": "0x54",
      "name": "CUnitAdjuster_ptr",
      "type": "CUnitAdjuster*",
      "comment": "terrain modifiers, one 24 byte CUnitAdjuster per terrain id",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:24"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:36"
     },
     {
      "offset": "0xE8",
      "name": "width",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:39"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:62"
     },
     {
      "offset": "0xEC",
      "name": "max_strength",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:25"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:49"
     },
     {
      "offset": "0xF0",
      "name": "max_organisation",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:26"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:50"
     },
     {
      "offset": "0xF4",
      "name": "morale",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:27"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:51"
     },
     {
      "offset": "0xFC",
-     "name": "manpower",
+     "name": "build_cost_manpower",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:28"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:40"
     },
     {
      "offset": "0x108",
      "name": "max_speed",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:29"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:52"
     },
     {
      "offset": "0x10C",
      "name": "weight",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:40"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:63"
     },
     {
      "offset": "0x110",
      "name": "supply_consumption",
      "type": "int",
      "comment": "base figure for one sub unit",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:30"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:53"
     },
     {
      "offset": "0x114",
      "name": "fuel_consumption",
      "type": "int",
      "comment": "base figure for one sub unit",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:31"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:54"
     },
     {
      "offset": "0x118",
      "name": "officers",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:32"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:55"
     },
     {
      "offset": "0x11C",
      "name": "defensiveness",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:41"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:64"
     },
     {
      "offset": "0x120",
      "name": "toughness",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:42"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:65"
     },
     {
      "offset": "0x124",
      "name": "softness",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:43"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:66"
     },
     {
      "offset": "0x128",
      "name": "air_defence",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:33"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:56"
     },
     {
      "offset": "0x12C",
      "name": "armor",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:67"
     },
     {
      "offset": "0x130",
      "name": "suppression",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:45"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:68"
     },
     {
      "offset": "0x134",
      "name": "soft_attack",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:46"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:69"
     },
     {
      "offset": "0x138",
      "name": "hard_attack",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:47"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:70"
     },
     {
      "offset": "0x13C",
      "name": "piercing_attack",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:48"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:71"
     },
     {
      "offset": "0x140",
      "name": "air_attack",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:34"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:57"
     },
     {
      "offset": "0x144",
      "name": "transport_capacity",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:55"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:78"
     },
     {
      "offset": "0x148",
      "name": "range",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:56"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:79"
     },
     {
      "offset": "0x14C",
      "name": "firing_distance",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:57"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:80"
     },
     {
      "offset": "0x150",
      "name": "surface_detection",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:58"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:81"
     },
     {
      "offset": "0x154",
      "name": "air_detection",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:59"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:82"
     },
     {
      "offset": "0x158",
      "name": "sub_detection",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:60"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:83"
     },
     {
      "offset": "0x15C",
      "name": "visibility",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:61"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:84"
     },
     {
      "offset": "0x160",
      "name": "sea_defence",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:62"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:85"
     },
     {
      "offset": "0x164",
      "name": "convoy_attack",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:63"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:86"
     },
     {
      "offset": "0x168",
      "name": "sea_attack",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:64"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:87"
     },
     {
      "offset": "0x16C",
      "name": "sub_attack",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:65"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:88"
     },
     {
      "offset": "0x170",
      "name": "shore_bombardment",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:66"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:89"
     },
     {
      "offset": "0x174",
      "name": "surface_defence",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:72"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:107"
     },
     {
      "offset": "0x178",
      "name": "hull",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:67"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:90"
     },
     {
      "offset": "0x17C",
      "name": "strategic_attack",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:73"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:108"
     },
     {
      "offset": "0x180",
      "name": "sub_unit_amount",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:35"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:58"
     },
     {
      "offset": "0x184",
      "name": "positioning",
      "type": "int",
      "comment": "",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:68"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:91"
+    },
+    {
+     "offset": "0x190",
+     "name": "carrier_size",
+     "type": "int",
+     "comment": "how many carrier air groups the ship carries, x1000 like the rest of the definition. IsCarrier (0x94650) is this being above zero, so a ship with none is not a carrier to the game",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:104"
     },
     {
      "offset": "0x198",
      "name": "sprite",
      "type": "int",
      "comment": "unit picture",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:36"
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:59"
     }
    ]
   },
@@ -3612,7 +4428,7 @@
     {
      "offset": "0x48",
      "name": "is_water",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool",
      "source": "BiceLib/GameClasses/CTerrain.hpp:11"
     },
@@ -3685,9 +4501,9 @@
     {
      "offset": "0x4",
      "name": "is_selected",
-     "type": "undefined4",
-     "comment": "selected",
-     "source": "BiceLib/GameClasses/CUnit.hpp:18"
+     "type": "bool",
+     "comment": "the unit is selected - one byte; +0x5 to +0x7 are other fields",
+     "source": "BiceLib/GameClasses/CUnit.hpp:23"
     },
     {
      "offset": "0x10",
@@ -3713,30 +4529,30 @@
     {
      "offset": "0xA4",
      "name": "upgrade_prio",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool",
      "source": "BiceLib/GameClasses/CUnit.hpp:24"
     },
     {
      "offset": "0xA5",
      "name": "upgrade_active",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool",
      "source": "BiceLib/GameClasses/CUnit.hpp:25"
     },
     {
      "offset": "0xA6",
      "name": "reinforcements_active",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "bool",
      "source": "BiceLib/GameClasses/CUnit.hpp:26"
     },
     {
      "offset": "0xB0",
      "name": "order_ptr",
-     "type": "pointer",
-     "comment": "current order",
-     "source": "BiceLib/GameClasses/CUnit.hpp:27"
+     "type": "COrder*",
+     "comment": "the unit's current order",
+     "source": "BiceLib/GameClasses/CUnit.hpp:39"
     },
     {
      "offset": "0xC8",
@@ -4304,6 +5120,13 @@
    "name": "CDefines",
    "fields": [
     {
+     "offset": "0x9C",
+     "name": "economy",
+     "type": "CDefinesEconomy*",
+     "comment": "the economy block of defines.lua - its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:26"
+    },
+    {
      "offset": "0xAC",
      "name": "supply_defines_ptr",
      "type": "CDefinesSupply*",
@@ -4323,17 +5146,45 @@
      "source": "BiceLib/GameClasses/CMapProvince.hpp:76"
     },
     {
-     "offset": "0x220",
-     "name": "supply_capacity_define_220",
+     "offset": "0x210",
+     "name": "RADIO_CORPS_LEADER_DISTANCE",
      "type": "int",
-     "comment": "define used by the supply capacity function",
+     "comment": "the radius a leader of that rank's command reaches, picked by the HQ's oob_level in CUnit::CommandReachFrom. Inferred: these four defines are consecutive in defines.lua in this order, and the two after them are the supply capacity pair already recorded at +0x220 and +0x224",
+     "source": "reversing/CLASSES.md:267"
+    },
+    {
+     "offset": "0x214",
+     "name": "RADIO_ARMY_LEADER_DISTANCE",
+     "type": "int",
+     "comment": "the radius a leader of that rank's command reaches, picked by the HQ's oob_level in CUnit::CommandReachFrom. Inferred: these four defines are consecutive in defines.lua in this order, and the two after them are the supply capacity pair already recorded at +0x220 and +0x224",
+     "source": "reversing/CLASSES.md:267"
+    },
+    {
+     "offset": "0x218",
+     "name": "RADIO_ARMYGROUP_LEADER_DISTANCE",
+     "type": "int",
+     "comment": "the radius a leader of that rank's command reaches, picked by the HQ's oob_level in CUnit::CommandReachFrom. Inferred: these four defines are consecutive in defines.lua in this order, and the two after them are the supply capacity pair already recorded at +0x220 and +0x224",
+     "source": "reversing/CLASSES.md:267"
+    },
+    {
+     "offset": "0x21C",
+     "name": "RADIO_THEATHRE_LEADER_DISTANCE",
+     "type": "int",
+     "comment": "the radius a leader of that rank's command reaches, picked by the HQ's oob_level in CUnit::CommandReachFrom. Inferred: these four defines are consecutive in defines.lua in this order, and the two after them are the supply capacity pair already recorded at +0x220 and +0x224",
+     "source": "reversing/CLASSES.md:267"
+    },
+    {
+     "offset": "0x220",
+     "name": "OWNED_AND_CONTROLLED_THROUGHPUT_CAP_BONUS",
+     "type": "int",
+     "comment": "define used by the supply capacity function; the name is inferred from where it falls against defines.lua, just after the four leader distance defines",
      "source": "BiceLib/GameClasses/CMapProvince.hpp:93"
     },
     {
      "offset": "0x224",
-     "name": "supply_capacity_define_224",
+     "name": "INFRA_THROUGHPUT_IMPACT",
      "type": "int",
-     "comment": "define used by the supply capacity function",
+     "comment": "define used by the supply capacity function; the name is inferred from where it falls against defines.lua, just after the four leader distance defines",
      "source": "BiceLib/GameClasses/CMapProvince.hpp:93"
     }
    ]
@@ -4493,8 +5344,8 @@
     {
      "offset": "0x18",
      "name": "values",
-     "type": "CModifierEntry*",
-     "comment": "one entry per ModifierType, indexed by it; CModifier::GetValue reads [this+0x18][type*8]",
+     "type": "CModifierValues*",
+     "comment": "the values, one entry per ModifierType and indexed by it; CModifier::GetValue reads [this+0x18][type*8]. Typed as a structure of named entries so a read is a field rather than an index",
      "source": "BiceLib/GameClasses/CModifier.hpp:45"
     }
    ],
@@ -4607,7 +5458,7 @@
     {
      "offset": "0x1C",
      "name": "is_set",
-     "type": "uint8_t",
+     "type": "bool",
      "comment": "what CFlags::IsFlagSet answers",
      "source": "BiceLib/GameClasses/CFlags.hpp:53"
     }
@@ -4641,6 +5492,1399 @@
      "type": "int",
      "comment": "what it costs in IC, a CFixedPoint: the game's GetCost (0x837C0), which CCountry::GetUsedIC sums over the country's constructions",
      "source": "reversing/CLASSES.md:502"
+    }
+   ]
+  },
+  {
+   "name": "COrder",
+   "fields": [],
+   "vftable_rva": "0x11C589C"
+  },
+  {
+   "name": "CMoveOrder",
+   "fields": [],
+   "vftable_rva": "0x11C59BC"
+  },
+  {
+   "name": "CModifierValues",
+   "size": "0x478",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "MINIMUM_REVOLT_RISK",
+     "type": "CModifierEntry",
+     "comment": "modifier 0",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x8",
+     "name": "LOCAL_REVOLT_RISK",
+     "type": "CModifierEntry",
+     "comment": "modifier 1",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x10",
+     "name": "GLOBAL_REVOLT_RISK",
+     "type": "CModifierEntry",
+     "comment": "modifier 2",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x18",
+     "name": "LOCAL_MANPOWER",
+     "type": "CModifierEntry",
+     "comment": "modifier 3, the definition's key is MANPOWER",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x20",
+     "name": "GLOBAL_MANPOWER",
+     "type": "CModifierEntry",
+     "comment": "modifier 4, the definition's key is MANPOWER",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x28",
+     "name": "LOCAL_MANPOWER_MODIFIER",
+     "type": "CModifierEntry",
+     "comment": "modifier 5, the definition's key is LOCAL_MANPOWER",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x30",
+     "name": "GLOBAL_MANPOWER_MODIFIER",
+     "type": "CModifierEntry",
+     "comment": "modifier 6, the definition's key is GLOBAL_MANPOWER",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x38",
+     "name": "ATTRITION",
+     "type": "CModifierEntry",
+     "comment": "modifier 7",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x40",
+     "name": "WAR_EXHAUSTION",
+     "type": "CModifierEntry",
+     "comment": "modifier 8",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x48",
+     "name": "MAX_WAR_EXHAUSTION",
+     "type": "CModifierEntry",
+     "comment": "modifier 9",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x50",
+     "name": "FORT_LEVEL",
+     "type": "CModifierEntry",
+     "comment": "modifier 10",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x58",
+     "name": "COASTAL_FORT_LEVEL",
+     "type": "CModifierEntry",
+     "comment": "modifier 11",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x60",
+     "name": "INFRASTRUCTURE",
+     "type": "CModifierEntry",
+     "comment": "modifier 12",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x68",
+     "name": "LOCAL_INFRASTRUCTURE",
+     "type": "CModifierEntry",
+     "comment": "modifier 13",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x70",
+     "name": "GLOBAL_INFRASTRUCTURE",
+     "type": "CModifierEntry",
+     "comment": "modifier 14",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x78",
+     "name": "IC",
+     "type": "CModifierEntry",
+     "comment": "modifier 15",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x80",
+     "name": "LOCAL_IC",
+     "type": "CModifierEntry",
+     "comment": "modifier 16",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x88",
+     "name": "GLOBAL_IC",
+     "type": "CModifierEntry",
+     "comment": "modifier 17",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x90",
+     "name": "LOCAL_CRUDE_OIL",
+     "type": "CModifierEntry",
+     "comment": "modifier 18",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x98",
+     "name": "GLOBAL_CRUDE_OIL",
+     "type": "CModifierEntry",
+     "comment": "modifier 19",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xA0",
+     "name": "LOCAL_ENERGY",
+     "type": "CModifierEntry",
+     "comment": "modifier 20",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xA8",
+     "name": "GLOBAL_ENERGY",
+     "type": "CModifierEntry",
+     "comment": "modifier 21",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xB0",
+     "name": "LOCAL_METAL",
+     "type": "CModifierEntry",
+     "comment": "modifier 22",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xB8",
+     "name": "GLOBAL_METAL",
+     "type": "CModifierEntry",
+     "comment": "modifier 23",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xC0",
+     "name": "LOCAL_RARE_MATERIALS",
+     "type": "CModifierEntry",
+     "comment": "modifier 24",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xC8",
+     "name": "GLOBAL_RARE_MATERIALS",
+     "type": "CModifierEntry",
+     "comment": "modifier 25",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xD0",
+     "name": "LOCAL_SUPPLIES",
+     "type": "CModifierEntry",
+     "comment": "modifier 26",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xD8",
+     "name": "GLOBAL_SUPPLIES",
+     "type": "CModifierEntry",
+     "comment": "modifier 27",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xE0",
+     "name": "LOCAL_FUEL",
+     "type": "CModifierEntry",
+     "comment": "modifier 28",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xE8",
+     "name": "GLOBAL_FUEL",
+     "type": "CModifierEntry",
+     "comment": "modifier 29",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xF0",
+     "name": "LOCAL_MONEY",
+     "type": "CModifierEntry",
+     "comment": "modifier 30",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0xF8",
+     "name": "GLOBAL_MONEY",
+     "type": "CModifierEntry",
+     "comment": "modifier 31",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x100",
+     "name": "LOCAL_LEADERSHIP",
+     "type": "CModifierEntry",
+     "comment": "modifier 32",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x108",
+     "name": "GLOBAL_LEADERSHIP",
+     "type": "CModifierEntry",
+     "comment": "modifier 33",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x110",
+     "name": "LOCAL_LEADERSHIP_MODIFIER",
+     "type": "CModifierEntry",
+     "comment": "modifier 34",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x118",
+     "name": "GLOBAL_LEADERSHIP_MODIFIER",
+     "type": "CModifierEntry",
+     "comment": "modifier 35",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x120",
+     "name": "DRIFT_SPEED",
+     "type": "CModifierEntry",
+     "comment": "modifier 36",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x128",
+     "name": "SUSEPTIBILITY",
+     "type": "CModifierEntry",
+     "comment": "modifier 37",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x130",
+     "name": "INCORPORATE_COST",
+     "type": "CModifierEntry",
+     "comment": "modifier 38",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x138",
+     "name": "TERRITORIAL_PRIDE",
+     "type": "CModifierEntry",
+     "comment": "modifier 39",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x140",
+     "name": "WAR_CONSUMER_GOODS_DEMAND",
+     "type": "CModifierEntry",
+     "comment": "modifier 40",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x148",
+     "name": "PEACE_CONSUMER_GOODS_DEMAND",
+     "type": "CModifierEntry",
+     "comment": "modifier 41",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x150",
+     "name": "ESPIONAGE_BONUS",
+     "type": "CModifierEntry",
+     "comment": "modifier 42",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x158",
+     "name": "DISSENT",
+     "type": "CModifierEntry",
+     "comment": "modifier 43",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x160",
+     "name": "NATIONAL_UNITY",
+     "type": "CModifierEntry",
+     "comment": "modifier 44",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x168",
+     "name": "NAVAL_CAPACITY",
+     "type": "CModifierEntry",
+     "comment": "modifier 45",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x170",
+     "name": "AIR_CAPACITY",
+     "type": "CModifierEntry",
+     "comment": "modifier 46",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x178",
+     "name": "ALIGN_TOWARDS",
+     "type": "CModifierEntry",
+     "comment": "modifier 47",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x180",
+     "name": "RADAR_LEVEL",
+     "type": "CModifierEntry",
+     "comment": "modifier 48",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x188",
+     "name": "SUPPLY_CONSUMPTION",
+     "type": "CModifierEntry",
+     "comment": "modifier 49",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x190",
+     "name": "PEACETIME_MANPOWER_ROTATION",
+     "type": "CModifierEntry",
+     "comment": "modifier 50",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x198",
+     "name": "UNIT_RECRUITMENT_TIME",
+     "type": "CModifierEntry",
+     "comment": "modifier 51",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1A0",
+     "name": "UNIT_START_EXPERIENCE",
+     "type": "CModifierEntry",
+     "comment": "modifier 52",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1A8",
+     "name": "UNIT_REPAIR",
+     "type": "CModifierEntry",
+     "comment": "modifier 53",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1B0",
+     "name": "COUNTER_INTELLIGENCE",
+     "type": "CModifierEntry",
+     "comment": "modifier 54",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1B8",
+     "name": "COUNTER_ESPIONAGE",
+     "type": "CModifierEntry",
+     "comment": "modifier 55",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1C0",
+     "name": "THREAT_IMPACT",
+     "type": "CModifierEntry",
+     "comment": "modifier 56",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1C8",
+     "name": "THREAT_RESISTANCE",
+     "type": "CModifierEntry",
+     "comment": "modifier 57",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1D0",
+     "name": "PEACE_OFFMAP_INTEL",
+     "type": "CModifierEntry",
+     "comment": "modifier 58",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1D8",
+     "name": "OFFMAP_LAND_INTEL",
+     "type": "CModifierEntry",
+     "comment": "modifier 59",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1E0",
+     "name": "OFFMAP_NAVAL_INTEL",
+     "type": "CModifierEntry",
+     "comment": "modifier 60",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1E8",
+     "name": "OFFMAP_INDUSTRY_INTEL",
+     "type": "CModifierEntry",
+     "comment": "modifier 61",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1F0",
+     "name": "OFFMAP_POLITICAL_INTEL",
+     "type": "CModifierEntry",
+     "comment": "modifier 62",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x1F8",
+     "name": "COMBAT_MOVEMENT_SPEED",
+     "type": "CModifierEntry",
+     "comment": "modifier 63",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x200",
+     "name": "ATTACK_REINFORCE_CHANCE",
+     "type": "CModifierEntry",
+     "comment": "modifier 64",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x208",
+     "name": "DEFEND_REINFORCE_CHANCE",
+     "type": "CModifierEntry",
+     "comment": "modifier 65",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x210",
+     "name": "COMBAT_WIDTH",
+     "type": "CModifierEntry",
+     "comment": "modifier 66",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x218",
+     "name": "ORG_REGAIN",
+     "type": "CModifierEntry",
+     "comment": "modifier 67",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x220",
+     "name": "NATIONAL_UNITY_EFFECT",
+     "type": "CModifierEntry",
+     "comment": "modifier 68",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x228",
+     "name": "RULING_PARTY_SUPPORT",
+     "type": "CModifierEntry",
+     "comment": "modifier 69",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x230",
+     "name": "LAND_ORGANISATION",
+     "type": "CModifierEntry",
+     "comment": "modifier 70",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x238",
+     "name": "AIR_ORGANISATION",
+     "type": "CModifierEntry",
+     "comment": "modifier 71",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x240",
+     "name": "NAVAL_ORGANISATION",
+     "type": "CModifierEntry",
+     "comment": "modifier 72",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x248",
+     "name": "RESEARCH_EFFICIENCY",
+     "type": "CModifierEntry",
+     "comment": "modifier 73",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x250",
+     "name": "INDUSTRIAL_EFFICIENCY",
+     "type": "CModifierEntry",
+     "comment": "modifier 74",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x258",
+     "name": "LOCAL_ANTI_AIR",
+     "type": "CModifierEntry",
+     "comment": "modifier 75, the definition's key is MODIFIER_LOCAL_AA",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x260",
+     "name": "LOCAL_PARTISAN_SUPPORT",
+     "type": "CModifierEntry",
+     "comment": "modifier 76",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x268",
+     "name": "RESERVES_PENALTY_SIZE",
+     "type": "CModifierEntry",
+     "comment": "modifier 77",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x270",
+     "name": "NEUTRALITY_CHANGE",
+     "type": "CModifierEntry",
+     "comment": "modifier 78",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x278",
+     "name": "PARTISAN_EFFICENCY",
+     "type": "CModifierEntry",
+     "comment": "modifier 79",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x280",
+     "name": "NAVAL_BASE_EFFICIENCY",
+     "type": "CModifierEntry",
+     "comment": "modifier 80",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x288",
+     "name": "SUPPLY_THROUGHPUT",
+     "type": "CModifierEntry",
+     "comment": "modifier 81",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x290",
+     "name": "OFFICER_RECRUITMENT",
+     "type": "CModifierEntry",
+     "comment": "modifier 82",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x298",
+     "name": "NEUTRALITY",
+     "type": "CModifierEntry",
+     "comment": "modifier 83",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2A0",
+     "name": "GLOBAL_RESOURCES",
+     "type": "CModifierEntry",
+     "comment": "modifier 84",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2A8",
+     "name": "LOCAL_RESOURCES",
+     "type": "CModifierEntry",
+     "comment": "modifier 85",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2B0",
+     "name": "REINFORCEMENT_BONUS",
+     "type": "CModifierEntry",
+     "comment": "modifier 86",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2B8",
+     "name": "AIR_BUILD_SPEED",
+     "type": "CModifierEntry",
+     "comment": "modifier 87",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2C0",
+     "name": "LAND_BUILD_SPEED",
+     "type": "CModifierEntry",
+     "comment": "modifier 88",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2C8",
+     "name": "ROCKET_BUILD_SPEED",
+     "type": "CModifierEntry",
+     "comment": "modifier 89",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2D0",
+     "name": "TANK_BUILD_SPEED",
+     "type": "CModifierEntry",
+     "comment": "modifier 90",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2D8",
+     "name": "NAVAL_BUILD_SPEED",
+     "type": "CModifierEntry",
+     "comment": "modifier 91",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2E0",
+     "name": "FUEL_CONVERSION",
+     "type": "CModifierEntry",
+     "comment": "modifier 92",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2E8",
+     "name": "TRICKLEBACK",
+     "type": "CModifierEntry",
+     "comment": "modifier 93",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2F0",
+     "name": "HARD_ATTACK",
+     "type": "CModifierEntry",
+     "comment": "modifier 94",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x2F8",
+     "name": "SOFT_ATTACK",
+     "type": "CModifierEntry",
+     "comment": "modifier 95",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x300",
+     "name": "NUKE_RESEARCH",
+     "type": "CModifierEntry",
+     "comment": "modifier 96",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x308",
+     "name": "AMM_MOVEMENT_SPEED",
+     "type": "CModifierEntry",
+     "comment": "modifier 97",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x310",
+     "name": "WINTER_EFFECTS",
+     "type": "CModifierEntry",
+     "comment": "modifier 98",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x318",
+     "name": "JUNGLE_EFFECTS",
+     "type": "CModifierEntry",
+     "comment": "modifier 99",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x320",
+     "name": "LEADER_DEFENCE",
+     "type": "CModifierEntry",
+     "comment": "modifier 100",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x328",
+     "name": "SW_NATIONAL_UNITY_EFFECT",
+     "type": "CModifierEntry",
+     "comment": "modifier 101",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x330",
+     "name": "LAND_INTEL_BOOST",
+     "type": "CModifierEntry",
+     "comment": "modifier 102",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x338",
+     "name": "NAVAL_INTEL_BOOST",
+     "type": "CModifierEntry",
+     "comment": "modifier 103",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x340",
+     "name": "LOCAL_UNDERGROUND",
+     "type": "CModifierEntry",
+     "comment": "modifier 104",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x348",
+     "name": "NAVAL_INTEL_BOOST_105",
+     "type": "CModifierEntry",
+     "comment": "modifier 105, the definition's key is MODIFIER_NAVAL_INTEL_BOOST",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x350",
+     "name": "STRATEGIC_RESOURCE_EFFICIENCY",
+     "type": "CModifierEntry",
+     "comment": "modifier 106",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x358",
+     "name": "LOCAL_UNIT_SPEED",
+     "type": "CModifierEntry",
+     "comment": "modifier 107",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x360",
+     "name": "support_attack_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 108",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x368",
+     "name": "strategic_redeployment_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 109",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x370",
+     "name": "move_order_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 110",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x378",
+     "name": "rebase_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 111",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x380",
+     "name": "reserves_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 112",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x388",
+     "name": "patrol_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 113",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x390",
+     "name": "intercept_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 114",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x398",
+     "name": "sortie_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 115",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3A0",
+     "name": "convoy_escort_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 116",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3A8",
+     "name": "convoy_raid_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 117",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3B0",
+     "name": "air_convoy_raid_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 118",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3B8",
+     "name": "transport_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 119",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3C0",
+     "name": "invasion_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 120",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3C8",
+     "name": "strategic_bomb_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 121",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3D0",
+     "name": "logistical_strike_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 122",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3D8",
+     "name": "runway_cratering_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 123",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3E0",
+     "name": "installation_strike_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 124",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3E8",
+     "name": "ground_attack_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 125",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3F0",
+     "name": "interdiction_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 126",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x3F8",
+     "name": "air_intercept_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 127",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x400",
+     "name": "carrier_protection_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 128",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x408",
+     "name": "paradrop_mission_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 129",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x410",
+     "name": "port_strike_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 130",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x418",
+     "name": "naval_strike_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 131",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x420",
+     "name": "rebase_to_carrier_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 132",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x428",
+     "name": "nuke_mission_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 133",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x430",
+     "name": "transport_supplies_mission_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 134",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x438",
+     "name": "rebase_air_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 135",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x440",
+     "name": "air_reserve_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 136",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x448",
+     "name": "air_superiority_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 137",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x450",
+     "name": "join_fleet_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 138",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x458",
+     "name": "join_air_eff",
+     "type": "CModifierEntry",
+     "comment": "modifier 139",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x460",
+     "name": "suseptibility_axis",
+     "type": "CModifierEntry",
+     "comment": "modifier 140",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x468",
+     "name": "suseptibility_allies",
+     "type": "CModifierEntry",
+     "comment": "modifier 141",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    },
+    {
+     "offset": "0x470",
+     "name": "suseptibility_comintern",
+     "type": "CModifierEntry",
+     "comment": "modifier 142",
+     "source": "BiceLib/GameClasses/CModifier.hpp:88"
+    }
+   ]
+  },
+  {
+   "name": "CLeadershipDistribution",
+   "size": "0x10",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "NCO",
+     "type": "CDistributionSetting*",
+     "comment": "a CDistributeNCO - officers",
+     "source": "BiceLib/GameClasses/CCountry.hpp:50"
+    },
+    {
+     "offset": "0x4",
+     "name": "Diplomacy",
+     "type": "CDistributionSetting*",
+     "comment": "a CDistributeDiplomacy",
+     "source": "BiceLib/GameClasses/CCountry.hpp:50"
+    },
+    {
+     "offset": "0x8",
+     "name": "Espionage",
+     "type": "CDistributionSetting*",
+     "comment": "a CDistributeEspionage",
+     "source": "BiceLib/GameClasses/CCountry.hpp:50"
+    },
+    {
+     "offset": "0xC",
+     "name": "Research",
+     "type": "CDistributionSetting*",
+     "comment": "a CDistributeResearch",
+     "source": "BiceLib/GameClasses/CCountry.hpp:50"
+    }
+   ]
+  },
+  {
+   "name": "CDistributionSetting",
+   "size": "0x28",
+   "fields": [
+    {
+     "offset": "0x10",
+     "name": "factor",
+     "type": "longlong",
+     "comment": "a second fpml::fixed_point<__int64,48,15> the allowed research slots calculation multiplies the base percentage by; the constructor sets it to 1",
+     "source": "BiceLib/GameClasses/CCountry.hpp:218"
+    },
+    {
+     "offset": "0x18",
+     "name": "country_ptr",
+     "type": "CCountry*",
+     "comment": "the country this belongs to; GetNeeded reads the country through it",
+     "source": "BiceLib/GameClasses/CCountry.hpp:221"
+    }
+   ]
+  },
+  {
+   "name": "CProductionDistribution",
+   "size": "0x18",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "LendLease",
+     "type": "CDistributionSetting*",
+     "comment": "a CDistributeLendLease - _PRODUCTION_LENDLEASE_",
+     "source": "BiceLib/GameClasses/CCountry.hpp:68"
+    },
+    {
+     "offset": "0x4",
+     "name": "ConsumerGoods",
+     "type": "CDistributionSetting*",
+     "comment": "a CDistributeConsumerGoods - _PRODUCTION_CONSUMER_",
+     "source": "BiceLib/GameClasses/CCountry.hpp:68"
+    },
+    {
+     "offset": "0x8",
+     "name": "Production",
+     "type": "CDistributionSetting*",
+     "comment": "a CDistributeProduction - _PRODUCTION_PRODUCTION_",
+     "source": "BiceLib/GameClasses/CCountry.hpp:68"
+    },
+    {
+     "offset": "0xC",
+     "name": "Supply",
+     "type": "CDistributionSetting*",
+     "comment": "a CDistributeSupply - _PRODUCTION_SUPPLY_",
+     "source": "BiceLib/GameClasses/CCountry.hpp:68"
+    },
+    {
+     "offset": "0x10",
+     "name": "Reinforcement",
+     "type": "CDistributionSetting*",
+     "comment": "a CDistributeReinforcement - _PRODUCTION_REINFORCEMENT_",
+     "source": "BiceLib/GameClasses/CCountry.hpp:68"
+    },
+    {
+     "offset": "0x14",
+     "name": "Upgrade",
+     "type": "CDistributionSetting*",
+     "comment": "a CDistributeUpgrade - _PRODUCTION_UPGRADE_",
+     "source": "BiceLib/GameClasses/CCountry.hpp:68"
+    }
+   ]
+  },
+  {
+   "name": "CTechnologyCategory",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "construction_practical, infantry_theory",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:86"
+    },
+    {
+     "offset": "0x24",
+     "name": "displayName",
+     "type": "Hoi3CString",
+     "comment": "the localised name",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:54"
+    },
+    {
+     "offset": "0x40",
+     "name": "shortName",
+     "type": "Hoi3CString",
+     "comment": "the short name's key, construction_practical_short; slot 1 answers it",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:114"
+    },
+    {
+     "offset": "0x5C",
+     "name": "index",
+     "type": "int",
+     "comment": "what the country's per category arrays are indexed by",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:55"
+    }
+   ]
+  },
+  {
+   "name": "CTechnologyStatus",
+   "fields": [
+    {
+     "offset": "0x44",
+     "name": "convoy_build_cost_effect",
+     "type": "int",
+     "comment": "what technology has done to the convoy build cost; the define is scaled by (1000 + this) / 1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:46"
+    },
+    {
+     "offset": "0x48",
+     "name": "convoy_build_time_effect",
+     "type": "int",
+     "comment": "what technology has done to the convoy build time; the define is scaled by (1000 + this) / 1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:46"
+    },
+    {
+     "offset": "0x4C",
+     "name": "escort_build_cost_effect",
+     "type": "int",
+     "comment": "what technology has done to the escort build cost; the define is scaled by (1000 + this) / 1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:46"
+    },
+    {
+     "offset": "0x50",
+     "name": "escort_build_time_effect",
+     "type": "int",
+     "comment": "what technology has done to the escort build time; the define is scaled by (1000 + this) / 1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:46"
+    },
+    {
+     "offset": "0x94",
+     "name": "build_discount_extra",
+     "type": "int",
+     "comment": "added to the technology category discount by 0xE1AC0; the neighbour of GetIcModifier at +0x90 and not the same figure",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:144"
+    },
+    {
+     "offset": "0x218",
+     "name": "build_cost_by_technology",
+     "type": "int*",
+     "comment": "ints indexed by a technology's index (+0x244): what each technology does to a unit type's build cost, summed over the type's own technology list",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:149"
+    },
+    {
+     "offset": "0x24C",
+     "name": "build_cost_by_unit_type",
+     "type": "int*",
+     "comment": "ints indexed by CSubUnitDefinition's index: what technology has done to that unit type's build cost",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:153"
+    },
+    {
+     "offset": "0x25C",
+     "name": "build_cost_mp_by_unit_type",
+     "type": "int*",
+     "comment": "the manpower counterpart of +0x24C, read by the total build cost function",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:156"
+    },
+    {
+     "offset": "0x26C",
+     "name": "build_time_by_unit_type",
+     "type": "int*",
+     "comment": "ints indexed by CSubUnitDefinition's index: what technology has done to that unit type's build time",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:176"
+    }
+   ]
+  },
+  {
+   "name": "CMilitaryConstruction",
+   "fields": [
+    {
+     "offset": "0x8C",
+     "name": "is_reserve",
+     "type": "bool",
+     "comment": "the item is being built as reserves, which is what fills reserves_factor",
+     "source": "reversing/CLASSES.md:864"
+    },
+    {
+     "offset": "0x9C",
+     "name": "reserves_factor",
+     "type": "int",
+     "comment": "1000 + the owner's RESERVES_PENALTY_SIZE modifier (77) where is_reserve is set, 1000 otherwise - filled at 0x84A3A and 0x85211. Stored rather than looked up, so an item keeps the factor it was given",
+     "source": "reversing/CLASSES.md:864"
+    }
+   ],
+   "vftable_rva": "0x11BDC34"
+  },
+  {
+   "name": "CDefinesEconomy",
+   "size": "0x54",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "MAX_PROVINCE_SELL_PRICE",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:41"
+    },
+    {
+     "offset": "0x4",
+     "name": "LEADERSHIP_TO_DIPLOMACY",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:42"
+    },
+    {
+     "offset": "0x8",
+     "name": "IC_TO_MONEY",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:43"
+    },
+    {
+     "offset": "0xC",
+     "name": "IC_TO_CONSUMER_GOODS",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:44"
+    },
+    {
+     "offset": "0x10",
+     "name": "IC_TO_SUPPLIES",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:45"
+    },
+    {
+     "offset": "0x14",
+     "name": "CONVOY_BUILD_COST",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:46"
+    },
+    {
+     "offset": "0x18",
+     "name": "CONVOY_BUILD_TIME",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:47"
+    },
+    {
+     "offset": "0x1C",
+     "name": "ESCORT_BUILD_COST",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:48"
+    },
+    {
+     "offset": "0x20",
+     "name": "ESCORT_BUILD_TIME",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:49"
+    },
+    {
+     "offset": "0x24",
+     "name": "LEADERSHIP_TO_SPIES",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:50"
+    },
+    {
+     "offset": "0x28",
+     "name": "BUILDING_REPAIR_SPEED",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:51"
+    },
+    {
+     "offset": "0x2C",
+     "name": "LEADERSHIP_TO_OFFICERS",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:52"
+    },
+    {
+     "offset": "0x30",
+     "name": "THREAT_FROM_CONVOYS_MODIFIER",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:53"
+    },
+    {
+     "offset": "0x34",
+     "name": "CONVOY_CONSTRUCTION_SIZE",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:54"
+    },
+    {
+     "offset": "0x38",
+     "name": "MAX_DAILY_TRADE",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:55"
+    },
+    {
+     "offset": "0x3C",
+     "name": "CONVOY_PATH_LENGTH_MULT",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:56"
+    },
+    {
+     "offset": "0x40",
+     "name": "CONVOY_TRADE_WEIGHT_MULT",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:57"
+    },
+    {
+     "offset": "0x44",
+     "name": "RESOURCE_TO_IC_COST",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:58"
+    },
+    {
+     "offset": "0x48",
+     "name": "CARGO_TONS_SUNK_SCALE",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:59"
+    },
+    {
+     "offset": "0x4C",
+     "name": "LL_CONVOY_EFF_IMPACT",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:60"
+    },
+    {
+     "offset": "0x50",
+     "name": "LL_CONVOY_EFF_REGAIN",
+     "type": "int",
+     "comment": "the economy block of defines.lua, its entries in file order, one dword each, x1000",
+     "source": "BiceLib/GameClasses/CDefines.hpp:61"
     }
    ]
   }
@@ -4702,28 +6946,86 @@
    "11": "GetKind"
   },
   "CLandCombat": {
-   "11": "GetKind"
+   "11": {
+    "name": "GetKind",
+    "signature": "int __thiscall GetKind(CCombat* this)"
+   }
   },
   "CNavalCombat": {
-   "11": "GetKind"
+   "11": {
+    "name": "GetKind",
+    "signature": "int __thiscall GetKind(CCombat* this)"
+   }
   },
   "CAirCombat": {
-   "11": "GetKind"
+   "11": {
+    "name": "GetKind",
+    "signature": "int __thiscall GetKind(CCombat* this)"
+   }
   },
   "CGroundBombing": {
-   "11": "GetKind"
+   "11": {
+    "name": "GetKind",
+    "signature": "int __thiscall GetKind(CCombat* this)"
+   }
   },
   "CLandBombing": {
-   "11": "GetKind"
+   "11": {
+    "name": "GetKind",
+    "signature": "int __thiscall GetKind(CCombat* this)"
+   }
   },
   "CNavalBombing": {
-   "11": "GetKind"
+   "11": {
+    "name": "GetKind",
+    "signature": "int __thiscall GetKind(CCombat* this)"
+   }
   },
   "CMoveCommand": {
    "6": "RouteUnit"
   },
   "CRegiment": {
    "12": "GetMaxStrength"
+  },
+  "COrder": {
+   "16": {
+    "name": "GetTypeId",
+    "signature": "int __thiscall GetTypeId(COrder* this)"
+   }
+  },
+  "CMoveOrder": {
+   "16": {
+    "name": "GetTypeId",
+    "signature": "int __thiscall GetTypeId(COrder* this)"
+   }
+  },
+  "CTechnologyCategory": {
+   "0": {
+    "name": "GetName",
+    "signature": "Hoi3CString* __thiscall GetName(CTechnologyCategory* this, Hoi3CString* result)"
+   },
+   "1": {
+    "name": "GetShortName",
+    "signature": "Hoi3CString* __thiscall GetShortName(CTechnologyCategory* this, Hoi3CString* result)"
+   },
+   "2": {
+    "name": "IsValid",
+    "signature": "bool __thiscall IsValid(CTechnologyCategory* this)"
+   }
+  },
+  "CTechnologyFolder": {
+   "0": {
+    "name": "GetName",
+    "signature": "Hoi3CString* __thiscall GetName(CTechnologyFolder* this, Hoi3CString* result)"
+   },
+   "1": {
+    "name": "GetShortName",
+    "signature": "Hoi3CString* __thiscall GetShortName(CTechnologyFolder* this, Hoi3CString* result)"
+   },
+   "2": {
+    "name": "IsValid",
+    "signature": "bool __thiscall IsValid(CTechnologyFolder* this)"
+   }
   }
  }
 }

@@ -15,6 +15,11 @@
  */
 namespace CUnit {
     namespace Offsets {
+        /**@brief the unit is selected - **one byte**
+
+           Read as `cmp byte ptr [unit+4], 0`, and +0x5 to +0x7 hold other fields, which
+           carry data of their own while this byte is zero. It used to be recorded as four
+           bytes wide.*/
         constexpr uintptr_t is_selected = 0x4;
         constexpr uintptr_t type = 0x10;
         constexpr uintptr_t id = 0x14;
@@ -27,6 +32,15 @@ namespace CUnit {
         constexpr uintptr_t upgrade_prio = 0xA4;          // boolean!
         constexpr uintptr_t upgrade_active = 0xA5;        // boolean!
         constexpr uintptr_t reinforcements_active = 0xA6; // boolean!
+        /**
+         * **The unit's current order**, a COrder*.
+         *
+         * Which kind it is comes from virtual slot 16, which COrder leaves pure virtual and
+         * every concrete order fills with `mov eax, <id>; ret`. `0x5A4` is
+         * `CStrategicRedeploymentOrder`; the rest of the ids are in `reversing/CLASSES.md`.
+         * The game reads it this way itself - a land unit whose order answers `0x5A4` burns
+         * no fuel (**read**, `0x1BB7A0`).
+         */
         constexpr uintptr_t order_ptr = 0xB0;
         constexpr uintptr_t CSubUnitDefinitionPtr = 0xC8;
         constexpr uintptr_t combat_cooldown = 0xD4;

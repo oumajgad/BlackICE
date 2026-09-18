@@ -97,7 +97,14 @@
    "bases": [],
    "size": null,
    "constructors": [],
-   "fields": [],
+   "fields": [
+    {
+     "name": "Priority",
+     "offset": 164,
+     "type": "CFixedPoint",
+     "evidence": "accessor CTheatre::GetPriority at 004AEE90"
+    }
+   ],
    "enums": []
   },
   {
@@ -155,6 +162,12 @@
      "offset": 48,
      "type": "int",
      "evidence": "accessor CLicenceTechnologyAction::GetParalell at 00A3D780"
+    },
+    {
+     "name": "Money",
+     "offset": 52,
+     "type": "CFixedPoint",
+     "evidence": "accessor CLicenceTechnologyAction::GetMoney at 00A3D7A0"
     }
    ],
    "enums": []
@@ -646,7 +659,14 @@
    "bases": [],
    "size": null,
    "constructors": [],
-   "fields": [],
+   "fields": [
+    {
+     "name": "IcModifier",
+     "offset": 144,
+     "type": "CFixedPoint",
+     "evidence": "accessor CTechnologyStatus::GetIcModifier at 00B5CA20"
+    }
+   ],
    "enums": []
   },
   {
@@ -683,10 +703,22 @@
    "constructors": [],
    "fields": [
     {
+     "name": "Level",
+     "offset": 0,
+     "type": "CFixedPoint",
+     "evidence": "accessor CSpyPresence::GetLevel at 004C83F0"
+    },
+    {
      "name": "Priority",
      "offset": 4,
      "type": "int",
      "evidence": "accessor CSpyPresence::GetPriority at 00BBBDD0"
+    },
+    {
+     "name": "LastMissionChangeDate",
+     "offset": 80,
+     "type": "CEU3Date",
+     "evidence": "accessor CSpyPresence::GetLastMissionChangeDate at 004C8410"
     }
    ],
    "enums": [
@@ -800,7 +832,26 @@
    "bases": [],
    "size": null,
    "constructors": [],
-   "fields": [],
+   "fields": [
+    {
+     "name": "BombingImpact",
+     "offset": 16,
+     "type": "CFixedPoint",
+     "evidence": "accessor CStrategicWarfare::GetBombingImpact at 004C8440"
+    },
+    {
+     "name": "AlliesImpact",
+     "offset": 12,
+     "type": "CFixedPoint",
+     "evidence": "accessor CStrategicWarfare::GetAlliesImpact at 004C8430"
+    },
+    {
+     "name": "ConvoyImpact",
+     "offset": 8,
+     "type": "CFixedPoint",
+     "evidence": "accessor CStrategicWarfare::GetConvoyImpact at 004C8420"
+    }
+   ],
    "enums": []
   },
   {
@@ -842,7 +893,20 @@
    "bases": [],
    "size": null,
    "constructors": [],
-   "fields": [],
+   "fields": [
+    {
+     "name": "Current",
+     "offset": 36,
+     "type": "CFixedPoint",
+     "evidence": "accessor CProvinceBuilding::GetCurrent at 00417A60"
+    },
+    {
+     "name": "Max",
+     "offset": 32,
+     "type": "CFixedPoint",
+     "evidence": "accessor CProvinceBuilding::GetMax at 00417A70"
+    }
+   ],
    "enums": []
   },
   {
@@ -1140,7 +1204,14 @@
    "bases": [],
    "size": null,
    "constructors": [],
-   "fields": [],
+   "fields": [
+    {
+     "name": "BasePercentage",
+     "offset": 8,
+     "type": "fpml::fixed_point<__int64,48,15>",
+     "evidence": "accessor CDistributionSetting::GetBasePercentage at 004C8920"
+    }
+   ],
    "enums": [
     {
      "name": "_PRODUCTION_LENDLEASE_",
@@ -1430,7 +1501,14 @@
    ],
    "size": null,
    "constructors": [],
-   "fields": [],
+   "fields": [
+    {
+     "name": "CountryTag",
+     "offset": 52,
+     "type": "CCountryTag",
+     "evidence": "accessor CAIAgent::GetCountryTag at 00887FA0"
+    }
+   ],
    "enums": []
   },
   {
@@ -1581,7 +1659,14 @@
      "address": null
     }
    ],
-   "fields": [],
+   "fields": [
+    {
+     "name": "Versus",
+     "offset": 40,
+     "type": "CCountryTag",
+     "evidence": "accessor CCallAllyAction::GetVersus at 00A2A7F0"
+    }
+   ],
    "enums": []
   },
   {
@@ -1794,6 +1879,12 @@
      "offset": 84,
      "type": "bool",
      "evidence": "accessor CTradeRoute::IsInactive at 00A4D540"
+    },
+    {
+     "name": "LastInactive",
+     "offset": 132,
+     "type": "CEU3Date",
+     "evidence": "accessor CTradeRoute::GetLastInactive at 00887F80"
     }
    ],
    "enums": []
@@ -1994,6 +2085,12 @@
    "constructors": [],
    "fields": [
     {
+     "name": "Value",
+     "offset": 56,
+     "type": "CFixedPoint",
+     "evidence": "accessor CDiplomacyStatus::GetValue at 00A48130"
+    },
+    {
      "name": "Threat",
      "offset": 92,
      "type": "CFixedPoint",
@@ -2016,6 +2113,12 @@
      "offset": 120,
      "type": "bool",
      "evidence": "accessor CDiplomacyStatus::AllowDebts at 00A4A7E0"
+    },
+    {
+     "name": "Target",
+     "offset": 8,
+     "type": "CCountryTag",
+     "evidence": "accessor CDiplomacyStatus::GetTarget at 004C8920"
     },
     {
      "name": "War",
@@ -2066,6 +2169,12 @@
      "evidence": "accessor CProvince::GetContinent at 004A6BD0"
     },
     {
+     "name": "MaxInfrastructure",
+     "offset": 92,
+     "type": "CFixedPoint",
+     "evidence": "accessor CProvince::GetMaxInfrastructure at 0046C360"
+    },
+    {
      "name": "Controller",
      "offset": 820,
      "type": "CCountryTag",
@@ -2076,6 +2185,12 @@
      "offset": 812,
      "type": "CCountryTag",
      "evidence": "accessor CProvince::GetOwner at 0042F030"
+    },
+    {
+     "name": "CachedTotalSuppression",
+     "offset": 40,
+     "type": "CFixedPoint",
+     "evidence": "accessor CProvince::GetCachedTotalSuppression at 004C8500"
     },
     {
      "name": "UnderGroundAction",
@@ -2206,6 +2321,60 @@
      "offset": 36,
      "type": "int",
      "evidence": "accessor CSubUnitDefinition::GetIndex at 00A832A0"
+    },
+    {
+     "name": "CompletionSize",
+     "offset": 228,
+     "type": "CFixedPoint",
+     "evidence": "accessor CSubUnitDefinition::GetCompletionSize at 00417A00"
+    },
+    {
+     "name": "BuildCostIC",
+     "offset": 248,
+     "type": "CFixedPoint",
+     "evidence": "accessor CSubUnitDefinition::GetBuildCostIC at 00462D30"
+    },
+    {
+     "name": "BuildCostMP",
+     "offset": 252,
+     "type": "CFixedPoint",
+     "evidence": "accessor CSubUnitDefinition::GetBuildCostMP at 00417A20"
+    },
+    {
+     "name": "BuildTime",
+     "offset": 256,
+     "type": "CFixedPoint",
+     "evidence": "accessor CSubUnitDefinition::GetBuildTime at 004C8370"
+    },
+    {
+     "name": "DefaultStrength",
+     "offset": 236,
+     "type": "CFixedPoint",
+     "evidence": "accessor CSubUnitDefinition::GetDefaultStrength at 00417A40"
+    },
+    {
+     "name": "CombatWidth",
+     "offset": 232,
+     "type": "CFixedPoint",
+     "evidence": "accessor CSubUnitDefinition::GetCombatWidth at 005A3260"
+    },
+    {
+     "name": "Defensivness",
+     "offset": 284,
+     "type": "CFixedPoint",
+     "evidence": "accessor CSubUnitDefinition::GetDefensivness at 00564020"
+    },
+    {
+     "name": "Toughness",
+     "offset": 288,
+     "type": "CFixedPoint",
+     "evidence": "accessor CSubUnitDefinition::GetToughness at 00564040"
+    },
+    {
+     "name": "Softness",
+     "offset": 292,
+     "type": "CFixedPoint",
+     "evidence": "accessor CSubUnitDefinition::GetSoftness at 0055DBA0"
     }
    ],
    "enums": []
@@ -2230,6 +2399,12 @@
    "size": null,
    "constructors": [],
    "fields": [
+    {
+     "name": "CountryTag",
+     "offset": 8,
+     "type": "CCountryTag",
+     "evidence": "accessor CAIStrategy::GetCountryTag at 004C8920"
+    },
     {
      "name": "Personality",
      "offset": 24,
@@ -2810,6 +2985,12 @@
    "constructors": [],
    "fields": [
     {
+     "name": "Cost",
+     "offset": 48,
+     "type": "CFixedPoint",
+     "evidence": "accessor CConstruction::GetCost at 004837C0"
+    },
+    {
      "name": "Size",
      "offset": 64,
      "type": "int",
@@ -2876,6 +3057,24 @@
      "evidence": "accessor CCountry::GetAlignment at 0060BC10"
     },
     {
+     "name": "Dissent",
+     "offset": 4276,
+     "type": "CFixedPoint",
+     "evidence": "accessor CCountry::GetDissent at 004F8AE0"
+    },
+    {
+     "name": "NationalUnity",
+     "offset": 4280,
+     "type": "CFixedPoint",
+     "evidence": "accessor CCountry::GetNationalUnity at 004F8B20"
+    },
+    {
+     "name": "OfficerRatio",
+     "offset": 212,
+     "type": "CFixedPoint",
+     "evidence": "accessor CCountry::GetOfficerRatio at 00417C60"
+    },
+    {
      "name": "Neighbours",
      "offset": 4056,
      "type": "CCountryList",
@@ -2906,6 +3105,12 @@
      "evidence": "accessor CCountry::IsAtWar at 00417BD0"
     },
     {
+     "name": "Manpower",
+     "offset": 3020,
+     "type": "CFixedPoint",
+     "evidence": "accessor CCountry::GetManpower at 004E1BE0"
+    },
+    {
      "name": "NumOfAllies",
      "offset": 4196,
      "type": "int",
@@ -2918,7 +3123,7 @@
      "evidence": "accessor CCountry::GetAllies at 004E6A20"
     },
     {
-     "name": "Capital",
+     "name": "ActingCapital",
      "offset": 3620,
      "type": "int",
      "evidence": "accessor CCountry::GetActingCapital at 0046C370"
@@ -3026,6 +3231,12 @@
      "evidence": "accessor CCountry::IsMobilized at 004C8850"
     },
     {
+     "name": "TotalLeadership",
+     "offset": 3032,
+     "type": "CFixedPoint",
+     "evidence": "accessor CCountry::GetTotalLeadership at 004F4E00"
+    },
+    {
      "name": "Convoys",
      "offset": 160,
      "type": "CList<CConvoy *>",
@@ -3080,6 +3291,12 @@
      "evidence": "accessor CCountry::GetDiplomacy at 004E65B0"
     },
     {
+     "name": "Overlord",
+     "offset": 3896,
+     "type": "CCountryTag",
+     "evidence": "accessor CCountry::GetOverlord at 004EDEB0"
+    },
+    {
      "name": "Vassals",
      "offset": 3960,
      "type": "CCountryList",
@@ -3092,10 +3309,34 @@
      "evidence": "accessor CCountry::GetMaxIC at 00423680"
     },
     {
+     "name": "Neutrality",
+     "offset": 2700,
+     "type": "CFixedPoint",
+     "evidence": "accessor CCountry::GetNeutrality at 004FBC90"
+    },
+    {
+     "name": "EffectiveNeutrality",
+     "offset": 2704,
+     "type": "CFixedPoint",
+     "evidence": "accessor CCountry::GetEffectiveNeutrality at 004FBE80"
+    },
+    {
      "name": "HighestThreat",
      "offset": 4568,
      "type": "CCountryTag",
      "evidence": "accessor CCountry::GetHighestThreat at 005074F0"
+    },
+    {
+     "name": "SupplyBalanceAverage",
+     "offset": 4600,
+     "type": "CFixedPoint",
+     "evidence": "accessor CCountry::GetSupplyBalanceAverage at 008E8220"
+    },
+    {
+     "name": "MoneyBalanceAverage",
+     "offset": 4612,
+     "type": "CFixedPoint",
+     "evidence": "accessor CCountry::GetMoneyBalanceAverage at 008E8240"
     },
     {
      "name": "isSubject",

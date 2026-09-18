@@ -70,7 +70,7 @@ namespace CSubUnitDefinition {
         lua_pushstring(L, "max_organisation");
         lua_pushinteger(L, max_organisation);
         lua_settable(L, -3);
-        int manpower = *(uintptr_t*)(subUnitDefinitionPtr + Offsets::manpower);
+        int manpower = *(uintptr_t*)(subUnitDefinitionPtr + Offsets::build_cost_manpower);
         lua_pushstring(L, "manpower");
         lua_pushinteger(L, manpower);
         lua_settable(L, -3);

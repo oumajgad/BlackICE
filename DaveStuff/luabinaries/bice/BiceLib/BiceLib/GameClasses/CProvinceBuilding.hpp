@@ -45,8 +45,76 @@ namespace CProvinceBuilding {
  * CBuilding - what a building is, rather than one a province has.
  */
 namespace CBuilding {
+    namespace VFTable {
+        constexpr uintptr_t CBuilding = 0x11C09F8;   // module relative, RTTI
+    }
+
     namespace Offsets {
         constexpr uintptr_t name = 0x1C;        // the key, "air_base"
         constexpr uintptr_t displayName = 0x38; // what the game shows, "Air Base"
+        constexpr uintptr_t index = 0x54;       // the game's GetIndex
+
+        /**@brief **what it costs to build**, x1000 - `cost` in `common/buildings.txt`
+
+           **Read live** and checked against the mod's file: `air_base` 2600 for `cost = 2.6`,
+           `naval_base` 4275 for `4.275`, the nuclear reactors 50000 for `50`. What a country
+           actually pays is `CCountry::GetBuildCost` (`0xDFDA0`), which discounts this.*/
+        constexpr uintptr_t cost = 0x58;
+
+        /**@brief **the technology category the cost is discounted by**, a
+                  CTechnologyCategory*
+
+           **Read live**: most buildings point at `construction_practical`, the nuclear
+           reactors at `nuclear_bomb`, `smallarms_factory` at `infantry_theory`,
+           `automotive_factory` at `automotive_theory`, `radar_station` at
+           `electronic_engineering_practical`.*/
+        constexpr uintptr_t technology_category_ptr = 0x88;
+    }
+}
+
+/**
+ * CTechnologyCategory - one of the 48 theory and practical lines a country has a level in.
+ *
+ * Only valid for this build of hoi3_tfh.exe.
+ */
+namespace CTechnologyCategory {
+    namespace VFTable {
+        constexpr uintptr_t CTechnologyCategory = 0x11C3510;   // module relative, RTTI, 3 slots
+
+        /**@brief the `nocategory` object, which derives from it and adds a fourth slot
+
+           **Slot 2 is the same body either way** - the folded `mov al,1; ret` at `0xA92590`,
+           which 259 virtual tables share - so a null category answers the build cost check
+           exactly as a real one does. See `CCountry::GetBuildCost`.*/
+        constexpr uintptr_t CNullTechnologyCategory = 0x11C355C;
+    }
+
+    /**
+     * Its three virtuals, all named by BiceLib. Slots 0 and 1 answer a std::string by value,
+     * copied from the two strings below; the bodies are the same two addresses the technology
+     * *folder* classes use, so neither can be named from its body (**read**).
+     *
+     * **Slot 2 is inference**: the body is the folded `mov al,1; ret` at `0xA92590`, which is
+     * also what `CMinister::IsValid` and half a dozen other registered `IsValid` methods are,
+     * and `CNullTechnologyFolder` - the null object of the sibling class - overrides exactly
+     * that slot with `xor al,al; ret`. `CNullTechnologyCategory` does **not** override it, so
+     * a null category answers true; see `CCountry::GetBuildCost`.
+     */
+    namespace Slots {
+        constexpr int GET_NAME = 0;
+        constexpr int GET_SHORT_NAME = 1;
+        constexpr int IS_VALID = 2;
+    }
+
+    namespace Offsets {
+        constexpr uintptr_t key = 0x8;          // "construction_practical"
+        constexpr uintptr_t displayName = 0x24; // "Construction Practical"
+
+        /**@brief the key of the short name, "construction_practical_short"; slot 1 answers it*/
+        constexpr uintptr_t shortName = 0x40;
+
+        /**@brief what CCountry::Offsets::category_levels and category_shared_from are
+                  indexed by; 1 to 48 in this mod, 0 being no category*/
+        constexpr uintptr_t index = 0x5C;
     }
 }

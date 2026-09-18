@@ -76,6 +76,31 @@ python dumpStruct.py 0x1a2b3c40 --length 0x200 --strings
 Pointers that land on a known vftable are named, which is usually what identifies a
 field first.
 
+**`poolSnapshot.py`**, **`poolCompare.py`** - every country's goods pools, and what moved
+between two snapshots.
+
+```
+python poolSnapshot.py s1.json     # take several while the game runs
+python poolCompare.py s*.json
+```
+
+Written to tell apart pools nothing names. A pool that only ever moves in crude oil and
+another that only ever moves in fuel are the two sides of the same conversion; one that
+never moves in any country over eleven game days is not used at all.
+
+**`saveTokens.py`** - every id the save code uses and the key it stands for, out of the
+executable.
+
+```
+python saveTokens.py tokens.json
+```
+
+Save code never writes a key as a string: it writes an id (`mov ecx, 0x5A6`, then a call)
+and a table built at startup turns that into `usage`. **That is a way of naming a field
+the Lua API never exposes** - find where the class's writer saves it and read the id
+beside it. 2056 ids in this build; `CCountry`'s goods pools are the worked example, in
+CLASSES.md.
+
 **`vtable.py`** - classes' vtables side by side, out of the executable.
 
 ```

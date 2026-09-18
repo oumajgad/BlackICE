@@ -33,9 +33,76 @@ namespace CCountry {
          */
         constexpr uintptr_t is_government_in_exile = 0x95;
 
+        /**
+         * **The leadership distribution** - the four sliders leadership is split between.
+         * A vector: this is its first element, +0x5E8 its end and +0x5EC its capacity, and
+         * it always holds four `CDistributionSetting*` in this order, each object's vftable
+         * saying which it is (**read live**):
+         *
+         *     [0] CDistributeNCO          officers
+         *     [1] CDistributeDiplomacy
+         *     [2] CDistributeEspionage
+         *     [3] CDistributeResearch
+         *
+         * The game's own `CCountry::GetLeadershipDistributionAt(i)` (`0xE06C0`) is nothing
+         * but `[this + 0x5E4][i]`, which is where the name comes from.
+         */
+        constexpr uintptr_t leadership_distribution = 0x5E4;
+        constexpr uintptr_t leadership_distribution_end = 0x5E8;
+        constexpr uintptr_t leadership_distribution_capacity = 0x5EC;
+
+        /**
+         * **The industrial capacity distribution** - the six production sliders, the same
+         * shape as the leadership one above: first element here, end at +0x5F8, capacity
+         * at +0x5FC. Six `CDistributionSetting*` in the order of the game's own
+         * `ProductionCategory` enum, which it registers to Lua on `CDistributionSetting`
+         * (**named**; the order is **read live** off the six objects' vftables):
+         *
+         *     [0] CDistributeLendLease      _PRODUCTION_LENDLEASE_
+         *     [1] CDistributeConsumerGoods  _PRODUCTION_CONSUMER_
+         *     [2] CDistributeProduction     _PRODUCTION_PRODUCTION_
+         *     [3] CDistributeSupply         _PRODUCTION_SUPPLY_
+         *     [4] CDistributeReinforcement  _PRODUCTION_REINFORCEMENT_
+         *     [5] CDistributeUpgrade        _PRODUCTION_UPGRADE_
+         */
+        constexpr uintptr_t production_distribution = 0x5F4;
+        constexpr uintptr_t production_distribution_end = 0x5F8;
+        constexpr uintptr_t production_distribution_capacity = 0x5FC;
+
         /**@brief the country's industrial capacity now and at most, the game's
                   `GetTotalIC` and `GetMaxIC`; the offmap IC fix writes the first*/
         constexpr uintptr_t total_ic = 0x604;
+
+        /**
+         * **The country's own level in each technology category**, a pointer to ints in
+         * thousandths indexed by CTechnologyCategory::Offsets::index - the theories and
+         * practicals, and holding whole and half levels (**read live**, against the game's own
+         * category keys).
+         */
+        constexpr uintptr_t own_ability = 0x698;
+
+        /**
+         * **Who shares each category with this country** - the game's technology sharing,
+         * a CCountryTag per category beside the levels.
+         *
+         * **The tag is on the receiver, not the giver**, one slot per category, so a
+         * country can be shared each category by at most one other (**read live**).
+         *
+         * What it buys is the higher of the two levels: the game's own
+         * `CCountry::GetAbility(CTechnologyCategory*)` (`0xE0290`) answers this country's
+         * own level unless a tag is set here and that country's is higher. The build cost
+         * discount (`0xE1AC0`) does the same lookup inline, so sharing cuts what the
+         * receiver pays for buildings and units as well as helping its research.
+         */
+        constexpr uintptr_t ability_shared_from = 0x6A8;
+
+        /**
+         * **What reinforcement and upgrading currently cost**, which the spare IC
+         * calculation (`0xF4B90`) subtracts from what those two sliders allocate
+         * (**read**). Nothing else about them has been checked.
+         */
+        constexpr uintptr_t reinforcement_cost = 0xA98;
+        constexpr uintptr_t upgrade_cost = 0xAA4;
         constexpr uintptr_t max_ic = 0x60C;
 
         /**
@@ -83,17 +150,26 @@ namespace CCountry {
         constexpr uintptr_t leaders = 0xE10;
 
         /**
-         * **The capital, as a province id** - index it into the game state's province
-         * vector. The game's own "capital province" (`0x2F100`) reads this, and so does
-         * its `GetActingCapital` - which by that name is where the government sits now,
-         * rather than the capital it started with; not checked.
+         * **The two capitals, each a province id** - index either into the game state's
+         * province vector.
          *
-         * The country's stockpile is the capital's pool: `CCountry:GetPool()`
-         * (`0xF4DE0`) answers `&capital->pool` (CMapProvince::Offsets::pool), unless the
+         * `+0xE20` is the capital and `+0xE24` where the government sits now. That was
+         * recorded the other way round until 2026-09-19, when the pair of accessors
+         * settled it: `CCountry::GetCapitalLocation` (`0x17AF0`) and
+         * `GetActingCapitalLocation` (`0x2F100`) are the same function but for the offset
+         * they read, and `GetActingCapital` (`0x6C370`) answers `+0xE24` (**read**).
+         *
+         * **The Lua API is a trap here**: it registers `GetActingCapital` under the name
+         * `GetCapital`, so a script asking a country for its capital is told where the
+         * government sits.
+         *
+         * The stockpile follows the **acting** capital: `CCountry:GetPool()` (`0xF4DE0`)
+         * calls `GetActingCapitalLocation` and adds the province's pool offset, unless the
          * country is a government in exile (is_government_in_exile), when it answers the
          * pool held here at `+0x9F8`.
          */
-        constexpr uintptr_t capital_province_id = 0xE24;
+        constexpr uintptr_t capital_province_id = 0xE20;
+        constexpr uintptr_t acting_capital_province_id = 0xE24;
 
         /**
          * **The country's goods pools**, each a CGoodsPool. It holds 23, `+0x74C` to
@@ -117,6 +193,96 @@ namespace CCountry {
         constexpr uintptr_t traded_away_sans_allied_supply = 0x800;
         constexpr uintptr_t traded_for = 0x86C;
         constexpr uintptr_t traded_for_sans_allied_supply = 0x890;
+
+        /**
+         * **Three more named by the save**, and the rest by what the daily figures do with
+         * them. Which good a pool holds is `pool + CGoodsPool::Goods::supplies +
+         * category * 4`, the category being the game's GoodsCategory.
+         *
+         * The country's writer (`0xCFF20` and around) saves ten of the 23, each under a key
+         * it names by an id - `usage` is `0x5A6`, `to` is `0x350`, `back` is `0x397`. The
+         * ids come from a table `reversing/saveTokens.py` rebuilds; the keys it gives for
+         * the pools BiceLib had already named all agree, which is what makes the three new
+         * ones worth trusting. The other thirteen are **not saved at all**, so nothing names them. What is known
+         * of each is below, and **four of them are never used in this build**: `+0x824`,
+         * `+0x848`, `+0x944` and `+0xA64` hold nothing, and the first three are written
+         * nowhere but the constructor and the two daily resets (`0xD34xx` and `0x1033xx`,
+         * which write a constant over every pool). The terms the daily figures spend on
+         * `+0x824`, `+0x848` and `+0xA64` therefore contribute nothing (**read live**).
+         *
+         * **`+0xA1C` and `+0xA40` are the unit supply draw** (**read**, `0x1BB950`): when a
+         * unit takes supply from a country, `+0xA1C` is credited if the unit stands in that
+         * country's own acting capital province, and `+0xA40` on the branch where the
+         * supplier is the unit's own country - the other branch credits `traded_away` and
+         * `traded_for` instead, which is where allied supply is recorded. `+0xA1C` holds
+         * supplies alone, `+0xA40` supplies and fuel.
+         *
+         * Three more are told apart by the goods they move in, each moving in some and never
+         * in others (**read live**):
+         *
+         * `+0x8D8` and `+0x8B4` are the **conversion pair**, what it consumes and what it
+         * makes: crude oil in and fuel out, and energy in and oil out where a country makes
+         * synthetic. The rate is per country, which is the FUEL_CONVERSION modifier (92) at
+         * work, and it fits their part in the daily figures - the input an expense, the
+         * output an income.
+         *
+         * `+0x968` is **what the country's industry needs**: metal, energy and rares in
+         * 1 : 2 : 0.5 without exception, which `usage` tracks to within a fraction of a
+         * percent.
+         *
+         * `+0x920` and `+0x8FC` are **the two sides of the puppet tribute**, where a subject
+         * hands its overlord everything it holds over a threshold. The subject's share is
+         * `+0x920`, held as a **negative**; the overlord's is `+0x8FC`, and the `overlord`
+         * tag at `+0xF38` on the subject names who receives it. Only subjects hold anything
+         * in the first and only overlords in the second, and the two match good for good.
+         * It is **not** `traded_away` and `traded_for`, which are far larger and cover
+         * ordinary trade.
+         *
+         * **One case does not balance**: a subject's tribute can leave its overlord's
+         * `+0x8FC` empty. Whether the goods are dropped, credited elsewhere, or only counted
+         * on arrival has not been established.
+         */
+        constexpr uintptr_t usage = 0x98C;          // saved as "usage"; an expense
+        constexpr uintptr_t sent_to = 0x9B0;        // saved as "to"; an expense
+        constexpr uintptr_t sent_back = 0x9D4;      // saved as "back"; an income
+        constexpr uintptr_t supply_drawn_at_capital = 0xA1C;
+        constexpr uintptr_t supply_drawn_own = 0xA40;
+        constexpr uintptr_t conversion_made = 0x8B4;      // an income
+        constexpr uintptr_t conversion_used = 0x8D8;      // an expense
+        constexpr uintptr_t resources_needed = 0x968;     // metal : energy : rares = 1 : 2 : 0.5
+        constexpr uintptr_t tribute_received = 0x8FC;    // from this country's subjects
+        constexpr uintptr_t tribute_sent = 0x920;        // to its overlord, held negative
+        // Nothing fills these. +0x824, +0x848 and +0x944 are written nowhere but the
+        // constructor and the daily resets; +0xA64 has writes but is empty in practice.
+        constexpr uintptr_t unused_pool_824 = 0x824;
+        constexpr uintptr_t unused_pool_848 = 0x848;
+        constexpr uintptr_t unused_pool_944 = 0x944;
+        constexpr uintptr_t unused_pool_A64 = 0xA64;
+
+        /**@brief the stockpile a government in exile holds itself, saved as just "pool" -
+                  see is_government_in_exile*/
+        constexpr uintptr_t pool_in_exile = 0x9F8;
+    }
+
+    /**
+     * **A day's figures for one good**, all four `CFixedPoint` through a hidden pointer and
+     * all taking a GoodsCategory (**read**).
+     *
+     *     0xF1830  GetDailyIncome    home_produced, convoyed_in, and the five income pools
+     *     0xF1950  GetDailyExpense   the three expense pools, convoyed_out, traded_away,
+     *                                less the two shortfall pools
+     *     0xF19A0  GetDailyNeed      the same seven, all added
+     *     0xF18A0  GetDailyBalance   income less expense, worked out inline
+     *
+     * **`convoyed_in` counts only for goods other than supplies and fuel** - categories 0
+     * and 1 are tested and skipped - so what convoys bring in of those two never shows in
+     * the income or the balance.
+     */
+    namespace GameFunction {
+        constexpr uintptr_t GetDailyIncome = 0xF1830;
+        constexpr uintptr_t GetDailyExpense = 0xF1950;
+        constexpr uintptr_t GetDailyNeed = 0xF19A0;
+        constexpr uintptr_t GetDailyBalance = 0xF18A0;
     }
 
     /**
@@ -158,4 +324,55 @@ namespace CCountry {
 
     /**@brief the country with this id, or 0*/
     uintptr_t findById(int id);
+}
+
+/**
+ * CDistributionSetting - one of the four sliders a country's leadership is split between.
+ *
+ * `0x28` bytes, from the allocation its builder makes (`0xC9FA5`). The four are made
+ * together and pushed onto CCountry::Offsets::leadership_distribution; each derives from
+ * this and only overrides how much it needs.
+ *
+ * Only valid for this build of hoi3_tfh.exe.
+ */
+namespace CDistributionSetting {
+    namespace VFTable {
+        constexpr uintptr_t CDistributeNCO = 0x11C22A4;         // module relative, RTTI
+        constexpr uintptr_t CDistributeDiplomacy = 0x11C22D8;
+        constexpr uintptr_t CDistributeEspionage = 0x11C230C;
+        constexpr uintptr_t CDistributeResearch = 0x11C2340;
+    }
+
+    constexpr uintptr_t SIZE = 0x28;
+
+    namespace Offsets {
+        /**
+         * **The share of leadership this slider is set to**, and the game's own
+         * `GetBasePercentage` - registered to Lua as `CDistributionSetting:GetPercentage`
+         * (**named**). Eight bytes: the compiler's RTTI calls the type
+         * `fpml::fixed_point<__int64,48,15>`, so 32768 is 1 and the four sum to it.
+         *
+         * The four always add to one (**read live**).
+         */
+        constexpr uintptr_t base_percentage = 0x8;
+
+        /**
+         * A second figure of the same kind, which the allowed research slots calculation
+         * multiplies the percentage by. The constructor sets it to 1 and it stays there
+         * (**read live**); **what would change it has not been established.**
+         */
+        constexpr uintptr_t factor = 0x10;
+
+        /**@brief the CCountry this belongs to; `GetNeeded` reads the country through it*/
+        constexpr uintptr_t country_ptr = 0x18;
+    }
+
+    /**
+     * Virtual slot 3, `GetNeeded`: how much of this the country is actually using.
+     * `CDistributeResearch`'s (`0x121450`) answers the country's
+     * `GetNumberOfCurrentResearch` (`CCountry +0x640`) shifted into the fixed point.
+     */
+    namespace Slots {
+        constexpr int GET_NEEDED = 3;
+    }
 }

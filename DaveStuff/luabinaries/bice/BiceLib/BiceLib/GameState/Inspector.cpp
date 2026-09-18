@@ -47,7 +47,7 @@ namespace {
             { "max_strength",        CSubUnitDefinition::Offsets::max_strength,        0.001f, "",     MASK_NAVY | MASK_AIR },
             { "max_organisation",    CSubUnitDefinition::Offsets::max_organisation,    0.001f, "",     MASK_ALL },
             { "morale",              CSubUnitDefinition::Offsets::morale,              0.1f,   "%",    MASK_ALL },
-            { "manpower",            CSubUnitDefinition::Offsets::manpower,            0.001f, "",     MASK_ALL },
+            { "manpower",            CSubUnitDefinition::Offsets::build_cost_manpower, 0.001f, "",     MASK_ALL },
             { "officers",            CSubUnitDefinition::Offsets::officers,            0.001f, "",     MASK_ALL },
             { "max_speed",           CSubUnitDefinition::Offsets::max_speed,           0.001f, " kph", MASK_ALL },
             { "supply_consumption",  CSubUnitDefinition::Offsets::supply_consumption,  0.001f, "",     MASK_ALL },
