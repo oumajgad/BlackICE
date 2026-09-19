@@ -22,6 +22,37 @@ namespace CMapProvince {
          */
         constexpr uintptr_t modifier = 0xFC;
 
+        /**
+         * **Everything the save writes out of a province**, named from the key
+         * `CProvince::SaveContents` (`0x95020`) writes each one under and `CProvince::LoadKey`
+         * (`0x95880`) reads it back into. The two agree with what was already here -
+         * `weather` at `+0x68`, `pool` at `+0x15C`, `current_producing` and `max_producing`,
+         * both throughput pointers and both drawn pointers all carry the name the save
+         * gives them.
+         */
+        constexpr uintptr_t strategic_resource = 0x18;    // saved as "strategic_resource"
+        constexpr uintptr_t last_convoy_attack = 0x1C;    // a date; only saved once it is set
+        constexpr uintptr_t out_of_supply_days = 0x20;    // only saved above zero
+        constexpr uintptr_t nationalism = 0x24;
+        constexpr uintptr_t flags = 0xC4;                 // a CPersistent of its own
+        constexpr uintptr_t history = 0xD8;               // a CPersistent; +0xEC is its count
+        constexpr uintptr_t history_count = 0xEC;
+
+        /**
+         * The province's active modifiers, a linked list: head here, tail at `+0x140` and
+         * the count at `+0x144`. One `modifier` key per node. Not the same thing as
+         * `modifier` at `+0xFC`, which is the CProvinceModifier held by value.
+         */
+        constexpr uintptr_t modifiers = 0x13C;
+        constexpr uintptr_t modifiers_last = 0x140;
+        constexpr uintptr_t modifiers_count = 0x144;
+
+        /**@brief the countries holding a core here, a linked list; one `core` key per node*/
+        constexpr uintptr_t cores = 0x344;
+
+        /**@brief a CCountryTag: who owns the underground here. Saved as `underground_owner`*/
+        constexpr uintptr_t underground_owner = 0x38C;
+
         /**@brief the buildings, a pointer to an array of CProvinceBuilding*, see there*/
         constexpr uintptr_t CProvinceBuilding_array_ptr = 0x310;
 
@@ -110,7 +141,7 @@ namespace CMapProvince {
          *                 which is where the offsets +0x60, +0x68 and +0x70 it reads
          *                 fall), two defines (CDefines + 0xAC, + 0x220 and
          *                 + 0x224), and the controller's modifiers; unlimited where the
-         *                 byte at `unlimited_supply_capacity` is set. It only reads.
+         *                 byte at `capital` is set. It only reads.
          *   supply need   `0x9E020`
          *   loss          `0x9DE80`, what is lost per step on the way
          *   fuel need     filled in the same loop, not traced
@@ -197,11 +228,13 @@ namespace CMapProvince {
         constexpr uintptr_t max_producing = 0x28C;
 
         /**
-         * A byte: while set, the game's supply capacity for the province (see the pools
-         * above) is unlimited. Set in most capitals and some other land provinces; what
-         * decides it is not known.
+         * A byte, and **the game saves it as `capital`** - `CProvince::SaveContents` writes
+         * the key and `CProvince::LoadKey` sets this from a `yes`. So this is a capital
+         * province, which is what decides it; BiceLib had it as
+         * `unlimited_supply_capacity`, named for its one known effect - while it is set,
+         * the game's supply capacity for the province (see the pools above) is unlimited.
          */
-        constexpr uintptr_t unlimited_supply_capacity = 0x2B0;
+        constexpr uintptr_t capital = 0x2B0;
 
         constexpr uintptr_t manpower = 0x320;
         constexpr uintptr_t leadership = 0x324;

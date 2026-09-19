@@ -88,7 +88,7 @@ public class ApplyBiceLibFindings extends GhidraScript {
 	private SymbolTable symbols;
 	private Address base;
 
-	private int named, labelled, signatures, fields, kept, failed, vftables;
+	private int named, labelled, signatures, fields, kept, failed, vftables, enums;
 	private final List<String> notes = new ArrayList<>();
 
 	@Override
@@ -171,8 +171,8 @@ public class ApplyBiceLibFindings extends GhidraScript {
 		}
 		println("");
 		println(String.format("functions named: %d, labels: %d, signatures: %d, struct fields: %d, " +
-			"virtual tables: %d, %s: %d, failed: %d", named, labelled, signatures, fields, vftables,
-			overwrite ? "replaced" : "left as you had them", kept, failed));
+			"enums: %d, virtual tables: %d, %s: %d, failed: %d", named, labelled, signatures, fields,
+			enums, vftables, overwrite ? "replaced" : "left as you had them", kept, failed));
 	}
 
 	// ---- functions --------------------------------------------------------------------
@@ -422,10 +422,27 @@ public class ApplyBiceLibFindings extends GhidraScript {
 
 	// ---- types -------------------------------------------------------------------------
 
+	/**
+	 * An enum has no room for a marker on each member, so the marker goes in its description
+	 * and the category it sits in says whose it is: one this script made lives under
+	 * /BiceLib and is its own to rewrite, which is what lets a rebuild add members to an
+	 * enum already in the program. One of yours, anywhere else, it leaves and says so.
+	 */
 	private void applyEnum(JsonObject item) {
 		String name = sanitizeType(item.get("name").getAsString());
 		DataType existing = findType(name);
-		if (existing != null && !(overwrite && existing instanceof ghidra.program.model.data.Enum)) {
+		boolean ours = existing instanceof ghidra.program.model.data.Enum
+			&& (CATEGORY.equals(existing.getCategoryPath())
+				|| String.valueOf(existing.getDescription()).contains(MARKER));
+		if (existing != null && !overwrite && !ours) {
+			kept++;
+			notes.add("enum " + name + " is yours, left as it is");
+			return;
+		}
+		if (existing != null && !(existing instanceof ghidra.program.model.data.Enum)) {
+			kept++;
+			notes.add("a " + existing.getClass().getSimpleName() + " already holds the name "
+				+ name + ", so the enum was not made");
 			return;
 		}
 		EnumDataType e = new EnumDataType(CATEGORY, name, item.has("size") ? item.get("size").getAsInt() : 4, dtm);
@@ -433,14 +450,17 @@ public class ApplyBiceLibFindings extends GhidraScript {
 			JsonObject value = v.getAsJsonObject();
 			e.add(value.get("name").getAsString(), value.get("value").getAsLong());
 		}
-		if (item.has("comment")) {
-			e.setDescription(item.get("comment").getAsString());
-		}
+		e.setDescription((item.has("comment") ? item.get("comment").getAsString() + "  " : "") + MARKER);
 		if (existing != null) {
-			existing.replaceWith(e);                         // overwriting: same enum, recorded values
+			if (existing.isEquivalent(e)) {
+				return;                                      // already what the findings hold
+			}
+			existing.replaceWith(e);
+			enums++;
 			return;
 		}
 		dtm.addDataType(e, DataTypeConflictHandler.KEEP_HANDLER);
+		enums++;
 	}
 
 	private void applyStruct(JsonObject item) {
@@ -474,6 +494,10 @@ public class ApplyBiceLibFindings extends GhidraScript {
 	 * that a call through the table reads as a name: `unit->vftable->GetAverageOrganisation()`
 	 * rather than `(**(*unit + 0x50))()`.
 	 *
+	 * An abstract base has no table in the image, since nothing of that class is ever made,
+	 * but calls on a pointer to it still go through one; such a table comes with no address
+	 * on the slots its descendants fill.
+	 *
 	 * A slot whose function is known takes a pointer to that function's own definition, which
 	 * is what gives the call its arguments and return type; the rest are plain pointers, named
 	 * for the slot they fill.
@@ -491,7 +515,10 @@ public class ApplyBiceLibFindings extends GhidraScript {
 		for (JsonElement e : slots) {
 			JsonObject slot = e.getAsJsonObject();
 			int index = slot.get("slot").getAsInt();
-			Address target = base.add(slot.get("rva").getAsLong());
+			// A table the compiler never wrote - an abstract base's - has no address for a
+			// slot the base leaves to its descendants.
+			Address target = slot.get("rva").isJsonNull() ? null
+				: base.add(slot.get("rva").getAsLong());
 			String fname = slot.get("name").getAsString();
 			String comment = string(slot, "comment");
 			boolean typed = slot.get("typed").getAsBoolean();
@@ -499,7 +526,7 @@ public class ApplyBiceLibFindings extends GhidraScript {
 			// Ghidra is the best one there is - as long as the body is this class's own or
 			// inherited, which is what "own" says. A folded body is shared with classes that
 			// have nothing to do with this one, and its name would not be about this slot.
-			if (!slot.get("named").getAsBoolean() && slot.get("own").getAsBoolean()) {
+			if (target != null && !slot.get("named").getAsBoolean() && slot.get("own").getAsBoolean()) {
 				Function f = getFunctionAt(target);
 				if (f != null && !PLACEHOLDER.matcher(f.getName()).matches()) {
 					fname = sanitize(f.getName());
@@ -515,7 +542,7 @@ public class ApplyBiceLibFindings extends GhidraScript {
 				type = slotType(name, fname, slot.getAsJsonObject("signature"));
 			}
 			else {
-				type = typed ? slotType(name, fname, target)
+				type = typed && target != null ? slotType(name, fname, target)
 					: new PointerDataType(VoidDataType.dataType, dtm);
 			}
 			placeField(table, index * 4, fname, type, comment, "a function pointer");

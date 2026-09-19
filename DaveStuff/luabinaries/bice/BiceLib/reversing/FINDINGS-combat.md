@@ -151,7 +151,7 @@ nothing at all about who lost.
 | +0x10 | attacker, a `CLandCombatant` |
 | +0x14 | defender, a `CLandCombatant` |
 | +0x18 | `CMapProvince` the battle is in |
-| +0x1c, +0x20 | 3 and 3 in one battle, 2 and 2 in another - **unconfirmed**, but they track each other and look like counts of something per side, not the day and duration `../../../../mem` calls them |
+| +0x1c, +0x20 | `day` and `duration`, **settled**: CCombat::SaveContents (`0x16E210`) writes them under those keys and CCombat::LoadKey reads them back. They track each other closely - 3 and 3 in one battle, 2 and 2 in another - which is what made them look like something else |
 | +0x24 | `CTerrain` |
 
 `CLandCombatant+0x3c` points back at its `CLandCombat`, which confirms the one offset
@@ -186,7 +186,7 @@ start when it was read, so it cannot be a day count either. Ignore it.
 | --- | --- |
 | `CCombat` vftable `0x11C4EE4` | `CLandCombat`. `CCombat`'s own are `0x11C4D14` and `0x11C4D64` |
 | `CCombatant` vftable `0x11C4DFC` | `CLandCombatant` |
-| `CCombat.day = 0x1C`, `duration = 0x20` | doubtful; see above |
+| `CCombat.day = 0x1C`, `duration = 0x20` | right after all - the save code names them |
 
 ## The history does not go back far
 

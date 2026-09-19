@@ -89,17 +89,29 @@ another that only ever moves in fuel are the two sides of the same conversion; o
 never moves in any country over eleven game days is not used at all.
 
 **`saveTokens.py`** - every id the save code uses and the key it stands for, out of the
-executable.
+running game.
 
 ```
-python saveTokens.py tokens.json
+python saveTokens.py tokens.json            # the running game if there is one
+python saveTokens.py tokens.json --compiled # only the ids built into the executable
+python saveTokens.py tokens.json --static   # the executable alone
 ```
 
 Save code never writes a key as a string: it writes an id (`mov ecx, 0x5A6`, then a call)
-and a table built at startup turns that into `usage`. **That is a way of naming a field
-the Lua API never exposes** - find where the class's writer saves it and read the id
-beside it. 2056 ids in this build; `CCountry`'s goods pools are the worked example, in
-CLASSES.md.
+and a table turns that into `usage`. **That is a way of naming a field the Lua API never
+exposes** - find the key in the class's `SaveContents` or `LoadKey` and read the id beside
+it. `CCountry`'s goods pools are the worked example, in CLASSES.md.
+
+The game builds that table on first use and it is a `std::vector<std::string>` indexed by
+the id, so the running game gives all **4134** of them. Without a game the script scans the
+registrations instead, which finds 2056 and agreed with the live table on every one but a
+single false positive.
+
+**`--compiled` is the one to re-emit**, into `ghidra/saveTokens.json`: the executable's own
+2149, without the resources, cultures and decorations the loaded mod registers on top, which
+are numbered in load order and so mean nothing outside that mod. `buildFindings.py` turns
+that file into the `SaveToken` enum, which is what makes a save writer decompile as
+`SaveWriteKey(usage, writer)`.
 
 **`vtable.py`** - classes' vtables side by side, out of the executable.
 
@@ -203,3 +215,30 @@ That code goes in a module of its own in the style of `BiceLib/Oob/`, reading th
 - A derived class carries its own vftable, so `CCombat` will not find `CLandCombat`.
   Look each up by its own name.
 - Offsets are only good for this build of `hoi3_tfh.exe`, like everything else here.
+
+## Where to look next
+
+Classes whose save and load paths would name the most, counted by `CPersistent`'s slots 2 and
+4: how many keys the class writes, and how many of the offsets those two paths touch have no
+name yet. The offset count is rough - the register tracking behind it leaks on big loaders -
+so read it as a guide, not a ranking.
+
+| class | keys | unnamed | why |
+| --- | --- | --- | --- |
+| `CGameState` | 33 | 36 | **the save's root**, and not one field named: date, scenario, player, seed, and the lists everything else hangs off |
+| `CUnit` | - | 21 | the one a mod touches most; BiceLib has 26 fields already, its save path touches 21 more |
+| `CAIStrategy` | 21 | 31 | the AI's own state - personality, land/air/naval percentages, armor_bias, threat, rival, protect |
+| `CSubUnit` | 10 | 21 | a brigade, nothing named: id, name, home, type, organisation, strength, highest, experience, builder, sunk_by |
+| `COrder` | 9 | 33 | completes a class BiceLib half knows - the type ids and the redeploy path are already in |
+| `CRebelFaction` | 9 | 33 | partisans, which the mod does a lot with |
+| `CWar`, `CWarGoal` | 9, 5 | 16, 37 | war state and goals |
+| `CMilitaryConstruction` | 6 | 18 | the production queue item, and the open question about a queued item's reserves rate |
+| `CActiveMission` | 5 | 14 | air and naval missions |
+| `CTheatre` | 5 | 8 | small and quick |
+| `CLeader` | 4 | 10 | on top of the 13 already named |
+| `CFaction`, `CLaw`, `CMinister`, `CTechnology` | few | 7-22 | loader only, cheap |
+
+**Worth skipping**: the hundred-odd `C*Command`, `CCgm*`, `C*Change`, `C*Effect` and
+`C*Trigger` classes are multiplayer command plumbing and event scripting internals, and the
+`C*Type` classes are interface definitions. They come top of a raw unnamed-offset count only
+because the tracking leaks through their long loaders.

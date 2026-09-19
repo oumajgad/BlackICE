@@ -211,11 +211,14 @@
   {
    "rva": "0x95020",
    "kind": "function",
-   "name": "CProvince::WriteSave",
+   "name": "CProvince::SaveContents",
    "signature": null,
-   "comment": "Province save writer (CProvince slot 2); writes each non-zero goods pool under its key.",
+   "comment": "Province save writer (CProvince slot 2); writes each non-zero goods pool under its key. Slot 2 of CPersistent, which the rest of the family calls SaveContents; BiceLib had it as WriteSave, kept as a label.",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CMapProvince.hpp:66"
+   "source": "BiceLib/GameClasses/CMapProvince.hpp:66",
+   "aliases": [
+    "CProvince::WriteSave"
+   ]
   },
   {
    "rva": "0x973E0",
@@ -419,11 +422,14 @@
   {
    "rva": "0xC5600",
    "kind": "function",
-   "name": "CConvoy::WriteSave",
+   "name": "CConvoy::SaveContents",
    "signature": null,
-   "comment": "Convoy save writer; the source of the convoy's saved field names.",
+   "comment": "Convoy save writer; the source of the convoy's saved field names. Slot 2 of CPersistent, which the rest of the family calls SaveContents; BiceLib had it as WriteSave, kept as a label.",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CConvoy.hpp:12"
+   "source": "BiceLib/GameClasses/CConvoy.hpp:12",
+   "aliases": [
+    "CConvoy::WriteSave"
+   ]
   },
   {
    "rva": "0xDCBD3",
@@ -1752,7 +1758,7 @@
    "rva": "0x267710",
    "kind": "function",
    "name": "MapMode_VictoryPoints_Recolour",
-   "signature": "void __thiscall MapMode_VictoryPoints_Recolour(CInGameIdler* this)",
+   "signature": "void __stdcall MapMode_VictoryPoints_Recolour(CInGameIdler* idler@ECX)",
    "comment": "Recolours the map for the VP map mode (mode 7); called with ecx pointing at the in game idler.",
    "confidence": "confirmed",
    "source": "BiceLib/Hooks/MapModeHooks.cpp:30"
@@ -2725,6 +2731,196 @@
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCurrentGameState.hpp:22; reversing/FINDINGS-autosave.md:32",
    "type": "CCurrentGameState*"
+  },
+  {
+   "rva": "0x5BB10",
+   "kind": "function",
+   "name": "CPersistent::Save",
+   "signature": "void __thiscall CPersistent::Save(CPersistent* this, CSaveWriter* writer)",
+   "comment": "Slot 1 of CPersistent, and the whole of an object's braces: it writes `{`, calls slot 2 for the class's own keys, then indents and writes `}`. The key before the `=` is the caller's to write, so `flags={ ... }` is SaveWriteKey(0x37F) followed by this. 739 of the 754 CPersistent tables hold this body. Depth lives in the writer and starts at -1, which is how the outermost object writes no braces at all.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:45"
+  },
+  {
+   "rva": "0x67C050",
+   "kind": "function",
+   "name": "CPersistent::Load",
+   "signature": "void __thiscall CPersistent::Load(CPersistent* this, CParseContext* parse)",
+   "comment": "Slot 3 of CPersistent: reads key and value pairs until `}` or the end of input, calling slot 4 with each key's token id, and calls slot 5 once the block is done. 738 of the 754 CPersistent tables hold this body. Its error path names the source file, persistent.cpp, which is the only place the executable says what this class is.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:48"
+  },
+  {
+   "rva": "0x67A1B0",
+   "kind": "function",
+   "name": "SaveWriteKey",
+   "signature": "void __stdcall SaveWriteKey(SaveToken token@ECX, CSaveWriter* writer@stack:4)",
+   "comment": "Writes `<key>=`: indents, writes the token's text, then token 1, which is `=`. The key is never a string in the code - `mov ecx, 0x5A6; call` is `usage=`. In a binary save the id goes out raw instead. Every CPersistent slot 2 is a run of these.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:51"
+  },
+  {
+   "rva": "0x61360",
+   "kind": "function",
+   "name": "SaveWriteToken",
+   "signature": "void __stdcall SaveWriteToken(SaveToken token@ECX, CSaveWriter* writer@stack:4)",
+   "comment": "Writes a token's own text as a value - `yes`, `{`, a newline - by looking the id up with TokenText and handing the result to SaveWriteValue.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:54"
+  },
+  {
+   "rva": "0x6797A0",
+   "kind": "function",
+   "name": "SaveWriteValue",
+   "signature": "void __stdcall SaveWriteValue(CToken* value@ECX, CSaveWriter* writer@stack:4)",
+   "comment": "Writes one token to the stream. In a text save it writes the text, converting where the type says to - 0x18F long_float is a fixed point of 15 fractional bits. In a binary save it writes the type as two bytes and the payload after it, and drops whitespace tokens altogether.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:57"
+  },
+  {
+   "rva": "0x679750",
+   "kind": "function",
+   "name": "SaveBeginBlock",
+   "signature": "void __stdcall SaveBeginBlock(CSaveWriter* writer@ESI)",
+   "comment": "Opens an object: a newline, the indent, `{`, a newline, and one more level of depth. Where the depth is still -1 this is the outermost object, and it writes nothing but the first level.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:66"
+  },
+  {
+   "rva": "0x67A110",
+   "kind": "function",
+   "name": "SaveWriteIndent",
+   "signature": "void __stdcall SaveWriteIndent(CSaveWriter* writer, int levels)",
+   "comment": "Writes token 0x11, a tab, that many times. Not called at all for a binary save.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:69"
+  },
+  {
+   "rva": "0x66A230",
+   "kind": "function",
+   "name": "TokenText",
+   "signature": "void* __stdcall TokenText(SaveToken token@EDI, void* result@ESI)",
+   "comment": "The key a token id stands for, as a std::string built into the caller's buffer: the id indexes the table at g_save_tokens_first. Builds that table on first use. This is the lookup that turns `mov ecx, 0x522` into carrier_size.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:60"
+  },
+  {
+   "rva": "0x66A050",
+   "kind": "function",
+   "name": "BuildTokenTable",
+   "signature": "void __cdecl BuildTokenTable(void)",
+   "comment": "Fills the id to key table once, out of the CToken array at g_save_tokens - 2138 of them, each carrying its own id - and a list of ones registered later, which is everything the loaded mod defines. The table only exists in a running game, which is why reversing/saveTokens.py reads it out of the process.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:63"
+  },
+  {
+   "rva": "0x67ACB0",
+   "kind": "function",
+   "name": "ParseReadKeyValue",
+   "signature": "int __stdcall ParseReadKeyValue(CParseContext* parse)",
+   "comment": "Reads one `key = value` into the parse state: the key into +0x20, the `=` into +0x124 and the value into +0x228. CPersistent::Load calls this before every slot 4.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:72"
+  },
+  {
+   "rva": "0x67AC60",
+   "kind": "function",
+   "name": "ParseSkipValue",
+   "signature": "bool __stdcall ParseSkipValue(CParseContext* parse@EDI) @AL",
+   "comment": "Steps over the value of a key the class does not handle, counting `{` and `}` so a whole block goes by. CCountry slot 4 calls it for the keys in its ignore list.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:75"
+  },
+  {
+   "rva": "0xCFCE0",
+   "kind": "function",
+   "name": "CCountry::SaveContents",
+   "signature": "void __thiscall CCountry::SaveContents(CCountry* this, CSaveWriter* writer)",
+   "comment": "Slot 2 of CPersistent for a country: the whole of what a country writes into a save, key by key. Reading it is how a field can be named from the key the game saves it under - the goods pools were told apart this way. Nothing else in the class writes a key.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:290"
+  },
+  {
+   "rva": "0xCCDA0",
+   "kind": "function",
+   "name": "CCountry::LoadKey",
+   "signature": "void __thiscall CCountry::LoadKey(CCountry* this, CParseContext* parse, SaveToken key)",
+   "comment": "Slot 4 of CPersistent for a country: one key from a save, dispatched on its token id through a tree of comparisons. The value is the CToken at parse +0x228, so a number is read straight out of parse +0x22C. The mirror of CCountry::SaveContents, and the other place a field's save key can be read off.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:291"
+  },
+  {
+   "rva": "0xD2500",
+   "kind": "function",
+   "name": "CCountry::AfterLoad",
+   "signature": "void __thiscall CCountry::AfterLoad(CCountry* this)",
+   "comment": "Slot 5 of CPersistent for a country: run once the country's block has been read, to fill in what the save did not carry - a country with nothing at +0xF20 is given the Generic one.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:292"
+  },
+  {
+   "rva": "0x17165B4",
+   "kind": "global",
+   "name": "g_save_tokens_first",
+   "signature": null,
+   "comment": "std::string* - the id to key table, 0x1C per entry, the index being the token id. Null until BuildTokenTable has run, so this is only readable in a running game.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:139"
+  },
+  {
+   "rva": "0x17165B8",
+   "kind": "global",
+   "name": "g_save_tokens_end",
+   "signature": null,
+   "comment": "One past the last entry of g_save_tokens_first; the two together give the token count.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:140"
+  },
+  {
+   "rva": "0x16857B8",
+   "kind": "global",
+   "name": "g_save_token_count",
+   "signature": null,
+   "comment": "How many tokens the table should hold, checked against its length on every lookup so the table is rebuilt if tokens were added.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:141"
+  },
+  {
+   "rva": "0x168CCA0",
+   "kind": "global",
+   "name": "g_save_tokens",
+   "signature": null,
+   "comment": "The tokens built into the executable, which BuildTokenTable copies into g_save_tokens_first by their own ids. The punctuation is not among them - the tokenizer holds ids 1 to 21 - and the loaded mod registers about as many again on top, which are heap objects numbered in load order.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CPersistent.hpp:143",
+   "type": "CToken[2138]"
+  },
+  {
+   "rva": "0xB8DC0",
+   "kind": "function",
+   "name": "AreaIsConnectedTo",
+   "signature": "bool __stdcall AreaIsConnectedTo(COwnerArea* area@EAX, COwnerArea* other@ECX) @AL",
+   "comment": "Whether two areas are joined overland: it walks the list at COwnerArea +0x34 looking for the other one. CCountry::NeedConvoyToTradeWith is the caller - two acting capitals on different continents need convoys unless this says yes. Both arguments arrive in registers.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:390"
+  },
+  {
+   "rva": "0xE21E0",
+   "kind": "function",
+   "name": "CCountry::RebuildNeighbours",
+   "signature": null,
+   "comment": "Fills a country's two neighbour sets and the two CCountryList they stand for. It clears both, walks OwnedProvinces marking the owner of every adjacent province that nobody is occupying, then walks ControlledProvinces marking the controller of every adjacent province owned by somebody else. It is what says which set means what.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountry.hpp:404"
+  },
+  {
+   "rva": "0x11BDF14",
+   "kind": "vftable",
+   "name": "CBuildingDeployment",
+   "signature": null,
+   "comment": "CBuildingDeployment vftable (RTTI). 0x82A80 builds one for a finished capital building with no province - the building goes at +0x38 - and 0xF56C0 appends it to the country's deployment queue at CCountry +0x688.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:83"
   }
  ],
  "structs": [
@@ -2864,6 +3060,20 @@
    "name": "CCountry",
    "fields": [
     {
+     "offset": "0x74",
+     "name": "ignored_keys",
+     "type": "SaveToken*",
+     "comment": "the first of a vector of save keys this country will not handle: CCountry::LoadKey walks it before anything else and hands the value to ParseSkipValue when the key is in it. Ends at +0x78",
+     "source": "BiceLib/GameClasses/CCountry.hpp:279"
+    },
+    {
+     "offset": "0x78",
+     "name": "ignored_keys_end",
+     "type": "SaveToken*",
+     "comment": "one past the last of ignored_keys",
+     "source": "BiceLib/GameClasses/CCountry.hpp:280"
+    },
+    {
      "offset": "0x95",
      "name": "use_own_pool",
      "type": "bool",
@@ -2871,11 +3081,46 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:61"
     },
     {
+     "offset": "0x98",
+     "name": "duration",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `duration`, which the writer loads straight out of here and the loader parses back into it",
+     "source": "BiceLib/GameClasses/CCountry.hpp:279"
+    },
+    {
+     "offset": "0x9C",
+     "name": "convoys_changed",
+     "type": "bool",
+     "comment": "set to 1 every time the `convoy` key appends to the Convoys list at +0xA0. What clears it, or reads it, has not been established",
+     "source": "BiceLib/GameClasses/CCountry.hpp:282"
+    },
+    {
      "offset": "0xA0",
      "name": "convoys",
      "type": "CList<CConvoy *>",
      "comment": "the country's convoys",
      "source": "BiceLib/GameClasses/CCountry.hpp:54"
+    },
+    {
+     "offset": "0xC4",
+     "name": "officers",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `officers`",
+     "source": "BiceLib/GameClasses/CCountry.hpp:280"
+    },
+    {
+     "offset": "0x158",
+     "name": "starting_manpower",
+     "type": "CFixedPoint",
+     "comment": "LoadKey copies Manpower into this the moment it has read the `manpower` key, so it is the country's manpower as its history file set it. Nothing else about it has been established",
+     "source": "BiceLib/GameClasses/CCountry.hpp:281"
+    },
+    {
+     "offset": "0x15C",
+     "name": "is_major",
+     "type": "bool",
+     "comment": "named from the key CCountry::LoadKey reads it from, `major`: the loader sets it from whether the value is `yes`",
+     "source": "BiceLib/GameClasses/CCountry.hpp:282"
     },
     {
      "offset": "0x180",
@@ -2892,11 +3137,25 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:47"
     },
     {
+     "offset": "0x1DC",
+     "name": "ai_hard_strategy",
+     "type": "CPersistent*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `ai_hard_strategy`, which it loads by calling slot 3 on the object here",
+     "source": "BiceLib/GameClasses/CCountry.hpp:283"
+    },
+    {
      "offset": "0x1E4",
      "name": "tag",
      "type": "CCountryTag",
      "comment": "the country's tag and id, as BiceLib reads them",
      "source": "BiceLib/GameClasses/CCountry.hpp:21"
+    },
+    {
+     "offset": "0x334",
+     "name": "ai_event_strategy",
+     "type": "CPersistent*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `ai_event_strategy`, loaded the same way as ai_hard_strategy",
+     "source": "BiceLib/GameClasses/CCountry.hpp:284"
     },
     {
      "offset": "0x5E4",
@@ -2955,6 +3214,27 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:58"
     },
     {
+     "offset": "0x688",
+     "name": "deployments",
+     "type": "void*",
+     "comment": "the head of what the country has finished and not yet placed: CUnitDeployment, and CBuildingDeployment for a capital building built without a province. Tail at +0x68C, count at +0x690. **Read live**: the USA had 50, all units",
+     "source": "BiceLib/GameClasses/CCountry.hpp:89"
+    },
+    {
+     "offset": "0x68C",
+     "name": "deployments_last",
+     "type": "void*",
+     "comment": "the tail of the deployment queue",
+     "source": "BiceLib/GameClasses/CCountry.hpp:90"
+    },
+    {
+     "offset": "0x690",
+     "name": "deployments_count",
+     "type": "int",
+     "comment": "how many are in the deployment queue",
+     "source": "BiceLib/GameClasses/CCountry.hpp:91"
+    },
+    {
      "offset": "0x698",
      "name": "category_levels",
      "type": "int*",
@@ -2967,6 +3247,48 @@
      "type": "CCountryTag*",
      "comment": "a country tag per technology category; where one is set the build cost discount takes the higher of that country's level and this one's. Every tag was empty in the game looked at",
      "source": "BiceLib/GameClasses/CCountry.hpp:88"
+    },
+    {
+     "offset": "0x6B8",
+     "name": "lendlease_distributions",
+     "type": "void*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `lendlease_distributions`, which shares its storage with `lendlease_effectiveness`. The first of a vector, ending at +0x6BC",
+     "source": "BiceLib/GameClasses/CCountry.hpp:285"
+    },
+    {
+     "offset": "0x6BC",
+     "name": "lendlease_distributions_end",
+     "type": "void*",
+     "comment": "one past the last of lendlease_distributions",
+     "source": "BiceLib/GameClasses/CCountry.hpp:286"
+    },
+    {
+     "offset": "0x6C8",
+     "name": "lend_lease_from_values",
+     "type": "void*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `lend_lease_from_values`. The first of a vector, ending at +0x6CC",
+     "source": "BiceLib/GameClasses/CCountry.hpp:287"
+    },
+    {
+     "offset": "0x6CC",
+     "name": "lend_lease_from_values_end",
+     "type": "void*",
+     "comment": "one past the last of lend_lease_from_values",
+     "source": "BiceLib/GameClasses/CCountry.hpp:288"
+    },
+    {
+     "offset": "0x6D8",
+     "name": "lend_lease_from_yesterday_values",
+     "type": "void*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `lend_lease_from_yesterday_values`. The first of a vector, ending at +0x6DC",
+     "source": "BiceLib/GameClasses/CCountry.hpp:289"
+    },
+    {
+     "offset": "0x6DC",
+     "name": "lend_lease_from_yesterday_values_end",
+     "type": "void*",
+     "comment": "one past the last of lend_lease_from_yesterday_values",
+     "source": "BiceLib/GameClasses/CCountry.hpp:290"
     },
     {
      "offset": "0x74C",
@@ -3053,6 +3375,13 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:244"
     },
     {
+     "offset": "0xA88",
+     "name": "diplo_influence",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `diplo_influence`. Neutrality sits at +0xA8C and EffectiveNeutrality at +0xA90, both of which the Lua API had already named the same way",
+     "source": "BiceLib/GameClasses/CCountry.hpp:291"
+    },
+    {
      "offset": "0xA98",
      "name": "reinforcement_cost",
      "type": "int",
@@ -3067,6 +3396,62 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:82"
     },
     {
+     "offset": "0xAAC",
+     "name": "last_election_at_start",
+     "type": "int",
+     "comment": "CCountry::LoadKey copies last_election here, but only while CCurrentGameState +0xD9C is clear, which is what tells a history file from a save. Nothing that reads it has been traced, and it is not saved",
+     "source": "BiceLib/GameClasses/CCountry.hpp:295"
+    },
+    {
+     "offset": "0xAB0",
+     "name": "last_election",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `last_election`; a date, written through the same formatter as the other three",
+     "source": "BiceLib/GameClasses/CCountry.hpp:292"
+    },
+    {
+     "offset": "0xAB4",
+     "name": "last_rebel_acceptance",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `last_rebel_acceptance`; a date",
+     "source": "BiceLib/GameClasses/CCountry.hpp:293"
+    },
+    {
+     "offset": "0xAB8",
+     "name": "remove_fow",
+     "type": "void*",
+     "comment": "named from the key CCountry::SaveContents writes it under, `remove_fow`. The head of a linked list, with the tail at +0xABC and the count at +0xAC0; the loader appends a node per entry",
+     "source": "BiceLib/GameClasses/CCountry.hpp:294"
+    },
+    {
+     "offset": "0xABC",
+     "name": "remove_fow_end",
+     "type": "void*",
+     "comment": "the tail of the remove_fow list",
+     "source": "BiceLib/GameClasses/CCountry.hpp:295"
+    },
+    {
+     "offset": "0xAC0",
+     "name": "remove_fow_count",
+     "type": "int",
+     "comment": "how many are in the remove_fow list",
+     "source": "BiceLib/GameClasses/CCountry.hpp:296"
+    },
+    {
+     "offset": "0xAC8",
+     "name": "last_surrender",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `last_surrender`; a date. isAtWar is the byte at +0xACC",
+     "source": "BiceLib/GameClasses/CCountry.hpp:297"
+    },
+    {
+     "offset": "0xAD0",
+     "name": "war_exhaustion",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `war_exhaustion`",
+     "source": "BiceLib/GameClasses/CCountry.hpp:298"
+    },
+    {
      "offset": "0xBAC",
      "name": "units",
      "type": "CUnitList",
@@ -3074,11 +3459,53 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:63"
     },
     {
+     "offset": "0xC30",
+     "name": "color",
+     "type": "CPersistent*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `color`, which it loads by calling slot 3 on the object here and then copies to +0xC50",
+     "source": "BiceLib/GameClasses/CCountry.hpp:299"
+    },
+    {
+     "offset": "0xC4C",
+     "name": "has_color",
+     "type": "bool",
+     "comment": "set the moment the `color` key has been read",
+     "source": "BiceLib/GameClasses/CCountry.hpp:300"
+    },
+    {
+     "offset": "0xCCC",
+     "name": "history",
+     "type": "CPersistent*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `history`, loaded by calling slot 3 on the object here",
+     "source": "BiceLib/GameClasses/CCountry.hpp:301"
+    },
+    {
      "offset": "0xD90",
      "name": "global_modifier",
      "type": "CModifier",
      "comment": "the country's modifier totals",
      "source": "BiceLib/GameClasses/CCountry.hpp:70"
+    },
+    {
+     "offset": "0xE00",
+     "name": "active_leaders",
+     "type": "void*",
+     "comment": "named from the key CCountry::SaveContents writes it under, `active_leaders`. The first of a vector, ending at +0xE04 with room to +0xE08",
+     "source": "BiceLib/GameClasses/CCountry.hpp:302"
+    },
+    {
+     "offset": "0xE04",
+     "name": "active_leaders_end",
+     "type": "void*",
+     "comment": "one past the last of active_leaders",
+     "source": "BiceLib/GameClasses/CCountry.hpp:303"
+    },
+    {
+     "offset": "0xE08",
+     "name": "active_leaders_capacity",
+     "type": "void*",
+     "comment": "the end of the room active_leaders has",
+     "source": "BiceLib/GameClasses/CCountry.hpp:304"
     },
     {
      "offset": "0xE10",
@@ -3100,6 +3527,153 @@
      "type": "int",
      "comment": "where the government sits now, as a province id; the game's GetActingCapital, registered to Lua under the name GetCapital",
      "source": "BiceLib/GameClasses/CCountry.hpp:174"
+    },
+    {
+     "offset": "0xE38",
+     "name": "active_mission",
+     "type": "CPersistent*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `active_mission`, loaded by calling slot 3 on the object here",
+     "source": "BiceLib/GameClasses/CCountry.hpp:305"
+    },
+    {
+     "offset": "0xF20",
+     "name": "graphical_culture",
+     "type": "void*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `graphical_culture`. CCountry::AfterLoad (0xD2500) puts the Generic one here when a country was loaded without it",
+     "source": "BiceLib/GameClasses/CCountry.hpp:306"
+    },
+    {
+     "offset": "0xF24",
+     "name": "declarewar",
+     "type": "void*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `declarewar`. The head of a linked list, with the tail at +0xF28 and the count at +0xF2C",
+     "source": "BiceLib/GameClasses/CCountry.hpp:307"
+    },
+    {
+     "offset": "0xF28",
+     "name": "declarewar_end",
+     "type": "void*",
+     "comment": "the tail of the declarewar list",
+     "source": "BiceLib/GameClasses/CCountry.hpp:308"
+    },
+    {
+     "offset": "0xF2C",
+     "name": "declarewar_count",
+     "type": "int",
+     "comment": "how many are in the declarewar list",
+     "source": "BiceLib/GameClasses/CCountry.hpp:309"
+    },
+    {
+     "offset": "0xF58",
+     "name": "neighbours",
+     "type": "char*",
+     "comment": "which countries are in the Neighbours list at +0xFD8: a byte per country, indexed by its id. RebuildNeighbours (0xE21E0) walks the provinces this country **owns** and marks the owner of each adjacent province whose owner and controller are the same - so not one somebody is occupying - and which is neither unowned nor this country. CCountry::IsNeighbour is this indexed by the tag's id",
+     "source": "BiceLib/GameClasses/CCountry.hpp:354"
+    },
+    {
+     "offset": "0xF5C",
+     "name": "neighbours_end",
+     "type": "char*",
+     "comment": "one past the last of neighbours",
+     "source": "BiceLib/GameClasses/CCountry.hpp:355"
+    },
+    {
+     "offset": "0xF60",
+     "name": "neighbours_capacity",
+     "type": "char*",
+     "comment": "the end of the room neighbours has",
+     "source": "BiceLib/GameClasses/CCountry.hpp:356"
+    },
+    {
+     "offset": "0xF68",
+     "name": "controller_neighbours",
+     "type": "char*",
+     "comment": "which countries are in the ControllerNeighbours list at +0xFE8, the same shape as neighbours. RebuildNeighbours walks the provinces this country **controls** and marks the controller of each adjacent province that is owned by somebody and neither owned nor controlled by this country. So occupation moves a country from one set to the other: Sweden has Denmark in neither, and Germany here, because Germany holds Denmark. CCountry::IsNonExileNeighbour reads this and then checks the other country is not a government in exile, which this list does not do for itself",
+     "source": "BiceLib/GameClasses/CCountry.hpp:357"
+    },
+    {
+     "offset": "0xF6C",
+     "name": "controller_neighbours_end",
+     "type": "char*",
+     "comment": "one past the last of controller_neighbours",
+     "source": "BiceLib/GameClasses/CCountry.hpp:358"
+    },
+    {
+     "offset": "0xF70",
+     "name": "controller_neighbours_capacity",
+     "type": "char*",
+     "comment": "the end of the room controller_neighbours has",
+     "source": "BiceLib/GameClasses/CCountry.hpp:359"
+    },
+    {
+     "offset": "0x1080",
+     "name": "land_battles_fought",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `land_battles_fought`; the three counters are written one after another and sit next to each other",
+     "source": "BiceLib/GameClasses/CCountry.hpp:310"
+    },
+    {
+     "offset": "0x1084",
+     "name": "air_battles_fought",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `air_battles_fought`",
+     "source": "BiceLib/GameClasses/CCountry.hpp:311"
+    },
+    {
+     "offset": "0x1088",
+     "name": "naval_battles_fought",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `naval_battles_fought`",
+     "source": "BiceLib/GameClasses/CCountry.hpp:312"
+    },
+    {
+     "offset": "0x10A4",
+     "name": "historical_friends",
+     "type": "void*",
+     "comment": "named from the key CCountry::LoadKey reads it from, `historical_friends`, which reads tags and looks each one up in the country database. The first of a vector, ending at +0x10A8",
+     "source": "BiceLib/GameClasses/CCountry.hpp:313"
+    },
+    {
+     "offset": "0x10A8",
+     "name": "historical_friends_end",
+     "type": "void*",
+     "comment": "one past the last of historical_friends",
+     "source": "BiceLib/GameClasses/CCountry.hpp:314"
+    },
+    {
+     "offset": "0x10AC",
+     "name": "historical_friends_capacity",
+     "type": "void*",
+     "comment": "the end of the room historical_friends has",
+     "source": "BiceLib/GameClasses/CCountry.hpp:315"
+    },
+    {
+     "offset": "0x113C",
+     "name": "election",
+     "type": "bool",
+     "comment": "named from the key CCountry::SaveContents writes it under, `election`, which writes whether this byte is zero",
+     "source": "BiceLib/GameClasses/CCountry.hpp:316"
+    },
+    {
+     "offset": "0x1160",
+     "name": "espionage",
+     "type": "void*",
+     "comment": "the first of an array of 0xF8 byte entries, one per country, ending at +0x1164. `spy_priority` writes entry+4, `covert_ops_points` entry+0xF4, and `spy_mission` walks nine values an entry",
+     "source": "BiceLib/GameClasses/CCountry.hpp:317"
+    },
+    {
+     "offset": "0x1164",
+     "name": "espionage_end",
+     "type": "void*",
+     "comment": "one past the last of espionage",
+     "source": "BiceLib/GameClasses/CCountry.hpp:318"
+    },
+    {
+     "offset": "0x11D4",
+     "name": "spiescaught",
+     "type": "int",
+     "comment": "named from the key CCountry::SaveContents writes it under, `spiescaught`. HighestThreat, which the Lua API names, is the next field at +0x11D8",
+     "source": "BiceLib/GameClasses/CCountry.hpp:319"
     }
    ],
    "vftable_rva": "0x11C1BA8"
@@ -3517,6 +4091,34 @@
    "name": "CMapProvince",
    "fields": [
     {
+     "offset": "0x18",
+     "name": "strategic_resource",
+     "type": "int",
+     "comment": "saved as `strategic_resource`, and the loader writes the value straight back here",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:33"
+    },
+    {
+     "offset": "0x1C",
+     "name": "last_convoy_attack",
+     "type": "int",
+     "comment": "a date, saved as `last_convoy_attack` once it is set",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:34"
+    },
+    {
+     "offset": "0x20",
+     "name": "out_of_supply_days",
+     "type": "int",
+     "comment": "saved as `out_of_supply_days`, and only above zero",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:35"
+    },
+    {
+     "offset": "0x24",
+     "name": "nationalism",
+     "type": "int",
+     "comment": "saved as `nationalism`, and only when it is not null",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:36"
+    },
+    {
      "offset": "0x34",
      "name": "victory_points",
      "type": "int",
@@ -3545,6 +4147,13 @@
      "source": "BiceLib/GameClasses/CMapProvince.hpp:34"
     },
     {
+     "offset": "0xC4",
+     "name": "flags",
+     "type": "CPersistent*",
+     "comment": "the province's flags, saved as `flags` by calling slot 1 on the object here",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:37"
+    },
+    {
      "offset": "0xD0",
      "name": "id",
      "type": "int",
@@ -3559,11 +4168,46 @@
      "source": "BiceLib/GameClasses/CMapProvince.hpp:21"
     },
     {
+     "offset": "0xD8",
+     "name": "history",
+     "type": "CPersistent*",
+     "comment": "the province's history, saved as `history` by calling slot 1 on the object here, and only when +0xEC is above zero",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:38"
+    },
+    {
+     "offset": "0xEC",
+     "name": "history_count",
+     "type": "int",
+     "comment": "how much history there is; the writer skips the `history` key when this is zero",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:39"
+    },
+    {
      "offset": "0xFC",
      "name": "modifier",
      "type": "CProvinceModifier",
      "comment": "the province's local modifiers",
      "source": "BiceLib/GameClasses/CMapProvince.hpp:23"
+    },
+    {
+     "offset": "0x13C",
+     "name": "modifiers",
+     "type": "void*",
+     "comment": "the head of the province's active modifier list, with the tail at +0x140 and the count at +0x144. The writer emits one `modifier` key per node. Not the CProvinceModifier held by value at +0xFC",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:46"
+    },
+    {
+     "offset": "0x140",
+     "name": "modifiers_last",
+     "type": "void*",
+     "comment": "the tail of the modifiers list",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:47"
+    },
+    {
+     "offset": "0x144",
+     "name": "modifiers_count",
+     "type": "int",
+     "comment": "how many are in the modifiers list",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:48"
     },
     {
      "offset": "0x15C",
@@ -3658,10 +4302,17 @@
     },
     {
      "offset": "0x2B0",
-     "name": "unlimited_supply_capacity",
-     "type": "uint8_t",
-     "comment": "while set the province's supply capacity is unlimited",
-     "source": "BiceLib/GameClasses/CMapProvince.hpp:185"
+     "name": "capital",
+     "type": "bool",
+     "comment": "the province is a capital - the game saves it as `capital` and the loader sets it from a `yes`. BiceLib had it as unlimited_supply_capacity, named for its one known effect: while it is set the province's supply capacity is unlimited",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:237"
+    },
+    {
+     "offset": "0x2B4",
+     "name": "area",
+     "type": "COwnerArea*",
+     "comment": "the area the province is in: **read live**, the object's own RTTI says COwnerArea, or CNullOwnerArea where nothing owns it, and 4999 provinces share 50 of them in blocks of neighbouring ids. CCountry::NeedConvoyToTradeWith wants both acting capitals to have one, and asks AreaIsConnectedTo about the two when the capitals are on different continents",
+     "source": "reversing/CLASSES.md:1"
     },
     {
      "offset": "0x2B8",
@@ -3669,6 +4320,13 @@
      "type": "CUnitList",
      "comment": "the units in the province, what CProvince::GetUnits answers",
      "source": "BiceLib/GameClasses/CMapProvince.hpp:214"
+    },
+    {
+     "offset": "0x2FC",
+     "name": "combat",
+     "type": "CCombat*",
+     "comment": "the combat being fought here, or null. CCombat::AfterLoad puts the combat here when the province has none yet; **read live**, 4 of 4999 provinces had one and every one of them was a CCombat subclass by its own RTTI",
+     "source": "BiceLib/GameClasses/CCombat.hpp:102"
     },
     {
      "offset": "0x310",
@@ -3706,6 +4364,13 @@
      "source": "BiceLib/GameClasses/CMapProvince.hpp:211"
     },
     {
+     "offset": "0x344",
+     "name": "cores",
+     "type": "void*",
+     "comment": "the head of the list of countries holding a core here; the writer emits one `core` key per node, out of the tag at the node itself",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:51"
+    },
+    {
      "offset": "0x370",
      "name": "intel_by_country_ptr",
      "type": "uint8_t*",
@@ -3718,6 +4383,13 @@
      "type": "int",
      "comment": "number of entries in the intel array",
      "source": "BiceLib/GameClasses/CMapProvince.hpp:55"
+    },
+    {
+     "offset": "0x38C",
+     "name": "underground_owner",
+     "type": "CCountryTag",
+     "comment": "who owns the underground here, saved as `underground_owner`: four characters and the id at +0x390, the shape of a CCountryTag",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:54"
     }
    ],
    "vftable_rva": "0x11BEBF8"
@@ -3874,18 +4546,32 @@
    "name": "CBuilding",
    "fields": [
     {
+     "offset": "0x8",
+     "name": "effect_size",
+     "type": "int",
+     "comment": "what the building does per level, x1000, and it is only ever one thing: whichever modifier key the definition carries. ic = 1 on industry is 1000, fort_level = 0.4 on land_fort is 400, and a building with no such key is zero. The modifier it belongs to is the definition at +0xC",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:66"
+    },
+    {
+     "offset": "0xC",
+     "name": "effect",
+     "type": "void*",
+     "comment": "the modifier definition effect_size belongs to; its name is the std::string at +4 - FORT_LEVEL, MODIFIER_IC, MODIFIER_LOCAL_AA, or NONE where the building has no modifier key at all",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:23"
+    },
+    {
      "offset": "0x1C",
      "name": "name",
      "type": "Hoi3CString",
      "comment": "building key, e.g. air_base",
-     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:49"
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:69"
     },
     {
      "offset": "0x38",
      "name": "displayName",
      "type": "Hoi3CString",
      "comment": "localised name shown by the game",
-     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:50"
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:70"
     },
     {
      "offset": "0x54",
@@ -3898,8 +4584,29 @@
      "offset": "0x58",
      "name": "cost",
      "type": "int",
-     "comment": "what it costs to build, x1000 - the `cost` key in common/buildings.txt, checked against the mod's file for three buildings",
-     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:62"
+     "comment": "buildings.txt `cost`, x1000: the mod's `cost = 4.5` reads 4500",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:126"
+    },
+    {
+     "offset": "0x5C",
+     "name": "time",
+     "type": "int",
+     "comment": "buildings.txt `time`, in days, and not scaled",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:106"
+    },
+    {
+     "offset": "0x60",
+     "name": "capital",
+     "type": "bool",
+     "comment": "buildings.txt's `capital = yes`. Two things read it: the production screen only looks for a build button named after a building that has it, and a construction that finishes with no province only does anything for a flagged building - it makes a CBuildingDeployment and puts it in the country's deployment queue, instead of raising the level in a province. **Read live**: set on 47 of 60 buildings, the exceptions being the forts, infra and BlackICE's request_* entries",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:124"
+    },
+    {
+     "offset": "0x61",
+     "name": "port",
+     "type": "bool",
+     "comment": "buildings.txt `port`",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:107"
     },
     {
      "offset": "0x68",
@@ -3909,11 +4616,116 @@
      "source": "BiceLib/Hooks/HookedPatches.cpp:92"
     },
     {
+     "offset": "0x6C",
+     "name": "on_completion",
+     "type": "void*",
+     "comment": "buildings.txt `on_completion`, a std::string: the practical or theory finishing one feeds",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:108"
+    },
+    {
      "offset": "0x88",
      "name": "technology_category_ptr",
      "type": "CTechnologyCategory*",
      "comment": "the category whose level discounts this building's cost",
-     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:71"
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:135"
+    },
+    {
+     "offset": "0x8C",
+     "name": "completion_size",
+     "type": "int",
+     "comment": "buildings.txt `completion_size`, x1000",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:109"
+    },
+    {
+     "offset": "0x90",
+     "name": "damage_factor",
+     "type": "int",
+     "comment": "buildings.txt `damage_factor`, x1000",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:110"
+    },
+    {
+     "offset": "0x94",
+     "name": "onmap",
+     "type": "bool",
+     "comment": "buildings.txt `onmap`",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:111"
+    },
+    {
+     "offset": "0x95",
+     "name": "visibility",
+     "type": "bool",
+     "comment": "buildings.txt `visibility`",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:112"
+    },
+    {
+     "offset": "0x96",
+     "name": "show_for_province",
+     "type": "bool",
+     "comment": "buildings.txt `show_for_province`; true unless the file says otherwise",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:113"
+    },
+    {
+     "offset": "0xAC",
+     "name": "prerequisites",
+     "type": "void*",
+     "comment": "buildings.txt `prerequisites`: a `{ ... }` block whose every word becomes a std::string on a list (tail at +0xb0, count at +0xb4). **Nothing reads it** - inside CBuilding's own code the only references are the branch that fills it and the two that empty it, and none of the 44 places that fetch the building database goes on to read it. Neither buildings.txt uses the key, and read live all 61 buildings have it empty",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:129"
+    },
+    {
+     "offset": "0xB0",
+     "name": "prerequisites_last",
+     "type": "void*",
+     "comment": "the tail of the prerequisites list, which nothing reads",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:130"
+    },
+    {
+     "offset": "0xB4",
+     "name": "prerequisites_count",
+     "type": "int",
+     "comment": "how many prerequisites there are; always zero in practice",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:131"
+    },
+    {
+     "offset": "0xCC",
+     "name": "not_if_x_exists",
+     "type": "void*",
+     "comment": "buildings.txt `not_if_x_exists`: a `{ ... }` block whose every word becomes a std::string on a list (tail at +0xd0, count at +0xd4). **Nothing reads it** - inside CBuilding's own code the only references are the branch that fills it and the two that empty it, and none of the 44 places that fetch the building database goes on to read it. Neither buildings.txt uses the key, and read live all 61 buildings have it empty",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:132"
+    },
+    {
+     "offset": "0xD0",
+     "name": "not_if_x_exists_last",
+     "type": "void*",
+     "comment": "the tail of the not_if_x_exists list, which nothing reads",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:133"
+    },
+    {
+     "offset": "0xD4",
+     "name": "not_if_x_exists_count",
+     "type": "int",
+     "comment": "how many are in the not_if_x_exists list; always zero",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:134"
+    },
+    {
+     "offset": "0xDC",
+     "name": "confirm",
+     "type": "bool",
+     "comment": "buildings.txt `confirm`",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:120"
+    },
+    {
+     "offset": "0xDD",
+     "name": "orientation",
+     "type": "bool",
+     "comment": "buildings.txt `orientation`",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:121"
+    },
+    {
+     "offset": "0xDE",
+     "name": "repair",
+     "type": "bool",
+     "comment": "buildings.txt `repair`; true unless the file says otherwise",
+     "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:122"
     }
    ]
   },
@@ -4924,17 +5736,17 @@
     },
     {
      "offset": "0x1C",
-     "name": "unknown_1c",
+     "name": "day",
      "type": "int",
-     "comment": "tracks +0x20; meaning unknown",
-     "source": "BiceLib/GameClasses/CCombat.hpp:67"
+     "comment": "saved as `day`: CCombat::SaveContents writes it under that key and CCombat::LoadKey reads it back. It and duration track each other closely in a running game",
+     "source": "BiceLib/GameClasses/CCombat.hpp:69"
     },
     {
      "offset": "0x20",
-     "name": "unknown_20",
+     "name": "duration",
      "type": "int",
-     "comment": "tracks +0x1C; meaning unknown",
-     "source": "BiceLib/GameClasses/CCombat.hpp:68"
+     "comment": "saved as `duration`, the key CCombat::SaveContents writes it under",
+     "source": "BiceLib/GameClasses/CCombat.hpp:70"
     },
     {
      "offset": "0x24",
@@ -4957,6 +5769,27 @@
    "name": "CCombatant",
    "fields": [
     {
+     "offset": "0x28",
+     "name": "sunk_ships",
+     "type": "void*",
+     "comment": "the head of the list of ships this side has lost, with the tail at +0x2C and the count at +0x30. CCombatant::SaveContents writes one `sunk_ship` key per node out of [node + 0xC]",
+     "source": "BiceLib/GameClasses/CCombat.hpp:114"
+    },
+    {
+     "offset": "0x2C",
+     "name": "sunk_ships_last",
+     "type": "void*",
+     "comment": "the tail of the sunk_ships list",
+     "source": "BiceLib/GameClasses/CCombat.hpp:115"
+    },
+    {
+     "offset": "0x30",
+     "name": "sunk_ships_count",
+     "type": "int",
+     "comment": "how many are in the sunk_ships list",
+     "source": "BiceLib/GameClasses/CCombat.hpp:116"
+    },
+    {
      "offset": "0x3C",
      "name": "combat",
      "type": "CCombat*",
@@ -4969,6 +5802,13 @@
      "type": "CList",
      "comment": "the units on this side (mem); a CList by the constructor",
      "source": "BiceLib/GameClasses/CCombat.hpp:106"
+    },
+    {
+     "offset": "0x50",
+     "name": "dice",
+     "type": "int",
+     "comment": "saved as `dice`: this side's roll",
+     "source": "BiceLib/GameClasses/CCombat.hpp:151"
     },
     {
      "offset": "0x54",
@@ -5025,6 +5865,13 @@
      "type": "int*",
      "comment": "damage short of destruction per type, begin",
      "source": "BiceLib/GameClasses/CCombat.hpp:148"
+    },
+    {
+     "offset": "0xAC",
+     "name": "tactic",
+     "type": "void*",
+     "comment": "the combat tactic in use, or null. Saved as `tactic` out of [tactic + 0x80], and the loader looks that id back up to get the pointer",
+     "source": "BiceLib/GameClasses/CCombat.hpp:169"
     }
    ],
    "vftable_rva": "0x11C4CA4"
@@ -6887,10 +7734,395 @@
      "source": "BiceLib/GameClasses/CDefines.hpp:61"
     }
    ]
+  },
+  {
+   "name": "CToken",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "type",
+     "type": "SaveToken",
+     "comment": "the token's kind, itself a token id: 1 `=`, 3 `{`, 4 `}`, 0x10 a newline, 0x11 a tab, 0x12 a space, 0x13 the end of input, 0x14 an integer, 0x18F long_float. In a binary save this is what gets written, as two bytes.",
+     "source": "BiceLib/GameClasses/CPersistent.hpp:76"
+    },
+    {
+     "offset": "0x4",
+     "name": "text",
+     "type": "char[256]",
+     "comment": "the token as text, which is what a text save carries",
+     "source": "BiceLib/GameClasses/CPersistent.hpp:77"
+    }
+   ],
+   "size": "0x104"
+  },
+  {
+   "name": "CSaveWriter",
+   "fields": [
+    {
+     "offset": "0x4",
+     "name": "depth",
+     "type": "int",
+     "comment": "how deep in braces the writer is, starting at -1 so the outermost object writes none. CPersistent::Save raises it and lowers it again.",
+     "source": "BiceLib/GameClasses/CPersistent.hpp:86"
+    },
+    {
+     "offset": "0x8",
+     "name": "stream",
+     "type": "void*",
+     "comment": "the stream written to; its vftable holds write-text at +0x14 and write-bytes at +0x20",
+     "source": "BiceLib/GameClasses/CPersistent.hpp:89"
+    },
+    {
+     "offset": "0xC",
+     "name": "binary",
+     "type": "bool",
+     "comment": "set for a binary save: token ids go out as two bytes each, and the indenting and newlines are skipped",
+     "source": "BiceLib/GameClasses/CPersistent.hpp:92"
+    }
+   ]
+  },
+  {
+   "name": "CParseContext",
+   "fields": [
+    {
+     "offset": "0x1C",
+     "name": "tokenizer",
+     "type": "void*",
+     "comment": "the tokenizer; its current CToken is at +0xC and a flag saying one is ready at +0x110",
+     "source": "BiceLib/GameClasses/CPersistent.hpp:103"
+    },
+    {
+     "offset": "0x20",
+     "name": "key",
+     "type": "CToken",
+     "comment": "the key just read. Its type is the token id CPersistent::Load hands slot 4, which is what a class switches on.",
+     "source": "BiceLib/GameClasses/CPersistent.hpp:104"
+    },
+    {
+     "offset": "0x124",
+     "name": "separator",
+     "type": "CToken",
+     "comment": "the `=` between the key and the value",
+     "source": "BiceLib/GameClasses/CPersistent.hpp:105"
+    },
+    {
+     "offset": "0x228",
+     "name": "value",
+     "type": "CToken",
+     "comment": "the value just read, which slot 4 converts out of its text",
+     "source": "BiceLib/GameClasses/CPersistent.hpp:106"
+    }
+   ]
+  },
+  {
+   "name": "CProvince",
+   "fields": [
+    {
+     "offset": "0x18",
+     "name": "strategic_resource",
+     "type": "int",
+     "comment": "saved as `strategic_resource`, and the loader writes the value straight back here",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:33"
+    },
+    {
+     "offset": "0x1C",
+     "name": "last_convoy_attack",
+     "type": "int",
+     "comment": "a date, saved as `last_convoy_attack` once it is set",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:34"
+    },
+    {
+     "offset": "0x20",
+     "name": "out_of_supply_days",
+     "type": "int",
+     "comment": "saved as `out_of_supply_days`, and only above zero",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:35"
+    },
+    {
+     "offset": "0x24",
+     "name": "nationalism",
+     "type": "int",
+     "comment": "saved as `nationalism`, and only when it is not null",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:36"
+    },
+    {
+     "offset": "0x34",
+     "name": "victory_points",
+     "type": "int",
+     "comment": "victory points. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:22"
+    },
+    {
+     "offset": "0x48",
+     "name": "supply_depot_id",
+     "type": "int",
+     "comment": "province id of the depot it draws from. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:30"
+    },
+    {
+     "offset": "0x4C",
+     "name": "supply_depot_distance",
+     "type": "int",
+     "comment": "steps to the depot; 100000 when cut off. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:31"
+    },
+    {
+     "offset": "0x68",
+     "name": "weather",
+     "type": "CWeather",
+     "comment": "embedded CWeather (save key weather). CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:34"
+    },
+    {
+     "offset": "0xC4",
+     "name": "flags",
+     "type": "CPersistent*",
+     "comment": "the province's flags, saved as `flags` by calling slot 1 on the object here",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:37"
+    },
+    {
+     "offset": "0xD0",
+     "name": "id",
+     "type": "int",
+     "comment": "province id. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:12"
+    },
+    {
+     "offset": "0xD4",
+     "name": "path_node_ptr",
+     "type": "CProvinceTemplate*",
+     "comment": "the province's template: edges to neighbours and terrain. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:21"
+    },
+    {
+     "offset": "0xD8",
+     "name": "history",
+     "type": "CPersistent*",
+     "comment": "the province's history, saved as `history` by calling slot 1 on the object here, and only when +0xEC is above zero",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:38"
+    },
+    {
+     "offset": "0xEC",
+     "name": "history_count",
+     "type": "int",
+     "comment": "how much history there is; the writer skips the `history` key when this is zero",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:39"
+    },
+    {
+     "offset": "0xFC",
+     "name": "modifier",
+     "type": "CProvinceModifier",
+     "comment": "the province's local modifiers. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:23"
+    },
+    {
+     "offset": "0x13C",
+     "name": "modifiers",
+     "type": "void*",
+     "comment": "the head of the province's active modifier list, with the tail at +0x140 and the count at +0x144. The writer emits one `modifier` key per node. Not the CProvinceModifier held by value at +0xFC",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:46"
+    },
+    {
+     "offset": "0x140",
+     "name": "modifiers_last",
+     "type": "void*",
+     "comment": "the tail of the modifiers list",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:47"
+    },
+    {
+     "offset": "0x144",
+     "name": "modifiers_count",
+     "type": "int",
+     "comment": "how many are in the modifiers list",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:48"
+    },
+    {
+     "offset": "0x15C",
+     "name": "pool",
+     "type": "CGoodsPool",
+     "comment": "goods in the province; the national stockpile in a capital (save key pool). CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:112"
+    },
+    {
+     "offset": "0x180",
+     "name": "last_pool",
+     "type": "CGoodsPool",
+     "comment": "pool as the last daily supply pass left it; not saved. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:120"
+    },
+    {
+     "offset": "0x1A4",
+     "name": "last_drawn_ptr",
+     "type": "CGoodsPool*",
+     "comment": "points at one of the drawn buffers (save key last_drawn). CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:143"
+    },
+    {
+     "offset": "0x1A8",
+     "name": "drawn_ptr",
+     "type": "CGoodsPool*",
+     "comment": "points at today's drawn buffer (save key drawn). CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:144"
+    },
+    {
+     "offset": "0x1AC",
+     "name": "drawn_buffer_a",
+     "type": "CGoodsPool",
+     "comment": "drawn double buffer A. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:145"
+    },
+    {
+     "offset": "0x1D0",
+     "name": "drawn_buffer_b",
+     "type": "CGoodsPool",
+     "comment": "drawn double buffer B. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:146"
+    },
+    {
+     "offset": "0x1F4",
+     "name": "last_throughput_ptr",
+     "type": "CGoodsPool*",
+     "comment": "points at one of the throughput buffers (save key last_throughput). CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:148"
+    },
+    {
+     "offset": "0x1F8",
+     "name": "throughput_ptr",
+     "type": "CGoodsPool*",
+     "comment": "points at today's throughput buffer (save key throughput). CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:149"
+    },
+    {
+     "offset": "0x1FC",
+     "name": "throughput_buffer_a",
+     "type": "CGoodsPool",
+     "comment": "throughput double buffer A. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:150"
+    },
+    {
+     "offset": "0x220",
+     "name": "throughput_buffer_b",
+     "type": "CGoodsPool",
+     "comment": "throughput double buffer B. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:151"
+    },
+    {
+     "offset": "0x244",
+     "name": "need",
+     "type": "CGoodsPool",
+     "comment": "supplies and fuel the units there need today; name inferred. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:159"
+    },
+    {
+     "offset": "0x268",
+     "name": "current_producing",
+     "type": "CGoodsPool",
+     "comment": "resources it yields now (save key current_producing). CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:172"
+    },
+    {
+     "offset": "0x28C",
+     "name": "max_producing",
+     "type": "CGoodsPool",
+     "comment": "resources it could yield (save key max_producing). CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:178"
+    },
+    {
+     "offset": "0x2B0",
+     "name": "capital",
+     "type": "bool",
+     "comment": "the province is a capital - the game saves it as `capital` and the loader sets it from a `yes`. BiceLib had it as unlimited_supply_capacity, named for its one known effect: while it is set the province's supply capacity is unlimited",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:237"
+    },
+    {
+     "offset": "0x2B4",
+     "name": "area",
+     "type": "COwnerArea*",
+     "comment": "the area the province is in: **read live**, the object's own RTTI says COwnerArea, or CNullOwnerArea where nothing owns it, and 4999 provinces share 50 of them in blocks of neighbouring ids. CCountry::NeedConvoyToTradeWith wants both acting capitals to have one, and asks AreaIsConnectedTo about the two when the capitals are on different continents",
+     "source": "BiceLib/GameClasses/CCountry.hpp:390"
+    },
+    {
+     "offset": "0x2B8",
+     "name": "units",
+     "type": "CUnitList",
+     "comment": "the units in the province, what CProvince::GetUnits answers. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:214"
+    },
+    {
+     "offset": "0x2FC",
+     "name": "combat",
+     "type": "CCombat*",
+     "comment": "the combat being fought here, or null. CCombat::AfterLoad puts the combat here when the province has none yet; **read live**, 4 of 4999 provinces had one and every one of them was a CCombat subclass by its own RTTI",
+     "source": "BiceLib/GameClasses/CCombat.hpp:102"
+    },
+    {
+     "offset": "0x310",
+     "name": "CProvinceBuilding_array_ptr",
+     "type": "CProvinceBuilding**",
+     "comment": "one CProvinceBuilding* per defined building, index 0 nobuilding. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:10"
+    },
+    {
+     "offset": "0x320",
+     "name": "manpower",
+     "type": "int",
+     "comment": "manpower. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:187"
+    },
+    {
+     "offset": "0x324",
+     "name": "leadership",
+     "type": "int",
+     "comment": "leadership. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:188"
+    },
+    {
+     "offset": "0x32C",
+     "name": "owner",
+     "type": "CCountryTag",
+     "comment": "the owner. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:210"
+    },
+    {
+     "offset": "0x334",
+     "name": "controller",
+     "type": "CCountryTag",
+     "comment": "the controller. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:211"
+    },
+    {
+     "offset": "0x344",
+     "name": "cores",
+     "type": "void*",
+     "comment": "the head of the list of countries holding a core here; the writer emits one `core` key per node, out of the tag at the node itself",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:51"
+    },
+    {
+     "offset": "0x370",
+     "name": "intel_by_country_ptr",
+     "type": "uint8_t*",
+     "comment": "one intel byte per country index (0 unseen, 3 partial, 9 own). CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:54"
+    },
+    {
+     "offset": "0x374",
+     "name": "intel_country_count",
+     "type": "int",
+     "comment": "number of entries in the intel array. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:55"
+    },
+    {
+     "offset": "0x38C",
+     "name": "underground_owner",
+     "type": "CCountryTag",
+     "comment": "who owns the underground here, saved as `underground_owner`: four characters and the id at +0x390, the shape of a CCountryTag",
+     "source": "BiceLib/GameClasses/CMapProvince.hpp:54"
+    }
+   ]
   }
  ],
  "vftable_slots": {
-  "_about": "Slot names BiceLib has established but that cannot be read off the slot's body - the linker folds identical bodies together, so the three unit predicates are one `mov al,1; ret` and one `xor al,al; ret` between them. Keyed by class, then slot.",
+  "_about": "Slot names BiceLib has established but that cannot be read off the slot's body - the linker folds identical bodies together, so the three unit predicates are one `mov al,1; ret` and one `xor al,al; ret` between them. Keyed by class, then slot. A record on a base class names that slot in every table below it, which is how CPersistent's six virtuals reach all 754 classes that derive from it; a name read off the slot's own body wins over one inherited this way.",
   "CUnit": {
    "15": "IsLand",
    "16": "IsNaval",
@@ -7025,6 +8257,28 @@
    "2": {
     "name": "IsValid",
     "signature": "bool __thiscall IsValid(CTechnologyFolder* this)"
+   }
+  },
+  "CPersistent": {
+   "1": {
+    "name": "Save",
+    "signature": "void __thiscall Save(CPersistent* this, CSaveWriter* writer)"
+   },
+   "2": {
+    "name": "SaveContents",
+    "signature": "void __thiscall SaveContents(CPersistent* this, CSaveWriter* writer)"
+   },
+   "3": {
+    "name": "Load",
+    "signature": "void __thiscall Load(CPersistent* this, CParseContext* parse)"
+   },
+   "4": {
+    "name": "LoadKey",
+    "signature": "void __thiscall LoadKey(CPersistent* this, CParseContext* parse, SaveToken key)"
+   },
+   "5": {
+    "name": "AfterLoad",
+    "signature": "void __thiscall AfterLoad(CPersistent* this)"
    }
   }
  }
