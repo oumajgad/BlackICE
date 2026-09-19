@@ -1,6 +1,7 @@
 #include <GameClasses/CSubUnitDefinition.hpp>
 #include <GameClasses/CUnit.hpp>
 #include <GameClasses/CTerrain.hpp>
+#include <GameClasses/CUnitAdjuster.hpp>
 #include <utils.hpp>
 #include <HoiDataStructures.hpp>
 
@@ -10,8 +11,9 @@ namespace CSubUnitDefinition {
 
         for (int i = 0; i < CTerrain::Terrains->size(); i++) {
             auto terrain = CTerrain::Terrains->at(i);
-            HDS::CUnitAdjuster* unitAdjuster = (HDS::CUnitAdjuster*) (unitAdjusterArrayPtr + (terrain->id * 24)); // 24 => Length of the CUnidAdjuster object
-            DEBUG_OUT(printf("unitAdjusterArrayPtr + (terrain->id * 24): %#010x\n", unitAdjusterArrayPtr + (terrain->id * 24)));
+            const uintptr_t adjusterPtr = unitAdjusterArrayPtr + (terrain->id * CUnitAdjuster::SIZE);
+            CUnitAdjuster::CUnitAdjuster* unitAdjuster = (CUnitAdjuster::CUnitAdjuster*) adjusterPtr;
+            DEBUG_OUT(printf("adjuster for terrain %i: %#010x\n", terrain->id, adjusterPtr));
             
             DEBUG_OUT(printf("terrain->name: %s\n", terrain->name.c_str()));
             DEBUG_OUT(printf("terrain->id: %i\n", terrain->id));
@@ -55,7 +57,7 @@ namespace CSubUnitDefinition {
 
         DEBUG_OUT(printf("subUnitDefinitionPtr: %#010x\n", subUnitDefinitionPtr));
 
-        pushTerrainStatsToStack(L, *(uintptr_t*)(subUnitDefinitionPtr + Offsets::CUnitAdjuster_ptr));
+        pushTerrainStatsToStack(L, *(uintptr_t*)(subUnitDefinitionPtr + Offsets::terrain_adjusters));
 
         // GENERAL
         int sub_unit_amount = *(uintptr_t*)(subUnitDefinitionPtr + Offsets::sub_unit_amount);

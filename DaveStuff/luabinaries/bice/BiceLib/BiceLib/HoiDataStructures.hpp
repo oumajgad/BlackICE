@@ -75,16 +75,6 @@ namespace HDS {
         int32_t maxLength = 0xF;
     };
 
-    struct CUnitAdjuster
-    {
-        int vftable;
-        int pad_1;
-        int attack;
-        int defence;
-        int movement;
-        int attrition;
-    };
-
     /**
     @brief reads a Hoi3CString at \p address, or "" if it is not one
 

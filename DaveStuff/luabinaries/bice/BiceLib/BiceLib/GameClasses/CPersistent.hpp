@@ -34,6 +34,29 @@
  * Only valid for this build of hoi3_tfh.exe.
  */
 namespace CPersistent {
+    namespace Offsets {
+        constexpr uintptr_t vftable = 0x0;
+
+        /**
+         * **A SaveToken every CPersistent carries, and nothing has been found that reads
+         * it.** The constructor sets it to `none` (397) and is inlined everywhere: of 714
+         * inlined constructors that write this word and then a vftable, **697 write
+         * `none`**. **Read live**: still `none` on every instance of CSubUnitDefinition,
+         * CTechnology, CRegiment, CCombat, CAIStrategy, CLeader, CTheatre and CConvoy in a
+         * running game.
+         *
+         * So it is *not* a class id, however much a constant at +4 looks like one - every
+         * class holds the same value. Nothing in the executable compares this word against
+         * `none`, and no class was seen setting it to another token, so what it was meant
+         * for is open. It is recorded here because a derived class's first own field starts
+         * at +0x8, not +0x4.
+         *
+         * On a class that reaches CPersistent at an offset - CUnit and CProvinceBuilding at
+         * +8, CGameSetup at +12 - this sits that much further in.
+         */
+        constexpr uintptr_t token = 0x4;
+    }
+
     /**@brief the six virtuals every CPersistent has, by slot*/
     namespace Slots {
         constexpr int DESTRUCTOR = 0;

@@ -55,6 +55,26 @@ namespace CUnit {
         constexpr uintptr_t movement_order_remaining_provinces_count = 0x140;
         constexpr uintptr_t in_game_idler_ptr = 0x160;
         constexpr uintptr_t name = 0x16C;      // a Hoi3CString
+        /**
+         * **What the save names on a unit.** `CUnit::SaveContents` (`0x1B8170`) and
+         * `CUnit::LoadKey` (`0x1B6E90`) are in CUnit's *second* virtual table, the one at
+         * object +8 where CPersistent sits, so **`this` in those two is `CUnit + 8`** and
+         * every offset they use wants 8 adding to it.
+         *
+         * They also confirm four names that were already here: `supplies` is
+         * `supply_received_percentage`, `fuel` is `fuel_received_percentage`, `dig_in` is
+         * `dig_in_level`, and `attack_delay` is `combat_cooldown`.
+         *
+         * **Read live** across 750 armies, navies and air units.
+         */
+        constexpr uintptr_t disengage = 0xA8;             // zero on all but a few
+        constexpr uintptr_t end_date = 0xD0;              // a date
+        constexpr uintptr_t movement_progress = 0x14C;    // x1000
+        constexpr uintptr_t retreat = 0x158;              // a yes or no
+        constexpr uintptr_t arrow_state = 0x18C;
+        constexpr uintptr_t plan = 0x1FC;                 // a CPersistent of its own
+        constexpr uintptr_t expeditionary_owner = 0x28C;  // a CCountryTag
+
         constexpr uintptr_t dig_in_level = 0x1C8;
         constexpr uintptr_t base_ca_bonus = 0x1CC;
         constexpr uintptr_t higher_oob_unit_ptr = 0x1E0;

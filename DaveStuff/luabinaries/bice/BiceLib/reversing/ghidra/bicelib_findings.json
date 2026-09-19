@@ -9660,6 +9660,30 @@
    ]
   },
   {
+   "name": "Hoi3CString",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "stringData",
+     "type": "char[16]",
+     "comment": "inline characters, or a pointer to them when longer than 15 (BiceLib/HoiDataStructures.hpp:40)"
+    },
+    {
+     "offset": 16,
+     "name": "length",
+     "type": "int",
+     "comment": "length (BiceLib/HoiDataStructures.hpp:41)"
+    },
+    {
+     "offset": 20,
+     "name": "maxLength",
+     "type": "int",
+     "comment": "capacity (BiceLib/HoiDataStructures.hpp:42)"
+    }
+   ]
+  },
+  {
    "name": "CList<CResearchBonus>",
    "size": 16,
    "fields": [
@@ -9696,8 +9720,8 @@
     {
      "offset": 524,
      "name": "Key",
-     "type": "CString",
-     "comment": "read by CTechnology::GetKey"
+     "type": "Hoi3CString",
+     "comment": "read by CTechnology::GetKey\nBiceLib: key (Hoi3CString) - the technology's key as the files spell it - `art_barrel_ammo`. A sub unit's save keys are technology keys, and its loader looks them up by this (BiceLib/GameClasses/CTechnology.hpp:34)"
     },
     {
      "offset": 580,
@@ -9734,6 +9758,18 @@
      "name": "canUpgrade",
      "type": "bool",
      "comment": "read by CTechnology::CanUpgrade"
+    },
+    {
+     "offset": 552,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "its name for the player - `Artillery Barrel and Ammunition` (BiceLib/GameClasses/CTechnology.hpp:38)"
+    },
+    {
+     "offset": 660,
+     "name": "effects",
+     "type": "void*",
+     "comment": "**what this technology does to each unit type**: a list whose nodes hold the effect at +0 and the next node at +8. Each effect is a whole CSubUnitDefinition holding only the changes, and its `Key` is the unit type it is for. **Read live**: 16044 effects across 1175 technologies in this mod (BiceLib/GameClasses/CTechnology.hpp:49)"
     }
    ]
   },
@@ -9836,30 +9872,6 @@
      "name": "build_time_by_unit_type",
      "type": "int*",
      "comment": "ints indexed by CSubUnitDefinition's index: what technology has done to that unit type's build time (BiceLib/GameClasses/CSubUnitDefinition.hpp:176)"
-    }
-   ]
-  },
-  {
-   "name": "Hoi3CString",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "stringData",
-     "type": "char[16]",
-     "comment": "inline characters, or a pointer to them when longer than 15 (BiceLib/HoiDataStructures.hpp:40)"
-    },
-    {
-     "offset": 16,
-     "name": "length",
-     "type": "int",
-     "comment": "length (BiceLib/HoiDataStructures.hpp:41)"
-    },
-    {
-     "offset": 20,
-     "name": "maxLength",
-     "type": "int",
-     "comment": "capacity (BiceLib/HoiDataStructures.hpp:42)"
     }
    ]
   },
@@ -10539,6 +10551,24 @@
      "comment": "a tag field holding the null tag ---; not the player tag (BiceLib/GameClasses/CCurrentGameState.hpp:103)"
     },
     {
+     "offset": 32,
+     "name": "sunk_ships",
+     "type": "void*",
+     "comment": "the head of the ships that have been sunk, saved as `sunk_ships`, with the tail at +0x24 and the count at +0x28. **Read live**: 1295 CShip in a 1942 game (BiceLib/GameClasses/CCurrentGameState.hpp:46)"
+    },
+    {
+     "offset": 36,
+     "name": "sunk_ships_last",
+     "type": "void*",
+     "comment": "the tail of the sunk_ships list (BiceLib/GameClasses/CCurrentGameState.hpp:47)"
+    },
+    {
+     "offset": 40,
+     "name": "sunk_ships_count",
+     "type": "int",
+     "comment": "how many ships have been sunk (BiceLib/GameClasses/CCurrentGameState.hpp:48)"
+    },
+    {
      "offset": 84,
      "name": "provinces_by_supply_order",
      "type": "CMapProvince**",
@@ -10549,6 +10579,48 @@
      "name": "tag_90",
      "type": "char[4]",
      "comment": "a tag field holding the null tag --- (BiceLib/GameClasses/CCurrentGameState.hpp:104)"
+    },
+    {
+     "offset": 156,
+     "name": "automate_sliders",
+     "type": "int",
+     "comment": "saved as `automate_sliders` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:46)"
+    },
+    {
+     "offset": 160,
+     "name": "automate_tech_sliders",
+     "type": "int",
+     "comment": "saved as `automate_tech_sliders` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:47)"
+    },
+    {
+     "offset": 164,
+     "name": "automate_trade",
+     "type": "bool",
+     "comment": "saved as `automate_trade` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:48)"
+    },
+    {
+     "offset": 232,
+     "name": "flags",
+     "type": "void*",
+     "comment": "the game's flags, saved as `flags`. **Read live**: a CFlags (BiceLib/GameClasses/CCurrentGameState.hpp:49)"
+    },
+    {
+     "offset": 2788,
+     "name": "ai_draws",
+     "type": "int",
+     "comment": "the loader sets it to zero when it has read `ai_seed` and seeded the generator, so it counts what has been drawn since (BiceLib/GameClasses/CCurrentGameState.hpp:50)"
+    },
+    {
+     "offset": 2796,
+     "name": "weather",
+     "type": "void*",
+     "comment": "the weather manager, saved as `weather`. **Read live**: a CWeatherManager by its own RTTI (BiceLib/GameClasses/CCurrentGameState.hpp:51)"
+    },
+    {
+     "offset": 2852,
+     "name": "diplomacy",
+     "type": "void*",
+     "comment": "saved as `diplomacy`. **Read live**: a CDiplomacy (BiceLib/GameClasses/CCurrentGameState.hpp:52)"
     },
     {
      "offset": 2908,
@@ -10605,10 +10677,148 @@
      "comment": "the in game idler (BiceLib/GameClasses/CCurrentGameState.hpp:47)"
     },
     {
+     "offset": 3072,
+     "name": "active_war",
+     "type": "void*",
+     "comment": "the head of the wars being fought, saved as `active_war`. **Read live**: 12 CWar in a 1942 game (BiceLib/GameClasses/CCurrentGameState.hpp:53)"
+    },
+    {
+     "offset": 3076,
+     "name": "active_war_last",
+     "type": "void*",
+     "comment": "the tail of the active_war list (BiceLib/GameClasses/CCurrentGameState.hpp:53)"
+    },
+    {
+     "offset": 3080,
+     "name": "active_war_count",
+     "type": "int",
+     "comment": "the count of the active_war list (BiceLib/GameClasses/CCurrentGameState.hpp:53)"
+    },
+    {
+     "offset": 3088,
+     "name": "undeclared_war",
+     "type": "void*",
+     "comment": "the head of the undeclared wars, saved as `undeclared_war`. **Read live**: CUndeclaredWar (BiceLib/GameClasses/CCurrentGameState.hpp:54)"
+    },
+    {
+     "offset": 3092,
+     "name": "undeclared_war_last",
+     "type": "void*",
+     "comment": "the tail of the undeclared_war list (BiceLib/GameClasses/CCurrentGameState.hpp:54)"
+    },
+    {
+     "offset": 3096,
+     "name": "undeclared_war_count",
+     "type": "int",
+     "comment": "the count of the undeclared_war list (BiceLib/GameClasses/CCurrentGameState.hpp:54)"
+    },
+    {
+     "offset": 3104,
+     "name": "previous_war",
+     "type": "void*",
+     "comment": "the head of the wars that are over, saved as `previous_war`. **Read live**: CWar (BiceLib/GameClasses/CCurrentGameState.hpp:55)"
+    },
+    {
+     "offset": 3108,
+     "name": "previous_war_last",
+     "type": "void*",
+     "comment": "the tail of the previous_war list (BiceLib/GameClasses/CCurrentGameState.hpp:55)"
+    },
+    {
+     "offset": 3112,
+     "name": "previous_war_count",
+     "type": "int",
+     "comment": "the count of the previous_war list (BiceLib/GameClasses/CCurrentGameState.hpp:55)"
+    },
+    {
      "offset": 3120,
      "name": "player",
      "type": "CCountryTag",
      "comment": "the country being played (BiceLib/GameClasses/CCurrentGameState.hpp:109)"
+    },
+    {
+     "offset": 3180,
+     "name": "income_statistics",
+     "type": "void*",
+     "comment": "saved as `income_statistics` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:56)"
+    },
+    {
+     "offset": 3184,
+     "name": "nation_size_statistics",
+     "type": "void*",
+     "comment": "saved as `nation_size_statistics` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:57)"
+    },
+    {
+     "offset": 3188,
+     "name": "inflation_statistics",
+     "type": "void*",
+     "comment": "saved as `inflation_statistics` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:58)"
+    },
+    {
+     "offset": 3196,
+     "name": "rebel_factions",
+     "type": "void*",
+     "comment": "the head of the rebel factions, saved as `rebel_faction`. **Read live**: CRebelFaction (BiceLib/GameClasses/CCurrentGameState.hpp:59)"
+    },
+    {
+     "offset": 3200,
+     "name": "rebel_factions_last",
+     "type": "void*",
+     "comment": "the tail of the rebel_factions list (BiceLib/GameClasses/CCurrentGameState.hpp:59)"
+    },
+    {
+     "offset": 3204,
+     "name": "rebel_factions_count",
+     "type": "int",
+     "comment": "the count of the rebel_factions list (BiceLib/GameClasses/CCurrentGameState.hpp:59)"
+    },
+    {
+     "offset": 3216,
+     "name": "gameplay_settings",
+     "type": "void*",
+     "comment": "saved as `gameplaysettings`. **Read live**: a CGamePlaySettings (BiceLib/GameClasses/CCurrentGameState.hpp:60)"
+    },
+    {
+     "offset": 3240,
+     "name": "selection_groups",
+     "type": "void*",
+     "comment": "saved as `selectionGroups` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:61)"
+    },
+    {
+     "offset": 3316,
+     "name": "skip_automation_keys",
+     "type": "bool",
+     "comment": "while set, CGameState::LoadKey ignores `automate_sliders`, `automate_tech_sliders`, `automate_trade` and `ai` - each of those four is applied only when this is clear. What sets it has not been established (BiceLib/GameClasses/CCurrentGameState.hpp:70)"
+    },
+    {
+     "offset": 3336,
+     "name": "victory_conditions",
+     "type": "void*",
+     "comment": "saved as `victory_conditions` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:62)"
+    },
+    {
+     "offset": 3340,
+     "name": "scenario",
+     "type": "void*",
+     "comment": "the scenario, or null in a loaded save; the writer writes the string at its +8 under the key `scenario` (BiceLib/GameClasses/CCurrentGameState.hpp:63)"
+    },
+    {
+     "offset": 3344,
+     "name": "scenario_name",
+     "type": "void*",
+     "comment": "a std::string: where the loader puts the `scenario` text before looking it up (BiceLib/GameClasses/CCurrentGameState.hpp:64)"
+    },
+    {
+     "offset": 3392,
+     "name": "selection_group_array",
+     "type": "void*",
+     "comment": "the selection groups, 0xA0 bytes an entry and indexed by the group's own id, which is what the `selectionGroups` loader writes into (BiceLib/GameClasses/CCurrentGameState.hpp:69)"
+    },
+    {
+     "offset": 3432,
+     "name": "strategic_warfare",
+     "type": "void*",
+     "comment": "saved as `strategic_warfare` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:65)"
     },
     {
      "offset": 3485,
@@ -11223,6 +11433,12 @@
      "comment": "bool (BiceLib/GameClasses/CUnit.hpp:26)"
     },
     {
+     "offset": 168,
+     "name": "disengage",
+     "type": "int",
+     "comment": "saved as `disengage`. **Read live**: zero on 696 of 750 units and a small number on the rest (BiceLib/GameClasses/CUnit.hpp:70)"
+    },
+    {
      "offset": 176,
      "name": "order_ptr",
      "type": "COrder*",
@@ -11235,22 +11451,34 @@
      "comment": "sub unit definition (BiceLib/GameClasses/CUnit.hpp:28)"
     },
     {
+     "offset": 208,
+     "name": "end_date",
+     "type": "int",
+     "comment": "a date, saved as `end_date`. **Read live**: the epoch value on most units, so unset (BiceLib/GameClasses/CUnit.hpp:71)"
+    },
+    {
      "offset": 212,
      "name": "combat_cooldown",
      "type": "int",
-     "comment": " (BiceLib/GameClasses/CUnit.hpp:29)"
+     "comment": "The save writes it under the key `attack_delay`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:29)"
     },
     {
      "offset": 252,
      "name": "supply_received_percentage",
      "type": "int",
-     "comment": " (BiceLib/GameClasses/CUnit.hpp:30)"
+     "comment": "The save writes it under the key `supplies`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:30)"
     },
     {
      "offset": 256,
      "name": "fuel_received_percentage",
      "type": "int",
-     "comment": " (BiceLib/GameClasses/CUnit.hpp:31)"
+     "comment": "The save writes it under the key `fuel`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:31)"
+    },
+    {
+     "offset": 276,
+     "name": "combats",
+     "type": "CList<CCombat*>",
+     "comment": "the combats this unit is in. The sub unit writer only writes `current_distance` where this has something in it. **Read live**: 168 of 2000 armies, and what the nodes hold is a CLandCombat (BiceLib/GameClasses/CRegiment.hpp:116)"
     },
     {
      "offset": 292,
@@ -11274,7 +11502,7 @@
      "offset": 308,
      "name": "supplied_from_province_ptr",
      "type": "CMapProvince*",
-     "comment": " (BiceLib/GameClasses/CUnit.hpp:36)"
+     "comment": "**CUnit::LoadKey reads it under the key `previous`**, putting a province here, which fits a previous province better than a supply source - and +0x138 and +0x13C are the movement pointers. The BiceLib name is left as it is; which is right has not been settled (BiceLib/GameClasses/CUnit.hpp:36)"
     },
     {
      "offset": 312,
@@ -11295,6 +11523,18 @@
      "comment": " (BiceLib/GameClasses/CUnit.hpp:39)"
     },
     {
+     "offset": 332,
+     "name": "movement_progress",
+     "type": "int",
+     "comment": "saved as `movement_progress`, x1000. **Read live**: zero or a part of the way (BiceLib/GameClasses/CUnit.hpp:72)"
+    },
+    {
+     "offset": 344,
+     "name": "retreat",
+     "type": "bool",
+     "comment": "saved as `retreat`. **Read live**: 11 of 750 units retreating (BiceLib/GameClasses/CUnit.hpp:73)"
+    },
+    {
      "offset": 352,
      "name": "in_game_idler_ptr",
      "type": "CInGameIdler*",
@@ -11307,10 +11547,16 @@
      "comment": "the unit's name (BiceLib/GameClasses/CUnit.hpp:43)"
     },
     {
+     "offset": 396,
+     "name": "arrow_state",
+     "type": "int",
+     "comment": "saved as `arrow_state`. **Read live**: zero on every unit (BiceLib/GameClasses/CUnit.hpp:74)"
+    },
+    {
      "offset": 456,
      "name": "dig_in_level",
      "type": "int",
-     "comment": " (BiceLib/GameClasses/CUnit.hpp:43)"
+     "comment": "The save writes it under the key `dig_in`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:43)"
     },
     {
      "offset": 460,
@@ -11329,6 +11575,54 @@
      "name": "oob_level",
      "type": "int",
      "comment": "0 theatre .. 4 division, 5 navy (BiceLib/GameClasses/CUnit.hpp:49)"
+    },
+    {
+     "offset": 508,
+     "name": "plan",
+     "type": "void*",
+     "comment": "the unit's plan, saved as `plan` by calling slot 1 on it. **Read live**: every unit has one (BiceLib/GameClasses/CUnit.hpp:75)"
+    },
+    {
+     "offset": 652,
+     "name": "expeditionary_owner",
+     "type": "CCountryTag",
+     "comment": "who the unit is on loan from, saved as `expeditionary_owner`. **Read live**: `---` on 740 of 750, and ITA, HUN, SLO and POL on the rest (BiceLib/GameClasses/CUnit.hpp:76)"
+    }
+   ]
+  },
+  {
+   "name": "CUnitAdjuster",
+   "size": 24,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "token",
+     "type": "SaveToken",
+     "comment": "a SaveToken CPersistent's constructor sets to `none`, and nothing has been found that reads it. Of 714 inlined constructors that write this word and then a vftable, 697 write `none`, and **read live** it is still `none` on every CSubUnitDefinition, CTechnology, CRegiment, CCombat, CAIStrategy, CLeader, CTheatre and CConvoy in a running game - so it is not a class id, whatever a constant at +4 looks like. See CPersistent.hpp (BiceLib/GameClasses/CUnitAdjuster.hpp:30)"
+    },
+    {
+     "offset": 8,
+     "name": "attack",
+     "type": "int",
+     "comment": "saved as `attack`, x1000, by the game's own CUnitAdjuster::LoadKey (BiceLib/GameClasses/CUnitAdjuster.hpp:32)"
+    },
+    {
+     "offset": 12,
+     "name": "defence",
+     "type": "int",
+     "comment": "saved as `defence`, x1000, by the game's own CUnitAdjuster::LoadKey (BiceLib/GameClasses/CUnitAdjuster.hpp:33)"
+    },
+    {
+     "offset": 16,
+     "name": "movement",
+     "type": "int",
+     "comment": "saved as `movement`, x1000, by the game's own CUnitAdjuster::LoadKey (BiceLib/GameClasses/CUnitAdjuster.hpp:34)"
+    },
+    {
+     "offset": 20,
+     "name": "attrition",
+     "type": "int",
+     "comment": "saved as `attrition`, x1000, by the game's own CUnitAdjuster::LoadKey. **Read live**: `urban` on an engineer_brigade is `{0.46, 0.4, -0.35, 1}`, which is that unit file's urban block to the digit (BiceLib/GameClasses/CUnitAdjuster.hpp:35)"
     }
    ]
   },
@@ -11500,9 +11794,51 @@
     },
     {
      "offset": 84,
-     "name": "CUnitAdjuster_ptr",
+     "name": "terrain_adjusters",
      "type": "CUnitAdjuster*",
-     "comment": "terrain modifiers, one 24 byte CUnitAdjuster per terrain id (BiceLib/GameClasses/CSubUnitDefinition.hpp:36)"
+     "comment": "the terrain modifiers, a vector of CUnitAdjuster **indexed by terrain id**, ending at +0x58. **Read live**: 45 entries on every definition, 28 of them non-zero on an engineer_brigade, and they are the unit file's terrain blocks exactly - 16 is `urban`, 17 `plains`, 18 `woods`, 32 `mountain` (BiceLib/GameClasses/CSubUnitDefinition.hpp:60)"
+    },
+    {
+     "offset": 88,
+     "name": "terrain_adjusters_end",
+     "type": "CUnitAdjuster*",
+     "comment": "one past the last terrain adjuster (BiceLib/GameClasses/CSubUnitDefinition.hpp:61)"
+    },
+    {
+     "offset": 100,
+     "name": "night",
+     "type": "CUnitAdjuster",
+     "comment": "the `night` block of the unit file, held by value. **Read live**: 0.7 attack on a commando_brigade, 0.5 on a paratrooper_brigade, -2.0 movement on a naval_corps_hq_brigade, each exactly what that file says (BiceLib/GameClasses/CSubUnitDefinition.hpp:71)"
+    },
+    {
+     "offset": 124,
+     "name": "fort",
+     "type": "CUnitAdjuster",
+     "comment": "the `fort` block. **Read live**: `{0.55, 0.55}` on an armor_brigade, `{0.9, 0.15}` on an engineer_brigade (BiceLib/GameClasses/CSubUnitDefinition.hpp:72)"
+    },
+    {
+     "offset": 148,
+     "name": "river",
+     "type": "CUnitAdjuster",
+     "comment": "the `river` block. **Read live**: `{-0.5, 0.35, -0.75}` on an armor_brigade, `{1.35, 0.1, 0.35}` on an engineer_brigade (BiceLib/GameClasses/CSubUnitDefinition.hpp:73)"
+    },
+    {
+     "offset": 172,
+     "name": "amphibious",
+     "type": "CUnitAdjuster",
+     "comment": "the `amphibious` block. **Read live**: `{-1.1, -1.1}` on an armor_brigade, `{-0.3, -0.5}` on an engineer_brigade (BiceLib/GameClasses/CSubUnitDefinition.hpp:74)"
+    },
+    {
+     "offset": 196,
+     "name": "other_adjusters",
+     "type": "CUnitAdjuster*",
+     "comment": "a second vector of CUnitAdjuster, ending at +0xC8 and walked by the same code as the terrain one. **Read live**: empty on every definition in this mod (BiceLib/GameClasses/CSubUnitDefinition.hpp:78)"
+    },
+    {
+     "offset": 200,
+     "name": "other_adjusters_end",
+     "type": "CUnitAdjuster*",
+     "comment": "one past the last of them (BiceLib/GameClasses/CSubUnitDefinition.hpp:79)"
     },
     {
      "offset": 240,
@@ -11791,6 +12127,114 @@
      "name": "WarTargets",
      "type": "CList<CCountryWarTargetValue*>",
      "comment": "read by CAIStrategy::GetWarTargets"
+    },
+    {
+     "offset": 20,
+     "name": "initialized",
+     "type": "bool",
+     "comment": "saved as `initialized` (BiceLib/GameClasses/CAIStrategy.hpp:29)"
+    },
+    {
+     "offset": 21,
+     "name": "is_static",
+     "type": "bool",
+     "comment": "saved as `static`, which is not a name C++ will take (BiceLib/GameClasses/CAIStrategy.hpp:30)"
+    },
+    {
+     "offset": 22,
+     "name": "consolidate",
+     "type": "bool",
+     "comment": "saved as `consolidate` (BiceLib/GameClasses/CAIStrategy.hpp:31)"
+    },
+    {
+     "offset": 28,
+     "name": "conquer_prov",
+     "type": "void*",
+     "comment": "the provinces the AI means to take: a list of sixteen bytes - first, last, count and a spare - with one `conquer_prov` key written per entry (BiceLib/GameClasses/CAIStrategy.hpp:37)"
+    },
+    {
+     "offset": 44,
+     "name": "defend_prov",
+     "type": "void*",
+     "comment": "the provinces it means to hold: a list of sixteen bytes - first, last, count and a spare - with one `defend_prov` key written per entry (BiceLib/GameClasses/CAIStrategy.hpp:38)"
+    },
+    {
+     "offset": 60,
+     "name": "threat",
+     "type": "void*",
+     "comment": "who it counts as a threat: twenty-eight bytes, a list of sixteen and then a count, 0x1FF and a pointer. **Read live**: Germany in a 1942 game had two (BiceLib/GameClasses/CAIStrategy.hpp:48)"
+    },
+    {
+     "offset": 88,
+     "name": "antagonize",
+     "type": "void*",
+     "comment": "who it will antagonise: twenty-eight bytes, a list of sixteen and then a count, 0x1FF and a pointer. **Read live**: Germany in a 1942 game had seven (BiceLib/GameClasses/CAIStrategy.hpp:49)"
+    },
+    {
+     "offset": 116,
+     "name": "befriend",
+     "type": "void*",
+     "comment": "who it will court: twenty-eight bytes, a list of sixteen and then a count, 0x1FF and a pointer. **Read live**: Germany in a 1942 game had seven (BiceLib/GameClasses/CAIStrategy.hpp:50)"
+    },
+    {
+     "offset": 144,
+     "name": "protect",
+     "type": "void*",
+     "comment": "who it will protect: twenty-eight bytes, a list of sixteen and then a count, 0x1FF and a pointer. **Read live**: Germany in a 1942 game had three (BiceLib/GameClasses/CAIStrategy.hpp:51)"
+    },
+    {
+     "offset": 172,
+     "name": "vassal",
+     "type": "void*",
+     "comment": "who it wants as a subject: twenty-eight bytes, a list of sixteen and then a count, 0x1FF and a pointer. **Read live**: Germany in a 1942 game had none (BiceLib/GameClasses/CAIStrategy.hpp:52)"
+    },
+    {
+     "offset": 200,
+     "name": "military_access",
+     "type": "void*",
+     "comment": "who it wants access through: twenty-eight bytes, a list of sixteen and then a count, 0x1FF and a pointer. **Read live**: Germany in a 1942 game had three (BiceLib/GameClasses/CAIStrategy.hpp:53)"
+    },
+    {
+     "offset": 248,
+     "name": "max_subunits",
+     "type": "int",
+     "comment": "how many brigades the AI is aiming for, x1000. **Read live**: 1250 for Germany (BiceLib/GameClasses/CAIStrategy.hpp:60)"
+    },
+    {
+     "offset": 252,
+     "name": "land_perc",
+     "type": "int",
+     "comment": "the share of production going to land, x1000; land, air and naval add to one. **Read live**: 837 for Germany (BiceLib/GameClasses/CAIStrategy.hpp:63)"
+    },
+    {
+     "offset": 256,
+     "name": "air_perc",
+     "type": "int",
+     "comment": "the share going to air, x1000. **Read live**: 50 for Germany (BiceLib/GameClasses/CAIStrategy.hpp:64)"
+    },
+    {
+     "offset": 260,
+     "name": "naval_perc",
+     "type": "int",
+     "comment": "the share going to navy, x1000. **Read live**: 113 for Germany (BiceLib/GameClasses/CAIStrategy.hpp:65)"
+    },
+    {
+     "offset": 264,
+     "name": "armor_bias",
+     "type": "int",
+     "comment": "how much of the land share goes to armour, x1000. **Read live**: 330 for Germany (BiceLib/GameClasses/CAIStrategy.hpp:68)"
+    },
+    {
+     "offset": 268,
+     "name": "building_prov",
+     "type": "void*",
+     "comment": "the provinces it means to build in: a list of sixteen bytes - first, last, count and a spare - with one `building_prov` key written per entry (BiceLib/GameClasses/CAIStrategy.hpp:39)"
+    },
+    {
+     "offset": 284,
+     "name": "rival",
+     "type": "void*",
+     "comment": "who it treats as a rival: twenty-eight bytes, a list of sixteen and then a count, 0x1FF and a pointer. **Read live**: Germany in a 1942 game had two (BiceLib/GameClasses/CAIStrategy.hpp:54)"
     }
    ]
   },
@@ -13859,86 +14303,296 @@
    ]
   },
   {
-   "name": "CRegiment",
+   "name": "CList<CSubUnitTechnology>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "LinkedListNode*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "LinkedListNode*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
+   "name": "CSubUnit",
    "size": 216,
    "fields": [
+    {
+     "offset": 8,
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the save's `id` pair, written after the id. **Read live**: 41 on what a scenario started with, 4713 on what the game has built since (BiceLib/GameClasses/CRegiment.hpp:31)"
+    },
+    {
+     "offset": 12,
+     "name": "id",
+     "type": "int",
+     "comment": "the regiment's id, the first half of the save's `id` pair (BiceLib/GameClasses/CRegiment.hpp:32)"
+    },
     {
      "offset": 48,
      "name": "strength_ceiling",
      "type": "int",
-     "comment": "set to the regiment's strength when it is built and afterwards only raised to it, never lowered; CUnit slot 24 totals it. Not what the regiment has left - that is +0x5C (BiceLib/GameClasses/CRegiment.hpp:37)"
+     "comment": "set to the regiment's strength when it is built and afterwards only raised to it, never lowered; CUnit slot 24 totals it. Not what the regiment has left - that is +0x5C. saved as `highest` (BiceLib/GameClasses/CRegiment.hpp:55)"
+    },
+    {
+     "offset": 52,
+     "name": "builder",
+     "type": "CCountryTag",
+     "comment": "who built it, saved as `builder`, and only where the id half of the tag is set (BiceLib/GameClasses/CRegiment.hpp:59)"
+    },
+    {
+     "offset": 60,
+     "name": "experience",
+     "type": "int",
+     "comment": "x1000, saved as `experience` (BiceLib/GameClasses/CRegiment.hpp:61)"
     },
     {
      "offset": 88,
      "name": "sub_unit_definition_ptr",
      "type": "CSubUnitDefinition*",
-     "comment": "this regiment's definition, with its country's tech applied (BiceLib/GameClasses/CRegiment.hpp:22)"
+     "comment": "this regiment's definition, with its country's tech applied. saved as `type`, by writing the definition's own name (BiceLib/GameClasses/CRegiment.hpp:64)"
     },
     {
      "offset": 92,
      "name": "strength",
      "type": "int",
-     "comment": "what the regiment has left, in the scale of its definition's max_strength; the supply consumption scales by it, CUnit slot 21 averages it (BiceLib/GameClasses/CRegiment.hpp:26)"
+     "comment": "what the regiment has left, in the scale of its definition's max_strength; the supply consumption scales by it, CUnit slot 21 averages it. saved as `strength` (BiceLib/GameClasses/CRegiment.hpp:44)"
     },
     {
      "offset": 96,
      "name": "organisation",
      "type": "int",
-     "comment": "organisation x1000 (BiceLib/GameClasses/CRegiment.hpp:20)"
+     "comment": "organisation x1000, saved as `organisation` (BiceLib/GameClasses/CRegiment.hpp:62)"
+    },
+    {
+     "offset": 100,
+     "name": "home",
+     "type": "CMapProvince*",
+     "comment": "where it was raised; the save writes that province's id under `home`, and the loader turns the id back into this pointer. **Read live**: a CMapProvince by its own RTTI, and null on a regiment that was never given one (BiceLib/GameClasses/CRegiment.hpp:68)"
     },
     {
      "offset": 104,
      "name": "name",
      "type": "Hoi3CString",
-     "comment": "historical regiment name (BiceLib/GameClasses/CRegiment.hpp:21)"
+     "comment": "historical regiment name, saved as `name` (BiceLib/GameClasses/CRegiment.hpp:63)"
+    },
+    {
+     "offset": 132,
+     "name": "technologies",
+     "type": "CList<CSubUnitTechnology>",
+     "comment": "**the technology levels this regiment was raised with**, one node per entry of its definition's `technologies`, built by CSubUnit::SetType. The save writes a line per node keyed by the technology's own name - `infantry_activation={5 0.000}` - and the loader looks the key up in the technology database, which is what says these are technologies. **Read live**: every node's first word is a CTechnology; none on a CWing, 9 to 52 on a regiment (BiceLib/GameClasses/CRegiment.hpp:85)"
+    },
+    {
+     "offset": 156,
+     "name": "sunk_by_type",
+     "type": "int",
+     "comment": "type half of the `sunk_by` object id (BiceLib/GameClasses/CRegiment.hpp:92)"
+    },
+    {
+     "offset": 160,
+     "name": "sunk_by_id",
+     "type": "int",
+     "comment": "what sank this ship, saved as `sunk_by`, and only where the pair is not the game's \"no object\" one. **Read live**: set on 1123 of 3736 ships (BiceLib/GameClasses/CRegiment.hpp:93)"
+    },
+    {
+     "offset": 164,
+     "name": "is_reserve",
+     "type": "bool",
+     "comment": "saved as `is_reserve`; CRegiment::GetMaxStrength scales the definition's max_strength by RESERVES_PENALTY_SIZE where it is set. **Read live**: 1184 of 4000 regiments (BiceLib/GameClasses/CRegiment.hpp:98)"
+    },
+    {
+     "offset": 165,
+     "name": "pride",
+     "type": "bool",
+     "comment": "the pride of the fleet, saved as `pride`. **Read live**: 31 of 3736 ships (BiceLib/GameClasses/CRegiment.hpp:102)"
     },
     {
      "offset": 176,
      "name": "unit_ptr",
      "type": "CUnit*",
-     "comment": "the unit this regiment belongs to; how the per regiment consumption functions reach the unit's order and the order of battle above it (BiceLib/GameClasses/CRegiment.hpp:47)"
+     "comment": "the CUnit this regiment belongs to; how the per regiment supply and fuel functions reach the unit's order. **Read live**: a CArmy on every regiment (BiceLib/GameClasses/CRegiment.hpp:108)"
+    },
+    {
+     "offset": 200,
+     "name": "current_distance",
+     "type": "int",
+     "comment": "how far the regiment is from the enemy in its battle, x1000, saved as `current_distance` - and only where the unit's `combats` list has something in it. **Read live**: zero on all 4000 regiments (BiceLib/GameClasses/CRegiment.hpp:116)"
     },
     {
      "offset": 204,
      "name": "extra_consumption",
      "type": "int",
-     "comment": "each point adds 1% to this regiment's supply and fuel consumption (times the constant 10 at 0x168873C, against a potency of 1000). A cached total the game recomputes at 0x1ABFC0 by summing the second dword of every element of the list at +0x84; what that list holds is not established, so the name says what the field does, not what it counts (BiceLib/GameClasses/CRegiment.hpp:60)"
+     "comment": "every point is another 1% of supply and fuel: the consumption functions add it x10 to a potency whose base is 1000. A cached total - the levels in `technologies` added up, which CSubUnit::ApplyTechnologies recomputes. **Read live**: it is that sum on all 10254 sub units in a running game (BiceLib/GameClasses/CRegiment.hpp:130)"
+    },
+    {
+     "offset": 208,
+     "name": "historical_model",
+     "type": "int",
+     "comment": "which historical model it was raised as, saved as `historical_model`; -1 where it is none. **Read live**: -1 on 3940 of 4000 (BiceLib/GameClasses/CRegiment.hpp:134)"
     }
    ]
   },
   {
-   "name": "CUnitAdjuster",
-   "size": null,
+   "name": "CRegiment",
+   "size": 216,
    "fields": [
     {
-     "offset": 4,
-     "name": "pad_1",
-     "type": "undefined4",
-     "comment": "unknown (BiceLib/HoiDataStructures.hpp:48)"
-    },
-    {
      "offset": 8,
-     "name": "attack",
+     "name": "id_type",
      "type": "int",
-     "comment": "terrain attack modifier (BiceLib/HoiDataStructures.hpp:49)"
+     "comment": "type half of the save's `id` pair, written after the id. **Read live**: 41 on what a scenario started with, 4713 on what the game has built since (BiceLib/GameClasses/CRegiment.hpp:31), inherited from CSubUnit"
     },
     {
      "offset": 12,
-     "name": "defence",
+     "name": "id",
      "type": "int",
-     "comment": "terrain defence modifier (BiceLib/HoiDataStructures.hpp:50)"
+     "comment": "the regiment's id, the first half of the save's `id` pair (BiceLib/GameClasses/CRegiment.hpp:32), inherited from CSubUnit"
     },
     {
-     "offset": 16,
-     "name": "movement",
+     "offset": 48,
+     "name": "strength_ceiling",
      "type": "int",
-     "comment": "terrain movement modifier (BiceLib/HoiDataStructures.hpp:51)"
+     "comment": "set to the regiment's strength when it is built and afterwards only raised to it, never lowered; CUnit slot 24 totals it. Not what the regiment has left - that is +0x5C. saved as `highest` (BiceLib/GameClasses/CRegiment.hpp:55), inherited from CSubUnit"
     },
     {
-     "offset": 20,
-     "name": "attrition",
+     "offset": 52,
+     "name": "builder",
+     "type": "CCountryTag",
+     "comment": "who built it, saved as `builder`, and only where the id half of the tag is set (BiceLib/GameClasses/CRegiment.hpp:59), inherited from CSubUnit"
+    },
+    {
+     "offset": 60,
+     "name": "experience",
      "type": "int",
-     "comment": "terrain attrition modifier (BiceLib/HoiDataStructures.hpp:52)"
+     "comment": "x1000, saved as `experience` (BiceLib/GameClasses/CRegiment.hpp:61), inherited from CSubUnit"
+    },
+    {
+     "offset": 88,
+     "name": "sub_unit_definition_ptr",
+     "type": "CSubUnitDefinition*",
+     "comment": "this regiment's definition, with its country's tech applied. saved as `type`, by writing the definition's own name (BiceLib/GameClasses/CRegiment.hpp:64), inherited from CSubUnit"
+    },
+    {
+     "offset": 92,
+     "name": "strength",
+     "type": "int",
+     "comment": "what the regiment has left, in the scale of its definition's max_strength; the supply consumption scales by it, CUnit slot 21 averages it. saved as `strength` (BiceLib/GameClasses/CRegiment.hpp:44), inherited from CSubUnit"
+    },
+    {
+     "offset": 96,
+     "name": "organisation",
+     "type": "int",
+     "comment": "organisation x1000, saved as `organisation` (BiceLib/GameClasses/CRegiment.hpp:62), inherited from CSubUnit"
+    },
+    {
+     "offset": 100,
+     "name": "home",
+     "type": "CMapProvince*",
+     "comment": "where it was raised; the save writes that province's id under `home`, and the loader turns the id back into this pointer. **Read live**: a CMapProvince by its own RTTI, and null on a regiment that was never given one (BiceLib/GameClasses/CRegiment.hpp:68), inherited from CSubUnit"
+    },
+    {
+     "offset": 104,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "historical regiment name, saved as `name` (BiceLib/GameClasses/CRegiment.hpp:63), inherited from CSubUnit"
+    },
+    {
+     "offset": 132,
+     "name": "technologies",
+     "type": "CList<CSubUnitTechnology>",
+     "comment": "**the technology levels this regiment was raised with**, one node per entry of its definition's `technologies`, built by CSubUnit::SetType. The save writes a line per node keyed by the technology's own name - `infantry_activation={5 0.000}` - and the loader looks the key up in the technology database, which is what says these are technologies. **Read live**: every node's first word is a CTechnology; none on a CWing, 9 to 52 on a regiment (BiceLib/GameClasses/CRegiment.hpp:85), inherited from CSubUnit"
+    },
+    {
+     "offset": 156,
+     "name": "sunk_by_type",
+     "type": "int",
+     "comment": "type half of the `sunk_by` object id (BiceLib/GameClasses/CRegiment.hpp:92), inherited from CSubUnit"
+    },
+    {
+     "offset": 160,
+     "name": "sunk_by_id",
+     "type": "int",
+     "comment": "what sank this ship, saved as `sunk_by`, and only where the pair is not the game's \"no object\" one. **Read live**: set on 1123 of 3736 ships (BiceLib/GameClasses/CRegiment.hpp:93), inherited from CSubUnit"
+    },
+    {
+     "offset": 164,
+     "name": "is_reserve",
+     "type": "bool",
+     "comment": "saved as `is_reserve`; CRegiment::GetMaxStrength scales the definition's max_strength by RESERVES_PENALTY_SIZE where it is set. **Read live**: 1184 of 4000 regiments (BiceLib/GameClasses/CRegiment.hpp:98), inherited from CSubUnit"
+    },
+    {
+     "offset": 165,
+     "name": "pride",
+     "type": "bool",
+     "comment": "the pride of the fleet, saved as `pride`. **Read live**: 31 of 3736 ships (BiceLib/GameClasses/CRegiment.hpp:102), inherited from CSubUnit"
+    },
+    {
+     "offset": 176,
+     "name": "unit_ptr",
+     "type": "CUnit*",
+     "comment": "the CUnit this regiment belongs to; how the per regiment supply and fuel functions reach the unit's order. **Read live**: a CArmy on every regiment (BiceLib/GameClasses/CRegiment.hpp:108), inherited from CSubUnit"
+    },
+    {
+     "offset": 200,
+     "name": "current_distance",
+     "type": "int",
+     "comment": "how far the regiment is from the enemy in its battle, x1000, saved as `current_distance` - and only where the unit's `combats` list has something in it. **Read live**: zero on all 4000 regiments (BiceLib/GameClasses/CRegiment.hpp:116), inherited from CSubUnit"
+    },
+    {
+     "offset": 204,
+     "name": "extra_consumption",
+     "type": "int",
+     "comment": "every point is another 1% of supply and fuel: the consumption functions add it x10 to a potency whose base is 1000. A cached total - the levels in `technologies` added up, which CSubUnit::ApplyTechnologies recomputes. **Read live**: it is that sum on all 10254 sub units in a running game (BiceLib/GameClasses/CRegiment.hpp:130), inherited from CSubUnit"
+    },
+    {
+     "offset": 208,
+     "name": "historical_model",
+     "type": "int",
+     "comment": "which historical model it was raised as, saved as `historical_model`; -1 where it is none. **Read live**: -1 on 3940 of 4000 (BiceLib/GameClasses/CRegiment.hpp:134), inherited from CSubUnit"
+    }
+   ]
+  },
+  {
+   "name": "CSubUnitTechnology",
+   "size": 12,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "technology",
+     "type": "CTechnology*",
+     "comment": "which technology this is the regiment's level of (BiceLib/GameClasses/CRegiment.hpp:85)"
+    },
+    {
+     "offset": 4,
+     "name": "level",
+     "type": "int",
+     "comment": "the level the regiment has of it; the save's first number, and what CSubUnit::ApplyTechnologies adds into extra_consumption (BiceLib/GameClasses/CRegiment.hpp:85)"
+    },
+    {
+     "offset": 8,
+     "name": "progress",
+     "type": "int",
+     "comment": "x1000, the save's second number. **Read live**: zero on land regiments and set on some ships (BiceLib/GameClasses/CRegiment.hpp:85)"
     }
    ]
   },
@@ -15671,98 +16325,1214 @@
    ]
   },
   {
-   "name": "CListNode<CConvoy*>",
+   "name": "CGameState",
    "size": null,
    "fields": [
     {
-     "offset": 0,
-     "name": "data",
-     "type": "CConvoy*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+     "offset": 24,
+     "name": "tag_18",
+     "type": "char[4]",
+     "comment": "a tag field holding the null tag ---; not the player tag. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:103)"
     },
     {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CConvoy*>*",
-     "comment": "the previous node"
+     "offset": 32,
+     "name": "sunk_ships",
+     "type": "void*",
+     "comment": "the head of the ships that have been sunk, saved as `sunk_ships`, with the tail at +0x24 and the count at +0x28. **Read live**: 1295 CShip in a 1942 game (BiceLib/GameClasses/CCurrentGameState.hpp:46)"
     },
     {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CConvoy*>*",
-     "comment": "the next node"
+     "offset": 36,
+     "name": "sunk_ships_last",
+     "type": "void*",
+     "comment": "the tail of the sunk_ships list (BiceLib/GameClasses/CCurrentGameState.hpp:47)"
+    },
+    {
+     "offset": 40,
+     "name": "sunk_ships_count",
+     "type": "int",
+     "comment": "how many ships have been sunk (BiceLib/GameClasses/CCurrentGameState.hpp:48)"
+    },
+    {
+     "offset": 84,
+     "name": "provinces_by_supply_order",
+     "type": "CMapProvince**",
+     "comment": "every province sorted by supply depot distance, farthest first. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:85)"
+    },
+    {
+     "offset": 144,
+     "name": "tag_90",
+     "type": "char[4]",
+     "comment": "a tag field holding the null tag ---. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:104)"
+    },
+    {
+     "offset": 156,
+     "name": "automate_sliders",
+     "type": "int",
+     "comment": "saved as `automate_sliders` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:46)"
+    },
+    {
+     "offset": 160,
+     "name": "automate_tech_sliders",
+     "type": "int",
+     "comment": "saved as `automate_tech_sliders` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:47)"
+    },
+    {
+     "offset": 164,
+     "name": "automate_trade",
+     "type": "bool",
+     "comment": "saved as `automate_trade` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:48)"
+    },
+    {
+     "offset": 232,
+     "name": "flags",
+     "type": "void*",
+     "comment": "the game's flags, saved as `flags`. **Read live**: a CFlags (BiceLib/GameClasses/CCurrentGameState.hpp:49)"
+    },
+    {
+     "offset": 2788,
+     "name": "ai_draws",
+     "type": "int",
+     "comment": "the loader sets it to zero when it has read `ai_seed` and seeded the generator, so it counts what has been drawn since (BiceLib/GameClasses/CCurrentGameState.hpp:50)"
+    },
+    {
+     "offset": 2796,
+     "name": "weather",
+     "type": "void*",
+     "comment": "the weather manager, saved as `weather`. **Read live**: a CWeatherManager by its own RTTI (BiceLib/GameClasses/CCurrentGameState.hpp:51)"
+    },
+    {
+     "offset": 2852,
+     "name": "diplomacy",
+     "type": "void*",
+     "comment": "saved as `diplomacy`. **Read live**: a CDiplomacy (BiceLib/GameClasses/CCurrentGameState.hpp:52)"
+    },
+    {
+     "offset": 2908,
+     "name": "combat_manager",
+     "type": "CCombatManager",
+     "comment": "embedded CCombatManager. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:30)"
+    },
+    {
+     "offset": 2956,
+     "name": "provinces_begin",
+     "type": "CMapProvince**",
+     "comment": "province vector begin, indexed by id; id 0 is a placeholder. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:73)"
+    },
+    {
+     "offset": 2960,
+     "name": "provinces_end",
+     "type": "CMapProvince**",
+     "comment": "province vector end. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:74)"
+    },
+    {
+     "offset": 2964,
+     "name": "provinces_capacity_end",
+     "type": "CMapProvince**",
+     "comment": "province vector allocation end. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:75)"
+    },
+    {
+     "offset": 3004,
+     "name": "countries_begin",
+     "type": "CCountry**",
+     "comment": "vector of every country, begin. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:57)"
+    },
+    {
+     "offset": 3008,
+     "name": "countries_end",
+     "type": "CCountry**",
+     "comment": "vector of every country, end. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:58)"
+    },
+    {
+     "offset": 3020,
+     "name": "played_countries_array",
+     "type": "undefined4",
+     "comment": "one entry per country id, non zero for a played country. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:92)"
+    },
+    {
+     "offset": 3036,
+     "name": "tick",
+     "type": "int",
+     "comment": "current tick: hours since 43800000. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:39)"
+    },
+    {
+     "offset": 3048,
+     "name": "in_game_screen",
+     "type": "CInGameIdler*",
+     "comment": "the in game idler. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:47)"
+    },
+    {
+     "offset": 3072,
+     "name": "active_war",
+     "type": "void*",
+     "comment": "the head of the wars being fought, saved as `active_war`. **Read live**: 12 CWar in a 1942 game (BiceLib/GameClasses/CCurrentGameState.hpp:53)"
+    },
+    {
+     "offset": 3076,
+     "name": "active_war_last",
+     "type": "void*",
+     "comment": "the tail of the active_war list (BiceLib/GameClasses/CCurrentGameState.hpp:53)"
+    },
+    {
+     "offset": 3080,
+     "name": "active_war_count",
+     "type": "int",
+     "comment": "the count of the active_war list (BiceLib/GameClasses/CCurrentGameState.hpp:53)"
+    },
+    {
+     "offset": 3088,
+     "name": "undeclared_war",
+     "type": "void*",
+     "comment": "the head of the undeclared wars, saved as `undeclared_war`. **Read live**: CUndeclaredWar (BiceLib/GameClasses/CCurrentGameState.hpp:54)"
+    },
+    {
+     "offset": 3092,
+     "name": "undeclared_war_last",
+     "type": "void*",
+     "comment": "the tail of the undeclared_war list (BiceLib/GameClasses/CCurrentGameState.hpp:54)"
+    },
+    {
+     "offset": 3096,
+     "name": "undeclared_war_count",
+     "type": "int",
+     "comment": "the count of the undeclared_war list (BiceLib/GameClasses/CCurrentGameState.hpp:54)"
+    },
+    {
+     "offset": 3104,
+     "name": "previous_war",
+     "type": "void*",
+     "comment": "the head of the wars that are over, saved as `previous_war`. **Read live**: CWar (BiceLib/GameClasses/CCurrentGameState.hpp:55)"
+    },
+    {
+     "offset": 3108,
+     "name": "previous_war_last",
+     "type": "void*",
+     "comment": "the tail of the previous_war list (BiceLib/GameClasses/CCurrentGameState.hpp:55)"
+    },
+    {
+     "offset": 3112,
+     "name": "previous_war_count",
+     "type": "int",
+     "comment": "the count of the previous_war list (BiceLib/GameClasses/CCurrentGameState.hpp:55)"
+    },
+    {
+     "offset": 3120,
+     "name": "player",
+     "type": "CCountryTag",
+     "comment": "the country being played. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:109)"
+    },
+    {
+     "offset": 3180,
+     "name": "income_statistics",
+     "type": "void*",
+     "comment": "saved as `income_statistics` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:56)"
+    },
+    {
+     "offset": 3184,
+     "name": "nation_size_statistics",
+     "type": "void*",
+     "comment": "saved as `nation_size_statistics` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:57)"
+    },
+    {
+     "offset": 3188,
+     "name": "inflation_statistics",
+     "type": "void*",
+     "comment": "saved as `inflation_statistics` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:58)"
+    },
+    {
+     "offset": 3196,
+     "name": "rebel_factions",
+     "type": "void*",
+     "comment": "the head of the rebel factions, saved as `rebel_faction`. **Read live**: CRebelFaction (BiceLib/GameClasses/CCurrentGameState.hpp:59)"
+    },
+    {
+     "offset": 3200,
+     "name": "rebel_factions_last",
+     "type": "void*",
+     "comment": "the tail of the rebel_factions list (BiceLib/GameClasses/CCurrentGameState.hpp:59)"
+    },
+    {
+     "offset": 3204,
+     "name": "rebel_factions_count",
+     "type": "int",
+     "comment": "the count of the rebel_factions list (BiceLib/GameClasses/CCurrentGameState.hpp:59)"
+    },
+    {
+     "offset": 3216,
+     "name": "gameplay_settings",
+     "type": "void*",
+     "comment": "saved as `gameplaysettings`. **Read live**: a CGamePlaySettings (BiceLib/GameClasses/CCurrentGameState.hpp:60)"
+    },
+    {
+     "offset": 3240,
+     "name": "selection_groups",
+     "type": "void*",
+     "comment": "saved as `selectionGroups` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:61)"
+    },
+    {
+     "offset": 3316,
+     "name": "skip_automation_keys",
+     "type": "bool",
+     "comment": "while set, CGameState::LoadKey ignores `automate_sliders`, `automate_tech_sliders`, `automate_trade` and `ai` - each of those four is applied only when this is clear. What sets it has not been established (BiceLib/GameClasses/CCurrentGameState.hpp:70)"
+    },
+    {
+     "offset": 3336,
+     "name": "victory_conditions",
+     "type": "void*",
+     "comment": "saved as `victory_conditions` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:62)"
+    },
+    {
+     "offset": 3340,
+     "name": "scenario",
+     "type": "void*",
+     "comment": "the scenario, or null in a loaded save; the writer writes the string at its +8 under the key `scenario` (BiceLib/GameClasses/CCurrentGameState.hpp:63)"
+    },
+    {
+     "offset": 3344,
+     "name": "scenario_name",
+     "type": "void*",
+     "comment": "a std::string: where the loader puts the `scenario` text before looking it up (BiceLib/GameClasses/CCurrentGameState.hpp:64)"
+    },
+    {
+     "offset": 3392,
+     "name": "selection_group_array",
+     "type": "void*",
+     "comment": "the selection groups, 0xA0 bytes an entry and indexed by the group's own id, which is what the `selectionGroups` loader writes into (BiceLib/GameClasses/CCurrentGameState.hpp:69)"
+    },
+    {
+     "offset": 3432,
+     "name": "strategic_warfare",
+     "type": "void*",
+     "comment": "saved as `strategic_warfare` by CGameState::SaveContents, and the loader puts it back here (BiceLib/GameClasses/CCurrentGameState.hpp:65)"
+    },
+    {
+     "offset": 3485,
+     "name": "autosave_blocked",
+     "type": "unsigned char",
+     "comment": "must be zero before the game considers an autosave; meaning not established. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (BiceLib/GameClasses/CCurrentGameState.hpp:115)"
+    },
+    {
+     "offset": 2876,
+     "name": "unknown_b3c",
+     "type": "undefined4",
+     "comment": "start of an embedded object with vftable 0x11C9BEC. CCurrentGameState derives from CGameState and adds nothing at this offset, so the field is the base's; CGameState's own save and load read it. Both carry it because Ghidra has no inheritance between the two structures (reversing/CLASSES.md:46)"
     }
    ]
   },
   {
-   "name": "CListNode<CTheatre*>",
-   "size": null,
+   "name": "CWing",
+   "size": 216,
    "fields": [
     {
-     "offset": 0,
-     "name": "data",
-     "type": "CTheatre*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CTheatre*>*",
-     "comment": "the previous node"
-    },
-    {
      "offset": 8,
-     "name": "next",
-     "type": "CListNode<CTheatre*>*",
-     "comment": "the next node"
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the save's `id` pair, written after the id. **Read live**: 41 on what a scenario started with, 4713 on what the game has built since (BiceLib/GameClasses/CRegiment.hpp:31), inherited from CSubUnit"
+    },
+    {
+     "offset": 12,
+     "name": "id",
+     "type": "int",
+     "comment": "the regiment's id, the first half of the save's `id` pair (BiceLib/GameClasses/CRegiment.hpp:32), inherited from CSubUnit"
+    },
+    {
+     "offset": 48,
+     "name": "strength_ceiling",
+     "type": "int",
+     "comment": "set to the regiment's strength when it is built and afterwards only raised to it, never lowered; CUnit slot 24 totals it. Not what the regiment has left - that is +0x5C. saved as `highest` (BiceLib/GameClasses/CRegiment.hpp:55), inherited from CSubUnit"
+    },
+    {
+     "offset": 52,
+     "name": "builder",
+     "type": "CCountryTag",
+     "comment": "who built it, saved as `builder`, and only where the id half of the tag is set (BiceLib/GameClasses/CRegiment.hpp:59), inherited from CSubUnit"
+    },
+    {
+     "offset": 60,
+     "name": "experience",
+     "type": "int",
+     "comment": "x1000, saved as `experience` (BiceLib/GameClasses/CRegiment.hpp:61), inherited from CSubUnit"
+    },
+    {
+     "offset": 88,
+     "name": "sub_unit_definition_ptr",
+     "type": "CSubUnitDefinition*",
+     "comment": "this regiment's definition, with its country's tech applied. saved as `type`, by writing the definition's own name (BiceLib/GameClasses/CRegiment.hpp:64), inherited from CSubUnit"
+    },
+    {
+     "offset": 92,
+     "name": "strength",
+     "type": "int",
+     "comment": "what the regiment has left, in the scale of its definition's max_strength; the supply consumption scales by it, CUnit slot 21 averages it. saved as `strength` (BiceLib/GameClasses/CRegiment.hpp:44), inherited from CSubUnit"
+    },
+    {
+     "offset": 96,
+     "name": "organisation",
+     "type": "int",
+     "comment": "organisation x1000, saved as `organisation` (BiceLib/GameClasses/CRegiment.hpp:62), inherited from CSubUnit"
+    },
+    {
+     "offset": 100,
+     "name": "home",
+     "type": "CMapProvince*",
+     "comment": "where it was raised; the save writes that province's id under `home`, and the loader turns the id back into this pointer. **Read live**: a CMapProvince by its own RTTI, and null on a regiment that was never given one (BiceLib/GameClasses/CRegiment.hpp:68), inherited from CSubUnit"
+    },
+    {
+     "offset": 104,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "historical regiment name, saved as `name` (BiceLib/GameClasses/CRegiment.hpp:63), inherited from CSubUnit"
+    },
+    {
+     "offset": 132,
+     "name": "technologies",
+     "type": "CList<CSubUnitTechnology>",
+     "comment": "**the technology levels this regiment was raised with**, one node per entry of its definition's `technologies`, built by CSubUnit::SetType. The save writes a line per node keyed by the technology's own name - `infantry_activation={5 0.000}` - and the loader looks the key up in the technology database, which is what says these are technologies. **Read live**: every node's first word is a CTechnology; none on a CWing, 9 to 52 on a regiment (BiceLib/GameClasses/CRegiment.hpp:85), inherited from CSubUnit"
+    },
+    {
+     "offset": 156,
+     "name": "sunk_by_type",
+     "type": "int",
+     "comment": "type half of the `sunk_by` object id (BiceLib/GameClasses/CRegiment.hpp:92), inherited from CSubUnit"
+    },
+    {
+     "offset": 160,
+     "name": "sunk_by_id",
+     "type": "int",
+     "comment": "what sank this ship, saved as `sunk_by`, and only where the pair is not the game's \"no object\" one. **Read live**: set on 1123 of 3736 ships (BiceLib/GameClasses/CRegiment.hpp:93), inherited from CSubUnit"
+    },
+    {
+     "offset": 164,
+     "name": "is_reserve",
+     "type": "bool",
+     "comment": "saved as `is_reserve`; CRegiment::GetMaxStrength scales the definition's max_strength by RESERVES_PENALTY_SIZE where it is set. **Read live**: 1184 of 4000 regiments (BiceLib/GameClasses/CRegiment.hpp:98), inherited from CSubUnit"
+    },
+    {
+     "offset": 165,
+     "name": "pride",
+     "type": "bool",
+     "comment": "the pride of the fleet, saved as `pride`. **Read live**: 31 of 3736 ships (BiceLib/GameClasses/CRegiment.hpp:102), inherited from CSubUnit"
+    },
+    {
+     "offset": 176,
+     "name": "unit_ptr",
+     "type": "CUnit*",
+     "comment": "the CUnit this regiment belongs to; how the per regiment supply and fuel functions reach the unit's order. **Read live**: a CArmy on every regiment (BiceLib/GameClasses/CRegiment.hpp:108), inherited from CSubUnit"
+    },
+    {
+     "offset": 200,
+     "name": "current_distance",
+     "type": "int",
+     "comment": "how far the regiment is from the enemy in its battle, x1000, saved as `current_distance` - and only where the unit's `combats` list has something in it. **Read live**: zero on all 4000 regiments (BiceLib/GameClasses/CRegiment.hpp:116), inherited from CSubUnit"
+    },
+    {
+     "offset": 204,
+     "name": "extra_consumption",
+     "type": "int",
+     "comment": "every point is another 1% of supply and fuel: the consumption functions add it x10 to a potency whose base is 1000. A cached total - the levels in `technologies` added up, which CSubUnit::ApplyTechnologies recomputes. **Read live**: it is that sum on all 10254 sub units in a running game (BiceLib/GameClasses/CRegiment.hpp:130), inherited from CSubUnit"
+    },
+    {
+     "offset": 208,
+     "name": "historical_model",
+     "type": "int",
+     "comment": "which historical model it was raised as, saved as `historical_model`; -1 where it is none. **Read live**: -1 on 3940 of 4000 (BiceLib/GameClasses/CRegiment.hpp:134), inherited from CSubUnit"
     }
    ]
   },
   {
-   "name": "CListNode<CCountryWarTargetValue*>",
-   "size": null,
+   "name": "CList<CAir*>",
+   "size": 16,
    "fields": [
     {
      "offset": 0,
-     "name": "data",
-     "type": "CCountryWarTargetValue*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+     "name": "first",
+     "type": "CListNode<CAir*>*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
     },
     {
      "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CCountryWarTargetValue*>*",
-     "comment": "the previous node"
+     "name": "last",
+     "type": "CListNode<CAir*>*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
     },
     {
      "offset": 8,
-     "name": "next",
-     "type": "CListNode<CCountryWarTargetValue*>*",
-     "comment": "the next node"
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
     }
    ]
   },
   {
-   "name": "CListNode<CBrigadeConstructionDefinition*>",
+   "name": "CShip",
    "size": null,
    "fields": [
     {
-     "offset": 0,
-     "name": "data",
-     "type": "CBrigadeConstructionDefinition*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+     "offset": 8,
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the save's `id` pair, written after the id. **Read live**: 41 on what a scenario started with, 4713 on what the game has built since (BiceLib/GameClasses/CRegiment.hpp:31), inherited from CSubUnit"
+    },
+    {
+     "offset": 12,
+     "name": "id",
+     "type": "int",
+     "comment": "the regiment's id, the first half of the save's `id` pair (BiceLib/GameClasses/CRegiment.hpp:32), inherited from CSubUnit"
+    },
+    {
+     "offset": 48,
+     "name": "strength_ceiling",
+     "type": "int",
+     "comment": "set to the regiment's strength when it is built and afterwards only raised to it, never lowered; CUnit slot 24 totals it. Not what the regiment has left - that is +0x5C. saved as `highest` (BiceLib/GameClasses/CRegiment.hpp:55), inherited from CSubUnit"
+    },
+    {
+     "offset": 52,
+     "name": "builder",
+     "type": "CCountryTag",
+     "comment": "who built it, saved as `builder`, and only where the id half of the tag is set (BiceLib/GameClasses/CRegiment.hpp:59), inherited from CSubUnit"
+    },
+    {
+     "offset": 60,
+     "name": "experience",
+     "type": "int",
+     "comment": "x1000, saved as `experience` (BiceLib/GameClasses/CRegiment.hpp:61), inherited from CSubUnit"
+    },
+    {
+     "offset": 88,
+     "name": "sub_unit_definition_ptr",
+     "type": "CSubUnitDefinition*",
+     "comment": "this regiment's definition, with its country's tech applied. saved as `type`, by writing the definition's own name (BiceLib/GameClasses/CRegiment.hpp:64), inherited from CSubUnit"
+    },
+    {
+     "offset": 92,
+     "name": "strength",
+     "type": "int",
+     "comment": "what the regiment has left, in the scale of its definition's max_strength; the supply consumption scales by it, CUnit slot 21 averages it. saved as `strength` (BiceLib/GameClasses/CRegiment.hpp:44), inherited from CSubUnit"
+    },
+    {
+     "offset": 96,
+     "name": "organisation",
+     "type": "int",
+     "comment": "organisation x1000, saved as `organisation` (BiceLib/GameClasses/CRegiment.hpp:62), inherited from CSubUnit"
+    },
+    {
+     "offset": 100,
+     "name": "home",
+     "type": "CMapProvince*",
+     "comment": "where it was raised; the save writes that province's id under `home`, and the loader turns the id back into this pointer. **Read live**: a CMapProvince by its own RTTI, and null on a regiment that was never given one (BiceLib/GameClasses/CRegiment.hpp:68), inherited from CSubUnit"
+    },
+    {
+     "offset": 104,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "historical regiment name, saved as `name` (BiceLib/GameClasses/CRegiment.hpp:63), inherited from CSubUnit"
+    },
+    {
+     "offset": 132,
+     "name": "technologies",
+     "type": "CList<CSubUnitTechnology>",
+     "comment": "**the technology levels this regiment was raised with**, one node per entry of its definition's `technologies`, built by CSubUnit::SetType. The save writes a line per node keyed by the technology's own name - `infantry_activation={5 0.000}` - and the loader looks the key up in the technology database, which is what says these are technologies. **Read live**: every node's first word is a CTechnology; none on a CWing, 9 to 52 on a regiment (BiceLib/GameClasses/CRegiment.hpp:85), inherited from CSubUnit"
+    },
+    {
+     "offset": 156,
+     "name": "sunk_by_type",
+     "type": "int",
+     "comment": "type half of the `sunk_by` object id (BiceLib/GameClasses/CRegiment.hpp:92), inherited from CSubUnit"
+    },
+    {
+     "offset": 160,
+     "name": "sunk_by_id",
+     "type": "int",
+     "comment": "what sank this ship, saved as `sunk_by`, and only where the pair is not the game's \"no object\" one. **Read live**: set on 1123 of 3736 ships (BiceLib/GameClasses/CRegiment.hpp:93), inherited from CSubUnit"
+    },
+    {
+     "offset": 164,
+     "name": "is_reserve",
+     "type": "bool",
+     "comment": "saved as `is_reserve`; CRegiment::GetMaxStrength scales the definition's max_strength by RESERVES_PENALTY_SIZE where it is set. **Read live**: 1184 of 4000 regiments (BiceLib/GameClasses/CRegiment.hpp:98), inherited from CSubUnit"
+    },
+    {
+     "offset": 165,
+     "name": "pride",
+     "type": "bool",
+     "comment": "the pride of the fleet, saved as `pride`. **Read live**: 31 of 3736 ships (BiceLib/GameClasses/CRegiment.hpp:102), inherited from CSubUnit"
+    },
+    {
+     "offset": 176,
+     "name": "unit_ptr",
+     "type": "CUnit*",
+     "comment": "the CUnit this regiment belongs to; how the per regiment supply and fuel functions reach the unit's order. **Read live**: a CArmy on every regiment (BiceLib/GameClasses/CRegiment.hpp:108), inherited from CSubUnit"
+    },
+    {
+     "offset": 200,
+     "name": "current_distance",
+     "type": "int",
+     "comment": "how far the regiment is from the enemy in its battle, x1000, saved as `current_distance` - and only where the unit's `combats` list has something in it. **Read live**: zero on all 4000 regiments (BiceLib/GameClasses/CRegiment.hpp:116), inherited from CSubUnit"
+    },
+    {
+     "offset": 204,
+     "name": "extra_consumption",
+     "type": "int",
+     "comment": "every point is another 1% of supply and fuel: the consumption functions add it x10 to a potency whose base is 1000. A cached total - the levels in `technologies` added up, which CSubUnit::ApplyTechnologies recomputes. **Read live**: it is that sum on all 10254 sub units in a running game (BiceLib/GameClasses/CRegiment.hpp:130), inherited from CSubUnit"
+    },
+    {
+     "offset": 208,
+     "name": "historical_model",
+     "type": "int",
+     "comment": "which historical model it was raised as, saved as `historical_model`; -1 where it is none. **Read live**: -1 on 3940 of 4000 (BiceLib/GameClasses/CRegiment.hpp:134), inherited from CSubUnit"
+    },
+    {
+     "offset": 220,
+     "name": "air",
+     "type": "CList<CAir*>",
+     "comment": "the carrier's air wings, saved as `air` by calling each wing's own Save; the one key CShip adds to CSubUnit's. **Read live**: 79 of 3736 ships have one, and what it holds is a CAir (BiceLib/GameClasses/CRegiment.hpp:139)"
+    }
+   ]
+  },
+  {
+   "name": "CArmy",
+   "size": null,
+   "fields": [
+    {
+     "offset": 484,
+     "name": "Children",
+     "type": "CUnitList",
+     "comment": "read by CUnit::GetChildren, inherited from CUnit"
     },
     {
      "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CBrigadeConstructionDefinition*>*",
-     "comment": "the previous node"
+     "name": "is_selected",
+     "type": "bool",
+     "comment": "the unit is selected - one byte; +0x5 to +0x7 are other fields (BiceLib/GameClasses/CUnit.hpp:23), inherited from CUnit"
     },
     {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CBrigadeConstructionDefinition*>*",
-     "comment": "the next node"
+     "offset": 16,
+     "name": "type",
+     "type": "int",
+     "comment": "type (BiceLib/GameClasses/CUnit.hpp:19), inherited from CUnit"
+    },
+    {
+     "offset": 20,
+     "name": "id",
+     "type": "int",
+     "comment": "unit id (BiceLib/GameClasses/CUnit.hpp:20), inherited from CUnit"
+    },
+    {
+     "offset": 56,
+     "name": "regiments",
+     "type": "CList<CRegiment*>",
+     "comment": "the unit's own regiments; a CList<CSubUnit*> base in RTTI (BiceLib/GameClasses/CUnit.hpp:26), inherited from CUnit"
+    },
+    {
+     "offset": 164,
+     "name": "upgrade_prio",
+     "type": "bool",
+     "comment": "bool (BiceLib/GameClasses/CUnit.hpp:24), inherited from CUnit"
+    },
+    {
+     "offset": 165,
+     "name": "upgrade_active",
+     "type": "bool",
+     "comment": "bool (BiceLib/GameClasses/CUnit.hpp:25), inherited from CUnit"
+    },
+    {
+     "offset": 166,
+     "name": "reinforcements_active",
+     "type": "bool",
+     "comment": "bool (BiceLib/GameClasses/CUnit.hpp:26), inherited from CUnit"
+    },
+    {
+     "offset": 168,
+     "name": "disengage",
+     "type": "int",
+     "comment": "saved as `disengage`. **Read live**: zero on 696 of 750 units and a small number on the rest (BiceLib/GameClasses/CUnit.hpp:70), inherited from CUnit"
+    },
+    {
+     "offset": 176,
+     "name": "order_ptr",
+     "type": "COrder*",
+     "comment": "the unit's current order (BiceLib/GameClasses/CUnit.hpp:39), inherited from CUnit"
+    },
+    {
+     "offset": 200,
+     "name": "CSubUnitDefinitionPtr",
+     "type": "CSubUnitDefinition*",
+     "comment": "sub unit definition (BiceLib/GameClasses/CUnit.hpp:28), inherited from CUnit"
+    },
+    {
+     "offset": 208,
+     "name": "end_date",
+     "type": "int",
+     "comment": "a date, saved as `end_date`. **Read live**: the epoch value on most units, so unset (BiceLib/GameClasses/CUnit.hpp:71), inherited from CUnit"
+    },
+    {
+     "offset": 212,
+     "name": "combat_cooldown",
+     "type": "int",
+     "comment": "The save writes it under the key `attack_delay`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:29), inherited from CUnit"
+    },
+    {
+     "offset": 252,
+     "name": "supply_received_percentage",
+     "type": "int",
+     "comment": "The save writes it under the key `supplies`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:30), inherited from CUnit"
+    },
+    {
+     "offset": 256,
+     "name": "fuel_received_percentage",
+     "type": "int",
+     "comment": "The save writes it under the key `fuel`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:31), inherited from CUnit"
+    },
+    {
+     "offset": 276,
+     "name": "combats",
+     "type": "CList<CCombat*>",
+     "comment": "the combats this unit is in. The sub unit writer only writes `current_distance` where this has something in it. **Read live**: 168 of 2000 armies, and what the nodes hold is a CLandCombat (BiceLib/GameClasses/CRegiment.hpp:116), inherited from CUnit"
+    },
+    {
+     "offset": 292,
+     "name": "owner",
+     "type": "CCountryTag",
+     "comment": "the owner (BiceLib/GameClasses/CUnit.hpp:35), inherited from CUnit"
+    },
+    {
+     "offset": 300,
+     "name": "leader_ptr",
+     "type": "CLeader*",
+     "comment": "commanding leader (BiceLib/GameClasses/CUnit.hpp:34), inherited from CUnit"
+    },
+    {
+     "offset": 304,
+     "name": "current_province_ptr",
+     "type": "CMapProvince*",
+     "comment": "province the unit is in (BiceLib/GameClasses/CUnit.hpp:35), inherited from CUnit"
+    },
+    {
+     "offset": 308,
+     "name": "supplied_from_province_ptr",
+     "type": "CMapProvince*",
+     "comment": "**CUnit::LoadKey reads it under the key `previous`**, putting a province here, which fits a previous province better than a supply source - and +0x138 and +0x13C are the movement pointers. The BiceLib name is left as it is; which is right has not been settled (BiceLib/GameClasses/CUnit.hpp:36), inherited from CUnit"
+    },
+    {
+     "offset": 312,
+     "name": "movement_order_next_province_ptr",
+     "type": "CMapProvince*",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:37), inherited from CUnit"
+    },
+    {
+     "offset": 316,
+     "name": "movement_order_last_current_province_ptr",
+     "type": "CMapProvince*",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:38), inherited from CUnit"
+    },
+    {
+     "offset": 320,
+     "name": "movement_order_remaining_provinces_count",
+     "type": "int",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:39), inherited from CUnit"
+    },
+    {
+     "offset": 332,
+     "name": "movement_progress",
+     "type": "int",
+     "comment": "saved as `movement_progress`, x1000. **Read live**: zero or a part of the way (BiceLib/GameClasses/CUnit.hpp:72), inherited from CUnit"
+    },
+    {
+     "offset": 344,
+     "name": "retreat",
+     "type": "bool",
+     "comment": "saved as `retreat`. **Read live**: 11 of 750 units retreating (BiceLib/GameClasses/CUnit.hpp:73), inherited from CUnit"
+    },
+    {
+     "offset": 352,
+     "name": "in_game_idler_ptr",
+     "type": "CInGameIdler*",
+     "comment": "the in game idler (BiceLib/GameClasses/CUnit.hpp:40), inherited from CUnit"
+    },
+    {
+     "offset": 364,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "the unit's name (BiceLib/GameClasses/CUnit.hpp:43), inherited from CUnit"
+    },
+    {
+     "offset": 396,
+     "name": "arrow_state",
+     "type": "int",
+     "comment": "saved as `arrow_state`. **Read live**: zero on every unit (BiceLib/GameClasses/CUnit.hpp:74), inherited from CUnit"
+    },
+    {
+     "offset": 456,
+     "name": "dig_in_level",
+     "type": "int",
+     "comment": "The save writes it under the key `dig_in`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:43), inherited from CUnit"
+    },
+    {
+     "offset": 460,
+     "name": "base_ca_bonus",
+     "type": "int",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:44), inherited from CUnit"
+    },
+    {
+     "offset": 480,
+     "name": "higher_oob_unit_ptr",
+     "type": "CUnit*",
+     "comment": "parent unit in the order of battle (BiceLib/GameClasses/CUnit.hpp:45), inherited from CUnit"
+    },
+    {
+     "offset": 500,
+     "name": "oob_level",
+     "type": "int",
+     "comment": "0 theatre .. 4 division, 5 navy (BiceLib/GameClasses/CUnit.hpp:49), inherited from CUnit"
+    },
+    {
+     "offset": 508,
+     "name": "plan",
+     "type": "void*",
+     "comment": "the unit's plan, saved as `plan` by calling slot 1 on it. **Read live**: every unit has one (BiceLib/GameClasses/CUnit.hpp:75), inherited from CUnit"
+    },
+    {
+     "offset": 652,
+     "name": "expeditionary_owner",
+     "type": "CCountryTag",
+     "comment": "who the unit is on loan from, saved as `expeditionary_owner`. **Read live**: `---` on 740 of 750, and ITA, HUN, SLO and POL on the rest (BiceLib/GameClasses/CUnit.hpp:76), inherited from CUnit"
+    }
+   ]
+  },
+  {
+   "name": "CNavy",
+   "size": null,
+   "fields": [
+    {
+     "offset": 484,
+     "name": "Children",
+     "type": "CUnitList",
+     "comment": "read by CUnit::GetChildren, inherited from CUnit"
+    },
+    {
+     "offset": 4,
+     "name": "is_selected",
+     "type": "bool",
+     "comment": "the unit is selected - one byte; +0x5 to +0x7 are other fields (BiceLib/GameClasses/CUnit.hpp:23), inherited from CUnit"
+    },
+    {
+     "offset": 16,
+     "name": "type",
+     "type": "int",
+     "comment": "type (BiceLib/GameClasses/CUnit.hpp:19), inherited from CUnit"
+    },
+    {
+     "offset": 20,
+     "name": "id",
+     "type": "int",
+     "comment": "unit id (BiceLib/GameClasses/CUnit.hpp:20), inherited from CUnit"
+    },
+    {
+     "offset": 56,
+     "name": "regiments",
+     "type": "CList<CRegiment*>",
+     "comment": "the unit's own regiments; a CList<CSubUnit*> base in RTTI (BiceLib/GameClasses/CUnit.hpp:26), inherited from CUnit"
+    },
+    {
+     "offset": 164,
+     "name": "upgrade_prio",
+     "type": "bool",
+     "comment": "bool (BiceLib/GameClasses/CUnit.hpp:24), inherited from CUnit"
+    },
+    {
+     "offset": 165,
+     "name": "upgrade_active",
+     "type": "bool",
+     "comment": "bool (BiceLib/GameClasses/CUnit.hpp:25), inherited from CUnit"
+    },
+    {
+     "offset": 166,
+     "name": "reinforcements_active",
+     "type": "bool",
+     "comment": "bool (BiceLib/GameClasses/CUnit.hpp:26), inherited from CUnit"
+    },
+    {
+     "offset": 168,
+     "name": "disengage",
+     "type": "int",
+     "comment": "saved as `disengage`. **Read live**: zero on 696 of 750 units and a small number on the rest (BiceLib/GameClasses/CUnit.hpp:70), inherited from CUnit"
+    },
+    {
+     "offset": 176,
+     "name": "order_ptr",
+     "type": "COrder*",
+     "comment": "the unit's current order (BiceLib/GameClasses/CUnit.hpp:39), inherited from CUnit"
+    },
+    {
+     "offset": 200,
+     "name": "CSubUnitDefinitionPtr",
+     "type": "CSubUnitDefinition*",
+     "comment": "sub unit definition (BiceLib/GameClasses/CUnit.hpp:28), inherited from CUnit"
+    },
+    {
+     "offset": 208,
+     "name": "end_date",
+     "type": "int",
+     "comment": "a date, saved as `end_date`. **Read live**: the epoch value on most units, so unset (BiceLib/GameClasses/CUnit.hpp:71), inherited from CUnit"
+    },
+    {
+     "offset": 212,
+     "name": "combat_cooldown",
+     "type": "int",
+     "comment": "The save writes it under the key `attack_delay`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:29), inherited from CUnit"
+    },
+    {
+     "offset": 252,
+     "name": "supply_received_percentage",
+     "type": "int",
+     "comment": "The save writes it under the key `supplies`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:30), inherited from CUnit"
+    },
+    {
+     "offset": 256,
+     "name": "fuel_received_percentage",
+     "type": "int",
+     "comment": "The save writes it under the key `fuel`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:31), inherited from CUnit"
+    },
+    {
+     "offset": 276,
+     "name": "combats",
+     "type": "CList<CCombat*>",
+     "comment": "the combats this unit is in. The sub unit writer only writes `current_distance` where this has something in it. **Read live**: 168 of 2000 armies, and what the nodes hold is a CLandCombat (BiceLib/GameClasses/CRegiment.hpp:116), inherited from CUnit"
+    },
+    {
+     "offset": 292,
+     "name": "owner",
+     "type": "CCountryTag",
+     "comment": "the owner (BiceLib/GameClasses/CUnit.hpp:35), inherited from CUnit"
+    },
+    {
+     "offset": 300,
+     "name": "leader_ptr",
+     "type": "CLeader*",
+     "comment": "commanding leader (BiceLib/GameClasses/CUnit.hpp:34), inherited from CUnit"
+    },
+    {
+     "offset": 304,
+     "name": "current_province_ptr",
+     "type": "CMapProvince*",
+     "comment": "province the unit is in (BiceLib/GameClasses/CUnit.hpp:35), inherited from CUnit"
+    },
+    {
+     "offset": 308,
+     "name": "supplied_from_province_ptr",
+     "type": "CMapProvince*",
+     "comment": "**CUnit::LoadKey reads it under the key `previous`**, putting a province here, which fits a previous province better than a supply source - and +0x138 and +0x13C are the movement pointers. The BiceLib name is left as it is; which is right has not been settled (BiceLib/GameClasses/CUnit.hpp:36), inherited from CUnit"
+    },
+    {
+     "offset": 312,
+     "name": "movement_order_next_province_ptr",
+     "type": "CMapProvince*",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:37), inherited from CUnit"
+    },
+    {
+     "offset": 316,
+     "name": "movement_order_last_current_province_ptr",
+     "type": "CMapProvince*",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:38), inherited from CUnit"
+    },
+    {
+     "offset": 320,
+     "name": "movement_order_remaining_provinces_count",
+     "type": "int",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:39), inherited from CUnit"
+    },
+    {
+     "offset": 332,
+     "name": "movement_progress",
+     "type": "int",
+     "comment": "saved as `movement_progress`, x1000. **Read live**: zero or a part of the way (BiceLib/GameClasses/CUnit.hpp:72), inherited from CUnit"
+    },
+    {
+     "offset": 344,
+     "name": "retreat",
+     "type": "bool",
+     "comment": "saved as `retreat`. **Read live**: 11 of 750 units retreating (BiceLib/GameClasses/CUnit.hpp:73), inherited from CUnit"
+    },
+    {
+     "offset": 352,
+     "name": "in_game_idler_ptr",
+     "type": "CInGameIdler*",
+     "comment": "the in game idler (BiceLib/GameClasses/CUnit.hpp:40), inherited from CUnit"
+    },
+    {
+     "offset": 364,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "the unit's name (BiceLib/GameClasses/CUnit.hpp:43), inherited from CUnit"
+    },
+    {
+     "offset": 396,
+     "name": "arrow_state",
+     "type": "int",
+     "comment": "saved as `arrow_state`. **Read live**: zero on every unit (BiceLib/GameClasses/CUnit.hpp:74), inherited from CUnit"
+    },
+    {
+     "offset": 456,
+     "name": "dig_in_level",
+     "type": "int",
+     "comment": "The save writes it under the key `dig_in`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:43), inherited from CUnit"
+    },
+    {
+     "offset": 460,
+     "name": "base_ca_bonus",
+     "type": "int",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:44), inherited from CUnit"
+    },
+    {
+     "offset": 480,
+     "name": "higher_oob_unit_ptr",
+     "type": "CUnit*",
+     "comment": "parent unit in the order of battle (BiceLib/GameClasses/CUnit.hpp:45), inherited from CUnit"
+    },
+    {
+     "offset": 500,
+     "name": "oob_level",
+     "type": "int",
+     "comment": "0 theatre .. 4 division, 5 navy (BiceLib/GameClasses/CUnit.hpp:49), inherited from CUnit"
+    },
+    {
+     "offset": 508,
+     "name": "plan",
+     "type": "void*",
+     "comment": "the unit's plan, saved as `plan` by calling slot 1 on it. **Read live**: every unit has one (BiceLib/GameClasses/CUnit.hpp:75), inherited from CUnit"
+    },
+    {
+     "offset": 652,
+     "name": "expeditionary_owner",
+     "type": "CCountryTag",
+     "comment": "who the unit is on loan from, saved as `expeditionary_owner`. **Read live**: `---` on 740 of 750, and ITA, HUN, SLO and POL on the rest (BiceLib/GameClasses/CUnit.hpp:76), inherited from CUnit"
+    }
+   ]
+  },
+  {
+   "name": "CAir",
+   "size": null,
+   "fields": [
+    {
+     "offset": 484,
+     "name": "Children",
+     "type": "CUnitList",
+     "comment": "read by CUnit::GetChildren, inherited from CUnit"
+    },
+    {
+     "offset": 4,
+     "name": "is_selected",
+     "type": "bool",
+     "comment": "the unit is selected - one byte; +0x5 to +0x7 are other fields (BiceLib/GameClasses/CUnit.hpp:23), inherited from CUnit"
+    },
+    {
+     "offset": 16,
+     "name": "type",
+     "type": "int",
+     "comment": "type (BiceLib/GameClasses/CUnit.hpp:19), inherited from CUnit"
+    },
+    {
+     "offset": 20,
+     "name": "id",
+     "type": "int",
+     "comment": "unit id (BiceLib/GameClasses/CUnit.hpp:20), inherited from CUnit"
+    },
+    {
+     "offset": 56,
+     "name": "regiments",
+     "type": "CList<CRegiment*>",
+     "comment": "the unit's own regiments; a CList<CSubUnit*> base in RTTI (BiceLib/GameClasses/CUnit.hpp:26), inherited from CUnit"
+    },
+    {
+     "offset": 164,
+     "name": "upgrade_prio",
+     "type": "bool",
+     "comment": "bool (BiceLib/GameClasses/CUnit.hpp:24), inherited from CUnit"
+    },
+    {
+     "offset": 165,
+     "name": "upgrade_active",
+     "type": "bool",
+     "comment": "bool (BiceLib/GameClasses/CUnit.hpp:25), inherited from CUnit"
+    },
+    {
+     "offset": 166,
+     "name": "reinforcements_active",
+     "type": "bool",
+     "comment": "bool (BiceLib/GameClasses/CUnit.hpp:26), inherited from CUnit"
+    },
+    {
+     "offset": 168,
+     "name": "disengage",
+     "type": "int",
+     "comment": "saved as `disengage`. **Read live**: zero on 696 of 750 units and a small number on the rest (BiceLib/GameClasses/CUnit.hpp:70), inherited from CUnit"
+    },
+    {
+     "offset": 176,
+     "name": "order_ptr",
+     "type": "COrder*",
+     "comment": "the unit's current order (BiceLib/GameClasses/CUnit.hpp:39), inherited from CUnit"
+    },
+    {
+     "offset": 200,
+     "name": "CSubUnitDefinitionPtr",
+     "type": "CSubUnitDefinition*",
+     "comment": "sub unit definition (BiceLib/GameClasses/CUnit.hpp:28), inherited from CUnit"
+    },
+    {
+     "offset": 208,
+     "name": "end_date",
+     "type": "int",
+     "comment": "a date, saved as `end_date`. **Read live**: the epoch value on most units, so unset (BiceLib/GameClasses/CUnit.hpp:71), inherited from CUnit"
+    },
+    {
+     "offset": 212,
+     "name": "combat_cooldown",
+     "type": "int",
+     "comment": "The save writes it under the key `attack_delay`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:29), inherited from CUnit"
+    },
+    {
+     "offset": 252,
+     "name": "supply_received_percentage",
+     "type": "int",
+     "comment": "The save writes it under the key `supplies`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:30), inherited from CUnit"
+    },
+    {
+     "offset": 256,
+     "name": "fuel_received_percentage",
+     "type": "int",
+     "comment": "The save writes it under the key `fuel`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:31), inherited from CUnit"
+    },
+    {
+     "offset": 276,
+     "name": "combats",
+     "type": "CList<CCombat*>",
+     "comment": "the combats this unit is in. The sub unit writer only writes `current_distance` where this has something in it. **Read live**: 168 of 2000 armies, and what the nodes hold is a CLandCombat (BiceLib/GameClasses/CRegiment.hpp:116), inherited from CUnit"
+    },
+    {
+     "offset": 292,
+     "name": "owner",
+     "type": "CCountryTag",
+     "comment": "the owner (BiceLib/GameClasses/CUnit.hpp:35), inherited from CUnit"
+    },
+    {
+     "offset": 300,
+     "name": "leader_ptr",
+     "type": "CLeader*",
+     "comment": "commanding leader (BiceLib/GameClasses/CUnit.hpp:34), inherited from CUnit"
+    },
+    {
+     "offset": 304,
+     "name": "current_province_ptr",
+     "type": "CMapProvince*",
+     "comment": "province the unit is in (BiceLib/GameClasses/CUnit.hpp:35), inherited from CUnit"
+    },
+    {
+     "offset": 308,
+     "name": "supplied_from_province_ptr",
+     "type": "CMapProvince*",
+     "comment": "**CUnit::LoadKey reads it under the key `previous`**, putting a province here, which fits a previous province better than a supply source - and +0x138 and +0x13C are the movement pointers. The BiceLib name is left as it is; which is right has not been settled (BiceLib/GameClasses/CUnit.hpp:36), inherited from CUnit"
+    },
+    {
+     "offset": 312,
+     "name": "movement_order_next_province_ptr",
+     "type": "CMapProvince*",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:37), inherited from CUnit"
+    },
+    {
+     "offset": 316,
+     "name": "movement_order_last_current_province_ptr",
+     "type": "CMapProvince*",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:38), inherited from CUnit"
+    },
+    {
+     "offset": 320,
+     "name": "movement_order_remaining_provinces_count",
+     "type": "int",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:39), inherited from CUnit"
+    },
+    {
+     "offset": 332,
+     "name": "movement_progress",
+     "type": "int",
+     "comment": "saved as `movement_progress`, x1000. **Read live**: zero or a part of the way (BiceLib/GameClasses/CUnit.hpp:72), inherited from CUnit"
+    },
+    {
+     "offset": 344,
+     "name": "retreat",
+     "type": "bool",
+     "comment": "saved as `retreat`. **Read live**: 11 of 750 units retreating (BiceLib/GameClasses/CUnit.hpp:73), inherited from CUnit"
+    },
+    {
+     "offset": 352,
+     "name": "in_game_idler_ptr",
+     "type": "CInGameIdler*",
+     "comment": "the in game idler (BiceLib/GameClasses/CUnit.hpp:40), inherited from CUnit"
+    },
+    {
+     "offset": 364,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "the unit's name (BiceLib/GameClasses/CUnit.hpp:43), inherited from CUnit"
+    },
+    {
+     "offset": 396,
+     "name": "arrow_state",
+     "type": "int",
+     "comment": "saved as `arrow_state`. **Read live**: zero on every unit (BiceLib/GameClasses/CUnit.hpp:74), inherited from CUnit"
+    },
+    {
+     "offset": 456,
+     "name": "dig_in_level",
+     "type": "int",
+     "comment": "The save writes it under the key `dig_in`, which agrees with this name (BiceLib/GameClasses/CUnit.hpp:43), inherited from CUnit"
+    },
+    {
+     "offset": 460,
+     "name": "base_ca_bonus",
+     "type": "int",
+     "comment": " (BiceLib/GameClasses/CUnit.hpp:44), inherited from CUnit"
+    },
+    {
+     "offset": 480,
+     "name": "higher_oob_unit_ptr",
+     "type": "CUnit*",
+     "comment": "parent unit in the order of battle (BiceLib/GameClasses/CUnit.hpp:45), inherited from CUnit"
+    },
+    {
+     "offset": 500,
+     "name": "oob_level",
+     "type": "int",
+     "comment": "0 theatre .. 4 division, 5 navy (BiceLib/GameClasses/CUnit.hpp:49), inherited from CUnit"
+    },
+    {
+     "offset": 508,
+     "name": "plan",
+     "type": "void*",
+     "comment": "the unit's plan, saved as `plan` by calling slot 1 on it. **Read live**: every unit has one (BiceLib/GameClasses/CUnit.hpp:75), inherited from CUnit"
+    },
+    {
+     "offset": 652,
+     "name": "expeditionary_owner",
+     "type": "CCountryTag",
+     "comment": "who the unit is on loan from, saved as `expeditionary_owner`. **Read live**: `---` on 740 of 750, and ITA, HUN, SLO and POL on the rest (BiceLib/GameClasses/CUnit.hpp:76), inherited from CUnit"
+    }
+   ]
+  },
+  {
+   "name": "CPersistent",
+   "size": null,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "token",
+     "type": "SaveToken",
+     "comment": "a SaveToken CPersistent's constructor sets to `none`, and nothing has been found that reads it. Of 714 inlined constructors that write this word and then a vftable, 697 write `none`, and **read live** it is still `none` on every CSubUnitDefinition, CTechnology, CRegiment, CCombat, CAIStrategy, CLeader, CTheatre and CConvoy in a running game - so it is not a class id, whatever a constant at +4 looks like (BiceLib/GameClasses/CPersistent.hpp:57)"
     }
    ]
   },
@@ -15786,150 +17556,6 @@
      "offset": 8,
      "name": "next",
      "type": "CListNode<CTrait*>*",
-     "comment": "the next node"
-    }
-   ]
-  },
-  {
-   "name": "CListNode<CConstruction*>",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "data",
-     "type": "CConstruction*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CConstruction*>*",
-     "comment": "the previous node"
-    },
-    {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CConstruction*>*",
-     "comment": "the next node"
-    }
-   ]
-  },
-  {
-   "name": "CListNode<CProvince*>",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "data",
-     "type": "CProvince*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CProvince*>*",
-     "comment": "the previous node"
-    },
-    {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CProvince*>*",
-     "comment": "the next node"
-    }
-   ]
-  },
-  {
-   "name": "CListNode<CTechnology const*>",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "data",
-     "type": "CTechnology const*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CTechnology const*>*",
-     "comment": "the previous node"
-    },
-    {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CTechnology const*>*",
-     "comment": "the next node"
-    }
-   ]
-  },
-  {
-   "name": "CListNode<CMinister*>",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "data",
-     "type": "CMinister*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CMinister*>*",
-     "comment": "the previous node"
-    },
-    {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CMinister*>*",
-     "comment": "the next node"
-    }
-   ]
-  },
-  {
-   "name": "CListNode<CTradeRoute*>",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "data",
-     "type": "CTradeRoute*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CTradeRoute*>*",
-     "comment": "the previous node"
-    },
-    {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CTradeRoute*>*",
-     "comment": "the next node"
-    }
-   ]
-  },
-  {
-   "name": "CListNode<CRegiment*>",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "data",
-     "type": "CRegiment*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CRegiment*>*",
-     "comment": "the previous node"
-    },
-    {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CRegiment*>*",
      "comment": "the next node"
     }
    ]
@@ -15959,6 +17585,174 @@
    ]
   },
   {
+   "name": "CListNode<CCountryWarTargetValue*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CCountryWarTargetValue*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CCountryWarTargetValue*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CCountryWarTargetValue*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CMinister*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CMinister*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CMinister*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CMinister*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CBrigadeConstructionDefinition*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CBrigadeConstructionDefinition*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CBrigadeConstructionDefinition*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CBrigadeConstructionDefinition*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CConvoy*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CConvoy*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CConvoy*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CConvoy*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CProvince*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CProvince*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CProvince*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CProvince*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CConstruction*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CConstruction*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CConstruction*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CConstruction*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CTechnology const*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CTechnology const*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CTechnology const*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CTechnology const*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
    "name": "CListNode<CLeader*>",
    "size": null,
    "fields": [
@@ -15983,6 +17777,30 @@
    ]
   },
   {
+   "name": "CListNode<CRegiment*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CRegiment*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CRegiment*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CRegiment*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
    "name": "CListNode<CUnit*>",
    "size": null,
    "fields": [
@@ -16002,6 +17820,78 @@
      "offset": 8,
      "name": "next",
      "type": "CListNode<CUnit*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CTheatre*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CTheatre*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CTheatre*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CTheatre*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CTradeRoute*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CTradeRoute*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CTradeRoute*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CTradeRoute*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CAir*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CAir*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CAir*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CAir*>*",
      "comment": "the next node"
     }
    ]
@@ -18058,6 +19948,61 @@
    "labels": []
   },
   {
+   "rva": 317248,
+   "namespace": "CFlags",
+   "name": "SaveContents",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CFlags introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CFlags + 36**, because that is where CPersistent sits in this class; add 36 to any offset here to get a CFlags one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "writer",
+      "type": "CSaveWriter*",
+      "storage": "stack:4"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 317280,
+   "namespace": "CFlags",
+   "name": "LoadKey",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CFlags introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CFlags + 36**, because that is where CPersistent sits in this class; add 36 to any offset here to get a CFlags one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "parse",
+      "type": "CParseContext*",
+      "storage": "stack:4"
+     },
+     {
+      "name": "key",
+      "type": "SaveToken",
+      "storage": "stack:8"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 355344,
    "namespace": "",
    "name": "GetSize",
@@ -19195,6 +21140,61 @@
      {
       "name": null,
       "type": "CString const &"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 487520,
+   "namespace": "CVariables",
+   "name": "SaveContents",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CVariables introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CVariables + 36**, because that is where CPersistent sits in this class; add 36 to any offset here to get a CVariables one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "writer",
+      "type": "CSaveWriter*",
+      "storage": "stack:4"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 487552,
+   "namespace": "CVariables",
+   "name": "LoadKey",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CVariables introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CVariables + 36**, because that is where CPersistent sits in this class; add 36 to any offset here to get a CVariables one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "parse",
+      "type": "CParseContext*",
+      "storage": "stack:4"
+     },
+     {
+      "name": "key",
+      "type": "SaveToken",
+      "storage": "stack:8"
      }
     ]
    },
@@ -20645,69 +22645,50 @@
    "labels": []
   },
   {
-   "rva": 754640,
+   "rva": 754336,
    "namespace": "CProvinceBuilding",
    "name": "Load",
    "confidence": "CERTAIN",
-   "evidence": "Slot 3 of CPersistent, this class's own: the RTTI export says CProvinceBuilding introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "Slot 3 of CPersistent, this class's own: the RTTI export says CProvinceBuilding introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CProvinceBuilding + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CProvinceBuilding one.",
    "signature": {
-    "convention": "__thiscall",
+    "convention": "__stdcall",
     "return": "void",
     "hiddenReturn": false,
     "params": [
      {
-      "name": "this",
-      "type": "CProvinceBuilding*"
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
      },
      {
       "name": "parse",
-      "type": "CParseContext*"
+      "type": "CParseContext*",
+      "storage": "stack:4"
      }
     ]
    },
    "labels": []
   },
   {
-   "rva": 755904,
+   "rva": 754432,
    "namespace": "CProvinceBuilding",
-   "name": "LoadKey",
+   "name": "SaveContents",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CProvinceBuilding introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CProvinceBuilding introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CProvinceBuilding + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CProvinceBuilding one.",
    "signature": {
-    "convention": "__thiscall",
+    "convention": "__stdcall",
     "return": "void",
     "hiddenReturn": false,
     "params": [
      {
-      "name": "this",
-      "type": "CProvinceBuilding*"
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
      },
      {
-      "name": "parse",
-      "type": "CParseContext*"
-     },
-     {
-      "name": "key",
-      "type": "SaveToken"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 756144,
-   "namespace": "CProvinceBuilding",
-   "name": "AfterLoad",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 5 of CPersistent, this class's own: the RTTI export says CProvinceBuilding introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CProvinceBuilding*"
+      "name": "writer",
+      "type": "CSaveWriter*",
+      "storage": "stack:4"
      }
     ]
    },
@@ -28439,6 +30420,81 @@
    "labels": []
   },
   {
+   "rva": 1733888,
+   "namespace": "CSubUnitDefinition",
+   "name": "Assign",
+   "confidence": "CERTAIN",
+   "evidence": "Copies a whole definition, the name and the adjusters included. CSubUnit::ApplyTechnologies uses it twice: to put the type's template back on the sub unit's own copy before it starts, and to take a copy of each effect it is about to scale.\n(BiceLib/GameClasses/CRegiment.hpp:99)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "destination",
+      "type": "CSubUnitDefinition*",
+      "storage": "ESI"
+     },
+     {
+      "name": "source",
+      "type": "CSubUnitDefinition*",
+      "storage": "EAX"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1734832,
+   "namespace": "CSubUnitDefinition",
+   "name": "Scale",
+   "confidence": "CERTAIN",
+   "evidence": "Multiplies every number on a definition by `factor / 1000`: the 42 stat fields from +0xE8 to +0x190 inline, and each CUnitAdjuster - the four inline ones and both vectors - through CUnitAdjuster::Scale. This is how a technology's effect is scaled by the level a regiment holds, the factor being the level x1000.\n(BiceLib/GameClasses/CRegiment.hpp:99)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "definition",
+      "type": "CSubUnitDefinition*",
+      "storage": "EDI"
+     },
+     {
+      "name": "factor",
+      "type": "int",
+      "storage": "stack:4"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1736640,
+   "namespace": "CSubUnitDefinition",
+   "name": "Add",
+   "confidence": "CERTAIN",
+   "evidence": "Adds one definition into another, field by field, the adjusters included. What applies a scaled technology effect to a sub unit's own definition.\n(BiceLib/GameClasses/CRegiment.hpp:99)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "destination",
+      "type": "CSubUnitDefinition*",
+      "storage": "ESI"
+     },
+     {
+      "name": "source",
+      "type": "CSubUnitDefinition*",
+      "storage": "ECX"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 1739760,
    "namespace": "CSubUnit",
    "name": "LoadKey",
@@ -28514,6 +30570,91 @@
    "confidence": "CERTAIN",
    "evidence": "Virtual slot 12: the definition's max_strength (+0xEC), scaled by the owner's RESERVES_PENALTY_SIZE modifier where the regiment's reserve byte at +0xA4 is set, floored at a global minimum. Answers through a hidden return pointer, ret 0xC. The name is BiceLib's.\n(reversing/CLASSES.md:260)",
    "signature": null,
+   "labels": []
+  },
+  {
+   "rva": 1750784,
+   "namespace": "CSubUnit",
+   "name": "GetMaxOrganisation",
+   "confidence": "CERTAIN",
+   "evidence": "Answers through a hidden return pointer, ret 0xC, the same shape as slot 12's maximum strength. Walks the HQ chain above the unit - +0x1F4 being the oob level, 4 for a theatre, 3 for an army group, 2 for an army. The name is BiceLib's, from what CSubUnit::ApplyTechnologies clamps with it.\n(BiceLib/GameClasses/CRegiment.hpp:99)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "int*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "out",
+      "type": "int*",
+      "storage": "EAX"
+     },
+     {
+      "name": "subunit",
+      "type": "CSubUnit*",
+      "storage": "stack:4"
+     },
+     {
+      "name": "zero",
+      "type": "int",
+      "storage": "stack:8"
+     },
+     {
+      "name": "alsoZero",
+      "type": "int",
+      "storage": "stack:12"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1752880,
+   "namespace": "CSubUnit",
+   "name": "SetType",
+   "confidence": "CERTAIN",
+   "evidence": "Gives a sub unit its CSubUnitDefinition and builds the `technologies` list from it, one node per entry of the definition's `technologies` vector (+0x44 to +0x48), each at level zero. A regiment therefore keeps the tech state it was raised with while its country's moves on.\n(BiceLib/GameClasses/CRegiment.hpp:85)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "subunit",
+      "type": "CSubUnit*",
+      "storage": "EDI"
+     },
+     {
+      "name": "definition",
+      "type": "CSubUnitDefinition*",
+      "storage": "stack:4"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1753024,
+   "namespace": "CSubUnit",
+   "name": "ApplyTechnologies",
+   "confidence": "CERTAIN",
+   "evidence": "**Rebuilds the sub unit's own definition**: puts the type's template back on it, then for every node of `technologies` takes the technology's effect for this unit type, scales a copy of it by the node's level and adds it in. Then totals the levels into `extra_consumption`, and unless `keepStrength` is set clamps `strength` and `organisation` to the maxima that come out of the new definition; either way it raises `strength_ceiling` to the strength. **Read live**: the whole formula holds to the point on all 1068 engineer_brigade regiments in a 1942 game, on the stat fields and the adjusters alike, and what is left over each time is the template.\n(BiceLib/GameClasses/CRegiment.hpp:85)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "subunit",
+      "type": "CSubUnit*",
+      "storage": "stack:4"
+     },
+     {
+      "name": "keepStrength",
+      "type": "bool",
+      "storage": "stack:8"
+     }
+    ]
+   },
    "labels": []
   },
   {
@@ -28724,6 +30865,81 @@
    "labels": []
   },
   {
+   "rva": 1797776,
+   "namespace": "CUnit",
+   "name": "LoadKey",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CUnit introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CUnit + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CUnit one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "parse",
+      "type": "CParseContext*",
+      "storage": "stack:4"
+     },
+     {
+      "name": "key",
+      "type": "SaveToken",
+      "storage": "stack:8"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1802448,
+   "namespace": "CUnit",
+   "name": "AfterLoad",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 5 of CPersistent, this class's own: the RTTI export says CUnit introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CUnit + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CUnit one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1802608,
+   "namespace": "CUnit",
+   "name": "SaveContents",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CUnit introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CUnit + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CUnit one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "writer",
+      "type": "CSaveWriter*",
+      "storage": "stack:4"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 1809264,
    "namespace": "CUnit",
    "name": "GetChildren",
@@ -28795,75 +31011,6 @@
    "labels": []
   },
   {
-   "rva": 1836352,
-   "namespace": "CUnit",
-   "name": "SaveContents",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CUnit introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CUnit*"
-     },
-     {
-      "name": "writer",
-      "type": "CSaveWriter*"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 1836528,
-   "namespace": "CUnit",
-   "name": "LoadKey",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CUnit introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CUnit*"
-     },
-     {
-      "name": "parse",
-      "type": "CParseContext*"
-     },
-     {
-      "name": "key",
-      "type": "SaveToken"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 1837872,
-   "namespace": "CUnit",
-   "name": "AfterLoad",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 5 of CPersistent, this class's own: the RTTI export says CUnit introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CUnit*"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
    "rva": 1853344,
    "namespace": "CUnit",
    "name": "GetName",
@@ -28874,29 +31021,6 @@
     "return": "CString",
     "hiddenReturn": true,
     "params": []
-   },
-   "labels": []
-  },
-  {
-   "rva": 1854240,
-   "namespace": "CUnit",
-   "name": "Load",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 3 of CPersistent, this class's own: the RTTI export says CUnit introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CUnit*"
-     },
-     {
-      "name": "parse",
-      "type": "CParseContext*"
-     }
-    ]
    },
    "labels": []
   },
@@ -28993,6 +31117,171 @@
    "labels": []
   },
   {
+   "rva": 1895488,
+   "namespace": "CArmy",
+   "name": "LoadKey",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CArmy introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CArmy + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CArmy one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "parse",
+      "type": "CParseContext*",
+      "storage": "stack:4"
+     },
+     {
+      "name": "key",
+      "type": "SaveToken",
+      "storage": "stack:8"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1895632,
+   "namespace": "CArmy",
+   "name": "SaveContents",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CArmy introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CArmy + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CArmy one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "writer",
+      "type": "CSaveWriter*",
+      "storage": "stack:4"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1898144,
+   "namespace": "CNavy",
+   "name": "LoadKey",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CNavy introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CNavy + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CNavy one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "parse",
+      "type": "CParseContext*",
+      "storage": "stack:4"
+     },
+     {
+      "name": "key",
+      "type": "SaveToken",
+      "storage": "stack:8"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1899168,
+   "namespace": "CNavy",
+   "name": "SaveContents",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CNavy introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CNavy + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CNavy one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "writer",
+      "type": "CSaveWriter*",
+      "storage": "stack:4"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1901856,
+   "namespace": "CAir",
+   "name": "LoadKey",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CAir introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CAir + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CAir one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "parse",
+      "type": "CParseContext*",
+      "storage": "stack:4"
+     },
+     {
+      "name": "key",
+      "type": "SaveToken",
+      "storage": "stack:8"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1902256,
+   "namespace": "CAir",
+   "name": "SaveContents",
+   "confidence": "CERTAIN",
+   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CAir introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CAir + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CAir one.",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "writer",
+      "type": "CSaveWriter*",
+      "storage": "stack:4"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 1904928,
    "namespace": "CUnit",
    "name": "CommandEffect",
@@ -29024,7 +31313,7 @@
    "namespace": "CUnitAdjuster",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CUnitAdjuster introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "Slot 4, and what names the four numbers on an adjuster: `attack` into +0x8, `defence` into +0xC, `movement` into +0x10, `attrition` into +0x14. Its SaveContents is an empty `ret 4`, so an adjuster is read out of the mod's files and never written back.\n(BiceLib/GameClasses/CUnitAdjuster.hpp:32)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CUnitAdjuster introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -29041,6 +31330,31 @@
      {
       "name": "key",
       "type": "SaveToken"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1920544,
+   "namespace": "CUnitAdjuster",
+   "name": "Scale",
+   "confidence": "CERTAIN",
+   "evidence": "Multiplies an adjuster's attack, defence, movement and attrition by `factor / 1000`. Four muldivs and nothing else, which is what confirms those four are all a CUnitAdjuster holds.\n(BiceLib/GameClasses/CRegiment.hpp:99)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "adjuster",
+      "type": "CUnitAdjuster*",
+      "storage": "ESI"
+     },
+     {
+      "name": "factor",
+      "type": "int",
+      "storage": "stack:4"
      }
     ]
    },
@@ -33474,121 +35788,6 @@
    "labels": []
   },
   {
-   "rva": 3175952,
-   "namespace": "CGameSetup",
-   "name": "Save",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 1 of CPersistent, this class's own: the RTTI export says CGameSetup introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CGameSetup*"
-     },
-     {
-      "name": "writer",
-      "type": "CSaveWriter*"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 3179936,
-   "namespace": "CGameSetup",
-   "name": "SaveContents",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CGameSetup introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CGameSetup*"
-     },
-     {
-      "name": "writer",
-      "type": "CSaveWriter*"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 3184032,
-   "namespace": "CGameSetup",
-   "name": "Load",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 3 of CPersistent, this class's own: the RTTI export says CGameSetup introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CGameSetup*"
-     },
-     {
-      "name": "parse",
-      "type": "CParseContext*"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 3185808,
-   "namespace": "CGameSetup",
-   "name": "LoadKey",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CGameSetup introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CGameSetup*"
-     },
-     {
-      "name": "parse",
-      "type": "CParseContext*"
-     },
-     {
-      "name": "key",
-      "type": "SaveToken"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 3195056,
-   "namespace": "CGameSetup",
-   "name": "AfterLoad",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 5 of CPersistent, this class's own: the RTTI export says CGameSetup introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CGameSetup*"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
    "rva": 3741888,
    "namespace": "CEU3AI",
    "name": "GetTheatreSubUnitNeedCounts",
@@ -33625,56 +35824,6 @@
      {
       "name": "this",
       "type": "CCounterType*"
-     },
-     {
-      "name": "parse",
-      "type": "CParseContext*"
-     },
-     {
-      "name": "key",
-      "type": "SaveToken"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 4458720,
-   "namespace": "CEU3Graphics",
-   "name": "SaveContents",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CEU3Graphics introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CEU3Graphics*"
-     },
-     {
-      "name": "writer",
-      "type": "CSaveWriter*"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 4460144,
-   "namespace": "CEU3Graphics",
-   "name": "LoadKey",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CEU3Graphics introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CEU3Graphics*"
      },
      {
       "name": "parse",
@@ -39893,23 +42042,30 @@
    "labels": []
   },
   {
-   "rva": 6779488,
+   "rva": 6753968,
    "namespace": "CEU3Graphics",
-   "name": "Load",
+   "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 3 of CPersistent, this class's own: the RTTI export says CEU3Graphics introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CEU3Graphics introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CEU3Graphics + 4**, because that is where CPersistent sits in this class; add 4 to any offset here to get a CEU3Graphics one.",
    "signature": {
-    "convention": "__thiscall",
+    "convention": "__stdcall",
     "return": "void",
     "hiddenReturn": false,
     "params": [
      {
-      "name": "this",
-      "type": "CEU3Graphics*"
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
      },
      {
       "name": "parse",
-      "type": "CParseContext*"
+      "type": "CParseContext*",
+      "storage": "stack:4"
+     },
+     {
+      "name": "key",
+      "type": "SaveToken",
+      "storage": "stack:8"
      }
     ]
    },
@@ -40131,115 +42287,30 @@
    "labels": []
   },
   {
-   "rva": 6802416,
+   "rva": 6805248,
    "namespace": "CEU3Gui",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CEU3Gui introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CEU3Gui introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CEU3Gui + 4**, because that is where CPersistent sits in this class; add 4 to any offset here to get a CEU3Gui one.",
    "signature": {
-    "convention": "__thiscall",
+    "convention": "__stdcall",
     "return": "void",
     "hiddenReturn": false,
     "params": [
      {
-      "name": "this",
-      "type": "CEU3Gui*"
+      "name": "base",
+      "type": "void*",
+      "storage": "ECX"
      },
      {
       "name": "parse",
-      "type": "CParseContext*"
+      "type": "CParseContext*",
+      "storage": "stack:4"
      },
      {
       "name": "key",
-      "type": "SaveToken"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 6802496,
-   "namespace": "CEU3Gui",
-   "name": "AfterLoad",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 5 of CPersistent, this class's own: the RTTI export says CEU3Gui introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CEU3Gui*"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 6802608,
-   "namespace": "CEU3Gui",
-   "name": "Load",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 3 of CPersistent, this class's own: the RTTI export says CEU3Gui introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CEU3Gui*"
-     },
-     {
-      "name": "parse",
-      "type": "CParseContext*"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 6803696,
-   "namespace": "CEU3Gui",
-   "name": "Save",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 1 of CPersistent, this class's own: the RTTI export says CEU3Gui introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CEU3Gui*"
-     },
-     {
-      "name": "writer",
-      "type": "CSaveWriter*"
-     }
-    ]
-   },
-   "labels": []
-  },
-  {
-   "rva": 6805024,
-   "namespace": "CEU3Gui",
-   "name": "SaveContents",
-   "confidence": "CERTAIN",
-   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CEU3Gui introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
-   "signature": {
-    "convention": "__thiscall",
-    "return": "void",
-    "hiddenReturn": false,
-    "params": [
-     {
-      "name": "this",
-      "type": "CEU3Gui*"
-     },
-     {
-      "name": "writer",
-      "type": "CSaveWriter*"
+      "type": "SaveToken",
+      "storage": "stack:8"
      }
     ]
    },
@@ -42187,6 +44258,69 @@
    "type": null
   },
   {
+   "rva": 18792228,
+   "namespace": "CAIStrategy",
+   "name": "vftable",
+   "kind": "vftable",
+   "confidence": "CERTAIN",
+   "evidence": "CAIStrategy vftable (RTTI, base CPersistent). One per country - read live, 326 of them.\n(BiceLib/GameClasses/CAIStrategy.hpp:24)",
+   "type": null
+  },
+  {
+   "rva": 19967672,
+   "namespace": "",
+   "name": "g_convoy_id",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "the running id the game hands out next for a convoy, saved as the key `convoy` and written straight back by CGameState::LoadKey\n(BiceLib/GameClasses/CCurrentGameState.hpp:76)",
+   "type": null
+  },
+  {
+   "rva": 19967676,
+   "namespace": "",
+   "name": "g_theatre_id",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "the running id the game hands out next for a theatre, saved as the key `theatre` and written straight back by CGameState::LoadKey\n(BiceLib/GameClasses/CCurrentGameState.hpp:77)",
+   "type": null
+  },
+  {
+   "rva": 19967760,
+   "namespace": "",
+   "name": "g_leader_id",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "the running id the game hands out next for a leader, saved as the key `leader` and written straight back by CGameState::LoadKey\n(BiceLib/GameClasses/CCurrentGameState.hpp:78)",
+   "type": null
+  },
+  {
+   "rva": 19967864,
+   "namespace": "",
+   "name": "g_unit_id",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "the running id the game hands out next for a unit, saved as the key `unit` and written straight back by CGameState::LoadKey\n(BiceLib/GameClasses/CCurrentGameState.hpp:79)",
+   "type": null
+  },
+  {
+   "rva": 19967868,
+   "namespace": "",
+   "name": "g_rebel_id",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "the running id the game hands out next for a rebel, saved as the key `rebel` and written straight back by CGameState::LoadKey\n(BiceLib/GameClasses/CCurrentGameState.hpp:80)",
+   "type": null
+  },
+  {
+   "rva": 19992448,
+   "namespace": "",
+   "name": "g_random_seed",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "the random number generator's seed, saved as `seed`\n(BiceLib/GameClasses/CCurrentGameState.hpp:81)",
+   "type": null
+  },
+  {
    "rva": 20001428,
    "namespace": "",
    "name": "MonthLengthTable",
@@ -42194,6 +44328,15 @@
    "confidence": "CERTAIN",
    "evidence": "Table of month lengths in days (31, 28, 31, ...) used by the date helpers.\n(reversing/FINDINGS-autosave.md:76)",
    "type": "int[12]"
+  },
+  {
+   "rva": 20241036,
+   "namespace": "",
+   "name": "g_random_draws",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "how much has been drawn from the generator, saved as `count` right after `seed` - the pair is what makes a save replay the same way\n(BiceLib/GameClasses/CCurrentGameState.hpp:82)",
+   "type": null
   },
   {
    "rva": 23614844,
@@ -46487,36 +48630,96 @@
      "rva": 1836352,
      "name": "SaveContents",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 2, 005C0540"
+     "comment": "slot 2, 005C0540 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
     },
     {
      "slot": 3,
      "rva": 1854240,
      "name": "Load",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 3, 005C4B20"
+     "comment": "slot 3, 005C4B20 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       }
+      ]
+     }
     },
     {
      "slot": 4,
      "rva": 1836528,
      "name": "LoadKey",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 4, 005C05F0"
+     "comment": "slot 4, 005C05F0 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       },
+       {
+        "name": "key",
+        "type": "SaveToken"
+       }
+      ]
+     }
     },
     {
      "slot": 5,
      "rva": 1837872,
      "name": "AfterLoad",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 5, 005C0B30"
+     "comment": "slot 5, 005C0B30 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
     },
     {
      "slot": 6,
@@ -46891,24 +49094,9 @@
      "rva": 1902256,
      "name": "SaveContents",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 2, 005D06B0 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "writer",
-        "type": "CSaveWriter*"
-       }
-      ]
-     }
+     "comment": "slot 2, 005D06B0"
     },
     {
      "slot": 3,
@@ -46924,48 +49112,18 @@
      "rva": 1901856,
      "name": "LoadKey",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 4, 005D0520 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "parse",
-        "type": "CParseContext*"
-       },
-       {
-        "name": "key",
-        "type": "SaveToken"
-       }
-      ]
-     }
+     "comment": "slot 4, 005D0520"
     },
     {
      "slot": 5,
      "rva": 1802448,
      "name": "AfterLoad",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 5, 005B80D0 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       }
-      ]
-     }
+     "comment": "slot 5, 005B80D0"
     },
     {
      "slot": 6,
@@ -47919,36 +50077,96 @@
      "rva": 1836352,
      "name": "SaveContents",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 2, 005C0540"
+     "comment": "slot 2, 005C0540 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
     },
     {
      "slot": 3,
      "rva": 1854240,
      "name": "Load",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 3, 005C4B20"
+     "comment": "slot 3, 005C4B20 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       }
+      ]
+     }
     },
     {
      "slot": 4,
      "rva": 1836528,
      "name": "LoadKey",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 4, 005C05F0"
+     "comment": "slot 4, 005C05F0 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       },
+       {
+        "name": "key",
+        "type": "SaveToken"
+       }
+      ]
+     }
     },
     {
      "slot": 5,
      "rva": 1837872,
      "name": "AfterLoad",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 5, 005C0B30"
+     "comment": "slot 5, 005C0B30 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
     },
     {
      "slot": 6,
@@ -48305,24 +50523,9 @@
      "rva": 1895632,
      "name": "SaveContents",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 2, 005CECD0 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "writer",
-        "type": "CSaveWriter*"
-       }
-      ]
-     }
+     "comment": "slot 2, 005CECD0"
     },
     {
      "slot": 3,
@@ -48338,48 +50541,18 @@
      "rva": 1895488,
      "name": "LoadKey",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 4, 005CEC40 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "parse",
-        "type": "CParseContext*"
-       },
-       {
-        "name": "key",
-        "type": "SaveToken"
-       }
-      ]
-     }
+     "comment": "slot 4, 005CEC40"
     },
     {
      "slot": 5,
      "rva": 1802448,
      "name": "AfterLoad",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 5, 005B80D0 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       }
-      ]
-     }
+     "comment": "slot 5, 005B80D0"
     },
     {
      "slot": 6,
@@ -54911,24 +57084,9 @@
      "rva": 317248,
      "name": "SaveContents",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 2, 0044D740 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "writer",
-        "type": "CSaveWriter*"
-       }
-      ]
-     }
+     "comment": "slot 2, 0044D740"
     },
     {
      "slot": 3,
@@ -54944,28 +57102,9 @@
      "rva": 317280,
      "name": "LoadKey",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 4, 0044D760 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "parse",
-        "type": "CParseContext*"
-       },
-       {
-        "name": "key",
-        "type": "SaveToken"
-       }
-      ]
-     }
+     "comment": "slot 4, 0044D760"
     },
     {
      "slot": 5,
@@ -54986,6 +57125,88 @@
        }
       ]
      }
+    }
+   ]
+  },
+  {
+   "name": "CGameState_vftable",
+   "class": "CGameState",
+   "rva": 18675236,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 2611440,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 0067D8F0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 2615024,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 0067E6F0"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 2620592,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 0067FCB0"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 2601168,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 6, 0067B0D0"
     }
    ]
   },
@@ -63268,36 +65489,96 @@
      "rva": 1836352,
      "name": "SaveContents",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 2, 005C0540"
+     "comment": "slot 2, 005C0540 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
     },
     {
      "slot": 3,
      "rva": 1854240,
      "name": "Load",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 3, 005C4B20"
+     "comment": "slot 3, 005C4B20 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       }
+      ]
+     }
     },
     {
      "slot": 4,
      "rva": 1836528,
      "name": "LoadKey",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 4, 005C05F0"
+     "comment": "slot 4, 005C05F0 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       },
+       {
+        "name": "key",
+        "type": "SaveToken"
+       }
+      ]
+     }
     },
     {
      "slot": 5,
      "rva": 1837872,
      "name": "AfterLoad",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 5, 005C0B30"
+     "comment": "slot 5, 005C0B30 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
     },
     {
      "slot": 6,
@@ -63672,24 +65953,9 @@
      "rva": 1899168,
      "name": "SaveContents",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 2, 005CFAA0 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "writer",
-        "type": "CSaveWriter*"
-       }
-      ]
-     }
+     "comment": "slot 2, 005CFAA0"
     },
     {
      "slot": 3,
@@ -63705,48 +65971,18 @@
      "rva": 1898144,
      "name": "LoadKey",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 4, 005CF6A0 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "parse",
-        "type": "CParseContext*"
-       },
-       {
-        "name": "key",
-        "type": "SaveToken"
-       }
-      ]
-     }
+     "comment": "slot 4, 005CF6A0"
     },
     {
      "slot": 5,
      "rva": 1802448,
      "name": "AfterLoad",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 5, 005B80D0 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       }
-      ]
-     }
+     "comment": "slot 5, 005B80D0"
     },
     {
      "slot": 6,
@@ -65604,27 +67840,72 @@
      "rva": 754640,
      "name": "Load",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 3, 004B83D0"
+     "comment": "slot 3, 004B83D0 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       }
+      ]
+     }
     },
     {
      "slot": 4,
      "rva": 755904,
      "name": "LoadKey",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 4, 004B88C0"
+     "comment": "slot 4, 004B88C0 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       },
+       {
+        "name": "key",
+        "type": "SaveToken"
+       }
+      ]
+     }
     },
     {
      "slot": 5,
      "rva": 756144,
      "name": "AfterLoad",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 5, 004B89B0"
+     "comment": "slot 5, 004B89B0 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
     },
     {
      "slot": 6,
@@ -65684,48 +67965,18 @@
      "rva": 754432,
      "name": "SaveContents",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 2, 004B8300 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "writer",
-        "type": "CSaveWriter*"
-       }
-      ]
-     }
+     "comment": "slot 2, 004B8300"
     },
     {
      "slot": 3,
      "rva": 754336,
      "name": "Load",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 3, 004B82A0 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "parse",
-        "type": "CParseContext*"
-       }
-      ]
-     }
+     "comment": "slot 3, 004B82A0"
     },
     {
      "slot": 4,
@@ -67243,6 +69494,158 @@
    ]
   },
   {
+   "name": "CShip_vftable",
+   "class": "CShip",
+   "rva": 18643572,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 1760176,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 005ADBB0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 1760560,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 005ADD30"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 1760240,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 005ADBF0"
+    },
+    {
+     "slot": 5,
+     "rva": 1741104,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 5, 005A9130"
+    },
+    {
+     "slot": 6,
+     "rva": 6934608,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 6, 00A9D050"
+    },
+    {
+     "slot": 7,
+     "rva": 6934528,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 00A9D000"
+    },
+    {
+     "slot": 8,
+     "rva": 7105616,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 8, 00AC6C50"
+    },
+    {
+     "slot": 9,
+     "rva": 1647456,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 9, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 10,
+     "rva": 6890896,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 10, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 11,
+     "rva": 1647456,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 11, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 12,
+     "rva": 1750656,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 12, 005AB680 - a body shared with CRegiment::GetMaxStrength, so not named here"
+    },
+    {
+     "slot": 13,
+     "rva": 1760640,
+     "name": "vf_13",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 13, 005ADD80"
+    },
+    {
+     "slot": 14,
+     "rva": 534672,
+     "name": "vf_14",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 14, 00482890"
+    },
+    {
+     "slot": 15,
+     "rva": 1758448,
+     "name": "vf_15",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 15, 005AD4F0"
+    }
+   ]
+  },
+  {
    "name": "CStartResearchCommand_vftable",
    "class": "CStartResearchCommand",
    "rva": 18628788,
@@ -67823,6 +70226,158 @@
      "typed": true,
      "own": true,
      "comment": "slot 5, 00530C90"
+    }
+   ]
+  },
+  {
+   "name": "CSubUnit_vftable",
+   "class": "CSubUnit",
+   "rva": 18643444,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 545376,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 00485260"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 1741472,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 005A92A0"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 1739760,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 005A8BF0"
+    },
+    {
+     "slot": 5,
+     "rva": 1741104,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 5, 005A9130"
+    },
+    {
+     "slot": 6,
+     "rva": 6934608,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 6, 00A9D050"
+    },
+    {
+     "slot": 7,
+     "rva": 6934528,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 00A9D000"
+    },
+    {
+     "slot": 8,
+     "rva": 7105616,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 8, 00AC6C50"
+    },
+    {
+     "slot": 9,
+     "rva": 1647456,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 9, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 10,
+     "rva": 1647456,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 10, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 11,
+     "rva": 1647456,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 11, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 12,
+     "rva": 1750656,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 12, 005AB680 - a body shared with CRegiment::GetMaxStrength, so not named here"
+    },
+    {
+     "slot": 13,
+     "rva": 7954901,
+     "name": "vf_13",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 13, 00B961D5 - a body shared with _purecall, so not named here"
+    },
+    {
+     "slot": 14,
+     "rva": 534672,
+     "name": "vf_14",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 14, 00482890"
+    },
+    {
+     "slot": 15,
+     "rva": 7954901,
+     "name": "vf_15",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 15, 00B961D5 - a body shared with _purecall, so not named here"
     }
    ]
   },
@@ -69207,36 +71762,96 @@
      "rva": 1836352,
      "name": "SaveContents",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 2, 005C0540"
+     "comment": "slot 2, 005C0540 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
     },
     {
      "slot": 3,
      "rva": 1854240,
      "name": "Load",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 3, 005C4B20"
+     "comment": "slot 3, 005C4B20 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       }
+      ]
+     }
     },
     {
      "slot": 4,
      "rva": 1836528,
      "name": "LoadKey",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 4, 005C05F0"
+     "comment": "slot 4, 005C05F0 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       },
+       {
+        "name": "key",
+        "type": "SaveToken"
+       }
+      ]
+     }
     },
     {
      "slot": 5,
      "rva": 1837872,
      "name": "AfterLoad",
      "named": true,
-     "typed": true,
+     "typed": false,
      "own": true,
-     "comment": "slot 5, 005C0B30"
+     "comment": "slot 5, 005C0B30 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
     },
     {
      "slot": 6,
@@ -69593,24 +72208,9 @@
      "rva": 1802608,
      "name": "SaveContents",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 2, 005B8170 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "writer",
-        "type": "CSaveWriter*"
-       }
-      ]
-     }
+     "comment": "slot 2, 005B8170"
     },
     {
      "slot": 3,
@@ -69626,48 +72226,18 @@
      "rva": 1797776,
      "name": "LoadKey",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 4, 005B6E90 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "parse",
-        "type": "CParseContext*"
-       },
-       {
-        "name": "key",
-        "type": "SaveToken"
-       }
-      ]
-     }
+     "comment": "slot 4, 005B6E90"
     },
     {
      "slot": 5,
      "rva": 1802448,
      "name": "AfterLoad",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 5, 005B80D0 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       }
-      ]
-     }
+     "comment": "slot 5, 005B80D0"
     },
     {
      "slot": 6,
@@ -70115,24 +72685,9 @@
      "rva": 487520,
      "name": "SaveContents",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 2, 00477060 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "writer",
-        "type": "CSaveWriter*"
-       }
-      ]
-     }
+     "comment": "slot 2, 00477060"
     },
     {
      "slot": 3,
@@ -70148,28 +72703,9 @@
      "rva": 487552,
      "name": "LoadKey",
      "named": true,
-     "typed": false,
+     "typed": true,
      "own": true,
-     "comment": "slot 4, 00477080 - CPersistent's slot, named by BiceLib, typed from the findings",
-     "signature": {
-      "convention": "__thiscall",
-      "return": "void",
-      "hiddenReturn": false,
-      "params": [
-       {
-        "name": "this",
-        "type": "CPersistent*"
-       },
-       {
-        "name": "parse",
-        "type": "CParseContext*"
-       },
-       {
-        "name": "key",
-        "type": "SaveToken"
-       }
-      ]
-     }
+     "comment": "slot 4, 00477080"
     },
     {
      "slot": 5,
@@ -70380,6 +72916,158 @@
        }
       ]
      }
+    }
+   ]
+  },
+  {
+   "name": "CWing_vftable",
+   "class": "CWing",
+   "rva": 18603460,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 545376,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 00485260"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 1741472,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 005A92A0"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 1739760,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 005A8BF0"
+    },
+    {
+     "slot": 5,
+     "rva": 1741104,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 5, 005A9130"
+    },
+    {
+     "slot": 6,
+     "rva": 6934608,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 6, 00A9D050"
+    },
+    {
+     "slot": 7,
+     "rva": 6934528,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 00A9D000"
+    },
+    {
+     "slot": 8,
+     "rva": 7105616,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 8, 00AC6C50"
+    },
+    {
+     "slot": 9,
+     "rva": 1647456,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 9, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 10,
+     "rva": 1647456,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 10, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 11,
+     "rva": 6890896,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 11, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 12,
+     "rva": 1750656,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 12, 005AB680 - a body shared with CRegiment::GetMaxStrength, so not named here"
+    },
+    {
+     "slot": 13,
+     "rva": 1760640,
+     "name": "vf_13",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 13, 005ADD80"
+    },
+    {
+     "slot": 14,
+     "rva": 534672,
+     "name": "vf_14",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 14, 00482890"
+    },
+    {
+     "slot": 15,
+     "rva": 355792,
+     "name": "vf_15",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 15, 00456DD0"
     }
    ]
   },

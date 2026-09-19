@@ -383,6 +383,21 @@ def folded_across_classes(holders, rtti, va):
                    for candidate in owners)
 
 
+def base_offset(rtti, name, target, seen=None, at=0):
+    """Where target sits inside name, or None when it is not a base of it at all."""
+    if name == target:
+        return at
+    seen = seen if seen is not None else set()
+    if name in seen or name not in rtti:
+        return None
+    seen.add(name)
+    for b in rtti[name].get("bases", []):
+        found = base_offset(rtti, b["name"], target, seen, at + b.get("offset", 0))
+        if found is not None:
+            return found
+    return None
+
+
 def ancestors_of(rtti, name, seen=None):
     seen = seen if seen is not None else set()
     if name in seen or name not in rtti:
@@ -489,6 +504,21 @@ PERSISTENT_SLOTS = {
     3: ("Load", "void __thiscall %s::Load(%s* this, CParseContext* parse)"),
     4: ("LoadKey", "void __thiscall %s::LoadKey(%s* this, CParseContext* parse, SaveToken key)"),
     5: ("AfterLoad", "void __thiscall %s::AfterLoad(%s* this)"),
+}
+
+# The same five where CPersistent sits at a non-zero offset. `this` is that subobject, not
+# the class, and __thiscall will not say so - Ghidra gives a method in a class namespace a
+# `this` of its own type whatever the findings write - so the place goes in by hand. The
+# type is void*, not CPersistent*: a CPersistent is four bytes here, and Ghidra would index
+# the pointer as an array of them rather than showing the offsets.
+PERSISTENT_SLOTS_AT = {
+    1: ("Save", "void __stdcall %s::Save(void* base@ECX, CSaveWriter* writer@stack:4)"),
+    2: ("SaveContents",
+        "void __stdcall %s::SaveContents(void* base@ECX, CSaveWriter* writer@stack:4)"),
+    3: ("Load", "void __stdcall %s::Load(void* base@ECX, CParseContext* parse@stack:4)"),
+    4: ("LoadKey", "void __stdcall %s::LoadKey(void* base@ECX, "
+                   "CParseContext* parse@stack:4, SaveToken key@stack:8)"),
+    5: ("AfterLoad", "void __stdcall %s::AfterLoad(void* base@ECX)"),
 }
 
 # The bodies CPersistent itself provides: named once, under CPersistent, and the two empty
@@ -701,18 +731,34 @@ def main():
     # inherited from a base is left to the base and a body shared with an unrelated class -
     # the empty defaults - is left alone.
     for name, cls in sorted(rtti.items()):
-        if "CPersistent" not in ancestors_of(rtti, name) or not VALID_CLASS.match(name):
+        if not VALID_CLASS.match(name):
+            continue
+        # Which table the five sit in depends on where CPersistent sits in the object. A
+        # class that reaches it through a base at a non-zero offset - CUnit gets there
+        # through CReferenceObject at +8 - keeps them in that base's table, and the primary
+        # table's slots 1 to 5 are something else entirely.
+        at = base_offset(rtti, name, "CPersistent")
+        if at is None:
             continue
         for i in cls.get("introduces", []):
             slot, va = i["slot"], int(i["address"], 16)
-            if i.get("vftable_offset", 0) or slot not in PERSISTENT_SLOTS or va in PERSISTENT_BASE:
+            if i.get("vftable_offset", 0) != at or slot not in PERSISTENT_SLOTS                or va in PERSISTENT_BASE:
                 continue
-            method, shape = PERSISTENT_SLOTS[slot]
-            add_function(va - IMAGE_BASE, name, method, "CERTAIN",
-                         "Slot %d of CPersistent, this class's own: the RTTI export says %s "
-                         "introduced the implementation at this address. See "
-                         "GameClasses/CPersistent.hpp for what the five do." % (slot, name),
-                         parse_prototype(shape % (name, name)), proven=True)
+            method, shape = (PERSISTENT_SLOTS if at == 0 else PERSISTENT_SLOTS_AT)[slot]
+            # Where CPersistent sits at a non-zero offset the call hands over that
+            # subobject, not the class - `this` is `<class> + at` - so typing the parameter
+            # as the class would read every field eight or twelve bytes early.
+            this = name if at == 0 else "CPersistent"
+            note = ("Slot %d of CPersistent, this class's own: the RTTI export says %s "
+                    "introduced the implementation at this address. See "
+                    "GameClasses/CPersistent.hpp for what the five do." % (slot, name))
+            if at:
+                note += (" **`this` is the CPersistent subobject, %s + %d**, because that is "
+                         "where CPersistent sits in this class; add %d to any offset here to "
+                         "get a %s one." % (name, at, at, name))
+            prototype = shape % ((this, this) if at == 0 else (name,))
+            add_function(va - IMAGE_BASE, name, method, "CERTAIN", note,
+                         parse_prototype(prototype), proven=True)
 
     # ---- structures ----
     structs = collections.OrderedDict()
@@ -777,6 +823,33 @@ def main():
                 for f in s["fields"]:
                     if f["name"] in ("first", "last"):
                         f["type"] = "CListNode<%s>*" % element
+    # Ghidra has no inheritance between structures: a derived class only reads well if its
+    # base's fields are laid out on it too. `"inherits"` in project.json names a base that
+    # sits at offset 0, and its fields are copied in - a field the derived class declares
+    # itself always wins.
+    inherits = {p["name"]: p["inherits"] for p in project["structs"] if p.get("inherits")}
+    inherited = set()
+
+    def inherit(name, seen=()):
+        if name in inherited or name in seen:
+            return
+        base = inherits.get(name)
+        if base:
+            inherit(base, seen + (name,))
+        inherited.add(name)
+        if base is None:
+            return
+        if base not in structs:
+            print("! %s inherits %s, which nothing lays out" % (name, base))
+            return
+        s = struct(name)
+        taken = {f["offset"] for f in s["fields"]}
+        for f in structs[base]["fields"]:
+            if f["offset"] not in taken:
+                s["fields"].append(dict(f, comment="%s, inherited from %s" % (f["comment"], base)))
+
+    for name in list(inherits):
+        inherit(name)
     TYPE_MAP = {"pointer": "undefined4", "uintptr_t": "undefined4", "uint8_t": "unsigned char", "int8_t": "signed char",
                 "uint16_t": "unsigned short", "int16_t": "short", "uint32_t": "unsigned int", "int32_t": "int",
                 "DWORD": "unsigned int", "BYTE": "unsigned char", "WORD": "unsigned short",

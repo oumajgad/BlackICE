@@ -50,7 +50,34 @@ namespace CSubUnitDefinition {
         constexpr uintptr_t can_paradrop = 0x38;
 
         constexpr uintptr_t is_buildable = 0x36;          // boolean
-        constexpr uintptr_t CUnitAdjuster_ptr = 0x54;     // Terrain modifiers
+        /**
+         * **The terrain modifiers**, a vector of CUnitAdjuster (CUnitAdjuster.hpp): begin
+         * here, end at +0x58,
+         * 0x18 bytes each and **indexed by terrain id**. **Read live**: 45 entries on every
+         * definition, of which 28 are non-zero on an engineer_brigade, and they are the
+         * unit file's terrain blocks to the digit - entry 16 is `urban`, 17 `plains`, 18
+         * `woods`, 32 `mountain`.
+         */
+        constexpr uintptr_t terrain_adjusters = 0x54;
+        constexpr uintptr_t terrain_adjusters_end = 0x58;
+
+        /**
+         * **The four environments that are not terrain**, a CUnitAdjuster each, held by
+         * value. Named by reading each one's value back against the unit files: for
+         * `armor_brigade` `fort` is `{0.55, 0.55}`, `river` `{-0.5, 0.35, -0.75}` and
+         * `amphibious` `{-1.1, -1.1}`, and `night` is `0.7` attack on a commando_brigade,
+         * `0.5` on a paratrooper_brigade and -2.0 movement on a naval_corps_hq_brigade -
+         * all exactly what those files say.
+         */
+        constexpr uintptr_t night = 0x64;
+        constexpr uintptr_t fort = 0x7C;
+        constexpr uintptr_t river = 0x94;
+        constexpr uintptr_t amphibious = 0xAC;
+
+        /**@brief a second vector of CUnitAdjuster, walked by the same code as the terrain
+           one. **Read live**: empty on every definition in this mod*/
+        constexpr uintptr_t other_adjusters = 0xC4;
+        constexpr uintptr_t other_adjusters_end = 0xC8;
         /**
          * **The technology category this type's build cost is discounted by**, a
          * CTechnologyCategory* - the same mechanism buildings use.

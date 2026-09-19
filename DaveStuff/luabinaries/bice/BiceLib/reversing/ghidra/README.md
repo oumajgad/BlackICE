@@ -7,6 +7,7 @@ from `bicelib_findings.json`, which sits next to it.
 | --- | --- |
 | `ApplyBiceLibFindings.java` | the Ghidra script |
 | `ResetBiceLibFunction.java` | hands one function back to it, when your own edit of it should give way |
+| `ResetBiceLibOrphans.java` | clears names it put down and has since withdrawn |
 | `bicelib_findings.json` | what it applies; built, do not edit |
 | `luabindExtract.py` | recovers the Lua API's C++ functions from the executable -> `luabind.json` |
 | `project.json` | everything else BiceLib has found; **add new findings here** |
@@ -54,6 +55,22 @@ name stays behind as a label of yours, the next function made there takes it up 
 the script goes on deferring to it. Run this on the address instead - with the function
 already gone it removes that label, and the next run makes the function and names it.
 
+**A name the findings withdraw does not clear itself.** The apply script only ever writes,
+so when a name turns out to be wrong and the build stops making it, the old one and its
+`[BiceLib]` plate stay in the program saying something false. `ResetBiceLibOrphans` finds
+them by comparing the program against the findings - every function carrying a `[BiceLib]`
+plate that the findings no longer name - and puts each back to `FUN_...`, lowering the
+signature and taking out the script's block while keeping anything you wrote around it. A
+name you set yourself is left alone and reported.
+
+    ResetBiceLibOrphans list          what would be cleared, changing nothing
+    ResetBiceLibOrphans               do it
+    ResetBiceLibOrphans 0x005c0540    clear exactly these, claimed or not
+
+Then run `ApplyBiceLibFindings` to name whatever the findings now put there. It was written
+for the day five classes were named off the wrong virtual table; it found all twenty without
+being told which.
+
 **To have the findings win instead**, run `ApplyBiceLibFindingsOverwrite` (it asks once
 before it starts), or headless `-postScript ApplyBiceLibFindings.java overwrite`. Every name
 and signature the findings cover is replaced whoever set it, struct fields are replaced
@@ -95,6 +112,21 @@ one Ghidra writes as an OR of the members that add up to it: `token.type = 0xC` 
 does. The build fills every gap below the highest id, naming what it can and using the id
 otherwise.
 
+**Do not declare a `vftable` field at +0 in `project.json`.** The script places that pointer
+itself, typed as the class's own virtual table structure, so a field of your own there is
+overwritten by the vftable pass on every run and put back by the field pass on the next -
+two writes a run, for ever. The symptom is an apply that never settles to `struct fields: 0`
+however often it is run. Leave +0 alone and the class still gets its pointer.
+
+**Ghidra has no inheritance between structures**, so a derived class reads as a wall of
+`field_0x30` however well its base is laid out. `"inherits"` on a `project.json` struct
+names a base that sits at offset 0 and copies its fields in, and a field the derived class
+declares itself always wins. `CRegiment`, `CShip` and `CWing` take `CSubUnit`'s that way,
+and `CArmy`, `CNavy` and `CAir` take `CUnit`'s, which is what makes a decompiled `CArmy`
+read like the unit it is. The base has to be a base **at offset 0**: where it sits further
+in, its fields are at their own offsets on the derived class and copying them would put
+every one of them in the wrong place.
+
 **Virtual tables**: a structure per table, and a pointer to it on the class, so a call
 through one reads as `unit->vftable->GetAverageOrganisation()` rather than
 `(**(*unit + 0x50))()`. The tables are read out of the executable and their length comes
@@ -126,6 +158,14 @@ export - a class's `introduces` list is the implementations it wrote itself - so
 inherited is left to the base it came from, and the empty defaults `CPersistent` supplies are
 left alone, since hundreds of unrelated classes share those. The names are built, not
 written out: `buildFindings.py` walks the export.
+
+**Where the base sits matters.** A class reaches CPersistent through a base at a non-zero
+offset in five cases here - `CUnit` and `CProvinceBuilding` at +8, `CGameSetup` at +12,
+`CEU3Gui` and `CEU3Graphics` at +4 - and then the five virtuals are in *that* base's table,
+not the primary one, and `this` is the subobject rather than the class. The build follows the
+offset, and writes those signatures as `__stdcall` with `void* base@ECX`: a method in a class
+namespace has its `this` forced to the class's own type by Ghidra, so saying it any other way
+does not survive. Add the offset to anything read off `base` to get a class offset.
 
 **A class the compiler wrote no table for still gets one.** `CPersistent` is never
 instantiated, so there is no table of its own anywhere in the image - but its own methods

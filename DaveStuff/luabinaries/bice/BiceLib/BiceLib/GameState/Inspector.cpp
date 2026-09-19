@@ -9,6 +9,7 @@
 #include <GameClasses/CUnit.hpp>
 #include <GameClasses/CSubUnitDefinition.hpp>
 #include <GameClasses/CTerrain.hpp>
+#include <GameClasses/CUnitAdjuster.hpp>
 
 namespace {
     using namespace Inspector;
@@ -150,7 +151,7 @@ namespace {
         }
 
         uintptr_t adjusterArrayPtr = 0;
-        if (!Mem::tryRead(subUnitDefinitionPtr + CSubUnitDefinition::Offsets::CUnitAdjuster_ptr, adjusterArrayPtr) ||
+        if (!Mem::tryRead(subUnitDefinitionPtr + CSubUnitDefinition::Offsets::terrain_adjusters, adjusterArrayPtr) ||
             adjusterArrayPtr == 0) {
             return;
         }
@@ -172,9 +173,8 @@ namespace {
                 continue;
             }
 
-            // 24 => sizeof(CUnitAdjuster) in the game
-            HDS::CUnitAdjuster adjuster;
-            if (!Mem::tryRead(adjusterArrayPtr + (terrain->id * 24), adjuster)) {
+            CUnitAdjuster::CUnitAdjuster adjuster;
+            if (!Mem::tryRead(adjusterArrayPtr + (terrain->id * CUnitAdjuster::SIZE), adjuster)) {
                 entity.terrain.clear();
                 return;
             }

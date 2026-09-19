@@ -479,6 +479,169 @@ entry is proof on its own.
 `CDefines` itself comes from `GetDefines` (`0x45D90`), which makes it on first use and
 keeps it at `0x1686040`.
 
+### What the save keys named on a sub unit
+
+`CRegiment` is a name BiceLib picked; the game's class is **`CSubUnit`**, and `CRegiment`,
+`CShip` and `CWing` all derive from it at offset 0. **`CRegiment` and `CWing` override none
+of its virtuals** - all three share one vtable body for the save path - so everything below
+holds for a brigade, a ship and an air wing alike. That is why the order of battle has
+always read air and naval sub units through the land offsets without anything looking
+wrong. `CShip` overrides two slots only to add its carrier wings.
+
+`CSubUnit::SaveContents` (`0x1A92A0`) and `CSubUnit::LoadKey` (`0x1A8BF0`) name the class
+between them, and a `regiment=` block in a save shows the same keys in the same order:
+
+| Key | Offset | |
+| --- | --- | --- |
+| `id` | +0x08 | an object id: **the type half is first in memory and second in the save** |
+| `name` | +0x68 | |
+| `home` | +0x64 | a `CMapProvince*`; the save carries that province's id |
+| `type` | +0x58 | the `CSubUnitDefinition*`, by its name |
+| `organisation` | +0x60 | x1000 |
+| `strength` | +0x5C | |
+| `highest` | +0x30 | the ceiling BiceLib calls `strength_ceiling` - **the game's own name for it is `highest`** |
+| `experience` | +0x3C | x1000 |
+| `current_distance` | +0xC8 | written only where the unit is fighting |
+| `builder` | +0x34 | a `CCountryTag`, written only where its id half is set |
+| `is_reserve` | +0xA4 | a byte, written only when true |
+| `pride` | +0xA5 | a byte, the pride of the fleet |
+| `sunk_by` | +0x9C | an object id, written unless it is the game's "no object" pair |
+| `historical_model` | +0xD0 | -1 where it is none |
+| `air` | +0xDC | `CShip` only, past the end of a `CRegiment` |
+
+Everything checks out live: `home` is a `CMapProvince` and `+0xB0` a `CArmy` by their own
+RTTI, `is_reserve` is set on 1184 of 4000 regiments, `pride` on 31 of 3736 ships, `sunk_by`
+on 1123 of them, and `historical_model` is -1 on 3940 of 4000.
+
+**`current_distance` is the distance in a battle.** The writer only writes it where the
+regiment's unit has a combat, and the guard is a list at **`CUnit + 0x114`** whose nodes
+hold a `CLandCombat` (**read live**: 168 of 2000 armies, first and last equal with a count
+of 1 on a unit in one battle). It is 0.000 on every regiment in a running game and in every
+save looked at, so nothing is known about what a real distance would be.
+
+### The technologies a regiment carries
+
+The save writes a line per technology on every sub unit, keyed by **the technology's own
+name**, which is why they do not appear in the token table as keys at all:
+
+```
+infantry_activation={5 0.000}
+camo_designs={2 0.000}
+Panzerfaust_Bazooka_AT_Tech={0 0.000}
+```
+
+They come out of a list at **+0x84**, laid out like the game's other `CList`: first, last,
+count and a byte. The element is 12 bytes held by value - the `CTechnology*`, the level,
+and a fixed point - so the whole node is 0x18 with prev at +0xC and next at +0x10. The
+loader looks each key up in the technology database (`0x140D00`), which is what says these
+are technologies, and **read live** the first word of every node is a `CTechnology` by its
+own RTTI.
+
+`CSubUnit::SetType` (`0x1ABF30`) builds the list when a sub unit is given its definition,
+one node per entry of `CSubUnitDefinition::technologies` (+0x44 to +0x48), each at level
+zero. **A regiment therefore keeps the tech state it was raised with** while its country's
+moves on. `CSubUnit::ApplyTechnologies` (`0x1ABFC0`) walks the list and applies each
+technology's effects at the level the node carries.
+
+**This is what `extra_consumption` (+0xCC) is**: the last thing `ApplyTechnologies` does is
+add every node's level up and store the total there. That field was known to be a cached
+total of "the second dword of every element of the list at +0x84" with the list unexplained;
+it is the sum of the technology levels. **Read live**: it is exactly that sum on all 10254
+regiments, ships and wings in a running game, without one exception. So a regiment's supply
+and fuel bill rises by 1% per technology level it was built with - 84 to 95 points on the
+ones measured, which is close to double what the definition asks.
+
+The third number in a node, which the save writes after the level, is **how far the
+regiment is towards the next level of that technology**, x1000. Nothing in
+`ApplyTechnologies` reads it - only whole levels change a stat. **Read live**: about 3% of
+all nodes carry one, on regiments, ships and wings alike, and the largest seen is 999.
+
+### How a technology reaches a unit
+
+A technology's effects are not modifiers on the country. **Each effect is a whole
+`CSubUnitDefinition` used as a delta, named after the unit type it applies to** - which is
+how the technology files spell it in the first place:
+
+```
+engineer_bridging_equipment = {
+	engineer_brigade = {
+		river = { attack = 0.1  movement = 0.15 }
+	}
+	motorized_engineer_brigade = { ... }
+}
+```
+
+becomes one definition per unit type named there, with only those fields set, hanging off
+`CTechnology + 0x294` as a list. A `CTechnology` also carries its key at **+0x20C**
+(`art_barrel_ammo`) and its player-facing name at **+0x228**. **Read live**: this mod has
+**16044 effects across 1175 technologies**.
+
+**A sub unit's `sub_unit_definition_ptr` is not the shared type but a copy it owns** (**read
+live**: 4000 regiments, 4000 distinct definitions), and `CSubUnit::ApplyTechnologies`
+(`0x1ABFC0`) is what fills it in:
+
+```
+definition = the type's template
+           + sum over the technologies list of (that technology's effect
+                                                for this unit type  x  the node's level)
+```
+
+then `extra_consumption` is totalled, `strength` and `organisation` are clamped to the
+maxima the new definition gives (unless the caller passes the flag that says to leave them),
+and `strength_ceiling` is raised to the strength. Three helpers do the arithmetic, and each
+takes its objects in registers rather than on the stack:
+
+| RVA | | |
+| --- | --- | --- |
+| `0x1A7500` | `Assign(dest@ESI, src@EAX)` | copies a whole definition |
+| `0x1A78B0` | `Scale(definition@EDI, factor@stack:4)` | multiplies every number by `factor/1000` |
+| `0x1A7FC0` | `Add(dest@ESI, src@ECX)` | adds one definition into another |
+
+**Verified against the running game**, which is worth saying because reading the scale
+function alone gives the wrong answer: it writes only the 42 stat fields from `+0xE8` to
+`+0x190` inline, and reaches everything else through calls. Rebuilding all 1068
+`engineer_brigade` regiments in a 1942 game from that formula leaves a remainder that is the
+same for every one of them, on `soft_attack`, `max_speed`, `supply_consumption`,
+`build_cost_ic`, the `river` and `fort` adjusters and the terrain adjusters alike - and that
+remainder is exactly what the unit file says and what the type's template object in memory
+holds. Nothing is applied unscaled.
+
+### What a unit file's terrain blocks become
+
+A `CUnitAdjuster` is 0x18 bytes - a vftable, a word that belongs to CPersistent rather than
+to it, and then **attack, defence, movement and attrition**, all x1000. Those four names are
+the game's own: `CUnitAdjuster::LoadKey` (`0x1D4C10`) reads `attack` into +0x8, `defence`
+into +0xC, `movement` into +0x10 and `attrition` into +0x14, and its `SaveContents` is an
+empty `ret`, so an adjuster is read out of the mod's files and never written back.
+`CUnitAdjuster::Scale` (`0x1D4E20`) is four muldivs and nothing else, which is what says
+those four numbers are all there is. BiceLib already had the layout in
+`HoiDataStructures.hpp`; it now has a header of its own, and what is new is where they sit
+and that a technology can change any of them.
+
+**The word at +0x4 is CPersistent's, not a class id.** Its constructor sets it to the save
+token `none` (397) - of 714 inlined constructors that write that word and then a vftable,
+697 write `none` - and **read live** it is still `none` on every CSubUnitDefinition,
+CTechnology, CRegiment, CCombat, CAIStrategy, CLeader, CTheatre and CConvoy in a running
+game. Nothing in the executable compares it against `none` and no class was seen setting it
+to another token, so what it was for is open; it matters here only because a derived class's
+own fields start at +0x8.
+
+A `CSubUnitDefinition` holds them two ways:
+
+- **a vector at +0x54, ending at +0x58, indexed by terrain id** - the unit file's terrain
+  blocks. **Read live**: 45 entries on every definition, 28 of them non-zero on an
+  `engineer_brigade`; entry 16 is `urban`, 17 `plains`, 18 `woods`, 32 `mountain`, each
+  matching that file's block to the digit, `attrition` included.
+- **four inline, for the blocks that are not terrain**: `night` at **+0x64**, `fort` at
+  **+0x7C**, `river` at **+0x94** and `amphibious` at **+0xAC**. Named by reading each one
+  back against the unit files - `armor_brigade` has fort `{0.55, 0.55}`, river
+  `{-0.5, 0.35, -0.75}` and amphibious `{-1.1, -1.1}`, and `night` is 0.7 attack on a
+  `commando_brigade`, 0.5 on a `paratrooper_brigade` and -2.0 movement on a
+  `naval_corps_hq_brigade`, all exactly what those files say.
+
+A second vector at +0xC4/+0xC8 is walked by the same code and is empty on every definition
+in this mod.
+
 ### Orders, and the id each kind answers
 
 A unit's order is `CUnit +0xB0`, a `COrder*`. `COrder` leaves **slot 16** pure virtual and
@@ -1021,6 +1184,66 @@ file rather than a save; the loader takes both.
 reading `government`, at the cabinet position's own index (`+0x50` on the position). What it
 is for has not been established: the writer iterates `Ministers` at `+0x618` instead, and how
 the two relate was not chased down.
+
+### What the AI has decided, per country
+
+`CAIStrategy` - one per country, 326 of them live, reached from `CCountry +0x1DC`. Its 21
+save keys name the whole class; nothing had a name but four fields before.
+
+| offset | key | |
+| --- | --- | --- |
+| `+0x14`, `+0x15`, `+0x16` | `initialized`, `static`, `consolidate` | |
+| `+0x1C`, `+0x2C`, `+0x10C` | `conquer_prov`, `defend_prov`, `building_prov` | sixteen bytes each - first, last, count, spare - one key per entry |
+| `+0x3C`, `+0x58`, `+0x74`, `+0x90`, `+0xAC`, `+0xC8`, `+0x11C` | `threat`, `antagonize`, `befriend`, `protect`, `vassal`, `military_access`, `rival` | twenty-eight bytes each: that same list, then a count, `0x1FF` and a pointer |
+| `+0xF8` | `max_subunits` | |
+| `+0xFC`, `+0x100`, `+0x104` | `land_perc`, `air_perc`, `naval_perc` | x1000, and the three add to one |
+| `+0x108` | `armor_bias` | x1000 |
+
+**Read live**, Germany in a 1942 game: `max_subunits` 1250, `land_perc` 837, `air_perc` 50,
+`naval_perc` 113 - which is 1.000 between them - and `armor_bias` 330. Two countries on
+`threat`, seven on `antagonize`, seven on `befriend`, three on `protect`, three on
+`military_access`, two on `rival`, none on `vassal`.
+
+### The game state, which is the save's root
+
+`CCurrentGameState` derives from `CGameState`, and it is `CGameState::SaveContents`
+(`0x27E6F0`) and `CGameState::LoadKey` (`0x27FCB0`) that write and read the whole save - so
+these are the base's fields. The loader stores straight into `this`, which is what names
+them; the writer agrees, and both agree with what BiceLib already had (`date` is `tick`,
+`combat` is `combat_manager`, `player` is `player_tag`).
+
+| offset | key | |
+| --- | --- | --- |
+| `+0x20` | `sunk_ships` | a list of CShip; tail `+0x24`, count `+0x28`. **Read live**: 1295 of them in a 1942 game |
+| `+0x9C`, `+0xA0`, `+0xA4` | `automate_sliders`, `automate_tech_sliders`, `automate_trade` | |
+| `+0xE8` | `flags` | a CFlags |
+| `+0xAE4` | | zeroed when `ai_seed` is read, so it counts draws since |
+| `+0xAEC` | `weather` | a CWeatherManager |
+| `+0xB24` | `diplomacy` | a CDiplomacy |
+| `+0xC00`, `+0xC10`, `+0xC20` | `active_war`, `undeclared_war`, `previous_war` | lists of CWar, CUndeclaredWar, CWar; tail and count after each |
+| `+0xC6C`, `+0xC70`, `+0xC74` | `income_`, `nation_size_`, `inflation_statistics` | |
+| `+0xC7C` | `rebel_faction` | a list of CRebelFaction |
+| `+0xC90` | `gameplaysettings` | a CGamePlaySettings |
+| `+0xCA8` | `selectionGroups` | with the array itself at `+0xD40`, `0xA0` an entry by the group's id |
+| `+0xCF4` | | while set, the loader ignores all four automation keys and `ai` |
+| `+0xD08` | `victory_conditions` | |
+| `+0xD0C`, `+0xD10` | `scenario` | the scenario, and where the loader puts its name |
+| `+0xD68` | `strategic_warfare` | |
+
+Every pointer was checked against a running game and holds what its name says, by the
+object's own RTTI.
+
+**Seven of the keys are globals, not fields** - the loader writes them straight back:
+
+| global | key | |
+| --- | --- | --- |
+| `0x130AEB8`, `0x130AEBC` | `convoy`, `theatre` | the running id each is handed next |
+| `0x130AF10`, `0x130AF78`, `0x130AF7C` | `leader`, `unit`, `rebel` | the same |
+| `0x1310F80` | `seed` | the random number generator's seed |
+| `0x134DA8C` | `count` | how much has been drawn from it - the pair is what makes a save replay the same way |
+
+Read live, the convoy, theatre and rebel counters sit near the number of those objects in the
+game; the unit and leader ones are far larger, so those two look encoded rather than plain.
 
 ### Who a country borders, and when trade needs convoys
 

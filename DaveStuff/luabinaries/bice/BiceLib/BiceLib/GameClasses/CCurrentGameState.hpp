@@ -30,6 +30,63 @@ namespace CCurrentGameState {
          * **The CCombatManager**, held by value. The history of finished combats is inside
          * it, at CCombatManager::Offsets::history.
          */
+        /**
+         * **The save's root.** `CCurrentGameState` derives from `CGameState`, and it is
+         * `CGameState::SaveContents` (`0x27E6F0`) and `CGameState::LoadKey` (`0x27FCB0`)
+         * that write and read the lot - so these are the base's fields, and the loader,
+         * which stores straight into `this`, is what names them.
+         *
+         * It agrees with what was already here: `date` is `tick`, `combat` is
+         * `combat_manager`, `player` is `player_tag`.
+         *
+         * **Read live**: every pointer below holds what its name says, by the object's own
+         * RTTI - CFlags, CWeatherManager, CDiplomacy, CGamePlaySettings, and lists of CWar,
+         * CUndeclaredWar and CRebelFaction.
+         */
+        constexpr uintptr_t sunk_ships = 0x20;          // a list of CShip
+        constexpr uintptr_t sunk_ships_last = 0x24;
+        constexpr uintptr_t sunk_ships_count = 0x28;
+        constexpr uintptr_t automate_sliders = 0x9C;
+        constexpr uintptr_t automate_tech_sliders = 0xA0;
+        constexpr uintptr_t automate_trade = 0xA4;      // a byte
+        constexpr uintptr_t flags = 0xE8;               // a CFlags
+        constexpr uintptr_t ai_draws = 0xAE4;           // zeroed when `ai_seed` is read
+        constexpr uintptr_t weather = 0xAEC;            // a CWeatherManager
+        constexpr uintptr_t diplomacy = 0xB24;          // a CDiplomacy
+        constexpr uintptr_t active_war = 0xC00;         // a list of CWar
+        constexpr uintptr_t undeclared_war = 0xC10;     // a list of CUndeclaredWar
+        constexpr uintptr_t previous_war = 0xC20;       // a list of CWar
+        constexpr uintptr_t income_statistics = 0xC6C;
+        constexpr uintptr_t nation_size_statistics = 0xC70;
+        constexpr uintptr_t inflation_statistics = 0xC74;
+        constexpr uintptr_t rebel_factions = 0xC7C;     // a list of CRebelFaction
+        constexpr uintptr_t gameplay_settings = 0xC90;  // a CGamePlaySettings
+        constexpr uintptr_t selection_groups = 0xCA8;
+        constexpr uintptr_t victory_conditions = 0xD08;
+        constexpr uintptr_t scenario = 0xD0C;           // its name is the string at +8
+        constexpr uintptr_t scenario_name = 0xD10;      // where the loader puts the text
+        constexpr uintptr_t strategic_warfare = 0xD68;
+        constexpr uintptr_t selection_group_array = 0xD40;  // 0xA0 an entry, by the group's id
+        constexpr uintptr_t skip_automation_keys = 0xCF4;   // see the comment
+
+        /**
+         * **The counters the save carries as plain keys**, each a global the loader writes
+         * straight back. `seed` and `count` are the random number generator's state; the
+         * rest are the running id each kind of object is handed next. **Read live**, the
+         * convoy, theatre and rebel ones sit near the number of those objects in the game,
+         * while the unit and leader ones are far larger, so those two are likely encoded
+         * rather than plain counts.
+         */
+        namespace Global {
+            constexpr uintptr_t convoy_id = 0x130AEB8;
+            constexpr uintptr_t theatre_id = 0x130AEBC;
+            constexpr uintptr_t leader_id = 0x130AF10;
+            constexpr uintptr_t unit_id = 0x130AF78;
+            constexpr uintptr_t rebel_id = 0x130AF7C;
+            constexpr uintptr_t random_seed = 0x1310F80;
+            constexpr uintptr_t random_draws = 0x134DA8C;
+        }
+
         constexpr uintptr_t combat_manager = 0xB5C;
 
         /**

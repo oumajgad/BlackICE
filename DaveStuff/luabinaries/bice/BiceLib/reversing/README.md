@@ -221,14 +221,15 @@ That code goes in a module of its own in the style of `BiceLib/Oob/`, reading th
 Classes whose save and load paths would name the most, counted by `CPersistent`'s slots 2 and
 4: how many keys the class writes, and how many of the offsets those two paths touch have no
 name yet. The offset count is rough - the register tracking behind it leaks on big loaders -
-so read it as a guide, not a ranking.
+so read it as a guide, not a ranking. The ones marked done have been read since the list
+was written; what is left below them is where to go next.
 
 | class | keys | unnamed | why |
 | --- | --- | --- | --- |
-| `CGameState` | 33 | 36 | **the save's root**, and not one field named: date, scenario, player, seed, and the lists everything else hangs off |
-| `CUnit` | - | 21 | the one a mod touches most; BiceLib has 26 fields already, its save path touches 21 more |
-| `CAIStrategy` | 21 | 31 | the AI's own state - personality, land/air/naval percentages, armor_bias, threat, rival, protect |
-| `CSubUnit` | 10 | 21 | a brigade, nothing named: id, name, home, type, organisation, strength, highest, experience, builder, sunk_by |
+| `CGameState` | 33 | 36 | **done** - see CLASSES.md, *The game state, which is the save's root* |
+| `CUnit` | - | 21 | **done** - seven fields named from its save path |
+| `CAIStrategy` | 21 | 31 | **done** - the whole class, see CAIStrategy.hpp |
+| `CSubUnit` | 10 | 21 | **done** - and with it CRegiment, CShip and CWing; see CLASSES.md, *What the save keys named on a sub unit* |
 | `COrder` | 9 | 33 | completes a class BiceLib half knows - the type ids and the redeploy path are already in |
 | `CRebelFaction` | 9 | 33 | partisans, which the mod does a lot with |
 | `CWar`, `CWarGoal` | 9, 5 | 16, 37 | war state and goals |
