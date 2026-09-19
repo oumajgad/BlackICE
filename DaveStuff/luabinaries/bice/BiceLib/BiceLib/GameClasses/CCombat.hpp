@@ -60,12 +60,14 @@ namespace CCombat {
         constexpr uintptr_t province = 0x18;
 
         /**
-         * Two ints that tracked each other - 3 and 3 in one battle, 2 and 2 in another.
-         * `DaveStuff/mem` calls them day and duration, which those values do not fit.
-         * What they are is not known.
+         * **`day` and `duration`**, which is what `CCombat::SaveContents` (`0x16E210`)
+         * writes them under and what `CCombat::LoadKey` reads back into them - so
+         * `DaveStuff/mem` had them right and the note that doubted it was wrong. Both are
+         * plain ints. They track each other closely in a running game, 3 and 3 in one battle
+         * and 2 and 2 in another, which is what the doubt was about.
          */
-        constexpr uintptr_t unknown_1c = 0x1C;
-        constexpr uintptr_t unknown_20 = 0x20;
+        constexpr uintptr_t day = 0x1C;
+        constexpr uintptr_t duration = 0x20;
 
         /**@brief the CTerrain fought on; from DaveStuff/mem*/
         constexpr uintptr_t terrain = 0x24;
@@ -103,6 +105,16 @@ namespace CCombatant {
          * The units on this side, by `DaveStuff/mem`. The constructor sets it up as a list
          * (HDS::ListOffsets), not the vector mem took it for. Not read by BiceLib.
          */
+        /**
+         * **The ships this side has lost**, a linked list: the head here, the tail at
+         * `+0x2C` and the count at `+0x30`. `CCombatant::SaveContents` (`0x165010`) writes
+         * one `sunk_ship` key per node, out of `[node + 0xC]`, and `CCombatant::LoadKey`
+         * (`0x164DD0`) builds the list back up a node at a time.
+         */
+        constexpr uintptr_t sunk_ships = 0x28;
+        constexpr uintptr_t sunk_ships_last = 0x2C;
+        constexpr uintptr_t sunk_ships_count = 0x30;
+
         constexpr uintptr_t units = 0x40;
 
         /**
@@ -135,6 +147,9 @@ namespace CCombatant {
          * **Strength lost, in thousandths**: the battle message prints this over a
          * thousand as its casualties, and a subunit destroyed outright adds exactly 1000.
          */
+        /**@brief saved as `dice`: this side's roll*/
+        constexpr uintptr_t dice = 0x50;
+
         constexpr uintptr_t losses = 0x84;
 
         /**
@@ -146,6 +161,12 @@ namespace CCombatant {
 
         /**@brief damage short of destruction, per subunit type, the same shape; not read*/
         constexpr uintptr_t damage_begin = 0x98;
+
+        /**
+         * @brief the combat tactic in use, or null. Saved as `tactic`, out of `[tactic+0x80]`,
+         *        and the loader looks that id back up to get the pointer.
+         */
+        constexpr uintptr_t tactic = 0xAC;
         constexpr uintptr_t damage_end = 0x9C;
     }
 }

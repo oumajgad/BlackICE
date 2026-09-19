@@ -50,6 +50,22 @@ namespace CBuilding {
     }
 
     namespace Offsets {
+        /**
+         * **What a building does, and it is only ever one thing**: the value at
+         * `effect_size` and the modifier it belongs to at `effect`. Whichever modifier key
+         * the definition carries lands here - `ic = 1` on industry, `infrastructure = 0.1`
+         * on infra, `fort_level = 0.4` on land_fort, `local_anti_air = 2.5` on anti_air,
+         * `local_crude_oil = 0.3` on oil_well - and a building with no such key, like
+         * `air_base`, has zero and the NONE modifier.
+         *
+         * `CBuilding::LoadKey` reaches it through its last branch: a key it does not know
+         * is looked up in the modifier table, and if it is there the definition goes in
+         * `effect` and the number in `effect_size`. **Read live** against the mod's own
+         * `buildings.txt`, every one of the seven checked agreeing to the thousandth.
+         */
+        constexpr uintptr_t effect_size = 0x8;  // x1000
+        constexpr uintptr_t effect = 0xC;       // the modifier definition; its name is at +4
+
         constexpr uintptr_t name = 0x1C;        // the key, "air_base"
         constexpr uintptr_t displayName = 0x38; // what the game shows, "Air Base"
         constexpr uintptr_t index = 0x54;       // the game's GetIndex
@@ -59,6 +75,69 @@ namespace CBuilding {
            **Read live** and checked against the mod's file: `air_base` 2600 for `cost = 2.6`,
            `naval_base` 4275 for `4.275`, the nuclear reactors 50000 for `50`. What a country
            actually pays is `CCountry::GetBuildCost` (`0xDFDA0`), which discounts this.*/
+        /**
+         * **`capital = yes` in buildings.txt.** `CBuilding::LoadKey` (`0xB6950`) sets it
+         * from that key, and it does two things:
+         *
+         *  - **the production screen** only looks for a build button for a building that
+         *    has it. Three places walk the building database, skip anything without the
+         *    flag, and ask the window for a child named after the building's key -
+         *    `country_production.gui`'s `air_base`, `naval_base`, `industry`, `anti_air`,
+         *    `radar_station`, `nuclear_reactor` and `rocket_test` buttons. BlackICE's own
+         *    `country_production.gui` has none of those, so nothing comes of it there.
+         *  - **when a construction finishes with no province** (`0x85C98`), only a flagged
+         *    building does anything: the game makes a `CBuildingDeployment` holding it and
+         *    puts it in the country's deployment queue, beside finished units. Without the
+         *    flag, or with a province, the level of `province->buildings[index]` goes up
+         *    instead.
+         *
+         * **Read live**: set on 47 of the 60 buildings. The ones without it are the forts -
+         * `land_fort`, `coastal_fort`, `beach_defence`, `fortress`, `weather_fort`,
+         * `desperate_defence` - plus `infra` and BlackICE's `request_*` entries. Those are
+         * exactly the buildings that are always raised in a province you name up front.
+         */
+        /**
+         * **Everything else `buildings.txt` sets**, from `CBuilding::LoadKey` (`0xB6950`),
+         * which is the whole of the file's grammar for a building. `cost`,
+         * `completion_size` and `damage_factor` are x1000; `time` and `max_level` are plain.
+         * A key the file leaves out keeps the default the constructor gave it, which is why
+         * `show_for_province` and `repair` read true on buildings that never mention them.
+         */
+        constexpr uintptr_t time = 0x5C;              // "time", in days
+        constexpr uintptr_t port = 0x61;              // "port"
+        constexpr uintptr_t on_completion = 0x6C;     // a std::string: the practical it feeds
+        constexpr uintptr_t completion_size = 0x8C;   // x1000
+        constexpr uintptr_t damage_factor = 0x90;     // x1000
+        constexpr uintptr_t onmap = 0x94;             // "onmap"
+        constexpr uintptr_t visibility = 0x95;        // "visibility"
+        constexpr uintptr_t show_for_province = 0x96; // "show_for_province"
+        /**
+         * **Two lists of words that nothing ever reads.** Each key takes a `{ ... }` block
+         * and every word in it becomes a `std::string` on a list - head, tail and count in
+         * the usual three - and that is the end of it.
+         *
+         * Inside CBuilding's own code (`0xB65D0` to `0xB7400`) the only references to
+         * either list are the two branches of `CBuilding::LoadKey` that fill them and the
+         * two places that empty them again. Outside it, none of the 44 places that fetch
+         * the building database goes on to read either. **No consumer was found**, which
+         * is not quite the same as proving there is none - a reader could reach a building
+         * by a route not enumerated here - but nothing suggests one.
+         *
+         * Neither vanilla's `buildings.txt` nor BlackICE's uses either key, and **read
+         * live**, all 61 buildings have both lists empty.
+         */
+        constexpr uintptr_t prerequisites = 0xAC;
+        constexpr uintptr_t prerequisites_last = 0xB0;
+        constexpr uintptr_t prerequisites_count = 0xB4;
+        constexpr uintptr_t not_if_x_exists = 0xCC;
+        constexpr uintptr_t not_if_x_exists_last = 0xD0;
+        constexpr uintptr_t not_if_x_exists_count = 0xD4;
+        constexpr uintptr_t confirm = 0xDC;           // "confirm"
+        constexpr uintptr_t orientation = 0xDD;       // "orientation"
+        constexpr uintptr_t repair = 0xDE;            // "repair"
+
+        constexpr uintptr_t capital = 0x60;
+
         constexpr uintptr_t cost = 0x58;
 
         /**@brief **the technology category the cost is discounted by**, a

@@ -79,6 +79,17 @@ namespace CCountry {
          * practicals, and holding whole and half levels (**read live**, against the game's own
          * category keys).
          */
+        /**
+         * **What the country has finished and not yet placed**, a linked list: head here,
+         * tail at `+0x68C` and the count at `+0x690`. It holds `CUnitDeployment` and, for a
+         * building whose definition has `capital` set and whose construction named no
+         * province, `CBuildingDeployment` (`0x82A80` makes one and `0xF56C0` appends it).
+         * **Read live**: in a 1942 game the USA had 50 entries, all CUnitDeployment.
+         */
+        constexpr uintptr_t deployments = 0x688;
+        constexpr uintptr_t deployments_last = 0x68C;
+        constexpr uintptr_t deployments_count = 0x690;
+
         constexpr uintptr_t own_ability = 0x698;
 
         /**
@@ -262,6 +273,101 @@ namespace CCountry {
         /**@brief the stockpile a government in exile holds itself, saved as just "pool" -
                   see is_government_in_exile*/
         constexpr uintptr_t pool_in_exile = 0x9F8;
+
+        /**
+         * **Named from the key the game saves them under.** `CCountry::SaveContents`
+         * (`0xCFCE0`) loads the field, writes the key, then writes the value, and
+         * `CCountry::LoadKey` (`0xCCDA0`) reads it back into the same place - so the pairing
+         * is the code's, not a guess. See CPersistent.hpp for how that works.
+         *
+         * The method checks out where it can be checked: it gives `+0xA8C` the key
+         * `neutrality`, `+0xB4` `escorts` and `+0xBAC` `active_leaders`, which is what the
+         * Lua API already called them.
+         *
+         * A few of these come from a country's history file rather than a save - `major`,
+         * `color`, `graphical_culture`, `history`, `manpower` - since the loader takes both.
+         */
+        constexpr uintptr_t ignored_keys = 0x74;             // SaveToken[], skipped on load
+        constexpr uintptr_t ignored_keys_end = 0x78;
+        constexpr uintptr_t duration = 0x98;                 // saved as "duration"
+        constexpr uintptr_t convoys_changed = 0x9C;          // set when a convoy is added
+        constexpr uintptr_t officers = 0xC4;                 // saved as "officers"
+        constexpr uintptr_t starting_manpower = 0x158;       // LoadKey copies Manpower here
+        constexpr uintptr_t is_major = 0x15C;                // "major"; a yes/no
+        constexpr uintptr_t ai_hard_strategy = 0x1DC;        // a CPersistent of its own
+        constexpr uintptr_t ai_event_strategy = 0x334;       // a CPersistent of its own
+        constexpr uintptr_t lendlease_distributions = 0x6B8; // and _end at +0x6BC
+        constexpr uintptr_t lendlease_distributions_end = 0x6BC;
+        constexpr uintptr_t lend_lease_from_values = 0x6C8;
+        constexpr uintptr_t lend_lease_from_values_end = 0x6CC;
+        constexpr uintptr_t lend_lease_from_yesterday_values = 0x6D8;
+        constexpr uintptr_t lend_lease_from_yesterday_values_end = 0x6DC;
+        constexpr uintptr_t diplo_influence = 0xA88;
+        constexpr uintptr_t last_election_at_start = 0xAAC;  // see the comment
+        constexpr uintptr_t last_election = 0xAB0;           // a date
+        constexpr uintptr_t last_rebel_acceptance = 0xAB4;   // a date
+        constexpr uintptr_t remove_fow = 0xAB8;              // a linked list
+        constexpr uintptr_t remove_fow_end = 0xABC;
+        constexpr uintptr_t remove_fow_count = 0xAC0;
+        constexpr uintptr_t last_surrender = 0xAC8;          // a date
+        constexpr uintptr_t war_exhaustion = 0xAD0;
+        constexpr uintptr_t color = 0xC30;                   // a CPersistent of its own
+        constexpr uintptr_t has_color = 0xC4C;               // set when "color" is read
+        constexpr uintptr_t history = 0xCCC;                 // a CPersistent of its own
+        constexpr uintptr_t active_leaders = 0xE00;          // and _end, _capacity after it
+        constexpr uintptr_t active_leaders_end = 0xE04;
+        constexpr uintptr_t active_leaders_capacity = 0xE08;
+        constexpr uintptr_t active_mission = 0xE38;          // a CPersistent of its own
+        constexpr uintptr_t graphical_culture = 0xF20;       // AfterLoad gives it "Generic"
+        constexpr uintptr_t declarewar = 0xF24;              // a linked list
+        constexpr uintptr_t declarewar_end = 0xF28;
+        constexpr uintptr_t declarewar_count = 0xF2C;
+        constexpr uintptr_t land_battles_fought = 0x1080;
+        constexpr uintptr_t air_battles_fought = 0x1084;
+        constexpr uintptr_t naval_battles_fought = 0x1088;
+        constexpr uintptr_t historical_friends = 0x10A4;     // and _end, _capacity after it
+        constexpr uintptr_t historical_friends_end = 0x10A8;
+        constexpr uintptr_t historical_friends_capacity = 0x10AC;
+        constexpr uintptr_t election = 0x113C;               // a yes/no
+        constexpr uintptr_t espionage = 0x1160;              // 0xF8 an entry, one per country
+        constexpr uintptr_t espionage_end = 0x1164;
+        constexpr uintptr_t spiescaught = 0x11D4;
+
+        /**
+         * **Who this country borders**: which countries are in the `Neighbours` list
+         * (`+0xFD8`) and the `ControllerNeighbours` list (`+0xFE8`), one byte per country,
+         * indexed by the country's id and as long as the country count. The constructor
+         * makes and clears both; one function (`0xE21E0`) fills them, and it is that
+         * function that says what each one counts (**read**):
+         *
+         *  - `neighbours` walks the provinces this country **owns**. An adjacent province
+         *    counts only where its **owner and controller are the same** - so not one
+         *    somebody is occupying - and is neither unowned nor this country. The owner is
+         *    what gets marked.
+         *  - `controller_neighbours` walks the provinces this country **controls**. An
+         *    adjacent province counts where it is owned by somebody, and neither owned nor
+         *    controlled by this country. The **controller** is what gets marked.
+         *
+         * So occupation moves a country from one list to the other, in both directions at
+         * once. **Read live** off a 1942 game, and every case follows from those two rules:
+         * Sweden has Norway and Finland as neighbours but not Denmark, because Germany holds
+         * Denmark - and Germany instead, under control. Germany owns only its own ground, so
+         * its first list is four countries and its second twelve. Poland, Denmark and Greece
+         * still own their land and keep their old borders in the first, and hold nothing, so
+         * the second is empty. Yugoslavia, annexed, owns nothing and has the first empty
+         * while the second still has what its remaining ground touches.
+         *
+         * `CCountry::IsNeighbour` (`0xC86C0`) is the first indexed by the tag's id and
+         * nothing more. `CCountry::IsNonExileNeighbour` (`0xC86E0`) is the second, **and** a
+         * check that the other country is not a government in exile - the list itself is not
+         * free of exiles.
+         */
+        constexpr uintptr_t neighbours = 0xF58;
+        constexpr uintptr_t neighbours_end = 0xF5C;
+        constexpr uintptr_t neighbours_capacity = 0xF60;
+        constexpr uintptr_t controller_neighbours = 0xF68;
+        constexpr uintptr_t controller_neighbours_end = 0xF6C;
+        constexpr uintptr_t controller_neighbours_capacity = 0xF70;
     }
 
     /**
@@ -283,6 +389,30 @@ namespace CCountry {
         constexpr uintptr_t GetDailyExpense = 0xF1950;
         constexpr uintptr_t GetDailyNeed = 0xF19A0;
         constexpr uintptr_t GetDailyBalance = 0xF18A0;
+
+        // The country's three CPersistent slots - see CPersistent.hpp. Together they are
+        // the full list of the keys a country is saved under, and the only place some of
+        // its fields are named at all.
+        constexpr uintptr_t SaveContents = 0xCFCE0;   // slot 2, what a country writes
+        constexpr uintptr_t LoadKey = 0xCCDA0;        // slot 4, one key read back
+        constexpr uintptr_t AfterLoad = 0xD2500;      // slot 5, the fix-ups afterwards
+
+        /**@brief neighbours[tag.id] and nothing else*/
+        constexpr uintptr_t IsNeighbour = 0xC86C0;
+
+        /**@brief controller_neighbours[tag.id], and that country not being in exile*/
+        constexpr uintptr_t IsNonExileNeighbour = 0xC86E0;
+
+        /**
+         * `0x103C60` - whether trading with a country needs convoys. **Read**: no, if it is
+         * a `neighbours` neighbour; otherwise yes unless both acting capitals sit in an
+         * area and are on one continent, or on two continents joined overland
+         * (`AreaIsConnectedTo`, `0xB8DC0`).
+         */
+        constexpr uintptr_t NeedConvoyToTradeWith = 0x103C60;
+
+        /**@brief fills both neighbour sets, and the two CCountryList they stand for*/
+        constexpr uintptr_t RebuildNeighbours = 0xE21E0;
     }
 
     /**

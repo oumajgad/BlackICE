@@ -144,8 +144,143 @@ entry's constructor takes a plain `CCombat*` and dispatches on nothing):
 | +0x14 | defender | read |
 | +0x18 | the `CMapProvince` fought over | read |
 | +0x2b | a flag the entry keeps at its +0x20 | read |
-| +0x1c, +0x20 | 3 and 3 in one battle, 2 and 2 in another - not the day and duration `mem` calls them | seen, unexplained |
+| +0x1c, +0x20 | `day` and `duration`: what CCombat::SaveContents writes them under. They track each other closely - 3 and 3 in one battle, 2 and 2 in another - which is why they were doubted | **saved under those keys** |
 | +0x24 | `CTerrain` | mem |
+
+**What the save names on a combat.** `CCombat::SaveContents` (`0x16E210`) writes `location`,
+`day`, `duration`, `attacker`, `defender` and `terrain`, which is what settles `+0x1C` and
+`+0x20` above. `CCombat::AfterLoad` (`0x16E360`) puts the combat into the province it is
+fought in - **`CProvince +0x2FC`**, read live as 4 of 4999 provinces, each holding a CCombat
+subclass by its own RTTI.
+
+`CCombatant::SaveContents` (`0x165010`) writes `dice` (`+0x50`), one `unit` per unit, one
+`sunk_ship` per node of the list at **`+0x28`** (tail `+0x2C`, count `+0x30`, each node's ship
+out of `[node + 0xC]`), `losses`, `size` for the men, and `tactic` out of `[+0xAC + 0x80]`
+where a tactic is in use.
+
+### buildings.txt, key by key
+
+`CBuilding::LoadKey` (`0xB6950`) is the whole of the file's grammar for a building, and it
+names every field it fills:
+
+| key | offset | |
+| --- | --- | --- |
+| `cost` | `+0x58` | x1000 |
+| `time` | `+0x5C` | days, not scaled |
+| `capital` | `+0x60` | see below |
+| `port` | `+0x61` | |
+| `max_level` | `+0x68` | not scaled |
+| `on_completion` | `+0x6C` | a std::string: the practical it feeds |
+| `completion_size` | `+0x8C` | x1000 |
+| `damage_factor` | `+0x90` | x1000 |
+| `onmap` | `+0x94` | |
+| `visibility` | `+0x95` | |
+| `show_for_province` | `+0x96` | true unless the file says otherwise |
+| `prerequisites` | `+0xAC` | a list; `+0xB0` tail, `+0xB4` count |
+| `not_if_x_exists` | `+0xCC` | a list; `+0xD0` tail, `+0xD4` count |
+| `confirm` | `+0xDC` | |
+| `orientation` | `+0xDD` | |
+| `repair` | `+0xDE` | true unless the file says otherwise |
+
+**`prerequisites` and `not_if_x_exists` go nowhere.** Each takes a `{ ... }` block and every
+word in it becomes a `std::string` on a list, and that is all that ever happens to them.
+Inside CBuilding's own code (`0xB65D0` to `0xB7400`) the only references to either list are
+the branch of `CBuilding::LoadKey` that fills it and the two places that empty it again;
+outside, none of the 44 places that fetch the building database goes on to read either. No
+consumer was found - not the same as proving there is none, but nothing points to one.
+Neither vanilla's `buildings.txt` nor BlackICE's uses the keys, and read live all 61 buildings
+have both lists empty.
+
+**Anything else in the block is a modifier**, and a building gets exactly one: the last
+branch looks the key up in the modifier table and, if it is there, puts the definition in
+`+0xC` and the number in `+0x8`. That is where `ic`, `infrastructure`, `fort_level`,
+`local_anti_air` and `local_crude_oil` go - they are not building fields at all.
+
+**Read live against the mod's own `buildings.txt`**, and every value agrees to the thousandth:
+
+| | `+0x8` | `+0xC` name | |
+| --- | --- | --- | --- |
+| `industry` | 1000 | `MODIFIER_IC` | `ic = 1` |
+| `infra` | 100 | `MODIFIER_INFRASTRUCTURE` | `infrastructure = 0.1` |
+| `land_fort` | 400 | `FORT_LEVEL` | `fort_level = 0.4` |
+| `anti_air` | 2500 | `MODIFIER_LOCAL_AA` | `local_anti_air = 2.5` |
+| `oil_well` | 300 | | `local_crude_oil = 0.3` |
+| `air_base` | 0 | `NONE` | no modifier key |
+
+`land_fort` checks out field for field as well: `cost = 4.5` -> 4500, `time = 45` -> 45,
+`max_level = 10` -> 10, `completion_size = 0.01` -> 10, `damage_factor = 0.5` -> 500,
+`onmap = yes` -> 1, `visibility = yes` -> 1, `on_completion = militia_theory` -> the string.
+
+### What `capital = yes` does to a building
+
+`buildings.txt` gives a building `capital = yes` or nothing; `CBuilding::LoadKey` (`0xB6950`)
+puts it in **`CBuilding +0x60`**. Only two things read it, and a sweep of the whole `.text`
+for byte reads at that offset says there is nothing else.
+
+**The production screen.** Three places walk the building database, skip anything without the
+flag, and ask the window for a child named after the building's key:
+
+```
+call    0x4b7580                     ; the building database
+mov     edx, [eax + 0xc]
+mov     edi, [edx + eax*4]           ; buildings[i]
+cmp     byte ptr [edi + 0x60], 0     ; capital?
+je      skip
+mov     ecx, [ebx + 0xa8]            ; the window
+lea     eax, [edi + 0x1c]            ; the building's key
+call    [[ecx] + 0x34]               ; FindChild(key)
+```
+
+The only .gui with children named after buildings is vanilla's `country_production.gui` -
+`air_base`, `naval_base`, `industry`, `anti_air`, `radar_station`, `nuclear_reactor`,
+`rocket_test`. **BlackICE's own `country_production.gui` has none of them**, so in BlackICE
+this half of the flag does nothing.
+
+**Construction that names no province.** At `0x85C98`, when a construction finishes:
+
+| | `capital` set | not set |
+| --- | --- | --- |
+| the construction has a province | raise `province->buildings[index]` by one level | the same |
+| it has none | make a `CBuildingDeployment` (`0x82A80`) holding the building and append it to the country's deployment queue (`0xF56C0`, `CCountry +0x688`) | nothing happens |
+
+That queue is the one finished units wait in - **read live**, the USA held 50 entries in a
+1942 game, all `CUnitDeployment`.
+
+**Which buildings have it** (read live, 47 of 60): everything except the forts -
+`land_fort`, `coastal_fort`, `beach_defence`, `fortress`, `weather_fort`,
+`desperate_defence` - plus `infra` and BlackICE's `request_*` entries. Those are exactly the
+ones that are always raised in a province named up front, which is what the two uses above
+would predict.
+
+### What the save names on a province
+
+`CProvince::SaveContents` (`0x95020`) writes 22 keys and `CProvince::LoadKey` (`0x95880`)
+reads them back. Between them they name everything the save touches:
+
+| offset | key | |
+| --- | --- | --- |
+| `+0x18` | `strategic_resource` | |
+| `+0x1C` | `last_convoy_attack` | a date, written only once it is set |
+| `+0x20` | `out_of_supply_days` | written only above zero |
+| `+0x24` | `nationalism` | |
+| `+0xC4` | `flags` | a CPersistent of its own |
+| `+0xD8` | `history` | a CPersistent; `+0xEC` is its count, and the key is skipped at zero |
+| `+0x13C` | `modifier` | the head of a list, tail `+0x140`, count `+0x144` - one key per node. Not `modifier` at `+0xFC`, which is the CProvinceModifier held by value |
+| `+0x2B0` | `capital` | see below |
+| `+0x344` | `core` | the head of a list, one key per country holding a core |
+| `+0x38C` | `underground_owner` | a CCountryTag: four characters and the id at `+0x390` |
+
+**`+0x2B0` is `capital`.** BiceLib had it as `unlimited_supply_capacity` and said "set in most
+capitals and some other land provinces; what decides it is not known" - the save key is what
+decides it. The old name described its one known effect, and is kept in the comment.
+
+The keys also **agree with what was already named**, which is the check that the method works:
+`weather` `+0x68`, `pool` `+0x15C`, `throughput` and `last_throughput`, `drawn` and
+`last_drawn`, `current_producing` and `max_producing` all carry the name the save gives them.
+
+`CMapProvince` derives from `CProvince` and adds nothing at these offsets, so the fields are
+the base's and `CProvince`'s own code reads them. Both structures carry them, because Ghidra
+has no inheritance between the two.
 
 ### The combatants
 
@@ -731,16 +866,191 @@ a name in it; the `RADIO_*_LEADER_DISTANCE` names in `CDefinesSupply` remain inf
 | `0xFD670` GetEscortBuildCost | `ESCORT_BUILD_COST` | `+0x4C` |
 | `0xFD6E0` GetEscortBuildTime | `ESCORT_BUILD_TIME` | `+0x50` |
 
+### CPersistent: how anything gets into a save
+
+`CPersistent` is the base of **754 classes** in this build, `CCountry` among them, and the
+whole of saving and loading is **six virtuals**. The executable says what the class is in
+exactly one place: the error path of slot 3 names its source file, `persistent.cpp`. The
+slot names below are BiceLib's.
+
+| slot | base body | what it is |
+| --- | --- | --- |
+| 0 | per class | the scalar deleting destructor |
+| 1 | `0x5BB10`, in 739 tables | `Save(CSaveWriter*)` - writes `{`, calls slot 2, writes `}` |
+| 2 | `0x20CD50` `ret 4`, in 362 | `SaveContents(CSaveWriter*)` - the class's own keys |
+| 3 | `0x67C050`, in 738 tables | `Load(CParseContext*)` - reads keys until `}` |
+| 4 | per class | `LoadKey(CParseContext*, int key)` - one key |
+| 5 | `0x6BF890` `ret`, in 715 | `AfterLoad()` - fix-ups once the block is read |
+
+`CPersistent` has no virtual table in the image - nothing of that class is ever made - but
+everything calls through one all the same, so the findings write one out from the slots
+above. With it, `CPersistent::Save` decompiles as
+
+```c
+SaveBeginBlock(writer);
+(*this->vftable->SaveContents)(this,writer);
+writer->depth = writer->depth + -1;
+...
+if (writer->depth != -1) {
+  SaveWriteToken(4,writer);        // }
+  SaveWriteToken(0x10,writer);     // a newline
+}
+```
+
+and a class's slot 2 reads as `SaveWriteKey(0x5a6,writer)` - which is `usage=` - followed by
+whatever writes the value.
+
+**The key belongs to the caller, not to `Save`.** `flags={ ... }` is
+`SaveWriteKey(0x37F)` and then `flags_object->Save(writer)`; slot 1 is only the braces and
+the indenting, so a class that overrides slot 2 writes nothing but key and value pairs. That
+is what makes slot 2 worth reading - it is the complete list of what the class puts in a
+save, in one function.
+
+For a country: `CCountry::SaveContents` `0xCFCE0`, `CCountry::LoadKey` `0xCCDA0`,
+`CCountry::AfterLoad` `0xD2500`. **All five are named on every class that writes its own** -
+568 bodies - from the RTTI export's account of which class introduced which implementation,
+so `CBuilding::LoadKey` and `CPromoteLeaderCommand::SaveContents` read as themselves. A body
+a class inherited stays with the base it came from, and the empty defaults stay
+`CPersistent`'s.
+
+The pieces slot 2 is built out of:
+
+| address | what it does |
+| --- | --- |
+| `0x67A1B0` `SaveWriteKey` | indents, writes the token's text, then token 1, `=` |
+| `0x61360` `SaveWriteToken` | a token's own text as a value - `yes`, `{`, a newline |
+| `0x6797A0` `SaveWriteValue` | one `CToken`, text or binary as the writer is set |
+| `0x679750` `SaveBeginBlock` | a newline, the indent, `{`, and one more level of depth |
+| `0x67A110` `SaveWriteIndent` | that many tabs; skipped for a binary save |
+
+The writer holds the depth at `+0x4`, its stream at `+0x8` and a binary flag at `+0xC`. The
+depth starts at **-1**, which is how the outermost object writes no braces of its own.
+
+A `CToken` is `{ int type; char text[256]; }`, `0x104` bytes. **`type` is itself a token
+id**, so a token names its own kind: `1` `=`, `3` `{`, `4` `}`, `0x10` a newline, `0x11` a
+tab, `0x12` a space, `0x13` the end of input, `0x14` an integer, `0x18F` `long_float`. In a
+binary save the type is the whole of what gets written, two bytes, with the payload after it
+and whitespace dropped; in a text save the id is looked up and the text written instead.
+
+Loading is the mirror. `CPersistent::Load` reads a `key = value` into the parse state -
+key at `+0x20`, the `=` at `+0x124`, value at `+0x228`, three `CToken` in a row - and hands
+slot 4 the key's token id. So `CCountry::LoadKey` is a tree of comparisons on the id and
+reads its numbers straight out of `parse + 0x22C`. A key the class does not handle goes to
+`ParseSkipValue` (`0x67AC60`), which counts braces so a whole block goes by.
+
 ### Save keys, and how to get one
 
-**Save code never writes a key as a string.** It writes an id - `mov ecx, 0x5A6`, then a
-call - and a table built at startup turns that into `usage`. `reversing/saveTokens.py`
-rebuilds the table by walking the registrations (`mov edx, <the string>` ... `mov ecx, <the
-id>`): **2056 ids** in this build, and it checks out against the one id that was already
-known from another direction, `carrier_size` at `0x522`.
+**A key is never a string in the code.** It is a token id - `mov ecx, 0x5A6` then a call -
+and a table turns that into `usage`. That is a way of naming a field the Lua API never
+exposes: find the key in slot 2 or slot 4 and read the id. The country's goods pools are the
+worked example.
 
-That is a way of naming a field the Lua API never exposes: find where the class's writer
-saves it and read the id. The country's goods pools are the worked example.
+`TokenText` (`0x66A230`) is the lookup, and it indexes a `std::vector<std::string>` at
+`g_save_tokens_first` (`0x17165B4`), `0x1C` per entry, **the index being the id**.
+`BuildTokenTable` (`0x66A050`) makes it on first use out of a static array of `CToken` at
+`0x168CCA4` - 2138 of them, `0x104` apart, each id in the dword before its text - plus a
+list of tokens registered later. So **the table only exists in a running game**: statically
+those globals are empty.
+
+`reversing/saveTokens.py` reads the live vector, **4134 ids** in a BlackICE game, and falls
+back to scanning the registrations (`mov edx, <the string>` ... `mov ecx, <the id>`) where
+there is no game. The scan finds 2056 and **agreed with the live table on 2055**, the one
+miss being a false positive on id 1, which is `=`. Both give `carrier_size` at `0x522`, known
+from another direction.
+
+**Only about half of those ids belong to the executable.** The static array holds 2138, and
+the tokenizer another 21 or so of punctuation; the rest - 1976 in this game - are heap
+objects the loaded mod registers for its resources, cultures and decorations, numbered in
+load order, so their ids change with the mod. `saveTokens.py --compiled` takes the
+executable's own **2149** and writes `ghidra/saveTokens.json`, which is committed.
+
+That file becomes the **`SaveToken` enum** in the findings, and the parameters that carry a
+key are typed with it. That is all it takes to have the decompiler read a save writer out
+loud:
+
+```c
+SaveWriteKey(flags,writer);      (*(*this_01)->Save)(...)
+SaveWriteKey(usage,writer);      (*(this->usage).vftable->Save)(...)
+SaveWriteToken(tok_close,writer);          // }
+```
+
+and `CCountry::LoadKey` the same way round: `if (key == unit_names)`, `if (key == history)`.
+
+### What the save keys named on CCountry
+
+A pass over `CCountry::SaveContents` and `CCountry::LoadKey` together. The writer loads the
+field, writes the key, then writes the value, so **the field is in the instructions ahead of
+the `SaveWriteKey` call, not after it**; the loader is the cleaner side, a switch on the key
+id storing into `this`. Between them **45 fields** got a name.
+
+The method is worth trusting because it re-derives names nothing gave it: it puts `neutrality`
+on `+0xA8C`, `escorts` on `+0xB4` and `active_leaders` on `+0xBAC`, which is what the Lua API
+already called them.
+
+| offset | name | |
+| --- | --- | --- |
+| `+0x74`, `+0x78` | `ignored_keys`, `_end` | a vector of SaveToken the loader skips before anything else |
+| `+0x98` | `duration` | |
+| `+0x9C` | `convoys_changed` | set whenever `convoy` appends to Convoys at `+0xA0` |
+| `+0xC4` | `officers` | |
+| `+0x158` | `starting_manpower` | the loader copies Manpower here once `manpower` is read |
+| `+0x15C` | `is_major` | from `major` |
+| `+0x1DC`, `+0x334` | `ai_hard_strategy`, `ai_event_strategy` | CPersistent of their own |
+| `+0x6B8`, `+0x6C8`, `+0x6D8` | the three lend lease vectors | each with its `_end` four bytes on |
+| `+0xA88` | `diplo_influence` | `Neutrality` is `+0xA8C` and `EffectiveNeutrality` `+0xA90` |
+| `+0xAAC` | `last_election_at_start` | set from `last_election`, but only off a history file |
+| `+0xAB0`, `+0xAB4`, `+0xAC8` | `last_election`, `last_rebel_acceptance`, `last_surrender` | dates |
+| `+0xAB8` | `remove_fow` | a linked list, tail `+0xABC`, count `+0xAC0` |
+| `+0xAD0` | `war_exhaustion` | `isAtWar` is `+0xACC` |
+| `+0xC30`, `+0xC4C` | `color`, `has_color` | the colour is a CPersistent, copied to `+0xC50` |
+| `+0xCCC` | `history` | a CPersistent of its own |
+| `+0xE00` | `active_leaders` | a vector, `_end` and `_capacity` after it |
+| `+0xE38` | `active_mission` | a CPersistent of its own |
+| `+0xF20` | `graphical_culture` | which `CCountry::AfterLoad` fills with the Generic one |
+| `+0xF24` | `declarewar` | a linked list, tail `+0xF28`, count `+0xF2C` |
+| `+0x1080`, `+0x1084`, `+0x1088` | `land_`, `air_`, `naval_battles_fought` | |
+| `+0x10A4` | `historical_friends` | a vector of countries, looked up by tag on load |
+| `+0x113C` | `election` | a yes/no |
+| `+0x1160`, `+0x1164` | `espionage`, `_end` | `0xF8` an entry, one per country: `+4` is the priority the `spy_priority` key sets, `+0xF4` the covert ops points |
+| `+0x11D4` | `spiescaught` | `HighestThreat` is the next field, `+0x11D8` |
+
+`major`, `color`, `graphical_culture`, `history` and `manpower` come off a country's history
+file rather than a save; the loader takes both.
+
+**One is left.** `+0x628` is the first of an array of `CMinister*` the loader writes while
+reading `government`, at the cabinet position's own index (`+0x50` on the position). What it
+is for has not been established: the writer iterates `Ministers` at `+0x618` instead, and how
+the two relate was not chased down.
+
+### Who a country borders, and when trade needs convoys
+
+`CCountry` keeps two sets of one byte per country, indexed by the country's id: `+0xF58` and
+`+0xF68`. They are the membership of the two lists the Lua API already names, `Neighbours`
+(`+0xFD8`) and `ControllerNeighbours` (`+0xFE8`). One function fills both, `0xE21E0`, and it
+is what settles the difference:
+
+| | walks | marks | when |
+| --- | --- | --- | --- |
+| `neighbours` `+0xF58` | the provinces this country **owns** | the adjacent province's **owner** | its owner and controller are the same - nobody is occupying it - and it is neither unowned nor this country |
+| `controller_neighbours` `+0xF68` | the provinces this country **controls** | the adjacent province's **controller** | it is owned by somebody, and neither owned nor controlled by this country |
+
+**Occupation moves a country from one set to the other, on both sides at once.** Read live
+off a 1942 game, every case follows: Sweden has Norway and Finland as neighbours but not
+Denmark, because Germany holds Denmark - and has Germany under control instead. Germany owns
+only its own ground, so its first set is four countries and its second twelve. Poland,
+Denmark and Greece still own their land, so they keep their old borders in the first, and
+hold nothing, so the second is empty. Yugoslavia, annexed, is the mirror of that: nothing in
+the first, and what its remaining ground touches in the second.
+
+`CCountry::IsNeighbour` (`0xC86C0`) is the first indexed by the tag and nothing else.
+`CCountry::IsNonExileNeighbour` (`0xC86E0`) is the second **plus** its own check that the
+other country is not a government in exile - the set itself does not exclude them.
+
+`CCountry::NeedConvoyToTradeWith` (`0x103C60`) says no where the other country is in the
+first set. Otherwise it wants both acting capitals to sit in an area (`CProvince +0x2B4`,
+**a `COwnerArea*` by the object's own RTTI** - 50 of them over 4999 provinces, in blocks of
+neighbouring ids) and on one continent, or on two continents whose areas are joined overland,
+which `AreaIsConnectedTo` (`0xB8DC0`) answers by walking the list at `COwnerArea +0x34`.
 
 ### The country's goods pools, and which are which
 

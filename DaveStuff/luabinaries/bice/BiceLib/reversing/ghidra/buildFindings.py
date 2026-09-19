@@ -33,6 +33,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 LUABIND = os.path.join(HERE, "luabind.json")
 PROJECT = os.path.join(HERE, "project.json")
 OUT = os.path.join(HERE, "bicelib_findings.json")
+SAVE_TOKENS = os.path.join(HERE, "saveTokens.json")
 
 IMAGE_BASE = LX.IMAGE_BASE
 
@@ -409,6 +410,95 @@ def is_purecall(image, rva=PURECALL):
             and b[12:14] == b"\x85\xc0" and b[16:18] == b"\xff\xd0" and b[18:20] == b"\x6a\x19")
 
 
+# Ids the table has no string for. They are real all the same - the writer puts one in a
+# CToken's type field to say what the value is - and without a member Ghidra spells the
+# constant as an OR of the members that happen to add up to it: 0xC came out as
+# `tok_comma|tok_close`. The ones with a name here were read off the code, the rest are the
+# id in hex.
+UNREGISTERED_TOKENS = {
+    0x00: "tok_none",
+    0x0C: "tok_int",     # written with "%d", and read back with atoi
+    0x0D: "tok_fixed",   # a whole part, a dot and a fraction, into thousandths
+    0x0E: "tok_bool",    # written as the word yes or no, and read back by comparing to "yes"
+    0x0F: "tok_word",    # a bare word: what SaveWriteKey gives the key itself
+    0x13: "tok_end",     # nothing left to read; CPersistent::Load stops on it
+    0x14: "tok_uint",    # written with "%u"
+}
+
+PUNCTUATION_NAMES = {
+    "=": "equals", '"': "quote", "{": "open", "}": "close", "(": "lparen", ")": "rparen",
+    ",": "comma", "#": "hash", "\n": "newline", "\t": "tab", " ": "space", ";": "semicolon",
+    ":": "colon", "<": "less", ">": "greater", "!": "bang", "|": "pipe",
+}
+
+
+def save_token_enum():
+    """
+    Every save key the executable itself knows, as an enum, so that `SaveWriteKey(0x5a6,
+    writer)` decompiles as `SaveWriteKey(usage, writer)` and a class's LoadKey reads as a
+    list of keys rather than a list of numbers. Typing a parameter as this enum is all it
+    takes - the decompiler does the rest.
+
+    `reversing/saveTokens.py --compiled` writes the file, off a running game, since the
+    table is built at startup and nothing in the image holds it. **Only the executable's own
+    tokens go in**: the loaded mod registers about as many again for its resources, cultures
+    and decorations, and those are numbered in load order, so their ids say nothing about
+    the executable.
+
+    Every id below the last one gets a member even where the table has no string for it,
+    because an enum value with no member is one Ghidra writes as an OR of the members that
+    reach it - `tok_comma|tok_close` for 0xC, which is a lie about what the code does.
+    """
+    if not os.path.exists(SAVE_TOKENS):
+        return None
+    tokens = {int(k): v for k, v in json.load(open(SAVE_TOKENS, encoding="utf-8")).items()}
+    # Every id up to the last one the executable knows gets a member, gaps included, or the
+    # decompiler makes up an OR of other members to reach the value.
+    gaps = {i: UNREGISTERED_TOKENS.get(i, "tok_%02X" % i)
+            for i in range(max(tokens) + 1) if i not in tokens}
+    values, taken = [], {}
+    for ident, key in sorted(tokens.items()):
+        if ident in gaps:
+            continue
+        if re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", key):
+            name = key
+        elif all(c in PUNCTUATION_NAMES for c in key):
+            name = "tok_" + "_".join(PUNCTUATION_NAMES[c] for c in key)
+        else:
+            name = re.sub(r"[^A-Za-z0-9_]", "_", key)
+            name = name if re.match(r"^[A-Za-z_]", name) else "_" + name
+        if name in taken:                       # never seen, but a name must be unique
+            name = "%s_%d" % (name, ident)
+        taken[name] = ident
+        values.append({"name": name, "value": ident})
+    for ident, name in sorted(gaps.items()):
+        values.append({"name": name, "value": ident})
+    values.sort(key=lambda v: v["value"])
+    return {"name": "SaveToken", "size": 4, "values": values,
+            "comment": "A save key, as the game writes it: the id, not the string. %d of them, "
+                       "the ones built into this executable - what the loaded mod registers on "
+                       "top is numbered in load order and left out. From reversing/saveTokens.py."
+                       % len(values)}
+
+
+# CPersistent's virtuals, and the shape each one takes on a class of its own. Slot 0 is the
+# destructor, which is not ours to name.
+PERSISTENT_SLOTS = {
+    1: ("Save", "void __thiscall %s::Save(%s* this, CSaveWriter* writer)"),
+    2: ("SaveContents", "void __thiscall %s::SaveContents(%s* this, CSaveWriter* writer)"),
+    3: ("Load", "void __thiscall %s::Load(%s* this, CParseContext* parse)"),
+    4: ("LoadKey", "void __thiscall %s::LoadKey(%s* this, CParseContext* parse, SaveToken key)"),
+    5: ("AfterLoad", "void __thiscall %s::AfterLoad(%s* this)"),
+}
+
+# The bodies CPersistent itself provides: named once, under CPersistent, and the two empty
+# ones are shared with hundreds of classes that have nothing to do with each other.
+PERSISTENT_BASE = {0x45BB10, 0x60CD50, 0xA7C050, 0xABF890, PURECALL + IMAGE_BASE}
+
+# A class whose name Ghidra can hold as a namespace: no templates, no library mangling.
+VALID_CLASS = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+
+
 def parse_prototype(text):
     """
     'int* __stdcall SupplyCapacity(CMapProvince* province, int* out)' -> signature dict.
@@ -450,6 +540,9 @@ def main():
     lua = json.load(open(LUABIND))
     project = json.load(open(PROJECT, encoding="utf-8"))
     enums = set(lua["enum_types"])
+    save_tokens = save_token_enum()
+    if save_tokens:
+        enums.add("SaveToken")
     sizes = {k: v[0] for k, v in KNOWN_SIZES.items()}
     for c in lua["classes"]:
         if c["size"]:
@@ -577,6 +670,13 @@ def main():
             if folded_across_classes(holders, rtti, va) and trivial_name(checker.image, va):
                 problems.append("%s names a body folded into %d classes; %s is what it does"
                                 % (a["name"], len(holders[va]), trivial_name(checker.image, va)))
+    # Ghidra gives a __thiscall function a `this` of its own unless the function sits in a
+    # class namespace, and everything written here shifts one place behind it - so what the
+    # code puts in ECX reads as the argument after it. Say ECX outright in those.
+    for a in project["addresses"]:
+        if "__thiscall" in (a.get("signature") or "") and "::" not in (a.get("name") or ""):
+            problems.append("__thiscall outside a class, so Ghidra adds a this of its own "
+                            "and the arguments shift: %s %s" % (a["rva"], a["name"]))
     for a in project["addresses"]:
         rva = int(a["rva"], 16)
         conf = CONFIDENCE.get(a["confidence"], "TENTATIVE")
@@ -594,6 +694,25 @@ def main():
                 ns, name = checker.vftable_class(va), "vftable"
             labels.append({"rva": rva, "namespace": ns, "name": name, "kind": a["kind"], "confidence": conf,
                            "evidence": evidence, "type": a.get("type")})
+
+    # ---- CPersistent's five, wherever a class writes its own ----
+    # The slot records name the slot; this names the body behind it, which is what a call
+    # site reads. The RTTI export says which implementation each class introduced, so a body
+    # inherited from a base is left to the base and a body shared with an unrelated class -
+    # the empty defaults - is left alone.
+    for name, cls in sorted(rtti.items()):
+        if "CPersistent" not in ancestors_of(rtti, name) or not VALID_CLASS.match(name):
+            continue
+        for i in cls.get("introduces", []):
+            slot, va = i["slot"], int(i["address"], 16)
+            if i.get("vftable_offset", 0) or slot not in PERSISTENT_SLOTS or va in PERSISTENT_BASE:
+                continue
+            method, shape = PERSISTENT_SLOTS[slot]
+            add_function(va - IMAGE_BASE, name, method, "CERTAIN",
+                         "Slot %d of CPersistent, this class's own: the RTTI export says %s "
+                         "introduced the implementation at this address. See "
+                         "GameClasses/CPersistent.hpp for what the five do." % (slot, name),
+                         parse_prototype(shape % (name, name)), proven=True)
 
     # ---- structures ----
     structs = collections.OrderedDict()
@@ -708,6 +827,8 @@ def main():
                             "values": [{"name": n, "value": lua_values[n]} for n, _ in values if n in lua_values]}
     for e in enums:
         enum_out.setdefault(e, {"name": e, "size": 4, "comment": "an enum the Lua API passes; values not registered", "values": []})
+    if save_tokens:
+        enum_out["SaveToken"] = save_tokens
 
     vftables = virtual_tables(checker, structs, functions, labels, project.get("vftable_slots"))
 
@@ -733,10 +854,16 @@ def virtual_tables(checker, structs, functions, labels, overrides=None):
     offset: `unit->vftable->GetAverageOrganisation(...)` instead of `(**(*unit + 0x50))()`.
 
     The tables are read out of the executable and their length comes from the RTTI export.
+    A class whose own table the compiler never wrote - an abstract base such as CPersistent -
+    still gets one, out of its `vftable_slots` records alone, since calls on a pointer to it
+    go through a table all the same.
+
     A slot whose function the findings name takes that name; the rest are `vf_<slot>`, which
     still says which slot a call went through. An override in `vftable_slots` may be a name
     on its own, or `{"name": ..., "signature": ...}` where the signature is what the slot is
-    typed from. Only classes the findings already describe -
+    typed from. A record written against a base class names that slot in every table below
+    it - CPersistent's six virtuals reach all 754 classes that derive from it this way - and
+    is weaker than a name read off the slot's own body. Only classes the findings already describe -
     a structure, or a vftable of their own - are laid out, since those are the ones anyone
     is reading.
     """
@@ -774,6 +901,14 @@ def virtual_tables(checker, structs, functions, labels, overrides=None):
         family = ancestors(name)
         struct_name = "%s_vftable" % name if at == 0 else "%s_vftable_at%X" % (name, at)
         by_slot = (overrides or {}).get(name, {})
+        # A base class's slots are its descendants' slots too, so a record written once
+        # against the base names that slot in every table below it. It is the weaker claim
+        # of the two: a name read off the slot's own body wins, since that body is the
+        # override the class actually wrote.
+        from_base = {}
+        for ancestor in sorted(family - {name}):
+            for slot, record in ((overrides or {}).get(ancestor) or {}).items():
+                from_base.setdefault(slot, (ancestor, record))
         entries, taken = [], collections.Counter()
         for i, target in enumerate(targets):
             known = known_functions.get(target) or known_labels.get(target)
@@ -788,6 +923,8 @@ def virtual_tables(checker, structs, functions, labels, overrides=None):
             # address is _purecall and says nothing about the call.
             override = by_slot.get(str(i))
             override = {"name": override} if isinstance(override, str) else override
+            base_class, inherited = from_base.get(str(i), (None, None))
+            inherited = {"name": inherited} if isinstance(inherited, str) else inherited
             # A body too small to belong to anyone is named for what it does, and the
             # classes that declare such a method are kept on it as labels. One of those
             # labels may be this class's, and in this table that name is right - it is
@@ -796,13 +933,16 @@ def virtual_tables(checker, structs, functions, labels, overrides=None):
                              if l.get("namespace") in family), None)
             slot_name = ((override or {}).get("name")
                          or (split_name(known["name"])[1] if mine
-                             else declared["name"] if declared else "vf_%d" % i))
+                             else declared["name"] if declared
+                             else (inherited or {}).get("name") or "vf_%d" % i))
             taken[slot_name] += 1
             if taken[slot_name] > 1:                    # one body filling several slots
                 slot_name = "%s_%d" % (slot_name, i)
             comment = "slot %d, %08X" % (i, target + IMAGE_BASE)
             if override:
                 comment += " - named by BiceLib"
+            elif inherited and not mine and not declared:
+                comment += " - %s's slot, named by BiceLib" % base_class
             elif declared:
                 comment += (" - a body the linker folded, named for this class from %s::%s"
                             % (declared["namespace"], declared["name"]))
@@ -817,15 +957,55 @@ def virtual_tables(checker, structs, functions, labels, overrides=None):
             # this slot and the script may take it. A folded body fills slots in classes
             # with nothing in common, and gets neither its name nor its signature.
             entry = {"slot": i, "rva": target, "name": slot_name,
-                     "named": mine or bool(override) or bool(declared), "typed": mine,
+                     "named": mine or bool(override) or bool(declared) or bool(inherited), "typed": mine,
                      "own": inherited_only(target, tables, rtti),
                      "comment": comment}
-            if override and override.get("signature"):
-                entry["signature"] = parse_prototype(override["signature"])
+            written = override if override and override.get("signature") else (
+                inherited if inherited and not mine and not declared else None)
+            if written and written.get("signature"):
+                entry["signature"] = parse_prototype(written["signature"])
+                entry["named"] = True
                 entry["comment"] += ", typed from the findings"
             entries.append(entry)
         out.append({"name": struct_name, "class": name, "rva": rva,
                     "objectOffset": at, "slots": entries})
+
+    # A base class may have no table of its own - CPersistent is never instantiated, so the
+    # compiler wrote none - and yet every call inside its own methods goes through one, and
+    # so does every call on a pointer to it. Its slot records are enough to write the table
+    # out, which is what turns `(**(*this + 8))(writer)` into
+    # `this->vftable->SaveContents(writer)`. Where the base has a body of its own for a slot
+    # the slot points at it, the same as a real table's would.
+    by_qualified = {(f.get("namespace"), f["name"]): f for f in functions.values()}
+    for name, by_slot in sorted((overrides or {}).items()):
+        if name.startswith("_") or name not in rtti or rtti[name]["vftables"]:
+            continue
+        records = {int(k): v for k, v in by_slot.items() if k.isdigit()}
+        if not records:
+            continue
+        entries = []
+        for i in range(max(records) + 1):
+            record = records.get(i)
+            record = {"name": record} if isinstance(record, str) else record
+            slot_name = (record or {}).get("name") or "vf_%d" % i
+            impl = by_qualified.get((name, slot_name))
+            # Zero rather than nothing where the base has no body of its own: the address is
+            # never read for such a slot, and a null would make an older apply script throw.
+            entry = {"slot": i, "rva": impl["rva"] if impl else 0, "name": slot_name,
+                     "named": bool(record), "typed": bool(impl and impl["signature"]),
+                     "own": bool(impl),
+                     "comment": "slot %d of %s, which has no table of its own - written from "
+                                "the findings" % (i, name)}
+            if impl:
+                entry["comment"] += ", pointing at %s::%s" % (name, slot_name)
+            else:
+                entry["comment"] += "; no body at this level, so no address"
+                if record and record.get("signature"):
+                    entry["signature"] = parse_prototype(record["signature"])
+                    entry["comment"] += ", typed from the signature there"
+            entries.append(entry)
+        out.append({"name": "%s_vftable" % name, "class": name, "rva": 0,
+                    "objectOffset": 0, "slots": entries})
     return out
 
 
