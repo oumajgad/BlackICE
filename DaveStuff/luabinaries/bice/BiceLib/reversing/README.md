@@ -218,29 +218,76 @@ That code goes in a module of its own in the style of `BiceLib/Oob/`, reading th
 
 ## Where to look next
 
-Classes whose save and load paths would name the most, counted by `CPersistent`'s slots 2 and
-4: how many keys the class writes, and how many of the offsets those two paths touch have no
-name yet. The offset count is rough - the register tracking behind it leaks on big loaders -
-so read it as a guide, not a ranking. The ones marked done have been read since the list
-was written; what is left below them is where to go next.
+**The save classes are done.** Every class that writes a savegame and was worth reading has
+been read: CCountry, CProvince, CCombat, CBuilding, CGameState, CUnit, CAIStrategy, CSubUnit
+with CRegiment/CShip/CWing, COrder with its six derived kinds, CRebelFaction, CWar with
+CWarGoal and CUndeclaredWar, CConstruction with the three kinds and CBrigadeConstructionDefinition,
+CActiveMission, CTheatre, CLeader, CFaction and CMinister. What is left is the other half.
 
-| class | keys | unnamed | why |
-| --- | --- | --- | --- |
-| `CGameState` | 33 | 36 | **done** - see CLASSES.md, *The game state, which is the save's root* |
-| `CUnit` | - | 21 | **done** - seven fields named from its save path |
-| `CAIStrategy` | 21 | 31 | **done** - the whole class, see CAIStrategy.hpp |
-| `CSubUnit` | 10 | 21 | **done** - and with it CRegiment, CShip and CWing; see CLASSES.md, *What the save keys named on a sub unit* |
-| `COrder` | 9 | 33 | **done** - and with it CAirOrder, CNavalOrder, CSupportAttackOrder and the three that add nothing; see CLASSES.md, *What the save keys named on an order* |
-| `CRebelFaction` | 9 | 33 | **done** - and with it CRebelType and CGovernment; see CLASSES.md, *What the save keys named on a rebel faction* |
-| `CWar`, `CWarGoal` | 9, 5 | 16, 37 | **done** - and with them CUndeclaredWar and CCasusBelliType; see CLASSES.md, *What the save keys named on a war* |
-| `CMilitaryConstruction` | 6 | 18 | **done** - with CConstruction, the two other kinds and CBrigadeConstructionDefinition; the reserves rate is saved as `factor` |
-| `CActiveMission` | 5 | 14 | **done** - though every mission in a running game is the null one; see CLASSES.md |
-| `CTheatre` | 5 | 8 | **done** - and a `front=` block turned out to be a CAreaBorder |
-| `CLeader` | 4 | 10 | **done** - and `experience`/`experience_2` turned out to be one 64-bit `current_experience` |
-| `CFaction`, `CMinister` | few | 7-22 | **done** - see CLASSES.md, *The faction, and the minister* |
-| `CLaw`, `CTechnology` | few | 7-22 | **left**: both are file parsers with no save path, and long enough that a quick pass would only guess |
+### The half that never sees a save
 
-**Worth skipping**: the hundred-odd `C*Command`, `CCgm*`, `C*Change`, `C*Effect` and
-`C*Trigger` classes are multiplayer command plumbing and event scripting internals, and the
-`C*Type` classes are interface definitions. They come top of a raw unnamed-offset count only
-because the tracking leaks through their long loaders.
+**362 of the 754 CPersistent descendants never write anything**: slot 2, `SaveContents`, is
+the shared empty `ret 4` at `0x20CD50`. They are definitions read out of the mod's `.txt`
+files, so **their `LoadKey` is the grammar of a file** rather than of a save block - which is
+what made `CBuilding::LoadKey` a complete account of `buildings.txt`. See CLASSES.md, *How a
+.txt gets off disk*, for the path that feeds them.
+
+Dropping the event-script plumbing (`C*Effect`, `C*Trigger`, `C*Command`, `CCgm*`) and the
+interface classes leaves **52 distinct loaders**. Ranked by how much grammar the loader
+carries - the bytes of its `LoadKey`, which is a rough count of keys - against what is
+already named:
+
+| class | LoadKey | bytes | named | why |
+| --- | --- | --- | --- | --- |
+| `CSubUnitDefinition` | `0x1A3C80` | 6103 | 68 | **the unit files**, and the most used class in the mod; the stat block is done, the tails are not - `build_cost_by_technology`, the per-unit-type vectors |
+| `CTechnology` | `0x134AC0` | 3217 | 9 | `technology.txt`; the effects list is understood (CTechnology.hpp) but the rest of the class is not |
+| `CGovernment` | `0x124660` | 3319 | 1 | `governments.txt`; only its key is named, and CRebelFaction points at one |
+| `CTrait` | `0x1B2A50` | 1620 | 1 | `traits.txt` and `gainable_traits.txt` - what a leader's traits actually do |
+| `CHistoricalModel` | `0x1828D0` | 1554 | 0 | the unit models; `historical_model` on a sub unit points into this |
+| `CMinister` | `0x12C630` | 1591 | 6 | `minister_types.txt`; six named from the last pass, the rest is open |
+| `CBuilding` | `0xB6950` | 1427 | 26 | `buildings.txt`, **done** - kept here as the worked example |
+| `CRebelType` | `0xBFA40` | 1064 | 1 | `rebel_types.txt`; partisan behaviour |
+| `CCasusBelliType` | `0x165F0` | 856 | 1 | `cb_types.txt` |
+| `CCombatTactic` | `0x38900` | 775 | 0 | `combat_tactics.txt`; ties into the combat work already done |
+| `CCounterType` | `0x43B840` | 694 | 0 | the map counters |
+| `CDefines` | `0x45E10` | 691 | 2 | every constant the game reads; BiceLib has a handful in CDefines.hpp |
+| `CIdeologyGroup` | `0x126E60` | 675 | 2 | `ideologies.txt` |
+| the `CModifier` family | `0x59620` | 601 | 5 | one loader shared by `CProvinceModifier`, `CStaticModifier`, `CFactionModifier` and two more - `static_modifiers.txt` and `event_modifiers.txt`, which reach everything |
+| `CTerrain` | `0xADA10` | 770 | 9 | **mostly done**; `movement_cost`, `temperature` and `precipitation` went in last |
+| `CScenario`, `CMap` | `0x5E990`, `0x893B0` | 2406, 2026 | 0, 6 | the scenario and map load rather than a `common/` file |
+| `CRule`, `CTutorialChapter`, `CTerrainGraphical`, `CDirectorySettings`, `CSelectionGroupReader`, `CMeanTimeToHappen` | | 476-1336 | 0 | plumbing; `CDirectorySettings` is the path table the loader fills |
+
+`CNationalProvinceTigger` tops a raw byte count with 9728 and is a trigger the name filter
+missed - the game's own spelling. Ignore it and anything like it.
+
+### How to read one
+
+Different from a save class, and the difference is what makes it easy: **the mod's own file
+is the oracle**, not a savegame.
+
+1. **Find the file.** The 24 `common/` names and their order are in CLASSES.md; a class not
+   in that list comes from the map, the scenario or `history/`.
+2. **Decompile `LoadKey` in Ghidra.** With the `SaveToken` enum applied the switch reads as
+   `if (key == max_strength)`, so the keys name themselves. **Do not write a switch solver** -
+   these loaders use binary searches with the key register adjusted down each branch, and
+   jump tables; a hand-rolled walker gets the offsets wrong, which it did twice.
+3. **Take the offsets from the disassembly where the decompiler hides them** - a handler that
+   passes its destination in a register shows as `func_0x...()` with no argument.
+4. **Check every key against the file**, the way `buildings.txt` was checked: parse the `.txt`,
+   read the same field out of a running game, and confirm the scaling - almost everything is
+   x1000.
+5. **Then read it live across every instance.** Definition objects live for the whole session,
+   so a running game holds them all; a field's spread over 61 buildings or 608 unit types
+   settles what it means.
+6. Record: offsets in the header, entries in `project.json`, a CLASSES.md section keyed by the
+   file, and rebuild and apply the findings.
+
+### The two things that would make all of it faster
+
+- **Which database claims which file is not traced.** The path from startup to a
+  `CParseContext` over a file is known; what is missing is how a top-level key becomes a
+  `CBuilding` rather than a `CGovernment`. Finding that dispatch would name the remaining
+  loaders' owners in one go.
+- **A reliable key extractor.** Ghidra decompiles these switches correctly and the enum names
+  the keys; a script that reads the decompiled C - rather than the instructions - would turn
+  step 2 into a batch job over all 52.

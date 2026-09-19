@@ -50,13 +50,14 @@ namespace {
         if (terrain.empty()) {
             return;
         }
-        if (!ImGui::BeginTable(id, 5, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersInner | ImGuiTableFlags_SizingStretchProp)) {
+        if (!ImGui::BeginTable(id, 6, ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersInner | ImGuiTableFlags_SizingStretchProp)) {
             return;
         }
         ImGui::TableSetupColumn("Terrain");
         ImGui::TableSetupColumn("Att");
         ImGui::TableSetupColumn("Def");
         ImGui::TableSetupColumn("Move");
+        ImGui::TableSetupColumn("Speed");
         ImGui::TableSetupColumn("Attr");
         ImGui::TableHeadersRow();
 
@@ -78,6 +79,8 @@ namespace {
             ImGui::Text("%.1f%%", stat.defence * 0.1f);
             ImGui::TableNextColumn();
             ImGui::Text("%.1f%%", stat.movement * 0.1f);
+            ImGui::TableNextColumn();
+            ImGui::Text("%.2f kph", stat.speed * 0.001f);
             ImGui::TableNextColumn();
             ImGui::Text("%.2f%%", stat.attrition * 0.001f);
         }

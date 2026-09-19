@@ -39,6 +39,16 @@ namespace Inspector {
         int movement;
 
         /**
+         * **What the unit actually moves at here**, in the same thousandths as
+         * `max_speed`: the definition's speed with this row's `movement` modifier applied,
+         * `max_speed * (1 + movement)`, floored at zero.
+         *
+         * The terrain's own `movement_cost` does not come into it - the game does not use
+         * that field.
+         */
+        int speed;
+
+        /**
          * **True for `night`, `fort`, `river` and `amphibious`**, which are not map terrain
          * at all: the definition holds them as four CUnitAdjusters of its own rather than
          * in the vector the terrains index, so they have no CTerrain behind them and
