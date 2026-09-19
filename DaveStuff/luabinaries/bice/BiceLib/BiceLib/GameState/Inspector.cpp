@@ -140,7 +140,15 @@ namespace {
      * 1146, 1240 and 1296 of 1500 land regiments and on no ship or wing at all, so they are
      * listed for armies only.
      */
-    void collectEnvironments(Entity& entity, uintptr_t subUnitDefinitionPtr, unsigned typeMask) {
+    /**@brief `max_speed` with a terrain's movement modifier applied, floored at zero; both
+       are thousandths, and a modifier of -1.0 or worse means it does not move at all*/
+    int speedIn(int maxSpeed, int movement) {
+        const long long scaled = static_cast<long long>(maxSpeed) * (1000 + movement) / 1000;
+        return scaled < 0 ? 0 : static_cast<int>(scaled);
+    }
+
+    void collectEnvironments(Entity& entity, uintptr_t subUnitDefinitionPtr, unsigned typeMask,
+            int maxSpeed) {
         struct Environment { const char* name; uintptr_t offset; unsigned typeMask; };
         static const Environment environments[] = {
             { "night",      CSubUnitDefinition::Offsets::night,      MASK_ALL },
@@ -172,6 +180,7 @@ namespace {
             stat.defence = adjuster.defence;
             stat.attrition = adjuster.attrition;
             stat.movement = adjuster.movement;
+            stat.speed = speedIn(maxSpeed, adjuster.movement);
             entity.terrain.push_back(stat);
         }
     }
@@ -220,6 +229,9 @@ namespace {
             return;
         }
 
+        int maxSpeed = 0;
+        Mem::tryRead(subUnitDefinitionPtr + CSubUnitDefinition::Offsets::max_speed, maxSpeed);
+
         // Read on first use. The definitions come off the map in one pass now, so
         // there is nothing to defer behind a button the way there was while this
         // meant walking the heap.
@@ -250,10 +262,11 @@ namespace {
             stat.defence = adjuster.defence + terrain->defence;
             stat.attrition = adjuster.attrition + terrain->attrition;
             stat.movement = adjuster.movement;
+            stat.speed = speedIn(maxSpeed, adjuster.movement);
             entity.terrain.push_back(stat);
         }
 
-        collectEnvironments(entity, subUnitDefinitionPtr, typeMask);
+        collectEnvironments(entity, subUnitDefinitionPtr, typeMask, maxSpeed);
     }
 }
 

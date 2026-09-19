@@ -1351,6 +1351,55 @@ a name in it; the `RADIO_*_LEADER_DISTANCE` names in `CDefinesSupply` remain inf
 | `0xFD670` GetEscortBuildCost | `ESCORT_BUILD_COST` | `+0x4C` |
 | `0xFD6E0` GetEscortBuildTime | `ESCORT_BUILD_TIME` | `+0x50` |
 
+### How a .txt gets off disk, and which classes never see a save
+
+**362 of the 754 CPersistent descendants are never written to a save.** The test is
+mechanical: slot 2, `SaveContents`, is the shared empty `ret 4` at `0x20CD50`, so the class
+writes nothing however much it loads. The other 392 have a writer of their own. That is the
+line between a class that carries game state and one that is only ever a definition read out
+of the mod's files - `CBuilding`, `CLaw`, `CMinister`, `CTechnology`, `CCasusBelliType`,
+`CDecision`, `CDefines`, `CContinent`, `CCombatTactic`, `CDivisionTemplate`, and the whole
+`C*Effect` / `C*Trigger` / `CCgm*` mass of event-script plumbing.
+
+For those, **the loader is the grammar of the file** rather than of a save block, which is
+what makes `CBuilding::LoadKey` a complete account of `buildings.txt`.
+
+**The path from disk.** Startup is one function, `0x22FAC0`, whose own log strings name it
+`eu3application.cpp`, and it runs in this order: `graphicalculturetype.txt` and
+`bookmarks.txt`, `Initialise Defines`, `App Init`, the cursors, `Sound...`, `Initialise
+Graphics`, the `.gfx` files, the `.gui` files, then **the databases**, then `LOAD_EVENTS`,
+the sound effects, the flags, `history execute`, and last `Idler Initialised`.
+
+The databases step calls **`0x2348F0`**, which is the `common/` loader and takes the
+application as its one argument. For every file in `common/` it builds `<directory> +
+"/name.txt"`, asks **`0x66B3A0`** whether that file exists, and keeps the path only when it
+does - which is how a mod's copy wins over vanilla's. The names are consecutive strings from
+`0x11CCB94`, and the first twenty-four are, in the order they are loaded:
+
+```
+technology.txt          static_modifiers.txt    event_modifiers.txt     buildings.txt
+governments.txt         countries.txt           country_colors.txt      triggered_modifiers.txt
+on_actions.txt          rebel_types.txt         faction_aims.txt        unit_upgrades.txt
+combined_arms.txt       minister_types.txt      government_positions.txt ideologies.txt
+laws.txt                traits.txt              gainable_traits.txt     combat_tactics.txt
+occupation_policies.txt strategic_resources.txt cb_types.txt            covert_ops.txt
+```
+
+**Then the same machinery the save uses takes over.** For a file it makes a **tokenizer** -
+0x114 bytes, constructor `0x669990`, vftable `0x11FD1FC` - over the path, and wraps it in a
+**`CParseContext`**, constructor `0x67A460`, vftable `0x11FD93C`. That constructor stores the
+tokenizer at **+0x1C**, which is the same field `CPersistent::Load` reads, so a file and a
+save block are parsed by one set of parts from here on. Neither class has RTTI, which is why
+neither turns up in the export.
+
+The driver the loader calls next (`0x127470`, taking the context as its second argument)
+pulls tokens through the tokenizer's slot 1 until the kind is `0x13`, end of input - the same
+loop, and the same token kinds, as the save path in the section above.
+
+**What is not established**: how a given file is matched to the class it fills. The chain
+above gets a `CParseContext` onto a file; which database claims it, and how a top-level key
+becomes a `CBuilding` rather than a `CGovernment`, has not been traced.
+
 ### CPersistent: how anything gets into a save
 
 `CPersistent` is the base of **754 classes** in this build, `CCountry` among them, and the

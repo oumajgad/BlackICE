@@ -783,6 +783,15 @@
    "source": "BiceLib/GameClasses/CGoodsPool.hpp:30"
   },
   {
+   "rva": "0x127470",
+   "kind": "function",
+   "name": "LoadCommonFileContents",
+   "signature": null,
+   "comment": "The driver `LoadCommonFiles` calls once a CParseContext is built, taking it as the second argument: pulls tokens through the tokenizer's slot 1 until the kind is 0x13, end of input. The same loop and token kinds as CPersistent::Load. **Which class a given file fills is not traced** - this is as far as the general path goes. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:1354"
+  },
+  {
    "rva": "0x163E60",
    "kind": "function",
    "name": "Return_4",
@@ -1746,6 +1755,24 @@
    "source": "BiceLib/GameClasses/CMoveCommand.hpp:63; reversing/FINDINGS-redeploy.md:101"
   },
   {
+   "rva": "0x22FAC0",
+   "kind": "function",
+   "name": "CEU3Application::LoadEverything",
+   "signature": null,
+   "comment": "**The game's startup**, named from its own log strings, which cite `eu3application.cpp`. In order: graphicalculturetype.txt and bookmarks.txt, `Initialise Defines`, `App Init`, the cursors, sound and music, graphics, the .gfx files, the .gui files, the databases (LoadCommonFiles below), LOAD_EVENTS, the sound effects, the flags, `history execute`, and last the idler. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:1354"
+  },
+  {
+   "rva": "0x2348F0",
+   "kind": "function",
+   "name": "LoadCommonFiles",
+   "signature": null,
+   "comment": "**Works out which `common/*.txt` to read and reads them**, one argument, the application. Per file it builds `<directory> + \"/name.txt\"`, calls FileExists on it and keeps the path only where the file is there, which is how a mod's copy wins over vanilla's; the names are consecutive strings from 0x11CCB94, starting technology, static_modifiers, event_modifiers, buildings, governments, countries. Then it makes a tokenizer and a CParseContext over each. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:1354"
+  },
+  {
    "rva": "0x243750",
    "kind": "function",
    "name": "CombineColourBrightness",
@@ -2241,6 +2268,15 @@
    "source": "reversing/FINDINGS-mapmode.md:51"
   },
   {
+   "rva": "0x669990",
+   "kind": "function",
+   "name": "Tokenizer::Tokenizer",
+   "signature": null,
+   "comment": "Builds the tokenizer a file is read through: 0x114 bytes, vftable 0x11FD1FC, taking the path. Slot 1 is what the parse loops call for the next token. No RTTI, so the class name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:1354"
+  },
+  {
    "rva": "0x66A050",
    "kind": "function",
    "name": "BuildTokenTable",
@@ -2257,6 +2293,15 @@
    "comment": "The key a token id stands for, as a std::string built into the caller's buffer: the id indexes the table at g_save_tokens_first. Builds that table on first use. This is the lookup that turns `mov ecx, 0x522` into carrier_size.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CPersistent.hpp:60"
+  },
+  {
+   "rva": "0x66B3A0",
+   "kind": "function",
+   "name": "FileExists",
+   "signature": null,
+   "comment": "Answers whether a path is there; the `common/` loader calls it once per file to choose between the mod's copy and vanilla's. The name is BiceLib's, from that use.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:1354"
   },
   {
    "rva": "0x679750",
@@ -2293,6 +2338,15 @@
    "comment": "Writes `<key>=`: indents, writes the token's text, then token 1, which is `=`. The key is never a string in the code - `mov ecx, 0x5A6; call` is `usage=`. In a binary save the id goes out raw instead. Every CPersistent slot 2 is a run of these.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CPersistent.hpp:51"
+  },
+  {
+   "rva": "0x67A460",
+   "kind": "function",
+   "name": "CParseContext::CParseContext",
+   "signature": null,
+   "comment": "**Wraps a tokenizer in the same CParseContext the save loader uses**: writes vftable 0x11FD93C, clears the token fields and stores the tokenizer at +0x1C - the field CPersistent::Load reads. From here a file and a save block go through one set of parts. No RTTI for it either.",
+   "confidence": "confirmed",
+   "source": "reversing/CLASSES.md:1354"
   },
   {
    "rva": "0x67AC60",
@@ -5932,6 +5986,13 @@
      "source": "BiceLib/GameClasses/CTerrain.hpp:10"
     },
     {
+     "offset": "0x44",
+     "name": "movement_cost",
+     "type": "int",
+     "comment": "x1000, from the terrain's `movement_cost` - mountain 1.6, plains 2.0, ocean 1.0, urban 1.25, woods 1.45, all matching `map/terrain.txt`. **Parsed and then never used**: the game does not take it into account, so a unit's speed in a terrain is its own per-terrain modifier on max_speed and nothing else",
+     "source": "BiceLib/GameClasses/CTerrain.hpp:28"
+    },
+    {
      "offset": "0x48",
      "name": "is_water",
      "type": "bool",
@@ -5953,11 +6014,25 @@
      "source": "BiceLib/GameClasses/CTerrain.hpp:13"
     },
     {
+     "offset": "0x58",
+     "name": "temperature",
+     "type": "int",
+     "comment": "x1000, from the terrain's `temperature`. **Read live**: -10000 on mountain, which declares `-10`, and zero on the four terrains compared that declare none - one positive sample",
+     "source": "BiceLib/GameClasses/CTerrain.hpp:37"
+    },
+    {
      "offset": "0x5C",
      "name": "attrition",
      "type": "int",
      "comment": "",
      "source": "BiceLib/GameClasses/CTerrain.hpp:14"
+    },
+    {
+     "offset": "0x64",
+     "name": "precipitation",
+     "type": "int",
+     "comment": "x1000, from the terrain's `precipitation`. **Read live**: 10000 on mountain, which declares `10`, and zero on the four that declare none",
+     "source": "BiceLib/GameClasses/CTerrain.hpp:43"
     }
    ],
    "vftable_rva": "0x11C0764"
