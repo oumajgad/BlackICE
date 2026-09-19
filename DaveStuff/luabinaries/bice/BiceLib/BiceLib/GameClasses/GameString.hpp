@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <string>
 
 /**
  * A string in the shape the game's own compiler produced, owned by BiceLib.
@@ -57,6 +58,28 @@ namespace Game {
         String(const String&);
         String& operator=(const String&);
     };
+
+    /**
+    @brief writes text into a string the **game** owns, growing it as the game would
+
+    For rewriting a string a game function handed out - the text an effect shows, say.
+    The string has to be a live, constructed one: this assigns to it, which frees what
+    it held. A string BiceLib owns is a `Game::String` and sets itself.
+    */
+    void assignTo(void* gameString, const char* text);
+
+    /**
+    @brief the same text with the game's colour codes taken out
+
+    The game marks colour inline, as `\xA7` and a letter - `\xA7Y` yellow, `\xA7W` back
+    to white - and **a name can carry its own**: unit names in this mod do. Putting one
+    inside a colour of your own ends that colour at the name's first code, so the rest
+    of the line comes out in the name's colour instead.
+
+    So anything being placed inside a colour goes through here first. What is left is
+    still Windows-1252; only the markup is gone.
+    */
+    std::string withoutColours(const char* text);
 
     /**
     @brief the characters of a string the game owns, in the game's own encoding

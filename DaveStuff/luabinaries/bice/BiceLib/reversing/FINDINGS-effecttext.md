@@ -130,10 +130,93 @@ and the game's own `free` gives it back, because the allocator in the DLL is not
 allocator in the executable. `Game::String` is that, owning, and is the reusable half of
 this work.
 
-### What this does not cover
-
-Only `kill_leader`. Every other effect builds its own sentence in its own function, and
-the same two-stub shape would work on any of them - the machinery above is shared.
-
 A localisation that asks for a variable nothing fills shows the `$WHERE$` as it stands,
 so a failed install is visible in the tooltip rather than silent.
+
+## load_oob, which had nothing to fill in
+
+`CLoadOOBEffect::GetText` is **`0x5BBE40`** - slot 9 of `0x11F4490`, the same slot the
+kill_leader one introduces, and the class derives from `CStringEffect`, which keeps its
+string at **`+0x20`**. For this effect that string is the file path.
+
+What it does with it is the surprise: it hands **the path itself** to `GetText` as a
+localisation key, renders whatever comes back and shows that. No key, no variables, and
+nothing worth substituting into - so BiceLib writes the whole string instead, over the
+one already built.
+
+```
+0x5BBE40  CLoadOOBEffect::GetText
+  -> 0x682490   GetText(this + 0x20)      the path, used as a key
+  -> 0x682E40   RenderText                into the out string at [ebp+8]
+  -> 0x687020   ReleaseTextReplacements   the last call before it returns
+```
+
+`CLoadOOBEffect::Execute` is `0x5BBD00`. It writes the path onto the country -
+**`CCountry + 0x58`**, through the one line setter at `0x1EC9E0` - and then calls
+**`0xFFED0`** on that country, which is what does the work. The country is the scope's:
+the id at **scope + 0x14**, the id half of the `CCountryTag` the kill_leader builder
+reads at scope + 0x10.
+
+### The file is read when the effect fires, not before
+
+Worth establishing, because it decides how a tooltip can be built at all. `0xFFED0`
+builds `<base>/units/<path>` - the base chosen by `[0x1685558 + 0x50]`, which has three
+values - and then calls, in order (**read**, from its own call list):
+
+| | |
+| --- | --- |
+| `0x66B3A0` | `FileExists`, the same one the `common/` loader uses to let a mod's copy win |
+| `0x669990` | `Tokenizer::Tokenizer` |
+| `0x67A460` | `CParseContext::CParseContext` |
+
+That is the same pair of parts `CLASSES.md` records for every `.txt` the game reads, so
+the effect opens and parses the file at the moment it fires. Startup only **lists** the
+folder: `history/units` is handed to `0xAB3E00` alongside `history/countries`,
+`history/provinces` and the rest, and that is a directory walk - it is the function that
+knows to skip `.svn`.
+
+So there is nothing in memory to read a tooltip out of, and `GameState/OobFile.cpp`
+reads the same file the effect will, counting the blocks that carry a `location` of
+their own.
+
+Two stubs again, five bytes each:
+
+**`0x5BBE40`**, the function's own first three instructions - `push ebp; mov ebp, esp;
+push -1` - taken together because they come to exactly five bytes. All the stub wants is
+ecx, the effect, which three instructions later has become a pointer into it. Those
+three are reproduced exactly, which is safe because a stub reached by a jump sees the
+stack the function's own entry saw.
+
+**`0x5BBEB1`**, the call to `ReleaseTextReplacements`. By there the string the effect
+will show is built and sits at `[ebp+8]`, with the scope at `[ebp+0xC]` - **ebp is still
+the builder's frame**, which is what makes both reachable from a stub that holds nothing
+of its own.
+
+The entry is checked as five fixed bytes, since a prologue is not a call to resolve.
+
+### The rank warning is a choice, not a finding
+
+The tooltip marks a leader whose rank is below the level he is being given - division 1,
+corps 2, and everything above them 3. **The engine has no such rule**: its only rank
+defines are `AIR_RANK_1..4` and `NAVAL_RANK_1..4`, which are how many units a rank may
+command, not what it may command.
+
+Nor do the mod's own files imply one. Every leader assignment in `history/units` against
+that leader's starting rank in `history/leaders`:
+
+| block | rank 1 | rank 2 | rank 3 | rank 4 |
+| --- | --- | --- | --- | --- |
+| division | 2302 | 509 | 95 | 56 |
+| corps | 613 | 154 | 51 | 26 |
+| army | 90 | 51 | 55 | 2 |
+| armygroup | 22 | 13 | 38 | 34 |
+| theatre | 9 | 8 | 6 | 16 |
+
+So the rule is David's, chosen with those numbers in front of him, and it is meant to
+fire on the 613. It lives in one table, `rankFor` in `Hooks/EffectTextHooks.cpp`.
+
+### What this does not cover
+
+Two effects. Every other one builds its sentence in its own function, and whichever of
+the two shapes fits - fill in a variable, or write the line - would work on any of them,
+because the machinery above is shared.

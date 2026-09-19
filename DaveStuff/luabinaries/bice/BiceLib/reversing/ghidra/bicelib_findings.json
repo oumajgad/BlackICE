@@ -26066,6 +26066,15 @@
    "labels": []
   },
   {
+   "rva": 1048272,
+   "namespace": "CCountry",
+   "name": "LoadOobFile",
+   "confidence": "CERTAIN",
+   "evidence": "**Reads the order of battle named at `CCountry + 0x58`** and puts it in the country. It builds `<base>/units/<path>` - the base chosen by `[0x1685558 + 0x50]`, which has three values - then calls FileExists, makes a Tokenizer and a CParseContext over it: the same parts every other `.txt` is read through. **So the file is opened when the effect fires**; startup only lists the folder. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": null,
+   "labels": []
+  },
+  {
    "rva": 1052864,
    "namespace": "CCountry",
    "name": "GetNumberOfControlledProvinces",
@@ -34605,6 +34614,15 @@
    "labels": []
   },
   {
+   "rva": 2017760,
+   "namespace": "CCountry",
+   "name": "SetOobFile",
+   "confidence": "CERTAIN",
+   "evidence": "One line: writes the path an order of battle is to be loaded from onto the country, at `+0x58`. What CLoadOOBEffect::Execute calls before asking for the load. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": null,
+   "labels": []
+  },
+  {
    "rva": 2026352,
    "namespace": "CCountryCapitalChange",
    "name": "SaveContents",
@@ -41239,6 +41257,24 @@
      }
     ]
    },
+   "labels": []
+  },
+  {
+   "rva": 6012160,
+   "namespace": "CLoadOOBEffect",
+   "name": "Execute",
+   "confidence": "CERTAIN",
+   "evidence": "Loads the order of battle the effect names: the path at `+0x20` goes to `0x5EC9E0`, which reads the file, and the result is applied to the country the scope names - the id at `scope + 0x14`. **Nothing about the file is in memory before this**, which is why a tooltip about it has to read the file itself. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": null,
+   "labels": []
+  },
+  {
+   "rva": 6012480,
+   "namespace": "CLoadOOBEffect",
+   "name": "GetText",
+   "confidence": "CERTAIN",
+   "evidence": "**What the `load_oob` effect shows in an option's tooltip**, slot 9 of its vftable (`0x11F4490`, RTTI). It hands the effect's own string - the file path, at `+0x20`, which CStringEffect keeps - to GetText **as a localisation key**, renders what comes back and shows that, so a player sees the bare path. There is no key and no variable to fill, so BiceLib writes the whole string over it at the last call before the return. See reversing/FINDINGS-effecttext.md.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": null,
    "labels": []
   },
   {

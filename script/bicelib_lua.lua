@@ -61,6 +61,9 @@ if mod then
     -- Fills $UNIT$, $LOCATION$ and $WHERE$ in KILL_LEADER_EFFECT. Switching this off
     -- leaves any of those the localisation asks for showing as they are written.
     BiceLib.EffectTexts.activateKillLeaderVariables()
+    -- Replaces the bare file path load_oob shows with what the file would do: the
+    -- units and where they appear, and which leaders it takes from where.
+    BiceLib.EffectTexts.activateLoadOobDetails()
 end
 
 function HasLoadedBiceLibSuccessfully()

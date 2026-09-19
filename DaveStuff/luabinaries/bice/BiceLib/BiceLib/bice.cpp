@@ -792,13 +792,35 @@ __declspec(dllexport) int seaTerrainColourInSimplifiedMapMode(lua_State* L)
  */
 __declspec(dllexport) int activateKillLeaderVariables(lua_State* L)
 {
-    const bool ok = Hooks::EffectText::install();
+    const bool ok = Hooks::EffectText::installKillLeader();
     if (!ok) {
         ERROR_OUT(printf("Hook 'activateKillLeaderVariables' failed: %s \n",
             Hooks::EffectText::status()));
     }
     else {
         INFO_OUT(printf("Hook 'activateKillLeaderVariables' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
+ * Replaces what `load_oob` shows - a file path and nothing else - with what the file
+ * would actually do: how many units appear and where, what they are made of, and which
+ * leaders it takes, with what each of those commands now.
+ *
+ * The file is read off disk, because nothing about it is in memory until the effect
+ * fires. See Hooks/EffectTextHooks.hpp and GameState/OobFile.hpp.
+ */
+__declspec(dllexport) int activateLoadOobDetails(lua_State* L)
+{
+    const bool ok = Hooks::EffectText::installLoadOob();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateLoadOobDetails' failed: %s \n",
+            Hooks::EffectText::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateLoadOobDetails' succeeded \n"));
     }
     lua_pushboolean(L, ok);
     return 1;
@@ -1085,6 +1107,7 @@ void registerEffectTextFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "EffectTexts");
     lua_newtable(this_state);
     registerFunction(this_state, "activateKillLeaderVariables", activateKillLeaderVariables);
+    registerFunction(this_state, "activateLoadOobDetails", activateLoadOobDetails);
     lua_settable(this_state, -3);
     return;
 }

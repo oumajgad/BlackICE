@@ -91,6 +91,33 @@ void Game::String::clear() {
     capacity_ = 15;
 }
 
+std::string Game::withoutColours(const char* text) {
+    std::string out;
+    if (text == nullptr) {
+        return out;
+    }
+    for (const char* at = text; *at != 0; at++) {
+        if (static_cast<unsigned char>(*at) == 0xA7) {
+            if (at[1] != 0) {
+                at++;       // the letter belongs to the escape
+            }
+            continue;
+        }
+        out += *at;
+    }
+    return out;
+}
+
+void Game::assignTo(void* gameString, const char* text) {
+    if (gameString == nullptr || text == nullptr) {
+        return;
+    }
+    setUp();
+    if (assign != nullptr) {
+        assign(gameString, text, strlen(text));
+    }
+}
+
 const char* Game::rawChars(uintptr_t address) {
     int capacity = 0;
     if (!Mem::tryRead(address + HDS::StringOffsets::capacity, capacity)) {

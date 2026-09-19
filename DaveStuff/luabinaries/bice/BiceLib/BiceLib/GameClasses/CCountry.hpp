@@ -47,6 +47,14 @@ namespace CCountry {
          * The game's own `CCountry::GetLeadershipDistributionAt(i)` (`0xE06C0`) is nothing
          * but `[this + 0x5E4][i]`, which is where the name comes from.
          */
+        /**
+         * **The order of battle file to load**, a Hoi3CString. `load_oob` writes the
+         * path here (`0x1EC9E0`) and then asks the country to read it (`0xFFED0`),
+         * which builds `<base>/units/<path>` and parses it there and then - the file
+         * is not in memory before that. See reversing/FINDINGS-effecttext.md.
+         */
+        constexpr uintptr_t oob_file = 0x58;
+
         constexpr uintptr_t leadership_distribution = 0x5E4;
         constexpr uintptr_t leadership_distribution_end = 0x5E8;
         constexpr uintptr_t leadership_distribution_capacity = 0x5EC;

@@ -774,6 +774,15 @@
    "source": "BiceLib/GameClasses/CDefines.hpp:49"
   },
   {
+   "rva": "0xFFED0",
+   "kind": "function",
+   "name": "CCountry::LoadOobFile",
+   "signature": null,
+   "comment": "**Reads the order of battle named at `CCountry + 0x58`** and puts it in the country. It builds `<base>/units/<path>` - the base chosen by `[0x1685558 + 0x50]`, which has three values - then calls FileExists, makes a Tokenizer and a CParseContext over it: the same parts every other `.txt` is read through. **So the file is opened when the effect fires**; startup only lists the folder. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
    "rva": "0x118480",
    "kind": "function",
    "name": "CCountryDataBase::GetTag",
@@ -1764,6 +1773,15 @@
    "source": "BiceLib/GameClasses/CMoveCommand.hpp:63; reversing/FINDINGS-redeploy.md:101"
   },
   {
+   "rva": "0x1EC9E0",
+   "kind": "function",
+   "name": "CCountry::SetOobFile",
+   "signature": null,
+   "comment": "One line: writes the path an order of battle is to be loaded from onto the country, at `+0x58`. What CLoadOOBEffect::Execute calls before asking for the load. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
    "rva": "0x22FAC0",
    "kind": "function",
    "name": "CEU3Application::LoadEverything",
@@ -2264,6 +2282,24 @@
    "name": "CKillLeaderEffect::GetText",
    "signature": null,
    "comment": "**The sentence an option's tooltip shows for `kill_leader`**, slot 9 of the class's vftable (`0x11F4F28`, RTTI). The only function that names the localisation string `KILL_LEADER_EFFECT`. It resolves the effect's value into a leader, finds him in the country's active leaders at `country + 0xE00`, looks the string up and puts \"\\xa7Y<name>\\xa7W\" in place of its $NAME$. BiceLib stands in for two of its calls to add $UNIT$, $LOCATION$ and $WHERE$ - see reversing/FINDINGS-effecttext.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x5BBD00",
+   "kind": "function",
+   "name": "CLoadOOBEffect::Execute",
+   "signature": null,
+   "comment": "Loads the order of battle the effect names: the path at `+0x20` goes to `0x5EC9E0`, which reads the file, and the result is applied to the country the scope names - the id at `scope + 0x14`. **Nothing about the file is in memory before this**, which is why a tooltip about it has to read the file itself. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x5BBE40",
+   "kind": "function",
+   "name": "CLoadOOBEffect::GetText",
+   "signature": null,
+   "comment": "**What the `load_oob` effect shows in an option's tooltip**, slot 9 of its vftable (`0x11F4490`, RTTI). It hands the effect's own string - the file path, at `+0x20`, which CStringEffect keeps - to GetText **as a localisation key**, renders what comes back and shows that, so a player sees the bare path. There is no key and no variable to fill, so BiceLib writes the whole string over it at the last call before the return. See reversing/FINDINGS-effecttext.md.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
