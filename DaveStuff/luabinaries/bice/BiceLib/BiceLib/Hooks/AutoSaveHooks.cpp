@@ -47,6 +47,12 @@ namespace {
     const char* const EXTENSION = ".hoi3";
     const char* const OLDER_PREFIXES[3] = { "", "old", "older" };
 
+    // Indexed by Kind. A set per kind, so the monthly save and the timed one keep
+    // three files each and neither ages the other's out.
+    const char* const DEFAULT_BASE_NAMES[Hooks::AutoSave::KIND_COUNT] = {
+        "autosave_premonth", "autosave_timed"
+    };
+
     // The stubs below are naked assembly, where a displacement has to be written as a
     // literal. These are what say those literals are the fields they are meant to be,
     // so moving one in GameClasses breaks the build instead of the hook.
@@ -62,7 +68,10 @@ namespace {
     // reproduce, in assembly, exactly the instructions they replaced, so nothing here
     // can disturb a register or a flag.
     unsigned char active = 0;
-    unsigned char pending = 0;
+
+    // Which kind has claimed the next save, or -1 for none. Not read from the stubs -
+    // only `active` is - so it can be a plain int.
+    int pendingKind = -1;
 
     DWORD jumpBackClear = 0;
     DWORD jumpBackDebugSaves = 0;
@@ -72,21 +81,23 @@ namespace {
     // names except while one of our saves is being written.
     char nameBuffers[3][64] = {};
 
-    // What our three files are called, before the rotation prefixes and the
+    // What each kind's three files are called, before the rotation prefixes and the
     // extension are put on.
-    char saveBaseName[40] = "autosave_premonth";
+    char saveBaseNames[Hooks::AutoSave::KIND_COUNT][40] = {
+        "autosave_premonth", "autosave_timed"
+    };
 
-    /**@brief puts either our names or the game's own into the buffers*/
-    void applyNames(bool ours) {
+    /**@brief the game's own names, or one kind's; a kind below zero means the game's*/
+    void applyNames(int kind) {
         for (int i = 0; i < 3; i++) {
-            if (!ours) {
+            if (kind < 0) {
                 strncpy_s(nameBuffers[i], sizeof(nameBuffers[i]), GAME_NAMES[i], _TRUNCATE);
                 continue;
             }
             // Built rather than formatted so the length is bounded by construction and
             // the result always ends in the extension.
             strncpy_s(nameBuffers[i], sizeof(nameBuffers[i]), OLDER_PREFIXES[i], _TRUNCATE);
-            strncat_s(nameBuffers[i], sizeof(nameBuffers[i]), saveBaseName, _TRUNCATE);
+            strncat_s(nameBuffers[i], sizeof(nameBuffers[i]), saveBaseNames[kind], _TRUNCATE);
             strncat_s(nameBuffers[i], sizeof(nameBuffers[i]), EXTENSION, _TRUNCATE);
         }
     }
@@ -101,18 +112,20 @@ namespace {
 
     Called in place of the writer's read of debug_saves, with what that read produced.
     A save of ours is answered with zero however debug_saves is set, because zero is
-    the rotation branch and the rotation is the point; anything else is answered
-    honestly and gets the game's own names back.
+    the rotation branch and the rotation is the point; the names come from whichever
+    kind claimed it. Anything else is answered honestly and gets the game's own names
+    back.
 
     @returns what the read should have produced
     */
     int __cdecl chooseSaveNames(int debugSaves) {
-        if (pending != 0) {
-            pending = 0;        // names one save, not the next
-            applyNames(true);
+        if (pendingKind >= 0) {
+            const int kind = pendingKind;
+            pendingKind = -1;   // names one save, not the next
+            applyNames(kind);
             return 0;
         }
-        applyNames(false);
+        applyNames(-1);
         return debugSaves;
     }
 
@@ -242,7 +255,7 @@ bool Hooks::AutoSave::install() {
 
     // The game's own names, so a vanilla autosave written before ours is ever
     // requested is named exactly as it always was.
-    applyNames(false);
+    applyNames(-1);
 
     jumpBackClear = static_cast<DWORD>(base + CLEAR_REQUEST_SITE + 6);
     jumpBackDebugSaves = static_cast<DWORD>(base + DEBUG_SAVES_SITE + 6);
@@ -272,45 +285,55 @@ bool Hooks::AutoSave::install() {
 void Hooks::AutoSave::setActive(bool on) {
     active = on ? 1 : 0;
     if (!on) {
-        pending = 0;        // nothing of ours is waiting to be named
+        pendingKind = -1;   // nothing of ours is waiting to be named
 
         // The immediates still point here, and with the stub inert nothing will put
         // these back later, so the game's own names have to be what is left behind.
-        applyNames(false);
+        applyNames(-1);
     }
 }
 
-void Hooks::AutoSave::claimNextSave() {
-    pending = 1;
+void Hooks::AutoSave::claimNextSave(Kind kind) {
+    pendingKind = static_cast<int>(kind);
 }
 
-bool Hooks::AutoSave::releaseClaim() {
-    const bool had = pending != 0;
-    pending = 0;
+int Hooks::AutoSave::releaseClaim() {
+    const int had = pendingKind;
+    pendingKind = -1;
     return had;
 }
 
-void Hooks::AutoSave::setSaveName(const char* baseName) {
-    if (baseName == nullptr || baseName[0] == 0) {
-        baseName = "autosave_premonth";  // the files have to be called something
+bool Hooks::AutoSave::claimed() {
+    return pendingKind >= 0;
+}
+
+void Hooks::AutoSave::setSaveName(Kind kind, const char* baseName) {
+    const int index = static_cast<int>(kind);
+    if (index < 0 || index >= KIND_COUNT) {
+        return;
     }
-    strncpy_s(saveBaseName, sizeof(saveBaseName), baseName, _TRUNCATE);
+    if (baseName == nullptr || baseName[0] == 0) {
+        baseName = DEFAULT_BASE_NAMES[index];  // the files have to be called something
+    }
+    strncpy_s(saveBaseNames[index], sizeof(saveBaseNames[index]), baseName, _TRUNCATE);
 
     // Only while one of ours is being written do the buffers hold our names, so there
     // is nothing to rewrite here: the next save of ours picks the new name up.
 }
 
-const char* Hooks::AutoSave::saveName(int slot) {
-    if (slot < 0 || slot > 2) {
+const char* Hooks::AutoSave::saveName(Kind kind, int slot) {
+    const int index = static_cast<int>(kind);
+    if (index < 0 || index >= KIND_COUNT || slot < 0 || slot > 2) {
         return "";
     }
     // Built on demand rather than read out of the buffers, which hold the game's own
     // names except during one of our saves.
-    static char text[3][64] = {};
-    strncpy_s(text[slot], sizeof(text[slot]), OLDER_PREFIXES[slot], _TRUNCATE);
-    strncat_s(text[slot], sizeof(text[slot]), saveBaseName, _TRUNCATE);
-    strncat_s(text[slot], sizeof(text[slot]), EXTENSION, _TRUNCATE);
-    return text[slot];
+    static char text[KIND_COUNT][3][64] = {};
+    char* into = text[index][slot];
+    strncpy_s(into, 64, OLDER_PREFIXES[slot], _TRUNCATE);
+    strncat_s(into, 64, saveBaseNames[index], _TRUNCATE);
+    strncat_s(into, 64, EXTENSION, _TRUNCATE);
+    return into;
 }
 
 bool Hooks::AutoSave::installed() {

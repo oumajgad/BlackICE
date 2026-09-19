@@ -15,7 +15,10 @@
  * answers zero for a save of ours - the three file rotation - and the three names that
  * rotation works on are pointed at buffers here, so the game's own routine runs
  * unchanged over a set of files of ours. Ours therefore rotate among three the way the
- * game's own do, and the two sets do not push each other out.
+ * game's own do, and the sets do not push each other out.
+ *
+ * There is a set per Kind, because a claim says which extra save it belongs to and the
+ * buffers are filled from that set as the writer reads them.
  *
  * While inactive both stubs reproduce, in assembly, exactly the instruction they
  * replaced and call nothing in BiceLib.
@@ -24,6 +27,18 @@
  */
 namespace Hooks {
     namespace AutoSave {
+        /**
+         * Which extra save a claim belongs to.
+         *
+         * Each kind names its own three rotating files, so two of them running
+         * together neither collide with each other nor with the game's own three.
+         */
+        enum class Kind {
+            Monthly,    // a few days before the month turns
+            Timed,      // every so many minutes of play
+        };
+        constexpr int KIND_COUNT = 2;
+
         /**@brief patches the two sites, once; safe to call again*/
         bool install();
 
@@ -36,34 +51,42 @@ namespace Hooks {
         void setActive(bool on);
 
         /**
-        @brief claims the naming of the next save the game writes
+        @brief claims the naming of the next save the game writes, for one kind
 
         Cleared by the writer as it reads it, so it names one save and not the next.
+        Only one claim can be outstanding, because only one save can be pending: the
+        game has a single request flag, and asking twice is still one save.
         */
-        void claimNextSave();
+        void claimNextSave(Kind kind);
 
         /**
-        @brief gives up a claim that was never written, and says whether there was one
+        @brief gives up a claim that was never written, and says whose it was
 
         The decision clears the game's request flag every time it runs, which cancels
         a save asked for but not yet written. The claim on the name has to go the same
         way or it lands on whichever save the game writes next, months later.
+
+        @returns the kind the claim belonged to, or -1 if there was no claim
         */
-        bool releaseClaim();
+        int releaseClaim();
+
+        /**@brief whether a claim is outstanding, whoever it belongs to*/
+        bool claimed();
 
         /**
-        @brief what our three rotating files are called
+        @brief what one kind's three rotating files are called
 
         The base of the name only: the rotation prefixes and the extension are put on
         here, giving `<name>.hoi3`, `old<name>.hoi3` and `older<name>.hoi3`. An empty
-        name falls back to a default rather than producing files called `.hoi3`.
+        name falls back to that kind's default rather than producing files called
+        `.hoi3`.
         */
-        void setSaveName(const char* baseName);
+        void setSaveName(Kind kind, const char* baseName);
 
         /**
-        @brief one of the three names, newest first, for a page that wants to show them
+        @brief one of a kind's three names, newest first, for a page that shows them
         */
-        const char* saveName(int slot);
+        const char* saveName(Kind kind, int slot);
 
         bool installed();
 

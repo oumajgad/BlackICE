@@ -163,13 +163,32 @@ name" entry point.
 
 ## What BiceLib does with it
 
-Custom Auto-Saves, on the Options page. It adds one save a month, a configurable
-number of days before the month turns, because the game evaluates event trigger
-conditions on the month change and only then: a save made after that moment has
-already had its evaluation, so loading it fires nothing for that month.
+Custom Auto-Saves, on the Options page: **two extra saves, each switched on by
+itself**, sharing one pair of stubs.
 
-It sits alongside the game's own autosave. The frequency in `settings.txt` keeps
-working untouched, and switching the feature off leaves the game deciding on its own.
+**Before the month changes.** One save a month, a configurable number of days before
+the month turns, because the game evaluates event trigger conditions on the month
+change and only then: a save made after that moment has already had its evaluation, so
+loading it fires nothing for that month.
+
+**On a timer.** One save every so many minutes of real time, measured with
+`GetTickCount64`, so the most a crash can cost is the interval whatever speed the game
+is at.
+
+Both sit alongside the game's own autosave. The frequency in `settings.txt` keeps
+working untouched, and switching both off leaves the game deciding on its own.
+
+**The decision is the only moment either of them gets**, and it comes round once per
+game day - `CInGameIdler::dailyUpdate`. So the timed save is as fine grained as a game
+day and no finer: the interval is checked when the day changes, the save lands on the
+first day change after it is up, and a paused game takes none, which is what should
+happen when nothing has changed. At the slowest speed a day is a few seconds, so the
+granularity is only visible at the one minute floor.
+
+Where both fall due on the same call the month save is asked first and the timed one
+stands down: there is one request flag, so there would be one save either way, and the
+month save is the one that has to land on a particular day. The timer is restarted by
+it regardless - a save has been taken, which is the whole of what the timer promises.
 
 Two stubs, in `Hooks/AutoSaveHooks.cpp`:
 
@@ -197,10 +216,12 @@ immediates that load them rather than by editing the strings:
 
 The buffers hold the game's own names except during a save of ours, so the game's
 autosave is untouched and ours gets `autosave_premonth.hoi3`,
-`oldautosave_premonth.hoi3` and `olderautosave_premonth.hoi3`. Two independent sets of
-three: neither pushes the other out, and the rotation itself - `0x2501C0` onwards,
-delete the oldest, rename the middle to the oldest, rename the newest to the middle -
-is the game's own code, unchanged.
+`oldautosave_premonth.hoi3` and `olderautosave_premonth.hoi3` - or the same three for
+`autosave_timed`, because a claim carries which of the two asked for the save and the
+buffers are filled from that one's names. Three independent sets of three: none pushes
+another out, and the rotation itself - `0x2501C0` onwards, delete the oldest, rename
+the middle to the oldest, rename the newest to the middle - is the game's own code,
+unchanged.
 
 Rotating means the files are renamed as they age, so the name cannot carry the date
 the save was taken on. An earlier version did name them for their date, and made too
@@ -215,8 +236,8 @@ they replaced and call nothing in BiceLib.
 writer takes a frame of delay before it writes, so a decision landing in between
 throws the request away. The claim on the name has to be given up with it or it lands
 on whichever save the game writes next, months later. `releaseClaim()` does that at
-the top of every decision, and says whether there was one, so the day is allowed to
-ask again.
+the top of every decision, and says *whose* it was, so the day is allowed to ask again
+and the timer goes back to where it stood before a save that never happened.
 
 **The writer clears both bytes at once**, `mov word ptr [esi+0xAB0], bx` at `0x250005`,
 just before it writes. So one request is one save, and nothing has to clear the flag
