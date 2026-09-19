@@ -33,6 +33,16 @@ actually changed, so a settled run reports none.
 **Re-run it after every rebuild of the findings**, since that is where everything new
 lands - the script itself hardly changes.
 
+**The built file is byte for byte the same every time it is built from the same inputs**,
+so a diff of it is only what actually changed. Every list in it is ordered by something of
+its own: functions and labels by address, enums and virtual tables by name, a structure's
+fields by priority and offset. The structures themselves have to be in embedding order -
+one held by value has to be laid out before whatever holds it - so they are sorted by name
+inside that walk rather than after it. It used to come out in whatever order the dicts and
+sets upstream happened to have, which put a few hundred lines of noise in every diff and
+hid the real change. **Anything new in the output needs a key of its own for the same
+reason.**
+
 The first run after the findings gain new classes settles in two passes - a class that only
 gets a structure because its virtual table gave it one is typed on the next run - so a
 second run reporting a handful of fields is expected. A third changes nothing.

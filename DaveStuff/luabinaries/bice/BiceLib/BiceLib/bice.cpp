@@ -33,6 +33,7 @@
 #include <Hooks/CNavyHooks.hpp>
 #include <Hooks/HookedPatches.hpp>
 #include <GameState/AutoSave.hpp>
+#include <Hooks/EffectTextHooks.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
@@ -778,6 +779,32 @@ __declspec(dllexport) int seaTerrainColourInSimplifiedMapMode(lua_State* L)
     return 0;
 }
 /////////////////////////////////////
+//     EFFECT TEXT FUNCTIONS      //
+/////////////////////////////////////
+
+/**
+ * Adds `$UNIT$`, `$LOCATION$` and `$WHERE$` to what the `kill_leader` effect shows, so
+ * `KILL_LEADER_EFFECT` can say which unit the leader commands and where it is.
+ *
+ * Switched on from Lua rather than at startup because it is a change to what the game
+ * displays, like every other hook here - and because the localisation has to ask for
+ * the variables before any of it shows. See Hooks/EffectTextHooks.hpp.
+ */
+__declspec(dllexport) int activateKillLeaderVariables(lua_State* L)
+{
+    const bool ok = Hooks::EffectText::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateKillLeaderVariables' failed: %s \n",
+            Hooks::EffectText::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateKillLeaderVariables' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/////////////////////////////////////
 //      INSPECTOR FUNCTIONS        //
 /////////////////////////////////////
 
@@ -1054,6 +1081,14 @@ void registerComplexPatchFunctions(lua_State* this_state) {
     return;
 }
 
+void registerEffectTextFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "EffectTexts");
+    lua_newtable(this_state);
+    registerFunction(this_state, "activateKillLeaderVariables", activateKillLeaderVariables);
+    lua_settable(this_state, -3);
+    return;
+}
+
 void registerInspectorFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "Inspector");
     lua_newtable(this_state);
@@ -1092,6 +1127,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerNavyFunctions(this_state);
     registerPatchFunctions(this_state);
     registerComplexPatchFunctions(this_state);
+    registerEffectTextFunctions(this_state);
     registerInspectorFunctions(this_state);
     registerOverlayFunctions(this_state);
 

@@ -917,11 +917,15 @@ def main():
 
     out = {"about": "Built by buildFindings.py from luabind.json and project.json. Applied by ApplyBiceLibFindings.java.",
            "image_base": IMAGE_BASE,
-           "enums": list(enum_out.values()),
+           # Every list in the file is ordered by something of its own, so two runs over the
+           # same inputs produce the same bytes. The structures are the exception that
+           # proves it: they have to be laid out in embedding order, so they are sorted
+           # inside that walk rather than here.
+           "enums": sorted(enum_out.values(), key=lambda e: e["name"]),
            "structs": embedded_first([s for s in structs.values() if s["fields"] or s["size"]], enums),
-           "functions": sorted(functions.values(), key=lambda f: f["rva"]),
-           "labels": sorted(labels, key=lambda l: l["rva"]),
-           "vftables": vftables}
+           "functions": sorted(functions.values(), key=lambda f: (f["rva"], f["name"])),
+           "labels": sorted(labels, key=lambda l: (l["rva"], l["name"])),
+           "vftables": sorted(vftables, key=lambda v: v["name"])}
     json.dump(out, open(OUT, "w", encoding="utf-8"), indent=1)
     counts = collections.Counter(f["confidence"] for f in functions.values())
     print("wrote %s: %d functions %s, %d with signatures, %d labels, %d structs (%d fields), %d enums" % (
@@ -1176,7 +1180,7 @@ def merge_fields(fields, enums, struct_sizes):
             host["comment"] += "\n+0x%X inside it: %s (%s) - %s" % (f["offset"] - host["offset"], f["name"], f["type"], f["comment"])
             continue
         out.append(f)
-    out.sort(key=lambda x: (x["priority"], x["offset"]))
+    out.sort(key=lambda x: (x["priority"], x["offset"], x["name"]))
     for f in out:
         del f["priority"]
     return out
@@ -1188,6 +1192,11 @@ def embedded_first(struct_list, enums):
     before the structures that hold it. The script lays them out in this order, and a
     structure has no size until it has been laid out, so an embedding placed first would
     have nothing to measure.
+
+    **Seeded by name**, which is what makes the built file the same every time: the walk
+    below only constrains a structure against the ones it embeds, so everything else keeps
+    whatever order it arrived in - and that order comes off dicts and sets upstream, which
+    moved between runs and put a few hundred lines of pure noise in every diff.
     """
     by_name = {s["name"]: s for s in struct_list}
     ordered, state = [], {}
@@ -1210,7 +1219,7 @@ def embedded_first(struct_list, enums):
         state[s["name"]] = "done"
         ordered.append(s)
 
-    for s in struct_list:
+    for s in sorted(struct_list, key=lambda x: x["name"]):
         visit(s)
     return ordered
 

@@ -11,6 +11,15 @@
    "source": "BiceLib/GameClasses/CCountryDataBase.hpp:32"
   },
   {
+   "rva": "0xA160",
+   "kind": "function",
+   "name": "std::string::assign",
+   "signature": null,
+   "comment": "`assign(const char*, size_t)`: thiscall, both arguments pushed, `ret 8`. Up to fifteen characters it writes them into the object and past that it allocates. What BiceLib calls to hand the game a string of its own.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
    "rva": "0x17AF0",
    "kind": "function",
    "name": "CCountry::GetCapitalLocation",
@@ -2241,6 +2250,24 @@
    "source": "BiceLib/Patches.cpp:82"
   },
   {
+   "rva": "0x5ADBF0",
+   "kind": "function",
+   "name": "CKillLeaderEffect::GetLeaderId",
+   "signature": null,
+   "comment": "Turns the effect's stored value into the leader it names: the value sits at `+0x20` as a thousandth, so the id written in the event file is `value / 1000`. Answers zero while the game has no leaders to look in. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x5ADD30",
+   "kind": "function",
+   "name": "CKillLeaderEffect::GetText",
+   "signature": null,
+   "comment": "**The sentence an option's tooltip shows for `kill_leader`**, slot 9 of the class's vftable (`0x11F4F28`, RTTI). The only function that names the localisation string `KILL_LEADER_EFFECT`. It resolves the effect's value into a leader, finds him in the country's active leaders at `country + 0xE00`, looks the string up and puts \"\\xa7Y<name>\\xa7W\" in place of its $NAME$. BiceLib stands in for two of its calls to add $UNIT$, $LOCATION$ and $WHERE$ - see reversing/FINDINGS-effecttext.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
    "rva": "0x64F220",
    "kind": "function",
    "name": "CWar::AddAttacker",
@@ -2257,6 +2284,24 @@
    "comment": "The same for the defenders.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CWar.hpp:39"
+  },
+  {
+   "rva": "0x65B0D0",
+   "kind": "function",
+   "name": "TextBuilder::Append",
+   "signature": null,
+   "comment": "Adds one more string to a run started by TextBuilder::Begin and answers the builder again. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x65B150",
+   "kind": "function",
+   "name": "TextBuilder::Begin",
+   "signature": null,
+   "comment": "Starts the \"\\xa7Y<something>\\xa7W\" run that a tooltip colours a name with: the colour code in edx as a plain char*, the string to follow it pushed, the builder in ecx, and the builder back in eax so the next piece can be chained onto it. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
   },
   {
    "rva": "0x6628B0",
@@ -2376,6 +2421,42 @@
    "source": "BiceLib/GameClasses/CPersistent.hpp:48"
   },
   {
+   "rva": "0x682490",
+   "kind": "function",
+   "name": "GetText",
+   "signature": null,
+   "comment": "**The localisation lookup**: `TextObject* GetText(TextObject* out, const std::string* key)`. Both arguments are pushed and the callee cleans them (`ret 8`). **It does not answer with a string** - the out is a sixteen byte text object, `{entry, and a vector of the $VARIABLE$ replacements to apply}`, and characters come out of RenderText. A key it cannot find gets an empty entry made for it rather than an error. Province names are localisation too, under `PROV<id>`; the game builds that key with the format string at `0x11BE118`. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x682E40",
+   "kind": "function",
+   "name": "RenderText",
+   "signature": null,
+   "comment": "**Turns a text object into characters**: `thiscall` on the object, sixteen bytes of colour settings from `settings + 0x6C` pushed by value (`ret 0x10`), and the built `std::string` handed in **esi** - the same register trick as the key in ReplaceTextVariable. It writes the length and capacity over whatever the out string held, so it must be given an empty one. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x682F40",
+   "kind": "function",
+   "name": "ReplaceTextVariable",
+   "signature": null,
+   "comment": "**`text.Replace(key, value)`**, the `$NAME$` style variable mechanism: the text in ecx, the value pushed, and **the key in esi**, which the compiler left in a register variable and the callee reads from there (`mov edx, esi` at `0x682F7A`, and pushed outright at `0x682F90`). It builds a 0x40 byte object - vftable, the text at `+4`, the key as a string at `+8` and the value as another at `+0x24`, both copied - so a value need not outlive the call. `ret 4`. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x687020",
+   "kind": "function",
+   "name": "ReleaseTextReplacements",
+   "signature": null,
+   "comment": "Destroys the replacements a text object collected, walking the vector whose three pointers are handed in **edi** and calling slot 0 of each entry's table with 1. The caller frees the block afterwards. A lookup that added no variables has none, so the loop runs no times. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
    "rva": "0x6AABA0",
    "kind": "function",
    "name": "Date_DayOfWeek",
@@ -2383,6 +2464,15 @@
    "comment": "From a tick: (days - 1) % 7.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-autosave.md:81"
+  },
+  {
+   "rva": "0x795F9B",
+   "kind": "function",
+   "name": "free",
+   "signature": null,
+   "comment": "A thunk to the CRT's free. Every string destructor in the executable calls it the same way - `if (capacity > 15) free(pointer)` - which is what BiceLib copies to give back a string the game allocated for it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
   },
   {
    "rva": "0x7961D5",
@@ -2410,6 +2500,15 @@
    "comment": "`mov eax, 2; ret` - the whole body, so the linker folded it and this one address fills a virtual table slot in several classes that have nothing to do with each other. It is slot 11 of CNavalCombat, where it answers the combat kind 2, and that is written on CNavalCombat's own slot rather than on the address.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:327"
+  },
+  {
+   "rva": "0xA84D30",
+   "kind": "function",
+   "name": "AddTextEntry",
+   "signature": null,
+   "comment": "Puts an entry in the localisation database under a key. Also what the lookup calls when a key is **missing** - it creates an empty entry so the renderer can say NO_TEXT_FOR_KEY, which is why a missing key answers without failing. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
   },
   {
    "rva": "0x108746C",

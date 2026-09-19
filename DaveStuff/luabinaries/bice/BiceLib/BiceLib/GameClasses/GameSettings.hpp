@@ -20,6 +20,14 @@ namespace GameSettings {
 
     namespace Offsets {
         /**
+         * **Sixteen bytes handed to the localisation render by value**, which is the
+         * only thing BiceLib does with them - `Localisation::text` copies them out and
+         * passes them on exactly as the game does, without knowing what they mean.
+         * They look like the colours a rendered line is allowed to use.
+         */
+        constexpr uintptr_t text_colours = 0x6C;
+
+        /**
          * The style number the water shader picks its technique from, and so what
          * decides whether sea provinces take a map mode's colour at all. Only 16, 18
          * and 19 colour the sea. Not read by BiceLib: it is written by the map mode

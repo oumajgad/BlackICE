@@ -56,6 +56,11 @@ if mod then
     -- Complex Patches
     BiceLib.ComplexPatches.fixOffMapIC()
     BiceLib.ComplexPatches.enablePlacingNonResearchedBuildings()
+
+    -- Effect texts
+    -- Fills $UNIT$, $LOCATION$ and $WHERE$ in KILL_LEADER_EFFECT. Switching this off
+    -- leaves any of those the localisation asks for showing as they are written.
+    BiceLib.EffectTexts.activateKillLeaderVariables()
 end
 
 function HasLoadedBiceLibSuccessfully()
