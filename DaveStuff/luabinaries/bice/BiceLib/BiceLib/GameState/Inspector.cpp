@@ -51,6 +51,12 @@ namespace {
             { "manpower",            CSubUnitDefinition::Offsets::build_cost_manpower, 0.001f, "",     MASK_ALL },
             { "officers",            CSubUnitDefinition::Offsets::officers,            0.001f, "",     MASK_ALL },
             { "max_speed",           CSubUnitDefinition::Offsets::max_speed,           0.001f, " kph", MASK_ALL },
+            // What it costs to build, which this page never showed. All three are x1000,
+            // checked against the mod's own files: armor_brigade is 21.3 IC over 157 days,
+            // a carrier 22.0 over 700.
+            { "build_cost_ic",       CSubUnitDefinition::Offsets::build_cost_ic,       0.001f, "",     MASK_ALL },
+            { "build_time",          CSubUnitDefinition::Offsets::build_time,          0.001f, " days", MASK_ALL },
+            { "completion_size",     CSubUnitDefinition::Offsets::completion_size,     0.001f, "",     MASK_ALL },
             { "supply_consumption",  CSubUnitDefinition::Offsets::supply_consumption,  0.001f, "",     MASK_ALL },
             { "fuel_consumption",    CSubUnitDefinition::Offsets::fuel_consumption,    0.001f, "",     MASK_ALL },
             { "air_defence",         CSubUnitDefinition::Offsets::air_defence,         0.001f, "",     MASK_ALL },
@@ -80,6 +86,9 @@ namespace {
             { "sea_defence",         CSubUnitDefinition::Offsets::sea_defence,         0.001f, "",     MASK_NAVY },
             { "convoy_attack",       CSubUnitDefinition::Offsets::convoy_attack,       0.001f, "",     MASK_NAVY },
             { "sub_attack",          CSubUnitDefinition::Offsets::sub_attack,          0.001f, "",     MASK_NAVY },
+            { "sub_detection",       CSubUnitDefinition::Offsets::sub_detection,       0.001f, "",     MASK_NAVY },
+            // Zero on everything that is not a carrier, and 2 on one (x1000 like the rest).
+            { "carrier_size",        CSubUnitDefinition::Offsets::carrier_size,        0.001f, "",     MASK_NAVY },
             { "shore_bombardment",   CSubUnitDefinition::Offsets::shore_bombardment,   0.001f, "",     MASK_NAVY },
             { "hull",                CSubUnitDefinition::Offsets::hull,                0.001f, "",     MASK_NAVY },
             { "positioning",         CSubUnitDefinition::Offsets::positioning,         0.001f, "",     MASK_NAVY },
@@ -121,6 +130,61 @@ namespace {
         return true;
     }
 
+    /**
+     * The four blocks a unit file writes outside the terrains - `night`, `fort`, `river`
+     * and `amphibious`. The definition keeps each as a CUnitAdjuster of its own rather than
+     * in the terrain vector, so the terrain walk above never sees them.
+     *
+     * **Which types carry them, read live**: `night` is set on 916 of 1500 ships and 213 of
+     * 807 wings, so it is listed for everything; `fort`, `river` and `amphibious` are set on
+     * 1146, 1240 and 1296 of 1500 land regiments and on no ship or wing at all, so they are
+     * listed for armies only.
+     */
+    void collectEnvironments(Entity& entity, uintptr_t subUnitDefinitionPtr, unsigned typeMask) {
+        struct Environment { const char* name; uintptr_t offset; unsigned typeMask; };
+        static const Environment environments[] = {
+            { "night",      CSubUnitDefinition::Offsets::night,      MASK_ALL },
+            { "fort",       CSubUnitDefinition::Offsets::fort,       MASK_ARMY },
+            { "river",      CSubUnitDefinition::Offsets::river,      MASK_ARMY },
+            { "amphibious", CSubUnitDefinition::Offsets::amphibious, MASK_ARMY },
+        };
+
+        for (const Environment& environment : environments) {
+            if ((environment.typeMask & typeMask) == 0) {
+                continue;
+            }
+            CUnitAdjuster::CUnitAdjuster adjuster;
+            if (!Mem::tryRead(subUnitDefinitionPtr + environment.offset, adjuster)) {
+                return;
+            }
+            // Held by value on the definition, so there is no terrain to add and no
+            // pointer to check - but an all-zero block means the file said nothing about
+            // this environment, and a row of zeroes is just noise.
+            if (adjuster.attack == 0 && adjuster.defence == 0 &&
+                adjuster.movement == 0 && adjuster.attrition == 0) {
+                continue;
+            }
+            TerrainStat stat;
+            stat.name = environment.name;
+            stat.isWater = false;
+            stat.isEnvironment = true;
+            stat.attack = adjuster.attack;
+            stat.defence = adjuster.defence;
+            stat.attrition = adjuster.attrition;
+            stat.movement = adjuster.movement;
+            entity.terrain.push_back(stat);
+        }
+    }
+
+    /**
+     * **The definition a unit points at is its own, not the shared type.** `CUnit + 0xC8` is
+     * an aggregate the game keeps for the whole division: **read live**, its `max_strength`,
+     * `soft_attack`, `supply_consumption`, `build_cost_ic` and `defensiveness` are the sum
+     * over the unit's regiments' own definitions on 539 of 540 armies, and `max_speed` is
+     * the slowest of them on all 540. Each regiment's own definition already carries its
+     * technology levels (see CTechnology.hpp), so what this page shows is the unit's
+     * effective stats with tech in them, not the paper values from the unit file.
+     */
     void collectStats(Entity& entity, uintptr_t unitPtr, unsigned typeMask) {
         uintptr_t subUnitDefinitionPtr = 0;
         if (!Mem::tryRead(unitPtr + CUnit::Offsets::CSubUnitDefinitionPtr, subUnitDefinitionPtr) ||
@@ -188,6 +252,8 @@ namespace {
             stat.movement = adjuster.movement;
             entity.terrain.push_back(stat);
         }
+
+        collectEnvironments(entity, subUnitDefinitionPtr, typeMask);
     }
 }
 

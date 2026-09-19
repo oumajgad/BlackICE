@@ -1,5 +1,6 @@
 #include <GameClasses/CLeader.hpp>
 #include <GameClasses/CCountry.hpp>
+#include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CUnit.hpp>
 #include <GameClasses/CMapProvince.hpp>
 #include <HoiDataStructures.hpp>
@@ -7,6 +8,15 @@
 #include <utils.hpp>
 
 namespace CLeader {
+    const char* typeName(int type) {
+        switch (type) {
+            case static_cast<int>(Type::Land): return "land";
+            case static_cast<int>(Type::Sea): return "sea";
+            case static_cast<int>(Type::Air): return "air";
+            default: return "unknown";
+        }
+    }
+
     CLeader Make(uintptr_t addr) {
         //DEBUG_OUT(printf("Making %#010x\n", addr));
         CLeader res = CLeader{};
@@ -16,10 +26,21 @@ namespace CLeader {
         res.trait_ll_end = *(uintptr_t*)(addr + Offsets::traits + HDS::ListOffsets::last);
         res.number_of_traits = *(int*)(addr + Offsets::traits + HDS::ListOffsets::count);
         res.unit_ptr = *(uintptr_t*)(addr + Offsets::unit_ptr);
+        res.country = HDS::readTag(addr + Offsets::country + CCountryTag::Offsets::tag);
+        res.country_id = *(int*)(addr + Offsets::country + CCountryTag::Offsets::id);
+        res.name = HDS::readString(addr + Offsets::name);
+        res.picture = HDS::readString(addr + Offsets::picture);
+        res.type = *(int*)(addr + Offsets::type);
         res.rank = *(int*)(addr + Offsets::rank);
         res.skill = *(int*)(addr + Offsets::skill);
-        res.experience = *(int*)(addr + Offsets::experience);
-        res.name = HDS::readString(addr + Offsets::name);
+        res.max_skill = *(int*)(addr + Offsets::max_skill);
+        res.starting_skill = *(int*)(addr + Offsets::starting_skill);
+        // One 64-bit read, not two words: see CLeader.hpp. Reading only the low half would
+        // hold until a leader parked at skill 10 accrues past 2^31, which the game has no
+        // ceiling against.
+        res.experience = *(long long*)(addr + Offsets::current_experience);
+        res.starting_experience = *(int*)(addr + Offsets::starting_experience);
+        res.loyalty = *(int*)(addr + Offsets::loyalty);
 
         //DEBUG_OUT(printf("res.id: %d\n", res.id));
         //DEBUG_OUT(printf("Finished %#010x\n", addr));
@@ -78,6 +99,39 @@ namespace CLeader {
         lua_settable(L, -3);
         lua_pushstring(L, "name");
         lua_pushstring(L, leader.name.c_str());
+        lua_settable(L, -3);
+        lua_pushstring(L, "country");
+        lua_pushstring(L, leader.country.c_str());
+        lua_settable(L, -3);
+        lua_pushstring(L, "picture");
+        lua_pushstring(L, leader.picture.c_str());
+        lua_settable(L, -3);
+        lua_pushstring(L, "type");
+        lua_pushstring(L, typeName(leader.type));
+        lua_settable(L, -3);
+        lua_pushstring(L, "rank");
+        lua_pushinteger(L, leader.rank);
+        lua_settable(L, -3);
+        lua_pushstring(L, "skill");
+        lua_pushinteger(L, leader.skill);
+        lua_settable(L, -3);
+        lua_pushstring(L, "max_skill");
+        lua_pushinteger(L, leader.max_skill);
+        lua_settable(L, -3);
+        lua_pushstring(L, "starting_skill");
+        lua_pushinteger(L, leader.starting_skill);
+        lua_settable(L, -3);
+        // As a Lua number rather than an integer: the total is 64-bit and a career one can
+        // outgrow what lua_pushinteger takes. A double holds it exactly to 2^53, which is
+        // far past anything the game can reach.
+        lua_pushstring(L, "experience");
+        lua_pushnumber(L, static_cast<lua_Number>(leader.experience));
+        lua_settable(L, -3);
+        lua_pushstring(L, "loyalty");
+        lua_pushinteger(L, leader.loyalty);
+        lua_settable(L, -3);
+        lua_pushstring(L, "number_of_traits");
+        lua_pushinteger(L, leader.number_of_traits);
         lua_settable(L, -3);
 
         lua_pushstring(L, "province_id");

@@ -63,7 +63,15 @@ namespace {
         for (const Inspector::TerrainStat& stat : terrain) {
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
-            ImGui::TextUnformatted(stat.name.empty() ? "?" : stat.name.c_str());
+            const char* name = stat.name.empty() ? "?" : stat.name.c_str();
+            // `night`, `fort`, `river` and `amphibious` come last and are not map terrain,
+            // so they are dimmed rather than left to read as one.
+            if (stat.isEnvironment) {
+                ImGui::TextDisabled("%s", name);
+            }
+            else {
+                ImGui::TextUnformatted(name);
+            }
             ImGui::TableNextColumn();
             ImGui::Text("%.1f%%", stat.attack * 0.1f);
             ImGui::TableNextColumn();

@@ -209,6 +209,42 @@
    "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:156"
   },
   {
+   "rva": "0x76040",
+   "kind": "function",
+   "name": "CUndeclaredWar::AddAttacker",
+   "signature": null,
+   "comment": "Adds a country to an undeclared war's attackers, the vector at +0x8.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CWar.hpp:39"
+  },
+  {
+   "rva": "0x761C0",
+   "kind": "function",
+   "name": "CUndeclaredWar::AddDefender",
+   "signature": null,
+   "comment": "The same for the defenders, at +0x18.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CWar.hpp:39"
+  },
+  {
+   "rva": "0x82C50",
+   "kind": "function",
+   "name": "CBrigadeConstructionDefinition::SetName",
+   "signature": null,
+   "comment": "Assigns the brigade's name at +0x18 and then fills the second string at +0x8 from it through a lookup. The object is in edi.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CConstruction.hpp:49"
+  },
+  {
+   "rva": "0x83200",
+   "kind": "function",
+   "name": "CConstruction::LoadKey",
+   "signature": "void __stdcall LoadKey(CConstruction* construction@ECX, CParseContext* parse@stack:4, SaveToken key@stack:8)",
+   "comment": "**The shared loader of the production queue.** CConstruction is abstract and has no virtual table, so this is not one of CPersistent's slots and the family pass never sees it; all three of CMilitaryConstruction, CBuildingConstruction and CConvoyConstruction call it for the keys they do not handle - `id`, `cost`, `duration`, `progress`, `status`, `size`, `location`, `country` and `builder`. There was no function here in the program at all until this pass.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CConstruction.hpp:49"
+  },
+  {
    "rva": "0x883A0",
    "kind": "function",
    "name": "CMap::CMap",
@@ -891,6 +927,24 @@
    "source": "BiceLib/Hooks/CLeaderHooks.cpp:115"
   },
   {
+   "rva": "0x181CE0",
+   "kind": "function",
+   "name": "CLeader::AddExperience",
+   "signature": "void __stdcall AddExperience(CLeader* leader@ESI, int factor@stack:4, int amount@stack:8)",
+   "comment": "**Gives a leader experience and promotes him when he has enough.** Does nothing at all while `skill >= 12`; scales the gain by `1 + (max_skill - skill)^2 / 5`, so a leader far below his maximum gains much faster, and divides the result by 3 once he is at or past it; then adds to `current_experience` as a 64-bit pair and compares that pair against `g_LeaderSkillThresholds[skill]` shifted left 15. The promotion is a plain `skill + 1` with an overflow guard.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CLeader.hpp:89"
+  },
+  {
+   "rva": "0x181E10",
+   "kind": "function",
+   "name": "CLeader::ResetToStarting",
+   "signature": null,
+   "comment": "Puts a leader back to the state he was defined with: `rank` to 0, `skill` to `starting_skill` where that is not negative, and `current_experience` to `starting_experience` scaled by 32768/1000. The leader is in eax.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CLeader.hpp:89"
+  },
+  {
    "rva": "0x1832A8",
    "kind": "instruction",
    "name": "Patch_HistoricalModelLogic_1",
@@ -943,6 +997,15 @@
    "comment": "Virtual slot 16: answers 0x5A4, the id that marks a CStrategicRedeploymentOrder. `mov eax, 0x5A4; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x188340",
+   "kind": "function",
+   "name": "CSupportAttackOrder::LoadKey",
+   "signature": null,
+   "comment": "One key of its own, `combat` into +0x34; the rest go to COrder::LoadKey.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/COrder.hpp:32"
   },
   {
    "rva": "0x188700",
@@ -1152,6 +1215,15 @@
    "source": "reversing/CLASSES.md:347"
   },
   {
+   "rva": "0x189A40",
+   "kind": "function",
+   "name": "CAirOrder::LoadKey",
+   "signature": null,
+   "comment": "Handles `provinces` and `return_to_base` and `priority` itself, then **looks any other key up as a unit type** - the same database CSubUnit::LoadKey's `type` uses - and stores the value into the array at +0x34 at that type's index. A key it cannot place that way goes to COrder::LoadKey.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/COrder.hpp:32"
+  },
+  {
    "rva": "0x19A5A0",
    "kind": "function",
    "name": "CRebaseOrder::GetTypeId",
@@ -1240,6 +1312,15 @@
    "comment": "Virtual slot 16: answers 0x3A5, the id that marks a CNavalInvasionOrder. `mov eax, 0x3A5; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x19AE40",
+   "kind": "function",
+   "name": "CNavalOrder::LoadKey",
+   "signature": null,
+   "comment": "`sub_unit`, `other`, `capital`, and **its own `return_to_base` and `priority`** at +0x34 and +0x38 rather than the base's +0x18 and +0x1C. Everything else goes to COrder::LoadKey.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/COrder.hpp:32"
   },
   {
    "rva": "0x1A12B0",
@@ -2133,6 +2214,24 @@
    "source": "BiceLib/Patches.cpp:82"
   },
   {
+   "rva": "0x64F220",
+   "kind": "function",
+   "name": "CWar::AddAttacker",
+   "signature": null,
+   "comment": "Adds a country to a war's attackers: (CWar*, int, int, char tag[4], int id). The loader calls it for every `attacker=` line, after refusing a tag the country database does not know.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CWar.hpp:39"
+  },
+  {
+   "rva": "0x6506B0",
+   "kind": "function",
+   "name": "CWar::AddDefender",
+   "signature": null,
+   "comment": "The same for the defenders.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CWar.hpp:39"
+  },
+  {
    "rva": "0x6628B0",
    "kind": "function",
    "name": "CColor::ToPackedArgb",
@@ -2885,6 +2984,16 @@
    "source": "BiceLib/GameClasses/CCurrentGameState.hpp:77"
   },
   {
+   "rva": "0x130AEE4",
+   "kind": "global",
+   "name": "g_LeaderSkillThresholds",
+   "signature": null,
+   "comment": "**The experience each skill needs**, ints indexed by the leader's current skill and shifted left 15 into the 48.15 fixed point before the comparison in CLeader::AddExperience: 1000, 2000, 4000, 8000, 12000, 18000, 25000, 33000, 43000 and 60000 for skills 0 to 9 - the same figures BiceLib's Hooks/CLeaderHooks.cpp carries once shifted - and then 100000000 for skill 10, which is 3276800000000 shifted and unreachable. **That is what caps a leader at skill 10**, not the `skill >= 12` guard.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CLeader.hpp:102",
+   "type": "int[11]"
+  },
+  {
    "rva": "0x130AF10",
    "kind": "global",
    "name": "g_leader_id",
@@ -3065,6 +3174,26 @@
    "comment": "One past the last entry of g_save_tokens_first; the two together give the token count.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CPersistent.hpp:140"
+  },
+  {
+   "rva": "0x17EB6E8",
+   "kind": "global",
+   "name": "CLeader_AddExperience_rankFactor",
+   "signature": null,
+   "comment": "**A function-local static inside CLeader::AddExperience**, not a global anyone else uses: five 64-bit fixed points indexed by the leader's rank, behind the one-byte construction guard at 0x17EB710. The constructor fills all five from the double 32768.5 at 0x120A548, truncated to 32768 - exactly 1.0 - so **rank does not change how fast a leader learns**. **Read live**: all five are 32768 and the guard is 1, and the whole image references the array only from the ten writes that fill it and the two reads that index it.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CLeader.hpp:113",
+   "type": "longlong[5]"
+  },
+  {
+   "rva": "0x17EB710",
+   "kind": "global",
+   "name": "CLeader_AddExperience_rankFactorBuilt",
+   "signature": null,
+   "comment": "The one-byte guard MSVC puts in front of a function-local static: `test byte ptr [this], 1; jne skip` at the top, `or [this], 1` before the constructor runs. Its presence is what tells you the addresses beside it are a local static rather than a global.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CLeader.hpp:113",
+   "type": "int"
   }
  ],
  "structs": [
@@ -4309,95 +4438,116 @@
    "name": "CLeader",
    "fields": [
     {
+     "offset": "0x8",
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the save's `id` pair",
+     "source": "BiceLib/GameClasses/CLeader.hpp:15"
+    },
+    {
      "offset": "0xC",
      "name": "id",
      "type": "int",
      "comment": "leader id",
-     "source": "BiceLib/GameClasses/CLeader.hpp:9"
+     "source": "BiceLib/GameClasses/CLeader.hpp:16"
     },
     {
      "offset": "0x30",
      "name": "traits",
      "type": "CList<CTrait *>",
      "comment": "the leader's traits",
-     "source": "BiceLib/GameClasses/CLeader.hpp:10"
+     "source": "BiceLib/GameClasses/CLeader.hpp:17"
     },
     {
      "offset": "0x40",
      "name": "unit_ptr",
      "type": "pointer",
      "comment": "the unit the leader commands",
-     "source": "BiceLib/GameClasses/CLeader.hpp:13"
+     "source": "BiceLib/GameClasses/CLeader.hpp:18"
     },
     {
      "offset": "0x44",
      "name": "country",
      "type": "CCountryTag",
      "comment": "the leader's country (mem)",
-     "source": "BiceLib/GameClasses/CLeader.hpp:12"
+     "source": "BiceLib/GameClasses/CLeader.hpp:19"
     },
     {
      "offset": "0x4C",
      "name": "name",
      "type": "Hoi3CString",
      "comment": "leader name, Windows-1252",
-     "source": "BiceLib/GameClasses/CLeader.hpp:16"
+     "source": "BiceLib/GameClasses/CLeader.hpp:20"
     },
     {
      "offset": "0x68",
      "name": "type",
      "type": "int",
      "comment": "leader type (disabled in source, unverified); compared in the rank change code",
-     "source": "BiceLib/GameClasses/CLeader.hpp:17"
+     "source": "BiceLib/GameClasses/CLeader.hpp:21"
     },
     {
      "offset": "0x6C",
      "name": "rank",
      "type": "int",
      "comment": "rank",
-     "source": "BiceLib/GameClasses/CLeader.hpp:18"
+     "source": "BiceLib/GameClasses/CLeader.hpp:22"
     },
     {
      "offset": "0x70",
      "name": "skill",
      "type": "int",
      "comment": "current skill",
-     "source": "BiceLib/GameClasses/CLeader.hpp:19"
+     "source": "BiceLib/GameClasses/CLeader.hpp:23"
     },
     {
      "offset": "0x74",
      "name": "max_skill",
      "type": "int",
      "comment": "maximum skill",
-     "source": "BiceLib/GameClasses/CLeader.hpp:20"
+     "source": "BiceLib/GameClasses/CLeader.hpp:24"
     },
     {
      "offset": "0x78",
-     "name": "experience",
-     "type": "int",
-     "comment": "experience, low word",
-     "source": "BiceLib/GameClasses/CLeader.hpp:21"
-    },
-    {
-     "offset": "0x7C",
-     "name": "experience_2",
-     "type": "int",
-     "comment": "experience, high word",
-     "source": "BiceLib/GameClasses/CLeader.hpp:22"
+     "name": "current_experience",
+     "type": "longlong",
+     "comment": "**one 64-bit value, not two words**: the loader reads `current_experience` with `%lld` into these eight bytes and CLeader::AddExperience adds to them with `add`/`adc` and compares them against the threshold as a pair. The game's 48.15 fixed point, and a career total rather than a per-level count. **The high half can be reached**: the skill-10 threshold is unreachable by design, so a leader parked there keeps accruing, passing 2^31 after another 5536 experience points. **Read live**: zero high halves on 8000 leaders and a largest total of 809977445, 38% of the way to 2^31",
+     "source": "BiceLib/GameClasses/CLeader.hpp:48"
     },
     {
      "offset": "0x80",
      "name": "loyalty",
      "type": "int",
-     "comment": "loyalty (disabled in source, unverified)",
-     "source": "BiceLib/GameClasses/CLeader.hpp:23"
+     "comment": "saved as `loyalty`, x1000. **Read live**: 1000 on 5107 of 8000 leaders and 0 on 2825, so it carries a real value rather than being unused",
+     "source": "BiceLib/GameClasses/CLeader.hpp:52"
     },
     {
      "offset": "0x84",
      "name": "CLeaderHistoryOffset",
      "type": "undefined4",
      "comment": "leader history (disabled in source, unverified)",
-     "source": "BiceLib/GameClasses/CLeader.hpp:24"
+     "source": "BiceLib/GameClasses/CLeader.hpp:53"
+    },
+    {
+     "offset": "0xA8",
+     "name": "picture",
+     "type": "Hoi3CString",
+     "comment": "the leader's portrait, saved as `picture`. **Read live**: `L54027`, and `empty_position` on the null leader",
+     "source": "BiceLib/GameClasses/CLeader.hpp:57"
+    },
+    {
+     "offset": "0xC8",
+     "name": "starting_skill",
+     "type": "int",
+     "comment": "**the skill the mod's files define**: the `skill` handler writes it here too but only while it is still negative, so it keeps the first value, and CLeader::ResetToStarting puts it back into `skill`. **Read live**: matching 7296 leaders to history/leaders/*.txt on country and id, it is the file's `skill` on every one of them - 6179 still at it, 1117 risen above it through experience, **none below it**. Nothing in the image decrements +0x70, and the only path that lowers it is ResetToStarting, which resets to the definition rather than below it",
+     "source": "BiceLib/GameClasses/CLeader.hpp:81"
+    },
+    {
+     "offset": "0xCC",
+     "name": "starting_experience",
+     "type": "int",
+     "comment": "the experience the leader was defined with, in whole points, saved as `experience`. CLeader::ResetToStarting scales it by 32768/1000 into `current_experience`. **Read live**: zero on all 8000 leaders",
+     "source": "BiceLib/GameClasses/CLeader.hpp:82"
     }
    ],
    "vftable_rva": "0x11C5220"
@@ -4874,7 +5024,8 @@
      "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:9"
     }
    ],
-   "vftable_rva": "0x11C5ADC"
+   "vftable_rva": "0x11C5ADC",
+   "inherits": "COrder"
   },
   {
    "name": "CProvinceBuilding",
@@ -6933,23 +7084,158 @@
    "name": "CConstruction",
    "fields": [
     {
+     "offset": "0x8",
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the `id` pair, written after the id",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:29"
+    },
+    {
+     "offset": "0xC",
+     "name": "id",
+     "type": "int",
+     "comment": "the queue item's id",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:30"
+    },
+    {
      "offset": "0x30",
      "name": "cost",
      "type": "int",
      "comment": "what it costs in IC, a CFixedPoint: the game's GetCost (0x837C0), which CCountry::GetUsedIC sums over the country's constructions",
      "source": "reversing/CLASSES.md:502"
+    },
+    {
+     "offset": "0x34",
+     "name": "duration",
+     "type": "int",
+     "comment": "x1000, saved as `duration`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:33"
+    },
+    {
+     "offset": "0x38",
+     "name": "progress",
+     "type": "int",
+     "comment": "x1000, saved as `progress`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:34"
+    },
+    {
+     "offset": "0x3C",
+     "name": "status",
+     "type": "int",
+     "comment": "x1000, saved as `status`. **Read live**: 1.0 on most items and 0 on the rest, with a handful in between, so it looks like a fraction rather than a flag. A CConvoyConstruction does not use this - it keeps its own `status` byte at +0x58",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:39"
+    },
+    {
+     "offset": "0x44",
+     "name": "location",
+     "type": "CMapProvince*",
+     "comment": "where it is being built, saved as `location`. **Read live**: a CMapProvince on all 89 building items and null on the military and convoy ones, which are not placed",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:46"
+    },
+    {
+     "offset": "0x48",
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "who it is for, saved as `country`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:49"
+    },
+    {
+     "offset": "0x50",
+     "name": "builder",
+     "type": "CCountryTag",
+     "comment": "who is building it, saved as `builder`. **Read live**: the same as `country` on every military item and the no-country tag `---` on every building and convoy one",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:54"
     }
    ]
   },
   {
    "name": "COrder",
-   "fields": [],
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "unit",
+     "type": "CUnit*",
+     "comment": "the CUnit this order belongs to; not saved, since the unit is what writes the order out. **Read live**: a CArmy, CNavy or CAir by its own RTTI on every order in a running game. Also how CStrategicRedeploymentOrder's router reaches the unit",
+     "source": "BiceLib/GameClasses/COrder.hpp:27"
+    },
+    {
+     "offset": "0xC",
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "where the order sends the unit; saved as `province` by writing that province's id. **Read live**: a CMapProvince on every order that has one, and null on every CNullOrder",
+     "source": "BiceLib/GameClasses/COrder.hpp:32"
+    },
+    {
+     "offset": "0x10",
+     "name": "target_type",
+     "type": "int",
+     "comment": "type half of the `target` object id",
+     "source": "BiceLib/GameClasses/COrder.hpp:37"
+    },
+    {
+     "offset": "0x14",
+     "name": "target_id",
+     "type": "int",
+     "comment": "what the order is aimed at, saved as `target` and only where the pair is not the game's \"no object\" one. **Read live**: set on 12 of 357 air orders and on nothing else",
+     "source": "BiceLib/GameClasses/COrder.hpp:38"
+    },
+    {
+     "offset": "0x18",
+     "name": "return_to_base",
+     "type": "bool",
+     "comment": "saved as `return_to_base`. **Read live**: set on 30 of 357 air orders. CNavalOrder keeps its own at +0x34 instead of using this",
+     "source": "BiceLib/GameClasses/COrder.hpp:42"
+    },
+    {
+     "offset": "0x1C",
+     "name": "priority",
+     "type": "int",
+     "comment": "saved as `priority`. **Read live**: zero on every order in a running game. CNavalOrder keeps its own at +0x38 instead of using this",
+     "source": "BiceLib/GameClasses/COrder.hpp:46"
+    },
+    {
+     "offset": "0x20",
+     "name": "stance",
+     "type": "int",
+     "comment": "saved as `stance`. **Read live**: 1 on every order in a running game, so what the other values mean is open",
+     "source": "BiceLib/GameClasses/COrder.hpp:50"
+    },
+    {
+     "offset": "0x24",
+     "name": "stop",
+     "type": "int",
+     "comment": "saved as `stop`, x1000. **Read live**: 0.7 on redeployments and support attacks, -1.0 on move and null orders",
+     "source": "BiceLib/GameClasses/COrder.hpp:54"
+    },
+    {
+     "offset": "0x28",
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, saved as `start_date` and written as a date. **Read live**: 60814998, which is 1942-05-09 06:00, on a redeployment in a 1942 game",
+     "source": "BiceLib/GameClasses/COrder.hpp:59"
+    },
+    {
+     "offset": "0x2C",
+     "name": "death_date",
+     "type": "int",
+     "comment": "a game tick, saved as `death_date`. **Read live**: the zero tick 43808760 on orders that were never given one",
+     "source": "BiceLib/GameClasses/COrder.hpp:60"
+    },
+    {
+     "offset": "0x30",
+     "name": "time",
+     "type": "int",
+     "comment": "saved as `time`, read with `%i`. **Read live**: 2 on every order in a running game",
+     "source": "BiceLib/GameClasses/COrder.hpp:64"
+    }
+   ],
    "vftable_rva": "0x11C589C"
   },
   {
    "name": "CMoveOrder",
    "fields": [],
-   "vftable_rva": "0x11C59BC"
+   "vftable_rva": "0x11C59BC",
+   "inherits": "COrder"
   },
   {
    "name": "CModifierValues",
@@ -8165,21 +8451,85 @@
    "name": "CMilitaryConstruction",
    "fields": [
     {
+     "offset": "0x58",
+     "name": "unit_type",
+     "type": "int",
+     "comment": "type half of the `unit` object id",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:75"
+    },
+    {
+     "offset": "0x5C",
+     "name": "unit_id",
+     "type": "int",
+     "comment": "the unit being built, saved as `unit`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:76"
+    },
+    {
+     "offset": "0x60",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "the name it will be given, saved as `name`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:79"
+    },
+    {
+     "offset": "0x84",
+     "name": "brigades_count",
+     "type": "int",
+     "comment": "how many brigades. **Read live**: 1 on 536 of 831 items and 6 or 7 on most of the rest",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:85"
+    },
+    {
      "offset": "0x8C",
      "name": "is_reserve",
      "type": "bool",
-     "comment": "the item is being built as reserves, which is what fills reserves_factor",
-     "source": "reversing/CLASSES.md:864"
+     "comment": "the item is being built as reserves, which is what fills reserves_factor, and is a byte. **Read live**: set on 43 of 831 items",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:89"
+    },
+    {
+     "offset": "0x90",
+     "name": "target_type",
+     "type": "int",
+     "comment": "type half of the `target` object id",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:92"
+    },
+    {
+     "offset": "0x94",
+     "name": "target_id",
+     "type": "int",
+     "comment": "what the item is aimed at, saved as `target`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:93"
+    },
+    {
+     "offset": "0x98",
+     "name": "manpower",
+     "type": "int",
+     "comment": "x1000, saved as `manpower`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:96"
     },
     {
      "offset": "0x9C",
      "name": "reserves_factor",
      "type": "int",
-     "comment": "1000 + the owner's RESERVES_PENALTY_SIZE modifier (77) where is_reserve is set, 1000 otherwise - filled at 0x84A3A and 0x85211. Stored rather than looked up, so an item keeps the factor it was given",
-     "source": "reversing/CLASSES.md:864"
+     "comment": "1000 + the owner's RESERVES_PENALTY_SIZE modifier (77) where is_reserve is set, 1000 otherwise - filled at 0x84A3A and 0x85211. Stored rather than looked up, so an item keeps the factor it was given. **It is saved as `factor`**, which settles that the number travels with the item through a save rather than being recomputed on load. **Read live**: 1000 on 788 items, 800 on 27 and 900 on 8, so the penalty is negative and differs by country",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:108"
+    },
+    {
+     "offset": "0xA4",
+     "name": "accumulated_experience",
+     "type": "int",
+     "comment": "x1000, saved as `accumulated_experiance` - the game's own spelling",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:111"
+    },
+    {
+     "offset": "0xA8",
+     "name": "accumulated_progress",
+     "type": "int",
+     "comment": "x1000, saved as `accumulated_progress`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:114"
     }
    ],
-   "vftable_rva": "0x11BDC34"
+   "vftable_rva": "0x11BDC34",
+   "inherits": "CConstruction"
   },
   {
    "name": "CDefinesEconomy",
@@ -9264,6 +9614,739 @@
      "source": "BiceLib/GameClasses/CPersistent.hpp:57"
     }
    ]
+  },
+  {
+   "name": "CAirOrder",
+   "fields": [
+    {
+     "offset": "0x34",
+     "name": "by_unit_type",
+     "type": "int*",
+     "comment": "ints indexed by `CSubUnitDefinition::Index`. **CAirOrder's loader looks an unknown key up as a unit type** and stores the value here at that type's index, so an air order's block can carry a line per unit type. **Read live**: null on 356 of 357 air orders",
+     "source": "BiceLib/GameClasses/COrder.hpp:95"
+    },
+    {
+     "offset": "0x44",
+     "name": "provinces_first",
+     "type": "void*",
+     "comment": "the provinces the mission covers, one `provinces=` line each; nodes of 16 bytes - the CMapProvince, the previous node, the next and a spare",
+     "source": "BiceLib/GameClasses/COrder.hpp:100"
+    },
+    {
+     "offset": "0x48",
+     "name": "provinces_last",
+     "type": "void*",
+     "comment": "the last node of that list",
+     "source": "BiceLib/GameClasses/COrder.hpp:101"
+    },
+    {
+     "offset": "0x4C",
+     "name": "provinces_count",
+     "type": "int",
+     "comment": "how many. **Read live**: zero on 356 of 357 air orders",
+     "source": "BiceLib/GameClasses/COrder.hpp:102"
+    }
+   ],
+   "vftable_rva": "0x11C5EB4",
+   "inherits": "COrder"
+  },
+  {
+   "name": "CNavalOrder",
+   "fields": [
+    {
+     "offset": "0x34",
+     "name": "return_to_base",
+     "type": "bool",
+     "comment": "**CNavalOrder's own, not COrder's +0x18**: its loader takes the `return_to_base` key before COrder sees it and stores it here",
+     "source": "BiceLib/GameClasses/COrder.hpp:119"
+    },
+    {
+     "offset": "0x38",
+     "name": "priority",
+     "type": "int",
+     "comment": "**CNavalOrder's own, not COrder's +0x1C**, for the same reason",
+     "source": "BiceLib/GameClasses/COrder.hpp:120"
+    },
+    {
+     "offset": "0x3C",
+     "name": "capital",
+     "type": "int",
+     "comment": "saved as `capital`",
+     "source": "BiceLib/GameClasses/COrder.hpp:121"
+    },
+    {
+     "offset": "0x40",
+     "name": "sub_unit",
+     "type": "int",
+     "comment": "saved as `sub_unit`",
+     "source": "BiceLib/GameClasses/COrder.hpp:122"
+    },
+    {
+     "offset": "0x44",
+     "name": "other",
+     "type": "int",
+     "comment": "saved as `other`",
+     "source": "BiceLib/GameClasses/COrder.hpp:123"
+    }
+   ],
+   "vftable_rva": "0x11C6CD4",
+   "inherits": "COrder"
+  },
+  {
+   "name": "CNullOrder",
+   "fields": [],
+   "vftable_rva": "0x11C592C",
+   "inherits": "COrder"
+  },
+  {
+   "name": "CSupportAttackOrder",
+   "fields": [
+    {
+     "offset": "0x34",
+     "name": "combat",
+     "type": "bool",
+     "comment": "saved as `combat`. **Read live**: set on all three CSupportAttackOrder in a running game",
+     "source": "BiceLib/GameClasses/COrder.hpp:133"
+    }
+   ],
+   "vftable_rva": "0x11C5A4C",
+   "inherits": "COrder"
+  },
+  {
+   "name": "CRebelFaction",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the `id` pair, written after the id. **Read live**: 39",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:25"
+    },
+    {
+     "offset": "0xC",
+     "name": "id",
+     "type": "int",
+     "comment": "the faction's id, handed out from the game state's `rebel_id` counter",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:26"
+    },
+    {
+     "offset": "0x30",
+     "name": "type",
+     "type": "CRebelType*",
+     "comment": "what kind of rebels these are, saved as `type` by its key. **Read live**: a CRebelType by its own RTTI; the mod defines six",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:32"
+    },
+    {
+     "offset": "0x34",
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "where they are; saved as `province` by writing that province's id. **Read live**: a CMapProvince",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:36"
+    },
+    {
+     "offset": "0x38",
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "**whose country they are rising in**, saved as `country`",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:39"
+    },
+    {
+     "offset": "0x40",
+     "name": "government",
+     "type": "void*",
+     "comment": "the government they would install, saved as `government`. **Read live**: a CGovernment by its own RTTI; the mod defines eighteen",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:44"
+    },
+    {
+     "offset": "0x44",
+     "name": "independence",
+     "type": "CCountryTag",
+     "comment": "**who they want the province to end up as**, saved as `independence` - `CHI` for the Chinese Nationalists inside Japan",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:48"
+    },
+    {
+     "offset": "0x54",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "saved as `name`",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:51"
+    },
+    {
+     "offset": "0x70",
+     "name": "targets_first",
+     "type": "void*",
+     "comment": "**who they are fighting**, a CCountryTag per entry and one `target=` line each; nodes of 20 bytes - the tag's four characters, its id, the previous node, the next and a spare",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:58"
+    },
+    {
+     "offset": "0x74",
+     "name": "targets_last",
+     "type": "void*",
+     "comment": "the last of them",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:59"
+    },
+    {
+     "offset": "0x78",
+     "name": "targets_count",
+     "type": "int",
+     "comment": "how many. **Read live**: one, `JAP`",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:60"
+    },
+    {
+     "offset": "0x80",
+     "name": "armies_first",
+     "type": "void*",
+     "comment": "**the armies they have in the field**, an object id per entry and one `army=` block each, nodes of the same 20-byte shape",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:67"
+    },
+    {
+     "offset": "0x84",
+     "name": "armies_last",
+     "type": "void*",
+     "comment": "the last of them",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:68"
+    },
+    {
+     "offset": "0x88",
+     "name": "armies_count",
+     "type": "int",
+     "comment": "how many. **Read live**: none on the faction in the running game, one in the save it came from",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:69"
+    },
+    {
+     "offset": "0x94",
+     "name": "provinces",
+     "type": "int*",
+     "comment": "the provinces they claim, saved as one `provinces={ ... }` block of ids; a vector, ending at +0x98",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:73"
+    },
+    {
+     "offset": "0x98",
+     "name": "provinces_end",
+     "type": "int*",
+     "comment": "one past the last of them",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:74"
+    }
+   ],
+   "vftable_rva": "0x11C0B6C"
+  },
+  {
+   "name": "CRebelType",
+   "fields": [
+    {
+     "offset": "0xC",
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "the rebel type's key. **Read live**: six in this mod - disgruntled_rabble, fascist_rebels, nationalist_rebels, organized_partisans, partisans, patriot_rebels",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:92"
+    }
+   ]
+  },
+  {
+   "name": "CGovernment",
+   "fields": [
+    {
+     "offset": "0x44",
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "the government's key. **Read live**: eighteen in this mod, from absolute_monarchy to socialist_republic",
+     "source": "BiceLib/GameClasses/CRebelFaction.hpp:101"
+    }
+   ]
+  },
+  {
+   "name": "CWar",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "revolutionary_war",
+     "type": "bool",
+     "comment": "saved as `revolutionary_war`, read straight off whether the value token is `yes`",
+     "source": "BiceLib/GameClasses/CWar.hpp:21"
+    },
+    {
+     "offset": "0xC",
+     "name": "action",
+     "type": "int",
+     "comment": "a game tick, saved as `action` and written as a date. **Read live**: 60815253, which is 1942-05-19, on most of the wars in a 1942 game",
+     "source": "BiceLib/GameClasses/CWar.hpp:25"
+    },
+    {
+     "offset": "0x10",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "saved as `name`. **Read live**: `War of Italian Aggression`, `2nd War of German Aggression`, `Chinese Civil War`",
+     "source": "BiceLib/GameClasses/CWar.hpp:29"
+    },
+    {
+     "offset": "0x2C",
+     "name": "attackers",
+     "type": "CCountryTag*",
+     "comment": "**one side of the war**, a vector of CCountryTag with one `attacker=` line per entry. **Read live**: `ITA` alone against 28 countries in the War of Italian Aggression",
+     "source": "BiceLib/GameClasses/CWar.hpp:39"
+    },
+    {
+     "offset": "0x30",
+     "name": "attackers_end",
+     "type": "CCountryTag*",
+     "comment": "one past the last attacker. **Read the end here, not the capacity at +0x34** - the two differ on some wars and reading the capacity hands back stale tags past the end",
+     "source": "BiceLib/GameClasses/CWar.hpp:40"
+    },
+    {
+     "offset": "0x34",
+     "name": "attackers_capacity",
+     "type": "CCountryTag*",
+     "comment": "the end of the allocation, not of the list",
+     "source": "BiceLib/GameClasses/CWar.hpp:41"
+    },
+    {
+     "offset": "0x3C",
+     "name": "defenders",
+     "type": "CCountryTag*",
+     "comment": "the other side, the same shape, one `defender=` line per entry",
+     "source": "BiceLib/GameClasses/CWar.hpp:42"
+    },
+    {
+     "offset": "0x40",
+     "name": "defenders_end",
+     "type": "CCountryTag*",
+     "comment": "one past the last defender",
+     "source": "BiceLib/GameClasses/CWar.hpp:43"
+    },
+    {
+     "offset": "0x44",
+     "name": "defenders_capacity",
+     "type": "CCountryTag*",
+     "comment": "the end of the allocation",
+     "source": "BiceLib/GameClasses/CWar.hpp:44"
+    },
+    {
+     "offset": "0x4C",
+     "name": "history",
+     "type": "void*",
+     "comment": "a CWarHistory held by value, saved as `history` by calling its own Load and Save. **Read live**: a CWarHistory by its own RTTI, carrying CPersistent's vftable and token like any other",
+     "source": "BiceLib/GameClasses/CWar.hpp:49"
+    },
+    {
+     "offset": "0x70",
+     "name": "is_limited",
+     "type": "bool",
+     "comment": "saved as `limited`. **Read live**: set on all 19 wars",
+     "source": "BiceLib/GameClasses/CWar.hpp:52"
+    },
+    {
+     "offset": "0x84",
+     "name": "target",
+     "type": "CCountryTag",
+     "comment": "saved as `target`. **Read live**: the no-country tag `---` on every war in the game",
+     "source": "BiceLib/GameClasses/CWar.hpp:57"
+    },
+    {
+     "offset": "0x8C",
+     "name": "original_attacker",
+     "type": "CCountryTag",
+     "comment": "saved as `original_attacker`. **Read live**: `---` on every war",
+     "source": "BiceLib/GameClasses/CWar.hpp:58"
+    },
+    {
+     "offset": "0x94",
+     "name": "original_defender",
+     "type": "CCountryTag",
+     "comment": "saved as `original_defender`. **Read live**: `---` on every war",
+     "source": "BiceLib/GameClasses/CWar.hpp:59"
+    }
+   ],
+   "vftable_rva": "0x11FBE78"
+  },
+  {
+   "name": "CWarGoal",
+   "fields": [
+    {
+     "offset": "0xC",
+     "name": "casus_belli",
+     "type": "void*",
+     "comment": "**what the goal is**, saved as `casus_belli` by its key; the loader looks the name up and falls back to indexing the list by number. **Read live**: a CCasusBelliType on 259 of 262 goals, a CNullCasusBelliType on one",
+     "source": "BiceLib/GameClasses/CWar.hpp:92"
+    }
+   ],
+   "vftable_rva": "0x11BDB34"
+  },
+  {
+   "name": "CUndeclaredWar",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "attackers",
+     "type": "CCountryTag*",
+     "comment": "one side, a vector of CCountryTag. **Read live**: `USA` in the one undeclared war in the game",
+     "source": "BiceLib/GameClasses/CWar.hpp:117"
+    },
+    {
+     "offset": "0xC",
+     "name": "attackers_end",
+     "type": "CCountryTag*",
+     "comment": "one past the last",
+     "source": "BiceLib/GameClasses/CWar.hpp:118"
+    },
+    {
+     "offset": "0x18",
+     "name": "defenders",
+     "type": "CCountryTag*",
+     "comment": "the other side. **Read live**: `GER`",
+     "source": "BiceLib/GameClasses/CWar.hpp:119"
+    },
+    {
+     "offset": "0x1C",
+     "name": "defenders_end",
+     "type": "CCountryTag*",
+     "comment": "one past the last",
+     "source": "BiceLib/GameClasses/CWar.hpp:120"
+    }
+   ],
+   "vftable_rva": "0x11BD6E4"
+  },
+  {
+   "name": "CCasusBelliType",
+   "fields": [
+    {
+     "offset": "0x14",
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "the casus belli's key. **Read live**: `oder_neisse_line`, `china_war_goal`, `occupation_japan`",
+     "source": "BiceLib/GameClasses/CWar.hpp:140"
+    }
+   ]
+  },
+  {
+   "name": "CBuildingConstruction",
+   "fields": [
+    {
+     "offset": "0x58",
+     "name": "building",
+     "type": "void*",
+     "comment": "which building, saved as `building` by its index into the building database. **Read live**: a CBuilding by its own RTTI on all 89",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:133"
+    },
+    {
+     "offset": "0x5C",
+     "name": "count",
+     "type": "int",
+     "comment": "saved as `count`. **Read live**: zero on all 89",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:136"
+    }
+   ],
+   "vftable_rva": "0x11BDCD4",
+   "inherits": "CConstruction"
+  },
+  {
+   "name": "CConvoyConstruction",
+   "fields": [
+    {
+     "offset": "0x58",
+     "name": "status",
+     "type": "bool",
+     "comment": "**its own `status` key rather than CConstruction's at +0x3C**: the loader takes the key before the base sees it and sets this byte only where the value is `yes`. **Read live**: set on 20 of 68",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:150"
+    }
+   ],
+   "vftable_rva": "0x11BDD34",
+   "inherits": "CConstruction"
+  },
+  {
+   "name": "CBrigadeConstructionDefinition",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "display_name",
+     "type": "Hoi3CString",
+     "comment": "a second string the name setter fills, through a lookup on the name",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:165"
+    },
+    {
+     "offset": "0x10",
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the `id` pair",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:168"
+    },
+    {
+     "offset": "0x14",
+     "name": "id",
+     "type": "int",
+     "comment": "the brigade's id, saved as `id`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:169"
+    },
+    {
+     "offset": "0x18",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "saved as `name`. **Read live**: `IV/SG 136`, `IV./StG 410`, `II/KG 42 (leicht)`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:173"
+    },
+    {
+     "offset": "0x40",
+     "name": "experience",
+     "type": "int",
+     "comment": "x1000, saved as `experience`",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:180"
+    },
+    {
+     "offset": "0x44",
+     "name": "model",
+     "type": "int*",
+     "comment": "the model numbers, saved as `model={ 6 2 1 1 ... }`; a vector of ints ending at +0x48",
+     "source": "BiceLib/GameClasses/CConstruction.hpp:183"
+    }
+   ],
+   "vftable_rva": "0x11BDC8C"
+  },
+  {
+   "name": "CTheatre",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the `id` pair. **Read live**: 45 on every theatre",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:22"
+    },
+    {
+     "offset": "0xC",
+     "name": "id",
+     "type": "int",
+     "comment": "the theatre's id, handed out from the game state's `theatre_id` counter",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:23"
+    },
+    {
+     "offset": "0x30",
+     "name": "provinces_first",
+     "type": "void*",
+     "comment": "**the provinces in the theatre**, a CList of CMapProvince*, saved as one `provinces={ ... }` block of ids. **Read live**: the ids come back in the save's own order, and the count matches the walk - 20 provinces on the smallest theatre, 569 on the largest",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:31"
+    },
+    {
+     "offset": "0x34",
+     "name": "provinces_last",
+     "type": "void*",
+     "comment": "the last node of that list",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:32"
+    },
+    {
+     "offset": "0x38",
+     "name": "provinces_count",
+     "type": "int",
+     "comment": "how many provinces",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:33"
+    },
+    {
+     "offset": "0x40",
+     "name": "key_provinces_first",
+     "type": "void*",
+     "comment": "a second CList of CMapProvince*, filled by a key the token table calls `key` through an adder of its own (`0xAFCE0`). **It cannot survive a save**: CTheatre::SaveContents walks this list and the one at +0x30 into a single sorted, deduped `provinces={ ... }` block, which is why no save carries a `key=` line. **Read live**: 3 of 100 theatres hold exactly one province here and it looks like the theatre's seat - Paris on the theatre whose HQ unit is `Paris HQ`, San Francisco on `Pacific High Command`, Washington D.C. on `Eastern Defense Command`. It is not where the HQ unit stands: two of the three differ",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:56"
+    },
+    {
+     "offset": "0x44",
+     "name": "key_provinces_last",
+     "type": "void*",
+     "comment": "the last node of that list",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:57"
+    },
+    {
+     "offset": "0x48",
+     "name": "key_provinces_count",
+     "type": "int",
+     "comment": "how many",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:58"
+    },
+    {
+     "offset": "0x50",
+     "name": "fronts_first",
+     "type": "void*",
+     "comment": "**the fronts**, a CList of CAreaBorder, one `front=` block each - a province list, a `local_enemy` tag and the `front` and `sea` flags. **Read live**: the nodes hold a CAreaBorder by its own RTTI",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:66"
+    },
+    {
+     "offset": "0x54",
+     "name": "fronts_last",
+     "type": "void*",
+     "comment": "the last front",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:67"
+    },
+    {
+     "offset": "0x58",
+     "name": "fronts_count",
+     "type": "int",
+     "comment": "how many fronts. **Read live**: one to six per theatre, and it matches the walk",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:68"
+    },
+    {
+     "offset": "0x70",
+     "name": "hot",
+     "type": "bool",
+     "comment": "saved as `hot`. **Read live**: set on 19 of the 100",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:71"
+    },
+    {
+     "offset": "0x74",
+     "name": "unit_type",
+     "type": "int",
+     "comment": "type half of the theatre's `unit` id. **Read live**: 41",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:75"
+    },
+    {
+     "offset": "0x78",
+     "name": "unit_id",
+     "type": "int",
+     "comment": "the theatre's own unit, saved as `unit`",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:76"
+    },
+    {
+     "offset": "0x7C",
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "whose theatre it is, saved as `country`. **Read live**: ENG has 11, JAP and VIC 6 each",
+     "source": "BiceLib/GameClasses/CTheatre.hpp:80"
+    }
+   ],
+   "vftable_rva": "0x11C0788"
+  },
+  {
+   "name": "CActiveMission",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "type",
+     "type": "void*",
+     "comment": "which mission, looked up by name and saved as `type` by its key. **Read live**: a CNullMission on all 108 in the game, key `no_mission`",
+     "source": "BiceLib/GameClasses/CActiveMission.hpp:21"
+    },
+    {
+     "offset": "0xC",
+     "name": "scope",
+     "type": "void*",
+     "comment": "a CEventScope held by value, saved as `scope` through its own Load and Save. **Read live**: a CEventScope by its own RTTI",
+     "source": "BiceLib/GameClasses/CActiveMission.hpp:25"
+    },
+    {
+     "offset": "0x44",
+     "name": "parent_scope_ptr",
+     "type": "void*",
+     "comment": "set to `this + 0x54` when `parent_scope` is read",
+     "source": "BiceLib/GameClasses/CActiveMission.hpp:29"
+    },
+    {
+     "offset": "0x54",
+     "name": "parent_scope",
+     "type": "void*",
+     "comment": "a second CEventScope held by value, saved as `parent_scope`",
+     "source": "BiceLib/GameClasses/CActiveMission.hpp:32"
+    },
+    {
+     "offset": "0x9C",
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, saved as `start_date` and written as a date",
+     "source": "BiceLib/GameClasses/CActiveMission.hpp:35"
+    },
+    {
+     "offset": "0xA0",
+     "name": "owner",
+     "type": "CCountryTag",
+     "comment": "whose mission it is, saved as `owner`. **Read live**: `---` on all 108, which goes with every one of them being the null mission",
+     "source": "BiceLib/GameClasses/CActiveMission.hpp:39"
+    }
+   ],
+   "vftable_rva": "0x11F5D74"
+  },
+  {
+   "name": "CFaction",
+   "fields": [
+    {
+     "offset": "0xC",
+     "name": "tag",
+     "type": "CCountryTag",
+     "comment": "the faction's tag, saved as `tag`. **Read live**: the game holds exactly three - `axis`, `alli` and `comi`",
+     "source": "BiceLib/GameClasses/CFaction.hpp:16"
+    },
+    {
+     "offset": "0x3C",
+     "name": "icon",
+     "type": "void*",
+     "comment": "saved as `icon`. **Read live**: nothing readable as a string on any of the three, so what it holds has not been settled",
+     "source": "BiceLib/GameClasses/CFaction.hpp:23"
+    },
+    {
+     "offset": "0x40",
+     "name": "rule",
+     "type": "void*",
+     "comment": "an object of its own, loaded through its vtable, saved as `rule`",
+     "source": "BiceLib/GameClasses/CFaction.hpp:26"
+    },
+    {
+     "offset": "0x7C",
+     "name": "modifier",
+     "type": "void*",
+     "comment": "an object of its own, loaded through its vtable, saved as `modifier`",
+     "source": "BiceLib/GameClasses/CFaction.hpp:29"
+    },
+    {
+     "offset": "0xB0",
+     "name": "neutrality",
+     "type": "int",
+     "comment": "saved as `neutrality`, x1000. **Read live**: 25.0 for the axis and zero for the other two",
+     "source": "BiceLib/GameClasses/CFaction.hpp:37"
+    },
+    {
+     "offset": "0xBC",
+     "name": "influence",
+     "type": "Hoi3CString",
+     "comment": "saved as `influence`. **Read live**: `align_towards_axis`, `align_towards_allies`, `align_towards_comintern` - the decision each faction pulls countries with",
+     "source": "BiceLib/GameClasses/CFaction.hpp:42"
+    }
+   ],
+   "vftable_rva": "0x11C2430"
+  },
+  {
+   "name": "CMinister",
+   "fields": [
+    {
+     "offset": "0x30",
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "read from `name`. **Read live**: `Alfred Rosenberg`, `Thomas Mann`",
+     "source": "BiceLib/GameClasses/CFaction.hpp:66"
+    },
+    {
+     "offset": "0x54",
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, read from `start_date` - when the minister becomes available",
+     "source": "BiceLib/GameClasses/CFaction.hpp:69"
+    },
+    {
+     "offset": "0x58",
+     "name": "death_date",
+     "type": "int",
+     "comment": "a game tick, read from `death_date`",
+     "source": "BiceLib/GameClasses/CFaction.hpp:72"
+    },
+    {
+     "offset": "0x70",
+     "name": "loyalty",
+     "type": "int",
+     "comment": "read from `loyalty`, x1000. **Read live**: 1000 or 750",
+     "source": "BiceLib/GameClasses/CFaction.hpp:78"
+    },
+    {
+     "offset": "0x74",
+     "name": "picture",
+     "type": "Hoi3CString",
+     "comment": "his portrait, read from `picture`. **Read live**: `M57`, `M64`, `M82`",
+     "source": "BiceLib/GameClasses/CFaction.hpp:82"
+    }
+   ],
+   "vftable_rva": "0x11C2AB4"
   }
  ],
  "vftable_slots": {

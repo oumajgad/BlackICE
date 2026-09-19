@@ -620,18 +620,6 @@
    ]
   },
   {
-   "name": "SLIDER_AUTOMATION_LEVEL",
-   "size": 4,
-   "comment": "an enum the Lua API passes; values not registered",
-   "values": []
-  },
-  {
-   "name": "IntelLevel",
-   "size": 4,
-   "comment": "an enum the Lua API passes; values not registered",
-   "values": []
-  },
-  {
    "name": "SaveToken",
    "size": 4,
    "values": [
@@ -9269,6 +9257,18 @@
     }
    ],
    "comment": "A save key, as the game writes it: the id, not the string. 2158 of them, the ones built into this executable - what the loaded mod registers on top is numbered in load order and left out. From reversing/saveTokens.py."
+  },
+  {
+   "name": "IntelLevel",
+   "size": 4,
+   "comment": "an enum the Lua API passes; values not registered",
+   "values": []
+  },
+  {
+   "name": "SLIDER_AUTOMATION_LEVEL",
+   "size": 4,
+   "comment": "an enum the Lua API passes; values not registered",
+   "values": []
   }
  ],
  "structs": [
@@ -9381,6 +9381,12 @@
      "name": "Region",
      "type": "CRegion const*",
      "comment": "read by CWarGoal::GetRegion"
+    },
+    {
+     "offset": 12,
+     "name": "casus_belli",
+     "type": "void*",
+     "comment": "**what the goal is**, saved as `casus_belli` by its key; the loader looks the name up and falls back to indexing the list by number. **Read live**: a CCasusBelliType on 259 of 262 goals, a CNullCasusBelliType on one (BiceLib/GameClasses/CWar.hpp:92)"
     }
    ]
   },
@@ -9411,6 +9417,96 @@
      "name": "Priority",
      "type": "CFixedPoint",
      "comment": "read by CTheatre::GetPriority"
+    },
+    {
+     "offset": 8,
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the `id` pair. **Read live**: 45 on every theatre (BiceLib/GameClasses/CTheatre.hpp:22)"
+    },
+    {
+     "offset": 12,
+     "name": "id",
+     "type": "int",
+     "comment": "the theatre's id, handed out from the game state's `theatre_id` counter (BiceLib/GameClasses/CTheatre.hpp:23)"
+    },
+    {
+     "offset": 48,
+     "name": "provinces_first",
+     "type": "void*",
+     "comment": "**the provinces in the theatre**, a CList of CMapProvince*, saved as one `provinces={ ... }` block of ids. **Read live**: the ids come back in the save's own order, and the count matches the walk - 20 provinces on the smallest theatre, 569 on the largest (BiceLib/GameClasses/CTheatre.hpp:31)"
+    },
+    {
+     "offset": 52,
+     "name": "provinces_last",
+     "type": "void*",
+     "comment": "the last node of that list (BiceLib/GameClasses/CTheatre.hpp:32)"
+    },
+    {
+     "offset": 56,
+     "name": "provinces_count",
+     "type": "int",
+     "comment": "how many provinces (BiceLib/GameClasses/CTheatre.hpp:33)"
+    },
+    {
+     "offset": 64,
+     "name": "key_provinces_first",
+     "type": "void*",
+     "comment": "a second CList of CMapProvince*, filled by a key the token table calls `key` through an adder of its own (`0xAFCE0`). **It cannot survive a save**: CTheatre::SaveContents walks this list and the one at +0x30 into a single sorted, deduped `provinces={ ... }` block, which is why no save carries a `key=` line. **Read live**: 3 of 100 theatres hold exactly one province here and it looks like the theatre's seat - Paris on the theatre whose HQ unit is `Paris HQ`, San Francisco on `Pacific High Command`, Washington D.C. on `Eastern Defense Command`. It is not where the HQ unit stands: two of the three differ (BiceLib/GameClasses/CTheatre.hpp:56)"
+    },
+    {
+     "offset": 68,
+     "name": "key_provinces_last",
+     "type": "void*",
+     "comment": "the last node of that list (BiceLib/GameClasses/CTheatre.hpp:57)"
+    },
+    {
+     "offset": 72,
+     "name": "key_provinces_count",
+     "type": "int",
+     "comment": "how many (BiceLib/GameClasses/CTheatre.hpp:58)"
+    },
+    {
+     "offset": 80,
+     "name": "fronts_first",
+     "type": "void*",
+     "comment": "**the fronts**, a CList of CAreaBorder, one `front=` block each - a province list, a `local_enemy` tag and the `front` and `sea` flags. **Read live**: the nodes hold a CAreaBorder by its own RTTI (BiceLib/GameClasses/CTheatre.hpp:66)"
+    },
+    {
+     "offset": 84,
+     "name": "fronts_last",
+     "type": "void*",
+     "comment": "the last front (BiceLib/GameClasses/CTheatre.hpp:67)"
+    },
+    {
+     "offset": 88,
+     "name": "fronts_count",
+     "type": "int",
+     "comment": "how many fronts. **Read live**: one to six per theatre, and it matches the walk (BiceLib/GameClasses/CTheatre.hpp:68)"
+    },
+    {
+     "offset": 112,
+     "name": "hot",
+     "type": "bool",
+     "comment": "saved as `hot`. **Read live**: set on 19 of the 100 (BiceLib/GameClasses/CTheatre.hpp:71)"
+    },
+    {
+     "offset": 116,
+     "name": "unit_type",
+     "type": "int",
+     "comment": "type half of the theatre's `unit` id. **Read live**: 41 (BiceLib/GameClasses/CTheatre.hpp:75)"
+    },
+    {
+     "offset": 120,
+     "name": "unit_id",
+     "type": "int",
+     "comment": "the theatre's own unit, saved as `unit` (BiceLib/GameClasses/CTheatre.hpp:76)"
+    },
+    {
+     "offset": 124,
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "whose theatre it is, saved as `country`. **Read live**: ENG has 11, JAP and VIC 6 each (BiceLib/GameClasses/CTheatre.hpp:80)"
     }
    ]
   },
@@ -9606,6 +9702,30 @@
    "fields": []
   },
   {
+   "name": "Hoi3CString",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "stringData",
+     "type": "char[16]",
+     "comment": "inline characters, or a pointer to them when longer than 15 (BiceLib/HoiDataStructures.hpp:40)"
+    },
+    {
+     "offset": 16,
+     "name": "length",
+     "type": "int",
+     "comment": "length (BiceLib/HoiDataStructures.hpp:41)"
+    },
+    {
+     "offset": 20,
+     "name": "maxLength",
+     "type": "int",
+     "comment": "capacity (BiceLib/HoiDataStructures.hpp:42)"
+    }
+   ]
+  },
+  {
    "name": "CMinister",
    "size": null,
    "fields": [
@@ -9614,6 +9734,36 @@
      "name": "Ideology",
      "type": "CIdeology const*",
      "comment": "read by CMinister::GetIdeology"
+    },
+    {
+     "offset": 48,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "read from `name`. **Read live**: `Alfred Rosenberg`, `Thomas Mann` (BiceLib/GameClasses/CFaction.hpp:66)"
+    },
+    {
+     "offset": 84,
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, read from `start_date` - when the minister becomes available (BiceLib/GameClasses/CFaction.hpp:69)"
+    },
+    {
+     "offset": 88,
+     "name": "death_date",
+     "type": "int",
+     "comment": "a game tick, read from `death_date` (BiceLib/GameClasses/CFaction.hpp:72)"
+    },
+    {
+     "offset": 112,
+     "name": "loyalty",
+     "type": "int",
+     "comment": "read from `loyalty`, x1000. **Read live**: 1000 or 750 (BiceLib/GameClasses/CFaction.hpp:78)"
+    },
+    {
+     "offset": 116,
+     "name": "picture",
+     "type": "Hoi3CString",
+     "comment": "his portrait, read from `picture`. **Read live**: `M57`, `M64`, `M82` (BiceLib/GameClasses/CFaction.hpp:82)"
     }
    ]
   },
@@ -9656,30 +9806,6 @@
      "name": "Index",
      "type": "int",
      "comment": "read by CMinisterType::GetIndex"
-    }
-   ]
-  },
-  {
-   "name": "Hoi3CString",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "stringData",
-     "type": "char[16]",
-     "comment": "inline characters, or a pointer to them when longer than 15 (BiceLib/HoiDataStructures.hpp:40)"
-    },
-    {
-     "offset": 16,
-     "name": "length",
-     "type": "int",
-     "comment": "length (BiceLib/HoiDataStructures.hpp:41)"
-    },
-    {
-     "offset": 20,
-     "name": "maxLength",
-     "type": "int",
-     "comment": "capacity (BiceLib/HoiDataStructures.hpp:42)"
     }
    ]
   },
@@ -10877,8 +11003,8 @@
     {
      "offset": 12,
      "name": "Tag",
-     "type": "CString",
-     "comment": "read by CFaction::GetTag"
+     "type": "CCountryTag",
+     "comment": "read by CFaction::GetTag\nBiceLib: tag (CCountryTag) - the faction's tag, saved as `tag`. **Read live**: the game holds exactly three - `axis`, `alli` and `comi` (BiceLib/GameClasses/CFaction.hpp:16)"
     },
     {
      "offset": 40,
@@ -10891,6 +11017,36 @@
      "name": "Progress",
      "type": "CFixedPoint",
      "comment": "read by CFaction::GetProgress"
+    },
+    {
+     "offset": 60,
+     "name": "icon",
+     "type": "void*",
+     "comment": "saved as `icon`. **Read live**: nothing readable as a string on any of the three, so what it holds has not been settled (BiceLib/GameClasses/CFaction.hpp:23)"
+    },
+    {
+     "offset": 64,
+     "name": "rule",
+     "type": "void*",
+     "comment": "an object of its own, loaded through its vtable, saved as `rule` (BiceLib/GameClasses/CFaction.hpp:26)"
+    },
+    {
+     "offset": 124,
+     "name": "modifier",
+     "type": "void*",
+     "comment": "an object of its own, loaded through its vtable, saved as `modifier` (BiceLib/GameClasses/CFaction.hpp:29)"
+    },
+    {
+     "offset": 176,
+     "name": "neutrality",
+     "type": "int",
+     "comment": "saved as `neutrality`, x1000. **Read live**: 25.0 for the axis and zero for the other two (BiceLib/GameClasses/CFaction.hpp:37)"
+    },
+    {
+     "offset": 188,
+     "name": "influence",
+     "type": "Hoi3CString",
+     "comment": "saved as `influence`. **Read live**: `align_towards_axis`, `align_towards_allies`, `align_towards_comintern` - the decision each faction pulls countries with (BiceLib/GameClasses/CFaction.hpp:42)"
     }
    ]
   },
@@ -10937,20 +11093,86 @@
     {
      "offset": 44,
      "name": "Attackers",
-     "type": "CArray<CCountryTag>",
-     "comment": "read by CWar::GetAttackers"
+     "type": "CCountryTag*",
+     "comment": "read by CWar::GetAttackers\nBiceLib: attackers (CCountryTag*) - **one side of the war**, a vector of CCountryTag with one `attacker=` line per entry. **Read live**: `ITA` alone against 28 countries in the War of Italian Aggression (BiceLib/GameClasses/CWar.hpp:39)"
     },
     {
      "offset": 60,
      "name": "Defenders",
-     "type": "CArray<CCountryTag>",
-     "comment": "read by CWar::GetDefenders"
+     "type": "CCountryTag*",
+     "comment": "read by CWar::GetDefenders\nBiceLib: defenders (CCountryTag*) - the other side, the same shape, one `defender=` line per entry (BiceLib/GameClasses/CWar.hpp:42)"
     },
     {
      "offset": 112,
      "name": "isLimited",
      "type": "bool",
-     "comment": "read by CWar::IsLimited"
+     "comment": "read by CWar::IsLimited\nBiceLib: is_limited (bool) - saved as `limited`. **Read live**: set on all 19 wars (BiceLib/GameClasses/CWar.hpp:52)"
+    },
+    {
+     "offset": 8,
+     "name": "revolutionary_war",
+     "type": "bool",
+     "comment": "saved as `revolutionary_war`, read straight off whether the value token is `yes` (BiceLib/GameClasses/CWar.hpp:21)"
+    },
+    {
+     "offset": 12,
+     "name": "action",
+     "type": "int",
+     "comment": "a game tick, saved as `action` and written as a date. **Read live**: 60815253, which is 1942-05-19, on most of the wars in a 1942 game (BiceLib/GameClasses/CWar.hpp:25)"
+    },
+    {
+     "offset": 16,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "saved as `name`. **Read live**: `War of Italian Aggression`, `2nd War of German Aggression`, `Chinese Civil War` (BiceLib/GameClasses/CWar.hpp:29)"
+    },
+    {
+     "offset": 48,
+     "name": "attackers_end",
+     "type": "CCountryTag*",
+     "comment": "one past the last attacker. **Read the end here, not the capacity at +0x34** - the two differ on some wars and reading the capacity hands back stale tags past the end (BiceLib/GameClasses/CWar.hpp:40)"
+    },
+    {
+     "offset": 52,
+     "name": "attackers_capacity",
+     "type": "CCountryTag*",
+     "comment": "the end of the allocation, not of the list (BiceLib/GameClasses/CWar.hpp:41)"
+    },
+    {
+     "offset": 64,
+     "name": "defenders_end",
+     "type": "CCountryTag*",
+     "comment": "one past the last defender (BiceLib/GameClasses/CWar.hpp:43)"
+    },
+    {
+     "offset": 68,
+     "name": "defenders_capacity",
+     "type": "CCountryTag*",
+     "comment": "the end of the allocation (BiceLib/GameClasses/CWar.hpp:44)"
+    },
+    {
+     "offset": 76,
+     "name": "history",
+     "type": "void*",
+     "comment": "a CWarHistory held by value, saved as `history` by calling its own Load and Save. **Read live**: a CWarHistory by its own RTTI, carrying CPersistent's vftable and token like any other (BiceLib/GameClasses/CWar.hpp:49)"
+    },
+    {
+     "offset": 132,
+     "name": "target",
+     "type": "CCountryTag",
+     "comment": "saved as `target`. **Read live**: the no-country tag `---` on every war in the game (BiceLib/GameClasses/CWar.hpp:57)"
+    },
+    {
+     "offset": 140,
+     "name": "original_attacker",
+     "type": "CCountryTag",
+     "comment": "saved as `original_attacker`. **Read live**: `---` on every war (BiceLib/GameClasses/CWar.hpp:58)"
+    },
+    {
+     "offset": 148,
+     "name": "original_defender",
+     "type": "CCountryTag",
+     "comment": "saved as `original_defender`. **Read live**: `---` on every war (BiceLib/GameClasses/CWar.hpp:59)"
     }
    ]
   },
@@ -12257,6 +12479,18 @@
    ]
   },
   {
+   "name": "CGovernment",
+   "size": null,
+   "fields": [
+    {
+     "offset": 68,
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "the government's key. **Read live**: eighteen in this mod, from absolute_monarchy to socialist_republic (BiceLib/GameClasses/CRebelFaction.hpp:101)"
+    }
+   ]
+  },
+  {
    "name": "CLaw",
    "size": null,
    "fields": [
@@ -12331,6 +12565,24 @@
      "name": "Type",
      "type": "CSubUnitDefinition const*",
      "comment": "read by CBrigadeConstructionDefinition::GetType"
+    },
+    {
+     "offset": 8,
+     "name": "display_name",
+     "type": "Hoi3CString",
+     "comment": "a second string the name setter fills, through a lookup on the name (BiceLib/GameClasses/CConstruction.hpp:165)\n+0x8 inside it: id_type (int) - type half of the `id` pair (BiceLib/GameClasses/CConstruction.hpp:168)\n+0xC inside it: id (int) - the brigade's id, saved as `id` (BiceLib/GameClasses/CConstruction.hpp:169)\n+0x10 inside it: name (Hoi3CString) - saved as `name`. **Read live**: `IV/SG 136`, `IV./StG 410`, `II/KG 42 (leicht)` (BiceLib/GameClasses/CConstruction.hpp:173)"
+    },
+    {
+     "offset": 64,
+     "name": "experience",
+     "type": "int",
+     "comment": "x1000, saved as `experience` (BiceLib/GameClasses/CConstruction.hpp:180)"
+    },
+    {
+     "offset": 68,
+     "name": "model",
+     "type": "int*",
+     "comment": "the model numbers, saved as `model={ 6 2 1 1 ... }`; a vector of ints ending at +0x48 (BiceLib/GameClasses/CConstruction.hpp:183)"
     }
    ]
   },
@@ -12369,22 +12621,130 @@
    "size": null,
    "fields": [
     {
+     "offset": 48,
+     "name": "Cost",
+     "type": "CFixedPoint",
+     "comment": "read by CConstruction::GetCost, inherited from CConstruction\nBiceLib: cost (int) - what it costs in IC, a CFixedPoint: the game's GetCost (0x837C0), which CCountry::GetUsedIC sums over the country's constructions (reversing/CLASSES.md:502), inherited from CConstruction"
+    },
+    {
+     "offset": 64,
+     "name": "Size",
+     "type": "int",
+     "comment": "read by CConstruction::GetSize, inherited from CConstruction"
+    },
+    {
      "offset": 124,
      "name": "Brigades",
      "type": "CList<CBrigadeConstructionDefinition*>",
-     "comment": "read by CMilitaryConstruction::GetBrigades"
+     "comment": "read by CMilitaryConstruction::GetBrigades\n+0x8 inside it: brigades_count (int) - how many brigades. **Read live**: 1 on 536 of 831 items and 6 or 7 on most of the rest (BiceLib/GameClasses/CConstruction.hpp:85)"
+    },
+    {
+     "offset": 8,
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the `id` pair, written after the id (BiceLib/GameClasses/CConstruction.hpp:29), inherited from CConstruction"
+    },
+    {
+     "offset": 12,
+     "name": "id",
+     "type": "int",
+     "comment": "the queue item's id (BiceLib/GameClasses/CConstruction.hpp:30), inherited from CConstruction"
+    },
+    {
+     "offset": 52,
+     "name": "duration",
+     "type": "int",
+     "comment": "x1000, saved as `duration` (BiceLib/GameClasses/CConstruction.hpp:33), inherited from CConstruction"
+    },
+    {
+     "offset": 56,
+     "name": "progress",
+     "type": "int",
+     "comment": "x1000, saved as `progress` (BiceLib/GameClasses/CConstruction.hpp:34), inherited from CConstruction"
+    },
+    {
+     "offset": 60,
+     "name": "status",
+     "type": "int",
+     "comment": "x1000, saved as `status`. **Read live**: 1.0 on most items and 0 on the rest, with a handful in between, so it looks like a fraction rather than a flag. A CConvoyConstruction does not use this - it keeps its own `status` byte at +0x58 (BiceLib/GameClasses/CConstruction.hpp:39), inherited from CConstruction"
+    },
+    {
+     "offset": 68,
+     "name": "location",
+     "type": "CMapProvince*",
+     "comment": "where it is being built, saved as `location`. **Read live**: a CMapProvince on all 89 building items and null on the military and convoy ones, which are not placed (BiceLib/GameClasses/CConstruction.hpp:46), inherited from CConstruction"
+    },
+    {
+     "offset": 72,
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "who it is for, saved as `country` (BiceLib/GameClasses/CConstruction.hpp:49), inherited from CConstruction"
+    },
+    {
+     "offset": 80,
+     "name": "builder",
+     "type": "CCountryTag",
+     "comment": "who is building it, saved as `builder`. **Read live**: the same as `country` on every military item and the no-country tag `---` on every building and convoy one (BiceLib/GameClasses/CConstruction.hpp:54), inherited from CConstruction"
+    },
+    {
+     "offset": 88,
+     "name": "unit_type",
+     "type": "int",
+     "comment": "type half of the `unit` object id (BiceLib/GameClasses/CConstruction.hpp:75)"
+    },
+    {
+     "offset": 92,
+     "name": "unit_id",
+     "type": "int",
+     "comment": "the unit being built, saved as `unit` (BiceLib/GameClasses/CConstruction.hpp:76)"
+    },
+    {
+     "offset": 96,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "the name it will be given, saved as `name` (BiceLib/GameClasses/CConstruction.hpp:79)"
     },
     {
      "offset": 140,
      "name": "is_reserve",
      "type": "bool",
-     "comment": "the item is being built as reserves, which is what fills reserves_factor (reversing/CLASSES.md:864)"
+     "comment": "the item is being built as reserves, which is what fills reserves_factor, and is a byte. **Read live**: set on 43 of 831 items (BiceLib/GameClasses/CConstruction.hpp:89)"
+    },
+    {
+     "offset": 144,
+     "name": "target_type",
+     "type": "int",
+     "comment": "type half of the `target` object id (BiceLib/GameClasses/CConstruction.hpp:92)"
+    },
+    {
+     "offset": 148,
+     "name": "target_id",
+     "type": "int",
+     "comment": "what the item is aimed at, saved as `target` (BiceLib/GameClasses/CConstruction.hpp:93)"
+    },
+    {
+     "offset": 152,
+     "name": "manpower",
+     "type": "int",
+     "comment": "x1000, saved as `manpower` (BiceLib/GameClasses/CConstruction.hpp:96)"
     },
     {
      "offset": 156,
      "name": "reserves_factor",
      "type": "int",
-     "comment": "1000 + the owner's RESERVES_PENALTY_SIZE modifier (77) where is_reserve is set, 1000 otherwise - filled at 0x84A3A and 0x85211. Stored rather than looked up, so an item keeps the factor it was given (reversing/CLASSES.md:864)"
+     "comment": "1000 + the owner's RESERVES_PENALTY_SIZE modifier (77) where is_reserve is set, 1000 otherwise - filled at 0x84A3A and 0x85211. Stored rather than looked up, so an item keeps the factor it was given. **It is saved as `factor`**, which settles that the number travels with the item through a save rather than being recomputed on load. **Read live**: 1000 on 788 items, 800 on 27 and 900 on 8, so the penalty is negative and differs by country (BiceLib/GameClasses/CConstruction.hpp:108)"
+    },
+    {
+     "offset": 164,
+     "name": "accumulated_experience",
+     "type": "int",
+     "comment": "x1000, saved as `accumulated_experiance` - the game's own spelling (BiceLib/GameClasses/CConstruction.hpp:111)"
+    },
+    {
+     "offset": 168,
+     "name": "accumulated_progress",
+     "type": "int",
+     "comment": "x1000, saved as `accumulated_progress` (BiceLib/GameClasses/CConstruction.hpp:114)"
     }
    ]
   },
@@ -12403,6 +12763,54 @@
      "name": "Size",
      "type": "int",
      "comment": "read by CConstruction::GetSize"
+    },
+    {
+     "offset": 8,
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the `id` pair, written after the id (BiceLib/GameClasses/CConstruction.hpp:29)"
+    },
+    {
+     "offset": 12,
+     "name": "id",
+     "type": "int",
+     "comment": "the queue item's id (BiceLib/GameClasses/CConstruction.hpp:30)"
+    },
+    {
+     "offset": 52,
+     "name": "duration",
+     "type": "int",
+     "comment": "x1000, saved as `duration` (BiceLib/GameClasses/CConstruction.hpp:33)"
+    },
+    {
+     "offset": 56,
+     "name": "progress",
+     "type": "int",
+     "comment": "x1000, saved as `progress` (BiceLib/GameClasses/CConstruction.hpp:34)"
+    },
+    {
+     "offset": 60,
+     "name": "status",
+     "type": "int",
+     "comment": "x1000, saved as `status`. **Read live**: 1.0 on most items and 0 on the rest, with a handful in between, so it looks like a fraction rather than a flag. A CConvoyConstruction does not use this - it keeps its own `status` byte at +0x58 (BiceLib/GameClasses/CConstruction.hpp:39)"
+    },
+    {
+     "offset": 68,
+     "name": "location",
+     "type": "CMapProvince*",
+     "comment": "where it is being built, saved as `location`. **Read live**: a CMapProvince on all 89 building items and null on the military and convoy ones, which are not placed (BiceLib/GameClasses/CConstruction.hpp:46)"
+    },
+    {
+     "offset": 72,
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "who it is for, saved as `country` (BiceLib/GameClasses/CConstruction.hpp:49)"
+    },
+    {
+     "offset": 80,
+     "name": "builder",
+     "type": "CCountryTag",
+     "comment": "who is building it, saved as `builder`. **Read live**: the same as `country` on every military item and the no-country tag `---` on every building and convoy one (BiceLib/GameClasses/CConstruction.hpp:54)"
     }
    ]
   },
@@ -13797,82 +14205,100 @@
    "size": null,
    "fields": [
     {
+     "offset": 8,
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the save's `id` pair (BiceLib/GameClasses/CLeader.hpp:15)"
+    },
+    {
      "offset": 12,
      "name": "id",
      "type": "int",
-     "comment": "leader id (BiceLib/GameClasses/CLeader.hpp:9)"
+     "comment": "leader id (BiceLib/GameClasses/CLeader.hpp:16)"
     },
     {
      "offset": 48,
      "name": "traits",
      "type": "CList<CTrait*>",
-     "comment": "the leader's traits (BiceLib/GameClasses/CLeader.hpp:10)"
+     "comment": "the leader's traits (BiceLib/GameClasses/CLeader.hpp:17)"
     },
     {
      "offset": 64,
      "name": "unit_ptr",
      "type": "undefined4",
-     "comment": "the unit the leader commands (BiceLib/GameClasses/CLeader.hpp:13)"
+     "comment": "the unit the leader commands (BiceLib/GameClasses/CLeader.hpp:18)"
     },
     {
      "offset": 68,
      "name": "country",
      "type": "CCountryTag",
-     "comment": "the leader's country (mem) (BiceLib/GameClasses/CLeader.hpp:12)"
+     "comment": "the leader's country (mem) (BiceLib/GameClasses/CLeader.hpp:19)"
     },
     {
      "offset": 76,
      "name": "name",
      "type": "Hoi3CString",
-     "comment": "leader name, Windows-1252 (BiceLib/GameClasses/CLeader.hpp:16)"
+     "comment": "leader name, Windows-1252 (BiceLib/GameClasses/CLeader.hpp:20)"
     },
     {
      "offset": 104,
      "name": "type",
      "type": "int",
-     "comment": "leader type (disabled in source, unverified); compared in the rank change code (BiceLib/GameClasses/CLeader.hpp:17)"
+     "comment": "leader type (disabled in source, unverified); compared in the rank change code (BiceLib/GameClasses/CLeader.hpp:21)"
     },
     {
      "offset": 108,
      "name": "rank",
      "type": "int",
-     "comment": "rank (BiceLib/GameClasses/CLeader.hpp:18)"
+     "comment": "rank (BiceLib/GameClasses/CLeader.hpp:22)"
     },
     {
      "offset": 112,
      "name": "skill",
      "type": "int",
-     "comment": "current skill (BiceLib/GameClasses/CLeader.hpp:19)"
+     "comment": "current skill (BiceLib/GameClasses/CLeader.hpp:23)"
     },
     {
      "offset": 116,
      "name": "max_skill",
      "type": "int",
-     "comment": "maximum skill (BiceLib/GameClasses/CLeader.hpp:20)"
+     "comment": "maximum skill (BiceLib/GameClasses/CLeader.hpp:24)"
     },
     {
      "offset": 120,
-     "name": "experience",
-     "type": "int",
-     "comment": "experience, low word (BiceLib/GameClasses/CLeader.hpp:21)"
-    },
-    {
-     "offset": 124,
-     "name": "experience_2",
-     "type": "int",
-     "comment": "experience, high word (BiceLib/GameClasses/CLeader.hpp:22)"
+     "name": "current_experience",
+     "type": "longlong",
+     "comment": "**one 64-bit value, not two words**: the loader reads `current_experience` with `%lld` into these eight bytes and CLeader::AddExperience adds to them with `add`/`adc` and compares them against the threshold as a pair. The game's 48.15 fixed point, and a career total rather than a per-level count. **The high half can be reached**: the skill-10 threshold is unreachable by design, so a leader parked there keeps accruing, passing 2^31 after another 5536 experience points. **Read live**: zero high halves on 8000 leaders and a largest total of 809977445, 38% of the way to 2^31 (BiceLib/GameClasses/CLeader.hpp:48)"
     },
     {
      "offset": 128,
      "name": "loyalty",
      "type": "int",
-     "comment": "loyalty (disabled in source, unverified) (BiceLib/GameClasses/CLeader.hpp:23)"
+     "comment": "saved as `loyalty`, x1000. **Read live**: 1000 on 5107 of 8000 leaders and 0 on 2825, so it carries a real value rather than being unused (BiceLib/GameClasses/CLeader.hpp:52)"
     },
     {
      "offset": 132,
      "name": "CLeaderHistoryOffset",
      "type": "undefined4",
-     "comment": "leader history (disabled in source, unverified) (BiceLib/GameClasses/CLeader.hpp:24)"
+     "comment": "leader history (disabled in source, unverified) (BiceLib/GameClasses/CLeader.hpp:53)"
+    },
+    {
+     "offset": 168,
+     "name": "picture",
+     "type": "Hoi3CString",
+     "comment": "the leader's portrait, saved as `picture`. **Read live**: `L54027`, and `empty_position` on the null leader (BiceLib/GameClasses/CLeader.hpp:57)"
+    },
+    {
+     "offset": 200,
+     "name": "starting_skill",
+     "type": "int",
+     "comment": "**the skill the mod's files define**: the `skill` handler writes it here too but only while it is still negative, so it keeps the first value, and CLeader::ResetToStarting puts it back into `skill`. **Read live**: matching 7296 leaders to history/leaders/*.txt on country and id, it is the file's `skill` on every one of them - 6179 still at it, 1117 risen above it through experience, **none below it**. Nothing in the image decrements +0x70, and the only path that lowers it is ResetToStarting, which resets to the definition rather than below it (BiceLib/GameClasses/CLeader.hpp:81)"
+    },
+    {
+     "offset": 204,
+     "name": "starting_experience",
+     "type": "int",
+     "comment": "the experience the leader was defined with, in whole points, saved as `experience`. CLeader::ResetToStarting scales it by 32768/1000 into `current_experience`. **Read live**: zero on all 8000 leaders (BiceLib/GameClasses/CLeader.hpp:82)"
     }
    ]
   },
@@ -14287,6 +14713,60 @@
      "name": "target_province",
      "type": "undefined4",
      "comment": "the province it is going to (BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:9)"
+    },
+    {
+     "offset": 16,
+     "name": "target_type",
+     "type": "int",
+     "comment": "type half of the `target` object id (BiceLib/GameClasses/COrder.hpp:37), inherited from COrder"
+    },
+    {
+     "offset": 20,
+     "name": "target_id",
+     "type": "int",
+     "comment": "what the order is aimed at, saved as `target` and only where the pair is not the game's \"no object\" one. **Read live**: set on 12 of 357 air orders and on nothing else (BiceLib/GameClasses/COrder.hpp:38), inherited from COrder"
+    },
+    {
+     "offset": 24,
+     "name": "return_to_base",
+     "type": "bool",
+     "comment": "saved as `return_to_base`. **Read live**: set on 30 of 357 air orders. CNavalOrder keeps its own at +0x34 instead of using this (BiceLib/GameClasses/COrder.hpp:42), inherited from COrder"
+    },
+    {
+     "offset": 28,
+     "name": "priority",
+     "type": "int",
+     "comment": "saved as `priority`. **Read live**: zero on every order in a running game. CNavalOrder keeps its own at +0x38 instead of using this (BiceLib/GameClasses/COrder.hpp:46), inherited from COrder"
+    },
+    {
+     "offset": 32,
+     "name": "stance",
+     "type": "int",
+     "comment": "saved as `stance`. **Read live**: 1 on every order in a running game, so what the other values mean is open (BiceLib/GameClasses/COrder.hpp:50), inherited from COrder"
+    },
+    {
+     "offset": 36,
+     "name": "stop",
+     "type": "int",
+     "comment": "saved as `stop`, x1000. **Read live**: 0.7 on redeployments and support attacks, -1.0 on move and null orders (BiceLib/GameClasses/COrder.hpp:54), inherited from COrder"
+    },
+    {
+     "offset": 40,
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, saved as `start_date` and written as a date. **Read live**: 60814998, which is 1942-05-09 06:00, on a redeployment in a 1942 game (BiceLib/GameClasses/COrder.hpp:59), inherited from COrder"
+    },
+    {
+     "offset": 44,
+     "name": "death_date",
+     "type": "int",
+     "comment": "a game tick, saved as `death_date`. **Read live**: the zero tick 43808760 on orders that were never given one (BiceLib/GameClasses/COrder.hpp:60), inherited from COrder"
+    },
+    {
+     "offset": 48,
+     "name": "time",
+     "type": "int",
+     "comment": "saved as `time`, read with `%i`. **Read live**: 2 on every order in a running game (BiceLib/GameClasses/COrder.hpp:64), inherited from COrder"
     }
    ]
   },
@@ -15181,6 +15661,150 @@
      "name": "value",
      "type": "int",
      "comment": "a CFixedPoint; what CVariables::GetVariable answers (BiceLib/GameClasses/CFlags.hpp:67)"
+    }
+   ]
+  },
+  {
+   "name": "COrder",
+   "size": null,
+   "fields": [
+    {
+     "offset": 8,
+     "name": "unit",
+     "type": "CUnit*",
+     "comment": "the CUnit this order belongs to; not saved, since the unit is what writes the order out. **Read live**: a CArmy, CNavy or CAir by its own RTTI on every order in a running game. Also how CStrategicRedeploymentOrder's router reaches the unit (BiceLib/GameClasses/COrder.hpp:27)"
+    },
+    {
+     "offset": 12,
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "where the order sends the unit; saved as `province` by writing that province's id. **Read live**: a CMapProvince on every order that has one, and null on every CNullOrder (BiceLib/GameClasses/COrder.hpp:32)"
+    },
+    {
+     "offset": 16,
+     "name": "target_type",
+     "type": "int",
+     "comment": "type half of the `target` object id (BiceLib/GameClasses/COrder.hpp:37)"
+    },
+    {
+     "offset": 20,
+     "name": "target_id",
+     "type": "int",
+     "comment": "what the order is aimed at, saved as `target` and only where the pair is not the game's \"no object\" one. **Read live**: set on 12 of 357 air orders and on nothing else (BiceLib/GameClasses/COrder.hpp:38)"
+    },
+    {
+     "offset": 24,
+     "name": "return_to_base",
+     "type": "bool",
+     "comment": "saved as `return_to_base`. **Read live**: set on 30 of 357 air orders. CNavalOrder keeps its own at +0x34 instead of using this (BiceLib/GameClasses/COrder.hpp:42)"
+    },
+    {
+     "offset": 28,
+     "name": "priority",
+     "type": "int",
+     "comment": "saved as `priority`. **Read live**: zero on every order in a running game. CNavalOrder keeps its own at +0x38 instead of using this (BiceLib/GameClasses/COrder.hpp:46)"
+    },
+    {
+     "offset": 32,
+     "name": "stance",
+     "type": "int",
+     "comment": "saved as `stance`. **Read live**: 1 on every order in a running game, so what the other values mean is open (BiceLib/GameClasses/COrder.hpp:50)"
+    },
+    {
+     "offset": 36,
+     "name": "stop",
+     "type": "int",
+     "comment": "saved as `stop`, x1000. **Read live**: 0.7 on redeployments and support attacks, -1.0 on move and null orders (BiceLib/GameClasses/COrder.hpp:54)"
+    },
+    {
+     "offset": 40,
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, saved as `start_date` and written as a date. **Read live**: 60814998, which is 1942-05-09 06:00, on a redeployment in a 1942 game (BiceLib/GameClasses/COrder.hpp:59)"
+    },
+    {
+     "offset": 44,
+     "name": "death_date",
+     "type": "int",
+     "comment": "a game tick, saved as `death_date`. **Read live**: the zero tick 43808760 on orders that were never given one (BiceLib/GameClasses/COrder.hpp:60)"
+    },
+    {
+     "offset": 48,
+     "name": "time",
+     "type": "int",
+     "comment": "saved as `time`, read with `%i`. **Read live**: 2 on every order in a running game (BiceLib/GameClasses/COrder.hpp:64)"
+    }
+   ]
+  },
+  {
+   "name": "CMoveOrder",
+   "size": null,
+   "fields": [
+    {
+     "offset": 8,
+     "name": "unit",
+     "type": "CUnit*",
+     "comment": "the CUnit this order belongs to; not saved, since the unit is what writes the order out. **Read live**: a CArmy, CNavy or CAir by its own RTTI on every order in a running game. Also how CStrategicRedeploymentOrder's router reaches the unit (BiceLib/GameClasses/COrder.hpp:27), inherited from COrder"
+    },
+    {
+     "offset": 12,
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "where the order sends the unit; saved as `province` by writing that province's id. **Read live**: a CMapProvince on every order that has one, and null on every CNullOrder (BiceLib/GameClasses/COrder.hpp:32), inherited from COrder"
+    },
+    {
+     "offset": 16,
+     "name": "target_type",
+     "type": "int",
+     "comment": "type half of the `target` object id (BiceLib/GameClasses/COrder.hpp:37), inherited from COrder"
+    },
+    {
+     "offset": 20,
+     "name": "target_id",
+     "type": "int",
+     "comment": "what the order is aimed at, saved as `target` and only where the pair is not the game's \"no object\" one. **Read live**: set on 12 of 357 air orders and on nothing else (BiceLib/GameClasses/COrder.hpp:38), inherited from COrder"
+    },
+    {
+     "offset": 24,
+     "name": "return_to_base",
+     "type": "bool",
+     "comment": "saved as `return_to_base`. **Read live**: set on 30 of 357 air orders. CNavalOrder keeps its own at +0x34 instead of using this (BiceLib/GameClasses/COrder.hpp:42), inherited from COrder"
+    },
+    {
+     "offset": 28,
+     "name": "priority",
+     "type": "int",
+     "comment": "saved as `priority`. **Read live**: zero on every order in a running game. CNavalOrder keeps its own at +0x38 instead of using this (BiceLib/GameClasses/COrder.hpp:46), inherited from COrder"
+    },
+    {
+     "offset": 32,
+     "name": "stance",
+     "type": "int",
+     "comment": "saved as `stance`. **Read live**: 1 on every order in a running game, so what the other values mean is open (BiceLib/GameClasses/COrder.hpp:50), inherited from COrder"
+    },
+    {
+     "offset": 36,
+     "name": "stop",
+     "type": "int",
+     "comment": "saved as `stop`, x1000. **Read live**: 0.7 on redeployments and support attacks, -1.0 on move and null orders (BiceLib/GameClasses/COrder.hpp:54), inherited from COrder"
+    },
+    {
+     "offset": 40,
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, saved as `start_date` and written as a date. **Read live**: 60814998, which is 1942-05-09 06:00, on a redeployment in a 1942 game (BiceLib/GameClasses/COrder.hpp:59), inherited from COrder"
+    },
+    {
+     "offset": 44,
+     "name": "death_date",
+     "type": "int",
+     "comment": "a game tick, saved as `death_date`. **Read live**: the zero tick 43808760 on orders that were never given one (BiceLib/GameClasses/COrder.hpp:60), inherited from COrder"
+    },
+    {
+     "offset": 48,
+     "name": "time",
+     "type": "int",
+     "comment": "saved as `time`, read with `%i`. **Read live**: 2 on every order in a running game (BiceLib/GameClasses/COrder.hpp:64), inherited from COrder"
     }
    ]
   },
@@ -17537,74 +18161,698 @@
    ]
   },
   {
-   "name": "CListNode<CTrait*>",
+   "name": "CAirOrder",
    "size": null,
    "fields": [
     {
-     "offset": 0,
-     "name": "data",
-     "type": "CTrait*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CTrait*>*",
-     "comment": "the previous node"
-    },
-    {
      "offset": 8,
-     "name": "next",
-     "type": "CListNode<CTrait*>*",
-     "comment": "the next node"
+     "name": "unit",
+     "type": "CUnit*",
+     "comment": "the CUnit this order belongs to; not saved, since the unit is what writes the order out. **Read live**: a CArmy, CNavy or CAir by its own RTTI on every order in a running game. Also how CStrategicRedeploymentOrder's router reaches the unit (BiceLib/GameClasses/COrder.hpp:27), inherited from COrder"
+    },
+    {
+     "offset": 12,
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "where the order sends the unit; saved as `province` by writing that province's id. **Read live**: a CMapProvince on every order that has one, and null on every CNullOrder (BiceLib/GameClasses/COrder.hpp:32), inherited from COrder"
+    },
+    {
+     "offset": 16,
+     "name": "target_type",
+     "type": "int",
+     "comment": "type half of the `target` object id (BiceLib/GameClasses/COrder.hpp:37), inherited from COrder"
+    },
+    {
+     "offset": 20,
+     "name": "target_id",
+     "type": "int",
+     "comment": "what the order is aimed at, saved as `target` and only where the pair is not the game's \"no object\" one. **Read live**: set on 12 of 357 air orders and on nothing else (BiceLib/GameClasses/COrder.hpp:38), inherited from COrder"
+    },
+    {
+     "offset": 24,
+     "name": "return_to_base",
+     "type": "bool",
+     "comment": "saved as `return_to_base`. **Read live**: set on 30 of 357 air orders. CNavalOrder keeps its own at +0x34 instead of using this (BiceLib/GameClasses/COrder.hpp:42), inherited from COrder"
+    },
+    {
+     "offset": 28,
+     "name": "priority",
+     "type": "int",
+     "comment": "saved as `priority`. **Read live**: zero on every order in a running game. CNavalOrder keeps its own at +0x38 instead of using this (BiceLib/GameClasses/COrder.hpp:46), inherited from COrder"
+    },
+    {
+     "offset": 32,
+     "name": "stance",
+     "type": "int",
+     "comment": "saved as `stance`. **Read live**: 1 on every order in a running game, so what the other values mean is open (BiceLib/GameClasses/COrder.hpp:50), inherited from COrder"
+    },
+    {
+     "offset": 36,
+     "name": "stop",
+     "type": "int",
+     "comment": "saved as `stop`, x1000. **Read live**: 0.7 on redeployments and support attacks, -1.0 on move and null orders (BiceLib/GameClasses/COrder.hpp:54), inherited from COrder"
+    },
+    {
+     "offset": 40,
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, saved as `start_date` and written as a date. **Read live**: 60814998, which is 1942-05-09 06:00, on a redeployment in a 1942 game (BiceLib/GameClasses/COrder.hpp:59), inherited from COrder"
+    },
+    {
+     "offset": 44,
+     "name": "death_date",
+     "type": "int",
+     "comment": "a game tick, saved as `death_date`. **Read live**: the zero tick 43808760 on orders that were never given one (BiceLib/GameClasses/COrder.hpp:60), inherited from COrder"
+    },
+    {
+     "offset": 48,
+     "name": "time",
+     "type": "int",
+     "comment": "saved as `time`, read with `%i`. **Read live**: 2 on every order in a running game (BiceLib/GameClasses/COrder.hpp:64), inherited from COrder"
+    },
+    {
+     "offset": 52,
+     "name": "by_unit_type",
+     "type": "int*",
+     "comment": "ints indexed by `CSubUnitDefinition::Index`. **CAirOrder's loader looks an unknown key up as a unit type** and stores the value here at that type's index, so an air order's block can carry a line per unit type. **Read live**: null on 356 of 357 air orders (BiceLib/GameClasses/COrder.hpp:95)"
+    },
+    {
+     "offset": 68,
+     "name": "provinces_first",
+     "type": "void*",
+     "comment": "the provinces the mission covers, one `provinces=` line each; nodes of 16 bytes - the CMapProvince, the previous node, the next and a spare (BiceLib/GameClasses/COrder.hpp:100)"
+    },
+    {
+     "offset": 72,
+     "name": "provinces_last",
+     "type": "void*",
+     "comment": "the last node of that list (BiceLib/GameClasses/COrder.hpp:101)"
+    },
+    {
+     "offset": 76,
+     "name": "provinces_count",
+     "type": "int",
+     "comment": "how many. **Read live**: zero on 356 of 357 air orders (BiceLib/GameClasses/COrder.hpp:102)"
     }
    ]
   },
   {
-   "name": "CListNode<CCombat*>",
+   "name": "CNavalOrder",
    "size": null,
    "fields": [
     {
-     "offset": 0,
-     "name": "data",
-     "type": "CCombat*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CCombat*>*",
-     "comment": "the previous node"
-    },
-    {
      "offset": 8,
-     "name": "next",
-     "type": "CListNode<CCombat*>*",
-     "comment": "the next node"
+     "name": "unit",
+     "type": "CUnit*",
+     "comment": "the CUnit this order belongs to; not saved, since the unit is what writes the order out. **Read live**: a CArmy, CNavy or CAir by its own RTTI on every order in a running game. Also how CStrategicRedeploymentOrder's router reaches the unit (BiceLib/GameClasses/COrder.hpp:27), inherited from COrder"
+    },
+    {
+     "offset": 12,
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "where the order sends the unit; saved as `province` by writing that province's id. **Read live**: a CMapProvince on every order that has one, and null on every CNullOrder (BiceLib/GameClasses/COrder.hpp:32), inherited from COrder"
+    },
+    {
+     "offset": 16,
+     "name": "target_type",
+     "type": "int",
+     "comment": "type half of the `target` object id (BiceLib/GameClasses/COrder.hpp:37), inherited from COrder"
+    },
+    {
+     "offset": 20,
+     "name": "target_id",
+     "type": "int",
+     "comment": "what the order is aimed at, saved as `target` and only where the pair is not the game's \"no object\" one. **Read live**: set on 12 of 357 air orders and on nothing else (BiceLib/GameClasses/COrder.hpp:38), inherited from COrder"
+    },
+    {
+     "offset": 24,
+     "name": "return_to_base",
+     "type": "bool",
+     "comment": "saved as `return_to_base`. **Read live**: set on 30 of 357 air orders. CNavalOrder keeps its own at +0x34 instead of using this (BiceLib/GameClasses/COrder.hpp:42), inherited from COrder"
+    },
+    {
+     "offset": 28,
+     "name": "priority",
+     "type": "int",
+     "comment": "saved as `priority`. **Read live**: zero on every order in a running game. CNavalOrder keeps its own at +0x38 instead of using this (BiceLib/GameClasses/COrder.hpp:46), inherited from COrder"
+    },
+    {
+     "offset": 32,
+     "name": "stance",
+     "type": "int",
+     "comment": "saved as `stance`. **Read live**: 1 on every order in a running game, so what the other values mean is open (BiceLib/GameClasses/COrder.hpp:50), inherited from COrder"
+    },
+    {
+     "offset": 36,
+     "name": "stop",
+     "type": "int",
+     "comment": "saved as `stop`, x1000. **Read live**: 0.7 on redeployments and support attacks, -1.0 on move and null orders (BiceLib/GameClasses/COrder.hpp:54), inherited from COrder"
+    },
+    {
+     "offset": 40,
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, saved as `start_date` and written as a date. **Read live**: 60814998, which is 1942-05-09 06:00, on a redeployment in a 1942 game (BiceLib/GameClasses/COrder.hpp:59), inherited from COrder"
+    },
+    {
+     "offset": 44,
+     "name": "death_date",
+     "type": "int",
+     "comment": "a game tick, saved as `death_date`. **Read live**: the zero tick 43808760 on orders that were never given one (BiceLib/GameClasses/COrder.hpp:60), inherited from COrder"
+    },
+    {
+     "offset": 48,
+     "name": "time",
+     "type": "int",
+     "comment": "saved as `time`, read with `%i`. **Read live**: 2 on every order in a running game (BiceLib/GameClasses/COrder.hpp:64), inherited from COrder"
+    },
+    {
+     "offset": 52,
+     "name": "return_to_base",
+     "type": "bool",
+     "comment": "**CNavalOrder's own, not COrder's +0x18**: its loader takes the `return_to_base` key before COrder sees it and stores it here (BiceLib/GameClasses/COrder.hpp:119)"
+    },
+    {
+     "offset": 56,
+     "name": "priority",
+     "type": "int",
+     "comment": "**CNavalOrder's own, not COrder's +0x1C**, for the same reason (BiceLib/GameClasses/COrder.hpp:120)"
+    },
+    {
+     "offset": 60,
+     "name": "capital",
+     "type": "int",
+     "comment": "saved as `capital` (BiceLib/GameClasses/COrder.hpp:121)"
+    },
+    {
+     "offset": 64,
+     "name": "sub_unit",
+     "type": "int",
+     "comment": "saved as `sub_unit` (BiceLib/GameClasses/COrder.hpp:122)"
+    },
+    {
+     "offset": 68,
+     "name": "other",
+     "type": "int",
+     "comment": "saved as `other` (BiceLib/GameClasses/COrder.hpp:123)"
     }
    ]
   },
   {
-   "name": "CListNode<CCountryWarTargetValue*>",
+   "name": "CNullOrder",
    "size": null,
    "fields": [
     {
-     "offset": 0,
-     "name": "data",
-     "type": "CCountryWarTargetValue*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+     "offset": 8,
+     "name": "unit",
+     "type": "CUnit*",
+     "comment": "the CUnit this order belongs to; not saved, since the unit is what writes the order out. **Read live**: a CArmy, CNavy or CAir by its own RTTI on every order in a running game. Also how CStrategicRedeploymentOrder's router reaches the unit (BiceLib/GameClasses/COrder.hpp:27), inherited from COrder"
     },
     {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CCountryWarTargetValue*>*",
-     "comment": "the previous node"
+     "offset": 12,
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "where the order sends the unit; saved as `province` by writing that province's id. **Read live**: a CMapProvince on every order that has one, and null on every CNullOrder (BiceLib/GameClasses/COrder.hpp:32), inherited from COrder"
+    },
+    {
+     "offset": 16,
+     "name": "target_type",
+     "type": "int",
+     "comment": "type half of the `target` object id (BiceLib/GameClasses/COrder.hpp:37), inherited from COrder"
+    },
+    {
+     "offset": 20,
+     "name": "target_id",
+     "type": "int",
+     "comment": "what the order is aimed at, saved as `target` and only where the pair is not the game's \"no object\" one. **Read live**: set on 12 of 357 air orders and on nothing else (BiceLib/GameClasses/COrder.hpp:38), inherited from COrder"
+    },
+    {
+     "offset": 24,
+     "name": "return_to_base",
+     "type": "bool",
+     "comment": "saved as `return_to_base`. **Read live**: set on 30 of 357 air orders. CNavalOrder keeps its own at +0x34 instead of using this (BiceLib/GameClasses/COrder.hpp:42), inherited from COrder"
+    },
+    {
+     "offset": 28,
+     "name": "priority",
+     "type": "int",
+     "comment": "saved as `priority`. **Read live**: zero on every order in a running game. CNavalOrder keeps its own at +0x38 instead of using this (BiceLib/GameClasses/COrder.hpp:46), inherited from COrder"
+    },
+    {
+     "offset": 32,
+     "name": "stance",
+     "type": "int",
+     "comment": "saved as `stance`. **Read live**: 1 on every order in a running game, so what the other values mean is open (BiceLib/GameClasses/COrder.hpp:50), inherited from COrder"
+    },
+    {
+     "offset": 36,
+     "name": "stop",
+     "type": "int",
+     "comment": "saved as `stop`, x1000. **Read live**: 0.7 on redeployments and support attacks, -1.0 on move and null orders (BiceLib/GameClasses/COrder.hpp:54), inherited from COrder"
+    },
+    {
+     "offset": 40,
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, saved as `start_date` and written as a date. **Read live**: 60814998, which is 1942-05-09 06:00, on a redeployment in a 1942 game (BiceLib/GameClasses/COrder.hpp:59), inherited from COrder"
+    },
+    {
+     "offset": 44,
+     "name": "death_date",
+     "type": "int",
+     "comment": "a game tick, saved as `death_date`. **Read live**: the zero tick 43808760 on orders that were never given one (BiceLib/GameClasses/COrder.hpp:60), inherited from COrder"
+    },
+    {
+     "offset": 48,
+     "name": "time",
+     "type": "int",
+     "comment": "saved as `time`, read with `%i`. **Read live**: 2 on every order in a running game (BiceLib/GameClasses/COrder.hpp:64), inherited from COrder"
+    }
+   ]
+  },
+  {
+   "name": "CSupportAttackOrder",
+   "size": null,
+   "fields": [
+    {
+     "offset": 8,
+     "name": "unit",
+     "type": "CUnit*",
+     "comment": "the CUnit this order belongs to; not saved, since the unit is what writes the order out. **Read live**: a CArmy, CNavy or CAir by its own RTTI on every order in a running game. Also how CStrategicRedeploymentOrder's router reaches the unit (BiceLib/GameClasses/COrder.hpp:27), inherited from COrder"
+    },
+    {
+     "offset": 12,
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "where the order sends the unit; saved as `province` by writing that province's id. **Read live**: a CMapProvince on every order that has one, and null on every CNullOrder (BiceLib/GameClasses/COrder.hpp:32), inherited from COrder"
+    },
+    {
+     "offset": 16,
+     "name": "target_type",
+     "type": "int",
+     "comment": "type half of the `target` object id (BiceLib/GameClasses/COrder.hpp:37), inherited from COrder"
+    },
+    {
+     "offset": 20,
+     "name": "target_id",
+     "type": "int",
+     "comment": "what the order is aimed at, saved as `target` and only where the pair is not the game's \"no object\" one. **Read live**: set on 12 of 357 air orders and on nothing else (BiceLib/GameClasses/COrder.hpp:38), inherited from COrder"
+    },
+    {
+     "offset": 24,
+     "name": "return_to_base",
+     "type": "bool",
+     "comment": "saved as `return_to_base`. **Read live**: set on 30 of 357 air orders. CNavalOrder keeps its own at +0x34 instead of using this (BiceLib/GameClasses/COrder.hpp:42), inherited from COrder"
+    },
+    {
+     "offset": 28,
+     "name": "priority",
+     "type": "int",
+     "comment": "saved as `priority`. **Read live**: zero on every order in a running game. CNavalOrder keeps its own at +0x38 instead of using this (BiceLib/GameClasses/COrder.hpp:46), inherited from COrder"
+    },
+    {
+     "offset": 32,
+     "name": "stance",
+     "type": "int",
+     "comment": "saved as `stance`. **Read live**: 1 on every order in a running game, so what the other values mean is open (BiceLib/GameClasses/COrder.hpp:50), inherited from COrder"
+    },
+    {
+     "offset": 36,
+     "name": "stop",
+     "type": "int",
+     "comment": "saved as `stop`, x1000. **Read live**: 0.7 on redeployments and support attacks, -1.0 on move and null orders (BiceLib/GameClasses/COrder.hpp:54), inherited from COrder"
+    },
+    {
+     "offset": 40,
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, saved as `start_date` and written as a date. **Read live**: 60814998, which is 1942-05-09 06:00, on a redeployment in a 1942 game (BiceLib/GameClasses/COrder.hpp:59), inherited from COrder"
+    },
+    {
+     "offset": 44,
+     "name": "death_date",
+     "type": "int",
+     "comment": "a game tick, saved as `death_date`. **Read live**: the zero tick 43808760 on orders that were never given one (BiceLib/GameClasses/COrder.hpp:60), inherited from COrder"
+    },
+    {
+     "offset": 48,
+     "name": "time",
+     "type": "int",
+     "comment": "saved as `time`, read with `%i`. **Read live**: 2 on every order in a running game (BiceLib/GameClasses/COrder.hpp:64), inherited from COrder"
+    },
+    {
+     "offset": 52,
+     "name": "combat",
+     "type": "bool",
+     "comment": "saved as `combat`. **Read live**: set on all three CSupportAttackOrder in a running game (BiceLib/GameClasses/COrder.hpp:133)"
+    }
+   ]
+  },
+  {
+   "name": "CRebelFaction",
+   "size": null,
+   "fields": [
+    {
+     "offset": 8,
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the `id` pair, written after the id. **Read live**: 39 (BiceLib/GameClasses/CRebelFaction.hpp:25)"
+    },
+    {
+     "offset": 12,
+     "name": "id",
+     "type": "int",
+     "comment": "the faction's id, handed out from the game state's `rebel_id` counter (BiceLib/GameClasses/CRebelFaction.hpp:26)"
+    },
+    {
+     "offset": 48,
+     "name": "type",
+     "type": "CRebelType*",
+     "comment": "what kind of rebels these are, saved as `type` by its key. **Read live**: a CRebelType by its own RTTI; the mod defines six (BiceLib/GameClasses/CRebelFaction.hpp:32)"
+    },
+    {
+     "offset": 52,
+     "name": "province",
+     "type": "CMapProvince*",
+     "comment": "where they are; saved as `province` by writing that province's id. **Read live**: a CMapProvince (BiceLib/GameClasses/CRebelFaction.hpp:36)"
+    },
+    {
+     "offset": 56,
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "**whose country they are rising in**, saved as `country` (BiceLib/GameClasses/CRebelFaction.hpp:39)"
+    },
+    {
+     "offset": 64,
+     "name": "government",
+     "type": "void*",
+     "comment": "the government they would install, saved as `government`. **Read live**: a CGovernment by its own RTTI; the mod defines eighteen (BiceLib/GameClasses/CRebelFaction.hpp:44)"
+    },
+    {
+     "offset": 68,
+     "name": "independence",
+     "type": "CCountryTag",
+     "comment": "**who they want the province to end up as**, saved as `independence` - `CHI` for the Chinese Nationalists inside Japan (BiceLib/GameClasses/CRebelFaction.hpp:48)"
+    },
+    {
+     "offset": 84,
+     "name": "name",
+     "type": "Hoi3CString",
+     "comment": "saved as `name` (BiceLib/GameClasses/CRebelFaction.hpp:51)"
+    },
+    {
+     "offset": 112,
+     "name": "targets_first",
+     "type": "void*",
+     "comment": "**who they are fighting**, a CCountryTag per entry and one `target=` line each; nodes of 20 bytes - the tag's four characters, its id, the previous node, the next and a spare (BiceLib/GameClasses/CRebelFaction.hpp:58)"
+    },
+    {
+     "offset": 116,
+     "name": "targets_last",
+     "type": "void*",
+     "comment": "the last of them (BiceLib/GameClasses/CRebelFaction.hpp:59)"
+    },
+    {
+     "offset": 120,
+     "name": "targets_count",
+     "type": "int",
+     "comment": "how many. **Read live**: one, `JAP` (BiceLib/GameClasses/CRebelFaction.hpp:60)"
+    },
+    {
+     "offset": 128,
+     "name": "armies_first",
+     "type": "void*",
+     "comment": "**the armies they have in the field**, an object id per entry and one `army=` block each, nodes of the same 20-byte shape (BiceLib/GameClasses/CRebelFaction.hpp:67)"
+    },
+    {
+     "offset": 132,
+     "name": "armies_last",
+     "type": "void*",
+     "comment": "the last of them (BiceLib/GameClasses/CRebelFaction.hpp:68)"
+    },
+    {
+     "offset": 136,
+     "name": "armies_count",
+     "type": "int",
+     "comment": "how many. **Read live**: none on the faction in the running game, one in the save it came from (BiceLib/GameClasses/CRebelFaction.hpp:69)"
+    },
+    {
+     "offset": 148,
+     "name": "provinces",
+     "type": "int*",
+     "comment": "the provinces they claim, saved as one `provinces={ ... }` block of ids; a vector, ending at +0x98 (BiceLib/GameClasses/CRebelFaction.hpp:73)"
+    },
+    {
+     "offset": 152,
+     "name": "provinces_end",
+     "type": "int*",
+     "comment": "one past the last of them (BiceLib/GameClasses/CRebelFaction.hpp:74)"
+    }
+   ]
+  },
+  {
+   "name": "CRebelType",
+   "size": null,
+   "fields": [
+    {
+     "offset": 12,
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "the rebel type's key. **Read live**: six in this mod - disgruntled_rabble, fascist_rebels, nationalist_rebels, organized_partisans, partisans, patriot_rebels (BiceLib/GameClasses/CRebelFaction.hpp:92)"
+    }
+   ]
+  },
+  {
+   "name": "CUndeclaredWar",
+   "size": null,
+   "fields": [
+    {
+     "offset": 8,
+     "name": "attackers",
+     "type": "CCountryTag*",
+     "comment": "one side, a vector of CCountryTag. **Read live**: `USA` in the one undeclared war in the game (BiceLib/GameClasses/CWar.hpp:117)"
+    },
+    {
+     "offset": 12,
+     "name": "attackers_end",
+     "type": "CCountryTag*",
+     "comment": "one past the last (BiceLib/GameClasses/CWar.hpp:118)"
+    },
+    {
+     "offset": 24,
+     "name": "defenders",
+     "type": "CCountryTag*",
+     "comment": "the other side. **Read live**: `GER` (BiceLib/GameClasses/CWar.hpp:119)"
+    },
+    {
+     "offset": 28,
+     "name": "defenders_end",
+     "type": "CCountryTag*",
+     "comment": "one past the last (BiceLib/GameClasses/CWar.hpp:120)"
+    }
+   ]
+  },
+  {
+   "name": "CCasusBelliType",
+   "size": null,
+   "fields": [
+    {
+     "offset": 20,
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "the casus belli's key. **Read live**: `oder_neisse_line`, `china_war_goal`, `occupation_japan` (BiceLib/GameClasses/CWar.hpp:140)"
+    }
+   ]
+  },
+  {
+   "name": "CBuildingConstruction",
+   "size": null,
+   "fields": [
+    {
+     "offset": 48,
+     "name": "Cost",
+     "type": "CFixedPoint",
+     "comment": "read by CConstruction::GetCost, inherited from CConstruction\nBiceLib: cost (int) - what it costs in IC, a CFixedPoint: the game's GetCost (0x837C0), which CCountry::GetUsedIC sums over the country's constructions (reversing/CLASSES.md:502), inherited from CConstruction"
+    },
+    {
+     "offset": 64,
+     "name": "Size",
+     "type": "int",
+     "comment": "read by CConstruction::GetSize, inherited from CConstruction"
     },
     {
      "offset": 8,
-     "name": "next",
-     "type": "CListNode<CCountryWarTargetValue*>*",
-     "comment": "the next node"
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the `id` pair, written after the id (BiceLib/GameClasses/CConstruction.hpp:29), inherited from CConstruction"
+    },
+    {
+     "offset": 12,
+     "name": "id",
+     "type": "int",
+     "comment": "the queue item's id (BiceLib/GameClasses/CConstruction.hpp:30), inherited from CConstruction"
+    },
+    {
+     "offset": 52,
+     "name": "duration",
+     "type": "int",
+     "comment": "x1000, saved as `duration` (BiceLib/GameClasses/CConstruction.hpp:33), inherited from CConstruction"
+    },
+    {
+     "offset": 56,
+     "name": "progress",
+     "type": "int",
+     "comment": "x1000, saved as `progress` (BiceLib/GameClasses/CConstruction.hpp:34), inherited from CConstruction"
+    },
+    {
+     "offset": 60,
+     "name": "status",
+     "type": "int",
+     "comment": "x1000, saved as `status`. **Read live**: 1.0 on most items and 0 on the rest, with a handful in between, so it looks like a fraction rather than a flag. A CConvoyConstruction does not use this - it keeps its own `status` byte at +0x58 (BiceLib/GameClasses/CConstruction.hpp:39), inherited from CConstruction"
+    },
+    {
+     "offset": 68,
+     "name": "location",
+     "type": "CMapProvince*",
+     "comment": "where it is being built, saved as `location`. **Read live**: a CMapProvince on all 89 building items and null on the military and convoy ones, which are not placed (BiceLib/GameClasses/CConstruction.hpp:46), inherited from CConstruction"
+    },
+    {
+     "offset": 72,
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "who it is for, saved as `country` (BiceLib/GameClasses/CConstruction.hpp:49), inherited from CConstruction"
+    },
+    {
+     "offset": 80,
+     "name": "builder",
+     "type": "CCountryTag",
+     "comment": "who is building it, saved as `builder`. **Read live**: the same as `country` on every military item and the no-country tag `---` on every building and convoy one (BiceLib/GameClasses/CConstruction.hpp:54), inherited from CConstruction"
+    },
+    {
+     "offset": 88,
+     "name": "building",
+     "type": "void*",
+     "comment": "which building, saved as `building` by its index into the building database. **Read live**: a CBuilding by its own RTTI on all 89 (BiceLib/GameClasses/CConstruction.hpp:133)"
+    },
+    {
+     "offset": 92,
+     "name": "count",
+     "type": "int",
+     "comment": "saved as `count`. **Read live**: zero on all 89 (BiceLib/GameClasses/CConstruction.hpp:136)"
+    }
+   ]
+  },
+  {
+   "name": "CConvoyConstruction",
+   "size": null,
+   "fields": [
+    {
+     "offset": 48,
+     "name": "Cost",
+     "type": "CFixedPoint",
+     "comment": "read by CConstruction::GetCost, inherited from CConstruction\nBiceLib: cost (int) - what it costs in IC, a CFixedPoint: the game's GetCost (0x837C0), which CCountry::GetUsedIC sums over the country's constructions (reversing/CLASSES.md:502), inherited from CConstruction"
+    },
+    {
+     "offset": 64,
+     "name": "Size",
+     "type": "int",
+     "comment": "read by CConstruction::GetSize, inherited from CConstruction"
+    },
+    {
+     "offset": 8,
+     "name": "id_type",
+     "type": "int",
+     "comment": "type half of the `id` pair, written after the id (BiceLib/GameClasses/CConstruction.hpp:29), inherited from CConstruction"
+    },
+    {
+     "offset": 12,
+     "name": "id",
+     "type": "int",
+     "comment": "the queue item's id (BiceLib/GameClasses/CConstruction.hpp:30), inherited from CConstruction"
+    },
+    {
+     "offset": 52,
+     "name": "duration",
+     "type": "int",
+     "comment": "x1000, saved as `duration` (BiceLib/GameClasses/CConstruction.hpp:33), inherited from CConstruction"
+    },
+    {
+     "offset": 56,
+     "name": "progress",
+     "type": "int",
+     "comment": "x1000, saved as `progress` (BiceLib/GameClasses/CConstruction.hpp:34), inherited from CConstruction"
+    },
+    {
+     "offset": 60,
+     "name": "status",
+     "type": "int",
+     "comment": "x1000, saved as `status`. **Read live**: 1.0 on most items and 0 on the rest, with a handful in between, so it looks like a fraction rather than a flag. A CConvoyConstruction does not use this - it keeps its own `status` byte at +0x58 (BiceLib/GameClasses/CConstruction.hpp:39), inherited from CConstruction"
+    },
+    {
+     "offset": 68,
+     "name": "location",
+     "type": "CMapProvince*",
+     "comment": "where it is being built, saved as `location`. **Read live**: a CMapProvince on all 89 building items and null on the military and convoy ones, which are not placed (BiceLib/GameClasses/CConstruction.hpp:46), inherited from CConstruction"
+    },
+    {
+     "offset": 72,
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "who it is for, saved as `country` (BiceLib/GameClasses/CConstruction.hpp:49), inherited from CConstruction"
+    },
+    {
+     "offset": 80,
+     "name": "builder",
+     "type": "CCountryTag",
+     "comment": "who is building it, saved as `builder`. **Read live**: the same as `country` on every military item and the no-country tag `---` on every building and convoy one (BiceLib/GameClasses/CConstruction.hpp:54), inherited from CConstruction"
+    },
+    {
+     "offset": 88,
+     "name": "status",
+     "type": "bool",
+     "comment": "**its own `status` key rather than CConstruction's at +0x3C**: the loader takes the key before the base sees it and sets this byte only where the value is `yes`. **Read live**: set on 20 of 68 (BiceLib/GameClasses/CConstruction.hpp:150)"
+    }
+   ]
+  },
+  {
+   "name": "CActiveMission",
+   "size": null,
+   "fields": [
+    {
+     "offset": 8,
+     "name": "type",
+     "type": "void*",
+     "comment": "which mission, looked up by name and saved as `type` by its key. **Read live**: a CNullMission on all 108 in the game, key `no_mission` (BiceLib/GameClasses/CActiveMission.hpp:21)"
+    },
+    {
+     "offset": 12,
+     "name": "scope",
+     "type": "void*",
+     "comment": "a CEventScope held by value, saved as `scope` through its own Load and Save. **Read live**: a CEventScope by its own RTTI (BiceLib/GameClasses/CActiveMission.hpp:25)"
+    },
+    {
+     "offset": 68,
+     "name": "parent_scope_ptr",
+     "type": "void*",
+     "comment": "set to `this + 0x54` when `parent_scope` is read (BiceLib/GameClasses/CActiveMission.hpp:29)"
+    },
+    {
+     "offset": 84,
+     "name": "parent_scope",
+     "type": "void*",
+     "comment": "a second CEventScope held by value, saved as `parent_scope` (BiceLib/GameClasses/CActiveMission.hpp:32)"
+    },
+    {
+     "offset": 156,
+     "name": "start_date",
+     "type": "int",
+     "comment": "a game tick, saved as `start_date` and written as a date (BiceLib/GameClasses/CActiveMission.hpp:35)"
+    },
+    {
+     "offset": 160,
+     "name": "owner",
+     "type": "CCountryTag",
+     "comment": "whose mission it is, saved as `owner`. **Read live**: `---` on all 108, which goes with every one of them being the null mission (BiceLib/GameClasses/CActiveMission.hpp:39)"
     }
    ]
   },
@@ -17633,121 +18881,25 @@
    ]
   },
   {
-   "name": "CListNode<CBrigadeConstructionDefinition*>",
+   "name": "CListNode<CAir*>",
    "size": null,
    "fields": [
     {
      "offset": 0,
      "name": "data",
-     "type": "CBrigadeConstructionDefinition*",
+     "type": "CAir*",
      "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
     },
     {
      "offset": 4,
      "name": "prev",
-     "type": "CListNode<CBrigadeConstructionDefinition*>*",
+     "type": "CListNode<CAir*>*",
      "comment": "the previous node"
     },
     {
      "offset": 8,
      "name": "next",
-     "type": "CListNode<CBrigadeConstructionDefinition*>*",
-     "comment": "the next node"
-    }
-   ]
-  },
-  {
-   "name": "CListNode<CConvoy*>",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "data",
-     "type": "CConvoy*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CConvoy*>*",
-     "comment": "the previous node"
-    },
-    {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CConvoy*>*",
-     "comment": "the next node"
-    }
-   ]
-  },
-  {
-   "name": "CListNode<CProvince*>",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "data",
-     "type": "CProvince*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CProvince*>*",
-     "comment": "the previous node"
-    },
-    {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CProvince*>*",
-     "comment": "the next node"
-    }
-   ]
-  },
-  {
-   "name": "CListNode<CConstruction*>",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "data",
-     "type": "CConstruction*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CConstruction*>*",
-     "comment": "the previous node"
-    },
-    {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CConstruction*>*",
-     "comment": "the next node"
-    }
-   ]
-  },
-  {
-   "name": "CListNode<CTechnology const*>",
-   "size": null,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "data",
-     "type": "CTechnology const*",
-     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
-    },
-    {
-     "offset": 4,
-     "name": "prev",
-     "type": "CListNode<CTechnology const*>*",
-     "comment": "the previous node"
-    },
-    {
-     "offset": 8,
-     "name": "next",
-     "type": "CListNode<CTechnology const*>*",
+     "type": "CListNode<CAir*>*",
      "comment": "the next node"
     }
    ]
@@ -17777,25 +18929,73 @@
    ]
   },
   {
-   "name": "CListNode<CRegiment*>",
+   "name": "CListNode<CCountryWarTargetValue*>",
    "size": null,
    "fields": [
     {
      "offset": 0,
      "name": "data",
-     "type": "CRegiment*",
+     "type": "CCountryWarTargetValue*",
      "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
     },
     {
      "offset": 4,
      "name": "prev",
-     "type": "CListNode<CRegiment*>*",
+     "type": "CListNode<CCountryWarTargetValue*>*",
      "comment": "the previous node"
     },
     {
      "offset": 8,
      "name": "next",
-     "type": "CListNode<CRegiment*>*",
+     "type": "CListNode<CCountryWarTargetValue*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CCombat*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CCombat*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CCombat*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CCombat*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CTechnology const*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CTechnology const*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CTechnology const*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CTechnology const*>*",
      "comment": "the next node"
     }
    ]
@@ -17820,6 +19020,78 @@
      "offset": 8,
      "name": "next",
      "type": "CListNode<CUnit*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CConvoy*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CConvoy*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CConvoy*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CConvoy*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CConstruction*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CConstruction*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CConstruction*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CConstruction*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CBrigadeConstructionDefinition*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CBrigadeConstructionDefinition*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CBrigadeConstructionDefinition*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CBrigadeConstructionDefinition*>*",
      "comment": "the next node"
     }
    ]
@@ -17873,25 +19145,73 @@
    ]
   },
   {
-   "name": "CListNode<CAir*>",
+   "name": "CListNode<CRegiment*>",
    "size": null,
    "fields": [
     {
      "offset": 0,
      "name": "data",
-     "type": "CAir*",
+     "type": "CRegiment*",
      "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
     },
     {
      "offset": 4,
      "name": "prev",
-     "type": "CListNode<CAir*>*",
+     "type": "CListNode<CRegiment*>*",
      "comment": "the previous node"
     },
     {
      "offset": 8,
      "name": "next",
-     "type": "CListNode<CAir*>*",
+     "type": "CListNode<CRegiment*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CTrait*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CTrait*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CTrait*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CTrait*>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CProvince*>",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CProvince*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CProvince*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CProvince*>*",
      "comment": "the next node"
     }
    ]
@@ -20777,6 +22097,24 @@
    "labels": []
   },
   {
+   "rva": 483392,
+   "namespace": "CUndeclaredWar",
+   "name": "AddAttacker",
+   "confidence": "CERTAIN",
+   "evidence": "Adds a country to an undeclared war's attackers, the vector at +0x8.\n(BiceLib/GameClasses/CWar.hpp:39)",
+   "signature": null,
+   "labels": []
+  },
+  {
+   "rva": 483776,
+   "namespace": "CUndeclaredWar",
+   "name": "AddDefender",
+   "confidence": "CERTAIN",
+   "evidence": "The same for the defenders, at +0x18.\n(BiceLib/GameClasses/CWar.hpp:39)",
+   "signature": null,
+   "labels": []
+  },
+  {
    "rva": 484336,
    "namespace": "CCountryValue",
    "name": "LoadKey",
@@ -21469,6 +22807,15 @@
    "labels": []
   },
   {
+   "rva": 535632,
+   "namespace": "CBrigadeConstructionDefinition",
+   "name": "SetName",
+   "confidence": "CERTAIN",
+   "evidence": "Assigns the brigade's name at +0x18 and then fills the second string at +0x8 from it through a lookup. The object is in edi.\n(BiceLib/GameClasses/CConstruction.hpp:49)",
+   "signature": null,
+   "labels": []
+  },
+  {
    "rva": 536016,
    "namespace": "CBrigadeConstructionDefinition",
    "name": "LoadKey",
@@ -21513,6 +22860,36 @@
      {
       "name": "writer",
       "type": "CSaveWriter*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 537088,
+   "namespace": "CConstruction",
+   "name": "LoadKey",
+   "confidence": "CERTAIN",
+   "evidence": "**The shared loader of the production queue.** CConstruction is abstract and has no virtual table, so this is not one of CPersistent's slots and the family pass never sees it; all three of CMilitaryConstruction, CBuildingConstruction and CConvoyConstruction call it for the keys they do not handle - `id`, `cost`, `duration`, `progress`, `status`, `size`, `location`, `country` and `builder`. There was no function here in the program at all until this pass.\n(BiceLib/GameClasses/CConstruction.hpp:49)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "construction",
+      "type": "CConstruction*",
+      "storage": "ECX"
+     },
+     {
+      "name": "parse",
+      "type": "CParseContext*",
+      "storage": "stack:4"
+     },
+     {
+      "name": "key",
+      "type": "SaveToken",
+      "storage": "stack:8"
      }
     ]
    },
@@ -28744,6 +30121,45 @@
    "labels": []
   },
   {
+   "rva": 1580256,
+   "namespace": "CLeader",
+   "name": "AddExperience",
+   "confidence": "CERTAIN",
+   "evidence": "**Gives a leader experience and promotes him when he has enough.** Does nothing at all while `skill >= 12`; scales the gain by `1 + (max_skill - skill)^2 / 5`, so a leader far below his maximum gains much faster, and divides the result by 3 once he is at or past it; then adds to `current_experience` as a 64-bit pair and compares that pair against `g_LeaderSkillThresholds[skill]` shifted left 15. The promotion is a plain `skill + 1` with an overflow guard.\n(BiceLib/GameClasses/CLeader.hpp:89)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "leader",
+      "type": "CLeader*",
+      "storage": "ESI"
+     },
+     {
+      "name": "factor",
+      "type": "int",
+      "storage": "stack:4"
+     },
+     {
+      "name": "amount",
+      "type": "int",
+      "storage": "stack:8"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1580560,
+   "namespace": "CLeader",
+   "name": "ResetToStarting",
+   "confidence": "CERTAIN",
+   "evidence": "Puts a leader back to the state he was defined with: `rank` to 0, `skill` to `starting_skill` where that is not negative, and `current_experience` to `starting_experience` scaled by 32768/1000. The leader is in eax.\n(BiceLib/GameClasses/CLeader.hpp:89)",
+   "signature": null,
+   "labels": []
+  },
+  {
    "rva": 1583312,
    "namespace": "CHistoricalModel",
    "name": "LoadKey",
@@ -28882,7 +30298,7 @@
    "namespace": "CSupportAttackOrder",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CSupportAttackOrder introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "One key of its own, `combat` into +0x34; the rest go to COrder::LoadKey.\n(BiceLib/GameClasses/COrder.hpp:32)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CSupportAttackOrder introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -29302,7 +30718,7 @@
    "namespace": "CAirOrder",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CAirOrder introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "Handles `provinces` and `return_to_base` and `priority` itself, then **looks any other key up as a unit type** - the same database CSubUnit::LoadKey's `type` uses - and stores the value into the array at +0x34 at that type's index. A key it cannot place that way goes to COrder::LoadKey.\n(BiceLib/GameClasses/COrder.hpp:32)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CAirOrder introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -29875,7 +31291,7 @@
    "namespace": "CNavalOrder",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CNavalOrder introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "`sub_unit`, `other`, `capital`, and **its own `return_to_base` and `priority`** at +0x34 and +0x38 rather than the base's +0x18 and +0x1C. Everything else goes to COrder::LoadKey.\n(BiceLib/GameClasses/COrder.hpp:32)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CNavalOrder introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -41854,6 +43270,24 @@
    "labels": []
   },
   {
+   "rva": 6615584,
+   "namespace": "CWar",
+   "name": "AddAttacker",
+   "confidence": "CERTAIN",
+   "evidence": "Adds a country to a war's attackers: (CWar*, int, int, char tag[4], int id). The loader calls it for every `attacker=` line, after refusing a tag the country database does not know.\n(BiceLib/GameClasses/CWar.hpp:39)",
+   "signature": null,
+   "labels": []
+  },
+  {
+   "rva": 6620848,
+   "namespace": "CWar",
+   "name": "AddDefender",
+   "confidence": "CERTAIN",
+   "evidence": "The same for the defenders.\n(BiceLib/GameClasses/CWar.hpp:39)",
+   "signature": null,
+   "labels": []
+  },
+  {
    "rva": 6626592,
    "namespace": "CWar",
    "name": "GetStartDate",
@@ -44285,6 +45719,15 @@
    "type": null
   },
   {
+   "rva": 19967716,
+   "namespace": "",
+   "name": "g_LeaderSkillThresholds",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "**The experience each skill needs**, ints indexed by the leader's current skill and shifted left 15 into the 48.15 fixed point before the comparison in CLeader::AddExperience: 1000, 2000, 4000, 8000, 12000, 18000, 25000, 33000, 43000 and 60000 for skills 0 to 9 - the same figures BiceLib's Hooks/CLeaderHooks.cpp carries once shifted - and then 100000000 for skill 10, which is 3276800000000 shifted and unreachable. **That is what caps a leader at skill 10**, not the `skill >= 12` guard.\n(BiceLib/GameClasses/CLeader.hpp:102)",
+   "type": "int[11]"
+  },
+  {
    "rva": 19967760,
    "namespace": "",
    "name": "g_leader_id",
@@ -44454,6 +45897,24 @@
    "confidence": "CERTAIN",
    "evidence": "One past the last entry of g_save_tokens_first; the two together give the token count.\n(BiceLib/GameClasses/CPersistent.hpp:140)",
    "type": null
+  },
+  {
+   "rva": 25081576,
+   "namespace": "",
+   "name": "CLeader_AddExperience_rankFactor",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "**A function-local static inside CLeader::AddExperience**, not a global anyone else uses: five 64-bit fixed points indexed by the leader's rank, behind the one-byte construction guard at 0x17EB710. The constructor fills all five from the double 32768.5 at 0x120A548, truncated to 32768 - exactly 1.0 - so **rank does not change how fast a leader learns**. **Read live**: all five are 32768 and the guard is 1, and the whole image references the array only from the ten writes that fill it and the two reads that index it.\n(BiceLib/GameClasses/CLeader.hpp:113)",
+   "type": "longlong[5]"
+  },
+  {
+   "rva": 25081616,
+   "namespace": "",
+   "name": "CLeader_AddExperience_rankFactorBuilt",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "The one-byte guard MSVC puts in front of a function-local static: `test byte ptr [this], 1; jne skip` at the top, `or [this], 1` before the constructor runs. Its presence is what tells you the addresses beside it are a local static rather than a global.\n(BiceLib/GameClasses/CLeader.hpp:113)",
+   "type": "int"
   }
  ],
  "vftables": [
@@ -48587,6 +50048,79 @@
    ]
   },
   {
+   "name": "CActiveMission_vftable",
+   "class": "CActiveMission",
+   "rva": 18832756,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 193520,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 0, 0042F3F0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 6061024,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 009C7BE0"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 6060576,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 009C7A20"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
    "name": "CAir_vftable",
    "class": "CAir",
    "rva": 18646900,
@@ -49740,6 +51274,396 @@
      "typed": false,
      "own": false,
      "comment": "slot 25, 00A92590 - a body shared with ReturnTrue, so not named here"
+    }
+   ]
+  },
+  {
+   "name": "CAirOrder_vftable",
+   "class": "CAirOrder",
+   "rva": 18636468,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 1663616,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 00596280"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 1613008,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 00589CD0"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 1612352,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00589A40"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 1603968,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 6, 00587980"
+    },
+    {
+     "slot": 7,
+     "rva": 1601344,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 7, 00586F40"
+    },
+    {
+     "slot": 8,
+     "rva": 6890896,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 8, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 9,
+     "rva": 1647456,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 9, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 10,
+     "rva": 1601392,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 10, 00586F70"
+    },
+    {
+     "slot": 11,
+     "rva": 7954901,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 11, 00B961D5 - a body shared with _purecall, so not named here"
+    },
+    {
+     "slot": 12,
+     "rva": 6890896,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 12, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 13,
+     "rva": 1615760,
+     "name": "vf_13",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 13, 0058A790"
+    },
+    {
+     "slot": 14,
+     "rva": 1615328,
+     "name": "vf_14",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 14, 0058A5E0"
+    },
+    {
+     "slot": 15,
+     "rva": 7954901,
+     "name": "vf_15",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 15, 00B961D5 - a body shared with _purecall, so not named here"
+    },
+    {
+     "slot": 16,
+     "rva": 7954901,
+     "name": "GetTypeId",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 16, 00B961D5 - COrder's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "int",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "COrder*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 17,
+     "rva": 1674672,
+     "name": "vf_17",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 17, 00598DB0"
+    },
+    {
+     "slot": 18,
+     "rva": 6817424,
+     "name": "vf_18",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 18, 00A80690"
+    },
+    {
+     "slot": 19,
+     "rva": 607424,
+     "name": "vf_19",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 19, 004944C0 - a body shared with GetDword_0x20, so not named here"
+    },
+    {
+     "slot": 20,
+     "rva": 1647456,
+     "name": "vf_20",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 20, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 21,
+     "rva": 1647456,
+     "name": "vf_21",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 21, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 22,
+     "rva": 6890896,
+     "name": "vf_22",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 22, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 23,
+     "rva": 7075984,
+     "name": "vf_23",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 23, 00ABF890"
+    },
+    {
+     "slot": 24,
+     "rva": 6890896,
+     "name": "vf_24",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 24, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 25,
+     "rva": 1613968,
+     "name": "vf_25",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 25, 0058A090"
+    },
+    {
+     "slot": 26,
+     "rva": 1647456,
+     "name": "vf_26",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 26, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 27,
+     "rva": 1647456,
+     "name": "vf_27",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 27, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 28,
+     "rva": 1647456,
+     "name": "vf_28",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 28, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 29,
+     "rva": 1647456,
+     "name": "vf_29",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 29, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 30,
+     "rva": 1674672,
+     "name": "vf_30",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 30, 00598DB0"
+    },
+    {
+     "slot": 31,
+     "rva": 1674672,
+     "name": "vf_31",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 31, 00598DB0"
+    },
+    {
+     "slot": 32,
+     "rva": 1674672,
+     "name": "vf_32",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 32, 00598DB0"
+    },
+    {
+     "slot": 33,
+     "rva": 1647456,
+     "name": "vf_33",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 33, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 34,
+     "rva": 1647456,
+     "name": "vf_34",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 34, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 35,
+     "rva": 7416224,
+     "name": "vf_35",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 35, 00B129A0"
+    },
+    {
+     "slot": 36,
+     "rva": 1612208,
+     "name": "vf_36",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 36, 005899B0"
+    },
+    {
+     "slot": 37,
+     "rva": 1612336,
+     "name": "vf_37",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 37, 00589A30"
+    },
+    {
+     "slot": 38,
+     "rva": 1616144,
+     "name": "vf_38",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 38, 0058A910"
+    },
+    {
+     "slot": 39,
+     "rva": 6817424,
+     "name": "vf_39",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 39, 00A80690"
     }
    ]
   },
@@ -51025,6 +52949,214 @@
    ]
   },
   {
+   "name": "CBuildingConstruction_vftable",
+   "class": "CBuildingConstruction",
+   "rva": 18603180,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 1376720,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 0, 005501D0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 547456,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 00485A80"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 547200,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00485980"
+    },
+    {
+     "slot": 5,
+     "rva": 1561200,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 0057D270 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 6934608,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 6, 00A9D050"
+    },
+    {
+     "slot": 7,
+     "rva": 6934528,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 00A9D000"
+    },
+    {
+     "slot": 8,
+     "rva": 6890896,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 8, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 9,
+     "rva": 547792,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 9, 00485BD0"
+    },
+    {
+     "slot": 10,
+     "rva": 549632,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 10, 00486300"
+    },
+    {
+     "slot": 11,
+     "rva": 549968,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 11, 00486450"
+    },
+    {
+     "slot": 12,
+     "rva": 550080,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 12, 004864C0"
+    },
+    {
+     "slot": 13,
+     "rva": 549648,
+     "name": "vf_13",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 13, 00486310"
+    },
+    {
+     "slot": 14,
+     "rva": 547632,
+     "name": "vf_14",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 14, 00485B30"
+    },
+    {
+     "slot": 15,
+     "rva": 1647456,
+     "name": "vf_15",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 15, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 16,
+     "rva": 6890896,
+     "name": "vf_16",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 16, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 17,
+     "rva": 1647456,
+     "name": "vf_17",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 17, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 18,
+     "rva": 6817424,
+     "name": "vf_18",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 18, 00A80690"
+    },
+    {
+     "slot": 19,
+     "rva": 3632928,
+     "name": "vf_19",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 19, 00776F20"
+    },
+    {
+     "slot": 20,
+     "rva": 2149712,
+     "name": "vf_20",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 20, 0060CD50"
+    }
+   ]
+  },
+  {
    "name": "CBuildingDeployment_vftable",
    "class": "CBuildingDeployment",
    "rva": 18603796,
@@ -51036,7 +53168,7 @@
      "name": "vf_0",
      "named": false,
      "typed": false,
-     "own": true,
+     "own": false,
      "comment": "slot 0, 005501D0"
     },
     {
@@ -51528,6 +53660,112 @@
      "typed": false,
      "own": false,
      "comment": "slot 14, 00A92590 - a body shared with ReturnTrue, so not named here"
+    }
+   ]
+  },
+  {
+   "name": "CCasusBelliType_vftable",
+   "class": "CCasusBelliType",
+   "rva": 18569424,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 91136,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 00416400"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 2149712,
+     "name": "SaveContents",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 2, 0060CD50 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 91632,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 004165F0"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 92496,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 6, 00416950"
+    },
+    {
+     "slot": 7,
+     "rva": 6890896,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 00A92590 - a body shared with ReturnTrue, so not named here"
     }
    ]
   },
@@ -54881,6 +57119,214 @@
      "typed": false,
      "own": false,
      "comment": "slot 7, 00A9D000"
+    }
+   ]
+  },
+  {
+   "name": "CConvoyConstruction_vftable",
+   "class": "CConvoyConstruction",
+   "rva": 18603268,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 1376720,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 0, 005501D0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 550640,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 004866F0"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 550576,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 004866B0"
+    },
+    {
+     "slot": 5,
+     "rva": 1561200,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 0057D270 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 6934608,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 6, 00A9D050"
+    },
+    {
+     "slot": 7,
+     "rva": 6934528,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 00A9D000"
+    },
+    {
+     "slot": 8,
+     "rva": 6890896,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 8, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 9,
+     "rva": 550768,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 9, 00486770"
+    },
+    {
+     "slot": 10,
+     "rva": 550992,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 10, 00486850"
+    },
+    {
+     "slot": 11,
+     "rva": 1647456,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 11, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 12,
+     "rva": 537024,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 12, 004831C0"
+    },
+    {
+     "slot": 13,
+     "rva": 551008,
+     "name": "vf_13",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 13, 00486860"
+    },
+    {
+     "slot": 14,
+     "rva": 7075984,
+     "name": "vf_14",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 14, 00ABF890"
+    },
+    {
+     "slot": 15,
+     "rva": 6890896,
+     "name": "vf_15",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 15, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 16,
+     "rva": 1647456,
+     "name": "vf_16",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 16, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 17,
+     "rva": 1647456,
+     "name": "vf_17",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 17, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 18,
+     "rva": 6817424,
+     "name": "vf_18",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 18, 00A80690"
+    },
+    {
+     "slot": 19,
+     "rva": 3632928,
+     "name": "vf_19",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 19, 00776F20"
+    },
+    {
+     "slot": 20,
+     "rva": 2149712,
+     "name": "vf_20",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 20, 0060CD50"
     }
    ]
   },
@@ -63004,7 +65450,7 @@
      "name": "vf_12",
      "named": false,
      "typed": false,
-     "own": true,
+     "own": false,
      "comment": "slot 12, 004831C0"
     },
     {
@@ -65193,6 +67639,351 @@
    ]
   },
   {
+   "name": "CNavalOrder_vftable",
+   "class": "CNavalOrder",
+   "rva": 18640084,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 193520,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 0, 0042F3F0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 1683168,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 0059AEE0"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 1683008,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 0059AE40"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 1603968,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 6, 00587980"
+    },
+    {
+     "slot": 7,
+     "rva": 1601344,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 7, 00586F40"
+    },
+    {
+     "slot": 8,
+     "rva": 1683920,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 8, 0059B1D0"
+    },
+    {
+     "slot": 9,
+     "rva": 1647456,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 9, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 10,
+     "rva": 1601392,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 10, 00586F70"
+    },
+    {
+     "slot": 11,
+     "rva": 7954901,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 11, 00B961D5 - a body shared with _purecall, so not named here"
+    },
+    {
+     "slot": 12,
+     "rva": 6890896,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 12, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 13,
+     "rva": 7954901,
+     "name": "vf_13",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 13, 00B961D5 - a body shared with _purecall, so not named here"
+    },
+    {
+     "slot": 14,
+     "rva": 1683568,
+     "name": "vf_14",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 14, 0059B070"
+    },
+    {
+     "slot": 15,
+     "rva": 1682832,
+     "name": "vf_15",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 15, 0059AD90"
+    },
+    {
+     "slot": 16,
+     "rva": 7954901,
+     "name": "GetTypeId",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 16, 00B961D5 - COrder's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "int",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "COrder*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 17,
+     "rva": 1674672,
+     "name": "vf_17",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 17, 00598DB0"
+    },
+    {
+     "slot": 18,
+     "rva": 1683808,
+     "name": "vf_18",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 18, 0059B160"
+    },
+    {
+     "slot": 19,
+     "rva": 607424,
+     "name": "vf_19",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 19, 004944C0 - a body shared with GetDword_0x20, so not named here"
+    },
+    {
+     "slot": 20,
+     "rva": 1647456,
+     "name": "vf_20",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 20, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 21,
+     "rva": 6890896,
+     "name": "vf_21",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 21, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 22,
+     "rva": 1647456,
+     "name": "vf_22",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 22, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 23,
+     "rva": 7075984,
+     "name": "vf_23",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 23, 00ABF890"
+    },
+    {
+     "slot": 24,
+     "rva": 6890896,
+     "name": "vf_24",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 24, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 25,
+     "rva": 1647456,
+     "name": "vf_25",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 25, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 26,
+     "rva": 1647456,
+     "name": "vf_26",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 26, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 27,
+     "rva": 1647456,
+     "name": "vf_27",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 27, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 28,
+     "rva": 1647456,
+     "name": "vf_28",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 28, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 29,
+     "rva": 1647456,
+     "name": "vf_29",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 29, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 30,
+     "rva": 1674672,
+     "name": "vf_30",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 30, 00598DB0"
+    },
+    {
+     "slot": 31,
+     "rva": 1674672,
+     "name": "vf_31",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 31, 00598DB0"
+    },
+    {
+     "slot": 32,
+     "rva": 1674672,
+     "name": "vf_32",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 32, 00598DB0"
+    },
+    {
+     "slot": 33,
+     "rva": 1647456,
+     "name": "vf_33",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 33, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 34,
+     "rva": 1647456,
+     "name": "vf_34",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 34, 00592360 - a body shared with ReturnFalse, so not named here"
+    }
+   ]
+  },
+  {
    "name": "CNavalTargetCombatant_vftable",
    "class": "CNavalTargetCombatant",
    "rva": 18630332,
@@ -66001,6 +68792,340 @@
      "typed": false,
      "own": false,
      "comment": "slot 7, 00A9D000"
+    }
+   ]
+  },
+  {
+   "name": "CNullOrder_vftable",
+   "class": "CNullOrder",
+   "rva": 18635052,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 193520,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 0, 0042F3F0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 1602864,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 00587530"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 1601504,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00586FE0"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 1603968,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 6, 00587980"
+    },
+    {
+     "slot": 7,
+     "rva": 355792,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 00456DD0"
+    },
+    {
+     "slot": 8,
+     "rva": 6890896,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 8, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 9,
+     "rva": 1647456,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 9, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 10,
+     "rva": 1601392,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 10, 00586F70"
+    },
+    {
+     "slot": 11,
+     "rva": 6890896,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 11, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 12,
+     "rva": 6890896,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 12, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 13,
+     "rva": 7075984,
+     "name": "vf_13",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 13, 00ABF890"
+    },
+    {
+     "slot": 14,
+     "rva": 1603552,
+     "name": "vf_14",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 14, 005877E0"
+    },
+    {
+     "slot": 15,
+     "rva": 1586672,
+     "name": "vf_15",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 15, 005835F0"
+    },
+    {
+     "slot": 16,
+     "rva": 1586832,
+     "name": "GetTypeId",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 16, 00583690"
+    },
+    {
+     "slot": 17,
+     "rva": 1674672,
+     "name": "vf_17",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 17, 00598DB0"
+    },
+    {
+     "slot": 18,
+     "rva": 6817424,
+     "name": "vf_18",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 18, 00A80690"
+    },
+    {
+     "slot": 19,
+     "rva": 607424,
+     "name": "vf_19",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 19, 004944C0 - a body shared with GetDword_0x20, so not named here"
+    },
+    {
+     "slot": 20,
+     "rva": 1647456,
+     "name": "vf_20",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 20, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 21,
+     "rva": 1647456,
+     "name": "vf_21",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 21, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 22,
+     "rva": 1647456,
+     "name": "vf_22",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 22, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 23,
+     "rva": 7075984,
+     "name": "vf_23",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 23, 00ABF890"
+    },
+    {
+     "slot": 24,
+     "rva": 1647456,
+     "name": "vf_24",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 24, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 25,
+     "rva": 1647456,
+     "name": "vf_25",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 25, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 26,
+     "rva": 1647456,
+     "name": "vf_26",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 26, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 27,
+     "rva": 1647456,
+     "name": "vf_27",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 27, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 28,
+     "rva": 1647456,
+     "name": "vf_28",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 28, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 29,
+     "rva": 1647456,
+     "name": "vf_29",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 29, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 30,
+     "rva": 1674672,
+     "name": "vf_30",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 30, 00598DB0"
+    },
+    {
+     "slot": 31,
+     "rva": 1674672,
+     "name": "vf_31",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 31, 00598DB0"
+    },
+    {
+     "slot": 32,
+     "rva": 1674672,
+     "name": "vf_32",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 32, 00598DB0"
+    },
+    {
+     "slot": 33,
+     "rva": 1647456,
+     "name": "vf_33",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 33, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 34,
+     "rva": 1647456,
+     "name": "vf_34",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 34, 00592360 - a body shared with ReturnFalse, so not named here"
     }
    ]
   },
@@ -68287,6 +71412,185 @@
    ]
   },
   {
+   "name": "CRebelFaction_vftable",
+   "class": "CRebelFaction",
+   "rva": 18615148,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 757520,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 004B8F10"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 758208,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 004B91C0"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 758816,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 004B9420"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 6934608,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 6, 00A9D050"
+    },
+    {
+     "slot": 7,
+     "rva": 6934528,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 00A9D000"
+    }
+   ]
+  },
+  {
+   "name": "CRebelType_vftable",
+   "class": "CRebelType",
+   "rva": 18615240,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 782832,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 004BF1F0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 2149712,
+     "name": "SaveContents",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 2, 0060CD50 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 784960,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 004BFA40"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
    "name": "CRegiment_vftable",
    "class": "CRegiment",
    "rva": 18603388,
@@ -70506,6 +73810,340 @@
    ]
   },
   {
+   "name": "CSupportAttackOrder_vftable",
+   "class": "CSupportAttackOrder",
+   "rva": 18635340,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 193520,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 0, 0042F3F0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 1606512,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 00588370"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 1606464,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00588340"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 1603968,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 6, 00587980"
+    },
+    {
+     "slot": 7,
+     "rva": 1601344,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 7, 00586F40"
+    },
+    {
+     "slot": 8,
+     "rva": 6890896,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 8, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 9,
+     "rva": 1647456,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 9, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 10,
+     "rva": 1601392,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 10, 00586F70"
+    },
+    {
+     "slot": 11,
+     "rva": 1605424,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 11, 00587F30"
+    },
+    {
+     "slot": 12,
+     "rva": 6890896,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 12, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 13,
+     "rva": 1605552,
+     "name": "vf_13",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 13, 00587FB0"
+    },
+    {
+     "slot": 14,
+     "rva": 1605584,
+     "name": "vf_14",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 14, 00587FD0"
+    },
+    {
+     "slot": 15,
+     "rva": 1606064,
+     "name": "vf_15",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 15, 005881B0"
+    },
+    {
+     "slot": 16,
+     "rva": 1587072,
+     "name": "GetTypeId",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 16, 00583780"
+    },
+    {
+     "slot": 17,
+     "rva": 1674672,
+     "name": "vf_17",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 17, 00598DB0"
+    },
+    {
+     "slot": 18,
+     "rva": 6817424,
+     "name": "vf_18",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 18, 00A80690"
+    },
+    {
+     "slot": 19,
+     "rva": 607424,
+     "name": "vf_19",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 19, 004944C0 - a body shared with GetDword_0x20, so not named here"
+    },
+    {
+     "slot": 20,
+     "rva": 1647456,
+     "name": "vf_20",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 20, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 21,
+     "rva": 1647456,
+     "name": "vf_21",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 21, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 22,
+     "rva": 1647456,
+     "name": "vf_22",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 22, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 23,
+     "rva": 7075984,
+     "name": "vf_23",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 23, 00ABF890"
+    },
+    {
+     "slot": 24,
+     "rva": 6890896,
+     "name": "vf_24",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 24, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 25,
+     "rva": 1647456,
+     "name": "vf_25",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 25, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 26,
+     "rva": 1647456,
+     "name": "vf_26",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 26, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 27,
+     "rva": 1647456,
+     "name": "vf_27",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 27, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 28,
+     "rva": 1647456,
+     "name": "vf_28",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 28, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 29,
+     "rva": 1647456,
+     "name": "vf_29",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 29, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 30,
+     "rva": 1674672,
+     "name": "vf_30",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 30, 00598DB0"
+    },
+    {
+     "slot": 31,
+     "rva": 1674672,
+     "name": "vf_31",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 31, 00598DB0"
+    },
+    {
+     "slot": 32,
+     "rva": 1674672,
+     "name": "vf_32",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 32, 00598DB0"
+    },
+    {
+     "slot": 33,
+     "rva": 1647456,
+     "name": "vf_33",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 33, 00592360 - a body shared with ReturnFalse, so not named here"
+    },
+    {
+     "slot": 34,
+     "rva": 1647456,
+     "name": "vf_34",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 34, 00592360 - a body shared with ReturnFalse, so not named here"
+    }
+   ]
+  },
+  {
    "name": "CTechnology_vftable",
    "class": "CTechnology",
    "rva": 18625712,
@@ -71715,6 +75353,79 @@
      "typed": false,
      "own": false,
      "comment": "slot 13, 00A92590 - a body shared with ReturnTrue, so not named here"
+    }
+   ]
+  },
+  {
+   "name": "CUndeclaredWar_vftable",
+   "class": "CUndeclaredWar",
+   "rva": 18601700,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 481728,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 004759C0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 482928,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 00475E70"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 481888,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00475A60"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
     }
    ]
   },

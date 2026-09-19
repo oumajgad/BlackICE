@@ -876,6 +876,16 @@ def main():
                                      for f in s["fields"])
     for s in structs.values():
         s["fields"] = merge_fields(s["fields"], enums, extents)
+    # Two fields that overlap are placed in turn, each clearing the other, so an apply never
+    # settles and `overwrite` flip-flops the pair for ever. Nothing downstream can spot it.
+    for s in structs.values():
+        laid = sorted(s["fields"], key=lambda f: f["offset"])
+        for first, second in zip(laid, laid[1:]):
+            width = field_size(first["type"], enums, extents)
+            if width and first["offset"] + width > second["offset"]:
+                print("! %s: %s (%s, %d bytes at +%#x) runs into %s at +%#x - they will fight "
+                      "on every apply" % (s["name"], first["name"], first["type"], width,
+                                          first["offset"], second["name"], second["offset"]))
 
     # ---- enums ----
     enum_out = {}
@@ -1114,7 +1124,12 @@ def inherited_only(target, tables, rtti):
 
 SCALAR_SIZES = {"bool": 1, "char": 1, "signed char": 1, "unsigned char": 1, "short": 2, "unsigned short": 2,
                 "int": 4, "unsigned int": 4, "long": 4, "unsigned long": 4, "float": 4, "double": 8,
-                "__int64": 8, "unsigned __int64": 8, "undefined4": 4, "undefined1": 1}
+                "__int64": 8, "unsigned __int64": 8, "undefined4": 4, "undefined1": 1,
+                # Ghidra's own spellings, which is what TYPE_MAP hands back: without these a
+                # 64-bit field has no size, nothing folds into it, and a field inside it
+                # survives to fight with it on every apply.
+                "longlong": 8, "ulonglong": 8, "long long": 8, "unsigned long long": 8,
+                "undefined8": 8, "undefined2": 2, "byte": 1, "word": 2, "dword": 4, "qword": 8}
 
 
 def field_size(type_text, enums, struct_sizes):

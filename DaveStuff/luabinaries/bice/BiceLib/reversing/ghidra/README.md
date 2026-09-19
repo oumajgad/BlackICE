@@ -112,6 +112,29 @@ one Ghidra writes as an OR of the members that add up to it: `token.type = 0xC` 
 does. The build fills every gap below the highest id, naming what it can and using the id
 otherwise.
 
+**A run of `_DAT_` globals in one function is often a local static.** MSVC gives every
+function-local static a one-byte construction guard next to it, so the shape is
+`test byte ptr [flag], 1; jne past; ...build...; or [flag], 1`. Everything the build writes
+belongs to that one function however global it looks, and the decompiler cannot tell you so -
+`CLeader::AddExperience` reads as five unrelated `_DAT_01beb6e8` globals when it is one
+`static` array of five. Two things follow: name them after the function that owns them, and
+**check what the constructor actually stores** - in that case all five slots get 1.0, so the
+rank the code indexes by makes no difference at all.
+
+**Two fields that overlap flip-flop for ever**, and `overwrite` is where you see it: each
+run places one, clearing the other, and the next run puts the other back. The symptom is an
+apply that reports `struct fields: 1` and a `replaced` line naming the same pair every time,
+alternating direction.
+
+It happened because a 64-bit field did not know its own width. **Both sides have their own
+type table** - `SCALAR_SIZES` in `buildFindings.py` decides whether a field covers the next
+one, and `builtin()` in `ApplyBiceLibFindings.java` decides what Ghidra actually lays down -
+and neither knew `longlong`, which is the name `TYPE_MAP` hands back for the game's 64-bit
+fixed point. So the build could not fold the second half into it, and the apply resolved the
+type to an empty structure one byte wide. Add a name to one table and add it to the other.
+The build now also prints `! <struct>: <a> runs into <b>` for any overlap that survives the
+merge, which is the check that would have caught it in the first place.
+
 **Do not declare a `vftable` field at +0 in `project.json`.** The script places that pointer
 itself, typed as the class's own virtual table structure, so a field of your own there is
 overwritten by the vftable pass on every run and put back by the field pass on the next -

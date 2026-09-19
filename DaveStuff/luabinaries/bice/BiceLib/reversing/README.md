@@ -230,14 +230,15 @@ was written; what is left below them is where to go next.
 | `CUnit` | - | 21 | **done** - seven fields named from its save path |
 | `CAIStrategy` | 21 | 31 | **done** - the whole class, see CAIStrategy.hpp |
 | `CSubUnit` | 10 | 21 | **done** - and with it CRegiment, CShip and CWing; see CLASSES.md, *What the save keys named on a sub unit* |
-| `COrder` | 9 | 33 | completes a class BiceLib half knows - the type ids and the redeploy path are already in |
-| `CRebelFaction` | 9 | 33 | partisans, which the mod does a lot with |
-| `CWar`, `CWarGoal` | 9, 5 | 16, 37 | war state and goals |
-| `CMilitaryConstruction` | 6 | 18 | the production queue item, and the open question about a queued item's reserves rate |
-| `CActiveMission` | 5 | 14 | air and naval missions |
-| `CTheatre` | 5 | 8 | small and quick |
-| `CLeader` | 4 | 10 | on top of the 13 already named |
-| `CFaction`, `CLaw`, `CMinister`, `CTechnology` | few | 7-22 | loader only, cheap |
+| `COrder` | 9 | 33 | **done** - and with it CAirOrder, CNavalOrder, CSupportAttackOrder and the three that add nothing; see CLASSES.md, *What the save keys named on an order* |
+| `CRebelFaction` | 9 | 33 | **done** - and with it CRebelType and CGovernment; see CLASSES.md, *What the save keys named on a rebel faction* |
+| `CWar`, `CWarGoal` | 9, 5 | 16, 37 | **done** - and with them CUndeclaredWar and CCasusBelliType; see CLASSES.md, *What the save keys named on a war* |
+| `CMilitaryConstruction` | 6 | 18 | **done** - with CConstruction, the two other kinds and CBrigadeConstructionDefinition; the reserves rate is saved as `factor` |
+| `CActiveMission` | 5 | 14 | **done** - though every mission in a running game is the null one; see CLASSES.md |
+| `CTheatre` | 5 | 8 | **done** - and a `front=` block turned out to be a CAreaBorder |
+| `CLeader` | 4 | 10 | **done** - and `experience`/`experience_2` turned out to be one 64-bit `current_experience` |
+| `CFaction`, `CMinister` | few | 7-22 | **done** - see CLASSES.md, *The faction, and the minister* |
+| `CLaw`, `CTechnology` | few | 7-22 | **left**: both are file parsers with no save path, and long enough that a quick pass would only guess |
 
 **Worth skipping**: the hundred-odd `C*Command`, `CCgm*`, `C*Change`, `C*Effect` and
 `C*Trigger` classes are multiplayer command plumbing and event scripting internals, and the

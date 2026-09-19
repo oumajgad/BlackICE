@@ -37,6 +37,15 @@ namespace Inspector {
         int defence;
         int attrition;
         int movement;
+
+        /**
+         * **True for `night`, `fort`, `river` and `amphibious`**, which are not map terrain
+         * at all: the definition holds them as four CUnitAdjusters of its own rather than
+         * in the vector the terrains index, so they have no CTerrain behind them and
+         * nothing to add to their numbers. They were missing from this page entirely until
+         * the adjusters were read out.
+         */
+        bool isEnvironment = false;
     };
 
     struct Entity

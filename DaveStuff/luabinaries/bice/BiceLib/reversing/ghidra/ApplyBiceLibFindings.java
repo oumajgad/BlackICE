@@ -820,6 +820,15 @@ public class ApplyBiceLibFindings extends GhidraScript {
 			case "unsigned long": return UnsignedLongDataType.dataType;
 			case "__int64": return LongLongDataType.dataType;
 			case "unsigned __int64": return UnsignedLongLongDataType.dataType;
+			// Ghidra's own spellings. Without them a 64-bit field resolves to an empty
+			// structure of that name - one byte wide - so it never covers its second half
+			// and a field declared there fights it on every run.
+			case "longlong": return LongLongDataType.dataType;
+			case "long long": return LongLongDataType.dataType;
+			case "ulonglong": return UnsignedLongLongDataType.dataType;
+			case "unsigned long long": return UnsignedLongLongDataType.dataType;
+			case "undefined2": return Undefined2DataType.dataType;
+			case "undefined8": return Undefined8DataType.dataType;
 			case "float": return FloatDataType.dataType;
 			case "double": return DoubleDataType.dataType;
 			case "undefined1": return Undefined1DataType.dataType;

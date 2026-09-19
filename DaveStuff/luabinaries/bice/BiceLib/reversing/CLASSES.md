@@ -642,6 +642,328 @@ A `CSubUnitDefinition` holds them two ways:
 A second vector at +0xC4/+0xC8 is walked by the same code and is empty on every definition
 in this mod.
 
+### The leader's experience is one number, not two
+
+`CLeader` already had thirteen fields named, and its save path settles the two that looked
+odd. The loader reads **`current_experience` with `%lld` straight into +0x78**, so what
+BiceLib recorded as `experience` (+0x78) and `experience_2` (+0x7C) are the low and high
+halves of a single 64-bit value in the game's 48.15 fixed point, where 32768 is 1. Reading
+the low word alone has always worked because **the high half is zero on all 8000 leaders in
+a running game**.
+
+**Read live** it is a multiple of 32768000 that tracks the skill: 0 at skill 0, 32768000 at
+skill 1, 65536000 at skill 2, 131072000 at skill 4.
+
+**And the high half is reachable, so the low word alone is a ticking clock.**
+`CLeader::AddExperience` (`0x181CE0`) adds with `add`/`adc` and compares as a pair against
+`g_LeaderSkillThresholds` (`0x130AEE4`), which holds 1000, 2000, 4000, 8000, 12000, 18000,
+25000, 33000, 43000 and 60000 for skills 0 to 9 - the same figures as
+`Hooks/CLeaderHooks.cpp` once shifted left 15 - and then **100000000 for skill 10**, which
+shifts to 3276800000000 and can never be reached. *That* is what caps a leader at skill 10,
+not the `skill >= 12` test at the top of the function.
+
+But that test is the only thing that stops the adding, and it never fires, so **a leader
+parked at skill 10 accrues for ever**. From the skill-9 threshold the total passes 2^31 after
+another 5536 experience points and 2^32 after 71000. Reading the low dword *unsigned* holds
+until the second of those; reading it *signed* breaks at the first. **Read live**: every high
+half is zero in a 1942 game and the largest total is 809977445, 38% of the way to 2^31 - so
+this has not bitten yet.
+
+Two more things the same function shows: the gain is multiplied by
+**`1 + (max_skill - skill)^2 / 5`**, so a leader far below his maximum gains much faster, and
+the whole thing is divided by 3 once he is at or past it.
+
+**And a third factor that turns out to do nothing.** The gain is also multiplied by a table
+indexed by the leader's rank - which looks like five globals at `0x17EB6E8` in the
+decompilation, but is a **function-local static**: MSVC puts a one-byte construction guard
+beside it (`0x17EB710`), and the `test byte ptr [guard], 1; jne past` at the top of the block
+is the tell. The constructor fills all five slots from the double `32768.5` at `0x120A548`,
+truncated to **32768, which is exactly 1.0** in the 48.15 fixed point - the half is there so
+the truncating conversion lands on 32768 rather than 32767. **Read live**: all five are 32768
+and the guard is 1, and the whole executable references the array only from the ten writes
+that fill it and the two reads that index it. So **rank does not change how fast a leader
+learns**, however much the code looks like it should.
+
+Two more fields came out of the loader:
+
+- **+0xC8 and +0xCC, the skill and experience the leader was defined with.** The `skill`
+  handler writes +0xC8 too, but only while it is still negative, so it keeps the first value;
+  +0xCC takes the save's `experience` key in whole points. `CLeader::ResetToStarting`
+  (`0x181E10`) is what they are for - rank to 0, skill back to +0xC8, experience back from
+  +0xCC scaled by 32768/1000.
+
+  **+0xC8 is the skill the mod's files define**, and a leader never ends up below it.
+  Matching 7296 live leaders to `history/leaders/*.txt` on country and id: +0xC8 is the
+  file's `skill` on every one of them, 6179 are still at it, 1117 have risen above it through
+  experience, and **none is below it**. Nothing in the executable decrements a leader's skill
+  either - not one `dec` or `sub` against +0x70 in the whole image - and the only path that
+  can lower it is `ResetToStarting`, called from a single loop over `CCountry + 0xE10` inside
+  an unnamed routine at `0xD2B60`; even that resets *to* the definition, never below it.
+  BiceLib's own skill-loss-on-promotion hook is dormant, its activation commented out in
+  `script/bicelib_lua.lua`.
+- **+0xA8 `picture`**, the portrait - `L54027`, and `empty_position` on the null leader.
+
+`loyalty` (+0x80) was recorded as "disabled in source, unverified"; it is 1000 on 5107
+leaders and 0 on 2825, so it carries a real value.
+
+### The faction, and the minister
+
+`CFaction` is one of the three alliances - **read live**, the game holds exactly `axis`,
+`alli` and `comi`. Its loader names `icon` (+0x3C), `rule` (+0x40) and `modifier` (+0x7C,
+both objects loaded through their own vtables), `progress` (+0xAC), `neutrality` (+0xB0) and
+`influence` (+0xBC). The last is a string, and it is **the decision each faction pulls
+countries with**: `align_towards_axis`, `align_towards_allies`, `align_towards_comintern`.
+Progress reads 860.0 for the axis, 686.0 for the allies and 182.0 for the comintern, and
+only the axis has a neutrality, 25.0.
+
+`CMinister` - 6257 of them - **is never written to a save**: its slot 2 is the shared empty
+`ret 4`, so the class is read out of the mod's files and only referenced afterwards. Its
+loader is therefore the file parser, and it names `name` (+0x30), `start_date` (+0x54),
+`death_date` (+0x58), `ideology` (+0x6C, which BiceLib had), `loyalty` (+0x70) and `picture`
+(+0x74) - `M57`, `M64`, `M82`.
+
+**`CLaw` and `CTechnology` are not done.** Both have the same empty slot 2, so both are file
+parsers rather than save paths, and both are long enough - a jump table on one, embedded
+modifier objects on the other - that a quick pass would have produced guesses rather than
+offsets. `CTechnology` already has nine fields named from other work, including the `effects`
+list this file explains under the sub unit technologies.
+
+### The theatre, and what a front is
+
+`CTheatre` is one theatre of the order of battle, saved as `area_theatre`, and the game had
+100 of them.
+
+| Key | Offset | |
+| --- | --- | --- |
+| `id` | +0x08 | type 45 on every theatre |
+| `provinces` | +0x30 | a `CList` of `CMapProvince*`, count at +0x38 |
+| `key` | +0x40 | a second province list of the same shape |
+| `front` | +0x50 | a `CList` of `CAreaBorder`, count at +0x58 |
+| `hot` | +0x70 | set on 19 of the 100 |
+| `unit` | +0x74 | an object id, type 41 |
+| `country` | +0x7C | a `CCountryTag` |
+| - | +0xA4 | the AI's priority, which BiceLib already had |
+
+The province list checks out against the save to the digit: the theatre the save calls id
+4328 has `provinces={ 781 7306 820 864 819 863 ... }` and walking +0x30 live gives 781,
+7306, 820, 864, 819, 863 in that order, with the count at +0x38 matching - from 20 provinces
+on the smallest theatre to 569 on the largest.
+
+**A `front=` block is a `CAreaBorder`**, held on the list at +0x50 - one per neighbour the
+theatre faces, each with its own province list, a `local_enemy` tag and the `front` and `sea`
+flags. **Read live**: one to six per theatre, and what the nodes hold is a `CAreaBorder` by
+its own RTTI.
+
+The second province list at +0x40 is filled by a key the token table calls **`key`**, through
+an adder of its own (`0xAFCE0`). **It cannot survive a save**: `CTheatre::SaveContents` walks
+it and the list at +0x30 into a single sorted, deduped `provinces={ ... }` block, so a
+theatre loaded back from a save has everything in the first list and nothing in the second.
+That is why no save carries a `key=` line.
+
+**Read live**, 3 of the 100 theatres hold exactly one province here, and it looks like the
+theatre's seat - the city it is named for or run from:
+
+| theatre | its HQ unit | the province | where that unit actually is |
+| --- | --- | --- | --- |
+| 4328, GER | `Paris HQ` | Paris | Berlin |
+| 80, USA | `Pacific High Command` | San Francisco | Honolulu |
+| 81, USA | `Eastern Defense Command` | Washington D.C. | Washington D.C. |
+
+**It is not the HQ's location** - two of the three differ - and the province is in the
+theatre's own list in all three cases. Three samples and no reader found, so that is where it
+comes from rather than what it is for.
+
+### The mission, which this game never uses
+
+`CActiveMission` names cleanly off its loader - `type` (+0x08, a mission looked up by name),
+`scope` (+0x0C) and `parent_scope` (+0x54), both `CEventScope` held by value, `start_date`
+(+0x9C) and `owner` (+0xA0). The pointer at +0x44 is set to `this + 0x54` when
+`parent_scope` is read, so the mission can reach the scope below it without knowing whether
+it has one.
+
+**But every one of the 108 in the running game is the null mission**: `type` is a
+`CNullMission` whose key is `no_mission` and `owner` is the no-country tag `---`. The types
+are confirmed by RTTI, but nothing has been seen with a mission actually in it, so treat the
+meanings as read off the code rather than observed.
+
+### What the save keys named on the production queue
+
+`CConstruction` is one item in a country's queue, and `CMilitaryConstruction`,
+`CBuildingConstruction` and `CConvoyConstruction` derive from it at offset 0. **Read live**:
+831, 89 and 68 of them in a 1942 game.
+
+**CConstruction is abstract and has no virtual table**, so its loader is not one of
+CPersistent's slots and the family pass never sees it. All three derived loaders call it by
+address for the keys they do not handle, and until this pass **there was no function at
+`0x83200` in the program at all** - not even an unnamed one. It handles:
+
+| Key | Offset | |
+| --- | --- | --- |
+| `id` | +0x08 | |
+| `cost` | +0x30 | x1000 |
+| `duration` | +0x34 | x1000 |
+| `progress` | +0x38 | x1000 |
+| `status` | +0x3C | x1000, and a fraction rather than a flag - 1.0 on most items, 0 on the rest, a few in between |
+| `size` | +0x40 | |
+| `location` | +0x44 | a `CMapProvince*`; set on all 89 building items and null on military and convoy ones |
+| `country` | +0x48 | a `CCountryTag` |
+| `builder` | +0x50 | a `CCountryTag`; the same as `country` on military items, `---` on the rest |
+
+**A queued division's block is keyed by unit type.** `CMilitaryConstruction`'s loader looks
+any key it does not know up in the sub unit database, and one that names a type becomes a
+`CBrigadeConstructionDefinition` on the list at +0x7C - which is why a queued division reads
+`multi_role={ id=... name="IV/SG 136" model={ 6 2 1 1 ... } }`. That is the third place this
+trick turns up, after a regiment's technologies and an air order's per-type array. **Read
+live**: one brigade on 536 of the 831 items and six or seven on most of the rest, with names
+like `IV./StG 410` under types `cas` and `light_bomber`.
+
+Its own keys are `unit` (+0x58, an object id), `name` (+0x60), `is_reserve` (+0x8C),
+`target` (+0x90), `manpower` (+0x98), `factor` (+0x9C), `accumulated_experiance` (+0xA4, the
+game's own spelling) and `accumulated_progress` (+0xA8).
+
+**`factor` is `reserves_factor`**, which closes an open question. That field was known to be
+1000 plus the owner's RESERVES_PENALTY_SIZE where `is_reserve` is set, filled once at build
+time and kept rather than looked up again; the save writes it, so **the number really does
+travel with the item** instead of being recomputed on load. **Read live**: 1000 on 788 items,
+800 on 27 and 900 on 8 - the penalty is negative and differs by country.
+
+`CBuildingConstruction` adds `building` (+0x58, a `CBuilding*` by index - a CBuilding on all
+89 live) and `count` (+0x5C). `CConvoyConstruction` adds **its own `status` byte at +0x58**,
+taken before CConstruction sees the key, so on a convoy item `status` is a flag at +0x58 and
+not the fraction at +0x3C. That is the same shadowing trap as `CNavalOrder`'s
+`return_to_base`.
+
+### What the save keys named on a war
+
+`CWar` is one war. The game state holds three lists of them - `active_war`, `previous_war`
+and `undeclared_war` - and a 1942 game had 19.
+
+| Key | Offset | |
+| --- | --- | --- |
+| `revolutionary_war` | +0x08 | read straight off whether the value token is `yes` |
+| `action` | +0x0C | a game tick, written as a date |
+| `name` | +0x10 | `War of Italian Aggression`, `Chinese Civil War` |
+| `attacker` | +0x2C | a `std::vector<CCountryTag>`, one line per entry |
+| `defender` | +0x3C | the same |
+| `history` | +0x4C | a `CWarHistory` held by value, saved through its own Load and Save |
+| `limited` | +0x70 | |
+| `target` | +0x84 | a `CCountryTag` |
+| `original_attacker` | +0x8C | |
+| `original_defender` | +0x94 | |
+
+The sides read back exactly as they should: the War of Italian Aggression is `ITA` against
+`FRA`, `ENG`, `OMN` and 25 more, and the War of German Aggression has ten attackers against
+29. **Read the vector's end at +0x30 and +0x40, not its capacity at +0x34 and +0x44** - the
+two are equal on some wars and not on others, and reading the capacity hands back stale tags
+past the end, which is exactly what happened on the first pass here and put `'\x03'` and
+`'\x08@'` in the German war's attacker list. `limited` is set on all 19; `target`,
+`original_attacker` and `original_defender` are the no-country tag `---` on every one, so
+nothing has been seen setting them.
+
+**`CWarGoal` is what a country wants out of a war**, one `war_goal=` block each and 262 in
+the game. BiceLib had four of its five fields from the Lua API - `country`, `actor`,
+`recipient` (saved as `receiver`) and `region` - and the loader adds the fifth and confirms
+the rest: **`casus_belli` at +0x0C**, a `CCasusBelliType*` written by its key and looked up
+by name, falling back to indexing the list by number. **Read live**: a `CCasusBelliType` on
+259 of the 262 and a `CNullCasusBelliType` on one. That class keeps its key at **+0x14** -
+`oder_neisse_line`, `china_war_goal`, `occupation_japan`.
+
+**`CUndeclaredWar` is the same idea without a war**: two vectors of tags, attackers at +0x08
+and defenders at +0x18. The game had exactly one, `USA` against `GER` - the American escort
+war.
+
+### What the save keys named on a rebel faction
+
+`CRebelFaction` is one partisan or rebel group. The game state keeps them in the list at
+`CCurrentGameState + 0xC7C` and hands each an id from the `rebel_id` counter. A
+`rebel_faction=` block carries the whole class, and the running game held the same one:
+
+```
+rebel_faction={ id={ id=953 type=39 } type="nationalist_rebels"
+                name="Chinese Nationalists" country="JAP" target="JAP"
+                independence="CHI" government="imperial" province=5448
+                army={ id=954 type=39 } provinces={ 5448 } }
+```
+
+| Key | Offset | |
+| --- | --- | --- |
+| `id` | +0x08 | type first in memory, second in the save |
+| `type` | +0x30 | a `CRebelType*`, written by its key |
+| `province` | +0x34 | a `CMapProvince*`, written as its id |
+| `country` | +0x38 | a `CCountryTag` - **whose country they are rising in** |
+| `government` | +0x40 | a `CGovernment*` - what they would install |
+| `independence` | +0x44 | a `CCountryTag` - **who they want the province to end up as** |
+| `name` | +0x54 | |
+| `target` | +0x70 | a list of `CCountryTag`, one line each - who they are fighting |
+| `army` | +0x80 | a list of object ids, one block each |
+| `provinces` | +0x94 | a vector of province ids, written as one block |
+
+The two lists have the same 20-byte node: the value (a tag by value, or an object id), the
+previous node, the next, and a spare byte. **Read live**, the one faction in the game is the
+Chinese Nationalists inside Japan: `country` JAP, `independence` CHI, one target JAP, its
+province 5448, and +0x30, +0x40 and +0x34 are a `CRebelType`, a `CGovernment` and a
+`CMapProvince` by their own RTTI.
+
+That pair of tags is the mechanic worth knowing: **`country` is who they are inside and
+`independence` is who the province becomes if they win**, which is how a mod's nationalist
+risings are set up. `target` is separate again - who they are actually at war with.
+
+Two small classes come with it. **`CRebelType` keeps its key at +0xC** and this mod defines
+six: `disgruntled_rabble`, `fascist_rebels`, `nationalist_rebels`, `organized_partisans`,
+`partisans`, `patriot_rebels`. **`CGovernment` keeps its key at +0x44** and there are
+eighteen, from `absolute_monarchy` to `socialist_republic`.
+
+### What the save keys named on an order
+
+`COrder` is what a unit has been told to do, and six classes derive from it at offset 0.
+**Three of them - `CMoveOrder`, `CNullOrder` and `CStrategicRedeploymentOrder` - add no
+fields and no save path at all**, sharing COrder's outright; `CAirOrder`, `CNavalOrder` and
+`CSupportAttackOrder` override the loader and call back into COrder's for what they do not
+handle. A `strategic_redeployment=` block in a save carries the whole base class:
+
+```
+strategic_redeployment={ province=2712 stance=1 start_date="1942.4.7.15"
+                         death_date="1942.4.7.15" return_to_base=no time=2
+                         priority=0 stop=0.700 }
+```
+
+| Key | Offset | |
+| --- | --- | --- |
+| - | +0x08 | the `CUnit` the order belongs to; not saved, because the unit is what writes it out |
+| `province` | +0x0C | a `CMapProvince*`; the save carries that province's id |
+| `target` | +0x10 | an object id, written unless it is the "no object" pair |
+| `return_to_base` | +0x18 | |
+| `priority` | +0x1C | |
+| `stance` | +0x20 | |
+| `stop` | +0x24 | x1000 |
+| `start_date` | +0x28 | a game tick, written as a date |
+| `death_date` | +0x2C | |
+| `time` | +0x30 | read with `%i` |
+
+**Read live** across every order in a 1942 game: +0x08 is a `CArmy`, `CNavy` or `CAir` by its
+own RTTI and +0x0C a `CMapProvince`, `stance` is 1 and `time` 2 on all of them, `stop` is 0.7
+on redeployments and support attacks and -1.0 on move and null orders, `priority` is zero
+throughout, `return_to_base` is set on 30 of 357 air orders and `target` on 12 of them, and
+the start and death ticks read back as real dates - 60814998 is 1942-05-09 06:00. A
+`CNullOrder` has no province at all, which is what makes it the "no order" object.
+
+**The trap: `CNavalOrder` keeps its own `return_to_base` and `priority`.** Its loader takes
+both keys before COrder sees them and stores them at **+0x34** and **+0x38**, leaving the
+base's +0x18 and +0x1C unused on a naval order. So the same key means a different field
+depending on which class is reading it - worth knowing before reading either offset off a
+naval order. It adds `capital` (+0x3C), `sub_unit` (+0x40) and `other` (+0x44) as well. No
+`CNavalOrder` existed in the game this was read from, so none of the five has been seen
+holding a value.
+
+`CSupportAttackOrder` adds one key, `combat` at +0x34, set on all three in the game.
+
+**`CAirOrder` keys part of its block by unit type.** It handles `provinces` - a list at
++0x44 of the provinces the mission covers - and then **looks any key it does not know up as
+a unit type**, through the same database `CSubUnit::LoadKey`'s `type` uses, and stores the
+value in the array at +0x34 at that type's `Index`. So an air order can carry a line per
+unit type. Both are empty on 356 of the 357 air orders in the game, so what a filled one
+means has not been seen.
+
 ### Orders, and the id each kind answers
 
 A unit's order is `CUnit +0xB0`, a `COrder*`. `COrder` leaves **slot 16** pure virtual and
