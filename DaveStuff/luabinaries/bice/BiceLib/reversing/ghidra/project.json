@@ -38,6 +38,51 @@
    "source": "reversing/FINDINGS-effecttext.md"
   },
   {
+   "rva": "0xBCC0",
+   "kind": "function",
+   "name": "CBattlePlanSendCommand::LoadKey",
+   "signature": "void __thiscall CBattlePlanSendCommand::LoadKey(CBattlePlanSendCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `battle_plan`, `index`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0xC1A0",
+   "kind": "function",
+   "name": "CBattlePlanDeleteCommand::LoadKey",
+   "signature": "void __thiscall CBattlePlanDeleteCommand::LoadKey(CBattlePlanDeleteCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `index`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14F80",
+   "kind": "function",
+   "name": "CBattlePlanToolColorOption::LoadKey",
+   "signature": "void __thiscall CBattlePlanToolColorOption::LoadKey(CBattlePlanToolColorOption* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `blue`, `green`, `name`, `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14FE0",
+   "kind": "function",
+   "name": "CBattlePlanToolArrowOption::LoadKey",
+   "signature": "void __thiscall CBattlePlanToolArrowOption::LoadKey(CBattlePlanToolArrowOption* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `name`, `type`. Inherited by 3 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x165F0",
+   "kind": "function",
+   "name": "CCasusBelliType::LoadKey",
+   "signature": "void __thiscall CCasusBelliType::LoadKey(CCasusBelliType* this, CParseContext* parse, SaveToken key)",
+   "comment": "One war goal. The `po_*` keys are the peace options it unlocks; `is_valid` and `prerequisites` are triggers, `on_add` and `on_completion` effects, each parsed by a sub-object of its own. **The keys its switch names**, 28 of them, one case each: `allowed_countries`, `allowed_province`, `allowed_regions`, `always`, `country_desc`, `handles_peace`, `is_civil_war`, `is_triggered_only`, `is_valid`, `is_valid_join`, `months`, `mutual`, `on_add`, `on_completion`, `peace_cost_factor`, `penalty_factor`, `po_annex`, `po_change_government`, `po_demand_provinces`, `po_demand_region`, `po_install_government`, `po_puppet`, `prerequisites`, `prov_desc`, `sprite_index`, `threat`, `truce_months`, `war_name`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x17AF0",
    "kind": "function",
    "name": "CCountry::GetCapitalLocation",
@@ -45,6 +90,150 @@
    "comment": "The capital's province: the game state's province vector (+0xB8C) indexed by CCountry +0xE20. Byte for byte the same function as GetActingCapitalLocation (0x2F100) but for the offset it reads, which is what settles which field is which.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:173"
+  },
+  {
+   "rva": "0x17D90",
+   "kind": "function",
+   "name": "CCGExtraPracticeDecay::LoadKey",
+   "signature": "void __thiscall CCGExtraPracticeDecay::LoadKey(CCGExtraPracticeDecay* this, CParseContext* parse, SaveToken key)",
+   "comment": "**No keys of its own**, the same shape as CCGMUnitCostMult: the key is a name and the value what it decays by.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x17F30",
+   "kind": "function",
+   "name": "CCGMUnitCostMult::LoadKey",
+   "signature": "void __thiscall CCGMUnitCostMult::LoadKey(CCGMUnitCostMult* this, CParseContext* parse, SaveToken key)",
+   "comment": "**No keys of its own**: it builds a string out of the key's own text, so every key is a **unit type's name** and the value is that type's cost multiplier. Part of the competitive game mode's rules.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x18120",
+   "kind": "function",
+   "name": "CCGMTechMinimums::LoadKey",
+   "signature": "void __thiscall CCGMTechMinimums::LoadKey(CCGMTechMinimums* this, CParseContext* parse, SaveToken key)",
+   "comment": "**No keys of its own**, the same shape again: the key names the thing and the value is its minimum.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x18590",
+   "kind": "function",
+   "name": "CCGMTemplate::LoadKey",
+   "signature": "void __thiscall CCGMTemplate::LoadKey(CCGMTemplate* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `deployment`, `diplomacy`, `technology`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x28F70",
+   "kind": "function",
+   "name": "CCgmSetStageCommand::LoadKey",
+   "signature": "void __thiscall CCgmSetStageCommand::LoadKey(CCgmSetStageCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `cgm_stage`, `country`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x29410",
+   "kind": "function",
+   "name": "CCgmOnPlayerDisconnectCommand::LoadKey",
+   "signature": "void __thiscall CCgmOnPlayerDisconnectCommand::LoadKey(CCgmOnPlayerDisconnectCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `player`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x29890",
+   "kind": "function",
+   "name": "CCgmNeutralityChangeCommand::LoadKey",
+   "signature": "void __thiscall CCgmNeutralityChangeCommand::LoadKey(CCgmNeutralityChangeCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `neutrality`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x29DE0",
+   "kind": "function",
+   "name": "CCgmAlignmentChangeCommand::LoadKey",
+   "signature": "void __thiscall CCgmAlignmentChangeCommand::LoadKey(CCgmAlignmentChangeCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `y`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2A460",
+   "kind": "function",
+   "name": "CCgmLeaveFactionCommand::LoadKey",
+   "signature": "void __thiscall CCgmLeaveFactionCommand::LoadKey(CCgmLeaveFactionCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `is_leave`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2ADD0",
+   "kind": "function",
+   "name": "CCgmTechResearchChangeCommand::LoadKey",
+   "signature": "void __thiscall CCgmTechResearchChangeCommand::LoadKey(CCgmTechResearchChangeCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `country`, `level`, `technology`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2B400",
+   "kind": "function",
+   "name": "CCgmTechResearchResetCommand::LoadKey",
+   "signature": "void __thiscall CCgmTechResearchResetCommand::LoadKey(CCgmTechResearchResetCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `technology`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2C260",
+   "kind": "function",
+   "name": "CCgmTechResearchSetProgressCommand::LoadKey",
+   "signature": "void __thiscall CCgmTechResearchSetProgressCommand::LoadKey(CCgmTechResearchSetProgressCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `technology`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2C790",
+   "kind": "function",
+   "name": "CCgmTeleportUnitCommand::LoadKey",
+   "signature": "void __thiscall CCgmTeleportUnitCommand::LoadKey(CCgmTeleportUnitCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2CD90",
+   "kind": "function",
+   "name": "CCgmSetBuildingLevelCommand::LoadKey",
+   "signature": "void __thiscall CCgmSetBuildingLevelCommand::LoadKey(CCgmSetBuildingLevelCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `building`, `level`, `location`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D540",
+   "kind": "function",
+   "name": "CCgmSetUndergroundCommand::LoadKey",
+   "signature": "void __thiscall CCgmSetUndergroundCommand::LoadKey(CCgmSetUndergroundCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `location`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2DBA0",
+   "kind": "function",
+   "name": "CCgmSetConvoyEscortCommand::LoadKey",
+   "signature": "void __thiscall CCgmSetConvoyEscortCommand::LoadKey(CCgmSetConvoyEscortCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x2EEF0",
@@ -92,6 +281,15 @@
    "source": "reversing/FINDINGS-combat.md:219"
   },
   {
+   "rva": "0x2F5F0",
+   "kind": "function",
+   "name": "CCombatHistoryEntry::LoadKey",
+   "signature": "void __thiscall CCombatHistoryEntry::LoadKey(CCombatHistoryEntry* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 6 of them, one case each: `attacker`, `convoy`, `defender`, `end_date`, `location`, `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x2F960",
    "kind": "function",
    "name": "CCombatHistory::RecordCombat",
@@ -121,11 +319,20 @@
   {
    "rva": "0x2FAD0",
    "kind": "function",
-   "name": "CCombatHistory_Virtual_0042fad0",
-   "signature": null,
-   "comment": "A CCombatHistory virtual that reaches the two stack entry builders.",
-   "confidence": "inferred",
-   "source": "reversing/FINDINGS-combat.md:231"
+   "name": "CCombatHistory::LoadKey",
+   "signature": "void __thiscall CCombatHistory::LoadKey(CCombatHistory* this, CParseContext* parse, SaveToken key)",
+   "comment": "One key, `history`, holding the combats already fought. See FINDINGS-combat.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2FC60",
+   "kind": "function",
+   "name": "CCombatManager::LoadKey",
+   "signature": "void __thiscall CCombatManager::LoadKey(CCombatManager* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 7 of them, one case each: `air_combat`, `ground_bombing`, `history`, `land_bombing`, `land_combat`, `naval_bombing`, `naval_combat`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x3170B",
@@ -146,6 +353,24 @@
    "source": "reversing/FINDINGS-combat.md:229"
   },
   {
+   "rva": "0x38900",
+   "kind": "function",
+   "name": "CCombatTactic::LoadKey",
+   "signature": "void __thiscall CCombatTactic::LoadKey(CCombatTactic* this, CParseContext* parse, SaveToken key)",
+   "comment": "One tactic a land combat can pick. `attacker` and `defender` are the unit types it favours, `countered_by` names the tactic that beats it. **The keys its switch names**, 9 of them, one case each: `aggressiveness`, `attacker`, `base`, `combat_width`, `countered_by`, `defender`, `movement_speed`, `picture`, `trigger`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x44DF0",
+   "kind": "function",
+   "name": "CCovertOpsMission::LoadKey",
+   "signature": "void __thiscall CCovertOpsMission::LoadKey(CCovertOpsMission* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `cost`, `effect`, `is_selectable`, `is_valid`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x45D90",
    "kind": "function",
    "name": "GetDefines",
@@ -153,6 +378,24 @@
    "comment": "Getter for the defines object read from defines.lua; makes it on first use and keeps it at 0x1686040. Its +0xAC is the block holding SUPPLYPOOL_DAYS and the leader distance defines.",
    "confidence": "confirmed",
    "source": "reversing/CLASSES.md:267"
+  },
+  {
+   "rva": "0x45E10",
+   "kind": "function",
+   "name": "CDefines::LoadKey",
+   "signature": "void __thiscall CDefines::LoadKey(CDefines* this, CParseContext* parse, SaveToken key)",
+   "comment": "The top-level blocks of `common/defines.lua`; each holds the constants of one part of the game. **The keys its switch names**, 9 of them, one case each: `alignment`, `country`, `diplomacy`, `economy`, `goods_cost`, `map`, `military`, `start_date`, `weather`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x4BCD0",
+   "kind": "function",
+   "name": "CDirectorySettings::LoadKey",
+   "signature": "void __thiscall CDirectorySettings::LoadKey(CDirectorySettings* this, CParseContext* parse, SaveToken key)",
+   "comment": "The path table the loader fills. `replace` and `extend` are how a mod says whether its folder replaces the base game's or adds to it. **The keys its switch names**, 2 of them, one case each: `extend`, `replace`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x4C5C0",
@@ -164,6 +407,42 @@
    "source": "reversing/FINDINGS-autosave.md:82"
   },
   {
+   "rva": "0x4D070",
+   "kind": "function",
+   "name": "CEU3SoundConfigurator::LoadKey",
+   "signature": "void __thiscall CEU3SoundConfigurator::LoadKey(CEU3SoundConfigurator* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `file`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x59620",
+   "kind": "function",
+   "name": "CModifier::LoadKey",
+   "signature": "void __thiscall CModifier::LoadKey(CModifier* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `icon`. Inherited by 6 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5B7F0",
+   "kind": "function",
+   "name": "CTimedModifier::LoadKey",
+   "signature": "void __thiscall CTimedModifier::LoadKey(CTimedModifier* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `date`, `modifier`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5BAC0",
+   "kind": "function",
+   "name": "CTriggeredModifier::LoadKey",
+   "signature": "void __thiscall CTriggeredModifier::LoadKey(CTriggeredModifier* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `potential`, `trigger`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x5BB10",
    "kind": "function",
    "name": "CPersistent::Save",
@@ -171,6 +450,51 @@
    "comment": "Slot 1 of CPersistent, and the whole of an object's braces: it writes `{`, calls slot 2 for the class's own keys, then indents and writes `}`. The key before the `=` is the caller's to write, so `flags={ ... }` is SaveWriteKey(0x37F) followed by this. 739 of the 754 CPersistent tables hold this body. Depth lives in the writer and starts at -1, which is how the outermost object writes no braces at all.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CPersistent.hpp:45"
+  },
+  {
+   "rva": "0x5C9E0",
+   "kind": "function",
+   "name": "CSong::LoadKey",
+   "signature": "void __thiscall CSong::LoadKey(CSong* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `chance`, `name`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5D2A0",
+   "kind": "function",
+   "name": "CMapPoint::LoadKey",
+   "signature": "void __thiscall CMapPoint::LoadKey(CMapPoint* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `y`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5D920",
+   "kind": "function",
+   "name": "CRule::LoadKey",
+   "signature": "void __thiscall CRule::LoadKey(CRule* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `icon`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5E990",
+   "kind": "function",
+   "name": "CScenario::LoadKey",
+   "signature": "void __thiscall CScenario::LoadKey(CScenario* this, CParseContext* parse, SaveToken key)",
+   "comment": "A scenario: selectable countries, where the camera starts, the victory conditions. **The keys its switch names**, 21 of them, one case each: `camera_center`, `camera_height`, `camera_max_x`, `camera_max_y`, `camera_min_x`, `camera_min_y`, `country`, `desc`, `enable_strategic_resources`, `enddate`, `events`, `icon`, `name`, `number_of_victory_conditions`, `provinces`, `regions`, `reinforcement`, `selectable_country`, `startdate`, `victory_conditions`, `victory_conditions_to_win`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5F630",
+   "kind": "function",
+   "name": "CMapRenderingOptions::LoadKey",
+   "signature": "void __thiscall CMapRenderingOptions::LoadKey(CMapRenderingOptions* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 9 of them, one case each: `alwaysCounters`, `counter_distance`, `counter_scale`, `onmap`, `renderTrees`, `render_hierarchy`, `show_unit_names`, `simpleWater`, `waves`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x5FB7E",
@@ -207,6 +531,15 @@
    "comment": "Turns an autosave frequency enum value back into its string.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-autosave.md:55"
+  },
+  {
+   "rva": "0x601D0",
+   "kind": "function",
+   "name": "CSettings::LoadKey",
+   "signature": "void __thiscall CSettings::LoadKey(CSettings* this, CParseContext* parse, SaveToken key)",
+   "comment": "The player's settings as the game writes them back. **The keys its switch names**, 10 of them, one case each: `autosave`, `categories`, `debug_saves`, `lasthost`, `lastplayer`, `mapRenderingOptions`, `outliner`, `serveradress`, `simple`, `use_legacy_camera`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x60383",
@@ -263,6 +596,15 @@
    "source": "BiceLib/GameClasses/CTrait.hpp"
   },
   {
+   "rva": "0x75A60",
+   "kind": "function",
+   "name": "CUndeclaredWar::LoadKey",
+   "signature": "void __thiscall CUndeclaredWar::LoadKey(CUndeclaredWar* this, CParseContext* parse, SaveToken key)",
+   "comment": "The save's record of a war nobody declared. **The keys its switch names**, 2 of them, one case each: `defender`, `region`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x76040",
    "kind": "function",
    "name": "CUndeclaredWar::AddAttacker",
@@ -281,6 +623,87 @@
    "source": "BiceLib/GameClasses/CWar.hpp:39"
   },
   {
+   "rva": "0x763F0",
+   "kind": "function",
+   "name": "CCountryValue::LoadKey",
+   "signature": "void __thiscall CCountryValue::LoadKey(CCountryValue* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `id`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x765A0",
+   "kind": "function",
+   "name": "CCountryWarTargetValue::LoadKey",
+   "signature": "void __thiscall CCountryWarTargetValue::LoadKey(CCountryWarTargetValue* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 5 of them, one case each: `date`, `decision`, `id`, `limited`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x768D0",
+   "kind": "function",
+   "name": "CCountryDate::LoadKey",
+   "signature": "void __thiscall CCountryDate::LoadKey(CCountryDate* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `date`, `id`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x76A60",
+   "kind": "function",
+   "name": "CIDValue::LoadKey",
+   "signature": "void __thiscall CIDValue::LoadKey(CIDValue* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `id`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x76B30",
+   "kind": "function",
+   "name": "CProvinceValue::LoadKey",
+   "signature": "void __thiscall CProvinceValue::LoadKey(CProvinceValue* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `id`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x76C40",
+   "kind": "function",
+   "name": "CProvinceFloat::LoadKey",
+   "signature": "void __thiscall CProvinceFloat::LoadKey(CProvinceFloat* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `id`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x76D60",
+   "kind": "function",
+   "name": "CStringIntInt::LoadKey",
+   "signature": "void __thiscall CStringIntInt::LoadKey(CStringIntInt* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `id`, `key`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x79A90",
+   "kind": "function",
+   "name": "CWarGoal::LoadKey",
+   "signature": "void __thiscall CWarGoal::LoadKey(CWarGoal* this, CParseContext* parse, SaveToken key)",
+   "comment": "One war goal in progress: who wants what from whom. **The keys its switch names**, 5 of them, one case each: `actor`, `casus_belli`, `country`, `receiver`, `region`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x7C630",
+   "kind": "function",
+   "name": "CAreaBorder::LoadKey",
+   "signature": "void __thiscall CAreaBorder::LoadKey(CAreaBorder* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `front`, `local_enemy`, `provinces`, `sea`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x82C50",
    "kind": "function",
    "name": "CBrigadeConstructionDefinition::SetName",
@@ -288,6 +711,15 @@
    "comment": "Assigns the brigade's name at +0x18 and then fills the second string at +0x8 from it through a lookup. The object is in edi.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CConstruction.hpp:49"
+  },
+  {
+   "rva": "0x82DD0",
+   "kind": "function",
+   "name": "CBrigadeConstructionDefinition::LoadKey",
+   "signature": "void __thiscall CBrigadeConstructionDefinition::LoadKey(CBrigadeConstructionDefinition* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 7 of them, one case each: `experience`, `historical_model`, `id`, `model`, `name`, `upgrading_from_subunit`, `upgrading_from_subunit_str`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x83200",
@@ -299,6 +731,33 @@
    "source": "BiceLib/GameClasses/CConstruction.hpp:49"
   },
   {
+   "rva": "0x840C0",
+   "kind": "function",
+   "name": "CMilitaryConstruction::LoadKey",
+   "signature": "void __thiscall CMilitaryConstruction::LoadKey(CMilitaryConstruction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 8 of them, one case each: `accumulated_experiance`, `accumulated_progress`, `factor`, `is_reserve`, `manpower`, `name`, `target`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x85980",
+   "kind": "function",
+   "name": "CBuildingConstruction::LoadKey",
+   "signature": "void __thiscall CBuildingConstruction::LoadKey(CBuildingConstruction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `building`, `count`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x866B0",
+   "kind": "function",
+   "name": "CConvoyConstruction::LoadKey",
+   "signature": "void __thiscall CConvoyConstruction::LoadKey(CConvoyConstruction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `status`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x883A0",
    "kind": "function",
    "name": "CMap::CMap",
@@ -306,6 +765,24 @@
    "comment": "CMap constructor (object 0x2A94 bytes).",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CMap.hpp:7"
+  },
+  {
+   "rva": "0x893B0",
+   "kind": "function",
+   "name": "CMap::LoadKey",
+   "signature": "void __thiscall CMap::LoadKey(CMap* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 20 of them, one case each: `adjacencies`, `border_cutoff`, `border_heights`, `climate`, `coastlines`, `continent`, `definitions`, `high_pressure_zones`, `low_pressure_zones`, `max_provinces`, `positions`, `provinces`, `region`, `rivers`, `sea_starts`, `terrain`, `terrain_definition`, `terrain_sheet_heights`, `tree`, `tree_definition`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x93C20",
+   "kind": "function",
+   "name": "CConquerProvinceCommand::LoadKey",
+   "signature": "void __thiscall CConquerProvinceCommand::LoadKey(CConquerProvinceCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `owner`, `province`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x94650",
@@ -327,6 +804,15 @@
    "aliases": [
     "CProvince::WriteSave"
    ]
+  },
+  {
+   "rva": "0x95880",
+   "kind": "function",
+   "name": "CProvince::LoadKey",
+   "signature": "void __thiscall CProvince::LoadKey(CProvince* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 26 of them, one case each: `capital`, `controller`, `core`, `current_producing`, `drawn`, `flags`, `history`, `last_convoy_attack`, `last_drawn`, `last_throughput`, `leadership`, `manpower`, `max_producing`, `modifier`, `name`, `nationalism`, `out_of_supply_days`, `owner`, `points`, `pool`, `revolt_risk`, `strategic_resource`, `throughput`, `underground_action`, `underground_owner`, `weather`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x973E0",
@@ -528,6 +1014,78 @@
    "source": "BiceLib/GameClasses/CMapProvince.hpp:96"
   },
   {
+   "rva": "0xADA10",
+   "kind": "function",
+   "name": "CTerrain::LoadKey",
+   "signature": "void __thiscall CTerrain::LoadKey(CTerrain* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 12 of them, one case each: `attack`, `attacker`, `attrition`, `color`, `defence`, `defender`, `humidity`, `inland_sea`, `is_water`, `movement_cost`, `precipitation`, `temperature`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0xAE7E0",
+   "kind": "function",
+   "name": "CTerrainGraphical::LoadKey",
+   "signature": "void __thiscall CTerrainGraphical::LoadKey(CTerrainGraphical* this, CParseContext* parse, SaveToken key)",
+   "comment": "How a terrain type is drawn. What it *does* is CTerrain. **The keys its switch names**, 8 of them, one case each: `altitude`, `color`, `has_texture`, `objects`, `priority`, `tree`, `tree_density`, `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0xB01F0",
+   "kind": "function",
+   "name": "CTheatre::LoadKey",
+   "signature": "void __thiscall CTheatre::LoadKey(CTheatre* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 7 of them, one case each: `country`, `front`, `hot`, `id`, `key`, `provinces`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0xB1F60",
+   "kind": "function",
+   "name": "CTree::LoadKey",
+   "signature": "void __thiscall CTree::LoadKey(CTree* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `texture`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0xB20C0",
+   "kind": "function",
+   "name": "CWeather::LoadKey",
+   "signature": "void __thiscall CWeather::LoadKey(CWeather* this, CParseContext* parse, SaveToken key)",
+   "comment": "Eight keys, the whole of a province's weather: `temperature`, `precipitation`, `cloud_coverage`, `humidity`, `muddyness`, `frozen`, `pressure` and `windspeed`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0xB4C30",
+   "kind": "function",
+   "name": "CWeatherFront::LoadKey",
+   "signature": "void __thiscall CWeatherFront::LoadKey(CWeatherFront* this, CParseContext* parse, SaveToken key)",
+   "comment": "A weather system: where it is, which way it is going, how fast. **The keys its switch names**, 5 of them, one case each: `direction`, `home`, `provinces`, `rotation`, `speed`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0xB5FA0",
+   "kind": "function",
+   "name": "CWeatherManager::LoadKey",
+   "signature": "void __thiscall CWeatherManager::LoadKey(CWeatherManager* this, CParseContext* parse, SaveToken key)",
+   "comment": "One key, `front`, which is where each CWeatherFront in a save comes from.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0xB6950",
+   "kind": "function",
+   "name": "CBuilding::LoadKey",
+   "signature": "void __thiscall CBuilding::LoadKey(CBuilding* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 16 of them, one case each: `capital`, `completion_size`, `confirm`, `cost`, `damage_factor`, `max_level`, `not_if_x_exists`, `on_completion`, `onmap`, `orientation`, `port`, `prerequisites`, `repair`, `show_for_province`, `time`, `visibility`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0xB8DC0",
    "kind": "function",
    "name": "AreaIsConnectedTo",
@@ -535,6 +1093,42 @@
    "comment": "Whether two areas are joined overland: it walks the list at COwnerArea +0x34 looking for the other one. CCountry::NeedConvoyToTradeWith is the caller - two acting capitals on different continents need convoys unless this says yes. Both arguments arrive in registers.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:390"
+  },
+  {
+   "rva": "0xB9420",
+   "kind": "function",
+   "name": "CRebelFaction::LoadKey",
+   "signature": "void __thiscall CRebelFaction::LoadKey(CRebelFaction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 10 of them, one case each: `army`, `country`, `government`, `id`, `independence`, `name`, `province`, `provinces`, `target`, `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0xBFA40",
+   "kind": "function",
+   "name": "CRebelType::LoadKey",
+   "signature": "void __thiscall CRebelType::LoadKey(CRebelType* this, CParseContext* parse, SaveToken key)",
+   "comment": "One kind of uprising - what spawns it, what it demands, what it leaves behind. **The keys its switch names**, 17 of them, one case each: `area`, `auto_convert`, `can_enforce_trigger`, `defect_delay`, `defection`, `demands_enforced_effect`, `ideology`, `independence`, `is_triggered_only`, `movement_evaluation`, `reinforcing`, `resilient`, `siege_won_effect`, `siege_won_trigger`, `smart`, `spawn_chance`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0xC31B0",
+   "kind": "function",
+   "name": "CAlignment::LoadKey",
+   "signature": "void __thiscall CAlignment::LoadKey(CAlignment* this, CParseContext* parse, SaveToken key)",
+   "comment": "**One key, `position`**, an `{ x = .. y = .. }` block read by ParsePoint into `this + 8`. That is a country's place on the political compass; everything else is unknown.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0xC5320",
+   "kind": "function",
+   "name": "CConvoy::LoadKey",
+   "signature": "void __thiscall CConvoy::LoadKey(CConvoy* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 13 of them, one case each: `convoys`, `daily`, `end`, `escorts`, `id`, `last_attack`, `lend_lease`, `lendlease_targets`, `path`, `ship`, `start`, `start_date`, `trade`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0xC5600",
@@ -837,6 +1431,15 @@
    "source": "BiceLib/GameClasses/CCountryDataBase.hpp:33"
   },
   {
+   "rva": "0x1227E0",
+   "kind": "function",
+   "name": "CFaction::LoadKey",
+   "signature": "void __thiscall CFaction::LoadKey(CFaction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 8 of them, one case each: `country`, `icon`, `influence`, `modifier`, `neutrality`, `progress`, `rule`, `tag`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x123A90",
    "kind": "function",
    "name": "CGoodsPool::ReadSave",
@@ -864,6 +1467,24 @@
    "source": "BiceLib/GameClasses/CGovernment.hpp"
   },
   {
+   "rva": "0x126B80",
+   "kind": "function",
+   "name": "CIdeology::LoadKey",
+   "signature": "void __thiscall CIdeology::LoadKey(CIdeology* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `color`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x126E60",
+   "kind": "function",
+   "name": "CIdeologyGroup::LoadKey",
+   "signature": "void __thiscall CIdeologyGroup::LoadKey(CIdeologyGroup* this, CParseContext* parse, SaveToken key)",
+   "comment": "A group of ideologies - fascism, democracy, communism. Two keys of its own; every other key in the block is an ideology's name. **The keys its switch names**, 2 of them, one case each: `faction`, `position`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x127280",
    "kind": "function",
    "name": "GetIdeologies",
@@ -882,6 +1503,33 @@
    "source": "reversing/CLASSES.md:1354"
   },
   {
+   "rva": "0x128540",
+   "kind": "function",
+   "name": "CIdeologyData::LoadKey",
+   "signature": "void __thiscall CIdeologyData::LoadKey(CIdeologyData* this, CParseContext* parse, SaveToken key)",
+   "comment": "One key, `data`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x129380",
+   "kind": "function",
+   "name": "CLaw::LoadKey",
+   "signature": "void __thiscall CLaw::LoadKey(CLaw* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `allow`, `cost`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x129710",
+   "kind": "function",
+   "name": "CLawGroup::LoadKey",
+   "signature": "void __thiscall CLawGroup::LoadKey(CLawGroup* this, CParseContext* parse, SaveToken key)",
+   "comment": "**No keys of its own.** Every key in a law group's block is a law's name: the loader news a 0x98 byte object per key and fills it, the same pattern CIdeologyGroup uses for its ideologies. So `common/laws.txt` is a list of groups, each a list of laws, and nothing else is accepted at either level.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x12A5F0",
    "kind": "function",
    "name": "CNameDataBase::GetByName",
@@ -891,6 +1539,15 @@
    "source": "BiceLib/GameClasses/CGovernment.hpp"
   },
   {
+   "rva": "0x12A9D0",
+   "kind": "function",
+   "name": "CMinisterType::LoadKey",
+   "signature": "void __thiscall CMinisterType::LoadKey(CMinisterType* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `decay`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x12B140",
    "kind": "function",
    "name": "GetMinisterTypes",
@@ -898,6 +1555,15 @@
    "comment": "The minister type database, made on first use at `g_minister_types` - the same CNameDataBase shape as the ideologies and the government positions, with CNullMinisterType (`noMinisterType`) at index 0. **Read live**: 106 types declared in `common/minister_types.txt`. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CMinister.hpp"
+  },
+  {
+   "rva": "0x12B910",
+   "kind": "function",
+   "name": "CGovernmentPosition::LoadKey",
+   "signature": "void __thiscall CGovernmentPosition::LoadKey(CGovernmentPosition* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `changeable`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x12BA30",
@@ -918,6 +1584,24 @@
    "source": "BiceLib/GameClasses/CMinister.hpp"
   },
   {
+   "rva": "0x12CEE0",
+   "kind": "function",
+   "name": "COccupationPolicy::LoadKey",
+   "signature": "void __thiscall COccupationPolicy::LoadKey(COccupationPolicy* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `allow`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1309B0",
+   "kind": "function",
+   "name": "CStrategicWarfare::LoadKey",
+   "signature": "void __thiscall CStrategicWarfare::LoadKey(CStrategicWarfare* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `alliance`, `convoy`, `ground_bombing`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x134AC0",
    "kind": "function",
    "name": "CTechnology::LoadKey",
@@ -925,6 +1609,402 @@
    "comment": "**The grammar of the technology files.** A dozen keys of its own - the ones in CTechnology.hpp - and **anything it does not know is taken as a unit type's name**: that is how `infantry_brigade = { soft_attack = 0.1 }` becomes an effect, resolved through the same by-name lookup the unit files use. `research_bonus_from` reads a list, and `folder` and `activate_*` resolve against their own databases.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CTechnology.hpp"
+  },
+  {
+   "rva": "0x137DB0",
+   "kind": "function",
+   "name": "CTechStatistics::LoadKey",
+   "signature": "void __thiscall CTechStatistics::LoadKey(CTechStatistics* this, CParseContext* parse, SaveToken key)",
+   "comment": "**Every country-wide effect a technology can have**, one case each - 47 of them, which is the whole list. A technology writes them at its own top level, `supply_throughput = 0.05` beside its `allow` block. **`ground_defence_effiency` is the engine's own misspelling.** Eight of them the mod never uses. The list is in GameClasses/CCountryHistory.hpp; regenerate with `switchmap.py 0x537DB0`.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountryHistory.hpp"
+  },
+  {
+   "rva": "0x143270",
+   "kind": "function",
+   "name": "CVictoryCondition::LoadKey",
+   "signature": "void __thiscall CVictoryCondition::LoadKey(CVictoryCondition* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `primary`, `trigger`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x144920",
+   "kind": "function",
+   "name": "CVictoryConditionManager::LoadKey",
+   "signature": "void __thiscall CVictoryConditionManager::LoadKey(CVictoryConditionManager* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `faction`, `game_finished`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x145310",
+   "kind": "function",
+   "name": "CConstructBuildingCommand::LoadKey",
+   "signature": "void __thiscall CConstructBuildingCommand::LoadKey(CConstructBuildingCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `building`, `id`, `province`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1465D0",
+   "kind": "function",
+   "name": "CConstructUnitCommand::LoadKey",
+   "signature": "void __thiscall CConstructUnitCommand::LoadKey(CConstructUnitCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 9 of them, one case each: `amount`, `builder`, `buildunit`, `country`, `id`, `is_cgm`, `is_reserve`, `province`, `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x147410",
+   "kind": "function",
+   "name": "CConstructSingleUnitCommand::LoadKey",
+   "signature": "void __thiscall CConstructSingleUnitCommand::LoadKey(CConstructSingleUnitCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 7 of them, one case each: `amount`, `buildunit`, `country`, `id`, `is_cgm`, `province`, `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x148180",
+   "kind": "function",
+   "name": "CCreateUnitCommand::LoadKey",
+   "signature": "void __thiscall CCreateUnitCommand::LoadKey(CCreateUnitCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 7 of them, one case each: `base`, `client_only`, `country`, `id`, `is_allowed_empty`, `province`, `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x148730",
+   "kind": "function",
+   "name": "CCancelUnitConstructionCommand::LoadKey",
+   "signature": "void __thiscall CCancelUnitConstructionCommand::LoadKey(CCancelUnitConstructionCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `buildunit`, `country`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x148DB0",
+   "kind": "function",
+   "name": "CChangePriorityCommand::LoadKey",
+   "signature": "void __thiscall CChangePriorityCommand::LoadKey(CChangePriorityCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `buildunit`, `country`, `direction`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1493E0",
+   "kind": "function",
+   "name": "CDeployUnitCommand::LoadKey",
+   "signature": "void __thiscall CDeployUnitCommand::LoadKey(CDeployUnitCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `country`, `id`, `location`, `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x149B00",
+   "kind": "function",
+   "name": "CConstructConvoyCommand::LoadKey",
+   "signature": "void __thiscall CConstructConvoyCommand::LoadKey(CConstructConvoyCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `amount`, `country`, `id`, `status`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14A190",
+   "kind": "function",
+   "name": "CCreateConvoyCommand::LoadKey",
+   "signature": "void __thiscall CCreateConvoyCommand::LoadKey(CCreateConvoyCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `from`, `to`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14A550",
+   "kind": "function",
+   "name": "CCancelConvoyCommand::LoadKey",
+   "signature": "void __thiscall CCancelConvoyCommand::LoadKey(CCancelConvoyCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `convoy`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14ACC0",
+   "kind": "function",
+   "name": "CChangeEscortsInConvoyCommand::LoadKey",
+   "signature": "void __thiscall CChangeEscortsInConvoyCommand::LoadKey(CChangeEscortsInConvoyCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `amount`, `convoy`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14B280",
+   "kind": "function",
+   "name": "CChangeResourcesInConvoyCommand::LoadKey",
+   "signature": "void __thiscall CChangeResourcesInConvoyCommand::LoadKey(CChangeResourcesInConvoyCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `convoy`, `status`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14B560",
+   "kind": "function",
+   "name": "CStartAICommand::LoadKey",
+   "signature": "void __thiscall CStartAICommand::LoadKey(CStartAICommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `country`. Inherited by 9 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14C640",
+   "kind": "function",
+   "name": "CPerformCoupCommand::LoadKey",
+   "signature": "void __thiscall CPerformCoupCommand::LoadKey(CPerformCoupCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `from`, `to`. Inherited by 3 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14DFB0",
+   "kind": "function",
+   "name": "CChangeProvinceNameCommand::LoadKey",
+   "signature": "void __thiscall CChangeProvinceNameCommand::LoadKey(CChangeProvinceNameCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `location`, `name`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14EB50",
+   "kind": "function",
+   "name": "CChangeMinisterCommand::LoadKey",
+   "signature": "void __thiscall CChangeMinisterCommand::LoadKey(CChangeMinisterCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `country`, `id`, `position`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x14FBB0",
+   "kind": "function",
+   "name": "CChangeLawCommand::LoadKey",
+   "signature": "void __thiscall CChangeLawCommand::LoadKey(CChangeLawCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `country`, `law`, `position`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1502D0",
+   "kind": "function",
+   "name": "CAlterTheatreCommand::LoadKey",
+   "signature": "void __thiscall CAlterTheatreCommand::LoadKey(CAlterTheatreCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `id`, `theatre`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1506E0",
+   "kind": "function",
+   "name": "CAddTheatreCommand::LoadKey",
+   "signature": "void __thiscall CAddTheatreCommand::LoadKey(CAddTheatreCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `theatre`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x150B30",
+   "kind": "function",
+   "name": "CRemoveTheatreCommand::LoadKey",
+   "signature": "void __thiscall CRemoveTheatreCommand::LoadKey(CRemoveTheatreCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `id`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x151120",
+   "kind": "function",
+   "name": "CChangeOccupationPolicyCommand::LoadKey",
+   "signature": "void __thiscall CChangeOccupationPolicyCommand::LoadKey(CChangeOccupationPolicyCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `occupation_policy`, `target`, `which`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x152330",
+   "kind": "function",
+   "name": "CToggleMobilizationCommand::LoadKey",
+   "signature": "void __thiscall CToggleMobilizationCommand::LoadKey(CToggleMobilizationCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `which`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x152870",
+   "kind": "function",
+   "name": "CChangeTemplateCommand::LoadKey",
+   "signature": "void __thiscall CChangeTemplateCommand::LoadKey(CChangeTemplateCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `index`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x152F30",
+   "kind": "function",
+   "name": "CSetFlagCommand::LoadKey",
+   "signature": "void __thiscall CSetFlagCommand::LoadKey(CSetFlagCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `flagType`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x153460",
+   "kind": "function",
+   "name": "CSetVariableCommand::LoadKey",
+   "signature": "void __thiscall CSetVariableCommand::LoadKey(CSetVariableCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `country`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1538F0",
+   "kind": "function",
+   "name": "CChooseVictoryConditionsCommand::LoadKey",
+   "signature": "void __thiscall CChooseVictoryConditionsCommand::LoadKey(CChooseVictoryConditionsCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `faction`, `victory_conditions`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x153ED0",
+   "kind": "function",
+   "name": "CSetAlliedObjectiveCommand::LoadKey",
+   "signature": "void __thiscall CSetAlliedObjectiveCommand::LoadKey(CSetAlliedObjectiveCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `active`, `country`, `province`, `requester`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1557D0",
+   "kind": "function",
+   "name": "CChangeLendLeaseDistributionCommand::LoadKey",
+   "signature": "void __thiscall CChangeLendLeaseDistributionCommand::LoadKey(CChangeLendLeaseDistributionCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `country`, `distribution`, `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1564A0",
+   "kind": "function",
+   "name": "CRemoveLendLeaseCommand::LoadKey",
+   "signature": "void __thiscall CRemoveLendLeaseCommand::LoadKey(CRemoveLendLeaseCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x156DC0",
+   "kind": "function",
+   "name": "CChangeInvestmentCommand::LoadKey",
+   "signature": "void __thiscall CChangeInvestmentCommand::LoadKey(CChangeInvestmentCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `data`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x157B10",
+   "kind": "function",
+   "name": "CStopResearchCommand::LoadKey",
+   "signature": "void __thiscall CStopResearchCommand::LoadKey(CStopResearchCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `technology`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x158600",
+   "kind": "function",
+   "name": "CChangeTechPriorityCommand::LoadKey",
+   "signature": "void __thiscall CChangeTechPriorityCommand::LoadKey(CChangeTechPriorityCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `country`, `direction`, `technology`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x158B40",
+   "kind": "function",
+   "name": "CChangeSpyPriority::LoadKey",
+   "signature": "void __thiscall CChangeSpyPriority::LoadKey(CChangeSpyPriority* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `actor`, `priority`, `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x159160",
+   "kind": "function",
+   "name": "CChangeSpyMission::LoadKey",
+   "signature": "void __thiscall CChangeSpyMission::LoadKey(CChangeSpyMission* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `actor`, `id`, `priority`, `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x159760",
+   "kind": "function",
+   "name": "CSendCovertOpsMission::LoadKey",
+   "signature": "void __thiscall CSendCovertOpsMission::LoadKey(CSendCovertOpsMission* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `actor`, `id`, `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x15A600",
+   "kind": "function",
+   "name": "CChangeFoG::LoadKey",
+   "signature": "void __thiscall CChangeFoG::LoadKey(CChangeFoG* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `country`, `government`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x15BD70",
+   "kind": "function",
+   "name": "CExecuteRebelAcceptanceCommand::LoadKey",
+   "signature": "void __thiscall CExecuteRebelAcceptanceCommand::LoadKey(CExecuteRebelAcceptanceCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `scope`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x15C080",
+   "kind": "function",
+   "name": "CSpawnPartisanCommand::LoadKey",
+   "signature": "void __thiscall CSpawnPartisanCommand::LoadKey(CSpawnPartisanCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `province`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x15C6E0",
+   "kind": "function",
+   "name": "CSpawnFullRevoltCommand::LoadKey",
+   "signature": "void __thiscall CSpawnFullRevoltCommand::LoadKey(CSpawnFullRevoltCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `country`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x15CB90",
+   "kind": "function",
+   "name": "CChangeUndergroundMission::LoadKey",
+   "signature": "void __thiscall CChangeUndergroundMission::LoadKey(CChangeUndergroundMission* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `target`, `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x15FDF0",
+   "kind": "function",
+   "name": "CBomberCombatant::LoadKey",
+   "signature": "void __thiscall CBomberCombatant::LoadKey(CBomberCombatant* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `building`, `current_producing`, `pool`, `strength`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x163E60",
@@ -963,6 +2043,15 @@
    "source": "reversing/FINDINGS-combat.md:345"
   },
   {
+   "rva": "0x164DD0",
+   "kind": "function",
+   "name": "CCombatant::LoadKey",
+   "signature": "void __thiscall CCombatant::LoadKey(CCombatant* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 6 of them, one case each: `dice`, `losses`, `size`, `sunk_ship`, `tactic`, `unit`. Inherited by 4 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x166267",
    "kind": "instruction",
    "name": "CCombatant_LossAccounting",
@@ -988,6 +2077,42 @@
    "comment": "Where the screen penalty calculation continues after the hooked block.",
    "confidence": "confirmed",
    "source": "BiceLib/bice.cpp:564"
+  },
+  {
+   "rva": "0x168D80",
+   "kind": "function",
+   "name": "CNavalCombatant::LoadKey",
+   "signature": "void __thiscall CNavalCombatant::LoadKey(CNavalCombatant* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `positioning`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x169040",
+   "kind": "function",
+   "name": "CLandCombatant::LoadKey",
+   "signature": "void __thiscall CLandCombatant::LoadKey(CLandCombatant* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `front`, `reserves`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x16DED0",
+   "kind": "function",
+   "name": "CAirCombatant::LoadKey",
+   "signature": "void __thiscall CAirCombatant::LoadKey(CAirCombatant* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `positioning`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x16E0B0",
+   "kind": "function",
+   "name": "CCombat::LoadKey",
+   "signature": "void __thiscall CCombat::LoadKey(CCombat* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 6 of them, one case each: `attacker`, `day`, `defender`, `duration`, `location`, `terrain`. Inherited by 7 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x1745F4",
@@ -1035,6 +2160,15 @@
    "source": "reversing/FINDINGS-combat.md:328"
   },
   {
+   "rva": "0x17E080",
+   "kind": "function",
+   "name": "CUnitDeployment::LoadKey",
+   "signature": "void __thiscall CUnitDeployment::LoadKey(CUnitDeployment* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `air`, `army`, `id`, `navy`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x17E4E5",
    "kind": "instruction",
    "name": "Hook_PlaceBuildingCheck",
@@ -1042,6 +2176,24 @@
    "comment": "Building placement permission check (ebx province, esi country, edi CBuildingDeployment); the refusal path is 210 bytes further on. Hooked.",
    "confidence": "confirmed",
    "source": "BiceLib/bice.cpp:666"
+  },
+  {
+   "rva": "0x17EDB0",
+   "kind": "function",
+   "name": "CBuildingDeployment::LoadKey",
+   "signature": "void __thiscall CBuildingDeployment::LoadKey(CBuildingDeployment* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `building`, `id`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x17F800",
+   "kind": "function",
+   "name": "CLeader::LoadKey",
+   "signature": "void __thiscall CLeader::LoadKey(CLeader* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 15 of them, one case each: `add_trait`, `country`, `current_experience`, `experience`, `gainable_trait`, `history`, `id`, `loyalty`, `max_skill`, `name`, `picture`, `rank`, `skill`, `trait`, `type`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x17FF08",
@@ -1177,6 +2329,15 @@
    "comment": "Virtual slot 16: answers 0x5A4, the id that marks a CStrategicRedeploymentOrder. `mov eax, 0x5A4; ret`. COrder leaves this slot pure virtual and every concrete order fills it, which is how code holding only a COrder* tells them apart - CUnit::FuelConsumption reads it to let a strategic redeployment consume nothing. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x186FE0",
+   "kind": "function",
+   "name": "COrder::LoadKey",
+   "signature": "void __thiscall COrder::LoadKey(COrder* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 8 of them, one case each: `priority`, `province`, `return_to_base`, `stance`, `start_date`, `stop`, `target`, `time`. Inherited by 4 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x188340",
@@ -1404,6 +2565,60 @@
    "source": "BiceLib/GameClasses/COrder.hpp:32"
   },
   {
+   "rva": "0x190850",
+   "kind": "function",
+   "name": "CParadropMission::LoadKey",
+   "signature": "void __thiscall CParadropMission::LoadKey(CParadropMission* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `message`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x193A50",
+   "kind": "function",
+   "name": "CRebaseToCarrierMission::LoadKey",
+   "signature": "void __thiscall CRebaseToCarrierMission::LoadKey(CRebaseToCarrierMission* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `carrier_target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1951F0",
+   "kind": "function",
+   "name": "CNukeMission::LoadKey",
+   "signature": "void __thiscall CNukeMission::LoadKey(CNukeMission* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `nukes`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x195330",
+   "kind": "function",
+   "name": "CTransportSuppliesOrder::LoadKey",
+   "signature": "void __thiscall CTransportSuppliesOrder::LoadKey(CTransportSuppliesOrder* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `fuel`, `supplies`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x196490",
+   "kind": "function",
+   "name": "CAirReserveOrder::LoadKey",
+   "signature": "void __thiscall CAirReserveOrder::LoadKey(CAirReserveOrder* this, CParseContext* parse, SaveToken key)",
+   "comment": "Three keys: `priority` (through ParseInt into `this +0x1C`), `provinces` and `return_to_base`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x197E00",
+   "kind": "function",
+   "name": "CJoinAirOrder::LoadKey",
+   "signature": "void __thiscall CJoinAirOrder::LoadKey(CJoinAirOrder* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x19A5A0",
    "kind": "function",
    "name": "CRebaseOrder::GetTypeId",
@@ -1503,6 +2718,69 @@
    "source": "BiceLib/GameClasses/COrder.hpp:32"
   },
   {
+   "rva": "0x19BF40",
+   "kind": "function",
+   "name": "CJoinFleetOrder::LoadKey",
+   "signature": "void __thiscall CJoinFleetOrder::LoadKey(CJoinFleetOrder* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `join_fleet`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x19C9C0",
+   "kind": "function",
+   "name": "CPatrolOrder::LoadKey",
+   "signature": "void __thiscall CPatrolOrder::LoadKey(CPatrolOrder* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `provinces`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x19E640",
+   "kind": "function",
+   "name": "CNavalSortieOrder::LoadKey",
+   "signature": "void __thiscall CNavalSortieOrder::LoadKey(CNavalSortieOrder* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `current`, `provinces`, `start`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x19FCF0",
+   "kind": "function",
+   "name": "CConvoyEscortOrder::LoadKey",
+   "signature": "void __thiscall CConvoyEscortOrder::LoadKey(CConvoyEscortOrder* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `convoy`, `direction`, `province`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1A02E0",
+   "kind": "function",
+   "name": "CConvoyRaid::LoadKey",
+   "signature": "void __thiscall CConvoyRaid::LoadKey(CConvoyRaid* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `attack`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1A0780",
+   "kind": "function",
+   "name": "CRebaseOrder::LoadKey",
+   "signature": "void __thiscall CRebaseOrder::LoadKey(CRebaseOrder* this, CParseContext* parse, SaveToken key)",
+   "comment": "Three keys: `sub_unit`, `capital` and `return_to_base`, with `priority` handled by the COrder base. Shared by three order classes.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1A1030",
+   "kind": "function",
+   "name": "CNavalInvasionOrder::LoadKey",
+   "signature": "void __thiscall CNavalInvasionOrder::LoadKey(CNavalInvasionOrder* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `message`, `transport`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x1A12B0",
    "kind": "function",
    "name": "CPathFind::Find",
@@ -1584,6 +2862,24 @@
    "source": "reversing/FINDINGS-redeploy.md:38"
   },
   {
+   "rva": "0x1A3280",
+   "kind": "function",
+   "name": "CSubUnitAmphibiousMult::LoadKey",
+   "signature": "void __thiscall CSubUnitAmphibiousMult::LoadKey(CSubUnitAmphibiousMult* this, CParseContext* parse, SaveToken key)",
+   "comment": "**No keys of its own.** It builds a string out of the key's own text and looks it up, so every key is a **unit type's name** and the value is that type's amphibious multiplier.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1A3C80",
+   "kind": "function",
+   "name": "CSubUnitDefinition::LoadKey",
+   "signature": "void __thiscall CSubUnitDefinition::LoadKey(CSubUnitDefinition* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 73 of them, one case each: `active`, `air`, `air_attack`, `air_defence`, `air_detection`, `amphibious`, `amphibious_invasion_defence`, `amphibious_invasion_speed`, `ap_attack`, `armor_value`, `available_trigger`, `build_cost_ic`, `build_cost_manpower`, `build_time`, `can_be_pride`, `can_paradrop`, `capital`, `carrier_size`, `combat_width`, `completion_size`, `convoy_attack`, `default_morale`, `default_organisation`, `defensiveness`, `distance`, `extra_amphibious_defence`, `fort`, `fuel_consumption`, `hard_attack`, `hull`, `is_armor`, `is_bomber`, `is_buildable`, `is_cag`, `is_mobile`, `is_rocket`, `is_sub`, `land`, `max_percentage_of_type`, `max_strength`, `maximum_speed`, `minimum_of_type`, `naval`, `night`, `officers`, `on_completion`, `positioning`, `priority`, `radio_strength`, `range`, `repair_cost_multiplier`, `river`, `sea_attack`, `sea_defence`, `shore_bombardment`, `soft_attack`, `softness`, `sprite`, `strategic_attack`, `sub_attack`, `sub_detection`, `supply_consumption`, `suppression`, `surface_defence`, `surface_detection`, `toughness`, `transport`, `transport_capability`, `transport_weight`, `type`, `unit_group`, `usable_by`, `visibility`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x1A4CF1",
    "kind": "instruction",
    "name": "SubUnitDefinition_StoreUnitGroup",
@@ -1618,6 +2914,15 @@
    "comment": "Adds one definition into another, field by field, the adjusters included. What applies a scaled technology effect to a sub unit's own definition.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CRegiment.hpp:99"
+  },
+  {
+   "rva": "0x1A8BF0",
+   "kind": "function",
+   "name": "CSubUnit::LoadKey",
+   "signature": "void __thiscall CSubUnit::LoadKey(CSubUnit* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 13 of them, one case each: `builder`, `current_distance`, `experience`, `highest`, `historical_model`, `home`, `is_reserve`, `name`, `organisation`, `pride`, `strength`, `sunk_by`, `type`. Inherited by 3 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x1AB680",
@@ -1672,6 +2977,24 @@
    "comment": "Per regiment fuel consumption; the regiment in eax, ret 4. The same shape as the unit level one, reached through the regiment's own unit at +0xB0.",
    "confidence": "confirmed",
    "source": "reversing/CLASSES.md:267"
+  },
+  {
+   "rva": "0x1ADBF0",
+   "kind": "function",
+   "name": "CShip::LoadKey",
+   "signature": "void __thiscall CShip::LoadKey(CShip* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `air`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1AFE90",
+   "kind": "function",
+   "name": "CRandomListEffect::LoadKey",
+   "signature": "void __thiscall CRandomListEffect::LoadKey(CRandomListEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "Its keys are the **weights** of a `random_list` - a bare integer per entry, which is why the only token it names is the parser's `tok_int`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x1B2A00",
@@ -1845,6 +3168,24 @@
    "source": "reversing/CLASSES.md:554"
   },
   {
+   "rva": "0x1D6F80",
+   "kind": "function",
+   "name": "CCreateLeaderCommand::LoadKey",
+   "signature": "void __thiscall CCreateLeaderCommand::LoadKey(CCreateLeaderCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `country`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1D7850",
+   "kind": "function",
+   "name": "CAssignLeaderCommand::LoadKey",
+   "signature": "void __thiscall CAssignLeaderCommand::LoadKey(CAssignLeaderCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `leader`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x1D7CDC",
    "kind": "instruction",
    "name": "Hook_LeaderRankChange",
@@ -1852,6 +3193,15 @@
    "comment": "Where a leader's rank is written on promotion or demotion (mov [edi+0x6c], eax; cmp [edi+0x68], ebx); edi is the leader, esi the CPromoteLeaderCommand, eax the new rank. Hooked.",
    "confidence": "confirmed",
    "source": "BiceLib/bice.cpp:213"
+  },
+  {
+   "rva": "0x1D7EF0",
+   "kind": "function",
+   "name": "CPromoteLeaderCommand::LoadKey",
+   "signature": "void __thiscall CPromoteLeaderCommand::LoadKey(CPromoteLeaderCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `leader`, `upper`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x1D86F0",
@@ -1944,6 +3294,15 @@
    "source": "reversing/CLASSES.md:347"
   },
   {
+   "rva": "0x1D92B0",
+   "kind": "function",
+   "name": "CMoveCommand::LoadKey",
+   "signature": "void __thiscall CMoveCommand::LoadKey(CMoveCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 6 of them, one case each: `avoid`, `clear`, `location`, `province`, `safe`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x1D93F0",
    "kind": "function",
    "name": "CMoveCommand::CMoveCommand_copy",
@@ -1953,6 +3312,276 @@
    "source": "BiceLib/GameClasses/CMoveCommand.hpp:63; reversing/FINDINGS-redeploy.md:101"
   },
   {
+   "rva": "0x1DA4C0",
+   "kind": "function",
+   "name": "CMakePrideCommand::LoadKey",
+   "signature": "void __thiscall CMakePrideCommand::LoadKey(CMakePrideCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `sub_unit`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1DB110",
+   "kind": "function",
+   "name": "CUpgradeRegimentCommand::LoadKey",
+   "signature": "void __thiscall CUpgradeRegimentCommand::LoadKey(CUpgradeRegimentCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `sub_unit`, `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1DC570",
+   "kind": "function",
+   "name": "CMergeCommand::LoadKey",
+   "signature": "void __thiscall CMergeCommand::LoadKey(CMergeCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `unit`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1DD570",
+   "kind": "function",
+   "name": "CTransferSubUnitCommand::LoadKey",
+   "signature": "void __thiscall CTransferSubUnitCommand::LoadKey(CTransferSubUnitCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `client_only`, `sub_unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1DDB20",
+   "kind": "function",
+   "name": "CRenameUnitCommand::LoadKey",
+   "signature": "void __thiscall CRenameUnitCommand::LoadKey(CRenameUnitCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `name`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1DDF60",
+   "kind": "function",
+   "name": "CRenameSubUnitCommand::LoadKey",
+   "signature": "void __thiscall CRenameSubUnitCommand::LoadKey(CRenameSubUnitCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `name`, `sub_unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1DEFC0",
+   "kind": "function",
+   "name": "CAttachUnitCommand::LoadKey",
+   "signature": "void __thiscall CAttachUnitCommand::LoadKey(CAttachUnitCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `parent`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E0610",
+   "kind": "function",
+   "name": "CCreateHigherCommand::LoadKey",
+   "signature": "void __thiscall CCreateHigherCommand::LoadKey(CCreateHigherCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `parent`, `select_units`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E1510",
+   "kind": "function",
+   "name": "CCreateNewHQCommand::LoadKey",
+   "signature": "void __thiscall CCreateNewHQCommand::LoadKey(CCreateNewHQCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `level`, `location`, `owner`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E1AA0",
+   "kind": "function",
+   "name": "CSetCommandLevel::LoadKey",
+   "signature": "void __thiscall CSetCommandLevel::LoadKey(CSetCommandLevel* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `level`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E2670",
+   "kind": "function",
+   "name": "CSetOrderCommand::LoadKey",
+   "signature": "void __thiscall CSetOrderCommand::LoadKey(CSetOrderCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 12 of them, one case each: `activation_date`, `death_date`, `end_date`, `objectives`, `province`, `stance`, `start_date`, `stop`, `target`, `time`, `unit`, `which`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E3380",
+   "kind": "function",
+   "name": "CDisbandCommand::LoadKey",
+   "signature": "void __thiscall CDisbandCommand::LoadKey(CDisbandCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `unit`. Inherited by 8 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E3F20",
+   "kind": "function",
+   "name": "CLoadArmyCommand::LoadKey",
+   "signature": "void __thiscall CLoadArmyCommand::LoadKey(CLoadArmyCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E4A80",
+   "kind": "function",
+   "name": "CLoadOnPlaneCommand::LoadKey",
+   "signature": "void __thiscall CLoadOnPlaneCommand::LoadKey(CLoadOnPlaneCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `air`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E5100",
+   "kind": "function",
+   "name": "CUnitPlanCommand::LoadKey",
+   "signature": "void __thiscall CUnitPlanCommand::LoadKey(CUnitPlanCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `plan`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E55B0",
+   "kind": "function",
+   "name": "CActivateUnitPlanCommand::LoadKey",
+   "signature": "void __thiscall CActivateUnitPlanCommand::LoadKey(CActivateUnitPlanCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `active`, `allow_hq_reorg`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E59D0",
+   "kind": "function",
+   "name": "CToggleUnitAggressionCommand::LoadKey",
+   "signature": "void __thiscall CToggleUnitAggressionCommand::LoadKey(CToggleUnitAggressionCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `active`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E5DE0",
+   "kind": "function",
+   "name": "CSetUnitAggressionCommand::LoadKey",
+   "signature": "void __thiscall CSetUnitAggressionCommand::LoadKey(CSetUnitAggressionCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E6580",
+   "kind": "function",
+   "name": "CSetPlanOpsAreaCommand::LoadKey",
+   "signature": "void __thiscall CSetPlanOpsAreaCommand::LoadKey(CSetPlanOpsAreaCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `area`, `fallback_line`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E6AA0",
+   "kind": "function",
+   "name": "CSetPlanObjectivesCommand::LoadKey",
+   "signature": "void __thiscall CSetPlanObjectivesCommand::LoadKey(CSetPlanObjectivesCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `objective`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E7440",
+   "kind": "function",
+   "name": "CTogglePlanObjectiveCommand::LoadKey",
+   "signature": "void __thiscall CTogglePlanObjectiveCommand::LoadKey(CTogglePlanObjectiveCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `province`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E7C20",
+   "kind": "function",
+   "name": "CSetPlanAttributesCommand::LoadKey",
+   "signature": "void __thiscall CSetPlanAttributesCommand::LoadKey(CSetPlanAttributesCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 7 of them, one case each: `active`, `air_stance`, `naval_stance`, `our_power`, `stance`, `their_power`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E8520",
+   "kind": "function",
+   "name": "CSetPlanAxisCommand::LoadKey",
+   "signature": "void __thiscall CSetPlanAxisCommand::LoadKey(CSetPlanAxisCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `path`, `path2`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E89B0",
+   "kind": "function",
+   "name": "CSetPlanForcesCommand::LoadKey",
+   "signature": "void __thiscall CSetPlanForcesCommand::LoadKey(CSetPlanForcesCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `min`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E8E40",
+   "kind": "function",
+   "name": "CSetPlanTransportStateCommand::LoadKey",
+   "signature": "void __thiscall CSetPlanTransportStateCommand::LoadKey(CSetPlanTransportStateCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `debark`, `embark`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E9330",
+   "kind": "function",
+   "name": "CSetAIParamCommand::LoadKey",
+   "signature": "void __thiscall CSetAIParamCommand::LoadKey(CSetAIParamCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `staging_province`, `target`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1E9D60",
+   "kind": "function",
+   "name": "CSendExpeditionCommand::LoadKey",
+   "signature": "void __thiscall CSendExpeditionCommand::LoadKey(CSendExpeditionCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `target`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1EA2C0",
+   "kind": "function",
+   "name": "CUpdateTheatreCommand::LoadKey",
+   "signature": "void __thiscall CUpdateTheatreCommand::LoadKey(CUpdateTheatreCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `area`, `theatre`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1EA7C0",
+   "kind": "function",
+   "name": "CSelectionGroupCommand::LoadKey",
+   "signature": "void __thiscall CSelectionGroupCommand::LoadKey(CSelectionGroupCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `group`, `index`, `tag`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1EB3A0",
+   "kind": "function",
+   "name": "CUnitSplitCommand::LoadKey",
+   "signature": "void __thiscall CUnitSplitCommand::LoadKey(CUnitSplitCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `new_units_id`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x1EC9E0",
    "kind": "function",
    "name": "CCountry::SetOobFile",
@@ -1960,6 +3589,96 @@
    "comment": "One line: **`country->oob_file = path`**, through std::string::operator= with the country in ecx and `+0x58` computed into it. What CLoadOOBEffect::Execute calls before asking for the load. `ret 4`. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x1ECA90",
+   "kind": "function",
+   "name": "CCountryHistory::LoadEntry",
+   "signature": "void __thiscall CCountryHistory::LoadEntry(CCountryHistory* this, void* date, CParseContext* parse, SaveToken key)",
+   "comment": "Slot 9: one key of a country's history, dated or not. **It names 33 keys outright** - `capital`, `government`, `ideology`, `oob`, `alignment`, `money` and the rest - and resolves everything else as a name out of a database. **Read live** against the mod's 108 country files: 6119 uses are a technology, 4222 a technology category, 1082 one of the 33, 884 a government position and 631 a law. That is all of it bar 78 names nothing declares, which are in the mod's bugs.md.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountryHistory.hpp"
+  },
+  {
+   "rva": "0x1F2810",
+   "kind": "function",
+   "name": "CDiplomaticHistory::LoadKey",
+   "signature": "void __thiscall CDiplomaticHistory::LoadKey(CDiplomaticHistory* this, CParseContext* parse, SaveToken key)",
+   "comment": "No keys of its own in the switch; what it does with a key instead has not been read.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1F2F30",
+   "kind": "function",
+   "name": "CRelationChange::LoadKey",
+   "signature": "void __thiscall CRelationChange::LoadKey(CRelationChange* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 5 of them, one case each: `end_date`, `first`, `second`, `start_date`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1F35A0",
+   "kind": "function",
+   "name": "SGraphStatisticsItem::LoadKey",
+   "signature": "void __thiscall SGraphStatisticsItem::LoadKey(SGraphStatisticsItem* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `ledger_data_x`, `ledger_data_y`, `name`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1F3A70",
+   "kind": "function",
+   "name": "CGraphStatistics::LoadKey",
+   "signature": "void __thiscall CGraphStatistics::LoadKey(CGraphStatistics* this, CParseContext* parse, SaveToken key)",
+   "comment": "One key, `ledger_data` - the series the ledger's graphs are drawn from.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1FC400",
+   "kind": "function",
+   "name": "CWarHistory::LoadKey",
+   "signature": "void __thiscall CWarHistory::LoadKey(CWarHistory* this, CParseContext* parse, SaveToken key)",
+   "comment": "No keys of its own in the switch; what it does with a key instead has not been read.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1FCC10",
+   "kind": "function",
+   "name": "CHistoryContainer::LoadKey",
+   "signature": "void __thiscall CHistoryContainer::LoadKey(CHistoryContainer* this, CParseContext* parse)",
+   "comment": "**Only the dates.** The loader `CCountryHistory` and `CProvinceHistory` share: if the key is not a date it goes straight to **vftable slot 9**, the derived class's entry handler; if it is, the date is parsed and every key/value pair in the block that follows goes to slot 9 instead. So a dated block is nothing but a way of postponing the one grammar, which is why anything valid at the top of a country file is valid inside one. **Ghidra's analysis does not find this function** - only a vftable reaches it.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountryHistory.hpp"
+  },
+  {
+   "rva": "0x1FCED0",
+   "kind": "function",
+   "name": "CProvinceHistory::LoadEntry",
+   "signature": "void __thiscall CProvinceHistory::LoadEntry(CProvinceHistory* this, void* date, CParseContext* parse, SaveToken key)",
+   "comment": "Slot 9: one key of a province's history. **It names eighteen** - `owner`, `controller`, `manpower`, `add_core`, `remove_core`, `terrain`, `leadership`, `points`, `supplies`, `money`, `fuel`, `revolt`, `revolt_risk`, `strategic_resource` and the four resources `energy`, `metal`, `rare_materials` and `crude_oil` - and everything else is a building. **That is the whole grammar**: of the mod's own province files, 50174 uses are one of the eighteen, 17330 a building, and the fifteen lines left over are misspellings, listed in the mod's bugs.md.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CCountryHistory.hpp"
+  },
+  {
+   "rva": "0x1FFE50",
+   "kind": "function",
+   "name": "CRevoltChange::LoadKey",
+   "signature": "void __thiscall CRevoltChange::LoadKey(CRevoltChange* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `leader`, `name`, `size`, `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x20E2A0",
+   "kind": "function",
+   "name": "CDiplomaticActionCommand::LoadKey",
+   "signature": "void __thiscall CDiplomaticActionCommand::LoadKey(CDiplomaticActionCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The key names a diplomatic action.** It hands the token to `0xE5800`, which makes the matching action object into `this + 0x3C`, then delegates the rest of the block to that object's own `Load`. So the grammar is one key per kind of diplomatic action, and what goes inside belongs to the action.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x22FAC0",
@@ -1980,6 +3699,15 @@
    "source": "reversing/CLASSES.md:1354"
   },
   {
+   "rva": "0x23DD10",
+   "kind": "function",
+   "name": "CEU3DialogGuiType::LoadKey",
+   "signature": "void __thiscall CEU3DialogGuiType::LoadKey(CEU3DialogGuiType* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `shieldtype`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x243750",
    "kind": "function",
    "name": "CombineColourBrightness",
@@ -1996,6 +3724,15 @@
    "comment": "Virtual getter at vtable offset 0x164: mov eax,[ecx+0xD34]; ret.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-mapmode.md:235"
+  },
+  {
+   "rva": "0x2465D0",
+   "kind": "function",
+   "name": "CRelation::LoadKey",
+   "signature": "void __thiscall CRelation::LoadKey(CRelation* this, CParseContext* parse, SaveToken key)",
+   "comment": "Five keys: `first` and `second`, each a country tag looked up in the country database and stored as a tag/id pair at `this +8` and `this +0x10`; then `start_date`, `end_date` and `cancel`. Nine classes inherit it, so this is the shape of every standing agreement in a save.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x24FF80",
@@ -2250,6 +3987,15 @@
    "source": "reversing/FINDINGS-autosave.md:129"
   },
   {
+   "rva": "0x27C3B0",
+   "kind": "function",
+   "name": "CColor::LoadKey",
+   "signature": "void __thiscall CColor::LoadKey(CColor* this, CParseContext* parse, SaveToken key)",
+   "comment": "**It has no keys at all** - the whole body is a tail call to ReportUnknownKey. A colour is three numbers in a row, `color = { 139 90 43 }`, read positionally by the block loader rather than by key. Seventy-four classes inherit this, so \"no keys\" is the answer for all of them.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x27D070",
    "kind": "function",
    "name": "CCurrentGameState::CCurrentGameState",
@@ -2259,6 +4005,15 @@
    "source": "BiceLib/GameClasses/CCurrentGameState.hpp:9; reversing/CLASSES.md:39"
   },
   {
+   "rva": "0x27FCB0",
+   "kind": "function",
+   "name": "CGameState::LoadKey",
+   "signature": "void __thiscall CGameState::LoadKey(CGameState* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 31 of them, one case each: `active_war`, `ai_seed`, `allied_objectives`, `automate_sliders`, `automate_tech_sliders`, `automate_trade`, `battle_plan`, `combat`, `controller`, `date`, `diplomacy`, `faction`, `fired_events`, `flags`, `gameplaysettings`, `id`, `income_statistics`, `inflation_statistics`, `leader`, `nation_size_statistics`, `player`, `previous_war`, `rebel`, `rebel_faction`, `scenario`, `selectionGroups`, `start_date`, `undeclared_war`, `unit`, `victory_conditions`, `weather`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x2872D0",
    "kind": "function",
    "name": "CSupply::DailySupplyPass",
@@ -2266,6 +4021,177 @@
    "comment": "Daily supply pass: walks provinces farthest from the depot first, tops up pools from closer neighbours and passes unmet demand on.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CMapProvince.hpp:70"
+  },
+  {
+   "rva": "0x28A550",
+   "kind": "function",
+   "name": "CGamePlaySettings::LoadKey",
+   "signature": "void __thiscall CGamePlaySettings::LoadKey(CGamePlaySettings* this, CParseContext* parse, SaveToken key)",
+   "comment": "One key, `setgameplayoptions` - the block of options a save carries.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x28CFA0",
+   "kind": "function",
+   "name": "CSelectionGroupReader::LoadKey",
+   "signature": "void __thiscall CSelectionGroupReader::LoadKey(CSelectionGroupReader* this, CParseContext* parse, SaveToken key)",
+   "comment": "One key, `tag`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x291440",
+   "kind": "function",
+   "name": "CEU3Application::LoadKey",
+   "signature": "void __thiscall CEU3Application::LoadKey(CEU3Application* this, CParseContext* parse, SaveToken key)",
+   "comment": "One key, `name` - the application settings file.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x29A510",
+   "kind": "function",
+   "name": "CQuit::LoadKey",
+   "signature": "void __thiscall CQuit::LoadKey(CQuit* this, CParseContext* parse, SaveToken key)",
+   "comment": "It compares the key's **text** rather than its token, which is why the switch reader finds nothing. Five classes inherit it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x29A770",
+   "kind": "function",
+   "name": "CMessageType::LoadKey",
+   "signature": "void __thiscall CMessageType::LoadKey(CMessageType* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 7 of them, one case each: `categories`, `idle`, `log`, `onmap`, `option`, `pausepopup`, `popup`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D4450",
+   "kind": "function",
+   "name": "CSetCountryControllerCommand::LoadKey",
+   "signature": "void __thiscall CSetCountryControllerCommand::LoadKey(CSetCountryControllerCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `country`, `machineid`, `other`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D52A0",
+   "kind": "function",
+   "name": "CSelectBookmark::LoadKey",
+   "signature": "void __thiscall CSelectBookmark::LoadKey(CSelectBookmark* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `bookmark`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D5680",
+   "kind": "function",
+   "name": "CSelectScenario::LoadKey",
+   "signature": "void __thiscall CSelectScenario::LoadKey(CSelectScenario* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `scenario`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D5AB0",
+   "kind": "function",
+   "name": "CResetGame::LoadKey",
+   "signature": "void __thiscall CResetGame::LoadKey(CResetGame* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `clear`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D5EC0",
+   "kind": "function",
+   "name": "CSetGamePlayOptions::LoadKey",
+   "signature": "void __thiscall CSetGamePlayOptions::LoadKey(CSetGamePlayOptions* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `setgameplayoptions`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D65C0",
+   "kind": "function",
+   "name": "CSetHistoryDate::LoadKey",
+   "signature": "void __thiscall CSetHistoryDate::LoadKey(CSetHistoryDate* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `date`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D6E10",
+   "kind": "function",
+   "name": "CAddPlayer::LoadKey",
+   "signature": "void __thiscall CAddPlayer::LoadKey(CAddPlayer* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `hotjoin`, `machineid`, `name`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D78C0",
+   "kind": "function",
+   "name": "CPlayerConnected::LoadKey",
+   "signature": "void __thiscall CPlayerConnected::LoadKey(CPlayerConnected* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `machineid`, `name`, `object`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D7D40",
+   "kind": "function",
+   "name": "CSetRandomSeed::LoadKey",
+   "signature": "void __thiscall CSetRandomSeed::LoadKey(CSetRandomSeed* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `count`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D8290",
+   "kind": "function",
+   "name": "CPauseGame::LoadKey",
+   "signature": "void __thiscall CPauseGame::LoadKey(CPauseGame* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `name`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2D8A00",
+   "kind": "function",
+   "name": "CAutosave::LoadKey",
+   "signature": "void __thiscall CAutosave::LoadKey(CAutosave* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `start`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2DA500",
+   "kind": "function",
+   "name": "CHourlyTickCommand::LoadKey",
+   "signature": "void __thiscall CHourlyTickCommand::LoadKey(CHourlyTickCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2DB420",
+   "kind": "function",
+   "name": "CClientPingCommand::LoadKey",
+   "signature": "void __thiscall CClientPingCommand::LoadKey(CClientPingCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `date`, `machineid`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2EC6F0",
+   "kind": "function",
+   "name": "CBookmark::LoadKey",
+   "signature": "void __thiscall CBookmark::LoadKey(CBookmark* this, CParseContext* parse, SaveToken key)",
+   "comment": "One entry on the scenario select screen. **The keys its switch names**, 7 of them, one case each: `cgm_folder`, `country`, `date`, `desc`, `icon`, `is_cgm`, `name`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x365688",
@@ -2284,6 +4210,51 @@
    "comment": "In the selected leader display, where the skill text is formatted. Hooked to show skill and max skill.",
    "confidence": "confirmed",
    "source": "BiceLib/bice.cpp:409"
+  },
+  {
+   "rva": "0x43B840",
+   "kind": "function",
+   "name": "CCounterType::LoadKey",
+   "signature": "void __thiscall CCounterType::LoadKey(CCounterType* this, CParseContext* parse, SaveToken key)",
+   "comment": "How a map counter is drawn - textures, offsets, fonts, the shield. **The keys its switch names**, 18 of them, one case each: `color1`, `color2`, `delayAfterAttackColor`, `effect`, `effectFile`, `font`, `level_scale`, `noOfFrames`, `offset`, `offset2`, `offset3`, `scale`, `shieldtype`, `size`, `textureFile`, `textureFile2`, `textureFile3`, `textureFile4`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x4450B0",
+   "kind": "function",
+   "name": "CFlagType::LoadKey",
+   "signature": "void __thiscall CFlagType::LoadKey(CFlagType* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `size`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x44B690",
+   "kind": "function",
+   "name": "CMasked3dFlagType::LoadKey",
+   "signature": "void __thiscall CMasked3dFlagType::LoadKey(CMasked3dFlagType* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `noOfFrames`, `size`, `textureFile1`, `textureFile2`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x44C030",
+   "kind": "function",
+   "name": "CMaskedSpriteType::LoadKey",
+   "signature": "void __thiscall CMaskedSpriteType::LoadKey(CMaskedSpriteType* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `effectFile`, `textureFile1`, `textureFile2`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x44E330",
+   "kind": "function",
+   "name": "CProjectionType::LoadKey",
+   "signature": "void __thiscall CProjectionType::LoadKey(CProjectionType* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 10 of them, one case each: `additative`, `duration`, `expanding`, `fadeout`, `pulsating`, `pulseLowest`, `pulseSpeed`, `size`, `spin`, `textureFile`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x44F290",
@@ -2421,6 +4392,15 @@
    "source": "reversing/FINDINGS-mapmode.md:324"
   },
   {
+   "rva": "0x483D50",
+   "kind": "function",
+   "name": "CWeatherBillboardType::LoadKey",
+   "signature": "void __thiscall CWeatherBillboardType::LoadKey(CWeatherBillboardType* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `animation`, `simple`, `textureFile`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x48D560",
    "kind": "function",
    "name": "AnnounceLoadedUnitsToScreen",
@@ -2439,6 +4419,15 @@
    "source": "BiceLib/GameClasses/CMoveCommand.hpp:68; reversing/FINDINGS-redeploy.md:114"
   },
   {
+   "rva": "0x4A40B0",
+   "kind": "function",
+   "name": "CAIStrategy::LoadKey",
+   "signature": "void __thiscall CAIStrategy::LoadKey(CAIStrategy* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 21 of them, one case each: `air_perc`, `antagonize`, `area_theatre`, `armor_bias`, `befriend`, `building_prov`, `conquer_prov`, `consolidate`, `defend_prov`, `initialized`, `land_perc`, `max_subunits`, `military_access`, `naval_perc`, `personality`, `protect`, `rival`, `static`, `threat`, `vassal`, `war_with`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x4B348A",
    "kind": "instruction",
    "name": "Patch_InterAiExpeditionaries_1",
@@ -2455,6 +4444,87 @@
    "comment": "Conditional jump turned into nop + jmp by disableInterAiExpeditionaries.",
    "confidence": "confirmed",
    "source": "BiceLib/Patches.cpp:82"
+  },
+  {
+   "rva": "0x4DF720",
+   "kind": "function",
+   "name": "CUnitPlan::LoadKey",
+   "signature": "void __thiscall CUnitPlan::LoadKey(CUnitPlan* this, CParseContext* parse, SaveToken key)",
+   "comment": "A battle plan as the save keeps it: objectives, path, stances, and both sides' power estimates. **The keys its switch names**, 16 of them, one case each: `active`, `air_stance`, `allow_hq_reorg`, `debark`, `embark`, `fallback_line`, `min`, `naval_stance`, `objective`, `objectives`, `ops_area`, `our_power`, `path`, `path2`, `stance`, `their_power`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x4E33D0",
+   "kind": "function",
+   "name": "CObjective::LoadKey",
+   "signature": "void __thiscall CObjective::LoadKey(CObjective* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `hold`, `invasion`, `priority`, `province`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x4E6CB0",
+   "kind": "function",
+   "name": "CTutorialChapter::LoadKey",
+   "signature": "void __thiscall CTutorialChapter::LoadKey(CTutorialChapter* this, CParseContext* parse, SaveToken key)",
+   "comment": "One chapter of the tutorial script. **The keys its switch names**, 9 of them, one case each: `country`, `date`, `desc`, `exclusive`, `interactive`, `page`, `save_game`, `title`, `tutorial_window`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x598960",
+   "kind": "function",
+   "name": "CDecision::LoadKey",
+   "signature": "void __thiscall CDecision::LoadKey(CDecision* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 5 of them, one case each: `ai_will_do`, `allow`, `effect`, `major`, `potential`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x599CA0",
+   "kind": "function",
+   "name": "CEffect::LoadKey",
+   "signature": "void __thiscall CEffect::LoadKey(CEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The effect half of the event script language**, inherited by 74 effect classes. The same shape as CTrigger::LoadKey with **91 cases**, except that it inlines its constructors rather than calling them. `kill_leader` is case 1532, `CKillLeaderEffect` - the one BiceLib's Hooks/EffectText hangs a tooltip on. The full table is in reversing/FINDINGS-script.md, regenerated by `switchmap.py 0x999CA0`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5A2DE0",
+   "kind": "function",
+   "name": "CAddCountryModifierEffect::LoadKey",
+   "signature": "void __thiscall CAddCountryModifierEffect::LoadKey(CAddCountryModifierEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `duration`, `name`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5A70A0",
+   "kind": "function",
+   "name": "CRelationEffect::LoadKey",
+   "signature": "void __thiscall CRelationEffect::LoadKey(CRelationEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `from`, `this`, `value`, `who`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5AB250",
+   "kind": "function",
+   "name": "CMultipleTargetEffect::LoadKey",
+   "signature": "void __thiscall CMultipleTargetEffect::LoadKey(CMultipleTargetEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `limit`. Inherited by 11 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5ABC00",
+   "kind": "function",
+   "name": "CAnyNearbyProvinceEffect::LoadKey",
+   "signature": "void __thiscall CAnyNearbyProvinceEffect::LoadKey(CAnyNearbyProvinceEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `distance`, `limit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x5ADBF0",
@@ -2493,6 +4563,51 @@
    "source": "reversing/FINDINGS-effecttext.md"
   },
   {
+   "rva": "0x5AF740",
+   "kind": "function",
+   "name": "CSetVariableEffect::LoadKey",
+   "signature": "void __thiscall CSetVariableEffect::LoadKey(CSetVariableEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `value`, `which`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5AF8E0",
+   "kind": "function",
+   "name": "CRandomEffect::LoadKey",
+   "signature": "void __thiscall CRandomEffect::LoadKey(CRandomEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `chance`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5B4ED0",
+   "kind": "function",
+   "name": "CThreatEffect::LoadKey",
+   "signature": "void __thiscall CThreatEffect::LoadKey(CThreatEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `value`, `which`, `who`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5B5DF0",
+   "kind": "function",
+   "name": "CAddDivisionEffect::LoadKey",
+   "signature": "void __thiscall CAddDivisionEffect::LoadKey(CAddDivisionEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `name`, `where`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5B8FB0",
+   "kind": "function",
+   "name": "CAllOrganisationPopularityEffect::LoadKey",
+   "signature": "void __thiscall CAllOrganisationPopularityEffect::LoadKey(CAllOrganisationPopularityEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `popularity`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
    "rva": "0x5BBD00",
    "kind": "function",
    "name": "CLoadOOBEffect::Execute",
@@ -2518,6 +4633,339 @@
    "comment": "**A BiceLib patch site.** The last call in CLoadOOBEffect::GetText, by which point the string the effect will show is built and sits at [ebp+8], with the scope at [ebp+0xC] - ebp is still the builder's frame. The stub writes the description over it and reproduces the call. Hooks/EffectText/LoadOobText.cpp.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x5BC490",
+   "kind": "function",
+   "name": "CWarEffect::LoadKey",
+   "signature": "void __thiscall CWarEffect::LoadKey(CWarEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 7 of them, one case each: `attacker_goal`, `call_ally`, `defender_goal`, `from`, `limited`, `target`, `this`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5BCC70",
+   "kind": "function",
+   "name": "CUndeclaredWarRegionEffect::LoadKey",
+   "signature": "void __thiscall CUndeclaredWarRegionEffect::LoadKey(CUndeclaredWarRegionEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `from`, `region`, `target`, `this`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5BD480",
+   "kind": "function",
+   "name": "CWarGoalEffect::LoadKey",
+   "signature": "void __thiscall CWarGoalEffect::LoadKey(CWarGoalEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `from`, `target`, `this`, `war_goal`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5BDBE0",
+   "kind": "function",
+   "name": "CPracticalEffect::LoadKey",
+   "signature": "void __thiscall CPracticalEffect::LoadKey(CPracticalEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `technology_group`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5BDFE0",
+   "kind": "function",
+   "name": "CModifySpiesEffect::LoadKey",
+   "signature": "void __thiscall CModifySpiesEffect::LoadKey(CModifySpiesEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `from`, `target`, `this`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5BF420",
+   "kind": "function",
+   "name": "CEvent::LoadKey",
+   "signature": "void __thiscall CEvent::LoadKey(CEvent* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 12 of them, one case each: `desc`, `fire_only_once`, `id`, `immediate`, `is_triggered_only`, `major`, `mean_time_to_happen`, `option`, `picture`, `subtitle`, `title`, `trigger`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5C15A0",
+   "kind": "function",
+   "name": "CEventOption::LoadKey",
+   "signature": "void __thiscall CEventOption::LoadKey(CEventOption* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `ai_chance`, `name`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5C1890",
+   "kind": "function",
+   "name": "CEventScope::LoadKey",
+   "signature": "void __thiscall CEventScope::LoadKey(CEventScope* this, CParseContext* parse, SaveToken key)",
+   "comment": "The scope an event fires in - the country, province or rebel faction it is about, and the seed for its random numbers. **The keys its switch names**, 6 of them, one case each: `country`, `from_country`, `from_province`, `province`, `rebel_faction`, `seed`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5C4A00",
+   "kind": "function",
+   "name": "CMTTHModifier::LoadKey",
+   "signature": "void __thiscall CMTTHModifier::LoadKey(CMTTHModifier* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `factor`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5C4BF0",
+   "kind": "function",
+   "name": "CMeanTimeToHappen::LoadKey",
+   "signature": "void __thiscall CMeanTimeToHappen::LoadKey(CMeanTimeToHappen* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The MTTH grammar** every event and decision is timed by: a base in `days`, `months` or `years`, then `modifier` blocks with a `factor` each. **The keys its switch names**, 5 of them, one case each: `days`, `factor`, `modifier`, `months`, `years`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5C4F20",
+   "kind": "function",
+   "name": "CAIMTTHChance::LoadKey",
+   "signature": "void __thiscall CAIMTTHChance::LoadKey(CAIMTTHChance* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `factor`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5C5410",
+   "kind": "function",
+   "name": "CMission::LoadKey",
+   "signature": "void __thiscall CMission::LoadKey(CMission* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 6 of them, one case each: `abort`, `allow`, `chance`, `effect`, `success`, `type`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5C7A20",
+   "kind": "function",
+   "name": "CActiveMission::LoadKey",
+   "signature": "void __thiscall CActiveMission::LoadKey(CActiveMission* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 5 of them, one case each: `owner`, `parent_scope`, `scope`, `start_date`, `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5C8D10",
+   "kind": "function",
+   "name": "CTrigger::LoadKey",
+   "signature": "void __thiscall CTrigger::LoadKey(CTrigger* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The whole trigger half of the event script language**, and the loader all 157 trigger classes inherit. One switch over the key's save token with **153 cases**, each building the class that implements that keyword - `CAlwaysTrigger` for `always`, `CAmountOfBrigadesTrigger` for `amount_of_brigades`. A key that is no keyword falls through to a province id, then an ideology, then the technology database, which is how `divisonal_command_structure = 1` is a condition; anything else is a parse error and the condition is dropped. The full table is in reversing/FINDINGS-script.md, regenerated by `switchmap.py 0x9C8D10`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5DDE50",
+   "kind": "function",
+   "name": "CRelationTrigger::LoadKey",
+   "signature": "void __thiscall CRelationTrigger::LoadKey(CRelationTrigger* this, CParseContext* parse, SaveToken key)",
+   "comment": "The `relation` trigger's own grammar - whose relation, with whom, and the value. **The keys its switch names**, 4 of them, one case each: `from`, `this`, `value`, `who`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5E82B0",
+   "kind": "function",
+   "name": "CHasCasusBelliTrigger::LoadKey",
+   "signature": "void __thiscall CHasCasusBelliTrigger::LoadKey(CHasCasusBelliTrigger* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `actor`, `from`, `this`, `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5F0260",
+   "kind": "function",
+   "name": "CVariableTrigger::LoadKey",
+   "signature": "void __thiscall CVariableTrigger::LoadKey(CVariableTrigger* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `value`, `which`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5F2CC0",
+   "kind": "function",
+   "name": "CThreatTrigger::LoadKey",
+   "signature": "void __thiscall CThreatTrigger::LoadKey(CThreatTrigger* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `value`, `which`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5FA760",
+   "kind": "function",
+   "name": "CAllOrganisationPopularityTrigger::LoadKey",
+   "signature": "void __thiscall CAllOrganisationPopularityTrigger::LoadKey(CAllOrganisationPopularityTrigger* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `popularity`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x606020",
+   "kind": "function",
+   "name": "CSpyMissionCountTrigger::LoadKey",
+   "signature": "void __thiscall CSpyMissionCountTrigger::LoadKey(CSpyMissionCountTrigger* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `type`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x609930",
+   "kind": "function",
+   "name": "CExecuteDecisionCommand::LoadKey",
+   "signature": "void __thiscall CExecuteDecisionCommand::LoadKey(CExecuteDecisionCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `decision`, `scope`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x60C260",
+   "kind": "function",
+   "name": "CSelectEventOptionCommand::LoadKey",
+   "signature": "void __thiscall CSelectEventOptionCommand::LoadKey(CSelectEventOptionCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `event`, `option`, `scope`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x60D5C0",
+   "kind": "function",
+   "name": "CDiplomacy::LoadKey",
+   "signature": "void __thiscall CDiplomacy::LoadKey(CDiplomacy* this, CParseContext* parse, SaveToken key)",
+   "comment": "The save's diplomacy block - one key per kind of standing agreement. **The keys its switch names**, 9 of them, one case each: `alliance`, `casus_belli`, `guarantee`, `history`, `influence`, `nap`, `trade`, `vassal`, `warning`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x60E690",
+   "kind": "function",
+   "name": "CDiplomaticAction::LoadKey",
+   "signature": "void __thiscall CDiplomaticAction::LoadKey(CDiplomaticAction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 6 of them, one case each: `actor`, `date`, `last_command_date`, `recipient`, `type`, `value`. Inherited by 15 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x618C20",
+   "kind": "function",
+   "name": "CWarGoalBaseAction::LoadKey",
+   "signature": "void __thiscall CWarGoalBaseAction::LoadKey(CWarGoalBaseAction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `war_goal`. Inherited by 3 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x62AEA0",
+   "kind": "function",
+   "name": "CCallAllyAction::LoadKey",
+   "signature": "void __thiscall CCallAllyAction::LoadKey(CCallAllyAction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `versus`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x638F60",
+   "kind": "function",
+   "name": "CTradeAction::LoadKey",
+   "signature": "void __thiscall CTradeAction::LoadKey(CTradeAction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `trade`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x63B300",
+   "kind": "function",
+   "name": "CSendExpeditionaryForceAction::LoadKey",
+   "signature": "void __thiscall CSendExpeditionaryForceAction::LoadKey(CSendExpeditionaryForceAction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `action`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x63D600",
+   "kind": "function",
+   "name": "CLicenceTechnologyAction::LoadKey",
+   "signature": "void __thiscall CLicenceTechnologyAction::LoadKey(CLicenceTechnologyAction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `definition`, `money`, `parallel`, `serial`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x643F10",
+   "kind": "function",
+   "name": "CJoinFactionGoalAction::LoadKey",
+   "signature": "void __thiscall CJoinFactionGoalAction::LoadKey(CJoinFactionGoalAction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `leader`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x6465D0",
+   "kind": "function",
+   "name": "CRelation::LoadKey",
+   "signature": "void __thiscall CRelation::LoadKey(CRelation* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 5 of them, one case each: `cancel`, `end_date`, `first`, `second`, `start_date`. Inherited by 9 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x646F70",
+   "kind": "function",
+   "name": "CNap::LoadKey",
+   "signature": "void __thiscall CNap::LoadKey(CNap* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `their_power`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x647910",
+   "kind": "function",
+   "name": "CCasusBelli::LoadKey",
+   "signature": "void __thiscall CCasusBelli::LoadKey(CCasusBelli* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x648190",
+   "kind": "function",
+   "name": "CDiplomacyStatus::LoadKey",
+   "signature": "void __thiscall CDiplomacyStatus::LoadKey(CDiplomacyStatus* this, CParseContext* parse, SaveToken key)",
+   "comment": "What two countries have between them - access, debt, threat, the occupation policy. **The keys its switch names**, 10 of them, one case each: `dailyrepay`, `debt`, `debtaction_action`, `last_send_diplomat`, `last_war`, `military_access`, `next_wargoal_date`, `occupation_policy`, `threat`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x64C2C0",
+   "kind": "function",
+   "name": "CShareTechnologyAction::LoadKey",
+   "signature": "void __thiscall CShareTechnologyAction::LoadKey(CShareTechnologyAction* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `technology`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x64CBA0",
+   "kind": "function",
+   "name": "CTradeRoute::LoadKey",
+   "signature": "void __thiscall CTradeRoute::LoadKey(CTradeRoute* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 5 of them, one case each: `convoy`, `from`, `to`, `trade_from`, `trade_to`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x64E610",
+   "kind": "function",
+   "name": "CWar::LoadKey",
+   "signature": "void __thiscall CWar::LoadKey(CWar* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 11 of them, one case each: `action`, `attacker`, `defender`, `history`, `limited`, `name`, `original_attacker`, `original_defender`, `revolutionary_war`, `target`, `war_goal`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x64F220",
@@ -2655,6 +5103,33 @@
    "source": "reversing/CLASSES.md:1354"
   },
   {
+   "rva": "0x67A7B0",
+   "kind": "function",
+   "name": "ReportUnknownKey",
+   "signature": "void __cdecl ReportUnknownKey(CParseContext* parse@EDI)",
+   "comment": "**It does not log.** Every loader calls this for a key it has no case for, and all it does is build the text `\"Unexpected\"` plus the key, and **append it to the list at `CParseContext +4`** - first at +4, last at +8, count at +0xC, nodes linked through +0x40. Whether anything is ever written depends on somebody asking that list for its contents, and for the `common/`, `units/`, `history/`, `events/` and `decisions/` loaders **nobody does**: the parse context's destructor frees the nodes and the messages die with it. See CParseContext::MessagesAsText and CParseContext::ReportMessages.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x67A960",
+   "kind": "function",
+   "name": "ReportParseError",
+   "signature": "void __cdecl ReportParseError(CParseContext* parse@ESI)",
+   "comment": "The other half of ReportUnknownKey: a key that *is* known but whose value will not parse. Sets a byte at `[parse +0x35C] +4`, which is what the loader checks afterwards. The register is **inferred** from the call sites, not confirmed by one that sets it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x67AB40",
+   "kind": "function",
+   "name": "CParseContext::MessagesAsText",
+   "signature": "Hoi3CString* __thiscall CParseContext::MessagesAsText(CParseContext* this, Hoi3CString* out)",
+   "comment": "Walks the message list at `+4` and joins it into one string, a newline after each. **The only reader the list has**, and it has exactly one caller, CParseContext::ReportMessages.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x67AC60",
    "kind": "function",
    "name": "ParseSkipValue",
@@ -2673,22 +5148,76 @@
    "source": "BiceLib/GameClasses/CPersistent.hpp:72"
   },
   {
+   "rva": "0x67AFB0",
+   "kind": "function",
+   "name": "ParseString",
+   "signature": "void __cdecl ParseString(CParseContext* parse@ECX, Hoi3CString* out)",
+   "comment": "Reads a quoted or bare string into an Hoi3CString - CCasusBelliType's `war_name`, `country_desc` and `prov_desc` all go through it. The register is **inferred**.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x67B250",
+   "kind": "function",
+   "name": "ParseObjectId",
+   "signature": "void __cdecl ParseObjectId(CParseContext* parse, int* pair)",
+   "comment": "Reads the `{ type = N id = N }` pair the save writes for an object reference, into two ints. CReferenceObject::LoadKey calls it with `this + 8` for its `id` key, which is why CMinister keeps `id_type` at 0x8 and `id` at 0xC.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x67B410",
    "kind": "function",
    "name": "ParseBool",
    "signature": "void __stdcall ParseBool(CParseContext* parse@EAX, bool* out@stack:4)",
-   "comment": "**The shared yes/no parser.** Compares the parse context's value text against `\"yes\"` and `\"no\"` and writes 1 or 0; anything else goes to the parse error at `0x67A960`. Takes the parse context in eax, `ret 4`. The name is BiceLib's.",
+   "comment": "**The shared yes/no parser.** Compares the value text against `\"yes\"` and `\"no\"` and writes 1 or 0; anything else goes to ReportParseError. Takes the parse context in eax, `ret 4`.",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CGovernment.hpp"
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x67B470",
+   "kind": "function",
+   "name": "ParseInt",
+   "signature": "void __cdecl ParseInt(CParseContext* parse@ECX, int* out@EAX)",
+   "comment": "`sscanf(value.text, \"%i\", out)`, and ReportParseError if that fails. **Confirmed** at `0x21664D`, where CCasusBelliType's `months` case puts the parse context in ecx and `this + 0x1F4` in eax. This and ParseBool are how most of a loader's numbers are read.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x67B8D0",
+   "kind": "function",
+   "name": "ParsePoint",
+   "signature": "void __cdecl ParsePoint(CParseContext* parse@EAX, void* out)",
+   "comment": "Reads an `{ x = .. y = .. }` block. Checks the value is a block (`[parse +0x1C] +0xC == 3`) and reports a parse error if not. CAlignment's only key, `position`, is one of these. The register is **inferred**.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x67BAF0",
+   "kind": "function",
+   "name": "CParseContext::FreeMessages",
+   "signature": "void __cdecl CParseContext::FreeMessages(void* list)",
+   "comment": "Walks the message list freeing each node and its two strings, then clears first, last and count. The destructor calls it, and **nothing is logged on the way out** - which is why the mod's `common/` files never produce a line however many unknown keys they carry.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x67BC80",
+   "kind": "function",
+   "name": "CCommand::LoadKey",
+   "signature": "void __thiscall CCommand::LoadKey(CCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 3 of them, one case each: `identity`, `istargetasynchronous`, `tickstamp`. Inherited by 4 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x67C050",
    "kind": "function",
-   "name": "CPersistent::Load",
-   "signature": "void __thiscall CPersistent::Load(CPersistent* this, CParseContext* parse)",
-   "comment": "Slot 3 of CPersistent: reads key and value pairs until `}` or the end of input, calling slot 4 with each key's token id, and calls slot 5 once the block is done. 738 of the 754 CPersistent tables hold this body. Its error path names the source file, persistent.cpp, which is the only place the executable says what this class is.",
+   "name": "CParseContext::ReportMessages",
+   "signature": "void __stdcall CParseContext::ReportMessages(CParseContext* parse@stack:4)",
+   "comment": "**The only thing that ever writes a parse message out.** If the count at `+0xC` is zero it returns; otherwise it joins the messages and logs them under `persistent.cpp` with the prefix `Error: \"`. **Seven callers**, and the loaders for `common/` are not among them: CGameState::LoadKey (a savegame), CUnitPlan::LoadKey, CSetPlanObjectivesCommand::LoadKey, the bookmarks loader at `0x1CBB0`, and three DLC and competitive-mode paths. So a bad key in a mod's data file is dropped in total silence, and one in a savegame is not.",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CPersistent.hpp:48"
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x682490",
@@ -2736,6 +5265,15 @@
    "source": "reversing/FINDINGS-effecttext.md"
   },
   {
+   "rva": "0x69D720",
+   "kind": "function",
+   "name": "CReferenceObject::LoadKey",
+   "signature": "void __thiscall CReferenceObject::LoadKey(CReferenceObject* this, CParseContext* parse, SaveToken key)",
+   "comment": "**One key, `id` (token 11)**, read as an object id pair into `this + 8`; everything else goes straight to ReportUnknownKey. Nineteen classes inherit it, CMinister and CRebelFaction among them, which is where their `id_type` at 0x8 and `id` at 0xC come from.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x69DA00",
    "kind": "function",
    "name": "FindPersistentById",
@@ -2752,6 +5290,42 @@
    "comment": "From a tick: (days - 1) % 7.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-autosave.md:81"
+  },
+  {
+   "rva": "0x6B45E0",
+   "kind": "function",
+   "name": "CVersion::LoadKey",
+   "signature": "void __thiscall CVersion::LoadKey(CVersion* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 4 of them, one case each: `data`, `executable`, `minValue`, `name`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x6CF500",
+   "kind": "function",
+   "name": "CSessionConfiguration::LoadKey",
+   "signature": "void __thiscall CSessionConfiguration::LoadKey(CSessionConfiguration* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 7 of them, one case each: `address`, `basic_type`, `port`, `session_name`, `status`, `string_address`, `type`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x6F9640",
+   "kind": "function",
+   "name": "CProvinceType::LoadKey",
+   "signature": "void __thiscall CProvinceType::LoadKey(CProvinceType* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 1 of them, one case each: `norefcount`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x6F9CF0",
+   "kind": "function",
+   "name": "CEU3BitmapFont::LoadKey",
+   "signature": "void __thiscall CEU3BitmapFont::LoadKey(CEU3BitmapFont* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The keys its switch names**, 6 of them, one case each: `color`, `color_override`, `colorcodes`, `effect`, `fontName`, `name`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x705080",

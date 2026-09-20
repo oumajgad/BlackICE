@@ -69,32 +69,46 @@ NOTES = {
                  "which is CMinisterType",
     "CBuilding": "`buildings.txt`, the worked example the method came from",
     "CTerrain": "mostly done; `movement_cost`, `temperature` and `precipitation` went in last",
-    "CRebelType": "`rebel_types.txt`; partisan behaviour",
-    "CCasusBelliType": "`cb_types.txt`",
-    "CCombatTactic": "`combat_tactics.txt`; ties into the combat work already done",
-    "CCounterType": "the map counters",
-    "CDefines": "every constant the game reads; BiceLib has a handful in CDefines.hpp",
-    "CIdeologyGroup": "`ideologies.txt`, and it holds a `CList<CIdeology*>` at +8 by RTTI",
     "CModifier": "one loader shared by `CProvinceModifier`, `CStaticModifier`, "
                  "`CFactionModifier` and two more - `static_modifiers.txt` and "
                  "`event_modifiers.txt`, which reach everything",
-    "CScenario": "the scenario load rather than a `common/` file",
     "CMap": "the map load rather than a `common/` file",
-    "CDirectorySettings": "the path table the loader fills",
     "CGainableTrait": "`gainable_traits.txt`; its trigger grammar belongs to CTrigger, unread",
     "CMinisterType": "`minister_types.txt`, a CModifier",
     "CIdeology": "one ideology, a CModifier; its key and index are read",
+    "CCountryHistory": "**read**: `history/countries`, where a date is a key. See "
+                       "GameClasses/CCountryHistory.hpp",
+    "CProvinceHistory": "**read**: `history/provinces`, the same date-block shape as "
+                        "CCountryHistory. Its handler names four keys; the rest are buildings",
+    "CCombatTactic": "**read**: `combat_tactics.txt`, 9 keys and the file uses exactly those. "
+                     "See FINDINGS-definitions.md",
+    "CCasusBelliType": "**read**: `cb_types.txt`, 28 keys - the `po_*` peace options among them",
+    "CRebelType": "**read**: `rebel_types.txt`, 17 keys. `unit_transfer` is not one, though the "
+                  "file uses it - see the mod's bugs.md",
+    "CIdeologyGroup": "**read**: `ideologies.txt`. Two keys of its own; every other key in a "
+                      "group is an ideology's name",
+    "CBookmark": "**read**: `bookmarks.txt`, 7 keys",
+    "CCounterType": "**read**: how a map counter is drawn, 18 keys",
+    "CDefines": "**read**: the nine top-level blocks of `defines.lua`",
+    "CScenario": "**read**: a scenario - selectable countries, camera, victory conditions",
+    "CMeanTimeToHappen": "**read**: the MTTH grammar every event and decision is timed by",
+    "CDiplomacy": "**read**: the save's diplomacy block, one key per kind of agreement",
+    "CUnitPlan": "**read**: a battle plan as the save keeps it",
+    "CWeatherFront": "**read**: a weather system - where it is and where it is going",
+    "CTerrainGraphical": "**read**: how a terrain type is drawn. `CTerrain` is what it does",
+    "CDirectorySettings": "**read**: the path table; `replace` and `extend` are how a mod says "
+                          "whether its folder replaces the base game's",
+    "CUndeclaredWar": "**read**: the save's record of a war nobody declared",
+    "CRelationTrigger": "**read**: the `relation` trigger's own grammar",
     "CGovernmentPosition": "one government position, a CModifier; its key and index are read",
-    "CTrigger": "**the trigger grammar**, inherited by every trigger class there is - "
-                "including the one `CGainableTrait` needs",
-    "CEffect": "**the effect grammar**, inherited by every effect class - the other half of "
-               "what an event script can say",
-    "CTechStatistics": "the technology statistics the ledger draws",
+    "CTrigger": "**read**: 152 keywords, one class each - the whole trigger half of the event "
+                "script language. See FINDINGS-script.md",
+    "CEffect": "**read**: 91 keywords, one class each - the effect half. See FINDINGS-script.md",
+    "CTechStatistics": "**read**: the 47 country-wide effects a technology can have, one "
+                       "case each. See GameClasses/CCountryHistory.hpp",
     "CTutorialChapter": "the tutorial script; plumbing",
     "CRule": "plumbing",
-    "CTerrainGraphical": "how terrain is drawn, not what it does - `CTerrain` is that",
     "CEU3SoundConfigurator": "plumbing",
-    "CMeanTimeToHappen": "**the MTTH grammar** that events and decisions are timed by",
     "CSelectionGroupReader": "plumbing",
     "CEU3Application": "plumbing: the settings file",
 }
@@ -109,8 +123,32 @@ def ancestors(rtti, name, seen=None):
     return seen
 
 
+def primaryChain(rtti, name):
+    """
+    The classes a class shares its first vftable with.
+
+    **A CPersistent slot only means what it means on this chain.** CGameSetup reaches
+    CPersistent through a secondary base and is really a CFrontEndView, so slot 4 of its
+    first vftable is a view's method, not LoadKey - and reading it as a loader put a UI
+    function at the top of the ranked list as the biggest unread grammar in the game.
+    """
+    chain = [name]
+    while len(chain) < 16:
+        bases = [b for b in rtti.get(chain[-1], {}).get("bases") or [] if b["offset"] == 0]
+        if not bases:
+            break
+        chain.append(bases[0]["name"])
+    return chain
+
+
 def loaderSize(image, address):
-    """How many bytes of grammar a loader carries: up to its trailing int3 padding."""
+    """
+    How many bytes of grammar a loader carries: up to its trailing int3 padding.
+
+    **A rough figure, and it can be far too big.** Where the next function follows with no
+    padding between them the scan runs straight on into it - `CHistoryContainer::LoadKey`
+    measures 4596 bytes and is about sixty lines. Use it to rank, never to conclude.
+    """
     data = image.read(address, 0x2600)
     match = re.search(b"\xcc\xcc\xcc\xcc", data)
     return match.start() if match else 0x2600
@@ -143,10 +181,17 @@ def collect():
     merged = {s["name"]: len(s.get("fields") or []) for s in findings["structs"]}
 
     functions = collections.Counter()
+    loadersRead = set()
     for entry in project["addresses"]:
         name = entry.get("name") or ""
         if entry.get("kind") == "function" and "::" in name:
-            functions[name.split("::")[0]] += 1
+            owner, member = name.split("::")[0], name.split("::")[-1]
+            functions[owner] += 1
+            # A loader we chose to name and comment is one somebody read through.
+            # LoadEntry counts too: the two histories keep their grammar there, because
+            # their LoadKey is CHistoryContainer's and only handles the dates.
+            if member in ("LoadKey", "LoadEntry") and entry.get("source"):
+                loadersRead.add(owner)
 
     headers = documented()
     census = {}
@@ -170,7 +215,7 @@ def collect():
         tables = [v for v in record.get("vftables") or [] if v["object_offset"] == 0]
         slots = tables[0]["slots"] if tables else 0
         loader, grammar = None, 0
-        persistent = "CPersistent" in ancestors(rtti, name)
+        persistent = "CPersistent" in primaryChain(rtti, name)
         if kind is None:
             kind = "live"
         if persistent and tables and slots >= 5:
@@ -181,7 +226,7 @@ def collect():
                 grammar = loaderSize(image, loadKey)
             if kind == "live":
                 kind = "file" if saveContents == EMPTY_SAVE_CONTENTS else "save"
-        elif persistent and kind == "live":
+        elif "CPersistent" in ancestors(rtti, name) and kind == "live":
             kind = "save"
 
         entry = ours.get(name) or {}
@@ -199,6 +244,7 @@ def collect():
             "loader": loader,
             "grammar": grammar,
             "header": headers.get(name),
+            "loader_read": name in loadersRead,
             "live": census.get(name, 0),
         })
     rows.sort(key=lambda r: r["name"])
@@ -219,6 +265,13 @@ def status(row):
     """The marks CLASSES.md already uses, so the two documents say the same thing."""
     if row["mine"] >= ENOUGH:
         return "read"
+    # **Knowing a class's grammar is not knowing its layout.** definitions.py reads the
+    # keys out of a loader's switch for 263 classes, which says exactly what a file may
+    # contain and nothing at all about where any of it lands in the object. That deserves
+    # its own mark rather than being folded into `read`, which would claim 274 classes
+    # were understood when a dozen of them have not one named field.
+    if row["loader_read"]:
+        return "keys"
     if row["mine"]:
         return "part"
     if row["lua"]:
@@ -264,7 +317,10 @@ def write(rows, censusTaken):
         "| mark | means |",
         "| --- | --- |",
         "| `read` | at least %d of its fields have been named by hand - an account of the "
-        "class rather than a toe-hold. It does **not** mean every field is known |" % ENOUGH,
+        "object's layout. It does **not** mean every field is known |" % ENOUGH,
+        "| `keys` | **its loader's grammar is known** - every key the file or save block may "
+        "contain, out of the switch that parses them - but its fields are not. See "
+        "FINDINGS-definitions.md |",
         "| `part` | one to %d fields named by hand |" % (ENOUGH - 1),
         "| `named` | only what the Lua API gave away - an accessor per field, free and certain "
         "about the offset, silent about the meaning |",
@@ -282,7 +338,7 @@ def write(rows, censusTaken):
         "| | classes |",
         "| --- | --- |",
     ]
-    for mark in ("read", "part", "named", "RTTI"):
+    for mark in ("read", "keys", "part", "named", "RTTI"):
         lines.append("| `%s` | %d |" % (mark, counts.get(mark, 0)))
     lines += ["| **all** | **%d** |" % len(rows), ""]
 
@@ -294,8 +350,11 @@ def write(rows, censusTaken):
         "script language for the rest. It is inherited, so one loader can belong to 157 classes",
         "and reading it is still one job.",
         "",
-        "Ranked by the bytes of the loader, which is a rough count of keys, with the ones whose",
-        "owner is already read left out:",
+        "**Every one of them has been read.** The keys are in FINDINGS-definitions.md, and the",
+        "two big ones - `CTrigger` and `CEffect` - in FINDINGS-script.md. Anything that turns up",
+        "here again is a loader `switchmap.py` has newly learned to see, or one somebody has",
+        "since un-named; it is ranked by the bytes of the loader, which is a rough figure and",
+        "only that, because where a loader abuts the next function the count runs into it.",
         "",
     ]
     # One row per loader, not per class. A LoadKey is inherited, so 157 trigger classes
@@ -320,7 +379,7 @@ def write(rows, censusTaken):
         # The owner is what says whether this loader has been read. Its CNull sibling
         # shares the loader and will never be read, so judging the whole group would put
         # every finished class back on the list.
-        if status(owner) == "read" or owner["kind"] in ("interface", "null"):
+        if status(owner) in ("read", "keys") or owner["kind"] in ("interface", "null"):
             continue
         note = next((NOTES[r["name"]] for r in here if r["name"] in NOTES), "")
         if not note and len(here) > 10:
@@ -334,8 +393,15 @@ def write(rows, censusTaken):
         shown += 1
         if shown == 22:
             break
+    if not shown:
+        lines += ["*(nothing - every loader the game has is read.)*", ""]
     lines += ["",
-              "The method is in README.md, *How to read one*, with the five traps that cost the",
+              "**What is left is layout, not grammar.** Knowing every key a file may contain",
+              "says nothing about where any of it lands in the object, and that is what the",
+              "`keys` mark below means. The classes worth taking further are the ones with a",
+              "big `live` count and no fields named - those are where the memory is.",
+              "",
+              "The method is in README.md, *How to read one*, with the traps that cost the",
               "most time.", ""]
 
     SECTIONS = [
@@ -383,8 +449,8 @@ def main():
         return 0 if current == text else 1
     io.open(OUT, "w", encoding="utf-8", newline="\n").write(text)
     counts = collections.Counter(status(r) for r in rows)
-    print("wrote %s: %d classes, %d read, %d part, %d from the Lua API alone"
-          % (OUT, len(rows), counts["read"], counts["part"], counts["named"]))
+    print("wrote %s: %d classes, %d read, %d with their grammar known, %d part"
+          % (OUT, len(rows), counts["read"], counts["keys"], counts["part"]))
     return 0
 
 
