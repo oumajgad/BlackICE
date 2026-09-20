@@ -33,7 +33,8 @@
 #include <Hooks/CNavyHooks.hpp>
 #include <Hooks/HookedPatches.hpp>
 #include <GameState/AutoSave.hpp>
-#include <Hooks/EffectTextHooks.hpp>
+#include <Hooks/EffectText/KillLeaderText.hpp>
+#include <Hooks/EffectText/LoadOobText.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
@@ -788,14 +789,14 @@ __declspec(dllexport) int seaTerrainColourInSimplifiedMapMode(lua_State* L)
  *
  * Switched on from Lua rather than at startup because it is a change to what the game
  * displays, like every other hook here - and because the localisation has to ask for
- * the variables before any of it shows. See Hooks/EffectTextHooks.hpp.
+ * the variables before any of it shows. See Hooks/EffectText/KillLeaderText.hpp.
  */
 __declspec(dllexport) int activateKillLeaderVariables(lua_State* L)
 {
-    const bool ok = Hooks::EffectText::installKillLeader();
+    const bool ok = Hooks::EffectText::KillLeader::install();
     if (!ok) {
         ERROR_OUT(printf("Hook 'activateKillLeaderVariables' failed: %s \n",
-            Hooks::EffectText::status()));
+            Hooks::EffectText::KillLeader::status()));
     }
     else {
         INFO_OUT(printf("Hook 'activateKillLeaderVariables' succeeded \n"));
@@ -810,14 +811,14 @@ __declspec(dllexport) int activateKillLeaderVariables(lua_State* L)
  * leaders it takes, with what each of those commands now.
  *
  * The file is read off disk, because nothing about it is in memory until the effect
- * fires. See Hooks/EffectTextHooks.hpp and GameState/OobFile.hpp.
+ * fires. See Hooks/EffectText/LoadOobText.hpp and GameState/OobFile.hpp.
  */
 __declspec(dllexport) int activateLoadOobDetails(lua_State* L)
 {
-    const bool ok = Hooks::EffectText::installLoadOob();
+    const bool ok = Hooks::EffectText::LoadOob::install();
     if (!ok) {
         ERROR_OUT(printf("Hook 'activateLoadOobDetails' failed: %s \n",
-            Hooks::EffectText::status()));
+            Hooks::EffectText::LoadOob::status()));
     }
     else {
         INFO_OUT(printf("Hook 'activateLoadOobDetails' succeeded \n"));
