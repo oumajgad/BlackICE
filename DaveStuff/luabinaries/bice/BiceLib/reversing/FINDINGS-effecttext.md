@@ -89,7 +89,7 @@ which is what makes it safe to pass a string BiceLib owns.
 
 ## What BiceLib does with it
 
-Three more variables on that one effect, in `Hooks/EffectTextHooks.cpp`:
+Three more variables on that one effect, in `Hooks/EffectText/KillLeaderText.cpp`:
 
 | | |
 | --- | --- |
@@ -213,7 +213,7 @@ that leader's starting rank in `history/leaders`:
 | theatre | 9 | 8 | 6 | 16 |
 
 So the rule is David's, chosen with those numbers in front of him, and it is meant to
-fire on the 613. It lives in one table, `rankFor` in `Hooks/EffectTextHooks.cpp`.
+fire on the 613. It lives in one table, `rankFor` in `Hooks/EffectText/LoadOobText.cpp`.
 
 ### What this does not cover
 
