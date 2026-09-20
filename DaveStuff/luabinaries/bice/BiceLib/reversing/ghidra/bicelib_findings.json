@@ -13674,14 +13674,116 @@
    ]
   },
   {
-   "name": "CGovernment",
-   "size": null,
+   "name": "CList<CIdeology*>",
+   "size": 16,
    "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "CListNode<CIdeology*>*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "CListNode<CIdeology*>*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
+   "name": "CGovernment",
+   "size": 128,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "persistent_meta",
+     "type": "int",
+     "comment": "0x18D (BiceLib/GameClasses/CModifier.hpp:29), inherited from CModifier"
+    },
+    {
+     "offset": 24,
+     "name": "values",
+     "type": "CModifierValues*",
+     "comment": "the values, one entry per ModifierType and indexed by it; CModifier::GetValue reads [this+0x18][type*8]. Typed as a structure of named entries so a read is a field rather than an index (BiceLib/GameClasses/CModifier.hpp:45), inherited from CModifier"
+    },
+    {
+     "offset": 44,
+     "name": "duration",
+     "type": "int",
+     "comment": "`duration`, token 108 - atoi of the value text, unscaled. **Read live**: 18 of 18, and 0 on the ten governments that do not declare it (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 48,
+     "name": "ideologies",
+     "type": "CList<CIdeology*>",
+     "comment": "**the ideologies this government is acceptable to**, appended by LoadKey a node at a time where the value is `yes`. **Read live**: the names in it are exactly the file's, 18 of 18 (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 64,
+     "name": "token",
+     "type": "SaveToken",
+     "comment": "**the government's own key as a save token**, registered at construction by RegisterDynamicToken. **Read live** against the running game's table: 2451 is `nogovernment` and 2452 to 2469 are the eighteen in file order (BiceLib/GameClasses/CGovernment.hpp)"
+    },
     {
      "offset": 68,
      "name": "key",
      "type": "Hoi3CString",
      "comment": "the government's key. **Read live**: eighteen in this mod, from absolute_monarchy to socialist_republic (BiceLib/GameClasses/CRebelFaction.hpp:101)"
+    },
+    {
+     "offset": 96,
+     "name": "index",
+     "type": "int",
+     "comment": "**which government this is**, the constructor's third argument. **Read live**: 1 to 18 in file order, because index 0 belongs to CNullGovernment (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 100,
+     "name": "valid_for_new_country",
+     "type": "bool",
+     "comment": "`valid_for_new_country`, token 1715. **The constructor defaults it to 1** and BlackICE never sets it, so it is 1 on all eighteen (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 104,
+     "name": "elected_positions",
+     "type": "uint32_t*",
+     "comment": "**which government positions an election changes**, a bitset numbered by each CGovernmentPosition's own index - so bit 0 is the null position and is never set. These three are its block vector; twelve bits fit the single 4 byte block. **Read live**: the bits are the file's, 18 of 18 (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 108,
+     "name": "elected_positions_end",
+     "type": "uint32_t*",
+     "comment": " (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 112,
+     "name": "elected_positions_capacity",
+     "type": "uint32_t*",
+     "comment": " (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 120,
+     "name": "elected_position_count",
+     "type": "int",
+     "comment": "how many bits the set has - **read live** 12 on every government, the size of the position database including its null (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 124,
+     "name": "election",
+     "type": "bool",
+     "comment": "`election`, token 1736, through the shared yes/no parser. **Read live**: 18 of 18, and the constructor defaults it to 0 (BiceLib/GameClasses/CGovernment.hpp)"
     }
    ]
   },
@@ -13692,8 +13794,8 @@
     {
      "offset": 48,
      "name": "Key",
-     "type": "CString",
-     "comment": "read by CGovernmentPosition::GetKey"
+     "type": "Hoi3CString",
+     "comment": "read by CGovernmentPosition::GetKey\nBiceLib: key (Hoi3CString) - the key, the first field after the CModifier base - **read live** `head_of_state` and `national_socialist` among them (BiceLib/GameClasses/CGovernment.hpp)"
     },
     {
      "offset": 76,
@@ -13706,6 +13808,18 @@
      "name": "isChangeable",
      "type": "bool",
      "comment": "read by CGovernmentPosition::IsChangeable"
+    },
+    {
+     "offset": 4,
+     "name": "persistent_meta",
+     "type": "int",
+     "comment": "0x18D (BiceLib/GameClasses/CModifier.hpp:29), inherited from CModifier"
+    },
+    {
+     "offset": 24,
+     "name": "values",
+     "type": "CModifierValues*",
+     "comment": "the values, one entry per ModifierType and indexed by it; CModifier::GetValue reads [this+0x18][type*8]. Typed as a structure of named entries so a read is a field rather than an index (BiceLib/GameClasses/CModifier.hpp:45), inherited from CModifier"
     }
    ]
   },
@@ -13800,14 +13914,32 @@
     {
      "offset": 48,
      "name": "Key",
-     "type": "CString",
-     "comment": "read by CIdeology::GetKey"
+     "type": "Hoi3CString",
+     "comment": "read by CIdeology::GetKey\nBiceLib: key (Hoi3CString) - the key, the first field after the CModifier base - **read live** `head_of_state` and `national_socialist` among them (BiceLib/GameClasses/CGovernment.hpp)"
     },
     {
      "offset": 80,
      "name": "Group",
      "type": "CIdeologyGroup const*",
      "comment": "read by CIdeology::GetGroup"
+    },
+    {
+     "offset": 4,
+     "name": "persistent_meta",
+     "type": "int",
+     "comment": "0x18D (BiceLib/GameClasses/CModifier.hpp:29), inherited from CModifier"
+    },
+    {
+     "offset": 24,
+     "name": "values",
+     "type": "CModifierValues*",
+     "comment": "the values, one entry per ModifierType and indexed by it; CModifier::GetValue reads [this+0x18][type*8]. Typed as a structure of named entries so a read is a field rather than an index (BiceLib/GameClasses/CModifier.hpp:45), inherited from CModifier"
+    },
+    {
+     "offset": 76,
+     "name": "index",
+     "type": "int",
+     "comment": "**its index in its database**, and the bit number CGovernment's `elected_positions` uses. **Read live**: 0 to 11 and 0 to 10, 0 being the null object (BiceLib/GameClasses/CGovernment.hpp)"
     }
    ]
   },
@@ -14208,6 +14340,36 @@
    ]
   },
   {
+   "name": "CList<CMinisterPosting>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "CListNode<CMinisterPosting>*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "CListNode<CMinisterPosting>*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
    "name": "CList<CResearchBonus>",
    "size": 16,
    "fields": [
@@ -14281,7 +14443,7 @@
   },
   {
    "name": "CListNode<CAir*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14300,12 +14462,18 @@
      "name": "next",
      "type": "CListNode<CAir*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CBrigadeConstructionDefinition*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14324,12 +14492,18 @@
      "name": "next",
      "type": "CListNode<CBrigadeConstructionDefinition*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CCombat*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14348,12 +14522,18 @@
      "name": "next",
      "type": "CListNode<CCombat*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CConstruction*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14372,12 +14552,18 @@
      "name": "next",
      "type": "CListNode<CConstruction*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CConvoy*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14396,12 +14582,18 @@
      "name": "next",
      "type": "CListNode<CConvoy*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CCountryTag>",
-   "size": 16,
+   "size": 20,
    "fields": [
     {
      "offset": 0,
@@ -14420,12 +14612,18 @@
      "name": "next",
      "type": "CListNode<CCountryTag>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 16,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CCountryWarTargetValue*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14444,12 +14642,48 @@
      "name": "next",
      "type": "CListNode<CCountryWarTargetValue*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CIdeology*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CIdeology*",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<CIdeology*>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<CIdeology*>*",
+     "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CLeader*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14468,12 +14702,18 @@
      "name": "next",
      "type": "CListNode<CLeader*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CMinister*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14492,12 +14732,66 @@
      "name": "next",
      "type": "CListNode<CMinister*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
+    }
+   ]
+  },
+  {
+   "name": "CMinisterPosting",
+   "size": 8,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "position",
+     "type": "CGovernmentPosition*",
+     "comment": "which post - the key of the line in the file (BiceLib/GameClasses/CMinister.hpp)"
+    },
+    {
+     "offset": 4,
+     "name": "type",
+     "type": "CMinisterType*",
+     "comment": "what kind of minister he is in it - the value (BiceLib/GameClasses/CMinister.hpp)"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CMinisterPosting>",
+   "size": 20,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CMinisterPosting",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 8,
+     "name": "prev",
+     "type": "CListNode<CMinisterPosting>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 12,
+     "name": "next",
+     "type": "CListNode<CMinisterPosting>*",
+     "comment": "the next node"
+    },
+    {
+     "offset": 16,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CProvince*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14516,12 +14810,18 @@
      "name": "next",
      "type": "CListNode<CProvince*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CRegiment*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14540,6 +14840,12 @@
      "name": "next",
      "type": "CListNode<CRegiment*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
@@ -14569,7 +14875,7 @@
   },
   {
    "name": "CListNode<CSubUnitTechnology>",
-   "size": 20,
+   "size": 24,
    "fields": [
     {
      "offset": 0,
@@ -14588,12 +14894,18 @@
      "name": "next",
      "type": "CListNode<CSubUnitTechnology>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 20,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CTechnology const*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14612,12 +14924,18 @@
      "name": "next",
      "type": "CListNode<CTechnology const*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CTheatre*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14636,12 +14954,18 @@
      "name": "next",
      "type": "CListNode<CTheatre*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CTradeRoute*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14660,12 +14984,18 @@
      "name": "next",
      "type": "CListNode<CTradeRoute*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CTrait*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14684,12 +15014,18 @@
      "name": "next",
      "type": "CListNode<CTrait*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<CUnit*>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14708,12 +15044,18 @@
      "name": "next",
      "type": "CListNode<CUnit*>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
   {
    "name": "CListNode<int>",
-   "size": 12,
+   "size": 16,
    "fields": [
     {
      "offset": 0,
@@ -14732,6 +15074,12 @@
      "name": "next",
      "type": "CListNode<int>*",
      "comment": "the next node"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the node is made with cleared, like CList's own"
     }
    ]
   },
@@ -15223,19 +15571,55 @@
   },
   {
    "name": "CMinister",
-   "size": null,
+   "size": 144,
    "fields": [
     {
      "offset": 108,
      "name": "Ideology",
      "type": "CIdeology const*",
-     "comment": "read by CMinister::GetIdeology"
+     "comment": "read by CMinister::GetIdeology\nBiceLib: ideology (CIdeology*) - `ideology`, out of the ideology database. **Read live**: 5747 of 5747, ten distinct (BiceLib/GameClasses/CMinister.hpp)"
+    },
+    {
+     "offset": 4,
+     "name": "token",
+     "type": "SaveToken",
+     "comment": "a SaveToken CPersistent's constructor sets to `none`, and nothing has been found that reads it. Of 714 inlined constructors that write this word and then a vftable, 697 write `none`, and **read live** it is still `none` on every CSubUnitDefinition, CTechnology, CRegiment, CCombat, CAIStrategy, CLeader, CTheatre and CConvoy in a running game - so it is not a class id, whatever a constant at +4 looks like (BiceLib/GameClasses/CPersistent.hpp:57), inherited from CPersistent, inherited from CReferenceObject"
+    },
+    {
+     "offset": 8,
+     "name": "id_type",
+     "type": "int",
+     "comment": "the type half of the object id pair - **read live** 38 on all 6257 (BiceLib/GameClasses/CMinister.hpp)"
+    },
+    {
+     "offset": 12,
+     "name": "id",
+     "type": "int",
+     "comment": "**the minister's id**, the number that opens his block and what a country's `head_of_state = 54001` points at. **Read live**: 6257 of 6257, none shared (BiceLib/GameClasses/CMinister.hpp)"
+    },
+    {
+     "offset": 20,
+     "name": "unused_string",
+     "type": "Hoi3CString",
+     "comment": "**empty on all 6257** - nothing in LoadKey writes it (BiceLib/GameClasses/CMinister.hpp)"
     },
     {
      "offset": 48,
      "name": "name",
      "type": "Hoi3CString",
      "comment": "read from `name`. **Read live**: `Alfred Rosenberg`, `Thomas Mann` (BiceLib/GameClasses/CFaction.hpp:66)"
+    },
+    {
+     "offset": 76,
+     "name": "current_type",
+     "type": "CMinisterType*",
+     "comment": "**the CNullMinisterType on all 6257** in a running 1942 game, so what fills this and its neighbour has not been seen. Not the postings; those are the list at 0x5C (BiceLib/GameClasses/CMinister.hpp)"
+    },
+    {
+     "offset": 80,
+     "name": "current_type_other",
+     "type": "CMinisterType*",
+     "comment": " (BiceLib/GameClasses/CMinister.hpp)"
     },
     {
      "offset": 84,
@@ -15250,6 +15634,12 @@
      "comment": "a game tick, read from `death_date` (BiceLib/GameClasses/CFaction.hpp:72)"
     },
     {
+     "offset": 92,
+     "name": "postings",
+     "type": "CList<CMinisterPosting>",
+     "comment": "**the posts he can hold and the type he is in each**, appended a pair at a time by LoadKey. **Read live**: exactly the file's on 5746 of 5747 (BiceLib/GameClasses/CMinister.hpp)"
+    },
+    {
      "offset": 112,
      "name": "loyalty",
      "type": "int",
@@ -15259,7 +15649,7 @@
      "offset": 116,
      "name": "picture",
      "type": "Hoi3CString",
-     "comment": "his portrait, read from `picture`. **Read live**: `M57`, `M64`, `M82` (BiceLib/GameClasses/CFaction.hpp:82)"
+     "comment": "his portrait, read from `picture`. **Read live**: `M54001`, `M57` - and it **defaults to `empty_position`**, which is what the five blocks that declare no picture end up with (BiceLib/GameClasses/CMinister.hpp)"
     }
    ]
   },
@@ -15278,6 +15668,18 @@
      "name": "Index",
      "type": "int",
      "comment": "read by CMinisterType::GetIndex"
+    },
+    {
+     "offset": 4,
+     "name": "persistent_meta",
+     "type": "int",
+     "comment": "0x18D (BiceLib/GameClasses/CModifier.hpp:29), inherited from CModifier"
+    },
+    {
+     "offset": 24,
+     "name": "values",
+     "type": "CModifierValues*",
+     "comment": "the values, one entry per ModifierType and indexed by it; CModifier::GetValue reads [this+0x18][type*8]. Typed as a structure of named entries so a read is a field rather than an index (BiceLib/GameClasses/CModifier.hpp:45), inherited from CModifier"
     }
    ]
   },
@@ -16274,6 +16676,36 @@
      "name": "time",
      "type": "int",
      "comment": "saved as `time`, read with `%i`. **Read live**: 2 on every order in a running game (BiceLib/GameClasses/COrder.hpp:64), inherited from COrder"
+    }
+   ]
+  },
+  {
+   "name": "CNameDataBase",
+   "size": null,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "count",
+     "type": "int",
+     "comment": "how many entries - **read live** 11 ideologies and 12 positions (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 8,
+     "name": "by_name",
+     "type": "void*",
+     "comment": "what GetByName searches; its shape has not been read (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 12,
+     "name": "first",
+     "type": "void**",
+     "comment": "the entries in index order, entry 0 being the null object (BiceLib/GameClasses/CGovernment.hpp)"
+    },
+    {
+     "offset": 16,
+     "name": "last",
+     "type": "void**",
+     "comment": " (BiceLib/GameClasses/CGovernment.hpp)"
     }
    ]
   },
@@ -17312,6 +17744,18 @@
      "name": "key",
      "type": "Hoi3CString",
      "comment": "the rebel type's key. **Read live**: six in this mod - disgruntled_rabble, fascist_rebels, nationalist_rebels, organized_partisans, partisans, patriot_rebels (BiceLib/GameClasses/CRebelFaction.hpp:92)"
+    }
+   ]
+  },
+  {
+   "name": "CReferenceObject",
+   "size": null,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "token",
+     "type": "SaveToken",
+     "comment": "a SaveToken CPersistent's constructor sets to `none`, and nothing has been found that reads it. Of 714 inlined constructors that write this word and then a vftable, 697 write `none`, and **read live** it is still `none` on every CSubUnitDefinition, CTechnology, CRegiment, CCombat, CAIStrategy, CLeader, CTheatre and CConvoy in a running game - so it is not a class id, whatever a constant at +4 looks like (BiceLib/GameClasses/CPersistent.hpp:57), inherited from CPersistent"
     }
    ]
   },
@@ -27243,11 +27687,39 @@
    "labels": []
   },
   {
+   "rva": 1195152,
+   "namespace": "CGovernment",
+   "name": "CGovernment",
+   "confidence": "CERTAIN",
+   "evidence": "The constructor, `ret 0xC`, answering `this` in eax. Zeroes `duration` and the ideology list, copies the key, stores the caller's `index`, **defaults `valid_for_new_country` to 1 and `election` to 0**, empties the position bitset, and registers the key as a dynamic save token into `token`.\n(BiceLib/GameClasses/CGovernment.hpp)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "CGovernment*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CGovernment*"
+     },
+     {
+      "name": "key",
+      "type": "Hoi3CString*"
+     },
+     {
+      "name": "index",
+      "type": "int"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
    "rva": 1197664,
    "namespace": "CGovernment",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CGovernment introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "**One government from `common/governments.txt`.** Three keys of its own - `duration` (108, atoi), `valid_for_new_country` (1715) and `election` (1736, through the shared yes/no parser) - and everything else is looked up by name: first in the ideology database, where a `yes` appends to the government's `ideologies` list, then in the government position database, where it sets or clears that position's bit in `elected_positions`, and failing both it falls through to **CModifier::LoadKey**, because CGovernment derives from CModifier. The position bitset is sized on first use to the whole database, null included.\n(BiceLib/GameClasses/CGovernment.hpp)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CGovernment introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -27348,6 +27820,21 @@
     "return": "CPoint<CFixedPoint> const &",
     "hiddenReturn": false,
     "params": []
+   },
+   "labels": []
+  },
+  {
+   "rva": 1208960,
+   "namespace": "",
+   "name": "GetIdeologies",
+   "confidence": "CERTAIN",
+   "evidence": "The ideology database, made on first use at `g_ideologies`. **Read live**: eleven entries - `noIdeology` and the ten of `common/ideologies.txt`, in file order. The name is BiceLib's; the object has no RTTI.\n(BiceLib/GameClasses/CGovernment.hpp)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "CNameDataBase*",
+    "hiddenReturn": false,
+    "params": [],
+    "returnStorage": "EAX"
    },
    "labels": []
   },
@@ -27517,6 +28004,32 @@
    "labels": []
   },
   {
+   "rva": 1222128,
+   "namespace": "CNameDataBase",
+   "name": "GetByName",
+   "confidence": "CERTAIN",
+   "evidence": "The by-name lookup both databases above share: the database in eax, the name on the stack, `ret 4`, and the object or null in eax. The name is BiceLib's.\n(BiceLib/GameClasses/CGovernment.hpp)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "database",
+      "type": "CNameDataBase*",
+      "storage": "EAX"
+     },
+     {
+      "name": "name",
+      "type": "Hoi3CString*",
+      "storage": "stack:4"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
    "rva": 1223120,
    "namespace": "CMinisterType",
    "name": "LoadKey",
@@ -27563,6 +28076,21 @@
    "labels": []
   },
   {
+   "rva": 1225024,
+   "namespace": "",
+   "name": "GetMinisterTypes",
+   "confidence": "CERTAIN",
+   "evidence": "The minister type database, made on first use at `g_minister_types` - the same CNameDataBase shape as the ideologies and the government positions, with CNullMinisterType (`noMinisterType`) at index 0. **Read live**: 106 types declared in `common/minister_types.txt`. The name is BiceLib's.\n(BiceLib/GameClasses/CMinister.hpp)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "CNameDataBase*",
+    "hiddenReturn": false,
+    "params": [],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
    "rva": 1227024,
    "namespace": "CGovernmentPosition",
    "name": "LoadKey",
@@ -27590,11 +28118,26 @@
    "labels": []
   },
   {
+   "rva": 1227312,
+   "namespace": "",
+   "name": "GetGovernmentPositions",
+   "confidence": "CERTAIN",
+   "evidence": "The government position database, made on first use at `g_government_positions`. **Read live**: twelve entries - `noGovernmentPosition` and the eleven of `common/government_positions.txt`. Its size is what CGovernment's position bitset is sized to. The name is BiceLib's.\n(BiceLib/GameClasses/CGovernment.hpp)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "CNameDataBase*",
+    "hiddenReturn": false,
+    "params": [],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
    "rva": 1230384,
    "namespace": "CMinister",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CMinister introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "**One minister from a `ministers = { }` block in `common/countries`.** Handles `name`, `ideology`, `loyalty`, `picture`, `start_date` and `death_date` by token, **accepts and discards `type`**, and treats every other key as a **government position** whose value is a **minister type** - appending the pair to the minister's `postings` list, so one person can hold several posts. A key that is no position, or a value that is no type, is a parse error and that posting is lost. **Read live**: the pairs agree with the mod on 5746 of the 5747 ministers whose name no other shares.\n(BiceLib/GameClasses/CMinister.hpp)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CMinister introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -44426,6 +44969,26 @@
    "labels": []
   },
   {
+   "rva": 6724768,
+   "namespace": "",
+   "name": "RegisterDynamicToken",
+   "confidence": "CERTAIN",
+   "evidence": "**Turns a key loaded from a file into a SaveToken**, so the save code can write it as a number like any compiled-in key. Looks the text up in the map at `g_dynamic_tokens` and adds it if it is new; its failure message is `\"Error on dynamic token: \"`. These ids are **not** in `ghidra/saveTokens.json`, which holds only the compiled ones - reversing/saveTokens.py reads the live table that has both. The name is BiceLib's.\n(BiceLib/GameClasses/CGovernment.hpp)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "SaveToken",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "key",
+      "type": "Hoi3CString*"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
    "rva": 6725712,
    "namespace": "",
    "name": "BuildTokenTable",
@@ -44661,6 +45224,31 @@
      {
       "name": "parse",
       "type": "CParseContext*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 6796304,
+   "namespace": "",
+   "name": "ParseBool",
+   "confidence": "CERTAIN",
+   "evidence": "**The shared yes/no parser.** Compares the parse context's value text against `\"yes\"` and `\"no\"` and writes 1 or 0; anything else goes to the parse error at `0x67A960`. Takes the parse context in eax, `ret 4`. The name is BiceLib's.\n(BiceLib/GameClasses/CGovernment.hpp)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "parse",
+      "type": "CParseContext*",
+      "storage": "EAX"
+     },
+     {
+      "name": "out",
+      "type": "bool*",
+      "storage": "stack:4"
      }
     ]
    },
@@ -47008,6 +47596,15 @@
    "type": null
   },
   {
+   "rva": 19992048,
+   "namespace": "",
+   "name": "g_dynamic_tokens",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "The map RegisterDynamicToken looks a key's text up in, so that names loaded from files get save tokens of their own.\n(BiceLib/GameClasses/CGovernment.hpp)",
+   "type": null
+  },
+  {
    "rva": 19992448,
    "namespace": "",
    "name": "g_random_seed",
@@ -47087,6 +47684,33 @@
    "confidence": "CERTAIN",
    "evidence": "Pointer to the settings singleton that settings.txt is read into (0x18C bytes). Pointer to the settings singleton (the same global as module + 0x16863F8).\n(BiceLib/GameClasses/GameSettings.hpp:19; reversing/FINDINGS-autosave.md:47)",
    "type": "GameSettings*"
+  },
+  {
+   "rva": 23623868,
+   "namespace": "",
+   "name": "g_ideologies",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "The ideology database, null until GetIdeologies makes it.\n(BiceLib/GameClasses/CGovernment.hpp)",
+   "type": null
+  },
+  {
+   "rva": 23624080,
+   "namespace": "",
+   "name": "g_government_positions",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "The government position database, null until GetGovernmentPositions makes it.\n(BiceLib/GameClasses/CGovernment.hpp)",
+   "type": null
+  },
+  {
+   "rva": 23624144,
+   "namespace": "",
+   "name": "g_minister_types",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "The minister type database, null until GetMinisterTypes makes it.\n(BiceLib/GameClasses/CMinister.hpp)",
+   "type": null
   },
   {
    "rva": 23627496,
@@ -47248,7 +47872,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -47257,7 +47881,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -47924,7 +48548,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -47933,7 +48557,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -48600,7 +49224,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -48609,7 +49233,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -49276,7 +49900,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -49285,7 +49909,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -49952,7 +50576,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -49961,7 +50585,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -50701,7 +51325,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -50710,7 +51334,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -52906,7 +53530,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -52915,7 +53539,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     }
    ]
@@ -53737,7 +54361,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -53746,7 +54370,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     }
    ]
@@ -54089,7 +54713,7 @@
      "name": "vf_0",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 0, 005501D0"
     },
     {
@@ -54154,7 +54778,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -54163,7 +54787,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -54297,7 +54921,7 @@
      "name": "vf_0",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 0, 005501D0"
     },
     {
@@ -54362,7 +54986,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -54371,7 +54995,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -58296,7 +58920,7 @@
      "name": "vf_0",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 0, 005501D0"
     },
     {
@@ -58361,7 +58985,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -58370,7 +58994,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -58569,7 +59193,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -58578,7 +59202,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     }
    ]
@@ -66026,7 +66650,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -66035,7 +66659,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -67261,7 +67885,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -67270,7 +67894,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -67653,7 +68277,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -67662,7 +68286,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -70646,7 +71270,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -70655,7 +71279,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     }
    ]
@@ -73460,7 +74084,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -73469,7 +74093,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     }
    ]
@@ -73563,6 +74187,97 @@
    ]
   },
   {
+   "name": "CReferenceObject_vftable",
+   "class": "CReferenceObject",
+   "rva": 18627300,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 1376720,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 005501D0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 6936304,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 00A9D6F0"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 6936352,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00A9D720"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 6934608,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 6, 00A9D050"
+    },
+    {
+     "slot": 7,
+     "rva": 6934528,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 7, 00A9D000"
+    }
+   ]
+  },
+  {
    "name": "CRegiment_vftable",
    "class": "CRegiment",
    "rva": 18603388,
@@ -73628,7 +74343,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -73637,7 +74352,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -74986,7 +75701,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -74995,7 +75710,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -75846,7 +76561,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -75855,7 +76570,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {
@@ -76807,7 +77522,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -76816,7 +77531,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     }
    ]
@@ -78240,7 +78955,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -78249,7 +78964,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     }
    ]
@@ -78892,7 +79607,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 6, 00A9D050"
     },
     {
@@ -78901,7 +79616,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": false,
+     "own": true,
      "comment": "slot 7, 00A9D000"
     },
     {

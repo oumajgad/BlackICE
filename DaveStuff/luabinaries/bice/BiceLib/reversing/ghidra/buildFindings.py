@@ -835,8 +835,13 @@ def main():
                         {"offset": width, "name": "prev", "type": "CListNode<%s>*" % element, "priority": 2,
                          "comment": "the previous node"},
                         {"offset": width + 4, "name": "next", "type": "CListNode<%s>*" % element, "priority": 2,
-                         "comment": "the next node"}]
-                    node["size"] = width + 8
+                         "comment": "the next node"},
+                        {"offset": width + 8, "name": "flag", "type": "uint8_t", "priority": 2,
+                         "comment": "a byte the node is made with cleared, like CList's own"}]
+                    # The allocations say the size: CGovernment's ideology nodes are new(0x10)
+                    # for a 4 byte element and CMinister's postings new(0x14) for an 8 byte
+                    # one, both of which are the element, two links and that byte, padded.
+                    node["size"] = width + 12
                 for f in s["fields"]:
                     if f["name"] in ("first", "last"):
                         f["type"] = "CListNode<%s>*" % element

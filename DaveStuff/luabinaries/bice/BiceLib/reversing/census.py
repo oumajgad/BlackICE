@@ -3,6 +3,7 @@
     python census.py                # the fifty most numerous classes
     python census.py --top 200
     python census.py --like CUnit   # only classes whose name contains this
+    python census.py --json ghidra/census.json    # every count, for progress.py
 
 Every object of a class starts with that class's vftable, so counting how often each
 vftable address appears in memory counts the objects. The RTTI export names 2,645
@@ -17,7 +18,10 @@ allocations or a great many small ones.
 """
 
 import argparse
+import collections
 import ctypes
+import io
+import json
 from ctypes import wintypes
 
 import numpy
@@ -70,6 +74,8 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--top", type=int, default=50)
     parser.add_argument("--like", default="", help="only classes containing this")
+    parser.add_argument("--json", default="", metavar="PATH",
+        help="also write every class's count there, which is what PROGRESS.md reads")
     parser.add_argument("--scales-with", type=int, default=0, metavar="N",
         help="list the classes whose count is a whole multiple of N - give it the "
              "number of countries to find everything built per country")
@@ -124,6 +130,18 @@ def main():
 
     print("scanned %.2f GB of private memory in %d regions\n"
           % (scanned / 1073741824.0, len(sizes)))
+
+    if args.json:
+        with io.open(args.json, "w", encoding="utf-8", newline="\n") as f:
+            # A class with two vftables appears twice in labels, so add rather than
+            # overwrite - CProvinceBuilding is one.
+            total = collections.Counter()
+            for i in range(len(labels)):
+                if counts[i]:
+                    total[labels[i]] += int(counts[i])
+            json.dump({"scanned_bytes": scanned, "counts": dict(total)},
+                      f, indent=1, sort_keys=True)
+        print("wrote %s\n" % args.json)
 
     order = numpy.argsort(-counts)
     shown = 0

@@ -846,6 +846,33 @@
    "source": "BiceLib/GameClasses/CGoodsPool.hpp:30"
   },
   {
+   "rva": "0x123C90",
+   "kind": "function",
+   "name": "CGovernment::CGovernment",
+   "signature": "CGovernment* __stdcall CGovernment::CGovernment(CGovernment* this, Hoi3CString* key, int index) @EAX",
+   "comment": "The constructor, `ret 0xC`, answering `this` in eax. Zeroes `duration` and the ideology list, copies the key, stores the caller's `index`, **defaults `valid_for_new_country` to 1 and `election` to 0**, empties the position bitset, and registers the key as a dynamic save token into `token`.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGovernment.hpp"
+  },
+  {
+   "rva": "0x124660",
+   "kind": "function",
+   "name": "CGovernment::LoadKey",
+   "signature": "void __thiscall CGovernment::LoadKey(CGovernment* this, CParseContext* parse, SaveToken key)",
+   "comment": "**One government from `common/governments.txt`.** Three keys of its own - `duration` (108, atoi), `valid_for_new_country` (1715) and `election` (1736, through the shared yes/no parser) - and everything else is looked up by name: first in the ideology database, where a `yes` appends to the government's `ideologies` list, then in the government position database, where it sets or clears that position's bit in `elected_positions`, and failing both it falls through to **CModifier::LoadKey**, because CGovernment derives from CModifier. The position bitset is sized on first use to the whole database, null included.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGovernment.hpp"
+  },
+  {
+   "rva": "0x127280",
+   "kind": "function",
+   "name": "GetIdeologies",
+   "signature": "CNameDataBase* __cdecl GetIdeologies() @EAX",
+   "comment": "The ideology database, made on first use at `g_ideologies`. **Read live**: eleven entries - `noIdeology` and the ten of `common/ideologies.txt`, in file order. The name is BiceLib's; the object has no RTTI.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGovernment.hpp"
+  },
+  {
    "rva": "0x127470",
    "kind": "function",
    "name": "LoadCommonFileContents",
@@ -853,6 +880,42 @@
    "comment": "The driver `LoadCommonFiles` calls once a CParseContext is built, taking it as the second argument: pulls tokens through the tokenizer's slot 1 until the kind is 0x13, end of input. The same loop and token kinds as CPersistent::Load. **Which class a given file fills is not traced** - this is as far as the general path goes. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/CLASSES.md:1354"
+  },
+  {
+   "rva": "0x12A5F0",
+   "kind": "function",
+   "name": "CNameDataBase::GetByName",
+   "signature": "void* __stdcall CNameDataBase::GetByName(CNameDataBase* database@EAX, Hoi3CString* name@stack:4) @EAX",
+   "comment": "The by-name lookup both databases above share: the database in eax, the name on the stack, `ret 4`, and the object or null in eax. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGovernment.hpp"
+  },
+  {
+   "rva": "0x12B140",
+   "kind": "function",
+   "name": "GetMinisterTypes",
+   "signature": "CNameDataBase* __cdecl GetMinisterTypes() @EAX",
+   "comment": "The minister type database, made on first use at `g_minister_types` - the same CNameDataBase shape as the ideologies and the government positions, with CNullMinisterType (`noMinisterType`) at index 0. **Read live**: 106 types declared in `common/minister_types.txt`. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMinister.hpp"
+  },
+  {
+   "rva": "0x12BA30",
+   "kind": "function",
+   "name": "GetGovernmentPositions",
+   "signature": "CNameDataBase* __cdecl GetGovernmentPositions() @EAX",
+   "comment": "The government position database, made on first use at `g_government_positions`. **Read live**: twelve entries - `noGovernmentPosition` and the eleven of `common/government_positions.txt`. Its size is what CGovernment's position bitset is sized to. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGovernment.hpp"
+  },
+  {
+   "rva": "0x12C630",
+   "kind": "function",
+   "name": "CMinister::LoadKey",
+   "signature": "void __thiscall CMinister::LoadKey(CMinister* this, CParseContext* parse, SaveToken key)",
+   "comment": "**One minister from a `ministers = { }` block in `common/countries`.** Handles `name`, `ideology`, `loyalty`, `picture`, `start_date` and `death_date` by token, **accepts and discards `type`**, and treats every other key as a **government position** whose value is a **minister type** - appending the pair to the minister's `postings` list, so one person can hold several posts. A key that is no position, or a value that is no type, is a parse error and that posting is lost. **Read live**: the pairs agree with the mod on 5746 of the 5747 ministers whose name no other shares.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMinister.hpp"
   },
   {
    "rva": "0x134AC0",
@@ -2511,6 +2574,15 @@
    "source": "reversing/CLASSES.md:1354"
   },
   {
+   "rva": "0x669CA0",
+   "kind": "function",
+   "name": "RegisterDynamicToken",
+   "signature": "SaveToken __cdecl RegisterDynamicToken(Hoi3CString* key) @EAX",
+   "comment": "**Turns a key loaded from a file into a SaveToken**, so the save code can write it as a number like any compiled-in key. Looks the text up in the map at `g_dynamic_tokens` and adds it if it is new; its failure message is `\"Error on dynamic token: \"`. These ids are **not** in `ghidra/saveTokens.json`, which holds only the compiled ones - reversing/saveTokens.py reads the live table that has both. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGovernment.hpp"
+  },
+  {
    "rva": "0x66A050",
    "kind": "function",
    "name": "BuildTokenTable",
@@ -2599,6 +2671,15 @@
    "comment": "Reads one `key = value` into the parse state: the key into +0x20, the `=` into +0x124 and the value into +0x228. CPersistent::Load calls this before every slot 4.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CPersistent.hpp:72"
+  },
+  {
+   "rva": "0x67B410",
+   "kind": "function",
+   "name": "ParseBool",
+   "signature": "void __stdcall ParseBool(CParseContext* parse@EAX, bool* out@stack:4)",
+   "comment": "**The shared yes/no parser.** Compares the parse context's value text against `\"yes\"` and `\"no\"` and writes 1 or 0; anything else goes to the parse error at `0x67A960`. Takes the parse context in eax, `ret 4`. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGovernment.hpp"
   },
   {
    "rva": "0x67C050",
@@ -3381,6 +3462,14 @@
    "source": "BiceLib/GameClasses/CCurrentGameState.hpp:80"
   },
   {
+   "rva": "0x1310DF0",
+   "kind": "global",
+   "name": "g_dynamic_tokens",
+   "comment": "The map RegisterDynamicToken looks a key's text up in, so that names loaded from files get save tokens of their own.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGovernment.hpp"
+  },
+  {
    "rva": "0x1310F80",
    "kind": "global",
    "name": "g_random_seed",
@@ -3466,6 +3555,30 @@
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/GameSettings.hpp:19; reversing/FINDINGS-autosave.md:47",
    "type": "GameSettings*"
+  },
+  {
+   "rva": "0x16878BC",
+   "kind": "global",
+   "name": "g_ideologies",
+   "comment": "The ideology database, null until GetIdeologies makes it.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGovernment.hpp"
+  },
+  {
+   "rva": "0x1687990",
+   "kind": "global",
+   "name": "g_government_positions",
+   "comment": "The government position database, null until GetGovernmentPositions makes it.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CGovernment.hpp"
+  },
+  {
+   "rva": "0x16879D0",
+   "kind": "global",
+   "name": "g_minister_types",
+   "comment": "The minister type database, null until GetMinisterTypes makes it.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CMinister.hpp"
   },
   {
    "rva": "0x16886E8",
@@ -10382,13 +10495,86 @@
    "name": "CGovernment",
    "fields": [
     {
+     "offset": "0x2C",
+     "name": "duration",
+     "type": "int",
+     "comment": "`duration`, token 108 - atoi of the value text, unscaled. **Read live**: 18 of 18, and 0 on the ten governments that do not declare it",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x30",
+     "name": "ideologies",
+     "type": "CList<CIdeology*>",
+     "comment": "**the ideologies this government is acceptable to**, appended by LoadKey a node at a time where the value is `yes`. **Read live**: the names in it are exactly the file's, 18 of 18",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x40",
+     "name": "token",
+     "type": "SaveToken",
+     "comment": "**the government's own key as a save token**, registered at construction by RegisterDynamicToken. **Read live** against the running game's table: 2451 is `nogovernment` and 2452 to 2469 are the eighteen in file order",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
      "offset": "0x44",
      "name": "key",
      "type": "Hoi3CString",
      "comment": "the government's key. **Read live**: eighteen in this mod, from absolute_monarchy to socialist_republic",
      "source": "BiceLib/GameClasses/CRebelFaction.hpp:101"
+    },
+    {
+     "offset": "0x60",
+     "name": "index",
+     "type": "int",
+     "comment": "**which government this is**, the constructor's third argument. **Read live**: 1 to 18 in file order, because index 0 belongs to CNullGovernment",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x64",
+     "name": "valid_for_new_country",
+     "type": "bool",
+     "comment": "`valid_for_new_country`, token 1715. **The constructor defaults it to 1** and BlackICE never sets it, so it is 1 on all eighteen",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x68",
+     "name": "elected_positions",
+     "type": "uint32_t*",
+     "comment": "**which government positions an election changes**, a bitset numbered by each CGovernmentPosition's own index - so bit 0 is the null position and is never set. These three are its block vector; twelve bits fit the single 4 byte block. **Read live**: the bits are the file's, 18 of 18",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x6C",
+     "name": "elected_positions_end",
+     "type": "uint32_t*",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x70",
+     "name": "elected_positions_capacity",
+     "type": "uint32_t*",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x78",
+     "name": "elected_position_count",
+     "type": "int",
+     "comment": "how many bits the set has - **read live** 12 on every government, the size of the position database including its null",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x7C",
+     "name": "election",
+     "type": "bool",
+     "comment": "`election`, token 1736, through the shared yes/no parser. **Read live**: 18 of 18, and the constructor defaults it to 0",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
     }
-   ]
+   ],
+   "size": "0x80",
+   "inherits": "CModifier",
+   "comment": "One form of government from `common/governments.txt`, a CModifier. **Read live**: eighteen in this mod, and all four loaded fields agree with the file on every one."
   },
   {
    "name": "CWar",
@@ -10847,11 +11033,46 @@
    "name": "CMinister",
    "fields": [
     {
+     "offset": "0x8",
+     "name": "id_type",
+     "type": "int",
+     "comment": "the type half of the object id pair - **read live** 38 on all 6257",
+     "source": "BiceLib/GameClasses/CMinister.hpp"
+    },
+    {
+     "offset": "0xC",
+     "name": "id",
+     "type": "int",
+     "comment": "**the minister's id**, the number that opens his block and what a country's `head_of_state = 54001` points at. **Read live**: 6257 of 6257, none shared",
+     "source": "BiceLib/GameClasses/CMinister.hpp"
+    },
+    {
+     "offset": "0x14",
+     "name": "unused_string",
+     "type": "Hoi3CString",
+     "comment": "**empty on all 6257** - nothing in LoadKey writes it",
+     "source": "BiceLib/GameClasses/CMinister.hpp"
+    },
+    {
      "offset": "0x30",
      "name": "name",
      "type": "Hoi3CString",
      "comment": "read from `name`. **Read live**: `Alfred Rosenberg`, `Thomas Mann`",
      "source": "BiceLib/GameClasses/CFaction.hpp:66"
+    },
+    {
+     "offset": "0x4C",
+     "name": "current_type",
+     "type": "CMinisterType*",
+     "comment": "**the CNullMinisterType on all 6257** in a running 1942 game, so what fills this and its neighbour has not been seen. Not the postings; those are the list at 0x5C",
+     "source": "BiceLib/GameClasses/CMinister.hpp"
+    },
+    {
+     "offset": "0x50",
+     "name": "current_type_other",
+     "type": "CMinisterType*",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CMinister.hpp"
     },
     {
      "offset": "0x54",
@@ -10868,6 +11089,20 @@
      "source": "BiceLib/GameClasses/CFaction.hpp:72"
     },
     {
+     "offset": "0x5C",
+     "name": "postings",
+     "type": "CList<CMinisterPosting>",
+     "comment": "**the posts he can hold and the type he is in each**, appended a pair at a time by LoadKey. **Read live**: exactly the file's on 5746 of 5747",
+     "source": "BiceLib/GameClasses/CMinister.hpp"
+    },
+    {
+     "offset": "0x6C",
+     "name": "ideology",
+     "type": "CIdeology*",
+     "comment": "`ideology`, out of the ideology database. **Read live**: 5747 of 5747, ten distinct",
+     "source": "BiceLib/GameClasses/CMinister.hpp"
+    },
+    {
      "offset": "0x70",
      "name": "loyalty",
      "type": "int",
@@ -10878,11 +11113,14 @@
      "offset": "0x74",
      "name": "picture",
      "type": "Hoi3CString",
-     "comment": "his portrait, read from `picture`. **Read live**: `M57`, `M64`, `M82`",
-     "source": "BiceLib/GameClasses/CFaction.hpp:82"
+     "comment": "his portrait, read from `picture`. **Read live**: `M54001`, `M57` - and it **defaults to `empty_position`**, which is what the five blocks that declare no picture end up with",
+     "source": "BiceLib/GameClasses/CMinister.hpp"
     }
    ],
-   "vftable_rva": "0x11C2AB4"
+   "vftable_rva": "0x11C2AB4",
+   "size": "0x90",
+   "inherits": "CReferenceObject",
+   "comment": "One person who can hold a government post, declared in `common/countries/<Country>.txt` - **not** in `minister_types.txt`, which declares CMinisterType. **Read live**: 6257 blocks in the mod and 6257 objects."
   },
   {
    "name": "CInternationalizedText",
@@ -11175,6 +11413,113 @@
    ],
    "size": "0x1C",
    "comment": "**One unit type's models for one country** - the object a CCountry's `historical_models` array holds, and what CHistoricalModel::PickBestModel takes in ecx. **Read live**: 108 countries x 1643 unit types, each with exactly `HISTORICAL_MODEL_MAX` models, which accounts for every CHistoricalModel in the process. The name is BiceLib's."
+  },
+  {
+   "name": "CNameDataBase",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "count",
+     "type": "int",
+     "comment": "how many entries - **read live** 11 ideologies and 12 positions",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x8",
+     "name": "by_name",
+     "type": "void*",
+     "comment": "what GetByName searches; its shape has not been read",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0xC",
+     "name": "first",
+     "type": "void**",
+     "comment": "the entries in index order, entry 0 being the null object",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x10",
+     "name": "last",
+     "type": "void**",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    }
+   ],
+   "comment": "**A database of named, file-loaded objects, kept in index order with a null at 0.** No vftable - the first word is the count - and one shared by-name lookup. The ideologies and the government positions are both one of these; the pattern is worth recognising, because an index from one of them is 1-based as far as the mod's files are concerned. The name is BiceLib's."
+  },
+  {
+   "name": "CIdeology",
+   "fields": [
+    {
+     "offset": "0x30",
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "the key, the first field after the CModifier base - **read live** `head_of_state` and `national_socialist` among them",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x4C",
+     "name": "index",
+     "type": "int",
+     "comment": "**its index in its database**, and the bit number CGovernment's `elected_positions` uses. **Read live**: 0 to 11 and 0 to 10, 0 being the null object",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    }
+   ],
+   "inherits": "CModifier"
+  },
+  {
+   "name": "CGovernmentPosition",
+   "fields": [
+    {
+     "offset": "0x30",
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "the key, the first field after the CModifier base - **read live** `head_of_state` and `national_socialist` among them",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    },
+    {
+     "offset": "0x4C",
+     "name": "index",
+     "type": "int",
+     "comment": "**its index in its database**, and the bit number CGovernment's `elected_positions` uses. **Read live**: 0 to 11 and 0 to 10, 0 being the null object",
+     "source": "BiceLib/GameClasses/CGovernment.hpp"
+    }
+   ],
+   "inherits": "CModifier"
+  },
+  {
+   "name": "CMinisterPosting",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "position",
+     "type": "CGovernmentPosition*",
+     "comment": "which post - the key of the line in the file",
+     "source": "BiceLib/GameClasses/CMinister.hpp"
+    },
+    {
+     "offset": "0x4",
+     "name": "type",
+     "type": "CMinisterType*",
+     "comment": "what kind of minister he is in it - the value",
+     "source": "BiceLib/GameClasses/CMinister.hpp"
+    }
+   ],
+   "size": "0x8",
+   "comment": "**One post a minister can hold**: the position and the type he is in it, side by side. LoadKey builds these straight into the list nodes, so a node is 8 bytes of posting and then its links. The name is BiceLib's."
+  },
+  {
+   "name": "CMinisterType",
+   "fields": [],
+   "inherits": "CModifier",
+   "comment": "One of the 106 kinds of minister in `common/minister_types.txt`, a CModifier - and its key and index sit where every CModifier-derived named type keeps them."
+  },
+  {
+   "name": "CReferenceObject",
+   "inherits": "CPersistent",
+   "comment": "A CPersistent that other objects hold pointers to - CMinister and CRebelFaction are two. **Its own fields have not been read**; it is here so that the classes deriving from it lay out, and what CMinister keeps at 0x8 and 0xC is recorded on CMinister until something says the base owns it.",
+   "fields": []
   }
  ],
  "vftable_slots": {

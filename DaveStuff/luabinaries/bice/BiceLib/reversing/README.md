@@ -232,33 +232,19 @@ files, so **their `LoadKey` is the grammar of a file** rather than of a save blo
 what made `CBuilding::LoadKey` a complete account of `buildings.txt`. See CLASSES.md, *How a
 .txt gets off disk*, for the path that feeds them.
 
-Dropping the event-script plumbing (`C*Effect`, `C*Trigger`, `C*Command`, `CCgm*`) and the
-interface classes leaves **52 distinct loaders**. Ranked by how much grammar the loader
-carries - the bytes of its `LoadKey`, which is a rough count of keys - against what is
-already named:
+**PROGRESS.md ranks what is left**, and it is generated rather than kept by hand, so it
+cannot go stale:
 
-| class | LoadKey | bytes | named | why |
-| --- | --- | --- | --- | --- |
-| `CSubUnitDefinition` | `0x1A3C80` | 6103 | 68 | **the unit files**, and the most used class in the mod; the stat block is done, the tails are not - `build_cost_by_technology`, the per-unit-type vectors |
-| `CTechnology` | `0x134AC0` | 3217 | **done** | the technology files: a dozen keys of its own, checked against all 1174, and everything else read as a unit type's name - which is how an effect is written |
-| `CGovernment` | `0x124660` | 3319 | 1 | `governments.txt`; only its key is named, and CRebelFaction points at one |
-| `CTrait` | `0x1B2A50` | 1620 | **done** | `traits.txt`: 31 effects, the leader kinds, and a count that stops at sixteen. `gainable_traits.txt` turned out to be a different class, `CGainableTrait`, which is still unread |
-| `CHistoricalModel` | `0x1828D0` | 1554 | **done** | the unit models, declared in `units/models` - 122421 blocks of `<type>.<index> = { technology = level }`. No keys of its own, and **2.48 million objects, 114 MB**: every country keeps a set per unit type, 108 x 1643 x `HISTORICAL_MODEL_MAX`. The picker they feed is where `historicalModelLogicFix` patches |
-| `CMinister` | `0x12C630` | 1591 | 6 | `minister_types.txt`; six named from the last pass, the rest is open |
-| `CBuilding` | `0xB6950` | 1427 | 26 | `buildings.txt`, **done** - kept here as the worked example |
-| `CRebelType` | `0xBFA40` | 1064 | 1 | `rebel_types.txt`; partisan behaviour |
-| `CCasusBelliType` | `0x165F0` | 856 | 1 | `cb_types.txt` |
-| `CCombatTactic` | `0x38900` | 775 | 0 | `combat_tactics.txt`; ties into the combat work already done |
-| `CCounterType` | `0x43B840` | 694 | 0 | the map counters |
-| `CDefines` | `0x45E10` | 691 | 2 | every constant the game reads; BiceLib has a handful in CDefines.hpp |
-| `CIdeologyGroup` | `0x126E60` | 675 | 2 | `ideologies.txt` |
-| the `CModifier` family | `0x59620` | 601 | 5 | one loader shared by `CProvinceModifier`, `CStaticModifier`, `CFactionModifier` and two more - `static_modifiers.txt` and `event_modifiers.txt`, which reach everything |
-| `CTerrain` | `0xADA10` | 770 | 9 | **mostly done**; `movement_cost`, `temperature` and `precipitation` went in last |
-| `CScenario`, `CMap` | `0x5E990`, `0x893B0` | 2406, 2026 | 0, 6 | the scenario and map load rather than a `common/` file |
-| `CRule`, `CTutorialChapter`, `CTerrainGraphical`, `CDirectorySettings`, `CSelectionGroupReader`, `CMeanTimeToHappen` | | 476-1336 | 0 | plumbing; `CDirectorySettings` is the path table the loader fills |
+```
+python progress.py            # rewrite it
+python progress.py --check    # say whether it is out of date
+```
 
-`CNationalProvinceTigger` tops a raw byte count with 9728 and is a trigger the name filter
-missed - the game's own spelling. Ignore it and anything like it.
+It has every class the game has, what is named on each, and a ranked table of the loaders
+still unread - by the bytes of grammar each carries. Two things that table made obvious and
+this list never did: a `LoadKey` is **inherited**, so the one at `0x5C8D10` is the grammar
+for all 157 trigger classes and reading it once does all of them; and the biggest unread
+loader of all is `CGameSetup`, which writes a save rather than reading a file.
 
 ### How to read one
 
@@ -281,7 +267,7 @@ is the oracle**, not a savegame.
 5. Record: offsets in the header, entries in `project.json`, a CLASSES.md section keyed by the
    file, and rebuild and apply the findings.
 
-#### Four traps in step 4, each of which cost time
+#### Five traps in step 4, each of which cost time
 
 **A fit against a key that never varies means nothing.** `is_armor = yes` on 76 types and
 absent everywhere else fits *any* byte that happens to be 1 on those types. Count the distinct
@@ -297,6 +283,14 @@ that way. Read every instance and expect several.
 **Technology moves most numbers.** Anything a technology can change - `max_strength`,
 `distance`, the attacks - will not match the file on a definition that has had technology
 applied. A key that fits nothing at any scale is usually this, not a wrong offset.
+
+**A name database reserves index 0 for a null.** `CNullIdeology`, `CNullGovernmentPosition`,
+`CNullGovernment` - there are about twenty of these classes, and each sits at index 0 of its
+database ahead of everything the mod declares. So an index out of one of them is 1-based
+against the file, and a bitset numbered by it has a dead bit 0. Laying `governments.txt`
+straight onto CGovernment's position bits made 15 of 18 governments look wrong until the
+null was allowed for; with it, all 18 agree. Check the database's first entry before
+trusting any index.
 
 **Names do not fit by value, but they do by partition.** For a key whose value is a name -
 `unit_group`, a group in `combined_arms.txt` - look for the offset whose values split the types

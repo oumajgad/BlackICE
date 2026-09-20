@@ -4,6 +4,10 @@ What each object is, where it sits, and which of its fields have been identified
 is the reference; `FINDINGS-combat.md` is the story of how the combat ones were worked
 out, and the scripts here are what to work the next ones out with.
 
+**`PROGRESS.md` is the scoreboard** - every class the game has and how far each one is
+read, generated from the findings so it cannot drift. Look there for what is left; look
+here for what the read ones mean. The marks below are the ones it uses.
+
 **The code is the authority for the offsets it uses.** Where a class is read by BiceLib,
 this file names the source file rather than copying its table, so the two cannot drift
 apart. What is here that the code does not have is where a fact came from and how far it
