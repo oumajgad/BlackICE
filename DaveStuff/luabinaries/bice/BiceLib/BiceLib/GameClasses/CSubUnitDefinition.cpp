@@ -60,9 +60,12 @@ namespace CSubUnitDefinition {
         pushTerrainStatsToStack(L, *(uintptr_t*)(subUnitDefinitionPtr + Offsets::terrain_adjusters));
 
         // GENERAL
-        int sub_unit_amount = *(uintptr_t*)(subUnitDefinitionPtr + Offsets::sub_unit_amount);
-        lua_pushstring(L, "sub_unit_amount");
-        lua_pushinteger(L, sub_unit_amount);
+        // Was called sub_unit_amount, which it is not: the unit files call it
+        // radio_strength and the values agree on 1273 types. The Lua key changed with it,
+        // so utility/gameinfos/inspector.lua names the new one.
+        int radio_strength = *(uintptr_t*)(subUnitDefinitionPtr + Offsets::radio_strength);
+        lua_pushstring(L, "radio_strength");
+        lua_pushinteger(L, radio_strength);
         lua_settable(L, -3);
         int max_strength = *(uintptr_t*)(subUnitDefinitionPtr + Offsets::max_strength);
         lua_pushstring(L, "max_strength");

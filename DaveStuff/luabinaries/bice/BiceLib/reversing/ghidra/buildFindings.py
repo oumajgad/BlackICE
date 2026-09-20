@@ -796,6 +796,9 @@ def main():
     # base, at 0, and no vftable). Lay each one the Lua API names out the same way.
     if "CList" in structs:
         shape = structs["CList"]
+        SCALAR_WIDTHS = {"int": 4, "uint": 4, "unsigned int": 4, "float": 4, "undefined4": 4,
+                         "bool": 1, "char": 1, "uint8_t": 1, "short": 2, "uint16_t": 2,
+                         "int64_t": 8, "double": 8}
         lists = {f["type"] for s in structs.values() for f in s["fields"]}
         for text in lists:
             base = LX.parse_type(re.sub(r"\[\d+\]$", "", text).replace(" &", "&").replace(" *", "*"), enums)["base"]
@@ -804,22 +807,36 @@ def main():
                 s["size"] = shape["size"]
                 if not s["fields"]:
                     s["fields"] = [dict(f) for f in shape["fields"]]
-                # A list of pointers gets a node type of its own, so a walk reads
-                # `node->data->field` rather than stopping at an untyped word. Only for
-                # pointer elements: where the element is a class held by value the node
-                # is wider than one word and where prev and next then sit is not known.
+                # Each instantiation gets a node type of its own, so a walk reads
+                # `node->data->field` rather than stopping at an untyped word. **A node
+                # holds its element at 0 and links at the end of it**: prev at the
+                # element's width, rounded up to a pointer, and next four bytes after.
+                # Read out of CHistoricalModelSet::MakeSubUnit for CList<CSubUnitTechnology>,
+                # whose element is 0xC and whose next is at 0x10, and confirmed live by
+                # walking first to last in `count` steps - unanimous on 288
+                # CList<CSubUnitTechnology> and 827 CList<int>, which is the same rule the
+                # pointer lists already followed at two more widths. An element whose width
+                # we do not know is left alone.
                 element = "CUnit*" if base == "CUnitList" else base[len("CList<"):-1]
-                if not element.endswith("*"):
+                if element.endswith("*"):
+                    width = 4
+                elif element in SCALAR_WIDTHS:
+                    width = SCALAR_WIDTHS[element]
+                else:
+                    width = structs.get(element, {}).get("size")
+                if not width:
                     continue
+                width = (width + 3) // 4 * 4
                 node = struct("CListNode<%s>" % element)
                 if not node["fields"]:
                     node["fields"] = [
                         {"offset": 0, "name": "data", "type": element, "priority": 2,
                          "comment": "what the node holds (%s)" % shape["fields"][0]["comment"].split(" (")[-1].rstrip(")")},
-                        {"offset": 4, "name": "prev", "type": "CListNode<%s>*" % element, "priority": 2,
+                        {"offset": width, "name": "prev", "type": "CListNode<%s>*" % element, "priority": 2,
                          "comment": "the previous node"},
-                        {"offset": 8, "name": "next", "type": "CListNode<%s>*" % element, "priority": 2,
+                        {"offset": width + 4, "name": "next", "type": "CListNode<%s>*" % element, "priority": 2,
                          "comment": "the next node"}]
+                    node["size"] = width + 8
                 for f in s["fields"]:
                     if f["name"] in ("first", "last"):
                         f["type"] = "CListNode<%s>*" % element

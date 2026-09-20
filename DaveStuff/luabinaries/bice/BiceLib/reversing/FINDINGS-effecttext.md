@@ -37,9 +37,9 @@ agrees with `CLeader::Offsets::name` already being `0x4C`.
 | | Is |
 | --- | --- |
 | `0x682490` | **`TextObject* GetText(TextObject* out, const std::string* key)`** - the localisation lookup. Both arguments pushed, callee cleans - `ret 8` (**read**). |
-| `0x682E40` | **`Render(this, out, colours)`** - a text object to characters. `ret 0x10` (**read**). |
+| `0x682E40` | **`CInternationalizedText::Render(out, colours)`** - a text object to characters, `ret 0x10` (**read**). |
 | `0x687020` | Destroys a text object's replacements, the vector's three pointers in **edi** (**read**). |
-| `0x682F40` | **`text.Replace(key, value)`** - the whole variable mechanism. `ret 4` (**read**). |
+| `0x682F40` | **`CInternationalizedText::Replace(key, value)`** - the whole variable mechanism, `ret 4` (**read**). |
 | `0xA160` | `std::string::assign(const char*, size_t)`, thiscall, `ret 8` (**read**). |
 
 ### The lookup does not answer with text
@@ -59,6 +59,12 @@ exactly what it looks like on screen - the first version of this feature put tha
 tooltip. A key that is **not** found is not an error either: the lookup creates an empty
 entry for it (`0xA84D30`) so the renderer can say `NO_TEXT_FOR_KEY <key>`, and writes
 `{that entry, 0, 0, 0}` without touching the caller's length or capacity at all.
+
+A replacement is a **0x20 byte record** in that vector - the variable's name as a string at
++0, the object `Replace` allocated at +0x1C - which is why tearing a text object down takes
+two loops and a free: `0x687020` destroys the objects, `0x705080`
+(`DestroyStringsInRange`, a folded library helper 1552 call sites share) empties the names,
+and the caller frees the block.
 
 Getting characters out takes the second call. `0x682E40` is `thiscall` on the object and
 takes **sixteen bytes of colour settings by value** - `settings + 0x6C`, copied verbatim
@@ -136,8 +142,13 @@ so a failed install is visible in the tooltip rather than silent.
 ## load_oob, which had nothing to fill in
 
 `CLoadOOBEffect::GetText` is **`0x5BBE40`** - slot 9 of `0x11F4490`, the same slot the
-kill_leader one introduces, and the class derives from `CStringEffect`, which keeps its
-string at **`+0x20`**. For this effect that string is the file path.
+kill_leader one introduces.
+
+The class derives from **`CStringEffect`**, whose whole point is one string, at **`+0x20`**
+(**read**: both of its descendants read that offset as one - this effect as the order of
+battle's path, and `CRemoveBrigadeEffect` as the brigade it puts into `REMOVE_BRIGADE`).
+Above it sit `CPersistent`'s vftable and token, and the `CList` `CEffect` carries at `+8`
+for the effects inside it; `0x18` to `0x1F` is not established.
 
 What it does with it is the surprise: it hands **the path itself** to `GetText` as a
 localisation key, renders whatever comes back and shows that. No key, no variables, and
@@ -153,9 +164,45 @@ one already built.
 
 `CLoadOOBEffect::Execute` is `0x5BBD00`. It writes the path onto the country -
 **`CCountry + 0x58`**, through the one line setter at `0x1EC9E0` - and then calls
-**`0xFFED0`** on that country, which is what does the work. The country is the scope's:
+**`0xFFED0`** on that country, which is what does the work.
+
+**Both calls take what they look like they take**, which is worth saying because the
+decompilation suggests otherwise. Each is preceded by a store into the same stack slot
+that nothing ever reads, and between them Ghidra shows an assignment out of the scope.
+That is **`CCountryTag::GetCountry` inlined, twice**: it takes the tag by value, so the
+compiler copies the three letters into a temporary and then indexes the database with the
+id half - and after inlining the copy is dead, but the store stays. The pushes balance
+(`push eax` against `ret 4`, both times; the `push edi` between them is edi's callee save,
+placed late), and `0xFFED0` reads only `[ebp+8]`.
+
+What makes it read badly is the scope's own type: the Lua API declares `_Country` at
+`+0x10` as a `CCountryTag&`, which is its **getter's return type rather than the layout**.
+The tag is there by value - the letters at `+0x10`, the id at `+0x14` - which is why the
+kill_leader builder passes `scope + 0x10` to GetCountry. `+0x14` is now named. The country is the scope's:
 the id at **scope + 0x14**, the id half of the `CCountryTag` the kill_leader builder
 reads at scope + 0x10.
+
+### What load_oob actually does, end to end
+
+```
+CLoadOOBEffect::Execute        0x5BBD00
+  -> CCountry::SetOobFile      0x1EC9E0   country->oob_file = the effect's own string
+  -> CCountry::LoadOobFile     0xFFED0    <base>/units/<path>, FileExists, Tokenizer,
+                                          CParseContext, then the country's slot 3:
+       -> CPersistent::Load    0x67C050   pulls keys and hands each to
+       -> CCountry::LoadKey    0xCCDA0    ** this is where the units are made **
+  -> AnnounceLoadedUnitsToScreen 0x48D560 the player's own country only: tells the interface
+```
+
+**The country loads the file into itself, as though it were part of its own save block.**
+Every keyword an order of battle uses is a SaveToken - `theatre` 1125, `armygroup` 1126,
+`corps` 1127, `division` 1128, `navy` 593, `air` 1088, `regiment` 594, `location` 544,
+`leader` 616, `military_construction` 637 - so the same `CCountry::LoadKey` that reads a
+savegame's country block builds these units. Nothing new was written for it.
+
+The last step is presentation and nothing else: it runs only when a scenario is up **and
+the country is the player's**, walks the country's units and hands the interface an object
+per unit. What `CCountry + 0x1D8` is, and which alert it raises, are not established.
 
 ### The file is read when the effect fires, not before
 

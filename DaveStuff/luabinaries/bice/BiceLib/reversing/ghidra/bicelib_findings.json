@@ -10838,13 +10838,13 @@
     {
      "offset": 0,
      "name": "first",
-     "type": "LinkedListNode*",
+     "type": "CListNode<CCountryTag>*",
      "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
     },
     {
      "offset": 4,
      "name": "last",
-     "type": "LinkedListNode*",
+     "type": "CListNode<CCountryTag>*",
      "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
     },
     {
@@ -11094,13 +11094,13 @@
     {
      "offset": 0,
      "name": "first",
-     "type": "LinkedListNode*",
+     "type": "CListNode<int>*",
      "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
     },
     {
      "offset": 4,
      "name": "last",
-     "type": "LinkedListNode*",
+     "type": "CListNode<int>*",
      "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
     },
     {
@@ -11956,6 +11956,12 @@
      "comment": "read by CCountry::GetMoneyBalanceAverage"
     },
     {
+     "offset": 72,
+     "name": "historical_models",
+     "type": "CHistoricalModelSet**",
+     "comment": "**this country's models, one set per unit type**, indexed by `CSubUnitDefinition::type_index` - 1643 slots. Read by CHistoricalModel::PickBestModel's callers and, **read live**, the holder of every CHistoricalModel in the process (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
      "offset": 116,
      "name": "ignored_keys",
      "type": "SaveToken*",
@@ -12428,6 +12434,12 @@
      "name": "spiescaught",
      "type": "int",
      "comment": "named from the key CCountry::SaveContents writes it under, `spiescaught`. HighestThreat, which the Lua API names, is the next field at +0x11D8 (BiceLib/GameClasses/CCountry.hpp:319)"
+    },
+    {
+     "offset": 88,
+     "name": "oob_file",
+     "type": "Hoi3CString",
+     "comment": "**the order of battle to read**, relative to `history/units`. CLoadOOBEffect::Execute writes the effect's own string here through CCountry::SetOobFile and then calls CCountry::LoadOobFile, which reads it back. Nothing else uses it, so it is an argument passed on the object rather than a property of the country (reversing/FINDINGS-effecttext.md)"
     }
    ]
   },
@@ -13164,8 +13176,26 @@
    ]
   },
   {
-   "name": "CEventScope",
+   "name": "CEffect",
    "size": null,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "token",
+     "type": "SaveToken",
+     "comment": "a SaveToken CPersistent's constructor sets to `none`, and nothing has been found that reads it. Of 714 inlined constructors that write this word and then a vftable, 697 write `none`, and **read live** it is still `none` on every CSubUnitDefinition, CTechnology, CRegiment, CCombat, CAIStrategy, CLeader, CTheatre and CConvoy in a running game - so it is not a class id, whatever a constant at +4 looks like (BiceLib/GameClasses/CPersistent.hpp:57), inherited from CPersistent"
+    },
+    {
+     "offset": 8,
+     "name": "children",
+     "type": "CList",
+     "comment": "the effects inside this one, where it holds any: RTTI gives CEffect a second base of `PAVCEffect::__CList` at offset 8 (reversing/FINDINGS-effecttext.md)"
+    }
+   ]
+  },
+  {
+   "name": "CEventScope",
+   "size": 56,
    "fields": [
     {
      "offset": 16,
@@ -13178,6 +13208,12 @@
      "name": "_nProvince",
      "type": "int",
      "comment": "declared to Lua"
+    },
+    {
+     "offset": 20,
+     "name": "country_id",
+     "type": "int",
+     "comment": "**the country the scope is about**, and what every effect indexes the country database with. The Lua API declares `_Country` at +0x10 as a `CCountryTag&` - that is its getter's return type, not the layout: the tag sits there **by value**, three letters at +0x10 and this id at +0x14, which is why CCountryTag::GetCountry is passed `scope + 0x10` (reversing/FINDINGS-effecttext.md)"
     }
    ]
   },
@@ -13256,6 +13292,42 @@
      "name": "is_set",
      "type": "bool",
      "comment": "what CFlags::IsFlagSet answers (BiceLib/GameClasses/CFlags.hpp:53)"
+    }
+   ]
+  },
+  {
+   "name": "CGainableTrait",
+   "size": null,
+   "fields": [
+    {
+     "offset": 8,
+     "name": "combat",
+     "type": "SaveToken",
+     "comment": "which kind of combat earns it, as the token itself (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 12,
+     "name": "hours_required",
+     "type": "int",
+     "comment": "hours of such combat a leader needs (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 16,
+     "name": "trait",
+     "type": "CTrait*",
+     "comment": "what is earned, resolved as the file is read (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 20,
+     "name": "trigger",
+     "type": "CTrigger",
+     "comment": "held by value; it loads itself from the `trigger` block (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 84,
+     "name": "has_trigger",
+     "type": "bool",
+     "comment": "set when a `trigger` block was read at all (BiceLib/GameClasses/CTrait.hpp)"
     }
    ]
   },
@@ -13638,6 +13710,90 @@
    ]
   },
   {
+   "name": "CHistoricalModel",
+   "size": 48,
+   "fields": [
+    {
+     "offset": 8,
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "held by value, and **the null tag `---` on all 20000 sampled** - a model does not know its country. The real tag is on the CHistoricalModelSet that holds it (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
+     "offset": 16,
+     "name": "definition",
+     "type": "CSubUnitDefinition*",
+     "comment": "the unit type this is a model of (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
+     "offset": 20,
+     "name": "technologies",
+     "type": "CSubUnitTechnology*",
+     "comment": "**what this model was built with**: a vector of the same 12 byte {technology, level, progress} entries a regiment carries, which is why PickBestModel can compare the two directly. **Read live**: non-empty on 1677 of 4000 models, always a whole number of entries, and in this mod every entry's level is the model's own index (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
+     "offset": 24,
+     "name": "technologies_end",
+     "type": "CSubUnitTechnology*",
+     "comment": " (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
+     "offset": 28,
+     "name": "technologies_capacity",
+     "type": "CSubUnitTechnology*",
+     "comment": " (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
+     "offset": 36,
+     "name": "index",
+     "type": "int",
+     "comment": "which model this is, and what `historical_model = N` in an order of battle picks by (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    }
+   ]
+  },
+  {
+   "name": "CHistoricalModelSet",
+   "size": 28,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "models",
+     "type": "CHistoricalModel**",
+     "comment": "a vector of the type's models, in index order (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
+     "offset": 4,
+     "name": "models_end",
+     "type": "CHistoricalModel**",
+     "comment": " (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
+     "offset": 8,
+     "name": "models_capacity",
+     "type": "CHistoricalModel**",
+     "comment": " (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
+     "offset": 12,
+     "name": "unknown_c",
+     "type": "undefined4",
+     "comment": "zero on 878 of 1296 sets and unrelated bytes on the rest, so nothing appears to read it (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
+     "offset": 16,
+     "name": "definition",
+     "type": "CSubUnitDefinition*",
+     "comment": "the unit type, and the same pointer every model in the vector carries at its own `definition`. **Read live**: 25 of 25, and its `type_index` is the slot this set sits in (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    },
+    {
+     "offset": 20,
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "held by value; **read live** the id half is the owning country's index on 1296 of 1296, and the letters are the country's - GER, SWE. This is the tag the model's own field never has (BiceLib/GameClasses/CHistoricalModel.hpp)"
+    }
+   ]
+  },
+  {
    "name": "CIdeology",
    "size": null,
    "fields": [
@@ -13712,6 +13868,36 @@
      "name": "map_mode_table",
      "type": "undefined4",
      "comment": "table with an entry per map mode; the colouring dispatch only runs a mode's routine where its entry is 1 (reversing/FINDINGS-mapmode.md:134)"
+    }
+   ]
+  },
+  {
+   "name": "CInternationalizedText",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "entry",
+     "type": "void*",
+     "comment": "the localisation entry the key found, or the empty one made for a key that was not there (reversing/FINDINGS-effecttext.md)"
+    },
+    {
+     "offset": 4,
+     "name": "replacements_first",
+     "type": "void*",
+     "comment": "a vector of the $VARIABLE$ replacements to apply when this is rendered: **0x20 byte records**, each the variable's name as a string at +0 and the replacement object at +0x1C. ReleaseTextReplacements destroys the objects and DestroyStringsInRange empties the names (reversing/FINDINGS-effecttext.md)"
+    },
+    {
+     "offset": 8,
+     "name": "replacements_last",
+     "type": "void*",
+     "comment": "end of the replacements (reversing/FINDINGS-effecttext.md)"
+    },
+    {
+     "offset": 12,
+     "name": "replacements_end",
+     "type": "void*",
+     "comment": "end of the replacements' storage (reversing/FINDINGS-effecttext.md)"
     }
    ]
   },
@@ -13890,6 +14076,18 @@
    ]
   },
   {
+   "name": "CLeaderHistory",
+   "size": null,
+   "fields": [
+    {
+     "offset": 64,
+     "name": "trait_gain",
+     "type": "CTraitGainTracker*",
+     "comment": "how far the leader has got towards each gainable trait. **Read live**: 399 of 400 histories point at one, the exception being the empty template (BiceLib/GameClasses/CTrait.hpp)"
+    }
+   ]
+  },
+  {
    "name": "CLeadershipDistribution",
    "size": 16,
    "fields": [
@@ -14058,13 +14256,13 @@
     {
      "offset": 0,
      "name": "first",
-     "type": "LinkedListNode*",
+     "type": "CListNode<CSubUnitTechnology>*",
      "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
     },
     {
      "offset": 4,
      "name": "last",
-     "type": "LinkedListNode*",
+     "type": "CListNode<CSubUnitTechnology>*",
      "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
     },
     {
@@ -14083,7 +14281,7 @@
   },
   {
    "name": "CListNode<CAir*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14107,7 +14305,7 @@
   },
   {
    "name": "CListNode<CBrigadeConstructionDefinition*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14131,7 +14329,7 @@
   },
   {
    "name": "CListNode<CCombat*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14155,7 +14353,7 @@
   },
   {
    "name": "CListNode<CConstruction*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14179,7 +14377,7 @@
   },
   {
    "name": "CListNode<CConvoy*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14202,8 +14400,32 @@
    ]
   },
   {
+   "name": "CListNode<CCountryTag>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CCountryTag",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 8,
+     "name": "prev",
+     "type": "CListNode<CCountryTag>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 12,
+     "name": "next",
+     "type": "CListNode<CCountryTag>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
    "name": "CListNode<CCountryWarTargetValue*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14227,7 +14449,7 @@
   },
   {
    "name": "CListNode<CLeader*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14251,7 +14473,7 @@
   },
   {
    "name": "CListNode<CMinister*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14275,7 +14497,7 @@
   },
   {
    "name": "CListNode<CProvince*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14299,7 +14521,7 @@
   },
   {
    "name": "CListNode<CRegiment*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14322,8 +14544,56 @@
    ]
   },
   {
+   "name": "CSubUnitTechnology",
+   "size": 12,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "technology",
+     "type": "CTechnology*",
+     "comment": "which technology this is the regiment's level of (BiceLib/GameClasses/CRegiment.hpp:85)"
+    },
+    {
+     "offset": 4,
+     "name": "level",
+     "type": "int",
+     "comment": "the level the regiment has of it; the save's first number, and what CSubUnit::ApplyTechnologies adds into extra_consumption (BiceLib/GameClasses/CRegiment.hpp:85)"
+    },
+    {
+     "offset": 8,
+     "name": "progress",
+     "type": "int",
+     "comment": "x1000, the save's second number. **Read live**: zero on land regiments and set on some ships (BiceLib/GameClasses/CRegiment.hpp:85)"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<CSubUnitTechnology>",
+   "size": 20,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "CSubUnitTechnology",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 12,
+     "name": "prev",
+     "type": "CListNode<CSubUnitTechnology>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 16,
+     "name": "next",
+     "type": "CListNode<CSubUnitTechnology>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
    "name": "CListNode<CTechnology const*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14347,7 +14617,7 @@
   },
   {
    "name": "CListNode<CTheatre*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14371,7 +14641,7 @@
   },
   {
    "name": "CListNode<CTradeRoute*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14395,7 +14665,7 @@
   },
   {
    "name": "CListNode<CTrait*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14419,7 +14689,7 @@
   },
   {
    "name": "CListNode<CUnit*>",
-   "size": null,
+   "size": 12,
    "fields": [
     {
      "offset": 0,
@@ -14438,6 +14708,54 @@
      "name": "next",
      "type": "CListNode<CUnit*>*",
      "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CListNode<int>",
+   "size": 12,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "data",
+     "type": "int",
+     "comment": "what the node holds (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "prev",
+     "type": "CListNode<int>*",
+     "comment": "the previous node"
+    },
+    {
+     "offset": 8,
+     "name": "next",
+     "type": "CListNode<int>*",
+     "comment": "the next node"
+    }
+   ]
+  },
+  {
+   "name": "CLoadOOBEffect",
+   "size": null,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "token",
+     "type": "SaveToken",
+     "comment": "a SaveToken CPersistent's constructor sets to `none`, and nothing has been found that reads it. Of 714 inlined constructors that write this word and then a vftable, 697 write `none`, and **read live** it is still `none` on every CSubUnitDefinition, CTechnology, CRegiment, CCombat, CAIStrategy, CLeader, CTheatre and CConvoy in a running game - so it is not a class id, whatever a constant at +4 looks like (BiceLib/GameClasses/CPersistent.hpp:57), inherited from CPersistent, inherited from CEffect, inherited from CStringEffect"
+    },
+    {
+     "offset": 8,
+     "name": "children",
+     "type": "CList",
+     "comment": "the effects inside this one, where it holds any: RTTI gives CEffect a second base of `PAVCEffect::__CList` at offset 8 (reversing/FINDINGS-effecttext.md), inherited from CEffect, inherited from CStringEffect"
+    },
+    {
+     "offset": 32,
+     "name": "text",
+     "type": "Hoi3CString",
+     "comment": "**the one string the effect was written with**, which is what the class is for. Both descendants read it and mean different things by it: for CLoadOOBEffect it is the order of battle's path under history/units, for CRemoveBrigadeEffect the brigade to take away, which it puts into REMOVE_BRIGADE (reversing/FINDINGS-effecttext.md), inherited from CStringEffect"
     }
    ]
   },
@@ -17136,6 +17454,30 @@
    ]
   },
   {
+   "name": "CRemoveBrigadeEffect",
+   "size": null,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "token",
+     "type": "SaveToken",
+     "comment": "a SaveToken CPersistent's constructor sets to `none`, and nothing has been found that reads it. Of 714 inlined constructors that write this word and then a vftable, 697 write `none`, and **read live** it is still `none` on every CSubUnitDefinition, CTechnology, CRegiment, CCombat, CAIStrategy, CLeader, CTheatre and CConvoy in a running game - so it is not a class id, whatever a constant at +4 looks like (BiceLib/GameClasses/CPersistent.hpp:57), inherited from CPersistent, inherited from CEffect, inherited from CStringEffect"
+    },
+    {
+     "offset": 8,
+     "name": "children",
+     "type": "CList",
+     "comment": "the effects inside this one, where it holds any: RTTI gives CEffect a second base of `PAVCEffect::__CList` at offset 8 (reversing/FINDINGS-effecttext.md), inherited from CEffect, inherited from CStringEffect"
+    },
+    {
+     "offset": 32,
+     "name": "text",
+     "type": "Hoi3CString",
+     "comment": "**the one string the effect was written with**, which is what the class is for. Both descendants read it and mean different things by it: for CLoadOOBEffect it is the order of battle's path under history/units, for CRemoveBrigadeEffect the brigade to take away, which it puts into REMOVE_BRIGADE (reversing/FINDINGS-effecttext.md), inherited from CStringEffect"
+    }
+   ]
+  },
+  {
    "name": "CResearchBonus",
    "size": null,
    "fields": [
@@ -17450,6 +17792,30 @@
      "name": "time",
      "type": "int",
      "comment": "saved as `time`, read with `%i`. **Read live**: 2 on every order in a running game (BiceLib/GameClasses/COrder.hpp:64), inherited from COrder"
+    }
+   ]
+  },
+  {
+   "name": "CStringEffect",
+   "size": null,
+   "fields": [
+    {
+     "offset": 4,
+     "name": "token",
+     "type": "SaveToken",
+     "comment": "a SaveToken CPersistent's constructor sets to `none`, and nothing has been found that reads it. Of 714 inlined constructors that write this word and then a vftable, 697 write `none`, and **read live** it is still `none` on every CSubUnitDefinition, CTechnology, CRegiment, CCombat, CAIStrategy, CLeader, CTheatre and CConvoy in a running game - so it is not a class id, whatever a constant at +4 looks like (BiceLib/GameClasses/CPersistent.hpp:57), inherited from CPersistent, inherited from CEffect"
+    },
+    {
+     "offset": 8,
+     "name": "children",
+     "type": "CList",
+     "comment": "the effects inside this one, where it holds any: RTTI gives CEffect a second base of `PAVCEffect::__CList` at offset 8 (reversing/FINDINGS-effecttext.md), inherited from CEffect"
+    },
+    {
+     "offset": 32,
+     "name": "text",
+     "type": "Hoi3CString",
+     "comment": "**the one string the effect was written with**, which is what the class is for. Both descendants read it and mean different things by it: for CLoadOOBEffect it is the order of battle's path under history/units, for CRemoveBrigadeEffect the brigade to take away, which it puts into REMOVE_BRIGADE (reversing/FINDINGS-effecttext.md)"
     }
    ]
   },
@@ -18044,30 +18410,12 @@
      "name": "sprite",
      "type": "int",
      "comment": "unit picture (BiceLib/GameClasses/CSubUnitDefinition.hpp:59)"
-    }
-   ]
-  },
-  {
-   "name": "CSubUnitTechnology",
-   "size": 12,
-   "fields": [
-    {
-     "offset": 0,
-     "name": "technology",
-     "type": "CTechnology*",
-     "comment": "which technology this is the regiment's level of (BiceLib/GameClasses/CRegiment.hpp:85)"
     },
     {
-     "offset": 4,
-     "name": "level",
+     "offset": 436,
+     "name": "unit_group",
      "type": "int",
-     "comment": "the level the regiment has of it; the save's first number, and what CSubUnit::ApplyTechnologies adds into extra_consumption (BiceLib/GameClasses/CRegiment.hpp:85)"
-    },
-    {
-     "offset": 8,
-     "name": "progress",
-     "type": "int",
-     "comment": "x1000, the save's second number. **Read live**: zero on land regiments and set on some ships (BiceLib/GameClasses/CRegiment.hpp:85)"
+     "comment": "which combined arms group the type is in: a one based index into common/combined_arms.txt's own order, 0 for none (BiceLib/GameClasses/CSubUnitDefinition.hpp)"
     }
    ]
   },
@@ -18202,10 +18550,82 @@
      "comment": "its name for the player - `Artillery Barrel and Ammunition` (BiceLib/GameClasses/CTechnology.hpp:38)"
     },
     {
+     "offset": 584,
+     "name": "allow",
+     "type": "void*",
+     "comment": "the `allow` block: a trigger held by value, which loads itself (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
+     "offset": 648,
+     "name": "change",
+     "type": "bool",
+     "comment": "`change`; 388 of 388 agree (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
      "offset": 660,
      "name": "effects",
      "type": "void*",
      "comment": "**what this technology does to each unit type**: a list whose nodes hold the effect at +0 and the next node at +8. Each effect is a whole CSubUnitDefinition holding only the changes, and its `Key` is the unit type it is for. **Read live**: 16044 effects across 1175 technologies in this mod (BiceLib/GameClasses/CTechnology.hpp:49)"
+    },
+    {
+     "offset": 692,
+     "name": "start_year",
+     "type": "int",
+     "comment": "`start_year`; 1173 of 1174 agree across 31 values (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
+     "offset": 696,
+     "name": "first_offset",
+     "type": "int",
+     "comment": "`first_offset`; 801 of 802 agree across 32 values (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
+     "offset": 700,
+     "name": "stealable",
+     "type": "bool",
+     "comment": "`stealable`; 569 of 569 agree (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
+     "offset": 704,
+     "name": "additional_offset",
+     "type": "int",
+     "comment": "`additional_offset`; 795 of 795 agree (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
+     "offset": 708,
+     "name": "max_level",
+     "type": "int",
+     "comment": "`max_level`, and **the loader turns 0 into 1** rather than leaving it; 877 of 877 agree (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
+     "offset": 716,
+     "name": "is_nuclear",
+     "type": "bool",
+     "comment": "`is_nuclear`; 14 declare it and agree, but all 14 say yes, so this rests on the loader (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
+     "offset": 720,
+     "name": "build_cost_ic_modifier",
+     "type": "int[4]",
+     "comment": "read by 0x45140 into sixteen bytes; what they hold has not been read (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
+     "offset": 736,
+     "name": "build_cost_mp_modifier",
+     "type": "int[4]",
+     "comment": "the same, for manpower (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
+     "offset": 752,
+     "name": "build_time_modifier",
+     "type": "int[4]",
+     "comment": "the same, for time (BiceLib/GameClasses/CTechnology.hpp)"
+    },
+    {
+     "offset": 784,
+     "name": "activate_building",
+     "type": "void*",
+     "comment": "the building this technology unlocks; the loader also writes this technology onto that building at its +0x10 (BiceLib/GameClasses/CTechnology.hpp)"
     }
    ]
   },
@@ -18299,9 +18719,9 @@
     },
     {
      "offset": 536,
-     "name": "build_cost_by_technology",
+     "name": "level_by_technology",
      "type": "int*",
-     "comment": "ints indexed by a technology's index (+0x244): what each technology does to a unit type's build cost, summed over the type's own technology list (BiceLib/GameClasses/CSubUnitDefinition.hpp:149)"
+     "comment": "**the country's researched level of each technology**, ints indexed by a technology's index (`CTechnology +0x244`). `CHistoricalModelSet::MakeSubUnit` copies straight out of it into a new regiment's `CSubUnitTechnology::level` (`mov [ecx+4], esi` at `0x183183`), and **read live** it equals the level 6859 of 7445 regiment entries carry, counting only non-zero ones - the rest being regiments raised before the country researched further. `0x63D40` sums it over a unit type's own technologies and hands the total to GetBuildCostIC, which is what it used to be named for (BiceLib/GameClasses/CHistoricalModel.hpp)"
     },
     {
      "offset": 588,
@@ -18416,6 +18836,36 @@
      "name": "precipitation",
      "type": "int",
      "comment": "x1000, from the terrain's `precipitation`. **Read live**: 10000 on mountain, which declares `10`, and zero on the four that declare none (BiceLib/GameClasses/CTerrain.hpp:43)"
+    }
+   ]
+  },
+  {
+   "name": "CTextRenderColours",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "value0",
+     "type": "int",
+     "comment": "sixteen bytes from settings + 0x6C, passed to RenderText by value; BiceLib copies them verbatim and what they mean is not established (reversing/FINDINGS-effecttext.md)"
+    },
+    {
+     "offset": 4,
+     "name": "value1",
+     "type": "int",
+     "comment": " (reversing/FINDINGS-effecttext.md)"
+    },
+    {
+     "offset": 8,
+     "name": "value2",
+     "type": "int",
+     "comment": " (reversing/FINDINGS-effecttext.md)"
+    },
+    {
+     "offset": 12,
+     "name": "value3",
+     "type": "int",
+     "comment": " (reversing/FINDINGS-effecttext.md)"
     }
    ]
   },
@@ -18568,10 +19018,64 @@
    "size": null,
    "fields": [
     {
+     "offset": 4,
+     "name": "persistent_meta",
+     "type": "int",
+     "comment": "0x18D (BiceLib/GameClasses/CModifier.hpp:29), inherited from CModifier"
+    },
+    {
+     "offset": 24,
+     "name": "values",
+     "type": "CModifierValues*",
+     "comment": "the values, one entry per ModifierType and indexed by it; CModifier::GetValue reads [this+0x18][type*8]. Typed as a structure of named entries so a read is a field rather than an index (BiceLib/GameClasses/CModifier.hpp:45), inherited from CModifier"
+    },
+    {
      "offset": 44,
      "name": "name",
      "type": "Hoi3CString",
      "comment": "trait name (BiceLib/GameClasses/CTrait.hpp:22)"
+    },
+    {
+     "offset": 104,
+     "name": "effect_values",
+     "type": "int[16]",
+     "comment": "what each effect is worth, in thousandths (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 168,
+     "name": "effect_kinds",
+     "type": "int[16]",
+     "comment": "which of the 31 effects each one is - CTrait::Effect in the header, numbered as CTrait::LoadKey's jump table numbers them (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 232,
+     "name": "effect_types",
+     "type": "Hoi3CString[16]",
+     "comment": "the terrain each terrain_* effect names, empty for the rest. The stride is 0x1C against a string's 0x18, and **read live** the four spare bytes hold fragments of the parser's buffer - they are padding nothing writes (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 680,
+     "name": "effect_count",
+     "type": "int",
+     "comment": "how many of the sixteen are used (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 688,
+     "name": "allowed_land",
+     "type": "bool",
+     "comment": "from `allowed_leader`; all three are set outright when the key is absent (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 689,
+     "name": "allowed_sea",
+     "type": "bool",
+     "comment": "from `allowed_leader` (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 690,
+     "name": "allowed_air",
+     "type": "bool",
+     "comment": "from `allowed_leader` (BiceLib/GameClasses/CTrait.hpp)"
     }
    ]
   },
@@ -18596,6 +19100,30 @@
      "name": "traits_end",
      "type": "CTrait**",
      "comment": "trait vector end (BiceLib/GameClasses/CTrait.hpp:50)"
+    }
+   ]
+  },
+  {
+   "name": "CTraitGainTracker",
+   "size": null,
+   "fields": [
+    {
+     "offset": 12,
+     "name": "hours_by_trait",
+     "type": "void*",
+     "comment": "a std::map of trait to hours - a red-black tree, the value at each node's +0x10 (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 28,
+     "name": "duration",
+     "type": "int",
+     "comment": "saved as `duration` (BiceLib/GameClasses/CTrait.hpp)"
+    },
+    {
+     "offset": 32,
+     "name": "current",
+     "type": "int",
+     "comment": "saved as `current` (BiceLib/GameClasses/CTrait.hpp)"
     }
    ]
   },
@@ -19237,6 +19765,34 @@
  ],
  "functions": [
   {
+   "rva": 4192,
+   "namespace": "std::string",
+   "name": "operator=",
+   "confidence": "CERTAIN",
+   "evidence": "Four instructions: `assign(source, 0, npos)`. **The source arrives in eax** - the compiler gave this thunk a convention of its own - and the destination in ecx as usual. Eight call sites. What CCountry::SetOobFile is made of.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": null,
+   "labels": []
+  },
+  {
+   "rva": 4208,
+   "namespace": "std::string",
+   "name": "clear",
+   "confidence": "CERTAIN",
+   "evidence": "Gives the buffer back where the string had one - `if (capacity >= 0x10) free(data)` - and leaves it empty: capacity 0xF, length 0, first byte 0. The destructor's body as well as `clear()`, which is why it turns up at the end of every function that built a string.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "Hoi3CString*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 8256,
    "namespace": "CFixedPoint",
    "name": "Get",
@@ -19302,8 +19858,27 @@
    "namespace": "std::string",
    "name": "assign",
    "confidence": "CERTAIN",
-   "evidence": "`assign(const char*, size_t)`: thiscall, both arguments pushed, `ret 8`. Up to fifteen characters it writes them into the object and past that it allocates. What BiceLib calls to hand the game a string of its own.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "`assign(const char*, size_t)`: thiscall, both arguments pushed, `ret 8`. Up to fifteen characters it writes them into the object and past that it allocates. What BiceLib calls to hand the game a string of its own - see GameClasses/GameString.cpp.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "Hoi3CString*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "Hoi3CString*"
+     },
+     {
+      "name": "text",
+      "type": "char*"
+     },
+     {
+      "name": "length",
+      "type": "uint"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
    "labels": []
   },
   {
@@ -22001,7 +22576,7 @@
    "namespace": "CGainableTrait",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CGainableTrait introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "**The whole grammar of `common/gainable_traits.txt`**, which is four keys: `combat` keeps the token itself at `+0x8`, `hours_required` a number at `+0xC`, `trait` the CTrait it resolves through the trait database at `+0x10`, and `trigger` hands the block to the CTrigger held at `+0x14` and marks `+0x54`. Nothing inside a trigger reaches here - the trigger loads itself - which is why the file's other keys are not this class's.\n(BiceLib/GameClasses/CTrait.hpp)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CGainableTrait introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -22028,7 +22603,7 @@
    "namespace": "CTraitGainTracker",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CTraitGainTracker introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "`duration` and `current` are read with `%i` into `+0x1C` and `+0x20`. **Any other key is a trait's name**: it is looked up and the value put on that trait's entry in the map at `+0xC`, which is how a save carries how far a leader has got towards each gainable trait.\n(BiceLib/GameClasses/CTrait.hpp)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CTraitGainTracker introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -22055,7 +22630,7 @@
    "namespace": "CTraitGainTracker",
    "name": "SaveContents",
    "confidence": "CERTAIN",
-   "evidence": "Slot 2 of CPersistent, this class's own: the RTTI export says CTraitGainTracker introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "Walks the map at `+0xC` - a red-black tree, the value at each node's `+0x10` - and writes one key per trait. That this class has a SaveContents of its own, rather than the shared empty one at `0x20CD50`, is what says the progress is game state rather than a definition. **Read live**: a leader's history holds the tracker, at `CLeaderHistory + 0x40` - 399 of 400 histories in a running game point at one.\n(BiceLib/GameClasses/CTrait.hpp)\n\nSlot 2 of CPersistent, this class's own: the RTTI export says CTraitGainTracker introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -26070,8 +26645,18 @@
    "namespace": "CCountry",
    "name": "LoadOobFile",
    "confidence": "CERTAIN",
-   "evidence": "**Reads the order of battle named at `CCountry + 0x58`** and puts it in the country. It builds `<base>/units/<path>` - the base chosen by `[0x1685558 + 0x50]`, which has three values - then calls FileExists, makes a Tokenizer and a CParseContext over it: the same parts every other `.txt` is read through. **So the file is opened when the effect fires**; startup only lists the folder. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "**Reads the order of battle named at `CCountry::oob_file`** and puts it in the country. It builds `<base>/units/<path>` - the base chosen by `[0x1685558 + 0x50]`, which has three values - and tries it with FileExists; then allocates a CParseContext (0x360 bytes) and a Tokenizer (0x114) over the file and calls **the country's own slot 3, `CPersistent::Load`**, with that context, before deleting it.\n\nSo **an order of battle is read as a piece of a country's save block**: Load pulls keys and hands each to `CCountry::LoadKey` (`0xCCDA0`), the same one a savegame goes through, and every keyword in the file is a SaveToken - `theatre` 1125, `armygroup` 1126, `corps` 1127, `division` 1128, `navy` 593, `air` 1088, `regiment` 594, `location` 544, `leader` 616, `military_construction` 637. **This is where the units are made.** The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "country",
+      "type": "CCountry*"
+     }
+    ]
+   },
    "labels": []
   },
   {
@@ -27463,7 +28048,7 @@
    "namespace": "CTechnology",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CTechnology introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "**The grammar of the technology files.** A dozen keys of its own - the ones in CTechnology.hpp - and **anything it does not know is taken as a unit type's name**: that is how `infantry_brigade = { soft_attack = 0.1 }` becomes an effect, resolved through the same by-name lookup the unit files use. `research_bonus_from` reads a list, and `folder` and `activate_*` resolve against their own databases.\n(BiceLib/GameClasses/CTechnology.hpp)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CTechnology introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -30209,7 +30794,7 @@
    "namespace": "CHistoricalModel",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CHistoricalModel introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "**No keys of its own.** Every key is taken as a **technology's name**: it is looked up in the technology database, that technology's effects are walked for the one whose CSubUnitDefinition index matches this model's unit type, and it is applied (`0x111D90`). A name that is not a technology, or one with nothing for this type, is logged against `model.cpp` with both names. So a model is the list of technologies a unit was built with.\n(BiceLib/GameClasses/CHistoricalModel.hpp)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CHistoricalModel introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -30228,6 +30813,72 @@
       "type": "SaveToken"
      }
     ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1585248,
+   "namespace": "CHistoricalModelSet",
+   "name": "MakeSubUnit",
+   "confidence": "CERTAIN",
+   "evidence": "**Builds a throwaway regiment to compare models against.** From the set's definition it news a CRegiment, a ship or an air unit by the two flags at `CSubUnitDefinition +0x2C` and `+0x2E`, calls CSubUnit::SetType, then walks the definition's `technologies` vector (`+0x44..+0x48`) and writes each one's researched level - `CTechnologyStatus::level_by_technology[technology->index]` of the country the set's tag names - into the matching node of the new regiment's `technologies` list, and finishes with CSubUnit::ApplyTechnologies. Its only caller destroys it immediately. The name is BiceLib's.\n(BiceLib/GameClasses/CHistoricalModel.hpp)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "CSubUnit*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "models",
+      "type": "CHistoricalModelSet*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1585648,
+   "namespace": "CHistoricalModelSet",
+   "name": "PickCurrentModel",
+   "confidence": "CERTAIN",
+   "evidence": "**The model a country would build right now**: MakeSubUnit for a regiment carrying the country's current research, PickBestModel against it, then the regiment's deleting destructor. Takes its one argument in eax and answers in eax, an LTCG convention. The name is BiceLib's.\n(BiceLib/GameClasses/CHistoricalModel.hpp)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "CHistoricalModel*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "models",
+      "type": "CHistoricalModelSet*",
+      "storage": "EAX"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
+   "rva": 1585712,
+   "namespace": "CHistoricalModel",
+   "name": "PickBestModel",
+   "confidence": "CERTAIN",
+   "evidence": "**Which of a unit type's models a country would build today.** `ret 4`, so it takes **one** stack argument, not two: ecx is the CHistoricalModelSet whose first three words are the model vector, and the stack argument is a CSubUnit whose `technologies` list at `+0x84` says what the country has researched. It scores every model as the sum, over the model's own CSubUnitTechnology entries, of `|the regiment's level - the level the model wants| * 1000`, **counting only technologies whose `CTechnology::change` is set** (789 of 1175 in this mod), and answers the model with the smallest total - starting from 999,999,000, and null for an empty set. **The absolute value is what `Patches::historicalModelLogicFix` replaces**, so that a model asking for more than is researched is penalised rather than treated as equally close. The name is BiceLib's.\n(BiceLib/GameClasses/CHistoricalModel.hpp)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "CHistoricalModel*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "models",
+      "type": "CHistoricalModelSet*",
+      "storage": "ECX"
+     },
+     {
+      "name": "raised",
+      "type": "CSubUnit*",
+      "storage": "stack:4"
+     }
+    ],
+    "returnStorage": "EAX"
    },
    "labels": []
   },
@@ -32219,11 +32870,43 @@
    "labels": []
   },
   {
+   "rva": 1780224,
+   "namespace": "CTrait",
+   "name": "AddEffect",
+   "confidence": "CERTAIN",
+   "evidence": "Appends one effect to the three parallel arrays a trait keeps - the value at `+0x68`, which of the 31 kinds it is at `+0xA8`, and the terrain type at `+0xE8` with a stride of 0x1C - and counts it at `+0x2A8`. **The kind arrives in ecx**, which is why the loader's jump table is a column of `mov edi, N`. **It refuses the seventeenth silently**: the arrays hold sixteen, which is exactly where the count sits (`0xE8 + 16 * 0x1C == 0x2A8`). The name is BiceLib's.\n(BiceLib/GameClasses/CTrait.hpp)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CTrait*"
+     },
+     {
+      "name": "kind",
+      "type": "int",
+      "storage": "ECX"
+     },
+     {
+      "name": "value",
+      "type": "int"
+     },
+     {
+      "name": "type",
+      "type": "Hoi3CString*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 1780304,
    "namespace": "CTrait",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CTrait introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "**The whole grammar of `common/traits.txt`**, and the only thing that reads it: `allowed_leader = { land sea air }` sets the three flags at `+0x2B0` (all three when the key is absent), and 31 effect keys each add one entry through AddEffect. The three terrain ones read `type` then `value`, in that order, which the loader insists on. Anything else is logged against `traits.cpp` with the key's own text.\n\n**Checked against the mod**: all 33 distinct keys across the 341 traits in BlackICE's `traits.txt` are ones this knows. `gainable_traits.txt` is a different class - CGainableTrait, whose keys (`trait`, `combat`, `trigger`, `hours_required`) none of this would take.\n(BiceLib/GameClasses/CTrait.hpp)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CTrait introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -32247,10 +32930,10 @@
   },
   {
    "rva": 1787456,
-   "namespace": "",
-   "name": "GetTraitDataBase",
+   "namespace": "CTrait",
+   "name": "database",
    "confidence": "CERTAIN",
-   "evidence": "Getter that creates on first use and returns the object holding every trait.\n(BiceLib/GameClasses/CTrait.hpp:31)",
+   "evidence": "Makes the object holding every trait on first use and keeps it at `0x16855EC`; 0x1C bytes, the traits themselves between `+0xC` and `+0x10`. Index 0 is a CNullTrait. The name is BiceLib's.\n(BiceLib/GameClasses/CTrait.hpp:31)",
    "signature": null,
    "labels": []
   },
@@ -34618,8 +35301,22 @@
    "namespace": "CCountry",
    "name": "SetOobFile",
    "confidence": "CERTAIN",
-   "evidence": "One line: writes the path an order of battle is to be loaded from onto the country, at `+0x58`. What CLoadOOBEffect::Execute calls before asking for the load. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "One line: **`country->oob_file = path`**, through std::string::operator= with the country in ecx and `+0x58` computed into it. What CLoadOOBEffect::Execute calls before asking for the load. `ret 4`. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CCountry*"
+     },
+     {
+      "name": "path",
+      "type": "Hoi3CString*"
+     }
+    ]
+   },
    "labels": []
   },
   {
@@ -37621,6 +38318,29 @@
      {
       "name": null,
       "type": "int"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 4773216,
+   "namespace": "",
+   "name": "AnnounceLoadedUnitsToScreen",
+   "confidence": "CERTAIN",
+   "evidence": "**Tells the interface about a country's units**, which is the last thing CLoadOOBEffect::Execute does - and only when a scenario is running and the country is the **player's own**, so it is presentation rather than game state. It takes the thing at `CCountry + 0x1D8`, whose CCountryTag at `+0x20` gives it the country, walks that country's `units`, and for each one that passes a virtual test builds a 0x64 byte object and hands it to a virtual on `CCurrentGameState::in_game_screen`. **What `CCountry + 0x1D8` is has not been established**, nor which alert this raises. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "owner",
+      "type": "void*"
+     },
+     {
+      "name": "flag",
+      "type": "char"
      }
     ]
    },
@@ -41086,10 +41806,22 @@
   {
    "rva": 5954544,
    "namespace": "CKillLeaderEffect",
-   "name": "GetLeaderId",
+   "name": "GetLeader",
    "confidence": "CERTAIN",
-   "evidence": "Turns the effect's stored value into the leader it names: the value sits at `+0x20` as a thousandth, so the id written in the event file is `value / 1000`. Answers zero while the game has no leaders to look in. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "**The leader the effect names.** Its value sits at `+0x20` as a thousandth, so the id written in the event file is `value / 1000`, and that goes to the lookup at `0x69DA00` with the type 0x25. Answers null while the game has no leaders to look in. The compiler kept it to itself and passes the effect in **eax**. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "CLeader*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "effect",
+      "type": "CKillLeaderEffect*",
+      "storage": "EAX"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
    "labels": []
   },
   {
@@ -41097,8 +41829,38 @@
    "namespace": "CKillLeaderEffect",
    "name": "GetText",
    "confidence": "CERTAIN",
-   "evidence": "**The sentence an option's tooltip shows for `kill_leader`**, slot 9 of the class's vftable (`0x11F4F28`, RTTI). The only function that names the localisation string `KILL_LEADER_EFFECT`. It resolves the effect's value into a leader, finds him in the country's active leaders at `country + 0xE00`, looks the string up and puts \"\\xa7Y<name>\\xa7W\" in place of its $NAME$. BiceLib stands in for two of its calls to add $UNIT$, $LOCATION$ and $WHERE$ - see reversing/FINDINGS-effecttext.md.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "**The shape every effect's text builder has**, slot 9: it builds the sentence into `out`, answers it in eax, and takes forty bytes of arguments (`ret 0x28`). Of those the scope is read by 66 of the 99 effect classes that have a slot 9, and the string at `+0x10` by 75 - but only to destroy it, never to read its characters, so `unread` is what it is called here. The last eight bytes are read by none of the 99; they are written out so the stack adds up. This one names the localisation string `KILL_LEADER_EFFECT`, finds the leader in the scope country's active list and puts \"\\xa7Y<name>\\xa7W\" in place of its $NAME$. BiceLib stands in for two of its calls to add $UNIT$, $LOCATION$ and $WHERE$ - see Hooks/EffectText/KillLeaderText.cpp.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "Hoi3CString*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CKillLeaderEffect*"
+     },
+     {
+      "name": "out",
+      "type": "Hoi3CString*"
+     },
+     {
+      "name": "scope",
+      "type": "CEventScope*"
+     },
+     {
+      "name": "unread",
+      "type": "Hoi3CString"
+     },
+     {
+      "name": "unknown1",
+      "type": "int"
+     },
+     {
+      "name": "unknown2",
+      "type": "int"
+     }
+    ]
+   },
    "labels": []
   },
   {
@@ -41264,8 +42026,26 @@
    "namespace": "CLoadOOBEffect",
    "name": "Execute",
    "confidence": "CERTAIN",
-   "evidence": "Loads the order of battle the effect names: the path at `+0x20` goes to `0x5EC9E0`, which reads the file, and the result is applied to the country the scope names - the id at `scope + 0x14`. **Nothing about the file is in memory before this**, which is why a tooltip about it has to read the file itself. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "Loads the order of battle the effect names: `CStringEffect::text` is written onto the country by CCountry::SetOobFile, and CCountry::LoadOobFile is called on it. The country is the scope's, by the id at `scope + 0x14`. **Nothing about the file is in memory before this**, which is why a tooltip about it has to read the file itself. The second stack argument is not read here; it is written out so the `ret 8` adds up. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CLoadOOBEffect*"
+     },
+     {
+      "name": "scope",
+      "type": "CEventScope*"
+     },
+     {
+      "name": "unknown",
+      "type": "int"
+     }
+    ]
+   },
    "labels": []
   },
   {
@@ -41273,8 +42053,38 @@
    "namespace": "CLoadOOBEffect",
    "name": "GetText",
    "confidence": "CERTAIN",
-   "evidence": "**What the `load_oob` effect shows in an option's tooltip**, slot 9 of its vftable (`0x11F4490`, RTTI). It hands the effect's own string - the file path, at `+0x20`, which CStringEffect keeps - to GetText **as a localisation key**, renders what comes back and shows that, so a player sees the bare path. There is no key and no variable to fill, so BiceLib writes the whole string over it at the last call before the return. See reversing/FINDINGS-effecttext.md.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "**The shape every effect's text builder has**, slot 9: it builds the sentence into `out`, answers it in eax, and takes forty bytes of arguments (`ret 0x28`). Of those the scope is read by 66 of the 99 effect classes that have a slot 9, and the string at `+0x10` by 75 - but only to destroy it, never to read its characters, so `unread` is what it is called here. The last eight bytes are read by none of the 99; they are written out so the stack adds up. This one hands **the effect's own string** - `CStringEffect::text`, which for this effect is the order of battle's path - to GetText as though it were a localisation key, so a player sees the bare path. There is no key and no variable to fill, so BiceLib writes the whole string over it at the last call before the return - see Hooks/EffectText/LoadOobText.cpp. **It is also a BiceLib patch site**: its first three instructions come to exactly five bytes, which is what a jump needs, and all the stub wants is ecx.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "Hoi3CString*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CLoadOOBEffect*"
+     },
+     {
+      "name": "out",
+      "type": "Hoi3CString*"
+     },
+     {
+      "name": "scope",
+      "type": "CEventScope*"
+     },
+     {
+      "name": "unread",
+      "type": "Hoi3CString"
+     },
+     {
+      "name": "unknown1",
+      "type": "int"
+     },
+     {
+      "name": "unknown2",
+      "type": "int"
+     }
+    ]
+   },
    "labels": []
   },
   {
@@ -43442,8 +44252,30 @@
    "namespace": "TextBuilder",
    "name": "Append",
    "confidence": "CERTAIN",
-   "evidence": "Adds one more string to a run started by TextBuilder::Begin and answers the builder again. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "Adds one more string to a run started by TextBuilder::Begin and answers the builder again. Like the rest of this machinery it takes a second pointer in **esi**, the string it builds into. `ret 4`. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "Hoi3CString*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "out",
+      "type": "Hoi3CString*",
+      "storage": "ESI"
+     },
+     {
+      "name": "text",
+      "type": "Hoi3CString*",
+      "storage": "stack:4"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
    "labels": []
   },
   {
@@ -43451,8 +44283,30 @@
    "namespace": "TextBuilder",
    "name": "Begin",
    "confidence": "CERTAIN",
-   "evidence": "Starts the \"\\xa7Y<something>\\xa7W\" run that a tooltip colours a name with: the colour code in edx as a plain char*, the string to follow it pushed, the builder in ecx, and the builder back in eax so the next piece can be chained onto it. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "Starts the \"\\xa7Y<something>\\xa7W\" run a tooltip colours a name with: the colour code in edx as a plain char*, the string to follow it pushed, the builder in ecx, and the builder back in eax so the next piece can be chained onto it. **The caller cleans the stack** (`ret` with no operand, and an `add esp, 4` at the call site), which is why this is written as cdecl with the registers spelled out rather than as fastcall. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "void*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "void*",
+      "storage": "ECX"
+     },
+     {
+      "name": "colour",
+      "type": "char*",
+      "storage": "EDX"
+     },
+     {
+      "name": "text",
+      "type": "Hoi3CString*",
+      "storage": "stack:4"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
    "labels": []
   },
   {
@@ -43615,8 +44469,20 @@
    "namespace": "",
    "name": "FileExists",
    "confidence": "CERTAIN",
-   "evidence": "Answers whether a path is there; the `common/` loader calls it once per file to choose between the mod's copy and vanilla's. The name is BiceLib's, from that use.\n(reversing/CLASSES.md:1354)",
-   "signature": null,
+   "evidence": "Answers whether a path is there; the `common/` loader calls it once per file to choose between the mod's copy and vanilla's, and CCountry::LoadOobFile for the same reason. The path arrives in **eax** - the compiler kept the function to itself - and it reads the string's capacity at `+0x14` to find the characters. The name is BiceLib's, from that use.\n(reversing/CLASSES.md:1354)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "bool",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "path",
+      "type": "Hoi3CString*",
+      "storage": "EAX"
+     }
+    ],
+    "returnStorage": "AL"
+   },
    "labels": []
   },
   {
@@ -43917,26 +44783,83 @@
    "namespace": "",
    "name": "GetText",
    "confidence": "CERTAIN",
-   "evidence": "**The localisation lookup**: `TextObject* GetText(TextObject* out, const std::string* key)`. Both arguments are pushed and the callee cleans them (`ret 8`). **It does not answer with a string** - the out is a sixteen byte text object, `{entry, and a vector of the $VARIABLE$ replacements to apply}`, and characters come out of RenderText. A key it cannot find gets an empty entry made for it rather than an error. Province names are localisation too, under `PROV<id>`; the game builds that key with the format string at `0x11BE118`. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "**The localisation lookup.** Both arguments are pushed and the callee cleans them (`ret 8`). **It does not answer with a string** - the out is the sixteen byte text object, the entry plus a vector of the $VARIABLE$ replacements to apply, and characters come out of CInternationalizedText::Render. A key it cannot find gets an empty entry made for it rather than an error. Province names are localisation too, under `PROV<id>`; the game builds that key with the format string at `0x11BE118`. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "CInternationalizedText*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "out",
+      "type": "CInternationalizedText*"
+     },
+     {
+      "name": "key",
+      "type": "Hoi3CString*"
+     }
+    ]
+   },
    "labels": []
   },
   {
    "rva": 6827584,
-   "namespace": "",
-   "name": "RenderText",
+   "namespace": "CInternationalizedText",
+   "name": "Render",
    "confidence": "CERTAIN",
-   "evidence": "**Turns a text object into characters**: `thiscall` on the object, sixteen bytes of colour settings from `settings + 0x6C` pushed by value (`ret 0x10`), and the built `std::string` handed in **esi** - the same register trick as the key in ReplaceTextVariable. It writes the length and capacity over whatever the out string held, so it must be given an empty one. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "evidence": "**A text object to characters.** `thiscall` on the object with sixteen bytes of colour settings pushed by value (`ret 0x10`), and the built string handed back in **esi** - the same register trick as the key in CInternationalizedText::Replace. It writes the length and capacity over whatever the out string held, so it must be given an empty one. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "Hoi3CString*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CInternationalizedText*",
+      "storage": "ECX"
+     },
+     {
+      "name": "out",
+      "type": "Hoi3CString*",
+      "storage": "ESI"
+     },
+     {
+      "name": "colours",
+      "type": "CTextRenderColours",
+      "storage": "stack:4"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
    "labels": []
   },
   {
    "rva": 6827840,
-   "namespace": "",
-   "name": "ReplaceTextVariable",
+   "namespace": "CInternationalizedText",
+   "name": "Replace",
    "confidence": "CERTAIN",
    "evidence": "**`text.Replace(key, value)`**, the `$NAME$` style variable mechanism: the text in ecx, the value pushed, and **the key in esi**, which the compiler left in a register variable and the callee reads from there (`mov edx, esi` at `0x682F7A`, and pushed outright at `0x682F90`). It builds a 0x40 byte object - vftable, the text at `+4`, the key as a string at `+8` and the value as another at `+0x24`, both copied - so a value need not outlive the call. `ret 4`. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CInternationalizedText*",
+      "storage": "ECX"
+     },
+     {
+      "name": "key",
+      "type": "Hoi3CString*",
+      "storage": "ESI"
+     },
+     {
+      "name": "value",
+      "type": "Hoi3CString*",
+      "storage": "stack:4"
+     }
+    ]
+   },
    "labels": []
   },
   {
@@ -43954,12 +44877,50 @@
    ]
   },
   {
+   "rva": 6835504,
+   "namespace": "",
+   "name": "AddTextEntry",
+   "confidence": "CERTAIN",
+   "evidence": "Puts an entry in the localisation database under a key. Also what the lookup calls when a key is **missing** - it creates an empty entry so the renderer can say NO_TEXT_FOR_KEY, which is why a missing key answers without failing. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "database",
+      "type": "void*"
+     },
+     {
+      "name": "key",
+      "type": "Hoi3CString*"
+     },
+     {
+      "name": "text",
+      "type": "Hoi3CString*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 6844448,
    "namespace": "",
    "name": "ReleaseTextReplacements",
    "confidence": "CERTAIN",
    "evidence": "Destroys the replacements a text object collected, walking the vector whose three pointers are handed in **edi** and calling slot 0 of each entry's table with 1. The caller frees the block afterwards. A lookup that added no variables has none, so the loop runs no times. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "signature": {
+    "convention": "__cdecl",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "replacements",
+      "type": "void**",
+      "storage": "EDI"
+     }
+    ]
+   },
    "labels": []
   },
   {
@@ -44081,6 +45042,29 @@
      {
       "name": "key",
       "type": "SaveToken"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 6937088,
+   "namespace": "",
+   "name": "FindPersistentById",
+   "confidence": "CERTAIN",
+   "evidence": "Looks a saved object up by its type and id - the two halves of the `id = { type = N id = N }` pair the save writes. Type 0x25 is a leader: CKillLeaderEffect::GetLeader calls it with that and the id from the event file. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "void*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "type",
+      "type": "int"
+     },
+     {
+      "name": "id",
+      "type": "int"
      }
     ]
    },
@@ -44391,6 +45375,31 @@
    "labels": []
   },
   {
+   "rva": 7360640,
+   "namespace": "",
+   "name": "DestroyStringsInRange",
+   "confidence": "CERTAIN",
+   "evidence": "**Empties the string at the start of every record in a range**, walking `[first, last)` in steps of **0x20** and giving each string's buffer back where it had one - `if (capacity >= 0x10) free(data)`, then capacity 0xF, length 0, first byte 0. Both ends arrive in registers, first in eax and last in edi. `ret`.\n\nIt is a destructor loop the compiler wrote once and **1552 call sites share**: every record type of 0x20 bytes that begins with a string folds onto this one body, which is why its callers have nothing to do with each other. The stride is baked in, so it is only correct for that shape.\n\nBiceLib meets it tearing a text object down: after ReleaseTextReplacements has destroyed the object each replacement points at, this empties the name each one carries, and the caller frees the block. The name is BiceLib's.\n(reversing/FINDINGS-effecttext.md)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "first",
+      "type": "void*",
+      "storage": "EAX"
+     },
+     {
+      "name": "last",
+      "type": "void*",
+      "storage": "EDI"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 7416208,
    "namespace": "CBrigadeConstructionDefinition",
    "name": "GetType",
@@ -44552,7 +45561,17 @@
    "name": "free",
    "confidence": "CERTAIN",
    "evidence": "A thunk to the CRT's free. Every string destructor in the executable calls it the same way - `if (capacity > 15) free(pointer)` - which is what BiceLib copies to give back a string the game allocated for it.\n(reversing/FINDINGS-effecttext.md)",
-   "signature": null,
+   "signature": {
+    "convention": "__cdecl",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "block",
+      "type": "void*"
+     }
+    ]
+   },
    "labels": []
   },
   {
@@ -44932,7 +45951,7 @@
    "name": "Patch_HistoricalModelLogic_1",
    "kind": "instruction",
    "confidence": "CERTAIN",
-   "evidence": "Patched to jmp short +0x2A by historicalModelLogicFix.\n(BiceLib/Patches.cpp:91)",
+   "evidence": "**A BiceLib patch site.** `neg ecx` - the absolute value that makes a model wanting more technology than the country has score the same as one wanting less by as much. historicalModelLogicFix writes `jmp +0x2A` here, into the padding after CHistoricalModel::PickBestModel.\n(BiceLib/Patches.cpp)",
    "type": null
   },
   {
@@ -44941,7 +45960,7 @@
    "name": "Patch_HistoricalModelLogic_2",
    "kind": "instruction",
    "confidence": "CERTAIN",
-   "evidence": "Patched to mov ecx, 0x100000 by historicalModelLogicFix.\n(BiceLib/Patches.cpp:97)",
+   "evidence": "**A BiceLib patch site**, six bytes of the padding after CHistoricalModel::PickBestModel: historicalModelLogicFix writes `mov ecx, 0x100000`, the flat penalty a model the country cannot yet field takes.\n(BiceLib/Patches.cpp)",
    "type": null
   },
   {
@@ -44950,7 +45969,7 @@
    "name": "Patch_HistoricalModelLogic_3",
    "kind": "instruction",
    "confidence": "CERTAIN",
-   "evidence": "Patched to jmp short -0x32 by historicalModelLogicFix.\n(BiceLib/Patches.cpp:103)",
+   "evidence": "**A BiceLib patch site**, two more bytes of that padding: `jmp -0x32`, back to the `add eax, ecx` that accumulates the score.\n(BiceLib/Patches.cpp)",
    "type": null
   },
   {
@@ -44978,6 +45997,15 @@
    "kind": "instruction",
    "confidence": "CERTAIN",
    "evidence": "Address of the imm32 operand of the instruction at 0x1887FE.\n(BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:47)",
+   "type": null
+  },
+  {
+   "rva": 1723633,
+   "namespace": "",
+   "name": "SubUnitDefinition_StoreUnitGroup",
+   "kind": "instruction",
+   "confidence": "CERTAIN",
+   "evidence": "**A BiceLib landmark, not a function**: `mov [edi + 0x1B4], edx` - where CSubUnitDefinition::LoadKey puts the combined arms group. The value is a one based index into `common/combined_arms.txt`'s own order, looked up by name just above; a name that file does not declare leaves 0, which is `none`.\n(BiceLib/GameClasses/CSubUnitDefinition.hpp)",
    "type": null
   },
   {
@@ -45311,6 +46339,33 @@
    "kind": "instruction",
    "confidence": "CERTAIN",
    "evidence": "Conditional jump turned into nop + jmp by disableInterAiExpeditionaries.\n(BiceLib/Patches.cpp:82)",
+   "type": null
+  },
+  {
+   "rva": 5955170,
+   "namespace": "",
+   "name": "KillLeaderText_FormatName",
+   "kind": "instruction",
+   "confidence": "CERTAIN",
+   "evidence": "**A BiceLib patch site.** The call that formats the leader's name for $NAME$, and the last instruction that still has the leader in esi - the register is reused two calls later. The stub keeps esi and reproduces the call. Hooks/EffectText/KillLeaderText.cpp.\n(reversing/FINDINGS-effecttext.md)",
+   "type": null
+  },
+  {
+   "rva": 5955210,
+   "namespace": "",
+   "name": "KillLeaderText_ReplaceName",
+   "kind": "instruction",
+   "confidence": "CERTAIN",
+   "evidence": "**A BiceLib patch site.** The game's own $NAME$ replacement, the last thing done to the text. The stub adds $UNIT$, $LOCATION$ and $WHERE$ with the text still in ecx, then reproduces the call. Hooks/EffectText/KillLeaderText.cpp.\n(reversing/FINDINGS-effecttext.md)",
+   "type": null
+  },
+  {
+   "rva": 6012593,
+   "namespace": "",
+   "name": "LoadOobText_Release",
+   "kind": "instruction",
+   "confidence": "CERTAIN",
+   "evidence": "**A BiceLib patch site.** The last call in CLoadOOBEffect::GetText, by which point the string the effect will show is built and sits at [ebp+8], with the scope at [ebp+0xC] - ebp is still the builder's frame. The stub writes the description over it and reproduces the call. Hooks/EffectText/LoadOobText.cpp.\n(reversing/FINDINGS-effecttext.md)",
    "type": null
   },
   {
@@ -58808,7 +59863,7 @@
      "name": "vf_0",
      "named": false,
      "typed": false,
-     "own": true,
+     "own": false,
      "comment": "slot 0, 00600220"
     },
     {
@@ -58826,7 +59881,7 @@
      "name": "SaveContents",
      "named": true,
      "typed": false,
-     "own": true,
+     "own": false,
      "comment": "slot 2, 005F28E0 - CPersistent's slot, named by BiceLib, typed from the findings",
      "signature": {
       "convention": "__thiscall",
@@ -58888,7 +59943,7 @@
      "name": "vf_6",
      "named": false,
      "typed": false,
-     "own": true,
+     "own": false,
      "comment": "slot 6, 005F4660"
     },
     {
@@ -58897,7 +59952,7 @@
      "name": "vf_7",
      "named": false,
      "typed": false,
-     "own": true,
+     "own": false,
      "comment": "slot 7, 005F4830"
     },
     {
@@ -58943,6 +59998,148 @@
      "typed": false,
      "own": true,
      "comment": "slot 1, 00888590"
+    }
+   ]
+  },
+  {
+   "name": "CEffect_vftable",
+   "class": "CEffect",
+   "rva": 18569460,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 5883200,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 0099C540"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 2149712,
+     "name": "SaveContents",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 2, 0060CD50 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 5872800,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00999CA0"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 90112,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 6, 00416000 - a body shared with Shared_GetPersonality_GetType, so not named here"
+    },
+    {
+     "slot": 7,
+     "rva": 90096,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 7, 00415FF0"
+    },
+    {
+     "slot": 8,
+     "rva": 5883664,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 8, 0099C710"
+    },
+    {
+     "slot": 9,
+     "rva": 5967568,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 9, 009B0ED0"
+    },
+    {
+     "slot": 10,
+     "rva": 5884704,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 10, 0099CB20"
+    },
+    {
+     "slot": 11,
+     "rva": 5883616,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 11, 0099C6E0"
     }
    ]
   },
@@ -59749,6 +60946,94 @@
      "typed": true,
      "own": true,
      "comment": "slot 4, 0044D760"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "CGainableTrait_vftable",
+   "class": "CGainableTrait",
+   "rva": 18601556,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 473040,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 004737D0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 2149712,
+     "name": "SaveContents",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 2, 0060CD50 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 473088,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00473800"
     },
     {
      "slot": 5,
@@ -61104,6 +62389,94 @@
      "typed": false,
      "own": false,
      "comment": "slot 21, 00A92590 - a body shared with ReturnTrue, so not named here"
+    }
+   ]
+  },
+  {
+   "name": "CHistoricalModel_vftable",
+   "class": "CHistoricalModel",
+   "rva": 18633464,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 1580832,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 00581F20"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 2149712,
+     "name": "SaveContents",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 2, 0060CD50 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 1583312,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 005828D0"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
     }
    ]
   },
@@ -64445,6 +65818,149 @@
    ]
   },
   {
+   "name": "CLeaderHistory_vftable",
+   "class": "CLeaderHistory",
+   "rva": 18647240,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 2097696,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 0, 00600220"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 2042080,
+     "name": "SaveContents",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 2, 005F28E0 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 2081792,
+     "name": "LoadKey",
+     "named": true,
+     "typed": false,
+     "own": true,
+     "comment": "slot 4, 005FC400 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "parse",
+        "type": "CParseContext*"
+       },
+       {
+        "name": "key",
+        "type": "SaveToken"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 2049632,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 6, 005F4660"
+    },
+    {
+     "slot": 7,
+     "rva": 2050096,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 005F4830"
+    },
+    {
+     "slot": 8,
+     "rva": 6890896,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 8, 00A92590 - a body shared with ReturnTrue, so not named here"
+    },
+    {
+     "slot": 9,
+     "rva": 2082016,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 9, 005FC4E0"
+    }
+   ]
+  },
+  {
    "name": "CLeader_vftable",
    "class": "CLeader",
    "rva": 18633248,
@@ -64944,6 +66460,157 @@
      "typed": false,
      "own": false,
      "comment": "slot 21, 00A92590 - a body shared with ReturnTrue, so not named here"
+    }
+   ]
+  },
+  {
+   "name": "CLoadOOBEffect_vftable",
+   "class": "CLoadOOBEffect",
+   "rva": 18826384,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 5883104,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 0, 0099C4E0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 2149712,
+     "name": "SaveContents",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 2, 0060CD50 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 5872800,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00999CA0"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 90112,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 6, 00416000 - a body shared with Shared_GetPersonality_GetType, so not named here"
+    },
+    {
+     "slot": 7,
+     "rva": 5890512,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 0099E1D0"
+    },
+    {
+     "slot": 8,
+     "rva": 5883664,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 8, 0099C710"
+    },
+    {
+     "slot": 9,
+     "rva": 6012480,
+     "name": "GetText",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 9, 009BBE40"
+    },
+    {
+     "slot": 10,
+     "rva": 5884704,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 10, 0099CB20"
+    },
+    {
+     "slot": 11,
+     "rva": 6012160,
+     "name": "Execute",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 11, 009BBD00"
+    },
+    {
+     "slot": 12,
+     "rva": 5890592,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 12, 0099E220"
     }
    ]
   },
@@ -72149,6 +73816,157 @@
    ]
   },
   {
+   "name": "CRemoveBrigadeEffect_vftable",
+   "class": "CRemoveBrigadeEffect",
+   "rva": 18826440,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 5883104,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 0, 0099C4E0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 2149712,
+     "name": "SaveContents",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 2, 0060CD50 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       },
+       {
+        "name": "writer",
+        "type": "CSaveWriter*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 5872800,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00999CA0"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
+    },
+    {
+     "slot": 6,
+     "rva": 90112,
+     "name": "vf_6",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 6, 00416000 - a body shared with Shared_GetPersonality_GetType, so not named here"
+    },
+    {
+     "slot": 7,
+     "rva": 5890512,
+     "name": "vf_7",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 7, 0099E1D0"
+    },
+    {
+     "slot": 8,
+     "rva": 5883664,
+     "name": "vf_8",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 8, 0099C710"
+    },
+    {
+     "slot": 9,
+     "rva": 6013408,
+     "name": "vf_9",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 9, 009BC1E0"
+    },
+    {
+     "slot": 10,
+     "rva": 5884704,
+     "name": "vf_10",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 10, 0099CB20"
+    },
+    {
+     "slot": 11,
+     "rva": 6012688,
+     "name": "vf_11",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 11, 009BBF10"
+    },
+    {
+     "slot": 12,
+     "rva": 5890592,
+     "name": "vf_12",
+     "named": false,
+     "typed": false,
+     "own": false,
+     "comment": "slot 12, 0099E220"
+    }
+   ]
+  },
+  {
    "name": "CRequestLendLeaseAction_vftable",
    "class": "CRequestLendLeaseAction",
    "rva": 18854708,
@@ -75498,6 +77316,79 @@
      "typed": false,
      "own": true,
      "comment": "slot 11, 00A4D400"
+    }
+   ]
+  },
+  {
+   "name": "CTraitGainTracker_vftable",
+   "class": "CTraitGainTracker",
+   "rva": 18601528,
+   "objectOffset": 0,
+   "slots": [
+    {
+     "slot": 0,
+     "rva": 475312,
+     "name": "vf_0",
+     "named": false,
+     "typed": false,
+     "own": true,
+     "comment": "slot 0, 004740B0"
+    },
+    {
+     "slot": 1,
+     "rva": 375568,
+     "name": "Save",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 1, 0045BB10"
+    },
+    {
+     "slot": 2,
+     "rva": 476944,
+     "name": "SaveContents",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 2, 00474710"
+    },
+    {
+     "slot": 3,
+     "rva": 6799440,
+     "name": "Load",
+     "named": true,
+     "typed": true,
+     "own": false,
+     "comment": "slot 3, 00A7C050"
+    },
+    {
+     "slot": 4,
+     "rva": 476688,
+     "name": "LoadKey",
+     "named": true,
+     "typed": true,
+     "own": true,
+     "comment": "slot 4, 00474610"
+    },
+    {
+     "slot": 5,
+     "rva": 7075984,
+     "name": "AfterLoad",
+     "named": true,
+     "typed": false,
+     "own": false,
+     "comment": "slot 5, 00ABF890 - CPersistent's slot, named by BiceLib, typed from the findings",
+     "signature": {
+      "convention": "__thiscall",
+      "return": "void",
+      "hiddenReturn": false,
+      "params": [
+       {
+        "name": "this",
+        "type": "CPersistent*"
+       }
+      ]
+     }
     }
    ]
   },

@@ -13,6 +13,28 @@
  * Only valid for this build of hoi3_tfh.exe.
  */
 namespace CSubUnitDefinition {
+    /**
+     * **A definition is 0x248 bytes** - the gap between neighbours in memory is 584 in
+     * 45059 of the pairs a running game has - and **a type has more than one of them**.
+     * Besides the definition the unit file makes, every technology that changes the type
+     * carries a delta with the same key at `+0x08` and only the fields it touches; the
+     * other fields are zero.
+     *
+     * **So reading "the" definition of a type by scanning for the first instance with
+     * that key is wrong**, and quietly so: it can hand back a delta. Seven corps HQs
+     * looked like they had lost their combined arms group that way, and had not. Take
+     * every instance and expect several.
+     */
+
+    /**
+     * **Still unplaced**, out of the 70 keys `CSubUnitDefinition::LoadKey` (`0x1A3C80`)
+     * takes: `distance` - which fits nothing at any scale, so technology probably moves
+     * it - and `type`, `on_completion`, `usable_by`, `minimum_of_type`,
+     * `max_percentage_of_type`, `available_trigger`, `extra_amphibious_defence` and
+     * `repair_cost_multiplier`, which are strings, triggers or constants and so cannot be
+     * fitted against the files at all. They need the offsets read out of the handlers,
+     * which is where the decompiler hides them.
+     */
     namespace Offsets {
         // General
 
@@ -43,7 +65,7 @@ namespace CSubUnitDefinition {
          */
         constexpr uintptr_t is_air = 0x2C;
         constexpr uintptr_t is_rocket = 0x33;
-        constexpr uintptr_t is_tank = 0x34;
+        constexpr uintptr_t is_tank = 0x34;               // `is_armor` in the files
         constexpr uintptr_t is_ship = 0x2E;
         constexpr uintptr_t is_cag = 0x32;                // carrier air group
         constexpr uintptr_t is_bomber = 0x37;
@@ -90,7 +112,7 @@ namespace CSubUnitDefinition {
         /**
          * **The technologies that bear on this type**, a vector of CTechnology*: begin here,
          * end at +0x48. A loaded definition holds 45 to 56 of them (**read live**). The game
-         * adds up `CTechnologyStatus::Offsets::build_cost_by_technology` over them and feeds
+         * adds up `CTechnologyStatus::Offsets::level_by_technology` over them and feeds
          * the total to GetBuildCostIC as its third argument.
          */
         constexpr uintptr_t technologies = 0x44;
@@ -117,27 +139,69 @@ namespace CSubUnitDefinition {
         constexpr uintptr_t officers = 0x118;
         constexpr uintptr_t air_defence = 0x128;
         constexpr uintptr_t air_attack = 0x140;
-        constexpr uintptr_t sub_unit_amount = 0x180;
+        /**
+         * **`radio_strength` in the unit files**, x1000. It was called `sub_unit_amount`
+         * here, which was wrong: **read live** against the files, 1273 unit types set it
+         * to something other than 1 and every one of them matches - `1.5` is 1500.
+         */
+        constexpr uintptr_t radio_strength = 0x180;
         constexpr uintptr_t sprite = 0x198;
 
+        /**
+         * **`priority` in the unit files**, and not scaled: 83 on `infantry_brigade`, 110
+         * on `armor_brigade`, 1 on `interceptor`. **Read live**, it fits 98% of the 1642
+         * types across 80 distinct values.
+         */
+        constexpr uintptr_t priority = 0x194;
+
+        /**
+         * **`active`**, 1 or 0 rather than a byte. **Read live**: every one of the 84
+         * types that declare `active = yes` has 1 here, and 1510 of the 1539 declaring
+         * `no` have 0 - what the other 29 are has not been looked into.
+         */
+        constexpr uintptr_t active = 0x1D0;
+
+        /**
+         * **What a transport does to an amphibious invasion**, both x1000 and both only
+         * ever set on the four types that declare `transport = yes`:
+         * `Aux_vessel`, `Aux_vessel_LR`, `landing_craft` and `transport_ship`.
+         */
+        constexpr uintptr_t amphibious_invasion_speed = 0x188;
+        constexpr uintptr_t amphibious_invasion_defence = 0x18C;
+
+        /**@brief **`is_mobile`**; set on 147 types against the 152 that declare it*/
+        constexpr uintptr_t is_mobile = 0x35;
+
+        /**
+         * **`unit_group`** - which combined arms group the type belongs to, as **a one
+         * based index into `common/combined_arms.txt`'s own order**: the first group
+         * declared there is 1, and **0 means none**. The loader looks the name up and
+         * stores what it finds (`0x1A4CF1`), so a name that file does not declare leaves
+         * a 0 behind without complaint.
+         *
+         * **Read live** across 1067 types: every group in the mod maps to exactly one
+         * value and the order matches the file's.
+         */
+        constexpr uintptr_t unit_group = 0x1B4;
+
         // Land units
-        constexpr uintptr_t width = 0xE8;
-        constexpr uintptr_t weight = 0x10C;
+        constexpr uintptr_t width = 0xE8;   // `combat_width` in the files
+        constexpr uintptr_t weight = 0x10C;   // `transport_weight` in the files
         constexpr uintptr_t defensiveness = 0x11C;
         constexpr uintptr_t toughness = 0x120;
         constexpr uintptr_t softness = 0x124;
-        constexpr uintptr_t armor = 0x12C;
+        constexpr uintptr_t armor = 0x12C;   // `armor_value` in the files
         constexpr uintptr_t suppression = 0x130;
         constexpr uintptr_t soft_attack = 0x134;
         constexpr uintptr_t hard_attack = 0x138;
-        constexpr uintptr_t piercing_attack = 0x13C;
+        constexpr uintptr_t piercing_attack = 0x13C;   // `ap_attack` in the files
 
         // Ships
-        constexpr uintptr_t is_capital = 0x2F;    // boolean
-        constexpr uintptr_t is_transport = 0x30;  // boolean
+        constexpr uintptr_t is_capital = 0x2F;    // boolean / `capital`
+        constexpr uintptr_t is_transport = 0x30;  // boolean / `transport`
         constexpr uintptr_t is_sub = 0x31;        // boolean
         constexpr uintptr_t can_be_pride = 0x39;  // boolean
-        constexpr uintptr_t transport_capacity = 0x144;
+        constexpr uintptr_t transport_capacity = 0x144;   // `transport_capability` in the files
         constexpr uintptr_t range = 0x148;
         constexpr uintptr_t firing_distance = 0x14C;
         constexpr uintptr_t surface_detection = 0x150;
@@ -187,10 +251,20 @@ namespace CTechnologyStatus {
                   the one above, and **not** the same figure*/
         constexpr uintptr_t build_discount_extra = 0x94;
 
-        /**@brief a pointer to ints indexed by CTechnology's index (+0x244): what each
-                  technology does to a unit type's build cost, summed over the type's own
-                  technology list (**read**, `0x63D40`)*/
-        constexpr uintptr_t build_cost_by_technology = 0x218;
+        /**
+         * **The country's researched level of each technology**, a pointer to ints indexed
+         * by CTechnology's index (`+0x244`).
+         *
+         * It was named `build_cost_by_technology` for its first caller, `0x63D40`, which
+         * sums it over a unit type's own technologies and hands the total to
+         * GetBuildCostIC - but the array is levels, not costs.
+         * `CHistoricalModelSet::MakeSubUnit` copies out of it straight into a new
+         * regiment's `CSubUnitTechnology::level` (`mov [ecx+4], esi` at `0x183183`), and
+         * **read live** it equals the level 6859 of 7445 regiment entries carry, counting
+         * only the non-zero ones - the rest being regiments raised before their country
+         * researched further.
+         */
+        constexpr uintptr_t level_by_technology = 0x218;
 
         /**@brief a pointer to ints indexed by CSubUnitDefinition::Offsets::index: what
                   technology has done to that unit type's build cost (**read**)*/

@@ -2,6 +2,24 @@
  "about": "Findings about hoi3_tfh.exe from BiceLib's headers, hooks and reversing notes. rva is module relative. Checked against the executable by buildFindings.py. A global may carry a type, which the script gives the data there (\"string\" for a C string).",
  "addresses": [
   {
+   "rva": "0x1060",
+   "kind": "function",
+   "name": "std::string::operator=",
+   "signature": "void __thiscall std::string::operator=(Hoi3CString* this, Hoi3CString* source@EAX)",
+   "comment": "Four instructions: `assign(source, 0, npos)`. **The source arrives in eax** - the compiler gave this thunk a convention of its own - and the destination in ecx as usual. Eight call sites. What CCountry::SetOobFile is made of.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x1070",
+   "kind": "function",
+   "name": "std::string::clear",
+   "signature": "void __thiscall std::string::clear(Hoi3CString* this)",
+   "comment": "Gives the buffer back where the string had one - `if (capacity >= 0x10) free(data)` - and leaves it empty: capacity 0xF, length 0, first byte 0. The destructor's body as well as `clear()`, which is why it turns up at the end of every function that built a string.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
    "rva": "0x24D0",
    "kind": "function",
    "name": "CCountryDataBase::CCountryDataBase",
@@ -14,8 +32,8 @@
    "rva": "0xA160",
    "kind": "function",
    "name": "std::string::assign",
-   "signature": null,
-   "comment": "`assign(const char*, size_t)`: thiscall, both arguments pushed, `ret 8`. Up to fifteen characters it writes them into the object and past that it allocates. What BiceLib calls to hand the game a string of its own.",
+   "signature": "Hoi3CString* __thiscall assign(Hoi3CString* this, char* text, uint length) @EAX",
+   "comment": "`assign(const char*, size_t)`: thiscall, both arguments pushed, `ret 8`. Up to fifteen characters it writes them into the object and past that it allocates. What BiceLib calls to hand the game a string of its own - see GameClasses/GameString.cpp.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -216,6 +234,33 @@
    "comment": "What a unit type will cost this country in all - the whole build, not a day of it. Four arguments: the definition, the country, and somewhere to put an IC figure and a manpower one, either of which may be null to skip that half; both come back as fpml::fixed_point<__int64,48,15>. It adds up CTechnologyStatus +0x218 over the definition's own technology list (+0x44..+0x48), hands that total to CCountry::GetBuildTime (0xE19A0) for the days, works the daily cost out with the same terms as CCountry::GetBuildCostIC - but without its reserves step, which this does not have - and multiplies the two. The manpower half does the same from +0xFC with CTechnologyStatus +0x25C and a floor from a global. Its three callers all add the two figures onto running totals. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:156"
+  },
+  {
+   "rva": "0x73800",
+   "kind": "function",
+   "name": "CGainableTrait::LoadKey",
+   "signature": "void __thiscall CGainableTrait::LoadKey(CGainableTrait* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The whole grammar of `common/gainable_traits.txt`**, which is four keys: `combat` keeps the token itself at `+0x8`, `hours_required` a number at `+0xC`, `trait` the CTrait it resolves through the trait database at `+0x10`, and `trigger` hands the block to the CTrigger held at `+0x14` and marks `+0x54`. Nothing inside a trigger reaches here - the trigger loads itself - which is why the file's other keys are not this class's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTrait.hpp"
+  },
+  {
+   "rva": "0x74610",
+   "kind": "function",
+   "name": "CTraitGainTracker::LoadKey",
+   "signature": "void __thiscall CTraitGainTracker::LoadKey(CTraitGainTracker* this, CParseContext* parse, SaveToken key)",
+   "comment": "`duration` and `current` are read with `%i` into `+0x1C` and `+0x20`. **Any other key is a trait's name**: it is looked up and the value put on that trait's entry in the map at `+0xC`, which is how a save carries how far a leader has got towards each gainable trait.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTrait.hpp"
+  },
+  {
+   "rva": "0x74710",
+   "kind": "function",
+   "name": "CTraitGainTracker::SaveContents",
+   "signature": null,
+   "comment": "Walks the map at `+0xC` - a red-black tree, the value at each node's `+0x10` - and writes one key per trait. That this class has a SaveContents of its own, rather than the shared empty one at `0x20CD50`, is what says the progress is game state rather than a definition. **Read live**: a leader's history holds the tracker, at `CLeaderHistory + 0x40` - 399 of 400 histories in a running game point at one.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTrait.hpp"
   },
   {
    "rva": "0x76040",
@@ -777,8 +822,8 @@
    "rva": "0xFFED0",
    "kind": "function",
    "name": "CCountry::LoadOobFile",
-   "signature": null,
-   "comment": "**Reads the order of battle named at `CCountry + 0x58`** and puts it in the country. It builds `<base>/units/<path>` - the base chosen by `[0x1685558 + 0x50]`, which has three values - then calls FileExists, makes a Tokenizer and a CParseContext over it: the same parts every other `.txt` is read through. **So the file is opened when the effect fires**; startup only lists the folder. The name is BiceLib's.",
+   "signature": "void __stdcall CCountry::LoadOobFile(CCountry* country)",
+   "comment": "**Reads the order of battle named at `CCountry::oob_file`** and puts it in the country. It builds `<base>/units/<path>` - the base chosen by `[0x1685558 + 0x50]`, which has three values - and tries it with FileExists; then allocates a CParseContext (0x360 bytes) and a Tokenizer (0x114) over the file and calls **the country's own slot 3, `CPersistent::Load`**, with that context, before deleting it.\n\nSo **an order of battle is read as a piece of a country's save block**: Load pulls keys and hands each to `CCountry::LoadKey` (`0xCCDA0`), the same one a savegame goes through, and every keyword in the file is a SaveToken - `theatre` 1125, `armygroup` 1126, `corps` 1127, `division` 1128, `navy` 593, `air` 1088, `regiment` 594, `location` 544, `leader` 616, `military_construction` 637. **This is where the units are made.** The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -808,6 +853,15 @@
    "comment": "The driver `LoadCommonFiles` calls once a CParseContext is built, taking it as the second argument: pulls tokens through the tokenizer's slot 1 until the kind is 0x13, end of input. The same loop and token kinds as CPersistent::Load. **Which class a given file fills is not traced** - this is as far as the general path goes. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/CLASSES.md:1354"
+  },
+  {
+   "rva": "0x134AC0",
+   "kind": "function",
+   "name": "CTechnology::LoadKey",
+   "signature": "void __thiscall CTechnology::LoadKey(CTechnology* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The grammar of the technology files.** A dozen keys of its own - the ones in CTechnology.hpp - and **anything it does not know is taken as a unit type's name**: that is how `infantry_brigade = { soft_attack = 0.1 }` becomes an effect, resolved through the same by-name lookup the unit files use. `research_bonus_from` reads a list, and `folder` and `activate_*` resolve against their own databases.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTechnology.hpp"
   },
   {
    "rva": "0x163E60",
@@ -972,31 +1026,67 @@
    "source": "BiceLib/GameClasses/CLeader.hpp:89"
   },
   {
+   "rva": "0x1828D0",
+   "kind": "function",
+   "name": "CHistoricalModel::LoadKey",
+   "signature": "void __thiscall CHistoricalModel::LoadKey(CHistoricalModel* this, CParseContext* parse, SaveToken key)",
+   "comment": "**No keys of its own.** Every key is taken as a **technology's name**: it is looked up in the technology database, that technology's effects are walked for the one whose CSubUnitDefinition index matches this model's unit type, and it is applied (`0x111D90`). A name that is not a technology, or one with nothing for this type, is logged against `model.cpp` with both names. So a model is the list of technologies a unit was built with.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+  },
+  {
+   "rva": "0x183060",
+   "kind": "function",
+   "name": "CHistoricalModelSet::MakeSubUnit",
+   "signature": "CSubUnit* __stdcall CHistoricalModelSet::MakeSubUnit(CHistoricalModelSet* models)",
+   "comment": "**Builds a throwaway regiment to compare models against.** From the set's definition it news a CRegiment, a ship or an air unit by the two flags at `CSubUnitDefinition +0x2C` and `+0x2E`, calls CSubUnit::SetType, then walks the definition's `technologies` vector (`+0x44..+0x48`) and writes each one's researched level - `CTechnologyStatus::level_by_technology[technology->index]` of the country the set's tag names - into the matching node of the new regiment's `technologies` list, and finishes with CSubUnit::ApplyTechnologies. Its only caller destroys it immediately. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+  },
+  {
+   "rva": "0x1831F0",
+   "kind": "function",
+   "name": "CHistoricalModelSet::PickCurrentModel",
+   "signature": "CHistoricalModel* __cdecl CHistoricalModelSet::PickCurrentModel(CHistoricalModelSet* models@EAX) @EAX",
+   "comment": "**The model a country would build right now**: MakeSubUnit for a regiment carrying the country's current research, PickBestModel against it, then the regiment's deleting destructor. Takes its one argument in eax and answers in eax, an LTCG convention. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+  },
+  {
+   "rva": "0x183230",
+   "kind": "function",
+   "name": "CHistoricalModel::PickBestModel",
+   "signature": "CHistoricalModel* __stdcall CHistoricalModel::PickBestModel(CHistoricalModelSet* models@ECX, CSubUnit* raised@stack:4) @EAX",
+   "comment": "**Which of a unit type's models a country would build today.** `ret 4`, so it takes **one** stack argument, not two: ecx is the CHistoricalModelSet whose first three words are the model vector, and the stack argument is a CSubUnit whose `technologies` list at `+0x84` says what the country has researched. It scores every model as the sum, over the model's own CSubUnitTechnology entries, of `|the regiment's level - the level the model wants| * 1000`, **counting only technologies whose `CTechnology::change` is set** (789 of 1175 in this mod), and answers the model with the smallest total - starting from 999,999,000, and null for an empty set. **The absolute value is what `Patches::historicalModelLogicFix` replaces**, so that a model asking for more than is researched is penalised rather than treated as equally close. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+  },
+  {
    "rva": "0x1832A8",
    "kind": "instruction",
    "name": "Patch_HistoricalModelLogic_1",
    "signature": null,
-   "comment": "Patched to jmp short +0x2A by historicalModelLogicFix.",
+   "comment": "**A BiceLib patch site.** `neg ecx` - the absolute value that makes a model wanting more technology than the country has score the same as one wanting less by as much. historicalModelLogicFix writes `jmp +0x2A` here, into the padding after CHistoricalModel::PickBestModel.",
    "confidence": "confirmed",
-   "source": "BiceLib/Patches.cpp:91"
+   "source": "BiceLib/Patches.cpp"
   },
   {
    "rva": "0x1832D4",
    "kind": "instruction",
    "name": "Patch_HistoricalModelLogic_2",
    "signature": null,
-   "comment": "Patched to mov ecx, 0x100000 by historicalModelLogicFix.",
+   "comment": "**A BiceLib patch site**, six bytes of the padding after CHistoricalModel::PickBestModel: historicalModelLogicFix writes `mov ecx, 0x100000`, the flat penalty a model the country cannot yet field takes.",
    "confidence": "confirmed",
-   "source": "BiceLib/Patches.cpp:97"
+   "source": "BiceLib/Patches.cpp"
   },
   {
    "rva": "0x1832DA",
    "kind": "instruction",
    "name": "Patch_HistoricalModelLogic_3",
    "signature": null,
-   "comment": "Patched to jmp short -0x32 by historicalModelLogicFix.",
+   "comment": "**A BiceLib patch site**, two more bytes of that padding: `jmp -0x32`, back to the `add eax, ecx` that accumulates the score.",
    "confidence": "confirmed",
-   "source": "BiceLib/Patches.cpp:103"
+   "source": "BiceLib/Patches.cpp"
   },
   {
    "rva": "0x183690",
@@ -1431,6 +1521,15 @@
    "source": "reversing/FINDINGS-redeploy.md:38"
   },
   {
+   "rva": "0x1A4CF1",
+   "kind": "instruction",
+   "name": "SubUnitDefinition_StoreUnitGroup",
+   "signature": null,
+   "comment": "**A BiceLib landmark, not a function**: `mov [edi + 0x1B4], edx` - where CSubUnitDefinition::LoadKey puts the combined arms group. The value is a one based index into `common/combined_arms.txt`'s own order, looked up by name just above; a name that file does not declare leaves 0, which is `none`.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp"
+  },
+  {
    "rva": "0x1A7500",
    "kind": "function",
    "name": "CSubUnitDefinition::Assign",
@@ -1512,11 +1611,29 @@
    "source": "reversing/CLASSES.md:267"
   },
   {
+   "rva": "0x1B2A00",
+   "kind": "function",
+   "name": "CTrait::AddEffect",
+   "signature": "void __thiscall CTrait::AddEffect(CTrait* this, int kind@ECX, int value, Hoi3CString* type)",
+   "comment": "Appends one effect to the three parallel arrays a trait keeps - the value at `+0x68`, which of the 31 kinds it is at `+0xA8`, and the terrain type at `+0xE8` with a stride of 0x1C - and counts it at `+0x2A8`. **The kind arrives in ecx**, which is why the loader's jump table is a column of `mov edi, N`. **It refuses the seventeenth silently**: the arrays hold sixteen, which is exactly where the count sits (`0xE8 + 16 * 0x1C == 0x2A8`). The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTrait.hpp"
+  },
+  {
+   "rva": "0x1B2A50",
+   "kind": "function",
+   "name": "CTrait::LoadKey",
+   "signature": "void __thiscall CTrait::LoadKey(CTrait* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The whole grammar of `common/traits.txt`**, and the only thing that reads it: `allowed_leader = { land sea air }` sets the three flags at `+0x2B0` (all three when the key is absent), and 31 effect keys each add one entry through AddEffect. The three terrain ones read `type` then `value`, in that order, which the loader insists on. Anything else is logged against `traits.cpp` with the key's own text.\n\n**Checked against the mod**: all 33 distinct keys across the 341 traits in BlackICE's `traits.txt` are ones this knows. `gainable_traits.txt` is a different class - CGainableTrait, whose keys (`trait`, `combat`, `trigger`, `hours_required`) none of this would take.",
+   "confidence": "confirmed",
+   "source": "BiceLib/GameClasses/CTrait.hpp"
+  },
+  {
    "rva": "0x1B4640",
    "kind": "function",
-   "name": "GetTraitDataBase",
+   "name": "CTrait::database",
    "signature": null,
-   "comment": "Getter that creates on first use and returns the object holding every trait.",
+   "comment": "Makes the object holding every trait on first use and keeps it at `0x16855EC`; 0x1C bytes, the traits themselves between `+0xC` and `+0x10`. Index 0 is a CNullTrait. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CTrait.hpp:31"
   },
@@ -1776,8 +1893,8 @@
    "rva": "0x1EC9E0",
    "kind": "function",
    "name": "CCountry::SetOobFile",
-   "signature": null,
-   "comment": "One line: writes the path an order of battle is to be loaded from onto the country, at `+0x58`. What CLoadOOBEffect::Execute calls before asking for the load. The name is BiceLib's.",
+   "signature": "void __thiscall CCountry::SetOobFile(CCountry* this, Hoi3CString* path)",
+   "comment": "One line: **`country->oob_file = path`**, through std::string::operator= with the country in ecx and `+0x58` computed into it. What CLoadOOBEffect::Execute calls before asking for the load. `ret 4`. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -2241,6 +2358,15 @@
    "source": "reversing/FINDINGS-mapmode.md:324"
   },
   {
+   "rva": "0x48D560",
+   "kind": "function",
+   "name": "AnnounceLoadedUnitsToScreen",
+   "signature": "void __cdecl AnnounceLoadedUnitsToScreen(void* owner, char flag)",
+   "comment": "**Tells the interface about a country's units**, which is the last thing CLoadOOBEffect::Execute does - and only when a scenario is running and the country is the **player's own**, so it is presentation rather than game state. It takes the thing at `CCountry + 0x1D8`, whose CCountryTag at `+0x20` gives it the country, walks that country's `units`, and for each one that passes a virtual test builds a 0x64 byte object and hands it to a virtual on `CCurrentGameState::in_game_screen`. **What `CCountry + 0x1D8` is has not been established**, nor which alert this raises. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
    "rva": "0x49A840",
    "kind": "function",
    "name": "CMoveCommand::IssueFromInterface",
@@ -2270,9 +2396,9 @@
   {
    "rva": "0x5ADBF0",
    "kind": "function",
-   "name": "CKillLeaderEffect::GetLeaderId",
-   "signature": null,
-   "comment": "Turns the effect's stored value into the leader it names: the value sits at `+0x20` as a thousandth, so the id written in the event file is `value / 1000`. Answers zero while the game has no leaders to look in. The name is BiceLib's.",
+   "name": "CKillLeaderEffect::GetLeader",
+   "signature": "CLeader* __cdecl CKillLeaderEffect::GetLeader(CKillLeaderEffect* effect@EAX) @EAX",
+   "comment": "**The leader the effect names.** Its value sits at `+0x20` as a thousandth, so the id written in the event file is `value / 1000`, and that goes to the lookup at `0x69DA00` with the type 0x25. Answers null while the game has no leaders to look in. The compiler kept it to itself and passes the effect in **eax**. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -2280,8 +2406,26 @@
    "rva": "0x5ADD30",
    "kind": "function",
    "name": "CKillLeaderEffect::GetText",
+   "signature": "Hoi3CString* __thiscall CKillLeaderEffect::GetText(CKillLeaderEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString unread, int unknown1, int unknown2)",
+   "comment": "**The shape every effect's text builder has**, slot 9: it builds the sentence into `out`, answers it in eax, and takes forty bytes of arguments (`ret 0x28`). Of those the scope is read by 66 of the 99 effect classes that have a slot 9, and the string at `+0x10` by 75 - but only to destroy it, never to read its characters, so `unread` is what it is called here. The last eight bytes are read by none of the 99; they are written out so the stack adds up. This one names the localisation string `KILL_LEADER_EFFECT`, finds the leader in the scope country's active list and puts \"\\xa7Y<name>\\xa7W\" in place of its $NAME$. BiceLib stands in for two of its calls to add $UNIT$, $LOCATION$ and $WHERE$ - see Hooks/EffectText/KillLeaderText.cpp.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x5ADE62",
+   "kind": "instruction",
+   "name": "KillLeaderText_FormatName",
    "signature": null,
-   "comment": "**The sentence an option's tooltip shows for `kill_leader`**, slot 9 of the class's vftable (`0x11F4F28`, RTTI). The only function that names the localisation string `KILL_LEADER_EFFECT`. It resolves the effect's value into a leader, finds him in the country's active leaders at `country + 0xE00`, looks the string up and puts \"\\xa7Y<name>\\xa7W\" in place of its $NAME$. BiceLib stands in for two of its calls to add $UNIT$, $LOCATION$ and $WHERE$ - see reversing/FINDINGS-effecttext.md.",
+   "comment": "**A BiceLib patch site.** The call that formats the leader's name for $NAME$, and the last instruction that still has the leader in esi - the register is reused two calls later. The stub keeps esi and reproduces the call. Hooks/EffectText/KillLeaderText.cpp.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x5ADE8A",
+   "kind": "instruction",
+   "name": "KillLeaderText_ReplaceName",
+   "signature": null,
+   "comment": "**A BiceLib patch site.** The game's own $NAME$ replacement, the last thing done to the text. The stub adds $UNIT$, $LOCATION$ and $WHERE$ with the text still in ecx, then reproduces the call. Hooks/EffectText/KillLeaderText.cpp.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -2289,8 +2433,8 @@
    "rva": "0x5BBD00",
    "kind": "function",
    "name": "CLoadOOBEffect::Execute",
-   "signature": null,
-   "comment": "Loads the order of battle the effect names: the path at `+0x20` goes to `0x5EC9E0`, which reads the file, and the result is applied to the country the scope names - the id at `scope + 0x14`. **Nothing about the file is in memory before this**, which is why a tooltip about it has to read the file itself. The name is BiceLib's.",
+   "signature": "void __thiscall CLoadOOBEffect::Execute(CLoadOOBEffect* this, CEventScope* scope, int unknown)",
+   "comment": "Loads the order of battle the effect names: `CStringEffect::text` is written onto the country by CCountry::SetOobFile, and CCountry::LoadOobFile is called on it. The country is the scope's, by the id at `scope + 0x14`. **Nothing about the file is in memory before this**, which is why a tooltip about it has to read the file itself. The second stack argument is not read here; it is written out so the `ret 8` adds up. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -2298,8 +2442,17 @@
    "rva": "0x5BBE40",
    "kind": "function",
    "name": "CLoadOOBEffect::GetText",
+   "signature": "Hoi3CString* __thiscall CLoadOOBEffect::GetText(CLoadOOBEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString unread, int unknown1, int unknown2)",
+   "comment": "**The shape every effect's text builder has**, slot 9: it builds the sentence into `out`, answers it in eax, and takes forty bytes of arguments (`ret 0x28`). Of those the scope is read by 66 of the 99 effect classes that have a slot 9, and the string at `+0x10` by 75 - but only to destroy it, never to read its characters, so `unread` is what it is called here. The last eight bytes are read by none of the 99; they are written out so the stack adds up. This one hands **the effect's own string** - `CStringEffect::text`, which for this effect is the order of battle's path - to GetText as though it were a localisation key, so a player sees the bare path. There is no key and no variable to fill, so BiceLib writes the whole string over it at the last call before the return - see Hooks/EffectText/LoadOobText.cpp. **It is also a BiceLib patch site**: its first three instructions come to exactly five bytes, which is what a jump needs, and all the stub wants is ecx.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x5BBEB1",
+   "kind": "instruction",
+   "name": "LoadOobText_Release",
    "signature": null,
-   "comment": "**What the `load_oob` effect shows in an option's tooltip**, slot 9 of its vftable (`0x11F4490`, RTTI). It hands the effect's own string - the file path, at `+0x20`, which CStringEffect keeps - to GetText **as a localisation key**, renders what comes back and shows that, so a player sees the bare path. There is no key and no variable to fill, so BiceLib writes the whole string over it at the last call before the return. See reversing/FINDINGS-effecttext.md.",
+   "comment": "**A BiceLib patch site.** The last call in CLoadOOBEffect::GetText, by which point the string the effect will show is built and sits at [ebp+8], with the scope at [ebp+0xC] - ebp is still the builder's frame. The stub writes the description over it and reproduces the call. Hooks/EffectText/LoadOobText.cpp.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -2325,8 +2478,8 @@
    "rva": "0x65B0D0",
    "kind": "function",
    "name": "TextBuilder::Append",
-   "signature": null,
-   "comment": "Adds one more string to a run started by TextBuilder::Begin and answers the builder again. The name is BiceLib's.",
+   "signature": "Hoi3CString* __thiscall TextBuilder::Append(void* this@ECX, Hoi3CString* out@ESI, Hoi3CString* text@stack:4) @EAX",
+   "comment": "Adds one more string to a run started by TextBuilder::Begin and answers the builder again. Like the rest of this machinery it takes a second pointer in **esi**, the string it builds into. `ret 4`. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -2334,8 +2487,8 @@
    "rva": "0x65B150",
    "kind": "function",
    "name": "TextBuilder::Begin",
-   "signature": null,
-   "comment": "Starts the \"\\xa7Y<something>\\xa7W\" run that a tooltip colours a name with: the colour code in edx as a plain char*, the string to follow it pushed, the builder in ecx, and the builder back in eax so the next piece can be chained onto it. The name is BiceLib's.",
+   "signature": "void* __cdecl TextBuilder::Begin(void* this@ECX, char* colour@EDX, Hoi3CString* text@stack:4) @EAX",
+   "comment": "Starts the \"\\xa7Y<something>\\xa7W\" run a tooltip colours a name with: the colour code in edx as a plain char*, the string to follow it pushed, the builder in ecx, and the builder back in eax so the next piece can be chained onto it. **The caller cleans the stack** (`ret` with no operand, and an `add esp, 4` at the call site), which is why this is written as cdecl with the registers spelled out rather than as fastcall. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -2379,8 +2532,8 @@
    "rva": "0x66B3A0",
    "kind": "function",
    "name": "FileExists",
-   "signature": null,
-   "comment": "Answers whether a path is there; the `common/` loader calls it once per file to choose between the mod's copy and vanilla's. The name is BiceLib's, from that use.",
+   "signature": "bool __cdecl FileExists(Hoi3CString* path@EAX) @AL",
+   "comment": "Answers whether a path is there; the `common/` loader calls it once per file to choose between the mod's copy and vanilla's, and CCountry::LoadOobFile for the same reason. The path arrives in **eax** - the compiler kept the function to itself - and it reads the string's capacity at `+0x14` to find the characters. The name is BiceLib's, from that use.",
    "confidence": "confirmed",
    "source": "reversing/CLASSES.md:1354"
   },
@@ -2460,26 +2613,35 @@
    "rva": "0x682490",
    "kind": "function",
    "name": "GetText",
-   "signature": null,
-   "comment": "**The localisation lookup**: `TextObject* GetText(TextObject* out, const std::string* key)`. Both arguments are pushed and the callee cleans them (`ret 8`). **It does not answer with a string** - the out is a sixteen byte text object, `{entry, and a vector of the $VARIABLE$ replacements to apply}`, and characters come out of RenderText. A key it cannot find gets an empty entry made for it rather than an error. Province names are localisation too, under `PROV<id>`; the game builds that key with the format string at `0x11BE118`. The name is BiceLib's.",
+   "signature": "CInternationalizedText* __stdcall GetText(CInternationalizedText* out, Hoi3CString* key)",
+   "comment": "**The localisation lookup.** Both arguments are pushed and the callee cleans them (`ret 8`). **It does not answer with a string** - the out is the sixteen byte text object, the entry plus a vector of the $VARIABLE$ replacements to apply, and characters come out of CInternationalizedText::Render. A key it cannot find gets an empty entry made for it rather than an error. Province names are localisation too, under `PROV<id>`; the game builds that key with the format string at `0x11BE118`. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
   {
    "rva": "0x682E40",
    "kind": "function",
-   "name": "RenderText",
-   "signature": null,
-   "comment": "**Turns a text object into characters**: `thiscall` on the object, sixteen bytes of colour settings from `settings + 0x6C` pushed by value (`ret 0x10`), and the built `std::string` handed in **esi** - the same register trick as the key in ReplaceTextVariable. It writes the length and capacity over whatever the out string held, so it must be given an empty one. The name is BiceLib's.",
+   "name": "CInternationalizedText::Render",
+   "signature": "Hoi3CString* __thiscall CInternationalizedText::Render(CInternationalizedText* this@ECX, Hoi3CString* out@ESI, CTextRenderColours colours@stack:4) @EAX",
+   "comment": "**A text object to characters.** `thiscall` on the object with sixteen bytes of colour settings pushed by value (`ret 0x10`), and the built string handed back in **esi** - the same register trick as the key in CInternationalizedText::Replace. It writes the length and capacity over whatever the out string held, so it must be given an empty one. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
   {
    "rva": "0x682F40",
    "kind": "function",
-   "name": "ReplaceTextVariable",
-   "signature": null,
+   "name": "CInternationalizedText::Replace",
+   "signature": "void __thiscall CInternationalizedText::Replace(CInternationalizedText* this@ECX, Hoi3CString* key@ESI, Hoi3CString* value@stack:4)",
    "comment": "**`text.Replace(key, value)`**, the `$NAME$` style variable mechanism: the text in ecx, the value pushed, and **the key in esi**, which the compiler left in a register variable and the callee reads from there (`mov edx, esi` at `0x682F7A`, and pushed outright at `0x682F90`). It builds a 0x40 byte object - vftable, the text at `+4`, the key as a string at `+8` and the value as another at `+0x24`, both copied - so a value need not outlive the call. `ret 4`. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x684D30",
+   "kind": "function",
+   "name": "AddTextEntry",
+   "signature": "void __stdcall AddTextEntry(void* database, Hoi3CString* key, Hoi3CString* text)",
+   "comment": "Puts an entry in the localisation database under a key. Also what the lookup calls when a key is **missing** - it creates an empty entry so the renderer can say NO_TEXT_FOR_KEY, which is why a missing key answers without failing. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -2487,8 +2649,17 @@
    "rva": "0x687020",
    "kind": "function",
    "name": "ReleaseTextReplacements",
-   "signature": null,
+   "signature": "void __cdecl ReleaseTextReplacements(void** replacements@EDI)",
    "comment": "Destroys the replacements a text object collected, walking the vector whose three pointers are handed in **edi** and calling slot 0 of each entry's table with 1. The caller frees the block afterwards. A lookup that added no variables has none, so the loop runs no times. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x69DA00",
+   "kind": "function",
+   "name": "FindPersistentById",
+   "signature": "void* __cdecl FindPersistentById(int type, int id)",
+   "comment": "Looks a saved object up by its type and id - the two halves of the `id = { type = N id = N }` pair the save writes. Type 0x25 is a leader: CKillLeaderEffect::GetLeader calls it with that and the id from the event file. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -2502,10 +2673,19 @@
    "source": "reversing/FINDINGS-autosave.md:81"
   },
   {
+   "rva": "0x705080",
+   "kind": "function",
+   "name": "DestroyStringsInRange",
+   "signature": "void __cdecl DestroyStringsInRange(void* first@EAX, void* last@EDI)",
+   "comment": "**Empties the string at the start of every record in a range**, walking `[first, last)` in steps of **0x20** and giving each string's buffer back where it had one - `if (capacity >= 0x10) free(data)`, then capacity 0xF, length 0, first byte 0. Both ends arrive in registers, first in eax and last in edi. `ret`.\n\nIt is a destructor loop the compiler wrote once and **1552 call sites share**: every record type of 0x20 bytes that begins with a string folds onto this one body, which is why its callers have nothing to do with each other. The stride is baked in, so it is only correct for that shape.\n\nBiceLib meets it tearing a text object down: after ReleaseTextReplacements has destroyed the object each replacement points at, this empties the name each one carries, and the caller frees the block. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
    "rva": "0x795F9B",
    "kind": "function",
    "name": "free",
-   "signature": null,
+   "signature": "void __cdecl free(void* block)",
    "comment": "A thunk to the CRT's free. Every string destructor in the executable calls it the same way - `if (capacity > 15) free(pointer)` - which is what BiceLib copies to give back a string the game allocated for it.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
@@ -2536,15 +2716,6 @@
    "comment": "`mov eax, 2; ret` - the whole body, so the linker folded it and this one address fills a virtual table slot in several classes that have nothing to do with each other. It is slot 11 of CNavalCombat, where it answers the combat kind 2, and that is written on CNavalCombat's own slot rather than on the address.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:327"
-  },
-  {
-   "rva": "0xA84D30",
-   "kind": "function",
-   "name": "AddTextEntry",
-   "signature": null,
-   "comment": "Puts an entry in the localisation database under a key. Also what the lookup calls when a key is **missing** - it creates an empty entry so the renderer can say NO_TEXT_FOR_KEY, which is why a missing key answers without failing. The name is BiceLib's.",
-   "confidence": "confirmed",
-   "source": "reversing/FINDINGS-effecttext.md"
   },
   {
    "rva": "0x108746C",
@@ -3521,6 +3692,20 @@
   {
    "name": "CCountry",
    "fields": [
+    {
+     "offset": "0x48",
+     "name": "historical_models",
+     "type": "CHistoricalModelSet**",
+     "comment": "**this country's models, one set per unit type**, indexed by `CSubUnitDefinition::type_index` - 1643 slots. Read by CHistoricalModel::PickBestModel's callers and, **read live**, the holder of every CHistoricalModel in the process",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x58",
+     "name": "oob_file",
+     "type": "Hoi3CString",
+     "comment": "**the order of battle to read**, relative to `history/units`. CLoadOOBEffect::Execute writes the effect's own string here through CCountry::SetOobFile and then calls CCountry::LoadOobFile, which reads it back. Nothing else uses it, so it is an argument passed on the object rather than a property of the country",
+     "source": "reversing/FINDINGS-effecttext.md"
+    },
     {
      "offset": "0x74",
      "name": "ignored_keys",
@@ -6059,6 +6244,13 @@
      "type": "int",
      "comment": "unit picture",
      "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:59"
+    },
+    {
+     "offset": "0x1B4",
+     "name": "unit_group",
+     "type": "int",
+     "comment": "which combined arms group the type is in: a one based index into common/combined_arms.txt's own order, 0 for none",
+     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp"
     }
    ]
   },
@@ -6181,9 +6373,59 @@
      "type": "Hoi3CString",
      "comment": "trait name",
      "source": "BiceLib/GameClasses/CTrait.hpp:22"
+    },
+    {
+     "offset": "0x68",
+     "name": "effect_values",
+     "type": "int[16]",
+     "comment": "what each effect is worth, in thousandths",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0xA8",
+     "name": "effect_kinds",
+     "type": "int[16]",
+     "comment": "which of the 31 effects each one is - CTrait::Effect in the header, numbered as CTrait::LoadKey's jump table numbers them",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0xE8",
+     "name": "effect_types",
+     "type": "Hoi3CString[16]",
+     "comment": "the terrain each terrain_* effect names, empty for the rest. The stride is 0x1C against a string's 0x18, and **read live** the four spare bytes hold fragments of the parser's buffer - they are padding nothing writes",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0x2A8",
+     "name": "effect_count",
+     "type": "int",
+     "comment": "how many of the sixteen are used",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0x2B0",
+     "name": "allowed_land",
+     "type": "bool",
+     "comment": "from `allowed_leader`; all three are set outright when the key is absent",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0x2B1",
+     "name": "allowed_sea",
+     "type": "bool",
+     "comment": "from `allowed_leader`",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0x2B2",
+     "name": "allowed_air",
+     "type": "bool",
+     "comment": "from `allowed_leader`",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
     }
    ],
-   "vftable_rva": "0x11C7DC0"
+   "vftable_rva": "0x11C7DC0",
+   "inherits": "CModifier"
   },
   {
    "name": "CTraitDataBase",
@@ -8629,10 +8871,10 @@
     },
     {
      "offset": "0x218",
-     "name": "build_cost_by_technology",
+     "name": "level_by_technology",
      "type": "int*",
-     "comment": "ints indexed by a technology's index (+0x244): what each technology does to a unit type's build cost, summed over the type's own technology list",
-     "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:149"
+     "comment": "**the country's researched level of each technology**, ints indexed by a technology's index (`CTechnology +0x244`). `CHistoricalModelSet::MakeSubUnit` copies straight out of it into a new regiment's `CSubUnitTechnology::level` (`mov [ecx+4], esi` at `0x183183`), and **read live** it equals the level 6859 of 7445 regiment entries carry, counting only non-zero ones - the rest being regiments raised before the country researched further. `0x63D40` sums it over a unit type's own technologies and hands the total to GetBuildCostIC, which is what it used to be named for",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
     },
     {
      "offset": "0x24C",
@@ -9805,11 +10047,95 @@
      "source": "BiceLib/GameClasses/CTechnology.hpp:38"
     },
     {
+     "offset": "0x248",
+     "name": "allow",
+     "type": "void*",
+     "comment": "the `allow` block: a trigger held by value, which loads itself",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x288",
+     "name": "change",
+     "type": "bool",
+     "comment": "`change`; 388 of 388 agree",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
      "offset": "0x294",
      "name": "effects",
      "type": "void*",
      "comment": "**what this technology does to each unit type**: a list whose nodes hold the effect at +0 and the next node at +8. Each effect is a whole CSubUnitDefinition holding only the changes, and its `Key` is the unit type it is for. **Read live**: 16044 effects across 1175 technologies in this mod",
      "source": "BiceLib/GameClasses/CTechnology.hpp:49"
+    },
+    {
+     "offset": "0x2B4",
+     "name": "start_year",
+     "type": "int",
+     "comment": "`start_year`; 1173 of 1174 agree across 31 values",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x2B8",
+     "name": "first_offset",
+     "type": "int",
+     "comment": "`first_offset`; 801 of 802 agree across 32 values",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x2BC",
+     "name": "stealable",
+     "type": "bool",
+     "comment": "`stealable`; 569 of 569 agree",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x2C0",
+     "name": "additional_offset",
+     "type": "int",
+     "comment": "`additional_offset`; 795 of 795 agree",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x2C4",
+     "name": "max_level",
+     "type": "int",
+     "comment": "`max_level`, and **the loader turns 0 into 1** rather than leaving it; 877 of 877 agree",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x2CC",
+     "name": "is_nuclear",
+     "type": "bool",
+     "comment": "`is_nuclear`; 14 declare it and agree, but all 14 say yes, so this rests on the loader",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x2D0",
+     "name": "build_cost_ic_modifier",
+     "type": "int[4]",
+     "comment": "read by 0x45140 into sixteen bytes; what they hold has not been read",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x2E0",
+     "name": "build_cost_mp_modifier",
+     "type": "int[4]",
+     "comment": "the same, for manpower",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x2F0",
+     "name": "build_time_modifier",
+     "type": "int[4]",
+     "comment": "the same, for time",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x310",
+     "name": "activate_building",
+     "type": "void*",
+     "comment": "the building this technology unlocks; the loader also writes this technology onto that building at its +0x10",
+     "source": "BiceLib/GameClasses/CTechnology.hpp"
     }
    ]
   },
@@ -10557,6 +10883,298 @@
     }
    ],
    "vftable_rva": "0x11C2AB4"
+  },
+  {
+   "name": "CInternationalizedText",
+   "size": "0x10",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "entry",
+     "type": "void*",
+     "comment": "the localisation entry the key found, or the empty one made for a key that was not there",
+     "source": "reversing/FINDINGS-effecttext.md"
+    },
+    {
+     "offset": "0x4",
+     "name": "replacements_first",
+     "type": "void*",
+     "comment": "a vector of the $VARIABLE$ replacements to apply when this is rendered: **0x20 byte records**, each the variable's name as a string at +0 and the replacement object at +0x1C. ReleaseTextReplacements destroys the objects and DestroyStringsInRange empties the names",
+     "source": "reversing/FINDINGS-effecttext.md"
+    },
+    {
+     "offset": "0x8",
+     "name": "replacements_last",
+     "type": "void*",
+     "comment": "end of the replacements",
+     "source": "reversing/FINDINGS-effecttext.md"
+    },
+    {
+     "offset": "0xC",
+     "name": "replacements_end",
+     "type": "void*",
+     "comment": "end of the replacements' storage",
+     "source": "reversing/FINDINGS-effecttext.md"
+    }
+   ]
+  },
+  {
+   "name": "CTextRenderColours",
+   "size": "0x10",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "value0",
+     "type": "int",
+     "comment": "sixteen bytes from settings + 0x6C, passed to RenderText by value; BiceLib copies them verbatim and what they mean is not established",
+     "source": "reversing/FINDINGS-effecttext.md"
+    },
+    {
+     "offset": "0x4",
+     "name": "value1",
+     "type": "int",
+     "comment": "",
+     "source": "reversing/FINDINGS-effecttext.md"
+    },
+    {
+     "offset": "0x8",
+     "name": "value2",
+     "type": "int",
+     "comment": "",
+     "source": "reversing/FINDINGS-effecttext.md"
+    },
+    {
+     "offset": "0xC",
+     "name": "value3",
+     "type": "int",
+     "comment": "",
+     "source": "reversing/FINDINGS-effecttext.md"
+    }
+   ]
+  },
+  {
+   "name": "CEffect",
+   "inherits": "CPersistent",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "children",
+     "type": "CList",
+     "comment": "the effects inside this one, where it holds any: RTTI gives CEffect a second base of `PAVCEffect::__CList` at offset 8",
+     "source": "reversing/FINDINGS-effecttext.md"
+    }
+   ]
+  },
+  {
+   "name": "CStringEffect",
+   "inherits": "CEffect",
+   "fields": [
+    {
+     "offset": "0x20",
+     "name": "text",
+     "type": "Hoi3CString",
+     "comment": "**the one string the effect was written with**, which is what the class is for. Both descendants read it and mean different things by it: for CLoadOOBEffect it is the order of battle's path under history/units, for CRemoveBrigadeEffect the brigade to take away, which it puts into REMOVE_BRIGADE",
+     "source": "reversing/FINDINGS-effecttext.md"
+    }
+   ]
+  },
+  {
+   "name": "CLoadOOBEffect",
+   "inherits": "CStringEffect",
+   "fields": []
+  },
+  {
+   "name": "CRemoveBrigadeEffect",
+   "inherits": "CStringEffect",
+   "fields": []
+  },
+  {
+   "name": "CEventScope",
+   "size": "0x38",
+   "fields": [
+    {
+     "offset": "0x14",
+     "name": "country_id",
+     "type": "int",
+     "comment": "**the country the scope is about**, and what every effect indexes the country database with. The Lua API declares `_Country` at +0x10 as a `CCountryTag&` - that is its getter's return type, not the layout: the tag sits there **by value**, three letters at +0x10 and this id at +0x14, which is why CCountryTag::GetCountry is passed `scope + 0x10`",
+     "source": "reversing/FINDINGS-effecttext.md"
+    }
+   ]
+  },
+  {
+   "name": "CGainableTrait",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "combat",
+     "type": "SaveToken",
+     "comment": "which kind of combat earns it, as the token itself",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0xC",
+     "name": "hours_required",
+     "type": "int",
+     "comment": "hours of such combat a leader needs",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0x10",
+     "name": "trait",
+     "type": "CTrait*",
+     "comment": "what is earned, resolved as the file is read",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0x14",
+     "name": "trigger",
+     "type": "CTrigger",
+     "comment": "held by value; it loads itself from the `trigger` block",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0x54",
+     "name": "has_trigger",
+     "type": "bool",
+     "comment": "set when a `trigger` block was read at all",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    }
+   ]
+  },
+  {
+   "name": "CTraitGainTracker",
+   "fields": [
+    {
+     "offset": "0xC",
+     "name": "hours_by_trait",
+     "type": "void*",
+     "comment": "a std::map of trait to hours - a red-black tree, the value at each node's +0x10",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0x1C",
+     "name": "duration",
+     "type": "int",
+     "comment": "saved as `duration`",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    },
+    {
+     "offset": "0x20",
+     "name": "current",
+     "type": "int",
+     "comment": "saved as `current`",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    }
+   ]
+  },
+  {
+   "name": "CLeaderHistory",
+   "fields": [
+    {
+     "offset": "0x40",
+     "name": "trait_gain",
+     "type": "CTraitGainTracker*",
+     "comment": "how far the leader has got towards each gainable trait. **Read live**: 399 of 400 histories point at one, the exception being the empty template",
+     "source": "BiceLib/GameClasses/CTrait.hpp"
+    }
+   ]
+  },
+  {
+   "name": "CHistoricalModel",
+   "size": "0x30",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "held by value, and **the null tag `---` on all 20000 sampled** - a model does not know its country. The real tag is on the CHistoricalModelSet that holds it",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x10",
+     "name": "definition",
+     "type": "CSubUnitDefinition*",
+     "comment": "the unit type this is a model of",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x14",
+     "name": "technologies",
+     "type": "CSubUnitTechnology*",
+     "comment": "**what this model was built with**: a vector of the same 12 byte {technology, level, progress} entries a regiment carries, which is why PickBestModel can compare the two directly. **Read live**: non-empty on 1677 of 4000 models, always a whole number of entries, and in this mod every entry's level is the model's own index",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x18",
+     "name": "technologies_end",
+     "type": "CSubUnitTechnology*",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x1C",
+     "name": "technologies_capacity",
+     "type": "CSubUnitTechnology*",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x24",
+     "name": "index",
+     "type": "int",
+     "comment": "which model this is, and what `historical_model = N` in an order of battle picks by",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    }
+   ]
+  },
+  {
+   "name": "CHistoricalModelSet",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "models",
+     "type": "CHistoricalModel**",
+     "comment": "a vector of the type's models, in index order",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x4",
+     "name": "models_end",
+     "type": "CHistoricalModel**",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x8",
+     "name": "models_capacity",
+     "type": "CHistoricalModel**",
+     "comment": "",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0xC",
+     "name": "unknown_c",
+     "type": "undefined4",
+     "comment": "zero on 878 of 1296 sets and unrelated bytes on the rest, so nothing appears to read it",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x10",
+     "name": "definition",
+     "type": "CSubUnitDefinition*",
+     "comment": "the unit type, and the same pointer every model in the vector carries at its own `definition`. **Read live**: 25 of 25, and its `type_index` is the slot this set sits in",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x14",
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "held by value; **read live** the id half is the owning country's index on 1296 of 1296, and the letters are the country's - GER, SWE. This is the tag the model's own field never has",
+     "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    }
+   ],
+   "size": "0x1C",
+   "comment": "**One unit type's models for one country** - the object a CCountry's `historical_models` array holds, and what CHistoricalModel::PickBestModel takes in ecx. **Read live**: 108 countries x 1643 unit types, each with exactly `HISTORICAL_MODEL_MAX` models, which accounts for every CHistoricalModel in the process. The name is BiceLib's."
   }
  ],
  "vftable_slots": {

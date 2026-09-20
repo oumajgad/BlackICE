@@ -61,7 +61,7 @@ namespace {
             { "fuel_consumption",    CSubUnitDefinition::Offsets::fuel_consumption,    0.001f, "",     MASK_ALL },
             { "air_defence",         CSubUnitDefinition::Offsets::air_defence,         0.001f, "",     MASK_ALL },
             { "air_attack",          CSubUnitDefinition::Offsets::air_attack,          0.001f, "",     MASK_ALL },
-            { "sub_unit_amount",     CSubUnitDefinition::Offsets::sub_unit_amount,     0.001f, "",     MASK_NAVY | MASK_AIR },
+            { "radio_strength",      CSubUnitDefinition::Offsets::radio_strength,      0.001f, "",     MASK_NAVY | MASK_AIR },
             { "soft_attack",         CSubUnitDefinition::Offsets::soft_attack,         0.001f, "",     MASK_ARMY | MASK_AIR },
             { "hard_attack",         CSubUnitDefinition::Offsets::hard_attack,         0.001f, "",     MASK_ARMY | MASK_AIR },
             { "air_detection",       CSubUnitDefinition::Offsets::air_detection,       0.001f, "",     MASK_NAVY | MASK_AIR },

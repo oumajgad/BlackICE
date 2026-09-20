@@ -86,6 +86,31 @@ bool Patches::disableInterAiExpeditionaries(uintptr_t moduleBase) {
     return 1;
 }
 
+/**
+ * Stops a unit being given a model it has not researched.
+ *
+ * `CHistoricalModel::PickBestModel` (`0x183230`) chooses which model a unit is built
+ * with: for every model it adds up, over the technologies that model asks for,
+ * `|researched level - asked for level| * 1000`, and takes the model with the smallest
+ * total. The **absolute value is the bug**: a model that wants more than the country has
+ * scores exactly as well as one that wants less by the same amount, so a country can be
+ * handed a model it cannot field.
+ *
+ * The patch replaces the two byte `neg ecx` that makes the difference positive with a
+ * jump into the padding after the function, where six bytes put a flat `0x100000` in ecx
+ * and two more jump back. So **a model that asks for more than is researched takes a
+ * fixed, enormous penalty** instead of a small one, and loses to any model that does not.
+ *
+ * Three writes, all inside that one function and its padding:
+ *
+ * | | |
+ * | --- | --- |
+ * | `0x1832A8` | `neg ecx` becomes `jmp +0x2A`, into the padding |
+ * | `0x1832D4` | six bytes of padding become `mov ecx, 0x100000` |
+ * | `0x1832DA` | two more become `jmp -0x32`, back to the `add eax, ecx` |
+ *
+ * See GameClasses/CHistoricalModel.hpp for the class and the picker.
+ */
 bool Patches::historicalModelLogicFix(uintptr_t moduleBase) {
     BYTE one[2] = { 0xEB, 0x2A };
     DWORD address1 = moduleBase + 0x1832A8;

@@ -28,7 +28,7 @@ local properties = {
     ["softness"] = {            factor = 0.1, unit = "%", translation = nil },
     ["strategic_attack"] = {    factor = 0.001, unit = "", translation = nil },
     ["sub_attack"] = {          factor = 0.001, unit = "", translation = nil },
-    ["sub_unit_amount"] = {     factor = 0.001, unit = "", translation = "Sub Units" },
+    ["radio_strength"] = {      factor = 0.001, unit = "", translation = "Radio Strength" },
     ["supply_consumption"] = {  factor = 0.001, unit = "", translation = nil },
     ["suppression"] = {         factor = 0.001, unit = "", translation = nil },
     ["surface_defence"] = {     factor = 0.001, unit = "", translation = nil },
@@ -51,7 +51,7 @@ local blacklists = {
     ["Army"] = {
         "type", "name",
         "air_detection", "convoy_attack", "firing_distance", "hull", "positioning", "range", "sea_attack", "sea_defence",
-        "shore_bombardment", "strategic_attack", "sub_attack", "sub_unit_amount", "surface_defence", "surface_detection", "transport_capacity",
+        "shore_bombardment", "strategic_attack", "sub_attack", "radio_strength", "surface_defence", "surface_detection", "transport_capacity",
         "visibility",
     },
     ["Navy"] = {

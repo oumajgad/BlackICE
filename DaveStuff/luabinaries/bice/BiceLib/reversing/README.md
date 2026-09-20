@@ -240,10 +240,10 @@ already named:
 | class | LoadKey | bytes | named | why |
 | --- | --- | --- | --- | --- |
 | `CSubUnitDefinition` | `0x1A3C80` | 6103 | 68 | **the unit files**, and the most used class in the mod; the stat block is done, the tails are not - `build_cost_by_technology`, the per-unit-type vectors |
-| `CTechnology` | `0x134AC0` | 3217 | 9 | `technology.txt`; the effects list is understood (CTechnology.hpp) but the rest of the class is not |
+| `CTechnology` | `0x134AC0` | 3217 | **done** | the technology files: a dozen keys of its own, checked against all 1174, and everything else read as a unit type's name - which is how an effect is written |
 | `CGovernment` | `0x124660` | 3319 | 1 | `governments.txt`; only its key is named, and CRebelFaction points at one |
-| `CTrait` | `0x1B2A50` | 1620 | 1 | `traits.txt` and `gainable_traits.txt` - what a leader's traits actually do |
-| `CHistoricalModel` | `0x1828D0` | 1554 | 0 | the unit models; `historical_model` on a sub unit points into this |
+| `CTrait` | `0x1B2A50` | 1620 | **done** | `traits.txt`: 31 effects, the leader kinds, and a count that stops at sixteen. `gainable_traits.txt` turned out to be a different class, `CGainableTrait`, which is still unread |
+| `CHistoricalModel` | `0x1828D0` | 1554 | **done** | the unit models, declared in `units/models` - 122421 blocks of `<type>.<index> = { technology = level }`. No keys of its own, and **2.48 million objects, 114 MB**: every country keeps a set per unit type, 108 x 1643 x `HISTORICAL_MODEL_MAX`. The picker they feed is where `historicalModelLogicFix` patches |
 | `CMinister` | `0x12C630` | 1591 | 6 | `minister_types.txt`; six named from the last pass, the rest is open |
 | `CBuilding` | `0xB6950` | 1427 | 26 | `buildings.txt`, **done** - kept here as the worked example |
 | `CRebelType` | `0xBFA40` | 1064 | 1 | `rebel_types.txt`; partisan behaviour |
@@ -273,14 +273,36 @@ is the oracle**, not a savegame.
    jump tables; a hand-rolled walker gets the offsets wrong, which it did twice.
 3. **Take the offsets from the disassembly where the decompiler hides them** - a handler that
    passes its destination in a register shows as `func_0x...()` with no argument.
-4. **Check every key against the file**, the way `buildings.txt` was checked: parse the `.txt`,
-   read the same field out of a running game, and confirm the scaling - almost everything is
-   x1000.
-5. **Then read it live across every instance.** Definition objects live for the whole session,
-   so a running game holds them all; a field's spread over 61 buildings or 608 unit types
-   settles what it means.
-6. Record: offsets in the header, entries in `project.json`, a CLASSES.md section keyed by the
+4. **Fit the file against a running game, key by key.** This is the step that does the work
+   and it is worth automating: parse every `.txt` for `type -> key -> value`, read every
+   instance of the class out of the process, and for each key try every offset at every
+   plausible scale. The offset that agrees for *all* of them is the field. `CTechnology` went
+   from 9 named to 20 in one pass this way, checked against all 1174 technologies.
+5. Record: offsets in the header, entries in `project.json`, a CLASSES.md section keyed by the
    file, and rebuild and apply the findings.
+
+#### Four traps in step 4, each of which cost time
+
+**A fit against a key that never varies means nothing.** `is_armor = yes` on 76 types and
+absent everywhere else fits *any* byte that happens to be 1 on those types. Count the distinct
+values first, and where there is only one, fit on **absence**: the offset that is set on
+exactly the types that declare it, and zero on the 1500 that do not.
+
+**A type has more than one object.** A `CSubUnitDefinition` exists once per regiment and once
+per technology that changes it - 60487 objects for 1642 types - and a delta carries only the
+fields that technology touches. Taking "the first instance with this key" hands back a delta
+and invents discrepancies: seven corps HQs looked like they had lost their combined arms group
+that way. Read every instance and expect several.
+
+**Technology moves most numbers.** Anything a technology can change - `max_strength`,
+`distance`, the attacks - will not match the file on a definition that has had technology
+applied. A key that fits nothing at any scale is usually this, not a wrong offset.
+
+**Names do not fit by value, but they do by partition.** For a key whose value is a name -
+`unit_group`, a group in `combined_arms.txt` - look for the offset whose values split the types
+the same way the names do. When that finds nothing, read the offset out of the handler: it is
+`mov [reg + N], eax` a few instructions after the lookup, and that is how `unit_group` was
+found at `+0x1B4` after the partition test failed on a group the mod never declared.
 
 ### The two things that would make all of it faster
 
