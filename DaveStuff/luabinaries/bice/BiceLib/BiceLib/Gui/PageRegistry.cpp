@@ -411,6 +411,103 @@ namespace {
 }
 
 namespace {
+    // Which page has the keyboard this frame, and the dock it is docked in. Noted while
+    // the pages are drawn, because that is the only point ImGui can be asked; read
+    // afterwards, when the tab bars exist to be stepped through.
+    const Gui::GuiPage* focusedPage = nullptr;
+    ImGuiID focusedNode = 0;
+
+    /**
+    @brief shows the tab \p by places along from the one showing, wrapping round
+
+    Straight onto the node, the same way reselectRememberedTabs writes a selection and
+    for the same reason: SetNavWindow moves the keyboard without raising the window,
+    and raising it would take the foreground off the game when the group has been torn
+    off into a window of its own.
+
+    The order is the tab bar's own, so it is the order the tabs appear in - including
+    after they have been dragged about - rather than the order the pages registered in.
+    */
+    void stepTab(int by) {
+        ImGuiDockNode* node = ImGui::DockBuilderGetNode(focusedNode);
+        if (node == nullptr || node->TabBar == nullptr) {
+            return;
+        }
+        ImGuiTabBar* bar = node->TabBar;
+        const int count = bar->Tabs.Size;
+        if (count < 2) {
+            return;         // nothing to step to
+        }
+
+        int at = -1;
+        for (int i = 0; i < count; i++) {
+            if (bar->Tabs[i].ID == bar->SelectedTabId) {
+                at = i;
+                break;
+            }
+        }
+        if (at < 0) {
+            return;         // no tab showing, so nothing to step from
+        }
+
+        // Round the houses at most once, so a bar of tabs that all turn out to be
+        // unusable leaves the selection where it was instead of spinning.
+        int next = at;
+        for (int step = 0; step < count; step++) {
+            next = (next + by + count) % count;
+            if (bar->Tabs[next].Window != nullptr) {
+                break;
+            }
+        }
+        const ImGuiTabItem& tab = bar->Tabs[next];
+        if (tab.Window == nullptr || tab.ID == bar->SelectedTabId) {
+            return;
+        }
+
+        node->SelectedTabId = tab.ID;
+        bar->SelectedTabId = tab.ID;
+        bar->NextSelectedTabId = tab.ID;
+        ImGui::SetNavWindow(tab.Window);
+    }
+
+    /**
+    @brief steps through a dock's tabs on the arrow keys, or on A and D
+
+    Only the dock the keyboard is actually in, so two groups side by side do not both
+    move. Nothing happens unless a page has the focus - clicking the tab bar itself or
+    the game leaves the keys alone.
+
+    **A page that steers with these keys keeps all of them.** Both sets are given up
+    while it has the focus, because the OOB browser walks its tree with the arrows *and*
+    with WASD and would otherwise lose half its controls to the tab bar; its own tabs
+    are reached by clicking. And anything typed goes to the text box: ImGui says so
+    through WantTextInput, and it covers every filter on every page without either of
+    them knowing about the other.
+    */
+    void handleTabKeys() {
+        if (focusedNode == 0) {
+            return;
+        }
+        if (ImGui::GetIO().WantTextInput) {
+            return;
+        }
+        if (focusedPage != nullptr && focusedPage->usesNavigationKeys()) {
+            return;
+        }
+
+        int by = 0;
+        if (ImGui::IsKeyPressed(ImGuiKey_D) || ImGui::IsKeyPressed(ImGuiKey_RightArrow)) {
+            by = 1;
+        }
+        else if (ImGui::IsKeyPressed(ImGuiKey_A)
+            || ImGui::IsKeyPressed(ImGuiKey_LeftArrow)) {
+            by = -1;
+        }
+        if (by != 0) {
+            stepTab(by);
+        }
+    }
+
     /**
     @brief makes each node show the page it was showing before the overlay was hidden
 
@@ -590,6 +687,10 @@ void Gui::drawAll() {
         drawGroupWindow(groupWindows[i], i);
     }
 
+    // Worked out afresh every frame: the focus moves on clicks this loop never sees.
+    focusedPage = nullptr;
+    focusedNode = 0;
+
     for (GuiPage* page : pages()) {
         if (!page->open) {
             continue;
@@ -599,6 +700,13 @@ void Gui::drawAll() {
 
         noFocusOnAppearing();
         if (ImGui::Begin(windowName(page), &page->open)) {
+            // Which page the keys belong to, for handleTabKeys below. Child windows
+            // count: a list or a tree inside the page is still the page having focus.
+            if (ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)
+                && ImGui::IsWindowDocked()) {
+                focusedPage = page;
+                focusedNode = ImGui::GetWindowDockID();
+            }
             // Begin only returns true for the tab that is actually showing, so this
             // is the selection, recorded without asking ImGui for it. Not while the
             // selection is being put back: ImGui's wrong answer is still on screen
@@ -629,6 +737,10 @@ void Gui::drawAll() {
     // rendering, or the detached windows - is not blamed on whichever page happened
     // to be drawn last.
     CrashReport::notePage(nullptr);
+
+    // After the pages, because it needs the tab bars they have just filled in, and
+    // because a page that took a key this frame has already had it.
+    handleTabKeys();
 
     // After the pages, so the tabs exist to be selected. Kept up until the selection
     // holds on its own for two frames running, because something was seen taking the

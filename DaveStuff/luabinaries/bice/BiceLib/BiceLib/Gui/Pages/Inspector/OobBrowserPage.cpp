@@ -255,14 +255,28 @@ namespace {
         // focused list makes. Clicking elsewhere gives them back.
         ImGui::SetNextFrameWantCaptureKeyboard(true);
 
+        // **Not while the filter has the caret.** The arrows alone were harmless there,
+        // but WASD is four letters someone is entitled to type, and the tree would walk
+        // away underneath them. ImGui answers for whatever holds the keyboard, so this
+        // covers the filter without either knowing about the other.
+        if (ImGui::GetIO().WantTextInput) {
+            return;
+        }
+
         if (visibleOrder.empty()) {
             return;
         }
 
-        const bool down = ImGui::IsKeyPressed(ImGuiKey_DownArrow);
-        const bool up = ImGui::IsKeyPressed(ImGuiKey_UpArrow);
-        const bool left = ImGui::IsKeyPressed(ImGuiKey_LeftArrow);
-        const bool right = ImGui::IsKeyPressed(ImGuiKey_RightArrow);
+        // WASD beside the arrows, laid out the same way: W and S walk the list, A and D
+        // close and open a formation.
+        const bool down = ImGui::IsKeyPressed(ImGuiKey_DownArrow)
+            || ImGui::IsKeyPressed(ImGuiKey_S);
+        const bool up = ImGui::IsKeyPressed(ImGuiKey_UpArrow)
+            || ImGui::IsKeyPressed(ImGuiKey_W);
+        const bool left = ImGui::IsKeyPressed(ImGuiKey_LeftArrow)
+            || ImGui::IsKeyPressed(ImGuiKey_A);
+        const bool right = ImGui::IsKeyPressed(ImGuiKey_RightArrow)
+            || ImGui::IsKeyPressed(ImGuiKey_D);
         if (!down && !up && !left && !right) {
             return;
         }
@@ -687,6 +701,10 @@ namespace {
         const char* group() const override { return "Inspector"; }
         int order() const override { return 15; }
         void draw() override { drawOobBrowser(); }
+
+        // The tree walks with the arrows and with WASD - see handleTreeKeys - so
+        // neither set may also step through the dock's tabs. Its tabs are clicked.
+        bool usesNavigationKeys() const override { return true; }
     };
 }
 

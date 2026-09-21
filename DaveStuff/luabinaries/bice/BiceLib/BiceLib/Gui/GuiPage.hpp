@@ -52,6 +52,23 @@ namespace Gui {
         /**@brief draws the page body. Called between Begin() and End().*/
         virtual void draw() = 0;
 
+        /**
+        @brief whether the page steers something with the arrows or WASD itself
+
+        **Say yes and neither set changes tab while this page has the keyboard.** A
+        dock's tabs are stepped through with Left and Right and with A and D, and a page
+        that moves a selection with them - the OOB browser walks its tree with all eight
+        - would otherwise be fighting the tab bar for every key.
+
+        The page wins, so the tabs of the dock it sits in have to be reached by clicking
+        while it has the focus. That is the price of the page having the keys at all,
+        and it is paid by one page.
+
+        Typing is never affected either way: a focused text box takes the keyboard
+        before any of this, which ImGui reports through WantTextInput.
+        */
+        virtual bool usesNavigationKeys() const { return false; }
+
         /**@brief whether the page is currently open as a tab or floating window*/
         bool open = true;
     };
