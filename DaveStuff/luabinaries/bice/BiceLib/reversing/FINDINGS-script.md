@@ -315,6 +315,136 @@ for that is `secede_province`.
 **`has_naval_base` is not a trigger** - eight uses in `events/Australia.txt`. The building
 is tested by its own name, `naval_base`.
 
+## CTrigger's virtual table, and where a condition is answered
+
+A trigger is not only parsed, it is **run**, and that happens through its virtual table.
+`CTrigger`'s has **12 slots**; 1 to 5 are `CPersistent`'s save and load, and the ones that
+matter are its own:
+
+| slot | name | what it is |
+| --- | --- | --- |
+| 6 | **`Evaluate`** | `bool Evaluate(CEventScope* scope)` - **the condition itself** |
+| 8 | `GetText` | `Hoi3CString* GetText(out, scope, ...)` - the condition as the tooltip shows it |
+| 10 | `WalkChildren` | forwards its four arguments to slot 10 of each child |
+| 11 | `CountEvaluation` | calls its own `Evaluate`, then `++*passed` if true and `++*total` always |
+
+**Slot 6 is the evaluate, and the proof is self-referential.** `CAndTrigger::Evaluate`
+walks the child list at `this+8` and calls `[vftable+0x18]` - slot 6 - on each child with
+the same scope. A trigger that ANDs its children by calling slot 6 on each *is* slot 6.
+Two more confirmations: every one of the **163** triggers overrides it, all with `ret 4`,
+so it takes one argument; and `CAlwaysTrigger::Evaluate` is the whole of
+
+```
+mov al, byte ptr [ecx + 0x40]
+ret 4
+```
+
+- `always = yes` read straight back out of the object. `CTagTrigger` ends `sete al`.
+
+Slots 6 and 8 are **pure virtual on CTrigger** - the base's table points at `_purecall` -
+which is why the findings carry their signatures rather than reading them off a body.
+
+`WalkChildren` and `CountEvaluation` are **BiceLib's names**, from what the bodies do;
+the game's own are not known. Together they look like the machinery behind a tooltip that
+says how many of a list of conditions are met.
+
+**Slot 6 means something else on CEffect** (`mov eax, [ecx+0x18]; ret`, a plain getter),
+so this is CTrigger's own slot and not something inherited from CPersistent.
+
+### What that buys
+
+`project.json` now carries a `CTrigger` structure and the four slot names, so
+`ApplyBiceLibFindings` lays out a `CTrigger_vftable` and puts a typed `vftable` pointer on
+the class. **A call through any `CTrigger*` in Ghidra now reads as
+`trigger->vftable->Evaluate(scope)`** instead of `(**(code **)(*param_1 + 0x18))()`, which
+is the thing that makes the script machinery readable.
+
+A record on the base names that slot in **every table below it**, so this reaches all 163
+triggers - but only classes the findings already describe get a table laid out at all.
+`CTrigger` has one now because it has a structure; the individual triggers do not, and
+giving `CAlwaysTrigger` its own table would mean a structure or a vftable label for it
+too.
+
+**CTrigger is `0x40` bytes.** Not from an allocation size - from its heirs: 129 of the 163
+read `this+0x40` inside their own `Evaluate`, and that is where their own value sits
+(`CAlwaysTrigger`'s bool, `CTagTrigger`'s tag pair at `0x40` and `0x44`). Its own data
+before that is the `CList` of children at `0x8`, which is how `and`, `or` and `not` hold
+what they wrap.
+
+## How a requirement tooltip is drawn
+
+`Evaluate` answers whether a condition holds; **slot 9, `GetBlockText`, is what draws the
+whole tree** a technology's `allow` or a decision's conditions turn into. It is worth
+having in full because BiceLib patches six places in it.
+
+```
+Hoi3CString* GetBlockText(Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)
+```
+
+**Every line is the same three pieces:**
+
+```
+indent(depth) + icon + the child's content
+```
+
+The icon is `(§R*§W)` or `(§G*§W)` - a red or a green asterisk - chosen by calling the
+child's `Evaluate` and comparing it against **`redWhen`**, the result that counts as
+unmet. It is 0 normally, and `CNotTrigger::GetBlockText` is nothing but
+`cmp byte [ebp+0x10], 0 / sete dl` and a hand-off to the base: **`not` renders by flipping
+the polarity and standing aside**, so everything under it is green when false. That is the
+proof of what the third argument is.
+
+**The parent draws the line, icon and all.** A child contributes only its content. The
+base walks the children and asks each for its one-line `GetText` (slot 8); a child that is
+itself a block answers the empty string there, and the walk falls back to that child's own
+slot 9. A trigger with no children answers empty too, which is what makes the fallback
+work.
+
+Two special cases that look like bugs and are not:
+
+- **An `and` at depth 0 draws no header** (`0x5D0753`). It hands the call to the base
+  renderer instead, which is why a technology's `allow` - an implicit `and` at the top -
+  lists its conditions with no `All of the below:` over them.
+- **An `or` draws an icon for its own header only at depth 0** (`0x5D0E03`), where
+  nothing above it has drawn one.
+
+### What it gets wrong, and what BiceLib does about it
+
+Three sums, each wrong in both containers, and they compound:
+
+| | the game | should be |
+| --- | --- | --- |
+| a header's own indent | `depth` | **0** - the parent already indented the line |
+| the indent before each child's line | `depth` | **`depth + 1`** - children sit inside |
+| the depth given to a child block | `0` from `and`, `1` from `or` | **`depth + 1`** |
+
+The first is why the text of a nested block sat right of its own icon; the second is why a
+plain condition sat level with the header above it; the third is why nothing got deeper
+than one level however far it was nested. `Hooks::EffectText::TriggerIndent` fixes all
+six - two one-byte changes turning a header's indent loop `jle` into a `jmp`, and four
+five-byte stubs.
+
+**The header fix has to be the jump, not the count.** The register holding the depth is
+read twice: as the loop's counter, and again afterwards as the `or`'s "am I the top?"
+test. Zeroing it satisfied the first and broke the second, and every nested `or` came out
+with two asterisks.
+
+### The string helpers it is built on
+
+Shared across the whole executable, and the first two are easy to confuse:
+
+| rva | what | sites |
+| --- | --- | --- |
+| `0x33B40` | `appendChars(const char*, length)` | 358 |
+| `0x33E30` | `appendString(const string&, from, count)` | 1072 |
+| `0x1BD0` | **`assignString`**(const string&, from, count) - replaces | 5489 |
+| `0xA160` | `assign(const char*, length)` | 14075 |
+
+`appendString` and `assignString` take the same three arguments and open with the same
+bounds check on `from` against the source's length, so only what they do with the result
+tells them apart. The names are BiceLib's: these are overloads the game keeps no names
+for.
+
 ## The triggers
 
 | keyword | token | class |

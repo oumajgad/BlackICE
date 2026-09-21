@@ -35,6 +35,7 @@
 #include <GameState/AutoSave.hpp>
 #include <Hooks/EffectText/KillLeaderText.hpp>
 #include <Hooks/EffectText/LoadOobText.hpp>
+#include <Hooks/EffectText/TriggerIndentText.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
@@ -827,6 +828,28 @@ __declspec(dllexport) int activateLoadOobDetails(lua_State* L)
     return 1;
 }
 
+/**
+ * Indents what is inside an `and` or an `or` in a requirement tooltip.
+ *
+ * The game renders a requirement tree one line per trigger, three spaces per level, and
+ * both container triggers pass a constant for their children instead of their own depth
+ * plus one - so a condition inside an `and` or an `or` is drawn flush left whatever it
+ * is nested in. See Hooks/EffectText/TriggerIndentText.hpp.
+ */
+__declspec(dllexport) int activateTriggerIndent(lua_State* L)
+{
+    const bool ok = Hooks::EffectText::TriggerIndent::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateTriggerIndent' failed: %s \n",
+            Hooks::EffectText::TriggerIndent::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateTriggerIndent' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
 /////////////////////////////////////
 //      INSPECTOR FUNCTIONS        //
 /////////////////////////////////////
@@ -1109,6 +1132,7 @@ void registerEffectTextFunctions(lua_State* this_state) {
     lua_newtable(this_state);
     registerFunction(this_state, "activateKillLeaderVariables", activateKillLeaderVariables);
     registerFunction(this_state, "activateLoadOobDetails", activateLoadOobDetails);
+    registerFunction(this_state, "activateTriggerIndent", activateTriggerIndent);
     lua_settable(this_state, -3);
     return;
 }

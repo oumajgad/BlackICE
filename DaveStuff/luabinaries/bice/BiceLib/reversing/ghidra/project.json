@@ -20,6 +20,15 @@
    "source": "reversing/FINDINGS-effecttext.md"
   },
   {
+   "rva": "0x1BD0",
+   "kind": "function",
+   "name": "std::string::assignString",
+   "signature": "Hoi3CString* __thiscall assignString(Hoi3CString* this, Hoi3CString* text, unsigned int from, unsigned int count) @EAX",
+   "comment": "**Replaces** this string with part of another - the same three arguments and the same bounds check as `appendString` (`0x33E30`), and the pair are easy to mistake for each other. **5489 call sites.** The requirement renderer uses this one to hand its finished text back through the out parameter.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x2410",
    "kind": "function",
    "name": "LogRecord::Make",
@@ -360,6 +369,24 @@
    "comment": "Call to RecordCombat from the combat manager's own code.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:227"
+  },
+  {
+   "rva": "0x33B40",
+   "kind": "function",
+   "name": "std::string::appendChars",
+   "signature": "Hoi3CString* __thiscall appendChars(Hoi3CString* this, const char* text, unsigned int length) @EAX",
+   "comment": "Adds \\p length characters to the end of a string, growing it. **358 call sites.** The name is BiceLib's: this is one of `append`'s overloads and the game keeps no name for it. Distinguished from `assign` by what it reads first - the *target's* capacity at `this+0x14`, to see whether what is there already fits beside the new text. Confirmed by use: the requirement renderer appends an indent, then the icon through this, then the line, and the indent survives.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x33E30",
+   "kind": "function",
+   "name": "std::string::appendString",
+   "signature": "Hoi3CString* __thiscall appendString(Hoi3CString* this, Hoi3CString* text, unsigned int from, unsigned int count) @EAX",
+   "comment": "Adds part of another string to the end of this one; `from 0, count -1` is the whole of it, which is how every caller uses it. **1072 call sites.** Opens by checking `from` against the source's length at `text+0x10` and throwing `invalid string position` when it is past the end, which is what identifies the three arguments.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x34140",
@@ -4821,6 +4848,72 @@
    "source": "reversing/FINDINGS-script.md"
   },
   {
+   "rva": "0x5D03F0",
+   "kind": "function",
+   "name": "CTrigger::GetBlockText",
+   "signature": "Hoi3CString* __thiscall CTrigger::GetBlockText(CTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
+   "comment": "**Slot 9, and the whole of how a requirement tooltip is drawn.** One line per child:\n\n    indent(depth) + icon + the child's content\n\nwhere the icon is `(\u00a7R*\u00a7W)` or `(\u00a7G*\u00a7W)` by comparing the child's `Evaluate` against **`redWhen`** - the result that counts as unmet, 0 normally and 1 inside a `not`. The parent indents the line, icon and all.\n\nThis base walks the children and calls each child's **GetText** (slot 8) for its one line; a child that is itself a block answers empty there, and the walk falls back to the child's own slot 9. A trigger with no children answers the empty string, which is what makes that fallback work.\n\n**Three BiceLib patches land in its `and` and `or` overrides** - see Hooks/EffectText/TriggerIndentText.hpp.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5D1300",
+   "kind": "function",
+   "name": "CNotTrigger::GetBlockText",
+   "signature": "Hoi3CString* __thiscall CNotTrigger::GetBlockText(CNotTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
+   "comment": "**`not` renders by flipping the polarity and standing aside**: `cmp byte [ebp+0x10], 0 / sete dl` turns `redWhen` into its opposite and hands the same call to `CTrigger::GetBlockText`. So everything under a `not` is drawn green when it is false. That is what proves the third argument is the polarity and not, say, a count.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5D0753",
+   "kind": "instruction",
+   "name": "AndBlockNoHeaderAtTop",
+   "comment": "**An `and` at depth 0 draws no header.** `jne` past this and it renders `AND_TRIGGER_STARTS` and its children; fall through and it hands the whole call to `CTrigger::GetBlockText` instead. That is why a technology's `allow`, which is an implicit `and` at the top, lists its conditions without an `All of the below:` above them.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5D0E03",
+   "kind": "instruction",
+   "name": "OrBlockOwnIconAtTop",
+   "comment": "**An `or` draws an icon for its own header only at depth 0**, where nothing above it has drawn one; `jne` skips it at any other depth. The test reads the same register the header's indent loop counts down, which is why BiceLib's indent patch has to disable that loop rather than zero the register - zeroing it made every nested `or` draw a second asterisk.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5D07A9",
+   "kind": "instruction",
+   "name": "AndHeaderIndentLoop",
+   "comment": "The `jle` past an `and` header's own indent loop. **A BiceLib patch site**: one byte to `jmp`, because the parent has already indented this line and the header indenting itself again is what pushed the text right of its icon.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5D0D9B",
+   "kind": "instruction",
+   "name": "OrHeaderIndentLoop",
+   "comment": "The same for `or`. **A BiceLib patch site**, one byte to `jmp`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5D0B6E",
+   "kind": "instruction",
+   "name": "AndPerChildIndent",
+   "comment": "Where an `and` reads its depth as the number of indents to put before each child's line. **A BiceLib patch site**: it wants `depth + 1`, since the children sit *inside* the block, and using the block's own depth left every condition level with its header.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5D1127",
+   "kind": "instruction",
+   "name": "OrPerChildIndent",
+   "comment": "The same for `or`. **A BiceLib patch site.**",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x5DDE50",
    "kind": "function",
    "name": "CRelationTrigger::LoadKey",
@@ -5423,6 +5516,15 @@
    "source": "reversing/FINDINGS-effecttext.md"
   },
   {
+   "rva": "0x79602F",
+   "kind": "function",
+   "name": "operator_new",
+   "signature": "void* __cdecl operator_new(unsigned int size)",
+   "comment": "**`operator new`, and so every allocation the game's own code makes.** Ghidra calls it `FUN_00b9602f`, and it is the function behind a `push <size>` / `call` pair - `push 0xB0` before a log record, `push 0x57C` before a country database. The size is the object's, which makes a call site worth reading: it is how big the thing about to be built is.\n\nThe standard MSVC body, a retry loop: call `malloc` (`0x796CC3`); on success return it; on failure call `_callnewh` (`0x79F4F7`) to give the new handler a chance to free something and try again; when the handler answers 0, **throw `std::bad_alloc`** - its vftable is `0x119FCE8` - through `_CxxThrowException` (`0x79894B`). So it never returns null.\n\nThe `mov edi, edi` it opens with is the two byte hot patch pad, which is why the body starts at `+2`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-allocator.md"
+  },
+  {
    "rva": "0x7961D5",
    "kind": "function",
    "name": "_purecall",
@@ -5430,6 +5532,33 @@
    "comment": "The CRT stub a class's own vftable holds for a method it leaves pure virtual - COrder's slot 16, the order type id, among many. It calls the installed _purecall_handler if there is one and otherwise ends the process through _amsg_exit(_RT_PUREVIRT), the R6025 \"pure virtual function call\" message, so reaching it is fatal. Nothing reaches it in a working game: every concrete class fills the slot. Three Lua registrations resolve here - CCommand::IsValid, CDiplomaticAction::IsValid and CDiplomaticAction::GetAIAcceptance - because those methods are pure virtual in the class that declares them; the findings used to name this address after them (Shared_GetAIAcceptance_IsValid) and no longer do.",
    "confidence": "confirmed",
    "source": "reversing/CLASSES.md:347"
+  },
+  {
+   "rva": "0x796CC3",
+   "kind": "function",
+   "name": "malloc",
+   "signature": "void* __cdecl malloc(unsigned int size)",
+   "comment": "The CRT's `malloc`, and the only thing `operator_new` calls to get memory. Rejects a size above `_HEAP_MAXREQ` (`cmp ebx, -0x20`, so anything over `0xFFFFFFE0`), rounds a zero request up to one byte, and hands the rest to **`HeapAlloc(_crtheap, 0, size)`** - the heap handle is the global at `0x134D240`, created on first use. Answers 0 when the heap does; `operator_new` is what turns that into a throw.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-allocator.md"
+  },
+  {
+   "rva": "0x79F4F7",
+   "kind": "function",
+   "name": "_callnewh",
+   "signature": "int __cdecl _callnewh(unsigned int size)",
+   "comment": "Calls the installed **new handler** and says whether to try allocating again: 1 when the handler ran and returned non-zero, 0 otherwise. The handler is kept encoded at `0x134CC04` and put back with `DecodePointer`, so it cannot be read straight out of memory. The game installs none that has been found, which means the first failed allocation throws.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-allocator.md"
+  },
+  {
+   "rva": "0x79894B",
+   "kind": "function",
+   "name": "_CxxThrowException",
+   "signature": "void __stdcall _CxxThrowException(void* object, void* throwInfo)",
+   "comment": "The CRT's throw. Takes the exception object by address and a `_ThrowInfo` describing its type, and does not return - every caller has an `int3` after it. Reached from `operator_new` with a `std::bad_alloc`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-allocator.md"
   },
   {
    "rva": "0x7F9B90",
@@ -5468,6 +5597,14 @@
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44",
    "type": "int"
+  },
+  {
+   "rva": "0x119FCE8",
+   "kind": "vftable",
+   "name": "vftable",
+   "comment": "`std::bad_alloc`, thrown by `operator_new` when the heap is out and the new handler cannot help. Named from its own RTTI.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-allocator.md"
   },
   {
    "rva": "0x11B68C0",
@@ -6138,6 +6275,15 @@
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-autosave.md:76",
    "type": "int[12]"
+  },
+  {
+   "rva": "0x134D240",
+   "kind": "global",
+   "name": "g_crtheap",
+   "type": "void*",
+   "comment": "The process heap `malloc` allocates from, as `HeapAlloc`'s first argument. Zero until the first allocation, which creates it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-allocator.md"
   },
   {
    "rva": "0x134DA8C",
@@ -8412,6 +8558,35 @@
      "source": "BiceLib/Hooks/HookedPatches.cpp:90"
     }
    ]
+  },
+  {
+   "name": "CTrigger",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "children_first",
+     "type": "void*",
+     "comment": "First node of the trigger's **child list** - RTTI gives CTrigger a `CList` base at object offset 8, and CAndTrigger's Evaluate walks exactly this: `mov esi, [ecx+8]`, then `[esi]` for the child and `[esi+8]` for the next. A leaf trigger leaves it null.",
+     "source": "reversing/FINDINGS-script.md"
+    },
+    {
+     "offset": "0xC",
+     "name": "children_last",
+     "type": "void*",
+     "comment": "Last node of the child list.",
+     "source": "reversing/FINDINGS-script.md"
+    },
+    {
+     "offset": "0x10",
+     "name": "children_count",
+     "type": "int",
+     "comment": "How many children. CTrigger::LoadKey writes 0x8, 0xC and 0x10 together, which is the CList shape.",
+     "source": "reversing/FINDINGS-script.md"
+    }
+   ],
+   "vftable_rva": "0x11C34DC",
+   "size": "0x40",
+   "comment": "**One condition in the event script language, and the base of all 163 of them.** Its virtual table is the thing worth having: slot 6 is Evaluate.\n\nThe size is read from its heirs rather than from an allocation: of the 163 triggers, **129 read `this+0x40`** inside their own Evaluate, and the ones that do are reading their own value there - CAlwaysTrigger's whole Evaluate is `mov al, [ecx+0x40]; ret 4`, and CTagTrigger takes a tag pair from 0x40 and 0x44. So a derived trigger's own data starts at 0x40 and CTrigger is that big."
   },
   {
    "name": "CSubUnit",
@@ -14319,6 +14494,7 @@
     "signature": "bool __thiscall IsValid(CTechnologyFolder* this)"
    }
   },
+  "CTrigger": {"6": {"name": "Evaluate", "signature": "bool __thiscall Evaluate(CTrigger* this, CEventScope* scope)"}, "8": {"name": "GetText", "signature": "Hoi3CString* __thiscall GetText(CTrigger* this, Hoi3CString* out, CEventScope* scope, int unknown1, int unknown2)"}, "10": {"name": "WalkChildren", "signature": "void __thiscall WalkChildren(CTrigger* this, CEventScope* scope, int* unknown, int* passed, int* total)"}, "11": {"name": "CountEvaluation", "signature": "void __thiscall CountEvaluation(CTrigger* this, CEventScope* scope, int* passed, int* total)"}, "9": {"name": "GetBlockText", "signature": "Hoi3CString* __thiscall GetBlockText(CTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)"}},
   "CPersistent": {
    "1": {
     "name": "Save",

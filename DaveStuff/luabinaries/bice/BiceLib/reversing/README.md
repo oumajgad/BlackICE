@@ -256,6 +256,12 @@ running game*.
 **What is left is the meaning of a field**, and `PROGRESS.md` says which classes are
 worth it by how many of them are live.
 
+**`FINDINGS-allocator.md`** covers `operator new` and what a call site gives away: the
+size of the object is pushed right before the call, at 11,247 places. It also says why
+the obvious way to turn those sizes into class names produces confident nonsense, and
+carries the capstone trap - `X86_OP_IMM` is 2, and writing `1` asks for a register and
+fails silently - that cost two attempts at exactly that.
+
 
 **The save classes are done.** Every class that writes a savegame and was worth reading has
 been read: CCountry, CProvince, CCombat, CBuilding, CGameState, CUnit, CAIStrategy, CSubUnit

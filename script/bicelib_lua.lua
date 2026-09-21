@@ -64,6 +64,12 @@ if mod then
     -- Replaces the bare file path load_oob shows with what the file would do: the
     -- units and where they appear, and which leaders it takes from where.
     BiceLib.EffectTexts.activateLoadOobDetails()
+
+    -- Requirement tooltips
+    -- The game indents a requirement tree three spaces per level, but `and` and
+    -- `or` pass a constant for their children instead of their own depth plus one,
+    -- so a condition inside either is drawn flush left. This fixes both.
+    BiceLib.EffectTexts.activateTriggerIndent()
 end
 
 function HasLoadedBiceLibSuccessfully()
