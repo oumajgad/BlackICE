@@ -14,6 +14,19 @@
  * there and then - so the file is read off disk the same way the game will read it. See
  * GameState/OobFile.hpp.
  *
+ * ## Holding Alt shows the whole thing
+ *
+ * Long lists are cut - four places and ten leaders - because that covers all but the
+ * largest orders of battle and a tooltip has to fit on the screen. **Holding either Alt
+ * lifts both limits**, and a tooltip that left anything out says so on its last line.
+ * The line only appears when something really was cut, so a tooltip that already fits
+ * does not advertise a key that would change nothing.
+ *
+ * It answers the key while the tooltip is up, because the game rebuilds one every frame
+ * the mouse is over it. The built text is kept for a second to save re-reading the file,
+ * and **Alt is part of what that text is of** - keyed on the path alone, the key would
+ * look broken for up to a second at a time.
+ *
  * **A leader whose rank is below the job gets a red line.** The rule is the order of
  * battle's own levels - a division is a major general's, a corps a lieutenant general's,
  * and everything above a corps a general's - and it is David's choice, made against the

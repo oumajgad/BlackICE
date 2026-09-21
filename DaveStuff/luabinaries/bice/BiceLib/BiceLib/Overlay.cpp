@@ -131,6 +131,27 @@ namespace {
     }
 
     LRESULT CALLBACK hookedWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+        // **Alt must not open the window menu.**
+        //
+        // Tapping Alt makes DefWindowProc send `WM_SYSCOMMAND` with `SC_KEYMENU`, and
+        // Windows then runs its own modal loop for the menu - even on a window that has
+        // no menu at all. While that loop owns the thread the game does not pump its
+        // own messages: it stops drawing, whatever tooltip is under the mouse never
+        // gets another update and so stays on screen, and it takes a click somewhere to
+        // break out. That is exactly what holding Alt over a `load_oob` tooltip looked
+        // like, down to needing the click - and none of it is the tooltip's doing. If
+        // the freeze ever comes back, the thing to check first is whether Alt alone,
+        // with nothing hovered, does it too: if it does this message is reaching
+        // DefWindowProc again, and if it does not the cause is something else.
+        //
+        // Swallowing the command stops the loop ever starting. It costs the window menu
+        // on Alt and on Alt+Space, which a fullscreen game has no use for.
+        // **Alt+F4 and Alt+Enter are different commands** - `SC_CLOSE` and the driver's
+        // own handling - and both still work.
+        if (msg == WM_SYSCOMMAND && (wParam & 0xFFF0) == SC_KEYMENU) {
+            return 0;
+        }
+
         if (msg == WM_KEYDOWN) {
             if (capturingKey) {
                 // Swallowed either way, so the game does not act on the key that was

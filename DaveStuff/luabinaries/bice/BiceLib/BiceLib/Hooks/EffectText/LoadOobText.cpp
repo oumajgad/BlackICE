@@ -37,6 +37,9 @@ namespace {
     // largest starting orders of battle: 97.5% of the mod's `history/units` files
     // assign six or fewer, and the handful above ten are the whole-country ones -
     // FRA_1936 has 150 - which no event loads.
+    //
+    // **Holding Alt lifts both**, so the few files that do go over can still be read
+    // in full. See altHeld.
     const int LEADERS_SHOWN = 10;
     const int PLACES_SHOWN = 4;
 
@@ -93,11 +96,33 @@ namespace {
         return "\xA7R" + where + "\xA7W";
     }
 
-    /**@brief the provinces the file's units appear in, as one line*/
-    std::string placesLine(const OobFile::Summary& file) {
+    /**
+    @brief whether either Alt is down right now
+
+    `GetAsyncKeyState` rather than anything the game keeps, because this runs on
+    whichever thread is drawing the tooltip and has no business reading the game's input
+    state. `VK_MENU` is both Alt keys. The high bit is "down now"; the low bit is "was
+    pressed since last asked" and is deliberately not used - it would latch a tap that
+    happened while the mouse was somewhere else entirely.
+
+    It is read afresh for every rebuild, so the tooltip answers the key while it is up.
+    */
+    bool altHeld() {
+        return (GetAsyncKeyState(VK_MENU) & 0x8000) != 0;
+    }
+
+    /**
+    @brief the provinces the file's units appear in, as one line
+
+    @param showAll  every place rather than the first few
+    @param hidAny   set when something was left out, cleared never - the caller passes
+                    one flag through the whole description so the hint is offered once
+    */
+    std::string placesLine(const OobFile::Summary& file, bool showAll, bool& hidAny) {
         std::string places;
         char one[128] = {};
-        for (size_t i = 0; i < file.places.size() && i < PLACES_SHOWN; i++) {
+        const size_t limit = showAll ? file.places.size() : PLACES_SHOWN;
+        for (size_t i = 0; i < file.places.size() && i < limit; i++) {
             const OobFile::Place& place = file.places[i];
             const std::string name = place.name.empty()
                 ? std::to_string(place.provinceId) : place.name;
@@ -111,10 +136,11 @@ namespace {
             }
             places += one;
         }
-        if (file.places.size() > PLACES_SHOWN) {
+        if (file.places.size() > limit) {
             _snprintf_s(one, sizeof(one), _TRUNCATE, " and %d more",
-                static_cast<int>(file.places.size()) - PLACES_SHOWN);
+                static_cast<int>(file.places.size() - limit));
             places += one;
+            hidAny = true;
         }
         return places;
     }
@@ -162,8 +188,14 @@ namespace {
         return byId;
     }
 
-    /**@brief the leaders the file takes, and what each of them leaves behind*/
-    std::string leadersPart(const OobFile::Summary& file, uintptr_t scope) {
+    /**
+    @brief the leaders the file takes, and what each of them leaves behind
+
+    @param showAll  every leader rather than the first ten
+    @param hidAny   set when some were left out
+    */
+    std::string leadersPart(const OobFile::Summary& file, uintptr_t scope,
+        bool showAll, bool& hidAny) {
         if (file.leaders.empty()) {
             return "";
         }
@@ -177,10 +209,11 @@ namespace {
 
         int shown = 0;
         for (const OobFile::Assignment& assignment : file.leaders) {
-            if (shown >= LEADERS_SHOWN) {
+            if (!showAll && shown >= LEADERS_SHOWN) {
                 _snprintf_s(line, sizeof(line), _TRUNCATE, "\n  and %d more",
                     static_cast<int>(file.leaders.size()) - shown);
                 text += line;
+                hidAny = true;
                 break;
             }
             shown++;
@@ -223,18 +256,20 @@ namespace {
 
     @param path the file, as the effect carries it
     @param scope what the option is being shown for, which says whose leaders to look at
+    @param showAll every place and every leader, however many there are
     */
-    std::string describe(const char* path, uintptr_t scope) {
+    std::string describe(const char* path, uintptr_t scope, bool showAll) {
         const OobFile::Summary& file = OobFile::of(path);
         std::string text = path;
         if (!file.found) {
             return text + "\n\xA7RNot in the mod or the game.\xA7W";
         }
 
+        bool hidAny = false;
         char line[512] = {};
         if (file.units > 0) {
             _snprintf_s(line, sizeof(line), _TRUNCATE, "\n\xA7Y%d\xA7W units in %s",
-                file.units, placesLine(file).c_str());
+                file.units, placesLine(file, showAll, hidAny).c_str());
             text += line;
         }
         const std::string made = madeOfLine(file);
@@ -246,7 +281,18 @@ namespace {
                 "\n\xA7Y%d\xA7W added to production", file.constructions);
             text += line;
         }
-        return text + leadersPart(file, scope);
+        text += leadersPart(file, scope, showAll, hidAny);
+
+        // Only when something was actually left out: a tooltip that fits should not
+        // spend a line telling the player about a key that would change nothing.
+        //
+        // It ends with a newline of its own. An option can carry more than one
+        // `load_oob`, and the game runs their texts straight together - so without it
+        // the next file's path starts on the end of this line.
+        if (hidAny) {
+            text += "\n\xA7Ghold Alt for the rest\xA7W\n";
+        }
+        return text;
     }
 
     /**
@@ -255,6 +301,11 @@ namespace {
     Kept for a moment because a tooltip is rebuilt on every frame the mouse is over it,
     and this reads a file and walks a country's leaders. A second is short enough that a
     reassignment made while the tooltip is up still shows.
+
+    **Alt is part of what the kept text is of.** Keeping it on the path alone would make
+    the key look broken for up to a second - the player holds Alt, the tooltip carries on
+    showing the short version, and by the time it changes they have let go. It costs one
+    extra rebuild each time the key changes and nothing at all otherwise.
 
     @param out the string the effect shows, already built and holding the path
     @param scope what the option is being shown for
@@ -273,10 +324,14 @@ namespace {
         static std::string keptFor;
         static std::string kept;
         static ULONGLONG keptAt = 0;
+        static bool keptAll = false;
+        const bool showAll = altHeld();
         const ULONGLONG now = GetTickCount64();
-        if (kept.empty() || keptFor != path || now - keptAt > 1000) {
+        if (kept.empty() || keptFor != path || keptAll != showAll
+            || now - keptAt > 1000) {
             keptFor = path;
-            kept = describe(path, scope);
+            keptAll = showAll;
+            kept = describe(path, scope, showAll);
             keptAt = now;
         }
         Game::assignTo(out, kept.c_str());
