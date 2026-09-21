@@ -20,6 +20,24 @@
    "source": "reversing/FINDINGS-effecttext.md"
   },
   {
+   "rva": "0x2410",
+   "kind": "function",
+   "name": "LogRecord::Make",
+   "signature": "LogRecord* __thiscall LogRecord::Make(LogRecord* this, const char* file@stack:4, int line@stack:8, int channel@stack:0xC)",
+   "comment": "**Builds one log record**, and first makes sure there is a sink: if `g_log_sink` (`0x17162A4`) is still null it allocates the four byte do-nothing sink whose vftable is `0x11FCEA0` and installs that, so a message logged before `InstallLogSink` is discarded rather than queued. Then tail calls the record's constructor at `0x6649D0` with the file, the sink and the line. There is **no channel test here or anywhere after it** - every record built is flushed to the sink.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x24B0",
+   "kind": "function",
+   "name": "LogRecord::Flush",
+   "signature": "void* __cdecl LogRecord::Flush(void* record@EAX)",
+   "comment": "**The destructor, and where a log line is decided.** Every message in the game arrives here in a record holding its file, line and channel, and this is what does or does not write it - `[persistent.cpp:39]`, `[countryhistory.cpp:450]` and the 597KB of setup.log all pass through it. Takes the record in eax. **The one place worth hooking to see everything the engine complains about**, including the channels that produce no file.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x24D0",
    "kind": "function",
    "name": "CCountryDataBase::CCountryDataBase",
@@ -387,6 +405,15 @@
    "comment": "The top-level blocks of `common/defines.lua`; each holds the constants of one part of the game. **The keys its switch names**, 9 of them, one case each: `alignment`, `country`, `diplomacy`, `economy`, `goods_cost`, `map`, `military`, `start_date`, `weather`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x4A610",
+   "kind": "function",
+   "name": "LogSink::WriteNothing",
+   "signature": "void __thiscall LogSink::WriteNothing(LogSink* this, int channel, Hoi3CString* file, int line, Hoi3CString* message)",
+   "comment": "Slot 1 of the **fallback** sink's vftable (`0xDFCEA0`), and it is `ret 0x10` and nothing else. That sink is the one `0x2410` makes if the global is still null, so a message logged before the real sink is installed is discarded outright rather than queued.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x4BCD0",
@@ -3600,6 +3627,14 @@
    "source": "BiceLib/GameClasses/CCountryHistory.hpp"
   },
   {
+   "rva": "0x1EE7E6",
+   "kind": "instruction",
+   "name": "UnknownCountryHistoryCommand",
+   "comment": "**`countryhistory.cpp:450`, `Unknown History Command ==>'<key>'`** on channel `0x10004`. Reached only when every handler above has failed; `0x1EE7B8` is the success path jumping over it. **It does not fire for the mod's bad technology names** - a history key that is not the loader's own is resolved as a name, and a name that is not found comes back as **index 0**, the database's null object, which the loader accepts. A whole startup on 2026-09-20 produced this line zero times where `bugs.md` bug 9 alone predicted 219.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x1F2810",
    "kind": "function",
    "name": "CDiplomaticHistory::LoadKey",
@@ -3607,6 +3642,14 @@
    "comment": "No keys of its own in the switch; what it does with a key instead has not been read.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1F2AD6",
+   "kind": "instruction",
+   "name": "UnknownDiplomaticHistoryCommand",
+   "comment": "**`diplomatichistory.cpp:196`**, the same message for a diplomacy entry, on channel `0x10004`, finished with `'<==  for diplomacy: `. The key `0x294` is allowed through without complaint at `0x1F2AA1`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x1F2F30",
@@ -3661,6 +3704,14 @@
    "comment": "Slot 9: one key of a province's history. **It names eighteen** - `owner`, `controller`, `manpower`, `add_core`, `remove_core`, `terrain`, `leadership`, `points`, `supplies`, `money`, `fuel`, `revolt`, `revolt_risk`, `strategic_resource` and the four resources `energy`, `metal`, `rare_materials` and `crude_oil` - and everything else is a building. **That is the whole grammar**: of the mod's own province files, 50174 uses are one of the eighteen, 17330 a building, and the fifteen lines left over are misspellings, listed in the mod's bugs.md.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountryHistory.hpp"
+  },
+  {
+   "rva": "0x1FDCFE",
+   "kind": "instruction",
+   "name": "UnknownProvinceHistoryCommand",
+   "comment": "**`provincehistory.cpp:259`**, the same message for a province history, on channel `0x10004`. Never fires for the misspelled buildings in `bugs.md` bug 8, which resolve as a building name and come back as the null building at index 0.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x1FFE50",
@@ -3724,6 +3775,15 @@
    "comment": "Virtual getter at vtable offset 0x164: mov eax,[ecx+0xD34]; ret.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-mapmode.md:235"
+  },
+  {
+   "rva": "0x2464E0",
+   "kind": "function",
+   "name": "LogRecord::LogRecord",
+   "signature": "void* __cdecl LogRecord::LogRecord(void* record, void* sink, const char* file, int line, int channel)",
+   "comment": "Builds the object one log line is assembled in: the sink at `+0x50`, the source file as an Hoi3CString at `+0x54`, the **line at `+0x70`** and the **channel at `+0x74`**, with the message accumulated into the stream part by `operator<<`. `ret 0x14`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x2465D0",
@@ -4986,6 +5046,14 @@
    "source": "BiceLib/GameClasses/CWar.hpp:39"
   },
   {
+   "rva": "0x658D7F",
+   "kind": "instruction",
+   "name": "InstallLogSink",
+   "comment": "Where the real log sink is put into `g_log_sink`, in the logging setup that `main.cpp` runs. Everything logged before this point goes to the do-nothing fallback.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x65B0D0",
    "kind": "function",
    "name": "TextBuilder::Append",
@@ -5107,7 +5175,7 @@
    "kind": "function",
    "name": "ReportUnknownKey",
    "signature": "void __cdecl ReportUnknownKey(CParseContext* parse@EDI)",
-   "comment": "**It does not log.** Every loader calls this for a key it has no case for, and all it does is build the text `\"Unexpected\"` plus the key, and **append it to the list at `CParseContext +4`** - first at +4, last at +8, count at +0xC, nodes linked through +0x40. Whether anything is ever written depends on somebody asking that list for its contents, and for the `common/`, `units/`, `history/`, `events/` and `decisions/` loaders **nobody does**: the parse context's destructor frees the nodes and the messages die with it. See CParseContext::MessagesAsText and CParseContext::ReportMessages.",
+   "comment": "**The fallback for a loader with nothing else to try, and it does not log.** It builds the text `\"Unexpected\"` plus the key and appends it to the list at `CParseContext +4`; for a `common/` file nothing ever reads that list and the parse context's destructor frees it. **55 callers** - and a loader that resolves keys as names does not come here at all: CCountryHistory tries four databases and ends at its own `countryhistory.cpp:450`, `Unknown History Command`, which is why hooking this was not enough to see a mod's mistakes. LogSink::Write is where they all meet.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
   },
@@ -5335,6 +5403,15 @@
    "comment": "**Empties the string at the start of every record in a range**, walking `[first, last)` in steps of **0x20** and giving each string's buffer back where it had one - `if (capacity >= 0x10) free(data)`, then capacity 0xF, length 0, first byte 0. Both ends arrive in registers, first in eax and last in edi. `ret`.\n\nIt is a destructor loop the compiler wrote once and **1552 call sites share**: every record type of 0x20 bytes that begins with a string folds onto this one body, which is why its callers have nothing to do with each other. The stride is baked in, so it is only correct for that shape.\n\nBiceLib meets it tearing a text object down: after ReleaseTextReplacements has destroyed the object each replacement points at, this empties the name each one carries, and the caller frees the block. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
+  },
+  {
+   "rva": "0x7082C0",
+   "kind": "function",
+   "name": "LogSink::Write",
+   "signature": "void __thiscall LogSink::Write(LogSink* this, int channel, Hoi3CString* file, int line, Hoi3CString* message)",
+   "comment": "**Where every message in the game arrives.** The record's destructor pulls the four apart and calls this through the sink's vftable slot 1. It opens with a filter of its own - `call 0x40C3C0` on a global at `0x16052F0`, taking the message and dropping it when that answers true - and only then picks a file by channel. **Measured, 2026-09-20**, by catching a whole startup: `3` writes to `system.log`, `0x10000` to `setup.log`, `0x10002` to `game.log`, `0x10006` to `time.log`, and every channel the run produced reached a file. `0x10004`, which carries the three `Unknown History Command` sites, was never produced at all. **Hooked once, on 2026-09-20**, with a five byte jump over the prologue (`55 8B EC 6A FF`) - ahead of the filter, so every message built was seen. That capture matched `setup.log` and `game.log` line for line, which is how the filter was shown to drop nothing, and the hook was then removed as redundant. `ret 0x10`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x795F9B",
@@ -6203,6 +6280,14 @@
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CPersistent.hpp:143",
    "type": "CToken[2138]"
+  },
+  {
+   "rva": "0x17162A4",
+   "kind": "global",
+   "name": "g_log_sink",
+   "comment": "The log sink every message goes through, installed during startup from `main.cpp` at `0x658D7F`. Null until then, and `0x2410` fills it with a do-nothing sink if anything logs first.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x17165B4",

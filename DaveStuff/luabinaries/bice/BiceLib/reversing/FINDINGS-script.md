@@ -125,9 +125,116 @@ The per-class lines that *do* appear - `[minister.cpp:186]`, `[building.cpp:429]
 `[traits.cpp:358]` and the rest of what fills `setup.log` - are each loader's own logging,
 nothing to do with this path.
 
-**BiceLib could hook `0x67A7B0`** and write what the game throws away. That would turn
-every entry in the mod's `bugs.md` into something the game reports by itself, with the
-file and line it came from.
+### Where a message really lives or dies
+
+`ReportUnknownKey` is not the only way a key is dropped, and hooking it is not enough to
+see a mod's mistakes. **A loader that resolves a key as a name has its own failure path**:
+an unknown key in a country file goes through four database lookups and ends at
+`countryhistory.cpp:450`, `Unknown History Command ==>'<key>'`.
+
+Every message in the game, that one included, is built into a **log record** - the sink at
+`+0x50`, the source file at `+0x54`, the line at `+0x70`, the channel at `+0x74` - and
+flushed by its destructor:
+
+```
+LogRecord::LogRecord   0x2464E0   builds the record with file, line and channel
+LogRecord::Flush       0x24B0     the destructor, which hands it on
+LogSink::Write         0x7082C0   sink->vftable[1](channel, file, line, message)
+g_log_sink             0x17162A4  the sink, installed from main.cpp at 0x658D7F
+```
+
+**`LogSink::Write` is where they all meet**, with the four already pulled apart, and it is
+the channel that decides whether a file is written. `eu3application.cpp` on `0x10000`
+reaches `setup.log`. The fallback sink's writer, used before the real one is installed,
+is `ret 0x10` and nothing else.
+
+#### What hooking it answered, and why the hook is gone
+
+On 2026-09-20 BiceLib hooked `0x7082C0` and copied a whole startup out - **20,098
+messages**, from `eu3application.cpp:274  App Init` to `frontend.cpp:583  done frontend`.
+The hook has since been **removed**, because what it measured is that it was redundant.
+Everything below is what that run established; the code is in git history if it is ever
+wanted back.
+
+**The capture was exactly the game's own output, message for message.** Counting the same
+run both ways:
+
+| | hook | game's file |
+| --- | --- | --- |
+| `0x10000` / `setup.log` | 6529 | **6529** |
+| `0x10002` / `game.log` | 3308 | **3308** |
+| `3` / `system.log` | 158 | 199 (41 before the hook) |
+| `0x10006` / `time.log` | 44 | 48 (4 before the hook) |
+
+The two that begin after `autoexec.lua` match **exactly**, which settles the last open
+question about the sink: **the filter it opens with drops nothing**. The hook added no
+message the game's own four logs lack.
+
+**45 lines preceded it** - 41 on `system.log` (`systemsettings.cpp`, `main.cpp:504/532/592`,
+the first `graphicssettings.cpp`) and 4 on `time.log` (`main.cpp:519/522/523/589` -
+text.csv, files, blob). A hook installed from `autoexec.lua` cannot reach them, and that
+is the one thing it could not fix. **Catching those needs to be in the process before the
+game is**, which is what a `dinput8.dll` shim would give; that is the route to take if
+this is picked up again.
+
+**The channel-to-file mapping, all four that fire**, each confirmed by finding one of its
+messages in the file:
+
+| channel | file | e.g. |
+| --- | --- | --- |
+| `3` | `system.log` | `eu3application.cpp:274  App Init` |
+| `0x10000` | `setup.log` | `modifier.cpp:575  StaticModifier #120 tag = ...` |
+| `0x10002` | `game.log` | `trigger.cpp:365  Fixed trigger dependency for ...` |
+| `0x10006` | `time.log` | `eu3application.cpp:775  Initialising Graphical Map <3.48>` |
+
+**Every channel produced reaches a file.** Nothing was being dropped in silence, so the
+premise that a hook would reveal hidden messages was wrong - it revealed that there are
+none. That, plus the exact line counts above, is why the hook was not kept: it cost a
+flush per line and ~900 KB a run to reproduce four files the game already writes.
+
+**`countryhistory.cpp:450` never fired**, and that is the finding. The site is real:
+
+```
+005ee7e6  push 0x10004          ; the channel
+005ee7eb  push 0x1c2            ; line 450
+005ee7f0  push <countryhistory.cpp>
+005ee7fd  call 0x402410         ; build the record
+```
+
+with the same shape at `provincehistory.cpp:259` and `diplomatichistory.cpp:196`, all
+three on channel `0x10004` - the one channel seen in the code and never in the log. Bug 9
+in `bugs.md` would have fired the country one **219 times**.
+
+It fired none because **those keys are not unknown to the engine**. Just above the log
+block sits `005ee7b8  jmp 0x5ee8ad`, the success path jumping clean over it. A history key
+that is not one of the loader's own is resolved as a *name*, and **a name that is not
+found comes back as index 0** - a real index, holding that database's null object. The
+loader is handed an object, takes the success branch, and never reaches the error. This is
+the same null-at-index-0 that makes every name database 1-based.
+
+So an unknown *key* would be logged; a key that is a **bad name** is not an error at all.
+The mod's bugs are all the second kind, which is why no log has ever shown them and no log
+setting ever will. Static analysis is the only way to find them.
+
+**The dispatch itself is unconditional**, which is what makes that reasoning sound - a
+message that was built could not have been missed. The record's destructor at `0xa6484f`
+does
+
+```
+mov ecx, [edi - 0x28]   ; the sink
+mov eax, [ecx]          ; its vftable
+mov eax, [eax + 4]      ; slot 1
+... push message, line, file, channel
+call eax
+```
+
+with no test of any kind, and the hook sat on the writer's own prologue - ahead even of
+the filter `LogSink::Write` opens with (`call 0x40C3C0` on a global at `0x16052F0`, which
+drops the message when it answers true). So if a message was built, the hook saw it.
+
+**One thing is still unknown**, and it no longer matters much: whether `0x10004` reaches
+`error.log`. It is the only channel with no observed message. `error.log` is 0 bytes,
+which is consistent either way.
 
 Two classes turn out to have no grammar worth the name. **`CColor::LoadKey` is a single
 tail call to `ReportUnknownKey`** - a colour is three numbers read positionally, and that

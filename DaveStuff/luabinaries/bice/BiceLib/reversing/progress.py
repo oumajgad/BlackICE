@@ -182,6 +182,7 @@ def collect():
 
     functions = collections.Counter()
     loadersRead = set()
+    placed = placements()
     for entry in project["addresses"]:
         name = entry.get("name") or ""
         if entry.get("kind") == "function" and "::" in name:
@@ -245,6 +246,7 @@ def collect():
             "grammar": grammar,
             "header": headers.get(name),
             "loader_read": name in loadersRead,
+            "placed": placed.get(loader, (0, 0)),
             "live": census.get(name, 0),
         })
     rows.sort(key=lambda r: r["name"])
@@ -260,6 +262,29 @@ def collect():
 # column of its own instead.
 ENOUGH = 5
 
+FIELDMAP = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                        "FINDINGS-fieldmap.md")
+
+
+def placements():
+    """loader rva -> (keys placed, keys in all), from what fieldmap.py last wrote.
+
+    Read out of the generated document rather than recomputed, because walking every
+    case body of every loader takes minutes and this runs often. It means PROGRESS.md
+    is only as current as the last `fieldmap.py --all`; when the file is missing
+    nothing is claimed.
+    """
+    try:
+        with io.open(FIELDMAP, encoding="utf-8") as f:
+            text = f.read()
+    except IOError:
+        return {}
+    out = {}
+    for rva, placed, total in re.findall(
+            r"`LoadKey` at `0x([0-9a-f]+)`, \*\*(\d+) of (\d+) keys placed\*\*", text):
+        out[int(rva, 16)] = (int(placed), int(total))
+    return out
+
 
 def status(row):
     """The marks CLASSES.md already uses, so the two documents say the same thing."""
@@ -270,6 +295,20 @@ def status(row):
     # contain and nothing at all about where any of it lands in the object. That deserves
     # its own mark rather than being folded into `read`, which would claim 274 classes
     # were understood when a dozen of them have not one named field.
+    #
+    # `placed` sits between the two: fieldmap.py has read the **offset** each key is
+    # stored to out of its case body, so the object's shape is known even though no
+    # field has been named or checked by hand. It is worth more than `keys` and much
+    # less than `read` - an offset is not a meaning, and of the four checked against a
+    # live game one needed a savegame before it made any sense at all.
+    #
+    # **It goes to the loader's owner only, exactly as `keys` does.** A class that
+    # merely inherits the loader does get those offsets, but it has fields of its own
+    # that nothing here has touched, so marking it would say more than was measured.
+    # Counting inheritors put this at 493 classes against 38 `read`, which is the same
+    # flattery that once had `read` claiming 274.
+    if row["loader_read"] and row["placed"][0]:
+        return "placed"
     if row["loader_read"]:
         return "keys"
     if row["mine"]:
@@ -280,8 +319,8 @@ def status(row):
 
 
 def table(rows, withNote=True):
-    out = ["| class | derives from | size | fields | fn | doc | live | state | notes |",
-           "| --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
+    out = ["| class | derives from | size | fields | placed | fn | doc | live | state | notes |",
+           "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
     for row in rows:
         # What was named *for this class*, not what Ghidra ends up showing on it: a
         # derived class inherits its base's fields and counting those twice would say
@@ -291,11 +330,13 @@ def table(rows, withNote=True):
             fields = "%s%s%d lua" % (row["mine"] or "", " + " if row["mine"] else "",
                                      row["lua"])
         note = NOTES.get(row["name"], "") if withNote else ""
-        out.append("| `%s` | %s | %s | %s | %s | %s | %s | %s | %s |" % (
+        keysPlaced = "%d/%d" % row["placed"] if row["placed"][1] else ""
+        out.append("| `%s` | %s | %s | %s | %s | %s | %s | %s | %s | %s |" % (
             row["name"],
             " ".join("`%s`" % b for b in row["bases"]) or "",
             row["size"] or "",
             fields,
+            keysPlaced,
             row["functions"] or "",
             row["header"] or "",
             "{:,}".format(row["live"]) if row["live"] else "",
@@ -318,9 +359,12 @@ def write(rows, censusTaken):
         "| --- | --- |",
         "| `read` | at least %d of its fields have been named by hand - an account of the "
         "object's layout. It does **not** mean every field is known |" % ENOUGH,
+        "| `placed` | its grammar **and the offset each key is stored to**, read out of the "
+        "case bodies by fieldmap.py. The shape of the object is known; no field has been "
+        "named or checked by hand. See FINDINGS-fieldmap.md |",
         "| `keys` | **its loader's grammar is known** - every key the file or save block may "
-        "contain, out of the switch that parses them - but its fields are not. See "
-        "FINDINGS-definitions.md |",
+        "contain, out of the switch that parses them - but where any of it lands is not. "
+        "See FINDINGS-definitions.md |",
         "| `part` | one to %d fields named by hand |" % (ENOUGH - 1),
         "| `named` | only what the Lua API gave away - an accessor per field, free and certain "
         "about the offset, silent about the meaning |",
@@ -328,7 +372,10 @@ def write(rows, censusTaken):
         "",
         "`fields` is how many were named **on this class**, by hand and then by the Lua API -",
         "a derived class does not count its base's; `fn` is how many of its functions carry a name",
-        "we chose; `doc` is the header that writes the class up, where there is one. `live` is",
+        "we chose. `placed` is how many of its loader's keys fieldmap.py found an offset for, out",
+        "of how many that loader takes - it goes to the class that **owns** the loader, never to",
+        "one that merely inherits it, which has fields of its own nothing here has touched.",
+        "`doc` is the header that writes the class up, where there is one. `live` is",
         "how many objects a census found%s." % (
             " (taken %s)" % censusTaken if censusTaken
             else ", and no census has been taken, so the column is empty"),
@@ -338,7 +385,7 @@ def write(rows, censusTaken):
         "| | classes |",
         "| --- | --- |",
     ]
-    for mark in ("read", "keys", "part", "named", "RTTI"):
+    for mark in ("read", "placed", "keys", "part", "named", "RTTI"):
         lines.append("| `%s` | %d |" % (mark, counts.get(mark, 0)))
     lines += ["| **all** | **%d** |" % len(rows), ""]
 
@@ -400,6 +447,18 @@ def write(rows, censusTaken):
               "says nothing about where any of it lands in the object, and that is what the",
               "`keys` mark below means. The classes worth taking further are the ones with a",
               "big `live` count and no fields named - those are where the memory is.",
+              "",
+              "**`fieldmap.py` does the first half of that by itself**, reading the offset each",
+              "key is stored to out of its case body. That is where the `placed` mark and the",
+              "`placed` column come from, and it is why most of what used to be `keys` is now",
+              "`placed`. It is **not** the same as `read`: an offset is not a meaning. Of the",
+              "four checked against a live game, `CCountry.major` landed on exactly the seven",
+              "majors, and `CCountry.officers` looked like a pointer until it turned out HoI3",
+              "keeps such numbers as **thousandths** - 237964731 is 237964.731 officers. See",
+              "*Numbers are fixed point* in FINDINGS-fieldmap.md before doubting an offset.",
+              "",
+              "So the work a `placed` class still wants is **naming and checking**: what the",
+              "field means, what width it really is, and what a live object holds there.",
               "",
               "The method is in README.md, *How to read one*, with the traps that cost the",
               "most time.", ""]

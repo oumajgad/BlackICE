@@ -218,6 +218,45 @@ That code goes in a module of its own in the style of `BiceLib/Oob/`, reading th
 
 ## Where to look next
 
+**The loaders are done.** Every one of the game's 266 has had its grammar read out of its
+switch; they are in `FINDINGS-definitions.md`, the two big ones in `FINDINGS-script.md`,
+and `PROGRESS.md` marks them `keys`. What is left of the classes is **layout, not
+grammar** - which field a key lands in - and `PROGRESS.md` says which classes are worth it
+by how many of them are live.
+
+**The engine log is closed, and the hook that closed it has been removed.** It copied a
+whole startup out on 2026-09-20 and proved itself redundant - all four channels reach a
+file, and its capture matched `setup.log` and `game.log` line for line. It also settled
+why the mod's bad data is invisible: the engine does not consider it wrong, because a name
+it cannot find comes back as index 0, the null object. See *What hooking it answered, and
+why the hook is gone* in `FINDINGS-script.md`, and `bugs.md` at the mod root. The one gap
+it could not close - the 45 lines logged before `autoexec.lua` - wants a `dinput8.dll`
+shim rather than a hook.
+
+**Layout is now mostly generated too.** `fieldmap.py` walks each case body of a loader
+and records where it puts its value - a store like `mov [ebx + 0xb0], eax`, or a field
+address handed to a reader as `lea edi, [ebx + 0xbcc]`. That turns a grammar into a
+layout: **796 of 1503 keys placed across 210 loaders**, in `FINDINGS-fieldmap.md`.
+
+    python fieldmap.py CWarGoal      # one class
+    python fieldmap.py --all         # the lot, as markdown
+
+A store is evidence and not proof, so the ones that matter are read back out of a running
+game with `dumpStruct.py`, and against a savegame where the save has the same key.
+`CCountry.major` at `+0x15c` is set on exactly 7 of 108 countries, which is the seven
+majors; `CCountry.officers` at `+0xc4` matches the save for all ten countries checked.
+
+**Numbers are thousandths.** `officers` reads 237964731 where the save says
+`officers=238282.966`. It was written off here as garbage for an hour before anyone
+divided by 1000 - so when a field looks wrong, **check it against a savegame** before
+doubting the offset. The save is plain text and names every value. Both are in
+`FINDINGS-fieldmap.md`, *Numbers are fixed point* and *What was checked against a
+running game*.
+
+**What is left is the meaning of a field**, and `PROGRESS.md` says which classes are
+worth it by how many of them are live.
+
+
 **The save classes are done.** Every class that writes a savegame and was worth reading has
 been read: CCountry, CProvince, CCombat, CBuilding, CGameState, CUnit, CAIStrategy, CSubUnit
 with CRegiment/CShip/CWing, COrder with its six derived kinds, CRebelFaction, CWar with
