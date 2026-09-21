@@ -26,14 +26,10 @@
  *
  * ## What it does
  *
- * Below the threshold, and once only: ask the game to save, wait for it to be written,
- * say why in a message box, and close the game. The save is the game's own autosave
- * writer - `[idler+0xAB0]` is the whole of how one is asked for - so it happens on the
- * game's own thread in the game's own time, named `crashsave` through the same
- * rotation the scheduled saves use. See reversing/FINDINGS-autosave.md.
- *
- * **Measured**: three of these were written in four frames each with the largest free
- * block at 2 and 4 MB, and the save's own net cost was about 356 KB.
+ * Below the threshold, and once only: hand over to CrashSave, which asks the game to
+ * save, says why in a message box, and closes the game. This file decides *that* the
+ * game is finished; what to do about it is shared with the purecall handler, which
+ * reaches the same end by a different road.
  *
  * ## What used to be here
  *
@@ -53,15 +49,6 @@ namespace OutOfMemory {
      * with the block size down at 2 MB.
      */
     constexpr unsigned __int64 DEFAULT_TRIGGER_AT = 2u * 1024u * 1024u;
-
-    /**@brief where the crash save has got to*/
-    enum class Stage
-    {
-        Watching,   // nothing wrong yet
-        Saving,     // the save has been asked for, waiting for the game to write it
-        Done,       // written; the message is up and the game is about to be closed
-        Failed,     // it could not be asked for, or the game never wrote it
-    };
 
     /**
     @brief looked at once a frame, from the Present hook
@@ -98,24 +85,13 @@ namespace OutOfMemory {
     unsigned __int64 triggerAt();
     void setTriggerAt(unsigned __int64 bytes);
 
-    Stage stage();
-
-    /**@brief one line on what happened, for the page and the message box*/
-    const char* stageText();
-
     /**
-    @brief starts the crash save now, whatever the free space is
+    @brief asks for the crash save now, whatever the free space is
 
     The same path the threshold takes, so testing it tests the real thing - message
-    box and closing the game included.
+    box and closing the game included. What happens next is CrashSave's.
     */
     void trigger();
-
-    /**@brief free address space when the save was asked for, 0 if it has not been*/
-    unsigned __int64 freeAtTrigger();
-
-    /**@brief and when the game had finished writing it*/
-    unsigned __int64 freeAfterSave();
 
     // ---- the ballast -----------------------------------------------------------------
 

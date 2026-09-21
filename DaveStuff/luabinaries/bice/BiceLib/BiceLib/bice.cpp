@@ -33,6 +33,7 @@
 #include <Hooks/CNavyHooks.hpp>
 #include <Hooks/HookedPatches.hpp>
 #include <GameState/AutoSave.hpp>
+#include <GameState/PureCall.hpp>
 #include <Settings.hpp>
 #include <Hooks/EffectText/KillLeaderText.hpp>
 #include <Hooks/EffectText/LoadOobText.hpp>
@@ -1021,9 +1022,14 @@ DWORD WINAPI periodicsJob(void* data) {
 
 __declspec(dllexport) int enableOverlay(lua_State* L)
 {
-    // Armed before the overlay is installed, so a crash while installing it is
-    // reported too.
+    // Both of these go in before the overlay, so a crash while installing it is
+    // still caught. A pure virtual call aborts the process where it stands, so the
+    // handler has to be in place before anything that could raise one - and unlike
+    // the out of memory watch, which is a poll and lives in the frame loop, this is
+    // installed once and then works on any thread whether frames are running or not.
+    // Nothing is patched; see GameState/PureCall.hpp.
     CrashReport::install();
+    PureCall::install();
 
     bool ok = Overlay::install();
     if (!ok) {

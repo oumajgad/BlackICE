@@ -2,7 +2,9 @@
 #include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/TextureStats.hpp>
+#include <GameState/CrashSave.hpp>
 #include <GameState/OutOfMemory.hpp>
+#include <GameState/PureCall.hpp>
 #include <Settings.hpp>
 
 #include <Windows.h>
@@ -458,11 +460,37 @@ namespace {
                 "pressure it is meant for.");
         }
 
-        if (OutOfMemory::freeAtTrigger() != 0) {
-            ImGui::Text("Last attempt: %s (%s free before, %s after)",
-                OutOfMemory::stageText(),
-                formatBytes(OutOfMemory::freeAtTrigger(), scratch, sizeof(scratch)),
-                formatBytes(OutOfMemory::freeAfterSave(), other, sizeof(other)));
+        ImGui::Spacing();
+        ImGui::Text("Pure virtual call handler: %s", PureCall::status());
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("The other way the game dies where nothing can be done\n"
+                "about it: a virtual call through a slot with no\n"
+                "implementation, which the CRT answers by aborting.\n"
+                "\n"
+                "Installed into the game's own handler slot, which was\n"
+                "empty. Nothing is patched. It saves on the spot, because\n"
+                "there is no next frame to wait for.");
+        }
+        if (PureCall::installed()) {
+            ImGui::SameLine();
+            if (ImGui::SmallButton("Provoke one")) {
+                PureCall::provoke();
+            }
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Calls the game's own _purecall, which is the exact\n"
+                "address sitting in 510 of its vftable slots - so this is\n"
+                "the same call a real pure virtual would make, not an\n"
+                "imitation of one.\n"
+                "\n"
+                "It saves and closes the game. Save first.");
+        }
+
+        if (CrashSave::stage() != CrashSave::Stage::Idle) {
+            ImGui::Text("Last attempt: the game %s - %s (%s free before, %s after)",
+                CrashSave::reason(), CrashSave::stageText(),
+                formatBytes(CrashSave::roomBefore(), scratch, sizeof(scratch)),
+                formatBytes(CrashSave::roomAfter(), other, sizeof(other)));
         }
     }
 
