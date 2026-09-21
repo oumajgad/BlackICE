@@ -122,3 +122,175 @@ the five bytes in front of `E8`, which is not instruction-aligned and so invents
 sizes - `0x58245c88` and `0x6000004` came out of it. Good enough for counting, not for a
 table anybody relies on; disassemble forward from a known point to be sure, which is how
 the `0xda8` sites above were checked.
+
+## The new handler, and the two globals behind it
+
+`_callnewh` was described above as fetching the handler. Followed through, because a
+crash-save on out of memory would stand on it:
+
+```
+_callnewh                            0xB9F4F7   rva 0x79F4F7
+  8B FF 55 8B EC                     mov edi,edi; push ebp; mov ebp,esp
+  FF 35 <_pnhHeap>                   push the encoded handler      rva 0x134CC04
+  FF 15 <DecodePointer>              decode it                     rva 0x92B040
+  test eax,eax; je out
+  push [ebp+8]; call eax             the handler, cdecl, given the size
+  test eax,eax; je out
+  xor eax,eax; inc eax               nonzero: tell the caller to try again
+```
+
+**`_pnhHeap` is at rva `0x134CC04`** and **nothing installs anything in it**. It is
+written from exactly one instruction in the whole executable, `0xB9F4F0` inside the raw
+setter at **rva `0x79F4E8`**, and that setter has exactly one caller: `0xB9845B`, a CRT
+startup routine that calls `EncodePointer` and hands the result straight on. It encodes
+**null**. So the first allocation the heap refuses throws, which is what the section
+above says and this is why.
+
+**`_newmode` is at rva `0x134D3C0`**, and it is **read three times and written never**.
+`malloc` consults it before bothering with the handler:
+
+```
+0xB96D17  39 05 <_newmode>    cmp dword ptr [_newmode], eax   ; eax is 0 here
+0xB96D1D  74 0D               je -> set errno and return null
+0xB96D1F  push ebx
+0xB96D20  call _callnewh
+0xB96D26  test eax,eax; jne -> retry the HeapAlloc
+```
+
+Being permanently 0 means **`malloc` never asks the handler** - only `operator new`
+does. Setting it to 1 is additive: a handler that gives up still leaves `malloc`
+returning null exactly as before, because the give-up path falls into the same errno
+and return.
+
+The other two `_callnewh` callers are at `0xB993C2`/`0xB993D2` and `0xBA776F`, each
+behind its own read of `_newmode`.
+
+### Installing one from BiceLib
+
+**Our own `_set_new_handler` is useless here.** BiceLib links its own CRT, so it would
+write our copy of `_pnhHeap` while the game reads its own. The global has to be written
+directly. `EncodePointer`'s cookie is per process rather than per module, so a pointer
+encoded in BiceLib decodes correctly in the game.
+
+`GameState/OutOfMemory.cpp` does it, and finds the two globals **by reading the operands
+out of the instructions above** rather than trusting the addresses written here: the
+seven bytes before the operand must match, the operand must be where it is expected, the
+`DecodePointer` import must be the one named in the import table, and the slot must still
+hold an encoded null. Anything else and it writes nothing.
+
+## What the instrumentation measured
+
+Six deliberate squeezes on 2026-09-21, with `GameState/OutOfMemory.cpp` armed. Every
+one produced the same thing, and all of it is **seen**, not read:
+
+```
+fire 1  size 2097152  largest free 216 KB  free total 18240 KB
+        parachute released  told the game to retry
+    frame 0  exe+0x0079f511
+    frame 1  exe+0x00796d25
+    frame 2..5  absolute, inside BiceLib.dll
+--- squeeze over: 173 chunks, 919 MB taken, malloc succeeded ---
+```
+
+**Frame 0 is `0x79F511`**, the instruction after `call eax` in `_callnewh`, and
+**frame 1 is `0x796D25`**, the instruction after `malloc`'s `call _callnewh`. Both are
+exactly where the disassembly above says they would be, so:
+
+- The handler is installed and reached. `_pnhHeap` at rva `0x134CC04` is the right
+  global, and a pointer encoded in BiceLib decodes correctly in the game.
+- **Setting `_newmode` works.** The fire came through `malloc`, which by the section
+  above would not have asked a handler at all with the global left at 0.
+- The frame pointer walk holds for the CRT frames, and reaches the caller: frames 2 to
+  5 are in BiceLib, which is what called the game's `malloc` for the test.
+- The parachute works. 919 MB was taken away, the allocation failed, releasing 64 MB
+  let the retry succeed, and the game carried on.
+
+**What this does not yet show** is that the game's *own* allocation failures arrive
+here: the squeeze provoked the failure from BiceLib's own call to the game's `malloc`,
+with the render thread parked inside the page that has the button. The handler only
+ever covers the exe's CRT heap, so a graphics driver allocation, a direct `HeapAlloc`
+or a `new` in another module still goes past it without a word, and whether the game
+catches `std::bad_alloc` anywhere is unestablished.
+
+That one is answered by leaving it armed and playing until a real failure: a fire whose
+**frame 1 is `0x796041`** came through `operator new`, one with `0x796D25` through
+`malloc`, and frame 2 then names the game code that was allocating.
+
+## Played to death with 30 MB left, and the handler never ran
+
+2026-09-21, second run. The ballast took **859 MB in 121 reservations**, leaving 30 MB
+free with a largest block of 960 KB. The game was played until it crashed, about a
+minute later. The log for the whole run:
+
+```
+--- armed 2026-09-21 21:21:32  handler at exe+0x0134cc04  parachute 64 MB reserved ---
+--- ballast: 121 reservations, 859 MB held, 30 MB left free (largest block 960 KB) ---
+```
+
+**No fires at all.** Neither `operator new` nor `malloc` in the executable refused a
+single allocation before the process died.
+
+### The handler was there to be asked
+
+Zero fires can mean nothing asked, or nothing was installed to ask. The dump settles
+it: `hoi3_tfh.exe.27508.dmp` has `_newmode` at `exe+0x134D3C0` reading **1**. Nothing
+in the executable ever writes that global - three reads, no writes, and `.bss` starts
+it at 0 - so the 1 can only have come from BiceLib's `arm()`, which writes it *after*
+the handler and restores both together. **The handler was installed and live at the
+moment of death, and it was never called.**
+
+### What killed it was not the game's allocator
+
+```
+access violation (0xC0000005) at ucrtbase.dll+0x973FE  =  memcpy + 0x4e
+  reading 0x00090F40, 0x800 bytes, into 0x1FBC2A00
+```
+
+**`hoi3_tfh.exe` does not import `ucrtbase.dll` at all** - its import table is 16 DLLs
+and none of them is a CRT, which is the same fact as its allocator being the static one
+this file is about. So that `memcpy` belongs to some other module in the process:
+BiceLib, a Windows component, or one of the media and driver DLLs. Which one is not
+established.
+
+### So the ballast is a poor proxy for a real death
+
+**30 MB of free address space is plenty for small allocations.** The heap only has to
+ask the OS for more when it runs out of room in what it already holds, so a starved
+process kills whoever next wants something *large* - and that was not the game. The
+ballast starves every module in the process equally, and something else fell over
+first.
+
+This says the test is wrong, not that the idea is. What it does establish is that a
+game under memory pressure does not necessarily reach `operator new` at all before the
+process dies, which is worth knowing either way.
+
+### The natural crash looks nothing like it
+
+The dump from three hours earlier, before any of this existed, on an ordinary load:
+
+```
+access violation (0xC0000005) at hoi3_tfh.exe+0x33C38
+  writing 0x713F27F4        esi = 0x713F27E4
+  overlay closed, frames started 0
+```
+
+`0x33C38` is `mov dword ptr [esi+0x10], edi` inside **`std::string::appendChars`**
+(rva `0x33B40`), and `esi+0x10` is exactly the `0x713F27F4` it faulted on - so it is
+the string writing its own length field through a `this` that is not mapped. In the
+game's own code, during loading, with the overlay never drawn.
+
+**That** is the death worth catching, and the way to catch it is to leave the handler
+armed with no ballast and reproduce it. The crash dump notes have those happening
+35-110 s after launch at 2.0-3.3 GB private bytes.
+
+## What was measured about the address space
+
+Incidental, but worth keeping: the squeeze could take **919 MB** in 173 reservations
+before the space was gone, so that session had 919 MB of free address space left in
+pieces of 256 KB or more.
+
+The **18 MB in holes smaller than 256 KB** it left behind says less than it looks like.
+The squeeze stops at 256 KB chunks, so a 300 KB hole becomes a 44 KB one by its own
+doing, and the residue is its own leftovers mixed with fragments that were already
+there. Telling the two apart needs the free list measured *before* a squeeze, which is
+what `Largest free block` on the Memory page already shows.

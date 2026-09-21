@@ -33,6 +33,7 @@
 #include <Hooks/CNavyHooks.hpp>
 #include <Hooks/HookedPatches.hpp>
 #include <GameState/AutoSave.hpp>
+#include <Settings.hpp>
 #include <Hooks/EffectText/KillLeaderText.hpp>
 #include <Hooks/EffectText/LoadOobText.hpp>
 #include <Hooks/EffectText/TriggerIndentText.hpp>
@@ -1032,6 +1033,7 @@ __declspec(dllexport) int enableOverlay(lua_State* L)
     // Features that keep a setting have to be back in place whether or not their
     // page is ever opened, so they are asked for here rather than on a first draw.
     AutoSave::restore();
+
     lua_pushboolean(L, ok);
     return 1;
 }

@@ -18,6 +18,7 @@
 #include <GameState/CustomMapMode.hpp>
 #include <GameState/GameClock.hpp>
 #include <GameState/Periodics.hpp>
+#include <GameState/OutOfMemory.hpp>
 #include <Gui/TextureStats.hpp>
 #include <MemScan.hpp>
 #include <Settings.hpp>
@@ -572,6 +573,12 @@ namespace {
             // session - the multiplayer clients run none of the mod's scripts.
             Periodics::update();
 
+            // Watches how much address space is left, and saves and closes the game
+            // rather than letting it die. One cheap call a frame while nothing is
+            // wrong. Deliberately outside the visibility check below: the game has to
+            // be caught whether or not anybody has the overlay open.
+            OutOfMemory::update();
+
             // Minimized: no frame at all, and the layout is left exactly as it is.
             // wasVisible is left alone too, so a toggle made while the window was away
             // still gets its transition on the first frame back.
@@ -942,6 +949,10 @@ const std::string& Overlay::directory() {
         path = (slash == std::string::npos) ? std::string() : path.substr(0, slash + 1);
     }
     return path;
+}
+
+void* Overlay::window() {
+    return gameWindow;
 }
 
 const std::string& Overlay::gameDirectory() {

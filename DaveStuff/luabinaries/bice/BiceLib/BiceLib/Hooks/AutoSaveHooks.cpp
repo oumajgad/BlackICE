@@ -50,7 +50,7 @@ namespace {
     // Indexed by Kind. A set per kind, so the monthly save and the timed one keep
     // three files each and neither ages the other's out.
     const char* const DEFAULT_BASE_NAMES[Hooks::AutoSave::KIND_COUNT] = {
-        "autosave_premonth", "autosave_timed"
+        "autosave_premonth", "autosave_timed", "crashsave"
     };
 
     // The stubs below are naked assembly, where a displacement has to be written as a
@@ -84,7 +84,7 @@ namespace {
     // What each kind's three files are called, before the rotation prefixes and the
     // extension are put on.
     char saveBaseNames[Hooks::AutoSave::KIND_COUNT][40] = {
-        "autosave_premonth", "autosave_timed"
+        "autosave_premonth", "autosave_timed", "crashsave"
     };
 
     /**@brief the game's own names, or one kind's; a kind below zero means the game's*/

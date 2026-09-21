@@ -38,6 +38,15 @@ namespace Overlay {
     */
     const std::string& gameDirectory();
 
+    /**
+    @brief the game's own top level window, or null before the device is made
+
+    Taken from the D3D9 device's focus window rather than looked up, so it is the
+    window the game is actually drawing into. Wanted by anything that has to put a
+    native window in front of the game.
+    */
+    void* window();
+
     /**@brief the device the game is rendering with, null before the first frame.
        Needed by anything creating its own D3D resources, such as the texture cache.*/
     IDirect3DDevice9* device();

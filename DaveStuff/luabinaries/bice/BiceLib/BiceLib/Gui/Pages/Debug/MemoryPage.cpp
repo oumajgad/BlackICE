@@ -2,6 +2,8 @@
 #include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/TextureStats.hpp>
+#include <GameState/OutOfMemory.hpp>
+#include <Settings.hpp>
 
 #include <Windows.h>
 #include <psapi.h>
@@ -377,6 +379,147 @@ namespace {
             "what the driver rounded them up to.");
     }
 
+    /**
+    @brief what the new handler has caught, and the button that provokes it
+
+    Instrumentation rather than a feature: it says whether the game's own allocator is
+    where out of memory actually arrives, which is the one thing a crash-save on out of
+    memory would rest on. Nothing here writes a save.
+    */
+    /**
+    @brief the crash save: what it will do, and the button that does it now
+
+    The part of this page that is a feature rather than an experiment. Everything
+    below it exists to find out whether the game's allocator can be caught; this
+    does not wait to find out - it watches the free address space and acts while
+    there is still some.
+    */
+    void drawCrashSave() {
+        ImGui::SeparatorText("Crash save");
+
+        char scratch[32];
+        char other[32];
+        const unsigned __int64 free = OutOfMemory::freeNow();
+        const unsigned __int64 largest = OutOfMemory::largestBlock();
+        const unsigned __int64 trigger = OutOfMemory::triggerAt();
+
+        // The largest block first, because it is the one that decides: two deaths were
+        // measured with tens of MB free and nothing big enough to put anything in.
+        ImGui::Text("Largest block it can still get: %s",
+            formatBytes(largest, scratch, sizeof(scratch)));
+        if (largest != 0 && largest <= trigger * 2) {
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.3f, 1.0f), "- getting close");
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Measured by asking for one and giving it straight back,\n"
+                "twice a second. This is what the trigger watches.\n"
+                "\n"
+                "The total below is not: a process with 30 MB free in\n"
+                "small pieces and nothing bigger than 244 KB is already\n"
+                "finished, and that is exactly how two runs died.");
+        }
+        ImGui::TextDisabled("Free in total: %s", formatBytes(free, other, sizeof(other)));
+
+        bool watching = OutOfMemory::watching();
+        if (ImGui::Checkbox("Save and close the game when it runs out", &watching)) {
+            OutOfMemory::setWatching(watching);
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Below the threshold the game is saved as \"crashsave\",\n"
+                "told why in a message box, and closed.\n"
+                "\n"
+                "Closing somebody's game is a large thing to do, so it is\n"
+                "this one checkbox. Off, the game is left to die however\n"
+                "it would have.");
+        }
+
+        int triggerMb = static_cast<int>(trigger / (1024 * 1024));
+        ImGui::SetNextItemWidth(120.0f);
+        if (ImGui::InputInt("Fire below this block size, MB", &triggerMb, 1, 5)) {
+            if (triggerMb < 1) {
+                triggerMb = 1;
+            }
+            if (triggerMb > 512) {
+                triggerMb = 512;
+            }
+            OutOfMemory::setTriggerAt(
+                static_cast<unsigned __int64>(triggerMb) * 1024u * 1024u);
+        }
+
+        ImGui::Spacing();
+        if (ImGui::Button("Save and close now")) {
+            OutOfMemory::trigger();
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("The same path the threshold takes, so this tests the\n"
+                "real thing - including the message box and closing the\n"
+                "game. Hold the ballast below first to try it under the\n"
+                "pressure it is meant for.");
+        }
+
+        if (OutOfMemory::freeAtTrigger() != 0) {
+            ImGui::Text("Last attempt: %s (%s free before, %s after)",
+                OutOfMemory::stageText(),
+                formatBytes(OutOfMemory::freeAtTrigger(), scratch, sizeof(scratch)),
+                formatBytes(OutOfMemory::freeAfterSave(), other, sizeof(other)));
+        }
+    }
+
+    /**@brief the crash save, and the ballast that is how it gets tested*/
+    void drawOutOfMemory() {
+        drawCrashSave();
+
+        char scratch[32];
+
+        // Held across frames rather than given straight back, so the game meets the
+        // wall while doing its own work. This is how the crash save above is tested
+        // without playing a whole session to get there.
+        ImGui::Spacing();
+        ImGui::SeparatorText("Ballast - play the game to death");
+
+        static int leaveFreeMb =
+            static_cast<int>(OutOfMemory::DEFAULT_LEAVE_FREE / (1024 * 1024));
+        const unsigned __int64 held = OutOfMemory::ballastHeld();
+
+        if (held == 0) {
+            ImGui::SetNextItemWidth(120.0f);
+            ImGui::InputInt("MB to leave the game", &leaveFreeMb, 10, 50);
+            if (leaveFreeMb < 8) {
+                leaveFreeMb = 8;
+            }
+            if (leaveFreeMb > 1024) {
+                leaveFreeMb = 1024;
+            }
+            if (ImGui::Button("Hold everything else")) {
+                OutOfMemory::hold(
+                    static_cast<unsigned __int64>(leaveFreeMb) * 1024u * 1024u);
+            }
+            if (ImGui::IsItemHovered()) {
+                ImGui::SetTooltip("Takes the address space and keeps it, so the game runs\n"
+                    "with almost none and the crash save above fires at\n"
+                    "whatever it tries next.\n"
+                    "\n"
+                    "Nothing gives it back except the release button, so\n"
+                    "what it holds is what the game has to do without.\n"
+                    "Save first.");
+            }
+        }
+        else {
+            ImGui::Text("Holding %s in %d reservations",
+                formatBytes(held, scratch, sizeof(scratch)),
+                OutOfMemory::ballastReservations());
+            if (ImGui::Button("Release the ballast")) {
+                OutOfMemory::releaseBallast();
+            }
+        }
+
+        ImGui::Spacing();
+        ImGui::TextWrapped("Every crash save is appended to OutOfMemory.log beside the "
+            "DLL, with how much room there was before and after it - because a save "
+            "taken as the game dies has to leave a record of whether it worked.");
+    }
+
     void drawMemoryMeter() {
         const ULONGLONG now = GetTickCount64();
         if (now - lastMemorySampleMs >= 500 || lastMemorySampleMs == 0) {
@@ -421,6 +564,7 @@ namespace {
         drawBreakdown();
         drawLua();
         drawTextures();
+        drawOutOfMemory();
     }
 }
 

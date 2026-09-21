@@ -36,8 +36,9 @@ namespace Hooks {
         enum class Kind {
             Monthly,    // a few days before the month turns
             Timed,      // every so many minutes of play
+            Crash,      // the game is out of memory and is about to be closed
         };
-        constexpr int KIND_COUNT = 2;
+        constexpr int KIND_COUNT = 3;
 
         /**@brief patches the two sites, once; safe to call again*/
         bool install();
