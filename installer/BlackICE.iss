@@ -131,6 +131,7 @@ Name: "border";   Description: "Borderless window (needs settings.txt edited aft
 [Tasks]
 Name: "patchexe";  Description: "Patch hoi3_tfh.exe so the game can use 4 GB of memory"; GroupDescription: "Fixes applied to the game:"
 Name: "sprites";   Description: "Move the unused 3D unit sprites aside (frees ~300 MB)"; GroupDescription: "Fixes applied to the game:"
+Name: "crashdumps"; Description: "Let Windows keep a crash dump if the game crashes (up to 5, in %LOCALAPPDATA%\CrashDumps)"; GroupDescription: "Crash reporting:"
 Name: "desktop";   Description: "Create a desktop shortcut that launches {#ModName} directly"; GroupDescription: "Shortcuts:"
 Name: "startmenu"; Description: "Create a Start menu entry"; GroupDescription: "Shortcuts:"
 
@@ -205,6 +206,7 @@ Type: files;          Name: "{app}\tfh\mod\{#ModFolder}.mod"
 #include "inc\exepatch.iss"
 #include "inc\sprites.iss"
 #include "inc\extras.iss"
+#include "inc\crashdumps.iss"
 #include "inc\oldversions.iss"
 #include "inc\uninstallpick.iss"
 #include "inc\redist.iss"
@@ -274,6 +276,9 @@ begin
     Report := Report + '   already moved aside' + #13#10 + #13#10
   else
     Report := Report + Format('   %d files, %d MB that the mod never draws', [Files, Bytes div 1048576]) + #13#10 + #13#10;
+
+  Report := Report + 'Windows crash dumps' + #13#10;
+  Report := Report + '   ' + DescribeCrashDumps() + #13#10 + #13#10;
 
   Report := Report + 'Runtimes' + #13#10;
   Report := Report + RuntimeReport();
@@ -376,6 +381,14 @@ begin
     Summary := Summary + 'Unit sprites' + #13#10 + '  ' + Message + #13#10 + #13#10;
   end;
 
+  if WizardIsTaskSelected('crashdumps') then
+  begin
+    WizardForm.StatusLabel.Caption := 'Switching on Windows crash dumps...';
+    Message := '';
+    EnableCrashDumps(Message);
+    Summary := Summary + 'Crash dumps' + #13#10 + '  ' + Message + #13#10 + #13#10;
+  end;
+
   // Last, so that a failed install never costs anyone the version they had.
   Removed := 0;
   Reclaimed := 0;
@@ -454,6 +467,7 @@ begin
     RestoreSprites(GameDir);
     RestoreStockExe(GameDir);
     RestoreBaseFiles(GameDir);
+    DisableCrashDumps();
     RemoveExtras(GameDir);
     Exit;
   end;
@@ -462,13 +476,15 @@ begin
             'This restores:' + #13#10 +
             '   - the original hoi3_tfh.exe (undoing the 4 GB patch)' + #13#10 +
             '   - the 3D unit sprites in gfx\anims' + #13#10 +
-            '   - the game''s own lua5.1.dll' + #13#10 + #13#10 +
-            'Choose No to leave all three as they are and only remove the mod files.',
+            '   - the game''s own lua5.1.dll' + #13#10 +
+            '   - the Windows crash dump setting, if this installer switched it on' + #13#10 + #13#10 +
+            'Choose No to leave all of that as it is and only remove the mod files.',
             mbConfirmation, MB_YESNO) = IDYES then
   begin
     RestoreSprites(GameDir);
     RestoreStockExe(GameDir);
     RestoreBaseFiles(GameDir);
+    DisableCrashDumps();
   end;
 
   // Asked separately, and only when they are actually there. These are not

@@ -84,6 +84,34 @@ scanning a file the installer has just written, which was seen for real during
 testing. Each attempt either completes and verifies, or restores the original
 before retrying, so the exe is never left half written.
 
+### Windows crash dumps
+
+`crashdumps.iss` replaces step 2 of [CRASH-REPORTS.md](../CRASH-REPORTS.md), which asked
+the player to type a `.reg` file in Notepad, save it with the right extension and run it
+as admin. Almost nobody does that, so the crashes that matter most — the ones before
+BlackICE has even loaded, which leave no report of its own — went unreported.
+
+It writes Windows Error Reporting's per-executable LocalDumps setting:
+
+```
+HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting\LocalDumps\hoi3_tfh.exe
+    DumpCount = 5
+    DumpType  = 1        mini dump, ~37 MB each
+```
+
+Scoped to that one executable, so nothing else on the machine is affected, and capped at
+five dumps in `%LOCALAPPDATA%\CrashDumps`.
+
+**It must be written to the 64-bit registry view.** The installer is a 32-bit program, so
+a plain `HKLM` write is redirected into `Wow6432Node` — and `LocalDumps` only exists in
+the native view, so the result would be a brand new key somewhere Windows never looks: a
+setting that appears present and does nothing. `WerRootKey()` returns `HKLM64` on 64-bit
+Windows and `HKLM` on 32-bit, where asking for a 64-bit view is an error.
+
+An existing configuration is never overwritten, and the uninstaller only removes the key
+when it holds exactly the two values above — which is how somebody's own setup is told
+apart from ours without storing a marker anywhere.
+
 ### The uninstaller's name
 
 Inno hardcodes it as `unins000.exe` and has no directive to change it. Renaming
@@ -253,6 +281,7 @@ installer/
     exepatch.iss      the LAA patch, with build fingerprinting
     sprites.iss       moving gfx\anims aside, as the Utility's button does
     extras.iss        DXVK and borderless: removed only if asked for
+    crashdumps.iss    turning on Windows crash dumps for the game
     oldversions.iss   finding and removing older BlackICE versions
     uninstallpick.iss which versions to remove, asked on the way out
     redist.iss        runtime detection and silent install

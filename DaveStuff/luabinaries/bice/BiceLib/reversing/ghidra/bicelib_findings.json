@@ -47175,8 +47175,13 @@
    "namespace": "",
    "name": "_purecall",
    "confidence": "CERTAIN",
-   "evidence": "The CRT stub a class's own vftable holds for a method it leaves pure virtual - COrder's slot 16, the order type id, among many. It calls the installed _purecall_handler if there is one and otherwise ends the process through _amsg_exit(_RT_PUREVIRT), the R6025 \"pure virtual function call\" message, so reaching it is fatal. Nothing reaches it in a working game: every concrete class fills the slot. Three Lua registrations resolve here - CCommand::IsValid, CDiplomaticAction::IsValid and CDiplomaticAction::GetAIAcceptance - because those methods are pure virtual in the class that declares them; the findings used to name this address after them (Shared_GetAIAcceptance_IsValid) and no longer do.\n(reversing/CLASSES.md:347)",
-   "signature": null,
+   "evidence": "The CRT stub a class's own vftable holds for a method it leaves pure virtual - COrder's slot 16, the order type id, among many. It calls the installed _purecall_handler if there is one and otherwise ends the process through _amsg_exit(_RT_PUREVIRT), the R6025 \"pure virtual function call\" message, so reaching it is fatal. Nothing reaches it in a working game: every concrete class fills the slot. Three Lua registrations resolve here - CCommand::IsValid, CDiplomaticAction::IsValid and CDiplomaticAction::GetAIAcceptance - because those methods are pure virtual in the class that declares them; the findings used to name this address after them (Shared_GetAIAcceptance_IsValid) and no longer do.\n\n**Read out in full**, because it is where a crash can be caught: `push [__pPurecall]` (`0x134D238`, kept encoded), `call [DecodePointer]`, `test eax,eax`, `je` past it, `call eax` with no arguments - and then `push 0x19`, **25 = `_RT_PUREVIRT`**, which is what identifies this function rather than one of the other handler wrappers in this CRT that also decode a pointer and call it.\n\n**510 slots in the data sections hold this address and nothing calls it directly.** The game installs no handler, so reaching it is fatal as the comment above says; BiceLib installs one and saves the game before it goes - GameState/PureCall.cpp and reversing/FINDINGS-allocator.md.\n(reversing/CLASSES.md:347)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": []
+   },
    "labels": []
   },
   {
@@ -47235,6 +47240,25 @@
      {
       "name": "size",
       "type": "unsigned int"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 7993710,
+   "namespace": "",
+   "name": "set_purecall_handler_encoded",
+   "confidence": "CERTAIN",
+   "evidence": "Stores its argument into `__pPurecall` (`0x134D238`) **without encoding it**, so it is the inner half of `_set_purecall_handler` and whatever calls it has to call `EncodePointer` first. The CRT startup at `0x79845B` is its only caller in the executable, and it passes an encoded null.\n\nNamed for what it does rather than `_set_purecall_handler`, because the function of that name in the CRT is the one that does the encoding.\n(reversing/FINDINGS-allocator.md)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "encodedHandler",
+      "type": "void*"
      }
     ]
    },
@@ -48789,6 +48813,15 @@
    "confidence": "CERTAIN",
    "evidence": "Table of month lengths in days (31, 28, 31, ...) used by the date helpers.\n(reversing/FINDINGS-autosave.md:76)",
    "type": "int[12]"
+  },
+  {
+   "rva": 20238904,
+   "namespace": "",
+   "name": "__pPurecall",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "The pure virtual call handler, kept **encoded** with `EncodePointer` - so it cannot be read out of memory as a pointer, and a decode of null is what says none is installed.\n\nRead only by `_purecall` (`0x7961D5`). Written only by the raw setter at `0x79F96E`, which has no caller, and by the CRT startup at `0x79845B` that encodes a null into this and four other handler globals. So it is empty in the game as shipped, and BiceLib is free to take it.\n(reversing/FINDINGS-allocator.md)",
+   "type": "void*"
   },
   {
    "rva": 20238912,

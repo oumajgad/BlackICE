@@ -294,3 +294,66 @@ The squeeze stops at 256 KB chunks, so a 300 KB hole becomes a 44 KB one by its 
 doing, and the residue is its own leftovers mixed with fragments that were already
 there. Telling the two apart needs the free list measured *before* a squeeze, which is
 what `Largest free block` on the Memory page already shows.
+
+## The other empty handler slot: `_purecall`
+
+Found while looking for somewhere the game could be caught before it dies, because the
+new handler above turned out never to be asked. **This one is asked.**
+
+```
+_purecall                            0xB961D5   rva 0x7961D5
+  FF 35 <__pPurecall>                push the handler, kept encoded   rva 0x134D238
+  FF 15 <DecodePointer>              decode it                        rva 0x92B040
+  85 C0                              test eax, eax
+  74 02                              je  -> the abort path
+  FF D0                              call eax        the handler: no arguments, no result
+  6A 19                              push 25 = _RT_PUREVIRT
+  ...                                and on into the CRT's runtime error and abort
+```
+
+**`push 0x19` is what identifies it**, and it is worth saying why: 25 is the CRT's
+runtime error number for a pure virtual call, pushed on exactly the path taken when no
+handler is installed. Without that, a function that decodes a pointer and calls it
+could be any of the half dozen handler wrappers in this CRT - the shape alone does not
+distinguish them.
+
+`_purecall` is what the compiler puts in a **pure virtual's vftable slot**, and the
+counts bear that out: **510 slots in the data sections hold this address, and nothing
+calls it directly.** So it is reached only by ordinary virtual dispatch, through an
+object used while it is still being constructed or after it has been destroyed.
+
+### `__pPurecall`, rva `0x134D238`
+
+Empty, the same way and for the same reason as `_pnhHeap`. It is `.bss`, so it starts
+at zero; the CRT startup at `0xB9845B` encodes a null into it along with four other
+handler globals; and **the only other instruction in the executable that writes it** is
+the raw setter at rva **`0x79F96E`**, which has no caller at all.
+
+That setter stores what it is given without encoding it, so anything calling it has to
+encode first - which is what the startup does, and what BiceLib does.
+
+### The five globals that startup clears
+
+Worth keeping, because it is the list of every handler slot this CRT has, and three of
+them are still unidentified:
+
+| rva | set by | is |
+| --- | --- | --- |
+| `0x134CC04` | `0x79F4E8` | `_pnhHeap`, the new handler - read by `_callnewh` |
+| `0x134D238` | `0x79F96E` | **`__pPurecall`** - read by `_purecall` |
+| `0x134D23C` | `0x79F97D` | read at `0x79FADF`, which tail-jumps to it with arguments |
+| `0x134D3D8` | `0x7A534A` | written, and never read in `.text` |
+| `0x134D3C4`..`D0` | `0x7A5145` | four slots set together from one call |
+
+### What BiceLib does with it
+
+`GameState/PureCall.cpp` installs a handler, by writing `EncodePointer(&ours)` straight
+into `__pPurecall` - **no instruction is patched**, because the CRT already provides the
+slot and the game never used it. It verifies the two opcodes, both operands read out of
+the instructions rather than trusted from this page, the `_RT_PUREVIRT` tail, and that
+the slot still decodes to null, before writing anything.
+
+The handler cannot return - returning lands back on the abort path - so it saves
+synchronously by calling `CInGameIdler::AutosaveWrite` (rva `0x24FF80`) directly, then
+says why and ends the process. `GameState/CrashSave.cpp` is the shared end of that and
+of the out of memory watch.
