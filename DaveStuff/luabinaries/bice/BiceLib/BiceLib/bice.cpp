@@ -38,6 +38,7 @@
 #include <Hooks/EffectText/KillLeaderText.hpp>
 #include <Hooks/EffectText/LoadOobText.hpp>
 #include <Hooks/EffectText/TriggerIndentText.hpp>
+#include <Hooks/EffectText/TriggerScrollText.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
@@ -852,6 +853,28 @@ __declspec(dllexport) int activateTriggerIndent(lua_State* L)
     return 1;
 }
 
+/**
+ * Lets a requirement tooltip too tall for the screen be scrolled with Alt and the
+ * arrow keys.
+ *
+ * Nothing about the tooltip window is touched: the text itself is shortened from the
+ * front, which works because the game rebuilds it continuously while it is hovered.
+ * See Hooks/EffectText/TriggerScrollText.hpp.
+ */
+__declspec(dllexport) int activateTriggerScroll(lua_State* L)
+{
+    const bool ok = Hooks::EffectText::TriggerScroll::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateTriggerScroll' failed: %s \n",
+            Hooks::EffectText::TriggerScroll::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateTriggerScroll' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
 /////////////////////////////////////
 //      INSPECTOR FUNCTIONS        //
 /////////////////////////////////////
@@ -1141,6 +1164,7 @@ void registerEffectTextFunctions(lua_State* this_state) {
     registerFunction(this_state, "activateKillLeaderVariables", activateKillLeaderVariables);
     registerFunction(this_state, "activateLoadOobDetails", activateLoadOobDetails);
     registerFunction(this_state, "activateTriggerIndent", activateTriggerIndent);
+    registerFunction(this_state, "activateTriggerScroll", activateTriggerScroll);
     lua_settable(this_state, -3);
     return;
 }
