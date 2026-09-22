@@ -44,6 +44,37 @@ namespace {
     const unsigned char CONDITIONAL[1] = { 0x7E };  // jle rel8
     const unsigned char ALWAYS[1] = { 0xEB };       // jmp rel8, same displacement
 
+    // **And every scope trigger does the same thing**, which is the same bug wearing a
+    // different name: `any_owned_province`, a region, a neighbour, a core, and the
+    // context trigger behind `controller = { ... }`, `owner = { ... }` and a plain
+    // country tag. Each opens by clearing its output and then indenting it by its own
+    // depth, before a word of its own text - so the line sits right and the text is
+    // pushed off its asterisk, exactly as an `and` header used to.
+    //
+    // Found by looking rather than by guessing: the indent is always the same pair of
+    // pushes - the three space string at `0x15F39A8`, and 3 - so every renderer in the
+    // trigger vftables was scanned for one and for the conditional guarding it. Of the
+    // ten that have a `GetBlockText` of their own, these six have a self-indent;
+    // `CEnemyScopeTrigger` shares `CAndTrigger`'s renderer and so is already covered by
+    // the `and` above, and the base renderer's only indent is the per-child one, which
+    // is correct and left alone.
+    //
+    // Each was then checked to re-read the depth from its argument *after* the loop and
+    // hand it to the base for its children, so skipping the loop cannot disturb what is
+    // inside them.
+    const uintptr_t SCOPE_HEADER_JUMPS[6] = {
+        0x5D1F1E,   // CContextTrigger            - a country tag, controller, owner
+        0x5DD60B,   // CAnyOwnedProvinceTrigger
+        0x5DCA61,   // CRegionScopeTrigger
+        0x5DCF25,   // CAnyNeighborProvinceTrigger
+        0x5E6025,   // CAnyNeighborCountryTrigger
+        0x5E6545,   // CAnyCoreTrigger
+    };
+    const char* const SCOPE_HEADER_NAMES[6] = {
+        "a country scope", "any_owned_province", "a region scope",
+        "any_neighbor_province", "any_neighbor_country", "any_core",
+    };
+
     // ---- 2. the per-child indent, one level deeper -------------------------------------
     const uintptr_t AND_PERCHILD_SITE = 0x5D0B6E;
     const unsigned char AND_PERCHILD_BYTES[11] =
@@ -117,6 +148,38 @@ namespace {
 
     bool installedFlag = false;
     const char* statusText = "not installed yet";
+
+    // ---- 7. a `not` indents its own text ----------------------------------------------
+    //
+    // **`CNotTrigger::GetBlockText` (rva 0x5D1300) is four instructions**: it flips
+    // `redWhen` and calls the base renderer with **the depth unchanged**. The base then
+    // renders the one condition inside the `not` as a leaf - `indent(depth) + icon +
+    // text` - and hands the lot back to the parent, which has *already* drawn this
+    // line's indent and icon.
+    //
+    // So the indent lands a second time, in the middle of the line: `(*)   Gaseous
+    // Diffusion lower than 1`. The whole line sits correctly; only the text is pushed
+    // right of its own asterisk.
+    //
+    // **No depth fixes it**, which is why this is not another arithmetic patch. The
+    // base draws the icon when `depth == 0` *or* the depth arrived negative, and the
+    // indent whenever `depth > 0`: zero means no indent but a second asterisk, and
+    // anything above zero means no asterisk but the spaces are back. "Neither" is not a
+    // value the base can be given.
+    //
+    // What is true in every case is the rule itself - **a `not` renders inside a line
+    // somebody else has already placed** - so its output is taken as it comes and the
+    // leading indent is removed from the front of it. That holds whether the base
+    // indented (depth above zero), did not (depth zero), or did both indent and draw an
+    // icon (a negative depth, inside a country scope).
+    //
+    // The whole epilogue is replaced rather than a jump woven into it: nine bytes of
+    // `mov eax, esi; pop esi; mov esp, ebp; pop ebp; ret 0x10`, which the stub does
+    // itself after the text has been tidied.
+    const uintptr_t NOT_EPILOGUE_SITE = 0x5D1328;
+    const unsigned char NOT_EPILOGUE_BYTES[9] = {
+        0x8B, 0xC6, 0x5E, 0x8B, 0xE5, 0x5D, 0xC2, 0x10, 0x00
+    };
 
     // Read by the naked stubs, so plain words.
     DWORD baseSkipTarget = 0;
@@ -276,6 +339,74 @@ namespace {
         }
     }
 
+    /**
+    @brief takes the indent off the front of what a `not` produced
+
+    The game's string: sixteen bytes that are the characters themselves, or a pointer to
+    them once it has outgrown them, then the length. Shifted in place rather than
+    rebuilt, so nothing is allocated and the string the caller is about to append stays
+    the one it was given.
+
+    Only spaces are taken, and only from the very front. A requirement line never begins
+    with one for any other reason - the indent is the only thing that puts them there.
+    */
+    void __cdecl stripLeadingIndent(void* text) {
+        if (text == nullptr) {
+            return;
+        }
+        char* bytes = reinterpret_cast<char*>(text);
+        int& length = *reinterpret_cast<int*>(bytes + 0x10);
+        const int capacity = *reinterpret_cast<int*>(bytes + 0x14);
+        if (length <= 0 || capacity < 15 || length > capacity) {
+            return;     // not a string of that shape; leave it alone
+        }
+
+        char* data = capacity > 15 ? *reinterpret_cast<char**>(bytes) : bytes;
+        if (data == nullptr) {
+            return;
+        }
+
+        int spaces = 0;
+        while (spaces < length && data[spaces] == ' ') {
+            spaces++;
+        }
+        if (spaces == 0) {
+            return;
+        }
+
+        // The terminator moves with the rest, which is what keeps it a C string as well
+        // as a counted one.
+        for (int i = spaces; i <= length; i++) {
+            data[i - spaces] = data[i];
+        }
+        length -= spaces;
+    }
+
+    /**
+    @brief stands in for the whole of `CNotTrigger::GetBlockText`'s epilogue
+
+    The base renderer has run and `esi` holds the text it filled, which is also what the
+    function returns. Everything a call could disturb is saved around the tidy-up, and
+    then the four instructions this replaced are done here.
+    */
+    __declspec(naked) void notInline() {
+        __asm {
+            pushad
+            pushfd
+            push esi
+            call stripLeadingIndent
+            add esp, 4
+            popfd
+            popad
+
+            mov eax, esi        // exactly the epilogue this replaced
+            pop esi
+            mov esp, ebp
+            pop ebp
+            ret 0x10
+        }
+    }
+
     struct Site {
         uintptr_t site;
         const unsigned char* bytes;
@@ -340,6 +471,23 @@ bool Hooks::EffectText::TriggerIndent::install() {
         return false;
     }
 
+    for (int i = 0; i < 6; i++) {
+        if (!Hooks::bytesAre(base + SCOPE_HEADER_JUMPS[i], CONDITIONAL, 1)) {
+            statusText = "a scope trigger's indent loop is not where this build expects";
+            ERROR_OUT(printf("TriggerIndent: %#010x is not a jle (%s)\n",
+                static_cast<unsigned>(base + SCOPE_HEADER_JUMPS[i]),
+                SCOPE_HEADER_NAMES[i]));
+            return false;
+        }
+    }
+
+    if (!Hooks::bytesAre(base + NOT_EPILOGUE_SITE, NOT_EPILOGUE_BYTES, 9)) {
+        statusText = "a not's block renderer is not what this build expects";
+        ERROR_OUT(printf("TriggerIndent: %#010x is not the epilogue expected (a not)\n",
+            static_cast<unsigned>(base + NOT_EPILOGUE_SITE)));
+        return false;
+    }
+
     // The branch keeps its condition and changes only where it goes: a `je rel32`, so
     // the four bytes after the opcode are the displacement from the end of it.
     baseSkipTarget = static_cast<DWORD>(base + BASE_SKIP_TARGET);
@@ -363,6 +511,14 @@ bool Hooks::EffectText::TriggerIndent::install() {
         return false;
     }
 
+    for (int i = 0; i < 6; i++) {
+        if (!Patches::patchBytes(
+                reinterpret_cast<void*>(base + SCOPE_HEADER_JUMPS[i]), always, 1)) {
+            statusText = "could not make the code writable";
+            return false;
+        }
+    }
+
     for (int i = 0; i < count; i++) {
         *sites[i].resumeWord = static_cast<DWORD>(base + sites[i].resume);
         if (!Hooks::hook(reinterpret_cast<void*>(base + sites[i].site),
@@ -370,6 +526,13 @@ bool Hooks::EffectText::TriggerIndent::install() {
             statusText = "could not make the code writable";
             return false;
         }
+    }
+
+    // Five of jump and four of nop, over an epilogue the stub does itself.
+    if (!Hooks::hook(reinterpret_cast<void*>(base + NOT_EPILOGUE_SITE),
+            &notInline, 5, 4)) {
+        statusText = "could not make the code writable";
+        return false;
     }
 
     installedFlag = true;
