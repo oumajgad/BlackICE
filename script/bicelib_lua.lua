@@ -70,6 +70,10 @@ if mod then
     -- `or` pass a constant for their children instead of their own depth plus one,
     -- so a condition inside either is drawn flush left. This fixes both.
     BiceLib.EffectTexts.activateTriggerIndent()
+    -- A long `allow` block makes a tooltip taller than the screen, and the game
+    -- neither shrinks it nor scrolls it. Hold Alt and press Up or Down over one to
+    -- move through it.
+    BiceLib.EffectTexts.activateTriggerScroll()
 end
 
 function HasLoadedBiceLibSuccessfully()
