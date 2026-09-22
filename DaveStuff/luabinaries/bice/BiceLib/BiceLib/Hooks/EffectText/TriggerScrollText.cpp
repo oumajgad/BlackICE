@@ -202,8 +202,8 @@ namespace {
                 return;     // it fits; leave the text exactly as the game built it
             }
             const std::string hinted =
-                std::string("\xA7Y... scroll with the mouse wheel, "
-                    "or Alt and the arrow keys\xA7W\n") + whole;
+                std::string("\xA7Y... hold Alt and scroll, "
+                    "with the wheel or the arrow keys\xA7W\n") + whole;
             Game::assignTo(text, hinted.c_str());
             return;
         }
@@ -221,7 +221,7 @@ namespace {
 
         char marker[80];
         const int written = _snprintf(marker, sizeof(marker) - 1,
-            "\xA7Y... %d more above (wheel, or Alt+Up/Down)\xA7W\n", offset);
+            "\xA7Y... %d more above (Alt + wheel or Up/Down)\xA7W\n", offset);
         if (written <= 0) {
             return;
         }
@@ -291,6 +291,14 @@ bool Hooks::EffectText::TriggerScroll::install() {
 
 bool Hooks::EffectText::TriggerScroll::takeWheel(int delta) {
     if (!installedFlag || !scrollableNow || delta == 0) {
+        return false;
+    }
+
+    // **Alt, the same as the arrow keys.** A decision or a triggered modifier puts its
+    // conditions in a tooltip over a list that scrolls, and the pointer is on the
+    // tooltip the whole time it is being read - so taking the wheel on sight took it
+    // from the list underneath, which is the one the player was trying to move.
+    if (!held(VK_MENU)) {
         return false;
     }
     if (GetTickCount64() - lastRenderAt > ON_SCREEN_MS) {

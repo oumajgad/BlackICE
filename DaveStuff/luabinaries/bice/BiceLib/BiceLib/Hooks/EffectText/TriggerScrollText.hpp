@@ -12,10 +12,15 @@
  *
  * **The game rebuilds a tooltip's text continuously while it is hovered**, which is
  * what makes this possible at all: the same fact behind the `load_oob` tooltip growing
- * the moment Alt goes down. So turning the wheel, or holding Alt and pressing Down,
+ * the moment Alt goes down. So holding Alt and turning the wheel, or pressing Down,
  * drops lines off the *front* of the text the next time it is built - the tooltip is
  * that much shorter, and what was below the screen moves up into view. Scrolling back
  * puts them on again.
+ *
+ * **Alt is required for the wheel as well as the keys.** A decision or a triggered
+ * modifier shows its conditions in a tooltip over a list that scrolls, and the pointer
+ * sits on the tooltip for as long as it is being read - so a wheel taken on sight is
+ * taken from the list the player is trying to move.
  *
  * Nothing about the game's tooltip window is patched, measured or resized. As far as
  * it is concerned the requirement text simply got shorter.
@@ -60,11 +65,12 @@ namespace Hooks {
 
             Called from the window procedure, before the game sees the message.
 
-            **Taken only while a scrollable requirement tooltip is actually on screen**,
-            which is known without asking the GUI anything: the text is rebuilt
-            continuously while one is hovered, so a render within the last fraction of a
-            second means one is up. Outside that the wheel is not touched and the map
-            zooms as it always did.
+            **Taken only with Alt held, and only while a scrollable requirement
+            tooltip is actually on screen.** The second is known without asking the GUI
+            anything: the text is rebuilt continuously while one is hovered, so a render
+            within the last fraction of a second means one is up. Outside those two the
+            wheel is not touched, and whatever was going to have it - the map, or a list
+            under the tooltip - still does.
 
             @param delta WHEEL_DELTA units, as WM_MOUSEWHEEL gives them; forward is
                    positive and scrolls towards the top of the list
