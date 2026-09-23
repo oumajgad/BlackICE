@@ -6842,6 +6842,60 @@
    "comment": "`country->Manpower += trickled back`, floored at zero by the two instructions after it, and the one write in the whole function. `esi` is the country and `eax` the manpower, **already in the units the tooltip prints** - nothing to price here, unlike attrition and rotation.\\n\\n**BiceLib stands here** to total what comes back per country.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1CFBD0",
+   "kind": "function",
+   "name": "CheckTransportOverload",
+   "signature": "void __cdecl CheckTransportOverload(CNavy* fleet)",
+   "comment": "**Whether a fleet is carrying more than it can.** The last thing `CUnit::UpdateDaily` does, for naval units only - it downcasts through slot 11 and calls this.\\n\\n    carried = sum of transport_weight over fleet->carrying\\n    if (carried > fleet->definition->transport_capacity / 1000) ...\\n\\nBoth halves are read off `CSubUnitDefinition`: `weight` at `+0x10C`, which the unit files call `transport_weight`, and `transport_capacity` at `+0x144`.\\n\\n**It throws cargo overboard until the load fits**, re-measuring each time round:\n\n    do\n        for each unit in fleet->carrying\n            if (its province's info byte +0x22 is set)\n                RemoveFromTransport(...); unit->EnterProvince(province)\n            else\n                RemoveRegimentFromUnit(its first regiment); delete it\n                if that was its last, post {unit->type, unit->id} to the game\n                    state's message ring at +0xBF8\n    while (carried weight > capacity)\n\nSo a unit that **can** be put ashore is put ashore, and one that cannot is taken apart a regiment at a time. Which is which turns on a byte of the province's info object at `+0x22` - 246 places in the image read it, so it is something fundamental, but nothing here says which way round it means land.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1D6690",
+   "kind": "function",
+   "name": "SumTransportWeight",
+   "signature": null,
+   "comment": "Adds up `CSubUnitDefinition::weight / 1000` over a `CList<CUnit*>`, which is what a fleet's load is measured in.\\n\\n**No signature recorded**: the compiler passed the list in `eax` - the caller does `add eax, 0x2E4` on the fleet and calls straight in - so it cannot be written as an ordinary function.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BB3E8",
+   "kind": "instruction",
+   "name": "DailyTickEndGate",
+   "signature": null,
+   "comment": "`cmp byte ptr [gamestate + 0xDA4], 0` - the gate on the last block of `CUnit::UpdateDaily`, which is attrition and, for a fleet, the transport overload check.\\n\\n**What the byte means is not known, and it matters.** It is zeroed when the game state is constructed, and `ApplyAttrition` has **exactly one caller** - the call this gates. So if nothing ever sets this byte, that attrition function never runs at all. Nothing that sets it was found, but the search is not conclusive: `+0xDA4` is a common displacement and the global is loaded in thousands of places, so the scan cannot be made clean. **It is settled in a game rather than here** - watch whether BiceLib's `$ATTRITION$` ever leaves zero. Sizing `CCurrentGameState` to its real `0xDA8` is what makes it read as `+0xDA4` at all - the structure used to end at `0xD9E`, so this came out as an index past the end of it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BE9A0",
+   "kind": "function",
+   "name": "RemoveRegimentFromUnit",
+   "signature": null,
+   "comment": "**Takes a regiment out of its unit.** It walks the unit's `regiments` for the node holding this one and unlinks it, then sets the regiment's `unit_ptr` (`+0xB0`) to zero - which is what says so rather than any guess. The caller deletes the regiment afterwards.\\n\\n**No signature recorded**: the compiler passed the unit in `edi` and the regiment on the stack.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1CF120",
+   "kind": "function",
+   "name": "RemoveFromTransport",
+   "signature": null,
+   "comment": "Takes a unit off whatever is carrying it: it writes `CUnit::carrying` (`+0x2E4`) at `0x1CF19F`, which is the fleet's list of passengers.\\n\\nCalled by `CheckTransportOverload` together with `CUnit::EnterProvince`, which is the pair that puts a unit ashore. Only the one write was read; the rest of the function was not.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BEFD0",
+   "kind": "function",
+   "name": "CUnit::EnterProvince",
+   "signature": "void __thiscall CUnit::EnterProvince(CUnit* this, CMapProvince* province)",
+   "comment": "Puts a unit into a province: it writes `current_province_ptr` (`+0x130`) at `0x1BF4D3`.\\n\\n**Only that much was read.** The function is over 2.5KB and does a great deal besides - it reads the province's path node in half a dozen places - so the name is what it is *for* at the one call site traced here, not a full account of it. The convention is read off that call site: `ecx` is the unit and the province is pushed.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
   }
  ],
  "structs": [
@@ -7660,6 +7714,7 @@
   },
   {
    "name": "CCurrentGameState",
+   "size": "0xDA8",
    "fields": [
     {
      "offset": "0x18",
@@ -10017,6 +10072,13 @@
      "type": "void*",
      "comment": "the unit's plan, saved as `plan` by calling slot 1 on it. **Read live**: every unit has one",
      "source": "BiceLib/GameClasses/CUnit.hpp:75"
+    },
+    {
+     "offset": "0x2E4",
+     "name": "carrying",
+     "type": "CList<CUnit*>",
+     "comment": "the units a fleet is carrying: CheckTransportOverload sums their definitions' transport_weight over this list and compares it with the fleet's own transport_capacity",
+     "source": "reversing/FINDINGS-manpower.md"
     },
     {
      "offset": "0x28C",

@@ -9789,6 +9789,36 @@
    ]
   },
   {
+   "name": "CList<CUnit*>",
+   "size": 16,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "first",
+     "type": "CListNode<CUnit*>*",
+     "comment": "first node (BiceLib/HoiDataStructures.hpp:53)"
+    },
+    {
+     "offset": 4,
+     "name": "last",
+     "type": "CListNode<CUnit*>*",
+     "comment": "last node (BiceLib/HoiDataStructures.hpp:54)"
+    },
+    {
+     "offset": 8,
+     "name": "count",
+     "type": "int",
+     "comment": "how many nodes (BiceLib/HoiDataStructures.hpp:55)"
+    },
+    {
+     "offset": 12,
+     "name": "flag",
+     "type": "unsigned char",
+     "comment": "a byte the constructors clear; meaning not known (BiceLib/HoiDataStructures.hpp:58)"
+    }
+   ]
+  },
+  {
    "name": "CAir",
    "size": null,
    "fields": [
@@ -9995,6 +10025,12 @@
      "name": "expeditionary_owner",
      "type": "CCountryTag",
      "comment": "who the unit is on loan from, saved as `expeditionary_owner`. **Read live**: `---` on 740 of 750, and ITA, HUN, SLO and POL on the rest (BiceLib/GameClasses/CUnit.hpp:76), inherited from CUnit"
+    },
+    {
+     "offset": 740,
+     "name": "carrying",
+     "type": "CList<CUnit*>",
+     "comment": "the units a fleet is carrying: CheckTransportOverload sums their definitions' transport_weight over this list and compares it with the fleet's own transport_capacity (reversing/FINDINGS-manpower.md), inherited from CUnit"
     }
    ]
   },
@@ -10301,6 +10337,12 @@
      "name": "expeditionary_owner",
      "type": "CCountryTag",
      "comment": "who the unit is on loan from, saved as `expeditionary_owner`. **Read live**: `---` on 740 of 750, and ITA, HUN, SLO and POL on the rest (BiceLib/GameClasses/CUnit.hpp:76), inherited from CUnit"
+    },
+    {
+     "offset": 740,
+     "name": "carrying",
+     "type": "CList<CUnit*>",
+     "comment": "the units a fleet is carrying: CheckTransportOverload sums their definitions' transport_weight over this list and compares it with the fleet's own transport_capacity (reversing/FINDINGS-manpower.md), inherited from CUnit"
     }
    ]
   },
@@ -12505,7 +12547,7 @@
   },
   {
    "name": "CCurrentGameState",
-   "size": null,
+   "size": 3496,
    "fields": [
     {
      "offset": 24,
@@ -17336,6 +17378,12 @@
      "name": "expeditionary_owner",
      "type": "CCountryTag",
      "comment": "who the unit is on loan from, saved as `expeditionary_owner`. **Read live**: `---` on 740 of 750, and ITA, HUN, SLO and POL on the rest (BiceLib/GameClasses/CUnit.hpp:76), inherited from CUnit"
+    },
+    {
+     "offset": 740,
+     "name": "carrying",
+     "type": "CList<CUnit*>",
+     "comment": "the units a fleet is carrying: CheckTransportOverload sums their definitions' transport_weight over this list and compares it with the fleet's own transport_capacity (reversing/FINDINGS-manpower.md), inherited from CUnit"
     }
    ]
   },
@@ -20126,6 +20174,12 @@
      "name": "expeditionary_owner",
      "type": "CCountryTag",
      "comment": "who the unit is on loan from, saved as `expeditionary_owner`. **Read live**: `---` on 740 of 750, and ITA, HUN, SLO and POL on the rest (BiceLib/GameClasses/CUnit.hpp:76)"
+    },
+    {
+     "offset": 740,
+     "name": "carrying",
+     "type": "CList<CUnit*>",
+     "comment": "the units a fleet is carrying: CheckTransportOverload sums their definitions' transport_weight over this list and compares it with the fleet's own transport_capacity (reversing/FINDINGS-manpower.md)"
     }
    ]
   },
@@ -34469,6 +34523,38 @@
    "labels": []
   },
   {
+   "rva": 1829280,
+   "namespace": "",
+   "name": "RemoveRegimentFromUnit",
+   "confidence": "CERTAIN",
+   "evidence": "**Takes a regiment out of its unit.** It walks the unit's `regiments` for the node holding this one and unlinks it, then sets the regiment's `unit_ptr` (`+0xB0`) to zero - which is what says so rather than any guess. The caller deletes the regiment afterwards.\\n\\n**No signature recorded**: the compiler passed the unit in `edi` and the regiment on the stack.\n(reversing/FINDINGS-manpower.md)",
+   "signature": null,
+   "labels": []
+  },
+  {
+   "rva": 1830864,
+   "namespace": "CUnit",
+   "name": "EnterProvince",
+   "confidence": "TENTATIVE",
+   "evidence": "Puts a unit into a province: it writes `current_province_ptr` (`+0x130`) at `0x1BF4D3`.\\n\\n**Only that much was read.** The function is over 2.5KB and does a great deal besides - it reads the province's path node in half a dozen places - so the name is what it is *for* at the one call site traced here, not a full account of it. The convention is read off that call site: `ecx` is the unit and the province is pushed.\n(reversing/FINDINGS-manpower.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CUnit*"
+     },
+     {
+      "name": "province",
+      "type": "CMapProvince*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 1851184,
    "namespace": "",
    "name": "AddCasualtyTrickleback",
@@ -34662,6 +34748,15 @@
    "labels": []
   },
   {
+   "rva": 1896736,
+   "namespace": "",
+   "name": "RemoveFromTransport",
+   "confidence": "TENTATIVE",
+   "evidence": "Takes a unit off whatever is carrying it: it writes `CUnit::carrying` (`+0x2E4`) at `0x1CF19F`, which is the fleet's list of passengers.\\n\\nCalled by `CheckTransportOverload` together with `CUnit::EnterProvince`, which is the pair that puts a unit ashore. Only the one write was read; the rest of the function was not.\n(reversing/FINDINGS-manpower.md)",
+   "signature": null,
+   "labels": []
+  },
+  {
    "rva": 1898144,
    "namespace": "CNavy",
    "name": "LoadKey",
@@ -34711,6 +34806,25 @@
       "name": "writer",
       "type": "CSaveWriter*",
       "storage": "stack:4"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1899472,
+   "namespace": "",
+   "name": "CheckTransportOverload",
+   "confidence": "CERTAIN",
+   "evidence": "**Whether a fleet is carrying more than it can.** The last thing `CUnit::UpdateDaily` does, for naval units only - it downcasts through slot 11 and calls this.\\n\\n    carried = sum of transport_weight over fleet->carrying\\n    if (carried > fleet->definition->transport_capacity / 1000) ...\\n\\nBoth halves are read off `CSubUnitDefinition`: `weight` at `+0x10C`, which the unit files call `transport_weight`, and `transport_capacity` at `+0x144`.\\n\\n**It throws cargo overboard until the load fits**, re-measuring each time round:\n\n    do\n        for each unit in fleet->carrying\n            if (its province's info byte +0x22 is set)\n                RemoveFromTransport(...); unit->EnterProvince(province)\n            else\n                RemoveRegimentFromUnit(its first regiment); delete it\n                if that was its last, post {unit->type, unit->id} to the game\n                    state's message ring at +0xBF8\n    while (carried weight > capacity)\n\nSo a unit that **can** be put ashore is put ashore, and one that cannot is taken apart a regiment at a time. Which is which turns on a byte of the province's info object at `+0x22` - 246 places in the image read it, so it is something fundamental, but nothing here says which way round it means land.\n(reversing/FINDINGS-manpower.md)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "fleet",
+      "type": "CNavy*"
      }
     ]
    },
@@ -34998,6 +35112,15 @@
     "hiddenReturn": true,
     "params": []
    },
+   "labels": []
+  },
+  {
+   "rva": 1926800,
+   "namespace": "",
+   "name": "SumTransportWeight",
+   "confidence": "CERTAIN",
+   "evidence": "Adds up `CSubUnitDefinition::weight / 1000` over a `CList<CUnit*>`, which is what a fleet's load is measured in.\\n\\n**No signature recorded**: the compiler passed the list in `eax` - the caller does `add eax, 0x2E4` on the fleet and calls straight in - so it cannot be written as an ordinary function.\n(reversing/FINDINGS-manpower.md)",
+   "signature": null,
    "labels": []
   },
   {
@@ -48520,6 +48643,15 @@
    "kind": "instruction",
    "confidence": "CERTAIN",
    "evidence": "Where rotation writes the reduced strength back. **The drain worked out above is clamped to nothing below zero and to the maximum above it**, so what actually went is `[edi + 0x5C]` before this instruction less `ebx` after it - which is where BiceLib stands, rather than on the figure the arithmetic produced.\n\n`edi` is the subunit and `esi` is still the unit. The `jns` two instructions above lands on the first byte of this, so a jump written here is still what that branch arrives at.\n(reversing/FINDINGS-manpower.md)",
+   "type": null
+  },
+  {
+   "rva": 1815528,
+   "namespace": "",
+   "name": "DailyTickEndGate",
+   "kind": "instruction",
+   "confidence": "CERTAIN",
+   "evidence": "`cmp byte ptr [gamestate + 0xDA4], 0` - the gate on the last block of `CUnit::UpdateDaily`, which is attrition and, for a fleet, the transport overload check.\\n\\n**What the byte means is not known, and it matters.** It is zeroed when the game state is constructed, and `ApplyAttrition` has **exactly one caller** - the call this gates. So if nothing ever sets this byte, that attrition function never runs at all. Nothing that sets it was found, but the search is not conclusive: `+0xDA4` is a common displacement and the global is loaded in thousands of places, so the scan cannot be made clean. **It is settled in a game rather than here** - watch whether BiceLib's `$ATTRITION$` ever leaves zero. Sizing `CCurrentGameState` to its real `0xDA8` is what makes it read as `+0xDA4` at all - the structure used to end at `0xD9E`, so this came out as an index past the end of it.\n(reversing/FINDINGS-manpower.md)",
    "type": null
   },
   {
