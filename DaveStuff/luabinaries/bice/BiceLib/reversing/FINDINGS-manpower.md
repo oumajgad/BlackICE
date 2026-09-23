@@ -155,6 +155,32 @@ write through `[reg + 0x5C]`, the ceiling at `+0x30` raised after. So it is hook
 same way and priced with the same formula. The one difference is that the unit is not in
 a register - it comes off the frame at `[ebp + 8]`.
 
+## What an overloaded fleet does to its cargo
+
+`CheckTransportOverload` (`0x1CFBD0`), the last thing `CUnit::UpdateDaily` does and only
+for a fleet. **It throws cargo overboard until the load fits**, re-measuring each pass:
+
+    do
+        for each unit in fleet->carrying
+            if (its province's info byte +0x22 is set)
+                RemoveFromTransport(...)          # writes CUnit::carrying
+                unit->EnterProvince(province)     # writes current_province_ptr
+            else
+                RemoveRegimentFromUnit(its first regiment)   # clears regiment->unit_ptr
+                delete that regiment
+                if that was its last, post {unit->type, unit->id} into the game
+                    state's message ring at +0xBF8, through an interlocked slot
+    while (carried weight > capacity)
+
+So a unit that **can** be put ashore is put ashore, and one that cannot is taken apart a
+regiment at a time until the fleet is within its `transport_capacity`.
+
+The two writes are what settle it and neither is a guess: `0x1CF19F` writes
+`CUnit::carrying` and `0x1BF4D3` writes `current_province_ptr`. Which units are eligible
+turns on a byte of the province's info object at `+0x22`; 246 places in the image read
+it, so it is something fundamental - most likely land against sea - but nothing read here
+says which way round.
+
 ## Casualty trickleback
 
 `AddCasualtyTrickleback` (`0x1C3F30`), the only reader of the `casualty_trickleback`
@@ -174,6 +200,23 @@ manpower figure already.
 No signature is recorded for it. The compiler gave it a register convention - the unit in
 `eax`, the casualties on the stack - so it cannot be written as an ordinary function, the
 same reason `CCountry::IsEnemy`'s second overload has none.
+
+### Attrition may never run in this build
+
+`ApplyAttrition` has **exactly one caller**, and it is behind
+`if (g_CCurrentGameState->field_0xDA4)` at `0x1BB3E8` in `CUnit::UpdateDaily`. That byte
+is zeroed when the game state is constructed and nothing was found that sets it.
+
+The search is not conclusive - `+0xDA4` is a common displacement and the global is loaded
+in thousands of places, so it cannot be scanned cleanly - but the shape is exactly a
+leftover development switch, zeroed at construction and gating a whole mechanic. The same
+byte also gates the transport overload check, so if it is a switch it is one over the
+end-of-day unit upkeep rather than over attrition alone.
+
+**Settle it in a game, not here**: if `$ATTRITION$` never leaves zero for an army sitting
+in hostile or unsupplied territory, the gate is never opened and whatever attrition
+players see comes from somewhere else entirely - the supply system is the obvious
+candidate.
 
 ### Why these two are averaged rather than projected
 
