@@ -74,6 +74,12 @@ if mod then
     -- neither shrinks it nor scrolls it. Hold Alt and press Up or Down over one to
     -- move through it.
     BiceLib.EffectTexts.activateTriggerScroll()
+
+    -- Tooltips
+    -- The manpower tooltip gives one figure for everything waiting to be
+    -- reinforced. This fills $LAND$, $AIR$ and $NAVY$ in MANPOWER_DETAILS_IRO
+    -- with what each of the three is short of.
+    BiceLib.Tooltips.activateManpowerBreakdown()
 end
 
 function HasLoadedBiceLibSuccessfully()
