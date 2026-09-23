@@ -6499,7 +6499,7 @@
    "signature": "Hoi3CString* __thiscall CAndTrigger::GetBlockText(CAndTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
    "comment": "Slot 9 of the trigger vftable. One line per child - `indent(depth) + icon + the child's content` - where the icon is a red or green asterisk by whether the child evaluates to `redWhen`. **The parent indents the line, icon and all**, which is why a child that indents itself again comes out adrift.\n\n**The root of a technology's requirements**: an `allow` block is an implicit `and`, so this is the call that has the whole finished tree in hand. Four BiceLib patches land in it - its header indent, its per-child indent, the depth it gives a block child, and its exit.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5D0D40",
@@ -6508,7 +6508,7 @@
    "signature": "Hoi3CString* __thiscall COrTrigger::GetBlockText(COrTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
    "comment": "Slot 9 of the trigger vftable. One line per child - `indent(depth) + icon + the child's content` - where the icon is a red or green asterisk by whether the child evaluates to `redWhen`. **The parent indents the line, icon and all**, which is why a child that indents itself again comes out adrift.\n\nUnlike the `and`, an `or` draws an icon for its own header when nothing above it has - which is why its header indent is skipped with a jump rather than by zeroing the depth the test reads.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5D1590",
@@ -6517,7 +6517,7 @@
    "signature": "Hoi3CString* __thiscall CContextTrigger::GetBlockText(CContextTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
    "comment": "The renderer behind **a plain country tag, `controller = { ... }` and `owner = { ... }`** - a scope that hands its conditions a real country to be evaluated against.\n\nThat is what makes it the exception among the scopes: BiceLib negates the depth it passes down (`0x5D20A1`), which is the engine's own way of saying \"indent this, and still colour the conditions\". The iterating scopes cannot have that - their conditions are about a province while the scope passes the country, so an asterisk there would always be red.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5DD5B0",
@@ -6526,7 +6526,7 @@
    "signature": "Hoi3CString* __thiscall CAnyOwnedProvinceTrigger::GetBlockText(CAnyOwnedProvinceTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5DCA10",
@@ -6535,7 +6535,7 @@
    "signature": "Hoi3CString* __thiscall CRegionScopeTrigger::GetBlockText(CRegionScopeTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5DCED0",
@@ -6544,7 +6544,7 @@
    "signature": "Hoi3CString* __thiscall CAnyNeighborProvinceTrigger::GetBlockText(CAnyNeighborProvinceTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5E5FD0",
@@ -6553,7 +6553,7 @@
    "signature": "Hoi3CString* __thiscall CAnyNeighborCountryTrigger::GetBlockText(CAnyNeighborCountryTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5E64F0",
@@ -6562,7 +6562,7 @@
    "signature": "Hoi3CString* __thiscall CAnyCoreTrigger::GetBlockText(CAnyCoreTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5E64C0",
@@ -6571,7 +6571,7 @@
    "signature": "Hoi3CString* __thiscall GetText(CTrigger* this, Hoi3CString* out, CEventScope* scope, int unknown1, int unknown2)",
    "comment": "**Slot 8 for every container and every scope**: `CAndTrigger` declares it and `COrTrigger`, `CNotTrigger` and all six scope triggers inherit it, because they all derive from `CAndTrigger`. It answers the empty string.\n\nThat empty answer is the whole mechanism behind how a tree is walked: a parent asks each child for its one line here, and a child with no line of its own says nothing, which is what sends the parent to the child's block renderer at slot 9 instead.\n\n`CTrigger`'s own slot 8 is `_purecall` (`0x7961D5`), so GetText is pure virtual on the base and this is the first real implementation.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5D04F4",
@@ -6580,7 +6580,7 @@
    "signature": null,
    "comment": "`je` past the leaf line to the block path, inside `CTrigger::GetBlockText`. The block path draws **neither indent nor icon** - it goes straight to the child's own slot 9 - which is why a nested `and` or `or` inside a scope used to come out with no asterisk at all.\n\n**BiceLib retargets this branch** (the condition is kept, only the destination changes) to a stub that draws the indent and the asterisk for a block child and then rejoins at `0x5D05DA`.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5D0A4F",
@@ -6589,7 +6589,7 @@
    "signature": null,
    "comment": "What an `and` passes as the depth when a child is itself a block. The game sends a constant, so a block inside a block restarted at the same level; BiceLib sends the `and`'s own depth plus one.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5D102E",
@@ -6598,7 +6598,7 @@
    "signature": null,
    "comment": "The same for an `or`, which sends its own constant - 1 rather than the `and`'s 0, which is why the two containers drifted differently.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5D20A1",
@@ -6607,7 +6607,7 @@
    "signature": null,
    "comment": "Where `CContextTrigger` hands its conditions their depth: `inc ecx`, so `depth + 1`. **BiceLib makes it `not ecx`**, which is `-(depth + 1)` exactly - the same number, carrying the engine's own flag for \"and these conditions can be coloured\". The sign is read at the top of `CTrigger::GetBlockText`, which negates it back and remembers that it did.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5D1328",
@@ -6616,7 +6616,7 @@
    "signature": null,
    "comment": "The epilogue of `CNotTrigger::GetBlockText`, which BiceLib replaces whole.\n\nA `not` flips `redWhen` and forwards to the base **with the depth unchanged**, so the base indents the condition inside it a second time - into the middle of a line the parent has already placed. No depth fixes that: the base draws the icon when the depth is 0 or arrived negative and the indent whenever it is above 0, so \"neither\" is not a value it can be given. The stub takes the leading indent off the finished text instead.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5D1F1E",
@@ -6625,7 +6625,7 @@
    "signature": null,
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5DD60B",
@@ -6634,7 +6634,7 @@
    "signature": null,
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5DCA61",
@@ -6643,7 +6643,7 @@
    "signature": null,
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5DCF25",
@@ -6652,7 +6652,7 @@
    "signature": null,
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5E6025",
@@ -6661,7 +6661,7 @@
    "signature": null,
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5E6545",
@@ -6670,7 +6670,7 @@
    "signature": null,
    "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x5D0CB0",
@@ -6679,7 +6679,7 @@
    "signature": null,
    "comment": "`mov ecx, [esp + 0xE4]`, the last instruction of `CAndTrigger::GetBlockText` before its epilogue, and the point every path through the function converges on - two branches inside it land exactly here.\n\n**BiceLib stands here to scroll a requirement tooltip too tall for the screen**: the finished text is in `esi` and the frame is still up, so lines can be taken off the front before the tooltip sees it. One instruction before the epilogue rather than over it, because the epilogue writes `fs:[0]` and reproducing that from inline assembly is a warning and a SAFESEH question nobody needs.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerScrollText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerScrollText.hpp"
   },
   {
    "rva": "0x11F39A8",
@@ -6688,7 +6688,7 @@
    "signature": null,
    "comment": "**Three spaces, and the whole of how a requirement tree is indented.** Every indent loop in every trigger renderer pushes this and 3 and appends it once per level, which is what makes the loops findable: scanning for this address is how the six scope triggers that indent themselves were found rather than guessed at.",
    "confidence": "confirmed",
-   "source": "BiceLib/Hooks/EffectText/TriggerIndentText.hpp"
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
    "rva": "0x11BA60",

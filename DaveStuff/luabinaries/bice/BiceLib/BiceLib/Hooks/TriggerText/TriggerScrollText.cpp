@@ -1,4 +1,4 @@
-#include <Hooks/EffectText/TriggerScrollText.hpp>
+#include <Hooks/TriggerText/TriggerScrollText.hpp>
 
 #include <GameClasses/GameString.hpp>
 #include <Hooks/Hooks.hpp>
@@ -256,7 +256,7 @@ namespace {
     }
 }
 
-bool Hooks::EffectText::TriggerScroll::install() {
+bool Hooks::TriggerText::TriggerScroll::install() {
     if (installedFlag) {
         return true;
     }
@@ -289,7 +289,7 @@ bool Hooks::EffectText::TriggerScroll::install() {
     return true;
 }
 
-bool Hooks::EffectText::TriggerScroll::takeWheel(int delta) {
+bool Hooks::TriggerText::TriggerScroll::takeWheel(int delta) {
     if (!installedFlag || !scrollableNow || delta == 0) {
         return false;
     }
@@ -315,10 +315,10 @@ bool Hooks::EffectText::TriggerScroll::takeWheel(int delta) {
     return true;
 }
 
-bool Hooks::EffectText::TriggerScroll::installed() {
+bool Hooks::TriggerText::TriggerScroll::installed() {
     return installedFlag;
 }
 
-const char* Hooks::EffectText::TriggerScroll::status() {
+const char* Hooks::TriggerText::TriggerScroll::status() {
     return statusText;
 }

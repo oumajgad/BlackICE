@@ -37,8 +37,8 @@
 #include <Settings.hpp>
 #include <Hooks/EffectText/KillLeaderText.hpp>
 #include <Hooks/EffectText/LoadOobText.hpp>
-#include <Hooks/EffectText/TriggerIndentText.hpp>
-#include <Hooks/EffectText/TriggerScrollText.hpp>
+#include <Hooks/TriggerText/TriggerIndentText.hpp>
+#include <Hooks/TriggerText/TriggerScrollText.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
 #include <Patches.hpp>
 
@@ -838,14 +838,14 @@ __declspec(dllexport) int activateLoadOobDetails(lua_State* L)
  * The game renders a requirement tree one line per trigger, three spaces per level, and
  * both container triggers pass a constant for their children instead of their own depth
  * plus one - so a condition inside an `and` or an `or` is drawn flush left whatever it
- * is nested in. See Hooks/EffectText/TriggerIndentText.hpp.
+ * is nested in. See Hooks/TriggerText/TriggerIndentText.hpp.
  */
 __declspec(dllexport) int activateTriggerIndent(lua_State* L)
 {
-    const bool ok = Hooks::EffectText::TriggerIndent::install();
+    const bool ok = Hooks::TriggerText::TriggerIndent::install();
     if (!ok) {
         ERROR_OUT(printf("Hook 'activateTriggerIndent' failed: %s \n",
-            Hooks::EffectText::TriggerIndent::status()));
+            Hooks::TriggerText::TriggerIndent::status()));
     }
     else {
         INFO_OUT(printf("Hook 'activateTriggerIndent' succeeded \n"));
@@ -860,14 +860,14 @@ __declspec(dllexport) int activateTriggerIndent(lua_State* L)
  *
  * Nothing about the tooltip window is touched: the text itself is shortened from the
  * front, which works because the game rebuilds it continuously while it is hovered.
- * See Hooks/EffectText/TriggerScrollText.hpp.
+ * See Hooks/TriggerText/TriggerScrollText.hpp.
  */
 __declspec(dllexport) int activateTriggerScroll(lua_State* L)
 {
-    const bool ok = Hooks::EffectText::TriggerScroll::install();
+    const bool ok = Hooks::TriggerText::TriggerScroll::install();
     if (!ok) {
         ERROR_OUT(printf("Hook 'activateTriggerScroll' failed: %s \n",
-            Hooks::EffectText::TriggerScroll::status()));
+            Hooks::TriggerText::TriggerScroll::status()));
     }
     else {
         INFO_OUT(printf("Hook 'activateTriggerScroll' succeeded \n"));

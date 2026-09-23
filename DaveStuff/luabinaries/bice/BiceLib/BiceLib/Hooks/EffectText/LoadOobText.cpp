@@ -331,7 +331,11 @@ namespace {
             || now - keptAt > 1000) {
             keptFor = path;
             keptAll = showAll;
-            kept = describe(path, scope, showAll);
+            // **A line break at the end**, because an option can have effects after this
+            // one and the game puts nothing between them: without it the next effect's
+            // sentence starts on the last line of this description. Added here rather
+            // than in describe(), which has two ways out, and cached with the rest.
+            kept = describe(path, scope, showAll) + "\n";
             keptAt = now;
         }
         Game::assignTo(out, kept.c_str());

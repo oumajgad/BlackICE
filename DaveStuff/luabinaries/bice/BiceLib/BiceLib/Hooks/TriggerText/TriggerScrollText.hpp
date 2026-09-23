@@ -50,7 +50,7 @@
  * which is what the feature is for.
  */
 namespace Hooks {
-    namespace EffectText {
+    namespace TriggerText {
         namespace TriggerScroll {
             /**
             @brief patches the exit of the `and` renderer, once; safe to call again

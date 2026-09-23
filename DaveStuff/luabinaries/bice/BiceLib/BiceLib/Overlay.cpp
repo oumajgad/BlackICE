@@ -18,7 +18,7 @@
 #include <GameState/CustomMapMode.hpp>
 #include <GameState/GameClock.hpp>
 #include <GameState/Periodics.hpp>
-#include <Hooks/EffectText/TriggerScrollText.hpp>
+#include <Hooks/TriggerText/TriggerScrollText.hpp>
 #include <GameState/OutOfMemory.hpp>
 #include <Gui/TextureStats.hpp>
 #include <MemScan.hpp>
@@ -157,9 +157,9 @@ namespace {
         // **The wheel scrolls a requirement tooltip that is too tall for the screen.**
         // Only taken while one is actually on screen and long enough to scroll, so the
         // map keeps the wheel at every other moment; see
-        // Hooks/EffectText/TriggerScrollText.hpp for how that is known.
+        // Hooks/TriggerText/TriggerScrollText.hpp for how that is known.
         if (msg == WM_MOUSEWHEEL) {
-            if (Hooks::EffectText::TriggerScroll::takeWheel(
+            if (Hooks::TriggerText::TriggerScroll::takeWheel(
                     GET_WHEEL_DELTA_WPARAM(wParam))) {
                 return 0;
             }
