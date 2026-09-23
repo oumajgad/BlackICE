@@ -93,6 +93,24 @@ def read(address, length):
     return b""
 
 
+def mapped(address):
+    """whether a virtual address is inside a section once the image is loaded
+
+    **Not the same question as `read` answering.** A section's virtual size is usually
+    larger than the bytes the file carries: `.data` ends with everything that starts out
+    zero, and the loader supplies those rather than the file. `read` returns nothing
+    there, so using it to ask "is this address real" says no to every uninitialised
+    global - `g_CCurrentGameState` among them, which is the one address in this project
+    that is certainly right.
+    """
+    for section in image().sections:
+        start = image().OPTIONAL_HEADER.ImageBase + section.VirtualAddress
+        size = max(section.Misc_VirtualSize, section.SizeOfRawData)
+        if start <= address < start + size:
+            return True
+    return False
+
+
 def engine(detail=True):
     """a 32 bit x86 decoder"""
     cs = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)

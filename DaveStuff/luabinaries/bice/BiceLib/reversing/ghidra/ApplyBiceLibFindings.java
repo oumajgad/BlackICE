@@ -634,6 +634,21 @@ public class ApplyBiceLibFindings extends GhidraScript {
 				&& marked.equals(existing.getComment())) {
 				return;                                 // already exactly this
 			}
+			// **A settled run places no fields.** When one is placed over a field that was
+			// already standing, and placed again on the next run, the two disagree about
+			// something that re-placing does not fix - and until this note existed that was
+			// invisible, because a successful placement records nothing. Say which of the
+			// three the run tripped on.
+			if (ourField(existing, comment, type) || overwrite) {
+				String differs = !fname.equals(existing.getFieldName())
+					? "named " + existing.getFieldName()
+					: !existing.getDataType().isEquivalent(type)
+						? "typed " + existing.getDataType().getDisplayName() + ", findings say "
+							+ type.getDisplayName()
+						: "same name and type, comment differs";
+				notes.add("~ " + struct.getName() + "+0x" + Integer.toHexString(offset) + " "
+					+ fname + ": " + differs);
+			}
 			// One of ours may be renamed as well as retyped: a slot the findings could not
 			// name takes the name the function has in this program, and that name changes
 			// when you change it.

@@ -1,0 +1,147 @@
+{
+ "agent": "LogRecord / TextBuilder layout",
+ "question": "Recover the LogRecord and TextBuilder layouts so the five signatures that say void* can name the class.",
+ "source": "reversing/FINDINGS-script.md",
+ "addresses": [
+  {
+   "rva": "0x2410",
+   "kind": "function",
+   "no_signature": null,
+   "name": "LogRecord::Make",
+   "signature": "LogRecord* __cdecl LogRecord::Make(LogRecord* this@ECX, Hoi3CString* file, int line, int channel)",
+   "comment": "**Builds one log record**, and first makes sure there is a sink: if `g_log_sink` (`0x17162A4`) is still null it allocates the four byte do-nothing sink whose vftable is `0x11FCEA0` and installs that, so a message logged before `InstallLogSink` is discarded rather than queued. Then calls the register-convention forwarder `LogRecord::Construct` (`0x6649D0`) with the file, the sink, the line and the channel. There is **no channel test here or anywhere after it** - every record built is flushed to the sink. `this` arrives in ECX and is returned in EAX; the three stack arguments are cleaned by the caller (bare `ret`, `add esp, 0xC` at the call site), so the convention is `__cdecl` with a register `this`, not `__thiscall`.\n\n**`file` is an `Hoi3CString*`, not a `const char*`.** The constructor hands it to `std::string::assignString` (`0x1BD0`), which takes a string, and every call site builds one first: `mov edx, 'battleplan.cpp'; lea esi,[ebp-0x74]; call std::string::fromCString` and then pushes that temporary (0x404743..0x404768).",
+   "confidence": "confirmed",
+   "revises": "the third parameter was recorded `const char* file`. The constructor at 0x6646E0 passes it straight to std::string::assignString(this=record+0x54, text, 0, -1), whose second argument project.json already types Hoi3CString*, and the call sites run the literal through std::string::fromCString first and push the resulting temporary. Typed as const char* every caller decompiles with a bogus cast.",
+   "evidence": "Read 0x402410 and 0xA646E0 end to end; the argument reaching [ebp+0x10] of Make becomes the third push to 0x401BD0 (std::string::assignString) with `push -1; push 0; push eax` and ecx = esi+0x54. Call site 0x404743-0x404768 builds the Hoi3CString with std::string::fromCString before pushing it, and LogSink::Write already takes `Hoi3CString* file`. Shown wrong by any call site that pushes a string literal address directly as Make's first stack argument - none of the ones inspected (0x404768, the 0x40D726 chain, 0x4031C8) does."
+  },
+  {
+   "rva": "0x24B0",
+   "kind": "function",
+   "no_signature": null,
+   "name": "LogRecord::Flush",
+   "signature": "void __cdecl LogRecord::Flush(LogRecord* record@EAX)",
+   "comment": "**The complete destructor of the record, and where a log line is decided.** Every message in the game arrives here in a record holding its file, line and channel, and this is what does or does not write it - `[persistent.cpp:39]`, `[countryhistory.cpp:450]` and the 597KB of setup.log all pass through it. Takes the record in eax, pushes `record+0x78` (the `std::basic_ios` virtual base) into `LogRecord::FlushAndDestruct`, then puts the `ios_base` vftable `0x15A7B8C` at `record+0x78` and runs `~ios_base` (`0x794BAE`). Nothing is returned: eax at the `ret` is whatever `~ios_base` left there and no caller reads it. **The one place worth hooking to see everything the engine complains about**, including the channels that produce no file.",
+   "confidence": "confirmed",
+   "revises": "`void* __cdecl LogRecord::Flush(void* record@EAX)` named the class but typed its receiver void*, so every field reached through it decompiled as an offset into nothing - and it claimed a return value the function does not set.",
+   "evidence": "The whole body is ten instructions at 0x4024B0-0x4024CA: eax is only ever used as `lea esi,[eax+0x78]`, which is the record's vbtable offset (image.read(0x15FCE98) is {0, 0x78}), and the last thing before `ret` is `call 0xB94BAE` with esi pushed, so eax is not set on the way out. Shown wrong by a call site that uses the result of 0x4024B0 - 0x4047A5 and the other inline tails discard it."
+  },
+  {
+   "rva": "0x6646E0",
+   "kind": "function",
+   "no_signature": null,
+   "name": "LogRecord::LogRecord",
+   "signature": "LogRecord* __stdcall LogRecord::LogRecord(LogRecord* record, LogSink* sink, Hoi3CString* file, int line, int channel)",
+   "comment": "Builds the object one log line is assembled in. In order: the vbtable pointer `0x15FCE98` at `+0`, the `ios_base` vftable `0x15A7B9C` at `+0x78`, `std::ostringstream::ostringstream(record, 2 /*ios::out*/, 0)` at `0x65BBA0` for the stream half, the `basic_ios` vftable `0x15FCE94` written through the vbtable, then **the sink at `+0x50`**, **the source file at `+0x54`** (an `Hoi3CString`, filled by `std::string::assignString(record+0x54, file, 0, -1)`), **the line at `+0x70`** and **the channel at `+0x74`**. The message is accumulated into the stream part afterwards by `operator<<`. `ret 0x14`; the record comes back in eax. Reached from `LogRecord::Make` through `LogRecord::Construct` (`0x6649D0`), which is what supplies the five stack arguments.",
+   "confidence": "confirmed",
+   "revises": "record and sink were `void*` and file was `const char*`. The first two are now typed and the third corrected: it is passed to std::string::assignString, which takes an Hoi3CString*.",
+   "evidence": "Disassembled 0xA646E0-0xA6477F in full: the writes are `mov [esi],0x15FCE98`, `mov [esi+0x78],0x15A7B9C`, `mov [esi+0x50],edx` (arg2), `lea ecx,[esi+0x54]` then assignString(arg3), `mov [esi+0x70],ecx` (arg4), `mov [esi+0x74],edx` (arg5), and `ret 0x14` = five stack arguments cleaned. LogSink::Write, already recorded, reads exactly those four back out at record+0x74/+0x54/+0x70. Shown wrong if 0x401BD0 is not std::string::assignString, or if the vbtable at 0x15FCE98 does not read {0, 0x78}."
+  },
+  {
+   "rva": "0x6647D0",
+   "kind": "function",
+   "no_signature": null,
+   "name": "LogRecord::FlushAndDestruct",
+   "signature": "void __stdcall LogRecord::FlushAndDestruct(LogRecordIosBase* iosBase)",
+   "comment": "The body of `~LogRecord` - the destructor of the ostringstream-derived temporary every log line in the game is built into, inlined at 679 call sites. **Its argument is not the record: it is `record + 0x78`**, the `std::basic_ios` virtual base, and every field is reached at a negative displacement from it, so a reader has to subtract 0x78 to get back to the object. `LogRecordIosBase` is a deliberately separate type for that sub-object rather than `LogRecord*`, because a `LogRecord*` here would render `record+0x50` as `-0x28` into the wrong struct.\n\nIt (1) writes the basic_ios vftable 0x15FCE94 through the vbtable at `record+0`, (2) calls `std::ostringstream::str` (`0x65BD10`) to pull the message out of the stringbuf at `record+4`, (3) copies that into a second local string with `std::string::assign`, (4) makes the sink call `(*(*[record+0x50]))[1](channel=[record+0x74], file=record+0x54, line=[record+0x70], message=&text)` - slot 1 of the sink at `record+0x50`, which FINDINGS-script.md already records as `LogSink::Write(channel, file, line, message)` with exactly that field layout, (5) frees both temporaries and the file string at `record+0x54`, and (6) tears the stream back down, vftable 0x15FC550 for the ios base, 0x15F2B34 on the stringbuf at `record+4` before 0x6D1360 and 0x10CD90 destroy it, and 0x15A7B94 last. It does **not** run the final `ios_base` destructor; the caller does, which is why `LogRecord::Flush` at 0x24B0 is only `lea esi,[eax+0x78]; push esi; call this; mov [esi],0x15A7B8C; call 0x794BAE` and why all 679 inline sites repeat that same two-step tail. This is the reason the two targets share so many *::LoadKey callers without sharing all of them: 0x65A7A0 builds the message, this one emits it.",
+   "confidence": "confirmed",
+   "revises": "the parameter was `void*`. It is now typed to the virtual-base sub-object it really is, which is what puts the function in LogRecord's namespace for checkSignatures without claiming the pointer is a LogRecord*.",
+   "evidence": "Disassembled 0xA647D0-0xA64913. edi = [ebp+8] throughout and every access is `[edi-0x78]` (vbptr), `[edi-0x74]` (stringbuf, = record+4), `[edi-0x28]` (sink, = record+0x50), `[edi-0x24]` (file, = record+0x54), `[edi-8]` (line, = record+0x70), `[edi-4]` (channel, = record+0x74). `ret 4`. Shown wrong if any caller passes the record itself: 0x4024B1 and the inline tails all do `lea esi,[eax+0x78]` first."
+  },
+  {
+   "rva": "0x6649D0",
+   "kind": "function",
+   "no_signature": null,
+   "name": "LogRecord::Construct",
+   "signature": "LogRecord* __stdcall LogRecord::Construct(LogRecord* record@ESI, int line@ECX, int channel@EAX, LogSink* sink, Hoi3CString* file) @EAX",
+   "comment": "The register-convention forwarder LTCG left between `LogRecord::Make` and the constructor at `0x6646E0`: it takes the record in esi, the line in ecx and the channel in eax, the sink and the file on the stack, and pushes all five in the order the `__stdcall` constructor wants (`record, sink, file, line, channel`). Returns the record in eax. `ret 8` - it cleans only the two it was given on the stack.",
+   "confidence": "confirmed",
+   "evidence": "Ten instructions at 0xA649D0-0xA649F2: `push eax; push ecx; push edx(=[ebp+0xC]); push eax(=[ebp+8]); push esi; call 0xA646E0` maps one-to-one onto the constructor's [ebp+8]..[ebp+0x18], and the register loads in LogRecord::Make (0x40248B-0x402496) fix which of Make's arguments each register holds. Shown wrong if 0xA646E0's argument order is not (record, sink, file, line, channel) - that order is read off the writes to +0x50/+0x54/+0x70/+0x74."
+  },
+  {
+   "rva": "0x664790",
+   "kind": "function",
+   "no_signature": null,
+   "name": "LogRecord::ScalarDeletingDestructor",
+   "signature": "LogRecord* __thiscall LogRecord::ScalarDeletingDestructor(LogRecordIosBase* this, int flags) @EAX",
+   "comment": "MSVC's `??_G` for the record: `this` arrives as `record+0x78` (the `basic_ios` virtual base, the same thing `FlushAndDestruct` takes), it recovers the record with `lea edi,[ecx-0x78]`, runs `LogRecord::FlushAndDestruct` and then `~ios_base` (`0x794BAE`), and frees the record only when bit 0 of `flags` is set. `ret 4`, record back in eax. Sits in no virtual table - `vtable.py --holding 0xA64790` finds none - so nothing dispatches to it; it is the out-of-line copy the compiler emitted anyway.",
+   "confidence": "confirmed",
+   "evidence": "Fourteen instructions at 0xA64790-0xA647C4; `test byte ptr [ebp+8], 1` before `call 0xB95F9B` (free) is the textbook scalar-deleting-destructor flag, and the two calls before it are 0xA647D0 and 0xB94BAE, exactly the pair LogRecord::Flush makes. Shown wrong if 0xB95F9B is not free - project.json already names it so."
+  },
+  {
+   "rva": "0x65BBA0",
+   "kind": "function",
+   "no_signature": null,
+   "name": "std::ostringstream::ostringstream",
+   "signature": "std::ostringstream* __stdcall std::ostringstream::ostringstream(std::ostringstream* stream, int mode, int isMostDerived)",
+   "comment": "`std::basic_ostringstream<char>`'s constructor, shared by the plain stream and by `LogRecord`, which is why it looks the virtual base offset up instead of using a constant: `esi = stream + *(int*)(*stream + 4)` is the `basic_ios`, so the same body works whether that lives at `+0x50` (a plain ostringstream) or at `+0x78` (a LogRecord). When `isMostDerived` is non-zero it also writes its own vbtable `0x160285C` at `+0` and the `ios_base` vftable `0x15A7B9C` at `+0x50`; `LogRecord::LogRecord` passes 0 because it has already written its own. Then `ios_base::_Init` (`0xC7FA0`), `basic_ios._Mystrbuf = stream+4`, `_Tiestr = 0`, `_Fillch = widen(' ')`, the `basic_ios` vftable `0x15FC550`, the stringbuf constructor at `0x10F0E0` with vftable `0x15F2B34`, and finally the stringbuf's `_Seekhigh = 0` and `_Mystate = mode|ios::out` at `stream+0x40`/`stream+0x44`. `ret 0xC`.\n\n**This is what fixes the class's field boundaries:** for a plain ostringstream the virtual base sits at `+0x50`, so the vbptr plus the `basic_stringbuf` occupy exactly `0..0x4F`, and `LogRecord`'s own four fields are what push its `basic_ios` out to `+0x78`.",
+   "confidence": "confirmed",
+   "evidence": "Disassembled 0xA5BBA0-0xA5BC9A. Only six callers (findRefs --callers), one of which is LogRecord's constructor; the `mov [edi],0x160285C / mov [edi+0x50],0x15A7B9C` pair under `cmp [ebp+0x10],0` is the plain class's own vbtable, whose second dword is 0x50. `ret 0xC` = three stack arguments. Shown wrong if that vbtable's second dword is not 0x50, or if 0x4C7FA0 is not ios_base::_Init."
+  },
+  {
+   "rva": "0x65BD10",
+   "kind": "function",
+   "no_signature": null,
+   "name": "std::ostringstream::str",
+   "signature": "Hoi3CString* __cdecl std::ostringstream::str(std::ostringstream* stream@ECX, Hoi3CString* out@EAX) @EAX",
+   "comment": "`ostringstream::str()`, register convention: the stream in ecx, the string to fill in eax. All it does is `add ecx,4` to reach the `basic_stringbuf` and call `0x520940`, then answer the out string. Bare `ret`, nothing on the stack. `LogRecord::FlushAndDestruct` calls this to get the accumulated message before handing it to the sink.",
+   "confidence": "confirmed",
+   "evidence": "Thirteen instructions at 0xA5BD10-0xA5BD2C: `mov esi,eax; add ecx,4; call 0x920940; mov eax,esi; ret`. The caller at 0xA6480C passes ecx = record (not record+4) and eax = a local string that is immediately read with the `capacity >= 0x10 ? *p : p` c_str idiom and then strlen'd. Shown wrong if 0x920940 turns out not to be basic_stringbuf::str - it has not been read here, and is listed in frontier."
+  },
+  {
+   "rva": "0x65CC70",
+   "kind": "function",
+   "no_signature": null,
+   "name": "std::string::concat",
+   "signature": "Hoi3CString* __cdecl std::string::concat(Hoi3CString* out, Hoi3CString* left, Hoi3CString* right) @EAX",
+   "comment": "The out-of-line body of `std::operator+(const std::string&, const std::string&)`. It tidies `out` to the empty state (`_Myres = 0xF`, `_Mysize = 0`, `out[0] = 0`), reserves `left.length + right.length` through `0x1D50`, then `appendString(out, left, 0, -1)` and `appendString(out, right, 0, -1)`. Three stack arguments, bare `ret`, `out` back in eax. This is what `std::string::operatorPlus` (`0x65B0D0`) calls to do the actual work.",
+   "confidence": "confirmed",
+   "evidence": "Disassembled 0xA5CC70-0xA5CD1E. The two `push -1; push 0; push <arg>; mov ecx,esi; call 0x433E30` pairs are std::string::appendString, which project.json records as `(this, text, from, count)` with `from 0, count -1` meaning the whole of it; the length arithmetic adds `[left+0x10]` and `[right+0x10]`, the recorded Hoi3CString.length. Shown wrong if 0x433E30 is not appendString."
+  },
+  {
+   "rva": "0x65B0D0",
+   "kind": "function",
+   "no_signature": null,
+   "name": "std::string::operatorPlus",
+   "signature": "Hoi3CString* __thiscall std::string::operatorPlus(Hoi3CString* this, Hoi3CString* out@ESI, Hoi3CString* right@stack:4) @EAX",
+   "comment": "**`std::operator+(const std::string&, const std::string&)`, in its named-return-value form** - previously recorded as `TextBuilder::Append`. There is no TextBuilder: `ecx` is the left-hand string, not a builder object. It calls `std::string::concat` (`0x65CC70`) into a local temporary, tidies `out` (the NRV slot, in esi) to empty and `assignString`s the temporary into it, frees the temporary's heap buffer when its capacity reached 0x10, and answers `out` in eax. `ret 4`.\n\nCall sites chain it exactly the way `a + b + c` compiles: `std::string::operatorPlusChars` produces the first temporary in eax, that becomes this function's `ecx`, and a fresh stack slot is handed in esi for the result (0x40D70E-0x40D726). The `\\xa7Y...\\xa7W` colour runs the old name described are just one of the things callers happen to concatenate.",
+   "confidence": "confirmed",
+   "replaces": "TextBuilder::Append",
+   "revises": "TextBuilder is not a class. `this@ECX` is an Hoi3CString - the left operand - and the function is the string `operator+`. Recorded as a method of a made-up class, every field access through that pointer decompiles as an offset into nothing, and the name suggests a builder object that does not exist.",
+   "evidence": "Disassembled 0xA5B0D0-0xA5B148: ecx is passed straight through to 0xA5CC70 as the `left` argument of a concat that reads `[left+0x10]` (Hoi3CString.length), and esi is written with `[esi+0x14]=0xF; [esi+0x10]=0; [esi]=0` - the exact three-store tidy that project.json's Hoi3CString and std::string::fromCString already describe. At call site 0x404717-0x4047B2 the ecx/out string at [ebp-0x58] is afterwards read with `cmp [ebp-0x44],0x10` (capacity at +0x14), the c_str idiom on an Hoi3CString. Shown wrong by any call site where the ecx operand is not later used as a string, or where a vftable is written into it; none of 0x4014FF, 0x40D726, 0x40D8AF, 0x4031C8 does."
+  },
+  {
+   "rva": "0x65B150",
+   "kind": "function",
+   "no_signature": null,
+   "name": "std::string::operatorPlusChars",
+   "signature": "Hoi3CString* __cdecl std::string::operatorPlusChars(Hoi3CString* out@ECX, const char* left@EDX, Hoi3CString* right@stack:4) @EAX",
+   "comment": "**`std::operator+(const char*, const std::string&)`** - previously recorded as `TextBuilder::Begin`. There is no TextBuilder: `ecx` is the string the result is built into (the named-return-value slot), `edx` is the literal on the left, and the string on the right is pushed. It inlines `strlen` on `edx`, builds a local Hoi3CString from it with `std::string::assign` (`0xA160`), calls `std::string::operatorPlus` (`0x65B0D0`) with that temporary as the left operand and `out` still in esi, frees the temporary and answers `out` in eax. **The caller cleans the stack** (bare `ret`, `add esp, 4` at the call site), which is why this is written as cdecl with the registers spelled out rather than as fastcall.\n\nThis is the head of every `\"literal\" + str + ...` chain in the game, including the `\"\\xa7Y\" + name + \"\\xa7W\"` colour runs the old name was taken from and the `\"File exception: \" + what()` at 0x404723.",
+   "confidence": "confirmed",
+   "replaces": "TextBuilder::Begin",
+   "revises": "TextBuilder is not a class, and `colour` was the wrong reading of edx: it is the left operand of a string operator+, a colour code only at some call sites. `this@ECX` is the Hoi3CString the result is built into.",
+   "evidence": "Disassembled 0xA5B150-0xA5B1CD: `mov esi,ecx` at entry and `mov eax,esi` at exit, with nothing in between touching ecx as an object - the only writes to it come from 0xA5B0D0, which writes it as a string. The local at [ebp-0x2C] is built with the same inline strlen + 0x40A160 that std::string::fromCString uses, and is freed with the `capacity >= 0x10` test. At 0x404723 edx is 'File exception: ' and at 0x40D6FF it is an unrelated literal, so edx is not a colour code. Shown wrong by a call site where ecx is not afterwards used as a string."
+  },
+  {
+   "rva": "0xC7FA0",
+   "kind": "function",
+   "no_signature": null,
+   "name": "std::ios_base::_Init",
+   "signature": "void __cdecl std::ios_base::_Init(std::ios_base* base@ECX)",
+   "comment": "`ios_base::_Init()`: zeroes `+8`, `_Except` (`+0x10`), sets `_Fmtfl = 0x201` (`skipws|dec`) at `+0x14`, `_Prec = 6` at `+0x18`/`+0x1C` (a `streamsize` is `__int64` here), `_Wide = 0` at `+0x20`/`+0x24`, `_Arr = _Calls = 0` at `+0x28`/`+0x2C`, calls `std::ios_base::clear(0, false)` for `_Mystate` at `+0xC`, and finally allocates a four-byte `locale` into `_Ploc` at `+0x30`. `ecx` is the receiver, nothing is on the stack, bare `ret`.\n\n**`+0x30` is the highest field it writes**, which together with `_Mystrbuf` at `+0x38` is what bounds `sizeof(ios_base)` at 0x34..0x38.",
+   "confidence": "confirmed",
+   "evidence": "Disassembled 0x4C7FA0-0x4C802C; every store is a constant into an ecx-relative slot between 8 and 0x30 and the only call before the allocator is 0x4020B0, which project.json already names std::ios_base::clear and which writes [ecx+0xC]. The +0x14 value 0x201 and the +0x18 value 6 are the standard initial fmtflags and precision. Shown wrong if a caller of 0x4C7FA0 passes something that is not an ios_base."
+  }
+ ],
+ "frontier": [
+  "0x520940",
+  "0x10F0E0",
+  "0x10F2E0",
+  "0x10CD90",
+  "0x6D1360",
+  "0x1D50",
+  "0x794F61",
+  "0x79504A",
+  "0x40C3C0"
+ ],
+ "notes": "TWO STRUCTS THAT COULD NOT BE DELIVERED AS struct_fields.\n\nmergeFindings places fields into a struct that is already in project.json's `structs`\nlist, and neither LogRecord nor TextBuilder is there, so a struct_fields entry would be\nrefused with `no such struct in project.json`. The layouts are recorded here instead;\nwhoever adds the two struct shells can lift them straight in. (`LogRecord*` is already\nused as a type in project.json signatures without a struct behind it, which is why the\naddress entries above can name it even so.)\n\n1. TextBuilder DOES NOT EXIST - there is no layout to record.\n   0x65B0D0 and 0x65B150 are two std::string operator+ overloads. Their `this@ECX` is an\n   Hoi3CString - the left operand at 0x65B0D0, the named-return-value slot at 0x65B150 -\n   and the `out@ESI` is another one. Both are renamed above. The third member of the\n   family, the plain out-parameter form std::string::concat, is at 0x65CC70.\n\n2. LogRecord - confirmed against hoi3_tfh.exe, size inferred.\n   It is std::basic_ostringstream<char> with four fields added, so its std::basic_ios\n   virtual base is pushed from +0x50, where a plain ostringstream keeps it, to +0x78.\n\n   offset  type                  name        how it was established\n   0x00    void**                vbptr       = 0x15FCE98; image.read says that vbtable\n                                             is {0x00000000, 0x00000078}. CONFIRMED.\n   0x04    std::basic_stringbuf  buf         0x4C bytes, 0x04..0x4F. Constructed by\n                                             0x65BBA0, vftable 0x15F2B34, destroyed by\n                                             0x6D1360 / 0x10CD90. CONFIRMED.\n     0x40  char*                 buf._Seekhigh   written 0 at the end of 0x65BBA0.\n     0x44  int                   buf._Mystate    = mode|ios::out, same place.\n   0x50    LogSink*              sink        ctor arg 2; FlushAndDestruct calls slot 1\n                                             of its vftable = LogSink::Write. CONFIRMED.\n   0x54    Hoi3CString           file        0x1C bytes; the ctor tidies it and\n                                             assignStrings ctor arg 3 into it; freed at\n                                             0xA648A5. CONFIRMED.\n   0x70    int                   line        ctor arg 4; read at [edi-8] for the sink\n                                             call. CONFIRMED.\n   0x74    int                   channel     ctor arg 5; read at [edi-4]. CONFIRMED.\n   0x78    std::basic_ios        ios         virtual base, 0x44 bytes. vftable 0x15FCE94\n                                             in use; 0x15A7B9C, 0x15FC550, 0x15A7B94 and\n                                             0x15A7B8C during construction and teardown.\n                                             Offset CONFIRMED, size INFERRED.\n     +0x0C _Mystate    +0x10 _Except   +0x14 _Fmtfl   +0x18 _Prec (__int64)\n     +0x20 _Wide (__int64)  +0x28 _Arr  +0x2C _Calls  +0x30 _Ploc\n     +0x38 _Mystrbuf   +0x3C _Tiestr   +0x40 _Fillch (char)\n   total   0xBC                                      INFERRED - see below.\n\n   WHAT IS NOT SETTLED: the total size, because sizeof(std::basic_ios<char>) is not\n   pinned. _Fillch at +0x40 is a char and is the last member anything writes, so the\n   size is at least 0x41 and 0x44 by four-byte alignment, giving 0xBC. The upper bound\n   is real but loose: in 0x70B3B0 a plain ostringstream local sits at alignedEbp-0xA8\n   (two independent readings, `lea eax,[esp+0x140]` at 0xB0B4DA and `lea ecx,[esp+0x138]`\n   at 0xB0B574 with two fewer pushes), and the SEH frame occupies alignedEbp-0xC upwards,\n   so sizeof(ostringstream) <= 0x9C and sizeof(basic_ios) <= 0x4C. Anything from 0x44 to\n   0x4C fits; 0x44 is chosen because nothing reads past +0x40. A heap-allocated\n   ostringstream anywhere in the image would settle it - there is none, all six callers\n   of 0x65BBA0 use stack locals.\n\n   The 0x50 boundary is not a guess. 0x65BBA0 is shared between LogRecord and the plain\n   ostringstream, and for the plain one it writes that class's own vbtable 0x160285C,\n   whose second entry is 0x50. So vbptr(4) + stringbuf = 0x50 and the stringbuf is\n   exactly 0x4C, and LogRecord's four extra fields are 4 + 0x1C + 4 + 4 = 0x28, which\n   takes 0x50 to 0x78. Every byte between 0 and 0x78 is accounted for, with no holes.\n\n   Hoi3CString is 0x1C wide here, not the 0x18 its three known fields span: 0x54 + 0x1C\n   = 0x70 exactly, and the 0x1C stride from a string field to the next field holds in 20\n   of project.json's own structs (CCountry.oob_file, CLeader.name, CBuilding.name,\n   CFlag.name, CWar.name, CTechnologyCategory.key, ...).\n\n   LogRecordIosBase, used in the FlushAndDestruct and ScalarDeletingDestructor\n   signatures above, is the name for the 0x44-byte basic_ios sub-object at +0x78. It is\n   deliberately not LogRecord*: both functions are handed record+0x78 and reach every\n   field at a negative displacement, so typing it LogRecord* would be a lie that\n   decompiles no better than void* did."
+}

@@ -75,7 +75,11 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 INCOMING = os.path.join(HERE, "..", "findings", "incoming")
 MERGED = os.path.join(HERE, "..", "findings", "merged")
 
-ADDRESS_KEYS = ("rva", "kind", "name", "signature", "comment", "confidence", "source")
+# `no_signature` is here because it was not: the merge demanded a reason and then
+# dropped it, so project.json held functions with neither a signature nor any
+# record of why. The reason is the finding, as much as the signature would be.
+ADDRESS_KEYS = ("rva", "kind", "name", "signature", "no_signature", "comment",
+                "confidence", "source")
 FIELD_KEYS = ("offset", "name", "type", "comment", "source")
 KINDS = ("function", "instruction", "vftable", "global", "string", "jumptable")
 CONFIDENCES = ("confirmed", "inferred")
@@ -158,7 +162,11 @@ def problems(document, files):
             # .text runs well past the image base and 0x680690 is a perfectly good rva.
             # Where both readings land in the image, leave it to buildFindings, which
             # checks the entry against the executable itself.
-            if not image.read(image.toVa(rva), 1) and image.read(rva, 1):
+            # `mapped`, not `read`: a global in the zero-filled tail of .data has no bytes
+            # in the file, so asking whether it is readable refuses every one of them -
+            # including g_CCurrentGameState, which is the address this project is surest
+            # of. It refused 20 entries project.json already holds.
+            if not image.mapped(image.toVa(rva)) and image.mapped(rva):
                 said.append("%s: 0x%X is only inside the image read as a virtual "
                             "address - subtract the image base" % (where, rva))
 
@@ -166,7 +174,7 @@ def problems(document, files):
             tables = inTables().get(image.toVa(rva), [])
             if tables and len(tables) <= FOLDED:
                 owners = sorted({owner for owner, _ in tables})
-                if "::" not in name:
+                if "::" not in name and not incoming.get("slots_noted"):
                     said.append("%s: that address is slot %d of %s, so the name wants "
                                 "the class on it" % (where, tables[0][1],
                                                      ", ".join(owners)))
@@ -178,16 +186,35 @@ def problems(document, files):
                                 % (where, len(tables), "" if len(tables) == 1 else "s",
                                    ", ".join("%s slot %d" % (o, sl)
                                              for o, sl in sorted(tables))))
-            elif len(tables) > FOLDED:
+            elif len(tables) > FOLDED and not related({o for o, _ in tables}) \
+                    and "::" in name:
+                # A class-free name here is the right answer, not a problem: the point of
+                # refusing was to stop one of the 38 classes being singled out.
                 said.append("%s: that body is in %d virtual tables, so the linker folded "
                             "it - it cannot be named for any one class" % (where, len(tables)))
 
-            if name in byName and byName[name] != rva:
-                said.append("%s: project.json already gives that name to 0x%X"
-                            % (where, byName[name]))
-            if rva in byRva and byRva[rva] != name:
-                said.append("%s: project.json already calls 0x%X %s"
-                            % (where, rva, byRva[rva]))
+            # `revises` is how an entry says it means to change something already
+            # recorded. Without it a name or address already spoken for is a collision;
+            # with it, it is the point. Silently skipping - which this did - loses the
+            # correction and says nothing, and both agents who hit it noticed only
+            # because they went looking.
+            have = existing(document, entry)
+            if entry.get("revises"):
+                if have is None:
+                    said.append("%s: revises nothing - no entry has that name or address"
+                                % where)
+                elif not differs(have, entry):
+                    said.append("%s: revises an entry it does not change" % where)
+            else:
+                if name in byName and byName[name] != rva:
+                    said.append("%s: project.json already gives that name to 0x%X - say "
+                                "revises to move it" % (where, byName[name]))
+                if rva in byRva and byRva[rva] != name:
+                    said.append("%s: project.json already calls 0x%X %s - say revises to "
+                                "rename it" % (where, rva, byRva[rva]))
+                if have is not None and differs(have, entry):
+                    said.append("%s: project.json already records that, differently - say "
+                                "revises, with why" % where)
             if name in claimedName and claimedName[name] != (rva, who):
                 said.append("%s: %s also names it, at 0x%X"
                             % (where, claimedName[name][1], claimedName[name][0]))
@@ -214,11 +241,67 @@ def problems(document, files):
     return said
 
 
-def alreadyThere(document, entry):
+def existing(document, entry):
+    """the entry in project.json this one would change
+
+    By `replaces` where it says so, then by name, then by address. The first is for a
+    correction that changes the name as well as the address - a folded body whose class
+    name never belonged to it - where nothing else connects the two records.
+    """
+    named = entry.get("replaces")
+    if named:
+        for have in document["addresses"]:
+            if have["name"] == named:
+                return have
+        return None
     for have in document["addresses"]:
-        if have["name"] == entry["name"] and int(have["rva"], 16) == int(entry["rva"], 16):
+        if have["name"] == entry["name"]:
+            return have
+    for have in document["addresses"]:
+        if int(have["rva"], 16) == int(entry["rva"], 16):
+            return have
+    return None
+
+
+def differs(have, entry):
+    """whether an incoming entry says anything new about one already recorded"""
+    for key in ("rva", "kind", "name", "signature", "comment", "confidence"):
+        mine, theirs = have.get(key), entry.get(key)
+        if key == "rva" and mine and theirs:
+            if int(mine, 16) != int(theirs, 16):
+                return True
+            continue
+        if (mine or "") != (theirs or ""):
             return True
     return False
+
+
+def ancestors(name, seen=None):
+    """a class and everything it derives from, transitively"""
+    seen = seen if seen is not None else set()
+    if name in seen:
+        return seen
+    seen.add(name)
+    for base in (hoi3.classes().get(name) or {}).get("bases") or []:
+        ancestors(base["name"], seen)
+    return seen
+
+
+def related(names):
+    """whether every one of these classes shares an ancestor with the others
+
+    A body in many tables is usually one the linker folded - `xor eax,eax; ret` is in 189
+    of them - but a virtual a base declares is in its own table and every heir's, and
+    that is inheritance rather than folding. CRelation's LoadKey is in nine: itself and
+    its eight subclasses.
+    """
+    common = None
+    for name in names:
+        chain = ancestors(name)
+        common = chain if common is None else (common & chain)
+        if not common:
+            return False
+    return True
 
 
 def indent(entry, spaces):
@@ -226,19 +309,37 @@ def indent(entry, spaces):
     return "\n".join(" " * spaces + line for line in text.split("\n"))
 
 
+def replaceEntry(raw, name, text):
+    """swap the whole block of the address entry called `name` for `text`
+
+    Keys sit three spaces in and a struct field's `name` sits five, so the marker below
+    only ever matches an address entry.
+    """
+    marker = '   "name": "%s",\n' % name
+    assert raw.count(marker) == 1, "expected exactly one entry named %s" % name
+    at = raw.index(marker)
+    start = raw.rindex("\n  {\n", 0, at) + 1
+    end = raw.index("\n  }", at) + len("\n  }")
+    return raw[:start] + text.lstrip("\n") + raw[end:]
+
+
 def land(files):
     raw = io.open(PROJECT, encoding="utf-8").read()
     document = load()
     addresses = []
+    revisions = []
     fields = []
 
     for path, incoming in files:
         for entry in incoming.get("addresses", []):
-            if alreadyThere(document, entry):
-                continue
             clean = {k: entry.get(k) for k in ADDRESS_KEYS}
             clean["source"] = entry.get("source") or incoming["source"]
-            addresses.append(clean)
+            have = existing(document, entry)
+            if have is None:
+                addresses.append(clean)
+            elif entry.get("revises"):
+                revisions.append((have["name"], clean))
+            # anything else was refused by problems() before we got here
         for field in incoming.get("struct_fields", []):
             clean = {k: field.get(k) for k in FIELD_KEYS}
             clean["source"] = field.get("source") or incoming["source"]
@@ -251,12 +352,36 @@ def land(files):
 
     for klass, entries in slots.items():
         anchor = '  "%s": {\n' % klass
-        if raw.count(anchor) != 1:
-            raise SystemExit("vftable_slots for %s is not in the plain shape this can "
-                             "edit - add it by hand" % klass)
-        added = "".join('   "%s": "%s",\n' % (slot, name)
-                        for slot, name in sorted(entries.items(), key=lambda kv: int(kv[0])))
-        raw = raw.replace(anchor, anchor + added, 1)
+        if raw.count(anchor) > 1:
+            raise SystemExit("vftable_slots names %s more than once - fix that by hand"
+                             % klass)
+        # A slot is either a bare name or the richer {name, signature} that CPersistent
+        # and CTrigger already use and that the apply script types the slot from. `"%s"`
+        # on the second wrote a Python repr into the file as a string, which the apply
+        # then used verbatim as the field name - and since Ghidra turns the spaces in it
+        # into underscores, the name never compared equal to itself and the run re-placed
+        # it forever. json.dumps spells both correctly.
+        added = "".join('   "%s": %s,\n' % (slot, json.dumps(value, ensure_ascii=True))
+                        for slot, value in sorted(entries.items(),
+                                                  key=lambda kv: int(kv[0])))
+        if raw.count(anchor) == 1:
+            raw = raw.replace(anchor, anchor + added, 1)
+        else:
+            # First slot recorded for this class. Aborting the whole wave over a missing
+            # block, which is what this did, punishes exactly the agent that did the
+            # extra work of checking its function against the tables.
+            opening = ' "vftable_slots": {\n'
+            if raw.count(opening) != 1:
+                raise SystemExit("could not find the vftable_slots block")
+            # `added` ends in a comma, which is right when the block it joins already
+            # has entries under it and invalid JSON when it is the whole of a new one.
+            # That broke project.json on the first wave that recorded a slot for a class
+            # with no block, which is the case this branch exists to handle.
+            raw = raw.replace(opening,
+                              opening + anchor + added.rstrip(",\n") + "\n  },\n", 1)
+
+    for name, entry in revisions:
+        raw = replaceEntry(raw, name, indent(entry, 2))
 
     if addresses:
         close = "\n ],\n \"structs\": ["

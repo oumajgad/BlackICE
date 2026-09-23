@@ -80,6 +80,22 @@ if mod then
     -- reinforced. This fills $LAND$, $AIR$ and $NAVY$ in MANPOWER_DETAILS_IRO
     -- with what each of the three is short of.
     BiceLib.Tooltips.activateManpowerBreakdown()
+
+    -- Reverse engineering. Both are workbench tools and both are off here. Each reads a
+    -- file beside the DLL that the mod does not ship; the templates are in the BiceLib
+    -- source under reversing/probes, and using one means copying it into this folder and
+    -- uncommenting the line below it.
+
+    -- Counts how often the game reaches each address named in BiceLibCounters.txt, to
+    -- BiceLibCounters.csv, one row a game day. It hooks whatever that file names, so
+    -- treat its first run as a test. Answers "does the game ever go here", which the
+    -- disassembly cannot.
+    -- BiceLib.Reversing.activateCounters()
+
+    -- Records what the game state fields named in BiceLibWatch.txt hold, to
+    -- BiceLibWatch.csv, whenever one changes. Hooks nothing - one pointer read a frame.
+    -- It confirmed in_game at +0xDA4 and read the supply path option at +0xC9C.
+    -- BiceLib.Reversing.activateWatch()
 end
 
 function HasLoadedBiceLibSuccessfully()

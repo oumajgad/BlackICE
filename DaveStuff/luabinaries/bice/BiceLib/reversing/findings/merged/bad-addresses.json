@@ -1,0 +1,115 @@
+{
+ "agent": "bad-addresses",
+ "question": "Nine entries in project.json whose rva points into the middle of a function rather than at its start: find the real function start for each, and say whether the recorded name belongs to that function at all.",
+ "source": "reversing/FINDINGS-script.md",
+ "addresses": [
+  {
+   "rva": "0x2410",
+   "kind": "function",
+   "name": "LogRecord::Make",
+   "signature": "LogRecord* __cdecl LogRecord::Make(LogRecord* this@ECX, const char* file, int line, int channel)",
+   "comment": "**Builds one log record**, and first makes sure there is a sink: if `g_log_sink` (`0x17162A4`) is still null it allocates the four byte do-nothing sink whose vftable is `0x11FCEA0` and installs that, so a message logged before `InstallLogSink` is discarded rather than queued. Then calls the record's constructor forwarder at `0x6649D0` with the file, the sink and the line. There is **no channel test here or anywhere after it** - every record built is flushed to the sink. `this` arrives in ECX and is returned in EAX; the three stack arguments are cleaned by the caller (bare `ret`, `add esp, 0xC` at the call site), so the convention is `__cdecl` with a register `this`, not `__thiscall`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md",
+   "evidence": "The rva was never wrong - this entry is the one false alarm of the nine, and buildFindings.py does not list it among the eight it drops. 0x00402410 is a genuine function start: `push ebp; mov ebp,esp; push -1; push 0xC30E78; mov eax,fs:[0]` is a complete SEH prologue, and the only call site the findings record, `0x005EE7FD call 0x402410`, targets it exactly. checkSignatures' hint that 0x004023E0 looks like the start is the documented backwards-walk trap, and here is the mechanism: image.functionStart recognises a boundary only by a run of int3, never by the prologue at the address itself, and 0x004023E0's function ends `ret 4` at 0x0040240D with NO int3 between it and 0x00402410, so the nearest padding above is the one before 0x004023E0. The three functions are laid out nose to tail - 0x004023E0..0x0040240D (`ret 4`), 0x00402410..0x004024AC LogRecord::Make (padded to 0x004024B0), 0x004024B0..0x004024CA LogRecord::Flush (already named at rva 0x24B0, padded to 0x004024D0) - which is exactly the small-function cluster that makes the walk answer for the wrong body. What is wrong is the SIGNATURE: the function ends in a bare `ret` at 0x004024AC while the recorded __thiscall predicts `ret 0xC`, and the call site does its own `add esp, 0xC`. The three stack slots and their order are confirmed by tracing them through: [ebp+8] file, [ebp+0xC] line, [ebp+0x10] channel, handed on to 0x6649D0 and from there to the constructor, which writes line to +0x70 and channel to +0x74. `mov eax,[0x1B162A4]` is g_log_sink read as a VA, i.e. rva 0x17162A4, so that entry is right; `mov [eax],0x15FCEA0` is the fallback vftable, rva 0x11FCEA0, so this comment's number is right too. WHAT WOULD SHOW IT WRONG: a `ret 0xC` anywhere in the body (there is none - the single exit is 0x004024AC), or a call site that does not clean 12 bytes after the call.",
+   "correction": "rva unchanged at 0x2410; signature corrected from __thiscall/ret 12 to __cdecl with this@ECX",
+   "revises": "wave 2: the address was never wrong - only checkSignatures complained, through the backwards-walk trap. The signature was: it is a bare `ret` with the caller doing `add esp,0xC` and `this` in ecx, so __cdecl with this@ECX rather than __thiscall."
+  },
+  {
+   "rva": "0x44A610",
+   "kind": "function",
+   "name": "DoNothing_4Args",
+   "signature": "void __stdcall DoNothing_4Args(void* a, void* b, void* c, void* d)",
+   "comment": "`ret 0x10` and nothing else, so the linker folded it: this one address fills a virtual slot in 38 unrelated classes and belongs to none of them. It was recorded as LogSink::WriteNothing, which is one of the 38 - the fallback sink's slot 1 does point here, but so does everything else that needed a four argument no-op. Slot 1 of the **fallback** sink's vftable (rva `0x11FCEA0`, VA `0x015FCEA0`), and it is `ret 0x10` and nothing else. That sink is the one `0x2410` makes if the global is still null, so a message logged before the real sink is installed is discarded outright rather than queued. **The body is not the fallback sink's own** - the linker folded it with every other four-argument do-nothing virtual in the program, and it sits in 38 RTTI classes' tables.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md",
+   "evidence": "The old rva 0x4A610 is the true rva with 0x400000 subtracted from it once too often, and the same slip runs through the rest of that entry: its comment gives the fallback vftable as 0xDFCEA0, which is the LogRecord::Make entry's 0x11FCEA0 minus 0x400000. Read the table itself: LogRecord::Make writes 0x015FCEA0 into the new sink at 0x0040244D, and the dword at VA 0x015FCEA4 (slot 1) is 0x0084A610, i.e. rva 0x44A610. Disassembling 0x0084A610 gives `c2 10 00  ret 0x10` followed by int3 padding, exactly the `ret 0x10` the comment claims and exactly what the recorded signature (four stack arguments, this in ECX) predicts. THE NAME, HOWEVER, DOES NOT BELONG TO THAT BODY: `vtable.py --holding 0x84A610` puts it in 38 classes' tables (C2dObject slots 42 and 59, C3dObject slot 59, and so on), far past mergeFindings' folded threshold of 8, so it is the program's shared four-argument no-op and cannot be named for LogSink. The right record here is the corrected address plus the statement that the body is shared; whoever lands this should decide whether to keep the name at all. WHAT WOULD SHOW IT WRONG: a different dword at VA 0x015FCEA4, or --holding returning one table rather than 38.",
+   "correction": "rva 0x4A610 -> 0x44A610 (image base subtracted twice); the body is linker-folded across 38 tables, so the name overstates ownership",
+   "revises": "wave 2: the recorded rva was the true rva with the image base subtracted a second time, so every one of these landed mid-body and buildFindings dropped them. Corrected address verified against a call site, a virtual table slot or the entry's own comment, and confirmed here by disassembly - the corrected addresses are function prologues and the recorded ones, read as virtual addresses, are mid-instruction.",
+   "replaces": "LogSink::WriteNothing"
+  },
+  {
+   "rva": "0x5AFE90",
+   "kind": "function",
+   "name": "CRandomListEffect::LoadKey",
+   "signature": "void __thiscall CRandomListEffect::LoadKey(CRandomListEffect* this, CParseContext* parse, SaveToken key)",
+   "comment": "Its keys are the **weights** of a `random_list` - a bare integer per entry, which is why the only token it names is the parser's `tok_int` (0xC).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md",
+   "evidence": "0x1AFE90 is 0x5AFE90 with the image base taken off a second time. `vtable.py CRandomListEffect --all` gives slot 4 - the LoadKey slot, fixed by CPersistent and cross-checked against CDefines::LoadKey (0x45E10, slot 4) and CCasusBelliType::LoadKey (0x165F0, slot 4) - as 0x009AFE90, i.e. rva 0x5AFE90, and `--holding 0x9AFE90` returns that one table and no other. The body is a real function start (`push ebp; mov ebp,esp`), tests one key (`cmp [ebp+0xC], 0xC`) and both its exits are `ret 8`, which is what the recorded signature predicts and what the old address could not deliver. Token 0xC is below the tokenizer's ceiling of 21 and is absent from the running game's name table, consistent with the comment's tok_int. The name belongs to this function: it is the only table the body sits in. WHAT WOULD SHOW IT WRONG: CRandomListEffect slot 4 holding some other address, or a `ret` other than 8 on either exit.",
+   "correction": "rva 0x1AFE90 -> 0x5AFE90 (image base subtracted twice); name is correct for this body",
+   "revises": "wave 2: the recorded rva was the true rva with the image base subtracted a second time, so every one of these landed mid-body and buildFindings dropped them. Corrected address verified against a call site, a virtual table slot or the entry's own comment, and confirmed here by disassembly - the corrected addresses are function prologues and the recorded ones, read as virtual addresses, are mid-instruction."
+  },
+  {
+   "rva": "0x60E2A0",
+   "kind": "function",
+   "name": "CDiplomaticActionCommand::LoadKey",
+   "signature": "void __thiscall CDiplomaticActionCommand::LoadKey(CDiplomaticActionCommand* this, CParseContext* parse, SaveToken key)",
+   "comment": "**The key names a diplomatic action.** It hands the token to `0xE5800`, which makes the matching action object into `this + 0x3C`, then delegates the rest of the block to that object's own `Load`. So the grammar is one key per kind of diplomatic action, and what goes inside belongs to the action.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md",
+   "evidence": "0x20E2A0 is 0x60E2A0 with the image base taken off twice. `vtable.py CDiplomaticActionCommand --all` gives slot 4 as 0x00A0E2A0 and `--holding` returns that table alone. The body confirms the recorded comment instruction for instruction: `push edi; call 0x4E5800; add esp,4; mov [esi+0x3C], eax` - 0x4E5800 is exactly the rva 0xE5800 the comment names, and the result is stored at this+0x3C as claimed; the fallback branch tail calls 0xA7BC80, which project.json already names CCommand::LoadKey. Both exits are `ret 8`; the old address gave `ret 4` because it landed inside a neighbouring body. The name belongs here. WHAT WOULD SHOW IT WRONG: the call target not being 0x4E5800, or the store going somewhere other than +0x3C.",
+   "correction": "rva 0x20E2A0 -> 0x60E2A0 (image base subtracted twice); name is correct for this body",
+   "revises": "wave 2: the recorded rva was the true rva with the image base subtracted a second time, so every one of these landed mid-body and buildFindings dropped them. Corrected address verified against a call site, a virtual table slot or the entry's own comment, and confirmed here by disassembly - the corrected addresses are function prologues and the recorded ones, read as virtual addresses, are mid-instruction."
+  },
+  {
+   "rva": "0x6646E0",
+   "kind": "function",
+   "name": "LogRecord::LogRecord",
+   "signature": "void* __stdcall LogRecord::LogRecord(void* record, void* sink, const char* file, int line, int channel)",
+   "comment": "Builds the object one log line is assembled in: the sink at `+0x50`, the source file as an Hoi3CString at `+0x54`, the **line at `+0x70`** and the **channel at `+0x74`**, with the message accumulated into the stream part by `operator<<`. `ret 0x14`. Reached from `LogRecord::Make` through the register-convention forwarder at `0x6649D0`, which is what supplies the five stack arguments.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md",
+   "evidence": "This one is not a plain image-base slip - it is the base slip PLUS a transposed digit: the true rva is 0x6646E0, minus 0x400000 is 0x2646E0, and what was recorded is 0x2464E0. It was recovered by following the code rather than by arithmetic. LogRecord::Make at 0x00402410 ends `call 0xA649D0` (rva 0x6649D0, the address Make's own comment already names as the record's constructor), and 0xA649D0 is a five-push forwarder - `push eax` (channel), `push ecx` (line), `push edx` (file), `push eax` (sink), `push esi` (the record) - into `call 0xA646E0`. 0x00A646E0 then writes every field the recorded comment claims, at the offsets it claims: `mov [esi+0x50], edx` for the sink, `lea ecx,[esi+0x54]` plus a string construct for the file, `mov [esi+0x70], ecx` for the line, `mov [esi+0x74], edx` for the channel, and it ends `ret 0x14` - the very `ret 0x14` the comment states, which the old address could not produce. The old 0x2464E0 read as an rva lands at VA 0x00A464E0, inside a `__luabind_class_map` routine with ESI live on entry, which is neither a function start nor anything to do with logging. The SIGNATURE also needed fixing: five stack arguments cleaned by the callee is __stdcall, not the recorded __cdecl. CORROBORATION FROM THE OTHER END: this body writes the std::basic_ios vftable 0x015A7B9C into record+0x78 at 0x00A6470A, and the already-named LogRecord::Flush at rva 0x24B0 - read directly, `push esi; lea esi,[eax+0x78]; push esi; call 0xA647D0; push esi; mov [esi],0x015A7B8C; call 0xB94BAE; add esp,4; pop esi; ret` - takes record+0x78 as its ios base and writes the neighbouring vftable back over it, so construction and destruction agree on the same +0x78 virtual base and the same field block below it. (The 0xA647D0 there is rva 0x6647D0, which another agent in this wave is naming; the absence of a stack fixup between that call and the next push confirms it is callee-clean, consistent with their `ret 4`.) WHAT WOULD SHOW IT WRONG: a field write at an offset other than 0x50/0x54/0x70/0x74, or a `ret` other than 0x14, or 0x6649D0 turning out to forward somewhere else.",
+   "correction": "rva 0x2464E0 -> 0x6646E0 (image base subtracted twice and 46/64 transposed); __cdecl -> __stdcall",
+   "revises": "wave 2: the recorded rva was the true rva with the image base subtracted a second time, so every one of these landed mid-body and buildFindings dropped them. Corrected address verified against a call site, a virtual table slot or the entry's own comment, and confirmed here by disassembly - the corrected addresses are function prologues and the recorded ones, read as virtual addresses, are mid-instruction."
+  },
+  {
+   "rva": "0x67C3B0",
+   "kind": "function",
+   "name": "LoadKey_ReportUnknown",
+   "signature": "void __stdcall LoadKey_ReportUnknown(void* this@ECX, CParseContext* parse, SaveToken key)",
+   "comment": "A tail call to ReportUnknownKey and nothing else: the LoadKey a class gets when it has no keys of its own to try. The linker folded it across 75 unrelated classes - CColor among them, which is why it was recorded as CColor::LoadKey - so it belongs to none of them. **It has no keys at all** - the whole body is a tail call to ReportUnknownKey. A colour is three numbers in a row, `color = { 139 90 43 }`, read positionally by the block loader rather than by key. **The body is shared by 75 unrelated classes**, so \"no keys\" is the answer for all of them and the body is not CColor's property.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md",
+   "evidence": "0x27C3B0 is 0x67C3B0 with the image base taken off twice; read as an rva the old value lands at VA 0x0067C3B0, in the middle of CParseContext::FreeMessages (0x67BAF0), which is how it came to disassemble as `ror byte ptr [ebx-0x7B39FE58]`. `vtable.py CColor --all` gives slot 4 as 0x00A7C3B0, and the eight-instruction body there is `push ebp; mov ebp,esp; push edi; mov edi,[ebp+8]; call 0xA7A7B0; pop edi; pop ebp; ret 8` - 0xA7A7B0 is rva 0x67A7B0, which project.json already names ReportUnknownKey, so the claim that the whole body is a tail call to ReportUnknownKey is confirmed against a named target rather than against prose. THE NAME DOES NOT BELONG TO THIS BODY: `--holding 0x00A7C3B0` returns 75 tables, and they are not one family - CColor derives from CPersistent, CCountryHistoryEntry from CHistoryEntry, and CCoastlines, CRegion, CProvinceTemplate and CDivisionTemplate are unrelated again. This is the linker folding 75 identical \"I have no keys\" overrides into one body, past the FOLDED threshold, so it cannot be named for CColor; the honest record is the corrected address plus that statement. WHAT WOULD SHOW IT WRONG: --holding returning a single inheritance chain, or the call target not being ReportUnknownKey.",
+   "correction": "rva 0x27C3B0 -> 0x67C3B0 (image base subtracted twice); the body is linker-folded across 75 unrelated tables, so the name overstates ownership",
+   "revises": "wave 2: the recorded rva was the true rva with the image base subtracted a second time, so every one of these landed mid-body and buildFindings dropped them. Corrected address verified against a call site, a virtual table slot or the entry's own comment, and confirmed here by disassembly - the corrected addresses are function prologues and the recorded ones, read as virtual addresses, are mid-instruction.",
+   "replaces": "CColor::LoadKey"
+  },
+  {
+   "rva": "0x691440",
+   "kind": "function",
+   "name": "CEU3Application::LoadKey",
+   "signature": "void __thiscall CEU3Application::LoadKey(CEU3Application* this, CParseContext* parse, SaveToken key)",
+   "comment": "One key, `name` - the application settings file. Token 0x1A, read by ParseString into `this + 0x8C`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md",
+   "evidence": "0x291440 is 0x691440 with the image base taken off twice; the old value read as an rva lands inside the function that starts at 0x006913F0, which is why it gave `ret 0`. `vtable.py CEU3Application --all` gives slot 4 as 0x00A91440 and `--holding` returns that one table. The eleven-instruction body is `cmp [ebp+0xC], 0x1A; jne; add ecx,0x8C; push 0; push ecx; mov ecx,[ebp+8]; call 0xA7AFB0` and ends `ret 8`. Token 26 is `name` in the running game's token table (saveTokens.py), and 0xA7AFB0 is rva 0x67AFB0, which project.json already names ParseString - so \"one key, name\" is confirmed from the token table and a named callee, not from the prose. The name belongs here. WHAT WOULD SHOW IT WRONG: token 26 not being `name`, or the compared immediate not being 0x1A.",
+   "correction": "rva 0x291440 -> 0x691440 (image base subtracted twice); name is correct for this body",
+   "revises": "wave 2: the recorded rva was the true rva with the image base subtracted a second time, so every one of these landed mid-body and buildFindings dropped them. Corrected address verified against a call site, a virtual table slot or the entry's own comment, and confirmed here by disassembly - the corrected addresses are function prologues and the recorded ones, read as virtual addresses, are mid-instruction."
+  },
+  {
+   "rva": "0x69A510",
+   "kind": "function",
+   "name": "LoadKey_CommandThunk",
+   "signature": "void __stdcall LoadKey_CommandThunk(void* this@ECX, CParseContext* parse, SaveToken key)",
+   "comment": "Four instructions into the already-named CCommand::LoadKey. Five sibling commands share this one body - CClearBookmark, CLobbyStartGame, CQuit, CReopenLobby and CStartGame - so CQuit, which it was recorded as, was an arbitrary pick among them. A four-instruction frame-only thunk that tail jumps into `CCommand::LoadKey` (`0x67BC80`), which is what compares the key's **text** rather than its token - that is why the switch reader finds nothing. The body is shared by five sibling command classes: CClearBookmark, CLobbyStartGame, CQuit, CReopenLobby and CStartGame.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-definitions.md",
+   "evidence": "0x29A510 is 0x69A510 with the image base taken off twice; the old value read as an rva lands three instructions into a `mov [esi], vftable` destructor that starts at 0x0069A4F0, which is why it gave `ret 4`. `vtable.py CQuit --all` gives slot 4 as 0x00A9A510, and cfg.py shows the whole body as four instructions - `push ebp; mov ebp,esp; pop ebp; jmp 0xA7BC80`. 0xA7BC80 is rva 0x67BC80, which project.json already names CCommand::LoadKey, and disassembling it shows a byte-by-byte string compare against 0x015B4945, so the recorded comment's \"compares the key's text rather than its token\" is right about the behaviour but describes the base's body, not this thunk. It ends in a tail jump and has no `ret` of its own, so checkSignatures will skip it rather than confirm the `ret 8`. THE NAME IS ONE OF FIVE CANDIDATES: `--holding 0x00A9A510` gives CClearBookmark, CLobbyStartGame, CQuit, CReopenLobby and CStartGame, all siblings under CCommand whose own slot 4 is the different body 0x67BC80, so this is one override folded across five classes and CQuit is an arbitrary pick among them - the comment now says so. WHAT WOULD SHOW IT WRONG: the jump target not being CCommand::LoadKey, or --holding naming only CQuit.",
+   "correction": "rva 0x29A510 -> 0x69A510 (image base subtracted twice); body shared by five sibling command classes",
+   "revises": "wave 2: the recorded rva was the true rva with the image base subtracted a second time, so every one of these landed mid-body and buildFindings dropped them. Corrected address verified against a call site, a virtual table slot or the entry's own comment, and confirmed here by disassembly - the corrected addresses are function prologues and the recorded ones, read as virtual addresses, are mid-instruction.",
+   "replaces": "CQuit::LoadKey"
+  }
+ ],
+ "struct_fields": [],
+ "vftable_slots": {},
+ "slots_noted": "Every corrected address here is slot 4 of its class's table, and slot 4 is already recorded on CPersistent as LoadKey. project.json's own rule is that a record on a base names that slot in every table below it, and all of these classes derive from CPersistent, so no new vftable_slots record is needed: adding CRandomListEffect, CDiplomaticActionCommand, CEU3Application, CQuit and its four siblings would only restate what CPersistent slot 4 already says. Three of the bodies are shared and are deliberately left without a per-class slot name: 0x44A610 (38 tables, the program's folded four-argument no-op), 0x67C3B0 (75 unrelated tables, the folded \"no keys\" override) and 0x69A510 (five sibling command classes). 0x6465D0 is in nine tables but they are CRelation and its eight heirs, which is inheritance rather than folding.",
+ "frontier": [
+  "0x6649D0",
+  "0x65BBA0",
+  "0xE5800"
+ ],
+ "cannot_merge_as_is": "mergeFindings refuses every entry whose name project.json already gives to a different address, and that is exactly what a correction is - seven of these nine are reported as 'project.json already gives that name to 0x...'. LogRecord::Make keeps its rva, so it passes the check but is then skipped by land() as already present, which means its signature fix does not land either; CRelation::LoadKey escapes the name check only because project.json already holds a second, correct entry at 0x6465D0 that the last-wins dict picks up. There is no key in the incoming format for amending or deleting an existing entry, so all nine need a hand edit of project.json by whoever collects the wave: eight rva/signature corrections and one deletion (the 0x2465D0 CRelation duplicate). In addition, 0x44A610 (38 tables), 0x67C3B0 (75) and 0x6465D0 (9) trip the FOLDED>8 rule; for the first two that rule is right and for CRelation it is a false positive, since those nine tables are one inheritance chain."
+}

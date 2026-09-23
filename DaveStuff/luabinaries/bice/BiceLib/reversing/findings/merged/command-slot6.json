@@ -1,0 +1,168 @@
+{
+ "agent": "command-slot6: what virtual slot 6 of the command classes is, and the three bodies that reach CUnit::RefreshPlanForceNeeds",
+ "question": "Slot 6 is unnamed in every command vftable in the image. What is the operation, on which class is it declared, and what are 0x1E77D0, 0x1E88A0 and the odd one out at 0x1E60B0?",
+ "source": "reversing/FINDINGS-manpower.md",
+ "addresses": [
+  {
+   "rva": "0x1E77D0",
+   "kind": "function",
+   "name": "CSetPlanAttributesCommand::Execute",
+   "signature": "void __thiscall CSetPlanAttributesCommand::Execute(void)",
+   "no_signature": null,
+   "comment": "Slot 6 of `CSetPlanAttributesCommand` - the command's own **Execute** (see `CCommand::Execute`). It resolves the command's `unit` reference and writes the six battle-plan attributes it carries onto that unit's embedded `CUnitPlan` (`CUnit +0x1FC`), each with a sentinel meaning \"not set by this command\":\n\n| command field | key | sentinel | lands on |\n| --- | --- | --- | --- |\n| `+0x64` byte | `active` | none | `CUnitPlan::SetActive` (`0x4DEB10`) |\n| `+0x68` | `stance` | `== 5` skips | plan `+0xC` = `CUnit +0x208` |\n| `+0x6C` | `air_stance` | `== 3` skips | plan `+0x10` = `CUnit +0x20C` |\n| `+0x70` | `naval_stance` | `== 3` skips | plan `+0x14` = `CUnit +0x210` |\n| `+0x74` | `our_power` | `< 0` skips | plan `+0x80` = `CUnit +0x27C` |\n| `+0x78` | `their_power` | `< 0` skips | plan `+0x84` = `CUnit +0x280` |\n\nOnly the `stance` branch calls `CUnit::RefreshPlanForceNeeds` (at `0x1E78B4`) - changing the ground stance is what changes what the plan needs; the air and naval stances and the two power estimates do not.\n\n**It re-resolves the unit for every field it writes** - six separate `FindPersistentById` lookups off `this->+0x40`/`+0x44` - rather than resolving once, which is why the body is four times longer than what it does. Each lookup has a failure arm that falls through to `xor eax, eax` and then stores through the null pointer anyway (`0x1E79EB` writes `[0 + 0x280]`); the game survives only because a command whose target has gone is rejected by `IsValid` before slot 6 is reached.",
+   "confidence": "confirmed",
+   "evidence": "`vtable.py --holding 0x5E77D0` returns exactly one table, CSetPlanAttributesCommand slot 6. The field-to-key mapping is read off this class's own `LoadKey` (`0x1E7C20`) rather than guessed: token 0x50A `active` -> `+0x64` (0x1E7C4B), 0x124 `stance` -> `+0x68` (0x1E7C7D), 0x73D `air_stance` -> `+0x6C` (0x1E7CE7), 0x73E `naval_stance` -> `+0x70` (0x1E7CCD), 0x72E `our_power` -> `+0x74` (0x1E7C88), 0x72F `their_power` -> `+0x78` (0x1E7CF2), 0x256 `unit` -> `+0x3C` through ParseObjectReference. The destination offsets on the plan are read off `CUnitPlan::LoadKey` (0x4DF720) for the same tokens: `stance` writes `[plan+0xC]` at 0x4DF7D8, `air_stance` `[plan+0x10]` at 0x4DF93B, `naval_stance` `[plan+0x14]` at 0x4DF962, `our_power` `plan+0x80` at 0x4DFD52, `their_power` `plan+0x84` at 0x4DFD71 - the last two reached through the jump table at 0x4DFDF0 indexed by the byte table at 0x4DFE24. Plan offset + 0x1FC equals the CUnit offset this function writes in every one of the five cases, which is also how CUnit +0x1FC is known to hold the plan by value rather than by pointer. The bare `ret` at 0x1E79E8 and 0x1E79F7 is what makes it a zero-stack-argument __thiscall.\n\nWhat would show it wrong: a `stance`/`air_stance` swap, if the token-to-offset reading of either LoadKey were mis-decoded - checkable by re-running the jump table decode; or CUnit +0x1FC being a pointer rather than an embedded object, which would break the +0x1FC arithmetic and is contradicted by project.json already naming CUnit +0x26C (= plan +0x70) `plan_subunit_wanted`."
+  },
+  {
+   "rva": "0x1E88A0",
+   "kind": "function",
+   "name": "CSetPlanForcesCommand::Execute",
+   "signature": "void __thiscall CSetPlanForcesCommand::Execute(void)",
+   "no_signature": null,
+   "comment": "Slot 6 of `CSetPlanForcesCommand` - the command's own **Execute** (see `CCommand::Execute`). It resolves its `unit` reference, hands the `min` vector it carries at `+0x64` to `CUnitPlan::SetMinForces` (`0x4DF0F0`), which replaces plan `+0x70` - `CUnit +0x26C`, already named `plan_subunit_wanted` - and then calls `CUnit::RefreshPlanForceNeeds` so the shortfall per subunit type is recomputed against the new target.\n\nThe two calls to `RefreshPlanForceNeeds` (`0x1E8928` and `0x1E8934`) are the two arms of the second lookup, not two refreshes: the second passes `eax = 0`, the null arm of a resolve the compiler inlined twice. So it refreshes once, and would dereference null if the unit had gone - which `IsValid` prevents.",
+   "confidence": "confirmed",
+   "evidence": "`vtable.py --holding 0x5E88A0` returns exactly one table, CSetPlanForcesCommand slot 6. Its `LoadKey` (0x1E89B0) has exactly two keys and places token 0x719 `min` at `+0x64` (0x1E89D2) through the int-vector parser 0x5F450 and token 0x256 `unit` at `+0x3C`. `CUnitPlan::LoadKey` places the same token 0x719 at `plan+0x70` (0x4DFCD5), and 0x4DF0F0 - the function this passes `&this->+0x64` to, with `plan` in eax - clears and reassigns exactly `[plan+0x70]`/`[plan+0x74]`. plan+0x70 + 0x1FC = CUnit +0x26C, which project.json already calls `plan_subunit_wanted`, so the two readings agree independently. cfg.py shows both exits are a bare `ret`.\n\nWhat would show it wrong: if 0x4DF0F0 took its object somewhere other than eax - then the `add eax, 0x1FC` before the call would not be the plan; the function reads `[eax+0x70]`/`[eax+0x74]` as its first act, so that is decidable from its first three instructions."
+  },
+  {
+   "rva": "0x1E6180",
+   "kind": "function",
+   "name": "CSetPlanOpsAreaCommand::Execute",
+   "signature": "void __thiscall CSetPlanOpsAreaCommand::Execute(void)",
+   "no_signature": null,
+   "comment": "Slot 6 of `CSetPlanOpsAreaCommand` - the command's own **Execute** (see `CCommand::Execute`), and the third and last body in the image that reaches `CUnit::RefreshPlanForceNeeds`.\n\nOne province list at `+0x64` and one flag at `+0x74` decide which of the plan's two province lists it replaces:\n\n    if (this->fallback_line)   CUnitPlan::SetFallbackLine(plan, &this->provinces)   // plan +0x28, returns here\n    else                       CUnitPlan::SetOpsArea(plan, &this->provinces)        // plan +0x18\n                               CUnit::RefreshPlanForceNeeds(unit)\n                               if (unit->owner == the local player's country\n                                   && this->unit_ref matches the local session)\n                                       gamestate->+0xBE8 slot 32(...)               // 0x1E649F\n\nSo a fallback line costs nothing - it is a line, not an area to hold - while an operations area changes what the plan needs and refreshes it. The tail is the only part of the three plan commands that touches the GUI, and it is gated on the unit belonging to the player at this client.",
+   "confidence": "confirmed",
+   "evidence": "`vtable.py --holding 0x5E6180` returns exactly one table, CSetPlanOpsAreaCommand slot 6. Its `LoadKey` (0x1E6580) is small enough to read whole: token 0x74C `fallback_line` -> `+0x74` through the bool parser 0x67B410 (0x1E65AC), token 0x648 `area` -> `+0x64` through the int-list parser 0xA3C0 (0x1E65B9), token 0x256 `unit` -> `+0x3C` through ParseObjectReference (0x1E65CB). The two setters are matched to those two keys by what they write, not by the branch order: 0x4DEF00 frees and rebuilds `[plan+0x28]` (its second instruction), and `CUnitPlan::LoadKey`'s `fallback_line` case writes plan +0x28/+0x2C/+0x30 (0x4DFB7D); 0x4DEBB0 writes `[plan+0x18]`/`[plan+0x1C]`/`[plan+0x20]` (0x4DEC33, 0x4DED55), and `CUnitPlan::LoadKey`'s `ops_area` case writes plan +0x18/+0x1C/+0x20 (0x4DFA7B). The `ret` at 0x1E61FF and 0x1E6222 is bare.\n\nWhat would show it wrong: the sense of the `+0x74` flag, if 0x67B410 were not a bool parser - then the two branches would be the other way round. The check is that 0x67B410 is the same helper CCommand's own `istargetasynchronous` and CUnitPlan's `active` go through, and that `+0x74` is compared only against zero."
+  },
+  {
+   "rva": "0x1E60B0",
+   "kind": "function",
+   "name": "CSetPlanOpsAreaCommand::CSetPlanOpsAreaCommand",
+   "signature": "CSetPlanOpsAreaCommand* __stdcall CSetPlanOpsAreaCommand::CSetPlanOpsAreaCommand(CSetPlanOpsAreaCommand* self, void* unit, void* provinces)",
+   "no_signature": null,
+   "comment": "**Not slot 6, and in no virtual table**: this is `CSetPlanOpsAreaCommand`'s constructor, and the reason it looked like the third `RefreshPlanForceNeeds` caller is that `image.functionStart` attributes `0x1E629D` to it - there is no `int3` padding between its `ret 0xC` at `0x1E617D` and the real owner, `CSetPlanOpsAreaCommand::Execute`, at `0x1E6180`.\n\nIt inlines the `CCommand` base constructor rather than calling it - `CCommand`'s vftable at `0x15B4F74` goes in first and is overwritten with its own at `0x15C931C` - then fills `+0x2C`/`+0x30` with 0x70A, the tickstamp word at `+0x34` with 0xFFFF, the identity at `+0x38` with 0, builds the `unit` reference at `+0x3C` out of its second argument and copies the province list into `+0x64`. `this` arrives on the stack rather than in ecx and the object comes back in eax; the five callers all `operator new(0x78)` first, which is the class's size.",
+   "confidence": "confirmed",
+   "evidence": "The two vftable stores at 0x1E60D8 and 0x1E612E are the RTTI addresses of CCommand and CSetPlanOpsAreaCommand respectively (hoi3-classes RTTI export). `ret 0xC` with `this` read from `[ebp+8]` is what makes it __stdcall with an explicit self rather than __thiscall. All five callers (0x8BB6CB, 0x8C1491, 0x8DBD1F, 0x8DBEE8, 0x8DC771) push three arguments onto a pointer returned by `operator new(0x78)` - 0x8DBCFB is the clearest. That 0x1E60B0 does not call 0x1BD6F0 was checked directly: `findRefs.py --callers 0x5BD6F0` gives four sites, 0x1E629D among them, and 0x1E629D is past this function's `ret`.\n\nWhat would show it wrong: a function actually starting before 0x1E60B0 and running through both - ruled out because 0x1E60B0 is a clean `push ebp; mov ebp, esp` prologue preceded by `int3` padding, and 0x1E617D pops the SEH frame it installed."
+  },
+  {
+   "rva": "0x4DEB10",
+   "kind": "function",
+   "name": "CUnitPlan::SetActive",
+   "signature": "void __stdcall CUnitPlan::SetActive(CUnitPlan* this@ESI, bool active)",
+   "no_signature": null,
+   "comment": "Writes the plan's `active` byte at `+0x8` (`CUnit +0x204`), and **when switching it off, resets the whole plan first**: the objective, path, ops-area and fallback lists at `+0x18`, `+0x28`, `+0x38`, `+0x48`, `+0x5C` and `+0x70`/`+0x74` are emptied, `stance` (`+0xC`) goes back to 2, `air_stance` and `naval_stance` to 0, both power estimates (`+0x80`, `+0x84`) and `+0x88`/`+0x8C` to 0, and the byte at `+0x9` to 0. Switching it on writes nothing but the byte.\n\nThe compiler gave it a register convention: the plan arrives in esi, the flag on the stack.",
+   "confidence": "confirmed",
+   "evidence": "`mov byte ptr [esi+8], bl` at 0x4DEBA3 is the one unconditional store, and `bl` is `[ebp+8]`. `CUnitPlan::LoadKey` places token 0x50A `active` at `[plan+8]` through the bool parser (0x4DF76E), which is the same field from the other side. The `ret 4` at 0x4DEBA8 agrees with one stack argument and a register `this`. Its only caller is CSetPlanAttributesCommand::Execute, which passes `movzx edx, byte [cmd+0x64]` - the command's `active` key.\n\nWhat would show it wrong: `esi` not holding the plan at entry - the caller does `lea esi, [unit+0x1FC]` two instructions before the call and nothing touches esi in between, so this is decidable by eye; and a second caller with a different esi, of which there is none."
+  },
+  {
+   "rva": "0x4DEBB0",
+   "kind": "function",
+   "name": "CUnitPlan::SetOpsArea",
+   "signature": "void __stdcall CUnitPlan::SetOpsArea(CUnitPlan* plan, void* provinces)",
+   "no_signature": null,
+   "comment": "Replaces the plan's operations area - the province list at `+0x18`/`+0x1C`/`+0x20` - with the one it is given, freeing the old one. Both arguments are on the stack.",
+   "confidence": "confirmed",
+   "evidence": "It writes `[plan+0x18]`, `[plan+0x1C]` and `[plan+0x20]` (0x4DEC33/0x4DEC3B/0x4DEC3E on the fresh-allocation path, 0x4DED55..0x4DED5B on the replace path) and touches no other plan field. `CUnitPlan::LoadKey`'s `ops_area` case (token 0x6F3, jump-table case 0 at 0x4DF979) writes the same three, which fixes the name from the save format rather than from the caller. `ret 8` matches two stack arguments.\n\nWhat would show it wrong: `ops_area` and `fallback_line` writing the same list - they do not; 0x4DFA7B and 0x4DFB7D are 0x10 bytes apart on the plan."
+  },
+  {
+   "rva": "0x4DEF00",
+   "kind": "function",
+   "name": "CUnitPlan::SetFallbackLine",
+   "signature": "void __stdcall CUnitPlan::SetFallbackLine(CUnitPlan* plan, void* provinces)",
+   "no_signature": null,
+   "comment": "Replaces the plan's fallback line - the province list at `+0x28`/`+0x2C`/`+0x30` - with the one it is given, freeing the old one. Both arguments are on the stack.",
+   "confidence": "confirmed",
+   "evidence": "Its second instruction is `mov eax, [edi+0x28]` with `edi = [ebp+8]`, and the walk that follows frees that list before the new one goes in. `CUnitPlan::LoadKey`'s `fallback_line` case (token 0x74C, jump-table case 11 at 0x4DFABA) writes plan +0x2C/+0x30, the same list. `ret 8` matches two stack arguments.\n\nWhat would show it wrong: as above, the two lists being one - checkable from the two LoadKey cases."
+  },
+  {
+   "rva": "0x4DF0F0",
+   "kind": "function",
+   "name": "CUnitPlan::SetMinForces",
+   "signature": "void __stdcall CUnitPlan::SetMinForces(CUnitPlan* this@EAX, void* min)",
+   "no_signature": null,
+   "comment": "Replaces the plan's minimum force composition - the `vector<int>` at `+0x70`/`+0x74`, which is `CUnit +0x26C`, already named `plan_subunit_wanted` - with the one it is given. The `min` key of a `unit_plan` in the save, and what `CSetPlanForcesCommand` carries.\n\nThe plan arrives in eax and the source vector on the stack.",
+   "confidence": "confirmed",
+   "evidence": "`mov esi, eax` is its second instruction and every field it touches is `[esi+0x70]`/`[esi+0x74]`. `CUnitPlan::LoadKey` places token 0x719 `min` at plan +0x70 (0x4DFCD5), and plan +0x70 + 0x1FC = CUnit +0x26C, which project.json already calls `plan_subunit_wanted`. `ret 4` matches one stack argument and a register `this`.\n\nWhat would show it wrong: the source argument being a plain int rather than a vector - it is dereferenced as `[arg]`/`[arg+4]` at 0x4DF142 and passed to the same assign helper the loader uses."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CUnit",
+   "offset": "0x204",
+   "name": "plan_active",
+   "type": "uint8_t",
+   "comment": "CUnitPlan +0x8. Whether the unit's battle plan is switched on; CUnitPlan::SetActive (0x4DEB10) resets the whole plan when it goes to zero.",
+   "evidence": "CUnitPlan::LoadKey parses the `active` key (token 0x50A) into plan +0x8 at 0x4DF76E through the bool parser, and 0x4DEBA3 is the only unconditional store in SetActive. project.json's own CUnit::UpdatePlanForceNeeds comment already identifies plan+0x8 as CUnit +0x204. Wrong if CUnit +0x1FC were a pointer rather than the plan itself."
+  },
+  {
+   "struct": "CUnit",
+   "offset": "0x208",
+   "name": "plan_stance",
+   "type": "int",
+   "comment": "CUnitPlan +0xC, the `stance` key. Defaults to 2 when the plan is switched off. The one plan attribute whose change makes CSetPlanAttributesCommand::Execute call CUnit::RefreshPlanForceNeeds; 5 is the command's \"not set\" sentinel.",
+   "evidence": "CUnitPlan::LoadKey writes `[plan+0xC]` for token 0x124 `stance` at 0x4DF7D8; CSetPlanAttributesCommand::Execute writes `[unit+0x208]` from its `stance` field at 0x1E7877. The two offsets differ by exactly 0x1FC. Wrong if the token table decode were off by one case, which would also move air_stance and naval_stance."
+  },
+  {
+   "struct": "CUnit",
+   "offset": "0x20C",
+   "name": "plan_air_stance",
+   "type": "int",
+   "comment": "CUnitPlan +0x10, the `air_stance` key. 3 is CSetPlanAttributesCommand's \"not set\" sentinel for it.",
+   "evidence": "CUnitPlan::LoadKey writes `[plan+0x10]` for token 0x73D `air_stance` at 0x4DF93B (jump-table case 8); CSetPlanAttributesCommand::LoadKey places the same token at command +0x6C and Execute writes `[unit+0x20C]` from it. Wrong if 0x73D were not `air_stance` - it is read straight out of saveTokens.json."
+  },
+  {
+   "struct": "CUnit",
+   "offset": "0x210",
+   "name": "plan_naval_stance",
+   "type": "int",
+   "comment": "CUnitPlan +0x14, the `naval_stance` key. 3 is CSetPlanAttributesCommand's \"not set\" sentinel for it.",
+   "evidence": "CUnitPlan::LoadKey writes `[plan+0x14]` for token 0x73E `naval_stance` at 0x4DF962 (jump-table case 9); the command places 0x73E at +0x70 and Execute writes `[unit+0x210]` from it. Wrong under the same condition as plan_air_stance, and the two would be wrong together."
+  },
+  {
+   "struct": "CUnit",
+   "offset": "0x27C",
+   "name": "plan_our_power",
+   "type": "int",
+   "comment": "CUnitPlan +0x80, the `our_power` key - the plan's cached estimate of the owner's strength for it. A negative value is CSetPlanAttributesCommand's \"not set\" sentinel.",
+   "evidence": "CUnitPlan::LoadKey reaches plan +0x80 for token 0x72E `our_power` at 0x4DFD52 (`sub edi, -0x80`, jump-table case 4); CSetPlanAttributesCommand::LoadKey places 0x72E at +0x74 and Execute writes `[unit+0x27C]` from it at 0x1E7998. Wrong if the `sub edi, -0x80` were read as `add edi, 0x80` onto the wrong base - edi is `this` throughout that function."
+  },
+  {
+   "struct": "CUnit",
+   "offset": "0x280",
+   "name": "plan_their_power",
+   "type": "int",
+   "comment": "CUnitPlan +0x84, the `their_power` key - the plan's cached estimate of the opposition's strength. A negative value is CSetPlanAttributesCommand's \"not set\" sentinel.",
+   "evidence": "CUnitPlan::LoadKey reaches plan +0x84 for token 0x72F `their_power` at 0x4DFD71 (jump-table case 5); the command places 0x72F at +0x78 and Execute writes `[unit+0x280]` from it at 0x1E79DC. Wrong under the same condition as plan_our_power."
+  }
+ ],
+ "vftable_slots": {
+  "CCommand": {
+   "6": {
+    "name": "Execute",
+    "signature": "void __thiscall Execute(CCommand* this)"
+   }
+  },
+  "CSetPlanAttributesCommand": {
+   "6": "Execute"
+  },
+  "CSetPlanForcesCommand": {
+   "6": "Execute"
+  },
+  "CSetPlanOpsAreaCommand": {
+   "6": "Execute"
+  }
+ },
+ "slots_noted": "CCommand's own body for slot 6 is 0xABF890, a bare `ret` the linker folded into 1691 virtual tables, so it is recorded as a slot name on CCommand and deliberately given no address entry - naming that body for CCommand would say something false about 1690 other classes. CCommand is where the slot is declared: CPersistent, its only base, has six virtuals (slots 0..5, already recorded as the destructor, Save, SaveContents, Load, LoadKey and AfterLoad), and every CPersistent subclass that is not a command has a table that stops at slot 5 or puts something unrelated at 6. 136 of the 138 command subclasses with a table longer than six slots override it; the two that do not inherit CCommand's empty default. CMoveCommand's slot 6 is already recorded as `RouteUnit` and is left alone: a name read off the slot's own body wins over one inherited from the base, and routing the unit is exactly how a move command executes.",
+ "frontier": [
+  "0x2DD70",
+  "0x2DE10",
+  "0x142F60",
+  "0x86A70",
+  "0x10D1E0",
+  "0x22760",
+  "0x82190",
+  "0x4DD860",
+  "0x794BEC",
+  "0x795B00",
+  "0x799220"
+ ]
+}

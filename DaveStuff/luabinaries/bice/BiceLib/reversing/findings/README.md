@@ -72,6 +72,19 @@ were once named off the wrong virtual table.
 **Say what you could not settle.** A finding that names its own gap is worth more than
 one that quietly rounds up.
 
+**Your signature has to survive `checkSignatures.py`.** It reads the `ret` and works out
+what the convention implies: `__cdecl` leaves the arguments to the caller and ends in a
+bare `ret`, `__stdcall` and `__thiscall` clean their own and end in `ret N`. So the
+signature you write is a prediction the executable can refuse, and it refused six that
+were already in `project.json` - `ParseObjectId` was recorded `__cdecl` and does `ret 8`.
+Run it once your file is written; a disagreement means one of the two is wrong and it is
+usually the signature.
+
+Two conventions it knows about, which yours should use. A register argument is written
+`unit@ESI` and a stack one `out@stack:4`, and a register argument costs no stack. Where
+the compiler used a register convention no ordinary signature can express, that is what
+`no_signature` is for - do not invent stack parameters to make the arithmetic close.
+
 ## Traps that have actually cost time here
 
 - **Virtual address against rva.** The disassembler prints virtual addresses, based at
@@ -116,6 +129,7 @@ your own copy of the Ghidra project: concurrent headless runs fight over the loc
 
 ## Landing it
 
+    python checkSignatures.py                   your signature against the ret
     python ghidra/mergeFindings.py --check      what would land, changing nothing
     python ghidra/mergeFindings.py              land it
     python ghidra/buildFindings.py              the oracle - it validates against the exe

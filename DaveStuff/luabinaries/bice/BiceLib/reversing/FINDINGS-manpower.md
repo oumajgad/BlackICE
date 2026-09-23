@@ -223,6 +223,26 @@ landing before the in-game GUI is built. So both the set in `CInGameIdler` and t
 in `CFrontEnd` hold at runtime. The tool is `Reversing/Watch.hpp`, which hooks nothing -
 it reads the one pointer a frame and refuses an offset outside the object.
 
+**Counted in a running game**, which settles how much of this block actually runs. Three
+counters on the gate, over four game days of an ordinary campaign:
+
+| | per day |
+| --- | --- |
+| the gate is reached | ~8270, once per unit |
+| the gate is passed | ~8270, the same number every day |
+| the inner branch is taken | ~860 |
+
+Reached and passed are *identical* on every row, which is what `in_game` being 1 for the
+whole session predicts, and is how the counters show they are counting rather than
+sitting still. So `ApplyAttrition` runs for every unit in the game every day.
+
+The inner branch is `IsNaval` - slot 16, which `CNavy` overrides and `CArmy` and `CAir`
+inherit from `CUnit` - so `CheckTransportOverload` runs for every *fleet* every day, and
+about 10.4% of the units in that campaign were fleets. That agrees with the signature
+from the other direction: it takes a `CNavy*`.
+
+Neither of those was dead code, which is the thing the disassembly could not say.
+
 **`in_game` is the straight answer to a question BiceLib has always had to infer.**
 `CCurrentGameState::current()` being non-null proves only that a session was started at
 some point, which is why the Present hook watches the clock instead. This byte is the
