@@ -5,11 +5,13 @@
  * CCurrentGameState - the running game, and the one global everything else is reached
  * from.
  *
- * Held in a single module relative pointer, created lazily, `0xda8` bytes, constructed
- * at `0x27D070`. **It exists at the main menu**: its being non-null proves a session
+ * Held in a single module relative pointer, created lazily, `0xda8` bytes. Its own
+ * constructor is inlined everywhere; `0x27D070` is the base `CGameState` constructor
+ * each copy calls. **It exists at the main menu**: its being non-null proves a session
  * has been started at some point, not that one is loaded now. Anything that must not
  * run outside a session needs a stronger check than this - see the note in
- * `README-imgui.md` about the Present hook.
+ * `README-imgui.md` about the Present hook. The game's own answer is the `in_game` byte
+ * at `+0xDA4`, set on entering a running game and cleared on leaving it.
  *
  * How the anchor and the combat fields were found is in `reversing/CLASSES.md`; the
  * autosave fields are in `reversing/FINDINGS-autosave.md` and the map mode ones in

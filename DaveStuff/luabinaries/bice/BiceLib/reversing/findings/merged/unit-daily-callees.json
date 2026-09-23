@@ -1,0 +1,117 @@
+{
+ "agent": "unit-daily-callees",
+ "question": "The two unnamed functions CUnit::UpdateDaily calls, rva 0x1BB950 and rva 0x1BD240 (virtual 0x005BB950 and 0x005BD240). What each does, its signature and convention, every field access on a class already in project.json, and a name.",
+ "source": "reversing/FINDINGS-manpower.md",
+
+ "addresses": [
+  {
+   "rva": "0x1BB950",
+   "kind": "function",
+   "name": "CUnit::ConsumeSuppliesAndFuel",
+   "signature": "void __stdcall ConsumeSuppliesAndFuel(CUnit* unit)",
+   "comment": "The daily supply and fuel draw for one unit. Asks CUnit::SupplyConsumption (0x1BB560) and CUnit::FuelConsumption (0x1BB7A0) what the unit wants, takes what it can get, and writes CUnit::supply_received_percentage (+0xFC) and CUnit::fuel_received_percentage (+0x100) as taken*1000/wanted (1000 when fully supplied, -1 when nothing was wanted, 0 when nothing was available). The country it bills is the expeditionary_owner (+0x28C) where CUnit +0x290 is set, the owner (+0x124) otherwise, through CCountryTag::GetCountry (0x2610). Two paths, chosen on g_CCurrentGameState +0xC9C: >0 draws straight out of CCountry::GetPool(country) (0xF4DE0 - pool_in_exile at +0x9F8 when use_own_pool, the capital province's pool at +0x15C otherwise), the inline copy of that function appearing four times; <=0 walks the supply network - the unit's supply source province, its supply_depot_id (+0x48) into g_CMap +0x2200, and draws that province's pool.supplies (+0x164) and pool.fuel (+0x168) pro rata against the province's need.supplies (+0x24C) and need.fuel (+0x250). Where the depot is controlled by another country a lend-lease conversion runs: the amount is scaled by a rate built from CDefines +0xCC and the receiving country's CGoodsPool at +0x7DC is credited, the supplier's at +0x86C, and both countries' pools are moved. Fuel is only taken when the unit is moving (movement_order_remaining_provinces_count > 0) or is naval and 0x1CDC30 says no; a land or air unit standing still burns none. The last act, for the player's own units only, is to set the byte at +0x1BC on both objects hanging off CUnit +0x164 (+0x13C and +0x140) when either received percentage has fallen below Define50 - the out-of-supply marker on the counter.",
+   "confidence": "confirmed",
+   "evidence": "Checked: the two calls at 0x1BB978 and 0x1BB985 are to CUnit::SupplyConsumption and CUnit::FuelConsumption, both already named in project.json, and their out-parameters at [ebp-0x30] and [ebp-0x1C] are the divisors of every ratio the function writes. Every store the function makes to the unit is to +0xFC or +0x100, which project.json already calls supply_received_percentage and fuel_received_percentage - there is no third store to the unit. The pool selection at 0x1BBA55, 0x1BBA8B, 0x1BBB3C, 0x1BBB75, 0x1BBFEC, 0x1BC01C, 0x1BC050, 0x1BC206, 0x1BC236 and 0x1BC26C is instruction-for-instruction the body of CCountry::GetPool (0xF4DE0) inlined, and the same function is called out of line twice at 0x1BC010 and 0x1BC22A; +8 and +0xC off its result are CGoodsPool::supplies and CGoodsPool::fuel, already named. ret 4 with one stack argument at [ebp+8] and no ecx use before it is written, at every one of the five exits (0x1BBBC1, 0x1BBBF2, 0x1BBC2E, 0x1BBF87, 0x1BC45A); both call sites push one argument and neither adjusts esp afterwards, so __stdcall. eax at the exits is whatever the last ratio left there and both callers discard it, hence void. What would show it wrong: a caller that uses the return value; a store to a CUnit field other than +0xFC/+0x100 that this reading misses; or the g_CCurrentGameState +0xC9C branch turning out to select something other than 'skip the supply network', which is the one part of the reading that rests on shape rather than on a named symbol."
+  },
+  {
+   "rva": "0x1BD240",
+   "kind": "function",
+   "name": "CUnit::UpdatePlanForceNeeds",
+   "signature": "bool __stdcall UpdatePlanForceNeeds(CUnit* unit, void* difference, void* groupDifference, void* needed, void* wanted)",
+   "comment": "Recomputes, per subunit type, what this unit's order of battle is short of against its plan. The three vector<int> arguments are always &unit->+0x5C, &unit->+0x6C and &unit->+0x7C at both call sites; all three are indexed by CSubUnitDefinition::type_index and sized to the subunit definition database's count ((db+0x20 - db+0x1C)/4), grown and zero-filled on the first call and, on later calls, with the second and third zeroed at 0x1BD40C while the first is overwritten wholesale. It then walks up higher_oob_unit_ptr to the top of the OOB and, unless that top unit has plan+0x8 (CUnit +0x204) set with oob_level 0, calls 0x4E1D00 to build the wanted composition out of the unit's plan (CUnit +0x1FC) and the owner's available subunit types; with the fifth argument null it fills the plan's own buffers at plan+0x18/+0x70/+0x80/+0x84, with it non-null it fills locals instead. The wanted list is the local one where 0x4E1D00 produced one and unit->+0x26C (which is plan+0x70) otherwise. CUnit::CountSubUnitsByType (0x1BD7E0) then counts what the unit actually has, and: difference[i] = wanted[i] - have[i]; groupDifference[GenericType(i)] += difference[i] for every non-zero entry, where GenericType is 0x1ADF70 folding a subunit type onto a representative one; then, over a copy of groupDifference, needed[i] = min(difference[i], groupNet) for each positive deficit, drawing that group's remaining net down as it goes - so a surplus of one type inside a group cancels a deficit of another. Returns true if any entry of needed was set. Runs once a day from CUnit::UpdateDaily for units at oob_level 0 and for HQs at level 1..3 whose +0x198 is set; the level 1..3 units with +0x198 clear have the three vectors cleared instead, and level >=4 is skipped entirely.",
+   "confidence": "inferred",
+   "evidence": "Checked: ret 0x14 against five pushes at both call sites (0x1BB326 inside CUnit::UpdateDaily and 0x1BD737 inside 0x1BD6F0), so __stdcall with five dword arguments; the return is al, set only at 0x1BD69D and read by nothing at either site, which is why the entry says bool rather than void. The identification of the arrays is mechanical: 0x1BD7E0, which fills the 'have' array, indexes it by [regiment->sub_unit_definition_ptr->type_index] - CRegiment +0x58 and CSubUnitDefinition +0x24, both already named - walking CUnit::regiments (+0x38) and recursing over CUnit::children (+0x1E4). 0x1ADF70, which produces the group index, tests CSubUnitDefinition is_ship (+0x2E), carrier_size (+0x190), is_capital (+0x2F), is_transport (+0x30), is_sub (+0x31) and width (+0xE8) at exactly the offsets project.json already names, and returns another definition's type_index; that is five named fields agreeing at once, so the database global is settled even though it has no name yet. 0x1BD4D1 reads unit+0x26C and 0x1BD498 passes plan+0x70, and CUnit::plan is already named at +0x1FC, so 0x1FC+0x70 == 0x26C ties the array to the plan arithmetically. The word 'plan' in the name comes from the callers of 0x1BD6F0, which is the out-of-line twin of the gate CUnit::UpdateDaily inlines: they are CSetPlanForcesCommand slot 6 (0x1E88A0, twice) and CSetPlanAttributesCommand slot 6 (0x1E77D0), both already named classes. What would show it wrong: 0x4E1D00 turning out to produce something other than a desired composition - it is only called from here and is not named, so that step is read off its arguments and its use of the owner's subunit availability byte array rather than off a symbol; or a reader of unit+0x5C/+0x6C/+0x7C somewhere else in the image that uses them for something other than force requests. A scan for code touching all three displacements off one base within 0x40 bytes returned only 0x1BD72A (inside 0x1BD6F0) and one site in the CRT, so no such reader was found, but that scan only catches lea forms."
+  },
+  {
+   "rva": "0x1BD7E0",
+   "kind": "function",
+   "name": "CUnit::CountSubUnitsByType",
+   "signature": "void __thiscall CUnit::CountSubUnitsByType(CUnit* this, void* counts, int reserved)",
+   "comment": "Counts this unit's subunits by CSubUnitDefinition::type_index into a vector<int>, recursing through the OOB. Where the vector is empty it is first grown to the subunit definition database's count and zero-filled; then counts[regiment->sub_unit_definition_ptr->type_index]++ over CUnit::regiments (+0x38), then the same call on every entry of CUnit::children (+0x1E4). The second argument is pushed as 0 at both call sites and never read.",
+   "confidence": "confirmed",
+   "evidence": "Checked: ret 8 with ecx saved to [ebp-0x14] at 0x1BD805 and read back at 0x1BD8D5 as the object whose +0x38 and +0x1E4 are walked, so __thiscall with two stack arguments. The increment at 0x1BD8ED indexes by [[node]+0x58]+0x24, which is CRegiment::sub_unit_definition_ptr followed by CSubUnitDefinition::type_index, both already in project.json; the list walk is the CList shape ([node] item, [node+8] next) that CUnit::regiments and CUnit::children already carry. [ebp+0xc] appears in no operand in the body. What would show it wrong: a read of the second argument this missed, which would make 'reserved' wrong (the shape of the rest would be unaffected)."
+  },
+  {
+   "rva": "0x1BD6F0",
+   "kind": "function",
+   "name": "CUnit::RefreshPlanForceNeeds",
+   "signature": null,
+   "no_signature": "The compiler gave it a register convention - the unit arrives in eax and it takes no stack arguments (plain ret) - so it cannot be written as an ordinary function, the same reason AddCasualtyTrickleback has none.",
+   "comment": "The out-of-line copy of the gate CUnit::UpdateDaily inlines at 0x1BB273. On a unit with oob_level >= 4 it does nothing; with oob_level 0, or with +0x198 set, it calls CUnit::UpdatePlanForceNeeds(unit, &unit->+0x5C, &unit->+0x6C, &unit->+0x7C, 0); otherwise it clears all three vectors. Called from CSetPlanForcesCommand slot 6 (twice) and CSetPlanAttributesCommand slot 6.",
+   "confidence": "confirmed",
+   "evidence": "Checked: instruction for instruction the same tests and the same five pushes as 0x1BB273..0x1BB32A inside CUnit::UpdateDaily, against CUnit::oob_level (+0x1F4), which project.json already names; the three clears go through 0x0A8590, whose body is the same vector-clear MSVC inlined into UpdateDaily at 0x1BB297, 0x1BB2BF and 0x1BB2E7. Its three callers resolve to CSetPlanForcesCommand and CSetPlanAttributesCommand virtual table bodies. What would show it wrong: nothing about the control flow, which is eighteen instructions; the name would be wrong if CUnit::UpdatePlanForceNeeds is wrong."
+  }
+ ],
+
+ "struct_fields": [
+  {
+   "struct": "CUnit",
+   "offset": "0x5C",
+   "name": "plan_subunit_difference",
+   "type": "std::vector<int>",
+   "comment": "Per CSubUnitDefinition::type_index: what the plan wants of that type minus what the unit's OOB actually has. Signed - a negative entry is a surplus. Written wholesale by CUnit::UpdatePlanForceNeeds (0x1BD240) and cleared by CUnit::RefreshPlanForceNeeds for an HQ that has no plan.",
+   "evidence": "The vector is sized to the subunit definition database's entry count and indexed by the same i that CUnit::CountSubUnitsByType indexes by CSubUnitDefinition::type_index; the store is at 0x1BD525, difference[i] = wanted[i] - have[i]. The three vectors are passed positionally from &unit->+0x5C at both call sites. What would show it wrong: a reader elsewhere treating it as something else; nothing but 0x1BD240, 0x1BD6F0 and the block CUnit::UpdateDaily inlines was found to touch it."
+  },
+  {
+   "struct": "CUnit",
+   "offset": "0x6C",
+   "name": "plan_subunit_group_difference",
+   "type": "std::vector<int>",
+   "comment": "The same differences summed onto one representative subunit type per group (0x1ADF70 does the folding: carrier air, capital ship, transport/submarine, and so on). Zeroed at the top of each pass and accumulated at 0x1BD544.",
+   "evidence": "Indexed by the return of 0x1ADF70, which reads CSubUnitDefinition is_ship, carrier_size, is_capital, is_transport, is_sub and width - all already named - and returns another definition's type_index. Zeroed at 0x1BD41D alongside +0x7C, accumulated at 0x1BD544, copied at 0x1BD580 and drawn down at 0x1BD69A. What would show it wrong: 0x1ADF70 turning out to return something that is not a type_index, which the +0x24 read argues against."
+  },
+  {
+   "struct": "CUnit",
+   "offset": "0x7C",
+   "name": "plan_subunit_needed",
+   "type": "std::vector<int>",
+   "comment": "Per subunit type, the part of the deficit that the group as a whole is still short of - min(difference[i], whatever is left of that group's net difference), taken in index order. This is the list the plan machinery asks for.",
+   "evidence": "The only store is at 0x1BD697, guarded by difference[i] > 0 and by the group remainder being positive, and it is a plain store rather than an accumulate, which is why the vector is zeroed at 0x1BD414 first. Setting it is also what makes the function return true. What would show it wrong: a consumer of the array reading it as absolute counts rather than as a shortfall."
+  },
+  {
+   "struct": "CUnit",
+   "offset": "0x26C",
+   "name": "plan_subunit_wanted",
+   "type": "std::vector<int>",
+   "comment": "The composition the plan asks for, per subunit type - the array 0x4E1D00 fills from the plan and the owner's available subunit types. Sits inside CUnit::plan at plan+0x70.",
+   "evidence": "0x1BD498 passes plan+0x70 (plan is CUnit +0x1FC, already named, so plan+0x70 is unit+0x26C) as the fourth argument of 0x4E1D00, and 0x1BD4D1 then reads unit+0x26C as the wanted array unless 0x4E1D00 filled a local one instead. The arithmetic 0x1FC+0x70 == 0x26C is exact. What would show it wrong: CUnit::plan not being an embedded object - project.json types it void*, and this entry assumes the pointer-typed field is really the head of a struct, which the four plan+offset arguments at 0x1BD498 are the evidence for."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xA40",
+   "name": "unit_demand",
+   "type": "CGoodsPool",
+   "comment": "What the units drawing on this country asked for today, before any shortfall - supplies accumulate at +0xA48 and fuel at +0xA4C on every path through CUnit::ConsumeSuppliesAndFuel, including the one where the pool cannot pay. Distinct from CCountry::usage (+0x98C), which only gets what was actually handed over.",
+   "evidence": "Layout is anchored at both ends: CCountry's goods pools run on a 0x24 stride and pool_in_exile (+0x9F8) and unused_pool_A64 (+0xA64) are both already named, which puts pools at +0xA1C and +0xA40 between them; +0xA48 and +0xA4C are then CGoodsPool::supplies and CGoodsPool::fuel of the second, at the +8 and +0xC the struct already names. The adds are at 0x1BBAB1, 0x1BBFC6 and 0x1BC091 for supplies, 0x1BBB9E, 0x1BC1E0 and 0x1BC29F for fuel, and in every case the addend is the wanted figure rather than the taken one, while the taken one goes to +0x994/+0x998 (usage). What would show it wrong: the name - the layout is solid, but 'demand' is read off which of the two figures is added, not off a symbol; the pool at +0xA1C is left unnamed here for exactly that reason, since it takes the same figures but only when the unit is standing in the country's capital province and no reading of that gate was reached."
+  }
+ ],
+
+ "vftable_slots": {},
+ "slots_noted": "None of the four functions is in any class's virtual table - `vtable.py --holding` reports 'is in no class's virtual table' for all four (0x1BB950, 0x1BD240, 0x1BD7E0 and 0x1BD6F0; the tool takes virtual addresses, so that was run as 0x005BB950 and so on). Two bodies reached from them are virtuals and are deliberately left unnamed: 0x1B4EC0 (`mov eax,ecx; ret`) sits in six tables, CArmy slots 9 and 10, CNavy 11 and 12 and CAir 13 and 14, so it is a shared downcast that belongs to no one class; and 0x1E77D0 / 0x1E88A0 are slot 6 of CSetPlanAttributesCommand and CSetPlanForcesCommand, named here only as evidence, not renamed.",
+
+ "frontier": [
+  "0x1BB560 CUnit::SupplyConsumption and 0x1BB7A0 CUnit::FuelConsumption are named but their bodies are not reversed - they are what decides how much a unit wants",
+  "0x4E1D00 - only called from 0x1BD240, builds the plan's wanted composition from CUnit::plan and the owner's available subunit types (reads g_CCountryDataBase and country+0xDF8->+0x27C, a per-type availability byte array, and country+0xDF8->+0x248 +0xCA4)",
+  "0x1ADF70 - subunit type -> representative group type; register convention (edx = the database, esi = the index). Reads CSubUnitDefinition is_ship/is_capital/is_transport/is_sub/carrier_size/width and +0x2D, and returns db+0x98/+0xA0/+0xA8/+0xAC ->type_index",
+  "0x1ADEE0 and 0x1B1BE0 - constructor and install of the 0xC0 byte subunit definition database singleton at rva 0x16886F0 (295 references; CSubUnit::ApplyTechnologies, CCountry::LoadKey and CCombatant::CCombatant are among the named functions that use it). Its vector of CSubUnitDefinition* is at +0x1C/+0x20; naming the global wants the class name, which was not recovered",
+  "0xEF7C0 - __thiscall on CCountry taking (CCountryTag*, bool), ret 8; compares this->+0xCA8 against the tag and walks the other country's +0xF38/+0xF3C. Decides, in 0x1BB950, whether a supply draw across a border is lend-lease",
+  "0x1CDC30 - register convention (esi = the unit), bool. Reads CUnit +0x98, its vf0 against current_province_ptr, then +0x18 -> +0xB0 -> +0x11C. Gates whether a stationary naval unit burns fuel",
+  "0x2610 - __thiscall on CCountryTag returning CCountry* through g_CCountryDataBase +0x16C; called 11 times from 0x1BB950 alone. Looks like CCountryTag::GetCountry but was not confirmed",
+  "0x1FD0 and 0x808870 - the float helper pair 0x1BBE63..0x1BBE79 uses to build the lend-lease conversion rate",
+  "0x799980 and 0x799AF0 - __alldiv and __allmul, the CRT 64 bit helpers every ratio in 0x1BB950 falls back to when the operand would overflow a 32 bit imul",
+  "0x22760 - the vector<int> grow helper (eax = the vector, ecx = the count), and 0x0C0700 its move/reallocate; 0x0A8590 is the matching clear",
+  "0x794936 - the frame unwind funclet of 0x1BD240",
+  "CCurrentGameState +0xC9C - unnamed, and it decides which of the two supply paths 0x1BB950 takes. Written only by CSetGamePlayOptions slot 6 (0x2D5D20), from element 1 of a vector<int> on the command, with +0xC98 taking element 0; so it is a gameplay option set at game start, but which one was not settled",
+  "CCountry +0xCA4 and +0xCA8 - unnamed, the pair 0x1BB950 and 0xEF7C0 use to decide lend-lease",
+  "CCountry +0x7DC and +0x86C - unnamed CGoodsPools on the 0x24 stride, credited with the lend-lease amounts at +0x7E4/+0x7E8 and +0x874/+0x878",
+  "CCountry +0xA1C - unnamed CGoodsPool, taking the same demand figures as +0xA40 but only when the unit is standing in the country's capital province",
+  "CUnit +0x98 - unnamed, an object whose vf0 returns a CMapProvince and whose +0x18 is a CUnit; it is how 0x1BB950 finds the province a unit draws supply from, and 0x1CDC30 reads it too",
+  "CUnit +0x164 - unnamed; +0x13C and +0x140 off it each carry a byte at +0x1BC that 0x1BB950 sets as the out-of-supply marker, and CUnit::UpdateDaily tests +0x164 at 0x1BB333",
+  "CUnit +0x198 - unnamed; with oob_level 1..3 it is what decides whether an HQ gets its plan force needs recomputed or cleared",
+  "CUnit +0x204 - unnamed, which is plan+0x8; with oob_level 0 on the top unit of the OOB it suppresses the 0x4E1D00 call entirely",
+  "CArmy +0x300 and +0x304 - unnamed (reached through slot 9, the `return this` downcast); each points at an object of the same kind as CUnit +0x98 and either one, when set, replaces the supply source province",
+  "CUnit virtual slot 9 (CArmy 9/10, CNavy 11/12, CAir 13/14) - all six are 0x1B4EC0, `mov eax,ecx; ret`, so the slot group is a downcast to the concrete unit class; the merge would refuse one name across three classes, so it wants a record rather than a name"
+ ],
+
+ "notes": "Named fields the two functions touch, all already in project.json and all agreeing with this reading - CUnit: supply_received_percentage (+0xFC), fuel_received_percentage (+0x100), owner (+0x124), current_province_ptr (+0x130), movement_order_remaining_provinces_count (+0x140), oob_level (+0x1F4), plan (+0x1FC), expeditionary_owner (+0x28C), regiments (+0x38), children (+0x1E4), higher_oob_unit_ptr (+0x1E0), and virtual slots 15 IsLand, 16 IsNaval, 17 IsAir. CCountry: use_own_pool (+0x95), pool_in_exile (+0x9F8), usage (+0x98C), units (+0xBAC). CMapProvince: supply_depot_id (+0x48), id (+0xD0), pool (+0x15C), need (+0x244), controller (+0x334). CGoodsPool: supplies (+8), fuel (+0xC). CCurrentGameState: player (+0xC30). CSubUnitDefinition: type_index (+0x24), is_ship (+0x2E), is_capital (+0x2F), is_transport (+0x30), is_sub (+0x31), width (+0xE8), carrier_size (+0x190). CRegiment: sub_unit_definition_ptr (+0x58). Globals: g_CCurrentGameState, g_CMap, g_CCountryDataBase, g_CDefines, Define50. One correction to record: CUnit::UpdateDaily does NOT call 0x1BD240 unconditionally - `findRefs.py --callers` reports the call at 0x1BB326, but that site is inside the block 0x1BB317..0x1BB32A, which both the je at 0x1BB284 and the jmp at 0x1BB315 reach or skip, so the call happens only for oob_level 0 or for an HQ with +0x198 set, and for oob_level 1..3 with +0x198 clear the three vectors are cleared instead. Reading the bytes forward from 0x1BB310 decodes them from the middle of the lea at 0x1BB2FB and produces a coherent-looking but wrong instruction stream; cfg.py from 0x1BB25D is what shows the real boundaries."
+}

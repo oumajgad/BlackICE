@@ -113,6 +113,25 @@ are numbered in load order and so mean nothing outside that mod. `buildFindings.
 that file into the `SaveToken` enum, which is what makes a save writer decompile as
 `SaveWriteKey(usage, writer)`.
 
+**The static scanners** - `image.py` loads the executable and converts between virtual
+addresses and rvas; the four beside it are built on it and none of them needs the game.
+
+```
+python disasm.py 0x005BB146 0x60          a range, with strings named
+python cfg.py 0x005BAF70 0x450            basic blocks and every edge into them
+python cfg.py 0x005BAF70 0x450 --lands-in 0x005BB25E 0x005BB262
+python fieldchain.py --holder 0xDA8 --index 50 --stride 8
+python slotcalls.py 32 --touches 0xBAC 0x1E4
+python frontier.py --top 40               what named functions call that nobody has named
+python frontier.py --from 0x005BAF70      what one function reaches
+```
+
+**`fieldchain.py` is the one that does the work.** A displacement on its own is hundreds
+of unrelated hits - `--holder` ties the register to a known pointer first, which is what
+showed `peacetime_manpower_rotation` has exactly one reader in the whole image. `cfg.py
+--lands-in` is the check to run before hooking: five bytes of jump cover more than the
+instruction they replace, and a branch into the middle of that lands in the displacement.
+
 **`vtable.py`** - classes' vtables side by side, out of the executable.
 
 ```
@@ -193,6 +212,14 @@ symbols.
    distinguishes them is how the page will split its three columns.
 6. Confirm the meaning of every field twice, with different battles, before writing it
    down. A field that happens to match once is the usual way to get this wrong.
+
+## Working in parallel
+
+`findings/README.md` is the contract for several agents reading the executable at once:
+a question each, one file each into `findings/incoming/`, and `ghidra/mergeFindings.py`
+the only thing that writes `project.json`. It works here because `buildFindings.py`
+validates every entry against the executable, so an answer can be checked before anyone
+reads the reasoning.
 
 ## Where findings go
 

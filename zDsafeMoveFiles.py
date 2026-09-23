@@ -69,6 +69,14 @@ PreserveInScript = [
     # Crash reports are the whole evidence of a crash somebody has reported, and a
     # deploy is exactly what happens next after one arrives.
     "crash_reports",
+    # The reverse engineering probes. The mod does not ship these - the .txt is copied
+    # in by hand from BiceLib's reversing/probes when someone wants an answer, and the
+    # .csv is what the game wrote back. Precisely because they do not come from the
+    # source tree, a deploy would destroy them with nothing to restore them from.
+    "BiceLibCounters.txt",
+    "BiceLibCounters.csv",
+    "BiceLibWatch.txt",
+    "BiceLibWatch.csv",
 ]
 
 PreserveStash = os.path.abspath("./.deploy-preserved")

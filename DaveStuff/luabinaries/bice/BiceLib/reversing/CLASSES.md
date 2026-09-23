@@ -40,11 +40,21 @@ Everything reachable starts from one global.
 offsets below and hands the pointer out through `current()`. Nothing else should spell
 the global out.
 
-**`CCurrentGameState`** - vftable `0x11CF674`, `0xda8` bytes, constructed at
-`0x27D070` (**read**: both callers of the combat recorder allocate `0xda8`, call that
-constructor and store the result in the global). It is created lazily, and **exists at
-the main menu** - see `present-hook-must-not-call-game-lua` and `README-imgui.md`. Its
-being non-null proves nothing about a game being loaded.
+**`CCurrentGameState`** - vftable `0x11CF674`, `0xda8` bytes. **Its own constructor is
+inlined at all 2773 sites** and so has no body to name: each site allocates `0xda8`,
+calls the base constructor `CGameState::CGameState` at `0x27D070` - which writes
+`CGameState`'s own vftable `0x11CF624` - and then writes `0x11CF674` over it and zeroes
+the derived fields `+0xD9C`, `+0xDA0` and `in_game` at `+0xDA4`.
+
+This entry read "constructed at `0x27D070`" until 2026-09-23. The call is real, which is
+why the reading held up; it is the *base* class's constructor, and the vftable each one
+writes is what tells them apart.
+
+It is created lazily, and **exists at the main menu** - see
+`present-hook-must-not-call-game-lua` and `README-imgui.md`. Its being non-null proves
+nothing about a game being loaded. **`in_game` at `+0xDA4` is the game's own answer to
+that question**: set on entering a running game, cleared on returning to the frontend,
+and tested by about twenty sites before they touch live game data.
 
 | Offset | Holds | |
 | --- | --- | --- |

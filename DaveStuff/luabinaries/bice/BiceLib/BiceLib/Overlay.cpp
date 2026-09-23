@@ -18,6 +18,8 @@
 #include <GameState/CustomMapMode.hpp>
 #include <GameState/GameClock.hpp>
 #include <GameState/Periodics.hpp>
+#include <Reversing/Counters.hpp>
+#include <Reversing/Watch.hpp>
 #include <Hooks/TriggerText/TriggerScrollText.hpp>
 #include <GameState/OutOfMemory.hpp>
 #include <Gui/TextureStats.hpp>
@@ -578,12 +580,21 @@ namespace {
             // frame where it says the clock has just moved in play, so never at the menu.
             GameClock::update();
 
+            // Records what the watched game state fields hold, whenever one changes.
+            // Not behind the clock check below on purpose: the sample that matters for
+            // a field like in_game is the one taken at the main menu.
+            Reversing::Watch::update();
+
             // Repaints the custom map mode once a game day while it is on.
             CustomMapMode::update();
 
             // Runs the mod's BiceLib setup once a game day, in every game in a
             // session - the multiplayer clients run none of the mod's scripts.
             Periodics::update();
+
+            // Appends a row of the reverse engineering counters once a game day, when
+            // BiceLibCounters.txt named any. Nothing is installed without that file.
+            Reversing::Counters::update();
 
             // Watches how much address space is left, and saves and closes the game
             // rather than letting it die. One cheap call a frame while nothing is

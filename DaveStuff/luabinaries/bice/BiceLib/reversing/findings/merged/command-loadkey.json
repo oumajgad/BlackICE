@@ -1,0 +1,38 @@
+{
+ "agent": "command-loadkey",
+ "question": "0x005EC150 (rva 0x1EC150): what the helper that 44 command LoadKey methods call actually does, its signature and convention, its field accesses, and whether it is a virtual.",
+ "source": "reversing/FINDINGS-script.md",
+ "addresses": [
+  {
+   "rva": "0x1EC150",
+   "kind": "function",
+   "name": "ParseObjectReference",
+   "signature": "void __cdecl ParseObjectReference(CParseContext* parse@ECX, void* reference@ESI)",
+   "comment": "**Reads the `{ type = N id = N }` block a save writes for an object reference into the 0x28-byte reference a command keeps.** It calls `ParseObjectId` (0x67B250) for the pair and then fills the reference: `+0` the cached object pointer, set to 0 because the block names no object yet; `+4` type; `+8` id; `+0xC` an `Hoi3CString` assigned from the parse context's own name at `+0x32C`. It takes no stack argument - the parse context arrives in ECX and the reference in ESI (`mov ecx,[ebp+8]` and `lea esi,[this+0x3C]` at the call site, a bare `ret` here), the same register-argument style as the rest of the loader primitives. 61 call sites, every one of them a command's `LoadKey` case for a key whose value is an object: `unit` is token 0x256 and `parent` 0x84, and a command keeps one such reference per key at `+0x3C`, `+0x64` and so on, 0x28 apart. **It stores nothing when the parse context's error handler at `+0x35C` has latched** - handler non-null and both its bytes at `+4` and `+5` set jumps straight to the epilogue and leaves the reference as it was, although `ParseObjectId` has already consumed the tokens. The mirror image is the command's `SaveContents`, e.g. `CMoveCommand`'s at 0x1D9160: `SaveWriteKey(0x256)` then the pair out of `+0x40` and `+0x44` - the string at `+0x4C` is never written to the save. The same reference is built from a live object by 0x2DD70 (unnamed): type from `CUnit +0x10`, id from `+0x14`, the string from the object's `+0x1C`, and the object pointer cached at `+0`.",
+   "confidence": "confirmed",
+   "evidence": "Body read from the bytes (disasm.py 0x005EC150 0x120) and the block graph (cfg.py 0x005EC150 0xD0), which is what settles the gate: 0x1EC18F and 0x1EC194 both jump *into* the store and only 0x1EC199 taken reaches the epilogue, so the skip needs all three of handler, +4 and +5. Convention confirmed at three call sites - CMoveCommand::LoadKey 0x5D92D6, CAttachUnitCommand::LoadKey 0x5DEFEA and 0x5DEFFC, CActivateUnitPlanCommand::LoadKey 0x5E5603 - each of which does `mov ecx,[ebp+8]` (LoadKey's CParseContext argument) and `lea`/`add esi, this+offset`, with no stack adjustment after the call, and this function ends in a plain `ret`. The stack arithmetic only closes if ParseObjectId cleans its own 8 bytes, and it does: it ends `ret 8` at 0xA7B406, so project.json's `__cdecl` on ParseObjectId is wrong and wants __stdcall - not changed here. The 0x28 layout is confirmed twice over: the constructor at 0x42DD70 writes 0, then type from unit+0x10 and id from unit+0x14, then the string, then the object pointer; and CMoveCommand::SaveContents (0x1D9160) writes +0x40 and +0x44 as the pair under token 0x256 while CMoveCommand's own `target_province` sits at 0x64, exactly 0x28 past 0x3C. WHAT WOULD SHOW IT WRONG: a call site that puts something other than `this + k*0x28` in ESI, or that pushes an argument; a reader of the reference's `+0xC` string that shows it is not the context's name; a use of `+0` as anything but a cached object pointer - 0x42DD70 stores the object there and this one zeroes it, but no resolver was traced, so that half is not established here. The name is descriptive, not a symbol out of the binary: nothing in the image names this function or the struct it fills, and the struct has no vtable and so no RTTI.",
+   "no_signature": null
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CParseContext",
+   "offset": "0x32C",
+   "name": "session_name",
+   "type": "Hoi3CString",
+   "comment": "The name the context was made with - the third argument of `CParseContext::CParseContext` (0x67A460), which takes it in EDX and assigns it here; the destructor (0x67A630) frees it with the usual `capacity >= 0x10` test, size at `+0x33C` and capacity at `+0x340`. Two constructor call sites pass the literal `UNNAMED_SESSION` (0x1002AF, 0x231700), which is where the name comes from. Exactly two places read it: `CCommand::LoadKey` (0x67BCD0) copies it into the command's own string at `+8` when that is still empty, and `ParseObjectReference` (0x1EC150) copies it into every object reference it fills. Nothing writes it after construction and neither copy is ever saved, so it is a runtime label for which stream a command or a reference came out of. **The `session` reading is inferred** from the default literal; what is checked is that it is a string and who its five users are.",
+   "evidence": "fieldchain.py --field 0x32C, restricted to the parser module, returns five uses and no others: `lea ecx,[x+0x32C]` in both constructors (0x67A499, 0x67A55F) followed by assignString, the free-and-reset pair in the destructor (0x67A6B7, 0x67A6D6), and `lea eax,[esi+0x32C]` in CCommand::LoadKey (0x67BCD0). The layout it is used with is the std::string one project.json already records for assignString. WHAT WOULD SHOW IT WRONG: a writer reached through a pointer already in a register would not appear in that scan; and a constructor call site that passes a file path rather than a session name would sink the name - the two literal sites do not, and at 0x4408A0 the file path `interface/tutorial.gui` goes to the tokenizer beside it while the context gets a different string."
+  },
+  {
+   "struct": "CParseContext",
+   "offset": "0x35C",
+   "name": "error_handler",
+   "type": "void*",
+   "comment": "Null in the ordinary constructor (0x67A460); set from the caller's EDI by the second one (0x67A520), whose six call sites are all in the 0xB3xxxx network module. `ReportParseError` (0x67A960) sets the byte at its `+4`, calls its slot 0 with the parse context and, where that returns true, sets `+5` as well and queues no message. `ParseObjectReference` (0x1EC150) reads the same three and stores nothing when all three are set, so once the handler has taken an error the block is still consumed but its value is dropped. project.json already describes `+4` in ReportParseError's comment; this names the field it hangs off.",
+   "evidence": "fieldchain.py --field 0x35C: on a CParseContext the field is touched in exactly four functions - the two constructors, ReportParseError and 0x1EC150 - once the hits are restricted to the parser module and 0x1EC150. The handler's slot 0 is called as `mov eax,[ecx]; mov edx,[eax]; push esi; call edx` and its result tested with `test al,al`, so it returns a bool. WHAT WOULD SHOW IT WRONG: a fifth user of the field, or slot 0 turning out to be something other than an error hook - it was not decompiled, and no concrete handler class was traced from the six network call sites."
+  }
+ ],
+ "frontier": [],
+ "frontier_note": "0x1EC150 calls only functions project.json already names: ParseObjectId (0x67B250), assignString (0x1BD0, twice) and free (0x795F9B). The queue it suggests is beside it rather than under it: 0x2DD70, the constructor that builds the same 0x28-byte reference from a live object, and 0x2DE10 next to it, both unnamed; and 0x6789F0, the writer half that puts the type/id pair into a save.",
+ "slots_noted": "not a virtual: `python vtable.py --holding 0x005EC150` says it is in no class's virtual table, so there is no slot to record."
+}

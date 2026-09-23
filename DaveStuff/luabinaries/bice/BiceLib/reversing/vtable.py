@@ -45,15 +45,63 @@ def functionNames(pe, data):
     return named
 
 
+def holding(address):
+    """
+    Which classes' virtual tables hold this function, and at which slot.
+
+    **Run this on every function you name.** A function that turns out to be a virtual
+    is not finished when it has a name: the slot has to be recorded for the class that
+    owns it *and* for the classes that share or inherit it, or the next person reads
+    `vf_32` on three tables that all point here. The linker folds identical bodies
+    together, so a slot several classes share is one address in all of them and the
+    listing below is how you find them.
+    """
+    pe = pefile.PE(EXE, fast_load=True)
+    with open(EXE, "rb") as handle:
+        data = handle.read()
+
+    found = []
+    for name, record in sorted(hoi3.classes().items()):
+        for table in record.get("vftables", []):
+            start = int(table["address"], 16)
+            slots = table.get("slots", 0)
+            if not slots:
+                continue
+            # the table's own address is not the question - what it *holds* is
+            entries = readVtable(pe, data, start - IMAGE_BASE, slots)
+            for slot, value in enumerate(entries):
+                if value == address:
+                    found.append((name, slot, table["object_offset"], start))
+    if not found:
+        print("0x%08X is in no class's virtual table" % address)
+        return
+    print("0x%08X appears in %d table%s:"
+          % (address, len(found), "" if len(found) == 1 else "s"))
+    for name, slot, offset, start in found:
+        print("   %-32s slot %-3d  (table 0x%08X, object offset %d)"
+              % (name, slot, start, offset))
+    print("")
+    print("Record the slot on the class that owns the body, and check whether the")
+    print("others inherit it or override it - vtable.py <those classes> --all shows it.")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("classes", nargs="+", help="the classes to compare")
+    parser.add_argument("classes", nargs="*", help="the classes to compare")
+    parser.add_argument("--holding", type=lambda v: int(v, 0), metavar="ADDRESS",
+        help="instead: which classes' tables hold this function, and at which slot")
     parser.add_argument("--index", type=int, default=0,
         help="which vftable, for classes with more than one base (default 0)")
     parser.add_argument("--all", action="store_true",
         help="show every slot, not only the ones that differ")
     args = parser.parse_args()
+
+    if args.holding is not None:
+        holding(args.holding)
+        return
+    if not args.classes:
+        parser.error("give some classes, or --holding")
 
     pe = pefile.PE(EXE, fast_load=True)
     with open(EXE, "rb") as handle:

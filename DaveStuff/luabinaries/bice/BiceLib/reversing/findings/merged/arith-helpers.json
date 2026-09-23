@@ -1,0 +1,29 @@
+{
+ "agent": "arith-helpers: the two 64-bit compiler helpers behind every thousandths calculation",
+ "question": "0x799980 and 0x799AF0 - both called by ApplyAttrition, AddCasualtyTrickleback and CCountry::GetAllowedResearchSlots. Confirm or refute that they are MSVC's 64-bit arithmetic helpers, and say which is which, with signedness and rounding.",
+ "source": "reversing/FINDINGS-manpower.md",
+ "addresses": [
+  {
+   "rva": "0x799980",
+   "kind": "function",
+   "name": "__alldiv",
+   "signature": "__int64 __stdcall __alldiv(__int64 dividend, __int64 divisor)",
+   "comment": "MSVC CRT signed 64-bit divide (lldiv.asm). Dividend at [esp+4..0xB], divisor at [esp+0xC..0x13]; result in edx:eax; callee cleans 16 bytes (ret 0x10). Truncates toward zero, NOT floor: it takes the absolute value of both operands, divides unsigned, and negates the quotient only if exactly one operand was negative (edi counts the negations at 0xB9998D and 0xB999A9, and 0xB99A1A negates when edi==1). 2032 direct call sites. This is the helper every 'x * 1000 / y' in the game goes through - the thousandths fixed point multiplies into a 64-bit intermediate to avoid overflow and then divides here.",
+   "confidence": "confirmed",
+   "evidence": "Instruction-for-instruction match with the published MSVC CRT lldiv.asm: push edi/esi/ebx, xor edi,edi, then HIWORD(DVND) read at [esp+0x10] and LOWORD(DVND) at [esp+0x10-4]=[esp+0x10]... precisely, the source's DVND equ [esp+16] and DVSR equ [esp+24] equates reproduce every displacement in the body (0xB99985 [esp+0x14]=HIWORD(DVND), 0xB9998E [esp+0x10]=LOWORD(DVND), 0xB999A1 [esp+0x1C]=HIWORD(DVSR), 0xB999C1 [esp+0x18]=LOWORD(DVSR)), including the easy path when the divisor's high word is zero (two chained div ecx at 0xB999CB/0xB999D3), the shr/rcr normalisation loop at 0xB999E7 that the source calls the 'hard' case, the correction-by-one at 0xB99A15, and ret 16. It is signed, not __aulldiv: __aulldiv has no sign handling at all, and this has two of them. cfg.py over 0xAC bytes shows 15 basic blocks, no call instruction and a single ret, so it is a leaf. vtable.py --holding says it is in no class's virtual table. Call sites confirm the argument order and the signedness independently: at 0x5C75B5 (inside ApplyAttrition) a signed 'imul dword ptr [...]' leaves the 64-bit product in edx:eax, then push 0 / push 0x3E8 / push edx / push eax lands eax:edx as the dividend at [esp+4] and 1000 at [esp+0xC] - the /1000 of thousandths arithmetic - and at 0x5C7602 the same shape with 0x7530 = 30000, which is exactly the '/30000' monthly-rate divide FINDINGS-manpower.md records for attrition. WHAT WOULD SHOW IT WRONG: if the two 'inc edi' at 0xB9998D and 0xB999A9 were absent (it would be __aulldiv), if the tail at 0xB99A1D negated on any condition other than edi==1 (the truncation-toward-zero claim would fail), if it ended in 'ret 0' rather than 'ret 0x10' (the stack-cleanup half of the signature), or if any caller pushed other than four dwords before it."
+  },
+  {
+   "rva": "0x799AF0",
+   "kind": "function",
+   "name": "__allmul",
+   "signature": "__int64 __stdcall __allmul(__int64 a, __int64 b)",
+   "comment": "MSVC CRT 64-bit multiply (llmul.asm). a at [esp+4..0xB], b at [esp+0xC..0x13]; result in edx:eax; callee cleans 16 bytes (ret 0x10). Sign-agnostic: the low 64 bits of the product are the same for signed and unsigned operands, so MSVC emits this one body for both, and the sign lives at the CALL SITE - a 'cdq' before the push means the 32-bit operand was signed, a 'xor edx,edx' means it was not. Fast path when both high words are zero (0xB99B00, a single mul), otherwise the three partial products AHI*BLO + ALO*BHI + ALO*BLO. 1144 direct call sites.",
+   "confidence": "confirmed",
+   "evidence": "Instruction-for-instruction match with the published MSVC CRT llmul.asm, in order and with the same registers: mov eax,HIWORD(A)=[esp+8]; mov ecx,HIWORD(B)=[esp+0x10]; or ecx,eax; mov ecx,LOWORD(B)=[esp+0xC]; jnz hard; mov eax,LOWORD(A)=[esp+4]; mul ecx; ret 16 - then the hard path push ebx; mul ecx (AHI*BLO); mov ebx,eax; mov eax,LOWORD(A); mul HIWORD(B) (ALO*BHI); add ebx,eax; mov eax,LOWORD(A); mul ecx (ALO*BLO); add edx,ebx; pop ebx; ret 16. The [esp+8]/[esp+0x14] pair on the hard path is the same argument read once before and once after the push ebx, which is what fixes the frame and hence the argument order. cfg.py over 0x34 bytes: 3 basic blocks, 19 instructions, no call, two rets - a leaf. vtable.py --holding: in no class's virtual table. That it is used signed here is read off the call sites, not off the body: 0x5C3F82 and 0x5C75F3 both emit 'cdq' immediately before pushing edx:eax into it, which only makes sense for a signed 32-bit value widened to 64. WHAT WOULD SHOW IT WRONG: if the fast path at 0xB99B00 multiplied anything other than the two low words, if the hard path summed a different set of partial products, if it ended in 'ret 0' rather than 'ret 0x10', or if a caller pushed other than four dwords. Note the one claim here that is NOT settled by the body: nothing in this function distinguishes signed from unsigned multiply, so any statement about the signedness of a particular calculation has to come from that caller's own widening instruction."
+  }
+ ],
+ "struct_fields": [],
+ "vftable_slots": {},
+ "frontier": [],
+ "slots_noted": "Neither function is in any class's virtual table - vtable.py --holding reports 'is in no class's virtual table' for both - so there is no slot to record."
+}

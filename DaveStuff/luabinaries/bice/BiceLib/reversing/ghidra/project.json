@@ -4085,11 +4085,11 @@
   {
    "rva": "0x27D070",
    "kind": "function",
-   "name": "CCurrentGameState::CCurrentGameState",
+   "name": "CGameState::CGameState",
    "signature": null,
-   "comment": "CCurrentGameState constructor (object 0xDA8 bytes). CCurrentGameState constructor as written in CLASSES.md (the header gives 0x27D070).",
+   "comment": "Base constructor: it writes CGameState's own vftable (rva 0x11CF624) at +0. Called from the inlined CCurrentGameState constructor at all 2773 sites, each of which then writes CCurrentGameState's vftable (rva 0x11CF674) and zeroes the derived fields +0xD9C, +0xDA0 and in_game at +0xDA4 - so CCurrentGameState has no standalone constructor to name. This entry read CCurrentGameState::CCurrentGameState until the wave of 2026-09-23; it was marked confirmed on the strength of CLASSES.md rather than the image.",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CCurrentGameState.hpp:9; reversing/CLASSES.md:39"
+   "source": "reversing/FINDINGS-manpower.md"
   },
   {
    "rva": "0x27FCB0",
@@ -5321,8 +5321,8 @@
    "rva": "0x67B250",
    "kind": "function",
    "name": "ParseObjectId",
-   "signature": "void __cdecl ParseObjectId(CParseContext* parse, int* pair)",
-   "comment": "Reads the `{ type = N id = N }` pair the save writes for an object reference, into two ints. CReferenceObject::LoadKey calls it with `this + 8` for its `id` key, which is why CMinister keeps `id_type` at 0x8 and `id` at 0xC.",
+   "signature": "void __stdcall ParseObjectId(CParseContext* parse, int* pair)",
+   "comment": "Reads the `{ type = N id = N }` pair the save writes for an object reference, into two ints. CReferenceObject::LoadKey calls it with `this + 8` for its `id` key, which is why CMinister keeps `id_type` at 0x8 and `id` at 0xC. It ends `ret 8` at rva 0x67B406, so it cleans its own two stack arguments: this read __cdecl until the wave of 2026-09-23, and ParseObjectReference's stack arithmetic only closes as __stdcall.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
   },
@@ -6896,6 +6896,186 @@
    "comment": "Puts a unit into a province: it writes `current_province_ptr` (`+0x130`) at `0x1BF4D3`.\\n\\n**Only that much was read.** The function is over 2.5KB and does a great deal besides - it reads the province's path node in half a dozen places - so the name is what it is *for* at the one call site traced here, not a full account of it. The convention is read off that call site: `ecx` is the unit and the province is pushed.",
    "confidence": "inferred",
    "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0xA0990",
+   "kind": "function",
+   "name": "GetProvinceAttrition",
+   "signature": null,
+   "comment": "**The only reader of the `attrition` modifier off a province's own modifier** (`[province + 0xFC + 0x18]`, entry 7, read at `0xA09CD`). `ApplyAttrition` calls it once per subunit at `0x1C75AE` and scales the result by a global and by the subunit's maximum strength.\n\nThree callers in all: `0xA19BF`, `0x1C75AE` and `0x3593E3`.\n\n**No signature recorded** - what it takes beyond the province, and how, was not read.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x799980",
+   "kind": "function",
+   "name": "__alldiv",
+   "signature": "__int64 __stdcall __alldiv(__int64 dividend, __int64 divisor)",
+   "comment": "MSVC CRT signed 64-bit divide (lldiv.asm). Dividend at [esp+4..0xB], divisor at [esp+0xC..0x13]; result in edx:eax; callee cleans 16 bytes (ret 0x10). Truncates toward zero, NOT floor: it takes the absolute value of both operands, divides unsigned, and negates the quotient only if exactly one operand was negative (edi counts the negations at 0xB9998D and 0xB999A9, and 0xB99A1A negates when edi==1). 2032 direct call sites. This is the helper every 'x * 1000 / y' in the game goes through - the thousandths fixed point multiplies into a 64-bit intermediate to avoid overflow and then divides here.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x799AF0",
+   "kind": "function",
+   "name": "__allmul",
+   "signature": "__int64 __stdcall __allmul(__int64 a, __int64 b)",
+   "comment": "MSVC CRT 64-bit multiply (llmul.asm). a at [esp+4..0xB], b at [esp+0xC..0x13]; result in edx:eax; callee cleans 16 bytes (ret 0x10). Sign-agnostic: the low 64 bits of the product are the same for signed and unsigned operands, so MSVC emits this one body for both, and the sign lives at the CALL SITE - a 'cdq' before the push means the 32-bit operand was signed, a 'xor edx,edx' means it was not. Fast path when both high words are zero (0xB99B00, a single mul), otherwise the three partial products AHI*BLO + ALO*BHI + ALO*BLO. 1144 direct call sites.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x25D126",
+   "kind": "instruction",
+   "name": "EnterGame_SetInGame",
+   "signature": null,
+   "comment": "**The only instruction in the executable that writes `CCurrentGameState +0xDA4` a nonzero value**: `mov byte ptr [ecx + 0xDA4], 1`, with `ecx` loaded from `g_CCurrentGameState` two instructions earlier.\n\nIt sits near the end of `CInGameIdler::Enter` (`0x25A2B0`), after the session has been built - the log lines above it are `Countries initialized<`, `provinces initialised<`, `information caches setup<`, `supply logic defined<`, ` processed weather <`, ` processed intel setup <` - and before the in-game GUI is built (`menubar`, `chat_list`, `mapmode_1`..`mapmode_10`).\n\nUnconditional on its path: the block at `0x25D120` is the join of the inlined get-or-create of the game state, entered from `0x25D082(taken)`, `0x25D114(taken)` and `0x25D11E(flow)`, and the block above it at `0x25D075` is reached from all three arms of the camera setup. **So the attrition gate opens in every game**, which is what the live tooltip measurement already showed.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x25A2B0",
+   "kind": "function",
+   "name": "CInGameIdler::Enter",
+   "signature": "void __thiscall CInGameIdler::Enter(void)",
+   "comment": "Slot 3 of `CInGameIdler`'s virtual table, and the whole of entering a running game: it looks up the `unitlist_start` / `unitlist_offset` gui types (`Missing unitlist_start or unitlist_offset gui type.`), runs `LOAD_GFX`, `LOAD_EVENTS` and `ADAPTING_HISTORY`, logs the six `eu3idler.cpp` setup stages, **sets `gamestate->in_game` at `0x25D126`**, then builds the in-game interface.\n\n`CFrontEnd` overrides the same slot at `0x2EEF00`, where it logs `entering frontend...` and **clears** the same byte at `0x2EFE58` - which is what makes slot 3 the screen's enter hook rather than anything more specific.\n\nSpans `0x25A2B0`..`0x261BB8`, about 0x7900 bytes, which is why `image.functionStart`'s default 0x2500 limit reports `?` for the write inside it.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x262060",
+   "kind": "function",
+   "name": "CInGameIdler::Leave",
+   "signature": "void __thiscall CInGameIdler::Leave(void)",
+   "comment": "Slot 4 of `CInGameIdler`'s virtual table, the counterpart to slot 3: it frees the idler's lists and then **clears `gamestate->in_game` at `0x262337`**. `CFrontEnd` overrides the same slot at `0x2F0140`.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x262337",
+   "kind": "instruction",
+   "name": "LeaveGame_ClearInGame",
+   "signature": null,
+   "comment": "`mov byte ptr [eax + 0xDA4], 0` in `CInGameIdler::Leave`, with `eax` the game state just stored back into `g_CCurrentGameState` at `0x262325`. The counterpart to `EnterGame_SetInGame`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x2EFE58",
+   "kind": "instruction",
+   "name": "FrontEnd_Enter_ClearInGame",
+   "signature": null,
+   "comment": "`mov byte ptr [eax + 0xDA4], bl` in `CFrontEnd`'s slot 3 (`0x2EEF00`, the function that logs `entering frontend...`), with `eax` the game state stored into `g_CCurrentGameState` at `0x2EFE40`. Returning to the main menu closes the gate again.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1EC150",
+   "kind": "function",
+   "name": "ParseObjectReference",
+   "signature": "void __cdecl ParseObjectReference(CParseContext* parse@ECX, void* reference@ESI)",
+   "comment": "**Reads the `{ type = N id = N }` block a save writes for an object reference into the 0x28-byte reference a command keeps.** It calls `ParseObjectId` (0x67B250) for the pair and then fills the reference: `+0` the cached object pointer, set to 0 because the block names no object yet; `+4` type; `+8` id; `+0xC` an `Hoi3CString` assigned from the parse context's own name at `+0x32C`. It takes no stack argument - the parse context arrives in ECX and the reference in ESI (`mov ecx,[ebp+8]` and `lea esi,[this+0x3C]` at the call site, a bare `ret` here), the same register-argument style as the rest of the loader primitives. 61 call sites, every one of them a command's `LoadKey` case for a key whose value is an object: `unit` is token 0x256 and `parent` 0x84, and a command keeps one such reference per key at `+0x3C`, `+0x64` and so on, 0x28 apart. **It stores nothing when the parse context's error handler at `+0x35C` has latched** - handler non-null and both its bytes at `+4` and `+5` set jumps straight to the epilogue and leaves the reference as it was, although `ParseObjectId` has already consumed the tokens. The mirror image is the command's `SaveContents`, e.g. `CMoveCommand`'s at 0x1D9160: `SaveWriteKey(0x256)` then the pair out of `+0x40` and `+0x44` - the string at `+0x4C` is never written to the save. The same reference is built from a live object by 0x2DD70 (unnamed): type from `CUnit +0x10`, id from `+0x14`, the string from the object's `+0x1C`, and the object pointer cached at `+0`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x7964D4",
+   "kind": "function",
+   "name": "sscanf",
+   "signature": "int __cdecl sscanf(const char* buffer, const char* format, ...)",
+   "comment": "MSVC CRT `sscanf`, statically linked. The body is only the public wrapper: it loads the buffer into esi and calls the file-scope helper at 0x796466 with (INPUTFN=_input_l 0x7A1379, format, locale=NULL, va_list=&arg3), which builds a FILE on its own stack over the string (_flag=0x49 = _IOREAD|_IOMYBUF|_IOSTRG, _ptr=_base=buffer, _cnt=min(strlen(buffer), INT_MAX)) and runs the scan engine over it. **This is the single most-called unnamed function in the image, 168 direct call sites**, and it is how every loader turns a lexed token into a number: 152 of those sites push exactly three arguments and clean 0xc, with the middle one a literal format - `%i` 102 times, `%f` 28, `%u` 18, `%c` 8, and one each of `%x`, `%lld` and `%d.%d.%d.%d` - and the return is tested against zero, which is sscanf's count of fields assigned. The string argument is almost always `parse + 0x22C`, the lexer's current token text.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x796466",
+   "kind": "function",
+   "name": "v_sscanf_l",
+   "signature": null,
+   "comment": "The static helper behind sscanf, CRT source `v_sscanf_l`. Rejects a null string or a null format with errno=EINVAL (0x16) and _invalid_parameter_noinfo, then fakes a FILE on its stack over the string - _flag 0x49, _ptr=_base=string, _cnt=min(strlen(string), INT_MAX) - and tail-calls the INPUTFN it was handed. Exactly one caller, sscanf at 0x7964D4.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x7A1379",
+   "kind": "function",
+   "name": "_input_l",
+   "signature": "int __cdecl _input_l(FILE* stream, const char* format, _locale_t locale, va_list arglist)",
+   "comment": "The CRT's scanf engine - the format walker shared by every scanf-family entry point. 0x200 bytes of stack frame, /GS cookie, and the format loop compares against '%' , '*' and the length modifiers. Referenced exactly once in the whole image, as the INPUTFN constant sscanf hands to its helper, so in this binary it is reached only through sscanf.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x79C9F0",
+   "kind": "function",
+   "name": "strlen",
+   "signature": "size_t __cdecl strlen(const char* s)",
+   "comment": "MSVC's hand-written strlen - byte loop to a dword boundary, then the 0x7EFEFEFF / 0x81010100 zero-byte-in-a-word trick. Called by the sscanf helper to size the fake FILE's _cnt.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x7969F1",
+   "kind": "function",
+   "name": "atoi",
+   "signature": "int __cdecl atoi(const char* nptr)",
+   "comment": "`(int)strtol(nptr, NULL, 10)`. **291 direct call sites, the second most-called unnamed function in the image**, and the other half of how a loader reads a number: where sscanf is used for a value that must be validated, atoi is used where a bad token can silently read as 0. The body here is a four-byte alias - `mov edi,edi; push ebp; mov ebp,esp; pop ebp; jmp 0x7969DB` - because the linker folded two source functions with identical code, keeping one body and one thunk; 0x7969DB is that body.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x7969DB",
+   "kind": "function",
+   "name": "atol",
+   "signature": "long __cdecl atol(const char* nptr)",
+   "comment": "`strtol(nptr, NULL, 10)` - the body that atoi at 0x7969F1 jumps into, and separately the target of 8 direct calls of its own.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x7A2D44",
+   "kind": "function",
+   "name": "strtol",
+   "signature": "long __cdecl strtol(const char* nptr, char** endptr, int base)",
+   "comment": "CRT `strtol`: forwards to the shared signed/unsigned converter at 0x7A2B19 as strtoxl(locale, nptr, endptr, base, flags=0), passing the process locale (0x16F5A14) while the locale-changed flag at 0x174CBF4 is still zero. Reached from atoi/atol; the sibling wrapper at 0x7A300C passes the same shape to a different, 64-bit body (0x7A2D6F) and is the _strtoi64 of the pair.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x1BB950",
+   "kind": "function",
+   "name": "CUnit::ConsumeSuppliesAndFuel",
+   "signature": "void __stdcall ConsumeSuppliesAndFuel(CUnit* unit)",
+   "comment": "The daily supply and fuel draw for one unit. Asks CUnit::SupplyConsumption (0x1BB560) and CUnit::FuelConsumption (0x1BB7A0) what the unit wants, takes what it can get, and writes CUnit::supply_received_percentage (+0xFC) and CUnit::fuel_received_percentage (+0x100) as taken*1000/wanted (1000 when fully supplied, -1 when nothing was wanted, 0 when nothing was available). The country it bills is the expeditionary_owner (+0x28C) where CUnit +0x290 is set, the owner (+0x124) otherwise, through CCountryTag::GetCountry (0x2610). Two paths, chosen on g_CCurrentGameState +0xC9C: >0 draws straight out of CCountry::GetPool(country) (0xF4DE0 - pool_in_exile at +0x9F8 when use_own_pool, the capital province's pool at +0x15C otherwise), the inline copy of that function appearing four times; <=0 walks the supply network - the unit's supply source province, its supply_depot_id (+0x48) into g_CMap +0x2200, and draws that province's pool.supplies (+0x164) and pool.fuel (+0x168) pro rata against the province's need.supplies (+0x24C) and need.fuel (+0x250). Where the depot is controlled by another country a lend-lease conversion runs: the amount is scaled by a rate built from CDefines +0xCC and the receiving country's CGoodsPool at +0x7DC is credited, the supplier's at +0x86C, and both countries' pools are moved. Fuel is only taken when the unit is moving (movement_order_remaining_provinces_count > 0) or is naval and 0x1CDC30 says no; a land or air unit standing still burns none. The last act, for the player's own units only, is to set the byte at +0x1BC on both objects hanging off CUnit +0x164 (+0x13C and +0x140) when either received percentage has fallen below Define50 - the out-of-supply marker on the counter.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BD240",
+   "kind": "function",
+   "name": "CUnit::UpdatePlanForceNeeds",
+   "signature": "bool __stdcall UpdatePlanForceNeeds(CUnit* unit, void* difference, void* groupDifference, void* needed, void* wanted)",
+   "comment": "Recomputes, per subunit type, what this unit's order of battle is short of against its plan. The three vector<int> arguments are always &unit->+0x5C, &unit->+0x6C and &unit->+0x7C at both call sites; all three are indexed by CSubUnitDefinition::type_index and sized to the subunit definition database's count ((db+0x20 - db+0x1C)/4), grown and zero-filled on the first call and, on later calls, with the second and third zeroed at 0x1BD40C while the first is overwritten wholesale. It then walks up higher_oob_unit_ptr to the top of the OOB and, unless that top unit has plan+0x8 (CUnit +0x204) set with oob_level 0, calls 0x4E1D00 to build the wanted composition out of the unit's plan (CUnit +0x1FC) and the owner's available subunit types; with the fifth argument null it fills the plan's own buffers at plan+0x18/+0x70/+0x80/+0x84, with it non-null it fills locals instead. The wanted list is the local one where 0x4E1D00 produced one and unit->+0x26C (which is plan+0x70) otherwise. CUnit::CountSubUnitsByType (0x1BD7E0) then counts what the unit actually has, and: difference[i] = wanted[i] - have[i]; groupDifference[GenericType(i)] += difference[i] for every non-zero entry, where GenericType is 0x1ADF70 folding a subunit type onto a representative one; then, over a copy of groupDifference, needed[i] = min(difference[i], groupNet) for each positive deficit, drawing that group's remaining net down as it goes - so a surplus of one type inside a group cancels a deficit of another. Returns true if any entry of needed was set. Runs once a day from CUnit::UpdateDaily for units at oob_level 0 and for HQs at level 1..3 whose +0x198 is set; the level 1..3 units with +0x198 clear have the three vectors cleared instead, and level >=4 is skipped entirely.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BD7E0",
+   "kind": "function",
+   "name": "CUnit::CountSubUnitsByType",
+   "signature": "void __thiscall CUnit::CountSubUnitsByType(CUnit* this, void* counts, int reserved)",
+   "comment": "Counts this unit's subunits by CSubUnitDefinition::type_index into a vector<int>, recursing through the OOB. Where the vector is empty it is first grown to the subunit definition database's count and zero-filled; then counts[regiment->sub_unit_definition_ptr->type_index]++ over CUnit::regiments (+0x38), then the same call on every entry of CUnit::children (+0x1E4). The second argument is pushed as 0 at both call sites and never read.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BD6F0",
+   "kind": "function",
+   "name": "CUnit::RefreshPlanForceNeeds",
+   "signature": null,
+   "comment": "The out-of-line copy of the gate CUnit::UpdateDaily inlines at 0x1BB273. On a unit with oob_level >= 4 it does nothing; with oob_level 0, or with +0x198 set, it calls CUnit::UpdatePlanForceNeeds(unit, &unit->+0x5C, &unit->+0x6C, &unit->+0x7C, 0); otherwise it clears all three vectors. Called from CSetPlanForcesCommand slot 6 (twice) and CSetPlanAttributesCommand slot 6.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
   }
  ],
  "structs": [
@@ -7034,6 +7214,13 @@
   {
    "name": "CCountry",
    "fields": [
+    {
+     "offset": "0xA40",
+     "name": "unit_demand",
+     "type": "CGoodsPool",
+     "comment": "What the units drawing on this country asked for today, before any shortfall - supplies accumulate at +0xA48 and fuel at +0xA4C on every path through CUnit::ConsumeSuppliesAndFuel, including the one where the pool cannot pay. Distinct from CCountry::usage (+0x98C), which only gets what was actually handed over.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
     {
      "offset": "0x48",
      "name": "historical_models",
@@ -7716,6 +7903,13 @@
    "name": "CCurrentGameState",
    "size": "0xDA8",
    "fields": [
+    {
+     "offset": "0xDA4",
+     "name": "in_game",
+     "type": "uint8_t",
+     "comment": "Nonzero while the in-game screen is the live one: set to 1 at `0x25D126`, the end of `CInGameIdler::Enter`'s session build, and cleared by `CInGameIdler::Leave` (`0x262337`), by `CFrontEnd`'s enter (`0x2EFE58`) and at `0x2ED9AF`. Zeroed by every construction of the game state.\n\n**This is the attrition gate.** `CUnit::UpdateDaily` tests it at `DailyTickEndGate` (`0x1BB3E8`) and skips both `ApplyAttrition` and `CheckTransportOverload` when it is zero - so it is not a development-era \"enable attrition\" switch, and attrition does run. About twenty other places test it before touching live game data (`0x255AB7` reaches `strategic_warfare`, `0x4349B2` reaches the player tag), which is the sense the name is taken from: a game is running.\n\nOne byte. The last field of the class: the object is allocated `0xDA8` bytes and the constructor tail writes a word at `+0xD9C`, a dword at `+0xDA0` and this byte, so `+0xDA5..+0xDA7` are padding.\n\nNot saved: no access to it lives in the save or load code, and no key in a `.hoi3` save corresponds to it.\n\n**Confirmed in a running game**, not only traced: sampled every frame it read 0 at the main menu with the pointer already live, 1 once a campaign was up - while the clock was still not reporting in play, which is the write landing before the in-game GUI is built - and 0 again on returning to the menu. See `Reversing/Watch.hpp`.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
     {
      "offset": "0x18",
      "name": "tag_18",
@@ -9842,6 +10036,34 @@
   {
    "name": "CUnit",
    "fields": [
+    {
+     "offset": "0x26C",
+     "name": "plan_subunit_wanted",
+     "type": "std::vector<int>",
+     "comment": "The composition the plan asks for, per subunit type - the array 0x4E1D00 fills from the plan and the owner's available subunit types. Sits inside CUnit::plan at plan+0x70.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x7C",
+     "name": "plan_subunit_needed",
+     "type": "std::vector<int>",
+     "comment": "Per subunit type, the part of the deficit that the group as a whole is still short of - min(difference[i], whatever is left of that group's net difference), taken in index order. This is the list the plan machinery asks for.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x6C",
+     "name": "plan_subunit_group_difference",
+     "type": "std::vector<int>",
+     "comment": "The same differences summed onto one representative subunit type per group (0x1ADF70 does the folding: carrier air, capital ship, transport/submarine, and so on). Zeroed at the top of each pass and accumulated at 0x1BD544.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x5C",
+     "name": "plan_subunit_difference",
+     "type": "std::vector<int>",
+     "comment": "Per CSubUnitDefinition::type_index: what the plan wants of that type minus what the unit's OOB actually has. Signed - a negative entry is a surplus. Written wholesale by CUnit::UpdatePlanForceNeeds (0x1BD240) and cleared by CUnit::RefreshPlanForceNeeds for an HQ that has no plan.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
     {
      "offset": "0x4",
      "name": "is_selected",
@@ -12905,6 +13127,20 @@
    "name": "CParseContext",
    "fields": [
     {
+     "offset": "0x35C",
+     "name": "error_handler",
+     "type": "void*",
+     "comment": "Null in the ordinary constructor (0x67A460); set from the caller's EDI by the second one (0x67A520), whose six call sites are all in the 0xB3xxxx network module. `ReportParseError` (0x67A960) sets the byte at its `+4`, calls its slot 0 with the parse context and, where that returns true, sets `+5` as well and queues no message. `ParseObjectReference` (0x1EC150) reads the same three and stores nothing when all three are set, so once the handler has taken an error the block is still consumed but its value is dropped. project.json already describes `+4` in ReportParseError's comment; this names the field it hangs off.",
+     "source": "reversing/FINDINGS-script.md"
+    },
+    {
+     "offset": "0x32C",
+     "name": "session_name",
+     "type": "Hoi3CString",
+     "comment": "The name the context was made with - the third argument of `CParseContext::CParseContext` (0x67A460), which takes it in EDX and assigns it here; the destructor (0x67A630) frees it with the usual `capacity >= 0x10` test, size at `+0x33C` and capacity at `+0x340`. Two constructor call sites pass the literal `UNNAMED_SESSION` (0x1002AF, 0x231700), which is where the name comes from. Exactly two places read it: `CCommand::LoadKey` (0x67BCD0) copies it into the command's own string at `+8` when that is still empty, and `ParseObjectReference` (0x1EC150) copies it into every object reference it fills. Nothing writes it after construction and neither copy is ever saved, so it is a runtime label for which stream a command or a reference came out of. **The `session` reading is inferred** from the default literal; what is checked is that it is a string and who its five users are.",
+     "source": "reversing/FINDINGS-script.md"
+    },
+    {
      "offset": "0x1C",
      "name": "tokenizer",
      "type": "void*",
@@ -15180,6 +15416,8 @@
    "2": "MayStep"
   },
   "CInGameIdler": {
+   "3": "Enter",
+   "4": "Leave",
    "48": "CentreOnProvince"
   },
   "CCombat": {
