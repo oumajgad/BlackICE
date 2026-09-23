@@ -420,7 +420,7 @@ Three sums, each wrong in both containers, and they compound:
 
 The first is why the text of a nested block sat right of its own icon; the second is why a
 plain condition sat level with the header above it; the third is why nothing got deeper
-than one level however far it was nested. `Hooks::EffectText::TriggerIndent` fixes all
+than one level however far it was nested. `Hooks::TriggerText::TriggerIndent` fixes all
 six - two one-byte changes turning a header's indent loop `jle` into a `jmp`, and four
 five-byte stubs.
 

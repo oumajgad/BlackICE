@@ -1,4 +1,4 @@
-#include <Hooks/EffectText/TriggerIndentText.hpp>
+#include <Hooks/TriggerText/TriggerIndentText.hpp>
 
 #include <Hooks/Hooks.hpp>
 #include <MemScan.hpp>
@@ -418,7 +418,7 @@ namespace {
     };
 }
 
-bool Hooks::EffectText::TriggerIndent::install() {
+bool Hooks::TriggerText::TriggerIndent::install() {
     if (installedFlag) {
         return true;
     }
@@ -541,10 +541,10 @@ bool Hooks::EffectText::TriggerIndent::install() {
     return true;
 }
 
-bool Hooks::EffectText::TriggerIndent::installed() {
+bool Hooks::TriggerText::TriggerIndent::installed() {
     return installedFlag;
 }
 
-const char* Hooks::EffectText::TriggerIndent::status() {
+const char* Hooks::TriggerText::TriggerIndent::status() {
     return statusText;
 }

@@ -6491,6 +6491,357 @@
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-allocator.md",
    "type": "void*"
+  },
+  {
+   "rva": "0x5D0720",
+   "kind": "function",
+   "name": "CAndTrigger::GetBlockText",
+   "signature": "Hoi3CString* __thiscall CAndTrigger::GetBlockText(CAndTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
+   "comment": "Slot 9 of the trigger vftable. One line per child - `indent(depth) + icon + the child's content` - where the icon is a red or green asterisk by whether the child evaluates to `redWhen`. **The parent indents the line, icon and all**, which is why a child that indents itself again comes out adrift.\n\n**The root of a technology's requirements**: an `allow` block is an implicit `and`, so this is the call that has the whole finished tree in hand. Four BiceLib patches land in it - its header indent, its per-child indent, the depth it gives a block child, and its exit.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5D0D40",
+   "kind": "function",
+   "name": "COrTrigger::GetBlockText",
+   "signature": "Hoi3CString* __thiscall COrTrigger::GetBlockText(COrTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
+   "comment": "Slot 9 of the trigger vftable. One line per child - `indent(depth) + icon + the child's content` - where the icon is a red or green asterisk by whether the child evaluates to `redWhen`. **The parent indents the line, icon and all**, which is why a child that indents itself again comes out adrift.\n\nUnlike the `and`, an `or` draws an icon for its own header when nothing above it has - which is why its header indent is skipped with a jump rather than by zeroing the depth the test reads.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5D1590",
+   "kind": "function",
+   "name": "CContextTrigger::GetBlockText",
+   "signature": "Hoi3CString* __thiscall CContextTrigger::GetBlockText(CContextTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
+   "comment": "The renderer behind **a plain country tag, `controller = { ... }` and `owner = { ... }`** - a scope that hands its conditions a real country to be evaluated against.\n\nThat is what makes it the exception among the scopes: BiceLib negates the depth it passes down (`0x5D20A1`), which is the engine's own way of saying \"indent this, and still colour the conditions\". The iterating scopes cannot have that - their conditions are about a province while the scope passes the country, so an asterisk there would always be red.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5DD5B0",
+   "kind": "function",
+   "name": "CAnyOwnedProvinceTrigger::GetBlockText",
+   "signature": "Hoi3CString* __thiscall CAnyOwnedProvinceTrigger::GetBlockText(CAnyOwnedProvinceTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5DCA10",
+   "kind": "function",
+   "name": "CRegionScopeTrigger::GetBlockText",
+   "signature": "Hoi3CString* __thiscall CRegionScopeTrigger::GetBlockText(CRegionScopeTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5DCED0",
+   "kind": "function",
+   "name": "CAnyNeighborProvinceTrigger::GetBlockText",
+   "signature": "Hoi3CString* __thiscall CAnyNeighborProvinceTrigger::GetBlockText(CAnyNeighborProvinceTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5E5FD0",
+   "kind": "function",
+   "name": "CAnyNeighborCountryTrigger::GetBlockText",
+   "signature": "Hoi3CString* __thiscall CAnyNeighborCountryTrigger::GetBlockText(CAnyNeighborCountryTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5E64F0",
+   "kind": "function",
+   "name": "CAnyCoreTrigger::GetBlockText",
+   "signature": "Hoi3CString* __thiscall CAnyCoreTrigger::GetBlockText(CAnyCoreTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5E64C0",
+   "kind": "function",
+   "name": "CAndTrigger::GetText",
+   "signature": "Hoi3CString* __thiscall GetText(CTrigger* this, Hoi3CString* out, CEventScope* scope, int unknown1, int unknown2)",
+   "comment": "**Slot 8 for every container and every scope**: `CAndTrigger` declares it and `COrTrigger`, `CNotTrigger` and all six scope triggers inherit it, because they all derive from `CAndTrigger`. It answers the empty string.\n\nThat empty answer is the whole mechanism behind how a tree is walked: a parent asks each child for its one line here, and a child with no line of its own says nothing, which is what sends the parent to the child's block renderer at slot 9 instead.\n\n`CTrigger`'s own slot 8 is `_purecall` (`0x7961D5`), so GetText is pure virtual on the base and this is the first real implementation.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5D04F4",
+   "kind": "instruction",
+   "name": "BaseBlockChildBranch",
+   "signature": null,
+   "comment": "`je` past the leaf line to the block path, inside `CTrigger::GetBlockText`. The block path draws **neither indent nor icon** - it goes straight to the child's own slot 9 - which is why a nested `and` or `or` inside a scope used to come out with no asterisk at all.\n\n**BiceLib retargets this branch** (the condition is kept, only the destination changes) to a stub that draws the indent and the asterisk for a block child and then rejoins at `0x5D05DA`.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5D0A4F",
+   "kind": "instruction",
+   "name": "AndBlockChildDepth",
+   "signature": null,
+   "comment": "What an `and` passes as the depth when a child is itself a block. The game sends a constant, so a block inside a block restarted at the same level; BiceLib sends the `and`'s own depth plus one.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5D102E",
+   "kind": "instruction",
+   "name": "OrBlockChildDepth",
+   "signature": null,
+   "comment": "The same for an `or`, which sends its own constant - 1 rather than the `and`'s 0, which is why the two containers drifted differently.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5D20A1",
+   "kind": "instruction",
+   "name": "ContextTriggerChildDepth",
+   "signature": null,
+   "comment": "Where `CContextTrigger` hands its conditions their depth: `inc ecx`, so `depth + 1`. **BiceLib makes it `not ecx`**, which is `-(depth + 1)` exactly - the same number, carrying the engine's own flag for \"and these conditions can be coloured\". The sign is read at the top of `CTrigger::GetBlockText`, which negates it back and remembers that it did.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5D1328",
+   "kind": "instruction",
+   "name": "NotTriggerEpilogue",
+   "signature": null,
+   "comment": "The epilogue of `CNotTrigger::GetBlockText`, which BiceLib replaces whole.\n\nA `not` flips `redWhen` and forwards to the base **with the depth unchanged**, so the base indents the condition inside it a second time - into the middle of a line the parent has already placed. No depth fixes that: the base draws the icon when the depth is 0 or arrived negative and the indent whenever it is above 0, so \"neither\" is not a value it can be given. The stub takes the leading indent off the finished text instead.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5D1F1E",
+   "kind": "instruction",
+   "name": "ContextTriggerHeaderIndent",
+   "signature": null,
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5DD60B",
+   "kind": "instruction",
+   "name": "AnyOwnedProvinceHeaderIndent",
+   "signature": null,
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5DCA61",
+   "kind": "instruction",
+   "name": "RegionScopeHeaderIndent",
+   "signature": null,
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5DCF25",
+   "kind": "instruction",
+   "name": "AnyNeighborProvinceHeaderIndent",
+   "signature": null,
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5E6025",
+   "kind": "instruction",
+   "name": "AnyNeighborCountryHeaderIndent",
+   "signature": null,
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5E6545",
+   "kind": "instruction",
+   "name": "AnyCoreHeaderIndent",
+   "signature": null,
+   "comment": "Its own indent loop, at the top of the renderer and before a word of its own text - so it indents a line its parent has already placed, and the text ends up adrift of its own asterisk. **BiceLib turns the `jle` that guards it into an unconditional `jmp`**, which skips the loop and leaves the depth register for the icon test that reads it next.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x5D0CB0",
+   "kind": "instruction",
+   "name": "AndTriggerExit",
+   "signature": null,
+   "comment": "`mov ecx, [esp + 0xE4]`, the last instruction of `CAndTrigger::GetBlockText` before its epilogue, and the point every path through the function converges on - two branches inside it land exactly here.\n\n**BiceLib stands here to scroll a requirement tooltip too tall for the screen**: the finished text is in `esi` and the frame is still up, so lines can be taken off the front before the tooltip sees it. One instruction before the epilogue rather than over it, because the epilogue writes `fs:[0]` and reproducing that from inline assembly is a warning and a SAFESEH question nobody needs.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerScrollText.hpp"
+  },
+  {
+   "rva": "0x11F39A8",
+   "kind": "string",
+   "name": "TriggerIndentUnit",
+   "signature": null,
+   "comment": "**Three spaces, and the whole of how a requirement tree is indented.** Every indent loop in every trigger renderer pushes this and 3 and appends it once per level, which is what makes the loops findable: scanning for this address is how the six scope triggers that indent themselves were found rather than guessed at.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
+  },
+  {
+   "rva": "0x11BA60",
+   "kind": "function",
+   "name": "CDistributeReinforcement::Distribute",
+   "signature": "void* __thiscall CDistributeReinforcement::Distribute(CDistributeReinforcement* this, void* result)",
+   "comment": "**Slot 0 of its virtual table, and where the manpower tooltip's two numbers come from.** The class derives from `CDistributionSetting`, so this is the reinforcement slider spending what it has been allocated; every sibling distributor - supply, upgrade, production, research - has its own body at the same slot.\n\nIt zeroes `CCountry +0xA98`, `+0xA9C` and `+0xAA0`, then walks the country's units and every subunit under each, and rebuilds all three from nothing. `this + 0x18` is the country throughout.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x11BBFC",
+   "kind": "instruction",
+   "name": "ReinforcementCountersCleared",
+   "signature": null,
+   "comment": "The last of the three counters the pass clears before it walks anything, with `edi` zero and `esi` the country.\n\n**BiceLib stands here to start its own day**: the split it keeps has to begin and end with the game's, or the parts would not add up to the total printed beside them. It is also the only thing in the game that happens once a day per country and that BiceLib stands on, so a day of troop rotation is closed here too.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x11C5EB",
+   "kind": "instruction",
+   "name": "ReinforcementManpowerUsedAdded",
+   "signature": null,
+   "comment": "`country->reinforcement_manpower_used += used`, which the tooltip prints as `$USED$`. The same value has just been taken off the country's manpower pool at `0x11C5C7`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x11C60C",
+   "kind": "instruction",
+   "name": "ReinforcementManpowerNeededAdded",
+   "signature": null,
+   "comment": "`country->reinforcement_manpower_needed += need`, which the tooltip prints as `$NEED$`. `eax` is the country and `ecx` is what this one subunit's missing strength is worth.\n\n**Which subunit that is, is still at `[esp + 0x44]`** - written at `0x11BF98` and read back as late as `0x11C43D`, with the stack unmoved, and the very next instruction reads `[esp + 0x48]` for the loop's own next node. That is what lets one hook here split the total into land, air and naval by the subunit's class.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BAF70",
+   "kind": "function",
+   "name": "CUnit::UpdateDaily",
+   "signature": "void __thiscall CUnit::UpdateDaily(CUnit* this)",
+   "comment": "**`CUnit`'s virtual slot 32, the per-unit update.** `CArmy` and `CNavy` share it; `CAir` overrides it with `0x1D0B60`, and nothing else derives from `CUnit`.\n\nIt ages the timed entries at `this + 0x2A8`, asks the order two questions, digs in and rotates troops (land only), and then tidies three vectors.\n\n**The name claims a period, and that part is inference.** What the code shows is the work: troop rotation here divides a thousandth-scaled annual rate by 365000 and applies it once a call, and dig-in advances by exactly one level a call. Both only make sense once a day. The caller would settle it and was not found - the slot is reached through a virtual table, and `+0x80` is 150 call sites in 119 functions, none of the three that also walk units being this one. So `Update` rather than `Daily` is the part to rely on.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1D0B60",
+   "kind": "function",
+   "name": "CAir::UpdateDaily",
+   "signature": "void __thiscall CAir::UpdateDaily(CAir* this)",
+   "comment": "`CAir`'s own slot 32. **It does not replace `CUnit::UpdateDaily` - it ends by calling it**, on every path, after its own air-specific work.\n\nSo an air unit does reach the troop rotation code, and what stops it there is the `IsLand` test at the top, the same thing that stops a navy. That test is the single gate; no class avoids rotation by not running the function.\n\nThe period in the name is inferred, the same way and on the same evidence as `CUnit::UpdateDaily`.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BB091",
+   "kind": "instruction",
+   "name": "UpdateDailyLandOnly",
+   "signature": null,
+   "comment": "`if (!this->IsLand()) ...` - slot 15, and **the whole of the gate on troop rotation**. All three unit classes arrive here: a navy shares this function, and `CAir::UpdateDaily` ends by calling it. So rotation is an army's alone, and so is the manpower it costs.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BB0F7",
+   "kind": "instruction",
+   "name": "DigInRequiresWar",
+   "signature": null,
+   "comment": "`if (!owner->isAtWar) goto 0x1BB146` - and `0x1BB146` is **the rotation code**, not the end of it.\n\n**This test belongs to digging in, not to rotation**, which is the trap in this function: the name `peacetime_manpower_rotation` invites the opposite reading. The flow graph settles it - `0x1BB146` has seven incoming edges, six of them branches taken to skip the dig-in block - and the decompiler agrees, putting the whole of that block in one nested `if` whose body is `dig_in_level += 1000`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BB171",
+   "kind": "instruction",
+   "name": "PeacetimeManpowerRotationRead",
+   "signature": null,
+   "comment": "**The only read of `peacetime_manpower_rotation` in the executable.** Checked by pairing all 153 fetches of a country's modifier array with a read of entry 50 within the next 0x200 bytes.\n\nIt is scaled up at `0x1BB184` where the unit is under-supplied, by `PEACETIME_MANPOWER_ROTATION_LOW_SUPPLY_FACTOR`, and then divided by 365000 per subunit - a thousandth-scaled annual rate applied daily.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BB25D",
+   "kind": "instruction",
+   "name": "RotationStrengthStored",
+   "signature": null,
+   "comment": "Where rotation writes the reduced strength back. **The drain worked out above is clamped to nothing below zero and to the maximum above it**, so what actually went is `[edi + 0x5C]` before this instruction less `ebx` after it - which is where BiceLib stands, rather than on the figure the arithmetic produced.\n\n`edi` is the subunit and `esi` is still the unit. The `jns` two instructions above lands on the first byte of this, so a jump written here is still what that branch arrives at.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x2D0540",
+   "kind": "function",
+   "name": "GetManpowerDetailsText",
+   "signature": "Hoi3CString* __cdecl GetManpowerDetailsText(Hoi3CString* out, CCountryTag* tag)",
+   "comment": "**The only reference to `MANPOWER_DETAILS_IRO` in the image.** It reads the country's `+0xA9C` and `+0xAA0`, formats each with `FormatFixedPoint`, and replaces `$NEED$` and `$USED$`.\n\n**The whole of it exists twice**, once at two decimals and once at one, chosen at `0x2D0639` by whether the need reaches 10000. It goes on to build `MANPOWER_DETAILS_DRO` in a second string.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x2D0885",
+   "kind": "instruction",
+   "name": "ManpowerDetailsBuilt",
+   "signature": null,
+   "comment": "The first call after both halves of the tooltip converge, and so the one point where the sentence is finished and nothing has been done to it yet. The frame still holds it at `[ebp - 0x80]` and the country at `[ebp - 0x4C]`.\n\n**BiceLib stands here** to add `$LAND$`, `$AIR$`, `$NAVY$`, `$ROTATION$` and `$ROTATIONCOST$` beside the game's own two.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x65ACA0",
+   "kind": "function",
+   "name": "FormatFixedPoint",
+   "signature": "Hoi3CString* __stdcall FormatFixedPoint(Hoi3CString* out, int value, int decimals)",
+   "comment": "**A CFixedPoint as text**: the value over a thousand, with as many decimal places as asked for, truncated rather than rounded and with no thousands separator. It constructs into the string it is given, so that one has to be empty.\n\nWhat the whole interface formats its numbers with, and what BiceLib calls so its own figures read like the game's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1C7530",
+   "kind": "function",
+   "name": "ApplyAttrition",
+   "signature": "int* __stdcall ApplyAttrition(CUnit* unit, int* strengthLost)",
+   "comment": "**What attrition takes off a unit, once a day.** `CUnit::UpdateDaily` calls it.\\n\\nPer subunit: the province's own `attrition` modifier, scaled by a global and by the subunit's maximum strength, over 30000 - a monthly rate applied daily. The strength lost is totalled into the second argument, which is also what it answers.\\n\\nTwo gates, both at the top and both the same ones rotation has: `combats.count` must be below 1, and the unit must answer `IsLand`. So attrition here is an army standing still out of combat, and neither fleets nor air commands take it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1C76E2",
+   "kind": "instruction",
+   "name": "AttritionStrengthStored",
+   "signature": null,
+   "comment": "Where attrition writes the reduced strength back - **the same shape as rotation's store at `0x1BB25D`**, down to the clamp above it and the ceiling raised after, because both are a subunit losing strength.\\n\\n`esi` is the subunit and `edi` what its strength is about to become, so what actually went is `[esi + 0x5C]` before this instruction less `edi` after. **The unit is not in a register**: `edi` held it at the top of the function and has been reused, so it comes off the frame at `[ebp + 8]`.\\n\\n**BiceLib stands here** to price the loss in manpower and total it per country.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1C3F30",
+   "kind": "function",
+   "name": "AddCasualtyTrickleback",
+   "signature": null,
+   "comment": "**What comes back to the manpower pool from casualties.** The only reader of the `casualty_trickleback` modifier in the executable, at `0x1C3FB6`.\\n\\n    manpower = casualties x build_cost_manpower / max_strength\\n             x (trickleback + a technology bonus) / 100000\\n\\nThe first half is the same pricing the reinforcement pass uses, so a casualty is valued at what replacing it costs, and the modifier decides how much of that returns. It credits the **expeditionary owner** where there is one (`+0x28C`) and the owner otherwise.\\n\\n**No signature recorded**: the compiler gave it a register convention, taking the unit in `eax` and the casualties on the stack, so it cannot be written as an ordinary function - the same reason `CCountry::IsEnemy`'s second overload has none.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1C3FF2",
+   "kind": "instruction",
+   "name": "TricklebackCredited",
+   "signature": null,
+   "comment": "`country->Manpower += trickled back`, floored at zero by the two instructions after it, and the one write in the whole function. `esi` is the country and `eax` the manpower, **already in the units the tooltip prints** - nothing to price here, unlike attrition and rotation.\\n\\n**BiceLib stands here** to total what comes back per country.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
   }
  ],
  "structs": [
@@ -6971,6 +7322,20 @@
      "type": "int",
      "comment": "what reinforcement currently costs; the spare IC calculation subtracts it from what the reinforcement slider allocates",
      "source": "BiceLib/GameClasses/CCountry.hpp:81"
+    },
+    {
+     "offset": "0xA9C",
+     "name": "reinforcement_manpower_needed",
+     "type": "int",
+     "comment": "manpower to bring every subunit back to strength, rebuilt daily by CDistributeReinforcement::Distribute; the tooltip's $NEED$",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0xAA0",
+     "name": "reinforcement_manpower_used",
+     "type": "int",
+     "comment": "manpower spent reinforcing today, rebuilt daily beside the one above; the tooltip's $USED$",
+     "source": "reversing/FINDINGS-manpower.md"
     },
     {
      "offset": "0xAA4",
@@ -10147,6 +10512,332 @@
      "type": "CDefinesSupply*",
      "comment": "pointer to the block holding SUPPLYPOOL_DAYS and the supply capacity defines",
      "source": "BiceLib/GameClasses/CMapProvince.hpp:76"
+    }
+,
+    {
+     "offset": "0xCC",
+     "name": "country",
+     "type": "CDefinesCountry*",
+     "comment": "the country block of defines.lua - its entries in file order, one dword each, x1000, the same shape as the economy block at +0x9C",
+     "source": "reversing/FINDINGS-manpower.md"
+    }
+   ]
+  },
+  {
+   "name": "CDistributeReinforcement",
+   "fields": [
+    {
+     "offset": "0x18",
+     "name": "country",
+     "type": "CCountry*",
+     "comment": "the country whose reinforcement this distributor spends for - every read of the three counters, of the manpower pool and of the units list in Distribute goes through it. Almost certainly CDistributionSetting's rather than this class's own, but only checked here",
+     "source": "reversing/FINDINGS-manpower.md"
+    }
+   ]
+  },
+  {
+   "name": "CDefinesCountry",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "CORE_LOSE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x4",
+     "name": "CORE_GAIN",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x8",
+     "name": "YEARS_OF_NATIONALISM",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0xC",
+     "name": "YEARS_UNTIL_BROKEN",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x10",
+     "name": "REBEL_ACCEPTANCE_MONTHS",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - no reader found; placed by its position in the file, between two that have one",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x14",
+     "name": "ELECTION_RANDOMNESS",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x18",
+     "name": "ELECTION_MINISTER_DISSENT_PENALTY",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x1C",
+     "name": "MAX_NUMBER_OF_SPIES",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x20",
+     "name": "SPY_DETECTION_CHANCE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x24",
+     "name": "SPY_MISSION_CHANGE_DAYS",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - no reader found; placed by its position in the file, between two that have one",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x28",
+     "name": "SPY_CONNECTION_DETECTION_CHANCE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - no reader found; placed by its position in the file, between two that have one",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x2C",
+     "name": "SPY_BASE_CONNECTION_DETECTION_CHANCE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - no reader found; placed by its position in the file, between two that have one",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x30",
+     "name": "SPY_UNIT_DETECTION_CHANCE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x34",
+     "name": "SPY_INTEL_MISSION_BONUS",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x38",
+     "name": "SPY_PARTY_ORGANIZATION_BOOST",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x3C",
+     "name": "BASE_TECH_DECAY",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x40",
+     "name": "MAX_TECH_ABILITY",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x44",
+     "name": "TECH_ABILITY_GAIN_DIVISOR",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x48",
+     "name": "NUKE_UNITY_IMPACT",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x4C",
+     "name": "MOBILIZE_THREAT_IMPACT",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x50",
+     "name": "SPY_THREAT_INCREASE_ACTION",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x54",
+     "name": "POPULARITIY_RANDOMNESS",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x58",
+     "name": "PARTY_POP_CHANGE_RATE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x5C",
+     "name": "MOBILIZATION_BONUS_DAYS",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x60",
+     "name": "NO_MISSION_SPY_DETECTION_MULTIPLIER",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x64",
+     "name": "DEMOBILIZATION_FACTOR",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x68",
+     "name": "NUMBER_OF_VICTORY_CONDITIONS",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x6C",
+     "name": "VICTORY_CONDITIONS_TO_WIN",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x70",
+     "name": "PARTY_POPULARITY_CUTOFF",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x74",
+     "name": "COUP_CHANCE_PER_POSITION",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x78",
+     "name": "PEACETIME_MANPOWER_ROTATION_LOW_SUPPLY_FACTOR",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x7C",
+     "name": "SPY_BASE_PRODUCTION_DETECTION_CHANCE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x80",
+     "name": "SPY_COVERT_OPS_GAIN",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x84",
+     "name": "SPY_COVERT_OPS_MAX",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x88",
+     "name": "COUP_COVERT_OPS_COST",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x8C",
+     "name": "ROUGH_COUNTRY_RUIN_EST_MODIFIER",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - no reader found; placed by its position in the file, between two that have one",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x90",
+     "name": "TECHNOLOGY_YEAR_IMPACT",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x94",
+     "name": "TECH_ESPIONAGE_BASE_CHANCE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x98",
+     "name": "TECH_ESPIONAGE_TECH_PICK_FACTOR",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x9C",
+     "name": "SPY_MILITARY_INTEL_TIME_BASE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0xA0",
+     "name": "MILITARY_ESPIONAGE_DETECTION_CHANCE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0xA4",
+     "name": "MILITARY_ESPIONAGE_AT_BASE_CHANCE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0xA8",
+     "name": "SPY_MILITARY_INTEL_LOCAL_TIME_BASE",
+     "type": "int",
+     "comment": "the country block of defines.lua, its entries in file order, one dword each, x1000 - read off a `[defines + 0xCC]` fetch in the executable",
+     "source": "reversing/FINDINGS-manpower.md"
     }
    ]
   },
@@ -14383,7 +15074,8 @@
    "17": "IsAir",
    "20": "GetAverageOrganisation",
    "21": "GetAverageStrength",
-   "24": "GetTotalStrengthCeiling"
+   "24": "GetTotalStrengthCeiling",
+   "32": "UpdateDaily"
   },
   "CArmy": {
    "15": "IsLand",

@@ -37,8 +37,9 @@
 #include <Settings.hpp>
 #include <Hooks/EffectText/KillLeaderText.hpp>
 #include <Hooks/EffectText/LoadOobText.hpp>
-#include <Hooks/EffectText/TriggerIndentText.hpp>
-#include <Hooks/EffectText/TriggerScrollText.hpp>
+#include <Hooks/TriggerText/TriggerIndentText.hpp>
+#include <Hooks/TriggerText/TriggerScrollText.hpp>
+#include <Hooks/Tooltips/ManpowerText.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
@@ -837,14 +838,14 @@ __declspec(dllexport) int activateLoadOobDetails(lua_State* L)
  * The game renders a requirement tree one line per trigger, three spaces per level, and
  * both container triggers pass a constant for their children instead of their own depth
  * plus one - so a condition inside an `and` or an `or` is drawn flush left whatever it
- * is nested in. See Hooks/EffectText/TriggerIndentText.hpp.
+ * is nested in. See Hooks/TriggerText/TriggerIndentText.hpp.
  */
 __declspec(dllexport) int activateTriggerIndent(lua_State* L)
 {
-    const bool ok = Hooks::EffectText::TriggerIndent::install();
+    const bool ok = Hooks::TriggerText::TriggerIndent::install();
     if (!ok) {
         ERROR_OUT(printf("Hook 'activateTriggerIndent' failed: %s \n",
-            Hooks::EffectText::TriggerIndent::status()));
+            Hooks::TriggerText::TriggerIndent::status()));
     }
     else {
         INFO_OUT(printf("Hook 'activateTriggerIndent' succeeded \n"));
@@ -859,17 +860,43 @@ __declspec(dllexport) int activateTriggerIndent(lua_State* L)
  *
  * Nothing about the tooltip window is touched: the text itself is shortened from the
  * front, which works because the game rebuilds it continuously while it is hovered.
- * See Hooks/EffectText/TriggerScrollText.hpp.
+ * See Hooks/TriggerText/TriggerScrollText.hpp.
  */
 __declspec(dllexport) int activateTriggerScroll(lua_State* L)
 {
-    const bool ok = Hooks::EffectText::TriggerScroll::install();
+    const bool ok = Hooks::TriggerText::TriggerScroll::install();
     if (!ok) {
         ERROR_OUT(printf("Hook 'activateTriggerScroll' failed: %s \n",
-            Hooks::EffectText::TriggerScroll::status()));
+            Hooks::TriggerText::TriggerScroll::status()));
     }
     else {
         INFO_OUT(printf("Hook 'activateTriggerScroll' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/////////////////////////////////////
+//       TOOLTIP FUNCTIONS         //
+/////////////////////////////////////
+
+/**
+ * Splits the manpower tooltip's "needs X manpower to reinforce" into land, air and
+ * naval, and offers each as a variable `MANPOWER_DETAILS_IRO` can place.
+ *
+ * The three are taken from the one instruction that builds the total, so they add up to
+ * it rather than merely ought to. Nothing shows until the localisation asks for
+ * `$LAND$`, `$AIR$` and `$NAVY$`. See Hooks/Tooltips/ManpowerText.hpp.
+ */
+__declspec(dllexport) int activateManpowerBreakdown(lua_State* L)
+{
+    const bool ok = Hooks::Tooltips::Manpower::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateManpowerBreakdown' failed: %s \n",
+            Hooks::Tooltips::Manpower::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateManpowerBreakdown' succeeded \n"));
     }
     lua_pushboolean(L, ok);
     return 1;
@@ -1169,6 +1196,14 @@ void registerEffectTextFunctions(lua_State* this_state) {
     return;
 }
 
+void registerTooltipFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Tooltips");
+    lua_newtable(this_state);
+    registerFunction(this_state, "activateManpowerBreakdown", activateManpowerBreakdown);
+    lua_settable(this_state, -3);
+    return;
+}
+
 void registerInspectorFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "Inspector");
     lua_newtable(this_state);
@@ -1208,6 +1243,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerPatchFunctions(this_state);
     registerComplexPatchFunctions(this_state);
     registerEffectTextFunctions(this_state);
+    registerTooltipFunctions(this_state);
     registerInspectorFunctions(this_state);
     registerOverlayFunctions(this_state);
 

@@ -49,7 +49,7 @@
  * **Switched on from Lua**: `BiceLib.EffectTexts.activateTriggerIndent()`.
  */
 namespace Hooks {
-    namespace EffectText {
+    namespace TriggerText {
         namespace TriggerIndent {
             /**@brief patches the four sites, all or none; safe to call again*/
             bool install();
