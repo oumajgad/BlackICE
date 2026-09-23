@@ -45,8 +45,8 @@ liberate_europe = {
 	is_valid = {
 		this = {
 			OR = {
-			  tag = ENG
-			  tag = SOV
+			tag = ENG
+			tag = SOV
 			}
 		}
 		tag = GER
@@ -58,22 +58,22 @@ liberate_europe = {
 		# Foreign parts
 		any_country = { any_owned = { limit = { NOT = { owned_by = GER } controlled_by = GER } change_controller = ENG } }
 		# Renouncing claims #
-		any_owned = { limit = { is_core = AUS }  remove_core = GER }
-		any_owned = { limit = { is_core = CZE }  remove_core = GER }
-		any_owned = { limit = { is_core = POL }  remove_core = GER }
-		any_owned = { limit = { is_core = DEN }  remove_core = GER }
-		any_owned = { limit = { is_core = HOL }  remove_core = GER }
-		any_owned = { limit = { is_core = BEL }  remove_core = GER }
-		any_owned = { limit = { is_core = LUX }  remove_core = GER }
-		any_owned = { limit = { is_core = FRA }  remove_core = GER }
-		any_owned = { limit = { is_core = YUG }  remove_core = GER }
+		any_owned = { limit = { is_core = AUS } remove_core = GER }
+		any_owned = { limit = { is_core = CZE } remove_core = GER }
+		any_owned = { limit = { is_core = POL } remove_core = GER }
+		any_owned = { limit = { is_core = DEN } remove_core = GER }
+		any_owned = { limit = { is_core = HOL } remove_core = GER }
+		any_owned = { limit = { is_core = BEL } remove_core = GER }
+		any_owned = { limit = { is_core = LUX } remove_core = GER }
+		any_owned = { limit = { is_core = FRA } remove_core = GER }
+		any_owned = { limit = { is_core = YUG } remove_core = GER }
 		any_owned = { limit = { is_core = SOV NOT = { region = north_germany_region } } remove_core = GER }
-		any_owned = { limit = { is_core = ITA }  remove_core = GER }
+		any_owned = { limit = { is_core = ITA } remove_core = GER }
 		POL = {
-		  any_owned = { limit = { is_core = GER }  remove_core = GER }
+		any_owned = { limit = { is_core = GER } remove_core = GER }
 		}
 		FRA = {
-		  any_owned = { limit = { is_core = GER }  remove_core = GER }
+		any_owned = { limit = { is_core = GER } remove_core = GER }
 		}
 		# Restorations
 		any_owned = { limit = { NOT = { is_core = GER } controller = { faction = allies } } secede_province = ENG }
@@ -89,9 +89,9 @@ oder_neisse_line = {
 	is_valid = {
 		THIS = {
 			OR = {
-			  tag = ENG
-			  tag = SOV
-			  tag = POL
+			 tag = ENG
+			 tag = SOV
+			 tag = POL
 			}
 		}
 		tag = GER
@@ -100,23 +100,23 @@ oder_neisse_line = {
 	handles_peace = yes
 
 	on_completion = {
-	  # Klaipeda/Memel
+	# Klaipeda/Memel
 		1306 = { remove_core = GER secede_province = SOV }
 		1440 = { remove_core = GER secede_province = SOV }
-		western_russia_region = { remove_core = POL  secede_province = SOV  add_core = SOV }
+		western_russia_region = { remove_core = POL secede_province = SOV add_core = SOV }
 		poland_region = { limit = { is_core = LIT } remove_core = POL add_core = SOV secede_province = SOV }
 		# Northern East Prussia
-		north_germany_region  = { add_core = SOV remove_core = GER secede_province = SOV }
+		north_germany_region = { add_core = SOV remove_core = GER secede_province = SOV }
 
 		# Eastern provinces of the Oder-Neisse Line
-		polish_soviet_region  = { add_core = POL remove_core = GER secede_province = POL }
+		polish_soviet_region = { add_core = POL remove_core = GER secede_province = POL }
 		polish_germany_region = { add_core = POL remove_core = GER secede_province = POL }
 
 		# SOV return Bialystok to Poland
-		SOV = { 1690 = { remove_core = SOV  add_core = POL  secede_province = POL } }
-		SOV = { 1810 = { remove_core = SOV  add_core = POL  secede_province = POL } }
-		SOV = { 1871 = { remove_core = SOV  add_core = POL  secede_province = POL } }
-		SOV = { 1930 = { remove_core = SOV  add_core = POL  secede_province = POL } }
+		SOV = { 1690 = { remove_core = SOV add_core = POL secede_province = POL } }
+		SOV = { 1810 = { remove_core = SOV add_core = POL secede_province = POL } }
+		SOV = { 1871 = { remove_core = SOV add_core = POL secede_province = POL } }
+		SOV = { 1930 = { remove_core = SOV add_core = POL secede_province = POL } }
 
 		# POL lost eastern Poland & Orlova
 		western_poland_region = { add_core = POL secede_province = POL }
@@ -149,9 +149,9 @@ division_germany = {
 		form_government_in_exile = yes
 		# Withdraw #
 		# German parts
-		any_owned = { limit = { controller = { faction = allies } }     change_controller = ENG }
-		any_owned = { limit = { controller = { faction = comintern } }  change_controller = SOV }
-		any_owned = { limit = { controlled_by = GER }                   change_controller = FRA }
+		any_owned = { limit = { controller = { faction = allies } } change_controller = ENG }
+		any_owned = { limit = { controller = { faction = comintern } } change_controller = SOV }
+		any_owned = { limit = { controlled_by = GER } change_controller = FRA }
 		# Flensburg government
 		head_of_state = 32
 		head_of_government = 49
@@ -179,8 +179,8 @@ liberate_asia = {
 	always = yes
 	is_valid = {
 		THIS = {
-		  NOT = { faction = axis }
-		  war_with = JAP
+		 NOT = { faction = axis }
+		 war_with = JAP
 		}
 		tag = JAP
 		JAP = { faction = axis }
@@ -189,7 +189,7 @@ liberate_asia = {
 	on_completion = {
 		# Withdraw #
 		# Foreign parts
-		any_country = { any_owned = { limit = { controlled_by = JAP }   change_controller = USA } }
+		any_country = { any_owned = { limit = { controlled_by = JAP } change_controller = USA } }
 		# Renouncing claims #
 		# Korea
 		south_korea_region = { remove_core = JAP }
@@ -205,7 +205,7 @@ liberate_asia = {
 		8640 = { remove_core = JAP add_core = SOV }
 		6875 = { remove_core = JAP add_core = SOV }
 		# Japanese Oceania
-		5966  = { remove_core = JAP add_core = USA }
+		5966 = { remove_core = JAP add_core = USA }
 		10644 = { remove_core = JAP add_core = USA }
 		10656 = { remove_core = JAP add_core = USA }
 		10658 = { remove_core = JAP add_core = USA }
@@ -216,20 +216,20 @@ liberate_asia = {
 		6319 = { remove_core = JAP add_core = USA }
 		# Restorations and Reparations
 		release = CHI
-		any_owned = { limit = { is_core = CHI }  secede_province = CHI }
-		any_owned = { limit = { is_core = USA }  secede_province = USA }
-		any_owned = { limit = { is_core = FRA }  secede_province = FRA }
-		any_owned = { limit = { is_core = SOV }  secede_province = SOV }
+		any_owned = { limit = { is_core = CHI } secede_province = CHI }
+		any_owned = { limit = { is_core = USA } secede_province = USA }
+		any_owned = { limit = { is_core = FRA } secede_province = FRA }
+		any_owned = { limit = { is_core = SOV } secede_province = SOV }
 		release = INO
-		south_korea_region = { limit = { controller = { faction = allies } }    secede_province = USA }
+		south_korea_region = { limit = { controller = { faction = allies } } secede_province = USA }
 		south_korea_region = { limit = { controller = { faction = comintern } } secede_province = SOV }
-		south_korea_region = { limit = { controller = { OR = { faction = axis is_in_any_faction = no } } }  secede_province = USA }
-		north_korea_region = { limit = { controller = { faction = allies } }  secede_province = USA }
+		south_korea_region = { limit = { controller = { OR = { faction = axis is_in_any_faction = no } } } secede_province = USA }
+		north_korea_region = { limit = { controller = { faction = allies } } secede_province = USA }
 		north_korea_region = { limit = { controller = { faction = comintern } } secede_province = SOV }
-		north_korea_region = { limit = { controller = { OR = { faction = axis is_in_any_faction = no } } }  secede_province = USA }
-		any_owned = { limit = { NOT = { is_core = JAP } controller = { faction = allies } }    secede_province = USA }
+		north_korea_region = { limit = { controller = { OR = { faction = axis is_in_any_faction = no } } } secede_province = USA }
+		any_owned = { limit = { NOT = { is_core = JAP } controller = { faction = allies } } secede_province = USA }
 		any_owned = { limit = { NOT = { is_core = JAP } controller = { faction = comintern } } secede_province = SOV }
-	  any_owned = { limit = { NOT = { is_core = JAP } controller = { OR = { faction = axis is_in_any_faction = no } } }  secede_province = USA }
+		any_owned = { limit = { NOT = { is_core = JAP } controller = { OR = { faction = axis is_in_any_faction = no } } } secede_province = USA }
 	}
 }
 
@@ -240,10 +240,10 @@ occupation_japan = {
 	is_valid = {
 		THIS = {
 			OR = {
-			  tag = ENG
-			  tag = USA
-			  tag = CHI
-			  tag = SOV
+			tag = ENG
+			tag = USA
+			tag = CHI
+			tag = SOV
 			}
 		}
 		tag = JAP
