@@ -40,6 +40,8 @@
 #include <Hooks/TriggerText/TriggerIndentText.hpp>
 #include <Hooks/TriggerText/TriggerScrollText.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
+#include <Reversing/Counters.hpp>
+#include <Reversing/Watch.hpp>
 #include <Patches.hpp>
 
 int DATA_SECTION_START = 0x12F5000;
@@ -877,6 +879,55 @@ __declspec(dllexport) int activateTriggerScroll(lua_State* L)
 }
 
 /////////////////////////////////////
+//      REVERSING FUNCTIONS        //
+/////////////////////////////////////
+
+/**
+ * Counts how often the game reaches each address named in BiceLibCounters.txt, and
+ * writes the totals to BiceLibCounters.csv once a game day.
+ *
+ * A workbench tool for reverse engineering: the disassembly says what code would do,
+ * not whether the game ever goes there. Without the file this does nothing and says so.
+ * See Reversing/Counters.hpp for the file's shape and for the two checks that have to be
+ * made outside the game first.
+ */
+__declspec(dllexport) int activateCounters(lua_State* L)
+{
+    const bool ok = Reversing::Counters::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateCounters' failed: %s \n",
+            Reversing::Counters::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateCounters': %s \n",
+            Reversing::Counters::status()));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
+ * Records what the game state fields named in BiceLibWatch.txt hold, writing a row to
+ * BiceLibWatch.csv whenever one of them changes.
+ *
+ * Hooks nothing: it reads through CCurrentGameState::current() once a frame and refuses
+ * an offset outside the object, so a wrong line in the file costs a wrong number in a
+ * csv rather than the game. See Reversing/Watch.hpp.
+ */
+__declspec(dllexport) int activateWatch(lua_State* L)
+{
+    const bool ok = Reversing::Watch::install();
+    if (!ok) {
+        ERROR_OUT(printf("'activateWatch' failed: %s \n", Reversing::Watch::status()));
+    }
+    else {
+        INFO_OUT(printf("'activateWatch': %s \n", Reversing::Watch::status()));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/////////////////////////////////////
 //       TOOLTIP FUNCTIONS         //
 /////////////////////////////////////
 
@@ -1204,6 +1255,15 @@ void registerTooltipFunctions(lua_State* this_state) {
     return;
 }
 
+void registerReversingFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Reversing");
+    lua_newtable(this_state);
+    registerFunction(this_state, "activateCounters", activateCounters);
+    registerFunction(this_state, "activateWatch", activateWatch);
+    lua_settable(this_state, -3);
+    return;
+}
+
 void registerInspectorFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "Inspector");
     lua_newtable(this_state);
@@ -1244,6 +1304,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerComplexPatchFunctions(this_state);
     registerEffectTextFunctions(this_state);
     registerTooltipFunctions(this_state);
+    registerReversingFunctions(this_state);
     registerInspectorFunctions(this_state);
     registerOverlayFunctions(this_state);
 

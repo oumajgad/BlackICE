@@ -32,8 +32,9 @@
    "rva": "0x2410",
    "kind": "function",
    "name": "LogRecord::Make",
-   "signature": "LogRecord* __thiscall LogRecord::Make(LogRecord* this, const char* file@stack:4, int line@stack:8, int channel@stack:0xC)",
-   "comment": "**Builds one log record**, and first makes sure there is a sink: if `g_log_sink` (`0x17162A4`) is still null it allocates the four byte do-nothing sink whose vftable is `0x11FCEA0` and installs that, so a message logged before `InstallLogSink` is discarded rather than queued. Then tail calls the record's constructor at `0x6649D0` with the file, the sink and the line. There is **no channel test here or anywhere after it** - every record built is flushed to the sink.",
+   "signature": "LogRecord* __cdecl LogRecord::Make(LogRecord* this@ECX, Hoi3CString* file, int line, int channel)",
+   "no_signature": null,
+   "comment": "**Builds one log record**, and first makes sure there is a sink: if `g_log_sink` (`0x17162A4`) is still null it allocates the four byte do-nothing sink whose vftable is `0x11FCEA0` and installs that, so a message logged before `InstallLogSink` is discarded rather than queued. Then calls the register-convention forwarder `LogRecord::Construct` (`0x6649D0`) with the file, the sink, the line and the channel. There is **no channel test here or anywhere after it** - every record built is flushed to the sink. `this` arrives in ECX and is returned in EAX; the three stack arguments are cleaned by the caller (bare `ret`, `add esp, 0xC` at the call site), so the convention is `__cdecl` with a register `this`, not `__thiscall`.\n\n**`file` is an `Hoi3CString*`, not a `const char*`.** The constructor hands it to `std::string::assignString` (`0x1BD0`), which takes a string, and every call site builds one first: `mov edx, 'battleplan.cpp'; lea esi,[ebp-0x74]; call std::string::fromCString` and then pushes that temporary (0x404743..0x404768).",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
   },
@@ -41,8 +42,9 @@
    "rva": "0x24B0",
    "kind": "function",
    "name": "LogRecord::Flush",
-   "signature": "void* __cdecl LogRecord::Flush(void* record@EAX)",
-   "comment": "**The destructor, and where a log line is decided.** Every message in the game arrives here in a record holding its file, line and channel, and this is what does or does not write it - `[persistent.cpp:39]`, `[countryhistory.cpp:450]` and the 597KB of setup.log all pass through it. Takes the record in eax. **The one place worth hooking to see everything the engine complains about**, including the channels that produce no file.",
+   "signature": "void __cdecl LogRecord::Flush(LogRecord* record@EAX)",
+   "no_signature": null,
+   "comment": "**The complete destructor of the record, and where a log line is decided.** Every message in the game arrives here in a record holding its file, line and channel, and this is what does or does not write it - `[persistent.cpp:39]`, `[countryhistory.cpp:450]` and the 597KB of setup.log all pass through it. Takes the record in eax, pushes `record+0x78` (the `std::basic_ios` virtual base) into `LogRecord::FlushAndDestruct`, then puts the `ios_base` vftable `0x15A7B8C` at `record+0x78` and runs `~ios_base` (`0x794BAE`). Nothing is returned: eax at the `ret` is whatever `~ios_base` left there and no caller reads it. **The one place worth hooking to see everything the engine complains about**, including the channels that produce no file.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
   },
@@ -113,8 +115,9 @@
    "rva": "0x17AF0",
    "kind": "function",
    "name": "CCountry::GetCapitalLocation",
-   "signature": null,
-   "comment": "The capital's province: the game state's province vector (+0xB8C) indexed by CCountry +0xE20. Byte for byte the same function as GetActingCapitalLocation (0x2F100) but for the offset it reads, which is what settles which field is which.",
+   "signature": "CMapProvince* __thiscall CCountry::GetCapitalLocation(CCountry* this)",
+   "no_signature": null,
+   "comment": "The capital's province: the game state's province vector (+0xB8C) indexed by CCountry +0xE20. Byte for byte the same function as GetActingCapitalLocation (0x2F100) but for the offset it reads, which is what settles which field is which.\n\n**Signature**: `this` in ecx and nothing on the stack - a bare `ret`, and the 55 call sites push nothing.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:173"
   },
@@ -283,9 +286,10 @@
   {
    "rva": "0x2F100",
    "kind": "function",
-   "name": "CCountry::GetCapitalProvince",
-   "signature": null,
-   "comment": "The game's capital province lookup; reads CCountry +0xE24.",
+   "name": "CCountry::GetActingCapitalLocation",
+   "signature": "CMapProvince* __thiscall CCountry::GetActingCapitalLocation(CCountry* this)",
+   "no_signature": null,
+   "comment": "The game's capital province lookup; reads CCountry +0xE24.\n\n**Signature**: `this` in ecx and nothing on the stack - a bare `ret`.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:57"
   },
@@ -434,11 +438,11 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
-   "rva": "0x4A610",
+   "rva": "0x44A610",
    "kind": "function",
-   "name": "LogSink::WriteNothing",
-   "signature": "void __thiscall LogSink::WriteNothing(LogSink* this, int channel, Hoi3CString* file, int line, Hoi3CString* message)",
-   "comment": "Slot 1 of the **fallback** sink's vftable (`0xDFCEA0`), and it is `ret 0x10` and nothing else. That sink is the one `0x2410` makes if the global is still null, so a message logged before the real sink is installed is discarded outright rather than queued.",
+   "name": "DoNothing_4Args",
+   "signature": "void __stdcall DoNothing_4Args(void* a, void* b, void* c, void* d)",
+   "comment": "`ret 0x10` and nothing else, so the linker folded it: this one address fills a virtual slot in 38 unrelated classes and belongs to none of them. It was recorded as LogSink::WriteNothing, which is one of the 38 - the fallback sink's slot 1 does point here, but so does everything else that needed a four argument no-op. Slot 1 of the **fallback** sink's vftable (rva `0x11FCEA0`, VA `0x015FCEA0`), and it is `ret 0x10` and nothing else. That sink is the one `0x2410` makes if the global is still null, so a message logged before the real sink is installed is discarded outright rather than queued. **The body is not the fallback sink's own** - the linker folded it with every other four-argument do-nothing virtual in the program, and it sits in 38 RTTI classes' tables.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
   },
@@ -1263,8 +1267,9 @@
    "rva": "0xDFDA0",
    "kind": "function",
    "name": "CCountry::GetBuildCost",
-   "signature": null,
-   "comment": "What this country pays for a building: the building's own cost (CBuilding +0x58) scaled by the discount its technology category earns, cost x (1000 - discount) / 1000. The slot 2 call on the category that guards it is the folded `mov al,1; ret` at 0xA92590, true for a real category and for the nocategory object alike, so the discount is always applied. That matters for a building whose category is nocategory - its index is 0, where every country's ability is 0, and an ability below 5.000 raises the cost: A building whose category is nocategory therefore costs about half as much again.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetBuildCost(CCountry* this, CFixedPoint* out, CBuilding* building)",
+   "no_signature": null,
+   "comment": "What this country pays for a building: the building's own cost (CBuilding +0x58) scaled by the discount its technology category earns, cost x (1000 - discount) / 1000. The slot 2 call on the category that guards it is the folded `mov al,1; ret` at 0xA92590, true for a real category and for the nocategory object alike, so the discount is always applied. That matters for a building whose category is nocategory - its index is 0, where every country's ability is 0, and an ability below 5.000 raises the cost: A building whose category is nocategory therefore costs about half as much again.\n\n**Signature**: out is the hidden first stack argument and comes back in eax; `this` is in ecx, which is why the `ret` is 8 and not 12.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:62"
   },
@@ -1272,8 +1277,9 @@
    "rva": "0xE0170",
    "kind": "function",
    "name": "CCountry::GetAllowedResearchSlots",
-   "signature": null,
-   "comment": "round(base_percentage x factor x TotalLeadership) - the research slider (LeadershipDistribution->Research, the fourth of the four) times the country's total leadership. Reads the two as fpml::fixed_point<__int64,48,15>, so the shifts by 15 and 30 and the 0x1F40000 are only the fixed point arithmetic.",
+   "signature": "int __thiscall CCountry::GetAllowedResearchSlots(CCountry* this)",
+   "no_signature": null,
+   "comment": "round(base_percentage x factor x TotalLeadership) - the research slider (LeadershipDistribution->Research, the fourth of the four) times the country's total leadership. Reads the two as fpml::fixed_point<__int64,48,15>, so the shifts by 15 and 30 and the 0x1F40000 are only the fixed point arithmetic.\n\n**Signature**: no arguments at all - `this` in ecx and a bare `ret` - and it answers a plain rounded int, not a CFixedPoint through a hidden pointer.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:50"
   },
@@ -1281,8 +1287,9 @@
    "rva": "0xE0290",
    "kind": "function",
    "name": "CCountry::GetAbility",
-   "signature": null,
-   "comment": "The country's effective level in a technology category: its own (+0x698), or the level of the country sharing that category with it (+0x6A8) where that is higher.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetAbility(CCountry* this, CFixedPoint* out, CTechnologyCategory* category)",
+   "no_signature": null,
+   "comment": "The country's effective level in a technology category: its own (+0x698), or the level of the country sharing that category with it (+0x6A8) where that is higher.\n\n**Signature**: out is the hidden first stack argument, returned in eax; the category is the second.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:99"
   },
@@ -1290,8 +1297,9 @@
    "rva": "0xE06C0",
    "kind": "function",
    "name": "CCountry::GetLeadershipDistributionAt",
-   "signature": null,
-   "comment": "[this+0x5E4][i] - the leadership slider at that index: 0 officers, 1 diplomacy, 2 espionage, 3 research, the order of the game's LeadershipCategory enum.",
+   "signature": "CDistributionSetting* __thiscall CCountry::GetLeadershipDistributionAt(CCountry* this, int index)",
+   "no_signature": null,
+   "comment": "[this+0x5E4][i] - the leadership slider at that index: 0 officers, 1 diplomacy, 2 espionage, 3 research, the order of the game's LeadershipCategory enum.\n\n**Signature**: `this` in ecx, the index the one stack argument (`ret 4`). No direct caller exists in the image, so the convention is read off the body's own `ret`.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:50"
   },
@@ -1299,8 +1307,9 @@
    "rva": "0xE18F0",
    "kind": "function",
    "name": "CCountry::GetBuildCostIC",
-   "signature": null,
-   "comment": "What a unit type costs this country. base is the definition's BuildCostIC (+0xF8); the multiplier is 1000, plus CTechnologyStatus +0x24C for the type, plus the third argument times 10 (so 1% a point), less the discount the definition's technology category (+0x3C) earns - the same 0xE1AC0 buildings use. Then, where the fourth argument is set, times (1000 + the country's RESERVES_PENALTY_SIZE modifier, 77) over 1000. The third argument is the caller's: the game works it out at 0x63D40 by adding up CTechnologyStatus +0x218 over the definition's own technology list (+0x44..+0x48). Only Lua calls this entry point; the game's own path is GetTotalBuildCost (0x63D40), which works the same cost out inline without the reserves step and multiplies it by GetBuildTime.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetBuildCostIC(CCountry* this, CFixedPoint* out, CSubUnitDefinition* definition, int technologyBonus, bool reserves)",
+   "no_signature": null,
+   "comment": "What a unit type costs this country. base is the definition's BuildCostIC (+0xF8); the multiplier is 1000, plus CTechnologyStatus +0x24C for the type, plus the third argument times 10 (so 1% a point), less the discount the definition's technology category (+0x3C) earns - the same 0xE1AC0 buildings use. Then, where the fourth argument is set, times (1000 + the country's RESERVES_PENALTY_SIZE modifier, 77) over 1000. The third argument is the caller's: the game works it out at 0x63D40 by adding up CTechnologyStatus +0x218 over the definition's own technology list (+0x44..+0x48). Only Lua calls this entry point; the game's own path is GetTotalBuildCost (0x63D40), which works the same cost out inline without the reserves step and multiplies it by GetBuildTime.\n\n**Signature**: four stack arguments (`ret 0x10`) with out hidden first and returned in eax; the flag at [ebp+0x14] is tested as a byte, so it is a bool.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44"
   },
@@ -1308,8 +1317,9 @@
    "rva": "0xE19A0",
    "kind": "function",
    "name": "CCountry::GetBuildTime",
-   "signature": null,
-   "comment": "How long a unit type takes this country to build. The definition's BuildTime (+0x100) times two factors over a million. The first is 1000, plus CTechnologyStatus +0x26C for the type, plus the second argument times 10, plus the country's UNIT_RECRUITMENT_TIME modifier (51), less the discount the definition's technology category earns (0xE1AC0, the same one the costs use); it is floored at 50. The second is 1000 plus one build speed modifier, chosen by the definition's kind flags in this order: is_rocket (+0x33) ROCKET_BUILD_SPEED, is_tank (+0x34) TANK_BUILD_SPEED, is_air (+0x2C) AIR_BUILD_SPEED, is_ship (+0x2E) NAVAL_BUILD_SPEED, else LAND_BUILD_SPEED.",
+   "signature": "int __thiscall CCountry::GetBuildTime(CCountry* this, CSubUnitDefinition* definition, int technologyBonus)",
+   "no_signature": null,
+   "comment": "How long a unit type takes this country to build. The definition's BuildTime (+0x100) times two factors over a million. The first is 1000, plus CTechnologyStatus +0x26C for the type, plus the second argument times 10, plus the country's UNIT_RECRUITMENT_TIME modifier (51), less the discount the definition's technology category earns (0xE1AC0, the same one the costs use); it is floored at 50. The second is 1000 plus one build speed modifier, chosen by the definition's kind flags in this order: is_rocket (+0x33) ROCKET_BUILD_SPEED, is_tank (+0x34) TANK_BUILD_SPEED, is_air (+0x2C) AIR_BUILD_SPEED, is_ship (+0x2E) NAVAL_BUILD_SPEED, else LAND_BUILD_SPEED.\n\n**Signature**: unlike the costs this one answers a plain int in eax - divided by 1000 at 0x4E1AA5, and the callers multiply it back up - so there is no hidden out pointer and the `ret` is 8, not 12.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:44"
   },
@@ -1317,8 +1327,8 @@
    "rva": "0xE1AC0",
    "kind": "function",
    "name": "CCountry::GetCategoryBuildDiscount",
-   "signature": "int* __stdcall GetCategoryBuildDiscount(CCountry* country, int* out, CTechnologyCategory* category)",
-   "comment": "The discount a technology category earns, in thousandths, which the build cost is scaled by as (1000 - this). Takes the country's ability in that category - its own level at +0x698, or the sharer's if a tag at +0x6A8 names one with a higher level, the same lookup GetAbility makes - floors it at 0 and measures it against 5.000: below that the result is negative and the cost goes up, at 100 per point; above it 50 per point with everything past 1.000 halved first. Then adds the country's INDUSTRIAL_EFFICIENCY modifier (74) and CTechnologyStatus +0x94, and caps the whole at 990, so at most 99% off. The name is BiceLib's.",
+   "signature": "int* __stdcall CCountry::GetCategoryBuildDiscount(int* out@ESI, CCountry* country@stack:4, CTechnologyCategory* category@stack:8)",
+   "comment": "The discount a technology category earns, in thousandths, which the build cost is scaled by as (1000 - this). Takes the country's ability in that category - its own level at +0x698, or the sharer's if a tag at +0x6A8 names one with a higher level, the same lookup GetAbility makes - floors it at 0 and measures it against 5.000: below that the result is negative and the cost goes up, at 100 per point; above it 50 per point with everything past 1.000 halved first. Then adds the country's INDUSTRIAL_EFFICIENCY modifier (74) and CTechnologyStatus +0x94, and caps the whole at 990, so at most 99% off. The name is BiceLib's.\n\n**The out pointer travels in ESI, not on the stack** - that is the whole of why the recorded signature wanted ret 12 and the function does ret 8. Only two things are pushed, the country and the category; ESI is never written in the body, only read (every store is `mov [esi], ...`), and the return is `mov eax, esi` at 0x4E1BCA.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CProvinceBuilding.hpp:62"
   },
@@ -1326,8 +1336,9 @@
    "rva": "0xE21E0",
    "kind": "function",
    "name": "CCountry::RebuildNeighbours",
-   "signature": null,
-   "comment": "Fills a country's two neighbour sets and the two CCountryList they stand for. It clears both, walks OwnedProvinces marking the owner of every adjacent province that nobody is occupying, then walks ControlledProvinces marking the controller of every adjacent province owned by somebody else. It is what says which set means what.",
+   "signature": "void __stdcall CCountry::RebuildNeighbours(CCountry* country)",
+   "no_signature": null,
+   "comment": "Fills a country's two neighbour sets and the two CCountryList they stand for. It clears both, walks OwnedProvinces marking the owner of every adjacent province that nobody is occupying, then walks ControlledProvinces marking the controller of every adjacent province owned by somebody else. It is what says which set means what.\n\n**Signature**: __stdcall, not __thiscall - the country is [ebp+8], ecx is never read, and the single `ret 4` is the callee cleaning it.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:404"
   },
@@ -1371,8 +1382,9 @@
    "rva": "0xF1830",
    "kind": "function",
    "name": "CCountry::GetDailyIncome",
-   "signature": null,
-   "comment": "A day's income of one good: home_produced plus, for anything but supplies and fuel, convoyed_in, plus the five pools at +0x848, +0x8B4, +0x8FC, +0x9D4 and +0xA64. Each read as pool + 8 + category * 4.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetDailyIncome(CCountry* this, CFixedPoint* out, int goodsCategory)",
+   "no_signature": null,
+   "comment": "A day's income of one good: home_produced plus, for anything but supplies and fuel, convoyed_in, plus the five pools at +0x848, +0x8B4, +0x8FC, +0x9D4 and +0xA64. Each read as pool + 8 + category * 4.\n\n**Signature**: `this` in ecx, out the hidden first stack argument and returned in eax, the goods category the second (`ret 8`).",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:247"
   },
@@ -1380,8 +1392,9 @@
    "rva": "0xF18A0",
    "kind": "function",
    "name": "CCountry::GetDailyBalance",
-   "signature": null,
-   "comment": "A day's balance of one good: GetDailyIncome less GetDailyExpense, worked out inline rather than by calling either. The convoyed_in skip for supplies and fuel is here too.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetDailyBalance(CCountry* this, CFixedPoint* out, int goodsCategory)",
+   "no_signature": null,
+   "comment": "A day's balance of one good: GetDailyIncome less GetDailyExpense, worked out inline rather than by calling either. The convoyed_in skip for supplies and fuel is here too.\n\n**Signature**: `this` in ecx, out the hidden first stack argument and returned in eax, the goods category the second (`ret 8`).",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:247"
   },
@@ -1389,8 +1402,9 @@
    "rva": "0xF1950",
    "kind": "function",
    "name": "CCountry::GetDailyExpense",
-   "signature": null,
-   "comment": "A day's spending of one good: traded_away, convoyed_out and the three pools at +0x8D8, +0x98C and +0x9B0, less the two at +0x824 and +0x920 - which is what makes it the need less what was wanted and not got.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetDailyExpense(CCountry* this, CFixedPoint* out, int goodsCategory)",
+   "no_signature": null,
+   "comment": "A day's spending of one good: traded_away, convoyed_out and the three pools at +0x8D8, +0x98C and +0x9B0, less the two at +0x824 and +0x920 - which is what makes it the need less what was wanted and not got.\n\n**Signature**: `this` in ecx, out the hidden first stack argument and returned in eax, the goods category the second (`ret 8`).",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:247"
   },
@@ -1398,8 +1412,9 @@
    "rva": "0xF19A0",
    "kind": "function",
    "name": "CCountry::GetDailyNeed",
-   "signature": null,
-   "comment": "The same seven pools GetDailyExpense uses, all added: what the country wanted of one good, where the expense is what it actually spent.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetDailyNeed(CCountry* this, CFixedPoint* out, int goodsCategory)",
+   "no_signature": null,
+   "comment": "The same seven pools GetDailyExpense uses, all added: what the country wanted of one good, where the expense is what it actually spent.\n\n**Signature**: `this` in ecx, out the hidden first stack argument and returned in eax, the goods category the second (`ret 8`).",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:247"
   },
@@ -1416,8 +1431,9 @@
    "rva": "0xF4D70",
    "kind": "function",
    "name": "CCountry::GetAvailableIC",
-   "signature": null,
-   "comment": "Spare industrial capacity: GetSpareICIn summed over the five ProductionCategory values from _PRODUCTION_CONSUMER_ to _PRODUCTION_UPGRADE_ - lend lease, category 0, is left out - and divided by 1000. So it is IC a slider has been given but does not need, not IC that is unallocated.",
+   "signature": "int __thiscall CCountry::GetAvailableIC(CCountry* this)",
+   "no_signature": null,
+   "comment": "Spare industrial capacity: GetSpareICIn summed over the five ProductionCategory values from _PRODUCTION_CONSUMER_ to _PRODUCTION_UPGRADE_ - lend lease, category 0, is left out - and divided by 1000. So it is IC a slider has been given but does not need, not IC that is unallocated.\n\n**Signature**: no arguments, `this` in ecx, a bare `ret`, and a plain int in eax.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:68"
   },
@@ -1425,8 +1441,9 @@
    "rva": "0xF4DE0",
    "kind": "function",
    "name": "CCountry::GetPool",
-   "signature": null,
-   "comment": "Answers the capital province's pool, or the country's own pool at +0x9F8 when the country is a government in exile (+0x95).",
+   "signature": "CGoodsPool* __thiscall CCountry::GetPool(CCountry* this)",
+   "no_signature": null,
+   "comment": "Answers the capital province's pool, or the country's own pool at +0x9F8 when the country is a government in exile (+0x95).\n\n**Signature**: `this` in ecx, no stack arguments, a bare `ret` on both arms - the out-of-line body needs no register notation.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountry.hpp:60"
   },
@@ -1434,8 +1451,9 @@
    "rva": "0xFD590",
    "kind": "function",
    "name": "CCountry::GetConvoyBuildCost",
-   "signature": null,
-   "comment": "The CONVOY_BUILD_COST define (CDefines economy block, CONVOY_BUILD_COST) times (1000 + CTechnologyStatus 0x44) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetConvoyBuildCost(CCountry* this, CFixedPoint* out)",
+   "no_signature": null,
+   "comment": "The CONVOY_BUILD_COST define (CDefines economy block, CONVOY_BUILD_COST) times (1000 + CTechnologyStatus 0x44) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.\n\n**Signature**: `this` in ecx and the hidden out pointer the one stack argument (`ret 4`), returned in eax.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CDefines.hpp:46"
   },
@@ -1443,8 +1461,9 @@
    "rva": "0xFD600",
    "kind": "function",
    "name": "CCountry::GetConvoyBuildTime",
-   "signature": null,
-   "comment": "The CONVOY_BUILD_TIME define (CDefines economy block, CONVOY_BUILD_TIME) times (1000 + CTechnologyStatus 0x48) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetConvoyBuildTime(CCountry* this, CFixedPoint* out)",
+   "no_signature": null,
+   "comment": "The CONVOY_BUILD_TIME define (CDefines economy block, CONVOY_BUILD_TIME) times (1000 + CTechnologyStatus 0x48) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.\n\n**Signature**: `this` in ecx and the hidden out pointer the one stack argument (`ret 4`), returned in eax.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CDefines.hpp:47"
   },
@@ -1452,8 +1471,9 @@
    "rva": "0xFD670",
    "kind": "function",
    "name": "CCountry::GetEscortBuildCost",
-   "signature": null,
-   "comment": "The ESCORT_BUILD_COST define (CDefines economy block, ESCORT_BUILD_COST) times (1000 + CTechnologyStatus 0x4C) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetEscortBuildCost(CCountry* this, CFixedPoint* out)",
+   "no_signature": null,
+   "comment": "The ESCORT_BUILD_COST define (CDefines economy block, ESCORT_BUILD_COST) times (1000 + CTechnologyStatus 0x4C) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.\n\n**Signature**: `this` in ecx and the hidden out pointer the one stack argument (`ret 4`), returned in eax.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CDefines.hpp:48"
   },
@@ -1461,8 +1481,9 @@
    "rva": "0xFD6E0",
    "kind": "function",
    "name": "CCountry::GetEscortBuildTime",
-   "signature": null,
-   "comment": "The ESCORT_BUILD_TIME define (CDefines economy block, ESCORT_BUILD_TIME) times (1000 + CTechnologyStatus 0x50) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.",
+   "signature": "CFixedPoint* __thiscall CCountry::GetEscortBuildTime(CCountry* this, CFixedPoint* out)",
+   "no_signature": null,
+   "comment": "The ESCORT_BUILD_TIME define (CDefines economy block, ESCORT_BUILD_TIME) times (1000 + CTechnologyStatus 0x50) over 1000, floored at 10. Four functions of this one shape cover the convoy and escort cost and time.\n\n**Signature**: `this` in ecx and the hidden out pointer the one stack argument (`ret 4`), returned in eax.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CDefines.hpp:49"
   },
@@ -2838,82 +2859,91 @@
    "rva": "0x1A12B0",
    "kind": "function",
    "name": "CPathFind::Find",
-   "signature": null,
-   "comment": "Finds a route: Find(finder, unit, from, to, out path) with the finder on the stack, answering a bool. Route finder entry (same function as RVA 0x1A12B0).",
+   "signature": "bool __stdcall CPathFind::Find(CPathFind* finder, CUnit* unit, CProvince* from, CProvince* to, CList* path)",
+   "no_signature": null,
+   "comment": "The A* search itself, and **not a member call**: the finder is the first stack argument, not a receiver. The call site at rva 0x1D8F08 pushes five and adds nothing back (the body does `ret 0x14`), and ECX there holds the unit's own province from CUnit +0x130 - so nothing puts the finder in a register.\n\nWhat it does: refuses unless unit, from and to are all non-null, then asks the finder's slot 1 (MayUse) whether it may run at all. It allocates three arrays the size of the game state's province vector - a visited byte per province, a 16-byte open-list record per province and a came-from index per province - and loops: take the cheapest open province, ask slot 3 (IsGoal), and for each edge of its template (CProvince +0xD4) ask slot 2 (MayStep) and then slot 0 (StepCost). The heuristic added on top is the straight-line distance between the two templates' +0x2C/+0x30 coordinates, wrapped at the map width in CMap +0x2A74 and scaled by [0x1688618]. On success rva 0x1A11F0 fills `path` with 16-byte nodes holding province **ids** (the CList head is first/last/count/flag, the nodes are data/prev/next/flag).",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CPathFind.hpp:64; reversing/FINDINGS-redeploy.md:52"
+   "source": "reversing/FINDINGS-redeploy.md"
   },
   {
    "rva": "0x1A25B0",
    "kind": "function",
    "name": "CPathFind::MayUse",
-   "signature": null,
-   "comment": "CPathFind slot 1; looks like whether this finder may be used.",
+   "signature": "bool __thiscall CPathFind::MayUse(CPathFind* this, CUnit* unit, CProvince* from, CProvince* to)",
+   "no_signature": null,
+   "comment": "CPathFind slot 1: whether this finder may be used for this unit at all. CPathFind::Find asks it once, before allocating anything, and answers false when it does. `this` is not read - see CPathFind::StepCost for why the convention is still __thiscall - and `ret 0xC` covers the three stack arguments.\n\nFalse unless the unit's own slot 34 (vftable +0x88) accepts `to`. If the unit's slot 16 (+0x40) then says nothing, true; if it does, the test at rva 0xA7D70 - `to` in ECX, `from` in EAX, `&unit->owner` pushed - has to agree as well.",
    "confidence": "inferred",
-   "source": "reversing/FINDINGS-redeploy.md:34"
+   "source": "reversing/FINDINGS-redeploy.md"
   },
   {
    "rva": "0x1A2700",
    "kind": "function",
    "name": "CPathFind::MayStep",
-   "signature": null,
-   "comment": "CPathFind slot 2; looks like whether a step may be taken, answering a bool.",
+   "signature": "bool __thiscall CPathFind::MayStep(CPathFind* this, CUnit* unit, CProvince* goal, CProvince* from, CProvince* to, ProvinceEdge* edge)",
+   "no_signature": null,
+   "comment": "CPathFind slot 2: whether `unit` may step from `from` to `to` along `edge`, with `goal` the search's destination (which the base ignores and both safe finders use). `this` is not read; `ret 0x14` covers the five stack arguments.\n\nRefuses when the edge's kind is 3, when `from` is `to`, when `goal`'s template flag +0x13D is clear, and when the helper at rva 0x1A2600 says a kind-1 edge is blocked - that one reads the province the edge crosses (edge +8) and refuses if its controller is hostile or a foreign unit that is not retreating stands in it. Then the two provinces' templates have to agree: the byte at template **+0x22, unnamed**, may not be set on both, and where it is set on one, that template's **+0xA4, unnamed**, must be the other province's id. What follows is the supply gate: with the destination's controller hostile (rva 0x2F1B0) it refuses a unit whose supply_received_percentage is zero and whose CUnit::SupplyConsumption is positive, and likewise fuel_received_percentage against CUnit::FuelConsumption; and last, the unit owner's relation record for `from`'s controller (country +0xE28 indexed by tag id, byte **+0x4C unnamed**) together with **+0x20** on the record for `to`'s controller refuses the step.",
    "confidence": "inferred",
-   "source": "reversing/FINDINGS-redeploy.md:34"
+   "source": "reversing/FINDINGS-redeploy.md"
   },
   {
    "rva": "0x1A2A00",
    "kind": "function",
    "name": "CPathFind::StepCost",
-   "signature": "void __stdcall StepCost(CFixedPoint* out, CProvinceTemplate* from, int edge, CMap* map, CUnit* unit)",
-   "comment": "CPathFind slot 0, apparently the cost of one step (edge distance scaled by a controller/intel constant); __thiscall that never reads ecx, ret 0x14. Its effect on routes is unconfirmed. CPathFind slot 0 (same function as RVA 0x1A2A00).",
+   "signature": "CFixedPoint* __thiscall CPathFind::StepCost(CPathFind* this, CFixedPoint* out, CProvinceTemplate* from, int edge, CMap* map, CUnit* unit)",
+   "no_signature": null,
+   "comment": "CPathFind slot 0: the cost of stepping out of `from` along its edge number `edge`. **The name is right and the receiver is in ECX.** The body belongs to CPathFind - vtable.py --holding puts it at slot 0 of CPathFind, CSafePathFind, CVerySafePathFind and CPlannedPathFind, which inherit it, while CSafeNavalPathFind overrides it at 0x1A2E00 - and CPathFind::Find loads ECX with the finder at every one of its four dispatch sites (0x1A12E5, 0x1A1390, 0x1A143A, 0x1A145C). The body never reads ECX because these finders are four-byte objects holding nothing but a vftable pointer; that is a `this` that is not needed, not a missing argument. `ret 0x14` accounts for the five stack arguments exactly.\n\nThe cost is `from->edges_begin[edge].distance`, in thousandths. Then, if the country controlling `map->provinces[from->edges_begin[edge].to_province]` is hostile to the unit's owner - the tag test at rva 0x2F1B0 - it is scaled by 1100/1000, or by 2000/1000 when that province's intel byte for the owner (CProvince +0x370, bounds-checked against +0x374) is 2 or more **and** units are standing in it (+0x2C0). The two constants are the floats at 0x160A5F0 (1100.5) and 0x160A5F4 (2000.5), truncated to int. Returns `out` in EAX, MSVC's struct return.",
    "confidence": "inferred",
-   "source": "BiceLib/GameClasses/CPathFind.hpp:77; reversing/FINDINGS-redeploy.md:34"
+   "source": "reversing/FINDINGS-redeploy.md"
   },
   {
    "rva": "0x1A2AE0",
    "kind": "function",
    "name": "CSafePathFind::MayStep",
-   "signature": null,
-   "comment": "CSafePathFind slot 2; calls the base and refuses more.",
+   "signature": "bool __thiscall CSafePathFind::MayStep(CSafePathFind* this, CUnit* unit, CProvince* goal, CProvince* from, CProvince* to, ProvinceEdge* edge)",
+   "no_signature": null,
+   "comment": "CSafePathFind slot 2. Forwards all five arguments unchanged to CPathFind::MayStep (0x5A2AFB-0x5A2B00, no ECX set, callee cleans) and refuses on top of it. Allows the step outright when `to` is the goal - the last step into the destination is exempt. Otherwise it weighs the destination: when the unit's slot 16 or 17 answers true it takes rva 0x1D6900 over `to`'s unit list with the unit's owner tag and multiplies by 1000; when neither does it walks that list itself and adds rva 0x1C3120's value for each unit there whose owner is hostile (rva 0x2F1B0), skipping a `REB` owner when the province's owner tag id (CProvince +0x330) is the unit's own. Either way it refuses when that total is greater than the sum of +0x5C over the unit's own list at CUnit +0xB8.",
    "confidence": "inferred",
-   "source": "reversing/FINDINGS-redeploy.md:35"
+   "source": "reversing/FINDINGS-redeploy.md"
   },
   {
    "rva": "0x1A2C40",
    "kind": "function",
    "name": "CVerySafePathFind::MayStep",
-   "signature": null,
-   "comment": "CVerySafePathFind slot 2; calls the base and refuses more.",
+   "signature": "bool __thiscall CVerySafePathFind::MayStep(CVerySafePathFind* this, CUnit* unit, CProvince* goal, CProvince* from, CProvince* to, ProvinceEdge* edge)",
+   "no_signature": null,
+   "comment": "CVerySafePathFind slot 2, the same shape as CSafePathFind's: forwards all five arguments to CPathFind::MayStep (0x5A2C5B-0x5A2C60), exempts the last step into the goal, and refuses otherwise. It differs in what it does when the unit's slot 16 and slot 17 both say nothing - where the safe one still weighs the units in the destination, this one refuses as soon as the destination's controller is hostile (rva 0x2F1B0) or rva 0xA6010 objects to the province. When either slot does answer it compares rva 0x1D6900 over the destination's unit list (x1000) against the sum of +0x5C over CUnit +0xB8, exactly as the safe one does.",
    "confidence": "inferred",
-   "source": "reversing/FINDINGS-redeploy.md:36"
+   "source": "reversing/FINDINGS-redeploy.md"
   },
   {
    "rva": "0x1A2D20",
    "kind": "function",
    "name": "CPlannedPathFind::MayUse",
-   "signature": null,
-   "comment": "CPlannedPathFind slot 1 (mov al,1).",
+   "signature": "bool __thiscall CPlannedPathFind::MayUse(CPlannedPathFind* this, CUnit* unit, CProvince* from, CProvince* to)",
+   "no_signature": null,
+   "comment": "CPlannedPathFind slot 1, two instructions: `mov al,1; ret 0xC`. It always allows the finder to run, whatever the unit and the two provinces are, which is what a planning finder wants - the base refuses outright for units whose slot 34 turns the destination down. The body is in CPlannedPathFind's table only, so it is not one the linker folded.",
    "confidence": "inferred",
-   "source": "reversing/FINDINGS-redeploy.md:37"
+   "source": "reversing/FINDINGS-redeploy.md"
   },
   {
    "rva": "0x1A2D30",
    "kind": "function",
    "name": "CPlannedPathFind::MayStep",
-   "signature": null,
-   "comment": "CPlannedPathFind slot 2.",
+   "signature": "bool __thiscall CPlannedPathFind::MayStep(CPlannedPathFind* this, CUnit* unit, CProvince* goal, CProvince* from, CProvince* to, ProvinceEdge* edge)",
+   "no_signature": null,
+   "comment": "CPlannedPathFind slot 2, and the only override that does **not** call the base. It keeps the base's first tests and drops everything after them: refuses a kind-3 edge and `from == to`, applies the same template rule (the byte at template +0x22 may not be set on both, and where it is set on one, that template's +0xA4 must be the other province's id), and asks the unit's slot 16 (+0x40), slot 15 (+0x3C) and slot 34 (+0x88, with `to`). No supply, fuel, intel or relation test - a plan is drawn without them.",
    "confidence": "inferred",
-   "source": "reversing/FINDINGS-redeploy.md:37"
+   "source": "reversing/FINDINGS-redeploy.md"
   },
   {
    "rva": "0x1A2E00",
    "kind": "function",
    "name": "CSafeNavalPathFind::StepCost",
-   "signature": null,
-   "comment": "CSafeNavalPathFind slot 0; calls the base cost and adds to it.",
+   "signature": "CFixedPoint* __thiscall CSafeNavalPathFind::StepCost(CSafeNavalPathFind* this, CFixedPoint* out, CProvinceTemplate* from, int edge, CMap* map, CUnit* unit)",
+   "no_signature": null,
+   "comment": "CSafeNavalPathFind slot 0: the base cost, then a multiplier for what is on the shore. Forwards all five arguments to CPathFind::StepCost (0x5A2E30-0x5A2E35, no ECX set), then takes the edge's destination `from->edges_begin[edge].to_province`, makes sure the CCurrentGameState exists (creating it if not - 0xDA8 bytes, CGameState::CGameState, vftable 0x15CF674), and walks that province's own template edges. For each neighbour whose controller is hostile to the unit's owner by the relation record at country +0xE28 (+0x20 set), it multiplies the cost by 3000/1000 once if the neighbour's **CProvince +0x300, unnamed** has a level above zero and once if **+0x304, unnamed** does - two specific buildings, which the province's building array at +0x310 would name. The loop stops once both multipliers have been applied, and is skipped entirely when the destination's template flag +0x22 is set. Returns `out` in EAX.",
    "confidence": "inferred",
-   "source": "reversing/FINDINGS-redeploy.md:38"
+   "source": "reversing/FINDINGS-redeploy.md"
   },
   {
    "rva": "0x1A3280",
@@ -3042,11 +3072,11 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
-   "rva": "0x1AFE90",
+   "rva": "0x5AFE90",
    "kind": "function",
    "name": "CRandomListEffect::LoadKey",
    "signature": "void __thiscall CRandomListEffect::LoadKey(CRandomListEffect* this, CParseContext* parse, SaveToken key)",
-   "comment": "Its keys are the **weights** of a `random_list` - a bare integer per entry, which is why the only token it names is the parser's `tok_int`.",
+   "comment": "Its keys are the **weights** of a `random_list` - a bare integer per entry, which is why the only token it names is the parser's `tok_int` (0xC).",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
   },
@@ -3718,7 +3748,7 @@
    "rva": "0x1FCC10",
    "kind": "function",
    "name": "CHistoryContainer::LoadKey",
-   "signature": "void __thiscall CHistoryContainer::LoadKey(CHistoryContainer* this, CParseContext* parse)",
+   "signature": "void __thiscall CHistoryContainer::LoadKey(CHistoryContainer* this, CParseContext* parse, SaveToken key)",
    "comment": "**Only the dates.** The loader `CCountryHistory` and `CProvinceHistory` share: if the key is not a date it goes straight to **vftable slot 9**, the derived class's entry handler; if it is, the date is parsed and every key/value pair in the block that follows goes to slot 9 instead. So a dated block is nothing but a way of postponing the one grammar, which is why anything valid at the top of a country file is valid inside one. **Ghidra's analysis does not find this function** - only a vftable reaches it.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountryHistory.hpp"
@@ -3750,7 +3780,7 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
-   "rva": "0x20E2A0",
+   "rva": "0x60E2A0",
    "kind": "function",
    "name": "CDiplomaticActionCommand::LoadKey",
    "signature": "void __thiscall CDiplomaticActionCommand::LoadKey(CDiplomaticActionCommand* this, CParseContext* parse, SaveToken key)",
@@ -3804,22 +3834,14 @@
    "source": "reversing/FINDINGS-mapmode.md:235"
   },
   {
-   "rva": "0x2464E0",
+   "rva": "0x6646E0",
    "kind": "function",
    "name": "LogRecord::LogRecord",
-   "signature": "void* __cdecl LogRecord::LogRecord(void* record, void* sink, const char* file, int line, int channel)",
-   "comment": "Builds the object one log line is assembled in: the sink at `+0x50`, the source file as an Hoi3CString at `+0x54`, the **line at `+0x70`** and the **channel at `+0x74`**, with the message accumulated into the stream part by `operator<<`. `ret 0x14`.",
+   "signature": "LogRecord* __stdcall LogRecord::LogRecord(LogRecord* record, LogSink* sink, Hoi3CString* file, int line, int channel)",
+   "no_signature": null,
+   "comment": "Builds the object one log line is assembled in. In order: the vbtable pointer `0x15FCE98` at `+0`, the `ios_base` vftable `0x15A7B9C` at `+0x78`, `std::ostringstream::ostringstream(record, 2 /*ios::out*/, 0)` at `0x65BBA0` for the stream half, the `basic_ios` vftable `0x15FCE94` written through the vbtable, then **the sink at `+0x50`**, **the source file at `+0x54`** (an `Hoi3CString`, filled by `std::string::assignString(record+0x54, file, 0, -1)`), **the line at `+0x70`** and **the channel at `+0x74`**. The message is accumulated into the stream part afterwards by `operator<<`. `ret 0x14`; the record comes back in eax. Reached from `LogRecord::Make` through `LogRecord::Construct` (`0x6649D0`), which is what supplies the five stack arguments.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
-  },
-  {
-   "rva": "0x2465D0",
-   "kind": "function",
-   "name": "CRelation::LoadKey",
-   "signature": "void __thiscall CRelation::LoadKey(CRelation* this, CParseContext* parse, SaveToken key)",
-   "comment": "Five keys: `first` and `second`, each a country tag looked up in the country database and stored as a tag/id pair at `this +8` and `this +0x10`; then `start_date`, `end_date` and `cancel`. Nine classes inherit it, so this is the shape of every standing agreement in a save.",
-   "confidence": "confirmed",
-   "source": "reversing/FINDINGS-definitions.md"
   },
   {
    "rva": "0x24FF80",
@@ -4074,22 +4096,22 @@
    "source": "reversing/FINDINGS-autosave.md:129"
   },
   {
-   "rva": "0x27C3B0",
+   "rva": "0x67C3B0",
    "kind": "function",
-   "name": "CColor::LoadKey",
-   "signature": "void __thiscall CColor::LoadKey(CColor* this, CParseContext* parse, SaveToken key)",
-   "comment": "**It has no keys at all** - the whole body is a tail call to ReportUnknownKey. A colour is three numbers in a row, `color = { 139 90 43 }`, read positionally by the block loader rather than by key. Seventy-four classes inherit this, so \"no keys\" is the answer for all of them.",
+   "name": "LoadKey_ReportUnknown",
+   "signature": "void __stdcall LoadKey_ReportUnknown(void* this@ECX, CParseContext* parse, SaveToken key)",
+   "comment": "A tail call to ReportUnknownKey and nothing else: the LoadKey a class gets when it has no keys of its own to try. The linker folded it across 75 unrelated classes - CColor among them, which is why it was recorded as CColor::LoadKey - so it belongs to none of them. **It has no keys at all** - the whole body is a tail call to ReportUnknownKey. A colour is three numbers in a row, `color = { 139 90 43 }`, read positionally by the block loader rather than by key. **The body is shared by 75 unrelated classes**, so \"no keys\" is the answer for all of them and the body is not CColor's property.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x27D070",
    "kind": "function",
-   "name": "CCurrentGameState::CCurrentGameState",
+   "name": "CGameState::CGameState",
    "signature": null,
-   "comment": "CCurrentGameState constructor (object 0xDA8 bytes). CCurrentGameState constructor as written in CLASSES.md (the header gives 0x27D070).",
+   "comment": "Base constructor: it writes CGameState's own vftable (rva 0x11CF624) at +0. Called from the inlined CCurrentGameState constructor at all 2773 sites, each of which then writes CCurrentGameState's vftable (rva 0x11CF674) and zeroes the derived fields +0xD9C, +0xDA0 and in_game at +0xDA4 - so CCurrentGameState has no standalone constructor to name. This entry read CCurrentGameState::CCurrentGameState until the wave of 2026-09-23; it was marked confirmed on the strength of CLASSES.md rather than the image.",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CCurrentGameState.hpp:9; reversing/CLASSES.md:39"
+   "source": "reversing/FINDINGS-manpower.md"
   },
   {
    "rva": "0x27FCB0",
@@ -4128,20 +4150,20 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
-   "rva": "0x291440",
+   "rva": "0x691440",
    "kind": "function",
    "name": "CEU3Application::LoadKey",
    "signature": "void __thiscall CEU3Application::LoadKey(CEU3Application* this, CParseContext* parse, SaveToken key)",
-   "comment": "One key, `name` - the application settings file.",
+   "comment": "One key, `name` - the application settings file. Token 0x1A, read by ParseString into `this + 0x8C`.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
-   "rva": "0x29A510",
+   "rva": "0x69A510",
    "kind": "function",
-   "name": "CQuit::LoadKey",
-   "signature": "void __thiscall CQuit::LoadKey(CQuit* this, CParseContext* parse, SaveToken key)",
-   "comment": "It compares the key's **text** rather than its token, which is why the switch reader finds nothing. Five classes inherit it.",
+   "name": "LoadKey_CommandThunk",
+   "signature": "void __stdcall LoadKey_CommandThunk(void* this@ECX, CParseContext* parse, SaveToken key)",
+   "comment": "Four instructions into the already-named CCommand::LoadKey. Five sibling commands share this one body - CClearBookmark, CLobbyStartGame, CQuit, CReopenLobby and CStartGame - so CQuit, which it was recorded as, was an arbitrary pick among them. A four-instruction frame-only thunk that tail jumps into `CCommand::LoadKey` (`0x67BC80`), which is what compares the key's **text** rather than its token - that is why the switch reader finds nothing. The body is shared by five sibling command classes: CClearBookmark, CLobbyStartGame, CQuit, CReopenLobby and CStartGame.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
   },
@@ -4491,7 +4513,7 @@
    "rva": "0x48D560",
    "kind": "function",
    "name": "AnnounceLoadedUnitsToScreen",
-   "signature": "void __cdecl AnnounceLoadedUnitsToScreen(void* owner, char flag)",
+   "signature": "void __stdcall AnnounceLoadedUnitsToScreen(void* owner, char flag)",
    "comment": "**Tells the interface about a country's units**, which is the last thing CLoadOOBEffect::Execute does - and only when a scenario is running and the country is the **player's own**, so it is presentation rather than game state. It takes the thing at `CCountry + 0x1D8`, whose CCountryTag at `+0x20` gives it the country, walks that country's `units`, and for each one that passes a virtual test builds a 0x64 byte object and hands it to a virtual on `CCurrentGameState::in_game_screen`. **What `CCountry + 0x1D8` is has not been established**, nor which alert this raises. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
@@ -5149,20 +5171,22 @@
   {
    "rva": "0x65B0D0",
    "kind": "function",
-   "name": "TextBuilder::Append",
-   "signature": "Hoi3CString* __thiscall TextBuilder::Append(void* this@ECX, Hoi3CString* out@ESI, Hoi3CString* text@stack:4) @EAX",
-   "comment": "Adds one more string to a run started by TextBuilder::Begin and answers the builder again. Like the rest of this machinery it takes a second pointer in **esi**, the string it builds into. `ret 4`. The name is BiceLib's.",
+   "name": "std::string::operatorPlus",
+   "signature": "Hoi3CString* __thiscall std::string::operatorPlus(Hoi3CString* this, Hoi3CString* out@ESI, Hoi3CString* right@stack:4) @EAX",
+   "no_signature": null,
+   "comment": "**`std::operator+(const std::string&, const std::string&)`, in its named-return-value form** - previously recorded as `TextBuilder::Append`. There is no TextBuilder: `ecx` is the left-hand string, not a builder object. It calls `std::string::concat` (`0x65CC70`) into a local temporary, tidies `out` (the NRV slot, in esi) to empty and `assignString`s the temporary into it, frees the temporary's heap buffer when its capacity reached 0x10, and answers `out` in eax. `ret 4`.\n\nCall sites chain it exactly the way `a + b + c` compiles: `std::string::operatorPlusChars` produces the first temporary in eax, that becomes this function's `ecx`, and a fresh stack slot is handed in esi for the result (0x40D70E-0x40D726). The `\\xa7Y...\\xa7W` colour runs the old name described are just one of the things callers happen to concatenate.",
    "confidence": "confirmed",
-   "source": "reversing/FINDINGS-effecttext.md"
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x65B150",
    "kind": "function",
-   "name": "TextBuilder::Begin",
-   "signature": "void* __cdecl TextBuilder::Begin(void* this@ECX, char* colour@EDX, Hoi3CString* text@stack:4) @EAX",
-   "comment": "Starts the \"\\xa7Y<something>\\xa7W\" run a tooltip colours a name with: the colour code in edx as a plain char*, the string to follow it pushed, the builder in ecx, and the builder back in eax so the next piece can be chained onto it. **The caller cleans the stack** (`ret` with no operand, and an `add esp, 4` at the call site), which is why this is written as cdecl with the registers spelled out rather than as fastcall. The name is BiceLib's.",
+   "name": "std::string::operatorPlusChars",
+   "signature": "Hoi3CString* __cdecl std::string::operatorPlusChars(Hoi3CString* out@ECX, const char* left@EDX, Hoi3CString* right@stack:4) @EAX",
+   "no_signature": null,
+   "comment": "**`std::operator+(const char*, const std::string&)`** - previously recorded as `TextBuilder::Begin`. There is no TextBuilder: `ecx` is the string the result is built into (the named-return-value slot), `edx` is the literal on the left, and the string on the right is pushed. It inlines `strlen` on `edx`, builds a local Hoi3CString from it with `std::string::assign` (`0xA160`), calls `std::string::operatorPlus` (`0x65B0D0`) with that temporary as the left operand and `out` still in esi, frees the temporary and answers `out` in eax. **The caller cleans the stack** (bare `ret`, `add esp, 4` at the call site), which is why this is written as cdecl with the registers spelled out rather than as fastcall.\n\nThis is the head of every `\"literal\" + str + ...` chain in the game, including the `\"\\xa7Y\" + name + \"\\xa7W\"` colour runs the old name was taken from and the `\"File exception: \" + what()` at 0x404723.",
    "confidence": "confirmed",
-   "source": "reversing/FINDINGS-effecttext.md"
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x6628B0",
@@ -5312,7 +5336,7 @@
    "rva": "0x67AFB0",
    "kind": "function",
    "name": "ParseString",
-   "signature": "void __cdecl ParseString(CParseContext* parse@ECX, Hoi3CString* out)",
+   "signature": "void __stdcall ParseString(CParseContext* parse@ECX, Hoi3CString* out, int unknown)",
    "comment": "Reads a quoted or bare string into an Hoi3CString - CCasusBelliType's `war_name`, `country_desc` and `prov_desc` all go through it. The register is **inferred**.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
@@ -5321,8 +5345,8 @@
    "rva": "0x67B250",
    "kind": "function",
    "name": "ParseObjectId",
-   "signature": "void __cdecl ParseObjectId(CParseContext* parse, int* pair)",
-   "comment": "Reads the `{ type = N id = N }` pair the save writes for an object reference, into two ints. CReferenceObject::LoadKey calls it with `this + 8` for its `id` key, which is why CMinister keeps `id_type` at 0x8 and `id` at 0xC.",
+   "signature": "void __stdcall ParseObjectId(CParseContext* parse, int* pair)",
+   "comment": "Reads the `{ type = N id = N }` pair the save writes for an object reference, into two ints. CReferenceObject::LoadKey calls it with `this + 8` for its `id` key, which is why CMinister keeps `id_type` at 0x8 and `id` at 0xC. It ends `ret 8` at rva 0x67B406, so it cleans its own two stack arguments: this read __cdecl until the wave of 2026-09-23, and ParseObjectReference's stack arithmetic only closes as __stdcall.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
   },
@@ -5348,7 +5372,7 @@
    "rva": "0x67B8D0",
    "kind": "function",
    "name": "ParsePoint",
-   "signature": "void __cdecl ParsePoint(CParseContext* parse@EAX, void* out)",
+   "signature": "void __stdcall ParsePoint(CParseContext* parse@EAX, void* out)",
    "comment": "Reads an `{ x = .. y = .. }` block. Checks the value is a block (`[parse +0x1C] +0xC == 3`) and reports a parse error if not. CAlignment's only key, `position`, is one of these. The register is **inferred**.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
@@ -5357,8 +5381,9 @@
    "rva": "0x67BAF0",
    "kind": "function",
    "name": "CParseContext::FreeMessages",
-   "signature": "void __cdecl CParseContext::FreeMessages(void* list)",
-   "comment": "Walks the message list freeing each node and its two strings, then clears first, last and count. The destructor calls it, and **nothing is logged on the way out** - which is why the mod's `common/` files never produce a line however many unknown keys they carry.",
+   "signature": "void __stdcall CParseContext::FreeMessages(CParseContextMessageList* messages)",
+   "no_signature": null,
+   "comment": "Walks the message list freeing each node and its two strings, then clears first, last and count. The destructor calls it, and **nothing is logged on the way out** - which is why the mod's `common/` files never produce a line however many unknown keys they carry.\n\n**It has no receiver anywhere.** ECX is dead at entry - the first instruction is `mov eax,[ebp+8]` - and dead at the call: CParseContext::~CParseContext (0x67A630) passes `this+4` on the stack having clobbered ECX in a `free` two instructions earlier, and `ret 4` cleans that one argument. So it is a free helper over the list head, not a member with its receiver in a register. The list itself **is** a CParseContext field: the destructor's argument is `this+4` and the site at 0x67C354 passes `[ebp+8]+4` of a CParseContext it is handed, so the head is messages_first/messages_last/messages_count at CParseContext +4/+8/+0xC. A node is two Hoi3CStrings, at +0 and +0x20, with the next pointer at +0x40 - not a LinkedListNode, which is why the parameter is typed for this list rather than as CList*.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
   },
@@ -6694,8 +6719,8 @@
    "rva": "0x11BA60",
    "kind": "function",
    "name": "CDistributeReinforcement::Distribute",
-   "signature": "void* __thiscall CDistributeReinforcement::Distribute(CDistributeReinforcement* this, void* result)",
-   "comment": "**Slot 0 of its virtual table, and where the manpower tooltip's two numbers come from.** The class derives from `CDistributionSetting`, so this is the reinforcement slider spending what it has been allocated; every sibling distributor - supply, upgrade, production, research - has its own body at the same slot.\n\nIt zeroes `CCountry +0xA98`, `+0xA9C` and `+0xAA0`, then walks the country's units and every subunit under each, and rebuilds all three from nothing. `this + 0x18` is the country throughout.",
+   "signature": "CFixedPoint* __thiscall CDistributeReinforcement::Distribute(CDistributeReinforcement* this, CFixedPoint* result@stack:4, __int64 available@stack:8, bool flag@stack:16)",
+   "comment": "**Slot 0 of its virtual table, and where the manpower tooltip's two numbers come from.** The class derives from `CDistributionSetting`, so this is the reinforcement slider spending what it has been allocated; every sibling distributor - supply, upgrade, production, research, consumer goods, lend lease, NCO, diplomacy, espionage - has its own body at the same slot.\n\nIt zeroes `CCountry +0xA98`, `+0xA9C` and `+0xAA0`, then walks the country's units and every subunit under each, and rebuilds all three from nothing. `this + 0x18` is the country throughout.\n\n**The stack arguments are three, not one**, which is why the recorded signature wanted ret 4 and the function does ret 16: a hidden return pointer at [ebp+8] for the eight-byte fixed point it answers, the amount it has been given as a 64-bit `fpml::fixed_point<__int64,48,15>` split across [ebp+0xC] and [ebp+0x10], and a byte flag at [ebp+0x14]. This body ignores the flag; the consumer-goods (0x118C50) and production (0x119D10) bodies read it and skip their last step when it is set. `__int64` is written for the middle argument only so the arithmetic sizes - it is the same fixed point type as the return.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-manpower.md"
   },
@@ -6847,7 +6872,7 @@
    "rva": "0x1CFBD0",
    "kind": "function",
    "name": "CheckTransportOverload",
-   "signature": "void __cdecl CheckTransportOverload(CNavy* fleet)",
+   "signature": "void __stdcall CheckTransportOverload(CNavy* fleet)",
    "comment": "**Whether a fleet is carrying more than it can.** The last thing `CUnit::UpdateDaily` does, for naval units only - it downcasts through slot 11 and calls this.\\n\\n    carried = sum of transport_weight over fleet->carrying\\n    if (carried > fleet->definition->transport_capacity / 1000) ...\\n\\nBoth halves are read off `CSubUnitDefinition`: `weight` at `+0x10C`, which the unit files call `transport_weight`, and `transport_capacity` at `+0x144`.\\n\\n**It throws cargo overboard until the load fits**, re-measuring each time round:\n\n    do\n        for each unit in fleet->carrying\n            if (its province's info byte +0x22 is set)\n                RemoveFromTransport(...); unit->EnterProvince(province)\n            else\n                RemoveRegimentFromUnit(its first regiment); delete it\n                if that was its last, post {unit->type, unit->id} to the game\n                    state's message ring at +0xBF8\n    while (carried weight > capacity)\n\nSo a unit that **can** be put ashore is put ashore, and one that cannot is taken apart a regiment at a time. Which is which turns on a byte of the province's info object at `+0x22` - 246 places in the image read it, so it is something fundamental, but nothing here says which way round it means land.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-manpower.md"
@@ -6896,6 +6921,567 @@
    "comment": "Puts a unit into a province: it writes `current_province_ptr` (`+0x130`) at `0x1BF4D3`.\\n\\n**Only that much was read.** The function is over 2.5KB and does a great deal besides - it reads the province's path node in half a dozen places - so the name is what it is *for* at the one call site traced here, not a full account of it. The convention is read off that call site: `ecx` is the unit and the province is pushed.",
    "confidence": "inferred",
    "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0xA0990",
+   "kind": "function",
+   "name": "GetProvinceAttrition",
+   "signature": null,
+   "comment": "**The only reader of the `attrition` modifier off a province's own modifier** (`[province + 0xFC + 0x18]`, entry 7, read at `0xA09CD`). `ApplyAttrition` calls it once per subunit at `0x1C75AE` and scales the result by a global and by the subunit's maximum strength.\n\nThree callers in all: `0xA19BF`, `0x1C75AE` and `0x3593E3`.\n\n**No signature recorded** - what it takes beyond the province, and how, was not read.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x799980",
+   "kind": "function",
+   "name": "__alldiv",
+   "signature": "__int64 __stdcall __alldiv(__int64 dividend, __int64 divisor)",
+   "comment": "MSVC CRT signed 64-bit divide (lldiv.asm). Dividend at [esp+4..0xB], divisor at [esp+0xC..0x13]; result in edx:eax; callee cleans 16 bytes (ret 0x10). Truncates toward zero, NOT floor: it takes the absolute value of both operands, divides unsigned, and negates the quotient only if exactly one operand was negative (edi counts the negations at 0xB9998D and 0xB999A9, and 0xB99A1A negates when edi==1). 2032 direct call sites. This is the helper every 'x * 1000 / y' in the game goes through - the thousandths fixed point multiplies into a 64-bit intermediate to avoid overflow and then divides here.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x799AF0",
+   "kind": "function",
+   "name": "__allmul",
+   "signature": "__int64 __stdcall __allmul(__int64 a, __int64 b)",
+   "comment": "MSVC CRT 64-bit multiply (llmul.asm). a at [esp+4..0xB], b at [esp+0xC..0x13]; result in edx:eax; callee cleans 16 bytes (ret 0x10). Sign-agnostic: the low 64 bits of the product are the same for signed and unsigned operands, so MSVC emits this one body for both, and the sign lives at the CALL SITE - a 'cdq' before the push means the 32-bit operand was signed, a 'xor edx,edx' means it was not. Fast path when both high words are zero (0xB99B00, a single mul), otherwise the three partial products AHI*BLO + ALO*BHI + ALO*BLO. 1144 direct call sites.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x25D126",
+   "kind": "instruction",
+   "name": "EnterGame_SetInGame",
+   "signature": null,
+   "comment": "**The only instruction in the executable that writes `CCurrentGameState +0xDA4` a nonzero value**: `mov byte ptr [ecx + 0xDA4], 1`, with `ecx` loaded from `g_CCurrentGameState` two instructions earlier.\n\nIt sits near the end of `CInGameIdler::Enter` (`0x25A2B0`), after the session has been built - the log lines above it are `Countries initialized<`, `provinces initialised<`, `information caches setup<`, `supply logic defined<`, ` processed weather <`, ` processed intel setup <` - and before the in-game GUI is built (`menubar`, `chat_list`, `mapmode_1`..`mapmode_10`).\n\nUnconditional on its path: the block at `0x25D120` is the join of the inlined get-or-create of the game state, entered from `0x25D082(taken)`, `0x25D114(taken)` and `0x25D11E(flow)`, and the block above it at `0x25D075` is reached from all three arms of the camera setup. **So the attrition gate opens in every game**, which is what the live tooltip measurement already showed.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x25A2B0",
+   "kind": "function",
+   "name": "CInGameIdler::Enter",
+   "signature": "void __thiscall CInGameIdler::Enter(void)",
+   "comment": "Slot 3 of `CInGameIdler`'s virtual table, and the whole of entering a running game: it looks up the `unitlist_start` / `unitlist_offset` gui types (`Missing unitlist_start or unitlist_offset gui type.`), runs `LOAD_GFX`, `LOAD_EVENTS` and `ADAPTING_HISTORY`, logs the six `eu3idler.cpp` setup stages, **sets `gamestate->in_game` at `0x25D126`**, then builds the in-game interface.\n\n`CFrontEnd` overrides the same slot at `0x2EEF00`, where it logs `entering frontend...` and **clears** the same byte at `0x2EFE58` - which is what makes slot 3 the screen's enter hook rather than anything more specific.\n\nSpans `0x25A2B0`..`0x261BB8`, about 0x7900 bytes, which is why `image.functionStart`'s default 0x2500 limit reports `?` for the write inside it.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x262060",
+   "kind": "function",
+   "name": "CInGameIdler::Leave",
+   "signature": "void __thiscall CInGameIdler::Leave(void)",
+   "comment": "Slot 4 of `CInGameIdler`'s virtual table, the counterpart to slot 3: it frees the idler's lists and then **clears `gamestate->in_game` at `0x262337`**. `CFrontEnd` overrides the same slot at `0x2F0140`.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x262337",
+   "kind": "instruction",
+   "name": "LeaveGame_ClearInGame",
+   "signature": null,
+   "comment": "`mov byte ptr [eax + 0xDA4], 0` in `CInGameIdler::Leave`, with `eax` the game state just stored back into `g_CCurrentGameState` at `0x262325`. The counterpart to `EnterGame_SetInGame`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x2EFE58",
+   "kind": "instruction",
+   "name": "FrontEnd_Enter_ClearInGame",
+   "signature": null,
+   "comment": "`mov byte ptr [eax + 0xDA4], bl` in `CFrontEnd`'s slot 3 (`0x2EEF00`, the function that logs `entering frontend...`), with `eax` the game state stored into `g_CCurrentGameState` at `0x2EFE40`. Returning to the main menu closes the gate again.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1EC150",
+   "kind": "function",
+   "name": "ParseObjectReference",
+   "signature": "void __cdecl ParseObjectReference(CParseContext* parse@ECX, void* reference@ESI)",
+   "comment": "**Reads the `{ type = N id = N }` block a save writes for an object reference into the 0x28-byte reference a command keeps.** It calls `ParseObjectId` (0x67B250) for the pair and then fills the reference: `+0` the cached object pointer, set to 0 because the block names no object yet; `+4` type; `+8` id; `+0xC` an `Hoi3CString` assigned from the parse context's own name at `+0x32C`. It takes no stack argument - the parse context arrives in ECX and the reference in ESI (`mov ecx,[ebp+8]` and `lea esi,[this+0x3C]` at the call site, a bare `ret` here), the same register-argument style as the rest of the loader primitives. 61 call sites, every one of them a command's `LoadKey` case for a key whose value is an object: `unit` is token 0x256 and `parent` 0x84, and a command keeps one such reference per key at `+0x3C`, `+0x64` and so on, 0x28 apart. **It stores nothing when the parse context's error handler at `+0x35C` has latched** - handler non-null and both its bytes at `+4` and `+5` set jumps straight to the epilogue and leaves the reference as it was, although `ParseObjectId` has already consumed the tokens. The mirror image is the command's `SaveContents`, e.g. `CMoveCommand`'s at 0x1D9160: `SaveWriteKey(0x256)` then the pair out of `+0x40` and `+0x44` - the string at `+0x4C` is never written to the save. The same reference is built from a live object by 0x2DD70 (unnamed): type from `CUnit +0x10`, id from `+0x14`, the string from the object's `+0x1C`, and the object pointer cached at `+0`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x7964D4",
+   "kind": "function",
+   "name": "sscanf",
+   "signature": "int __cdecl sscanf(const char* buffer, const char* format, ...)",
+   "comment": "MSVC CRT `sscanf`, statically linked. The body is only the public wrapper: it loads the buffer into esi and calls the file-scope helper at 0x796466 with (INPUTFN=_input_l 0x7A1379, format, locale=NULL, va_list=&arg3), which builds a FILE on its own stack over the string (_flag=0x49 = _IOREAD|_IOMYBUF|_IOSTRG, _ptr=_base=buffer, _cnt=min(strlen(buffer), INT_MAX)) and runs the scan engine over it. **This is the single most-called unnamed function in the image, 168 direct call sites**, and it is how every loader turns a lexed token into a number: 152 of those sites push exactly three arguments and clean 0xc, with the middle one a literal format - `%i` 102 times, `%f` 28, `%u` 18, `%c` 8, and one each of `%x`, `%lld` and `%d.%d.%d.%d` - and the return is tested against zero, which is sscanf's count of fields assigned. The string argument is almost always `parse + 0x22C`, the lexer's current token text.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x796466",
+   "kind": "function",
+   "name": "v_sscanf_l",
+   "signature": null,
+   "comment": "The static helper behind sscanf, CRT source `v_sscanf_l`. Rejects a null string or a null format with errno=EINVAL (0x16) and _invalid_parameter_noinfo, then fakes a FILE on its stack over the string - _flag 0x49, _ptr=_base=string, _cnt=min(strlen(string), INT_MAX) - and tail-calls the INPUTFN it was handed. Exactly one caller, sscanf at 0x7964D4.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x7A1379",
+   "kind": "function",
+   "name": "_input_l",
+   "signature": "int __cdecl _input_l(FILE* stream, const char* format, _locale_t locale, va_list arglist)",
+   "comment": "The CRT's scanf engine - the format walker shared by every scanf-family entry point. 0x200 bytes of stack frame, /GS cookie, and the format loop compares against '%' , '*' and the length modifiers. Referenced exactly once in the whole image, as the INPUTFN constant sscanf hands to its helper, so in this binary it is reached only through sscanf.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x79C9F0",
+   "kind": "function",
+   "name": "strlen",
+   "signature": "size_t __cdecl strlen(const char* s)",
+   "comment": "MSVC's hand-written strlen - byte loop to a dword boundary, then the 0x7EFEFEFF / 0x81010100 zero-byte-in-a-word trick. Called by the sscanf helper to size the fake FILE's _cnt.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x7969F1",
+   "kind": "function",
+   "name": "atoi",
+   "signature": "int __cdecl atoi(const char* nptr)",
+   "comment": "`(int)strtol(nptr, NULL, 10)`. **291 direct call sites, the second most-called unnamed function in the image**, and the other half of how a loader reads a number: where sscanf is used for a value that must be validated, atoi is used where a bad token can silently read as 0. The body here is a four-byte alias - `mov edi,edi; push ebp; mov ebp,esp; pop ebp; jmp 0x7969DB` - because the linker folded two source functions with identical code, keeping one body and one thunk; 0x7969DB is that body.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x7969DB",
+   "kind": "function",
+   "name": "atol",
+   "signature": "long __cdecl atol(const char* nptr)",
+   "comment": "`strtol(nptr, NULL, 10)` - the body that atoi at 0x7969F1 jumps into, and separately the target of 8 direct calls of its own.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x7A2D44",
+   "kind": "function",
+   "name": "strtol",
+   "signature": "long __cdecl strtol(const char* nptr, char** endptr, int base)",
+   "comment": "CRT `strtol`: forwards to the shared signed/unsigned converter at 0x7A2B19 as strtoxl(locale, nptr, endptr, base, flags=0), passing the process locale (0x16F5A14) while the locale-changed flag at 0x174CBF4 is still zero. Reached from atoi/atol; the sibling wrapper at 0x7A300C passes the same shape to a different, 64-bit body (0x7A2D6F) and is the _strtoi64 of the pair.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x1BB950",
+   "kind": "function",
+   "name": "CUnit::ConsumeSuppliesAndFuel",
+   "signature": "void __stdcall ConsumeSuppliesAndFuel(CUnit* unit)",
+   "comment": "The daily supply and fuel draw for one unit. Asks CUnit::SupplyConsumption (0x1BB560) and CUnit::FuelConsumption (0x1BB7A0) what the unit wants, takes what it can get, and writes CUnit::supply_received_percentage (+0xFC) and CUnit::fuel_received_percentage (+0x100) as taken*1000/wanted (1000 when fully supplied, -1 when nothing was wanted, 0 when nothing was available). The country it bills is the expeditionary_owner (+0x28C) where CUnit +0x290 is set, the owner (+0x124) otherwise, through CCountryTag::GetCountry (0x2610). Two paths, chosen on g_CCurrentGameState +0xC9C: >0 draws straight out of CCountry::GetPool(country) (0xF4DE0 - pool_in_exile at +0x9F8 when use_own_pool, the capital province's pool at +0x15C otherwise), the inline copy of that function appearing four times; <=0 walks the supply network - the unit's supply source province, its supply_depot_id (+0x48) into g_CMap +0x2200, and draws that province's pool.supplies (+0x164) and pool.fuel (+0x168) pro rata against the province's need.supplies (+0x24C) and need.fuel (+0x250). Where the depot is controlled by another country a lend-lease conversion runs: the amount is scaled by a rate built from CDefines +0xCC and the receiving country's CGoodsPool at +0x7DC is credited, the supplier's at +0x86C, and both countries' pools are moved. Fuel is only taken when the unit is moving (movement_order_remaining_provinces_count > 0) or is naval and 0x1CDC30 says no; a land or air unit standing still burns none. The last act, for the player's own units only, is to set the byte at +0x1BC on both objects hanging off CUnit +0x164 (+0x13C and +0x140) when either received percentage has fallen below Define50 - the out-of-supply marker on the counter.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BD240",
+   "kind": "function",
+   "name": "CUnit::UpdatePlanForceNeeds",
+   "signature": "bool __stdcall UpdatePlanForceNeeds(CUnit* unit, void* difference, void* groupDifference, void* needed, void* wanted)",
+   "comment": "Recomputes, per subunit type, what this unit's order of battle is short of against its plan. The three vector<int> arguments are always &unit->+0x5C, &unit->+0x6C and &unit->+0x7C at both call sites; all three are indexed by CSubUnitDefinition::type_index and sized to the subunit definition database's count ((db+0x20 - db+0x1C)/4), grown and zero-filled on the first call and, on later calls, with the second and third zeroed at 0x1BD40C while the first is overwritten wholesale. It then walks up higher_oob_unit_ptr to the top of the OOB and, unless that top unit has plan+0x8 (CUnit +0x204) set with oob_level 0, calls ComputePlanWantedSubUnits (0x4E1D00) to build the wanted composition out of the unit's plan (CUnit +0x1FC) and the owner's available subunit types; with the fifth argument null it fills the plan's own buffers at plan+0x18/+0x70/+0x80/+0x84, with it non-null it fills locals instead. The wanted list is the local one where 0x4E1D00 produced one and unit->+0x26C (which is plan+0x70) otherwise. CUnit::CountSubUnitsByType (0x1BD7E0) then counts what the unit actually has, and: difference[i] = wanted[i] - have[i]; groupDifference[GenericType(i)] += difference[i] for every non-zero entry, where GenericType is 0x1ADF70 folding a subunit type onto a representative one; then, over a copy of groupDifference, needed[i] = min(difference[i], groupNet) for each positive deficit, drawing that group's remaining net down as it goes - so a surplus of one type inside a group cancels a deficit of another. Returns true if any entry of needed was set. Runs once a day from CUnit::UpdateDaily for units at oob_level 0 and for HQs at level 1..3 whose +0x198 is set; the level 1..3 units with +0x198 clear have the three vectors cleared instead, and level >=4 is skipped entirely.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BD7E0",
+   "kind": "function",
+   "name": "CUnit::CountSubUnitsByType",
+   "signature": "void __thiscall CUnit::CountSubUnitsByType(CUnit* this, void* counts, int reserved)",
+   "comment": "Counts this unit's subunits by CSubUnitDefinition::type_index into a vector<int>, recursing through the OOB. Where the vector is empty it is first grown to the subunit definition database's count and zero-filled; then counts[regiment->sub_unit_definition_ptr->type_index]++ over CUnit::regiments (+0x38), then the same call on every entry of CUnit::children (+0x1E4). The second argument is pushed as 0 at both call sites and never read.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1BD6F0",
+   "kind": "function",
+   "name": "CUnit::RefreshPlanForceNeeds",
+   "signature": "void __stdcall RefreshPlanForceNeeds(CUnit* unit@EAX)",
+   "comment": "The out-of-line copy of the gate CUnit::UpdateDaily inlines at 0x1BB273. On a unit with oob_level >= 4 it does nothing; with oob_level 0, or with +0x198 set, it calls CUnit::UpdatePlanForceNeeds(unit, &unit->+0x5C, &unit->+0x6C, &unit->+0x7C, 0); otherwise it clears all three vectors. Called from CSetPlanForcesCommand slot 6 (twice) and CSetPlanAttributesCommand slot 6.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x65A7A0",
+   "kind": "function",
+   "name": "std::string::fromCString",
+   "signature": "Hoi3CString* __cdecl std::string::fromCString(Hoi3CString* this@ESI, const char* text@EDX)",
+   "comment": "MSVC's `std::basic_string<char>::basic_string(const char*)`, statically linked and given a register calling convention by LTCG: the string is in ESI and the C string in EDX, nothing is on the stack, and `this` comes back in EAX. The body is the textbook two steps. First `_Tidy()` on an *uninitialised* object - `[esi+0x14] = 0xF` (_Myres), `[esi+0x10] = 0` (_Mysize), `[esi] = 0` (_Buf[0]), the same 0x18-byte layout `std::string::assign` at 0xA160 already reads. Then `assign(_Ptr, _Traits::length(_Ptr))`: a four-instruction inline strlen (`lea edi,[eax+1]` / `mov cl,[eax]; inc eax; test cl,cl; jne` / `sub eax,edi`) whose result is pushed with the pointer before `mov ecx,esi; call 0xA160`. **6732 direct call sites**, far more than any other unnamed function left, and it is how every loader, log line and error message turns a literal into a string - the caller is invariably `mov edx,<literal>; lea esi,<fresh local>; call`, followed by the EH state byte being stepped for the new object. There is no null check on EDX, which is what separates the constructor from an assignment.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x6647D0",
+   "kind": "function",
+   "name": "LogRecord::FlushAndDestruct",
+   "signature": "void __stdcall LogRecord::FlushAndDestruct(LogRecordIosBase* iosBase)",
+   "no_signature": null,
+   "comment": "The body of `~LogRecord` - the destructor of the ostringstream-derived temporary every log line in the game is built into, inlined at 679 call sites. **Its argument is not the record: it is `record + 0x78`**, the `std::basic_ios` virtual base, and every field is reached at a negative displacement from it, so a reader has to subtract 0x78 to get back to the object. `LogRecordIosBase` is a deliberately separate type for that sub-object rather than `LogRecord*`, because a `LogRecord*` here would render `record+0x50` as `-0x28` into the wrong struct.\n\nIt (1) writes the basic_ios vftable 0x15FCE94 through the vbtable at `record+0`, (2) calls `std::ostringstream::str` (`0x65BD10`) to pull the message out of the stringbuf at `record+4`, (3) copies that into a second local string with `std::string::assign`, (4) makes the sink call `(*(*[record+0x50]))[1](channel=[record+0x74], file=record+0x54, line=[record+0x70], message=&text)` - slot 1 of the sink at `record+0x50`, which FINDINGS-script.md already records as `LogSink::Write(channel, file, line, message)` with exactly that field layout, (5) frees both temporaries and the file string at `record+0x54`, and (6) tears the stream back down, vftable 0x15FC550 for the ios base, 0x15F2B34 on the stringbuf at `record+4` before 0x6D1360 and 0x10CD90 destroy it, and 0x15A7B94 last. It does **not** run the final `ios_base` destructor; the caller does, which is why `LogRecord::Flush` at 0x24B0 is only `lea esi,[eax+0x78]; push esi; call this; mov [esi],0x15A7B8C; call 0x794BAE` and why all 679 inline sites repeat that same two-step tail. This is the reason the two targets share so many *::LoadKey callers without sharing all of them: 0x65A7A0 builds the message, this one emits it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x2240",
+   "kind": "function",
+   "name": "std::endl",
+   "signature": "std::ostream* __cdecl std::endl(std::ostream* os)",
+   "comment": "**`std::endl`** - MSVC's `basic_ostream<char>::put(widen('\\n')); flush(); return os`, out of line. `__cdecl`, one stack argument, bare `ret`, answers the stream in eax so it chains.\n\nThe body is two halves. The `put('\\n')` half is the call to `0x9B50`, which is `__stdcall` and cleans the argument itself - which is why there is no `add esp,4` after it at any call site. The `flush()` half is inlined here and is instruction for instruction the body of `std::ostream::flush` at `0x65BB20`: `if (!(rdstate() & (failbit|badbit)) && rdbuf()->pubsync() == -1) state = badbit;` then `if (state) clear(rdstate() | state | (rdbuf() ? 0 : badbit), false)` through `std::ios_base::clear` at `0x20B0`.\n\n**681 direct call sites, and they are the game's log.** The idiom is `LogRecord::Make(file, line, channel) << \"text\" << ... << endl` - `0x2410` builds the record, `0xA64A00`/`0xA64A30` are its own inserters, `0x21D30` writes the C strings and this ends the line. `*::LoadKey` dominates the caller list because that is where the engine complains about a key it did not understand. MSVC inlined the same pair at about 120 further sites (`0x16E92` is one: `push esi; call 0x409B50` followed by a private copy of the flush body), so the real number of `<< endl` in this executable is higher than the call count.\n\nThe stream is reached through a virtual base: `[[os]+4] + os` is the `basic_ios`, whose fields this touches are `+0xC` `_Mystate` and `+0x38` `_Mystrbuf`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x21D30",
+   "kind": "function",
+   "name": "std::operator<<Chars",
+   "signature": "std::ostream* __cdecl std::operator<<Chars(std::ostream* os, const char* text)",
+   "comment": "**`std::operator<<(std::ostream&, const char*)`** - the free inserter for a C string, out of line. `__cdecl`, `os` at `[ebp+8]`, the string at `[ebp+0xC]`, bare `ret`, answers `os` in eax. The `Chars` suffix distinguishes it from the other `operator<<` overloads, the way `std::string::appendChars` is distinguished from `appendString` in these findings.\n\nIt is the standard algorithm, in order: `strlen` inline (0x421D61, and the same inline `strlen` opens `std::string::assign`'s caller at 0x4022A0); `pad = width() > len ? width() - len : 0`, computed as a full 64-bit compare and subtract because `streamsize` is `__int64` here, against `_Wide` at basic_ios `+0x20`/`+0x24`; then the sentry - `rdbuf()->_Lock()`, and if `_Mystate == 0` and `_Tiestr` (`+0x3C`) is set, `_Tiestr->flush()` through 0xA5BB20; if the sentry is not ok, `badbit`. When it is ok, `(_Fmtfl & 0x1C0) == 0x40` - `adjustfield == left` - decides whether the padding goes after the text (0x421F44) or before it (0x421E22); the fill character is `_Fillch` at `+0x40` and each one goes out through the sputc fast path or `overflow`. The text itself goes through `sputn` (0x22170) and a short write is `badbit`. Then `width(0)` - `_Wide` zeroed at 0x421EA4 - `setstate(state)` through `std::ios_base::clear`, and the sentry's destructor: `uncaught_exception()` (0x794AE9), `_Osfx` (0xA260), `rdbuf()->_Unlock()`.\n\n**845 direct call sites**, for the same reason as `std::endl`: this is what writes every literal in the game's log lines, and `*::LoadKey` is over-represented because that is where parse complaints are written.\n\nbasic_ios is a virtual base, reached as `[[os]+4] + os`; the fields used are `+0xC` `_Mystate`, `+0x14` `_Fmtfl`, `+0x20` `_Wide` (64 bit), `+0x38` `_Mystrbuf`, `+0x3C` `_Tiestr`, `+0x40` `_Fillch`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x20B0",
+   "kind": "function",
+   "name": "std::ios_base::clear",
+   "signature": "void __thiscall std::ios_base::clear(std::ios_base* this, int state, bool reraise)",
+   "comment": "**`std::ios_base::clear(iostate, bool)`**, the bottom of every stream error path. `_Mystate` (`+0xC`) = `state & 0x17` (MSVC's `_Statmask`); if nothing in the new state is in `_Except` (`+0x10`) it returns; if `reraise` it rethrows with `_CxxThrowException(0, 0)`; otherwise it throws `std::ios_base::failure` carrying `ios_base::badbit set` (0x15B4E4C), `ios_base::failbit set` (0x15B4E64) or `ios_base::eofbit set` (0x15B4E7C), in that priority order, through `_CxxThrowException` with the `_ThrowInfo` at 0x164B158.\n\n`this` is the `basic_ios` (== the `ios_base` subobject), so callers reach it as `[[os]+4] + os`. The `basic_ios::clear` wrapper is inlined at every call site as the two instructions `cmp dword ptr [ecx+0x38], 0 / or eax, 4` - the 'no rdbuf means badbit' rule - which is why the callee never looks at the buffer itself.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x65BB20",
+   "kind": "function",
+   "name": "std::ostream::flush",
+   "signature": "std::ostream* __thiscall std::ostream::flush(std::ostream* this@ESI)",
+   "comment": "**`std::basic_ostream<char>::flush()`**: `if (!(rdstate() & (failbit|badbit)) && rdbuf()->pubsync() == -1) setstate(badbit); return *this;`. `pubsync` is the streambuf's virtual at `+0x34`; the `-1` answer is the only failure it recognises.\n\n**`this` arrives in ESI, not ECX** - the compiler gave this one a convention of its own, as it did `std::string::operator=` (eax) and `LogRecord::Flush` (eax). Every caller sets esi and nothing else: 0x40A296 (`_Osfx`), 0x409BA8 and 0x421DD8 (the two sentry constructors, flushing `_Tiestr`). Bare `ret`, the stream comes back in eax.\n\nIts body is what `std::endl` at 0x2240 has inlined; the two are the same 25 instructions.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0xA260",
+   "kind": "function",
+   "name": "std::ostream::_Osfx",
+   "signature": "void __thiscall std::ostream::_Osfx(std::ostream* this)",
+   "comment": "MSVC's `basic_ostream<char>::_Osfx()`, the end-of-operation hook the `sentry` destructor runs: `if (flags() & unitbuf) flush();`, wrapped in a catch-all (the SEH funclet at 0x40A2AC swallows anything the flush throws). `unitbuf` is `_Fmtfl & 2` at basic_ios `+0x14`; the flush is 0xA5BB20 with `this` handed over in esi. `this` in ecx as usual, no stack arguments, bare `ret`.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x22170",
+   "kind": "function",
+   "name": "std::streambuf::sputn",
+   "signature": "__int64 __thiscall std::streambuf::sputn(std::streambuf* this, const char* text, __int64 count)",
+   "comment": "Seven instructions: hand `(text, count)` to the buffer's virtual at `+0x24` - slot 9, `xsputn` - and answer what it answers, a 64-bit count in edx:eax. `ret 0xC`, so `__thiscall` with a pointer and a `streamsize`. `std::operator<<Chars` compares the result against the length it asked for and sets `badbit` when they differ.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x9B50",
+   "kind": "function",
+   "name": "std::putNewline",
+   "signature": "std::ostream* __stdcall std::putNewline(std::ostream* os)",
+   "comment": "**The `put(widen('\\n'))` half of `std::endl`, kept out of line**: construct the sentry (`rdbuf()->_Lock()`, flush `_Tiestr`, ok = `_Mystate == 0`), write 0x0A through the buffer's put pointer or, when there is no room, through `overflow`; `badbit` if either the sentry was not ok or `overflow` answered -1; `setstate`; destroy the sentry; answer the stream.\n\n**`__stdcall`** - it cleans its own argument, `ret 4`, which is why no call site has an `add esp,4` after it. 120 direct call sites: 0x2240 (`std::endl` itself) and about 119 places where the compiler inlined `endl`'s flush half but left this call standing, 0x16E92 among them.\n\nThe name is descriptive, not a symbol the library exports. It is not `basic_ostream::put`: the character is the constant 0xA, baked in at both 0x9BF2 and 0x9BFF, and there is no character parameter.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x799A30",
+   "kind": "function",
+   "name": "__allrem",
+   "signature": "__int64 __stdcall __allrem(__int64 dividend, __int64 divisor)",
+   "comment": "MSVC CRT signed 64-bit remainder (llrem.asm). With the two saved registers on the stack the dividend is at [esp+0xC..0x13] and the divisor at [esp+0x14..0x1B]; remainder in edx:eax; callee cleans 16 bytes (ret 0x10). **The remainder takes the dividend's sign alone**, which is what tells it apart from __alldiv at 0x799980: the two bodies are otherwise the same shape, but __alldiv has `inc edi` on both the dividend branch (0xB9998D) and the divisor branch (0xB999A9) and negates when exactly one operand was negative, while this one has `inc edi` on the dividend branch (0xB99A3C) and **none** on the divisor branch at 0xB99A56, so the flag counts only the dividend - and the tail tests it with `jns` rather than __alldiv's `jne`. It is signed, not __aullrem, which has no sign handling at all. 7 direct call sites.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x799B30",
+   "kind": "function",
+   "name": "__allshl",
+   "signature": null,
+   "comment": "MSVC CRT 64-bit left shift (llshl.asm). Value in edx:eax, count in cl, result in edx:eax, nothing on the stack, bare ret. Three cases: count >= 64 answers zero (0xB99B4A), count >= 32 moves eax into edx and shifts it by count&31 with eax zeroed (0xB99B40), otherwise `shld edx, eax, cl` then `shl eax, cl` (0xB99B3A). Sign-agnostic - a left shift is the same body for signed and unsigned, which is why MSVC emits one body for both. 4 direct call sites.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x16886F0",
+   "kind": "global",
+   "name": "g_CSubUnitDataBase",
+   "signature": null,
+   "comment": "The one CSubUnitDataBase, 0xC0 bytes, built lazily: every user does `if (!g_CSubUnitDataBase) CSubUnitDataBase::SetInstance(new CSubUnitDataBase)`. Layout as the constructor at rva 0x1ADEE0 and the four Lua accessors show it - +0x00..+0x0B a three-dword container zeroed at construction; +0x10..+0x1B a name -> definition hash map (count at +0x10, 0x1FF buckets at +0x14, the bucket array allocated at +0x18), which GetSubUnit searches; +0x1C..+0x27 a CArray<CSubUnitDefinition*> (begin/end/capacity), which GetSubUnitList returns by reference and GetSubUnitByIndex indexes, so the element stride is 4 and the entry count is (+0x20 - +0x1C)/4; +0x28..+0xAC a block of cached CSubUnitDefinition* for well-known roles, left uninitialised by the constructor and filled at load time; +0xB0..+0xBB a second three-dword container. The count at (+0x20 - +0x1C)/4 is what sizes every array indexed by CSubUnitDefinition::type_index, CUnit::plan_subunit_wanted among them.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1ADEE0",
+   "kind": "function",
+   "name": "CSubUnitDataBase::CSubUnitDataBase",
+   "signature": "CSubUnitDataBase* __stdcall CSubUnitDataBase::CSubUnitDataBase(CSubUnitDataBase* object)",
+   "comment": "Zeroes the container at +0x00, sets the hash map at +0x10 to 0x1FF empty buckets (allocating and memset-ing 0x1FF*4 bytes into +0x18), zeroes the CArray<CSubUnitDefinition*> at +0x1C and the container at +0xB0, and returns the object. It does NOT touch +0x28..+0xAC, the cached role definitions, which the loader fills later. Writes no vftable, so the class is not polymorphic.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1AE0C0",
+   "kind": "function",
+   "name": "CSubUnitDataBase::~CSubUnitDataBase",
+   "signature": "void __stdcall CSubUnitDataBase::~CSubUnitDataBase(CSubUnitDataBase* object)",
+   "comment": "Walks the CArray<CSubUnitDefinition*> at +0x1C ((+0x20 - +0x1C)/4 entries) and tears the database down. Called by CSubUnitDataBase::SetInstance before it frees the old database, and by the array-owning helper at rva 0x1B1C30.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1B1BE0",
+   "kind": "function",
+   "name": "CSubUnitDataBase::SetInstance",
+   "signature": "CSubUnitDataBase** __stdcall CSubUnitDataBase::SetInstance(CSubUnitDataBase* database)",
+   "comment": "Installs the singleton: if the incoming pointer differs from the one already in g_CSubUnitDataBase, destroys and frees the old one first; either way stores the new pointer and returns &g_CSubUnitDataBase. Every lazy-init site of the database calls it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x4E9D60",
+   "kind": "function",
+   "name": "GetSubUnitList",
+   "signature": "CArray<CSubUnitDefinition*>* __cdecl GetSubUnitList()",
+   "comment": "The Lua global `GetSubUnitList`. Builds the database if it does not exist yet, then returns &g_CSubUnitDataBase->+0x1C - the array of every subunit definition, in type_index order.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x4E9DD0",
+   "kind": "function",
+   "name": "GetNumberOfSubUnits",
+   "signature": "int __cdecl GetNumberOfSubUnits()",
+   "comment": "The Lua global `GetNumberOfSubUnits`. Returns (g_CSubUnitDataBase->+0x20 - g_CSubUnitDataBase->+0x1C) >> 2 - the number of subunit definitions, which is the size every array indexed by CSubUnitDefinition::type_index is grown to.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x4E9E40",
+   "kind": "function",
+   "name": "GetSubUnit",
+   "signature": "CSubUnitDefinition* __cdecl GetSubUnit(char const* key)",
+   "comment": "The Lua global `GetSubUnit`. Wraps the C string in a CString and looks it up in the database's name hash map at g_CSubUnitDataBase+0x10, returning the definition or null. This is the by-name half of the database; GetSubUnitByIndex is the by-index half.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x4E9F00",
+   "kind": "function",
+   "name": "GetSubUnitByIndex",
+   "signature": "CSubUnitDefinition* __cdecl GetSubUnitByIndex(int index)",
+   "comment": "The Lua global `GetSubUnitByIndex`. Returns g_CSubUnitDataBase->+0x1C[index] with no bounds check. The index is CSubUnitDefinition::type_index, the same subscript every per-type array in the game uses.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x4E1D00",
+   "kind": "function",
+   "name": "ComputePlanWantedSubUnits",
+   "signature": "void __stdcall ComputePlanWantedSubUnits(void* plan, CUnit* unit, void* area, std::vector<int>* wanted, int* ownStrength, int* areaStrength, bool useArea)",
+   "comment": "Builds the order of battle a plan asks for. Called only from CUnit::UpdatePlanForceNeeds (rva 0x1BD240), twice, and it is what fills CUnit::plan_subunit_wanted. In order: (1) grows `wanted` to GetNumberOfSubUnits() entries and zeroes every one of them (0x8E1DB3..0x8E1E39, the loop bound is (db+0x20 - db+0x1C)/4); (2) resolves about a dozen roles to concrete subunit types by taking the database's cached role definitions at db+0x2C, +0x34, +0x38, +0x3C, +0x40, +0x50, +0x58, +0x6C, +0x7C, +0x80 and +0x84 (those eleven and no others; 0x1ADF70 reaches six more of the same block, +0x44, +0x78, +0x98, +0xA0, +0xA8 and +0xAC) and keeping each only if the owner's availability byte array says so - `country->+0xDF8->+0x27C[definition->type_index] != 0` and then the second test at rva 0x1A3BC0 - falling back to db+0x34 otherwise (0x8E1E3F..0x8E2075); (3) collects the unit's own regiments through rva 0x1BD930 and accumulates, into *ownStrength, each one's strength (CRegiment +0x5C) over its maximum times its organisation over CSubUnit::GetMaxOrganisation, counting them by category with the 0..6 classifier at rva 0x1A8540 (0x8E20C4..0x8E22A2); (4) walks the plan's province list at [area], and for each province its 0x14-byte border records at +0xD4 ->+0x90..+0x94, skipping type 3, accumulating into *areaStrength (0x8E2387..0x8E26E0); (5) turns that frontage into counts using the plan type at plan+0xC (2, 3 and 4 each select a different global) and several defines, and finally does `wanted[definition->type_index]++` once per requested regiment for each role (0x8E2FE0, 0x8E3027, 0x8E31B6, 0x8E31E2). `useArea` switches the source of the scope: with it set the caller supplies `area` and the regiment collection is filtered by it; with it clear the unit's whole OOB is used and `area` is the plan's own province list. Returns nothing - eax is zero on every path and neither call site reads it.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1E77D0",
+   "kind": "function",
+   "name": "CSetPlanAttributesCommand::Execute",
+   "signature": "void __thiscall CSetPlanAttributesCommand::Execute(void)",
+   "no_signature": null,
+   "comment": "Slot 6 of `CSetPlanAttributesCommand` - the command's own **Execute** (see `CCommand::Execute`). It resolves the command's `unit` reference and writes the six battle-plan attributes it carries onto that unit's embedded `CUnitPlan` (`CUnit +0x1FC`), each with a sentinel meaning \"not set by this command\":\n\n| command field | key | sentinel | lands on |\n| --- | --- | --- | --- |\n| `+0x64` byte | `active` | none | `CUnitPlan::SetActive` (`0x4DEB10`) |\n| `+0x68` | `stance` | `== 5` skips | plan `+0xC` = `CUnit +0x208` |\n| `+0x6C` | `air_stance` | `== 3` skips | plan `+0x10` = `CUnit +0x20C` |\n| `+0x70` | `naval_stance` | `== 3` skips | plan `+0x14` = `CUnit +0x210` |\n| `+0x74` | `our_power` | `< 0` skips | plan `+0x80` = `CUnit +0x27C` |\n| `+0x78` | `their_power` | `< 0` skips | plan `+0x84` = `CUnit +0x280` |\n\nOnly the `stance` branch calls `CUnit::RefreshPlanForceNeeds` (at `0x1E78B4`) - changing the ground stance is what changes what the plan needs; the air and naval stances and the two power estimates do not.\n\n**It re-resolves the unit for every field it writes** - six separate `FindPersistentById` lookups off `this->+0x40`/`+0x44` - rather than resolving once, which is why the body is four times longer than what it does. Each lookup has a failure arm that falls through to `xor eax, eax` and then stores through the null pointer anyway (`0x1E79EB` writes `[0 + 0x280]`); the game survives only because a command whose target has gone is rejected by `IsValid` before slot 6 is reached.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1E88A0",
+   "kind": "function",
+   "name": "CSetPlanForcesCommand::Execute",
+   "signature": "void __thiscall CSetPlanForcesCommand::Execute(void)",
+   "no_signature": null,
+   "comment": "Slot 6 of `CSetPlanForcesCommand` - the command's own **Execute** (see `CCommand::Execute`). It resolves its `unit` reference, hands the `min` vector it carries at `+0x64` to `CUnitPlan::SetMinForces` (`0x4DF0F0`), which replaces plan `+0x70` - `CUnit +0x26C`, already named `plan_subunit_wanted` - and then calls `CUnit::RefreshPlanForceNeeds` so the shortfall per subunit type is recomputed against the new target.\n\nThe two calls to `RefreshPlanForceNeeds` (`0x1E8928` and `0x1E8934`) are the two arms of the second lookup, not two refreshes: the second passes `eax = 0`, the null arm of a resolve the compiler inlined twice. So it refreshes once, and would dereference null if the unit had gone - which `IsValid` prevents.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1E6180",
+   "kind": "function",
+   "name": "CSetPlanOpsAreaCommand::Execute",
+   "signature": "void __thiscall CSetPlanOpsAreaCommand::Execute(void)",
+   "no_signature": null,
+   "comment": "Slot 6 of `CSetPlanOpsAreaCommand` - the command's own **Execute** (see `CCommand::Execute`), and the third and last body in the image that reaches `CUnit::RefreshPlanForceNeeds`.\n\nOne province list at `+0x64` and one flag at `+0x74` decide which of the plan's two province lists it replaces:\n\n    if (this->fallback_line)   CUnitPlan::SetFallbackLine(plan, &this->provinces)   // plan +0x28, returns here\n    else                       CUnitPlan::SetOpsArea(plan, &this->provinces)        // plan +0x18\n                               CUnit::RefreshPlanForceNeeds(unit)\n                               if (unit->owner == the local player's country\n                                   && this->unit_ref matches the local session)\n                                       gamestate->+0xBE8 slot 32(...)               // 0x1E649F\n\nSo a fallback line costs nothing - it is a line, not an area to hold - while an operations area changes what the plan needs and refreshes it. The tail is the only part of the three plan commands that touches the GUI, and it is gated on the unit belonging to the player at this client.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1E60B0",
+   "kind": "function",
+   "name": "CSetPlanOpsAreaCommand::CSetPlanOpsAreaCommand",
+   "signature": "CSetPlanOpsAreaCommand* __stdcall CSetPlanOpsAreaCommand::CSetPlanOpsAreaCommand(CSetPlanOpsAreaCommand* self, void* unit, void* provinces)",
+   "no_signature": null,
+   "comment": "**Not slot 6, and in no virtual table**: this is `CSetPlanOpsAreaCommand`'s constructor, and the reason it looked like the third `RefreshPlanForceNeeds` caller is that `image.functionStart` attributes `0x1E629D` to it - there is no `int3` padding between its `ret 0xC` at `0x1E617D` and the real owner, `CSetPlanOpsAreaCommand::Execute`, at `0x1E6180`.\n\nIt inlines the `CCommand` base constructor rather than calling it - `CCommand`'s vftable at `0x15B4F74` goes in first and is overwritten with its own at `0x15C931C` - then fills `+0x2C`/`+0x30` with 0x70A, the tickstamp word at `+0x34` with 0xFFFF, the identity at `+0x38` with 0, builds the `unit` reference at `+0x3C` out of its second argument and copies the province list into `+0x64`. `this` arrives on the stack rather than in ecx and the object comes back in eax; the five callers all `operator new(0x78)` first, which is the class's size.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x4DEB10",
+   "kind": "function",
+   "name": "CUnitPlan::SetActive",
+   "signature": "void __stdcall CUnitPlan::SetActive(CUnitPlan* this@ESI, bool active)",
+   "no_signature": null,
+   "comment": "Writes the plan's `active` byte at `+0x8` (`CUnit +0x204`), and **when switching it off, resets the whole plan first**: the objective, path, ops-area and fallback lists at `+0x18`, `+0x28`, `+0x38`, `+0x48`, `+0x5C` and `+0x70`/`+0x74` are emptied, `stance` (`+0xC`) goes back to 2, `air_stance` and `naval_stance` to 0, both power estimates (`+0x80`, `+0x84`) and `+0x88`/`+0x8C` to 0, and the byte at `+0x9` to 0. Switching it on writes nothing but the byte.\n\nThe compiler gave it a register convention: the plan arrives in esi, the flag on the stack.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x4DEBB0",
+   "kind": "function",
+   "name": "CUnitPlan::SetOpsArea",
+   "signature": "void __stdcall CUnitPlan::SetOpsArea(CUnitPlan* plan, void* provinces)",
+   "no_signature": null,
+   "comment": "Replaces the plan's operations area - the province list at `+0x18`/`+0x1C`/`+0x20` - with the one it is given, freeing the old one. Both arguments are on the stack.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x4DEF00",
+   "kind": "function",
+   "name": "CUnitPlan::SetFallbackLine",
+   "signature": "void __stdcall CUnitPlan::SetFallbackLine(CUnitPlan* plan, void* provinces)",
+   "no_signature": null,
+   "comment": "Replaces the plan's fallback line - the province list at `+0x28`/`+0x2C`/`+0x30` - with the one it is given, freeing the old one. Both arguments are on the stack.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x4DF0F0",
+   "kind": "function",
+   "name": "CUnitPlan::SetMinForces",
+   "signature": "void __stdcall CUnitPlan::SetMinForces(CUnitPlan* this@EAX, void* min)",
+   "no_signature": null,
+   "comment": "Replaces the plan's minimum force composition - the `vector<int>` at `+0x70`/`+0x74`, which is `CUnit +0x26C`, already named `plan_subunit_wanted` - with the one it is given. The `min` key of a `unit_plan` in the save, and what `CSetPlanForcesCommand` carries.\n\nThe plan arrives in eax and the source vector on the stack.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x664A00",
+   "kind": "function",
+   "name": "std::ostream::writeCString",
+   "signature": "std::ostream* __cdecl std::ostream::writeCString(std::ostream* os@ESI, const char* text@EDX) @EAX",
+   "no_signature": null,
+   "comment": "**`os.write(text, strlen(text))` for a NUL-terminated string**, and the `<<` that 427 call sites use to put a C string into the game's log. `strlen` is open-coded as the four-instruction byte scan at `0xA64A10`; the length and a zero high dword are then pushed with the pointer and the stream and `std::ostream::write` (`0x664A30`) is called. It answers the stream in `eax` so the idiom chains: `LogRecord::Make(file, line, channel) << \"text\" << ... << endl`.\n\n**The convention is one the optimiser invented, not `__cdecl` as written on a page.** Both arguments arrive in registers - the stream in `esi` (never saved, never reloaded: the epilogue is `mov eax, esi`) and the string in `edx` (`mov eax, edx` is the first thing the body does) - and the function ends in a bare `ret` having consumed nothing from the stack. `0x434389` is a plain example: `mov edx, 0x15B65D0 ('Bad messagetype'); mov esi, eax; call 0xA64A00; push eax; call std::endl`. This is the same re-signing that gave `std::string::fromCString` (`0x65A7A0`) its `this@ESI, text@EDX` and `std::ostream::flush` (`0x65BB20`) its `this@ESI`.\n\n**It is not `std::operator<<Chars` (`0x21D30`), and the difference is real.** `0x21D30` is MSVC's `_Insert_string`: it reads `ios_base::_Wide` at `+0x20/+0x24`, computes the padding, emits `_Fillch` from `+0x40` and finishes with `width(0)`. This one does none of that - it goes straight to `write`, so a stream with a non-zero `width()` formats differently through the two. **What I could not settle** is whether that makes it a second `operator<<(ostream&, const char*)` from a translation unit built against a different `<ostream>`, or an engine-local unpadded fast inserter; the name records what it does rather than deciding that.\n\nThe four call sites that do not load `edx` from a string literal are the reason this wrapper exists at all: where the length is not a compile-time constant the compiler cannot fold it, so it calls the scanner instead of `write` directly.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x664A30",
+   "kind": "function",
+   "name": "std::ostream::write",
+   "signature": "std::ostream* __stdcall std::ostream::write(std::ostream* os, const char* text, __int64 count) @EAX",
+   "no_signature": null,
+   "comment": "**`std::basic_ostream<char>::write(const char*, streamsize)`, verbatim.** The body is the documented implementation instruction for instruction:\n\n    ios_base::iostate _State = goodbit;\n    const sentry _Ok(*this);                       // sentry_base + sentry\n    if (!_Ok) _State |= badbit;\n    else if (rdbuf()->sputn(_Str, _Count) != _Count) _State |= badbit;\n    setstate(_State);\n    return *this;\n\nEach piece is identifiable. `sentry_base`'s constructor is `if (rdbuf()) rdbuf()->_Lock()` - the virtual call through `[rdbuf]+4` at `0xA64A6E`; its destructor is `_Unlock`, slot `+8`, at `0xA64B64`. The `sentry` constructor's `if (good() && tie()) tie()->flush()` is the `[+0xC] == 0` / `[+0x3C] != 0` pair calling `std::ostream::flush` (`0x65BB20`), and `_Ok = good()` is the `sete cl` at `0xA64A96`. The insert is `std::streambuf::sputn` (`0x22170`) with `this` in `ecx` from `basic_ios::_Mystrbuf` at `+0x38`; because `streamsize` is a 64-bit type the return comes back in `edx:eax` and the short-write test is the two compares at `0xA64AC7`. `setstate` is inlined as `clear(rdstate() | _State | (rdbuf() ? 0 : badbit), false)` through `std::ios_base::clear` (`0x20B0`). The `sentry` destructor is `if (!uncaught_exception()) _Osfx()` - `0x794AE9` then `std::ostream::_Osfx` (`0xA260`). The block at `0xA64ADF` is the SEH unwind funclet for the same `setstate`, reached through the scope table at `0xC214FA`.\n\n**It is `write` and not `_Insert_string`**: nothing in the body reads `ios_base::_Wide` (`+0x20/+0x24`) or `_Fillch` (`+0x40`), and there is no closing `width(0)`. `0x21D30` (`std::operator<<Chars`) is the one that does all three.\n\n**The convention is again optimiser-chosen**: `this` is pushed as the first stack argument rather than passed in `ecx`, and the function cleans all 16 bytes itself - `ret 0x10` = stream + pointer + the two halves of the `streamsize`. 352 sites call it directly with a constant folded length; `0x664A00` calls it for the rest.\n\nThe `basic_ios` it works on is reached through the virtual base: `[[os]+4] + os`. Fields touched: `+0x0C` `_Mystate`, `+0x38` `_Mystrbuf`, `+0x3C` `_Tiestr`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x794BAE",
+   "kind": "function",
+   "name": "std::ios_base::_Ios_base_dtor",
+   "signature": "void __cdecl std::ios_base::_Ios_base_dtor(std::ios_base* base)",
+   "no_signature": null,
+   "comment": "**Confirmed: this is the `ios_base` destructor**, specifically the out-of-line static body that MSVC's `virtual ~ios_base()` consists of a single call to. The earlier report guessed right.\n\n    if (_Stdstr == 0 || --_Stdstr_refs[_Stdstr] <= 0) {\n        _Tidy();                                  // 0x794B15\n        if (_Ploc) { _Ploc->~locale(); free(_Ploc); }\n    }\n\nThe guard is the standard-stream reference count. `ios_base +8` is the slot index into an eight-entry table of standard streams at VA `0x174C818` with a parallel byte refcount array at VA `0x174C840`; this function decrements that byte and returns without tearing anything down while it is still positive, so `cout`/`cerr`/`clog` survive every `ios_base::Init` but the last. `std::ios_base::_Addstd` (`0x794B59`) is the only other code in the image that touches either table, and it increments exactly the byte this decrements.\n\nWhen it does tear down: `_Tidy()` releases the `_Arr` and `_Calls` lists (`+0x28`, `+0x2C`), then `_Ploc` at `+0x30` gets `std::locale::~locale` (`0x2EE40`, `this` in `ecx`) followed by `free` (`0x795F9B`, which is what `operator delete` folded to here).\n\n**How the 700 call sites read.** Every one of them is a derived class destroying its `ios_base` base, and each writes the `ios_base` virtual table `0x15A7B8C` into the object immediately before the call - textbook base-subobject destruction with the vfptr reset. `LogRecord::Flush` (`0x24B0`) is the example the handover named:\n\n    lea esi, [eax+0x78]          ; the ios_base subobject inside the record\n    push esi; call LogRecord::FlushAndDestruct\n    push esi; mov [esi], 0x15A7B8C\n    call 0x794BAE\n\n`__cdecl`, one stack argument at `[ebp+8]`, bare `ret`, no return value. It is *not* itself virtual and sits in no class's virtual table; the virtual destructor that calls it is the scalar deleting destructor at `0x2210`, which is unnamed and left for the next wave.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x794B15",
+   "kind": "function",
+   "name": "std::ios_base::_Tidy",
+   "signature": "void __thiscall std::ios_base::_Tidy(std::ios_base* this)",
+   "no_signature": null,
+   "comment": "`ios_base::_Tidy()` - runs the registered callbacks with `erase_event` and then frees both of `ios_base`'s owned lists:\n\n    _Callfns(erase_event);                 // 0x794AEE, with the literal 0\n    for (p = _Arr;   p; p = next) free(p); _Arr = 0;      // +0x28\n    for (p = _Calls; p; p = next) free(p); _Calls = 0;    // +0x2C\n\nBoth loops read the `_Next` pointer at offset `0` of the node before freeing it, which is the `_Iosarray` / `_Calls_t` layout. `__thiscall`, no stack arguments, bare `ret`. Recorded here because it is the only callee of `std::ios_base::_Ios_base_dtor` that was not already named and it is what fixes `+0x28` and `+0x2C` as the two list heads.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x794B59",
+   "kind": "function",
+   "name": "std::ios_base::_Addstd",
+   "signature": "void __cdecl std::ios_base::_Addstd(std::ios_base* base)",
+   "no_signature": null,
+   "comment": "The increment side of the standard-stream reference count that `std::ios_base::_Ios_base_dtor` (`0x794BAE`) decrements. Under `_Lockit(_LOCK_STREAM)` - the literal `2` passed to `0x79504A` - it scans the eight-entry pointer table at VA `0x174C818` from index 1 for a free slot or for itself, stores the index in `ios_base +8`, stores the pointer in the table and increments the byte at `0x174C840 + index`. `__cdecl`, one stack argument, bare `ret`.\n\nRecorded here rather than left on the frontier because it is the evidence that `ios_base +8` is the standard-stream index and that the byte array at `0x174C840` is a refcount - without it the guard at the top of `0x794BAE` is unreadable.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x6649D0",
+   "kind": "function",
+   "name": "LogRecord::Construct",
+   "signature": "LogRecord* __stdcall LogRecord::Construct(LogRecord* record@ESI, int line@ECX, int channel@EAX, LogSink* sink, Hoi3CString* file) @EAX",
+   "no_signature": null,
+   "comment": "The register-convention forwarder LTCG left between `LogRecord::Make` and the constructor at `0x6646E0`: it takes the record in esi, the line in ecx and the channel in eax, the sink and the file on the stack, and pushes all five in the order the `__stdcall` constructor wants (`record, sink, file, line, channel`). Returns the record in eax. `ret 8` - it cleans only the two it was given on the stack.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x664790",
+   "kind": "function",
+   "name": "LogRecord::ScalarDeletingDestructor",
+   "signature": "LogRecord* __thiscall LogRecord::ScalarDeletingDestructor(LogRecordIosBase* this, int flags) @EAX",
+   "no_signature": null,
+   "comment": "MSVC's `??_G` for the record: `this` arrives as `record+0x78` (the `basic_ios` virtual base, the same thing `FlushAndDestruct` takes), it recovers the record with `lea edi,[ecx-0x78]`, runs `LogRecord::FlushAndDestruct` and then `~ios_base` (`0x794BAE`), and frees the record only when bit 0 of `flags` is set. `ret 4`, record back in eax. Sits in no virtual table - `vtable.py --holding 0xA64790` finds none - so nothing dispatches to it; it is the out-of-line copy the compiler emitted anyway.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x65BBA0",
+   "kind": "function",
+   "name": "std::ostringstream::ostringstream",
+   "signature": "std::ostringstream* __stdcall std::ostringstream::ostringstream(std::ostringstream* stream, int mode, int isMostDerived)",
+   "no_signature": null,
+   "comment": "`std::basic_ostringstream<char>`'s constructor, shared by the plain stream and by `LogRecord`, which is why it looks the virtual base offset up instead of using a constant: `esi = stream + *(int*)(*stream + 4)` is the `basic_ios`, so the same body works whether that lives at `+0x50` (a plain ostringstream) or at `+0x78` (a LogRecord). When `isMostDerived` is non-zero it also writes its own vbtable `0x160285C` at `+0` and the `ios_base` vftable `0x15A7B9C` at `+0x50`; `LogRecord::LogRecord` passes 0 because it has already written its own. Then `ios_base::_Init` (`0xC7FA0`), `basic_ios._Mystrbuf = stream+4`, `_Tiestr = 0`, `_Fillch = widen(' ')`, the `basic_ios` vftable `0x15FC550`, the stringbuf constructor at `0x10F0E0` with vftable `0x15F2B34`, and finally the stringbuf's `_Seekhigh = 0` and `_Mystate = mode|ios::out` at `stream+0x40`/`stream+0x44`. `ret 0xC`.\n\n**This is what fixes the class's field boundaries:** for a plain ostringstream the virtual base sits at `+0x50`, so the vbptr plus the `basic_stringbuf` occupy exactly `0..0x4F`, and `LogRecord`'s own four fields are what push its `basic_ios` out to `+0x78`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x65BD10",
+   "kind": "function",
+   "name": "std::ostringstream::str",
+   "signature": "Hoi3CString* __cdecl std::ostringstream::str(std::ostringstream* stream@ECX, Hoi3CString* out@EAX) @EAX",
+   "no_signature": null,
+   "comment": "`ostringstream::str()`, register convention: the stream in ecx, the string to fill in eax. All it does is `add ecx,4` to reach the `basic_stringbuf` and call `0x520940`, then answer the out string. Bare `ret`, nothing on the stack. `LogRecord::FlushAndDestruct` calls this to get the accumulated message before handing it to the sink.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x65CC70",
+   "kind": "function",
+   "name": "std::string::concat",
+   "signature": "Hoi3CString* __cdecl std::string::concat(Hoi3CString* out, Hoi3CString* left, Hoi3CString* right) @EAX",
+   "no_signature": null,
+   "comment": "The out-of-line body of `std::operator+(const std::string&, const std::string&)`. It tidies `out` to the empty state (`_Myres = 0xF`, `_Mysize = 0`, `out[0] = 0`), reserves `left.length + right.length` through `0x1D50`, then `appendString(out, left, 0, -1)` and `appendString(out, right, 0, -1)`. Three stack arguments, bare `ret`, `out` back in eax. This is what `std::string::operatorPlus` (`0x65B0D0`) calls to do the actual work.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0xC7FA0",
+   "kind": "function",
+   "name": "std::ios_base::_Init",
+   "signature": "void __cdecl std::ios_base::_Init(std::ios_base* base@ECX)",
+   "no_signature": null,
+   "comment": "`ios_base::_Init()`: zeroes `+8`, `_Except` (`+0x10`), sets `_Fmtfl = 0x201` (`skipws|dec`) at `+0x14`, `_Prec = 6` at `+0x18`/`+0x1C` (a `streamsize` is `__int64` here), `_Wide = 0` at `+0x20`/`+0x24`, `_Arr = _Calls = 0` at `+0x28`/`+0x2C`, calls `std::ios_base::clear(0, false)` for `_Mystate` at `+0xC`, and finally allocates a four-byte `locale` into `_Ploc` at `+0x30`. `ecx` is the receiver, nothing is on the stack, bare `ret`.\n\n**`+0x30` is the highest field it writes**, which together with `_Mystrbuf` at `+0x38` is what bounds `sizeof(ios_base)` at 0x34..0x38.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x1A29F0",
+   "kind": "function",
+   "name": "CPathFind::IsGoal",
+   "signature": "bool __thiscall CPathFind::IsGoal(CPathFind* this, CUnit* unit, CProvince* goal, CProvince* at)",
+   "no_signature": null,
+   "comment": "CPathFind slot 3, which no class in the family overrides: `sete` on `goal == at`, three stack arguments, `ret 0xC`, and neither `this` nor `unit` read. CPathFind::Find asks it for every province it takes off the open list and builds the path the moment it answers 1 (0x5A13B3-0x5A13B7), which is what the name says. Slot 3 was previously recorded only as \"unknown\" on the CPathFind vftable entry.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-redeploy.md"
   }
  ],
  "structs": [
@@ -7034,6 +7620,13 @@
   {
    "name": "CCountry",
    "fields": [
+    {
+     "offset": "0xA40",
+     "name": "unit_demand",
+     "type": "CGoodsPool",
+     "comment": "What the units drawing on this country asked for today, before any shortfall - supplies accumulate at +0xA48 and fuel at +0xA4C on every path through CUnit::ConsumeSuppliesAndFuel, including the one where the pool cannot pay. Distinct from CCountry::usage (+0x98C), which only gets what was actually handed over.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
     {
      "offset": "0x48",
      "name": "historical_models",
@@ -7716,6 +8309,13 @@
    "name": "CCurrentGameState",
    "size": "0xDA8",
    "fields": [
+    {
+     "offset": "0xDA4",
+     "name": "in_game",
+     "type": "uint8_t",
+     "comment": "Nonzero while the in-game screen is the live one: set to 1 at `0x25D126`, the end of `CInGameIdler::Enter`'s session build, and cleared by `CInGameIdler::Leave` (`0x262337`), by `CFrontEnd`'s enter (`0x2EFE58`) and at `0x2ED9AF`. Zeroed by every construction of the game state.\n\n**This is the attrition gate.** `CUnit::UpdateDaily` tests it at `DailyTickEndGate` (`0x1BB3E8`) and skips both `ApplyAttrition` and `CheckTransportOverload` when it is zero - so it is not a development-era \"enable attrition\" switch, and attrition does run. About twenty other places test it before touching live game data (`0x255AB7` reaches `strategic_warfare`, `0x4349B2` reaches the player tag), which is the sense the name is taken from: a game is running.\n\nOne byte. The last field of the class: the object is allocated `0xDA8` bytes and the constructor tail writes a word at `+0xD9C`, a dword at `+0xDA0` and this byte, so `+0xDA5..+0xDA7` are padding.\n\nNot saved: no access to it lives in the save or load code, and no key in a `.hoi3` save corresponds to it.\n\n**Confirmed in a running game**, not only traced: sampled every frame it read 0 at the main menu with the pointer already live, 1 once a campaign was up - while the clock was still not reporting in play, which is the write landing before the in-game GUI is built - and 0 again on returning to the menu. See `Reversing/Watch.hpp`.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
     {
      "offset": "0x18",
      "name": "tag_18",
@@ -8687,6 +9287,20 @@
   {
    "name": "ProvinceEdge",
    "fields": [
+    {
+     "offset": "0x8",
+     "name": "crossed_province",
+     "type": "int",
+     "comment": "The province a kind-1 edge crosses, as an index into CMap::provinces. The helper at rva 0x1A2600 refuses the step when that province's controller is hostile to the unit's owner, or when a foreign unit that is not retreating is standing in it - a strait or crossing that can be blocked.",
+     "source": "reversing/FINDINGS-redeploy.md"
+    },
+    {
+     "offset": "0x0",
+     "name": "kind",
+     "type": "int",
+     "comment": "What sort of edge this is. Only two values are tested here: CPathFind::MayStep and CPlannedPathFind::MayStep refuse an edge whose kind is 3 outright, and the helper at rva 0x1A2600 acts only on kind 1, which is a crossing through the province named at +8. The full set of values is not known.",
+     "source": "reversing/FINDINGS-redeploy.md"
+    },
     {
      "offset": "0x4",
      "name": "to_province",
@@ -9843,6 +10457,76 @@
    "name": "CUnit",
    "fields": [
     {
+     "offset": "0x280",
+     "name": "plan_their_power",
+     "type": "int",
+     "comment": "CUnitPlan +0x84, the `their_power` key - the plan's cached estimate of the opposition's strength. A negative value is CSetPlanAttributesCommand's \"not set\" sentinel.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x27C",
+     "name": "plan_our_power",
+     "type": "int",
+     "comment": "CUnitPlan +0x80, the `our_power` key - the plan's cached estimate of the owner's strength for it. A negative value is CSetPlanAttributesCommand's \"not set\" sentinel.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x210",
+     "name": "plan_naval_stance",
+     "type": "int",
+     "comment": "CUnitPlan +0x14, the `naval_stance` key. 3 is CSetPlanAttributesCommand's \"not set\" sentinel for it.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x20C",
+     "name": "plan_air_stance",
+     "type": "int",
+     "comment": "CUnitPlan +0x10, the `air_stance` key. 3 is CSetPlanAttributesCommand's \"not set\" sentinel for it.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x208",
+     "name": "plan_stance",
+     "type": "int",
+     "comment": "CUnitPlan +0xC, the `stance` key. Defaults to 2 when the plan is switched off. The one plan attribute whose change makes CSetPlanAttributesCommand::Execute call CUnit::RefreshPlanForceNeeds; 5 is the command's \"not set\" sentinel.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x204",
+     "name": "plan_active",
+     "type": "uint8_t",
+     "comment": "CUnitPlan +0x8. Whether the unit's battle plan is switched on; CUnitPlan::SetActive (0x4DEB10) resets the whole plan when it goes to zero.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x26C",
+     "name": "plan_subunit_wanted",
+     "type": "std::vector<int>",
+     "comment": "The composition the plan asks for, per subunit type - the array 0x4E1D00 fills from the plan and the owner's available subunit types. Sits inside CUnit::plan at plan+0x70.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x7C",
+     "name": "plan_subunit_needed",
+     "type": "std::vector<int>",
+     "comment": "Per subunit type, the part of the deficit that the group as a whole is still short of - min(difference[i], whatever is left of that group's net difference), taken in index order. This is the list the plan machinery asks for.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x6C",
+     "name": "plan_subunit_group_difference",
+     "type": "std::vector<int>",
+     "comment": "The same differences summed onto one representative subunit type per group (0x1ADF70 does the folding: carrier air, capital ship, transport/submarine, and so on). Zeroed at the top of each pass and accumulated at 0x1BD544.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0x5C",
+     "name": "plan_subunit_difference",
+     "type": "std::vector<int>",
+     "comment": "Per CSubUnitDefinition::type_index: what the plan wants of that type minus what the unit's OOB actually has. Signed - a negative entry is a surplus. Written wholesale by CUnit::UpdatePlanForceNeeds (0x1BD240) and cleared by CUnit::RefreshPlanForceNeeds for an HQ that has no plan.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
      "offset": "0x4",
      "name": "is_selected",
      "type": "bool",
@@ -10132,6 +10816,8 @@
   },
   {
    "name": "Hoi3CString",
+   "size": "0x1C",
+   "comment": "**MSVC's std::basic_string<char>**, under the name BiceLib gives it in HoiDataStructures.hpp. `stringData` is the small-string union - the characters themselves up to fifteen, a pointer to them past that - `length` is `_Mysize`, and `maxLength` is `_Myres`, which starts at 0xF for exactly that reason. Its methods are named as what they are: std::string::assign, appendChars, appendString, fromCString, concat, clear, operator= and operatorPlus.\n\nThe name stays `Hoi3CString` rather than becoming `std::string`: it is a real type in BiceLib's own headers, used by ten game classes and read by the DLL at runtime, so the findings and the code that consumes them have to agree. Ghidra also does not take `::` in a structure's name the way it does in a function's, where it means a class namespace.\n\n**0x1C, not the 0x18 its three fields account for** - four bytes at +0x18 are unidentified. The stride is what settles it: around twenty classes place the next field exactly 0x1C on, including runs of adjacent strings (CBuilding at 0x1C, 0x38, 0x54; CTechnologyCategory at 0x8, 0x24, 0x40, 0x5C). CTrait.hpp records the same gap and indexes its Hoi3CString[16] with an explicit 0x1C rather than a sizeof.",
    "fields": [
     {
      "offset": "0x0",
@@ -12905,6 +13591,41 @@
    "name": "CParseContext",
    "fields": [
     {
+     "offset": "0xC",
+     "name": "messages_count",
+     "type": "int",
+     "comment": "How many messages are in the list; cleared when it is freed. Nothing reads it on the way out, which is why a file full of unknown keys is silent.",
+     "source": "reversing/FINDINGS-redeploy.md"
+    },
+    {
+     "offset": "0x8",
+     "name": "messages_last",
+     "type": "void*",
+     "comment": "Last node of the parse messages list; cleared with the other two when the list is freed.",
+     "source": "reversing/FINDINGS-redeploy.md"
+    },
+    {
+     "offset": "0x4",
+     "name": "messages_first",
+     "type": "void*",
+     "comment": "First node of the parse messages list; a node is two Hoi3CStrings at +0 and +0x20 with the next pointer at +0x40. CParseContext::FreeMessages is handed this field's address - the destructor passes `this+4` - and frees the chain.",
+     "source": "reversing/FINDINGS-redeploy.md"
+    },
+    {
+     "offset": "0x35C",
+     "name": "error_handler",
+     "type": "void*",
+     "comment": "Null in the ordinary constructor (0x67A460); set from the caller's EDI by the second one (0x67A520), whose six call sites are all in the 0xB3xxxx network module. `ReportParseError` (0x67A960) sets the byte at its `+4`, calls its slot 0 with the parse context and, where that returns true, sets `+5` as well and queues no message. `ParseObjectReference` (0x1EC150) reads the same three and stores nothing when all three are set, so once the handler has taken an error the block is still consumed but its value is dropped. project.json already describes `+4` in ReportParseError's comment; this names the field it hangs off.",
+     "source": "reversing/FINDINGS-script.md"
+    },
+    {
+     "offset": "0x32C",
+     "name": "session_name",
+     "type": "Hoi3CString",
+     "comment": "The name the context was made with - the third argument of `CParseContext::CParseContext` (0x67A460), which takes it in EDX and assigns it here; the destructor (0x67A630) frees it with the usual `capacity >= 0x10` test, size at `+0x33C` and capacity at `+0x340`. Two constructor call sites pass the literal `UNNAMED_SESSION` (0x1002AF, 0x231700), which is where the name comes from. Exactly two places read it: `CCommand::LoadKey` (0x67BCD0) copies it into the command's own string at `+8` when that is still empty, and `ParseObjectReference` (0x1EC150) copies it into every object reference it fills. Nothing writes it after construction and neither copy is ever saved, so it is a runtime label for which stream a command or a reference came out of. **The `session` reading is inferred** from the default literal; what is checked is that it is a string and who its five users are.",
+     "source": "reversing/FINDINGS-script.md"
+    },
+    {
      "offset": "0x1C",
      "name": "tokenizer",
      "type": "void*",
@@ -15126,9 +15847,63 @@
    "inherits": "CPersistent",
    "comment": "A CPersistent that other objects hold pointers to - CMinister and CRebelFaction are two. **Its own fields have not been read**; it is here so that the classes deriving from it lay out, and what CMinister keeps at 0x8 and 0xC is recorded on CMinister until something says the base owns it.",
    "fields": []
+  },
+  {
+   "name": "LogRecord",
+   "size": "0xBC",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "vbptr",
+     "type": "void*",
+     "comment": "The virtual base pointer, 0x15FCE98, whose vbtable reads {0, 0x78} - which is what puts the basic_ios base at +0x78 rather than the +0x50 a plain ostringstream keeps it at.",
+     "source": "reversing/findings/merged/log-textbuilder.json"
+    },
+    {
+     "offset": "0x50",
+     "name": "sink",
+     "type": "void*",
+     "comment": "The LogSink this line goes to; FlushAndDestruct calls slot 1 of its vftable, which is the recorded LogSink::Write. Typed void* because LogSink has no layout here yet.",
+     "source": "reversing/findings/merged/log-textbuilder.json"
+    },
+    {
+     "offset": "0x54",
+     "name": "file",
+     "type": "Hoi3CString",
+     "comment": "The source file the line was logged from. An Hoi3CString, not a `const char*`: the constructor assignStrings into it, and every call site runs its literal through std::string::fromCString first.",
+     "source": "reversing/findings/merged/log-textbuilder.json"
+    },
+    {
+     "offset": "0x70",
+     "name": "line",
+     "type": "int",
+     "comment": "The source line, read at [ios-8] for the sink call.",
+     "source": "reversing/findings/merged/log-textbuilder.json"
+    },
+    {
+     "offset": "0x74",
+     "name": "channel",
+     "type": "int",
+     "comment": "Which log channel the line belongs to, read at [ios-4].",
+     "source": "reversing/findings/merged/log-textbuilder.json"
+    }
+   ],
+   "comment": "The temporary every log line in the game is built into: `LogRecord::Make(file, line, channel) << \"text\" << ... << endl`. It is a std::basic_ostringstream<char> with four fields of its own added, which is why its basic_ios virtual base sits at +0x78 instead of +0x50.\n\n**Two gaps, deliberately.** +0x04..+0x4F is the std::basic_stringbuf (0x4C bytes, vftable 0x15F2B34, with _Seekhigh at +0x40 and _Mystate at +0x44), and +0x78 is the std::basic_ios virtual base (0x44 bytes, vftable 0x15FCE94). Neither type is modelled here, and a byte blob would claim a layout nobody has read, so they are left undefined and described instead.\n\nThe size of 0xBC is **inferred**: basic_ios' last written member is _Fillch at +0x40, giving at least 0x41 and 0x44 by alignment. Every LogRecord in the image is a stack local, so no allocation size settles it."
   }
  ],
  "vftable_slots": {
+  "CSetPlanOpsAreaCommand": {
+   "6": "Execute"
+  },
+  "CSetPlanForcesCommand": {
+   "6": "Execute"
+  },
+  "CSetPlanAttributesCommand": {
+   "6": "Execute"
+  },
+  "CCommand": {
+   "6": {"name": "Execute", "signature": "void __thiscall Execute(CCommand* this)"}
+  },
   "_about": "Slot names BiceLib has established but that cannot be read off the slot's body - the linker folds identical bodies together, so the three unit predicates are one `mov al,1; ret` and one `xor al,al; ret` between them. Keyed by class, then slot. A record on a base class names that slot in every table below it, which is how CPersistent's six virtuals reach all 754 classes that derive from it; a name read off the slot's own body wins over one inherited this way.",
   "CUnit": {
    "15": "IsLand",
@@ -15155,31 +15930,38 @@
    "17": "IsAir"
   },
   "CPathFind": {
+   "3": "IsGoal",
    "0": "StepCost",
    "1": "MayUse",
    "2": "MayStep"
   },
   "CSafePathFind": {
+   "3": "IsGoal",
    "0": "StepCost",
    "1": "MayUse",
    "2": "MayStep"
   },
   "CVerySafePathFind": {
+   "3": "IsGoal",
    "0": "StepCost",
    "1": "MayUse",
    "2": "MayStep"
   },
   "CPlannedPathFind": {
+   "3": "IsGoal",
    "0": "StepCost",
    "1": "MayUse",
    "2": "MayStep"
   },
   "CSafeNavalPathFind": {
+   "3": "IsGoal",
    "0": "StepCost",
    "1": "MayUse",
    "2": "MayStep"
   },
   "CInGameIdler": {
+   "3": "Enter",
+   "4": "Leave",
    "48": "CentreOnProvince"
   },
   "CCombat": {

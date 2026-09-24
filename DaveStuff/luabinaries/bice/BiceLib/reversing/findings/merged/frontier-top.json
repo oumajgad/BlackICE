@@ -1,0 +1,74 @@
+{
+ "agent": "frontier-top: the two most-called unnamed functions, 0x2240 and 0x21D30",
+ "question": "rva 0x2240 and rva 0x21D30, 45 named callers each and almost all of them *::LoadKey. What do they do, what are their signatures and calling conventions, and can they be named? If either is a CRT or STL routine, say which and how that is known.",
+ "source": "reversing/FINDINGS-script.md",
+ "addresses": [
+  {
+   "rva": "0x2240",
+   "kind": "function",
+   "name": "std::endl",
+   "signature": "std::ostream* __cdecl std::endl(std::ostream* os)",
+   "comment": "**`std::endl`** - MSVC's `basic_ostream<char>::put(widen('\\n')); flush(); return os`, out of line. `__cdecl`, one stack argument, bare `ret`, answers the stream in eax so it chains.\n\nThe body is two halves. The `put('\\n')` half is the call to `0x9B50`, which is `__stdcall` and cleans the argument itself - which is why there is no `add esp,4` after it at any call site. The `flush()` half is inlined here and is instruction for instruction the body of `std::ostream::flush` at `0x65BB20`: `if (!(rdstate() & (failbit|badbit)) && rdbuf()->pubsync() == -1) state = badbit;` then `if (state) clear(rdstate() | state | (rdbuf() ? 0 : badbit), false)` through `std::ios_base::clear` at `0x20B0`.\n\n**681 direct call sites, and they are the game's log.** The idiom is `LogRecord::Make(file, line, channel) << \"text\" << ... << endl` - `0x2410` builds the record, `0xA64A00`/`0xA64A30` are its own inserters, `0x21D30` writes the C strings and this ends the line. `*::LoadKey` dominates the caller list because that is where the engine complains about a key it did not understand. MSVC inlined the same pair at about 120 further sites (`0x16E92` is one: `push esi; call 0x409B50` followed by a private copy of the flush body), so the real number of `<< endl` in this executable is higher than the call count.\n\nThe stream is reached through a virtual base: `[[os]+4] + os` is the `basic_ios`, whose fields this touches are `+0xC` `_Mystate` and `+0x38` `_Mystrbuf`.",
+   "confidence": "confirmed",
+   "evidence": "Three checks, each reproducible. (1) The 25 instructions from 0x40224F to the `ret` are identical - mnemonic and operand text, after normalising branch targets - to 0xA5BB26..0xA5BB6A, the whole body of the standalone `flush` at 0xA5BB20, differing only in where `edi` is saved; compared programmatically with cfg.walk, mismatches: 0. (2) The callee 0x409B50 writes the literal 0xA, twice and unmistakably: `mov byte ptr [eax], 0xa` on the sputc fast path at 0x409BF2 and `push 0xa` into `overflow` at 0x409BFF. put-then-flush-then-return-the-stream is the definition of `endl` and of nothing else in the standard library. (3) The same pair appears inlined at a call site - 0x416E92 pushes the stream, calls 0x409B50, and then re-emits the flush body in place - so this function is the out-of-line copy of code the compiler also expanded for `<< endl`. `cfg.walk` gives one `ret`, bare, and the call sites clean (0xB53406 is inside an `add esp, 0xC` covering it and the two-argument call before it), so `__cdecl` with a single pointer argument.\n\nWhat would show it wrong: 0x409B50 turning out to write something other than 0x0A, or the flush half not being the body of 0xA5BB20 - both are byte comparisons anyone can redo. A weaker failure would be that this is a game-written manipulator with endl's exact semantics rather than the library's `endl` template; the name would still describe the behaviour, but `std::` would be wrong. Nothing in the body distinguishes the two, so that possibility stands."
+  },
+  {
+   "rva": "0x21D30",
+   "kind": "function",
+   "name": "std::operator<<Chars",
+   "signature": "std::ostream* __cdecl std::operator<<Chars(std::ostream* os, const char* text)",
+   "comment": "**`std::operator<<(std::ostream&, const char*)`** - the free inserter for a C string, out of line. `__cdecl`, `os` at `[ebp+8]`, the string at `[ebp+0xC]`, bare `ret`, answers `os` in eax. The `Chars` suffix distinguishes it from the other `operator<<` overloads, the way `std::string::appendChars` is distinguished from `appendString` in these findings.\n\nIt is the standard algorithm, in order: `strlen` inline (0x421D61, and the same inline `strlen` opens `std::string::assign`'s caller at 0x4022A0); `pad = width() > len ? width() - len : 0`, computed as a full 64-bit compare and subtract because `streamsize` is `__int64` here, against `_Wide` at basic_ios `+0x20`/`+0x24`; then the sentry - `rdbuf()->_Lock()`, and if `_Mystate == 0` and `_Tiestr` (`+0x3C`) is set, `_Tiestr->flush()` through 0xA5BB20; if the sentry is not ok, `badbit`. When it is ok, `(_Fmtfl & 0x1C0) == 0x40` - `adjustfield == left` - decides whether the padding goes after the text (0x421F44) or before it (0x421E22); the fill character is `_Fillch` at `+0x40` and each one goes out through the sputc fast path or `overflow`. The text itself goes through `sputn` (0x22170) and a short write is `badbit`. Then `width(0)` - `_Wide` zeroed at 0x421EA4 - `setstate(state)` through `std::ios_base::clear`, and the sentry's destructor: `uncaught_exception()` (0x794AE9), `_Osfx` (0xA260), `rdbuf()->_Unlock()`.\n\n**845 direct call sites**, for the same reason as `std::endl`: this is what writes every literal in the game's log lines, and `*::LoadKey` is over-represented because that is where parse complaints are written.\n\nbasic_ios is a virtual base, reached as `[[os]+4] + os`; the fields used are `+0xC` `_Mystate`, `+0x14` `_Fmtfl`, `+0x20` `_Wide` (64 bit), `+0x38` `_Mystrbuf`, `+0x3C` `_Tiestr`, `+0x40` `_Fillch`.",
+   "confidence": "confirmed",
+   "evidence": "The body is the published MSVC <ostream> algorithm step for step, and three of its constants are MSVC's own and could not coincide: `_Fmtfl & 0x1C0` compared against `0x40` is `adjustfield`/`left` exactly as <xiosbase> numbers them; the state mask tested elsewhere in the family is `_Statmask` 0x17; and the three messages `ios_base::badbit set`, `ios_base::failbit set`, `ios_base::eofbit set` sit in the callee 0x20B0 in that order. The width is read as a 64-bit quantity from two adjacent dwords, which is `streamsize` on MSVC and not on anything else. Argument order is read off both ends: 0x421E7C loads `[ebp+0xC]` as the pointer handed to `sputn`, and the call site at 0xB533F2..0xB5340B pushes the string then the stream and then cleans 0xC for this call plus the `endl` after it. `cfg.walk` over 0x421D30..0x421F94 gives exactly one `ret`, bare, hence `__cdecl`.\n\nWhat would show it wrong: a caller that passes something other than (stream, C string) - the two the ret and the sputn argument fix - or the padding branch turning out not to key on 0x1C0/0x40. If the streambuf virtual table were ordered differently from MSVC's, the reading of slot 9 as `xsputn` and slot 13 as `sync` would fall, but the description of this function would survive it: it would still be 'strlen, pad to width, hand the bytes to the buffer, clear the width, set the state'."
+  },
+  {
+   "rva": "0x20B0",
+   "kind": "function",
+   "name": "std::ios_base::clear",
+   "signature": "void __thiscall std::ios_base::clear(std::ios_base* this, int state, bool reraise)",
+   "comment": "**`std::ios_base::clear(iostate, bool)`**, the bottom of every stream error path. `_Mystate` (`+0xC`) = `state & 0x17` (MSVC's `_Statmask`); if nothing in the new state is in `_Except` (`+0x10`) it returns; if `reraise` it rethrows with `_CxxThrowException(0, 0)`; otherwise it throws `std::ios_base::failure` carrying `ios_base::badbit set` (0x15B4E4C), `ios_base::failbit set` (0x15B4E64) or `ios_base::eofbit set` (0x15B4E7C), in that priority order, through `_CxxThrowException` with the `_ThrowInfo` at 0x164B158.\n\n`this` is the `basic_ios` (== the `ios_base` subobject), so callers reach it as `[[os]+4] + os`. The `basic_ios::clear` wrapper is inlined at every call site as the two instructions `cmp dword ptr [ecx+0x38], 0 / or eax, 4` - the 'no rdbuf means badbit' rule - which is why the callee never looks at the buffer itself.",
+   "confidence": "confirmed",
+   "evidence": "The three literal messages are MSVC's own text for this function and nothing else uses them; they appear in the one body, guarded by tests of bits 4, 2 and 1 in that order, which is the order <xiosbase> writes them in. `and eax, 0x17` is `_Statmask`. The bare `_CxxThrowException(0, 0)` on the `reraise` path is a rethrow and only `clear` has one. `ret 8` matches `__thiscall` with `(iostate, bool)`. What would show it wrong: the strings not being at those addresses (they are printed by disasm.py's own annotation), or `ecx` at the call sites not being the basic_ios - it is, the callers compute it as `[[os]+4] + os` immediately before."
+  },
+  {
+   "rva": "0x65BB20",
+   "kind": "function",
+   "name": "std::ostream::flush",
+   "signature": "std::ostream* __thiscall std::ostream::flush(std::ostream* this@ESI)",
+   "comment": "**`std::basic_ostream<char>::flush()`**: `if (!(rdstate() & (failbit|badbit)) && rdbuf()->pubsync() == -1) setstate(badbit); return *this;`. `pubsync` is the streambuf's virtual at `+0x34`; the `-1` answer is the only failure it recognises.\n\n**`this` arrives in ESI, not ECX** - the compiler gave this one a convention of its own, as it did `std::string::operator=` (eax) and `LogRecord::Flush` (eax). Every caller sets esi and nothing else: 0x40A296 (`_Osfx`), 0x409BA8 and 0x421DD8 (the two sentry constructors, flushing `_Tiestr`). Bare `ret`, the stream comes back in eax.\n\nIts body is what `std::endl` at 0x2240 has inlined; the two are the same 25 instructions.",
+   "confidence": "confirmed",
+   "evidence": "25-instruction identity with 0x40224F..0x40229B, checked programmatically after normalising branch targets: mismatches 0. The register convention is read off three call sites, all of which load esi and none of which load ecx, and off the body, which dereferences esi as the stream from its first instruction. What would show it wrong: a caller that sets ecx instead - there is none among the callers of this address - or the virtual at streambuf `+0x34` not being `sync`, which would leave the function correctly described but misnamed."
+  },
+  {
+   "rva": "0xA260",
+   "kind": "function",
+   "name": "std::ostream::_Osfx",
+   "signature": "void __thiscall std::ostream::_Osfx(std::ostream* this)",
+   "comment": "MSVC's `basic_ostream<char>::_Osfx()`, the end-of-operation hook the `sentry` destructor runs: `if (flags() & unitbuf) flush();`, wrapped in a catch-all (the SEH funclet at 0x40A2AC swallows anything the flush throws). `unitbuf` is `_Fmtfl & 2` at basic_ios `+0x14`; the flush is 0xA5BB20 with `this` handed over in esi. `this` in ecx as usual, no stack arguments, bare `ret`.",
+   "confidence": "inferred",
+   "evidence": "Called from exactly the place `_Osfx` is called from - both sentry destructors, 0x409C77 and 0x421EEC, immediately after `uncaught_exception()` (0x794AE9) answers false - and it does the one thing `_Osfx` does. The behaviour is certain; the name is MSVC's internal one for it and is the inferred part. What would show it wrong: `_Fmtfl & 2` not being `unitbuf`, which would need the whole <xiosbase> flag numbering to be different from the one the 0x1C0/0x40 test in 0x21D30 already fits."
+  },
+  {
+   "rva": "0x22170",
+   "kind": "function",
+   "name": "std::streambuf::sputn",
+   "signature": "__int64 __thiscall std::streambuf::sputn(std::streambuf* this, const char* text, __int64 count)",
+   "comment": "Seven instructions: hand `(text, count)` to the buffer's virtual at `+0x24` - slot 9, `xsputn` - and answer what it answers, a 64-bit count in edx:eax. `ret 0xC`, so `__thiscall` with a pointer and a `streamsize`. `std::operator<<Chars` compares the result against the length it asked for and sets `badbit` when they differ.",
+   "confidence": "inferred",
+   "evidence": "The shape is not in doubt - one indirect call through `[[this]+0x24]` with three pushed dwords, `ret 0xC`, 64-bit result - and 'pass the pointer and the count to a virtual, compare the answer with the count' is `sputn` and nothing else. The name additionally asserts that `+0x24` is `xsputn`, which rests on the streambuf slot map the rest of this family fits: `+0x4` `_Lock` (both sentry constructors), `+0x8` `_Unlock` (both destructors), `+0xC` `overflow` (called with one character, answer compared to -1), `+0x34` `sync` (in flush). What would show it wrong: a streambuf virtual table laid out differently from MSVC's, which would move all five at once."
+  },
+  {
+   "rva": "0x9B50",
+   "kind": "function",
+   "name": "std::putNewline",
+   "signature": "std::ostream* __stdcall std::putNewline(std::ostream* os)",
+   "comment": "**The `put(widen('\\n'))` half of `std::endl`, kept out of line**: construct the sentry (`rdbuf()->_Lock()`, flush `_Tiestr`, ok = `_Mystate == 0`), write 0x0A through the buffer's put pointer or, when there is no room, through `overflow`; `badbit` if either the sentry was not ok or `overflow` answered -1; `setstate`; destroy the sentry; answer the stream.\n\n**`__stdcall`** - it cleans its own argument, `ret 4`, which is why no call site has an `add esp,4` after it. 120 direct call sites: 0x2240 (`std::endl` itself) and about 119 places where the compiler inlined `endl`'s flush half but left this call standing, 0x16E92 among them.\n\nThe name is descriptive, not a symbol the library exports. It is not `basic_ostream::put`: the character is the constant 0xA, baked in at both 0x9BF2 and 0x9BFF, and there is no character parameter.",
+   "confidence": "inferred",
+   "evidence": "The body is decidable and was read instruction by instruction: the constant written is 0xA in both paths, the sentry construction is the same code as the opening of 0x21D30, and there is no `sync` call anywhere in 0x9B50..0x9CA9, so it is put-without-flush. `cfg.walk` gives one `ret`, immediate 4, hence `__stdcall`; the call sites agree by not adjusting esp. The name is the inferred part - a standard library function that writes a hard-coded newline does not exist, so this is either MSVC outlining `endl`'s first half or a program-local one-line manipulator, and nothing in the body separates those two. What would show it wrong: finding a call site that reaches it with a character to write, or a caller for which the following code is not `endl`'s flush."
+  }
+ ],
+ "struct_fields": [],
+ "vftable_slots": {},
+ "slots_noted": "None of the seven is in any class's virtual table - `vtable.py --holding` was run on each of 0x402240, 0x421D30, 0x409B50, 0x4020B0, 0x40A260, 0x422170 and 0xA5BB20 and each answered 'in no class's virtual table'. They are reached by direct call only; the virtual calls they make go through `std::basic_streambuf`'s table, which is a library class and has no RTTI record here.",
+ "frontier": ["0x794A6E", "0x795991", "0x794AE9", "0x664A00", "0x664A30"]
+}

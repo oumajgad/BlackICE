@@ -1,0 +1,65 @@
+{
+ "agent": "attrition-gate hunt",
+ "question": "What writes CCurrentGameState +0xDA4 a nonzero value - the byte ApplyAttrition's only caller tests - and what does the field mean?",
+ "source": "reversing/FINDINGS-manpower.md",
+ "addresses": [
+  {
+   "rva": "0x25D126",
+   "kind": "instruction",
+   "name": "EnterGame_SetInGame",
+   "signature": null,
+   "comment": "**The only instruction in the executable that writes `CCurrentGameState +0xDA4` a nonzero value**: `mov byte ptr [ecx + 0xDA4], 1`, with `ecx` loaded from `g_CCurrentGameState` two instructions earlier.\n\nIt sits near the end of `CInGameIdler::Enter` (`0x25A2B0`), after the session has been built - the log lines above it are `Countries initialized<`, `provinces initialised<`, `information caches setup<`, `supply logic defined<`, ` processed weather <`, ` processed intel setup <` - and before the in-game GUI is built (`menubar`, `chat_list`, `mapmode_1`..`mapmode_10`).\n\nUnconditional on its path: the block at `0x25D120` is the join of the inlined get-or-create of the game state, entered from `0x25D082(taken)`, `0x25D114(taken)` and `0x25D11E(flow)`, and the block above it at `0x25D075` is reached from all three arms of the camera setup. **So the attrition gate opens in every game**, which is what the live tooltip measurement already showed.",
+   "confidence": "confirmed",
+   "evidence": "Every instruction in .text whose memory operand carries displacement 0xDA4 was decoded (2820 of them) and each classified by whether a `mov dword ptr [reg], 0x15CF674` - the CCurrentGameState vftable - appears in the 0x30 bytes before it. 2772 are that inlined constructor, all writing 0. Of the 48 that are not, this is the only store of a nonzero value; the rest write 0 or `bl`/`bx` held at zero, read the byte, or are `esp`-relative stack slots in unrelated frames. It would be shown wrong by a write that does not use displacement 0xDA4 at all - a `memcpy`/`memset` over the object, or a base register holding `gamestate + n` with the rest of the offset in the displacement. Neither was found: no displacement in 0xD9E..0xDA7 other than 0xDA0 and 0xDA4 is used anywhere in .text, and every 0xDA4 access is byte-sized except six esp-relative dwords."
+  },
+  {
+   "rva": "0x25A2B0",
+   "kind": "function",
+   "name": "CInGameIdler::Enter",
+   "signature": "void __thiscall CInGameIdler::Enter(void)",
+   "comment": "Slot 3 of `CInGameIdler`'s virtual table, and the whole of entering a running game: it looks up the `unitlist_start` / `unitlist_offset` gui types (`Missing unitlist_start or unitlist_offset gui type.`), runs `LOAD_GFX`, `LOAD_EVENTS` and `ADAPTING_HISTORY`, logs the six `eu3idler.cpp` setup stages, **sets `gamestate->in_game` at `0x25D126`**, then builds the in-game interface.\n\n`CFrontEnd` overrides the same slot at `0x2EEF00`, where it logs `entering frontend...` and **clears** the same byte at `0x2EFE58` - which is what makes slot 3 the screen's enter hook rather than anything more specific.\n\nSpans `0x25A2B0`..`0x261BB8`, about 0x7900 bytes, which is why `image.functionStart`'s default 0x2500 limit reports `?` for the write inside it.",
+   "confidence": "inferred",
+   "evidence": "`vtable.py --holding 0x65A2B0` puts it in exactly one table, CInGameIdler slot 3; `vtable.py CInGameIdler CFrontEnd --all` shows both classes overriding slots 3 and 4 and sharing slot 2 (CEU3Idler), so the pair is the base idler's. The signature is read off the single `ret` (no immediate) at `0x261BB7` and `mov ebx, ecx` at `0x25A2E6`. **The name is inference from CFrontEnd's `entering frontend...` in the matching slot, not from a caller** - `slotcalls.py 3` returns 1011 sites in 673 functions, far too unselective to settle it. It would be wrong if slot 3 is something narrower that both screens happen to log entry from, e.g. a resource-load or re-show hook."
+  },
+  {
+   "rva": "0x262060",
+   "kind": "function",
+   "name": "CInGameIdler::Leave",
+   "signature": "void __thiscall CInGameIdler::Leave(void)",
+   "comment": "Slot 4 of `CInGameIdler`'s virtual table, the counterpart to slot 3: it frees the idler's lists and then **clears `gamestate->in_game` at `0x262337`**. `CFrontEnd` overrides the same slot at `0x2F0140`.",
+   "confidence": "inferred",
+   "evidence": "`vtable.py --holding 0x662060` gives CInGameIdler slot 4 and nothing else; the signature is off the single `ret` at `0x26242E`. The body walks a list freeing each node through `0xB95F9B` (free) and zeroes the list head before touching the game state, which is teardown shape. **Inference**, paired with the Enter naming above; it would be wrong the same way slot 3's name would."
+  },
+  {
+   "rva": "0x262337",
+   "kind": "instruction",
+   "name": "LeaveGame_ClearInGame",
+   "signature": null,
+   "comment": "`mov byte ptr [eax + 0xDA4], 0` in `CInGameIdler::Leave`, with `eax` the game state just stored back into `g_CCurrentGameState` at `0x262325`. The counterpart to `EnterGame_SetInGame`.",
+   "confidence": "confirmed",
+   "evidence": "Decoded at the address; the base register is loaded from / stored to the global 0x1689790 within the preceding 0x20 bytes. It would be shown wrong if `eax` were reloaded in between, which the disassembly rules out."
+  },
+  {
+   "rva": "0x2EFE58",
+   "kind": "instruction",
+   "name": "FrontEnd_Enter_ClearInGame",
+   "signature": null,
+   "comment": "`mov byte ptr [eax + 0xDA4], bl` in `CFrontEnd`'s slot 3 (`0x2EEF00`, the function that logs `entering frontend...`), with `eax` the game state stored into `g_CCurrentGameState` at `0x2EFE40`. Returning to the main menu closes the gate again.",
+   "confidence": "inferred",
+   "evidence": "The instruction and the base register are read off the disassembly; that it writes **zero** rests on `ebx` being the function's null constant, which is how it is used at `0x2EFDD6` (`cmp eax, ebx` as the null test on the global) and at `0x2EFE12` (the constructor tail that zeroes +0xD9C/+0xDA0/+0xDA4). A register trace would settle it; nothing here sets ebx nonzero, but that was not proved exhaustively."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CCurrentGameState",
+   "offset": "0xDA4",
+   "name": "in_game",
+   "type": "uint8_t",
+   "comment": "Nonzero while the in-game screen is the live one: set to 1 at `0x25D126`, the end of `CInGameIdler::Enter`'s session build, and cleared by `CInGameIdler::Leave` (`0x262337`), by `CFrontEnd`'s enter (`0x2EFE58`) and at `0x2ED9AF`. Zeroed by every construction of the game state.\n\n**This is the attrition gate.** `CUnit::UpdateDaily` tests it at `DailyTickEndGate` (`0x1BB3E8`) and skips both `ApplyAttrition` and `CheckTransportOverload` when it is zero - so it is not a development-era \"enable attrition\" switch, and attrition does run. About twenty other places test it before touching live game data (`0x255AB7` reaches `strategic_warfare`, `0x4349B2` reaches the player tag), which is the sense the name is taken from: a game is running.\n\nOne byte. The last field of the class: the object is allocated `0xDA8` bytes and the constructor tail writes a word at `+0xD9C`, a dword at `+0xDA0` and this byte, so `+0xDA5..+0xDA7` are padding.\n\nNot saved: no access to it lives in the save or load code, and no key in a `.hoi3` save corresponds to it.",
+   "evidence": "Set: the single nonzero writer, see EnterGame_SetInGame. Read: the gate at 0x1BB3E8 is `cmp byte ptr [edi + 0xDA4], 0` with edi loaded from the global at 0x1BB36D. Width: every one of the 2820 uses of displacement 0xDA4 in .text is byte-sized except six esp-relative dwords in unrelated frames, and displacements 0xDA1..0xDA3 and 0xDA5..0xDA7 are used nowhere at all. Size: 3054 sites in .text are `push 0xDA8; call 0x79602F`, all of them that one call target (operator new), and each is the allocation the inlined constructor follows - so project.json's 0xDA8 is right and this byte is the last field in it. Not serialized: no +0xDA4 access falls inside CGameState::LoadKey (0x27FCB0) or the save writer, and `BlackICE GitHub/save games/autosave.hoi3` has no matching key. **What would show it wrong**: a write that does not carry the displacement - a block copy or memset over the object, or a base register already holding `gamestate + n`. Neither turned up, but only displacement-carrying instructions were scanned. The name would be wrong if the flag tracks something narrower than the in-game screen being live - it was not watched in a running game."
+  }
+ ],
+ "vftable_slots": {"CInGameIdler": {"3": "Enter", "4": "Leave"}},
+ "frontier": ["0x2EEF00", "0x2F0140", "0x2ED660", "0x27B240"],
+ "slots_noted": "CFrontEnd overrides the same two slots (3 at 0x2EEF00, 4 at 0x2F0140) and its slot 3 is the strongest evidence for the Enter naming, but project.json carries no vftable_slots block for CFrontEnd and the merge can only extend one that is already there, so those two slots are left for whoever adds the class by hand."
+}

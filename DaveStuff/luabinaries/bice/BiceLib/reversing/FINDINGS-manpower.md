@@ -201,22 +201,77 @@ No signature is recorded for it. The compiler gave it a register convention - th
 `eax`, the casualties on the stack - so it cannot be written as an ordinary function, the
 same reason `CCountry::IsEnemy`'s second overload has none.
 
-### Attrition may never run in this build
+### Attrition runs, and its gate is `in_game`
 
 `ApplyAttrition` has **exactly one caller**, and it is behind
-`if (g_CCurrentGameState->field_0xDA4)` at `0x1BB3E8` in `CUnit::UpdateDaily`. That byte
-is zeroed when the game state is constructed and nothing was found that sets it.
+`if (g_CCurrentGameState->in_game)` at `0x1BB3E8` in `CUnit::UpdateDaily`.
 
-The search is not conclusive - `+0xDA4` is a common displacement and the global is loaded
-in thousands of places, so it cannot be scanned cleanly - but the shape is exactly a
-leftover development switch, zeroed at construction and gating a whole mechanic. The same
-byte also gates the transport overload check, so if it is a switch it is one over the
-end-of-day unit upkeep rather than over attrition alone.
+`CCurrentGameState +0xDA4` is **"the in-game screen is live"**. One instruction in the
+whole executable writes it nonzero - `mov byte [ecx + 0xDA4], 1` at `0x25D126`, inside
+`CInGameIdler` slot 3, after the session is built and before the in-game GUI is - and it
+is unconditional on its path, so it opens in every game. `CFrontEnd` slot 3 clears it on
+the way back out, and about twenty other sites test it before touching live game data.
 
-**Settle it in a game, not here**: if `$ATTRITION$` never leaves zero for an army sitting
-in hostile or unsupplied territory, the gate is never opened and whatever attrition
-players see comes from somewhere else entirely - the supply system is the obvious
-candidate.
+So the gate is not about attrition at all. It guards the end-of-day unit upkeep as a
+whole - `ApplyAttrition` and `CheckTransportOverload` both - against running while no
+game is on screen.
+
+**Measured, not only traced.** Sampling the byte every frame gives 0 at the main menu
+with the pointer already live, 1 once a campaign is up, and 0 again on returning to the
+menu. The 0 -> 1 was seen while the clock still reported not-in-play, which is the write
+landing before the in-game GUI is built. So both the set in `CInGameIdler` and the clear
+in `CFrontEnd` hold at runtime. The tool is `Reversing/Watch.hpp`, which hooks nothing -
+it reads the one pointer a frame and refuses an offset outside the object.
+
+**Counted in a running game**, which settles how much of this block actually runs. Three
+counters on the gate, over four game days of an ordinary campaign:
+
+| | per day |
+| --- | --- |
+| the gate is reached | ~8270, once per unit |
+| the gate is passed | ~8270, the same number every day |
+| the inner branch is taken | ~860 |
+
+Reached and passed are *identical* on every row, which is what `in_game` being 1 for the
+whole session predicts, and is how the counters show they are counting rather than
+sitting still. So `ApplyAttrition` runs for every unit in the game every day.
+
+The inner branch is `IsNaval` - slot 16, which `CNavy` overrides and `CArmy` and `CAir`
+inherit from `CUnit` - so `CheckTransportOverload` runs for every *fleet* every day, and
+about 10.4% of the units in that campaign were fleets. That agrees with the signature
+from the other direction: it takes a `CNavy*`.
+
+Neither of those was dead code, which is the thing the disassembly could not say.
+
+**`in_game` is the straight answer to a question BiceLib has always had to infer.**
+`CCurrentGameState::current()` being non-null proves only that a session was started at
+some point, which is why the Present hook watches the clock instead. This byte is the
+game's own flag. Nothing has been changed to use it - the clock check works, and swapping
+a load-bearing guard is its own piece of work - but it is there.
+
+**Two earlier readings of this byte were wrong**, and in the same way. It was first
+written up here as a leftover development switch that might mean attrition never runs,
+and then guessed at as an `EnableAttrition` setting. Both took the shape of the code -
+a byte, zeroed at construction, gating a whole mechanic - as evidence of intent. It is
+the shape of a lifecycle flag too, and that is what it turned out to be.
+
+Two things went wrong mechanically, and both are worth knowing because they will happen
+again:
+
+- **A search that cannot be run cleanly returns "nothing found", and "nothing found"
+  got written up as "probably nothing there".** One game day settled what the scan could
+  not. The live counter now beside the DLL exists because of this.
+- **The scan was drowned by inlining.** MSVC inlined the `GetCurrentGameState()` lazy
+  singleton at 3054 sites, and every copy ends with the constructor tail zeroing this
+  byte - so 2772 of the 2820 hits on displacement `0xDA4` are one inlined constructor.
+  Filtering on "is the `CCurrentGameState` vftable written within the preceding 0x30
+  bytes" cuts it to 48, of which exactly one writes a nonzero value. A second factor:
+  the writer sits `0x2E76` into a `0x7900`-byte function, past `image.functionStart`'s
+  default `limit`, so it reported no owning function and looked unattributable.
+
+`CCurrentGameState`'s recorded size of `0xDA8` is confirmed correct: every use of the
+displacement is byte-sized, `0xDA5`..`0xDA7` are used nowhere, and the 3054 allocation
+sites all pass `0xDA8`. So `+0xDA4` is the last field, followed by padding.
 
 ### Why these two are averaged rather than projected
 

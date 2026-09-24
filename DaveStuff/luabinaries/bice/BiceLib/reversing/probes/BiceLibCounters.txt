@@ -1,0 +1,44 @@
+# NOT SHIPPED. This is a template. To use it, copy this file into the game's
+# script folder, beside BiceLib.dll, and uncomment the matching activate line in
+# bicelib_lua.lua. It is kept here rather than in the mod because it is one
+# developer's question of the moment, not mod content - and because the tools
+# that produce its contents (disasm.py, cfg.py) are in the folder above.
+#
+# BiceLib reverse engineering counters.
+#
+# One counter per line:   rva ; the bytes that must be there ; a label
+#
+# Nothing here is installed until BiceLib.Reversing.activateCounters() is called. The
+# tally lands in BiceLibCounters.csv beside this file, one row a game day, cumulative.
+#
+# The bytes come from `python disasm.py <address> <length> --bytes`, in
+# DaveStuff/luabinaries/bice/BiceLib/reversing. They are both the check that the address
+# is what you think it is and the instructions the counter replays, so they have to be
+# whole instructions, and there have to be at least five bytes of them.
+#
+# Before adding a line, run the landing check. Five bytes of jump cover more than one
+# instruction, and a branch into the middle of that lands in a displacement:
+#
+#     python cfg.py <function> <length> --lands-in <site+1> <site+length-1>
+#
+# Count the first instruction of the block you want to know about rather than the branch
+# above it. A relative branch cannot be replayed from a thunk, and a line holding one is
+# refused rather than installed.
+
+# --- CUnit::UpdateDaily, the end of day upkeep gate ----------------------------------
+# The byte at gamestate +0xDA4 is `in_game`, set once on entering a game and cleared on
+# leaving it, and it guards the whole end-of-day unit upkeep: ApplyAttrition, and a
+# second call behind a virtual returning a bool.
+#
+# The first two are the instrument's own check, not an open question. Both should climb
+# by the number of units in the game every day, and the two should stay equal, because
+# the gate is open for the whole of a running game. If they do not move, or move apart,
+# the counter is lying and nothing else it reports can be trusted.
+#
+# The third is the real one. It is the transport overload branch, which is reached only
+# when the inner virtual says yes, and how often that happens in an ordinary campaign is
+# not known.
+
+0x1BB3E8 ; 80 BF A4 0D 00 00 00 ; upkeep gate reached
+0x1BB3F1 ; 8D 4C 24 14 51       ; upkeep gate passed
+0x1BB409 ; 8B 16 8B 42 2C       ; upkeep inner branch taken

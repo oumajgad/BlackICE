@@ -1,0 +1,97 @@
+{
+ "agent": "loader-helpers: the two most-called unnamed functions in the image",
+ "question": "0x7964D4 (70 named callers) and 0x7969F1 (65 named callers), nearly all of them *::LoadKey. What are they, what are their signatures and calling conventions, and can they be named?",
+ "source": "reversing/FINDINGS-script.md",
+ "addresses": [
+  {
+   "rva": "0x7964D4",
+   "kind": "function",
+   "name": "sscanf",
+   "signature": "int __cdecl sscanf(const char* buffer, const char* format, ...)",
+   "comment": "MSVC CRT `sscanf`, statically linked. The body is only the public wrapper: it loads the buffer into esi and calls the file-scope helper at 0x796466 with (INPUTFN=_input_l 0x7A1379, format, locale=NULL, va_list=&arg3), which builds a FILE on its own stack over the string (_flag=0x49 = _IOREAD|_IOMYBUF|_IOSTRG, _ptr=_base=buffer, _cnt=min(strlen(buffer), INT_MAX)) and runs the scan engine over it. **This is the single most-called unnamed function in the image, 168 direct call sites**, and it is how every loader turns a lexed token into a number: 152 of those sites push exactly three arguments and clean 0xc, with the middle one a literal format - `%i` 102 times, `%f` 28, `%u` 18, `%c` 8, and one each of `%x`, `%lld` and `%d.%d.%d.%d` - and the return is tested against zero, which is sscanf's count of fields assigned. The string argument is almost always `parse + 0x22C`, the lexer's current token text.",
+   "confidence": "confirmed",
+   "evidence": "Three independent checks agree. (1) Shape: `ret` with no immediate and 152/168 call sites doing `add esp,0xc` afterwards makes it __cdecl and variadic - `lea eax,[ebp+0x10]` at 0x00B964E0 is the va_list, taken one slot past the format. (2) The helper at 0x796466 is the textbook sscanf setup: `mov [ebp-0x14],0x49` is _IOREAD|_IOMYBUF|_IOSTRG, `_cnt` is min(strlen(string), 0x7FFFFFFF) with strlen at 0x79C9F0 - **no count parameter anywhere**, which is what separates sscanf from _snscanf - and 0x7A1379, passed to it as a function pointer, walks the format comparing against '%' (0x25 at 0x00BA14E4 and 0x00BA224D), '*' (0x2A) and 'h' (0x68). (3) project.json already calls 0x67B470 `ParseInt`, documented there as `sscanf(value.text, \"%i\", out)` and confirmed at its own call site; 0x67B470's entire body is `push out; push \"%i\"; push parse+0x22C; call 0x7964D4; add esp,0xc; test eax,eax; jne; ReportParseError`. Format strings read from the executable at 0x15FD14C (\"%i\"), 0x15FD150 (\"%c\"), 0x15FD154 (\"%x\"), 0x15FD144 (\"%d.%03d\"). What would show it wrong: a count argument reaching the helper's _cnt (it would be _snscanf), the FILE flags lacking _IOSTRG (it would read a real stream, fscanf), or call sites passing buffer sizes after each pointer (the _s secure variants). None of those is present."
+  },
+  {
+   "rva": "0x796466",
+   "kind": "function",
+   "name": "v_sscanf_l",
+   "signature": null,
+   "no_signature": "Mixed convention the compiler chose for a file-scope static: four __cdecl stack arguments (INPUTFN inputfn, const char* format, _locale_t locale, va_list arglist) plus **the string in ESI**, which it tests at 0x00B9647E before any stack argument is touched. No C declaration expresses that; in Ghidra it needs custom storage with esi as the second parameter.",
+   "comment": "The static helper behind sscanf, CRT source `v_sscanf_l`. Rejects a null string or a null format with errno=EINVAL (0x16) and _invalid_parameter_noinfo, then fakes a FILE on its stack over the string - _flag 0x49, _ptr=_base=string, _cnt=min(strlen(string), INT_MAX) - and tail-calls the INPUTFN it was handed. Exactly one caller, sscanf at 0x7964D4.",
+   "confidence": "inferred",
+   "evidence": "Confirmed as to behaviour: `findRefs.py --callers 0x00B96466` returns exactly one call site, sscanf's, and the stack FILE is read straight off 0x00B964A3..0x00B964BF. Inferred only as to the name, which is the CRT source's name for this static (sscanf.c) and cannot be recovered from the bytes - no symbol, no export, no string. What would show it wrong: a second caller taking a count (it would be the _snscanf helper instead), or the _cnt coming from an argument rather than from strlen."
+  },
+  {
+   "rva": "0x7A1379",
+   "kind": "function",
+   "name": "_input_l",
+   "signature": "int __cdecl _input_l(FILE* stream, const char* format, _locale_t locale, va_list arglist)",
+   "comment": "The CRT's scanf engine - the format walker shared by every scanf-family entry point. 0x200 bytes of stack frame, /GS cookie, and the format loop compares against '%' , '*' and the length modifiers. Referenced exactly once in the whole image, as the INPUTFN constant sscanf hands to its helper, so in this binary it is reached only through sscanf.",
+   "confidence": "inferred",
+   "evidence": "`findRefs.py --address 0x00BA1379` gives one reference, the `push 0xBA1379` at 0x00B964E6, and the helper calls it with (FILE*, format, locale, arglist) in that order. The body compares a character with 0x25 at 0x00BA14E4 and 0x00BA224D, with 0x2A ('*', assignment suppression) at 0x00BA1587 and 0x68 ('h') at 0x00BA1604 - a scanf/printf format walker. Inferred rather than confirmed because the exact CRT symbol (_input_l vs the _tinput_l macro expansion) is a source-level distinction the bytes cannot settle; what would show it wrong is a second reference from a printf-family wrapper, which would make it the output engine instead."
+  },
+  {
+   "rva": "0x79C9F0",
+   "kind": "function",
+   "name": "strlen",
+   "signature": "size_t __cdecl strlen(const char* s)",
+   "comment": "MSVC's hand-written strlen - byte loop to a dword boundary, then the 0x7EFEFEFF / 0x81010100 zero-byte-in-a-word trick. Called by the sscanf helper to size the fake FILE's _cnt.",
+   "confidence": "confirmed",
+   "evidence": "Instruction-for-instruction the published CRT strlen.asm: argument read from [esp+4] with no frame at 0x00B9C9F0, `test ecx,3` alignment run-up, `mov edx,0x7EFEFEFF` at 0x00B9CA22. Preceded by int3 padding, so it is a function start. What would show it wrong: the magic constant being 0x80808080 with a pcmpeqb (that would be an SSE2 strlen) or a second length argument (strnlen)."
+  },
+  {
+   "rva": "0x7969F1",
+   "kind": "function",
+   "name": "atoi",
+   "signature": "int __cdecl atoi(const char* nptr)",
+   "comment": "`(int)strtol(nptr, NULL, 10)`. **291 direct call sites, the second most-called unnamed function in the image**, and the other half of how a loader reads a number: where sscanf is used for a value that must be validated, atoi is used where a bad token can silently read as 0. The body here is a four-byte alias - `mov edi,edi; push ebp; mov ebp,esp; pop ebp; jmp 0x7969DB` - because the linker folded two source functions with identical code, keeping one body and one thunk; 0x7969DB is that body.",
+   "confidence": "inferred",
+   "evidence": "The chain is confirmed: 0x7969F1 jumps to 0x7969DB, which is `push 10; push 0; push [ebp+8]; call 0x7A2D44; add esp,0xc; ret`, i.e. strtol(s, NULL, 10) - and 0x7A2D44's shared body at 0x7A2B19 clamps at 0x7FFFFFFF / 0x80000000 (LONG_MAX/LONG_MIN, 32-bit, at 0x00BA2CB9 and 0x00BA2CCB), so the conversion is a signed 32-bit one. Call sites are one argument, `push reg; call; add esp,4` in 157 of the 291 (the rest keep the value in eax and clean later), so __cdecl with one pointer argument. **What is inferred is only which of the two folded C names sits at this address**: atoi and atol compile to identical code on Win32 and the bytes cannot tell them apart. The split rests on use - 291 callers here against 8 at 0x7969DB, and C++ code calls atoi far more often than atol - and on both names denoting the same conversion, so a decompilation reading `atoi(token)` is right either way. A PDB, an export table or a matching lib would settle it; nothing in this image can."
+  },
+  {
+   "rva": "0x7969DB",
+   "kind": "function",
+   "name": "atol",
+   "signature": "long __cdecl atol(const char* nptr)",
+   "comment": "`strtol(nptr, NULL, 10)` - the body that atoi at 0x7969F1 jumps into, and separately the target of 8 direct calls of its own.",
+   "confidence": "inferred",
+   "evidence": "Body read directly: `push 0xA; push 0; push [ebp+8]; call 0x7A2D44; add esp,0xc; ret` at 0x00B969DB, __cdecl, one argument. 8 direct callers. Same caveat as 0x7969F1: this is the shared body of the atoi/atol pair, and the assignment of the two C names to the two addresses is by call frequency, not by bytes - they are the same function on a 32-bit target. Being wrong about which is which changes nothing about what a caller does."
+  },
+  {
+   "rva": "0x7A2D44",
+   "kind": "function",
+   "name": "strtol",
+   "signature": "long __cdecl strtol(const char* nptr, char** endptr, int base)",
+   "comment": "CRT `strtol`: forwards to the shared signed/unsigned converter at 0x7A2B19 as strtoxl(locale, nptr, endptr, base, flags=0), passing the process locale (0x16F5A14) while the locale-changed flag at 0x174CBF4 is still zero. Reached from atoi/atol; the sibling wrapper at 0x7A300C passes the same shape to a different, 64-bit body (0x7A2D6F) and is the _strtoi64 of the pair.",
+   "confidence": "inferred",
+   "evidence": "Five pushes in the CRT's strtoxl order - (locale, nptr, endptr, base, flags) with flags forced to 0 - then `add esp,0x14`, and the callee at 0x7A2B19 does the locale update, indexes the 16-bit _pctype table (`movzx eax, word ptr [edx+eax*2]` at 0x00BA2BAA) to classify digits, and clamps at LONG_MAX/LONG_MIN. flags=0 is the signed path, so strtol and not strtoul. What would show it wrong: the fifth argument being 1 (FL_UNSIGNED, making it strtoul) or the clamp constants appearing as the high halves of a 64-bit pair, as they do in the neighbouring body at 0x7A2D6F (0x00BA2F69/0x00BA2F6E), which is what makes that one the 64-bit converter."
+  }
+ ],
+ "struct_fields": [],
+ "vftable_slots": {},
+ "slots_noted": "None of these is virtual: `vtable.py --holding` reports 0x00B964D4, 0x00B969F1 and 0x00B969DB as being in no class's virtual table, which is what you expect of statically linked CRT code.",
+ "frontier": [
+  "0x799931",
+  "0x79FB07",
+  "0x7A2B19",
+  "0x79C724",
+  "0x7964F6",
+  "0x79823A",
+  "0x7A134F",
+  "0x796D57",
+  "0x798135",
+  "0x7A1339",
+  "0x7A12C2",
+  "0x79A291",
+  "0x7B297D",
+  "0x799220",
+  "0x7981B9",
+  "0x7A1319",
+  "0x7962FF",
+  "0x7A2D6F",
+  "0x7A300C",
+  "0x7969FC"
+ ],
+ "frontier_notes": "Everything the two targets reach, directly or through the wrappers named above, that nobody has named. 0x799931 returns a pointer to the thread's errno (callers do `*it = 0x16`, EINVAL) and 0x79FB07 pushes five zeros into 0x79FADA - those two are _errno and _invalid_parameter_noinfo by shape and are called from CRT code all over the image, so they are worth an entry of their own. 0x7A2B19 is the shared signed/unsigned strtoxl body. 0x79C724 .. 0x7962FF are the direct callees of the scan engine 0x7A1379, which include its locale update (0x7964F6, also called by strtol) and its ungetc/character classification helpers. 0x7A300C / 0x7A2D6F / 0x7969FC are the 64-bit siblings (_strtoi64 and _atoi64 by shape), reached by the one `%lld` call site rather than by the targets. 0x799AF0, also a callee of 0x7A1379, is deliberately left off: findings/incoming/arith-helpers.json is naming it in this same wave."
+}

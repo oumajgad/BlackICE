@@ -113,6 +113,44 @@ are numbered in load order and so mean nothing outside that mod. `buildFindings.
 that file into the `SaveToken` enum, which is what makes a save writer decompile as
 `SaveWriteKey(usage, writer)`.
 
+**The static scanners** - `image.py` loads the executable and converts between virtual
+addresses and rvas; the four beside it are built on it and none of them needs the game.
+
+```
+python disasm.py 0x005BB146 0x60          a range, with strings named
+python cfg.py 0x005BAF70 0x450            basic blocks and every edge into them
+python cfg.py 0x005BAF70 0x450 --lands-in 0x005BB25E 0x005BB262
+python fieldchain.py --holder 0xDA8 --index 50 --stride 8
+python slotcalls.py 32 --touches 0xBAC 0x1E4
+python frontier.py --top 40               what named functions call that nobody has named
+python frontier.py --from 0x005BAF70      what one function reaches
+python checkSignatures.py                 the findings against the executable
+```
+
+**`checkSignatures.py` audits what is already recorded**, which nothing else here does.
+A signature predicts the exact immediate on the function's `ret` - `__cdecl` leaves the
+arguments to the caller and ends in a bare `ret`, `__stdcall` and `__thiscall` clean
+their own - so the claim is decidable, and so is "`X::X` writes `X`'s vftable". Both have
+been wrong in `project.json`, both on entries marked `confirmed`, and both cited an
+earlier write-up rather than the image.
+
+Its first useful run corrected six signatures and left nine questions. Two things it
+taught, both now in the tool: a register argument is spelled `unit@ESI` here and costs no
+stack, and `SaveToken` is four bytes - assuming that unblocked 287 `LoadKey` entries which
+then *agreed* with their own `ret`, which is better evidence for the size than reading the
+type would have been.
+
+**Read a disagreement as a question.** Six of the nine are addresses that are not function
+starts, which `buildFindings` rejects for its own reasons - the walk begins inside
+somebody else's body, so the `ret` it finds belongs to someone else. Those need the
+address fixed, not the signature.
+
+**`fieldchain.py` is the one that does the work.** A displacement on its own is hundreds
+of unrelated hits - `--holder` ties the register to a known pointer first, which is what
+showed `peacetime_manpower_rotation` has exactly one reader in the whole image. `cfg.py
+--lands-in` is the check to run before hooking: five bytes of jump cover more than the
+instruction they replace, and a branch into the middle of that lands in the displacement.
+
 **`vtable.py`** - classes' vtables side by side, out of the executable.
 
 ```
@@ -193,6 +231,14 @@ symbols.
    distinguishes them is how the page will split its three columns.
 6. Confirm the meaning of every field twice, with different battles, before writing it
    down. A field that happens to match once is the usual way to get this wrong.
+
+## Working in parallel
+
+`findings/README.md` is the contract for several agents reading the executable at once:
+a question each, one file each into `findings/incoming/`, and `ghidra/mergeFindings.py`
+the only thing that writes `project.json`. It works here because `buildFindings.py`
+validates every entry against the executable, so an answer can be checked before anyone
+reads the reasoning.
 
 ## Where findings go
 

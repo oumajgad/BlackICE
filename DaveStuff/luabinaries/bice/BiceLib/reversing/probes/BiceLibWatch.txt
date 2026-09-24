@@ -1,0 +1,42 @@
+# NOT SHIPPED. This is a template. To use it, copy this file into the game's
+# script folder, beside BiceLib.dll, and uncomment the matching activate line in
+# bicelib_lua.lua. It is kept here rather than in the mod because it is one
+# developer's question of the moment, not mod content - and because the tools
+# that produce its contents (disasm.py, cfg.py) are in the folder above.
+#
+# BiceLib game state watch.
+#
+# One field per line:   offset into CCurrentGameState ; size in bytes (1, 2 or 4) ; label
+#
+# Nothing here is read until BiceLib.Reversing.activateWatch() is called. A row goes into
+# BiceLibWatch.csv beside this file only when one of the values below changes, so a whole
+# campaign is a handful of rows.
+#
+# An offset past the object's 0xDA8 bytes is refused, which is what keeps a wrong line in
+# here harmless: there is no hook and no arbitrary pointer, only a window on an object the
+# game already owns.
+
+# --- in_game -------------------------------------------------------------------------
+# The claim under test. A static trace found exactly one instruction in the executable
+# that writes this byte a nonzero value, inside the routine that enters a running game,
+# and the reading is that it means "a session is live on screen" - which is a question
+# BiceLib has never had a straight answer to.
+#
+# Confirms it:  0 for every frame of the main menu, then 1 once a game is up. Because the
+#               write happens before the in-game GUI is built, the 0 -> 1 should appear
+#               on a row whose `inplay` is still 0, not after the clock starts moving.
+# Refutes it:   1 while still sitting at the menu, or 0 through a running campaign.
+#
+# The `tick` and `inplay` columns are the instrument checking itself. If every row reads
+# tick 0, the sampling never reached a live game and the file says nothing about in_game.
+
+0xDA4 ; 1 ; in_game
+
+# --- a gameplay option, unidentified ---------------------------------------------------
+# Picks between the two supply paths in CUnit::ConsumeSuppliesAndFuel: above zero draws
+# straight from the country pool, at or below zero walks the supply network. Written only
+# by CSetGamePlayOptions, from element 1 of a vector, so it is set once at game start -
+# but which option it is has not been read out. Costs nothing to carry along, and the
+# value a real game gives it is most of the answer.
+
+0xC9C ; 4 ; supply_path_option

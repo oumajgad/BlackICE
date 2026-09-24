@@ -1,0 +1,16 @@
+{
+ "agent": "the session that built this plumbing",
+ "question": "What produces the per-province attrition figure ApplyAttrition scales by?",
+ "source": "reversing/FINDINGS-manpower.md",
+ "addresses": [
+  {
+   "rva": "0xA0990",
+   "kind": "function",
+   "name": "GetProvinceAttrition",
+   "signature": null,
+   "comment": "**The only reader of the `attrition` modifier off a province's own modifier** (`[province + 0xFC + 0x18]`, entry 7, read at `0xA09CD`). `ApplyAttrition` calls it once per subunit at `0x1C75AE` and scales the result by a global and by the subunit's maximum strength.\n\nThree callers in all: `0xA19BF`, `0x1C75AE` and `0x3593E3`.\n\n**No signature recorded** - what it takes beyond the province, and how, was not read.",
+   "confidence": "inferred",
+   "evidence": "fieldchain.py --holder 0xFC+0x18 --index 7 returns this one site and no other, so nothing else in the image reads a province's attrition modifier. The name claims what the value is FOR, read off its one traced caller; it would be wrong if the function returns something else derived from that entry, which was not checked."
+  }
+ ]
+}
