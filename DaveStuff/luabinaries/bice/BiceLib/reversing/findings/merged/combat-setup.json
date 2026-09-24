@@ -1,0 +1,229 @@
+{
+ "agent": "combat-setup",
+ "question": "How a combat is set up: CLandCombat/CNavalCombat/CAirCombat::CreateCombatants and CCombatant::CCombatant - signature, calling convention, what they read off the combat, what they build, and every field access on a class already in project.json.",
+ "source": "reversing/FINDINGS-combat.md",
+
+ "addresses": [
+  {
+   "rva": "0x17B4D0",
+   "kind": "function",
+   "name": "CLandCombat::CreateCombatants",
+   "signature": "void __thiscall CLandCombat::CreateCombatants(CLandCombat* this)",
+   "comment": "CCombat slot 6, land. Two `operator new(0xE4)` calls, each followed by CLandCombatant::CLandCombatant (0x168DB0) with the attacker flag in al (1 then 0) and this in ecx; the results go to this+0x10 (attacker) and this+0x14 (defender). A failed allocation stores null and skips the constructor - the only branching in it. It reads nothing at all off the combat: the object is still blank at this point, because both call sites run slot 6 immediately after the constructor and before anything else is set. The SEH frame (state -1/0/1) exists only to destroy the first combatant if the second allocation throws.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "revises": "signature, and a comment that said only \"builds its two CLandCombatants\"",
+   "evidence": "Whole body disassembled, 0x17B4D0-0x17B56E, both exits a bare `ret`; checkSignatures agrees with __thiscall and no stack arguments. `vtable.py --holding 0x57B4D0` puts it in exactly one table, CLandCombat slot 6. `findRefs --callers` returns zero direct calls; the two indirect ones are `mov edx,[eax+0x18]; mov ecx,edi; call edx` at 0x2FCC5 (CCombatManager::LoadKey) and 0x3142B (the combat factory at 0x31370). Shown wrong by: any read of `[edi+N]` other than the two stores, or a `ret N` other than a bare ret."
+  },
+  {
+   "rva": "0x17B770",
+   "kind": "function",
+   "name": "CNavalCombat::CreateCombatants",
+   "signature": "void __thiscall CNavalCombat::CreateCombatants(CNavalCombat* this)",
+   "comment": "CCombat slot 6, naval. Same shape as the land one, but CNavalCombatant has no constructor of its own - it is inlined here: `operator new(0x10BC)`, CCombatant::CCombatant(object, 1 or 0) with this in ecx, then `[object] = 0x11C4D8C` (the CNavalCombatant vftable) and zeroes at +0x10B4 and +0x10B8. So a naval combatant is 0x10BC bytes and adds exactly two words to CCombatant, the first of which is `positioning` (CNavalCombatant::LoadKey at 0x168D80 takes key 0x39B into [ecx+0x10B4] as a %d). Reads nothing off the combat.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "revises": "signature, and a comment that said only \"builds its two CNavalCombatants\"",
+   "evidence": "Whole body read off cfg.py for 0x17B770-0x17B832, both exits a bare `ret`. The allocation size 0x10BC and the vftable 0x15C4D8C are immediates in the body; 0x15C4D8C - 0x400000 is the CNavalCombatant table the RTTI export gives. `vtable.py --holding 0x57B770`: one table, CNavalCombat slot 6. Shown wrong by: a different immediate on either `push`, or a CNavalCombatant constructor turning up elsewhere that this one only appears to inline."
+  },
+  {
+   "rva": "0x17BBA0",
+   "kind": "function",
+   "name": "CAirCombat::CreateCombatants",
+   "signature": "void __thiscall CAirCombat::CreateCombatants(CAirCombat* this)",
+   "comment": "CCombat slot 6, air. The shortest of the three: `operator new(0x10B4)`, CCombatant::CCombatant(object, 1 or 0) with this in ecx, `[object] = 0x11C4E74` and nothing else - CAirCombatant adds no field its construction initialises, although it is 0x10B4 bytes against CCombatant's 0xB0. Consistent with CAirCombatant::LoadKey (0x16DED0), which matches the `positioning` key 0x39B and then returns without reading it. Reads nothing off the combat.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "revises": "signature, and a comment that said only \"builds its two CAirCombatants\"",
+   "evidence": "Whole body read off cfg.py for 0x17BBA0-0x17BC4D, both exits a bare `ret`. Size 0x10B4 and vftable 0x15C4E74 are immediates. `vtable.py --holding 0x57BBA0`: one table, CAirCombat slot 6. Shown wrong by: any write into the new object between the constructor call and the store to this+0x10/+0x14."
+  },
+  {
+   "rva": "0x163DA0",
+   "kind": "function",
+   "name": "CGroundBombing::CreateCombatants",
+   "signature": "void __thiscall CGroundBombing::CreateCombatants(CGroundBombing* this)",
+   "comment": "CCombat slot 6 for a bombing raid, and the same function again with two different combatant kinds: the attacker is `operator new(0x10E8)` plus CBomberCombatant::CBomberCombatant (0x15DBC0), which hardwires the attacker flag to 1, and the defender is `operator new(0x10B4)` plus an inlined CCombatant::CCombatant with the flag 0 and `[object] = 0x11C464C`, the CGroundTargetCombatant vftable. Reads nothing off the combat.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "evidence": "Body disassembled 0x163DA0-0x163E42, both exits a bare `ret`. `vtable.py --holding 0x563DA0` gives CGroundBombing slot 6 and nothing else. The vftable immediate 0x15C464C is CGroundTargetCombatant's in the RTTI export. Shown wrong by: 0x15DBC0 turning out not to be CBomberCombatant's constructor - it writes 0x15C45DC, which is that class's only table."
+  },
+  {
+   "rva": "0x163E70",
+   "kind": "function",
+   "name": "CLandBombing::CreateCombatants",
+   "signature": "void __thiscall CLandBombing::CreateCombatants(CLandBombing* this)",
+   "comment": "CCombat slot 6 for a land bombing raid. Byte for byte the ground-bombing one with a different target vftable: attacker `operator new(0x10E8)` + CBomberCombatant::CBomberCombatant, defender `operator new(0x10B4)` + inlined CCombatant::CCombatant with the flag 0 and `[object] = 0x11C472C`, CLandTargetCombatant. Reads nothing off the combat.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "evidence": "Body disassembled 0x163E70-0x163F12, both exits a bare `ret`; `vtable.py --holding 0x563E70` gives CLandBombing slot 6 only. The only immediate that differs from 0x163DA0 is the vftable, 0x15C472C, which the RTTI export gives to CLandTargetCombatant. Shown wrong by a different value on either `push` or a second table holding the body."
+  },
+  {
+   "rva": "0x163F40",
+   "kind": "function",
+   "name": "CNavalBombing::CreateCombatants",
+   "signature": "void __thiscall CNavalBombing::CreateCombatants(CNavalBombing* this)",
+   "comment": "CCombat slot 6 for a naval bombing raid; the same body again with `[object] = 0x11C46BC`, CNavalTargetCombatant, as the defender's vftable. Reads nothing off the combat.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "evidence": "Body disassembled 0x163F40-0x163FE2, both exits a bare `ret`; `vtable.py --holding 0x563F40` gives CNavalBombing slot 6 only. Vftable immediate 0x15C46BC is CNavalTargetCombatant's in the RTTI export. Shown wrong by a different immediate or a second holding table."
+  },
+  {
+   "rva": "0x164550",
+   "kind": "function",
+   "name": "CCombatant::CCombatant",
+   "signature": "CCombatant* __stdcall CCombatant::CCombatant(CCombatant* this@stack:4, bool attacker@stack:8, CCombat* combat@ECX) @EAX",
+   "comment": "The base constructor every combatant kind runs. `this` and the attacker flag come on the stack and it cleans them (`ret 8`); the combat comes in ecx and is stored at this+0x3C, which is the back-pointer to the combat. Writes, in order: +0x04 = 0x18D, +0x00 = the CCombatant vftable 0x11C4CA4, four CLists at +0x28, +0x40, +0x54, +0x64 (three words and a byte each), three empty vectors at +0x74, +0x88 and +0x98, +0x84 = 0 (losses), +0xAC = 0 (tactic), +0x50 = 0 (dice), +0x38 = the flag, +0x3C = ecx, byte +0xA8 = 0 (unnamed), and finally +0x08..+0x25 zeroed with three movq, a dword and a word (all unnamed). It then pushes one zero into each of +0x74, +0x88 and +0x98 per entry in g_CSubUnitDataBase's definition vector (count = ([db+0x20]-[db+0x1C])/4), so those three are indexed by subunit type by construction - and it creates g_CSubUnitDataBase inline, with a 511-bucket table, if it is null. Returns this in eax.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "revises": "signature, and a comment that said only that it initialises the country lists and losses",
+   "evidence": "Disassembled whole, 0x164550-0x164883, ending `ret 8`, which is what the signature predicts and what checkSignatures compares against. ecx is not touched between the prologue and `mov [edi+0x3C], ecx` at 0x1645F9, and CCombatant+0x3C is already recorded as the combat - so the ecx argument is real, not an artefact. The four callers that pass a live combat in ecx (0x17B4D0's two, 0x17B7AE, 0x17B7F4, 0x17BBDF, 0x17BC1A) all set it from their own `this`. Shown wrong by: ecx being written before 0x1645F9 on some path the linear read missed, or the global at 0x16886F0 not being g_CSubUnitDataBase, which project.json already names it."
+  },
+  {
+   "rva": "0x168DB0",
+   "kind": "function",
+   "name": "CLandCombatant::CLandCombatant",
+   "signature": "CLandCombatant* __cdecl CLandCombatant::CLandCombatant(CLandCombatant* this@ESI, bool attacker@AL, CCombat* combat@ECX) @EAX",
+   "comment": "The only combatant kind with a constructor the compiler did not inline. Everything travels in registers: `push eax; push esi; call CCombatant::CCombatant` forwards the flag and the object, ecx falls through untouched to the base. It then writes `[esi] = 0x11C4DFC` and zeroes three CLists - +0xB0/+0xB4/+0xB8/byte +0xBC, +0xC0.., +0xD0.. - and byte +0xE0, and returns this in eax. CLandCombatant::LoadKey (0x169040) names all three: +0xB0 is `front` (key 0x396), +0xC0 `reserves` (0x398) and +0xD0 `retreat` (0x1A6); it also sets byte +0xE0 to 1 on every call. The destructor at 0x168E40 walks and frees the nodes of all three through their +8 next pointers. The object is 0xE4 bytes.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "revises": null,
+   "evidence": "Disassembled whole, 0x168DB0-0x168E0F, a bare `ret` and no stack arguments, which is what __cdecl predicts. It writes 0x15C4DFC, CLandCombatant's own and only vftable in the RTTI export, which is the check checkSignatures makes on a constructor. The two callers are 0x17B50E and 0x17B542, both inside CLandCombat::CreateCombatants, and both set al and ecx immediately before. The three key-to-offset pairs come from the `sub eax, N` chain and the `[edi+0xB4]/[edi+0xC4]/[edi+0xD4]` loads in each arm of CLandCombatant::LoadKey, against ghidra/saveTokens.json. Shown wrong by: a second caller passing something else in esi, or the LoadKey arms reading different offsets than the three listed."
+  },
+  {
+   "rva": "0x17B480",
+   "kind": "function",
+   "name": "CLandCombat::CLandCombat",
+   "signature": "CLandCombat* __cdecl CLandCombat::CLandCombat(CLandCombat* this@EAX) @EAX",
+   "comment": "The CCombat base constructor inlined plus CLandCombat's two vftables - there is no separate CCombat::CCombat body. Sets +0x04 = 0x18D, +0x08 = 0x11C0694 (the CSelectable base table) then 0x11C4F34 (CLandCombat's own), byte +0x0C = 0, +0x10/+0x14/+0x18 = 0 (attacker, defender, province all null at this point), +0x1C = -1 (day), +0x20..+0x40 = 0, +0x00 = 0x11C4EE4. Both callers allocate 0x44 bytes for it, which is CCombat's size.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "revises": null,
+   "evidence": "Disassembled whole, 0x17B480-0x17B4CB, a bare `ret` and nothing read from the stack. It writes 0x15C4EE4 and 0x15C4F34, which are CLandCombat's two tables in the RTTI export. `findRefs --vftable CLandCombat` finds that write and no other in the image, so this is the only place a CLandCombat table is installed. Its two callers, 0x2FCB1 (CCombatManager::LoadKey, save key land_combat 0x2D3) and 0x3139A (the factory at 0x31370), both do `push 0x44; call operator_new` first. Shown wrong by any caller allocating something other than 0x44."
+  },
+  {
+   "rva": "0x17B720",
+   "kind": "function",
+   "name": "CNavalCombat::CNavalCombat",
+   "signature": "CNavalCombat* __cdecl CNavalCombat::CNavalCombat(CNavalCombat* this@EAX) @EAX",
+   "comment": "The same body as CLandCombat::CLandCombat with CNavalCombat's tables, 0x11C4F5C and 0x11C4FAC. Called from CCombatManager::LoadKey under the save key naval_combat (0x2D4) and from the combat factory for kind 2, both after `operator new(0x44)`.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "revises": null,
+   "evidence": "Disassembled 0x17B720-0x17B769, a bare `ret`, and it writes 0x15C4F5C and 0x15C4FAC - CNavalCombat's two tables in the RTTI export, and `findRefs --vftable CNavalCombat` finds no other write to them. Callers 0x2FC9A and 0x313B7. Shown wrong by a second reference to the CNavalCombat table turning up in the image."
+  },
+  {
+   "rva": "0x17BB50",
+   "kind": "function",
+   "name": "CAirCombat::CAirCombat",
+   "signature": "CAirCombat* __cdecl CAirCombat::CAirCombat(CAirCombat* this@EAX) @EAX",
+   "comment": "The same body again with CAirCombat's tables, 0x11C4FD4 and 0x11C5024. Called from CCombatManager::LoadKey under the save key air_combat (0x520) and from the combat factory for kind 3, both after `operator new(0x44)`.",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "revises": null,
+   "evidence": "Disassembled 0x17BB50-0x17BB9B, a bare `ret`, and it writes 0x15C4FD4 and 0x15C5024 - CAirCombat's two tables in the RTTI export, with `findRefs --vftable CAirCombat` finding no other write. Callers 0x2FD02 and 0x313CE. Shown wrong by a second reference to the CAirCombat table."
+  }
+ ],
+
+ "struct_fields": [
+  {
+   "struct": "CCombatant",
+   "offset": "0x4",
+   "name": "persistent_meta",
+   "type": "int",
+   "comment": "0x18D, the CPersistent constant every object in this game carries; not a date and not about the combatant",
+   "evidence": "`mov dword ptr [edi+4], 0x18D` at 0x164573, the first thing CCombatant::CCombatant writes; the same literal and the same name are already recorded on CCombatManager and CCombatHistoryEntry. Shown wrong by the field holding anything but 0x18D on a live combatant."
+  },
+  {
+   "struct": "CCombatant",
+   "offset": "0x38",
+   "name": "is_attacker",
+   "type": "bool",
+   "comment": "1 on the combatant stored at CCombat+0x10, 0 on the one at CCombat+0x14 - a side knows which it is without asking the combat. Set from the constructor's second argument.",
+   "evidence": "`mov byte ptr [edi+0x38], al` at 0x1645F6, al being CCombatant::CCombatant's stack argument. All ten construction sites in the image pass 1 for the object that then goes to combat+0x10 and 0 for the one that goes to combat+0x14: 0x17B50A/0x17B53E (land), 0x17B7A9/0x17B7F0 (naval), 0x17BBDA/0x17BC15 (air), 0x163E0B, 0x163EDB, 0x163FAB (the three bombings' targets) and 0x15DBE1 (CBomberCombatant, hardwired to 1). Shown wrong by one construction site passing the other value, or by anything later writing +0x38."
+  },
+  {
+   "struct": "CCombatant",
+   "offset": "0x7C",
+   "name": "men_capacity",
+   "type": "int*",
+   "comment": "end of the allocation behind men_begin; the constructor grows the vector when men_end reaches it",
+   "evidence": "`cmp ecx, [edi+0x7C]` at 0x1646F9 with ecx = [edi+0x78], followed by `lea ecx,[edi+0x74]; call 0x22700` - the begin/end/capacity shape. Shown wrong by +0x7C ever holding something that is not a pointer into the same block as +0x74."
+  },
+  {
+   "struct": "CCombatant",
+   "offset": "0x90",
+   "name": "destroyed_capacity",
+   "type": "int*",
+   "comment": "end of the allocation behind destroyed_begin",
+   "evidence": "`cmp ecx, [edi+0x90]` at 0x164763 with ecx = [edi+0x8C], then `lea ecx,[edi+0x88]; call 0x22700`, the same three-word vector as +0x74. Shown wrong the same way."
+  },
+  {
+   "struct": "CCombatant",
+   "offset": "0x9C",
+   "name": "damage_end",
+   "type": "int*",
+   "comment": "end of the per-subunit-type damage vector whose begin is +0x98",
+   "evidence": "`mov ecx, [edi+0x9C]` at 0x1647C0 used as the write cursor, and `add dword ptr [edi+0x9C], 4` at 0x164815 after each push - exactly what +0x78 and +0x8C do for the other two vectors. Shown wrong by the push writing through a different field."
+  },
+  {
+   "struct": "CCombatant",
+   "offset": "0xA0",
+   "name": "damage_capacity",
+   "type": "int*",
+   "comment": "end of the allocation behind damage_begin",
+   "evidence": "`cmp ecx, [edi+0xA0]` at 0x1647E5 guarding `lea ecx,[edi+0x98]; call 0x22700`. Shown wrong the same way as the other two capacities."
+  },
+  {
+   "struct": "CCombat",
+   "offset": "0x4",
+   "name": "persistent_meta",
+   "type": "int",
+   "comment": "0x18D, the CPersistent constant; the same field the manager, the history and its entries carry",
+   "evidence": "`mov dword ptr [eax+4], 0x18D` at 0x17B482, 0x17B722 and 0x17BB52 - the first write in each of the three combat constructors. Shown wrong by the field holding anything else on a live combat."
+  },
+  {
+   "struct": "CCombat",
+   "offset": "0x8",
+   "name": "selectable_vftable",
+   "type": "void*",
+   "comment": "the CSelectable base's virtual table - CCombat inherits CSelectable at object offset 8, which is why every kind of combat has two tables",
+   "evidence": "Each combat constructor writes 0x11C0694 here and then overwrites it with the derived class's second table (0x11C4F34 land, 0x11C4FAC naval, 0x11C5024 air), and the RTTI export gives CCombat a CSelectable base at offset 8 and exactly those second tables. Shown wrong by the second write landing somewhere other than +0x8."
+  }
+ ],
+
+ "vftable_slots": {
+  "CCombat": {
+   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"}
+  },
+  "CLandCombat": {
+   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"}
+  },
+  "CNavalCombat": {
+   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"}
+  },
+  "CAirCombat": {
+   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"}
+  },
+  "CGroundBombing": {
+   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"}
+  },
+  "CLandBombing": {
+   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"}
+  },
+  "CNavalBombing": {
+   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"}
+  }
+ },
+
+ "slots_noted": "CCombat slot 6 is _purecall (0xABF890) - the record names the slot, not the body, the same way project.json already records CCombat slot 11 GetKind. The six subclasses each hold their own body, one table apiece by vtable.py --holding, so no folded body is named for a class here.",
+
+ "frontier": [
+  "0x15DBC0",
+  "0x22700",
+  "0x1AE0C0",
+  "0x794BEC",
+  "0x799220",
+  "0x31370",
+  "0x2FFC0"
+ ]
+}

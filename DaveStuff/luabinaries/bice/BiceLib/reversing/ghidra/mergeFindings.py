@@ -62,6 +62,7 @@ import glob
 import io
 import json
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -80,6 +81,12 @@ MERGED = os.path.join(HERE, "..", "findings", "merged")
 # record of why. The reason is the finding, as much as the signature would be.
 ADDRESS_KEYS = ("rva", "kind", "name", "signature", "no_signature", "comment",
                 "confidence", "source")
+# Optional, and **kept through a revision**. Everything the merge writes is rebuilt from
+# ADDRESS_KEYS alone, so a key missing from both lists is dropped without a word - which is
+# how `no_signature` was lost, and a revision of a function would otherwise quietly take its
+# locals with it.
+OPTIONAL_ADDRESS_KEYS = ("locals",)
+STACK_AT = re.compile(r"^stack:-?0[xX][0-9a-fA-F]+$")
 FIELD_KEYS = ("offset", "name", "type", "comment", "source")
 KINDS = ("function", "instruction", "vftable", "global", "string", "jumptable")
 CONFIDENCES = ("confirmed", "inferred")
@@ -143,6 +150,19 @@ def problems(document, files):
                 said.append("%s: confidence must be confirmed or inferred" % where)
             if not entry.get("evidence"):
                 said.append("%s: no evidence" % where)
+            for local in entry.get("locals") or []:
+                if not STACK_AT.match(local.get("at") or ""):
+                    said.append("%s: local %r needs `at` as stack:<offset>, e.g. stack:-0x30 - "
+                                "Ghidra's own offset, the number in the local_30 it prints, "
+                                "which is four below the [ebp-0x2c] in the disassembly"
+                                % (where, local.get("name")))
+                if not local.get("name") or not local.get("type"):
+                    said.append("%s: local at %s needs both a name and a type"
+                                % (where, local.get("at")))
+                if not local.get("comment"):
+                    said.append("%s: local %r needs a comment saying what it is"
+                                % (where, local.get("name")))
+
             signature = entry.get("signature") or ""
             if "__thiscall" in signature and "::" not in name:
                 said.append("%s: a __thiscall name needs a class, or Ghidra invents a "
@@ -370,6 +390,13 @@ def land(files):
             clean = {k: entry.get(k) for k in ADDRESS_KEYS}
             clean["source"] = entry.get("source") or incoming["source"]
             have = existing(document, entry)
+            for key in OPTIONAL_ADDRESS_KEYS:
+                # Carried only when there is something to carry, so the file does not gain a
+                # null for every address that has none - but carried through a revision, which
+                # rebuilds the record from scratch and would otherwise drop it.
+                carried = entry.get(key) or (have or {}).get(key)
+                if carried:
+                    clean[key] = carried
             if have is None:
                 addresses.append(clean)
             elif entry.get("revises"):

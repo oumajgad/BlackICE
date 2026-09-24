@@ -96,6 +96,12 @@ KNOWN = {
     "productioncategory": 4,
     "_locale_t": 4,             # a pointer typedef
     "va_list": 4,               # a char* into the caller's frame
+    # By value it is 0x18 - the three fields, with nothing after them. The 0x1C seen
+    # between string fields in about twenty classes is a *stride*, not a size: those
+    # classes leave four bytes after each string. CKillLeaderEffect::GetText and
+    # CLoadOOBEffect::GetText settle it, because they take one by value and `ret 40`
+    # against a sibling shape of 16 - a difference of exactly 24.
+    "hoi3cstring": 0x18,
 }
 
 

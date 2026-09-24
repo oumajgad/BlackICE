@@ -8,6 +8,7 @@ from `bicelib_findings.json`, which sits next to it.
 | `ApplyBiceLibFindings.java` | the Ghidra script |
 | `ResetBiceLibFunction.java` | hands one function back to it, when your own edit of it should give way |
 | `ResetBiceLibOrphans.java` | clears names it put down and has since withdrawn |
+| `RepairFunctionBody.java` | when the decompiler stops mid function: finds the truncated body and repairs it |
 | `bicelib_findings.json` | what it applies; built, do not edit |
 | `luabindExtract.py` | recovers the Lua API's C++ functions from the executable -> `luabind.json` |
 | `project.json` | everything else BiceLib has found; **add new findings here** |
@@ -88,6 +89,92 @@ even where a field of the same name holds a type you gave it, conflicting neighb
 cleared to make room, and enums take the recorded values. Comments are kept either way:
 the script only ever replaces its own `[BiceLib]` text. Tested headless on Ghidra 12.1.2, run
 twice on a fresh import: nothing failed, and the second run changed nothing.
+
+## Typing a function's own locals
+
+A value a function builds for itself reaches no struct field, so nothing can type it and every
+read through it comes out raw. `CSupply::SpreadFromDepot` builds its search frontier as a
+`CList` on the stack with nodes from `operator new`, and the same province read
+`province->supply_depot_distance` through the typed province vector and `*(iVar3 + 0x4c)` two
+lines earlier through the queue.
+
+`locals` on an address record fixes that:
+
+    {"rva": "0x289BE0", "kind": "function", "name": "CSupply::SpreadFromDepot",
+     "locals": [
+      {"at": "stack:-0x30", "name": "frontier",
+       "type": "CListNode<CMapProvince*>*", "comment": "head of the queue"}]}
+
+**`at` is Ghidra's stack offset, which the decompiler prints**: the local it calls `local_30`
+is `stack:-0x30`. On a normal `push ebp; mov ebp,esp` frame that is four *below* the
+`[ebp - 0x2c]` in the disassembly, and copying the disassembly's number is the mistake to
+expect - the apply says so by name when an offset names no local.
+
+**Type the stack slot and the registers follow.** The decompiler carries a type across
+`province = node->data`, so three lines here retyped a dozen reads and the whole edge walk with
+them. That is also why only stack storage is addressable: a register local in Ghidra is a
+variable over a *range* of the function, and one register holds several unrelated ones, so
+`EBX` does not name anything the way an offset does.
+
+**A list of a known class wants its own node type.** The generic `LinkedListNode` holds an
+`undefined4` - it has to, since different lists hold different things - so a pointer to it
+leaves the reads as untyped as before. `buildFindings` already generates a `CListNode<T>` for
+every `CList<T>` a class holds, and it now generates one for an element only a local asks for,
+so **use that name** (`CListNode<CMapProvince*>`) rather than writing a node of your own; a
+second name for the same 16 bytes is the thing to avoid.
+
+Your own retyping wins, the way a name or a signature does, and `overwrite` takes it. A settled
+run reports `locals: 0`.
+
+## When the decompiler stops mid function
+
+The listing has more code, the decompilation ends anyway, and nothing says why. Ghidra
+decompiles a function's **body** - a set of address ranges settled when the function was made -
+not the bytes between its entry and the next function, so a body that stops early takes the
+decompilation with it.
+
+What truncates one is a call the program believes never comes back, and it is recorded in two
+separate places: the callee's **No Return** mark, and a **`CALL_RETURN` flow override** on the
+call site, which the listing shows as `Flow Override: CALL_RETURN (CALL_TERMINATOR)`. Clearing
+one does not clear the other. Ghidra's "Non-Returning Functions - Discovered" analyzer lays
+both down by guessing from the shape of a function, and on this executable it guesses wrong
+about `free` (rva `0x795F9B`), whose five-byte thunk `mov edi,edi; push ebp; mov ebp,esp; pop
+ebp; jmp <body>` is exactly the shape it looks for. `free` has 35868 call sites, so one wrong
+guess can hide a large part of the program.
+
+    RepairFunctionBody                        the function under the cursor
+    RepairFunctionBody fix 0x00689be0         repair it
+    RepairFunctionBody sweep                  every function in the program this happens to
+    RepairFunctionBody sweep fix 0x00b95f9b   repair them all, for the callees named
+
+It reports before it changes anything, and clears nothing until told which callee, because
+**some of these marks are right** - a real `abort` or `_CxxThrowException` truncates its
+callers correctly and there is nothing in the shape of a function that tells the two apart.
+The repair keeps the function's name, signature and comments; only its range set changes.
+
+**A GUI script cannot use `ghidra.app.cmd.*`.** The natural way to write the repair is
+`DisassembleCommand` and `CreateFunctionCmd.fixupFunctionBody`; both compile, and both run
+fine headless, but in the GUI the script's bundle is not wired to that package and it dies at
+run time with `NoClassDefFoundError: ghidra/app/cmd/disassemble/DisassembleCommand`. So
+headless is not a test of whether a script works in the Script Manager. Stay inside
+`GhidraScript`'s own methods and `ghidra.program.model.*`: `disassemble(Address)` replaces the
+first, and a flow walk from the entry point replaces the second - it produces the same body,
+byte for byte, on the case this was written for.
+
+**Dropping an import needs Ghidra restarted.** Every script in this folder compiles into one
+OSGi bundle, and its manifest lists the packages it imports. Removing the last use of a
+package changes that manifest, and Ghidra will not re-wire a bundle that is already active -
+so the fixed script recompiles, the old class keeps running, and the same stack trace comes
+back with the same line numbers. The tell is a trace blaming a line that holds no code in the
+file on disk. A restart clears it; so does toggling the folder in the Bundle Manager.
+
+Two things it was worth getting wrong first. **Do not ask what follows the body's last byte** -
+that reports the alignment padding behind every `ret` as lost code; ask where the flow goes
+from each instruction *inside* the body and which of those the body fails to cover. And **do
+not find the callers through references**: `getReferencesTo` returns at most 4096 and the
+reference manager stops recording at 8191 to one address, so on `free` that route saw a fifth
+of the call sites and reported the function this was written for as untruncated. One pass over
+the listing takes about ten seconds and is right.
 
 ## What it applies
 

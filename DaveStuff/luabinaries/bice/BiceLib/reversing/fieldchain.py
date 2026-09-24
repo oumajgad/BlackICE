@@ -38,6 +38,45 @@ import image
 WINDOW = 0x40
 
 
+# Below this x86 encodes a displacement in one byte, so searching .text for the four-byte
+# value finds nothing real. At and above it the encoding is disp32 and the byte search is
+# both correct and far quicker than a sweep.
+DISP8_LIMIT = 0x80
+
+_swept = None
+
+
+def sweep():
+    """every instruction in .text, decoded once and kept
+
+    Only for displacements under DISP8_LIMIT, where there is nothing in the bytes to
+    search for. It costs a pass over 9.6 MB, which is why it is not the default.
+    """
+    global _swept
+    if _swept is not None:
+        return _swept
+    engine = image.engine()
+    start, data = image.text()
+    _swept = []
+    at = start
+    end = start + len(data)
+    while at < end:
+        window = list(engine.disasm(image.read(at, min(0x1000, end - at)), at))
+        if not window:
+            at += 1                     # data, or a byte that will not decode
+            continue
+        _swept.extend(window)
+        at = window[-1].address + window[-1].size
+    return _swept
+
+
+def sites(displacement):
+    """addresses worth examining for a use of [reg + displacement]"""
+    if displacement >= DISP8_LIMIT:
+        return image.findValue(displacement)
+    return [i.address for i in sweep() if image.usesMemory(i, displacement)]
+
+
 def offsetOf(text):
     """'0xFC+0x18' as 0x114, because that is how a nested field reads"""
     return sum(int(part, 0) for part in text.split("+"))
@@ -47,8 +86,8 @@ def chained(holder, displacement, window):
     """reads of [reg + displacement] where reg came from [something + holder]"""
     engine = image.engine()
     hits = {}
-    for at in image.findValue(holder):
-        for back in range(2, 10):
+    for at in sites(holder):
+        for back in range(0, 10):
             window_bytes = image.read(at - back, back + 8)
             decoded = list(engine.disasm(window_bytes, at - back, count=1))
             if not decoded:
@@ -75,8 +114,8 @@ def direct(displacement, writesOnly):
     """every instruction using [reg + displacement], immediate stores included"""
     engine = image.engine()
     hits = {}
-    for at in image.findValue(displacement):
-        for back in range(2, 12):
+    for at in sites(displacement):
+        for back in range(0, 12):
             decoded = list(engine.disasm(image.read(at - back, back + 10),
                                          at - back, count=1))
             if not decoded:
@@ -84,7 +123,7 @@ def direct(displacement, writesOnly):
             instruction = decoded[0]
             # the displacement has to be inside this instruction, but need not end it:
             # an immediate store carries its value after it
-            if instruction.address + instruction.size <= at + 3:
+            if back and instruction.address + instruction.size <= at + 3:
                 continue
             if not image.usesMemory(instruction, displacement):
                 break

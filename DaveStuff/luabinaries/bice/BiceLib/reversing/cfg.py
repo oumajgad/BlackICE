@@ -15,6 +15,12 @@ to the first byte is fine, because that is where the jump starts.
 
 Walking follows both sides of every branch from the entry, so a block is not called
 unreachable because the only path to it was a conditional nobody looked at.
+
+**It does not resolve jump tables.** A `jmp [table + reg*4]` gets an edge marked
+`indirect` with no destination, and the arms it reaches are walked only if something else
+also reaches them. So a switch's arms can look unreachable and the instruction after the
+table can look like the block they all join. Where you see `indirect`, read the table
+yourself - `disasm.py` at the address the jump indexes will show it.
 """
 
 import argparse
@@ -58,7 +64,11 @@ def walk(entry, length):
                 pending.append(target)
 
             if instruction.mnemonic == "jmp":
-                edges[at] = [("jmp", target)]
+                # An indirect jmp is a jump table this does not resolve, and saying so
+                # matters: with no edge at all, the block after it looks like the place
+                # every arm joins. That is exactly how a dead one-instruction default arm
+                # was read as the common tail of a six-way switch.
+                edges[at] = [("jmp" if target is not None else "indirect", target)]
                 break
             edges[at] = [("taken", target), ("fall", after)]
             at = after
@@ -116,6 +126,12 @@ def main():
             print("\n%-12s <- %s" % ("0x%08X:" % at,
                   ", ".join("0x%X(%s)" % (a, k) for a, k in who) or "entry"))
         print("   0x%08X  %-7s %s" % (at, instruction.mnemonic, instruction.op_str))
+        # An unresolved indirect jump leaves no edge, so without this line the arms it
+        # reaches look unreachable and the instruction after the table looks like the
+        # block they all join.
+        if any(kind == "indirect" for kind, _ in edges.get(at, [])):
+            print("      ^ a jump table this does not resolve - read it with disasm.py;"
+                  " the arms below are NOT unreachable")
 
 
 if __name__ == "__main__":

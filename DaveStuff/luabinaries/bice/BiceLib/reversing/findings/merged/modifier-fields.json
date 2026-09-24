@@ -1,0 +1,158 @@
+{
+ "agent": "modifier-fields: which modifier the reserve penalty is, what CProvince +0x330 is, and whether CUnitPlan +0x58/+0x6C/+0x7C can be named",
+ "question": "Settle the modifier index CSubUnit::GetMaxStrength reads (owner->[0xDA8]->[0x268]); identify CProvince +0x330, the third test in the sea-hop gate; name CUnitPlan +0x58, +0x6C and +0x7C or say why they cannot be named.",
+ "source": "reversing/CLASSES.md",
+ "addresses": [
+  {
+   "rva": "0x1AB680",
+   "kind": "function",
+   "name": "CSubUnit::GetMaxStrength",
+   "signature": "int* __thiscall CSubUnit::GetMaxStrength(CSubUnit* this, int* out, bool penaltyWhenOwnerAcc, bool penaltyAlways) @EAX",
+   "no_signature": null,
+   "comment": "Virtual slot 12, `ret 0xC`: `this` in ecx, a hidden return pointer at [ebp+8] and two bool flags at [ebp+0xC] and [ebp+0x10]. The answer is written through the pointer and the pointer comes back in eax, the same shape as CSubUnit::GetMaxOrganisation next door.\n\n`*out` starts as the definition's `max_strength` (`this->sub_unit_definition_ptr(+0x58)->+0xEC`). Where the subunit's `is_reserve` byte (+0xA4) is clear that value stands. Where it is set, the owner is fetched (0x1ABCF0, subunit -> unit_ptr +0xB0 -> country) and the RESERVES_PENALTY_SIZE modifier is applied as `*out = max_strength * (1000 + owner->global_modifier.values->RESERVES_PENALTY_SIZE) / 1000` - but only past a gate: `penaltyAlways` ([ebp+0x10]) applies it unconditionally, otherwise owner+0x94 set skips it, otherwise owner+0xACC clear applies it, otherwise `penaltyWhenOwnerAcc` ([ebp+0xC]) decides. Both flags are 0 at the call sites looked at (0x5AC1CD pushes 0 and 0), so the everyday answer is: reserves take the penalty unless the owner's +0x94 says otherwise.\n\n**Which modifier it is, is settled.** `owner->[0xDA8]` is CCountry +0xD90 `global_modifier` plus CModifier +0x18 `values`, so `[edx+0x268]` is entry 0x268/8 = 77 of the values array, and entry 77 is RESERVES_PENALTY_SIZE by two independent routes that agree: the live walk of a country's array that named all 143 entries off each entry's CModifierDefinition key, and the global initialiser at rvas 0x56E10..0x59320, whose 77th CModifier is built from the literal MODIFIER_RESERVES_PENALTY_SIZE with 77 in edx (reversing/modifierIds.py). What the code does with it agrees with the name: it scales a **reserve** subunit's max strength by (1000 + value)/1000, and nothing else in the function reads it.\n\nFinally `*out` is **floored** at the global at 0x1A8869C - a minimum strength, not a maximum.\n\n**The name is BiceLib's and may sit one class too low**: the body is slot 12 of CSubUnit's own table as well as CRegiment's, CShip's and CWing's, so it is CSubUnit that declares and implements it and the other three inherit. Left as recorded rather than moved, because moving it is a rename and this wave is not one.",
+   "confidence": "confirmed",
+   "revises": "The recorded comment named the modifier RESERVES_PENALTY_SIZE but carried it as an inherited note - the arithmetic was confirmed and the identity was not - and it still spelled the read as the raw `owner->[0xDA8]->[0x268]`. Nothing about the function changes; the modifier is now settled and the comment says how, so the next reader does not re-open it.",
+   "evidence": "The read is two already-recorded fields composed: CCountry +0xD90 global_modifier (a CModifier by value) and CModifier +0x18 values, 0xD90+0x18 = 0xDA8, and CModifier::GetValue (rva 0x179E0) is [this+0x18][type*8], so 0x268 is entry 77. Two independent sources name entry 77 and agree: CModifierValues +0x268 is already recorded RESERVES_PENALTY_SIZE from the live walk of a country's array (CLASSES.md, twelve countries agreeing entry for entry), and reversing/modifierIds.py, walking the 108 CModifier constructions in the global initialiser, pairs id 77 with the literal MODIFIER_RESERVES_PENALTY_SIZE. The two indexings coincide here because array index and CModifier::id agree for 0..101 and only diverge from 102 (see the CModifier.values entry in this file). Corroboration from the reader: the scaling is reached only when the subunit's is_reserve byte at +0xA4 is set. What would show it wrong: the array index not being the modifier id below 102 - which would also break PEACETIME_MANPOWER_ROTATION at entry 50 and ATTRITION at entry 7, both of which already have working readers; or a second CModifier built with id 77 later in the initialiser, which would silently rename entry 77 (id 104 is the one id built twice, and it is not this one)."
+  },
+  {
+   "rva": "0x1AB6C7",
+   "kind": "instruction",
+   "name": "CSubUnit_GetMaxStrength_ReservesPenaltyValue",
+   "signature": null,
+   "no_signature": null,
+   "comment": "`mov ecx,[edx+0x268]` - the reserve penalty itself: entry 77 of the owner's global modifier values, RESERVES_PENALTY_SIZE, in thousandths. edx came from `mov edx,[eax+0xda8]` one instruction earlier, which is CCountry +0xD90 global_modifier plus CModifier +0x18 values. The next instruction adds 1000 to it, so -500 here halves a reserve subunit's max strength.",
+   "confidence": "confirmed",
+   "evidence": "Decoded from the function start at 0x5AB680, not from a guess: 0x5AB6C1 `mov edx,[eax+0xda8]`, 0x5AB6C7 `mov ecx,[edx+0x268]`, 0x5AB6CD `add ecx,0x3e8`, then imul by the definition's max_strength and a divide by 1000 through the 64-bit helper at 0xB99980. 0x268/8 = 77, and both the live array walk and the initialiser walk call 77 RESERVES_PENALTY_SIZE. What would show it wrong: CModifierEntry not being 8 bytes, which would move every entry."
+  },
+  {
+   "rva": "0x1CEEA4",
+   "kind": "instruction",
+   "name": "ProvinceSeaHopCheck_OwnerIdTest",
+   "signature": null,
+   "no_signature": null,
+   "comment": "`cmp dword ptr [edi+0x330], 0` - **not a field of its own**: +0x330 is the `id` half of the CCountryTag at CProvince +0x32C, so this is `province->owner.id != 0`, the province is owned by somebody. CCountryDataBase::GetTag hands back `---` with id 0 where there is none. It is the second of four tests in this gate: the path node's +0x22 byte at 0x1CEE9A, this one, `+0x354` (the CPort*) at 0x1CEEAD and `naval_base->level_max(+0x20) > 0` at 0x1CEEBC.",
+   "confidence": "confirmed",
+   "evidence": "CCountryTag is already recorded as 8 bytes, char[4] tag at +0 and int id at +4, and CProvince +0x32C is already recorded `owner`, which puts the id at +0x330 and leaves no room for anything else. The same function proves the layout on the neighbouring tag: at 0x1CEEC2 it reads [edi+0x334] (controller.tag), at 0x1CEED4 [edi+0x338] (controller.id) and uses that id to index g_CCountryDataBase->countries_first (+0x16C), and at 0x1CEEDD it takes `lea ebx,[edi+0x334]` - the address of the whole CCountryTag - to pass it on. Id 0 as 'nobody' is the game's own convention, already recorded on CCountryDataBase::GetTag (rva 0x118480). What would show it wrong: a country whose id is 0 and which really owns provinces, which would make this test exclude it - the tag database would have to hand id 0 to a real tag for that."
+  },
+  {
+   "rva": "0xA7EE3",
+   "kind": "instruction",
+   "name": "ProvinceNavalBaseCheck_OwnerIdTest",
+   "signature": null,
+   "no_signature": null,
+   "comment": "`cmp dword ptr [esi+0x330], 0` - the same test as the sea-hop gate's, on the same field: +0x330 is the `id` half of CProvince +0x32C `owner`, so it asks whether the province is owned at all. The function it opens (0xA7EE0, reached from 0x81AC1 and 0x81AD0) writes `province->naval_base->level_current` (+0x24) through the out pointer in edi unconditionally, and then **zeroes it again** at 0xA7F6C only where every gate passes: owner.id non-zero, the port at +0x354 non-null, `naval_base->level_max` (+0x20) > 0, a match on the adjacent sea province through the path node at +0xD4, and a true from the call at 0xA7F61. Any gate that fails leaves the level standing.",
+   "confidence": "confirmed",
+   "evidence": "Same structural argument as the other site: CCountryTag is 8 bytes and CProvince +0x32C is `owner`, both already recorded, so +0x330 is owner.id. The instruction is decoded from the function start image.functionStart gives for it, 0x4A7EE0, and every other read around it is an already-named CProvince field: +0x300 naval_base with its +0x24 level_current and +0x20 level_max, +0x354 port, +0xD4 the path node. What would show it wrong: the same thing that would break the other site - a real country with id 0."
+  },
+  {
+   "rva": "0x4DEA25",
+   "kind": "instruction",
+   "name": "CUnitPlan_Ctor_ZeroesUnnamed58",
+   "signature": null,
+   "no_signature": null,
+   "comment": "`mov [eax+0x58], ecx` in CUnitPlan::CUnitPlan, with ecx zero - and, with the `mov [eax+0x6c], ecx` at 0x4DEA34, **the only write to either field in any CUnitPlan method**. The constructor lays the object out as: vftable, 0x18D at +4, the two bytes at +8, stances 2/1/1 at +0xC/+0x10/+0x14, four CLists (+0x18, +0x28, +0x38, +0x48), **an unnamed dword at +0x58**, a fifth CList at +0x5C, **an unnamed dword at +0x6C**, the `min` vector's three pointers (+0x70, +0x74, +0x78), then +0x80..+0x8C. It never touches +0x7C at all.\n\nWhat is known about the three: the destructor frees nothing at any of them, so none is a pointer the plan owns; CUnitPlan::SetActive (the reset, 0x4DEB10) clears every list, the vector and +0x80..+0x8C and leaves all three alone; the applier at 0x1D0F00 copies active, stance, ops_area, objectives, path, path2, min, our_power and their_power from one plan to another and copies none of them; and LoadKey (0x4DF720) and SaveContents (0x4DF160) never mention them, so nothing about them reaches a savegame or the network. They are runtime-only, unread by the class itself, and cannot be named from the executable alone.",
+   "confidence": "inferred",
+   "evidence": "cfg.walk over all sixteen functions that can hold a plan pointer - the constructor 0x4DE9D0, the destructor 0x4DEA60, SetActive 0x4DEB10, SetOpsArea 0x4DEBB0, SetFallbackLine 0x4DEF00, SetMinForces 0x4DF0F0, the four copy setters 0x4DEE60/0x4DEEB0/0x4DF050/0x4DF0A0, SaveContents 0x4DF160, LoadKey 0x4DF720, the applier 0x1D0F00 and CUnitPlanCommand's 0x1E4DC0/0x1E4FF0/0x1E5020 - finds exactly two references to 0x58, 0x6C or 0x7C in all of them, both in the constructor. Walking control flow rather than sweeping linearly is what makes that trustworthy: a linear sweep of the same range decodes the pointer table after CUnitPlan::LoadKey's jump table as code and invents matches. Every function in the image that forms a pointer to a plan (`lea`/`add reg, +0x1FC`, 34 sites, 23 distinct functions, each cfg-walked) was checked the same way, and the few 0x58/0x6C/0x7C hits inside them are on other objects - CSetPlanAttributesCommand::Execute's are the command's own +0x64/+0x68/+0x6C attribute fields, CUnit's destructor's are CUnit's own vectors at +0x6C/+0x7C. **What is not settled, and what would settle it**: the plan sits by value in CUnit, so a reader outside the class appears as CUnit +0x254, +0x268 or +0x278, and those are 86, 78 and 79 decoded hits across the image with nothing tying the base register to a CUnit. The sibling test - the same register also used at another plan displacement - does not discriminate, because any zeroing constructor of a class over 0x290 bytes matches every sibling at once. A live read (watching CUnit +0x254/+0x268/+0x278 on a unit while plans are drawn, or a write watchpoint on them) would settle all three, and is the only thing that will."
+  },
+  {
+   "rva": "0x1D0F00",
+   "kind": "function",
+   "name": "CUnitPlan::ApplyToUnit",
+   "signature": "void __stdcall CUnitPlan::ApplyToUnit(CUnitPlan* source@EAX, CUnit* unit)",
+   "no_signature": null,
+   "comment": "Copies a whole plan onto a unit's own plan at CUnit +0x1FC. In order: CUnitPlan::SetActive(dest, source->active), `unit->plan_stance(+0x208) = source->stance`, then CopyOpsArea, CopyObjectives, CopyPath, CopyPath2 and SetMinForces from the source's +0x18, +0x38, +0x48, +0x5C and +0x70, then our_power and their_power into CUnit +0x27C/+0x280. **What it does not copy is as informative as what it does**: the fallback line (+0x28), embark and debark (+0x88/+0x8C) and the three unnamed fields (+0x58, +0x6C, +0x7C) are all left as the reset left them. Both call sites are CUnitPlanCommand's slot 6, which is how a plan drawn in the interface reaches the unit.",
+   "confidence": "confirmed",
+   "evidence": "Read off the body: `mov ebx,[ebp+8]` is the unit, eax is the source plan, `lea esi,[ebx+0x1fc]` is the destination plan, and it ends `ret 4` - one stack argument and one in a register, which is what the signature says and what checkSignatures.py checks. Every callee is a CUnitPlan method taking the plan in EAX. The two callers are 0x1E5065 and 0x1E5075, both inside 0x1E5020, which is slot 6 of CUnitPlanCommand's table at 0x15C921C (its RTTI type descriptor reads .?AVCUnitPlanCommand@@) and which resolves the unit from the command's reference at +0x40/+0x44 first. What would show it wrong: [ebp+8] not being a CUnit - it is only ever used at +0x1FC, +0x208, +0x27C and +0x280, all recorded CUnit fields, and the caller obtains it from the unit lookup at 0xA9DA00."
+  },
+  {
+   "rva": "0x4DEEB0",
+   "kind": "function",
+   "name": "CUnitPlan::CopyOpsArea",
+   "signature": "void __stdcall CUnitPlan::CopyOpsArea(CUnitPlan* this@EAX, CList* source)",
+   "no_signature": null,
+   "comment": "Replaces the plan's `ops_area` list (+0x18) with the caller's. It walks the existing nodes freeing each one, zeroes the list's first, last and count, and hands the list and the argument to the list helper at 0x49C070. `this` arrives in EAX and the source is the one stack argument (`ret 4`). Called from the plan applier at 0x1D0F00 and from the matching plan command's Execute.",
+   "confidence": "confirmed",
+   "evidence": "Body read from its own start: `lea esi,[eax+0x18]` names the field, the free loop follows the node chain, the three zero stores are the CList's first, last and count, and it ends `ret 4` - one stack argument with `this` in a register, which is what the signature says and what checkSignatures.py checks against the ret. The field at +0x18 is already recorded on CUnitPlan. What would show it wrong: EAX not being the plan at the call sites - 0x1D0F00 sets eax = esi = unit+0x1FC before each of these calls, and the command Execute functions do `add eax,0x1fc` on the looked-up unit first."
+  },
+  {
+   "rva": "0x4DEE60",
+   "kind": "function",
+   "name": "CUnitPlan::CopyObjectives",
+   "signature": "void __stdcall CUnitPlan::CopyObjectives(CUnitPlan* this@EAX, CList* source)",
+   "no_signature": null,
+   "comment": "Replaces the plan's `objectives` list (+0x38) with the caller's. It walks the existing nodes freeing each one, zeroes the list's first, last and count, and hands the list and the argument to the list helper at 0x4E3260. `this` arrives in EAX and the source is the one stack argument (`ret 4`). Called from the plan applier at 0x1D0F00 and from the matching plan command's Execute.",
+   "confidence": "confirmed",
+   "evidence": "Body read from its own start: `lea esi,[eax+0x38]` names the field, the free loop follows the node chain, the three zero stores are the CList's first, last and count, and it ends `ret 4` - one stack argument with `this` in a register, which is what the signature says and what checkSignatures.py checks against the ret. The field at +0x38 is already recorded on CUnitPlan. What would show it wrong: EAX not being the plan at the call sites - 0x1D0F00 sets eax = esi = unit+0x1FC before each of these calls, and the command Execute functions do `add eax,0x1fc` on the looked-up unit first."
+  },
+  {
+   "rva": "0x4DF050",
+   "kind": "function",
+   "name": "CUnitPlan::CopyPath",
+   "signature": "void __stdcall CUnitPlan::CopyPath(CUnitPlan* this@EAX, CList* source)",
+   "no_signature": null,
+   "comment": "Replaces the plan's `path` list (+0x48) with the caller's. It walks the existing nodes freeing each one, zeroes the list's first, last and count, and hands the list and the argument to the list helper at 0x49C070. `this` arrives in EAX and the source is the one stack argument (`ret 4`). Called from the plan applier at 0x1D0F00 and from the matching plan command's Execute.",
+   "confidence": "confirmed",
+   "evidence": "Body read from its own start: `lea esi,[eax+0x48]` names the field, the free loop follows the node chain, the three zero stores are the CList's first, last and count, and it ends `ret 4` - one stack argument with `this` in a register, which is what the signature says and what checkSignatures.py checks against the ret. The field at +0x48 is already recorded on CUnitPlan. What would show it wrong: EAX not being the plan at the call sites - 0x1D0F00 sets eax = esi = unit+0x1FC before each of these calls, and the command Execute functions do `add eax,0x1fc` on the looked-up unit first."
+  },
+  {
+   "rva": "0x4DF0A0",
+   "kind": "function",
+   "name": "CUnitPlan::CopyPath2",
+   "signature": "void __stdcall CUnitPlan::CopyPath2(CUnitPlan* this@EAX, CList* source)",
+   "no_signature": null,
+   "comment": "Replaces the plan's `path2` list (+0x5C) with the caller's. It walks the existing nodes freeing each one, zeroes the list's first, last and count, and hands the list and the argument to the list helper at 0x49C070. `this` arrives in EAX and the source is the one stack argument (`ret 4`). Called from the plan applier at 0x1D0F00 and from the matching plan command's Execute.",
+   "confidence": "confirmed",
+   "evidence": "Body read from its own start: `lea esi,[eax+0x5C]` names the field, the free loop follows the node chain, the three zero stores are the CList's first, last and count, and it ends `ret 4` - one stack argument with `this` in a register, which is what the signature says and what checkSignatures.py checks against the ret. The field at +0x5C is already recorded on CUnitPlan. What would show it wrong: EAX not being the plan at the call sites - 0x1D0F00 sets eax = esi = unit+0x1FC before each of these calls, and the command Execute functions do `add eax,0x1fc` on the looked-up unit first."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CProvince",
+   "offset": "0x32C",
+   "name": "owner",
+   "type": "CCountryTag",
+   "comment": "the owner. Eight bytes: the tag at +0x32C and **the id at +0x330**, which is what code asking whether a province is owned at all compares against zero - `---` with id 0 is what CCountryDataBase::GetTag hands back where there is none. Two such tests are the sea-hop gate at rva 0x1CEEA4 and the naval-base check at rva 0xA7EE3. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures",
+   "revises": "The comment was 'the owner' and nothing more, which left the id half at +0x330 looking like an unnamed field - the province-buildings finding calls it 'an unidentified province field at +0x330' in the middle of the sea-hop gate. It is not a field; it is this one's second half.",
+   "evidence": "CCountryTag is already recorded 8 bytes wide, char[4] tag at +0 and int id at +4, so `owner` covers 0x32C..0x333 and nothing else can live at +0x330. The function at 0x1CEE70 demonstrates the layout on the neighbouring tag in the same breath: [edi+0x334] is controller.tag, [edi+0x338] is controller.id and is used to index g_CCountryDataBase->countries_first, and `lea ebx,[edi+0x334]` passes the pair as one object. What would show it wrong: CCountryTag not being 8 bytes, which would also break every one of the 1295 call sites of CCountryTag::GetCountry."
+  },
+  {
+   "struct": "CMapProvince",
+   "offset": "0x32C",
+   "name": "owner",
+   "type": "CCountryTag",
+   "comment": "the owner. Eight bytes: the tag at +0x32C and **the id at +0x330**, which is what code asking whether a province is owned at all compares against zero - `---` with id 0 is what CCountryDataBase::GetTag hands back where there is none. Two such tests are the sea-hop gate at rva 0x1CEEA4 and the naval-base check at rva 0xA7EE3.",
+   "revises": "The same correction as CProvince +0x32C: the comment was 'the owner' and the id half at +0x330 read as an unnamed field in the sea-hop gate. Both structures carry the field, so both need the note.",
+   "evidence": "As for CProvince +0x32C: CCountryTag is recorded 8 bytes, tag at +0 and id at +4. The reader at 0xA7EE3 uses the same base register for +0x330 and for +0x300 and +0x354, both already-recorded CProvince fields. What would show it wrong: CCountryTag not being 8 bytes."
+  },
+  {
+   "struct": "CModifier",
+   "offset": "0x18",
+   "name": "values",
+   "type": "CModifierValues*",
+   "comment": "the values, one entry per ModifierType and indexed by it; CModifier::GetValue reads [this+0x18][type*8]. Typed as a structure of named entries so a read is a field rather than an index. **The index is the definition's registration order, which is CModifier::id only up to 101.** The global initialiser builds 108 definitions in array order but stamps ids that are not in that order at the end: entries 102..107 are LAND_INTEL_BOOST (id 103), NAVAL_INTEL_BOOST (id 104), LOCAL_UNDERGROUND (id 102), NAVAL_INTEL_BOOST a second time (id 104 again), STRATEGIC_RESOURCE_EFFICIENCY (id 105) and LOCAL_UNIT_SPEED (id 106). So an index below 102 can be read straight off reversing/modifierIds.py, and one at or above 102 has to be read off this structure instead - while a comparison against CModifier +0x24 `id` is the other way round.",
+   "revises": "The comment said the array is 'indexed by ModifierType' without saying that ModifierType and CModifier::id part company at 102, which is exactly where a reader reaching for modifierIds.py gets the wrong name - MODIFIER_LOCAL_UNDERGROUND is id 102 and entry 104. Nothing about the field or its type changes.",
+   "evidence": "Two independent orderings that agree entry for entry. This structure's 143 names came from a live walk of a country's array reading each entry's CModifierDefinition key (CLASSES.md, twelve countries agreeing). Walking the 108 CModifier constructions in the initialiser at rvas 0x56E10..0x59320 in address order - the same walk reversing/modifierIds.py does, but keeping the order instead of keying by id - gives LAND_INTEL_BOOST (id 103, rva 0x5916F), NAVAL_INTEL_BOOST (id 104, 0x591C4), LOCAL_UNDERGROUND (id 102, 0x59219), NAVAL_INTEL_BOOST again (id 104, 0x5926E), STRATEGIC_RESOURCE_EFFICIENCY (id 105, 0x592C4), LOCAL_UNIT_SPEED (id 106, 0x5931A), which is position for position what the live walk recorded at entries 102..107, duplicate included. modifierIds.py reports 107 modifiers for 108 constructions because it keys by id and 104 is built twice. What would show it wrong: the array not being filled in registration order - in which case the live walk and the initialiser walk would not line up at 102..107, and they do, including the duplicate."
+  },
+  {
+   "struct": "CUnitPlan",
+   "offset": "0x70",
+   "name": "min",
+   "type": "std::vector<int>",
+   "comment": "how many regiments of each subunit type the plan wants, indexed by CSubUnitDefinition::type_index and sized to the subunit database. The same vector CUnit reaches as plan_subunit_wanted at +0x26C. **It is twelve bytes, +0x70..+0x7B** - _Myfirst, _Mylast, _Myend, with no stored allocator - so **+0x7C is a separate dword**, and it is the one field CUnitPlan's constructor never initialises.",
+   "revises": "The comment did not say how wide the vector is, which left +0x7C looking as though it might be the vector's tail. It is not: the constructor zeroes +0x70, +0x74 and +0x78 and stops, and this image's std::vector<int> is three pointers with no allocator byte.",
+   "evidence": "The vector's own helpers read it as three pointers from offset 0: the assign at 0x82190 reads [esi], [esi+4] and [esi+8] as first/last/end (it carries the 'vector<T> too long' literal at 0x15B4F5C), and the clear at 0xA8590 reads [ebx] and [ebx+4]. CUnitPlan::SetMinForces (0x4DF0F0) passes `lea ecx,[esi+0x70]` as the vector object to 0x82190 and reads [esi+0x70] and [esi+0x74] as first and last; the applier at 0x1D0F00 passes the source's +0x70 as the source vector, whose [ecx] and [ecx+4] it reads. The constructor at 0x4DE9D0 zeroes 0x70, 0x74 and 0x78 and jumps straight to 0x80. What would show it wrong: a std::vector in this image that stores its allocator, which would put _Myfirst at +0x74 and make the destructor's free of [esi+0x70] free the wrong pointer."
+  }
+ ],
+ "vftable_slots": {},
+ "frontier": [
+  "0x49C070",
+  "0x4E3260",
+  "0x4DD860",
+  "0x82190",
+  "0xA8590",
+  "0x4DF160",
+  "0xA7EE0",
+  "0x1CEE70"
+ ],
+ "slots_noted": "None of the five functions named here is in any class's virtual table - vtable.py --holding says so for each of 0x4DEE60, 0x4DEEB0, 0x4DF050, 0x4DF0A0 and 0x1D0F00. CUnitPlan's table at 0x15C8BFC has six slots (0x5E4FF0, 0x45BB10, 0x8DF160, 0xA7C050, 0x8DF720, 0xABF890) and none of them is renamed here."
+}

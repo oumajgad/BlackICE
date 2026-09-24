@@ -45,13 +45,22 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import ghidra.app.decompiler.DecompInterface;
+import ghidra.app.decompiler.DecompileResults;
 import ghidra.app.script.GhidraScript;
 import ghidra.program.model.address.Address;
 import ghidra.program.model.data.*;
 import ghidra.program.model.listing.*;
 import ghidra.program.model.lang.Register;
 import ghidra.program.model.listing.Function.FunctionUpdateType;
+import ghidra.program.model.pcode.HighFunction;
+import ghidra.program.model.pcode.HighFunctionDBUtil;
+import ghidra.program.model.pcode.HighSymbol;
+import ghidra.program.model.pcode.LocalSymbolMap;
 import ghidra.program.model.pcode.Varnode;
+import ghidra.program.model.scalar.Scalar;
+import ghidra.program.model.symbol.Equate;
+import ghidra.program.model.symbol.EquateTable;
 import ghidra.program.model.symbol.Namespace;
 import ghidra.program.model.symbol.SourceType;
 import ghidra.program.model.symbol.Symbol;
@@ -88,7 +97,10 @@ public class ApplyBiceLibFindings extends GhidraScript {
 	private SymbolTable symbols;
 	private Address base;
 
-	private int named, labelled, signatures, fields, kept, failed, vftables, enums;
+	private int named, labelled, signatures, fields, kept, failed, vftables, enums,
+			equates, variables;
+	/** made on the first function that declares locals, and only then */
+	private DecompInterface decompiler;
 	private final List<String> notes = new ArrayList<>();
 
 	@Override
@@ -132,6 +144,17 @@ public class ApplyBiceLibFindings extends GhidraScript {
 			monitor.checkCancelled();
 			applyStruct(e.getAsJsonObject());
 		}
+		// After the enums, which they name members of, and before anything else.
+		for (JsonElement e : array(root, "equates")) {
+			monitor.checkCancelled();
+			try {
+				applyEquate(e.getAsJsonObject());
+			}
+			catch (Exception ex) {
+				failed++;
+				notes.add("! equate: " + ex.getMessage());
+			}
+		}
 		for (JsonElement e : array(root, "functions")) {
 			monitor.checkCancelled();
 			try {
@@ -171,8 +194,13 @@ public class ApplyBiceLibFindings extends GhidraScript {
 		}
 		println("");
 		println(String.format("functions named: %d, labels: %d, signatures: %d, struct fields: %d, " +
-			"enums: %d, virtual tables: %d, %s: %d, failed: %d", named, labelled, signatures, fields,
-			enums, vftables, overwrite ? "replaced" : "left as you had them", kept, failed));
+			"enums: %d, equates: %d, virtual tables: %d, locals: %d, %s: %d, failed: %d", named,
+			labelled, signatures, fields, enums, equates, vftables, variables,
+			overwrite ? "replaced" : "left as you had them", kept, failed));
+		if (decompiler != null) {
+			decompiler.dispose();
+			decompiler = null;
+		}
 	}
 
 	// ---- functions --------------------------------------------------------------------
@@ -256,6 +284,98 @@ public class ApplyBiceLibFindings extends GhidraScript {
 
 		if (item.has("signature") && !item.get("signature").isJsonNull()) {
 			applySignature(function, item.getAsJsonObject("signature"));
+		}
+		// After the signature: the decompiler below reads the function as it now stands, and a
+		// parameter that arrives later moves the stack locals under it.
+		if (item.has("locals")) {
+			applyLocals(function, item.getAsJsonArray("locals"));
+		}
+	}
+
+	/**
+	 * Name and type the stack locals a finding declares.
+	 *
+	 * **Why this is not a struct field.** A local is built inside the function - here a queue
+	 * of nodes from `operator new` - so no member of any class reaches it and nothing can
+	 * propagate a type in. Ghidra calls it `local_30` and every use reads `*(iVar3 + 0x4c)`
+	 * where the same field a line away reads `province->supply_depot_distance`, purely because
+	 * one came through a typed vector and the other did not.
+	 *
+	 * **Typing the stack slot is enough; the register locals follow.** The value a slot is
+	 * read into keeps the type across the assignment, so one line here settles a dozen reads.
+	 * That is also why registers are not addressable in a finding - see parse_locals.
+	 */
+	private void applyLocals(Function function, JsonArray wanted) throws Exception {
+		if (wanted.size() == 0) {
+			return;
+		}
+		if (decompiler == null) {
+			decompiler = new DecompInterface();
+			decompiler.openProgram(currentProgram);
+		}
+		DecompileResults results = decompiler.decompileFunction(function, 120, monitor);
+		HighFunction high = results == null ? null : results.getHighFunction();
+		if (high == null) {
+			failed++;
+			notes.add("! " + function.getEntryPoint() + " " + function.getName() +
+				": locals need the decompiler, and it did not produce a function" +
+				(results == null ? "" : " (" + results.getErrorMessage() + ")"));
+			return;
+		}
+		LocalSymbolMap locals = high.getLocalSymbolMap();
+
+		for (JsonElement e : wanted) {
+			JsonObject want = e.getAsJsonObject();
+			int at = want.get("at").getAsInt();
+			String name = want.get("name").getAsString();
+			DataType type = resolve(want.get("type").getAsString());
+			String where = function.getEntryPoint() + " " + function.getName() + " stack:" +
+				(at < 0 ? "-0x" + Integer.toHexString(-at) : "0x" + Integer.toHexString(at));
+
+			// Yours wins, the way a name or a signature does. A stack variable already in the
+			// database is the only thing that can carry a source, so a slot the decompiler has
+			// merely invented has none and is ours to take.
+			Variable existing = null;
+			for (Variable v : function.getLocalVariables()) {
+				if (v.isStackVariable() && v.getStackOffset() == at) {
+					existing = v;
+					break;
+				}
+			}
+			if (existing != null && existing.getSource() == SourceType.USER_DEFINED && !overwrite) {
+				kept++;
+				notes.add(where + " kept your '" + existing.getName() + "'");
+				continue;
+			}
+
+			HighSymbol symbol = null;
+			for (java.util.Iterator<HighSymbol> it = locals.getSymbols(); it.hasNext();) {
+				HighSymbol candidate = it.next();
+				VariableStorage storage = candidate.getStorage();
+				if (storage != null && storage.isStackStorage() && storage.getStackOffset() == at) {
+					symbol = candidate;
+					break;
+				}
+			}
+			if (symbol == null) {
+				// Not a failure to shout about on its own, but it does mean the finding is
+				// describing a slot this function has not got - most often the [ebp-N] from the
+				// disassembly rather than Ghidra's own offset, which is four lower.
+				failed++;
+				notes.add("! " + where + " " + name + ": no local there" +
+					" (Ghidra's offset, the number in its local_NN, is four below the [ebp-N])");
+				continue;
+			}
+
+			DataType had = symbol.getDataType();
+			if (name.equals(symbol.getName()) && had != null && had.isEquivalent(type)) {
+				continue;                       // already so; a settled run reports none
+			}
+			if (existing != null && existing.getSource() == SourceType.USER_DEFINED) {
+				notes.add(where + " replaced your '" + existing.getName() + "'");
+			}
+			HighFunctionDBUtil.updateDBVariable(symbol, name, type, SourceType.ANALYSIS);
+			variables++;
 		}
 	}
 
@@ -428,6 +548,65 @@ public class ApplyBiceLibFindings extends GhidraScript {
 	 * /BiceLib and is its own to rewrite, which is what lets a rebuild add members to an
 	 * enum already in the program. One of yours, anywhere else, it leaves and says so.
 	 */
+	/**
+	 * Shows one constant as the enum member it is.
+	 *
+	 * Typing a field as an enum only reaches a comparison the decompiler can see *is* that
+	 * field. Where the pointer was walked out of an untyped container - which is most of
+	 * this game's loaders - nothing connects the two, and the constant stays a number
+	 * however well the structure is typed. CBuildingDataBase's role ladder compares
+	 * `[esi+0x24]` against five modifier ids that way.
+	 *
+	 * An equate binds the constant at one instruction to one member, with no type
+	 * inference in between, which is what it is for.
+	 */
+	private void applyEquate(JsonObject item) throws Exception {
+		Address address = base.add(item.get("rva").getAsLong());
+		String enumName = item.get("enum").getAsString();
+		int operand = item.has("operand") ? item.get("operand").getAsInt() : 1;
+
+		Instruction instruction = getInstructionAt(address);
+		if (instruction == null) {
+			failed++;
+			notes.add("! " + address + " equate: no instruction there");
+			return;
+		}
+		Scalar scalar = instruction.getScalar(operand);
+		if (scalar == null) {
+			failed++;
+			notes.add("! " + address + " equate: operand " + operand + " is not a constant");
+			return;
+		}
+		DataType type = dtm.getDataType(new DataTypePath(CATEGORY, enumName));
+		if (!(type instanceof ghidra.program.model.data.Enum)) {
+			failed++;
+			notes.add("! " + address + " equate: no enum called " + enumName);
+			return;
+		}
+		ghidra.program.model.data.Enum values = (ghidra.program.model.data.Enum) type;
+		long value = scalar.getUnsignedValue();
+		String member = values.getName(value);
+		if (member == null) {
+			failed++;
+			notes.add("! " + address + " equate: " + enumName + " has no member for 0x"
+				+ Long.toHexString(value));
+			return;
+		}
+
+		EquateTable table = currentProgram.getEquateTable();
+		Equate equate = table.getEquate(member);
+		if (equate != null && equate.getValue() != value) {
+			// the name is taken by another value; qualifying it beats saying something false
+			member = enumName + "_" + member;
+			equate = table.getEquate(member);
+		}
+		if (equate == null) {
+			equate = table.createEquate(member, value);
+		}
+		equate.addReference(address, operand);
+		equates++;
+	}
+
 	private void applyEnum(JsonObject item) {
 		String name = sanitizeType(item.get("name").getAsString());
 		DataType existing = findType(name);

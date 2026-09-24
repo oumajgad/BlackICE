@@ -1,0 +1,148 @@
+{
+ "agent": "combat-factory",
+ "question": "rva 0x31370 - the live combat factory. Settle the default arm of its jump table, which does `mov edi,[ebp+0xC]` and so uses the province argument as the combat. Then CBomberCombatant::CBomberCombatant (0x15DBC0), and the ~0x1000 bytes CAirCombatant, CNavalCombatant and CBomberCombatant never write at construction.",
+ "source": "reversing/FINDINGS-combat.md",
+ "addresses": [
+  {
+   "rva": "0x31370",
+   "kind": "function",
+   "name": "CCombatManager::CreateCombat",
+   "signature": "void __stdcall CCombatManager::CreateCombat(CCombatManager* manager, CMapProvince* province, int kind, CUnit* attacker, CUnit* defender)",
+   "no_signature": null,
+   "comment": "The live combat factory - where a combat starts in a running game, as opposed to CCombatManager::LoadKey's path out of a save. `ret 0x14`, five stack arguments, nothing in ecx.\n\nA jump table at 0x431604 on `kind - 1` covers 1..6 and every arm is the same three instructions: `operator new(0x44)`, the kind's own constructor, `edi = the new combat`, `jmp 0x43141F`. 1 CLandCombat (0x17B480), 2 CNavalCombat (0x17B720), 3 CAirCombat (0x17BB50), 4 CGroundBombing (0x2FE20), 5 CLandBombing (0x2FE70), 6 CNavalBombing (0x2FEC0). A failed allocation sets edi = 0 and joins the same tail.\n\nThe common tail, with edi the combat and esi the manager:\n\n    CCombatManager::AddCombat(manager, combat)      0x2FFC0\n    combat->slot 6 ()                               CreateCombatants\n    combat->SetProvince(province)                   slot 16\n    if (kind == 4)                                  ground bombing only\n        push the province's controller tag+id (province +0x334/+0x338, 8 bytes)\n        into combat->defender->countries (+0x54/+0x58/+0x5C)\n    combat->attacker->slot 12 (attacker);  0x5BFE80;  if (!combat->slot 8 ()) 0x5C7970(attacker, 1)\n    if (defender)\n        combat->defender->slot 12 (defender); 0x5BFE80; if (!combat->slot 8 ()) 0x5C7970(defender, 0)\n    for each unit in province->units (+0x2B8)\n        skip it if it is the attacker or the defender, and, for a bombing,\n        only offer it when slot 8 and the unit's own tests agree\n        combat->AddUnit(unit)                       slot 18\n    if the attacker's +0xB0 object passes slot 0x6C, walk province +0x354's list\n        the same way and offer those units too\n    if (combat->slot 8 ())   province->+0x2FC = combat, if it was null\n    else                     CMapProvince::AddCombat(province, combat)   into province +0x2EC\n\nSlot 8 is `xor al,al; ret` on CCombat and `mov al,1; ret` on all three bombings, so the last two lines read: a bombing goes in the province's single +0x2FC slot, an ordinary combat onto the province's +0x2EC list. Both bodies are linker-folded, so neither is named here.\n\n**The default arm is dead code, and the reading `(manager, province, kind, attacker, defender)` stands.** The arms all jump to 0x43141F; 0x43141C is three bytes of its own - `mov edi,[ebp+0xC]` - reached only by the `ja` at 0x43137F, that is only when `kind` is outside 1..6. Both callers are exhaustive: CCombatManager::StartCombat sets its kind slot to 1, 2 or 3 on every path that reaches the call, and CCombatManager::StartBombing to 4, 5 or 6, checked off cfg.py's edge lists into 0x430883/0x43093F and 0x430467/0x430474. And the arm is not a second calling convention: arg2 is the province by three independent reads - SetProvince stores it in CCombat +0x18 and its terrain in +0x24, the kind-4 block reads its controller tag at +0x334, and both callers read +0xD4, +0x2B8 and +0x2FC off the same value - so running that arm would call CCombat virtuals on a CMapProvince. It is what MSVC emitted for a `combat` variable left undefined when the switch matched nothing.",
+   "confidence": "confirmed",
+   "evidence": "Jump table read out of the image at 0x431604 (six entries, 0x43138C/0x3A9/0x3C0/0x3D7/0x3EE/0x405; the seventh dword is 0xCCCCCCCC padding). Every arm ends `jmp 0x43141F`, verified in the bytes at 0x431418 (8b f8 eb 03 8b 7d 0c 8b 75 08). `ret 0x14` against five pushes at both call sites. Arg1 is the manager because 0x2FFC0 reads it at +8/+0xC/+0x10, the CCombatManager list, and both callers pass the ecx their own caller set to gameState+0xB5C (`lea ecx,[eax+0xB5C]` at 0x5CFFC2 and 0x9A8B1A, with eax the global at 0x1A89790), which project.json already records as the embedded CCombatManager. Wrong if: a third caller exists that this missed - findRefs --callers reports exactly two and findRefs --address finds no data reference, so a call through a function pointer built arithmetically is the only escape; or if some path in either caller reaches the call with the kind slot still 0, which the cfg edge lists say cannot happen."
+  },
+  {
+   "rva": "0x2FFC0",
+   "kind": "function",
+   "name": "CCombatManager::AddCombat",
+   "signature": "void __stdcall CCombatManager::AddCombat(CCombatManager* manager@ESI, CCombat* combat@EAX)",
+   "no_signature": null,
+   "comment": "Links a new 0x10-byte node { combat, previous, next, byte } into the manager's live-combat list (first at +0x08, last at +0x0C, count at +0x10). It calls the combat's slot 8 first and pushes to the front when that is true - the three bombings - and to the back otherwise. A failed `operator new(0x10)` stores a null node pointer and still bumps the count. Called only from CCombatManager::CreateCombat and CCombatManager::LoadKey.",
+   "confidence": "confirmed",
+   "evidence": "Read in full at 0x42FFC0..0x43004F; bare `ret`, all arguments in registers. The list offsets match the CCombatManager struct already in project.json (+0x08 combats). Wrong if esi is not the manager - but the only two callers set esi from a value the outer frame took from gameState+0xB5C."
+  },
+  {
+   "rva": "0x30760",
+   "kind": "function",
+   "name": "CCombatManager::StartCombat",
+   "signature": "int __stdcall CCombatManager::StartCombat(CCombatManager* manager, CMapProvince* province, CUnit* unit) @EAX",
+   "no_signature": null,
+   "comment": "Decides whether `unit` starts an ordinary combat in `province` and, if so, which kind, then calls CCombatManager::CreateCombat. Returns the kind it created - 1 land, 2 naval, 3 air - or 0 for none; the kind lives in one stack slot that is zeroed at 0x4307C4 and is also the return value on every early exit.\n\nIt walks the province's units (+0x2B8) for an enemy, then: the enemy unit's slot 17 true gives **3**; otherwise the province's terrain record (+0xD4) with a nonzero byte at +0x22 gives **1**; otherwise **2**, but only when the attacker's own slot 11 result passes 0x431840 and its +0x40 is at least 1. Before creating, 0x4A6010 refuses a second combat of the same kind in the province.",
+   "confidence": "inferred",
+   "evidence": "Read whole at 0x430760..0x430960, `ret 0xC`, three stack arguments, and the five pushes at 0x430946..0x43094A line up with CreateCombat's five. The kind values 1/2/3 are the constants written into [esp+0x10] at 0x430878, 0x43086E and 0x430825, and cfg.py shows 0x430883 and 0x43093F are reachable only downstream of those three. The name is the judgement: the body is confirmed, the word \"StartCombat\" is not. Wrong if the stack slot is not the return value - 0x430950 loads it into eax before the epilogue on every path, so it is."
+  },
+  {
+   "rva": "0x302A0",
+   "kind": "function",
+   "name": "CCombatManager::StartBombing",
+   "signature": "int __stdcall CCombatManager::StartBombing(CCombatManager* manager, CMapProvince* province, CUnit* unit) @EAX",
+   "no_signature": null,
+   "comment": "The bombing half of the same decision, with the same three arguments and the same return - the kind it created, 4 ground bombing, 5 land bombing, 6 naval bombing, or 0 for none.\n\n**4** when the province's terrain byte (+0xD4, +0x22) is set, the bomber's +0xB0 object passes slot 0x68, and 0x42F1B0 says the province's controller (+0x334/+0x338) is hostile to the bomber's owner (+0x124) - that is, a raid on the province itself, with no enemy unit needed. Otherwise it walks the province's units for a target and takes **5 or 6** from the target's slot 16: `setne cl; add ecx,5` at 0x43045D, so a target that answers true is 6 and one that answers false is 5. Either way it gives up if province->+0x2FC already holds a bombing.",
+   "confidence": "inferred",
+   "evidence": "Read whole at 0x4302A0..0x430690, `ret 0xC`. The kind slot is zeroed at 0x4302F8 and set at 0x430342 (4) or 0x430463 (5/6); cfg.py's edges into 0x430467 are exactly those two, and into 0x430474 exactly the fall-through. The +0x2FC gate at 0x430467 is the same field CreateCombat writes for bombings, which is what ties the two together. Name inferred as above. Wrong if 5 and 6 are the other way round - that hangs entirely on the numbering already recorded from each class's slot 11 (CLandBombing 5, CNavalBombing 6) and on target slot 16 being a naval test, which was not read."
+  },
+  {
+   "rva": "0x17AF50",
+   "kind": "function",
+   "name": "CCombat::SetProvince",
+   "signature": "void __thiscall CCombat::SetProvince(CCombat* this, CMapProvince* province)",
+   "no_signature": null,
+   "comment": "Six instructions: `this->province (+0x18) = province; this->terrain (+0x24) = province->+0xD4->+0x0C`. Slot 16, inherited unchanged by all six combat kinds. This is the call that gives CCombatManager::CreateCombat's second argument its type, and it is what puts the province the CCombatHistoryEntry constructor later reads +0xD0 off.",
+   "confidence": "confirmed",
+   "evidence": "Read whole; `ret 4`. The two fields it writes are the ones project.json already names province and terrain on CCombat, which is the check - it agrees with a record made from the save code, not from here. Wrong if the argument were something other than a province: then CCombat::province, already confirmed from CCombat::SaveContents, would be wrong too."
+  },
+  {
+   "rva": "0x16E7D0",
+   "kind": "function",
+   "name": "CCombat::AddUnit",
+   "signature": "bool __thiscall CCombat::AddUnit(CCombat* this, CUnit* unit) @AL",
+   "no_signature": null,
+   "comment": "Slot 18. Offers a unit to a combat that already exists and lets the combat pick the side:\n\n    a = this->attacker->slot 17 (unit)\n    d = this->defender->slot 17 (unit)\n    if (d && !a)   attacker->slot 12 (unit); 0x5BFE80; if (!this->slot 8 ()) 0x5C7970(unit, 1); return true\n    if (a && !d)   defender->slot 12 (unit); 0x5BFE80; if (!this->slot 8 ()) 0x5C7970(unit, 0); return true\n    return false\n\nso a unit joins the side the *other* side is hostile to, and a unit both sides or neither side object to is refused. The defender branch has two extra gates for bombings - the unit's own slot 17 and the global test at 0x5CDC30. CCombatManager::CreateCombat calls this for every bystander in the province; the same body is slot 18 in all six combat classes.",
+   "confidence": "inferred",
+   "evidence": "Read whole off cfg.py, 87 instructions, `ret 4`, `mov al,1` on both joining paths and `xor al,al` on the refusal. The two tails are byte-for-byte the sequence CreateCombat runs for its own attacker and defender at 0x431496 and 0x4314C5, which is what identifies slot 12 as the combatant's add-a-unit. The name is the judgement - what slot 17 means (read here as \"is this unit hostile to my side\") was inferred from which side the unit ends up on, not read out of 0x165500. Wrong if slot 17 means the opposite, in which case the sides are swapped and the name still holds."
+  },
+  {
+   "rva": "0xA5F90",
+   "kind": "function",
+   "name": "CMapProvince::AddCombat",
+   "signature": "void __stdcall CMapProvince::AddCombat(CMapProvince* province@ESI, CCombat* combat@stack:4)",
+   "no_signature": null,
+   "comment": "Appends the combat to the province's combat list - first at +0x2EC, last at +0x2F0, count at +0x2F4, 0x10-byte nodes { combat, previous, next, byte } - unless a node already holds it. A failed `operator new(0x10)` stores a null and still bumps the count. Two callers: CCombatManager::CreateCombat's tail and 0x16E360, both under the same `if (!combat->slot 8 ())`.",
+   "confidence": "confirmed",
+   "evidence": "Read whole at 0x4A5F90..0x4A6000, `ret 4`. esi is the province in both callers: CreateCombat reloads it from its own province argument at 0x4315D0, and 0x16E3BB takes it from combat->+0x18, which project.json names province. CMapProvince::HasCombatOfKind reads the same +0x2EC chain, which is the second read of the field. Wrong if esi were something else - then HasCombatOfKind, which takes the province in eax and walks +0x2EC, would be walking a different list than the one this fills, and the two would never agree."
+  },
+  {
+   "rva": "0xA6010",
+   "kind": "function",
+   "name": "CMapProvince::HasCombatOfKind",
+   "signature": "bool __stdcall CMapProvince::HasCombatOfKind(CMapProvince* province@EAX, int kind@EDI) @AL",
+   "no_signature": null,
+   "comment": "Walks province->combats (+0x2EC) and returns true as soon as one combat's slot 11 equals `kind`. Eleven instructions, bare `ret`, both arguments in registers. CCombatManager::StartCombat calls it to refuse a second land, naval or air combat of the same kind in one province.",
+   "confidence": "confirmed",
+   "evidence": "Read whole. It is a second, independent confirmation of both facts it rests on: that +0x2EC is a list of CCombat, and that slot 11 (offset 0x2C) is the kind - the value it compares against is the 1/2/3 StartCombat just chose. Wrong if edi were not the kind at the call site, but 0x430883 loads edi from the same stack slot StartCombat passes to CreateCombat as the kind."
+  },
+  {
+   "rva": "0x15DBC0",
+   "kind": "function",
+   "name": "CBomberCombatant::CBomberCombatant",
+   "signature": "CBomberCombatant* __stdcall CBomberCombatant::CBomberCombatant(CBomberCombatant* this, CCombat* combat@ECX) @EAX",
+   "no_signature": null,
+   "comment": "`ret 4` - `this` on the stack, the combat in ecx untouched so that CCombatant::CCombatant can store it at +0x3C. It runs the base with the attacker flag hardwired to 1, writes its own vftable 0x11C45DC, and then builds three vectors of its own:\n\n    +0x10B4  one int per **building definition**, from g_CBuildingDataBase\n    +0x10C4  seven ints\n    +0x10D4  seven ints\n    +0x10E4  int, 0\n\nThe first loop is the same lazy-singleton-and-fill the base constructor does for the subunit database, but on a different global: it creates g_CBuildingDataBase inline if it is null (0x30 bytes, 0x1FF buckets) and then pushes one zero per entry of that database's definition vector, count `([db+0x10] - [db+0x0C]) / 4`. So a bomber combatant carries a tally indexed by building type - which is what a strategic raid needs and what nothing else in the combatant family has. The second loop pushes seven zeros into each of +0x10C4 and +0x10D4 and is a plain `for (i = 0; i < 7; ++i)`, not a database count.\n\nThe object is 0x10E8 bytes and, like CAirCombatant and CNavalCombatant, leaves +0xB0..+0x10B3 untouched - see CNavalCombatant::CollectTargets for what that region is.",
+   "confidence": "confirmed",
+   "evidence": "Read whole at 0x55DBC0..0x55DF5D off cfg.py and disasm. The singleton global is 0x1A870D4, which is rva 0x16870D4, which project.json already records as g_CBuildingDataBase - and the loop bound (+0x10 minus +0x0C, shifted 2) is exactly the vector<CBuilding*> that entry documents, not the +0x1C/+0x20 pair CCombatant::CCombatant uses on the subunit database. The literal 7 is at 0x55DF3B (`cmp eax, 7; jl 0x55DD60`). Wrong if the 7 were a count read from somewhere and folded - it is an immediate compare, so it is not. That the 7 entries are HoI3's seven resources is a guess and is deliberately not in the name."
+  },
+  {
+   "rva": "0x167250",
+   "kind": "function",
+   "name": "CNavalCombatant::CollectTargets",
+   "signature": "void __thiscall CNavalCombatant::CollectTargets(CNavalCombatant* this, CNavalCombatant* out, CSubUnit* attacker)",
+   "no_signature": null,
+   "comment": "**This is what the ~0x1000 unwritten bytes are.** The function clears `out->+0x10B0` to 0, walks `this->units` (+0x40) and each unit's subunits (CUnit +0x38), and for every subunit that passes its filters does\n\n    out->[0xB0 + count * 4] = subunit;  ++out->+0x10B0\n\nSo a naval, air or bomber combatant carries a fixed array of **1024 `CSubUnit*` at +0xB0 with its count at +0x10B0**: 0xB0 + 1024 * 4 = 0x10B0, and the count dword ends at 0x10B4, which is exactly where all three classes' own fields start. It is scratch - the count is reset on every call, nothing initialises it at construction and no LoadKey or SaveContents touches it - which is why the constructors leave the region alone. 0x1675D0 then picks one entry with `random % count` (`idiv [ebx+0x10B0]` at 0x5678CC) as the target of one attack.\n\nCLandCombatant does not have it: that class is 0xE4 bytes and uses +0xB0 for its `front` list. There is no bounds check on the append.",
+   "confidence": "inferred",
+   "evidence": "The array and count are read out of 0x5674C9..0x5674DE, 0x567272 and 0x5675B4, and 0x56D500 walks the same pair on the air side (`if (this->+0x10B0 <= 0) return; p = this + 0xB0`). The holder is a combatant, not something else: 0x5675D0 takes the same pointer in [ebp+8], adds its +0x10B4 - CNavalCombatant::positioning, already named from its LoadKey - to an attack value, and reads +0x40, the CCombatant units list, off it. The element is a CSubUnit because the walk is units list -> unit +0x38 -> that list's entries, and each entry's +0x58 is dereferenced the way CSubUnitDefinition is everywhere else. A whole-image scan for +0x10B0 and for indexed +0xB0 found exactly two sites, this one and its air twin at 0x16D430.\n\nWhat is inferred is only which side is which: `this` is read as the *enemy* combatant whose subunits become candidates and `out` as the firing side's own combatant, from the call chain 0x567930 (CNavalCombatant slot 15) -> 0x5675D0 -> here. That would be shown wrong by a caller that passes the same pointer for both, in which case the two parameters are one object and the name still stands."
+  },
+  {
+   "rva": "0x16D430",
+   "kind": "function",
+   "name": "CAirCombatant::CollectTargets",
+   "signature": "void __stdcall CAirCombatant::CollectTargets(CAirCombatant* out@stack:4, CAirCombatant* enemy@EAX)",
+   "no_signature": null,
+   "comment": "The air twin of CNavalCombatant::CollectTargets and the second witness for the +0xB0 array. `ret 4`, the source combatant in eax: it clears `out->+0x10B0`, walks `enemy->units` (+0x40) and their subunits, and appends each candidate at `out->[0xB0 + count*4]`. It takes no attacking subunit, so the filtering is simpler than the naval one. 0x16D620 picks from the result with `random % count` and 0x16D500 walks the whole array.",
+   "confidence": "inferred",
+   "evidence": "Read whole at 0x56D430..0x56D4F1; the four instructions at 0x56D438, 0x56D4C3, 0x56D4D0 and 0x56D4D7 are the same shape as the naval ones. The argument roles come from its only caller, 0x56D681, which does `mov eax,[ebp+0xC]; push ebx; call` with ebx the function's first argument. Name inferred from the class the array belongs to; wrong if the two combatants are the same object at the call, which would make the parameter names redundant rather than wrong."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CMapProvince",
+   "offset": "0x2EC",
+   "name": "combats",
+   "type": "CList<CCombat*>",
+   "no_signature": null,
+   "comment": "Every ordinary combat going on in this province - first at +0x2EC, last at +0x2F0, count at +0x2F4, 0x10-byte nodes. CMapProvince::AddCombat appends to it and CMapProvince::HasCombatOfKind walks it. Bombings do not go here: CCombatManager::CreateCombat puts a combat on this list only when the combat's slot 8 is false, and in the same `else` writes +0x2FC when it is true, so +0x2FC is the province's *bombing* slot and this is the list of the rest.",
+   "evidence": "Read off CMapProvince::AddCombat (0xA5F90) in full and confirmed by a second reader, CMapProvince::HasCombatOfKind (0xA6010), which takes the province in eax and walks the same chain comparing each entry's slot 11. Wrong if the two functions took different objects - but CCombatManager::StartCombat passes the same province to both, one directly and one through CreateCombat."
+  },
+  {
+   "struct": "CProvince",
+   "offset": "0x2EC",
+   "name": "combats",
+   "type": "CList<CCombat*>",
+   "no_signature": null,
+   "comment": "The same field as CMapProvince +0x2EC; project.json carries both structures with the same offsets because Ghidra has no inheritance between them.",
+   "evidence": "As for CMapProvince +0x2EC. Recorded on both for the same reason +0x2B8 and +0x2FC are on both."
+  }
+ ],
+ "vftable_slots": {
+  "CCombat": {"16": "SetProvince", "18": "AddUnit"},
+  "CLandCombat": {"16": "SetProvince", "18": "AddUnit"},
+  "CNavalCombat": {"16": "SetProvince", "18": "AddUnit"},
+  "CAirCombat": {"16": "SetProvince", "18": "AddUnit"},
+  "CGroundBombing": {"16": "SetProvince", "18": "AddUnit"},
+  "CLandBombing": {"16": "SetProvince", "18": "AddUnit"},
+  "CNavalBombing": {"16": "SetProvince", "18": "AddUnit"}
+ },
+ "slots_noted": "CCombat slot 8 decides bombing from ordinary combat everywhere in this file - CCombatManager::AddCombat's front-or-back, CCombat::AddUnit's extra gates, and the province +0x2FC / +0x2EC split in CCombatManager::CreateCombat. It is deliberately left unnamed: the two bodies are `xor al,al; ret` (0x192360) and `mov al,1; ret` (0x692590), which the linker folded across far more than eight tables, so naming either for CCombat or for CBombing would say something false about every other class holding it. The same goes for CCombatant slot 12 (add a unit to a side) and slot 17 (the side's hostility test), which are named in this file's prose but not recorded, because only the base bodies at 0x165190 and 0x165500 were read and the four overrides were not.",
+ "frontier": ["0x1C7970", "0x1BFE80", "0x31840", "0x1C01F0", "0x1CE000", "0x2F1B0", "0xF4E80", "0x1CDC30", "0x1D5E20", "0x30690", "0x30210", "0x1C0030", "0x165190", "0x165500", "0x1675D0", "0x16D620", "0x16D500", "0x167510", "0x167930", "0x16D750", "0x166F20", "0x30960", "0x16E360"]
+}

@@ -1,0 +1,400 @@
+{
+ "agent": "map-and-lookup: the tag->country lookup (0x2610), the two arithmetic helpers behind the 'at least 10' clamp (0x1FD0, 0x808870), and signatures plus layout for CMap::CMap, CProvince::SaveContents, CGoodsPool::ReadSave and CParseContext::CParseContext",
+ "question": "Confirm, name and sign rva 0x2610 (19 named callers, three waves called it the country-tag lookup in passing); settle rva 0x1FD0 and rva 0x808870, described by a previous wave as 'the float floor helpers behind the at least 10 clamp'; and give the four named-but-unsigned structural functions signatures, naming CGoodsPool's fields from ReadSave and establishing what CMap holds.",
+ "source": "reversing/CLASSES.md",
+ "addresses": [
+  {
+   "rva": "0x2610",
+   "kind": "function",
+   "name": "CCountryTag::GetCountry",
+   "signature": "CCountry* __thiscall CCountryTag::GetCountry(CCountryTag* this)",
+   "no_signature": null,
+   "comment": "**The tag -> country lookup the whole image goes through: 1295 direct call sites.** Five instructions, no branch, no call: `g_CCountryDataBase->countries_first[this->id]`. `mov eax,[ecx]` reads the four tag characters and `mov [esp],eax` stores them in a stack slot nothing reads again - the dead half of a by-value CCountryTag copy the optimiser flattened - so only `this->id` at +4 is used. It does not range-check the id and it does not check that g_CCountryDataBase is non-null.",
+   "confidence": "confirmed",
+   "evidence": "The body at 0x402610 reads [ecx] and [ecx+4], loads g_CCountryDataBase (VA 0x1A855A4 = rva 0x16855A4, already recorded), indexes +0x16C (CCountryDataBase::countries_first, already recorded) by [ecx+4]*4 and returns it - every constant in it is a field project.json already names, and CCountryTag is already recorded as {char[4] tag at 0; int id at 4}. The convention is read off the call sites, not assumed: of the 1295 callers, 511 have a `lea ecx, <something>` as the instruction immediately before the call, and the commonest holder offsets among them are CProvince +0x334 (controller, 46 sites) and +0x32C (owner, 11 sites) - both already recorded as CCountryTag. The return type is read the same way: the instruction after the call is `mov ecx,eax; call CCountry::GetActingCapitalLocation` at 83 sites and CCountry::GetCapitalLocation at 11, both already signed `__thiscall CCountry*`, plus CCountry::IsEnemy (23) and CCountry::GetDailyBalance (7). Bare `ret`, no stack argument, so __thiscall with no parameters. What would show it wrong: a call site that loads ecx with something recorded as not a CCountryTag, or a use of the result as a class other than CCountry - neither appears in the scan; and if +0x16C were an array of something else, GetActingCapitalLocation would be being called on the wrong type at 83 sites.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "rva": "0x1FD0",
+   "kind": "function",
+   "name": "floorf",
+   "signature": "float __cdecl floorf(float x)",
+   "no_signature": null,
+   "comment": "**The `float` overload of `floor` from <math.h>**, emitted out of line: `return (float)floor((double)x)`. It widens the stack float to a double, calls `floor` (rva 0x8084B0) and narrows the result back, answering in st(0). Not a game function and nothing to do with clamping by itself - see `_ftol2_sse` for what it is paired with.",
+   "confidence": "confirmed",
+   "evidence": "Six instructions: `fld dword [ebp+8]`, push as a qword, `call 0xC084B0`, store the result as a dword and reload it, bare `ret` (so __cdecl, and the call sites do `add esp,4` afterwards). 0xC084B0 is floor - see that entry. What would show it wrong: if 0xC084B0 turned out to be ceil or trunc, or if the result were stored back as a qword rather than a dword, which would make this a `double` function.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "rva": "0x8084B0",
+   "kind": "function",
+   "name": "floor",
+   "signature": "double __cdecl floor(double x)",
+   "no_signature": null,
+   "comment": "MSVC CRT `floor`, the SSE2 body, with an x87 fallback at 0xC09778 chosen by the `__use_sse2` style flag at VA 0x1BEC898. Takes the double on the x87 stack via the caller's push and answers in st(0). This is what `floorf` (rva 0x1FD0) calls.",
+   "confidence": "confirmed",
+   "evidence": "It clears the mantissa bits below the binary point (psrlq/psllq by 0x433 minus the exponent, the constant pair at VA 0x15AF510 being 0x433), returns +0.0 for a positive |x|<1 (`fldz` at 0xC085AA), and for a negative x subtracts 1.0 (the constant at VA 0x15AF500 is {1.0,1.0}) exactly when the truncation compared greater - `cmpltpd` at 0xC08580. The |x|<1 negative path at 0xC085AD selects -1.0 out of {-1.0, 2^52} at VA 0x15AF520 when x < -0.0 (VA 0x15AF530). Those are floor's answers and not trunc's: trunc(-0.5) is -0.0 and this gives -1.0. Every path ends in a bare `ret`, so __cdecl. Corroboration from a completely independent direction: project.json already records `Define50_BuildFloor` as 'a define, 50 - the floor of the float 50.5 taken at startup', which is this same idiom. What would show it wrong: a constant read differently - if VA 0x15AF500 were not 1.0, or if the subtraction were unconditional (that would be x-1 for every value, not floor).",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "rva": "0x808870",
+   "kind": "function",
+   "name": "_ftol2_sse",
+   "signature": "int __cdecl _ftol2_sse(double value@ST0) @EAX",
+   "no_signature": null,
+   "comment": "**MSVC CRT `_ftol2_sse`, the float-to-integer conversion helper** - not a floor helper. It takes its argument on the x87 stack (nothing is pushed by the caller, which is why the signature has to say `@ST0`) and answers a truncated 32-bit integer in eax, via `cvttsd2si` when the `__sse2_available` flag at VA 0x1BEC9C0 is set. When it is not, it falls through to the x87 body at 0xC088A6, which is `_ftol2` proper and produces the full 64-bit result in edx:eax; that address has 26 direct callers of its own. The second entry point at 0xC0888C (`_ftol2_sse_excpt`, unreferenced here) is the control-word-checking variant. Paired with `floorf` at the sites the previous wave was describing: `CCountry::GetConvoyBuildTime`, `GetConvoyBuildCost` and `GetCategoryBuildDiscount` all do `floorf(10.5f)` then `_ftol2_sse()` and keep the larger of that and the computed value, which is the *at least 10* clamp - so the clamp reading was right about the effect and wrong about these two functions: neither is a floor helper, one is `floor` for floats and the other is `(int)`.",
+   "confidence": "confirmed",
+   "evidence": "Instruction-for-instruction the published MSVC ftol2.asm: `cmp __sse2_available,0 / je / push ebp / mov ebp,esp / sub esp,8 / and esp,-8 / fstp qword [esp] / cvttsd2si eax,qword [esp] / leave / ret`, then the `_ftol2_sse_excpt` entry that reads the control word and jumps back, then `_ftol2`. No argument is pushed at any call site - at 0x4FD64A the caller does `movss [esp],xmm0; call floorf; add esp,4; call 0xC08870` with the stack already balanced, so the value can only be arriving in st(0). Every path ends in a bare `ret`, hence __cdecl. The clamp claim is read off 0x4FD638-0x4FD65B: `movss xmm0,[VA 0x160A680]` where that dword is the float 10.5, then floorf, then this, then `cmp esi,eax; jge; mov [edi],eax`. What would show it wrong: a call site that does push a double before calling (there is none in the three signed callers), or the float at VA 0x160A680 being something other than 10.5.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "rva": "0x883A0",
+   "kind": "function",
+   "name": "CMap::CMap",
+   "signature": "CMap* __stdcall CMap::CMap(CMap* this) @EAX",
+   "no_signature": null,
+   "comment": "CMap constructor (object 0x2A94 bytes), and the only place the whole layout is visible at once - it has exactly one caller, 0x488243. `this` arrives on the stack, not in ecx (`mov edi,[ebp+8]`, `ret 4`), and comes back in eax. It writes CMap's primary vftable (rva 0x11BE3EC) at +0 and CMap's secondary vftable (rva 0x11BE408) at **+8**, with the CPersistent meta word 0x18D at +4; the +8 sub-object is built first with a base vftable at VA 0x15FDB48 and holds an Hoi3CString at +0xC set to `default.map`. It then constructs 512 CLists at +0x50 (through the CRT vector-constructor iterator, element ctor 0x9CE0, dtor 0x4A30D0), empties the twelve file-name strings from +0x2054 to +0x219C, zeroes the province and terrain vectors, memsets +0x2220 (0x400 bytes, to 0) and +0x2620 (0x400 bytes, to 0xFF), builds the engine string hash table at +0x2A50 with 0x1FF buckets, defaults +0x2A80 to 400 and the player tag at +0x2A88 to `---`/0, and finally reserves **14500** entries in the province vector at +0x2200. It also fills six global Hoi3CStrings with the map paths it will read: `default.map`, `cache/time`, `cache/navaldist.bin`, `cache/climate.bin`, `cache/provincecache.bin`, `cache/bboxcache.bin` at VA 0x170C750, 0x170C76C, 0x170C788, 0x170C7A4, 0x170C7C0, 0x170C7DC.",
+   "confidence": "confirmed",
+   "revises": "It had no signature, and the signature is the point: `this` is a stack argument here, so writing it __thiscall would have shifted every argument along. The comment is expanded from one line to the layout the body establishes, which is what the task asked for.",
+   "evidence": "`mov edi,[ebp+8]` at 0x4883BE with ecx never read, `mov eax,edi` at 0x488999 and `ret 4` at 0x4889A8 - one stack argument, cleaned by the callee, returned in eax, which is __stdcall. The 0x2A94 size is the existing record and is not re-derived here. The reserve is `push 0x38A4; lea esi,[edi+0x2200]; call 0x4C0700`, and 0x4C0700 is std::vector reserve: it raises 'vector<T> too long' above 0x3FFFFFFF, compares `([esi+8]-[esi])>>2` against the request and rewrites [esi], [esi+4], [esi+8] - so +0x2200/+0x2204/+0x2208 are begin/end/capacity. The 512x16 array is `call 0xB96170` with the five arguments (edi+0x50, 0x10, 0x200, 0x409CE0, 0x8A30D0); 0xB96170 loops i to [ebp+0x10] calling [ebp+0x14] with ecx set from [ebp+8], which is the eh vector constructor iterator, and 0x10*0x200 = 0x2000 lands exactly on the next field at +0x2050. The secondary-vftable offset is checked twice: the ctor writes it to [edi+8], and the RTTI complete-object-locator at VA 0x1611F28 has offset 8 in its second dword. What would show it wrong: a second caller passing `this` in ecx (findRefs --callers says there is exactly one caller), or 0xB96170 turning out to take its arguments in another order, which would move the +0x50 array's element size and count and break the arithmetic that lands on +0x2050.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "rva": "0x11BE408",
+   "kind": "vftable",
+   "name": "CMap_secondary",
+   "signature": null,
+   "no_signature": null,
+   "comment": "CMap vftable for the base subobject at object **+0x8**.",
+   "confidence": "confirmed",
+   "revises": "The recorded comment says the sub-object is at +0x1C. It is at +0x8: CMap::CMap writes this table to `[edi+8]` at 0x48843C, and the RTTI complete-object-locator for it (VA 0x1611F28) carries 8 in its offset field, against 0 for the primary table's locator at VA 0x1611F3C. Left at +0x1C, anyone typing the sub-object puts it on top of CMap's string block instead of its own base.",
+   "evidence": "Two independent reads agreeing: the constructor store `mov dword ptr [edi+8], 0x15BE408` (VA 0x15BE408 = rva 0x11BE408), and the COL offset field. Both tables' type descriptors demangle to `.?AVCMap@@`, so this is CMap's own second base, not another class. What would show it wrong: a COL whose second dword is not the object offset - it is, by the primary table's 0 - or a write of this table to +0x1C somewhere else in the image.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "rva": "0x95020",
+   "kind": "function",
+   "name": "CProvince::SaveContents",
+   "signature": "void __thiscall CProvince::SaveContents(CProvince* this, CSaveWriter* writer)",
+   "no_signature": null,
+   "comment": "Province save writer, slot 2 of CProvince and of CMapProvince. Slot 2 of CPersistent, which the rest of the family calls SaveContents; BiceLib had it as WriteSave, kept as a label. **It is the province's field list in save order**: flags (+0xC4), owner (+0x32C, only when the tag id at +0x330 is set), controller (+0x334, gated on +0x338), underground_owner (+0x38C, gated on +0x390), underground_action (+0x394, skipped when it is 2), one `core` per node of the list at +0x344 (the node *is* the tag, next at node+0xC), capital (+0x2B0, only when true), manpower (+0x320) and leadership (+0x324) when positive, revolt_risk (+0x328) when positive, strategic_resource (the object at +0x18, its name string at +0x30), every building at +0x310, history (+0xD8) when +0xEC is positive, points (+0x34), nationalism (+0x24) when non-null, then the seven goods pools - pool (+0x15C), throughput ([+0x1F8]), last_throughput ([+0x1F4]), drawn ([+0x1A8]), last_drawn ([+0x1A4]), current_producing (+0x268), max_producing (+0x28C) - each skipped when all seven of its goods equal the global at VA 0x1A87818, then weather (+0x68), last_convoy_attack (+0x1C) when the date is more than a year old, out_of_supply_days (+0x20) when positive, and one `modifier` per node of the list at +0x13C. It does *not* write +0x180 (last_pool) or the drawn/throughput buffers directly, only through the two pointers each.",
+   "confidence": "confirmed",
+   "revises": "It had no signature. The comment gains the field-by-field save order, which is the part that makes the entry useful and which the old one-line version did not have.",
+   "evidence": "Every field above is paired with the token id the body passes to SaveWriteKey (rva 0x67A1B0) in the instruction before it, and every id is resolved through ghidra/saveTokens.json: 0x37F flags, 0x1EC owner, 0x1ED controller, 0x784 underground_owner, 0x78B underground_action, 0x201 core, 0x1F9 capital, 0x1EA manpower, 0x49B leadership, 0x207 revolt_risk, 0x5C5 strategic_resource, 0x1E1 history, 0x516 points, 0x645 nationalism, 0x484 pool, 0x4BB throughput, 0x5A8 last_throughput, 0x4BC drawn, 0x5A7 last_drawn, 0x485 current_producing, 0x486 max_producing, 0x54A weather, 0x591 last_convoy_attack, 0x74B out_of_supply_days, 0x323 modifier. That set matches, key for key, the 26 keys FINDINGS-definitions.md line 349 lists for CProvince's own LoadKey at 0x95880, which was derived from the other side of the same grammar. `ret 4` at 0x495872 with `mov edi,ecx` at 0x495044 and the writer taken from [ebp+8] into ebx: __thiscall with one stack argument. What would show it wrong: a token id resolving to a different key in a running game's table (saveTokens.json is the compiled-only extraction, which the script says agreed with the live table on everything it found), or a `mov ecx,<id>` that belongs to a different call than the SaveWriteKey after it.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "rva": "0x123A90",
+   "kind": "function",
+   "name": "CGoodsPool::ReadSave",
+   "signature": "void __thiscall CGoodsPool::ReadSave(CGoodsPool* this, CParseContext* parse, SaveToken key)",
+   "no_signature": null,
+   "comment": "Goods pool save reader, slot 4 of CGoodsPool - the LoadKey of the CPersistent family under the name BiceLib gave it. One jump table over seven contiguous token ids, 0x469..0x46F, each case handing the parse context's value token (`parse + 0x228`) to TokenToFixedPoint with the address of the matching field: supplies +8, money +0x10, crude_oil +0x14, fuel +0xC, metal +0x18, energy +0x1C, rare_materials +0x20. **It names every field of the struct and confirms the seven already recorded, with no gaps and nothing left over** - the 0x24 stride is the vftable at +0, the CPersistent meta word at +4 and those seven goods. Note that it does not chain to a base for an unrecognised key: the default arm falls straight to the epilogue, so a key it does not know is silently dropped rather than reported.",
+   "confidence": "confirmed",
+   "revises": "It had no signature. The comment gains the token ids, the field mapping they prove and the silent default arm; the old one said only that it stores each good's key into its slot.",
+   "evidence": "`add eax,0xFFFFFB97` is key-0x469, `cmp eax,6 / ja` bounds it at seven, and the jump table at 0x523B88 reads 0x523AB1, 0x523AD0, 0x523B0D, 0x523AEE, 0x523B2C, 0x523B4A, 0x523B69 - so 0x469->+8, 0x46A->+0x10, 0x46B->+0x14, 0x46C->+0xC, 0x46D->+0x18, 0x46E->+0x1C, 0x46F->+0x20. saveTokens.json gives those ids as supplies, money, crude_oil, fuel, metal, energy, rare_materials, which is the recorded field at every one of the seven offsets - so no struct_fields entry is needed and none is filed. 0xA69550 is TokenToFixedPoint, already signed `(CToken* token, int* out) @EAX`, and the +0x228 it is handed is CParseContext::value, already recorded. `ret 8` with `mov esi,ecx`: __thiscall, two stack arguments. What would show it wrong: the jump table being misread (it is read as seven little-endian dwords from the address the `jmp dword ptr [eax*4+0x523B88]` names, and all seven land on instruction boundaries inside this function), or 0x469 not being the base - which would shift all seven names by the same amount and immediately disagree with the recorded offsets.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "rva": "0x67A460",
+   "kind": "function",
+   "name": "CParseContext::CParseContext",
+   "signature": "CParseContext* __stdcall CParseContext::CParseContext(CParseContext* this, Tokenizer* tokenizer, Hoi3CString* name@EDX) @EAX",
+   "no_signature": null,
+   "comment": "**Wraps a tokenizer in the same CParseContext the save loader uses**: writes vftable 0x11FD93C, clears the token fields and stores the tokenizer at +0x1C - the field CPersistent::Load reads. From here a file and a save block go through one set of parts. No RTTI for it either. `this` and the tokenizer are stack arguments and the session name arrives in **edx** - nothing in the body sets edx before it is pushed as the source of the assignString into +0x32C, and all 52 call sites do `lea edx, <a local>` immediately before the call. Besides those it clears +0x4/+0x8/+0xC (the parse message list), the bytes at +0x10 and +0x14, +0x348/+0x34C/+0x350 and +0x35C (error_handler), and sets the byte at +0x358 to 1 - the only field it gives a non-zero default.",
+   "confidence": "confirmed",
+   "revises": "It had no signature, and the register argument was the reason given for not writing one. It can be written: `name@EDX` costs no stack and the arithmetic then matches the `ret 8` exactly. The comment keeps its original text and adds the edx argument and the remaining field writes.",
+   "evidence": "`mov esi,[ebp+8]` (this), `mov eax,[ebp+0xC]; mov [esi+0x1C],eax` (tokenizer), `ret 8` at 0xA7A4E8 - two stack arguments cleaned by the callee, so __stdcall, and eax is loaded from esi before the epilogue. edx is an argument, not garbage: it is never written in the body and is pushed first of the three arguments to assignString (rva 0x1BD0, already signed `(this, Hoi3CString* text, uint from, uint count)` __thiscall) with ecx = this+0x32C, from = 0 and count = -1. Three call sites checked individually - 0x4408DB, 0x5002AF, 0x5F7868 - and each has `lea edx,[<a local>]` as the last instruction before the call, with the other two arguments pushed as tokenizer then this; at 0x4408C5 and 0x50029C the pushed tokenizer has just had Tokenizer's vftable (VA 0x15FD1FC) written into it, which is what types that argument. The vftable in the existing comment is the rva, 0x11FD93C = VA 0x15FD93C, and the body writes the VA - not a discrepancy. What would show it wrong: a call site that does not set edx, which would mean +0x32C is assigned from whatever was left in it.",
+   "source": "reversing/CLASSES.md"
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CProvince",
+   "offset": "0x18",
+   "name": "strategic_resource",
+   "type": "void*",
+   "comment": "The strategic resource here, as a **pointer to the entry in the strategic-resource CNameDataBase**, not a number. Null when the province has none. The entry carries its key as an Hoi3CString at +0x30 and answers a bool from virtual slot 14, which is what decides whether the key is written at all.",
+   "revises": "It was recorded `int strategic_resource`, 'saved as strategic_resource, and the loader writes the value straight back here'. The loader does not write the value back: CProvince::LoadKey builds an Hoi3CString from the value token and calls CNameDataBase::GetByName (rva 0x12A5F0) on the database that rva 0x60B90 returns, storing the *result pointer* at +0x18. Typed as an int, every read of it decompiles as a number and the name string at +0x30 is unreachable.",
+   "evidence": "Two sides of the same field. Writing, at 0x49533E in CProvince::SaveContents: `mov ecx,[edi+0x18]; mov eax,[ecx]; mov edx,[eax+0x38]; call edx; test al,al; je` - it dereferences +0x18 as an object and calls through its vftable - then `lea ecx,[esi+0x30]` and the string writer, under token 0x5C5 = strategic_resource. Reading, at 0x496008-0x49602C in CProvince::LoadKey: `add edx,0x22C` (the value token's text), fromCString, `call 0x460B90`, `push esi; call 0x52A5F0` (CNameDataBase::GetByName, already signed with the database in EAX and the name pushed), `mov [edi+0x18],eax`. FINDINGS-fieldmap.md line 457 records the same key landing at '+0x18 dword', which is where the int reading came from - a dword it is, an int it is not. What would show it wrong: 0x460B90 not returning a CNameDataBase (it is the same lazily-allocating singleton shape as GetIdeologies at 0x127280), or the +0x30 read belonging to some other pointer - esi is loaded from [edi+0x18] two instructions earlier.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CProvince",
+   "offset": "0x328",
+   "name": "revolt_risk",
+   "type": "int",
+   "comment": "Revolt risk, thousandths, saved as `revolt_risk` and only when positive. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the same in both.",
+   "evidence": "CProvince::SaveContents at 0x49531B: `mov eax,[edi+0x328]; test eax,eax; jle <skip>`, then the value is placed on the stack and written with `mov ecx,0x207` - token 0x207 is `revolt_risk` in ghidra/saveTokens.json. It sits immediately after manpower (+0x320, token 0x1EA) and leadership (+0x324, token 0x49B), both already recorded, written by the identical three-instruction shape. It is one of the twelve CProvince keys FINDINGS-fieldmap.md could not place from the loader side. What would show it wrong: token 0x207 resolving to another key in a live table, or the `jle` being a guard on something other than the value being written - it is the same value that is stored to [ecx] and passed on.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CProvince",
+   "offset": "0x394",
+   "name": "underground_action",
+   "type": "int",
+   "comment": "The underground action here, saved as `underground_action`; **2 is the default and is not written**, which is the only field of the province with a non-zero skip value. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the same in both.",
+   "evidence": "CProvince::SaveContents at 0x4951F3: `mov esi,[edi+0x394]; cmp esi,2; je <skip>`, then `mov ecx,0x78B; call SaveWriteKey` - token 0x78B is `underground_action`. FINDINGS-fieldmap.md line 402 of the CProvince block has the loader putting the same key at '+0x394 dword', from the other side of the grammar and by a different route, so the two agree. It follows underground_owner at +0x38C, whose tag id at +0x390 gates it. What would show it wrong: the `cmp esi,2` being a test of something else - esi is loaded from the field in the instruction before and is the value written.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x4",
+   "name": "persistent_meta",
+   "type": "int",
+   "comment": "0x18D, carried by every CPersistent - so CMap is one, which is what makes its LoadKey slot 4 and its SaveContents slot 2.",
+   "evidence": "`mov dword ptr [edi+4], 0x18D` at 0x4883D2, the first field the constructor writes, before either vftable. The same constant at the same offset is already recorded on CGoodsPool. What would show it wrong: 0x18D turning out to be something other than the CPersistent meta word, which would break the CGoodsPool record too.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x8",
+   "name": "vftable_secondary",
+   "type": "void*",
+   "comment": "CMap's second virtual table (rva 0x11BE408) - the base sub-object it inherits at +8. The constructor builds that sub-object with a base class's table at VA 0x15FDB48 first and overwrites it here, which is the ordinary derived-after-base sequence.",
+   "evidence": "`mov dword ptr [edi+8], 0x15BE408` at 0x48843C, and the RTTI complete-object-locator behind that table (VA 0x1611F28) gives 8 as its object offset against 0 for the primary. Both type descriptors demangle to `.?AVCMap@@`. What would show it wrong: a COL whose second dword is not the offset, which the primary table's 0 argues against.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0xC",
+   "name": "definition_file",
+   "type": "Hoi3CString",
+   "comment": "`default.map` - the name of the map definition file, the first thing the constructor puts in the +8 sub-object. The full path built from it goes to the global Hoi3CString at VA 0x170C750.",
+   "evidence": "At 0x4883CA the constructor builds the literal 'default.map' into a stack temporary, empties the string at edi+0xC with the MSVC small-string idiom (`[+0x14]=0xF, [+0x10]=0, [+0]=0`), then calls assignString (rva 0x1BD0) with ecx = edi+0xC. What would show it wrong: the ecx at the assignString call pointing somewhere else - it is `lea ecx,[eax+4]` off `lea eax,[edi+8]`, so +0xC exactly.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x50",
+   "name": "lists",
+   "type": "CList[512]",
+   "comment": "**512 CLists, 0x2000 bytes, from +0x50 to +0x2050** - the largest single thing the map holds and the one nothing has identified. The constructor runs the CRT vector-constructor iterator over them; the element destructor (rva 0x4A30D0) walks the chain from `first` freeing each node through node+8, so they are used, not vestigial. What indexes them - 512 of what - is **not settled here**; nothing in the constructor says.",
+   "evidence": "`push 0x8A30D0; push 0x409CE0; push 0x200; push 0x10; lea ecx,[edi+0x50]; push ecx; call 0xB96170` at 0x48845B-0x488474. 0xB96170 is the eh vector constructor iterator: after the SEH prologue it loops an index to [ebp+0x10] calling [ebp+0x14] with ecx taken from [ebp+8], so the arguments are (array, element size 0x10, count 0x200, ctor, dtor). 0x10 * 0x200 = 0x2000 and 0x50 + 0x2000 = 0x2050, which is the next field the constructor writes - the arithmetic closes. The element type is CList and not a guess: 0x409CE0 is `[eax]=0; [eax+4]=0; [eax+8]=0; byte [eax+0xC]=0`, which is exactly CList's recorded {first, last, count, flag} and its recorded size of 0x10. What would show it wrong: 0xB96170 taking its count and size the other way round - then the block would be 0x200 elements of 0x10 read as 0x10 of 0x200, the same total, so the extent is safe either way, but the element type would not be; the ctor writing four members of the right widths is what fixes that.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2050",
+   "name": "border_cutoff",
+   "type": "float",
+   "comment": "The map's `border_cutoff`, a float, defaulted from a constant by the constructor and overwritten by default.map's key of the same name.",
+   "evidence": "`movss xmm0,[VA 0x1717BF8]; movss [edi+0x2050],xmm0` at 0x488479 - the only movss in the constructor, so the only float field it touches. FINDINGS-fieldmap.md line 388 has CMap::LoadKey putting key `border_cutoff` (token 0x6B8) at +0x2050, independently. What would show it wrong: the two disagreeing, which they do not.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2054",
+   "name": "adjacencies_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `adjacencies` - the first of twelve file-name strings running from +0x2054 to +0x219C, each 0x1C apart. Named `_file` throughout because the bare key `provinces` is already the province vector at +0x2200.",
+   "evidence": "The constructor empties a string here with the small-string idiom (`[+0x2068]=0xF, [+0x2064]=0, byte [+0x2054]=0`), and FINDINGS-fieldmap.md line 389 has CMap::LoadKey reading key `adjacencies` (token 0x3AE) into +0x2054. Two independent sources, one from the constructor and one from the loader. What would show all twelve of these wrong: the fieldmap's CMap block being read off a different function - it cites LoadKey at 0x893B0, which project.json records as CMap::LoadKey.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2070",
+   "name": "positions_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `positions`.",
+   "evidence": "Emptied by the constructor at 0x48849B-0x4884A7 with the small-string idiom at +0x2084/+0x2080/+0x2070; FINDINGS-fieldmap.md line 390 has LoadKey reading key `positions` (token 0x2A3) into +0x2070.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x208C",
+   "name": "provinces_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `provinces` - the province bitmap's file name, **not** the province array, which is at +0x2200.",
+   "evidence": "Emptied by the constructor at 0x4884AD-0x4884B9; FINDINGS-fieldmap.md line 391 has LoadKey reading key `provinces` (token 0x1DC) into +0x208C.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x20A8",
+   "name": "terrain_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `terrain`.",
+   "evidence": "Emptied by the constructor at 0x4884BF-0x4884CB; FINDINGS-fieldmap.md line 392 has LoadKey reading key `terrain` (token 0x20B) into +0x20A8.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x20C4",
+   "name": "rivers_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `rivers`.",
+   "evidence": "Emptied by the constructor at 0x4884D1-0x4884DD; FINDINGS-fieldmap.md line 393 has LoadKey reading key `rivers` (token 0x2B5) into +0x20C4.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x20EC",
+   "name": "climate_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `climate`. Three dwords at +0x20E0, +0x20E4 and +0x20E8 sit between this and the string before it, zeroed by the constructor and unidentified.",
+   "evidence": "Emptied by the constructor at 0x4884F5-0x488501; FINDINGS-fieldmap.md line 394 has LoadKey reading key `climate` (token 0x3DE) into +0x20EC.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x210C",
+   "name": "unknown_210c",
+   "type": "Hoi3CString",
+   "comment": "An Hoi3CString the constructor empties along with the other eleven file names, and **the one of the twelve that the loader side could not place**. `definitions` (default.map's definition.csv) is the obvious candidate - it is among the CMap keys FINDINGS-fieldmap.md lists as going somewhere it could not see - but nothing here proves it, so it is left unnamed rather than guessed.",
+   "evidence": "Emptied at 0x48850D-0x488519 with the small-string idiom at +0x2120/+0x211C/+0x210C, so it is a string; it is the only one of the twelve with no entry in the fieldmap's CMap table. What would settle it: reading CMap::LoadKey at 0x893B0 for token 0x1DE.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2128",
+   "name": "terrain_definition_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `terrain_definition`.",
+   "evidence": "Emptied by the constructor at 0x48851F-0x48852B; FINDINGS-fieldmap.md line 395 has LoadKey reading key `terrain_definition` (token 0x20C) into +0x2128.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2144",
+   "name": "continent_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `continent`.",
+   "evidence": "Emptied by the constructor at 0x488531-0x48853D; FINDINGS-fieldmap.md line 396 has LoadKey reading key `continent` (token 0x30B) into +0x2144.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2160",
+   "name": "region_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `region`.",
+   "evidence": "Emptied by the constructor at 0x488543-0x48854F; FINDINGS-fieldmap.md line 397 has LoadKey reading key `region` (token 0x414) into +0x2160.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x217C",
+   "name": "coastlines_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `coastlines`. A dword at +0x2198 sits between this string and the next, zeroed by the constructor and unidentified.",
+   "evidence": "Emptied by the constructor at 0x488555-0x488561; FINDINGS-fieldmap.md line 398 has LoadKey reading key `coastlines` (token 0x7B5) into +0x217C.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x219C",
+   "name": "tree_definition_file",
+   "type": "Hoi3CString",
+   "comment": "default.map's `tree_definition` - the last of the twelve.",
+   "evidence": "Emptied by the constructor at 0x48856D-0x488579; FINDINGS-fieldmap.md line 399 has LoadKey reading key `tree_definition` (token 0x29E) into +0x219C.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2204",
+   "name": "provinces_end",
+   "type": "CMapProvince**",
+   "comment": "One past the last province - the `provinces` vector at +0x2200 is a std::vector, and this is its second word. The province count is (this - provinces) / 4.",
+   "evidence": "The last thing CMap::CMap does is `push 0x38A4; lea esi,[edi+0x2200]; call 0x4C0700`, and 0x4C0700 is std::vector reserve: it computes the capacity as `([esi+8]-[esi])>>2`, copies `([esi+4]-[esi])` bytes to the new block and writes begin to [esi], the new end to [esi+4] and the new capacity end to [esi+8]. What would show it wrong: 0x4C0700 not being reserve - it raises the CRT's 'vector<T> too long' for a request above 0x3FFFFFFF, which no other routine does.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2208",
+   "name": "provinces_capacity",
+   "type": "CMapProvince**",
+   "comment": "End of the province vector's storage. The constructor reserves **14500** entries here before anything is loaded, against the 14190 max_provinces the recorded +0x21FC holds - so the vector never grows during a game and the province pointers never move.",
+   "evidence": "Same call: `push 0x38A4` is 14500 decimal, and reserve writes `[esi] + request*4` to [esi+8]. What would show it wrong: the push being something other than the element count - reserve reads it from [ebp+8] and multiplies by 4 at 0x4C0763.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2218",
+   "name": "terrains_capacity",
+   "type": "CTerrain**",
+   "comment": "End of the terrain vector's storage - the third word of the vector whose begin and end at +0x2210 and +0x2214 are already recorded.",
+   "evidence": "The constructor zeroes +0x2210, +0x2214 and +0x2218 as a run at 0x4885F1-0x4885FD, the same three-word shape it zeroes for the province vector at +0x2200/+0x2204/+0x2208. What would show it wrong: something else claiming +0x2218 - nothing in the constructor touches it again.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2220",
+   "name": "unknown_2220",
+   "type": "char[1024]",
+   "comment": "A 0x400-byte table the constructor zeroes in one memset. Paired with the 0x400 bytes at +0x2620, which it fills with 0xFF instead - a value/validity pair, on the usual reading, but **what they are indexed by is not established here** and 256 dwords fits neither the provinces nor the countries.",
+   "evidence": "`push 0x400; lea eax,[edi+0x2220]; push 0; push eax; call 0xB99220` - memset(this+0x2220, 0, 0x400). The extent is exact: 0x2220 + 0x400 = 0x2620, which is where the next memset starts. What would show it wrong: 0xB99220 not being memset - its three arguments here and at the +0x2620 call differ only in the fill byte, which is memset's shape.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2620",
+   "name": "unknown_2620",
+   "type": "char[1024]",
+   "comment": "A 0x400-byte table the constructor fills with 0xFF - the 'nothing here yet' fill, beside the zero-filled one at +0x2220. It ends at +0x2A20, where the next run of zeroed words begins. Unidentified.",
+   "evidence": "`push 0x400; push -1; lea ecx,[edi+0x2620]; push ecx; call 0xB99220` at 0x4886E8. 0x2620 + 0x400 = 0x2A20, the next field the constructor writes, so nothing lies between.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2A50",
+   "name": "by_name",
+   "type": "void*",
+   "comment": "The engine's own string hash table, `{int count; unsigned bucketCount; void** buckets;}` at +0x2A50/+0x2A54/+0x2A58 - the same shape StringHashFind (rva 0x5C7D60) walks. The constructor sets 0x1FF buckets and allocates and zeroes them; **what it indexes is not established here**, but every other instance of this table in the image is a by-name index for a loader, and CMap loads the terrains, continents and regions.",
+   "evidence": "At 0x48863F-0x48867C: `mov [edi+0x2A54], 0x1FF`, multiply by 4 with an overflow check, allocate, `mov [edi+0x2A58], eax`, memset it to zero over bucketCount*4 bytes, and `mov [edi+0x2A50], ebx` with ebx zero. That is field for field the layout recorded on StringHashFind, and the 0x1FF bucket count is the same one recorded for CSubUnitDataBase's by_name. What would show it wrong: the three words belonging to three unrelated fields that happen to be adjacent - the allocation tying +0x2A54 to the size of the block stored at +0x2A58 is what rules that out.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2A80",
+   "name": "unknown_2a80",
+   "type": "int",
+   "comment": "An int the constructor defaults to **400**. FINDINGS-fieldmap.md puts default.map's `tree` key here, which would make it a list rather than an int, so the two do not agree and the field is left unnamed rather than named off the weaker of them.",
+   "evidence": "`mov dword ptr [edi+0x2A80], 0x190` at 0x4886C7, with the byte at +0x2A84 cleared beside it. Against that, FINDINGS-fieldmap.md line 402 has CMap::LoadKey reading key `tree` (token 0x29D) into +0x2A80, and `tree` in default.map is a brace list. What would settle it: reading CMap::LoadKey at 0x893B0 for token 0x29D and seeing whether it parses one number or a list.",
+   "source": "reversing/CLASSES.md"
+  },
+  {
+   "struct": "CMap",
+   "offset": "0x2A88",
+   "name": "player",
+   "type": "CCountryTag",
+   "comment": "The player, defaulted by the constructor to the tag `---` with id 0 - the engine's no-country tag.",
+   "revises": "The field was recorded as 'the player (mem, unverified)' - read out of a running game's memory and never checked against the image. The constructor writes 0x2D2D2D, which is '---' little-endian with its NUL, to +0x2A88 and zero to +0x2A8C, so the CCountryTag typing and the offset are now read off the executable and the field can drop the caveat.",
+   "evidence": "`mov dword ptr [ebp-0x18], 0x2D2D2D; mov edx,[ebp-0x18]; mov [edi+0x2A88],edx; mov [edi+0x2A8C],ebx` at 0x48869D-0x4886DD, with ebx zero throughout the constructor. 0x2D is '-', so the four bytes are '-','-','-',0 - which is CCountryTag's recorded char[4] tag at +0 followed by its int id at +4. What would show it wrong: the object ending before +0x2A8C, which the recorded 0x2A94 size rules out.",
+   "source": "reversing/CLASSES.md"
+  }
+ ],
+ "vftable_slots": {
+  "CGoodsPool": {
+   "4": "ReadSave"
+  },
+  "CProvince": {
+   "2": "SaveContents"
+  },
+  "CMapProvince": {
+   "2": "SaveContents"
+  }
+ },
+ "frontier": [
+  "0x9CE0",
+  "0x4C710",
+  "0x60B90",
+  "0x89060",
+  "0xC0700",
+  "0x4A30D0",
+  "0x6694C0",
+  "0x678B70",
+  "0x678D40",
+  "0x678FB0",
+  "0x67E210",
+  "0x794BEC",
+  "0x796170",
+  "0x79625D",
+  "0x799220",
+  "0x79A1AD",
+  "0x8088A6",
+  "0x8094AC",
+  "0x809778"
+ ],
+ "slots_noted": "The four addresses that sit in a virtual table are all covered above. The other five - CCountryTag::GetCountry, floorf, floor, _ftol2_sse and the CMap_secondary table itself - were each checked with vtable.py --holding and are in no class's table."
+}

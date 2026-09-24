@@ -72,6 +72,19 @@ were once named off the wrong virtual table.
 **Say what you could not settle.** A finding that names its own gap is worth more than
 one that quietly rounds up.
 
+**A name without a signature untypes everything downstream of it, silently.** Ghidra's
+RTTI pass names constructors and virtuals that `project.json` has never heard of, so
+`checkSignatures.py` cannot see them - it only audits what is recorded. A call to one
+comes back as `int *`, and then every field reached through that pointer is an anonymous
+offset, however well the structure is typed.
+
+`CBuildingDataBase`'s role ladder sat unreadable through two waves for exactly this
+reason: `CModifier::id` was typed as an enum and `CBuilding::effect` as a `CModifier*`,
+and the comparisons still printed bare hex, because the building came out of
+`CBuilding::CBuilding` - named by RTTI, recorded nowhere - as an `int *`. One signature
+fixed the whole function. **If a decompilation is unreadable and the types look right,
+check what the pointers came out of.**
+
 **Your signature has to survive `checkSignatures.py`.** It reads the `ret` and works out
 what the convention implies: `__cdecl` leaves the arguments to the caller and ends in a
 bare `ret`, `__stdcall` and `__thiscall` clean their own and end in `ret N`. So the
@@ -126,6 +139,26 @@ In `reversing/`, and they reproduce the results in `FINDINGS-manpower.md` exactl
 **Decompile against the applied findings.** A named program is far more readable than a
 bare one - `CUnit::UpdateDaily` was nearly unreadable until its fields had names. Use
 your own copy of the Ghidra project: concurrent headless runs fight over the lock.
+
+## Typing a local the function builds itself
+
+A value that never comes out of a class field - a queue, a scratch list, a buffer built with
+`operator new` - has nothing to propagate a type from, so every read through it decompiles as
+`*(iVar3 + 0x4c)` while the same field a line away reads `province->supply_depot_distance`.
+Say so on the address record:
+
+    "locals": [{"at": "stack:-0x30", "name": "frontier",
+                "type": "CListNode<CMapProvince*>*",
+                "comment": "head of the queue of provinces still to relax"}]
+
+**`at` is Ghidra's own offset, the number in the `local_30` the decompiler prints** - four
+below the `[ebp - 0x2c]` in the disassembly on a normal frame. Stack only: a register local is
+a variable over a range of the function and one register holds several, so `EBX` names nothing.
+You rarely need them anyway - typing the stack slot carries the type into every register the
+value is read into.
+
+For a list, use the `CListNode<T>` name the build already generates rather than inventing a
+node; `reversing/ghidra/README.md` has the rest.
 
 ## Landing it
 

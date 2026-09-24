@@ -77,12 +77,29 @@ def graph(names):
     return reached
 
 
+def isLibrary(name):
+    """whether a named function is the standard library rather than the game's
+
+    Narrow on purpose. `std::` and a leading underscore are explicit, and a bare
+    lowercase name with no class is how the CRT is spelled here - `atoi`, `strlen`,
+    `free`, `sscanf`. The game's own free functions are CamelCase (`ParseInt`,
+    `ReportUnknownKey`, `TokenToFixedPoint`), so nothing of its own is caught.
+    """
+    if name.startswith("std::") or name.startswith("_"):
+        return True
+    if "::" in name:
+        return False
+    return name[:1].islower()
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--from", dest="start", type=image.address,
                         help="only what this function reaches")
     parser.add_argument("--depth", type=int, default=1)
     parser.add_argument("--top", type=int, default=40)
+    parser.add_argument("--all", action="store_true",
+        help="rank by every caller, including the standard library's own internals")
     args = parser.parse_args()
 
     names = named()
@@ -105,12 +122,26 @@ def main():
         return
 
     reached = graph(names)
-    frontier = [(len(callers), rva, callers)
-                for rva, callers in reached.items() if rva not in names]
+    frontier = []
+    for rva, callers in reached.items():
+        if rva in names:
+            continue
+        # The game's callers are what makes something worth naming next. Counting the
+        # library's own internals here is what put _input_l's callees at the top.
+        game = {c for c in callers if not isLibrary(c)}
+        count = len(callers) if args.all else len(game)
+        if count == 0:
+            continue
+        frontier.append((count, rva, callers if args.all else game))
     frontier.sort(key=lambda row: (-row[0], row[1]))
 
+    unnamed = sum(1 for rva in reached if rva not in names)
+    hidden = unnamed - len(frontier)
     print("%d unnamed functions are called by named ones; %d named in all"
           % (len(frontier), len(names)))
+    if not args.all and hidden > 0:
+        print("%d more are reached only by the standard library - --all includes them"
+              % hidden)
     print("%-30s %-7s %s" % ("address", "callers", "called by"))
     for count, rva, callers in frontier[:args.top]:
         listed = ", ".join(sorted(callers)[:3])

@@ -1,0 +1,1781 @@
+{
+ "agent": "defines-anchor",
+ "question": "re-anchor the CDefines* structs against the mod's common/defines.lua, and settle CBuildingDataBase +0x18",
+ "source": "reversing/FINDINGS-supply.md",
+ "addresses": [
+  {
+   "rva": "0x46210",
+   "kind": "function",
+   "name": "LoadDefines",
+   "signature": "void __stdcall LoadDefines(CDefines* defines)",
+   "no_signature": null,
+   "comment": "Fills `CDefines` from the parsed `common/defines.lua`. One unrolled run of 396 loads, each of them `mov <reg>, [defines + <block>]`, `push \"<KEY>\"`, `call` the reader, `mov [<reg> + <offset>], eax` - so **every define is looked up by name and stored at an offset compiled into this function**. A mod cannot move a define by reordering the file; a key the file does not define goes unreported and stores 0, because the reader's type check fails; a key the file defines that this function never pushes is never read at all, which is what BlackICE's PRIDE_SUNK_DISSENT_IMPACT, WHITESEA, WHITESEA_BLOCKER and GFX_RAINIMPACT_LIMIT are. The eight blocks hang off CDefines +0x9C, +0xAC, +0xBC, +0xCC, +0xDC, +0xEC, +0xFC and +0x10C. `reversing/definesMap.py` reads the whole map back out of this function.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "disassembled in full; the 396 stores through a block pointer pair one to one with 396 calls to the two readers, with none left over at either end (`definesMap.py --verify`). `ret 4` with the CDefines* at [ebp+8] and no use of ecx gives the __stdcall. Wrong if checkSignatures reads the ret differently, or if a store is found that no pushed key precedes."
+  },
+  {
+   "rva": "0x45F40",
+   "kind": "function",
+   "name": "ReadDefineThousandths",
+   "signature": "int* __cdecl ReadDefineThousandths(int* out, void* block, const char** key)",
+   "no_signature": null,
+   "comment": "Looks `key` up in a parsed defines block and writes `(int)((value + 0.0005) * 1000)` to `*out`, or 0 where the key is missing or the entry is not a number - the type tag is compared against 3. Returns `out`, which is why every call site reads the value back with `mov eax, [eax]`. This is where thousandths come from: every numeric define in defines.lua is stored x1000, rounded.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "the two constants it folds in are at 0x160A460 = 0.0005 and 0x160A300 = 1000.0, read out of .rdata; `mov ebx, [ebp+8]` on both arms and `mov eax, ebx` at the end give the return. Bare `ret` with call sites doing `add esp, 0xc` gives __cdecl with three arguments. Wrong if a call site is found that cleans a different amount."
+  },
+  {
+   "rva": "0x460D0",
+   "kind": "function",
+   "name": "ReadDefineInt",
+   "signature": "int __cdecl ReadDefineInt(void* block, const char** key)",
+   "no_signature": null,
+   "comment": "The unscaled sibling of `ReadDefineThousandths`: same lookup, same type check against 3, but it returns the number as a plain int. Used only for the `map` block of defines.lua, whose entries are province ids.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "all ten of its calls in LoadDefines store through CDefines +0xFC, and every other define in the file goes through rva 0x45F40; it ends `mov eax, ebx` on the value returned by rva 0x44B760, not on an out pointer. Bare `ret` and two pushed arguments give __cdecl. Wrong if a caller outside the map block turns up."
+  },
+  {
+   "rva": "0x16870D4",
+   "kind": "global",
+   "name": "g_CBuildingDataBase",
+   "signature": null,
+   "no_signature": "a global, not a function",
+   "comment": "The one `CBuildingDataBase`, 0x30 bytes, built lazily exactly as `g_CSubUnitDataBase` is: every user does `if (!g) g = new 0x30 bytes, init`. The init at rva `0x5BD30` is shared with 198 other databases and lays out the first 0x18 bytes - `+0x00`..`+0x0B` a name -> `CBuilding*` hash map (count at `+0x00`, `0x1FF` buckets at `+0x04`, the bucket array allocated and zeroed at `+0x08`) and `+0x0C`/`+0x10`/`+0x14` a `vector<CBuilding*>`. Everything from `+0x18` on is this class's own and the init does not touch it.\n\n**Five of those six slots are cached `CBuilding*` for well-known roles**, filled by the loader at rva `0xB769B` (the defaults, all five pointed at the built-in 'nobuilding') and rva `0xB78AB` (the modifier ladder): `+0x1C` air_base, `+0x20` naval_base, `+0x24` anti_air, `+0x28` underground, `+0x2C` industry. The setup at `0x968B8`..`0x96A50` turns four of them into a province's building shortcuts,\n\n    province->+0x308 = province->buildings[ db->+0x24->index ]\n    province->+0x304 = province->buildings[ db->+0x1C->index ]\n    province->+0x300 = province->buildings[ db->+0x20->index ]\n    province->+0x30C = province->buildings[ db->+0x28->index ]\n\nwhere `index` is `CBuilding +0x54` and `buildings` is `CProvince +0x310`.\n\n**`+0x18` is the sixth slot and is dead.** It is the first dword the class adds on top of the shared 0x18-byte base, so it is a member rather than padding, but no instruction in the image writes or reads it: the init stops at `+0x14`, the loader's defaults set exactly the five role slots, and the ladder has exactly five branches. The object is `malloc`ed and never zeroed, so whatever stands at `+0x18` is heap garbage, not a building.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "every function that names this global was disassembled and every field access reached through it counted: +0x0C 107 times, +0x10 47, +0x1C 5, +0x20 14, +0x24 1, +0x28 22, +0x2C 2, and +0x18 not once. The loader at rva 0xB7580 was walked the same way through its CBuildingDataBase argument and touches +0x0C, +0x10 and the five role slots only. That is a negative from a scan and not a proof, hence inferred: it would be shown wrong by an access at +0x18 through a pointer the scan loses - one spilled to a stack slot, or handed to a callee as an argument. The 0x18-byte base is from rva 0x5BD30, which 198 databases share and which writes only +0x00..+0x14.",
+   "revises": "the comment called +0x18..+0x2C six role slots and said which building each holds had not been established. The ladder at rva 0xB78AB has since established all five, and +0x18 is not a sixth role: nothing in the image writes or reads it."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CDefinesCountry",
+   "offset": "0x40",
+   "name": "BASE_TECH_DECAY",
+   "type": "int",
+   "comment": "the country block of defines.lua. CDefines::Load reads it by the key `BASE_TECH_DECAY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BASE_TECH_DECAY\", calls the reader at rva 0x45F40, and stores the result at rva 0x46CC4 with `mov [<CDefines+0xCC>+0x40], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block country` reprints the whole map from the executable.",
+   "revises": "project.json had MAX_TECH_ABILITY here, one place out: it was anchored on the order of the entries in common/defines.lua, and the engine does not read them in that order. NO_MISSION_SPY_DETECTION_MULTIPLIER is loaded last of the run, out of file order, into +0x3C, which pushes BASE_TECH_DECAY and the eight after it up by four."
+  },
+  {
+   "struct": "CDefinesCountry",
+   "offset": "0x44",
+   "name": "MAX_TECH_ABILITY",
+   "type": "int",
+   "comment": "the country block of defines.lua. CDefines::Load reads it by the key `MAX_TECH_ABILITY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"MAX_TECH_ABILITY\", calls the reader at rva 0x45F40, and stores the result at rva 0x46CF0 with `mov [<CDefines+0xCC>+0x44], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block country` reprints the whole map from the executable.",
+   "revises": "project.json had TECH_ABILITY_GAIN_DIVISOR here, one place out: it was anchored on the order of the entries in common/defines.lua, and the engine does not read them in that order. NO_MISSION_SPY_DETECTION_MULTIPLIER is loaded last of the run, out of file order, into +0x3C, which pushes BASE_TECH_DECAY and the eight after it up by four."
+  },
+  {
+   "struct": "CDefinesCountry",
+   "offset": "0x48",
+   "name": "TECH_ABILITY_GAIN_DIVISOR",
+   "type": "int",
+   "comment": "the country block of defines.lua. CDefines::Load reads it by the key `TECH_ABILITY_GAIN_DIVISOR` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"TECH_ABILITY_GAIN_DIVISOR\", calls the reader at rva 0x45F40, and stores the result at rva 0x46D2D with `mov [<CDefines+0xCC>+0x48], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block country` reprints the whole map from the executable.",
+   "revises": "project.json had NUKE_UNITY_IMPACT here, one place out: it was anchored on the order of the entries in common/defines.lua, and the engine does not read them in that order. NO_MISSION_SPY_DETECTION_MULTIPLIER is loaded last of the run, out of file order, into +0x3C, which pushes BASE_TECH_DECAY and the eight after it up by four."
+  },
+  {
+   "struct": "CDefinesCountry",
+   "offset": "0x4C",
+   "name": "NUKE_UNITY_IMPACT",
+   "type": "int",
+   "comment": "the country block of defines.lua. CDefines::Load reads it by the key `NUKE_UNITY_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NUKE_UNITY_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x46D48 with `mov [<CDefines+0xCC>+0x4C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block country` reprints the whole map from the executable.",
+   "revises": "project.json had MOBILIZE_THREAT_IMPACT here, one place out: it was anchored on the order of the entries in common/defines.lua, and the engine does not read them in that order. NO_MISSION_SPY_DETECTION_MULTIPLIER is loaded last of the run, out of file order, into +0x3C, which pushes BASE_TECH_DECAY and the eight after it up by four."
+  },
+  {
+   "struct": "CDefinesCountry",
+   "offset": "0x50",
+   "name": "MOBILIZE_THREAT_IMPACT",
+   "type": "int",
+   "comment": "the country block of defines.lua. CDefines::Load reads it by the key `MOBILIZE_THREAT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"MOBILIZE_THREAT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x46D74 with `mov [<CDefines+0xCC>+0x50], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block country` reprints the whole map from the executable.",
+   "revises": "project.json had SPY_THREAT_INCREASE_ACTION here, one place out: it was anchored on the order of the entries in common/defines.lua, and the engine does not read them in that order. NO_MISSION_SPY_DETECTION_MULTIPLIER is loaded last of the run, out of file order, into +0x3C, which pushes BASE_TECH_DECAY and the eight after it up by four."
+  },
+  {
+   "struct": "CDefinesCountry",
+   "offset": "0x54",
+   "name": "SPY_THREAT_INCREASE_ACTION",
+   "type": "int",
+   "comment": "the country block of defines.lua. CDefines::Load reads it by the key `SPY_THREAT_INCREASE_ACTION` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"SPY_THREAT_INCREASE_ACTION\", calls the reader at rva 0x45F40, and stores the result at rva 0x46DB1 with `mov [<CDefines+0xCC>+0x54], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block country` reprints the whole map from the executable.",
+   "revises": "project.json had POPULARITIY_RANDOMNESS here, one place out: it was anchored on the order of the entries in common/defines.lua, and the engine does not read them in that order. NO_MISSION_SPY_DETECTION_MULTIPLIER is loaded last of the run, out of file order, into +0x3C, which pushes BASE_TECH_DECAY and the eight after it up by four."
+  },
+  {
+   "struct": "CDefinesCountry",
+   "offset": "0x58",
+   "name": "POPULARITIY_RANDOMNESS",
+   "type": "int",
+   "comment": "the country block of defines.lua. CDefines::Load reads it by the key `POPULARITIY_RANDOMNESS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"POPULARITIY_RANDOMNESS\", calls the reader at rva 0x45F40, and stores the result at rva 0x46DC9 with `mov [<CDefines+0xCC>+0x58], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block country` reprints the whole map from the executable.",
+   "revises": "project.json had PARTY_POP_CHANGE_RATE here, one place out: it was anchored on the order of the entries in common/defines.lua, and the engine does not read them in that order. NO_MISSION_SPY_DETECTION_MULTIPLIER is loaded last of the run, out of file order, into +0x3C, which pushes BASE_TECH_DECAY and the eight after it up by four."
+  },
+  {
+   "struct": "CDefinesCountry",
+   "offset": "0x5C",
+   "name": "PARTY_POP_CHANGE_RATE",
+   "type": "int",
+   "comment": "the country block of defines.lua. CDefines::Load reads it by the key `PARTY_POP_CHANGE_RATE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PARTY_POP_CHANGE_RATE\", calls the reader at rva 0x45F40, and stores the result at rva 0x46DF8 with `mov [<CDefines+0xCC>+0x5C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block country` reprints the whole map from the executable.",
+   "revises": "project.json had MOBILIZATION_BONUS_DAYS here, one place out: it was anchored on the order of the entries in common/defines.lua, and the engine does not read them in that order. NO_MISSION_SPY_DETECTION_MULTIPLIER is loaded last of the run, out of file order, into +0x3C, which pushes BASE_TECH_DECAY and the eight after it up by four."
+  },
+  {
+   "struct": "CDefinesCountry",
+   "offset": "0x60",
+   "name": "MOBILIZATION_BONUS_DAYS",
+   "type": "int",
+   "comment": "the country block of defines.lua. CDefines::Load reads it by the key `MOBILIZATION_BONUS_DAYS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"MOBILIZATION_BONUS_DAYS\", calls the reader at rva 0x45F40, and stores the result at rva 0x46E35 with `mov [<CDefines+0xCC>+0x60], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block country` reprints the whole map from the executable.",
+   "revises": "project.json had NO_MISSION_SPY_DETECTION_MULTIPLIER here, one place out: it was anchored on the order of the entries in common/defines.lua, and the engine does not read them in that order. NO_MISSION_SPY_DETECTION_MULTIPLIER is loaded last of the run, out of file order, into +0x3C, which pushes BASE_TECH_DECAY and the eight after it up by four."
+  },
+  {
+   "struct": "CDefinesCountry",
+   "offset": "0x3C",
+   "name": "NO_MISSION_SPY_DETECTION_MULTIPLIER",
+   "type": "int",
+   "comment": "the country block of defines.lua. CDefines::Load reads it by the key `NO_MISSION_SPY_DETECTION_MULTIPLIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NO_MISSION_SPY_DETECTION_MULTIPLIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x46E50 with `mov [<CDefines+0xCC>+0x3C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block country` reprints the whole map from the executable.",
+   "revises": "project.json had BASE_TECH_DECAY here, one place out: it was anchored on the order of the entries in common/defines.lua, and the engine does not read them in that order. NO_MISSION_SPY_DETECTION_MULTIPLIER is loaded last of the run, out of file order, into +0x3C, which pushes BASE_TECH_DECAY and the eight after it up by four."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x0",
+   "name": "MAX_MANPOWER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `MAX_MANPOWER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"MAX_MANPOWER\", calls the reader at rva 0x45F40, and stores the result at rva 0x4763A with `mov [<CDefines+0xAC>+0x0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x4",
+   "name": "HISTORICAL_MODEL_MAX",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `HISTORICAL_MODEL_MAX` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"HISTORICAL_MODEL_MAX\", calls the reader at rva 0x45F40, and stores the result at rva 0x47676 with `mov [<CDefines+0xAC>+0x4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x8",
+   "name": "BASE_CHANCE_TO_AVOID_HIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BASE_CHANCE_TO_AVOID_HIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BASE_CHANCE_TO_AVOID_HIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x47691 with `mov [<CDefines+0xAC>+0x8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xC",
+   "name": "CHANCE_TO_AVOID_HIT_AT_NO_DEF",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `CHANCE_TO_AVOID_HIT_AT_NO_DEF` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"CHANCE_TO_AVOID_HIT_AT_NO_DEF\", calls the reader at rva 0x45F40, and stores the result at rva 0x476BD with `mov [<CDefines+0xAC>+0xC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x10",
+   "name": "RIVER_CROSSING_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `RIVER_CROSSING_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"RIVER_CROSSING_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x476FA with `mov [<CDefines+0xAC>+0x10], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x14",
+   "name": "AMPHIBIOUS_LANDING_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AMPHIBIOUS_LANDING_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AMPHIBIOUS_LANDING_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x47715 with `mov [<CDefines+0xAC>+0x14], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x18",
+   "name": "PARADROP_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PARADROP_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PARADROP_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x4774A with `mov [<CDefines+0xAC>+0x18], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1C",
+   "name": "MULTIPLE_COMBATS_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `MULTIPLE_COMBATS_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"MULTIPLE_COMBATS_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x4777E with `mov [<CDefines+0xAC>+0x1C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x20",
+   "name": "ENVELOPMENT_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `ENVELOPMENT_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"ENVELOPMENT_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x47799 with `mov [<CDefines+0xAC>+0x20], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x24",
+   "name": "ENCIRCLED_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `ENCIRCLED_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"ENCIRCLED_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x477C5 with `mov [<CDefines+0xAC>+0x24], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x28",
+   "name": "DIG_IN_FACTOR",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `DIG_IN_FACTOR` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"DIG_IN_FACTOR\", calls the reader at rva 0x45F40, and stores the result at rva 0x47802 with `mov [<CDefines+0xAC>+0x28], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2C",
+   "name": "COMBAT_SUPPLY_LACK_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `COMBAT_SUPPLY_LACK_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"COMBAT_SUPPLY_LACK_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x4781D with `mov [<CDefines+0xAC>+0x2C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x30",
+   "name": "COMBAT_DISSENT_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `COMBAT_DISSENT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"COMBAT_DISSENT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x47849 with `mov [<CDefines+0xAC>+0x30], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x40",
+   "name": "SUPPLY_SAME_AREA_DIST_CUTOFF",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `SUPPLY_SAME_AREA_DIST_CUTOFF` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"SUPPLY_SAME_AREA_DIST_CUTOFF\", calls the reader at rva 0x45F40, and stores the result at rva 0x4790A with `mov [<CDefines+0xAC>+0x40], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x44",
+   "name": "PARASUPPLYPOOL_DAYS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PARASUPPLYPOOL_DAYS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PARASUPPLYPOOL_DAYS\", calls the reader at rva 0x45F40, and stores the result at rva 0x47925 with `mov [<CDefines+0xAC>+0x44], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x48",
+   "name": "RADAR_RANGE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `RADAR_RANGE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"RADAR_RANGE\", calls the reader at rva 0x45F40, and stores the result at rva 0x47951 with `mov [<CDefines+0xAC>+0x48], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x4C",
+   "name": "BASE_RADIO_STRENGTH",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BASE_RADIO_STRENGTH` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BASE_RADIO_STRENGTH\", calls the reader at rva 0x45F40, and stores the result at rva 0x4798E with `mov [<CDefines+0xAC>+0x4C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x50",
+   "name": "EXP_GAIN_LAND",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `EXP_GAIN_LAND` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"EXP_GAIN_LAND\", calls the reader at rva 0x45F40, and stores the result at rva 0x479A9 with `mov [<CDefines+0xAC>+0x50], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x54",
+   "name": "EXP_GAIN_NAVAL",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `EXP_GAIN_NAVAL` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"EXP_GAIN_NAVAL\", calls the reader at rva 0x45F40, and stores the result at rva 0x479D2 with `mov [<CDefines+0xAC>+0x54], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x58",
+   "name": "EXP_GAIN_CONVOY_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `EXP_GAIN_CONVOY_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"EXP_GAIN_CONVOY_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x47A12 with `mov [<CDefines+0xAC>+0x58], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x5C",
+   "name": "EXP_GAIN_AIR",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `EXP_GAIN_AIR` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"EXP_GAIN_AIR\", calls the reader at rva 0x45F40, and stores the result at rva 0x47A2D with `mov [<CDefines+0xAC>+0x5C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x60",
+   "name": "EXP_GAIN_DIV",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `EXP_GAIN_DIV` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"EXP_GAIN_DIV\", calls the reader at rva 0x45F40, and stores the result at rva 0x47A59 with `mov [<CDefines+0xAC>+0x60], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x64",
+   "name": "EXP_GAIN_LEADER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `EXP_GAIN_LEADER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"EXP_GAIN_LEADER\", calls the reader at rva 0x45F40, and stores the result at rva 0x47A96 with `mov [<CDefines+0xAC>+0x64], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x68",
+   "name": "PRIDE_BONUS_EXP",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PRIDE_BONUS_EXP` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PRIDE_BONUS_EXP\", calls the reader at rva 0x45F40, and stores the result at rva 0x47AB1 with `mov [<CDefines+0xAC>+0x68], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x6C",
+   "name": "PRIDE_BASE_REDESIGNATION_DISSENT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PRIDE_BASE_REDESIGNATION_DISSENT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PRIDE_BASE_REDESIGNATION_DISSENT\", calls the reader at rva 0x45F40, and stores the result at rva 0x47ADD with `mov [<CDefines+0xAC>+0x6C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x70",
+   "name": "LAND_SPEED_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_SPEED_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_SPEED_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x47B12 with `mov [<CDefines+0xAC>+0x70], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x74",
+   "name": "NAVAL_SPEED_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_SPEED_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_SPEED_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x47B35 with `mov [<CDefines+0xAC>+0x74], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x78",
+   "name": "AIR_SPEED_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_SPEED_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_SPEED_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x47B61 with `mov [<CDefines+0xAC>+0x78], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x7C",
+   "name": "MINIMUM_STRENGTH",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `MINIMUM_STRENGTH` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"MINIMUM_STRENGTH\", calls the reader at rva 0x45F40, and stores the result at rva 0x47B9E with `mov [<CDefines+0xAC>+0x7C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x80",
+   "name": "BRIGADES_IN_DIVISION",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BRIGADES_IN_DIVISION` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BRIGADES_IN_DIVISION\", calls the reader at rva 0x45F40, and stores the result at rva 0x47BB9 with `mov [<CDefines+0xAC>+0x80], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x84",
+   "name": "COMBAT_LEADER_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `COMBAT_LEADER_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"COMBAT_LEADER_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x47BE8 with `mov [<CDefines+0xAC>+0x84], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x88",
+   "name": "COMBAT_MOVEMENT_SPEED",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `COMBAT_MOVEMENT_SPEED` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"COMBAT_MOVEMENT_SPEED\", calls the reader at rva 0x45F40, and stores the result at rva 0x47C28 with `mov [<CDefines+0xAC>+0x88], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x8C",
+   "name": "COMBAT_PUSHBACK_DAMAGE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `COMBAT_PUSHBACK_DAMAGE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"COMBAT_PUSHBACK_DAMAGE\", calls the reader at rva 0x45F40, and stores the result at rva 0x47C46 with `mov [<CDefines+0xAC>+0x8C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x90",
+   "name": "COMBAT_PUSHBACK_CHANCE_FOR_DAMAGE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `COMBAT_PUSHBACK_CHANCE_FOR_DAMAGE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"COMBAT_PUSHBACK_CHANCE_FOR_DAMAGE\", calls the reader at rva 0x45F40, and stores the result at rva 0x47C75 with `mov [<CDefines+0xAC>+0x90], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x94",
+   "name": "UNIT_ATTACK_DELAY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNIT_ATTACK_DELAY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNIT_ATTACK_DELAY\", calls the reader at rva 0x45F40, and stores the result at rva 0x47CB5 with `mov [<CDefines+0xAC>+0x94], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x98",
+   "name": "UNIT_ATTACK_DELAY_MODIFY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNIT_ATTACK_DELAY_MODIFY` and stores it here, scaled to thousandths. The engine loads this key twice, at rva 0x47CD3 and again at rva 0x47D02, both into +0x98 - a copy-paste in the loader, harmless because the value is the same. Note the pair is stored the other way round from the file: UNIT_ATTACK_DELAY_PERIOD is +0x9C.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNIT_ATTACK_DELAY_MODIFY\", calls the reader at rva 0x45F40, and stores the result at rva 0x47CD3 with `mov [<CDefines+0xAC>+0x98], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x9C",
+   "name": "UNIT_ATTACK_DELAY_PERIOD",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNIT_ATTACK_DELAY_PERIOD` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNIT_ATTACK_DELAY_PERIOD\", calls the reader at rva 0x45F40, and stores the result at rva 0x47D42 with `mov [<CDefines+0xAC>+0x9C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xA0",
+   "name": "PARATROOP_MISSION_DELAY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PARATROOP_MISSION_DELAY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PARATROOP_MISSION_DELAY\", calls the reader at rva 0x45F40, and stores the result at rva 0x47D60 with `mov [<CDefines+0xAC>+0xA0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xA4",
+   "name": "PARATROOP_DROP_ORG_MULT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PARATROOP_DROP_ORG_MULT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PARATROOP_DROP_ORG_MULT\", calls the reader at rva 0x45F40, and stores the result at rva 0x47D8F with `mov [<CDefines+0xAC>+0xA4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xA8",
+   "name": "PARATROOP_DROP_ORG_MULT_PLANE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PARATROOP_DROP_ORG_MULT_PLANE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PARATROOP_DROP_ORG_MULT_PLANE\", calls the reader at rva 0x45F40, and stores the result at rva 0x47DBE with `mov [<CDefines+0xAC>+0xA8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xAC",
+   "name": "PARATROOP_MISSION_ORG_REQ",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PARATROOP_MISSION_ORG_REQ` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PARATROOP_MISSION_ORG_REQ\", calls the reader at rva 0x45F40, and stores the result at rva 0x47DED with `mov [<CDefines+0xAC>+0xAC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xB0",
+   "name": "UNIT_DIGIN_CAP",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNIT_DIGIN_CAP` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNIT_DIGIN_CAP\", calls the reader at rva 0x45F40, and stores the result at rva 0x47E1C with `mov [<CDefines+0xAC>+0xB0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xB4",
+   "name": "BOMB_STRATEGIC_RESOURCES_INFRA_FRACTION",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BOMB_STRATEGIC_RESOURCES_INFRA_FRACTION` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BOMB_STRATEGIC_RESOURCES_INFRA_FRACTION\", calls the reader at rva 0x45F40, and stores the result at rva 0x47E5C with `mov [<CDefines+0xAC>+0xB4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xB8",
+   "name": "BOMB_STRATEGIC_RESOURCES",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BOMB_STRATEGIC_RESOURCES` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BOMB_STRATEGIC_RESOURCES\", calls the reader at rva 0x45F40, and stores the result at rva 0x47E7A with `mov [<CDefines+0xAC>+0xB8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xBC",
+   "name": "BOMB_STRATEGIC_PRODUCTION",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BOMB_STRATEGIC_PRODUCTION` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BOMB_STRATEGIC_PRODUCTION\", calls the reader at rva 0x45F40, and stores the result at rva 0x47EA9 with `mov [<CDefines+0xAC>+0xBC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xC0",
+   "name": "BOMB_STRATEGIC_BUILDINGS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BOMB_STRATEGIC_BUILDINGS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BOMB_STRATEGIC_BUILDINGS\", calls the reader at rva 0x45F40, and stores the result at rva 0x47EE9 with `mov [<CDefines+0xAC>+0xC0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xC4",
+   "name": "BOMB_REGIMENT_DAMAGE_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BOMB_REGIMENT_DAMAGE_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BOMB_REGIMENT_DAMAGE_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x47F07 with `mov [<CDefines+0xAC>+0xC4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xC8",
+   "name": "BOMB_SHIP_DAMAGE_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BOMB_SHIP_DAMAGE_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BOMB_SHIP_DAMAGE_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x47F36 with `mov [<CDefines+0xAC>+0xC8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xCC",
+   "name": "BOMB_WING_DAMAGE_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BOMB_WING_DAMAGE_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BOMB_WING_DAMAGE_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x47F76 with `mov [<CDefines+0xAC>+0xCC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xD0",
+   "name": "OFFICER_COMBAT_LOSS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `OFFICER_COMBAT_LOSS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"OFFICER_COMBAT_LOSS\", calls the reader at rva 0x45F40, and stores the result at rva 0x47F94 with `mov [<CDefines+0xAC>+0xD0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xD4",
+   "name": "AGGRESSIVE_ORGANISATION_LIMIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AGGRESSIVE_ORGANISATION_LIMIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AGGRESSIVE_ORGANISATION_LIMIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x47FC3 with `mov [<CDefines+0xAC>+0xD4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xD8",
+   "name": "DEFENSIVE_ORGANISATION_LIMIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `DEFENSIVE_ORGANISATION_LIMIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"DEFENSIVE_ORGANISATION_LIMIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x48003 with `mov [<CDefines+0xAC>+0xD8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xDC",
+   "name": "PASSIVE_ORGANISATION_LIMIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PASSIVE_ORGANISATION_LIMIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PASSIVE_ORGANISATION_LIMIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x48021 with `mov [<CDefines+0xAC>+0xDC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xE0",
+   "name": "AGGRESSIVE_STRENGTH_LIMIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AGGRESSIVE_STRENGTH_LIMIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AGGRESSIVE_STRENGTH_LIMIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x48050 with `mov [<CDefines+0xAC>+0xE0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xE4",
+   "name": "DEFENSIVE_STRENGTH_LIMIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `DEFENSIVE_STRENGTH_LIMIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"DEFENSIVE_STRENGTH_LIMIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x48090 with `mov [<CDefines+0xAC>+0xE4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xE8",
+   "name": "PASSIVE_STRENGTH_LIMIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PASSIVE_STRENGTH_LIMIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PASSIVE_STRENGTH_LIMIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x480AE with `mov [<CDefines+0xAC>+0xE8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xEC",
+   "name": "CAG_DUTY_MINIMUM_ORG_LIMIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `CAG_DUTY_MINIMUM_ORG_LIMIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"CAG_DUTY_MINIMUM_ORG_LIMIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x480DD with `mov [<CDefines+0xAC>+0xEC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xF0",
+   "name": "LAND_COMBAT_THREAT_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_COMBAT_THREAT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_COMBAT_THREAT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x4811D with `mov [<CDefines+0xAC>+0xF0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xF4",
+   "name": "NAVAL_COMBAT_THREAT_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_COMBAT_THREAT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_COMBAT_THREAT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x4813B with `mov [<CDefines+0xAC>+0xF4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xF8",
+   "name": "AIR_COMBAT_THREAT_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_THREAT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_THREAT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x4816A with `mov [<CDefines+0xAC>+0xF8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0xFC",
+   "name": "BOMBING_THREAT_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BOMBING_THREAT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BOMBING_THREAT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x481AA with `mov [<CDefines+0xAC>+0xFC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x100",
+   "name": "LAND_DOCTRINE_INCREASE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_DOCTRINE_INCREASE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_DOCTRINE_INCREASE\", calls the reader at rva 0x45F40, and stores the result at rva 0x481C8 with `mov [<CDefines+0xAC>+0x100], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x104",
+   "name": "NAVAL_DOCTRINE_INCREASE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_DOCTRINE_INCREASE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_DOCTRINE_INCREASE\", calls the reader at rva 0x45F40, and stores the result at rva 0x481F7 with `mov [<CDefines+0xAC>+0x104], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x108",
+   "name": "AIR_DOCTRINE_INCREASE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_DOCTRINE_INCREASE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_DOCTRINE_INCREASE\", calls the reader at rva 0x45F40, and stores the result at rva 0x48237 with `mov [<CDefines+0xAC>+0x108], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x10C",
+   "name": "BOMBING_DOCTRINE_INCREASE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BOMBING_DOCTRINE_INCREASE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BOMBING_DOCTRINE_INCREASE\", calls the reader at rva 0x45F40, and stores the result at rva 0x48255 with `mov [<CDefines+0xAC>+0x10C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x110",
+   "name": "COMBAT_DIFFICULTY_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `COMBAT_DIFFICULTY_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"COMBAT_DIFFICULTY_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x48284 with `mov [<CDefines+0xAC>+0x110], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x114",
+   "name": "BASE_COMBAT_WIDTH",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BASE_COMBAT_WIDTH` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BASE_COMBAT_WIDTH\", calls the reader at rva 0x45F40, and stores the result at rva 0x482C4 with `mov [<CDefines+0xAC>+0x114], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x118",
+   "name": "ADDITIONAL_COMBAT_WIDTH",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `ADDITIONAL_COMBAT_WIDTH` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"ADDITIONAL_COMBAT_WIDTH\", calls the reader at rva 0x45F40, and stores the result at rva 0x482E2 with `mov [<CDefines+0xAC>+0x118], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x11C",
+   "name": "RETREAT_PROGRESS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `RETREAT_PROGRESS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"RETREAT_PROGRESS\", calls the reader at rva 0x45F40, and stores the result at rva 0x48311 with `mov [<CDefines+0xAC>+0x11C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x120",
+   "name": "BASE_NIGHT_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BASE_NIGHT_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BASE_NIGHT_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x48351 with `mov [<CDefines+0xAC>+0x120], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x124",
+   "name": "BASE_FORT_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BASE_FORT_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BASE_FORT_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x4836F with `mov [<CDefines+0xAC>+0x124], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x128",
+   "name": "BASE_STACKING_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BASE_STACKING_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BASE_STACKING_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x4839E with `mov [<CDefines+0xAC>+0x128], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x12C",
+   "name": "RADAR_COMBAT_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `RADAR_COMBAT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"RADAR_COMBAT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x483DE with `mov [<CDefines+0xAC>+0x12C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x130",
+   "name": "COMBAT_EVENT_DURATION",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `COMBAT_EVENT_DURATION` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"COMBAT_EVENT_DURATION\", calls the reader at rva 0x45F40, and stores the result at rva 0x483FC with `mov [<CDefines+0xAC>+0x130], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x134",
+   "name": "STRAT_RAIDER_FOUGHT_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_RAIDER_FOUGHT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_RAIDER_FOUGHT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x4842B with `mov [<CDefines+0xAC>+0x134], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x138",
+   "name": "STRAT_BOMBER_FOUGHT_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_BOMBER_FOUGHT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_BOMBER_FOUGHT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x4846B with `mov [<CDefines+0xAC>+0x138], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x294",
+   "name": "STRAT_BOMBER_NONCRIT_IMPACT_FRACTION",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_BOMBER_NONCRIT_IMPACT_FRACTION` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_BOMBER_NONCRIT_IMPACT_FRACTION\", calls the reader at rva 0x45F40, and stores the result at rva 0x48489 with `mov [<CDefines+0xAC>+0x294], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x13C",
+   "name": "STRAT_AIR_RAIDER_FOUGHT_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_AIR_RAIDER_FOUGHT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_AIR_RAIDER_FOUGHT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x484B8 with `mov [<CDefines+0xAC>+0x13C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x140",
+   "name": "STRAT_NO_ALLIES_HELP_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_NO_ALLIES_HELP_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_NO_ALLIES_HELP_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x484F8 with `mov [<CDefines+0xAC>+0x140], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x144",
+   "name": "STRAT_ALLIES_HELP",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_ALLIES_HELP` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_ALLIES_HELP\", calls the reader at rva 0x45F40, and stores the result at rva 0x48516 with `mov [<CDefines+0xAC>+0x144], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x148",
+   "name": "STRAT_BOMBING_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_BOMBING_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_BOMBING_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x48545 with `mov [<CDefines+0xAC>+0x148], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x14C",
+   "name": "STRAT_CONVOY_DAMAGE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_CONVOY_DAMAGE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_CONVOY_DAMAGE\", calls the reader at rva 0x45F40, and stores the result at rva 0x48585 with `mov [<CDefines+0xAC>+0x14C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x150",
+   "name": "LAND_COMBAT_ORG_DICE_SIZE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_COMBAT_ORG_DICE_SIZE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_COMBAT_ORG_DICE_SIZE\", calls the reader at rva 0x45F40, and stores the result at rva 0x485A3 with `mov [<CDefines+0xAC>+0x150], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x154",
+   "name": "LAND_COMBAT_STR_DICE_SIZE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_COMBAT_STR_DICE_SIZE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_COMBAT_STR_DICE_SIZE\", calls the reader at rva 0x45F40, and stores the result at rva 0x485DB with `mov [<CDefines+0xAC>+0x154], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x158",
+   "name": "LAND_COMBAT_STR_ARMOR_ON_SOFT_DICE_SIZE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_COMBAT_STR_ARMOR_ON_SOFT_DICE_SIZE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_COMBAT_STR_ARMOR_ON_SOFT_DICE_SIZE\", calls the reader at rva 0x45F40, and stores the result at rva 0x48612 with `mov [<CDefines+0xAC>+0x158], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x15C",
+   "name": "LAND_COMBAT_ORG_ARMOR_ON_SOFT_DICE_SIZE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_COMBAT_ORG_ARMOR_ON_SOFT_DICE_SIZE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_COMBAT_ORG_ARMOR_ON_SOFT_DICE_SIZE\", calls the reader at rva 0x45F40, and stores the result at rva 0x48630 with `mov [<CDefines+0xAC>+0x15C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x160",
+   "name": "LAND_COMBAT_STR_DAMAGE_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_COMBAT_STR_DAMAGE_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_COMBAT_STR_DAMAGE_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x4865F with `mov [<CDefines+0xAC>+0x160], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x164",
+   "name": "LAND_COMBAT_ORG_DAMAGE_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_COMBAT_ORG_DAMAGE_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_COMBAT_ORG_DAMAGE_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x4869F with `mov [<CDefines+0xAC>+0x164], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x168",
+   "name": "AIR_COMBAT_ORG_DICE_SIZE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_ORG_DICE_SIZE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_ORG_DICE_SIZE\", calls the reader at rva 0x45F40, and stores the result at rva 0x486BD with `mov [<CDefines+0xAC>+0x168], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x16C",
+   "name": "AIR_COMBAT_STR_DICE_SIZE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_STR_DICE_SIZE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_STR_DICE_SIZE\", calls the reader at rva 0x45F40, and stores the result at rva 0x486EC with `mov [<CDefines+0xAC>+0x16C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x170",
+   "name": "AIR_COMBAT_CRITICAL_HIT_DAMAGE_MUL",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_CRITICAL_HIT_DAMAGE_MUL` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_CRITICAL_HIT_DAMAGE_MUL\", calls the reader at rva 0x45F40, and stores the result at rva 0x4872C with `mov [<CDefines+0xAC>+0x170], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x174",
+   "name": "AIR_COMBAT_CRITICAL_HIT_DAMAGE_CHANCE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_CRITICAL_HIT_DAMAGE_CHANCE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_CRITICAL_HIT_DAMAGE_CHANCE\", calls the reader at rva 0x45F40, and stores the result at rva 0x4874A with `mov [<CDefines+0xAC>+0x174], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x178",
+   "name": "AIR_COMBAT_ORG_DAMAGE_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_ORG_DAMAGE_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_ORG_DAMAGE_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x48779 with `mov [<CDefines+0xAC>+0x178], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x17C",
+   "name": "AIR_COMBAT_STR_DAMAGE_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_STR_DAMAGE_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_STR_DAMAGE_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x487B9 with `mov [<CDefines+0xAC>+0x17C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x180",
+   "name": "AIR_COMBAT_NAV_SURPRISE_CHANCE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_NAV_SURPRISE_CHANCE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_NAV_SURPRISE_CHANCE\", calls the reader at rva 0x45F40, and stores the result at rva 0x487D7 with `mov [<CDefines+0xAC>+0x180], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x184",
+   "name": "AIR_COMBAT_NAV_SURPRISE_BONUS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_NAV_SURPRISE_BONUS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_NAV_SURPRISE_BONUS\", calls the reader at rva 0x45F40, and stores the result at rva 0x48806 with `mov [<CDefines+0xAC>+0x184], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x188",
+   "name": "AIR_COMBAT_NAV_SURPRISE_ROUNDS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_NAV_SURPRISE_ROUNDS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_NAV_SURPRISE_ROUNDS\", calls the reader at rva 0x45F40, and stores the result at rva 0x48846 with `mov [<CDefines+0xAC>+0x188], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x18C",
+   "name": "AIR_COMBAT_CAG_ORG_DAMAGE_MOD",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_CAG_ORG_DAMAGE_MOD` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_CAG_ORG_DAMAGE_MOD\", calls the reader at rva 0x45F40, and stores the result at rva 0x48864 with `mov [<CDefines+0xAC>+0x18C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x190",
+   "name": "AIR_COMBAT_CAG_STR_DAMAGE_MOD",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_CAG_STR_DAMAGE_MOD` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_CAG_STR_DAMAGE_MOD\", calls the reader at rva 0x45F40, and stores the result at rva 0x48890 with `mov [<CDefines+0xAC>+0x190], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x274",
+   "name": "NAVAL_BASE_EFFICIENCY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_BASE_EFFICIENCY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_BASE_EFFICIENCY\", calls the reader at rva 0x45F40, and stores the result at rva 0x488D3 with `mov [<CDefines+0xAC>+0x274], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x278",
+   "name": "AMPHIBIOUS_INVADE_SPEED_BASE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AMPHIBIOUS_INVADE_SPEED_BASE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AMPHIBIOUS_INVADE_SPEED_BASE\", calls the reader at rva 0x45F40, and stores the result at rva 0x488F1 with `mov [<CDefines+0xAC>+0x278], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x27C",
+   "name": "AMPHIBIOUS_INVADE_MOVEMENT_COST",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AMPHIBIOUS_INVADE_MOVEMENT_COST` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AMPHIBIOUS_INVADE_MOVEMENT_COST\", calls the reader at rva 0x45F40, and stores the result at rva 0x48920 with `mov [<CDefines+0xAC>+0x27C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x280",
+   "name": "AMPHIBIOUS_INVADE_ATTACK_LOW",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AMPHIBIOUS_INVADE_ATTACK_LOW` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AMPHIBIOUS_INVADE_ATTACK_LOW\", calls the reader at rva 0x45F40, and stores the result at rva 0x48960 with `mov [<CDefines+0xAC>+0x280], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x284",
+   "name": "AMPHIBIOUS_INVADE_ATTACK_HIGH",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AMPHIBIOUS_INVADE_ATTACK_HIGH` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AMPHIBIOUS_INVADE_ATTACK_HIGH\", calls the reader at rva 0x45F40, and stores the result at rva 0x4897E with `mov [<CDefines+0xAC>+0x284], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x288",
+   "name": "AMPHIBIOUS_INVADE_DEFEND_LOW",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AMPHIBIOUS_INVADE_DEFEND_LOW` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AMPHIBIOUS_INVADE_DEFEND_LOW\", calls the reader at rva 0x45F40, and stores the result at rva 0x489AD with `mov [<CDefines+0xAC>+0x288], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x28C",
+   "name": "AMPHIBIOUS_INVADE_DEFEND_HIGH",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AMPHIBIOUS_INVADE_DEFEND_HIGH` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AMPHIBIOUS_INVADE_DEFEND_HIGH\", calls the reader at rva 0x45F40, and stores the result at rva 0x489E5 with `mov [<CDefines+0xAC>+0x28C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x290",
+   "name": "AMPHIBIOUS_INVADE_LANDING_PENALTY_DECREASE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AMPHIBIOUS_INVADE_LANDING_PENALTY_DECREASE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AMPHIBIOUS_INVADE_LANDING_PENALTY_DECREASE\", calls the reader at rva 0x45F40, and stores the result at rva 0x48A0B with `mov [<CDefines+0xAC>+0x290], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x194",
+   "name": "NAVAL_COMBAT_ORG_DICE_SIZE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_COMBAT_ORG_DICE_SIZE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_COMBAT_ORG_DICE_SIZE\", calls the reader at rva 0x45F40, and stores the result at rva 0x48A3A with `mov [<CDefines+0xAC>+0x194], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x198",
+   "name": "NAVAL_COMBAT_STR_DICE_SIZE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_COMBAT_STR_DICE_SIZE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_COMBAT_STR_DICE_SIZE\", calls the reader at rva 0x45F40, and stores the result at rva 0x48A7A with `mov [<CDefines+0xAC>+0x198], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x19C",
+   "name": "NAVAL_COMBAT_CRITICAL_HIT_DAMAGE_CHANCE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_COMBAT_CRITICAL_HIT_DAMAGE_CHANCE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_COMBAT_CRITICAL_HIT_DAMAGE_CHANCE\", calls the reader at rva 0x45F40, and stores the result at rva 0x48A98 with `mov [<CDefines+0xAC>+0x19C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1A0",
+   "name": "NAVAL_COMBAT_CRITICAL_HIT_DAMAGE_MUL",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_COMBAT_CRITICAL_HIT_DAMAGE_MUL` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_COMBAT_CRITICAL_HIT_DAMAGE_MUL\", calls the reader at rva 0x45F40, and stores the result at rva 0x48AC7 with `mov [<CDefines+0xAC>+0x1A0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1A4",
+   "name": "NAVAL_COMBAT_ORG_DAMAGE_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_COMBAT_ORG_DAMAGE_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_COMBAT_ORG_DAMAGE_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x48B07 with `mov [<CDefines+0xAC>+0x1A4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1A8",
+   "name": "NAVAL_COMBAT_STR_DAMAGE_MODIFIER",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_COMBAT_STR_DAMAGE_MODIFIER` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_COMBAT_STR_DAMAGE_MODIFIER\", calls the reader at rva 0x45F40, and stores the result at rva 0x48B25 with `mov [<CDefines+0xAC>+0x1A8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1AC",
+   "name": "NAVAL_COMBAT_SUB_SURPRISE_CHANCE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_COMBAT_SUB_SURPRISE_CHANCE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_COMBAT_SUB_SURPRISE_CHANCE\", calls the reader at rva 0x45F40, and stores the result at rva 0x48B54 with `mov [<CDefines+0xAC>+0x1AC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1B0",
+   "name": "NAVAL_COMBAT_SUB_SURPRISE_BONUS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_COMBAT_SUB_SURPRISE_BONUS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_COMBAT_SUB_SURPRISE_BONUS\", calls the reader at rva 0x45F40, and stores the result at rva 0x48B94 with `mov [<CDefines+0xAC>+0x1B0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1B4",
+   "name": "NAVAL_COMBAT_SUB_SURPRISE_ROUNDS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_COMBAT_SUB_SURPRISE_ROUNDS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_COMBAT_SUB_SURPRISE_ROUNDS\", calls the reader at rva 0x45F40, and stores the result at rva 0x48BB2 with `mov [<CDefines+0xAC>+0x1B4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1B8",
+   "name": "AIR_COMBAT_ON_BOMBING",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_COMBAT_ON_BOMBING` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_COMBAT_ON_BOMBING\", calls the reader at rva 0x45F40, and stores the result at rva 0x48BE1 with `mov [<CDefines+0xAC>+0x1B8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1BC",
+   "name": "BASE_PROXIMITY_BONUS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `BASE_PROXIMITY_BONUS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"BASE_PROXIMITY_BONUS\", calls the reader at rva 0x45F40, and stores the result at rva 0x48C21 with `mov [<CDefines+0xAC>+0x1BC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1C0",
+   "name": "INTERCEPT_ATTACK_BONUS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `INTERCEPT_ATTACK_BONUS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"INTERCEPT_ATTACK_BONUS\", calls the reader at rva 0x45F40, and stores the result at rva 0x48C3F with `mov [<CDefines+0xAC>+0x1C0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1C4",
+   "name": "AIR_SUP_DEFEND_BONUS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_SUP_DEFEND_BONUS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_SUP_DEFEND_BONUS\", calls the reader at rva 0x45F40, and stores the result at rva 0x48C6E with `mov [<CDefines+0xAC>+0x1C4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1C8",
+   "name": "SHORE_BOMBARDMENT_MOD",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `SHORE_BOMBARDMENT_MOD` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"SHORE_BOMBARDMENT_MOD\", calls the reader at rva 0x45F40, and stores the result at rva 0x48C9D with `mov [<CDefines+0xAC>+0x1C8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1CC",
+   "name": "SHORE_BOMBARDMENT_CAP",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `SHORE_BOMBARDMENT_CAP` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"SHORE_BOMBARDMENT_CAP\", calls the reader at rva 0x45F40, and stores the result at rva 0x48CCC with `mov [<CDefines+0xAC>+0x1CC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1D0",
+   "name": "AIR_STACKING_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_STACKING_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_STACKING_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x48CFB with `mov [<CDefines+0xAC>+0x1D0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1D4",
+   "name": "NAVAL_STACKING_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_STACKING_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_STACKING_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x48D3B with `mov [<CDefines+0xAC>+0x1D4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1DC",
+   "name": "NAVAL_STACK_POS_HULL_LIMIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_STACK_POS_HULL_LIMIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_STACK_POS_HULL_LIMIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x48D59 with `mov [<CDefines+0xAC>+0x1DC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1E0",
+   "name": "NAVAL_STACK_POS_PENALTY_HULL_MULT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_STACK_POS_PENALTY_HULL_MULT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_STACK_POS_PENALTY_HULL_MULT\", calls the reader at rva 0x45F40, and stores the result at rva 0x48D88 with `mov [<CDefines+0xAC>+0x1E0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1E4",
+   "name": "STRAT_REDEP_BASE_SPEED",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_REDEP_BASE_SPEED` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_REDEP_BASE_SPEED\", calls the reader at rva 0x45F40, and stores the result at rva 0x48DC8 with `mov [<CDefines+0xAC>+0x1E4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1E8",
+   "name": "STRAT_REDEP_SUPPLY_MOD",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_REDEP_SUPPLY_MOD` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_REDEP_SUPPLY_MOD\", calls the reader at rva 0x45F40, and stores the result at rva 0x48DE6 with `mov [<CDefines+0xAC>+0x1E8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1EC",
+   "name": "STRAT_REDEP_ORG_LOSS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STRAT_REDEP_ORG_LOSS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STRAT_REDEP_ORG_LOSS\", calls the reader at rva 0x45F40, and stores the result at rva 0x48E15 with `mov [<CDefines+0xAC>+0x1EC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1F0",
+   "name": "AIR_RANK_1",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_RANK_1` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_RANK_1\", calls the reader at rva 0x45F40, and stores the result at rva 0x48E55 with `mov [<CDefines+0xAC>+0x1F0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1F4",
+   "name": "AIR_RANK_2",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_RANK_2` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_RANK_2\", calls the reader at rva 0x45F40, and stores the result at rva 0x48E73 with `mov [<CDefines+0xAC>+0x1F4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1F8",
+   "name": "AIR_RANK_3",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_RANK_3` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_RANK_3\", calls the reader at rva 0x45F40, and stores the result at rva 0x48EA2 with `mov [<CDefines+0xAC>+0x1F8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1FC",
+   "name": "AIR_RANK_4",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_RANK_4` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_RANK_4\", calls the reader at rva 0x45F40, and stores the result at rva 0x48EE2 with `mov [<CDefines+0xAC>+0x1FC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x200",
+   "name": "NAVAL_RANK_1",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_RANK_1` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_RANK_1\", calls the reader at rva 0x45F40, and stores the result at rva 0x48F00 with `mov [<CDefines+0xAC>+0x200], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x204",
+   "name": "NAVAL_RANK_2",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_RANK_2` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_RANK_2\", calls the reader at rva 0x45F40, and stores the result at rva 0x48F2F with `mov [<CDefines+0xAC>+0x204], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x208",
+   "name": "NAVAL_RANK_3",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_RANK_3` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_RANK_3\", calls the reader at rva 0x45F40, and stores the result at rva 0x48F6F with `mov [<CDefines+0xAC>+0x208], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x20C",
+   "name": "NAVAL_RANK_4",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_RANK_4` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_RANK_4\", calls the reader at rva 0x45F40, and stores the result at rva 0x48F8D with `mov [<CDefines+0xAC>+0x20C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x220",
+   "name": "OWNED_AND_CONTROLLED_THROUGHPUT_CAP_BONUS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `OWNED_AND_CONTROLLED_THROUGHPUT_CAP_BONUS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"OWNED_AND_CONTROLLED_THROUGHPUT_CAP_BONUS\", calls the reader at rva 0x45F40, and stores the result at rva 0x49089 with `mov [<CDefines+0xAC>+0x220], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable.",
+   "revises": "the name was recorded as inferred from where it falls against defines.lua. It is not an inference: the loader pushes this key by name and stores it at this offset. Only the comment changes."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x224",
+   "name": "INFRA_THROUGHPUT_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `INFRA_THROUGHPUT_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"INFRA_THROUGHPUT_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x490A7 with `mov [<CDefines+0xAC>+0x224], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable.",
+   "revises": "the name was recorded as inferred from where it falls against defines.lua. It is not an inference: the loader pushes this key by name and stores it at this offset. Only the comment changes."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x228",
+   "name": "SURPRISE_BONUS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `SURPRISE_BONUS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"SURPRISE_BONUS\", calls the reader at rva 0x45F40, and stores the result at rva 0x490D6 with `mov [<CDefines+0xAC>+0x228], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x22C",
+   "name": "STATIC_AA_SCALE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `STATIC_AA_SCALE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"STATIC_AA_SCALE\", calls the reader at rva 0x45F40, and stores the result at rva 0x49116 with `mov [<CDefines+0xAC>+0x22C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x230",
+   "name": "AIR_SUPPLY_FACTOR",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_SUPPLY_FACTOR` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_SUPPLY_FACTOR\", calls the reader at rva 0x45F40, and stores the result at rva 0x49134 with `mov [<CDefines+0xAC>+0x230], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x234",
+   "name": "UNIT_UPGRADE_COST",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNIT_UPGRADE_COST` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNIT_UPGRADE_COST\", calls the reader at rva 0x45F40, and stores the result at rva 0x49163 with `mov [<CDefines+0xAC>+0x234], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x238",
+   "name": "UNIT_UPGRADE_TIME",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNIT_UPGRADE_TIME` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNIT_UPGRADE_TIME\", calls the reader at rva 0x45F40, and stores the result at rva 0x491A3 with `mov [<CDefines+0xAC>+0x238], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x23C",
+   "name": "UNIT_UPGRADE_PRACTICAL_MOD",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNIT_UPGRADE_PRACTICAL_MOD` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNIT_UPGRADE_PRACTICAL_MOD\", calls the reader at rva 0x45F40, and stores the result at rva 0x491C1 with `mov [<CDefines+0xAC>+0x23C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x240",
+   "name": "MAX_OFFICERS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `MAX_OFFICERS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"MAX_OFFICERS\", calls the reader at rva 0x45F40, and stores the result at rva 0x491F0 with `mov [<CDefines+0xAC>+0x240], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x244",
+   "name": "LOW_ORG_REGAIN_BONUS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LOW_ORG_REGAIN_BONUS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LOW_ORG_REGAIN_BONUS\", calls the reader at rva 0x45F40, and stores the result at rva 0x49230 with `mov [<CDefines+0xAC>+0x244], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x248",
+   "name": "SPAWN_PARTISAN_LIMIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `SPAWN_PARTISAN_LIMIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"SPAWN_PARTISAN_LIMIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x4924E with `mov [<CDefines+0xAC>+0x248], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x24C",
+   "name": "SPAWN_UNDERGROUND_LIMIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `SPAWN_UNDERGROUND_LIMIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"SPAWN_UNDERGROUND_LIMIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x4927D with `mov [<CDefines+0xAC>+0x24C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x250",
+   "name": "MAX_UNDERGROUND_DISTANCE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `MAX_UNDERGROUND_DISTANCE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"MAX_UNDERGROUND_DISTANCE\", calls the reader at rva 0x45F40, and stores the result at rva 0x492BD with `mov [<CDefines+0xAC>+0x250], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x254",
+   "name": "UNDERGOUND_INITIAL_STRENGTH",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNDERGOUND_INITIAL_STRENGTH` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNDERGOUND_INITIAL_STRENGTH\", calls the reader at rva 0x45F40, and stores the result at rva 0x492DB with `mov [<CDefines+0xAC>+0x254], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x258",
+   "name": "UNDERGROUND_STRENGTH_GAIN",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNDERGROUND_STRENGTH_GAIN` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNDERGROUND_STRENGTH_GAIN\", calls the reader at rva 0x45F40, and stores the result at rva 0x4930A with `mov [<CDefines+0xAC>+0x258], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x25C",
+   "name": "UNDERGROUND_DETECT_CHANCE",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNDERGROUND_DETECT_CHANCE` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNDERGROUND_DETECT_CHANCE\", calls the reader at rva 0x45F40, and stores the result at rva 0x4934A with `mov [<CDefines+0xAC>+0x25C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x260",
+   "name": "UNDERGROUND_PARTISAN_STRENGTH",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNDERGROUND_PARTISAN_STRENGTH` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNDERGROUND_PARTISAN_STRENGTH\", calls the reader at rva 0x45F40, and stores the result at rva 0x49368 with `mov [<CDefines+0xAC>+0x260], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x264",
+   "name": "UNDERGROUND_SPAWN_STRENGTH",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `UNDERGROUND_SPAWN_STRENGTH` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"UNDERGROUND_SPAWN_STRENGTH\", calls the reader at rva 0x45F40, and stores the result at rva 0x49397 with `mov [<CDefines+0xAC>+0x264], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x268",
+   "name": "NAVAL_STACK_POS_PENALTY_MAX",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_STACK_POS_PENALTY_MAX` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_STACK_POS_PENALTY_MAX\", calls the reader at rva 0x45F40, and stores the result at rva 0x493D7 with `mov [<CDefines+0xAC>+0x268], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x26C",
+   "name": "PARADROP_MIN_TIME",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `PARADROP_MIN_TIME` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"PARADROP_MIN_TIME\", calls the reader at rva 0x45F40, and stores the result at rva 0x493F5 with `mov [<CDefines+0xAC>+0x26C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x270",
+   "name": "NAVAL_INTERCEPTION_AFTER_ATTACK_FACTOR",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NAVAL_INTERCEPTION_AFTER_ATTACK_FACTOR` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NAVAL_INTERCEPTION_AFTER_ATTACK_FACTOR\", calls the reader at rva 0x45F40, and stores the result at rva 0x49424 with `mov [<CDefines+0xAC>+0x270], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x298",
+   "name": "LAND_COMBAT_STR_ARMOR_DEFLECTION_FACTOR",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_COMBAT_STR_ARMOR_DEFLECTION_FACTOR` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_COMBAT_STR_ARMOR_DEFLECTION_FACTOR\", calls the reader at rva 0x45F40, and stores the result at rva 0x49464 with `mov [<CDefines+0xAC>+0x298], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x29C",
+   "name": "LAND_COMBAT_ORG_ARMOR_DEFLECTION_FACTOR",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_COMBAT_ORG_ARMOR_DEFLECTION_FACTOR` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_COMBAT_ORG_ARMOR_DEFLECTION_FACTOR\", calls the reader at rva 0x45F40, and stores the result at rva 0x49482 with `mov [<CDefines+0xAC>+0x29C], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2A0",
+   "name": "TACTIC_SWAP_FREQUENCEY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `TACTIC_SWAP_FREQUENCEY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"TACTIC_SWAP_FREQUENCEY\", calls the reader at rva 0x45F40, and stores the result at rva 0x494BA with `mov [<CDefines+0xAC>+0x2A0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2A4",
+   "name": "INITIATIVE_PICK_COUNTER_ADVANTAGE_FACTOR",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `INITIATIVE_PICK_COUNTER_ADVANTAGE_FACTOR` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"INITIATIVE_PICK_COUNTER_ADVANTAGE_FACTOR\", calls the reader at rva 0x45F40, and stores the result at rva 0x494F1 with `mov [<CDefines+0xAC>+0x2A4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2A8",
+   "name": "AGGRESSIVNESS_SELECTION_IMPACT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AGGRESSIVNESS_SELECTION_IMPACT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AGGRESSIVNESS_SELECTION_IMPACT\", calls the reader at rva 0x45F40, and stores the result at rva 0x4950F with `mov [<CDefines+0xAC>+0x2A8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x1D8",
+   "name": "AIR_STACKING_PENALTY_MAX",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_STACKING_PENALTY_MAX` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_STACKING_PENALTY_MAX\", calls the reader at rva 0x45F40, and stores the result at rva 0x4953E with `mov [<CDefines+0xAC>+0x1D8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2AC",
+   "name": "SHIP_UPGRADE_SPEED_MOD",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `SHIP_UPGRADE_SPEED_MOD` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"SHIP_UPGRADE_SPEED_MOD\", calls the reader at rva 0x45F40, and stores the result at rva 0x4957E with `mov [<CDefines+0xAC>+0x2AC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2B0",
+   "name": "AIR_UPGRADE_SPEED_MOD",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `AIR_UPGRADE_SPEED_MOD` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"AIR_UPGRADE_SPEED_MOD\", calls the reader at rva 0x45F40, and stores the result at rva 0x4959C with `mov [<CDefines+0xAC>+0x2B0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2B4",
+   "name": "LAND_UPGRADE_SPEED_MOD",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `LAND_UPGRADE_SPEED_MOD` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"LAND_UPGRADE_SPEED_MOD\", calls the reader at rva 0x45F40, and stores the result at rva 0x495CB with `mov [<CDefines+0xAC>+0x2B4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2B8",
+   "name": "CAG_STACKING_PENALTY",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `CAG_STACKING_PENALTY` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"CAG_STACKING_PENALTY\", calls the reader at rva 0x45F40, and stores the result at rva 0x4960B with `mov [<CDefines+0xAC>+0x2B8], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2BC",
+   "name": "CAG_SHIP_ATTACK_STR_BONUS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `CAG_SHIP_ATTACK_STR_BONUS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"CAG_SHIP_ATTACK_STR_BONUS\", calls the reader at rva 0x45F40, and stores the result at rva 0x49629 with `mov [<CDefines+0xAC>+0x2BC], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2C0",
+   "name": "CAG_SHIP_ATTACK_ORG_BONUS",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `CAG_SHIP_ATTACK_ORG_BONUS` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"CAG_SHIP_ATTACK_ORG_BONUS\", calls the reader at rva 0x45F40, and stores the result at rva 0x49658 with `mov [<CDefines+0xAC>+0x2C0], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x2C4",
+   "name": "NEW_LEADER_ORG_HIT",
+   "type": "int",
+   "comment": "the military block of defines.lua. CDefines::Load reads it by the key `NEW_LEADER_ORG_HIT` and stores it here, scaled to thousandths.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load (rva 0x46210) reads defines.lua **by key**: for this entry it pushes the literal \"NEW_LEADER_ORG_HIT\", calls the reader at rva 0x45F40, and stores the result at rva 0x49687 with `mov [<CDefines+0xAC>+0x2C4], eax`. The offset is compiled in, so nothing a mod does to the order of common/defines.lua moves it. Wrong if that store names a different key or a different displacement - `python definesMap.py --block military` reprints the whole map from the executable."
+  },
+  {
+   "struct": "CDefines",
+   "offset": "0xBC",
+   "name": "diplomacy",
+   "type": "int*",
+   "comment": "the diplomacy block of defines.lua. CDefines::Load loads this pointer into a register and stores each entry of the block through it at a compiled-in offset, keyed by name. 67 entries, WARDEC_BELIGERENCY at +0x0 to LEND_LEASE_MAX_IC_HIGH at +0x108. No struct is recorded for it yet; `python definesMap.py --block diplomacy` prints the map.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load does `mov <reg>, [ebx+0xBC]` (ebx is its CDefines* argument) immediately before every store of a diplomacy entry, and before no other block's. Wrong if a key from another block is stored through this pointer - definesMap.py prints the first and last key of each block, so a mix-up shows there."
+  },
+  {
+   "struct": "CDefines",
+   "offset": "0xDC",
+   "name": "alignment",
+   "type": "int*",
+   "comment": "the alignment block of defines.lua. CDefines::Load loads this pointer into a register and stores each entry of the block through it at a compiled-in offset, keyed by name. 13 entries, ALIGNMENT_INTERVAL at +0x0 to REPULSION_IC_FACTOR at +0x30. No struct is recorded for it yet; `python definesMap.py --block alignment` prints the map.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load does `mov <reg>, [ebx+0xDC]` (ebx is its CDefines* argument) immediately before every store of a alignment entry, and before no other block's. Wrong if a key from another block is stored through this pointer - definesMap.py prints the first and last key of each block, so a mix-up shows there."
+  },
+  {
+   "struct": "CDefines",
+   "offset": "0xEC",
+   "name": "weather",
+   "type": "int*",
+   "comment": "the weather block of defines.lua. CDefines::Load loads this pointer into a register and stores each entry of the block through it at a compiled-in offset, keyed by name. 56 entries, PRESSUREMIN at +0x0 to INITIAL_SIMULATION_HOURS_AHEAD at +0xDC. No struct is recorded for it yet; `python definesMap.py --block weather` prints the map.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load does `mov <reg>, [ebx+0xEC]` (ebx is its CDefines* argument) immediately before every store of a weather entry, and before no other block's. Wrong if a key from another block is stored through this pointer - definesMap.py prints the first and last key of each block, so a mix-up shows there."
+  },
+  {
+   "struct": "CDefines",
+   "offset": "0xFC",
+   "name": "map",
+   "type": "int*",
+   "comment": "the map block of defines.lua. CDefines::Load loads this pointer into a register and stores each entry of the block through it at a compiled-in offset, keyed by name. 10 entries, SUEZ at +0x0 to GIBRALTAR_BLOCKER at +0x24, and these are read by rva 0x460D0 as plain ints, not scaled - they are province ids. The mod's WHITESEA and WHITESEA_BLOCKER are not among them and are never read. No struct is recorded for it yet; `python definesMap.py --block map` prints the map.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load does `mov <reg>, [ebx+0xFC]` (ebx is its CDefines* argument) immediately before every store of a map entry, and before no other block's. Wrong if a key from another block is stored through this pointer - definesMap.py prints the first and last key of each block, so a mix-up shows there."
+  },
+  {
+   "struct": "CDefines",
+   "offset": "0x10C",
+   "name": "goods_cost",
+   "type": "int*",
+   "comment": "the goods_cost block of defines.lua. CDefines::Load loads this pointer into a register and stores each entry of the block through it at a compiled-in offset, keyed by name. 7 entries, SUPPLIES at +0x0 to RARE_MATERIALS at +0x18. No struct is recorded for it yet; `python definesMap.py --block goods_cost` prints the map.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "CDefines::Load does `mov <reg>, [ebx+0x10C]` (ebx is its CDefines* argument) immediately before every store of a goods_cost entry, and before no other block's. Wrong if a key from another block is stored through this pointer - definesMap.py prints the first and last key of each block, so a mix-up shows there."
+  },
+  {
+   "struct": "CDefines",
+   "offset": "0x9C",
+   "name": "economy",
+   "type": "CDefinesEconomy*",
+   "comment": "the economy block of defines.lua. the entries are not read in file order - they are read by key, and the offsets are compiled into CDefines::Load. This block happens to agree with the file, which is exactly why the file-order reading looked confirmed.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "read off CDefines::Load at rva 0x46210, where every store through this pointer is preceded by a push of the key it holds. Wrong if a key is stored at an offset definesMap.py does not print for it.",
+   "revises": "the comment said the block's entries sit in the struct in the order they appear in defines.lua. They do not - the loader reads them by name. the entries are not read in file order - they are read by key, and the offsets are compiled into CDefines::Load. This block happens to agree with the file, which is exactly why the file-order reading looked confirmed."
+  },
+  {
+   "struct": "CDefines",
+   "offset": "0xAC",
+   "name": "supply_defines_ptr",
+   "type": "CDefinesSupply*",
+   "comment": "pointer to the block holding SUPPLYPOOL_DAYS and the supply capacity defines. this is the whole `military` block, 179 entries from MAX_MANPOWER at +0x0 to NEW_LEADER_ORG_HIT at +0x2C4 - not a supply-only block. The entries are read by key, so their offsets do not move when the mod's defines.lua changes.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "read off CDefines::Load at rva 0x46210, where every store through this pointer is preceded by a push of the key it holds. Wrong if a key is stored at an offset definesMap.py does not print for it.",
+   "revises": "the comment said the block's entries sit in the struct in the order they appear in defines.lua. They do not - the loader reads them by name. this is the whole `military` block, 179 entries from MAX_MANPOWER at +0x0 to NEW_LEADER_ORG_HIT at +0x2C4 - not a supply-only block. The entries are read by key, so their offsets do not move when the mod's defines.lua changes."
+  },
+  {
+   "struct": "CDefines",
+   "offset": "0xCC",
+   "name": "country",
+   "type": "CDefinesCountry*",
+   "comment": "the country block of defines.lua. the entries are not read in file order but by key, into offsets compiled into CDefines::Load, and for this block the two disagree: NO_MISSION_SPY_DETECTION_MULTIPLIER is at +0x3C, not +0x60.",
+   "source": "reversing/FINDINGS-supply.md",
+   "evidence": "read off CDefines::Load at rva 0x46210, where every store through this pointer is preceded by a push of the key it holds. Wrong if a key is stored at an offset definesMap.py does not print for it.",
+   "revises": "the comment said the block's entries sit in the struct in the order they appear in defines.lua. They do not - the loader reads them by name. the entries are not read in file order but by key, into offsets compiled into CDefines::Load, and for this block the two disagree: NO_MISSION_SPY_DETECTION_MULTIPLIER is at +0x3C, not +0x60."
+  }
+ ],
+ "frontier": [
+  "0x44B540",
+  "0x44B580",
+  "0x44B600",
+  "0x44B630",
+  "0x44B6B0",
+  "0x44B760",
+  "0x4452A0",
+  "0x44CDA0"
+ ],
+ "slots_noted": "none of these is a virtual - LoadDefines and the two readers are called directly and sit in no table"
+}

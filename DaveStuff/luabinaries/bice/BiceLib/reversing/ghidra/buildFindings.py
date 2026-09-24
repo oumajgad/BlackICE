@@ -34,6 +34,7 @@ LUABIND = os.path.join(HERE, "luabind.json")
 PROJECT = os.path.join(HERE, "project.json")
 OUT = os.path.join(HERE, "bicelib_findings.json")
 SAVE_TOKENS = os.path.join(HERE, "saveTokens.json")
+MODIFIER_IDS = os.path.join(HERE, "modifierIds.json")
 
 IMAGE_BASE = LX.IMAGE_BASE
 
@@ -447,6 +448,39 @@ PUNCTUATION_NAMES = {
 }
 
 
+def modifier_enum():
+    """
+    Every modifier the executable knows, by id, so that a comparison against one reads as
+    its name. `CBuildingDataBase_RoleByModifierId` is five such comparisons in a row, and
+    without this they are 0x2E, 0x2D, 0x4B, 0x66 and 0x0F.
+
+    `reversing/modifierIds.py` writes the file, reading the global initialiser that builds
+    all 107 of them - the names exist nowhere else in the image, only as the literal each
+    one is constructed with.
+
+    Every id from 0 to the last gets a member. A value with no member is one Ghidra writes
+    as an OR of the members that reach it, which is a lie about what the code compares.
+    """
+    if not os.path.exists(MODIFIER_IDS):
+        return None
+    found = {int(k): v for k, v in json.load(
+        open(MODIFIER_IDS, encoding="utf-8")).items()}
+    values, taken = [], set()
+    for ident in range(max(found) + 1):
+        name = found.get(ident) or "MODIFIER_%d" % ident
+        # Two modifiers really are built from the same literal: ids 3 and 4 both push
+        # 'MANPOWER' and differ only in the save token they load under, 0x2C1 and 0x2C0.
+        # An enum cannot hold the name twice, so the second carries its id.
+        if name in taken:
+            name = "%s_%d" % (name, ident)
+        taken.add(name)
+        values.append({"name": name, "value": ident})
+    return {"name": "ModifierId", "size": 4, "values": values,
+            "comment": "Which modifier, as the game numbers them: %d of them, read out of "
+                       "the global initialiser that constructs them. From "
+                       "reversing/modifierIds.py." % len(values)}
+
+
 def save_token_enum():
     """
     Every save key the executable itself knows, as an enum, so that `SaveWriteKey(0x5a6,
@@ -529,6 +563,43 @@ PERSISTENT_BASE = {0x45BB10, 0x60CD50, 0xA7C050, 0xABF890, PURECALL + IMAGE_BASE
 VALID_CLASS = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
 
+STACK_AT = re.compile(r"^stack:(-?0[xX][0-9a-fA-F]+)$")
+
+
+def parse_locals(item, problems):
+    """the `locals` of one address record, checked
+
+    **Stack storage only.** A register local in Ghidra is a variable over a *range* of the
+    function, and one register holds several unrelated ones in a function of any size, so
+    `EBX` does not name a variable the way `stack:-0x30` does. Nothing stops the decompiler
+    propagating into them: type the stack slot a register local is read from and the type
+    follows the assignment, which is the whole reason this is worth having.
+
+    The offset is Ghidra's, not the frame pointer's, and the decompiler prints it: the local
+    it calls `local_30` is at `stack:-0x30`. On a function with the usual `push ebp; mov
+    ebp,esp` that is four less than the `[ebp - 0x2c]` in the disassembly, and taking the
+    disassembly's number is the mistake to expect.
+    """
+    out = []
+    for v in item.get("locals", []):
+        where = STACK_AT.match(v.get("at", ""))
+        if not where:
+            problems.append("local %s on %s %s: `at` must be stack:<offset>, e.g. "
+                            "stack:-0x30 (Ghidra's offset, the number in its local_30)"
+                            % (v.get("name"), item["rva"], item["name"]))
+            continue
+        if not v.get("name") or not v.get("type"):
+            problems.append("local at %s on %s %s: needs both a name and a type"
+                            % (v.get("at"), item["rva"], item["name"]))
+            continue
+        out.append({"at": int(where.group(1), 16), "name": v["name"], "type": v["type"]})
+    seen = collections.Counter(v["at"] for v in out)
+    for at, n in seen.items():
+        if n > 1:
+            problems.append("%s %s: two locals at stack:%#x" % (item["rva"], item["name"], at))
+    return sorted(out, key=lambda v: v["at"])
+
+
 def parse_prototype(text):
     """
     'int* __stdcall SupplyCapacity(CMapProvince* province, int* out)' -> signature dict.
@@ -573,6 +644,9 @@ def main():
     save_tokens = save_token_enum()
     if save_tokens:
         enums.add("SaveToken")
+    modifier_ids = modifier_enum()
+    if modifier_ids:
+        enums.add("ModifierId")
     sizes = {k: v[0] for k, v in KNOWN_SIZES.items()}
     for c in lua["classes"]:
         if c["size"]:
@@ -586,7 +660,8 @@ def main():
         problems.append("%08X is not the _purecall stub any more - pure virtual slots will be "
                         "named after whatever Lua method resolves to them" % (PURECALL + IMAGE_BASE))
 
-    def add_function(rva, namespace, name, confidence, evidence, signature=None, extra_labels=(), proven=False):
+    def add_function(rva, namespace, name, confidence, evidence, signature=None, extra_labels=(),
+                     proven=False, variables=()):
         va = rva + IMAGE_BASE
         # A luabind registration proves its target is an entry point; the start heuristic
         # is only for addresses that come from notes.
@@ -600,9 +675,16 @@ def main():
             f["evidence"] += "\n\n" + evidence
             if f["signature"] is None and signature is not None:
                 f["signature"] = signature
+            if variables and not f.get("locals"):
+                f["locals"] = list(variables)
             return
         functions[rva] = {"rva": rva, "namespace": namespace, "name": name, "confidence": confidence,
                           "evidence": evidence, "signature": signature, "labels": list(extra_labels)}
+        # Only when there are some. A `"locals": []` on all 901 functions would put a line of
+        # noise per function in every diff of the built file, which is what the ordering rules
+        # above exist to avoid.
+        if variables:
+            functions[rva]["locals"] = list(variables)
 
     # ---- the Lua API ----
     for f in lua["functions"]:
@@ -714,7 +796,8 @@ def main():
         ns, name = split_name(a["name"])
         if a["kind"] == "function":
             add_function(rva, ns, name, conf, evidence, parse_prototype(a.get("signature")),
-                         [{"namespace": split_name(x)[0], "name": split_name(x)[1]} for x in a.get("aliases", [])])
+                         [{"namespace": split_name(x)[0], "name": split_name(x)[1]} for x in a.get("aliases", [])],
+                         variables=parse_locals(a, problems))
         else:
             va = rva + IMAGE_BASE
             if not checker.check(a["kind"], va):
@@ -765,6 +848,37 @@ def main():
 
     def struct(name):
         return structs.setdefault(name, {"name": name, "size": None, "fields": []})
+
+    def list_node(element, where):
+        """the CListNode<element> struct, made if it is not there yet
+
+        Returns False for an element whose width is unknown, since the links sit after it and
+        nothing can be laid out without that. The allocations say the size: CGovernment's
+        ideology nodes are `new(0x10)` for a 4 byte element and CMinister's postings
+        `new(0x14)` for an 8 byte one - the element, two links and a byte, padded to four.
+        """
+        if element.endswith("*"):
+            width = 4
+        elif element in SCALAR_WIDTHS:
+            width = SCALAR_WIDTHS[element]
+        else:
+            width = structs.get(element, {}).get("size")
+        if not width:
+            return False
+        width = (width + 3) // 4 * 4
+        node = struct("CListNode<%s>" % element)
+        if not node["fields"]:
+            node["fields"] = [
+                {"offset": 0, "name": "data", "type": element, "priority": 2,
+                 "comment": "what the node holds (%s)" % where},
+                {"offset": width, "name": "prev", "type": "CListNode<%s>*" % element, "priority": 2,
+                 "comment": "the previous node"},
+                {"offset": width + 4, "name": "next", "type": "CListNode<%s>*" % element, "priority": 2,
+                 "comment": "the next node"},
+                {"offset": width + 8, "name": "flag", "type": "uint8_t", "priority": 2,
+                 "comment": "a byte the node is made with cleared, like CList's own"}]
+            node["size"] = width + 12
+        return True
 
     for name, (size, why) in KNOWN_SIZES.items():
         struct(name)["size"] = size
@@ -818,33 +932,24 @@ def main():
                 # pointer lists already followed at two more widths. An element whose width
                 # we do not know is left alone.
                 element = "CUnit*" if base == "CUnitList" else base[len("CList<"):-1]
-                if element.endswith("*"):
-                    width = 4
-                elif element in SCALAR_WIDTHS:
-                    width = SCALAR_WIDTHS[element]
-                else:
-                    width = structs.get(element, {}).get("size")
-                if not width:
+                where = shape["fields"][0]["comment"].split(" (")[-1].rstrip(")")
+                if not list_node(element, where):
                     continue
-                width = (width + 3) // 4 * 4
-                node = struct("CListNode<%s>" % element)
-                if not node["fields"]:
-                    node["fields"] = [
-                        {"offset": 0, "name": "data", "type": element, "priority": 2,
-                         "comment": "what the node holds (%s)" % shape["fields"][0]["comment"].split(" (")[-1].rstrip(")")},
-                        {"offset": width, "name": "prev", "type": "CListNode<%s>*" % element, "priority": 2,
-                         "comment": "the previous node"},
-                        {"offset": width + 4, "name": "next", "type": "CListNode<%s>*" % element, "priority": 2,
-                         "comment": "the next node"},
-                        {"offset": width + 8, "name": "flag", "type": "uint8_t", "priority": 2,
-                         "comment": "a byte the node is made with cleared, like CList's own"}]
-                    # The allocations say the size: CGovernment's ideology nodes are new(0x10)
-                    # for a 4 byte element and CMinister's postings new(0x14) for an 8 byte
-                    # one, both of which are the element, two links and that byte, padded.
-                    node["size"] = width + 12
                 for f in s["fields"]:
                     if f["name"] in ("first", "last"):
                         f["type"] = "CListNode<%s>*" % element
+    # **A local can ask for a list node no field does.** A list built inside a function - a
+    # queue of provinces, say - is nobody's member, so nothing in the CList pass above ever
+    # reaches it; without this the type in the finding resolves to an empty struct and the
+    # apply lays down nothing. Same generator, so such a node is identical to one a field
+    # asked for and the two share a definition when both exist.
+    for f in sorted(functions.values(), key=lambda f: f["rva"]):
+        for v in f.get("locals", []):
+            for element in sorted(set(re.findall(r"CListNode<(.+?)>", v["type"]))):
+                if not list_node(element, "a local of %s" % f["name"]):
+                    problems.append("%s %s: CListNode<%s> - the element's width is unknown, so "
+                                    "the node cannot be laid out" % (f["rva"], f["name"], element))
+
     # Ghidra has no inheritance between structures: a derived class only reads well if its
     # base's fields are laid out on it too. `"inherits"` in project.json names a base that
     # sits at offset 0, and its fields are copied in - a field the derived class declares
@@ -934,6 +1039,8 @@ def main():
         enum_out.setdefault(e, {"name": e, "size": 4, "comment": "an enum the Lua API passes; values not registered", "values": []})
     if save_tokens:
         enum_out["SaveToken"] = save_tokens
+    if modifier_ids:
+        enum_out["ModifierId"] = modifier_ids
 
     vftables = virtual_tables(checker, structs, functions, labels, project.get("vftable_slots"))
 
@@ -947,7 +1054,14 @@ def main():
            "structs": embedded_first([s for s in structs.values() if s["fields"] or s["size"]], enums),
            "functions": sorted(functions.values(), key=lambda f: (f["rva"], f["name"])),
            "labels": sorted(labels, key=lambda l: (l["rva"], l["name"])),
-           "vftables": sorted(vftables, key=lambda v: v["name"])}
+           "vftables": sorted(vftables, key=lambda v: v["name"]),
+           # Straight through from project.json: an equate names one constant at one
+           # instruction, and there is nothing to derive or check against the image
+           # that the apply does not check better when it looks at the operand.
+           # rva as a number, the way every other section carries it: the apply
+           # reads it with getAsLong(), which does not parse "0x...".
+           "equates": [dict(e, rva=int(e["rva"], 16))
+                       for e in project.get("equates", [])]}
     json.dump(out, open(OUT, "w", encoding="utf-8"), indent=1)
     counts = collections.Counter(f["confidence"] for f in functions.values())
     print("wrote %s: %d functions %s, %d with signatures, %d labels, %d structs (%d fields), %d enums" % (

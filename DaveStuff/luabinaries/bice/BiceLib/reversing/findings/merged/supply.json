@@ -1,0 +1,127 @@
+{
+ "agent": "supply pass agent",
+ "question": "Reverse CSupply::DailySupplyPass (rva 0x2872D0): its signature and calling convention, what it walks, where supply is produced and where it accumulates, and what supply_depot_id and g_CMap +0x2200 actually are.",
+ "source": "BiceLib/GameState/CustomMapMode.cpp",
+ "addresses": [
+  {
+   "rva": "0x2872D0",
+   "kind": "function",
+   "name": "CSupply::DailySupplyPass",
+   "signature": "void __stdcall CSupply::DailySupplyPass(CCurrentGameState* state, int* capacity, int* fuelNeed, int* supplyNeed, int* stepLoss)",
+   "no_signature": null,
+   "revises": true,
+   "comment": "The daily supply distribution, for Normal (non-arcade) games only: both callers skip it when CCurrentGameState::arcade_mode (+0xC9C) is above zero, the same switch CUnit::ConsumeSuppliesAndFuel takes its arcade branch on. Five stack arguments, `ret 0x14`, no `this`; the four arrays are one entry per province id, _alloca'd and zeroed by the caller and filled only for provinces whose CProvinceTemplate +0x13D is set - `capacity` from SupplyCapacity (0x9DD00), `supplyNeed` and `fuelNeed` from SupplyNeed (0x9E020), `stepLoss` from SupplyLoss (0x9DE80).\n\nIt sweeps CCurrentGameState::provinces_by_supply_order (+0x54) forward to pull supply inwards and backward to push surplus home. Two provinces are on the same network exactly when supply_depot_id (+0x48) matches; the pass only ever compares that field for equality, so it is the network label, and supply_depot_distance (+0x4C) is the hop count, 0 at the depot. A neighbour only counts when it carries the same depot id and is strictly closer.\n\n**Phase 1** (0x2872F0): for every flagged province, swap drawn_ptr with last_drawn_ptr and throughput_ptr with last_throughput_ptr, zero today's drawn and throughput and zero `need`. So last_drawn/last_throughput are yesterday's, which phase 2 reads.\n\n**Phase 2** (0x2874D2), forward: SUPPLYPOOL_DAYS is read once through the inlined GetDefines() as defines->supply(+0x3C)/1000, floored at 1 - 35. A province that is its controller's acting capital (CCountry::GetActingCapitalLocation) is skipped but for copying pool into last_pool: the national stockpile is the end of the chain, not a link in it. For every other province: need.supplies = supplyNeed[id] and need.fuel = fuelNeed[id], each raised to 1000 when it is between 0 and 1000 and the matching pool good is under 5000; want = need*35 - pool; local = min(need, current_producing) is added to the unnamed CGoodsPool at CCountry +0xA1C (+0xA24/+0xA28) and subtracted from want; want is floored at 0, capped at need*2 and added to `drawn`. `drawn` then holds this province's own shortfall plus all the demand provinces farther out already pushed on to it. One step's stepLoss[id] is added to the demand carried to the neighbours and taken off again on delivery.\n\nThen three sweeps over the template's ProvinceEdge vector (+0x90..+0x94, stride 20, neighbour id at +4), each considering only same-network, strictly-closer neighbours. (1) Take goods: available = min(neighbour->last_pool, capacity[nid]), scaled by this province's share of yesterday's demand where the neighbour's last_drawn exceeded its last_throughput (congestion rationing, capped at 1), then capped by the neighbour's current pool; the take is added to the neighbour's drawn and throughput, taken off its pool, and `max(take - stepLoss[id], 0)` added to this province's pool - and where the neighbour is a capital, to CCountry::usage. (2) Split what is still wanted evenly over the qualifying neighbours, each share capped by that neighbour's capacity minus its drawn, into its `drawn`. (3) Dump anything still unmet into each closer neighbour's drawn, capped at capacity[nid]. Sweeps 2 and 3 move demand, not goods, which is what the farthest-first sort order is for. Then last_pool = pool, all seven goods.\n\n**Phase 3** (0x287CD3), backward: the controller's acting capital is skipped where its distance is 0, and a province short of what was drawn from it in both supplies and fuel keeps everything. Otherwise surplus = pool - (need*35 + drawn). At a depot (distance 0) the surplus is shipped to the controller's acting capital province, limited by the sum over the province's convoys (CMapProvince +0x38..+0x3C, counting only those that end here and start in the capital's `area`) of NavalBaseCapacity(province) * CConvoy::GetEfficiency / 1000, capped by NavalBaseCapacity itself, and recorded in CCountry::sent_back. Anywhere else the whole surplus goes to the first neighbour found on the same network and closer to the depot, with no capacity limit.\n\nSo `drawn` is what was asked of a province today and `throughput` is what actually moved through it, and phase 2 rations next day's takers by exactly that ratio. **No supply is produced here**: current_producing only reduces what has to be fetched, and every increase to a pool is a transfer out of another pool.",
+   "confidence": "confirmed",
+   "evidence": "Signature: `ret 0x14` at 0x287FFD against five distinct [ebp+8..0x18] reads, no ecx use in the prologue; both call sites (0x2872A7 and 0x278F36) push exactly five dwords and adjust nothing after. The array identities come from the two callers: at 0x287250/0x278DF7 the result of SupplyCapacity goes to the array passed as arg1, SupplyNeed's stack out to arg3 and its edi out to arg2, SupplyLoss's out to arg4. Every field read is checked against project.json (drawn_ptr 0x1A8, last_drawn_ptr 0x1A4, throughput_ptr 0x1F8, last_throughput_ptr 0x1F4, need 0x244, pool 0x15C, last_pool 0x180, current_producing 0x268, supply_depot_id 0x48, supply_depot_distance 0x4C, id 0xD0, path_node_ptr 0xD4, controller 0x334, CCountry::usage 0x98C, CCountry::sent_back 0x9D4, CCurrentGameState provinces_by_supply_order 0x54 and provinces_begin/end 0xB8C/0xB90, CMap::provinces 0x2200, ProvinceEdge stride 20 with to_province at +4). Control flow read off cfg.py's edge list, not single jumps - in particular 0x287CC1 has three incoming edges and 0x287FE0 has twelve. The constants: 35000 and 2000 come from double 0.0005 at 0x160A460, double 1000.0 at 0x160A300 and float 2000.5 at 0x160A5F4 through 0x401FD0 then the truncating _ftol at 0xC08870 (`cvttsd2si`). **Wrong if**: the arcade gate is read backwards (it is `jg` past the call on arcade_mode > 0, so Normal = 0 runs it); or if `provinces_by_supply_order` is not in fact sorted farthest-first, which is taken from the existing project.json name and not re-derived - the whole one-sweep propagation argument rests on it, and a live dump of +0x54 against +0x4C would settle it. The three unnamed CCountry writes at +0xA24/+0xA28 are described, not named."
+  },
+  {
+   "rva": "0x287070",
+   "kind": "function",
+   "name": "RunDailySupplyPass",
+   "signature": "void __stdcall RunDailySupplyPass(CCurrentGameState* state)",
+   "no_signature": null,
+   "comment": "Builds the four per-province arrays CSupply::DailySupplyPass takes and calls it. Returns at once when CCurrentGameState::arcade_mode (+0xC9C) is above zero. Allocates four count*4 arrays on the stack (count = (provinces_end - provinces_begin)/4), memsets them to zero, and for every province whose CProvinceTemplate +0x13D is set fills capacity from SupplyCapacity, supplies and fuel need from SupplyNeed and the per-step loss from SupplyLoss. The loop keeps a moving pointer into the fuel-need array in edi - which is also SupplyNeed's second out parameter - and reaches the other three arrays through precomputed deltas off it. One caller, 0x282D7E inside 0x282630, which takes the game state as its own argument. Named for what it does; no class, like SupplyCapacity, SupplyNeed and SupplyLoss beside it.",
+   "confidence": "confirmed",
+   "evidence": "`ret 4` at 0x2872BF and one [ebp+8] read, pushed unchanged as the pass's first argument at 0x2872A0; the caller at 0x282D7E pushes ebx, which is its own [ebp+8] and is dereferenced at +0x8 and +0xBDC, both inside CCurrentGameState's recorded 0xDA8. The delta arithmetic is at 0x287194..0x2871AB: three `sub ecx, eax` against edi, which still holds the fuel array base there. **Wrong if** 0x282630's argument is not the game state - it is only shown to be an object of at least 0xBE0 bytes whose +0x8 takes a call and whose +0xBDC holds a pointer into the 0x29C55C0 table, which is consistent with but not proof of CCurrentGameState. The pass itself uses the singleton at 0x1A89790 for the same fields, so a wrong argument here would show up as a crash, not a wrong answer."
+  },
+  {
+   "rva": "0x9E020",
+   "kind": "function",
+   "name": "SupplyNeed",
+   "signature": "void __stdcall SupplyNeed(CMapProvince* province, int* suppliesOut, int* fuelOut@EDI)",
+   "no_signature": null,
+   "revises": true,
+   "comment": "Fills the per-province supply and fuel need the daily supply pass writes into CMapProvince::need. **Two out parameters and only one of them is on the stack**: the supplies total goes through the stack pointer at [ebp+0xC] and the fuel total through EDI, which the callers keep as a moving pointer into the fuel array. Both are zeroed on entry. It sums CUnit::SupplyConsumption (0x1BB560) and CUnit::FuelConsumption (0x1BB7A0) over the province's `units` (+0x2B8) and over two further unit lists at CMapProvince +0x54 and +0x58 whose meaning is not established. A unit is skipped where the province's controller id is a country at war with the unit's owner, and where either tag is REB; a virtual call on the unit's slot at +0x3C also has to return true.",
+   "confidence": "confirmed",
+   "evidence": "`ret 8` at 0x9E232 for two stack arguments. `mov dword ptr [edi], 0` at 0x9E045 with edi never written in the function is what makes EDI an argument, and the two callers set it: 0x287194 and 0x278D4F both leave edi pointing into the array they pass as the pass's arg2, which the pass writes to need.fuel at 0x2875E2. The two accumulate sites are 0x9E190 (`add [ebx], eax` after SupplyConsumption) and 0x9E1A1 (`add [edi], eax` after FuelConsumption). **Wrong if** EDI happened to be dead-but-valid at both call sites by coincidence - it is not, because the fuel array would then be all zeros and the pass would never place any fuel demand, which contradicts the fuel transfers it performs. The REB and at-war filters are read off the byte compares at 0x9E13F..0x9E173 and 0x9E136 and are the weakest part of this."
+  },
+  {
+   "rva": "0x9DE80",
+   "kind": "function",
+   "name": "SupplyLoss",
+   "signature": "int* __stdcall SupplyLoss(CMapProvince* province@EAX, int* out)",
+   "no_signature": null,
+   "revises": true,
+   "comment": "Fills the supplies lost crossing one province, which the daily supply pass adds to the demand it carries to a neighbour and subtracts again on delivery. Starts from defines->supply(+0xAC)(+0x34), **halves it where the province's owner id (+0x330) equals its controller id (+0x338)**, adds a partisan term built from defines->supply(+0x38) and the province's +0x84 when +0x88 is zero, scales the whole thing by the controller's +0xDF8(+0xC), and floors the result at zero. Against the mod's own common/defines.lua the two defines are SUPPLY_TAX and PARTISAN_EFFECT_ON_SUPPLY_TAX.",
+   "confidence": "confirmed",
+   "evidence": "`ret 4` at 0x9E013 for the one stack argument; the province arrives in EAX (`mov edi, eax` at 0x9DE89 before anything else, and both callers do `mov eax, <province>` immediately before the call at 0x28726D and 0x278E14), the same shape project.json already records for CUnit::FuelConsumption. It returns `out` - `mov eax, esi` at 0x9E003. The halving is `x * 1000 / 2000` at 0x9DEAC..0x9DEC9 guarded by `cmp [edi+0x330], [edi+0x338]`. **Wrong if** +0x330 and +0x338 are not the owner's and controller's tag ids - they are the second dword of the CCountryTag at 0x32C and 0x334, both already named, and CCountryTag is recorded as 8 bytes. The define names are positional (see the CDefinesSupply fields in this file) and are the part to doubt."
+  },
+  {
+   "rva": "0xA75D0",
+   "kind": "function",
+   "name": "NavalBaseCapacity",
+   "signature": "int* __stdcall NavalBaseCapacity(CMapProvince* province, int* out@ESI)",
+   "no_signature": null,
+   "comment": "How much a province's naval base can move in a day, in thousandths, written through an out pointer in ESI and also returned. Computes `naval_base->level_current * defines->supply(+0xAC)(+0x274) / 1000`, caching that define in the global at 0x1BEBAB8 behind the flag at 0x1BEBABC, then scales it by `(1000 + controller->modifier.NAVAL_BASE_EFFICIENCY + controller->+0xDF8(+0x7C)) / 1000`. The daily supply pass uses it in phase 3 as the ceiling on what a depot can ship home by convoy. Twenty callers in all, so the name describes what it computes rather than any one use.",
+   "confidence": "inferred",
+   "evidence": "`ret 4` at 0xA768E for the one stack argument; ESI is written (`mov [esi], edi` at 0xA7645, `mov [esi], eax` at 0xA767E) and never loaded, and two independent call sites set it immediately before - `lea esi, [ebp-0x44]` at 0x287DCF and `lea esi, [ebp+0xC]` at 0x494326. The modifier is CModifierValues +0x280, which project.json already names NAVAL_BASE_EFFICIENCY as a confirmed entry, and the multiplicand is [province+0x300](+0x24), where +0x24 is CProvinceBuilding::level_current. **Wrong if** CMapProvince +0x300 is not the naval base - the only evidence for that is the modifier it is paired with, and a live read of +0x300 against the buildings array at +0x310 would settle it. The name would also be wrong if define +0x274 turns out not to be a throughput rate; the define block's offsets past +0x40 are not reliably anchored."
+  },
+  {
+   "rva": "0xC6B80",
+   "kind": "function",
+   "name": "CConvoy::GetEfficiency",
+   "signature": "int* __thiscall CConvoy::GetEfficiency(CConvoy* this, int* out)",
+   "no_signature": null,
+   "comment": "The fraction of a convoy route that is actually running, in thousandths, written through out and also returned. Defaults to 1000, then becomes `transports (+0x98) * 1000 * 1000 / (transports wanted * 1000)` where a helper at 0xC7320 supplies the wanted figure, and is multiplied by +0xAC / 1000 - an unnamed field, most likely the lend-lease efficiency the defines call LL_CONVOY_EFF_IMPACT - when is_lend_lease (+0xA1) is set. The daily supply pass multiplies a depot's NavalBaseCapacity by it once per convoy that ends at the depot.",
+   "confidence": "inferred",
+   "evidence": "`ret 4` at 0xC6C25 with `this` in ecx (`mov esi, ecx` at 0xC6B89 before anything else) and one stack out at [ebp+8], returned in eax at 0xC6C21. The fields it reads are CConvoy::transports (+0x98) and CConvoy::is_lend_lease (+0xA1), both already named, which is what ties the class to the object. **Wrong if** 0xC7320 returns something other than transports wanted - it reads +0xB8 and runs it through the same round-and-truncate pair as the defines, and was not reversed. The name is a description of the ratio, not a name read off any string."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CMapProvince",
+   "offset": "0x38",
+   "name": "convoys_begin",
+   "type": "CConvoy**",
+   "comment": "begin of a vector of the convoy routes touching this province; the daily supply pass walks it at a depot to work out how much surplus can be shipped home, counting only entries whose end_province_id is this province and whose start_province_id lies in the acting capital's area",
+   "evidence": "Walked at 0x287DE0..0x287E4B with the count taken as ([province+0x3C] - [province+0x38])/4. Each element is read at +0xC4 and +0xC0 and both are used as indices into g_CMap->provinces, which is exactly CConvoy::end_province_id and CConvoy::start_province_id - the only pair of adjacent province-id fields at those two offsets in any recorded class. **Wrong if** some other class carries province ids at +0xC0 and +0xC4; the code that appends to this vector was not found, so the type rests on that offset coincidence alone. Recorded on CMapProvince only, because that is the class the pass has in hand; whether CProvince carries it too was not checked."
+  },
+  {
+   "struct": "CMapProvince",
+   "offset": "0x3C",
+   "name": "convoys_end",
+   "type": "CConvoy**",
+   "comment": "end of the convoy vector at +0x38",
+   "evidence": "Same site: the difference against +0x38 is divided by 4 and used as the loop bound at 0x287DE3. **Wrong if** +0x38 is not what it is taken to be, which is the same doubt as that field."
+  },
+  {
+   "struct": "CMapProvince",
+   "offset": "0x300",
+   "name": "naval_base",
+   "type": "CProvinceBuilding*",
+   "comment": "the province's naval base; NavalBaseCapacity (0xA75D0) multiplies its level_current by a supply define and by the NAVAL_BASE_EFFICIENCY modifier",
+   "evidence": "Read at 0xA7624 as [province+0x300] then +0x24, which is CProvinceBuilding::level_current, and the result is scaled by CModifierValues +0x280 - already confirmed as NAVAL_BASE_EFFICIENCY. **Wrong if** +0x300 points at a different building and the pairing with the naval-base modifier is a coincidence; the province holds one CProvinceBuilding* per defined building in the array at +0x310, and a live read comparing +0x300 with that array's naval-base slot would settle it in one step. Nothing was found that writes +0x300."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x34",
+   "name": "SUPPLY_TAX",
+   "type": "int",
+   "comment": "supplies lost crossing one province, x1000; SupplyLoss (0x9DE80) starts from this and halves it where the province's owner and controller are the same country. defines.lua calls it 'supplies cost for moving through a province'",
+   "evidence": "Read at 0x9DE9C as defines->+0xAC(+0x34) and written straight to SupplyLoss's out, which the daily supply pass adds to the demand it carries one step and subtracts again on delivery - which is what a per-province movement cost is. Positionally it is entry 15 of the `military` block of the mod's own common/defines.lua, counting the block's first stored entry as HISTORICAL_MODEL_MAX, the same anchoring that puts SUPPLYPOOL_DAYS at +0x3C where project.json already has it and PARTISAN_EFFECT_ON_SUPPLY_TAX at +0x38 where the partisan term is read. **Wrong if** the game indexes a different defines.lua than the mod's - and it must be the mod's, because under the vanilla file +0x38 would be SUPPLY_TAX itself and the partisan term would be multiplying the wrong number. Note also that this anchoring does NOT reproduce project.json's RADIO_CORPS_LEADER_DISTANCE at +0x210 (it lands at +0x218; vanilla gives +0x1F0), so everything recorded past +0x40 in this struct should be re-anchored before it is trusted."
+  },
+  {
+   "struct": "CDefinesSupply",
+   "offset": "0x38",
+   "name": "PARTISAN_EFFECT_ON_SUPPLY_TAX",
+   "type": "int",
+   "comment": "how much partisan activity raises the per-province supply loss, x1000; SupplyLoss adds a term built from this and the province's +0x84 when +0x88 is zero",
+   "evidence": "Read at 0x9DFB0 as defines->+0xAC(+0x38) inside the branch that also reads the province's +0x84 through the global multiplier at 0x1A86F70 - a province-local risk figure - and it sits immediately after the base loss define the same function starts from. Positionally it is entry 16 of the mod's `military` block under the anchoring described for +0x34. **Wrong if** the mod's defines.lua is not the file the engine indexes, or if province +0x84 is not partisan-related; +0x84 was not otherwise identified."
+  }
+ ],
+ "vftable_slots": {},
+ "slots_noted": "None of the six functions is in any class's virtual table - vtable.py --holding reports 'in no class's virtual table' for 0x2872D0, 0x287070, 0x9E020, 0x9DE80, 0xA75D0 and 0xC6B80.",
+ "frontier": [
+  "0x452E0",
+  "0x1FD0",
+  "0x808870",
+  "0x8084B0",
+  "0x799420",
+  "0x799220",
+  "0x282630",
+  "0x278AB0",
+  "0x1D560",
+  "0xC7320",
+  "0x2F1B0"
+ ]
+}

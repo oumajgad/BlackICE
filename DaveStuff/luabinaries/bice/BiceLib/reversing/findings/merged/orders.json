@@ -1,0 +1,201 @@
+{
+ "agent": "orders wave - signatures for the order LoadKeys and the order-side RouteUnit",
+ "question": "Sign CAirOrder::LoadKey, CNavalOrder::LoadKey, CSupportAttackOrder::LoadKey, CStrategicRedeploymentOrder::RouteUnit, CLeader::ResetToStarting, CSubUnitDefinition::IsCarrier, CRegiment::GetMaxStrength and CUnitAdjuster::LoadKey, which project.json named with no signature at all; record the mod-facing keys each LoadKey names, and settle whether the order-side RouteUnit is CMoveCommand::RouteUnit's sibling at the same slot.",
+ "source": "reversing/CLASSES.md",
+ "addresses": [
+  {
+   "rva": "0x189A40",
+   "kind": "function",
+   "name": "CAirOrder::LoadKey",
+   "signature": "void __thiscall CAirOrder::LoadKey(CAirOrder* this, CParseContext* parse, SaveToken key)",
+   "no_signature": null,
+   "comment": "CAirOrder vftable slot 4, and the image's ordinary LoadKey shape: `this` in ecx, `CParseContext*` at [ebp+8], the four byte SaveToken at [ebp+0xC], every exit `ret 8`.\n\nThree keys of its own. `provinces` (0x1DC) reads the value with `sscanf(parse+0x22C, \"%i\", &n)`, turns `n` into a CMapProvince* through `g_CCurrentGameState->[0xB8C][n]`, and appends a 16 byte node {province, prev, next, flag} to the list at +0x44/+0x48/+0x4C - so `provinces = N` may be repeated and accumulates. `return_to_base` (0x6DF) is ParseBool into the **base's** +0x18, and `priority` (0x8A) is `sscanf \"%i\"` into the base's +0x1C; unlike CNavalOrder it does not give those two fields of its own.\n\nEvery other key is taken as **a unit type name**: the raw key text at `parse+0x24` is copied into a std::string and looked up with StringHashFind in the database returned by 0x1ADE80, and where that hits, the value is read as `%i` and stored into the int array at +0x34 at that type's index (`type+0x24`). Only a key that is not a unit type either reaches COrder::LoadKey. A failed sscanf calls ReportParseError, so a bad value is reported but the key is not.\n\nThe body is slot 4 of CAirOrder and of its thirteen subclasses, which all inherit it.",
+   "confidence": "confirmed",
+   "revises": "project.json recorded the name and the shape of this function but no signature at all. The signature is read off the frame and the `ret 8`; the comment now carries the token ids, the field offsets each key writes and the `%i` sscanf, which is what a mod author needs.",
+   "evidence": "cfg.py rva:0x189A40 700: entry `mov eax,[ebp+0xC]`, `mov edi,ecx`, and six `ret 8` exits, no other return. The three compares are `cmp eax,0x8A` (0x589A65), `cmp eax,0x1DC` (0x589A71) and `cmp eax,0x6DF` (0x589A7C); ghidra/saveTokens.json gives 0x8A=priority, 0x1DC=provinces, 0x6DF=return_to_base. 0xA7B410 is ParseBool and 0xB964D4 is sscanf in project.json, and image.read(0x15FD14C) is b'%i'. The store at 0x589B2B is `mov [ecx+edx*4],eax` with ecx=[this+0x34] and edx=[found+0x24]. vtable.py --holding 0x589A40 lists exactly 14 tables, all slot 4, CAirOrder plus thirteen subclasses. WHAT WOULD SHOW IT WRONG: a `ret` with a different immediate anywhere in the body (checkSignatures reads them all), a token table where 0x1DC is not `provinces`, or 0x1ADE80 turning out to return something other than a unit-type database - that last is the weakest link and is on the frontier list.",
+   "source": "BiceLib/GameClasses/COrder.hpp:32"
+  },
+  {
+   "rva": "0x19AE40",
+   "kind": "function",
+   "name": "CNavalOrder::LoadKey",
+   "signature": "void __thiscall CNavalOrder::LoadKey(CNavalOrder* this, CParseContext* parse, SaveToken key)",
+   "no_signature": null,
+   "comment": "CNavalOrder vftable slot 4, the ordinary LoadKey shape: `this` in ecx, `CParseContext*` at [ebp+8], SaveToken at [ebp+0xC], every exit `ret 8`. 58 instructions, an if-ladder on the token rather than a jump table.\n\nFive keys of its own, and two of them shadow the base: `return_to_base` (0x6DF) is ParseBool into **+0x34** and `priority` (0x8A) is `sscanf \"%i\"` into **+0x38**, not COrder's +0x18 and +0x1C - so a naval order carries its own copies and the base's stay at whatever COrder::LoadKey left them. The other three are `capital` (0x1F9) through ParseInt into +0x3C, `sub_unit` (0x388) through sscanf into +0x40, and `other` (0x39A) through sscanf into +0x44. Everything else is passed straight to COrder::LoadKey with the same two arguments, which tail-returns `ret 8` in its own right.",
+   "confidence": "confirmed",
+   "revises": "project.json recorded the name and the four-field summary but no signature at all. The signature comes off the `ret 8` and the [ebp+8]/[ebp+0xC] reads; the comment now names the token ids and which parse helper each key uses.",
+   "evidence": "cfg.py rva:0x19AE40 400: `mov eax,[ebp+0xC]` at entry, five `ret 8` exits and no other. Compares `cmp eax,0x388` (jg/je), `cmp eax,0x8A`, `cmp eax,0x1F9`, `cmp eax,0x39A`, `cmp eax,0x6DF`; saveTokens.json gives capital, sub_unit, other, priority, return_to_base for 0x1F9/0x388/0x39A/0x8A/0x6DF. 0xA7B470 is ParseInt (`parse@ECX, int* out@EAX`) and the call site loads exactly that pair; 0xA7B410 is ParseBool. 0x586FE0 is COrder::LoadKey. The offsets match the fields project.json already records on CNavalOrder (+0x34 return_to_base, +0x38 priority, +0x3C capital, +0x40 sub_unit, +0x44 other). WHAT WOULD SHOW IT WRONG: any exit with an immediate other than 8, or the token table disagreeing on those five ids.",
+   "source": "BiceLib/GameClasses/COrder.hpp:32"
+  },
+  {
+   "rva": "0x188340",
+   "kind": "function",
+   "name": "CSupportAttackOrder::LoadKey",
+   "signature": "void __thiscall CSupportAttackOrder::LoadKey(CSupportAttackOrder* this, CParseContext* parse, SaveToken key)",
+   "no_signature": null,
+   "comment": "CSupportAttackOrder vftable slot 4, and the smallest LoadKey in the order family: 17 instructions, `this` in ecx, `CParseContext*` at [ebp+8], SaveToken at [ebp+0xC], both exits `ret 8`.\n\nOne key of its own - `combat` (0x2D0) - and it is a **bool**, read with ParseBool into +0x34, not an object reference as the shorthand \"combat into +0x34\" suggested. Every other token is handed to COrder::LoadKey with the same two arguments.",
+   "confidence": "confirmed",
+   "revises": "project.json recorded the name with no signature at all, and its comment left the type of `combat` open. The signature is read off both `ret 8` exits; the type comes from the call being ParseBool rather than ParseObjectReference.",
+   "evidence": "cfg.py rva:0x188340 100: `mov eax,[ebp+0xC]`, `cmp eax,0x2D0`, then either `add ecx,0x34; push ecx; call 0xA7B410` or `push eax; push [ebp+8]; call 0x586FE0`; both blocks end `ret 8`. saveTokens.json gives 0x2D0 = combat. 0xA7B410 is ParseBool (`CParseContext* parse@EAX, bool* out@stack:4`) and the call site puts [ebp+8] in eax and this+0x34 on the stack, which is that convention exactly. 0x586FE0 is COrder::LoadKey. project.json already records CSupportAttackOrder +0x34 as `bool combat`, independently. WHAT WOULD SHOW IT WRONG: 0xA7B410 not being ParseBool, or a second token compare hidden behind a jump the cfg did not follow - it lists every edge and there are only the two.",
+   "source": "BiceLib/GameClasses/COrder.hpp:32"
+  },
+  {
+   "rva": "0x1D4C10",
+   "kind": "function",
+   "name": "CUnitAdjuster::LoadKey",
+   "signature": "void __thiscall CUnitAdjuster::LoadKey(CUnitAdjuster* this, CParseContext* parse, SaveToken key)",
+   "no_signature": null,
+   "comment": "CUnitAdjuster vftable slot 4, the ordinary LoadKey shape: `this` in ecx (kept in esi), `CParseContext*` at [ebp+8], SaveToken at [ebp+0xC], every exit `ret 8`.\n\nFour keys, and **all four go through TokenToFixedPoint on `parse+0x228`**, so every number on an adjuster is the engine's thousandths fixed point - `0.5` in a mod file is stored as 500, not truncated to 0: `attack` (0x174) into +0x8, `defence` (0x45E) into +0xC, `movement` (0x45F) into +0x10, `attrition` (0x2DC) into +0x14.\n\nThere is no base call. An unrecognised key is reported inline, with the log record built from the literals `unitadjuster.cpp`, `unknown key '` and `' in file `, so a misspelt terrain adjuster key is a log line and nothing else. Its SaveContents is an empty `ret 4`, so an adjuster is read out of the mod's files and never written back.",
+   "confidence": "confirmed",
+   "revises": "project.json recorded the name and the four offsets with no signature at all. The signature is read off the `ret 8` exits; the comment adds that every value is fixed point (TokenToFixedPoint, not ParseInt) and that the unknown-key path is inlined rather than delegated.",
+   "evidence": "cfg.py rva:0x1D4C10 400: `mov eax,[ebp+0xC]` at 0x5D4C24, `mov esi,ecx`, and `ret 8` at every exit. The compares are 0x45E (jg/je), 0x174, 0x2DC and 0x45F; saveTokens.json gives defence, attack, attrition, movement. Each case does `lea <local>; push it; lea eax,[parse+0x228]; push it; call 0xA69550` then `mov eax,[eax]; mov [esi+N],eax` - 0xA69550 is TokenToFixedPoint in project.json, signed `(CToken* token, int* out) @EAX`. The default block at 0x5D4CF2 builds a string from image.read(0x15C8870)=b'unitadjuster.cpp' and 0x15C0718=b\"unknown key '\", 0x15BC224=b\"' in file \". WHAT WOULD SHOW IT WRONG: a fifth token compare (the cfg lists four and one default), or TokenToFixedPoint being misidentified - it has 188 call sites and a signature already checked against its own ret.",
+   "source": "BiceLib/GameClasses/CUnitAdjuster.hpp:32"
+  },
+  {
+   "rva": "0x188700",
+   "kind": "function",
+   "name": "CStrategicRedeploymentOrder::RouteUnit",
+   "signature": "bool __cdecl CStrategicRedeploymentOrder::RouteUnit(CStrategicRedeploymentOrder* order@EDI) @AL",
+   "no_signature": null,
+   "comment": "The body of the order-side re-route. **Not a virtual and not CMoveCommand::RouteUnit's slot-mate**: it is a private helper reached in three places, one of them the `push edi; mov edi,ecx; call` thunk at 0x188440 that occupies CStrategicRedeploymentOrder vftable **slot 13**, where CMoveCommand::RouteUnit is slot 6 of the CCommand hierarchy (and slot 6 is CCommand::Execute). Two different hierarchies, two different slots; what they share is the work, not the dispatch.\n\nThe order arrives in edi and costs no stack - a bare `ret` at both exits - and the answer is a bool in al. What it does, in order:\n\n1. Touches `g_CCurrentGameState`, creating it (0xDA8 bytes, CGameState::CGameState then the CCurrentGameState vftable) if it is still null - the singleton accessor inlined.\n2. **Gives up early, answering true, when the unit is not due yet**: `if (gamestate[0xBDC] < order->unit->[0xCC]) return true`.\n3. **Gives up early, answering true, when the unit is already heading the right way**: where the unit has a path (count at +0x140 > 0), its first province (`g_CMap->[0x2200][ path[0] ]`) is compared against the order's target province at +0xC, and an equal one means there is nothing to redo.\n4. Otherwise builds a **CVerySafePathFind** in the frame (vftable 0x15C5B6C written at 0x1887FE) - always that finder, never the plain or merely-safe one CMoveCommand picks between - and calls CPathFind::Find with the unit, the unit's +0x130 and the order's target province.\n5. On success calls SetUnitPath(unit, path, 1) and answers true; on failure it destroys the finder and answers **false**, which is the only way this returns false.\n\nSo \"routing\" here is: decide whether the unit still needs a new path, work one out with the most cautious finder, and hand it to the unit.",
+   "confidence": "confirmed",
+   "revises": "project.json recorded this with no signature at all and a comment whose last sentence (\"Re-route helper (same function as RVA 0x188700)\") was a merge artefact pointing at itself. The signature is read off the bare `ret` and the edi use; the comment now settles the slot question the task asked and spells out the two early exits.",
+   "evidence": "cfg.py rva:0x188700 900: 105 instructions, two exits, both a bare `ret` (0x588844, 0x588860), al set to 1 at 0x588832 and xor'd to 0 at 0x588853. Every field read goes through edi (`[edi+8]` the unit at 0x58871E and 0x5887B3, `[edi+0xC]` the province at 0x5887D4 and 0x5887F5) and nothing is read from [ebp+8] or above, so it takes no stack argument. findRefs.py --callers 0x588700 gives exactly three: 0x588443 (inside the thunk `push edi; mov edi,ecx; call; pop edi; ret` at 0x588440), 0x58850D and 0x588552, and the latter two both do `mov edi,<the order>` immediately before the call. vtable.py --holding 0x588700 says it is in no table at all; vtable.py --holding 0x588440 says CStrategicRedeploymentOrder slot 13, one table. vtable.py COrder CStrategicRedeploymentOrder CMoveOrder CAirOrder CNavalOrder CSupportAttackOrder --all shows slot 13 is `0xB961D5` (purecall) on COrder, so slot 13 is a pure virtual the concrete orders implement. project.json names 0x15C5B6C the CVerySafePathFind vftable, 0x1A12B0 CPathFind::Find and 0x1C9AC0 SetUnitPath. WHAT WOULD SHOW IT WRONG: a caller that sets up a stack argument before the call (none of the three does), or CMoveCommand's table turning out to hold a thunk into 0x188700 as well - it does not; vtable.py --holding finds 0x188440 in one table only.",
+   "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:30; reversing/FINDINGS-redeploy.md:103"
+  },
+  {
+   "rva": "0x188440",
+   "kind": "function",
+   "name": "CStrategicRedeploymentOrder::RouteUnit_Thunk",
+   "signature": "bool __thiscall CStrategicRedeploymentOrder::RouteUnit_Thunk(CStrategicRedeploymentOrder* this) @AL",
+   "no_signature": null,
+   "comment": "CStrategicRedeploymentOrder vftable **slot 13** - the virtual that dispatches to the re-route. Five instructions and nothing else: `push edi; mov edi,ecx; call CStrategicRedeploymentOrder::RouteUnit; pop edi; ret`. It exists because the compiler gave the body a register calling convention (the order in edi) and the table needs an ordinary `__thiscall` entry. The bool comes straight back in al.\n\nSlot 13 is `_purecall` on COrder itself, so every concrete order supplies its own: CMoveOrder 0x187B00, CAirOrder 0x18A790, CSupportAttackOrder 0x187FB0. Those are not named here - only this one is known to route.",
+   "confidence": "confirmed",
+   "revises": null,
+   "evidence": "disasm.py 0x588440: the five instructions above, ending in a bare `ret` with nothing pushed for the callee, which is `__thiscall` with no stack arguments. vtable.py --holding 0x588440: CStrategicRedeploymentOrder slot 13, table 0x015C5ADC, one table only. findRefs.py --callers 0x588440 and --address 0x588440 both find nothing in code, which is what a slot-only entry looks like. vtable.py on the six order classes --all shows COrder slot 13 = 0xB961D5, the purecall stub that every unimplemented slot in that table points at. WHAT WOULD SHOW IT WRONG: 0xB961D5 not being _purecall (then slot 13 would have a real base body and this would be an override, not the declaration), or the thunk doing anything besides moving ecx to edi - it does not.",
+   "source": "BiceLib/GameClasses/CStrategicRedeploymentOrder.hpp:30"
+  },
+  {
+   "rva": "0x181E10",
+   "kind": "function",
+   "name": "CLeader::ResetToStarting",
+   "signature": "void __cdecl CLeader::ResetToStarting(CLeader* leader@EAX)",
+   "no_signature": null,
+   "comment": "Puts a leader back to the state he was defined with. The leader arrives in **eax** and costs no stack - a bare `ret` - and nothing comes back.\n\n`rank` (+0x6C) to 0; `skill` (+0x70) to `starting_skill` (+0xC8) but only where that is not negative, so a leader defined with -1 keeps the skill he has; `current_experience` (+0x78, 64 bit) to `starting_experience` (+0xCC) scaled by 32768/1000, computed as `__alldiv(exp << 30, 0x1F40000)` - 2^30 over 1000*32768, which is the same ratio without losing the low bits.\n\nThen a step the earlier note missed: the new experience is **clamped down** to `table[0x170AEE0][skill] << 15`, the experience ceiling for the skill just written, so resetting can lower the experience as well as raise it. Finally, where +0xC4 is non-null it is passed in edi to 0x74140, which walks a list off its +0xC.\n\nOne caller: a loop at 0x4D2DE3 over the list at `[ebx+0xE10]`, taking each node's +0 into eax and stepping by +8.",
+   "confidence": "confirmed",
+   "revises": "project.json recorded the name and the three assignments with no signature at all. The signature is read off the bare `ret` and `mov esi,eax` at entry; the comment adds the experience ceiling clamp and the +0xC4 call, both of which the earlier note left out.",
+   "evidence": "cfg.py rva:0x181E10 150: 41 instructions, one exit, a bare `ret` at 0x581E83, and the only argument source is `mov esi,eax` at 0x581E12 - nothing is read from [ebp+N] or [esp+N] as an incoming value. The stores are `[esi+0x6C]=0`, `[esi+0x70]=[esi+0xC8]` under `js` (skip when negative), and `[esi+0x78]/[esi+0x7C] = __alldiv([esi+0xCC]<<30, 0x1F40000)` - 0xB99980 is __alldiv in project.json. The clamp at 0x581E4B..0x581E6C reads `[0x170AEE0 + skill*4]`, shifts it left 15 as a 64 bit value and writes it back when the current pair is larger. project.json already records CLeader +0x6C rank, +0x70 skill, +0x78 longlong current_experience, +0xC8 starting_skill, +0xCC starting_experience, which the offsets match one for one. findRefs.py --callers 0x581E10 gives one site, 0x4D2DE8, preceded by `mov eax,[edi]`. WHAT WOULD SHOW IT WRONG: a second caller passing the leader somewhere other than eax (there is only one), or 0x170AEE0 turning out to be indexed by something other than skill - it is indexed by the value just stored into +0x70 and by nothing else.",
+   "source": "BiceLib/GameClasses/CLeader.hpp:89"
+  },
+  {
+   "rva": "0x94650",
+   "kind": "function",
+   "name": "CSubUnitDefinition::IsCarrier",
+   "signature": "bool __thiscall CSubUnitDefinition::IsCarrier(CSubUnitDefinition* this) @AL",
+   "no_signature": null,
+   "comment": "`cmp [ecx+0x190], 0; setg al; ret` - three instructions. A carrier is a ship whose `carrier_size` (+0x190) is **above** zero, not a flag byte like the other kind tests, so a definition with a zero or negative carrier_size is not one.\n\nNothing calls it directly. Its one reference in the image is at 0x8EDDF8, where its address is pushed next to the literal `IsCarrier` in a run of (name, address) pairs alongside `IsValid`, `IsSecondRank` and `GetCompletionSize` - a luabind class registration. So the name is the game's own, the receiver really is the definition in ecx, and the function exists for script rather than for engine code.",
+   "confidence": "confirmed",
+   "revises": "project.json recorded the name and the body with no signature at all. `__thiscall` with no stack arguments predicts a bare `ret`, which is what it has; the comment adds where the name comes from, which is also what rules out a register convention other than ecx.",
+   "evidence": "disasm.py rva:0x94650: `cmp dword ptr [ecx+0x190],0` / `setg al` / `ret` / int3 - the whole body, and the only register read is ecx. `setg` is signed and strict, hence 'above zero'. project.json already records CSubUnitDefinition +0x190 as `int carrier_size`. findRefs.py --callers 0x494650 finds none; --address 0x494650 finds one, at 0x8EDDF8, and image.read of the neighbouring pointers gives b'IsCarrier', b'IsValid', b'IsSecondRank', b'GetCompletionSize'. vtable.py --holding says it is in no virtual table. WHAT WOULD SHOW IT WRONG: the registration at 0x8EDDD0 not being luabind - if it were a table of free functions the receiver would still be in ecx by the body, but the class attribution would rest on the neighbouring names alone.",
+   "source": "reversing/CLASSES.md:427"
+  },
+  {
+   "rva": "0x1AB680",
+   "kind": "function",
+   "name": "CSubUnit::GetMaxStrength",
+   "signature": "int* __thiscall CSubUnit::GetMaxStrength(CSubUnit* this, int* out, bool penaltyWhenOwnerAcc, bool penaltyAlways) @EAX",
+   "no_signature": null,
+   "comment": "Virtual slot 12, `ret 0xC`: `this` in ecx, a hidden return pointer at [ebp+8] and two bool flags at [ebp+0xC] and [ebp+0x10]. The answer is written through the pointer and the pointer comes back in eax, the same shape as CSubUnit::GetMaxOrganisation next door.\n\n`*out` starts as the definition's `max_strength` (`this->sub_unit_definition_ptr(+0x58)->+0xEC`). Where the subunit's `is_reserve` byte (+0xA4) is clear that value stands. Where it is set, the owner is fetched (0x1ABCF0, subunit -> unit_ptr +0xB0 -> country) and the RESERVES_PENALTY_SIZE modifier is applied as `*out = max_strength * (1000 + owner->[0xDA8]->[0x268]) / 1000` - but only past a gate: `penaltyAlways` ([ebp+0x10]) applies it unconditionally, otherwise owner+0x94 set skips it, otherwise owner+0xACC clear applies it, otherwise `penaltyWhenOwnerAcc` ([ebp+0xC]) decides. Both flags are 0 at the call sites looked at (0x5AC1CD pushes 0 and 0), so the everyday answer is: reserves take the penalty unless the owner's +0x94 says otherwise.\n\nFinally `*out` is **floored** at the global at 0x1A8869C - a minimum strength, not a maximum.\n\n**The name is BiceLib's and may sit one class too low**: the body is slot 12 of CSubUnit's own table as well as CRegiment's, CShip's and CWing's, so it is CSubUnit that declares and implements it and the other three inherit. Left as recorded rather than moved, because moving it is a rename and this wave is not one.",
+   "confidence": "confirmed",
+   "revises": "project.json recorded the name and the sketch with no signature at all. The signature is read off `ret 0xC` (out + two four-byte flags) and `mov eax,esi` before the return; the comment adds the gate the two flags control, the 1000-scaling of the modifier, and the fact that the body is CSubUnit's rather than CRegiment's. Also moved from CRegiment to CSubUnit: the body is slot 12 of CSubUnit's own table as well as CRegiment's, CShip's and CWing's, and those three all derive from CSubUnit - so the base declares and implements it. The function immediately after it, 0x1AB700, is already CSubUnit::GetMaxOrganisation.",
+   "evidence": "cfg.py rva:0x1AB680 130: 40 instructions, one exit, `ret 0xC`, with `mov eax,ecx` at entry, `mov esi,[ebp+8]` used as the out pointer, `cmp byte ptr [ebp+0x10],0` at 0x5AB6A3 and `cmp byte ptr [ebp+0xC],0` at 0x5AB6BB - three stack slots, 0xC bytes, which is exactly what the ret cleans. `mov eax,esi; ret` returns the out pointer. project.json already records CSubUnit +0x58 sub_unit_definition_ptr, +0xA4 is_reserve, +0xB0 unit_ptr and CSubUnitDefinition +0xEC max_strength, and the reads match. The scaling is `mov ecx,[[eax+0xDA8]+0x268]; add ecx,0x3E8; imul edi; __alldiv(.., 0x3E8)`. The final compare is `jge` against `[0x1A8869C]`, i.e. raise to it, so it is a floor. vtable.py --holding 0x5AB680: four tables, CRegiment, CShip, CSubUnit and CWing, all slot 12. WHAT WOULD SHOW IT WRONG: the modifier index 0x268 not being RESERVES_PENALTY_SIZE - that part is inherited from the earlier note and was not re-checked here, since the modifier table's layout is not recorded in project.json; and a call site passing a nonzero flag would sharpen the two parameter names, which are descriptions of the gate rather than the game's own.",
+   "source": "reversing/CLASSES.md:260",
+   "replaces": "CRegiment::GetMaxStrength"
+  }
+ ],
+ "struct_fields": [],
+ "vftable_slots": {
+  "COrder": {
+   "4": "LoadKey"
+  },
+  "CAirOrder": {
+   "4": "LoadKey"
+  },
+  "CAirConvoyRaid": {
+   "4": "LoadKey"
+  },
+  "CAirInterceptOrder": {
+   "4": "LoadKey"
+  },
+  "CAirInterdictionOrder": {
+   "4": "LoadKey"
+  },
+  "CAirPatrol": {
+   "4": "LoadKey"
+  },
+  "CBombInstallationOrder": {
+   "4": "LoadKey"
+  },
+  "CBombLogisiticsOrder": {
+   "4": "LoadKey"
+  },
+  "CBombRunwayOrder": {
+   "4": "LoadKey"
+  },
+  "CCarrierProtection": {
+   "4": "LoadKey"
+  },
+  "CGroundAttackOrder": {
+   "4": "LoadKey"
+  },
+  "CNavalStrikeOrder": {
+   "4": "LoadKey"
+  },
+  "CPortStrikeOrder": {
+   "4": "LoadKey"
+  },
+  "CRebaseAirOrder": {
+   "4": "LoadKey"
+  },
+  "CStrategicBombOrder": {
+   "4": "LoadKey"
+  },
+  "CNavalOrder": {
+   "4": "LoadKey"
+  },
+  "CSupportAttackOrder": {
+   "4": "LoadKey"
+  },
+  "CUnitAdjuster": {
+   "4": "LoadKey"
+  },
+  "CStrategicRedeploymentOrder": {
+   "13": "RouteUnit_Thunk"
+  },
+  "CSubUnit": {
+   "12": "GetMaxStrength"
+  },
+  "CRegiment": {
+   "12": "GetMaxStrength"
+  },
+  "CShip": {
+   "12": "GetMaxStrength"
+  },
+  "CWing": {
+   "12": "GetMaxStrength"
+  }
+ },
+ "slots_noted": "Slot 4 is LoadKey right across the order family - vtable.py on COrder, CStrategicRedeploymentOrder, CMoveOrder, CAirOrder, CNavalOrder and CSupportAttackOrder --all shows COrder::LoadKey (0x186FE0) at slot 4 and each subclass's own body where it overrides - so COrder and the thirteen CAirOrder subclasses that inherit 0x189A40 are recorded too, one record naming the slot in every table below it. Slot 12 is recorded on all four classes whose tables hold 0x1AB680. What is deliberately left unrecorded: the other implementations of slot 13 (CMoveOrder 0x187B00, CAirOrder 0x18A790, CSupportAttackOrder 0x187FB0) - slot 13 is _purecall on COrder and only CStrategicRedeploymentOrder's was read here, so naming the slot on those classes would be guessing that they route too.",
+ "frontier": [
+  "0x1ADE80",
+  "0x1ABCF0",
+  "0x74140",
+  "0x188450",
+  "0x1C9430",
+  "0x4A30D0",
+  "0x1BAE20",
+  "0x187B00",
+  "0x18A790",
+  "0x187FB0"
+ ]
+}

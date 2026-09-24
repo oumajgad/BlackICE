@@ -494,3 +494,183 @@ because they are worth knowing.
 2. **Check the country statistics screen.** The game shows losses per country
    somewhere. If that is persistent it is a second source to check the accumulated
    record against, which nothing currently does.
+
+## How a combat is set up: `CreateCombatants`, slot 6
+
+Read out of the executable, whole; no game was running for any of it.
+
+### The slot, and when it runs
+
+`CCombat` slot 6 is `_purecall` (`0xABF890`) and each kind implements it:
+
+```
+CLandCombat::CreateCombatants    0x17B4D0
+CNavalCombat::CreateCombatants   0x17B770
+CAirCombat::CreateCombatants     0x17BBA0
+```
+
+Nothing calls any of the three directly - `findRefs --callers` returns zero for each.
+Both call sites go through the slot, `mov edx, [eax+0x18]; mov ecx, edi; call edx`, and
+they are the only two:
+
+```
+0x2FCC5   the combat loader, a switch on the save key: land_combat 0x2D3 at 0x2FCA3,
+          naval_combat 0x2D4 at 0x2FC8C, air_combat 0x520 at 0x2FCF4
+0x3142B   the live factory at 0x31370, a jump table on the kind 1..6
+```
+
+Both do the same three things in the same order: `operator new(0x44)`, the kind's own
+constructor, `0x2FFC0` to put the combat on the manager's list, **then slot 6**, and only
+then the combat's own contents - `[eax+0xC]` (load) or `[eax+0x40]` (set the province).
+So **the combatants exist before anything is known about the combat**, which is why
+`CreateCombatants` reads nothing off it.
+
+The factory at `0x31370` goes on to call slot 12 on `combat+0x10` with the attacking
+unit and on `combat+0x14` with the defending one, so the units arrive *after* this.
+`ret 0x14` - five stack arguments, `(manager, province, kind, attacker, defender)`,
+the last optional. Not reversed further; it is the obvious next function.
+
+### What each one does
+
+All three are `void __thiscall (this)`, bare `ret`, an SEH frame whose only job is to
+free the first combatant if the second allocation throws. Each allocates twice, builds
+the attacker with the bool `true` and the defender with `false`, and stores them at
+`+0x10` and `+0x14`. A failed `operator new` stores a null and skips the constructor,
+which is the only branching in any of them.
+
+| | land | naval | air |
+| --- | --- | --- | --- |
+| allocation | `0xE4` | `0x10BC` | `0x10B4` |
+| constructor | a real one, `0x168DB0` | inlined | inlined |
+| vftable written | by that constructor | `0x11C4D8C` here | `0x11C4E74` here |
+| extra fields zeroed | `+0xB0`..`+0xE0`, in the constructor | `+0x10B4`, `+0x10B8` | none |
+
+**That is the whole of the difference.** The three are the same function with a
+different size, a different vftable and a different tail; nothing about terrain, sea
+zones or air bases enters here.
+
+`CLandCombatant` is the only one with a constructor of its own because it is the only
+one with anything to construct - three lists at `+0xB0`, `+0xC0`, `+0xD0`, whose nodes
+its destructor (`0x168E40`) walks and frees. `CLandCombatant::LoadKey` names all three:
+
+```
++0xB0   front       save key `front`    (0x396)
++0xC0   reserves    save key `reserves` (0x398)
++0xD0   retreat     save key `retreat`  (0x1A6)
++0xE0   byte, set to 1 by every LoadKey call
+```
+
+`CNavalCombatant +0x10B4` is `positioning` (key `0x39B`), a plain `int` - its `LoadKey`
+does `lea edi, [ecx+0x10B4]` and `0x67B540` writes a `%d` through `edi`. `+0x10B8` is
+zeroed beside it and nothing here says what it is.
+
+**`CAirCombatant` accepts `positioning` and throws it away.** Its `LoadKey`
+(`0x16DED0`) compares the key against `0x39B` and, on a match, returns without reading
+anything. Naval and air combatants are both `0x10B4`-ish objects whose constructors
+initialise only the `CCombatant` base - **about `0x1000` bytes in each of them is never
+written at construction and nothing found here says what it holds.** That is the one
+thing this pass could not settle.
+
+### `CCombatant::CCombatant` (`0x164550`)
+
+`ret 8`, two stack arguments and a third in `ecx`, returns `this` in `eax`:
+
+```
+CCombatant* __stdcall CCombatant::CCombatant(CCombatant* this@stack:4,
+                                             bool attacker@stack:8,
+                                             CCombat* combat@ECX) @EAX
+```
+
+The `ecx` argument is not an artefact - `[edi+0x3C] = ecx` at `0x5645F9`, which is the
+back-pointer to the combat `../../../../mem` already had. `CLandCombat::CreateCombatants`
+sets `ecx` before calling the `CLandCombatant` constructor, which never touches it and
+lets it fall through.
+
+What it writes, in order:
+
+```
++0x04 = 0x18D                     the CPersistent constant
++0x00 = 0x11C4CA4                 CCombatant's own vftable
++0x28 +0x2C +0x30 byte +0x34      sunk_ships, a CList
++0x40 +0x44 +0x48 byte +0x4C      units, a CList
++0x54 +0x58 +0x5C byte +0x60      countries, a CList
++0x64 +0x68 +0x6C byte +0x70      own_countries, a CList
++0x74 +0x78 +0x7C                 men, a vector (begin, end, capacity)
++0x84 = 0                         losses
++0x88 +0x8C +0x90                 destroyed, a vector
++0x98 +0x9C +0xA0                 damage, a vector
++0xAC = 0                         tactic
++0x50 = 0                         dice
++0x38 = the bool argument         **is_attacker**
++0x3C = ecx                       combat
++0xA8 = 0                         a byte, unnamed
++0x08..+0x25 = 0                  three movq, a dword and a word, all unnamed
+```
+
+and then, before any of the zeroing at `+0x08`, a loop that **sizes the three vectors
+to the subunit database**:
+
+```
+for (i = 0; i < ([g_CSubUnitDataBase+0x20] - [g_CSubUnitDataBase+0x1C]) / 4; ++i) {
+    push_back(0) into +0x74;  push_back(0) into +0x88;  push_back(0) into +0x98;
+}
+```
+
+`+0x1C` and `+0x20` are `definitions_begin` and `definitions_end`, so the count is the
+number of subunit definitions the mod loaded. That settles by construction what
+`FINDINGS-combat.md` had read off the loss accounting: **`+0x74`, `+0x88` and `+0x98`
+are indexed by subunit type**, and the index is the one at
+`[[subunit+0x58]+0x24]` - `CSubUnitDefinition::type_index`.
+
+The loop also **creates `g_CSubUnitDataBase` if it is null**, inline, with a 511-bucket
+table; that is a lazy singleton getter the compiler inlined, not something the combatant
+does.
+
+`+0x38` is the useful new field. It is `1` for the object stored at `combat+0x10` and
+`0` for the one at `combat+0x14`, in all three `CreateCombatants` and in the three
+bombings' equivalents, so **a combatant knows which side it is without asking the
+combat**. That is a cheaper attacker/defender test than comparing pointers, and it is
+the one the game itself uses.
+
+### The `CCombat` constructors, for completeness
+
+`0x17B480`, `0x17B720`, `0x17BB50` - land, naval, air. Each takes `this` in `eax`, has a
+bare `ret`, and is the `CCombat` base constructor inlined plus the class's own two
+vftables. They are how `CCombat`'s size and starting state are known:
+
+```
+new(0x44)                         so CCombat is 0x44 bytes
++0x04 = 0x18D                     persistent_meta
++0x08 = 0x11C0694, then the class's CSelectable table
+byte +0x0C = 0
++0x10 = +0x14 = +0x18 = 0         attacker, defender, province - all null here
++0x1C = -1                        day starts at -1, not 0
++0x20 .. +0x40 = 0
+```
+
+### The three bombings do the same thing
+
+`CGroundBombing::CreateCombatants` (`0x163DA0`), `CLandBombing::CreateCombatants`
+(`0x163E70`) and `CNavalBombing::CreateCombatants` (`0x163F40`) are slot 6 of their own
+classes and the same function again:
+
+```
+attacker  new(0x10E8), CBomberCombatant::CBomberCombatant (0x15DBC0), which hardwires
+          the bool to 1                              ->  combat+0x10
+defender  new(0x10B4), CCombatant::CCombatant inlined with the bool 0, then the target
+          class's vftable                            ->  combat+0x14
+```
+
+with the target vftable the only thing that varies: `0x11C464C` ground, `0x11C472C`
+land, `0x11C46BC` naval. That accounts for all nine callers of
+`CCombatant::CCombatant`: two here per bombing, two each in naval and air, one in
+`CBomberCombatant`'s constructor and one in `CLandCombatant`'s.
+
+So **`+0x38` is `1` for `combat+0x10` and `0` for `combat+0x14` in all six kinds of
+combat**, with no exception anywhere in the image.
+
+`CBomberCombatant` is `0x10E8` bytes and writes `+0x10B4` onwards, the same boundary
+`CNavalCombatant` and `CAirCombatant` sit on. Three sibling classes ending their base
+part at `0x10B4` is a strong hint at a shared layout the RTTI does not show - every one
+of them derives from `CCombatant` directly - but it is a hint and nothing more. Its
+constructor has a lazy-singleton loop of its own and was not read.

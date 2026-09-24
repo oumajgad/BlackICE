@@ -1,0 +1,149 @@
+{
+ "agent": "save-writers",
+ "question": "Confirm or refute the reported names of rva 0x678B70 SaveWriteInt, 0x678D40 SaveWriteBool and 0x678FB0 SaveWriteString, and establish the shape of CSaveWriter and how a nested object gets written.",
+ "source": "reversing/FINDINGS-save.md",
+ "addresses": [
+  {
+   "rva": "0x678B70",
+   "kind": "function",
+   "name": "SaveWriteFixed",
+   "signature": "void __stdcall SaveWriteFixed(SaveToken key@ECX, CSaveWriter* writer@EDI, int thousandths@stack:4)",
+   "no_signature": null,
+   "comment": "**Not SaveWriteInt.** Writes `<key>=<n>.<nnn>` and a newline for a value the game holds in thousandths: SaveWriteKey, then a CToken, then SaveWriteToken(tok_newline). In a text save it hands the int to MakeFixedToken, which formats it `%d.%03d` as tok_fixed (0xD); in a binary save (writer->binary set) it formats the raw int `%d` as tok_int (0xC) instead, so no precision is lost either way. The writer arrives in EDI, not ESI as in the plain-int sibling at 0x678CA0 - the compiler picked a register per function, so the call sites decide.",
+   "confidence": "confirmed",
+   "evidence": "Body at VA 0xA78B70 (image.both: 0x00A78B70, rva 0x678B70) calls SaveWriteKey(0xA7A1B0) with ECX untouched, then either MakeFixedToken(0xA694C0, `%d.%03d`, type 0xD) or _snprintf with '%d' at 0x15DC2B4 and type 0xC, then SaveWriteValue(0xA797A0) and SaveWriteToken(0x461360) with ECX=0x10 tok_newline; `ret 4` against one stack argument. The branch is `cmp byte [edi+0xC],0 / je` and CSaveWriter+0xC is `binary`, so the `%d.%03d` arm is the *text* arm. Call sites in CProvince::SaveContents (rva 0x95020) push the value and set ECX=key, EDI=writer at 0x4952E4 (0x1EA manpower), 0x495307 (0x49B leadership) and 0x49532A (0x207 revolt_risk). A real text save agrees: autosave.hoi3 has `manpower=0.100`, `leadership=0.100`, `revolt_risk=9.000`, while `points=0` and `out_of_supply_days=2109` - the two the province writes through SaveWriteValue by hand - are bare integers. What would show it wrong: a text save writing one of those three keys as a bare integer, or a call site that sets ESI rather than EDI before the call.",
+   "source": "reversing/FINDINGS-save.md"
+  },
+  {
+   "rva": "0x678D40",
+   "kind": "function",
+   "name": "SaveWriteBool",
+   "signature": "void __stdcall SaveWriteBool(SaveToken key@ECX, CSaveWriter* writer@ESI, bool value@stack:4)",
+   "no_signature": null,
+   "comment": "Writes `<key>=yes` or `<key>=no` and a newline. SaveWriteKey, then a tok_bool (0xE) CToken whose text is `%s` of the literal `yes` at VA 0x15C1914 or `no` at 0x15C1918, then SaveWriteToken(tok_newline). There is no binary branch: the word goes out as a tok_bool either way, and it is SaveWriteValue that decides how a tok_bool is encoded.",
+   "confidence": "confirmed",
+   "evidence": "Body at VA 0xA78D40 (rva 0x678D40): `cmp byte [ebp+8],0` picks between the two literals, sets the CToken type word to 0xE, and calls SaveWriteValue then SaveWriteToken(0x10); `ret 4` against one stack argument, ESI never restored so it is an incoming register. CProvince::SaveContents at 0x4952C8 does `push eax / mov ecx,0x1F9 (capital) / mov esi,ebx / call`, and the province writes `capital` only when the byte at +0x2B0 is true. Strings read straight out of the image: 0x15C1914 = 'yes', 0x15C1918 = 'no'. What would show it wrong: a call site that leaves ESI alone, or a text save writing a boolean key as 1/0.",
+   "source": "reversing/FINDINGS-save.md"
+  },
+  {
+   "rva": "0x678FB0",
+   "kind": "function",
+   "name": "SaveWriteString",
+   "signature": "void __stdcall SaveWriteString(Hoi3CString* value@ECX, CSaveWriter* writer@stack:4)",
+   "no_signature": null,
+   "comment": "Writes a **quoted string value and a newline - it writes no key**, so the caller does SaveWriteKey first and this is the right half of `owner=\"NOR\"`. In a text save it builds `\"` + the string + `\"` with std::string::operatorPlus and the one-character literal at VA 0x15E14F8, formats it `%s` into a tok_word (0xF) CToken and calls SaveWriteValue; in a binary save it copies the string unquoted into the same tok_word and writes that. Then SaveWriteToken(tok_newline) on both paths. The most-called member of the family: 281 direct calls.",
+   "confidence": "confirmed",
+   "evidence": "Body at VA 0xA78FB0 (rva 0x678FB0): ECX is copied to ESI and used as the std::string, [ebp+8] is the writer and is the operand of `cmp byte [eax+0xC],bl`; the CToken's type word is set to 0xF from EDI (`lea edi,[ebx+0xF]`), SaveWriteValue is called at 0xA79098/0xA7918E and SaveWriteToken(ECX=0x10) at 0xA791C3; `ret 4`. It contains no call to SaveWriteKey (0xA7A1B0), and every call site pairs it with one - CProvince::SaveContents at 0x4950C5/0x4950CF (0x1EC owner), 0x495145/0x49514F (0x1ED controller), 0x4951C5/0x4951CF (0x784 underground_owner), 0x495287/0x495291 (0x201 core), 0x495355/0x49535E (0x5C5 strategic_resource), 0x495746/0x49574E (0x591 last_convoy_attack); at 0x4950CA the caller pushes the writer and puts the Hoi3CString it just built with std::string::assign in ECX. autosave.hoi3 shows exactly those keys quoted: `owner=\"NOR\"`, `controller=\"GER\"`, `core=\"NOR\"`. What would show it wrong: a call site that does not call SaveWriteKey first, or a save with an unquoted owner.",
+   "source": "reversing/FINDINGS-save.md"
+  },
+  {
+   "rva": "0x678CA0",
+   "kind": "function",
+   "name": "SaveWriteInt",
+   "signature": "void __stdcall SaveWriteInt(SaveToken key@ECX, CSaveWriter* writer@ESI, int value@stack:4)",
+   "no_signature": null,
+   "comment": "The real `<key>=<int>` writer, and the sibling 0x678B70 was mistaken for: SaveWriteKey, a tok_int (0xC) CToken formatted `%d`, SaveWriteValue, SaveWriteToken(tok_newline). No binary branch - an integer is an integer in both formats. Only four call sites, because most integer keys are written by hand as SaveWriteKey + SaveWriteValue inside the SaveContents itself.",
+   "confidence": "confirmed",
+   "evidence": "Body at VA 0xA78CA0 (rva 0x678CA0): `push esi / call SaveWriteKey` with ECX untouched, `_snprintf(buf,0xFF,'%d',[ebp+8])` into a CToken whose type word is 0xC, SaveWriteValue, SaveWriteToken(0x10); `ret 4`, ESI never restored. Caller at VA 0x5EEB70 does `push [eax+0x10] / mov ecx,0x1F9 / mov esi,[ebp+8] / call`. What would show it wrong: a caller that sets EDI instead of ESI, or one that writes its own key beforehand.",
+   "source": "reversing/FINDINGS-save.md"
+  },
+  {
+   "rva": "0x678CF0",
+   "kind": "function",
+   "name": "SaveWriteUInt",
+   "signature": "void __stdcall SaveWriteUInt(SaveToken key@ECX, CSaveWriter* writer@ESI, unsigned int value@stack:4)",
+   "no_signature": null,
+   "comment": "SaveWriteInt's unsigned twin: identical body but `%u` at VA 0x15FD128 and the CToken type word tok_uint (0x14) rather than tok_int (0xC). One call site in the image.",
+   "confidence": "confirmed",
+   "evidence": "Body at VA 0xA78CF0 (rva 0x678CF0) differs from 0xA78CA0 only in the format pointer (0x15FD128 = '%u') and the type constant (0x14); `ret 4`. Its one caller at VA 0x5F0207 sets ECX from a lookup's return value, ESI from [ebp+8] and pushes the value. What would show it wrong: the string at 0x15FD128 not being '%u', or SaveToken 0x14 not being tok_uint.",
+   "source": "reversing/FINDINGS-save.md"
+  },
+  {
+   "rva": "0x679210",
+   "kind": "function",
+   "name": "SaveWriteKeyString",
+   "signature": "void __stdcall SaveWriteKeyString(SaveToken key@ECX, CSaveWriter* writer@ESI, Hoi3CString* value@stack:4)",
+   "no_signature": null,
+   "comment": "The two halves of `<key>=\"<text>\"` in one call: SaveWriteKey followed by SaveWriteString. Seventeen call sites; everywhere else the SaveContents calls the two separately because it has to build the string first.",
+   "confidence": "confirmed",
+   "evidence": "Body at VA 0xA79210 (rva 0x679210) is six instructions: `push esi / call 0xA7A1B0 / mov ecx,[ebp+8] / push esi / call 0xA78FB0 / ret 4`. Caller at VA 0x5EF2C0 does `push this+0x10 / mov ecx,0x37D / mov esi,[ebp+8] / call`. What would show it wrong: the callee at 0xA78FB0 turning out to write a key of its own, which would double it.",
+   "source": "reversing/FINDINGS-save.md"
+  },
+  {
+   "rva": "0x6791E0",
+   "kind": "function",
+   "name": "SaveWriteKeyToken",
+   "signature": "void __stdcall SaveWriteKeyToken(SaveToken key@ECX, CSaveWriter* writer@ESI, SaveToken value@stack:4)",
+   "no_signature": null,
+   "comment": "Writes `<key>=<word>` where the value is itself a save token written by its own text - an enum member spelled out, the way `automate_trade=yes` or a named mode is. SaveWriteKey, SaveWriteToken(value), SaveWriteToken(tok_newline).",
+   "confidence": "confirmed",
+   "evidence": "Body at VA 0xA791E0 (rva 0x6791E0): `push esi / call 0xA7A1B0 / mov ecx,[ebp+8] / push esi / call 0x461360 / push esi / mov ecx,0x10 / call 0x461360 / ret 4`, where 0x461360 is the recorded SaveWriteToken and 0x10 is tok_newline. Caller at VA 0x5EEE14 puts a token id returned by 0x4C83E0 on the stack, 0x216 in ECX and the writer in ESI. What would show it wrong: a call site passing something other than a token id as the stack argument.",
+   "source": "reversing/FINDINGS-save.md"
+  },
+  {
+   "rva": "0x678BE0",
+   "kind": "function",
+   "name": "SaveWriteNamedFixed",
+   "signature": "void __stdcall SaveWriteNamedFixed(Hoi3CString* key@EAX, CSaveWriter* writer@EDI, int thousandths@stack:4)",
+   "no_signature": null,
+   "comment": "SaveWriteFixed for a key that is not a token: the key is a runtime string, so it open-codes what SaveWriteKey does - indent by depth-1, write the name as a tok_word, write tok_equals - and then writes the value exactly as SaveWriteFixed does, `%d.%03d` as tok_fixed in a text save and `%d` as tok_int in a binary one, followed by a newline. This is how a save writes rows keyed by a moddable name rather than by a built-in token.",
+   "confidence": "confirmed",
+   "evidence": "Body at VA 0xA78BE0 (rva 0x678BE0): EAX is copied to ESI and read as an Hoi3CString (`cmp [esi+0x14],0x10` is the small-string test against Hoi3CString::maxLength), formatted `%s` into a tok_word (0xF) CToken, SaveWriteValue, SaveWriteToken(ECX=1 tok_equals); the value half is byte-identical in shape to 0xA78B70, calling MakeFixedToken at 0xA694C0 on the text path; `ret 4`. The indent prologue `cmp byte [edi+0xC],0 / mov eax,[edi+4] / test / dec / SaveWriteIndent` is the same code CPersistent::Save and SaveWriteKey use, which is what fixes EDI as the writer. Caller at VA 0x474745 sets EAX to a string reached through two pointers and EDI from [ebp+8] at 0x474721. What would show it wrong: a call site that puts the writer in ESI, or one whose EAX is not a string.",
+   "source": "reversing/FINDINGS-save.md"
+  },
+  {
+   "rva": "0x6694C0",
+   "kind": "function",
+   "name": "MakeFixedToken",
+   "signature": "CToken* __cdecl MakeFixedToken(int* value@EAX, CToken* out@ESI) @EAX",
+   "no_signature": null,
+   "comment": "Builds a tok_fixed (0xD) CToken in the caller's buffer from a thousandths integer: divides by 1000, formats `%d.%03d`, and handles a value between -999 and 0 by writing the sign separately (`-%d.%03d` at VA 0x15FD138) so that -1 comes out `-0.001` rather than `0.-001`. This is the one place the game's thousandths convention becomes text. Returns the buffer in EAX.",
+   "confidence": "confirmed",
+   "evidence": "Body at VA 0xA694C0 (rva 0x6694C0): `mov dword [esi],0xD` then the signed magic-number divide by 0x3E8 (multiplier 0x10624DD3, `sar edx,6`), then _snprintf into esi+4 with '%d.%03d' at 0x15FD144 or '-%d.%03d' at 0x15FD138; every path ends `mov eax,esi / ret` - a bare ret with no stack arguments. Its callers 0xA78B70 and 0xA78BE0 set EAX to the address of the value and ESI to a 0x104-byte stack buffer whose layout matches the recorded CToken (type at +0, text at +4). SaveToken 0xD is tok_fixed. What would show it wrong: the text in a save not matching `%d.%03d` for a field written through it - autosave.hoi3's `revolt_risk=9.000` and `manpower=0.100` say it does.",
+   "source": "reversing/FINDINGS-save.md"
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CToken",
+   "offset": "0x0",
+   "name": "type",
+   "type": "SaveToken",
+   "revises": "the writer family pins the numeric token types the old comment only half-listed: 0xC is tok_int and 0x14 is tok_uint, where the comment called 0x14 'an integer' and did not mention 0xC, 0xD or 0xE at all",
+   "comment": "the token's kind, itself a token id: 1 `=`, 3 `{`, 4 `}`, 0x10 a newline, 0x11 a tab, 0x12 a space, 0x13 the end of input, and on the write side 0xC tok_int, 0xD tok_fixed (`%d.%03d`, a thousandths value), 0xE tok_bool (`yes`/`no`), 0xF tok_word (a name, and a quoted string), 0x14 tok_uint, 0x18F long_float. In a binary save this is what gets written, as two bytes, and tok_newline, tok_tab and 0x12 are dropped instead.",
+   "evidence": "Each constant is the literal the writer stores into the type word immediately before calling SaveWriteValue: 0xC at VA 0xA78C08 and 0xA78CBF, 0xD at 0xA694C0 and 0xA78EE2, 0xE at 0xA78D53, 0xF at 0xA78C08's string arm and 0xA79064, 0x14 at 0xA78D0F; the names come from the SaveToken enum already in the findings (tok_int=0xC, tok_fixed=0xD, tok_bool=0xE, tok_word=0xF, tok_uint=0x14). SaveWriteValue's binary arm at 0xA79AB6 compares the type against 0x12, 0x10 and 0x11 and returns without writing for all three. What would show it wrong: a writer storing one of those constants and producing text of a different shape.",
+   "source": "reversing/FINDINGS-save.md"
+  }
+ ],
+ "frontier": [
+  "0x7960AF",
+  "0x799AF0",
+  "0x679D40",
+  "0xC89B0",
+  "0xC83E0",
+  "0x678040",
+  "0x678120",
+  "0x678170",
+  "0x678210",
+  "0x6782B0",
+  "0x6782F0",
+  "0x678330",
+  "0x6783F0",
+  "0x678530",
+  "0x6785B0",
+  "0x678690",
+  "0x678700",
+  "0x678830",
+  "0x678870",
+  "0x6788F0",
+  "0x678990",
+  "0x6789F0",
+  "0x678AF0",
+  "0x678DA0",
+  "0x678E90",
+  "0x679230",
+  "0x679640"
+ ],
+ "slots_noted": "none of the nine bodies is in any class's virtual table - vtable.py --holding reports 'is in no class's virtual table' for each of 0xA78B70, 0xA78D40, 0xA78FB0, 0xA78CA0, 0xA78CF0, 0xA79210, 0xA791E0, 0xA78BE0 and 0xA694C0. They are free functions the SaveContents bodies call directly.",
+ "frontier_note": "0x7960AF and 0x799AF0 are the CRT formatters every writer ends in - image.functionStart for the call targets 0x79625D (a vsnprintf-style sprintf) and 0x79A1AD (_snprintf). 0x679D40 writes one CToken a given number of times and is what SaveWriteIndent calls; image.functionStart folds it into SaveWriteValue, which ends at 0x679B20, so it is a separate function the walker runs past. 0xC89B0 and 0xC83E0 are the lookups a caller uses to get a token id at run time. The 0x678040-0x679640 run is the rest of this family - 22 more free save-writing helpers between SaveWriteToken's neighbours and SaveBeginBlock, each with its own register convention, and naming them finishes the save side."
+}
