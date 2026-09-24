@@ -236,8 +236,22 @@ def problems(document, files):
                 said.append("%s: no such struct in project.json" % where)
                 continue
             have = known.get(str(field.get("offset", "")).lower())
-            if have is not None and have["name"] != field["name"]:
-                said.append("%s: that offset is already %s" % (where, have["name"]))
+            if have is not None:
+                # Names alone were compared here. A field that keeps its name and
+                # changes its type - `plan`, from void* to CUnitPlan - said nothing and
+                # landed as a *second* record for the same offset, which is worse than
+                # being dropped: the file then holds two answers and neither run
+                # complains, because the apply reads whichever comes first.
+                changed = any((have.get(key) or "") != (field.get(key) or "")
+                              for key in ("name", "type", "comment"))
+                if changed and not field.get("revises"):
+                    said.append("%s: that offset already holds %s %s, saying something "
+                                "else - say revises, with why"
+                                % (where, have.get("type"), have.get("name")))
+                elif not changed and field.get("revises"):
+                    said.append("%s: revises a field it does not change" % where)
+            elif field.get("revises"):
+                said.append("%s: revises nothing - no field is recorded there" % where)
     return said
 
 
@@ -309,6 +323,27 @@ def indent(entry, spaces):
     return "\n".join(" " * spaces + line for line in text.split("\n"))
 
 
+def replaceField(raw, struct, offset, text):
+    """swap the field at `offset` of `struct` for `text`
+
+    A field's keys sit five spaces in and an address entry's three, and the search
+    is bounded to this struct's own block, because the same offset is recorded on
+    dozens of other classes.
+    """
+    anchor = '  {\n   "name": "%s",\n' % struct
+    assert raw.count(anchor) == 1, "could not find struct %s" % struct
+    start = raw.index(anchor)
+    end = raw.index("\n  },", start)
+    marker = '     "offset": "%s",\n' % offset
+    block = raw[start:end]
+    assert block.count(marker) == 1, \
+        "expected one field at %s of %s" % (offset, struct)
+    at = start + block.index(marker)
+    first = raw.rindex("\n    {\n", start, at) + 1
+    last = raw.index("\n    }", at) + len("\n    }")
+    return raw[:first] + text.lstrip("\n") + raw[last:]
+
+
 def replaceEntry(raw, name, text):
     """swap the whole block of the address entry called `name` for `text`
 
@@ -343,7 +378,7 @@ def land(files):
         for field in incoming.get("struct_fields", []):
             clean = {k: field.get(k) for k in FIELD_KEYS}
             clean["source"] = field.get("source") or incoming["source"]
-            fields.append((field["struct"], clean))
+            fields.append((field["struct"], clean, bool(field.get("revises"))))
 
     slots = {}
     for path, incoming in files:
@@ -389,7 +424,10 @@ def land(files):
         raw = raw.replace(
             close, ",\n" + ",\n".join(indent(e, 2) for e in addresses) + close, 1)
 
-    for struct, field in fields:
+    for struct, field, revises in fields:
+        if revises:
+            raw = replaceField(raw, struct, field["offset"], indent(field, 4))
+            continue
         anchor = '  {\n   "name": "%s",\n' % struct
         assert raw.count(anchor) == 1, "could not find struct %s" % struct
         opening = anchor + '   "fields": [\n'

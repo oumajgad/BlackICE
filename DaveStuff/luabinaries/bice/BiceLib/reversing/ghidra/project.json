@@ -306,8 +306,9 @@
    "rva": "0x2F340",
    "kind": "function",
    "name": "CCombatHistoryEntry::CCombatHistoryEntry",
-   "signature": null,
-   "comment": "CCombatHistoryEntry constructor; fills the entry from a CCombat (tick, kind, winner tag, flag, province).",
+   "signature": "CCombatHistoryEntry* __stdcall CCombatHistoryEntry::CCombatHistoryEntry(CCombatHistoryEntry* this@ESI, CCombat* combat@ECX, int* tick@EAX)",
+   "no_signature": null,
+   "comment": "CCombatHistoryEntry constructor; fills the entry from a CCombat (tick, kind, winner tag, flag, province). **It takes nothing on the stack at all** - bare `ret` - and all three arguments are registers: the entry in esi (written throughout, returned in eax), the combat in ecx, and a pointer to the tick in eax, whose target goes to +8. It writes its own vftable 0x15B68C0 and the 0x18D at +4, takes the kind from the combat's virtual slot 0x2C, the flag from the combat's byte +0x2B, the province from [combat+0x18]'s +0xD0, and the two CCountryTags at +0x10 and +0x18 from the combat's +0x10 and +0x14 sides - writing the literal `---` (three `mov` of 0x2D and a NUL) with id 0 where a side has none.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-combat.md:219"
   },
@@ -324,8 +325,9 @@
    "rva": "0x2F960",
    "kind": "function",
    "name": "CCombatHistory::RecordCombat",
-   "signature": null,
-   "comment": "Appends an entry to the combat history when a combat ends; arg1 the list, arg2 the finished CCombat. Hooked at its first instruction.",
+   "signature": "void __stdcall CCombatHistory::RecordCombat(CCombatHistory* history, CCombat* combat)",
+   "no_signature": null,
+   "comment": "Appends an entry to the combat history when a combat ends; arg1 the list, arg2 the finished CCombat. Hooked at its first instruction. Both arguments are on the stack and it cleans them (`ret 8` on both exits); nothing is returned. It builds the entry in a stack temporary through CCombatHistoryEntry::CCombatHistoryEntry - passing the game state's tick pointer in eax and the combat in ecx - then allocates 0x34 bytes and copies the temporary into the list held at the history's +0xC.",
    "confidence": "confirmed",
    "source": "BiceLib/Hooks/CCombatHooks.cpp:21"
   },
@@ -648,8 +650,9 @@
    "rva": "0x74710",
    "kind": "function",
    "name": "CTraitGainTracker::SaveContents",
-   "signature": null,
-   "comment": "Walks the map at `+0xC` - a red-black tree, the value at each node's `+0x10` - and writes one key per trait. That this class has a SaveContents of its own, rather than the shared empty one at `0x20CD50`, is what says the progress is game state rather than a definition. **Read live**: a leader's history holds the tracker, at `CLeaderHistory + 0x40` - 399 of 400 histories in a running game point at one.",
+   "signature": "void __thiscall CTraitGainTracker::SaveContents(CTraitGainTracker* this, CSaveWriter* writer)",
+   "no_signature": null,
+   "comment": "Walks the map at `+0xC` - a red-black tree, the value at each node's `+0x10` - and writes one key per trait. That this class has a SaveContents of its own, rather than the shared empty one at `0x20CD50`, is what says the progress is game state rather than a definition. **Read live**: a leader's history holds the tracker, at `CLeaderHistory + 0x40` - 399 of 400 histories in a running game point at one. It is virtual slot 2, the CPersistent save hook, with the ordinary shape of one: tracker in ecx, writer on the stack, `ret 4`.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CTrait.hpp"
   },
@@ -666,8 +669,9 @@
    "rva": "0x76040",
    "kind": "function",
    "name": "CUndeclaredWar::AddAttacker",
-   "signature": null,
-   "comment": "Adds a country to an undeclared war's attackers, the vector at +0x8.",
+   "signature": "void __stdcall CUndeclaredWar::AddAttacker(CUndeclaredWar* war, char tag[4], int countryId)",
+   "no_signature": null,
+   "comment": "Adds a country to an undeclared war's attackers, the vector at +0x8. Three stack dwords, `ret 0xC`: the war, then one `CCountryTag` by value, spelled as its two halves. It appends the tag (`lea edi,[ebx+8]`, the pair's address in eax, 0x22690) and then walks the **defenders** at +0x18, setting each `countries[thisId]->+0xE28[thatId]->+0x24` and the mirror to the war - the pairwise relation both ways round.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CWar.hpp:39"
   },
@@ -675,8 +679,9 @@
    "rva": "0x761C0",
    "kind": "function",
    "name": "CUndeclaredWar::AddDefender",
-   "signature": null,
-   "comment": "The same for the defenders, at +0x18.",
+   "signature": "void __stdcall CUndeclaredWar::AddDefender(CUndeclaredWar* war, char tag[4], int countryId)",
+   "no_signature": null,
+   "comment": "The same for the defenders, at +0x18: it appends to +0x18 and walks the attackers at +0x8. Instruction for instruction the mirror of AddAttacker, `ret 0xC`.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CWar.hpp:39"
   },
@@ -765,8 +770,9 @@
    "rva": "0x82C50",
    "kind": "function",
    "name": "CBrigadeConstructionDefinition::SetName",
-   "signature": null,
-   "comment": "Assigns the brigade's name at +0x18 and then fills the second string at +0x8 from it through a lookup. The object is in edi.",
+   "signature": "void __stdcall CBrigadeConstructionDefinition::SetName(CBrigadeConstructionDefinition* this@EDI, Hoi3CString* name@ESI)",
+   "no_signature": null,
+   "comment": "Assigns the brigade's name at +0x18 (`lea ecx,[edi+0x18]`, std::string::assign with 0 and -1) and then hands the owning country and that same string to 0xCB450. Both arguments are registers and it takes nothing on the stack - no frame beyond `push ecx` for one local, and a bare `ret`; the caller at 0x82E4D sets `esi` from std::string::fromCString and `edi` from the object. **The lookup is a country lookup, not a string one**: `lea ecx,[edi+8]; call 0x402610` reads +8 and +0xC as a CCountryTag and returns `countries[id]`. project.json records +0x8 as `display_name Hoi3CString`, which cannot be right - a Hoi3CString is 0x18 bytes, so one at +8 would swallow +0x10, +0x14 and the name at +0x18. The field was left alone here rather than renamed on the strength of one call site.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CConstruction.hpp:49"
   },
@@ -3291,8 +3297,9 @@
    "rva": "0x1D86F0",
    "kind": "function",
    "name": "CMoveCommand::CMoveCommand_default",
-   "signature": null,
-   "comment": "CMoveCommand constructor that leaves every field zero.",
+   "signature": "CMoveCommand* __stdcall CMoveCommand::CMoveCommand_default(CMoveCommand* out)",
+   "no_signature": null,
+   "comment": "CMoveCommand constructor that leaves every field zero. **The object arrives on the stack, not in ecx**: `mov esi,[ebp+8]` at 0x1D870D is the only thing it takes, ecx is never read, and it gives the object back in eax and does `ret 4`. Writes CCommand's table (0x15B4F74) first and CMoveCommand's own (0x15C8C1C) at 0x1D8770, sets the type id 0x18D at +4 and 0x255 at +0x2C/+0x30, empties the strings at +8 and +0x48, and zeroes +0x64..+0x6A.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CMoveCommand.hpp:63"
   },
@@ -3300,8 +3307,9 @@
    "rva": "0x1D87F0",
    "kind": "function",
    "name": "CMoveCommand::CMoveCommand",
-   "signature": null,
-   "comment": "CMoveCommand constructor (a, target, mode68, safe, verySafe), ret 0x14. Constructor (same function as RVA 0x1D87F0).",
+   "signature": "CMoveCommand* __stdcall CMoveCommand::CMoveCommand(CMoveCommand* out, int targetProvince, bool mode68, bool safe, bool verySafe, CUnit* unit@EDI)",
+   "no_signature": null,
+   "comment": "CMoveCommand constructor, `ret 0x14`. The object is the **first stack argument** (`mov esi,[ebp+8]`), returned in eax; the four values go to +0x64 (target province), +0x68 (mode68), +0x69 (safe) and +0x6A (very safe). **The unit arrives in edi**, unset anywhere in the body: it is pushed with `lea edx,[esi+0x3C]` into 0x42DD70, which builds the command's object reference from it, and then `[edi+0x130]`'s +0xD0 - the unit's current province - is stored at +0x6C.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CMoveCommand.hpp:65; reversing/FINDINGS-redeploy.md:100"
   },
@@ -3309,8 +3317,9 @@
    "rva": "0x1D88C0",
    "kind": "function",
    "name": "CMoveCommand::RouteUnit",
-   "signature": null,
-   "comment": "CMoveCommand vftable slot 6: works the unit's route out with one of three finders and gives it to the unit. CMoveCommand slot 6 (same function as RVA 0x1D88C0).",
+   "signature": "void __thiscall CMoveCommand::RouteUnit(CMoveCommand* this)",
+   "no_signature": null,
+   "comment": "CMoveCommand vftable slot 6: works the unit's route out with one of three finders and gives it to the unit. Ordinary __thiscall - the command is in ecx (`mov esi,ecx` at 0x1D88E0, then +0x40/+0x44, the object reference pair) and it takes nothing on the stack (bare `ret`). Nothing is returned: eax at the exit is the leftover of the list-freeing loop at 0x1D9120.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CMoveCommand.hpp:58; reversing/FINDINGS-redeploy.md:90"
   },
@@ -3390,8 +3399,9 @@
    "rva": "0x1D93F0",
    "kind": "function",
    "name": "CMoveCommand::CMoveCommand_copy",
-   "signature": null,
-   "comment": "CMoveCommand copy constructor; copies the routing mode bytes. Copy constructor (same function as RVA 0x1D93F0).",
+   "signature": "CMoveCommand* __thiscall CMoveCommand::CMoveCommand_copy(CMoveCommand* this, CMoveCommand* out)",
+   "no_signature": null,
+   "comment": "CMoveCommand copy body, `ret 4`. **The receiver is the source, not the destination**: ecx is the command being copied (`mov edi,ecx`, then every read is [edi+...]) and the new object is the stack argument (`mov esi,[ebp+8]`, every write is [esi+...], and it is returned in eax). It writes CMoveCommand's table into the new object, then copies +0x3C/+0x40/+0x44 (the object reference), the string at +0x48, +0x64 and the routing bytes +0x68/+0x69/+0x6A and +0x6C. Called from exactly one place, 0x1D93BB, inside CMoveCommand slot 13 (0x1D9380) - the clone - which allocates 0x70 bytes and passes them in.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CMoveCommand.hpp:63; reversing/FINDINGS-redeploy.md:101"
   },
@@ -3847,8 +3857,9 @@
    "rva": "0x24FF80",
    "kind": "function",
    "name": "CInGameIdler::AutosaveWrite",
-   "signature": null,
-   "comment": "Writes the autosave when idler +0xAB0 is set, after one frame of delay; builds the file name from debug_saves.",
+   "signature": "void __stdcall CInGameIdler::AutosaveWrite(CInGameIdler* idler)",
+   "no_signature": null,
+   "comment": "Writes the autosave when idler +0xAB0 is set, after one frame of delay; builds the file name from debug_saves. **The idler is a stack argument, not ecx** (`mov esi,[ebp+8]`), matching the neighbouring AutosaveCheck (0x261D20), which is recorded the same way. `ret 4`, no return value: on the first frame it just sets +0xAB1 and leaves. Not a virtual, and called from exactly one place, 0x255E28 in CInGameIdler::Update.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-autosave.md:19"
   },
@@ -3910,8 +3921,9 @@
    "rva": "0x2559D0",
    "kind": "function",
    "name": "CInGameIdler::Update",
-   "signature": null,
-   "comment": "Per-frame update of the in game idler; calls the autosave writer.",
+   "signature": "void __thiscall CInGameIdler::Update(CInGameIdler* this, int unused)",
+   "no_signature": null,
+   "comment": "Per-frame update of the in game idler, virtual slot 1; calls the autosave writer (0x24FF80, `push ebx` with ebx = this, at 0x255E28). `ret 4`, but **no implementation of slot 1 reads its stack argument** - not this one, not CEU3Idler's at 0x244750, not CFrontEnd's at 0x2EDD60 (which only forwards it to the base), not CBackEndIdler's 0x208AF0 or CNudgeIdler's 0x29BE90 - so the argument is real but its meaning is not recoverable from the bodies. Frame timing is taken from the clock at +0x192C instead, into +0xA88/+0xA8C.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-autosave.md:18"
   },
@@ -3919,8 +3931,9 @@
    "rva": "0x261CA0",
    "kind": "function",
    "name": "CInGameIdler::DailyUpdate",
-   "signature": null,
-   "comment": "CInGameIdler virtual slot 53: repaints the map in modes 4/18/19, then always runs the autosave check.",
+   "signature": "bool __thiscall CInGameIdler::DailyUpdate(CInGameIdler* this)",
+   "no_signature": null,
+   "comment": "CInGameIdler virtual slot 53: repaints the map in modes 4/18/19, then always runs the autosave check. Takes nothing on the stack (bare `ret` on all three paths) and returns true - every path sets `al, 1` before the epilogue. The mode is the dword at +0xD34; mode 4 calls MapMode_Supply_Colour (0x266EE0), 0x12 and 0x13 go through 0x46A1E0/0x46AD60 and 0x46A6F0 on the map object's +0x1DC4; every path ends with `push esi; call 0x261D20`, the autosave check.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-autosave.md:16"
   },
@@ -4090,8 +4103,9 @@
    "rva": "0x275090",
    "kind": "function",
    "name": "CInGameIdler::SetAutosaveRequested",
-   "signature": null,
-   "comment": "Virtual setter (slot 92) for the autosave request pair; clears +0xAB1 whenever +0xAB0 is set to 0.",
+   "signature": "void __thiscall CInGameIdler::SetAutosaveRequested(CInGameIdler* this, bool requested)",
+   "no_signature": null,
+   "comment": "Virtual setter (slot 92) for the autosave request pair; clears +0xAB1 whenever +0xAB0 is set to 0. Nine instructions: `mov al,[ebp+8]; mov [ecx+0xAB0],al; test al,al; jne; mov [ecx+0xAB1],al`, then `ret 4`. The byte it leaves in al is the argument, not a return value.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-autosave.md:129"
   },
@@ -4522,8 +4536,9 @@
    "rva": "0x49A840",
    "kind": "function",
    "name": "CMoveCommand::IssueFromInterface",
-   "signature": null,
-   "comment": "What the GUI calls to issue a move; hardcodes mode68 = 1 and forwards its fourth and fifth arguments as safe and very safe; ret 0x18. GUI entry to issue a move (same function as RVA 0x49A840).",
+   "signature": "void __stdcall CMoveCommand::IssueFromInterface(void* issuer@ECX, CUnit* unit, int provinceId, int recordOnly, bool safe, bool verySafe, int unused)",
+   "no_signature": null,
+   "comment": "What the GUI calls to issue a move; hardcodes mode68 = 1 and forwards its fourth and fifth arguments as safe and very safe; `ret 0x18`. The unit is the first stack argument (+0x158 gate, virtual +0x8C asked whether the province is reachable); `provinceId` indexes the game state's province vector at +0xB8C; when `recordOnly` is greater than zero it only writes the province to the unit's +0x2CC and returns; the sixth stack dword is never read on any path. **The receiver in ecx is not a CMoveCommand** - it is only ever handed on, as the first argument of 0x49ABD0 (issue a command of type id, 0x18D here or 0x5A4 for the sibling path) and of 0x499E50, which does `add ecx,0x20; call 0x402610`, so the object carries a CCountryTag at +0x20: the per-player interface the order is issued through. Its class was not identified.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CMoveCommand.hpp:68; reversing/FINDINGS-redeploy.md:114"
   },
@@ -5146,8 +5161,9 @@
    "rva": "0x64F220",
    "kind": "function",
    "name": "CWar::AddAttacker",
-   "signature": null,
-   "comment": "Adds a country to a war's attackers: (CWar*, int, int, char tag[4], int id). The loader calls it for every `attacker=` line, after refusing a tag the country database does not know.",
+   "signature": "void __stdcall CWar::AddAttacker(CWar* war, bool arg2, bool arg3, char tag[4], int countryId)",
+   "no_signature": null,
+   "comment": "Adds a country to a war's attackers, the vector at +0x2C. The loader calls it for every `attacker=` line, after refusing a tag the country database does not know. **Everything is on the stack** (`mov esi,[ebp+8]`, `ret 0x14`) and the last two dwords are one `CCountryTag` passed by value - char[4] then id - spelled out as two parameters here so the arithmetic checks: the id at [ebp+0x18] is what the search over the existing 8-byte entries compares, and `lea ecx,[ebp+0x14]; call 0x402610` resolves the pair to a CCountry. The two flags are bytes: [ebp+0x10] (arg3) is cleared when the first existing attacker's country has a zero byte at +0xF34 and, once zero, skips the bulk of the function; [ebp+0xC] (arg2) is tested near the end. What the two mean was not settled - across the call sites arg2 is 1 or 0 and arg3 is 0 or a zeroed register at every one of them.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CWar.hpp:39"
   },
@@ -5155,8 +5171,9 @@
    "rva": "0x6506B0",
    "kind": "function",
    "name": "CWar::AddDefender",
-   "signature": null,
-   "comment": "The same for the defenders.",
+   "signature": "void __stdcall CWar::AddDefender(CWar* war, bool arg2, bool arg3, char tag[4], int countryId)",
+   "no_signature": null,
+   "comment": "The same for the defenders, the vector at +0x3C: the same five stack arguments, the same `ret 0x14`, the same CCountryTag pair at the end and the same pair of flags. The only difference in the first thirty instructions is `add edi, 0x3C` where the attacker side has +0x2C.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CWar.hpp:39"
   },
@@ -5463,8 +5480,9 @@
    "rva": "0x69DA00",
    "kind": "function",
    "name": "FindPersistentById",
-   "signature": "void* __cdecl FindPersistentById(int type, int id)",
-   "comment": "Looks a saved object up by its type and id - the two halves of the `id = { type = N id = N }` pair the save writes. Type 0x25 is a leader: CKillLeaderEffect::GetLeader calls it with that and the id from the event file. The name is BiceLib's.",
+   "signature": "void* __cdecl FindPersistentById(int* keys@EAX, void* table@ECX) @EAX",
+   "no_signature": null,
+   "comment": "Looks a saved object up by its type and id - the two halves of the `id = { type = N id = N }` pair the save writes. Type 0x25 is a leader: CKillLeaderEffect::GetLeader calls it with that and the id from the event file. The name is BiceLib's.\n\n**It takes both arguments in registers and nothing on the stack.** EAX holds the address of the key pair - two dwords, `{type, id}` - and ECX holds the hash table; the result comes back in EAX and is NULL when nothing matches. All 427 call sites set EAX with a `lea` of a stack local in the instruction immediately before the call and push nothing at all, and none of them cleans any stack afterwards.\n\nThe body: `edi = [eax]` (type), `esi = [eax+4]` (id), hashes `(type << 16) + id` by dividing it by `[ecx+4]` (the bucket count) and indexes `[ecx+8]` (the bucket array) with the remainder, then walks the chain - `[node]` is the stored pointer, `[node+4]` the next node - comparing `[stored+8]` against the type and `[stored+0xC]` against the id. So the registered object keeps its own copy of the key pair at +8/+0xC, which is where CReferenceObject's unread +0x8 and +0xC most likely go - that last step is inference, not something checked.\n\nThe table is one of two globals, `[0x1A857F4]` and `[0x1A857F0]`, and 374 of the 427 sites choose between them with `cmp <type>, 0x1268` immediately before - so the type space is split into two registries at 4712. 132 of the 427 sites follow the call with `add eax, -8` before using the result; what that adjustment reaches has not been settled here.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-effecttext.md"
   },
@@ -7482,6 +7500,196 @@
    "comment": "CPathFind slot 3, which no class in the family overrides: `sete` on `goal == at`, three stack arguments, `ret 0xC`, and neither `this` nor `unit` read. CPathFind::Find asks it for every province it takes off the open list and builds the path the moment it answers 1 (0x5A13B3-0x5A13B7), which is what the name says. Slot 3 was previously recorded only as \"unknown\" on the CPathFind vftable entry.",
    "confidence": "inferred",
    "source": "reversing/FINDINGS-redeploy.md"
+  },
+  {
+   "rva": "0x669550",
+   "kind": "function",
+   "name": "TokenToFixedPoint",
+   "signature": "int* __stdcall TokenToFixedPoint(CToken* token, int* out) @EAX",
+   "no_signature": null,
+   "comment": "Turns a `CToken`'s text into the engine's thousandths fixed point: `*out = atoi(text) * 1000 + fraction`, where `fraction` is the digits after the first `.` read as a number and then padded with zeros to exactly three places - `1.5` gives 1500, `1.25` gives 1250, `2` gives 2000, and a token with no `.` at all gives a fraction of 0. The sign comes from `text[0]`: when it is `-` and `atoi` returned 0 the fraction is negated anyway, so `-0.5` comes out -500.\n\nThe `imul 1000` / `__allmul(x,1000)` / `__alldiv(x,1000000)` round trip in the middle is a 64 bit overflow guard on a fraction with more than three digits, not a second scaling - `lea edx,[eax+0x189373]; cmp edx,0x39580D` picks the 32 bit path only when `eax*1000` cannot overflow, and both paths hand the same fraction back. The fast path's `0x431BDE83` with `sar edx,0x12` is the standard divide-by-1000000 magic (2^50/10^6 = 1125899906.8).\n\n**188 direct call sites, all loaders**, and the argument is `parse + 0x228` (`CParseContext::value`, the CToken) at every one looked at. It takes the token, not the context, so it reports nothing: a token that is not a number simply gives 0. It answers `out` in eax so the caller can read the value straight back - `call; mov eax,[eax]; mov [ebx+0xC4],eax` at 0x4CDE8B, and `call; movd xmm0,[eax]; cvtdq2ps; divsd [0x160A300]` (1000.0) at 0x4B1F93, which is the float the loader actually wanted.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x67B540",
+   "kind": "function",
+   "name": "ParseFixedPoint",
+   "signature": "void __stdcall ParseFixedPoint(CParseContext* parse@EAX, int* out@EDI)",
+   "no_signature": null,
+   "comment": "The fixed point reader of the `*::LoadKey` family, beside `ParseInt` (0x67B470), `ParseBool` and `ParseString`: `*out` gets the value token as thousandths. Both arguments are in registers, so there is nothing on the stack and the function ends in a bare `ret`.\n\nIt takes one of two readings, decided by the tokenizer's virtual slot 2 - `mov ecx,[parse+0x1C]; mov eax,[ecx]; call [eax+8]`, on the field project.json already calls `CParseContext::tokenizer`. That slot is `_purecall` in the tokenizer base (vftable 0x15FD1F0, slots 1 and 2 both 0xB961D5) and a compile time constant in each subclass, so it is a kind flag, not a computation: the tokenizer used everywhere for files (vftable 0x15FD1FC, 78 construction sites) answers **false** through `xor al,al; ret` at 0x192360, and the rarer one (vftable 0x15FD208, 4 sites, all reached from the 0xB3xxxx network module) answers **true** through `mov al,1; ret` at 0x692590.\n\nTrue takes the text as already scaled - `sscanf(parse->value.text, \"%i\", out)` straight into `*out`. False sends `&parse->value` to 0x6696A0, which is the checked form of `TokenToFixedPoint`: `sscanf(\"%i\")` for the whole part, `strstr(text, \".\")` for a fraction, the first three fraction digits zero-padded, and the whole thing multiplied by 1000 - so the `1.5` a script file writes becomes 1500. Either reading failing ends in `ReportParseError(parse@ESI)`, which esi already holds.\n\n**76 direct call sites**, the switch arm shape being `mov eax,[ebp+8]; lea edi,[<field>]; call` with the caller's `ret 8` right after (0x414FB4, 0x4CD030).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x4CDA0",
+   "kind": "function",
+   "name": "Date_SetFromString",
+   "signature": "void __stdcall Date_SetFromString(int* date@ESI, const char* text)",
+   "no_signature": null,
+   "comment": "Sets a date tick from the text `year.month.day.hour`, in place, joining `Date_Year`, `Date_DayOfYear`, `Date_DayOfMonth` and `Date_DayOfWeek` as the writing half of that family. **782 direct call sites**, the most-called unnamed function in the image after the parse helpers, and the text handed to it is `parse + 0x22C` (`CParseContext::value.text`) at every site inspected.\n\nIt is `sscanf(text, \"%d.%d.%d.%d\", &year, &month, &day, &hour)`, then month and day are decremented to 0 based, then the tick is rebuilt on the epoch `CLASSES.md` records: `tick = 24 * sign(year) * (365*|year| + dayOfYear(old tick)) + 43800000 + hourOfDay(old tick)`, where 0x29C55C0 = 43800000 and 0x538AB8*8 is the same number. The month is then added by 0x4C420 and the day of the month by 0x4C360 - both walk the month length table at rva 0x1313294 - and finally the hour of day is replaced by the parsed one. Callers hand it a date holding exactly the epoch (`mov [esp+0x64],0x29C55C0; lea esi,[esp+0x64]` at 0x4CE4A2), so the old day-of-year and hour-of-day it preserves are both zero and the result is exactly the date in the string.\n\n**The sscanf return is never tested.** A string that is not a date leaves year 0 and, because the decrements are unconditional, month -1 and day -1, so the tick walks backwards off the epoch and nothing is reported - the same silence `FINDINGS-...` records for unknown keys.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5C7D60",
+   "kind": "function",
+   "name": "StringHashFind",
+   "signature": "void* __stdcall StringHashFind(void* table@EAX, Hoi3CString* key) @EAX",
+   "no_signature": null,
+   "comment": "Looks a name up in the engine's own string hash table and answers the stored pointer, or null. **206 direct call sites.**\n\nThe table is `{int count; unsigned bucketCount; void** buckets;}` at +0/+4/+8 and a node is `{void* value; Node* next;}`. The hash is the engine's string hash, `h = (h + c) * 61` over the length of the key (`imul eax,eax,0x3D`, the same three bytes inlined at 23 places in the image), reduced by `div [table+4]`. Each node in the bucket is compared by taking `value + 8` as an `Hoi3CString` and running the 4-bytes-at-a-time compare at 0x15F70 over `min(keylen, storedlen)` characters, with the lengths broken as the tie - so **the key is a member of the stored object, at +8**, and nothing is copied into the table.\n\nThat +8 is what fixes this instantiation of what is otherwise a template body: the insert half at 0x5C87C0 is the same table and the same hash with the key at value+4. The table itself is a member of whatever owns it (`esi+0x10` of a global at 0x4CDCE7, `vf[0x44]() + 0x6BCF0` at 0x406B5A), and the value is used as a polymorphic object straight afterwards (`mov edx,[eax]; mov ecx,eax; call [edx+0x48]`), so this is the by-name index the loaders go through when a script names a thing.\n\nNo class on the name deliberately: the body is shared by several owners, it is in no virtual table, and which class the values belong to is not settled here.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x794A6E",
+   "kind": "function",
+   "name": "std::iostream_category",
+   "signature": "std::error_category* __cdecl std::iostream_category() @EAX",
+   "no_signature": null,
+   "comment": "**Two instructions - `mov eax, 0x16F5204; ret` - and it is not half of building the exception.** It is `std::iostream_category()`: the address it answers is the static `_Iostream_error_category` singleton, whose vfptr at `+0` is `0x15A7A84` and whose RTTI type descriptor reads `.?AV_Iostream_error_category@std@@`. Its `name()` (slot 1, `0x794A66`) is `return *(const char**)(this+4)`, and `this+4` = `0x16F5204+4` holds `0x15A7A74`, the address of the literal `\"iostream\"`.\n\nThe three call sites are the three throw paths of `std::ios_base::clear` (`0x20B0`) and each uses the result as the `_Cat` half of an `error_code`:\n\n    call  std::iostream_category         ; edi = the category\n    mov   [esp+0xC], 0x15B4E4C           ; \"ios_base::badbit set\"\n    lea   ecx, [esp+0x10]                ; the exception object\n    call  std::exception::exception      ; 0x795991\n    mov   [esp+0x20], esi                ; error_code._Val  = 1  (io_errc::stream)\n    mov   [esp+0x24], edi                ; error_code._Cat  = this\n    mov   [esp+0x14], 0x15A7BD8          ; vfptr <- std::ios_base::failure\n    call  _CxxThrowException\n\nSo `ios_base::clear` throws `failure(msg, make_error_code(io_errc::stream))`, exactly as `<xiosbase>` documents, and the `failure` layout is {vfptr, `_Mywhat`, `_Mydofree`, `_Mycode._Val`, `_Mycode._Cat`}. `__cdecl`, no arguments, bare `ret`, pointer back in eax. The `_Generic_error_category` and `_System_error_category` singletons sit immediately after it, at `0x16F5208` and `0x16F520C`, with tables `0x15A7A5C` and `0x15A7AA8`; their accessors and virtuals are left on the frontier.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x795991",
+   "kind": "function",
+   "name": "std::exception::exception",
+   "signature": "std::exception* __thiscall std::exception::exception(std::exception* this, const char** what) @EAX",
+   "no_signature": null,
+   "comment": "**`std::exception::exception(const char* const& _What)`** - the base constructor of every standard exception in the image, not something built for `ios_base::failure`. It writes the `std::exception` vftable `0x15A7C88` at `+0`, zeroes `_Mywhat` at `+4` and `_Mydofree` at `+8`, then calls `_Copy_str` (`0x795933`) with `*what`.\n\n**The parameter is a pointer to a `const char*`, not a `const char*`** - `mov eax,[ebp+8]; push [eax]` - which is MSVC's `exception(const char *const &)` signature verbatim, and is why every call site first parks the literal in a stack slot and passes that slot's address. Recording it as `const char*` would make every caller decompile with a bogus extra dereference.\n\n`__thiscall`, `ret 4`, the object back in eax. 297 direct callers, of which the three in `std::ios_base::clear` are the ones the handover was looking at; the rest are every `throw std::runtime_error(...)` / `bad_alloc` / `bad_cast` in the game. The derived constructors are one instruction longer and sit right after it: `0x7959ED` (`bad_cast`, vftable `0x15A7CA8`), `0x795A16` (`bad_typeid`, `0x15A7CB4`), `0x402060` (`runtime_error`, `0x159FDA0`).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x794AE9",
+   "kind": "function",
+   "name": "std::uncaught_exception",
+   "signature": "bool __cdecl std::uncaught_exception() @AL",
+   "no_signature": null,
+   "comment": "A five-byte `jmp 0x79CD77` and nothing else - `std::uncaught_exception()` tail-calling the CRT's `__uncaught_exception`. The handover's description is confirmed.\n\nIt has 16 callers and every one reads the result the same way, `test al,al` followed by a jump around a call: that is the `basic_ostream::sentry` destructor, `if (!uncaught_exception()) _Osfx();`. `std::ostream::write` (`0x664A30`) is the example the previous wave named - `0xA64B3B: call 0xB94AE9; test al,al; jne 0xA64B4B; mov ecx,edi; call 0x40A260`, and `0xA260` is already recorded as `std::ostream::_Osfx`.\n\nNo arguments, `bool` in al. Written `__cdecl` because the caller consumes nothing; the jump target's own `ret` is bare.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x79CD77",
+   "kind": "function",
+   "name": "__uncaught_exception",
+   "signature": "bool __cdecl __uncaught_exception() @AL",
+   "no_signature": null,
+   "comment": "The CRT side of the above: `return _getptd()->_ProcessingThrow != 0`. Three instructions after the call - `call 0x7A0FFE; xor ecx,ecx; cmp [eax+0x90], ecx; setne al; ret`. `0x7A0FFE` is the per-thread data getter (59 callers across the CRT), and `+0x90` into that block is the in-flight-throw counter. Recorded here because `std::uncaught_exception` (`0x794AE9`) is nothing but a jump to it and cannot be read without it. No arguments, bare `ret`, `bool` in al.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x794AEE",
+   "kind": "function",
+   "name": "std::ios_base::_Callfns",
+   "signature": "void __thiscall std::ios_base::_Callfns(std::ios_base* this, int event)",
+   "no_signature": null,
+   "comment": "Confirms the handover. `ios_base::_Callfns(event)`: walk the singly linked callback list whose head is `_Calls` at `+0x2C` and call each node's function with the event, the stream and the node's index.\n\n    for (node = this->_Calls; node; node = node->_Next)\n        node->_Pfn(event, *this, node->_Index);\n\nThe node layout falls straight out of the loop - `+0` `_Next`, `+4` `_Index`, `+8` `_Pfn` - and the callback is `__cdecl`: three pushes and `add esp, 0xC` at `0xB94B08`, in the order `(event, this, index)`. That is `typedef void (__cdecl *event_callback)(event, ios_base&, int)` exactly.\n\n`__thiscall`, one stack argument, `ret 4`, nothing returned. **It has exactly one caller in the whole image**, `std::ios_base::_Tidy` (`0x794B15`), which passes the literal 0 - `erase_event`. So no registered callback in this game is ever told about `copyfmt_event` or `imbue_event`; the list is only ever run at teardown.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x2EE40",
+   "kind": "function",
+   "name": "std::locale::Destruct",
+   "signature": "void __thiscall std::locale::Destruct(std::locale* this)",
+   "no_signature": null,
+   "comment": "Confirms the handover's reading of the body, with one correction to the name's spelling. This is `std::locale::~locale()` with `facet::_Decref()` inlined into it:\n\n    if (_Ptr) {                       // the _Locimp* at locale +0\n        _Lockit lock(_LOCK_LOCALE);   // 0x79504A with the literal 0\n        if (0 < _Ptr->_Myrefs && _Ptr->_Myrefs != (size_t)-1) --_Ptr->_Myrefs;\n        dead = _Ptr->_Myrefs == 0 ? _Ptr : 0;   // the neg/sbb/not/and at 0x42EE69\n        ~_Lockit();                   // 0x795072\n        if (dead) dead->vftable[0](1);          // scalar deleting destructor\n    }\n\nSo a `locale` is one pointer wide, which is why `ios_base::_Init` allocates exactly four bytes into `_Ploc`; the refcount is at `_Locimp +4`; and `-1` is the sentinel that keeps the classic locale alive forever.\n\n`__thiscall`, no stack arguments, bare `ret`. Four callers: `std::ios_base::_Ios_base_dtor` (`0x794BAE`), which destroys `_Ploc` at `+0x30` and then frees it, and three in `0x50E742`/`0x50ED2E`/`0x50ED54`.\n\n**The name is spelled `Destruct`, not `~locale`.** project.json holds exactly one `~` name (`CSubUnitDataBase::~CSubUnitDataBase`) and the convention the log family already established for this is a word - `LogRecord::FlushAndDestruct`, `std::ios_base::_Ios_base_dtor`. Whoever prefers the tilde should rename it once, everywhere.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x79504A",
+   "kind": "function",
+   "name": "std::_Lockit::_Lockit",
+   "signature": "std::_Lockit* __thiscall std::_Lockit::_Lockit(std::_Lockit* this, int kind) @EAX",
+   "no_signature": null,
+   "comment": "Confirms the handover. `_Lockit::_Lockit(int _Kind)`: store the kind at `+0`, and if it is below 4 enter the critical section at `0x174C878 + kind*0x18`.\n\n    _Locktype = kind;\n    if (kind < _MAX_LOCK) EnterCriticalSection(&mtx[kind]);\n\nThe table is four `CRITICAL_SECTION`s - the `0x18` stride is `sizeof(RTL_CRITICAL_SECTION)` on 32 bit - and `0xB958D8`, the thing it calls, is a one-line forwarder to the `EnterCriticalSection` import. `__thiscall`, `ret 4`, the object back in eax (constructors do). 47 callers, paired one for one with 47 callers of the destructor below.\n\nThe lock ids seen in use are `0` from `std::locale::Destruct` (`_LOCK_LOCALE`) and `2` from `std::ios_base::_Addstd` (`_LOCK_STREAM`).",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x795072",
+   "kind": "function",
+   "name": "std::_Lockit::Destruct",
+   "signature": "void __thiscall std::_Lockit::Destruct(std::_Lockit* this)",
+   "no_signature": null,
+   "comment": "The matching `~_Lockit()`: read the kind back out of `+0` and, if it is below 4, leave the same critical section. `0xB958E8` forwards to the `LeaveCriticalSection` import. Seven instructions, no prologue at all - `this` in ecx, no stack arguments, bare `ret`, nothing returned. 47 callers, the same count as the constructor.\n\nSpelled `Destruct` rather than `~_Lockit` for the same reason as `std::locale::Destruct` above.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x520940",
+   "kind": "function",
+   "name": "std::stringbuf::str",
+   "signature": "Hoi3CString* __cdecl std::stringbuf::str(std::stringbuf* buf@ECX, Hoi3CString* out@ESI) @EAX",
+   "no_signature": null,
+   "comment": "**The real `basic_stringbuf<char>::str()`, and its address is rva `0x520940` - not `0x920940`.** `0x920940` is the *virtual* address the disassembler prints inside `std::ostringstream::str` (`0x65BD10`); the handover carried it across as an rva. Rva `0x920940` (VA `0xD20940`) is not a function entry at all: it decodes from the middle of an instruction and has zero callers. This is the trap `findings/README.md` warns about, and the previous wave's own `frontier` list did record it correctly as `0x520940`.\n\nThe body is MSVC's `str()` unchanged:\n\n    if (!(_Mystate & _Constant) && pptr() != 0)\n        return string(pbase(), max(_Seekhigh, pptr()) - pbase());\n    else if (!(_Mystate & _Noread) && gptr() != 0)\n        return string(eback(), egptr() - eback());\n    else\n        return string();\n\nAll three arms build a local `Hoi3CString` with `std::string::assign` (`0xA160`), tidy `out` to the empty state (`[out+0x14]=0xF`, `[out+0x10]=0`, `[out]=0`) and copy the local into it with `0x32720`, then free the local when its capacity reached 0x10.\n\n**Field offsets, streambuf-relative** (MSVC keeps pointers *to* the area pointers, so each is dereferenced twice): `+0x10` `_IGfirst`, `+0x14` `_IPfirst`, `+0x20` `_IGnext`, `+0x24` `_IPnext`, `+0x30` `_IGcount`; `egptr()` is computed as `*_IGnext + *_IGcount`. `+0x3C` is `_Seekhigh` and `+0x40` `_Mystate`, which is the cross-check that settles the identification: `LogRecord` puts its stringbuf at `record+4` and the already-confirmed `std::ostringstream::ostringstream` writes `_Seekhigh` at `record+0x40` and `_Mystate` at `record+0x44` - the same two fields, the same two offsets.\n\n**Convention.** `esi` is never pushed, never assigned and never restored, and the epilogue is `mov eax,esi` - so it is an incoming argument, the named-return-value slot. `ecx` is the buffer. Bare `ret`, nothing on the stack. Both callers set it up that way: `std::ostringstream::str` does `mov esi,eax; add ecx,4; call` and the second caller, `0x51FB50`, does `mov esi,eax; add ecx,0x18; call`.\n\nThe state bits are `_Constant = 2` and `_Noread = 4`, tested in that order.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x2210",
+   "kind": "function",
+   "name": "std::ios_base::ScalarDeletingDestructor",
+   "signature": "std::ios_base* __thiscall std::ios_base::ScalarDeletingDestructor(std::ios_base* this, int flags) @EAX",
+   "no_signature": null,
+   "comment": "Confirms the handover in full. MSVC's `??_G` for `ios_base`, and **the virtual-table slot that `std::ios_base::_Ios_base_dtor` (`0x794BAE`) sits behind**:\n\n    mov  [esi], 0x15A7B8C        ; the ios_base vftable\n    push esi; call 0x794BAE; add esp,4\n    if (flags & 1) free(esi);\n    return esi;\n\n`__thiscall`, `ret 4`, the object back in eax. **It has no direct callers at all** - every use is a virtual dispatch, which is what one expects of a slot-0 destructor and is the complement of `_Ios_base_dtor`'s 700 direct calls.\n\n**It is slot 0 of two tables**: `std::ios_base`'s own (`0x15A7B8C`, RTTI `.?AVios_base@std@@`) and `std::basic_ios<char>`'s (`0x15A7B9C`, RTTI `.?AV?$basic_ios@DU?$char_traits@D@std@@@std@@`, which project.json spells `std::anon::anon::std::D::DU__char_traits::__basic_ios`). Both tables have exactly one slot. The body belongs to `ios_base` - it writes `ios_base`'s own vftable, not `basic_ios`'s - and `basic_ios` derives from `ios_base` in project.json's class record, so the derived table holds the inherited body. Both slots are recorded under `vftable_slots`.\n\nThe neighbouring vftable `0x15A7B94` is `std::basic_ostream<char>`'s at object offset 8 and its slot 0 is a different body (`0x50E270`), so it is not part of this and is left on the frontier.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x4DE9D0",
+   "kind": "function",
+   "name": "CUnitPlan::CUnitPlan",
+   "signature": "void __stdcall CUnitPlan::CUnitPlan(CUnitPlan* this@EAX)",
+   "no_signature": null,
+   "comment": "The battle plan's constructor, and **the whole of its layout in one place**. A leaf: the object arrives in EAX, nothing is pushed, and it ends in a bare `ret`.\n\nIt writes the vftable `0x15C8BFC` at `+0x0`, the save-token id `0x18D` at `+0x4` (CPersistent's own field), zeroes the word at `+0x8` (`active` and `allow_hq_reorg`), sets `stance` (`+0xC`) to 2 and `air_stance`/`naval_stance` (`+0x10`/`+0x14`) to 1, zeroes five CList heads at `+0x18`, `+0x28`, `+0x38`, `+0x48` and `+0x5C` (each first/last/count and a flag byte, 0x10 bytes), the loose dwords at `+0x58` and `+0x6C`, the `vector<int>` at `+0x70`/`+0x74`/`+0x78`, and the four dwords `+0x80`..`+0x8C`. `+0x7C` is the one dword it does not touch.\n\nThe last field written is `+0x8C`, so **CUnitPlan is 0x90 bytes**, which is exactly the room CUnit leaves between `+0x1FC` and `expeditionary_owner` at `+0x28C`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x4DEA60",
+   "kind": "function",
+   "name": "CUnitPlan::~CUnitPlan",
+   "signature": "void __thiscall CUnitPlan::~CUnitPlan(CUnitPlan* this)",
+   "no_signature": null,
+   "comment": "The plan's destructor: rewrites the vftable, frees the `vector<int>` at `+0x70` and clears `+0x70`/`+0x74`/`+0x78`, destroys the list at `+0x5C` and the one at `+0x48`, and walks the singly-linked nodes of the lists at `+0x38`, `+0x28` and `+0x18` freeing each through its `+0x8` link, resetting each head/tail/count triple as it goes. `this` is in ECX and it ends in a bare `ret`, so it takes nothing on the stack.\n\nCalled once, at `0x1B5799`, with `ecx = unit + 0x1FC` - CUnit's destructor destroying the plan it holds by value.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x1B5232",
+   "kind": "instruction",
+   "name": "CUnit::ConstructPlanInPlace",
+   "signature": null,
+   "no_signature": null,
+   "comment": "`lea eax, [edi + 0x1FC]; call CUnitPlan::CUnitPlan` inside CUnit's constructor (`0x1B5010`). **This is what settles that `CUnit +0x1FC` is a CUnitPlan held by value and not a pointer**: nothing is allocated, the plan is built in place at that offset, and the very next store is `expeditionary_owner` at `+0x28C`. The matching destruction is at `0x1B5799`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x2D5D20",
+   "kind": "function",
+   "name": "CSetGamePlayOptions::Execute",
+   "signature": "void __thiscall CSetGamePlayOptions::Execute(void)",
+   "no_signature": null,
+   "comment": "Slot 6 of `CSetGamePlayOptions` - the command's own **Execute** (see `CCommand::Execute`), and **the only thing in the image that writes either gameplay option**:\n\n    gamestate->difficulty   = this->options[0]          // +0xC98\n    if (this->options.size() >= 2)\n        gamestate->arcade_mode = this->options[1]        // +0xC9C\n\nThe vector it carries is at `+0x3C`/`+0x40` and is what `CSetGamePlayOptions::LoadKey` (`0x2D5EC0`) fills from the save's `setgameplayoptions` key; the save writes it back under token `0x60D` at `0x2D5E90`. Since the command is only ever run when the game is set up or a save is loaded, both options are fixed for the length of a campaign.\n\nIt ends by touching the globals at `0x171042C`/`0x1710430` and `0x1A857F0`/`0x1A857F4`, which was not followed up.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
+  },
+  {
+   "rva": "0x16870D4",
+   "kind": "global",
+   "name": "g_CBuildingDataBase",
+   "signature": null,
+   "no_signature": "a global, not a function",
+   "comment": "The one `CBuildingDataBase`, 0x30 bytes, built lazily exactly as `g_CSubUnitDataBase` is: every user does `if (!g) g = new 0x30 bytes, init`. Layout as the init at rva `0x5BD30` and its users show it - `+0x00`..`+0x0B` a name -> `CBuilding*` hash map (count at `+0x00`, `0x1FF` buckets at `+0x04`, the bucket array allocated and zeroed at `+0x08`), `+0x0C`/`+0x10`/`+0x14` a `vector<CBuilding*>`, and `+0x18`..`+0x2C` six cached `CBuilding*` for well-known roles, which the init does not touch and the loader fills later.\n\n**Those cached roles are what a province's building shortcuts are made of.** The setup at `0x968B8`..`0x96A50` does, four times over,\n\n    province->+0x308 = province->buildings[ db->+0x24->index ]\n    province->+0x304 = province->buildings[ db->+0x1C->index ]\n    province->+0x300 = province->buildings[ db->+0x20->index ]\n    province->+0x30C = province->buildings[ db->+0x28->index ]\n\nwhere `index` is `CBuilding +0x54` and `buildings` is `CProvince +0x310`. Which building each role slot holds was **not** established - nothing found writes `+0x18`..`+0x2C` through a register that is still recognisably this global.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-manpower.md"
   }
  ],
  "structs": [
@@ -8309,6 +8517,20 @@
    "name": "CCurrentGameState",
    "size": "0xDA8",
    "fields": [
+    {
+     "offset": "0xC9C",
+     "name": "arcade_mode",
+     "type": "int",
+     "comment": "The lobby's **Game Mode**: 0 Normal, 1 Arcade. Element 1 of the save's `setgameplayoptions` vector, written only by `CSetGamePlayOptions::Execute` (0x2D5D20), so it is set once when the game is started or loaded. CCurrentGameState's constructor defaults it to 0.\n\n**This is the switch between the two supply models.** `CUnit::ConsumeSuppliesAndFuel` tests it at 0x1BBA3A: above zero the unit draws straight from the owner's capital pool (`CProvince +0x15C`), at or below zero it walks the supply network. Twenty-odd other sites read it the same way. Measured live it reads 0, and every save in `BlackICE GitHub/save games` writes `{ 2 0 }`, so the network path is the one that runs in an ordinary campaign.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0xC98",
+     "name": "difficulty",
+     "type": "int",
+     "comment": "The campaign's difficulty, 0..4 (`VERY_EASY`, `EASY`, `NORMAL`, `HARD`, `VERY_HARD` in the localisation). Element 0 of the save's `setgameplayoptions` vector, written only by `CSetGamePlayOptions::Execute` (0x2D5D20) and so fixed for the game. CCurrentGameState's constructor defaults it to 2, Normal, and every save read here carries `setgameplayoptions = { 2 0 }`.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
     {
      "offset": "0xDA4",
      "name": "in_game",
@@ -9253,6 +9475,20 @@
   {
    "name": "CProvinceTemplate",
    "fields": [
+    {
+     "offset": "0xA4",
+     "name": "sea_province_id",
+     "type": "int",
+     "comment": "On a land province (`is_land` set), the id of the one sea province it connects to, as an index into `CMap::provinces` (`+0x2200`); 0 where there is none. Meaningless where `is_land` is clear, and nothing reads it there.\n\nIt is the single gate on a fleet crossing the coast. `CPathFind::MayStep` (0x1A2700) and `CPlannedPathFind::MayStep` (0x1A2D30) let a naval unit step out of a land province only to the province this names, and into a land province only from it; a step between two land provinces is refused outright. The helper at `0xA7D70` uses it the other way, replacing a land province by `map->provinces[sea_province_id]` until both ends of a pair are sea, which is also what fixes the target as a sea province: the loop terminates only when the province it lands on has `is_land` clear.",
+     "source": "reversing/FINDINGS-redeploy.md"
+    },
+    {
+     "offset": "0x22",
+     "name": "is_land",
+     "type": "uint8_t",
+     "comment": "Non-zero on a land province, zero on a sea zone. 245 places in the image read it through a province's `path_node_ptr` (+0xD4), which is why it looked fundamental and unnameable; three of them fix which way round it is. `CPathFind::MayStep` refuses a **naval** step between two provinces that both have it set, and where exactly one has it, that template's `sea_province_id` (+0xA4) must name the other province. `CProvince::IsFrontProvince` (0xA56B0) skips any neighbour that does not have it. `CSafeNavalPathFind::StepCost` only looks for hostile buildings around the destination when the destination does **not** have it - i.e. only when a fleet is entering open sea. `CheckTransportOverload` puts a carried unit ashore only where it is set.",
+     "source": "reversing/FINDINGS-redeploy.md"
+    },
     {
      "offset": "0xC",
      "name": "terrain",
@@ -10753,9 +10989,9 @@
     {
      "offset": "0x1FC",
      "name": "plan",
-     "type": "void*",
-     "comment": "the unit's plan, saved as `plan` by calling slot 1 on it. **Read live**: every unit has one",
-     "source": "BiceLib/GameClasses/CUnit.hpp:75"
+     "type": "CUnitPlan",
+     "comment": "The unit's battle plan, **held by value, not by pointer** - CUnit's constructor builds a CUnitPlan in place here at 0x1B5232 and its destructor destroys it in place at 0x1B5799. 0x90 bytes, so it runs to +0x28B and expeditionary_owner at +0x28C is the next field. Every plan field already recorded on CUnit is this object's offset plus 0x1FC: +0x204 plan_active = plan +0x8, +0x208 plan_stance = +0xC, +0x20C plan_air_stance = +0x10, +0x210 plan_naval_stance = +0x14, +0x26C plan_subunit_wanted = +0x70, +0x27C plan_our_power = +0x80, +0x280 plan_their_power = +0x84. The save writes it under `plan` by calling slot 1 on it, which works because +0x1FC is the embedded object's own vftable pointer.",
+     "source": "reversing/FINDINGS-manpower.md"
     },
     {
      "offset": "0x2E4",
@@ -15106,10 +15342,10 @@
    "fields": [
     {
      "offset": "0x8",
-     "name": "display_name",
-     "type": "Hoi3CString",
-     "comment": "a second string the name setter fills, through a lookup on the name",
-     "source": "BiceLib/GameClasses/CConstruction.hpp:165"
+     "name": "country",
+     "type": "CCountryTag",
+     "comment": "The country this brigade definition belongs to. SetName writes +0x8 and +0xC as two separate dwords from two separate arguments and hands +0x8 to the tag lookup at 0x402610, which is a CCountryTag - four tag characters then an id, filling exactly the eight bytes to id_type at +0x10.\n\nThis read `display_name`, an Hoi3CString, until the wave of 2026-09-24. A string here is 0x1C bytes and would have swallowed +0xC, +0x10, +0x14 and the name at +0x18 - and measuring the gap after every Hoi3CString field in this file gives 0x1C in around twenty places across unrelated classes, with this the only one that gave 0x8. Both the code and the layout said the same thing; nothing had asked either.",
+     "source": "reversing/findings/merged/member-signatures.json"
     },
     {
      "offset": "0x10",
@@ -15889,9 +16125,176 @@
     }
    ],
    "comment": "The temporary every log line in the game is built into: `LogRecord::Make(file, line, channel) << \"text\" << ... << endl`. It is a std::basic_ostringstream<char> with four fields of its own added, which is why its basic_ios virtual base sits at +0x78 instead of +0x50.\n\n**Two gaps, deliberately.** +0x04..+0x4F is the std::basic_stringbuf (0x4C bytes, vftable 0x15F2B34, with _Seekhigh at +0x40 and _Mystate at +0x44), and +0x78 is the std::basic_ios virtual base (0x44 bytes, vftable 0x15FCE94). Neither type is modelled here, and a byte blob would claim a layout nobody has read, so they are left undefined and described instead.\n\nThe size of 0xBC is **inferred**: basic_ios' last written member is _Fillch at +0x40, giving at least 0x41 and 0x44 by alignment. Every LogRecord in the image is a stack local, so no allocation size settles it."
+  },
+  {
+   "name": "CUnitPlan",
+   "size": "0x90",
+   "inherits": "CPersistent",
+   "comment": "A unit's battle plan, held **by value** at CUnit +0x1FC - CUnit's constructor calls this class's constructor on `this + 0x1FC` and its destructor mirrors it, and 0x90 is exactly the gap to expeditionary_owner at +0x28C.\n\nThe layout was read three ways that agree: the constructor field by field, CUnitPlan::LoadKey's sixteen cases, and CUnitPlan::SaveContents writing the same token for the same offset. Three offsets are left out because nothing identified them - +0x58, +0x6C, and +0x7C, which is the one field the constructor never initialises.",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "active",
+     "type": "uint8_t",
+     "comment": "whether the plan is switched on.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x9",
+     "name": "allow_hq_reorg",
+     "type": "uint8_t",
+     "comment": "whether the plan may reorganise the headquarters under it.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0xC",
+     "name": "stance",
+     "type": "int",
+     "comment": "the land stance, 0..4.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x10",
+     "name": "air_stance",
+     "type": "int",
+     "comment": "the air stance, 0..2.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x14",
+     "name": "naval_stance",
+     "type": "int",
+     "comment": "the naval stance, 0..2.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x18",
+     "name": "ops_area",
+     "type": "CList",
+     "comment": "the provinces the plan operates over.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x28",
+     "name": "fallback_line",
+     "type": "CList",
+     "comment": "the provinces of the fallback line.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x38",
+     "name": "objectives",
+     "type": "CList",
+     "comment": "the plan's objective provinces.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x48",
+     "name": "path",
+     "type": "CList",
+     "comment": "the planned route.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x5C",
+     "name": "path2",
+     "type": "CList",
+     "comment": "a second planned route.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x70",
+     "name": "min",
+     "type": "std::vector<int>",
+     "comment": "how many regiments of each subunit type the plan wants, indexed by CSubUnitDefinition::type_index and sized to the subunit database. The same vector CUnit reaches as plan_subunit_wanted at +0x26C.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x80",
+     "name": "our_power",
+     "type": "int",
+     "comment": "the plan's estimate of our strength.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x84",
+     "name": "their_power",
+     "type": "int",
+     "comment": "its estimate of theirs.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x88",
+     "name": "embark",
+     "type": "int",
+     "comment": "the province to embark at.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x8C",
+     "name": "debark",
+     "type": "int",
+     "comment": "the province to debark at.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    }
+   ]
+  },
+  {
+   "name": "CSubUnitDataBase",
+   "size": "0xC0",
+   "comment": "Every subunit definition the game loaded, reached through g_CSubUnitDataBase. It has no virtual table, which is why the RTTI never named it and three passes left it as DAT_ - the name came from luabind, which registers the class and so forced a type_info the RTTI export does not index.\n\n+0x28..+0xAC holds 34 cached role definitions the constructor does not initialise, and which nothing has identified; they are left out rather than guessed at.",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "all",
+     "type": "CList",
+     "comment": "a list of everything the database holds.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x10",
+     "name": "by_name",
+     "type": "void*",
+     "comment": "a 0x1FF-bucket hash map from a definition's key to the definition.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x1C",
+     "name": "definitions_begin",
+     "type": "CSubUnitDefinition**",
+     "comment": "the start of the definition array; GetSubUnitByIndex indexes it.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0x20",
+     "name": "definitions_end",
+     "type": "CSubUnitDefinition**",
+     "comment": "one past the end. The count is (this - definitions_begin) / 4, which is what GetNumberOfSubUnits answers and what sizes every array indexed by CSubUnitDefinition::type_index.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    },
+    {
+     "offset": "0xB0",
+     "name": "unused_list",
+     "type": "CList",
+     "comment": "a second list, zeroed by the constructor and not seen in use.",
+     "source": "reversing/findings/merged/types-and-fields.json"
+    }
+   ]
   }
  ],
  "vftable_slots": {
+  "CSetGamePlayOptions": {
+   "6": "Execute"
+  },
+  "CTraitGainTracker": {
+   "2": "SaveContents"
+  },
+  "std::anon::anon::std::D::DU__char_traits::__basic_ios": {
+   "0": "ScalarDeletingDestructor"
+  },
+  "std::ios_base": {
+   "0": "ScalarDeletingDestructor"
+  },
   "CSetPlanOpsAreaCommand": {
    "6": "Execute"
   },
@@ -15960,6 +16363,9 @@
    "2": "MayStep"
   },
   "CInGameIdler": {
+   "1": "Update",
+   "53": "DailyUpdate",
+   "92": "SetAutosaveRequested",
    "3": "Enter",
    "4": "Leave",
    "48": "CentreOnProvince"
@@ -16004,6 +16410,7 @@
    }
   },
   "CMoveCommand": {
+   "6": "RouteUnit",
    "6": "RouteUnit"
   },
   "CRegiment": {

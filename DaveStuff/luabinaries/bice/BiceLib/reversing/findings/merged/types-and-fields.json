@@ -1,0 +1,163 @@
+{
+ "agent": "types-and-fields: the embedded CUnitPlan, the subunit database's shape, four unnamed fields and the gameplay option that switches the supply model",
+ "question": "Correct CUnit +0x1FC (a CUnitPlan by value, not a pointer) and establish the plan's layout; confirm and land CSubUnitDataBase's layout; name CProvinceTemplate +0x22/+0xA4 and CProvince +0x300/+0x304 if the evidence supports it; identify CCurrentGameState +0xC9C.",
+ "source": "reversing/FINDINGS-manpower.md",
+ "addresses": [
+  {
+   "rva": "0x4DE9D0",
+   "kind": "function",
+   "name": "CUnitPlan::CUnitPlan",
+   "signature": "void __stdcall CUnitPlan::CUnitPlan(CUnitPlan* this@EAX)",
+   "no_signature": null,
+   "comment": "The battle plan's constructor, and **the whole of its layout in one place**. A leaf: the object arrives in EAX, nothing is pushed, and it ends in a bare `ret`.\n\nIt writes the vftable `0x15C8BFC` at `+0x0`, the save-token id `0x18D` at `+0x4` (CPersistent's own field), zeroes the word at `+0x8` (`active` and `allow_hq_reorg`), sets `stance` (`+0xC`) to 2 and `air_stance`/`naval_stance` (`+0x10`/`+0x14`) to 1, zeroes five CList heads at `+0x18`, `+0x28`, `+0x38`, `+0x48` and `+0x5C` (each first/last/count and a flag byte, 0x10 bytes), the loose dwords at `+0x58` and `+0x6C`, the `vector<int>` at `+0x70`/`+0x74`/`+0x78`, and the four dwords `+0x80`..`+0x8C`. `+0x7C` is the one dword it does not touch.\n\nThe last field written is `+0x8C`, so **CUnitPlan is 0x90 bytes**, which is exactly the room CUnit leaves between `+0x1FC` and `expeditionary_owner` at `+0x28C`.",
+   "confidence": "confirmed",
+   "evidence": "disasm 0x8DE9D0..0x8DEA58: every store is an immediate or the zero in ECX, through EAX, and nothing before `mov [eax+4], 0x18D` touches EAX, so EAX is the object. Its one caller that matters is `lea eax, [edi + 0x1FC]; call 0x8DE9D0` at 0x5B5232 inside CUnit's constructor (0x1B5010), which is followed at 0x5B524D by `mov [edi+0x28C], 0x2D2D2D` - the `---` tag that project.json already records as CUnit::expeditionary_owner. Wrong if a call site is found that pushes the object rather than putting it in EAX, or if a CUnit field is ever found between +0x1FC and +0x28C that the plan's own code does not write."
+  },
+  {
+   "rva": "0x4DEA60",
+   "kind": "function",
+   "name": "CUnitPlan::~CUnitPlan",
+   "signature": "void __thiscall CUnitPlan::~CUnitPlan(CUnitPlan* this)",
+   "no_signature": null,
+   "comment": "The plan's destructor: rewrites the vftable, frees the `vector<int>` at `+0x70` and clears `+0x70`/`+0x74`/`+0x78`, destroys the list at `+0x5C` and the one at `+0x48`, and walks the singly-linked nodes of the lists at `+0x38`, `+0x28` and `+0x18` freeing each through its `+0x8` link, resetting each head/tail/count triple as it goes. `this` is in ECX and it ends in a bare `ret`, so it takes nothing on the stack.\n\nCalled once, at `0x1B5799`, with `ecx = unit + 0x1FC` - CUnit's destructor destroying the plan it holds by value.",
+   "confidence": "confirmed",
+   "evidence": "disasm 0x8DEA60..0x8DEB02: `mov esi, ecx` is the first thing it does after two pushes, the body touches only [esi + ...], and the exit is `pop edi; pop esi; pop ebx; ret`. The call site is `lea ecx, [ebx + 0x1FC] ... call 0x8DEA60` at 0x5B5781-0x5B5799 inside 0x1B5560. Wrong if a caller is found that passes the object on the stack, or if the `ret` is ever read as `ret N`."
+  },
+  {
+   "rva": "0x1B5232",
+   "kind": "instruction",
+   "name": "CUnit::ConstructPlanInPlace",
+   "signature": null,
+   "no_signature": null,
+   "comment": "`lea eax, [edi + 0x1FC]; call CUnitPlan::CUnitPlan` inside CUnit's constructor (`0x1B5010`). **This is what settles that `CUnit +0x1FC` is a CUnitPlan held by value and not a pointer**: nothing is allocated, the plan is built in place at that offset, and the very next store is `expeditionary_owner` at `+0x28C`. The matching destruction is at `0x1B5799`.",
+   "confidence": "confirmed",
+   "evidence": "disasm 0x5B5210..0x5B5253. The preceding stores are CUnit::children's list head at +0x1E4..+0x1F0, and the following one is `mov [edi+0x28C], 0x2D2D2D`, the `---` country tag. Wrong if 0x8DE9D0 turns out to be something other than CUnitPlan's constructor - which its writing of vftable 0x15C8BFC, CUnitPlan's only table, rules out."
+  },
+  {
+   "rva": "0x2D5D20",
+   "kind": "function",
+   "name": "CSetGamePlayOptions::Execute",
+   "signature": "void __thiscall CSetGamePlayOptions::Execute(void)",
+   "no_signature": null,
+   "comment": "Slot 6 of `CSetGamePlayOptions` - the command's own **Execute** (see `CCommand::Execute`), and **the only thing in the image that writes either gameplay option**:\n\n    gamestate->difficulty   = this->options[0]          // +0xC98\n    if (this->options.size() >= 2)\n        gamestate->arcade_mode = this->options[1]        // +0xC9C\n\nThe vector it carries is at `+0x3C`/`+0x40` and is what `CSetGamePlayOptions::LoadKey` (`0x2D5EC0`) fills from the save's `setgameplayoptions` key; the save writes it back under token `0x60D` at `0x2D5E90`. Since the command is only ever run when the game is set up or a save is loaded, both options are fixed for the length of a campaign.\n\nIt ends by touching the globals at `0x171042C`/`0x1710430` and `0x1A857F0`/`0x1A857F4`, which was not followed up.",
+   "confidence": "confirmed",
+   "evidence": "disasm 0x6D5D20..0x6D5E7A. `mov edi, ecx` at 0x6D5D48 is the receiver; the two stores are at 0x6D5DC2 and 0x6D5DDB, and the guard between them is `edx = (+0x40 - +0x3C) & ~3; if (edx < 8) skip` - the size-2 test on a 4-byte-element vector. The exit at 0x6D5E7A is a bare `ret`, so nothing is on the stack. vtable.py --holding 0x6D5D20 puts it at slot 6 of CSetGamePlayOptions and no other table. fieldchain.py --field 0xC98 and --field 0xC9C return no other store through an object pointer apart from the two in CCurrentGameState's constructor at 0x67D4C1/0x67D4CB. Wrong if a second writer of either field is found, or if slot 6 turns out not to be Execute for this class - CSetPlanAttributesCommand and CSetPlanForcesCommand already record slot 6 as Execute."
+  },
+  {
+   "rva": "0x16870D4",
+   "kind": "global",
+   "name": "g_CBuildingDataBase",
+   "signature": null,
+   "no_signature": "a global, not a function",
+   "comment": "The one `CBuildingDataBase`, 0x30 bytes, built lazily exactly as `g_CSubUnitDataBase` is: every user does `if (!g) g = new 0x30 bytes, init`. Layout as the init at rva `0x5BD30` and its users show it - `+0x00`..`+0x0B` a name -> `CBuilding*` hash map (count at `+0x00`, `0x1FF` buckets at `+0x04`, the bucket array allocated and zeroed at `+0x08`), `+0x0C`/`+0x10`/`+0x14` a `vector<CBuilding*>`, and `+0x18`..`+0x2C` six cached `CBuilding*` for well-known roles, which the init does not touch and the loader fills later.\n\n**Those cached roles are what a province's building shortcuts are made of.** The setup at `0x968B8`..`0x96A50` does, four times over,\n\n    province->+0x308 = province->buildings[ db->+0x24->index ]\n    province->+0x304 = province->buildings[ db->+0x1C->index ]\n    province->+0x300 = province->buildings[ db->+0x20->index ]\n    province->+0x30C = province->buildings[ db->+0x28->index ]\n\nwhere `index` is `CBuilding +0x54` and `buildings` is `CProvince +0x310`. Which building each role slot holds was **not** established - nothing found writes `+0x18`..`+0x2C` through a register that is still recognisably this global.",
+   "confidence": "confirmed",
+   "evidence": "The class name is luabind's: `ghidra/luabind.json` registers the class `CBuildingDataBase` (mangled `.?AVCBuildingDataBase@@`) and registers `GetBuilding(char const*)` at 0x8E9F80 and `GetBuildingFromIndex(int)` at 0x8EA030 against it; 0x8EA030 opens with `mov eax, [0x1A870D4]; test eax,eax; jne ...; push 0x30; call operator_new; call 0x45BD30`, which is this global and no other. The 0x30 is the same at every lazy-init site; the 0x1FF is `mov [esi+4], 0x1FF` at 0x45BD32 with the array allocated at 4x that and memset at 4x again. What would show it wrong: a second 0x30-byte global that the building Lua accessors actually read - there is none, both name it directly; or `GetBuildingFromIndex` belonging to a different luabind class than the record says, which the recovered registration rules out."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CUnit",
+   "offset": "0x1FC",
+   "name": "plan",
+   "type": "CUnitPlan",
+   "comment": "The unit's battle plan, **held by value, not by pointer** - CUnit's constructor builds a CUnitPlan in place here at 0x1B5232 and its destructor destroys it in place at 0x1B5799. 0x90 bytes, so it runs to +0x28B and expeditionary_owner at +0x28C is the next field. Every plan field already recorded on CUnit is this object's offset plus 0x1FC: +0x204 plan_active = plan +0x8, +0x208 plan_stance = +0xC, +0x20C plan_air_stance = +0x10, +0x210 plan_naval_stance = +0x14, +0x26C plan_subunit_wanted = +0x70, +0x27C plan_our_power = +0x80, +0x280 plan_their_power = +0x84. The save writes it under `plan` by calling slot 1 on it, which works because +0x1FC is the embedded object's own vftable pointer.",
+   "evidence": "Was recorded as `void* plan`. Two instructions settle it and neither is a guess: `lea eax, [edi + 0x1FC]; call 0x8DE9D0` (CUnitPlan::CUnitPlan, object in EAX) at 0x5B5232, and `lea ecx, [ebx + 0x1FC]; call 0x8DEA60` (CUnitPlan::~CUnitPlan, this in ECX) at 0x5B5781. A byte scan for `lea reg, [reg + 0x1FC]` finds 21 sites and the plan ones all take the address rather than loading through it - 0x5E781C and 0x5E544B and 0x5D0F0F feed CUnitPlan::SetActive, 0x5BD486 feeds ComputePlanWantedSubUnits. Wrong if any site is found that does `mov reg, [unit + 0x1FC]` and then treats the result as a plan. **Note for whoever collects this wave:** mergeFindings has no `revises` for struct fields, so this lands as a second record for offset 0x1FC. It is inserted at the head of CUnit's field list, so the apply (\"struct fields are only placed where the structure is still undefined\") takes this one, but the old `void* plan` record should be deleted by hand.",
+   "revises": "wave 4: recorded as `void* plan`, and it is not a pointer - CUnit's constructor calls CUnitPlan::CUnitPlan on `this + 0x1FC` at rva 0x1B5232 and the destructor mirrors it, with 0x90 bytes to the next field, which is exactly the plan's size."
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x22",
+   "name": "is_land",
+   "type": "uint8_t",
+   "comment": "Non-zero on a land province, zero on a sea zone. 245 places in the image read it through a province's `path_node_ptr` (+0xD4), which is why it looked fundamental and unnameable; three of them fix which way round it is. `CPathFind::MayStep` refuses a **naval** step between two provinces that both have it set, and where exactly one has it, that template's `sea_province_id` (+0xA4) must name the other province. `CProvince::IsFrontProvince` (0xA56B0) skips any neighbour that does not have it. `CSafeNavalPathFind::StepCost` only looks for hostile buildings around the destination when the destination does **not** have it - i.e. only when a fleet is entering open sea. `CheckTransportOverload` puts a carried unit ashore only where it is set.",
+   "evidence": "fieldchain.py --holder 0xD4 --index 0x22 --stride 1 gives 245 readers; the polarity comes from 0x5A274D-0x5A27AB (CPathFind::MayStep), 0x4A5739 (IsFrontProvince skipping a neighbour whose byte is clear, when a land front can only be against a land neighbour) and 0x5A2F3E (`cmp byte [edi+0x22], 0; jne` skipping the whole hostile-building block for a destination that has it). The one-line predicate at 0x18E590 - `return province->template->+0x22 != 0` - is what the callers of all three use. Marked inferred rather than confirmed because nothing here reads the map data itself: a live read in which a province listed in `map/default.map`'s `sea_starts` (ids 10500 and up in this mod) has the byte set, or a land province has it clear, would show it wrong.",
+   "source": "reversing/FINDINGS-redeploy.md"
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0xA4",
+   "name": "sea_province_id",
+   "type": "int",
+   "comment": "On a land province (`is_land` set), the id of the one sea province it connects to, as an index into `CMap::provinces` (`+0x2200`); 0 where there is none. Meaningless where `is_land` is clear, and nothing reads it there.\n\nIt is the single gate on a fleet crossing the coast. `CPathFind::MayStep` (0x1A2700) and `CPlannedPathFind::MayStep` (0x1A2D30) let a naval unit step out of a land province only to the province this names, and into a land province only from it; a step between two land provinces is refused outright. The helper at `0xA7D70` uses it the other way, replacing a land province by `map->provinces[sea_province_id]` until both ends of a pair are sea, which is also what fixes the target as a sea province: the loop terminates only when the province it lands on has `is_land` clear.",
+   "evidence": "fieldchain.py --holder 0xD4 --index 0xA4 --stride 1 gives 31 readers, few enough to read. The comparisons that matter are at 0x5A277C and 0x5A27A5 (against the other province's `id` at +0xD0) and the indexing at 0x4A7DAB and 0x4A7DD1 (`map->provinces[value]`), which is what makes it a province id rather than a count. 0x47D6C7 tests it against 0 before using it, which is where the `0 means none` reading comes from. Marked inferred: the naming as the province's **sea** link rests on `is_land` being read correctly and on the 0xA7D70 loop terminating, not on map data. It would be shown wrong by a land province whose value names another land province, or by a coastal province with two sea neighbours whose fleets can nonetheless use both.",
+   "source": "reversing/FINDINGS-redeploy.md"
+  },
+  {
+   "struct": "CCurrentGameState",
+   "offset": "0xC98",
+   "name": "difficulty",
+   "type": "int",
+   "comment": "The campaign's difficulty, 0..4 (`VERY_EASY`, `EASY`, `NORMAL`, `HARD`, `VERY_HARD` in the localisation). Element 0 of the save's `setgameplayoptions` vector, written only by `CSetGamePlayOptions::Execute` (0x2D5D20) and so fixed for the game. CCurrentGameState's constructor defaults it to 2, Normal, and every save read here carries `setgameplayoptions = { 2 0 }`.",
+   "evidence": "The lobby builds its dropdown from this field: at 0x719589 `mov eax, [gamestate + 0xC98]` is immediately followed by `push 'difficulty_box'` at 0x719591, and the labelled control in the same screen is `FE_DIFFICULTY` (0x70514B), which the localisation gives as \"Difficulty:\". The default is `mov dword [ebx+0xC98], 2` at 0x67D4C1 in the constructor. Wrong if the dropdown at 0x719589 is shown to fill a different control than the string pushed two instructions later, or if a save is found whose first `setgameplayoptions` element is outside 0..4."
+  },
+  {
+   "struct": "CCurrentGameState",
+   "offset": "0xC9C",
+   "name": "arcade_mode",
+   "type": "int",
+   "comment": "The lobby's **Game Mode**: 0 Normal, 1 Arcade. Element 1 of the save's `setgameplayoptions` vector, written only by `CSetGamePlayOptions::Execute` (0x2D5D20), so it is set once when the game is started or loaded. CCurrentGameState's constructor defaults it to 0.\n\n**This is the switch between the two supply models.** `CUnit::ConsumeSuppliesAndFuel` tests it at 0x1BBA3A: above zero the unit draws straight from the owner's capital pool (`CProvince +0x15C`), at or below zero it walks the supply network. Twenty-odd other sites read it the same way. Measured live it reads 0, and every save in `BlackICE GitHub/save games` writes `{ 2 0 }`, so the network path is the one that runs in an ordinary campaign.",
+   "evidence": "Three things agree. The lobby: at 0x7196AE `mov eax, [gamestate + 0xC9C]` is immediately followed by `push 'arcade_box'` at 0x7196B6, and the labelled control beside `FE_DIFFICULTY` in the same screen is `FE_ARCADE` (0x705260), which the localisation gives as \"Game Mode\". The values: 0x7064E0..0x7065D8 builds that dropdown's item list, pushing `STANDARD_MODE` first (0x70650C) and `ARCADE_MODE` second (0x7065B5), and the localisation gives those as \"Normal\" and \"Arcade\" - so 0 is Normal and 1 is Arcade. The save: `setgameplayoptions = { 2 0 }` in every one of eighteen saves, and the constructor writes exactly 2 and 0 at 0x67D4C1/0x67D4CB. What would show it wrong: a control-id push at 0x7196B6 that belongs to a different widget than the load two instructions earlier - the difficulty pair at 0x719589/0x719591 has the identical shape and is independently confirmed by FE_DIFFICULTY - or a save with a non-0/1 second element."
+  }
+ ],
+ "vftable_slots": {
+  "CSetGamePlayOptions": {
+   "6": "Execute"
+  }
+ },
+ "notes": {
+  "CUnitPlan is not a struct in project.json, so its layout cannot land as struct_fields": "mergeFindings refuses a struct_field whose struct is not already in project.json ('no such struct in project.json'), and an incoming file cannot create one - `land()` only reads `addresses`, `struct_fields` and `vftable_slots`. So the layout is recorded here, the way LogRecord's was, and the shell wants adding by hand: `CUnitPlan`, size 0x90, base CPersistent, vftable 0x15C8BFC (6 slots).",
+  "CUnitPlan layout, 0x90 bytes": {
+   "+0x00": "vftable, 0x15C8BFC. The plan being polymorphic is what lets CUnit's writer save it by calling slot 1 on `unit + 0x1FC`.",
+   "+0x04": "CPersistent's save-token id, the constant 0x18D.",
+   "+0x08": "bool active - the `active` key (token 0x50A), CUnit +0x204. CUnitPlan::SetActive.",
+   "+0x09": "bool allow_hq_reorg - the `allow_hq_reorg` key (token 0x73F), LoadKey case at 0x4DF90B, SaveContents at 0x4DF1E9.",
+   "+0x0C": "int stance - the `stance` key (token 0x124), CUnit +0x208. 2 at construction and after SetActive(false).",
+   "+0x10": "int air_stance - the `air_stance` key (token 0x73D), CUnit +0x20C. 1 at construction.",
+   "+0x14": "int naval_stance - the `naval_stance` key (token 0x73E), CUnit +0x210. 1 at construction.",
+   "+0x18": "CList ops_area (first/last/count/flag, 0x10 bytes) - the `ops_area` key (token 0x6F3), nodes 0x10 bytes holding a CProvince*. CUnitPlan::SetOpsArea replaces it.",
+   "+0x28": "CList fallback_line - the `fallback_line` key (token 0x74C). CUnitPlan::SetFallbackLine replaces it.",
+   "+0x38": "CList objectives - the `objectives` key (token 0x6F2) reads the whole list, the `objective` key (token 0x714) appends one. The nodes are 0x24-byte CPersistent objects of their own, vftable 0x15C8BE0, linked through the node's +0x1C.",
+   "+0x48": "CList path - the `path` key (token 0x19C); loaded by the helper at rva 0xA3C0 and written by rva 0xA810, the same pair the ops-area lists use.",
+   "+0x58": "dword, zeroed at construction, **not named** - no reader was traced to it.",
+   "+0x5C": "CList path2 - the `path2` key (token 0x6F4), same helpers as `path`.",
+   "+0x6C": "dword, zeroed at construction, **not named**.",
+   "+0x70": "std::vector<int> begin/end/capacity at +0x70/+0x74/+0x78 - the `min` key (token 0x719), CUnit +0x26C, already named plan_subunit_wanted. CUnitPlan::SetMinForces replaces it, and LoadKey refuses a vector longer than GetNumberOfSubUnits() at 0x4DFCF0, which is what ties its indexing to CSubUnitDefinition::type_index.",
+   "+0x7C": "dword, **the one field the constructor does not initialise**, and not named.",
+   "+0x80": "int our_power - the `our_power` key (token 0x72E), CUnit +0x27C.",
+   "+0x84": "int their_power - the `their_power` key (token 0x72F), CUnit +0x280.",
+   "+0x88": "int embark - the `embark` key (token 0x731), read and written the same way the stances are. The transport half of a plan; CSetPlanTransportStateCommand carries the same two keys.",
+   "+0x8C": "int debark - the `debark` key (token 0x732), the last field in the object."
+  },
+  "how the CUnitPlan layout was read": "Three sources that have to agree and do. (1) The constructor at 0x4DE9D0 zeroes or seeds every field in order and stops at +0x8C. (2) CUnitPlan::LoadKey (0x4DF720) dispatches 16 keys; four are peeled off before the switch (0x50A active -> +0x8, 0x124 stance -> +0xC, 0x19C path -> +0x48, 0x6F2 objectives -> +0x38) and the rest go through the jump table at 0x4DFDF0 with the byte table at 0x4DFE24, base token 0x6F3, 0x5A entries, 13 targets - decoded, and every one of the 12 real cases lands on the offset above. (3) CUnitPlan::SaveContents (0x4DF160) writes the same token for the same offset in each case. The key names come from ghidra/saveTokens.json. What would show it wrong: a token id in saveTokens.json that does not match the id the switch subtracts, or a case target that reads a different displacement than recorded.",
+  "CSubUnitDataBase cannot land as struct_fields either, for the same reason": "It is not in project.json's `structs` - it has no RTTI vftable, so the class export never carried it, and the shell wants adding by hand: `CSubUnitDataBase`, size 0xC0, no base, no vftable. The layout recorded on g_CSubUnitDataBase's comment is **confirmed correct** against the constructor and the four Lua accessors, with two refinements.",
+  "CSubUnitDataBase layout, 0xC0 bytes": {
+   "+0x00": "CList (first/last/count/flag). The constructor zeroes +0x00/+0x04/+0x08 and leaves the flag byte at +0x0C, which is the CList shape project.json already records at 0x10 bytes - the earlier note called this 'a three-dword container' and that is one dword short.",
+   "+0x10": "name -> CSubUnitDefinition* hash map: count at +0x10, bucket count at +0x14 (the constant 0x1FF), bucket array at +0x18, allocated 0x1FF*4 bytes and memset to zero. GetSubUnit (rva 0x4E9E40) searches it.",
+   "+0x1C": "std::vector<CSubUnitDefinition*>: begin +0x1C, end +0x20, capacity end +0x24. GetSubUnitList (0x4E9D60) returns &db+0x1C; GetSubUnitByIndex (0x4E9F00) does `[db+0x1C][i]`; GetNumberOfSubUnits (0x4E9DD0) does `(+0x20 - +0x1C) >> 2`.",
+   "+0x28": "34 cached CSubUnitDefinition* for well-known roles, +0x28..+0xAC, left uninitialised by the constructor and filled at load time. ComputePlanWantedSubUnits reads eleven of them (+0x2C, +0x34, +0x38, +0x3C, +0x40, +0x50, +0x58, +0x6C, +0x7C, +0x80, +0x84); which role each holds is still unknown.",
+   "+0xB0": "a second CList, +0xB0..+0xBF: the constructor zeroes +0xB0/+0xB4/+0xB8 and leaves the flag byte, and 0xB0 + 0x10 is exactly the 0xC0 every allocation site asks for."
+  },
+  "what confirms the CSubUnitDataBase layout": "The constructor at rva 0x1ADEE0, read instruction by instruction (0x5ADEFF..0x5ADF58): the only fields it writes are +0x00/+0x04/+0x08, +0x10/+0x14/+0x18, +0x1C/+0x20/+0x24 and +0xB0/+0xB4/+0xB8, and it never touches +0x28..+0xAC. Independently, CUnitPlan::LoadKey's `min` case bounds the vector it is loading by `(db->+0x20 - db->+0x1C) >> 2` at 0x4DFCF0 - a fourth user of the same count expression, in code that has nothing to do with the Lua accessors. The size is the `push 0xC0` at every lazy-init site, five of which precede `call 0x5ADEE0`. What would show it wrong: a use of +0x0C or +0xBC as something other than a list flag byte, or an allocation of this object at any size but 0xC0.",
+  "CProvince +0x300 and +0x304: what they are, and why they are not named": "Both are `CProvinceBuilding*`, and both are set by the same setup pass, at 0x9694F and 0x969D7:\n\n    province->+0x304 = province->buildings[ g_CBuildingDataBase->+0x1C->index ]\n    province->+0x300 = province->buildings[ g_CBuildingDataBase->+0x20->index ]\n\nwith `+0x308` and `+0x30C` filled the same way from the database's `+0x24` and `+0x28`, `buildings` being CProvince +0x310 and `index` being CBuilding +0x54. That they are CProvinceBuilding* is settled by what reads them: `CSafeNavalPathFind::StepCost` dereferences each at `+0x20`, which project.json already names `CProvinceBuilding::level_max`.\n\nWhat that function does with them, at 0x1A2F9E and 0x1A2FDF: when a fleet's step ends in a **sea** province (the destination template's `is_land` clear), it walks that sea province's own neighbours; for a neighbour whose controller is hostile to the unit's owner, it multiplies the step cost by 3000/1000 once if that neighbour's `+0x300` building has level_max above zero, and once more if its `+0x304` does - so up to nine times the distance for a sea zone hemmed in by hostile coast. Each multiplier is applied at most once per step; the two `bool`s on the stack at [esp+0xE] and [esp+0xF] are what stop it compounding, and the hostility test itself is cached in [esp+0xD], which makes every neighbour after the first hostile one count as hostile too - a bug, but the code's behaviour.\n\nThe other reader worth knowing is `CUnit::UpdateDaily` at 0x1BB0C8: a land unit does not dig in while its province's `+0x300` is non-null, one of the two extra conditions the manpower notes left unread.\n\n**Neither is named**, because which building each database role slot holds was not established: nothing in the image was found that writes g_CBuildingDataBase +0x18..+0x2C through a register still traceable to that global, and the buildings the game's own `common/buildings.txt` defines are reached by index rather than by a constant. The obvious guesses - naval base and air base, the two things that make a hostile coastline dangerous to a fleet - are guesses, and this folder has been wrong twice before by taking the shape of code for evidence of intent. The next wave can finish it in one step: find the fill of g_CBuildingDataBase's role block and read the building name it matches.",
+  "what was checked and left unsettled": [
+   "CUnitPlan +0x58, +0x6C and +0x7C have no name. A bare scan for CUnit +0x254, +0x268 and +0x278 returns 128, 110 and 100 candidate sites, which is exactly the kind of displacement-only result the README says to treat as candidates rather than evidence, and nothing narrowed it.",
+   "The 34 cached role definitions at CSubUnitDataBase +0x28..+0xAC are still unnamed, the same way g_CSubUnitDataBase's comment already says.",
+   "CProvince +0x354 gates the sea-province hop in the helper at 0xA7D70 (`is_land && +0x354` before following sea_province_id). It looks like a port or naval-base test and was not chased."
+  ]
+ },
+ "frontier": [
+  "0x96480",
+  "0xA7D70",
+  "0xA7F80",
+  "0x18E590",
+  "0x1A2600",
+  "0x304AF0",
+  "0x317D60",
+  "0x319300",
+  "0x10D1E0",
+  "0x86A70",
+  "0xA3C0",
+  "0xA810",
+  "0x5BD30"
+ ]
+}

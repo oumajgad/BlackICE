@@ -180,6 +180,22 @@ def expected(signature):
     return total, None
 
 
+_classNames = None
+
+
+def isClass(name):
+    """whether this qualifier names something with a layout, rather than a namespace"""
+    global _classNames
+    if _classNames is None:
+        _classNames = set(hoi3.classes())
+        document = json.load(io.open(PROJECT, encoding="utf-8"))
+        _classNames |= {s["name"] for s in document.get("structs", [])}
+        # the findings spell std::string as Hoi3CString, so the qualifier `std::string`
+        # does name a layout even though nothing is recorded under that spelling
+        _classNames.add("std::string")
+    return name in _classNames
+
+
 def carriesClass(name, signature):
     """whether a Class::Method signature actually takes a Class
 
@@ -196,6 +212,15 @@ def carriesClass(name, signature):
     klass = name.rsplit("::", 1)[0]
     if not klass or klass == name:
         return True
+
+    # A `::` says qualified, not member. `std::uncaught_exception` and
+    # `std::iostream_category` are free functions in a namespace and have no receiver to
+    # take, so demanding one of them is asking for a parameter that does not exist. Only
+    # a qualifier that names something with a layout - a class from the RTTI, or a struct
+    # the findings hold - can be a receiver.
+    if not isClass(klass):
+        return True
+
     parts = parameters(signature)
     if not parts:
         # `__thiscall Class::Method(void)` is complete as it stands: the name puts it in
