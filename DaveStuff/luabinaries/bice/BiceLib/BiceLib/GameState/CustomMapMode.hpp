@@ -138,8 +138,14 @@ namespace CustomMapMode {
     o'clock or later, after the game's midnight processing, working out the day's
     scale - or for the load sources, every province's supply capacity - first.
 
-    Safe from the Present hook, which also runs at the main menu: it only paints on a
-    frame where GameClock::movedInPlay() says the clock has just moved in play.
+    Safe from the Present hook, which also runs at the main menu: it only paints while
+    CCurrentGameState::inGame() says a game is on screen, and only while this map mode
+    is the one being looked at.
+
+    **That second test is what makes it cheap.** Working out a day's figures costs a call
+    into the game for every province on the map, and none of it is worth doing for a
+    player looking at a different map mode. A game cannot begin on this one, so a
+    campaign starts without any of this running at all.
     */
     void update();
 

@@ -213,6 +213,11 @@ namespace {
     const int PAINT_FROM_HOUR = 1;
     int paintedDay = 0;
 
+    // Whether the VP map mode was on screen the last time update() looked. A mode that
+    // has just come back into view has to work its figures out again, because the days
+    // it was hidden for were days this deliberately did nothing on.
+    bool wasOnScreen = false;
+
     CustomMapMode::Palette activePalette = CustomMapMode::Palette::Green;
     bool paletteLoaded = false;
 
@@ -736,10 +741,32 @@ void CustomMapMode::setEnabled(bool on) {
 }
 
 void CustomMapMode::update() {
-    // Only ever on a frame where the clock has just moved in play. A paused game and
-    // the main menu look the same - a clock standing still - so neither may paint.
-    if (!GameClock::movedInPlay() || !enabled()) {
+    // Only while a game is on screen - the game's own flag, not the clock. The clock
+    // was standing in for this before there was a way to read it, and it cost something:
+    // movedInPlay() is true only on a frame where the clock ticked, so nothing here ran
+    // at all while the game was paused, and a map mode switched to during a pause kept
+    // whatever colours it already had.
+    if (!CCurrentGameState::inGame() || !enabled()) {
         return;
+    }
+
+    // **And not while the player is looking at some other map mode.** This is what keeps
+    // the cost off the start of a campaign, and it is the reason the clock is no longer
+    // needed to: a game cannot begin on this map mode, so there is nothing to work out
+    // until the player switches to it, by which time the game is long since running.
+    //
+    // repaint() makes the same test and refuses, but it makes it *after* the day's
+    // figures have been worked out, and those cost a call into the game for every
+    // province on the map - about fourteen thousand of them.
+    if (!Hooks::MapMode::onScreen()) {
+        wasOnScreen = false;
+        return;
+    }
+    if (!wasOnScreen) {
+        wasOnScreen = true;
+        // Coming back into view after days of doing nothing: whatever was worked out
+        // last is from before those days, so paint regardless of which day it is now.
+        paintedDay = -1;
     }
 
     // Once a day, after the midnight processing has run.

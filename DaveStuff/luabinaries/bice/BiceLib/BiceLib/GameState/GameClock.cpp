@@ -40,7 +40,12 @@ void GameClock::update() {
                 tick, tick / TICKS_PER_DAY, tick % TICKS_PER_DAY));
         }
     }
-    moved = steadySteps >= STEPS_FOR_PROOF;
+    // The steady-step count answers "is the clock running normally", which is what the
+    // once-a-day callers need and what a load has to be kept out of. The game's own
+    // in_game byte answers "is a game on screen", which the count could only ever infer.
+    // Both, because neither covers the other: in_game is set for the whole of a load,
+    // where the clock jumps, and the clock cannot tell a paused game from the menu.
+    moved = steadySteps >= STEPS_FOR_PROOF && CCurrentGameState::inGame();
 }
 
 bool GameClock::movedInPlay() {

@@ -58,11 +58,9 @@ namespace {
      * menu, which is the fault the gate exists to prevent - so it is tied to the scope
      * of one call rather than left as a mode.
      */
-    struct SessionGate
-    {
-        explicit SessionGate(bool required) { Gui::Lua::setSessionRequired(required); }
-        ~SessionGate() { Gui::Lua::setSessionRequired(true); }
-    };
+    // Gui::Lua::SessionGate, which used to live here. The overlay's warm up needs the
+    // same scope, so the one definition moved to LuaBridge rather than being copied.
+    using SessionGate = Gui::Lua::SessionGate;
 
     /**
      * Saved scripts, as plain .lua files in BiceLibScripts next to the DLL.

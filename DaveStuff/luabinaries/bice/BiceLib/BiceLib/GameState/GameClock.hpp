@@ -9,6 +9,12 @@
  * it jumps. So a frame counts as in play only when the clock has just moved forward by
  * less than a day, having done so at least once before since the last jump.
  *
+ * **The clock is no longer the only witness.** `CCurrentGameState::inGame()` reads the
+ * game's own flag, and a frame counts as in play only when that agrees too. The two
+ * answer different questions and neither replaces the other: the flag is set for the
+ * whole of a load, where the clock jumps and the once-a-day work must not run, and the
+ * clock cannot tell a paused game from the menu, where both stand still.
+ *
  * The overlay calls update() once a frame, before anything that asks.
  */
 namespace GameClock {
