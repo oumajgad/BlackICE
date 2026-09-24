@@ -259,30 +259,45 @@ bool Hooks::MapMode::install() {
     return true;
 }
 
+namespace {
+    /**
+    @brief the in-game screen, when the VP map mode is the one on it
+
+    Split out of repaint() so a caller can ask before doing the work rather than after.
+    Should the map mode field ever hold something other than the mode, this answers no
+    and nothing is repainted, which is the behaviour without a repaint at all.
+    */
+    uint32_t screenShowingVp() {
+        const uintptr_t state = CCurrentGameState::current();
+        if (state == 0) {
+            return 0;               // no session, so nothing to paint
+        }
+        uint32_t map = 0;
+        if (!Mem::tryRead(state + CCurrentGameState::Offsets::in_game_screen, map)
+            || map == 0) {
+            return 0;
+        }
+        int32_t current = -1;
+        if (!Mem::tryRead(map + CInGameIdler::Offsets::current_map_mode, current)
+            || current != CInGameIdler::MapMode::VICTORY_POINTS) {
+            return 0;
+        }
+        return map;
+    }
+}
+
+bool Hooks::MapMode::onScreen() {
+    return installedFlag && screenShowingVp() != 0;
+}
+
 bool Hooks::MapMode::repaint() {
     const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
     if (base == 0 || !installedFlag) {
         return false;
     }
 
-    const uintptr_t state = CCurrentGameState::current();
-    if (state == 0) {
-        return false;   // no session, so nothing to paint
-    }
-
-    uint32_t map = 0;
-    if (!Mem::tryRead(state + CCurrentGameState::Offsets::in_game_screen, map)
-        || map == 0) {
-        return false;
-    }
-
-    // Only when the VP map mode is what is on screen. Should this field ever hold
-    // something other than the mode, the repaint never happens and the player
-    // switches map mode by hand instead, which is the behaviour without a repaint at
-    // all.
-    int32_t current = -1;
-    if (!Mem::tryRead(map + CInGameIdler::Offsets::current_map_mode, current)
-        || current != CInGameIdler::MapMode::VICTORY_POINTS) {
+    const uint32_t map = screenShowingVp();
+    if (map == 0) {
         return false;
     }
 

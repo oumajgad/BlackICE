@@ -104,6 +104,16 @@ void Gui::warmupStep() {
         return;
     }
 
+    // The steps reach the mod's own Lua and nothing of the game's, so they do not need
+    // a session - and must not, because the point of warming up is to have the parsing
+    // done before a game starts, while the menu is on screen.
+    //
+    // This was implicit until sessionActive() began reading the game's in_game flag
+    // instead of the game state pointer. The pointer is non-null at the menu, so the
+    // warm up ran there by accident; the flag is not, so it stopped, and every page's
+    // first draw moved into the campaign that followed.
+    Gui::Lua::SessionGate atMenuToo(false);
+
     if (!Gui::Lua::available()) {
         return; // not on a frame where Lua can be reached; try the next one
     }

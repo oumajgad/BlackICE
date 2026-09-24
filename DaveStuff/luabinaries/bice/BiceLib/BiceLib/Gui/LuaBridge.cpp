@@ -110,8 +110,11 @@ namespace {
 }
 
 bool Gui::Lua::sessionActive() {
-    // Same pointer CMapProvince::GetMapProvinceById dereferences to reach the map.
-    return CCurrentGameState::current() != 0;
+    // The game's own flag, not the pointer. This read `current() != 0` until the byte at
+    // CCurrentGameState +0xDA4 was found and confirmed in a running game: the state
+    // object exists from the main menu onward, so the pointer answered "yes" in exactly
+    // the place this guard exists to say "no".
+    return CCurrentGameState::inGame();
 }
 
 void Gui::Lua::setSessionRequired(bool required) {

@@ -46,6 +46,16 @@ namespace Hooks {
         */
         bool repaint();
 
+        /**
+        @brief whether the VP map mode is the one on screen right now
+
+        The same test repaint() makes before it paints, offered separately so a caller
+        can ask *before* working out what to paint. Nothing BiceLib computes for this
+        map mode is worth computing while the player is looking at a different one, and
+        the day's figures cost a call into the game per province.
+        */
+        bool onScreen();
+
         bool installed();
 
         /**@brief why it is not installed, when it is not*/

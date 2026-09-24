@@ -24,9 +24,11 @@ namespace Gui {
         inside the game's own code, where lua_pcall offers no protection, so this
         gates every call rather than leaving it to each page to remember.
 
-        Read straight from the CCurrentGameState pointer instead of a flag set by the
-        mod's daily tick: the pointer is correct even while the game is paused, and it
-        needs no cooperation from Lua.
+        Reads the game's own `in_game` byte on CCurrentGameState. It needs no cooperation
+        from Lua and is correct while the game is paused, which is why this was never a
+        flag set by the mod's daily tick - but it used to read the state *pointer*, and
+        that pointer is non-null from the main menu onward. So the guard answered "a
+        session exists" at the menu, which is the one place it had to say otherwise.
         */
         bool sessionActive();
 
@@ -43,6 +45,28 @@ namespace Gui {
         page fetch data at the menu, which is exactly what the gate exists to stop.
         */
         void setSessionRequired(bool required);
+
+        /**
+        @brief drops the session requirement for one scope, and puts it back
+
+        For a call that reaches nothing but the mod's own Lua - parsing the mod's data
+        files, asking it for a list - which works perfectly well at the main menu. The
+        requirement is on by default and is restored on the way out, so a page that does
+        touch game objects is still stopped.
+
+        The overlay's warm up is the reason this is shared rather than local to the
+        console: its whole point is to do the parsing while the game sits at the menu,
+        and it went quiet the moment sessionActive() started telling the truth about
+        where it was.
+        */
+        struct SessionGate
+        {
+            explicit SessionGate(bool required) { setSessionRequired(required); }
+            ~SessionGate() { setSessionRequired(true); }
+
+            SessionGate(const SessionGate&) = delete;
+            SessionGate& operator=(const SessionGate&) = delete;
+        };
 
         /**@brief whether a call may be made right now (session, render thread, known state, not re-entrant)*/
         bool available();

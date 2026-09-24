@@ -173,6 +173,26 @@ namespace CCurrentGameState {
          * what it actually means has not been established.
          */
         constexpr uintptr_t autosave_blocked = 0xD9D;
+
+        /**
+         * **Whether a game is actually on screen**, and the last field of the class.
+         *
+         * One instruction in the whole executable writes it a one, inside the routine
+         * that enters a running game, after the session is built and before the in-game
+         * GUI is; `CFrontEnd`'s enter clears it on the way back out. About twenty places
+         * in the game test it before touching live game data, and `CUnit::UpdateDaily`
+         * uses it to skip the end-of-day unit upkeep - attrition and the transport
+         * overload check - when no game is running.
+         *
+         * **This is the answer the pointer above is not.** The game state exists at the
+         * main menu, so `current() != 0` is true there; this byte is 0.
+         *
+         * Confirmed in a running game, not only traced: sampled every frame it reads 0
+         * for the whole of the menu with the pointer already live, 1 from the frame a
+         * campaign comes up - while the clock still reports not in play, which is the
+         * write landing before the GUI is built - and 0 again on returning to the menu.
+         */
+        constexpr uintptr_t in_game = 0xDA4;
     }
 
     /**
@@ -182,6 +202,20 @@ namespace CCurrentGameState {
     that is not one answers 0 rather than faulting.
     */
     uintptr_t current();
+
+    /**
+    @brief whether a game is on screen now
+
+    **Use this, not `current() != 0`, to decide whether the game's objects may be
+    touched.** The state object exists from the main menu onward, so the pointer proves
+    only that a session was started at some point in this run; `Offsets::in_game` is the
+    game's own answer to the question, and it is the one the game asks itself before
+    reaching for live data.
+
+    False when the module is not loaded, the pointer is not one, or the byte cannot be
+    read - so a failure to answer reads as "not in a game", which is the safe way round.
+    */
+    bool inGame();
 
     /**
     @brief the current tick, or 0 when there is no session
