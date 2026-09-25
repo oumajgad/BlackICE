@@ -342,10 +342,10 @@ namespace {
         // of characters lands wherever the words and figures happen to end.
         Text::Table stats;
         stats.indent("  ");
-        stats.cell(caption("Soft Attack:")).cell(soft)
-             .cell(caption("Hard Attack:")).cell(hard).row();
-        stats.cell(caption("Defensiveness:")).cell(defence)
-             .cell(caption("Toughness:")).cell(tough).row();
+        stats.cell(caption("Soft Attack:")).cell(soft).row();
+        stats.cell(caption("Hard Attack:")).cell(hard).row();
+        stats.cell(caption("Defensiveness:")).cell(defence).row();
+        stats.cell(caption("Toughness:")).cell(tough).row();
 
         std::string block = "\n" + heading("Base") + " -> " + heading("effective") + "\n"
             + stats.text();
