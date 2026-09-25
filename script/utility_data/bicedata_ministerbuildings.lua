@@ -13,14 +13,14 @@ BiceData.MinisterBuildings = {}
 -- infrastructure. The triggers come straight from the AI's own thresholds.
 local BUILDINGS = {
     { key = "smallarms_factory",       name = "Small Arms Factory",     trigger = 80 },
-    { key = "tank_factory",            name = "Tank Factory",           trigger = 110 },
+    { key = "tank_factory",            name = "Tank Factory",           trigger = 90 },
     { key = "light_aircraft_factory",  name = "Light Aircraft Factory", trigger = 110 },
     { key = "medium_aircraft_factory", name = "Medium Aircraft Factory",trigger = 110 },
     { key = "heavy_aircraft_factory",  name = "Heavy Aircraft Factory", trigger = 110 },
     { key = "small_ship_shipyard",     name = "Small Shipyard",         trigger = 30 },
     { key = "medium_ship_shipyard",    name = "Medium Shipyard",        trigger = 54 },
     { key = "capital_ship_shipyard",   name = "Capital Shipyard",       trigger = 80 },
-    { key = "submarine_shipyard",      name = "Submarine Shipyard",     trigger = 110 },
+    { key = "submarine_shipyard",      name = "Submarine Shipyard",     trigger = 90 },
     { key = "heavy_industry",          name = "Heavy Industry",         trigger = 70 },
     { key = "supplies_factory",        name = "Manufacturing (Supply)", trigger = 30 },
     { key = "research_lab",            name = "Research Centers",       trigger = 42 },
