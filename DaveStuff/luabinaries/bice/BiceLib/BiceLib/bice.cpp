@@ -39,8 +39,10 @@
 #include <Hooks/EffectText/LoadOobText.hpp>
 #include <Hooks/TriggerText/TriggerIndentText.hpp>
 #include <Hooks/TriggerText/TriggerScrollText.hpp>
+#include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
 #include <Reversing/Counters.hpp>
+#include <Reversing/WriteWatch.hpp>
 #include <Reversing/Watch.hpp>
 #include <Patches.hpp>
 
@@ -907,6 +909,68 @@ __declspec(dllexport) int activateCounters(lua_State* L)
 }
 
 /**
+ * Traps writes to the combat modifier list of the unit the last battle tooltip was about,
+ * and reports which instruction made them.
+ *
+ * For a field nothing in the image appears to store to - `CUnit + 0xDC` is reached by a
+ * pointer computed somewhere a byte search cannot follow. Have a combat running, hover a
+ * unit in it, then call this and let the combat tick. See Reversing/WriteWatch.hpp.
+ */
+__declspec(dllexport) int watchCombatModifiers(lua_State* L)
+{
+    const uintptr_t offset = lua_gettop(L) >= 1
+        ? static_cast<uintptr_t>(lua_tonumber(L, 1)) : 0xDC;
+    const bool ok = Reversing::WriteWatch::armCombatModifiers(offset);
+    if (!ok) {
+        ERROR_OUT(printf("'watchCombatModifiers' failed: %s \n",
+            Reversing::WriteWatch::status()));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
+ * Traps writes to a field of the first subunit of the unit the last battle tooltip was
+ * about - `watchSubunit(offset)`, defaulting to 0xAC.
+ *
+ * For a pending total whose consumer cannot be found by reading: whatever spends one has
+ * to clear it, and that clear is a write. See Reversing/WriteWatch.hpp.
+ */
+__declspec(dllexport) int watchSubunit(lua_State* L)
+{
+    const uintptr_t offset = lua_gettop(L) >= 1
+        ? static_cast<uintptr_t>(lua_tonumber(L, 1)) : 0xAC;
+    const bool ok = Reversing::WriteWatch::armSubunit(offset);
+    if (!ok) {
+        ERROR_OUT(printf("'watchSubunit' failed: %s \n", Reversing::WriteWatch::status()));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**@brief the same watch on any address: watchWrite(address, size), size 1, 2 or 4*/
+__declspec(dllexport) int watchWrite(lua_State* L)
+{
+    const uintptr_t address = static_cast<uintptr_t>(lua_tonumber(L, 1));
+    const int size = lua_gettop(L) >= 2 ? static_cast<int>(lua_tonumber(L, 2)) : 4;
+    const bool ok = Reversing::WriteWatch::arm(address, size, "address");
+    if (!ok) {
+        ERROR_OUT(printf("'watchWrite' failed: %s \n", Reversing::WriteWatch::status()));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**@brief clears the watch and writes what it saw to BiceLibWrites.csv*/
+__declspec(dllexport) int stopWatching(lua_State* L)
+{
+    Reversing::WriteWatch::disarm();
+    INFO_OUT(printf("WriteWatch: disarmed \n"));
+    lua_pushboolean(L, 1);
+    return 1;
+}
+
+/**
  * Records what the game state fields named in BiceLibWatch.txt hold, writing a row to
  * BiceLibWatch.csv whenever one of them changes.
  *
@@ -948,6 +1012,29 @@ __declspec(dllexport) int activateManpowerBreakdown(lua_State* L)
     }
     else {
         INFO_OUT(printf("Hook 'activateManpowerBreakdown' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
+ * @brief offers a battle tooltip the stats its percentages are percentages of
+ *
+ * The modifier list a unit shows in a battle says `Attack Modifier: 44.70%` and never
+ * what of. This adds `$SOFTATTACK$`, `$HARDATTACK$`, `$PIERCING$`, `$DEFENSIVENESS$`,
+ * `$TOUGHNESS$`, `$ARMOR$` and `$AIRATTACK$` to `BATTLE_ATTACKMOD`, totalled over the
+ * division's brigades from each one's own definition - which already has its technology
+ * in it. Nothing shows until the localisation asks. See Hooks/Tooltips/CombatUnitStats.hpp.
+ */
+__declspec(dllexport) int activateCombatUnitStats(lua_State* L)
+{
+    const bool ok = Hooks::Tooltips::CombatUnitStats::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateCombatUnitStats' failed: %s \n",
+            Hooks::Tooltips::CombatUnitStats::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateCombatUnitStats' succeeded \n"));
     }
     lua_pushboolean(L, ok);
     return 1;
@@ -1251,6 +1338,7 @@ void registerTooltipFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "Tooltips");
     lua_newtable(this_state);
     registerFunction(this_state, "activateManpowerBreakdown", activateManpowerBreakdown);
+    registerFunction(this_state, "activateCombatUnitStats", activateCombatUnitStats);
     lua_settable(this_state, -3);
     return;
 }
@@ -1259,6 +1347,10 @@ void registerReversingFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "Reversing");
     lua_newtable(this_state);
     registerFunction(this_state, "activateCounters", activateCounters);
+    registerFunction(this_state, "watchCombatModifiers", watchCombatModifiers);
+    registerFunction(this_state, "watchSubunit", watchSubunit);
+    registerFunction(this_state, "watchWrite", watchWrite);
+    registerFunction(this_state, "stopWatching", stopWatching);
     registerFunction(this_state, "activateWatch", activateWatch);
     lua_settable(this_state, -3);
     return;

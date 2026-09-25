@@ -71,10 +71,23 @@ def sweep():
 
 
 def sites(displacement):
-    """addresses worth examining for a use of [reg + displacement]"""
+    """(address, isInstructionStart) worth examining for a use of [reg + displacement]
+
+    **The two kinds of hit are not the same address**, and treating them alike is a bug
+    this has already had: a swept hit *is* the instruction, while a byte-search hit is the
+    displacement inside one, two or more bytes in. Searching back from a swept hit decodes
+    from the middle of the instruction before it; decoding a search hit at zero offset
+    decodes the displacement itself as though it were an opcode. Either way the scan gives
+    up on the site and the answer comes back a confident zero.
+    """
     if displacement >= DISP8_LIMIT:
-        return image.findValue(displacement)
-    return [i.address for i in sweep() if image.usesMemory(i, displacement)]
+        return [(at, False) for at in image.findValue(displacement)]
+    return [(i.address, True) for i in sweep() if image.usesMemory(i, displacement)]
+
+
+def window(starts):
+    """how far back the instruction using a hit can begin"""
+    return (0,) if starts else range(2, 12)
 
 
 def offsetOf(text):
@@ -86,8 +99,8 @@ def chained(holder, displacement, window):
     """reads of [reg + displacement] where reg came from [something + holder]"""
     engine = image.engine()
     hits = {}
-    for at in sites(holder):
-        for back in range(0, 10):
+    for at, starts in sites(holder):
+        for back in window(starts):
             window_bytes = image.read(at - back, back + 8)
             decoded = list(engine.disasm(window_bytes, at - back, count=1))
             if not decoded:
@@ -114,8 +127,8 @@ def direct(displacement, writesOnly):
     """every instruction using [reg + displacement], immediate stores included"""
     engine = image.engine()
     hits = {}
-    for at in sites(displacement):
-        for back in range(0, 12):
+    for at, starts in sites(displacement):
+        for back in window(starts):
             decoded = list(engine.disasm(image.read(at - back, back + 10),
                                          at - back, count=1))
             if not decoded:
@@ -123,7 +136,7 @@ def direct(displacement, writesOnly):
             instruction = decoded[0]
             # the displacement has to be inside this instruction, but need not end it:
             # an immediate store carries its value after it
-            if back and instruction.address + instruction.size <= at + 3:
+            if instruction.address + instruction.size <= at + 3 and not starts:
                 continue
             if not image.usesMemory(instruction, displacement):
                 break

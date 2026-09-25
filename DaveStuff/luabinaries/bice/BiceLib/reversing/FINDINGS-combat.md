@@ -485,6 +485,196 @@ because they are worth knowing.
 - What a combatant holding several countries records - allies fighting together should
   put more than one tag in a list, and only the first is read.
 
+## The tick, and where the modifiers are applied
+
+Found while adding base stats to the battle tooltip; the tooltip is what named the fields,
+and the writers were found from there.
+
+**`CCombat` slot 15 (`0x16EBE0`) is the per-tick resolution.** Its first argument is the
+combat, and three fields identify it past doubt: `param_1[4]` and `[5]` are `attacker`
+(`+0x10`) and `defender` (`+0x14`), and `param_1[8]` is `duration` (`+0x20`), which it
+increments on the way in. It swaps tactics when `TACTIC_SWAP_FREQUENCEY` divides the
+duration or either side has none, then calls slot 19 on each combatant.
+
+**`CCombatant` slot 19 is "apply my side's combat modifiers to my units".** Every kind
+overrides it, which is what makes it the place to read:
+
+| class | rva |
+| --- | --- |
+| `CCombatant` | `0x165590` - the shared part, which the overrides call first |
+| `CLandCombatant` | `0x169B50` |
+| `CNavalCombatant` | `0x166480` |
+| `CAirCombatant` | `0x16C6F0` |
+| `CBomberCombatant` | `0x161680` |
+| the three target combatants | `0x1627D0`, shared |
+
+It walks `units` (`CCombatant + 0x40`) and writes two multipliers onto each `CUnit`:
+`+0xF4` for attack and `+0xF8` for defence, thousandths where 1000 is 100%. The land one
+is the readable example - it pulls `AMPHIBIOUS_INVADE_ATTACK_LOW`, `..._HIGH` and
+`AMPHIBIOUS_INVADE_DEFEND_HIGH` out of the defines and interpolates between them for a
+unit landing over water.
+
+Then `CCombatant::ApplyUnitStrengths` (`0x165FD0`) runs for each side, from `0x16F1B2` and
+`0x16F1BF`, and writes `CUnit + 0xEC` and `+0xF0` - the values those multipliers apply to.
+Its body walks the subunit database and has **not** been read through; it is named for
+what it writes.
+
+So a tick is: `Tick` -> slot 19 per side -> `ApplyUnitStrengths` per side, and the battle
+tooltip then prints `+0xEC x +0xF4 / 1000` as its Attack Modifier and `+0xF0 x +0xF8 /
+1000` as its Defend Modifier.
+
+**The modifiers multiply, they do not add.** On a division showing Combined Arms +22.5%,
+Terrain -10%, Night -70% and Leader +35.7%, the attack modifier printed 44.70% and
+1.225 x 0.9 x 0.30 x 1.357 is 0.449; the defend modifier printed 149.50% and the same
+product without the night term is 1.496.
+
+**The list the tooltip enumerates is `CUnit + 0xDC`**, one node per modifier, whose record
+holds the id at `+0` and two values at `+4` and `+8` - the attack and defend sides, printed
+as `x%/y%` when they differ. `0x164060` maps that id to its `BM_*` localisation key and is
+the only place the enum is written down.
+
+**Do not transcribe it from a decompiled switch.** `reversing/combatModifiers.py` reads all
+thirty names off the jump table at `0x16429C` and `buildFindings` makes them the
+`CombatModifier` enum, so `CombatModifierKey`'s parameter prints as `BM_TERRAIN` and the
+list never has to be copied by hand. Transcribing it got two things wrong at once:
+`BM_NIGHT_MODIFIER` is `0x1B` and not `0x1C`, and `BM_SURPRISE_BONUS` is `0x1D` and not the
+`0x1E` first recorded, which is one past the end. The bound is the function's own
+`cmp eax, 0x1d`.
+
+Its convention was wrong too, and `checkSignatures` caught it against the `ret`: the id is
+in **EAX** and the string to build into in **ECX**, with `ret 0` and nothing on the stack.
+**What pushes onto that list has not been found yet**, and it is the obvious next step - it
+is where each individual modifier is decided, which slot 19 only totals.
+
+## Which rule adds which modifier
+
+`CUnit::AddCombatModifier` (rva `0x1C3040`) is called 21 times and every one pushes its id
+as an immediate, so the whole map reads statically.
+`reversing/combatModifierSites.py` prints it.
+
+| what calls it | modifiers |
+| --- | --- |
+| `CCombatant::AddTerrainModifier`, **slot 20** (`0x165530`), shared by every kind | `BM_TERRAIN` |
+| `CLandCombatant::AddAssaultModifiers`, **slot 27** (`0x169750`), land only | `BM_RIVER_PENALTY`, `BM_PARATROOP_PENALTY`, `BM_AMPH_PENALTY`, `BM_FORT_MODIFIER` |
+| `CLandCombatant::ApplyCombatModifiers`, **slot 19** (`0x169B50`) | the other sixteen: `BM_DISSENT`, `BM_LEADER_BONUS`, `BM_DIFFICULTY`, `BM_ENCIRCLEMENT_PENALTY`, `BM_ENVELOPMENT_PENALTY`, `BM_DIVISION_PENALTY`, `BM_EXPERIENCE`, `BM_MISSION_EFFICIENCY`, `BM_TERRITORIAL_PRIDE`, `BM_DUGIN_MODIFIER`, `BM_SHORE_BOMBARD`, `BM_LACK_OF_SUPPLIES`, `BM_MULTIPLE`, `BM_COMBINED_ARMS`, `BM_WEATHER`, `BM_NIGHT_MODIFIER` |
+
+Slot 27 exists only on `CLandCombatant`, which has 28 slots where the others have 26.
+
+## The modifier list is land only
+
+**Nine ids have no call site at all**: `BM_RADIO`, `BM_ARMOR_ADVANTAGE`,
+`BM_BASE_PROXIMITY`, `BM_POOR_SCREEN_PENALTY`, `BM_RADAR_STATION`, `BM_INTERCEPT`,
+`BM_AIRCOMBAT`, `BM_SURPRISE_PENALTY` and `BM_SURPRISE_BONUS`. That looked like an
+incomplete reading; it is not.
+
+**The tick is three functions, not one.** `CCombat` slot 15 is overridden per kind:
+
+| class | tick |
+| --- | --- |
+| `CCombat`, `CLandCombat` | `0x16EBE0` |
+| `CNavalCombat` | `0x17BA00` |
+| `CAirCombat`, `CGroundBombing`, `CLandBombing`, `CNavalBombing` | `0x17BC50` |
+
+The air one calls slots 15, 17 and 18 through the vftable and **never 0x4C**, which is
+`CCombatant::ApplyCombatModifiers`; the naval one makes no virtual call at all in its first
+0x300 bytes. And `CUnit::ResetCombatModifiers` has exactly two callers - the land slot 19,
+and `CUnit::~CUnit`.
+
+So a ship's or a wing's `CUnit + 0xDC` is never filled **and never cleared**, and those
+nine ids are names the engine knows and nothing on this path ever adds.
+
+**Settled live, by a watch that caught nothing.** A hardware write watchpoint on `+0xE4`
+through a whole naval battle and then a whole air battle fired zero times, where a land
+battle caught the reset 4990 times and the push 23655. A probe that reports nothing is
+usually a probe in the wrong place - what made the silence evidence here was knowing
+exactly what the same probe does on land.
+
+## How land combat does damage
+
+Read end to end. Every signature is off the `ret` and the call site; several of these
+functions decompile truncated until `ghidra/RepairFunctionBody.java` has grown their bodies.
+
+A tick, per side, is `CCombat::Tick` -> `CCombatant::ApplyCombatModifiers` (slot 19) ->
+**`CLandCombatant::Attack` (slot 15, `0x16B340`)** -> `CCombatant::ApplyLosses`.
+
+**Attack walks this side's front line** - the CList at `CCombatant + 0xB0`, count at
+`+0xB8`, which is *not* the `units` list at `+0x40` - and calls
+**`CLandCombatant::FireUnit` (`0x16ADC0`)** once per unit on it.
+
+### One attacker's shots
+
+`FireUnit` draws **one** target for the whole tick, uniformly at random from the enemy's
+front line (`CCombatant::PickTarget`, `0x1696F0`), and then:
+
+    hard  = attacker.definition.hard_attack * (1000 + owner.HARD_ATTACK) / 1000
+    soft  = attacker.definition.soft_attack * (1000 + owner.SOFT_ATTACK) / 1000
+    s     = target.definition.softness
+    hard  = hard * (1000 - s) / 1000        soft = soft * s / 1000
+    shots = (attacker.+0xEC * attacker.+0xF4 / 1000) * (soft + hard) / 1000 / 1000
+    the remainder is a chance at one more shot
+
+So **soft and hard attack are split by the target's softness** - a unit's effective attack
+depends on who it drew - and **the combat modifier the tooltip prints multiplies the shot
+count**, not the damage per shot.
+
+### One shot
+
+While the target is not already finished (`CUnit::IsOutOfTheFight`, `0x1CD480`, which is
+what stops a unit being killed twice in a tick):
+
+    defence = (this side attacking ? target.defensiveness : target.toughness)
+              * target.+0xF0 * target.+0xF8 / 1000
+    if (!CUnit::RollToHit(target, defence)) miss
+    factor = combat doctrine figure + CUnit::StrengthDamageFactor(attacker) + 1000
+    strength, organisation damage *= factor / 1000
+    if (attacker.piercing_attack < target.armor)
+        *= LAND_COMBAT_STR_ARMOR_DEFLECTION_FACTOR / LAND_COMBAT_ORG_ARMOR_DEFLECTION_FACTOR
+    *= LAND_COMBAT_STR_DAMAGE_MODIFIER / LAND_COMBAT_ORG_DAMAGE_MODIFIER
+    CUnit::TakeDamage(target, strength, organisation)
+
+**`CUnit::RollToHit` (`0x1CD250`) is the model's heart, and it is not a flat dice roll.**
+The defence value buys a *number of shots* the unit can defend against this tick. While
+`CUnit::defences_used (+0x15C)` is below that, the shot is judged by
+`BASE_CHANCE_TO_AVOID_HIT` plus a technology bonus, and a slot is spent. Once they run out
+every further shot that tick is judged by `CHANCE_TO_AVOID_HIT_AT_NO_DEF` instead. **That is
+why being outnumbered compounds** rather than scaling linearly.
+
+**`CUnit::TakeDamage` (`0x1CD360`) spreads one landed shot over every subunit** of the unit
+hit - strength in proportion to each subunit's own maximum, organisation evenly. It
+subtracts nothing: it accumulates into `CSubUnit +0xA8` and `+0xAC`.
+
+**`CSubUnit::SettleDamage` (`0x1ABA60`) is what spends them**, and it clamps:
+
+    ebx = min(pending organisation, organisation)   ; cmovg at 0x1ABAE1
+    strength     -= pending strength                ; 0x1ABAE4, unclamped
+    organisation -= ebx                             ; 0x1ABAE7, clamped
+    pending strength = pending organisation = 0     ; 0x1ABAF7, 0x1ABAFD
+
+**So the pending organisation total is damage attempted, not damage dealt**, and in a
+one-sided fight most of a tick's is thrown away. Anything reporting organisation damage has
+to read the clamped `ebx`, not the field. A tooltip built on the raw total showed a division
+with about sixty organisation taking several hundred, which is what found this.
+
+Its four callers are `CCombatant::ApplyLosses` (`0x166298`) and three in the
+`0x1C38xx`-`0x1C3Exx` range.
+
+### So, per unit
+
+Attacking is per unit against one drawn defender; the *damage* of each landed shot is then
+spread across all of that defender's subunits. Nothing pools a side's attack and divides it.
+
+### Not settled
+
+- **What puts a unit on the front line at `+0xB0`.** Combat width is the obvious candidate
+  and is not yet evidence.
+- **Where `defences_used` is reset** each tick.
+- **The three other callers of `CSubUnit::SettleDamage`**, at `0x1C3887`, `0x1C3CB7` and
+  `0x1C3EF6`, which are not on the land combat path read here.
+- The globals at rva `0x1A8874C` (scales the strength factor) and `0x1A8868C` (scales
+  pending damage in `IsOutOfTheFight` for subunits answering slots 9 or 11).
+- Naval and air do none of this - see above; their ticks are `0x17BA00` and `0x17BC50` and
+  are unread.
+
 ## What to do next
 
 1. **Fight an air and a naval battle.** `CAirCombat` and `CNavalCombat` are named from

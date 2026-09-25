@@ -232,6 +232,16 @@ type to an empty structure one byte wide. Add a name to one table and add it to 
 The build now also prints `! <struct>: <a> runs into <b>` for any overlap that survives the
 merge, which is the check that would have caught it in the first place.
 
+**The overlap warning does not always fire, so do not lean on it** (2026-09-25). The build
+prints `! <struct>: <a> runs into <b>` for a field covered by the one before it, which is the
+guard against an apply that never settles. It missed a real one: `CCombatant + 0xB0` typed as
+`CList` (declared size `0x10`) with a separate `front_line_count` at `+0xB8`, two adjacent
+fields where the first plainly covers the second. `field_size` resolves a struct's size
+through `struct_sizes`, and `CList` is in there, so something about the ordering or the
+lookup is not doing what it reads as doing. **Not diagnosed.** Until it is, an overlap has to
+be caught by looking at the offsets, and the symptom to watch for is the one below: an apply
+reporting the same `struct fields: 1` for ever with a `replaced` line naming the same pair.
+
 **Do not declare a `vftable` field at +0 in `project.json`.** The script places that pointer
 itself, typed as the class's own virtual table structure, so a field of your own there is
 overwritten by the vftable pass on every run and put back by the field pass on the next -

@@ -1977,6 +1977,45 @@ against `settings.txt`). `+0xF4` on the same object is the map style
 `BiceLib/GameClasses/GameSettings.hpp` - named for what it holds, because the object
 has no vftable in the RTTI export to name it after.
 
+## Text and fonts
+
+The whole of it is in `FINDINGS-text.md`. **In code: `BiceLib/TextTable.cpp`**, which
+measures game text the way the game does so a block can be laid out in columns.
+
+`CEU3BitmapFont` (vftable `0x11E13D4`), one per `bitmapfont` block in
+`interface/core.gfx`. Two fields:
+
+| Offset | Field | How it was established |
+| --- | --- | --- |
+| `+0x78` | `font_name` | a `Hoi3CString`, the `fontName` key. `LoadKey` writes it there and both loaders read it to build `gfx/fonts/<name>.tga` and `.fnt` (**confirmed**) |
+| `+0x94` | `glyphs` | 256 `CEU3BitmapFontGlyph*`, indexed by the raw byte. `0x94 + 256 * 4` is `0x494`, which is the next field the loader writes - so the length is measured, not assumed (**confirmed**) |
+
+A glyph is a fixed `0x820` bytes: the seven numbers of the `.fnt`'s `char` line in file
+order (`x`, `y`, `width`, `height`, `xoffset`, `yoffset`, **`xadvance` at `+0x18`**), then
+up to 256 kerning pairs from `+0x1C` and their count at `+0x81C`.
+
+Three things worth carrying away:
+
+- **The `.fnt` is parsed positionally.** `CEU3BitmapFont::LoadGlyphs` matches only the
+  first token of a line, `char` or `kerning`, and takes the numbers after it in order. No
+  key name from that format appears in the executable, and nothing scales the numbers - so
+  the file's `xadvance` is what the pen moves by.
+- **Width is `xadvance` plus kerning**, and the kern partner is the *literal* next byte,
+  escape or not (`CEU3BitmapFont::GetStringWidth`, `0x6FD700`). `0xA7` and the byte after
+  it are skipped; `\n` ends a line and the widest line wins.
+- **Padding lands on a 4 pixel grid.** The only glyphs that draw nothing are the space and
+  the non-breaking space, both 4 wide, so a column placed by padding is within 2 pixels of
+  where it was aimed and no better measurement changes that.
+
+**Tooltips are drawn in `Arial14`.** `interface/core.gui` says so - `textBoxType { name =
+"ToolTip" font = "Arial14" }` - in the base game, `tfh` and the mod alike. `ToolTip_Font`,
+the `bitmapfont` `core.gfx` maps to `garamond_16`, is the **console's**, and measuring a
+tooltip with it put a padded block out by whole letters. Two names a letter apart; the
+wrong one was found first because the search needed `tooltip` and `font` on the same line,
+and in a `textBoxType` they are on different ones. Confirmed independently by catching the
+object the game measures a tooltip with: a 3 pixel space and label columns of 87 and 70
+fit exactly one `.fnt` in either folder.
+
 ## Tools
 
 | Script | For |

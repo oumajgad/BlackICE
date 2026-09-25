@@ -35,6 +35,7 @@ PROJECT = os.path.join(HERE, "project.json")
 OUT = os.path.join(HERE, "bicelib_findings.json")
 SAVE_TOKENS = os.path.join(HERE, "saveTokens.json")
 MODIFIER_IDS = os.path.join(HERE, "modifierIds.json")
+COMBAT_MODIFIER_IDS = os.path.join(HERE, "combatModifierIds.json")
 
 IMAGE_BASE = LX.IMAGE_BASE
 
@@ -481,6 +482,26 @@ def modifier_enum():
                        "reversing/modifierIds.py." % len(values)}
 
 
+def combat_modifier_enum():
+    """the ids of the list at CUnit +0xDC, from reversing/combatModifiers.py
+
+    A separate numbering from ModifierId and much smaller: these are the things a battle
+    tooltip lists, `BM_TERRAIN` and `BM_COMBINED_ARMS` and the rest, read off the jump
+    table of the function that turns one into its localisation key. Every id in range has
+    a name, so there are no gaps to fill the way the save tokens need.
+    """
+    if not os.path.exists(COMBAT_MODIFIER_IDS):
+        return None
+    found = {int(k): v for k, v in json.load(open(COMBAT_MODIFIER_IDS, encoding="utf-8")).items()}
+    if not found:
+        return None
+    values = [{"name": found[i], "value": i} for i in sorted(found)]
+    return {"name": "CombatModifier", "size": 4, "values": values,
+            "comment": "Which combat modifier, as the battle tooltip lists them: %d of them, "
+                       "read out of the jump table of CombatModifierKey (0x164060). From "
+                       "reversing/combatModifiers.py." % len(values)}
+
+
 def save_token_enum():
     """
     Every save key the executable itself knows, as an enum, so that `SaveWriteKey(0x5a6,
@@ -647,6 +668,9 @@ def main():
     modifier_ids = modifier_enum()
     if modifier_ids:
         enums.add("ModifierId")
+    combat_modifier_ids = combat_modifier_enum()
+    if combat_modifier_ids:
+        enums.add("CombatModifier")
     sizes = {k: v[0] for k, v in KNOWN_SIZES.items()}
     for c in lua["classes"]:
         if c["size"]:
@@ -1041,6 +1065,8 @@ def main():
         enum_out["SaveToken"] = save_tokens
     if modifier_ids:
         enum_out["ModifierId"] = modifier_ids
+    if combat_modifier_ids:
+        enum_out["CombatModifier"] = combat_modifier_ids
 
     vftables = virtual_tables(checker, structs, functions, labels, project.get("vftable_slots"))
 

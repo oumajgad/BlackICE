@@ -189,6 +189,45 @@ def expected(signature):
 _classNames = None
 
 
+def storageComplaint(signature):
+    """what is wrong with this signature's storage, or None
+
+    **All or nothing, and the return counts.** Ghidra reads a signature as CUSTOM_STORAGE
+    as soon as one parameter says where it lives, and from then on everything needs a
+    place: a parameter without one is dropped from the call, and a non-void return without
+    one comes back as `undefined4` however it is declared. Neither shows up against the
+    `ret`, so this is the only thing that looks for them.
+    """
+    parts = parameters(signature)
+    if parts is None:
+        return None
+
+    placed = [p for p in parts if "@" in p]
+    if not placed:
+        return None                       # no custom storage, nothing to be consistent about
+    bare = [p for p in parts if "@" not in p]
+    if bare:
+        return ("places %d of %d parameters, so the rest have nowhere to live: %s"
+                % (len(placed), len(parts), ", ".join(repr(b) for b in bare)))
+
+    # the return's place goes after the parameter list, as `...) @EAX`
+    close_at = signature.rfind(")")
+    trailer = signature[close_at + 1:].strip()
+    returned = signature[:signature.find("(")].strip()
+    isVoid = returned.split()[0] == "void" if returned.split() else True
+    # a void that is really a pointer return is still void to the caller
+    if not isVoid and not trailer.startswith("@"):
+        # **Softer than the rule above, because it does not always bite.**
+        # CCombatant::PickTarget decompiled as `undefined4` until it was given `) @EAX`;
+        # CCountry::GetCategoryBuildDiscount returns an `int*` perfectly well without one.
+        # Both place every parameter, so what separates them is not in the signature - so
+        # this reports rather than accuses, and the fix is harmless either way.
+        return ("MAYBE: returns %s and places its parameters. Some such signatures come back "
+                "as undefined4 at every call site until the return is placed too - add "
+                "`) @EAX` (or @AL) if it does" % returned.split()[0])
+    return None
+
+
 def isClass(name):
     """whether this qualifier names something with a layout, rather than a namespace"""
     global _classNames
@@ -320,6 +359,7 @@ def main():
     constructors = []
     unsigned = []
     freeFloating = []
+    storage = []
     skipped = []
     checked = 0
 
@@ -342,6 +382,13 @@ def main():
                 unsigned.append((rva, name, record.get("no_signature") or ""))
             elif not carriesClass(name, signature):
                 freeFloating.append((rva, name, signature))
+
+        # Independent of the class check, and of the ret: this is about where the
+        # arguments live rather than how many of them there are.
+        if signature:
+            complaint = storageComplaint(signature)
+            if complaint:
+                storage.append((rva, name, complaint, signature))
 
         # An address that is not a function start makes the walk meaningless: it begins
         # inside somebody else's body and reports whatever `ret` it reaches first. That is
@@ -409,6 +456,16 @@ def main():
               % len(freeFloating))
         for rva, name, signature in freeFloating:
             print("   %-10s %s" % (rva, name))
+            print("      %s" % signature)
+
+    if storage:
+        print("")
+        broken = [x for x in storage if not x[2].startswith("MAYBE")]
+        print("%d signatures whose custom storage is incomplete (%d certainly wrong):"
+              % (len(storage), len(broken)))
+        for rva, name, complaint, signature in storage:
+            print("   %-10s %s" % (rva, name))
+            print("      %s" % complaint)
             print("      %s" % signature)
 
     if unsigned:

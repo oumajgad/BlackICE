@@ -81,6 +81,11 @@ if mod then
     -- with what each of the three is short of.
     BiceLib.Tooltips.activateManpowerBreakdown()
 
+    -- The tooltip on a unit in a battle lists the modifiers acting on it and never
+    -- what they act on. This adds the division's own stats - technology included - on
+    -- the end of it, below the armor line.
+    BiceLib.Tooltips.activateCombatUnitStats()
+
     -- Reverse engineering. Both are workbench tools and both are off here. Each reads a
     -- file beside the DLL that the mod does not ship; the templates are in the BiceLib
     -- source under reversing/probes, and using one means copying it into this folder and

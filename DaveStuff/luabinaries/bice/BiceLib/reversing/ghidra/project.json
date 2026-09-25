@@ -2,6 +2,236 @@
  "about": "Findings about hoi3_tfh.exe from BiceLib's headers, hooks and reversing notes. rva is module relative. Checked against the executable by buildFindings.py. A global may carry a type, which the script gives the data there (\"string\" for a C string).",
  "addresses": [
   {
+   "rva": "0x1ABA60",
+   "kind": "function",
+   "name": "CSubUnit::SettleDamage",
+   "signature": "void __stdcall CSubUnit::SettleDamage(CSubUnit* subunit@ESI, int unused@stack:4)",
+   "no_signature": null,
+   "comment": "**Spends a subunit's pending damage and clears it.** The receiver is in ESI and the one stack argument is not read. Four callers: CCombatant::ApplyLosses (0x166298) and three in the 0x1C38xx-0x1C3Exx range.\n\n    ebx = min(pending organisation, organisation)   ; 0x1ABAE1, a cmovg\n    strength     -= pending strength                ; 0x1ABAE4, unclamped\n    organisation -= ebx                             ; 0x1ABAE7, clamped\n    pending strength = pending organisation = 0     ; 0x1ABAF7, 0x1ABAFD\n\n**The clamp is the thing worth knowing.** A tick's organisation damage is capped at what the subunit still has, so the total CUnit::TakeDamage accumulated is damage *attempted* and this is damage *dealt* - they differ by a lot in a one-sided fight. A tooltip built on the raw total showed a division with about sixty organisation taking several hundred, which is what sent the watch here.\n\nFound by a hardware write watch on a fighting subunit's +0xAC: 488 writes adding from CUnit::TakeDamage and 49 clearing from here. Nothing static had reached it - see BiceLib/Reversing/WriteWatch.hpp.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x16B340",
+   "kind": "function",
+   "name": "CLandCombatant::Attack",
+   "signature": "void __thiscall CLandCombatant::Attack(CLandCombatant* this, CCombatant* other)",
+   "no_signature": null,
+   "comment": "**One side's shooting for a tick**, CCombatant slot 15, which CCombat is pure virtual for. Walks this side's front line - the CList at CCombatant +0xB0 - and calls CLandCombatant::FireUnit once per unit on it. Everything before that is set-up: it refreshes the doctrine figures out of LAND_DOCTRINE_INCREASE and seeds the tick's random stream.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x16ADC0",
+   "kind": "function",
+   "name": "CLandCombatant::FireUnit",
+   "signature": "void __stdcall CLandCombatant::FireUnit(CLandCombatant* side@stack:4, uint* random@stack:8, CUnit* attacker@ESI, CCombatant* enemy@ECX)",
+   "no_signature": null,
+   "comment": "**One attacking unit's shots for a tick.** The attacker is in **ESI** and the side being shot at in **ECX**, neither loaded from the frame; the two stack arguments are this side and the tick's random state. Read off the call site in CLandCombatant::Attack (0x16B3B0..0x16B3BE), not off the decompiler - which showed the enemy as EDI, the register FireUnit copies ECX into at 0x16ADE3 for CCombatant::PickTarget's benefit.\n\nIt draws **one** target for the whole tick - CCombatant::PickTarget, a uniform random pick from the enemy's front line - and then works out how many shots to fire:\n\n    hard = attacker.definition.hard_attack * (1000 + owner.HARD_ATTACK) / 1000\n    soft = attacker.definition.soft_attack * (1000 + owner.SOFT_ATTACK) / 1000\n    s    = target.definition.softness\n    hard = hard * (1000 - s) / 1000      soft = soft * s / 1000\n    shots = (attacker.+0xEC * attacker.+0xF4 / 1000) * (soft + hard) / 1000 / 1000\n    and the remainder is a chance at one more shot\n\n**So the split between soft and hard attack is the target's softness**, and the combat modifier the tooltip prints multiplies the shot *count* rather than the damage per shot.\n\nEach shot then runs while the target is not already finished (CUnit::IsOutOfTheFight): the defence is the target's toughness when this side is defending and its defensiveness when attacking, times the target's own defend product; CUnit::RollToHit decides; and on a hit the damage is scaled by the combat's doctrine figure plus CUnit::StrengthDamageFactor, halved through LAND_COMBAT_STR/ORG_ARMOR_DEFLECTION_FACTOR when the attacker's piercing_attack is below the target's armor, scaled again by LAND_COMBAT_STR/ORG_DAMAGE_MODIFIER, and handed to CUnit::TakeDamage.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x1696F0",
+   "kind": "function",
+   "name": "CCombatant::PickTarget",
+   "signature": "CUnit* __stdcall CCombatant::PickTarget(uint* random@EDX, CCombatant* side@EDI) @EAX",
+   "no_signature": null,
+   "comment": "**Draws one of a side's front line units at random**, uniformly: `r % side->front_line.count` nodes along the CList at +0xB0, or 0 when the count is below 1. The side is in EDI, the random state in EDX and the result comes back in EAX - which has to be said, because a signature that places any parameter switches Ghidra to custom storage and then the **return** needs a place as well or it decompiles as an undefined4 at every call site. ECX is live at the call but the body never reads it, so it is not an argument.\n\nThe generator is the MSVC one, `x = x * 0x343FD + 0x269EC3` twice per draw with the top bits multiplied together, and its state is threaded through the whole tick from CLandCombatant::Attack - so one stream decides every target and every fractional shot in a round.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x1CD250",
+   "kind": "function",
+   "name": "CUnit::RollToHit",
+   "signature": "bool __stdcall CUnit::RollToHit(CUnit* target, int defence)",
+   "no_signature": null,
+   "comment": "**Whether one shot lands, and it spends the target's defence.** `defence` is thousandths; its whole part is how many shots the target can still defend against this tick and the remainder is a chance at one more.\n\n    if (slots <= target->defences_used)  avoid = CHANCE_TO_AVOID_HIT_AT_NO_DEF\n    else { avoid = BASE_CHANCE_TO_AVOID_HIT\n           if (target->IsLand()) avoid += the owner's TechnologyStatus +0x8\n           ++target->defences_used }\n    avoid = min(avoid, 99000)\n    return avoid / 1000 <= rand() % 100\n\n**So a unit does not dodge by chance alone - it runs out.** Once `defences_used` reaches what its defence value bought, every further shot that tick is judged by the much worse no-defence figure, which is what makes being outnumbered compound.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x1CD180",
+   "kind": "function",
+   "name": "CUnit::StrengthDamageFactor",
+   "signature": "int* __thiscall CUnit::StrengthDamageFactor(CUnit* this, int* out)",
+   "no_signature": null,
+   "comment": "**How hard a unit hits for the men it still has.** Totals its subunits' strength, divides by GetMaxStrength (slot 23), and returns roughly that percentage over a hundred - floored at 1, so even a shattered division still throws something - times the global at rva 0x1A8874C. Added to the combat's doctrine figure by CLandCombatant::FireUnit to scale a landed shot.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x1CD360",
+   "kind": "function",
+   "name": "CUnit::TakeDamage",
+   "signature": "void __stdcall CUnit::TakeDamage(CUnit* unit@EAX, int strength@stack:4, int organisation@stack:8)",
+   "no_signature": null,
+   "comment": "**Spreads one landed shot over every subunit of the unit hit.** The unit is in EAX. Strength damage is shared in proportion to each subunit's own maximum - `share = subunit.GetMaxStrength * 1000 / unit.GetMaxStrength` - while organisation damage is split evenly, one part per subunit.\n\nNothing is subtracted here. It accumulates into CSubUnit +0xA8, which CCombatant::ApplyLosses spends against `strength` at the end of the tick, and into +0xAC, **whose consumer has not been found** - see that field. That is what lets CUnit::IsOutOfTheFight tell a unit already killed this tick from one still worth shooting at, before any of it has been applied.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x1CD480",
+   "kind": "function",
+   "name": "CUnit::IsOutOfTheFight",
+   "signature": "bool __stdcall CUnit::IsOutOfTheFight(CUnit* unit@EAX) @AL",
+   "no_signature": null,
+   "comment": "**True when every subunit is already dead on this tick's arithmetic**, which is what stops a unit being shot at twice over. For each subunit it takes `strength - pending_strength_damage` - or `strength - global(0x1A8868C) * pending / 1000` where the subunit answers either of slots 9 or 11 - and returns 0 the moment one of them is still above zero. The unit is in EAX.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x17BA00",
+   "kind": "function",
+   "name": "CNavalCombat::Tick",
+   "signature": "void __thiscall CNavalCombat::Tick(CNavalCombat* this, int unused)",
+   "no_signature": null,
+   "comment": "**The naval per-tick resolution**, CCombat slot 15 overridden. Nothing to do with the land one at 0x16EBE0 beyond the slot: it makes no virtual call in its first 0x300 bytes and in particular never reaches CCombatant slot 19, so a ship's CUnit +0xDC modifier list is neither filled nor cleared. Confirmed live - a write watch on +0xE4 through a whole naval battle caught nothing at all, where a land battle caught the reset 4990 times.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x17BC50",
+   "kind": "function",
+   "name": "CAirCombat::Tick",
+   "signature": "void __thiscall CAirCombat::Tick(CAirCombat* this, int unused)",
+   "no_signature": null,
+   "comment": "**The air per-tick resolution**, CCombat slot 15 overridden, and shared by CGroundBombing, CLandBombing and CNavalBombing - so one body covers every kind of air action. It calls slots 15, 17 and 18 through the vftable and never 0x4C, which is CCombatant::ApplyCombatModifiers, so no air unit gets a combat modifier list. Confirmed the same way as the naval one.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x1C3040",
+   "kind": "function",
+   "name": "CUnit::AddCombatModifier",
+   "signature": "void __stdcall CUnit::AddCombatModifier(CUnit* unit@ESI, CombatModifier id@stack:4, int attack@stack:8, int defend@stack:12)",
+   "no_signature": null,
+   "comment": "**Adds one modifier to a unit's list and folds it into the running product.** `ret 0xC` for the three stack arguments; the unit arrives in **ESI** and is never loaded from the frame, which is why a byte search for stores to +0xDC through a named pointer never found this.\n\nIt allocates twice: a 12 byte record holding the id at +0, the attack delta at +4 and the defend delta at +8 - which is what the battle tooltip reads and prints as `x%/y%` when the two differ - and a 16 byte CListNode for it. Then `last = node`, `++count`, and `first = node` only when the count was zero, which is why watching +0xDC caught resets and no additions: the head is written on the empty-list branch alone.\n\n**Then it multiplies.** `unit->+0xEC = unit->+0xEC * max(attack + 1000, floor) / 1000` and the same for the defend side into +0xF0, with `floor` read from the global at 0x1A8873C (zero in the image, so presumably set at load). So a modifier's value is a **delta** - +22.5% is 225 - turned into a factor by the `add eax, 0x3e8`, and the two fields hold the running product of everything on the list. That is what the tooltip prints as its Attack and Defend Modifier, and why CUnit::ResetCombatModifiers seeds both with 1000.\n\nFound with a hardware write watchpoint on a live unit's +0xE4, the list's count - see BiceLib/Reversing/WriteWatch.hpp. Nothing static had reached it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x1C2FE0",
+   "kind": "function",
+   "name": "CUnit::ResetCombatModifiers",
+   "signature": "void __stdcall CUnit::ResetCombatModifiers(CUnit* unit)",
+   "no_signature": null,
+   "comment": "**Empties a unit's combat modifiers and puts the four multipliers back to neutral.** Frees every node of the CList at +0xDC, zeroes its three fields, and writes 1000 into +0xEC, +0xF0, +0xF4 and +0xF8 - which is what settles that all four are multipliers rather than two values and two multipliers.\n\nTwo callers: CCombatant::ApplyCombatModifiers (0x165590), which clears before it rebuilds, and CUnit::~CUnit (0x1B5560). Found with a hardware write watchpoint on a live unit - see BiceLib/Reversing/WriteWatch.hpp - after a byte search for stores to +0xDC had turned it up and a range filter had thrown it away for sitting in CUnit's code rather than the combatant's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x1B5560",
+   "kind": "function",
+   "name": "CUnit::~CUnit",
+   "signature": null,
+   "no_signature": "A destructor's own shape - it writes the vftable at +0 and +8 and takes no argument beyond its receiver - but which of the three unit classes Ghidra should attach it to has not been checked, and a wrong `this` type reads every field at the wrong offset.",
+   "comment": "**CUnit's destructor**: writes CUnit::vftable into +0 and +8, releases the orders and plans, calls CUnit::ResetCombatModifiers to free the combat modifier list, then walks the regiments. Reached while looking for what *builds* that list, which it is not.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x16EBE0",
+   "kind": "function",
+   "name": "CCombat::Tick",
+   "signature": "void __thiscall CCombat::Tick(CCombat* this, int unused)",
+   "no_signature": null,
+   "comment": "**The land per-tick combat resolution**, CCombat slot 15 - and CLandCombat's, which shares this body. **Not naval or air**: both override the slot, with 0x17BA00 and 0x17BC50, and neither reaches slot 19 at all. Increments `duration` (+0x20), swaps tactics when TACTIC_SWAP_FREQUENCEY divides it or either side has none, then calls CCombatant slot 19 on `attacker` (+0x10) and `defender` (+0x14) and CCombatant slot 15 on each, and finally ApplyOwnCombatModifiers on each. The one stack argument is **never read** - `[ebp+8]` appears nowhere in the function - so it is named for the space it takes.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x165590",
+   "kind": "function",
+   "name": "CCombatant::ApplyCombatModifiers",
+   "signature": "void __thiscall CCombatant::ApplyCombatModifiers(CCombatant* this, CCombatant* other, int flag)",
+   "no_signature": null,
+   "comment": "**Slot 19, the shared part**: the per-kind overrides call this first. Writes the two multipliers onto each of this side's units, CUnit +0xF4 for attack and +0xF8 for defence. `flag` is zero at both call sites in CCombat::Tick and its meaning is not known.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x169B50",
+   "kind": "function",
+   "name": "CLandCombatant::ApplyCombatModifiers",
+   "signature": "void __thiscall CLandCombatant::ApplyCombatModifiers(CLandCombatant* this, CCombatant* other, int flag)",
+   "no_signature": null,
+   "comment": "**Slot 19 for a land fight**, and the readable example of the family. Walks `units` (+0x40), and for a unit that is invading over water interpolates between AMPHIBIOUS_INVADE_ATTACK_LOW and _HIGH into CUnit +0xF4 and between the defend pair into +0xF8. Calls the base at 0x165590 first.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x166480",
+   "kind": "function",
+   "name": "CNavalCombatant::ApplyCombatModifiers",
+   "signature": "void __thiscall CNavalCombatant::ApplyCombatModifiers(CNavalCombatant* this, CCombatant* other, int flag)",
+   "no_signature": null,
+   "comment": "Slot 19 for a naval fight. Not read through.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x16C6F0",
+   "kind": "function",
+   "name": "CAirCombatant::ApplyCombatModifiers",
+   "signature": "void __thiscall CAirCombatant::ApplyCombatModifiers(CAirCombatant* this, CCombatant* other, int flag)",
+   "no_signature": null,
+   "comment": "Slot 19 for an air fight. Not read through.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x161680",
+   "kind": "function",
+   "name": "CBomberCombatant::ApplyCombatModifiers",
+   "signature": "void __thiscall CBomberCombatant::ApplyCombatModifiers(CBomberCombatant* this, CCombatant* other, int flag)",
+   "no_signature": null,
+   "comment": "Slot 19 for the bombing side of a raid. Not read through.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x1627D0",
+   "kind": "function",
+   "name": "CTargetCombatant::ApplyCombatModifiers",
+   "signature": "void __thiscall CTargetCombatant::ApplyCombatModifiers(CCombatant* this, CCombatant* other, int flag)",
+   "no_signature": null,
+   "comment": "**Slot 19 for all three target combatants** - ground, land and naval - which share one body, so it belongs to none of them in particular and `this` is typed as the base. Not read through.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x165FD0",
+   "kind": "function",
+   "name": "CCombatant::ApplyLosses",
+   "signature": "void __stdcall CCombatant::ApplyLosses(CCombatant* combatant@EDI, int* lossesOut@stack:4)",
+   "no_signature": null,
+   "comment": "**Applies a tick's damage to this side's subunits and totals what it cost.** 790 bytes; the receiver is in EDI and the single stack argument is an out parameter that receives the strength lost by this call (`mov [eax], ecx` at 0x1661CE).\n\nThe accounting, at 0x16625F, is the part worth hooking. ESI is the **CSubUnit** taking the hit and EDI its combatant:\n\n    edx = subunit->strength (+0x5C) - damage\n    type = subunit->definition(+0x58)->index(+0x24)\n    if (edx < 0)   combatant->destroyed[type] += 1000; combatant->losses += 1000\n    else           combatant->damaged[type]  += the damage\n\nSo losses are kept **per side** (+0x84) and **per subunit type** (+0x88 destroyed, +0x98 damaged) and **never per unit** - though the subunit is in hand at that instruction, and CRegiment +0xB0 leads to its CUnit, which is what makes per-unit tracking possible from here.\n\nTwo earlier names for this function were wrong, both from partial readings: it is not `ApplyUnitStrengths` and not `ApplyOwnCombatModifiers`. Ghidra had it as a one byte body - reversing/ghidra/RepairFunctionBody.java fixes that - so every reading before the repair saw a fraction of it.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-combat.md"
+  },
+  {
+   "rva": "0x329D40",
+   "kind": "function",
+   "name": "CCombatView::BuildUnitTooltip",
+   "signature": null,
+   "no_signature": "Three arguments and `ret 0xc`, but the second is untouched on every path read and the first is a window of some kind, so typing them would be guessing at two of the three.",
+   "comment": "**The tooltip for a unit hovered in a battle.** Its only caller is 0x331C77. Writes, in order: the leader line (LEADER_COMMAND_INFO, or NO_LEADER_FOR_THIS_1/_2 where there is none), UNIT_COMBAT_WIDTH, CURR_COMB_STR, BATTLE_ATTACKMOD, BATTLE_DEFENDMOD, CURR_COMB_ORG, and then the variable part - a walk of the CList at CUnit +0xDC, one node per combat modifier, each turned into a BM_* localisation key by the switch at 0x164060.\\n\\n**The unit is in EDI** through the whole second half. Not assumed: [edi + 0x12C] is read for the leader line and is CUnit::leader_ptr, and [edi + 0x40] is compared against 1 to choose the wording, which is the count of CUnit::regiments. BiceLib's hook checks the vftable regardless.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/Tooltips/CombatStats.hpp"
+  },
+  {
+   "rva": "0x164060",
+   "kind": "function",
+   "name": "CombatModifierKey",
+   "signature": "void __stdcall CombatModifierKey(Hoi3CString* out@ECX, CombatModifier modifier@EAX)",
+   "no_signature": null,
+   "comment": "**Turns a combat modifier id into its localisation key**, and is the only place that enum is written down. `reversing/combatModifiers.py` reads all 30 names off the jump table at 0x16429C and buildFindings makes them the `CombatModifier` enum, so the arms do not have to be transcribed - which is how this entry was twice wrong before, once putting BM_NIGHT_MODIFIER at 0x1C when it is 0x1B, and once putting BM_SURPRISE_BONUS at 0x1E, one past the end.\n\n**The bound is the function's own**: `cmp eax, 0x1d; ja <default>` at 0x164067, so the ids are 0..0x1D and anything else gets the fallback. The id arrives in **EAX** and the string to build into in **ECX** (`mov esi, ecx` at 0x164065); `ret 0`, so nothing is passed on the stack at all - an earlier reading here said the string was a stack argument, and checkSignatures caught it against the ret.",
+   "confidence": "confirmed",
+   "source": "BiceLib/Hooks/Tooltips/CombatStats.hpp"
+  },
+  {
    "rva": "0x1060",
    "kind": "function",
    "name": "std::string::operator=",
@@ -4904,7 +5134,7 @@
    "kind": "function",
    "name": "CTrigger::GetBlockText",
    "signature": "Hoi3CString* __thiscall CTrigger::GetBlockText(CTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)",
-   "comment": "**Slot 9, and the whole of how a requirement tooltip is drawn.** One line per child:\n\n    indent(depth) + icon + the child's content\n\nwhere the icon is `(\u00a7R*\u00a7W)` or `(\u00a7G*\u00a7W)` by comparing the child's `Evaluate` against **`redWhen`** - the result that counts as unmet, 0 normally and 1 inside a `not`. The parent indents the line, icon and all.\n\nThis base walks the children and calls each child's **GetText** (slot 8) for its one line; a child that is itself a block answers empty there, and the walk falls back to the child's own slot 9. A trigger with no children answers the empty string, which is what makes that fallback work.\n\n**Three BiceLib patches land in its `and` and `or` overrides** - see Hooks/EffectText/TriggerIndentText.hpp.",
+   "comment": "**Slot 9, and the whole of how a requirement tooltip is drawn.** One line per child:\n\n    indent(depth) + icon + the child's content\n\nwhere the icon is `(§R*§W)` or `(§G*§W)` by comparing the child's `Evaluate` against **`redWhen`** - the result that counts as unmet, 0 normally and 1 inside a `not`. The parent indents the line, icon and all.\n\nThis base walks the children and calls each child's **GetText** (slot 8) for its one line; a child that is itself a block answers empty there, and the walk falls back to the child's own slot 9. A trigger with no children answers the empty string, which is what makes that fallback work.\n\n**Three BiceLib patches land in its `and` and `or` overrides** - see Hooks/EffectText/TriggerIndentText.hpp.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
   },
@@ -8307,6 +8537,33 @@
    "comment": "Answers the province id that a province should draw supply from, or 0. Returns the origin country's acting_capital_province_id (CCountry +0xE24) once the province's area matches that of the origin's own acting capital, and otherwise recurses into the countries reached through the area's list at +0x34 and through +0xF34/+0xF38 on the country, carrying the same origin and a visited list so the walk terminates. `origin` defaults to `this` when it is passed null. This is what makes two provinces share a supply_depot_id: they resolve to the same acting capital.",
    "confidence": "inferred",
    "source": "reversing/FINDINGS-supply.md"
+  },
+  {
+   "rva": "0x6F9EA0",
+   "kind": "function",
+   "name": "CEU3BitmapFont::Load",
+   "signature": "void __thiscall CEU3BitmapFont::Load(CEU3BitmapFont* this)",
+   "comment": "**Loads the font**, virtual slot 5. Builds `gfx/fonts/` + `fontName` + `.tga`, loads that texture, then calls CEU3BitmapFont::LoadGlyphs for the `.fnt` beside it.\n\n**It and LoadGlyphs have no padding between them**, so reversing/image.py's functionStart answers 0x6F9EA0 for addresses in either. The frames tell them apart: this one reserves 0x58 bytes and the parser 0x1B4, and the parser addresses [ebp - 0x1C0], which this frame could not hold.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-text.md"
+  },
+  {
+   "rva": "0x6F9FD0",
+   "kind": "function",
+   "name": "CEU3BitmapFont::LoadGlyphs",
+   "signature": "void __stdcall CEU3BitmapFont::LoadGlyphs(CEU3BitmapFont* font)",
+   "comment": "**Reads `gfx/fonts/<fontName>.fnt` into the font's glyph table.** The file is an AngelCode BMFont descriptor in plain text, and this **never reads its key names**: it matches only the first token of a line - `char` at 0x6FA2E3, `kerning` at 0x6FA4AC - and then takes the numbers after it in file order, one atoi each.\n\n`char` gives id, x, y, width, height, xoffset, yoffset, xadvance, in that order, into a fresh 0x820 byte CEU3BitmapFontGlyph stored at `font + id * 4 + 0x94`. An id of 0x20 has its height forced to zero at 0x6FA3BD whatever the file says. `kerning` gives first, second, amount, and appends {second, amount} to the glyph named first.\n\nThat the parse is positional is why `xadvance` appears nowhere in the executable, and why the numbers in the .fnt are the ones the renderer advances by.\n\nNo `this`: the font arrives as the single stack argument and the ECX the caller had is unused, so it is __stdcall despite living on the class.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-text.md"
+  },
+  {
+   "rva": "0x6FD700",
+   "kind": "function",
+   "name": "CEU3BitmapFont::GetStringWidth",
+   "signature": "int __thiscall CEU3BitmapFont::GetStringWidth(CEU3BitmapFont* this, const char* text, int length)",
+   "comment": "**How wide a string draws, in pixels**, virtual slot 10. A negative `length` means to the NUL.\n\nEach byte adds its glyph's xadvance and then the kerning pair between it and **the literal next byte** - the game does not skip an escape to find the next drawn character. A glyph the font does not list adds nothing.\n\nThe escapes: 0xA7 and the byte after it are skipped, but only where the virtual at +0x4C says this font handles them; 0x40 takes three bytes and adds an icon width from the virtual at +0x68; 0xA3 takes a [A-Za-z_] name and adds one from +0x64; 0xA4 adds a flat 8; `{` adds 8 and takes two bytes.\n\nA newline ends a line rather than the string, and the return is the widest line.\n\nBiceLib's Text::Font follows all of this except the icon escapes, which it measures as ordinary glyphs because nothing it writes contains one.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-text.md"
   }
  ],
  "structs": [
@@ -10722,6 +10979,20 @@
    "name": "CSubUnit",
    "fields": [
     {
+     "offset": "0xAC",
+     "name": "pending_organisation_damage",
+     "type": "int",
+     "comment": "**Organisation damage taken this tick and not yet paid**, thousandths, spread evenly over the subunits by CUnit::TakeDamage rather than by size.\n\n**It is damage attempted, not damage dealt.** CSubUnit::SettleDamage clamps it to the organisation the subunit actually has (`cmovg` at 0x1ABAE1) before subtracting, so in a one-sided fight most of a tick's total is thrown away. Anything reporting organisation damage has to count the clamped amount at 0x1ABAE7, not this field.",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
+     "offset": "0xA8",
+     "name": "pending_strength_damage",
+     "type": "int",
+     "comment": "**Strength damage taken this tick and not yet paid**, thousandths. CUnit::TakeDamage adds to it per landed shot, CUnit::IsOutOfTheFight reads it to tell whether the unit is already finished, and CSubUnit::SettleDamage subtracts it from `strength` and clears it. **Not clamped** - unlike the organisation half.",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
      "offset": "0x8",
      "name": "id_type",
      "type": "int",
@@ -11534,6 +11805,62 @@
    "name": "CUnit",
    "fields": [
     {
+     "offset": "0x15C",
+     "name": "defences_used",
+     "type": "int",
+     "comment": "**How many shots this unit has already defended against this tick.** CUnit::RollToHit compares it against the slots its defence value bought and increments it on each one spent; past that the unit falls back to CHANCE_TO_AVOID_HIT_AT_NO_DEF. Reset per tick somewhere not yet found.",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
+     "offset": "0xE4",
+     "name": "combat_modifiers_count",
+     "type": "int",
+     "comment": "How many modifiers are on the list. **The one to watch** when looking for what adds to it: the head at +0xDC is only written by a push onto an empty list, while every addition has to touch this.",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
+     "offset": "0xE0",
+     "name": "combat_modifiers_last",
+     "type": "LinkedListNode*",
+     "comment": "The list's last node - the `last` of the CList at +0xDC.",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
+     "offset": "0xF8",
+     "name": "combat_defend_modifier_b",
+     "type": "int",
+     "comment": "**The other defend multiplier**, thousandths, written by slot 19 beside +0xF4 and compared against 0x3E8 the same way (0x32ACF6).",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
+     "offset": "0xF4",
+     "name": "combat_attack_modifier_b",
+     "type": "int",
+     "comment": "**The other attack multiplier**, thousandths, written by CCombatant::ApplyCombatModifiers (slot 19) once a tick. The game compares it against 0x3E8 and skips the block when equal (0x32ABC6), which is only worth doing for a factor of one.",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
+     "offset": "0xF0",
+     "name": "combat_defend_product",
+     "type": "int",
+     "comment": "**The running product of every modifier's defend side**, the same shape as +0xEC and filled by the same function. The tooltip prints `+0xF0 * +0xF8 / 1000` as its Defend Modifier (0x32AE8A).",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
+     "offset": "0xEC",
+     "name": "combat_attack_product",
+     "type": "int",
+     "comment": "**The running product of every modifier's attack side**, thousandths where 1000 is 100%. CUnit::AddCombatModifier (0x1C3040) multiplies each one in as it is added - `product = product * (delta + 1000) / 1000` - and CUnit::ResetCombatModifiers seeds it with 1000, an empty product. The battle tooltip prints `+0xEC * +0xF4 / 1000` as its Attack Modifier (0x32AE39).",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
+     "offset": "0xDC",
+     "name": "combat_modifiers",
+     "type": "CList",
+     "comment": "**The combat modifiers acting on this unit, on land only**, a CList: first here, last at +0xE0, count at +0xE4, all three cleared together by CUnit::ResetCombatModifiers (0x1C2FE0). One node per modifier; the node's record holds the id at +0 and the attack and defend values at +4 and +8, which the tooltip prints as `x%/y%` when they differ. 0x164060 turns the id into its BM_* key.",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
      "offset": "0x280",
      "name": "plan_their_power",
      "type": "int",
@@ -12134,6 +12461,13 @@
    "name": "CCombatant",
    "fields": [
     {
+     "offset": "0xB0",
+     "name": "front_line",
+     "type": "CList<CUnit*>",
+     "comment": "**The units that actually fight this tick**, and the CList's own `count` at +0xB8 is how many. Distinct from `units` at +0x40, which is everyone on this side: CLandCombatant::Attack walks this one to decide who shoots, and CCombatant::PickTarget draws from the enemy's to decide who is shot at. **What puts a unit on it has not been read** - combat width is the obvious candidate and is not yet evidence.",
+     "source": "reversing/FINDINGS-combat.md"
+    },
+    {
      "offset": "0xA0",
      "name": "damage_capacity",
      "type": "int*",
@@ -12164,8 +12498,8 @@
     {
      "offset": "0x38",
      "name": "is_attacker",
-     "type": "bool",
-     "comment": "1 on the combatant stored at CCombat+0x10, 0 on the one at CCombat+0x14 - a side knows which it is without asking the combat. Set from the constructor's second argument.",
+     "type": "uint8_t",
+     "comment": "**Which side of the fight this is.** Read by CLandCombatant::FireUnit to choose between the target's defensiveness (when this side is attacking) and its toughness (when defending), and again to pick which of the combat's two doctrine figures to scale damage by.",
      "source": "reversing/FINDINGS-combat.md"
     },
     {
@@ -12421,8 +12755,7 @@
      "type": "CDefinesSupply*",
      "comment": "pointer to the block holding SUPPLYPOOL_DAYS and the supply capacity defines. this is the whole `military` block, 179 entries from MAX_MANPOWER at +0x0 to NEW_LEADER_ORG_HIT at +0x2C4 - not a supply-only block. The entries are read by key, so their offsets do not move when the mod's defines.lua changes.",
      "source": "reversing/FINDINGS-supply.md"
-    }
-,
+    },
     {
      "offset": "0xCC",
      "name": "country",
@@ -18703,10 +19036,121 @@
      "source": "reversing/findings/merged/types-and-fields.json"
     }
    ]
+  },
+  {
+   "name": "CEU3BitmapFontKerning",
+   "size": "0x8",
+   "comment": "One kerning pair of a glyph: how much the pen moves by when this glyph is followed by `second`. Nearly always -1 in the fonts shipped; garamond_16 has 199 of them across all glyphs.",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "second",
+     "type": "int",
+     "comment": "the character code that has to follow for this pair to apply",
+     "source": "reversing/FINDINGS-text.md"
+    },
+    {
+     "offset": "0x4",
+     "name": "amount",
+     "type": "int",
+     "comment": "pixels added to the advance, almost always negative",
+     "source": "reversing/FINDINGS-text.md"
+    }
+   ]
+  },
+  {
+   "name": "CEU3BitmapFontGlyph",
+   "size": "0x820",
+   "comment": "One character of a bitmap font, as CEU3BitmapFont::LoadGlyphs builds it from a `char` line of the .fnt. The first seven fields are that line's numbers in file order. Fixed size whether or not the glyph has any kerning: (0x81C - 0x1C) / 8 is 256, so the pair array is sized for every possible partner.",
+   "fields": [
+    {
+     "offset": "0x0",
+     "name": "x",
+     "type": "int",
+     "comment": "left edge in the font texture",
+     "source": "reversing/FINDINGS-text.md"
+    },
+    {
+     "offset": "0x4",
+     "name": "y",
+     "type": "int",
+     "comment": "top edge in the font texture",
+     "source": "reversing/FINDINGS-text.md"
+    },
+    {
+     "offset": "0x8",
+     "name": "width",
+     "type": "int",
+     "comment": "how wide the glyph is in the texture, which is not what the pen moves by",
+     "source": "reversing/FINDINGS-text.md"
+    },
+    {
+     "offset": "0xC",
+     "name": "height",
+     "type": "int",
+     "comment": "how tall it is; forced to 0 for the space (id 0x20) at 0x6FA3BD whatever the file says, and GetStringWidth reads a zero height as a glyph that draws no ink",
+     "source": "reversing/FINDINGS-text.md"
+    },
+    {
+     "offset": "0x10",
+     "name": "xoffset",
+     "type": "int",
+     "comment": "where the glyph is drawn relative to the pen",
+     "source": "reversing/FINDINGS-text.md"
+    },
+    {
+     "offset": "0x14",
+     "name": "yoffset",
+     "type": "int",
+     "comment": "the same vertically",
+     "source": "reversing/FINDINGS-text.md"
+    },
+    {
+     "offset": "0x18",
+     "name": "xadvance",
+     "type": "int",
+     "comment": "**what the pen moves by** - the number that decides how wide text draws. The .fnt's value reaches here unchanged, since the parse is positional and nothing scales it",
+     "source": "reversing/FINDINGS-text.md"
+    },
+    {
+     "offset": "0x1C",
+     "name": "kerning",
+     "type": "CEU3BitmapFontKerning[256]",
+     "comment": "pairs in the order the .fnt listed them, only the first kerning_count of them meaning anything",
+     "source": "reversing/FINDINGS-text.md"
+    },
+    {
+     "offset": "0x81C",
+     "name": "kerning_count",
+     "type": "int",
+     "comment": "how many of the pairs are filled; zeroed as the glyph is made and incremented by each kerning line naming this glyph first",
+     "source": "reversing/FINDINGS-text.md"
+    }
+   ]
+  },
+  {
+   "name": "CEU3BitmapFont",
+   "vftable_rva": "0x11E13D4",
+   "comment": "A bitmap font, one per `bitmapfont` block in interface/core.gfx. Only the two fields the text measuring needed are known.",
+   "fields": [
+    {
+     "offset": "0x78",
+     "name": "font_name",
+     "type": "Hoi3CString",
+     "comment": "the `fontName` key, which is the stem of both gfx/fonts/<name>.tga and the .fnt beside it. CEU3BitmapFont::LoadKey takes the key straight onto this+0x78 and both loaders read it from there; 0x78 + 0x18 leaves it ending at 0x90, four bytes short of the glyph table",
+     "source": "reversing/FINDINGS-text.md"
+    },
+    {
+     "offset": "0x94",
+     "name": "glyphs",
+     "type": "CEU3BitmapFontGlyph*[256]",
+     "comment": "one pointer per character code, null where the font has no such glyph. Indexed by the raw byte in GetStringWidth, so 256 entries exactly - and 0x94 + 256 * 4 is 0x494, which is the next field LoadGlyphs writes (0x6FA26D), so the length is measured rather than assumed",
+     "source": "reversing/FINDINGS-text.md"
+    }
+   ]
   }
  ],
- "equates":
- [
+ "equates": [
   {
    "rva": "0xB78AE",
    "operand": 1,
@@ -18838,7 +19282,10 @@
    "6": "Execute"
   },
   "CCommand": {
-   "6": {"name": "Execute", "signature": "void __thiscall Execute(CCommand* this)"}
+   "6": {
+    "name": "Execute",
+    "signature": "void __thiscall Execute(CCommand* this)"
+   }
   },
   "_about": "Slot names BiceLib has established but that cannot be read off the slot's body - the linker folds identical bodies together, so the three unit predicates are one `mov al,1; ret` and one `xor al,al; ret` between them. Keyed by class, then slot. A record on a base class names that slot in every table below it, which is how CPersistent's six virtuals reach all 754 classes that derive from it; a name read off the slot's own body wins over one inherited this way.",
   "CUnit": {
@@ -18903,16 +19350,42 @@
    "4": "Leave",
    "48": "CentreOnProvince"
   },
+  "CCombatant": {
+   "20": {
+    "name": "AddTerrainModifier",
+    "signature": "void __thiscall AddTerrainModifier(CCombatant* this)"
+   },
+   "19": {
+    "name": "ApplyCombatModifiers",
+    "signature": "void __thiscall ApplyCombatModifiers(CCombatant* this, CCombatant* other, int flag)"
+   }
+  },
+  "CLandCombatant": {
+   "27": {
+    "name": "AddAssaultModifiers",
+    "signature": "void __thiscall AddAssaultModifiers(CLandCombatant* this, CCombatant* other)"
+   }
+  },
   "CCombat": {
+   "15": {
+    "name": "Tick",
+    "signature": "void __thiscall Tick(CCombat* this, int unused)"
+   },
    "16": "SetProvince",
    "18": "AddUnit",
-   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"},
+   "6": {
+    "name": "CreateCombatants",
+    "signature": "void __thiscall CreateCombatants(CCombat* this)"
+   },
    "11": "GetKind"
   },
   "CLandCombat": {
    "16": "SetProvince",
    "18": "AddUnit",
-   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"},
+   "6": {
+    "name": "CreateCombatants",
+    "signature": "void __thiscall CreateCombatants(CCombat* this)"
+   },
    "11": {
     "name": "GetKind",
     "signature": "int __thiscall GetKind(CCombat* this)"
@@ -18921,7 +19394,10 @@
   "CNavalCombat": {
    "16": "SetProvince",
    "18": "AddUnit",
-   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"},
+   "6": {
+    "name": "CreateCombatants",
+    "signature": "void __thiscall CreateCombatants(CCombat* this)"
+   },
    "11": {
     "name": "GetKind",
     "signature": "int __thiscall GetKind(CCombat* this)"
@@ -18930,7 +19406,10 @@
   "CAirCombat": {
    "16": "SetProvince",
    "18": "AddUnit",
-   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"},
+   "6": {
+    "name": "CreateCombatants",
+    "signature": "void __thiscall CreateCombatants(CCombat* this)"
+   },
    "11": {
     "name": "GetKind",
     "signature": "int __thiscall GetKind(CCombat* this)"
@@ -18939,7 +19418,10 @@
   "CGroundBombing": {
    "16": "SetProvince",
    "18": "AddUnit",
-   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"},
+   "6": {
+    "name": "CreateCombatants",
+    "signature": "void __thiscall CreateCombatants(CCombat* this)"
+   },
    "11": {
     "name": "GetKind",
     "signature": "int __thiscall GetKind(CCombat* this)"
@@ -18948,7 +19430,10 @@
   "CLandBombing": {
    "16": "SetProvince",
    "18": "AddUnit",
-   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"},
+   "6": {
+    "name": "CreateCombatants",
+    "signature": "void __thiscall CreateCombatants(CCombat* this)"
+   },
    "11": {
     "name": "GetKind",
     "signature": "int __thiscall GetKind(CCombat* this)"
@@ -18957,18 +19442,19 @@
   "CNavalBombing": {
    "16": "SetProvince",
    "18": "AddUnit",
-   "6": {"name": "CreateCombatants", "signature": "void __thiscall CreateCombatants(CCombat* this)"},
+   "6": {
+    "name": "CreateCombatants",
+    "signature": "void __thiscall CreateCombatants(CCombat* this)"
+   },
    "11": {
     "name": "GetKind",
     "signature": "int __thiscall GetKind(CCombat* this)"
    }
   },
   "CMoveCommand": {
-   "6": "RouteUnit",
    "6": "RouteUnit"
   },
   "CRegiment": {
-   "12": "GetMaxStrength",
    "12": "GetMaxStrength"
   },
   "COrder": {
@@ -19012,7 +19498,28 @@
     "signature": "bool __thiscall IsValid(CTechnologyFolder* this)"
    }
   },
-  "CTrigger": {"6": {"name": "Evaluate", "signature": "bool __thiscall Evaluate(CTrigger* this, CEventScope* scope)"}, "8": {"name": "GetText", "signature": "Hoi3CString* __thiscall GetText(CTrigger* this, Hoi3CString* out, CEventScope* scope, int unknown1, int unknown2)"}, "10": {"name": "WalkChildren", "signature": "void __thiscall WalkChildren(CTrigger* this, CEventScope* scope, int* unknown, int* passed, int* total)"}, "11": {"name": "CountEvaluation", "signature": "void __thiscall CountEvaluation(CTrigger* this, CEventScope* scope, int* passed, int* total)"}, "9": {"name": "GetBlockText", "signature": "Hoi3CString* __thiscall GetBlockText(CTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)"}},
+  "CTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CTrigger* this, CEventScope* scope)"
+   },
+   "8": {
+    "name": "GetText",
+    "signature": "Hoi3CString* __thiscall GetText(CTrigger* this, Hoi3CString* out, CEventScope* scope, int unknown1, int unknown2)"
+   },
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall WalkChildren(CTrigger* this, CEventScope* scope, int* unknown, int* passed, int* total)"
+   },
+   "11": {
+    "name": "CountEvaluation",
+    "signature": "void __thiscall CountEvaluation(CTrigger* this, CEventScope* scope, int* passed, int* total)"
+   },
+   "9": {
+    "name": "GetBlockText",
+    "signature": "Hoi3CString* __thiscall GetBlockText(CTrigger* this, Hoi3CString* out, CEventScope* scope, bool redWhen, int depth)"
+   }
+  },
   "CPersistent": {
    "1": {
     "name": "Save",
