@@ -51,7 +51,7 @@ namespace {
      * it lands on after probing - so the window slides over the divisions fighting most
      * recently and a stale one falls off the back unnoticed.
      */
-    const size_t CAPACITY = 2048;
+    const size_t CAPACITY = 4096;
     const size_t PROBES = 8;
 
     /**
