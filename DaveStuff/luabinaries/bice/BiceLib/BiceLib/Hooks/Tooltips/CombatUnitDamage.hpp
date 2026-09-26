@@ -42,9 +42,15 @@
  * clears entries when a battle ends: a unit keeps its last battle's figures until it fights
  * again, which is what makes the tooltip readable just after a fight rather than empty.
  *
- * The table is capped. Units are created and destroyed over a campaign and a pointer can be
- * reused, so it is bounded and emptied whole when it fills rather than grown forever; the
- * cost of that is one battle's figures, and the log says when it happens.
+ * **The same four figures are also kept for one round.** A combat round is an hour, so a
+ * round's figures are stamped with the game tick they arrived under, and the first damage of
+ * a later tick clears them. They read as the last tick the unit *did* something rather than
+ * as the tick now: a division out of the line keeps the last round it fought.
+ *
+ * The table is capped. Units are created and destroyed over a campaign and an address can be
+ * reused, so it is bounded rather than grown forever - entries are keyed by the unit's id,
+ * and a newcomer that finds every slot it probes taken evicts one of them. The log says when
+ * that starts happening.
  *
  * **Switched on with the rest of the battle tooltip**, by
  * `BiceLib.Tooltips.activateCombatUnitStats()`.
@@ -71,6 +77,18 @@ namespace Hooks {
 
             /**@brief organisation this unit has taken in its current battle, thousandths*/
             int takenOrganisationBy(uintptr_t unit);
+
+            /**@brief strength dealt in the last tick this unit fought, thousandths*/
+            int dealtLastTickBy(uintptr_t unit);
+
+            /**@brief strength taken in the last tick this unit fought, thousandths*/
+            int takenLastTickBy(uintptr_t unit);
+
+            /**@brief organisation dealt in the last tick this unit fought, thousandths*/
+            int dealtOrganisationLastTickBy(uintptr_t unit);
+
+            /**@brief organisation taken in the last tick this unit fought, thousandths*/
+            int takenOrganisationLastTickBy(uintptr_t unit);
 
             /**@brief whether this unit has a battle worth reporting at all*/
             bool known(uintptr_t unit);

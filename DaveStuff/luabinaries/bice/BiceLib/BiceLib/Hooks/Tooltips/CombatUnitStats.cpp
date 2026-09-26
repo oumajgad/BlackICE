@@ -358,21 +358,39 @@ namespace {
         // clamp, rather than where CUnit::TakeDamage works it out - the raw total is
         // damage attempted and is several times what a division actually loses.
         if (Hooks::Tooltips::CombatUnitDamage::known(unit)) {
+            namespace Damage = Hooks::Tooltips::CombatUnitDamage;
             char dealt[32], orgDealt[32], taken[32], org[32];
-            number(Hooks::Tooltips::CombatUnitDamage::dealtBy(unit), dealt, sizeof dealt);
-            number(Hooks::Tooltips::CombatUnitDamage::dealtOrganisationBy(unit),
-                orgDealt, sizeof orgDealt);
-            number(Hooks::Tooltips::CombatUnitDamage::takenBy(unit), taken, sizeof taken);
-            number(Hooks::Tooltips::CombatUnitDamage::takenOrganisationBy(unit), org, sizeof org);
+            number(Damage::dealtBy(unit), dealt, sizeof dealt);
+            number(Damage::dealtOrganisationBy(unit), orgDealt, sizeof orgDealt);
+            number(Damage::takenBy(unit), taken, sizeof taken);
+            number(Damage::takenOrganisationBy(unit), org, sizeof org);
 
-            // `str` and `org` are column headings rather than a prefix on every figure.
-            // They are right aligned with the figures under them, so each sits over the
+            char tickDealt[32], tickOrgDealt[32], tickTaken[32], tickOrg[32];
+            number(Damage::dealtLastTickBy(unit), tickDealt, sizeof tickDealt);
+            number(Damage::dealtOrganisationLastTickBy(unit),
+                tickOrgDealt, sizeof tickOrgDealt);
+            number(Damage::takenLastTickBy(unit), tickTaken, sizeof tickTaken);
+            number(Damage::takenOrganisationLastTickBy(unit), tickOrg, sizeof tickOrg);
+
+            // Four columns: which span the figures are for, which way round they went, and
+            // the pair itself. The two headings sit over the figures rather than being
+            // repeated as a prefix on each, right aligned with them so each sits over the
             // end of its column rather than over the widest number in it.
+            //
+            // One table rather than two, so the battle's figures and the round's line up
+            // with each other - which is the point of reading them together.
             Text::Table damage;
-            damage.indent("  ").align(1, Text::RIGHT).align(2, Text::RIGHT);
-            damage.cell("").cell(caption("Strength")).cell(caption("Organisation")).row();
-            damage.cell(caption("Dealt:")).cell(value(dealt)).cell(value(orgDealt)).row();
-            damage.cell(caption("Taken:")).cell(value(taken)).cell(value(org)).row();
+            damage.indent("  ").align(2, Text::RIGHT).align(3, Text::RIGHT);
+            damage.cell("").cell("")
+                  .cell(caption("Strength")).cell(caption("Organisation")).row();
+            damage.cell(caption("Battle")).cell(caption("dealt:"))
+                  .cell(value(dealt)).cell(value(orgDealt)).row();
+            damage.cell("").cell(caption("taken:"))
+                  .cell(value(taken)).cell(value(org)).row();
+            damage.cell(caption("Last tick")).cell(caption("dealt:"))
+                  .cell(value(tickDealt)).cell(value(tickOrgDealt)).row();
+            damage.cell("").cell(caption("taken:"))
+                  .cell(value(tickTaken)).cell(value(tickOrg)).row();
 
             block += "\n" + heading("Damage") + "\n"
                 + damage.text();

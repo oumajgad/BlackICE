@@ -1,6 +1,7 @@
 #include <Hooks/Tooltips/CombatUnitDamage.hpp>
 
 #include <GameClasses/CCombat.hpp>
+#include <GameClasses/CCurrentGameState.hpp>
 #include <GameClasses/CRegiment.hpp>
 #include <GameClasses/CUnit.hpp>
 #include <HoiDataStructures.hpp>
@@ -84,6 +85,23 @@ namespace {
          */
         long long dealtOrganisation;
         int takenOrganisation;
+
+        /**
+         * The same four figures for **one combat round**, and the tick they belong to.
+         *
+         * A round is an hour, so damage arriving under a later tick clears these rather
+         * than adding to them - which is what keeps them a round's worth instead of a
+         * second running total.
+         *
+         * The tick is read from the game state at the moment the damage lands, not from
+         * GameClock: that caches one value a frame, and at high speed the game runs
+         * several hours between two frames, which would fold those rounds into one.
+         */
+        int tick;
+        int tickDealt;
+        int tickTaken;
+        long long tickDealtOrganisation;
+        int tickTakenOrganisation;
     };
 
     /**
@@ -117,9 +135,10 @@ namespace {
      * `type` is kept and compared alongside because the id is only unique within it - the
      * game identifies a saved object by the pair, not by the number alone.
      *
-     * **192 bytes each, 2048 of them: 384 KB, allocated once and never grown.** The
-     * attempt is most of it; it sits beside the tally rather than in a table of its own
-     * because a unit being shot at is exactly a unit worth tracking.
+     * **Allocated once and never grown**, 2048 of them; the install log prints what
+     * that comes to, from `sizeof`, rather than a number here that would go stale. The
+     * attempt is most of each entry; it sits beside the tally rather than in a table of
+     * its own because a unit being shot at is exactly a unit worth tracking.
      */
     struct Entry
     {
@@ -201,6 +220,25 @@ namespace {
     }
 
     /**
+    @brief starts this tally's round over when the clock has moved past it
+
+    The round's figures only describe the tick named in `tick`, so the first damage of a
+    later one clears them. A tick of zero means the game state could not be read; the
+    round then never rolls and reads the same as the battle total, which is wrong in a way
+    that shows rather than one that misleads.
+    */
+    void openRound(Tally& tally, int now) {
+        if (tally.tick == now) {
+            return;
+        }
+        tally.tick = now;
+        tally.tickDealt = 0;
+        tally.tickTaken = 0;
+        tally.tickDealtOrganisation = 0;
+        tally.tickTakenOrganisation = 0;
+    }
+
+    /**
     @brief counts one landed shot, and remembers what it asked of the target's organisation
 
     `side` is the combatant that fired, and its `combat` (+0x3C) is what tells one battle
@@ -214,13 +252,19 @@ namespace {
             (void)Mem::tryRead(side + CCombatant::Offsets::combat, combat);
         }
 
+        const int now = CCurrentGameState::currentTick();
+
         Tally* dealt = tallyFor(attacker, combat);
         if (dealt != nullptr) {
+            openRound(*dealt, now);
             dealt->dealt += strength;
+            dealt->tickDealt += strength;
         }
         Tally* taken = tallyFor(target, combat);
         if (taken != nullptr) {
+            openRound(*taken, now);
             taken->taken += strength;
+            taken->tickTaken += strength;
         }
 
         // Organisation is only *asked for* here. What the target actually loses is decided
@@ -289,7 +333,10 @@ namespace {
         if (entry == nullptr) {
             return;
         }
+        const int now = CCurrentGameState::currentTick();
+        openRound(entry->tally, now);
         entry->tally.takenOrganisation += organisation;
+        entry->tally.tickTakenOrganisation += organisation;
 
         Attempt& attempt = entry->attempt;
         if (attempt.total <= 0) {
@@ -305,7 +352,10 @@ namespace {
                 static_cast<long long>(organisation) * attempt.asked[i] / attempt.total;
             Entry* who = entryFor(attempt.attackers[i], false);
             if (who != nullptr) {
-                who->tally.dealtOrganisation += share * 1000 / brigades;
+                const long long scaled = share * 1000 / brigades;
+                openRound(who->tally, now);
+                who->tally.dealtOrganisation += scaled;
+                who->tally.tickDealtOrganisation += scaled;
             }
         }
     }
@@ -436,6 +486,27 @@ int Hooks::Tooltips::CombatUnitDamage::takenOrganisationBy(uintptr_t unit) {
     // correct and the only place it can truncate.
     const Entry* entry = entryFor(unit, false);
     return entry == nullptr ? 0 : entry->tally.takenOrganisation / brigadesOf(unit);
+}
+
+int Hooks::Tooltips::CombatUnitDamage::dealtLastTickBy(uintptr_t unit) {
+    const Entry* entry = entryFor(unit, false);
+    return entry == nullptr ? 0 : entry->tally.tickDealt;
+}
+
+int Hooks::Tooltips::CombatUnitDamage::takenLastTickBy(uintptr_t unit) {
+    const Entry* entry = entryFor(unit, false);
+    return entry == nullptr ? 0 : entry->tally.tickTaken;
+}
+
+int Hooks::Tooltips::CombatUnitDamage::dealtOrganisationLastTickBy(uintptr_t unit) {
+    const Entry* entry = entryFor(unit, false);
+    return entry == nullptr
+        ? 0 : static_cast<int>(entry->tally.tickDealtOrganisation / 1000);
+}
+
+int Hooks::Tooltips::CombatUnitDamage::takenOrganisationLastTickBy(uintptr_t unit) {
+    const Entry* entry = entryFor(unit, false);
+    return entry == nullptr ? 0 : entry->tally.tickTakenOrganisation / brigadesOf(unit);
 }
 
 bool Hooks::Tooltips::CombatUnitDamage::known(uintptr_t unit) {
