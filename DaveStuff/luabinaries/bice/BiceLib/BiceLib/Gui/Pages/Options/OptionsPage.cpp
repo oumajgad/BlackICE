@@ -20,6 +20,7 @@
 #include <Gui/GuiPage.hpp>
 #include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
+#include <GameState/MapEdgeScroll.hpp>
 #include <Overlay.hpp>
 #include <Settings.hpp>
 
@@ -126,10 +127,41 @@ namespace {
         }
     }
 
+    /**@brief the one option here that is a patch rather than a file the mod owns*/
+    void drawMap() {
+        ImGui::SeparatorText("Map");
+
+        bool edgeScroll = MapEdgeScroll::enabled();
+        if (ImGui::Checkbox("Scroll the map when the mouse is at the screen edge",
+            &edgeScroll)) {
+            MapEdgeScroll::setEnabled(edgeScroll);
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip(
+                "Off stops the map moving when the cursor reaches the edge of the\n"
+                "screen. The arrow keys and dragging with the middle mouse button\n"
+                "still work.\n\n"
+                "The game's own scroll_speed setting is the speed of all scrolling,\n"
+                "so turning it down would have slowed those too. This patches out\n"
+                "the four edge tests instead and leaves the rest alone.\n\n"
+                "Remembered between sessions.");
+        }
+
+        if (!MapEdgeScroll::enabled() && !MapEdgeScroll::available()) {
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
+                "Not applied: %s", MapEdgeScroll::status());
+        }
+    }
+
     void drawOptions() {
         if (!loaded) {
             refresh();
         }
+
+        // Before the Lua check: this section is a patch on the executable and has
+        // something to offer even where the mod's own files cannot be read.
+        drawMap();
+        ImGui::Spacing();
 
         if (!valid) {
             ImGui::TextDisabled("Lua unavailable: %s", Gui::Lua::unavailableReason());
