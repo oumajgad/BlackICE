@@ -90,6 +90,19 @@ namespace Hooks {
             /**@brief organisation taken in the last tick this unit fought, thousandths*/
             int takenOrganisationLastTickBy(uintptr_t unit);
 
+            /**
+            @brief marks every tally belonging to \p combat as a battle that has ended
+
+            Called where the game records a finished combat. **The figures are kept** -
+            they are what the tooltip shows after the fighting stops - but the battle they
+            are stamped with is retired, so a later combat allocated on the same address
+            starts the unit over instead of adding to it.
+
+            Does nothing unless \p combat is a land combat, which is the only kind that
+            ever reaches this table.
+            */
+            void battleEnded(uintptr_t combat);
+
             /**@brief whether this unit has a battle worth reporting at all*/
             bool known(uintptr_t unit);
         }

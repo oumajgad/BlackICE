@@ -1,6 +1,7 @@
 #include <Hooks/CCombatHooks.hpp>
 
 #include <Hooks/Hooks.hpp>
+#include <Hooks/Tooltips/CombatUnitDamage.hpp>
 #include <GameState/CombatLog.hpp>
 #include <utils.hpp>
 
@@ -47,6 +48,11 @@ __declspec(naked) void Hooks::Combat::combatRecordedHook() {
     }
 
     ::Combat::note(combat);
+
+    // The same signal retires the battle stamp on the per unit damage figures: without it
+    // a CCombat allocated on a finished one's address would look like the battle still
+    // being counted. It gates itself on land combat.
+    Hooks::Tooltips::CombatUnitDamage::battleEnded(combat);
 
     _asm {
         mov esp, ebp

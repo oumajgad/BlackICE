@@ -61,6 +61,15 @@ namespace {
      */
     const int MOST_ATTACKERS = 16;
 
+    /**
+     * **A stamp no live combat can wear.** A tally whose battle has ended is marked with
+     * this instead of being cleared - the figures are what the tooltip shows after a fight
+     * - and because no heap address is ever this value, the next battle to arrive always
+     * counts as a different one.
+     */
+    const uintptr_t FINISHED = ~static_cast<uintptr_t>(0);
+
+    uintptr_t landCombatVFTable = 0;
     DWORD takeDamage = 0;
     DWORD resumeAt = 0;
     DWORD settleResume = 0;
@@ -205,7 +214,13 @@ namespace {
     @brief the unit's tally for this battle, cleared if its last was a different one
 
     A unit that fought this morning and is fighting again this afternoon should read as the
-    afternoon's, not the sum. The combat pointer is the whole test.
+    afternoon's, not the sum.
+
+    **The pointer alone is not enough to tell two battles apart**, because a freed CCombat's
+    address is handed out again and CCombat carries no id to key on instead - `+0x10` and
+    `+0x14` are its two combatants. `battleEnded` closes that by retiring the stamp when the
+    game says the battle is over, so a later combat landing on the same address can never
+    match one already counted.
     */
     Tally* tallyFor(uintptr_t unit, uintptr_t combat) {
         Entry* entry = entryFor(unit, true);
@@ -449,12 +464,33 @@ bool Hooks::Tooltips::CombatUnitDamage::install() {
         return false;
     }
 
+    landCombatVFTable = base + CCombat::VFTable::CLandCombat;
     installedFlag = true;
     statusText = "installed";
     INFO_OUT(printf("CombatUnitDamage: counting what each unit deals and takes in a land battle, "
         "%u units in %u KB\n", static_cast<unsigned>(CAPACITY),
         static_cast<unsigned>(sizeof entries / 1024)));
     return true;
+}
+
+void Hooks::Tooltips::CombatUnitDamage::battleEnded(uintptr_t combat) {
+    // **Land only, and that loses nothing**: the count is taken inside
+    // CLandCombatant::FireUnit, so no naval, air or bombing combat can ever have stamped a
+    // tally. Checking the vftable is one read; the walk it skips is 2048 entries, several
+    // times a day, to find nothing.
+    uintptr_t vftable = 0;
+    if (combat == 0 || landCombatVFTable == 0
+        || !Mem::tryRead(combat, vftable) || vftable != landCombatVFTable) {
+        return;
+    }
+
+    // Retired rather than cleared: the figures are exactly what the tooltip should keep
+    // showing once the fighting stops.
+    for (size_t i = 0; i < CAPACITY; ++i) {
+        if (entries[i].used && entries[i].tally.combat == combat) {
+            entries[i].tally.combat = FINISHED;
+        }
+    }
 }
 
 bool Hooks::Tooltips::CombatUnitDamage::installed() {
