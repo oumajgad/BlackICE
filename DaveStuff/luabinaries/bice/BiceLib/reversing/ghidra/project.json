@@ -8564,6 +8564,41 @@
    "comment": "**How wide a string draws, in pixels**, virtual slot 10. A negative `length` means to the NUL.\n\nEach byte adds its glyph's xadvance and then the kerning pair between it and **the literal next byte** - the game does not skip an escape to find the next drawn character. A glyph the font does not list adds nothing.\n\nThe escapes: 0xA7 and the byte after it are skipped, but only where the virtual at +0x4C says this font handles them; 0x40 takes three bytes and adds an icon width from the virtual at +0x68; 0xA3 takes a [A-Za-z_] name and adds one from +0x64; 0xA4 adds a flat 8; `{` adds 8 and takes two bytes.\n\nA newline ends a line rather than the string, and the return is the widest line.\n\nBiceLib's Text::Font follows all of this except the icon escapes, which it measures as ordinary glyphs because nothing it writes contains one.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-text.md"
+  },
+  {
+   "rva": "0x23C520",
+   "kind": "function",
+   "name": "UpdateMapCamera",
+   "no_signature": "Four stack arguments - it ends `ret 0x10` - **and** two objects in registers: the camera arrives in ESI and the mouse in EDI, both read before the prologue has finished. Under custom storage every parameter has to be placed or none does, and two of the four stack arguments have not been identified, so placing the rest would be a guess dressed as a fact.",
+   "comment": "**Moves the map camera, once a frame.** ESI is the camera (a MapCamera, which lives at CInGameIdler +0x1938), EDI the object the mouse position is asked of, and the first stack argument the one key states are asked of.\n\nIn order: dragging with the middle button, which works through the map projection rather than the screen; the arrow keys, tested as VK_LEFT, VK_UP, VK_RIGHT and VK_DOWN through the key object's +0x24; **the four screen edge tests at 0x23CE97** (see MapEdgeScrollTests); then clamping the result to the camera's limits.\n\nRead for the parts named; the zoom and rotation arithmetic around them has not been followed.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-camera.md"
+  },
+  {
+   "rva": "0x23CE97",
+   "kind": "instruction",
+   "name": "MapEdgeScrollTests",
+   "comment": "**Where the map starts scrolling because the mouse is against the edge of the screen**, and where BiceLib stops it.\n\nFour tests in a row, one per edge, each the same shape: ask EDI for the mouse position, compare one coordinate against one of the camera's edges give or take six pixels, and move the camera if it is past it.\n\n    mov  edx, [edi]              ; the mouse object's vftable\n    mov  edx, [edx + 0x4C]       ; its \"where is the mouse\"\n    lea  eax, [esp + 0x24]\n    push eax\n    mov  ecx, edi\n    call edx\n    mov  ecx, [esi + 0x328]      ; edge_top, then bottom, left, right\n    add  ecx, 6\n    cmp  [eax + 4], ecx\n    jge  <past it>\n\nThey run from here to **0x23CFB5**, where the camera is clamped, with nothing else in between - so a five byte jump from the first to the last removes all four and leaves the keyboard and the drag alone. The two instructions it replaces are exactly five bytes.\n\n**Every branch that enters the range lands on this first byte** - five of them, with the only others being each test skipping itself - which is what makes jumping over the whole run safe. Checked with `reversing/cfg.py --lands-in 0x63ce97 0x63cfb5`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-camera.md"
+  },
+  {
+   "rva": "0x243970",
+   "kind": "function",
+   "name": "CInGameIdler::GetMapCamera",
+   "signature": "MapCamera* __thiscall CInGameIdler::GetMapCamera(CInGameIdler* this)",
+   "comment": "Virtual slot 28. The whole body is `lea eax, [ecx + 0x1938]; ret` - the camera is held by value inside the idler, so this hands back its address rather than a pointer it stores.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-camera.md"
+  },
+  {
+   "rva": "0x24C0E0",
+   "kind": "function",
+   "name": "CInGameIdler::CentreOnProvince",
+   "signature": "void __thiscall CInGameIdler::CentreOnProvince(CInGameIdler* this, CMapProvince* province)",
+   "comment": "**Puts the camera on a province**, virtual slot 48. What the unit panel's `unit_location_button` ends up calling, and so what its `w` shortcut does.\n\nTakes the map position off the province's **path node** (`CMapProvince +0xD4`), whose x and y are at its +0x5C and +0x60, converts both to float, and writes them to the camera got from GetMapCamera. It writes `x` and `y` and then copies each into `x_settled` and `y_settled`, which is what makes the move immediate rather than something the camera eases into.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-camera.md"
   }
  ],
  "structs": [
@@ -9878,6 +9913,13 @@
      "type": "CList",
      "comment": "the selected things",
      "source": "BiceLib/GameClasses/CInGameIdler.hpp:74"
+    },
+    {
+     "offset": "0x1938",
+     "name": "map_camera",
+     "type": "MapCamera",
+     "comment": "held by value, not by pointer: GetMapCamera is `lea eax, [ecx + 0x1938]`. Everything that moves the map goes through it",
+     "source": "reversing/FINDINGS-camera.md"
     }
    ],
    "vftable_rva": "0x11CEB54"
@@ -19146,6 +19188,68 @@
      "type": "CEU3BitmapFontGlyph*[256]",
      "comment": "one pointer per character code, null where the font has no such glyph. Indexed by the raw byte in GetStringWidth, so 256 entries exactly - and 0x94 + 256 * 4 is 0x494, which is the next field LoadGlyphs writes (0x6FA26D), so the length is measured rather than assumed",
      "source": "reversing/FINDINGS-text.md"
+    }
+   ]
+  },
+  {
+   "name": "MapCamera",
+   "comment": "Where the map is looked at from, held by value inside CInGameIdler at +0x1938 and reached through CInGameIdler::GetMapCamera. Named for what it holds: it has no vftable, so there is nothing in the RTTI export to name it after.\n\nOnly the fields the scrolling touches are known; the zoom and rotation it also carries have not been worked out.",
+   "fields": [
+    {
+     "offset": "0x324",
+     "name": "edge_left",
+     "type": "int",
+     "comment": "the screen x the map starts at. The mouse being within six pixels of it scrolls the map west",
+     "source": "reversing/FINDINGS-camera.md"
+    },
+    {
+     "offset": "0x328",
+     "name": "edge_top",
+     "type": "int",
+     "comment": "the screen y the map starts at; within six pixels scrolls north",
+     "source": "reversing/FINDINGS-camera.md"
+    },
+    {
+     "offset": "0x32C",
+     "name": "edge_right",
+     "type": "int",
+     "comment": "the screen x the map ends at; within six pixels scrolls east",
+     "source": "reversing/FINDINGS-camera.md"
+    },
+    {
+     "offset": "0x330",
+     "name": "edge_bottom",
+     "type": "int",
+     "comment": "the screen y the map ends at; within six pixels scrolls south",
+     "source": "reversing/FINDINGS-camera.md"
+    },
+    {
+     "offset": "0x334",
+     "name": "x",
+     "type": "float",
+     "comment": "where the camera is looking, in map coordinates. This is what every kind of scrolling adds to and what the clamp bounds",
+     "source": "reversing/FINDINGS-camera.md"
+    },
+    {
+     "offset": "0x338",
+     "name": "y",
+     "type": "float",
+     "comment": "the same, north to south",
+     "source": "reversing/FINDINGS-camera.md"
+    },
+    {
+     "offset": "0x33C",
+     "name": "x_settled",
+     "type": "float",
+     "comment": "a second copy of `x`. CentreOnProvince and the camera's own setup both write the position and then copy it into this pair, which is what makes those moves immediate - so this is the value the camera has rather than the one it is heading for. Which of the two the renderer reads has not been checked",
+     "source": "reversing/FINDINGS-camera.md"
+    },
+    {
+     "offset": "0x340",
+     "name": "y_settled",
+     "type": "float",
+     "comment": "the same, north to south",
+     "source": "reversing/FINDINGS-camera.md"
     }
    ]
   }

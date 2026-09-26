@@ -1,17 +1,12 @@
-// Options: where the game puts its event popups, how this overlay is opened and how
-// big it draws, and the debug console.
+// Utility Options: how this overlay opens, how big it draws, what it looks like, and
+// the two things BiceLib itself owns - its crash reports and its log console.
 //
-// Unrelated things the wx page had in one grid of buttons, kept together here but
-// separated on the page. They differ in where the setting actually lives:
-//   - the event popup position is a line in the mod's interface files, rewritten in
-//     place, so it outlives the session and applies to every save;
-//   - the toggle key is in BiceLib's own settings file and outlives the session too;
-//   - the font size is this overlay's own, and lasts as long as the game does;
-//   - the console buttons are BiceLib's, unchanged from the wx page.
+// Nothing here changes the game. What does is on the Game Settings page beside it.
 //
-// The message and combat popup position was here as well and has been dropped: the mod
-// no longer uses it. BiceData.Options.SetMessagePopups still exists, because the wx
-// utility's own options page calls it.
+// They differ in how long they last, which is worth knowing before changing one:
+//   - the toggle key and the theme are in BiceLib's own settings file and outlive the
+//     session;
+//   - the font size is this overlay's own and lasts only as long as the game does.
 //
 // The wx page's font buttons resized wxWidgets controls and have no counterpart; ImGui
 // scales its font instead, which is the same intent by different means.
@@ -20,7 +15,6 @@
 #include <Gui/GuiPage.hpp>
 #include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
-#include <GameState/MapEdgeScroll.hpp>
 #include <Overlay.hpp>
 #include <Settings.hpp>
 
@@ -30,172 +24,25 @@
 #include <imgui.h>
 
 namespace {
-    const char* COLLECT = "BiceLibGui.Options.Collect";
-    const char* SET_EVENT_POPUPS = "BiceLibGui.Options.SetEventPopups";
     const char* START_CONSOLE = "BiceLib.startConsole";
     const char* STOP_CONSOLE = "BiceLib.stopConsole";
 
-    const double LEFT = 0.0;
-    const double CENTER = 1.0;
-
-    bool valid = false;
-    bool available = false;
-    std::string reason;
-    std::string eventPopups = "unknown";
-    std::string eventFile;
-
+    /**@brief what the last button pressed did, shown beside the ones that set it*/
     std::string status;
     bool statusIsError = false;
-    bool loaded = false;
 
-    void readSnapshot() {
-        available = Gui::Lua::boolField("available");
-        reason = Gui::Lua::stringField("reason");
-        if (!available) {
+    /**@brief the status line, where the button that wrote it can be seen next to it*/
+    void drawStatus() {
+        if (status.empty()) {
             return;
         }
-        // Collect also returns messagePopups and dialogFile, which nothing here
-        // reads any more.
-        eventPopups = Gui::Lua::stringField("eventPopups", "unknown");
-        eventFile = Gui::Lua::stringField("eventFile");
-        loaded = true;
-    }
-
-    /**@brief reads the interface files; on demand only, never on a timer*/
-    void refresh() {
-        if (!Gui::Lua::beginTableCall(COLLECT)) {
-            valid = false;
-            return;
-        }
-        valid = true;
-        readSnapshot();
-        Gui::Lua::endCall();
-    }
-
-    void setPopups(const char* path, double mode, const char* what) {
-        if (!Gui::Lua::beginTableCallWithNumber(path, mode)) {
-            valid = false;
-            return;
-        }
-        valid = true;
-
-        const bool ok = Gui::Lua::boolField("ok");
-        const std::string failure = Gui::Lua::stringField("reason");
-        readSnapshot();
-        Gui::Lua::endCall();
-
-        statusIsError = !ok;
-        status = ok ? (std::string(what) + " moved") : ("Could not write the file: " + failure);
-    }
-
-    /**
-    @brief one setting's current state and the two buttons that change it
-
-    The button for the state the file is already in is disabled rather than hidden, so
-    the pair reads as a choice with one of them selected.
-    */
-    void drawChoice(const char* label, const std::string& current, const char* path) {
-        ImGui::TextUnformatted(label);
-        ImGui::SameLine(220.0f);
-
-        ImGui::BeginDisabled(current == "left");
-        if (ImGui::Button((std::string("Left##") + label).c_str())) {
-            setPopups(path, LEFT, label);
-        }
-        ImGui::EndDisabled();
-
         ImGui::SameLine();
-        ImGui::BeginDisabled(current == "center");
-        if (ImGui::Button((std::string("Center##") + label).c_str())) {
-            setPopups(path, CENTER, label);
-        }
-        ImGui::EndDisabled();
-
-        ImGui::SameLine();
-        if (current == "custom") {
-            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning), "edited by hand");
-            ImGui::SetItemTooltip("The line is there but holds neither of the two known "
-                "positions, so it was changed outside this utility.");
-        }
-        else if (current == "unknown") {
-            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Error), "not found");
-            ImGui::SetItemTooltip("The marked line is missing from the interface file. "
-                "Check that the mod version matches this utility.");
-        }
-        else {
-            ImGui::TextDisabled("currently %s", current.c_str());
-        }
-    }
-
-    /**@brief the one option here that is a patch rather than a file the mod owns*/
-    void drawMap() {
-        ImGui::SeparatorText("Map");
-
-        bool edgeScroll = MapEdgeScroll::enabled();
-        if (ImGui::Checkbox("Scroll the map when the mouse is at the screen edge",
-            &edgeScroll)) {
-            MapEdgeScroll::setEnabled(edgeScroll);
-        }
-        if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip(
-                "Off stops the map moving when the cursor reaches the edge of the\n"
-                "screen. The arrow keys and dragging with the middle mouse button\n"
-                "still work.\n\n"
-                "The game's own scroll_speed setting is the speed of all scrolling,\n"
-                "so turning it down would have slowed those too. This patches out\n"
-                "the four edge tests instead and leaves the rest alone.\n\n"
-                "Remembered between sessions.");
-        }
-
-        if (!MapEdgeScroll::enabled() && !MapEdgeScroll::available()) {
-            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
-                "Not applied: %s", MapEdgeScroll::status());
-        }
+        ImGui::TextColored(statusIsError ? Gui::Theme::mark(Gui::Theme::Mark::Error)
+                                         : Gui::Theme::mark(Gui::Theme::Mark::Success),
+            "%s", status.c_str());
     }
 
     void drawOptions() {
-        if (!loaded) {
-            refresh();
-        }
-
-        // Before the Lua check: this section is a patch on the executable and has
-        // something to offer even where the mod's own files cannot be read.
-        drawMap();
-        ImGui::Spacing();
-
-        if (!valid) {
-            ImGui::TextDisabled("Lua unavailable: %s", Gui::Lua::unavailableReason());
-            return;
-        }
-
-        ImGui::SeparatorText("Popup positions");
-        if (!available) {
-            ImGui::TextDisabled("%s", reason.c_str());
-        }
-        else {
-            drawChoice("Event popups", eventPopups, SET_EVENT_POPUPS);
-
-            ImGui::Spacing();
-            if (ImGui::Button("Re-read the files")) {
-                refresh();
-                status.clear();
-            }
-            ImGui::SameLine();
-            if (!status.empty()) {
-                ImGui::TextColored(statusIsError ? Gui::Theme::mark(Gui::Theme::Mark::Error)
-                                                 : Gui::Theme::mark(Gui::Theme::Mark::Success),
-                    "%s", status.c_str());
-            }
-            else {
-                ImGui::TextDisabled("Restart the game for a change to take effect");
-            }
-
-            ImGui::TextWrapped("This rewrites a marked line in the mod's own interface "
-                "file, so the setting outlives the session and applies to every save - "
-                "and reinstalling the mod undoes it.");
-            ImGui::TextDisabled("%s", eventFile.c_str());
-        }
-
         ImGui::SeparatorText("This overlay");
 
         ImGui::Text("Open and close with");
@@ -323,6 +170,7 @@ namespace {
             status = "Folder path copied";
             statusIsError = false;
         }
+        drawStatus();
         ImGui::TextDisabled("%s", CrashReport::folder());
         if (CrashReport::written() > 0) {
             ImGui::Text("%d written this session, the last being %s",
@@ -342,6 +190,7 @@ namespace {
             status = "Console detached";
             statusIsError = false;
         }
+        drawStatus();
         ImGui::TextWrapped("The separate console window BiceLib writes its log to. Not "
             "to be confused with the Lua Console on the Debug dock, which runs script.");
     }
@@ -349,9 +198,10 @@ namespace {
     class OptionsPage : public Gui::GuiPage
     {
     public:
-        const char* title() const override { return "Actions"; }
+        const char* title() const override { return "Utility Options"; }
         const char* group() const override { return "Options"; }
-        int order() const override { return 10; }
+        // After the two that change the game, since this one changes only the utility.
+        int order() const override { return 30; }
         void draw() override { drawOptions(); }
     };
 }
