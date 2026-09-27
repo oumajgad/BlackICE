@@ -462,6 +462,27 @@ namespace CCountry {
 
     /**@brief the country with this id, or 0*/
     uintptr_t findById(int id);
+
+    /**
+    @brief the province the country's capital is in, or 0 where it has none
+
+    `CCountry::GetCapitalLocation` (rva 0x17AF0), which answers a CMapProvince the game
+    itself hands out - so a province from here needs no lookup of our own and cannot be
+    the wrong kind of object.
+
+    The **declared** capital, which is not always where the country is being run from: see
+    actingCapitalLocation.
+    */
+    [[nodiscard]] uintptr_t capitalLocation(uintptr_t country);
+
+    /**
+    @brief where the country is actually being run from, or 0 where there is nowhere
+
+    `CCountry::GetActingCapitalLocation` (rva 0x2F100). Differs from capitalLocation once
+    the declared capital is lost or the government is in exile, and it is the one
+    CCountry::ShatterUnit uses when it picks a shattered division's new home.
+    */
+    [[nodiscard]] uintptr_t actingCapitalLocation(uintptr_t country);
 }
 
 /**

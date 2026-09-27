@@ -89,6 +89,19 @@ namespace HDS {
     [[nodiscard]] std::string readString(uintptr_t address);
 
     /**
+    @brief the same string, in the bytes the game stores rather than converted
+
+    **For text going back into the game**, which is the other direction entirely: a
+    message variable, a name written into one of the game's own strings. Converting to
+    UTF-8 first would hand the game two bytes where it expects one, so a division called
+    `Panzergrenadier-Division Großdeutschland` comes back wrong.
+
+    Use readString for anything the overlay or Lua will draw, and this for anything the
+    game will read.
+    */
+    [[nodiscard]] std::string readStringAsStored(uintptr_t address);
+
+    /**
     @brief reads a fixed size character buffer, stopping at the first NUL
 
     Not everything the game holds as text is a Hoi3CString. A country tag is four

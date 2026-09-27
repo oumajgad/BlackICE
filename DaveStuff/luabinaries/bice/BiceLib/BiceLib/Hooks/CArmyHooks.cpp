@@ -59,14 +59,14 @@ int getTraitsEffect(DWORD leaderAddress) {
     for (size_t i = 0; i < traits.size(); i++) {
         const uintptr_t trait = traits[i];
         std::string traitNameAsString = HDS::readString(trait + CTrait::Offsets::name);
-        DEBUG_OUT(printf("traitNameAsString: %s \n", traitNameAsString.c_str()));
+        // DEBUG_OUT(printf("traitNameAsString: %s \n", traitNameAsString.c_str()));
         if (Hooks::CArmy::commandLimitTraits->find(traitNameAsString) != Hooks::CArmy::commandLimitTraits->end()) {
             auto clt = Hooks::CArmy::commandLimitTraits->at(traitNameAsString);
             res += clt->limitEffect;
-            DEBUG_OUT(printf("clt->limitEffect: %i \n", clt->limitEffect));
-            DEBUG_OUT(printf("res: %i \n", res));
+            // DEBUG_OUT(printf("clt->limitEffect: %i \n", clt->limitEffect));
+            // DEBUG_OUT(printf("res: %i \n", res));
         }
-        DEBUG_OUT(printf("----------\n"));
+        // DEBUG_OUT(printf("----------\n"));
     }
 
     return res;
@@ -75,7 +75,7 @@ int getTraitsEffect(DWORD leaderAddress) {
 int getAttachedBrigadesAmount(DWORD* higherUnitAddress) {
     int res = 0;
 
-    DEBUG_OUT(printf("getAttachedBrigadesAmount higherUnitAddress: %#010x \n", (uintptr_t)higherUnitAddress));
+    // DEBUG_OUT(printf("getAttachedBrigadesAmount higherUnitAddress: %#010x \n", (uintptr_t)higherUnitAddress));
     const std::vector<uintptr_t> attached = HDS::walkList(
         (uintptr_t)higherUnitAddress + CUnit::Offsets::children);
     for (size_t i = 0; i < attached.size(); i++) {
@@ -85,34 +85,34 @@ int getAttachedBrigadesAmount(DWORD* higherUnitAddress) {
         if (brigadesAmount == 1 && oobLevel == CUnit::Level::Division) { // brigades are held as divisions
             res++;
         }
-        DEBUG_OUT(printf("res %d \n",res));
+        // DEBUG_OUT(printf("res %d \n",res));
     }
 
     return res;
 }
 
 DWORD handleUnitAttachmentLimit(DWORD currentlyAttachedUnitAmount, DWORD* unitToAttach, DWORD* lastCountedUnit) {
-    DEBUG_OUT(printf("attachedUnitAmount: %d \n", (unsigned int)currentlyAttachedUnitAmount));
-    DEBUG_OUT(printf("unitToAttachName: %s \n", unitName(unitToAttach).c_str()));
-    DEBUG_OUT(printf("lastCountedUnitName: %s \n", unitName(lastCountedUnit).c_str()));
+    // DEBUG_OUT(printf("attachedUnitAmount: %d \n", (unsigned int)currentlyAttachedUnitAmount));
+    // DEBUG_OUT(printf("unitToAttachName: %s \n", unitName(unitToAttach).c_str()));
+    // DEBUG_OUT(printf("lastCountedUnitName: %s \n", unitName(lastCountedUnit).c_str()));
 
     DWORD newLimit = 5;
 
     DWORD brigadesAmount = unitField(unitToAttach, CUnit::Offsets::regiments + HDS::ListOffsets::count);
     DWORD oobLevel = unitField(unitToAttach, CUnit::Offsets::oob_level);
-    DEBUG_OUT(printf("brigadesAmount: %d \n", brigadesAmount));
+    // DEBUG_OUT(printf("brigadesAmount: %d \n", brigadesAmount));
     if (brigadesAmount == 1 && oobLevel == CUnit::Level::Division) {
         return 999;
     }
 
     DWORD tagId = unitField(unitToAttach, CUnit::Offsets::owner + CCountryTag::Offsets::id);
-    DEBUG_OUT(printf("tagId: %d \n", tagId));
+    // DEBUG_OUT(printf("tagId: %d \n", tagId));
     DWORD* higherUnit = (DWORD*)unitField(lastCountedUnit, CUnit::Offsets::higher_oob_unit_ptr);
-    DEBUG_OUT(printf("higherUnit: %#010x \n", (unsigned int) higherUnit));
+    // DEBUG_OUT(printf("higherUnit: %#010x \n", (unsigned int) higherUnit));
     if (higherUnit != 0) {
-        DEBUG_OUT(printf("higherUnitName: %s \n", unitName(higherUnit).c_str()));
+        // DEBUG_OUT(printf("higherUnitName: %s \n", unitName(higherUnit).c_str()));
         DWORD higherUnitOobLevel = unitField(higherUnit, CUnit::Offsets::oob_level);
-        DEBUG_OUT(printf("higherUnitOobLevel: %u \n", higherUnitOobLevel));
+        // DEBUG_OUT(printf("higherUnitOobLevel: %u \n", higherUnitOobLevel));
 
         if (higherUnitOobLevel == CUnit::Level::ArmyGroup) {
             if (Hooks::CArmy::armyGroupUnitLimitPerCountry[tagId] != 0) {

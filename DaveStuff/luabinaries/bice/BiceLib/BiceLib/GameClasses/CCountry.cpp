@@ -15,6 +15,20 @@ namespace {
      */
     const size_t MAX_COUNTRIES = 4096;
 
+    /**@brief the two capital accessors, both `__thiscall` on the country and both
+       answering a CMapProvince*/
+    const uintptr_t GET_CAPITAL_LOCATION = 0x17AF0;
+    const uintptr_t GET_ACTING_CAPITAL_LOCATION = 0x2F100;
+    typedef uintptr_t(__thiscall* GetLocation)(uintptr_t country);
+
+    /**@brief either accessor, called on \p country, guarding the nulls*/
+    uintptr_t locationThrough(uintptr_t rva, uintptr_t country) {
+        if (country == 0 || Hooks::MODULE_BASE == 0) {
+            return 0;
+        }
+        return reinterpret_cast<GetLocation>(Hooks::MODULE_BASE + rva)(country);
+    }
+
     /**
     @brief the country list as a base and a count, or false when there is none
 
@@ -238,4 +252,12 @@ uintptr_t CCountry::findById(int id) {
         }
     }
     return 0;
+}
+
+uintptr_t CCountry::capitalLocation(uintptr_t country) {
+    return locationThrough(GET_CAPITAL_LOCATION, country);
+}
+
+uintptr_t CCountry::actingCapitalLocation(uintptr_t country) {
+    return locationThrough(GET_ACTING_CAPITAL_LOCATION, country);
 }

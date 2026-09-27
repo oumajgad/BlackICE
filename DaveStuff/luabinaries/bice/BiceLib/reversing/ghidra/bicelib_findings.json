@@ -18112,6 +18112,36 @@
    ]
   },
   {
+   "name": "CMessageVariable",
+   "size": 68,
+   "fields": [
+    {
+     "offset": 0,
+     "name": "key",
+     "type": "Hoi3CString",
+     "comment": "the name without its dollars - `UNIT` fills `$UNIT$` (reversing/FINDINGS-messages.md)"
+    },
+    {
+     "offset": 28,
+     "name": "value",
+     "type": "Hoi3CString",
+     "comment": "what it is replaced with (reversing/FINDINGS-messages.md)"
+    },
+    {
+     "offset": 56,
+     "name": "previous",
+     "type": "CMessageVariable*",
+     "comment": "the node before this one (reversing/FINDINGS-messages.md)"
+    },
+    {
+     "offset": 60,
+     "name": "next",
+     "type": "CMessageVariable*",
+     "comment": "the node after it, null at the end (reversing/FINDINGS-messages.md)"
+    }
+   ]
+  },
+  {
    "name": "CMilitaryConstruction",
    "size": null,
    "fields": [
@@ -25828,6 +25858,25 @@
    "labels": []
   },
   {
+   "rva": 218544,
+   "namespace": "",
+   "name": "BuildMessagePopupText",
+   "confidence": "CERTAIN",
+   "evidence": "**Where a message popup's text actually comes from.** Builds the localisation keys off the type's name and fills the window: `_HEADER`, `Header`, `Line1` to `Line6`, `AgreeButton`, `DeclineButton`, `CenterOK`, and the spacing from `popup_textline_dist` and `popup_textline_dist_two`. The combat popups' halves - `Line_left_1`, `Line_right_1`, `ATTDETAIL`, `DEFTOTAL` and the rest - are built here too.\n\nThe popup is its one argument; `[popup + 4]` is the sub-object it reads through and `popup + 0x144` the element it hands to a virtual at the top. Ten callers, none of them PostMessage, so it runs from the popup's own update rather than from the raise.\n(reversing/FINDINGS-messages.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "popup",
+      "type": "void*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 231680,
    "namespace": "CCombatTactic",
    "name": "LoadKey",
@@ -28600,6 +28649,15 @@
    "labels": []
   },
   {
+   "rva": 680000,
+   "namespace": "",
+   "name": "MessagePopupCallback",
+   "confidence": "TENTATIVE",
+   "evidence": "**Passed to PostMessage as its fourth argument at every raise site**, loaded as a bare immediate (`mov esi, 0x4A6040` at 0x100DBE, `mov eax, 0x4A6040` at 0x173A31), and handed on to whichever popup the post builds. Effectively a constant rather than a choice a caller makes.\n\nTakes the message as its one argument, reads the type's name out of it at `+0x20` and dispatches on that name - AIRATTACKTHEM, AIRATTACKUS and the rest.\n\n**Not where a popup's text comes from**, which is what it first looked like. A probe standing on it printed nothing at all for a message that renders correctly, so it is never called while the popup is up - a button's callback rather than a builder. See BuildMessagePopupText for the function that does fill one in.\n(reversing/FINDINGS-messages.md)",
+   "signature": null,
+   "labels": []
+  },
+  {
    "rva": 681856,
    "namespace": "CProvince",
    "name": "HasAdjacentEnemyOrCB",
@@ -30081,6 +30139,26 @@
    "labels": []
   },
   {
+   "rva": 882160,
+   "namespace": "CCountry",
+   "name": "BuildMessageVariables",
+   "confidence": "CERTAIN",
+   "evidence": "**The variables every message starts with**, as a `{first, last, count}` list of CMessageVariable with `$COUNTRY$` first and fourteen in all.\n\n**It does not allocate the list.** The first thing it does is `[country + 0x24]` into edi and clear it (0x33F60), then refill it - so the list is the **country's own member**, and every caller gets the same one. It is returned for convenience, not because it is fresh.\n\nWhich makes the lifetime a trap. CMessage::CMessage copies the entries into the message and **releases the source**, so two messages cannot be in flight for one country: raising one from inside CCountry::ShatterUnit, which was holding this list in edi, freed the nodes under the game's own message and it died walking them at `$MONARCHTITLE$` (a virtual call through a stale vftable at 0x67ACE7). Anything raising a message has to do it where no other raise is part-built.\n(reversing/FINDINGS-messages.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "country",
+      "type": "CCountry*"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
    "rva": 916208,
    "namespace": "CCountry",
    "name": "GetGlobalModifier",
@@ -31254,6 +31332,29 @@
    "labels": []
   },
   {
+   "rva": 1050544,
+   "namespace": "CCountry",
+   "name": "ShatterUnit",
+   "confidence": "CERTAIN",
+   "evidence": "**Takes a shattered unit off the map and gives it somewhere to come back to.**\n\nThe new home is the country's acting capital, or - where the unit's current province has a supply depot whose controller is not an enemy - that depot's province. It then walks `oob_level` up the order of battle, which is what puts the unit back under its theatre command rather than leaving it where it fell.\n(reversing/FINDINGS-shatter.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "country",
+      "type": "CCountry*"
+     },
+     {
+      "name": "unit",
+      "type": "CUnit*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 1052864,
    "namespace": "CCountry",
    "name": "GetNumberOfControlledProvinces",
@@ -31599,6 +31700,15 @@
     "hiddenReturn": false,
     "params": []
    },
+   "labels": []
+  },
+  {
+   "rva": 1116752,
+   "namespace": "",
+   "name": "PostMessage",
+   "confidence": "CERTAIN",
+   "evidence": "**Shows a message**: logs it, puts it on the map, pops it up, according to what `interface/messagetypes.txt` says for its type.\n\n`ret 0x88` is the whole of its argument shape, and it is **five** arguments, not three:\n\n    +0x08  the handler\n    +0x0C  the province\n    +0x10  the message, 0x78 bytes **by value**\n    +0x88  the popup builder at 0xA6040\n    +0x8C  zero\n\n8 + 0x78 + 8 = 0x88. The two above the message are pushed before it is reserved, so at a raise site they read as stray pushes a long way from the call.\n\nThis tests the builder at 0x1112DA and skips a branch when it is null, and passes it to every popup it builds - DefaultPopup, CombatStartPopup, ElectionResultPopup. What it is for is MessagePopupCallback's business; a popup's text is not built here or by it, but by BuildMessagePopupText from the popup's own update.\n\nReading the pair as coming *before* the message shifts every field by two words and crashes at 0x110B8C, where the type is read out of the message at +0x20.\n(reversing/FINDINGS-messages.md)",
+   "signature": null,
    "labels": []
   },
   {
@@ -35309,6 +35419,49 @@
      {
       "name": "flag",
       "type": "int"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1464160,
+   "namespace": "CUnit",
+   "name": "RetreatFromCombat",
+   "confidence": "CERTAIN",
+   "evidence": "**Falls a unit back when a combat ends, or removes it from the game when it cannot.**\n\n    call FindRetreatProvince(unit)     ; 0x1C5D50\n    ...                                ; or the unit's own province, where the\n                                       ; combat is not in it\n    cmp  [esp+0x10], 0                 ; is there a destination at all?\n    je   <message, then RemoveUnit>\n\nWith a destination it records it and sets `disengage` and `retreat`. **Without one the unit is removed from the game** through CGameState::RemoveUnit. Its two calls to that are the same ending reached two ways, differing only in the message shown.\n\n**Do not read this one from the decompiler.** Ghidra invents a `CProvince *unaff_ESI` and tests it against null, which reads like the destination check and is not: at the call site `mov ecx, esi` makes ESI the unit. The destination lives in `[esp+0x10]`.\n\n**Nor should its end be found by looking for padding.** CCombatant::RetreatAllUnits follows it with no `int3` between, so a scan for the next padding run reports that function's bare `ret` as this one's and makes the stack argument look caller-cleaned. It is an ordinary __thiscall: `ret 4`, on five paths.\n(reversing/FINDINGS-shatter.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CUnit*"
+     },
+     {
+      "name": "side",
+      "type": "CCombatant*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1465504,
+   "namespace": "CCombatant",
+   "name": "RetreatAllUnits",
+   "confidence": "CERTAIN",
+   "evidence": "Walks this side's units (`CCombatant +0x40`) and calls CUnit::RetreatFromCombat on each, so a lost combat falls the whole side back in one pass - and destroys whichever of them have nowhere to go.\n\nThe loop pushes the side and does not clean up after the call, which is the clearest evidence that RetreatFromCombat cleans its own argument: anything else would walk the stack up by four bytes per unit.\n(reversing/FINDINGS-shatter.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "side",
+      "type": "CCombatant*",
+      "storage": "EDI"
      }
     ]
    },
@@ -39354,6 +39507,29 @@
    "labels": []
   },
   {
+   "rva": 1846176,
+   "namespace": "CUnit",
+   "name": "CanMoveTo",
+   "confidence": "CERTAIN",
+   "evidence": "**Whether this unit may enter that province**, virtual slot 35.\n\nAmong its tests: a land unit whose strength fraction is below CUnit::ShatterThreshold **may not enter an enemy controlled province at all**. CPathFind::MayStep applies the same test, and the interface shows it as `UTM_MAY_SHATTER` and `UTM_NOT_LEGAL_RETREAT`.\n\nSo the shatter threshold does two jobs: below it a unit shatters when hurt, and below it a unit cannot push into enemy ground.\n(reversing/FINDINGS-shatter.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "bool",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CUnit*"
+     },
+     {
+      "name": "province",
+      "type": "CMapProvince*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 1847264,
    "namespace": "CUnit",
    "name": "ResetCombatModifiers",
@@ -39408,6 +39584,59 @@
    "labels": []
   },
   {
+   "rva": 1847616,
+   "namespace": "CUnit",
+   "name": "ShatterThreshold",
+   "confidence": "CERTAIN",
+   "evidence": "**How weak a unit has to get before it shatters**, in per mille of full strength:\n\n    t  = min(1000 - 500 * national / 1000, 500)     // national = CCountry +0xD4\n    t -= leader->skill * 10                          // CLeader +0x70\n    t -= unitStat * 3 / 1000                         // CUnit virtual slot 22\n\nWith no national modifier the base is 50%, and each point of leader skill takes a percentage point off it.\n\n**The 500, 3 and 10 are baked into the executable**, not defines.lua - see g_ShatterBase, g_ShatterStatWeight and g_ShatterSkillWeight, each filled by a static initialiser of the shape `_ftol2_sse(floorf(500.5))`. The only levers a mod has are the leader's skill and the national value, and that value has not been identified.\n\nBoth arguments arrive in registers and the result is the pointer it was handed back in eax; the body ends in a bare `ret`.\n\n**It dereferences `leader_ptr` (+0x12C) with no null check.**\n(reversing/FINDINGS-shatter.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "CFixedPoint*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "unit",
+      "type": "CUnit*",
+      "storage": "EDI"
+     },
+     {
+      "name": "result",
+      "type": "CFixedPoint*",
+      "storage": "ESI"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
+   "rva": 1849376,
+   "namespace": "CUnit",
+   "name": "SettleCombatDamage",
+   "confidence": "CERTAIN",
+   "evidence": "**Where a combat tick's damage lands on a unit, and where shattering is decided.**\n\nWalks the regiments through CSubUnit::SettleDamage, totalling the strength lost into the out parameter, then adds the casualty trickleback and charges the owner's officer pool. After that:\n\n    strength = sum(regiment->strength)\n    fraction = strength * 1000 / GetTotalStrengthCeiling()\n    if (fraction < CUnit::ShatterThreshold(unit))\n        CCountry::ShatterUnit(owner, unit)\n\n**Nothing here looks at where the unit is** - not the province, not its controller, not whether anything has it surrounded. Shattering is a strength check and only that, which is why a surrounded unit is not reliably destroyed: it shatters here, before ever reaching the retreat that would have removed it.\n\nThe third argument is untouched on the paths read.\n(reversing/FINDINGS-shatter.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CUnit*"
+     },
+     {
+      "name": "strengthLost",
+      "type": "int*"
+     },
+     {
+      "name": "arg",
+      "type": "int"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 1851184,
    "namespace": "",
    "name": "AddCasualtyTrickleback",
@@ -39441,6 +39670,26 @@
     "return": "bool",
     "hiddenReturn": false,
     "params": []
+   },
+   "labels": []
+  },
+  {
+   "rva": 1858896,
+   "namespace": "CUnit",
+   "name": "FindRetreatProvince",
+   "confidence": "CERTAIN",
+   "evidence": "**Where a unit falls back to**, or null when there is nowhere - which is what has CUnit::RetreatFromCombat remove it from the game instead.\n\nWalks the provinces adjacent to the unit's own, over the path node's edge array (stride 0x14), and keeps the **best scoring** one. A candidate has to be passable and to pass the unit's virtual slot 13; its score is then built from *its* own neighbours:\n\n- one under the unit owner's control, or passing the test at `0x0EFA00`, adds **1000**;\n- one under nobody's enemy control adds **500** (g_RetreatNeutralNeighbourScore);\n- **an enemy controlled neighbour halves the total** rather than adding to it.\n\nThe province is only taken if it scores above a floor, and the highest score wins. **Nothing qualifying means null**, and the unit is destroyed.\n\nRebels come first and separately: an owner tag of `REB` takes a path of its own which returns null outright unless `0x286C10` finds them somewhere with a flag at `+0x30`'s `+0x198` set.\n(reversing/FINDINGS-shatter.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "CMapProvince*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "unit",
+      "type": "CUnit*"
+     }
+    ],
+    "returnStorage": "EAX"
    },
    "labels": []
   },
@@ -44073,6 +44322,37 @@
    "labels": []
   },
   {
+   "rva": 2641472,
+   "namespace": "CGameState",
+   "name": "RemoveUnit",
+   "confidence": "CERTAIN",
+   "evidence": "**A unit ceases to exist**, and this is where it is destroyed.\n\nIt unlinks the unit from everything holding it - its country's units, its province, its parent's Children in the order of battle, plans and orders, the interface's selection - takes its regiments off it through RemoveRegimentFromUnit, and then calls **the unit's own scalar deleting destructor**, `unit->vftable->vf_0(1)`. So the object is freed, not handed on.\n\nIts callers are every place a unit is gone for good: a country capitulating or being annexed with units it cannot transfer, CDisbandCommand::Execute, and CUnit::RetreatFromCombat finding nowhere to retreat to.\n\n`ret 0xC`, so three stack arguments past the receiver; what the two flags mean has not been established.\n(reversing/FINDINGS-shatter.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CGameState*"
+     },
+     {
+      "name": "unit",
+      "type": "CUnit*"
+     },
+     {
+      "name": "arg2",
+      "type": "bool"
+     },
+     {
+      "name": "arg3",
+      "type": "bool"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 2650224,
    "namespace": "",
    "name": "RunDailySupplyPass",
@@ -44323,6 +44603,72 @@
    "labels": []
   },
   {
+   "rva": 2723456,
+   "namespace": "",
+   "name": "GetMessageHandler",
+   "confidence": "CERTAIN",
+   "evidence": "**The one message handler**, made on first use and kept at `0x1689A8C`. Takes nothing and ends in a bare `ret`.\n\nWorth knowing because CCountry::ShatterUnit calls it in the **middle of pushing another call's arguments**, which reads like an eight argument call and is not. Mistaking it for one is what made the message system look far harder than it is.\n(reversing/FINDINGS-messages.md)",
+   "signature": {
+    "convention": "__cdecl",
+    "return": "void*",
+    "hiddenReturn": false,
+    "params": [],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
+   "rva": 2724992,
+   "namespace": "CMessageHandler",
+   "name": "FindType",
+   "confidence": "CERTAIN",
+   "evidence": "**A message type by name.** Forwards to the lookup at 0x299AC0 - the handler into eax, the name as a stack argument - and calls it a second time on the way out, which is what its result comes from.\n\n**A name the registry does not hold is not a crash**: it logs `Failed to find message type: <name>` from messagehandler.cpp and returns null. That is the whole cost of a misspelt or undeclared type, and it is what makes raising a mod-declared type safe to try.\n(reversing/FINDINGS-messages.md)",
+   "signature": {
+    "convention": "__fastcall",
+    "return": "void*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "name",
+      "type": "Hoi3CString*",
+      "storage": "ECX"
+     },
+     {
+      "name": "handler",
+      "type": "void*",
+      "storage": "EDX"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
+   "rva": 2726592,
+   "namespace": "CMessageHandler",
+   "name": "LookupType",
+   "confidence": "CERTAIN",
+   "evidence": "The search itself, under CMessageHandler::FindType. **The handler arrives in eax** and the name is the one stack argument; `ret 4`.\n(reversing/FINDINGS-messages.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "handler",
+      "type": "void*",
+      "storage": "EAX"
+     },
+     {
+      "name": "name",
+      "type": "Hoi3CString*"
+     }
+    ],
+    "returnStorage": "EAX"
+   },
+   "labels": []
+  },
+  {
    "rva": 2729280,
    "namespace": "CMessageType",
    "name": "SaveContents",
@@ -44370,6 +44716,15 @@
      }
     ]
    },
+   "labels": []
+  },
+  {
+   "rva": 2730608,
+   "namespace": "CMessage",
+   "name": "CMessage",
+   "confidence": "CERTAIN",
+   "evidence": "**Builds a message**, into the 0x80 buffer its first argument points at. Twelve arguments, `ret 0x30`, in the order CCountry::ShatterUnit pushes them:\n\n    1  the buffer to build into\n    2  the type, from CMessageHandler::FindType   -> +0x20\n    3  the variable list, which it walks and releases\n    4  the province                                -> +0x44\n    5  a head string, which CCountry::ShatterUnit passes **empty**\n    6  zero                                        -> +0x70\n    7,8   the game state's player tag and id       -> +0x34, +0x38\n    9,10  the country's +0xCA4 and +0xCA8          -> +0x3C, +0x40\n    11,12 two zeroes                               -> +0x68, +0x6C\n\nArguments 11 and 12 are not pushed: they are eight bytes reserved below the ten that are. The body is a plain field setter.\n(reversing/FINDINGS-messages.md)",
+   "signature": null,
    "labels": []
   },
   {
@@ -57236,12 +57591,48 @@
    "type": "int"
   },
   {
+   "rva": 23627612,
+   "namespace": "",
+   "name": "g_RetreatNeutralNeighbourScore",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "**The 500 a retreat candidate scores for a neighbour that is nobody's enemy**, against the 1000 it scores for one of the owner's own. Sits four bytes below g_ShatterSkillWeight and is filled the same way, `_ftol2_sse(floorf(500.5))`, so it is fixed in the executable and no mod can reach it.\n(reversing/FINDINGS-shatter.md)",
+   "type": "int"
+  },
+  {
+   "rva": 23627616,
+   "namespace": "",
+   "name": "g_ShatterSkillWeight",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "**The 10 in CUnit::ShatterThreshold**: each point of the leader's skill lowers the threshold by ten per mille, one percentage point. Static initialiser `floorf(10.5)`.\n(reversing/FINDINGS-shatter.md)",
+   "type": "int"
+  },
+  {
+   "rva": 23627668,
+   "namespace": "",
+   "name": "g_ShatterStatWeight",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "**The 3 in CUnit::ShatterThreshold**, weighting the value CUnit virtual slot 22 returns. Static initialiser `floorf(3.5)`.\n(reversing/FINDINGS-shatter.md)",
+   "type": "int"
+  },
+  {
    "rva": 23627676,
    "namespace": "",
    "name": "Define50",
    "kind": "global",
    "confidence": "CERTAIN",
    "evidence": "A define, 50 - the floor of the float 50.5, taken at startup. Thousandths, so 0.050. Five places read it and they do not agree on a purpose. CUnit's supply and fuel consumption multiply the army group leader's skill (CLeader +0x70) by it, scaled by how far that HQ's command reaches; the other three compare it against a unit's supply_received_percentage (+0xFC) and fuel_received_percentage (+0x100) to flag a unit that is short. 0x16886E8 is a separate global holding the same value from the same float. One name for it fits the consumption use and not the other three; which define it is has not been established.\n(reversing/CLASSES.md:267)",
+   "type": "int"
+  },
+  {
+   "rva": 23627692,
+   "namespace": "",
+   "name": "g_ShatterBase",
+   "kind": "global",
+   "confidence": "CERTAIN",
+   "evidence": "**The 500 in CUnit::ShatterThreshold** - the per mille strength a unit shatters below, before the leader and the national value move it. Filled by a static initialiser, `_ftol2_sse(floorf(500.5))`, so it is fixed in the executable and no mod can reach it.\n(reversing/FINDINGS-shatter.md)",
    "type": "int"
   },
   {
@@ -63990,9 +64381,9 @@
     {
      "slot": 35,
      "rva": 1846176,
-     "name": "vf_35",
-     "named": false,
-     "typed": false,
+     "name": "CanMoveTo",
+     "named": true,
+     "typed": true,
      "own": true,
      "comment": "slot 35, 005C2BA0"
     },
@@ -83137,9 +83528,9 @@
     {
      "slot": 35,
      "rva": 1846176,
-     "name": "vf_35",
-     "named": false,
-     "typed": false,
+     "name": "CanMoveTo",
+     "named": true,
+     "typed": true,
      "own": true,
      "comment": "slot 35, 005C2BA0"
     },
@@ -91874,9 +92265,9 @@
     {
      "slot": 35,
      "rva": 1846176,
-     "name": "vf_35",
-     "named": false,
-     "typed": false,
+     "name": "CanMoveTo",
+     "named": true,
+     "typed": true,
      "own": true,
      "comment": "slot 35, 005C2BA0"
     },

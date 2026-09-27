@@ -2,6 +2,7 @@
 #include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CCurrentGameState.hpp>
 #include <GameClasses/CGoodsPool.hpp>
+#include <GameClasses/GameString.hpp>
 #include <GameClasses/CModifier.hpp>
 #include <MemScan.hpp>
 #include <utils.hpp>
@@ -105,5 +106,26 @@ namespace CMapProvince {
         //lua_pushstring(L, province.owner_tag);
         //lua_settable(L, -3);
         return;
+    }
+
+    std::string name(uintptr_t province) {
+        if (province == 0) {
+            return std::string();
+        }
+        const uintptr_t named = province + Named::sub_object;
+        uintptr_t vftable = 0;
+        uintptr_t slot = 0;
+        if (!Mem::tryRead(named, vftable) || vftable == 0
+            || !Mem::tryRead(vftable + Named::name_slot * sizeof(uintptr_t), slot)
+            || slot == 0) {
+            return std::string();
+        }
+
+        // The game constructs into the out parameter without looking at what was there,
+        // so it has to arrive as a valid empty string - which is what Game::String is.
+        typedef void* (__thiscall* GetName)(uintptr_t self, void* out);
+        Game::String out;
+        reinterpret_cast<GetName>(slot)(named, out.raw());
+        return std::string(out.text());
     }
 }

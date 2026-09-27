@@ -1,13 +1,52 @@
 # Overview
 
-This is a LUA module written in C++ to achieve the following:
-* read game infos directly from memory which is not exposed by the existing Hoi3 LUA API
-    * This lib uses the "external" approach to reading memory. This makes it easier to test and is (pretty much) exactly as fast as using the "internal" way.
-* apply bugfix patches at runtime
-* modify/expand existing game mechanics
-* apply other miscellaneous patches
+`BiceLib.dll` is a C++ module loaded into `hoi3_tfh.exe` to do what the game's own Lua API
+cannot:
 
-LUA functions are provided to activate and configure the module. They are grouped the following way:
+* read the running game's state straight out of memory
+* patch bugs at runtime, either by rewriting a few bytes or by standing in front of a
+  function and doing the work in C++
+* add to or change existing game mechanics
+* add variables to what the game's own tooltips and effect texts say
+* draw an in-game utility overlay
+
+**It runs inside the game's own process.** Addresses are resolved against the module base
+at load, so nothing here is tied to where Windows happens to put the image, and patches are
+applied to live code. An earlier version read the game from outside; that is no longer how
+any of this works.
+
+Two other files cover the parts this one does not:
+
+| | |
+| --- | --- |
+| `README-imgui.md` | the utility overlay - what it draws, how it is switched on, how it gets on screen |
+| `reversing/README.md` | how the addresses in here were found, and the tooling that finds more |
+
+Everything below is the Lua API, grouped as it is grouped in Lua. Almost all of it is
+switched on from `script/bicelib_lua.lua`, which runs once per session.
+
+## Loading it
+
+* **BiceLib.setModuleBase()**
+    * Finds `hoi3_tfh.exe` in memory and stores its base. **Everything else needs this**, so
+      it is the first call `bicelib_lua.lua` makes.
+    * **Params**: /
+    * **Return values**: /
+    * **Notes**:
+        * Does nothing if called twice.
+* **BiceLib.startConsole()**
+    * Opens a console window for the module's own logging - every `INFO`, `WARNING` and
+      `ERROR` line in this document's functions goes there.
+    * **Params**: /
+    * **Return values**: /
+    * **Notes**:
+        * Quick-edit mode is turned off deliberately: clicking in a Windows console selects
+          text and **freezes the process that owns it** until the selection is cleared.
+        * Does nothing if called twice.
+* **BiceLib.stopConsole()**
+    * Detaches the console so its window can be closed.
+    * **Params**: /
+    * **Return values**: /
 
 ## BiceLib.GameInfo
 * **getCountryFlags(string countryTag)**:
@@ -35,6 +74,12 @@ LUA functions are provided to activate and configure the module. They are groupe
         1. *modifiers*: Mapping of *name (string)* -> *expiry date (string)*
     * **Notes**:
         * The first call can take up to a second to complete since it needs to find the country in memory. Subsequent calls are near instant due to caching. The cache is shared between *GameInfo* functions.
+* **getCountryGeneralModifiers(string countryTag)**:
+    * Get a map of the country's general modifiers and their current values
+    * **Params**:
+        1. *countryTag*: The TAG for which to retrieve the modifiers
+    * **Return values**:
+        1. *modifiers*: Mapping of *name (string)* -> *value (number)*, or *nil* if the tag wasn't found
 * **getCountryOffmapIc(string countryTag)**:
     * Gets the offmap ic value of a country
     * **Params**:
@@ -112,6 +157,13 @@ LUA functions are provided to activate and configure the module. They are groupe
     * **Notes**:
         * The traits display will only be updated after reopening the leader list.
         * This can add the same trait multiple times. During a save load the excess traits are removed.
+* **getLeaderDetails(int leaderId)**
+    * Gets everything known about one leader - name, rank, skill, experience, traits, what
+      he commands.
+    * **Params**:
+        1. *leaderId*: The ID of the leader
+    * **Return values**:
+        1. *details*: A table, or *nil* if no leader has that id
 * **activateLeaderListShowMaxSkill()**
     * This will make the ingame leader list also display a leaders max skill.
     * Max skill will be displayed inside parentheses following the current skill e.g.: "3 (7)"
@@ -179,6 +231,23 @@ Patches which only need a few bytes to be changed.
     * This happens especially in cases when the AI just conquered a country and immediately after creates a puppet.
     * **Params**: /
     * **Return values**: /
+* **historicalModelLogicFix()**
+    * A country can be handed a model it cannot field. When the game picks which model a
+      unit is built with, it scores each one by the **absolute** difference between the
+      technology levels the model asks for and the levels the country has - so a model
+      asking for *more* than the country has scores exactly as well as one asking for the
+      same amount *less*.
+    * This makes asking for more than is researched cost a flat, enormous penalty instead,
+      so such a model loses to any model that fits.
+    * **Params**: /
+    * **Return values**: /
+* **seaTerrainColourInSimplifiedMapMode()**
+    * Makes the Simplified Terrain map mode colour the sea as well as the land.
+    * That mode already works out a colour for all 3,547 sea provinces; the water ignored
+      them, because the shader that samples province colours is only used for two of the
+      map styles. This puts Simplified into the set that uses it.
+    * **Params**: /
+    * **Return values**: /
 
 ## BiceLib.ComplexPatches
 Patches which require some extra logic and hooking.
@@ -192,9 +261,155 @@ Patches which require some extra logic and hooking.
     * **Params**: /
     * **Return values**: /
 
+## BiceLib.EffectTexts
+Extra variables for what the game shows when an effect fires. **Each of these only adds
+variables - nothing appears until the localisation asks for them.**
+* **activateKillLeaderVariables()**
+    * Adds `$UNIT$`, `$LOCATION$` and `$WHERE$` to what the `kill_leader` effect shows, so
+      `KILL_LEADER_EFFECT` can say which unit the leader commands and where it is.
+    * **Params**: /
+    * **Return values**: /
+* **activateLoadOobDetails()**
+    * Replaces what `load_oob` shows - a file path and nothing else - with what the file
+      would actually do: how many units appear and where, what they are made of, and which
+      leaders it takes, with what each of those commands now.
+    * **Params**: /
+    * **Return values**: /
+    * **Notes**:
+        * The file is read off disk, because nothing about it is in memory until the effect
+          fires.
+* **activateTriggerIndent()**
+    * Indents what is inside an `and` or an `or` in a requirement tooltip.
+    * The game renders a requirement tree one line per trigger, three spaces per level, and
+      both container triggers pass a constant for their children instead of their own depth
+      plus one - so a condition inside an `and` or an `or` is drawn flush left whatever it
+      is nested in.
+    * **Params**: /
+    * **Return values**: /
+* **activateTriggerScroll()**
+    * Lets a requirement tooltip too tall for the screen be scrolled with **Alt and the
+      arrow keys**.
+    * **Params**: /
+    * **Return values**: /
+    * **Notes**:
+        * Nothing about the tooltip window is touched: the text itself is shortened from
+          the front, which works because the game rebuilds it continuously while hovered.
+
+## BiceLib.Tooltips
+Extra variables for the game's own tooltips. **As with the effect texts, nothing appears
+until the localisation asks.**
+* **activateManpowerBreakdown()**
+    * Splits the manpower tooltip's "needs X manpower to reinforce" into land, air and
+      naval, and offers each as a variable `MANPOWER_DETAILS_IRO` can place: `$LAND$`,
+      `$AIR$` and `$NAVY$`.
+    * **Params**: /
+    * **Return values**: /
+    * **Notes**:
+        * The three are taken from the one instruction that builds the total, so they add
+          up to it rather than merely ought to.
+* **activateCombatUnitStats()**
+    * The modifier list a unit shows in a battle says `Attack Modifier: 44.70%` and never
+      what of. This adds `$SOFTATTACK$`, `$HARDATTACK$`, `$PIERCING$`, `$DEFENSIVENESS$`,
+      `$TOUGHNESS$`, `$ARMOR$` and `$AIRATTACK$` to `BATTLE_ATTACKMOD`, totalled over the
+      division's brigades from each one's own definition - which already has its technology
+      in it.
+    * **Params**: /
+    * **Return values**: /
+
+## BiceLib.Messages
+* **show(string text, string header, number provinceId, string line2, string line3)**
+    * Puts one of the game's own message popups in front of the player, with text of your
+      own.
+    * **Params**:
+        1. *text*: the message's first line. **The only argument that is needed.**
+        2. *header*: who is reporting it. Defaults to "BlackICE reports that".
+        3. *provinceId*: what the message points at, and what its *Goto* button goes to.
+           Defaults to the player's capital.
+        4. *line2*, *line3*: two more lines, empty by default.
+    * **Return values**:
+        1. *success* (boolean): *false* with no game running, or if the queue is full
+    * **Notes**:
+        * Shown through the `BICE_MESSAGE` type, declared in
+          `interface/messagetypes.txt` and written in `localisation/BiceLib_messages.csv`.
+          A message's lines come from the localisation for its **type**, so the only way to
+          show arbitrary text is for that type's lines to be variables - which is what they
+          are.
+        * The popup appears **on the next frame**, not during the call. A message raised
+          straight away from inside the overlay's rendering comes up as an empty window;
+          this is queued and raised where the game raises its own.
+
 ## BiceLib.Inspector
 * **getSelectedEntity()**
     * Returns objects of what the player has selected ingame.
     * **Params**: /
     * **Return values**: A list of tables.
 
+## BiceLib.Overlay
+The in-game utility. See `README-imgui.md` for what it draws and for the settings that
+switch it on; these two are just the Lua handles.
+* **enable()**
+    * Installs the Direct3D hooks the overlay draws through. Called from
+      `script/gui-imgui.lua` rather than at startup, so turning the overlay off means the
+      hooks are never installed at all.
+    * **Params**: /
+    * **Return values**: /
+* **toggle()**
+    * Shows and hides it, the same as pressing **INSERT**.
+    * **Params**: /
+    * **Return values**: /
+
+## BiceLib.Reversing
+Workbench tools for reverse engineering, not for a normal session. Each is armed by hand
+and most write a csv next to the game. See `reversing/README.md`.
+* **activateCounters()**
+    * Counts how often the game reaches each address named in `BiceLibCounters.txt`, and
+      writes the totals to `BiceLibCounters.csv` once a game day.
+    * The disassembly says what code *would* do, not whether the game ever goes there.
+    * **Params**: /
+    * **Return values**: /
+    * **Notes**:
+        * Without the file this does nothing and says so.
+* **activateWatch()**
+    * Records what the game state fields named in `BiceLibWatch.txt` hold, writing a row to
+      `BiceLibWatch.csv` whenever one of them changes.
+    * **Params**: /
+    * **Return values**: /
+    * **Notes**:
+        * Hooks nothing: it reads once a frame and refuses an offset outside the object, so
+          a wrong line in the file costs a wrong number in a csv rather than the game.
+* **watchWrite(number address, number size)**
+    * Traps writes to an address and reports which instruction made them.
+    * **Params**:
+        1. *address*: what to watch
+        2. *size*: 1, 2 or 4
+    * **Return values**:
+        1. *success* (boolean)
+* **watchCombatModifiers(number offset)**
+    * The same trap, on the combat modifier list of the unit the last battle tooltip was
+      about. For a field nothing in the image appears to store to.
+    * **Params**:
+        1. *offset*: which field, defaulting to `0xDC`
+    * **Return values**:
+        1. *success* (boolean)
+    * **Notes**:
+        * Have a combat running and hover a unit in it, then call this and let the combat
+          tick.
+* **watchSubunit(number offset)**
+    * The same trap, on a field of the first subunit of that unit.
+    * **Params**:
+        1. *offset*: which field, defaulting to `0xAC`
+    * **Return values**:
+        1. *success* (boolean)
+* **stopWatching()**
+    * Clears whichever watch is armed and writes what it saw to `BiceLibWrites.csv`.
+    * **Params**: /
+    * **Return values**: /
+* **probeMessages(boolean on)**
+    * Prints the arguments of the next few messages the game posts, and of the popups it
+      builds their text into.
+    * For telling a message BiceLib raised apart from one the game raised itself, which is
+      the only way to see which field of an object passed by value on the stack is wrong.
+    * **Params**:
+        1. *on*: *false* puts the patched bytes back. Defaults to *true*.
+    * **Return values**:
+        1. *success* (boolean)
