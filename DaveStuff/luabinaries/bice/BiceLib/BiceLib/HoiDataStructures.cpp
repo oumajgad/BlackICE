@@ -47,6 +47,41 @@ std::string HDS::readString(uintptr_t address) {
     return Text::toUtf8(text);
 }
 
+std::string HDS::readStringAsStored(uintptr_t address) {
+    if (address == 0) {
+        return std::string();
+    }
+
+    uint32_t length = 0;
+    if (!Mem::tryRead(address + offsetof(Hoi3CString, length), length)
+        || length == 0 || length > MAX_STRING_LENGTH) {
+        return std::string();
+    }
+
+    uintptr_t characters = address;
+    if (length > INLINE_CAPACITY) {
+        uint32_t pointer = 0;
+        if (!Mem::tryRead(address, pointer) || pointer == 0) {
+            return std::string();
+        }
+        characters = pointer;
+    }
+
+    std::string text(length, '\0');
+    if (!Mem::tryReadBytes(characters, &text[0], length)) {
+        return std::string();
+    }
+
+    // The game is not always tidy about what follows the length.
+    const size_t terminator = text.find('\0');
+    if (terminator != std::string::npos) {
+        text.resize(terminator);
+    }
+    // No conversion: the caller is handing this back to the game, which wants its own
+    // Windows-1252.
+    return text;
+}
+
 std::string HDS::readChars(uintptr_t address, size_t size) {
     if (address == 0 || size == 0 || size > MAX_STRING_LENGTH) {
         return std::string();

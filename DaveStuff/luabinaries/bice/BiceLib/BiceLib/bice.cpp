@@ -40,9 +40,13 @@
 #include <Hooks/EffectText/LoadOobText.hpp>
 #include <Hooks/TriggerText/TriggerIndentText.hpp>
 #include <Hooks/TriggerText/TriggerScrollText.hpp>
+#include <GameClasses/GameMessage.hpp>
+#include <GameClasses/CCountryDataBase.hpp>
 #include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
 #include <Reversing/Counters.hpp>
+#include <Gui/LuaBridge.hpp>
+#include <Reversing/MessageProbe.hpp>
 #include <Reversing/WriteWatch.hpp>
 #include <Reversing/Watch.hpp>
 #include <Patches.hpp>
@@ -1041,6 +1045,97 @@ __declspec(dllexport) int activateCombatUnitStats(lua_State* L)
     return 1;
 }
 
+/**
+ * **The type a caller's own text is shown through.** Declared in
+ * `interface/messagetypes.txt` and written in `localisation/BiceLib_messages.csv`, where its
+ * lines are nothing but `$HEADER$`, `$TEXT$`, `$TEXT2$` and `$TEXT3$` - a message's text
+ * comes from the localisation for its type, so the only way to show arbitrary text is to
+ * make the type's text a set of variables and fill them here.
+ *
+ * All four are always set, empty where the caller left them out: a variable the text
+ * mentions and nothing supplies has never been tested, and an empty line is a known
+ * quantity.
+ */
+static const char* const FREE_TEXT_TYPE = "BICE_MESSAGE";
+static const char* const DEFAULT_HEADER = "BlackICE reports that";
+
+/**
+ * `Messages.show(text, header, provinceId, line2, line3)` puts a popup in front of the
+ * player with that text. Only `text` is needed: the header defaults, the province defaults
+ * to the player's capital (CCountry::capitalLocation), and the two extra lines to nothing.
+ *
+ * **Queued, not raised**, so it works from anywhere - the utility's GUI, the Lua console, an
+ * event effect, a tick hook. A message raised directly from inside the overlay's Present
+ * hook comes up as an empty window; see GameClasses/GameMessage.hpp.
+ */
+__declspec(dllexport) int showMessage(lua_State* L)
+{
+    const char* const text = (lua_gettop(L) > 0 && lua_isstring(L, 1))
+        ? lua_tostring(L, 1) : "";
+    if (*text == '\0') {
+        ERROR_OUT(printf("'Messages.show' needs some text \n"));
+        lua_pushboolean(L, 0);
+        return 1;
+    }
+    const char* const header = (lua_gettop(L) > 1 && lua_isstring(L, 2))
+        ? lua_tostring(L, 2) : DEFAULT_HEADER;
+    const int provinceId = lua_gettop(L) > 2 ? static_cast<int>(lua_tointeger(L, 3)) : 0;
+    const char* const line2 = (lua_gettop(L) > 3 && lua_isstring(L, 4))
+        ? lua_tostring(L, 4) : "";
+    const char* const line3 = (lua_gettop(L) > 4 && lua_isstring(L, 5))
+        ? lua_tostring(L, 5) : "";
+
+    const uintptr_t country = Game::playerCountry();
+    if (country == 0) {
+        ERROR_OUT(printf("'Messages.show' needs a running game \n"));
+        lua_pushboolean(L, 0);
+        return 1;
+    }
+
+    const uintptr_t province = (provinceId > 0)
+        ? CCurrentGameState::province(provinceId)
+        : CCountry::capitalLocation(country);
+
+    Game::Message message(FREE_TEXT_TYPE);
+    message.with("HEADER", header);
+    message.with("TEXT", text);
+    message.with("TEXT2", line2);
+    message.with("TEXT3", line3);
+    const bool ok = message.queue(country, province);
+    if (!ok) {
+        ERROR_OUT(printf("'Messages.show' failed: %s \n", Game::Message::status()));
+    }
+    lua_pushboolean(L, ok ? 1 : 0);
+    return 1;
+}
+
+/**
+ * @brief prints the arguments of the next few messages the game posts
+ *
+ * For comparing a message raised by hand against one the game raised itself, which is
+ * the only way to tell which field of a 0x78 byte object passed by value is wrong. Arm
+ * it, let a division shatter, raise one with `Messages.show`, and diff the two frames.
+ * It stands on the popup's text builder as well as on the post, so it also says whether
+ * a popup was filled in at all. See Reversing/MessageProbe.hpp.
+ */
+__declspec(dllexport) int probeMessages(lua_State* L)
+{
+    const bool on = lua_gettop(L) < 1 || lua_toboolean(L, 1) != 0;
+    if (!on) {
+        Reversing::MessageProbe::disarm();
+        INFO_OUT(printf("'probeMessages' off \n"));
+        lua_pushboolean(L, 1);
+        return 1;
+    }
+    const bool ok = Reversing::MessageProbe::arm();
+    if (!ok) {
+        ERROR_OUT(printf("'probeMessages' failed: %s \n", Reversing::MessageProbe::status()));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+
 /////////////////////////////////////
 //      INSPECTOR FUNCTIONS        //
 /////////////////////////////////////
@@ -1345,6 +1440,14 @@ void registerTooltipFunctions(lua_State* this_state) {
     return;
 }
 
+void registerMessageFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Messages");
+    lua_newtable(this_state);
+    registerFunction(this_state, "show", showMessage);
+    lua_settable(this_state, -3);
+    return;
+}
+
 void registerReversingFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "Reversing");
     lua_newtable(this_state);
@@ -1354,6 +1457,7 @@ void registerReversingFunctions(lua_State* this_state) {
     registerFunction(this_state, "watchWrite", watchWrite);
     registerFunction(this_state, "stopWatching", stopWatching);
     registerFunction(this_state, "activateWatch", activateWatch);
+    registerFunction(this_state, "probeMessages", probeMessages);
     lua_settable(this_state, -3);
     return;
 }
@@ -1398,6 +1502,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerComplexPatchFunctions(this_state);
     registerEffectTextFunctions(this_state);
     registerTooltipFunctions(this_state);
+    registerMessageFunctions(this_state);
     registerReversingFunctions(this_state);
     registerInspectorFunctions(this_state);
     registerOverlayFunctions(this_state);

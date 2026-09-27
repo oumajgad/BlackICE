@@ -1,4 +1,6 @@
 #pragma once
+
+#include <string>
 #include <cstdint>
 #include <lua.hpp>
 
@@ -292,6 +294,29 @@ namespace CMapProvince {
         //char* controller_tag;
         //int controller_id;
     };
+
+    /**
+     * **The named sub-object a province carries at `+8`**, and the slot on it that
+     * answers the display name. Read off CCountry::ShatterUnit, which fills `$LOCATION$`
+     * from exactly this at rva 0x100BA2: `this` is `province + 8` and the one argument is
+     * a `std::string` to write into.
+     */
+    namespace Named {
+        constexpr uintptr_t sub_object = 0x8;
+        constexpr int name_slot = 7;          // [vftable + 0x1C]
+    }
+
+    /**
+    @brief the province's display name, already localised, or empty where there is none
+
+    **Windows-1252, like everything the game hands out** - fine to pass straight back into
+    a message variable, and in need of Text::toUtf8 before it reaches the overlay.
+
+    Cheap enough to call per event and no cheaper: it is a virtual call into the game, so
+    not something to do per frame for every province. The GUI's own province names come
+    from Lua instead; this exists for the places Lua cannot be called from.
+    */
+    std::string name(uintptr_t province);
 
     CMapProvince Make(uintptr_t addr);
     CMapProvince GetMapProvinceById(int id);
