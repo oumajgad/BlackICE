@@ -9,7 +9,7 @@ rather than the decompiler's C. `FINDINGS-script.md` has the shapes a switch com
 and what each one costs if you miss it, and holds the two big ones - `CTrigger` with
 153 keywords and `CEffect` with 91.
 
-**266 loaders**, listed longest first. Where a class has a `common/` file of its own
+**271 loaders**, listed longest first. Where a class has a `common/` file of its own
 the keys are checked against it - anything the file uses that the loader does not know
 is a bug, and those are collected in the mod's `bugs.md`.
 
@@ -345,6 +345,7 @@ inherited - reading one of these reads all of them.
 | class | LoadKey | reads | classes | keys |
 | --- | --- | --- | --- | --- |
 | `CSubUnitDefinition` | `0x1A3C80` | a file | 2 | `active` `air` `air_attack` `air_defence` `air_detection` `amphibious` `amphibious_invasion_defence` `amphibious_invasion_speed` `ap_attack` `armor_value` `available_trigger` `build_cost_ic` `build_cost_manpower` `build_time` `can_be_pride` `can_paradrop` `capital` `carrier_size` `combat_width` `completion_size` `convoy_attack` `default_morale` `default_organisation` `defensiveness` `distance` `extra_amphibious_defence` `fort` `fuel_consumption` `hard_attack` `hull` `is_armor` `is_bomber` `is_buildable` `is_cag` `is_mobile` `is_rocket` `is_sub` `land` `max_percentage_of_type` `max_strength` `maximum_speed` `minimum_of_type` `naval` `night` `officers` `on_completion` `positioning` `priority` `radio_strength` `range` `repair_cost_multiplier` `river` `sea_attack` `sea_defence` `shore_bombardment` `soft_attack` `softness` `sprite` `strategic_attack` `sub_attack` `sub_detection` `supply_consumption` `suppression` `surface_defence` `surface_detection` `toughness` `transport` `transport_capability` `transport_weight` `type` `unit_group` `usable_by` `visibility` |
+| `CUnit` | `0x1B6E90` | a save block |  | `aggression_enabled` `aggression_setting` `air` `army` `armygroup` `arrow_state` `attack_delay` `can_reinforce` `can_upgrade` `combat_hours` `corps` `country_intel` `dig_in` `disengage` `division` `end_date` `expeditionary_date` `expeditionary_owner` `fuel` `id` `is_prioritized` `is_reserve` `leader` `location` `movement_progress` `name` `navy` `path` `plan` `possible_retreat` `previous` `regiment` `retreat` `ship` `start_date` `supplies` `theatre` `track` `was_paradropped` `wing` |
 | `CGameState` | `0x27FCB0` | a save block | 2 | `active_war` `ai_seed` `allied_objectives` `automate_sliders` `automate_tech_sliders` `automate_trade` `battle_plan` `combat` `controller` `date` `diplomacy` `faction` `fired_events` `flags` `gameplaysettings` `id` `income_statistics` `inflation_statistics` `leader` `nation_size_statistics` `player` `previous_war` `rebel` `rebel_faction` `scenario` `selectionGroups` `start_date` `undeclared_war` `unit` `victory_conditions` `weather` |
 | `CProvince` | `0x95880` | a save block | 2 | `capital` `controller` `core` `current_producing` `drawn` `flags` `history` `last_convoy_attack` `last_drawn` `last_throughput` `leadership` `manpower` `max_producing` `modifier` `name` `nationalism` `out_of_supply_days` `owner` `points` `pool` `revolt_risk` `strategic_resource` `throughput` `underground_action` `underground_owner` `weather` |
 | `CAIStrategy` | `0x4A40B0` | a save block |  | `air_perc` `antagonize` `area_theatre` `armor_bias` `befriend` `building_prov` `conquer_prov` `consolidate` `defend_prov` `initialized` `land_perc` `max_subunits` `military_access` `naval_perc` `personality` `protect` `rival` `static` `threat` `vassal` `war_with` |
@@ -385,6 +386,7 @@ inherited - reading one of these reads all of them.
 | `CActiveMission` | `0x5C7A20` | a save block |  | `owner` `parent_scope` `scope` `start_date` `type` |
 | `CCountryWarTargetValue` | `0x765A0` | a save block |  | `date` `decision` `id` `limited` `value` |
 | `CDecision` | `0x598960` | an event script |  | `ai_will_do` `allow` `effect` `major` `potential` |
+| `CEU3Graphics` | `0x670EB0` | a file |  | `bitmapfonts` `fonts` `lightTypes` `objectTypes` `spriteTypes` |
 | `CRelation` | `0x6465D0` | a save block | 9 | `cancel` `end_date` `first` `second` `start_date` |
 | `CRelationChange` | `0x1F2F30` | an event script |  | `end_date` `first` `second` `start_date` `value` |
 | `CTradeRoute` | `0x64CBA0` | a save block |  | `convoy` `from` `to` `trade_from` `trade_to` |
@@ -411,6 +413,7 @@ inherited - reading one of these reads all of them.
 | `CVersion` | `0x6B45E0` | a save block |  | `data` `executable` `minValue` `name` |
 | `CWarGoalEffect` | `0x5BD480` | an event script |  | `from` `target` `this` `war_goal` |
 | `CActivateUnitPlanCommand` | `0x1E55B0` | an event script |  | `active` `allow_hq_reorg` `unit` |
+| `CArmy` | `0x1CEC40` | a save block |  | `parent` `staging_province` `target` |
 | `CCGMTemplate` | `0x18590` | an event script |  | `deployment` `diplomacy` `technology` |
 | `CCgmSetBuildingLevelCommand` | `0x2CD90` | an event script |  | `building` `level` `location` |
 | `CCgmTechResearchChangeCommand` | `0x2ADD0` | an event script |  | `country` `level` `technology` |
@@ -427,6 +430,7 @@ inherited - reading one of these reads all of them.
 | `CCreateHigherCommand` | `0x1E0610` | an event script |  | `parent` `select_units` `unit` |
 | `CMaskedSpriteType` | `0x44C030` | a file |  | `effectFile` `textureFile1` `textureFile2` |
 | `CNavalSortieOrder` | `0x19E640` | a save block |  | `current` `provinces` `start` |
+| `CNavy` | `0x1CF6A0` | a save block |  | `army` `at_sea` `base` |
 | `CSelectEventOptionCommand` | `0x60C260` | an event script |  | `event` `option` `scope` |
 | `CSelectionGroupCommand` | `0x1EA7C0` | an event script |  | `group` `index` `tag` |
 | `CSendCovertOpsMission` | `0x159760` | a save block |  | `actor` `id` `target` |
@@ -442,6 +446,7 @@ inherited - reading one of these reads all of them.
 | `CAddCountryModifierEffect` | `0x5A2DE0` | an event script | 2 | `duration` `name` |
 | `CAddDivisionEffect` | `0x5B5DF0` | an event script |  | `name` `where` |
 | `CAddTheatreCommand` | `0x1506E0` | an event script |  | `country` `theatre` |
+| `CAir` | `0x1D0520` | a save block |  | `army` `base` |
 | `CAlterTheatreCommand` | `0x1502D0` | an event script |  | `id` `theatre` |
 | `CAnyNearbyProvinceEffect` | `0x5ABC00` | an event script |  | `distance` `limit` |
 | `CAttachUnitCommand` | `0x1DEFC0` | an event script |  | `parent` `unit` |

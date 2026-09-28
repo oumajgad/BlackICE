@@ -11407,7 +11407,7 @@
      "offset": 60,
      "name": "status",
      "type": "int",
-     "comment": "x1000, saved as `status`. **Read live**: 1.0 on most items and 0 on the rest, with a handful in between, so it looks like a fraction rather than a flag. A CConvoyConstruction does not use this - it keeps its own `status` byte at +0x58 (BiceLib/GameClasses/CConstruction.hpp:39), inherited from CConstruction"
+     "comment": "thousandths, saved as `status`: **the share of a full day's work the item received the last time the queue advanced it** - 1000 for a fully funded day, less when the item was only part funded, 0 when it got nothing. Written only by CConstruction::AddProgress (0x837D0) and defaulted to 1000 by each construction class's constructor. **Read live**: 1.0 on most items, 0 on the rest, a handful in between, which is what funding looks like. **Nothing reads it** - two sweeps found no reader outside the loader and the save writer - so a `status` written in an OOB file lasts until the item is next advanced and changes nothing. A CConvoyConstruction does not use this; it keeps its own `status` byte at +0x58. (BiceLib/GameClasses/CConstruction.hpp:39), inherited from CConstruction"
     },
     {
      "offset": 68,
@@ -11891,7 +11891,7 @@
      "offset": 60,
      "name": "status",
      "type": "int",
-     "comment": "x1000, saved as `status`. **Read live**: 1.0 on most items and 0 on the rest, with a handful in between, so it looks like a fraction rather than a flag. A CConvoyConstruction does not use this - it keeps its own `status` byte at +0x58 (BiceLib/GameClasses/CConstruction.hpp:39)"
+     "comment": "thousandths, saved as `status`: **the share of a full day's work the item received the last time the queue advanced it** - 1000 for a fully funded day, less when the item was only part funded, 0 when it got nothing. Written only by CConstruction::AddProgress (0x837D0) and defaulted to 1000 by each construction class's constructor. **Read live**: 1.0 on most items, 0 on the rest, a handful in between, which is what funding looks like. **Nothing reads it** - two sweeps found no reader outside the loader and the save writer - so a `status` written in an OOB file lasts until the item is next advanced and changes nothing. A CConvoyConstruction does not use this; it keeps its own `status` byte at +0x58. (BiceLib/GameClasses/CConstruction.hpp:39)"
     },
     {
      "offset": 68,
@@ -12155,7 +12155,7 @@
      "offset": 60,
      "name": "status",
      "type": "int",
-     "comment": "x1000, saved as `status`. **Read live**: 1.0 on most items and 0 on the rest, with a handful in between, so it looks like a fraction rather than a flag. A CConvoyConstruction does not use this - it keeps its own `status` byte at +0x58 (BiceLib/GameClasses/CConstruction.hpp:39), inherited from CConstruction"
+     "comment": "thousandths, saved as `status`: **the share of a full day's work the item received the last time the queue advanced it** - 1000 for a fully funded day, less when the item was only part funded, 0 when it got nothing. Written only by CConstruction::AddProgress (0x837D0) and defaulted to 1000 by each construction class's constructor. **Read live**: 1.0 on most items, 0 on the rest, a handful in between, which is what funding looks like. **Nothing reads it** - two sweeps found no reader outside the loader and the save writer - so a `status` written in an OOB file lasts until the item is next advanced and changes nothing. A CConvoyConstruction does not use this; it keeps its own `status` byte at +0x58. (BiceLib/GameClasses/CConstruction.hpp:39), inherited from CConstruction"
     },
     {
      "offset": 68,
@@ -12179,7 +12179,7 @@
      "offset": 88,
      "name": "status",
      "type": "bool",
-     "comment": "**its own `status` key rather than CConstruction's at +0x3C**: the loader takes the key before the base sees it and sets this byte only where the value is `yes`. **Read live**: set on 20 of 68 (BiceLib/GameClasses/CConstruction.hpp:150)"
+     "comment": "**its own `status` key rather than CConstruction's at +0x3C**: the loader takes the key before the base sees it and sets this byte only where the value is `yes`, anything else falling through to the base and being parsed as a number. It decides where the finished convoys go - set, and CConvoyConstruction::Deliver (0x86770) adds them to CCountry +0xB4, `escorts`; clear, and they go to +0xB0, the transports. So `status = yes` in a convoy_construction block means escorts. **Read live**: set on 20 of 68. (BiceLib/GameClasses/CConstruction.hpp:150)"
     }
    ]
   },
@@ -18077,7 +18077,7 @@
      "offset": 76,
      "name": "supply_depot_distance",
      "type": "int",
-     "comment": "not a hop count - the infrastructure-weighted cost of the cheapest path to the depot, 0 at the depot itself and 100000 while cut off. Each step adds max(4000 - 4*infrastructure, 1000)/1000 - an integer 1..4, worst where infrastructure is lowest - times the entered province's CProvinceTemplate +0x24. Written only by CSupply::RebuildSupplyNetwork (0x289B20, the reset) and CSupply::SpreadFromDepot (0x289BE0, the relaxation). The plain hop count is +0x50. (reversing/FINDINGS-supply.md)"
+     "comment": "not a hop count - the infrastructure-weighted cost of the cheapest path to the depot, 0 at the depot itself and 100000 while cut off. Each step adds max(4000 - 4*infrastructure, 1000)/1000 - an integer 1, 2 or 3, worst where infrastructure is lowest: 1 above half infrastructure, 2 over a quarter, 3 at a quarter and under - times the entered province's CProvinceTemplate +0x24. The cost belongs to the province entered and not to the edge, so a route's distance is the sum of its provinces' entry costs, and a neighbour u on the same network is a predecessor of v on a least-cost route exactly when d(u) == d(v) - cost(v). Written only by CSupply::RebuildSupplyNetwork (0x289B20, the reset) and CSupply::SpreadFromDepot (0x289BE0, the relaxation). The plain hop count is +0x50. (reversing/FINDINGS-supply.md)"
     },
     {
      "offset": 80,
@@ -18191,7 +18191,7 @@
      "offset": 60,
      "name": "status",
      "type": "int",
-     "comment": "x1000, saved as `status`. **Read live**: 1.0 on most items and 0 on the rest, with a handful in between, so it looks like a fraction rather than a flag. A CConvoyConstruction does not use this - it keeps its own `status` byte at +0x58 (BiceLib/GameClasses/CConstruction.hpp:39), inherited from CConstruction"
+     "comment": "thousandths, saved as `status`: **the share of a full day's work the item received the last time the queue advanced it** - 1000 for a fully funded day, less when the item was only part funded, 0 when it got nothing. Written only by CConstruction::AddProgress (0x837D0) and defaulted to 1000 by each construction class's constructor. **Read live**: 1.0 on most items, 0 on the rest, a handful in between, which is what funding looks like. **Nothing reads it** - two sweeps found no reader outside the loader and the save writer - so a `status` written in an OOB file lasts until the item is next advanced and changes nothing. A CConvoyConstruction does not use this; it keeps its own `status` byte at +0x58. (BiceLib/GameClasses/CConstruction.hpp:39), inherited from CConstruction"
     },
     {
      "offset": 68,
@@ -20363,7 +20363,7 @@
      "offset": 76,
      "name": "supply_depot_distance",
      "type": "int",
-     "comment": "not a hop count - the infrastructure-weighted cost of the cheapest path to the depot, 0 at the depot itself and 100000 while cut off. Each step adds max(4000 - 4*infrastructure, 1000)/1000 - an integer 1..4, worst where infrastructure is lowest - times the entered province's CProvinceTemplate +0x24. Written only by CSupply::RebuildSupplyNetwork (0x289B20, the reset) and CSupply::SpreadFromDepot (0x289BE0, the relaxation). The plain hop count is +0x50. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures (reversing/FINDINGS-supply.md)"
+     "comment": "not a hop count - the infrastructure-weighted cost of the cheapest path to the depot, 0 at the depot itself and 100000 while cut off. Each step adds max(4000 - 4*infrastructure, 1000)/1000 - an integer 1, 2 or 3, worst where infrastructure is lowest: 1 above half infrastructure, 2 over a quarter, 3 at a quarter and under - times the entered province's CProvinceTemplate +0x24. The cost belongs to the province entered and not to the edge, so a route's distance is the sum of its provinces' entry costs, and a neighbour u on the same network is a predecessor of v on a least-cost route exactly when d(u) == d(v) - cost(v). Written only by CSupply::RebuildSupplyNetwork (0x289B20, the reset) and CSupply::SpreadFromDepot (0x289BE0, the relaxation). The plain hop count is +0x50. CMapProvince derives from CProvince and adds nothing at this offset, so the field is the base's; CProvince's own code reads it. Both carry it because Ghidra has no inheritance between the two structures (reversing/FINDINGS-supply.md)"
     },
     {
      "offset": 80,
@@ -20483,7 +20483,7 @@
      "offset": 36,
      "name": "unknown_24",
      "type": "int",
-     "comment": "a per-province traversal cost. CSupply::SpreadFromDepot multiplies it by an infrastructure-derived factor of 1..4 to get the step it adds to supply_depot_distance, and 0xB615E does the same thing without the factor - edi = neighbour->template->+0x24 + accumulated, compared against CProvince +0x10 - so it is a distance charged for entering a province, not an edge length (ProvinceEdge already carries its own distance at +0xC). Its actual value was not sampled from a running game, so whether it is normally 1 is open. (reversing/FINDINGS-supply.md)"
+     "comment": "a per-province traversal cost. CSupply::SpreadFromDepot multiplies it by an infrastructure-derived factor of 1, 2 or 3 to get the step it adds to supply_depot_distance, and 0xB615E does the same thing without the factor - edi = neighbour->template->+0x24 + accumulated, compared against CProvince +0x10 - so it is a distance charged for entering a province, not an edge length (ProvinceEdge already carries its own distance at +0xC). Its actual value was not sampled from a running game, so whether it is normally 1 is open. (reversing/FINDINGS-supply.md)"
     },
     {
      "offset": 164,
@@ -27917,6 +27917,30 @@
    "labels": []
   },
   {
+   "rva": 538576,
+   "namespace": "CConstruction",
+   "name": "AddProgress",
+   "confidence": "CERTAIN",
+   "evidence": "**Advances one queue item by `amount` thousandths of a day's work.** `this` is in ESI and is not passed on the stack; the one argument is cleaned by the callee (`ret 4`). It works out `amount * 1000 / duration` - or -1 when duration is zero - and hands that to virtual slot 20 (`[vftable+0x50]`), adds `amount` to progress (+0x38), and then writes **status** (+0x3C): 1000 when `amount >= 1000`, `amount` when it is positive and cost (+0x30) is positive, 0 otherwise. So status is the share of a full day the item last received, and this is the only place it is ever written apart from the loader, the save and the constructors' default of 1000. Three callers: the daily production pass at 0x119D10, once with a literal 1000 and once with a computed partial amount, and the two build commands at 0x145BA0 and 0x146E40. The name is BiceLib's. See reversing/FINDINGS-oob.md.\n(reversing/FINDINGS-oob.md)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CConstruction*",
+      "storage": "ESI"
+     },
+     {
+      "name": "amount",
+      "type": "int"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 540160,
    "namespace": "CConstruction",
    "name": "GetSize",
@@ -28136,6 +28160,25 @@
      {
       "name": "writer",
       "type": "CSaveWriter*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 550768,
+   "namespace": "CConvoyConstruction",
+   "name": "Deliver",
+   "confidence": "TENTATIVE",
+   "evidence": "**Gives the finished convoys to the country**, and the one place CConvoyConstruction's own `status` byte (+0x58) is read: set, and the count goes to `CCountry +0xB4`, `escorts`; clear, and it goes to `+0xB0`, the transports beside it. Both arms are the same arithmetic on the convoy definition's +0x34 over 1000. It then compares duration (+0x34) with progress (+0x38). **The name is inferred from what it does** - it was not reached from a vftable slot. See reversing/FINDINGS-oob.md.\n(reversing/FINDINGS-oob.md)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CConvoyConstruction*"
      }
     ]
    },
@@ -36233,7 +36276,7 @@
    "namespace": "CUnitDeployment",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "**The keys its switch names**, 4 of them, one case each: `air`, `army`, `id`, `navy`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.\n(reversing/FINDINGS-definitions.md)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CUnitDeployment introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
+   "evidence": "**One entry in a country's deployment pool** - what has been built and not yet placed - and the whole of what a `unit_deployment` block accepts: eight keys. `id` goes through ParseObjectId into the deployment's own id. `army`, `theatre`, `armygroup`, `corps` and `division` all share one body (new 0x308, CArmy's constructor at 0x4828C0), `navy` is new 0x2FC through 0x5CEE20 and `air` new 0x2F4 through 0x5D0460 - and **all three stores are an unconditional `mov [edi+0x38], eax`, so a block holds exactly one unit** and a second overwrites the first. Unlike the country-level case at 0xCD959 there is no location test and no delete: a unit in the pool keeps no province, which is what the game's own saves write. The four land keywords reach one body through a range test - `cmp eax, 0x465 / jl default / cmp eax, 0x468 / jg default` and fall through - which switchmap.py did not read until 2026-09-28, so this was recorded with four keys and not eight. See reversing/FINDINGS-oob.md.\n(reversing/FINDINGS-oob.md)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CUnitDeployment introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do.",
    "signature": {
     "convention": "__thiscall",
     "return": "void",
@@ -39218,26 +39261,23 @@
    "namespace": "CUnit",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CUnit introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CUnit + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CUnit one.",
+   "evidence": "**The whole of what an order of battle block accepts** - a `division`, `corps`, `army`, `navy`, `air` or `theatre` - 40 keys in one switch of 4658 bytes. Seven open a child unit (`theatre`, `armygroup`, `army`, `corps`, `division`, `navy`, `air`), three say what the unit is made of (`regiment`, `ship`, `wing`, all reaching CSubUnit::LoadKey), four are identity (`id`, `name`, `location`, `leader`) and the rest is state a save carries: `path`, `track`, `previous`, `movement_progress`, `retreat`, `possible_retreat`, `disengage`, `arrow_state`, `start_date`, `end_date`, `was_paradropped`, `supplies`, `fuel`, `dig_in`, `attack_delay`, `combat_hours`, `can_upgrade`, `can_reinforce`, `is_reserve`, `is_prioritized`, `plan`, `expeditionary_owner`, `expeditionary_date`, `aggression_enabled`, `aggression_setting`, `country_intel`. The loader cannot tell an OOB file from a save - it is the same switch - so every one of them is legal in `history/units`.\n\n**The keyword does not pick the class, the parent does**: CNavy::LoadKey and CAir::LoadKey take the five child-unit keywords back and send all five to one handler that still builds a CArmy. Reached from RTTI, not from the first vftable: CArmy keeps CPersistent at object offset 8, so slot 4 of its primary table is a per-unit update and not this.\n(reversing/FINDINGS-oob.md)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CUnit introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CUnit + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CUnit one.",
    "signature": {
-    "convention": "__stdcall",
+    "convention": "__thiscall",
     "return": "void",
     "hiddenReturn": false,
     "params": [
      {
-      "name": "base",
-      "type": "void*",
-      "storage": "ECX"
+      "name": "this",
+      "type": "CUnit*"
      },
      {
       "name": "parse",
-      "type": "CParseContext*",
-      "storage": "stack:4"
+      "type": "CParseContext*"
      },
      {
       "name": "key",
-      "type": "SaveToken",
-      "storage": "stack:8"
+      "type": "SaveToken"
      }
     ]
    },
@@ -39901,26 +39941,23 @@
    "namespace": "CArmy",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CArmy introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CArmy + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CArmy one.",
+   "evidence": "**The keys its switch names**, 3 of them, one case each: `parent`, `staging_province`, `target`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.\n(reversing/FINDINGS-definitions.md)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CArmy introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CArmy + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CArmy one.",
    "signature": {
-    "convention": "__stdcall",
+    "convention": "__thiscall",
     "return": "void",
     "hiddenReturn": false,
     "params": [
      {
-      "name": "base",
-      "type": "void*",
-      "storage": "ECX"
+      "name": "this",
+      "type": "CArmy*"
      },
      {
       "name": "parse",
-      "type": "CParseContext*",
-      "storage": "stack:4"
+      "type": "CParseContext*"
      },
      {
       "name": "key",
-      "type": "SaveToken",
-      "storage": "stack:8"
+      "type": "SaveToken"
      }
     ]
    },
@@ -39965,26 +40002,23 @@
    "namespace": "CNavy",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CNavy introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CNavy + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CNavy one.",
+   "evidence": "What a `navy` block adds over CUnit::LoadKey: `at_sea` and `base`. It also takes `army`, `theatre`, `armygroup`, `corps` and `division` back off the base and sends all five to one handler of its own, which still builds a CArmy (new 0x308, ctor 0x4828C0) and then sets it up differently - embarked land units is a guess, not traced. The four land keywords reach one body through a range test - `cmp eax, 0x465 / jl default / cmp eax, 0x468 / jg default` and fall through - which switchmap.py did not read until 2026-09-28, so this was recorded with four keys and not eight. See reversing/FINDINGS-oob.md.\n(reversing/FINDINGS-oob.md)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CNavy introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CNavy + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CNavy one.",
    "signature": {
-    "convention": "__stdcall",
+    "convention": "__thiscall",
     "return": "void",
     "hiddenReturn": false,
     "params": [
      {
-      "name": "base",
-      "type": "void*",
-      "storage": "ECX"
+      "name": "this",
+      "type": "CNavy*"
      },
      {
       "name": "parse",
-      "type": "CParseContext*",
-      "storage": "stack:4"
+      "type": "CParseContext*"
      },
      {
       "name": "key",
-      "type": "SaveToken",
-      "storage": "stack:8"
+      "type": "SaveToken"
      }
     ]
    },
@@ -40039,26 +40073,23 @@
    "namespace": "CAir",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CAir introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CAir + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CAir one.",
+   "evidence": "What an `air` block adds over CUnit::LoadKey: `base`. Like CNavy::LoadKey it takes the five child-unit keywords back off the base and sends them to one handler of its own, which builds a CArmy. The four land keywords reach one body through a range test - `cmp eax, 0x465 / jl default / cmp eax, 0x468 / jg default` and fall through - which switchmap.py did not read until 2026-09-28, so this was recorded with four keys and not eight. See reversing/FINDINGS-oob.md.\n(reversing/FINDINGS-oob.md)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CAir introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CAir + 8**, because that is where CPersistent sits in this class; add 8 to any offset here to get a CAir one.",
    "signature": {
-    "convention": "__stdcall",
+    "convention": "__thiscall",
     "return": "void",
     "hiddenReturn": false,
     "params": [
      {
-      "name": "base",
-      "type": "void*",
-      "storage": "ECX"
+      "name": "this",
+      "type": "CAir*"
      },
      {
       "name": "parse",
-      "type": "CParseContext*",
-      "storage": "stack:4"
+      "type": "CParseContext*"
      },
      {
       "name": "key",
-      "type": "SaveToken",
-      "storage": "stack:8"
+      "type": "SaveToken"
      }
     ]
    },
@@ -44456,7 +44487,7 @@
    "namespace": "CSupply",
    "name": "SpreadFromDepot",
    "confidence": "CERTAIN",
-   "evidence": "The distance relaxation, one depot at a time. Sets the depot's own supply_depot_distance to 0, then works a FIFO queue of 0x10-byte nodes over the template's ProvinceEdge vector (+0x90..+0x94, stride 0x14, neighbour id at edge+4). A neighbour is considered only if its template's +0x13D is set and its supply_depot_id already equals `depot` - the label partitions the map and this only fills in distances inside one partition. The step cost is infrastructure-weighted, not a hop: infra = provinceModifier[MODIFIER_INFRASTRUCTURE] * (1000 + [MODIFIER_LOCAL_INFRASTRUCTURE] + [MODIFIER_GLOBAL_INFRASTRUCTURE]) / 1000, clamped below by a lazily computed constant at rva 0x17EA400 (from the float 10.5 at rva 0x120A680) and above by 1000; then step = max(4000 - 4*infra, 1000) / 1000, an integer 1..4, multiplied by the neighbour's CProvinceTemplate +0x24. The neighbour is relaxed only when its current distance is strictly greater, and it then also gets supply_depot_hops = parent's hops + 1. The queue is a CList by value on the stack - three dwords and a byte cleared together at 0x689C0F - and its nodes are CListNode<CMapProvince*>; the `locals` on this record are what make the body read in terms of the province rather than `*(iVar3 + 0x4c)`.\n(reversing/FINDINGS-supply.md)",
+   "evidence": "The distance relaxation, one depot at a time. Sets the depot's own supply_depot_distance to 0, then works a FIFO queue of 0x10-byte nodes over the template's ProvinceEdge vector (+0x90..+0x94, stride 0x14, neighbour id at edge+4). A neighbour is considered only if its template's +0x13D is set and its supply_depot_id already equals `depot` - the label partitions the map and this only fills in distances inside one partition. The step cost is infrastructure-weighted, not a hop: infra = provinceModifier[MODIFIER_INFRASTRUCTURE] * (1000 + [MODIFIER_LOCAL_INFRASTRUCTURE] + [MODIFIER_GLOBAL_INFRASTRUCTURE]) / 1000, clamped below by a lazily computed constant at rva 0x17EA400 (from the float 10.5 at rva 0x120A680) and above by 1000; then step = max(4000 - 4*infra, 1000) / 1000, an integer 1, 2 or 3 - the lower clamp keeps 4000 - 4*infra at or under 3960, so 4 is out of reach - multiplied by the neighbour's CProvinceTemplate +0x24. Since a province that improves is pushed back on the queue (the node at 0x689DAA, right after the write at 0x689DA4), this is Bellman-Ford by queue and the distances it leaves are true minima. The neighbour is relaxed only when its current distance is strictly greater, and it then also gets supply_depot_hops = parent's hops + 1. The queue is a CList by value on the stack - three dwords and a byte cleared together at 0x689C0F - and its nodes are CListNode<CMapProvince*>; the `locals` on this record are what make the body read in terms of the province rather than `*(iVar3 + 0x4c)`.\n(reversing/FINDINGS-supply.md)",
    "signature": {
     "convention": "__stdcall",
     "return": "void",
@@ -53254,26 +53285,23 @@
    "namespace": "CEU3Graphics",
    "name": "LoadKey",
    "confidence": "CERTAIN",
-   "evidence": "Slot 4 of CPersistent, this class's own: the RTTI export says CEU3Graphics introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CEU3Graphics + 4**, because that is where CPersistent sits in this class; add 4 to any offset here to get a CEU3Graphics one.",
+   "evidence": "**The keys its switch names**, 5 of them, one case each: `bitmapfonts`, `fonts`, `lightTypes`, `objectTypes`, `spriteTypes`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.\n(reversing/FINDINGS-definitions.md)\n\nSlot 4 of CPersistent, this class's own: the RTTI export says CEU3Graphics introduced the implementation at this address. See GameClasses/CPersistent.hpp for what the five do. **`this` is the CPersistent subobject, CEU3Graphics + 4**, because that is where CPersistent sits in this class; add 4 to any offset here to get a CEU3Graphics one.",
    "signature": {
-    "convention": "__stdcall",
+    "convention": "__thiscall",
     "return": "void",
     "hiddenReturn": false,
     "params": [
      {
-      "name": "base",
-      "type": "void*",
-      "storage": "ECX"
+      "name": "this",
+      "type": "CEU3Graphics*"
      },
      {
       "name": "parse",
-      "type": "CParseContext*",
-      "storage": "stack:4"
+      "type": "CParseContext*"
      },
      {
       "name": "key",
-      "type": "SaveToken",
-      "storage": "stack:8"
+      "type": "SaveToken"
      }
     ]
    },
@@ -69821,9 +69849,9 @@
     {
      "slot": 9,
      "rva": 550768,
-     "name": "vf_9",
-     "named": false,
-     "typed": false,
+     "name": "Deliver",
+     "named": true,
+     "typed": true,
      "own": true,
      "comment": "slot 9, 00486770"
     },

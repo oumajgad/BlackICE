@@ -71,13 +71,24 @@ namespace CMapProvince {
         constexpr uintptr_t victory_points = 0x34;
 
         /**
-         * **The supply depot the province draws from**, as a province id, and **how many
-         * steps away it is**. A depot is its own depot at distance 0; a province cut off
-         * from every depot has distance 100000. The daily supply pass only lets a
-         * province take from a neighbour with the same depot and a smaller distance.
+         * **The supply depot the province draws from**, as a province id, **what the
+         * route to it costs**, and **how many provinces that route crosses**. A depot is
+         * its own depot at cost 0; a province cut off from every depot has cost 100000
+         * and is left at 0 hops. The daily supply pass only lets a province take from a
+         * neighbour with the same depot and a smaller cost.
+         *
+         * **The cost is not a count of provinces.** Entering one costs 1, 2 or 3 by its
+         * infrastructure - 1 above half, 2 over a quarter, 3 at a quarter and under -
+         * times its CProvinceTemplate +0x24, and the cost belongs to the province
+         * entered rather than to the edge it is entered by. So a route's cost is the sum
+         * of its provinces' entry costs, and `supply_depot_distance` less
+         * `supply_depot_hops` is what the infrastructure on the route adds to its
+         * length. Both are written by CSupply::SpreadFromDepot, which relaxes them
+         * together; see reversing/FINDINGS-supply.md.
          */
         constexpr uintptr_t supply_depot_id = 0x48;
         constexpr uintptr_t supply_depot_distance = 0x4C;
+        constexpr uintptr_t supply_depot_hops = 0x50;
 
         /**@brief a CWeather, embedded; the province writer saves it under `weather`*/
         constexpr uintptr_t weather = 0x68;

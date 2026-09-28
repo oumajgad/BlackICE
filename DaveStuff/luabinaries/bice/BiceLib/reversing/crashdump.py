@@ -30,6 +30,25 @@ STREAM_VM_COUNTERS = 22
 # x86 CONTEXT, as the memory note records it.
 CONTEXT_EIP = 184
 CONTEXT_ESP = 196
+CONTEXT_EBP = 180
+CONTEXT_EAX = 176
+
+# MINIDUMP_EXCEPTION_STREAM: ULONG32 ThreadId, ULONG32 alignment, then the
+# EXCEPTION_RECORD, then its own MINIDUMP_LOCATION_DESCRIPTOR ThreadContext.
+EXCEPTION_CONTEXT_SIZE = 160
+EXCEPTION_CONTEXT_RVA = 164
+
+
+def low(address):
+    """
+    An address as the 32 bits it really is.
+
+    The process is LargeAddressAware and runs on 64-bit Windows, so it has the whole 4 GB
+    and anything allocated late sits above 0x80000000. WER writes those ULONG64 fields
+    **sign extended** - a stack based at 0x92EB2174 is stored as 0xFFFFFFFF92EB2174 - so
+    every comparison against a 32-bit register misses unless the high half is dropped.
+    """
+    return address & 0xFFFFFFFF
 
 EXCEPTIONS = {
     0xC0000005: "access violation",
@@ -73,7 +92,7 @@ def modules(data, found):
     for i in range(count):
         at = rva + 4 + i * 108
         base, size, _, _, nameRva = struct.unpack_from("<QIIII", data, at)
-        out.append((base, size, os.path.basename(readString(data, nameRva))))
+        out.append((low(base), size, os.path.basename(readString(data, nameRva))))
     out.sort()
     return out
 
@@ -96,7 +115,10 @@ def threads(data, found):
     for i in range(count):
         at = rva + 4 + i * 48
         threadId = struct.unpack_from("<I", data, at)[0]
-        stackStart, stackSize, stackRva = struct.unpack_from("<QII", data, at + 16)
+        # +16 is the Teb. The stack descriptor is at +24 - ULONG64 StartOfMemoryRange,
+        # then DataSize and Rva - and the context at +40. Reading the stack from +16 takes
+        # the Teb as the base and the base's two halves as size and rva.
+        stackStart, stackSize, stackRva = struct.unpack_from("<QII", data, at + 24)
         contextSize, contextRva = struct.unpack_from("<II", data, at + 40)
         out[threadId] = (stackStart, stackSize, stackRva, contextSize, contextRva)
     return out
@@ -161,14 +183,34 @@ def describe(path):
         print("    the faulting thread is not in the thread list")
         return
 
-    stackStart, stackSize, stackRva, contextSize, contextRva = stack
+    stackStart, stackSize, stackRva, _listSize, _listRva = stack
+
+    # **The exception stream's own context, not the thread list's.** The thread list holds
+    # the thread as it was when the dump was written - parked in ntdll while WER worked -
+    # and this holds it as it faulted.
+    contextSize = struct.unpack_from("<I", data, rva + EXCEPTION_CONTEXT_SIZE)[0]
+    contextRva = struct.unpack_from("<I", data, rva + EXCEPTION_CONTEXT_RVA)[0]
     if contextSize > CONTEXT_ESP:
-        eip, esp = struct.unpack_from("<I", data, contextRva + CONTEXT_EIP)[0], \
-                   struct.unpack_from("<I", data, contextRva + CONTEXT_ESP)[0]
-        print("    thread %d, eip 0x%08x, esp 0x%08x" % (threadId, eip, esp))
+        def reg(offset):
+            return struct.unpack_from("<I", data, contextRva + offset)[0]
+        eip, esp, ebp, eax = (reg(CONTEXT_EIP), reg(CONTEXT_ESP), reg(CONTEXT_EBP),
+                              reg(CONTEXT_EAX))
+        name, offset = moduleAt(loaded, eip)
+        print("    thread %d, eip 0x%08x%s, esp 0x%08x, ebp 0x%08x, eax 0x%08x"
+              % (threadId, eip, (" in %s+0x%x" % (name, offset)) if name else "",
+                 esp, ebp, eax))
+        # An address that is text rather than code is worth saying out loud: it means a
+        # pointer was read out of something that holds a string, and the four bytes name
+        # the string.
+        if name is None:
+            letters = struct.pack("<I", eip)
+            if all(32 <= b < 127 for b in letters):
+                print("    that address is the text %r - a pointer read out of string data"
+                      % letters.decode("latin-1"))
 
     # Every stack word that lands inside a module, in order, deduplicated by module.
     # The dump can hold less of the stack than it claims, so trust the file.
+    print("    stack 0x%08x, %d bytes of it in the dump" % (low(stackStart), stackSize))
     available = min(stackSize, len(data) - stackRva)
 
     seen = []

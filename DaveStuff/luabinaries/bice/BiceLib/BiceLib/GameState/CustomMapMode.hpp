@@ -45,7 +45,7 @@ namespace CustomMapMode {
         Level,      // as it is
         Amount,     // thousandths, printed as units
         Days,       // thousandths of a day, printed as days
-        Steps,      // as it is, with CUT_OFF printed as words
+        Cost,       // as it is, with CUT_OFF printed as words
         Percent,    // thousandths, printed as a percentage
     };
 
@@ -58,7 +58,8 @@ namespace CustomMapMode {
         FuelTraffic,
         SupplyStock,        // supplies in the province
         FuelStock,
-        DepotDistance,      // steps to the depot the province draws from
+        DepotDistance,      // what the route to the province's depot costs
+        DepotDetour,        // how much of that cost is the route's infrastructure
         SupplyLoad,         // supplies asked of the province over what it can pass on a day
         FuelLoad,
     };

@@ -24,6 +24,14 @@ or a run of them through a pair of tables
 where the base may be applied with `lea eax, [edi - base]` instead of `sub`, and the byte
 table is left out entirely when the run is short enough that no two tokens share a case.
 
+A run of adjacent tokens sharing one body may also be spent on a **two-sided range test**,
+whose halves are neither of the above:
+
+    cmp eax, K1 / jl default / cmp eax, K2 / jg default    the body falls through
+    cmp eax, K2 / jg elsewhere / cmp eax, K1 / jge body
+
+Not reading that cost `CUnitDeployment::LoadKey` four of its eight keys.
+
 Two things to get right. **The default has to be dropped**: the byte table sends every
 token in the gaps to it, so keeping it makes hundreds of tokens look like cases and gives
 them all the default's class. And the case body's class is the **last** vftable it writes,
@@ -277,6 +285,50 @@ def cases(start):
                 # Missing it loses one key per chain, and it is always the last one.
                 elif insn.mnemonic == "jne" and index + 1 < len(code):
                     out.setdefault(token, code[index + 1].address)
+
+
+    # **A two-sided range test.** A run of adjacent tokens sharing one body is often spent
+    # on two comparisons instead of a table, and neither of them is a `je`:
+    #
+    #     cmp eax, K1 / jl default / cmp eax, K2 / jg default / <body falls through>
+    #     cmp eax, K2 / jg elsewhere / cmp eax, K1 / jge body
+    #
+    # Missing the first shape cost CUnitDeployment::LoadKey `theatre`, `armygroup`, `corps`
+    # and `division` - half its grammar, all four sharing `army`'s body.
+    LOWER = ("jl", "jb")
+    UPPER = ("jg", "ja")
+    for index in range(len(code) - 3):
+        first, firstJump, second, secondJump = code[index:index + 4]
+        if first.mnemonic != "cmp" or second.mnemonic != "cmp":
+            continue
+        if len(first.operands) != 2 or len(second.operands) != 2:
+            continue
+        if not (first.operands[0].type == REG and second.operands[0].type == REG
+                and first.operands[0].reg == second.operands[0].reg):
+            continue
+        if first.operands[1].type != IMM or second.operands[1].type != IMM:
+            continue
+        if not firstJump.operands or not secondJump.operands:
+            continue
+        if firstJump.operands[0].type != IMM or secondJump.operands[0].type != IMM:
+            continue
+        a, b = first.operands[1].imm, second.operands[1].imm
+        if (firstJump.mnemonic in LOWER and secondJump.mnemonic in UPPER
+                and firstJump.operands[0].imm == secondJump.operands[0].imm):
+            # Both refusals go to the same place, so the body is the fall-through.
+            low, high = a, b
+            body = secondJump.address + secondJump.size
+        elif firstJump.mnemonic in UPPER and secondJump.mnemonic in ("jge", "jae"):
+            low, high = b, a
+            body = secondJump.operands[0].imm
+        else:
+            continue
+        # A run of tokens, not a bounds check on an index: a real one is a handful wide and
+        # the tokens are positive.
+        if not 0 < low <= high or high - low > 32:
+            continue
+        for token in range(low, high + 1):
+            out.setdefault(token, body)
 
     return {token: target for token, target in out.items() if target not in defaults}
 

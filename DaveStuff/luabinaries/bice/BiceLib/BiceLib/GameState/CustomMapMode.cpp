@@ -104,10 +104,18 @@ namespace {
     const std::vector<int> DAY_BANDS = {
         0, 1000, 2000, 3000, 5000, 7000, 10000, 15000, 21000, 30000 };
 
-    // Steps to the depot, lowest first. The last band holds only CUT_OFF, so a province
-    // cut off from every depot is never mistaken for one that is merely far away.
+    // What the route to the depot costs, lowest first. The last band holds only
+    // CUT_OFF, so a province cut off from every depot is never mistaken for one that is
+    // merely far away. The bands are wide enough for a cost rather than a hop count:
+    // every province on the route charges 1, 2 or 3 for being entered.
     const std::vector<int> DISTANCE_BANDS = {
         0, 1, 2, 4, 7, 12, 20, 35, 60, CustomMapMode::CUT_OFF };
+
+    // What the infrastructure on the route adds to its length, lowest first. Zero where
+    // every province on the route charged the least it can, and up to twice the number
+    // of provinces crossed where none of them did.
+    const std::vector<int> DETOUR_BANDS = {
+        0, 1, 2, 3, 5, 8, 12, 18, 26, 40 };
 
     // Load, in thousandths of the province's capacity, lowest first. The last band
     // starts at full, so a province asked for more than it can pass on is on its own.
@@ -130,6 +138,10 @@ namespace {
         }
         else if (measure == CustomMapMode::SupplyMeasure::DepotDistance) {
             source.bands = DISTANCE_BANDS;
+            source.higherIsWorse = true;
+        }
+        else if (measure == CustomMapMode::SupplyMeasure::DepotDetour) {
+            source.bands = DETOUR_BANDS;
             source.higherIsWorse = true;
         }
         else if (measure == CustomMapMode::SupplyMeasure::SupplyLoad
@@ -157,10 +169,21 @@ namespace {
             "province stocked for 35 days of its need, so a well supplied one sits in the "
             "top shade. Only provinces with units that use fuel are shaded."),
         supply(Measure::DepotDistance, "depot_distance", "Distance to depot",
-            Scaling::Bands, Unit::Steps,
-            "Steps to the supply depot the province draws from. Each shade starts at the "
-            "number under it: depots are the top shade, and provinces cut off from every "
-            "depot the bottom one. Land in no supply network at all is grey."),
+            Scaling::Bands, Unit::Cost,
+            "How far the province is from the depot that supplies it. Supply is handed "
+            "along province by province, so the further it has to travel, the less of it "
+            "arrives. Poor infrastructure makes a province count as two or three instead "
+            "of one, so a route across bad ground is further than it looks on the map. "
+            "Each shade starts at the number under it. Depots themselves are the top "
+            "shade, provinces with no supply line at all the bottom one, and land in no "
+            "supply network is grey."),
+        supply(Measure::DepotDetour, "depot_detour", "Infrastructure penalty",
+            Scaling::Bands, Unit::Cost,
+            "How much of that distance is poor infrastructure rather than real distance. "
+            "Zero means the way to the depot is good all the way and costs nothing extra. "
+            "Eight means the route counts as eight provinces longer than it really is, "
+            "because of what it crosses. This is the number that building infrastructure "
+            "brings down. Provinces with no supply line at all show nothing."),
         supply(Measure::SupplyLoad, "supply_load", "Supply line load",
             Scaling::Bands, Unit::Percent,
             "How much of what the province can pass on in a day is asked of it today - "
@@ -466,6 +489,34 @@ namespace {
         return (distance >= CustomMapMode::CUT_OFF) ? CustomMapMode::CUT_OFF : distance;
     }
 
+    /**
+    @brief what the route's infrastructure adds to its length, or NO_VALUE
+
+    The cost of the route to the depot, less the number of provinces on it. Both numbers
+    are the game's own and are written together by CSupply::SpreadFromDepot, so this is
+    what the game did rather than a reconstruction of it: every province on the route
+    charges 1, 2 or 3 for being entered, by its infrastructure, and the difference is
+    what everything short of the best roads cost on the way.
+
+    A province cut off from every depot has no route to measure. Its cost is CUT_OFF and
+    the rebuild leaves its hops at zero, so the subtraction would answer CUT_OFF.
+    */
+    int detourOf(uintptr_t province) {
+        const int distance = depotDistance(province);
+        if (distance == CustomMapMode::NO_VALUE || distance >= CustomMapMode::CUT_OFF) {
+            return CustomMapMode::NO_VALUE;
+        }
+        int32_t hops = 0;
+        if (!Mem::tryRead(province + CMapProvince::Offsets::supply_depot_hops, hops)
+            || hops < 0) {
+            return CustomMapMode::NO_VALUE;
+        }
+        // Costing less than the number of provinces crossed would mean one of them
+        // charges nothing to enter, which would be a finding of its own rather than
+        // something to draw; show it as the best a route can be.
+        return (distance > hops) ? (distance - hops) : 0;
+    }
+
     int supplyIn(uintptr_t province, CustomMapMode::SupplyMeasure measure) {
         using namespace CMapProvince::Offsets;
         const uintptr_t supplies = CGoodsPool::Goods::supplies;
@@ -482,6 +533,7 @@ namespace {
         case Measure::SupplyStock:    return anyOf(poolGood(province, pool, supplies));
         case Measure::FuelStock:      return anyOf(poolGood(province, pool, fuel));
         case Measure::DepotDistance:  return depotDistance(province);
+        case Measure::DepotDetour:    return detourOf(province);
         case Measure::SupplyLoad:     return loadOf(province, supplies);
         case Measure::FuelLoad:       return loadOf(province, fuel);
         }

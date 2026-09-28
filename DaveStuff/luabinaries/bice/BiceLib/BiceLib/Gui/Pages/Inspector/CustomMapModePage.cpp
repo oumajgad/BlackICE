@@ -65,7 +65,7 @@ namespace {
             return amount(raw);
         case CustomMapMode::Unit::Days:
             return amount(raw * (CustomMapMode::RESOURCE_SCALE / CustomMapMode::DAYS_SCALE));
-        case CustomMapMode::Unit::Steps:
+        case CustomMapMode::Unit::Cost:
             return (raw >= CustomMapMode::CUT_OFF) ? "cut off" : std::to_string(raw);
         case CustomMapMode::Unit::Percent:
             return std::to_string(raw / 10) + "%";

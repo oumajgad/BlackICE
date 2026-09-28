@@ -37,15 +37,49 @@ the *second* argument's `+0x4C` is larger, so it sorts descending. Element 0 is 
 province farthest from its depot, and the one-sweep argument below stands on that rather
 than on the field's name.
 
-**The distance is weighted, not a hop count.** `CSupply::SpreadFromDepot` (rva `0x289BE0`)
-relaxes outward from each depot over a FIFO queue, and each step costs
+**The distance is weighted, not a hop count**, and **the weight belongs to the province
+entered, not to the edge.** `CSupply::SpreadFromDepot` (rva `0x289BE0`) relaxes outward
+from each depot, and the cost of a step is worked out from the province being entered
+alone - its modifier block at `CMapProvince +0x114`:
 
     infra = MODIFIER_INFRASTRUCTURE * (1000 + LOCAL_INFRASTRUCTURE + GLOBAL_INFRASTRUCTURE) / 1000
-    step  = max(4000 - 4 * clamp(infra), 1000) / 1000      an integer 1..4
+    infra = clamp(infra, 10, 1000)
+    step  = max(4000 - 4 * infra, 1000) / 1000  *  CProvinceTemplate +0x24
 
-so a step through poor infrastructure counts up to four times a step through good. The
-plain hop count is a *different* field, `CProvince +0x50`, which the daily pass never
-reads. `100000` is the reset "infinity".
+Both divisions are integer, so the factor before `+0x24` is **1, 2 or 3** - this said
+1 to 4 before, which is wrong. The lower clamp is what puts 4 out of reach: it is a
+function static built once at `0x289CD5` from the float `10.5` at `0x160A680` through
+`floor` and `ftol`, so `infra` is never below 10 and `4000 - 4 * infra` never above 3960.
+The bands, as a share of full infrastructure:
+
+| infra | factor |
+| --- | --- |
+| above 0.5 | 1 |
+| over 0.25, up to 0.5 | 2 |
+| 0.25 and under | 3 |
+
+Whether an infrastructure *level* of 5 lands on `infra == 500` has not been read live, so
+those are shares of full infrastructure and not levels.
+
+**So each province has one entry cost, and a route's distance is the sum of the entry
+costs along it** - which is what makes a route reconstructible from the stored fields
+alone. A same-network neighbour `u` of `v` is a predecessor of `v` on a least-cost route
+exactly when `d(u) == d(v) - cost(v)`, and because `cost(v)` does not depend on which way
+`v` is entered, every predecessor of `v` sits at the same distance. `cost(v)` need not be
+recomputed at all: it is `d(v)` less the largest `d(u)` among `v`'s closer same-network
+neighbours.
+
+**The relaxation re-enqueues, so the stored distances are true minima.** The queue is
+FIFO, but a province that improves is pushed back on - the node is allocated at
+`0x289DAA`, immediately after the write at `0x289DA4` - which makes this Bellman-Ford by
+queue rather than one breadth-first sweep. Without that re-push the descent above would
+not be sound.
+
+The plain hop count is a *different* field, `CProvince +0x50`, which the daily pass never
+reads. The same loop maintains it, as the popped province's hops plus one at each
+improvement - so it counts hops **along the winning route**, not the map's shortest hop
+count, and `+0x4C` less `+0x50` is what that route's infrastructure costs on top of its
+length. `100000` is the reset "infinity".
 
 A province's label is its controller's **acting capital province id**, from
 `CProvince::UpdateSupplyDepot` (rva `0xA70C0`) via `CCountry::FindSupplyDepot` - so two

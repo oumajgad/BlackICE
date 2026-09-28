@@ -166,6 +166,26 @@ def documented():
     return out
 
 
+# CPersistent's own slot 1 and slot 3. A class that inherits CPersistent other than as its
+# primary base carries that table at a non-zero object offset - CArmy's is at +8 - and its
+# first table's slot 4 is some unrelated virtual rather than a loader. These are how the
+# right table is picked out: Save and Load are the framework CPersistent::Load drives and
+# are hardly ever overridden, while slot 4 always is.
+BASE_SAVE = 0x45BB10
+BASE_LOAD = 0xA7C050
+
+
+def persistentTable(image, record):
+    """the class's CPersistent vftable, at whatever object offset it sits"""
+    for table in record.get("vftables") or []:
+        if table["slots"] < 5:
+            continue
+        address = int(table["address"], 16)
+        if image.u32(address + 4) == BASE_SAVE or image.u32(address + 12) == BASE_LOAD:
+            return table
+    return None
+
+
 def collect():
     image = LX.Image(LX.EXE)
     rtti = LX.load_rtti()
@@ -219,8 +239,11 @@ def collect():
         persistent = "CPersistent" in primaryChain(rtti, name)
         if kind is None:
             kind = "live"
-        if persistent and tables and slots >= 5:
-            address = int(tables[0]["address"], 16)
+        secondary = None if (persistent and tables and slots >= 5) \
+            else persistentTable(image, record)
+        if (persistent and tables and slots >= 5) or secondary is not None:
+            table = tables[0] if secondary is None else secondary
+            address = int(table["address"], 16)
             saveContents, loadKey = image.u32(address + 8), image.u32(address + 16)
             if loadKey not in (BASE_LOAD_KEY, EMPTY_SAVE_CONTENTS, EMPTY_AFTER_LOAD):
                 loader = loadKey - 0x400000

@@ -1,6 +1,23 @@
 # BlackICE for Hearts of Iron III
 ### This is the official repo for the mod.
 
+### Documentation
+Everything is in **[docs/](docs/README.md)**. The main ones:
+
+| | |
+| --- | --- |
+| [The Paradox script language](docs/script/README.md) | How the game's text files work, with a worked event. Start here before writing any. |
+| [Triggers](docs/script/triggers.md) · [Effects](docs/script/effects.md) · [Scopes](docs/script/scopes.md) · [Modifiers](docs/script/modifiers.md) | Every keyword the engine accepts - 152 conditions and 91 effects, read out of the game itself |
+| [Orders of battle](docs/script/oob.md) | The unit files in `history/units/` - the land, naval and air hierarchies, and the production queue |
+| [Keyboard shortcuts](Shortcuts.txt) | |
+| [The installer](installer/README.md) | How the setup exe is built |
+
+If you are about to write an event or a decision, the one thing worth knowing up front is
+that **a key the engine does not recognise is silently dropped** - the condition never
+fires, nothing is logged, and nothing looks broken. Five keys that read perfectly
+reasonably do exactly that; they are listed
+[here](docs/script/triggers.md#keys-that-do-not-work).
+
 ### How to build a test version
 There is a GitHub action which builds the installer: a single
 `BlackICE <version> Setup.exe`. Run it and point it at the base game folder (the
