@@ -242,6 +242,64 @@ answer covers the 74 classes that inherit it. **`CReferenceObject::LoadKey` has 
 `id`, read as an object id pair into `this + 8`; its 19 heirs get `id_type` at 0x8 and
 `id` at 0xC from it, which is exactly where CMinister keeps them.
 
+## `practical`, and the two things that word names
+
+**`practical` is an effect**, `CPracticalEffect` (`CEffect::LoadKey` token 1883). It is also
+a block in `common/technology.txt`, and they have nothing to do with each other beyond the
+word.
+
+### The effect
+
+`CPracticalEffect::LoadKey` (rva `0x5BDBE0`) knows two keys:
+
+| key | what it is |
+| --- | --- |
+| `technology_group` | a **technology category** by name, looked up in the technology database's map at `+0x2C` - one of the names `common/technology.txt` lists, `carrier_practical` and the like - kept at the effect's `+0x20` |
+| `value` | a number through the family's `ParseFixedPoint`, kept at `+0x24` |
+
+    practical = { technology_group = carrier_practical value = 5 }
+
+**The amount is thousandths, and a whole number is scaled like any other.**
+`ParseFixedPoint` (`0x67B540`) has two paths, chosen by the tokenizer's slot 2: `sscanf` with
+`"%i"` and no scaling, or `0x6696A0`, which `imul`s the whole part by 1000 and adds the
+fraction. The tokenizer a text file is read with answers that slot **false** - its slot 2 is
+`xor al, al; ret` at rva `0x192360` - so a file always takes the scaling path, and
+`value = 5` is five levels while `value = 2.5` is two and a half.
+
+### What Execute does
+
+`CPracticalEffect::Execute` (rva `0x5BDCF0`):
+
+1. **Needs a country in scope** and returns at once when the scope has none.
+2. Takes the category's index from `CTechnologyCategory +0x5C` and reads the country's level
+   for it out of `own_ability`, `CCountry +0x698`.
+3. **If that category has a technology-sharing partner** - `CCountry +0x6A8` holds a
+   `CCountryTag` per category - it reads the partner's level for the same category and uses
+   **whichever of the two is higher** as the base. So the effect can jump a country to its
+   partner's level and then add on top.
+4. Adds `value` and stores through `CCountry::SetTechAbility` (rva `0xE03C0`), which floors
+   the result at 0 and caps it at **`MAX_TECH_ABILITY`** - the `country` define block's
+   `+0x44`, cached in a static on first use.
+
+A bare `carrier_practical` with no `=` and no block is not this effect and does nothing: the
+name is not a token `CEffect::LoadKey` knows, so it reaches `ReportUnknownKey` and is dropped
+without a word.
+
+### The block in `common/technology.txt`
+
+    theoretical = { infantry_theory militia_theory ... }
+    practical   = { infantry_practical militia_practical ... }
+    folders     = { nation_folder construction_folder ... }
+
+Three lists of names, and the `practical` one says which categories are practicals. It is
+**not** read through a `LoadKey` switch: the tokens exist (`practical` 1883, `theoretical`
+1884, `folders` 1189) but no loader in the game has a case for `theoretical` or `folders`, so
+the technology database reads this file its own way. `own_ability` holds a level for every
+category whichever list it is in, and the defines that bear on the difference all sit
+together in the `country` block - `BASE_TECH_DECAY` at `+0x40`, `MAX_TECH_ABILITY` at `+0x44`,
+`TECH_ABILITY_GAIN_DIVISOR` at `+0x48`. **What membership in the list actually changes was
+not traced**; the one reader of `BASE_TECH_DECAY` outside `CDefines::Load` is rva `0x204A0`.
+
 ## What the mod says that none of this is
 
 `scriptcheck.py` takes every key in `events/` and `decisions/`, subtracts the two keyword

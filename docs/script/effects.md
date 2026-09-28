@@ -21,12 +21,12 @@ Their description is inferred from the class the loader builds.
 | `add_casus_belli` | **(unverified)** Grants a casus belli the other way round from `casus_belli` - the class is `CReversedCasusBelliEffect`. | `add_casus_belli = ...` |  |
 | `add_core` | Make a certain province a core of the current country. | `add_core = <province id>` | 575 |
 | `add_country_modifier` | Add a country modifier with certain effects to the country. | `add_country_modifier = <name of modifier>` | 4460 |
-| `add_division` | **(unverified)** Adds a division. | `add_division = ...` |  |
+| `add_division` | **(~unverified~ works, units spawn with no techs and full strength)** Adds a division. | `add_division = { name = <name> where = <province id> <brigade type> = <name> <brigade type> = <name> }` |  |
 | `add_province_modifier` | Applies a named modifier to a province, optionally for a limited duration. | `add_province_modifier = ...` | 47 |
 | `add_wargoal` | Adds a War Goal to the current country towards the target country. It won't start a new war, only works if there's already one in progress. | `add_wargoal = ...` | 28 |
 | `any_controlled` | Any controlled province. | `any_controlled = ...` | 277 |
 | `any_country` | Any available country. | `any_country = ...` | 4236 |
-| `any_nearby_province` | **(unverified)** Scope over provinces near the current one. | `any_nearby_province = ...` |  |
+| `any_nearby_province` | **(~unverified~, does not work)** Scope over provinces near the current one. | `any_nearby_province = ...` |  |
 | `any_neighbor_country` | Any country neighboring the current country. | `any_neighbor_country = ...` | 1 |
 | `any_neighbor_province` | Any province neighboring the current province. | `any_neighbor_province = ...` | 116 |
 | `any_owned` | Any owned province. | `any_owned = ...` | 130 |
@@ -68,7 +68,7 @@ Their description is inferred from the class the loader builds.
 | `manpower` | Increase/decrease the amount of manpower a country has. | `manpower = x  #(x = +-0..1)` | 1907 |
 | `metal` | Increase/decrease a province’s max production of metal. | `metal = x` | 2423 |
 | `military_access` | Gives the specified country, tag1 military access to the current country, tag2. | `tag1 = { military_access = tag2 }` | 22 |
-| `modify_spies` | **(unverified)** Changes the number of spies. | `modify_spies = ...` |  |
+| `modify_spies` | **(~unverified~, does not work)** Changes the number of spies. | `modify_spies = ...` |  |
 | `money` | Increase/decrease the amount of money a country has. | `money = x  #( x = +-1..)` | 2226 |
 | `national_unity` | Increase/decrease a country’s amount of national unity. | `national_unity = x  #(x = +-1..100)` | 382 |
 | `neutrality` | Increase/decrease a country’s base neutrality value. | `neutrality = x # (x = +-1..100)` | 186 |
@@ -76,7 +76,7 @@ Their description is inferred from the class the loader builds.
 | `officer_pool` | Adds to the country's officer pool. | `officer_pool = ...` | 639 |
 | `organisation` | Increase/decrease the ruling party’s organisation. | `organisation = x #(x = +-1..)` | 347 |
 | `popularity` | Increase/decrease the ruling party’s popularity. | `popularity = x # (x = +-1..)` | 361 |
-| `practical` | **(unverified)** Changes practical knowledge. | `practical = ...` |  |
+| `practical` | **(~unverified~, works)** Changes practical knowledge. | `practical = ...` |  |
 | `province_event` | Fires an event in the province scope, the province equivalent of `country_event`. | `province_event = ...` | 80 |
 | `random` | Effects within the block has an x percents chance of taking effect. | `random = {` | 24 |
 | `random_country` | Picks a random country. | `random_country = ...` | 87 |
@@ -100,7 +100,7 @@ Their description is inferred from the class the loader builds.
 | `set_global_flag` | Sets a global flag regardless of country. | `set_global_flag = <name of flag>` | 198 |
 | `set_province_flag` | Sets a province flag (need a province scope). | `set_province_flag = <name of flag>` | 167 |
 | `set_variable` | Creates a new variable and assigns it the specified value. | `set_variable = {` | 1020 |
-| `split_troops` | Hands a fraction of the country's troops to the target, as a value between 0 and 1. Written in the receiving country's scope: `GER = { split_troops = 0.10 }`. **It also moves the affected units into a random adjacent province.** | `tag = { split_troops = x }` | 23 |
+| `split_troops` | Hands a fraction of the country's troops to the target, as a value between 0 and 1. Written in the receiving country's scope: `GER = { split_troops = 0.10 }`. **Can move the affected units into a random adjacent province under unknown circumstances.** | `tag = { split_troops = x }` | 23 |
 | `strategic_resource` | An effect to add or remove a strategic resource from a province. | `strategic_resource = <resource_name> / none` | 68 |
 | `supplies` | Increase/decrease a province’s max production of supplies. | `supplies = x` | 2230 |
 | `surrender_inherit` | The target inherits this country's holdings on surrender. | `surrender_inherit = ...` | 11 |

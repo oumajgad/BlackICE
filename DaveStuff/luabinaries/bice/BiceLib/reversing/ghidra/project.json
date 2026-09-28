@@ -1621,6 +1621,15 @@
    "source": "BiceLib/GameClasses/CCountry.hpp:99"
   },
   {
+   "rva": "0xE03C0",
+   "kind": "function",
+   "name": "CCountry::SetTechAbility",
+   "signature": "void __stdcall CCountry::SetTechAbility(CCountry* country, CTechnologyCategory* category, int level)",
+   "comment": "**Writes one of a country's theory or practical levels**, thousandths: floors the level at 0, caps it at MAX_TECH_ABILITY - the `country` define block at CDefines +0xCC, offset +0x44, read once and cached in the static at 0x17EBAB0 behind the flag at 0x17EBAB4 - and stores it in own_ability (+0x698) at the category's own index (+0x5C). Called by CPracticalEffect::Execute. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0xE06C0",
    "kind": "function",
    "name": "CCountry::GetLeadershipDistributionAt",
@@ -3735,6 +3744,15 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x1A9130",
+   "kind": "function",
+   "name": "CSubUnit::AfterLoad",
+   "signature": "void __thiscall CSubUnit::AfterLoad(CSubUnit* this)",
+   "comment": "CPersistent slot 5 on a brigade, and the same id minting as CUnit::AfterLoad: it reads and writes the generator at 0x170AF78. Reached from CRegiment's vftable slot 5. See reversing/FINDINGS-oob.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-oob.md"
+  },
+  {
    "rva": "0x1AB680",
    "kind": "function",
    "name": "CSubUnit::GetMaxStrength",
@@ -3926,6 +3944,15 @@
    "name": "CUnit::LoadKey",
    "signature": "void __thiscall CUnit::LoadKey(CUnit* this, CParseContext* parse, SaveToken key)",
    "comment": "**The whole of what an order of battle block accepts** - a `division`, `corps`, `army`, `navy`, `air` or `theatre` - 40 keys in one switch of 4658 bytes. Seven open a child unit (`theatre`, `armygroup`, `army`, `corps`, `division`, `navy`, `air`), three say what the unit is made of (`regiment`, `ship`, `wing`, all reaching CSubUnit::LoadKey), four are identity (`id`, `name`, `location`, `leader`) and the rest is state a save carries: `path`, `track`, `previous`, `movement_progress`, `retreat`, `possible_retreat`, `disengage`, `arrow_state`, `start_date`, `end_date`, `was_paradropped`, `supplies`, `fuel`, `dig_in`, `attack_delay`, `combat_hours`, `can_upgrade`, `can_reinforce`, `is_reserve`, `is_prioritized`, `plan`, `expeditionary_owner`, `expeditionary_date`, `aggression_enabled`, `aggression_setting`, `country_intel`. The loader cannot tell an OOB file from a save - it is the same switch - so every one of them is legal in `history/units`.\n\n**The keyword does not pick the class, the parent does**: CNavy::LoadKey and CAir::LoadKey take the five child-unit keywords back and send all five to one handler that still builds a CArmy. Reached from RTTI, not from the first vftable: CArmy keeps CPersistent at object offset 8, so slot 4 of its primary table is a per-unit update and not this.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-oob.md"
+  },
+  {
+   "rva": "0x1B80D0",
+   "kind": "function",
+   "name": "CUnit::AfterLoad",
+   "signature": "void __thiscall CUnit::AfterLoad(CUnit* this)",
+   "comment": "**CPersistent slot 5, and where a unit's id comes from.** If the block carried an id (either half of the pair at +8 non-zero) it keeps it and then pushes the global generator at 0x170AF78 past it, so a later runtime id cannot collide with it. If it carried none, it takes `counter++` and stamps id type **0x29 (41)**. That is why an OOB file need not carry ids at all, and why units from one that does not - the mod's flying_dutchman files - come out as type 41. It goes on to fix up the rest of what the block lacked. See reversing/FINDINGS-oob.md.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-oob.md"
   },
@@ -6275,13 +6302,31 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x5B57F0",
+   "kind": "function",
+   "name": "CAddDivisionEffect::Execute",
+   "signature": "void __thiscall CAddDivisionEffect::Execute(CAddDivisionEffect* this, CEventScope* scope)",
+   "comment": "**Slot 11, what `add_division` does.** Takes the province from the effect's +0x3C through g_CMap +0x2200 and the owner from the scope's country, falling back to the province's controller (+0x334/+0x338). Then walks the {definition, name} entries the loader collected at +0x40/+0x44 and, for the first one, allocates the parent unit too - **the class coming from the brigade definition's own flags**: land (+0x2D) gives CRegiment 0xD8 under CArmy 0x308, is_air (+0x2C) CWing under CAir 0x2F4, anything else CShip 0xF8 under CNavy 0x2FC. Each object gets an id from the generator at 0x170AF78 with type 0x29, its type through CSubUnit::SetType, its name from the entry's string, and its organisation from CSubUnit::GetMaxOrganisation; then CUnit::EnterProvince puts the unit **on the map** - not in the deployment pool - and AnnounceLoadedUnitsToScreen tells the player. See reversing/FINDINGS-oob.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-oob.md"
+  },
+  {
    "rva": "0x5B5DF0",
    "kind": "function",
    "name": "CAddDivisionEffect::LoadKey",
    "signature": "void __thiscall CAddDivisionEffect::LoadKey(CAddDivisionEffect* this, CParseContext* parse, SaveToken key)",
-   "comment": "**The keys its switch names**, 2 of them, one case each: `name`, `where`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "comment": "**Two keys by token and the rest by name.** `name` (26) reads a string into the effect's +0x20; `where` (1921) is sscanf'd into +0x3C as a province id, with a bad-value report when the text is not a number. **Every other key is looked up in g_CSubUnitDataBase by its own text**, so a brigade type is a key, and on a hit the pair {definition, the value's text} is appended to the vector at +0x40/+0x44 - 0x20 bytes an entry, the string becoming that brigade's name in Execute. A key the database does not know is dropped in silence, without even reaching ReportUnknownKey. See reversing/FINDINGS-oob.md.",
    "confidence": "confirmed",
-   "source": "reversing/FINDINGS-definitions.md"
+   "source": "reversing/FINDINGS-oob.md"
+  },
+  {
+   "rva": "0x5B5FA0",
+   "kind": "function",
+   "name": "CAddDivisionEffect::GetText",
+   "signature": "void __thiscall CAddDivisionEffect::GetText(CAddDivisionEffect* this)",
+   "comment": "Slot 9 of the effect's vftable, which is GetText on every CEffect - matched against CLoadOOBEffect, whose slots 9 and 11 are its named GetText and Execute. **The body was not read**; the name is the slot's.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-oob.md"
   },
   {
    "rva": "0x5B8FB0",
@@ -6351,9 +6396,27 @@
    "kind": "function",
    "name": "CPracticalEffect::LoadKey",
    "signature": "void __thiscall CPracticalEffect::LoadKey(CPracticalEffect* this, CParseContext* parse, SaveToken key)",
-   "comment": "**The keys its switch names**, 2 of them, one case each: `technology_group`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "comment": "**The two keys of the `practical` effect.** `technology_group` (530) reads a string and looks it up as a technology **category** in the technology database's map at +0x2C - the names common/technology.txt lists - keeping it at the effect's +0x20; `value` (678) goes through ParseFixedPoint into +0x24. Because the text tokenizer's slot 2 answers false (rva 0x192360 is `xor al, al; ret`), that number always takes the scaling path, so it is thousandths and `value = 5` means five levels. Anything else is dropped. See reversing/FINDINGS-script.md.",
    "confidence": "confirmed",
-   "source": "reversing/FINDINGS-definitions.md"
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5BDCF0",
+   "kind": "function",
+   "name": "CPracticalEffect::Execute",
+   "signature": "void __thiscall CPracticalEffect::Execute(CPracticalEffect* this, CEventScope* scope)",
+   "comment": "**Slot 11, what the `practical` effect does.** Returns at once unless the scope carries a country. Takes the technology category from the effect's +0x20, its index from CTechnologyCategory +0x5C, and the country's level for it from own_ability (CCountry +0x698). **Where that category has a technology-sharing partner** - CCountry +0x6A8, a CCountryTag per category - it reads the partner's level too and takes whichever is higher as the base. Then it adds the effect's `value` (+0x24) and stores the result through CCountry::SetTechAbility (0xE03C0), which floors at 0 and caps at MAX_TECH_ABILITY. See reversing/FINDINGS-script.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5BDDB0",
+   "kind": "function",
+   "name": "CPracticalEffect::GetText",
+   "signature": "void __thiscall CPracticalEffect::GetText(CPracticalEffect* this)",
+   "comment": "Slot 9, which is GetText on every CEffect. **The body was not read**; the name is the slot's.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x5BDFE0",
@@ -8832,6 +8895,15 @@
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CPersistent.hpp:143",
    "type": "CToken[2138]"
+  },
+  {
+   "rva": "0x170AF78",
+   "kind": "global",
+   "name": "g_next_persistent_id",
+   "signature": null,
+   "comment": "**The id generator.** One ULONG counter every runtime-created persistent takes its id from, stamped with id type 0x29 (41): CUnit::AfterLoad and CSubUnit::AfterLoad when a block carried no id, CAddDivisionEffect::Execute for everything it builds, and ten other sites including CGameState and the AI. A loaded id does not use it but does push it forward, so it always sits above every id in play. In a 1936 autosave type 41 is the second commonest id type - 15751 against 4713's 19689, those being the ids that came out of files. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-oob.md"
   },
   {
    "rva": "0x17162A4",

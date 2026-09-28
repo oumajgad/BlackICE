@@ -193,6 +193,81 @@ Both arms are the same three instructions over the convoy definition's `+0x34` d
 it is the one spelling of the key that carries meaning - the only load-bearing `status` in
 an OOB file.
 
+## `add_division`, and where ids come from
+
+`CAddDivisionEffect` (vftable rva `0x11F547C`; `CEffect` numbers its slots 4 `LoadKey`,
+9 `GetText`, 11 `Execute`) is the effect the mod's own docs list as unverified, and it is not
+used anywhere in BlackICE. Its grammar is wider than its two named keys.
+
+### The keys
+
+`CAddDivisionEffect::LoadKey` (rva `0x5B5DF0`) handles two by token and the rest by name:
+
+| key | what it does |
+| --- | --- |
+| `name` | a string into the effect's `+0x20` |
+| `where` | `sscanf`'d into `+0x3C` as a province id; a value that is not a number reports a bad value |
+| anything else | **looked up in `g_CSubUnitDataBase` by the key's own text** - so a brigade type is a key - and on a hit the pair {definition, the value's text} is appended to the vector at `+0x40`/`+0x44`, 0x20 bytes an entry |
+
+A key the sub-unit database does not know is **dropped without a word** - not even into the
+`Unexpected` list `ReportUnknownKey` keeps. So the shape is
+
+    add_division = {
+        name = "7. Panzerdivision"
+        where = 3123
+        light_armor_brigade = "1st Panzer"
+        motorized_brigade = "2nd Motorized"
+    }
+
+and the value of a brigade key becomes **that brigade's name** (`Execute` assigns it into the
+sub-unit's `+0x68`).
+
+### What Execute builds
+
+`CAddDivisionEffect::Execute` (rva `0x5B57F0`):
+
+1. Takes the province from `+0x3C` through `g_CMap +0x2200`, and the owner from the scope's
+   country - falling back to **the province's controller** (`+0x334`/`+0x338`) when the scope
+   carries none.
+2. Walks the entries. For the first one it also allocates the parent unit, and **the class
+   comes from the brigade definition's own flags, not from the effect's name**:
+
+   | definition flag | brigade | parent |
+   | --- | --- | --- |
+   | land (`+0x2D`) | `CRegiment`, 0xD8 | `CArmy`, 0x308 |
+   | `is_air` (`+0x2C`) | `CWing`, 0xD8 | `CAir`, 0x2F4 |
+   | otherwise | `CShip`, 0xF8 | `CNavy`, 0x2FC |
+
+   So `add_division` will build a fleet or an air group perfectly happily; the name is the
+   only thing that says division.
+3. Per object: mints an id (below), `CSubUnit::SetType` from the definition, the name from
+   the entry's string, organisation from `CSubUnit::GetMaxOrganisation`.
+4. `CUnit::EnterProvince` (rva `0x1BEFD0`) - **the unit is put on the map**, not into the
+   deployment pool - then registration with the game state and
+   `AnnounceLoadedUnitsToScreen` (rva `0x48D560`) for the notification.
+
+### The id generator
+
+Both the effect and the loaders mint ids from one global counter, **`0x170AF78`**, stamping
+id type **0x29 (41)**. `CUnit::AfterLoad` (slot 5, rva `0x1B80D0`) is where that happens for
+a loaded unit:
+
+    if (id_type != 0 || id != 0)          the file gave one: keep it, and then
+        if (counter <= id + 1) counter = id + 1        push the generator past it
+    else                                  mint: id = counter++, type = 0x29
+
+`CSubUnit::AfterLoad` (rva `0x1A9130`) does the same for a brigade. So **an OOB file does not
+need to carry ids at all** - leave the `id` block out and the game mints one. The mod already
+relies on this: `history/units/Meme/flying_dutchman1.txt` has no ids, and every Flying
+Dutchman in a save carries `type=41`. In a 1936 autosave, `type=41` is the second commonest
+id type at 15751 against `4713`'s 19689 - the latter being ids that came out of files and
+saves.
+
+**What that does and does not protect.** Keeping the counter ahead of a file's id stops a
+*future* runtime id colliding with it. It does not check whether the id is already in use by
+something alive, so a hand-written id that duplicates a live object's is still a duplicate -
+one more reason to leave ids out of a file loaded by `load_oob`.
+
 ## Why none of this was in FINDINGS-definitions.md
 
 `definitions.py` walks every loader `progress.py` knows about, and `progress.py` read
