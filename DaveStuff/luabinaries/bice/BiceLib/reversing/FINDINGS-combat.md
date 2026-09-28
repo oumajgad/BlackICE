@@ -685,6 +685,92 @@ spread across all of that defender's subunits. Nothing pools a side's attack and
    somewhere. If that is persistent it is a second source to check the accumulated
    record against, which nothing currently does.
 
+## Slot 5: putting a built combat into play
+
+Not named until a user's crash dump landed in it. `CCombat` slot 5 (`0x16E360`) is one
+implementation shared by all seven kinds, and it does the step after `CreateCombatants`:
+
+1. sets the word at `+0x29` to 1
+2. walks the attacker's units - `combat+0x10`, the combatant's list at `+0x40` - and calls
+   `0x1BFE80` for each
+3. the same for the defender at `combat+0x14`
+4. asks its own slot 8; on false it appends the combat to its province's combat list
+   through `0xA5F90`, and on true stores itself at `province+0x2FC` if that is empty
+5. carries on into slot 11
+
+`0xA5F90`'s only other caller is `CCombatManager::CreateCombat`'s tail, which registers a
+combat the same way - so slot 5 is that same work, reached through the table.
+
+### It is where an out-of-memory shows up
+
+The dump faulted at `0x16E391`, the `mov ebx, [ecx+0x40]` that reads `defender->units`,
+with `ecx = 1`:
+
+| | |
+| --- | --- |
+| `combat` (`edi`) | `0xDDBDECE0` - 3.71 GB up, the top of a 4 GB space |
+| `attacker` (`+0x10`) | `0x301B82F0`, and its unit list **empty** (`ebx = 0`) |
+| `defender` (`+0x14`) | **`1`** |
+| private bytes | **3.62 GB**, peak pagefile 3.29 GB |
+
+### What it is not
+
+The obvious explanation is `CreateCombatants` stopping half way through - its second
+`operator new` throwing, so `+0x14` is never written. The instruction order allows exactly
+that:
+
+    0x17B523  mov [edi+0x10], eax       the attacker, already constructed
+    0x17B526  call operator new(0xE4)   the defender  <-- throws bad allocation here
+    0x17B547  mov [edi+0x14], eax       never reached
+
+`operator new` (`0x79602F`) **throws** rather than answering null - malloc, the new handler,
+then `bad allocation` - so a failure there does not zero `+0x14`, it leaves it **unwritten**,
+holding whatever the combat's own recycled `operator new(0x44)` block held. A 1, here. And
+`+0x10` keeps a valid attacker, because the unwind state is `-1` across that allocation and
+becomes 1 only after it returns, so nothing is freed.
+
+The empty unit list is not damage either: **units are added after slot 6, not by it**, so a
+combat caught at this point has none yet.
+
+And the combat is already findable. `CCombatManager::AddCombat` runs **before** slot 6 in
+both paths - `0x2FCBE` in the loader and `0x31424` in the live factory - so a combat that
+throws inside `CreateCombatants` is left on the manager's live list, half-built, for
+whatever walks that list next to call slot 5 on and read `0x41`.
+
+**But that chain needs a catch, and there is none.** Searched for it with
+`reversing/ehcatches.py`:
+
+| | |
+| --- | --- |
+| eight levels of direct callers above `CreateCombat` | no try block anywhere |
+| `CInGameIdler::Update`, `CInGameIdler::DailyUpdate` | cleanup only, and no frame at all |
+| `CCombatManager::StartCombat`, `StartBombing` | no frame, cleanup only |
+| `CEU3Application::LoadEverything` | catches `CSoundException` and nothing else |
+| `__try/__except` in the whole image | **one** frame, at `0xBA5467`, inside the CRT |
+
+The game does have 772 catching frames out of 4373, and 717 of those take `(...)` - but they
+are iostream and CRT internals (`std::ostream::_Osfx`, `putNewline`,
+`std::operator<<Chars`), not game logic. An uncaught `bad allocation` here ends the process;
+it does not leave a combat behind to trip over later.
+
+**So the throw explanation is retracted.** What survives is narrower:
+
+- the proximate cause is certain - `combat+0x14` held `1`, and slot 5 dereferenced it
+- `+0x10` held a valid combatant with an empty unit list, so the object was not wholly junk
+- the process was at **3.62 GB private** in a 32-bit space, which is a real fault condition
+  and the likeliest thing in the neighbourhood
+
+What is **not** established is the route between them. A plausible one that needs no catch
+is an allocation failing somewhere else and being used unchecked, overwriting a live
+combat - but nothing here was read to support that over any other. The call graph walk is
+also truncated wherever dispatch is virtual, so "no catch above" is as far as direct calls
+reach and not a proof about the whole path.
+
+**So a fault here is an address-space symptom, not a combat bug.** `reversing/crashdump.py`
+prints the private bytes for exactly this reason; it used to read that stream as 32-bit
+fields and report zeros, which is worth knowing if an old transcript shows a dump with no
+memory figures.
+
 ## How a combat is set up: `CreateCombatants`, slot 6
 
 Read out of the executable, whole; no game was running for any of it.
@@ -722,11 +808,34 @@ the last optional. Not reversed further; it is the obvious next function.
 
 ### What each one does
 
-All three are `void __thiscall (this)`, bare `ret`, an SEH frame whose only job is to
-free the first combatant if the second allocation throws. Each allocates twice, builds
-the attacker with the bool `true` and the defender with `false`, and stores them at
-`+0x10` and `+0x14`. A failed `operator new` stores a null and skips the constructor,
-which is the only branching in any of them.
+All three are `void __thiscall (this)`, bare `ret`, and each allocates twice - `0xE4`
+bytes a combatant - building the attacker with the bool `true` and the defender with
+`false`, and storing them at `+0x10` and `+0x14`.
+
+**The order matters, and it is the shape of a known crash.** Taking
+`CLandCombat::CreateCombatants`:
+
+    0x17B4F2  call operator new(0xE4)   the attacker
+    0x17B50E  call 0x168DB0             its constructor, al = 1
+    0x17B517  mov [ebp-4], 0xFFFFFFFF   unwind state -1: nothing to clean up
+    0x17B523  mov [edi+0x10], eax       store the attacker
+    0x17B526  call operator new(0xE4)   the defender
+    0x17B533  mov [ebp-4], 1            state 1 - only after that call returned
+    0x17B542  call 0x168DB0             its constructor, al = 0
+    0x17B547  mov [edi+0x14], eax       store the defender
+
+So if the **second** allocation fails, `+0x14` is never written at all - it keeps whatever
+the combat's own recycled `operator new(0x44)` block held.
+
+Two things this file used to say about that are wrong:
+
+- **`operator new` throws, it does not return null.** `0x79602F` is malloc, then the new
+  handler, then `bad allocation`. The `test eax, eax` null paths in all three
+  `CreateCombatants` are unreachable, so "a failed allocation stores a null" never happens.
+- **The SEH frame does not free the first combatant when the second allocation throws.**
+  The unwind state is `-1` across that call and becomes 1 only after it returns, so no
+  cleanup runs: the attacker is leaked and `combat+0x10` stays a valid, constructed
+  combatant.
 
 | | land | naval | air |
 | --- | --- | --- | --- |

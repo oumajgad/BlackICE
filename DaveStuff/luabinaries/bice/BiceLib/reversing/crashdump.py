@@ -112,12 +112,29 @@ def describe(path):
     print("=== %s  (%.1f MB)" % (os.path.basename(path), len(data) / 1048576.0))
 
     if STREAM_VM_COUNTERS in found:
-        _, rva = found[STREAM_VM_COUNTERS]
-        # PROCESS_VM_COUNTERS: Revision, PeakVirtualSize, VirtualSize, PageFaultCount,
-        # PeakWorkingSetSize, WorkingSetSize, ... PagefileUsage, PeakPagefileUsage
-        values = struct.unpack_from("<I10I", data, rva)
-        print("    private bytes %.2f GB, peak %.2f GB" %
-              (values[9] / 1073741824.0, values[10] / 1073741824.0))
+        size, rva = found[STREAM_VM_COUNTERS]
+        # MINIDUMP_PROCESS_VM_COUNTERS_2: USHORT Revision, USHORT Flags,
+        # ULONG PageFaultCount, then **ULONG64** for the rest - peak working set, working
+        # set, four pool quotas, pagefile, peak pagefile, private, private working set,
+        # shared commit. Reading these as 32-bit takes the high half of each and prints
+        # zeros, which is what this did.
+        revision = struct.unpack_from("<H", data, rva)[0]
+        if revision >= 2 and size >= 80:
+            def counter(index):
+                return struct.unpack_from("<Q", data, rva + 8 + index * 8)[0]
+            private = counter(8) if size >= 8 + 9 * 8 else counter(6)
+            print("    private %.2f GB, peak pagefile %.2f GB, peak working set %.2f GB"
+                  % (private / 1073741824.0, counter(7) / 1073741824.0,
+                     counter(0) / 1073741824.0))
+            # A 32-bit process has 4 GB at the very most, and less once images, stacks and
+            # reserved-but-uncommitted ranges are out - so this close to it, an allocation
+            # failing somewhere is the likeliest thing that went wrong.
+            if private > 3 * 1073741824:
+                print("    ** within a gigabyte of the 32-bit ceiling: suspect an"
+                      " allocation failure **")
+        else:
+            print("    VM counters stream revision %d, %d bytes - not read" %
+                  (revision, size))
 
     if STREAM_EXCEPTION not in found:
         print("    no exception stream - not a crash dump?")
