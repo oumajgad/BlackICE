@@ -29,7 +29,6 @@ function IntelligenceMinisterUtilityThings()
 		if BiceLib ~= nil then
 			BiceLib.Events.rebuildCandidates()
 		end
-		-- DetermineExePatchStatus()
 		Stats.SetUpStatCollectionPage()
 	end
 
