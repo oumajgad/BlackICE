@@ -8,6 +8,10 @@ identified on it and how far each one can be trusted. This folder is the working
 that file is the record. `FINDINGS-combat.md` is the long form for the combat classes,
 which are the ones that have had the most attention.
 
+**`CANDIDATES.md` is the work queue** - what is worth reading next and why, with an anchor in
+the executable for each one so nobody has to find it twice. `PROGRESS.md` beside it is the
+generated scoreboard: every class and how far it has been read.
+
 **`ghidra/` puts all of it into a Ghidra program**, together with every C++ function
 behind the Lua API and its signature, recovered from the executable. Its README says how
 to run it and how to add to it.

@@ -30,17 +30,28 @@ only ever compared for equality, so it is the **network label**; `supply_depot_d
 (`+0x4C`) is the distance from the depot, `0` at a depot. A neighbour counts only when it
 carries the same label and is strictly closer.
 
-**Farthest first is derived, not assumed.** The per-tick driver at rva `0x282630` rebuilds
-the network when `CCurrentGameState +0x50` says it is dirty, resets the order to id order,
-then `qsort`s it with the comparator at rva `0x27B100` - 0x2A bytes that return `+1` when
+**Farthest first is derived, not assumed.** The **daily** pass at rva `0x282C20` -
+`RunDailyPass`, reached from the tick body at `0x2813F0` only when the day number changes -
+rebuilds the network when `CCurrentGameState +0x50` says it is dirty, resets the order to id
+order, then `qsort`s it with the comparator at rva `0x27B100` - 0x2A bytes that return `+1` when
 the *second* argument's `+0x4C` is larger, so it sorts descending. Element 0 is the
 province farthest from its depot, and the one-sweep argument below stands on that rather
 than on the field's name.
 
+**Once a day, not once an hour**, which this said until 2026-09-30. `0x282630` is the
+*hourly* pass and ends at `0x282C1D` with `ret 4`; `0x282C20` begins a new function with its
+own prologue, and the two abut with no padding, which is how they came to be read as one.
+The hourly pass does call `CSupply::RebuildSupplyNetwork` (at `0x2826E8`, on the same dirty
+flag), so a depot label changed during the hour is acted on within the hour - but the sort
+and `RunDailySupplyPass` are behind the day-change branch.
+
 **The distance is weighted, not a hop count**, and **the weight belongs to the province
 entered, not to the edge.** `CSupply::SpreadFromDepot` (rva `0x289BE0`) relaxes outward
 from each depot, and the cost of a step is worked out from the province being entered
-alone - its modifier block at `CMapProvince +0x114`:
+alone - its modifier block at `CMapProvince +0x114`, which is a **pointer** to an array of
+**8-byte entries** indexed by the modifier id, value in the low dword and a
+`CModifierDefinition*` in the high one. So a modifier's offset is `id * 8`, which is why the
+three reads below are `+0x60`, `+0x68` and `+0x70` for ids 12, 13 and 14:
 
     infra = MODIFIER_INFRASTRUCTURE * (1000 + LOCAL_INFRASTRUCTURE + GLOBAL_INFRASTRUCTURE) / 1000
     infra = clamp(infra, 10, 1000)

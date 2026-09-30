@@ -169,6 +169,15 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x15FF0",
+   "kind": "function",
+   "name": "CEffect::TakeScalarValue",
+   "signature": "void __thiscall CEffect::TakeScalarValue(CEffect* this, CToken value)",
+   "comment": "**Slot 7: what an effect written as `keyword = value` does with that value**, and the base is a do-nothing - the whole body is `ret 0x104`, which only cleans the 260-byte token off the stack. An effect that takes a scalar overrides it; CModifySpiesEffect is the one that does not, which is why that keyword can never be given a target or a count. The name is BiceLib's. See reversing/FINDINGS-script.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x165F0",
    "kind": "function",
    "name": "CCasusBelliType::LoadKey",
@@ -222,6 +231,60 @@
    "comment": "**The keys its switch names**, 3 of them, one case each: `deployment`, `diplomacy`, `technology`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x1C4E0",
+   "kind": "function",
+   "name": "GetCustomGameSettings",
+   "comment": "The lazily built **custom game modifier settings** singleton, 0xD8 bytes, held at 0x1A85C1C and constructed by 0x41C570. A bare `ret`; the struct has no vftable, so RTTI does not name it. +0x70 is theory_decay_months, +0x74 practice_decay_months, +0xA0 a CCGMUnitCostMult, +0xB8 a CCGExtraPracticeDecay whose map is +0xC0..+0xC4, +0xD0 officers_ratio. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "void* GetCustomGameSettings() @EAX"
+  },
+  {
+   "rva": "0x1D560",
+   "kind": "function",
+   "name": "ApplyCustomGameSettings",
+   "comment": "**Where the whole technology recalculation hangs off.** Extent 0x41D560..0x41E33C, `ret 8` - verified by linear sweep, there is no earlier `ret`, and nothing but a `call` reaches it so findRefs --address finds no reference at all. Per country it calls CTechnologyStatus::ReapplyAllTechnologies (rva 0x132840), then RecalculateTheoryAbilities (rva 0x1FE10), and later RecalculatePracticalAbilities (rva 0x1FFF0). Its two callers are CCgmSetStageCommand slot 6 (0x428AA0) and CInGameIdler slot 3 (0x65A2B0), so it runs at game start and when the custom game stage changes - **not on any tick**. What the second argument means was not read. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "void __stdcall ApplyCustomGameSettings(void* customGameSettings@stack:4, int stage@stack:8)"
+  },
+  {
+   "rva": "0x1F9A0",
+   "kind": "function",
+   "name": "LoadCustomGameSettings",
+   "comment": "The save loader for the custom game settings singleton: a token switch writing theory_decay_months (0x835) to +0x70, practice_decay_months (0x836) to +0x74, unit_cost_mult (0x837) to the sub-loader at +0xA0, extra_practice_decay (0x83A) to the one at +0xB8, and officers_ratio (0x543) to +0xD0. The two months go through the plain integer helper 0xB969F1. **The constructor leaves both months zero**, so a save without them decays nothing whatever BASE_TECH_DECAY says. `ret 8`. The name is BiceLib's.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "void __stdcall LoadCustomGameSettings(void* settings@stack:4, CParseContext* parse@stack:8)"
+  },
+  {
+   "rva": "0x1FE10",
+   "kind": "function",
+   "name": "RecalculateTheoryAbilities",
+   "comment": "**Rebuilds every theory ability from the technology levels, then decays them.** Zeroes each category with CTechnologyCategory +0x60 set through CCountry::SetTechAbility, then for every technology whose `on_completion` (CTechnology +0x28C, a CTechnologyCategory*) is a theory and whose researched level is above zero adds `(level + [0x160A460]) x [0x160A300]` into it through 0x4E02F0, and finishes by calling ApplyTechCategoryDecay (rva 0x204A0) with theory = 1. One caller, rva 0x1D560. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "void __stdcall RecalculateTheoryAbilities(void* customGameSettings@stack:4, CCountryTag* tag@stack:8)"
+  },
+  {
+   "rva": "0x1FFF0",
+   "kind": "function",
+   "name": "RecalculatePracticalAbilities",
+   "comment": "The practical half of rva 0x1FE10: the same rebuild over the categories whose CTechnologyCategory +0x60 is clear, finishing with ApplyTechCategoryDecay (rva 0x204A0) with theory = 0 at 0x42047C. One caller, rva 0x1D560. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "void __stdcall RecalculatePracticalAbilities(void* customGameSettings@stack:4, CCountryTag* tag@stack:8)"
+  },
+  {
+   "rva": "0x204A0",
+   "kind": "function",
+   "name": "ApplyTechCategoryDecay",
+   "comment": "**Practical and theory decay, and the image's only reader of BASE_TECH_DECAY** (CDefines `country +0x40`, at 0x420661). For every CTechnologyCategory in the database (`[0x1A87B78] + 0x1C`) whose +0x60 matches the bool argument:\n\n    step  = BASE_TECH_DECAY x (1.000 + CCountry +0x1174[category->index])\n            x extra x months x (1.000 - slack)          clamped to -1.000 .. 0\n    level = max(own_ability, the sharer's)\n    CCountry::SetTechAbility(country, category, level x (1.000 + step))\n\n`months` is the custom game settings' theory_decay_months (+0x70) or practice_decay_months (+0x74); `extra` is 1.000 for a theory and the extra_practice_decay map's entry (settings +0xC0, default 1.000) for a practical; `slack` is `[+8] x [+0x10]` summed over the **Reinforcement and Upgrade production sliders** (CCountry +0x5F4 elements 4 and 5), so IC spent there slows the decay.\n\n**It is not a tick.** Called twice, from 0x41FFCA (theory = 1) and **0x42047C** (theory = 0), both in wrappers whose only caller is rva 0x1D560 - reached from CCgmSetStageCommand slot 6 and CInGameIdler slot 3. CTechnologyCategory +0x60 == 0 is a practical, because that is the pass consulting extra_practice_decay. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "void __fastcall ApplyTechCategoryDecay(CCountryTag* tag@ECX, void* customGameSettings@stack:4, bool theory@stack:8)"
   },
   {
    "rva": "0x21D30",
@@ -960,6 +1023,15 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x831C0",
+   "kind": "function",
+   "name": "CConstruction::CanStillBeBuilt",
+   "comment": "**Slot 12**, called on every queue item at the top of the production pass (0x519DE1) with &CCountry +0xCA4. True when location (+0x44) is null, or when [[+0x44] + 0x338] equals the tag's id half (+4 of the argument), or when slot 11 ([vftable+0x2C]) answers true; false otherwise, and a false answer makes CDistributeProduction::Distribute unlink, free and destruct the item. location is null on every military and convoy item and a province on building items, so in practice this cancels building projects in provinces the country has lost and never touches unit builds. `this` in ecx, one stack argument, `ret 4`, with two `sete al` tails. The name is ours.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "bool __thiscall CConstruction::CanStillBeBuilt(CConstruction* this, CCountryTag* tag)"
+  },
+  {
    "rva": "0x83200",
    "kind": "function",
    "name": "CConstruction::LoadKey",
@@ -985,6 +1057,24 @@
    "comment": "**The keys its switch names**, 8 of them, one case each: `accumulated_experiance`, `accumulated_progress`, `factor`, `is_reserve`, `manpower`, `name`, `target`, `unit`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x846D0",
+   "kind": "function",
+   "name": "CMilitaryConstruction::AddStartExperience",
+   "comment": "**Slot 20 - what CConstruction::AddProgress hands the day's funding fraction to.** It takes the owning country's MODIFIER_UNIT_START_EXPERIENCE (modifier 52, at [CCountry +0xDA8] + 0x1A0 - the modifier values array is **eight bytes an entry**, which 77 x 8 = +0x268 for RESERVES_PENALTY_SIZE in GetBuildCostIC settles), scales it by reserves_factor (+0x9C) over 1000 where is_reserve (+0x8C) is set, multiplies by the fraction over 1000 and adds that to accumulated_experience (+0xA4), then adds the raw fraction to accumulated_progress (+0xA8). Both fields are already named from the save, which is what makes the reading safe. `this` in ecx, one stack argument, `ret 4`. The name is ours.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "void __thiscall CMilitaryConstruction::AddStartExperience(CMilitaryConstruction* this, int fraction)"
+  },
+  {
+   "rva": "0x85300",
+   "kind": "function",
+   "name": "CMilitaryConstruction::RecalculateCost",
+   "comment": "**Slot 14, and the only thing that ever sets a queue item's cost and duration.** It ends with exactly three stores - duration into +0x34, cost into +0x30 and a practical factor into +0xA0 - and a bare `ret` with no arguments. It finds the country as gamestate[+0x16C][this+0x4C] and calls CCountry::GetBuildCostIC (0x4E18F0, at 0x485494 and 0x4854EF) and CCountry::GetBuildTime (0x4E19A0, at 0x4855B6 and 0x4855CF), passing byte [this+0x8C] (is_reserve) as the reserves flag. Two arms: where brigades_count (+0x84) is positive and the first element of the vector at +0x7C has a non-null +0x38 the item is an upgrade, so it takes the difference between the new cost and the old (floored at zero at 0x4854F8) and applies the `military` defines UNIT_UPGRADE_COST (+0x234), UNIT_UPGRADE_TIME (+0x238) and UNIT_UPGRADE_PRACTICAL_MOD (+0x23C); otherwise it walks the brigade list for a fresh build. **It runs at exactly two moments** - when the item is queued (0x546166) and on every queued item whenever one completes (0x51A253) - so a queued item's cost lags the country's current technology and practical until something in the queue finishes. The name is ours.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "void __thiscall CMilitaryConstruction::RecalculateCost(CMilitaryConstruction* this)"
   },
   {
    "rva": "0x85980",
@@ -1442,6 +1532,15 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0xB8C90",
+   "kind": "function",
+   "name": "AddMonths",
+   "comment": "Advances a tick-valued date in place by a whole number of months; the date pointer arrives in eax and the count on the stack. Named from its two readers here - CCountry::CanBreakNap, which walks the NAP month windows with it, and the election phase of the country's daily pass, which uses it on last_election. Not read beyond its calling convention.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "void __fastcall AddMonths(int* date@EAX, int months)"
+  },
+  {
    "rva": "0xB8DC0",
    "kind": "function",
    "name": "AreaIsConnectedTo",
@@ -1476,6 +1575,141 @@
    "comment": "**One key, `position`**, an `{ x = .. y = .. }` block read by ParsePoint into `this + 8`. That is a country's place on the political compass; everything else is unknown.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0xC3200",
+   "kind": "function",
+   "name": "CAlignment::ComputeDrift",
+   "comment": "Sums the seven alignment terms into CAlignment+0x18[i] for every ideology group i whose slot 6 returns true, then returns SUM of (unit vector toward group i) * values[i] / 1000. Relation (0x4C3950), Ideology (0x4C3B10), Proximity (0x4C3C00) and AlignTowards (0x4C3790) are added; Revanchism (0x4C3E40), Threat (0x4C4120) and Repulsion (0x4C4380) are subtracted and only when the group is within distance 200 (`cmp eax, 0x9C40` on the squared distance, at 0x4C3361). Two callers: CAlignment::UpdateDaily and 0x4FA123.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "Point* __stdcall CAlignment::ComputeDrift(CAlignment* this, Point* out, CCountry* country)"
+  },
+  {
+   "rva": "0xC3620",
+   "kind": "function",
+   "name": "CAlignment::UpdateDaily",
+   "comment": "The alignment drift step. Both arguments are registers - the compiler gave it no stack frame arguments and it ends in a plain `ret`. A country in a real faction (slot 7 on CCountry+0xD8) does not drift: unless it is the faction leader its position is **snapped** to the leader's (leader+0xE4/+0xE8). Otherwise it calls 0x4C3200 for the drift vector, 0x4C4B00 to clamp it inside the ideology groups' bounding box, and adds it to +0x8/+0xC. Its one caller is the country's daily pass at 0x4DB87E, gated on today > CCountry+0x124.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "void __fastcall CAlignment::UpdateDaily(CAlignment* this@ESI, CCountry* country@EDI)"
+  },
+  {
+   "rva": "0xC3790",
+   "kind": "function",
+   "name": "CAlignment::GetAlignTowardsTerm",
+   "comment": "`ret 8` and the group arrives in **edi**. The seventh alignment term and the only one that reads no `alignment` define: it reads the faction's own ALIGN_TOWARDS modifier (values entry 47, [modifier+0x18]+0x178, through 0x523560) - the thing CFaction's `influence` string `align_towards_axis` names. (1 - leaderEffectiveNeutrality/100) x ALIGN_TOWARDS x ((1 - countryEffectiveNeutrality/100) + [0x1A8732C]). Zero for a country already in a faction, or a faction with no members.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __stdcall CAlignment::GetAlignTowardsTerm(int* out, CCountry* country, CIdeologyGroup* group@EDI)"
+  },
+  {
+   "rva": "0xC3950",
+   "kind": "function",
+   "name": "CAlignment::GetRelationTerm",
+   "comment": "Zero unless the country is in no faction (CCountry+0xD8 == the null-faction singleton at 0x1A855A8) and the group's faction has members. Otherwise: mean of CDiplomacyStatus+0x38 over every member, x RELATION_WEIGHT (alignment +0x4), x (1 + SUSEPTIBILITY), x (1 + suseptibility_<factiontag>), the latter modifier index taken from CFaction+0xB4.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __stdcall CAlignment::GetRelationTerm(int* out, CIdeologyGroup* group, CCountry* country)"
+  },
+  {
+   "rva": "0xC3B10",
+   "kind": "function",
+   "name": "CAlignment::GetIdeologyTerm",
+   "comment": "`ret 8` - the out pointer arrives in **edi**, which the body never sets. A flat term: IDEOLOGY_WEIGHT (alignment +0x8) x (1 + DRIFT_SPEED) when the country is unaligned and its ruling ideology (CCountry+0x1140) passes its slot 17 and belongs to this group (CIdeology+0x50 == group); zero otherwise. Abuts 0xC3C00 with no padding - the `ret 8` at 0x4C3BFD is followed straight by a fresh prologue with its own SEH handler.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __stdcall CAlignment::GetIdeologyTerm(CIdeologyGroup* group, CCountry* country, int* out@EDI)"
+  },
+  {
+   "rva": "0xC3C00",
+   "kind": "function",
+   "name": "CAlignment::GetProximityTerm",
+   "comment": "Zero unless the country is unaligned and the group's faction has members. Takes the **maximum** over members of (10 - capitalDistance/500, floored at [0x1A87334]) x floor(member.maxIC / country.maxIC), then x PROXIMITY_WEIGHT (alignment +0xC) x (1 + SUSEPTIBILITY) x (1 + suseptibility_<factiontag>). The IC ratio is an **integer** divide of CCountry+0x60C before scaling, so a member smaller than the country contributes exactly nothing. Distance is 0x492030 between the two acting-capital provinces.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __stdcall CAlignment::GetProximityTerm(int* out, CIdeologyGroup* group, CCountry* country)"
+  },
+  {
+   "rva": "0xC3E40",
+   "kind": "function",
+   "name": "CAlignment::GetRevanchismTerm",
+   "comment": "Subtracted by the aggregator. Zero when the faction holds at least half the world's victory points: s = faction.progress / total victory points (0x522CC0), and the 0.5 comes from floor(500.50003f), the float at 0x160A5E8. Otherwise (number of the country's claims, CCountry+0xD10, whose current owner is in this faction) x (0.5 - s) x 5 x REVANCHISM_WEIGHT (alignment +0x10) x (1 + SUSEPTIBILITY) x (1 + suseptibility_<factiontag>).",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __stdcall CAlignment::GetRevanchismTerm(int* out, CIdeologyGroup* group, CCountry* country)"
+  },
+  {
+   "rva": "0xC4120",
+   "kind": "function",
+   "name": "CAlignment::GetThreatTerm",
+   "comment": "Subtracted by the aggregator. max of CDiplomacyStatus+0x5C over the faction's members, x THREAT_WEIGHT (alignment +0x14) x (1 + SUSEPTIBILITY) x (1 + suseptibility_<factiontag>) x min(base IC / LARGE_COUNTRY_IC, 1) - the last clamp is exactly what defines.lua's own comment on LARGE_COUNTRY_IC (alignment +0x2C) describes. **It also has a dead branch**: the loop tracks whether any member's status has the hostile flag +0x20 and calls GetDefines at 0x4C41EE on the first hit, then discards both; nothing reads either, and WAR_THREAT (alignment +0x28) has no reader anywhere in the image.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __stdcall CAlignment::GetThreatTerm(int* out, CIdeologyGroup* group, CCountry* country)"
+  },
+  {
+   "rva": "0xC4380",
+   "kind": "function",
+   "name": "CAlignment::GetRepulsionTerm",
+   "comment": "Subtracted by the aggregator, and the only term that needs the CAlignment itself (in ecx). base = REPULSION_WEIGHT (alignment +0x18) x (200 - distance to the group), the distance by an inlined integer Newton square root at 0x4C4480. Where the country's ruling ideology is *not* in this group, base is multiplied by (country.maxIC x REPULSION_IC_FACTOR, alignment +0x30) / (leader.maxIC + (members' maxIC - leader.maxIC)/4) when that ratio exceeds 1 - which is defines.lua's own comment on REPULSION_IC_FACTOR, term for term.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __thiscall CAlignment::GetRepulsionTerm(CAlignment* this, int* out, CIdeologyGroup* group, CCountry* country)"
+  },
+  {
+   "rva": "0xC4660",
+   "kind": "function",
+   "name": "CAlignment::DistanceSquaredTo",
+   "comment": "`ret 8`. Writes ((this->x - other->+0x58)^2 + (this->y - other->+0x5C)^2), each squaring divided by 1000, through `out` and returns it - so the result is a squared distance in thousandths and nothing takes a square root. `other` is a CIdeologyGroup, whose position is at +0x58/+0x5C. Seven callers, three of them the FACTION_*_DIST functions.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __fastcall CAlignment::DistanceSquaredTo(CAlignment* this@ECX, int* out, void* other)"
+  },
+  {
+   "rva": "0xC4B00",
+   "kind": "function",
+   "name": "CAlignment::ClampMove",
+   "comment": "`ret 8`, with `this` arriving in **eax**. Copies `delta` into `out`, calls 0x4C46C0 to rebuild the bounding box of all ideology-group positions into this+0x28..+0x44, and shortens the move so the resulting position stays inside it. Called by the constructor (to place a new alignment at 0,0) and by CAlignment::UpdateDaily.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "Point* __fastcall CAlignment::ClampMove(CAlignment* this@EAX, Point* out, Point* delta)"
+  },
+  {
+   "rva": "0xC4CD0",
+   "kind": "function",
+   "name": "CAlignment::IsWithinFactionJoinDistance",
+   "comment": "**The gate on faction invitations.** Reads FACTION_JOIN_DIST (alignment +0x1C) through GetDefines, squares it (x itself, /1000) and compares it against CAlignment::DistanceSquaredTo(alignment, faction->+0x8): true when the distance is *less* than the define. The game names it itself - at 0xA3386A the false branch pushes the localisation key 'FACTION_DISTANCE' (0x15FACF4). Five callers: 0x6047C3 and four inside the faction-action validity functions 0xA32FD0 and 0xA33CD0.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "bool __stdcall CAlignment::IsWithinFactionJoinDistance(CAlignment* alignment, CFaction* faction)"
+  },
+  {
+   "rva": "0xC4D20",
+   "kind": "function",
+   "name": "CAlignment::IsWithinFactionStratBonusDistance",
+   "comment": "Byte-for-byte the same function as 0xC4CD0 with FACTION_STRAT_BONUS_DIST (alignment +0x20) in place of FACTION_JOIN_DIST. Two callers: 0x4FAC8C, inside the function that recomputes all seven alignment terms, and 0x68BFBC.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "bool __stdcall CAlignment::IsWithinFactionStratBonusDistance(CAlignment* alignment, CFaction* faction)"
+  },
+  {
+   "rva": "0xC4D70",
+   "kind": "function",
+   "name": "CAlignment::GetFactionThreatDistanceFactor",
+   "comment": "Not a predicate, unlike its two neighbours. *out = distanceSquared * 1000 / FACTION_THREAT_DIST^2 (alignment +0x24), in thousandths, or -1 when the define is zero; returns `out`. The second argument slot is reused as scratch by the inner DistanceSquaredTo call, so the value is read back out of the caller's own frame. Two callers, 0x4F54B9 and 0x4FBE00.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __stdcall CAlignment::GetFactionThreatDistanceFactor(CAlignment* alignment, int* out, CIdeologyGroup* group)"
+  },
+  {
+   "rva": "0xC4E60",
+   "kind": "function",
+   "name": "CAlignment::GetValueForGroup",
+   "comment": "Three instructions: *out = this->+0x18[group->+0x50]. Wrong `this` convention to be a plain thiscall - ecx holds the CAlignment but the function is `ret 8` with both arguments on the stack. This is how CIdeologyGroup+0x50 is established as the group's index into the per-group weight vector.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __stdcall CAlignment::GetValueForGroup(int* out, CIdeologyGroup* group)"
   },
   {
    "rva": "0xC5320",
@@ -1553,6 +1787,15 @@
    "comment": "**The variables every message starts with**, as a `{first, last, count}` list of CMessageVariable with `$COUNTRY$` first and fourteen in all.\n\n**It does not allocate the list.** The first thing it does is `[country + 0x24]` into edi and clear it (0x33F60), then refill it - so the list is the **country's own member**, and every caller gets the same one. It is returned for convenience, not because it is fresh.\n\nWhich makes the lifetime a trap. CMessage::CMessage copies the entries into the message and **releases the source**, so two messages cannot be in flight for one country: raising one from inside CCountry::ShatterUnit, which was holding this list in edi, freed the nodes under the game's own message and it died walking them at `$MONARCHTITLE$` (a virtual call through a stale vftable at 0x67ACE7). Anything raising a message has to do it where no other raise is part-built.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-messages.md"
+  },
+  {
+   "rva": "0xDA530",
+   "kind": "function",
+   "name": "RunCountryDailyPass",
+   "comment": "**Everything a country does once a day**, not just politics: 0x4DA530 to the `ret 4` at 0x4DC239 (0x4DC242 onward is SEH unwind, not body). One caller, RunDailyPass at 0x682E1A, looping the country vector; the address is in no vftable. Phases: three unread helpers, then Neutrality clamped to [0,100000] and EffectiveNeutrality derived; convoys and lend-lease; CCountry::ChangeNeutrality by the NEUTRALITY_CHANGE modifier; the IC block; the daily influence upkeep and then dissent forced to 0 for REB; the underground; elections; surrender; the AI. Alignment drift at 0x4DB87E, every ALIGNMENT_INTERVAL days. See FINDINGS-politics.md for the full ordered table.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "void __stdcall RunCountryDailyPass(CCountry* country)"
   },
   {
    "rva": "0xDCBD3",
@@ -1679,6 +1922,51 @@
    "source": "BiceLib/GameClasses/CCountry.hpp:404"
   },
   {
+   "rva": "0xEFCA0",
+   "kind": "function",
+   "name": "CCountry::CanBreakNap",
+   "comment": "`ret 8`. False when there is no NAP (this->+0xE28[otherCountryId]->+0x28) or the NAP's start_date plus NAP_UNBREAKABLE_MONTHS (diplomacy +0xE4) is still in the future. After that, **three successive windows of NAP_FORCE_BALANCE_RULE_MONTHS (+0xE8)**, each requiring the border force balance (NAP+0x24, inverted when this country is the NAP's `second` party) to reach NAP_BREAK_FORCE_BALANCE_1 / _2 / _3 (+0xEC / +0xF0 / +0xF4); once all three have elapsed it is always breakable. Every month define is divided by 1000 and passed to the date-add helper 0x4B8C90. Nine callers, all diplomatic-action code.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "bool __thiscall CCountry::CanBreakNap(CCountry* this, int otherCountryId)"
+  },
+  {
+   "rva": "0xF0510",
+   "kind": "function",
+   "name": "CCountry::GetLawByIndex",
+   "comment": "Three instructions: return this->+0x628[lawGroupIndex]. One of three abutting accessors on the laws array; see CCountry+0x628.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "CLaw* __thiscall CCountry::GetLawByIndex(CCountry* this, int lawGroupIndex)"
+  },
+  {
+   "rva": "0xF0530",
+   "kind": "function",
+   "name": "CCountry::GetLaw",
+   "comment": "Four instructions: return this->+0x628[group->+0x50].",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "CLaw* __thiscall CCountry::GetLaw(CCountry* this, CLawGroup* group)"
+  },
+  {
+   "rva": "0xF0550",
+   "kind": "function",
+   "name": "CCountry::SetLaw",
+   "comment": "Five instructions: country->+0x628[group->+0x50] = law. The country arrives in edx and the group in eax - neither is the usual `this` register - and only the law is on the stack (`ret 4`).",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "void __fastcall CCountry::SetLaw(CLaw* law, CCountry* country@EDX, CLawGroup* group@EAX)"
+  },
+  {
+   "rva": "0xF0CC0",
+   "kind": "function",
+   "name": "CCountry::UpdateIC",
+   "comment": "The daily IC calculation. `ret 8`, nothing in ecx, `country` parked in ebx at once. Extent 0xF0CC0..0xF15BD (0x8FE bytes), `ret` at 0xF15BB with int3 padding after. Zeroes +0x604/+0x608/+0x60C/+0x610 and the three CGoodsPools +0x8B4, +0x8D8, +0x968; seeds the sum with the MODIFIER_IC of a global CModifier reached as [[[0x1A86208]+0x64]+0x18]+0x78; walks the province list at CCountry +0xD00 adding provinceValues[MODIFIER_IC] * (1000 + provinceValues[MODIFIER_LOCAL_IC]) / 1000 each; divides by 1000 into +0x60C and +0x604, then scales +0x604 by (1000 + countryValues[GLOBAL_IC] + technologyStatus[+0x90]) / 1000, floor 1. Fills +0x968 with metal/energy/rares in 1:2:0.5 of the total. `applyDailyEffects` additionally runs the energy-to-crude-oil conversion (into +0x8D8/+0x8B4), the metal/energy resource cap (+0x614) and the lend-lease add (+0x608). Three callers: the daily pass 0xDB442 with true, 0xD633D and CInGameIdler::Enter 0x25B2C5 with false.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ic.md",
+   "signature": "void __stdcall CCountry::UpdateIC(CCountry* country, bool applyDailyEffects)"
+  },
+  {
    "rva": "0xF0F22",
    "kind": "instruction",
    "name": "Hook_OffmapIc_CountLocalIc",
@@ -1713,6 +2001,33 @@
    "comment": "Byte patch site of the old offmap IC fix (writes mov eax,[ecx+0x78] and nops).",
    "confidence": "confirmed",
    "source": "BiceLib/Patches.cpp:36"
+  },
+  {
+   "rva": "0xF15C0",
+   "kind": "function",
+   "name": "CCountry::GetResourceLimitedIC",
+   "comment": "`ret 4`, the country in esi, the out-pointer on the stack, returned in eax. Works from the stockpile's metal (GetPool()+0x18) less CCountry +0x95C and its energy (+0x1C) less +0x960. CCountry::UpdateIC divides the answer by 1000 and, where it is below +0x604, records (limit - total) * 1000 in +0x614 and cuts +0x604 to it. Four callers. Read only as far as 0xF1640 - the two resource terms and the return are read, the final combination is not.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-ic.md",
+   "signature": "int* __stdcall CCountry::GetResourceLimitedIC(CCountry* country@ESI, int* out) @EAX"
+  },
+  {
+   "rva": "0xF16D0",
+   "kind": "function",
+   "name": "CCountry::ConsumeIcResources",
+   "comment": "`ret 4`, the country in esi. Takes an IC amount in thousandths and charges it: energy x2 (0x7D0/0x3E8), metal x1, rares x0.5, credited to the `usage` pool +0x98C (+0x1C, +0x18, +0x20) and debited from GetPool()'s same three slots. Seven callers. This is the pair to the need CCountry::UpdateIC writes into +0x968 - UpdateIC sizes the need and does not call this.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-ic.md",
+   "signature": "void __stdcall CCountry::ConsumeIcResources(CCountry* country@ESI, int icThousandths)"
+  },
+  {
+   "rva": "0xF17F0",
+   "kind": "function",
+   "name": "CCountry::GetOilConversionRate",
+   "comment": "int3-padded both sides, `ret` with no stack args: the out-pointer in eax, the country in edx. `*out = <the function-local static cached from the global 0x1A87478> + country->TechnologyStatus[+0x98]`, thousandths. Three callers, all in CCountry::UpdateIC's energy-to-crude-oil block, which also inlines the same read at 0xF11A6. The name is inferred from what its one use converts.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-ic.md",
+   "signature": "int* __fastcall CCountry::GetOilConversionRate(int* out@EAX, CCountry* country@EDX) @EAX"
   },
   {
    "rva": "0xF1830",
@@ -1794,6 +2109,42 @@
    "source": "BiceLib/GameClasses/CCountry.hpp:60"
   },
   {
+   "rva": "0xF5600",
+   "kind": "function",
+   "name": "CCountry::EnqueueConstruction",
+   "comment": "**Puts a finished CConstruction on the country's build queue.** It zeroes the construction's location (+0x44) - which is why that field reads null on every military and convoy item and holds a province only on building ones - calls virtual slot 8, copies the country's tag from CCountry +0xCA4/+0xCA8 into +0x48/+0x4C, and appends a new 0x10-byte node (item, prev, next, byte) at the tail of the list at CCountry +0xF40/+0xF44. **Both arguments arrive in registers**, the construction in eax and the country in edi, and there is no stack argument, so the convention is read off its own `ret` and its two call sites, 0x545D2B in CConstructUnitCommand::Execute and 0x5471E7 in CConstructSingleUnitCommand::Execute. It is the path taken when the command's instant-build flag is clear. The name is ours.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "void __fastcall CCountry::EnqueueConstruction(CConstruction* construction@EAX, CCountry* country@EDI)"
+  },
+  {
+   "rva": "0xFA020",
+   "kind": "function",
+   "name": "CCountry::GetConsumerGoodsNeeded",
+   "comment": "**The share of industrial capacity the country wants on consumer goods**, in thousandths. It takes MODIFIER_WAR_CONSUMER_GOODS_DEMAND (modifier 40) or MODIFIER_PEACE_CONSUMER_GOODS_DEMAND (modifier 41) from the country's modifier values - [CCountry +0xDA8] + 0x140 + 8 x (byte [CCountry +0xACC] == 0), the array being eight bytes an entry - adds a term from 0x4F9F10, and clamps the result between floorf(10.5f) and floorf(990.5f), so **between 0.010 and 0.990**. **`this` arrives in eax and out in esi**, and there are no stack arguments. It is the first term of both CDistributeConsumerGoods::GetNeeded (0x119030) and the daily dissent change (0x118F80). The name is ours.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "int* __fastcall CCountry::GetConsumerGoodsNeeded(CCountry* this@EAX, int* out@ESI)"
+  },
+  {
+   "rva": "0xFBEA0",
+   "kind": "function",
+   "name": "CCountry::GetInfluencedCountryCount",
+   "comment": "No stack arguments, plain `ret`, the country in ecx. Walks every country o and counts those whose o->+0xE28[this->+0xCA8] has +0x2C set - the same flag the daily influence upkeep charges for. Abuts CCountry::ChangeNeutrality, which starts at 0x4FBF80 after eight int3. (First recorded at rva 0xFBF00, which is inside this function rather than its start - 0xFBF80 is CCountry::ChangeNeutrality, so 0xFBF00 could not begin anything. The start is 0xFBEA0, preceded by int3 padding, `push ebp; mov ebp, esp; and esp, -8`. buildFindings.py dropped the entry until this was corrected.)",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int __fastcall CCountry::GetInfluencedCountryCount(CCountry* this@ECX)"
+  },
+  {
+   "rva": "0xFBF80",
+   "kind": "function",
+   "name": "CCountry::ChangeNeutrality",
+   "comment": "`ret 8` with the country in **esi**. +0xA8C += delta floored at zero, then EffectiveNeutrality (+0xA90) recomputed as clamp(Neutrality - this->+0xE28[this->+0x11DC]->+0x5C, 0, 100000). With logHistory it allocates a 0x18-byte entry (constructor 0x5F11F0), stamps it with the current tick and appends it to the country's `history` (+0xCCC). The country's daily pass calls it at 0x4DAE9B with delta = the NEUTRALITY_CHANGE modifier (values entry 78) and logHistory false, which is the whole of the daily neutrality drift. 0x4FC0E0 beside it is the plain setter.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "void __fastcall CCountry::ChangeNeutrality(CCountry* this@ESI, int delta, bool logHistory)"
+  },
+  {
    "rva": "0xFD590",
    "kind": "function",
    "name": "CCountry::GetConvoyBuildCost",
@@ -1870,6 +2221,24 @@
    "source": "reversing/FINDINGS-messages.md"
   },
   {
+   "rva": "0x103D90",
+   "kind": "function",
+   "name": "CCountry::GetInfluenceUpkeep",
+   "comment": "*out = INFLUENCE_UPKEEP (diplomacy +0xD0) times the number of countries whose diplomacy status toward `country` has +0x2C set. The read-only counterpart of 0x103E90, presumably for the tooltip.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __stdcall CCountry::GetInfluenceUpkeep(CCountry* country, int* out)"
+  },
+  {
+   "rva": "0x103E90",
+   "kind": "function",
+   "name": "CCountry::PayDailyInfluenceUpkeep",
+   "comment": "No stack arguments, plain `ret`, the country in **esi**. For every country whose diplomacy status toward this one has +0x2C set, subtracts INFLUENCE_UPKEEP (diplomacy +0xD0) from diplo_influence (+0xA88); if that would go negative it is clamped to zero and 0x503F90 is called to cancel the influence. **This is where diplo_influence is spent per day.** Called from the country's daily pass at 0x4DB671, immediately before dissent is forced to zero for REB.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "void __fastcall CCountry::PayDailyInfluenceUpkeep(CCountry* this@ESI)"
+  },
+  {
    "rva": "0x110A50",
    "kind": "function",
    "name": "PostMessage",
@@ -1886,6 +2255,114 @@
    "comment": "The tag whose three letters are the string, found through the hash buckets; --- with id 0 when there is none.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CCountryDataBase.hpp:33"
+  },
+  {
+   "rva": "0x118800",
+   "kind": "function",
+   "name": "CDistributeLendLease::Distribute",
+   "comment": "**Slot 0.** Not read as a body. It reads no defines, calls 0x508620 and 0x508900, and is the only IC distributor that does **not** read CCountry +0x608 - so everything it spends is charged in resources, through CCountry::GetResourceLimitedIC at 0x5188E7 and CCountry::ConsumeICResources at 0x5188FE. It is index 0 of the six production sliders, _PRODUCTION_LENDLEASE_, the one CCountry::GetAvailableIC leaves out.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeLendLease::Distribute(CDistributeLendLease* this, CFixedPoint* out@stack:4, __int64 available@stack:8, bool flag@stack:16)"
+  },
+  {
+   "rva": "0x118C50",
+   "kind": "function",
+   "name": "CDistributeConsumerGoods::Distribute",
+   "comment": "**Slot 0 - money, the resource bill, and dissent.** Three things. First, where the `available` argument is non-zero it calls 0x118F00 with a fraction of 1000 and MaxIC (+0x60C) x 1000 and adds the money that comes back to HomeProduced's money (CCountry +0x780) and to the national stockpile's money (pool +0x10) - the fraction is a literal and the IC is MaxIC, so **the money income carries no term from the consumer goods share**. Second, it charges resources for percentage x factor x available less percentage x factor x CCountry +0x608, through CCountry::ConsumeICResources at 0x518DE3; consumer goods spends its whole allocation daily, so it pays for all of it that is not resource-free in one go. Third, unless the flag argument is set, or gamestate +0xD0C is non-zero, it moves dissent: 0x118F80 gives GetConsumerGoodsNeeded minus percentage x factor plus MODIFIER_DISSENT, and that goes onto CCountry +0x10B4 floored at zero, or the field is zeroed outright for a country with no tag id (+0xCA8). So the dissent rate is **one for one and linear** - a share one point over what the country needs takes one point of dissent off a day - with no percentage and no half-life. Returns zero.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeConsumerGoods::Distribute(CDistributeConsumerGoods* this, CFixedPoint* out@stack:4, __int64 available@stack:8, bool flag@stack:16)"
+  },
+  {
+   "rva": "0x118F00",
+   "kind": "function",
+   "name": "CDistributeConsumerGoods::GetMoneyIncome",
+   "comment": "Money from industrial capacity, in thousandths: ic x fraction / 1000, floored at zero, then times the `economy` define IC_TO_MONEY (+0x8) over 1000, then times (1000 + MODIFIER_GLOBAL_MONEY, modifier 31, at modifier values +0xF8) over 1000. **out arrives in esi** and comes back in eax; three stack arguments, `ret 0xC`. Two callers: CDistributeConsumerGoods::Distribute at 0x518C9D, which passes a fraction of 1000 and MaxIC, and 0x4F065A in the daily IC pass. The name is ours.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "int* __stdcall CDistributeConsumerGoods::GetMoneyIncome(int* out@ESI, CDistributeConsumerGoods* setting, int fraction, int ic)"
+  },
+  {
+   "rva": "0x118F80",
+   "kind": "function",
+   "name": "CDistributeConsumerGoods::GetDissentChange",
+   "comment": "The day's change in dissent, as an fpml::fixed_point<__int64,48,15>: CCountry::GetConsumerGoodsNeeded (0xFA020) minus the setting's factor (+0x10) times the share argument, plus the country's MODIFIER_DISSENT (modifier 43, at modifier values +0x158). **out arrives in edi**; four stack arguments, `ret 0x10`. Four callers, of which 0x518E95 is CDistributeConsumerGoods::Distribute. The name is ours.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __stdcall CDistributeConsumerGoods::GetDissentChange(CFixedPoint* out@EDI, CDistributeConsumerGoods* setting, __int64 share, int allocated)"
+  },
+  {
+   "rva": "0x119030",
+   "kind": "function",
+   "name": "CDistributeConsumerGoods::GetNeeded",
+   "comment": "**Slot 3.** CCountry::GetConsumerGoodsNeeded (0xFA020) shifted into fpml::fixed_point<__int64,48,15> plus the country's MODIFIER_DISSENT - the same two terms as the dissent change, which is why a country that already has dissent needs a bigger consumer goods share to stop it growing. `this` in ecx, one stack argument.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeConsumerGoods::GetNeeded(CDistributeConsumerGoods* this, CFixedPoint* out)"
+  },
+  {
+   "rva": "0x119D10",
+   "kind": "function",
+   "name": "CDistributeProduction::Distribute",
+   "comment": "**Slot 0 of vftable 0x15C21D4 - the daily production pass.** It works out two budgets from the same share: pool = percentage(+0x8) x factor(+0x10) x the `available` argument, and freePool = the same share of CCountry +0x608, which is the part of the day's IC that costs no resources. Then it walks the queue at CCountry +0xF40 head to tail (back edge 0x51A230 -> 0x519DC0) and gives each item, **strictly in queue order and with no proportional split or priority**, up to one full day of its own cost (+0x30, thousandths). Per item: slot 12 with &country->tag decides whether the item still exists (false unlinks and destructs it); if pool is spent, AddProgress(0) unless the flag argument is set (0x51A213); a zero-cost item gets AddProgress(1000) (0x519ED9); otherwise base = min(1, freePool/need), and any shortfall is topped up from pool only if CCountry::GetResourceLimitedIC allows it, paid for with CCountry::ConsumeICResources, with the total rounded up to a full 1000 once it reaches floorf(999.5f). AddProgress with the computed amount is 0x51A1B6. Then progress (+0x38) >= duration (+0x34) - or the global byte at 0x1A8559A - calls slot 9, and an answer of exactly 1 completes and destroys the item. After the walk, if anything completed, 0x4DDD80 runs and **slot 14 is called on every remaining item**, which is the only time a queued item's cost is recomputed apart from insertion. Finally 0x51A290 rebuilds +0x20. It always returns zero. Three of the image's five AddProgress call sites are in here. See reversing/FINDINGS-production.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeProduction::Distribute(CDistributeProduction* this, CFixedPoint* out@stack:4, __int64 available@stack:8, bool flag@stack:16)"
+  },
+  {
+   "rva": "0x11A290",
+   "kind": "function",
+   "name": "CDistributeProduction::UpdateNeeded",
+   "comment": "Zeroes this->+0x20/+0x24 and adds every construction's cost (+0x30) divided by 1000 into it, walking the country's queue at CCountry +0xF40. So +0x20 is the queue's total daily IC appetite as an fpml::fixed_point<__int64,48,15>, and slot 3 GetNeeded (0x11A2E0) returns exactly that. Called once, from the end of CDistributeProduction::Distribute (0x51A265). **`this` arrives in esi**, not ecx, and the body is a bare `ret` - the convention is read off its own epilogue, since the one call site sets esi and pushes nothing. The name is ours.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "void __fastcall CDistributeProduction::UpdateNeeded(CDistributeProduction* this@ESI)"
+  },
+  {
+   "rva": "0x11A2E0",
+   "kind": "function",
+   "name": "CDistributeProduction::GetNeeded",
+   "comment": "**Slot 3.** Six instructions: copies this->+0x20 and +0x24 into the out parameter and answers it in eax. The value is the cached total daily cost of the production queue, rebuilt by 0x11A290 at the end of every Distribute. `this` in ecx, one stack argument, `ret 4`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeProduction::GetNeeded(CDistributeProduction* this, CFixedPoint* out)"
+  },
+  {
+   "rva": "0x11A300",
+   "kind": "function",
+   "name": "CDistributeProduction::GetNeedTooltip",
+   "comment": "**Slot 1.** Builds a localised string from the key SLIDER_NEED (the literal at 0x15C1F14). The slot-1 and slot-5 bodies of the leadership distributors are, with their own slot 0, the only readers of LEADERSHIP_TO_OFFICERS, LEADERSHIP_TO_DIPLOMACY and LEADERSHIP_TO_SPIES, which is what says these slots are the text that tells the player what a slider buys. The name is ours; only the prologue and the key were read.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "Hoi3CString* __thiscall CDistributeProduction::GetNeedTooltip(CDistributeProduction* this, Hoi3CString* out)"
+  },
+  {
+   "rva": "0x11A440",
+   "kind": "function",
+   "name": "CDistributeProduction::GetICForShare",
+   "comment": "**Slot 2.** Turns a share into an amount of industrial capacity: the country's TotalIC (CCountry +0x604) shifted into fpml::fixed_point<__int64,48,15> and multiplied by the 64-bit share argument. Only read as far as the multiply; the name is ours and the argument count is taken from the two dwords it reads at [ebp+0xC] and [ebp+0x10].",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeProduction::GetICForShare(CDistributeProduction* this, CFixedPoint* out, __int64 share@stack:8)"
+  },
+  {
+   "rva": "0x11A9A0",
+   "kind": "function",
+   "name": "CDistributeProduction::GetName",
+   "comment": "**Slot 6.** Builds a localised string from the key DISTRIBUTE_PRODUCTION (the literal at 0x15C1F98), with SEH around the string. Every sibling has its own body at this slot with its own key, so slot 6 is the slider's display name. The name is ours; the out parameter and the `this` register are read, the full body is not.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "Hoi3CString* __thiscall CDistributeProduction::GetName(CDistributeProduction* this, Hoi3CString* out)"
+  },
+  {
+   "rva": "0x11AA80",
+   "kind": "function",
+   "name": "CDistributeSupply::Distribute",
+   "comment": "**Slot 0.** Not read line by line. It reads CCountry +0x608 at 0x51AB4A like the other IC sliders and the `economy` define IC_TO_SUPPLIES (+0x10) at 0x51ADD8, adds the supplies it makes to HomeProduced (CCountry +0x778), to the acting capital province's pool (+0x164) and its current_producing (+0x270), and to the country's `to` pool (+0x9B8); it raises a message; and it charges metal, energy and rare materials through CCountry::ConsumeICResources at 0x51ADAE.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeSupply::Distribute(CDistributeSupply* this, CFixedPoint* out@stack:4, __int64 available@stack:8, bool flag@stack:16)"
   },
   {
    "rva": "0x11BA60",
@@ -1924,6 +2401,51 @@
    "source": "reversing/FINDINGS-manpower.md"
   },
   {
+   "rva": "0x11CE60",
+   "kind": "function",
+   "name": "CDistributeUpgrade::Distribute",
+   "comment": "**Slot 0.** Not read line by line. It zeroes CCountry +0xAA4, upgrade_cost, at 0x51CF4C and rebuilds it at 0x51D4E1; reads CCountry +0x608 at 0x51CEE9; reads the three `military` defines SHIP_UPGRADE_SPEED_MOD (+0x2AC), AIR_UPGRADE_SPEED_MOD (+0x2B0) and LAND_UPGRADE_SPEED_MOD (+0x2B4) at 0x51D197, 0x51D1AC and 0x51D1C1; calls CCountry::GetBuildTime (0x51D286) and CCountry::GetCategoryBuildDiscount (0x51D34F); and charges resources at 0x51D56E.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeUpgrade::Distribute(CDistributeUpgrade* this, CFixedPoint* out@stack:4, __int64 available@stack:8, bool flag@stack:16)"
+  },
+  {
+   "rva": "0x11DF40",
+   "kind": "function",
+   "name": "CDistributeNCO::Distribute",
+   "comment": "**Slot 0 - where officers come from.** 0x120 bytes, and it stores nothing on the country: the officers are the **return value**. It multiplies the setting's share (+0x8) by the `available` leadership and by the factor (+0x10), then by the `economy` define LEADERSHIP_TO_OFFICERS (+0x2C, read at 0x51DF91) and by (1 + MODIFIER_OFFICER_RECRUITMENT, modifier 82, at modifier values +0x290). With its slot 5 (0x11E060) it is the only reader of LEADERSHIP_TO_OFFICERS in the image.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeNCO::Distribute(CDistributeNCO* this, CFixedPoint* out@stack:4, __int64 available@stack:8, bool flag@stack:16)"
+  },
+  {
+   "rva": "0x11E4B0",
+   "kind": "function",
+   "name": "CDistributeDiplomacy::Distribute",
+   "comment": "**Slot 0 - diplomatic influence.** 0xC0 bytes: the setting's share times the `available` leadership times the factor times the `economy` define LEADERSHIP_TO_DIPLOMACY (+0x4, read at 0x51E4FD), added to CCountry +0xA88 at 0x51E53C and clamped at 0x51E54D. With its slot 5 (0x11E570) it is the only reader of LEADERSHIP_TO_DIPLOMACY.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeDiplomacy::Distribute(CDistributeDiplomacy* this, CFixedPoint* out@stack:4, __int64 available@stack:8, bool flag@stack:16)"
+  },
+  {
+   "rva": "0x11ED00",
+   "kind": "function",
+   "name": "CDistributeEspionage::Distribute",
+   "comment": "**Slot 0 - spies.** Not read line by line. It reads the `country` define MAX_NUMBER_OF_SPIES (+0x1C) at 0x51ED23 and the `economy` define LEADERSHIP_TO_SPIES (+0x24) at 0x51ED91 - with its slot 5 (0x11F190) the only readers of the latter - writes CCountry +0x1170 at 0x51EDC6 and takes off it at 0x51F112, raises two messages, and ends by calling 0x4DDD80, the same function the production pass calls after anything completes.",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeEspionage::Distribute(CDistributeEspionage* this, CFixedPoint* out@stack:4, __int64 available@stack:8, bool flag@stack:16)"
+  },
+  {
+   "rva": "0x11F620",
+   "kind": "function",
+   "name": "CDistributeResearch::Distribute",
+   "comment": "**Slot 0 - the research the leadership slider pays for.** Not read as a body; it is by far the largest of the ten. It walks the country's current research (CCountry +0x638) calling 0x532F10 at 0x51F73F and 0x51F9DB, with 0x532EC0, 0x535760, 0x540D60 and 0x540B50 beside them, and calls 0x4E02F0 at 0x51FA04 - the same technology-category ability gain a finished unit uses. It reads no defines of its own, and it is the only one of the ten that also overrides slot 4 (0x11F4D0).",
+   "confidence": "inferred",
+   "source": "reversing/FINDINGS-production.md",
+   "signature": "CFixedPoint* __thiscall CDistributeResearch::Distribute(CDistributeResearch* this, CFixedPoint* out@stack:4, __int64 available@stack:8, bool flag@stack:16)"
+  },
+  {
    "rva": "0x1227E0",
    "kind": "function",
    "name": "CFaction::LoadKey",
@@ -1931,6 +2453,15 @@
    "comment": "**The keys its switch names**, 8 of them, one case each: `country`, `icon`, `influence`, `modifier`, `neutrality`, `progress`, `rule`, `tag`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x122CC0",
+   "kind": "function",
+   "name": "CFaction::GetVictoryPointShare",
+   "comment": "*out = faction->+0xAC (`progress`, the victory points the faction holds) divided by the sum of CProvince+0x34 over every province in the world, then multiplied by 100 - so a percentage in thousandths. Three callers, one of them the alignment revanchism term, which divides the 100 straight back out.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "int* __stdcall CFaction::GetVictoryPointShare(CFaction* faction, int* out)"
   },
   {
    "rva": "0x123A90",
@@ -1977,6 +2508,15 @@
    "comment": "A group of ideologies - fascism, democracy, communism. Two keys of its own; every other key in the block is an ideology's name. **The keys its switch names**, 2 of them, one case each: `faction`, `position`. Inherited by 2 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x127140",
+   "kind": "function",
+   "name": "CIdeologyGroup::GetFaction",
+   "comment": "Returns this->+0x54, or the shared null-faction singleton at 0x1A855A8 (lazily constructed with the CFaction constructor 0x5224B0 and then given the vftable 0x15C248C instead of CFaction's own) when the group has no faction. Every alignment term calls it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-politics.md",
+   "signature": "CFaction* __thiscall CIdeologyGroup::GetFaction(CIdeologyGroup* this)"
   },
   {
    "rva": "0x127280",
@@ -2096,6 +2636,78 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x132840",
+   "kind": "function",
+   "name": "CTechnologyStatus::ReapplyAllTechnologies",
+   "comment": "Resets the status (0x531DE0) and then calls ApplyTechnologyEffects (rva 0x132970) once per technology the country has a level in, with `scale = level x 1000` and the technology in edi. `ret 4`. Called per country from ApplyCustomGameSettings at 0x41DC85.\n\n**Watch the extent**: `image.functionStart(0x532943)` answers 0x532940, which is inside this function's loop - the two do not abut, the helper simply scans back to the wrong place. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "void __stdcall CTechnologyStatus::ReapplyAllTechnologies(CTechnologyStatus* status@stack:4)"
+  },
+  {
+   "rva": "0x132970",
+   "kind": "function",
+   "name": "CTechnologyStatus::ApplyTechnologyEffects",
+   "comment": "**How a technology's effects reach the country.** Over every unit type in the definition database (0x1A886F0) it adds `technology->+0x2D0[i] x scale / 1000` into `status->+0x24C[i]`, +0x2E0[i] into +0x25C[i] and +0x2F0[i] into +0x26C[i] - the build cost, manpower and time arrays. Then it sets `status->+0x27C[definition->index]` for every entry of the `activate_unit` vector (CTechnology +0x300..+0x304), sets `status->+0x28C[building->+0x54]` when `activate_building` answers slot 8 true, and hands the country-wide effects to 0x5374F0.\n\n**The technology arrives in EDI** - it is never loaded in the body and both callers set it (0x53292D, 0x532FD5). `ret 8`.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "void __stdcall CTechnologyStatus::ApplyTechnologyEffects(CTechnology* technology@EDI, CTechnologyStatus* status@stack:4, int scale@stack:8)"
+  },
+  {
+   "rva": "0x132B70",
+   "kind": "function",
+   "name": "GetDaysToResearch",
+   "comment": "`(1.0 - progress) / GetResearchGain(...) + 1`, or -1 when the gain is not positive. `fromScratch` takes the progress as zero rather than reading CTechnologyStatus +0x228[i]. `ret 0xC`, with **the technology in EAX and the status in EDI** - both set by every caller. Five callers: 0x41A2C0, 0x41A2F7, 0x815CED, 0x81F13C, 0x8235D3. That this is a count of *days* is what says one call of GetResearchGain is one day. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "int GetDaysToResearch(CTechnology* technology@EAX, CTechnologyStatus* status@EDI, int level@stack:4, int leadership@stack:8, bool fromScratch@stack:0xC) @EAX"
+  },
+  {
+   "rva": "0x132C20",
+   "kind": "function",
+   "name": "GetResearchGain",
+   "comment": "**The research speed formula.** One call's progress on one level of one technology, answered through `out` as a 64-bit fixed point where **1.0 = 0x8000, i.e. one level**:\n\n    levels per call = leadership x research_efficiency / year_penalty / cost\n\n`cost` is CTechnologyStatus::GetResearchCost (rva 0x1333F0) in thousandths and the code **divides** by it (`__alldiv` at 0x532E89). `research_efficiency` is `1000 + MODIFIER_RESEARCH_EFFICIENCY (id 73) + CTechnologyStatus +0xA8`, floored at 100 by the compiled-in global 0x1A87BE8. `year_penalty` is `1000 + max(dueYear - currentYear, 0) x TECHNOLOGY_YEAR_IMPACT`, where dueYear is `start_year` for level <= 1 and `first_offset + max(level-2,0) x additional_offset` above that, and currentYear is `(CCurrentGameState +0xBDC - 43800000)/24/365.0` truncated - **the calendar year**. So `start_year`, `first_offset` and `additional_offset` are years and they are difficulty, not gates.\n\n**No standard convention fits**: `ret 0xC`, with the level in ecx (-1 meaning `level_by_technology[i] + 1`) and the technology in edx; a leadership of -1000 means read it from CTechnologyStatus +0x238[i]. See reversing/FINDINGS-research.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "int64* GetResearchGain(int level@ECX, CTechnology* technology@EDX, CTechnologyStatus* status@stack:4, int64* out@stack:8, int leadership@stack:0xC) @EAX"
+  },
+  {
+   "rva": "0x132EC0",
+   "kind": "function",
+   "name": "CTechnologyStatus::ClearResearchLeadership",
+   "comment": "Zeroes the whole +0x238..+0x23C vector, the leadership assigned to each technology. A bare `ret`, no arguments, **the object in EAX**. One caller, 0x51F6BA in CDistributeResearch slot 0, so the research tick clears the assignments and then writes them back one technology at a time through AdvanceResearch. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "void CTechnologyStatus::ClearResearchLeadership(CTechnologyStatus* this@EAX)"
+  },
+  {
+   "rva": "0x132F10",
+   "kind": "function",
+   "name": "CTechnologyStatus::AdvanceResearch",
+   "comment": "**One tick of research on one technology**, answering whether a level was gained. Records the leadership at +0x238[i], adds GetResearchGain's answer into +0x228[i] as an **8-byte fixed point where 1.0 = 0x8000** (add/adc at 0x532F5B), and returns false unless that reaches 1.0 or the `instantresearch` byte at 0x1A8559B is set. Otherwise it subtracts 1.0, floors at zero, increments +0x218[i], calls ApplyTechnologyEffects (rva 0x132970) with scale 1000, and **zeroes the leftover progress when CTechnology +0x2C0 (additional_offset) is 0** - a single-level technology keeps nothing.\n\n**`this` arrives in EAX, not ecx**, and the technology is the first stack argument; `ret 8`. Both game callers (0x51F73F, 0x51F9DB) are in CDistributeResearch slot 0, plus one at 0x9A2747.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "bool CTechnologyStatus::AdvanceResearch(CTechnologyStatus* this@EAX, CTechnology* technology@stack:4, int leadership@stack:8) @AL"
+  },
+  {
+   "rva": "0x1332B0",
+   "kind": "function",
+   "name": "GetCategoryResearchAbility",
+   "comment": "**What one practical or theory contributes to research speed.** Takes the higher of the country's own level (CCountry +0x698[index]) and the level of the country sharing that category with it (CCountry +0x6A8), clamps it to 0..20.000, subtracts 5.000, takes the fixed-point square root (rva 0x69CEC0) of anything above 1.000, and multiplies by 0.100. Below 5.000 the term is negative - the `js` at 0x533339 skips the square root - so an untrained category makes the technology cost more.\n\n**The 20.000 cap is an immediate at 0x533319, not MAX_TECH_ABILITY**, so raising that define past 20 does not raise this. **The out pointer travels in ESI**, never on the stack, which is why the `ret` is 8 and not 12 - the same shape as CCountry::GetCategoryBuildDiscount. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "int* __stdcall GetCategoryResearchAbility(int* out@ESI, CTechnologyStatus* status@stack:4, CTechnologyCategory* category@stack:8) @EAX"
+  },
+  {
+   "rva": "0x1333F0",
+   "kind": "function",
+   "name": "CTechnologyStatus::GetResearchCost",
+   "comment": "**What a level of a technology costs, and where the practical bonus is applied.** Thousandths, answered through the hidden first stack argument and returned in eax (`ret 8`):\n\n    cost = (difficulty x 0.100 + 1.000) x 125 x (1.000 - bonus)\n\n`difficulty` is CTechnology +0x2C8, read by the loader with the same integer helper `start_year` uses, so it is not scaled by 1000; the 0.100 is the compiled-in global 0x1A87BB4 (100) and the x125 is the immediate 0x1E848 over 1000. `bonus` is the sum over the `research_bonus_from` list at CTechnology +0x2A4 (node: [0] category, [4] weight, [0xC] next) of the category's ability term (rva 0x1332B0) times the weight, plus MODIFIER_NUKE_RESEARCH (id 96) when `is_nuclear`, **capped at 900 by the compiled-in global 0x1A87B70** - at most 90% off. Four callers: 0x4D6101, 0x4D6192, 0x532C7B and 0x820C92. The name is BiceLib's.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "int* __thiscall CTechnologyStatus::GetResearchCost(CTechnologyStatus* this, int* out, CTechnology* technology)"
+  },
+  {
    "rva": "0x134AC0",
    "kind": "function",
    "name": "CTechnology::LoadKey",
@@ -2103,6 +2715,15 @@
    "comment": "**The grammar of the technology files.** A dozen keys of its own - the ones in CTechnology.hpp - and **anything it does not know is taken as a unit type's name**: that is how `infantry_brigade = { soft_attack = 0.1 }` becomes an effect, resolved through the same by-name lookup the unit files use. `research_bonus_from` reads a list, and `folder` and `activate_*` resolve against their own databases.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CTechnology.hpp"
+  },
+  {
+   "rva": "0x135760",
+   "kind": "function",
+   "name": "CTechnology::CheckResearchAllowed",
+   "comment": "**Where max_level and additional_offset really are gates.** A level of -1 means the country's next one. It fails when `additional_offset` (+0x2C0) is 0 and the level is above 1 - **so additional_offset = 0 declares a single-level technology** - fails when the level exceeds `max_level` (+0x2C4), checks a per-technology ceiling out of the custom game settings (0x41F500, its +0x28), and ends by evaluating the technology's own `allow` block, [this+0x248] slot 6, with `cmp al, 1; sete al`. **The polarity is unresolved**: both use sites (0x51F728, 0x5335CA) branch *past* the research when it answers true, which reads the opposite way round from that ending. The name is BiceLib's.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "bool __thiscall CTechnology::CheckResearchAllowed(CTechnology* this, int tagType, int countryId, int level)"
   },
   {
    "rva": "0x137DB0",
@@ -5388,6 +6009,60 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x281130",
+   "kind": "function",
+   "name": "CCurrentGameState::AdvanceClock",
+   "signature": "void __thiscall CCurrentGameState::AdvanceClock(CCurrentGameState* this)",
+   "comment": "**The frame's end of the clock**, 0x281130 to 0x2813E3, a bare `ret` - so nothing is passed on the stack: **the frame's elapsed time arrives in xmm0**, which is not how MSVC passes a stack float, so do not read a stack slot for it. One caller, 0x256006, inside CInGameIdler::Update. It adds the delta to +0xBE4, and returns at once if +0xBF0 says a tick is already in flight (the `cmp` is at 0x28114F, the `jne` at 0x281179 - the float work between them does not touch the flags). Otherwise it indexes five float thresholds - 0x160A2EC, 0x1718064, 0x171DBAC, 0x15AB304, 0x160A740 - by the speed at +0xBEC and compares; below the threshold it does nothing. When an hour is due it zeroes the accumulator, news 0x4C bytes, calls CHourlyTickCommand's constructor with a pointer to +0xC58, and posts it: in_game_screen (+0xBE8) slot 18 returns an object whose +0x38 gets slot 6 called with the command. See reversing/FINDINGS-tick.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-tick.md"
+  },
+  {
+   "rva": "0x2813F0",
+   "kind": "function",
+   "name": "RunHourlyTick",
+   "signature": "void __stdcall RunHourlyTick(CCurrentGameState* state, void* payload)",
+   "comment": "**One hour of game time, and the map of everything periodic.** 0x2813F0 to 0x282438, `ret 8`. Sets the interlock (`mov byte [edi+0xBF0], 1` at 0x281425) that stops AdvanceClock queueing another hour while this one runs, and holds the image's **only** advance of the clock, `inc dword [edi+0xBDC]` at 0x28155F. It takes the date apart first - `[state+0xBDC] - 0x29C55C0`, then /24 by the 0x2AAAAAAB magic, MonthLengthTable and the 365.0 at 0x160A550 - and compares afterwards, so each period runs when its number changed. In order: SnapshotRandomState (0x28207A, hourly); RunHourlyPass (0x282080, hourly); RunDailyPass (0x28213A) and in_game_screen slot 53 (0x28213F) when the day changed, gated by `cmp [esp+0x28], eax; je` at 0x282133; RunMonthlyPass (0x2821C1) and slot 54 when the month changed, gated at 0x2821BA; RunYearlyPass (0x282211) and slot 55 when the year changed, gated at 0x28220A; then 0x28DB20 every hour, last, which defers unit deletion through CGameState::RemoveUnit. **Slots 54 and 55 are both the do-nothing stub 0x692590**, so nothing in this build hangs off the monthly or yearly screen hook. A second counter at 0x1A8560C is incremented once per tick and is not identified. See reversing/FINDINGS-tick.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-tick.md"
+  },
+  {
+   "rva": "0x282440",
+   "kind": "function",
+   "name": "SnapshotRandomState",
+   "signature": "void __fastcall SnapshotRandomState(void* random_snapshot_vector@ECX)",
+   "comment": "Run **every hour** from RunHourlyTick at 0x28207A, on the game state's +0xC58, and ends 0x28250A with a bare `ret`. Clears the vector, then pushes two dwords into it through 0x221F0: g_random_draws (0x174DA8C) and the contents of **0x174DA94, which is not identified** - it is not the seed, since that is the state array at 0x1310F80. Along the way it lazily allocates a 4-byte object with vftable 0x15FDF60 into 0x174DA90. The same +0xC58 is handed to CHourlyTickCommand::Construct. Named for what it does; no class. See reversing/FINDINGS-tick.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-tick.md"
+  },
+  {
+   "rva": "0x282510",
+   "kind": "function",
+   "name": "RebuildEventCandidatesAndDailyCaches",
+   "comment": "0x682510 to the bare `ret` at 0x682628. **Takes the game state in EAX** - not ecx, not the stack - and cleans nothing. It is a separate function from the hourly generator snapshot at 0x682440, which ends at 0x68250A with its own bare `ret` and int3 padding between them. It creates the global event list if null (through SetEventList at 0x682550), then calls RebuildCountryEventCandidates on it at 0x68255B, then 0x68BB90(state), 0x68C190(), 0x4B59C0(state+0xAEC @EAX), a per-entry 0x5082C0 loop over the state+0xBBC array, and finally copies seven dwords +0x164..+0x17C to +0x188..+0x1A0 on each entry of the state+0x54 array. **This is the only path other than RunMonthlyPass that builds the per-country candidate lists**, and its own two callers are CInGameIdler vftable slot 67 (0x64C170, vftable 0x15CEB54, the only class that overrides the 0xABF890 stub that CEU3Idler/CBackEndIdler/CNudgeIdler leave there) and CReopenLobby::Execute (0x6D8430, CCommand slot 6). Inside 0x64C170 the call is gated on [[this+0x1790]+0x12C]+0x236 being non-zero (0x64C20C). The name covers only the event part; the other five calls were not read. See reversing/FINDINGS-events.md.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-events.md",
+   "signature": "void __fastcall RebuildEventCandidatesAndDailyCaches(CCurrentGameState* state@EAX)"
+  },
+  {
+   "rva": "0x282630",
+   "kind": "function",
+   "name": "RunHourlyPass",
+   "signature": "void __stdcall RunHourlyPass(CCurrentGameState* state)",
+   "comment": "The simulation work that happens **every hour**. 0x282630 to 0x282C1D, `ret 4`. **It abuts RunDailyPass with no int3 between them**, which is how the two were once read as one function and the daily supply work recorded as hourly - a scan for the next padding runs straight past 0x282C1D into 0x282C20. The only thing named in it so far is CSupply::RebuildSupplyNetwork at 0x2826E8, guarded on the dirty flag at +0x50, so a depot label changed during the hour is repaired within the hour. See reversing/FINDINGS-tick.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-tick.md"
+  },
+  {
+   "rva": "0x282C20",
+   "kind": "function",
+   "name": "RunDailyPass",
+   "signature": "void __stdcall RunDailyPass(CCurrentGameState* state)",
+   "comment": "**Everything the game does once a day.** 0x282C20 to 0x283077, `ret 4`. One caller: the tick body at 0x2813F0 calls it at 0x28213A, and only when the day number it recomputed differs from the stored one - the `cmp [esp+0x28], eax; je 0x282157` just above skips both this and CInGameIdler's slot 53 when the day has not turned. **It is not 0x282630**, the hourly pass that ends at 0x282C1D with its own `ret 4`; the two abut with no padding between them, which is how they came to be read as one function. What this one calls, in order: 0x28C190, 0x63030, CSupply::RebuildSupplyNetwork (0x282CEF, guarded on the dirty flag), CSupply::ResetSupplyOrder, a qsort with the comparator at 0x27B100 pushed at 0x282D0C, CProvince::UpdateSupplyDepot in a loop, 0x4F28B0, RunDailySupplyPass at 0x282D7E, then 0x28A0A0, 0x28E350, 0x4E39C0, 0x4DA530, 0x49EAB0, 0x4B9D60, 0x5BF720, 0x5C0A40, 0x288D40 and 0x143AB0. So the supply order is sorted and the daily supply pass run **once a day**, not once an hour. Named for what it does; no class, like RunDailySupplyPass beside it.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-supply.md"
+  },
+  {
    "rva": "0x282D18",
    "kind": "instruction",
    "name": "SupplyOrder_CallQsort",
@@ -5396,6 +6071,42 @@
    "comment": "qsort(state->provinces_by_supply_order, provinceCount, 4, CompareProvincesByDepotDistanceDescending) - the one place the supply order array is sorted. The instructions after it read back element 0's supply_depot_distance into CCurrentGameState +0x58, clamp it to 500, and where it exceeded 500 re-run CProvince::UpdateSupplyDepot on that farthest province.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-supply.md"
+  },
+  {
+   "rva": "0x283080",
+   "kind": "function",
+   "name": "CGameState::RunAIPass",
+   "comment": "**The gate that makes the AI hourly.** `ret 4`, one caller: CInGameIdler::Update at 0x656278, so it is offered every frame. Returns at once when `state[+0xC68]` is set; otherwise sets the global byte 0x1A857BF, launches the ProcessAI parallel_for (0x28E430) over `state[+0x114..+0x118]` with grain `max(1, count / ([0x170ABB0] == 1 ? 1 : 16))`, restores the global and sets `state[+0xC68] = 1`. **RunHourlyPass clears +0xC68 at its end (0x682B1D)**, and a byte-exact sweep finds no other clear, so the AI runs exactly once per game hour. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __stdcall CGameState::RunAIPass(CGameState* state)"
+  },
+  {
+   "rva": "0x283140",
+   "kind": "function",
+   "name": "CGameState::StartAI",
+   "comment": "`ret 4`. Logs `Starting AI` (0x15CF31C) from `gamestate.cpp` line 0x795, then walks every country in `state[+0xBBC]`, news 0x12C bytes, constructs a CEU3AI with `(country[+0xCA4], country[+0xCA8])`, stores it in `country+0x1D8` at 0x6832FD and pushes it onto the vector at **state +0x114/+0x118/+0x11C**. That vector is what the hourly parallel AI pass iterates. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __stdcall CGameState::StartAI(CGameState* state)"
+  },
+  {
+   "rva": "0x283B50",
+   "kind": "function",
+   "name": "RunMonthlyPass",
+   "signature": "void __stdcall RunMonthlyPass(CCurrentGameState* state)",
+   "comment": "0x283B50 to 0x283D0F, `ret 4`, then clean int3 padding. Called from RunHourlyTick at 0x2821C1 only when the month number changed, immediately before in_game_screen slot 54 - which is the do-nothing stub 0x692590, so this function is the whole of what the game does on a month change. Its contents have not been read. See reversing/FINDINGS-tick.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-tick.md"
+  },
+  {
+   "rva": "0x283D20",
+   "kind": "function",
+   "name": "RunYearlyPass",
+   "signature": "void __stdcall RunYearlyPass(CCurrentGameState* state)",
+   "comment": "Called from RunHourlyTick at 0x282211 when the year number changed, then in_game_screen slot 55 - the same do-nothing stub as the monthly hook. The caller pushes one argument and does not clean up, and the `ret 4` at 0x283E7D matches that, so the function is 0x283D20 to 0x283E7D. **The block from 0x283E80 to the bare `ret` at 0x283ED1 is not attributed** - it uses edi without setting it and has no prologue, so it is out-of-line code belonging to some other function rather than part of this one; do not read the two as one body. Contents not read. See reversing/FINDINGS-tick.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-tick.md"
   },
   {
    "rva": "0x284E40",
@@ -5407,12 +6118,21 @@
    "source": "reversing/FINDINGS-shatter.md"
   },
   {
+   "rva": "0x285F00",
+   "kind": "function",
+   "name": "CGameState::GetLocalPlayer",
+   "comment": "`ret 4`. Walks the player list at `state+0x60`, chained on `+0x54`, matching each entry's `+0x1C` against `in_game_screen (+0xBE8)` slot 18's `+0x6C`, and falls back to `state+0x70` when nothing matches. **Its `+0x38` is the array of five AI-delegation flags** the two minister-creation functions index, and `+0x30` is the four-way setting that seeds the tech minister's two bytes. Two callers, both in the AI. See reversing/FINDINGS-ai.md.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void* __stdcall CGameState::GetLocalPlayer(CGameState* state)"
+  },
+  {
    "rva": "0x287070",
    "kind": "function",
    "name": "RunDailySupplyPass",
    "signature": "void __stdcall RunDailySupplyPass(CCurrentGameState* state)",
    "no_signature": null,
-   "comment": "Builds the four per-province arrays CSupply::DailySupplyPass takes and calls it. Returns at once when CCurrentGameState::arcade_mode (+0xC9C) is above zero. Allocates four count*4 arrays on the stack (count = (provinces_end - provinces_begin)/4), memsets them to zero, and for every province whose CProvinceTemplate +0x13D is set fills capacity from SupplyCapacity, supplies and fuel need from SupplyNeed and the per-step loss from SupplyLoss. The loop keeps a moving pointer into the fuel-need array in edi - which is also SupplyNeed's second out parameter - and reaches the other three arrays through precomputed deltas off it. One caller, 0x282D7E inside 0x282630, which takes the game state as its own argument. Named for what it does; no class, like SupplyCapacity, SupplyNeed and SupplyLoss beside it.",
+   "comment": "Builds the four per-province arrays CSupply::DailySupplyPass takes and calls it. Returns at once when CCurrentGameState::arcade_mode (+0xC9C) is above zero. Allocates four count*4 arrays on the stack (count = (provinces_end - provinces_begin)/4), memsets them to zero, and for every province whose CProvinceTemplate +0x13D is set fills capacity from SupplyCapacity, supplies and fuel need from SupplyNeed and the per-step loss from SupplyLoss. The loop keeps a moving pointer into the fuel-need array in edi - which is also SupplyNeed's second out parameter - and reaches the other three arrays through precomputed deltas off it. One caller, 0x282D7E inside RunDailyPass (0x282C20), which takes the game state as its own argument. Not 0x282630, which an earlier reading of this said: that is the tick's hourly pass and it ends at 0x282C1D with `ret 4`, so the two are separate functions and this one runs only on a day change. Named for what it does; no class, like SupplyCapacity, SupplyNeed and SupplyLoss beside it.",
    "confidence": "confirmed",
    "source": "BiceLib/GameState/CustomMapMode.cpp"
   },
@@ -5442,7 +6162,7 @@
    "name": "CSupply::RebuildSupplyNetwork",
    "signature": "void __stdcall CSupply::RebuildSupplyNetwork(CCurrentGameState* state@ESI)",
    "no_signature": null,
-   "comment": "Recomputes every province's supply_depot_distance. Clears the dirty flag at CCurrentGameState +0x50, then sweeps the province vector: supply_depot_hops (+0x50) is zeroed, and supply_depot_distance (+0x4C) is set to 100000 where the province already carries a depot label and its template's +0x13D is set, and to 0 otherwise. A second sweep calls CSupply::SpreadFromDepot (0x289BE0) for every province whose supply_depot_id equals its own id - that is what makes a province a depot. It never writes supply_depot_id; that is CProvince::UpdateSupplyDepot (0xA70C0). Reached from CInGameIdler::Enter at 0x25C611, after the loop there has given every unlabelled province a depot, and from 0x282630 at 0x2826E8 and 0x282CEF, each guarded on CCurrentGameState +0x50.",
+   "comment": "Recomputes every province's supply_depot_distance. Clears the dirty flag at CCurrentGameState +0x50, then sweeps the province vector: supply_depot_hops (+0x50) is zeroed, and supply_depot_distance (+0x4C) is set to 100000 where the province already carries a depot label and its template's +0x13D is set, and to 0 otherwise. A second sweep calls CSupply::SpreadFromDepot (0x289BE0) for every province whose supply_depot_id equals its own id - that is what makes a province a depot. It never writes supply_depot_id; that is CProvince::UpdateSupplyDepot (0xA70C0). Reached from CInGameIdler::Enter at 0x25C611, after the loop there has given every unlabelled province a depot, and from both passes of the tick, each guarded on CCurrentGameState +0x50: the hourly pass (0x282630) at 0x2826E8 and RunDailyPass (0x282C20) at 0x282CEF. Those are two functions, not one - 0x282630 ends at 0x282C1D with `ret 4` - so the network is rebuilt on the hour when it is dirty, while everything else the daily pass does to it happens only on a day change.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-supply.md"
   },
@@ -5493,6 +6213,24 @@
    "comment": "One key, `tag`.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x28E430",
+   "kind": "function",
+   "name": "SpawnProcessAIParallelFor",
+   "comment": "Builds the TBB root task for the AI: `task_group_context::init`, `allocate_root_with_context_proxy::allocate(0x18)`, writes the start_for vftable 0x15CF73C, copies the range and the functor in, asks `get_initial_auto_partitioner_divisor` for +0x14, and spawns it. Bare `ret`; the range arrives in EDI and the functor on the stack. One caller, CGameState::RunAIPass. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __stdcall SpawnProcessAIParallelFor(ProcessAIFunctor* functor, tbb::blocked_range<int>* range@EDI)"
+  },
+  {
+   "rva": "0x28F080",
+   "kind": "function",
+   "name": "ProcessAIFunctor_start_for::execute",
+   "comment": "**The AI runs on TBB worker threads, and this is the proof.** The RTTI export names the class verbatim: `tbb::internal::start_for<blocked_range<...>, ProcessAIFunctor, auto_partitioner>`, vftable 0x15CF73C. It halves its range and allocates a continuation plus a child task while the range exceeds the grain at `+0xC`, and otherwise runs the serial body at 0x68F14D: `for (i = begin; i < end; ++i) ProcessAI(functor->vec[i])`. So ProcessAI is re-entered concurrently for different countries - any hook on it or on a minister tick must be thread-safe. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "tbb::task* __thiscall ProcessAIFunctor_start_for::execute(tbb::internal::start_for* this)"
   },
   {
    "rva": "0x298E80",
@@ -5665,6 +6403,24 @@
    "comment": "**The keys its switch names**, 1 of them, one case each: `start`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x2DA2C0",
+   "kind": "function",
+   "name": "CHourlyTickCommand::Construct",
+   "signature": "CHourlyTickCommand* __stdcall CHourlyTickCommand::Construct(CHourlyTickCommand* object, void* random_snapshot)",
+   "comment": "`ret 8`, so both the object and its second argument come off the stack rather than ecx - called from CCurrentGameState::AdvanceClock at 0x281214 with the freshly allocated 0x4C bytes and **a pointer to the game state's +0xC58**, the vector SnapshotRandomState refills every hour. That is why the tick command can be said to carry the generator's bookkeeping with it; that this is for a multiplayer peer rather than only the save is inference. See reversing/FINDINGS-tick.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-tick.md"
+  },
+  {
+   "rva": "0x2DA370",
+   "kind": "function",
+   "name": "CHourlyTickCommand::Execute",
+   "signature": "void __thiscall CHourlyTickCommand::Execute(CHourlyTickCommand* this)",
+   "comment": "**Slot 6, and the whole tick hangs off it.** Ends 0x2DA41D with a bare `ret`. It first makes sure the CCurrentGameState singleton at 0x1A89790 exists - newing a 0xDA8-byte one with vftable 0x15CF674 and destroying any previous - then calls RunHourlyTick (0x2813F0) with that state and this command's payload at `this+0x3C`. So **the game clock runs through the command queue** like any other order. See reversing/FINDINGS-tick.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-tick.md"
   },
   {
    "rva": "0x2DA500",
@@ -5938,6 +6694,42 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x488020",
+   "kind": "function",
+   "name": "CEU3AI::CEU3AI",
+   "comment": "`ret 0xC`. **Its first act is to register `script/ai_country.lua` (0x15EB628) with 0xA7E210** - CEU3AI is the CReloadableInterface for that file. Stores tag at +0x20 and the country id at +0x24, zeroes the five minister slots +0x60/+0x64/+0x68/+0x6C/+0x70 and the agent list +0x74/+0x78/+0x7C, sets +0xA4 = 0x10000 and +0xC0 = 0x1FF, and ends by calling CEU3AI::CreateMinisters (0x4888C0). Two callers, both inside the `Starting AI` pass at 0x283140. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "CEU3AI* __stdcall CEU3AI::CEU3AI(CEU3AI* this, CCountryTag tag, int countryId)"
+  },
+  {
+   "rva": "0x4888C0",
+   "kind": "function",
+   "name": "CEU3AI::CreateMinisters",
+   "comment": "**Creates or destroys the five ministers, and the whole AI-delegation rule is here.** Bare `ret`, one caller: the tail of CEU3AI::CEU3AI at 0x888566. For each ministry: return outright when `gamestate[+0xD0C] != 0`; create unconditionally when this is not the played country (`this[+0x24] != gamestate[+0xC34]`); and when it is, create only when `GetLocalPlayer()[+0x38][n] == 1`, else destroy. So **an AI country always has all five, and the human's country has only the ones delegated**. Order: flags[0] foreign +0x60, [1] production +0x64, [2] tech +0x6C, [3] politics +0x70, [4] espionage +0x68. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __thiscall CEU3AI::CreateMinisters(CEU3AI* this)"
+  },
+  {
+   "rva": "0x488F30",
+   "kind": "function",
+   "name": "CEU3AI::ApplyPlayerDelegation",
+   "comment": "**The delegate-a-ministry switch.** `this` arrives in **EDI** with a bare `ret` - confirmed at the call site 0x6EC109, `mov edi, [country+0x1D8]` where the country is `g_CCountryDataBase[+0x16C][gamestate->player_id]`. Same create/destroy body as CreateMinisters but without the is-this-the-player test: it always consults `GetLocalPlayer()[+0x38]`. It also writes the tech minister's two bytes +0x5C/+0x5D from a four-way switch on `GetLocalPlayer()[+0x30]`. Four callers, all UI: 0x2EBF00 is slot 13 of CCountryView, CDiplomacyView, CEspionageView, CPoliticsView, CProductionView and CTheatreView; 0x422290 and 0x422600 are CTechnologyView slots 12 and 13. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __stdcall CEU3AI::ApplyPlayerDelegation(CEU3AI* this@EDI)"
+  },
+  {
+   "rva": "0x4894E0",
+   "kind": "function",
+   "name": "ProcessAI",
+   "comment": "**One country's whole AI pass, and the one hook for the entire AI.** `ret 4` at 0x889BB5, then int3. Bails on `ai[+0x128]` and on `country[+0x580]`; calls 0x89A800 and 0x889E10; bails through 0x899A10 when the country-database record at `g_CCountryDataBase[+0x16C][ai->id]` has `+0xCF8 <= 0` and `+0x95 == 0`; then walks the agent list at `ai+0x74` on `+8` and calls slot 9 on every agent whose `+0x3C` byte is set; then 0x89E010 on the foreign minister. Four callers, and **the recurring one is a tbb::parallel_for** - see reversing/FINDINGS-ai.md for which thread.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __stdcall ProcessAI(CEU3AI* ai)"
+  },
+  {
    "rva": "0x48D560",
    "kind": "function",
    "name": "AnnounceLoadedUnitsToScreen",
@@ -5957,6 +6749,159 @@
    "source": "BiceLib/GameClasses/CMoveCommand.hpp:68; reversing/FINDINGS-redeploy.md:114"
   },
   {
+   "rva": "0x49C6F0",
+   "kind": "function",
+   "name": "CAIAgent::IsEnabled",
+   "comment": "**Virtual slot 8, shared by all seven CAIAgent subclasses.** Four instructions: `xor eax,eax; cmp byte [ecx+0x3C], al; setne al; ret`. CAIAgent::Update calls it first and does nothing at all when it returns false, and the driver ProcessAI tests the same byte before calling Update. The constructor leaves +0x3C at 0, and what sets it is not established. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "bool __thiscall CAIAgent::IsEnabled(CAIAgent* this)"
+  },
+  {
+   "rva": "0x49C720",
+   "kind": "function",
+   "name": "CAIAgent::CAIAgent",
+   "comment": "**Takes `this` in EAX** - the first instruction is `mov dword [eax], 0x15C3AE4` with nothing having written eax - and `ret 8` for the two stack arguments, returning `this` in eax unchanged. Sets +0x04 = 0x18D, +0x28 = 0x0F, +0x24 = 0, +0x30 = 0, +0x34 = tag, **+0x38 = the country's id**, +0x3C..+0x3E = 0, +0x40..+0x4C = 0, +0x50 = 0, and the CAIAgent vftable 0x15EB674 last. All ten call sites push `[owner+0x20]` and `[owner+0x24]` off the CEU3AI, which is why +0x38 is the country id and not an arbitrary stagger. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "CAIAgent* __stdcall CAIAgent::CAIAgent(CAIAgent* this@EAX, CCountryTag tag, int countryId) @EAX"
+  },
+  {
+   "rva": "0x49CA90",
+   "kind": "function",
+   "name": "CAIAgent::Update",
+   "comment": "**Virtual slot 9, the same body in all seven subclasses, 0 direct callers.** 21 instructions: if slot 8 (`[vftable+0x20]`) returns true, `dec [this+0x30]` and on zero call **slot 10** (`[vftable+0x28]`) - the \"do your job\" slot; then walk the child-agent list at `+0x44`, chained on `+8`, calling slot 9 (`[vftable+0x24]`) on each. Every minister's slot 10 re-arms `+0x30` to 1, so the countdown is not the throttle - the hour-of-day test inside each body is. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __thiscall CAIAgent::Update(CAIAgent* this)"
+  },
+  {
+   "rva": "0x49CAD0",
+   "kind": "function",
+   "name": "CAIEspionageMinister::CAIEspionageMinister",
+   "comment": "Bare `ret`, `this` in EAX and the owner in ESI. Pushes `[owner+0x24]` and `[owner+0x20]` into CAIAgent::CAIAgent, then vftable 0x15EB7BC, `+0x54 = owner`, `+0x58 = -1`. The object is 0x5C bytes and lands at CEU3AI+0x68. One caller, CEU3AI::CreateMinisters at 0x888B8D - CEU3AI::ApplyPlayerDelegation has the same body inlined. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "CAIEspionageMinister* __cdecl CAIEspionageMinister::CAIEspionageMinister(CAIEspionageMinister* this@EAX, CEU3AI* owner@ESI) @EAX"
+  },
+  {
+   "rva": "0x49CEC0",
+   "kind": "function",
+   "name": "CAIEspionageMinister::DoWork",
+   "comment": "**Virtual slot 10 - the espionage minister's daily tick, and the shortest of the five.** Sets `+0x30 = 1`, then acts only when `(this->countryId (+0x38) + 1) % 24 == (gamestate->tick - 0x29C55C0) % 24`, and the whole body is a call to the mod's Lua `IntelligenceMinister_Tick` (0x49D0D0) - note the name is Intelligence, not Espionage. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __thiscall CAIEspionageMinister::DoWork(CAIEspionageMinister* this)"
+  },
+  {
+   "rva": "0x49D0D0",
+   "kind": "function",
+   "name": "Lua_IntelligenceMinister_Tick",
+   "comment": "Pushes the name `IntelligenceMinister_Tick` and fetches it from the Lua globals table, the same shape as Lua_ForeignMinister_Tick. Called from CAIEspionageMinister::DoWork at 0x89CF2F - note the engine class is Espionage but the Lua entry point is Intelligence, which is the name script/ai_intelligence_minister.lua defines. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void* __cdecl Lua_IntelligenceMinister_Tick(void* args, lua_State* L@EDI, LuaCallFrame* out@ESI) @EAX"
+  },
+  {
+   "rva": "0x49D2E0",
+   "kind": "function",
+   "name": "CAIForeignMinister::CAIForeignMinister",
+   "comment": "Bare `ret`; both operands are registers - `this` in EAX (handed straight to CAIAgent::CAIAgent, which also takes EAX) and the owner in ESI. Pushes `[owner+0x24]` and `[owner+0x20]`, writes vftable 0x15EB97C, `+0x54 = owner`, `+0x58 = 0`, `+0x5C = 0.0f`, `+0x60 = -1`, `+0x64 = 0x2D2D2D`. The object is 0x74 bytes and lands at CEU3AI+0x60. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "CAIForeignMinister* __cdecl CAIForeignMinister::CAIForeignMinister(CAIForeignMinister* this@EAX, CEU3AI* owner@ESI) @EAX"
+  },
+  {
+   "rva": "0x49D600",
+   "kind": "function",
+   "name": "CAIForeignMinister::DoWork",
+   "comment": "**Virtual slot 10 - the foreign minister's daily tick.** Sets `+0x30 = 1`, honours a skip-once byte at `+0x70`, then acts only when `(this->countryId (+0x38) + 0x0D) % 24 == (gamestate->tick - 0x29C55C0) % 24` - the **hour of the day**, not the day. It calls 0x89E010 and then the mod's Lua `ForeignMinister_Tick`; executes the pending action cached at `+0x58` when its score `+0x5C` exceeds 50.0 (0x160A4C8) by handing it to 0x89A750 with the OwnerAI; and then filters the list at `country+0x5D4` by `country->neighbours (+0xF58)`. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __thiscall CAIForeignMinister::DoWork(CAIForeignMinister* this)"
+  },
+  {
+   "rva": "0x49E490",
+   "kind": "function",
+   "name": "CAIForeignMinister::OnWar",
+   "comment": "**Virtual slot 41, one of only two CAISubscriber slots any minister implements** (the rest are the 0x60CD50 / 0xA806D0 stubs). `ret 8`. It takes `b->id (+0xCA8)`, indexes `a[+0xE28]` with it, reads that record's `+0x20`, and hands that plus both countries' tags at `+0xCA4` to the mod's Lua `ForeignMinister_OnWar` (0x49E860). The slot's own name is inferred from the Lua function it calls, not from the caller. See reversing/FINDINGS-ai.md.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __thiscall CAIForeignMinister::OnWar(CAIForeignMinister* this, CCountry* a, CCountry* b)"
+  },
+  {
+   "rva": "0x49E7C0",
+   "kind": "function",
+   "name": "Lua_ForeignMinister_Tick",
+   "comment": "`lua_pushstring(L, \"ForeignMinister_Tick\")` (0x15EB8F0) then `lua_gettable(L, 0xFFFFD8EE)` - LUA_GLOBALSINDEX, -10002 - so it fetches the mod's global of that name. Then fills the frame at ESI with `{L, 1, 0xB7E9D0, args, 0}` and returns it in eax. Bare `ret` with one stack argument, so cdecl, and both other operands are registers. Called from CAIForeignMinister::DoWork at 0x89D69F. **This is where script/ai_foreign_minister.lua is entered.** See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void* __cdecl Lua_ForeignMinister_Tick(void* args, lua_State* L@EDI, LuaCallFrame* out@ESI) @EAX"
+  },
+  {
+   "rva": "0x49E800",
+   "kind": "function",
+   "name": "Lua_ForeignMinister_EvaluateDecision",
+   "comment": "Pushes the name `ForeignMinister_EvaluateDecision` (0x15EB93C) and fetches it from the Lua globals table. Where it is called from was not traced. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void* __cdecl Lua_ForeignMinister_EvaluateDecision(void* args, lua_State* L@EDI) @EAX"
+  },
+  {
+   "rva": "0x49E860",
+   "kind": "function",
+   "name": "Lua_ForeignMinister_OnWar",
+   "comment": "Pushes the name `ForeignMinister_OnWar` and fetches it from the Lua globals table; `ret 8`-shaped call from CAIForeignMinister slot 41 at 0x89E4F5 with the two countries' tags and a relation value. The exact argument order was read off the pushes at the call site, not from the body. See reversing/FINDINGS-ai.md.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void* __cdecl Lua_ForeignMinister_OnWar(CCountryTag* a, CCountryTag* b, lua_State* L@EDI) @EAX"
+  },
+  {
+   "rva": "0x4A1A40",
+   "kind": "function",
+   "name": "CAIPoliticsMinister::DoWork",
+   "comment": "**Virtual slot 10 - the politics minister's daily tick.** Sets `+0x30 = 1`, then acts only when `(this->countryId (+0x38) + 0x11) % 24 == (gamestate->tick - 0x29C55C0) % 24`. Inside that, 0x44C5C0's result is divided by 7 with the 0x92492493 magic and 0x8A1D40(this) runs only on the zero remainder - a weekly sub-task - and then the mod's Lua `PoliticsMinister_Tick` runs. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __thiscall CAIPoliticsMinister::DoWork(CAIPoliticsMinister* this)"
+  },
+  {
+   "rva": "0x4A2040",
+   "kind": "function",
+   "name": "Lua_PoliticsMinister_Tick",
+   "comment": "Pushes the name `PoliticsMinister_Tick` and fetches it from the Lua globals table. Called from CAIPoliticsMinister::DoWork at 0x8A1AE4. The mod defines it in script/ai_politics_minister.lua. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void* __cdecl Lua_PoliticsMinister_Tick(void* args, lua_State* L@EDI, LuaCallFrame* out@ESI) @EAX"
+  },
+  {
+   "rva": "0x4A22E0",
+   "kind": "function",
+   "name": "CAIProductionMinister::DoWork",
+   "comment": "**Virtual slot 10 - the production minister's tick.** Sets `+0x30 = 1`, computes the day of the month from the tick, the 365.0 at 0x160A550 and the month-length table at 0x1713294, then acts only when `(this->countryId (+0x38) + 5) % 24 == hours % 24`. It calls 0x899770(OwnerAI) and runs the main block only when `+0x5C < 0.0f` or `dayOfMonth % 14 == 0` - so the 1st and the 15th, or whenever +0x5C is negative; the constructor seeds +0x5C from the -1.0f at 0x170AC0C so the first pass always runs. The block caches `(float)*0x4EE560(country) / 1000.0` in +0x5C and calls the mod's Lua `ProductionMinister_Tick`. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __thiscall CAIProductionMinister::DoWork(CAIProductionMinister* this)"
+  },
+  {
+   "rva": "0x4A2B00",
+   "kind": "function",
+   "name": "Lua_ProductionMinister_Tick",
+   "comment": "Pushes the name `ProductionMinister_Tick` and fetches it from the Lua globals table. Called from CAIProductionMinister::DoWork at 0x8A249B. The mod defines it in script/ai_production_minister.lua. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void* __cdecl Lua_ProductionMinister_Tick(void* args, lua_State* L@EDI, LuaCallFrame* out@ESI) @EAX"
+  },
+  {
+   "rva": "0x4A3B90",
+   "kind": "function",
+   "name": "MergeAIStrategy",
+   "comment": "Folds one CAIStrategy into an accumulator. Three call sites and they are the whole story of how AI strategy reaches the AI: ApplyCountryAIStrategies passes `CCountry+0x1DC` (`ai_hard_strategy`) and `CCountry+0x334` (`ai_event_strategy`), and CAddAIStrategyEffect::Execute (0x5B0E00) passes the effect's own embedded CAIStrategy. What it does with the 18 fields was not read. See reversing/FINDINGS-ai.md.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __stdcall MergeAIStrategy(AIStrategyCache* acc, CAIStrategy** strategy)"
+  },
+  {
    "rva": "0x4A40B0",
    "kind": "function",
    "name": "CAIStrategy::LoadKey",
@@ -5964,6 +6909,60 @@
    "comment": "**The keys its switch names**, 21 of them, one case each: `air_perc`, `antagonize`, `area_theatre`, `armor_bias`, `befriend`, `building_prov`, `conquer_prov`, `consolidate`, `defend_prov`, `initialized`, `land_perc`, `max_subunits`, `military_access`, `naval_perc`, `personality`, `protect`, `rival`, `static`, `threat`, `vassal`, `war_with`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x4A5C90",
+   "kind": "function",
+   "name": "AIStrategyCache::Rebuild",
+   "comment": "Rebuilds a country's merged AI strategy. Bails when `+0xC` is null or the tag at `+8` is `REB`; stamps `+0x10 = gamestate->tick` and `+0x14 = 1`; calls 0x8A5DD0, 0x8ACE20, 0x8AD430, ApplyCountryAIStrategies (0x4A62A0) and 0x8AD6E0. **11 direct callers** across 0x4DB7C4, 0x4E055D, 0x4E3E5E, 0x4E6CCB, 0x4EF2A2, 0x4EF781, 0x4F640E, 0x4F645B, 0x65C282, 0x9B0E78 and 0xA4018C, so the strategy is consumed lazily and widely rather than by one minister. Which class owns the object is not established. See reversing/FINDINGS-ai.md.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __thiscall AIStrategyCache::Rebuild(AIStrategyCache* this)"
+  },
+  {
+   "rva": "0x4A62A0",
+   "kind": "function",
+   "name": "ApplyCountryAIStrategies",
+   "comment": "**The answer to who consumes CAIStrategy.** A sweep of all 1295 CCountryTag::GetCountry call sites for a `+0x1DC` access within 0x30 bytes returns exactly one hit, 0x8A62C4, and it is here: `country = GetCountry(&acc[+8])`, then `0x8A3B90(acc, &country[+0x1DC])` (`ai_hard_strategy`) and `0x8A3B90(acc, &country[+0x334])` (`ai_event_strategy`). 0x8A3B90 is the same merge routine CAddAIStrategyEffect::Execute uses, so the two loaded strategies and the `add_ai_strategy` effect all feed one accumulator. One caller, the cache rebuild at 0x4A5C90. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __stdcall ApplyCountryAIStrategies(AIStrategyCache* acc)"
+  },
+  {
+   "rva": "0x4AE7D0",
+   "kind": "function",
+   "name": "CAITechMinister::CAITechMinister",
+   "comment": "Bare `ret`, `this` in EAX and the owner in ESI. Pushes `[owner+0x24]` and `[owner+0x20]` into CAIAgent::CAIAgent, then writes vftable 0x15EBF5C, `+0x54 = owner`, `+0x58 = -1`, **`word +0x5C = 0x0101`** (the two booleans CEU3AI::ApplyPlayerDelegation later overwrites from the player's +0x30), and zeroes +0x60..+0x78. The object is 0x80 bytes and lands at CEU3AI+0x6C. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "CAITechMinister* __cdecl CAITechMinister::CAITechMinister(CAITechMinister* this@EAX, CEU3AI* owner@ESI) @EAX"
+  },
+  {
+   "rva": "0x4AE9B0",
+   "kind": "function",
+   "name": "CAITechMinister::OnCountryEvent",
+   "comment": "**Virtual slot 47, the only other CAISubscriber slot a minister implements.** `ret 8`. Its first act is `if (country[+0xCA8] != this[+0x38]) return;` - **independent confirmation that CAIAgent+0x38 is the country's id** - and then it news 0x48 bytes and builds a command-shaped object with `0x557E00(obj, this->tag, this->id, arg)` before touching the game state. Which notification this is, and what `arg` means, is not established; the name is a placeholder. See reversing/FINDINGS-ai.md.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __thiscall CAITechMinister::OnCountryEvent(CAITechMinister* this, CCountry* country, int arg)"
+  },
+  {
+   "rva": "0x4AEAD0",
+   "kind": "function",
+   "name": "CAITechMinister::DoWork",
+   "comment": "**Virtual slot 10 - the tech minister's tick, and the only one with a monthly re-plan.** Sets `+0x30 = 1`, computes the day of the month (365.0 at 0x160A550, month lengths at 0x1713294), and calls 0x8AECA0(this) then 0x8AEF40(this) whenever either of its vectors (+0x60..+0x64, +0x70..+0x74) is empty or `+0x58 > dayOfMonth` - which is only true on the day a month turns - then stores dayOfMonth in +0x58. Separately, when `(this->countryId (+0x38) + 3) % 24 == hours % 24`, it calls the mod's Lua `TechMinister_Tick` with the two bytes at +0x5C/+0x5D. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void __thiscall CAITechMinister::DoWork(CAITechMinister* this)"
+  },
+  {
+   "rva": "0x4AF280",
+   "kind": "function",
+   "name": "Lua_TechMinister_Tick",
+   "comment": "Pushes the name `TechMinister_Tick` and fetches it from the Lua globals table. Called from CAITechMinister::DoWork at 0x8AEC60, with the minister's two bytes +0x5C/+0x5D as the arguments. The mod defines it in script/ai_tech_minister.lua. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "void* __cdecl Lua_TechMinister_Tick(void* args, lua_State* L@EDI, LuaCallFrame* out@ESI) @EAX"
   },
   {
    "rva": "0x4B348A",
@@ -6166,6 +7165,15 @@
    "source": "reversing/FINDINGS-manpower.md"
   },
   {
+   "rva": "0x4EACA0",
+   "kind": "function",
+   "name": "GetThreadLuaState",
+   "comment": "**A Lua state per thread, and every AI Lua call in the image goes through it.** Reads the TLS array at `fs:[0x2C]`, and on a thread's first use takes `EnterCriticalSection(0x1B15418)`, news 4 bytes, calls `luaL_newstate` (0xD2B478) and `luaL_openlibs` (0xD2B46C), and runs `script/autoexec.lua` (0x15EC700). Returns a pointer to the slot, so callers do `mov edi, [eax]` to get the lua_State. That the AI needs a per-thread state is the other half of the evidence that it runs on TBB workers. See reversing/FINDINGS-ai.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-ai.md",
+   "signature": "lua_State** __stdcall GetThreadLuaState(void) @EAX"
+  },
+  {
    "rva": "0x520940",
    "kind": "function",
    "name": "std::stringbuf::str",
@@ -6203,6 +7211,15 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x5A6B10",
+   "kind": "function",
+   "name": "CReversedCasusBelliEffect::Execute",
+   "signature": "void __thiscall CReversedCasusBelliEffect::Execute(CReversedCasusBelliEffect* this, CEventScope* scope)",
+   "comment": "`add_casus_belli`. Resolves the value - a tag at +0x20, or `this`/`FROM` by the flags at +0x1C/+0x1D - and calls 0xE6640 with **the scope's tag in ECX and the named country as the argument**. CCasusBelliEffect::Execute (0x5A6770) makes the same call the other way round, the named tag against the scope's country, which is the whole of the difference between `casus_belli` and this. See reversing/FINDINGS-script.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
    "rva": "0x5A70A0",
    "kind": "function",
    "name": "CRelationEffect::LoadKey",
@@ -6219,6 +7236,15 @@
    "comment": "**The keys its switch names**, 1 of them, one case each: `limit`. Inherited by 11 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5ABA30",
+   "kind": "function",
+   "name": "CAnyNearbyProvinceEffect::Execute",
+   "signature": "void __thiscall CAnyNearbyProvinceEffect::Execute(CAnyNearbyProvinceEffect* this, CEventScope* scope)",
+   "comment": "A **province** scope: takes the province id from the scope's +0x28 and walks **CCountry +0xD00 of that province's controller** - the controlled-province list CAnyControlledEffect::Execute walks, against +0xCF0 for owned - keeping those within the effect's `distance` (+0x60). The test is `dx*dx + dy*dy <= distance*distance` on **map coordinates** from g_CMap +0x2A60 (x at +0x2C, y at +0x30), with the x difference wrapped against the world width at g_CMap +0x2A74. So the distance is not a count of provinces and the scope never leaves the controller's own land. See reversing/FINDINGS-script.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x5ABC00",
@@ -6291,6 +7317,33 @@
    "comment": "Its keys are the **weights** of a `random_list` - a bare integer per entry, which is why the only token it names is the parser's `tok_int` (0xC).",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5B0DF0",
+   "kind": "function",
+   "name": "CAddAIStrategyEffect::Load",
+   "signature": "void __thiscall CAddAIStrategyEffect::Load(CAddAIStrategyEffect* this, CParseContext* parse)",
+   "comment": "Four instructions, and the whole grammar of `add_ai_strategy`: `this += 0x20` then a tail jump to that object's own Load. The block is read by the embedded CAIStrategy and its 21 keys, which is why the effect itself never overrides LoadKey. See reversing/FINDINGS-script.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5B0E00",
+   "kind": "function",
+   "name": "CAddAIStrategyEffect::Execute",
+   "signature": "void __thiscall CAddAIStrategyEffect::Execute(CAddAIStrategyEffect* this, CEventScope* scope)",
+   "comment": "Hands the embedded CAIStrategy at +0x20 and the scope country's tag (country +0x334) to 0x4A3B90, then does more with the pointer at +0x38. See reversing/FINDINGS-script.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5B0E90",
+   "kind": "function",
+   "name": "CFixedAIStrategyEffect::Execute",
+   "signature": "void __thiscall CFixedAIStrategyEffect::Execute(CFixedAIStrategyEffect* this, CEventScope* scope)",
+   "comment": "Eleven instructions: writes the effect's byte at +0x20 - set by slot 7 (0x59DC50) to `value == yes` - into **CCountry +0x4A1** on the scope's country. **Nothing reads +0x4A1**: a byte-level sweep of .text finds exactly one access to that offset, this write. So `fixed_ai_strategy` has no effect. See reversing/FINDINGS-script.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x5B4ED0",
@@ -6405,7 +7458,7 @@
    "kind": "function",
    "name": "CPracticalEffect::Execute",
    "signature": "void __thiscall CPracticalEffect::Execute(CPracticalEffect* this, CEventScope* scope)",
-   "comment": "**Slot 11, what the `practical` effect does.** Returns at once unless the scope carries a country. Takes the technology category from the effect's +0x20, its index from CTechnologyCategory +0x5C, and the country's level for it from own_ability (CCountry +0x698). **Where that category has a technology-sharing partner** - CCountry +0x6A8, a CCountryTag per category - it reads the partner's level too and takes whichever is higher as the base. Then it adds the effect's `value` (+0x24) and stores the result through CCountry::SetTechAbility (0xE03C0), which floors at 0 and caps at MAX_TECH_ABILITY. See reversing/FINDINGS-script.md.",
+   "comment": "**Slot 11, what the `practical` effect does.** Returns at once unless the scope carries a country. Takes the technology category from the effect's +0x20, its index from CTechnologyCategory +0x5C, and the country's level for it from own_ability (CCountry +0x698). **Where that category has a technology-sharing partner** - CCountry +0x6A8, a CCountryTag per category - it reads the partner's level too and takes whichever is higher as the base. Then it adds the effect's `value` (+0x24) and stores the result through CCountry::SetTechAbility (0xE03C0), which floors at 0 and caps at MAX_TECH_ABILITY. **It is not restricted to practicals**: the category map it resolves against holds theories too and a country keeps one own_ability array for both, so `technology_group = infantry_theory` works and is the only way a script can move a theory - CEffect::LoadKey has no `theory` keyword. CCountry::LoadKey's own handling of a `*_theory` or `*_practical` key in a history file (rva 0xCF2F3) is the same lookup and the same array, assigning rather than adding. See reversing/FINDINGS-script.md.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-script.md"
   },
@@ -6423,9 +7476,18 @@
    "kind": "function",
    "name": "CModifySpiesEffect::LoadKey",
    "signature": "void __thiscall CModifySpiesEffect::LoadKey(CModifySpiesEffect* this, CParseContext* parse, SaveToken key)",
-   "comment": "**The keys its switch names**, 4 of them, one case each: `from`, `target`, `this`, `value`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
+   "comment": "**Dead code.** The keys are `target` (a tag, `this` or `FROM`), `value` (atoi), and the bare `this`/`from`, and nothing ever calls this: `modify_spies` is built with the effect table's scalar tail, which calls slot 7 rather than Load. See CModifySpiesEffect::Execute and reversing/FINDINGS-script.md.",
    "confidence": "confirmed",
-   "source": "reversing/FINDINGS-definitions.md"
+   "source": "reversing/FINDINGS-script.md"
+  },
+  {
+   "rva": "0x5BE130",
+   "kind": "function",
+   "name": "CModifySpiesEffect::Execute",
+   "signature": "void __thiscall CModifySpiesEffect::Execute(CModifySpiesEffect* this, CEventScope* scope)",
+   "comment": "**`modify_spies`, which cannot be configured.** The effect table builds it with the scalar tail (0x59A096 reads a block by calling slot 3; 0x599E71 hands the value to slot 7 - this keyword takes the second), and CModifySpiesEffect's slot 7 is CEffect's stub at 0x15FF0, `ret 0x104`. It is the only one of the 20 scalar effects that does not implement it, so CModifySpiesEffect::LoadKey is never called and the object keeps its constructor's `---` target and an **uninitialised +0x28** - the count - which the game's own tooltip shows as `Add 587232376 spies to Null`. What this would do if it had data: multiply +0x28 by 1000 and add it to the scope country's spy presence in the target - CCountry +0x1160, a **pointer** to an array of 0xF8-byte CSpyPresence records indexed by country id, count in the first field - the accessor at 0x44920 is `imul id, 0xF8` then `add eax, [ecx+0x1160]`, so the field holds the array's address rather than being the array - floored at 0 and capped at the dword at rva 0x130D164, 10000 in .data and written by no instruction: ten spies, hard coded. See reversing/FINDINGS-script.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-script.md"
   },
   {
    "rva": "0x5BF420",
@@ -6435,6 +7497,60 @@
    "comment": "**The keys its switch names**, 12 of them, one case each: `desc`, `fire_only_once`, `id`, `immediate`, `is_triggered_only`, `major`, `mean_time_to_happen`, `option`, `picture`, `subtitle`, `title`, `trigger`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5BF640",
+   "kind": "function",
+   "name": "GetEventList",
+   "comment": "0x9BF640 to 0x9BF68C, bare `ret`, no arguments. Returns the global event list at 0x1B15670, allocating a zeroed 0x20-byte one through SetEventList (0x9C1460) if it is null. The object is two CLists, {first,last,count,byte} at +0x00 and at +0x10; only +0x00 is walked by RebuildCountryEventCandidates and it holds the CEvent definitions. See reversing/FINDINGS-events.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-events.md",
+   "signature": "CEventList* __cdecl GetEventList(void) @EAX"
+  },
+  {
+   "rva": "0x5BF690",
+   "kind": "function",
+   "name": "DestroyEventList",
+   "comment": "0x9BF690 to the `ret 4` at 0x9BF70E; __stdcall is read off the two call sites, which have no `add esp,4` of their own (0x9C147F, 0x683CE1's neighbourhood at 0x9C14B8). It does not free the object and it does not tear down the two CLists - every caller does both itself, walking node+8 and calling free, which is why the tail of RunDailyPass looks longer than it is. The body was not read, so the name is from its position, not its contents. See reversing/FINDINGS-events.md.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-events.md",
+   "signature": "void __stdcall DestroyEventList(CEventList* list@stack:4)"
+  },
+  {
+   "rva": "0x5C0050",
+   "kind": "function",
+   "name": "RebuildCountryEventCandidates",
+   "comment": "0x9C0050 to 0x9C0421, `ret 4`. **The only function in the image that writes the per-country candidate event list at CCountry+0x8/+0xC/+0x10, and the reason a loaded savegame fires no events until the month turns.** Two callers: RunMonthlyPass at 0x683CE1 (month change only) and 0x682510 at 0x68255B. Pass 1 (0x9C010F-0x9C0185) frees and zeroes every country list, with no ownership gate. Pass 2 (0x9C02E1-0x9C040B) walks the CList at events+0x00 and, for each CEvent, skips it when `option` (+0xD4/+0xD8) is empty, when `is_triggered_only` (+0x170) is set, or when `fire_only_once` (+0x172) is set and the already-fired registry at CCurrentGameState+0xC38 - looked up by the event id pair at +0x8/+0xC through 0x68DC10(map@ECX,key@EDI) - already holds it; then for every country with CCountry+0xCF8 > 0 it builds a 0x48-byte CEventScope on the stack and calls the event's `trigger` (+0x30) slot 6 with it, appending the event to that country's list on true. Abuts 0x9BF7B0, which ends at 0x9C003E with `ret 8`. See reversing/FINDINGS-events.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-events.md",
+   "signature": "void __stdcall RebuildCountryEventCandidates(CEventList* events@stack:4)"
+  },
+  {
+   "rva": "0x5C0A40",
+   "kind": "function",
+   "name": "RunDailyEventPass",
+   "comment": "0x9C0A40 to 0x9C0C76, **bare `ret` and no arguments at all** - nothing on the stack and nothing in ecx. One caller: RunDailyPass at 0x683050. For each country in the database at [0x1A855A4] (+0x168 count, +0x16C array) it skips any country with CCountry+0xCF8 <= 0 (0x9C0B3E), then reads CCountry+0x8 - **the candidate list RebuildCountryEventCandidates built** - and skips the country outright if it is null (0x9C0B57). For each candidate it re-evaluates the event's `trigger` (+0x30) slot 6 against a stack CEventScope, calls CMeanTimeToHappen::GetChance(event+0xE4 @EAX, scope @EDI) at 0x9C0B85, draws from the Mersenne Twister and fires through 0x9C0C80(event, scope) at 0x9C0C49 when chance > r, where r = (tempered draw & 0x7FFFFFFF) * 2^-31 (0x160A2B8 is exactly 2^-31). It holds no state between days. image.functionStart walks back to 0x9C08F1 on this function because 0x9C0520 abuts it. See reversing/FINDINGS-events.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-events.md",
+   "signature": "void __cdecl RunDailyEventPass(void)"
+  },
+  {
+   "rva": "0x5C0C80",
+   "kind": "function",
+   "name": "FireEvent",
+   "comment": "0x9C0C80 to the `ret 8` at 0x9C1450. Ten direct callers: RunDailyEventPass at 0x9C0C49, 0x576A6C, 0x576B7F, 0x57864F, 0x578767, 0x57A975, 0x57AA9B, 0x9AE50F, 0x9AE8B8 and 0x9C7EA4 - the 0x576-0x57A group being effect code, which is how `is_triggered_only` events reach the player without ever entering a candidate list. **The body was not read**; the name and the argument order come from the call at 0x9C0C49 (`push scope; push event`) and from the extent. See reversing/FINDINGS-events.md.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-events.md",
+   "signature": "void __stdcall FireEvent(CEvent* event@stack:4, CEventScope* scope@stack:8)"
+  },
+  {
+   "rva": "0x5C1460",
+   "kind": "function",
+   "name": "SetEventList",
+   "comment": "0x9C1460 to 0x9C14AB, `ret 4`. Installs `list` as the global event list at 0x1B15670, destroying (0x9BF690) and freeing the previous one first unless it is the same pointer, and returns the **address** of the global (0x1B15670) in eax, not its value. Called from 0x682550 and from the getter at 0x9BF672/0x9BF681. See reversing/FINDINGS-events.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-events.md",
+   "signature": "CEventList** __stdcall SetEventList(CEventList* list@stack:4) @EAX"
   },
   {
    "rva": "0x5C15A0",
@@ -6462,6 +7578,15 @@
    "comment": "**The keys its switch names**, 1 of them, one case each: `factor`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x5C4AB0",
+   "kind": "function",
+   "name": "CMeanTimeToHappen::GetChance",
+   "comment": "0x9C4AB0 to 0x9C4B85. **Not thiscall**: `this` arrives in EAX and the scope in EDI, and the result comes back in st0 with a bare `ret`. days = (float)this->days (+0x8); for each CMTTHModifier in the list at +0xC (node {data, ?, next at +8}), if the modifier's condition slot 6 accepts the scope, days *= modifier->factor (+0x40) / 1000.0 - the double at 0x160A300 is 1000.0, so **factor is stored in thousandths**. If days <= 0 it returns 1.0f (certainty). Otherwise it returns 1.0f - 0.5f**(1.0f/days): the double at 0x160A308 is 0.5, so **`days` is a median, not a mean**, and the result is the per-day probability that gives a 50% chance of having fired after `days` days (2.28%/day at days=30, 50% at days=1). The code computes c = exp(log(0.5)/days) and then redundantly exp(log(c)) before 1-c, storing to a float32 between every step, so the answer is quantised at four points. That 0xC0B9B0 is log and 0xC0BAFC is exp is inference from the shape of the formula. See reversing/FINDINGS-events.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-events.md",
+   "signature": "float __fastcall CMeanTimeToHappen::GetChance(CMeanTimeToHappen* this@EAX, CEventScope* scope@EDI) @ST0"
   },
   {
    "rva": "0x5C4BF0",
@@ -6855,6 +7980,15 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x60DC70",
+   "kind": "function",
+   "name": "GetDiploScoreFromLua",
+   "signature": "int __cdecl GetDiploScoreFromLua(const char* lua_function, CCountryTag* actor, CCountryTag* recipient, CCountryTag* recipient_again, CCountryTag recipient_value, int extra)",
+   "comment": "**The engine asking the mod's Lua what the AI thinks of a diplomatic offer.** Six arguments, cdecl - every caller does `add esp, 0x18` - the first being the name of a Lua function, and the score comes back in eax. There are exactly 14 `DiploScore_*` literals in the image and every one is passed to this function; all 14 are defined in the mod, twelve in script/ai_diplomacy.lua plus DiploScore_OfferTrade in ai_trade.lua and DiploScore_LicenceTechnology in ai_license.lua.\n\nThree things happen here. **It returns 100 without calling Lua** when the acting country's id equals g_CCurrentGameState +0xC34 (player) and the byte at 0x1A8562F is set, so a script's opinion of what the human offers is never consulted down this path. **It resolves an AI object as CCountry +0x1D8**, trying three tags and taking the first non-null - the recipient, then the actor, then the recipient's other pointer - each through CCountryTag::GetCountry (0x402610). **Then it calls Lua**, 0xA445B0 with the AI pointer, the tags and the name, and 0xA44080 to convert the result to an int.\n\nNamed for what it does; no class. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
+  },
+  {
    "rva": "0x60E2A0",
    "kind": "function",
    "name": "CDiplomaticActionCommand::LoadKey",
@@ -6873,6 +8007,15 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x6116C0",
+   "kind": "function",
+   "name": "COfferLendLeaseAction::GetAIAcceptance",
+   "signature": "int __thiscall COfferLendLeaseAction::GetAIAcceptance(COfferLendLeaseAction* this)",
+   "comment": "**Slot 17 of CDiplomaticAction: how much the AI likes this offer, 0 to 100.** Asks the mod's Lua by pushing `DiploScore_OfferLendLease` and calling GetDiploScoreFromLua (0x60DC70), and returns its eax unchanged.\n\n**The name is the game's own** - CDiplomaticAction::GetAIAcceptance is registered with luabind - but the registration resolves to _purecall, since the method is pure virtual in the class that declares it, and all ten of that class's pure slots resolve there. So the *name* is certain and **slot 17 being the one it belongs to is inference from behaviour**: this slot computes an integer opinion of a proposed action by asking Lua. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
+  },
+  {
    "rva": "0x618C20",
    "kind": "function",
    "name": "CWarGoalBaseAction::LoadKey",
@@ -6880,6 +8023,33 @@
    "comment": "**The keys its switch names**, 1 of them, one case each: `war_goal`. Inherited by 3 classes in all. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x61BA70",
+   "kind": "function",
+   "name": "CAllianceAction::GetAIAcceptance",
+   "signature": "int __thiscall CAllianceAction::GetAIAcceptance(CAllianceAction* this)",
+   "comment": "**Slot 17 of CDiplomaticAction: how much the AI likes this offer, 0 to 100.** Asks the mod's Lua by pushing `DiploScore_Alliance` and calling GetDiploScoreFromLua (0x60DC70), and returns its eax unchanged.\n\n**The name is the game's own** - CDiplomaticAction::GetAIAcceptance is registered with luabind - but the registration resolves to _purecall, since the method is pure virtual in the class that declares it, and all ten of that class's pure slots resolve there. So the *name* is certain and **slot 17 being the one it belongs to is inference from behaviour**: this slot computes an integer opinion of a proposed action by asking Lua. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
+  },
+  {
+   "rva": "0x625610",
+   "kind": "function",
+   "name": "CMilitaryAccessAction::GetAIAcceptance",
+   "signature": "int __thiscall CMilitaryAccessAction::GetAIAcceptance(CMilitaryAccessAction* this)",
+   "comment": "**Slot 17 of CDiplomaticAction: how much the AI likes this offer, 0 to 100.** Asks the mod's Lua by pushing `DiploScore_DemandMilitaryAccess` and calling GetDiploScoreFromLua (0x60DC70), and returns its eax unchanged.\n\n**The name is the game's own** - CDiplomaticAction::GetAIAcceptance is registered with luabind - but the registration resolves to _purecall, since the method is pure virtual in the class that declares it, and all ten of that class's pure slots resolve there. So the *name* is certain and **slot 17 being the one it belongs to is inference from behaviour**: this slot computes an integer opinion of a proposed action by asking Lua. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
+  },
+  {
+   "rva": "0x6278E0",
+   "kind": "function",
+   "name": "COfferMilitaryAccessAction::GetAIAcceptance",
+   "signature": "int __thiscall COfferMilitaryAccessAction::GetAIAcceptance(COfferMilitaryAccessAction* this)",
+   "comment": "**Slot 17 of CDiplomaticAction: how much the AI likes this offer, 0 to 100.** Asks the mod's Lua by pushing `DiploScore_OfferMilitaryAccess` and calling GetDiploScoreFromLua (0x60DC70), and returns its eax unchanged.\n\n**The name is the game's own** - CDiplomaticAction::GetAIAcceptance is registered with luabind - but the registration resolves to _purecall, since the method is pure virtual in the class that declares it, and all ten of that class's pure slots resolve there. So the *name* is certain and **slot 17 being the one it belongs to is inference from behaviour**: this slot computes an integer opinion of a proposed action by asking Lua. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
   },
   {
    "rva": "0x62AEA0",
@@ -6891,6 +8061,24 @@
    "source": "reversing/FINDINGS-definitions.md"
   },
   {
+   "rva": "0x62E3D0",
+   "kind": "function",
+   "name": "CNapAction::GetAIAcceptance",
+   "signature": "int __thiscall CNapAction::GetAIAcceptance(CNapAction* this)",
+   "comment": "**Slot 17 of CDiplomaticAction: how much the AI likes this offer, 0 to 100.** Asks the mod's Lua by pushing `DiploScore_NonAgression` and calling GetDiploScoreFromLua (0x60DC70), and returns its eax unchanged. Read out in full in the findings as the pattern the other eight follow: it pushes the recipient tag at +0x10 by value and twice by address, the actor tag at +0x8 by address, then the literal, and returns the bridge's eax untouched. 0x27 bytes.\n\n**The name is the game's own** - CDiplomaticAction::GetAIAcceptance is registered with luabind - but the registration resolves to _purecall, since the method is pure virtual in the class that declares it, and all ten of that class's pure slots resolve there. So the *name* is certain and **slot 17 being the one it belongs to is inference from behaviour**: this slot computes an integer opinion of a proposed action by asking Lua. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
+  },
+  {
+   "rva": "0x634860",
+   "kind": "function",
+   "name": "CFactionAction::GetAIAcceptance",
+   "signature": "int __thiscall CFactionAction::GetAIAcceptance(CFactionAction* this)",
+   "comment": "**Slot 17 of CDiplomaticAction: how much the AI likes this offer, 0 to 100.** Asks the mod's Lua by pushing `DiploScore_InviteToFaction` and calling GetDiploScoreFromLua (0x60DC70), and returns its eax unchanged. The literal is pushed at two sites in this body, 0x63489E and 0x634970.\n\n**The name is the game's own** - CDiplomaticAction::GetAIAcceptance is registered with luabind - but the registration resolves to _purecall, since the method is pure virtual in the class that declares it, and all ten of that class's pure slots resolve there. So the *name* is certain and **slot 17 being the one it belongs to is inference from behaviour**: this slot computes an integer opinion of a proposed action by asking Lua. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
+  },
+  {
    "rva": "0x638F60",
    "kind": "function",
    "name": "CTradeAction::LoadKey",
@@ -6898,6 +8086,15 @@
    "comment": "**The keys its switch names**, 1 of them, one case each: `trade`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x63AF90",
+   "kind": "function",
+   "name": "CSendExpeditionaryForceAction::GetAIAcceptance",
+   "signature": "int __thiscall CSendExpeditionaryForceAction::GetAIAcceptance(CSendExpeditionaryForceAction* this)",
+   "comment": "**Slot 17 of CDiplomaticAction: how much the AI likes this offer, 0 to 100.** Asks the mod's Lua by pushing `DiploScore_SendExpeditionaryForce` and calling GetDiploScoreFromLua (0x60DC70), and returns its eax unchanged.\n\n**The name is the game's own** - CDiplomaticAction::GetAIAcceptance is registered with luabind - but the registration resolves to _purecall, since the method is pure virtual in the class that declares it, and all ten of that class's pure slots resolve there. So the *name* is certain and **slot 17 being the one it belongs to is inference from behaviour**: this slot computes an integer opinion of a proposed action by asking Lua. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
   },
   {
    "rva": "0x63B300",
@@ -6916,6 +8113,24 @@
    "comment": "**The keys its switch names**, 4 of them, one case each: `definition`, `money`, `parallel`, `serial`. Read from the switch by reversing/definitions.py. A loader may resolve further keys as names out of a database - CGovernment and CMinister both do - but anything that is neither is dropped in silence.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x63F330",
+   "kind": "function",
+   "name": "CDebtAction::GetAIAcceptance",
+   "signature": "int __thiscall CDebtAction::GetAIAcceptance(CDebtAction* this)",
+   "comment": "**Slot 17 of CDiplomaticAction: how much the AI likes this offer, 0 to 100.** Asks the mod's Lua by pushing `DiploScore_Debt` and calling GetDiploScoreFromLua (0x60DC70), and returns its eax unchanged.\n\n**The name is the game's own** - CDiplomaticAction::GetAIAcceptance is registered with luabind - but the registration resolves to _purecall, since the method is pure virtual in the class that declares it, and all ten of that class's pure slots resolve there. So the *name* is certain and **slot 17 being the one it belongs to is inference from behaviour**: this slot computes an integer opinion of a proposed action by asking Lua. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
+  },
+  {
+   "rva": "0x641D50",
+   "kind": "function",
+   "name": "CPeaceAction::GetAIAcceptance",
+   "signature": "int __thiscall CPeaceAction::GetAIAcceptance(CPeaceAction* this)",
+   "comment": "**Slot 17 of CDiplomaticAction: how much the AI likes this offer, 0 to 100.** Asks the mod's Lua by pushing `DiploScore_PeaceAction` and calling GetDiploScoreFromLua (0x60DC70), and returns its eax unchanged.\n\n**The name is the game's own** - CDiplomaticAction::GetAIAcceptance is registered with luabind - but the registration resolves to _purecall, since the method is pure virtual in the class that declares it, and all ten of that class's pure slots resolve there. So the *name* is certain and **slot 17 being the one it belongs to is inference from behaviour**: this slot computes an integer opinion of a proposed action by asking Lua. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
   },
   {
    "rva": "0x643F10",
@@ -7501,6 +8716,15 @@
    "source": "reversing/FINDINGS-script.md"
   },
   {
+   "rva": "0x680690",
+   "kind": "function",
+   "name": "ReturnZero",
+   "signature": "int __fastcall ReturnZero(void)",
+   "comment": "`xor eax, eax; ret` - the shared stub the compiler folds every trivial `return 0` onto. It appears in **189 vftable slots across 81 classes**, so finding it in a slot says only that the class does not implement that method, never what the method is for. Worth knowing where it lands: five diplomatic actions - CGuaranteeAction, CInfluenceNation, CInfluenceAllianceLeader, CShareTechnologyAction and CNullDiplomaticAction - point slot 17, GetAIAcceptance, at it, so **their AI acceptance is a hard zero and no script is asked**. That is why the mod's own DiploScore_Guarantee and DiploScore_InfluenceNation are called from ai_foreign_minister.lua rather than by the engine. See reversing/FINDINGS-diplomacy.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-diplomacy.md"
+  },
+  {
    "rva": "0x682490",
    "kind": "function",
    "name": "GetText",
@@ -7562,6 +8786,15 @@
    "comment": "Four instructions into the already-named CCommand::LoadKey. Five sibling commands share this one body - CClearBookmark, CLobbyStartGame, CQuit, CReopenLobby and CStartGame - so CQuit, which it was recorded as, was an arbitrary pick among them. A four-instruction frame-only thunk that tail jumps into `CCommand::LoadKey` (`0x67BC80`), which is what compares the key's **text** rather than its token - that is why the switch reader finds nothing. The body is shared by five sibling command classes: CClearBookmark, CLobbyStartGame, CQuit, CReopenLobby and CStartGame.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-definitions.md"
+  },
+  {
+   "rva": "0x69CEC0",
+   "kind": "function",
+   "name": "FixedPointSqrt",
+   "comment": "A square root in thousandths: zero for a non-positive input, an initial guess of value/2 for large values, then Newton iterations on `g - (g*g/1000 - value)/(2g)`. Read as structure and **not evaluated**, so the name is inference. Used by GetCategoryResearchAbility (rva 0x1332B0) to damp a practical above 6.000.",
+   "confidence": "likely",
+   "source": "reversing/FINDINGS-research.md",
+   "signature": "void __cdecl FixedPointSqrt(int* out, int value)"
   },
   {
    "rva": "0x69D720",
@@ -8599,6 +9832,14 @@
    "source": "BiceLib/Hooks/TriggerText/TriggerIndentText.hpp"
   },
   {
+   "rva": "0x120A550",
+   "kind": "global",
+   "name": "g_DaysPerYear",
+   "comment": "The double 365.0, divided into the elapsed day count at 0x532D8D so that `(CCurrentGameState +0xBDC - 43800000)/24/365.0` truncated is the calendar year. The same 365-day Clausewitz year BiceLib's utils::gameTickToParts assumes.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md"
+  },
+  {
    "rva": "0x130AEB8",
    "kind": "global",
    "name": "g_convoy_id",
@@ -8719,6 +9960,14 @@
    "type": "CMap*"
   },
   {
+   "rva": "0x168559B",
+   "kind": "global",
+   "name": "g_InstantResearch",
+   "comment": "The `instantresearch` console flag, a byte. Toggled at 0x4400A2, which prints `Instant research ON` / `Instant research OFF`. CTechnologyStatus::AdvanceResearch tests it at 0x532F87 and completes a level whatever the progress.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md"
+  },
+  {
    "rva": "0x16855A4",
    "kind": "global",
    "name": "g_CCountryDataBase",
@@ -8746,6 +9995,14 @@
    "comment": "How many tokens the table should hold, checked against its length on every lookup so the table is rebuilt if tokens were added.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CPersistent.hpp:141"
+  },
+  {
+   "rva": "0x1685C1C",
+   "kind": "global",
+   "name": "g_CustomGameSettings",
+   "comment": "The custom game modifier settings singleton, 0xD8 bytes, fetched through GetCustomGameSettings (rva 0x1C4E0) and filled by LoadCustomGameSettings (rva 0x1F9A0). It carries the two tech decay month counts the decay pass multiplies by.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md"
   },
   {
    "rva": "0x1686040",
@@ -8800,6 +10057,30 @@
    "comment": "The minister type database, null until GetMinisterTypes makes it.",
    "confidence": "confirmed",
    "source": "BiceLib/GameClasses/CMinister.hpp"
+  },
+  {
+   "rva": "0x1687B70",
+   "kind": "global",
+   "name": "g_MaxResearchBonus",
+   "comment": "900, thousandths - the cap on the summed research_bonus_from bonus in the research cost (0x5334B6), so a technology can never be more than 90% off. Built at 0xCBBED0 from the float literal 900.5 at 0x160AAC8; compiled in, not a define.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md"
+  },
+  {
+   "rva": "0x1687BB4",
+   "kind": "global",
+   "name": "g_TechnologyDifficultyScale",
+   "comment": "100, thousandths - what CTechnology +0x2C8 (`difficulty`) is multiplied by in the research cost (0x533409), so each point of difficulty is +10% on the cost. Built at 0xCBBEA0 from the same float literal 100.5 at 0x160A684 as g_MinimumResearchEfficiency; compiled in, not a define.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md"
+  },
+  {
+   "rva": "0x1687BE8",
+   "kind": "global",
+   "name": "g_MinimumResearchEfficiency",
+   "comment": "100, thousandths - the floor on `1000 + MODIFIER_RESEARCH_EFFICIENCY + CTechnologyStatus +0xA8` in the research gain (0x532DFD), so research never runs below 10%. Built at startup at 0xCBBE70 from the float literal 100.5 at 0x160A684, so **it is compiled in and no define moves it**.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-research.md"
   },
   {
    "rva": "0x16886E8",
@@ -8904,6 +10185,14 @@
    "comment": "**The id generator.** One ULONG counter every runtime-created persistent takes its id from, stamped with id type 0x29 (41): CUnit::AfterLoad and CSubUnit::AfterLoad when a block carried no id, CAddDivisionEffect::Execute for everything it builds, and ten other sites including CGameState and the AI. A loaded id does not use it but does push it forward, so it always sits above every id in play. In a 1936 autosave type 41 is the second commonest id type - 15751 against 4713's 19689, those being the ids that came out of files. The name is BiceLib's.",
    "confidence": "confirmed",
    "source": "reversing/FINDINGS-oob.md"
+  },
+  {
+   "rva": "0x1715670",
+   "kind": "global",
+   "name": "g_event_list",
+   "comment": "**The CList of every CEvent the scenario loaded**, and the one argument RebuildCountryEventCandidates (0x5C0050) takes. RunMonthlyPass creates it if it is null (0x283C72, a zeroed 0x20 bytes) and then rebuilds every country's candidate list from it; a null value therefore means the scenario has not finished loading. BiceLib's EventCandidates module reads it and calls the rebuild once per session rather than waiting for the month to turn - see reversing/FINDINGS-events.md.",
+   "confidence": "confirmed",
+   "source": "reversing/FINDINGS-events.md"
   },
   {
    "rva": "0x17162A4",
@@ -9089,18 +10378,25 @@
    "name": "CCountry",
    "fields": [
     {
-     "offset": "0xA1C",
-     "name": "unknown_a1c",
-     "type": "CGoodsPool",
-     "comment": "an embedded CGoodsPool of which only supplies (+0xA24) and fuel (+0xA28) are ever touched - a daily accumulator, added to by CSupply::DailySupplyPass at 0x287671 and 0x287993 with the part of a province's need met by its own current_producing, and by 0x1BBFBA in the unit consumption code; reset along with +0x994..+0x9AC by 0x4F28B0. Deliberately left unnamed: the pass writes production met locally into it and the unit code adds to it as well, and which of the two the field is for was not settled.",
-     "source": "reversing/FINDINGS-supply.md"
+     "offset": "0x8",
+     "name": "daily_event_candidates_first",
+     "type": "void*",
+     "comment": "Head of the CList of CEvent* this country is a candidate for. Nodes are 0x10 bytes, {data, prev, next, byte}. **Written only by RebuildCountryEventCandidates (0x9C0050), which the tick reaches only on a month change**, and read by RunDailyEventPass (0x9C0A40) at 0x9C0B52, which skips the country entirely when it is null. It is not in CCountry's save grammar (fieldmap over CCountry::LoadKey 0x4CCDA0 has no key landing at +0x8, +0xC or +0x10) and CCountry::AfterLoad (0x4D2500-0x4D273D) never writes it, so after a load it is empty. That is the reported no-events-until-the-1st bug.",
+     "source": "reversing/FINDINGS-events.md"
     },
     {
-     "offset": "0xA40",
-     "name": "unit_demand",
-     "type": "CGoodsPool",
-     "comment": "What the units drawing on this country asked for today, before any shortfall - supplies accumulate at +0xA48 and fuel at +0xA4C on every path through CUnit::ConsumeSuppliesAndFuel, including the one where the pool cannot pay. Distinct from CCountry::usage (+0x98C), which only gets what was actually handed over.",
-     "source": "reversing/FINDINGS-manpower.md"
+     "offset": "0xC",
+     "name": "daily_event_candidates_last",
+     "type": "void*",
+     "comment": "Tail of the candidate event CList at +0x8. Appended to at 0x9C03DE.",
+     "source": "reversing/FINDINGS-events.md"
+    },
+    {
+     "offset": "0x10",
+     "name": "daily_event_candidates_count",
+     "type": "int",
+     "comment": "Count of the candidate event CList at +0x8. **The single cheapest live test of the loaded-save event bug**: zero right after a load, non-zero after the next month change. Incremented at 0x9C03E1 and zeroed at 0x9C017C.",
+     "source": "reversing/FINDINGS-events.md"
     },
     {
      "offset": "0x48",
@@ -9166,6 +10462,41 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:280"
     },
     {
+     "offset": "0xD8",
+     "name": "faction",
+     "type": "CFaction*",
+     "comment": "The country's faction, and **never null**: a country in no faction points at a shared singleton at 0x1A855A8, built with the CFaction constructor and then given the vftable 0x15C248C instead of CFaction's 0x15C2430. Every alignment term compares this against that singleton and returns zero when they differ, which is why only unaligned countries drift. Its slot 7 is the boolean the alignment and surrender code use to ask whether the faction is real.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0xDC",
+     "name": "alignment",
+     "type": "CAlignment",
+     "comment": "An embedded CAlignment - the country's position on the political compass. This is where CCountry::LoadKey's `alignment` key reads, and every call in the alignment code passes `country + 0xDC`. Its own +0x8/+0xC are therefore CCountry +0xE4/+0xE8, which is how CAlignment::UpdateDaily copies a faction leader's position.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0xE4",
+     "name": "alignment_x",
+     "type": "int",
+     "comment": "The x of the embedded CAlignment's position, thousandths - the same field as alignment+0x8. Named separately because CAlignment::UpdateDaily reads the faction leader's copy by this offset when it snaps a member onto the leader.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0xE8",
+     "name": "alignment_y",
+     "type": "int",
+     "comment": "The y of the embedded CAlignment's position, thousandths - the same field as alignment+0xC.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x124",
+     "name": "next_alignment_update",
+     "type": "int",
+     "comment": "A tick. The daily pass runs CAlignment::UpdateDaily only when the clock has passed this, then sets it to today + ALIGNMENT_INTERVAL x 24 - the tick is hours, so the define is in days. BlackICE sets ALIGNMENT_INTERVAL to 24, so an unaligned country's political position moves once every 24 days, and every alignment weight is a move per interval rather than per day.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
      "offset": "0x158",
      "name": "starting_manpower",
      "type": "CFixedPoint",
@@ -9194,6 +10525,13 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:47"
     },
     {
+     "offset": "0x1D8",
+     "name": "ai",
+     "type": "void*",
+     "comment": "the country's CEU3AI, on two independent lines of evidence: GetDiploScoreFromLua (0x60DC70) reads it and hands it to Lua, where every DiploScore_* function's first parameter is `voAI`; and 0x26196F passes the same field to the AI agent update loop at 0x4894E0. No luabind accessor exposes it, so the name is ours",
+     "source": "reversing/FINDINGS-diplomacy.md"
+    },
+    {
      "offset": "0x1DC",
      "name": "ai_hard_strategy",
      "type": "CPersistent*",
@@ -9213,6 +10551,13 @@
      "type": "CPersistent*",
      "comment": "named from the key CCountry::LoadKey reads it from, `ai_event_strategy`, loaded the same way as ai_hard_strategy",
      "source": "BiceLib/GameClasses/CCountry.hpp:284"
+    },
+    {
+     "offset": "0x4A1",
+     "name": "fixed_ai_strategy",
+     "comment": "**Written by the `fixed_ai_strategy` effect and read by nothing.** CFixedAIStrategyEffect::Execute (0x5B0E90) stores `value == yes` here, and a byte-level sweep of .text finds no other access to the offset at all - so the effect is inert. A byte.",
+     "type": "bool",
+     "source": "reversing/FINDINGS-script.md"
     },
     {
      "offset": "0x5E4",
@@ -9262,6 +10607,48 @@
      "type": "int",
      "comment": "base IC written by the daily IC calculation",
      "source": "BiceLib/Hooks/HookedPatches.cpp:73"
+    },
+    {
+     "offset": "0x608",
+     "name": "lend_lease_ic",
+     "type": "int",
+     "comment": "**IC that costs no domestic resources**, in whole IC. CCountry::UpdateIC writes it and +0x604 from the same register at 0xF14C1/0xF14D0 - `add [country+0x604], esi` then `mov [country+0x608], esi` - so it is exactly the amount added on top of the total after that total has been capped at what the stockpiles support (0xF14A6). The value comes from the goods pool at +0x6D8, lend lease (`lea edi, [ebx+0x6d8]` on the next instruction), which is why it needs no metal, energy or rares: another country already paid for it. Read in exactly five places, one per IC distributor - consumer goods 0x118D67, production 0x119D5E, supply 0x11AB4A, reinforcement 0x11BB96, upgrade 0x11CEE9 - and by nothing else; the lend-lease distributor does not read it. Each takes its slider's share of this as a free budget, spent before anything has to pass CCountry::GetResourceLimitedIC. Two readings of this field were merged here: it was proposed both as `lend_lease_ic` (from the writer) and as `resource_free_ic` (from the five readers), and they are the same field seen from its two ends.",
+     "source": "reversing/FINDINGS-ic.md"
+    },
+    {
+     "offset": "0x60C",
+     "name": "max_ic",
+     "type": "int",
+     "comment": "**GetMaxIC: the day's IC before the resource cap.** CCountry::UpdateIC sets this and the total at +0x604 to the same summed figure at 0xF0FA3 and never touches this one again; only +0x604 is then capped at what resources support (0xF14A6) and topped up with the resource-free IC at +0x608. It is the province base summed with the country scaling, so it is larger than +0x604 whenever resources are short and smaller whenever lend lease is flowing.",
+     "source": "reversing/FINDINGS-ic.md"
+    },
+    {
+     "offset": "0x610",
+     "name": "core_home_area_ic",
+     "type": "int",
+     "comment": "in thousandths. CCountry::UpdateIC adds a province's contribution here when all three hold: the province's owner id (+0x330) is this country, its COwnerArea (+0x2B4) is the acting capital's, and this country is in its `core` list (+0x344). Read at 0xF1C9E and 0x11AC33, neither named. **The game's own name is not established** - this one describes the three tests.",
+     "source": "reversing/FINDINGS-ic.md"
+    },
+    {
+     "offset": "0x614",
+     "name": "ic_lost_to_shortage",
+     "type": "int",
+     "comment": "in thousandths and **negative**: (resource-limited IC - total IC) x 1000, written by CCountry::UpdateIC at 0xF14A0 only when the metal and energy stockpiles cannot support +0x604. Written in exactly two places in the image, here and the CCountry constructor (0xC8D25), and **read nowhere in .text** - it is not cleared on a day with no shortage either. Name inferred from the arithmetic.",
+     "source": "reversing/FINDINGS-ic.md"
+    },
+    {
+     "offset": "0x618",
+     "name": "ministers",
+     "type": "CMinister**",
+     "comment": "One CMinister* per cabinet post, indexed by the CGovernmentPosition's own index at +0x4C. CChangeMinisterCommand::Execute (0x54E2D0) writes it that way, and CCountry::LoadKey's loop over it calls slot 8 on each element - CMinister's vftable has exactly nine slots, so slot 8 is its last.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x628",
+     "name": "laws",
+     "type": "CLaw**",
+     "comment": "**The laws, not the ministers** - correcting CLASSES.md. One CLaw* per law group, indexed by the CLawGroup's own index at +0x50. Three readings agree: CChangeLawCommand::Execute (0x54EF60) stores the value its loader reads from the key `law` (+0x44) at the index of the object from the key `position` (+0x48); CCountry::LoadKey's loop over this array calls slot 16 on each element and CLaw's vftable has exactly seventeen slots; and the parallel +0x618 loop calls slot 8, CMinister's last. The three accessors are 0xF0510, 0xF0530 and 0xF0550.",
+     "source": "reversing/FINDINGS-politics.md"
     },
     {
      "offset": "0x648",
@@ -9397,6 +10784,13 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:265"
     },
     {
+     "offset": "0x944",
+     "name": "ic_resources_reserved",
+     "type": "CGoodsPool",
+     "comment": "One of the thirteen unnamed goods pools. CLASSES.md records it as never used in this build; it is **read** - CCountry::GetResourceLimitedIC (0xF15C0) subtracts its metal (+0x95C), energy (+0x960) and rare materials (+0x964) from the national stockpile before working out how much more IC the resources will support. Nothing writes it outside the constructor and the daily resets, which is consistent with it reading zero in all 108 countries of two games, so the reservation is real machinery that this build never uses. The name is ours.",
+     "source": "reversing/FINDINGS-production.md"
+    },
+    {
      "offset": "0x98C",
      "name": "usage",
      "type": "CGoodsPool",
@@ -9425,6 +10819,20 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:229"
     },
     {
+     "offset": "0xA1C",
+     "name": "unknown_a1c",
+     "type": "CGoodsPool",
+     "comment": "an embedded CGoodsPool of which only supplies (+0xA24) and fuel (+0xA28) are ever touched - a daily accumulator, added to by CSupply::DailySupplyPass at 0x287671 and 0x287993 with the part of a province's need met by its own current_producing, and by 0x1BBFBA in the unit consumption code; reset along with +0x994..+0x9AC by 0x4F28B0. Deliberately left unnamed: the pass writes production met locally into it and the unit code adds to it as well, and which of the two the field is for was not settled.",
+     "source": "reversing/FINDINGS-supply.md"
+    },
+    {
+     "offset": "0xA40",
+     "name": "unit_demand",
+     "type": "CGoodsPool",
+     "comment": "What the units drawing on this country asked for today, before any shortfall - supplies accumulate at +0xA48 and fuel at +0xA4C on every path through CUnit::ConsumeSuppliesAndFuel, including the one where the pool cannot pay. Distinct from CCountry::usage (+0x98C), which only gets what was actually handed over.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
      "offset": "0xA64",
      "name": "unused_pool_A64",
      "type": "CGoodsPool",
@@ -9437,6 +10845,13 @@
      "type": "int",
      "comment": "named from the key CCountry::SaveContents writes it under, `diplo_influence`. Neutrality sits at +0xA8C and EffectiveNeutrality at +0xA90, both of which the Lua API had already named the same way",
      "source": "BiceLib/GameClasses/CCountry.hpp:291"
+    },
+    {
+     "offset": "0xA90",
+     "name": "effective_neutrality",
+     "type": "int",
+     "comment": "Neutrality minus the threat the country feels from one single country, floored at zero and capped at 100000. Written in exactly two places with identical code - the daily pass at 0x4DA623 and CCountry::ChangeNeutrality at 0x4FC0A8 - both as clamp(+0xA8C - this->+0xE28[this->+0x11DC]->+0x5C, 0, 100000). Read by the alignment AlignTowards term for both the country and its prospective faction leader.",
+     "source": "reversing/FINDINGS-politics.md"
     },
     {
      "offset": "0xA98",
@@ -9544,6 +10959,20 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:300"
     },
     {
+     "offset": "0xCA4",
+     "name": "tag",
+     "type": "CCountryTag",
+     "comment": "The country's own tag held by value: three letters plus a NUL, written a byte at a time by CCountry::CCountry at 0x4C95D3 from its second argument (`al`, `ah`, `cl`, `0`). This is what the AI reads - CGameState::StartAI passes it to CEU3AI::CEU3AI at 0x6832D2, and CAIForeignMinister slot 41 passes `&country[+0xCA4]` to Lua. Distinct from the `+0x334` `ai_event_strategy` pointer next door in the loader's key list.",
+     "source": "reversing/FINDINGS-ai.md"
+    },
+    {
+     "offset": "0xCA8",
+     "name": "id",
+     "type": "int",
+     "comment": "**The country's index into the country database, and the number the whole engine keys off.** Written by CCountry::CCountry at 0x4C95EC from its third argument; 0 for the `---` placeholder built at 0x515D91. `CCurrentGameState+0xBCC` (`played_countries_array`) is indexed by it at 0x6561AC, `g_CCountryDataBase[+0x16C]` at 0x8895DB and 0x6EC106, and `CCountry+0xF58` (`neighbours`) at 0x89D784. CGameState::StartAI copies it into `CEU3AI+0x24`, which every minister constructor copies into `CAIAgent+0x38`, which is what staggers each minister's daily hour.",
+     "source": "reversing/FINDINGS-ai.md"
+    },
+    {
      "offset": "0xCCC",
      "name": "history",
      "type": "CPersistent*",
@@ -9551,11 +10980,32 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:301"
     },
     {
+     "offset": "0xD00",
+     "name": "province_ids",
+     "type": "void*",
+     "comment": "the head of a list of `{ province id, ?, next }` nodes - CCountry::UpdateIC walks it and looks each id up in CCurrentGameState +0xB8C to sum the country's IC. **Whether it is the owned or the controlled provinces is not established**; the +0x610 test then filters on ownership, which only makes sense as a narrowing, so controlled is the likelier - an inference, not a reading.",
+     "source": "reversing/FINDINGS-ic.md"
+    },
+    {
+     "offset": "0xD10",
+     "name": "claims",
+     "type": "void*",
+     "comment": "The head of a linked list of province ids the country claims, each node's next at +0x8. The alignment revanchism term walks it and counts the provinces whose current owner belongs to the faction being scored. Named from that use; no loader key was checked.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
      "offset": "0xD90",
      "name": "global_modifier",
      "type": "CModifier",
      "comment": "the country's modifier totals",
      "source": "BiceLib/GameClasses/CCountry.hpp:70"
+    },
+    {
+     "offset": "0xDF8",
+     "name": "technology_status",
+     "type": "CTechnologyStatus*",
+     "comment": "0x29C bytes, allocated and built in the CCountry constructor at 0xC9C64/0xC9C8B with 0x1311B0, which writes vftable 0x15C35BC - `CTechnologyStatus` by the RTTI export (bases CTechStatistics, PAVCTechnology::__CArray). The constructor nulls it first at 0xC9745. Its +0x90 is the technology IC bonus in thousandths (added to the GLOBAL_IC multiplier by CCountry::UpdateIC) and +0x98 the energy-to-crude-oil conversion bonus; SupplyCapacity reads +0x10 off the same pointer at 0x9DE44.",
+     "source": "reversing/FINDINGS-ic.md"
     },
     {
      "offset": "0xE00",
@@ -9719,6 +11169,13 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:315"
     },
     {
+     "offset": "0x10B4",
+     "name": "dissent",
+     "type": "int",
+     "comment": "Forced to zero every day for the rebel country: the daily pass compares +0xCA4/+0xCA5/+0xCA6 against 'R','E','B' at 0x4DB676 and writes 0 here at 0x4DB691, immediately after the influence upkeep. That it is dissent is the reported identification, not established here.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
      "offset": "0x113C",
      "name": "election",
      "type": "bool",
@@ -9729,7 +11186,7 @@
      "offset": "0x1160",
      "name": "espionage",
      "type": "void*",
-     "comment": "the first of an array of 0xF8 byte entries, one per country, ending at +0x1164. `spy_priority` writes entry+4, `covert_ops_points` entry+0xF4, and `spy_mission` walks nine values an entry",
+     "comment": "the first of an array of 0xF8 byte entries, one per country, ending at +0x1164. **Entry +0 is what the save writes as `spy_allocation`** - CCountry::LoadKey's case for that key (0xCE3C1) walks the array 0xF8 at a time writing entry+0 - and entry+4 is `spy_priority` (0xCE34B writes `[edx + esi + 4]`), entry+0xF4 `covert_ops_points`; `spy_mission` walks nine values an entry. The country's `spies` key is **not** in here: it is a single field elsewhere on the country. Entry+0 is thousandths - an accessor at 0x49F3B0 answers `< 1000`, i.e. under one spy, and everything that writes it clamps to the 10000 at rva 0x130D164. CModifySpiesEffect::Execute adds to entry+0, which is what that effect is for: the spies this country has on mission in the target. The country's `spies` field at +0x1170 is a separate figure. The assigner at 0xD59D0, reached from CInGameIdler::Enter, recomputes entry+0 from relations and faction when a game is entered, so a value written mid-game does not survive a reload.",
      "source": "BiceLib/GameClasses/CCountry.hpp:317"
     },
     {
@@ -9740,11 +11197,39 @@
      "source": "BiceLib/GameClasses/CCountry.hpp:318"
     },
     {
+     "offset": "0x1174",
+     "name": "tech_decay_modifier",
+     "type": "int*",
+     "comment": "**not the tech ability array** - that is +0x698. Ints in thousandths indexed by CTechnologyCategory +0x5C, and the image's one use is at 0x420652, where the decay step is `BASE_TECH_DECAY x (this[cat] + 1000) / 1000`. So this is a per-category multiplier on the decay, and BiceLib's fixMinisterTechDecay (rva 0xDE3ED, a `mov` turned into an `add`) is a decay patch, not an ability one",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
+     "offset": "0x1178",
+     "name": "tech_decay_modifier_end",
+     "type": "int*",
+     "comment": "one past the last, read at 0x4DE3B6 to size the fold loop",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
      "offset": "0x11D4",
      "name": "spiescaught",
      "type": "int",
      "comment": "named from the key CCountry::SaveContents writes it under, `spiescaught`. HighestThreat, which the Lua API names, is the next field at +0x11D8",
      "source": "BiceLib/GameClasses/CCountry.hpp:319"
+    },
+    {
+     "offset": "0x11D8",
+     "name": "highest_threat_tag",
+     "type": "int",
+     "comment": "The tag of the country this one feels the most threat from, as a packed three-character tag; initialised to '---' (0x2D2D2D). Written together with +0x11DC by 0x4E21E0, which scans the diplomacy statuses for the largest +0x5C. That function has 65 callers and is not one of the daily pass's, so the pass reads a cache someone else maintains.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x11DC",
+     "name": "highest_threat_id",
+     "type": "int",
+     "comment": "The country id matching +0x11D8. **This is the single index EffectiveNeutrality is derived from**: +0xA90 = clamp(Neutrality - this->+0xE28[this->+0x11DC]->+0x5C, 0, 100000).",
+     "source": "reversing/FINDINGS-politics.md"
     }
    ],
    "vftable_rva": "0x11C1BA8"
@@ -9785,41 +11270,6 @@
    "size": "0xDA8",
    "fields": [
     {
-     "offset": "0x58",
-     "name": "max_supply_depot_distance",
-     "type": "int",
-     "comment": "the largest supply_depot_distance on the map, taken from element 0 of provinces_by_supply_order right after the sort and clamped to 500. It is not the end pointer of the +0x54 vector - +0x54's storage is a plain new[] at 0x27E52A and its length is recomputed from the province vector everywhere it is walked. Where the raw value exceeded 500 the game also re-runs CProvince::UpdateSupplyDepot on that farthest province, which is how a province cut off at 100000 gets a fresh depot label.",
-     "source": "reversing/FINDINGS-supply.md"
-    },
-    {
-     "offset": "0x50",
-     "name": "supply_network_dirty",
-     "type": "uint8_t",
-     "comment": "set to 1 whenever CProvince::UpdateSupplyDepot changes a province's supply depot label, and cleared by CSupply::RebuildSupplyNetwork; the two rebuild sites in 0x282630 are both `cmp byte [state+0x50], 0; je` around the call",
-     "source": "reversing/FINDINGS-supply.md"
-    },
-    {
-     "offset": "0xC9C",
-     "name": "arcade_mode",
-     "type": "int",
-     "comment": "The lobby's **Game Mode**: 0 Normal, 1 Arcade. Element 1 of the save's `setgameplayoptions` vector, written only by `CSetGamePlayOptions::Execute` (0x2D5D20), so it is set once when the game is started or loaded. CCurrentGameState's constructor defaults it to 0.\n\n**This is the switch between the two supply models.** `CUnit::ConsumeSuppliesAndFuel` tests it at 0x1BBA3A: above zero the unit draws straight from the owner's capital pool (`CProvince +0x15C`), at or below zero it walks the supply network. Twenty-odd other sites read it the same way. Measured live it reads 0, and every save in `BlackICE GitHub/save games` writes `{ 2 0 }`, so the network path is the one that runs in an ordinary campaign.",
-     "source": "reversing/FINDINGS-manpower.md"
-    },
-    {
-     "offset": "0xC98",
-     "name": "difficulty",
-     "type": "int",
-     "comment": "The campaign's difficulty, 0..4 (`VERY_EASY`, `EASY`, `NORMAL`, `HARD`, `VERY_HARD` in the localisation). Element 0 of the save's `setgameplayoptions` vector, written only by `CSetGamePlayOptions::Execute` (0x2D5D20) and so fixed for the game. CCurrentGameState's constructor defaults it to 2, Normal, and every save read here carries `setgameplayoptions = { 2 0 }`.",
-     "source": "reversing/FINDINGS-manpower.md"
-    },
-    {
-     "offset": "0xDA4",
-     "name": "in_game",
-     "type": "uint8_t",
-     "comment": "Nonzero while the in-game screen is the live one: set to 1 at `0x25D126`, the end of `CInGameIdler::Enter`'s session build, and cleared by `CInGameIdler::Leave` (`0x262337`), by `CFrontEnd`'s enter (`0x2EFE58`) and at `0x2ED9AF`. Zeroed by every construction of the game state.\n\n**This is the attrition gate.** `CUnit::UpdateDaily` tests it at `DailyTickEndGate` (`0x1BB3E8`) and skips both `ApplyAttrition` and `CheckTransportOverload` when it is zero - so it is not a development-era \"enable attrition\" switch, and attrition does run. About twenty other places test it before touching live game data (`0x255AB7` reaches `strategic_warfare`, `0x4349B2` reaches the player tag), which is the sense the name is taken from: a game is running.\n\nOne byte. The last field of the class: the object is allocated `0xDA8` bytes and the constructor tail writes a word at `+0xD9C`, a dword at `+0xDA0` and this byte, so `+0xDA5..+0xDA7` are padding.\n\nNot saved: no access to it lives in the save or load code, and no key in a `.hoi3` save corresponds to it.\n\n**Confirmed in a running game**, not only traced: sampled every frame it read 0 at the main menu with the pointer already live, 1 once a campaign was up - while the clock was still not reporting in play, which is the write landing before the in-game GUI is built - and 0 again on returning to the menu. See `Reversing/Watch.hpp`.",
-     "source": "reversing/FINDINGS-manpower.md"
-    },
-    {
      "offset": "0x18",
      "name": "tag_18",
      "type": "char[4]",
@@ -9848,10 +11298,24 @@
      "source": "BiceLib/GameClasses/CCurrentGameState.hpp:48"
     },
     {
+     "offset": "0x50",
+     "name": "supply_network_dirty",
+     "type": "uint8_t",
+     "comment": "set to 1 whenever CProvince::UpdateSupplyDepot changes a province's supply depot label, and cleared by CSupply::RebuildSupplyNetwork; the two rebuild sites are both `cmp byte [state+0x50], 0; je` around the call, one in the tick's hourly pass (0x282630, at 0x2826E8) and one in its daily pass (RunDailyPass 0x282C20, at 0x282CEF)",
+     "source": "reversing/FINDINGS-supply.md"
+    },
+    {
      "offset": "0x54",
      "name": "provinces_by_supply_order",
      "type": "CMapProvince**",
      "comment": "every province sorted by supply depot distance, farthest first. Storage is one new[] of provinceCount*4 bytes at 0x27E52A; CSupply::ResetSupplyOrder (0x289AD0) refills it in province-id order and the qsort at 0x282D18 reorders it with CompareProvincesByDepotDistanceDescending. The length is never stored here - every walker recomputes it from provinces_end - provinces_begin.",
+     "source": "reversing/FINDINGS-supply.md"
+    },
+    {
+     "offset": "0x58",
+     "name": "max_supply_depot_distance",
+     "type": "int",
+     "comment": "the largest supply_depot_distance on the map, taken from element 0 of provinces_by_supply_order right after the sort and clamped to 500. It is not the end pointer of the +0x54 vector - +0x54's storage is a plain new[] at 0x27E52A and its length is recomputed from the province vector everywhere it is walked. Where the raw value exceeded 500 the game also re-runs CProvince::UpdateSupplyDepot on that farthest province, which is how a province cut off at 100000 gets a fresh depot label.",
      "source": "reversing/FINDINGS-supply.md"
     },
     {
@@ -9888,6 +11352,27 @@
      "type": "void*",
      "comment": "the game's flags, saved as `flags`. **Read live**: a CFlags",
      "source": "BiceLib/GameClasses/CCurrentGameState.hpp:49"
+    },
+    {
+     "offset": "0x114",
+     "name": "ai_agents",
+     "type": "void**",
+     "comment": "Vector of every country's CEU3AI, begin. CGameState::StartAI (0x283140) pushes one per country here as it constructs them, and CGameState::RunAIPass hands this range to the ProcessAI tbb::parallel_for - so this vector is the AI's work list. A get-or-create at 0x683629 also searches it, matching an entry's `+0x20` and `+0x24` against a tag and a country id.",
+     "source": "reversing/FINDINGS-ai.md"
+    },
+    {
+     "offset": "0x118",
+     "name": "ai_agents_end",
+     "type": "void**",
+     "comment": "Vector of every country's CEU3AI, end. `(+0x118 - +0x114) / 4` is the country count CGameState::RunAIPass divides into TBB grains at 0x6830C0.",
+     "source": "reversing/FINDINGS-ai.md"
+    },
+    {
+     "offset": "0x11C",
+     "name": "ai_agents_capacity",
+     "type": "void**",
+     "comment": "Vector of every country's CEU3AI, capacity; CGameState::StartAI compares end against it at 0x683325 before growing through 0xAB9B90.",
+     "source": "reversing/FINDINGS-ai.md"
     },
     {
      "offset": "0xAE4",
@@ -9970,8 +11455,15 @@
      "offset": "0xBDC",
      "name": "tick",
      "type": "int",
-     "comment": "current tick: hours since 43800000",
-     "source": "BiceLib/GameClasses/CCurrentGameState.hpp:39"
+     "comment": "current tick: **hours**, counted from an epoch 43800000 hours earlier. RunHourlyTick subtracts 0x29C55C0 from it and divides by 24 to get days, then uses MonthLengthTable and the 365.0 at 0x160A550 for month and year. 43800000 is 5000 x 365 x 24, so the epoch is 5000 years of 365 days before year zero (the factorisation is the evidence; that the designers thought of it as 5000 BC is inference). The image advances it in exactly one place, `inc dword [edi+0xBDC]` at 0x28155F inside RunHourlyTick.",
+     "source": "reversing/FINDINGS-tick.md"
+    },
+    {
+     "offset": "0xBE4",
+     "name": "frame_time_accumulator",
+     "type": "float",
+     "comment": "real time waiting to be turned into game hours: CCurrentGameState::AdvanceClock adds each frame's delta to it and zeroes it when it posts a CHourlyTickCommand. The add happens before the in-flight test at +0xBF0, so time that passes during a long tick is caught up afterwards rather than lost",
+     "source": "reversing/FINDINGS-tick.md"
     },
     {
      "offset": "0xBE8",
@@ -9979,6 +11471,20 @@
      "type": "CInGameIdler*",
      "comment": "the in game idler",
      "source": "BiceLib/GameClasses/CCurrentGameState.hpp:47"
+    },
+    {
+     "offset": "0xBEC",
+     "name": "game_speed",
+     "type": "int",
+     "comment": "the speed setting, used as an index into five float thresholds that CCurrentGameState::AdvanceClock loads onto the stack from 0x160A2EC, 0x1718064, 0x171DBAC, 0x15AB304 and 0x160A740 - so speed is a table lookup, not arithmetic on one constant. Which index is pause, and the five values, have not been read",
+     "source": "reversing/FINDINGS-tick.md"
+    },
+    {
+     "offset": "0xBF0",
+     "name": "tick_in_flight",
+     "type": "uint8_t",
+     "comment": "set to 1 by RunHourlyTick in its third instruction (0x281425) and tested by CCurrentGameState::AdvanceClock at 0x28114F, which posts nothing while it is set. It is the interlock that stops a second hour being queued inside the first",
+     "source": "reversing/FINDINGS-tick.md"
     },
     {
      "offset": "0xC00",
@@ -10051,6 +11557,27 @@
      "source": "BiceLib/GameClasses/CCurrentGameState.hpp:109"
     },
     {
+     "offset": "0xC38",
+     "name": "fired_once_events",
+     "type": "void*",
+     "comment": "The already-fired registry that the `fire_only_once` check consults. RebuildCountryEventCandidates looks an event up in it with 0x68DC10(&state->0xC38 @ECX, &event->id @EDI) at 0x9C033F, keyed by the event id pair at CEvent+0x8/+0xC; a result equal to the event means the event is dropped from every candidate list, a null result means it is still eligible. The container's class was not identified.",
+     "source": "reversing/FINDINGS-events.md"
+    },
+    {
+     "offset": "0xC58",
+     "name": "random_snapshot",
+     "type": "void*",
+     "comment": "a vector that SnapshotRandomState (0x282440) clears and refills every hour with g_random_draws and the dword at 0x174DA94. A pointer to this field is the second argument to CHourlyTickCommand::Construct, so the hourly tick command carries it",
+     "source": "reversing/FINDINGS-tick.md"
+    },
+    {
+     "offset": "0xC68",
+     "name": "ai_pass_done",
+     "type": "uint8_t",
+     "comment": "**The latch that makes the AI hourly.** CGameState::RunAIPass (0x283080) returns at once while this is set and sets it after launching the ProcessAI parallel_for (0x68309F, 0x683116); **RunHourlyPass clears it at its very end** (0x682B1D, guarded by `+0xD9D == 0`). A byte-exact sweep of .text finds only seven instructions touching this offset - those four plus two zeroing writes in the CGameState constructor region and nothing else - so the AI runs exactly once per game hour.",
+     "source": "reversing/FINDINGS-ai.md"
+    },
+    {
      "offset": "0xC6C",
      "name": "income_statistics",
      "type": "void*",
@@ -10098,6 +11625,20 @@
      "type": "void*",
      "comment": "saved as `gameplaysettings`. **Read live**: a CGamePlaySettings",
      "source": "BiceLib/GameClasses/CCurrentGameState.hpp:60"
+    },
+    {
+     "offset": "0xC98",
+     "name": "difficulty",
+     "type": "int",
+     "comment": "The campaign's difficulty, 0..4 (`VERY_EASY`, `EASY`, `NORMAL`, `HARD`, `VERY_HARD` in the localisation). Element 0 of the save's `setgameplayoptions` vector, written only by `CSetGamePlayOptions::Execute` (0x2D5D20) and so fixed for the game. CCurrentGameState's constructor defaults it to 2, Normal, and every save read here carries `setgameplayoptions = { 2 0 }`.",
+     "source": "reversing/FINDINGS-manpower.md"
+    },
+    {
+     "offset": "0xC9C",
+     "name": "arcade_mode",
+     "type": "int",
+     "comment": "The lobby's **Game Mode**: 0 Normal, 1 Arcade. Element 1 of the save's `setgameplayoptions` vector, written only by `CSetGamePlayOptions::Execute` (0x2D5D20), so it is set once when the game is started or loaded. CCurrentGameState's constructor defaults it to 0.\n\n**This is the switch between the two supply models.** `CUnit::ConsumeSuppliesAndFuel` tests it at 0x1BBA3A: above zero the unit draws straight from the owner's capital pool (`CProvince +0x15C`), at or below zero it walks the supply network. Twenty-odd other sites read it the same way. Measured live it reads 0, and every save in `BlackICE GitHub/save games` writes `{ 2 0 }`, so the network path is the one that runs in an ordinary campaign.",
+     "source": "reversing/FINDINGS-manpower.md"
     },
     {
      "offset": "0xCA8",
@@ -10154,6 +11695,13 @@
      "type": "uint8_t",
      "comment": "must be zero before the game considers an autosave; meaning not established",
      "source": "BiceLib/GameClasses/CCurrentGameState.hpp:115"
+    },
+    {
+     "offset": "0xDA4",
+     "name": "in_game",
+     "type": "uint8_t",
+     "comment": "Nonzero while the in-game screen is the live one: set to 1 at `0x25D126`, the end of `CInGameIdler::Enter`'s session build, and cleared by `CInGameIdler::Leave` (`0x262337`), by `CFrontEnd`'s enter (`0x2EFE58`) and at `0x2ED9AF`. Zeroed by every construction of the game state.\n\n**This is the attrition gate.** `CUnit::UpdateDaily` tests it at `DailyTickEndGate` (`0x1BB3E8`) and skips both `ApplyAttrition` and `CheckTransportOverload` when it is zero - so it is not a development-era \"enable attrition\" switch, and attrition does run. About twenty other places test it before touching live game data (`0x255AB7` reaches `strategic_warfare`, `0x4349B2` reaches the player tag), which is the sense the name is taken from: a game is running.\n\nOne byte. The last field of the class: the object is allocated `0xDA8` bytes and the constructor tail writes a word at `+0xD9C`, a dword at `+0xDA0` and this byte, so `+0xDA5..+0xDA7` are padding.\n\nNot saved: no access to it lives in the save or load code, and no key in a `.hoi3` save corresponds to it.\n\n**Confirmed in a running game**, not only traced: sampled every frame it read 0 at the main menu with the pointer already live, 1 once a campaign was up - while the clock was still not reporting in play, which is the write landing before the in-game GUI is built - and 0 again on returning to the menu. See `Reversing/Watch.hpp`.",
+     "source": "reversing/FINDINGS-manpower.md"
     }
    ],
    "vftable_rva": "0x11CF674"
@@ -16231,6 +17779,13 @@
    "size": "0x28",
    "fields": [
     {
+     "offset": "0x8",
+     "name": "base_percentage",
+     "type": "longlong",
+     "comment": "The slider's share, the game's GetBasePercentage, registered to Lua under the name GetPercentage; an fpml::fixed_point<__int64,48,15>, so 32768 is 1. Every Distribute body starts by multiplying it and the factor at +0x10 into whatever it has been given. Already in CLASSES.md; confirmed again at the construction site 0x4C9D98.",
+     "source": "reversing/FINDINGS-production.md"
+    },
+    {
      "offset": "0x10",
      "name": "factor",
      "type": "longlong",
@@ -16359,6 +17914,13 @@
      "source": "BiceLib/GameClasses/CDefines.hpp:46"
     },
     {
+     "offset": "0x90",
+     "name": "ic_bonus",
+     "type": "int",
+     "comment": "thousandths. CCountry::UpdateIC adds it to `1000 + countryValues[MODIFIER_GLOBAL_IC]` to get the multiplier on the province base. Read at 0xF0E3B (cached in a local) and applied at 0xF0FBB. The name is inferred from that one use; nothing else about the 0x29C bytes has been read.",
+     "source": "reversing/FINDINGS-ic.md"
+    },
+    {
      "offset": "0x94",
      "name": "build_discount_extra",
      "type": "int",
@@ -16366,11 +17928,60 @@
      "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:144"
     },
     {
+     "offset": "0x98",
+     "name": "oil_conversion_bonus",
+     "type": "int",
+     "comment": "thousandths. `CCountry::GetOilConversionRate` (0xF17F0) returns a cached global constant plus this, and CCountry::UpdateIC inlines the same read at 0xF11AC to get `1 + 2 x rate` for the energy-to-crude-oil conversion. Name inferred from those two uses.",
+     "source": "reversing/FINDINGS-ic.md"
+    },
+    {
+     "offset": "0xA8",
+     "name": "research_efficiency",
+     "type": "int",
+     "comment": "the `research_efficiency` technology effect, thousandths; added to 1000 and the country's MODIFIER_RESEARCH_EFFICIENCY in the research gain (0x532DF0). Named by fieldmap.py 0x537DB0, which places that effect key at +0xA8",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
+     "offset": "0x1F8",
+     "name": "tech_decay_by_category",
+     "type": "int*",
+     "comment": "a per-category int array the loop at 0x4DE3D0 folds into CCountry +0x1174, which is the multiplier the only reader of BASE_TECH_DECAY scales by. **That it is the technology effect key `decay` (save token 0x52E) is inference** - `decay` is the one key of the 47-effect switch at 0x537DB0 that fieldmap.py cannot place",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
      "offset": "0x218",
      "name": "level_by_technology",
      "type": "int*",
      "comment": "**the country's researched level of each technology**, ints indexed by a technology's index (`CTechnology +0x244`). `CHistoricalModelSet::MakeSubUnit` copies straight out of it into a new regiment's `CSubUnitTechnology::level` (`mov [ecx+4], esi` at `0x183183`), and **read live** it equals the level 6859 of 7445 regiment entries carry, counting only non-zero ones - the rest being regiments raised before the country researched further. `0x63D40` sums it over a unit type's own technologies and hands the total to GetBuildCostIC, which is what it used to be named for",
      "source": "BiceLib/GameClasses/CHistoricalModel.hpp"
+    },
+    {
+     "offset": "0x228",
+     "name": "progress_by_technology",
+     "type": "__int64*",
+     "comment": "**how far each technology has got**, indexed by a technology's index (CTechnology +0x244) and **eight bytes an entry, 1.0 = 0x8000 for one level** - the add at 0x532F5B is an add/adc pair. A level is taken when it reaches 1.0",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
+     "offset": "0x238",
+     "name": "leadership_by_technology",
+     "type": "int*",
+     "comment": "the leadership assigned to each technology, thousandths, indexed the same way. The research tick zeroes the whole vector (rva 0x132EC0) and AdvanceResearch writes each entry back; a leadership argument of -1000 to the gain function means read it here",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
+     "offset": "0x23C",
+     "name": "leadership_by_technology_end",
+     "type": "int*",
+     "comment": "one past the last, read at 0x532EC0",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
+     "offset": "0x248",
+     "name": "country",
+     "type": "CCountry*",
+     "comment": "the country this status belongs to - the back pointer for CCountry +0xDA8 (the modifier values) and +0x698 (the category abilities). Read at 0x532DD8 and 0x5332DF",
+     "source": "reversing/FINDINGS-research.md"
     },
     {
      "offset": "0x24C",
@@ -16392,6 +18003,20 @@
      "type": "int*",
      "comment": "ints indexed by CSubUnitDefinition's index: what technology has done to that unit type's build time",
      "source": "BiceLib/GameClasses/CSubUnitDefinition.hpp:176"
+    },
+    {
+     "offset": "0x27C",
+     "name": "unit_available",
+     "type": "bool*",
+     "comment": "one byte per unit type, indexed by CSubUnitDefinition's index (+0x24); set by ApplyTechnologyEffects for each entry of a technology's activate_unit list (0x532B16) and tested at 0x533030",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
+     "offset": "0x28C",
+     "name": "building_available",
+     "type": "bool*",
+     "comment": "one byte per building, indexed by CBuilding +0x54; set by ApplyTechnologyEffects from a technology's activate_building (0x532B3E)",
+     "source": "reversing/FINDINGS-research.md"
     }
    ]
   },
@@ -16460,6 +18085,13 @@
      "type": "int",
      "comment": "1000 + the owner's RESERVES_PENALTY_SIZE modifier (77) where is_reserve is set, 1000 otherwise - filled at 0x84A3A and 0x85211. Stored rather than looked up, so an item keeps the factor it was given. **It is saved as `factor`**, which settles that the number travels with the item through a save rather than being recomputed on load. **Read live**: 1000 on 788 items, 800 on 27 and 900 on 8, so the penalty is negative and differs by country",
      "source": "BiceLib/GameClasses/CConstruction.hpp:108"
+    },
+    {
+     "offset": "0xA0",
+     "name": "practical_factor",
+     "type": "int",
+     "comment": "Thousandths, and **neither saved nor loaded** - the loader places no key here and the writer writes none. The constructor sets it to 1000 (0x483ED2), slot 14 overwrites it (0x4858A5) with UNIT_UPGRADE_PRACTICAL_MOD scaled by the upgrade's share of the item's cost, and both instant-build paths zero it (0x546192 in CConstructUnitCommand::Execute, 0x547208 in CConstructSingleUnitCommand::Execute). Slot 9 reads it once, at 0x484EBC, to scale the technology-category ability a finished item awards through 0xE02F0 - so **an instantly built unit earns no practical** and an upgrade earns only the define's share of it.",
+     "source": "reversing/FINDINGS-production.md"
     },
     {
      "offset": "0xA4",
@@ -17655,11 +19287,25 @@
      "source": "BiceLib/GameClasses/CTechnology.hpp"
     },
     {
+     "offset": "0x28C",
+     "name": "on_completion",
+     "type": "CTechnologyCategory*",
+     "comment": "`on_completion`, save token 0x445 - **the practical or theory this technology feeds**. The ability rebuild at 0x41FEFC calls slot 2 on it and reads its +0x60, so it is a category, not a command",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
      "offset": "0x294",
      "name": "effects",
      "type": "void*",
      "comment": "**what this technology does to each unit type**: a list whose nodes hold the effect at +0 and the next node at +8. Each effect is a whole CSubUnitDefinition holding only the changes, and its `Key` is the unit type it is for. **Read live**: 16044 effects across 1175 technologies in this mod",
      "source": "BiceLib/GameClasses/CTechnology.hpp:49"
+    },
+    {
+     "offset": "0x2A4",
+     "name": "research_bonus_from",
+     "type": "void*",
+     "comment": "`research_bonus_from`, a linked list: [0] the CTechnologyCategory, [4] the weight in thousandths, [0xC] the next node. Walked at 0x533448..0x53348B, each category's ability term times its weight summed into the research bonus",
+     "source": "reversing/FINDINGS-research.md"
     },
     {
      "offset": "0x2B4",
@@ -17697,6 +19343,13 @@
      "source": "BiceLib/GameClasses/CTechnology.hpp"
     },
     {
+     "offset": "0x2C8",
+     "name": "difficulty",
+     "type": "int",
+     "comment": "`difficulty`, save token 0x35F, **a plain integer and not thousandths** - the loader at 0x534B19 uses the same helper `start_year` does. The research cost is `(difficulty x 0.1 + 1) x 125` leadership-days per level before the practical bonus. BlackICE writes 1..14, and three technologies write 0.5, which that helper truncates to 0",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
      "offset": "0x2CC",
      "name": "is_nuclear",
      "type": "bool",
@@ -17723,6 +19376,20 @@
      "type": "int[4]",
      "comment": "the same, for time",
      "source": "BiceLib/GameClasses/CTechnology.hpp"
+    },
+    {
+     "offset": "0x300",
+     "name": "activate_unit",
+     "type": "CSubUnitDefinition**",
+     "comment": "`activate_unit`, the vector CTechnology.hpp says has no field of its own: begin here, end at +0x304. ApplyTechnologyEffects walks it at 0x532AEE..0x532B1C and marks each definition's index available in CTechnologyStatus +0x27C",
+     "source": "reversing/FINDINGS-research.md"
+    },
+    {
+     "offset": "0x304",
+     "name": "activate_unit_end",
+     "type": "CSubUnitDefinition**",
+     "comment": "one past the last of the activate_unit vector",
+     "source": "reversing/FINDINGS-research.md"
     },
     {
      "offset": "0x310",
@@ -18466,6 +20133,13 @@
    "name": "CFaction",
    "fields": [
     {
+     "offset": "0x8",
+     "name": "ideology_group",
+     "type": "CIdeologyGroup*",
+     "comment": "The CIdeologyGroup that owns this faction. The CFaction constructor (0x5224B0) stores its second argument here, and its only caller is CIdeologyGroup::LoadKey's `faction` case, which passes the group. The two FACTION_*_DIST predicates take a CFaction and dereference this to get the position they measure to.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
      "offset": "0xC",
      "name": "tag",
      "type": "CCountryTag",
@@ -18499,6 +20173,13 @@
      "type": "int",
      "comment": "saved as `neutrality`, x1000. **Read live**: 25.0 for the axis and zero for the other two",
      "source": "BiceLib/GameClasses/CFaction.hpp:37"
+    },
+    {
+     "offset": "0xB4",
+     "name": "suseptibility_modifier_index",
+     "type": "int",
+     "comment": "The index, in a country's modifier-values array, of the modifier named `suseptibility_<this faction's tag>`. CIdeologyGroup::LoadKey builds that string from the literal 'suseptibility_' at 0x15C2690 plus the faction's tag, takes the current length of the global modifier-definition vector (([0x1A86198] - [0x1A86194]) / 4), writes it here at 0x527032 and then registers the modifier - so the index is this faction's entry by construction. CModifier.hpp's entries 140/141/142 are the same three. Five of the seven alignment terms scale themselves by (1 + country.modifier[this]).",
+     "source": "reversing/FINDINGS-politics.md"
     },
     {
      "offset": "0xBC",
@@ -18717,6 +20398,13 @@
      "type": "int",
      "comment": "**the country the scope is about**, and what every effect indexes the country database with. The Lua API declares `_Country` at +0x10 as a `CCountryTag&` - that is its getter's return type, not the layout: the tag sits there **by value**, three letters at +0x10 and this id at +0x14, which is why CCountryTag::GetCountry is passed `scope + 0x10`",
      "source": "reversing/FINDINGS-effecttext.md"
+    },
+    {
+     "offset": "0x34",
+     "name": "days_in_month",
+     "type": "int",
+     "comment": "The one field the two CEventScope builders disagree about. RebuildCountryEventCandidates sets it to the current month's length, recomputed at 0x9C0273-0x9C02E4 from state+0xBDC with the same 0x29C55C0 epoch and 365.0 constant (0x160A550) RunHourlyTick uses and then indexed into MonthLengthTable (0x1713294); RunDailyEventPass leaves it zero (0x9C0AAD). CMeanTimeToHappen::GetChance never reads the scope, only forwards it, so this can only matter to a trigger. **The name is inference from how the value is derived, not from a use.** CEventScope is 0x48 bytes, vftable 0x15B8AEC, base CPersistent; +0x10 and +0x18 are two CCountryTags, both 0x2D2D2D (\"---\") at construction and only +0x10 ever filled in with the country being scoped.",
+     "source": "reversing/FINDINGS-events.md"
     }
    ]
   },
@@ -19636,6 +21324,141 @@
      "type": "CMessageVariable*",
      "comment": "the node after it, null at the end",
      "source": "reversing/FINDINGS-messages.md"
+    }
+   ]
+  },
+  {
+   "name": "CMTTHModifier",
+   "vftable_rva": "0x11F5C84",
+   "fields": [
+    {
+     "offset": "0x40",
+     "name": "factor",
+     "type": "int",
+     "comment": "**Stored in thousandths.** CMeanTimeToHappen::GetChance divides it by the double 1000.0 at 0x160A300 (0x9C4AF1) before multiplying it into the days figure, so `factor = 0.5` in script is 500 in memory. The modifier is applied only when the modifier's condition object slot 6 accepts the scope (0x9C4AD4).",
+     "source": "reversing/FINDINGS-events.md"
+    }
+   ]
+  },
+  {
+   "name": "CIdeologyGroup",
+   "vftable_rva": "0x11C2728",
+   "fields": [
+    {
+     "offset": "0x50",
+     "name": "index",
+     "type": "int",
+     "comment": "The group's index into CAlignment's per-group weight vector at +0x18 - CAlignment::GetValueForGroup is literally `values[group->+0x50]`, and the constructor sizes that vector to the number of groups.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x54",
+     "name": "faction",
+     "type": "CFaction*",
+     "comment": "Read from the key `faction`: CIdeologyGroup::LoadKey allocates 0xD8 bytes, runs the CFaction constructor with this group as the second argument, loads the block through the faction's slot 3, and stores the result here. CIdeologyGroup::GetFaction (0x527140) returns it, or the null-faction singleton when it is null.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x58",
+     "name": "position_x",
+     "type": "int",
+     "comment": "The group's x on the political compass, thousandths. CIdeologyGroup::LoadKey's `position` key (token 0x4B) is ParsePoint(this + 0x58) at 0x5270E4. Every alignment distance in the game is measured to this pair.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x5C",
+     "name": "position_y",
+     "type": "int",
+     "comment": "The group's y on the political compass, thousandths; the second half of the `position` key.",
+     "source": "reversing/FINDINGS-politics.md"
+    }
+   ]
+  },
+  {
+   "name": "CAlignment",
+   "vftable_rva": "0x11C0CC0",
+   "fields": [
+    {
+     "offset": "0x8",
+     "name": "position_x",
+     "type": "int",
+     "comment": "The country's x on the political compass, thousandths. CAlignment::LoadKey reads the `position` key here through ParsePoint; the constructor zeroes it and then calls ClampMove with a zero delta, which places it inside the ideology groups' bounding box.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0xC",
+     "name": "position_y",
+     "type": "int",
+     "comment": "The country's y on the political compass, thousandths.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x18",
+     "name": "group_weights",
+     "type": "int*",
+     "comment": "The first of a vector of ints, ending at +0x1C with capacity at +0x20 - **one weight per ideology group**, indexed by CIdeologyGroup+0x50. The constructor sizes it to the group count and the destructor frees it. ComputeDrift fills every entry with the seven-term sum and then uses the entries as the magnitudes of unit vectors toward each group.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x28",
+     "name": "bounds",
+     "type": "int",
+     "comment": "The first of eight dwords (+0x28..+0x44) holding the bounding box of all ideology-group positions: minimum x and y at +0x28/+0x2C, extents at +0x30/+0x34, and two derived ratios at +0x38..+0x44. Zeroed by the constructor, rebuilt by 0x4C46C0 from the group manager's vector, and read by ClampMove to keep a drift inside the compass.",
+     "source": "reversing/FINDINGS-politics.md"
+    }
+   ]
+  },
+  {
+   "name": "CDiplomacyStatus",
+   "vftable_rva": "0x11FBC38",
+   "fields": [
+    {
+     "offset": "0x28",
+     "name": "nap",
+     "type": "void*",
+     "comment": "The non-aggression pact for the pair, or null. A CRelation subclass: +0x10/+0x14 the `second` party, +0x18 `start_date`, plus +0x24, the border force balance stored as first:second. CCountry::CanBreakNap reads all of those.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x2C",
+     "name": "influence_running",
+     "type": "int",
+     "comment": "Non-zero while a diplomatic influence is running between the pair. Two agreeing readers: CCountry::PayDailyInfluenceUpkeep charges INFLUENCE_UPKEEP once a day for each country whose status toward the payer has it set, and CCountry::GetInfluencedCountryCount counts the same thing. What the two directions mean is not settled - both readers index other->+0xE28[us].",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x38",
+     "name": "relation",
+     "type": "int",
+     "comment": "The pair's relation, thousandths. Inferred, not proven: the alignment relation term averages this field over a faction's members and scales it by RELATION_WEIGHT, which leaves little else it could be, but no loader key and no second reader were checked.",
+     "source": "reversing/FINDINGS-politics.md"
+    },
+    {
+     "offset": "0x5C",
+     "name": "threat",
+     "type": "int",
+     "comment": "How much threat the array's owner feels from the other country, thousandths. Two independent readers agree: the alignment threat term takes the maximum of this over a faction's members, and 0x4E21E0 scans it to cache the worst offender in CCountry +0x11D8/+0x11DC - which is the one value EffectiveNeutrality is derived from.",
+     "source": "reversing/FINDINGS-politics.md"
+    }
+   ]
+  },
+  {
+   "name": "CDistributeProduction",
+   "vftable_rva": "0x11C21D4",
+   "fields": [
+    {
+     "offset": "0x20",
+     "name": "needed",
+     "type": "longlong",
+     "comment": "An fpml::fixed_point<__int64,48,15>: the total daily IC the production queue wants, the sum of every construction's cost divided by 1000. Zeroed by the constructor at 0x4C9DB1, rebuilt by 0x11A290 at the end of every Distribute, and returned verbatim by slot 3 GetNeeded (0x11A2E0).",
+     "source": "reversing/FINDINGS-production.md"
+    },
+    {
+     "offset": "0x28",
+     "name": "spent_beyond_free",
+     "type": "longlong",
+     "comment": "An fpml::fixed_point<__int64,48,15>, zeroed at the start of every Distribute (0x519D23). It accumulates the IC the pass asked for **beyond the resource-free part** - the two adds, 0x51A03B and 0x51A137, both happen before the resource check, so it counts what was wanted rather than what was got. Nothing in the ten distributors reads it back; only the constructor, the two adds and the reset touch it. The name is ours.",
+     "source": "reversing/FINDINGS-production.md"
     }
    ]
   }

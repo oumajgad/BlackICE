@@ -33,6 +33,7 @@
 #include <Hooks/CNavyHooks.hpp>
 #include <Hooks/HookedPatches.hpp>
 #include <GameState/AutoSave.hpp>
+#include <GameState/EventCandidates.hpp>
 #include <GameState/MapEdgeScroll.hpp>
 #include <GameState/PureCall.hpp>
 #include <Settings.hpp>
@@ -1411,6 +1412,21 @@ void registerPatchFunctions(lua_State* this_state) {
     return;
 }
 
+__declspec(dllexport) int rebuildEventCandidates(lua_State* L)
+{
+    const bool ok = EventCandidates::rebuildNow();
+    lua_pushboolean(L, ok ? 1 : 0);
+    return 1;
+}
+
+void registerEventFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Events");
+    lua_newtable(this_state);
+    registerFunction(this_state, "rebuildCandidates", rebuildEventCandidates);
+    lua_settable(this_state, -3);
+    return;
+}
+
 void registerComplexPatchFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "ComplexPatches");
     lua_newtable(this_state);
@@ -1500,6 +1516,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerNavyFunctions(this_state);
     registerPatchFunctions(this_state);
     registerComplexPatchFunctions(this_state);
+    registerEventFunctions(this_state);
     registerEffectTextFunctions(this_state);
     registerTooltipFunctions(this_state);
     registerMessageFunctions(this_state);

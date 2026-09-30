@@ -285,6 +285,26 @@ A bare `carrier_practical` with no `=` and no block is not this effect and does 
 name is not a token `CEffect::LoadKey` knows, so it reaches `ReportUnknownKey` and is dropped
 without a word.
 
+### It is not restricted to practicals
+
+Nothing on the path tests which of `common/technology.txt`'s two lists the category is in.
+`technology_group` resolves against the technology database's category map at `+0x2C`, which
+holds **every** category - `CTechnologyCategory +0x8` is the key, and the keys it holds look
+like `construction_practical` *and* `infantry_theory` - and a country keeps one array for the
+lot, `own_ability`, indexed by the category's `+0x5C`. `Execute` reads that array, adds, and
+`CCountry::SetTechAbility` writes it back; neither looks at anything else.
+
+A country history file confirms it from the other end: `infantry_theory = 2.5` and
+`infantry_practical = 2.5` are **the same code** in `CCountry::LoadKey` (rva `0xCF2F3`
+onwards) - one lookup in that same map, then `min(value, MAX_TECH_ABILITY)` straight into
+`own_ability[index]`. The only difference from the effect is that the history *assigns* while
+the effect *adds*.
+
+So `practical = { technology_group = infantry_theory value = 2 }` raises a theory, and this
+is the only way a script can: **`practical` is the one tech-ability effect the game has** -
+there is no `theory` or `theoretical` keyword in `CEffect::LoadKey`'s 91. The name is the
+only thing practical about it.
+
 ### The block in `common/technology.txt`
 
     theoretical = { infantry_theory militia_theory ... }
@@ -299,6 +319,125 @@ category whichever list it is in, and the defines that bear on the difference al
 together in the `country` block - `BASE_TECH_DECAY` at `+0x40`, `MAX_TECH_ABILITY` at `+0x44`,
 `TECH_ABILITY_GAIN_DIVISOR` at `+0x48`. **What membership in the list actually changes was
 not traced**; the one reader of `BASE_TECH_DECAY` outside `CDefines::Load` is rva `0x204A0`.
+
+## Five effects the mod never uses
+
+Read from the disassembly and **not tested in game**. Each is `CEffect::LoadKey`'s case
+building a class, so the keyword list in the table at the end of this file says which.
+
+### `add_ai_strategy` - `CAddAIStrategyEffect`
+
+The block is a `CAIStrategy`. The class **overrides slot 3, `Load`** (rva `0x5B0DF0`) with
+four instructions - `this += 0x20; jmp [that object's Load]` - so the whole block is read by
+the embedded strategy at `+0x20` and its 21 keys, not by any effect grammar. `Execute` (rva
+`0x5B0E00`) hands that strategy and the scope country's tag to `0x4A3B90`.
+
+### `fixed_ai_strategy` - `CFixedAIStrategyEffect`, and it does nothing
+
+A scalar, not a block: the value reaches slot 7 (rva `0x59DC50`), which sets the effect's
+byte at `+0x20` to `value == yes`. `Execute` (rva `0x5B0E90`) is eleven instructions and
+writes that byte to **`CCountry +0x4A1`**.
+
+**Nothing reads `+0x4A1`.** A byte-level sweep of `.text` for any access to that offset finds
+exactly one, the write above. So whatever the keyword was meant to do, it does not do it.
+
+Slot 7 also has a dead branch worth noting, since it looks like a bug rather than a subtlety:
+
+    cmp eax, 0x377        ; is the value `this`?
+    jne <other>
+    cmp eax, 0x1f6        ; ... and is that same value `yes`?
+    sete al               ; never
+
+so `fixed_ai_strategy = this` always stores 0. The `jne` path does the real test.
+
+### `add_casus_belli` - `CReversedCasusBelliEffect`
+
+Exactly the mirror of `casus_belli`. Both end in the same call, `0xE6640`, with a tag in ECX
+and a country pushed:
+
+| effect | ECX | argument |
+| --- | --- | --- |
+| `casus_belli` (rva `0x5A6770`) | the **named** tag | the **scope's** country |
+| `add_casus_belli` (rva `0x5A6B10`) | the **scope's** tag | the **named** country |
+
+So in a `GER` scope, `casus_belli = ENG` is GER's war goal against ENG and
+`add_casus_belli = ENG` is ENG's against GER. The value may be a tag, `this` or `FROM`, the
+three handled by the flags at `+0x1C`/`+0x1D` and the tag at `+0x20`.
+
+### `modify_spies` - `CModifySpiesEffect`, and it cannot be configured
+
+Its `LoadKey` (rva `0x5BDFE0`) has the keys you would want - `target` as a tag, `this` or
+`FROM`, plus `value`, plus the bare `this`/`from` - and **none of them is ever read**, because
+nothing calls it.
+
+**How an effect gets its data is decided by the case that builds it**, and there are two
+tails in `CEffect::LoadKey`:
+
+| tail | what it does after linking the effect | effects using it |
+| --- | --- | --- |
+| `0x59A096` | calls the effect's **slot 3, `Load`**, so the `{ ... }` block is read | 11, `practical` and `add_division` among them |
+| `0x599E71` | copies the value token and calls **slot 7**, the scalar handler | 20, including `modify_spies` |
+
+`modify_spies` takes the second, so `Load` is never called and its block never parsed - and
+**its slot 7 is `0x15FF0`, `CEffect`'s own stub, whose whole body is `ret 0x104`**. Of the 20
+scalar effects it is the only one that does not implement slot 7. So the object keeps exactly
+what its constructor (rva `0x5BDFA0`) left: `+0x20` = `---`, `+0x24` = 0, the `this`/`FROM`
+flags clear, and `+0x28` - the count - **never written at all**, since the constructor stops
+at `+0x24` and the object is 0x2C bytes.
+
+That is what the game shows: *Add 587232376 spies to Null*, a heap address where the count
+should be and no country resolved. Verified in game 2026-09-29.
+
+`Execute` (rva `0x5BE130`) would otherwise be sound: it multiplies the count by 1000 and adds
+it to the scope country's spy presence in the target - `CCountry +0x1160`, **a pointer to**
+an array of 0xF8-byte `CSpyPresence` records indexed by country id, count in the first field
+- floored at 0 and capped at
+the dword at rva `0x130D164`, which holds **10000 in `.data` and is written by no instruction
+in the image**, a hard-coded ten spies rather than `MAX_NUMBER_OF_SPIES`. The clamp means
+firing it cannot store the garbage figure; which country's record it lands in is not something
+the script can choose.
+
+**`+0x1160` holds the array's address, not the array.** The accessor at rva `0x44920` is
+`imul` the tag's id by `0xF8` and then `add eax, [ecx+0x1160]` - it adds the field's
+*contents*, so the records live wherever that pointer points. The record's class is
+`CSpyPresence`: it has no RTTI, but the Lua API names it and three of its fields
+(`GetLevel` -> `+0x0`, `GetPriority` -> `+0x4`, `GetLastMissionChangeDate` -> `+0x50`), and
+the cap of 10000 at rva `0x130D164` is its `MAX_SPY_LEVEL` of ten in thousandths.
+
+### Fixing it takes five bytes - tried, and not kept
+
+The case's tail jump is the whole problem, so pointing it at the block tail is one
+displacement:
+
+    rva 0x59B244:   e9 28 ec ff ff   ->   e9 4d ee ff ff
+
+The block tail needs only `esi`, the new effect, which the case sets two instructions
+earlier, and `ebx`, which both tails share; the `[esp+0x10]` the case also writes is read by
+the scalar tail and not by the block one. **Everything downstream was already correct.**
+Entry +0 of the espionage array is what the effect is for - this country's spies on mission
+in the target, which a save writes as `spy_allocation`, one number per country - and the add,
+the floor at zero and the cap at 10000 all do what they should, that cap matching the mod's
+`MAX_NUMBER_OF_SPIES` of ten. The country's `spies` field at `CCountry +0x1170` is a separate
+figure and the effect rightly leaves it alone.
+
+**This was built and confirmed working in game on 2026-09-29, then removed**: the keyword does
+what it says, and what it says is not worth a patch to the executable. One caveat found on the
+way, in case it is ever reconsidered: the assigner at rva `0xD59D0`, reached from
+`CInGameIdler::Enter`, recomputes entry +0 from relations and faction when a game is entered,
+so a value an event writes is unlikely to survive a save and reload.
+
+### `any_nearby_province` - `CAnyNearbyProvinceEffect`
+
+Keys `distance` and `limit`, and it is a **province** scope: `Execute` (rva `0x5ABA30`) reads
+the province id from the scope's `+0x28`. Two things about it are easy to get wrong:
+
+- **It does not visit every province nearby.** It walks `CCountry +0xD00` of the current
+  province's **controller** - the same list `any_controlled` walks, against `+0xCF0` for
+  `any_owned` - so a province of anyone else is never reached however close it is.
+- **`distance` is in map coordinates, not provinces.** The positions come from
+  `g_CMap +0x2A60` indexed by province id (x at `+0x2C`, y at `+0x30`), the comparison is
+  `dx² + dy² <= distance²`, and the x difference is wrapped against the world width at
+  `g_CMap +0x2A74`. A `distance` of a handful covers nothing.
 
 ## What the mod says that none of this is
 
