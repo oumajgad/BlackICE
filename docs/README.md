@@ -11,6 +11,16 @@
   - [Modifiers](script/modifiers.md) - the named values a modifier can change
   - [Orders of battle](script/oob.md) - the unit files in `history/units/`
 
+- **[The Lua API](lua/README.md)** - the country AI is code, not data. How the files load,
+  where the engine calls in, and why nothing that comes out of the game is a plain Lua
+  value.
+  - [Values and containers](lua/types.md) - `CFixedPoint`, `CString`, tags, lists
+  - [The world](lua/world.md) - game state, countries, provinces, diplomacy, war
+  - [Units, production and technology](lua/military.md)
+  - [Government, laws and ministers](lua/politics.md)
+  - [The AI objects](lua/ai.md) - what a tick function is handed
+  - [Commands and diplomatic actions](lua/commands.md) - the only way to change anything
+
 ## Playing
 
 - [Keyboard shortcuts](../Shortcuts.txt)
@@ -29,11 +39,5 @@ Those notes are extensive and live with the code, in
 [`DaveStuff/luabinaries/bice/BiceLib/reversing/`](../DaveStuff/luabinaries/bice/BiceLib/reversing/).
 The one most relevant to modding is
 [`FINDINGS-script.md`](../DaveStuff/luabinaries/bice/BiceLib/reversing/FINDINGS-script.md),
-which is where the trigger and effect lists above came from.
-
-## Still to write
-
-- Lua documentation. The old wiki held a class reference copied from the
-  hoi3-ai-improvement-pack Google Code wiki; it was in Google Code markup and has been
-  removed. It is still recoverable from the wiki's history at commit `9a7254d` if it turns
-  out to be a useful starting point.
+which is where the trigger and effect lists above came from. The Lua pages come from the
+same place: `luabindExtract.py` recovers every exported function's signature out of the exe.

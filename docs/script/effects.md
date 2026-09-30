@@ -17,8 +17,8 @@ Their description is inferred from the class the loader builds.
 
 | Keyword | What it does | Syntax | Uses in the mod |
 | --- | --- | --- | --- |
-| `add_ai_strategy` | **(unverified)** Adds an AI strategy block. | `add_ai_strategy = ...` |  |
-| `add_casus_belli` | **(unverified)** Grants a casus belli the other way round from `casus_belli` - the class is `CReversedCasusBelliEffect`. | `add_casus_belli = ...` |  |
+| `add_ai_strategy` | **(from the disassembly, not tested)** Gives the current country an AI strategy. The block is a `CAIStrategy` - the effect's `Load` hands the whole block straight to one - so its keys are `air_perc` `antagonize` `area_theatre` `armor_bias` `befriend` `building_prov` `conquer_prov` `consolidate` `defend_prov` `initialized` `land_perc` `max_subunits` `military_access` `naval_perc` `personality` `protect` `rival` `static` `threat` `vassal` `war_with`. | `add_ai_strategy = { befriend = ENG }` |  |
+| `add_casus_belli` | **(from the disassembly, not tested)** The mirror of `casus_belli`: same call with the two countries swapped, so the **named** country gets the war goal against the **current** one. Takes a tag, `this` or `FROM`. | `add_casus_belli = ENG` |  |
 | `add_core` | Make a certain province a core of the current country. | `add_core = <province id>` | 575 |
 | `add_country_modifier` | Add a country modifier with certain effects to the country. | `add_country_modifier = <name of modifier>` | 4460 |
 | `add_division` | **(~unverified~ works, units spawn with no techs and full strength)** Adds a division. | `add_division = { name = <name> where = <province id> <brigade type> = <name> <brigade type> = <name> }` |  |
@@ -26,7 +26,7 @@ Their description is inferred from the class the loader builds.
 | `add_wargoal` | Adds a War Goal to the current country towards the target country. It won't start a new war, only works if there's already one in progress. | `add_wargoal = ...` | 28 |
 | `any_controlled` | Any controlled province. | `any_controlled = ...` | 277 |
 | `any_country` | Any available country. | `any_country = ...` | 4236 |
-| `any_nearby_province` | **(~unverified~, does not work)** Scope over provinces near the current one. | `any_nearby_province = ...` |  |
+| `any_nearby_province` | **(from the disassembly, not tested)** A **province** scope, and two things make it easy to write one that does nothing: it visits only the provinces **the current province's controller controls** - the same list `any_controlled` walks - and `distance` is measured in **map coordinates**, not provinces, so a small number reaches nothing. | `<province> = { any_nearby_province = { distance = 200 limit = { ... } <effects> } }` |  |
 | `any_neighbor_country` | Any country neighboring the current country. | `any_neighbor_country = ...` | 1 |
 | `any_neighbor_province` | Any province neighboring the current province. | `any_neighbor_province = ...` | 116 |
 | `any_owned` | Any owned province. | `any_owned = ...` | 130 |
@@ -52,7 +52,7 @@ Their description is inferred from the class the loader builds.
 | `end_non_aggression_pact` | Ends a non-aggression pact between the current country and the specified country. | `end_non_aggression_pact = tag` | 17 |
 | `end_war` | Ends any war between the specified country, tag1 and the current country, tag2. | `tag1 =  { end_war = tag2 }` | 87 |
 | `energy` | Increase/decrease a province’s max production of energy. | `energy = x` | 2168 |
-| `fixed_ai_strategy` | **(unverified)** Sets an AI strategy that later files cannot override. | `fixed_ai_strategy = ...` |  |
+| `fixed_ai_strategy` | **(from the disassembly)** Not a strategy block at all: a plain `yes`/`no` that sets one byte on the country, `CCountry +0x4A1`. **Nothing in the game reads that byte** - the write is its only access in the whole executable - so the effect does nothing. | `fixed_ai_strategy = yes` |  |
 | `form_government_in_exile` | Create a government in exile for the current country. | `form_government_in_exile = yes / no` | 11 |
 | `fuel` | Increase or decrease a country's or province's fuel. Works as an effect only - as a *condition* it is silently ignored, see [triggers.md](triggers.md#keys-that-do-not-work). | `fuel = x` | 383 |
 | `government` | Change the current type of government for the country. | `government = <government type> / THIS / FROM` | 340 |
@@ -68,7 +68,7 @@ Their description is inferred from the class the loader builds.
 | `manpower` | Increase/decrease the amount of manpower a country has. | `manpower = x  #(x = +-0..1)` | 1907 |
 | `metal` | Increase/decrease a province’s max production of metal. | `metal = x` | 2423 |
 | `military_access` | Gives the specified country, tag1 military access to the current country, tag2. | `tag1 = { military_access = tag2 }` | 22 |
-| `modify_spies` | **(~unverified~, does not work)** Changes the number of spies. | `modify_spies = ...` |  |
+| `modify_spies` | **(does not work)** Meant to add spies to the current country's own presence in another. The engine never reads its block - the keyword is wired as a scalar and its value handler is a stub - so it runs with no target and an uninitialised count, showing *Add 587232376 spies to Null*. Five bytes fix that and the rest of the effect is correct, but it was tried and not kept: see reversing/FINDINGS-script.md. | - |  |
 | `money` | Increase/decrease the amount of money a country has. | `money = x  #( x = +-1..)` | 2226 |
 | `national_unity` | Increase/decrease a country’s amount of national unity. | `national_unity = x  #(x = +-1..100)` | 382 |
 | `neutrality` | Increase/decrease a country’s base neutrality value. | `neutrality = x # (x = +-1..100)` | 186 |
