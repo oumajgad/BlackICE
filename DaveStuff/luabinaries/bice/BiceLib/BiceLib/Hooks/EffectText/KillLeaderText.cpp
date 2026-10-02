@@ -66,11 +66,11 @@ namespace {
         // colours the leader's name in the same sentence.
         char where[256] = {};
         if (!posting.unit.empty() && !posting.province.empty()) {
-            _snprintf_s(where, sizeof(where), _TRUNCATE, " (\xA7Y%s\xA7W, \xA7Y%s\xA7W)",
+            _snprintf_s(where, sizeof(where), _TRUNCATE, " (\xA7R%s\xA7W, \xA7R%s\xA7W)",
                 posting.unit.c_str(), posting.province.c_str());
         }
         else if (!posting.unit.empty()) {
-            _snprintf_s(where, sizeof(where), _TRUNCATE, " (\xA7Y%s\xA7W)",
+            _snprintf_s(where, sizeof(where), _TRUNCATE, " (\xA7R%s\xA7W)",
                 posting.unit.c_str());
         }
 
