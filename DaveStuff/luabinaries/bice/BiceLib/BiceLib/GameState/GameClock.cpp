@@ -41,10 +41,21 @@ void GameClock::update() {
         }
     }
     // The steady-step count answers "is the clock running normally", which is what the
-    // once-a-day callers need and what a load has to be kept out of. The game's own
-    // in_game byte answers "is a game on screen", which the count could only ever infer.
-    // Both, because neither covers the other: in_game is set for the whole of a load,
-    // where the clock jumps, and the clock cannot tell a paused game from the menu.
+    // once-a-day callers need. The game's own in_game byte answers "is a game on screen",
+    // which the count could only ever infer. Both, because neither covers the other.
+    //
+    // in_game is NOT set during a load - that was the reason given here until 2026-10-02 and
+    // it was wrong (reversing/FINDINGS-session.md). The byte has six writers in the whole
+    // image and only one writes a one, in CInGameIdler::Enter; the savegame loader contains
+    // none of them, and it can only be reached from the pre-game lobby or the tutorial
+    // screen, neither of which is the in-game screen.
+    //
+    // The window this guard really excludes is narrower. That single write sits 0x4A92 bytes
+    // from the end of CInGameIdler::Enter, and everything after it builds the in-game
+    // interface - so there is a stretch where in_game is 1, the session exists, and the GUI
+    // does not. The clock cannot have stepped there either, because AdvanceClock is only
+    // reached from CInGameIdler::Update, which has not run yet. Hence both halves.
+    // The clock alone also cannot tell a paused game from the menu.
     moved = steadySteps >= STEPS_FOR_PROOF && CCurrentGameState::inGame();
 }
 

@@ -6,11 +6,16 @@
 /**
  * Two extra autosaves, each switched on by itself.
  *
- * **Before the month turns.** The game evaluates event trigger conditions on the month
- * change and only then. A save made after that moment has already had its evaluation,
- * so loading it fires nothing for that month; a save made shortly before it still has
- * the evaluation ahead of it. This takes one, every month, at a configurable distance
- * from the 1st.
+ * **Before the month turns.** The month change is where the game's once-a-month work
+ * happens - monthly events get their one evaluation, research decay is applied - so a
+ * save taken shortly before it has all of that still ahead of it. This takes one, every
+ * month, at a configurable distance from the 1st.
+ *
+ * That is a rollback point, not a repair. The feature was originally written because
+ * loading a mid-month save fired no events for the rest of that month, the daily pass
+ * walking a candidate list only RunMonthlyPass fills; BiceLib now rebuilds that list on
+ * load itself (GameState/EventCandidates.cpp), so the old reason no longer holds and the
+ * documentation should not state it.
  *
  * **Every so many minutes.** A save on a wall clock rather than a game calendar, so
  * the most a crash can cost is the interval, whatever speed the game is running at.

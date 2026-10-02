@@ -32,7 +32,7 @@ One argument, the `CInGameIdler*`, pushed on the stack; `ret 4`.
 1  ensure CCurrentGameState exists      global module + 0x1689790
 2  tick = gameState[0xBDC]              the current tick
 3  idler[0xAB0] = 0                     clear first, every time
-4  if (gameState[0xD9D] != 0) return    a gate, meaning not established
+4  if (gameState[0xD9D] != 0) return    tutorial_active: no autosaves in a tutorial
 5  debugSaves = settings[0x158]
    if (debugSaves != 0) -> the debug path below, the frequency is not consulted
 6  switch (settings[0x15C])             the autosave frequency
@@ -154,9 +154,11 @@ name" entry point.
 
 ## What is not established
 
-- `gameState + 0xD9D`, the gate at step 4. It is 0 in a running game, so it is not
-  "a game is loaded"; more likely "the game is over" or "a save or load is in
-  progress". Nothing depends on it yet.
+- ~~`gameState + 0xD9D`, the gate at step 4.~~ **Answered: it is the tutorial flag**, and
+  this field was the reason it got named `autosave_blocked` - after this one reader, out of
+  twelve. Its only writers are two `CTutorialScreen` button handlers. So step 4 means "no
+  autosaves during a tutorial", and the guesses here ("the game is over", "a save or load is
+  in progress") were both wrong. See `FINDINGS-schedule.md`.
 - `idler + 0x68` as multiplayer. It fits, it has not been tested.
 - What calls `0x261CA0`. It is virtual, slot 53 of `CInGameIdler`, and nothing reaches
   it directly, so the caller has not been traced.

@@ -168,11 +168,23 @@ namespace CCurrentGameState {
         constexpr uintptr_t player_tag = 0xC30;
 
         /**
-         * Checked before the game will consider an autosave, and it has to be zero.
-         * It is zero in an ordinary running game, so it is not "a session is loaded";
-         * what it actually means has not been established.
+         * **Set while a tutorial is running.** Zero in every ordinary game, including a
+         * loaded one, because the only two instructions in the executable that write it are
+         * `CTutorialScreen` button handlers: `0x71D6BA` sets it when one of
+         * `tutorial_button_1`..`_6` is pressed and `0x71D365` clears it on `back_button`.
+         * Every constructed game state zeroes it, as part of the word store that clears
+         * `+0xD9C` and this together.
+         *
+         * It was called `autosave_blocked` here until 2026-09-30, after the one reader the
+         * autosave work happened to look at (the gate at `0x661DC9`). It has twelve readers,
+         * and three of them say what it is for: while it is set, `RunHourlyPass` never clears
+         * the AI latch `+0xC68`, `RunDailyPass` skips the daily event pass, and
+         * `RunMonthlyPass` skips the event-candidate rebuild. A tutorial runs with the event
+         * system off and the parallel AI pass latched off, declaring war through the command
+         * queue instead. Naming it after one reader was the mistake; see
+         * reversing/FINDINGS-schedule.md.
          */
-        constexpr uintptr_t autosave_blocked = 0xD9D;
+        constexpr uintptr_t tutorial_active = 0xD9D;
 
         /**
          * **Whether a game is actually on screen**, and the last field of the class.

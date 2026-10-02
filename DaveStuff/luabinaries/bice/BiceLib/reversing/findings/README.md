@@ -98,27 +98,14 @@ Two conventions it knows about, which yours should use. A register argument is w
 the compiler used a register convention no ordinary signature can express, that is what
 `no_signature` is for - do not invent stack parameters to make the arithmetic close.
 
-## Traps that have actually cost time here
+## Traps
 
-- **Virtual address against rva.** The disassembler prints virtual addresses, based at
-  `0x400000`; `project.json` wants the rva. **Magnitude does not tell you which is
-  which** - `.text` runs to about `0x970000`, so an rva here is routinely larger than the
-  image base. The tools take virtual addresses and accept `rva:0x...` for the other kind;
-  `image.both()` prints both, use it in anything you report. This trap ate an afternoon
-  once and then reappeared inside the tooling written to avoid it.
-- **A `__thiscall` name needs a `::`.** Without a class, Ghidra invents a `this` and
-  shifts every argument along.
-- **Do not decode from a guess.** x86 decodes happily from the middle of an instruction
-  and produces confident nonsense - a plain `mov` has read out here as `fisttp`. Start
-  from a function or from an address a tool printed.
-- **A displacement alone is not evidence.** `+0x38`, `+0x5C`, `+0xBCC` are each hundreds
-  of unrelated hits. Use `fieldchain.py --holder` so the register is tied to a known
-  pointer, and treat bare `--field` output as candidates.
-- **Read control flow off the graph.** `cfg.py` lists every edge into a block. One jump
-  read in isolation said troop rotation was gated on being at war; the edge list said it
-  was not, and the edge list was right.
-- **Check what already exists before naming it.** `CCountry +0xBCC` was named `Manpower`
-  by the Lua API long before this work added a duplicate for it.
+**They are in `../TRAPS.md`**, numbered, with the case that cost time and the cheap check for
+each. The findings files cite them by number - "exactly trap 2" means the entry numbered 2 there.
+
+This section used to carry its own shorter unnumbered version, which was worse than having none:
+the citations follow `TRAPS.md`'s numbering, so counting the bullets here resolved them to the
+wrong trap. Add a new trap to `TRAPS.md` and nowhere else.
 
 ## The tools
 

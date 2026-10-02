@@ -162,6 +162,27 @@ def functionStart(address, limit=0x2500):
     looks like a prologue is a boundary. **Not infallible** - a jump table or an inlined
     block looks the same - so treat what comes back as a candidate and check it against
     the disassembly before writing a finding from it.
+
+    **It is wrong wherever two functions abut with no padding**, which happens often enough
+    in this image to have cost the folder six findings. `functionStart(0x682E4B)` answers
+    `RunHourlyPass` (0x682630), because `RunDailyPass` begins at 0x682C20 immediately after
+    the hourly pass's `ret` with no int3 between them, and the walk runs straight past it.
+    Known pairs: 0x682630/0x682C20, 0x9C0520/0x9C0A40, 0x4C3B10/0x4C3C00. The full list,
+    with the rest of the traps, is in TRAPS.md.
+
+    It can also miss an entry whose first byte is not in its prologue set, which is the
+    opposite failure and looks identical from outside. 0x51/0x52/0x50 were added on
+    2026-10-01 after it walked past rva 0x963F0 (`push ecx`) into the function before it,
+    and 0x80 the same day after it walked past rva 0xA9B70 and 0xA9BE0, which both open
+    with `cmp byte ptr [eax+0x22], 0`. The byte is only ever tested immediately after an
+    int3, so adding to this set cannot stop the walk inside a function - only at a boundary
+    it was previously crossing.
+
+    Use `retsBefore(candidate, address)` to see it: an abutting boundary shows up as a `ret`
+    between the candidate and the address you asked about. Mind the converse, though - a
+    `ret` there can also be a function's early exit with a cold path after it, as in
+    CPersistent::Load (0xA7C050, exits at 0xA7C11A and 0xA7C39F), so a `ret` in between means
+    "look", not "the candidate is wrong".
     """
     start, data = text()
     at = address - start
@@ -173,9 +194,34 @@ def functionStart(address, limit=0x2500):
         if data[end] != 0xCC:
             continue
         candidate = end + 1
-        if data[candidate] in (0x55, 0x53, 0x56, 0x57, 0x8B, 0x83, 0x81, 0x6A, 0x68):
+        # 0x51/0x52/0x50 are push ecx/edx/eax: a function that spills its register
+        # argument on entry starts that way. Leaving 0x51 out made this walk straight
+        # past ComputeProvinceLatitude (rva 0x963F0) into the function before it.
+        # 0x80 is `cmp byte ptr [reg+disp8], imm8`: 0x4A9B70 and 0x4A9BE0 both open with
+        # `cmp byte ptr [eax+0x22], 0` and the walk ran past both into 0x4A9B33.
+        if data[candidate] in (0x55, 0x53, 0x56, 0x57, 0x8B, 0x83, 0x81, 0x6A, 0x68,
+                               0x51, 0x52, 0x50, 0x80):
             return start + candidate
     return None
+
+
+def retsBefore(start, address):
+    """
+    Every `ret` strictly between `start` and `address`, as (ret address, stack immediate).
+
+    Empty means `start` really does reach `address` without crossing a return, which is what
+    makes it safe to treat the two as one body. Anything in the list has to be looked at: it
+    is either an abutting function that `functionStart` walked past, or an early exit with a
+    cold path after it. The disassembly tells the two apart - a fresh prologue and its own SEH
+    handler push says a new function, reuse of the first function's frame says a cold path.
+    """
+    out = []
+    for instruction in decode(start, max(0, address - start)):
+        if instruction.address >= address:
+            break
+        if instruction.mnemonic == "ret":
+            out.append((instruction.address, instruction.op_str or None))
+    return out
 
 
 def usesMemory(instruction, displacement, base=None):

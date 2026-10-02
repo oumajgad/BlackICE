@@ -152,24 +152,50 @@ when.
 
 ## Part of the daily pass is not on this thread
 
-Five functions construct a `tbb::task_group_context` and allocate a root task through it -
+Functions that construct a `tbb::task_group_context` and allocate a root task through it -
 the imports at `0xD2B55C`, `0xD2B574`, `0xD2B578` and `0xD2B58C`. The game links Intel TBB and
-fans the tick out to worker threads, and **the RTTI export names the functor for each one**, so
+fans work out to worker threads, and **the RTTI export names the functor for each one**, so
 there is no guesswork about what is being parallelised:
 
 | fan-out | functor | its one caller | so it runs |
 | --- | --- | --- | --- |
-| `0x28DFD0` | `ProcessUnitFunctor` | `0x682887` | every hour |
-| `0x28E0B0` | `ProcessCountryFunctor` | `0x6828D4` | every hour |
-| `0x28E190` | `ProcessAITradeFunctor` | `0x6829DC` | every hour |
-| `0x28E270` | `ProcessProvinceFunctor` | `0x682A3B` | every hour |
-| `0x28E350` | `ProcessAIFunctor` | `0x682DDD` | once a day |
+| `0x28DFD0` | `ProcessUnitFunctor` | `0x682887` in `RunHourlyPass` | every hour |
+| `0x28E0B0` | `ProcessCountryFunctor` | `0x6828D4` in `RunHourlyPass` | every hour |
+| `0x28E190` | `ProcessAITradeFunctor` | `0x6829DC` in `RunHourlyPass` | every hour |
+| `0x28E270` | `ProcessProvinceFunctor` | `0x682A3B` in `RunHourlyPass` | every hour |
+| `0x28E350` | `ProcessCountriesPreDailyUpdate` | `0x682DDD` in `RunDailyPass` | once a day |
+| `0x28E430` | `ProcessAIFunctor` | `0x68310B` in `CGameState::RunAIPass` | every hour |
+| `0x28E800` | `ClearIntelFunctor` | `0x68E510`, from `0x688DD8` | not established |
+| `0x28E870` | `UpdateIntelFunctor` | `0x68E5E0`, from `0x689278` | not established |
 
-The first four callers are inside `RunHourlyPass` and the fifth inside `RunDailyPass`; each
-fan-out has exactly one caller. The functor vftables are `0x15CF6EC`, `0x15CF6FC`, `0x15CF70C`,
-`0x15CF71C` and `0x15CF73C`, and each is referenced twice - once by the fan-out above and once
-in the `0x68EC00`-`0x68F101` range, so a second set of `parallel_for` sites exists and **how
-often the AI really runs is not settled**; see `FINDINGS-ai.md`.
+**Two corrections, both of which this document got wrong first time round.**
+
+`0x28E350` is **not** the AI fan-out. It writes vftable `0x15CF72C`, which RTTI names
+`start_for<..., ProcessCountriesPreDailyUpdate, ...>`; the AI's is `0x15CF73C`, written by
+`0x28E430` at `0x68E4AE`. The two functions are otherwise instruction-identical, which is how
+they came to be conflated. So `RunDailyPass` never touches the AI at all - its fan-out rebuilds
+each country's neighbours.
+
+And there is **no second set of `parallel_for` sites**. Each functor vftable's second reference
+is inside its own `start_for::execute` (slot 1), in `0x68EBF0`-`0x68F2FC`: a `start_for` that
+splits its range allocates a **child of its own type** and so writes the same vftable. Verified
+for all eight. Nothing was hiding.
+
+**So the AI pass is hourly, and `FINDINGS-ai.md` was right throughout.** The path is not a tick
+stage at all - it is a latch handshake between the hourly pass and the idler:
+
+- `RunHourlyPass` **sets** `CCurrentGameState +0xC68` at `0x6829E4`, right after launching the
+  AI trade fan-out, so the AI pass cannot start while the hourly pass is still running;
+- at its end it **clears** the byte at `0x682B1D`, but only if `+0xD9D` is zero - `jne 0x682B37`
+  skips the clear otherwise;
+- `CInGameIdler::Update` offers `CGameState::RunAIPass` (`0x283080`) every frame; the function
+  returns immediately while the byte is set, and on the one frame it is clear it runs the AI
+  fan-out and sets the byte again (`0x683116`).
+
+The practical consequence: **`ForeignMinister_Tick` and its siblings run once per game day per
+live AI country**, at hour `(country_id + 13) mod 24`, because the hour gate is offered every
+hour and matches once a day. The unknown that remains is what `+0xD9D` is: while it is non-zero
+the latch is never released and the AI pass stops recurring entirely.
 
 **This matters for hooking.** BiceLib's existing hooks are safe because they run on the thread
 that owns the Direct3D device and the Lua state. A hook placed inside one of these functors is
@@ -200,10 +226,16 @@ need to stay in step. That reading is inference; nothing here traced the command
 
 ## What is not established
 
-- What `RunMonthlyPass` and `RunYearlyPass` actually do. Both are named and bounded -
-  `0x283B50` to `0x283D0F` and `0x283D20` to `0x283E7D`, each `ret 4` - and neither body has
-  been read. Since slots 54 and 55 are stubs, those two functions are the whole of the game's
-  monthly and yearly behaviour, which makes them unusually cheap for what they would explain.
+- What `RunYearlyPass` (`0x283D20` to `0x283E7D`, `ret 4`) does. Since slots 54 and 55 are
+  stubs, it is the whole of the game's yearly behaviour, which makes it unusually cheap for
+  what it would explain.
+- **`RunMonthlyPass` is now partly read** (`FINDINGS-techdecay.md`). Its shape is two loops and
+  a tail: one over the province vector `state+0xB8C` from index 1, calling `0x49F3E0` per
+  province and then running province `nationalism` (`+0x24`) down by 83 thousandths with a floor
+  at zero (`0x683BA5`); one over the country vector `state+0xBBC` from index 1, calling
+  `CCountry::UpdateMonthly` (`0x4DC840`), which is **where technology practicals and theories
+  decay**; then the event-candidate rebuild at `0x683CE1`. `0x49F3E0`, the province's own
+  monthly work, is still unread.
 - **The block at `0x683E80` to the bare `ret` at `0x683ED1`.** It follows the yearly pass's
   `ret 4` without padding, has no prologue, and uses `edi` without setting it, so it is
   out-of-line code belonging to some other function. Which one is unknown. Anything that reads

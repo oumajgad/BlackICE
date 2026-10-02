@@ -364,6 +364,8 @@ is the oracle**, not a savegame.
 
 #### Five traps in step 4, each of which cost time
 
+*These five are specific to fitting a key to an offset. The traps that apply to everything here are in `TRAPS.md`, numbered; the last one below is its trap 16.*
+
 **A fit against a key that never varies means nothing.** `is_armor = yes` on 76 types and
 absent everywhere else fits *any* byte that happens to be 1 on those types. Count the distinct
 values first, and where there is only one, fit on **absence**: the offset that is set on

@@ -37,10 +37,22 @@ first argument is the name of a Lua function; the rest are the tags involved.
 
 After the usual lazy creation of the `CCurrentGameState` singleton, it does three things.
 
-**It short-circuits for the human player.** If the acting country's id equals
-`g_CCurrentGameState +0xC34` (`player`) *and* the byte at `0x1A8562F` is set, it returns
-**100** without calling Lua at all. So a script's opinion of what the player is offering is
-never consulted down this path; what that byte is has not been established.
+**It short-circuits for the human player, but only under a cheat.** If the acting country's
+id equals `g_CCurrentGameState +0xC34` (`player`) *and* the byte at `0x1A8562F` is set, it
+returns **100** without calling Lua at all.
+
+**`0x1A8562F` is the `yesmen` console cheat** (rva `0x168562F`), identified 2026-10-01 and
+re-checked against the bytes. The console handler compares the typed word against `'yesmen'`
+(`0x15B8590`), tests the byte at `0x4419CA`, toggles it with
+`sete al; mov byte ptr [0x1A8562F], al` at `0x4419D8`, and prints
+*'AI now always responds favorably'* (`0x15B8598`). Eight readers in the image and that is the
+only writer; its neighbours in the same handler are the other cheat flags, including the one
+`project.json` already names `g_FogOfWarEnabled`.
+
+**So this paragraph used to say the opposite of the truth.** It read "a script's opinion of what
+the player is offering is never consulted down this path". In any game nobody has cheated in the
+short-circuit never fires, and the mod's Lua is asked about a human's offers exactly as it is
+about an AI's. See `FINDINGS-survivors.md`.
 
 **It finds an AI to hand to the script**, as `CCountry +0x1D8`, trying three tags in turn and
 taking the first non-null: the recipient, then the actor, then the recipient again through its
@@ -122,9 +134,17 @@ the loader places, and the score comes straight back in `eax` with no post-proce
 
 - Which of the ten pure slots the other nine names belong to. `CDiplomaticAction::IsValid` is
   also registered with luabind and also resolves to `_purecall`.
-- How `CCallAllyAction`, `CEmbargoAction`, `CLicenceTechnologyAction`,
-  `CRequestLendLeaseAction` and `CTradeAction` reach their Lua wrappers.
-- The byte at `0x1A8562F` that gates the `return 100` short-circuit.
+- ~~How `CCallAllyAction`, `CEmbargoAction`, `CLicenceTechnologyAction`,
+  `CRequestLendLeaseAction` and `CTradeAction` reach their Lua wrappers.~~ **Closed
+  2026-10-01** (`FINDINGS-survivors.md`): four of them call a **name-specialised clone** of
+  `GetDiploScoreFromLua` with the Lua function name baked into luabind's call proxy, which is
+  why no literal appears in the slot body. `CEmbargoAction` calls nothing - its slot 17 is
+  `mov eax, 0x64; ret`, a **constant 100**, shared with `CAddWarGoalAction`. A fifth clone
+  belongs to `CJoinFactionGoalAction`, which this file never enumerated because it derives from
+  `CWarGoalBaseAction` rather than from `CDiplomaticAction` directly - **the family is 24
+  classes, not 20**, and the hard-zero list is **six**, not five: `CDeclareWarAction` joins it.
+- ~~The byte at `0x1A8562F` that gates the `return 100` short-circuit.~~ **Closed: it is the
+  `yesmen` cheat** - see above.
 - `0xA445B0` and `0xA44080`, the luabind call and the result conversion.
 - What the engine does with the score - the thresholds an action is accepted at, and whether
   slot 13's can-offer gate runs before or after.

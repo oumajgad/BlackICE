@@ -220,16 +220,27 @@ and was not read - the survey's "tooltip"), `0x532C7B` (the gain above) and `0x8
 (`CCountry +0x5F4`, read at `0x420538` as `[+0x10]` and `[+0x14]`, which
 `CProductionDistribution` already names). **So IC going into reinforcements and upgrades
 slows the decay**, and at `slack >= 1.000` it stops it entirely. Which two 64-bit
-`CDistributionSetting` fields `+8` and `+0x10` are is **not established**: `+0x10` is
-recorded as `factor`, `+8` is undocumented.
+`CDistributionSetting` fields `+8` and `+0x10` are was recorded here as **not
+established**. It was already answered elsewhere: `+0x10` is `factor` and **`+8` is
+`base_percentage`**, the slider's own share - `project.json`, `CLASSES.md` and
+`FINDINGS-production.md` all have it, from the luabind registration that exposes `0x4C8920` as
+`GetPercentage`. So `slack` is the **sum of the Upgrade and Reinforcement slider positions**,
+in thousandths - the share of IC those sliders *ask for*, formed before need is consulted at
+all. See `FINDINGS-survivors.md` §3.
 
 `country->decay_modifier[...]` is `CCountry +0x1174`, and the array's end is `+0x1178`.
 
-### `BASE_TECH_DECAY` has exactly one reader, and it is not a tick
+### `BASE_TECH_DECAY` has two readers, and the second one *is* a tick
 
-Confirmed independently of the existing note in `FINDINGS-script.md`: a scan of every
-`call GetDefines (0x445D90)` site in `.text`, taking the first two displacement reads after
-the call, finds exactly one site that reaches `country +0x40` - `0x420661`, here.
+**Corrected.** This section first claimed a single reader. It has two, and the one it missed
+is the monthly one that actually matters - `0x4DCACA`, in `CCountry::UpdateMonthly`. See
+`FINDINGS-techdecay.md`; what follows is still an accurate reading of the *other* reader.
+
+The scan that produced the wrong answer looked at every `call GetDefines (0x445D90)` site in
+`.text` and took the first two displacement reads after the call. **`GetDefines` is inlined**
+at `0x4DCA62..0x4DCABD` - the same body, the same `push 0x11C` and `call 0x4452E0`, the same
+singleton `[0x1A86040]` - so there is no `call` there for such a scan to anchor on. Any
+"only reader of a define" claim in this folder arrived at that way carries the same risk.
 
 **What that site is reached from is the surprise.** The two wrappers are
 
@@ -254,10 +265,11 @@ Both wrappers have exactly one caller: `0x41D560` (rva `0x1D560`, extent
 - `0x65A2B0` - `CInGameIdler` slot 3, the one-shot in-game initialisation, which at
   `0x661812` also calls the settings parser `0x41F9A0`.
 
-Neither is a daily or monthly tick. **So in this build the only code that reads
-`BASE_TECH_DECAY` runs when the custom game settings are applied - at game start, or when the
-custom-game stage changes - and not during play.** Tuning `BASE_TECH_DECAY` therefore changes
-the ability a country begins with, not any ongoing drift.
+Neither is a daily or monthly tick, so **this** reader runs only when the custom game
+settings are applied - at game start, or when the custom-game stage changes. Ongoing drift
+comes from the other one: `CCountry::UpdateMonthly` applies `BASE_TECH_DECAY` to every
+category once a month, so tuning the define changes both the ability a country begins with
+and the rate it bleeds away during play.
 
 ### `customGameSettings` - the CGM singleton
 
@@ -456,33 +468,40 @@ the opposite way round from that ending, and **was not resolved**.
 
 ## The decay chain is not hidden behind a virtual call
 
-Worth recording because it was the obvious explanation and it is wrong. `0x4204A0` is the only
-reader of `BASE_TECH_DECAY` and its call graph is shallow and does not reach the tick, which
-invites the thought that the per-period application is reached virtually and so invisible to
-`findRefs`, which only sees direct calls.
+Worth recording because it was the obvious explanation and it is wrong. `0x4204A0`'s call
+graph is shallow and does not reach the tick, which invites the thought that the per-period
+application is reached virtually and so invisible to `findRefs`, which only sees direct calls.
 
 **It is not.** None of `0x4204A0`, its two callers' functions, its grandparent `0x41D560`, or
 either of that function's two call sites appears in **any** vftable slot of **any** class in the
 RTTI export. Every edge in the chain is a direct call, so `findRefs` saw all of them.
 
-So the open question stands and moves: something *other* than this chain must apply decay over
-time, since practicals visibly decay in play. The array it would have to write is
-`CCountry +0x698` `category_levels`, and 27 functions touch that offset - `0x41FFF0` among them,
-which sits immediately beside this chain and is the place to start.
+The mechanism was simply a second, separate function: **`CCountry::UpdateMonthly`
+(rva `0xDC840`)**, called directly from `RunMonthlyPass` at `0x683BE9`, which writes
+`CCountry +0x698` at `0x4DCB20`. No virtual call anywhere in it. `FINDINGS-techdecay.md` has
+the arithmetic and how it differs from this chain's.
+
+The lead this section offered - "`0x41FFF0` among them, which sits immediately beside this
+chain" - was **wrong**, and wrong in the folder's most repeated way: `0x41FFF0` ends at its
+`ret 8` at `0x420492` with `int3` padding, and the `+0x698` accesses credited to it
+(`0x420703`, `0x42070C`, `0x420717`) are inside `0x4204A0`, a fresh function with its own SEH
+frame. An extent walk ran through a `ret`. That is the fifth time in this folder.
 
 ## What is not established
 
 - **The tick period.** That `0x532C20` is called once a day is inference from
   `CDistributeResearch` being a leadership slider and from `0x532B70` reading the result as
   days. Nothing here measures it, and the game was not run.
-- **Whether anything decays tech ability during play.** `BASE_TECH_DECAY`'s one reader is
-  reached only from the CGM apply path, and the scan that established "one reader" takes the
-  first two displacement reads after each `GetDefines` call - a site that parks the defines
-  pointer on the stack first would be missed. A second mechanism under a different define, or
-  one hard-coded, would not show up in that scan at all.
-- **`CDistributionSetting +8`.** The decay's `slack` term multiplies `+8` by `+0x10` on the
-  Reinforcement and Upgrade sliders. `+0x10` is recorded as `factor`; `+8` is a second 64-bit
-  fixed point with no name, so what `slack` *means* is unread.
+- ~~**Whether anything decays tech ability during play.**~~ **Answered:**
+  `CCountry::UpdateMonthly` does, monthly, under the same define. The suspicion recorded here -
+  that the `GetDefines`-call scan could miss a reader - was right, though not for the reason
+  guessed: the miss was an *inlined* `GetDefines`, not a stashed pointer.
+- ~~**`CDistributionSetting +8`.**~~ **Never open - it is `base_percentage`**, named since
+  `FINDINGS-production.md`, and this file was simply stale against the record (trap 14). `slack`
+  is the sum of the Upgrade and Reinforcement **slider positions**, not spare capacity: the
+  product is formed before need is consulted, so practical decay is slowed in proportion to
+  what a country *allocates*, whether or not any of it is spent or needed. Since the six
+  production shares sum to one, `slack <= 1000`. `FINDINGS-survivors.md` §3.
 - **Where `extra_practice_decay`'s map is filled.** `CCGExtraPracticeDecay::LoadKey` exists in
   `project.json`, but no store into `settings +0xC0` was found anywhere in
   `0x41C570..0x421400`, and reading the value as a multiplier rests on its use at `0x420689`,

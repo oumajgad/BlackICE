@@ -371,20 +371,23 @@ not layout.
 
 ### What is not known
 
-- **Whether the hook fires for them at all.** `0x2F960` has two callers: `0x3170B`,
-  in the combat manager's own code, and `0x1D2904`, which sits among the `CArmy`,
-  `CNavy` and `CAir` virtuals - unit code. Both fetch the game state and append to the
-  same history. Which kinds of combat reach which caller has not been traced.
-- **What losses mean for them.** `+0x84` is strength in thousandths for a land
-  combatant, checked against the figure the game reported. Ships and planes are not
-  brigades, so the scale and the meaning both want checking before the report's Air and
-  Naval columns are believed.
+- ~~**Whether the hook fires for them at all.**~~ **Answered in
+  `FINDINGS-airnaval.md`: yes.** `CCombatManager::Tick` reaches `RecordCombat` through
+  `CCombat::Finish` and its tail, and **no step on that path tests the kind**. The second
+  caller `0x1D2904` writes `gameState + 0xB74`, the same list, which also places the one
+  `CCombatManager` at `CCurrentGameState + 0xB5C`.
+- ~~**What losses mean for them.**~~ **Answered, and the answer is that the columns cannot
+  share a formatter.** `CCombatant::ApplyLosses` branches on the combat kind:
+  land, air and the ground/land bombings sum `CUnit::SettleCombatDamage` into `+0x84`, so
+  **planes are the same currency as land brigades**; naval adds a **flat `0x3E8` per sunk
+  ship**, so on a naval row `+0x84` is a **ship count in thousandths** - 3000 means three
+  ships. Anything formatting `+0x84` has to branch on the kind first.
 - **Whether the loser's country list empties the same way.** The winner rule and the
   loser's name both hang on that, and both have only ever been watched on land.
 
-One air battle and one naval battle with recording on settle all three: the Kind column
-should read Air and Naval, Winner and Loser should fill, and the losses should match
-what the game reports.
+One air battle and one naval battle with recording on settle what is left: the Kind column
+should read Air and Naval, Winner and Loser should fill, and a naval row's losses should come
+out as a **small whole number of ships** rather than a strength figure.
 
 ## Bombing raids are combats too
 
@@ -575,13 +578,29 @@ incomplete reading; it is not.
 | `CNavalCombat` | `0x17BA00` |
 | `CAirCombat`, `CGroundBombing`, `CLandBombing`, `CNavalBombing` | `0x17BC50` |
 
-The air one calls slots 15, 17 and 18 through the vftable and **never 0x4C**, which is
-`CCombatant::ApplyCombatModifiers`; the naval one makes no virtual call at all in its first
-0x300 bytes. And `CUnit::ResetCombatModifiers` has exactly two callers - the land slot 19,
-and `CUnit::~CUnit`.
+**Corrected.** This table is right, but the argument that used to follow it was not. It read
+the air tick as calling slots 15, 17 and 18 itself and never `0x4C`, and the naval tick as
+making no virtual call at all. In fact **both delegate to the base tick as their first act**:
+`CAirCombat::Tick` is a dozen instructions whose opening is `call 0x56EBE0`, and
+`CNavalCombat::Tick` opens `call 0x56EBE0` too. The seven virtual dispatches attributed to the
+air tick are in that shared base body. So the base tick *does* run for air, naval and all three
+bombings, and `FINDINGS-airnaval.md` records it.
 
-So a ship's or a wing's `CUnit + 0xDC` is never filled **and never cleared**, and those
-nine ids are names the engine knows and nothing on this path ever adds.
+What survives, and what the live watch actually showed, is the **result**: a ship's or a wing's
+`CUnit + 0xDC` is never filled and never cleared, and `CUnit::ResetCombatModifiers` has exactly
+two callers - the land slot 19 and `CUnit::~CUnit`. Those nine ids are names the engine knows
+and nothing ever adds.
+
+**The reason, after two later surveys — and it is not the "per-kind override of a dispatched
+slot" guessed here.** Two separate things were wrong. First, air and naval modifiers go to a
+**different object**: `CSubUnit::AddCombatModifier` (rva `0x1AC300`, 48 call sites) appends to
+`CSubUnit +0x40`, while `CUnit::AddCombatModifier` (21 sites) appends to `CUnit +0xDC`. Land
+puts its modifiers on the division; naval, air and both sides of a bombing put theirs on the
+individual ship or wing. Second, `CUnit::ResetCombatModifiers`' caller is the **base**
+`CCombatant::ApplyCombatModifiers` (`0x565590`), which all five slot-19 overrides run — so a
+ship's or wing's parent `CUnit +0xDC` **is** cleared every tick. "Never filled" survives;
+"never cleared" does not, and the live `+0xE4` watchpoint was on an object that was never going
+to be filled. See `FINDINGS-combatmods.md`.
 
 **Settled live, by a watch that caught nothing.** A hardware write watchpoint on `+0xE4`
 through a whole naval battle and then a whole air battle fired zero times, where a land

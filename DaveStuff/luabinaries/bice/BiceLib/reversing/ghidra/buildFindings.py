@@ -64,6 +64,23 @@ class Checker:
         rdata = image.read(image.rdata[0], (image.rdata[1] - image.rdata[0]) & ~3)
         self.code_pointers = {v for (v,) in struct.iter_unpack("<I", rdata) if image.text[0] <= v < image.text[1]}
         self.data = [(s[0], s[0] + s[1]) for s in image.sections if s[3] == ".data"][0]
+        # Where a *writable or read-only* global may live, by **virtual** extent. Two kinds of
+        # real address were being rejected as "not a global" before this existed:
+        #
+        #  * a read-only constant in `.rdata` - `g_DaysPerYear`, and the `(int)floor(N.5f)`
+        #    statics this image is full of - which `self.data` alone does not cover;
+        #  * a global in `.data`'s zero-filled tail, past the bytes the file actually carries.
+        #    The four cached weather defines are there, and so is g_CCurrentGameState. This is
+        #    the `mapped()`-versus-`read()` distinction image.py documents: using the raw size
+        #    says "not real" to every global that starts out zero.
+        # Where a global may live, by **virtual** extent and in either data section. Two kinds
+        # of real address were rejected as "not a global" before this: a read-only constant in
+        # `.rdata` - `g_DaysPerYear`, and the `(int)floor(N.5f)` statics this image is full of -
+        # and a global in `.data`'s zero-filled tail past the bytes the file carries, where the
+        # cached weather defines live. `image.sections` already reports Misc_VirtualSize, so the
+        # tail was never the problem; the missing half was `.rdata`.
+        self.globals = [(s[0], s[0] + s[1]) for s in image.sections
+                        if s[3].startswith('.data') or s[3].startswith('.rdata')]
 
     def starts_function(self, va):
         """Called, pointed at from data, or straight after a ret and its int3 padding."""
@@ -114,16 +131,37 @@ class Checker:
         name = im.cstr(im.u32(locator + 0xC) + 8) if im.rdata[0] <= im.u32(locator + 0xC) < self.data[1] else None
         return bool(name and name.startswith(".?A")) and im.is_code(im.u32(va))
 
+    def is_vftable_nortti(self, va, slots=4):
+        """
+        A vftable belonging to a class RTTI does not describe.
+
+        `is_vftable` insists on an RTTI locator at `va - 4` with a mangled `.?A` name, which is
+        the right test for a vftable that has one and has caught real mistakes. A handful of
+        classes here were compiled without RTTI - the session and the four command channels -
+        so that test says no to a table whose address was read straight out of the `mov [this],
+        <imm>` in the class's own constructor. This is the weaker test those get: in `.rdata`,
+        and the first few slots all point at code. It cannot confirm *which* class owns the
+        table, so an entry using it has to carry the class name itself.
+        """
+        im = self.image
+        if not (im.rdata[0] <= va < im.rdata[1]):
+            return False
+        return all(im.is_code(im.u32(va + 4 * i)) for i in range(slots))
+
     def check(self, kind, va):
         im = self.image
         if kind == "function":
             return self.starts_function(va)
+        if kind == "vftable_nortti":
+            return self.is_vftable_nortti(va)
         if kind == "instruction":
             return self.on_instruction(va)
         if kind == "vftable":
             return self.is_vftable(va)
-        if kind == "global":
-            return self.data[0] <= va < self.data[1]
+        if kind in ("global", "data"):
+            # "data" is accepted as a synonym: it is what a survey naturally writes for a cached
+            # define, and refusing it only loses the finding.
+            return any(lo <= va < hi for lo, hi in self.globals)
         if kind == "string":
             s = im.cstr(va)
             return bool(s and len(s) >= 3)
@@ -829,6 +867,9 @@ def main():
                 continue
             if a["kind"] == "vftable":
                 ns, name = checker.vftable_class(va), "vftable"
+            elif a["kind"] == "vftable_nortti":
+                # The name in project.json is the class, because nothing in the image says it.
+                ns, name = a["name"], "vftable"
             labels.append({"rva": rva, "namespace": ns, "name": name, "kind": a["kind"], "confidence": conf,
                            "evidence": evidence, "type": a.get("type")})
 

@@ -35,6 +35,9 @@ import capstone
 
 import image
 
+# How far past the load to look for the use. 0x40 is too small for the combat module, where
+# a reader can sit 0x53 bytes past its block load - a false zero for military+0x158 came from
+# exactly that. Raise it with --window before believing any negative from this tool.
 WINDOW = 0x40
 
 
@@ -95,12 +98,24 @@ def offsetOf(text):
     return sum(int(part, 0) for part in text.split("+"))
 
 
-def chained(holder, displacement, window):
-    """reads of [reg + displacement] where reg came from [something + holder]"""
+def chained(holder, displacement, span):
+    """reads of [reg + displacement] where reg came from [something + holder]
+
+    `span` is how far past the load to look. It used to be called `window`, which shadowed the
+    module-level `window()` helper this function calls - so --holder raised
+    `TypeError: 'int' object is not callable` on every invocation. Fixed 2026-10-01.
+
+    The shadowing was introduced *after* this module's own worked example was run: with the fix
+    in place, `--holder 0xDA8 --index 50 --stride 8` again reports the one reader at 0x1BB171
+    that the module docstring describes, so that finding stands. But any --holder result from
+    between the regression and the fix is void, because the command could not have run at all -
+    and a tool that dies with a TypeError is at least honest. The dangerous version of this bug
+    is the one that returns an empty dict.
+    """
     engine = image.engine()
     hits = {}
     for at, starts in sites(holder):
-        for back in window(starts):
+        for back in window(starts):  # the helper, not the span
             window_bytes = image.read(at - back, back + 8)
             decoded = list(engine.disasm(window_bytes, at - back, count=1))
             if not decoded:
@@ -114,7 +129,7 @@ def chained(holder, displacement, window):
             if not image.usesMemory(load, holder):
                 break
             register = operands[0].reg
-            for following in image.decode(at - back + load.size, window):
+            for following in image.decode(at - back + load.size, span):
                 if image.usesMemory(following, displacement, base=register):
                     hits[following.address] = following
                 if following.mnemonic in ("call", "ret", "jmp"):

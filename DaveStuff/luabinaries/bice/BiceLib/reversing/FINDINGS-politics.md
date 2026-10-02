@@ -184,7 +184,11 @@ provinces (`CCountry +0xE24` via `0x42F100`).
 
 **AlignTowards** - `0x4C3790`. Reads no `alignment` define; it reads the faction's own
 `ALIGN_TOWARDS` modifier (entry 47, at `[modifier+0x18] + 0x178`, through `0x523560`) - which
-is what `CFaction`'s `influence` string `align_towards_axis` names.
+is what `CFaction`'s `influence` string `align_towards_axis` names. **The game's own name for
+this term is `influence`**: the drift tooltip `0x4FA0B0` keys it `FACTION_DRIFT_INFLUENCE`, so
+the name here was guessed correctly from the `influence` string and is now settled
+(`FINDINGS-survivors.md` §2, which also independently reproduces all seven terms, every sign,
+and the 200-unit distance gate).
 
     (1 - leaderEffectiveNeutrality/100)
       x faction.ALIGN_TOWARDS

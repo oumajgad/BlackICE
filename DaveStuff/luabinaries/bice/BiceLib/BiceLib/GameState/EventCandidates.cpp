@@ -113,18 +113,24 @@ bool EventCandidates::rebuildNow() {
         return refuse("the scenario's event list does not exist yet");
     }
 
-    // The same byte the monthly pass gates its own call on. The autosave work named it
-    // autosave_blocked, for having to be zero before the game will write a save; that
-    // this bookkeeping waits on it too says it means something closer to "a save or a
-    // load is in progress", which is exactly when not to rebuild anything.
+    // The same byte the monthly pass gates its own call on, and it is the tutorial flag -
+    // not "a save or a load is in progress", which is what this check claimed until
+    // 2026-09-30. The only writers in the executable are two CTutorialScreen button
+    // handlers, and while it is set the engine deliberately runs with the event system
+    // off: the daily pass skips the event pass and the monthly pass skips this very
+    // rebuild. So matching the engine means refusing here too, and the reason is that a
+    // tutorial is meant to have no events rather than that anything is busy.
+    //
+    // It is zero in every ordinary game, loaded ones included, so this has never actually
+    // stopped a rebuild. Kept because following the engine's own gate is the point.
     const uintptr_t state = CCurrentGameState::current();
-    uint8_t blocked = 0;
+    uint8_t tutorial = 0;
     if (state == 0) {
         return refuse("no game state");
     }
-    if (!Mem::tryRead(state + CCurrentGameState::Offsets::autosave_blocked, blocked)
-        || blocked != 0) {
-        return refuse("the game is busy with a save or a load");
+    if (!Mem::tryRead(state + CCurrentGameState::Offsets::tutorial_active, tutorial)
+        || tutorial != 0) {
+        return refuse("a tutorial is running, which the engine runs without events");
     }
 
     // Measured either side of the call, because it tests the diagnosis as well as the

@@ -2,6 +2,7 @@
 #include <Gui/Theme.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Gui/TextureStats.hpp>
+#include <Gui/WidgetStats.hpp>
 #include <GameState/CrashSave.hpp>
 #include <GameState/OutOfMemory.hpp>
 #include <GameState/PureCall.hpp>
@@ -548,10 +549,110 @@ namespace {
             "taken as the game dies has to leave a record of whether it worked.");
     }
 
+    /////////////////////////////////////
+    //          GUI WIDGETS            //
+    /////////////////////////////////////
+
+    Gui::WidgetStats::Sample widgetSample;
+    Gui::WidgetStats::DeepScan widgetDeep;
+    bool widgetDeepRun = false;
+
+    void drawWidgets() {
+        ImGui::SeparatorText("GUI widgets");
+
+        if (!widgetSample.valid) {
+            ImGui::TextDisabled("The gui object has not been found. It is resolved on the first "
+                "sample, which needs the game past the main menu once.");
+            return;
+        }
+
+        const uint32_t now = widgetSample.inUse;
+        const uint32_t base = Gui::WidgetStats::baseline();
+        const uint32_t peak = Gui::WidgetStats::peak();
+        const int drift = static_cast<int>(now) - static_cast<int>(base);
+
+        ImGui::Text("In use: %u of %u slots", now, widgetSample.capacity);
+        ImGui::SameLine();
+        if (ImGui::SmallButton("Reset baseline")) {
+            Gui::WidgetStats::resetBaseline();
+            widgetDeepRun = false;
+        }
+
+        ImGui::Text("Baseline %u, peak %u, drift %+d", base, peak, drift);
+
+        // The plot is what answers the question a single number cannot: whether the count
+        // settles or climbs. 30 widgets leak per open-and-close of a full screen window, so a
+        // staircase here is the leak and a flat line is a session that never opened one.
+        const int samples = Gui::WidgetStats::historyCount();
+        if (samples > 1) {
+            static float plot[1800];
+            const int take = samples < 1800 ? samples : 1800;
+            for (int i = 0; i < take; i++) {
+                plot[i] = static_cast<float>(Gui::WidgetStats::historyAt(samples - take + i));
+            }
+            ImGui::PlotLines("##widgets", plot, take, 0, nullptr, FLT_MAX, FLT_MAX,
+                ImVec2(0.0f, 60.0f));
+            ImGui::TextDisabled("%d samples, newest at the right", take);
+        }
+        else {
+            ImGui::TextDisabled("Collecting - the plot needs a few samples.");
+        }
+
+        if (Gui::WidgetStats::reallocated()) {
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Error),
+                "The vector has reallocated: its buffer moved since the baseline.");
+            ImGui::TextWrapped("Any widget pointer cached across that is dangling, and so is any "
+                "pointer to the array itself.");
+        }
+
+        if (drift > 0) {
+            ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
+                "%+d since the baseline.", drift);
+            ImGui::TextWrapped("Growth is expected up to a point: panels are built once and kept, "
+                "so visiting a part of the interface for the first time adds widgets for good. "
+                "What is not expected is a steady climb while nothing new is being opened - "
+                "every open-and-close of a full screen window permanently leaks 30, ten each of "
+                "outliner_header, outliner_header_entry and entry_text.");
+        }
+
+        ImGui::Spacing();
+        if (ImGui::Button("Count names (walks every widget)")) {
+            widgetDeep = Gui::WidgetStats::deepScan();
+            widgetDeepRun = true;
+        }
+        ImGui::SameLine();
+        ImGui::TextDisabled("one pointer chase and one string per widget - not on a timer");
+
+        if (widgetDeepRun && widgetDeep.valid) {
+            ImGui::Text("Walked %u, %u distinct names, %u null slots",
+                widgetDeep.walked, widgetDeep.distinctNames, widgetDeep.nulls);
+            ImGui::Text("The three that leak: outliner_header %u, outliner_header_entry %u, "
+                "entry_text %u", widgetDeep.outlinerHeader, widgetDeep.outlinerHeaderEntry,
+                widgetDeep.entryText);
+            if (widgetDeep.nulls > 0) {
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
+                    "Null slots exist - removal left holes rather than compacting, which is not "
+                    "what was measured on 2026-10-02.");
+            }
+            if (widgetDeep.outlinerHeader > 10) {
+                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
+                    "outliner_header is above its fresh-session count of 10, so about %u "
+                    "open/close cycles have happened.", widgetDeep.outlinerHeader / 10);
+            }
+        }
+        else if (widgetDeepRun) {
+            ImGui::TextDisabled("The walk could not read the vector.");
+        }
+    }
+
     void drawMemoryMeter() {
         const ULONGLONG now = GetTickCount64();
         if (now - lastMemorySampleMs >= 500 || lastMemorySampleMs == 0) {
             sampleMemory();
+            // Three dword reads, so it rides the same tick. The first call resolves the gui
+            // object by walking committed private memory and may hitch once; none after it does.
+            widgetSample = Gui::WidgetStats::sample();
+            Gui::WidgetStats::note(widgetSample);
             lastMemorySampleMs = now;
         }
 
@@ -590,6 +691,7 @@ namespace {
         }
 
         drawBreakdown();
+        drawWidgets();
         drawLua();
         drawTextures();
         drawOutOfMemory();

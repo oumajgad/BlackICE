@@ -271,10 +271,22 @@ namespace CCountry {
         constexpr uintptr_t resources_needed = 0x968;     // metal : energy : rares = 1 : 2 : 0.5
         constexpr uintptr_t tribute_received = 0x8FC;    // from this country's subjects
         constexpr uintptr_t tribute_sent = 0x920;        // to its overlord, held negative
-        // Nothing fills these. +0x824, +0x848 and +0x944 are written nowhere but the
-        // constructor and the daily resets; +0xA64 has writes but is empty in practice.
-        constexpr uintptr_t unused_pool_824 = 0x824;
-        constexpr uintptr_t unused_pool_848 = 0x848;
+        /**
+         * **Two of these have names now, and they are still not filled.** The goods-ledger
+         * tooltip (`0x4F3000`) labels `+0x824` `RES_REPAID_AWAY` and `+0x848` `RES_INC_DEBT`,
+         * pushing each key within four instructions of loading the pool it names - so the
+         * engine's own interface says what they are *for*. Nothing writes either one, and
+         * every reader gets zero, so they are the expense and income halves of a lending
+         * mechanic that exists in the field layout and in the interface and is **inert in
+         * this build**. The tooltip gates each line on `> 0`, so neither ever renders.
+         * Keep the names and keep the warning: a name is not a claim that a field is live.
+         * See reversing/FINDINGS-uinumbers.md.
+         *
+         * `+0x944` is written nowhere but the constructor and the daily resets; `+0xA64` has
+         * writes but is empty in practice. Neither has a name.
+         */
+        constexpr uintptr_t repaid_away = 0x824;        // never written; see above
+        constexpr uintptr_t income_from_debt = 0x848;   // never written; see above
         constexpr uintptr_t unused_pool_944 = 0x944;
         constexpr uintptr_t unused_pool_A64 = 0xA64;
 

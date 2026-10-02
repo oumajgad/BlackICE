@@ -1,7 +1,13 @@
-// Custom Auto-Saves: two extra autosaves, one a few days before the month turns so
-// there is always a save left with that month's event evaluation still ahead of it,
-// and one on a wall clock so a crash can only cost so many minutes of play. See
-// reversing/FINDINGS-autosave.md.
+// Custom Auto-Saves: two extra autosaves, one a few days before the month turns so there
+// is always a save left from before the month's work lands, and one on a wall clock so a
+// crash can only cost so many minutes of play. See reversing/FINDINGS-autosave.md.
+//
+// The original reason for the monthly one is gone and should not be put back: loading a
+// mid-month save used to fire no events for the rest of that month, because the daily pass
+// walks a candidate list that only RunMonthlyPass fills and a load never filled it. BiceLib
+// now calls the game's own RebuildCountryEventCandidates after a load (see
+// GameState/EventCandidates.cpp), so that is fixed and this feature is no longer a
+// workaround for it. What it is now is a rollback point at a predictable, meaningful date.
 
 #include <Gui/GuiPage.hpp>
 #include <Gui/Theme.hpp>
@@ -68,11 +74,10 @@ namespace {
     /**@brief the left half: one save a month, just before the change*/
     void drawMonthly() {
         ImGui::TextWrapped(
-            "The game works out which events can fire when the month changes, and only "
-            "then. A save made after that moment has already had its turn, so loading "
-            "it fires nothing for that month. This takes an extra save shortly before "
-            "the change, which leaves one to go back to that still has the whole month "
-            "ahead of it.");
+            "The month turn is where the game does its once-a-month work: monthly events "
+            "get their one evaluation, and research decay is applied. A save taken shortly "
+            "before it has all of that still ahead of it, which makes it the point in the "
+            "calendar most worth being able to go back to.");
 
         ImGui::Spacing();
 
