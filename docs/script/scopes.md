@@ -17,7 +17,7 @@ Scopes nest, and `limit` narrows one. See
 | --- | --- | --- | --- |
 | `and` | All parts of the group are valid. | `and = { ... }` | 7448 |
 | `or` | At least one part of the group is valid. | `or = { ... }` | 2410 |
-| `not` | No parts of the group are valid. # While this should have an implicit AND inside of it, it does not work correctly unless you explicitly state the AND | `not = { ... }` | 17880 |
+| `not` | No parts of the group are valid. # While this should have an implicit AND inside of it, it does not always work correctly unless you explicitly state the AND | `not = { ... }` | 17880 |
 | `country tag` | The specified country. | `tag  = { effects… }` |  |
 | `FROM` | The country that triggered the current event. | `FROM  = { effects… }` | 512 |
 | `THIS` | The current country. | `THIS  = { effects… }` | 784 |
