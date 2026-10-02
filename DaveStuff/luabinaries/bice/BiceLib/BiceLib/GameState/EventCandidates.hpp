@@ -31,7 +31,7 @@
  * which runs once after each save is loaded. That makes it switchable with the rest of
  * the mod's scripted behaviour rather than something the DLL does on its own.
  *
- * reversing/FINDINGS-events.md has the three layers and how the bug was found.
+ * reversing/findings/FINDINGS-events.md has the three layers and how the bug was found.
  */
 namespace EventCandidates {
     /**

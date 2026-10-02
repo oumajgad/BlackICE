@@ -28,7 +28,7 @@
  *
  * The four of them run from `0x23CE97` to `0x23CFB5` and nothing else is in between, so a
  * five byte jump from the first to the last takes out all four together. **Every branch
- * that enters that range lands on its first byte** - checked with `reversing/cfg.py
+ * that enters that range lands on its first byte** - checked with `reversing/scripts/cfg.py
  * --lands-in` - so there is no path that starts in the middle of it and would run into
  * the jump's tail.
  *

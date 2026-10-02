@@ -3,9 +3,33 @@
 Scripts for working out what the game keeps where, when nothing we already have
 exposes it. Everything here reads the running game and writes nothing to it.
 
+## The layout
+
+Five folders and five documents, and the split is worth knowing before looking for anything:
+
+| | |
+| --- | --- |
+| `findings/` | the 67 `FINDINGS-*.md` write-ups - the long form of everything that has been read |
+| `scripts/` | the toolkit, 37 scripts. **Commands are run from `reversing/`**, so they read `python scripts/image.py` |
+| `ghidra/` | the Ghidra side: `project.json`, the build and merge scripts, the headless java |
+| `fragments/` | the parallel-agent staging area - `incoming/`, `merged/`, and the contract in its README |
+| `probes/` | one-off probe scripts from a live session, kept for the record |
+| `CLASSES.md` `CANDIDATES.md` `TRAPS.md` `PROGRESS.md` | the record, the queue, the traps, the generated scoreboard |
+
+**A name without a folder is a name, not a path.** Through all of this, prose cites documents and
+scripts the way someone standing in `reversing/` would - `` `CLASSES.md` ``, `` `project.json` ``,
+`` `vtable.py` ``, `` `FINDINGS-combat.md` `` - and the table above is what resolves them. Only
+command lines and real paths were rewritten when the folders were split on 2026-10-02, because
+those are meant to be run or followed. Prefixing three hundred mentions in the prose would have
+made the writing worse to settle something one table settles.
+
+`findings/` and `fragments/` are both "findings" in ordinary speech, which is why they have
+different names here: the first is prose a person reads, the second is JSON an agent writes and
+`mergeFindings.py` lands. They were one name until 2026-10-02 and it was confusing.
+
 **What has been worked out is in `CLASSES.md`** - every class, its vftable, the fields
 identified on it and how far each one can be trusted. This folder is the workings;
-that file is the record. `FINDINGS-combat.md` is the long form for the combat classes,
+that file is the record. `findings/FINDINGS-combat.md` is the long form for the combat classes,
 which are the ones that have had the most attention.
 
 **`CANDIDATES.md` is the work queue** - what is worth reading next and why, with an anchor in
@@ -61,9 +85,9 @@ also why `CCombat` shows two vftables - the second, at object offset 8, is the
 **`findInstances.py`** - every live object of a class.
 
 ```
-python findInstances.py CCombatHistory
-python findInstances.py CCombatHistoryEntry --limit 20
-python findInstances.py CCombatHistory --dump 0x60
+python scripts/findInstances.py CCombatHistory
+python scripts/findInstances.py CCombatHistoryEntry --limit 20
+python scripts/findInstances.py CCombatHistory --dump 0x60
 ```
 
 The count answers structural questions on its own. One `CCombatHistory` means it is
@@ -73,8 +97,8 @@ global; one per country means it is not.
 by side.
 
 ```
-python dumpStruct.py CCombatHistory --length 0x80
-python dumpStruct.py 0x1a2b3c40 --length 0x200 --strings
+python scripts/dumpStruct.py CCombatHistory --length 0x80
+python scripts/dumpStruct.py 0x1a2b3c40 --length 0x200 --strings
 ```
 
 Pointers that land on a known vftable are named, which is usually what identifies a
@@ -84,8 +108,8 @@ field first.
 between two snapshots.
 
 ```
-python poolSnapshot.py s1.json     # take several while the game runs
-python poolCompare.py s*.json
+python scripts/poolSnapshot.py s1.json     # take several while the game runs
+python scripts/poolCompare.py s*.json
 ```
 
 Written to tell apart pools nothing names. A pool that only ever moves in crude oil and
@@ -96,9 +120,9 @@ never moves in any country over eleven game days is not used at all.
 running game.
 
 ```
-python saveTokens.py tokens.json            # the running game if there is one
-python saveTokens.py tokens.json --compiled # only the ids built into the executable
-python saveTokens.py tokens.json --static   # the executable alone
+python scripts/saveTokens.py tokens.json            # the running game if there is one
+python scripts/saveTokens.py tokens.json --compiled # only the ids built into the executable
+python scripts/saveTokens.py tokens.json --static   # the executable alone
 ```
 
 Save code never writes a key as a string: it writes an id (`mov ecx, 0x5A6`, then a call)
@@ -121,14 +145,14 @@ that file into the `SaveToken` enum, which is what makes a save writer decompile
 addresses and rvas; the four beside it are built on it and none of them needs the game.
 
 ```
-python disasm.py 0x005BB146 0x60          a range, with strings named
-python cfg.py 0x005BAF70 0x450            basic blocks and every edge into them
-python cfg.py 0x005BAF70 0x450 --lands-in 0x005BB25E 0x005BB262
-python fieldchain.py --holder 0xDA8 --index 50 --stride 8
-python slotcalls.py 32 --touches 0xBAC 0x1E4
-python frontier.py --top 40               what named functions call that nobody has named
-python frontier.py --from 0x005BAF70      what one function reaches
-python checkSignatures.py                 the findings against the executable
+python scripts/disasm.py 0x005BB146 0x60          a range, with strings named
+python scripts/cfg.py 0x005BAF70 0x450            basic blocks and every edge into them
+python scripts/cfg.py 0x005BAF70 0x450 --lands-in 0x005BB25E 0x005BB262
+python scripts/fieldchain.py --holder 0xDA8 --index 50 --stride 8
+python scripts/slotcalls.py 32 --touches 0xBAC 0x1E4
+python scripts/frontier.py --top 40               what named functions call that nobody has named
+python scripts/frontier.py --from 0x005BAF70      what one function reaches
+python scripts/checkSignatures.py                 the findings against the executable
 ```
 
 **`checkSignatures.py` audits what is already recorded**, which nothing else here does.
@@ -158,8 +182,8 @@ instruction they replace, and a branch into the middle of that lands in the disp
 **`vtable.py`** - classes' vtables side by side, out of the executable.
 
 ```
-python vtable.py CCombat CLandCombat CAirCombat CNavalCombat --all
-python vtable.py CCombatant CLandCombatant CAirCombatant CNavalCombatant
+python scripts/vtable.py CCombat CLandCombat CAirCombat CNavalCombat --all
+python scripts/vtable.py CCombatant CLandCombatant CAirCombatant CNavalCombatant
 ```
 
 What a subclass overrides is what it does differently, and a slot every sibling shares
@@ -169,8 +193,8 @@ how the kind of a combat was found.
 **`watch.py`** - snapshot, do something in game, see what moved.
 
 ```
-python watch.py CCombatHistory --length 0x80
-python watch.py CCombatHistoryEntry --instances
+python scripts/watch.py CCombatHistory --length 0x80
+python scripts/watch.py CCombatHistoryEntry --instances
 ```
 
 This is the one that finds counters. Fight a battle, press enter, and whatever counts
@@ -189,8 +213,8 @@ anything left, not a percentage.
 **`census.py`** - every class's live objects, by scanning for its vftable.
 
 ```
-python census.py --top 40
-python census.py --scales-with 108     # what is built per country
+python scripts/census.py --top 40
+python scripts/census.py --scales-with 108     # what is built per country
 ```
 
 `--scales-with` is what found the historical models: 5,323,320 objects turned out to be
@@ -201,9 +225,9 @@ python census.py --scales-with 108     # what is built per country
 pointers, text. Most of it is not objects.
 
 ```
-python regionprofile.py --top 12
-python regionprofile.py --save empty.json     # remember what is empty now
-python regionprofile.py --compare empty.json  # what has been written since
+python scripts/regionprofile.py --top 12
+python scripts/regionprofile.py --save empty.json     # remember what is empty now
+python scripts/regionprofile.py --compare empty.json  # what has been written since
 ```
 
 The save/compare pair answers "is this pool ever used". It refuses to call a region
@@ -238,8 +262,8 @@ symbols.
 
 ## Working in parallel
 
-`findings/README.md` is the contract for several agents reading the executable at once:
-a question each, one file each into `findings/incoming/`, and `ghidra/mergeFindings.py`
+`fragments/README.md` is the contract for several agents reading the executable at once:
+a question each, one file each into `fragments/incoming/`, and `ghidra/mergeFindings.py`
 the only thing that writes `project.json`. It works here because `buildFindings.py`
 validates every entry against the executable, so an answer can be checked before anyone
 reads the reasoning.
@@ -269,7 +293,7 @@ That code goes in a module of its own in the style of `BiceLib/Oob/`, reading th
 ## Where to look next
 
 **The loaders are done.** Every one of the game's 266 has had its grammar read out of its
-switch; they are in `FINDINGS-definitions.md`, the two big ones in `FINDINGS-script.md`,
+switch; they are in `findings/FINDINGS-definitions.md`, the two big ones in `findings/FINDINGS-script.md`,
 and `PROGRESS.md` marks them `keys`. What is left of the classes is **layout, not
 grammar** - which field a key lands in - and `PROGRESS.md` says which classes are worth it
 by how many of them are live.
@@ -279,17 +303,17 @@ whole startup out on 2026-09-20 and proved itself redundant - all four channels 
 file, and its capture matched `setup.log` and `game.log` line for line. It also settled
 why the mod's bad data is invisible: the engine does not consider it wrong, because a name
 it cannot find comes back as index 0, the null object. See *What hooking it answered, and
-why the hook is gone* in `FINDINGS-script.md`, and `bugs.md` at the mod root. The one gap
+why the hook is gone* in `findings/FINDINGS-script.md`, and `bugs.md` at the mod root. The one gap
 it could not close - the 45 lines logged before `autoexec.lua` - wants a `dinput8.dll`
 shim rather than a hook.
 
 **Layout is now mostly generated too.** `fieldmap.py` walks each case body of a loader
 and records where it puts its value - a store like `mov [ebx + 0xb0], eax`, or a field
 address handed to a reader as `lea edi, [ebx + 0xbcc]`. That turns a grammar into a
-layout: **796 of 1503 keys placed across 210 loaders**, in `FINDINGS-fieldmap.md`.
+layout: **796 of 1503 keys placed across 210 loaders**, in `findings/FINDINGS-fieldmap.md`.
 
-    python fieldmap.py CWarGoal      # one class
-    python fieldmap.py --all         # the lot, as markdown
+    python scripts/fieldmap.py CWarGoal      # one class
+    python scripts/fieldmap.py --all         # the lot, as markdown
 
 A store is evidence and not proof, so the ones that matter are read back out of a running
 game with `dumpStruct.py`, and against a savegame where the save has the same key.
@@ -300,13 +324,13 @@ majors; `CCountry.officers` at `+0xc4` matches the save for all ten countries ch
 `officers=238282.966`. It was written off here as garbage for an hour before anyone
 divided by 1000 - so when a field looks wrong, **check it against a savegame** before
 doubting the offset. The save is plain text and names every value. Both are in
-`FINDINGS-fieldmap.md`, *Numbers are fixed point* and *What was checked against a
+`findings/FINDINGS-fieldmap.md`, *Numbers are fixed point* and *What was checked against a
 running game*.
 
 **What is left is the meaning of a field**, and `PROGRESS.md` says which classes are
 worth it by how many of them are live.
 
-**`FINDINGS-allocator.md`** covers `operator new` and what a call site gives away: the
+**`findings/FINDINGS-allocator.md`** covers `operator new` and what a call site gives away: the
 size of the object is pushed right before the call, at 11,247 places. It also says why
 the obvious way to turn those sizes into class names produces confident nonsense, and
 carries the capstone trap - `X86_OP_IMM` is 2, and writing `1` asks for a register and
@@ -331,8 +355,8 @@ what made `CBuilding::LoadKey` a complete account of `buildings.txt`. See CLASSE
 cannot go stale:
 
 ```
-python progress.py            # rewrite it
-python progress.py --check    # say whether it is out of date
+python scripts/progress.py            # rewrite it
+python scripts/progress.py --check    # say whether it is out of date
 ```
 
 It has every class the game has, what is named on each, and a ranked table of the loaders

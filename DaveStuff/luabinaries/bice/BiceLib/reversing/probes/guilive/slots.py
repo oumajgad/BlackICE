@@ -1,6 +1,6 @@
 """Dump a vftable's slots out of the executable, with the first instructions of each body."""
 import sys, struct
-sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing")
+sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing\scripts")
 import image
 
 def slots(va, n):

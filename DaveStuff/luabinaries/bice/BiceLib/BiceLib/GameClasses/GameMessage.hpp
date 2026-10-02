@@ -84,7 +84,7 @@ namespace Game {
         Lua*, so it is `Present` that matters and Lua that does not. Nothing else about the
         two raises differs - the bytes, the type object, the handler, the province and
         every variable were printed side by side against one the game raised itself and
-        matched. See reversing/FINDINGS-messages.md.
+        matched. See reversing/findings/FINDINGS-messages.md.
 
         **And never while another message is part-built for the same country.**
         CCountry::BuildMessageVariables does not allocate its list, it clears and refills

@@ -75,7 +75,7 @@ namespace CGovernment {
          * **Read live** against the running game's token table: 2451 is `nogovernment`
          * and 2452 to 2469 are the eighteen governments in file order. It is not in
          * `ghidra/saveTokens.json`, because that holds only the tokens compiled into the
-         * executable; see reversing/saveTokens.py.
+         * executable; see reversing/scripts/saveTokens.py.
          */
         constexpr uintptr_t token = 0x40;
 

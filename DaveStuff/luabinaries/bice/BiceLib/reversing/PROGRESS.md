@@ -7,8 +7,8 @@ what the read ones mean is CLASSES.md; this is only the scoreboard.
 | mark | means |
 | --- | --- |
 | `read` | at least 5 of its fields have been named by hand - an account of the object's layout. It does **not** mean every field is known |
-| `placed` | its grammar **and the offset each key is stored to**, read out of the case bodies by fieldmap.py. The shape of the object is known; no field has been named or checked by hand. See FINDINGS-fieldmap.md |
-| `keys` | **its loader's grammar is known** - every key the file or save block may contain, out of the switch that parses them - but where any of it lands is not. See FINDINGS-definitions.md |
+| `placed` | its grammar **and the offset each key is stored to**, read out of the case bodies by fieldmap.py. The shape of the object is known; no field has been named or checked by hand. See findings/FINDINGS-fieldmap.md |
+| `keys` | **its loader's grammar is known** - every key the file or save block may contain, out of the switch that parses them - but where any of it lands is not. See findings/FINDINGS-definitions.md |
 | `part` | one to 4 fields named by hand |
 | `named` | only what the Lua API gave away - an accessor per field, free and certain about the offset, silent about the meaning |
 | `RTTI` | nothing but the name, its bases and its vftable |
@@ -40,16 +40,16 @@ under `common/` for the classes that never write a savegame, and a piece of the 
 script language for the rest. It is inherited, so one loader can belong to 157 classes
 and reading it is still one job.
 
-**Every one of them has been read.** The keys are in FINDINGS-definitions.md, and the
-two big ones - `CTrigger` and `CEffect` - in FINDINGS-script.md. Anything that turns up
+**Every one of them has been read.** The keys are in findings/FINDINGS-definitions.md, and the
+two big ones - `CTrigger` and `CEffect` - in findings/FINDINGS-script.md. Anything that turns up
 here again is a loader `switchmap.py` has newly learned to see, or one somebody has
 since un-named; it is ranked by the bytes of the loader, which is a rough figure and
 only that, because where a loader abuts the next function the count runs into it.
 
 | loader | bytes | owner | reads | classes | fields | why |
 | --- | --- | --- | --- | --- | --- | --- |
-| `0x5C8D10` | 9728 | `CTrigger` | event script | 157 | 3 | **read**: 152 keywords, one class each - the whole trigger half of the event script language. See FINDINGS-script.md |
-| `0x599CA0` | 8136 | `CEffect` | event script | 74 | 8 | **read**: 91 keywords, one class each - the effect half. See FINDINGS-script.md |
+| `0x5C8D10` | 9728 | `CTrigger` | event script | 157 | 3 | **read**: 152 keywords, one class each - the whole trigger half of the event script language. See findings/FINDINGS-script.md |
+| `0x599CA0` | 8136 | `CEffect` | event script | 74 | 8 | **read**: 91 keywords, one class each - the effect half. See findings/FINDINGS-script.md |
 | `0x5DDE50` | 4963 | `CRelationTrigger` | event script |  |  | **read**: the `relation` trigger's own grammar |
 | `0x5E990` | 2406 | `CScenario` | a file |  |  | **read**: a scenario - selectable countries, camera, victory conditions |
 | `0x5B4ED0` | 1980 | `CThreatEffect` | event script |  |  |  |
@@ -67,7 +67,7 @@ only that, because where a loader abuts the next function the count runs into it
 | `0x601D0` | 849 | `CSettings` | a save block |  |  |  |
 | `0x17E080` | 818 | `CUnitDeployment` | a save block |  |  |  |
 | `0x1E3F20` | 817 | `CLoadArmyCommand` | event script |  |  |  |
-| `0x38900` | 775 | `CCombatTactic` | a file | 2 |  | **read**: `combat_tactics.txt`, 9 keys and the file uses exactly those. See FINDINGS-definitions.md |
+| `0x38900` | 775 | `CCombatTactic` | a file | 2 |  | **read**: `combat_tactics.txt`, 9 keys and the file uses exactly those. See findings/FINDINGS-definitions.md |
 | `0x153ED0` | 722 | `CSetAlliedObjectiveCommand` | event script |  | 1 |  |
 | `0x19E640` | 721 | `CNavalSortieOrder` | a save block |  |  |  |
 
@@ -83,7 +83,7 @@ key is stored to out of its case body. That is where the `placed` mark and the
 four checked against a live game, `CCountry.major` landed on exactly the seven
 majors, and `CCountry.officers` looked like a pointer until it turned out HoI3
 keeps such numbers as **thousandths** - 237964731 is 237964.731 officers. See
-*Numbers are fixed point* in FINDINGS-fieldmap.md before doubting an offset.
+*Numbers are fixed point* in findings/FINDINGS-fieldmap.md before doubting an offset.
 
 So the work a `placed` class still wants is **naming and checking**: what the
 field means, what width it really is, and what a live object holds there.
@@ -341,7 +341,7 @@ Definitions out of `common/` and the rest of the mod. Their `LoadKey` is the gra
 | `CCGExtraPracticeDecay` | `CPersistent` |  |  |  | 1 |  | 1 | keys |  |
 | `CCasusBelliType` | `CPersistent` |  | 1 | 19/28 | 1 | CWar.hpp | 24 | placed | **read**: `cb_types.txt`, 28 keys - the `po_*` peace options among them |
 | `CColor` | `CPersistent` |  | 4 |  | 1 |  | 319,186 | part |  |
-| `CCombatTactic` | `CPersistent` |  |  | 8/9 | 1 |  | 42 | placed | **read**: `combat_tactics.txt`, 9 keys and the file uses exactly those. See FINDINGS-definitions.md |
+| `CCombatTactic` | `CPersistent` |  |  | 8/9 | 1 |  | 42 | placed | **read**: `combat_tactics.txt`, 9 keys and the file uses exactly those. See findings/FINDINGS-definitions.md |
 | `CContinent` | `CPersistent` `H::__CList` |  |  |  |  |  | 8 | RTTI |  |
 | `CCounterType` | `C3dObjectType` |  |  | 11/18 | 1 |  | 2 | placed | **read**: how a map counter is drawn, 18 keys |
 | `CCountryHistoryEntry` | `CHistoryEntry` |  |  |  |  |  |  | RTTI |  |
@@ -921,7 +921,7 @@ One class per effect, trigger, command and decision the event scripts can use. E
 | `CDissentChange` | `CCountryHistoryEntry` |  |  |  |  |  |  | RTTI |  |
 | `CDissentEffect` | `CValueEffect` |  |  | 3/91 |  |  | 638 | RTTI |  |
 | `CDissentTrigger` | `CValueTrigger` |  |  | 2/153 |  |  | 50 | RTTI |  |
-| `CEffect` | `PAVCEffect::__CList` `CPersistent` |  | 1 | 3/91 | 2 |  | 28,627 | placed | **read**: 91 keywords, one class each - the effect half. See FINDINGS-script.md |
+| `CEffect` | `PAVCEffect::__CList` `CPersistent` |  | 1 | 3/91 | 2 |  | 28,627 | placed | **read**: 91 keywords, one class each - the effect half. See findings/FINDINGS-script.md |
 | `CElectionEffect` | `CDiplomaticEffect` |  |  | 3/91 |  |  | 14 | RTTI |  |
 | `CEmptyTrigger` | `CBoolTrigger` |  |  | 2/153 |  |  |  | RTTI |  |
 | `CEndGuaranteeEffect` | `CCountryTargetEffect` |  |  | 3/91 |  |  | 73 | RTTI |  |
@@ -1202,7 +1202,7 @@ One class per effect, trigger, command and decision the event scripts can use. E
 | `CTotalWeBombTrigger` | `CValueTrigger` |  |  | 2/153 |  |  |  | RTTI |  |
 | `CTraitTrigger` | `CTrigger` |  |  | 2/153 |  |  | 512 | RTTI |  |
 | `CTransferSubUnitCommand` | `CCommand` |  |  | 2/2 | 1 |  | 1 | placed |  |
-| `CTrigger` | `PAVCTrigger::__CList` `CPersistent` | 0x40 | 3 | 2/153 | 2 |  | 11,343 | placed | **read**: 152 keywords, one class each - the whole trigger half of the event script language. See FINDINGS-script.md |
+| `CTrigger` | `PAVCTrigger::__CList` `CPersistent` | 0x40 | 3 | 2/153 | 2 |  | 11,343 | placed | **read**: 152 keywords, one class each - the whole trigger half of the event script language. See findings/FINDINGS-script.md |
 | `CTriggeredModifier` | `CStaticModifier` |  |  |  | 1 |  | 1,693 | keys |  |
 | `CTriggeredModifierItem` | `CStandardlistboxItem` |  |  |  |  |  |  | RTTI |  |
 | `CTriggeredModifiersView` | `CReloadableInterface` |  |  |  |  |  | 1 | RTTI |  |
@@ -1278,4 +1278,4 @@ Windows, pages, sprites and the map's own drawing.
 
 ---
 
-Regenerate with `python progress.py`; `--check` says whether it is stale.
+Regenerate with `python scripts/progress.py`; `--check` says whether it is stale.

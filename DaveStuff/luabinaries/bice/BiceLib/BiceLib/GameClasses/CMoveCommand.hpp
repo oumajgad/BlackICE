@@ -14,7 +14,7 @@
  * the only other place that finder is built - changed nothing about the route a
  * redeploying unit took, in two tests in the game at the heaviest weighting. So either the
  * route comes from somewhere else, or slot 0 is not what decides it. See
- * reversing/FINDINGS-redeploy.md; the approach was judged by the person testing it to
+ * reversing/findings/FINDINGS-redeploy.md; the approach was judged by the person testing it to
  * have misread the problem.
  *
  * Which of three finders slot 6 uses comes from three bytes on the command, set by the

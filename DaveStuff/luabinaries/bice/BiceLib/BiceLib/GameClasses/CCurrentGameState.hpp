@@ -14,8 +14,8 @@
  * at `+0xDA4`, set on entering a running game and cleared on leaving it.
  *
  * How the anchor and the combat fields were found is in `reversing/CLASSES.md`; the
- * autosave fields are in `reversing/FINDINGS-autosave.md` and the map mode ones in
- * `reversing/FINDINGS-mapmode.md`.
+ * autosave fields are in `reversing/findings/FINDINGS-autosave.md` and the map mode ones in
+ * `reversing/findings/FINDINGS-mapmode.md`.
  *
  * Only valid for this build of hoi3_tfh.exe.
  */
@@ -182,7 +182,7 @@ namespace CCurrentGameState {
          * `RunMonthlyPass` skips the event-candidate rebuild. A tutorial runs with the event
          * system off and the parallel AI pass latched off, declaring war through the command
          * queue instead. Naming it after one reader was the mistake; see
-         * reversing/FINDINGS-schedule.md.
+         * reversing/findings/FINDINGS-schedule.md.
          */
         constexpr uintptr_t tutorial_active = 0xD9D;
 

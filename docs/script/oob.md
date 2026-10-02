@@ -304,7 +304,7 @@ them is either a typo or savegame leftovers.
 ---
 
 Formation and brigade keys are read out of the game -
-[`FINDINGS-oob.md`](../../DaveStuff/luabinaries/bice/BiceLib/reversing/FINDINGS-oob.md) has
+[`reversing/findings/FINDINGS-oob.md`](../../DaveStuff/luabinaries/bice/BiceLib/reversing/findings/FINDINGS-oob.md) has
 the loaders behind them, and the `CConstruction` family in
 [`CLASSES.md`](../../DaveStuff/luabinaries/bice/BiceLib/reversing/CLASSES.md) covers the three
 construction blocks, including where each key lands and which class shadows `status`.

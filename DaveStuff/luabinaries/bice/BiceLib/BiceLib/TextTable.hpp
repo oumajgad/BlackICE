@@ -64,7 +64,7 @@ namespace Text {
         `Arial14`, looked for in the mod first and the game underneath it, the way the
         game resolves its own content. **Established by measuring, not by reading**: see
         `TOOLTIP_FONT` in the .cpp for the three numbers that identify it, and
-        `reversing/FINDINGS-text.md` for why `interface/core.gfx` cannot be taken at its
+        `reversing/findings/FINDINGS-text.md` for why `interface/core.gfx` cannot be taken at its
         word here.
 
         Only the first tooltip uses this. After that `useGameMeasure` has taken over and

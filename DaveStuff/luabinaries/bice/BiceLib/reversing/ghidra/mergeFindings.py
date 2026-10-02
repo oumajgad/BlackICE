@@ -1,10 +1,10 @@
 """Folds what an agent found into project.json, or says why it will not.
 
-    python mergeFindings.py --check      what would land, changing nothing
-    python mergeFindings.py              land it, and move the files to merged/
+    python ghidra/mergeFindings.py --check      what would land, changing nothing
+    python ghidra/mergeFindings.py              land it, and move the files to merged/
 
 **Only this script writes project.json.** Agents write one file each into
-`reversing/findings/incoming/`, which is what keeps several of them off a file with
+`reversing/fragments/incoming/`, which is what keeps several of them off a file with
 hand-kept formatting and a hand-compacted block in it. Insertion here is textual for the
 same reason: re-dumping the JSON reformats hundreds of lines and buries the real change.
 
@@ -65,7 +65,7 @@ import os
 import re
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "scripts"))
 
 import hoi3
 import image
@@ -73,8 +73,8 @@ import image
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.join(HERE, "project.json")
 ROOT = os.path.dirname(os.path.dirname(HERE))
-INCOMING = os.path.join(HERE, "..", "findings", "incoming")
-MERGED = os.path.join(HERE, "..", "findings", "merged")
+INCOMING = os.path.join(HERE, "..", "fragments", "incoming")
+MERGED = os.path.join(HERE, "..", "fragments", "merged")
 
 # `no_signature` is here because it was not: the merge demanded a reason and then
 # dropped it, so project.json held functions with neither a signature nor any
@@ -476,7 +476,7 @@ def main():
     paths = sorted(glob.glob(os.path.join(INCOMING, "*.json")))
     files = [(p, json.load(io.open(p, encoding="utf-8"))) for p in paths]
     if not files:
-        print("nothing in findings/incoming")
+        print("nothing in fragments/incoming")
         return
 
     document = load()
@@ -499,7 +499,7 @@ def main():
     for path, _ in files:
         os.replace(path, os.path.join(MERGED, os.path.basename(path)))
     print("landed %d addresses and %d struct fields" % (landed, fields))
-    print("now: python buildFindings.py, then apply, and check failed: 0")
+    print("now: python ghidra/buildFindings.py, then apply, and check failed: 0")
 
 
 if __name__ == "__main__":

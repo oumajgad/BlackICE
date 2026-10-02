@@ -12,7 +12,7 @@
  *
  * BiceLib keeps its own record of combats rather than reading these (GameState/CombatLog),
  * because the game's history entries carry no casualties and are pruned after a few days.
- * How the layout was found is in reversing/FINDINGS-combat.md.
+ * How the layout was found is in reversing/findings/FINDINGS-combat.md.
  *
  * Only valid for this build of hoi3_tfh.exe.
  */

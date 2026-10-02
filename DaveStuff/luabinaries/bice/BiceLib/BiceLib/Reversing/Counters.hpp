@@ -6,7 +6,7 @@
  * The disassembly says what code *would* do; it does not say whether the game ever goes
  * there. That gap has blocked this project more than once. `ApplyAttrition` has exactly
  * one caller behind a flag nothing appears to set, and a whole section of
- * FINDINGS-manpower.md was written up as "this mechanic is probably dead" when one game
+ * reversing/findings/FINDINGS-manpower.md was written up as "this mechanic is probably dead" when one game
  * day would have shown it running. The transport overload branch and the `IsNaval` arm
  * of `CUnit::UpdateDaily` are open in the same way.
  *

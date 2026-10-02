@@ -23,7 +23,7 @@
  * yet, so asking at the main menu before the files are read would answer nothing and
  * leave an empty entry behind.
  *
- * Addresses and how the object was worked out are in reversing/FINDINGS-effecttext.md.
+ * Addresses and how the object was worked out are in reversing/findings/FINDINGS-effecttext.md.
  */
 namespace Localisation {
     /**

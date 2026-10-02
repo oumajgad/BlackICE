@@ -39,7 +39,7 @@
  *
  * Two stubs: one at the text builder's entry to catch the effect, and one at the last
  * call before it returns, where the built string is in hand and can be replaced. See
- * EffectText.hpp for the shared parts, and reversing/FINDINGS-effecttext.md for the
+ * EffectText.hpp for the shared parts, and reversing/findings/FINDINGS-effecttext.md for the
  * addresses.
  *
  * **Switched on from Lua**: `BiceLib.EffectTexts.activateLoadOobDetails()`.

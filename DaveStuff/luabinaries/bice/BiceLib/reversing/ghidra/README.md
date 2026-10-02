@@ -198,7 +198,7 @@ far the largest - and class sizes where luabind constructs the object.
 
 **Save keys as names.** A constant reads as a name as soon as the parameter carrying it is
 typed as an enum, so `saveTokens.json` (the executable's own 2149 save keys, from
-`reversing/saveTokens.py --compiled`) becomes the `SaveToken` enum and
+`reversing/scripts/saveTokens.py --compiled`) becomes the `SaveToken` enum and
 `SaveWriteKey(0x5a6, writer)` decompiles as `SaveWriteKey(usage, writer)`. The same enum on
 `CPersistent::LoadKey`'s key turns a class's loader into `if (key == unit_names)`. Worth
 doing for any id a function switches on.
@@ -373,8 +373,8 @@ CERTAIN, LIKELY or TENTATIVE - and the evidence.
 
 ## Rebuilding
 
-    python luabindExtract.py      # only if the executable changes; needs pefile, capstone, unicorn
-    python buildFindings.py       # after editing project.json
+    python ghidra/luabindExtract.py      # only if the executable changes; needs pefile, capstone, unicorn
+    python ghidra/buildFindings.py       # after editing project.json
 
 `luabindExtract.py` explains how the recovery works: it emulates the game's own
 registration function and luabind's signature formatter rather than pattern matching.

@@ -12,8 +12,8 @@
  * what `cacheIngameIdler` in bice.cpp still does.
  *
  * The autosave fields, and how the decision that writes them was found, are in
- * `reversing/FINDINGS-autosave.md`. The map mode numbering is in
- * `reversing/FINDINGS-mapmode.md` and `reversing/mapmode.py`.
+ * `reversing/findings/FINDINGS-autosave.md`. The map mode numbering is in
+ * `reversing/findings/FINDINGS-mapmode.md` and `reversing/scripts/mapmode.py`.
  *
  * Only valid for this build of hoi3_tfh.exe.
  */
@@ -62,7 +62,7 @@ namespace CInGameIdler {
         /**
          * The map mode currently on screen, by the game's own numbering, which is not
          * the numbering in the gui files: the VP button is `mapmode_10` but mode 7.
-         * `reversing/mapmode.py` has the full table and prints the live value.
+         * `reversing/scripts/mapmode.py` has the full table and prints the live value.
          */
         constexpr uintptr_t current_map_mode = 0xD34;
 
@@ -76,7 +76,7 @@ namespace CInGameIdler {
 
     /**
      * Map modes worth naming, by the game's numbering rather than the button names.
-     * The rest are in reversing/mapmode.py.
+     * The rest are in reversing/scripts/mapmode.py.
      */
     /**
     @brief the live CInGameIdler, or 0 when there is no session

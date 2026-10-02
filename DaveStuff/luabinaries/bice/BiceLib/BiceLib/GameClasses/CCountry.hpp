@@ -51,7 +51,7 @@ namespace CCountry {
          * **The order of battle file to load**, a Hoi3CString. `load_oob` writes the
          * path here (`0x1EC9E0`) and then asks the country to read it (`0xFFED0`),
          * which builds `<base>/units/<path>` and parses it there and then - the file
-         * is not in memory before that. See reversing/FINDINGS-effecttext.md.
+         * is not in memory before that. See reversing/findings/FINDINGS-effecttext.md.
          */
         constexpr uintptr_t oob_file = 0x58;
 
@@ -220,7 +220,7 @@ namespace CCountry {
          *
          * The country's writer (`0xCFF20` and around) saves ten of the 23, each under a key
          * it names by an id - `usage` is `0x5A6`, `to` is `0x350`, `back` is `0x397`. The
-         * ids come from a table `reversing/saveTokens.py` rebuilds; the keys it gives for
+         * ids come from a table `reversing/scripts/saveTokens.py` rebuilds; the keys it gives for
          * the pools BiceLib had already named all agree, which is what makes the three new
          * ones worth trusting. The other thirteen are **not saved at all**, so nothing names them. What is known
          * of each is below, and **four of them are never used in this build**: `+0x824`,
@@ -280,7 +280,7 @@ namespace CCountry {
          * mechanic that exists in the field layout and in the interface and is **inert in
          * this build**. The tooltip gates each line on `> 0`, so neither ever renders.
          * Keep the names and keep the warning: a name is not a claim that a field is live.
-         * See reversing/FINDINGS-uinumbers.md.
+         * See reversing/findings/FINDINGS-uinumbers.md.
          *
          * `+0x944` is written nowhere but the constructor and the daily resets; `+0xA64` has
          * writes but is empty in practice. Neither has a name.

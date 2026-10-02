@@ -5,7 +5,7 @@
 /**
  * Answers one question, and then it should be deleted.
  *
- * **Who calls `CCombatant` slot 11?** `reversing/FINDINGS-slot11.md` says: nothing but
+ * **Who calls `CCombatant` slot 11?** `reversing/findings/FINDINGS-slot11.md` says: nothing but
  * `CCombat` slot 17, at the two sites `0x17B083` and `0x17B091`, so the return addresses
  * should only ever be `0x17B085` and `0x17B093` (module relative). That answer came from
  * four static sweeps, each with a positive control, and it is `confirmed` of what those

@@ -1,6 +1,6 @@
 """The six name registries a live window carries, at +0x324 +0x348 +0x36C +0x390 +0x3B4 +0x3D8."""
 import struct, sys, collections
-sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing")
+sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing\scripts")
 import hoi3
 
 pm = hoi3.attach()

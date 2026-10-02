@@ -38,6 +38,6 @@ The mod ships a DLL, BiceLib, built from work that reverse engineered parts of t
 Those notes are extensive and live with the code, in
 [`DaveStuff/luabinaries/bice/BiceLib/reversing/`](../DaveStuff/luabinaries/bice/BiceLib/reversing/).
 The one most relevant to modding is
-[`FINDINGS-script.md`](../DaveStuff/luabinaries/bice/BiceLib/reversing/FINDINGS-script.md),
+[`reversing/findings/FINDINGS-script.md`](../DaveStuff/luabinaries/bice/BiceLib/reversing/findings/FINDINGS-script.md),
 which is where the trigger and effect lists above came from. The Lua pages come from the
 same place: `luabindExtract.py` recovers every exported function's signature out of the exe.

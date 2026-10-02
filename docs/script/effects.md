@@ -1,7 +1,7 @@
 # Script effects
 
 <!-- The keyword lists come from CTrigger::LoadKey and CEffect::LoadKey, read out of
-     the game itself. FINDINGS-script.md in the reversing folder has the save token
+     the game itself. reversing/findings/FINDINGS-script.md in the reversing folder has the save token
      and implementing class of every one. -->
 
 What an event or a decision can do. There are **91** of them and every
@@ -68,7 +68,7 @@ Their description is inferred from the class the loader builds.
 | `manpower` | Increase/decrease the amount of manpower a country has. | `manpower = x  #(x = +-0..1)` | 1907 |
 | `metal` | Increase/decrease a province’s max production of metal. | `metal = x` | 2423 |
 | `military_access` | Gives the specified country, tag1 military access to the current country, tag2. | `tag1 = { military_access = tag2 }` | 22 |
-| `modify_spies` | **(does not work)** Meant to add spies to the current country's own presence in another. The engine never reads its block - the keyword is wired as a scalar and its value handler is a stub - so it runs with no target and an uninitialised count, showing *Add 587232376 spies to Null*. Five bytes fix that and the rest of the effect is correct, but it was tried and not kept: see reversing/FINDINGS-script.md. | - |  |
+| `modify_spies` | **(does not work)** Meant to add spies to the current country's own presence in another. The engine never reads its block - the keyword is wired as a scalar and its value handler is a stub - so it runs with no target and an uninitialised count, showing *Add 587232376 spies to Null*. Five bytes fix that and the rest of the effect is correct, but it was tried and not kept: see reversing/findings/FINDINGS-script.md. | - |  |
 | `money` | Increase/decrease the amount of money a country has. | `money = x  #( x = +-1..)` | 2226 |
 | `national_unity` | Increase/decrease a country’s amount of national unity. | `national_unity = x  #(x = +-1..100)` | 382 |
 | `neutrality` | Increase/decrease a country’s base neutrality value. | `neutrality = x # (x = +-1..100)` | 186 |

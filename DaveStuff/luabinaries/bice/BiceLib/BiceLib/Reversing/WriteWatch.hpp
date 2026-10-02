@@ -12,7 +12,7 @@
  * stores to that displacement at all.
  *
  * It exists for `CUnit + 0xDC`, the list of combat modifiers a battle tooltip walks.
- * `reversing/fieldchain.py` finds no dword store to `[reg + 0xDC]` anywhere in the combat
+ * `reversing/scripts/fieldchain.py` finds no dword store to `[reg + 0xDC]` anywhere in the combat
  * code, and no `lea reg, [reg + 0xDC]` either, so whatever builds that list reaches it by
  * a pointer computed somewhere this cannot see. A hardware watchpoint does not care how
  * the address was worked out.

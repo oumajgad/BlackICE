@@ -16,7 +16,7 @@ namespace {
      *
      * **Not `garamond_16`**, which `core.gfx` names as `ToolTip_Font`: that `bitmapfont`
      * belongs to `console_text`. The two names are easy to mistake for each other, and
-     * `reversing/FINDINGS-text.md` records how the tooltip's was confirmed against the
+     * `reversing/findings/FINDINGS-text.md` records how the tooltip's was confirmed against the
      * game's own measurements.
      *
      * This is only what the first tooltip of a session is laid out with; from the second

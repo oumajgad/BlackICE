@@ -13,8 +13,8 @@
  *
  *  - `BiceLibCrash_001.txt` - the exception, where it happened as `module+offset`,
  *    the registers, and what the overlay was doing. Small enough to paste into a chat.
- *  - `BiceLibCrash_001.dmp` - a minidump, for `reversing/crashdump.py` and
- *    `reversing/symbolize.py`. Only stacks and module lists, so a few megabytes
+ *  - `BiceLibCrash_001.dmp` - a minidump, for `reversing/scripts/crashdump.py` and
+ *    `reversing/scripts/symbolize.py`. Only stacks and module lists, so a few megabytes
  *    rather than the ~37 MB of a full Windows dump.
  *
  * The text alone is usually enough: it names the module and offset, which

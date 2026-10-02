@@ -1,6 +1,6 @@
 """The live widget tree, reading the window child array at +0x4C as 0x18-byte records."""
 import struct, sys, collections
-sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing")
+sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing\scripts")
 import hoi3
 
 pm = hoi3.attach()

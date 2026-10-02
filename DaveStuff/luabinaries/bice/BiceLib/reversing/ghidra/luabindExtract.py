@@ -1,6 +1,6 @@
 """Recovers every function the game exposes to Lua, with its C++ address and signature.
 
-    python luabindExtract.py                 # writes luabind.json next to this file
+    python ghidra/luabindExtract.py                 # writes luabind.json next to this file
 
 `script/LUA API.txt` is the game's own luabind registration source (lua_ai.cpp), so it
 names every C++ function behind the Lua API, but not where they are. This finds them.

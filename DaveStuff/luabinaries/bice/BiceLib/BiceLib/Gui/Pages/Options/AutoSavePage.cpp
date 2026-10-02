@@ -1,6 +1,6 @@
 // Custom Auto-Saves: two extra autosaves, one a few days before the month turns so there
 // is always a save left from before the month's work lands, and one on a wall clock so a
-// crash can only cost so many minutes of play. See reversing/FINDINGS-autosave.md.
+// crash can only cost so many minutes of play. See reversing/findings/FINDINGS-autosave.md.
 //
 // The original reason for the monthly one is gone and should not be put back: loading a
 // mid-month save used to fire no events for the rest of that month, because the daily pass

@@ -42,7 +42,7 @@
  *
  * The `365000` is what makes it an annual rate applied daily - and, with dig-in
  * advancing one level a call, the only evidence for the period in the slot's name.
- * No caller for it has been found; see reversing/FINDINGS-manpower.md.
+ * No caller for it has been found; see reversing/findings/FINDINGS-manpower.md.
  *
  * **It is land only, and `IsLand` is the whole of why.** All three unit classes reach
  * that test: `CArmy` and `CNavy` share this function, and `CAir` overrides slot 32 with

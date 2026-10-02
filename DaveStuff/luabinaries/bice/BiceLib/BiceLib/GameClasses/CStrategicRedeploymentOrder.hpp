@@ -16,7 +16,7 @@
  *
  * **Where a redeployment's route actually comes from is not known.** Replacing the very
  * safe finder's step cost here changed nothing in a game; replacing it in CMoveCommand as
- * well changed nothing either. See reversing/FINDINGS-redeploy.md.
+ * well changed nothing either. See reversing/findings/FINDINGS-redeploy.md.
  *
  * Only valid for this build of hoi3_tfh.exe. Module relative.
  */

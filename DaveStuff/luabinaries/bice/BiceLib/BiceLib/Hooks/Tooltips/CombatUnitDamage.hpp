@@ -28,7 +28,7 @@
  * number counted is the number applied, by construction.
  *
  * It is land only, which is the mechanic's own limit rather than this one's: naval and air
- * combat override `CCombat::Tick` and reach none of this. See reversing/FINDINGS-combat.md.
+ * combat override `CCombat::Tick` and reach none of this. See reversing/findings/FINDINGS-combat.md.
  *
  * ## What is counted, and when it resets
  *

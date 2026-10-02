@@ -1,6 +1,6 @@
 """The ret immediate of a function, which decides its calling convention."""
 import sys
-sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing")
+sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing\scripts")
 import image
 
 for a in sys.argv[1:]:

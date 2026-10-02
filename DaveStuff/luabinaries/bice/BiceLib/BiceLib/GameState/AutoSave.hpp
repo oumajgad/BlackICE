@@ -33,7 +33,7 @@
  * was taken on. The date is still on the save itself, and the load menu shows it.
  *
  * How the game's own decision was found, and why the hook sits where it does, is in
- * reversing/FINDINGS-autosave.md.
+ * reversing/findings/FINDINGS-autosave.md.
  */
 namespace AutoSave {
     /**

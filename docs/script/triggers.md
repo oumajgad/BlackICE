@@ -1,7 +1,7 @@
 # Script triggers
 
 <!-- The keyword lists come from CTrigger::LoadKey and CEffect::LoadKey, read out of
-     the game itself. FINDINGS-script.md in the reversing folder has the save token
+     the game itself. reversing/findings/FINDINGS-script.md in the reversing folder has the save token
      and implementing class of every one. -->
 
 The conditions an event or a decision can test. There are **152** of

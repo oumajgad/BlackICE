@@ -12,7 +12,7 @@
  *
  * The combats going on are listed in the CCombatManager; the game hands a combat that
  * has just ended to the function GameState/CombatLog hooks. How the layout was found is
- * in reversing/FINDINGS-combat.md.
+ * in reversing/findings/FINDINGS-combat.md.
  *
  * Only valid for this build of hoi3_tfh.exe.
  */

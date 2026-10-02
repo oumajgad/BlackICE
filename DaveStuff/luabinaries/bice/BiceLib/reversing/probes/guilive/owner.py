@@ -1,6 +1,6 @@
 """Given an address, walk back looking for an object start: a dword that is a vftable."""
 import struct, sys
-sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing")
+sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing\scripts")
 import hoi3, image
 
 pm = hoi3.attach()

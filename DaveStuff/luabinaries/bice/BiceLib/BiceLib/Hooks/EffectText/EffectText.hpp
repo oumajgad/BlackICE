@@ -22,7 +22,7 @@
  *
  * Each patch is switched on from Lua by itself, under `BiceLib.EffectTexts`, and
  * nothing is written to the game until it is. How the effect text machinery was worked
- * out is in reversing/FINDINGS-effecttext.md.
+ * out is in reversing/findings/FINDINGS-effecttext.md.
  */
 namespace Hooks {
     namespace EffectText {

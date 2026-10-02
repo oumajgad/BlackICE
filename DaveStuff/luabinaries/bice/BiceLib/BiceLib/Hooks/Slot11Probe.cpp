@@ -28,7 +28,7 @@ namespace {
 
     const unsigned char PROLOGUE[] = { 0x55, 0x8B, 0xEC, 0x83, 0xEC, 0x14 };
 
-    // The two return addresses FINDINGS-slot11.md predicts, module relative: the instruction
+    // The two return addresses reversing/findings/FINDINGS-slot11.md predicts, module relative: the instruction
     // after each of CCombat slot 17's two calls at 0x17B083 and 0x17B091.
     const DWORD EXPECTED_A = 0x17B085;
     const DWORD EXPECTED_B = 0x17B093;
@@ -36,7 +36,7 @@ namespace {
     // **And the third legitimate one, which the first version of this probe wrongly flagged as
     // UNKNOWN.** CLandCombatant overrides slot 11 with a pure forwarder at 0x168EE0 that calls the
     // base body non-virtually at 0x168EE8, so a land combatant's dispatch returns into the
-    // forwarder at 0x168EED rather than into CCombat slot 17. FINDINGS-slot11.md section 5 says so
+    // forwarder at 0x168EED rather than into CCombat slot 17. reversing/findings/FINDINGS-slot11.md section 5 says so
     // in as many words - the expected list was built from the two *external* call sites and forgot
     // that the override lands in the same body. It is not a caller: the forwarder's address appears
     // only in CLandCombatant's vftable +0x2C.

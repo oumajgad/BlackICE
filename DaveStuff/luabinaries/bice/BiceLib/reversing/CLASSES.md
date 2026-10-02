@@ -1,7 +1,7 @@
 # The game's classes, as far as they are known
 
 What each object is, where it sits, and which of its fields have been identified. This
-is the reference; `FINDINGS-combat.md` is the story of how the combat ones were worked
+is the reference; `findings/FINDINGS-combat.md` is the story of how the combat ones were worked
 out, and the scripts here are what to work the next ones out with.
 
 **`PROGRESS.md` is the scoreboard** - every class the game has and how far each one is
@@ -94,7 +94,7 @@ and tested by about twenty sites before they touch live game data.
 
 ## Combat
 
-The whole of how these were found, and what is still open, is in `FINDINGS-combat.md`.
+The whole of how these were found, and what is still open, is in `findings/FINDINGS-combat.md`.
 **In code: `BiceLib/GameClasses/CCombat.hpp`** (the combats and combatants) and
 `CCombatManager.hpp`, which are the authority for the offsets; `GameState/CombatLog.cpp`
 reads them.
@@ -1245,7 +1245,7 @@ order classes, then three `suseptibility_*`.
 Worked out for a strategic redeployment that preferred good infrastructure, which was
 **abandoned**: replacing the route finder's step cost changed nothing about the route taken,
 in two tests. The layout stands; the conclusions about what decides a route do not. All of
-it, and what was tried, is in `FINDINGS-redeploy.md`. None of it is used.
+it, and what was tried, is in `findings/FINDINGS-redeploy.md`. None of it is used.
 
 | Class | vftable | |
 | --- | --- | --- |
@@ -1410,9 +1410,10 @@ The driver the loader calls next (`0x127470`, taking the context as its second a
 pulls tokens through the tokenizer's slot 1 until the kind is `0x13`, end of input - the same
 loop, and the same token kinds, as the save path in the section above.
 
-**What is not established**: how a given file is matched to the class it fills. The chain
-above gets a `CParseContext` onto a file; which database claims it, and how a top-level key
-becomes a `CBuilding` rather than a `CGovernment`, has not been traced.
+**That is now established**, in `findings/FINDINGS-startup.md`: all 24 `common/` files are paired to
+their loader **by instruction**, through the per-file stack slot, and nine of the pairings are
+independently corroborated by names already in `project.json`. So which database claims a file,
+and how a top-level key becomes a `CBuilding` rather than a `CGovernment`, is no longer open.
 
 ### CPersistent: how anything gets into a save
 
@@ -1500,7 +1501,7 @@ worked example.
 list of tokens registered later. So **the table only exists in a running game**: statically
 those globals are empty.
 
-`reversing/saveTokens.py` reads the live vector, **4134 ids** in a BlackICE game, and falls
+`reversing/scripts/saveTokens.py` reads the live vector, **4134 ids** in a BlackICE game, and falls
 back to scanning the registrations (`mov edx, <the string>` ... `mov ecx, <the id>`) where
 there is no game. The scan finds 2056 and **agreed with the live table on 2055**, the one
 miss being a false positive on id 1, which is `=`. Both give `carrier_size` at `0x522`, known
@@ -1565,10 +1566,15 @@ already called them.
 `major`, `color`, `graphical_culture`, `history` and `manpower` come off a country's history
 file rather than a save; the loader takes both.
 
-**One is left.** `+0x628` is the first of an array of `CMinister*` the loader writes while
-reading `government`, at the cabinet position's own index (`+0x50` on the position). What it
-is for has not been established: the writer iterates `Ministers` at `+0x618` instead, and how
-the two relate was not chased down.
+**Both are settled now**, four independent ways, in `findings/FINDINGS-aifields.md` §6 - and `+0x628`
+is **not** an array of `CMinister*`, which is what this paragraph said while it was open.
+`+0x618` is `ministers`, one per government position. `+0x628` is `laws`, one per **law
+group**: it is resized to the count of law groups and pre-filled with the `CNullLaw` singleton,
+which is the reading that cannot be confused by a slot number. Nor is it written while reading
+`government` - that arm sets `+0xDFC`, the `CGovernment`. A country's laws are saved as
+`<law group name> = <law name>`, both save tokens, which is why `CCountry::LoadKey` has **no
+`law` key at all**: the default arm resolves the key text as a law group through the database's
+name map and stores at `laws[group->+0x50]`.
 
 ### What the AI has decided, per country
 
@@ -1956,11 +1962,11 @@ is running (**seen**), found by scanning for that vftable - `cacheIngameIdler` i
 autosave request.
 
 **The offsets are in `BiceLib/GameClasses/CInGameIdler.hpp`**, which is the authority
-for them; how the autosave ones were found is in `FINDINGS-autosave.md`.
+for them; how the autosave ones were found is in `findings/FINDINGS-autosave.md`.
 
 `+0xD34` was recorded here as a timer id at first. It is the map mode, and the numbers
 the autosave dispatcher compares it against are Supply, Air and Naval - the correction
-is written up in `FINDINGS-autosave.md`.
+is written up in `findings/FINDINGS-autosave.md`.
 
 | Offset | Holds | |
 | --- | --- | --- |
@@ -1973,13 +1979,13 @@ is written up in `FINDINGS-autosave.md`.
 The autosave settings live on the settings singleton, `module + 0x16863F8`, not here:
 `+0x158` is `debug_saves` and `+0x15C` is the frequency (**seen**, both matched
 against `settings.txt`). `+0xF4` on the same object is the map style
-`FINDINGS-mapmode.md` writes. All three are in
+`findings/FINDINGS-mapmode.md` writes. All three are in
 `BiceLib/GameClasses/GameSettings.hpp` - named for what it holds, because the object
 has no vftable in the RTTI export to name it after.
 
 ## Text and fonts
 
-The whole of it is in `FINDINGS-text.md`. **In code: `BiceLib/TextTable.cpp`**, which
+The whole of it is in `findings/FINDINGS-text.md`. **In code: `BiceLib/TextTable.cpp`**, which
 measures game text the way the game does so a block can be laid out in columns.
 
 `CEU3BitmapFont` (vftable `0x11E13D4`), one per `bitmapfont` block in

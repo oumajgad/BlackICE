@@ -1,7 +1,7 @@
 // Custom Mapmode: replaces what the VP map mode draws. It shades provinces by the
 // level of a building, the amount of a resource, or their supply; the hook underneath
 // decides the colour of every province, so the page has room to grow. See
-// reversing/FINDINGS-mapmode.md.
+// reversing/findings/FINDINGS-mapmode.md.
 
 #include <Gui/GuiPage.hpp>
 #include <Gui/Theme.hpp>

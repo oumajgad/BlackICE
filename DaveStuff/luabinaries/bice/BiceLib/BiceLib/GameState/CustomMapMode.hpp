@@ -17,7 +17,7 @@
  * after the game has worked out what it would have drawn, so turning this off gives
  * the VP map mode back exactly as it was.
  *
- * See reversing/FINDINGS-mapmode.md for how the colouring loop was found.
+ * See reversing/findings/FINDINGS-mapmode.md for how the colouring loop was found.
  */
 namespace CustomMapMode {
     /**@brief how many shades a value is drawn in; the brightest is the top one*/

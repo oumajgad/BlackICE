@@ -8,7 +8,7 @@
  * overlay's `Present` hook - the utility's GUI, its Lua console, anything drawn - is built
  * correctly and posts without complaint, and comes up as an **empty window**. One raised
  * from a game tick comes up right. That was measured three ways, and Lua turned out to
- * have nothing to do with it; see reversing/FINDINGS-messages.md.
+ * have nothing to do with it; see reversing/findings/FINDINGS-messages.md.
  *
  * There is a second trap. `CCountry::BuildMessageVariables` does not allocate its list, it
  * clears and refills the **country's own** at `+0x24`, and the message constructor

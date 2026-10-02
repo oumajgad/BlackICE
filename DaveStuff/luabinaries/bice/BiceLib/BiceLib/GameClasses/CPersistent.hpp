@@ -169,7 +169,7 @@ namespace CPersistent {
      *    about as many again, as heap objects **numbered in load order**. Those ids say
      *    nothing about the executable and change with the mod.
      *
-     * `reversing/saveTokens.py` reads the table; `--compiled` takes only the first kind,
+     * `reversing/scripts/saveTokens.py` reads the table; `--compiled` takes only the first kind,
      * which is what `ghidra/saveTokens.json` holds and what the findings turn into the
      * `SaveToken` enum.
      */

@@ -102,7 +102,7 @@ namespace CCountryHistory {
  *
  * An earlier reading of this handler found only twelve keys and left the four province
  * resources looking unaccounted for. That was `switchmap.py` shadowing a variable, not
- * the engine hiding anything - see FINDINGS-script.md.
+ * the engine hiding anything - see reversing/findings/FINDINGS-script.md.
  */
 namespace CProvinceHistory {
     namespace GameFunction {

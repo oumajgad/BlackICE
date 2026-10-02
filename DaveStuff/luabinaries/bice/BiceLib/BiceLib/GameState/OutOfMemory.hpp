@@ -38,7 +38,7 @@
  * never called - because the game dies without its own allocator ever refusing
  * anything. There was also a 64 MB reserved "parachute" handed to the save, which the
  * measurements above show it does not need. Both are gone; the reasoning and the
- * disassembly behind them are kept in reversing/FINDINGS-allocator.md.
+ * disassembly behind them are kept in reversing/findings/FINDINGS-allocator.md.
  */
 namespace OutOfMemory {
     /**

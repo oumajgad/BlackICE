@@ -10,7 +10,7 @@
  * relative pointer, with its getter at `0x5FF30`.
  *
  * The live file is not the one in the game folder - it is the per mod copy under
- * Documents; see the note in `reversing/FINDINGS-autosave.md`.
+ * Documents; see the note in `reversing/findings/FINDINGS-autosave.md`.
  *
  * Only valid for this build of hoi3_tfh.exe.
  */
@@ -32,7 +32,7 @@ namespace GameSettings {
          * decides whether sea provinces take a map mode's colour at all. Only 16, 18
          * and 19 colour the sea. Not read by BiceLib: it is written by the map mode
          * setters, and `Patches::seaTerrainColourInSimplifiedMapMode` changes the one
-         * the Simplified Terrain setter writes. See `reversing/FINDINGS-mapmode.md`.
+         * the Simplified Terrain setter writes. See `reversing/findings/FINDINGS-mapmode.md`.
          */
         constexpr uintptr_t map_style = 0xF4;
 

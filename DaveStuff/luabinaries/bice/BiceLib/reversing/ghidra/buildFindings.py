@@ -1,7 +1,7 @@
 """Builds bicelib_findings.json, which ApplyBiceLibFindings.java applies to a Ghidra program.
 
-    python buildFindings.py                        # luabind.json + project.json -> bicelib_findings.json
-    python buildFindings.py --import harvest.json  # check a harvest and write it as project.json first
+    python ghidra/buildFindings.py                        # luabind.json + project.json -> bicelib_findings.json
+    python ghidra/buildFindings.py --import harvest.json  # check a harvest and write it as project.json first
 
 Two sources:
 
@@ -493,7 +493,7 @@ def modifier_enum():
     its name. `CBuildingDataBase_RoleByModifierId` is five such comparisons in a row, and
     without this they are 0x2E, 0x2D, 0x4B, 0x66 and 0x0F.
 
-    `reversing/modifierIds.py` writes the file, reading the global initialiser that builds
+    `reversing/scripts/modifierIds.py` writes the file, reading the global initialiser that builds
     all 107 of them - the names exist nowhere else in the image, only as the literal each
     one is constructed with.
 
@@ -517,11 +517,11 @@ def modifier_enum():
     return {"name": "ModifierId", "size": 4, "values": values,
             "comment": "Which modifier, as the game numbers them: %d of them, read out of "
                        "the global initialiser that constructs them. From "
-                       "reversing/modifierIds.py." % len(values)}
+                       "reversing/scripts/modifierIds.py." % len(values)}
 
 
 def combat_modifier_enum():
-    """the ids of the list at CUnit +0xDC, from reversing/combatModifiers.py
+    """the ids of the list at CUnit +0xDC, from reversing/scripts/combatModifiers.py
 
     A separate numbering from ModifierId and much smaller: these are the things a battle
     tooltip lists, `BM_TERRAIN` and `BM_COMBINED_ARMS` and the rest, read off the jump
@@ -537,7 +537,7 @@ def combat_modifier_enum():
     return {"name": "CombatModifier", "size": 4, "values": values,
             "comment": "Which combat modifier, as the battle tooltip lists them: %d of them, "
                        "read out of the jump table of CombatModifierKey (0x164060). From "
-                       "reversing/combatModifiers.py." % len(values)}
+                       "reversing/scripts/combatModifiers.py." % len(values)}
 
 
 def save_token_enum():
@@ -547,7 +547,7 @@ def save_token_enum():
     list of keys rather than a list of numbers. Typing a parameter as this enum is all it
     takes - the decompiler does the rest.
 
-    `reversing/saveTokens.py --compiled` writes the file, off a running game, since the
+    `reversing/scripts/saveTokens.py --compiled` writes the file, off a running game, since the
     table is built at startup and nothing in the image holds it. **Only the executable's own
     tokens go in**: the loaded mod registers about as many again for its resources, cultures
     and decorations, and those are numbered in load order, so their ids say nothing about
@@ -585,7 +585,7 @@ def save_token_enum():
     return {"name": "SaveToken", "size": 4, "values": values,
             "comment": "A save key, as the game writes it: the id, not the string. %d of them, "
                        "the ones built into this executable - what the loaded mod registers on "
-                       "top is numbered in load order and left out. From reversing/saveTokens.py."
+                       "top is numbered in load order and left out. From reversing/scripts/saveTokens.py."
                        % len(values)}
 
 

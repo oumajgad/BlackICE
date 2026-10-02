@@ -12,7 +12,7 @@
 namespace CMapProvince {
     namespace Offsets {
         // No terrain offset here: the CTerrain is at +0xC of the province's template,
-        // path_node_ptr below. reversing/FINDINGS-mapmode.md covers it.
+        // path_node_ptr below. reversing/findings/FINDINGS-mapmode.md covers it.
 
         /**
          * **The province's local modifiers**, a CProvinceModifier held by value: one
@@ -84,7 +84,7 @@ namespace CMapProvince {
          * of its provinces' entry costs, and `supply_depot_distance` less
          * `supply_depot_hops` is what the infrastructure on the route adds to its
          * length. Both are written by CSupply::SpreadFromDepot, which relaxes them
-         * together; see reversing/FINDINGS-supply.md.
+         * together; see reversing/findings/FINDINGS-supply.md.
          */
         constexpr uintptr_t supply_depot_id = 0x48;
         constexpr uintptr_t supply_depot_distance = 0x4C;

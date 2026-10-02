@@ -22,7 +22,7 @@
  * Two stubs, both standing in for a `call` and both reproducing it: one to catch which
  * leader the text is being built for, and one to add the variables beside the game's
  * own. See EffectText.hpp for the shared parts, and
- * reversing/FINDINGS-effecttext.md for the addresses.
+ * reversing/findings/FINDINGS-effecttext.md for the addresses.
  *
  * **Switched on from Lua**: `BiceLib.EffectTexts.activateKillLeaderVariables()`.
  */

@@ -19,7 +19,7 @@
  * cost with a danger surcharge looks like. The base returns the edge's distance scaled by
  * one of two constants, chosen from the destination's controller and how much intel is
  * held on them. **Not confirmed by behaviour** - replacing it for strategic redeployment
- * changed nothing about the route taken; see reversing/FINDINGS-redeploy.md.
+ * changed nothing about the route taken; see reversing/findings/FINDINGS-redeploy.md.
  *
  * **Slot 2 looks like whether a step is allowed**, answering a bool. Safe and VerySafe
  * both call the base and then refuse more.

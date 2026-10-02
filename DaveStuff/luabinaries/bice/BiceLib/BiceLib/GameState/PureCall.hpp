@@ -29,7 +29,7 @@
  * would write its own copy of that global. The game's one is written directly.
  * `EncodePointer`'s cookie is per process rather than per module, so a pointer encoded
  * here decodes correctly over there. This is the same arrangement, and the same two
- * imports, as the new handler described in reversing/FINDINGS-allocator.md.
+ * imports, as the new handler described in reversing/findings/FINDINGS-allocator.md.
  *
  * ## Why this one is worth doing
  *

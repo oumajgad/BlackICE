@@ -50,7 +50,7 @@ misses it), `0x5A8540`/`0x5A8690`, `0x682630`/`0x682C20`, `0x9C0520`/`0x9C0A40`,
 `0x8BA05C`/`0x8BA060`, `0x68EBA0`/`ProcessUnitFunctor::execute`, `0x8ACD00`/`0x8ACD50`, `0x893C80`/`0x893E70` (the first ends `ret 8` at `0x893E6D` with no padding at all, so `functionStart(0x893E70)` answers `0x893C80` - and `0x893E70` is the AI's real landing-province chooser, so losing it loses the end of the invasion chain).
 
 Getting `0x4BFE70` wrong would have made `0x4C0430`'s whole argument list wrong, which is most of
-a section of `FINDINGS-revolt.md`.
+a section of `findings/FINDINGS-revolt.md`.
 
 **The same symptom has a second cause, and it is not abutment.** `functionStart` only accepts a
 candidate whose first byte is in its prologue set, so a function that opens with anything else is
@@ -94,9 +94,9 @@ The converse of trap 2, and the expensive one. A cold path or an exception-handl
 
 Two of those rows are failures this folder actually made. Reading `CAIUnit` slot 78 as
 running to `0x8B3A46` swallowed the whole of **slot 79**, which put `CDetachUnitCommand` and
-`CSendExpeditionCommand` in the wrong slot in `FINDINGS-aiunit.md`'s command table. And treating
+`CSendExpeditionCommand` in the wrong slot in `findings/FINDINGS-aiunit.md`'s command table. And treating
 a `ret 4` as the end of the function made `CSubUnit +0x54` look like it had **no reader anywhere
-in the image**, from which `FINDINGS-combatmods.md` concluded that every defence-side naval, air
+in the image**, from which `findings/FINDINGS-combatmods.md` concluded that every defence-side naval, air
 and bombing modifier might be inert. It is read, at `0x56645E`, in that block.
 
 **And then this table got the fix wrong, which is the lesson worth keeping.** The row above said
@@ -230,7 +230,7 @@ writers are `CTutorialScreen` button handlers, and it is `tutorial_active`.
 
 **And the check belongs before an item goes *on* the queue, not only before a name goes in.** This
 has now cost work twice, both times the same way. `CDistributionSetting +8` was queued as an open
-question when it had been `base_percentage` since `FINDINGS-production.md`. Then on 2026-10-01 a
+question when it had been `base_percentage` since `findings/FINDINGS-production.md`. Then on 2026-10-01 a
 survey brief was written out of six findings files' "What is not established" sections, and **four
 of its six fields were already named** in `project.json` - `CMapProvince +0x5C` (`ai_front_value`),
 `CMapProvince +0x304` (`ai_param_building`), `CArmy +0x2FC` (`army_role`) and `CCountry
@@ -247,7 +247,7 @@ whether you are naming a field or deciding to look at one.
 derived `convoyed_out` for `CCountry +0x7B8`, `traded_away` for `+0x7DC` and `traded_for` for
 `+0x86C` off the goods-ledger tooltip, and the record was duly corrected from `unknown_pool_*`. All
 three had been sitting in `BiceLib/GameClasses/CCountry.hpp` the whole time, named - its comment
-says - from "the ones the game's own accessors name". `FINDINGS-forceneeds.md` had written that
+says - from "the ones the game's own accessors name". `findings/FINDINGS-forceneeds.md` had written that
 "which is which was not established", and that was true of `project.json` and false of the project.
 I then repeated the error one level up by writing "this settles which is which" into the record.
 

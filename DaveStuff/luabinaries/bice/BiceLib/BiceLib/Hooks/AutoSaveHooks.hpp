@@ -23,7 +23,7 @@
  * While inactive both stubs reproduce, in assembly, exactly the instruction they
  * replaced and call nothing in BiceLib.
  *
- * Addresses and the reasoning are in reversing/FINDINGS-autosave.md.
+ * Addresses and the reasoning are in reversing/findings/FINDINGS-autosave.md.
  */
 namespace Hooks {
     namespace AutoSave {

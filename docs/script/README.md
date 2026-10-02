@@ -184,7 +184,7 @@ and only one of them is a unit.
 There is a tool for exactly this. From the reversing folder:
 
 ```
-python scriptcheck.py
+python DaveStuff/luabinaries/bice/BiceLib/reversing/scripts/scriptcheck.py
 ```
 
 It takes every key the events and decisions use, subtracts the keyword lists and every
@@ -197,7 +197,7 @@ the technology database.
 The trigger and effect lists are not folklore. They were read out of the game: the two
 loaders `CTrigger::LoadKey` and `CEffect::LoadKey` are each one giant switch over the save
 token of a key, one case per keyword, and
-[`FINDINGS-script.md`](../../DaveStuff/luabinaries/bice/BiceLib/reversing/FINDINGS-script.md)
+[`reversing/findings/FINDINGS-script.md`](../../DaveStuff/luabinaries/bice/BiceLib/reversing/findings/FINDINGS-script.md)
 in the reversing folder has all 243 with their token and the class that implements each.
 
 The lists are therefore complete and fixed: the switches are what the shipped game does,

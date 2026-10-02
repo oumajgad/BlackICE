@@ -152,7 +152,7 @@ bool Patches::historicalModelLogicFix(uintptr_t moduleBase) {
  * 18 is the air map mode's value. Only this map mode's setter is touched, so
  * Infrastructure, which writes the same 8 from a setter of its own, keeps plain water.
  *
- * reversing/FINDINGS-mapmode.md traces the path from the colour store to the shader.
+ * reversing/findings/FINDINGS-mapmode.md traces the path from the colour store to the shader.
  */
 bool Patches::seaTerrainColourInSimplifiedMapMode(uintptr_t moduleBase) {
     // mov dword ptr [eax+0xF4], 8 - the last of three settings the Simplified Terrain

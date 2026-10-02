@@ -45,7 +45,7 @@ void GameClock::update() {
     // which the count could only ever infer. Both, because neither covers the other.
     //
     // in_game is NOT set during a load - that was the reason given here until 2026-10-02 and
-    // it was wrong (reversing/FINDINGS-session.md). The byte has six writers in the whole
+    // it was wrong (reversing/findings/FINDINGS-session.md). The byte has six writers in the whole
     // image and only one writes a one, in CInGameIdler::Enter; the savegame loader contains
     // none of them, and it can only be reached from the pre-game lobby or the tutorial
     // screen, neither of which is the in-game screen.

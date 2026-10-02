@@ -17,7 +17,7 @@
  * one is asked for - the writer runs every frame and does nothing until that byte is
  * set - so nothing here has to know how a save is built. It is named `crashsave`
  * through the same rotation the scheduled saves use, so it keeps three files of its
- * own and never ages out an autosave. See reversing/FINDINGS-autosave.md.
+ * own and never ages out an autosave. See reversing/findings/FINDINGS-autosave.md.
  *
  * ## Two ways in, because the callers are in different positions
  *

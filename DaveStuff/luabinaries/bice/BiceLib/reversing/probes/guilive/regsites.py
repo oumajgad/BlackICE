@@ -1,6 +1,6 @@
 """Where does .text form `reg + <off>` for each of a window's six registries?"""
 import sys, struct
-sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing")
+sys.path.insert(0, r"c:\Users\David\GitHub\BlackICE\DaveStuff\luabinaries\bice\BiceLib\reversing\scripts")
 import image
 
 OFFS = [0x324, 0x348, 0x36c, 0x390, 0x3b4, 0x3d8]

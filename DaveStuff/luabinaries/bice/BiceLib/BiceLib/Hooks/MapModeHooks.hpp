@@ -17,7 +17,7 @@
  * repeatedly patching code in a running process carries more risk than leaving an
  * inert hook installed.
  *
- * The addresses and why this is the right place are in reversing/FINDINGS-mapmode.md.
+ * The addresses and why this is the right place are in reversing/findings/FINDINGS-mapmode.md.
  */
 namespace Hooks {
     namespace MapMode {
