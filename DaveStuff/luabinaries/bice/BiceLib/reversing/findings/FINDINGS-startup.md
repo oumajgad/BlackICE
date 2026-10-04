@@ -49,7 +49,7 @@ rests on:
    lines, `0x10006` `time.log`, `0x10004` the error channel.
 
 2. **A real startup log already on disk agrees line for line.** The mod's own
-   `C:\Users\David\Documents\Paradox Interactive\Hearts of Iron III\BlackICE GitHub\logs\time.log`
+   `%USERPROFILE%\Documents\Paradox Interactive\Hearts of Iron III\BlackICE GitHub\logs\time.log`
    and `system.log` (2026-10-02) print exactly these line numbers in exactly this order.
    Nothing was launched to get them; they are files. They are **dynamic evidence of a past
    run**, so they corroborate rather than establish, but the static line numbers and the
@@ -255,9 +255,9 @@ pass over the same file:
 0x00541834   'TECHNOLOGIES loaded '                 ; technology.cpp
 ```
 
-Oracle check: the mod has `C:\Users\David\GitHub\BlackICE\technologies\` with ~30 `.txt`
+Oracle check: the mod has `%USERPROFILE%\GitHub\BlackICE\technologies\` with ~30 `.txt`
 files (`01_Infantry Technologies.txt`, `Jet Technologies.txt`, …) and
-`C:\Users\David\GitHub\BlackICE\common\technology.txt` alongside. The split matches exactly.
+`%USERPROFILE%\GitHub\BlackICE\common\technology.txt` alongside. The split matches exactly.
 `confirmed`.
 
 **What this means for load order, and it is the point of the exercise.** A technology can
@@ -369,7 +369,7 @@ in `TRAPS.md` trap 2, and here they are precisely the accessor/loader pair for
 `0x6382FC`.
 
 And the mod on disk is the other oracle: all 24 names exist in
-`C:\Users\David\GitHub\BlackICE\common\`. Two files in that folder are **not** in the
+`%USERPROFILE%\GitHub\BlackICE\common\`. Two files in that folder are **not** in the
 engine's list at all — `combat_events.txt` and `cot_colors.txt`. `cot_colors.txt` is an EU3
 leftover (centre of trade). Neither is read by this stage. I did not search the rest of the
 image for them, so this is **not** a claim that nothing reads them.

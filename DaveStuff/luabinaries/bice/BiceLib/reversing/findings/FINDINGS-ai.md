@@ -396,7 +396,7 @@ minister. Which class owns the cache object is not established.
   (`0x49FB10`, `0x4B0710`) and `CAIUnit` has 17 extra slots of its own. Neither body was read.
   Neither constructor has a direct caller, so how those agents come into being is unknown.
 - Whether the one-shot latches (`0x1BEA470` for the serial loop, `CCurrentGameState +0xC68`
-  cleared hourly for the parallel one) behave as read in play. Both are static reads; David
+  cleared hourly for the parallel one) behave as read in play. Both are static reads; the maintainer
   can settle the first in one game by watching whether path 2 ever fires twice.
 - `0x1A857BF`, the global the parallel pass sets while running, and `0x170ABB0`, which is 1
   when the grain is the whole range (so, presumably, the single-thread setting).

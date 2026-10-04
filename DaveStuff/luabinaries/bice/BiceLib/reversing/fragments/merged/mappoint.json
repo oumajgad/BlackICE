@@ -1,0 +1,277 @@
+{
+ "agent": "wave 11 agent C",
+ "question": "What is a CMapPoint, what does one cost, who allocates them, what holds the 879,780 of them, and are they ever freed?",
+ "source": "reversing/findings/FINDINGS-mappoint.md",
+ "addresses": [
+  {
+   "rva": "0x5D1D0",
+   "kind": "function",
+   "name": "CMapPoint::SaveContents",
+   "signature": "void __thiscall CMapPoint::SaveContents(CMapPoint* this, CSaveWriter* writer)",
+   "no_signature": null,
+   "comment": "**CMapPoint slot 2, and the half of the class that settles its layout.** Writes exactly two keys and nothing else: key token `0x1F` = `x` from `this+0x8` (rva 0x5D1E3 reads it, rva 0x5D1E9 loads ECX with 0x1F for SaveWriteKey), then key token `0x20` = `y` from `this+0xC` (rva 0x5D239 / rva 0x5D244). Each value goes through the float formatter at rva 0x79625D with the `'%f'` literal at VA 0x15FD134 into a stack Hoi3CString, then SaveWriteValue (rva 0x6797A0), then SaveWriteToken with token 0x10 in ECX (rva 0x61360) to close the line. So a CMapPoint is **16 bytes**: CPersistent's vftable at +0x0 and its `token` word at +0x4 (set to `none`, 0x18D, by every inlined constructor), `float x` at +0x8, `float y` at +0xC - and nothing else, because this writes the whole object and CMapPoint::LoadKey reads back the same two offsets. Extent rva 0x5D1D0..0x5D294, one `ret 4`; three int3 then LoadKey's prologue at rva 0x5D2A0, so no trap 3 tail.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "Read instruction by instruction from the entry. The two field offsets are read directly off `movss xmm0, dword ptr [edi+8]` (rva 0x5D1E3) and `movss xmm0, dword ptr [edi+0xc]` (rva 0x5D239) with EDI = ECX = `this` from rva 0x5D1E1, each immediately before `mov ecx, 0x1F` / `mov ecx, 0x20` and the call to the already-named SaveWriteKey. ghidra/saveTokens.json gives 31 -> 'x' and 32 -> 'y'. CMapPoint::LoadKey agrees independently and in the opposite direction (0x1F -> +8, 0x20 -> +0xC). WHAT WOULD SHOW IT WRONG: a third key written anywhere in this body, or a field read at an offset other than +8/+0xC - there is neither, the body is 197 bytes and was read in full. The size claim rests not on this function but on four separate stride arguments; see the 0x10 strides cited on rva 0xACE90, 0xA9618, 0x90541 and 0xA982A."
+  },
+  {
+   "rva": "0x5D2A0",
+   "kind": "function",
+   "name": "CMapPoint::LoadKey",
+   "signature": "void __thiscall CMapPoint::LoadKey(CMapPoint* this, CParseContext* parse, SaveToken key)",
+   "no_signature": null,
+   "revises": "The comment said the switch names **one** key, `y`. It names **two**, `x` and `y`, and that matters because the whole published account of this class was 'each CMapPoint is a coordinate and x must be implied by position in a list'. It is not: both coordinates are present as named keys and positions.txt writes both (`x=3107.562500` / `y=2102.500000` under every `air_base`, `naval_base`, ... block). The scan that produced the old comment missed the first case because the chain opens `sub eax, 0x1f; je` and only the second arm is the `dec eax; je` shape a dec-chain reader expects. The signature is unchanged and still agrees with the `ret 8`.",
+   "comment": "**The keys its switch names**, 2 of them, one case each: `x` (token 0x1F) and `y` (token 0x20). Token 0x1F lands at rva 0x5D2D6 and does `add ecx, 8`; token 0x20 lands at rva 0x5D2C1 and does `add ecx, 0xc`; both then `sscanf(parse+0x22C, \"%f\", &field)` through rva 0x7964D4 with the `'%f'` literal at VA 0x15FD134, and a zero return calls ReportParseError (rva 0x5D2F2). Anything else calls ReportUnknownKey (rva 0x5D2B3) and is dropped. So `this+0x8` is `x` and `this+0xC` is `y`, which CMapPoint::SaveContents (rva 0x5D1D0) says the other way round. Extent rva 0x5D2A0..0x5D2FB, two `ret 8`, three int3 after.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "The whole body is 92 bytes and was read with scripts/disasm.py --bytes: `mov eax,[ebp+0xc]; sub eax,0x1f; je 0x45d2d3; dec eax; je 0x45d2be` (VAs) is the entire discrimination, so there are exactly two cases and a default. ghidra/saveTokens.json: 31 -> 'x', 32 -> 'y'. Cross-checked against the mod's own map/positions.txt, where every coordinate block is literally `x=`/`y=`. WHAT WOULD SHOW IT WRONG: a third `je` or a `cmp`/jump table before the entry - there is none, the function's first instruction after the prologue is the `mov eax,[ebp+0xc]`."
+  },
+  {
+   "rva": "0xACE90",
+   "kind": "function",
+   "name": "CMapPointFillDefaultN",
+   "signature": "void __cdecl CMapPointFillDefaultN(CMapPoint* first@EAX, int count@ECX, void* allocator@stack:4)",
+   "no_signature": null,
+   "comment": "`std::_Uninitialized_default_fill_n<CMapPoint>`, instantiated for this class only - it plants CMapPoint's own vftable (VA 0x15BC65C) inline, so it is not a folded stub. Per element: `[p+4] = 0x18D` (CPersistent's `token`, `none`), `[p+0] = 0x15BC65C`, `[p+8] = 0.0f`, `[p+0xC] = 0.0f`, then **`add eax, 0x10`** at rva 0xACEBA - which is the cleanest single statement of CMapPoint's size in the image. Bare `ret`, 14 int3 after; `first` arrives in EAX, `count` in ECX, and the one stack dword is never read (the caller at rva 0x91A85 pushes whatever happened to be in EDX), which is MSVC's unused allocator reference. One caller, rva 0x91A8F inside CMap::ComputeProvinceGeometry, which is the `vector<CMapPoint>::resize` that gives every province its building-position array.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "Body read in full (rva 0xACE90..0xACEC1, 50 bytes). `image.findValue(0x15BC65C)` returns ten sites in .text and this is one of them, so the vftable immediate is real and not a coincidence of displacement. scripts/vtable.py --holding says the body is in no class's virtual table, so trap 4 does not apply and the class-free name is the right shape. scripts/findRefs.py --callers gives exactly one caller. The stack argument is unread because the body contains no [esp] or [ebp] memory operand at all. WHAT WOULD SHOW IT WRONG: an `add eax, <not 0x10>` or a fifth store in the loop."
+  },
+  {
+   "rva": "0xACF10",
+   "kind": "function",
+   "name": "CMapPointCopyConstructRange",
+   "signature": "void __cdecl CMapPointCopyConstructRange(CMapPoint* first@stack:4, CMapPoint* last@EDX, CMapPoint* dest@EAX, void* allocator@stack:8)",
+   "no_signature": null,
+   "comment": "`std::_Uninitialized_copy<CMapPoint>` - the reallocation half of `vector<CMapPoint>`. Per element it writes a **fresh** vftable and token into the destination (`[dest+4] = 0x18D`, `[dest] = 0x15BC65C` at rva 0xACF24) and copies only the two floats (`fld [src+8]; fstp [dest+8]`, same for +0xC), then `add ecx, 0x10` / `add eax, 0x10` at rva 0xACF3C - a second, independent 0x10 stride for the class. Bare `ret`; the second stack dword is the unused allocator. One caller, rva 0xAC88F inside the vector's grow path (rva 0xAC830). **Trap 2: it abuts rva 0xACED0, which ends a bare `ret` at rva 0xACF0F with no padding at all, so image.functionStart(rva 0xACF2D) answers 0xACED0 and attributes this body to a copy loop whose stride is 0x14 and which has nothing to do with CMapPoint.**",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "Body read in full (rva 0xACF10..0xACF4B). image.retsBefore(0xACED0, 0xACF2D) returns one bare `ret` at 0xACF0F and the byte after it is `0x55 0x8B 0xEC`, a fresh prologue - a boundary, not a cold path, because the frame is new (`push ebp; mov ebp, esp`). scripts/vtable.py --holding: in no virtual table. One caller from findRefs --callers. WHAT WOULD SHOW IT WRONG: the copy touching a field other than +8/+0xC, or the stride differing between source and destination."
+  },
+  {
+   "rva": "0xA92B0",
+   "kind": "function",
+   "name": "CProvinceTemplate::CProvinceTemplate",
+   "signature": "CProvinceTemplate* __stdcall CProvinceTemplate::CProvinceTemplate(CProvinceTemplate* this@stack:4, void* source@ECX, int provinceId@EDX) @EAX",
+   "no_signature": null,
+   "comment": "The constructor the record already names in prose. `this` arrives on the **stack** at [ebp+8] and comes back in EAX (rva 0xA96D0), the CMap +0x2198 entry for this id arrives in ECX and is stored at +0x28 (rva 0xA92E7), the province id arrives in EDX and is stored at +0x7C (rva 0xA933B); `ret 4` at rva 0xA96DF, with an EH funclet after it in the same frame (trap 3). Allocated 0x27C bytes at a time at rva 0x8A153.\n\n**What is new here is where the map point population comes from.** The constructor plants **two CMapPoints by value**: one at +0x34 (vftable at rva 0xA930A, token at rva 0xA9302, x/y zeroed at rva 0xA92F8/0xA92FD) whose x/y are the already-named `text_position_x`/`text_position_y` at +0x3C/+0x40, and one at +0x44 (rva 0xA931A / 0xA9317 / 0xA930D / 0xA9312) whose x/y are `city_x`/`city_y` at +0x4C/+0x50. Then at rva 0xA9524 it reads `g_CBuildingDataBase` (VA 0x1A870D4), takes `([db+0x10] - [db+0xC]) >> 2` - the length of the database's `vector<CBuilding*>`, i.e. **the number of building types** - reserves that many in the `vector<CMapPoint>` at +0x258 (rva 0xA953C) and that many floats in the vector at +0x268 (rva 0xA9548), then push_backs a default `{vftable, 0x18D, 0.0f, 0.0f}` and a `0.0f` that many times; the inlined push_back advances `_Mylast` by **0x10** at rva 0xA9618. Because the reserve is exact and the pushes exactly fill it, the capacity has no slack.\n\n**Not read:** everything between rva 0xA934A and rva 0xA9524 (the rest of the field initialisation) and the tail after rva 0xA9670. The vector construction and the two embedded points were read end to end.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "The name is not mine: project.json's CProvinceTemplate +0x7C comment already says 'passed to CProvinceTemplate::CProvinceTemplate in EDX and stored at 0xA933B' and +0x28 cites 0xA92E7, both of which are instructions in this body - so this entry gives an address to a name the record already used, and the EDX/ECX claims are the record's own, re-read off the bytes. The constructor writes CProvinceTemplate's own vftable VA 0x15C064C at rva 0xA92DE, which is checkSignatures' constructor test. `ret 4` against __stdcall with one stack parameter. The building-type count: `mov eax,[0x1a870d4]; mov esi,[eax+0x10]; sub esi,[eax+0xc]; sar esi,2` is read verbatim, and project.json's existing g_CBuildingDataBase entry already records +0xC/+0x10/+0x14 as its `vector<CBuilding*>`. WHAT WOULD SHOW IT WRONG: the two reserve calls taking different counts, or +0x34/+0x44 holding something other than CMapPoint's vftable - both are single instructions and were read with bytes."
+  },
+  {
+   "rva": "0xA9730",
+   "kind": "function",
+   "name": "CProvinceTemplate::ScalarDeletingDestructor",
+   "signature": "CProvinceTemplate* __thiscall CProvinceTemplate::ScalarDeletingDestructor(CProvinceTemplate* this, int deleteFlag)",
+   "no_signature": null,
+   "comment": "CProvinceTemplate slot 0, 32 bytes: calls the real destructor at rva 0xA9770 with `this` pushed, then `free(this)` (rva 0x795F9B) when the low bit of the flag is set, and returns `this`. **It has no reference anywhere in .text** - image.findValue finds none, because it lives only in the virtual table at VA 0x15C064C - so the only way a CProvinceTemplate is destroyed is a virtual slot-0 call, and the only such call in the image is the loop in CMap's destructor at rva 0x88BE3.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "Body read in full (rva 0xA9730..0xA974F, `ret 4`, two int3 then a padding run). The RTTI export says CProvinceTemplate introduces slot 0 at VA 0x4A9730. image.findValue(0x4A9730) returns []; that is a negative, and its positive control is image.findValue(0x15C064C), which does find the table's own write sites - so the scan can see .text references to addresses in this neighbourhood and its silence about 0x4A9730 means the body really is only reachable through the table. WHAT WOULD SHOW IT WRONG: a direct call to it, or a second slot-0 call site on a CProvinceTemplate."
+  },
+  {
+   "rva": "0xA9770",
+   "kind": "function",
+   "name": "CProvinceTemplate::~CProvinceTemplate",
+   "signature": "void __stdcall CProvinceTemplate::~CProvinceTemplate(CProvinceTemplate* this)",
+   "no_signature": null,
+   "comment": "The real destructor, `this` on the stack at [ebp+8], `ret 4` at rva 0xA9927, SEH-framed. **This is where the map point population would be freed.** It frees the `vector<float>` at +0x268 first (rva 0xA97ED, then the three pointers zeroed at rva 0xA97F5/0xA97FB/0xA9801), then walks the `vector<CMapPoint>` at +0x258 calling each element's **slot 0 with the delete flag clear** (rva 0xA9820..0xA982F, `add esi, 0x10` per step - a fourth independent statement of the 0x10 stride) and frees the one block (rva 0xA9838), zeroing +0x258/+0x25C/+0x260. One caller, the slot-0 thunk at rva 0xA9737.\n\n**Not read:** the five-slot loop over +0x108 before it and everything from rva 0xA9854 on (the strings and lists at +0x12C and beyond).",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "The two free calls and the element loop were read instruction by instruction from rva 0xA97E2 to rva 0xA9854; rva 0x795F9B is already named `free` in project.json. findRefs --callers gives exactly one caller. WHAT WOULD SHOW IT WRONG: either vector surviving the destructor, or the element stride not being 0x10."
+  },
+  {
+   "rva": "0xA9D70",
+   "kind": "function",
+   "name": "CProvinceTemplate::GetNavalBasePosition",
+   "signature": "CMapPoint* __stdcall CProvinceTemplate::GetNavalBasePosition(CProvinceTemplate* this)",
+   "no_signature": null,
+   "comment": "`&this->building_positions[g_CBuildingDataBase->naval_base->index]`, in one line: lazily builds the database if it is absent, then `eax = [db+0x20]` (rva 0xA9DC2, the cached naval_base `CBuilding*`), `eax = [eax+0x54]` (its index), `shl eax, 4` (rva 0xA9DCE - the third independent 0x10), `add eax, [this+0x258]` (rva 0xA9DD1). `ret 4` at rva 0xA9DE1. 8 callers. **Trap 2: it abuts rva 0xA9D40, a name getter that ends `ret 4` at rva 0xA9D6D with no padding, so image.functionStart(rva 0xA9DD1) answers 0xA9D40 and findRefs --callers 0x4A9D40 returns twelve callers that have nothing to do with building positions.**",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "Body read in full. The naval_base attribution is project.json's own: its g_CBuildingDataBase entry records '+0x1C air_base, +0x20 naval_base, +0x24 anti_air, +0x28 underground, +0x2C industry', and this body reads +0x20 while the sibling at rva 0xA9DF0 reads +0x1C. image.retsBefore(0xA9D40, 0xA9DD1) returns `ret 4` at 0xA9D6D and the next byte is `push ebp; mov ebp, esp` with its own SEH frame - a boundary. WHAT WOULD SHOW IT WRONG: the database offset being other than +0x20, or the index field being other than CBuilding +0x54 (which project.json already names)."
+  },
+  {
+   "rva": "0xA9DF0",
+   "kind": "function",
+   "name": "CProvinceTemplate::GetAirBasePosition",
+   "signature": "CMapPoint* __stdcall CProvinceTemplate::GetAirBasePosition(CProvinceTemplate* this)",
+   "no_signature": null,
+   "comment": "The same body as rva 0xA9D70 one role along: `eax = [db+0x1C]` (rva 0xA9E42, the cached air_base `CBuilding*`), index at +0x54, `shl eax, 4`, `add eax, [this+0x258]` (rva 0xA9E51). `ret 4` at rva 0xA9E61, properly padded. **One caller**, rva 0x1D2E4C.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "Body read in full and compared instruction for instruction against rva 0xA9D70: the two differ only in the database displacement (+0x1C against +0x20). project.json's g_CBuildingDataBase entry names +0x1C as air_base. findRefs --callers gives one caller. WHAT WOULD SHOW IT WRONG: the displacement being read wrong, which `--bytes` would settle in one command."
+  },
+  {
+   "rva": "0xAA300",
+   "kind": "function",
+   "name": "CProvinceTemplate::Save",
+   "signature": "void __thiscall CProvinceTemplate::Save(CProvinceTemplate* this, CSaveWriter* writer)",
+   "no_signature": null,
+   "comment": "CProvinceTemplate **slot 1**, i.e. it overrides `Save` itself rather than `SaveContents` - slot 2 on this class is the generic `ret 4` stub at rva 0x20CD50 - so this body writes the braces and the whole key list of one positions.txt province block. `this` in ECX (rva 0xAA324), writer at [ebp+8], `ret 4` at rva 0xAB2D1 with a bare `ret` at rva 0xAB308 after it (trap 3 territory, not resolved here).\n\n**What was established:** it is the only thing besides the loaders that walks the two per-building vectors whole. It takes the element count as `([this+0x25C] - [this+0x258])` at rva 0xAAA03 and indexes +0x258 at four more places, and it does the same for +0x268/+0x26C at rva 0xAAC4B - immediately before the one reference in the image to the `'building_nudge'` literal at VA 0x15C0638 (rva 0xAAC9B). That pins +0x268 as the `building_nudge` block's vector from the writing side as well as the reading side.\n\n**Not read:** everything else, which is most of 0xFD0 bytes. This entry exists to keep the class's table current now that slot 0 is named, and to record the `building_nudge` reference; it is not a full account of the function.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "The slot is from the RTTI export (CProvinceTemplate introduces slot 1 at VA 0x4AA300) and from reading VA 0x15C064C's six slots directly, where slot 2 is the 1420-holder stub 0x60CD50. `this` in ECX off `mov edi, ecx` at rva 0xAA324, and `ret 4` agrees with __thiscall plus one stack parameter. The vector accesses and the string reference come from a scan of every instruction in .text whose memory displacement is one of 0x258/0x25C/0x260/0x268/0x26C/0x270, decoded forward from every int3 boundary; its positive control is that it also returns all six other functions that are known to touch these vectors. WHAT WOULD SHOW IT WRONG for the parts claimed: the string at VA 0x15C0638 not being 'building_nudge' (image.asString says it is), or slot 1 of the table not holding this address."
+  },
+  {
+   "rva": "0x90390",
+   "kind": "function",
+   "name": "CMap::LoadBuildingPositions",
+   "signature": "void __stdcall CMap::LoadBuildingPositions(CMap* this, CProvinceTemplate* province, CParseContext* parse)",
+   "no_signature": null,
+   "comment": "positions.txt's `building_position` block, reached from CMap::LoadPositionsFile's switch at rva 0x902B1 on save token **0x6CC**. Per key: copy the parse state (0x41 dwords) to the stack, stop on token 4 or 0x13, build a Hoi3CString from the key text at `parse+0x24`, look the name up in `g_CBuildingDataBase` (rva 0xB8B60) to get a `CBuilding*`, construct a **stack** CMapPoint `{0x15BC65C, 0x18D, 0.0f, 0.0f}` and call its slot 3 (CPersistent::Load) to parse the `{ x= y= }` body, then store the two floats into `province->building_positions[building->index]`:\n\n    mov  eax, [esi+0x54]        ; CBuilding::index\n    shl  eax, 4                 ; * 0x10, rva 0x90541\n    add  eax, [ecx+0x258]       ; province->building_positions, rva 0x90544\n    movss [eax+8], xmm0         ; x\n    movss [eax+0xc], xmm0       ; y\n\nAfter the store it compares the building against `g_CBuildingDataBase +0x20` (naval_base) at rva 0x90559 and **only for the naval base** goes on to check the raster at `CMap +0x20E0` that the pixel belongs to this province; every other building type loops straight back. `ret 0xc` at rva 0x9074D. **Trap 2: rva 0x90750 begins at the very next byte with no padding** (`c2 0c 00 | 55 8b ec`), so a displacement scan attributes the `building_nudge` loader's work to this function.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "The token is read off CMap::LoadPositionsFile's own sub/je chain: `sub eax,0x3d6; je` (0x3D6 = `text_scale`, a real positions.txt key), `sub eax,0x2f5; je` (cumulative 0x6CB = `building_nudge`), `dec eax; jne` (0x6CC = `building_position`) - and 0x6CB/0x6CC are exactly the two block names in the file, which is a three-way agreement rather than an inference. The three parameters are identified by their own distinctive displacements: [ebp+8] is used with +0x20E0 and +0x2A60 (CMap), [ebp+0xc] with +0x258 (CProvinceTemplate), [ebp+0x10] with +0x1C/+0x110 (CParseContext); `ret 0xc` matches three stack parameters. WHAT WOULD SHOW IT WRONG: the cumulative token arithmetic being off, which the file's own key names would immediately contradict."
+  },
+  {
+   "rva": "0x90750",
+   "kind": "function",
+   "name": "LoadBuildingNudges",
+   "signature": "void __stdcall LoadBuildingNudges(CProvinceTemplate* province, CParseContext* parse)",
+   "no_signature": null,
+   "comment": "positions.txt's `building_nudge` block, reached from CMap::LoadPositionsFile at rva 0x902BD on save token **0x6CB**. Same shape as its sibling but one float wide: look the key name up in `g_CBuildingDataBase`, `sscanf(parse+0x22C, \"%f\", &value)` (rva 0x908D4), then\n\n    mov  eax, [edi+0x54]        ; CBuilding::index, rva 0x908E8\n    mov  edx, [ecx+0x268]       ; province->building_nudges, rva 0x908EB\n    movss [edx+eax*4], xmm0     ; rva 0x908F6\n\n`ret 8` at rva 0x9091D. It takes no CMap, which is why the name carries no class. **In the mod's own map/positions.txt every one of the 14,168 `building_nudge` blocks is empty**, so all 851,400 floats this would write stay 0.0f.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "Entry, the per-key body and the exit read off the bytes; `ret 8` matches the two stack parameters at [ebp+8] (used with +0x268) and [ebp+0xc] (used with +0x1C/+0x110, a CParseContext). The token comes from the same sub/je chain as rva 0x90390 and agrees with the file. The empty-block claim is `grep -A3 building_nudge` over the mod's positions.txt returning no key lines at all, against 14,168 occurrences of the block itself. WHAT WOULD SHOW IT WRONG: a non-empty `building_nudge` block anywhere in the file - that would not change the function, only the 'all zero' remark."
+  },
+  {
+   "rva": "0x917A0",
+   "kind": "function",
+   "name": "CMap::ComputeProvinceGeometry",
+   "signature": "void __stdcall CMap::ComputeProvinceGeometry(CMap* this)",
+   "no_signature": null,
+   "comment": "The per-province derived-geometry pass, called once at rva 0x8A739 inside CMap::LoadMapFiles - **immediately before CMap::LoadPositionsFile at rva 0x8A73F**, which is why the vectors exist by the time positions.txt is parsed. It loops `i` over `[this+0x21FC]` provinces, takes `[this+0x2A60][i]` and, per province, writes the bounding-box centre into +0x2C/+0x30, copies it into the label pair at +0x5C/+0x60 and the float pairs at +0x3C/+0x40 and +0x4C/+0x50, derives the four-way size class at +0x24, rebases the edge list at +0x6C/+0x70, and sets the hemisphere byte +0xA2 against half of `CMap +0x2A78`. `ret 4` at rva 0x91CC3.\n\n**For the map point question it is the allocation site.** At rva 0x919E5 it reads the `vector<CMapPoint>` triple at +0x258 and its current length as `(_Mylast - _Myfirst) >> 4` (rva 0x919FC - the 0x10 element size again), compares it with the building-type count taken from `g_CBuildingDataBase`'s `vector<CBuilding*>`, and resizes: shrink through rva 0xACBD0, grow through rva 0xAC830 then CMapPointFillDefaultN at rva 0x91A8F. The same block follows for the `vector<float>` at +0x268, with `>> 2` and rva 0xC0700. Because the constructor already sized both to the same count, **both branches are no-ops in practice** - the `jbe`/`jae` pair falls straight through on equality.\n\n**Not read:** rva 0x91B80 onward.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-mappoint.md",
+   "evidence": "Read from the entry through rva 0x91B80. The field writes it performs are already recorded from this very function - project.json's CProvinceTemplate +0x2C, +0x30, +0x5C, +0x60, +0x64, +0x68 and +0xA2 comments all cite instructions between rva 0x917E7 and rva 0x91827 - so this entry puts a name on a body the record was already quoting. `ret 4` matches one stack parameter, [ebp+8], used with +0x21FC and +0x2A60. findRefs --callers gives the single call at rva 0x8A739, and project.json's CMap::LoadPositionsFile entry independently records 'Called unconditionally at 0x48A73F', six bytes later. WHAT WOULD SHOW IT WRONG: the resize counts coming from somewhere other than the building database, or a second caller."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x34",
+   "name": "text_position_vftable",
+   "type": "void*",
+   "comment": "A **CMapPoint held by value** occupies +0x34..+0x43, and this is its vftable word (VA 0x15BC65C, written at rva 0xA930A); `text_position_token` at +0x38 is CPersistent's token, and the object's own `x` and `y` are the already-named `text_position_x`/`text_position_y` at +0x3C/+0x40. Recorded because the two words before those floats otherwise read as a hole, and because these two embedded points plus the 60-element vector at +0x258 are the whole of the 879,780 live CMapPoints in a running game: 14,190 templates x (60 + 2).",
+   "evidence": "`mov ecx, 0x15bc65c` at rva 0xA9305 then `mov [edi+0x34], ecx` at rva 0xA930A inside CProvinceTemplate::CProvinceTemplate, with EDI = `this` from [ebp+8]; the x/y pair at +0x3C/+0x40 is zeroed two instructions earlier (rva 0xA92F8/0xA92FD) by the same xmm0. VA 0x15BC65C is CMapPoint's vftable in the RTTI export. The record's own +0x3C comment ('positions.txt's text_position x, written at 0x48FE70') is unaffected and is not revised. WHAT WOULD SHOW IT WRONG: the immediate not being CMapPoint's vftable, or a reader treating +0x34 as data.",
+   "source": "reversing/findings/FINDINGS-mappoint.md"
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x38",
+   "name": "text_position_token",
+   "type": "SaveToken",
+   "comment": "CPersistent's `token` word of the CMapPoint embedded at +0x34, set to `none` (0x18D) at rva 0xA9302 like all 714 inlined CPersistent constructors. Nothing reads it; see BiceLib/GameClasses/CPersistent.hpp on why every instance in the image carries the same value.",
+   "evidence": "`mov eax, 0x18d` at rva 0xA92D2 and `mov [edi+0x38], eax` at rva 0xA9302, four bytes below the vftable word at +0x34. ghidra/saveTokens.json gives 397 -> 'none'. WHAT WOULD SHOW IT WRONG: any instruction anywhere reading CProvinceTemplate +0x38.",
+   "source": "reversing/findings/FINDINGS-mappoint.md"
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x44",
+   "name": "city_vftable",
+   "type": "void*",
+   "comment": "The second **CMapPoint held by value**, occupying +0x44..+0x53: vftable word here (written at rva 0xA931A), token at +0x48, and its `x`/`y` are the already-named `city_x`/`city_y` at +0x4C/+0x50.",
+   "evidence": "`mov [edi+0x44], ecx` at rva 0xA931A with ECX still holding 0x15BC65C from rva 0xA9305, and the float pair at +0x4C/+0x50 zeroed at rva 0xA930D/0xA9312. WHAT WOULD SHOW IT WRONG: as for +0x34.",
+   "source": "reversing/findings/FINDINGS-mappoint.md"
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x48",
+   "name": "city_token",
+   "type": "SaveToken",
+   "comment": "CPersistent's `token` word of the CMapPoint embedded at +0x44, set to `none` (0x18D) at rva 0xA9317. Nothing reads it.",
+   "evidence": "`mov [edi+0x48], eax` at rva 0xA9317 with EAX = 0x18D. WHAT WOULD SHOW IT WRONG: a reader of CProvinceTemplate +0x48.",
+   "source": "reversing/findings/FINDINGS-mappoint.md"
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x258",
+   "name": "building_positions_begin",
+   "type": "CMapPoint*",
+   "comment": "`std::vector<CMapPoint>` _Myfirst - **one 16-byte CMapPoint per building type**, indexed by `CBuilding +0x54`, holding positions.txt's `building_position` block. The constructor reserves and fills exactly `([g_CBuildingDataBase+0x10] - [g_CBuildingDataBase+0xC]) >> 2` elements, which is the number of building types the database holds (59 from the mod's common/buildings.txt plus the built-in `nobuilding` the loader registers at rva 0xB7696, so 60 here). It is a **flat vector, not a list**: the element stride is 0x10 at every one of its six access sites, there is no per-element node, and the exact reserve means no capacity slack. 14,190 templates x 60 elements = 851,400 of the 879,780 live CMapPoints; the other 28,380 are the two embedded at +0x34 and +0x44.\n\nWritten by CMap::LoadBuildingPositions (rva 0x90390). Read by CProvinceTemplate::GetNavalBasePosition (rva 0xA9D70, 8 callers), CProvinceTemplate::GetAirBasePosition (rva 0xA9DF0, 1 caller), the land/sea neighbour distance pass at rva 0xA9E70, the building-graphics placement at rva 0x23FB06, rva 0x242230, and three bodies in the rva 0x29Exxx-0x29Fxxx range that also write the nudge float. Freed only in CProvinceTemplate::~CProvinceTemplate (rva 0xA9838).",
+   "evidence": "Six independent readings of the 0x10 stride: `shl eax, 4` before `add eax, [t+0x258]` at rva 0x90541, 0xA9DCE and 0xA9E4E; `sar eax, 4` on `_Mylast - _Myfirst` at rva 0x919FC and 0xA95B4; `add [edi+0x25c], 0x10` in the inlined push_back at rva 0xA9618; and `add esi, 0x10` in the destructor's element loop at rva 0xA982A. The triple +0x258/+0x25C/+0x260 is identified as a vector by the resize at rva 0x919E5..0x91AAB, which is MSVC's textbook shape. The element count being the building-type count is read verbatim at rva 0xA9524..0xA953C. ARITHMETIC CHECK: the mod's map/definition.csv has 14,189 provinces, so 14,190 template slots including index 0, and 14,190 x 62 = 879,780, which is ghidra/census.json's live count to the unit; independently, census.json's 1,702,800 CProvinceBuilding is 14,190 x 120 = 14,190 x 2 x 60. WHAT WOULD SHOW IT WRONG: a stride other than 0x10 at any access site, or the census count not factoring as provinces x (buildingTypes + 2) - the figure is exact, so one more or one fewer building type would miss it by 14,190.",
+   "source": "reversing/findings/FINDINGS-mappoint.md"
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x25C",
+   "name": "building_positions_end",
+   "type": "CMapPoint*",
+   "comment": "`std::vector<CMapPoint>` _Mylast for the array at +0x258. The inlined push_back in the constructor advances it by 0x10 (rva 0xA9618); `(+0x25C - +0x258) >> 4` is the element count, taken that way at rva 0x919FC and rva 0xAAA03.",
+   "evidence": "rva 0xA9618 `add dword ptr [edi+0x25c], 0x10`; rva 0x919E5/0x919FC read it and shift by 4; the destructor compares against it at rva 0xA9815 as the loop bound. WHAT WOULD SHOW IT WRONG: a shift other than 4 on the difference.",
+   "source": "reversing/findings/FINDINGS-mappoint.md"
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x260",
+   "name": "building_positions_capacity",
+   "type": "CMapPoint*",
+   "comment": "`std::vector<CMapPoint>` _Myend for the array at +0x258. Because the constructor reserves exactly the building-type count and then pushes exactly that many, it ends equal to +0x25C and the vector never grows: the push_back's `cmp eax, [edi+0x260]` grow arm (rva 0xA9596 / 0xA95DC, calling rva 0xACC40) is taken only on the last push, and CMap::ComputeProvinceGeometry's resize finds the length already correct.",
+   "evidence": "rva 0xA9467 zeroes it, rva 0xAC830's reserve sets it, and rva 0xA9596/0xA95DC compare against it. The 'no slack' claim follows from the reserve count and the push count being the same expression (`esi`, saved at rva 0xA9539 and reused at rva 0xA9541). WHAT WOULD SHOW IT WRONG: a reserve that rounds up, or a growth factor applied before the pushes.",
+   "source": "reversing/findings/FINDINGS-mappoint.md"
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x268",
+   "name": "building_nudges_begin",
+   "type": "float*",
+   "comment": "`std::vector<float>` _Myfirst - **one float per building type**, the same count and the same `CBuilding +0x54` index as the CMapPoint vector at +0x258, holding positions.txt's `building_nudge` block. Written by LoadBuildingNudges (rva 0x908F6), read back and rewritten by the position-editor bodies in the rva 0x29Exxx-0x29Fxxx range, and walked by CProvinceTemplate::Save at rva 0xAAC4B immediately before the only `'building_nudge'` string reference in the image. 14,190 x 60 x 4 bytes = 3,405,600 bytes, and in this mod's data every value is 0.0f because every `building_nudge` block in positions.txt is empty.",
+   "evidence": "rva 0x908EB `mov edx, [ecx+0x268]` then rva 0x908F6 `movss [edx+eax*4], xmm0` with eax = CBuilding +0x54, inside the function the loader's token chain reaches on token 0x6CB = `building_nudge`. The count is the same `esi` the CMapPoint reserve used (rva 0xA9539 saved, rva 0xA9541 pushed to rva 0xC0700). The stride is 4 from `sar eax, 2` at rva 0x91AC8 and the `eax*4` scale. WHAT WOULD SHOW IT WRONG: the two vectors being reserved to different counts, or a non-empty building_nudge block changing the all-zero remark (which would not change the field).",
+   "source": "reversing/findings/FINDINGS-mappoint.md"
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x26C",
+   "name": "building_nudges_end",
+   "type": "float*",
+   "comment": "`std::vector<float>` _Mylast for the array at +0x268. `(+0x26C - +0x268) >> 2` is the element count, taken that way at rva 0x91AC8 and rva 0xAAC4B.",
+   "evidence": "rva 0x91AB4/0x91ABA read the pair and `sar eax, 2` at rva 0x91AC8; the destructor frees +0x268 and zeroes this at rva 0xA97FB. WHAT WOULD SHOW IT WRONG: a shift other than 2.",
+   "source": "reversing/findings/FINDINGS-mappoint.md"
+  },
+  {
+   "struct": "CProvinceTemplate",
+   "offset": "0x270",
+   "name": "building_nudges_capacity",
+   "type": "float*",
+   "comment": "`std::vector<float>` _Myend for the array at +0x268, the last dword of CProvinceTemplate's 0x27C bytes that this class uses for geometry. Zeroed at rva 0xA9479, set by the reserve at rva 0xA9548, and zeroed again by the destructor at rva 0xA9801.",
+   "evidence": "The three sites above, read off the bytes, plus the resize at rva 0x91B3B comparing against it. 0x270 + 4 = 0x274, inside the 0x27C the record already gives the class. WHAT WOULD SHOW IT WRONG: the triple at +0x268 not being three pointers - the resize code treats it as exactly that.",
+   "source": "reversing/findings/FINDINGS-mappoint.md"
+  }
+ ],
+ "vftable_slots": {
+  "CMapPoint": {
+   "2": "SaveContents",
+   "4": "LoadKey"
+  },
+  "CProvinceTemplate": {
+   "0": "ScalarDeletingDestructor",
+   "1": "Save"
+  }
+ },
+ "frontier": [
+  "0xAC830",
+  "0xACC40",
+  "0xACBD0",
+  "0xACED0",
+  "0xC0700",
+  "0x46CC20",
+  "0xA9D40",
+  "0xA9E70",
+  "0x889B0",
+  "0x889E0",
+  "0x22F3F0",
+  "0x22F420",
+  "0x23F790",
+  "0x242010",
+  "0x29ED40",
+  "0x29EF50",
+  "0x29F120",
+  "0xB7510",
+  "0xB8AF0",
+  "0xB8B60",
+  "0x79625D"
+ ],
+ "slots_noted": "CMapPoint's other four slots are deliberately not named. Slot 0 is rva 0x2F3F0, slot 1 is rva 0x5BB10 (already named CPersistent::Save, 749 holders), slot 3 is rva 0x67C050 (already named CPersistent::Load, 748 holders, all at slot 3) and slot 5 is rva 0x6BF890 (1691 slots across 916 classes) - the last three are trap 4 folds and the RTTI export says CMapPoint introduces only slots 2 and 4, so slot 0 is shared too and was not counted. CProvinceTemplate's slots 2, 3, 4 and 5 are likewise inherited or folded: slot 2 is the 1420-holder stub rva 0x20CD50, slot 3 is CPersistent::Load, slot 4 is rva 0x67C3B0 and slot 5 is rva 0x6BF890; the RTTI export says this class introduces only slots 0 and 1, both of which are recorded above. The functions named here that are in no table at all - rva 0xACE90, 0xACF10, 0xA9770, 0xA9D70, 0xA9DF0, 0x90390, 0x90750, 0x917A0, 0xA92B0 - were each checked with scripts/vtable.py --holding, which reports nothing for all nine."
+}

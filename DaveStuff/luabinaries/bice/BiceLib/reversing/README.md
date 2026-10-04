@@ -14,7 +14,14 @@ Five folders and five documents, and the split is worth knowing before looking f
 | `ghidra/` | the Ghidra side: `project.json`, the build and merge scripts, the headless java |
 | `fragments/` | the parallel-agent staging area - `incoming/`, `merged/`, and the contract in its README |
 | `probes/` | one-off probe scripts from a live session, kept for the record |
+| `WAVE.md` | the next wave, planned and not yet launched - one wave at a time, and its result goes to `CANDIDATES.md` |
 | `CLASSES.md` `CANDIDATES.md` `TRAPS.md` `PROGRESS.md` | the record, the queue, the traps, the generated scoreboard |
+
+**`python scripts/checkrefs.py` checks that every reference that *is* a path still resolves** -
+across the whole repository, including the C++ headers and the repo's own `docs/`. It exits 1 on a
+failure, so it can gate a commit. Run it after moving anything: a broken markdown reference never
+announces itself, which is the whole reason it exists. `--tree` restricts it to this folder,
+`--list` prints each reference and where it resolved.
 
 **A name without a folder is a name, not a path.** Through all of this, prose cites documents and
 scripts the way someone standing in `reversing/` would - `` `CLASSES.md` ``, `` `project.json` ``,

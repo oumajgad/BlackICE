@@ -187,9 +187,9 @@ Over `+0x54`: skip a unit whose `slot9()` object has `+0x300` set, or whose curr
 
 `0x8A11B0` (`bool __fastcall (this@ECX, CUnit* unit@EAX)`, bare `ret`) is the "you can walk there" test, and it is the exact mirror of the planner's `AreaIsConnectedTo` gate. True when the unit's province *is* `+0x84`, when its area is `+0x84`'s area, when `0x4A6B00(province@EAX, objectiveArea)` holds, or when a neighbouring area of the unit's is enemy-controlled **and** `AreaIsConnectedTo(unitArea, objectiveArea)`. False early when `0x4A56B0(province, 0)` is false, when the unit's area is `+0x88`'s, or when it is our acting capital's. A unit that can march to the objective is thrown out of the invasion.
 
-### Stage 2 — `0x8A0610`, load at night
+### Stage 2 — `0x8A0610`, load in daylight
 
-Preconditions, in order: `+0x6C == 1`; the single naval unit's `COrder` (`CUnit +0xB0`) answers save token `0x3A5` (`invasion`) from slot 16; `CCountry::IsEnemy((+0x84)->controller)`. Then a **night** window:
+Preconditions, in order: `+0x6C == 1`; the single naval unit's `COrder` (`CUnit +0xB0`) answers save token `0x3A5` (`invasion`) from slot 16; `CCountry::IsEnemy((+0x84)->controller)`. Then a **daylight** window:
 
     hour = (gamestate->+0xBDC - 0x29C55C0) % 24
     proceed only if hour <= 0x4A7450(province) or hour >= 0x4A74D0(province)
@@ -201,7 +201,11 @@ and `0x5D6880(&(+0x84)->+0x2B8, tagChars, tagId)` must answer non-null. It then 
 
     0x89AD00(ai, 0x6FB /*ground_attack*/, unit, (+0x84)->id, &{(+0x84)->id}, &now, &deadline, 0x1A8CC94)
 
-So the AI loads its invasion force **only in the dark, and only with at least three hours of darkness left**, and the order it writes expires at sunrise. The two province functions `0x4A7450` and `0x4A74D0` take the province in **ESI** and are, on this evidence, sunrise and sunset; that is an inference from the modulo-24 comparison, not a reading of their bodies.
+So the AI loads its invasion force **in daylight, and only with at least three hours of daylight left**, and the order it writes expires at **sunset**.
+
+**Corrected 2026-10-02, and this paragraph used to say the opposite.** It read "only in the dark... expires at sunrise", on an attribution it flagged itself as "an inference from the modulo-24 comparison, not a reading of their bodies". The bodies have now been read (`FINDINGS-airnaval4.md`), and the inference was backwards: `0x4A7450` is **`CProvince::GetSunsetHour`** and `0x4A74D0` is **`CProvince::GetSunriseHour`**. The two are identical instruction for instruction except for the final combine — `lea eax,[edx+eax+0xc]`, i.e. `q + 12`, against `mov eax,0xc; sub eax,ecx`, i.e. `12 - q` — so one is as far after noon as the other is before it. Both were disassembled to confirm it.
+
+Two consequences for the code quoted above. `remaining = sunset - hour` is **hours of daylight left**, which is what the `< 3` test gates on. And because `q` is bounded in `[0, 12]` by its own arithmetic, `sunrise <= 12 <= sunset` always and the two **cannot cross** — so the first line, which needs `hour` past sunset *or* before sunrise to refuse, can never refuse on both counts at once, and the same shape in air phase 4 is dead code outright. The flag this file put on its own inference is what made the error cheap to find.
 
 ### Stage 3 — `0x8A09B0`, sail and issue the invasion order
 

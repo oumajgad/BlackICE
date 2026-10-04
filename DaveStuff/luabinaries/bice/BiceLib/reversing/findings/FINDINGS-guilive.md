@@ -181,10 +181,22 @@ the image's and not the tool's. It also explains the shape of the brief's warnin
 export with **zero** vftables, because the only place they appear is in some derived class's
 hierarchy descriptor. `CGuiObject` appears in six, `CFixedWindow` in two, `CIcon` in two,
 `CStandardlistboxItem` in 251. And a sweep of **every** hierarchy descriptor in the image for
-`TextBox|Listbox|Scrollbar|EditBox|Overlap|Checkbox` finds **nothing** — there is no `CTextBox`, no
-`CListbox`, no `CScrollbar`, no `CEditBox` name anywhere in `hoi3_tfh.exe`. Those nine classes cannot
-be named from the binary, and §11's `project.json` entries record them by their `.gui` keyword and
-say so.
+`TextBox|Listbox|Scrollbar|EditBox|Overlap|Checkbox` finds **nothing**.
+
+**Corrected 2026-10-02: that negative is wrong for two of the six, and this is worth reading even
+though it carried a positive control.** Searched over the export's full 2,645-name list rather than
+over the twelve classes' own hierarchy descriptors, it finds **`CCheckBoxObserver`** (with 28
+`__CCheckBoxObserverGlue` instantiations) and **`CScrollbarObserver`** (with 2), plus
+`TListboxItem`, `CStandardlistboxItem` and `CMessageListboxItem`. Both were re-checked directly.
+The checkbox was missed because **the image spells it `CheckBox` with a capital B** and the pattern
+above says `Checkbox` — `Checkbox` has zero hits, `CheckBox` has 29. `Scrollbar` *would* have
+matched, which is what says the sweep was not over the whole export after all.
+
+`TextBox`, `EditBox` and `Overlap` really do have zero hits, so the negative stands for those.
+**The lesson is not that the control was fake** — it recovered eight real names — **but that a
+control cannot catch a pattern that is misspelled for the one case it is aimed at.** See
+`FINDINGS-guistatic.md`, which names `CCheckBox` from the widget constructor's own string literal
+and `CScrollbar` from the observer convention.
 
 ## 2. `CFixedWindow`, and the `+0x18` that will bite
 
@@ -622,24 +634,43 @@ can dangle. One save/load answers it and I could not run it.
    `outliner_header_entry` and `entry_text`, while six sibling outliner names tear down correctly -
    so the leak is path-specific, and the popup test was perfectly symmetric. The Memory page now
    plots the live count, which is how a long game will say whether the leak matters.
-2. **Nine of the twelve live widget classes cannot be named.** The image's RTTI contains no
-   `CTextBox`, `CListbox`, `CScrollbar`, `CEditBox`, `COverlappingElementsBox` or `CCheckBox` name
-   anywhere — swept over every hierarchy descriptor in the export, with the positive control that
-   the same sweep recovers `CIcon`, `CButton`, `TButton`, `CFixedWindow`, `TWindow`, `CGuiObject`,
-   `CStandardlistboxItem` and `TListboxItem`. §11 records them by their `.gui` keyword and flags the
-   names as ours. *Cheapest route to real names:* a log or assert string inside one of the twelve
-   constructors; Paradox classes usually name their own `.cpp`.
-3. **Registries 1 (`+0x348`) and 5 (`+0x3D8`) are empty on all 206 windows**, so what they hold is
+2. ~~**Nine of the twelve live widget classes cannot be named.**~~ **Partly answered 2026-10-02,
+   and the premise was partly wrong** — see `FINDINGS-guistatic.md` and the correction in §1.
+   `checkboxType` is **`CCheckBox`**, from the string `'CheckBox'` the widget's own constructor
+   builds at `0xA816B2`, sitting `0x10` bytes before that widget's vftable in `.rdata`, and
+   corroborated by `CCheckBoxObserver` in the export. `scrollbarType` is **`CScrollbar`** on the
+   observer convention (`likely`). The `textBoxType` **type** class is `CTextBoxType`, from
+   `textboxtype.cpp`. **Six are still unnamed and the static routes are now exhausted** — all
+   three were run with positive controls: no RTTI locator, no source-file string in their `.obj`s
+   (120 file names in the image, four GUI-related), and no self-naming literal in their
+   constructors. Those six names are compiler-erased and **a live game cannot recover them
+   either**; only a symbol-bearing build or a Paradox header would.
+3. ~~**Registries 1 (`+0x348`) and 5 (`+0x3D8`) are empty on all 206 windows.**~~ **ANSWERED
+   2026-10-02, statically, in `FINDINGS-guistatic.md`: they are the `3dButtonType` and
+   `threeDguiType` indexes**, and the unused vector at `+0x27C` is `multiSpriteButtonType`'s. They
+   are empty because those three `.gui` keywords occur **zero** times in the mod's *and* the game's
+   own `interface/` folders — re-checked directly, with `positionType` and `shieldtype` as controls
+   in the same grep. So nothing is missing and no index is half-built: the engine accepts three
+   child keywords that neither BlackICE nor vanilla ever writes. *The original entry follows.*
+
+   **Registries 1 (`+0x348`) and 5 (`+0x3D8`) are empty on all 206 windows**, so what they hold is
    unknown. Their name lists (`+0x41C`, `+0x45C`) are empty too, so this is not a half-built index —
    nothing in the loaded mod puts anything in them. *Cheapest check:* read the `CWindowType::LoadKey`
    case that fills the corresponding list; the six lists are at a `0x10` stride so the handlers
    should be adjacent.
-4. **`CFixedWindow +0x4C` is a linked list of something.** Slot 36 (`0xAC1220`) walks it via node
-   `+8` and for each node calls `gui->vf[27](node->+0)` and then `node->+0`'s slot 36. Nodes are
-   `0x18` bytes and hold gui objects, 3D objects and `0x16010D0` billboards indiscriminately, which
-   makes a draw or collision list the obvious reading and that is **inference from the membership,
-   not a reading**. `CGui +0x44` points at a chain of the same node shape. *Cheapest check:* read
-   `gui` slot 27 on a class that overrides it — on `CEU3Gui` it is the empty stub.
+4. ~~**`CFixedWindow +0x4C` is a linked list of something.**~~ **ANSWERED 2026-10-02 in
+   `FINDINGS-guistatic.md`, and two things said here were wrong.** There are **two** lists, not one
+   — complete `+0x64` and `+0x74`, i.e. this file's `+0x4C` and `+0x5C` — each
+   `{head, tail, count, flag}`; the elements are **`CGuiObject*`**, read rather than inferred,
+   because all four walkers invoke `CGuiObject` virtual slots on `node->value`; and **the nodes are
+   `0x10` bytes**, `{value, prev, next, bool}`, from three identical `push 0x10; call operator new`
+   sites — **not `0x18`**. The "gui objects, 3D objects and billboards indiscriminately" membership
+   was contamination from the `+0x4C`/`+0x50` **vector** reading this file retracted in item 1 of
+   §9, so the draw-or-collision-list inference falls with it. `+0x64` holds every child the
+   constructor resolved out of thirteen per-kind containers, in declared order; `+0x74` holds the
+   children attached through slot 22. Slot 36 is `CFixedWindow::DetachChildren`.
+   The one part that stands: `gui` slot 27 is the empty stub on `CEU3Gui`, so what it is *for*
+   remains unknown.
 5. **The object `CInGameIdler` slot 15 returns, `CEU3Application +0x124`.** Identified as a field,
    not as a class; it has no RTTI. It owns the billboards and carries the `+0x1DF0` array indexed by
    province id.

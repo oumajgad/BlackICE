@@ -19,6 +19,9 @@ someone standing in that folder would. So, from here:
 | `project.json` | `../ghidra/project.json` |
 | a bare script name, `fieldchain.py` or `vtable.py` | `../scripts/`, and commands are run from `reversing/`: `python scripts/fieldchain.py` |
 
+`python scripts/checkrefs.py`, run from `reversing/`, checks every reference in here that does
+carry a folder, and exits 1 if one has gone stale.
+
 Those bare names were left as names on purpose when the folders were split on 2026-10-02. Prefixing
 300 mentions in the prose would have made the writing worse to resolve something this table
 resolves once. **Command lines were rewritten**, because those are meant to be run.

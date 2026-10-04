@@ -97,12 +97,48 @@ KNOWN = {
     "productioncategory": 4,
     "_locale_t": 4,             # a pointer typedef
     "va_list": 4,               # a char* into the caller's frame
-    # By value it is 0x18 - the three fields, with nothing after them. The 0x1C seen
-    # between string fields in about twenty classes is a *stride*, not a size: those
-    # classes leave four bytes after each string. CKillLeaderEffect::GetText and
-    # CLoadOOBEffect::GetText settle it, because they take one by value and `ret 40`
-    # against a sibling shape of 16 - a difference of exactly 24.
-    "hoi3cstring": 0x18,
+    # 8, from `project.json`'s own struct record - `char tag[4]` then `int id`, size
+    # 0x8 - and corroborated by the `int tagChars, int tagId` pairs the findings write
+    # wherever one is passed as two words (`CTheatre::CTheatre`,
+    # `CSendExpeditionCommand::CSendExpeditionCommand`). It was unsized until
+    # 2026-10-02, which skipped 16 entries on this parameter alone; sizing it took the
+    # run from 1301 entries checked to 1321, of which 18 agree with their own `ret` and
+    # 2 do not - and both of those two spell the tag's `id` half a second time as a
+    # trailing `int`. That is the same argument the `SaveToken` row above rests on: a
+    # wrong size would have arrived as 20 new disagreements, not 2.
+    "ccountrytag": 8,
+    # **By value it is 0x1C, and this said 0x18 until 2026-10-02.** The old reading was
+    # that the three recorded fields - `char[16]`, `length`, `maxLength` - are the whole
+    # object and the 0x1C stride between string members is padding the classes add. They
+    # cannot be: that layout has alignment 4, so MSVC inserts nothing between two of
+    # them, and four classes put a *named* non-string field at exactly
+    # `string + 0x1C` with nothing in the gap - `CMessageVariable` (`key` 0x0,
+    # `value` 0x1C, `previous` 0x38, size 0x44), `GuiTooltipText` (0x0, 0x1C, 0x38,
+    # then `int number` at 0x54), `CTechnologyCategory` (0x8, 0x24, 0x40, then
+    # `int index` at 0x5C) and `CBuilding` (`name` 0x1C, `displayName` 0x38, then
+    # `int index` at 0x54). So the type has a fourth 4-byte member at +0x18 - MSVC's
+    # `_String_val` keeps its allocator as a data member - and `project.json`'s
+    # `Hoi3CString` struct is a field short.
+    #
+    # **And the decisive case was already written down on the C++ side** (trap 14, the
+    # headers are the other half of the fact base): `BiceLib/GameClasses/CTrait.hpp`
+    # records `CTrait +0xE8` as a `Hoi3CString[16]` with `EFFECT_TYPE_STRIDE = 0x1C` and
+    # checks it as `0xE8 + 16 * 0x1C == 0x2A8`. That is an **array**, not a run of class
+    # members, and an array of a type has no padding between its elements - the stride
+    # *is* the size. The header's own note, "a string is 0x18 bytes and the stride is
+    # 0x1C, so four bytes go spare", describes something an array cannot do.
+    #
+    # The old 0x18 rested on `CKillLeaderEffect::GetText` and `CLoadOOBEffect::GetText`
+    # doing `ret 40` "against a sibling shape of 16", the sibling being
+    # `CAndTrigger::GetText`. That subtraction compares two different virtuals - a
+    # `CEffect`'s GetText against a `CTrigger`'s - so it never established the 24. Read
+    # with 0x1C, each of those two lists carries one invented trailing `int` too many,
+    # and `CBuilding::CBuilding`'s `int unread` is the string's own fourth dword.
+    #
+    # Net effect on the run: `CTerrain::CTerrain` and `AppendStatisticsSample` go from
+    # disagreeing to matching exactly, and those three go the other way. Their frames
+    # fit either size, which is why the in-class stride is what settles it.
+    "hoi3cstring": 0x1C,
 }
 
 
@@ -147,13 +183,36 @@ def expected(signature):
             return 0, None
         return None, "variadic, and not __cdecl"
 
+    # Whether the signature places any parameter itself. That changes what the
+    # convention's own implicit register assignment is allowed to do, below.
+    placed = [part for part in parts if "@" in part]
+
     if convention == "__thiscall":
-        # `this` travels in ecx. It is written out as a parameter here by convention, so
-        # drop it when it is named that and count everything otherwise - both spellings
-        # appear in the findings and each is right about its own entry.
-        if parts and re.search(r"\bthis\b", parts[0]):
+        # **The receiver goes in ecx by position, not by being called `this`.** This is
+        # Ghidra's own rule - a __thiscall's first parameter is assigned to ecx whatever
+        # it is named - and the image agrees: `GuiTypeTree_Find` (rva 0x67DEE0) opens
+        # `cmp dword ptr [ecx + 4], 0` and ends `ret 4`, with its signature's first
+        # parameter spelled `void* tree`. Matching on the word `this` instead counted
+        # seven receivers as stack arguments and predicted a `ret` four bytes too large:
+        # `OwnerAreaCost_NoEnemy`, `OwnerAreaCost_Accessible`, `CList::FreeNodes`,
+        # `ChecksumFile`, `CNavalCombatant::PickTarget`, `GuiTypeTree_Find` and
+        # `GuiTypeTree_FindByString`.
+        #
+        # A first parameter that places *itself* is the exception and it is a real one:
+        # `CPersistent::Load` is `__thiscall` with `(CParseContext* parse@stack:4)` and
+        # no receiver spelled at all, so dropping it by position would lose the only
+        # argument it has. An `@` on the first parameter wins over the convention.
+        if parts and "@" not in parts[0]:
             parts = parts[1:]
-    elif convention == "__fastcall":
+    elif convention == "__fastcall" and not placed:
+        # Only where the signature places *nothing* does the convention get to assign
+        # ecx and edx by itself. Dropping the first two four-byte parameters by size
+        # alone swallowed an `out@stack:4` as though it were a register argument, and
+        # consumed a bare parameter the author had clearly left on the stack - the
+        # findings use `__fastcall` as "register arguments, callee cleans" and then spell
+        # the registers out, so once one parameter says where it lives the rest are
+        # described by hand. `CMap::CollectCacheStampFiles(CMap* map@ESI, out)` does
+        # `ret 4`: the bare `out` is the stack argument, not a second register one.
         taken = 0
         remaining = []
         for part in parts:
@@ -399,12 +458,28 @@ def main():
         # row of them - has nothing to stop the walk, so it runs into its neighbour and
         # reports a start that is not its own. Gating on this hid 97 entries, against the
         # 8 that buildFindings actually rejects.
+        #
+        # **And it is noisy in the one direction trap 2 describes.** All five entries it
+        # flagged on 2026-10-02 - `ConcurrentQueue_TryPop`, `CSpyPresence::RunTechEspionage`,
+        # `CCountry::CollectCountriesWeCanOperateIn`, `FindRebelFactionForProvince` and
+        # `CGoodsPool::ClampEach` - open `55 8b ec` with a `ret` tail (`c3`, or `c2 N 00`)
+        # in the bytes immediately before, so each is a real boundary that `functionStart`
+        # walked past because the previous function abuts it with no `int3` at all. The
+        # genuine case looks different: rva 0x450AB0 is `e8` - a `call` - with no `ret`
+        # between it and the candidate, and it really does sit mid-function.
+        #
+        # So the hint now needs both halves: a `ret` in between *and* a prologue byte at
+        # the entry means abutment, and nothing is said.
         hint = ""
         try:
             start = image.functionStart(entry)
             if start is not None and start != entry:
-                hint = "   (may not be a function start: %s looks like the start)" \
-                       % image.both(start)
+                abutting = bool(image.retsBefore(start, entry)) and \
+                    image.read(entry, 1)[0] in (0x55, 0x53, 0x56, 0x57, 0x8B, 0x83,
+                                                0x81, 0x6A, 0x68, 0x51, 0x52, 0x50, 0x80)
+                if not abutting:
+                    hint = "   (may not be a function start: %s looks like the start)" \
+                           % image.both(start)
         except Exception:
             pass
 

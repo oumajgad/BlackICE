@@ -121,7 +121,7 @@ The call above is read from the executable and is not in doubt: `RunDailyPass` c
 the generator. **What is in doubt is whether that amounts to evaluating events.**
 
 Against it, from playing the game: **after loading a savegame, events do not fire until the
-first of the following month**, and then arrive as a barrage on that day. Reported by David,
+first of the following month**, and then arrive as a barrage on that day. Reported by the maintainer,
 2026-09-30, from long experience of the mod rather than a single session. If the daily call
 were doing the whole job, a loaded save would produce events the next day.
 

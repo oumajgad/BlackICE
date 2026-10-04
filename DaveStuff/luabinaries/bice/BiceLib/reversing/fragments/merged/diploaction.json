@@ -1,0 +1,364 @@
+{
+ "agent": "wave 11 agent D - the diplomatic action object in flight",
+ "question": "What a CDiplomaticAction is between an offer being made and it being accepted or refused: the layout, the type enumeration, the units of value, the lifecycle step by step, and why there are 13,669 CNullDiplomaticActions.",
+ "source": "reversing/findings/FINDINGS-diploaction.md",
+ "addresses": [
+  {
+   "rva": "0x60E890",
+   "kind": "function",
+   "name": "CDiplomaticAction::MakeCommand",
+   "signature": "CDiplomaticActionCommand* __thiscall CDiplomaticAction::MakeCommand(CDiplomaticAction* this)",
+   "no_signature": null,
+   "comment": "Slot 6, and the base's own body in all 24 tables of the family - the step that turns an action into something postable. Lazily creates g_CCurrentGameState, stamps `this->last_command_date` (+0x20) with its tick (+0xBDC) at 0xA0E92D, asks `operator new` for 0x40 bytes (sizeof CDiplomaticActionCommand), clones itself through slot 16 (0xA0E94F) and hands the clone to CDiplomaticActionCommand's two-argument constructor (0xA0E090 at 0xA0E953), returning the command. It does not post it: its one caller inside the engine, the hourly AI pass at 0x682BC2, takes the result and pushes it onto the session's command channel (country->+0xF1C slot 18 -> session +0x38 slot 6). Bare `ret`, no stack arguments, receiver in ECX.",
+   "confidence": "confirmed",
+   "evidence": "Read 0xA0E890 to the bare `ret` at 0xA0E968 and the null-allocation exit at 0xA0E97B. The 0x40 is the `push 0x40` at 0xA0E92B and matches the 0x40 that CDiplomaticActionCommand::Clone (0xA0E300) allocates for a command. `vtable.py --holding 0xA0E890` reports exactly 24 tables, all slot 6, and all 24 are in the CDiplomaticAction family, so it is inheritance and not a fold. Would be shown wrong by: slot 16 not being Clone (it is - 0xA0DC10 and 0xA2E360 both allocate the class's own size and copy every field), or by 0xA0E090 not being a constructor (it writes CDiplomaticActionCommand's vftable 0x15FB234 at 0xA0E103 and the action pointer at 0xA0E109)."
+  },
+  {
+   "rva": "0x60E120",
+   "kind": "function",
+   "name": "CDiplomaticActionCommand::Execute",
+   "signature": "void __thiscall CDiplomaticActionCommand::Execute(CDiplomaticActionCommand* this)",
+   "no_signature": null,
+   "comment": "Slot 6 of CDiplomaticActionCommand, which is CCommand's Execute slot, and the whole of what happens when a diplomatic offer or reply lands. With `a = this->+0x3C` (the action): (1) `a->IsValid()` (slot 13) at 0xA0E135 - false and nothing at all happens, which is how the null action makes an empty command a no-op; (2) if `a->type == 0` (PROPOSE) and `a->GetToken()` (slot 15) is not 0x309 `callaction`, set the actor/recipient CDiplomacyStatus's +0x50 to `a->date + 0xA8` (168 hours = 7 days) through 0xA4A550; (3) `a->slot 7` at 0xA0E19E - the per-class effect, the only slot every concrete class overrides with real work; (4) clone the action (slot 16) and enqueue the clone on a country through CCountry::AddPendingDiplomaticAction - the **recipient** when type is PROPOSE, the **actor** otherwise; (5) for a reply (type != PROPOSE) also CCountry::RebuildNeighbours (0x4E21E0) and 0x4E39C0 on **both** countries. Bare `ret`, receiver in ECX, no stack arguments.",
+   "confidence": "confirmed",
+   "evidence": "Read 0xA0E120 to the two bare `ret`s at 0xA0E1D7 and 0xA0E24F. Slot numbers from the displacements: 0x34/4=13, 0x3C/4=15, 0x1C/4=7, 0x40/4=16, and slot 13 is IsValid and 17 GetAIAcceptance by the luabind thunks already in the record (findings/FINDINGS-trade2.md). The recipient/actor split is independently confirmed by the save corpus: across 45 saves, all 30 pending blocks with `type=0` sit in the **recipient's** country block and all 26 with `type=1` or `type=2` sit in the **actor's**, 56 for 56. Would be shown wrong by a single counterexample in that corpus, or by `[0x1A855A4]+0x16C` not being g_CCountryDataBase::countries_first (it is, already in the record)."
+  },
+  {
+   "rva": "0x60E000",
+   "kind": "function",
+   "name": "CDiplomaticActionCommand::~CDiplomaticActionCommand",
+   "signature": "void __thiscall CDiplomaticActionCommand::~CDiplomaticActionCommand(CDiplomaticActionCommand* this, char freeMemory)",
+   "no_signature": null,
+   "comment": "Slot 0, the scalar deleting destructor. Writes its own vftable, then **deletes the held action unless it is the null-action singleton**: `if (action != 0x1B15C60 && action != 0) action->slot0(1)` at 0xA0E02F. That explicit comparison against the static object is the clearest single piece of evidence that 0x1B15C60 is a shared singleton the engine must never free. Then destroys the CCommand base (its vftable 0x15B4F74, the Hoi3CString at +0x8 with its capacity at +0x1C) and frees `this` when the low bit of the flag argument is set.",
+   "confidence": "confirmed",
+   "evidence": "Read 0xA0E000 to the `ret 4` at 0xA0E08C. `vtable.py --holding 0xA0E000` reports one table, CDiplomaticActionCommand slot 0. The `ret 4` and the `test byte ptr [ebp+8], 1` are the MSVC scalar-deleting-destructor shape, matching the recorded CHourlyTickCommand::~CHourlyTickCommand (rva 0x2DA260). Would be shown wrong by 0x1B15C60 not being the singleton - but the CRT initialiser at 0xD1B3A0 constructs exactly that address with CNullDiplomaticAction::CNullDiplomaticAction and the matching static destructor at 0xD278A0 tears it down."
+  },
+  {
+   "rva": "0x60EAF0",
+   "kind": "function",
+   "name": "CNullDiplomaticAction::CNullDiplomaticAction",
+   "signature": "CNullDiplomaticAction* __stdcall CNullDiplomaticAction::CNullDiplomaticAction(CNullDiplomaticAction* object)",
+   "no_signature": null,
+   "comment": "The only constructor of the null action, and the cheapest complete statement of CDiplomaticAction's layout, because it writes every base field in order: +0x4 = 0x18D, +0x8 = 0x2D2D2D (the tag \"---\"), +0xC = 0 (actor id), +0x10 = 0x2D2D2D (\"---\"), +0x14 = 0 (recipient id), +0x18 = 0 (type PROPOSE), +0x1C and +0x20 = [0x170C2B8] (the 43,800,000-hour epoch used as a null date), +0x24 = 1 (value true), then its own vftable 0x15FB274 and a Hoi3CString of its own at +0x28. Three call sites: the CRT static initialiser at 0xD1B3A0 that builds the singleton at 0x1B15C60, CNullDiplomaticAction::Clone (0xA0DC42) and CDiplomaticActionCommand::Clone (0xA0E39A).",
+   "confidence": "confirmed",
+   "evidence": "Read 0xA0EAF0 to the `ret 4` at 0xA0EB81; `findRefs.py --vftable CNullDiplomaticAction` finds exactly one write of 0x15FB274 in code, inside it. `findRefs.py --callers 0xA0EAF0` reports exactly three callers. The 0x44 size comes from the `push 0x44` in its two heap callers. [0x170C2B8] holding 43,800,000 is already in the record (findings/FINDINGS-trade2.md). Would be shown wrong by the field order differing from CNapAction's clone at 0xA2E360, which copies exactly these offsets."
+  },
+  {
+   "rva": "0x60DC10",
+   "kind": "function",
+   "name": "CNullDiplomaticAction::Clone",
+   "signature": "CDiplomaticAction* __thiscall CNullDiplomaticAction::Clone(CNullDiplomaticAction* this)",
+   "no_signature": null,
+   "comment": "Slot 16, Clone, for the null action: 0x44 bytes from `operator new` and the constructor, ignoring `this` entirely, because every null action is identical. Slot 16 is Clone for the whole family and each class's body allocates its own size - 0x28 for CNapAction (0xA2E360), 0xB0 for CTradeAction, 0x44 here - which is how the family's object sizes were read.",
+   "confidence": "confirmed",
+   "evidence": "Read 0xA0DC10 to the `ret`s at 0xA0DC54/0xA0DC64; `vtable.py --holding 0xA0DC10` reports one table, CNullDiplomaticAction slot 16. The slot number is also what CDiplomaticAction::MakeCommand and CDiplomaticActionCommand::Execute call (`[vftable+0x40]`, 0x40/4 = 16) to get a copy they can keep. Would be shown wrong by CNapAction's slot 16 at 0xA2E360 not copying fields - it copies +0x8 through +0x24 one by one and writes CNapAction's own vftable."
+  },
+  {
+   "rva": "0xE5800",
+   "kind": "function",
+   "name": "CDiplomaticAction::Create",
+   "signature": "CDiplomaticAction* __cdecl CDiplomaticAction::Create(SaveToken token)",
+   "no_signature": null,
+   "comment": "The family's factory: one switch case per action kind, keyed on the kind's **save token**, each case allocating the class and running its constructor. `switchmap.py 0x4E5800` reads 19 cases - add_war_goal, allianceaction, debtaction_action, declarewar, embargo_action, faction_action, guaranteeaction, influence_leaders, join_with_war_goal, licence_technology, milaccess, nap, offer_lendlease, offermilaccess, peace_action, request_lendlease, send_expedition, share_technology and trade_action - and returns the null-action singleton 0x1B15C60 for an unknown token (0x4E6002). 35 callers, of which the two interesting ones are CCountry::LoadKey (0x4CD398) and CDiplomaticActionCommand::LoadKey (0xA0E2B9), both of which pass the key they have just been given.",
+   "confidence": "confirmed",
+   "evidence": "`switchmap.py 0x4E5800` reports 19 cases, 19 with both a keyword and a class; three of the nineteen are mis-attributed to CCurrentGameState because the tool takes the last vftable written and those cases inline the lazy g_CCurrentGameState, which its own docstring warns about. Each case's `push <size>; call operator_new` then writes a family vftable. The unknown-token arm `mov eax, 0x1B15C60` at 0x4E6002 is the null-object default. Bare `ret` with every caller doing `add esp, 4`, which is what makes it __cdecl. Would be shown wrong by a twentieth case, or by a case building something outside the family."
+  },
+  {
+   "rva": "0xE61C0",
+   "kind": "function",
+   "name": "CCountry::AddPendingDiplomaticAction",
+   "signature": "void __stdcall CCountry::AddPendingDiplomaticAction(CCountry* country@EDI, CDiplomaticAction* action)",
+   "no_signature": null,
+   "comment": "Appends an action to the country's pending-action list (+0xF24 head, +0xF28 tail, +0xF2C count), stamping `action->last_command_date` (+0x20) with g_CCurrentGameState's tick first. Two gates before it does anything: if the country has no CEU3AI (+0x1D8 == 0) it is only accepted when the country **is** the player (`gameState->player` +0xC34 == `country->id` +0xCA8), and otherwise the action is dropped on the floor - leaked, since nothing frees it. The node is 0x10 bytes: +0x0 the action, +0x4 the previous node, +0x8 the next, +0xC a byte. Receiver in EDI, one stack argument, `ret 4`.",
+   "confidence": "confirmed",
+   "evidence": "Read 0x4E61C0 to the two `ret 4`s at 0x4E633F and 0x4E6357. The node shape and the head/tail/count triple are byte-for-byte the same code CCountry::LoadKey uses at 0x4CD3AF-0x4CD40A for the same three fields, which is two independent readings of the same list. `country->+0x1D8` is already recorded as the CEU3AI and `+0xC34`/`+0xCA8` as `player`/`id`. Would be shown wrong by the write at 0x4E62EB targeting something other than the action's +0x20 - but `[ebp+8]` is the only stack argument and the `ret 4` accounts for it."
+  },
+  {
+   "rva": "0xE6360",
+   "kind": "function",
+   "name": "CCountry::HasPendingTradeProposal",
+   "signature": "bool __thiscall CCountry::HasPendingTradeProposal(CCountry* this)",
+   "no_signature": null,
+   "comment": "Walks the pending-action list at +0xF24 and returns true for the first entry whose slot 15 token is 0x6DA `trade_action` and whose `type` (+0x18) is 0 PROPOSE. The clearest proof available that the +0xF24 list is **not** the declare-war list the record named it after: this reader only cares about trade offers in it. Bare `ret`, receiver in ECX, no arguments.",
+   "confidence": "confirmed",
+   "evidence": "Read 0x4E6360 to the `ret`s at 0x4E6393 (false) and 0x4E6398 (true). 0x6DA is CTradeAction's slot-15 constant, read straight out of its table body at 0xA38A90 (`mov eax, 0x6DA; ret`) and 0x6DA resolves to `trade_action` in ghidra/saveTokens.json. Would be shown wrong by CTradeAction's slot 15 returning something else, or by 0x6DA naming a different key."
+  },
+  {
+   "rva": "0xE63A0",
+   "kind": "function",
+   "name": "CCountry::ClearPendingDiplomaticActions",
+   "signature": "void __cdecl CCountry::ClearPendingDiplomaticActions(CCountry* country@EDI)",
+   "no_signature": null,
+   "comment": "Deletes every action in the +0xF24 list through its slot 0 with the free flag, frees every node, and zeroes +0xF24, +0xF28 and +0xF2C. Its one interesting caller is the hourly AI pass at 0x682BE5, which runs it on every AI country after looking at that country's offers - so an offer not acted on in the hour it arrives is discarded rather than carried over. Receiver in EDI, no stack arguments, bare `ret`.",
+   "confidence": "confirmed",
+   "evidence": "Read 0x4E63A0 to the `ret` at 0x4E6401; the three zeroing stores are at 0x4E63E2, 0x4E63EC and 0x4E63F6. `push esi` / `pop esi` with nothing else on the stack and a bare `ret` is what makes it register-argument rather than __thiscall. Would be shown wrong by the 0x682BE5 call site not passing the country in EDI - `mov edi, ebx` sits immediately before it at 0x682BE3 and ebx is the loop's country."
+  },
+  {
+   "rva": "0x64A550",
+   "kind": "function",
+   "name": "CDiplomacyStatus::SetNextOfferAllowed",
+   "signature": "void __stdcall CDiplomacyStatus::SetNextOfferAllowed(CDiplomacyStatus* status@EDI, int when)",
+   "no_signature": null,
+   "comment": "Stores its argument in the status's +0x50. **Likely a diplomatic cooldown, and the name is inference from the one caller, not from the body.** The body is `status->+0x50 = when` on both arms of a comparison against `g_CCurrentGameState->tick + 0xA8`, so the comparison is dead and only the single caller gives the field meaning: CDiplomaticActionCommand::Execute passes `action->date + 0xA8` - the proposal's date plus 168 hours, exactly seven days - on the PROPOSE path for every kind but `callaction`. The dead comparison is consistent with a cooldown that was reduced to an unconditional store at some point. One caller in the image. Receiver in EDI, one stack argument, `ret 4`.",
+   "confidence": "inferred",
+   "evidence": "Read 0xA4A550 to the two `ret 4`s at 0xA4A600 and 0xA4A618; both arms of the `jle` at 0xA4A5E9 store `[ebp+8]` to `[edi+0x50]`, which is what makes the comparison dead. EDI is a CDiplomacyStatus because the caller loads it as `countries[action->actor_id]->+0xE28[action->recipient_id]` at 0xA0E184-0xA0E18E and +0xE28 is the recorded diplomacy_status_array. `findRefs.py --callers 0xA4A550` reports exactly one caller. Marked inferred because **no reader of +0x50 was found**: a same-register-neighbour scan over every named function (requiring the register to also carry +0x2C, +0x38, +0x58, +0x60 or +0x68) returned 161 functions for +0x50, nearly all of them `esp`-relative frame slots, so the method cannot distinguish a real reader from noise and its silence is not evidence either way. Would be shown wrong by a reader that treats +0x50 as something other than a date."
+  },
+  {
+   "rva": "0x1715C60",
+   "kind": "global",
+   "name": "g_CNullDiplomaticAction",
+   "signature": null,
+   "no_signature": null,
+   "comment": "The null-action singleton, 0x44 bytes of static storage, constructed by the CRT initialiser at 0xD1B3A0 and destroyed by the atexit handler at 0xD278A0. It is what a default-constructed CDiplomaticActionCommand holds at +0x3C (0xA0DFE6), what CDiplomaticAction::Create returns for an unrecognised token (0x4E6002), and the one pointer CDiplomaticActionCommand's destructor refuses to delete (0xA0E02F). Its IsValid (slot 13) and IsSelectable (slot 14) are both ReturnFalse at 0x592360, so `IsValid()` on the family is literally \"this is not the null object\" - the same shape as CNullOwnerArea, and CDiplomaticActionCommand::LoadKey uses it exactly that way.",
+   "confidence": "confirmed",
+   "evidence": "`findRefs.py --address 0x1B15C60` finds five references in code; the CRT initialiser at 0xD1B3A0 passes it to CNullDiplomaticAction::CNullDiplomaticAction and the static destructor at 0xD278A0 writes 0x15FB1D4 (the base vftable) over it, both of which are static-duration shapes. `vtable.py --all CNullDiplomaticAction` shows 0x592360 (`xor al, al; ret`) at slots 13, 14 and 18. Would be shown wrong by a sixth reference that writes to it, or by the address being heap rather than static - it is in .data, and no code allocates it."
+  },
+  {
+   "rva": "0x4E83F0",
+   "kind": "function",
+   "name": "CAllianceAction::Create",
+   "signature": "CAllianceAction* __cdecl CAllianceAction::Create(CCountryTag actor, CCountryTag recipient)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for an alliance offer, and the first of a run of eleven identical ones at 0x4E83F0, 0x4E8510, 0x4E8630, 0x4E8770, 0x4E8890, 0x4E89B0, 0x4E8AD0, 0x4E8BF0, 0x4E8D10, 0x4E8E30 and 0x4E8F50. Each allocates its class's size, copies the two tags by value into +0x8 and +0x10, sets `type` = 0 PROPOSE, `value` = 1 and both dates to g_CCurrentGameState's tick, and writes its own vftable. Nothing in the engine calls it: the Lua name is **`Create`**, from the registration at 0x9058B5 whose name string is 0x15EEBD8 'Create', so this is `CAllianceAction.Create(actor, recipient)` as a mod sees it.",
+   "confidence": "confirmed",
+   "evidence": "Read 0x4E83F0 to the bare `ret`s at 0x8E84EE and 0x8E8502; the class is fixed by the vftable it writes at 0x8E84D5 (0x15FB514 = CAllianceAction, from the RTTI export). `findRefs.py --callers 0x4E83F0` reports 0 direct calls and `findRefs.py --address 0x8E83F0` finds one reference, a luabind registration object that also carries the name pointer 0x15EEBD8 = 'Create'. The four stack dwords at [ebp+8..+0x14] and the bare `ret` are what make it __cdecl taking two 8-byte tags. Would be shown wrong by the registration's scope being some other class - the body's own vftable settles which class it builds regardless."
+  },
+  {
+   "rva": "0x4E8510",
+   "kind": "function",
+   "name": "CGuaranteeAction::Create",
+   "signature": "CGuaranteeAction* __cdecl CGuaranteeAction::Create(CCountryTag actor, CCountryTag recipient)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for a guarantee offer - see CAllianceAction::Create for the shared shape and the 'Create' Lua name.",
+   "confidence": "confirmed",
+   "evidence": "Writes CGuaranteeAction's vftable 0x15FB574 at the end of the body; four stack dwords, bare `ret`, zero direct callers. Would be shown wrong by that vftable belonging to another class in the RTTI export."
+  },
+  {
+   "rva": "0x4E8630",
+   "kind": "function",
+   "name": "CInfluenceNation::Create",
+   "signature": "CInfluenceNation* __cdecl CInfluenceNation::Create(CCountryTag actor, CCountryTag recipient)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for an influence action - see CAllianceAction::Create. This one also writes a field at +0x28 of its own, which CInfluenceNation adds over the base.",
+   "confidence": "confirmed",
+   "evidence": "Writes CInfluenceNation's vftable 0x15FB5D4; four stack dwords, bare `ret`, zero direct callers. Would be shown wrong by that vftable belonging to another class in the RTTI export."
+  },
+  {
+   "rva": "0x4E8770",
+   "kind": "function",
+   "name": "CMilitaryAccessAction::Create",
+   "signature": "CMilitaryAccessAction* __cdecl CMilitaryAccessAction::Create(CCountryTag actor, CCountryTag recipient)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for a demand for military access - see CAllianceAction::Create.",
+   "confidence": "confirmed",
+   "evidence": "Writes CMilitaryAccessAction's vftable 0x15FB634; four stack dwords, bare `ret`, zero direct callers. Would be shown wrong by that vftable belonging to another class in the RTTI export."
+  },
+  {
+   "rva": "0x4E8890",
+   "kind": "function",
+   "name": "COfferMilitaryAccessAction::Create",
+   "signature": "COfferMilitaryAccessAction* __cdecl COfferMilitaryAccessAction::Create(CCountryTag actor, CCountryTag recipient)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for an offer of military access - see CAllianceAction::Create.",
+   "confidence": "confirmed",
+   "evidence": "Writes COfferMilitaryAccessAction's vftable 0x15FB694; four stack dwords, bare `ret`, zero direct callers. Would be shown wrong by that vftable belonging to another class in the RTTI export."
+  },
+  {
+   "rva": "0x4E89B0",
+   "kind": "function",
+   "name": "CCallAllyAction::Create",
+   "signature": "CCallAllyAction* __cdecl CCallAllyAction::Create(CCountryTag actor, CCountryTag recipient, CCountryTag ally)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for calling an ally into a war, and the only one of the eleven that takes a **third** tag, written to +0x28/+0x2C - the ally or the enemy the call is about. See CAllianceAction::Create for the rest of the shape.",
+   "confidence": "confirmed",
+   "evidence": "Writes CCallAllyAction's vftable 0x15FB6F4; reads six stack dwords at [ebp+8..+0x1C] rather than four and stores to +0x28/+0x2C as well, bare `ret`, zero direct callers. The three-tag shape agrees with the census's luabind entry `...V2::V2::anon::VCCountryTag::anon::PAVCCallAllyAction::ZU__vector4::00::...P6APAVCCallAllyAction`, a vector4 (return plus three arguments) where the other ten are vector3. Would be shown wrong by a seventh stack dword, which the `ret` forbids."
+  },
+  {
+   "rva": "0x4E8AD0",
+   "kind": "function",
+   "name": "CNapAction::Create",
+   "signature": "CNapAction* __cdecl CNapAction::Create(CCountryTag actor, CCountryTag recipient)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for a non-aggression pact offer - see CAllianceAction::Create.",
+   "confidence": "confirmed",
+   "evidence": "Writes CNapAction's vftable 0x15FB754; four stack dwords, bare `ret`, zero direct callers. Corroborated by CNapAction's own clone at 0xA2E360 allocating 0x28, the size this function allocates. Would be shown wrong by that vftable belonging to another class in the RTTI export."
+  },
+  {
+   "rva": "0x4E8BF0",
+   "kind": "function",
+   "name": "CInfluenceAllianceLeader::Create",
+   "signature": "CInfluenceAllianceLeader* __cdecl CInfluenceAllianceLeader::Create(CCountryTag actor, CCountryTag recipient)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for influencing an alliance leader - see CAllianceAction::Create.",
+   "confidence": "confirmed",
+   "evidence": "Writes CInfluenceAllianceLeader's vftable 0x15FB7B4; four stack dwords, bare `ret`, zero direct callers. Would be shown wrong by that vftable belonging to another class in the RTTI export."
+  },
+  {
+   "rva": "0x4E8D10",
+   "kind": "function",
+   "name": "CEmbargoAction::Create",
+   "signature": "CEmbargoAction* __cdecl CEmbargoAction::Create(CCountryTag actor, CCountryTag recipient)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for an embargo - see CAllianceAction::Create.",
+   "confidence": "confirmed",
+   "evidence": "Writes CEmbargoAction's vftable 0x15FB814; four stack dwords, bare `ret`, zero direct callers. Would be shown wrong by that vftable belonging to another class in the RTTI export."
+  },
+  {
+   "rva": "0x4E8E30",
+   "kind": "function",
+   "name": "CFactionAction::Create",
+   "signature": "CFactionAction* __cdecl CFactionAction::Create(CCountryTag actor, CCountryTag recipient)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for a faction invitation - see CAllianceAction::Create.",
+   "confidence": "confirmed",
+   "evidence": "Writes CFactionAction's vftable 0x15FB874; four stack dwords, bare `ret`, zero direct callers. Would be shown wrong by that vftable belonging to another class in the RTTI export."
+  },
+  {
+   "rva": "0x4E8F50",
+   "kind": "function",
+   "name": "CTradeAction::Create",
+   "signature": "CTradeAction* __cdecl CTradeAction::Create(CCountryTag actor, CCountryTag recipient)",
+   "no_signature": null,
+   "comment": "The Lua-side constructor for a trade offer - see CAllianceAction::Create. The object it builds is 0xB0 bytes, the largest in the family, because of the two goods vectors CTradeRoute carries.",
+   "confidence": "confirmed",
+   "evidence": "Writes CTradeAction's vftable 0x15FB8D4; four stack dwords, bare `ret`, zero direct callers. The 0xB0 agrees with the allocation in CTradeAction's own slot-16 clone at 0xA38ABA. Would be shown wrong by that vftable belonging to another class in the RTTI export."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CDiplomaticAction",
+   "offset": "0x4",
+   "name": "persistent_id",
+   "type": "int",
+   "comment": "Always 0x18D. Written by CNullDiplomaticAction's constructor (0xA0EB30), by each of the eleven Lua `Create` factories (e.g. 0x8E84A9) and copied by every slot-16 clone, so every action in the family carries it. **It is not a per-class discriminator**: CCommand +0x4 is recorded as \"a class id\" and holds the same 0x18D, and the kind of action is carried by slot 15's save token instead. What reads it was not traced; token 0x18D resolves to `none`.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "The constant appears as an immediate in six independently read bodies (0xA0EB30, 0x8E84A9, 0x8E85C9, 0x8E86E9, 0xA2E3AB and the other eight factories). No reader of the field was identified, so the comment says what the bytes say and no more. Would be shown wrong by a reader that treats it as something other than an id."
+  },
+  {
+   "struct": "CDiplomaticAction",
+   "offset": "0x8",
+   "name": "actor",
+   "type": "CCountryTag",
+   "comment": "The country making the offer, an 8-byte CCountryTag with the four-character tag at +0x8 and the country id at +0xC. Loaded from the save key `actor` (token 0x2E9) at 0xA0E7B5/0xA0E7BB, where CCountryDataBase::GetTag's result is copied as two dwords. CNullDiplomaticAction's constructor fills it with \"---\" and id 0. Every reader that wants the CCountry indexes `g_CCountryDataBase::countries_first` with +0xC: CTradeAction::IsValid, CDiplomaticActionCommand::Execute and the base's slot 14 all do.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CDiplomaticAction::LoadKey's `actor` case at 0xA0E769-0xA0E7BB; the constructor at 0xA0EB28/0xA0EB37; CNapAction::GetAIAcceptance pushing `this+0x8` as the actor tag's address (already in findings/FINDINGS-diplomacy.md). Would be shown wrong by the `recipient` key writing the same offsets - it writes +0x10/+0x14 instead, at 0xA0E86A/0xA0E874."
+  },
+  {
+   "struct": "CDiplomaticAction",
+   "offset": "0x10",
+   "name": "recipient",
+   "type": "CCountryTag",
+   "comment": "The country being offered to, an 8-byte CCountryTag with the tag at +0x10 and the id at +0x14. Loaded from the save key `recipient` (token 0x2EA) at 0xA0E86A/0xA0E874. The base's slot 14, `IsSelectable` (0xA0EAE0), is three instructions: `return actor_id != recipient_id` - so the family's default selectability test is just \"these are two different countries\".",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CDiplomaticAction::LoadKey's `recipient` case at 0xA0E81E-0xA0E874; 0xA0EAE0 is `mov eax,[ecx+0xC]; xor edx,edx; cmp eax,[ecx+0x14]; setne al; ret`, and `vtable.py --all` puts it at slot 14 of the base. Would be shown wrong by the save blocks: all 56 pending blocks in the corpus carry both an `actor` and a `recipient` tag."
+  },
+  {
+   "struct": "CDiplomaticAction",
+   "offset": "0x18",
+   "name": "type",
+   "type": "int",
+   "revises": "The record says the enum has two values. It has three: ACCEPT = 2 is registered in the same luabind chain, eight instructions after DECLINE, and appears in real saves. Carrying the correction into the comment, and adding what the field is for - it is the action's stage, not its kind.",
+   "comment": "The action's `CDiplomaticAction::EType`, and the **stage** an offer is at rather than what kind of offer it is: the kind is the C++ subclass, and its name is slot 15's save token. `CDiplomaticAction::GetType` is registered to Lua and resolves to a two-instruction `mov eax,[ecx+0x18]; ret` at 0x416000. The enum has **three** values, all registered in one luabind chain ending at 0x8ED397: ('PROPOSE', ebx) at 0x8ED38D with ebx zeroed at 0x8EAE68 and never rewritten, ('DECLINE', 1) at 0x8ED37F, and **('ACCEPT', 2) at 0x8ED3BB**, appended to the same value vector at 0x8ED3C9 and registered by the loop at 0x8ED3CE. So 0 = PROPOSE, 1 = DECLINE, 2 = ACCEPT. What acts on it: CDiplomaticActionCommand::Execute enqueues a PROPOSE on the recipient and anything else on the actor; the hourly AI pass at 0x682BA8 only touches entries still at PROPOSE and writes 2 into the field at 0x682BB3 to accept them. The body at 0x416000 has two references and so is **not** recorded under a class name (trap 4); the field is.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "Read the registration chain 0x8ED37F-0x8ED3EA: two value pairs go into the vector built by 0x8E8070, a third ('ACCEPT', 2) is appended by 0x883B30, and the loop at 0x8ED3CE-0x8ED3EA registers every element of [esi+4]..[esi+8] in 8-byte steps. ebx is 0 throughout: `xor ebx, ebx` at 0x8EAE68 is the only write to it between the function entry at 0x8EADD0 and 0x8ED3D0. The block is CDiplomaticAction's because the registration immediately after it (0x8ED3EF-0x8ED426) is the IsValid/IsSelectable/GetValue/SetValue/GetType/GetAIAcceptance chain already attributed to CDiplomaticAction in findings/FINDINGS-trade2.md, and the type descriptor spells `CDiplomaticAction::W4EType`. Independently confirmed by the save corpus: across 45 saves the 56 pending action blocks carry type=0 thirty times, type=1 five times and **type=2 twenty-one times**, so a two-valued enum cannot be right. Would be shown wrong by a fourth pair in the chain - there is none between 0x8ED397 and the loop - or by a save holding type=3."
+  },
+  {
+   "struct": "CDiplomaticAction",
+   "offset": "0x1C",
+   "name": "date",
+   "type": "int",
+   "comment": "When the offer was made, in **hours** on the same scale as g_CCurrentGameState's tick (+0xBDC), counted from the 43,800,000-hour epoch. Loaded from the save key `date` (token 0x1F8) through Date_SetFromString at 0xA0E70A, written by every Lua `Create` factory from the current tick, and set to the epoch itself - the engine's null date, [0x170C2B8] - by the null action's constructor. CDiplomaticActionCommand::Execute's only use of it is `date + 0xA8`, seven days, handed to CDiplomacyStatus::SetNextOfferAllowed.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "`date` is token 0x1F8 in ghidra/saveTokens.json and CDiplomaticAction::LoadKey's case for it at 0xA0E6FE puts `edi+0x1C` in ESI and calls the recorded Date_SetFromString (rva 0x4CDA0), whose signature types the receiver `int*`. The Lua factories write `gameState->+0xBDC` to it at e.g. 0x8E84C5. In the save corpus the key renders as \"1938.1.5.2\", a Y.M.D.H date. Would be shown wrong by the field being eight bytes - Date_SetFromString writes four, and +0x20 is the next field."
+  },
+  {
+   "struct": "CDiplomaticAction",
+   "offset": "0x20",
+   "name": "last_command_date",
+   "type": "int",
+   "comment": "When the action was last put on the wire, in hours on the tick scale - the save's own key name (token 0x3EC), loaded through Date_SetFromString at 0xA0E806. **Two independent writers, both setting it to the current tick**: CDiplomaticAction::MakeCommand stamps it just before wrapping the action in a command (0xA0E92D) and CCountry::AddPendingDiplomaticAction stamps it again as the action is enqueued (0x4E62EB). That is what makes it later than `date` for an offer that has travelled: in the save corpus it differs from `date` in 34 of 56 blocks and is never earlier.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "Token 0x3EC is `last_command_date`; the loader case at 0xA0E7FA-0xA0E80B calls Date_SetFromString with ESI = `edi+0x20`. The two writers are `mov [edi+0x20], eax` at 0xA0E92D and `mov [ecx+0x20], eax` at 0x4E62EB, both with eax = `gameState->+0xBDC`. The 34-of-56 count is from a scan of all 45 saves on this machine; every differing pair has last_command_date the later of the two. Would be shown wrong by one save block where last_command_date precedes date."
+  },
+  {
+   "struct": "CDiplomaticAction",
+   "offset": "0x24",
+   "name": "value",
+   "type": "uint8_t",
+   "revises": "Keeping the existing reading, which is right, and adding the save-corpus check that settles the units question: the key renders as yes/no, so this is a bool and **not** one of the game's thousandths (trap 7).",
+   "comment": "A bool, exposed to Lua as GetValue/SetValue: CDiplomaticAction::SetValue (0xA0E980, one reference, no vftable) is `this->+0x24 = [ebp+8]` and the getter is the folded `mov al,[ecx+0x24]` at 0xA0E990. **CTradeAction::IsValid (slot 13, 0xA38770) branches on it at 0xA387DA**: set, and it validates a fresh trade offer; clear, and it instead requires that an identical route already exist on the pair. So `value` is the proposal/cancellation polarity a script controls. **Units: none - it is a bool, not thousandths.** In the save it is written `value=yes` / `value=no`, 39 yes and 6 no over the 45 saves on this machine, which is also how the `value` loader case reads it: ParseBool (rva 0x67B410) at 0xA0E6E6, not a number. Seven of the family also use it as their slot-18 answer, through the folded `cmp byte ptr [ecx+0x24], 0; setne al; ret` at 0xA0FE10 and the recorded ReturnByteAt24 at 0xA0E990.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CDiplomaticAction::LoadKey's `value` case (token 0x2A6) at 0xA0E6DF-0xA0E6E6 passes `edi+0x24` to the already-recorded ParseBool, which is the bool parser and not sscanf - the `type` case four instructions away uses sscanf instead, which is the contrast that settles it. The save corpus shows the key as yes/no in all 45 blocks that carry it. Would be shown wrong by a save writing a number there, or by a reader comparing it against anything but zero."
+  },
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x50",
+   "name": "next_offer_allowed",
+   "type": "int",
+   "comment": "A tick (hours), set to the proposal's `date + 0xA8` - **exactly seven days** - by CDiplomacyStatus::SetNextOfferAllowed (0xA4A550), whose one caller is CDiplomaticActionCommand::Execute on the PROPOSE path, for every kind of action except `callaction` (0x309). **Likely a per-pair cooldown on diplomatic offers, but no reader was found**, and the setter's own comparison against `tick + 0xA8` is dead - both arms store the same value - so the feature may be partly gutted. The name is read off the one writer's arithmetic, not off a consumer.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "The write is `mov [edi+0x50], eax` / `mov [edi+0x50], ecx` at 0xA4A5EE and 0xA4A606, both with the caller's `action->date + 0xA8`; EDI is the pair's CDiplomacyStatus because CDiplomaticActionCommand::Execute loads it as `countries[actor_id]->+0xE28[recipient_id]` at 0xA0E184. 0xA8 = 168 and CCurrentGameState +0xBDC is recorded as hours. Marked inferred: a same-register-neighbour scan for readers (register must also carry +0x2C, +0x38, +0x58, +0x60 or +0x68) returned 161 named functions, overwhelmingly `esp` frame slots, so it cannot see a reader if one exists and its silence proves nothing - the honest statement is that this field has one writer and no identified reader. Would be shown wrong by a reader comparing it against the tick, which would confirm the cooldown, or by one treating it as a count."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xF24",
+   "name": "pending_diplomatic_actions",
+   "type": "void*",
+   "revises": "Renamed from `declarewar`. The name came from the first save key found that writes into the list, and `declarewar` is simply CDeclareWarAction's own class token (0x2F5) - one of **nineteen** action tokens CCountry::LoadKey accepts into this one list. The list is the country's pending diplomatic offers, of any kind; exactly trap 16, a name fitted to a key that was never the only one.",
+   "comment": "Head of the country's list of **pending CDiplomaticActions** - offers made to it and replies made to its own offers, of every kind. Node is 0x10 bytes: +0x0 the action, +0x4 the previous node, +0x8 the next, +0xC a byte. Tail at +0xF28, count at +0xF2C. Appended by CCountry::AddPendingDiplomaticAction (rva 0xE61C0) and by CCountry::LoadKey, whose nineteen action-token cases reach three entry points (0x4CD393 for declarewar, 0x4CD5FB for sixteen more, 0x4CDAE1 for influence and request_lendlease) that all call CDiplomaticAction::Create (rva 0xE5800) with the token, run CPersistent::Load and append to this one list. Read by CCountry::HasPendingTradeProposal (rva 0xE6360), by CAIForeignMinister::DoWork (0x89E05A) and by the hourly AI pass (0x682B83), and emptied wholesale by CCountry::ClearPendingDiplomaticActions (rva 0xE63A0). In a save it appears as one `<action_token>={...}` key per entry inside the country's block, not under a `declarewar` wrapper.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "`switchmap.py 0x4CCDA0` / `switchmap.cases(0x4CCDA0)` give token -> case body, and the 19 action tokens reach exactly three bodies that converge on one append: 0x4CD393 `push 0x2F5` (declarewar alone, the only one with a literal), 0x4CD5FB `push eax; jmp 0x4CD398` (sixteen tokens - allianceaction, guaranteeaction, milaccess, offermilaccess, callaction, nap, influence_leaders, embargo_action, faction_action, trade_action, send_expedition, licence_technology, debtaction_action, peace_action, share_technology, offer_lendlease - jumping into declarewar's own `call CDiplomaticAction::Create`), and 0x4CDAE1 `push eax; call Create; jmp 0x4CD3AB` (influence and request_lendlease, a separate call into the same append tail). So `declarewar` is the name of the one case the compiler emitted the literal for and the other eighteen jump into it. The append itself - a 0x10 node, head at +0xF24, tail at +0xF28, count at +0xF2C - is byte-identical to the one in CCountry::AddPendingDiplomaticAction (0x4E6302-0x4E6342 against 0x4CD3C3-0x4CD40A), which is a second independent reading of the same three fields. Corroborated from the other end: CCountry::HasPendingTradeProposal walks the list testing members for the `trade_action` token, and the savegame corpus shows `trade_action`, `licence_technology` and `debtaction_action` blocks as direct country keys carrying the base's six fields, never nested under a `declarewar` wrapper. Would be shown wrong by a twentieth case, by one of the three bodies appending somewhere else, or by a save that nests the actions under `declarewar`."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xF28",
+   "name": "pending_diplomatic_actions_end",
+   "type": "void*",
+   "revises": "Renamed with +0xF24, of which it is the tail; see that field for why `declarewar` was the wrong name for the list.",
+   "comment": "the tail of the pending_diplomatic_actions list",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "Written as the new tail at 0x4E631D and 0x4CD3D7, read as the old tail one instruction earlier in both; zeroed with the head and the count by CCountry::ClearPendingDiplomaticActions at 0x4E63EC. Would be shown wrong by a traversal that starts from it."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xF2C",
+   "name": "pending_diplomatic_actions_count",
+   "type": "int",
+   "revises": "Renamed with +0xF24, whose length it is; see that field for why `declarewar` was the wrong name for the list.",
+   "comment": "how many are in the pending_diplomatic_actions list",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "Incremented at 0x4E6323 and 0x4CD3E6, and its old value is what decides whether the new node becomes the head or is linked onto the old tail. Zeroed at 0x4E63F6. Would be shown wrong by a reader using it as anything but a length."
+  }
+ ],
+ "vftable_slots": {
+  "CDiplomaticActionCommand": {
+   "0": "CDiplomaticActionCommand::~CDiplomaticActionCommand",
+   "4": "CDiplomaticActionCommand::LoadKey",
+   "6": "CDiplomaticActionCommand::Execute"
+  },
+  "CDiplomaticAction": {
+   "6": "CDiplomaticAction::MakeCommand"
+  },
+  "CNullDiplomaticAction": {
+   "16": "CNullDiplomaticAction::Clone"
+  }
+ },
+ "slots_noted": "Slot 15 is the action's save token (a per-class `mov eax, imm32; ret`, 21 of the 24 giving a token name, the base and CWarGoalBaseAction leaving it pure and CNullDiplomaticAction answering ReturnZero) and slot 16 is Clone; the per-class bodies are one-holder each but are left unnamed and unrecorded here rather than landing 44 near-identical entries. Slot 7 (the per-class effect) and slot 18 (the predicate the hourly AI pass gates on) are described in the findings file and left unnamed: slot 18's shared body 0xA0FE10 sits in four tables of one family and would have to be recorded class-free, and slot 7 was not read in any class. CNullDiplomaticAction slot 0 (0xA0EB90) and CDiplomaticAction slot 0 (0xA1BC50) are destructors that were read but are not named here, because the point they establish - that every destructor in the family writes the *base* vftable 0x15FB1D4 into the object before it is freed - is a fact about the census rather than about either function.",
+ "frontier": [
+  "0xE39C0",
+  "0x282B14",
+  "0x60E300",
+  "0x60E3F0",
+  "0x60E250",
+  "0x60E480",
+  "0x60E9A0",
+  "0x61BC50",
+  "0x60EB90",
+  "0x60FE10",
+  "0x62AC70",
+  "0x6278C0",
+  "0x6352F0",
+  "0x62B090",
+  "0x6435F0"
+ ]
+}

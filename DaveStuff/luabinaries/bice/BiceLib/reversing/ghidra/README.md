@@ -55,6 +55,41 @@ says so in the console, naming the type you have and the one the findings hold. 
 from before the marker existed is recognised by its comment, which always cites where the
 finding came from.
 
+## Where Ghidra is, and which project
+
+Both of these are easy to lose an hour to, so they are written down rather than elided.
+
+**The installs are under `%USERPROFILE%\Documents\Ghidra\`** - five of them, `ghidra_10.2.2`
+through `ghidra_12.1.2_PUBLIC`, each with `support\analyzeHeadless.bat`. They are at **depth six**
+from the drive root, so a `find /c -maxdepth 4` finds nothing and says so convincingly; one session
+concluded from exactly that search that Ghidra was not installed on this machine.
+
+**The current project is `Hoi3_v12.1.2`**, in `%USERPROFILE%\GhidraProjects\`, 1.7 GB, and it
+pairs with the 12.1.2 install. `Hoi3.gpr` beside it is from 2023 and is not the one.
+
+**Run against your own copy, never the maintainer's.** Theirs is usually open in the GUI - a live
+`Hoi3_v12.1.2.lock` next to it and a `javaw.exe` holding over a gigabyte - and a headless run would
+fight the lock. A copy is a plain directory copy plus an empty `.gpr`; `project.prp` records only the
+owner, so nothing inside it needs renaming:
+
+    cp -r "$USERPROFILE/GhidraProjects/Hoi3_v12.1.2.rep" "<scratch>/hl/Check.rep"
+    : > "<scratch>/hl/Check.gpr"
+
+Then, from `reversing/`:
+
+    "$USERPROFILE/Documents/Ghidra/ghidra_12.1.2_PUBLIC/support/analyzeHeadless.bat" \
+        "<scratch>/hl" Check -process hoi3_tfh.exe -noanalysis \
+        -scriptPath "<repo>/DaveStuff/luabinaries/bice/BiceLib/reversing/ghidra" \
+        -postScript ApplyBiceLibFindings.java overwrite
+
+`-noanalysis` matters: the program in the project is already analysed and a second pass would both
+waste minutes and move boundaries the findings are written against. Grep the output for `'!'` to see
+the failures, and **`failed: 2` is the pass mark** - the two documented over-long bodies. A third is
+a real one.
+
+**Applying to the maintainer's own project is their step**, the same division as `Deploy.ps1` and the game
+folder: the headless run against a copy proves the record lands clean, and he takes it from there.
+
 **To hand back one function you edited yourself** - the findings have since learned what
 your edit stood in for - put the cursor in it and run `ResetBiceLibFunction`, then
 `ApplyBiceLibFindings` again. It lowers that function's name and signature from yours to a

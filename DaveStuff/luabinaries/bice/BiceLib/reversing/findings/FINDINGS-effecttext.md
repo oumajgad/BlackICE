@@ -259,7 +259,7 @@ that leader's starting rank in `history/leaders`:
 | armygroup | 22 | 13 | 38 | 34 |
 | theatre | 9 | 8 | 6 | 16 |
 
-So the rule is David's, chosen with those numbers in front of him, and it is meant to
+So the rule is the maintainer's, chosen with those numbers in front of them, and it is meant to
 fire on the 613. It lives in one table, `rankFor` in `Hooks/EffectText/LoadOobText.cpp`.
 
 ### What this does not cover

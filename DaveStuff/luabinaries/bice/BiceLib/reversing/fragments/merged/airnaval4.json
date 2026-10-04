@@ -1,0 +1,299 @@
+{
+ "agent": "air phase 4 and the naval convoy/rebase block, wave 8",
+ "question": "What decides each air mission in CAIUnit_ManageAirUnits phase 4 (rva 0x4CEE76-0x4D04E6); whether CAIUnit +0x1FC/+0x20C/+0x21C/+0x22C are air-specific; and what the only MT19937Next draw in either body (rva 0x4D2BBF) decides",
+ "source": "reversing/findings/FINDINGS-airnaval4.md",
+ "addresses": [
+  {
+   "rva": "0xA7450",
+   "kind": "function",
+   "name": "CProvince::GetSunsetHour",
+   "signature": "int __fastcall CProvince::GetSunsetHour(CProvince* this@ESI)",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "comment": "Bare `ret`, 0x4A7450-0x4A74C2, read end to end, receiver in ESI, no stack arguments, 13 int3 after it. Answers `12 + q`, where `q = (latitude_north (+0x388) * daylightMonthFactor[m] / 1000 + 12000) / 2000` through __alldiv/__allmul (0xB99980/0xB99AF0) and a final /1000. `m` is the global month at [0x1A85590], shifted by six months when the province template's `southern_hemisphere (+0xA2)` is **clear** - so the table is written for the southern hemisphere and the northern one is the rotated case, and `daylightMonthFactor` is the 12-entry signed table at [0x170C8B0] = {-6000,-3000,0,3000,6000,12000,6000,3000,0,-3000,-6000,-12000}.\n\n**The arithmetic is what names it.** At latitude 0 q is 6, so sunrise 6 and sunset 18 - twelve hours of daylight at the equator. At latitude_north 1000 in the +12000 month q is 12, so sunrise 0 and sunset 24 - the midnight sun; in the -12000 month q is 0, so both answer 12 - the polar night. `|latitude_north * factor / 1000| <= 12000`, so **q is in [0, 12] always** and this function always answers the later of the two hours.\n\nIts twin is CProvince::GetSunriseHour (0x4A74D0), byte for byte the same up to the final combine, which is `12 - q` there. Three callers of the pair: CAIUnit_ManageAirUnits' ground-attack block (0x4CF37E/0x4CF393), its naval/port-strike block (0x4D0215/0x4D022A), and CAIInvasion stage 2 (findings/FINDINGS-theatre2.md).\n\n**This corrects findings/FINDINGS-theatre2.md**, which attributed the two the other way round - explicitly as an inference from the modulo-24 comparison rather than a reading of the bodies - and concluded that the AI loads an invasion force only in darkness with three hours of darkness left. The window runs to **sunset** and needs three hours of **daylight**.",
+   "evidence": "Both bodies decoded from their entries (28 and 30 instructions). The only difference is 0x4A74BE `lea eax,[edx+eax+0xc]` against 0x4A7540-0x4A7545 `mov eax,0xc; sub eax,ecx`, i.e. q+12 against 12-q. The month table was read out of the image at 0x170C8B0 and is signed. Would be shown wrong by: the table not being the daylight table (it is indexed by `(month+6)%12` for one hemisphere and `month` for the other, which only a seasonal table is), or by q being able to exceed 12, which would need |latitude_north| > 1000. The hemisphere polarity is the record's, not mine: CProvinceTemplate +0xA2 is already `southern_hemisphere` in project.json from findings/FINDINGS-weatherfront.md, written by a `setge` on y >= half the map height, and ComputeProvinceClimate already rotates its season table by half a year off the same byte - which is a third independent sighting of the same mechanism. I had guessed the opposite polarity from the branch alone and the record corrected it (trap 14).",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0xA74D0",
+   "kind": "function",
+   "name": "CProvince::GetSunriseHour",
+   "signature": "int __fastcall CProvince::GetSunriseHour(CProvince* this@ESI)",
+   "no_signature": null,
+   "confidence": "confirmed",
+   "comment": "Bare `ret`, 0x4A74D0-0x4A7547, read end to end, receiver in ESI, no stack arguments, eight int3 after it. The exact twin of CProvince::GetSunsetHour (0x4A7450) - identical instruction for instruction up to the final combine, which here is `12 - q` instead of `q + 12`. See that function for q and for the sanity checks (equator 6/18, midnight sun 0/24, polar night 12/12).\n\n**Because the two are symmetric about hour 12 and q is in [0, 12], sunrise is never later than sunset.** That makes the guard both AI mission blocks put in front of them - `if (hour > sunset && hour < sunrise) skip` at 0x4CF3AA and 0x4D0241, and the same shape in CAIInvasion stage 2 - **unsatisfiable**: it can only fire where the two have crossed over, and they cannot. The gate that actually bites is the one after it, `sunset - hour >= 3`.",
+   "evidence": "As for 0x4A7450: both decoded in full and diffed. The dead-guard claim follows from q >= 0, which follows from the table's entries all being in [-12000, 12000] and latitude_north being thousandths of half the map height. Would be shown wrong by a latitude_north above 1000 in some province, which a live read of CMapProvince +0x388 over the province table would settle.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4CEE76",
+   "kind": "instruction",
+   "name": "AirPhase4_SortWingsIntoMissionPools",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageAirUnits (0x4CD890), not a function: it is reached only by `je 0x8CEE31` falling through from the stance gate at 0x8CEE74 and it leaves through the shared epilogue at 0x8CEE4F.",
+   "confidence": "confirmed",
+   "comment": "Phase 4's entry. Four CLists are zeroed here - P at [ebp-0x114], Q at [ebp-0xBC], R at [ebp-0x38], S at [ebp-0xF0], each {head, tail, count, byte} - and `[ebp+0xC]`, which held the caller's `force` argument, is reused as a budget `agent->+0x1E4 * 4`.\n\nThe loop at 0x8CEEF0 walks listB (the phase-1 candidate list, head at [ebp-0xD0]) and sorts each wing into one pool by role, after repeating the gates `combats_count (+0x11C) <= 0`, CUnit_IsAtOwnBase, !UnitHasBlockingOrder and not-already-in-listA:\n\n- any tactical_bomber, cas or cag in the group -> 0x8CF047: if the budget is positive and the wing's definition has `sea_attack (+0x168) > 0`, into **R** (naval/port strike) and the budget drops by one; otherwise 0x8CF0A2.\n- any strategic_bomber, or `strategic_attack (+0x17C) > 50000` -> **Q** (logistical strike, then strategic bomb or nuke).\n- else any naval_bomber -> **R**.\n- else any interceptor -> **S** (air intercept).\n- else dropped.\n- 0x8CF0A2, the overflow from the first arm: into **Q** when the agent's ops area (+0x90/+0x94) is empty, the country is at war or in an undeclared war, `strategic_attack >= 1000` and the group holds no cag; into **P** (ground attack) otherwise.\n\n**So P is the ground-attack pool and R the naval-strike pool, and `agent->+0x1E4 * 4` caps the naval-strike pool, not the ground-attack one.** findings/FINDINGS-reorganise.md had the budget on the tactical pool and left CSubUnitDefinition +0x168 unidentified; it is `sea_attack`, already named in project.json, which is what makes the arm read correctly.",
+   "evidence": "Every insert site decoded and its destination read off the tail local it loads: 0x8CEFA8 and 0x8CF05A both take [ebp-0x34] (R), 0x8CEFF6 takes [ebp-0xEC] (S), 0x8CF0E9 takes [ebp-0xB8] (Q), 0x8CF134 takes [ebp-0x110] (P). The pool-to-mission mapping is the consumer side: 0x8CF31F reads P's head, 0x8CF65C S's, 0x8CFC20 and 0x8CFE8D Q's, 0x8D01D1 R's. A scan of phase 4 for every access to the twelve list slots found no others. Would be shown wrong by a thirteenth access to any of them, or by the role type_index locals ([ebp-0xC0] tactical, [ebp-0x84] cas, [ebp-0xF4] cag, [ebp-0xF8] strategic, [ebp-0xA0] naval_bomber, [ebp-0x50] interceptor) being assigned differently in the prologue at 0x8CD945-0x8CD9AF than findings/FINDINGS-reorganise.md read them.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4CF18A",
+   "kind": "instruction",
+   "name": "AirPhase4_CollectBattleProvinces",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageAirUnits (0x4CD890).",
+   "confidence": "confirmed",
+   "comment": "The ground-attack target survey, 0x8CF18A-0x8CF31F, which also lazily builds the CCurrentGameState singleton and loads `[ebp+0xC] = state->tick (+0xBDC)` - the absolute hour that every mission window in phase 4 is written from.\n\nIt walks the agent's front provinces (+0xC0/+0xC4) and keeps a province in the CList at [ebp-0x94] when: `p->intel_country_count (+0x374) > ourCountry->id (+0xCA8)`; `p->intel_by_country_ptr (+0x370)[ourId] >= 2` (we can see it); and some unit in `p->units (+0x2B8)` passes slot 15, has `combats_count (+0x11C) > 0` and `current_combat (+0x110) == 0`.\n\n**So the ground-attack target set is the provinces on our own front where a battle is in progress** - which is what makes the block the close-air-support arm.",
+   "evidence": "Decoded 0x8CF18A-0x8CF32A. The intel pair +0x370/+0x374 and CCountry +0xCA8 id are already named in project.json, and the comparison `p->+0x374 > country->+0xCA8` followed by `byte [country->+0xCA8 + p->+0x370]` only type-checks that way round. Would be shown wrong by +0x370 being the index and +0xCA8 the array, which the recorded names rule out.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4CF330",
+   "kind": "instruction",
+   "name": "AirPhase4_IssueGroundAttack",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageAirUnits (0x4CD890).",
+   "confidence": "confirmed",
+   "comment": "0x8CF330-0x8CF63C, over pool P. Per wing: not in listA; `home_base_ptr (+0x98)` set and its slot 0 answering a province; then the daylight window - `hour = state->tick % 24`, the dead guard at 0x8CF3AA (see CProvince::GetSunriseHour), and `hoursLeft = GetSunsetHour(baseProvince) - hour >= 3`.\n\nTwo target arms, each ending in the same issue:\n1. 0x8CF403-0x8CF489 over `agent->+0x1AC` (recorded as invasion_target_provinces): the province must hold at least one enemy land unit (CountEnemyLandUnitsInList), `CWeather::AirCombatEffect` on it must be at or below **[0x1B151C0] = 400**, and the wing's `range (+0x148)` must be at least 1000x CMap::DistanceBetweenProvinces.\n2. 0x8CF4A3-0x8CF55D over the battle provinces from 0x8CF18A: weather at or below **[0x1B15240] = 330**, at most one of the agent's own wings already on `ground_attack (0x6FB)` against that province (counted through `order->+0xC` at 0x8CF50F), and the same range test.\n\nThe order: `CEU3AI::CreateUnitOrder(ai, 0x6FB, wing, p->id, &{p->id}, &now, &now + hoursLeft, 0x1A8CC94)` at 0x8CF5F5, then the province is removed from the battle list so two wings are not sent to the same battle in one pass. **So the mission window runs from now until local sunset at the airbase.**",
+   "evidence": "Decoded in full. The argument order matches project.json's recorded signature for CEU3AI::CreateUnitOrder push for push. The two weather globals are distinct constants and the arms read different ones - 0x8CF43E against [0x1B151C0], 0x8CF4CF against [0x1B15240]; findings/FINDINGS-reorganise.md listed only the second. Would be shown wrong by the loop at 0x8CF330 walking a list other than [ebp-0x114], which 0x8CF31F settles.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4CF643",
+   "kind": "instruction",
+   "name": "AirPhase4_IssueAirIntercept",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageAirUnits (0x4CD890).",
+   "confidence": "confirmed",
+   "comment": "0x8CF643-0x8CF902, over pool S (interceptors). Gated on `country->at_war (+0xACC) || country->in_undeclared_war (+0xACD)`.\n\nPer wing it scans **the whole province table** - `state->provinces_begin (+0xB8C)` to `+0xB90`, the loop index doubling as the province id - and collects every province where 0x4EFA50(province@EDI, ourCountry, 0) holds, intel is at least 2, the province is not an enemy-controlled one carrying a building (`+0x304->+0x20 > 0` and CCountry::IsEnemy on `controller (+0x334)`), and the wing's `range (+0x148)` reaches it.\n\nThe order: `CreateUnitOrder(ai, 0x718 air_intercept, wing, firstCollectedId, &list, &now, &now + 0x78, 0x1A8CC94)` at 0x8CF8BF. **0x78 = 120 hours, five days** - the longest window phase 4 writes, and the only one not tied to sunset. No weather test anywhere in this block.",
+   "evidence": "Decoded in full. The window is `[ebp+0xC] + 0x78` at 0x8CF892-0x8CF8A3 and `[ebp+0xC]` is state->tick, loaded at 0x8CF1F6. 0x4EFA50 is the predicate findings/FINDINGS-opsarea.md leaves open; it is called here with its third argument 0 and our own country, and I did not read it. Would be shown wrong by the loop bound being something other than the province vector, which 0x8CF713-0x8CF722 settles.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4CF902",
+   "kind": "instruction",
+   "name": "AirPhase4_StrategicArmRequiresAirStanceTwo",
+   "signature": null,
+   "no_signature": "A three-instruction gate inside CAIUnit_ManageAirUnits (0x4CD890).",
+   "confidence": "confirmed",
+   "comment": "`cmp dword ptr [agent->unit + 0x20C], 2; je 0x8CF9FB` - and the fall-through is the full teardown and return.\n\n**So `plan_air_stance == 2` is a hard precondition for every one of logistical_strike, strategic_bomb, nuke_mission, naval_strike and port_strike.** At any other non-zero stance phase 4 issues `ground_attack` and `air_intercept` and nothing else; at stance 0 it does not run at all (0x8CEE6E). CUnit +0x20C's own record says the live distribution is 1 almost everywhere - 1,125 of 1,126 air formations in a 1942 German save - so **on that evidence the five strategic and naval air missions are not reached in a normal game**, and the AI's air force flies CAS and interception only.\n\nThat is the single most consequential thing in phase 4 for a mod, and it is one instruction.",
+   "evidence": "Decoded; the only two edges out of 0x8CF902 are 0x8CF9FB (stance 2) and 0x8CF915 (the free-everything tail that jumps to the epilogue at 0x8CEE4F). Every mission site past it - 0x8CFD54, 0x8CFFD6, 0x8D03CE - is downstream of 0x8CF9FB, and the three remaining pool-count gates (0x8CF9FB on Q, 0x8CFFFD on R) are inside that arm. Would be shown wrong by a second edge into 0x8CF9FB or past it from outside; cfg over 0x4CD890 shows none. The claim about what happens in a real game rests on the recorded live stance distribution, not on the bytes - a live read with a stance-2 plan would settle it directly, and nothing here was watched running.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4CFA07",
+   "kind": "instruction",
+   "name": "AirPhase4_CollectInterdictionProvinces",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageAirUnits (0x4CD890).",
+   "confidence": "confirmed",
+   "comment": "The logistical-strike target survey, 0x8CF9FB-0x8CFC1A, reached only at air stance 2 and only when pool Q is non-empty.\n\nIt opens with `CUnitPlan::GetPowerRatio(&agent->unit->plan (+0x1FC))`, and **when the ratio is at or above [0x1B15210] = 750 the whole logistical-strike arm is skipped** (0x8CFA1C jumps past it) - so the AI interdicts when it is losing, not when it is winning.\n\nOtherwise it rebuilds the list at [ebp-0x94] from the agent's front provinces: the front province must be enemy-controlled, then for each of its template's edges (`+0xD4 -> +0x90/+0x94`, stride 0x14) that is not edge kind 3, the neighbour must have `template +0x22 is_land` and `+0x13D` set, be enemy-controlled, have `ai_front_value (+0x5C)` at least **[0x1B151E4] = 200**, and **not** pass CProvince::HasHostileLandNeighbour. That last clause is what makes it a rear-area set: a province one step behind the enemy's front line.",
+   "evidence": "Decoded 0x8CF9FB-0x8CFC30. CMapProvince +0x5C ai_front_value, +0x334 controller and CProvinceTemplate +0x22 is_land are all already named in project.json. The power-ratio global's value comes from its static initialiser at 0xD11B40, `(int)floorf(750.5f)`. Would be shown wrong by 0x8CFA1C jumping somewhere other than past the issue block at 0x8CFC37-0x8CFD85; it lands at 0x8CFD87.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4CFC37",
+   "kind": "instruction",
+   "name": "AirPhase4_IssueLogisticalStrike",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageAirUnits (0x4CD890).",
+   "confidence": "confirmed",
+   "comment": "0x8CFC37-0x8CFD85, over pool Q. Per wing not in listA it collects the interdiction provinces whose weather is at or below [0x1B15240] = 330 and that the wing's `range (+0x148)` reaches, and then issues `CreateUnitOrder(ai, 0x6FD logistical_strike, wing, firstId, &list, &now, &now + 0x18, 0x1A8CC94)` at 0x8CFD5A. **0x18 = 24 hours.** No sunrise or sunset test - unlike ground attack and naval strike, interdiction is flown round the clock.",
+   "evidence": "Decoded in full; the window is `[ebp+0xC] + 0x18` at 0x8CFD2D-0x8CFD3F. The whole block contains no call to 0x4A7450 or 0x4A74D0 - a scan of phase 4 finds those only at 0x8CF37E/0x8CF393 (ground attack) and 0x8D0215/0x8D022A (naval strike), which is the positive control for the negative.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4CFDA5",
+   "kind": "instruction",
+   "name": "AirPhase4_IssueStrategicBombOrNuke",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageAirUnits (0x4CD890).",
+   "confidence": "confirmed",
+   "comment": "0x8CFDA5-0x8CFFF8, over pool Q again, with its own survey first.\n\nThe survey (0x8CFDA5-0x8CFE87) walks `agent->strategic_target_provinces (+0x18C/+0x190)` and keeps each enemy-controlled province. **When `ourCountry->nukes (+0x90) >= 1000` - that is, at least one bomb - an extra filter applies**: the province's `cores (+0x344)` list must hold an entry whose `+4` equals the province's own `controller_id (+0x338)`, so a nuke is only ever aimed at territory the controller also cores, never at land it merely occupies.\n\nThe issue (0x8CFE8D-0x8CFFF8) is per wing over Q, collecting targets by weather at or below 330 and by range, and then `CreateUnitOrder(ai, token, wing, firstId, &list, &now, &now + 0x18, 0x1A8CC94)` at 0x8CFFD6, where the token is chosen once at 0x8CFF8E - `0x579 nuke_mission` when `nukes >= 1000`, `0x6F9 strategic_bomb` otherwise. **The choice is per country, not per target or per wing**: a country with one bomb in stock sends every strategic bomber it has on a nuke mission.",
+   "evidence": "Decoded in full. CMapProvince +0x344 cores and +0x338 controller_id are already named in project.json, and the walk compares node->+4 against +0x338 with +0xC as the link, which is the recorded node shape. CCountry +0x90 is the `nukes` key (save token 0x577) per findings/FINDINGS-fieldmap.md's loader map; it is not in project.json or the GameClasses headers, both greped. Would be shown wrong by +0x90 being some other thousandths quantity, which the loader map rules out.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4CFFFB",
+   "kind": "instruction",
+   "name": "AirPhase4_IssueNavalOrPortStrike",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageAirUnits (0x4CD890).",
+   "confidence": "confirmed",
+   "comment": "0x8CFFFB-0x8D03E8, over pool R, gated on R's count.\n\nThe survey (0x8D0031-0x8D01CB) walks `agent->enemy_units_sighted (+0x25C)`, resolves each id pair through 0xA9D390 and backs up eight bytes to the CUnit, requires CCountry::IsEnemy on `owner (+0x124)` and weather at or below 330 over `current_province_ptr (+0x130)`, and then **splits by the target province's `template +0x22 is_land`**: a land province's id goes into list X at [ebp-0xE0], a sea zone's into list Y at [ebp-0x4C], and for a sea target that is moving (`+0x140 > 0`) the first waypoint `+0x138[0]` goes into Y as well.\n\nThe issue (0x8D01E0-0x8D03E8) repeats the sunset window - `GetSunsetHour(base) - hour >= 3`, the same dead guard at 0x8D0241 - and then tries **Y first with token `0x700 naval_strike`**; only when nothing in Y is within `range (+0x148)` does it fall to **X with `0x701 port_strike`** (the token is rewritten at 0x8D030C). `CreateUnitOrder(ai, token, wing, firstId, &list, &now, &now + hoursLeft, 0x1A8CC94)` at 0x8D03CE.\n\n**So port strike is the fallback, not a separate decision**, and it works because a ship in harbour sits in the coastal land province.",
+   "evidence": "Decoded in full. The token locals are explicit: `mov [ebp-0x1C], 0x700` at 0x8D025D before the Y loop and `mov [ebp-0x1C], 0x701` at 0x8D030C before the X loop, and 0x8D03C4 reads [ebp-0x1C] into the push. CProvinceTemplate +0x22 is_land is already named. Would be shown wrong by the X/Y assignment at 0x8D00D3 going the other way, which the `je` on `byte [template+0x22] == 0` settles.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x1715240",
+   "kind": "global",
+   "name": "g_AiAirMissionWeatherCap",
+   "signature": null,
+   "no_signature": "A global int, not a function.",
+   "confidence": "confirmed",
+   "comment": "**330, in thousandths.** The ceiling on `CWeather::AirCombatEffect` above which the AI will not fly: five readers in .text, all `cmp eax, [0x1B15240]` on that function's result - 0x8B126F and, inside CAIUnit_ManageAirUnits' phase 4, 0x8CF4CF (ground attack on a battle province), 0x8CFC96 (logistical strike), 0x8CFF05 (strategic bomb / nuke) and 0x8D00AF (naval / port strike).\n\n**It is not a define and a mod cannot move it.** findings/FINDINGS-reorganise.md recorded 'no writer in .text' and left it open as trap 8's second or third shape; it is the third. The writer is the static initialiser at 0xD11960, `mov [0x1B15240], (int)floorf(330.5f)` - the `(int)floor(N.5f)` .CRT$XCU shape, with the float literal at 0x160A6E0. The reason the earlier scan could not see it is that `image.findValue` over .text does find it - at 0xD1197C - but .text here runs to 0xD2B000, well past the 0x970000 the folder's notes assume, so the hit was in the list and read as a sixth reader.",
+   "evidence": "findValue(0x1B15240, '.text') returns exactly six addresses; the sixth, 0xD1197C, decodes as the store half of a six-instruction initialiser that ends `ret` with int3 after it. The literal at 0x160A6E0 reads 330.5f and floorf is already recorded at 0x401FD0, _ftol2_sse at 0xC08870. Would be shown wrong by a seventh reference anywhere, or by 0xD11960 being reachable from ordinary code rather than only from an initialiser table - findRefs on 0xD11960 is the check I did not run.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x17151C0",
+   "kind": "global",
+   "name": "g_AiAirInvasionTargetWeatherCap",
+   "signature": null,
+   "no_signature": "A global int, not a function.",
+   "confidence": "confirmed",
+   "comment": "**400, in thousandths**, from the static initialiser at 0xD119C0 (`(int)floorf(400.5f)`, literal at 0x160A6DC). **Exactly one reader**: 0x8CF43E, the weather test on the invasion-target arm of phase 4's ground-attack block.\n\nSo the AI will fly close air support over an amphibious objective in weather that it refuses for an ordinary battle - 400 against g_AiAirMissionWeatherCap's 330. Not a define; a mod cannot move it.",
+   "evidence": "findValue(0x1B151C0, '.text') returns exactly two addresses, 0x8CF440 (the operand of the cmp at 0x8CF43E) and 0x8CF19DC's store. The positive control is the same call on 0x1B15240, which finds its five real readers. Would be shown wrong by a second code reader.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x1715210",
+   "kind": "global",
+   "name": "g_AiLogisticalStrikePowerRatioCap",
+   "signature": null,
+   "no_signature": "A global int, not a function.",
+   "confidence": "confirmed",
+   "comment": "**750, in thousandths**, from the static initialiser at 0xD11B40 (`(int)floorf(750.5f)`, literal at 0x160A614). **Exactly one reader**: 0x8CFA16, on `CUnitPlan::GetPowerRatio(&unit->plan)`. At or above it, phase 4 skips the logistical-strike target survey and the whole logistical-strike block.\n\nGetPowerRatio is `our_power * 1000 / their_power`, so the rule is: **interdict only while we have less than 0.75 of the enemy's power on this plan.** Not a define.",
+   "evidence": "findValue(0x1B15210, '.text') returns 0x8CFA18 and 0xD11B5C, nothing else. GetPowerRatio's thousandths scale is already confirmed in project.json. Would be shown wrong by a second reader, or by 0x8CFA1C jumping into rather than past the block - it lands at 0x8CFD87, past 0x8CFD85.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x17151E4",
+   "kind": "global",
+   "name": "g_AiFrontProvinceThreshold",
+   "signature": null,
+   "no_signature": "A global int, not a function.",
+   "confidence": "confirmed",
+   "comment": "**200**, in thousandths, and already recorded from findings/FINDINGS-power.md with the same value, the same `(int)floorf(200.5f)` initialiser at rva 0x9118EB and the same conclusion that it is not a define. This is an independent convergence, not a first settlement.\n\nWhat is added: **a ninth code reader**, 0x4CFB8A inside CAIUnit_ManageAirUnits phase 4, where it is the floor on `CMapProvince::ai_front_value (+0x5C)` for a logistical-strike target - a province one step behind the enemy's front line is only interdicted when its front value is at least 200. The record said eight places; `findValue(0x1B151E4, '.text')` returns ten references, nine of them code (0x8B4229, 0x8B8835, 0x8B9738, 0x8BADBC, 0x8BB7BF, 0x8BBCFA, 0x8CFB8C, 0x8DA60C, 0x8DAA79) and the tenth the store in the initialiser.",
+   "evidence": "findValue(0x1B151E4, '.text') run fresh: ten references, listed above. The ninth is decoded in place at 0x8CFB87-0x8CFB90, `mov eax,[edi+0x5c]; cmp eax,[0x1B151E4]; jl`. The positive control for the scan is that it also finds the eight the record already names. Would be shown wrong by findValue missing a reference held in .rdata rather than .text, which for an immediate operand it cannot be.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md",
+   "revises": "Only the reader count and the new reader. The name, type, value and 'not a define' verdict are unchanged and agree with findings/FINDINGS-power.md; the comment said eight compared sites and there are nine, the ninth being this body's interdiction filter."
+  },
+  {
+   "rva": "0x4D2B59",
+   "kind": "instruction",
+   "name": "NavalConvoyRaid_WeightedRandomTarget",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageNavalUnits (0x4D0880).",
+   "confidence": "confirmed",
+   "comment": "**The only MT19937Next draw in either air or naval AI body, and it picks the province a submarine wolfpack is sent to raid.** 0x8D2B59-0x8D2CB6.\n\nTwo preconditions: the candidate vector must be non-empty (`[esp+0xFC] > 0`) and the total weight positive (`[esp+0x38] > 0`). Then:\n\n    r = MT19937Next(&gameState->+0x124) % totalWeight          ; 0x8D2BBF, then cdq/idiv edi\n    chosen = 0\n    for (c = candidates, w = weights; c < candidatesEnd && r > 0; c++, w++) {\n        chosen = *c\n        r -= *w\n    }\n\nwhich is plain roulette-wheel selection over two parallel `std::vector<int>` - province ids at [esp+0xC4]/[esp+0xC8], weights at [esp+0xE8], the running total at [esp+0x38] - built by the loop at 0x8D2526. **One quirk worth knowing: `r` can come out 0** (one draw in `totalWeight`), and then the loop exits before it reads a candidate, `chosen` stays 0, and the order is issued against province id 0 all the same - nothing tests it.\n\nThe order is `CreateUnitOrder(ai, 0x6E9 convoy_raid, fleet, chosen, &emptyList, &now, &now + 0x1F8, 0x1A8CC94)` at 0x8D2CA5, with **0x1F8 = 504 hours, 21 days** - much the longest-lived order either body writes - and an empty province list, so the single chosen province is the whole of the mission.",
+   "evidence": "Decoded 0x8D2B59-0x8D2CB6 in full. MT19937Next is confirmed in project.json; its argument `gameState + 0x124` is formed at 0x8D2BBA. The idiv's divisor edi is loaded from [esp+0x38] at 0x8D2B68 and tested positive at 0x8D2B6C, which is also what makes the divide safe. The two vectors are identified by the push_back helper 0x4221F0 being called with EDI = &[esp+0xC4] at 0x8D27EF and EDI = &[esp+0xE8] at 0x8D281B, one holding the province id and the other the weight. The r==0 quirk follows from `cmp edx, ebx; jle` at 0x8D2BE9 with ebx zero and edi seeded zero at 0x8D2BD5. Would be shown wrong by a test on `chosen` between 0x8D2BF9 and the push at 0x8D2C9D; there is none.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4D2526",
+   "kind": "instruction",
+   "name": "NavalConvoyRaid_ScoreConvoyRoutes",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageNavalUnits (0x4D0880).",
+   "confidence": "confirmed",
+   "comment": "What fills the two vectors the convoy-raid draw runs on, 0x8D2526-0x8D28B3, and the reason the draw is weighted at all.\n\nThe arm is reached only for a fleet that is **a wolfpack**: `CountShipsByRole` must report the fleet all submarines when the AI runs its own units (`owner_ai->+0x2C` or `unit->+0x205`), or no transports and more than half submarines otherwise; plus `at_war || in_undeclared_war` and `plan_naval_stance (+0x210) != 0`.\n\nIt then walks `agent->+0x24C`, a CList of convoy object id pairs, resolving each through FindPersistentById against [0x1A857F0] or [0x1A857F4] by whether the id type is above 0x1268. A convoy counts when CCountry::IsEnemyTag accepts its `+0x30/+0x34` tag, or failing that when that tag is on our `undeclared_war_opponents (+0x1018)` list. For each province of the convoy's `path (CConvoy +0xB0)`, skipping the route's two endpoints (`*(+0xB0)` and `*(+0xB4)`), skipping province ids **0x2927..0x292A**, and skipping what 0x8D0520 refuses, and requiring `COrder::IsTargetInRange(fleet, id)`:\n\n    weight = CConvoy::GetDesiredTransports(convoy) * abs(i + 1 - path_count / 2)\n\nwhere `i` is the province's index along the route. **The weight is zero at the route's midpoint and largest at its ends**, so the AI's submarines are drawn to the waters near the convoy terminals rather than to mid-ocean - and a province exactly at the midpoint can never be picked.\n\nA second pass per candidate (0x8D2830-0x8D2894) accumulates the same `GetDesiredTransports` into an ordered map keyed by each province of the agent's area (`area->+0x94`) that lies within the fleet's `range (+0x148)` of the candidate - the raidable-tonnage-per-port figure the rebase block then has available.",
+   "evidence": "Decoded 0x8D2418-0x8D28B3 in full. CConvoy +0xB0 path and +0xB8 path_count, CCountry +0x1018 undeclared_war_opponents, CUnit +0x40 regiments_count and CountShipsByRole's five-slot output are all already named in project.json. The signed halving at 0x8D2624-0x8D2639 is `-(path_count/2)` and 0x8D264F increments it once per node, and 0x8D2800-0x8D2807 is the standard cdq/xor/sub absolute value. Would be shown wrong by `+0xB4` not being the path list's tail node - the CList shape {head, tail, count} is what makes `*(+0xB4)` the last province id, and +0xB8 being the count is already recorded.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "rva": "0x4D2D8B",
+   "kind": "instruction",
+   "name": "NavalRebase_ChooseHomePort",
+   "signature": null,
+   "no_signature": "A block label inside CAIUnit_ManageNavalUnits (0x4D0880).",
+   "confidence": "confirmed",
+   "comment": "The rebase half of the same per-fleet loop, 0x8D2D8B-0x8D3141. It runs when the fleet's order is not blocking, and it is skipped entirely for a fleet holding any submarine (0x8D2E3A) and for one whose current port is not overcrowded - `shipsAtBase + pendingArrivals <= port->naval_base (+0x300)->level_max (+0x20)/1000 + 2` (0x8D2EDC-0x8D2EFA).\n\nThe scoring, over `area->+0x94` (the theatre's provinces), lowest wins, starting from 1e6f:\n\n    if (candidate->area (+0x2B4) != fleetParentProvince->area) skip\n    score = DistanceBetweenProvinces(candidate, fleetParentProvince) + 10.0\n    load  = shipsBasedAt(candidate->+0x58) + pendingArrivals[candidate->id]\n            + (we are not already there ? fleet->regiments_count (+0x40) : 0)\n    over  = load - candidate->naval_base->level_max/1000\n    if (over > 0) score += over * 2000\n    if (we are already there) score *= 0.75\n    if (score < best && CMapProvince::CanUnitReach(candidate, fleet, 0, 0)) best = score\n\nand then `CEU3AI::IssueUnitOrder(ai, 0x6DE rebase, fleet, best->id)` at 0x8D313C, with the pending-arrivals map moved over. **So the AI's fleets spread themselves across the theatre's ports in proportion to berth capacity, pay 2000 per berth of overcrowding, get a 25% discount for staying put, and never cross out of their own COwnerArea** - and the `+ 10.0` floor means distance never scores zero.",
+   "evidence": "Decoded 0x8D2D8B-0x8D3141 in full. CMapProvince +0x300 naval_base, +0x2B4 area and CProvinceBuilding +0x20 level_max are already named. The constants were read out of the image: [0x160A598] = 1e6f, [0x160A340] = 10.0 (double), [0x160A638] = 0.75 (double), and the 0x7D0 at 0x8D3002 is an immediate. Would be shown wrong by `candidate->+0x58` not being the naval-base object - the same offset's `+4` is handed to the same counter 0x5D5CC0 that `fleet->home_base_ptr (+0x98) + 4` is handed at 0x8D2EC2, which is what ties the two together.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CCountry",
+   "offset": "0x90",
+   "name": "nukes",
+   "type": "int",
+   "comment": "The country's stock of nuclear bombs, x1000. The `nukes` key, save token 0x577, per findings/FINDINGS-fieldmap.md's map of CCountry::LoadKey - **that is where it was settled; this is corroboration from the consumer side, not a first reading.**\n\nCAIUnit_ManageAirUnits phase 4 reads it twice, both `>= 1000` i.e. 'at least one bomb': at 0x4CFE07 it adds a filter to the strategic-target survey so that only a province its own controller cores is kept, and at 0x4CFF8E it swaps the order token from `strategic_bomb (0x6F9)` to `nuke_mission (0x579)`. The second is per country and per pass, so one bomb in stock turns the whole strategic bomber force onto nuke missions.",
+   "evidence": "The two reads were decoded. The identity is findings/FINDINGS-fieldmap.md's loader-key mapping, which is independent of this body. project.json and BiceLib/GameClasses/CCountry.hpp were both greped for 0x90 (trap 14) and neither holds it. Would be shown wrong by the loader map being wrong about token 0x577.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "struct": "CAIUnit",
+   "offset": "0x24C",
+   "name": "known_enemy_convoys",
+   "type": "void *",
+   "comment": "Head of a CList of **convoy object id pairs** - each node holds the id type at +0, the serial at +4 and the next node at +0xC, the same shape as the +0x25C enemy_units_sighted list.\n\nCAIUnit_ManageNavalUnits' convoy-raid block is the only reader found: at 0x4D2526 it walks the list, resolves each pair through FindPersistentById against the persistent database at [0x1A857F0] (id type above 0x1268) or [0x1A857F4] (at or below), and scores the resolved object's `path` for a submarine raid target. That the resolved object is a CConvoy is not an inference - `CConvoy::GetDesiredTransports` is called on it twice (0x4D27F9, 0x4D288B) and `CConvoy +0xB0 path` / `+0xB8 path_count` are read as the record describes them.\n\nNothing writes it in either body, and what fills it was not looked for.",
+   "evidence": "The walk and both GetDesiredTransports calls were decoded. The list shape is read off 0x4D2543-0x4D2558 (`+0` and `+4` into the id pair handed to FindPersistentById) and 0x4D2547 (`+0xC` into the loop variable). The strongest check is the type: a field read as a CConvoy* by a confirmed CConvoy method cannot be holding something else. Would be shown wrong by GetDesiredTransports being misattributed, which project.json has as confirmed.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "struct": "CAIUnit",
+   "offset": "0x1AC",
+   "name": "invasion_target_provinces_first",
+   "type": "CMapProvince**",
+   "comment": "Begin of a `std::vector<CMapProvince*>` (end +0x1B0, capacity end +0x1B4) that slot 78 erases at 0x4B2000-0x4B2025.\n\n**Retyped from `int*`.** CAIUnit_ManageAirUnits phase 4 walks it at 0x4CF403-0x4CF489 and uses each element as a province object, not an id: `lea eax,[elem + 0x2B8]` into CountEnemyLandUnitsInList (the units list), `lea edi,[elem + 0x68]` into CWeather::AirCombatEffect (the embedded weather), and `[elem + 0xD0]` into CMap::DistanceBetweenProvinces (the id). An int could not be used any of those three ways.\n\nThe first phase-4 arm of the ground-attack block scores exactly these provinces, so whatever the vector is for, the AI bombs enemy stacks standing in it in preference to the battles on its own front.",
+   "revises": "The type was `int*`. The name and the vector's extent are unchanged; only the element type is corrected, from the three distinct province-field accesses phase 4 makes through each element.",
+   "evidence": "0x4CF403-0x4CF489 decoded. +0x2B8 units, +0x68 weather and +0xD0 id are all already named on CMapProvince, and the three callees' signatures in project.json fix what each argument has to be. Would be shown wrong by the vector at +0x1AC not being the one indexed at 0x4CF406 - that instruction loads `[agent + 0x1AC]` and indexes it by a counter bounded by `([agent+0x1B0] - [agent+0x1AC]) >> 2`, which is the recorded extent.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "struct": "CAIUnit",
+   "offset": "0x1FC",
+   "name": "air_target_provinces_default",
+   "type": "void *",
+   "comment": "Head of a CList (tail +0x200, count +0x204; nodes {payload, prev, next, byte} with the link at +8). The **payload** is a small record holding a province id at its `+8` and a float weight at its `+0xC` - it is *not* the 0x1C scored-province record used by +0x2C0, whose province is a `CMapProvince*` at +0 and whose score is a float at +8.\n\n**The name is kept, and here is exactly what it does and does not rest on.** It rests on the only reader anywhere in the image: CAIUnit_ManageAirUnits phase 2 picks one of these four lists by the wing's air role at 0x4CE253-0x4CE27B and scores it for a `rebase_air` destination. It does **not** rest on anything about who fills it, because nothing fills it that this pass can see.\n\nThe writer search: a bounded decode from all 2,067 recorded function entries, looking for any `mov`/`lea` touching +0x1FC/+0x200/+0x204 and the three siblings, found writes in **CAIUnit::CAIUnit (0x4AF778-0x4AF7CC, all twelve slots zeroed) and CAIUnit::~CAIUnit (0x4AFD6F-0x4AFD9A, all four torn down through 0x4B6260) and nowhere else**, with the four reads in the air body as the positive control that the method sees this exact code. A follow-up scan for `add reg, 0x1FC` found one AI hit, 0x4B1F50 in slot 78, and it is `unit + 0x1FC` - the CUnitPlan - which is trap 12, not a writer.\n\n**The live observation that these lists are populated on 93 of 102 agents is therefore itself the control that proves the search has a hole**: a writer exists and reaches the list through a pointer no displacement scan can follow - almost certainly `lea reg, [agent + 0x1FC]`-equivalent arithmetic in a function project.json has never heard of, or a `this` that already points at the list. The search to run next is the other callers of the teardown helper 0x4B6260, and a decode of the whole 0x4A0000-0x4E0000 AI range from int3-run boundaries rather than from recorded entries only.\n\nOne thing the live note does *not* show: that the recorded names are wrong. 'Every one of those agents' units was a CArmy' is the normal case for any CAIUnit above wing level, because air formations hang off army and theatre HQs, and the air body's own entry gate is `agent->air_units_count (+0x104) >= 1`, not 'the agent's unit is a CAir'. The reading that would impeach the names is an agent with **zero** air units whose four lists are populated, and that needs a live read.",
+   "revises": "Nothing is renamed and no type changes. The comment is extended with (a) the correct node/payload shape, since the recorded comment reads as if the id were at the node's +8, which is where the link is, and (b) the result of the writer search and its limit, which is what the open question in findings/FINDINGS-reorganise.md asked for.",
+   "evidence": "The four `lea` selection sites and the scoring walk at 0x4CE2D0-0x4CE550 were decoded; 0x4CE2D6 takes the link from node+8 and the payload from node+0, and 0x4CE34E reads `payload->+8` as an index into `gameState->provinces_begin (+0xB8C)`. The writer search is the negative, and its positive control is that the same scan reports CAIUnit::CAIUnit's twelve writes, CAIUnit::~CAIUnit's four teardowns and CAIUnit_ManageAirUnits' four reads. Its known hole is unrecorded functions, which the live population proves is a real hole. Would be shown wrong by: finding a writer (which would make the name checkable against what it fills from), or by a live agent with no air units carrying a populated list (which would make the names wrong).",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "struct": "CAIUnit",
+   "offset": "0x20C",
+   "name": "air_target_provinces_strategic",
+   "type": "void *",
+   "comment": "The +0x1FC list used for a wing carrying a strategic bomber, or whose definition's `strategic_attack (+0x17C)` exceeds 50000; selected at 0x4CE259-0x4CE26E. Same node and payload shape as +0x1FC, and the same writer question - see that field. Still read in exactly one place in the image.",
+   "revises": "Nothing renamed and no type change; the comment gains the node/payload shape and a pointer to +0x1FC's account of the writer search, so the four siblings do not each carry a different half of the answer.",
+   "evidence": "As for +0x1FC: the selection site decoded, and the writer scan covered +0x20C/+0x210/+0x214 in the same pass with the same control.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "struct": "CAIUnit",
+   "offset": "0x21C",
+   "name": "air_target_provinces_naval",
+   "type": "void *",
+   "comment": "The +0x1FC list used for a wing carrying a naval bomber; selected at 0x4CE270-0x4CE27B. Same node and payload shape as +0x1FC, and the same writer question - see that field. Populated in a live game, and still read in exactly one place in the image.",
+   "revises": "Nothing renamed and no type change; the comment gains the node/payload shape and a pointer to +0x1FC's account of the writer search.",
+   "evidence": "As for +0x1FC.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "struct": "CAIUnit",
+   "offset": "0x22C",
+   "name": "air_target_provinces_transport",
+   "type": "void *",
+   "comment": "The +0x1FC list used for a wing carrying a transport plane, and only when the vector at +0x16C/+0x170 is empty; selected at 0x4CE29F-0x4CE2A5. Same node and payload shape as +0x1FC, and the same writer question - see that field.",
+   "revises": "Nothing renamed and no type change; the comment gains the node/payload shape and a pointer to +0x1FC's account of the writer search.",
+   "evidence": "As for +0x1FC.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  },
+  {
+   "struct": "CMapProvince",
+   "offset": "0x58",
+   "name": "naval_base_station",
+   "type": "void *",
+   "comment": "The province's **naval** base object - the naval sibling of `+0x54 home_base_ptr`, which is the object an air unit's `CUnit +0x98` holds.\n\nCAIUnit_ManageNavalUnits' rebase block hands `candidate->+0x58 + 4` to the same ship counter (0x5D5CC0) that it hands `fleet->home_base_ptr (+0x98) + 4` eight instructions earlier (0x4D2EC2 against 0x4D2FB4), so the two are the same kind of object and `+0x58` is where a province keeps the one a fleet bases at. `+4` is the CList of units stationed there, exactly as `+0x54 + 4` is for an airfield.\n\n**Inferred, not confirmed**: what makes it the *naval* one is that only fleets reach it and only wings reach +0x54, which is a reading of the two callers rather than of the object.",
+   "evidence": "Both call sites decoded, together with the identical `lea ecx, [reg + 4]` shape in front of each. The air side of the pair is already recorded in CMapProvince +0x54's own comment, from CAIUnit_ManageAirUnits 0x4CE47D. Would be shown wrong by a reader that passes +0x58 for an air unit or +0x54 for a fleet; I did not scan the image for either, so that is the gap. A live read of one coastal province's +0x54 and +0x58 would settle it in one command.",
+   "source": "reversing/findings/FINDINGS-airnaval4.md"
+  }
+ ],
+ "frontier": [
+  "0x4EFA50",
+  "0x4DD0A0",
+  "0x4DCED0",
+  "0x4DD000",
+  "0x1C0160",
+  "0xA5570",
+  "0x1D5CC0",
+  "0x221F0",
+  "0x4D0520",
+  "0xC0700",
+  "0x6C310"
+ ],
+ "slots_noted": "No virtual is named in this file. Every address recorded here is either a static free function (0x4A7450, 0x4A74D0 - neither appears in any vftable), a block label inside one of the two already-recorded AI bodies, or a global."
+}
