@@ -13,8 +13,8 @@ base_militia = 'militia_brigade',
 country = {
 	CORE_LOSE 				= 50,
 	CORE_GAIN 				= 50,
-	YEARS_OF_NATIONALISM 	= 20,   -- Years of Nationalism
-	YEARS_UNTIL_BROKEN 		= 1,    -- Years until rebel held capital results in broken country.
+	YEARS_OF_NATIONALISM 	= 20, -- Years of Nationalism
+	YEARS_UNTIL_BROKEN 		= 1, -- Years until rebel held capital results in broken country.
 	REBEL_ACCEPTANCE_MONTHS = 40,
 	ELECTION_RANDOMNESS 	= 0.15,
 	ELECTION_MINISTER_DISSENT_PENALTY = -0.1,
@@ -24,9 +24,9 @@ country = {
 	SPY_CONNECTION_DETECTION_CHANCE 	 = 0.5,
 	SPY_BASE_CONNECTION_DETECTION_CHANCE = 0.5,
 	SPY_UNIT_DETECTION_CHANCE 		= 0.5,
-	SPY_INTEL_MISSION_BONUS 		= 0.5,   -- % better when focusing on a field
+	SPY_INTEL_MISSION_BONUS 		= 0.5, -- % better when focusing on a field
 	SPY_PARTY_ORGANIZATION_BOOST 	= 0.02,
-	BASE_TECH_DECAY 				= -0.02,  -- how many percent lost each month in tech categories.
+	BASE_TECH_DECAY 				= -0.02, -- how many percent lost each month in tech categories.
 	MAX_TECH_ABILITY				= 20,
 	TECH_ABILITY_GAIN_DIVISOR		= 10,
 	NUKE_UNITY_IMPACT	= 0.2,		-- impact from being nukes.
@@ -72,11 +72,11 @@ economy = {
 	THREAT_FROM_CONVOYS_MODIFIER	= 0.1,
 	CONVOY_CONSTRUCTION_SIZE 	= 10,
 	MAX_DAILY_TRADE			= 100,
-	CONVOY_PATH_LENGTH_MULT		= 0.33,  -- Convoy path length effect on needed transports
+	CONVOY_PATH_LENGTH_MULT		= 0.33, -- Convoy path length effect on needed transports
 	CONVOY_TRADE_WEIGHT_MULT	= 0.2,	 -- Trade route convoy effect on needed transports
 	RESOURCE_TO_IC_COST			= 0.3,	 -- For calc IC from damage done to resources (for strat warfare overview)
 	CARGO_TONS_SUNK_SCALE		= 800.0,
-	LL_CONVOY_EFF_IMPACT		= 0.5,  -- How much decreases efficiency when convoy is sunk. (f.ex. if impact is 25% and sunk only a half of total transports, then efficiency reduces by 12.5%)
+	LL_CONVOY_EFF_IMPACT		= 0.5, -- How much decreases efficiency when convoy is sunk. (f.ex. if impact is 25% and sunk only a half of total transports, then efficiency reduces by 12.5%)
 	LL_CONVOY_EFF_REGAIN		= 0.02	 -- How much efficiency % regenerates every day.
 },
 
@@ -113,14 +113,14 @@ military = {
 	LAND_SPEED_MODIFIER = 0.05,
 	NAVAL_SPEED_MODIFIER = 0.2,
 	AIR_SPEED_MODIFIER = 0.1,
-	MINIMUM_STRENGTH = 50,		--minimum strength of a land division at production.  50 = 5000 men.
+	MINIMUM_STRENGTH = 50,		--minimum strength of a land division at production. 50 = 5000 men.
 	BRIGADES_IN_DIVISION = 7,	--number of allowed brigades in a division.
 	COMBAT_LEADER_IMPACT = 0.06,
 	COMBAT_MOVEMENT_SPEED = 0.01,
 	COMBAT_PUSHBACK_DAMAGE = 0.7,
 	COMBAT_PUSHBACK_CHANCE_FOR_DAMAGE = 35,	-- 10 = 10%
 	UNIT_ATTACK_DELAY = 170,
-	UNIT_ATTACK_DELAY_PERIOD = 12, --  if combat time below this attack delay scales downwards
+	UNIT_ATTACK_DELAY_PERIOD = 12, -- if combat time below this attack delay scales downwards
 	UNIT_ATTACK_DELAY_MODIFY = 10,
 	PARATROOP_MISSION_DELAY = 120, 	-- Paratroops cannot make another attack drop before this many hours
 	PARATROOP_DROP_ORG_MULT = 0.5, -- Paratroop org is multiplied with this after they have landed (and combat is over)
@@ -326,8 +326,8 @@ diplomacy = {
 	NAP_BREAK_FORCE_BALANCE_1 = 3.0,		-- 3-1 brigades along the border required to break NAP
 	NAP_BREAK_FORCE_BALANCE_2 = 1.5,		-- 1.5-1 brigades along the border required to break NAP
 	NAP_BREAK_FORCE_BALANCE_3 = 0.5,		-- 1-1 brigades along the border required to break NAP
-	NAP_EXPIRY_ALERT_MONTHS_AHEAD = 3,  -- That many months ahead the alert will appear.
-	WARGOAL_ADD_COOLDOWN = 1, -- 1  month
+	NAP_EXPIRY_ALERT_MONTHS_AHEAD = 3, -- That many months ahead the alert will appear.
+	WARGOAL_ADD_COOLDOWN = 1, -- 1 month
 	LEND_LEASE_NEUTRALITY_LIMIT = 70.0,
 	LEND_LEASE_MAX_IC_LOW = 0.05,	-- bounds of % of our IC that we can share with LL. Interpolated by current neutrality vs LEND_LEASE_NEUTRALITY_LIMIT aspect.
 	LEND_LEASE_MAX_IC_HIGH = 0.9
@@ -364,7 +364,6 @@ map = {
 	WHITESEA_BLOCKER = 171
 },
 
-
 weather = {
 	PRESSUREMIN 			= 870,
 	PRESSUREMAX 			= 1090,
@@ -377,12 +376,12 @@ weather = {
 	MINHUMIDITY 			= 0,
 	MAXFROMEACHPRESSURE 	= 8,
 	HIGHTEMPERATUREATTRITIONTHRESHOLD 	= 40,
-	LOWTEMPERATUREATTRITIONTHRESHOLD 	= -5,    -- was -10
+	LOWTEMPERATUREATTRITIONTHRESHOLD 	= -5, -- was -10
 	WINDATTRITIONTHRESHOLD 				= 30,
 	CLOUDCOVERAGETEMPERATUREDROP 		= 8,
 	LANDRAINIMPACTMODIFIER				= 0.005,
 	LANDRAINIMPACTCAP 					= 0.9,
-	LANDLOWTEMPERATURETHRESHOLD 		= -5,   -- was -1
+	LANDLOWTEMPERATURETHRESHOLD 		= -5, -- was -1
 	LANDLOWTEMPERATUREIMPACT			= 0.60,
 	LANDHIGHTEMPERATURETHRESHOLD 		= 35,
 	LANDHIGHTEMPERATUREIMPACT 			= 0.05,
@@ -422,7 +421,7 @@ weather = {
 	GFX_SNOW_STORM_LIMIT				= 15.0,
 	GFX_PARTIAL_CLOUD_LIMIT				= 0.3,
 	GFX_CLOUD_LIMIT						= 0.8,
-	INITIAL_SIMULATION_HOURS_AHEAD		= 96  -- (24*4) 4 days ahead - reducing it may improve loading time a bit, but worse weather precision at startup
+	INITIAL_SIMULATION_HOURS_AHEAD		= 96 -- (24*4) 4 days ahead - reducing it may improve loading time a bit, but worse weather precision at startup
 },
 
 goods_cost = {
