@@ -45,6 +45,7 @@
 #include <GameClasses/CCountryDataBase.hpp>
 #include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
+#include <Hooks/UnassignSelected.hpp>
 #include <Reversing/Counters.hpp>
 #include <Gui/LuaBridge.hpp>
 #include <Reversing/MessageProbe.hpp>
@@ -1047,6 +1048,30 @@ __declspec(dllexport) int activateCombatUnitStats(lua_State* L)
 }
 
 /**
+ * Makes holding Ctrl while confirming `CONFIRM_REMOVEAll` - the "unassign all leaders"
+ * dialog - unassign only the leaders of the units that are currently selected.
+ *
+ * With Ctrl up the dialog does exactly what it always did. The hook sits on the skip
+ * test the game's own unassign loop already makes per unit, so an unselected unit is
+ * passed over by the same path that passes over a unit on loan to another country. See
+ * Hooks/UnassignSelected.hpp.
+ */
+__declspec(dllexport) int activateCtrlUnassignSelected(lua_State* L)
+{
+    const bool ok = Hooks::UnassignSelected::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateCtrlUnassignSelected' failed: %s \n",
+            Hooks::UnassignSelected::status()));
+    }
+    else {
+        Hooks::UnassignSelected::setActive(true);
+        INFO_OUT(printf("Hook 'activateCtrlUnassignSelected' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
  * **The type a caller's own text is shown through.** Declared in
  * `interface/messagetypes.txt` and written in `localisation/BiceLib_messages.csv`, where its
  * lines are nothing but `$HEADER$`, `$TEXT$`, `$TEXT2$` and `$TEXT3$` - a message's text
@@ -1374,6 +1399,7 @@ void registerLeaderFunctions(lua_State* this_state) {
     // registerFunction(this_state, "activateLeaderPromotionSkillLoss", activateLeaderPromotionSkillLoss);
     registerFunction(this_state, "activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
     registerFunction(this_state, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
+    registerFunction(this_state, "activateCtrlUnassignSelected", activateCtrlUnassignSelected);
     registerFunction(this_state, "addTraitToLeader", addTraitToLeader);
     registerFunction(this_state, "getLeaderDetails", getLeaderDetails);
     lua_settable(this_state, -3);

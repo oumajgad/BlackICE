@@ -452,6 +452,32 @@ close in minutes. **Worth doing all of these in one sitting rather than briefing
 
 ### Open, not scheduled
 
+**Two leader-assignment flags the Ctrl-unassign feature passes without knowing what they do.**
+Both are small, both are self-contained, and neither blocks anything - the feature has been tested
+in single player and in **multiplayer** and works. They are here so that whoever next touches
+leader assignment does not have to re-derive them.
+
+1. **`CAssignLeaderCommand +0x8C`**, the fourth argument of its constructor (rva `0x1D7430`).
+   The two swap sites in one function at rva `0x33ACAC` and `0x33ADA2` pass **0**; the two
+   single-assignment sites at `0x3665A4` and `0x36955C` pass **1**. BiceLib passes 1, matching the
+   site that builds the same command it builds - an assign-the-empty-leader - but *why* the swap
+   passes 0 is unread. The field is written by the constructor and read somewhere in `Execute`
+   (rva `0x1D7570`) or in the command's save path; one scan for readers of `+0x8C` settles it.
+   **The cheap guess to test first** is that it is "announce this to the player", since the swap
+   is one user action that posts two commands and would otherwise report itself twice.
+
+2. **`CUnit::SetLeader`'s two trailing ints** (rva `0x1BFC10`, `ret 0xc`). Four call sites read,
+   three distinct combinations: `(CLeader::null(), 1, 0)` from `CRemoveAllLeadersCommand::Execute`,
+   `(leader, 1, 1)` and `(CLeader::null(), 0, 0)` from `CAssignLeaderCommand::Execute`, and
+   `(CLeader::null(), 0, 0)` at rva `0x1D7DA7`. So the first is **not** "is there a leader" - the
+   remove-all path passes 1 with the empty leader - and the pattern that fits what is read is
+   first = "this is the assignment that counts", second = "a leader is arriving rather than
+   leaving". **That is a reading of three call sites, not of the body**, which is the thing to do:
+   23 callers makes it worth reading properly once.
+
+---
+
+
 **The one that would change a published claim.** Everything else here is an addition; this is a
 subtraction, and it is what is left of the slot 11 question after the live run closed the main part
 of it.

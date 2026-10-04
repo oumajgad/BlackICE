@@ -52056,6 +52056,37 @@
    "labels": []
   },
   {
+   "rva": 1834000,
+   "namespace": "CUnit",
+   "name": "SetLeader",
+   "confidence": "CERTAIN",
+   "evidence": "**Puts a leader on a unit, or takes one off by being given `CLeader::null()`.** `this` in ECX, three stack arguments, `ret 0xc`, and it opens `mov edi, ecx; mov ecx, [edi+0x12c]` - reading `CUnit::leader_ptr` - which is what identifies it. In no virtual table; **23 callers**.\n\n**The name is the record's own, found by trap 14's check.** `CLeader::null`'s comment already said \"the two zeros pushed around the call at 0x1D7D9F are the later arguments of CUnit::SetLeader\", and the call at 0x1D7D9F is this address - so the function was named in prose in one entry and recorded nowhere. Reading that comment before naming it is the whole of why this is `confirmed` and not a guess.\n\nThe two trailing ints are flags and **what they mean is not established**; the four call sites read are `(CLeader::null(), 1, 0)` from `CRemoveAllLeadersCommand::Execute` at 0x1D8635, `(leader, 1, 1)` and `(CLeader::null(), 0, 0)` from `CAssignLeaderCommand::Execute` at 0x1D7713 and 0x1D7705, and `(CLeader::null(), 0, 0)` at 0x1D7DA7.\n(BiceLib/Hooks/UnassignSelected.cpp)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CUnit*"
+     },
+     {
+      "name": "leader",
+      "type": "CLeader*"
+     },
+     {
+      "name": "a",
+      "type": "int"
+     },
+     {
+      "name": "b",
+      "type": "int"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 1835504,
    "namespace": "CUnit",
    "name": "CanEngage",
@@ -53545,6 +53576,37 @@
    "labels": []
   },
   {
+   "rva": 1930288,
+   "namespace": "CAssignLeaderCommand",
+   "name": "CAssignLeaderCommand",
+   "confidence": "CERTAIN",
+   "evidence": "**The game's own way to assign - or unassign - one unit's leader**, and so the command to post when the choice of units has to survive the trip to another client. `ret 0x10`, four stack arguments, the object back in EAX. Five callers, all of which `push 0x90` before `operator new`, so **`sizeof(CAssignLeaderCommand)` is 0x90**.\n\nIt writes the `CPersistent` token 0x18D at +0x4, its own save token 0x3A3 at +0x2C and +0x30 (which slot 7 returns), then turns `unit` into the persistent reference at +0x3C/+0x40/+0x44 through 0x42DD70 and `leader` into the one at +0x64/+0x68/+0x6C through 0x7C9530, and puts `flag` on the byte at +0x8C. **Holding both ends as persistent ids rather than pointers is what lets the command resolve on every client**, which is the difference between it and anything read out of the local selection.\n\n`Execute` (slot 6, 0x1D7570) resolves both back, detaches the leader from whatever unit it was on, and calls `CUnit::SetLeader`. **Unassigning is `leader = CLeader::null()`**: the site at rva 0x36955C builds exactly that, and `Execute`'s own fallback for a leader id that does not resolve is the same call.\n\nThe two swap sites in one function at rva 0x33ACAC and 0x33ADA2 pass `flag` 0 and the two single-assignment sites pass 1; **what the flag does is not established.**\n(BiceLib/Hooks/UnassignSelected.cpp)",
+   "signature": {
+    "convention": "__stdcall",
+    "return": "CAssignLeaderCommand*",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "storage",
+      "type": "void*"
+     },
+     {
+      "name": "unit",
+      "type": "CUnit*"
+     },
+     {
+      "name": "leader",
+      "type": "CLeader*"
+     },
+     {
+      "name": "flag",
+      "type": "bool"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
    "rva": 1931072,
    "namespace": "CAssignLeaderCommand",
    "name": "SaveContents",
@@ -53677,6 +53739,25 @@
      {
       "name": "this",
       "type": "CPromoteLeaderCommand*"
+     }
+    ]
+   },
+   "labels": []
+  },
+  {
+   "rva": 1934400,
+   "namespace": "CRemoveAllLeadersCommand",
+   "name": "Execute",
+   "confidence": "CERTAIN",
+   "evidence": "**What the \"unassign all leaders\" button does**, and the command the `CONFIRM_REMOVEAll` dialog queues when it is confirmed. Virtual **slot 6** of `CRemoveAllLeadersCommand`; `this` in ECX, no stack arguments, one bare `ret` at 0x5D8655 with nine `int3` after it and slot 7 (`mov eax, 0x5d8; ret`, the command's save token) at 0x5D8660.\n\nIt resolves its own country - `this->+0x40` is a country id, indexed into `g_CCountryDataBase (0x1A855A4) ->+0x16C` - and walks that country's `units` (`CCountry +0xBAC`), `edi` holding each unit and `[esp+0x14]` the next node. Per unit:\n\n- **0x5D84A1: `cmp [edi+0x290], ebx` / `jne 0x5D863A`** - skip a unit whose `expeditionary_owner`'s id is set, i.e. one on loan to another country. This is the loop's only skip.\n- 0x5D856C: `cmp [edi+0x128], ecx` against the game state's `player_tag`'s id (+0xC34). This gates **only the two message strings** built at 0x5D8590-0x5D8617, not the work: both arms fall into the call below.\n- **0x5D8635: `call 0x5BFC10`** with the unit in ECX and `(eax, 1, 0)` on the stack - the per-unit strip - **`CUnit::SetLeader`**, now recorded at rva 0x1BFC10. It opens `mov edi, ecx; mov ecx, [edi+0x12c]`, reading `CUnit::leader_ptr`, which is what says this is the leader detach. `ret 0xc`, in no virtual table, 23 callers. It was left unnamed here at first, on the grounds that a name taken from one caller would be trap 14's `tutorial_active` again - and then trap 14's *other* half answered it: `CLeader::null`'s comment already called the call at 0x1D7DA7 `CUnit::SetLeader`, so the record held the name all along.\n\nSo the \"all\" is implicit in the loop - the command carries a country and nothing about units - which is why making it act on a selection is a change to the skip test rather than to the command. The dialog itself is `CConfirmRemoveAll`, whose only override of `CEU3Dialog` is one body in both slots 5 and 6 at rva 0x348840, unread.\n(BiceLib/Hooks/UnassignSelected.cpp)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CRemoveAllLeadersCommand*"
      }
     ]
    },
@@ -61346,6 +61427,25 @@
    "confidence": "CERTAIN",
    "evidence": "**The tooltip for a unit hovered in a battle.** Its only caller is 0x331C77. Writes, in order: the leader line (LEADER_COMMAND_INFO, or NO_LEADER_FOR_THIS_1/_2 where there is none), UNIT_COMBAT_WIDTH, CURR_COMB_STR, BATTLE_ATTACKMOD, BATTLE_DEFENDMOD, CURR_COMB_ORG, and then the variable part - a walk of the CList at CUnit +0xDC, one node per combat modifier, each turned into a BM_* localisation key by the switch at 0x164060.\\n\\n**The unit is in EDI** through the whole second half. Not assumed: [edi + 0x12C] is read for the leader line and is CUnit::leader_ptr, and [edi + 0x40] is compared against 1 to choose the wording, which is the count of CUnit::regiments. BiceLib's hook checks the vftable regardless.\n(BiceLib/Hooks/Tooltips/CombatStats.hpp)",
    "signature": null,
+   "labels": []
+  },
+  {
+   "rva": 3442752,
+   "namespace": "CConfirmRemoveAll",
+   "name": "OnConfirm",
+   "confidence": "CERTAIN",
+   "evidence": "**Slot 5 of `CConfirmRemoveAll`, and the whole of what confirming the `CONFIRM_REMOVEAll` dialog does.** Single holder - `vtable.py --holding` puts it in that one table only, and the class leaves slot 6 to `CEU3Dialog`. Bare `ret`, `this` in ECX, no arguments. The name is ours, from what the body does; the dialog's own class name and the `CONFIRM_REMOVEAll` key are the game's.\n\n    obj = operator new(0x44)\n    cmd = CRemoveAllLeadersCommand(obj, state->player_tag, state->player_tag.id)   ; 0x348904\n    queue = state->+0xBE8 ->[vft+0x48]() ->+0x38\n    queue->[vft+0x18](cmd)                                                         ; 0x3489A9\n    ...then sets +0x64 on the dialog and may set +0xD30 on another object\n\nSo the command is given a **country and nothing about units** - the \"all\" lives in its `Execute` loop - which is why making the button act on a selection means posting different commands from here rather than changing what that loop does. **BiceLib hooks the post**, at 0x3489A0.\n(BiceLib/Hooks/UnassignSelected.cpp)",
+   "signature": {
+    "convention": "__thiscall",
+    "return": "void",
+    "hiddenReturn": false,
+    "params": [
+     {
+      "name": "this",
+      "type": "CConfirmRemoveAll*"
+     }
+    ]
+   },
    "labels": []
   },
   {
@@ -81994,6 +82094,15 @@
    "type": null
   },
   {
+   "rva": 1934497,
+   "namespace": "",
+   "name": "UnassignAllLeaders_SkipTest",
+   "kind": "instruction",
+   "confidence": "CERTAIN",
+   "evidence": "`cmp dword ptr [edi+0x290], ebx` then `jne 0x5D863A` - twelve bytes, the per-unit skip in `CRemoveAllLeadersCommand::Execute`. `edi` is the unit, `ebx` is zero, `+0x290` is `expeditionary_owner`'s country id and 0x5D863A is the loop's next-unit test, so the pair means \"pass over a unit that is on loan\".\n\n**BiceLib hooked this and no longer does, and the reason is worth keeping.** Making it mean \"...or, while Ctrl is held, one that is not in the player's selection\" gave the unassign-all button a selection-only mode in single player and **desynced multiplayer**: this `Execute` runs on *every* client, while the Ctrl key, the selection and the played country are local to one machine, so the client that pressed the button stripped a subset and every other client stripped everything. No test here can fix that, because the command carries a country and not a list of units - see `CConfirmRemoveAll::OnConfirm` (rva 0x348840), where the choice now lives. Nothing patches these bytes today.\n(BiceLib/Hooks/UnassignSelected.cpp)",
+   "type": null
+  },
+  {
    "rva": 1936022,
    "namespace": "CMoveCommand",
    "name": "RouteUnit_PutCPathFind",
@@ -82423,6 +82532,15 @@
    "kind": "instruction",
    "confidence": "CERTAIN",
    "evidence": "`mov eax,[edi+0xF0]` at 0x32AE8A then `imul dword ptr [edi+0xF8]` here, inside the tooltip for a unit hovered in a battle (rva 0x329D40), which project.json already describes and whose fields include BATTLE_ATTACKMOD and BATTLE_DEFENDMOD. The companion pair is at 0x32AEBA/0x32AED5. `edi` is the CUnit, established by that entry's own reading. A display reader of the land defence product, listed here so that the AI reader at rva 0x4D9825 is not mistaken for the only one.\n(reversing/FINDINGS-slot11.md)",
+   "type": null
+  },
+  {
+   "rva": 3443104,
+   "namespace": "",
+   "name": "RemoveAllLeaders_PostCommand",
+   "kind": "instruction",
+   "confidence": "CERTAIN",
+   "evidence": "`mov ecx,[eax+0x38]; mov eax,[ecx]; mov edx,[eax+0x18]; push edi; call edx` - eleven bytes, the post of the command `CConfirmRemoveAll::OnConfirm` has just built. `eax` is the dispatcher off `CCurrentGameState +0xBE8`, its `+0x38` is the command queue, queue slot 6 is the post, and `edi` is the command.\n\n**Hooked by BiceLib.** With Ctrl held it posts one `CAssignLeaderCommand(unit, CLeader::null(), 1)` per selected unit instead of the country-wide command, and destroys the unused one through its own slot 0. This is the right place for that choice **because this handler only runs on the machine whose player clicked**, so what leaves it is an explicit list of units that every client resolves the same way. **Tested in multiplayer on 2026-10-04 and it holds** - which is the observation the design rests on, not an argument from the code. The first attempt filtered inside `CRemoveAllLeadersCommand::Execute` instead and desynced, because that body runs on every client while the key and the selection do not; see rva 0x1D84A1. The bytes are `8B 48 38 8B 01 8B 50 18 57 FF D2` and the hook verifies them before writing.\n(BiceLib/Hooks/UnassignSelected.cpp)",
    "type": null
   },
   {

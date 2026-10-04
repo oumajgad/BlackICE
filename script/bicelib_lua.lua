@@ -29,6 +29,11 @@ if mod then
     BiceLib.Leaders.activateLeaderListShowMaxSkill()
     BiceLib.Leaders.activateLeaderListShowMaxSkillSelected()
 
+    -- Holding Ctrl while confirming the "unassign all leaders" dialog unassigns
+    -- only the leaders of the units that are currently selected. Ctrl up is the
+    -- old behaviour exactly.
+    BiceLib.Leaders.activateCtrlUnassignSelected()
+
     -- Rank Specific traits
     -- BiceLib.Leaders.activateRankSpecificTraits()
     -- BiceLib.Leaders.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)
