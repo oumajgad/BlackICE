@@ -890,19 +890,23 @@ every opcode map, at the price of false positives that the `--writes` filter and
 
 **`bytefield.py <offset> [--dword] [--writes]`** — the cheap first pass, one displacement only.
 
-**`power/annfp.py`** and **`power/frame.py`** from `FINDINGS-power.md` did all the actual reading;
-`forceneeds/enrich.py` is six lines on top of `annfp.py` that annotate every `[reg + 0xNN]` read
+**`scratchpad/power/annfp.py`** and **`scratchpad/power/frame.py`** from `FINDINGS-power.md` did
+all the actual reading; `scratchpad/forceneeds/enrich.py` is six lines on top of `annfp.py` that
+annotate every `[reg + 0xNN]` read
 off the `CSubUnitDataBase` singleton with that field's name from `project.json`. That last one is
 the difference between 1800 unreadable lines and a list of unit types, and it only works because
 the record already had all 33 of those fields — which is the argument for `project.json` being
 machine-readable rather than prose.
 
-The invocations that reproduce the two listings:
+The invocations that reproduce the two listings. **These scripts are gone** - they lived in a
+session scratchpad, not in `reversing/scripts/`, and the same is true of `coverstore.py`,
+`dispscan.py` and `bytefield.py` above. What they did is written out here precisely so the work does
+not depend on them surviving; rebuilding one from this description is a few minutes:
 
 ```
-python power/annfp.py 0x8B60F0 0x1E8A --prologue 0x8B6117 --eh 0x94 | python forceneeds/enrich.py -
-python power/annfp.py 0x8B5210 0xEE0  --prologue 0x8B5234 --eh 0x64 | python forceneeds/enrich.py -
-python power/frame.py  0x8B5210 0xEE0  --prologue 0x8B5234 --eh 0x64 --check
+python scratchpad/power/annfp.py 0x8B60F0 0x1E8A --prologue 0x8B6117 --eh 0x94 | python scratchpad/forceneeds/enrich.py -
+python scratchpad/power/annfp.py 0x8B5210 0xEE0  --prologue 0x8B5234 --eh 0x64 | python scratchpad/forceneeds/enrich.py -
+python scratchpad/power/frame.py  0x8B5210 0xEE0  --prologue 0x8B5234 --eh 0x64 --check
 ```
 
 ## 11. Thread safety

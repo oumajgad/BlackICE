@@ -210,6 +210,11 @@ both `project.json` and a mod's `defines.lua`. **That is the check worth running
 defines change** - not to find moved offsets, but to find keys the engine wants and the
 file no longer provides.
 
-One naming wart left alone: `CDefinesSupply` is a misnomer. `CDefines +0xAC` is the whole
-179-entry `military` block, from `MAX_MANPOWER` at `+0x0` to `NEW_LEADER_ORG_HIT` at
-`+0x2C4`.
+One naming wart, **fixed 2026-10-03**: the struct was called `CDefinesSupply` and the field
+`supply_defines_ptr`, and both were misnomers. `CDefines +0xAC` is the whole 179-entry `military`
+block, from `MAX_MANPOWER` at `+0x0` to `NEW_LEADER_ORG_HIT` at `+0x2C4`. They are now
+`CDefinesMilitary` and `military_defines_ptr`. What settled it beyond the offsets: `defines.lua`
+has **no `supply` block at all** - `definesMap.py --check` lists country, economy, military,
+diplomacy, alignment, map, weather and goods_cost - so the old name never had a referent to be
+right about. The pointer and all 178 field names were correct throughout; only the two labels
+were wrong.

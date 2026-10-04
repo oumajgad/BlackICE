@@ -47,10 +47,30 @@ trap 3), `0x8B5210`/`0x8B60F0` (one `int3` between, so a scan looking for a *run
 misses it), `0x5A8540`/`0x5A8690`, `0x682630`/`0x682C20`, `0x9C0520`/`0x9C0A40`,
 `0x4C3B10`/`0x4C3C00`,
 `0x52E3A0`/`0x52EBE0`, `0x49DD00`/`0x49DE80`, `0x4BFE70`/`0x4BFED0`, `0x8D5510`/`0x8D5530`,
-`0x8BA05C`/`0x8BA060`, `0x68EBA0`/`ProcessUnitFunctor::execute`, `0x8ACD00`/`0x8ACD50`, `0x893C80`/`0x893E70` (the first ends `ret 8` at `0x893E6D` with no padding at all, so `functionStart(0x893E70)` answers `0x893C80` - and `0x893E70` is the AI's real landing-province chooser, so losing it loses the end of the invasion chain).
+`0x8BA05C`/`0x8BA060`, `0x68EBA0`/`ProcessUnitFunctor::execute`, `0x8ACD00`/`0x8ACD50`,
+`0x5D06C0`/`0x5D06E0` and `0x5D0CD0`/`0x5D0D00` (both `CountEvaluation` ending `ret 0xc` with the
+next trigger's `Evaluate` on the following byte - wave 11's plan asserted "clean boundaries on both
+sides" here having checked only the upper one), `0x90390`/`0x90750` (`ret 0xc` then `push ebp`;
+merges the `building_position` loader with the `building_nudge` loader, i.e. a
+`vector<CMapPoint>` writer with a `vector<float>` writer), `0x4A9D40`/`0x4A9D70` (`ret 4` then a
+fresh SEH prologue - and `findRefs --callers` on the wrong entry then reports 12 callers where the
+right answer is 8), `0x4ACED0`/`0x4ACF10` (bare `ret`, no padding, and `0x4ACED0` is a copy loop
+over **0x14**-byte elements, so the misattribution would have put a 0x14 stride on `CMapPoint`), `0x893C80`/`0x893E70` (the first ends `ret 8` at `0x893E6D` with no padding at all, so `functionStart(0x893E70)` answers `0x893C80` - and `0x893E70` is the AI's real landing-province chooser, so losing it loses the end of the invasion chain).
 
 Getting `0x4BFE70` wrong would have made `0x4C0430`'s whole argument list wrong, which is most of
 a section of `findings/FINDINGS-revolt.md`.
+
+**And a third cause, found 2026-10-03: the walk can stop on a byte that is not padding at all.**
+`functionStart(0x22F92C)` answers `0x22F6CC`, which is not an entry. The `0xCC` it stopped at
+(`0x22F6CB`) is the **low byte of a `call rel32` displacement** - `e8 cc 68 56 00` - and the byte
+after it happens to be `0x68`, which is in the prologue set. The real entry is `0x22F420`
+(`CEU3Application::~CEU3Application`), 1,292 bytes earlier.
+
+**`retsBefore` does not catch this one.** It returns an empty list, because x86 resynchronised after
+the bogus start and the decode looked perfectly clean - so the usual cross-check is silent here,
+which is what makes it worth its own paragraph. The cheap check is that a single `0xCC` is as likely
+to be data as padding: **require a run of at least three `int3` before accepting a candidate**, and
+this case resolves correctly.
 
 **The same symptom has a second cause, and it is not abutment.** `functionStart` only accepts a
 candidate whose first byte is in its prologue set, so a function that opens with anything else is

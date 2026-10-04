@@ -25,7 +25,7 @@ namespace CDefines {
         /**@brief the `economy = { ... }` block; see CDefines::Economy*/
         constexpr uintptr_t economy = 0x9C;
 
-        /**@brief the `military = { ... }` block, which CDefinesSupply describes*/
+        /**@brief the `military = { ... }` block, which CDefinesMilitary describes*/
         constexpr uintptr_t military = 0xAC;
     }
 

@@ -29,7 +29,7 @@
  *
  * **A leader whose rank is below the job gets a red line.** The rule is the order of
  * battle's own levels - a division is a major general's, a corps a lieutenant general's,
- * and everything above a corps a general's - and it is David's choice, made against the
+ * and everything above a corps a general's - and it is the maintainer's choice, made against the
  * numbers rather than assumed: across the mod's own `history/units`, corps are led by a
  * rank 1 leader 613 times of 844, so the warning is meant to fire on those. Fleets and
  * air commands are left out, because their levels do not line up with the land ones.

@@ -21,9 +21,15 @@
  * that worse.
  *
  * **Cost.** The repeating sample is **three dword reads** - begin, end and capacity - so it is
- * safe on a timer. Counting nulls, distinct names and the three leaking names means walking
+ * safe on a timer. Counting nulls, distinct names and ranking the commonest names means walking
  * every widget and reading a string per widget, so that is a separate call behind a button and
  * must not be put on the timer.
+ *
+ * The deep scan **ranks** rather than looking for named culprits. It counted the three outliner
+ * names and nothing else until 2026-10-02, which could only ever re-confirm the leak that was
+ * already known; a ranking can show one nobody has looked for. Since the commonest names are the
+ * commonest whether they leak or not, each entry also carries its change against the previous
+ * scan, and that is the number a leak shows up in.
  *
  * All of this is specific to this build of `hoi3_tfh.exe`.
  */
@@ -67,14 +73,26 @@ namespace Gui {
          * and one string read per widget - several thousand of each.
          */
         struct DeepScan {
+            /// One widget type name and how many of it are live.
+            struct Entry {
+                char name[64] = { 0 };     ///< the `.gui` type name, truncated if longer
+                uint32_t count = 0;
+                int change = 0;            ///< against the previous scan; only if `comparable`
+            };
+            static const int TOP = 10;
+
             bool valid = false;
             uint32_t walked = 0;
             uint32_t nulls = 0;            ///< null slots; erase-and-compact leaves none
             uint32_t distinctNames = 0;
-            uint32_t outlinerHeader = 0;        ///< the three names known to leak, ten per cycle
-            uint32_t outlinerHeaderEntry = 0;
-            uint32_t entryText = 0;
+            Entry top[TOP];                ///< commonest first, ties by name
+            uint32_t topUsed = 0;          ///< how many of `top` are filled
+            bool comparable = false;       ///< false on the first scan, when `change` means nothing
         };
+
+        /**@brief forget the previous scan, so the next one reports no change*/
+        void forgetDeepScan();
+
         DeepScan deepScan();
     }
 }

@@ -339,9 +339,24 @@ namespace CCountry {
         constexpr uintptr_t active_leaders_capacity = 0xE08;
         constexpr uintptr_t active_mission = 0xE38;          // a CPersistent of its own
         constexpr uintptr_t graphical_culture = 0xF20;       // AfterLoad gives it "Generic"
-        constexpr uintptr_t declarewar = 0xF24;              // a linked list
-        constexpr uintptr_t declarewar_end = 0xF28;
-        constexpr uintptr_t declarewar_count = 0xF2C;
+        /**
+         * **The country's pending diplomatic actions, of any kind** - a linked list of
+         * 0x10-byte nodes `{action, prev, next, flag}`. A proposal is queued on the
+         * *recipient*, a reply on the *actor*, and the hourly AI pass empties the list every
+         * hour, so it is usually empty when a save is written.
+         *
+         * **Was called `declarewar` until 2026-10-03, and that was wrong.** `declarewar` is
+         * CDeclareWarAction's own class token (757) and one of **nineteen** action tokens
+         * `CCountry::LoadKey` accepts into this one list - sixteen of the others are a
+         * two-instruction `push eax; jmp` into declarewar's case, which is why the compiler
+         * emitted a literal for that one and not the rest. Across the 45 saves on this machine
+         * the list holds 1,000 `debtaction_action`, 294 `nap`, 45 `trade_action` and 6
+         * `licence_technology` blocks, and **zero** `declarewar`. See
+         * `reversing/findings/FINDINGS-diploaction.md` section 6.
+         */
+        constexpr uintptr_t pending_diplomatic_actions = 0xF24;
+        constexpr uintptr_t pending_diplomatic_actions_end = 0xF28;
+        constexpr uintptr_t pending_diplomatic_actions_count = 0xF2C;
         constexpr uintptr_t land_battles_fought = 0x1080;
         constexpr uintptr_t air_battles_fought = 0x1084;
         constexpr uintptr_t naval_battles_fought = 0x1088;

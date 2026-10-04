@@ -1,0 +1,397 @@
+{
+ "agent": "wave 11 agent B",
+ "question": "CHistoryContainer's layout, CLeaderHistoryEntry/CRankChange, whether any of the ~103,000 live history objects is read after load, and what the retention costs",
+ "source": "reversing/findings/FINDINGS-history.md",
+ "addresses": [
+  {
+   "rva": "0x1F45A0",
+   "kind": "function",
+   "name": "CHistoryContainer::CHistoryContainer",
+   "signature": "void __fastcall CHistoryContainer::CHistoryContainer(CHistoryContainer* this@EAX)",
+   "no_signature": null,
+   "comment": "**The whole of a history container's layout, in eight stores.** The receiver is in EAX, nothing is on the stack and it ends in a bare `ret`. It writes the CPersistent meta `0x18D` at +4, its own vftable (VA 0x15C88F4) at +0, the date at +8 - `0x29C55C0` as an immediate and then the same value again out of **g_NullDate** (rva 0x130C2B8), which is the default member initialiser followed by the copy from the static CDate - then zeroes the `CList` at +0xC (head +0xC, tail +0x10, count +0x14, flag byte +0x18) and the dword at +0x1C. **So CHistoryContainer is 0x20 bytes** and the derived class's own fields start at +0x20. Called from exactly two places, both tiny derived constructors: CProvinceHistory::CProvinceHistory (0x1FCBE0) and CCountryHistory's at 0x1ECA3A; CLeaderHistory's copy is inlined into CLeader::CLeader at 0x17F618..0x17F665.",
+   "confidence": "confirmed",
+   "evidence": "Read instruction by instruction at 0x5F45A0..0x5F45D4, then checked against two independent places: CLeader::CLeader writes the same eight slots at CLeader+0x84..+0xA4 (0x17F618 onward) and constructs `picture` at CLeader+0xA8, which is CLeaderHistory+0x24; and CMapProvince.hpp already records `history = 0xD8` with `history_count = 0xEC`, which is 0xD8+0x14, the count this constructor zeroes. Shown wrong by: a ninth store below +0x20 in this body, or a derived class putting its first field anywhere but +0x20."
+  },
+  {
+   "rva": "0x1F45E0",
+   "kind": "function",
+   "name": "CHistoryContainer::Clear",
+   "signature": "void __stdcall CHistoryContainer::Clear(CHistoryContainer* history)",
+   "no_signature": null,
+   "comment": "Empties the entry list and frees the entries. Two passes over the list at +0xC: the first calls each entry's **virtual slot 0** with 1 (CHistoryEntry::Release, which deletes it), the second frees the 0x10-byte nodes, and then head/tail/count (+0xC/+0x10/+0x14) go to zero. It does **not** reset the date at +8 - CHistoryContainer::Reset (0x1F4730) is the variant that does. Wrapped in SEH, `ret 4`, the container on the stack. Called from eight places, among them CHistoryContainer::Release (0x200220) and CCountryHistory's and CProvinceHistory's own release at 0x1ECA60.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5F45E0..0x5F465B; the two loops and the three zeroing stores are explicit, and the `ret 4` is the only ret in the body. Shown wrong by any store below +0x14 in the body, or by the first loop calling a slot other than [vftable+0]."
+  },
+  {
+   "rva": "0x1F4660",
+   "kind": "function",
+   "name": "CHistoryContainer::AddEntry",
+   "signature": "void __thiscall CHistoryContainer::AddEntry(CHistoryContainer* this, CHistoryEntry* entry)",
+   "no_signature": null,
+   "comment": "**Slot 6, introduced by CHistoryContainer and inherited unchanged by all five of its subclasses** - the one way an entry gets into a history. Allocates a 0x10-byte node with `operator new`, fills it {data = entry, prev = old tail, next = 0, flag = 0}, hangs it off the old tail's `next` (+8) or, on an empty list, writes it to the head at +0xC, and increments the count at +0x14. **It keeps the list in date order**: before appending it compares the current tail entry's date (entry+8) against the new entry's, and when the tail is later it hands both to the sorted insert at 0x1FAEE0 instead. `ret 4`. No direct caller - every one of the 21 call sites is the virtual, reached as `mov edx,[owner+<history offset>]; lea ecx,[owner+<history offset>]; call [edx+0x18]`, which is how CCountry::ChangeNeutrality logs a neutrality change and how CLeaderHistory::LoadEntry files a parsed entry.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5F4660..0x5F4721: both arms, the `push 0x10` before operator new, the four node stores and the date comparison at 0x5F46C0..0x5F46C6. The node shape agrees with HoiDataStructures.hpp's LinkedListNodeSingle {data +0, prev +4, next +8} and with CList's recorded 0x10 size. Shown wrong by the node being any size but 0x10, or by the date comparison reading something other than [entry+8]."
+  },
+  {
+   "rva": "0x1F4730",
+   "kind": "function",
+   "name": "CHistoryContainer::Reset",
+   "signature": "void __fastcall CHistoryContainer::Reset(CHistoryContainer* history@EDI)",
+   "no_signature": null,
+   "comment": "Clear plus the date: frees every node of the list at +0xC (without calling the entries' Release, so this leaks the entries unless the caller has freed them), zeroes head/tail/count, and then puts **g_NullDate** (rva 0x130C2B8) back into the date at +8. The container is in EDI, nothing is on the stack and it ends in a bare `ret`. Three callers: 0xD46EA inside the unnamed leader/country reset at 0xD2B60, 0x1F4A8C, and 0x27DD14.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5F4730..0x5F4770; the free loop, the three zeroes and the store of [0x170C2B8] to +8 are all explicit, and the only ret is bare. The same five-store shape appears inlined in a CProvince reset at 0x96C30..0x96C69, where the date goes to province+0xE0 = history+0x8. Shown wrong by the body calling the entries' slot 0, which would make it Clear rather than Reset."
+  },
+  {
+   "rva": "0x1F4780",
+   "kind": "function",
+   "name": "CHistoryContainer::SetDate",
+   "signature": "void __fastcall CHistoryContainer::SetDate(CHistoryContainer* history@EDI, int* date@ESI)",
+   "no_signature": null,
+   "comment": "Sets the container's own date at +8 from the dword ESI points at, and - **only when virtual slot 8 answers false** - first walks the entry list and stamps the same date into every entry's +8. **That branch is dead in every container that exists**: slot 8 is ReturnTrue (0x692590) in CLeaderHistory, CDiplomaticHistory and CWarHistory and a framed `mov al,1; ret` at 0x1EC720 in CCountryHistory and CProvinceHistory; only the abstract base's own slot holds ReturnFalse (0x192360). Container in EDI, date pointer in ESI, nothing on the stack, three bare `ret`s. Five callers, all inside the unnamed function at 0x1F1F40.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5F4780..0x5F47B3. Slot 8 of all six tables read directly out of .rdata with vtable.py: 0x592360 for CHistoryContainer, 0xA92590 for the leader/diplomacy/war trio, 0x5EC720 for country/province, and the bodies of all three are two or four instructions returning a constant. Shown wrong by a sixth container class whose slot 8 returns false."
+  },
+  {
+   "rva": "0x1F47C0",
+   "kind": "function",
+   "name": "CHistoryContainer::ApplyRange",
+   "signature": "void __fastcall CHistoryContainer::ApplyRange(CHistoryContainer* history@EAX, int* from@EDI, int* to@stack:4)",
+   "no_signature": null,
+   "comment": "**Replays one history container across a date range, forwards or backwards** - the mechanism the whole subsystem exists for. When `*to > *from` it walks the list head-to-tail and calls each entry's **virtual slot 7 with 1** for every entry whose date is in `(*from, *to]`; when the range runs backwards it walks tail-to-head and calls slot 7 with **0**, undoing each entry whose date is in `(*to, *from]`. The container is in EAX, the from-date in EDI and the to-date is the one stack argument, so `ret 4`. Nine call sites, all of them inside ExecuteHistory (0x1F4C20).",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5F47C0..0x5F4820: the `cmp ecx,[edi]` at 0x5F47CA picks the direction, the two loops differ only in following node+8 against node+4, and the two `call [edx+0x1c]` sites push 1 and 0 respectively. Shown wrong by the slot being other than 7 ([vftable+0x1C] with 4-byte slots), or by either loop's date test using a bound other than the two arguments."
+  },
+  {
+   "rva": "0x1F4830",
+   "kind": "function",
+   "name": "CHistoryContainer::ApplyAll",
+   "signature": "void __thiscall CHistoryContainer::ApplyAll(CHistoryContainer* this, bool forward)",
+   "no_signature": null,
+   "comment": "**Slot 7 of CHistoryContainer and of all five subclasses**, the undated form of ApplyRange: with the flag set it walks head-to-tail calling every entry's own slot 7 with the same flag, and with it clear it walks tail-to-head calling each with 0. No date test at all, so it applies or undoes the whole history. `ret 4`. Reached only through the vftable - a rel32 scan of .text finds zero direct calls.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5F4830..0x5F4876; the two loops are three instructions apart and differ only in node+8 against node+4. findRefs.py --callers reports 0 direct calls. Shown wrong by a direct caller, or by either loop testing a date."
+  },
+  {
+   "rva": "0x200220",
+   "kind": "function",
+   "name": "CHistoryContainer::Release",
+   "signature": "CHistoryContainer* __thiscall CHistoryContainer::Release(CHistoryContainer* this, bool deleteIt)",
+   "no_signature": null,
+   "comment": "Slot 0 of CHistoryContainer, CLeaderHistory, CDiplomaticHistory and CWarHistory - the scalar-deleting destructor. Calls CHistoryContainer::Clear (0x1F45E0), then frees the object itself when the low bit of the flag is set, and returns the receiver in eax. `ret 4`. CCountryHistory and CProvinceHistory override it at 0x1ECA60, which does the same thing through a different clear (0x946F0).",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x600220..0x60023F, and vtable.py --holding 0x600220 lists exactly those four tables at slot 0. Shown wrong by a fifth holder, or by the call target being something other than 0x5F45E0."
+  },
+  {
+   "rva": "0x1F28E0",
+   "kind": "function",
+   "name": "CLeaderHistory::SaveContents",
+   "signature": "void __thiscall CLeaderHistory::SaveContents(CLeaderHistory* this, CSaveWriter* writer)",
+   "no_signature": null,
+   "comment": "Slot 2 of CLeaderHistory, CDiplomaticHistory and CWarHistory - the same body in all three, which is why it is recorded on one of them and the slot recorded on the other two. Walks the list at +0xC and, for each entry, asks **CHistoryEntry::DateIsUnset (0x1EC6E0)**: an unset date goes straight to the entry's own slot 2, and a real one is first formatted through 0x44C710 and opened as a `<date> = { ... }` block. So a leader's `history` block is written back out whole on every save. `ret 4`. CCountryHistory and CProvinceHistory use a different and much larger writer at 0x1FCDA0.",
+   "confidence": "confirmed",
+   "evidence": "Read the head of the body at 0x5F28E0..0x5F29A7 - the list walk, the 0x5EC6E0 predicate and the date formatting - and vtable.py --holding gives exactly the three tables at slot 2. Shown wrong by a fourth holder, or by the walk starting anywhere but +0xC. The tail past 0x5F29A7 was not read line by line."
+  },
+  {
+   "rva": "0x1EC6E0",
+   "kind": "function",
+   "name": "CHistoryEntry::DateIsUnset",
+   "signature": "bool __thiscall CHistoryEntry::DateIsUnset(CHistoryEntry* this)",
+   "no_signature": null,
+   "comment": "`return GetYear(&this->date) < 2`, where the year comes from **0x2EF40**: `(*date - 0x29C55C0) / 24 / 365.0` truncated, with 365.0 read out of 0x120A550 (VA 0x160A550) and the epoch being the same 43800000 the record already holds for CCurrentGameState's tick. So an entry whose date is still **g_NullDate** - the epoch, year zero - counts as undated, and the save writer omits its date header. Bare `ret`, receiver in ecx, in no virtual table. The name is read off the arithmetic rather than from a string.",
+   "confidence": "confirmed",
+   "evidence": "Both bodies read in full (0x5EC6E0..0x5EC701 and 0x42EF40..0x42EF6C) and the 365.0 unpacked from the image at 0x160A550. The magic `0x2AAAAAAB; imul; sar edx,2` is division by 24. Shown wrong by 0x160A550 holding something other than 365.0, or by the comparison being against a value other than 2."
+  },
+  {
+   "rva": "0x1F4C20",
+   "kind": "function",
+   "name": "ExecuteHistory",
+   "signature": "void __fastcall ExecuteHistory(int* from@ECX, void* containers@EDX, int* to@stack:4, void* alsoContainers@stack:8)",
+   "no_signature": null,
+   "comment": "**The engine's `history execute` stage, and the only bulk reader of the history.** Logs `Executing History from <from> to <to>` on `history.cpp:11`, then for every CHistoryContainer* in the vector at [EDX]..[EDX+4] calls CHistoryContainer::ApplyRange (0x1F47C0) with the same two dates, and does the same for a second collection held at +0x10/+0x14 of the fourth argument when that is non-null. The direction is decided once, by `setl` on `*from < *to` at rva 0x1F4C62. Extent 0x1F4C20..0x1F5298, one `ret 8`, from-date in ECX and the container vector in EDX. Four call sites, all in ExecuteHistoryToDate (0x1F52A0). **Not on the tick**: that caller runs from CEU3Application::LoadEverything, from ResetGameStateToStartDate (0x23A460), from CSetHistoryDate slot 6 (0x2D60C0) and from six lobby/scenario-setup handlers (0x2F4250, 0x2F48A0, 0x2F4EA0, 0x2F5500, 0x307BF0, 0x31D4B0).",
+   "confidence": "confirmed",
+   "evidence": "The two strings at 0x15C9D54 and 0x15C9D40 and the file name 0x15C9D48 are in the body; the nine calls to 0x5F47C0 were found by a rel32 scan and all nine are inside this extent; the `ret 8` is the only ret, and the extent is bounded by four int3. The caller chain was climbed with a rel32 call index and image.functionStart. Shown wrong by a tenth caller of ApplyRange outside this function, or by a call to 0x1F52A0 from the daily or hourly pass."
+  },
+  {
+   "rva": "0x1F52A0",
+   "kind": "function",
+   "name": "ExecuteHistoryToDate",
+   "signature": "void __stdcall ExecuteHistoryToDate(void* context@stack:4, int** to@stack:8, int* from@EDX)",
+   "no_signature": null,
+   "comment": "Drives ExecuteHistory (0x1F4C20) up to four times to move the world from one date to another, lazily rebuilding the game state at [0x1689790] through CGameState::CGameState (0x27D070) when there is none and clearing `loaded_from_save`, `tutorial_id` and `in_game` on the new one. Extent 0x1F52A0..0x1F57B0, two exits, both `ret 8`. **This is the function that makes the history matter**: eleven call sites, the significant ones being 0x232882 and 0x2328EF inside CEU3Application::LoadEverything (the `history execute` stage), 0x23A75E and 0x23A825 inside ResetGameStateToStartDate, 0x2D619C inside CSetHistoryDate slot 6, and the lobby date handlers at 0x2F4361, 0x2F49B1, 0x2F4FB1, 0x2F5611, 0x307E18 and 0x31D9AC. `inferred` for the argument list only: the two stack slots and the incoming EDX are pinned by the `ret 8` and by EDX being read at 0x5F52C3 before anything writes it, but which of the two stack arguments is the context and which the date was not settled.",
+   "confidence": "inferred",
+   "evidence": "Extent and both `ret 8`s read off the decode; EDX read at 0x5F52C3 with no prior write; the eleven callers from a rel32 scan, attributed with image.functionStart. ECX is never read before being written, which is why it is not in the signature. Shown wrong by ECX turning out to be an argument, or by a stack slot carrying something other than these two."
+  },
+  {
+   "rva": "0x1FC4E0",
+   "kind": "function",
+   "name": "CLeaderHistory::LoadEntry",
+   "signature": "void __thiscall CLeaderHistory::LoadEntry(CLeaderHistory* this, void* date, CParseContext* parse, SaveToken key)",
+   "no_signature": null,
+   "comment": "**Slot 9, and the whole grammar of a leader's `history` block** - five keys, one `new` apiece, and the only producer of a CRankChange in the image. `rank` (0x10A) builds a CRankChange (vftable VA 0x15C9EB0, 0x18 bytes, value through atoi); `skill` (0x28F) a CSkillChange (VA 0x15C9EF8, 0x18); `loyalty` (0x43C) a CLoyaltyChange (VA 0x15C9ED4, 0x18); `add_trait` (0x488) a CAddTraitEntry (VA 0x15C9F40, 0x14) and `remove_trait` (0x489) a CRemoveTraitEntry (VA 0x15C9F1C, 0x14), the last two resolving the trait by name. Each entry gets the CHistoryEntry base inline (meta 0x18D at +4, date defaulted to g_NullDate at +8), **the owning CLeader\\* from `this->+0x20` at +0xC**, its value at +0x10, zero at +0x14, then the real date from the first argument, and is filed through slot 6 (AddEntry). `ret 0xC`. Anything else falls to 0x1FC7DB.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5FC4E0..0x5FC7DB: the four-way compare on [ebp+0x10], the five `push 0x18`/`push 0x14` allocations with their vftable stores, `mov ecx,[esi+0x20]` feeding +0xC in every arm, `[ebx+8] = [ebp+8]` and the `call [edx+0x18]` that files the entry. The five tokens were cross-checked against ghidra/saveTokens.json and each one matches its class's name exactly. Shown wrong by a sixth arm, or by the token/class pairing being crossed."
+  },
+  {
+   "rva": "0x1FC3B0",
+   "kind": "function",
+   "name": "CRankChange::GetSaveToken",
+   "signature": "SaveToken __thiscall CRankChange::GetSaveToken(CRankChange* this)",
+   "no_signature": null,
+   "comment": "`mov eax, 0x10A; ret` - five bytes. **Slot 6 of a history entry is the save token naming the key it carries**, pure virtual on CHistoryEntry (both slot 6 and slot 7 of table VA 0x15C9E8C are _purecall (rva 0x7961D5)), so every entry class supplies one. 0x10A is `rank`. This is the function RunCountryDailyPass calls through at 0xDAA80..0xDAAFE when it looks through a leader's history for the day he becomes active.",
+   "confidence": "confirmed",
+   "evidence": "Five bytes read at 0x5FC3B0, the immediate looked up in ghidra/saveTokens.json, and the slot read out of table 0x15C9EB0. The five leader-entry classes' slot 6 bodies sit 0x10 apart at 0x1FC3B0/C0/D0/E0/F0 and their tokens - 0x10A, 0x43C, 0x28F, 0x488, 0x489 - are rank, loyalty, skill, add_trait, remove_trait, matching the class names one for one. Shown wrong by any of those five pairings failing."
+  },
+  {
+   "rva": "0x1FC3C0",
+   "kind": "function",
+   "name": "CLoyaltyChange::GetSaveToken",
+   "signature": "SaveToken __thiscall CLoyaltyChange::GetSaveToken(CLoyaltyChange* this)",
+   "no_signature": null,
+   "comment": "`mov eax, 0x43C; ret`. 0x43C is `loyalty`. Slot 6 of CLoyaltyChange.",
+   "confidence": "confirmed",
+   "evidence": "Bytes read at 0x5FC3C0; token looked up in saveTokens.json; slot read out of table 0x15C9ED4."
+  },
+  {
+   "rva": "0x1FC3D0",
+   "kind": "function",
+   "name": "CSkillChange::GetSaveToken",
+   "signature": "SaveToken __thiscall CSkillChange::GetSaveToken(CSkillChange* this)",
+   "no_signature": null,
+   "comment": "`mov eax, 0x28F; ret`. 0x28F is `skill`. Slot 6 of CSkillChange. **And CSkillChange is the one leader history entry that does nothing**: its slot 7 is the 1420-holder empty stub at 0x20CD50, where its four siblings all have a real body. So `skill = N` inside a leader's `history` block is parsed, stored, written back out on save - and never applied. There are no live CSkillChange in the 2026-09-20 census, and the mod's 124 leader files use the key nowhere inside a history block.",
+   "confidence": "confirmed",
+   "evidence": "Bytes read at 0x5FC3D0; token from saveTokens.json; CSkillChange's slot 7 read straight out of its table (VA 0x15C9EF8) as VA 0x60CD50 = rva 0x20CD50, which TRAPS.md already lists as a 1420-holder fold. Shown wrong by 0x20CD50 having a body, or by CSkillChange's slot 7 being anything else."
+  },
+  {
+   "rva": "0x1FC3E0",
+   "kind": "function",
+   "name": "CAddTraitEntry::GetSaveToken",
+   "signature": "SaveToken __thiscall CAddTraitEntry::GetSaveToken(CAddTraitEntry* this)",
+   "no_signature": null,
+   "comment": "`mov eax, 0x488; ret`. 0x488 is `add_trait`. Slot 6 of CAddTraitEntry, whose slot 7 the record already holds as CAddTraitEntry::Apply (0x1FC9C0).",
+   "confidence": "confirmed",
+   "evidence": "Bytes read at 0x5FC3E0; token from saveTokens.json; slot read out of table 0x15C9F40."
+  },
+  {
+   "rva": "0x1FC3F0",
+   "kind": "function",
+   "name": "CRemoveTraitEntry::GetSaveToken",
+   "signature": "SaveToken __thiscall CRemoveTraitEntry::GetSaveToken(CRemoveTraitEntry* this)",
+   "no_signature": null,
+   "comment": "`mov eax, 0x489; ret`. 0x489 is `remove_trait`. Slot 6 of CRemoveTraitEntry.",
+   "confidence": "confirmed",
+   "evidence": "Bytes read at 0x5FC3F0; token from saveTokens.json; slot read out of table 0x15C9F1C."
+  },
+  {
+   "rva": "0x1FC7F0",
+   "kind": "function",
+   "name": "CRankChange::Apply",
+   "signature": "void __thiscall CRankChange::Apply(CRankChange* this, bool set)",
+   "no_signature": null,
+   "comment": "**Slot 7 of CRankChange, and what a rank change is**: with the flag set it saves the leader's current rank into `this->+0x14` and writes `this->+0x10` into `leader->rank` (+0x6C); with it clear it puts `this->+0x14` back. The leader is `this->+0xC`. Then, for a **land** leader only (`leader->type` +0x68 == 0) that has a unit at +0x40, it calls the unit's leader setter at rva 0x1BFC10 - FINDINGS-leaders.md's CUnit::SetLeader, still unrecorded - with the null leader from CLeader::null (rva 0x17F510) - so applying or undoing a rank change takes a land leader off his unit. `ret 4`. The same {+0xC leader, +0x10 new value, +0x14 saved old value} shape is CLoyaltyChange's at 0x1FC8A0, against `loyalty` (+0x80) instead of rank.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5FC7F0..0x5FC831, every instruction. +0x6C is CLeader's recorded `rank`, +0x68 its recorded `type` (0 = land, proven in CLeader.hpp against the mod's leader files), +0x40 its recorded `unit_ptr`, and rva 0x1BFC10 is CUnit::SetLeader, which FINDINGS-leaders.md identifies but project.json does not yet record. Shown wrong by the two arms writing different fields, or by +0x14 being written on the undo path as well as read."
+  },
+  {
+   "rva": "0x1FC8A0",
+   "kind": "function",
+   "name": "CLoyaltyChange::Apply",
+   "signature": "void __thiscall CLoyaltyChange::Apply(CLoyaltyChange* this, bool set)",
+   "no_signature": null,
+   "comment": "Slot 7 of CLoyaltyChange, CRankChange::Apply's twin without the unit half: set saves `leader->loyalty` (+0x80) into `this->+0x14` and writes `this->+0x10` over it, clear puts +0x14 back. The leader is `this->+0xC`. `ret 4`, two exits.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5FC8A0..0x5FC8CF, every instruction; +0x80 is CLeader's recorded `loyalty`. Shown wrong by either arm touching a field other than +0x80."
+  },
+  {
+   "rva": "0x1FC840",
+   "kind": "function",
+   "name": "CRankChange::SaveContents",
+   "signature": "void __thiscall CRankChange::SaveContents(CRankChange* this, CSaveWriter* writer)",
+   "no_signature": null,
+   "comment": "Slot 2 of CRankChange: writes one `rank = <this->+0x10>` line - the token 0x10A into ecx for 0xA7A1B0, then the value formatted into a stack Hoi3CString and handed to 0xA797A0. **It does not write +0x14**, which is why the saved old rank is runtime scratch for the undo path and not state a save carries.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5FC840..0x5FC897: `mov edi,[ecx+0x10]` is the only field read off the entry, and `mov ecx,0x10A` is the key. Shown wrong by a second field being read off `this`."
+  },
+  {
+   "rva": "0x1FCA50",
+   "kind": "function",
+   "name": "CHistoryEntry::Release",
+   "signature": "CHistoryEntry* __thiscall CHistoryEntry::Release(CHistoryEntry* this, bool deleteIt)",
+   "no_signature": null,
+   "comment": "Slot 0 of CHistoryEntry and of the seventeen of its subclasses that add nothing needing cleanup - CRankChange, CSkillChange, CLoyaltyChange, CAddTraitEntry and CRemoveTraitEntry among them. Puts the base vftable (VA 0x15C9E8C) back and frees the object when the low bit of the flag is set, returning the receiver. `ret 4`. This is the slot CHistoryContainer::Clear calls with 1 on every entry.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5FCA50..0x5FCA6F. vtable.py --holding lists 18 tables at slot 0 and every one of the 18 classes has CHistoryEntry as an ancestor, so this is inheritance and not a fold (trap 4). Shown wrong by a nineteenth holder outside the CHistoryEntry hierarchy."
+  },
+  {
+   "rva": "0xDDB30",
+   "kind": "function",
+   "name": "CCountry::GetOriginalCapital",
+   "signature": "int __stdcall CCountry::GetOriginalCapital(CCountry* country)",
+   "no_signature": null,
+   "comment": "**A runtime reader of a country's history, and the shortest one in the image.** Walks the list at `country->history + 0xC` (country +0xCD8), asks each entry's slot 6 for its save token, and returns `entry->+0x10` for the first entry whose token is **0x1F9 = `capital`**; with no such entry it falls back to the live `capital_province_id` (+0xE20). `ret 4`, one stack argument. Four callers - 0xBF8BD, 0xC1680, 0xE0C6A and 0x14BED6 - and the same loop is inlined twice more, at 0xBF973 and 0xC1632, so the country history is consulted for the original capital in at least six places. The name is read off the token and the fallback.",
+   "confidence": "confirmed",
+   "evidence": "The whole function is 0x40 bytes and was read at 0x4DDB30..0x4DDB70. 0x1F9 is `capital` in ghidra/saveTokens.json and +0xE20 is CCountry.hpp's recorded capital_province_id; the slot called is [vftable+0x18] = slot 6, the token getter. Callers from a rel32 scan. Shown wrong by 0x1F9 not being `capital`, or by +0x10 of a CCountryHistoryEntry not being its value."
+  },
+  {
+   "rva": "0x1FC400",
+   "kind": "function",
+   "name": "CWarHistory::LoadKey",
+   "signature": "void __thiscall CWarHistory::LoadKey(CWarHistory* this, CParseContext* parse, SaveToken key)",
+   "no_signature": null,
+   "revises": "read, and it is shared: the comment said what it does with a key had not been read, and it did not say the body is slot 4 of CLeaderHistory as well as of CWarHistory, so the name singles out one of two holders",
+   "comment": "**Dates only, and shared by CLeaderHistory and CWarHistory** - the leader/war twin of CHistoryContainer::LoadKey (0x1FCC10), which is the country/province one. It runs the key text at `parse+0x24` through atoi; a key that is not a number is ignored outright. For a real date it parses it with 0x44CDA0 into a local initialised from **g_NullDate**, then pulls key/value pairs off the tokenizer at `parse+0x1C` until the token is 4 or 0x13 (close brace / end) and sends each one to **virtual slot 9** with (date, key, parse) - `CLeaderHistory::LoadEntry` (0x1FC4E0) for a leader. So a dated block is only a way of postponing the one grammar, exactly as on the country side. `ret 8`. **The name names one of its two holders**: vtable.py --holding reports CLeaderHistory slot 4 and CWarHistory slot 4, both CHistoryContainer subclasses, so the body belongs to neither alone.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5FC400..0x5FC4B8: the atoi at 0x5FC418, the g_NullDate load at 0x5FC428, the token loop and the `call [edx+0x24]` (slot 9) at 0x5FC4A1. vtable.py --holding 0x5FC400 lists exactly the two tables. Shown wrong by a third holder, or by the dispatch being to a slot other than 9."
+  },
+  {
+   "rva": "0x130C2B8",
+   "kind": "global",
+   "name": "g_NullDate",
+   "signature": "int g_NullDate",
+   "no_signature": null,
+   "revises": "three more uses, in a second subsystem, which is what the entry said it was waiting for - it was `likely` because only the two trade ones had been read",
+   "comment": "Holds 43800000 = 0x29C55C0, which the record already identifies as the game's hour epoch (CCurrentGameState +0xBDC counts hours from 43800000 hours before year zero, and RunHourlyTick subtracts exactly this). Used as the **'never' value for a date field**: TradeRouteSetInactive compares CTradeRoute +0x84 against it before stamping a tick (0xA4D585) and CEU3AI::HasTradeGoneStale refuses to call a route stale while +0x84 still equals it (0x89B672). **The history subsystem is the second independent confirmation**: it is the default date of every CHistoryEntry (the base constructor writes the immediate 0x29C55C0 at +8 and then this static over it, at 0x200AA9/0x200AB0 and in every inlined copy), the default date of every CHistoryContainer (0x1F45BA) and what CHistoryContainer::Reset puts back (0x1F4768); CHistoryEntry::DateIsUnset (0x1EC6E0) is `year(date) < 2`, which is true of exactly this value; and it is the fallback the leader part of RunCountryDailyPass uses when a leader's history has no `rank` entry - a date no live tick can equal, so such a leader is never activated. 234 references in .text and **not one of them writes it**, so it is a read-only constant.",
+   "confidence": "confirmed",
+   "evidence": "The eight bytes unpacked from .data: 0x170C2B0..0x170C2BF is a run of 0x029C55C0 dwords. A scan of all 234 .text references, decoding at each hit, found zero stores with this as the destination. 43800000/24/365 = 5000 exactly, and 0x42EF40 computes `(date - 0x29C55C0)/24/365.0`, so the value is year zero on the engine's own calendar. Shown wrong by a writer of the address, or by the value differing from CCurrentGameState.hpp's stated epoch."
+  },
+  {
+   "rva": "0x1FCA80",
+   "kind": "function",
+   "name": "CRemoveTraitEntry::Apply",
+   "signature": "void __thiscall CRemoveTraitEntry::Apply(CRemoveTraitEntry* this, bool set)",
+   "no_signature": null,
+   "revises": "the body was read line by line, which is what the entry said was missing, so `likely` becomes `confirmed`",
+   "comment": "Slot 7 of CRemoveTraitEntry (RTTI), the mirror image of CAddTraitEntry::Apply - its undo branch is one of the five callers of CLeader::AddTrait (0x1FCABF). **Body now read in full** (rva 0x1FCA80..0x1FCAC3): with the flag set it walks the leader's trait list from `leader->+0x30`, stops at the node whose data equals `this->+0x10`, and hands that node to CList_RemoveNode (rva 0x1D49D0) to unlink it; with the flag clear it pushes `this->+0x10` and `this->+0xC` and calls CLeader::AddTrait. So, like every leader history entry, the leader is at +0xC and the value at +0x10. `ret 4`, two exits.",
+   "confidence": "confirmed",
+   "evidence": "Read at 0x5FCA80..0x5FCAC3; the `cmp byte ptr [ebp+8], 0` at 0x5FCA83 picks the branch, +0x30 is CLeader's recorded `traits`, and 0x581A60 is the recorded CLeader::AddTrait. Shown wrong by either branch using a field other than +0xC/+0x10."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CLeaderHistory",
+   "offset": "0x8",
+   "name": "date",
+   "type": "int",
+   "comment": "**CHistoryContainer's, at +0x8 on all five subclasses.** The container's own current date - what ExecuteHistory has advanced it to - in the engine's hours. Defaulted to g_NullDate (rva 0x130C2B8) by CHistoryContainer::CHistoryContainer (0x1F45BA), put back there by Reset (0x1F4768), and the only thing SetDate (0x1F4780) changes in practice. Reached as [leader + 0x8C], [province + 0xE0] and [country + 0xCD4].",
+   "source": "reversing/findings/FINDINGS-history.md",
+   "evidence": "Written by the base constructor at 0x5F45B3/0x5F45C0, by CLeader::CLeader at 0x17F628/0x17F637 (leader+0x8C), by the province reset at 0x96C64 (province+0xE0), and by both SetDate exits. Shown wrong by any of those stores going somewhere other than container+0x8."
+  },
+  {
+   "struct": "CLeaderHistory",
+   "offset": "0x1C",
+   "name": "unknown_1c",
+   "type": "undefined4",
+   "comment": "**CHistoryContainer's last dword, and nothing reads it.** Written zero by CHistoryContainer::CHistoryContainer (0x1F45D1) and by CLeader::CLeader's inlined copy (leader+0xA0, 0x17F655), and that is every reference found. It is what makes the container 0x20 bytes, so it matters even unread.",
+   "source": "reversing/findings/FINDINGS-history.md",
+   "evidence": "A disp32 byte-search of .text decoding at each hit found 6 references to +0xCE8 (country+0xCCC+0x1C) and the four with a real base are all CGameState, not CCountry; the container's own sixteen functions were decoded from their entries and none of them touches +0x1C on the receiver. **The control**: the same scan run on +0xCD8 (container+0xC, the list head) found three genuine CCountry readers, 0xBF973, 0xC1632 and 0xDDB38, so it can see a reader when there is one. `inferred` because only the country spelling was scanned; the leader (+0xA0) and province (+0xF4) spellings were not."
+  },
+  {
+   "struct": "CLeaderHistory",
+   "offset": "0x20",
+   "name": "leader",
+   "type": "CLeader*",
+   "comment": "**The owning leader, and CLeaderHistory's only field of its own.** CLeader::CLeader writes `[leader + 0xA4] = leader` at 0x17F665 - 0x84 + 0x20 - and CLeaderHistory::LoadEntry reads it out of `this->+0x20` to put on every entry it builds. CProvinceHistory and CCountryHistory keep their owner at the same +0x20 (CProvinceHistory::CProvinceHistory, 0x1FCBFE, stores its one argument there) and read it back through the non-virtual getter at 0x1EC730.",
+   "source": "reversing/findings/FINDINGS-history.md",
+   "evidence": "`mov dword ptr [esi + 0xa4], esi` at 0x57F665 with esi the CLeader being constructed; `mov ecx, dword ptr [esi + 0x20]` in all five arms of CLeaderHistory::LoadEntry feeding the entry's +0xC, which CRankChange::Apply then uses as a CLeader (reading +0x6C, +0x68, +0x40). Shown wrong by CRankChange::Apply's +0xC turning out not to be a CLeader."
+  }
+ ],
+ "vftable_slots": {
+  "CHistoryContainer": {
+   "6": "AddEntry",
+   "7": "ApplyAll",
+   "0": "Release"
+  },
+  "CLeaderHistory": {
+   "0": "Release",
+   "2": "SaveContents",
+   "4": "LoadKey",
+   "6": "AddEntry",
+   "7": "ApplyAll",
+   "9": "LoadEntry"
+  },
+  "CWarHistory": {
+   "0": "Release",
+   "2": "SaveContents",
+   "4": "LoadKey",
+   "6": "AddEntry",
+   "7": "ApplyAll"
+  },
+  "CDiplomaticHistory": {
+   "0": "Release",
+   "2": "SaveContents",
+   "4": "LoadKey",
+   "6": "AddEntry",
+   "7": "ApplyAll"
+  },
+  "CCountryHistory": {
+   "4": "LoadKey",
+   "6": "AddEntry",
+   "7": "ApplyAll",
+   "9": "LoadEntry"
+  },
+  "CProvinceHistory": {
+   "4": "LoadKey",
+   "6": "AddEntry",
+   "7": "ApplyAll",
+   "9": "LoadEntry"
+  },
+  "CHistoryEntry": {
+   "0": "Release"
+  },
+  "CRankChange": {
+   "0": "Release",
+   "2": "SaveContents",
+   "6": "GetSaveToken",
+   "7": "Apply"
+  },
+  "CSkillChange": {
+   "0": "Release",
+   "6": "GetSaveToken"
+  },
+  "CLoyaltyChange": {
+   "0": "Release",
+   "6": "GetSaveToken",
+   "7": "Apply"
+  },
+  "CAddTraitEntry": {
+   "0": "Release",
+   "6": "GetSaveToken",
+   "7": "Apply"
+  },
+  "CRemoveTraitEntry": {
+   "0": "Release",
+   "6": "GetSaveToken",
+   "7": "Apply"
+  }
+ },
+ "slots_noted": "Slot 8 of all six container tables is a folded constant predicate and is deliberately left unnamed: ReturnTrue (rva 0x692590, 440 slots) for CLeaderHistory/CDiplomaticHistory/CWarHistory, ReturnFalse (rva 0x192360, 836 slots) for the abstract base, and a third framed `mov al,1; ret` at rva 0x1EC720 held only by CCountryHistory and CProvinceHistory - two holders, but what the predicate means is not established, so it takes a record rather than a name. Slot 1 (0x45BB10), slot 3 (0xA7C050, CPersistent::Load) and slot 5 (0xABF890) are the shared CPersistent bodies (those three are VAs, as TRAPS.md prints them) TRAPS.md lists. CSkillChange slot 7 is the 1420-holder empty stub rva 0x20CD50 and is left alone for the same reason. CProvinceHistory/CCountryHistory slot 0 (0x1ECA60) and slot 2 (0x1FCDA0) were identified but not read line by line, so they are in `frontier` instead.",
+ "frontier": [
+  "0x1FAEE0",
+  "0x1FCDA0",
+  "0x1ECA60",
+  "0x1EC730",
+  "0x1F1F40",
+  "0x1F4A50",
+  "0x27DCE0",
+  "0xD2B60",
+  "0x1F2A80",
+  "0x200250",
+  "0x946F0",
+  "0xBF7C5",
+  "0xC1430",
+  "0xE0B80",
+  "0x14BD00",
+  "0x2D60C0",
+  "0x2F4250",
+  "0x2F48A0",
+  "0x2F4EA0",
+  "0x2F5500",
+  "0x307BF0",
+  "0x1FA840",
+  "0x44CDA0",
+  "0x2EF40",
+  "0x1D49D0",
+  "0x17F510"
+ ]
+}

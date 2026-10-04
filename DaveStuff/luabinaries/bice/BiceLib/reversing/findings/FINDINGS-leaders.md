@@ -52,7 +52,7 @@ code (`and [reg+0x70], 0xFFFFFFFD`, 100+ sites, all above `0xB96000`). Every wri
 
 **So `activateLeaderPromotionSkillLoss` should stay disabled as a reproduction of an engine
 mechanic, because there is no engine mechanic to reproduce - this build has none.** The
-mod's own memory ("the mechanic is from a predecessor game") is right. If David wants the
+mod's own memory ("the mechanic is from a predecessor game") is right. If the maintainer wants the
 behaviour it has to be the mod's own invention, which is what `CLeaderHooks.cpp` already
 implements, and nothing in the executable will fight it.
 

@@ -575,6 +575,7 @@ namespace {
         ImGui::SameLine();
         if (ImGui::SmallButton("Reset baseline")) {
             Gui::WidgetStats::resetBaseline();
+            Gui::WidgetStats::forgetDeepScan();
             widgetDeepRun = false;
         }
 
@@ -610,9 +611,11 @@ namespace {
                 "%+d since the baseline.", drift);
             ImGui::TextWrapped("Growth is expected up to a point: panels are built once and kept, "
                 "so visiting a part of the interface for the first time adds widgets for good. "
-                "What is not expected is a steady climb while nothing new is being opened - "
-                "every open-and-close of a full screen window permanently leaks 30, ten each of "
-                "outliner_header, outliner_header_entry and entry_text.");
+                "What is not expected is a steady climb while nothing new is being opened. One "
+                "such path was measured on 2026-10-02: every open-and-close of a full screen "
+                "window permanently leaked 30 widgets. Scan twice with something opened and "
+                "closed in between and the table below says which names are responsible - that "
+                "is what it is for, rather than confirming the one already known.");
         }
 
         ImGui::Spacing();
@@ -626,18 +629,55 @@ namespace {
         if (widgetDeepRun && widgetDeep.valid) {
             ImGui::Text("Walked %u, %u distinct names, %u null slots",
                 widgetDeep.walked, widgetDeep.distinctNames, widgetDeep.nulls);
-            ImGui::Text("The three that leak: outliner_header %u, outliner_header_entry %u, "
-                "entry_text %u", widgetDeep.outlinerHeader, widgetDeep.outlinerHeaderEntry,
-                widgetDeep.entryText);
             if (widgetDeep.nulls > 0) {
                 ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
                     "Null slots exist - removal left holes rather than compacting, which is not "
                     "what was measured on 2026-10-02.");
             }
-            if (widgetDeep.outlinerHeader > 10) {
-                ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
-                    "outliner_header is above its fresh-session count of 10, so about %u "
-                    "open/close cycles have happened.", widgetDeep.outlinerHeader / 10);
+
+            // The change column is the one that finds a leak. A name is near the top because the
+            // interface holds a lot of it, which says nothing; a name that grew while nothing new
+            // was opened is a leak. So the first scan says so rather than printing zeroes that
+            // would read as measurements.
+            if (widgetDeep.comparable) {
+                ImGui::TextDisabled("Change is against the previous scan.");
+            }
+            else {
+                ImGui::TextDisabled("Scan again to get a change column - one scan cannot show "
+                    "growth.");
+            }
+
+            if (ImGui::BeginTable("widgetNames", 3, ImGuiTableFlags_RowBg |
+                ImGuiTableFlags_BordersInner | ImGuiTableFlags_SizingStretchProp)) {
+                ImGui::TableSetupColumn("Widget type", ImGuiTableColumnFlags_WidthStretch, 1.8f);
+                ImGui::TableSetupColumn("Live", ImGuiTableColumnFlags_WidthStretch, 0.5f);
+                ImGui::TableSetupColumn("Change", ImGuiTableColumnFlags_WidthStretch, 0.5f);
+                ImGui::TableHeadersRow();
+
+                for (uint32_t i = 0; i < widgetDeep.topUsed; i++) {
+                    const Gui::WidgetStats::DeepScan::Entry& entry = widgetDeep.top[i];
+                    ImGui::TableNextRow();
+
+                    ImGui::TableNextColumn();
+                    ImGui::TextUnformatted(entry.name);
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%u", entry.count);
+                    ImGui::TableNextColumn();
+                    if (!widgetDeep.comparable) {
+                        ImGui::TextDisabled("-");
+                    }
+                    else if (entry.change > 0) {
+                        ImGui::TextColored(Gui::Theme::mark(Gui::Theme::Mark::Warning),
+                            "%+d", entry.change);
+                    }
+                    else if (entry.change < 0) {
+                        ImGui::Text("%+d", entry.change);
+                    }
+                    else {
+                        ImGui::TextDisabled("0");
+                    }
+                }
+                ImGui::EndTable();
             }
         }
         else if (widgetDeepRun) {

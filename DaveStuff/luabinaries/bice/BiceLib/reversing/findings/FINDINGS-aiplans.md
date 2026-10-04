@@ -2,7 +2,7 @@
 
 `FINDINGS-aiunit.md` mapped `CAIUnit` and named two bodies as the highest-value unread code in the class. This is those two, read line by line, plus what the reading dragged in with it: the `CUnitPlan` the AI is writing, the objective generator that feeds it, and the stance decider that is **not** in `CAIUnit` at all.
 
-Read statically off `C:\Users\David\Hearts of Iron 3\hoi3_tfh.exe` on 2026-10-01; the game was not running, so nothing here is marked *seen*. Addresses are **virtual** (image base `0x400000`) unless written `rva`.
+Read statically off `%USERPROFILE%\Hearts of Iron 3\hoi3_tfh.exe` on 2026-10-01; the game was not running, so nothing here is marked *seen*. Addresses are **virtual** (image base `0x400000`) unless written `rva`.
 
 ## In one line
 

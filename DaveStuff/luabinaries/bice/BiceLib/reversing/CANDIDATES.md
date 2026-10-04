@@ -28,67 +28,351 @@ and AI bodies.
 
 ## The queue
 
-**Wave 9 is planned below, four agents.** David's priority order still holds: the interface layer,
+**Wave 9 is planned below, four agents.** the maintainer's priority order still holds: the interface layer,
 then the last unread AI blocks, then core engine flow, then the rest. What is not scheduled is
 further down.
 
-### Wave 9, planned - four agents
+### Wave 9, 2026-10-02 - four agents, and what the plan got wrong
 
-**A. `0x8D93B0`, the AI land-attack-odds estimator.** rva `0x4D93B0`, 2,682 bytes, recursive, and
-**unread**. This is the single most load-bearing unread function in the record: it is the only
-non-display reader of the land defence product `CUnit +0xF0`, and therefore the only reason the
-land half of `findings/FINDINGS-combatmods.md`'s census survived the demotion. That claim is `likely`
-*solely* because this body has not been read. Reading it either promotes a published claim to
-`confirmed` or demolishes it, which is the best value-per-byte on the list.
+**The plan below was checked against `ghidra/project.json` before launch and four things in it were
+wrong.** Recorded here rather than quietly fixed, because three of the four are the same failure and
+it is the one that keeps happening: *this file described as unnamed or unsettled what the record had
+already settled.* That is trap 14 from the direction the trap file warns about least - a queue entry
+goes stale while the record moves on under it. The briefs went out corrected.
 
-Two specific questions it must answer. Is `esi` really a `CUnit`? The identification rests on the
-`+0xF0`/`+0xF8` pair being distinctive (trap 12's neighbour fallback) and not on
-`fieldchain.py --holder`, which **works now** - that bug was fixed on 2026-10-01, whatever a
-leftover note in `findings/FINDINGS-slot11.md` says. And **are the products ever non-neutral when this
-runs?** `CCombatant::ApplyCombatModifiers` resets them to 1000 every tick, so if this function only
-ever sees 1000 the reader is real but the value is not. Its output is compared against
-`LandAttackOddsThresholdForStance` and the 3.0 / 1.5 / 1.1 attack bars and the 0.8 abort bar in
-`CAIUnit_ManageLandUnits`, so what it returns decides whether the AI attacks and whether it breaks
-off.
+| in the plan | what the record actually says |
+| --- | --- |
+| `0x8D93B0` is "**unread**" | the *body* is unread; the function is **already named** `CAIUnit_EstimateAttackOdds` with a full signature, `inferred`, and its two `CUnit +0xF0` readers are already recorded as instruction entries at rva `0x4D9825` and `0x4D9C3A` |
+| the naval block "at `0x4D2418`" | that is an **rva**; the VA is `0x8D2418`. The air range in the same sentence was given as VAs - **trap 1 inside one sentence**, which is exactly the wave 7 mistake |
+| `0x23A460`'s "extent is unsettled (two `ret`s, so trap 2 or trap 3)" | **settled**, and recorded as settled: trap 2, rva `0x23A460`-`0x23A83C`, `0x3DD` bytes, 283 instructions, with `cfg.py` showing no edge into the neighbour. Also already named `ResetGameStateToStartDate` |
+| "the ledger window's class: `0x3C1ED0` is in no vftable" | `0x3C1ED0` is an rva, already named `LedgerPage_Update`, `confirmed`. What is in no vftable is the **class of its `void* ledgerWindow` parameter** - a different question, and the brief was rewritten to ask it |
 
-**B. The two biggest unread AI bodies.** The air body's **phase 4**, `0x8CEE76`-`0x8D04E6`, 5.7 KB -
-where `ground_attack`, `air_intercept`, `logistical_strike`, `strategic_bomb`/`nuke_mission` and
-`naval_strike`/`port_strike` are actually assigned - and the naval body's **convoy/rebase block** at
-`0x4D2418`, 3.6 KB, which holds the **only `MT19937Next` call in either body**, so a randomised AI
-decision worth knowing precisely.
+`0x27B240` was also already named (`CGameState_ResetAtHistoryExecute`), which the plan did not say.
 
-Carry in two live results that bear on it. `plan_air_stance` reads **1** on 1,125 of 1,126 live
-`CAir` formations, so of phase 4's three arms the one that runs is the plain one with full
-thresholds - 0 (off) and 2 (halved) were not observed. And the four list heads phase 2 scores from
-are **populated** (93 of 102 agents), so phase 2 is not dead code - **but every one of those agents'
-units is a `CArmy`, not a `CAir`**, which puts the `air_target_provinces_*` names in doubt. Settle
-whether they are air-specific or generic target lists.
+**No game was running when this wave launched**, so all four agents were briefed for static work.
+That matters most for agent C, whose four items were written as live questions - but each has a
+static route named in `FINDINGS-guilive.md` itself, and that is the route it was sent down.
 
-**C. Finish the live GUI layer.** Four items from `findings/FINDINGS-guilive.md`, now much cheaper than when
-they were written because the access route is known and verified: `CInGameIdler +0x1790` ->
-`CEU3Application` -> `+0x120` -> the one `CEU3Gui`, three reads, with no global anywhere in the
-image (a scan of all 16 MB for the live pointer found zero).
 
-- **Nine of the twelve live widget classes cannot be named** - the RTTI export has no entry for
-  them, so they need naming from their vftables and behaviour, the way `CBillboardObject` was.
-- **`CFixedWindow +0x4C` is a linked list of something**, walked by slot 36 (`0xAC1220`).
-- **Registries 1 (`+0x348`) and 5 (`+0x3D8`) are empty on all 206 windows**, so what they hold is
-  unknown. A live game with panels open is the way in.
-- **The ledger window's class** (`findings/FINDINGS-uinumbers2.md`): `0x3C1ED0` is in no vftable.
+**What came back.**
 
-**D. The session lifecycle's remaining gaps.** `findings/FINDINGS-session.md` named these and deliberately
-left them.
+**All four came back and all four corrected something already published.** That is the pattern worth
+noting: the wave's value was less in the new ground than in what reading the bytes did to claims the
+record was already making.
 
-- **`0x23A460`** - five callers across the lobby, `CTutorialScreen` and `CInGameIdler`; writes
-  `loaded_from_save`; calls the full reset. The file calls it "probably the real start-a-game entry
-  point" and declines to name it. Its extent is unsettled (two `ret`s, so trap 2 or trap 3).
-- **`0x27B240`'s 2,217 bytes**, read only as far as the reset block at `0x67B581`.
-- **The `session_manager` naming conflict.** `CInGameIdler +0x1790` is recorded as `session_manager`,
-  from a reading of its one writer - but the live object there resolves by RTTI to a
-  **`CEU3Application`**. One of those is wrong, or they are the same thing under two names. The
-  conflict is written on the field and deliberately not resolved by renaming on one observation.
+| agent | what it settled | what it overturned |
+| --- | --- | --- |
+| A `FINDINGS-attackodds.md` | `CAIUnit::EstimateAttackOdds` read end to end - it returns `ourDamage / theirDamage`, and `esi` is a `CUnit` by a five-link chain, so the land half of `FINDINGS-combatmods.md` is **promoted to a reading** | the recorded **signature** (`__fastcall` is wrong, `ret 16` against the function's `ret 20`); the published "monotone in committed strength" claim, which the *caller* enforces; and `CCombat` slot 17's "only one call site" |
+| B `FINDINGS-airnaval4.md` | air phase 4's seven missions, the convoy raid's roulette draw, and three unnamed compiled-in thresholds | **phase 4 has two arms, not three** - `plan_air_stance` must be **2** for five of the seven missions, and the live stance is 1 on 1,125 of 1,126 formations. Also `0x4A7450`/`0x4A74D0` are **sunset/sunrise**, which inverted `FINDINGS-theatre2.md`'s "loads only in the dark" |
+| C `FINDINGS-guistatic.md` | `CFixedWindow`'s **two** `CGuiObject*` child lists; registries 1 and 5 are the `3dButtonType` and `threeDguiType` indexes, empty because those keywords appear **zero** times in mod or vanilla; the ledger is a `CStatisticsLedger`; `CCheckBox` named from the widget's own string | `FINDINGS-guilive.md`'s RTTI negative - **wrong for two of six names despite carrying a positive control**, because the sweep spelled it `Checkbox` and the image spells it `CheckBox`. Also its `0x18`-byte node size (it is `0x10`) and `LedgerPage_Update`'s recorded parameter |
+| D `FINDINGS-session2.md` | `0x27B240` end to end - its last 0x560 bytes **parse `gameplaysettings.txt`** into the game state, a live but unused mod hook; `0x23A330` named | `CInGameIdler +0x1790` is the **`CEU3Application`**, not a `session_manager` - `SessionManager` occurs **zero** times in the image, and the shipping DLL was already right where `project.json` was wrong |
 
-### Deferred, at David's call
+**Landed:** 21 addresses and 27 struct fields merged; the record went 2,270 -> **2,275 functions** and
+2,707 -> **2,739 fields**, labels 543 -> 559. Recorded signatures that disagree with their `ret` went
+88 -> **87**.
+
+**The Ghidra apply ran and reported `failed: 2`** - the pass mark, and both failures are the two
+documented over-long bodies (`TernarySearchTreeFind` inside Ghidra's `GuiTypeTree_Find`, `MT19937Next`
+inside its `CSimpleRandom::GetInteger`). It named 2,273 functions, 559 labels, 2,033 signatures, 88
+struct fields and 206 virtual tables, and the two `CInGameIdler` renames landed visibly
+(`+0x1790 application: named session_manager`).
+
+**It ran against a scratch copy, not the maintainer's project.** Ghidra was open on `Hoi3_v12.1.2` at the
+time - a live lock and a 1.2 GB `javaw.exe` - and the contract in `fragments/README.md` says
+concurrent headless runs fight over the lock. So the names are in `project.json`,
+`bicelib_findings.json` and the scratch database; **applying them to `Hoi3_v12.1.2` is the maintainer's step**,
+the same division as `Deploy.ps1` and the game folder.
+
+*An earlier version of this entry said the Ghidra installation was not on this machine. That was
+wrong - the search behind it was `find /c -maxdepth 4` and the installs sit at depth 6, under
+`Documents\Ghidra\ghidra_*_PUBLIC\support\`. The exact command is in `ghidra/README.md`.*
+
+**Three schema faults in the agent contract, found independently by three of the four agents** and
+now written into `fragments/README.md`: the field list is `struct_fields` and a fragment saying
+`fields` lands nothing silently; `confidence` takes only `confirmed`/`inferred` although four
+documents and `project.json` itself use `likely`; and **every** key in `ADDRESS_KEYS` must be
+present, so a signed entry still needs `"no_signature": null`. The first of those was **my** error in
+all four briefs.
+
+### Wave 10, landed 2026-10-02 - four agents, and the record arguing with itself
+
+**All four came back; three of them overturned a published conclusion, and two of those three found
+the contradicting fact already sitting in `project.json`.** That is the wave's lesson and it is a
+process one: nothing in the pipeline compares a new conclusion against what the record already says.
+
+| agent | what it settled | what it overturned |
+| --- | --- | --- |
+| A `FINDINGS-aihelpers.md` | both AI combat helpers read end to end. **The AI keeps its own copy of the land combat modifier model** - 11 of 20 modifiers identical, 4 partial, 6 absent - and it **adds** fractions where the battle **multiplies** clamped factors. The helper is the **dominant** term, not a garnish: single terms reach ±4.0 against an engagement factor whose maximum is 1.0 | an **amphibious sign bug** (`subsd` where the river arm has `addsd`, both guarded by the same `jns`), making an opposed landing the most attractive move in the AI's model; `FINDINGS-combatmods.md`'s stacking rule, which is right for the defender and wrong for the attacker; and §10's callee list, which attributes four functions to both helpers when two are defence-only |
+| B `FINDINGS-sigaudit.md` | the 87 disagreements were **30 tool and 57 record**, and the run now reports **1** - the one left is a recorded address that is not a function start | **`Hoi3CString` by value is `0x1C`, not `0x18`** - and the proof was already in `BiceLib/GameClasses/CTrait.hpp`, which strides a `Hoi3CString[16]` by `0x1C` and checks it. Three *invented* parameters removed as a result. Also `CMap::MapPath` is not a `CMap` member, and five records write the register as a C comment, which reaches nothing |
+| C `FINDINGS-guicontainers.md` | `+0x414` is the **subwindow map**, the engine's own word, from its warning at `fixedwindow.cpp:1042`; all 28 `CWindowType::LoadKey` tokens tied to their containers, turning three `likely`s into `confirmed`s | `child_windows_begin` on `+0x2FC`, which is the vector half of `AttachChild`'s pair and not a child-window container; and "fourteen containers from `+0x174`", which is wrong twice - there are thirteen, from `+0x184` |
+| D `FINDINGS-airstance.md` | `0x4B4740` fills all four `air_target_provinces_*` lists, reached by a plain `lea reg,[agent+0x1FC]`; the scorer is a **mean map distance** and the lists are **lowest-first**, so low is good | **`FINDINGS-airnaval4.md`'s headline.** The AI *does* set `plan_air_stance` to 2, on every agent, every `ProcessAI` pass - so the five strategic and naval air missions are **live**. The live distribution that said otherwise was read off air formations; the gate reads `agent->unit`, the army. Also `CUnitPlan::SetActive` resets to **1**, not 0 |
+
+**Landed:** 85 addresses and 40 struct fields offered, 20 new addresses and 40 fields merged, the
+rest revisions. Record **2,275 -> 2,291 functions**, **2,739 -> 2,771 fields**, labels 559 -> 563,
+signatures 2,033 -> **2,050**. Headless apply **`failed: 2`** - the pass mark, both the documented
+over-long bodies. **Signature disagreements 87 -> 1.**
+
+**Two agents' work collided productively.** B's patched checker immediately flagged three of C's
+brand-new signatures: C wrote `__thiscall` with `this` implicit *and* the real parameter left bare,
+which under Ghidra's positional rule puts `name` in ECX. Fixed by spelling `this`. A tool patch that
+catches a defect in another agent's output the same hour it lands is the best evidence it is right.
+
+**What the plan got wrong this time** - the fourth wave running, so it is worth keeping the tally:
+
+| the plan said | the bytes said |
+| --- | --- |
+| `attached_children_head` sits on `+0x2FC` and `+0x414` may unseat it | it is on **`+0x74`**; `+0x2FC` is `child_windows_begin`. Different claim, and the name **survives** - `AttachChild` writes `+0x2FC` and `+0x74` in one body |
+| the `__fastcall` signature bug "accounts for 3, not 49" | 21, not 3. It swallows a **bare** parameter too, not only an `@stack:` one |
+| a wrong signature needs a hand edit, because the merge never overwrites one | `mergeFindings.py` has a **`revises`** key for exactly this; 63 revisions landed from a fragment |
+| fourteen `CWindowType` containers at a `0x10` stride from `+0x174` | thirteen, from `+0x184`; `+0x174` is an unrelated 4-stride pointer vector `LoadKey` never touches |
+| `gameplaysettings.txt`'s grammar makes the hook "nearly useless" | the premise held, the conclusion did not - the save grammar *contains* a `gameplaysettings` key. What limits the hook is **when** it runs |
+
+### Also ready, and cheaper than they look
+
+- ~~**`gameplaysettings.txt`'s key set.**~~ **Done 2026-10-02**, written up as
+  `findings/FINDINGS-session2.md` section 7, and the prediction recorded here was half wrong. It
+  *is* the game state's save grammar - 21 of the switch's keys appear at the top level of a real
+  save - but that grammar contains a **`gameplaysettings`** key of its own (token 1551, arm at VA
+  `0x68048A`, recursing through slot 3 into the `CGamePlaySettings` the record already names at
+  `CCurrentGameState +0xC90`), so the file is named after a block that genuinely exists and the
+  "nearly useless" conclusion drawn here did not follow. `CGamePlaySettings::LoadKey` (rva
+  `0x28A550`) takes exactly one key, `setgameplayoptions`, so the nested payload is two ints:
+  `difficulty` and `arcade_mode`. What really limits the hook is **when** it runs - `0x27B240`'s one
+  caller is `CEU3Application::LoadEverything`, so the parse is at startup, and the lobby writes both
+  of those values afterwards and wins.
+  **Two things came out of it that are worth more than the item was:** the recorded key list for
+  `CGameState::LoadKey` is **short by at least five** (`ai`, `convoy`, `theatre`,
+  `strategic_warfare`, `sunk_ships` - all five read by hand off the chained-`sub` arms, with `ai`
+  cross-checked because its arm reads the `skip_automation_keys` byte that the record's own field
+  comment says gates `ai`); and **45 savegames are on this machine after all**, under
+  `Documents\Paradox Interactive\Hearts of Iron III\BlackICE GitHub\save games\` - per mod, not
+  in the install - so the plain-text oracle is available and a pass today that reported none had
+  simply looked in the wrong two places.
+- **`0x27E550`** (VA `0x67E550`, **unrecorded** - checked; the nearest below is
+  `CGameState_SetProvincesAndSizePerCountryVectors` at rva `0x27E320`). It installs the game state's
+  country list from the database and resizes the per-country vectors; read far enough in wave 9 to
+  describe, not to name. On the frontier.
+- **`0x4EFA50`** (VA `0x8EFA50`, **unrecorded** - checked) - the province predicate air phase 4 and
+  the ops-area scorer both call, and `FINDINGS-opsarea.md`'s own open question 2. Wave 9 read four
+  arms into it and reports the record's one-line summary is incomplete.
+- **`0x4D0520`** (VA `0x8D0520`, **unrecorded** - checked) - the per-province predicate that excludes
+  a convoy province from raiding. Until it is read, "the AI will not raid its own side's shipping
+  lanes" is an inference from where it sits.
+- **`CGameState::LoadKey`'s key list and `CGamePlaySettings::LoadKey`'s comment** need a **hand
+  edit** for the same reason - the merge never overwrites a comment. Add the five missing keys to rva
+  `0x27FCB0`, and note on rva `0x28A550` that it is the grammar of a mod's `gameplaysettings.txt`
+  inner block and not only of a save's. `findings/FINDINGS-session2.md` section 7 has both, with the
+  path-by-path evidence.
+- **`CStatisticsLedger`'s two fields and `LedgerPage_Update`'s signature** still need a **hand
+  edit**, but for one reason rather than two: `struct_fields` cannot create a struct that
+  `project.json` lacks. **The "merge never overwrites a signature" half of this was wrong** -
+  `mergeFindings.py` has a `revises` key and wave 10 landed 63 signature revisions through it.
+  `FINDINGS-guistatic.md` §4 has the corrected form (`ShowPage(ledger@EDI, int page)`) and the two
+  fields with their evidence.
+
+### Wave 10's three decisions - two done 2026-10-03, one still open
+
+1. **STILL OPEN: `0x450AB0 CreateMapBinCacheOwner` is not a function start.** It is the
+   `call 0x486F10` *instruction* at VA `0x850AB0`, sitting inside the function that begins at rva
+   `0x450520`; `functionStart` answers `0x450520` and `retsBefore` between them is empty, so there
+   is no boundary in between. The author wanted to record *the caller* of the constructor and wrote
+   down the address of the call rather than the caller's entry. **Two things follow:** the name never
+   reaches Ghidra at all (`buildFindings.py` prints `not a function start, left out:
+   00850AB0 ::CreateMapBinCacheOwner`), and it is the **last** of the original 87 signature
+   disagreements, since a `void (void)` signature predicts `ret 0` against the `ret 4` found by
+   disassembling on from mid-function.
+   **Recommended: re-point it to rva `0x86F10`**, which is what the name actually describes. That
+   address is a clean function start (`push ebp; mov ebp, esp`), ends `ret 4` at VA `0x4872DC`
+   followed by `int3`, publishes itself at the global `0x1A85578` (`mov [0x1a85578], edi` at
+   `0x486F8F`), references `'/cache/map.bin'` twice, and has exactly one caller - the very call that
+   was mis-recorded. It wants the signature `void __stdcall CreateMapBinCacheOwner(void* owner)`,
+   `this` arriving on the stack from the caller's `operator new(0x48)`. The alternative, re-pointing
+   to `0x450520`, gives the name to a large loader that does much more than this; dropping the entry
+   loses a live name for no gain. **The fact the entry exists to carry - that `map.bin` is the
+   graphics side's and not the province graph's - is already applied to `0x8DFA0` and `0x8E2E0` and
+   survives any of the three choices.**
+2. ~~**`CNavalCombatant::PickTarget`**~~ **Done: renamed `CSubUnit::PickTarget`.** The receiver is in
+   ECX and is a `CSubUnit` - the entry does `mov edi, ecx; mov eax, [edi+0xb0]` and `+0xB0` is
+   `CSubUnit::unit_ptr`. Checked first that it is **not a virtual** (`vtable.py --holding`: no table)
+   and has one caller, `CNavalCombatant::Attack`, so nothing inherits the old qualifier. The reason
+   is recorded on the entry so the next reader does not put `CNavalCombatant::` back.
+3. ~~**`CDefines +0xAC`**~~ **Done: `CDefinesSupply` -> `CDefinesMilitary`, `supply_defines_ptr` ->
+   `military_defines_ptr`.** A live game was offered and **would not have helped** - the question was
+   never factual. `definesMap.py --check` lists the blocks `defines.lua` actually has: country,
+   economy, military, diplomacy, alignment, map, weather, goods_cost. **There is no `supply` block**,
+   so the old name had no referent to be right about, and the pointer and all 178 field names were
+   correct the whole time. Only the two labels were wrong. `FINDINGS-supply.md` had recorded it as "a
+   naming wart left alone" since that wave, which is why it took a prompt to fix rather than a
+   discovery. Nothing in code depended on either name - one doc comment in
+   `BiceLib/GameClasses/CDefines.hpp`, one line of `CLASSES.md`, one in `FINDINGS-supply.md`.
+   *One thing to know when you apply this:* a struct **rename** leaves the old `CDefinesSupply`
+   behind in a Ghidra database that already has it, since the apply creates by name and does not
+   delete. `ResetBiceLibOrphans` is the tool for that if it bothers you.
+
+Plus **`likely`, which agent B answered with evidence and a recommendation rather than a change**:
+`project.json` holds **219** of them, `buildFindings.py` maps `confirmed`->CERTAIN and
+`inferred`->TENTATIVE with a `.get(..., "TENTATIVE")` default, so all 219 already land as TENTATIVE -
+*indistinguishable from `inferred`*. B recommends **not** adding the word, because that default means
+a **typo** also degrades silently and the validator's short list is the only thing that catches one.
+Preferred fix: drop the third word from the three documents and convert the 219. A wrinkle worth
+knowing: the Ghidra output *does* have a LIKELY tier with 81 members, but those come from
+`buildFindings`'s own hardcoded cases (folded bodies, luabind wrappers) - so a real tier exists that
+the record's own `likely` cannot reach, which strengthens B's case rather than weakening it.
+
+## The planned next wave is in `WAVE.md`
+
+**It is not in this file any more.** `WAVE.md` holds the wave that is planned and has not launched,
+on its own, because finding the plan in five hundred lines of queue and archive was a search rather
+than a glance. This file keeps the standing backlog and every landed wave's result.
+
+Wave 11 is planned there, from the survey below.
+
+### Wave 11, landed 2026-10-03 - four agents, and two premises refuted
+
+**The wave's shape: two of the four briefs were wrong about the thing they were built on, and both
+agents said so and answered the better question instead.** That is the second wave running where
+the plan's own reasoning needed correcting by the bytes.
+
+| agent | what it settled | what it overturned |
+| --- | --- | --- |
+| A `FINDINGS-triggereval.md` | **there is no cache anywhere** in trigger evaluation - no memo, no dirty bit, no tick stamp - so `RunDailyEventPass` re-walks every tree every day, doubled wherever a tooltip is open because slot 11 re-evaluates rather than reading slot 6's answer. `CEventScope` taken from 2 named dwords to 12. The four composites' slot 6 read, and `CContextTrigger` **narrows** a scope by copying it, it does not build one | the plan's "clean boundaries on both sides" (trap 2, three times); `CEventScope`'s recorded **size**, where the struct said `0x38` and its own field comment said `0x48`; slot 10's recorded signature, whose 4th argument is an int **weight** divided among branches, not an `int* total`; and `CNotTrigger` is a **NOR** |
+| B `FINDINGS-history.md` | the history is a **reversible do/undo transaction log** keyed on dates, `AddEntry` its only public way in; **~3 MB** for 48,998 entries, with the arithmetic and its assumptions; `g_NullDate` promoted and explained as **year zero** on the engine's own calendar | **the brief's premise.** The history *is* read after load - three ways, one of them **every single day** for every leader of every country. And `CLeaderHistory +0x40 trait_gain` is not a field of a 0x24-byte struct: those four bytes are `CLeader +0xC4`, which **the record already held**, so it carried one field twice under two owners |
+| C `FINDINGS-mappoint.md` | **879,780 = 14,190 x (60 + 2), exactly** - one point per building type per province plus two embedded. 0x10 bytes from six independent strides; a **flat** vector with an exact `reserve`, so zero per-element and zero slack overhead; **13.5-13.6 MiB**, half of it vftable and a word nothing reads; built once at database load, freed only in `CEU3Application`'s destructor | the record's "one key, `y`" - **it is two, `x` and `y`** - and with it the plan's hypothesis that `x` was implied by position. Also the brief's "plus small-object allocator overhead": the allocation is **per vector, not per point**, so per-point allocator cost is zero |
+| D `FINDINGS-diploaction.md` | the offer lifecycle end to end, Lua `Create` to the entry in a save; `value` is a **bool**, not thousandths; the null action is a **static singleton** whose `IsValid()` is `xor al,al; ret`, used as "am I still empty" | **`type` has three values, not two** - `ACCEPT = 2` is registered eight instructions after the other pair, and 21 of 56 save blocks carry it. And **`CCountry +0xF24` is not `declarewar`**: it is the pending-action list of *any* kind, and `declarewar` is the one of nineteen tokens the compiler emitted a literal for |
+
+**Landed:** 84 addresses and 36 struct fields offered, **80 addresses and 36 fields merged**. Record
+**2,292 -> 2,352 functions**, 2,777 -> **2,806 fields**, signatures 2,051 -> **2,110**, labels
+563 -> 567, virtual tables 206 -> **207**. Headless apply **`failed: 2`** - the pass mark, both
+documented over-long bodies. `checkSignatures.py` **1,412 entries, none disagree** - the zero
+baseline wave 10 reached held through all 80 new entries.
+
+**The actionable mod figure of the wave**, from C: one building type costs 16 + 4 = **20 bytes per
+province**, present from database load to process exit whether any province has that building or
+not. That is 0.27 MiB each, so **BlackICE's 48 extra building types cost 12.99 MiB** over vanilla -
+and the same multiplier sits in front of `CProvinceBuilding`'s 1,702,800 instances, which is
+14,190 x 2 x 60 exactly. Two independent census figures landing on one multiplier.
+
+**And the methodological one**, from D: **`CDiplomaticAction`'s 22,113 "live" is not an object
+count.** The class is abstract - ten of its 22 slots are `_purecall` - and every destructor in the
+family writes the *base* vftable into the object as it unwinds, so freed-and-unreused memory still
+answers to it. `census.py`'s own docstring warns about exactly this. Any census number for an
+abstract base wants that check before it is believed.
+
+**Four new trap cases went into `TRAPS.md`**, including a genuinely new third cause for
+`functionStart`: it can stop on a `0xCC` that is **the low byte of a `call rel32` displacement**,
+and `retsBefore` does *not* catch it because x86 resynchronises and the decode looks clean. Requiring
+a run of three `int3` fixes it.
+
+## Away from the AI: where else there is to go
+
+Surveyed 2026-10-03 at the maintainer's request, after wave 10, by reading `PROGRESS.md`'s own table back
+rather than by taste. **Every loader grammar in the image has already been read** - `PROGRESS.md`
+says so and it is right - so what is left everywhere is *layout and behaviour*, not grammar.
+
+The arithmetic that frames the choice: of 1,141 classes, **858 have no `read` class anywhere in
+their ancestry**, and those hold **2.1 million living objects**. Counting ancestry is the whole
+trick, and getting it wrong is how this survey nearly went to the wrong place - see the two dead
+ends at the end.
+
+### 1. The evaluation half of the event script language - the strongest candidate
+
+**The grammar is read, the tooltips are read, and the answers are not.**
+`findings/FINDINGS-script.md` has all **152 trigger keywords and 91 effect keywords**, one class
+each. `CTrigger` slot 9 `GetBlockText` and slot 8 `GetText` - how a condition *draws itself in a
+tooltip* - are read in detail, including `CAndTrigger`'s and `CContextTrigger`'s overrides.
+
+But slot **6** is `Evaluate`, `bool __thiscall (CTrigger*, CEventScope*)`, and a grep of the whole
+record finds **7 named `Evaluate` bodies in the image**, four of them narrow leaves
+(`CPureRevoltRiskTrigger`, `CRevoltRiskTrigger`, `CCombatModifierTrigger`, `CCombatIsConvoyTrigger`,
+`CCombatIsWinnerTrigger`). So for ~152 trigger classes **the record knows how a condition displays
+itself and not how it answers.** `CEffect` has no vftable slots recorded at all.
+
+The live population backs it: `CAndTrigger` **100,464**, `CTechnologyTrigger` 33,204, `CEffect`
+28,627, `CNotTrigger` 28,006, `CHasCountryFlagTrigger` 18,966, `CVariableTrigger` 12,815,
+`CTrigger` 11,343, `CTagTrigger` 11,196, `CContextTrigger` 10,974 - **over 260,000 live objects**,
+nearly all `RTTI`-only.
+
+Why it matters for this mod specifically: BlackICE is an enormous event and decision mod, and these
+are the semantics behind every condition in it. Concrete questions with concrete answers:
+
+- **`CContextTrigger` derives from `CAndTrigger`** and has 10,974 instances - it is the scope
+  switch (`owner = { ... }`, `controller = { ... }`, a bare country tag). Only **2 of 153** keys
+  placed. How it rebinds the scope is the difference between a condition meaning what the modder
+  thinks and not.
+- **`CVariableTrigger`** - variables are a modding feature and nothing is known about it.
+- **Is evaluation cached, and what is the cost of a trigger forest?** Slots 10 and 11 are
+  `WalkChildren` and `CountEvaluation`, both recorded with signatures and neither read. If every
+  decision re-walks its tree on a schedule, that is a measurable cost in a mod with thousands.
+- **What a comparison actually compares.** `strength_ratio`, "controlled", "in combat" - the kind
+  of thing that is guessed at in mod forums and is sitting in the bytes.
+
+### 2. The retained-history question - a memory finding waiting to happen
+
+`CLeaderHistory` **24,138** live, `CRankChange` **24,547**, `CTraitGainTracker` **24,137**,
+`CCountryDecisionChange` 15,755, `CProvinceHistory` 14,190 - **about 103,000 live objects** of
+*history*, and `CRankChange` and `CCountryDecisionChange` are `RTTI` with no field and no function
+named.
+
+The question that makes this more than a layout exercise: **does the engine keep every leader's and
+province's full history in memory for the whole game, and does anything ever read it after load?**
+HoI3 dies of address space, not of leaks (`hoi3-crash-dump-diagnosis`), so a hundred thousand
+retained objects nobody reads is worth knowing about. It also lands next to a mechanic the maintainer already
+has: the dormant no-leader-skill-loss work, and `CTraitGainTracker` already has 4 fields and 6 named
+functions, so it is the cheapest way in.
+
+### 3. `CMapPoint` - 879,780 live, the single biggest population in the game
+
+`CMapPoint::LoadKey` takes **one key, `y`**, so each is a coordinate and there are **879,780 of
+them** - more than every other unread class combined, and nothing is recorded but that loader. At a
+plausible 8-16 bytes plus small-object allocator overhead this is on the order of ten megabytes of
+map geometry, in a process that runs out of address space.
+
+**This is the biggest unanswered memory question in the image** and it is pure plumbing - no mod
+semantics, no AI. It extends the measured work in `hoi3-memory-where-it-goes` rather than starting
+something new. Best paired with the Memory page, which can count them live.
+
+### 4. Diplomacy's action layer - smaller, self-contained
+
+`CDiplomaticAction` 22,113 live (`placed`, 2 fields, 2 functions) plus `CNullDiplomaticAction`
+13,669. `findings/FINDINGS-diplomacy.md` covers the save's diplomacy block and the agreement kinds;
+the **action** object - what an offer *is* while it is in flight - is not read. A contained job with
+a clear boundary, and the one of these four that could be done in a single pass.
+
+### Two candidates that died on inspection, recorded so nobody re-proposes them
+
+- **`CRegiment` / `CWing` are not unread.** `PROGRESS.md` shows `CRegiment` with **1** field at
+  `0xD8` bytes and 27,277 live, which reads like virgin territory - but its base **`CSubUnit` is
+  `read` with 28 fields at the same `0xD8`**, and the table's `fields` column is each class's *own*
+  named fields by design. The layout is largely known; only the derived slice is not. Same for
+  `CWing` (0 own fields, 2,298 live). **Rank on ancestry, not on the `fields` column.**
+- **The modifier system is better covered than its `RTTI` marks suggest.** `CStaticModifier` is
+  31,318 live with no struct and no named function, which looks like the mod's main lever lying
+  untouched - but `CModifier` is `placed` with a header, and **`CModifierValues` already has 143
+  fields named at `0x478` bytes**, which is the whole modifier value table. What `CStaticModifier`
+  adds over its base is a thin slice. `ActiveModifier`, `CModifierDefinition`, `CModifierEntry` and
+  `CMTTHModifier` are all recorded too.
+
+### The live queue - when a game is running
+
+Wave 9 was entirely static and generated a long list of things that one session with a game would
+close in minutes. **Worth doing all of these in one sitting rather than briefing an agent per item.**
+
+| what to read | what it settles | from |
+| --- | --- | --- |
+| `plan_air_stance` across AI air formations, looking for a **2** | whether five air missions are dead for the AI | `FINDINGS-airnaval4.md` |
+| `CGuiObject +0x44` with a text field focused | `has_focus`, currently `likely` | `FINDINGS-guistatic.md` |
+| `CFixedWindow +0x60` on all 206 windows, and on one being shown and hidden | the window-wide flag every descendant mirrors at `+0x48` | `FINDINGS-guistatic.md` |
+| `provinces[10535..10538]` | what the four province ids hard-coded out of convoy raiding are | `FINDINGS-airnaval4.md` |
+| `CRegion +0x6D` after a war has run on | whether war sets the byte `ScoreOpsAreaProvinces` adds +100 for | the open list above |
+| the debt pools after a war with debts allowed | `repaid_away` / `income_from_debt`, still "not established" | the open list above |
+| a hook on `EstimateAttackOdds`'s return for one province | the damage-ratio formula, outright | `FINDINGS-attackodds.md` |
+| `state->tick` between `CInGameIdler::Leave` and `CFrontEnd::Enter` | which instruction wrote the 60759360 | `FINDINGS-session2.md` |
+| the `+0x2FC` vector's 46 buttons, by type name and who called slot 22 | whether `attached_children_head` is the right name | `FINDINGS-guistatic.md` |
+| **AI agent units' `plan_air_stance`, on an AI country** | whether anything clears stance 2 faster than `ProcessAI` restores it - agent D's one remaining open item, and the last thing between "the strategic air war is live" and certainty | `FINDINGS-airstance.md` |
+| **`CUnit +0x2DC` across an attack decision onto an opposed amphibious landing** | the **amphibious sign bug**. If real, the estimate *rises* where it should fall. Currently the whole claim rests on one opcode byte (`subsd` where the river arm has `addsd`) | `FINDINGS-aihelpers.md` |
+| a **bombing** combat with the slot 11 probe still installed | the one arm of the slot 11 result that rests on static reading alone | the open list above |
+
+### Deferred, at the maintainer's call
 
 - **Finding the outliner leak in the code.** The symptom is quantified and reproducible - every
   open/close of a full-screen window permanently leaks 30 widgets, ten each of `outliner_header`,
@@ -117,7 +401,7 @@ of it.
    Non-zero in **0 of 108** live countries at a scenario start, with `home_produced` and `usage`
    populated in 106 of them and four sibling trade pools populated too, through the identical read
    path - so the zero is the field's and not the reader's. **That is not the same as inert**, and an
-   earlier version of this entry overclaimed it as such. David's own recall of the *allow debts
+   earlier version of this entry overclaimed it as such. the maintainer's own recall of the *allow debts
    during war* trading mechanic is what corrected it, and it is corroborated in the image:
    `CDebtAction` exists and has **zero live instances**, which is exactly what predicts these zeros
    at peace. So the honest status is "not established", and what would settle it is a game run on
@@ -146,10 +430,10 @@ of it.
    `findings/FINDINGS-politics.md` cheaply.
 8. **The force-needs half's remaining 2 KB** (`findings/FINDINGS-forceneeds.md`).
 9. **`0x4AF580`** (`CTheatre::AddFront` as proposed), read only to its first ~60 instructions.
-10. **Two front headings in David's savegame that do not fit the 0.125 lattice**
+10. **Two front headings in the maintainer's savegame that do not fit the 0.125 lattice**
     (`findings/FINDINGS-weatherfront.md`). Both are facts in the file and neither is accounted for.
 
-### Two decisions that are David's, not findable by reading
+### Two decisions that are the maintainer's, not findable by reading
 
 - **`CTradeRoute +0x34` and `+0x44`.** Six independent readings, including the engine's own
   `GetTradedFromOf`, say the record has the two the wrong way round. Both are still marked
@@ -177,8 +461,11 @@ only 40 of the 67, so it was both longer and less useful than a complete list.
 | `findings/FINDINGS-schedule.md` | when each unit-level update runs, and on which thread |
 | `findings/FINDINGS-commands.md` | the command queue, the four channel classes, and the one `Execute` caller |
 | `findings/FINDINGS-session.md` | the session lifecycle: what `in_game` means, and what creates and destroys a game |
+| `findings/FINDINGS-sigaudit.md` | the signature audit: 87 disagreements down to 1, and the string size |
+| `findings/FINDINGS-session2.md` | the startup reset's second half, and what `CInGameIdler +0x1790` really is |
 | `findings/FINDINGS-resetpath.md` | the deferred session-exit path, and whether `Update` can reach the reset with `in_game` set |
 | `findings/FINDINGS-startup.md` | how the engine boots, stage by stage, and which loader claims each `common/` file |
+| `findings/FINDINGS-mappoint.md` | 879,780 map points: 14,190 x 62 exactly, and the 13 MiB they cost |
 | `findings/FINDINGS-mapbuild.md` | the map build, its cache, and how the frontend is reached |
 | `findings/FINDINGS-allocator.md` | the allocator, and what a call site gives away |
 | `findings/FINDINGS-save.md` | how the game writes a save |
@@ -198,6 +485,10 @@ only 40 of the 67, so it was both longer and less useful than a complete list.
 | `findings/FINDINGS-subdivide.md` | slot 83: how an area is sliced, and the proof nobody ever asks for it |
 | `findings/FINDINGS-opsarea.md` | what scores an operations area, and what finds the way out of it |
 | `findings/FINDINGS-reorganise.md` | the two bodies behind slot 73's air and naval halves |
+| `findings/FINDINGS-aihelpers.md` | the AI's own combat modifier model, and how far it agrees with the battle's |
+| `findings/FINDINGS-attackodds.md` | the AI's land attack odds: `ourDamage / theirDamage`, read end to end |
+| `findings/FINDINGS-airstance.md` | who sets air stance 2, and who fills the air target lists |
+| `findings/FINDINGS-airnaval4.md` | air phase 4's mission assignment, and the naval convoy raid and rebase |
 | `findings/FINDINGS-aiconsumer.md` | slot 73's land half: who spends the ops-area and front scores |
 | `findings/FINDINGS-power.md` | what the AI thinks it can win: strength x org x a per-brigade stat sum |
 | `findings/FINDINGS-forceneeds.md` | what the AI thinks it needs built, and that an AI country asks only for aircraft |
@@ -238,6 +529,7 @@ only 40 of the 67, so it was both longer and less useful than a complete list.
 | `findings/FINDINGS-convoys.md` | convoys and trade, and that the AI drives a route through the mod's Lua |
 | `findings/FINDINGS-espionage.md` | spies, intelligence, and what the espionage sliders buy |
 | `findings/FINDINGS-events.md` | events, and why a loaded save fires none until the month turns |
+| `findings/FINDINGS-diploaction.md` | a diplomatic offer in flight: three stages, the lifecycle, the null singleton |
 | `findings/FINDINGS-diplomacy.md` | how the engine asks the mod's Lua whether the AI accepts |
 | `findings/FINDINGS-oob.md` | the order of battle, key by key |
 
@@ -257,6 +549,9 @@ only 40 of the 67, so it was both longer and less useful than a complete list.
 | --- | --- |
 | `findings/FINDINGS-gui.md` | the GUI framework: finding a thing by name, and what the combat-status window is |
 | `findings/FINDINGS-guilive.md` | the live GUI: from a window name to the object holding the number |
+| `findings/FINDINGS-history.md` | the history subsystem: a do/undo replay log, read every day, and what it costs |
+| `findings/FINDINGS-guicontainers.md` | the subwindow map, and every `CWindowType::LoadKey` token's container |
+| `findings/FINDINGS-guistatic.md` | the GUI read statically: the child lists, the empty registries, the ledger's class |
 | `findings/FINDINGS-uinumbers.md` | what the interface already computes |
 | `findings/FINDINGS-uinumbers2.md` | what the interface already computes, part two |
 | `findings/FINDINGS-messages.md` | the message system |
@@ -268,6 +563,7 @@ only 40 of the 67, so it was both longer and less useful than a complete list.
 | | |
 | --- | --- |
 | `findings/FINDINGS-definitions.md` | every loader's grammar, key by key |
+| `findings/FINDINGS-triggereval.md` | how a condition **answers**: slot 6, `CEventScope`, and the absence of any cache |
 | `findings/FINDINGS-script.md` | the event script language: 152 trigger keywords and 91 effect keywords |
 | `findings/FINDINGS-fieldmap.md` | which field each key lands in |
 

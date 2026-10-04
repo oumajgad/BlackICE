@@ -6,8 +6,11 @@
 
 #include <Windows.h>
 
-#include <set>
+#include <algorithm>
+#include <cstring>
+#include <map>
 #include <string>
+#include <vector>
 
 namespace {
     // Module relative. CEU3Gui's first vftable; the object also carries CPersistent's at +4 and
@@ -161,6 +164,11 @@ namespace {
     int historyHead = 0;
     uint32_t peakSeen = 0;
     uint32_t baselineSeen = 0;
+    // The previous deep scan's counts, so a scan can report what moved. Kept by name rather than
+    // by rank: a widget type that climbs out of nowhere is exactly the case worth catching, and it
+    // has no previous rank to be compared against.
+    std::map<std::string, uint32_t> previousCounts;
+    bool havePrevious = false;
     bool haveBaseline = false;
     uintptr_t baselineBegin = 0;
     bool bufferMoved = false;
@@ -232,6 +240,11 @@ void Gui::WidgetStats::resetBaseline() {
     bufferMoved = false;
 }
 
+void Gui::WidgetStats::forgetDeepScan() {
+    previousCounts.clear();
+    havePrevious = false;
+}
+
 Gui::WidgetStats::DeepScan Gui::WidgetStats::deepScan() {
     DeepScan out;
     const Sample taken = sample();
@@ -239,7 +252,7 @@ Gui::WidgetStats::DeepScan Gui::WidgetStats::deepScan() {
         return out;
     }
 
-    std::set<std::string> names;
+    std::map<std::string, uint32_t> counts;
     const uintptr_t begin = taken.begin;
     for (uint32_t i = 0; i < taken.inUse; i++) {
         const uint32_t object = dword(begin + i * 4);
@@ -271,19 +284,41 @@ Gui::WidgetStats::DeepScan Gui::WidgetStats::deepScan() {
             continue;
         }
         out.walked++;
-        const std::string name(buffer);
-        names.insert(name);
-        if (name == "outliner_header") {
-            out.outlinerHeader++;
-        }
-        else if (name == "outliner_header_entry") {
-            out.outlinerHeaderEntry++;
-        }
-        else if (name == "entry_text") {
-            out.entryText++;
+        counts[std::string(buffer)]++;
+    }
+    out.distinctNames = static_cast<uint32_t>(counts.size());
+
+    // Rank by count, ties by name so the order is stable between scans and the eye can follow a
+    // row. Only the top few are wanted, so partial_sort does less work than sorting all ~400.
+    std::vector<std::pair<std::string, uint32_t> > ranked(counts.begin(), counts.end());
+    const size_t limit = static_cast<size_t>(DeepScan::TOP);
+    const size_t wanted = ranked.size() < limit ? ranked.size() : limit;
+    std::partial_sort(ranked.begin(), ranked.begin() + wanted, ranked.end(),
+        [](const std::pair<std::string, uint32_t>& a,
+           const std::pair<std::string, uint32_t>& b) {
+            if (a.second != b.second) {
+                return a.second > b.second;
+            }
+            return a.first < b.first;
+        });
+
+    out.comparable = havePrevious;
+    for (size_t i = 0; i < wanted; i++) {
+        DeepScan::Entry& entry = out.top[i];
+        strncpy_s(entry.name, ranked[i].first.c_str(), _TRUNCATE);
+        entry.count = ranked[i].second;
+        if (havePrevious) {
+            const std::map<std::string, uint32_t>::const_iterator was =
+                previousCounts.find(ranked[i].first);
+            // A name absent from the previous scan is all new, not unchanged.
+            entry.change = static_cast<int>(entry.count)
+                - (was == previousCounts.end() ? 0 : static_cast<int>(was->second));
         }
     }
-    out.distinctNames = static_cast<uint32_t>(names.size());
+    out.topUsed = static_cast<uint32_t>(wanted);
+
+    previousCounts = counts;
+    havePrevious = true;
     out.valid = true;
     return out;
 }

@@ -427,7 +427,7 @@ side by side, four bytes apart.
 ### 4.4 Read out of the running game, and matched against the mod's files
 
 **This whole subsection rests on the live process** and on the files at
-`C:\Users\David\GitHub\BlackICE\technologies\`. The game was a freshly started 1936-01-01
+`%USERPROFILE%\GitHub\BlackICE\technologies\`. The game was a freshly started 1936-01-01
 campaign, paused, playing **IRE**; module base `0x830000`.
 
 Countries were identified by reading the tag chars at `CCountry +0xCA4` and the id at `+0xCA8` and

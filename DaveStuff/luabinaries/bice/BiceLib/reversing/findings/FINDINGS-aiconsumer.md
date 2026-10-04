@@ -677,7 +677,7 @@ Module base `0x830000` when read (`static = live - base + 0x400000`). The sessio
 `+0x22C` — the four per-role rebase destination lists the air body's phase 2 scores — are ever
 non-null, and says that if they are all null then half that file is dead code.
 
-**Why there are 112 agents and none for the played country - answered by David, 2026-10-02.**
+**Why there are 112 agents and none for the played country - answered by the maintainer, 2026-10-02.**
 Not a missing object and not an anomaly: **a `CAIUnit` exists per AI-controlled theatre**, and
 HoI3 treats theatre AI control as a per-theatre toggle, so the player's own theatre simply has
 no agent. That is why the census found 112 agents over 78 tags with no `IRE` among them. It also

@@ -58,6 +58,16 @@ says nothing about the call, so it takes a record rather than a name.
 `ghidra/mergeFindings.py` documents. That file has hand-kept formatting and a
 hand-compacted block in it, and several writers would wreck it.
 
+**Every key in an address entry must be *present*, even when it is empty.** The check is
+`if key not in entry`, over a fixed list that includes **`no_signature`** - so an entry with a
+perfectly good `signature` is still refused, with the unhelpful message "no no_signature", until it
+carries `"no_signature": null` as well. Three of the four wave 9 agents hit this independently.
+The field list is spelled **`struct_fields`**, not `fields`; `fields` is read by nothing and a
+fragment using it passes `--check` reporting zero fields and lands nothing. And `confidence` takes
+only `confirmed` or `inferred` - the validator has no `likely`, although this README, `TRAPS.md`,
+`CLAUDE.md` and `project.json` itself all use the three-word vocabulary. Where the honest strength
+is "likely", write `inferred` and say "likely, and why" in the comment.
+
 **Every entry carries `evidence`**: what you checked, and *what would show it wrong*.
 That second half is the one that matters and the one people skip. It is not copied into
 `project.json` - it is the reviewer's handle.

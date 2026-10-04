@@ -1353,7 +1353,7 @@ matched BlackICE's own `defines.lua`, values and all - `IC_TO_MONEY` 0.09 as 90,
 **It does not follow that every block counts out.** The military block at `+0xAC` does not -
 `SUPPLYPOOL_DAYS` sits four bytes earlier than the file order would put it, and the leader
 distance defines seven entries later. So check a block against a running game before trusting
-a name in it; the `RADIO_*_LEADER_DISTANCE` names in `CDefinesSupply` remain inference.
+a name in it; the `RADIO_*_LEADER_DISTANCE` names in `CDefinesMilitary` remain inference.
 
 `CCountry::GetConvoyBuildCost` (`0xFD590`) and its three siblings are one shape:
 `define x (1000 + a technology figure) / 1000`, floored at 10.
@@ -1556,7 +1556,7 @@ already called them.
 | `+0xE00` | `active_leaders` | a vector, `_end` and `_capacity` after it |
 | `+0xE38` | `active_mission` | a CPersistent of its own |
 | `+0xF20` | `graphical_culture` | which `CCountry::AfterLoad` fills with the Generic one |
-| `+0xF24` | `declarewar` | a linked list, tail `+0xF28`, count `+0xF2C` |
+| `+0xF24` | `pending_diplomatic_actions` | a linked list, tail `+0xF28`, count `+0xF2C`. **Not `declarewar`** - that is one of nineteen action tokens the loader accepts into this one list, and the only one the compiler emitted a literal for (`FINDINGS-diploaction.md` §6) |
 | `+0x1080`, `+0x1084`, `+0x1088` | `land_`, `air_`, `naval_battles_fought` | |
 | `+0x10A4` | `historical_friends` | a vector of countries, looked up by tag on load |
 | `+0x113C` | `election` | a yes/no |
@@ -2034,5 +2034,5 @@ fit exactly one `.fnt` in either folder.
 | `combatHistory.py` | the game's own combat history, decoded |
 | `hoi3.py` | the RTTI export, tick decoding, and the helpers the rest use |
 
-The RTTI export itself is at `C:\Users\David\GitHub\OpenHOI3\OpenHOI3\docs` - a class
+The RTTI export itself is at `%USERPROFILE%\GitHub\OpenHOI3\OpenHOI3\docs` - a class
 hierarchy as text, and the full records as JSON.
