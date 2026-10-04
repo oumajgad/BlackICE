@@ -225,7 +225,76 @@ the record's own `likely` cannot reach, which strengthens B's case rather than w
 on its own, because finding the plan in five hundred lines of queue and archive was a search rather
 than a glance. This file keeps the standing backlog and every landed wave's result.
 
-Wave 11 is planned there, from the survey below.
+**Wave 13 is planned there**, from wave 12's remainders and from a measurement wave 12's own
+headline provoked: 713 fields the generated record holds that `project.json` has no field for,
+across 115 structs, plus 108 offsets where the two disagree on a name. `CCountry +0xF88 = Allies`
+was not a one-off, and brief A is that rule turned into work.
+
+### Wave 12, landed 2026-10-04 - four agents, and the fact base turned out to have three halves
+
+**The wave's shape: the two sharpest findings were both already in the repository**, in places the
+standing rule did not say to look. Wave 11 asked whether `ally = { ... }` scopes to a *bordering*
+country; the answer was `Allies`, sitting in `ghidra/bicelib_findings.json` under the decimal offset
+`3976`. That is trap 14 for the fifth time and it is now written into the trap with its own clause.
+
+| agent | what it settled | what it overturned |
+| --- | --- | --- |
+| A `findings/FINDINGS-numtriggers.md` | **the units question, mechanically**: a leaf's scale is decided by which of **five** slot-7 bodies its base gives it, not by its own loader, so the answer is a table rather than a reading per trigger. `manpower_percentage` and `revolt_percentage` are **fractions, not percentages** - `= 50` demands fifty times the country's own ceiling. `enemy_ic_ratio` is the only one testing `<=`. `check_variable` **creates** the variable it cannot find, and compares `>=`, so a condition on a never-set variable is true whenever the threshold is `<= 0` | **the plan's own example.** `strength_ratio` **does not exist in this build** - no class, not among the 152 keywords, and the only occurrences anywhere under the mod root are in `WAVE.md` and this file. Also `max_manpower_greater_than` tests **current** manpower: its slot 6 is a linker fold of `CManpowerTrigger`'s body and has never read `+0xBD0` |
+| B `findings/FINDINGS-scopetriggers.md` | **`ally = { ... }` scopes to a random *allied* country** - `CCountry +0xF88` is `Allies`, five agreeing witnesses, and `CCountry::GetAllies` (rva `0xE6A20`) is the whole of `lea eax,[ecx+0xF88]; ret`. `Allies` is every bilateral alliance **plus every faction member**, which `alliance_with` does not consult. **Every region name in `map/region.txt` is a trigger keyword**, resolved before the `CContextTrigger` arm. `CEventScope +0x40` is the `CCombatant`, so eight combat conditions are silently false outside a combat | the record's description of `RebuildNeighbours` as filling "two neighbour sets and the two `CCountryList`" - **it fills nine lists**. `CCountry +0xD00` and `+0xD10`, whose comments claimed open questions that two Lua accessors had already answered. And the brief's own route in: the five `GetBlockText` renderers were not needed, because the vftables were cheaper |
+| C `findings/FINDINGS-effects.md` | **the whole `CEffect` slot map**, 12 slots, from a record that held none - slot 11 `Execute`, 9 `GetText`, 8 `GetBlockText`, 10 `GetTargetText`, 6 `GetKeywordToken`, and `CEffect` is `0x20` bytes. **`Execute`'s mystery second argument is read by nothing** in all 111 classes (11 of 100 bodies pass it through, two replace it with 0), with a positive control that the same scan sees the scope in 98 of 100. `country_event` **re-tests the target event's own trigger** and fires nothing, silently, if it is false. `add_country_modifier` is **idempotent** and a misspelt name is a silent no-op | **`flags` was recorded at the wrong offset on four structs** - `CGameState`/`CCurrentGameState +0xE8` and `CProvince`/`CMapProvince +0xC4` are the `CPersistent` *second base* of a `CFlags`, `0x24` into it. Three constructors settle it and `CCountry +0x180`, already recorded correctly, is the control. The headers carried the same error and nothing read them, which is why it survived |
+| D `findings/FINDINGS-diploaction.md` §11-20 | **slot 7, the step where an agreement happens**, closed with a stated remainder. One shape twenty times: charge the influence **on PROPOSE**, build a `CRelation` subclass on ACCEPT, call its slot 10 to hang it on **both** parties, append to the one global list, move the relation. **`CCountry::ChangeRelation` (rva `0xE65C0`) is `CDiplomacyStatus +0x38`'s missing writer** - relation is symmetric *by construction* and is thousandths on a ±200.000 scale, with `EMBARGO_RELATION_CHANGE = -200.0` hitting the clamp floor exactly. **A guarantee and an embargo take effect when offered and are never answered** | §9's "`0x00A435F0` is the war-goal base" - `CWarGoalBaseAction` slot 7 is `_purecall` and that body is its two derived classes', folded. The class count: **21 tables, 20 distinct bodies**, not twenty-four |
+
+**The numbers.** 2,352 -> **2,462** functions, 2,806 -> **2,863** fields, 2,110 -> **2,220**
+signatures, 1,412 -> **1,517** signature entries checked with **none disagreeing**, classes `read`
+66 -> **67**. 113 addresses and 58 struct fields landed off 115 submitted. The headless apply
+reported **`failed: 0`**, not the documented `failed: 2` - and chasing that down corrected a
+"known issue" that was never real. See the note below.
+
+**Four fields were named twice, by two agents each, and all four agreed**: `CCountry +0x10B8
+national_unity` and `+0xA8C neutrality` (A from the trigger side, C from the effect side), and
+`CDiplomacyStatus +0x14 alliance` and `+0x1C guarantee` (B from the scopes, D from the actions).
+That is four independent corroborations rather than four collisions, and it is the first wave where
+the overlap was checked mechanically.
+
+**A gap in the tooling, found by agent A reading another agent's fragment by hand.**
+`mergeFindings.py --check` compares `struct_fields` against `project.json` but **not against the
+other fragments in `incoming/`**, so two agents naming one offset differently is neither refused nor
+reported and both records land - which `mergeFindings.py`'s own documentation calls worse than being
+dropped. A withdrew three of its own entries that way. There is now a cross-fragment checker in the
+session scratchpad; **promoting it to `scripts/` is on the queue and not done.**
+
+**A second tooling gap, from agent C**: `checkSignatures.py --only` can check a signature that is
+already in `project.json`, which leaves an agent unable to check its own new entries before
+submitting them. C wrote its own and recommends a `--candidates` flag. Also on the queue.
+
+**`failed: 0`, and chasing down why corrected a documented "known issue" that was never real.**
+`CLAUDE.md` had excused two failures since wave 7 as Ghidra giving a function a body that runs past
+its real end and swallowing the next one: `MT19937Next` (`0xAA2B90`) inside
+`CSimpleRandom::GetInteger` (`0xAA2B10`), and `TernarySearchTreeFind` (`0xA7E030`) inside
+`GuiTypeTree_Find` (`0xA7DEE0`). This apply reported `failed: 0` with no `!` lines and neither name
+in the log. The first guess - that the maintainer had split the bodies themselves - was **wrong,
+they had not**, so it was probed: a read-only Ghidra script over a copy, printing exactly what the
+apply tests (`getFunctionAt` against `getFunctionContaining`).
+
+**Both predecessors are thunks that tail-jump into the function below them.**
+`CSimpleRandom::GetInteger` is the whole of `mov eax, ecx; jmp 0xAA2B90` followed by `int3`;
+`GuiTypeTree_Find` is a null check, `xor eax,eax; ret 4` on one arm and `pop ebp; jmp 0xA7E030` on
+the other, then `int3`. Ghidra's 7- and 24-byte bodies for them are **correct**. There was never an
+over-long body to arbitrate: what Ghidra had done was **merge each thunk with its tail-call target
+into one function**, which is ordinary behaviour on a tail call.
+
+**And the byte-level argument the old text rested on was about a different function.** It said
+"`0xA7DEE0` ends `ret 0xc` at `0xA7E028`, then five `int3`, then a clean `push ebp` - two functions,
+properly padded apart". That `ret 0xc` is real and so is the padding, but `functionStart(0xA7E020)`
+answers **`0xA7DF60`**. Two functions were conflated, and the conclusion that the record's names
+were right was true for an unrelated reason.
+
+In the current project all four addresses are proper entries, so the names land. **`CLAUDE.md` and
+`ghidra/README.md` now say `failed: 0` is the pass mark and any failure is a real one**, with the
+bytes and the note that if the pair ever returns, the repair belongs on the **thunk**, not the
+target. *The lesson is trap 2's own: a `ret`, a padding run and a clean prologue prove a boundary
+between the two functions they sit between, and say nothing about a third one named in the same
+sentence.*
 
 ### Wave 11, landed 2026-10-03 - four agents, and two premises refuted
 

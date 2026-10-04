@@ -385,9 +385,11 @@ the score is asked on the *proposer's* side, before the command is posted. See b
   evidence**, which is why the field and its setter are `inferred`. The setter's own comparison
   against `tick + 0xA8` is dead - both arms store the same value - which is consistent with a
   cooldown that was reduced to an unconditional store.
-- **Slot 7, the per-class effect**, was not read in any class. It is the agreement actually
-  happening and it is the single biggest thing left here: `0x00A352F0` for `CTradeAction`,
-  `0x00A2B090` for `CNapAction`, `0x00A435F0` for the war-goal base, and twenty-one more.
+- ~~**Slot 7, the per-class effect**, was not read in any class.~~ **Closed by wave 12 - see
+  sections 11-20 below**, which supersede this list. Section 19 restates every item here with what
+  changed. Two corrections it makes to this section: `0x00A435F0` is **not** "the war-goal base"
+  (`CWarGoalBaseAction` slot 7 is `_purecall`; the body is its two derived classes', folded), and the
+  class count is **21 tables holding 20 distinct bodies**, not twenty-four.
 - **Slot 18 is unnamed on purpose.** Its shared body `0x00A0FE10` sits in four tables of one family,
   so it would have to be recorded class-free, and one call site is thin evidence for a name. Its
   behaviour is in section 5.
@@ -429,3 +431,469 @@ confirming:
 **The header half still needs the same change by hand** — `BiceLib/GameClasses/CCountry.hpp`
 lines 342-344 and `CLASSES.md:1559` — which is trap 14's own lesson and the reason the agent flagged
 it rather than assuming the fragment covered it.
+
+---
+
+# Slot 7: what accepting an agreement actually does
+
+Section 9 of this file called slot 7 "the single biggest thing left here" and listed it as not read in
+any class. This closes it. Read out of the executable on 2026-10-04 by wave 12's agent D,
+cross-checked against the 45 savegames and against BlackICE's own `common/defines.lua`. Nothing here
+needed the game running. Addresses in this half of the file are **virtual**, based `0x400000`, with
+the rva beside anything a finding names.
+
+## 11. In one line
+
+Slot 7 is **not** one effect per class so much as **one shape** instantiated twenty times: each body
+branches on `type` (`+0x18`) and `value` (`+0x24`), charges its own `*_INFLUENCE_COST` define off the
+actor's `CCountry::diplo_influence` (`+0xA88`) **when the offer is proposed**, and on ACCEPT builds a
+`CRelation` subclass — `CNap`, `CTradeRoute`, `CAlliance`, `CGuarantee`, `CEmbargo`, `CAlign`,
+`CInfluence`, `CDependency`, `CCasusBelli` — stamps it with the action's `date`, calls its **slot 10**,
+which hangs it on **both** parties' `CDiplomacyStatus`, appends it to the one global list of relations
+at `CCurrentGameState +0xB2C`, and moves the pair's relation by its own `*_RELATION_CHANGE` define
+through a function that had no identified writer until now. Then it raises `diplomaticsuccess` or
+`diplomaticfailure` with three localisation keys — one for the actor, one for the recipient, one for
+everybody else.
+
+## 12. The call site and the signature
+
+`CDiplomaticActionCommand::Execute` calls slot 7 at `0xA0E19E` (section 5 step 3). Every concrete class
+overrides it; `CDiplomaticAction` and `CWarGoalBaseAction` leave it `_purecall` (`0x00B961D5`) and
+`CNullDiplomaticAction` answers the 1,691-holder empty stub `0x00ABF890`. So there are **21 tables with
+a body and 20 distinct bodies**, because `CAddWarGoalAction` and `CJoinFactionGoalAction` share one.
+
+All twenty are the same signature — `this` in ECX, no stack arguments, bare `ret`:
+
+    void __thiscall CTradeAction::Apply(CTradeAction* this)
+
+`Apply` is **our** name. No string, no assert and no luabind registration names slot 7: the
+`CDiplomaticAction` registration block at `0x8ED3EF` registers `IsValid` and `IsSelectable` and then
+the `GetValue`/`SetValue`/`GetType`/`GetAIAcceptance` chain section 8 already accounts for, and slot 7
+is not among them. The name is inference; the bodies are read.
+
+## 13. The twenty bodies, their extents, and two trap 2 cases
+
+Extents were bounded by the **next slot of the same class**, read straight out of the class's own
+vftable, not by padding — which is what caught the two cases below. A `cfg.walk` from each entry also
+confirms that the only `ret` reachable from the entry is the bare one, i.e. no trap 3 funclet and no
+swallowed neighbour.
+
+| class | slot 7 (VA / rva) | last byte | bytes | padding before the next slot |
+| --- | --- | --- | --- | --- |
+| `CRequestLendLeaseAction` | `0xA0ECC0` / `0x60ECC0` | `0xA0FC57` | 0xF98 | 8 |
+| `COfferLendLeaseAction` | `0xA10870` / `0x610870` | `0xA11573` | 0xD04 | 12 |
+| `CDeclareWarAction` | `0xA12030` / `0x612030` | `0xA147B2` | 0x2783 | 13 |
+| `CAllianceAction` | `0xA18D70` / `0x618D70` | `0xA1A434` | 0x16C5 | 11 |
+| `CGuaranteeAction` | `0xA1BCC0` / `0x61BCC0` | `0xA1D379` | 0x16BA | 6 |
+| `CInfluenceNation` | `0xA1E420` / `0x61E420` | `0xA1FB4A` | 0x172B | 5 |
+| `CInfluenceAllianceLeader` | `0xA20F70` / `0x620F70` | `0xA21EE1` | 0xF72 | 14 |
+| **`CMilitaryAccessAction`** | `0xA231F0` / `0x6231F0` | `0xA247BF` | **0x5D0** | **0 — trap 2** |
+| `COfferMilitaryAccessAction` | `0xA25830` / `0x625830` | `0xA26D05` | 0x14D6 | 10 |
+| `CCallAllyAction` | `0xA27BA0` / `0x627BA0` | `0xA29D33` | 0x2194 | 12 |
+| `CNapAction` | `0xA2B090` / `0x62B090` | `0xA2C8EA` | 0x185B | 5 |
+| `CEmbargoAction` | `0xA2E5F0` / `0x62E5F0` | `0xA2F9F0` | 0x1401 | 15 |
+| `CFactionAction` | `0xA30E70` / `0x630E70` | `0xA32FC6` | 0x2157 | 9 |
+| `CTradeAction` | `0xA352F0` / `0x6352F0` | `0xA3751B` | 0x222C | 4 |
+| `CSendExpeditionaryForceAction` | `0xA395B0` / `0x6395B0` | `0xA3A853` | 0x12A4 | 12 |
+| **`CLicenceTechnologyAction`** | `0xA3B5A0` / `0x63B5A0` | `0xA3CD5D` | **0x17BE** | **2 — trap 2** |
+| `CDebtAction` | `0xA3D8A0` / `0x63D8A0` | `0xA3E500` | 0xC61 | 15 |
+| `CPeaceAction` | `0xA3F710` / `0x63F710` | `0xA40A9B` | 0x138C | 4 |
+| `CAddWarGoalAction` + `CJoinFactionGoalAction` | `0xA435F0` / `0x6435F0` | `0xA43770` | 0x181 | 15 |
+| `CShareTechnologyAction` | `0xA4B780` / `0x64B780` | `0xA4B849` | 0xCA | 6 |
+
+**`CMilitaryAccessAction` is a fresh trap 2 pair, and a clean one.** Slot 7 ends `ret` at `0xA247BF`
+and `CMilitaryAccessAction` **slot 11 begins at `0xA247C0`, with no padding at all**. An `int3` scan
+gives slot 7 0x1C90 bytes instead of 0x5D0 and then attributes slot 11's tooltip strings —
+`MILACCDESC`, `CANCELMILACCDESC`, `CANCELMILACCDESC_NOPES_TROOPS`, `DIP_NO_INFL`, `ISATWAR`,
+`ENROUTE`, `DATE` — and two further `MILACCESS_INFLUENCE_COST` reads to the effect. The first pass of
+this work did exactly that.
+
+**`CLicenceTechnologyAction` is the same mistake one step subtler**: slot 11 is at `0xA3CD60` with
+**two** `int3` before it, so the brief's own "require a run of at least three `int3`" rule walks
+straight past the boundary. That rule protects against reading data as padding; it does not help here,
+and the vftable is what settles it. The over-long extent picks up `BUYLICENCEDESC`, `SELLLICENCEDESC`,
+`ACT_NO_SELF`, `DIP_NO_INFL` and a second `LICENCE_INFLUENCE_COST` read at `0xA3D13E`.
+
+**Both are confirmed a second way, for free.** `cfg.walk` from each slot-7 entry reaches only bare
+`ret`s. The `ret 4` at `0xA24E79` and the `ret 4` at `0xA3D2B6` are **not reachable** from the slot-7
+entries, which is independent of the padding argument and says the same thing: those bytes are slot
+11's. *A different stack immediate past the end is a cheap extra test for trap 2, and it is one this
+folder has not used before.*
+
+`CDeclareWarAction` looks like a third case and is not: the entry 13 `int3` after its `ret`, at
+`0xA147C0`, is a helper **this body itself calls twice**, and `CDeclareWarAction` slot 11 is further on
+at `0xA14BB0`.
+
+## 14. The defines are the fingerprint
+
+The cheapest and most decisive check in this whole reading. Every body resolves its constants through
+`call GetDefines (0x445D90)` then `[eax+0xBC]` — the **diplomacy** block — then `[block + N]`, and
+`scripts/definesMap.py --block diplomacy` turns every `N` into a name. **Each class reads exactly the
+defines named after it and no others.** Twenty bodies, 34 distinct defines, not one crossing into
+another class's group except where it obviously should.
+
+| class | influence costs | relation changes | other |
+| --- | --- | --- | --- |
+| `CDeclareWarAction` | `WARDEC_INFLUENCE_COST` (+0x8) | `WARDEC_WAR_DIPLOMACY_HIT` (+0x4) | |
+| `CAllianceAction` | `JOIN_ALLIANCE_INFLUENCE_COST` (+0xC), `LEAVE_ALLIANCE_INFLUENCE_COST` (+0x10) | `ALLIANCE_RELATION_CHANGE` (+0x40), `ALLIANCE_REJECT_RELATION_CHANGE` (+0x44) | |
+| `CGuaranteeAction` | `GUARANTEE_INFLUENCE_COST` (+0x14), `REVOKE_GUARANTEE_INFLUENCE_COST` (+0x18) | `REVOKE_GUARANTEE_RELATION_CHANGE` (+0x70) | |
+| `CCallAllyAction` | `CALLALLY_INFLUENCE_COST` (+0x1C) | `WARDEC_WAR_DIPLOMACY_HIT` (+0x4), `ALLIANCE_REJECT_RELATION_CHANGE` (+0x44) | |
+| `CEmbargoAction` | `EMBARGO_INFLUENCE_COST` (+0x28) | `EMBARGO_RELATION_CHANGE` (+0x80) | |
+| `CMilitaryAccessAction` | `MILACCESS_INFLUENCE_COST` (+0x2C) | `MILACC_ACCEPT_RELATION_CHANGE` (+0x64), `MILACC_DECLINE_RELATION_CHANGE` (+0x68) | |
+| `CNapAction` | `NAP_JOIN_INFLUENCE_COST` (+0x54), `LEAVE_NAP_INFLUENCE_COST` (+0x5C) | `NAP_RELATION_CHANGE` (+0x4C), `LEAVE_NAP_RELATION_CHANGE` (+0x50), `NAP_REJECT_RELATION_CHANGE` (+0x58) | `LEAVE_NAP_THREAT_COST` (+0x60), **by address** |
+| `CInfluenceNation` | — | `DAYS_OF_INFLUENCE_RELATION_CHANGE` (+0x74) | |
+| `CInfluenceAllianceLeader` | `ALIGN_INFLUENCE_COST` (+0x7C) | `DAYS_OF_ALIGN_RELATION_CHANGE` (+0x78) | |
+| `CFactionAction` | `JOIN_FACTION_INFLUENCE_COST` (+0x8C), `INVITE_FACTION_INFLUENCE_COST` (+0x90) | — | |
+| `CTradeAction` | `TRADE_INFLUENCE_COST` (+0xA0) | `TRADE_RELATION_CHANGES` (+0x9C), `TRADE_CANCEL_RELATION_COST` (+0xA8) | |
+| `CSendExpeditionaryForceAction` | `EXPEDITION_INFLUENCE_COST` (+0xAC) | — | `EXPEDITION_RETURN_TIME` (+0xB0) |
+| `CLicenceTechnologyAction` | `LICENCE_INFLUENCE_COST` (+0xB8) | — | |
+| `CShareTechnologyAction` | `SHARE_TECH_INFLUENCE_COST` (+0xBC) | — | |
+| `CDebtAction` | `ALLOW_DEBT_INFLUENCE_COST` (+0xC4), `REVOKE_DEBT_INFLUENCE_COST` (+0xC8) | — | |
+| `CRequestLendLeaseAction` | **`ALLOW_DEBT_INFLUENCE_COST`** (+0xC4) | — | |
+| `COfferLendLeaseAction`, `COfferMilitaryAccessAction`, `CPeaceAction`, the war-goal body | none | none | |
+
+Two of those rows are worth stopping on. **`CRequestLendLeaseAction` charges the debt define**, not a
+lend-lease one — there is no `LEND_LEASE_*_INFLUENCE_COST` in the block at all, only
+`LEND_LEASE_NEUTRALITY_LIMIT` and the two IC caps, none of which any slot 7 reads. And **`CNapAction`
+reads `NAP_JOIN_INFLUENCE_COST` (+0x54), never `NAP_INFLUENCE_COST` (+0x20)**, which no slot 7 touches.
+
+**A fourth way a define hides from a block scan, to go beside trap 8's three.** `LEAVE_NAP_THREAT_COST`
+is never loaded. At `0xA2BFE3` the body does `add edi, 0x60` on the register already holding the
+diplomacy block and hands the **address** to `0x4F50A0`, the threat adder. A scan looking for
+`mov reg, [block + N]` cannot see that, and `EMBARGO_THREAT_COST` (+0x88) is almost certainly reached
+the same way — `CEmbargoAction` calls `0x4F50A0` twice and never loads +0x88.
+
+Of the diplomacy block's 67 entries, 34 are read by a slot 7 and 33 are not found there. **That second
+number is a result from a method with a known blind spot**, not a statement that they are unread: it
+cannot see an inlined `GetDefines` (trap 8 case 1 — `CInfluenceNation` contains one, `call 0x4452E0`),
+a define cached into a global at startup (case 2), or a define passed by address (the new case above).
+Its positive control is that it finds every other class's own defines in the same pass.
+
+## 15. The ACCEPT path, and what it writes
+
+### `CShareTechnologyAction` — the whole shape in 42 instructions
+
+`0xA4B780`, 0xCA bytes, read end to end. It is the one member that raises no message and touches no
+`CDiplomacyStatus`, which is exactly why it is the one to read first:
+
+    if (!this->value) { 0x507C10(GetCountry(&recipient), GetCountry(&actor)@ECX); return; }
+    if (!this->+0x28) return;                       // the shared technology
+    actor = countries[this->actor_id];
+    actor->diplo_influence -= GetDefines()->diplomacy->SHARE_TECH_INFLUENCE_COST;
+    if (actor->diplo_influence < 0) actor->diplo_influence = 0;
+    0x507B40(GetCountry(&actor), this->+0x28->+0x5C, GetCountry(&recipient)@EAX);
+
+`0x507B40` and `0x507C10` are a matched add/remove pair over a 0xC-byte-strided vector at
+`CCountry +0x6F0`, which is where a shared technology is recorded. Both are unnamed; they are in the
+frontier.
+
+### `CNapAction` — all four arms
+
+`0xA2B090`. The arms, in the order the code tests them:
+
+| arm | what it does |
+| --- | --- |
+| `type == PROPOSE && value` (`0xA2B9A0`) | `countries[actor]->diplo_influence -= NAP_JOIN_INFLUENCE_COST`, clamped at 0 (`0xA2B9D3`) |
+| `type == ACCEPT` (`0xA2B9F2`) | `new(0x30)`; `CNap::CNap` (`0xA46F00`, vftable `0x15FBB68`); `nap->first = actor`, `nap->second = recipient`, `nap->start_date (+0x18) = action->date (+0x1C)`; `CNap::Activate()` (slot 10, `0xA471E0`); append to the relation list (`0xA2BAC8`); `CCountry::ChangeRelation(actor, &recipient, NAP_RELATION_CHANGE)` (`0xA2BB00`) |
+| `type == DECLINE` (`0xA2C3F6`) | `ChangeRelation(..., NAP_REJECT_RELATION_CHANGE)` (`0xA2C40B`) |
+| `value == 0` — breaking a pact | find the existing `CNap` in the relation list, `CList_RemoveNode` (`0xA2BF83`), delete it through slot 0 (`0xA2BF92`); `0x4F50A0(..., &LEAVE_NAP_THREAT_COST, ...)`; `ChangeRelation(..., LEAVE_NAP_RELATION_CHANGE)`; `diplo_influence -= LEAVE_NAP_INFLUENCE_COST` |
+
+**The influence is charged on PROPOSE, not on ACCEPT.** That is true of every class with a cost: the
+`type == 0 && value` test and the `+0xA88` subtraction sit together, above the ACCEPT branch, in
+`CNapAction` at `0xA2B9A0`, in `CTradeAction` at `0xA35AE9` and in `CShareTechnologyAction` inline.
+Offering costs; being refused does not refund.
+
+### `CTradeAction`
+
+`0xA352F0`, same four arms. `TRADE_INFLUENCE_COST` on propose (`0xA35B21`); on accept,
+`CTradeRoute::IsValid(&this->+0x28)` gates it — `0xA4CEE0`, and **`IsValid` is the name the luabind
+registration at `0x8ED468` gives that very address under the `CTradeRoute` class**, so
+**`CTradeAction +0x28` is an embedded `CTradeRoute`** — then `operator new(0x88)` =
+`sizeof(CTradeRoute)`, copy-constructed from `+0x28` through `0xA4C660`, `route->+0x18 = action->date`,
+`CTradeRoute::Activate()`, append, and
+`ChangeRelation(..., TRADE_RELATION_CHANGES)` at `0xA35F15`. Cancelling reads
+`TRADE_CANCEL_RELATION_COST`.
+
+### `CRelation` slot 10 — the step that writes the fields
+
+**This is the answer to "which fields on which objects".** `CRelation` (vftable `0x15FBB00`) leaves
+slot 10 `_purecall`; nine of its ten subclasses override it and `CWarning` answers the empty stub. The
+body hangs a freshly made relation on the two countries it is between, through
+`countries[id]->+0xE28[otherId]` — the `CDiplomacyStatus` array.
+
+| class | slot 10 (VA / rva) | writes | directions | sets `+0x59` |
+| --- | --- | --- | --- | --- |
+| `CAlliance` | `0xA46A40` / `0x646A40` | `+0x14` **alliance** | both | yes |
+| `CDependency` (and `CVassal`) | `0xA47760` / `0x647760` | `+0x18` **dependency** | both | yes |
+| `CGuarantee` | `0xA46DB0` / `0x646DB0` | `+0x1C` **guarantee** | both | yes |
+| `CNap` | `0xA471E0` / `0x6471E0` | `+0x28` `nap` *(already recorded)* | both | yes |
+| `CInfluence` | `0xA4AAD0` / `0x64AAD0` | `+0x2C` `influence_running` *(already recorded)* | recipient→actor only | yes |
+| `CAlign` | `0xA4B110` / `0x64B110` | `+0x30` **align** | actor→recipient only | **no** |
+| `CEmbargo` | `0xA4B530` / `0x64B530` | `+0x34` **embargo** | both | **no** |
+| `CCasusBelli` | `0xA47BB0` / `0x647BB0` | appends to `+0x3C`/`+0x40`/`+0x44` **casus_belli** | one | yes |
+| `CTradeRoute` | `0xA4D2C0` / `0x64D2C0` | appends to `+0x60`/`+0x64`/`+0x68` `trade_routes` | both | yes |
+
+So **five previously unnamed `CDiplomacyStatus` fields are named from their writers** — `+0x14`,
+`+0x18`, `+0x1C`, `+0x30`, `+0x34` — plus the casus-belli list at `+0x3C`/`+0x40`/`+0x44` and the trade
+list's tail at `+0x64`, which sat unrecorded between the recorded `+0x60` head and `+0x68` count.
+
+Two of those have independent corroboration already in the record, which is trap 14's converging-readings
+case rather than a collision. `project.json`'s account of `0x8A9390` says that predicate answers false
+"if our own faction leader's `CDiplomacyStatus` toward them has `+0x14` set" — it reads `+0x14` as *they
+are our ally*, which is what `CAlliance::Activate` makes it. And `+0x2C influence_running` is recorded
+as "non-zero while a diplomatic influence is running between the pair"; it is **the `CInfluence*`
+itself**, and only the influenced country's side of the pair carries it. The existing name is still
+right, so it is refined here rather than revised.
+
+`CGuarantee::Activate` is the whole mechanism in 17 instructions with no branch, and is the one to read
+if only one is read:
+
+    fwd = countries[this->first_id]->diplomacy[this->second_id];
+    fwd->changed (+0x59) = 1;  fwd->guarantee (+0x1C) = this;
+    rev = countries[this->second_id]->diplomacy[this->first_id];
+    rev->changed = 1;          rev->guarantee = this;
+
+### `CCountry::ChangeRelation` — rva `0xE65C0`, and the units
+
+The function the `*_RELATION_CHANGE` defines go into. 24 instructions, read end to end, `ret 4`, with
+the receiver in **EDI**, the other country's tag in **ECX** and the delta as the one stack argument —
+so it has no ordinary convention and the storage is spelled out (trap 11):
+
+    void __fastcall CCountry::ChangeRelation(CCountry* this@EDI, CCountryTag* other@ECX, int delta@stack:4)
+
+    fwd = this->diplomacy[other->id];
+    fwd->changed (+0x59) = 1;
+    v = clamp(delta + fwd->relation (+0x38), [0x1710C38], [0x1710C34]);
+    fwd->relation = v;
+    rev = other->GetCountry()->diplomacy[this->id];     // CCountryTag::GetCountry, 0x402610
+    rev->changed = 1;
+    rev->relation = v;
+
+**`CDiplomacyStatus +0x38 relation` had no identified writer** — `project.json` carries it as "the
+pair's relation, thousandths. Inferred, not proven: the alignment relation term averages it." This is
+the writer, and it settles three things at once:
+
+- **Relation is symmetric by construction.** The delta is applied to the *forward* side's value and the
+  single clamped result is written to both. The two can never diverge.
+- **`[0x1710C34] = 200000` and `[0x1710C38] = -200000`**, so relation is **thousandths on a
+  −200.000..+200.000 scale** — trap 7, and the range the diplomacy screen shows.
+- **`EMBARGO_RELATION_CHANGE = -200.0` in BlackICE's `common/defines.lua:299` is `-200000` stored,
+  which is the clamp floor exactly.** One embargo drops the pair to the bottom of the scale in a
+  single step. Two numbers read from two different files landing on the same value is as good a
+  thousandths proof as this project gets.
+
+There are 18 call sites, every one inside a slot 7.
+
+**A caveat on the save as an oracle here.** `CDiplomacyStatus` is written per partner inside each
+country block, as `IRE={ ... GER={ value=10  threat=2.357  last_send_diplomat="1938.5.3.5" } ... }`. The
+relation is the `value` key and it is written as a **bare integer** (`value=75`, `value=140`) while
+`threat` beside it is written `2.357`. So the save does not show relation's thousandths directly — it
+writes the whole points — and the scale claim rests on the clamp globals and the define, not on the
+save. Said rather than rounded up.
+
+### `CWarGoalBaseAction::Apply` — rva `0x6435F0`, and a correction to section 9
+
+Section 9 lists `0x00A435F0` as "the war-goal base". **It is not: `CWarGoalBaseAction` slot 7 is
+`_purecall`.** `0xA435F0` is slot 7 of `CAddWarGoalAction` **and** of `CJoinFactionGoalAction`, and of
+nothing else in the image — two identical bodies the linker folded. `vtable.py --holding` prints both.
+Because their common base leaves the slot pure, neither derived class can own the name without putting
+it on the other (trap 4's two-holder case, the dangerous size), so the record puts it on the base,
+where the code belongs, and notes the slot on both derived classes.
+
+0x181 bytes, two exits in one frame. **`this->+0x28` is an embedded `CWarGoal`**: `0x47BBE0` is called
+with `ECX = this+0x28` and reads `+0x18`, `+0x1C` and `+0xC`, which are `actor.tag`, `actor.index` and
+`casusBelli` in the layout `BiceLib/GameClasses/CWarGoal.hpp` established independently from
+`CWarGoal::LoadKey`. Three offsets agreeing with a reading made in another session, from another
+function, is confirmation rather than coincidence.
+
+    status = countries[actor_id]->diplomacy[recipient_id];
+    0xA51FB0(status->war (+0x20), actor.tag, actor.id);     // the add itself, unnamed
+    0x47BBE0(&this->warGoal);
+    goal = &this->warGoal;                                  // this->+0x34 is its casusBelli
+    walk status->casus_belli (+0x3C) for the entry whose +0x24 == goal->casusBelli->+8
+      not found -> 0xA49EB0() must answer true, or return
+      found     -> 0xA49F40(status, 0);
+                   remove that CCasusBelli from the relation list; delete it through slot 0
+
+Reading that tail as *adding the war goal consumes the casus belli it was justified by* is
+**inference**; the removal and the delete are read. `WARGOAL_ADD_COOLDOWN` (diplomacy +0xFC) is not
+read here.
+
+## 16. `CCurrentGameState +0xB2C` — the one list every agreement goes into
+
+`+0xB24` is already recorded as `diplomacy`, "a `CDiplomacy`", in `project.json` and in
+`BiceLib/GameClasses/CCurrentGameState.hpp:57`. Its **list** is at its own `+8`/`+0xC`/`+0x10`, i.e.
+`CCurrentGameState +0xB2C` head, `+0xB30` tail, `+0xB34` count, nodes 0x10 bytes
+`{value, prev@+4, next@+8, byte@+0xC}`. That is why two helpers get two different pointers: the append
+`0x493E10` is passed `state+0xB24` (the owner) and the recorded `CList_RemoveNode` is passed
+`state+0xB2C` (the head field). Getting those two confused is how `+8` would be wrong, and they
+cross-check each other.
+
+Six slot-7 bodies append here: `0xA195DF` (alliance), `0xA1BDCA` (guarantee), `0xA21155` (align),
+`0xA2BAC8` (nap), `0xA2EFB9` (embargo), `0xA35ED3` (trade).
+
+**The savegame is the independent half, and it is decisive.** The single top-level `diplomacy=` block
+is this list, and in `Ireland1939_01_03_02.hoi3` it holds **1,248 `trade`, 38 `guarantee`, 21
+`alliance`, 21 `influence`, 8 `align`, 8 `nap` and 7 `vassal`** entries — seven of `CRelation`'s ten
+subclasses, one key per class, with `CCasusBelli`, `CEmbargo` and `CWarning` simply absent from that
+game. Each entry carries `first`, `second` and `start_date`, which are `CRelation +0x8`, `+0x10` and
+`+0x18` — and `+0x18` is the field `CNapAction` and `CTradeAction` stamp from the action's own `date`.
+A `nap` block reads:
+
+    nap={ balance=1000.000  our_power=0  their_power=0
+          first="CHI"  second="SOV"  start_date="1937.8.21.19" }
+
+**`0x493E10` is not CDiplomacy-specific** — it has 12 callers, six of them outside this family
+(`0x442F92`, `0x4A5ADC`, `0x4E67B4`, `0x5F31C6`, `0x9B6278`, `0x9B721C`) — so it is a generic
+append-to-a-list-at-`+8` helper and is deliberately left unnamed here; naming it after this one use
+would be exactly trap 14. It is in the frontier.
+
+## 17. Who sees it: the message
+
+Most of each body's bulk is the message, which is why the average slot 7 is 0x1600 bytes while
+`CShareTechnologyAction`'s is 0xCA. Every message-raising body does the same three things: the inlined
+`g_CCurrentGameState` get-or-create (`[0x1A89790]`, `new(0xDA8)`, vftable `0x15CF674` — the 2,772-copy
+accessor the record already accounts for), `CCountry::BuildMessageVariables` (`0x4D75F0`), and
+`GetMessageHandler` (`0x698E80`). The category is `diplomaticsuccess` or `diplomaticfailure`, and the
+key is chosen on whether `state->played_country_id (+0xC34)` equals the actor's id, the recipient's, or
+neither — the `WE…` / `THEY…` / `OTHER…` triple:
+
+| class | accept | decline | cancel / revoke |
+| --- | --- | --- | --- |
+| `CNapAction` | `WENAP` / `THEYNAP` / `OTHERNAP` | `WEREJECTNAP` / `THEYREJECTNAP` / `OTHERREJECTNAP` | `WECANCELNAP` / `THEYCANCELNAP` / `OTHERCANCELNAP` |
+| `CTradeAction` | `ACTRAWITHUS` / `WETRADEAG` / `OTHERTRADEAG` | `DETRAWITHUS` / `WEDETRA` / `DETRAWITHOTHER` | `WEBRKTRADE` / `BRKTRADEUS` / `BRKTRADEOTH` |
+| `CAllianceAction` | `MILALLACCEPT` / `MILALLWEACCEPT` / `MILLALLINVACCEPTOTHER` | `MILALLREJECT` / `MILALLWEREJECT` / `MILLALLJOINREJECTOTHER` | `MILALLBAN` / `MILALLWEBAN` / `MILALLBANOTHER` |
+| `CMilitaryAccessAction` | `ACCMILUS` / `WEACCMIL` / `ACCMILOTHER` | `DECMILUS` / `WEDECMIL` / `DECMILOTHER` | `CANCMILUS` / `WECANMIL` / `CANMILOTHE` |
+| `COfferMilitaryAccessAction` | `OFFACCMILUS` / `WEOFFACCMIL` / `OFFACCMILOTHER` | `OFFDECMILUS` / `WEDECOFFMIL` / `DECOFFMILOTHER` | `CANCMILUS` / `WECANMIL` / `CANMILOTHE` |
+| `CCallAllyAction` | `MILALLHONOUR` / `WEMILALLHONOUR` / `OTHERMILALLHONOUR` | `MILALLDISHONOUR` / `WEMILALLDISHONOUR` / `OTHERMILALLDISHONOUR` | — |
+| `CFactionAction` | `FACTIONINVITEACCEPT`, `FACTIONJOINACCEPT` / `FACTIONJOINACCEPTOTHER` | `FACTIONJOINDECLINCE`, `FACTIONINVITEDECLINCE` | — |
+| `CSendExpeditionaryForceAction` | `OUREXPACC` | `OUREXPDEC` | `EXPOTHER` |
+| `CLicenceTechnologyAction` | `LICBUYACCEPT` | `LICBUYDECLINE` | — |
+| `CDebtAction` | `DEBTALLOWACCEPT` | `DEBTALLOWDECLINE` | `DEBTREVOKE` |
+| `CRequestLendLeaseAction` | `LENDACCEPT` | `LENDDECLINE` | `LENDOFFERREFUSED` |
+| `COfferLendLeaseAction` | `LENDOFFERACCEPT` | `LENDOFFERREFUSED` | `LENDREVOKE` |
+| `CDeclareWarAction` | `DECLWAR` / `WEDECLWAR` / `DECLWAROTHER`, `DECLWAR_LIMITED` | — | — |
+| `CGuaranteeAction` | `WEGUARAT` / `GUARATOUS` / `GUARATOOTHER` | — | `GUARACANCELTOTHEM` / `GUARACANCELTOUS` |
+| `CEmbargoAction` | `WEEMBARGO` / `THEYEMBARGO` / `OTHEREMBARGO` | — | `WECANCELEMBARGO` / `THEYCANCELEMBARGO` / `OTHERCANCELEMBARGO` |
+| `CInfluenceNation` | `WEINFLUENCE` / `THEYINFLUENCE` / `OTHERINFLUENCE` | — | — |
+| `CInfluenceAllianceLeader` | `WEALIGN` / `THEYALIGN` / `OTHERALIGN` | — | — |
+| `CPeaceAction` | `PEACEACCEPT` | `PEACEDECLINE` | — |
+| `CShareTechnologyAction`, the war-goal body | *(no message at all)* | | |
+
+**The empty columns are a finding, not a gap.** `CGuaranteeAction` and `CEmbargoAction` have no
+accept/decline pair, and `CGuaranteeAction`'s very first test is `this->value` with no `type` test
+above the allocate-and-append at `0xA1BCF5`–`0xA1BDCA`: **a guarantee and an embargo take effect when
+they are offered and are not answered.** `CPeaceAction` has only two keys and no third-party
+perspective. `CDeclareWarAction` additionally builds `MESS_BADWORDS1`..`4`, which is the war-declaration
+insult text.
+
+## 18. Two one-line class facts worth having
+
+`CFactionAction`'s first three tests, read straight off `0xA30E9D`–`0xA30EDF`: `value` must be set,
+`countries[actor]->at_war (+0xACC)` must be **clear** — a country at war cannot run a faction action —
+and `countries[recipient]->faction (+0xD8)->+0x28` must be non-null.
+
+`CPeaceAction` reads no defines and instead calls `CWar::RemoveAttacker` (`0xA50440`) twice and
+`CWar::RemoveDefender` (`0xA51710`) twice, both already named in the record, plus `0x4E70A0` and
+`0x4E7190` on both countries. Peace costs no influence and moves no relation by a define.
+
+## 19. What this section closes, and what it does not
+
+Replacing section 9's list:
+
+- ~~**Slot 7, the per-class effect**, was not read in any class.~~ **Closed, with a stated remainder.**
+  Read end to end: `CShareTechnologyAction`, `CGuarantee::Activate`, `CCasusBelli::Activate`,
+  `CCountry::ChangeRelation`, and the war-goal body. Read arm by arm: `CNapAction` (all four),
+  `CTradeAction` (propose and accept). Read for extent, inputs, call set and message keys only, with
+  the names marked inference: the other sixteen. **The remainder is: sixteen bodies whose
+  `CDiplomacyStatus` and `CCountry` writes have not been enumerated**, and the four — `CDeclareWarAction`,
+  `CCallAllyAction`, `CFactionAction`, `CLicenceTechnologyAction` — that reach into the war, faction and
+  technology layers are where that matters most.
+- ~~`0x00A435F0` is "the war-goal base".~~ **Corrected.** `CWarGoalBaseAction` slot 7 is `_purecall`;
+  `0xA435F0` is slot 7 of its two derived classes, folded.
+- **`CDiplomacyStatus +0x50` has one writer and no identified reader.** Untouched — no slot 7 reads it.
+- **Whether `GetAIAcceptance` gates the posting rather than the accepting.** Untouched, and slightly
+  narrowed: no slot 7 calls slot 17 either, so nothing on the *effect* path consults the score. The
+  diplomacy GUI's button handlers remain the place to look.
+- **Where the 13,669 live `CNullDiplomaticAction`s are.** Untouched.
+- **Slot 18 is unnamed on purpose.** Unchanged.
+- **`0x4E39C0`**, the per-country recomputation. Still open; eight of the twenty slot-7 bodies call it,
+  21 call sites in all, which strengthens the case for it as a standalone item.
+- **`CDiplomaticActionCommand::Clone` ends `ret 0x1C`.** Unchanged.
+- ~~`CDiplomaticActionCommand` and `CNullDiplomaticAction` have no `structs` record.~~ Unchanged, and
+  **the list is longer: `CRelation`, `CNap`, `CAlliance`, `CGuarantee`, `CEmbargo`, `CAlign`,
+  `CInfluence`, `CDependency`, `CCasusBelli` and `CDiplomacy` have none either**, and
+  `mergeFindings.py` will not create a struct. So this section's `CRelation` layout —
+  `+0x8` first tag/id, `+0x10` second tag/id, `+0x18` start_date, `+0x1C` end_date, `+0x20` a byte,
+  subclass fields from `+0x24` — is described here and recorded nowhere, and `CRelation` at least wants
+  a hand-added struct.
+
+New open items:
+
+- **`CDiplomacyStatus +0x59` has eleven writers and no reader was looked for.** Every
+  `CRelation::Activate` but `CAlign`'s and `CEmbargo`'s sets it, and so does `ChangeRelation` on both
+  sides. It is recorded `changed`, `inferred`, on that basis alone — exactly the shape of the mistake
+  trap 14 records for `tutorial_active`, and it should be read as provisional until somebody scans for
+  a reader. **Why `CAlign` and `CEmbargo` do not set it** is its own small question.
+- **Why the influence cost is charged on PROPOSE.** It means an AI that declines still costs the
+  proposer; whether the GUI refunds it was not looked at.
+- **`0xA51FB0`, `0xA49EB0`, `0xA49F40` and `0x47BBE0`** — the war-goal chain, all register-argument
+  heavy and all unnamed. A wave of their own.
+- **`0x4F50A0`**, the threat adder, four callers, which is where `LEAVE_NAP_THREAT_COST` and almost
+  certainly `EMBARGO_THREAT_COST` land.
+- **`0x507B40` / `0x507C10`**, the add/remove pair over `CCountry +0x6F0`, which is where a shared
+  technology is recorded, and `CCountry +0x1144`, set to 1 by `CInfluence::Activate`.
+
+## 20. Frontier
+
+Ninety-three unnamed call targets out of the twenty slot-7 bodies and the nine slot-10 bodies, as rvas,
+in `fragments/merged/diploaccept.json`. The ones worth a name first: `0x93E10` (the generic
+append-at-`+8`, 12 callers), `0xE39C0` (21 calls), `0x118730` (49), `0x7BBE0`, `0x651FB0`, `0x649EB0`,
+`0x649F40`, `0xF50A0`, `0x107B40`, `0x107C10`, `0x103F90`, `0x64C660`, `0x646F00`, `0x634CA0` (10
+calls, inside `CTradeAction` only). The high-count entries `0x6AC690` (116), `0x709E20` (68),
+`0x2F070` (65), `0x6ACC40` (60), `0x34290` (52) are string and container helpers, flagged by their
+counts rather than by a reading.
+
+---
+
+## Transcription note, sections 11-20
+
+Read and written by wave 12's agent D; transcribed by the session that collected the wave, because an
+agent's `Write` is refused for this path. The agent flagged two judgement calls for the collecting
+session to re-decide and both were checked and kept:
+
+- **`CWarGoalBaseAction::Apply` is named for a class whose own slot 7 is `_purecall`.**
+  `vtable.py --holding 0x00A435F0` confirms exactly two holders, `CAddWarGoalAction` and
+  `CJoinFactionGoalAction`, both at slot 7. They are one family, so the fold is benign (trap 4's own
+  "ask whether the holders are one family" test), and the fragment records `vftable_slots` on the two
+  holders only — it does not claim the base holds the body. Kept.
+- **`Apply` and `Activate` are this project's names, not the game's.** Sixteen of the twenty `Apply`
+  entries are `inferred` for that reason: the behaviour in their comments is read, the name is not.
+
+Spot-checked independently before transcription, all confirming:
+
+- **`CCountry::ChangeRelation`** (rva `0xE65C0`) decoded instruction for instruction: `[edi+0xe28]`
+  for the diplomacy array, the other's id from `[ecx+4]`, the delta from `[ebp+8]`, `+0x38` read and
+  added, `+0x59` written 1, then `mov ebx, [0x1710c34]` and a `cmovg`. The convention is as reported.
+- **The clamp globals**, which are the whole basis of the thousandths claim: `[0x1710C34]` is
+  **200000** and `[0x1710C38]` is **-200000**, both statically present in `.data`, which makes relation
+  thousandths on a ±200.000 scale. *Getting this wrong was this session's own trap 1: a first reading
+  passed those two **virtual** addresses to `image.read`, which takes a VA, as though they were rvas,
+  read `0x1310C34` in `.rdata` instead, got zero for both, and briefly had the agent's central claim
+  down as unsupported. `image.read`, `image.decode` and `image.findValue` all take VAs; `image.both`
+  takes a VA and prints the rva beside it.*
+- **The `CMilitaryAccessAction` trap 2 pair**: slot 7's `ret` at `0xA247BF` and a fresh SEH prologue
+  (`push ebp; mov ebp, esp; push -1; push 0xc62f06; mov eax, fs:[0]`) at `0xA247C0` — **zero** padding
+  bytes between them, exactly as reported.
+
+**A method note the agent proposed and this session adopted**, now trap 2's fourth check in
+`TRAPS.md`: when a vftable gives a candidate boundary, a `ret` past it carrying a **different stack
+immediate** and **unreachable from the entry** by `cfg.walk` confirms the split independently of any
+padding argument. `CLicenceTechnologyAction` is the case that needs it — slot 11 sits **two** `int3`
+after slot 7, so the "require a run of at least three `int3`" rule walks straight past the boundary.
+
+One thing the agent noted and left alone, and it is still open: `image.decode(address, length)` takes
+a **byte** count, not an instruction count, so `decode(addr, 1)` returns nothing at all. A throwaway
+read/write classifier written in this session asked for 1 instruction, got silence for all 22
+reference sites, and reported "no writers anywhere" — a false negative from the tool, which is the
+habit `TRAPS.md`'s closing section is about. Its positive control caught it.

@@ -1,0 +1,406 @@
+{
+ "agent": "wave 12 agent B - the scope and set triggers, and the `ally` loose end",
+ "question": "What set does each scope/set trigger walk, where does the set live, what does it test on each member, and what does it do with an empty set - plus: settle whether the CList at CCountry +0xF88 that the `ally` scope reads is the allies or the bordering countries.",
+ "source": "reversing/findings/FINDINGS-scopetriggers.md",
+ "addresses": [
+  {
+   "rva": "0x5DA1A0",
+   "kind": "function",
+   "name": "CExistsTrigger::Evaluate",
+   "signature": "bool __thiscall CExistsTrigger::Evaluate(CExistsTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`exists`, and it has two forms that behave differently.** 0x5DA1A0 to the two `ret 4` at 0x5DA1DF and 0x5DA208, 4 int3 before the entry (the previous function ends `ret 0x10` immediately before it, so the boundary is the `ret` plus a fresh `push ebp`, not a padding run), and the vftable settles the entry: slot 6 of CExistsTrigger's table (0x15F8438) and nothing else.\n\nIt branches on `this->+0x48`, the id half of the CCountryTag the loader put at `+0x44`/`+0x48`:\n\n- **`exists = <TAG>`** (`+0x48 != 0`): answers `countries[this->+0x48]->NumberOfOwnedProvinces (+0xCF8) > 0`. The bool at `+0x40` is **not read on this path**, so there is no negated tag form.\n- **`exists = yes|no`** (`+0x48 == 0`): takes the scope's own country (`scope->country_id +0x14`), computes the same `+0xCF8 > 0` into a byte and returns `that == this->+0x40`. So `exists = no` is the only way to ask whether a country has been annihilated, and it asks it of the scope's country.\n\nIt reads no province and does not touch the scope's province, so `exists` is a country question wherever it appears.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end; both exits are `ret 4` and both restore nothing but ebp, so one frame. `+0xCF8` is NumberOfOwnedProvinces by the game's own Lua accessor CCountry::GetNumberOfOwnedProvinces (0x1010D0 = `mov eax,[ecx+0xCF8]; ret`), which ghidra/luabind.json records. Wrong if `+0x48` were something other than the tag id - which would show as the country array at g_CCountryDataBase(0x1A855A4)+0x16C being indexed by a non-id, i.e. out of range in a live read."
+  },
+  {
+   "rva": "0x5DFAB0",
+   "kind": "function",
+   "name": "CControlledByTrigger::Evaluate",
+   "signature": "bool __thiscall CControlledByTrigger::Evaluate(CControlledByTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`controlled_by`, four argument forms, and it is false on a scope with no province.** 0x5DFAB0 to 0x5DFC2C; 14 int3 before, 4 after; **five** `ret 4` (0x5DFB9C, 0x5DFBC9, 0x5DFBF2, 0x5DFC13, 0x5DFC29) all restoring the same SEH slot `[esp+0x1C]`, so it is one function (trap 3, benign).\n\n    if (scope->province (+0x28) == 0) return false\n    p = g_CCurrentGameState (0x1A89790) ->+0xB8C [scope->province]\n    if (this->arg_is_this  (+0x18))  return p->controller_id (+0x338) == EventScope_GetCountryTag(scope).id\n    if (this->arg_is_from  (+0x19))  return p->controller_id == scope->from_country_id (+0x1C)\n    if (this->+0x44 byte != 0)       return p->controller_id == p->owner_id (+0x330)\n    else                             return p->controller_id == this->+0x44\n\nThe third arm is the one worth knowing about: there is a keyword form of `controlled_by` that compares the controller with the **owner** rather than with any named country, i.e. \"not occupied\". Which keyword selects it was not read (CControlledByTrigger's own slot 7 at 0x5DF9D0 is the loader and was not decoded), so that arm is reported, not named.\n\n`controlled_by` on a country-only scope is **false, not an error** - the same shape as an unresolvable context.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end. `+0x330`/`+0x338` are CProvince::owner_id/controller_id in project.json; `0x5C1A40` is the recorded EventScope_GetCountryTag and the out pointer arrives in EDI exactly as that record says; `+0x18`/`+0x19` are set by the shared tag loader 0x5E8F40 on tokens 0x377 (`this`) and 0x34F (`from`). Wrong if the byte at `this+0x44` were the low byte of the tag's id rather than a flag - the tag id of a real country is small and non-zero, which would make the owner-comparison arm unreachable for every tag, so the two readings are distinguishable by trying `controlled_by = GER` in a session."
+  },
+  {
+   "rva": "0x5DF250",
+   "kind": "function",
+   "name": "COwnedByTrigger::Evaluate",
+   "signature": "bool __thiscall COwnedByTrigger::Evaluate(COwnedByTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`owned_by`** - instruction for instruction CControlledByTrigger::Evaluate (0x5DFAB0) with `CProvince::owner_id (+0x330)` where that one reads `controller_id (+0x338)`. Same four argument forms (`this`, `from`, a literal tag, and a keyword arm), same `return false` when the scope names no province, same five-exit single frame. Its slot 7 loader is the shared 0x5E8F40, which is what puts the tag at `+0x40`/`+0x44` and sets `arg_is_this`/`arg_is_from`.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded from 0x5DF250 to the exits; the only divergence from 0x5DFAB0 found was the 0x330/0x338 displacement. Wrong if the two bodies diverge somewhere not decoded - a byte comparison of the two ranges would settle it and was not run."
+  },
+  {
+   "rva": "0x5D5F60",
+   "kind": "function",
+   "name": "CControlsTrigger::Evaluate",
+   "signature": "bool __thiscall CControlsTrigger::Evaluate(CControlsTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`controls = <province id>`**, and it is the mirror image of `controlled_by`: the province comes from the trigger and the country from the scope. 0x5D5F60 to the one `ret 4` at 0x5D6017, 5 int3 before and 6 after.\n\n    p = g_CCurrentGameState (0x1A89790) ->+0xB8C [this->+0x40]\n    return p->controller_id (+0x338) == scope->country_id (+0x14)\n\n`this->+0x40` is the int CIntTrigger holds, so the province id is the one written in the script and the scope's province is never read. It therefore works in a country scope and ignores any province scope it is nested inside.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end; CControlsTrigger derives from CIntTrigger in the RTTI export, which is why `+0x40` is an int rather than a tag. Wrong if `+0x40` held something other than the script's number, which the save/load side would show."
+  },
+  {
+   "rva": "0x5D6660",
+   "kind": "function",
+   "name": "CIsCoreTrigger::Evaluate",
+   "signature": "bool __thiscall CIsCoreTrigger::Evaluate(CIsCoreTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`is_core`** - a membership test over `CProvince::cores (+0x344)`, with both the province and the country able to come from either side.\n\n    p = gs->+0xB8C [ this->+0x40 ? this->+0x40 : scope->province (+0x28) ]\n    tag = this->arg_is_this (+0x18) ? EventScope_GetCountryTag(scope)\n        : this->arg_is_from (+0x19) ? scope->from_country (+0x18/+0x1C)\n        : <the literal argument, resolved through 0xA9D390>\n    walk p->cores (+0x344) on node->+0xC, comparing node->+4 with tag.id\n    return matched\n\nAn **empty cores list is false**, tested before the first dereference (0x5D67C1), so the walk is safe on a province nobody cores. `+0x40` doubles as the province id when the script gave one, which is why the class derives from CIntTrigger and still carries the tag machinery.\n\nTrap 2: only **one** int3 sits before the entry - the previous function ends `ret 0x104` at 0x5D665D - so the boundary is that `ret` followed by a fresh `push ebp`, confirmed by the vftable (slot 6 of 0x15F8160 and no other table).",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded 0x5D6660..0x5D68C9 across all four arms. `CProvince +0x344 cores` is project.json's own name, written from the save side (\"the writer emits one `core` key per node\"), and the node layout {chars, id, prev, next, byte} with next at +0xC matches every other CCountryList here. The third arm's resolution through 0xA9D390 was read only as far as \"it returns an object whose +0x44/+0x48 is a tag pair\" and is the weakest part; wrong if that call is not a tag lookup, which decoding 0xA9D390 would settle."
+  },
+  {
+   "rva": "0x5E55E0",
+   "kind": "function",
+   "name": "CRegionTrigger::Evaluate",
+   "signature": "bool __thiscall CRegionTrigger::Evaluate(CRegionTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`region = <name>`** - is the scope's **province** in that region. 0x5E55E0 to the two `ret 4` at 0x5E56A5 and 0x5E56BA, 4 int3 before.\n\n    p = g_CCurrentGameState (0x1A89790) ->+0xB8C [scope->province (+0x28)]\n    for (node = p->regions_first (+0x358); node; node = node->+8)\n        if (node->+0 == this->+0x40) return true\n    return false\n\n`this->+0x40` is a `CRegion*`, not a name or an index - the loader resolves the name once and stores the pointer, so the test is a pointer comparison. An **empty region list is false** and so is a scope with province 0 (province 0's record is the `---` province and is in no region).\n\nThis is the leaf test; the *scope* form of the same idea is a different class, CRegionScopeTrigger (0x5DC990).",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end. `CProvince +0x358 regions_first` is project.json's own name, with \"nodes with the region at +0 and next at +0x8\" - exactly the stride this walk uses. The `CRegion*` reading of `+0x40` is corroborated from the other side by CRegionScopeTrigger, whose constructor stores the result of the same by-name lookup into its own `+0x40` and then iterates `region+8/+0xC` as a province-id vector. Wrong if `+0x40` were a region id - which would make the comparison against a node's `CRegion*` never true, i.e. `region = ...` always false, which a session would show immediately."
+  },
+  {
+   "rva": "0x5E9000",
+   "kind": "function",
+   "name": "CNeighbourTrigger::Evaluate",
+   "signature": "bool __thiscall CNeighbourTrigger::Evaluate(CNeighbourTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`neighbour = <TAG>`**, and the direction it asks in is not the obvious one. 0x5E9000 to the single `ret 4` at 0x5E9060, 10 int3 before and 13 after.\n\n    other = this->arg_is_this (+0x18) ? scope->this_scope (+0x38) ->country (+0x10/+0x14)\n          : this->arg_is_from (+0x19) ? scope->this_scope (+0x38) ->from_country (+0x18/+0x1C)\n          : this->+0x40/+0x44                       // the literal tag\n    return countries[other.id] ->neighbours (+0xF58) [ scope->country_id (+0x14) ] != 0\n\nIt indexes **the other country's** `neighbours` byte array with **our** id, i.e. it is `CCountry::IsNeighbour(other, us)` and not the reverse. That matters because `+0xF58` is not symmetric: CCountry::RebuildNeighbours fills it from the provinces a country **owns**, marking the owner of each adjacent province that nobody is occupying, so an occupier appears in `controller_neighbours (+0xF68)` instead. Two countries that border each other only across an occupied province are in neither list.\n\nNote the difference from `alliance_with`, which resolves `this` through EventScope_GetCountryTag (and so falls back on a province's owner): this one reads `this_scope`'s country field directly, so on a province-only scope the `this` form yields `\"---\"`/0 and the test indexes country 0.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end; one holder (slot 6 of 0x15F8918). `CCountry +0xF58 neighbours` is project.json's own name and its comment already says \"CCountry::IsNeighbour is this indexed by the tag's id\". The direction is read off the registers: at 0x5E904D `eax` (the other id) indexes the country array and at 0x5E9056 `edx` (the scope's country id, loaded at 0x5E903B) indexes the byte array. Wrong if I have the two registers the wrong way round - which a live read of two countries with an asymmetric border would settle."
+  },
+  {
+   "rva": "0x5EF5A0",
+   "kind": "function",
+   "name": "CAllianceWithTrigger::Evaluate",
+   "signature": "bool __thiscall CAllianceWithTrigger::Evaluate(CAllianceWithTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`alliance_with = <TAG>` is exactly `CDiplomacyStatus::HasAlliance`** - one pointer test on the pair's `+0x14`. 0x5EF5A0 to the single `ret 4` at 0x5EF611, 8 int3 before.\n\n    other = this->arg_is_this (+0x18) ? EventScope_GetCountryTag(scope)        // 0x5C1A40\n          : this->arg_is_from (+0x19) ? scope->this_scope (+0x38) ->from_country (+0x18/+0x1C)\n          : this->+0x40/+0x44\n    us = countries[scope->country_id (+0x14)]\n    return us->diplomacy_status_array (+0xE28) [other.id] ->alliance (+0x14) != 0\n\n**It does not consult factions.** The alliance it tests is the bilateral one; faction membership is a separate structure (CCountry +0xD8 -> CFaction +0x28). That is the sharp edge beside the `ally` scope, which draws from a list built from *both* (see CCountry::RebuildNeighbours, rva 0xE21E0).\n\nUnlike `neighbour`, the `this` form goes through EventScope_GetCountryTag, so on a province-only scope it answers about the province's **owner** rather than about nothing.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end. `+0x14` is named by the game's own Lua predicate CDiplomacyStatus::HasAlliance (VA 0x494660, rva 0x94660), which is `cmp dword [ecx+0x14], 0; setne al; ret` and nothing else - ghidra/luabind.json carries the registration. The same field is the gate on the append to CCountry +0xF88 (Allies) in RebuildNeighbours at 0x4E328E. Wrong if 0x494660 were registered for some other class, which the registration's RTTI type (`bool HasAlliance(CDiplomacyStatus&)`) rules out."
+  },
+  {
+   "rva": "0x5DD460",
+   "kind": "function",
+   "name": "CAnyOwnedProvinceTrigger::Evaluate",
+   "signature": "bool __thiscall CAnyOwnedProvinceTrigger::Evaluate(CAnyOwnedProvinceTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`any_owned_province = { ... }` - an existential quantifier over the scope country's owned provinces, and empty means false.** 0x5DD460 to the two `ret 4` at 0x5DD58F and 0x5DD5AD, both restoring the same SEH slot `[esp+0x6C]`, so one function.\n\n    CEventScope copy = *scope                                    // CEventScope::CopyConstruct, 0x43C850\n    for (node = countries[scope->country_id]->owned_provinces (+0xCF0); node; node = node->+8)\n        copy.province (+0x28) = gs->+0xB8C [node->+0] ->id (+0xD0)\n        if (every child's slot 6 answers true with &copy) return true\n    return false\n\nSo: **first province that satisfies all the children wins; no province at all is false; a block with no children is true as soon as there is one province.** Only `province` is rewritten - `country` is left as it was, which is why conditions about the country keep working inside the block.\n\nIt walks the list the game's Lua calls `OwnedProvinces`, not the controlled one, so an occupied province of ours is still visited and a province we occupy is not.\n\n**Trap 2:** only one int3 sits before the entry (the previous function ends `ret 0x10` at 0x5DD45D). **Trap 3 inverted:** the body does *not* run to 0x5DDA16, where the next int3 run is - slot 9 (GetBlockText, 0x5DD5B0) begins 3 bytes after the second `ret`, and the vftable is what says so.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded 0x5DD460..0x5DD5AF. 0x43C850 is the recorded CEventScope::CopyConstruct; the copy lives at `[esp+0x20]` and `[esp+0x48]` is copy+0x28, which project.json names `province`. `CCountry +0xCF0` is `OwnedProvinces` in ghidra/luabind.json (accessor CCountry::GetOwnedProvinces at VA 0x43A660 = `lea eax,[ecx+0xCF0]; ret`) and `CProvince +0xD0` is `id`. The empty-set answer is the `je 0x9DD59A` at 0x9DD4B6 falling into the `xor al,al` exit. Wrong if `[esp+0x48]` were not copy+0x28 - which would show as the children seeing an unchanged province, i.e. the quantifier behaving like a plain AND."
+  },
+  {
+   "rva": "0x5DCCA0",
+   "kind": "function",
+   "name": "CAnyNeighborProvinceTrigger::Evaluate",
+   "signature": "bool __thiscall CAnyNeighborProvinceTrigger::Evaluate(CAnyNeighborProvinceTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`any_neighbor_province = { ... }` quantifies over the scope province's map adjacency - and skips every neighbour nobody owns.** 0x5DCCA0 to the two `ret 4` at 0x5DCE6E and 0x5DCEBF, same SEH slot, one function; 3 int3 before the entry and the previous function's `ret 0x10` right before them.\n\n    CEventScope copy = *scope\n    t = gs->+0xB8C [scope->province (+0x28)] ->path_node_ptr (+0xD4)        // CProvinceTemplate\n    n = (t->edges_end (+0x94) - t->edges_begin (+0x90)) / 0x14              // one 0x14-byte edge per neighbour\n    for (i = 0; i < n; ++i)\n        q = gs->+0xB8C [ *(int*)(t->edges_begin + i*0x14 + 4) ]            // the edge's far province\n        if (q->owner_id (+0x330) == 0) continue                            // <- unowned and sea zones are skipped\n        copy.province = q->id (+0xD0)\n        if (every child answers true with &copy) return true\n    return false\n\nThe `owner_id == 0` filter is the mod-facing detail: **sea zones and unowned land are never visited**, so `any_neighbor_province` cannot reach across water and cannot see empty land. Empty adjacency, or every neighbour filtered out, is **false**.\n\nThe edge record is 0x14 bytes with the far province's array index at `+4`; the rest of it was not read.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded 0x5DCCA0..0x5DCEC2. The stride is the `imul 0x66666667; sar edx,3` pair at 0x5DCD6F-0x5DCD79, which is a signed divide by 0x14. `CProvinceTemplate +0x90/+0x94` are already `edges_begin`/`edges_end` in project.json (\"vector of edges to neighbours\"), which is an independent agreement on what is being walked; `CMapProvince +0xD4 path_node_ptr` is its own name. Wrong if the edge's `+4` were something other than the far province - which would show as the trigger visiting nonsense provinces, or faulting, in any session."
+  },
+  {
+   "rva": "0x5E5F30",
+   "kind": "function",
+   "name": "CAnyNeighborCountryTrigger::Evaluate",
+   "signature": "bool __thiscall CAnyNeighborCountryTrigger::Evaluate(CAnyNeighborCountryTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`any_neighbor_country = { ... }` quantifies over `CCountry +0xFD8`, the Neighbours CCountryList - and that list excludes anyone who is only an occupier.** 0x5E5F30 to the two `ret 4` at 0x5E5FB1 and 0x5E5FC0, 4 int3 before, 13 after, then slot 9 at 0x5E5FD0.\n\n    CEventScope copy = *scope\n    for (node = countries[scope->country_id]->neighbours_list (+0xFD8); node; node = node->+0xC)\n        copy.country_tag (+0x10) = node->+0                       // chars\n        copy.country_id  (+0x14) = node->+4                       // id\n        if (every child answers true with &copy) return true\n    return false\n\nEmpty list is **false**. A block with no children is true at the first neighbour.\n\nTwo details a mod author will care about. **`province` is not cleared** when the country is rebound - unlike CEventScope::MakeScope's country contexts, which zero it - so a province condition inside an `any_neighbor_country` block still sees the province the block was entered with. And membership of `+0xFD8` is the owner-side rule: RebuildNeighbours marks the owner of each province adjacent to one we own **only where that province's owner and controller agree**, so a country that merely occupies a province on our border is in `controller_neighbours (+0xFE8)` and never visited here.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end; `[esp+0x28]`/`[esp+0x2C]` are copy+0x10/+0x14 against the copy at `[esp+0x18]`, and no store to copy+0x28 appears anywhere in the body. `CCountry +0xFD8` is `Neighbours` by the game's own Lua accessor CCountry::GetNeighbours (VA 0x61C8E0 = `lea eax,[ecx+0xFD8]; ret`), and project.json's `+0xF58 neighbours` comment already states the membership rule. Wrong about `province` surviving if a store to copy+0x28 exists outside the decoded range, which it does not - the range is the whole function."
+  },
+  {
+   "rva": "0x5E6390",
+   "kind": "function",
+   "name": "CAnyCoreTrigger::Evaluate",
+   "signature": "bool __thiscall CAnyCoreTrigger::Evaluate(CAnyCoreTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`any_core = { ... }` is a province scope that quantifies over COUNTRIES, not a country scope that quantifies over provinces.** 0x5E6390 to the two `ret 4` at 0x5E649C and 0x5E64B6, same SEH slot, one function; 4 int3 before, and slot 8 (CAndTrigger::GetText, 0x5E64C0) begins after the padding that follows.\n\n    p = g_CCurrentGameState (0x1A89790) ->+0xB8C [ scope->province (+0x28) ]\n    CEventScope copy = *scope\n    for (node = p->cores (+0x344); node; node = node->+0xC)\n        copy.country_tag (+0x10) = node->+0\n        copy.country_id  (+0x14) = node->+4\n        if (every child answers true with &copy) return true\n    return false\n\nSo it takes the province the scope is about and walks **the countries that hold a core there**, rebinding `country` to each. It is the exact transpose of what the keyword looks like it should do, and it needs a province scope: on a country-only scope `scope->province` is 0 and the walk is over province 0's cores, which is empty - so **false**.\n\nEmpty cores list is false; `province` is left alone, so the block keeps the province it was entered with.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end. `CProvince +0x344 cores` is project.json's own name (\"the head of the list of countries holding a core here\"), independently derived there from the save writer; the node layout and the `+0xC` next match. The copy is at `[esp+0x18]`, so `[esp+0x28]`/`[esp+0x2C]` are copy+0x10/+0x14. Wrong if `+0x344` held provinces rather than countries - which would put province ids in the scope's country field and make every child fail, visible in one session."
+  },
+  {
+   "rva": "0x5DC990",
+   "kind": "function",
+   "name": "CRegionScopeTrigger::Evaluate",
+   "signature": "bool __thiscall CRegionScopeTrigger::Evaluate(CRegionScopeTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`<region_name> = { ... }` - the one scope keyword that is not in any token table, because it is any name `map/region.txt` defines.** 0x5DC990 to the two `ret 4` at 0x5DC9F1 and 0x5DCA02, 7 int3 before and 11 after.\n\n    CEventScope copy = *scope\n    r = this->region (+0x40)\n    for (int* it = r->+8; it >= r->+8 && it < r->+0xC; ++it)        // std::vector<int> of province ids\n        copy.province (+0x28) = *it\n        if (every child answers true with &copy) return true\n    return false\n\nAn empty region is **false**; a block with no children is true at the first province. Only `province` is rewritten, so the country stays whatever the enclosing scope made it - which is what makes `<region> = { owned_by = GER }` mean \"does Germany own anything in that region\" rather than anything about the scope's own country.\n\nHow the keyword gets here is in CTrigger::LoadKey at 0x5CAE1C-0x5CAE5D: an unrecognised key is first looked up **by name in CMap's string hash table (`g_CMap 0x1A8557C + 0x2A50`)** through 0x52A710, and on a hit the loader allocates 0x44 bytes and builds a CRegionScopeTrigger over that region. Only if that misses does it fall through to 0x5CAE62 and the CContextTrigger path FINDINGS-triggereval.md describes. So the resolution order for an unknown trigger key is: **region name, then scope (country tag / number / context keyword), then parse error.**\n\nThe 0x44-byte allocation also fixes `sizeof(CTrigger)` at 0x40.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end; the `cmp edi,[eax]` / `cmp edi,[eax+4]` pair at 0x5DC9B7/0x5DC9BB with `eax = this->+0x40 + 8` is a std::vector begin/end bounds check, and `+=4` per step makes the element an int. The loader arm was decoded at 0x5CADF0-0x5CAE70 and the `call 0x5DC910` there is the only reference to CRegionScopeTrigger's vftable in the whole image (image.findValue on 0x15F8404 returns exactly one site, 0x5DC974, inside that constructor). project.json already records a region being found this way: its `mediterranean_region` entry says regions are \"looked up by name out of CMap +0x2A50 by the string hash table at 0x52A710\" and that \"the region object carries a std::vector<int> of province ids at +0x8/+0xC\" - an exact, independent match for both halves of this reading. Wrong if 0x52A710 indexed something other than regions, which that entry rules out."
+  },
+  {
+   "rva": "0x607980",
+   "kind": "function",
+   "name": "CEnemyScopeTrigger::Evaluate",
+   "signature": "bool __thiscall CEnemyScopeTrigger::Evaluate(CEnemyScopeTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`enemy = { ... }` is not a quantifier at all, despite deriving from CAndTrigger - and it only works inside a combat.** 0x607980 to the two `ret 4` at 0x6079F1 and 0x6079FB; 4 int3 before, 2 after, and 0x607A00 is a fresh prologue that the vftables name as CCombinedArmsTrigger slot 6.\n\n    me = scope->combatant (+0x40)\n    if (me == 0) return false                                    // no combat in this scope -> the block fails\n    foe = me->is_attacker (+0x38) ? me->combat (+0x3C) ->defender (+0x14)\n                                  : me->combat (+0x3C) ->attacker (+0x10)\n    CEventScope copy = *scope\n    copy.combatant (+0x40) = foe\n    copy.country_tag (+0x10) = foe->countries (+0x54) ->+0        // head node's chars\n    copy.country_id  (+0x14) = foe->countries (+0x54) ->+4\n    return every child answers true with &copy\n\nOne rebinding, one AND - so an `enemy = { }` with no children is **true** and an `enemy` block in an event that was not raised from a combat is **false**.\n\n**There is no null test on `foe->countries (+0x54)`.** project.json's own note on that field is that it is \"the countries still in the fight; emptied on the beaten side\", so a scope that reaches this after the opposing side has been emptied dereferences null at 0x6079C0. Not reachable from the loader - it needs a combat scope and a decided combat in the same frame - but it is in the bytes.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end. Four independent agreements with names project.json already holds: CCombatant `+0x38 is_attacker`, `+0x3C combat`, `+0x54 countries`, and CCombat `+0x10 attacker` / `+0x14 defender` - every displacement in the body lands on one of them. The copy is at `[esp+8]`, so `[esp+0x18]`/`[esp+0x1C]`/`[esp+0x48]` are copy+0x10/+0x14/+0x40. Wrong if `scope->+0x40` were not a CCombatant - see the CEventScope.combatant field entry for the seven other readers that settle it."
+  },
+  {
+   "rva": "0x5DC910",
+   "kind": "function",
+   "name": "CRegionScopeTrigger::CRegionScopeTrigger",
+   "signature": "CRegionScopeTrigger* __stdcall CRegionScopeTrigger::CRegionScopeTrigger(CRegionScopeTrigger* this, CRegion* region)",
+   "no_signature": null,
+   "comment": "0x5DC910 to the `ret 8` at 0x5DC986, 12 int3 before, 3 after. **`this` arrives on the stack and comes back in eax** (`mov esi,[ebp+8]` at 0x5DC92C, `mov eax,esi` at 0x5DC978), so it is `__stdcall` and not a `__thiscall`, the same shape as CCountry::RebuildNeighbours.\n\nIt zeroes the CList at `+8`/`+0xC`/`+0x10`, writes the CPersistent token 0x18D at `+4` and CTrigger's base vftable (VA 0x15C34DC), runs the CRT vector-constructor iterator at 0xB96170 over CTrigger's two 0x10-byte containers, **zeroes the word at `+0x18`** - which is `arg_is_this`/`arg_is_from` as one store - and the byte at `+0x3C`, stores its second argument at `+0x40`, and finally overwrites the vftable with CRegionScopeTrigger's own (VA 0x15F8404).\n\nOne caller, 0x5CAE56, in CTrigger::LoadKey's unknown-key arm, over a `push 0x44` allocation.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded 0x5DC910..0x5DC989; `ret 8` matches the two stack arguments exactly, and the constructor writes its own class's table (0x15F8404 at 0x5DC972), which is what checkSignatures' constructor rule asks. findRefs --callers reports exactly one direct call. Wrong if the body were a base constructor with the derived one inlined - which the 0x15F8404 store rules out."
+  },
+  {
+   "rva": "0x5E8F40",
+   "kind": "function",
+   "name": "TriggerLoadCountryTagArgument",
+   "signature": null,
+   "no_signature": "`ret 0x104` - the key's text is a 0x100-byte buffer passed **by value** on the stack beside the 4-byte SaveToken, which no C declaration Ghidra accepts can express; the receiver is in ecx. The same situation project.json already records for CContextTrigger::CContextTrigger. Were it writable it would be `void __thiscall LoadArgument(CTrigger* this, SaveToken key, char text[0x100])`.",
+   "comment": "**Slot 7 - how a leaf trigger takes a country-tag argument, and the writer of `CTrigger +0x18`/`+0x19`.** 0x5E8F40 to three `ret 0x104` at 0x5E8F7A, 0x5E8F96 and 0x5E8FF3; 10 int3 before, 10 after.\n\n    if (key == 0x377 /* this */) { this->arg_is_this (+0x18) = 1; return; }\n    if (key == 0x34F /* from */) { this->arg_is_from (+0x19) = 1; return; }\n    tag = CCountryDataBase::GetTag(g_CCountryDataBase (0x1A855A4), &local, &text)   // 0x518480\n    this->+0x40 = tag.chars;  this->+0x44 = tag.id\n\n**Class-free on purpose (trap 4).** It is slot 7 in **16** trigger tables: CAllianceWith, CCasusBelli, CCountryUnitsInProvince, CGrantsMilitaryAccess, CGuarantee, CHasWarGoal, CIsPossibleVassal, CNeighbour, CNonAgggressionPact, COwnedBy, CTag, CThreat, CTruceWith, CUndeclaredWarWith, CVassalOf and CWarWith. Twelve of those derive from CTagTrigger, so that part is inheritance; the other four derive straight from CTrigger and are a fold of an identical body, which is why no one class's name belongs on it.\n\nCTrigger's own slot 7 is the empty `ret 0x104` at rva 0x15FF0, and CTrigger::LoadKey calls the slot once, at 0x5C8E6F, having copied 0x104 bytes of `{SaveToken; char[0x100]}` onto the stack from `parse+0x228`. So slot 7 is \"take the argument the key was written with\", and it is the only place a leaf trigger's `this`/`from` flags are ever set.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded end to end; vtable.py --holding gives the 16 tables and the RTTI bases give the CTagTrigger/CTrigger split. Tokens 0x377 and 0x34F are `this` and `from` in the live token table (scripts/saveTokens.py) and are the same two ids CEventScope::MakeScope's switch already uses under those names in project.json. The dispatch site was found by scanning CTrigger::LoadKey (0x5C8D10..) for `[reg+0x1C]`, which returns exactly two hits, one of them the call. Wrong if `+0x18`/`+0x19` were set anywhere else as well - a scan for byte stores to those two displacements across the trigger family would settle it and was not run, so \"the only place\" is the weakest clause here."
+  },
+  {
+   "rva": "0x5CAE56",
+   "kind": "instruction",
+   "name": "LoadKeyRegionScopeArm",
+   "signature": null,
+   "no_signature": null,
+   "comment": "`call CRegionScopeTrigger::CRegionScopeTrigger` inside CTrigger::LoadKey (0x5C8D10), and the instruction that makes **every region name in `map/region.txt` a trigger scope keyword**. The arm runs 0x5CAE1C-0x5CAE5D: it calls 0x52A710 with `g_CMap (0x1A8557C) + 0x2A50` - CMap's by-name string hash table - and the key's text; on a hit it takes a 0x44-byte `operator new` and constructs a CRegionScopeTrigger over the region, and on a miss it falls through to 0x5CAE62, which is the CContextTrigger arm FINDINGS-triggereval.md section 3 describes.\n\nSo the loader's order for a key that is not in the compiled trigger table is: **region name, then speculative scope resolution, then `Unknown trigger-type` through trigger.cpp.** FINDINGS-triggereval.md section 3 had the second and third steps and not the first.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Decoded 0x5CADF0-0x5CAE70; the fall-through target 0x5CAE62 is the address FINDINGS-triggereval.md already names as the start of the CContextTrigger arm, which is what fixes the order of the two. Wrong if 0x5CAE1C were reached only on some other condition - cfg.py over the arm would confirm the edge and was not run; the `je 0x5CAE62` on a null result from 0x52A710 at 0x5CAE34 is the whole of the evidence for the fall-through."
+  },
+  {
+   "rva": "0xE21E0",
+   "kind": "function",
+   "name": "CCountry::RebuildNeighbours",
+   "revises": "the recorded comment says it fills \"a country's two neighbour sets and the two CCountryList they stand for\", and it fills nine country lists and a block of counters as well - which is what left `CCountry +0xF88` (Allies) looking like a neighbour structure and so left the `ally` event scope unexplained for a wave",
+   "signature": "void __stdcall CCountry::RebuildNeighbours(CCountry* country)",
+   "no_signature": null,
+   "comment": "**A country's whole daily rebuild of who stands where - nine CCountryLists, two byte sets and a block of counters, not just the neighbours the name promises.** 0x4E21E0 to the single `ret 4` at 0x4E39B9, 8 int3 before and 4 after; `retsBefore(0x4E21E0, 0x4E39BA)` returns that one `ret` and nothing else, so the whole 0x17DC bytes are one body.\n\n**Signature**: __stdcall, not __thiscall - the country is [ebp+8], ecx is never read, and the single `ret 4` is the callee cleaning it.\n\nIt opens by clearing everything it is about to fill (0x4E2206-0x4E24B5), then runs two passes:\n\n**1. The province walks** (0x4E2421-0x4E2E52) - the part the old comment described. It walks `OwnedProvinces (+0xCF0)` marking the owner of every adjacent province whose owner and controller agree (so not one somebody is occupying) into `neighbours (+0xF58)` and `+0xFD8`, then walks `ControlledProvinces (+0xD00)` marking the controller of every adjacent province owned by somebody else into `controller_neighbours (+0xF68)` and `+0xFE8`. It is what says which set means what.\n\n**2. A loop over the whole country database** (0x4E318E-0x4E3566), one `CDiplomacyStatus* = country->+0xE28[other]` per other country that has owned provinces, appending to a different list per predicate:\n\n| list | gate |\n| --- | --- |\n| `Allies +0xF88` (and `++NumOfAllies +0x1064`) | `CDiplomacyStatus +0x14` (`alliance`) non-null - the same field CDiplomacyStatus::HasAlliance tests and `alliance_with` evaluates |\n| `non_hostile_countries +0xF98` | `+0x58` (`co_belligerent`), then the REB and `war` exclusions already recorded there |\n| `+0xFC8` | `+0x1C` (`guarantee`) non-null, with a direction test on the relation's `+0xC` |\n| `Vassals +0xF78` (and `++ +0x1068`) | `+0x18` non-null **and** its slot 7 answering token 0x298 (`vassal`), with a direction test |\n| `+0xFA8` | `+0x14` or `+0x18` non-null, **or** the other country sharing our faction (`+0xD8`) - a \"friendly\" set; the else-arm of this test is where `highest_threat (+0x11D8/+0x11DC)` is chosen, by maximum `+0x5C` |\n| `SpyingOnUs +0x1028` | the other country's `espionage (+0x1160)[our id]` having a positive allocation |\n\n**3. A pass over the allies list it has just built** (0x4E3616-0x4E370D) appending to `+0xFB8` every ally that is not a government in exile (`+0x95`), whose acting capital is on the same continent as ours (`CCountry::GetActingCapitalLocation` then `CProvince +0x368`), whose `+0x60C` is at least half of ours, and which is itself at war (`at_war +0xACC`).\n\n**And the allies list has a second source** (0x4E356C-0x4E360B): after the database loop it walks `country->faction (+0xD8) ->members (+0x28)` and appends every member but itself, skipping any tag already in the list. So `Allies (+0xF88)` is **everyone we have a bilateral alliance with, plus every member of our faction** - which is the list `CEventScope::MakeScope`'s `ally` context (token 0x359) picks a random entry from, and the reason that scope is about allies and not about borders.\n\nIt also recomputes a block of per-country counters in the +0x1048..+0x107C range, of which only `NumOfPorts (+0x105C)` and `NumOfAllies (+0x1064)` are named; the rest were not individually identified.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Every list base, gate and append site above was read off the disassembly of 0x4E21E0..0x4E39BB and is cited by address in reversing/findings/FINDINGS-scopetriggers.md. The three list names are the game's own, from the Lua registrations in ghidra/luabind.json: CCountry::GetAllies (VA 0x4E6A20) is `lea eax,[ecx+0xF88]; ret`, CCountry::GetVassals (VA 0x4E6A10) is `lea eax,[ecx+0xF78]; ret`, CCountry::GetSpyingOnUs (VA 0x4E6A60) is `lea eax,[ecx+0x1028]; ret`, and CCountry::GetNumOfAllies (VA 0x4E2190) is `mov eax,[ecx+0x1064]; ret`. Token 0x298 is `vassal` in the live token table, which agrees with the Vassals list the same append feeds - two independent routes to the same name. The faction walk's `CFaction +0x28` is `Members` by CFaction::GetMembers. The parts marked as not identified are the counter block and the meaning of `CDiplomacyStatus +0x18` beyond \"a relation whose token is tested\". Wrong about section 3's continent test if 0x42F100 were not CCountry::GetActingCapitalLocation - it is, by its own project.json entry - or if CProvince +0x368 were not the continent, which CProvince::GetContinent (VA 0x4A6BD0) settles."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CTrigger",
+   "offset": "0x18",
+   "name": "arg_is_this",
+   "type": "bool",
+   "comment": "Set to 1 when the key's argument was the keyword `THIS` (save token 0x377) instead of a country tag. Written only by the shared slot-7 argument loader at rva 0x5E8F40 (`mov byte [esi+0x18], 1`), and zeroed with `+0x19` as one word by CTrigger's constructor. Every tag-taking leaf then reads it as the first of three branches: CAllianceWithTrigger::Evaluate (0x5EF5A9), CControlledByTrigger::Evaluate (0x5DFB6B), COwnedByTrigger::Evaluate (0x5DF30B), CIsCoreTrigger::Evaluate (0x5D67AC) and CNeighbourTrigger::Evaluate (0x5E9009). What it resolves to is **not uniform**: `alliance_with` and `controlled_by` go through EventScope_GetCountryTag (0x5C1A40), which falls back on a province's owner, while `neighbour` reads `this_scope (+0x38) ->country (+0x10/+0x14)` directly and so gets `\"---\"`/0 on a province-only scope.",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "The writer is read at 0x5E8F61-0x5E8F68, gated on `key == 0x377`, and 0x377 is `this` both in the live token table and in project.json's own CEventScope::MakeScope switch. Five readers decoded. Wrong if some other code writes it - no scan for other writers was run, which is the weak point; FINDINGS-triggereval.md's survey of the family found no reader at all for this offset, so the two readings together say the field was simply missed, not that it has another use."
+  },
+  {
+   "struct": "CTrigger",
+   "offset": "0x19",
+   "name": "arg_is_from",
+   "type": "bool",
+   "comment": "The twin of `arg_is_this` at +0x18: set to 1 when the key's argument was the keyword `FROM` (save token 0x34F). Written only at rva 0x5E8F84, in the shared slot-7 loader, and read as the second branch by the same five leaves. Every reader resolves it the same way - `scope->this_scope (+0x38) ->from_country_tag (+0x18) / from_country_id (+0x1C)` - so `FROM` is read off the **original** scope, not off whatever context the condition is nested inside.",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Writer read at 0x5E8F7D-0x5E8F84 gated on `key == 0x34F`, which is `from` in the token table and in MakeScope's switch. The `this_scope` route is read in CAllianceWithTrigger::Evaluate at 0x5EF5CA and in CNeighbourTrigger::Evaluate at 0x5E902C. Wrong if a leaf exists that reads +0x19 and resolves it some other way - five were checked, not all of them."
+  },
+  {
+   "struct": "CEventScope",
+   "offset": "0x40",
+   "name": "combatant",
+   "type": "CCombatant*",
+   "comment": "**The combat side the scope is about, or null.** This is the constructor's one stack argument, which FINDINGS-triggereval.md left unnamed (\"0 at 28 of the 29 call sites inspected\" - the exception, 0x74501, being the one place a combat raises an event).\n\n**The record already knew what it is and never wrote it down as a field.** CCombatModifierTrigger::Evaluate (0x607E80), CCombatIsConvoyTrigger::Evaluate (0x607F70) and CCombatIsWinnerTrigger::Evaluate (0x607F90) each say so in their own comments, the last two calling themselves the \"second\" and \"third independent witness that a combat trigger's scope holds the CCombatant at +0x40\". This entry is the fourth and fifth, and the first time the field itself is recorded: CEnemyScopeTrigger::Evaluate (0x607980) reads `is_attacker (+0x38)`, `combat (+0x3C)` and `countries (+0x54)` off it, and CCombatHasArmourUnitTrigger::Evaluate (0x607FD0) walks `front_line (+0xB0)`. CCombatTemperature (0x607E50), CCombatTerrain (0x607DC0) and CHasCombinedArmsBonus (0x607D60) are the rest of the family and were not decoded.\n\n**A scope with this null makes every one of them false**, which is why combat conditions silently fail in an ordinary event. CEventScope::MakeScope never writes it and CopyConstruct copies it, so it survives every context rebinding; `enemy = { ... }` is the only thing in the language that changes it, swapping it for the other side.",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Three project.json entries (0x607E80, 0x607F70, 0x607F90) already name `scope->+0x40` the CCombatant in prose, so this is confirmation of a reading the record held, not a first settlement. Independently: CCombatant's recorded fields `+0x38 is_attacker`, `+0x3C combat`, `+0x54 countries`, `+0xB0 front_line` and CCombat's `+0x10 attacker` / `+0x14 defender` account for every read in CEnemyScopeTrigger::Evaluate and in CCombatHasArmourUnitTrigger::Evaluate. Wrong if the object were a CLandCombatant or CNavalCombatant rather than the base; the type would then be too narrow rather than wrong, and the vftable the triggers dispatch through would say which. Note for the collecting session: those three entries type their second parameter `void* scope` and could now take `CEventScope*`."
+  },
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x14",
+   "name": "alliance",
+   "type": "void*",
+   "comment": "The pair's alliance, or null - the first of the relation pointers that run +0x14 `alliance`, +0x18 (a relation tested for token `vassal`), +0x1C `guarantee`, +0x20 `war`, +0x24 `undeclared_war`, +0x28 `nap`. Named by the game's own Lua predicate `CDiplomacyStatus::HasAlliance` (rva 0x94660), which is `cmp dword [ecx+0x14], 0; setne al; ret` and nothing else.\n\nThis is the field the event language's `alliance_with` trigger evaluates (CAllianceWithTrigger::Evaluate, rva 0x5EF5A0, at 0x5EF605) and the gate on the append to `CCountry +0xF88` (Allies) in CCountry::RebuildNeighbours at 0x4E328E. It is **not** what faction membership sets - that is `CCountry +0xD8 -> CFaction +0x28` - which is why the allies list has a second, faction-walking source and `alliance_with` does not.",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Three agreeing readers: the Lua predicate (whose registration ghidra/luabind.json carries as `bool HasAlliance(CDiplomacyStatus&)`), the trigger, and the list append. Wrong if 0x94660's registration belonged to another class - the RTTI type on the registration names CDiplomacyStatus."
+  },
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x1C",
+   "name": "guarantee",
+   "type": "void*",
+   "comment": "The pair's guarantee, or null. Named by the game's own Lua predicates `CDiplomacyStatus::IsGuaranting` (rva 0x648730) and `CDiplomacyStatus::IsGuaranteed` (rva 0x648760), which are the same body twice over: both read `+0x1C`, answer false when it is null, and otherwise compare the relation's `+0xC` with the status's own `+0xC` - `setne` for one direction and `sete` for the other. So the one pointer carries both directions and the `+0xC` comparison is what tells them apart; **no token test is involved**, unlike the relation at +0x18.\n\nCCountry::RebuildNeighbours appends to the list at `CCountry +0xFC8` on this field plus the same direction test (0x4E3398-0x4E3406), so `+0xFC8` is one of the two guarantee directions - which one was not settled.",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Both predicates decoded end to end and they differ only in the final `sete`/`setne`; both registrations are in ghidra/luabind.json. Wrong if the direction convention is the other way round, which would swap which of CCountry +0xFC8 and its mirror is which - this entry deliberately does not claim that."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xD00",
+   "name": "province_ids",
+   "type": "void*",
+   "revises": "its comment says \"Whether it is the owned or the controlled provinces is not established\" and then infers controlled. That is now established, and it is controlled - so the open question should stop being one. The name is left alone deliberately: the Lua half of the fact base (ghidra/luabind.json, ghidra/bicelib_findings.json) already spells this field `ControlledProvinces` and that is the name Ghidra shows, with this one folded into the comment.",
+   "comment": "the head of a list of `{ province id, ?, next }` nodes - CCountry::UpdateIC walks it and looks each id up in CCurrentGameState +0xB8C to sum the country's IC. **It is the controlled provinces**, settled by the game's own Lua accessor `CCountry::GetControlledProvinces` (VA 0x417AE0 = `lea eax,[ecx+0xD00]; ret`), with `NumberOfControlledProvinces` the CList's own count member at +0xD08 (`CCountry::GetNumberOfControlledProvinces`, VA 0x5010C0). The pair for the owned provinces is +0xCF0 / +0xCF8, which CAnyOwnedProvinceTrigger::Evaluate walks and CCountry::RebuildNeighbours's first province walk uses. The earlier inference from the +0x610 test was right.",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Both accessors decoded (two and three instructions each) and both registrations are in ghidra/luabind.json, which records them against CCountry with `CList<int>&` and `int` return types. Wrong if luabind.json's recovery had attached the wrong address to the name - the registration's own RTTI type is the check, and the two offsets it gives are 0x10 apart in the same {first, last, count} shape as the owned pair."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xD10",
+   "name": "claims",
+   "type": "void*",
+   "revises": "its comment says \"Named from that use; no loader key was checked\" - the game's own Lua accessor names it, so that caveat can go. The name is left alone deliberately: the Lua half already spells it `CoreProvinces`, which is the name Ghidra shows.",
+   "comment": "The head of a linked list of province ids the country claims, each node's next at +0x8. The alignment revanchism term walks it and counts the provinces whose current owner belongs to the faction being scored. **The game's own name for it is `CoreProvinces`**, from the Lua accessor `CCountry::GetCoreProvinces` (VA 0x4C3040 = `lea eax,[ecx+0xD10]; ret`, registered returning `CList<int>&`) - so these are HoI3's core provinces, the country side of the per-province `cores` list at `CProvince +0x344` that the event language's `is_core` and `any_core` triggers walk.",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "evidence": "Accessor decoded (`lea eax,[ecx+0xD10]; ret`), registration in ghidra/luabind.json under CCountry with `CList<int>&`. Corroborated from the province side: CProvince +0x344 is already `cores` in project.json, named off the save writer, and CIsCoreTrigger/CAnyCoreTrigger walk it as a list of countries - the transpose of this list of provinces. Wrong if the two were unrelated structures, which would show as a country's core list disagreeing with the provinces that name it."
+  }
+ ],
+ "vftable_slots": {
+  "CTrigger": {
+   "7": "LoadArgument"
+  },
+  "CExistsTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CExistsTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CControlledByTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CControlledByTrigger* this, CEventScope* scope)"
+   }
+  },
+  "COwnedByTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(COwnedByTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CControlsTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CControlsTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CIsCoreTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CIsCoreTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CRegionTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CRegionTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CNeighbourTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CNeighbourTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CAllianceWithTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CAllianceWithTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CRegionScopeTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CRegionScopeTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CEnemyScopeTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CEnemyScopeTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CAnyOwnedProvinceTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CAnyOwnedProvinceTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CAnyNeighborProvinceTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CAnyNeighborProvinceTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CAnyNeighborCountryTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CAnyNeighborCountryTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CAnyCoreTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CAnyCoreTrigger* this, CEventScope* scope)"
+   }
+  }
+ },
+ "frontier": [
+  "0x12A710",
+  "0x69D390",
+  "0x5DA0D0",
+  "0x5DF9D0",
+  "0x5D6500",
+  "0x5E5550",
+  "0x5D1400",
+  "0x5D1450",
+  "0x5D1480",
+  "0x5DA210",
+  "0x5DFC30",
+  "0x5DF3A0",
+  "0x5D6020",
+  "0x5D6910",
+  "0x5E56C0",
+  "0x5E9070",
+  "0x5EF620",
+  "0x607A00",
+  "0x607D60",
+  "0x607DC0",
+  "0x607E50",
+  "0x607FD0",
+  "0x5DF8A0",
+  "0x5EFB60",
+  "0xE6A10",
+  "0xE6A20",
+  "0xE6A30",
+  "0xE2190",
+  "0x94660",
+  "0x648730",
+  "0x648760",
+  "0x649C90",
+  "0x64A3F0",
+  "0x1010D0",
+  "0x5010C0",
+  "0x3A660",
+  "0x17AE0",
+  "0xC3040",
+  "0x63D780",
+  "0x1235E0",
+  "0xE39C0"
+ ],
+ "slots_noted": "0x5E8F40 is slot 7 of 16 trigger tables, 12 of them CTagTrigger descendants and 4 of them a fold of an identical body in classes deriving straight from CTrigger, so it is recorded class-free (trap 4) rather than under any one of them; CTrigger slot 7 is named here instead, which covers all 16. CTrigger's own slot 7 body is the empty `ret 0x104` stub at rva 0x15FF0 and is deliberately left unnamed - it is in many tables and says nothing."
+}
