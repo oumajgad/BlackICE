@@ -36,7 +36,13 @@ namespace CMapProvince {
         constexpr uintptr_t last_convoy_attack = 0x1C;    // a date; only saved once it is set
         constexpr uintptr_t out_of_supply_days = 0x20;    // only saved above zero
         constexpr uintptr_t nationalism = 0x24;
-        constexpr uintptr_t flags = 0xC4;                 // a CPersistent of its own
+        // The CFlags itself, held by value, as CCountry::Offsets::flags is. Corrected from 0xC4
+        // on 2026-10-04: CProvince::CProvince writes CFlags' own vftable here and CFlags'
+        // CPersistent vftable 0x24 further on, at 0xC4 - so the old value was the second base,
+        // and `flags + CTernary::Offsets::root` off it would have read 0xC8 when the root is at
+        // 0xA4. Nothing read it, which is why it survived. See reversing/findings/FINDINGS-effects.md
+        // section 5, where set_province_flag dispatches on this offset.
+        constexpr uintptr_t flags = 0xA0;                 // a CFlags; its CPersistent base is 0xC4
         constexpr uintptr_t history = 0xD8;               // a CPersistent; +0xEC is its count
         constexpr uintptr_t history_count = 0xEC;
 

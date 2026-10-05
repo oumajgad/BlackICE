@@ -84,11 +84,15 @@ Then, from `reversing/`:
 
 `-noanalysis` matters: the program in the project is already analysed and a second pass would both
 waste minutes and move boundaries the findings are written against. Grep the output for `'!'` to see
-the failures, and **`failed: 2` is the pass mark** - the two documented over-long bodies. A third is
-a real one.
+the failures, and **`failed: 0` is the pass mark** as of 2026-10-04. Any failure is a real one.
+
+This said `failed: 2` until then, excusing `MT19937Next` and `TernarySearchTreeFind` as "over-long
+bodies". They are not: their predecessors are **thunks that tail-jump into them**, Ghidra had merged
+each thunk with its target, and in the current project all four are proper entries. `CLAUDE.md` has
+the bytes. If the pair ever comes back, repair the **thunk**, not the target.
 
 **Applying to the maintainer's own project is their step**, the same division as `Deploy.ps1` and the game
-folder: the headless run against a copy proves the record lands clean, and he takes it from there.
+folder: the headless run against a copy proves the record lands clean, and they take it from there.
 
 **To hand back one function you edited yourself** - the findings have since learned what
 your edit stood in for - put the cursor in it and run `ResetBiceLibFunction`, then

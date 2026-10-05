@@ -109,19 +109,32 @@ The pipeline, in order, and it is idempotent:
      shallow `find` will reach, and the current project is `Hoi3_v12.1.2`. Run against a
      **copy** - the maintainer's is usually open and holds the lock.
 
-A second run should report `struct fields: 0`. **Two failures are expected and documented**, both
-the same kind of thing - Ghidra has given a function a body that runs past its real end and so
-swallows the next one, and the script refuses to guess which of the two to trust:
+A second run should report `struct fields: 0`. **`failed: 0` is the pass mark, as of 2026-10-04.**
+Any failure is a real one; read the `!` lines for it, which `grep -F '!'` over the headless output
+will show.
 
-- `MT19937Next` (`0xAA2B90`), inside Ghidra's `CSimpleRandom::GetInteger` (`0xAA2B10`).
-- `TernarySearchTreeFind` (`0xA7E030`), inside Ghidra's `GuiTypeTree_Find` (`0xA7DEE0`), new with
-  wave 7. The bytes settle it in the record's favour: `0xA7DEE0` ends `ret 0xc` at `0xA7E028`,
-  then **five `int3`**, then a clean `push ebp; mov ebp, esp` - two functions, properly padded
-  apart. Ghidra's body is wrong, the finding is right, and the only cost is that this one name
-  does not reach the Ghidra database.
+**This said `failed: 2` until 2026-10-04, and the two it excused were explained wrongly.** The
+claim was that Ghidra had given `CSimpleRandom::GetInteger` (`0xAA2B10`) and `GuiTypeTree_Find`
+(`0xA7DEE0`) bodies running past their real ends, swallowing `MT19937Next` (`0xAA2B90`) and
+`TernarySearchTreeFind` (`0xA7E030`). Both of those predecessors are in fact **thunks that
+tail-jump into the function below them**, and Ghidra's small bodies for them are correct:
 
-So `failed: 2` is the pass mark today. A *third* failure is a real one; read the `!` lines for it,
-which `grep -F '!'` over the headless output will show.
+    0xAA2B10  mov eax, ecx            0xA7DEE0  push ebp; mov ebp, esp
+    0xAA2B12  jmp 0xAA2B90                      cmp [ecx+4], 0; lea eax,[ecx+4]; jne
+    0xAA2B17  int3 ...                          xor eax,eax; pop ebp; ret 4
+                                      0xA7DEF3  pop ebp; jmp 0xA7E030
+                                      0xA7DEF8  int3 ...
+
+So there was never an over-long body to arbitrate; what Ghidra had done was **merge each thunk with
+its tail-call target into one function**, which is ordinary Ghidra behaviour on a tail call and not
+a wrong end. And the byte-level argument the old text offered - "`0xA7DEE0` ends `ret 0xc` at
+`0xA7E028`, then five `int3`" - was about a **different function**: `functionStart(0xA7E020)`
+answers `0xA7DF60`. Two functions were conflated, and the conclusion that the record's names were
+right happened to be true for an unrelated reason.
+
+In the current `Hoi3_v12.1.2` project all four addresses are proper function entries, so the apply
+names them and reports `failed: 0`. If a future run reports these two again, the fix is
+`RepairFunctionBody` on the **thunk**, not on the target.
 
 **Addresses in `project.json` are rvas** against an image base of `0x400000`, as are the
 `GameClasses` offsets ("module relative" is the same thing). Disassemblers print virtual

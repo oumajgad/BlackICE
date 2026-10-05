@@ -41,6 +41,14 @@ entry is wrong.
 *The check:* `image.retsBefore(candidate, address)`. A `ret` in between means look - it is either
 an abutting function or trap 3.
 
+*And a second check, from wave 12, for when the first is ambiguous and there is no padding to
+argue from:* **a `ret` past the candidate boundary that carries a different stack immediate,
+and that `cfg.walk` cannot reach from the entry, belongs to the next function.** Both held for
+`CMilitaryAccessAction` (a `ret 4` at rva `0x624E79`, unreachable from slot 7's entry, whose own
+exits are bare `ret`s) and for `CLicenceTechnologyAction` (a `ret 4` at `0x63D2B6`). It is
+independent of every padding argument, which is exactly what makes it worth running: a `ret 4`
+and a `ret 0x10` cannot be two exits of one `__thiscall`.
+
 *Known pairs:* **`0x565FD0`/`0x5662F0`** (`CCombatant::ApplyLosses` ends `ret 4` at
 `0x5662ED` and slot 11's prologue is the very next byte — this one produced a wrong finding, see
 trap 3), `0x8B5210`/`0x8B60F0` (one `int3` between, so a scan looking for a *run* of padding
@@ -57,6 +65,23 @@ fresh SEH prologue - and `findRefs --callers` on the wrong entry then reports 12
 right answer is 8), `0x4ACED0`/`0x4ACF10` (bare `ret`, no padding, and `0x4ACED0` is a copy loop
 over **0x14**-byte elements, so the misattribution would have put a 0x14 stride on `CMapPoint`), `0x893C80`/`0x893E70` (the first ends `ret 8` at `0x893E6D` with no padding at all, so `functionStart(0x893E70)` answers `0x893C80` - and `0x893E70` is the AI's real landing-province chooser, so losing it loses the end of the invasion chain).
 
+**Wave 12 added nine, all rvas, from three agents reading three different families.** The
+event-script language is unusually dense with them because the leaves are small and the
+compiler packed them:
+
+| pair | what goes wrong |
+| --- | --- |
+| `0x5F3E8D`/`0x5F3E90` | **zero** padding; `functionStart` answers `CAmountOfDivisionsTrigger::Evaluate` at `0x5F36E0`, two `ret`s away |
+| `0x5D13E0`/`0x5D1400` | `CValueTrigger`'s slot 7 abuts `CIntTrigger`'s, and they are the two *different* unit conventions - see trap 7 |
+| `0x669550`/`0x669630` | `TokenToFixedPoint` is followed immediately by an 8-byte function, no padding |
+| `0x607980`/`0x607A00` | two `int3` between `CEnemyScopeTrigger::Evaluate` and `CCombinedArmsTrigger::Evaluate` |
+| `0x5BF3CD`/`0x5BF3D0` | **`functionStart` cannot find `0x5BF3D0` at all** - see the prologue set below |
+| `0x5A49E0`/`0x5A4A30` | a single `int3` between the country-flag clearer and the province-flag setter |
+| `0x59CB4C`/`0x59CB50` | a single `int3` before `CValueEffect`'s slot 7 |
+| `0x6247BF`/`0x6247C0` | `CMilitaryAccessAction` slot 7's `ret` and slot 11's SEH prologue on the next byte. An `int3` scan gives slot 7 0x1C90 bytes instead of 0x5D0 and attributes slot 11's seven tooltip strings to the effect |
+| `0x63CD5D`/`0x63CD60` | the same one step subtler: **two** `int3`, so the "run of three" rule below walks past it |
+
+
 Getting `0x4BFE70` wrong would have made `0x4C0430`'s whole argument list wrong, which is most of
 a section of `findings/FINDINGS-revolt.md`.
 
@@ -65,6 +90,15 @@ a section of `findings/FINDINGS-revolt.md`.
 (`0x22F6CB`) is the **low byte of a `call rel32` displacement** - `e8 cc 68 56 00` - and the byte
 after it happens to be `0x68`, which is in the prologue set. The real entry is `0x22F420`
 (`CEU3Application::~CEU3Application`), 1,292 bytes earlier.
+
+**And the "run of at least three `int3`" rule below is sufficient, not necessary.** It was
+written into wave 12's own brief as a rule and three agents found it walking straight past a
+real boundary: `CLicenceTechnologyAction` slot 11 sits **two** `int3` after slot 7,
+`CSurrenderProgressTrigger::Evaluate` ends two `int3` before its own slot 8, and
+`CAnyOwnedProvinceTrigger::Evaluate` and `CIsCoreTrigger::Evaluate` each have exactly **one**
+`int3` above a genuine entry. Requiring three protects against reading data as padding and
+costs you boundaries that are real. **What settles both directions for free is the vftable**: an
+address a table holds is an entry by definition, and the next slot's address is the upper bound.
 
 **`retsBefore` does not catch this one.** It returns an empty list, because x86 resynchronised after
 the bogus start and the decode looked perfectly clean - so the usual cross-check is silent here,
@@ -78,7 +112,15 @@ walked straight past *even when it is properly padded*. Two have been found this
 rva `0x963F0` opens `push ecx` (`0x51`, added) and rvas `0xA9B70` and `0xA9BE0` both open
 `cmp byte ptr [eax+0x22], 0` (`0x80`, added) - the second pair has an `int3` between them, so
 abutment was not the problem at all. The set is now
-`55 53 56 57 8B 83 81 6A 68 51 52 50 80`.
+`55 53 56 57 8B 83 81 6A 68 51 52 50 80 8A 85`.
+
+**Wave 12 added the last two.** `0x8A`: `CAlwaysTrigger::Evaluate` (rva `0x5D3920`) is the
+whole of `mov al, byte ptr [ecx+0x40]; ret 4`, and `functionStart` answered `0x5D38C0`
+*although the padding above it is six clean `int3`* - so this is the second cause, not
+abutment. `0x85`: rva `0x5BF3D0`, the dispatcher that runs an event option's effect block,
+opens `test edx, edx` **and** abuts a `ret 8`, so it is both causes at once -
+`functionStart` answers `0x5BF300` and `retsBefore` returns five `ret`s, which is at least a
+loud failure rather than a quiet one.
 
 Widening it is safe in a way worth knowing, because widening a heuristic usually is not: the byte
 is only ever tested at a position immediately **after** an `int3`, so a new byte cannot make the
@@ -278,6 +320,35 @@ The two halves drift, and either one can be the stale one. So the check is **bot
 The derivation was still worth having - an independent reading from the display side that agreed
 name for name, and that corroborated two header details nothing else had. But *independent
 confirmation* and *first settlement* are different claims, and only one of them was true.
+
+**And there is a third half, which is where this trap has now cost the most.** The fact base is
+`ghidra/project.json`, the `GameClasses/*.hpp` headers, **and `ghidra/luabind.json` /
+`ghidra/bicelib_findings.json`** - the Lua side, which `buildFindings.py` merges alongside
+`project.json` and whose names Ghidra therefore already shows. So the check is three paths:
+
+    grep -n 0xF88 reversing/ghidra/project.json \
+                  reversing/ghidra/bicelib_findings.json \
+                  BiceLib/GameClasses/*.hpp
+
+**The Lua half stores offsets as decimal integers, so a hex grep over it finds nothing.** `0xF88`
+appears in `bicelib_findings.json` exactly once, inside a quoted copy of someone else's comment;
+what is actually there is `{"offset": 3976, "name": "Allies", "type": "CCountryList"}`. The right
+query is `grep 3976`, or `python -c` over the JSON.
+
+That one gap is why **`CCountry +0xF88` survived a whole wave as an open question** with the answer
+sitting in the repository. Wave 11's agent A found the `ally` scope reading a `CList` there, checked
+`project.json` and `CCountry.hpp` exactly as this trap says to, found nothing, and correctly refused
+to name it; the next wave was then planned around settling whether `ally = { ... }` scoped to a
+*bordering* country, which it does not. `CCountry::GetAllies` (rva `0xE6A20`) is the whole of
+`lea eax,[ecx+0xF88]; ret`, and it is a registered Lua accessor.
+
+The same wave hit the subtler form twice more. `CEventScope +0x40` was an open item in
+`findings/FINDINGS-triggereval.md` while **three** `project.json` function comments already called it
+the `CCombatant` - two of them describing themselves as the "second" and "third independent witness"
+- with nothing connecting the open item to the settled fact. And `CCountry +0xA8C` was `neutrality`
+in `CCountry.hpp` and in a setter's comment, but was not recorded as a field at all. So: **a fact can
+be in the record without being in the record's field table**, and prose in one entry does not make
+another entry's open list stale by itself.
 
 ## 15. `instances()` can match a table of vftable pointers, not objects
 

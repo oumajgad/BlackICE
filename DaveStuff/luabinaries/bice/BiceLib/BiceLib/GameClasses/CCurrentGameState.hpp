@@ -51,7 +51,11 @@ namespace CCurrentGameState {
         constexpr uintptr_t automate_sliders = 0x9C;
         constexpr uintptr_t automate_tech_sliders = 0xA0;
         constexpr uintptr_t automate_trade = 0xA4;      // a byte
-        constexpr uintptr_t flags = 0xE8;               // a CFlags
+        // Corrected from 0xE8 on 2026-10-04. CGameState::CGameState writes CFlags' own vftable
+        // at 0xC4 and CFlags' CPersistent vftable at 0xE8, 0x24 apart, so 0xE8 was the second
+        // base rather than the object. Unread, like CMapProvince's was. set_global_flag
+        // dispatches on 0xC4 - reversing/findings/FINDINGS-effects.md section 5.
+        constexpr uintptr_t flags = 0xC4;               // a CFlags; its CPersistent base is 0xE8
         constexpr uintptr_t ai_draws = 0xAE4;           // zeroed when `ai_seed` is read
         constexpr uintptr_t weather = 0xAEC;            // a CWeatherManager
         constexpr uintptr_t diplomacy = 0xB24;          // a CDiplomacy
