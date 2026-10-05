@@ -281,6 +281,39 @@ lookup is not doing what it reads as doing. **Not diagnosed.** Until it is, an o
 be caught by looking at the offsets, and the symptom to watch for is the one below: an apply
 reporting the same `struct fields: 1` for ever with a `replaced` line naming the same pair.
 
+**Five live instances of exactly that, and the mechanism, 2026-10-05.** A second headless run
+settles to `struct fields: 6`, not 0, and names the same five replacements every time:
+
+    CCurrentGameState+0xE8  'flags'   -> flags_persistent
+    CGameState+0xE8         'flags'   -> flags_persistent
+    CMapProvince+0xC4       'flags'   -> flags_persistent
+    CProvince+0xC4          'flags'   -> flags_persistent
+    CLeader+0xA8            'history' -> picture
+
+**The shape is: a field held by value, plus a second field that lands inside its extent.**
+`project.json` has no duplicate offsets, so this is not a double definition; it is two
+declarations that Ghidra cannot both honour. `CCurrentGameState+0xC4` is a `CFlags` *by value*
+and `+0xE8` is, by its own comment, "the `CPersistent` second base of `flags` (+0xC4)" - which
+is to say **a member of the object at `+0xC4`, declared as a sibling of it**. Placing the
+`CFlags` covers `+0xE8`; naming `+0xE8` carves it back out; next run, repeat. `CLeader` is the
+same thing one step less obvious: `history` is a `CLeaderHistory` recorded as `0x24` bytes, so
+`0x84 + 0x24` lands exactly on `picture` at `+0xA8` and the two are adjacent rather than
+overlapping *in the record* - but the type Ghidra actually holds for `CLeaderHistory` is what
+decides it, and `CFlags` and `CPersistent` both carry `size: None` here, so the record is not
+the authority on how far either reaches.
+
+Four of the five arrived with a correction on 2026-10-04 that moved `flags` to where the
+`CFlags` really begins (`0xE8` -> `0xC4` on the game state, `0xC4` -> `0xA0` on the province).
+That correction was right about the offset; what it left behind is the old offset still
+declared as a parent field. **The fix is to express the sub-object's member once, as a field of
+`CFlags` at `+0x24`, rather than twice** - but that changes how the record models a second base
+and would resize `CFlags`, whose own extent is unrecorded, so it is a modelling decision and
+not a typo. Left for the maintainer.
+
+Until then: **the pass mark is `failed: 0`, and `struct fields: 6` on a settled second run is
+this and not drift.** If the number moves off 6, or a sixth name joins the list, something new
+has overlapped.
+
 **Do not declare a `vftable` field at +0 in `project.json`.** The script places that pointer
 itself, typed as the class's own virtual table structure, so a field of your own there is
 overwritten by the vftable pass on every run and put back by the field pass on the next -

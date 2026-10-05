@@ -112,7 +112,14 @@ walked straight past *even when it is properly padded*. Two have been found this
 rva `0x963F0` opens `push ecx` (`0x51`, added) and rvas `0xA9B70` and `0xA9BE0` both open
 `cmp byte ptr [eax+0x22], 0` (`0x80`, added) - the second pair has an `int3` between them, so
 abutment was not the problem at all. The set is now
-`55 53 56 57 8B 83 81 6A 68 51 52 50 80 8A 85`.
+`55 53 56 57 8B 83 81 6A 68 51 52 50 80 8A 85 33`.
+
+**`0x33` was added 2026-10-04** and it is the clearest case yet that this is a second
+cause and not abutment: `PersistentRegistryInit` (rva `0x67BFA0`) opens `xor ecx, ecx`
+and has **seven `int3`** in front of it, so the padding is immaculate and the walk still
+went past it - `functionStart(0xA7BFA7)` answers `0xA7BF20`, a different function that
+ends `ret 0x24` at `0xA7BF96`. An `xor reg, reg` prologue is common in a leaf that takes
+no arguments, so expect more of these.
 
 **Wave 12 added the last two.** `0x8A`: `CAlwaysTrigger::Evaluate` (rva `0x5D3920`) is the
 whole of `mov al, byte ptr [ecx+0x40]; ret 4`, and `functionStart` answered `0x5D38C0`
@@ -280,6 +287,57 @@ it is used with.
 on being at war; the edge list said it was not, and the edge list was right.
 
 ## 14. Check what already exists before naming it
+
+**The cheapest form of this, and the one most often skipped: before reading a function, grep its
+rva.** Not before naming it - before *reading* it. An address can already be recorded under a name
+you would not have guessed, and the existing entry can be better than what you are about to
+derive. On 2026-10-04 `RegisterCommandTypes` (rva `0x485050`) was duplicated as
+`RegisterPersistentPrototypes` by a session that had just finished writing this trap into four
+agent briefs: the existing entry was marked only `likely`, but it had the **real extent**
+(`0x885050-0x887F37`) where the new reading had decoded 0x2200 bytes without finding a `ret` and
+nearly recorded the function as unbounded, and it had the one caller, and it already said the
+function exists "so the command factory has a prototype of each".
+
+**And a third place to look, beyond `project.json`'s own keys and the headers: the record's
+prose.** A function is sometimes named inside *another* entry's comment with no entry of its own.
+`CUnit::SetLeader` (rva `0x1BFC10`) was found that way - `CLeader::null`'s comment says "the two
+zeros pushed around the call at 0x1D7D9F are the later arguments of CUnit::SetLeader", and the call
+at that address is it. The same session had argued, correctly on the evidence it had looked at,
+that the body should stay unnamed because 23 callers made a name from any one of them a guess. The
+grep answered it.
+
+So the check is three questions, all before the reading: **is this rva recorded, is this name
+taken, and is this address mentioned in anybody's comment?**
+
+**And a fourth question, for a fact you are about to act on rather than name: does the record's
+own prose agree with `project.json`?** When they disagree, the entry is the likelier of the two,
+because an entry is written while the bytes are on screen and a prose summary is written
+afterwards from memory of them.
+
+This cost a session on 2026-10-05. `PLAN-customcommand.md` had been written with a step order that
+only made sense if a single player command post did not serialise, which it took from a summary
+table in `FINDINGS-commands.md` headed "And only the broadcast serialises", whose first column was
+labelled "loopback". But "Loopback" is the *name of a channel class* - the mode 2 one a single
+player session gets - and that class's post serialises every command and rebuilds it through the
+prototype registry. The table was true of a different channel's post. Meanwhile
+`project.json`'s entry for the very function, `LoopbackCommandChannel::Post` (rva `0x73C0A0`), had
+said in plain words all along that it "serialises the command through slot 7 and slot 1,
+deserialises a fresh copy into the concurrent_queue". **The record was right and the summary of the
+record was wrong**, which is the more dangerous way round, because the summary is the thing that
+reads like an answer.
+
+Two practical consequences. A **table** in a findings file is a summary and inherits none of the
+authority of the entry it summarises - if a plan turns on one, grep the function. And when a
+summary's column heading is a *name* rather than a description, check that the name means what you
+are using it to mean: "loopback" as an adjective and `LoopbackCommandChannel` as a class pulled in
+opposite directions, and nothing in the table said which was meant.
+
+`buildFindings.py` prints a `!!` line when `project.json` holds two entries for one rva, which it
+did not before. Read that as a backstop rather than the check: two entries for one address are
+merged - the second becomes an extra label on the first, which is correct when the two names come
+from different halves of the fact base and is how 54 functions legitimately carry one - so the
+duplicate is *absorbed*, and by the time the line appears the work has been done twice.
+
 
 `CCountry +0xBCC` was named `Manpower` by the Lua API long before this work added a duplicate.
 The pipeline refuses to overwrite an existing name, so a collision is a signal to compare

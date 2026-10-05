@@ -54,13 +54,31 @@ REPO = os.path.abspath(os.path.join(REVERSING, "..", "..", "..", "..", ".."))
 # Only a reference carrying a folder is a path; see the rule above.
 FINDING = re.compile(r"`?([\w./-]+/FINDINGS-[a-z0-9]+\.md)`?")
 COMMAND = re.compile(r"python ([\w./-]+\.py)")
-PATHISH = re.compile(r"`((?:findings|scripts|ghidra|fragments|probes|reversing)/[\w./-]+)`")
+PATHISH = re.compile(
+    r"`((?:findings|scripts|ghidra|fragments|probes|reversing|BiceLib)/[\w./-]+)`")
+# `BiceLib` was added 2026-10-05, and it caught three dangling references the same minute.
+# The seam between the two halves is that the record cites the headers - a fact becomes code
+# by being written into `project.json` and into a `GameClasses` constant - so a reference
+# pointing the other way is exactly as load-bearing as one pointing inward, and it was the
+# only kind not being checked. `ROOTS` already resolves from the BiceLib root, so nothing
+# else had to change. Note the brace form `CBiceCommand.{hpp,cpp}` is still not a path and is
+# still not checked; it reads well and there is no file of that name to find.
 
 # Build output, dependencies and the mod's bulk - nothing in them cites the tree.
 SKIP_DIRS = {".git", ".vs", "__pycache__", "venv", "ReleaseDebug", "x64", "Debug",
              "gfx", "history", "localisation", "map", "pyPdxParser", "old scripts",
              "node_modules"}
-READ = (".md", ".py", ".hpp", ".cpp", ".h", ".java")
+READ = (".md", ".py", ".hpp", ".cpp", ".h", ".java", ".json")
+
+# `.json` was added 2026-10-05, for `ghidra/project.json`. It is a third of the fact base and
+# its comments cite paths constantly - a finding's `source`, a header it pairs with, the
+# findings file that established an offset - and none of it was being checked, which is how a
+# reference to a deleted header survived a full pass.
+#
+# `bicelib_findings.json` is **generated** from `project.json` by `buildFindings.py`, so every
+# reference in it is a copy of one already checked in the source. Reading both would report
+# each breakage twice and, worse, invite someone to fix the generated copy. Skipped by name.
+SKIP_FILES = {"bicelib_findings.json"}
 
 # Where a reference may resolve from. Loose on purpose - see the docstring.
 ROOTS = [REVERSING, BICE, REPO]
@@ -77,7 +95,7 @@ def sources(root):
     for base, dirs, names in os.walk(root):
         dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
         for name in names:
-            if name.endswith(READ):
+            if name.endswith(READ) and name not in SKIP_FILES:
                 yield os.path.join(base, name)
 
 

@@ -1,7 +1,7 @@
 {
  "agent": "command-loadkey",
  "question": "0x005EC150 (rva 0x1EC150): what the helper that 44 command LoadKey methods call actually does, its signature and convention, its field accesses, and whether it is a virtual.",
- "source": "reversing/FINDINGS-script.md",
+ "source": "reversing/findings/FINDINGS-script.md",
  "addresses": [
   {
    "rva": "0x1EC150",
@@ -34,5 +34,5 @@
  ],
  "frontier": [],
  "frontier_note": "0x1EC150 calls only functions project.json already names: ParseObjectId (0x67B250), assignString (0x1BD0, twice) and free (0x795F9B). The queue it suggests is beside it rather than under it: 0x2DD70, the constructor that builds the same 0x28-byte reference from a live object, and 0x2DE10 next to it, both unnamed; and 0x6789F0, the writer half that puts the type/id pair into a save.",
- "slots_noted": "not a virtual: `python vtable.py --holding 0x005EC150` says it is in no class's virtual table, so there is no slot to record."
+ "slots_noted": "not a virtual: `python scripts/vtable.py --holding 0x005EC150` says it is in no class's virtual table, so there is no slot to record."
 }

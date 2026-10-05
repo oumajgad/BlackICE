@@ -1,7 +1,7 @@
 {
  "agent": "member-signatures (signature wave: CMoveCommand, CInGameIdler, CWar, CUndeclaredWar, and four singles)",
  "question": "Give the last of the unsigned member functions a signature: return type, calling convention, parameters, and above all the receiver, read off the ret and the call sites.",
- "source": "reversing/FINDINGS-redeploy.md",
+ "source": "reversing/findings/FINDINGS-redeploy.md",
  "addresses": [
   {
    "rva": "0x1D86F0",
@@ -23,7 +23,7 @@
    "no_signature": null,
    "comment": "CMoveCommand constructor, `ret 0x14`. The object is the **first stack argument** (`mov esi,[ebp+8]`), returned in eax; the four values go to +0x64 (target province), +0x68 (mode68), +0x69 (safe) and +0x6A (very safe). **The unit arrives in edi**, unset anywhere in the body: it is pushed with `lea edx,[esi+0x3C]` into 0x42DD70, which builds the command's object reference from it, and then `[edi+0x130]`'s +0xD0 - the unit's current province - is stored at +0x6C.",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CMoveCommand.hpp:65; reversing/FINDINGS-redeploy.md:100",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:65; reversing/findings/FINDINGS-redeploy.md:100",
    "revises": "the entry recorded no signature; the object is on the stack and the unit is a register argument, neither of which was written down",
    "evidence": "`ret 0x14` = five stack dwords, and every one of +8, +0xC, +0x10, +0x14, +0x18 is read. edi is pushed at 0x1D885E and read at 0x1D8893 with no write to it in the function, so it comes in; the call site at 0x5B9E58 sets it explicitly (`mov edi,esi`, esi being the unit whose +0x130 it had just read) and the one at 0x89A9DF has edi = the unit from [ebp+8] of CMoveCommand::IssueFromInterface. Constructor check: it writes 0x15C8C1C, CMoveCommand's own table. Shown wrong by: a call site that leaves edi holding something that is not a unit, or a use of edi in the body before 0x1D885E."
   },
@@ -35,7 +35,7 @@
    "no_signature": null,
    "comment": "CMoveCommand vftable slot 6: works the unit's route out with one of three finders and gives it to the unit. Ordinary __thiscall - the command is in ecx (`mov esi,ecx` at 0x1D88E0, then +0x40/+0x44, the object reference pair) and it takes nothing on the stack (bare `ret`). Nothing is returned: eax at the exit is the leftover of the list-freeing loop at 0x1D9120.",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CMoveCommand.hpp:58; reversing/FINDINGS-redeploy.md:90",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:58; reversing/findings/FINDINGS-redeploy.md:90",
    "revises": "the entry recorded no signature; slot 6 is a plain __thiscall with no arguments, which the ret proves",
    "evidence": "A cfg walk of the whole 615-instruction body finds one `ret` immediate, 0 - so nothing is cleaned and there are no stack arguments; ecx is taken into esi in the second instruction. vtable.py --holding: CMoveCommand slot 6 and no other table. Shown wrong by: a `ret N` on a path the walk did not reach, or a read of [ebp+8] in the body."
   },
@@ -47,7 +47,7 @@
    "no_signature": null,
    "comment": "CMoveCommand copy body, `ret 4`. **The receiver is the source, not the destination**: ecx is the command being copied (`mov edi,ecx`, then every read is [edi+...]) and the new object is the stack argument (`mov esi,[ebp+8]`, every write is [esi+...], and it is returned in eax). It writes CMoveCommand's table into the new object, then copies +0x3C/+0x40/+0x44 (the object reference), the string at +0x48, +0x64 and the routing bytes +0x68/+0x69/+0x6A and +0x6C. Called from exactly one place, 0x1D93BB, inside CMoveCommand slot 13 (0x1D9380) - the clone - which allocates 0x70 bytes and passes them in.",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CMoveCommand.hpp:63; reversing/FINDINGS-redeploy.md:101",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:63; reversing/findings/FINDINGS-redeploy.md:101",
    "revises": "the entry recorded no signature, and the direction was not written down: an MSVC copy constructor has the destination in ecx, and this one has the source",
    "evidence": "The vftable write `mov dword ptr [esi], 0x15C8C1C` at 0x1D941A lands on the stack argument, and an object gets its table when it is being built, so esi is the new one; all the `mov reg,[edi+...]` reads are from ecx. The single call site at 0x1D93B8 is `push eax` (a fresh 0x70-byte allocation) with `mov ecx,esi` (the existing command). `ret 4` for one stack dword. Shown wrong by: a second caller that passes them the other way round, or the 0x70 allocation turning out not to be a CMoveCommand."
   },
@@ -59,7 +59,7 @@
    "no_signature": null,
    "comment": "What the GUI calls to issue a move; hardcodes mode68 = 1 and forwards its fourth and fifth arguments as safe and very safe; `ret 0x18`. The unit is the first stack argument (+0x158 gate, virtual +0x8C asked whether the province is reachable); `provinceId` indexes the game state's province vector at +0xB8C; when `recordOnly` is greater than zero it only writes the province to the unit's +0x2CC and returns; the sixth stack dword is never read on any path. **The receiver in ecx is not a CMoveCommand** - it is only ever handed on, as the first argument of 0x49ABD0 (issue a command of type id, 0x18D here or 0x5A4 for the sibling path) and of 0x499E50, which does `add ecx,0x20; call 0x402610`, so the object carries a CCountryTag at +0x20: the per-player interface the order is issued through. Its class was not identified.",
    "confidence": "confirmed",
-   "source": "BiceLib/GameClasses/CMoveCommand.hpp:68; reversing/FINDINGS-redeploy.md:114",
+   "source": "BiceLib/GameClasses/CMoveCommand.hpp:68; reversing/findings/FINDINGS-redeploy.md:114",
    "revises": "the entry recorded no signature; the six stack arguments and the register receiver are what it needed, and the receiver is left void* rather than guessed",
    "evidence": "`ret 0x18` = six stack dwords; +8, +0xC, +0x10, +0x14 and +0x18 are all read and a scan of the whole 188-instruction body finds no reference to [ebp+0x1C]. ecx is saved to [ebp-0x10] at 0x49A865 and passed on at 0x49A93B, 0x49A98C and 0x49A9A1. 0x499E50 treating its +0x20 as a CCountryTag is the one positive fact about it: 0x402610 reads [ecx] and [ecx+4] and indexes the country array at g_1A855A4+0x16C. **This entry will show up under checkSignatures' 'member functions whose signature never mentions their class'** - correctly, because the receiver is not a CMoveCommand and writing one in would be an invention. Shown wrong by: identifying the ecx class (then the signature should name it), or a caller that leaves the sixth argument meaningful."
   },
@@ -71,7 +71,7 @@
    "no_signature": null,
    "comment": "Per-frame update of the in game idler, virtual slot 1; calls the autosave writer (0x24FF80, `push ebx` with ebx = this, at 0x255E28). `ret 4`, but **no implementation of slot 1 reads its stack argument** - not this one, not CEU3Idler's at 0x244750, not CFrontEnd's at 0x2EDD60 (which only forwards it to the base), not CBackEndIdler's 0x208AF0 or CNudgeIdler's 0x29BE90 - so the argument is real but its meaning is not recoverable from the bodies. Frame timing is taken from the clock at +0x192C instead, into +0xA88/+0xA8C.",
    "confidence": "confirmed",
-   "source": "reversing/FINDINGS-autosave.md:18",
+   "source": "reversing/findings/FINDINGS-autosave.md:18",
    "revises": "the entry recorded no signature; slot 1 takes one stack dword, which the ret fixes even though nothing reads it",
    "evidence": "`ret 4` on every path of the 1178-instruction walk, and a scan of that walk for [ebp+8] finds nothing; the same scan on the other four implementations of the slot finds only CFrontEnd's pass-through at 0x2EDD74. vtable.py --holding: CInGameIdler slot 1 alone. Shown wrong by: a slot-1 call site that clearly pushes a float or a pointer, which would name the argument."
   },
@@ -83,7 +83,7 @@
    "no_signature": null,
    "comment": "CInGameIdler virtual slot 53: repaints the map in modes 4/18/19, then always runs the autosave check. Takes nothing on the stack (bare `ret` on all three paths) and returns true - every path sets `al, 1` before the epilogue. The mode is the dword at +0xD34; mode 4 calls MapMode_Supply_Colour (0x266EE0), 0x12 and 0x13 go through 0x46A1E0/0x46AD60 and 0x46A6F0 on the map object's +0x1DC4; every path ends with `push esi; call 0x261D20`, the autosave check.",
    "confidence": "confirmed",
-   "source": "reversing/FINDINGS-autosave.md:16",
+   "source": "reversing/findings/FINDINGS-autosave.md:16",
    "revises": "the entry recorded no signature; it is a no-argument __thiscall that returns a bool, and the bool was not recorded",
    "evidence": "Three `ret` instructions, all bare, at 0x261CC7/0x261CF3/0x261D18, each preceded by `mov al, 1`; ecx into esi at 0x261CA7. vtable.py --holding: CInGameIdler slot 53 alone. Shown wrong by: a caller that ignores al on a slot where other classes return something else - the return was read off this body only."
   },
@@ -95,7 +95,7 @@
    "no_signature": null,
    "comment": "Writes the autosave when idler +0xAB0 is set, after one frame of delay; builds the file name from debug_saves. **The idler is a stack argument, not ecx** (`mov esi,[ebp+8]`), matching the neighbouring AutosaveCheck (0x261D20), which is recorded the same way. `ret 4`, no return value: on the first frame it just sets +0xAB1 and leaves. Not a virtual, and called from exactly one place, 0x255E28 in CInGameIdler::Update.",
    "confidence": "confirmed",
-   "source": "reversing/FINDINGS-autosave.md:19",
+   "source": "reversing/findings/FINDINGS-autosave.md:19",
    "revises": "the entry recorded no signature; it is __stdcall on a stack receiver rather than the __thiscall its name suggests",
    "evidence": "`mov esi,[ebp+8]` at 0x24FFA0 then [esi+0xAB0]/[esi+0xAB1], the autosave request pair; both exits `ret 4`; the one call site is `push ebx; call 0x24FF80` with ebx the idler that Update took from ecx. Shown wrong by: any read of ecx in the body - there is none before it is used as scratch."
   },
@@ -107,7 +107,7 @@
    "no_signature": null,
    "comment": "Virtual setter (slot 92) for the autosave request pair; clears +0xAB1 whenever +0xAB0 is set to 0. Nine instructions: `mov al,[ebp+8]; mov [ecx+0xAB0],al; test al,al; jne; mov [ecx+0xAB1],al`, then `ret 4`. The byte it leaves in al is the argument, not a return value.",
    "confidence": "confirmed",
-   "source": "reversing/FINDINGS-autosave.md:129",
+   "source": "reversing/findings/FINDINGS-autosave.md:129",
    "revises": "the entry recorded no signature; this is the plainest __thiscall in the set and had none",
    "evidence": "The whole body is visible at 0x275090..0x2750A7: ecx is the object, [ebp+8] the byte, `ret 4`. vtable.py --holding: CInGameIdler slot 92 alone. Shown wrong by: a caller that reads eax afterwards, which would make the al a return."
   },
@@ -167,7 +167,7 @@
    "no_signature": null,
    "comment": "CCombatHistoryEntry constructor; fills the entry from a CCombat (tick, kind, winner tag, flag, province). **It takes nothing on the stack at all** - bare `ret` - and all three arguments are registers: the entry in esi (written throughout, returned in eax), the combat in ecx, and a pointer to the tick in eax, whose target goes to +8. It writes its own vftable 0x15B68C0 and the 0x18D at +4, takes the kind from the combat's virtual slot 0x2C, the flag from the combat's byte +0x2B, the province from [combat+0x18]'s +0xD0, and the two CCountryTags at +0x10 and +0x18 from the combat's +0x10 and +0x14 sides - writing the literal `---` (three `mov` of 0x2D and a NUL) with id 0 where a side has none.",
    "confidence": "confirmed",
-   "source": "reversing/FINDINGS-combat.md:219",
+   "source": "reversing/findings/FINDINGS-combat.md:219",
    "revises": "the entry recorded no signature; three register arguments and no stack at all is exactly the case the findings notation exists for",
    "evidence": "Bare `ret` on both exits and no [ebp+...] argument read; esi is never written before its first use, nor is eax before `mov ecx,[eax]` at 0x2F357, nor ecx before `mov edi,ecx`. The one call site, 0x2F9FE inside RecordCombat, sets all three: `mov ecx,[ebp+0xC]` (the combat), `add eax,0xBDC` on the game state - CCurrentGameState +0xBDC is `tick` in project.json - and `lea esi,[ebp-0x38]`, a stack temporary. The `---` writes match CCountryTag's documented no-country value. Shown wrong by: a second caller setting the registers differently, or +0xBDC turning out not to be the tick."
   },

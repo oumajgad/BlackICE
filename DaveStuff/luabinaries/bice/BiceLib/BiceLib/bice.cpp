@@ -16,6 +16,8 @@
 #include <Overlay.hpp>
 #include <HoiDataStructures.hpp>
 
+#include <Commands/BiceCommandExample.hpp>
+#include <Commands/CBiceCommands.hpp>
 #include <GameClasses/CCountry.hpp>
 #include <GameClasses/CCountryTag.hpp>
 #include <GameClasses/CTrait.hpp>
@@ -1355,6 +1357,97 @@ __declspec(dllexport) int enableOverlay(lua_State* L)
     return 1;
 }
 
+/**
+ * Puts the one BiceCommand prototype in the game's persistent registry, and declares the
+ * kinds that ride on it.
+ *
+ * **Call this before posting, in single player as much as in multiplayer, and as early as you
+ * like - it needs no game session.** The single player post serialises the command and
+ * rebuilds it through the registry, so an unregistered type id is not a harmless no-op: the
+ * factory answers nothing and the post carries on regardless. And because the receive path
+ * drops a command whose id is not registered yet, every moment before this runs is a window
+ * in which a peer's command is silently ignored here.
+ *
+ * Registering a *kind* is the framework's own, token-free namespace - see
+ * Commands/CBiceCommands.hpp for why there is one game-level command class and a payload
+ * rather than one class per action.
+ *
+ * "Cannot reach Lua: no game session" from the overlay console is that console's gate, not
+ * this refusing; it has a "Needs a session" checkbox.
+ */
+__declspec(dllexport) int registerBiceCommands(lua_State* L)
+{
+    bool ok = CBiceCommands::Register();
+    if (!ok) {
+        ERROR_OUT(printf("'registerBiceCommands' failed: %s \n", CBiceCommands::status()));
+    }
+    else {
+        // The framework knows nothing about kinds until something declares one. The example
+        // is a kind like any other, which is the point of it.
+        ok = BiceCommandExample::install();
+        if (!ok) {
+            ERROR_OUT(printf("'registerBiceCommands': the example kind did not register \n"));
+        }
+        else {
+            INFO_OUT(printf("'registerBiceCommands' succeeded \n"));
+        }
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
+ * Posts one of the **example** "ping" commands, carrying whatever numbers are handed to it.
+ *
+ * What comes back out of the channel is executed on **every** machine in the game, through the
+ * same ordered pump every other command goes through. In single player the object that runs is
+ * the factory's clone of the registered prototype rather than the one posted, so an Execute
+ * line at all means the whole round trip is sound - and the arguments coming back unchanged
+ * means the payload survived it.
+ *
+ * Takes a **table** of numbers, so a caller is not boxed into a fixed arity: `{}` or no
+ * argument posts none, `{1, -2, 3}` posts three. Up to CBiceCommands::MAX_ARGS.
+ *
+ * A non-number in the table is refused rather than coerced. A silent 0 would be a different
+ * command from the one that was asked for, and it would be that different command on every
+ * machine at once.
+ */
+__declspec(dllexport) int postExampleCommand(lua_State* L)
+{
+    int32_t args[CBiceCommands::MAX_ARGS] = {};
+    int count = 0;
+
+    if (!lua_isnoneornil(L, 1)) {
+        if (!lua_istable(L, 1)) {
+            ERROR_OUT(printf("'postExampleCommand' wants a table of numbers\n"));
+            lua_pushboolean(L, false);
+            return 1;
+        }
+        // Lua 5.1, arrays from 1 - the same walk Gui/LuaBridge.cpp makes.
+        const int length = static_cast<int>(lua_objlen(L, 1));
+        if (length > CBiceCommands::MAX_ARGS) {
+            ERROR_OUT(printf("'postExampleCommand': %d arguments, %d is the limit\n",
+                length, CBiceCommands::MAX_ARGS));
+            lua_pushboolean(L, false);
+            return 1;
+        }
+        for (int i = 1; i <= length; i++) {
+            lua_rawgeti(L, 1, i);
+            if (!lua_isnumber(L, -1)) {
+                ERROR_OUT(printf("'postExampleCommand': entry %d is not a number\n", i));
+                lua_pop(L, 1);
+                lua_pushboolean(L, false);
+                return 1;
+            }
+            args[count++] = static_cast<int32_t>(lua_tonumber(L, -1));
+            lua_pop(L, 1);
+        }
+    }
+
+    lua_pushboolean(L, BiceCommandExample::post(count > 0 ? args : nullptr, count));
+    return 1;
+}
+
 __declspec(dllexport) int toggleOverlay(lua_State* L)
 {
     Overlay::toggle();
@@ -1504,6 +1597,15 @@ void registerReversingFunctions(lua_State* this_state) {
     return;
 }
 
+void registerCommandFunctions(lua_State* this_state) {
+    lua_pushstring(this_state, "Commands");
+    lua_newtable(this_state);
+    registerFunction(this_state, "registerBiceCommands", registerBiceCommands);
+    registerFunction(this_state, "postExampleCommand", postExampleCommand);
+    lua_settable(this_state, -3);
+    return;
+}
+
 void registerInspectorFunctions(lua_State* this_state) {
     lua_pushstring(this_state, "Inspector");
     lua_newtable(this_state);
@@ -1547,6 +1649,7 @@ __declspec(dllexport) int luaopen_BiceLib(lua_State* this_state)
     registerTooltipFunctions(this_state);
     registerMessageFunctions(this_state);
     registerReversingFunctions(this_state);
+    registerCommandFunctions(this_state);
     registerInspectorFunctions(this_state);
     registerOverlayFunctions(this_state);
 

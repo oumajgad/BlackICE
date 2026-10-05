@@ -284,7 +284,7 @@ a fact whose provenance is lost is a fact nobody can check later.
 
 Where a class is read by the overlay, the code is the authority for the offsets and
 `CLASSES.md` names the file rather than copying the table, so the two cannot drift.
-That code goes in a module of its own in the style of `BiceLib/Oob/`, reading through
+That code goes in a module of its own in the style of `BiceLib/GameState/OobFile.cpp`, reading through
 `Mem::tryRead` so a wrong guess fails instead of taking the game down.
 
 ## Notes

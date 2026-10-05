@@ -338,6 +338,73 @@ until the localisation asks.**
           straight away from inside the overlay's rendering comes up as an empty window;
           this is queued and raised where the game raises its own.
 
+## BiceLib.Commands
+A `CCommand` subclass of our own carrying **our own payload format**, so any number of mod
+actions can be made **multiplayer correct**.
+
+Multiplayer is synchronised by broadcasting the game's `CCommand`s and draining them in one
+ordered loop, which is why a feature that decides what to do from local state - a pressed
+key, the current selection, who the player is - *inside* a command's `Execute` desyncs. The
+honest fix for an action the game has no command for is to add the command.
+
+**One game-level command class carries everything.** A type id has to be a save token the
+game's table really covers, and only three such ids are free, so one class per action does not
+scale. Instead there is a single class and a **kind** inside its payload: kinds are ours,
+cost nothing, and adding one is `registerKind` plus a handler - no reversing, no token, no
+serialisation.
+
+The handler for a kind **runs on every machine in the game**, so everything it needs has to
+arrive in its arguments. A local input may choose which command to post; it may never change
+what a command does when it runs.
+
+See `BiceLib/Commands/CBiceCommands.hpp` for the design,
+`BiceLib/Commands/BiceCommandExample.hpp` for what adding one looks like, and
+`reversing/findings/FINDINGS-commands.md` for what had to be read.
+
+* **registerBiceCommands()**
+    * Puts the one command prototype in the game's persistent registry, and declares the
+      kinds that ride on it.
+    * **Params**: /
+    * **Return values**:
+        1. *success* (boolean): *false*, with the reason in the log, if the registry is not
+           initialised, a token id is already claimed, or this is not the build the
+           implementation expects. Nothing is written to the game on any failure path.
+    * **Notes**:
+        * **This has to be called before posting, in single player too.** The single player
+          post serialises the command and rebuilds it through the registry, so an unregistered
+          type id is not a harmless no-op - the factory answers nothing and the post carries on
+          anyway.
+        * **No game need be running - call it as early as you like, and preferably not in a
+          session.** It is once per *process*, not once per game: the registry is built before
+          any game code runs and cleared only when the process exits. Registering early also
+          closes a window - a command arriving from a peer before we have registered is
+          silently dropped - and it does not wait for `setModuleBase`, because it resolves the
+          game module itself.
+        * Idempotent, and there is deliberately no unregister: the registry outlives any one
+          game and holds a pointer into this DLL.
+        * `script/bicelib_lua.lua` already calls this in its top-level block.
+* **postExampleCommand(table args)**
+    * Posts one of the **example** "ping" commands, carrying whatever numbers it is given.
+    * **Params**:
+        1. *args* (table, optional): a list of numbers, up to 32. Omitted or `{}` posts none.
+    * **Return values**:
+        1. *success* (boolean): *false* if the prototype or the kind is not registered, no
+           game is on screen, or the table holds something that is not a number
+    * **Notes**:
+        * A **table** rather than fixed arguments, so a caller is not boxed into one arity.
+        * What comes back out of the channel is executed on **every** machine in the game,
+          through the same ordered pump every other command goes through.
+        * In single player the object that runs is the factory's clone of the registered
+          prototype, rebuilt from the serialised bytes, **not** the object that was posted. So
+          an `Execute` line at all means the round trip is sound, and the arguments coming back
+          unchanged means the payload survived it.
+        * A non-number in the table is refused rather than coerced: a silent 0 would be a
+          different command from the one asked for, on every machine at once.
+        * The channel takes ownership - it deletes the object once it has serialised it.
+        * Adding a real command is `registerKind` plus a handler in C++, not a new export here.
+          This one exists to exercise the framework; see
+          `BiceLib/Commands/BiceCommandExample.hpp`.
+
 ## BiceLib.Inspector
 * **getSelectedEntity()**
     * Returns objects of what the player has selected ingame.

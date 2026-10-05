@@ -308,7 +308,7 @@ These carry a game in progress. Their `LoadKey` is the grammar of a save block.
 | `CTraitGainTracker` | `CPersistent` |  | 4 |  | 6 | CTrait.hpp | 24,137 | keys |  |
 | `CTransportSuppliesOrder` | `CAirOrder` |  |  | 2/2 | 2 |  |  | placed |  |
 | `CUndeclaredWar` | `CPersistent` |  | 6 |  | 3 | CWar.hpp | 1 | read | **read**: the save's record of a war nobody declared |
-| `CUnit` | `PAVCSubUnit::__CList` `CSelectable` `CReferenceObject` |  | 81 + 1 lua |  | 42 | CUnit.hpp |  | read |  |
+| `CUnit` | `PAVCSubUnit::__CList` `CSelectable` `CReferenceObject` |  | 81 + 1 lua |  | 43 | CUnit.hpp |  | read |  |
 | `CUnitDeployment` | `CDeployment` |  |  | 3/4 | 1 |  | 49 | placed |  |
 | `CUnitPlan` | `CPersistent` | 0x90 | 15 | 10/16 | 13 |  | 8,827 | read | **read**: a battle plan as the save keeps it |
 | `CVariables` | `_0A::anon::PAUCVariable::__CTernary` `CPersistent` |  | 1 |  |  | CFlags.hpp | 216 | part |  |
@@ -477,7 +477,7 @@ Objects the game makes and never persists: managers, caches, the AI.
 | `CConfirmDisband` | `CEU3Dialog` |  |  |  |  |  |  | RTTI |  |
 | `CConfirmDisbandAll` | `CEU3Dialog` |  |  |  |  |  |  | RTTI |  |
 | `CConfirmMakePride` | `CEU3Dialog` |  |  |  |  |  |  | RTTI |  |
-| `CConfirmRemoveAll` | `CEU3Dialog` |  |  |  |  |  |  | RTTI |  |
+| `CConfirmRemoveAll` | `CEU3Dialog` |  |  |  | 1 |  |  | RTTI |  |
 | `CConfirmSave` | `CEU3Dialog` |  |  |  |  |  |  | RTTI |  |
 | `CConfirmSavePlan` | `CEU3Dialog` |  |  |  |  |  |  | RTTI |  |
 | `CConfirmVictoryConditionResign` | `CEU3Dialog` |  |  |  |  |  |  | RTTI |  |
@@ -795,7 +795,7 @@ One class per effect, trigger, command and decision the event scripts can use. E
 | `CAnyNeighborProvinceTrigger` | `CAndTrigger` |  |  | 2/153 | 2 |  | 114 | RTTI |  |
 | `CAnyOwnedEffect` | `CMultipleTargetEffect` |  |  |  |  |  | 161 | RTTI |  |
 | `CAnyOwnedProvinceTrigger` | `CAndTrigger` |  |  | 2/153 | 2 |  | 130 | RTTI |  |
-| `CAssignLeaderCommand` | `CCommand` |  |  | 1/1 | 1 |  | 1 | placed |  |
+| `CAssignLeaderCommand` | `CCommand` |  |  | 1/1 | 3 |  | 1 | placed |  |
 | `CAtWarTrigger` | `CBoolTrigger` |  |  | 2/153 |  |  | 723 | RTTI |  |
 | `CAttachUnitCommand` | `CCommand` |  |  | 2/2 | 1 |  | 1 | placed |  |
 | `CBaseNeutralityTrigger` | `CValueTrigger` |  |  | 2/153 | 1 |  |  | RTTI |  |
@@ -876,7 +876,7 @@ One class per effect, trigger, command and decision the event scripts can use. E
 | `CCombatTemperatureTrigger` | `CIntTrigger` |  |  | 2/153 | 1 |  | 2 | RTTI |  |
 | `CCombatTerrainTrigger` | `CStringTrigger` |  |  | 2/153 |  |  | 16 | RTTI |  |
 | `CCombinedArmsTrigger` | `CBoolTrigger` |  |  | 2/153 |  |  |  | RTTI |  |
-| `CCommand` | `CPersistent` |  | 7 | 1/3 | 1 |  | 26,074 | read |  |
+| `CCommand` | `CPersistent` |  | 7 | 1/3 | 4 |  | 26,074 | read |  |
 | `CConquerProvinceCommand` | `CCommand` |  |  | 2/2 | 1 |  | 1 | placed |  |
 | `CConsoleMemberOption` | `CStandardlistboxItem` |  |  |  |  |  | 2 | RTTI |  |
 | `CConstructBuildingCommand` | `CCommand` |  |  | 2/3 | 1 |  | 6 | placed |  |
@@ -971,7 +971,7 @@ One class per effect, trigger, command and decision the event scripts can use. E
 | `CHourlyTickCommand` | `CCommand` |  | 3 |  | 7 |  | 1 | keys |  |
 | `CIdeologyChange` | `CCountryHistoryEntry` |  |  |  |  |  | 38 | RTTI |  |
 | `CIdeologyGroupTrigger` | `CTrigger` |  |  | 2/153 |  |  | 55 | RTTI |  |
-| `CIncreaseGameSpeedCommand` | `CCommand` |  |  | 1/3 |  |  | 1 | RTTI |  |
+| `CIncreaseGameSpeedCommand` | `CCommand` |  |  | 1/3 | 3 |  | 1 | RTTI |  |
 | `CInheritEffect` | `CDiplomaticEffect` |  |  | 3/91 |  |  | 33 | RTTI |  |
 | `CIntEffect` | `CEffect` |  |  |  | 1 |  |  | RTTI |  |
 | `CIntTrigger` | `CTrigger` |  |  |  | 1 |  |  | RTTI |  |
@@ -1096,7 +1096,7 @@ One class per effect, trigger, command and decision the event scripts can use. E
 | `CReleaseEffect` | `CDiplomaticEffect` |  |  | 3/91 |  |  | 73 | RTTI |  |
 | `CReleaseVassalEffect` | `CEffect` |  |  | 3/91 |  |  | 78 | RTTI |  |
 | `CRemCoreEffect` | `CIntEffect` |  |  | 3/91 |  |  | 168 | RTTI |  |
-| `CRemoveAllLeadersCommand` | `CCommand` |  |  | 1/1 |  |  | 1 | RTTI |  |
+| `CRemoveAllLeadersCommand` | `CCommand` |  |  | 1/1 | 1 |  | 1 | RTTI |  |
 | `CRemoveAttackerChange` | `CWarHistoryEntry` |  |  |  |  |  | 3 | RTTI |  |
 | `CRemoveBrigadeEffect` | `CStringEffect` |  |  | 3/91 | 1 |  | 6,881 | RTTI |  |
 | `CRemoveCoreChange` | `CProvinceHistoryEntry` |  |  |  |  |  | 185 | RTTI |  |

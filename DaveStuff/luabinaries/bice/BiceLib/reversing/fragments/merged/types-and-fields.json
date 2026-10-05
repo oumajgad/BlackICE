@@ -1,7 +1,7 @@
 {
  "agent": "types-and-fields: the embedded CUnitPlan, the subunit database's shape, four unnamed fields and the gameplay option that switches the supply model",
  "question": "Correct CUnit +0x1FC (a CUnitPlan by value, not a pointer) and establish the plan's layout; confirm and land CSubUnitDataBase's layout; name CProvinceTemplate +0x22/+0xA4 and CProvince +0x300/+0x304 if the evidence supports it; identify CCurrentGameState +0xC9C.",
- "source": "reversing/FINDINGS-manpower.md",
+ "source": "reversing/findings/FINDINGS-manpower.md",
  "addresses": [
   {
    "rva": "0x4DE9D0",
@@ -71,7 +71,7 @@
    "type": "uint8_t",
    "comment": "Non-zero on a land province, zero on a sea zone. 245 places in the image read it through a province's `path_node_ptr` (+0xD4), which is why it looked fundamental and unnameable; three of them fix which way round it is. `CPathFind::MayStep` refuses a **naval** step between two provinces that both have it set, and where exactly one has it, that template's `sea_province_id` (+0xA4) must name the other province. `CProvince::IsFrontProvince` (0xA56B0) skips any neighbour that does not have it. `CSafeNavalPathFind::StepCost` only looks for hostile buildings around the destination when the destination does **not** have it - i.e. only when a fleet is entering open sea. `CheckTransportOverload` puts a carried unit ashore only where it is set.",
    "evidence": "fieldchain.py --holder 0xD4 --index 0x22 --stride 1 gives 245 readers; the polarity comes from 0x5A274D-0x5A27AB (CPathFind::MayStep), 0x4A5739 (IsFrontProvince skipping a neighbour whose byte is clear, when a land front can only be against a land neighbour) and 0x5A2F3E (`cmp byte [edi+0x22], 0; jne` skipping the whole hostile-building block for a destination that has it). The one-line predicate at 0x18E590 - `return province->template->+0x22 != 0` - is what the callers of all three use. Marked inferred rather than confirmed because nothing here reads the map data itself: a live read in which a province listed in `map/default.map`'s `sea_starts` (ids 10500 and up in this mod) has the byte set, or a land province has it clear, would show it wrong.",
-   "source": "reversing/FINDINGS-redeploy.md"
+   "source": "reversing/findings/FINDINGS-redeploy.md"
   },
   {
    "struct": "CProvinceTemplate",
@@ -80,7 +80,7 @@
    "type": "int",
    "comment": "On a land province (`is_land` set), the id of the one sea province it connects to, as an index into `CMap::provinces` (`+0x2200`); 0 where there is none. Meaningless where `is_land` is clear, and nothing reads it there.\n\nIt is the single gate on a fleet crossing the coast. `CPathFind::MayStep` (0x1A2700) and `CPlannedPathFind::MayStep` (0x1A2D30) let a naval unit step out of a land province only to the province this names, and into a land province only from it; a step between two land provinces is refused outright. The helper at `0xA7D70` uses it the other way, replacing a land province by `map->provinces[sea_province_id]` until both ends of a pair are sea, which is also what fixes the target as a sea province: the loop terminates only when the province it lands on has `is_land` clear.",
    "evidence": "fieldchain.py --holder 0xD4 --index 0xA4 --stride 1 gives 31 readers, few enough to read. The comparisons that matter are at 0x5A277C and 0x5A27A5 (against the other province's `id` at +0xD0) and the indexing at 0x4A7DAB and 0x4A7DD1 (`map->provinces[value]`), which is what makes it a province id rather than a count. 0x47D6C7 tests it against 0 before using it, which is where the `0 means none` reading comes from. Marked inferred: the naming as the province's **sea** link rests on `is_land` being read correctly and on the 0xA7D70 loop terminating, not on map data. It would be shown wrong by a land province whose value names another land province, or by a coastal province with two sea neighbours whose fleets can nonetheless use both.",
-   "source": "reversing/FINDINGS-redeploy.md"
+   "source": "reversing/findings/FINDINGS-redeploy.md"
   },
   {
    "struct": "CCurrentGameState",

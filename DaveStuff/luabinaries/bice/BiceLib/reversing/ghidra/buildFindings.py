@@ -699,6 +699,27 @@ def main():
 
     lua = json.load(open(LUABIND))
     project = json.load(open(PROJECT, encoding="utf-8"))
+
+    # project.json must never name one address twice. Two entries for one rva are merged by
+    # add_function below - the second becomes an extra label on the first - which is right
+    # when the two names come from *different* halves of the fact base (the Lua half calls a
+    # getter GetCurrentGameState where the notes call it GetInstance; 54 functions carry such
+    # a label and all of them are fine). Within this one hand-maintained file it is never
+    # right: it means somebody added an entry for an address that was already recorded, and
+    # the merge then hid it. That is how `RegisterPersistentPrototypes` was inserted over
+    # `RegisterCommandTypes` on 2026-10-04 and silently became a label. Checked here because
+    # this runs on every pipeline invocation, and it cannot cry wolf - a duplicate key in a
+    # hand-kept file has no benign reading.
+    byRva = {}
+    for a in project["addresses"]:
+        rva = int(a["rva"], 16)
+        if rva in byRva:
+            print("!! project.json has two entries for rva 0x%X: %r and %r - one of them is a "
+                  "duplicate of something already recorded, and the build will quietly keep the "
+                  "first and label the second" % (rva, byRva[rva], a.get("name")))
+        else:
+            byRva[rva] = a.get("name")
+
     enums = set(lua["enum_types"])
     save_tokens = save_token_enum()
     if save_tokens:

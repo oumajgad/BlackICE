@@ -194,6 +194,159 @@ The broadcast is in this class's **pump**, `0x00B352C0`, which is `server.cpp`. 
 That is the same pair of virtual calls, in the same order, as the other post makes at
 `0x00B3C1B5`/`0x00B3C1CA`. **One serialiser serves both paths.**
 
+## The wire format: binary, and only on the broadcast path
+
+Settled 2026-10-04, which closes half of open item 1 below: the question was never only
+*how* a command is serialised but *into what*, and `CSaveWriter` has a `binary` byte that
+changes the answer completely.
+
+The broadcast builds its writer on the pump's own stack at `[ebp-0xA0]`: vftable
+`0x015FD940`, `depth` from ESI, `stream` from a 0x3C-byte object out of `operator new`, and
+**`binary` as `(stream->+0x13 != 0)`** at `0x00B36327` - not a constant. That stream comes
+from `SaveStreamConstruct` (`0x00AD0050`, rva `0x6D0050`), whose fourth argument picks the
+format: **0 sets `+0x13` and means binary, 1 clears it and means text.** The call at
+`0x00B362FD` passes ESI, and the last write to ESI before it is `xor esi, esi` at
+`0x00B362C5`.
+
+**So a command goes onto the network in binary** - token ids two bytes each, the payload
+after each, whitespace tokens dropped - and through exactly the same slot 1 / slot 2 pair
+that writes a savegame. There is no command-specific format at all; the binary flag on the
+writer is the whole difference.
+
+### The two branches of the mode 1 post
+
+Worth stating next to it, because the two are not variations on each other. **This table is
+about `0x00B369E0` only** - the mode 1, host channel's post - and the column headings are
+its own `+0x36` test:
+
+| | `+0x36 == 0`, this host's own queue | `+0x36 != 0`, broadcast |
+| --- | --- | --- |
+| what is queued | **the command pointer** | its bytes |
+| serialised | **never** | slot 7 type id, then slot 1 |
+| on the way out | cloned through slot 13 | rebuilt on each peer |
+
+**This table used to be headed "And only the broadcast serialises", with its first column
+labelled "loopback", and that cost a session.** "Loopback" is the name of a *different
+channel class* - the mode 2 one a single player session gets, whose post is `0x00B3C0A0`
+and which **does serialise**, as the step-by-step above it says and as
+`LoopbackCommandChannel::Post` in `project.json` has always said. Anyone reading the table
+for "what happens in single player" got the opposite of the truth. The record was right and
+the summary of it was wrong, which is the more dangerous way round.
+
+So, the thing the old table was reaching for, stated without the ambiguity: **a command may
+only carry what survives a round trip through this writer**, because on every path except
+one branch of one channel's post it is torn down to bytes and rebuilt. That is why
+`CAssignLeaderCommand` holds its unit and its leader as `CPersistent` id pairs rather than
+as pointers - see point 5 of the multiplayer section.
+
+Which channel serialises, in one place:
+
+| channel | post | serialises? |
+| --- | --- | --- |
+| mode 0, client | `0x00B3A670` | not read |
+| mode 1, host | `0x00B369E0` | only the `+0x36 != 0` branch |
+| **mode 2, single player** | `0x00B3C0A0` | **always**, and round-trips through the factory |
+| other | `0x00B3D500` | not read |
+
+### The reading half - read 2026-10-04, and it is symmetric
+
+The counterpart was found by asking which functions in the network region build a
+`CParseContext` (`findRefs.py --callers 0xA7A460`): two do, and `slotcalls.py 3` filtered to
+the same region gives a third, which is the command one. All three have the same shape, so
+this is the house style rather than one path's trick:
+
+    stream  = operator new(0x3C); SaveStreamConstruct(stream, bytes, 1, 0, 0)   ; format 0 = binary
+    tok     = 0xA6A800(stream)                                                  ; the tokenizer
+    CParseContext::CParseContext(&ctx, ..., tok)                                ; 0xA7A460
+    ParseReadKeyValue(&ctx)                                                     ; 0xA7ACB0 - the type id
+
+and then, at `0x00B3C338`-`0x00B3C36E`, the part that was missing:
+
+    obj = factory->slot2(..., typeId)       ; 0xA7BDA0, below
+    if (obj == 0) skip
+    obj->slot3(&ctx)                        ; CPersistent::Load, then slot 4 LoadKey per key
+
+**The factory is a registry of prototypes, and instantiating is cloning.**
+`CreatePersistentByTypeId` (rva `0x67BDA0`) is slot 2 of the three-slot vftable at
+`0x015FD968` - 0x28 past `CSaveWriter`'s `0x015FD940`, the same translation unit, and its
+error path names the file: `'order.cpp'`. It hashes the type id into a table whose bucket
+count and bucket array are the runtime-filled globals `[0x1B16644]` and `[0x1B16648]`, walks
+the bucket comparing each entry's object at **`+0x30`** - the type id field the command
+constructors write - and then clones the match through **slot 13** (`mov eax,[edx+0x34];
+call eax` at `0xA7BEF9`).
+
+So **slot 13 is not only the drain's clone: it is also how a command arrives off the wire.**
+One mechanism, two uses, which is why every command has to have it.
+
+The round trip entire:
+
+| | out | in |
+| --- | --- | --- |
+| the type | slot 7, written by `SaveWriteKey` | `ParseReadKeyValue`, then the prototype table |
+| the object | - | **slot 13**, cloned from the prototype |
+| the fields | slot 1 `Save` -> slot 2 walker -> `SaveWrite*` | slot 3 `Load` -> slot 4 `LoadKey` -> `Parse*` |
+| the format | `CSaveWriter::binary` | the stream's own `+0x13`, set the same way |
+
+### Who fills the prototype table - read 2026-10-04
+
+A startup pass, as guessed, and **unrolled**. Three globals, all zero in the file:
+`[0x1B16640]` the entry count, `[0x1B16644]` the bucket count and `[0x1B16648]` the bucket
+array.
+
+`PersistentRegistryInit` (rva `0x67BFA0`) sets the bucket count to **511**, allocates and
+zeroes `511 * 4` bytes for the array, and answers the address of the count - the MSVC shape
+of a function-local static's initialiser. Its one caller is `0xD1E7A0`, in the CRT
+initialiser range, so the table exists before any game code runs.
+`PersistentRegistryClear` (rva `0x67BFF0`) is the teardown, one caller at `0xD283E0`, and it
+settles the node layout: a bucket is a singly linked list of **8-byte heap nodes
+`{ object +0, next +4 }`**, and it frees the nodes but not the prototypes.
+
+`RegisterCommandTypes` (rva `0x485050`) is the filling - and it was **already in the record**,
+as the function that "calls the default constructor of every command class in the game so the
+command factory has a prototype of each", marked `likely`. That was right; this run upgrades it
+and locates the factory it was pointing at. One block per class:
+
+    proto = operator new(<size>); <ctor>(proto)
+    bucket = proto->+0x30 / [0x1B16644]          ; div, remainder in EDX
+    node = operator new(8)
+    node->object = proto; node->next = buckets[bucket]
+    buckets[bucket] = node
+    ++[0x1B16640]
+
+**The key is the prototype's own `+0x30`** - the type id both command constructors write -
+so a class registers itself under the id its slot 7 returns and the table carries no
+separate key. Read from the entry, the first block allocates `0x44` bytes and calls
+`0x40B610`, which writes `CCommand`'s vftable then `CBattlePlanSendCommand`'s.
+
+**66 registrations in that body and 68 image-wide** - the other two are at `0x884B43` and
+`0x884B50` - counted by the byte encoding of `inc dword ptr [0x1B16640]` over the recorded
+extent rather than by decoding. Two caveats, both load-bearing: it is a count of **one
+encoding**, so read it as a floor; and the existing entry counts "about a hundred"
+constructor pairs in the same body, so **not every class constructed there is necessarily
+registered**, and which are not is unestablished.
+
+*Two things here came from the record rather than from this run, and both matter.* Decoding
+0x2200 bytes from the entry found no `ret` at all and I nearly wrote the function up as
+unbounded - the entry already had `0x885050-0x887F37`, and the bare `ret` is at `0x887F36`,
+which the full extent confirms. And naming it was a **duplicate**: rva `0x485050` was
+already recorded, `grep 0x485050 ghidra/project.json` was one command, and I did not run it
+before inserting. The duplicate has been withdrawn and the original revised. Trap 14,
+committed by the session that writes trap 14 into everyone else's briefs.
+
+*A method note, because the first attempt at this was a false negative.* A read/write
+classifier over `findValue`'s hits reported "no writers anywhere" and then, fixed, reported
+140 confident reads that were **all garbage**: `findValue` returns the displacement's
+address, and walking back one byte to find the instruction happily decodes
+`xor eax, 0x1B16644` out of the middle of a real instruction. Its positive control - a
+hand-verified read inside the lookup - failed both times, which is the only reason the
+output was thrown away rather than believed. What actually worked was `findBytes` on
+specific encodings (`FF 05`, `A3`, `C7 05`), which cannot land mid-instruction because the
+opcode is part of the pattern.
+
+**Still not established**: slots 0 (`0xA6F290`) and 1 (`0xA7C3D0`) of the factory's vftable,
+whether anything registers prototypes outside those 68 sites, and the path from the writer's
+stream to `send()`.
+
 ## The drain, `0x00B3BF90`
 
 Loops `try_pop` (`0x00B3E660`) on `channel+0x7C` until it comes back empty. For each item:
@@ -330,6 +483,34 @@ loopback path as well as on the broadcast path, because both use slot 1.
    generator bookkeeping travelling with the tick means peers have a way to notice a
    divergence, or to be corrected by it; which of the two, this document does not establish,
    because nothing here read the receiving side's use of `command+0x3C`.
+5. **Being inside `Execute` is not enough: the decision's *inputs* have to be on the ordered
+   path too.** This sharpens point 3, which on its own reads as "put your state change inside a
+   `CCommand::Execute` and you are safe" - and that is only half of it. `Execute` runs on **every**
+   peer, so anything it reads that exists on one machine only makes it do something different on
+   each: a pressed key, `CInGameIdler`'s selection (it holds its own session's and nobody else's),
+   `played_country_id`. The command's own fields are the ordered path; the machine it happens to be
+   running on is not.
+
+   **Worked example, and the first thing in this document that was actually run.** BiceLib's
+   "hold Ctrl to unassign only the selected units" was first built by filtering inside
+   `CRemoveAllLeadersCommand::Execute` (rva `0x1D8440`), whose loop strips the leader off every
+   unit of one country. The filter read the Ctrl key and the local selection, so the client that
+   pressed the button stripped three units and every other client stripped fifty. An owner check
+   added in the belief that it guarded against this made it **worse**, not better: it limited the
+   filter to the machine whose player owned the units, which is precisely the divergence.
+
+   The fix was to move the choice to where the command is *built* - `CConfirmRemoveAll::OnConfirm`
+   (rva `0x348840`), a GUI handler, which runs only on the machine whose player clicked. Reading
+   the keyboard and the selection **there** is fine, because what leaves it is one
+   `CAssignLeaderCommand` per unit, and that command keeps each end as a `CPersistent` id pair
+   rather than a pointer - so every peer resolves the same objects. **Tested in multiplayer on
+   2026-10-04: it works.** That is one observation and it does not settle section 302's other
+   readings, but it is the first support any of them has had.
+
+   So the rule, for a mod: **a local input may choose which commands to post, never what a
+   command does when it runs.** If the thing you want is not expressible as a command that names
+   its own targets, the honest options are to add the per-target command or to stay out of
+   multiplayer - not to read local state in `Execute` and hope.
 
 ## Which classes are network-related
 
@@ -414,3 +595,202 @@ answered: the snapshot is copied into the command and the command's serialiser w
 on both the loopback and the broadcast path. That document's caution - "nothing here traced
 the command onto a socket" - still stands for the socket half, and still stands after this
 one.
+
+## Building one: read and written 2026-10-05
+
+The implementation is `BiceLib/Commands/CBiceCommands.cpp` and its header carries
+the design. This section is the reversing half - what had to be read, and the two places
+the plan in `PLAN-customcommand.md` turned out to be wrong.
+
+### The plan had the step order backwards
+
+It sequenced "a payload-free command in single player" before "register the token", on the
+strength of the summary table corrected above. Both are wrong the same way: **the single
+player post serialises and rebuilds the command through the prototype registry**, so
+registering a prototype is a prerequisite for single player, not a multiplayer refinement.
+Decoded at `0x00B3C0A0`: `SaveStreamConstruct` with EBX as the format argument and
+`xor ebx, ebx` at `0x00B3C0C7` (so **binary**, both of its streams), slot 7 then
+`SaveWriteKey`, slot 1, then a second stream, the binary tokenizer,
+`ParseReadKeyValue`, `CreatePersistentByTypeId` at `0x00B3C353`, and
+`cmp eax, ebx; je 0x00B3C36E` at `0x00B3C355`.
+
+That `je` is worth being precise about: **it skips the Load, not the post.** Execution falls
+into the queue push either way. So an unregistered type id is not a clean no-op in single
+player, and what reaches the execute queue in that case was not established - which is
+reason enough for the DLL to refuse to post until it has registered.
+
+### Three payload-free command classes exist, and they are the donor
+
+A class whose virtual **slot 2 is `CCommand::SaveContents` itself** has no fields of its own
+past `+0x3C`. Searching `.rdata` for that function's address finds four slots:
+
+| table | class | type id |
+| --- | --- | --- |
+| `0x015B4F74` | `CCommand` - its own abstract table, slot 7 `_purecall` | - |
+| `0x015D3094` | `CClearAllControllersCommand` | `0x38A` |
+| `0x015D362C` | `CIncreaseGameSpeedCommand` | `0x292` |
+| `0x015D366C` | `CDecreaseGameSpeedCommand` | `0x293` |
+
+So a custom payload-free command does not need six slots written by hand: **copy one of
+those tables and override three.** `Execute` (6), the type id (7) and the clone (13) are
+ours; slot 0, 1, 2, 3, 4, 12, 14 and the five unexamined ones are the game's own working
+implementations and cannot be got subtly wrong because they are not ours.
+
+Why each of the three must be ours, and no others:
+
+- **Slot 7** is the type id, and the whole point is that ours differs.
+- **Slot 13** ends `mov dword ptr [esi], 0x15D362C` - it stamps *the donor's* vftable into
+  the object it makes, so a borrowed clone hands back an object of the donor's class and our
+  `Execute` never runs. Ours delegates to the donor's and rewrites that one dword. The type
+  id needs no rewriting, because `CCommand::CCommand` (rva `0xB530`) copies `+0x2C`/`+0x30`
+  from the source.
+- **Slot 0 does *not* have to be ours**, which is the useful surprise. `CCommand::~CCommand`
+  (rva `0x14E1E0`, 77 table slots) frees with a plain `free(this)` and is handed no size, so
+  it is correct for a subclass of any size - provided the object came from the game's own
+  `operator new`.
+
+### Slot 13 takes an `std::string` by value
+
+`ret 0x1C`, and both callers agree: `CreatePersistentByTypeId` at `0xA7BED4` and the
+loopback drain at `0xB3BFE3` each `sub esp, 0x1C`, build an empty string in that space, and
+call through `[vftable+0x34]`. The callee owns it - the donor frees its buffer when the
+capacity at `+0x14` is `0x10` or more. Two callers agreeing is the check; one would not
+have been. What the string holds, built from `factory+0x32C` or `session+0xBC`, was not read.
+
+In MSVC this is expressible without assembly as a `__fastcall` with a placeholder second
+parameter, because `__thiscall` and `__fastcall` are the same machine contract once the
+receiver is in ECX. Verified on the built DLL rather than trusted: slot 7 compiled to
+exactly `mov eax, 0x13; ret`, and slot 13's two exits both `ret 0x1C`, the live one
+preceded by the single `mov dword ptr [eax], <our vftable>`.
+
+### The type id: a built-in gap beats a registered token
+
+The plan's step 2 was to register a save token, and the blocker was that
+`BuildTokenTable`'s appender had not been read. **That step is not needed, and registering
+a token would have been the worse choice anyway.**
+
+A mod-registered token is numbered in **load order**, so its id depends on what content is
+loaded and in what sequence. A command's type id has to be identical on every peer or the
+factory answers 0 there and the command is silently dropped - so load-order numbering turns
+a content difference into a desync. A gap inside the **built-in** range is the same number
+in every process that runs this executable.
+
+`0x13` is such a gap: one of `0x7`, `0xA` and `0x13`, the three ids the binary tokenizer
+routes as ordinary keys while the built-in table holds a default-constructed empty string
+for them. The index is valid, so `TokenText`'s unchecked `begin + id * 0x1C` is safe, and
+there is no name to collide with.
+
+Is it free? Of the 865 `.rdata` slots holding `CPersistent::Save`, **196 have a constant
+`mov eax, imm32; ret` in slot 7**; the lowest id any of them claims is `0x8A`, and none
+claims `0x7`, `0xA` or `0x13`. Positive control: `0x28D`, `CHourlyTickCommand`'s, turns up
+exactly once. **The negative is a floor and not a proof** - 669 of those tables have no
+constant slot 7, so a class computing its id another way would be missed, and the registry
+holds every `CPersistent` prototype rather than only commands. So the DLL **walks the live
+bucket at registration and refuses if anything already claims the id**: the static search
+chooses the number, the runtime check is what makes it safe. A collision would be quiet and
+nasty, since our node is prepended and would win the lookup, stopping the other class from
+deserialising.
+
+### The registry insert, and its globals
+
+Four writes after the game's own init, mirroring `RegisterCommandTypes`: build the
+prototype, allocate an 8-byte node, prepend it to bucket `id % 511`, bump the count. The
+three globals are **virtual addresses** in the findings prose, which is how that document
+writes everything; as the rvas a `GameClasses` header wants they are
+
+| va | rva | holds |
+| --- | --- | --- |
+| `0x01B16640` | `0x1716640` | the entry count |
+| `0x01B16644` | `0x1716644` | the bucket count, 511 once initialised |
+| `0x01B16648` | `0x1716648` | the bucket array |
+
+All three are zero-fill `.data`, so the executable file carries no value for them - the
+expected answer, not a failed read, and `g_CCurrentGameState` behaves identically as a
+positive control. The save-token vector's `begin`/`end` are `0x17165B4`/`0x17165B8` on the
+same footing.
+
+### What this still does not establish
+
+- Whether a posted-but-unexecuted command can reach a savegame. Nothing was read about it.
+- What reaches the execute queue when the factory answers 0, as above.
+- `CCommand +0x24` and the word at `+0x28`: copied by the base copy constructor, so they
+  travel with a command, but what they hold was not read. They are not in this document's
+  `CCommand` layout table.
+- `CIncreaseGameSpeedCommand::Execute` (rva `0x2DA5C0`) was deliberately **not** recorded.
+  Its entry reads the game-state global and branches, and the branch taken when the state is
+  absent constructs a `0xDA8`-byte object with `CCurrentGameState`'s vftable, which is not
+  what an "increase game speed" command should plausibly do. The implementation did not need
+  it, and half a reading is worse than none.
+
+## A payload instead of more type ids - 2026-10-05
+
+The first custom command worked but it does not scale, and the reason is arithmetic. A type id
+has to be a token the table really covers, because it comes back through `TokenText`'s
+unchecked `begin + id * 0x1C`; inside the built-in range only **three** ids are both unclaimed
+and routed as ordinary keys by the binary tokenizer - `0x7`, `0xA` and `0x13`. Registering new
+tokens is not an escape: mod tokens are numbered in **load order**, so their ids depend on what
+content is loaded and in what sequence, and a type id that differs between peers is dropped on
+the peers that do not know it.
+
+Three ids is not a framework. So `CBiceCommands` spends **two, once, for ever**: `0x13` is the
+type id of a single class and `0x7` is the one key inside it, whose value is the whole payload
+as a string. `0xA` is left spare. Which action and its arguments live *inside* that string, in
+a format of our own, where ids cost nothing.
+
+Format "B1": fixed-width uppercase hex, `"B1" <kind:4> <count:2> <arg:8>*count`, so the whole
+string is `8 + 8 * count` characters and its length alone validates it. Text rather than raw
+bytes because the value goes out through `SaveWriteString` and comes back through
+`ParseString`, which quote it in a text save and copy it raw in a binary one - an alphabet with
+no quote, no backslash, no whitespace and no `\xA7` colour marker survives both unescaped.
+
+### Where a payload may not live, and what that costs
+
+**Not in the base's `Hoi3CString` at `+0x8`.** That was the tidier plan, because the base
+already constructs and destroys one there and the object would have stayed exactly `0x3C`
+bytes. But `CCommand::LoadKey` (`0x67BC80`) touches it **before its switch and for every
+key**: it compares `+0x8` against the empty string and, when it is empty, assigns it from
+`parse+0x32C`. `+0x8` is a field the base writes on the load path, not spare space.
+
+That one reading is what makes the object bigger than the base, and that in turn is what makes
+**slot 13 a full clone rather than a delegation**. `CBiceCommand` could hand the work to the
+donor's own clone and rewrite one dword, because it was the base's size; the donor's clone
+allocates `0x3C`, so anything larger has to allocate, construct, copy the base scalars and
+destroy the by-value string argument itself. The payload must survive it: the loopback pump
+clones every item off the queue and it is the clone that executes.
+
+While it was being read, two entries in the record were corrected:
+
+- **`ParseString`'s receiver is confirmed**, where the entry said "the register is inferred".
+  The parse context is in **ECX**; three independent call sites agree, each inside a `LoadKey`
+  doing `mov ecx, [ebp+8]` then pushing a destination and a flag - `0xB3208B`, `0xB45640`,
+  `0xB57172`. `ret 8`.
+- **The game's `std::string` is `0x18` bytes**, settled by `ParseString` building one of its
+  own on the stack at `0xA7AFCF`: buffer at `+0`, size at `+0x10`, capacity at `+0x14`.
+  BiceLib's `Game::String` asserts exactly that and has been right all along. Slot 13's
+  `ret 0x1C` is that `0x18` plus four bytes of argument slack, not a bigger type.
+
+### What the built DLL was checked for
+
+Five slots, five different stack contracts, and a wrong `ret` immediate on any of them
+corrupts the stack - slots 2 and 4 on every command serialised or loaded, slot 13 on every
+command that arrives. So the compiler's output was fingerprinted rather than trusted:
+slot 7 `mov eax, 0x13; ret`, slot 2 `ret 4`, slot 4 `ret 8`, slot 6 a bare `ret`, slot 13
+`ret 0x1C`. Re-checked after the implementation was rewritten, because "it compiled" says
+nothing about a `ret` immediate.
+
+*A method note.* Searching the DLL for `mov ecx, 7` (`B9 07 00 00 00`) to prove the payload
+token reaches `SaveWriteKey` found six sites, none near our code, and that looked for a moment
+like a missing write. It was a failed guess at an encoding: the compiler had materialised the
+constant as **`lea ecx, [edx + 7]`** in three bytes instead of five, having just zeroed EDX.
+Reading the body settled in one pass what byte-pattern search had made look like a bug -
+the same lesson as the read/write classifier that produced 140 confident rows of garbage.
+
+### Still unestablished
+
+- Whether a posted-but-unexecuted command can reach a savegame. Nothing read.
+- What `ParseString`'s second argument selects; 0 at two of three sites.
+- Which of `CCommand::LoadKey`'s three names belongs to which of `0xC3`, `0xC8`, `0xF3`. The
+  ids and the `0xF3` arm's destination (`+0x38`, the serial) are read; the pairing is not.
+- `CCommand +0x24` and the word at `+0x28`: carried by the base's copy constructor, so they
+  travel with a command, but what they hold was not read. Our clone copies them because the
+  game's does.

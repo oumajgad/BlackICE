@@ -24,6 +24,13 @@ if mod then
     -- BiceLib.startConsole() -- Creates a console for debug information
     BiceLib.setModuleBase()
 
+    -- Commands
+    -- Puts BiceLib's own CCommand in the game's registry, so a mod action can be made
+    -- multiplayer safe. Registered here rather than in a session: the registry is
+    -- process-wide, and a command arriving from a peer before we have registered is
+    -- silently dropped. Runs once per Lua state and is a no-op after the first.
+    BiceLib.Commands.registerBiceCommands()
+
     -- Leaders
     -- BiceLib.Leaders.activateLeaderPromotionSkillLoss()
     BiceLib.Leaders.activateLeaderListShowMaxSkill()
