@@ -576,3 +576,203 @@ The agent also recommended promoting its `wave12c_sigcheck.py` to `scripts/` as 
 flag on `checkSignatures.py`: the existing `--only` can check a signature that is already in
 `project.json`, which leaves an agent unable to check its own new entries before submitting them.
 That is a real gap in the tooling and is on the queue rather than done.
+
+## Slot 12: there is no `CEffect` slot 12, and the five bodies are not one function
+
+Wave 13 agent B, 2026-10-05. Addresses are **rvas** against `0x400000`.
+
+`CEffect`'s own table has twelve slots. The thirteenth slot that 43 of the 101 tables carry is not
+an override of anything `CEffect` declares - **five of `CEffect`'s sibling abstract middles each
+declare their own first virtual, which therefore lands at index 12 in every table below them.** The
+partition is exact and total:
+
+| body | holders | the class that owns it | `ret` | what it is |
+| --- | --- | --- | --- | --- |
+| `0x59D4F0` | 24 | **`CIntEffect`** - every heir | `0xC` | `FormatValueText` |
+| `0x59CB90` | 11 | **`CValueEffect`** - every heir | `0xC` | `FormatValueText` |
+| `0x59DC90` | 2 | **`CBoolEffect`** - both heirs | `0xC` | `FormatValueText` |
+| `0x59E220` | 2 | **`CStringEffect`** - both heirs | `0xC` | `FormatValueText`, the stub |
+| `0x5BD110` | 4 | **nobody** - a four-way fold | `8` | `GetTargetCountryTag` |
+
+Of the 111-class family, 58 tables have 12 slots and 43 have 13, and the 43 split 24/11/2/2/4
+**exactly by RTTI base**. The consequence is sharper than "grouped by scalar middle class" looks:
+`0x5BD110` cleans **8** bytes and the other four clean **0xC**, so **one slot index carries two
+unrelated signatures**. A virtual call through slot 12 is only meaningful behind a known middle
+class, and `vf_12` on an arbitrary effect table means nothing on its own.
+
+That `CStringEffect` and `CBoolEffect` really do declare the slot - rather than their two leaves each
+declaring it and the linker folding - is settled by the *other* string-shaped middles: `CFlagEffect`
+(6 heirs) and `CVariableEffect` (2 heirs) both derive straight from `CEffect` and all eight of their
+tables have **twelve** slots. `CStringEffect`'s only two heirs in the RTTI export are
+`CLoadOOBEffect` and `CRemoveBrigadeEffect`, both with thirteen.
+
+### `CIntEffect::FormatValueText`, rva `0x59D4F0`
+
+`0x75A` bytes, one `ret 0xc` at `0x59DC47`; four `int3` before it (the function above is
+`CIntEffect::TakeScalarValue` at `0x59D4A0`, 0x50 bytes earlier - the two are adjacent by design) and
+nine after.
+
+    Hoi3CString* __thiscall CIntEffect::FormatValueText(
+        CIntEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString* key)
+
+It renders **the caller's localisation key** with the effect's own number substituted in:
+`GetText (0x682490)` on `key` into a stack `CInternationalizedText`, four replacements added, then
+`CInternationalizedText::Render (0x682E40)` into `out`, which comes back in EAX. The four tokens:
+
+| token | what goes in |
+| --- | --- |
+| `$VALUE$` | a colour run - yellow, then green when `this->+0x20 > 0` and red when `< 0` and **nothing at all when it is exactly 0** - then **`abs(value / 1000)`** as a plain integer, then back to white |
+| `$DIRECTION$` | `GetText("GAIN")` when `+0x20 >= 0`, `GetText("LOSE")` otherwise |
+| `$WHERE$` | the scope's province, named through the game state, coloured yellow |
+
+The `/1000` is `imul 0x10624DD3; sar edx,6` at `0x59D5B7`, then the `cdq/xor/sub` absolute-value
+idiom, then `_itoa` (`0x79A0C4`) base 10. **The digits never carry the sign** - the sign is in the
+colour and in `$DIRECTION$`. And the `/1000` is the exact inverse of `CIntEffect::TakeScalarValue`'s
+`atoi(text) * 1000`, which is the control on the scale.
+
+`$WHERE$` is **unguarded**: `g_CCurrentGameState (0x1A89790) ->provinces (+0xB8C) [scope->province
+(+0x28)]`, then slot 7 of that province's second vftable at `+8`. Nothing tests whether the scope has
+a province, so on a country-scoped effect it names **province 0**. (It also lazily constructs the
+game state if the global is null - `operator_new(0xDA8)`, `CGameState::CGameState (0x27D070)`,
+vftable VA `0x15CF674` - the same inlined singleton accessor `CCountry::GetActingCapitalLocation`
+carries.)
+
+**Nothing in the image calls it.** Two scans, both with positive controls:
+
+1. every `mov r32,[r32+0x30]` in `.text` followed by a `call` on the same register - 464 sites. The
+   only three inside the effect module (VA `0x99C000`-`0x9C2000`) have a non-effect receiver
+   (`[edi+0x5C]`/`[edi+0x64]` neighbours: `0x5A885C`, `0x5A88C0`, `0x5B5ACC`).
+2. every slot body of all 43 thirteen-slot family classes, each bounded by its own padding run,
+   scanned for a `+0x30` dispatch.
+
+*The controls:* the same two scans find `0x59CB90`'s two callers and all nine of `0x5BD110`'s. And a
+scan for the one-instruction `call dword ptr [reg+0x30]` form returns **zero sites anywhere in the
+image**, so the two-instruction scan is not missing an encoding. So the 24 `CIntEffect` leaves each
+duplicate these substitutions inside their own slot 9 instead. A caller would need a `CEffect*`
+receiver, and a decision or event tooltip builder outside the family is the remaining candidate.
+
+### `CValueEffect::FormatValueText`, rva `0x59CB90` - and the two callers
+
+`0x905` bytes, one `ret 0xc` at `0x59D494`, nine `int3` after; the byte before the entry is a
+**single** `int3` and the function above is `CValueEffect::TakeScalarValue` at `0x59CB50` - the trap
+2 pair `TRAPS.md` already lists.
+
+Same shape, same `$DIRECTION$` and `$WHERE$`, a decimal `$VALUE$`, and one token the integer form has
+not got:
+
+| token | what goes in |
+| --- | --- |
+| `$VALUE$` | the colour run, then **`fabs(value / 1000.0)`** to **two** decimals (`cvtdq2ps`, `divsd` the 1000.0 at `0x160A300`, `fabs` through `0x40C390`, format through `0x65AEC0` with precision 2) |
+| `$PERC$` | the number read as a **multiplier**: `(value/1000.0 - 1.0) * 100` to **one** decimal, with a literal `+` prefix when positive and nothing when not, then a percent sign and back to white. Unlike `$VALUE$` it **keeps its sign** |
+
+So for a value effect `1.25` renders as `$VALUE$ = 1.25` and `$PERC$ = +25.0%`, and `0.8` renders as
+`0.80` and `-20.0%`. The arithmetic is at `0x59CFCA`-`0x59D097`: `subsd` the 1.0 at `0x160A248`,
+`comiss` the 0.0 at `0x15BED10` choosing the `+` at `0x15BC244` or the shared empty string at
+`0x15B4945`, `mulsd` the 100.0 at `0x160A358`. `0x40C390` is `fld; fabs; fstp` - decoded, not
+assumed.
+
+**Its two callers are its whole purpose, and they are the only two in the family.**
+`CWarexhaustionEffect::GetText` (`0x59E9A0`) and `CRevoltRiskEffect::GetText` (`0x5A5600`) are each
+`0xA6` bytes with a single `ret 0x28`, and each is three lines: build one `Hoi3CString` of its own
+keyword's localisation key (`WAREXHAUSTION_EFFECT` at `0x15F39E8`, `REVOLTRISK_EFFECT` at
+`0x15F3B38`), hand it to slot 12 with `out` and `scope`, free it, return `out`. A byte compare of the
+two `0xA6` ranges finds exactly nine differing bytes - the key pointer and its length at
+`+0x29`..`+0x2C`, and three `call rel32` displacements at `+0x40`, `+0x6C`, `+0x8A`, which cannot be
+equal in two functions at different addresses.
+
+The call sites also fix the argument order beyond doubt: `push <local key>; mov eax,[esi]; mov
+eax,[eax+0x30]; push edx; push edi; mov ecx,esi; call eax` with `edx = [ebp+0xC]` and
+`edi = [ebp+8]`. The `Hoi3CString unread` parameter is `CEffect::GetText`'s `group` - `0x1C` bytes
+from `[ebp+0x10]` to `[ebp+0x2B]`, read only to free its heap buffer, exactly as the base's own body
+does, and 4+4+0x1C+4 = 0x28.
+
+The other nine `CValueEffect` leaves inline the same sequence by hand; `CDissentEffect::GetText`
+(`0x5BA110`) is the clearest, doing its own `GetText('ADD_DISSENT_EFFECT')` and its own `$VALUE$`.
+
+### `CBoolEffect::FormatValueText`, rva `0x59DC90`
+
+`0x536` bytes, one `ret 0xc` at `0x59E1C3`, ten `int3` after. Held by `CFixedAIStrategyEffect` and
+`CFormGovernmentInExileAction`. Same construction with only **two** tokens, because a bool has no
+number: `$DIRECTION$` is `GAIN`/`LOSE` on `cmp byte ptr [esi+0x20], bl` at `0x59DCCD` - so
+**`CBoolEffect`'s value is a byte** - and `$WHERE$` is the scope's province, unguarded. No `VALUE`
+and no `PERC` string anywhere in the body. No caller. Recorded `inferred`, because its role rests on
+being the same construction as two siblings whose callers are known rather than on a call site of
+its own.
+
+### `CStringEffect::FormatValueText`, rva `0x59E220` - the body that explains the other four
+
+`0x2E` bytes, nine instructions, one `ret 0xc` at `0x59E24D`. The whole of it assigns the literal at
+`0x15F39D0`, length `0x13`, through `std::string::assign` (`0xA160`) into `out` and returns `out`.
+That literal reads **DON'T CALL THIS ONE**.
+
+Neither `scope` nor `key` is read. The virtual is declared independently on five sibling middles; the
+middle whose value is a string has nothing to substitute, so its implementation is a loud marker
+rather than a silent empty one. Both heirs inherit it and neither calls it.
+
+**Trap 2, a new pair for the list: `0x59E24D`/`0x59E250`.** The `ret 0xc` is followed by **no padding
+at all** by a fresh `push ebp` at `0x59E250`, an effect constructor (`ret 0x108`, a `CToken` by
+value, writing vftable VA `0x15F445C` and `CPersistent::token` `0x18D`). So `functionStart(0x59E250)`
+answers `0x59E220` and `retsBefore` reports one unexplained `ret`.
+
+### `Effect_GetTargetCountryTag`, rva `0x5BD110` - the one that is load-bearing
+
+`0x106` bytes, `ret 8` at `0x5BD215` with an early `ret 8` at `0x5BD14F`, eight `int3` after. Slot 12
+of `CWarEffect`, `CWarGoalEffect`, `CModifySpiesEffect` and `CUndeclaredWarRegionEffect`. It answers
+the `CCountryTag` the effect acts on, four ways in priority order:
+
+1. `this->use_this (+0x1C)` set -> `EventScope_GetCountryTag(scope)` (`0x5C1A40`, already recorded).
+2. `this->use_from (+0x1D)` set -> `scope->from_country_tag (+0x18)` / `from_country_id (+0x1C)`.
+3. neither, and `this->+0x24 == 0` -> `g_CCurrentGameState ->provinces (+0xB8C) [scope->province
+   (+0x28)] ->controller (+0x334)`.
+4. otherwise the tag written in the script, a `CCountryTag` at `this->+0x20`/`+0x24`.
+
+**Case 3 is the mod-facing one: `war`, `war_goal`, `undeclared_war_region` and `modify_spies` with no
+country named fall through to whoever currently *controls* the scoped province - `CMapProvince +0x334
+controller`, not `+0x32C owner`.** Occupation, not ownership. The two are 8 bytes apart and the
+body's displacements are `0x334`/`0x338`; `CCountryTag` is the recorded 8-byte
+`{char tag[4]; int id}` and the body writes `out->+0 = <tag>` / `out->+4 = <id>`, which is exactly
+that layout.
+
+**Nine call sites, in both halves of all four classes** - so this is not a tooltip helper, it is how
+those four effects decide whom to declare war on: `CWarEffect::Execute` `0x5BC6FB`;
+`CWarEffect::GetText` `0x5BC9D0` and `0x5BCA83`; `CUndeclaredWarRegionEffect::Execute` `0x5BCF28`;
+`CUndeclaredWarRegionEffect::GetText` `0x5BD24E`; `CWarGoalEffect::Execute` `0x5BD5E3`;
+`CWarGoalEffect::GetText` `0x5BD6C2`; `CModifySpiesEffect::Execute` `0x5BE142`;
+`CModifySpiesEffect::GetText` `0x5BE1DD`. Every one of the nine follows the call by reading
+`scope->country_tag (+0x10)` - the resolved tag is immediately set against the acting country. (The
+scan also threw two false positives, `0x5BBFA6` and `0x5BCF9B`, which are not dispatches at all; both
+discarded by hand.)
+
+**Left class-free, deliberately (trap 4).** Four tables, one address, and RTTI gives the four classes
+no common ancestor but `CEffect` - whose table has no slot 12. So it is a four-way fold of four
+identical source bodies, and naming it for any one of the four would put that class's name on three
+others. The *slot* is recorded for all four, as `GetTargetCountryTag`; the *body* is
+`Effect_GetTargetCountryTag`, `__stdcall` with `effect@ECX`.
+
+`CEffect +0x20`/`+0x24` is a `CCountryTag` on these four classes, but `+0x20` is where every
+subclass's own data starts, so no `CEffect` struct field is recorded for it. Same reasoning for
+`CBoolEffect +0x20`.
+
+### What slot 12 leaves open
+
+- **Who, if anyone, calls `CIntEffect`'s, `CBoolEffect`'s or `CStringEffect`'s slot 12.** The
+  negative is as strong as two scans with positive controls can make it inside the family; a caller
+  outside the family holding a `CEffect*` was not ruled out.
+- **The localisation side.** Whether `$PERC$` appears in any key the mod or the base game ships, and
+  whether `$WHERE$` is ever used on a country-scoped keyword (where it names province 0), are both
+  one grep of the localisation `.csv` away and were not checked.
+- **`CEffect +0x14`** is still untouched by anything read here.
+- `0x65AEC0` (float to string with a precision argument), `0x6832B0` and `0x682D70` (the
+  text-replacement map), `0x79A0C4` (`_itoa`) and `0xC390` (the `fabs` wrapper) are on the frontier.
+  So are the eight unnamed war-group bodies (`0x5BC490`, `0x5BC6D0`, `0x5BC9A0`, `0x5BCF00`,
+  `0x5BD220`, `0x5BD5D0`, `0x5BD650`, `0x5BE1B0`) and `0x118730`, which `CWarEffect::GetText` calls.
+
+### One tooling note, from the same reading
+
+`project.json` names `0x6C44F0` `SubWindowMap_Add` (`void __stdcall SubWindowMap_Add(Hoi3CString*
+name, CFixedWindow** window, void* map@EDI)`). All four scalar-middle slot-12 bodies call it to add a
+**text replacement** to a `CInternationalizedText`, with no window anywhere in sight - so it is a
+template instantiation shared between the GUI's sub-window map and the localisation replacement map,
+and the current name is a GUI-flavoured guess sitting on something more general. Not revised, because
+a rename needs the GUI side read too; it is the same shape as the `GuiTypeTree_Find`/`CFlags`
+discovery section 5 above already records.

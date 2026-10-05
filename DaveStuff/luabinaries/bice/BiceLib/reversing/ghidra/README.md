@@ -289,6 +289,19 @@ settles to `struct fields: 6`, not 0, and names the same five replacements every
     CMapProvince+0xC4       'flags'   -> flags_persistent
     CProvince+0xC4          'flags'   -> flags_persistent
     CLeader+0xA8            'history' -> picture
+    CLeader+0xC4            'history' -> trait_gain_tracker
+
+**There are six, not five** (2026-10-05). The sixth was missing from this list: `CLeader+0xC4
+trait_gain_tracker` is blocked by `CLeader`'s `history` for exactly the same reason `+0xA8
+picture` is, and the apply names all six in its `holds '<x>', not placing '<y>'` notes. That
+also resolves the arithmetic this section and `CLAUDE.md` have carried since 2026-10-04 -
+"struct fields: 6: five fields that overlap" - **six are blocked and five are placed**, which
+is why the number quoted and the number of names listed never agreed.
+
+**And the settled count alternates between 5 and 6**, it does not sit on 6: four consecutive
+applies of the same record gave 6, 5, 5 and 5, and the two directions of a blocked pair are
+what moves it. So the pass mark to read is `failed: 0` plus *no name outside these six*, not
+the integer.
 
 **The shape is: a field held by value, plus a second field that lands inside its extent.**
 `project.json` has no duplicate offsets, so this is not a double definition; it is two
@@ -408,6 +421,18 @@ CERTAIN, LIKELY or TENTATIVE - and the evidence.
   argument, not just the odd one**: custom storage is all or nothing, and an argument left
   without one is dropped from the call. `SaveWriteKey(int token@ECX, CSaveWriter* writer)`
   decompiled as `SaveWriteKey()`; with `writer@stack:4` it reads `SaveWriteKey(0x5a6, writer)`.
+  **And do not write one where the convention already puts the argument there.** Added
+  2026-10-05. Any `storage` at all flips the apply from `DYNAMIC_STORAGE_ALL_PARAMS` to
+  `CUSTOM_STORAGE`, and on that path a `void` return does not survive - Ghidra keeps whatever
+  return it had inferred. `CBomberCombatant::FireUnit` was written
+  `void __stdcall FireUnit(CBomberCombatant* side@stack:4, CSubUnit* wing@stack:8)`, which is
+  exactly where `__stdcall` puts two stack arguments anyway; the parameters landed, and the
+  function still decompiled as `CBomberCombatant * FireUnit(...)`, which then typed the shot
+  counter as a `CBomberCombatant*` and produced `shots = (int)&pCVar10->vftable + 1` for
+  `shots = n + 1`. Dropping both annotations - same convention, same layout - gave
+  `void CBomberCombatant::FireUnit(...)` and a clean counter. So: **annotate storage only
+  where the convention is wrong**, which is the register cases above, and never as
+  belt-and-braces on a stack slot the convention already describes.
 - **`__thiscall` only works inside a class.** Ghidra gives a `__thiscall` function a `this`
   parameter of its own unless the function sits in a class namespace, and everything the
   findings write shifts one place behind it - so what the code passes in ECX reads as the

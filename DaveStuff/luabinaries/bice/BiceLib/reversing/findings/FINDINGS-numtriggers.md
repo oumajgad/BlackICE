@@ -353,3 +353,114 @@ trigger side; the body name is the effect side's and was recorded first. Renamin
 is churn and needs `replaces`, so both stay, and the fact that one stub serves slot 7 of **both**
 families is itself the finding. Per trap 4 the body arguably should be class-free; that is a
 candidate correction, not something this wave changed.
+
+## The six resource triggers, and the exile question
+
+Wave 13 agent B, 2026-10-05. Addresses are **rvas** against `0x400000`.
+
+`money`, `energy`, `metal`, `rare_materials`, `crude_oil`, `supplies` - one body repeated six times,
+`0x61` bytes and 32 instructions each, at rvas `0x5F5E70`, `0x5F61E0`, `0x5F6550`, `0x5F68C0`,
+`0x5F6C30`, `0x5F6FA0`. Two `ret 4` each (the two arms of one branch - no cold path), thirteen `int3`
+before and fifteen after, except `0x5F5E70` which has four before.
+
+**The `0x370` stride is real and is not a fold**, and the vftable settles it for free rather than for
+two of the six: the six entries are slot 6 of six *distinct* tables at VA `0x15F9034`, `0x15F9068`,
+`0x15F909C`, `0x15F90D0`, `0x15F9104`, `0x15F9138` - `0x34` apart, in the **same order** as the
+bodies. Six distinct addresses, each held by exactly one table. `vtable.py --holding` on each returns
+one holder.
+
+    bool __thiscall CMoneyTrigger::Evaluate(CMoneyTrigger* this, CEventScope* scope)
+
+    country = CCountryDataBase ([0x1A855A4]) ->+0x16C [scope->country_id (+0x14)]
+    pool    = country->government_in_exile (+0x95)
+                ? country + 0x9F8                                      // pool_in_exile
+                : CCountry::GetActingCapitalLocation(country) + 0x15C   // the province's pool
+    return pool-><good> >= this->value (+0x40)
+
+All six differ in exactly one displacement, and each picks the field its own keyword names:
+
+| class | rva | `CGoodsPool` field |
+| --- | --- | --- |
+| `CMoneyTrigger` | `0x5F5E70` | `+0x10 money` |
+| `CEnergyTrigger` | `0x5F61E0` | `+0x1C energy` |
+| `CCrudeOilTrigger` | `0x5F6550` | `+0x14 crude_oil` |
+| `CRareMaterialsTrigger` | `0x5F68C0` | `+0x20 rare_materials` |
+| `CMetalTrigger` | `0x5F6C30` | `+0x18 metal` |
+| `CSuppliesTrigger` | `0x5F6FA0` | `+0x8 supplies` |
+
+Six keywords picking six different fields of a struct whose layout was named elsewhere is a **six-way
+independent confirmation of `CGoodsPool`**, not a first settlement of any of it.
+
+### The branch is `CCountry::GetPool` inlined - and the answer
+
+**The branch is not trigger machinery.** `CCountry::GetPool` (rva `0xF4DE0`, already recorded and
+`confirmed`) is ten instructions and is *this branch, instruction for instruction*: the same
+`cmp byte ptr [reg+0x95],0; je; lea reg+0x9F8; jmp; call 0x42F100; add eax,0x15C`. It is the game's
+single goods-pool accessor, and it is inlined at **40 sites** across the image - a scan for
+`lea reg,[reg+0x9F8]` with a `+0x95` byte compare within `0x20` bytes before and an `add eax,0x15C`
+within `0x20` after finds 40 of 71 `+0x9F8` leas, and they include `CCountry::UpdateIC`,
+`CCountry::GetResourceLimitedIC`, `CCountry::ConsumeIcResources`, `CCountry::GetAvailableIC`,
+`CDistributeSupply::Distribute`, `CUnit::ConsumeSuppliesAndFuel`, `CConvoy::RunDelivery` and
+`CChangeLawCommand::Execute`.
+
+So, to the question - **does a government in exile read its host's goods, or its own, and which
+province's?**
+
+- **Its own.** `CCountry +0x9F8 pool_in_exile`. A `money` or `supplies` test on a government in exile
+  never sees its host's stockpile, and this is not a trigger-side quirk: *everything* in the
+  production and supply code reads the exile's own pool too, through the same inlined accessor.
+- **Every other country reads the pool physically held on a province** - `CMapProvince +0x15C pool` -
+  and the province is the one `CCountry +0xE24 acting_capital_province_id` names. The **acting**
+  capital, not the declared one at `+0xE20`; `CCountry.hpp` records that the acting capital is what
+  falls back when the declared capital is lost.
+- `CCountry::GetActingCapitalLocation` re-read to its `ret` at `0x2F1AD`:
+  `g_CCurrentGameState (0x1A89790) ->provinces (+0xB8C) [this->+0xE24]`, a `CMapProvince*`.
+  VA `0x42F100`, rva `0x2F100`.
+
+**Two corrections, and the second is to the brief that commissioned this.** The earlier plan's
+"reaches the goods pool through a getter at `0x12F100`" was trap 1 - the right function is
+`CCountry::GetActingCapitalLocation`, rva `0x2F100`. But the replacement reading - "so the branch does
+**not** select a different pool: it looks up an acting capital" - is also not right. **The branch does
+select a different pool**, and the acting-capital lookup is only what the non-exile arm needs in order
+to find the province that holds it. The earlier agent's instinct about a pool branch was correct; its
+address was not.
+
+**And trap 14 again, in its most expensive form: every fact needed to answer the question was already
+in the fact base** - `CCountry +0x95 government_in_exile`, `+0x9F8 pool_in_exile`,
+`+0xE24 acting_capital_province_id`, `CMapProvince +0x15C pool`, all seven `CGoodsPool` fields, and
+`CCountry::GetPool` itself with a comment that says in plain words "answers the capital province's
+pool, or the country's own pool at `+0x9F8` when the country is a government in exile". The question
+was open because nothing connected the trigger to `GetPool`. No struct field is recorded from this
+reading for exactly that reason.
+
+### Scale, and two things a mod author would get wrong
+
+All six derive from `CValueTrigger`; slot 7 is `CValueTrigger::TakeScalarValue` (`0x5D13E0`), which
+puts `TokenToFixedPoint(text)` in `+0x40` in **thousandths**, and `CGoodsPool`'s fields are
+thousandths. Thousandths both sides, no scaling in the body, so `money = 0.5` really is half a unit
+and the decimal survives. Slot 11 is `CTrigger::CountEvaluation` (`0x5D06C0`), so each counts as one
+condition in a tooltip.
+
+- **The effect side is integer-only.** All seven `*PoolEffect` classes (`CEnergyPoolEffect`,
+  `CFuelPoolEffect`, `CMetalPoolEffect`, `CMoneyPoolEffect`, `COilPoolEffect`,
+  `CRareMaterialsPoolEffect`, `CSuppliesPoolEffect`) are `CIntEffect` heirs, whose slot 7 is
+  `atoi(text) * 1000`. So **`money = 0.5` as a *trigger* means half a unit and as an *effect* means
+  zero** - the same text, two scales, and nothing in the script shows the difference.
+- **`CGoodsPool` has seven goods and only six have a trigger: there is no `fuel` trigger.** The RTTI
+  export has no `CFuelTrigger`, while `CFuelPoolEffect` exists. A script can set a country's fuel and
+  cannot test it. *The control for that negative:* the same name query over the RTTI export finds all
+  six of the others and finds `CFuelPoolEffect` on the effect side. If someone wants to be sure,
+  `FINDINGS-script.md`'s 152-keyword table is the place a `fuel` keyword handled by some other class
+  would show up.
+
+### One dead store, and what was not chased
+
+`mov [esp+8], scope->country_tag (+0x10)` at `0x5F5E8B` (and the same instruction in all six) is never
+read - the remnant of a `CCountryTag` temporary the compiler optimised into the direct database index.
+Harmless; noted so the next reader does not look for its consumer.
+
+**The gap this leaves, named:** nobody looked for a *writer* that keeps `pool_in_exile` in step with
+the host's pool. If one existed, the distinction would be invisible in play even though the read paths
+are genuinely separate. That is the one way the mod-facing conclusion above could be true of the bytes
+and false of the game, and it is the cheapest next step - the savegame is the oracle, since a
+government-in-exile country's `pool` block is plain text.

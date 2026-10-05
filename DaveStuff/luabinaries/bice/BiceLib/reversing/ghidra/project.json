@@ -5336,7 +5336,7 @@
    "name": "CBomberCombatant::ApplyCombatModifiers",
    "signature": "void __thiscall CBomberCombatant::ApplyCombatModifiers(CBomberCombatant* this, CCombatant* other, int flag)",
    "no_signature": null,
-   "comment": "Slot 19 for the bombing side of a raid. Not read through.",
+   "comment": "Slot 19 for the bombing side of a raid. Not read through. **2026-10-05 (reversing/findings/FINDINGS-airdefence.md):** its two `+0x128` reads (0x1619EC, 0x161E5E) are **CUnit::owner_id and not `air_defence`** - the second pairs +0x124 and +0x128 as tag letters and id and indexes the country array. Worth saying because `air_defence` is also +0x128, on the definition rather than the unit, and the two are easy to confuse here of all places.",
    "confidence": "confirmed",
    "source": "reversing/findings/FINDINGS-combat.md"
   },
@@ -5362,7 +5362,7 @@
    "name": "CTargetCombatant::ApplyCombatModifiers",
    "signature": "void __thiscall CTargetCombatant::ApplyCombatModifiers(CCombatant* this, CCombatant* other, int flag)",
    "no_signature": null,
-   "comment": "**Slot 19 for all three target combatants** - ground, land and naval - which share one body, so it belongs to none of them in particular and `this` is typed as the base. Not read through.",
+   "comment": "**Slot 19 for all three target combatants** - ground, land and naval - which share one body, so it belongs to none of them in particular and `this` is typed as the base. Not read through. **The attack/defence split of all eleven of its sites, 2026-10-05 (reversing/findings/FINDINGS-airdefence.md).** The ids and formulas are in findings/FINDINGS-combatmods.md §8; this is which half each one actually moves, resolved by modelling the three argument slots rather than the pushes (the call reserves slots with `push ecx` and writes into them afterwards, and `ecx` aliases the first slot across both reservations). **Defence only:** BM_FORT_MODIFIER 0x0C (0x162A69) and BM_POOR_SCREEN_PENALTY 0x15 (0x1629FE). **Attack only:** BM_NIGHT_MODIFIER 0x1B (0x162EF5), `add(esi, 0)` - so night does not protect a bombed unit. **Both halves from one register:** BM_DISSENT (0x162DD6), BM_LEADER_BONUS (0x16305E), BM_DIFFICULTY (0x1629C3), BM_DIVISION_PENALTY (0x162E12), BM_EXPERIENCE (0x162B4D), BM_MISSION_EFFICIENCY (0x162BE0), BM_RADIO (0x162D05), BM_LACK_OF_SUPPLIES (0x162CD6). The control for the slot model is the two ids §8 derived independently, and it returns attack=0 for both. Consequence: the two defence-only terms contribute to nothing but CSubUnit+0x54, whose only reader in the bombing code is the discarded air-defence multiply - so a fort level and a fleet's screen cover both show as a battle row and change no damage.",
    "confidence": "confirmed",
    "source": "reversing/findings/FINDINGS-combat.md"
   },
@@ -5870,7 +5870,7 @@
    "name": "CAirCombatant::ApplyCombatModifiers",
    "signature": "void __thiscall CAirCombatant::ApplyCombatModifiers(CAirCombatant* this, CCombatant* other, int flag)",
    "no_signature": null,
-   "comment": "Slot 19 for an air fight. Not read through.",
+   "comment": "Slot 19 for an air fight. Not read through. **Read as far as its defines, 2026-10-05 (reversing/findings/FINDINGS-airdefence.md).** Slot 19 is where everything that shapes an air fight other than `air_attack` lives, and it reads nine named `military` defines: AIR_STACKING_PENALTY (0x16C747) and AIR_STACKING_PENALTY_MAX (0x16C77B), BASE_PROXIMITY_BONUS (0x16CB70), INTERCEPT_ATTACK_BONUS (0x16CC27), AIR_SUP_DEFEND_BONUS (0x16CCD5), RADAR_COMBAT_IMPACT (0x16D080 and 0x16D34E), COMBAT_SUPPLY_LACK_IMPACT (0x16CE3A), COMBAT_DISSENT_IMPACT (0x16CFA4), PRIDE_BONUS_EXP (0x16C9F8) - and RIVER_CROSSING_PENALTY at 0x16D1DB, which in an air fight is odd enough to deserve a look. **Its four `+0x128` reads are CUnit::owner_id, not `air_defence`** (0x16C917, 0x16CD1B, 0x16CEBC, 0x16CF06): each pairs the tag letters at +0x124 with the id and indexes the country array at [0x1A855A4] +0x16C. Nothing reachable from an air combat reads `air_defence` - the closure is 529 functions and the finding has the method.",
    "confidence": "confirmed",
    "source": "reversing/findings/FINDINGS-combat.md"
   },
@@ -19938,7 +19938,7 @@
    "name": "CDeclareWarAction::Apply",
    "signature": "void __thiscall CDeclareWarAction::Apply(CDeclareWarAction* this)",
    "no_signature": null,
-   "comment": "CDeclareWarAction slot 7, one holder (vftable 0x15FB3F4). 0xA12030 to the single bare `ret` at 0xA147B2, 13 int3, then the separate helper 0xA147C0 which this body itself calls twice; CDeclareWarAction slot 11 is further on at 0xA14BB0. 0x2783 bytes, the largest in the family. `this` in ECX, no stack arguments.\n\nReads its own two defines: WARDEC_WAR_DIPLOMACY_HIT (diplomacy +0x4) at 0xA1281B and WARDEC_INFLUENCE_COST (+0x8) at 0xA1290C. Calls CCountry::RebuildNeighbours (0x4E21E0), 0x4E39C0 and 0x4E70A0 on both sides, 0x4F50A0 (the threat adder), and the war machinery at 0xA4F220 / 0xA506B0 / 0xA51FB0. Its localisation keys are DECLWAR / WEDECLWAR / DECLWAROTHER, DECLWAR_LIMITED, and the four MESS_BADWORDS strings.\n\n**The body was not read instruction by instruction** - the extent, the defines, the call set and the message keys are read; what it writes on CDiplomacyStatus is not. The name `Apply` is ours and is inference from the family, not from this body.",
+   "comment": "CDeclareWarAction slot 7, one holder (vftable 0x15FB3F4). 0xA12030 to the single bare `ret` at 0xA147B2, 13 int3, then the separate helper 0xA147C0 which this body itself calls twice; CDeclareWarAction slot 11 is further on at 0xA14BB0. 0x2783 bytes, the largest in the family. `this` in ECX, no stack arguments.\n\nReads its own two defines: WARDEC_WAR_DIPLOMACY_HIT (diplomacy +0x4) at 0xA1281B and WARDEC_INFLUENCE_COST (+0x8) at 0xA1290C, the latter subtracted from `countries[actor]->diplo_influence (+0xA88)` and clamped at 0 (0xA1292A/0xA12938).\n\n**And a third define, by the worst hiding place yet: the block pointer itself.** At 0xA128B9 it calls GetDefines, takes `[eax+0xBC]` - the diplomacy block - and passes that **bare address** to SpreadThreat (rva 0xF50A0) at 0xA128FC, which reads `*amount` from it. Offset 0 of the block is **WARDEC_BELIGERENCY** (25.0 in BlackICE's defines.lua), so declaring war spreads that much threat, with a `*scale` of a stack int set to 1000 at 0xA128B1 and the **victim's** acting capital province (CCountry::GetActingCapitalLocation, rva 0x2F100, on `countries[recipient.id]`) as the origin. This is trap 8's fourth case with no `add reg, N` to scan for at all, which is why a by-address scan would miss it too.\n\n**Its CDiplomacyStatus and CCountry writes, which were not read before:**\n\n| where | write |\n| --- | --- |\n| 0xA1239F | `status->undeclared_war (+0x24) = 0`, having deleted the CUndeclaredWar through its slot 0 - a formal war replaces the undeclared one |\n| 0xA12DB6, 0xA12DE6 | `hasMilitaryAccess (+0x4C) = 0` in **both** directions, through SetMilitaryAccess (rva 0x64A400) |\n| 0xA12E10/0xA12E14 and 0xA12E3E/0xA12E42 | `changed (+0x59) = 1` and `guarantee (+0x1C) = 0`, both directions - war cancels the pair's guarantee |\n| 0xA12E69, 0xA12E96 | `allowDebts (+0x78) = 0`, both directions - war cancels the debt agreement |\n| 0xA1292A, 0xA12938 | `countries[actor]->diplo_influence (+0xA88) -= WARDEC_INFLUENCE_COST`, clamped at 0 |\n\nIt also runs the full war-goal chain - CWarGoal::AddToWar (0xA12675), CWarGoal::RunCasusBelliOnAdd (0xA1267C) and CCasusBelli::RemoveFromStatus (0xA126AF, notify false) - and **builds CCallAllyAction proposals** at two sites through 0xA27AD0, gated on `status->war (+0x20)` being null and on the target's guarantees, which is how the victim's allies are asked to join. CWar::AddAttacker and CWar::AddDefender four times each, CCountry::RebuildNeighbours and 0x4E39C0 and 0x4E70A0 twice each, CCountry::ChangeRelation once, CList_RemoveNode four times, LoadMapSprites once. Keys DECLWAR / WEDECLWAR / DECLWAROTHER, DECLWAR_LIMITED and the four MESS_BADWORDS strings.\n\n**Still not read instruction by instruction**: the message construction and the two-site call-ally gate. The name `Apply` remains ours.",
    "confidence": "inferred",
    "source": "reversing/findings/FINDINGS-diploaction.md"
   },
@@ -20008,7 +20008,7 @@
    "name": "CCallAllyAction::Apply",
    "signature": "void __thiscall CCallAllyAction::Apply(CCallAllyAction* this)",
    "no_signature": null,
-   "comment": "CCallAllyAction slot 7, one holder (vftable 0x15FB6F4). 0xA27BA0 to the bare `ret` at 0xA29D33, 12 int3, then CCallAllyAction slot 11 at 0xA29D40; the `ret` at 0xA284CE is an arm of the same frame. `this` in ECX, no stack arguments. Reads CALLALLY_INFLUENCE_COST (diplomacy +0x1C), WARDEC_WAR_DIPLOMACY_HIT (+0x4) and ALLIANCE_REJECT_RELATION_CHANGE (+0x44) - the only class that borrows two other groups' defines, which fits an ally being dragged into someone else's war. Calls the war machinery (0xA4F220, 0xA506B0) and the faction registries. Keys MILALLHONOUR / WEMILALLHONOUR / OTHERMILALLHONOUR and MILALLDISHONOUR / WEMILALLDISHONOUR / OTHERMILALLDISHONOUR, with VERSUS, VICTIM, FACTION, FACTIONWAROFF and FACTIONWARDEF variables. Note that `CDiplomaticActionCommand::Execute` exempts this class alone from the seven-day cooldown write. Not read instruction by instruction; the name is inference from the family.",
+   "comment": "CCallAllyAction slot 7, one holder (vftable 0x15FB6F4). 0xA27BA0 to the bare `ret` at 0xA29D33, 12 int3, then CCallAllyAction slot 11 at 0xA29D40; the `ret` at 0xA284CE is an arm of the same frame. `this` in ECX, no stack arguments. Reads CALLALLY_INFLUENCE_COST (diplomacy +0x1C), WARDEC_WAR_DIPLOMACY_HIT (+0x4) and ALLIANCE_REJECT_RELATION_CHANGE (+0x44) - the only class that borrows two other groups' defines, which fits an ally being dragged into someone else's war.\n\n**Its CDiplomacyStatus and CCountry writes, which were not read before:**\n\n| where | write |\n| --- | --- |\n| 0xA284A2, 0xA284B4 | `countries[actor]->diplo_influence (+0xA88) -= CALLALLY_INFLUENCE_COST`, clamped at 0 |\n| 0xA2871B | `status->undeclared_war (+0x24) = 0`, having deleted the CUndeclaredWar through its slot 0 - the same shape as CDeclareWarAction's |\n| 0xA28891, 0xA288C4 | `hasMilitaryAccess (+0x4C) = 0`, two statuses, through SetMilitaryAccess (rva 0x64A400) |\n| 0xA28958 | **CDiplomacyStatus::ClearCasusBelli** (rva 0x64A3B0) on `countries[...]->diplomacy[this->+0x2C]` - the status against the *third* country the action names. Joining a war empties the whole casus-belli list between those two, rather than spending one |\n\nIt also calls CWar::AddAttacker and CWar::AddDefender once each, CCountry::ChangeRelation twice, 0x4E70A0 three times, 0x4E6640 twice, CountryTagVector_Contains twice, 0xA43FC0 (a remove-by-payload over a list) once, 0xA0DBB0 four times, and **builds one further CCallAllyAction** through 0xA27AD0 - so honouring a call to arms issues the next one along the chain. Keys MILALLHONOUR / WEMILALLHONOUR / OTHERMILALLHONOUR and MILALLDISHONOUR / WEMILALLDISHONOUR / OTHERMILALLDISHONOUR, with VERSUS, VICTIM, FACTION, FACTIONWAROFF and FACTIONWARDEF variables. Note that CDiplomaticActionCommand::Execute exempts this class alone from the seven-day cooldown write.\n\n**Still not read instruction by instruction**: the message construction and which direction each of the two military-access clears applies to. The name `Apply` remains ours.",
    "confidence": "inferred",
    "source": "reversing/findings/FINDINGS-diploaction.md"
   },
@@ -20028,7 +20028,7 @@
    "name": "CFactionAction::Apply",
    "signature": "void __thiscall CFactionAction::Apply(CFactionAction* this)",
    "no_signature": null,
-   "comment": "CFactionAction slot 7, one holder (vftable 0x15FB874). 0xA30E70 to the bare `ret` at 0xA32FC6, 9 int3, then CFactionAction slot 11 at 0xA32FD0. `this` in ECX, no stack arguments. Its first two tests are read: `this->value` must be set, and `countries[actor_id]->at_war (+0xACC)` must be **clear** - a country at war cannot run a faction action - and then `countries[recipient_id]->faction (+0xD8)->+0x28` must be non-null. Reads INVITE_FACTION_INFLUENCE_COST (diplomacy +0x90) and JOIN_FACTION_INFLUENCE_COST (+0x8C), which is how the one class serves both directions. Keys FACTIONINVITEACCEPT, FACTIONJOINACCEPT / FACTIONJOINACCEPTOTHER, FACTIONJOINDECLINCE, FACTIONINVITEDECLINCE, and the FACTIONCOMMENT_ / FACTIONCOMMENTBAD_ prefixes it builds keys from. Not read instruction by instruction; the name is inference from the family.",
+   "comment": "CFactionAction slot 7, one holder (vftable 0x15FB874). 0xA30E70 to the bare `ret` at 0xA32FC6, 9 int3, then CFactionAction slot 11 at 0xA32FD0. `this` in ECX, no stack arguments.\n\nIts gate is read in full, at 0xA30E9D-0xA30F09: `this->value (+0x24)` must be set; `countries[actor]->at_war (+0xACC)` must be **clear**; `countries[recipient]->faction (+0xD8)->+0x28` must be non-null; and then it walks that faction's member list and requires `countries[actor]->diplomacy[member]->war (+0x20)` to be null for **every** member - so a country may not join a faction while at war with any of its members. Reads INVITE_FACTION_INFLUENCE_COST (diplomacy +0x90) and JOIN_FACTION_INFLUENCE_COST (+0x8C), which is how the one class serves both directions.\n\n**Its CDiplomacyStatus and CCountry writes, which were not read before: there are none but the influence charge.** 0xA31545/0xA31553 subtract the cost from `countries[...]->diplo_influence (+0xA88)` and clamp at 0, and that is the only write to a CCountry or a CDiplomacyStatus in 0x2157 bytes. **Every other store in the body is to its own frame or to the 0x44-byte CMessageVariables it builds** - which is a finding rather than a gap: the faction membership change is not here.\n\nWhere it is instead: `0x4F5F30`, a ~0x950-byte `__thiscall` called twice (0xA319B2 and 0xA31AF5) with `ECX = country->faction (+0xD8)` and `(CCountry*, 0, 1)` on the stack, `ret 0xC`. It is in the frontier. The body also calls 0x68AC90 once at 0xA32F23, which appends an int to the game state's list at `+0xCFC`/`+0xD00`, and CList_RemoveNode once at 0xA31BFD.\n\nKeys FACTIONINVITEACCEPT, FACTIONJOINACCEPT / FACTIONJOINACCEPTOTHER, FACTIONJOINDECLINCE, FACTIONINVITEDECLINCE, and the FACTIONCOMMENT_ / FACTIONCOMMENTBAD_ prefixes it builds keys from.\n\n**Still not read instruction by instruction**: the message construction and 0x4F5F30. The name `Apply` remains ours.",
    "confidence": "inferred",
    "source": "reversing/findings/FINDINGS-diploaction.md"
   },
@@ -20048,7 +20048,7 @@
    "name": "CLicenceTechnologyAction::Apply",
    "signature": "void __thiscall CLicenceTechnologyAction::Apply(CLicenceTechnologyAction* this)",
    "no_signature": null,
-   "comment": "CLicenceTechnologyAction slot 7, one holder (vftable 0x15FB994). **A second trap 2 case: 0xA3B5A0 to the bare `ret` at 0xA3CD5D, with only two int3 before CLicenceTechnologyAction slot 11 at 0xA3CD60** - so a scan requiring a run of three or more padding bytes crosses the boundary and gives the body 0x1D20 bytes instead of 0x17C0, which attributes slot 11's LICENCE_INFLUENCE_COST read at 0xA3D13E and its tooltip strings (BUYLICENCEDESC, SELLLICENCEDESC, DIP_NO_INFL, ACT_NO_SELF, ENROUTE) to slot 7.\n\nWithin the real extent it reads LICENCE_INFLUENCE_COST (diplomacy +0xB8) once, at 0xA3C36A, and divides through the 64-bit helper 0xB99980 twice - the only member of the family to do arithmetic beyond add-and-clamp, which fits a licence fee. Keys LICBUYACCEPT / LICBUYDECLINE with NAME and NUM variables. `this` in ECX, no stack arguments. Not read instruction by instruction; the name is inference from the family.",
+   "comment": "CLicenceTechnologyAction slot 7, one holder (vftable 0x15FB994). **A trap 2 case: 0xA3B5A0 to the bare `ret` at 0xA3CD5D, with only two int3 before CLicenceTechnologyAction slot 11 at 0xA3CD60** - so a scan requiring a run of three or more padding bytes crosses the boundary and gives the body 0x1D20 bytes instead of 0x17BE, which attributes slot 11's LICENCE_INFLUENCE_COST read at 0xA3D13E and its tooltip strings (BUYLICENCEDESC, SELLLICENCEDESC, DIP_NO_INFL, ACT_NO_SELF, ENROUTE) to slot 7. `this` in ECX, no stack arguments.\n\nWithin the real extent it reads LICENCE_INFLUENCE_COST (diplomacy +0xB8) once, at 0xA3C36A, and divides through the 64-bit helper 0xB99980 twice - the only member of the family to do arithmetic beyond add-and-clamp, which fits a licence fee.\n\n**Its CDiplomacyStatus and CCountry writes, which were not read before, and they are the interesting part:**\n\n| where | write |\n| --- | --- |\n| 0xA3C38A, 0xA3C398 | on PROPOSE (`type == 0 && value`, gated at 0xA3C355), `countries[actor]->diplo_influence (+0xA88) -= LICENCE_INFLUENCE_COST`, clamped at 0 |\n| 0xA3C5A1 | on ACCEPT, **when the pair have a debt agreement** (`allowDebts`, +0x78): `countries[seller]->diplomacy[buyer]->debt (+0x70) += fee` |\n| 0xA3C5DE, 0xA3C61B | otherwise the fee moves as **money**: `-fee` and `+fee` into `CGoodsPool +0x10` of each side's pool, chosen the way GetPool chooses it - `country->pool_in_exile (+0x9F8)` when `government_in_exile (+0x95)` is set, else `CCountry::GetActingCapitalLocation(country) (rva 0x2F100) -> CMapProvince::pool (+0x15C)` |\n\nSo a licence is paid in cash unless the buyer holds a debt agreement with the seller, in which case it goes on the tab. Which branch is taken is decided by a byte at `[esp+0xf]`, tested at 0xA3C573.\n\n**And it reaches the technology layer by handing over a model**, not a technology: it calls CHistoricalModel::PickBestModel (rva 0x183230) once and CHistoricalModelSet::MakeSubUnit (rva 0x183060) twice, over a loop bounded by `[edi+0x30]`, then CList_FreeAndClear (rva 0x10D1E0) on what it built, plus 0x181F70, 0x182FA0 and 0x145760 - all in the frontier.\n\nKeys LICBUYACCEPT / LICBUYDECLINE with NAME and NUM variables. **Still not read instruction by instruction**: the model loop and the message construction. The name `Apply` remains ours.",
    "confidence": "inferred",
    "source": "reversing/findings/FINDINGS-diploaction.md"
   },
@@ -20798,9 +20798,9 @@
    "name": "CCountry::GetSurrenderProgress",
    "signature": "int* __thiscall CCountry::GetSurrenderProgress(CCountry* this, int* out@stack:4)",
    "no_signature": null,
-   "comment": "0xFCB80 to three `ret 4` at 0xFCB9F, 0xFCBB9 and 0xFCC53 - one function, every exit sharing the same frame and reached by a jump from inside. 82 instructions, read end to end; twelve int3 before, ten after. `this` in ECX, the out pointer the single stack argument, and `out` comes back in EAX so the caller can do `call; mov eax,[eax]`.\n\n    if (this->government_in_exile (+0x95))  *out = 0\n    elif (this->+0xD08 == 0)                *out = 1000\n    else { v = national_unity (+0x10B8) * 1000 / 100000; v = v * 1000 / <0xFCC60's answer>;\n           clamp v to 0..1000; *out = v }\n\nSo the answer is a thousandths fraction, 0..1000 inclusive, and it is derived from national unity. Its only caller in the image is `CSurrenderProgressTrigger::Evaluate` (0x5F8210), which is where the name comes from - the script keyword `surrender_progress`. **Which end of the range means 'about to surrender' is not established here**: the `+0xD08 == 0` arm answers the maximum, and the main arm rises with unity, which reads as 'how far from surrendering' rather than 'how close'.",
-   "confidence": "inferred",
-   "source": "reversing/findings/FINDINGS-numtriggers.md"
+   "comment": "0xFCB80 to three `ret 4` at 0xFCB9F, 0xFCBB9 and 0xFCC53 - one function, every exit sharing the same frame and reached by a jump from inside. 82 instructions, read end to end; twelve int3 before, ten after. `this` in ECX, the out pointer the single stack argument, and `out` comes back in EAX so the caller can do `call; mov eax,[eax]`.\n\n    if (this->government_in_exile (+0x95))  *out = 0\n    elif (this->province_count (+0xD08) == 0) *out = 1000\n    else { unity = national_unity (+0x10B8) * 1000 / 100000        ; i.e. /100, so 10..1000\n           if (unity == 0) *out = 1000\n           else *out = clamp(0xFCC60(this) * 1000 / unity, 0, 1000) }\n\n**1000 means on the brink of surrender and 0 means untouched.** `0xFCC60` is the share of the country's own claimed, owned victory points that it does **not** control, in thousandths, so the numerator rises as territory is occupied; and because `national_unity` is the **divisor**, the answer also rises as unity falls. Three independent corroborations: the `province_count == 0` arm - no provinces left at all - answers the maximum; `CAIUnit::EstimateTheatreNeed` reads the same pair of fields at 0x4B99FF as `owned - controlled >= 2 VP`, i.e. as a loss; and BlackICE's own `open_peace_negotiation` decision offers the Soviet Union peace on an ascending ladder of `surrender_progress = 72, 74, 76, 78, 80, 82, 84, 90, 95` paired with rising desperation, while `sacrifice_the_homeland` (scorched earth) unlocks at 0.25/0.15/0.05.\n\nThe only engine caller is `CSurrenderProgressTrigger::Evaluate` (0x5F8210), which divides by ten, so the script scale is 0..100. The game's own Lua registration calls this function **`CCountry::GetSurrenderLevel`** (ghidra/bicelib_findings.json, recovered from the luabind registration object), which is the engine's name for it and the reason the reading is now `confirmed` rather than named off a keyword.\n\n**One consequence for a mod:** when the claims list at +0xD10 holds no province the country owns, 0xFCC60's `+0xBE0 <= 0` arm answers 0, so `surrender_progress` is 0 however much has been lost. It is a measure of occupied **claimed** territory, not of territory in general.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-negatives.md"
   },
   {
    "rva": "0x607E50",
@@ -21021,6 +21021,697 @@
    "comment": "`call CRegionScopeTrigger::CRegionScopeTrigger` inside CTrigger::LoadKey (0x5C8D10), and the instruction that makes **every region name in `map/region.txt` a trigger scope keyword**. The arm runs 0x5CAE1C-0x5CAE5D: it calls 0x52A710 with `g_CMap (0x1A8557C) + 0x2A50` - CMap's by-name string hash table - and the key's text; on a hit it takes a 0x44-byte `operator new` and constructs a CRegionScopeTrigger over the region, and on a miss it falls through to 0x5CAE62, which is the CContextTrigger arm FINDINGS-triggereval.md section 3 describes.\n\nSo the loader's order for a key that is not in the compiled trigger table is: **region name, then speculative scope resolution, then `Unknown trigger-type` through trigger.cpp.** FINDINGS-triggereval.md section 3 had the second and third steps and not the first.",
    "confidence": "confirmed",
    "source": "reversing/findings/FINDINGS-scopetriggers.md"
+  },
+  {
+   "rva": "0x651FB0",
+   "kind": "function",
+   "name": "CWarGoal::AddToWar",
+   "signature": "void __fastcall CWarGoal::AddToWar(CWarGoal* goal@EDI, CWar* war@stack:4, int actorTag@stack:8, int actorId@stack:0xC)",
+   "no_signature": null,
+   "comment": "**The war-goal add itself.** 0xA51FB0 to the single `ret 0xC` at 0xA520E5, 8 int3, then a separate function at 0xA520F0 (`push ebp` prologue, so functionStart agrees); `retsBefore` over the whole body is empty, so no trap 2 and no trap 3 funclet. The goal arrives in **EDI** and the three stack dwords are the war, the actor's tag by value and the actor's id.\n\nSix callers: 0x600193, 0x9BC92F, 0x9BC95B, 0x9BD63F, CDeclareWarAction::Apply at 0xA12675 and CWarGoalBaseAction::Apply at 0xA43647.\n\nWhat it does, end to end:\n\n1. `CWarGoal::IsValid(goal)` (rva 0x79950) at 0xA51FD2 must answer true, or **nothing at all happens** - the body jumps straight to the epilogue. That is the only gate.\n2. 0xA52750(`war + 0x9C`, &actorId) looks up the war's per-country war-goal bucket and 0x9BE8F0 (container in ESI, element in EAX) appends the goal to it. So `CWar +0x9C` is a map from country id to that country's war goals; neither helper is named and both are in the frontier.\n3. `countries[actorId]->diplomacy[goal->receiver.index (+0x24)]->next_wargoal_date (+0x7C) = tick + WARGOAL_ADD_COOLDOWN/1000 months`, through `AddMonths` (rva 0xB8C90, already named) at 0xA520AB.\n\n**That third step corrects the record.** `project.json`'s entry for CWarGoalBaseAction::Apply says \"WARGOAL_ADD_COOLDOWN, diplomacy +0xFC, is not read here\" - true of that body and false of the chain: it is read one call deeper, at 0xA52096, divided by 1000 with the usual `imul 0x10624DD3; sar 6` and spent as a **month** count. BlackICE's own `common/defines.lua:330` says `WARGOAL_ADD_COOLDOWN = 1, -- 1 month`, which agrees with `AddMonths` independently.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x79950",
+   "kind": "function",
+   "name": "CWarGoal::IsValid",
+   "signature": "bool __thiscall CWarGoal::IsValid(CWarGoal* this)",
+   "no_signature": null,
+   "comment": "The gate on CWarGoal::AddToWar (rva 0x651FB0), and the AI's own test. 0x479950 to two bare `ret`s in one frame at 0x479A7B (`mov al, 1`) and 0x479A82 (`xor al, al`), 13 int3, then CWarGoal::LoadKey at 0x479A90 - the extent the header already records. `this` in ECX, no stack arguments. Two callers: 0xA51FD2 and 0x89DB95 (inside the AI).\n\nThe body is almost entirely the construction of **two** CEventScopes on the stack (vftable 0x15B8AEC, persistent id 0x18D), each stamped with the goal's `actor` (+0x18/+0x1C) and `receiver` (+0x20/+0x24) and a null `---` tag, of which only the one at `esp+0x58` is used. Then three tests, in order:\n\n    if (this->casusBelli (+0xC) == 0)              return false;\n    if (!casusBelli->slot7())                      return false;   // 0xA92590 `mov al,1; ret` on CCasusBelliType, ReturnFalse on CNullCasusBelliType\n    return casusBelli->slot6(scope);                               // CCasusBelliType::IsValid, the `is_valid` trigger\n\nSo a war goal may be added exactly when it names a real casus belli type whose `is_valid = { ... }` block passes for a scope built from the goal's own actor and receiver. Nothing about the casus belli the actor *holds* is tested here - see CWarGoalBaseAction::Apply for that.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x16950",
+   "kind": "function",
+   "name": "CCasusBelliType::IsValid",
+   "signature": "bool __thiscall CCasusBelliType::IsValid(CCasusBelliType* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "CCasusBelliType slot 6, one holder (vftable 0x15B58D0; CNullCasusBelliType has its own body at 0x598DB0, so this is not a fold). Seven instructions and no `ret` of its own - it **tail-jumps** into `this->+0x30`'s own slot 6, which is CTrigger::Evaluate:\n\n    push ebp; mov ebp, esp; add ecx, 0x30; mov eax,[ecx]; mov eax,[eax+0x18]; pop ebp; jmp eax\n\n`CCasusBelliType +0x30` is the **`is_valid`** block, save token 0x797, stored there by CCasusBelliType::LoadKey (rva 0x165F0) at 0x41682D. `BiceLib/GameClasses/CWarGoal.hpp` already says \"0x30: a CAndTrigger, the condition under which this pretext may be used\" from the other end; this names the key.\n\ncheckSignatures will skip it: a tail `jmp` has no `ret` to predict.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x7BBE0",
+   "kind": "function",
+   "name": "CWarGoal::RunCasusBelliOnAdd",
+   "signature": "void __thiscall CWarGoal::RunCasusBelliOnAdd(CWarGoal* this)",
+   "no_signature": null,
+   "comment": "0x47BBE0 to the bare `ret` at 0x47BC5D, 0x7E bytes. **Only two int3 of padding** before the next function at 0x47BC60 - which `functionStart` happens to find anyway, because 0x47BC60 opens `push ebp` - but it is the trap 2 shape and `retsBefore(0x47BBE0, 0x47BC5D)` is empty, which is the check that settles it. `this` in ECX, no stack arguments. Two callers: CDeclareWarAction::Apply at 0xA1267C and CWarGoalBaseAction::Apply at 0xA4364E.\n\nIt builds a **CEventScope** on its own stack (vftable 0x15B8AEC at [ebp-0x50], persistent id 0x18D at [ebp-0x4C]) whose country is the war goal's `actor` - tag from `this->+0x18` into scope+0x10, index from `this->+0x1C` into scope+0x14, with a null `---` tag written at scope+0x18 - and then calls **slot 11 of the object at `this->casusBelli (+0xC) + 0x24C`**, passing the scope by address.\n\n`CCasusBelliType +0x24C` is the **`on_add`** block (save token 0x796, stored by CCasusBelliType::LoadKey at 0x416812) and slot 11 of a CEffect is `Execute(CEventScope*, int)`, already recorded under `vftable_slots`. So this is \"run the casus belli's `on_add = { ... }` effect, scoped to the country that took the war goal\" - which is how `common/casus_belli.txt` gets to fire effects when a goal is claimed.\n\nThe three fields it reads - `+0x18`/`+0x1C` actor and `+0xC` casusBelli - are exactly the ones `BiceLib/GameClasses/CWarGoal.hpp` derived independently from CWarGoal::LoadKey.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x649EB0",
+   "kind": "function",
+   "name": "CasusBelliTypeIsAlways",
+   "signature": "bool __fastcall CasusBelliTypeIsAlways(int typeIndex@EDI) @AL",
+   "no_signature": null,
+   "comment": "0xA49EB0 to the bare `ret` at 0xA49F34, 0x85 bytes, 11 int3, then CCasusBelli::RemoveFromStatus at 0xA49F40. **One caller in the image**, CWarGoalBaseAction::Apply at 0xA4366E. The casus-belli-type index arrives in **EDI** and nothing is on the stack.\n\nIt lazily creates the casus-belli-type database at [0x1A85BD8] (`new(0x1C)`, the 198-database shared init 0x45BD30, then the registrar 0x417350 - the same singleton `GetCasusBelliTypes` (rva 0x16A40) returns), then indexes its pointer vector at `+0xC`/`+0x10`, falling back to element 0 when the index is out of range, and returns `type->+0x1F2 != 0`.\n\n**`CCasusBelliType +0x1F2` is the `always` key** - save token 0x6A2, read through `ParseBool` (rva 0x67B410) by CCasusBelliType::LoadKey at 0x4166A2. So the predicate is \"is this pretext declared `always = yes` in `common/casus_belli.txt`\". The neighbouring bools are `+0x1F0` `is_triggered_only` (token 0x61D), `+0x1F1` (token 0x78D `mutual`) and `+0x1F3` (token 0x7B0 `handles_peace`).\n\n**But at its one call site the predicate cannot change what happens** - see CWarGoalBaseAction::Apply's revised comment. It is class-free on purpose: the receiver is an index, not a CCasusBelliType, so a `CCasusBelliType::` name would be wrong (trap 11).",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x649F40",
+   "kind": "function",
+   "name": "CCasusBelli::RemoveFromStatus",
+   "signature": "void __fastcall CCasusBelli::RemoveFromStatus(CCasusBelli* casusBelli@EDI, CDiplomacyStatus* status@stack:4, bool notify@stack:8)",
+   "no_signature": null,
+   "comment": "**The casus-belli consumption step.** 0xA49F40 to the single `ret 8` at 0xA4A3A5, 0x466 bytes, 8 int3, then CDiplomacyStatus::ClearCasusBelli at 0xA4A3B0; `retsBefore` over the body is empty. The casus belli arrives in **EDI**; the two stack dwords are the CDiplomacyStatus and a bool.\n\nIts tail, at 0xA4A36A, is the part that always runs:\n\n    status->changed (+0x59) = 1;\n    unlink the node whose payload is this casus belli from status->casus_belli (+0x3C)   // CList_RemoveNode, 0x5D49D0\n\nIt does **not** delete the object - the caller does that, after also unlinking it from the one CDiplomacy relation list at CCurrentGameState +0xB2C.\n\nEverything above that, 0x430 bytes of it, is conditional on the **bool** and raises a message. With `notify` false the body jumps straight from 0xA49F68 to the tail. With it true it reads the casus belli as a CRelation - `+0x8`/`+0xC` first tag and id, `+0x10`/`+0x14` second - and raises a message only when `first.id == gameState->played_country_id (+0xC34)`, the game state's `in_game (+0xDA4)` is set, and `countries[second.id]->NumberOfOwnedProvinces (+0xCF8) > 0`. Its localisation keys are **`WELOSECB`** with `ENEMY` and `CASUS` variables - the game's own words for what this function is, which is what turns the earlier reading of the consumption from inference into a name.\n\nThree callers: CDeclareWarAction::Apply at 0xA126AF, CWarGoalBaseAction::Apply at 0xA436B5 (both with the bool **false**, so neither tells the player) and CCasusBelli slot 11 at 0xA47D54 - the only path that can raise the message.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x64A3B0",
+   "kind": "function",
+   "name": "CDiplomacyStatus::ClearCasusBelli",
+   "signature": "void __fastcall CDiplomacyStatus::ClearCasusBelli(CDiplomacyStatus* status@EDI)",
+   "no_signature": null,
+   "comment": "0xA4A3B0 to the bare `ret` at 0xA4A3E8, 0x39 bytes, 7 int3 after. The status arrives in **EDI** and nothing is on the stack. Sets `changed (+0x59) = 1`, walks `casus_belli (+0x3C)` freeing every **node** (0xB95F9B, `free`) without touching the payloads, then zeroes the head, the tail (+0x40) and the count (+0x44). One caller in the image: CCallAllyAction::Apply at 0xA28958.\n\nThat it frees nodes and not objects is the correct ownership: a CCasusBelli is also in the one CDiplomacy relation list at CCurrentGameState +0xB2C, which owns it.\n\n**A new trap 2 second-cause case.** The eight int3 above this entry are immaculate and `image.functionStart(0xA4A3B0)` still answers 0xA49F40, the function before it, because the entry's first byte is `0xC6` (`mov byte ptr [edi+0x59], 1`) and that is not in functionStart's prologue set. It opens with a store rather than a prologue precisely because its receiver is already in a register, which is a shape this image has a lot of - so expect more `0xC6`.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0xF50A0",
+   "kind": "function",
+   "name": "SpreadThreat",
+   "signature": "void __stdcall SpreadThreat(CCountry* feared, int* amount, int* scale, CMapProvince* origin)",
+   "no_signature": null,
+   "comment": "**The threat adder, and a breadth-first spread over the province graph rather than a single add.** 0x4F50A0 to the single `ret 0x10` at 0x4F55F8, 0x55B bytes, 5 int3, then a register-convention function at 0x4F5600; `retsBefore` over the body is empty. Four stack dwords, nothing in a register, so plain `__stdcall`.\n\n**Seven call sites in six functions**, not the four the record says: 0x47B280, 0x551565, 0x65B64C, CDeclareWarAction::Apply at 0xA128FC, CNapAction::Apply at 0xA2BFFB, and CEmbargoAction::Apply **twice** at 0xA2F099 and 0xA2F57B.\n\nShape:\n\n1. the base magnitude is `*amount * (1000 + feared->+0xDA8->+0x1C0) / 1000`, **halved** when slot 7 of `feared->faction (+0xD8)` answers false, then scaled by a float global at 0x160A7B4;\n2. `CMapProvince +0x10` is set to 99999 on all `g_CMap (0x1A8557C) +0x21FC` provinces and `CCountry +0x18` is cleared on every country - the distance and visited scratch of the walk. **`+0x10` is the field already recorded as `weather_pressure_distance`**, shared with CWeatherManager::PropagateHighPressure, so it is a general BFS scratch slot and the existing name is narrower than the field;\n3. the walk runs out from `origin` over `CProvinceTemplate +0x90`/`+0x94` (0x14-byte edges), decaying the amount by distance and by `(1000 - feared->+0xDA8->+0x1C8)/1000`, by `*scale/1000` and by the per-edge cost 0x4C4D70 returns;\n4. for each province reached whose controller has not been marked, `controller->diplomacy[feared->id (+0xCA8)]->threat (+0x5C) += amount`, clamped at 0 from below, at 0x4F551B, and the controller is marked.\n\nSo threat is felt **by** whoever holds ground near `origin` **toward** `feared`, which is why CDeclareWarAction passes the actor as `feared` and the *victim's* acting capital as `origin`.\n\n**`amount` and `scale` are read through the pointer, never loaded**, which is trap 8's fourth case and now has three witnesses - see the revised CDeclareWarAction::Apply entry for the third and worst of them.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x64A400",
+   "kind": "function",
+   "name": "SetMilitaryAccess",
+   "signature": "void __fastcall SetMilitaryAccess(bool granted@CL, CDiplomacyStatus* status@stack:4)",
+   "no_signature": null,
+   "comment": "The one writer of `CDiplomacyStatus::hasMilitaryAccess (+0x4C)`. Opens 0xA4A400, `ret 4`. The bool arrives in **CL** and the status on the stack - no ordinary convention, hence the spelled-out storage (trap 11). Sets `status->changed (+0x59) = 1` and `status->+0x4C = cl`, then, when `gameState->in_game (+0xDA4)` is set, pushes -1 onto the game state's list at `+0xCF8` through 0x45F5E0 - a refresh request, since who may march where has just changed.\n\n**Fifteen callers, and they are what names the field.** `cl = 1` at CMilitaryAccessAction::Apply 0xA23998, COfferMilitaryAccessAction::Apply 0xA25F91 and **CGrantMilitaryAccessEffect::Execute (rva 0x5B69F0, slot 11) at 0x9B6A4E** - the event-script effect whose own name says what the byte is. `cl = 0` at the cancel arms of the same two actions (0xA242BF, 0xA268A9, 0xA268D9), at CDeclareWarAction::Apply (0xA12DB6 and 0xA12DE6, both directions) and CCallAllyAction::Apply (0xA28891, 0xA288C4), and in RunCountryHourlyPass (0x4D9EA7, 0x4D9EC3) and CCountry::UpdateUndeclaredWars (0x4E9BCF, 0x4E9BE6).\n\n**The field names here are wave 13 agent A's**, out of the Lua API (`CDiplomacyStatus::HasMilitaryAccess` rva 0x64A3F0 reads +0x4C, `CDiplomacyStatus::AllowDebts` rva 0x64A7E0 reads +0x78), which agree offset for offset with the save keys `military_access` (token 0x2F0) and `debtaction_action` (token 0x726) that CDiplomacyStatus::LoadKey (rva 0x648190) writes to the same two bytes at 0x4817F1 and 0xA4834F. Two independent halves of the fact base converging on one offset is trap 14's good case; the registration names win and the keys are recorded here.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x627AD0",
+   "kind": "function",
+   "name": "CCallAllyAction::CCallAllyAction",
+   "signature": "void __fastcall CCallAllyAction::CCallAllyAction(CCallAllyAction* this@EAX, int date@stack:4, CCountryTag actor@stack:8, CCountryTag recipient@stack:0x10, CCountryTag ally@stack:0x18)",
+   "no_signature": null,
+   "comment": "0xA27AD0 to the single `ret 0x1C` at 0xA27B19, 0x4A bytes, 4 int3. The object arrives in **EAX** and seven stack dwords follow - three CCountryTags by value plus the date, which is exactly 0x1C.\n\nIt writes the base layout FINDINGS-diploaction.md section 1 established, in one go: `+0x4 = 0x18D`, `+0x8`/`+0xC` actor tag and id, `+0x10`/`+0x14` recipient tag and id, `+0x18 = 0` (type PROPOSE), `+0x1C` and `+0x20` both the date, `+0x24 = 1` (value), **vftable `0x15FB6F4`** and then `+0x28`/`+0x2C` the third country - the ally being called - which is the extra pair the record notes only CCallAllyAction has.\n\nThree callers and they are the mechanism behind the whole class: **CDeclareWarAction::Apply builds two of these** (0xA12BE4 and a second site) and CCallAllyAction::Apply builds one. The date they pass is `[0x170C2B8]`, the 43,800,000-hour null date. So declaring war is what *manufactures* the call-to-arms offers, and an ally honouring one manufactures the next - which is how a faction is dragged in one country at a time.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x59D4F0",
+   "kind": "function",
+   "name": "CIntEffect::FormatValueText",
+   "signature": "Hoi3CString* __thiscall CIntEffect::FormatValueText(CIntEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString* key)",
+   "no_signature": null,
+   "comment": "**Slot 12, and the biggest of the five bodies the effect family's scalar middles supply - 24 holders, every `CIntEffect` heir, nobody overriding it.** 0x59D4F0 to the single `ret 0xc` at 0x59DC47, 0x75A bytes, four int3 before (the previous function is `CIntEffect::TakeScalarValue` at 0x59D4A0) and nine after.\n\nIt renders *the caller's* localisation key with the effect's own number substituted into it: `GetText (0x682490)` on `key`, then four replacements added to that `CInternationalizedText` and `CInternationalizedText::Render (0x682E40)` into `out`, which is returned in EAX.\n\n| token | what goes in |\n| --- | --- |\n| `$VALUE$` | a colour run - `\u00a7Y`, then `\u00a7G` if `this->+0x20 > 0` and `\u00a7R` if `< 0` and nothing when it is exactly 0 - then **`abs(value / 1000)`** as a plain integer (`imul 0x10624DD3; sar edx,6`, then the `cdq/xor/sub` absolute-value idiom, then `_itoa` at 0x79A0C4), then `\u00a7W` |\n| `$DIRECTION$` | `GetText(\"GAIN\")` when `+0x20 >= 0`, `GetText(\"LOSE\")` otherwise - so the sign is carried by the word and the colour, never by the digits |\n| `$WHERE$` | `g_CCurrentGameState (0x1A89790) ->provinces (+0xB8C) [scope->province (+0x28)]`, then slot 7 of that province's second vftable at `+8`, coloured `\u00a7Y`. **Unguarded**: nothing tests whether the scope has a province, so on a country-scoped effect this names province 0 |\n\nThe `/1000` is the exact inverse of `CIntEffect::TakeScalarValue`'s `atoi(text) * 1000`, which is the control on the scale.\n\n**Nothing in the image calls it.** See the evidence; `CValueEffect`'s identical body has two callers and this one has none, so the 24 `CIntEffect` leaves - which include all seven `*PoolEffect` classes - each duplicate these substitutions inside their own slot 9 instead. The name is BiceLib's, from what the body does and from the two call sites of the sibling body.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-effects.md"
+  },
+  {
+   "rva": "0x59CB90",
+   "kind": "function",
+   "name": "CValueEffect::FormatValueText",
+   "signature": "Hoi3CString* __thiscall CValueEffect::FormatValueText(CValueEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString* key)",
+   "no_signature": null,
+   "comment": "**Slot 12 for all eleven `CValueEffect` heirs**, and the only one of the five whose callers are known. 0x59CB90 to the single `ret 0xc` at 0x59D494, 0x905 bytes, nine int3 after; the byte before the entry is a single int3 and the function above it is `CValueEffect::TakeScalarValue` at 0x59CB50, which is the known trap 2 pair.\n\nSame shape as `CIntEffect::FormatValueText` - `GetText` on the caller's key, replacements, `CInternationalizedText::Render` - with the same `$DIRECTION$` and `$WHERE$`, a decimal `$VALUE$`, and one token the integer form does not have:\n\n| token | what goes in |\n| --- | --- |\n| `$VALUE$` | the colour run, then **`fabs(value / 1000.0)`** to **two** decimal places (`cvtdq2ps`, `divsd` by the 1000.0 at 0x160A300, `fabs` through 0x40C390, format through 0x65AEC0 with precision 2) |\n| `$PERC$` | the value read as a **multiplier**: `(value/1000.0 - 1.0) * 100`, to **one** decimal place, with a literal `+` prefix when positive and nothing when not, then `%\u00a7W`. So 1.25 renders `+25.0%` and 0.8 renders `-20.0%`. Unlike `$VALUE$` this keeps its sign |\n| `$DIRECTION$` | `GetText(\"GAIN\")`/`GetText(\"LOSE\")` on the sign of `+0x20` |\n| `$WHERE$` | the scope's province, through the game state, unguarded - as in the integer form |\n\nIts two callers are its whole purpose and both are three lines long: `CWarexhaustionEffect::GetText` (0x59E9A0) and `CRevoltRiskEffect::GetText` (0x5A5600) build one `Hoi3CString` of their own keyword's key and hand it straight to this slot. The other nine `CValueEffect` leaves - `CDissentEffect::GetText` at 0x5BA110 is the clearest - inline the same `GetText`/`$VALUE$`/replacement sequence by hand instead, which is why a slot the whole family declares has two users.\n\nThe name is BiceLib's, from the body and from those two call sites.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-effects.md"
+  },
+  {
+   "rva": "0x59DC90",
+   "kind": "function",
+   "name": "CBoolEffect::FormatValueText",
+   "signature": "Hoi3CString* __thiscall CBoolEffect::FormatValueText(CBoolEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString* key)",
+   "no_signature": null,
+   "comment": "**Slot 12 for `CBoolEffect`'s two heirs**, `CFixedAIStrategyEffect` and `CFormGovernmentInExileAction`. 0x59DC90 to the single `ret 0xc` at 0x59E1C3, 0x536 bytes, ten int3 after.\n\nThe same `GetText(key)` / replacements / `Render` shape as the integer and value forms, with only two tokens, because a bool has no number to print: `$DIRECTION$` is `GetText(\"GAIN\")` when `this->+0x20` is non-zero and `GetText(\"LOSE\")` when it is zero (`cmp byte ptr [esi+0x20], bl` at 0x59DCCD - so `CBoolEffect`'s value is a **byte**), and `$WHERE$` is the scope's province through the game state, unguarded, as in the other two.\n\nNo caller: both heirs' slot 9 does its own text. `inferred` rather than `confirmed` because the role rests on the body being the same construction as two siblings whose callers are known, not on a call site of its own.",
+   "confidence": "inferred",
+   "source": "reversing/findings/FINDINGS-effects.md"
+  },
+  {
+   "rva": "0x59E220",
+   "kind": "function",
+   "name": "CStringEffect::FormatValueText",
+   "signature": "Hoi3CString* __thiscall CStringEffect::FormatValueText(CStringEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString* key)",
+   "no_signature": null,
+   "comment": "**Slot 12 for `CStringEffect`'s two heirs, and the whole body is the developers saying not to.** 0x59E220 to the single `ret 0xc` at 0x59E24D, 0x2E bytes, and it is nine instructions: `*out = \"DON'T CALL THIS ONE\"` (the string at 0x15F39D0, through `std::string::assign` at 0xA160) and return `out`. Neither the scope nor the key is read.\n\nIt is the fifth of the five slot-12 bodies and the one that explains the other four: the virtual is declared independently on five sibling middles, and the middle whose value is a string has nothing to substitute, so its implementation is a loud marker rather than a silent empty one. `CLoadOOBEffect` and `CRemoveBrigadeEffect` - `CStringEffect`'s only two heirs - both inherit it and neither calls it.\n\n**Trap 2, a new pair:** the `ret 0xc` at 0x59E24D is followed with **no padding at all** by a fresh `push ebp` at 0x59E250, which is an effect constructor (`ret 0x108`, a `CToken` by value, writing the vftable at VA 0x15F445C and `CPersistent::token` 0x18D). So `functionStart(0x59E250)` answers 0x59E220 and `retsBefore` reports one unexplained `ret`.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-effects.md"
+  },
+  {
+   "rva": "0x5BD110",
+   "kind": "function",
+   "name": "Effect_GetTargetCountryTag",
+   "signature": "CCountryTag* __stdcall Effect_GetTargetCountryTag(CCountryTag* out@stack:4, CEventScope* scope@stack:8, CEffect* effect@ECX) @EAX",
+   "no_signature": null,
+   "comment": "**Slot 12 of `CWarEffect`, `CWarGoalEffect`, `CModifySpiesEffect` and `CUndeclaredWarRegionEffect`, and the only one of the five slot-12 bodies that is load-bearing rather than cosmetic.** 0x5BD110 to the `ret 8` at 0x5BD215 with an early `ret 8` at 0x5BD14F, 0x106 bytes, eight int3 after. It answers the `CCountryTag` the effect acts on, four ways in priority order:\n\n1. `this->use_this (+0x1C)` set: `EventScope_GetCountryTag(scope)` (0x5C1A40, recorded) - the scope's own subject.\n2. `this->use_from (+0x1D)` set: `scope->from_country_tag (+0x18)` and `from_country_id (+0x1C)`.\n3. neither, and `this->+0x24 == 0`: the **controller** of the scope's province - `g_CCurrentGameState (0x1A89790) ->provinces (+0xB8C) [scope->province (+0x28)] ->controller (+0x334)`, which is `CMapProvince +0x334 controller CCountryTag`, *not* `owner (+0x32C)`.\n4. otherwise the tag written in the script, held as a `CCountryTag` at `this->+0x20`/`+0x24`.\n\nSo `war = { ... }`, `war_goal`, `undeclared_war_region` and `modify_spies` with no country named at all fall through to case 3 and target **whoever currently controls the scoped province** - occupation, not ownership. The class-free name is deliberate (see `slots_noted`): four tables, one address, and no common ancestor among the four but `CEffect`, whose own table has no slot 12.\n\nNine call sites, in both halves of each class: `CWarEffect::Execute` 0x5BC6FB, `CWarEffect::GetText` 0x5BC9D0 and 0x5BCA83, `CUndeclaredWarRegionEffect::Execute` 0x5BCF28, `CUndeclaredWarRegionEffect::GetText` 0x5BD24E, `CWarGoalEffect::Execute` 0x5BD5E3, `CWarGoalEffect::GetText` 0x5BD6C2, `CModifySpiesEffect::Execute` 0x5BE142, `CModifySpiesEffect::GetText` 0x5BE1DD. Every one of the nine follows the call by reading `scope->country_tag (+0x10)`, i.e. the resolved tag is immediately compared against the acting country.\n\nIt also lazily constructs `g_CCurrentGameState` if the global is null - `operator_new(0xDA8)`, `CGameState::CGameState (0x27D070)`, vftable VA 0x15CF674 - which is the same inlined singleton accessor `CCountry::GetActingCapitalLocation` and `EventScope_GetCountryTag` carry.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-effects.md"
+  },
+  {
+   "rva": "0x59E9A0",
+   "kind": "function",
+   "name": "CWarexhaustionEffect::GetText",
+   "signature": "Hoi3CString* __thiscall CWarexhaustionEffect::GetText(CWarexhaustionEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString unread, int unknown)",
+   "no_signature": null,
+   "comment": "**Slot 9, and one of only two bodies in the whole effect family that uses slot 12 for its text.** 0x59E9A0 to the single `ret 0x28` at 0x59EA43, 0xA6 bytes, ten int3 on both sides. The whole function is: build an `Hoi3CString` holding the literal key `WAREXHAUSTION_EFFECT` (0x15F39E8, length 0x12), dispatch `[vftable+0x30]` - slot 12, `CValueEffect::FormatValueText` - with `out`, `scope` and a pointer to that key, free the key, and return `out` in EAX.\n\nThe `Hoi3CString unread` is `CEffect::GetText`'s `group` parameter: 0x1C bytes from `[ebp+0x10]` to `[ebp+0x2B]`, read only to free its heap buffer at 0x59EA25, exactly as the base's own body does. The trailing `int` at `[ebp+0x2C]` is not read at all. 4+4+0x1C+4 = 0x28.\n\nIts twin is `CRevoltRiskEffect::GetText` (0x5A5600), byte-identical but for the key.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-effects.md"
+  },
+  {
+   "rva": "0x5A5600",
+   "kind": "function",
+   "name": "CRevoltRiskEffect::GetText",
+   "signature": "Hoi3CString* __thiscall CRevoltRiskEffect::GetText(CRevoltRiskEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString unread, int unknown)",
+   "no_signature": null,
+   "comment": "**Slot 9, the second and last body in the effect family that uses slot 12.** 0x5A5600 to the single `ret 0x28` at 0x5A56A3, 0xA6 bytes, five int3 before and ten after. The same body as `CWarexhaustionEffect::GetText` (0x59E9A0) but for the key, which is `REVOLTRISK_EFFECT` (0x15F3B38, length 0x11): build the key, dispatch slot 12 - `CValueEffect::FormatValueText` - with `out`, `scope` and the key, free the key, return `out`.\n\nThe two of them are what the slot was designed for, and the other nine `CValueEffect` leaves plus all 24 `CIntEffect` leaves duplicate the substitutions in their own slot 9 instead.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-effects.md"
+  },
+  {
+   "rva": "0x5F5E70",
+   "kind": "function",
+   "name": "CMoneyTrigger::Evaluate",
+   "signature": "bool __thiscall CMoneyTrigger::Evaluate(CMoneyTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "`money = N`. 0x5F5E70 to two `ret 4` at 0x5F5EB4 and 0x5F5ECE, 0x61 bytes, four int3 before and fifteen after; the two exits are the two arms of one branch and there is no cold path.\n\n    country = CCountryDataBase ([0x1A855A4]) ->+0x16C [scope->country_id (+0x14)]\n    pool    = country->government_in_exile (+0x95) ? country + 0x9F8                                  // pool_in_exile\n                                                   : CCountry::GetActingCapitalLocation(country) + 0x15C  // the province's pool\n    return pool->money (+0x10) >= this->value (+0x40)\n\n**That branch is `CCountry::GetPool` (rva 0xF4DE0) inlined, instruction for instruction** - the same `cmp byte ptr [reg+0x95],0; je; lea reg+0x9F8; jmp; call 0x42F100; add eax,0x15C` - so it is nothing special to the trigger: it is the game's one goods-pool accessor, inlined at 40 sites including `CCountry::UpdateIC`, `GetResourceLimitedIC`, `ConsumeIcResources`, `GetAvailableIC`, `CDistributeSupply::Distribute`, `CUnit::ConsumeSuppliesAndFuel` and `CConvoy::RunDelivery`.\n\nSo **a government in exile reads its own stockpile and nobody else's**, and every other country reads the pool physically held on the province `CCountry +0xE24 acting_capital_province_id` names - the acting capital, which falls back when the declared capital at `+0xE20` is lost. A `money` test on an exile never sees its host's money.\n\nThousandths both sides: `CGoodsPool +0x10` is thousandths and `CValueTrigger`'s slot 7 (0x5D13E0) puts `TokenToFixedPoint(text)` in `+0x40`, so `money = 0.5` is half a unit and the decimal survives. Slot 11 is `CTrigger::CountEvaluation` (0x5D06C0), i.e. it counts as one condition.\n\nOne dead store: `mov [esp+8], scope->country_tag (+0x10)` at 0x5F5E8B is never read - the remnant of a `CCountryTag` temporary the compiler optimised into the direct database index.\n\n`CEnergyTrigger`, `CCrudeOilTrigger`, `CRareMaterialsTrigger`, `CMetalTrigger` and `CSuppliesTrigger` are the same 32 instructions at 0x370-byte intervals, differing only in the `CGoodsPool` displacement.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-numtriggers.md"
+  },
+  {
+   "rva": "0x5F61E0",
+   "kind": "function",
+   "name": "CEnergyTrigger::Evaluate",
+   "signature": "bool __thiscall CEnergyTrigger::Evaluate(CEnergyTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "`energy = N`. The `CMoneyTrigger::Evaluate` body with one displacement changed: `return pool->energy (+0x1C) >= this->value (+0x40)`, the pool being `CCountry::GetPool` inlined - `pool_in_exile (CCountry +0x9F8)` for a government in exile, the acting capital province's `pool (CMapProvince +0x15C)` otherwise. 0x5F61E0 to two `ret 4` at 0x5F6224 and 0x5F623E, 0x61 bytes, thirteen int3 before and fifteen after. Thousandths both sides.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-numtriggers.md"
+  },
+  {
+   "rva": "0x5F6550",
+   "kind": "function",
+   "name": "CCrudeOilTrigger::Evaluate",
+   "signature": "bool __thiscall CCrudeOilTrigger::Evaluate(CCrudeOilTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "`crude_oil = N`. The `CMoneyTrigger::Evaluate` body reading `pool->crude_oil (+0x14)` instead: `return pool->+0x14 >= this->value (+0x40)`, over `CCountry::GetPool` inlined. 0x5F6550 to two `ret 4` at 0x5F6594 and 0x5F65AE, 0x61 bytes, thirteen int3 before and fifteen after. Thousandths both sides.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-numtriggers.md"
+  },
+  {
+   "rva": "0x5F68C0",
+   "kind": "function",
+   "name": "CRareMaterialsTrigger::Evaluate",
+   "signature": "bool __thiscall CRareMaterialsTrigger::Evaluate(CRareMaterialsTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "`rare_materials = N`. The `CMoneyTrigger::Evaluate` body reading `pool->rare_materials (+0x20)`: `return pool->+0x20 >= this->value (+0x40)`, over `CCountry::GetPool` inlined. 0x5F68C0 to two `ret 4` at 0x5F6904 and 0x5F691E, 0x61 bytes, thirteen int3 before and fifteen after. Thousandths both sides.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-numtriggers.md"
+  },
+  {
+   "rva": "0x5F6C30",
+   "kind": "function",
+   "name": "CMetalTrigger::Evaluate",
+   "signature": "bool __thiscall CMetalTrigger::Evaluate(CMetalTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "`metal = N`. The `CMoneyTrigger::Evaluate` body reading `pool->metal (+0x18)`: `return pool->+0x18 >= this->value (+0x40)`, over `CCountry::GetPool` inlined. 0x5F6C30 to two `ret 4` at 0x5F6C74 and 0x5F6C8E, 0x61 bytes, thirteen int3 before and fifteen after. Thousandths both sides.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-numtriggers.md"
+  },
+  {
+   "rva": "0x5F6FA0",
+   "kind": "function",
+   "name": "CSuppliesTrigger::Evaluate",
+   "signature": "bool __thiscall CSuppliesTrigger::Evaluate(CSuppliesTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "`supplies = N`. The last of the six and the `CMoneyTrigger::Evaluate` body reading `pool->supplies (+0x8)`: `return pool->+0x8 >= this->value (+0x40)`, over `CCountry::GetPool` inlined. 0x5F6FA0 to two `ret 4` at 0x5F6FE4 and 0x5F6FFE, 0x61 bytes, thirteen int3 before and fifteen after. Thousandths both sides.\n\n**`CGoodsPool` has seven goods and only six of them have a trigger: there is no `fuel` trigger.** The RTTI export has no `CFuelTrigger` while `CFuelPoolEffect` exists, so a script can *set* a country's fuel and cannot *test* it.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-numtriggers.md"
+  },
+  {
+   "rva": "0xE6A10",
+   "kind": "function",
+   "name": "CCountry::GetVassals",
+   "signature": "CCountryList* __thiscall CCountry::GetVassals(CCountry* this)",
+   "no_signature": null,
+   "comment": "The countries this one is overlord of, as a CCountryList embedded at +0xF78. The sibling of GetAllies ten bytes below it, and the two together are why +0xF78 and +0xF88 are two lists and not one: CCountry::RebuildNeighbours fills both.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0xE6A20",
+   "kind": "function",
+   "name": "CCountry::GetAllies",
+   "signature": "CCountryList* __thiscall CCountry::GetAllies(CCountry* this)",
+   "no_signature": null,
+   "comment": "**The answer to CCountry +0xF88.** The list the event language's `ally = { ... }` scope walks, embedded in the country as a CCountryList. `findings/FINDINGS-triggereval.md` found the scope walking a CList here, checked project.json and CCountry.hpp exactly as trap 14 says to, found nothing and correctly declined to name it - and the next wave was planned around settling whether `ally` scoped to a *bordering* country, which it does not. The name was in the repository the whole time, in `ghidra/luabind.json`, as `{\"offset\": 3976, \"name\": \"Allies\"}`: the Lua half stores offsets as **decimal**, so the hex grep trap 14 prescribes could not see it. That is now trap 14's third path and `scripts/reconcileFacts.py --grep` runs it.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0xE6A30",
+   "kind": "function",
+   "name": "CCountry::CalculateIsAllied",
+   "signature": "bool __thiscall CCountry::CalculateIsAllied(CCountry* this, CCountryTag other)",
+   "no_signature": null,
+   "comment": "Walks the `Allies` list at +0xF88 looking for `other`'s id. `mov eax,[ecx+0xF88]` takes the CList's `first`, then `cmp edx,[node+4]` against `[ebp+0xC]` - the id half of the CCountryTag passed by value - and `mov eax,[node+0xC]` follows `next`. That node layout, data at +0 and `next` at +0xC, is CListNode<CCountryTag> with an eight-byte payload, which is a second witness that the list holds tags by value rather than pointers. `ret 8` for the one eight-byte argument; answers `al` 1 on a hit and 0 off the end.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0xE2190",
+   "kind": "function",
+   "name": "CCountry::GetNumOfAllies",
+   "signature": "int __thiscall CCountry::GetNumOfAllies(CCountry* this)",
+   "no_signature": null,
+   "comment": "project.json already records +0x1064 as `num_of_allies` off CNumOfAlliesTrigger and marks it *likely*; this is the game's own accessor for the same field, which settles it. The entry's own note that it is **not** the list at +0xF88 is right - the two live 0xDC bytes apart and CCountry::RebuildNeighbours maintains both.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x94660",
+   "kind": "function",
+   "name": "CDiplomacyStatus::HasAlliance",
+   "signature": "bool __thiscall CDiplomacyStatus::HasAlliance(CDiplomacyStatus* this)",
+   "no_signature": null,
+   "comment": "`cmp dword [ecx+0x14], 0; setne al; ret` and nothing else - three instructions, so `luabindExtract`'s two-instruction accessor test does not take it and the Lua half has no field for +0x14 either. **project.json's CDiplomacyStatus +0x14 comment has named this function, with this rva, since FINDINGS-scopetriggers.md** and it has never had an entry: trap 14's third place to look, found by looking.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x648730",
+   "kind": "function",
+   "name": "CDiplomacyStatus::IsGuaranting",
+   "signature": "bool __thiscall CDiplomacyStatus::IsGuaranting(CDiplomacyStatus* this)",
+   "no_signature": null,
+   "comment": "Reads the guarantee at +0x1C, answers false when it is null, and otherwise compares the relation's +0xC with the status's own +0xC - `setne` here, `sete` in IsGuaranteed at 0x648760, which is the same body otherwise. So the one pointer carries both directions and the +0xC comparison is the direction. Named in project.json's +0x1C comment, with this rva, since FINDINGS-scopetriggers.md; this is the entry it never had.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x648760",
+   "kind": "function",
+   "name": "CDiplomacyStatus::IsGuaranteed",
+   "signature": "bool __thiscall CDiplomacyStatus::IsGuaranteed(CDiplomacyStatus* this)",
+   "no_signature": null,
+   "comment": "IsGuaranting's twin at 0x648730, differing in one byte: `sete al` where the other has `setne al`. Same reading of +0x1C, same direction test on +0xC, opposite answer.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x649C90",
+   "kind": "function",
+   "name": "CDiplomacyStatus::IsFightingWarTogether",
+   "signature": "bool __thiscall CDiplomacyStatus::IsFightingWarTogether(CDiplomacyStatus* this)",
+   "no_signature": null,
+   "comment": "The game's own name for the byte project.json records at +0x58 as `co_belligerent`, and the two readings agree: FINDINGS-trade2.md found it set between two countries when either joins the side of a war the other is already on, which is what fighting a war together is. A spelling difference, not a disagreement.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x64A3F0",
+   "kind": "function",
+   "name": "ReturnByteAt0x4C",
+   "signature": "bool __fastcall ReturnByteAt0x4C(void* this@ECX)",
+   "no_signature": null,
+   "comment": "`mov al, byte ptr [ecx+0x4c]; ret` - two instructions, and **class-free on purpose (trap 4)**. luabind registers it as `CDiplomacyStatus::HasMilitaryAccess`, and the same address fills **slot 70 of sixteen graphics classes** - C2dObject, C3dObject, C3dVisibleObject, CAreaCircleObject, CCounterObject, CCounterStack, CHoiAvatar, CMasked3dFlag, CProjectionObject, CProvinceCollisionObject, CProvinceObject, CProvinceWaterObject, CShield3dObject, CShieldObject, CSmallAvatarBase and CUnitArrow. Putting CDiplomacyStatus's name on it would put it on all sixteen. **The field is still safe**: the registration names the class, so the compiler emitted this getter from CDiplomacyStatus's own source and the linker merged it afterwards - a fold moves the risk onto the function's name, never onto the offset. CDiplomacyStatus +0x4C lands as `hasMilitaryAccess` in this same fragment.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x1010C0",
+   "kind": "function",
+   "name": "CCountry::GetNumberOfControlledProvinces",
+   "signature": "int __thiscall CCountry::GetNumberOfControlledProvinces(CCountry* this)",
+   "no_signature": null,
+   "comment": "`mov eax,[ecx+0xD08]`, which is the `count` member of the CList<int> at +0xD00 - so this is the controlled-province count and not a field of its own; buildFindings folds +0xD08 into the list that contains it. project.json's +0xD00 comment already named this function and its VA.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x1010D0",
+   "kind": "function",
+   "name": "CCountry::GetNumberOfOwnedProvinces",
+   "signature": "int __thiscall CCountry::GetNumberOfOwnedProvinces(CCountry* this)",
+   "no_signature": null,
+   "comment": "`mov eax,[ecx+0xCF8]`, the `count` member of the CList<int> at +0xCF0. The pair of 0x1010C0 on the next ten bytes, which is what makes the +0xCF0 / +0xD00 split owned against controlled rather than anything else.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x3A660",
+   "kind": "function",
+   "name": "CCountry::GetOwnedProvinces",
+   "signature": "CList<int>* __thiscall CCountry::GetOwnedProvinces(CCountry* this)",
+   "no_signature": null,
+   "comment": "`lea eax,[ecx+0xCF0]`, registered returning `CList<int> const&` - so +0xCF0 is an embedded CList of province **ids**, not pointers, and the three lists at +0xCF0, +0xD00 and +0xD10 are owned, controlled and core in that order.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x17AE0",
+   "kind": "function",
+   "name": "CCountry::GetControlledProvinces",
+   "signature": "CList<int>* __thiscall CCountry::GetControlledProvinces(CCountry* this)",
+   "no_signature": null,
+   "comment": "`lea eax,[ecx+0xD00]`. The list CCountry::UpdateIC walks to sum the country's IC, which is the reading FINDINGS-scopetriggers.md settled +0xD00 with; this is the accessor that comment cites, and it has never had an entry.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0xC3040",
+   "kind": "function",
+   "name": "CCountry::GetCoreProvinces",
+   "signature": "CList<int>* __thiscall CCountry::GetCoreProvinces(CCountry* this)",
+   "no_signature": null,
+   "comment": "`lea eax,[ecx+0xD10]`. The country side of the per-province `cores` list at CProvince +0x344 that the event language's `is_core` and `any_core` triggers walk - so project.json's name `claims` for +0xD10 was EU3 vocabulary for HoI3's cores, and this fragment revises it.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x63D780",
+   "kind": "function",
+   "name": "ReturnDwordAt0x30",
+   "signature": "int __fastcall ReturnDwordAt0x30(void* this@ECX)",
+   "no_signature": null,
+   "comment": "`mov eax, dword ptr [ecx+0x30]; ret` - **class-free (trap 4)**, because luabind registers this one address twice: as `CFaction::GetNumberOfMembers` and as `CLicenceTechnologyAction::GetParalell`. No virtual table holds it, so the usual holder count answers zero and says nothing; the registrations are the second holder source and the one that catches this. It is `LeaThisPlus28`'s exact situation - that body is `CFaction::GetMembers` and `CTradeAction::GetRoute` - and it takes the same answer. CFaction +0x30 lands as `NumberOfMembers` in this same fragment.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0x1235E0",
+   "kind": "function",
+   "name": "CFaction::GetFactionLeader",
+   "signature": "CCountryTag* __thiscall CFaction::GetFactionLeader(CFaction* this)",
+   "no_signature": null,
+   "comment": "Four instructions, and **the faction leader is simply the first member**: `cmp dword [ecx+0x30], 0; mov eax, 0x170CF48; je +3; mov eax,[ecx+0x28]; ret`. +0x30 is `NumberOfMembers` and +0x28 is `Members`, so when the faction has members it returns `Members.first` - and because a CListNode's payload sits at offset 0 and the payload here is a CCountryTag by value, the node pointer *is* a CCountryTag*. With no members it returns the global at 0x170CF48, whose eight bytes read `2d 2d 2d 00 00 00 00 00`: the null tag `---` with id 0. There is no separate leader field on CFaction, which is worth knowing before anyone looks for one.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0xEDD80",
+   "kind": "function",
+   "name": "CCountry::UpdateSubjectStatus",
+   "signature": "bool __cdecl CCountry::UpdateSubjectStatus(CCountry* country@EDI)",
+   "no_signature": null,
+   "comment": "**What settles CCountry +0xF34 and +0xF38.** 0x4EDD80 to the one bare `ret` at 0x4EDE98, SEH prologue, the country in **EDI** and nothing on the stack - which is why it is `__cdecl` with the receiver placed rather than `__thiscall` (trap 11). It clears +0xF34, writes `'---'` (0x2D2D2D) to +0xF38 and 0 to +0xF3C, then walks the country's own diplomacy array (+0xE28..+0xE2C, indexed by the other country's id) and for each status reads the relation at **+0x18** - the one project.json already names `dependency`. Where it is non-null it calls the relation's vftable slot 7 and compares the answer with **0x298**, which `ghidra/saveTokens.json` gives as token 664 `vassal`; then it checks the relation's +0xC against the status's own +0xC, the same one-pointer-two-directions test IsGuaranting and IsGuaranteed use on +0x1C. On a match it sets +0xF34 to 1 and copies that country's tag out of the database (`[0x1A855A4]`, `+0x16C` indexed by the id) into +0xF38/+0xF3C. So +0xF34 is 'this country is somebody's vassal' and +0xF38 is 'whose', which is exactly what the Lua half calls `isSubject` and `Overlord` and not at all what project.json called `has_faction` and `faction_leader_tag` - faction membership is +0xD8 -> CFaction. Its four callers are CDependency::Activate (0xA477D1, 0xA477EF) and CDependency slot 11 at 0xA47800 (0xA47873, 0xA47891), each calling it once per side, which closes that entry's own 'also calls 0x4EDD80 on each country'.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md"
+  },
+  {
+   "rva": "0xFCC60",
+   "kind": "function",
+   "name": "CCountry::GetOccupiedVictoryPointShare",
+   "signature": "int* __cdecl CCountry::GetOccupiedVictoryPointShare(CCountry* this@EAX, int* out@EDI)",
+   "no_signature": null,
+   "comment": "**The occupied share of a country's own claimed victory points, in thousandths - and the whole of what `surrender_progress` measures.** 0x4FCC60 to three bare `ret` at 0x4FCCC9, 0x4FCCDE and 0x4FCCEA, 43 instructions read end to end, one int3 after. Receiver in EAX, the out pointer in EDI, no stack arguments, and `out` comes back in EAX.\n\n    owned = this->claimed_victory_points_owned (+0xBE0)\n    if (owned <= 0)  { *out = 0; return out }\n    held = this->claimed_victory_points_controlled (+0xBE4)\n    *out = 1000 - clamp(held * 1000 / owned, 0, 1000)\n\nSo 0 when it still controls everything it owns, 1000 when it controls none of it, and **0 when it owns nothing it claims** - which is the one arm that does not mean what the name suggests and is why a country with an empty `claims` list never registers any surrender progress at all. The ratio is computed on a 32-bit `imul`/`idiv` fast path when `held` fits in +-2,147,035 and through the 64-bit helpers 0xB99AF0/0xB99980 otherwise. The `jne` at 0x4FCC6D and its `or eax,-1` arm are dead: the `jle` above it already took every value <= 0.\n\nIts only caller is CCountry::GetSurrenderProgress (0xFCB80) at 0x4FCBC1. Named for what it computes rather than for the keyword, because the keyword belongs to its caller.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-negatives.md"
+  },
+  {
+   "rva": "0x76FB0",
+   "kind": "function",
+   "name": "CVariables::AddVariable",
+   "signature": "void* __stdcall CVariables::AddVariable(CVariables* variables@EDI, Hoi3CString* name, int value)",
+   "no_signature": null,
+   "comment": "**The create half of `check_variable`'s side effect - and of `set_variable`'s and `change_variable`'s. It really does create.** 0x476FB0 to the single `ret 8` at 0x476FFC, 24 instructions read end to end. The registry arrives in EDI, the name and the value on the stack, and the new object comes back in EAX.\n\nIt asks `operator new` for **0x20 bytes** and lays out a variable: the Hoi3CString at offset 0 (inline buffer zeroed, length +0x10 = 0, capacity +0x14 = 0xF - the SSO shape), then the value at **+0x1C** from its second argument, then `Hoi3CString::assign` from the name argument, then an insert through the registry's **slot 6** (`[[edi]+0x18]`, pushed the object twice). It never looks the name up first, so on its own it would overwrite an existing payload inside the tree and leak the earlier object - but no caller does that, because all of them look up first and call this only on a miss.\n\n**Six call sites in five functions**, and they are the whole of how a script variable comes into existence:\n  - `CVariableTrigger::Evaluate` (0x5F01D0) at 0x5F0237, with `(&this->name, 0)` - this is the `check_variable` side effect, and the trigger then answers `0 >= value`\n  - `CSetVariableEffect` slot 11 (0x5AF7A0) at 0x5AF7FE - `set_variable` finds and updates `+0x1C` in place, and creates only when the name is new\n  - `CChangeVariableEffect` slot 11 (0x5AF810) at 0x5AF874 and 0x5AF8C6 - `change_variable` reads, adds its own `+0x3C` and writes back, so on a name that does not exist it calls this twice: once to make it zero and once more, which then finds it and updates in place\n  - `CSetVariableCommand` slot 6 (0x1532C0) at 0x553313 - the same find-or-create, as a `CCommand`\n  - `CVariables::GetValue` (0x76F60) at 0x476F8E - the generic accessor, which **has no callers at all** in this build\n\n`CVariables::LoadKey` (0x77080, slot 4 of the CPersistent vftable 0x11BD724) does not call this; it builds the identical 0x20 bytes inline and inserts them the same way, filling the value through `TokenToFixedPoint`. That is what fixes the layout, because the loader's object is the one a savegame's `name=value` pair becomes.\n\nSlot 6 of CVariables' own vftable (0x11BD700) is `NameTree_Insert` (0x4D8A0), a folded template body in eight tables that therefore stays class-free; it reduces to `TernarySearchTreeInsert` (0x4DA70), whose key comparison runs through `tolower`. **So variable names are case-insensitive** - unlike `remove_brigade`, which memcmps.\n\n**The created variable does not reach the save.** See 0x77000.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-negatives.md"
+  },
+  {
+   "rva": "0x77000",
+   "kind": "function",
+   "name": "CVariables::SaveSubtree",
+   "signature": "void __thiscall CVariables::SaveSubtree(CVariables* this, CSaveWriter* writer, CTernaryNode* node)",
+   "no_signature": null,
+   "comment": "**Why a variable set to zero is not in the savegame.** 0x477000 to the single `ret 8` at 0x477058, 36 instructions read end to end. An in-order walk of the variable tree: recurse into `node->low (+8)`, write this node's payload, recurse into `node->equal (+0x10)`, then iterate `node->high (+0xC)` as a loop. That order is why the `variables={}` block comes out alphabetically.\n\nThe payload step is the point:\n\n    v = node->element (+0)\n    if (v != 0 && v->value (+0x1C) != 0)\n        SaveWriteNamedFixed(v, writer, v->value)\n\nThe `test eax,eax; je` at 0x47702B is a **zero test on the value**, so a variable whose value is exactly zero is skipped. There is no 'absent means zero' distinction to lose, because `CVariableTrigger::Evaluate` treats a missing name as zero anyway - but it does mean the variable `check_variable` creates on a miss **is session-scoped and erases itself at the next save**, so the side effect cannot accumulate across a save/load and cannot be seen from outside the process.\n\nReached only from `CVariables::SaveContents` (0x77060), which is slot 2 of CVariables' CPersistent vftable 0x11BD724 and is the whole of `add ecx,-0x24; if (this->root) 0x77000(writer, root)`. The -0x24 is the second-base adjustment: CCountry holds the tree part at +0x1AC and the CPersistent part at +0x1D0, and CCountry::SaveContents does the matching `lea esi,[edi+0x1d0]` before writing key 0x411 `variables` at 0x4CFE2D.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-negatives.md"
+  },
+  {
+   "rva": "0x76F60",
+   "kind": "function",
+   "name": "CVariables::GetValue",
+   "signature": "int* __thiscall CVariables::GetValue(CVariables* this, int* out, Hoi3CString* name)",
+   "no_signature": null,
+   "comment": "**The generic read of a script variable, and it creates the variable it fails to find.** 0x476F60 to two `ret 8` at 0x476F81 and 0x476F9F, 21 instructions read end to end, eleven int3 before and fourteen after.\n\n    v = this->slot1(name)                 ; GuiTypeTree_FindByString\n    if (v) { *out = v->value (+0x1C); return out }\n    CVariables::AddVariable(this@EDI, name, 0)\n    *out = 0; return out\n\n**It has no callers in this build** - `findRefs.py --callers` reports zero direct calls - so the create-on-read behaviour reaches the game only through `CVariableTrigger::Evaluate`, which does the same thing inline. It is worth recording anyway, because it is the clearest statement of the intended semantics: in this engine reading a variable is what brings it into existence, and the trigger is not doing anything unusual.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-negatives.md"
+  },
+  {
+   "rva": "0x1615C0",
+   "kind": "function",
+   "name": "CBomberCombatant::Attack",
+   "signature": "void __thiscall CBomberCombatant::Attack(CBomberCombatant* this, CCombatant* other)",
+   "comment": "**Slot 15 of CBomberCombatant** (vftable 0x15C45DC), 0xB8 bytes. Resets the side's `units` CList at +0x40, then per unit asks the unit's order (slot 33 through CUnit +0xB0) which arm applies and fills this side's target array through 0x160600 or 0x1608A0 - the second only when [this+0xB0], the target count, is still zero. Then it walks the unit's regiments (CUnit +0x38) and calls CBomberCombatant::FireUnit(this, wing) at 0x161657, which is the only call to that function in the image.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x160B90",
+   "kind": "function",
+   "name": "CBomberCombatant::FireUnit",
+   "signature": "void __stdcall CBomberCombatant::FireUnit(CBomberCombatant* side, CSubUnit* wing)",
+   "comment": "**One bombing wing's shots for a tick** - and the only function in the image that reads `air_defence` off a definition in a combat path. 0xA25 bytes, one `ret 8`, ECX unused so it is not a thiscall. It draws one target uniformly from the side's own array (`Random() % [side+0xB0]`, element `[side+0xB4+i*4]`, elements are CSubUnit*), picks the attack stat by the wing's order - soft/hard split by the target's softness exactly as land does, or hard_attack alone, or sea_attack scaled by command effect 0x11 - computes the shot count as `attack * CSubUnit::combat_attack_product / 1000 / 1000` with the remainder as a chance at one more, and per shot rolls `Random() % 100 < CHANCE_TO_AVOID_HIT_AT_NO_DEF / 1000`. Damage is a 3..9 and a 1..3 die in thousandths, a 10% chance to cut the second by ten, a ship's scaled by `hull`, and then BOMB_REGIMENT/SHIP/WING_DAMAGE_MODIFIER by target kind (0x161274, 0x16138D, 0x16141A). **The target's air defence is computed and discarded** - see the instruction entries at 0x160D44, 0x160E5B and 0x160E6B.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md",
+   "locals": [
+    {
+     "at": "stack:-0x14",
+     "name": "airDefenceDiscarded",
+     "type": "int",
+     "comment": "the target's air_defence, rescaled by its combat_defend_product once per shot and never read - see FINDINGS-airdefence.md"
+    },
+    {
+     "at": "stack:-0x18",
+     "name": "wingUnit",
+     "type": "CUnit*",
+     "comment": "the firing wing's CUnit, whose order picks which attack stat applies"
+    },
+    {
+     "at": "stack:-0x1c",
+     "name": "target",
+     "type": "CSubUnit*",
+     "comment": "the regiment, ship or wing drawn for this tick"
+    },
+    {
+     "at": "stack:-0x20",
+     "name": "shots",
+     "type": "int",
+     "comment": "how many shots this wing gets, the loop counter"
+    },
+    {
+     "at": "stack:-0x28",
+     "name": "regimentCountTerm",
+     "type": "int",
+     "comment": "1000 + (the defender side's regiment total scaled by the static at 0x1A88104); multiplies a regiment's strength damage"
+    },
+    {
+     "at": "stack:-0x8",
+     "name": "ehState",
+     "type": "int",
+     "comment": "MSVC's `__$EHRec$` try level, at ebp-4 from the `push -1` in the prologue. Driven to 0, 1 and -1 around the lazy CDefines construction so the unwinder knows whether that object needs destroying."
+    },
+    {
+     "at": "stack:-0x10",
+     "name": "ehPrevRecord",
+     "type": "void*",
+     "comment": "the previous SEH registration record, saved from fs:[0] in the prologue and put back at every return (0x1615A2)"
+    }
+   ]
+  },
+  {
+   "rva": "0x16D750",
+   "kind": "function",
+   "name": "CAirCombatant::Attack",
+   "signature": "void __thiscall CAirCombatant::Attack(CAirCombatant* this, CCombatant* other)",
+   "comment": "**Slot 15 for an air fight**, 0x779 bytes. The attack value is `air_attack` off the firing wing's definition (+0x58 then +0x140, gated non-zero at 0x16D7F3), scaled by CSubUnit::combat_attack_product and divided twice by 1000 for a shot count. Dice are AIR_COMBAT_ORG_DICE_SIZE and AIR_COMBAT_STR_DICE_SIZE (military +0x168/+0x16C at 0x16D9FD and 0x16DA03), the avoid chance is CHANCE_TO_AVOID_HIT_AT_NO_DEF at 0x16DAEE. **It never reads `air_defence`**, so an aircraft's own air defence does nothing in air-to-air combat either.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x1630E0",
+   "kind": "function",
+   "name": "CGroundTargetCombatant::Attack",
+   "signature": "void __thiscall CGroundTargetCombatant::Attack(CGroundTargetCombatant* this, CCombatant* other)",
+   "comment": "Slot 15 for the side being ground-attacked, and only 15 instructions: it resets `units` (+0x40) and forwards to 0x163110 and 0x162370. Neither reads a definition stat; 0x162370 is the static anti-air term shared with the naval and land target sides.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x1631E0",
+   "kind": "function",
+   "name": "CNavalTargetCombatant::Attack",
+   "signature": "void __thiscall CNavalTargetCombatant::Attack(CNavalTargetCombatant* this, CCombatant* other)",
+   "comment": "Slot 15 for ships under air attack, 0xBB3 bytes and two `ret 4`. Fires with `air_attack` off the firing sub-unit's definition (+0x58 then +0x140, 0x163273) and rolls against CHANCE_TO_AVOID_HIT_AT_NO_DEF (0x1634D8). Reads no `air_defence`.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x1637C0",
+   "kind": "function",
+   "name": "CLandTargetCombatant::Attack",
+   "signature": "void __thiscall CLandTargetCombatant::Attack(CLandTargetCombatant* this, CCombatant* other)",
+   "comment": "Slot 15 for brigades under air attack, 0x5D3 bytes. Fires with `air_attack`, reached through the unit's own definition at CUnit +0xC8 (0x163831), and rolls against CHANCE_TO_AVOID_HIT_AT_NO_DEF (0x163AB2). Reads no `air_defence`.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x162370",
+   "kind": "function",
+   "name": "StaticAntiAirTerm",
+   "signature": "void __stdcall StaticAntiAirTerm(CCombatant* side@stack:4)",
+   "comment": "**The province's own anti-air, added to what the mobile units contribute** - 0x445 bytes, `ret 4`, called from all three target-side Attack bodies (0x1630F9, 0x163223, 0x163803) and from nowhere else. It takes a value from `[side+0x114]` then `+0x258`, scales it by a `(1000 + modifier)/1000` term and then by **STATIC_AA_SCALE** (military +0x22C, read at 0x16245F), and adds the result to another term. `likely`: the arithmetic above is off the bytes, the name is from the define it reads, and the function has not been read end to end. What matters for the air-defence question is negative and solid - it reads no definition stat, so static AA is a third channel that does not involve any unit's `air_defence`.",
+   "confidence": "likely",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x1D2D80",
+   "kind": "function",
+   "name": "CAir::GetDefenceValue",
+   "signature": "int __thiscall CAir::GetDefenceValue(CAir* this)",
+   "comment": "**CUnit slot 40 for an air unit**, the sibling of CArmy::GetDefenceValue (0x1D2A40) and CNavy's (0x1D2C40), and already described inside that entry's comment before it had one of its own. Returns -1 below the `[this+0x1F8] >= 7` gate; otherwise `air_defence` off the unit's own definition (+0xC8 then +0x128), range-checked against overflow at 0x1D2DA2 and then scaled. None of its call sites is in the combat code.",
+   "confidence": "likely",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x1D2C40",
+   "kind": "function",
+   "name": "CNavy::GetDefenceValue",
+   "signature": "int __thiscall CNavy::GetDefenceValue(CNavy* this)",
+   "comment": "**CUnit slot 40 for a naval unit** - the same shape as CArmy's (0x1D2A40) and CAir's (0x1D2D80), using `sea_defence` (+0xC8 then +0x160). Named off the vftable it sits in and the description already in CArmy's comment.",
+   "confidence": "likely",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x160D44",
+   "kind": "instruction",
+   "name": "BombFire_ReadTargetAirDefence",
+   "signature": null,
+   "comment": "`mov eax, [eax + 0x128]` - the target's `air_defence`, off the definition loaded one instruction earlier (CSubUnit +0x58 at 0x160D41, or the unit's own at CUnit +0xC8 from 0x160CAC on the ground-attack arm). Stored to the frame slot `[ebp - 0x10]` at 0x160D4A. **This is the only read of `air_defence` in any combat function in the image.**",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x160E5B",
+   "kind": "instruction",
+   "name": "BombFire_ScaleAirDefenceByDefendProduct",
+   "signature": null,
+   "comment": "`imul dword ptr [ebp - 0x10]` against the target's CSubUnit::combat_defend_product (+0x54, loaded at 0x160E58), divided by 1000 and stored back. **The second static reader of +0x54**, which that field's entry said had only one. Once per shot, so the slot is a loop-carried value whose only consumer is this instruction.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x160E6B",
+   "kind": "instruction",
+   "name": "BombFire_AirDefenceDeadStore",
+   "signature": null,
+   "comment": "`mov [ebp - 0x10], eax` - and **nothing ever reads it again**. The slot has exactly five accesses in the function (0x160BDB, 0x160D05, 0x160D4A, 0x160E5B, 0x160E6B), the function has no esp-form stack access at all so there is no alias, and the decode is verified: 829 instructions to the one `ret` at 0x1615B2, all 72 intra-function branch targets on an instruction boundary, recursive descent reaching 829 of 829. MSVC kept the store because the `imul` above reads it on the next iteration, so it is a dead cycle rather than a dead store. **Effect: a target's air defence changes nothing about being bombed.**",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x160F23",
+   "kind": "instruction",
+   "name": "BombFire_AvoidChanceAtNoDef",
+   "signature": null,
+   "comment": "`mov ebx, [ecx + 0xc]` off the `military` defines block - CHANCE_TO_AVOID_HIT_AT_NO_DEF - clamped to 99000 at 0x160F26 and compared against `Random() % 100` at 0x160FDE. BASE_CHANCE_TO_AVOID_HIT (+0x8) is not read anywhere in this function, so a bombed unit is always treated as having no defences left. BlackICE sets 70.0 against 88.0.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x16DAEE",
+   "kind": "instruction",
+   "name": "AirCombat_AvoidChanceAtNoDef",
+   "signature": null,
+   "comment": "CHANCE_TO_AVOID_HIT_AT_NO_DEF in CAirCombatant::Attack, clamped to 99000. The air fight has no defence-value mechanic of its own: CUnit::RollToHit (0x1CD250) has exactly one caller in the image and it is CLandCombatant::FireUnit at 0x16B0FD.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x1634D8",
+   "kind": "instruction",
+   "name": "NavalTarget_AvoidChanceAtNoDef",
+   "signature": null,
+   "comment": "CHANCE_TO_AVOID_HIT_AT_NO_DEF in CNavalTargetCombatant::Attack, clamped to 99000. Same flat roll as the other air paths.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x163AB2",
+   "kind": "instruction",
+   "name": "LandTarget_AvoidChanceAtNoDef",
+   "signature": null,
+   "comment": "CHANCE_TO_AVOID_HIT_AT_NO_DEF in CLandTargetCombatant::Attack, clamped to 99000. Same flat roll as the other air paths.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x16245F",
+   "kind": "instruction",
+   "name": "StaticAntiAir_ScaleDefine",
+   "signature": null,
+   "comment": "`mov eax, [eax + 0x22c]` off the `military` block - **STATIC_AA_SCALE** - the only define other than the avoid chance that the target-side fire reads. It scales a value taken from `[side+0x114]` then `+0x258`, which is the province's own anti-air rather than any unit stat.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x1688104",
+   "kind": "global",
+   "name": "k_thousandths_10_combat",
+   "signature": null,
+   "comment": "A compiled-in `(int)floor(10.5f)` static, **not a define** - no `defines.lua` entry can move it. Value 10, floored from the float at 0x120A680 by the store at 0x8BF78C inside the shared `.CRT$XCU` initialiser at 0x8BF6F0. **Eight readers**, which is why it is named for what it holds and not for one of them: CBomberCombatant::FireUnit (0x160D66), CBomberCombatant::ApplyCombatModifiers (0x161DDB, 0x161F3B), CTargetCombatant::ApplyCombatModifiers (0x162834), 0x1629BD, 0x162CFF and CBomberCombatant slot 10 (0x15EF7C). In FireUnit it makes the regiment-count term `1000 + regiments * 10` - **1% more bombing strength damage per regiment on the defending side** - where `regiments` is `GetTotalNumOfRegiments(side->combat->defender->units)`. Same float as `Define10` and `g_CombatModifierFloor`, a different static.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x16880D4",
+   "kind": "global",
+   "name": "g_BombRegimentStrengthFactor",
+   "signature": null,
+   "comment": "A compiled-in `(int)floor(400.5f)` static, **not a define** - no `defines.lua` entry can move it. Value 400, floored from the float at 0x120A6DC by the store at 0x8BF9CC inside the shared `.CRT$XCU` initialiser at 0x8BF6F0. **One reader**, at 0x161259 in CBomberCombatant::FireUnit, which is why it is named for it: the x0.400 on **strength** damage when a bombing run hits a land regiment, applied before BOMB_REGIMENT_DAMAGE_MODIFIER. Pairs with g_BombRegimentOrgFactor.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x1688130",
+   "kind": "global",
+   "name": "g_BombRegimentOrgFactor",
+   "signature": null,
+   "comment": "A compiled-in `(int)floor(800.5f)` static, **not a define** - no `defines.lua` entry can move it. Value 800, floored from the float at 0x120AADC by the store at 0x8BFB7C inside the shared `.CRT$XCU` initialiser at 0x8BF6F0. **One reader**, at 0x16125F in CBomberCombatant::FireUnit: the x0.800 on **organisation** damage against a land regiment, before BOMB_REGIMENT_DAMAGE_MODIFIER. So bombing a brigade costs it twice as much organisation as strength, and that ratio is compiled in.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x168810C",
+   "kind": "global",
+   "name": "g_BombShipStrengthFactor",
+   "signature": null,
+   "comment": "A compiled-in `(int)floor(300.5f)` static, **not a define** - no `defines.lua` entry can move it. Value 300, floored from the float at 0x120AAB4 by the store at 0x8BF93C inside the shared `.CRT$XCU` initialiser at 0x8BF6F0. **One reader**, at 0x161373 in CBomberCombatant::FireUnit: the x0.300 on **strength** damage against a ship, before BOMB_SHIP_DAMAGE_MODIFIER. The organisation side of the same arm uses k_thousandths_500.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x1688120",
+   "kind": "global",
+   "name": "k_thousandths_500",
+   "signature": null,
+   "comment": "A compiled-in `(int)floor(500.5f)` static, **not a define** - no `defines.lua` entry can move it. Value 500, floored from the float at 0x120A5E8 by the store at 0x8BFA2C inside the shared `.CRT$XCU` initialiser at 0x8BF6F0. **Two readers, both in CBomberCombatant::FireUnit and for different things**, which is why this one keeps a generic name: at 0x161378 it is the x0.500 on **organisation** damage against a **ship**, and at 0x1613FF the x0.500 on **strength** damage against a **wing**. Naming it for either would be false about the other.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
+  },
+  {
+   "rva": "0x1688160",
+   "kind": "global",
+   "name": "g_BombWingOrgFactor",
+   "signature": null,
+   "comment": "A compiled-in `(int)floor(700.5f)` static, **not a define** - no `defines.lua` entry can move it. Value 700, floored from the float at 0x120AB0C by the store at 0x8BFB1C inside the shared `.CRT$XCU` initialiser at 0x8BF6F0. **One reader**, at 0x161405 in CBomberCombatant::FireUnit: the x0.700 on **organisation** damage against a wing, before BOMB_WING_DAMAGE_MODIFIER.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-airdefence.md"
   }
  ],
  "structs": [
@@ -21180,6 +21871,223 @@
   {
    "name": "CCountry",
    "fields": [
+    {
+     "offset": "0xD08",
+     "name": "province_count",
+     "type": "int",
+     "comment": "**How many provinces the country holds** - the count of the list at +0xD00, and the field `CCountry::GetSurrenderProgress` tests against zero to answer the maximum. There is a one-instruction accessor for it at rva 0x1010C0 (`mov eax,[ecx+0xd08]; ret`), which is the shape of a registered Lua getter. Incremented by the append at 0x4DD224 and zeroed with the head and tail by CCountry::AfterLoad at 0x4D4ACE; 48 `[reg+0xD08]` sites exist in `.text` and most of the readers are in the AI module.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
+    },
+    {
+     "offset": "0xD04",
+     "name": "province_ids_end",
+     "type": "void*",
+     "comment": "Tail of the province-id list whose head is `province_ids` at +0xD00, between it and `province_count` at +0xD08 - the usual head/tail/count triple. Read as the previous node and overwritten with the new one by the append at 0x4DD21E, and zeroed with the other two by CCountry::AfterLoad at 0x4D4AC8.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
+    },
+    {
+     "offset": "0xBE4",
+     "name": "claimed_victory_points_controlled",
+     "type": "int",
+     "comment": "**Victory points in thousandths, summed over the provinces in the `claims` list (+0xD10) that this country currently controls.** The other half of +0xBE0, written in the same loop in CCountry::RebuildNeighbours: zeroed at 0x4E2311 and accumulated at 0x4E3076 on `prov->controller_id (+0x338) == country->id`. `1000 - 1000 * controlled / owned` is the occupied share of the country's own territory, which is what `surrender_progress` is built from. CGameState also has a field at +0xBE4 and writes it with `movss`, i.e. as a float - a displacement scan mixes the two.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
+    },
+    {
+     "offset": "0xBE0",
+     "name": "claimed_victory_points_owned",
+     "type": "int",
+     "comment": "**Victory points in thousandths, summed over the provinces in the `claims` list (+0xD10) that this country owns.** Written only by CCountry::RebuildNeighbours (0xE21E0), which zeroes it with the rest of its counter block at 0x4E2305 and then accumulates `prov->victory_points (+0x34) * 1000` at 0x4E3059 for each claimed province whose `owner.id (+0x330)` is the country's own `id (+0xCA8)`. Two readers: CCountry::GetOccupiedVictoryPointShare (0xFCC60), which uses it as the denominator of the surrender measure, and CAIUnit::EstimateTheatreNeed, which at 0x4B99FF takes `owned - controlled` and tests it against 0x7D0 (2 victory points) to decide an ally is losing real ground. Other classes also carry a field at +0xBE0 - CGameState and CInGameIdler both write one - so a bare displacement scan here is trap 12.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
+    },
+    {
+     "offset": "0x1204",
+     "name": "MoneyBalanceAverage",
+     "type": "CFixedPoint",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetMoneyBalanceAverage` (rva 0x4E8240) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0x1204]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x11F8",
+     "name": "SupplyBalanceAverage",
+     "type": "CFixedPoint",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetSupplyBalanceAverage` (rva 0x4E8220) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0x11f8]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x10F4",
+     "name": "accessIdeologyPopularity",
+     "type": "CIdeologyData",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::AccessIdeologyPopularity` (rva 0xC8830) is `lea eax, [ecx + 0x10f4]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x10BC",
+     "name": "accessIdeologyOrganization",
+     "type": "CIdeologyData",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::AccessIdeologyOrganization` (rva 0xC8820) is `lea eax, [ecx + 0x10bc]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x1028",
+     "name": "SpyingOnUs",
+     "type": "CCountryList",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetSpyingOnUs` (rva 0xE6A60) is `lea eax, [ecx + 0x1028]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xFE8",
+     "name": "ControllerNeighbours",
+     "type": "CCountryList",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetControllerNeighbours` (rva 0x487F30) is `lea eax, [ecx + 0xfe8]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xFD8",
+     "name": "Neighbours",
+     "type": "CCountryList",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetNeighbours` (rva 0x21C8E0) is `lea eax, [ecx + 0xfd8]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xF88",
+     "name": "Allies",
+     "type": "CCountryList",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetAllies` (rva 0xE6A20) is `lea eax, [ecx + 0xf88]; ret` - the whole function, so the function *is* the offset. **The field FINDINGS-triggereval.md found the `ally` scope walking and correctly declined to name**, because the hex grep trap 14 prescribes cannot see the Lua half - which stores this offset as the decimal 3976. CCountry::RebuildNeighbours appends to it on CDiplomacyStatus +0x14 (`alliance`) being non-null plus a direction test, at 0x4E328E.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xF78",
+     "name": "Vassals",
+     "type": "CCountryList",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetVassals` (rva 0xE6A10) is `lea eax, [ecx + 0xf78]; ret` - the whole function, so the function *is* the offset. The countries this one is overlord of - the other end of `isSubject`/`Overlord` at +0xF34/+0xF38, which CCountry::UpdateSubjectStatus writes from the same `vassal` relation at CDiplomacyStatus +0x18.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xF40",
+     "name": "Constructions",
+     "type": "CList<CConstruction*>",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetConstructions` (rva 0xF56B0) is `lea eax, [ecx + 0xf40]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xDFC",
+     "name": "Government",
+     "type": "CGovernment const*",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetGovernment` (rva 0xE0450) is `mov eax, dword ptr [ecx + 0xdfc]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xDBC",
+     "name": "Rules",
+     "type": "CRule",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetRules` (rva 0xFBC80) is `lea eax, [ecx + 0xdbc]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xD80",
+     "name": "NavalBases",
+     "type": "CList<CProvince*>",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetNavalBases` (rva 0x946A0) is `lea eax, [ecx + 0xd80]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xD70",
+     "name": "AirBases",
+     "type": "CList<CProvince*>",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetAirBases` (rva 0x94690) is `lea eax, [ecx + 0xd70]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xCF0",
+     "name": "OwnedProvinces",
+     "type": "CList<int>",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetOwnedProvinces` (rva 0x3A660) is `lea eax, [ecx + 0xcf0]; ret` - the whole function, so the function *is* the offset. The first of the three province CLists - owned at +0xCF0, controlled at +0xD00, core at +0xD10, each 0x10 bytes with its count at +8. CAnyOwnedProvinceTrigger::Evaluate walks this one.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xBD8",
+     "name": "TotalLeadership",
+     "type": "CFixedPoint",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTotalLeadership` (rva 0xF4E00) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0xbd8]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x890",
+     "name": "TradedForSansAlliedSupply",
+     "type": "CGoodsPool",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTradedForSansAlliedSupply` (rva 0xC8790) is `lea eax, [ecx + 0x890]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x800",
+     "name": "TradedAwaySansAlliedSupply",
+     "type": "CGoodsPool",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTradedAwaySansAlliedSupply` (rva 0xC8750) is `lea eax, [ecx + 0x800]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x638",
+     "name": "CurrentResearch",
+     "type": "CList<CTechnology const*>",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetCurrentResearch` (rva 0xE01F0) is `lea eax, [ecx + 0x638]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x170",
+     "name": "HistoricalMinisters",
+     "type": "CList<CMinister*>",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetHistoricalMinisters` (rva 0xF8AD0) is `lea eax, [ecx + 0x170]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x160",
+     "name": "PossibleMinisters",
+     "type": "CList<CMinister*>",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetPossibleMinisters` (rva 0x750630) is `lea eax, [ecx + 0x160]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xD4",
+     "name": "OfficerRatio",
+     "type": "CFixedPoint",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetOfficerRatio` (rva 0x17C60) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0xd4]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xC0",
+     "name": "TotalNeededConvoyTransports",
+     "type": "int",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTotalNeededConvoyTransports` (rva 0x4E8210) is `mov eax, dword ptr [ecx + 0xc0]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xBC",
+     "name": "TotalConvoyTransports",
+     "type": "int",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTotalConvoyTransports` (rva 0x4E8200) is `mov eax, dword ptr [ecx + 0xbc]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CCountry::GetTotalConvoyTransports) and 1 virtual table slot - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xB8",
+     "name": "TotalNeededTransports",
+     "type": "int",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTotalNeededTransports` (rva 0x4A2260) is `mov eax, dword ptr [ecx + 0xb8]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CCountry::GetTotalNeededTransports) and 1 virtual table slot - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xB4",
+     "name": "Escorts",
+     "type": "int",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetEscorts` (rva 0x17C30) is `mov eax, dword ptr [ecx + 0xb4]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CCountry::GetEscorts) and 1 virtual table slot - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xB0",
+     "name": "Transports",
+     "type": "int",
+     "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTransports` (rva 0x17C40) is `mov eax, dword ptr [ecx + 0xb0]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CCountry::GetTransports) and 1 virtual table slot - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
     {
      "offset": "0x1194",
      "name": "strat_bomb_impact",
@@ -21672,9 +22580,9 @@
     },
     {
      "offset": "0x604",
-     "name": "base_ic",
+     "name": "TotalIC",
      "type": "int",
-     "comment": "base IC written by the daily IC calculation",
+     "comment": "base IC written by the daily IC calculation\n\n**Renamed from `base_ic` 2026-10-05: it is anything but base.** The game's own accessor is `CCountry::GetTotalIC` (rva 0x23670 = `mov eax,[ecx+0x604]; ret`), and this entry's own neighbour at +0x60C already describes why that is the right word. CCountry::UpdateIC writes the summed province base to +0x604 **and** +0x60C from one register at 0xF0F9D/0xF0FA3, and then only +0x604 is touched again: scaled by (1000 + countryValues[GLOBAL_IC] + technologyStatus ic_bonus) / 1000 and floored at 1 (0xF0FA9-0xF0FEB), cut to what metal and energy support (0xF14A6), and finally topped up with the resource-free lend-lease IC (0xF14C1). So +0x60C is the base and +0x604 is the total actually delivered. The event keyword agrees from the other side: `CTotalICTrigger::Evaluate` compares its threshold against **+0x604**, so the script's `total_ic` and the Lua API's `TotalIC` are the same field under the same name.",
      "source": "BiceLib/Hooks/HookedPatches.cpp:73"
     },
     {
@@ -22127,16 +23035,16 @@
     },
     {
      "offset": "0xD00",
-     "name": "province_ids",
-     "type": "void*",
-     "comment": "the head of a list of `{ province id, ?, next }` nodes - CCountry::UpdateIC walks it and looks each id up in CCurrentGameState +0xB8C to sum the country's IC. **It is the controlled provinces**, settled by the game's own Lua accessor `CCountry::GetControlledProvinces` (VA 0x417AE0 = `lea eax,[ecx+0xD00]; ret`), with `NumberOfControlledProvinces` the CList's own count member at +0xD08 (`CCountry::GetNumberOfControlledProvinces`, VA 0x5010C0). The pair for the owned provinces is +0xCF0 / +0xCF8, which CAnyOwnedProvinceTrigger::Evaluate walks and CCountry::RebuildNeighbours's first province walk uses. The earlier inference from the +0x610 test was right.",
+     "name": "ControlledProvinces",
+     "type": "CList<int>",
+     "comment": "the head of a list of `{ province id, ?, next }` nodes - CCountry::UpdateIC walks it and looks each id up in CCurrentGameState +0xB8C to sum the country's IC. **It is the controlled provinces**, settled by the game's own Lua accessor `CCountry::GetControlledProvinces` (VA 0x417AE0 = `lea eax,[ecx+0xD00]; ret`), with `NumberOfControlledProvinces` the CList's own count member at +0xD08 (`CCountry::GetNumberOfControlledProvinces`, VA 0x5010C0). The pair for the owned provinces is +0xCF0 / +0xCF8, which CAnyOwnedProvinceTrigger::Evaluate walks and CCountry::RebuildNeighbours's first province walk uses. The earlier inference from the +0x610 test was right.\n\n**Renamed from `province_ids` and retyped 2026-10-05.** The comment already said the game's own accessor settles it; the name and type now say so too. `lea eax,[ecx+0xD00]` at rva 0x17AE0 is registered as `CList<int> const& CCountry::GetControlledProvinces()`, so the field is the whole embedded CList - `first` at +0xD00, `last` at +0xD04, `count` at +0xD08 (which is what `CCountry::GetNumberOfControlledProvinces`, rva 0x1010C0, returns) and the node byte at +0xD0C.",
      "source": "reversing/findings/FINDINGS-scopetriggers.md"
     },
     {
      "offset": "0xD10",
-     "name": "claims",
-     "type": "void*",
-     "comment": "The head of a linked list of province ids the country claims, each node's next at +0x8. The alignment revanchism term walks it and counts the provinces whose current owner belongs to the faction being scored. **The game's own name for it is `CoreProvinces`**, from the Lua accessor `CCountry::GetCoreProvinces` (VA 0x4C3040 = `lea eax,[ecx+0xD10]; ret`, registered returning `CList<int>&`) - so these are HoI3's core provinces, the country side of the per-province `cores` list at `CProvince +0x344` that the event language's `is_core` and `any_core` triggers walk.",
+     "name": "CoreProvinces",
+     "type": "CList<int>",
+     "comment": "The head of a linked list of province ids the country claims, each node's next at +0x8. The alignment revanchism term walks it and counts the provinces whose current owner belongs to the faction being scored. **The game's own name for it is `CoreProvinces`**, from the Lua accessor `CCountry::GetCoreProvinces` (VA 0x4C3040 = `lea eax,[ecx+0xD10]; ret`, registered returning `CList<int>&`) - so these are HoI3's core provinces, the country side of the per-province `cores` list at `CProvince +0x344` that the event language's `is_core` and `any_core` triggers walk.\n\n**Renamed from `claims` and retyped 2026-10-05**, on the authority the comment already cited: `lea eax,[ecx+0xD10]` at rva 0xC3040, registered as `CList<int> const& CCountry::GetCoreProvinces()`. `claims` is EU3's word; HoI3 calls these core provinces, and conflating the two is a real risk because HoI3 also has claims in the peace machinery.",
      "source": "reversing/findings/FINDINGS-scopetriggers.md"
     },
     {
@@ -22253,16 +23161,16 @@
     },
     {
      "offset": "0xF34",
-     "name": "has_faction",
+     "name": "isSubject",
      "type": "bool",
-     "comment": "Tested by CCountry::IsSameSide (0xEF940) at 0xEF9BE before it will compare two countries' +0xF3C against each other - so it is 'this country belongs to a faction / has an overlord at +0xF38'. read",
+     "comment": "Tested by CCountry::IsSameSide (0xEF940) at 0xEF9BE before it will compare two countries' +0xF3C against each other - so it is 'this country belongs to a faction / has an overlord at +0xF38'. read\n\n**Renamed from `has_faction` 2026-10-05, and it is not about factions.** Its one real writer is `CCountry::UpdateSubjectStatus` (rva 0xEDD80), which sets it to 1 only when one of the country's own diplomacy statuses holds a relation at +0x18 whose slot 7 answers save token 0x298 `vassal` in the direction that makes this country the dependent - and in the same breath writes the overlord's tag to +0xF38. Faction membership is a different field: `CCountry +0xD8` is the `CFaction*`. The game's own predicate is `CCountry::IsSubject` (rva 0xEDEA0 = `mov al,[ecx+0xF34]; ret`). The recorded reading of CCountry::IsSameSide is untouched and still correct - a shared +0xF3C does make two countries the same side; it does so because they share an overlord.",
      "source": "reversing/findings/FINDINGS-aiplans.md"
     },
     {
      "offset": "0xF38",
-     "name": "faction_leader_tag",
+     "name": "Overlord",
      "type": "CCountryTag",
-     "comment": "A CCountryTag by value: letters here, id at +0xF3C. CCountry::IsSameSide (0xEF940) and CCountry::IsFriendly (0xEF7C0) treat two countries as the same side when either one's +0xF3C names the other, or when both carry the same +0xF3C - which is what makes it the faction leader or overlord. The letters half is loaded and stored to a scratch local at several points without being compared, so only the id half is load-bearing. read",
+     "comment": "A CCountryTag by value: letters here, id at +0xF3C. CCountry::IsSameSide (0xEF940) and CCountry::IsFriendly (0xEF7C0) treat two countries as the same side when either one's +0xF3C names the other, or when both carry the same +0xF3C - which is what makes it the faction leader or overlord. The letters half is loaded and stored to a scratch local at several points without being compared, so only the id half is load-bearing. read\n\n**Renamed from `faction_leader_tag` 2026-10-05.** `CCountry::UpdateSubjectStatus` (rva 0xEDD80) initialises it to the null tag `'---'` and overwrites it, together with the id half at +0xF3C, with the tag of the country on the other end of a `vassal` relation. The game's own accessor is `CCountry::GetOverlord` (rva 0xEDEB0), which copies +0xF38 and +0xF3C into the caller's eight bytes - which is also the independent witness for the pair being one CCountryTag by value rather than two fields.",
      "source": "reversing/findings/FINDINGS-aiplans.md"
     },
     {
@@ -22484,9 +23392,9 @@
     },
     {
      "offset": "0x1184",
-     "name": "convoy_damage_statistics",
-     "type": "void*",
-     "comment": "A time series the strategic-warfare screen draws (the `linechart_their_convoy_ic` family). ResolveConvoyRaid appends to it through 0x130600 when a raid is beaten off, with the value `-(STRAT_CONVOY_DAMAGE / victim->convoys_count) / 10` and the current tick as the x value. The class of the series was not read, and whether a successful raid writes a different series was not followed.",
+     "name": "StrategicWarfare",
+     "type": "CStrategicWarfare",
+     "comment": "A time series the strategic-warfare screen draws (the `linechart_their_convoy_ic` family). ResolveConvoyRaid appends to it through 0x130600 when a raid is beaten off, with the value `-(STRAT_CONVOY_DAMAGE / victim->convoys_count) / 10` and the current tick as the x value. The class of the series was not read, and whether a successful raid writes a different series was not followed.\n\n**Retyped and renamed 2026-10-05: it is an object, not a pointer.** `CCountry::GetStrategicWarfare` (rva 0x2F280) is `lea eax,[ecx+0x1184]; ret` registered as returning `CStrategicWarfare&`, and a `lea` cannot be a pointer load - so +0x1184 is an embedded CStrategicWarfare and `void*` was wrong. The Lua half gives that class three fields, +0x8 `ConvoyImpact`, +0xC `AlliesImpact`, +0x10 `BombingImpact`, and `CStrategicWarfare::LoadKey` (rva 0x1309B0) has exactly three keys - `convoy`, `alliance`, `ground_bombing` - which is an independent corroboration from the loader side that the object has those three members and nothing else. The recorded reading is otherwise intact: ResolveConvoyRaid at 0x5D1FFB does `lea edi,[country+0x1184]` and calls 0x130600, which allocates an eight-byte node and links it, so the series the strategic-warfare screen draws lives *inside* this object.",
      "source": "reversing/findings/FINDINGS-convoys.md"
     },
     {
@@ -22498,9 +23406,9 @@
     },
     {
      "offset": "0x11D8",
-     "name": "highest_threat_tag",
-     "type": "int",
-     "comment": "The tag of the country this one feels the most threat from, as a packed three-character tag; initialised to '---' (0x2D2D2D). Written together with +0x11DC by 0x4E21E0, which scans the diplomacy statuses for the largest +0x5C. That function has 65 callers and is not one of the daily pass's, so the pass reads a cache someone else maintains.",
+     "name": "HighestThreat",
+     "type": "CCountryTag",
+     "comment": "The tag of the country this one feels the most threat from, as a packed three-character tag; initialised to '---' (0x2D2D2D). Written together with +0x11DC by 0x4E21E0, which scans the diplomacy statuses for the largest +0x5C. That function has 65 callers and is not one of the daily pass's, so the pass reads a cache someone else maintains.\n\n**Retyped from `int` and renamed 2026-10-05.** `CCountry::GetHighestThreat` (rva 0x1074F0) is `lea eax,[ecx+0x11D8]; ret` registered as returning `CCountryTag const&`, so +0x11D8 is a CCountryTag by value - letters here, id at +0x11DC - and not an int. That is the same shape the entry already described ('written together with +0x11DC') and the same initialiser ('---', 0x2D2D2D, which is the null tag); the type simply never caught up, and with `int` on it every read of the id half decompiled as an unnamed offset four bytes past a scalar.",
      "source": "reversing/findings/FINDINGS-politics.md"
     },
     {
@@ -23811,9 +24719,9 @@
     },
     {
      "offset": "0x5C",
-     "name": "infrastructure",
-     "type": "int",
-     "comment": "An int in thousandths that the unit AI uses as \"is this province worth holding a front over\". `CAIUnit::EstimateAreaNeed` requires a neighbour's value to be at least 200 before the province counts as a front (0x4B8830), and gives the province itself the floor weight 500 instead of 1000 when its own value is at or below 300 (0x4B8BF4). Eight more readers across the unit AI and the map code. **Written in exactly one place**: `CProvince::LoadKey`'s default arm, which treats an unknown key as a building name and, when the loaded building's definition `+0x24` is 12, sets `province->+0x5C = building->level(+0x20) * definition->+0x8 / 1000` (0x96132-0x96152). Which building type index 12 is was **not** established - the mod reorders `common/buildings.txt`, so it is not safe to count. The cheapest live check is `dumpStruct.py` on a province and a comparison against the province panel.\n\n**Confirmed live 2026-10-02, and renamed from `ai_front_value`.** Read on every province with an `infra` key in `history/provinces/`, and compared: **10,642 of 10,642 agree** with `infra * 100`, where `infra` is the file's 0-10 value. (A first pass scored 98.43% against the *first* `infra` key in each file; all 167 misses were files that repeat the key, and the engine is **last-wins** - the residual was the test, not the field.) This does not contradict 'an int in thousandths': `infra * 100` and a fraction in thousandths are the same number, since the file's 0-10 is 0-100%. Paris (2613) reads 1000 = infra 10.0 = 100%.\n\n**The old name named a use, not the field.** The unit AI reads infrastructure when deciding whether a province is worth holding a front over, which is why it looked like an AI value. The gain from the rename is that the thresholds become readable in the units a modder sees: the 200 at 0x4B8830 is **infrastructure 2.0** and the 300 at 0x4B8BF4 is **3.0**. A province under 2.0 does not count as a front; under 3.0 it gets the floor weight 500 instead of 1000.\n\n`+0x24 == 12` is untouched by this and is still not a building index - `infra` is building no.21 in the mod's `common/buildings.txt`, so 12 is an id of something else, as the record already says.",
+     "name": "MaxInfrastructure",
+     "type": "CFixedPoint",
+     "comment": "An int in thousandths that the unit AI uses as \"is this province worth holding a front over\". `CAIUnit::EstimateAreaNeed` requires a neighbour's value to be at least 200 before the province counts as a front (0x4B8830), and gives the province itself the floor weight 500 instead of 1000 when its own value is at or below 300 (0x4B8BF4). Eight more readers across the unit AI and the map code. **Written in exactly one place**: `CProvince::LoadKey`'s default arm, which treats an unknown key as a building name and, when the loaded building's definition `+0x24` is 12, sets `province->+0x5C = building->level(+0x20) * definition->+0x8 / 1000` (0x96132-0x96152). Which building type index 12 is was **not** established - the mod reorders `common/buildings.txt`, so it is not safe to count. The cheapest live check is `dumpStruct.py` on a province and a comparison against the province panel.\n\n**Confirmed live 2026-10-02, and renamed from `ai_front_value`.** Read on every province with an `infra` key in `history/provinces/`, and compared: **10,642 of 10,642 agree** with `infra * 100`, where `infra` is the file's 0-10 value. (A first pass scored 98.43% against the *first* `infra` key in each file; all 167 misses were files that repeat the key, and the engine is **last-wins** - the residual was the test, not the field.) This does not contradict 'an int in thousandths': `infra * 100` and a fraction in thousandths are the same number, since the file's 0-10 is 0-100%. Paris (2613) reads 1000 = infra 10.0 = 100%.\n\n**The old name named a use, not the field.** The unit AI reads infrastructure when deciding whether a province is worth holding a front over, which is why it looked like an AI value. The gain from the rename is that the thresholds become readable in the units a modder sees: the 200 at 0x4B8830 is **infrastructure 2.0** and the 300 at 0x4B8BF4 is **3.0**. A province under 2.0 does not count as a front; under 3.0 it gets the floor weight 500 instead of 1000.\n\n`+0x24 == 12` is untouched by this and is still not a building index - `infra` is building no.21 in the mod's `common/buildings.txt`, so 12 is an id of something else, as the record already says.\n\n**Renamed from `infrastructure` and retyped 2026-10-05, in step with CProvince +0x5C**, which is the same field: RTTI has CMapProvince deriving from CProvince at offset 0, and both structures carry it only because Ghidra has no inheritance. The game's own name is `MaxInfrastructure`, from `CProvince::GetMaxInfrastructure` (rva 0x6C360); the effective infrastructure is a different quantity computed by `CProvince::GetInfrastructure` (rva 0x94570) out of the modifier array at +0x114. The unit AI's use of this field - a neighbour needing at least 200 before a province counts as a front, the floor weight dropping to 500 at or below 300 - is unchanged by the rename and now reads as thresholds on 20% and 30% of full infrastructure, which is what the 1000 clamp in GetInfrastructure says the scale is.",
      "source": "reversing/findings/FINDINGS-power.md"
     },
     {
@@ -24903,7 +25811,7 @@
      "offset": "0x54",
      "name": "combat_defend_product",
      "type": "int",
-     "comment": "The defence-side counterpart of +0x50, written by the same adder and reset to 1000 by the same slot 19. **Read at 0x56645E and nowhere else**, in CCombatant slot 11's per-sub-unit loop, where it is multiplied by +0x50 and divided by 1000. That read sits past a `ret 4` at 0x566452 and is reached only by `je 0x566455` from inside the loop, which is why it was recorded here as having **no reader** until 2026-10-01 (trap 3). The branch is taken when the sub-unit's slot 9 answers false; the true arm uses the division's CUnit +0xEC/+0xF0/+0xF4/+0xF8 instead, so on a ship or wing the two products are used together.\n\n**What it feeds, corrected 2026-10-01 (second correction, see reversing/findings/FINDINGS-combat3.md §3).** This entry twice said the product is a 'loss factor' that carries naval, air and bombing modifiers 'into losses'. It does not. That wording was inherited from a wrong owner: the block was first attributed to CCombatant::ApplyLosses (trap 2 - ApplyLosses ends at 0x5662ED and slot 11 begins at 0x5662F0 with no padding), and when the owner was corrected the meaning was not re-asked. **Slot 11 sums strength.** Its only two invocations in the image are 0x57B083 and 0x57B091 inside CCombat slot 17 (0x17B050), which returns the attacker's share of the two sides' total strength in thousandths; that number's only consumer is 0x17BD70, the `combat_status` window's per-tick refresh, called once from the end of CCombat::Tick and only for a combat the player's own country is in, where it picks an icon state at the 66.0%/33.0% thresholds and formats a percentage.\n\n**So the two sides are not symmetrical.** +0x50 multiplies the shot count in CNavalCombatant::Attack and therefore changes the simulation; +0x54's single reader changes a number on screen. On this reading a defence-side naval, air or bombing combat modifier - including the two defence-only ids - is **cosmetic in this build**. The bound: 'slot 11 has exactly two invocations' is confirmed of the entry-set decode, and 6.7% of non-padding .text lies outside that decode, so it is `likely` as a statement about the whole image. One battle in a running game settles it - see FINDINGS-combat3.md's live checks.\n\n**And the one reader only runs for the player's own battles** (2026-10-02): CCombat::Tick gates the combat_status refresh on CountryIdListContains over the attacker's or defender's CCombatant::countries with the player's id from gameState +0xC34. So in an AI-vs-AI combat this field is never read at all. Player-only, not merely display-only.\n\n**Confirmed live 2026-10-02.** A hook on the one reader (CCombatant slot 11) in a 1942 war save recorded 39,414 calls with **zero unexplained return addresses**: 39,222 via CLandCombatant's own forwarder and 96 + 96 from CCombat slot 17's two legs. So nothing outside slot 17 reaches this field in practice, the vcall-thunk route the static sweep could not close never fired, and the demotion stands: for naval, air and bombing the defence side of the combat modifier census is cosmetic in this build. Land is unaffected - CUnit +0xF0 has the AI reader.",
+     "comment": "The defence-side counterpart of +0x50, written by the same adder and reset to 1000 by the same slot 19. **Read at 0x56645E and nowhere else**, in CCombatant slot 11's per-sub-unit loop, where it is multiplied by +0x50 and divided by 1000. That read sits past a `ret 4` at 0x566452 and is reached only by `je 0x566455` from inside the loop, which is why it was recorded here as having **no reader** until 2026-10-01 (trap 3). The branch is taken when the sub-unit's slot 9 answers false; the true arm uses the division's CUnit +0xEC/+0xF0/+0xF4/+0xF8 instead, so on a ship or wing the two products are used together.\n\n**What it feeds, corrected 2026-10-01 (second correction, see reversing/findings/FINDINGS-combat3.md §3).** This entry twice said the product is a 'loss factor' that carries naval, air and bombing modifiers 'into losses'. It does not. That wording was inherited from a wrong owner: the block was first attributed to CCombatant::ApplyLosses (trap 2 - ApplyLosses ends at 0x5662ED and slot 11 begins at 0x5662F0 with no padding), and when the owner was corrected the meaning was not re-asked. **Slot 11 sums strength.** Its only two invocations in the image are 0x57B083 and 0x57B091 inside CCombat slot 17 (0x17B050), which returns the attacker's share of the two sides' total strength in thousandths; that number's only consumer is 0x17BD70, the `combat_status` window's per-tick refresh, called once from the end of CCombat::Tick and only for a combat the player's own country is in, where it picks an icon state at the 66.0%/33.0% thresholds and formats a percentage.\n\n**So the two sides are not symmetrical.** +0x50 multiplies the shot count in CNavalCombatant::Attack and therefore changes the simulation; +0x54's single reader changes a number on screen. On this reading a defence-side naval, air or bombing combat modifier - including the two defence-only ids - is **cosmetic in this build**. The bound: 'slot 11 has exactly two invocations' is confirmed of the entry-set decode, and 6.7% of non-padding .text lies outside that decode, so it is `likely` as a statement about the whole image. One battle in a running game settles it - see FINDINGS-combat3.md's live checks.\n\n**And the one reader only runs for the player's own battles** (2026-10-02): CCombat::Tick gates the combat_status refresh on CountryIdListContains over the attacker's or defender's CCombatant::countries with the player's id from gameState +0xC34. So in an AI-vs-AI combat this field is never read at all. Player-only, not merely display-only.\n\n**Confirmed live 2026-10-02.** A hook on the one reader (CCombatant slot 11) in a 1942 war save recorded 39,414 calls with **zero unexplained return addresses**: 39,222 via CLandCombatant's own forwarder and 96 + 96 from CCombat slot 17's two legs. So nothing outside slot 17 reaches this field in practice, the vcall-thunk route the static sweep could not close never fired, and the demotion stands: for naval, air and bombing the defence side of the combat modifier census is cosmetic in this build. Land is unaffected - CUnit +0xF0 has the AI reader.\n\n**\"Read at 0x56645E and nowhere else\" is wrong, and the conclusion survives (2026-10-05, reversing/findings/FINDINGS-airdefence.md).** There is a second static reader, at 0x160E5B in CBomberCombatant::FireUnit, where this field multiplies the bombing target's `air_defence`; the register is a CSubUnit on independent evidence, being read at +0x58, +0x5C and +0xA8 in the same loop. The 2026-10-02 live check does not contradict it - it hooked CCombatant slot 11's callers, not this field. The demotion stands for a better reason than the old one: **that second reader's result is itself discarded**, so the defence-side product still reaches nothing but a number on screen.",
      "source": "agent findings, combat modifiers wave"
     },
     {
@@ -24938,8 +25846,8 @@
      "offset": "0x68",
      "name": "name",
      "type": "Hoi3CString",
-     "comment": "historical regiment name, saved as `name`",
-     "source": "BiceLib/GameClasses/CRegiment.hpp:63"
+     "comment": "**The regiment's own name, always present, and the only thing `remove_brigade` can ever match.** Saved as `name` inside a `regiment={}` block, and the loader puts it back. Across the 45-save corpus there are **788,880 regiment blocks and 788,880 of them carry a `name=`, none of it empty**, so an 'unnamed regiment' does not exist at runtime: 290,876 of those instances (7,133 distinct strings) hold an engine-generated name of the shape `<ordinal> <abbrev> Regiment` - `1st HQ Regiment`, `2nd Art Regiment`, `1st Wagon Regiment` - and the rest hold the historical name the order of battle gave them. A wing is a CSubUnit too and carries its name here in the same way.\n\n**So `remove_brigade = <a subunit type>` can never match**, and nothing in the mod tries: of 6,132 distinct `remove_brigade` values none is one of the 1,427 subunit type tokens the mod's `units/*.txt` declare.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
     },
     {
      "offset": "0x84",
@@ -25081,6 +25989,34 @@
   {
    "name": "CSubUnitDefinition",
    "fields": [
+    {
+     "offset": "0x100",
+     "name": "BuildTime",
+     "type": "CFixedPoint",
+     "comment": "The game's own name for it, out of the Lua API. `CSubUnitDefinition::GetBuildTime` (rva 0xC8370) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0x100]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xF8",
+     "name": "BuildCostIC",
+     "type": "CFixedPoint",
+     "comment": "The game's own name for it, out of the Lua API. `CSubUnitDefinition::GetBuildCostIC` (rva 0x62D30) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0xf8]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x38",
+     "name": "canParadrop",
+     "type": "bool",
+     "comment": "The game's own name for it, out of the Lua API. `CSubUnitDefinition::CanParadrop` (rva 0x1A3250) is `mov al, byte ptr [ecx + 0x38]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x37",
+     "name": "isBomber",
+     "type": "bool",
+     "comment": "The game's own name for it, out of the Lua API. `CSubUnitDefinition::IsBomber` (rva 0x62D20) is `mov al, byte ptr [ecx + 0x37]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
     {
      "offset": "0x8",
      "name": "key",
@@ -26890,7 +27826,7 @@
      "offset": "0xB0",
      "name": "front_line",
      "type": "CList<CUnit*>",
-     "comment": "**The units that actually fight this tick**, and the CList's own `count` at +0xB8 is how many. Distinct from `units` at +0x40, which is everyone on this side: CLandCombatant::Attack walks this one to decide who shoots, and CCombatant::PickTarget draws from the enemy's to decide who is shot at. **What puts a unit on it has not been read** - combat width is the obvious candidate and is not yet evidence.",
+     "comment": "**The units that actually fight this tick**, and the CList's own `count` at +0xB8 is how many. Distinct from `units` at +0x40, which is everyone on this side: CLandCombatant::Attack walks this one to decide who shoots, and CCombatant::PickTarget draws from the enemy's to decide who is shot at. **What puts a unit on it has not been read** - combat width is the obvious candidate and is not yet evidence.\n\n**This is the land family's layout, not the base's (2026-10-05, reversing/findings/FINDINGS-airdefence.md).** The CList reading is right for CLandCombatant - its Attack does `lea esi, [ebx+0xB0]` and walks nodes at +8 from 0x16B3B0, and CCombatant::PickTarget takes the count from +0xB8 - and both of those are land. The air and bombing combatants use those bytes for a target array instead, and **the two layouts are the opposite way round** (corrected 2026-10-05, later the same day): CBomberCombatant keeps `target_count` at +0xB0 and `targets[1024]` at +0xB4 (0x160BD3, 0x160BDE), while CAirCombatant keeps `targets[1024]` at +0xB0 and the count at +0x10B0 (0x16D4C3, 0x16D4D0, 0x16D529). Both arrays are *derived* fields over the same 0xB0-byte base - RTTI gives CBomberCombatant : CCombatant and CGroundTargetCombatant : CBombTargetCombatant : CCombatant - so neither order constrains the other, and the first version of this note generalised the bomber's order onto the family wrongly. The 1024 bound is confirmed off `cmp eax, 0x400` at 0x16D4C9. Both classes now have struct records. The allocation sizes settle it: CLandCombatant is **0xE4** (0x17B4EB), CAirCombatant and the CBombTargetCombatant family **0x10B4**, CBomberCombatant **0x10E8** - and 0x10B4 - 0xB4 is exactly 0x1000, 1024 pointers. So sizeof(CCombatant) is 0xB0 and this field belongs on CLandCombatant, which has no struct record to move it to (mergeFindings cannot create one). Note the granularity difference it exposes: the land front line holds CUnit*, the air and bombing target arrays hold CSubUnit*.",
      "source": "reversing/findings/FINDINGS-combat.md"
     }
    ],
@@ -28844,9 +29780,9 @@
     {
      "offset": "0x0",
      "name": "element",
-     "type": "undefined4",
-     "comment": "the CFlag or CVariable ending here, or 0",
-     "source": "BiceLib/GameClasses/CFlags.hpp:29"
+     "type": "void*",
+     "comment": "The CFlag, CVariable or CGuiType whose name ends at this node, or 0 where no name ends here. TernarySearchTreeFind returns `*(*slot)` from here on a match (0xA7E079) and TernarySearchTreeInsert writes it last (0x44DAFB), overwriting it on a key already present. A variable object has its Hoi3CString at offset 0, which is why CVariables::SaveSubtree can hand this pointer straight to `SaveWriteNamedFixed(Hoi3CString* key@EAX, ...)`.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
     },
     {
      "offset": "0x4",
@@ -28857,24 +29793,24 @@
     },
     {
      "offset": "0x8",
-     "name": "parent",
+     "name": "low",
      "type": "CTernaryNode*",
-     "comment": "where a name added later hangs (mem)",
-     "source": "BiceLib/GameClasses/CFlags.hpp:36"
+     "comment": "**The subtree for keys whose current character sorts below this node's.** Taken when `tolower(key[i]) - node->character < 0`: `lea esi,[edi+8]` in TernarySearchTreeFind (0xA7E068) and `lea ebx,[esi+8]` in TernarySearchTreeInsert (0x44DAF3), in both cases without advancing the key position. CVariables::SaveSubtree recurses into it **first**, which is why the savegame's `variables={}` block comes out alphabetically.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
     },
     {
      "offset": "0xC",
-     "name": "sibling",
+     "name": "high",
      "type": "CTernaryNode*",
-     "comment": "sibling node",
-     "source": "BiceLib/GameClasses/CFlags.hpp:37"
+     "comment": "**The subtree for keys whose current character sorts above this node's.** Taken when `tolower(key[i]) - node->character > 0` (0xA7E061 in the find, 0x44DAEE in the insert), again without advancing the key. CVariables::SaveSubtree iterates it as the loop's continuation rather than recursing, which is the last leg of the in-order walk.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
     },
     {
      "offset": "0x10",
-     "name": "child",
+     "name": "equal",
      "type": "CTernaryNode*",
-     "comment": "child node",
-     "source": "BiceLib/GameClasses/CFlags.hpp:38"
+     "comment": "**The next character of a key that matched this node's.** Taken when `tolower(key[i]) == node->character` and the key has more to go, together with `key++` - `inc ebx; lea esi,[edi+0x10]` in the find (0xA7E05B) and `inc edi; lea ebx,[esi+0x10]` in the insert (0x44DAE4). Where the key ends instead, the node's `element` is the answer. **Both ends of the tree fold the key byte through `tolower` (0xB96692) and store the folded form, so every lookup in this structure is case-insensitive** - which is already recorded on TernarySearchTreeFind and is what makes `check_variable = { which = BaseIC }` and `which = baseic` the same variable, in contrast to `remove_brigade`, which memcmps a name.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
     }
    ]
   },
@@ -28945,6 +29881,13 @@
   {
    "name": "CConstruction",
    "fields": [
+    {
+     "offset": "0x40",
+     "name": "Size",
+     "type": "int",
+     "comment": "The game's own name for it, out of the Lua API. `CConstruction::GetSize` (rva 0x83E00) is `mov eax, dword ptr [ecx + 0x40]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
     {
      "offset": "0x8",
      "name": "id_type",
@@ -30439,6 +31382,13 @@
    "name": "CMilitaryConstruction",
    "fields": [
     {
+     "offset": "0x7C",
+     "name": "Brigades",
+     "type": "CList<CBrigadeConstructionDefinition*>",
+     "comment": "The game's own name for it, out of the Lua API. `CMilitaryConstruction::GetBrigades` (rva 0x17D50) is `lea eax, [ecx + 0x7c]; ret` - the whole function, so the function *is* the offset. The CList is 0x10 bytes, so project.json's own `brigades_count` at +0x84 is this list's `count` member and buildFindings folds it into this field's comment rather than laying it down separately. That is already what the generated record does; recording +0x7C here only makes project.json say the same.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
      "offset": "0x58",
      "name": "unit_type",
      "type": "int",
@@ -30797,6 +31747,20 @@
    "name": "CProvince",
    "fields": [
     {
+     "offset": "0x368",
+     "name": "Continent",
+     "type": "CContinent*",
+     "comment": "The game's own name for it, out of the Lua API. `CProvince::GetContinent` (rva 0xA6BD0) is `mov eax, dword ptr [ecx + 0x368]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x28",
+     "name": "CachedTotalSuppression",
+     "type": "CFixedPoint",
+     "comment": "The game's own name for it, out of the Lua API. `CProvince::GetCachedTotalSuppression` (rva 0xC8500) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0x28]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
      "offset": "0xA0",
      "name": "flags",
      "type": "CFlags",
@@ -30889,9 +31853,9 @@
     },
     {
      "offset": "0x5C",
-     "name": "infrastructure",
-     "type": "int",
-     "comment": "The same field project.json records on CMapProvince; both structures carry it because Ghidra has no inheritance between the two. It is written by CProvince's own code - zeroed in CProvince::CProvince at 0x494767 and in the province building reset at 0x496680, computed in CProvince::LoadKey at 0x496152, in SetProvinceBuildingLevel at 0x4A3B0A and in CProvinceBuilding_OnLevelChanged at 0x4B8024 - and the full account is on the CMapProvince entry.\n\n**Confirmed live 2026-10-02** against 10,642 provinces' `infra` keys in `history/provinces/` - 100.00% agree with `infra * 100`. `CMapProvince +0x5C`'s entry, which used to carry the name `ai_front_value`, is now named `infrastructure` to match this one.\n\n*This used to point at a `FINDINGS-infrastructure.md`, which has never existed - not in the tree and not anywhere in git history. The evidence for the name is the sentence above, not a document. Found 2026-10-05, when checkrefs.py learned to read this file; the dead pointer is removed rather than repaired because there is nothing to repair it to.*",
+     "name": "MaxInfrastructure",
+     "type": "CFixedPoint",
+     "comment": "The same field project.json records on CMapProvince; both structures carry it because Ghidra has no inheritance between the two. It is written by CProvince's own code - zeroed in CProvince::CProvince at 0x494767 and in the province building reset at 0x496680, computed in CProvince::LoadKey at 0x496152, in SetProvinceBuildingLevel at 0x4A3B0A and in CProvinceBuilding_OnLevelChanged at 0x4B8024 - and the full account is on the CMapProvince entry.\n\n**Confirmed live 2026-10-02** against 10,642 provinces' `infra` keys in `history/provinces/` - 100.00% agree with `infra * 100`. `CMapProvince +0x5C`'s entry, which used to carry the name `ai_front_value`, is now named `infrastructure` to match this one.\n\n*This used to point at a `FINDINGS-infrastructure.md`, which has never existed - not in the tree and not anywhere in git history. The evidence for the name is the sentence above, not a document. Found 2026-10-05, when checkrefs.py learned to read this file; the dead pointer is removed rather than repaired because there is nothing to repair it to.*\n\n**Renamed from `infrastructure` and retyped 2026-10-05: it is the maximum, and the game has a separate accessor for the effective figure.** `CProvince::GetMaxInfrastructure` (rva 0x6C360) copies +0x5C out as a `CFixedPoint`, while `CProvince::GetInfrastructure` (rva 0x94570) is a different and much longer function that does not read +0x5C at all: it takes the province's modifier array at +0x114 and computes `values[MODIFIER_INFRASTRUCTURE] * (1000 + values[LOCAL_INFRASTRUCTURE] + values[GLOBAL_INFRASTRUCTURE]) / 1000`, floors it at a cached constant and clamps it at 1000. Two accessors, two quantities, and only one of them is this field. The clamp at 1000 also fixes the scale: with the recorded live check - 100.00% of 10,642 provinces' `infra` keys agreeing with `infra * 100` - the field is thousandths of full infrastructure, 1000 being 100%, and `infra = 10` in history is the maximum.",
      "source": "reversing/findings/FINDINGS-aifields.md"
     },
     {
@@ -31675,6 +32639,20 @@
    "name": "CAIStrategy",
    "fields": [
     {
+     "offset": "0x148",
+     "name": "WarTargets",
+     "type": "CList<CCountryWarTargetValue*>",
+     "comment": "The game's own name for it, out of the Lua API. `CAIStrategy::GetWarTargets` (rva 0x6BE260) is `lea eax, [ecx + 0x148]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x18",
+     "name": "Personality",
+     "type": "CAIStrategy::AIPersonality",
+     "comment": "The game's own name for it, out of the Lua API. `CAIStrategy::GetPersonality` (rva 0x16000) is `mov eax, dword ptr [ecx + 0x18]; ret` - the whole function, so the function *is* the offset. That body is shared - 2 luabind registrations (CAIStrategy::GetPersonality, CDiplomaticAction::GetType) and 101 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
      "offset": "0x4",
      "name": "type_id",
      "type": "int",
@@ -31970,6 +32948,27 @@
   {
    "name": "CTechnology",
    "fields": [
+    {
+     "offset": "0x314",
+     "name": "canUpgrade",
+     "type": "bool",
+     "comment": "The game's own name for it, out of the Lua API. `CTechnology::CanUpgrade` (rva 0x1187D0) is `mov al, byte ptr [ecx + 0x314]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x290",
+     "name": "Folder",
+     "type": "CTechnologyFolder const*",
+     "comment": "The game's own name for it, out of the Lua API. `CTechnology::GetFolder` (rva 0xC8530) is `mov eax, dword ptr [ecx + 0x290]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x244",
+     "name": "Index",
+     "type": "int",
+     "comment": "The game's own name for it, out of the Lua API. `CTechnology::GetIndex` (rva 0x17AC0) is `mov eax, dword ptr [ecx + 0x244]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
     {
      "offset": "0x20C",
      "name": "key",
@@ -32677,6 +33676,34 @@
    "name": "CWarGoal",
    "fields": [
     {
+     "offset": "0x28",
+     "name": "Region",
+     "type": "CRegion const*",
+     "comment": "The game's own name for it, out of the Lua API. `CWarGoal::GetRegion` (rva 0x63B3D0) is `mov eax, dword ptr [ecx + 0x28]; ret` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CLicenceTechnologyAction::GetSubunit, CSendExpeditionaryForceAction::GetClaimType, CWarGoal::GetRegion) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x20",
+     "name": "Recipient",
+     "type": "CCountryTag",
+     "comment": "The game's own name for it, out of the Lua API. `CWarGoal::GetRecipient` (rva 0x771E0) is `lea eax, [ecx + 0x20]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x18",
+     "name": "Actor",
+     "type": "CCountryTag",
+     "comment": "The game's own name for it, out of the Lua API. `CWarGoal::GetActor` (rva 0x79740) is `lea eax, [ecx + 0x18]; ret` - the whole function, so the function *is* the offset. That body is shared - 4 luabind registrations (CIdeologyGroup::GetKey, CLawGroup::GetKey, CRegion::GetKey, CWarGoal::GetActor) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x10",
+     "name": "Country",
+     "type": "CCountryTag",
+     "comment": "The game's own name for it, out of the Lua API. `CWarGoal::GetCountry` (rva 0x79750) is `lea eax, [ecx + 0x10]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CWarGoal::GetCountry) and 1 virtual table slot - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
      "offset": "0xC",
      "name": "casus_belli",
      "type": "void*",
@@ -32785,6 +33812,13 @@
    "name": "CBrigadeConstructionDefinition",
    "fields": [
     {
+     "offset": "0x34",
+     "name": "Type",
+     "type": "CSubUnitDefinition const*",
+     "comment": "The game's own name for it, out of the Lua API. `CBrigadeConstructionDefinition::GetType` (rva 0x712990) is `mov eax, dword ptr [ecx + 0x34]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
      "offset": "0x8",
      "name": "country",
      "type": "CCountryTag",
@@ -32832,6 +33866,13 @@
   {
    "name": "CTheatre",
    "fields": [
+    {
+     "offset": "0xA4",
+     "name": "Priority",
+     "type": "CFixedPoint",
+     "comment": "The game's own name for it, out of the Lua API. `CTheatre::GetPriority` (rva 0xAEE90) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0xa4]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
     {
      "offset": "0x4",
      "name": "persistent_meta",
@@ -33047,6 +34088,20 @@
   {
    "name": "CFaction",
    "fields": [
+    {
+     "offset": "0xAC",
+     "name": "Progress",
+     "type": "CFixedPoint",
+     "comment": "The game's own name for it, out of the Lua API. `CFaction::GetProgress` (rva 0x122BC0) is `lea eax, [ecx + 0xac]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x28",
+     "name": "Members",
+     "type": "CList<CCountryTag>",
+     "comment": "The game's own name for it, out of the Lua API. `CFaction::GetMembers` (rva 0x638F90) is `lea eax, [ecx + 0x28]; ret` - the whole function, so the function *is* the offset. That body is shared - 2 luabind registrations (CFaction::GetMembers, CTradeAction::GetRoute) and 2 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout. The member tags, by value - a CList<CCountryTag> whose nodes are 0x10 bytes with the eight-byte tag at offset 0. `CFaction::GetFactionLeader` (rva 0x1235E0) returns this list's `first` **as** the leader's tag, which is only well typed because the payload sits at offset 0.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
     {
      "offset": "0x8",
      "name": "ideology_group",
@@ -33271,6 +34326,13 @@
    "name": "CEffect",
    "inherits": "CPersistent",
    "fields": [
+    {
+     "offset": "0x14",
+     "name": "unused",
+     "type": "uint8_t",
+     "comment": "**A byte every effect carries, zeroed when it is built and touched by nothing else in the image.** The family's base constructor is inlined everywhere it is used and writes, in this order, `+8 = +0xC = +0x10 = 0` (the CList base), `byte +0x14 = 0`, `token (+4) = 0x18D`, `word +0x1C = 0` (the `use_this`/`use_from` pair as one word), then the concrete class's vftable. CEffect::LoadKey (0x599CA0) does that 41 times, once per switch case, and three out-of-line constructors do it with the zero in a register (0x99E277, 0x9A26EE, 0x9AFF0D). There is no other write and **no read at all**, byte-sized or otherwise, in any of the 247 slot bodies the 109 `*Effect` vftables hold.\n\nIt is a declared member rather than padding - `+0x14` is a byte with three bytes of slack before `keyword` at +0x18, exactly as `+0x1C`/`+0x1D` have two before +0x20 - but it is dead in this build, so the name says only that.\n\n**This corrects the record's prose, not an earlier field record** - there was none. FINDINGS-effects.md's open list and fragments/merged/effects.json's `slots_noted` both say 'CEffect +0x14 is left unnamed: nothing in the three destructors or in CEffect::LoadKey touches it.' CEffect::LoadKey is where it is written, 41 times, the first at 0x999D35, and the width was unknown: it is a byte, not a dword. The destructors half of that claim stands - CEffect::~CEffect (0x59C540) zeroes exactly +0x8, +0xC and +0x10 at 0x99C596-0x99C59B, which is also what proves the CList base is three dwords and that +0x14 is CEffect's own rather than a fourth word of the list.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
+    },
     {
      "offset": "0x1D",
      "name": "use_from",
@@ -33721,6 +34783,13 @@
    "name": "CIdeology",
    "fields": [
     {
+     "offset": "0x50",
+     "name": "Group",
+     "type": "CIdeologyGroup const*",
+     "comment": "The game's own name for it, out of the Lua API. `CIdeology::GetGroup` (rva 0xC89A0) is `mov eax, dword ptr [ecx + 0x50]; ret` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CIdeology::GetGroup, CLaw::GetGroup, CLawGroup::GetIndex) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
      "offset": "0x30",
      "name": "key",
      "type": "Hoi3CString",
@@ -33740,6 +34809,13 @@
   {
    "name": "CGovernmentPosition",
    "fields": [
+    {
+     "offset": "0x50",
+     "name": "isChangeable",
+     "type": "bool",
+     "comment": "The game's own name for it, out of the Lua API. `CGovernmentPosition::IsChangeable` (rva 0x74E120) is `mov al, byte ptr [ecx + 0x50]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
     {
      "offset": "0x2C",
      "name": "key_token",
@@ -33801,6 +34877,20 @@
    "name": "LogRecord",
    "size": "0xBC",
    "fields": [
+    {
+     "offset": "0x4C",
+     "name": "Index",
+     "type": "int",
+     "comment": "The game's own name for it, out of the Lua API. `CMinisterType::GetIndex` (rva 0x14BB90) is `mov eax, dword ptr [ecx + 0x4c]; ret` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CGovernmentPosition::GetIndex, CLaw::GetIndex, CMinisterType::GetIndex) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x30",
+     "name": "Key",
+     "type": "CString",
+     "comment": "The game's own name for it, out of the Lua API. `CMinisterType::GetKey` (rva 0x4E8160) is `lea eax, [ecx + 0x30]; ret` - the whole function, so the function *is* the offset. That body is shared - 5 luabind registrations (CEU3AI::GetReqProdQueue, CGovernmentPosition::GetKey, CIdeology::GetKey, CLaw::GetKey, CMinisterType::GetKey) and 16 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
     {
      "offset": "0x0",
      "name": "vbptr",
@@ -34452,6 +35542,13 @@
    "vftable_rva": "0x11C2728",
    "fields": [
     {
+     "offset": "0x18",
+     "name": "Key",
+     "type": "CString",
+     "comment": "The game's own name for it, out of the Lua API. `CIdeologyGroup::GetKey` (rva 0x79740) is `lea eax, [ecx + 0x18]; ret` - the whole function, so the function *is* the offset. That body is shared - 4 luabind registrations (CIdeologyGroup::GetKey, CLawGroup::GetKey, CRegion::GetKey, CWarGoal::GetActor) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
      "offset": "0x50",
      "name": "index",
      "type": "int",
@@ -34520,6 +35617,48 @@
    "vftable_rva": "0x11FBC38",
    "fields": [
     {
+     "offset": "0x78",
+     "name": "allowDebts",
+     "type": "bool",
+     "comment": "The game's own name for it, out of the Lua API. `CDiplomacyStatus::AllowDebts` (rva 0x64A7E0) is `mov al, byte ptr [ecx + 0x78]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x4C",
+     "name": "hasMilitaryAccess",
+     "type": "bool",
+     "comment": "The game's own name for it, out of the Lua API. `CDiplomacyStatus::HasMilitaryAccess` (rva 0x64A3F0) is `mov al, byte ptr [ecx + 0x4c]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CDiplomacyStatus::HasMilitaryAccess) and 16 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout. The byte `ReturnByteAt0x4C` (rva 0x64A3F0) answers. The function has to stay class-free because sixteen graphics classes hold the same body at slot 70, but the field does not: the registration names CDiplomacyStatus.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x8",
+     "name": "Target",
+     "type": "CCountryTag",
+     "comment": "The game's own name for it, out of the Lua API. `CDiplomacyStatus::GetTarget` (rva 0xC8920) is `push ebp; mov ebp, esp; mov edx, dword ptr [ecx + 8]; mov eax, dword ptr [ebp + 8]; mov ecx, dword ptr [ecx + 0xc]; mov dword ptr [eax], edx; mov dword ptr [eax + 4], ecx` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CAIStrategy::GetCountryTag, CDiplomacyStatus::GetTarget, CDistributionSetting::GetBasePercentage) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout. The other country of the pair, as a CCountryTag by value: letters at +0x8, id at +0xC. The +0xC half is what every one-pointer-two-directions test in this class compares - IsGuaranting and IsGuaranteed on +0x1C, and CCountry::UpdateSubjectStatus on +0x18.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x7C",
+     "name": "next_wargoal_date",
+     "type": "int",
+     "comment": "A tick (hours): the earliest the array's owner may add another war goal against the other country. Named from the loader: CDiplomacyStatus::LoadKey (rva 0x648190) stores the key `next_wargoal_date`, token 0x7A7, here at 0xA4832A through Date_SetFromString (rva 0x4CDA0). **Its one writer is CWarGoal::AddToWar (rva 0x651FB0)** at 0xA520D2, which sets it to the current tick advanced by `WARGOAL_ADD_COOLDOWN / 1000` **months** through AddMonths (rva 0xB8C90). The status written is `countries[actorId]->diplomacy[goal->receiver.index]`, so the cooldown is per aggressor-and-victim pair. No reader was looked for.",
+     "source": "reversing/findings/FINDINGS-diploaction.md"
+    },
+    {
+     "offset": "0x74",
+     "name": "daily_repay",
+     "type": "int",
+     "comment": "How much of `debt` (+0x70) is repaid per day, thousandths. Named from the loader: CDiplomacyStatus::LoadKey (rva 0x648190) stores the key `dailyrepay`, token 0x728, here at 0xA48373. No writer or reader was looked for - this is a placement from the save grammar only.",
+     "source": "reversing/findings/FINDINGS-diploaction.md"
+    },
+    {
+     "offset": "0x70",
+     "name": "debt",
+     "type": "int",
+     "comment": "What the other country owes the array's owner, thousandths. Named from the loader: CDiplomacyStatus::LoadKey (rva 0x648190) stores the key `debt`, token 0x727, here at 0xA4836E. CLicenceTechnologyAction::Apply adds a licence fee to it at 0xA3C5A1 when the pair have a debt agreement (+0x78) instead of moving money - the only writer found, and no reader was looked for.",
+     "source": "reversing/findings/FINDINGS-diploaction.md"
+    },
+    {
      "offset": "0x1C",
      "name": "guarantee",
      "type": "void*",
@@ -34544,8 +35683,8 @@
      "offset": "0x59",
      "name": "changed",
      "type": "uint8_t",
-     "comment": "Set to 1 by everything that changes the pair's standing: CCountry::ChangeRelation (both directions, 0x4E65D8 and 0x4E660B) and seven of the nine CRelation::Activate bodies - CNap, CGuarantee, CAlliance, CDependency, CCasusBelli, CInfluence and CTradeRoute. CAlign's and CEmbargo's do not set it. **No reader was looked for**, so the name says what the writers have in common and nothing about what it is for; a dirty flag for the diplomacy screen is a guess and is not recorded as anything more.",
-     "source": "reversing/findings/FINDINGS-diploaction.md"
+     "comment": "Set to 1 by everything that changes the pair's standing, and **read by nothing in the image**. The whole universe of `[reg+0x59]` instructions in `.text` is 60 sites - 52 stores, 7 loads and one `lea` - and every one of the eight non-stores belongs to another class: three to CCreateUnitCommand (vftable 0x11C36D4), three to the CSetRandomSeed/CPauseGame command family (vftable 0x11D3434), one to a refcounted SEH object at 0x8364B0, and the `lea` to a hash-padding buffer at 0xAF8D40. **Thirty-seven of the 52 stores are on a CDiplomacyStatus**, all reached as `country->diplomacy_status_array (+0xE28)[id]` or through one of two setter helpers whose first act is this write - 0xA4A400 (which also writes +0x4C and then, if `g_CCurrentGameState->in_game` is set, ORs 0x100 into something reached through the state's +0xBE8, i.e. refreshes the interface) and 0xA4A3B0 (which also frees the casus-belli list). So the interface refresh is done by the **writer**, not by a reader of this flag.\n\nThe writers are CCountry::ChangeRelation (both directions, 0x4E65D8 and 0x4E660B) and **six** of the nine CRelation::Activate bodies - CAlliance, CGuarantee, CNap and CDependency twice each, one side apiece for CCasusBelli and CInfluence - plus CCountry::UpdateUndeclaredWars, CCountry::AfterLoad, CCountryEventEffect::Execute, CDiplomacyStatus::LoadKey's neighbourhood and several of the command LoadKeys.\n\nNothing reads it, so `changed` describes its writers and cannot be falsified beyond that; it is kept rather than renamed because no better name is available from a body that has no consumer.",
+     "source": "reversing/findings/FINDINGS-negatives.md"
     },
     {
      "offset": "0x44",
@@ -34607,7 +35746,7 @@
      "offset": "0x50",
      "name": "next_offer_allowed",
      "type": "int",
-     "comment": "A tick (hours), set to the proposal's `date + 0xA8` - **exactly seven days** - by CDiplomacyStatus::SetNextOfferAllowed (0xA4A550), whose one caller is CDiplomaticActionCommand::Execute on the PROPOSE path, for every kind of action except `callaction` (0x309). **Likely a per-pair cooldown on diplomatic offers, but no reader was found**, and the setter's own comparison against `tick + 0xA8` is dead - both arms store the same value - so the feature may be partly gutted. The name is read off the one writer's arithmetic, not off a consumer.",
+     "comment": "A tick (hours), set to the proposal's `date + 0xA8` - **exactly seven days** - by CDiplomacyStatus::SetNextOfferAllowed (0xA4A550), whose one caller is CDiplomaticActionCommand::Execute on the PROPOSE path, for every kind of action except `callaction` (0x309). **Likely a per-pair cooldown on diplomatic offers, but no reader was found**, and the setter's own comparison against `tick + 0xA8` is dead - both arms store the same value - so the feature may be partly gutted. The name is read off the one writer's arithmetic, not off a consumer.\n\n**The game's own name for the field is `last_send_diplomat`**: CDiplomacyStatus::LoadKey (rva 0x648190) stores that key, token 0x306, here at 0xA482C1 through Date_SetFromString - which is the key the save corpus shows beside `value` and `threat`. The two names disagree about tense and the code is on the record's side: what is stored is a date seven days in the *future*, not the last time a diplomat went. So the key is noted and the behavioural name kept.",
      "source": "reversing/findings/FINDINGS-diploaction.md"
     },
     {
@@ -34656,8 +35795,8 @@
      "offset": "0x54",
      "name": "war_seen_tick",
      "type": "int",
-     "comment": "CCountry::UpdateAtWarAndEnemies writes the current tick (`CGameState +0xBDC`) here at 0x4E6C32 for every pair whose `+0x20` (war) is non-null, and only for those. Because the function runs on every diplomatic action and once an hour, the value is refreshed for as long as the war lasts rather than stamped at its start, so it is the last tick at which the pair were seen to be at war and **not** a war-start date. No other writer or reader was looked for, which is why this is `inferred`.",
-     "source": "reversing/findings/FINDINGS-aifields.md"
+     "comment": "CCountry::UpdateAtWarAndEnemies writes the current tick (`CGameState +0xBDC`) here at 0x4E6C32 for every pair whose `+0x20` (war) is non-null, and only for those. Because the function runs on every diplomatic action and once an hour, the value is refreshed for as long as the war lasts rather than stamped at its start, so it is the last tick at which the pair were seen to be at war and **not** a war-start date.\n\n**The save key is `last_war`** - CDiplomacyStatus::LoadKey (rva 0x648190) stores token 0x305 here at 0xA4823E through Date_SetFromString - which corroborates that reading rather than contradicting it: the game calls it the last war, and the writer keeps it current while the war runs. Still `inferred` because no reader has been looked for.",
+     "source": "reversing/findings/FINDINGS-diploaction.md"
     },
     {
      "offset": "0x58",
@@ -35642,6 +36781,41 @@
    "vftable_rva": "0x11EB660",
    "fields": [
     {
+     "offset": "0x108",
+     "name": "TheatreSubUnitNeedCounts",
+     "type": "CArray<int>",
+     "comment": "The game's own name for it, out of the Lua API. `CEU3AI::GetTheatreSubUnitNeedCounts` (rva 0x3918C0) is `lea eax, [ecx + 0x108]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CEU3AI::GetTheatreSubUnitNeedCounts) and 2 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xF8",
+     "name": "ProductionSubUnitCounts",
+     "type": "CArray<int>",
+     "comment": "The game's own name for it, out of the Lua API. `CEU3AI::GetProductionSubUnitCounts` (rva 0x4E8190) is `lea eax, [ecx + 0xf8]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xE8",
+     "name": "DeployedSubUnitCounts",
+     "type": "CArray<int>",
+     "comment": "The game's own name for it, out of the Lua API. `CEU3AI::GetDeployedSubUnitCounts` (rva 0x4E8180) is `lea eax, [ecx + 0xe8]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0xAA",
+     "name": "hasFilledProdQueue",
+     "type": "bool",
+     "comment": "The game's own name for it, out of the Lua API. `CEU3AI::HasFilledProdQueue` (rva 0x4E8170) is `mov al, byte ptr [ecx + 0xaa]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x30",
+     "name": "ReqProdQueue",
+     "type": "CList<CSubUnitConstructionEntry>",
+     "comment": "The game's own name for it, out of the Lua API. `CEU3AI::GetReqProdQueue` (rva 0x4E8160) is `lea eax, [ecx + 0x30]; ret` - the whole function, so the function *is* the offset. That body is shared - 5 luabind registrations (CEU3AI::GetReqProdQueue, CGovernmentPosition::GetKey, CIdeology::GetKey, CLaw::GetKey, CMinisterType::GetKey) and 16 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
      "offset": "0x20",
      "name": "country_tag",
      "type": "CCountryTag",
@@ -36407,6 +37581,13 @@
    "vftable_rva": "0x11C285C",
    "fields": [
     {
+     "offset": "0x18",
+     "name": "Key",
+     "type": "CString",
+     "comment": "The game's own name for it, out of the Lua API. `CLawGroup::GetKey` (rva 0x79740) is `lea eax, [ecx + 0x18]; ret` - the whole function, so the function *is* the offset. That body is shared - 4 luabind registrations (CIdeologyGroup::GetKey, CLawGroup::GetKey, CRegion::GetKey, CWarGoal::GetActor) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
      "offset": "0x50",
      "name": "index",
      "type": "int",
@@ -36426,6 +37607,27 @@
    "name": "CLaw",
    "vftable_rva": "0x11C2814",
    "fields": [
+    {
+     "offset": "0x50",
+     "name": "Group",
+     "type": "CLawGroup const*",
+     "comment": "The game's own name for it, out of the Lua API. `CLaw::GetGroup` (rva 0xC89A0) is `mov eax, dword ptr [ecx + 0x50]; ret` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CIdeology::GetGroup, CLaw::GetGroup, CLawGroup::GetIndex) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x4C",
+     "name": "Index",
+     "type": "int",
+     "comment": "The game's own name for it, out of the Lua API. `CLaw::GetIndex` (rva 0x14BB90) is `mov eax, dword ptr [ecx + 0x4c]; ret` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CGovernmentPosition::GetIndex, CLaw::GetIndex, CMinisterType::GetIndex) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x30",
+     "name": "Key",
+     "type": "CString",
+     "comment": "The game's own name for it, out of the Lua API. `CLaw::GetKey` (rva 0x4E8160) is `lea eax, [ecx + 0x30]; ret` - the whole function, so the function *is* the offset. That body is shared - 5 luabind registrations (CEU3AI::GetReqProdQueue, CGovernmentPosition::GetKey, CIdeology::GetKey, CLaw::GetKey, CMinisterType::GetKey) and 16 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
     {
      "offset": "0x2C",
      "name": "name_token",
@@ -37658,6 +38860,20 @@
    "source": "reversing/findings/FINDINGS-opsarea.md; live 2026-10-02",
    "fields": [
     {
+     "offset": "0x6C",
+     "name": "useForPeace",
+     "type": "bool",
+     "comment": "The game's own name for it, out of the Lua API. `CRegion::UseForPeace` (rva 0x77250) is `mov al, byte ptr [ecx + 0x6c]; ret` - the whole function, so the function *is* the offset.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
+     "offset": "0x18",
+     "name": "Key",
+     "type": "CString",
+     "comment": "The game's own name for it, out of the Lua API. `CRegion::GetKey` (rva 0x79740) is `lea eax, [ecx + 0x18]; ret` - the whole function, so the function *is* the offset. That body is shared - 4 luabind registrations (CIdeologyGroup::GetKey, CLawGroup::GetKey, CRegion::GetKey, CWarGoal::GetActor) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+     "source": "reversing/findings/FINDINGS-factbase.md"
+    },
+    {
      "offset": "0x6D",
      "name": "ai_front_relevant",
      "type": "uint8_t",
@@ -37722,6 +38938,55 @@
      "source": "reversing/findings/FINDINGS-mappoint.md"
     }
    ]
+  },
+  {
+   "name": "CBomberCombatant",
+   "inherits": "CCombatant",
+   "fields": [
+    {
+     "offset": "0xB0",
+     "name": "target_count",
+     "type": "int",
+     "comment": "**How many entries of `targets` are filled.** Confirmed: FireUnit returns immediately when it is <= 0 (0x160BAE) and draws with `Random() % target_count` (0x160BD3), and both of the side's collectors zero it before filling (0x1608AD, 0x16060D). **Note the order is the opposite of CAirCombatant's**, which puts the array first and the count at +0x10B0 - these are derived fields, so the two classes are free to disagree and they do.",
+     "source": "reversing/findings/FINDINGS-airdefence.md"
+    },
+    {
+     "offset": "0xB4",
+     "name": "targets",
+     "type": "CSubUnit*[1024]",
+     "comment": "**The regiments, ships or wings this side may shoot at this tick**, filled by the collectors at 0x160600 / 0x1608A0. The elements are CSubUnit*, not CUnit*: FireUnit reads +0x54, +0x58, +0x5C and +0xA8 off the drawn one, so **a bombing fights at regiment granularity** where land fights at unit granularity. Element at `[side + 0xB4 + i*4]` (0x160BDE). The bound of 1024 is confirmed off CAirCombatant's `cmp eax, 0x400` at 0x16D4C9 and agrees with the arithmetic here: 0xB4 + 1024*4 = 0x10B4, which leaves exactly the 0x34 tail this class adds over CAirCombatant's 0x10B4.",
+     "source": "reversing/findings/FINDINGS-airdefence.md"
+    },
+    {
+     "offset": "0x10E4",
+     "name": "strength_damage_dealt",
+     "type": "int",
+     "comment": "**The strength damage this bombing side has dealt**, accumulated one shot at a time by FireUnit (`add [side+0x10E4], esi` at 0x16149C). Saved as **`strength`** - `fieldmap.py CBomberCombatant` maps token 0x259 to this offset through CBomberCombatant::LoadKey (0x15FDF0, store at 0x15FE26) - so it survives a save and reload. Also read and written by slot 10 (0x15E030) and read by the getter at 0x15FE90.",
+     "source": "reversing/findings/FINDINGS-airdefence.md"
+    }
+   ],
+   "size": "0x10E8"
+  },
+  {
+   "name": "CAirCombatant",
+   "inherits": "CCombatant",
+   "fields": [
+    {
+     "offset": "0xB0",
+     "name": "targets",
+     "type": "CSubUnit*[1024]",
+     "comment": "**The wings this side may shoot at this tick.** Confirmed off CAirCombatant::CollectTargets: `mov [ebx + eax*4 + 0xB0], esi` at 0x16D4D0 with `eax` the count and a `cmp eax, 0x400` bound at 0x16D4C9, and 0x16D529 walks it as `add ecx, 0xB0` after testing the count. **The array is first here and the count last**, the opposite of CBomberCombatant - both are derived fields over a 0xB0-byte CCombatant, so neither order constrains the other.",
+     "source": "reversing/findings/FINDINGS-airdefence.md"
+    },
+    {
+     "offset": "0x10B0",
+     "name": "target_count",
+     "type": "int",
+     "comment": "**How many entries of `targets` are filled** - the last dword of the object. Read at 0x16D4C3 and incremented at 0x16D4D7 in CollectTargets, and tested at 0x16D51D before the array is walked. CBomberCombatant keeps the same count at +0xB0 instead.",
+     "source": "reversing/findings/FINDINGS-airdefence.md"
+    }
+   ],
+   "size": "0x10B4"
   }
  ],
  "equates": [
@@ -37762,6 +39027,57 @@
   }
  ],
  "vftable_slots": {
+  "CSuppliesTrigger": {
+   "6": {"name": "Evaluate", "signature": "bool __thiscall Evaluate(CSuppliesTrigger* this, CEventScope* scope)"}
+  },
+  "CMetalTrigger": {
+   "6": {"name": "Evaluate", "signature": "bool __thiscall Evaluate(CMetalTrigger* this, CEventScope* scope)"}
+  },
+  "CRareMaterialsTrigger": {
+   "6": {"name": "Evaluate", "signature": "bool __thiscall Evaluate(CRareMaterialsTrigger* this, CEventScope* scope)"}
+  },
+  "CCrudeOilTrigger": {
+   "6": {"name": "Evaluate", "signature": "bool __thiscall Evaluate(CCrudeOilTrigger* this, CEventScope* scope)"}
+  },
+  "CEnergyTrigger": {
+   "6": {"name": "Evaluate", "signature": "bool __thiscall Evaluate(CEnergyTrigger* this, CEventScope* scope)"}
+  },
+  "CMoneyTrigger": {
+   "6": {"name": "Evaluate", "signature": "bool __thiscall Evaluate(CMoneyTrigger* this, CEventScope* scope)"}
+  },
+  "CRevoltRiskEffect": {
+   "9": {"name": "GetText", "signature": "Hoi3CString* __thiscall GetText(CRevoltRiskEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString unread, int unknown)"}
+  },
+  "CWarexhaustionEffect": {
+   "9": {"name": "GetText", "signature": "Hoi3CString* __thiscall GetText(CWarexhaustionEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString unread, int unknown)"}
+  },
+  "CUndeclaredWarRegionEffect": {
+   "12": {"name": "GetTargetCountryTag", "signature": "CCountryTag* __thiscall GetTargetCountryTag(CUndeclaredWarRegionEffect* this, CCountryTag* out, CEventScope* scope)"}
+  },
+  "CModifySpiesEffect": {
+   "12": {"name": "GetTargetCountryTag", "signature": "CCountryTag* __thiscall GetTargetCountryTag(CModifySpiesEffect* this, CCountryTag* out, CEventScope* scope)"}
+  },
+  "CWarGoalEffect": {
+   "12": {"name": "GetTargetCountryTag", "signature": "CCountryTag* __thiscall GetTargetCountryTag(CWarGoalEffect* this, CCountryTag* out, CEventScope* scope)"}
+  },
+  "CWarEffect": {
+   "12": {"name": "GetTargetCountryTag", "signature": "CCountryTag* __thiscall GetTargetCountryTag(CWarEffect* this, CCountryTag* out, CEventScope* scope)"}
+  },
+  "CStringEffect": {
+   "12": {"name": "FormatValueText", "signature": "Hoi3CString* __thiscall FormatValueText(CStringEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString* key)"}
+  },
+  "CBoolEffect": {
+   "12": {"name": "FormatValueText", "signature": "Hoi3CString* __thiscall FormatValueText(CBoolEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString* key)"}
+  },
+  "CValueEffect": {
+   "12": {"name": "FormatValueText", "signature": "Hoi3CString* __thiscall FormatValueText(CValueEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString* key)"}
+  },
+  "CIntEffect": {
+   "12": {"name": "FormatValueText", "signature": "Hoi3CString* __thiscall FormatValueText(CIntEffect* this, Hoi3CString* out, CEventScope* scope, Hoi3CString* key)"}
+  },
+  "CCasusBelliType": {
+   "6": "IsValid"
+  },
    "CConfirmRemoveAll": {
     "5": {"name": "OnConfirm", "signature": "void __thiscall OnConfirm(CConfirmRemoveAll* this)"}
    },
@@ -38005,6 +39321,7 @@
    "7": "Apply"
   },
   "CLicenceTechnologyAction": {
+   "7": "Apply",
    "7": "Apply"
   },
   "CSendExpeditionaryForceAction": {
@@ -38014,6 +39331,7 @@
    "7": "Apply"
   },
   "CFactionAction": {
+   "7": "Apply",
    "7": "Apply"
   },
   "CEmbargoAction": {
@@ -38023,6 +39341,7 @@
    "7": "Apply"
   },
   "CCallAllyAction": {
+   "7": "Apply",
    "7": "Apply"
   },
   "COfferMilitaryAccessAction": {
@@ -38044,6 +39363,7 @@
    "7": "Apply"
   },
   "CDeclareWarAction": {
+   "7": "Apply",
    "7": "Apply"
   },
   "COfferLendLeaseAction": {

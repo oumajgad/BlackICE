@@ -305,3 +305,429 @@ int* __thiscall CCombatant::<slot 11>(CCombatant* this, int* out)
 6. **Whether slot 11's land and naval arms being on different scales is a bug.** Outside what the bytes say.
 7. **6.7% of non-padding `.text` was reached by neither decode.** For `CWeatherManager +0x14` that gap is closed by the raw-byte cross-check (zero occurrences of the `disp32` outside the decode). For `CObjective::priority` it is closed differently — by reachability: a `CObjective*` can only arise in the seven bodies that write its vftable, and the two-level call closure of those is 219 functions, every one of which is a call target and therefore decoded. There is no equivalent byte-level check for a `disp8` of `0x0C`, so the reachability argument is what the negative rests on.
 8. **Nothing was watched in a running game.** Three cheap live checks, in order of value: an AI objective's `priority` should be a multiple of 20 plus 0 or 100 unless the country's `conquer_prov` contributed; a land unit under AI control with an ops area and no reachable objective should be found with an **empty** ops area after the hour (item 3's prediction); and `CGameState +0xB00` should read 0 at every moment of every session (item 2's prediction — if it is ever 1, everything in section 2 is wrong).
+
+---
+
+# Five more claims that rested on writers only
+
+Wave 13 agent D, 2026-10-05. Addresses are **rvas** where labelled and otherwise virtual, based
+`0x400000`. Nothing here needed the game running; two of the five are settled by the savegame.
+
+## 5. `CDiplomacyStatus +0x59 changed` - no reader exists, and two of the record's own facts were wrong
+
+### The census
+
+Not a scan for the displacement but the **complete universe** of it. `.text` split on runs of `int3`,
+each chunk decoded from its own start - so no linear sweep (trap 9) and abutting functions are decoded
+through rather than lost (trap 2) - collecting every instruction with a memory operand at displacement
+`0x59` on a base register other than `esp`/`ebp`.
+
+**60 sites in the whole image. 52 stores, 7 loads, 1 `lea`.**
+
+### The positive control, in its strong form
+
+The same census finds **every writer the record already names**: `0x4E65D8` and `0x4E660B` in
+`CCountry::ChangeRelation`, `0xA46DDF`/`0xA46E05` in `CGuarantee::Activate`, `0xA47CB3` in
+`CCasusBelli::Activate`, and so on. A method that sees all of the known writes of this exact byte at
+this exact offset is a method whose silence about reads means something.
+
+### The readers
+
+There are none. All eight non-stores belong to other classes:
+
+| site | owner |
+| --- | --- |
+| `0x547B9A`, `0x548145`, `0x5483EF` | `CCreateUnitCommand` - the cluster `0x547870` (ctor) / `0x547930` / `0x547FB0` / `0x548180` (LoadKey) / `0x5483B0`, whose ctor writes vftable `0x15C36D4` |
+| `0x6D8060`, `0x6D822D`, `0x6D8362` | the `CSetRandomSeed`/`CPauseGame` command family, ctor vftable `0x15D3434` |
+| `0x8364D2` | a refcounted SEH object (`dec [edi+0x5c]` right after) |
+| `0xAF8DD0` (`lea`) | an MD5/SHA-style padding buffer in the save-stream code |
+
+Three blind spots closed separately: an indexed `[reg+reg*n+0x59]` has three hits, all garbage decodes
+(`ror byte`, `fcomp`) in chunks with no `0xE28`; a word or dword load spanning byte `0x59` has 34 hits
+at disp `0x58`, every one a 32-bit pointer walk on another class (`CDiplomacyStatus +0x58` is a
+recorded `uint8_t`); `movzx`/`cmp byte` at `+0x59` is inside the census and produced none on a status.
+
+One census hit is a false positive and worth recording: `add byte ptr [edx+0x59], dl` at `0x4E608B`
+sits inside `CDiplomaticAction::Create`'s **embedded jump table**.
+`image.retsBefore(0x4E5800, 0x4E608B)` returns 25 `ret`s, which says so loudly. **A chunk-based decode
+desynchronises on a jump table in `.text`**; the cheap tell is a nonsense mnemonic plus a loud
+`retsBefore`.
+
+### Two corrections to the record
+
+**(a) It is six of the nine `CRelation::Activate` bodies, not seven. `CTradeRoute::Activate` does not
+set it either.** There is no `[reg+0x59]` instruction anywhere between `0xA4AB48`
+(`CInfluence::Activate`) and `0xAF8DD0`, so the census excludes `CTradeRoute::Activate`'s *whole body*,
+not just the part a bounded decode reaches. The three that do not set it are **CAlign, CEmbargo and
+CTradeRoute**. Per-body counts, each decoded from its entry:
+
+| Activate | rva | `+0x59` writes | materialises `g_CCurrentGameState` |
+| --- | --- | --- | --- |
+| CAlliance | 0x646A40 | 2 | yes |
+| CGuarantee | 0x646DB0 | 2 | no |
+| CNap | 0x6471E0 | 2 | yes |
+| CDependency | 0x647760 | 2 | no |
+| CCasusBelli | 0x647BB0 | 1 | yes |
+| CInfluence | 0x64AAD0 | 1 | yes |
+| **CAlign** | 0x64B110 | **0** | yes |
+| **CEmbargo** | 0x64B530 | **0** | yes |
+| **CTradeRoute** | 0x64D2C0 | **0** | no |
+
+**(b) "Why those two differ" has no answer, because the premise is wrong.** It is three bodies, not
+two, and the table above kills both candidate rules: materialising the game state does not separate
+them (four setters do it, two setters do not, and `CTradeRoute` does not either), and
+one-direction-versus-both does not (`CEmbargo` writes `+0x34` on both sides and sets nothing;
+`CInfluence` writes one side and sets it). With no reader, the three omissions have no consequence in
+either direction. No rule was found, and that is said rather than a rule invented.
+
+**(c) "eleven writers" was a count of nothing in particular.** There are **37 store sites on a
+`CDiplomacyStatus`** - the stores whose chunk carries the disp32 `0xE28`, which is the only route to a
+status - across about eighteen functions: `CCountry::ChangeRelation`, the six Activates,
+`CCountry::UpdateUndeclaredWars`, `CCountry::AfterLoad`, `CCountryEventEffect::Execute`,
+`CDiplomacyStatus::LoadKey`'s neighbourhood, `FindMatchingTradeRoute`, and several command `LoadKey`s.
+The chain is explicit at most sites, e.g. at `0x4D72E1`:
+`mov eax,[edx+0xe28]; mov ecx,[eax+ecx*4]; cmp [ecx+0x38],0; ... mov byte [ecx+0x59],1`.
+
+**(d) Two helper setters nobody had**, both on the frontier:
+
+- **`0x64A400`** - `__stdcall f(CDiplomacyStatus* status, bool flag@CL)`, `ret 4`. First two
+  instructions: `status->+0x59 = 1; status->+0x4C = cl`. Then, lazily materialising
+  `g_CCurrentGameState` and **only if its `in_game` byte at `+0xDA4` is set**, it ORs `0x100` into
+  `[state->+0xBE8]->+0x84` - it marks the interface for refresh. **So the GUI refresh is done by the
+  writer, not by any reader of this flag**, which is what makes `+0x59`'s deadness believable rather
+  than suspicious. The hourly country passes call it.
+- **`0x64A3B0`** - whose *first instruction* is `mov byte [edi+0x59], 1`, followed by freeing the
+  casus-belli list and zeroing `+0x3C`/`+0x40`/`+0x44`. A register-argument `ClearCasusBelli`.
+
+The name `changed` is kept. It describes the writers and nothing can falsify it further; a body with
+no consumer offers no better name.
+
+## 6. `surrender_progress` - **1000 means on the brink**, and the recorded arithmetic was upside down
+
+### The divisor, `0xFCC60`, read end to end
+
+Receiver in **EAX**, out pointer in **EDI**, no stack arguments, three bare `ret`. 43 instructions.
+
+    owned = this->+0xBE0
+    if (owned <= 0)  { *out = 0; return out }       ; 0x4FCCDF arm
+    held  = this->+0xBE4
+    *out = 1000 - clamp(held * 1000 / owned, 0, 1000)
+
+The `jne` at `0x4FCC6D` and its `or eax,-1` arm are **dead**: the `jle` above already took everything
+`<= 0`.
+
+### What the two fields are - and they are new names
+
+Both are written **only** by `CCountry::RebuildNeighbours` (rva `0xE21E0`): zeroed with that
+function's counter block at `0x4E2305`-`0x4E2323`, then accumulated in one loop over the province-id
+list at `CCountry +0xD10` at `0x4E3030`-`0x4E307E`:
+
+    prov = gameState->+0xB8C[node->id]
+    if (prov->owner.id      (+0x330) == country->id)  country->+0xBE0 += prov->victory_points (+0x34) * 1000
+    if (prov->controller_id (+0x338) == country->id)  country->+0xBE4 += prov->victory_points (+0x34) * 1000
+
+- **`CCountry +0xBE0` = `claimed_victory_points_owned`** (thousandths)
+- **`CCountry +0xBE4` = `claimed_victory_points_controlled`** (thousandths)
+
+So `0xFCC60` is **the share of the country's own claimed, owned victory points that it does not
+control** - the occupied fraction of its national territory, in thousandths. Named
+`CCountry::GetOccupiedVictoryPointShare`.
+
+Trap 12 applies hard here: other classes carry fields at the same offsets (`CInGameIdler::Enter` and
+`CGameState::LoadKey` write a `+0xBE0`; `CGameState` writes `+0xBE4` with `movss`, i.e. as a float).
+The chain was taken through `RebuildNeighbours`, not off the displacement.
+
+### The correction to `0xFCB80`
+
+The recorded pseudocode read `v = national_unity * 1000 / 100000; v = v * 1000 / <0xFCC60's answer>` -
+**unity in the numerator and `0xFCC60` in the denominator.** The bytes do the opposite.
+`lea edi,[ebp-4]` at `0x4FCBBC` makes `[ebp-4]` the out slot handed to `0xFCC60`, and the
+`__allmul`/`__alldiv` pair at `0x4FCC18`/`0x4FCC30` takes **`[ebp-4]` as the operand** and **`esi`
+(the unity quotient computed at `0x4FCBE9`-`0x4FCC0B`) as the divisor**. Corrected:
+
+    if (government_in_exile (+0x95))            *out = 0
+    elif (province_count (+0xD08) == 0)         *out = 1000
+    else { unity = national_unity (+0x10B8) * 1000 / 100000      ; i.e. /100, so 10..1000
+           if (unity == 0)                      *out = 1000      ; shares the +0xD08 exit
+           else *out = clamp(0xFCC60(this) * 1000 / unity, 0, 1000) }
+
+Everything the old entry concluded about direction followed from the inversion. It said *"the main arm
+rises with unity, which reads as 'how far from surrendering' rather than 'how close'"*. With the
+fraction the right way up the main arm **falls** with unity. **High = about to surrender.**
+
+Four corroborations, deliberately independent of each other:
+
+1. the `province_count == 0` arm - no provinces left at all - answers the **maximum**;
+2. the numerator rises as territory is occupied and the denominator falls as unity falls, both of which
+   are the country losing;
+3. `CAIUnit::EstimateTheatreNeed` reads the same two fields at `0x4B99FF` as
+   `owned - controlled >= 0x7D0` (2 victory points) to conclude a country is losing real ground;
+4. **the mod.** `decisions/l'ordre_nouveau_en_europe_decisions.txt` lets Germany open peace talks with
+   the USSR on an ascending ladder - `SOV = { surrender_progress = 72 }`, then 74, 76, 78, 80, 82, 84,
+   90, 95 - each paired with a rising `soviet_desperation`; and `decisions/scorched_earth_decision.txt`
+   unlocks `sacrifice_the_homeland` at 0.25 (democracy) / 0.15 (fascism) / **0.05** (communism). Both
+   read the same way round. Across the 58 uses in the mod the distinct values are 0.05 ... 95, and the
+   three ladders all point the same way.
+
+### Two things worth telling a mod author
+
+- **`surrender_progress = 0.05` is not "always true"; it is "any loss at all".** With nothing occupied,
+  `held == owned`, `0xFCC60` answers 0, and the trigger's `progress/10 >= 0.05` is false. It fires the
+  moment the occupied share exceeds about 0.05% of the national victory points, scaled up as unity
+  drops.
+- **It is a measure of occupied *claimed* territory, not of territory.** When the list at `+0xD10`
+  holds no province the country owns, `+0xBE0` is 0 and `0xFCC60`'s first arm answers **0** - so
+  `surrender_progress` is 0 however much has been lost. Any mod-made country with an empty claims list
+  can never surrender by this measure.
+
+### Housekeeping that fell out of this
+
+- **The prose was right and the entry was wrong**, which is trap 14's fourth question running the
+  *opposite* way: `findings/FINDINGS-invasion.md` line 281 has the arithmetic correct
+  (`clamp(0x4FCC60(this) * 1000 / (this->+0x10B8 / 100), 0, 1000)`, where
+  `0x4FCC60(this@EAX, out@EDI)` is `1000 - clamp(this->+0xBE4 * 1000 / this->+0xBE0, 0, 1000)`) and
+  `project.json` has it inverted. **Trap 14 says the entry is the likelier of the two; that is a
+  tendency, not a rule, and it now has a counterexample.**
+- `FINDINGS-invasion.md` also says `0xFCB80` has *nine* callers and `project.json` says *one*.
+  `findRefs` agrees with `project.json` for direct calls. The nine in the invasion prose look like
+  callers of something else. Not chased.
+- **`0xFCB80` carries two names from two halves of the fact base.** The generated record has rva
+  1035136 (= `0xFCB80`) as **`CCountry::GetSurrenderLevel`**, `CERTAIN`, recovered from the luabind
+  registration (`CFixedPoint GetSurrenderLevel(CCountry const&)`). That is the **engine's own name**,
+  and it is why the entry was raised to `confirmed`. Deliberately **not** renamed, because the
+  keyword-derived name is referenced from `FINDINGS-numtriggers.md` and the trigger's own entry - but
+  if one name is wanted, `GetSurrenderLevel` is the one with provenance. The inverted pseudocode had
+  propagated into the generated record too; since `buildFindings` writes that file, fixing
+  `project.json` fixes both.
+- Also newly named: **`CCountry +0xD04` `province_ids_end`** and **`CCountry +0xD08` `province_count`**
+  - the tail and count of the `+0xD00` list, from the triple zeroed at `0x4D4AC2`-`0x4D4ACE` and the
+  append at `0x4DD215`-`0x4DD237`, with a one-instruction accessor at rva `0x1010C0`.
+
+## 7. `check_variable`'s side effect - real, general, and **erased by the next save**
+
+### What `0x76FB0` is
+
+`CVariables::AddVariable`, `void* __stdcall (CVariables* variables@EDI, Hoi3CString* name, int value)`,
+`ret 8`, 24 instructions. It asks `operator new` for **0x20 bytes** and lays out a variable:
+`Hoi3CString` at **offset 0** (inline buffer zeroed, length `+0x10` = 0, capacity `+0x14` = 0xF - the
+SSO shape), **value at `+0x1C`** from its second argument, the name assigned from its first, then an
+insert through the registry's **slot 6** (`[[edi]+0x18]`, the object pushed twice). **It never looks
+the name up first.**
+
+The layout is confirmed twice over without reading this body: `CVariables::LoadKey` (rva `0x77080`)
+writes the same four fields in the same order and fills the value through `TokenToFixedPoint`; and the
+save walker hands the object straight to `SaveWriteNamedFixed(Hoi3CString* key@EAX, ...)`, which can
+only work if the string is at offset 0.
+
+### The side effect is not `check_variable`'s - it is the engine's
+
+`findRefs --callers 0x476FB0` gives **six call sites in five functions**, and they are the whole of how
+a script variable comes into existence:
+
+| caller | what it does |
+| --- | --- |
+| `CVariableTrigger::Evaluate` rva `0x5F01D0`, at `0x5F0237` | `check_variable`: find; on a miss `AddVariable(&this->name, 0)` and answer `0 >= value` |
+| `CSetVariableEffect` **slot 11**, rva `0x5AF7A0`, at `0x5AF7FE` | `set_variable`: find and write `+0x1C` in place; create only when the name is new |
+| `CChangeVariableEffect` **slot 11**, rva `0x5AF810`, at `0x5AF874` and `0x5AF8C6` | `change_variable`: read, add `this->+0x3C`, write back - so on a new name it calls `AddVariable` twice, the second lookup now succeeding and updating in place, so still one object |
+| `CSetVariableCommand` **slot 6**, rva `0x1532C0`, at `0x553313` | the same find-or-create, as a `CCommand` |
+| `CVariables::GetValue` rva `0x76F60`, at `0x476F8E` | the generic accessor - **and it has no callers at all in this build** |
+
+Both slot bodies attributed with `vtable.py --holding`: one table each, so no fold. **No caller leaks**:
+every one has `test eax,eax; je <create>` straight after the slot-1 lookup, so `AddVariable`'s own
+overwrite-and-leak behaviour (`TernarySearchTreeInsert` overwrites a duplicate payload and still
+increments the count - already in its record) is never reached. That was checked specifically because
+the opposite would have been a measurable drip.
+
+`CVariables::GetValue` is recorded anyway, because it is the clearest statement of the intent: **in
+this engine, reading a variable is what brings it into existence.** The trigger is not doing anything
+unusual.
+
+### Does it persist into the save? No - and here is the mechanism and the control
+
+`CCountry::SaveContents` writes key `0x411` (`variables`, token 1041) at `0x4CFE2D` and calls slot 1 of
+the object at `country+0x1D0` - the second-base adjustment, `CVariables` sitting at `CCountry +0x1AC`
+as a tree and at `+0x1D0` as a `CPersistent` (`lea esi,[edi+0x1d0]` at `0x4CFE1D`; the ctor writes
+`0x15BD700` to `+0x1AC` and `0x15BD724` to `+0x1D0`). That reaches `CPersistent::Save` -> slot 2 =
+**`CVariables::SaveContents`** (rva `0x77060`), which is the whole of
+`add ecx,-0x24; if (this->root) 0x77000(writer, root)`.
+
+**`0x77000` is where the answer is.** `CVariables::SaveSubtree`,
+`void __thiscall (CVariables*, CSaveWriter*, CTernaryNode*)`, `ret 8`, 36 instructions, an in-order
+walk:
+
+    for (node; node; node = node->high (+0xC)) {
+        if (node->low (+8))     recurse(node->low)
+        v = node->element (+0)
+        if (v && v->value (+0x1C) != 0)          <<<< 0x477028: mov eax,[eax+0x1c]; test eax,eax; je
+            SaveWriteNamedFixed(v, writer, v->value)
+        if (node->equal (+0x10)) recurse(node->equal)
+    }
+
+**A variable whose value is exactly zero is skipped.**
+
+The save corpus, with a control: across **45 saves and 4,815 `variables={}` blocks, 754 distinct
+variable names appear and not one of them is ever `0.000`** - while the same parse happily finds
+negatives (`Allies_Axis_help=-1.000`, `chromite_MaxSells=-2.000`, `aluminium_MaxSells=-4.000`), so the
+writer is not dropping non-positives in general, it is dropping exactly zero, which is what the
+`test`/`je` says.
+
+**So the mod-facing consequence is narrower than the record implied.** The side effect is real - the
+variable exists in the country's registry for the rest of the session - but it is **session-scoped and
+self-erasing across a save/load**, it cannot accumulate, it cannot be observed from outside the
+process, and it cannot change any answer (`check_variable` treats a missing name as zero anyway). The
+one real cost is a `0x20`-byte allocation per `(country, never-set name)` per session, bounded because
+the next lookup succeeds. The same holds for `set_variable = 0`: it exists in the tree and then
+vanishes at the save, which is behaviourally identical to being absent.
+
+### And one correction to the fact base that fell out of it - the ternary tree's links
+
+Reading both halves of the tree to settle the save order gave a confirmed correction to
+**`CTernaryNode`**, whose field names came from `BiceLib/GameClasses/CFlags.hpp` (whose own comment
+admits "what the tree means by each link has not been worked out"):
+
+| offset | was | **is** |
+| --- | --- | --- |
+| `+0x0` | `element`, type `undefined4` | `element`, type **`void*`** |
+| `+0x8` | `parent` | **`low`** - keys whose current character sorts below this node's |
+| `+0xC` | `sibling` | **`high`** - keys whose current character sorts above |
+| `+0x10` | `child` | **`equal`** - the next character of a key that matched, the only link that advances the key |
+
+Read off `TernarySearchTreeFind` (VA `0xA7E030`, 25 instructions: `sub eax,ecx`; `jne` ->
+`lea esi,[edi+0xc]`; `test eax,eax; jg` keeps `+0xC`, falls through to `lea esi,[edi+8]`) and
+`TernarySearchTreeInsert` (VA `0x44DA70`, 44 instructions, the same test mirrored at
+`0x44DAEA`-`0x44DAF6`, node `0x14` bytes from `push 0x14`, all three links zeroed at
+`0x44DAAE`-`0x44DAB4`). Third witness: `CVariables::SaveSubtree`'s low -> payload -> equal -> high
+order, and **every `variables={}` block in all 45 saves is alphabetical**.
+
+**This is trap 14 again, and the fixable half of it was walked into.** `TernarySearchTreeFind`'s own
+`project.json` comment already states the layout word for word - *"Node layout
+`{void* value; char key; Node* low; Node* high; Node* equal;}` at +0, +4, +8, +0xC, +0x10"* - and
+already states *"The comparison is case-insensitive"*. Both were re-derived. The genuinely new thing is
+that the **struct half of the record disagreed with the function half**, with the function right. A
+`grep` for "TernarySearchTree" before reading would have saved the derivation and still left the
+correction standing. **`CFlags.hpp`'s NodeOffsets block needs the same three renames**, since the
+headers are a third of the fact base.
+
+A free mod-facing fact from the same read: **variable names are case-insensitive.** Both the insert and
+the find fold the key byte through `tolower` (`0xB96692`) and only the insert stores the folded form,
+so `check_variable = { which = BaseIC }` and `which = baseic` are the same variable. That is the exact
+opposite of section 8.
+
+## 8. `remove_brigade` - every regiment has a name, so a type token can never match
+
+### What an unnamed regiment holds in `CSubUnit +0x68`: there is no such thing
+
+Every `regiment={}` block in the 45 saves was parsed and its **depth-1** `name=` collected (depth-1 so
+a nested block's name cannot be miscounted):
+
+- **788,880 regiment blocks. 788,880 of them carry a `name=`. Zero missing, zero empty.**
+- 30,600 distinct names.
+- **290,876 instances (7,133 distinct)** carry an engine-generated name of the shape
+  `<ordinal> <abbrev> Regiment` - `1st HQ Regiment` (3,208), `2nd HQ Regiment` (3,054),
+  `1st Art Regiment`, `1st Wagon Regiment`, `1st Mx-Sup Regiment` - matched with
+  `^\d+(st|nd|rd|th) [A-Za-z-]+ Regiment$`.
+
+So the engine generates a name for every regiment the order of battle did not name. `CSubUnit +0x68` is
+always a non-empty string, and **never a subunit type token**. `remove_brigade = <a subunit type>` can
+never match.
+
+The earlier basis was weak and is now replaced: "a decode of `CSubUnit::SetType` found no write to
+`+0x68`" is absence in one function. The savegame settles it positively instead. (A wing is a
+`CSubUnit` too and carries its name here in the same way, so `remove_brigade` reaches air units as
+well.)
+
+**And the mod never tries.** Of the **6,132 distinct `remove_brigade` values** across **6,894 uses**,
+**none** is one of the **1,427** subunit type tokens the mod's `units/*.txt` declare.
+
+### Fifteen `remove_brigade` lines in the current mod are dead because of case
+
+Since the comparison is case-sensitive (already in `CRemoveBrigadeEffect::Execute`'s record - memcmp
+plus a length test), every value was checked against the mod's **own** declared regiment names rather
+than against the saves, because the 45 saves are older than the mod tree and disagree with it for five
+Japanese regiments. 69,344 distinct names declared in 122,510 declarations (both forms:
+`regiment = { type = X name = "N" }` and the `<subunit_type> = { name = "N" }` form the OOB files also
+use).
+
+- matching exactly: **5,154 distinct / 5,887 uses**
+- matching **only if case is ignored - therefore dead: 15**
+- matching nothing at all, even ignoring case: 963 distinct / 992 uses
+
+The fifteen:
+
+| in the event file | the mod declares |
+| --- | --- |
+| `Kampfgruppe 1001 Nacht`, `Bock`, `Graf`, `Kempf`, `Knittel`, `Kummersdorf`, `Meyer`, `Mohnke`, `Nahring`, `Peiper`, `SS Polizei`, `Witt`, `von Luck`, `von Tettau` - all in `events/KampfGruppen.txt` | `KampfGruppe ...` in `history/units/GER/*.txt` (e.g. `history/units/GER/Bock.txt:5`) |
+| `Thomas Mcguire` in `events/battlecommanders.txt:2740` | `Thomas McGuire` in `history/units/USA/thomas_mcguire_oob.txt:5` |
+
+Fourteen are one systematic typo - `Kampfgruppe` for `KampfGruppe` - in a single file. Note
+`events/KampfGruppen.txt:712` also has `brigade_in_combat = "Kampfgruppe Bock"`, which will have the
+same problem if that trigger compares the same way; that trigger was not read.
+
+The 963 that match nothing are a separate class of staleness, mostly `events/SpanishCivilWar.txt` -
+e.g. `"1. 10a Milicia Falange"` appears in the whole mod exactly once, on its own `remove_brigade`
+line, with no regiment ever declared under that name. Not audited individually; the count is an upper
+bound because the declaration regex requires the `name=` inside the same brace group.
+
+## 9. `CEffect +0x14` - live as a write, dead as a field
+
+The family's base constructor is inlined everywhere and writes, in this order: `+8 = +0xC = +0x10 = 0`
+(the `CList` base), **`mov byte ptr [reg+0x14], 0`**, `token (+4) = 0x18D`,
+`mov word ptr [reg+0x1c], 0` (the `use_this`/`use_from` pair as one word), then the concrete vftable.
+Worked example at `0x999D1E`:
+
+    push 0x24; call operator_new
+    mov [eax+8],edi / [eax+0xc],edi / [eax+0x10],edi
+    mov byte ptr [eax+0x14], 0
+    mov dword ptr [eax+4], 0x18d
+    mov word ptr [eax+0x1c], di
+    mov dword ptr [eax], 0x15f45a8
+
+**So the record's claim is wrong in both halves of its statement of fact.**
+`fragments/merged/effects.json`'s `slots_noted` and this document's own open list both said *"nothing
+in the three destructors or in `CEffect::LoadKey` touches it"*. `CEffect::LoadKey` (rva `0x599CA0`) is
+**where it is written - 41 times, once per switch case, the first at `0x999D35`** - and the width was
+not known either: it is a **byte**, not a dword. The destructor half stands, and is useful:
+`CEffect::~CEffect` (rva `0x59C540`) zeroes exactly `+0x8`, `+0xC` and `+0x10` at
+`0x99C596`-`0x99C59B`, which is what proves the `CList` base is three dwords and that `+0x14` is
+`CEffect`'s own rather than a fourth word of the list. (`+0x4` needs no new record: it is
+`CPersistent::token`, and `0x18D` is the `none` token that 697 of 714 inlined constructors write.)
+
+**And there is no reader.** The 247 distinct slot bodies held by the 109 RTTI classes whose name ends
+in `Effect` were each decoded from the slot address - an entry by definition, so trap 2 cannot bite -
+and every byte-sized `[reg+0x14]` collected: **44 sites, 41 of them `..., 0` in `0x599CA0` and the
+other three the same initialisation with the zero in `al`/`cl`/`bl` (`0x99E277`, `0x9A26EE`,
+`0x9AFF0D`). No byte read anywhere.**
+
+**Positive control, same bodies, same scan.** Asked for `+0x1C` it returns 51 sites including
+`mov byte ptr [ecx+0x1c], 1` in body `0x59CB50` and `mov byte ptr [esi+0x1c], 1` in body `0x59D4A0` -
+precisely the two writers of `use_this` the record names - plus a dozen readers of the
+`cmp byte ptr [edi+0x1c], 0` shape. Asked for `+0x18` as a dword it returns the single recorded writer
+at `0x59B630` (`CEffect::LoadKey`'s common tail) and the recorded slot-6 reader at `0x416000`. The
+method sees both writers *and* readers of the live bytes either side of this one.
+
+A whole-image version was tried and discarded: `+0x14` chained to `+0x18` or `+0x1C` in the same
+register matches **478** sites, nearly all `mov dword ptr [ecx+0x14], 0xf` - `Hoi3CString` capacity
+initialisation. That is trap 12, and it is why the vftable chain is the right filter here.
+
+Recorded as `CEffect +0x14` `unused`, `uint8_t`. It is a declared member rather than padding (a byte
+with three bytes of slack before `keyword` at `+0x18`, exactly as `+0x1C`/`+0x1D` have two before
+`+0x20`), but it is dead in this build and the name says only that. The bounded gap: the two places a
+reader could still hide are `CEffect::GetBlockText` and the event-option dispatcher at rva `0x5BF3D0`,
+neither of which is a slot body.
+
+## What sections 5-9 skipped, deliberately
+
+- The nine Activate bodies were counted and the three non-setters identified, but only `CGuarantee`,
+  `CAlign` and `CEmbargo` were read instruction by instruction. The other six were decoded and
+  scanned, not read.
+- `CVariables::SaveContents` (rva `0x77060`) and `CVariables::LoadKey` (rva `0x77080`) are read and
+  described inside other entries' comments but **not recorded as entries**, because they are slots 2
+  and 4 of CVariables' *second* vftable (`0x11BD724`) and `project.json`'s `vftable_slots` is keyed by
+  class with no way to say which of a class's two tables a slot number belongs to. Both are on the
+  frontier, along with the two `+0x59` setters `0x64A3B0`/`0x64A400`, the CVariables destructor chain
+  `0x76EA0`/`0x77100`/`0x771A0`/`0x771D0`, the `province_count` accessor `0x1010C0`, and the two
+  non-diplomacy `+0x59` owners `0x4364B0`/`0x6F8D40`.
+- The 963 `remove_brigade` values that match no declared name were counted, not audited.
+  `events/SpanishCivilWar.txt` is where most of them are.
+- `CCountry +0xA8C`'s and `+0x10B8`'s duplicate records, and the `0xFCB80` name collision between the
+  two halves, are reported rather than changed.

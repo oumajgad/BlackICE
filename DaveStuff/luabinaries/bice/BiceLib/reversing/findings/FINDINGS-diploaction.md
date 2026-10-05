@@ -897,3 +897,465 @@ a **byte** count, not an instruction count, so `decode(addr, 1)` returns nothing
 read/write classifier written in this session asked for 1 instruction, got silence for all 22
 reference sites, and reported "no writers anywhere" — a false negative from the tool, which is the
 habit `TRAPS.md`'s closing section is about. Its positive control caught it.
+
+## 21. The war-goal chain, the threat spread, and the save grammar - in one line
+
+Read out of the executable on 2026-10-05 by wave 13's agent C. Addresses here are **virtual**, based
+`0x400000`, with the rva beside anything a finding names. Nothing needed the game running.
+
+The war-goal chain is four functions and it is now read end to end: `CWarGoal::AddToWar` (rva
+`0x651FB0`) appends the goal to the war and stamps a **one-month per-pair cooldown** from
+`WARGOAL_ADD_COOLDOWN` - a define the record said this chain does not read; `CWarGoal::RunCasusBelliOnAdd`
+(rva `0x7BBE0`) runs the casus belli type's **`on_add`** effect scoped to the actor;
+`CCasusBelli::RemoveFromStatus` (rva `0x649F40`) is the consumption, and its own localisation key is
+**`WELOSECB`**, which is the game's own word for what was previously an inference; and
+`CasusBelliTypeIsAlways` (rva `0x649EB0`) is the casus belli type's **`always`** flag, which at its
+one call site **cannot change what happens**.
+
+`0xF50A0` is not a threat adder but a **breadth-first spread over the province graph** that writes
+`CDiplomacyStatus::threat`, and `EMBARGO_THREAT_COST` does reach it by address, twice - plus a third
+and worse witness for trap 8's fourth case, where the define at block offset 0 is passed as the
+**bare block pointer** with no `add` at all.
+
+And `CDiplomacyStatus::LoadKey` (rva `0x648190`) turns out to be the cheapest thing in this area: ten
+save keys, ten offsets, which names `+0x4C`, `+0x70`, `+0x74`, `+0x78` and `+0x7C` outright and gives
+`+0x50` and `+0x54` the game's own keys.
+
+## 22. The war-goal chain
+
+### `CWarGoal::AddToWar` - rva `0x651FB0`
+
+`0xA51FB0` to the single `ret 0xC` at `0xA520E5`, 8 `int3`, then a properly prologued function at
+`0xA520F0`. `retsBefore` over the body is empty: no trap 2, no trap 3 funclet. **The goal arrives in
+EDI** and the three stack dwords are the `CWar*`, the actor's tag by value and the actor's id. Six
+callers: `0x600193`, `0x9BC92F`, `0x9BC95B`, `0x9BD63F`, `CDeclareWarAction::Apply` at `0xA12675` and
+`CWarGoalBaseAction::Apply` at `0xA43647`.
+
+    if (!CWarGoal::IsValid(goal)) return;                           // 0x479950, the only gate
+    bucket = 0xA52750(war + 0x9C, &actorId);                        // per-country war-goal bucket
+    0x9BE8F0(bucket@ESI, goal@EAX);                                 // append
+    status = countries[actorId]->diplomacy[goal->receiver.index (+0x24)];
+    status->next_wargoal_date (+0x7C) = AddMonths(tick, WARGOAL_ADD_COOLDOWN / 1000);
+
+**This corrects the record.** `project.json`'s entry for `CWarGoalBaseAction::Apply` says
+"`WARGOAL_ADD_COOLDOWN`, diplomacy `+0xFC`, is not read here". True of that body, false of the chain:
+it is read at `0xA52096`, divided by 1000 with the usual `imul 0x10624DD3; sar edx, 6` (2^38 /
+0x10624DD3 = 1000.0 exactly), and spent as a **month** count through `AddMonths` (rva `0xB8C90`,
+already named with a signature from two readers). BlackICE's own `common/defines.lua:330` reads
+`WARGOAL_ADD_COOLDOWN = 1, -- 1 month`, which is a second, independent agreement that the unit is
+months.
+
+`CWar +0x9C` is therefore a map from country id to that country's war goals. Neither `0xA52750` nor
+`0x9BE8F0` is named; both are in the frontier.
+
+### `CWarGoal::IsValid` - rva `0x79950`, the gate
+
+`0x479950` to two bare `ret`s in one frame (`mov al, 1` at `0x479A7B`, `xor al, al` at `0x479A82`), 13
+`int3`, then `CWarGoal::LoadKey` at `0x479A90` - the extent `CWarGoal.hpp` already implies. `this` in
+ECX. Two callers: `0xA51FD2` and `0x89DB95`, inside the AI.
+
+Almost the whole body is the construction of **two** `CEventScope`s on the stack (vftable `0x15B8AEC`,
+persistent id `0x18D`), each stamped with the goal's `actor` (`+0x18`/`+0x1C`) and `receiver`
+(`+0x20`/`+0x24`) and a null `---` tag; only the one at `esp+0x58` is used. Then three tests:
+
+    if (this->casusBelli (+0xC) == 0)   return false;
+    if (!casusBelli->slot7())           return false;   // 0xA92590 `mov al,1; ret`; ReturnFalse on CNullCasusBelliType
+    return casusBelli->slot6(scope);                    // CCasusBelliType::IsValid
+
+So **a war goal may be added exactly when it names a real casus belli type whose `is_valid = { ... }`
+block passes** for a scope built from the goal's own actor and receiver. Nothing about the casus belli
+the actor *holds* is tested here, which matters below.
+
+`CCasusBelliType::IsValid` is slot 6, rva `0x16950`, seven instructions:
+`add ecx, 0x30; mov eax,[ecx]; mov eax,[eax+0x18]; pop ebp; jmp eax` - a tail call into `this->+0x30`'s
+`CTrigger::Evaluate`. **`CCasusBelliType +0x30` is the `is_valid` key**, save token `0x797`.
+`CWarGoal.hpp` already said "0x30: a CAndTrigger, the condition under which this pretext may be used";
+this names it.
+
+### `CWarGoal::RunCasusBelliOnAdd` - rva `0x7BBE0`
+
+`0x47BBE0` to the bare `ret` at `0x47BC5D`, `0x7E` bytes. **Only two `int3` before the next function at
+`0x47BC60`** - the trap 2 shape, and `functionStart` happens to get it right only because `0x47BC60`
+opens `push ebp`; `retsBefore` is what settles it. `this` in ECX. Two callers:
+`CDeclareWarAction::Apply` at `0xA1267C` and `CWarGoalBaseAction::Apply` at `0xA4364E`.
+
+It builds a `CEventScope` on its own frame - vftable `0x15B8AEC` at `[ebp-0x50]`, persistent id
+`0x18D`, the war goal's **actor** tag into scope `+0x10` and index into `+0x14`, a null `---` tag at
+`+0x18` - and calls **slot 11 of the object at `this->casusBelli + 0x24C`**, passing the scope by
+address.
+
+**`CCasusBelliType +0x24C` is the `on_add` key** (token `0x796`, stored by `CCasusBelliType::LoadKey`
+at `0x416812`), and slot 11 of a `CEffect` is `Execute(CEventScope*, int)`, already in
+`vftable_slots`. So this is *run the casus belli's `on_add = { ... }` block, scoped to the country
+that took the war goal* - which is how `common/casus_belli.txt` fires effects when a goal is claimed,
+and it is a hook the mod can use.
+
+The three fields it reads are exactly the three `CWarGoal.hpp` derived independently from
+`CWarGoal::LoadKey`, and wave 13 agent A's fragment names `+0x18 Actor` and `+0x20 Recipient` off the
+Lua API - a third agreement.
+
+### `CasusBelliTypeIsAlways` - rva `0x649EB0`
+
+`0xA49EB0` to the bare `ret` at `0xA49F34`, `0x85` bytes, 11 `int3`, then `0xA49F40`. **One caller in
+the image.** The type index arrives in **EDI**; nothing on the stack. It lazily creates the
+casus-belli-type database at `[0x1A85BD8]` - `new(0x1C)`, the 198-database shared init `0x45BD30`, the
+registrar `0x417350`; the same singleton `GetCasusBelliTypes` (rva `0x16A40`) returns - indexes its
+pointer vector at `+0xC`/`+0x10` with a fallback to element 0, and returns `type->+0x1F2 != 0`.
+
+**`CCasusBelliType +0x1F2` is the `always` key**, token `0x6A2`, through `ParseBool`. Its neighbours
+are `+0x1F0` `is_triggered_only` (0x61D), `+0x1F1` `mutual` (0x78D) and `+0x1F3` `handles_peace`
+(0x7B0). The name is class-free on purpose: the receiver is an index, not a `CCasusBelliType*`.
+
+### `CCasusBelli::RemoveFromStatus` - rva `0x649F40`, and the answer
+
+`0xA49F40` to the single `ret 8` at `0xA4A3A5`, `0x466` bytes, 8 `int3`. The casus belli arrives in
+**EDI**; the stack carries the `CDiplomacyStatus*` and a **bool**.
+
+Its tail, at `0xA4A36A`, always runs:
+
+    status->changed (+0x59) = 1;
+    unlink the node whose payload is this casus belli from status->casus_belli (+0x3C);   // CList_RemoveNode
+
+It does **not** delete the object - the caller does, after also unlinking it from the one `CDiplomacy`
+relation list at `CCurrentGameState +0xB2C`.
+
+The other `0x430` bytes are gated on the bool and raise a message. With it true the body reads the
+casus belli as a `CRelation` and raises only when `first.id == gameState->played_country_id (+0xC34)`,
+`in_game (+0xDA4)` is set and `countries[second.id]->NumberOfOwnedProvinces (+0xCF8) > 0`. The keys
+are **`WELOSECB`**, with `ENEMY` and `CASUS` variables.
+
+Three callers: `CDeclareWarAction::Apply` (`0xA126AF`), `CWarGoalBaseAction::Apply` (`0xA436B5`) -
+**both with the bool false**, so neither tells the player - and `CCasusBelli` slot 11 at `0xA47D54`,
+the only path that can raise the message.
+
+### So: does adding a war goal consume the casus belli that justified it?
+
+**Yes, and it is no longer inference.** Four supports, of which the first two are new:
+
+1. The consume step is a named function whose own localisation key is `WELOSECB` - *we lose casus
+   belli*. The game's word for this path is "lose", and the function that does the losing is the one
+   `CWarGoalBaseAction::Apply` calls.
+2. The casus belli consumed is specifically the one that justified the goal, not any: the search key
+   is `warGoal->casusBelli->index (+0x8)` matched against `CCasusBelli +0x24`, and **`CCasusBelli
+   +0x24` is the `type` key** - `CCasusBelli::LoadKey` (rva `0x647910`, its one key, token `0xD9`)
+   resolves the type name through the same `[0x1A85BD8]` database and stores the index there, at
+   `0xA479DB`.
+3. The removal and the delete were already read.
+4. `always` only makes sense in a design where a casus belli is normally spent.
+
+**And three things the chain settles that were not asked.** First, `CWarGoalBaseAction::Apply` **adds
+the war goal before testing anything about held casus belli** - the add is unconditional in that body,
+and the only gate is `CWarGoal::IsValid` inside `AddToWar`, which tests the *type*, not the holding.
+So a war goal does not require a casus belli to be held; holding one just gets it spent.
+
+Second, **the `always` branch is behaviourally dead at its one call site.** The body searches
+`status->casus_belli` for the matching entry; on *not* finding it, it calls `CasusBelliTypeIsAlways`
+and returns if false - but if true it falls into a **second, byte-identical search of the same list
+for the same key**, which must also fail, and nothing between the two searches touches the list (the
+only call is `CasusBelliTypeIsAlways`, which reaches nothing but the type database). Both arms do
+nothing. This is read as a structural fact about the compiled code, not as a claim about the source;
+the likeliest source shape is `if (found || type->always) { ... }` with an inlined finder that the
+optimiser duplicated. Marked `confirmed` as a statement about the binary and nothing more.
+
+Third, the consumption is **silent**: `notify` is false from both action paths, so the `WELOSECB`
+message belongs to `CCasusBelli` slot 11 (expiry) rather than to spending one on a war goal.
+
+## 23. `SpreadThreat` - rva `0xF50A0`, and it is not an adder
+
+`0x4F50A0` to the single `ret 0x10` at `0x4F55F8`, `0x55B` bytes, 5 `int3`, then a
+register-convention function at `0x4F5600`. Four stack dwords, nothing in a register - plain
+`__stdcall`:
+
+    void __stdcall SpreadThreat(CCountry* feared, int* amount, int* scale, CMapProvince* origin)
+
+**Seven call sites in six functions, not the four the record says:** `0x47B280`, `0x551565`,
+`0x65B64C`, `CDeclareWarAction::Apply` at `0xA128FC`, `CNapAction::Apply` at `0xA2BFFB`, and
+`CEmbargoAction::Apply` **twice**, at `0xA2F099` and `0xA2F57B`. (Attributed by the known slot-7
+extents, not by `functionStart`, which lands in the wrong place for both `0xA2BFFB` and the two
+embargo sites - trap 2.)
+
+What it is:
+
+1. the base magnitude is `*amount * (1000 + feared->+0xDA8->+0x1C0) / 1000`, **halved** when slot 7 of
+   `feared->faction (+0xD8)` answers false, then scaled by a float at `[0x160A7B4]`;
+2. `CMapProvince +0x10` is set to 99999 on all `g_CMap (0x1A8557C) +0x21FC` provinces and
+   `CCountry +0x18` is cleared on every country - distance and visited scratch. **`CMapProvince +0x10`
+   is the field already recorded as `weather_pressure_distance`** from
+   `CWeatherManager::PropagateHighPressure`: it is a general breadth-first scratch slot and the
+   existing name is narrower than the field. `CCountry +0x18` is the per-country visited mark, so a
+   country with many nearby provinces gains the threat once; it is described here and **deliberately
+   not recorded**, because `+0x18` is far too common a displacement to pin from one function (trap 12);
+3. the walk runs out from `origin` over `CProvinceTemplate +0x90`/`+0x94` (0x14-byte edges), decaying
+   by distance, by `(1000 - feared->+0xDA8->+0x1C8)/1000`, by `*scale/1000`, and by the per-edge cost
+   `0x4C4D70` returns;
+4. for each province reached whose controller is unmarked:
+   `controller->diplomacy[feared->id (+0xCA8)]->threat (+0x5C) += amount`, clamped at 0 from below, at
+   `0x4F551B`.
+
+So threat is felt **by** whoever holds ground near `origin`, **toward** `feared`. `CDiplomacyStatus
++0x5C` is already recorded as `threat` in thousandths from two readers; this is its writer, and it
+explains the geography of threat in HoI3 - distance from the *victim's* capital, not from the
+aggressor.
+
+### Trap 8's fourth case now has three witnesses, and the third is the worst
+
+The record's new case was: the value is never loaded, the body does `add edi, 0x60` on the register
+already holding the diplomacy block and passes the **address**. Confirmed, and extended:
+
+| class | site | what is passed as `amount` |
+| --- | --- | --- |
+| `CNapAction::Apply` | `0xA2BFE3`/`0xA2BFF9` | `add edi, 0x60` -> `&LEAVE_NAP_THREAT_COST` |
+| `CEmbargoAction::Apply` | `0xA2F082`/`0xA2F097` | `add esi, 0x88` -> `&EMBARGO_THREAT_COST` |
+| `CEmbargoAction::Apply` | `0xA2F560`/`0xA2F579` | the same, a second time |
+| `CDeclareWarAction::Apply` | `0xA128BE`/`0xA128FA` | `mov eax,[eax+0xBC]` -> **the bare block pointer**, i.e. `&WARDEC_BELIGERENCY` |
+
+**So `EMBARGO_THREAT_COST` is confirmed, at two sites** - and the trap gets a worse sub-case than the
+one it was written for: when the define is at **offset 0** of its block there is no `add` to scan for
+either, so even a scan for "block pointer plus a displacement passed by address" misses it.
+`WARDEC_BELIGERENCY` is 25.0 in BlackICE's `defines.lua:267`, `LEAVE_NAP_THREAT_COST` 5.0 and
+`EMBARGO_THREAT_COST` 1 - the embargo's tiny threat beside its `-200.0` relation hit is itself worth
+noticing.
+
+`scale` is a pointer to a stack int, 1000 in all four, i.e. x1.0 - so the parameter exists for a
+caller that scales and none of these four does.
+
+## 24. `CDiplomacyStatus::LoadKey` - ten keys, ten offsets
+
+rva `0x648190`. This is the cheapest and most decisive thing in the area, and it was never read. Every
+one of the class's save keys, with the offset the case stores to:
+
+| key | token | offset | parsed by |
+| --- | --- | --- | --- |
+| `value` | 0x2A6 | -> `0xA48160`, which writes `relation (+0x38)` both ways | int |
+| `military_access` | 0x2F0 | **`+0x4C`** | `sete cl` on the value token being `yes` (0x1F6) |
+| `last_send_diplomat` | 0x306 | **`+0x50`** | `Date_SetFromString` |
+| `last_war` | 0x305 | **`+0x54`** | `Date_SetFromString` |
+| `threat` | 0x674 | `+0x5C` | `TokenToFixedPoint` (0x669550) - thousandths, as recorded |
+| `debt` | 0x727 | **`+0x70`** | int |
+| `dailyrepay` | 0x728 | **`+0x74`** | int |
+| `debtaction_action` | 0x726 | **`+0x78`** | `ParseBool` |
+| `next_wargoal_date` | 0x7A7 | **`+0x7C`** | `Date_SetFromString` |
+| `occupation_policy` | 0x57C | `+0x10` | name lookup |
+
+The last row is the **positive control**: `+0x10` was already named from this very function in
+`FINDINGS-occupation.md`, so the table reproduces a known answer in the same pass.
+
+Four notes on it:
+
+- **`+0x4C` and `+0x78`**: wave 13 agent A independently named these `hasMilitaryAccess` and
+  `allowDebts` off the Lua API (`CDiplomacyStatus::HasMilitaryAccess` rva `0x64A3F0`,
+  `CDiplomacyStatus::AllowDebts` rva `0x64A7E0`, each `mov al,[ecx+N]; ret`). **Two halves of the fact
+  base converging offset for offset** - trap 14's good case. Agent C dropped its two field entries in
+  favour of agent A's names and folded the save keys into the function comments instead; the merge
+  collision that caught this is recorded in the fragment. If the keys are wanted on the fields too,
+  they want adding to agent A's two comments by hand.
+- **`+0x50`** is `last_send_diplomat` to the game and `next_offer_allowed` to the record, and the code
+  is on the record's side: what is stored is a date seven days in the *future*. The key is noted and
+  the behavioural name kept. This closes one of section 9's open items by at least giving it the
+  game's name.
+- **`+0x54`** is `last_war`, which **corroborates** `war_seen_tick` rather than contradicting it: the
+  game calls it the last war and the writer keeps it current while the war runs.
+- **`+0x7C` is `next_wargoal_date`** and `CWarGoal::AddToWar` is its one writer - the two halves of
+  section 22 meeting in the middle.
+
+## 25. The four slot-7 bodies: what accepting actually changes
+
+Method, since all four are too large to read whole: a linear taint pass over each extent seeded on
+`[reg + 0x16C]` (the country array), `[CCountry + 0xE28]` (the diplomacy array) and the indexed loads
+off each, reporting stores through a tainted register; every hit then decoded in place. **Its positive
+control is `CNapAction::Apply` and `CGuarantee::Activate`**, where it returns exactly the `+0xA88`
+subtract-and-clamp and the two-direction `+0x59`/`+0x1C` writes the record already documents, and
+nothing else. Being linear it is not flow-sensitive, so a false positive is possible and a write
+through a register it could not follow would be missed - which is why every claim below is cited by
+address.
+
+### `CDeclareWarAction::Apply` - rva `0x612030`
+
+| where | write |
+| --- | --- |
+| `0xA1239F` | `status->undeclared_war (+0x24) = 0`, after deleting the `CUndeclaredWar` through its slot 0 - the formal war **replaces** the undeclared one |
+| `0xA12DB6`, `0xA12DE6` | `hasMilitaryAccess (+0x4C) = 0`, **both directions**, through `SetMilitaryAccess` |
+| `0xA12E10`/`0xA12E14`, `0xA12E3E`/`0xA12E42` | `changed (+0x59) = 1` and `guarantee (+0x1C) = 0`, both directions - war cancels the pair's guarantee |
+| `0xA12E69`, `0xA12E96` | `allowDebts (+0x78) = 0`, both directions - war cancels the debt agreement |
+| `0xA1292A`, `0xA12938` | `countries[actor]->diplo_influence (+0xA88) -= WARDEC_INFLUENCE_COST`, clamped at 0 |
+
+It also runs the whole war-goal chain (`0xA12675`, `0xA1267C`, `0xA126AF`) and **manufactures
+`CCallAllyAction` proposals** at two sites - see section 26.
+
+### `CCallAllyAction::Apply` - rva `0x627BA0`
+
+| where | write |
+| --- | --- |
+| `0xA284A2`, `0xA284B4` | `diplo_influence -= CALLALLY_INFLUENCE_COST`, clamped at 0 |
+| `0xA2871B` | `status->undeclared_war (+0x24) = 0`, byte for byte the shape at `0xA12390`-`0xA1239F` |
+| `0xA28891`, `0xA288C4` | `hasMilitaryAccess (+0x4C) = 0`, two statuses |
+| `0xA28958` | **`CDiplomacyStatus::ClearCasusBelli`** (rva `0x64A3B0`) on `countries[...]->diplomacy[this->+0x2C]` - the status against the **third** country the action names. Joining a war empties the whole casus-belli list between those two, rather than spending one |
+
+That last row is the sharpest contrast in this section: `CWarGoalBaseAction::Apply` spends **one**
+casus belli, of the matching type; being called into a war discards **all** of them.
+
+`ClearCasusBelli` itself (`0xA4A3B0`, `0x39` bytes, receiver in EDI, one caller) sets `changed`, frees
+every **node** of `casus_belli (+0x3C)` without touching the payloads - correct ownership, since the
+`CCasusBelli`s belong to the `CDiplomacy` relation list - and zeroes head, tail and count.
+
+### `CFactionAction::Apply` - rva `0x630E70`
+
+Its gate is now read in full, `0xA30E9D`-`0xA30F09`: `value` set; `countries[actor]->at_war (+0xACC)`
+**clear**; `countries[recipient]->faction (+0xD8)->+0x28` non-null; **and then it walks that faction's
+member list and requires `countries[actor]->diplomacy[member]->war (+0x20)` to be null for every
+member** - a country may not join a faction while at war with any of its members. That last clause is
+new.
+
+**Its only `CCountry`/`CDiplomacyStatus` write is the influence charge**, `0xA31545`/`0xA31553`, in
+`0x2157` bytes. Every other store in the body is to its own frame or to the 0x44-byte
+`CMessageVariable`s it builds (verified a second way, by listing *every* memory write with its base
+register's provenance - the non-stack hits are all `+0x0`/`+0x10`/`+0x14`/`+0x1C`/`+0x38`/`+0x3C`/`+0x40`
+of freshly allocated 0x44-byte objects, which is `CMessageVariable`'s recorded layout). **That is a
+finding, not a gap: the faction membership change is not in slot 7.** It is in `0x4F5F30`, a
+~0x950-byte `__thiscall` called twice (`0xA319B2`, `0xA31AF5`) with `ECX = country->faction (+0xD8)`
+and `(CCountry*, 0, 1)` on the stack, `ret 0xC`. In the frontier, and the obvious next item for anyone
+who wants factions.
+
+### `CLicenceTechnologyAction::Apply` - rva `0x63B5A0`
+
+| where | write |
+| --- | --- |
+| `0xA3C38A`, `0xA3C398` | on PROPOSE (gated at `0xA3C355`), `diplo_influence -= LICENCE_INFLUENCE_COST`, clamped at 0 |
+| `0xA3C5A1` | on ACCEPT, **when the pair have a debt agreement** (`allowDebts`, `+0x78`): `countries[seller]->diplomacy[buyer]->debt (+0x70) += fee` |
+| `0xA3C5DE`, `0xA3C61B` | otherwise the fee moves as **money**: `-fee` and `+fee` into `CGoodsPool +0x10` of each side's pool, chosen exactly the way `GetPool` chooses it - `country->pool_in_exile (+0x9F8)` when `government_in_exile (+0x95)` is set, else `CCountry::GetActingCapitalLocation(country)` -> `CMapProvince::pool (+0x15C)` |
+
+**So a licence is paid in cash unless the buyer holds a debt agreement with the seller, in which case
+it goes on the tab** - which is what `CDiplomacyStatus::debt` is for, and the first mechanic found for
+it.
+
+And the technology-layer reach is not a technology at all: it calls `CHistoricalModel::PickBestModel`
+(rva `0x183230`) once and `CHistoricalModelSet::MakeSubUnit` (rva `0x183060`) **twice**, over a loop
+bounded by `[edi+0x30]`, then `CList_FreeAndClear` on what it built, plus `0x181F70`, `0x182FA0` and
+`0x145760`. **A licence hands over a brigade model**, not a tech entry. The loop itself was not read.
+
+## 26. `CCallAllyAction::CCallAllyAction` - rva `0x627AD0`, and where calls to arms come from
+
+`0xA27AD0` to the single `ret 0x1C` at `0xA27B19`, `0x4A` bytes, 4 `int3`. The object arrives in **EAX**
+and seven stack dwords follow: the date plus three `CCountryTag`s by value, which is exactly `0x1C`. It
+writes the base layout of section 1 in one go - `+0x4 = 0x18D`, `+0x8`/`+0xC` actor, `+0x10`/`+0x14`
+recipient, `+0x18 = 0` (PROPOSE), `+0x1C` and `+0x20` both the date, `+0x24 = 1` (value), vftable
+**`0x15FB6F4`**, and `+0x28`/`+0x2C` the third country - the extra pair section 5 notes only
+`CCallAllyAction` has.
+
+Three callers, and they are the whole mechanism: **`CDeclareWarAction::Apply` builds two** (one at
+`0xA12BE4`, gated on `status->war (+0x20)` being null and on the target's guarantees, with the
+`new(0x30)` four instructions above it) and **`CCallAllyAction::Apply` builds one**. The date passed is
+`[0x170C2B8]`, the 43,800,000-hour null date.
+
+So declaring war is what *manufactures* the call-to-arms offers, and an ally honouring one manufactures
+the next - which is how a faction is dragged into a war one country at a time, and it closes the loop
+between section 5's lifecycle and the `MILALLHONOUR`/`MILALLDISHONOUR` keys.
+
+## 27. `CRelation` and the twelve absent structs - the layouts as prose
+
+`ghidra/mergeFindings.py` will not create a struct, and `project.json` holds **none** of `CRelation`,
+`CNap`, `CAlliance`, `CGuarantee`, `CEmbargo`, `CAlign`, `CInfluence`, `CDependency`, `CCasusBelli`,
+`CDiplomacy`, `CDiplomaticActionCommand` or `CNullDiplomaticAction` - re-verified 2026-10-05. So these
+are hand-adds.
+
+**`CRelation`** (vftable `0x15FBB00`, 12 slots; slots 6, 7, 10 and 11 are `_purecall`). Section 15's
+prose account is now **confirmed from the game's own save grammar**, not described:
+`CRelation::LoadKey` (rva `0x6465D0`, the body nine of its ten subclasses inherit) has exactly five
+cases, each storing to one offset -
+
+| offset | field | type | key |
+| --- | --- | --- | --- |
+| `+0x00` | vftable | | |
+| `+0x04` | `persistent_id` | `int` | - (`CPersistent`'s) |
+| `+0x08` | `first` | `CCountryTag` | `first` - tag at `+0x8`, id at `+0xC` |
+| `+0x10` | `second` | `CCountryTag` | `second` - tag at `+0x10`, id at `+0x14` |
+| `+0x18` | `start_date` | `int` (hours) | `start_date` |
+| `+0x1C` | `end_date` | `int` (hours) | `end_date` |
+| `+0x20` | `cancel` | `uint8_t` | `cancel`, as a `yes`/`no` token |
+| `+0x24` | *subclass fields begin* | | |
+
+The writes are at `0xA46656`/`0xA4665C`, `0xA466BE`/`0xA466C4`, `0xA466F8`, `0xA4672D` and `0xA46753`,
+each ending its own `ret 8`. `+0x18 start_date` is the field `CNapAction::Apply` and
+`CTradeAction::Apply` stamp from the action's own `date`, and the savegame's `diplomacy=` entries write
+`first`, `second` and `start_date` for every one of the seven subclasses that appear.
+
+**`CCasusBelli`** (vftable `0x15FBB9C`, 12 slots; slot 4 `LoadKey` `0xA47910`, slot 10 `Activate`
+`0xA47BB0`, slot 11 `0xA47D20`). `CRelation`'s seven fields, then `+0x24` `type`, an `int` - the index
+into the casus-belli-type database at `[0x1A85BD8]`. `CCasusBelli::LoadKey` has exactly **one** key,
+`type` (token `0xD9`): it builds the string, resolves it through `0x699AC0` against that database and
+stores the result at `+0x24` (`0xA479DB`). This is the field `CWarGoalBaseAction::Apply` compares
+against `warGoal->casusBelli->index (+0x8)`, so the match really is "this casus belli is of the pretext
+the goal names".
+
+**`CNap`** is `0x30` bytes (`CNapAction::Apply` asks `operator new` for `0x30`), vftable `0x15FBB68`,
+constructor `0xA46F00`, `Activate` `0xA471E0` - so it adds at most three dwords past `+0x24` and none
+was identified. **`CTradeRoute`** is `0x88` (`CTradeAction::Apply`'s `new`), copy-constructor
+`0xA4C660`, and `CTradeAction +0x28` is one embedded by value. **`CAlliance`**, **`CGuarantee`**,
+**`CEmbargo`**, **`CAlign`**, **`CInfluence`** and **`CDependency`** have `Activate` bodies at
+`0x646A40`, `0x646DB0`, `0x64B530`, `0x64B110`, `0x64AAD0` and `0x647760`, all already recorded, and no
+fields past `+0x24` were read for any of them. The `nap` block in a save carries `balance`,
+`our_power` and `their_power` beside the three `CRelation` keys, which is three subclass fields looking
+for offsets - a cheap item for whoever adds the struct.
+
+**`CDiplomacy`** is `CCurrentGameState +0xB24`; its list is at its own `+0x8`/`+0xC`/`+0x10`, i.e. game
+state `+0xB2C`/`+0xB30`/`+0xB34`, nodes `0x10` bytes `{value, prev@+4, next@+8, byte@+0xC}`.
+**`CDiplomaticActionCommand +0x3C`** is the held action and **`CNullDiplomaticAction +0x28`** is its own
+`Hoi3CString`, both from section 9 and both still recorded nowhere.
+
+**`CCasusBelliType`** is not in the absent list - it has a struct with one field - but it now has
+twenty-two more offsets known from its loader (rva `0x165F0`): `+0x30` `is_valid` (token 0x797),
+`+0x70` `is_valid_join` (0x7A8), `+0xB0` `prerequisites` (0x1FC), `+0xF0` `allowed_regions` (0x78E),
+`+0x130` `allowed_province` (0x7AC), `+0x170` `allowed_countries` (0x78F), `+0x1B8`
+`peace_cost_factor` (0x790), `+0x1BC` `penalty_factor` (0x791), `+0x1C0` `threat` (0x674), `+0x1D0`
+`truce_months`, `+0x1E0`/`+0x1E4`/`+0x1E8` the peace-option list the `po_*` tokens append to, `+0x1F0`
+`is_triggered_only` (0x61D), `+0x1F1` `mutual` (0x78D), `+0x1F2` `always` (0x6A2), `+0x1F3`
+`handles_peace` (0x7B0), `+0x1F4` `truce_months` (0x792), `+0x1F8` `war_name` (0x793), `+0x214`
+`country_desc` (0x794), `+0x230` `prov_desc` (0x795), `+0x24C` `on_add` (0x796), `+0x26C`
+`is_civil_war` (0x79D), `+0x270` `on_completion` (0x445). **None of these were recorded** - only
+`+0x30` and `+0x24C`, through the two function comments that depend on them - because the struct holds
+one field and a 22-row hand-add is the collecting session's call. The token-to-body table is
+reproducible in one command: byte table at `0x416924`, jump table at `0x4168E0`, base token `0x78D`.
+
+## 28. New traps and method notes from sections 21-27
+
+**Trap 2's second cause gains `0xC6`.** `CDiplomacyStatus::ClearCasusBelli` (rva `0x64A3B0`) has
+**eight immaculate `int3`** above it and `image.functionStart(0xA4A3B0)` still answers `0xA49F40`, the
+function before it, because its first byte is `0xC6` - `mov byte ptr [edi+0x59], 1`. It opens with a
+store rather than a prologue precisely because its receiver is already in a register, and this image is
+full of that shape, so **expect more `0xC6`**. The prologue set should become
+`55 53 56 57 8B 83 81 6A 68 51 52 50 80 8A 85 33 C6`.
+
+**And a note on the register-argument family in this corner.** Six of the ten functions read here take
+their receiver in a register that is not ECX - EDI four times (`0x651FB0`, `0x649EB0`, `0x649F40`,
+`0x64A3B0`), EAX once (`0x627AD0`) and CL for a bool once (`0x64A400`). `project.json`'s `@REG`
+convention expresses all of them and `checkSignatures` agrees with every `ret`, but the practical
+consequence is that **`functionStart` is unreliable across this whole region** and the vftable or a
+caller scan is what fixes an entry.
+
+**`0x4F50A0`'s caller count was wrong in the record** (four, against seven sites in six functions), and
+both the nap and the embargo sites are ones `functionStart` misattributes. A caller list derived from
+`functionStart` in a dense region should be re-derived from known extents.
+
+## 29. What sections 21-27 skipped, and what it would cost
+
+- **The message construction in all four slot-7 bodies.** It is most of their bulk and section 17
+  already has the keys; the gates and the keys were read, not the string building.
+- **`0x4F5F30`**, the ~0x950-byte faction mutation, which is where `CFactionAction`'s real effect
+  lives. Read only for its convention and its arguments. The single highest-value item left.
+- **`CLicenceTechnologyAction`'s model loop** (`[edi+0x30]`, `PickBestModel`, `MakeSubUnit` x2) and the
+  source of the `[esp+0xf]` byte that chooses debt against cash. The branch *condition* is therefore
+  read by consequence rather than read, and the fragment says so.
+- **The `CDeclareWarAction` call-ally gate** - which allies get a proposal, and the role of
+  `countries[...]->+0xF38`/`+0xF3C` and `status->guarantee->+0x24` in deciding. Two sites, both
+  identified, neither traced.
+- **`CCountry +0x18`**, the threat walk's visited mark: described, not recorded, because one function is
+  not enough for a `+0x18`.
+- **`CCasusBelliType`'s 22 loader offsets**: table derived and given above, nothing recorded.
+- **`CCasusBelli` slot 11 (`0x647D20`)**, the only caller of `RemoveFromStatus` with `notify` true -
+  i.e. the path that actually shows the player `WELOSECB`. Nothing but the call site was read; it has
+  **zero callers of its own**, so it is reached virtually and the question "when does a casus belli
+  expire" is still open.
+- The three non-diplomatic `SpreadThreat` callers (`0x47B280`, `0x551565`, `0x65B64C`) were looked at
+  only far enough to read their argument lists; `0x47B280` passes a stack int set to 1000 and a value
+  read off `[esi+0xc]->+0x1C0`, which is **not** a define, so the "amount is always a define" reading
+  holds only for the diplomatic four.

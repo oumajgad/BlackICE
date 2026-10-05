@@ -112,7 +112,25 @@ walked straight past *even when it is properly padded*. Two have been found this
 rva `0x963F0` opens `push ecx` (`0x51`, added) and rvas `0xA9B70` and `0xA9BE0` both open
 `cmp byte ptr [eax+0x22], 0` (`0x80`, added) - the second pair has an `int3` between them, so
 abutment was not the problem at all. The set is now
-`55 53 56 57 8B 83 81 6A 68 51 52 50 80 8A 85 33`.
+`55 53 56 57 8B 83 81 6A 68 51 52 50 80 8A 85 33 C6`.
+
+**`0xC6` was added 2026-10-05 and it is the most predictable member of the set, which is why
+it should have been there first.** `CDiplomacyStatus::ClearCasusBelli` (rva `0x64A3B0`) has
+**eight immaculate `int3` above it** - abutment is not the problem - and
+`functionStart(0xA4A3B0)` still answers the function before it, because its first instruction
+is `mov byte ptr [edi+0x59], 1`. **A function whose receiver arrives in a register has no
+prologue to open with, so it opens with its first store**, and this image is full of that
+shape: six of the ten functions wave 13's agent C read take their receiver in EDI, EAX or CL
+rather than ECX. The practical consequence is bigger than one byte - **`functionStart` is
+unreliable across that whole region**, and a caller list derived from it is too: the record's
+caller count for `SpreadThreat` (rva `0xF50A0`) said four and there are seven, in six
+functions, three of which `functionStart` misattributes. Derive extents from the vftable or
+from known bounds there, not from a walk.
+
+Two more pairs for the list, both 2026-10-05: `0x59E24D`/`0x59E250`, where a `ret 0xc` is
+followed by **no padding at all** before a fresh `push ebp`; and `0x47BC5D`/`0x47BC60`, with
+only two `int3` between them, where `functionStart` happens to get it right only because the
+next function does open with a prologue - `retsBefore` is what settles it either way.
 
 **`0x33` was added 2026-10-04** and it is the clearest case yet that this is a second
 cause and not abutment: `PersistentRegistryInit` (rva `0x67BFA0`) opens `xor ecx, ecx`
@@ -207,6 +225,29 @@ correct correction on 2026-10-01. To test a slot by hand, read `vftable + slot *
 them slot 19 of a `COrder` subclass - that is inheritance, not folding, and the name is right.
 Ask whether the holders are one family before rejecting a name.
 
+**And the virtual tables are not the only place a claimant lives.** Added 2026-10-05.
+`ghidra/luabind.json` carries a second, independent set of names for addresses, and a
+two-instruction getter is exactly what the linker folds - so a holder count run against the
+tables alone can answer **zero** and still be wrong. `0x63D780` is `mov eax,[ecx+0x30]; ret`,
+is in **no** virtual table, and is registered as both `CFaction::GetNumberOfMembers` and
+`CLicenceTechnologyAction::GetParalell`; nothing in the toolchain would have refused the first
+name. `0x64A3F0` is the opposite shape - one luabind name plus **sixteen** graphics-class
+tables, which the existing threshold would have caught.
+
+`scripts/reconcileFacts.py` prints both counts, and it found **five recorded names sitting on
+a body another registration claims**: `0x16000` (`CEffect::GetKeywordToken`, also
+`CAIStrategy::GetPersonality` and `CDiplomaticAction::GetType`), `0x944C0`
+(`COrder::GetStance`, also `CDiplomacyStatus::GetWar`), `0xC8920`
+(`CDistributionSetting::GetBasePercentage`, also `CDiplomacyStatus::GetTarget` and
+`CAIStrategy::GetCountryTag`), `0x4E9090` and `0x2EF70`. **Three of those entries contain an
+explicit negative that the registrations contradict** - one says "nothing outside it holds the
+body at all", another reasons from having traced the single registration it came in by.
+
+**The field is safe either way**, which is the useful half: the compiler emitted the getter
+from that class's own source and ICF merged it afterwards, so a fold puts the risk on the
+**function's** name and never on the offset. Record the field `confirmed`; leave the body
+class-free.
+
 ## 5. A modifier entry is 8 bytes, so the offset is `id * 8`
 
 Country and static modifier arrays are indexed `base + id * 8`, value in the low dword. An
@@ -257,6 +298,34 @@ has caused two false negatives.
 *The rule:* decode from a function entry, or from an address a tool printed. To cover the image,
 iterate over known entries and decode each body forward, stopping at an `int3` run - that stays
 synchronised and respects trap 2.
+
+**And that last technique still desynchronises, on an embedded jump table.** Added 2026-10-05.
+Splitting `.text` on runs of `int3` and decoding each chunk from its own start is the right way
+to sweep the image - it is what wave 13's agent D used to take the *complete* 60-site universe
+of a displacement - but a jump table sitting inside a function body is data in the middle of a
+chunk, and the decode comes out of it misaligned. The worked example is
+`add byte ptr [edx+0x59], dl` at `0x4E608B`, which is inside `CDiplomaticAction::Create`'s
+jump table and is not an instruction at all.
+
+**The two cheap tells**: a nonsense mnemonic for the context, and a loud `retsBefore` -
+`image.retsBefore(0x4E5800, 0x4E608B)` answers **25**, which no real function has. Treat a
+chunk sweep's hits as candidates and read each one in place.
+
+**And there is a third failure mode that produces no nonsense at all: capstone just stops.**
+Added 2026-10-05. `engine().disasm(blob, start)` halts at the first byte it cannot decode and
+returns what it had, with no error and no marker. On this image that happens about 0x60000
+bytes in, so a one-call sweep of `.text` covers **4%** of the code and the result looks
+entirely healthy - the air-defence census got "34 accesses in 17 functions" that way, where the
+real figure is **812 in 450**. Nothing about the small answer says it is truncated; the hits
+in it are all real.
+
+*The tell:* check the address of the **last** instruction returned against the end of the
+section, or the instruction count against the byte length - 123,277 instructions for 9 MB is
+46 bytes each and cannot be right. *The fix:* resume one byte past every stop and keep going
+(186 resumes over this `.text`, 3,084,578 instructions), then treat every hit as a candidate
+and re-decode it from `functionStart` before believing it, because a resumed sweep is
+misaligned by construction. Both halves matter: the resume stops the false negative, the
+re-decode stops the false positive.
 
 ## 10. The RTTI export gives slot counts, not slot contents
 
@@ -310,11 +379,26 @@ So the check is three questions, all before the reading: **is this rva recorded,
 taken, and is this address mentioned in anybody's comment?**
 
 **And a fourth question, for a fact you are about to act on rather than name: does the record's
-own prose agree with `project.json`?** When they disagree, the entry is the likelier of the two,
-because an entry is written while the bytes are on screen and a prose summary is written
+own prose agree with `project.json`?** When they disagree, the entry is **usually** the likelier of
+the two, because an entry is written while the bytes are on screen and a prose summary is written
 afterwards from memory of them.
 
-This cost a session on 2026-10-05. `PLAN-customcommand.md` had been written with a step order that
+**"Usually" is doing real work in that sentence, and it was not there when this clause was written
+earlier the same day.** It said the entry *is* the likelier, and within hours wave 13 produced the
+counterexample: for `CCountry::GetSurrenderProgress` (rva `0xFCB80`) the **prose was right and the
+entry was wrong**. `findings/FINDINGS-invasion.md` had the arithmetic correct -
+`clamp(0xFCC60(this) * 1000 / (unity / 100), 0, 1000)` - and `project.json` had the same expression
+**inverted**, with unity in the numerator. Everything the entry then concluded about direction
+followed from the inversion, so the published reading of `surrender_progress` was backwards: it is
+high, not low, that means a country is about to surrender. Worse, `buildFindings` had copied the
+inverted pseudocode into the generated record, so Ghidra carried it too.
+
+So the real rule is the one both halves of that pair obey: **when the two disagree, neither wins on
+provenance - go to the bytes.** The direction of the usual case tells you which to doubt first and
+nothing more. Both of 2026-10-05's examples were settled in one decode each.
+
+This cost a session on 2026-10-05. A handoff plan (since deleted, the framework having been built
+and run) had been written with a step order that
 only made sense if a single player command post did not serialise, which it took from a summary
 table in `FINDINGS-commands.md` headed "And only the broadcast serialises", whose first column was
 labelled "loopback". But "Loopback" is the *name of a channel class* - the mode 2 one a single
@@ -444,7 +528,55 @@ those types. Count the **distinct** values a key takes before trusting an offset
 Writing `1` asks for a register instead and fails **silently**. That cost two attempts at the
 same scan.
 
+## 18. Never edit a source file by a span between two markers it also moves
+
+This is about editing **our own code**, not the executable, and it deleted five functions on
+2026-10-05.
+
+A script trimmed `CBiceCommands.cpp` in four steps: lift the codec out of one place, re-insert
+it earlier in the file, then delete a block bounded by `"// ---- the self test"` and
+`"// ---- kinds"`. Step two moved the self-test banner **above** the five vftable slot
+functions. So by step three the span between the two markers was most of the file, and all five
+slots went with it. The script reported success, because every check it made was for the
+absence of what it meant to remove.
+
+Three things that would each have caught it:
+
+- **Compute every index before the first mutation**, or re-find markers after each one. A span
+  held across an edit is a stale pointer.
+- **Check what must survive, not only what must go.** The script asserted `selfTest` was gone
+  and found it gone. One `grep -c cloneSlot` would have said 0.
+- **Prefer one anchored replacement over a sequence of them.** Rewriting the file whole, which
+  is what the recovery did, cannot lose a function by accident.
+
+The recovery was only cheap because the file had been written in the same session and was still
+in context. **The files were untracked, so git had nothing** - which is the real lesson for a
+module being built: there was no copy of 450 lines of working code anywhere on disk.
+
+Related, same session, same file: a bash heredoc collapsed `\n` into real newlines inside three
+C string literals, which is what `CLAUDE.md` means by "heredocs mangle apostrophes and collapse
+`\x00`-style escapes". Scripts go in the scratchpad, written with the `Write` tool. Both of
+these were avoidable by following a rule that was already written down.
+
 ---
+
+### And in JSON, the anchor can match a *different object of the same name*
+
+Added 2026-10-05, from giving `CBomberCombatant` a struct record. The edit found its struct by
+`text.index('"name": "CBomberCombatant"')` and rebuilt the object around it. That string's
+**first** occurrence in `project.json` is the class's **vftable address entry**, not its
+struct, so the script replaced an entry in `addresses` with a struct object. It still parsed
+as JSON, `buildFindings.py` still ran, and nothing said a word; the loss only showed because
+the next read printed `inherits=None` for a key that had just been written.
+
+*The rule:* anchor inside the array you mean - `text.index(needle, text.index('\n "structs": ['))` -
+and after any structural edit, re-read the file and assert the thing you changed changed
+**and** the counts of everything else did not. `addresses` and `structs` both have `name`,
+and a class's vftable entry, its functions and its struct all carry the class's name.
+
+A second bug in the same script, for the same reason it is worth writing down: the offsets to
+drop were compared with `str(offset).upper()`, and `"0x2C".upper()` is `"0X2C"`, which matches
+nothing. It silently dropped zero fields and reported success.
 
 ## The habit all of these point at
 

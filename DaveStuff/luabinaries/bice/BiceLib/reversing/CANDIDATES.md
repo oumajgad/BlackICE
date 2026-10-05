@@ -225,10 +225,162 @@ the record's own `likely` cannot reach, which strengthens B's case rather than w
 on its own, because finding the plan in five hundred lines of queue and archive was a search rather
 than a glance. This file keeps the standing backlog and every landed wave's result.
 
-**Wave 13 is planned there**, from wave 12's remainders and from a measurement wave 12's own
-headline provoked: 713 fields the generated record holds that `project.json` has no field for,
-across 115 structs, plus 108 offsets where the two disagree on a name. `CCountry +0xF88 = Allies`
-was not a one-off, and brief A is that rule turned into work.
+**Wave 13 has landed** - its result is two sections down. **Wave 14 is written into `WAVE.md`
+and has not launched**: four briefs, the first of which teaches the pipeline to create a struct and
+lands the 37 classes blocked behind that, and the other three take the evaluation half of the
+script language and the faction layer. So `WAVE.md` is current, not stale, and the paragraph here
+that said otherwise was itself stale within a day of being written - which is the drift the
+two-file contract at the top of `WAVE.md` exists to prevent. The AI collector has now been held out
+of four waves running.
+
+### 2026-10-05, from `TODO.md`: the air defence stat, and it is not a scale bug
+
+**`air_defence` has no consumer in any combat path.** `findings/FINDINGS-airdefence.md` has it in
+full. The TODO asked whether the stat misses the fixed point system or is a magnitude too low;
+neither. It is parsed by the same `TokenToFixedPoint` as 42 of its 44 siblings (`air_attack` is the
+positive control, byte-for-byte the same four instructions), and divided by the same `1000.0` in
+all three unit stat panels. The one combat function in the image that reads it,
+`CBomberCombatant::FireUnit` (`0x160B90`, named this session), multiplies it by the target's
+`combat_defend_product` and writes it back to its own frame slot, where **nothing ever reads it** -
+five accesses to the slot, no esp alias, decode verified by recursive descent reaching 829 of 829
+instructions. MSVC kept the store because the `imul` reads it on the next iteration: a dead cycle,
+not a dead store.
+
+Every air and bombing roll instead uses a flat `CHANCE_TO_AVOID_HIT_AT_NO_DEF` - four sites, all
+clamped to 99000, none of them reading `BASE_CHANCE_TO_AVOID_HIT`. `CUnit::RollToHit`, which is
+where a defence stat buys anything, has **exactly one caller in the image** and it is
+`CLandCombatant::FireUnit`. So the mechanic is land-only by construction. In BlackICE that means a
+flat 30% chance to be hit per shot for every brigade, ship and wing under air attack, whatever its
+air defence; an AA brigade's `air_defence = 25` is inert and its `air_attack = 22` is the live half.
+
+Two corrections to the record came out of it, both now in `project.json`:
+
+- **`CSubUnit + 0x54`'s "read at 0x56645E and nowhere else" is false** - there is a second reader at
+  `0x160E5B` - and the conclusion built on it survives, because that second reader's result is the
+  discarded air defence value.
+- **`CCombatant + 0xB0` `front_line` is the land family's layout, not the base's.** The air and
+  bombing combatants use the same offset as a count with an inline `CSubUnit* targets[1024]` at
+  `+0xB4`. The allocation sizes settle it: `CLandCombatant` is **0xE4**, `CAirCombatant` and the
+  `CBombTargetCombatant` family **0x10B4**, `CBomberCombatant` **0x10E8**, and `0x10B4 - 0xB4` is
+  exactly 0x1000. So `sizeof(CCombatant)` is 0xB0 and the field belongs on `CLandCombatant` - which
+  has no struct record to move it to. **That is a third live instance of wave 14 brief A's
+  blocker.**
+
+What it left open, and none of it is urgent:
+
+- **`0x346260` and `0x499770`**, the two `air_defence` readers named only by address.
+- **`0x163110`**, the other half of what `CGroundTargetCombatant::Attack` forwards to, unread.
+- **`StaticAntiAirTerm` (`0x162370`, `likely`)** read only as far as `STATIC_AA_SCALE` and the
+  `[side+0x114]`/`+0x258` value it scales. The province's anti-air is a third channel and reading
+  it through would close the anti-air picture.
+- **The two live checks** in the findings file: a hook on `0x160D44` to prove the path is reached at
+  all, and one on `0x160FDE` to show the threshold never moves with the target's air defence.
+- **Whether this is worth a mod-side answer.** If the stat is inert, every `air_defence` line in
+  `units/*.txt` is documentation rather than balance, and the AA that does work is `air_attack` plus
+  the province's static AA. That is the maintainer's call, not a reversing question.
+
+### Wave 13, landed 2026-10-05 - four agents, and the headline was that a measurement was misleading
+
+**The wave's shape: brief A's own premise did not survive brief A.** The wave was planned around
+"713 fields the generated record holds that `project.json` has no field for", read as a measure of
+unread layout. It is not one. **386 are inheritance copies** - Ghidra has no struct inheritance, so
+`buildFindings` stamps a base's fields onto every derived struct - and **216 are generated `CList`
+plumbing**. `CAir` 60, `CNavy` 60, `CArmy` 59 are `CUnit`'s fields counted three times. The
+actionable set is **111**, and the unit classes were never the hole they looked like. *Taking that
+count for unread layout is how `CAir` got onto a queue.*
+
+| agent | what it settled | what it overturned |
+| --- | --- | --- |
+| A | 111 actionable fields triaged, 67 landed; 108 name disagreements classified; `reconcileFacts.py` and `crossFragments.py` written; `--check` taught to compare `struct_fields` across fragments | `CCountry +0x604` is **`TotalIC`**, not `base_ic`; `+0xF34`/`+0xF38` are **`isSubject`/`Overlord`**, not `has_faction`/`faction_leader_tag`; trap 4's holder check had only ever been run against the vftables |
+| B | there is **no `CEffect` slot 12** - five sibling middles each declare their own, and one slot index carries two unrelated signatures; a government in exile reads **its own** pool | the plan's replacement reading of the resource-trigger branch, which said the branch does not select a different pool. It does |
+| C | the war-goal chain end to end; `0xF50A0` is a **breadth-first spread**, not an adder; `CDiplomacyStatus::LoadKey` gives ten keys to ten offsets | "adding a war goal consumes the casus belli" is no longer inference - the function's own key is `WELOSECB`; `0xF50A0` has seven call sites, not four; trap 2's prologue set needs `0xC6` |
+| D | `+0x59` has **no reader**, from a 60-site census of the whole image; `check_variable`'s side effect is **erased by the next save**; every regiment has a name | **`surrender_progress` was inverted in the record** - high means about to surrender; `CEffect +0x14` is a byte written 41 times by `LoadKey`, where the record said nothing touched it; `CTernaryNode`'s three links |
+
+**Counts:** 2,478 -> 2,504 functions, 2,232 -> 2,260 signatures, `project.json` 2,232 -> 2,311
+fields. `checkSignatures` 1,573 entries none disagreeing, `checkrefs` 658 all resolving, headless
+apply `failed: 0`. Write-ups: `findings/FINDINGS-factbase.md` (new) plus sections appended to
+`FINDINGS-effects.md`, `FINDINGS-numtriggers.md`, `FINDINGS-diploaction.md` and
+`FINDINGS-negatives.md`.
+
+**Two results were overwrites and both were verified off the bytes by the collecting session**
+rather than taken on the agent's word, because a wrong new name costs little and a wrong overwrite
+costs a published claim. `0xFCC60` really is `1000 - clamp(controlled*1000/owned)` and the caller
+really does take the occupied share as the multiplicand with unity as the divisor, so the direction
+reverses; and `CCountry::UpdateIC` really does write `+0x604` and `+0x60C` from one register and then
+scale, floor and re-read only `+0x604`. That check is now a standing rule - see the report format in
+`CLAUDE.md`'s subagent section.
+
+#### What the wave changed about how a wave is run
+
+- **Agent reports now have a required shape**: a 2-5 sentence synopsis, then a table of every
+  function the fragment touches marked `new` or `revised`. Wave 13 came back in four different
+  shapes and finding "what actually changed in the record" was four separate searches. In
+  `CLAUDE.md` and in `WAVE.md`'s standing rules.
+- **The `revised` rows are the ones to verify.** See above.
+- `mergeFindings --check` now refuses a cross-fragment `struct_fields` disagreement, and
+  `scripts/crossFragments.py` reports agreements as corroboration. Running it over
+  `fragments/merged/` found **six field disagreements that had already landed**, one pair resolved
+  by merge order rather than by anything checking.
+
+#### Mod-facing, for the maintainer rather than for the record
+
+1. **Fifteen `remove_brigade` lines in the mod are dead because of case.** Fourteen are one
+   systematic typo - `Kampfgruppe` for `KampfGruppe` - all in `events/KampfGruppen.txt`; the
+   fifteenth is `Thomas Mcguire` for `Thomas McGuire` in `events/battlecommanders.txt:2740`.
+   `events/KampfGruppen.txt:712` also has `brigade_in_combat = "Kampfgruppe Bock"`, which will have
+   the same problem if that trigger compares the same way - **that trigger was not read**.
+2. **`enemy_ic_ratio` compares MaxIC**, i.e. raw province IC before the global and technology
+   scaling, before the resource cap and before lend-lease. It is not a ratio of the IC either
+   country runs on. `total_ic` reads the scaled total.
+3. **`money = 0.5` means half a unit as a trigger and zero as an effect.** All seven `*PoolEffect`
+   classes are `CIntEffect` heirs, whose scalar is `atoi(text) * 1000`; the six triggers are
+   `CValueTrigger` heirs, whose scalar keeps the decimal. Nothing in the script shows the difference.
+4. **There is no `fuel` trigger**, though `CFuelPoolEffect` exists - a script can set a country's
+   fuel and cannot test it.
+5. **`surrender_progress = 0.05` is "any loss at all", not "always true"** - and it measures occupied
+   **claimed** territory, so a mod-made country whose claims list holds no province it owns can never
+   surrender by this measure.
+6. **`war`, `war_goal`, `undeclared_war_region` and `modify_spies` with no country named** fall
+   through to the scoped province's **controller**, not its owner. Occupation, not ownership.
+7. **Flag and variable names are case-insensitive** (the tree folds the key through `tolower`), which
+   is the exact opposite of `remove_brigade`.
+
+#### Open, from wave 13, in rough order of value
+
+1. **`0x4F5F30`, the faction mutation** - a ~0x950-byte `__thiscall` where `CFactionAction`'s real
+   effect lives, since slot 7's only country write is the influence charge. Agent C named this the
+   single highest-value thing it left.
+2. **Four duplicate field records, where the `void*` wins.** `CDiplomacyStatus +0x14` and `+0x1C`
+   hold both `void*` and `CAlliance*`/`CGuarantee*`; `merge_fields` keeps the `void*` and demotes the
+   typed one into its comment, **so the decompilation gets `void*`** - confirmed in the generated
+   record. `CCountry +0xA8C` and `+0x10B8` are the same shape but harmless (same name and type
+   twice). Deliberately not fixed: the pairs are *not* identical - each carries a different comment
+   from a different findings file - so deleting one loses a reading and merging them is a content
+   call. Four hand edits.
+3. **Five recorded names sit on a body another luabind registration claims** - `0x16000`, `0x944C0`,
+   `0xC8920`, `0x4E9090`, `0x2EF70`. Three contain an explicit, now-false negative such as "nothing
+   outside it holds the body at all". `reconcileFacts.py` prints them in one command. Renaming is the
+   maintainer's call because the names are load-bearing in a lot of prose.
+4. **44 Lua fields cannot land**, because `mergeFindings` refuses a field on a struct `project.json`
+   has no record for and a fragment cannot create one. 18 structs; the 13 `def_readwrite` ones among
+   them are the **strongest** records in the whole Lua half. Either `mergeFindings` grows a `structs`
+   key or the 18 stubs go in by hand. `CGoodsValues`, `CResourceValues` and `CStrategicWarfare` are
+   the ones worth having.
+5. **`CCasusBelliType`'s 22 loader offsets** - the table is derived and written out in
+   `FINDINGS-diploaction.md` section 27; the struct holds one field. A hand-add.
+6. **`CRelation` and eleven sibling structs still do not exist** in `project.json`, so nine
+   subclasses write through a layout recorded nowhere. The layouts are prose in the same section.
+7. **When does a casus belli expire?** `CCasusBelli` slot 11 (`0x647D20`) is the only path that
+   raises `WELOSECB` to the player and has **zero direct callers** - reached virtually.
+8. **`CEventScope +0x10`** - the record has `char[4] country_tag`, the Lua half types it
+   `CCountryTag&`. If the Lua half is right there is an unrecorded `+0x14` and the scope's tag
+   comparisons read the id half, which is how every other tag comparison in the image works.
+9. **A tooling limitation worth fixing**: `vftable_slots` is keyed by class with no way to say
+   *which* of a class's two tables a slot belongs to, which is why `CVariables::SaveContents`
+   (`0x77060`) and `CVariables::LoadKey` (`0x77080`) are described inside other entries' comments
+   and recorded as neither.
+10. **The 963 `remove_brigade` values that match no declared name at all** - counted, not audited,
+    mostly `events/SpanishCivilWar.txt`.
 
 ### Wave 12, landed 2026-10-04 - four agents, and the fact base turned out to have three halves
 
@@ -356,6 +508,18 @@ record finds **7 named `Evaluate` bodies in the image**, four of them narrow lea
 `CCombatIsWinnerTrigger`). So for ~152 trigger classes **the record knows how a condition displays
 itself and not how it answers.** `CEffect` has no vftable slots recorded at all.
 
+> **Re-measured 2026-10-05, and the two sentences above are stale: there are now 64 named
+> `Evaluate` bodies, not 7, and `CEffect`'s slot map is fully recorded.** Waves 11, 12 and 13 landed
+> after this survey was written and wave 13 alone added six. The area is still the strongest
+> candidate away from the AI, but what is left in it is the **spine** - how `CContextTrigger`
+> rebinds a scope, and what walking a forest costs - rather than a hundred unread leaves. Wave 14's
+> briefs B and C are built on the re-measured picture; `WAVE.md` carries the arithmetic. **This is
+> trap 14's open-list clause: a survey is a claim about the record as it stood when it was written,
+> and the next wave is what invalidates it.** The three most populous trigger classes
+> (`CAndTrigger` 100,464 live, `CNotTrigger` 28,006, `CContextTrigger` 10,974) have named
+> `Evaluate` bodies and **no struct records at all**, which is brief A's problem rather than this
+> section's.
+
 The live population backs it: `CAndTrigger` **100,464**, `CTechnologyTrigger` 33,204, `CEffect`
 28,627, `CNotTrigger` 28,006, `CHasCountryFlagTrigger` 18,966, `CVariableTrigger` 12,815,
 `CTrigger` 11,343, `CTagTrigger` 11,196, `CContextTrigger` 10,974 - **over 260,000 live objects**,
@@ -474,6 +638,22 @@ leader assignment does not have to re-derive them.
    first = "this is the assignment that counts", second = "a leader is arriving rather than
    leaving". **That is a reading of three call sites, not of the body**, which is the thing to do:
    23 callers makes it worth reading properly once.
+
+**The one reversing dependency left in the BiceCommand framework: a persistent reference both
+ways.** Added 2026-10-05. The framework (`BiceLib/Commands/CBiceCommands.hpp`) carries `int32`
+arguments, which is already enough for ids, enums and flags - but a command that names a *unit*, a
+*leader* or a *province* has to carry it the way `CAssignLeaderCommand` does, as a `CPersistent`
+**id pair**, because that is what makes it mean the same object on every peer. A pair is two
+`int32`s, so the payload format already holds one; what is missing is the conversion.
+
+3. **`0x42DD70`** turns an object pointer into the pair, and **`FindPersistentById`
+   (`0x69DA00`)** resolves it back, choosing the registry `[0x1A857F0]` or `[0x1A857F4]` on
+   whether the id exceeds `0x1268` - all three read already, from
+   `CAssignLeaderCommand::Execute` (rva `0x1D7570`), which does exactly this for both of its
+   ends. What is **not** read is `0x42DD70`'s own signature and convention, or whether it is
+   general or unit-specific. One function, and it unblocks every command that names a game
+   object rather than a number. Worth a small helper on the framework once it is read, because
+   every such command will want the same two calls.
 
 ---
 

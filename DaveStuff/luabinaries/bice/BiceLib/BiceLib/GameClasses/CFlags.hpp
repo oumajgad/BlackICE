@@ -21,21 +21,42 @@ namespace CTernary {
     }
 
     /**
-     * One node. The names are the ones BiceLib reads them by, which walk every element
-     * the game shows; what the tree means by each link has not been worked out.
+     * One node of a **ternary search tree**, which is what the three links mean.
+     *
+     * This block used to say "what the tree means by each link has not been worked out" and
+     * carried the names `parent`, `sibling` and `child` from an external note. Those were
+     * wrong, and wrong in a way that did not show: the walk BiceLib does visits every element
+     * whichever way the links are labelled, so nothing misbehaved. Settled 2026-10-05 off
+     * `TernarySearchTreeFind` (rva `0x67E030`) and `TernarySearchTreeInsert` (rva `0x4DA70`),
+     * which compare the key byte and then take `+0xC` when it sorts above and `+0x8` when
+     * below, and corroborated by `CVariables::SaveSubtree` (rva `0x77000`) walking
+     * low -> element -> equal -> high, which is why every `variables={}` block in a savegame
+     * comes out alphabetical.
+     *
+     * `project.json`'s own entry for `TernarySearchTreeFind` had the layout right all along -
+     * the function half of the fact base disagreed with the struct half, and the function was
+     * the one to believe. See `reversing/findings/FINDINGS-negatives.md`.
+     *
+     * **Keys are case-insensitive**: both the find and the insert fold the character through
+     * `tolower`, and only the insert stores the folded form. So a flag or variable named
+     * `BaseIC` and one named `baseic` are the same one.
      */
     namespace NodeOffsets {
-        /**@brief the CFlag or CVariable ending here, or 0 where no name ends*/
+        /**@brief the CFlag or CVariable whose name ends here, or 0 where no name ends*/
         constexpr uintptr_t element = 0x0;
 
-        /**@brief the character this node stands for, per DaveStuff/mem; not read here*/
+        /**@brief the character this node stands for, folded to lower case*/
         constexpr uintptr_t character = 0x4;
 
-        /**@brief per DaveStuff/mem, where a name added later hangs rather than changing
-                  the root*/
-        constexpr uintptr_t parent = 0x8;
-        constexpr uintptr_t sibling = 0xC;
-        constexpr uintptr_t child = 0x10;
+        /**@brief keys whose character at this position sorts **below** this node's*/
+        constexpr uintptr_t low = 0x8;
+
+        /**@brief keys whose character at this position sorts **above** this node's*/
+        constexpr uintptr_t high = 0xC;
+
+        /**@brief the next character of a key that matched here - the only link that
+                  advances the key*/
+        constexpr uintptr_t equal = 0x10;
     }
 }
 

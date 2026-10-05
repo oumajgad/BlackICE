@@ -598,9 +598,11 @@ one.
 
 ## Building one: read and written 2026-10-05
 
-The implementation is `BiceLib/Commands/CBiceCommands.cpp` and its header carries
-the design. This section is the reversing half - what had to be read, and the two places
-the plan in `PLAN-customcommand.md` turned out to be wrong.
+The implementation is `BiceLib/Commands/CBiceCommands.cpp` and its header carries the design.
+This section is the reversing half - what had to be read, and the two places the plan this work
+started from turned out to be wrong. (That plan was a handoff document, `PLAN-customcommand.md`;
+it was deleted once the framework was built and working, and what was worth keeping from it is
+here, in the headers, and in `CANDIDATES.md`.)
 
 ### The plan had the step order backwards
 
@@ -794,3 +796,26 @@ the same lesson as the read/write classifier that produced 140 confident rows of
 - `CCommand +0x24` and the word at `+0x28`: carried by the base's copy constructor, so they
   travel with a command, but what they hold was not read. Our clone copies them because the
   game's does.
+
+### It works - run 2026-10-05
+
+The framework was run and the log lines matched. Worth recording as an observation rather than
+left implied, because one `Execute` line settles a long chain at once.
+
+The object that executes is **not the object that was posted** - the mode 2 post serialises it,
+`CreatePersistentByTypeId` clones the registered prototype, and slot 3 loads the fields back
+into the clone. So an `Execute` line at all confirms, in one go: the type id is a token the
+table covers, the prototype is in the right bucket under the key the factory hashes, slot 7
+agrees with `+0x30`, the binary writer and the tokenizer round-trip, the factory finds us, and
+slot 13 produces a usable object.
+
+And the handler's own line, carrying its arguments back unchanged, confirms the part the
+framework adds on top of the payload-free predecessor: slot 2 wrote the payload, slot 4 read it
+back through `ParseString`, and slot 13 carried it across the clone - the one of the three that
+is not symmetric and so the likeliest to have been wrong.
+
+*Not settled by that run*: whether it was exercised in multiplayer as well as single player.
+The predecessor was tested in both. The distinction matters less here than it looks, because
+**single player serialises too** - that is the correction this document carries above - so the
+payload crosses the same writer, tokenizer, factory and clone on both paths. What multiplayer
+adds is the socket, which nothing here has traced, and peers running the same kind table.

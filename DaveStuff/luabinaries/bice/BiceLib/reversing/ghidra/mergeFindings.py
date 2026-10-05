@@ -128,6 +128,17 @@ def problems(document, files):
                for s in document.get("structs", [])}
     claimedName = {}
     claimedRva = {}
+    # **And the same for fields, which was the hole.** The two above compare *address*
+    # entries between incoming fragments; `struct_fields` were only ever compared against
+    # project.json, so two agents naming one offset differently were neither refused nor
+    # reported and both records landed for the one field. `buildFindings.py` then keeps
+    # whichever comes first and demotes the other into its comment, which is worse than a
+    # drop: the file holds two answers and nothing says so. project.json carries four such
+    # pairs from before this existed - `scripts/reconcileFacts.py` lists them, and
+    # `scripts/crossFragments.py` is the same check as a report, which also prints the
+    # agreements. The type is compared as well as the name, for the reason the field check
+    # below gives: a field that keeps its name and changes its type said nothing.
+    claimedField = {}
 
     for path, incoming in files:
         who = os.path.basename(path)
@@ -251,6 +262,14 @@ def problems(document, files):
                     said.append("%s: no %s" % (where, key))
             if not field.get("evidence"):
                 said.append("%s: no evidence" % where)
+            spot = (field.get("struct"), str(field.get("offset", "")).lower())
+            answer = (field.get("name"), field.get("type"))
+            if spot in claimedField and claimedField[spot][0] != answer:
+                said.append("%s: %s calls %s +%s %s %s instead"
+                            % (where, claimedField[spot][1], spot[0], spot[1],
+                               claimedField[spot][0][1], claimedField[spot][0][0]))
+            claimedField[spot] = (answer, who)
+
             known = structs.get(field.get("struct"))
             if known is None:
                 said.append("%s: no such struct in project.json" % where)

@@ -107,6 +107,25 @@
  * way to break compatibility on purpose: a "B2" payload is refused by a "B1" peer instead of
  * being misread.
  *
+ * ## When a kind misbehaves
+ *
+ * The round trip itself was run and confirmed on 2026-10-05, so a new kind that does not work
+ * is almost certainly the kind and not the machinery. What the log says, and what each thing
+ * means:
+ *
+ * - **a `post` line and no `Execute` line** - the prototype is not being found. The type id,
+ *   the bucket, or the prototype's `+0x30`.
+ * - **an `Execute` line whose arguments are wrong** - the codec, or slot 2 and slot 4 around
+ *   it. The codec is pure and its one silent failure mode, a payload longer than the field, is
+ *   a `static_assert`; so suspect the serialisation either side of it first.
+ * - **`payload '...' is not one this build understands`** - the payload did not survive. Slot 2
+ *   writes it, slot 4 reads it, slot 13 copies it; **the clone is the likeliest of the three**,
+ *   because it is the one that is not symmetric.
+ * - **`kind N is not registered in this build`** - a peer is running a different BiceLib. This
+ *   is the one failure the framework cannot prevent, only report.
+ * - **a crash inside the post** - first suspect is a slot's stack contract, though all five
+ *   were fingerprinted in the built DLL (`ret` 0 / 4 / 8 / 0x1C, and `mov eax, 0x13; ret`).
+ *
  * Read statically out of hoi3_tfh.exe on 2026-10-05; see
  * `reversing/findings/FINDINGS-commands.md`. Only valid for this build. Module relative.
  */

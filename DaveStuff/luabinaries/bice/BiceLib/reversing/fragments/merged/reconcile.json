@@ -1,0 +1,895 @@
+{
+ "agent": "wave 13 agent A - reconciling the three halves of the fact base",
+ "question": "Where do ghidra/project.json, the GameClasses headers and the Lua half (ghidra/luabind.json -> ghidra/bicelib_findings.json) disagree, and which of them is right? Plus the sixteen tiny accessors luabind already names and project.json does not.",
+ "source": "reversing/findings/FINDINGS-factbase.md",
+ "addresses": [
+  {
+   "rva": "0xE6A10",
+   "kind": "function",
+   "name": "CCountry::GetVassals",
+   "signature": "CCountryList* __thiscall CCountry::GetVassals(CCountry* this)",
+   "no_signature": null,
+   "comment": "The countries this one is overlord of, as a CCountryList embedded at +0xF78. The sibling of GetAllies ten bytes below it, and the two together are why +0xF78 and +0xF88 are two lists and not one: CCountry::RebuildNeighbours fills both.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x4E6A10)` prints `0x004E6A10 (rva 0xE6A10)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x4E6A10, 0x20)` opens `lea eax, [ecx + 0xf78]; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CCountry::GetVassals) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0xE6A20",
+   "kind": "function",
+   "name": "CCountry::GetAllies",
+   "signature": "CCountryList* __thiscall CCountry::GetAllies(CCountry* this)",
+   "no_signature": null,
+   "comment": "**The answer to CCountry +0xF88.** The list the event language's `ally = { ... }` scope walks, embedded in the country as a CCountryList. `findings/FINDINGS-triggereval.md` found the scope walking a CList here, checked project.json and CCountry.hpp exactly as trap 14 says to, found nothing and correctly declined to name it - and the next wave was planned around settling whether `ally` scoped to a *bordering* country, which it does not. The name was in the repository the whole time, in `ghidra/luabind.json`, as `{\"offset\": 3976, \"name\": \"Allies\"}`: the Lua half stores offsets as **decimal**, so the hex grep trap 14 prescribes could not see it. That is now trap 14's third path and `scripts/reconcileFacts.py --grep` runs it.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x4E6A20)` prints `0x004E6A20 (rva 0xE6A20)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x4E6A20, 0x20)` opens `lea eax, [ecx + 0xf88]; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CCountry::GetAllies) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0xE6A30",
+   "kind": "function",
+   "name": "CCountry::CalculateIsAllied",
+   "signature": "bool __thiscall CCountry::CalculateIsAllied(CCountry* this, CCountryTag other)",
+   "no_signature": null,
+   "comment": "Walks the `Allies` list at +0xF88 looking for `other`'s id. `mov eax,[ecx+0xF88]` takes the CList's `first`, then `cmp edx,[node+4]` against `[ebp+0xC]` - the id half of the CCountryTag passed by value - and `mov eax,[node+0xC]` follows `next`. That node layout, data at +0 and `next` at +0xC, is CListNode<CCountryTag> with an eight-byte payload, which is a second witness that the list holds tags by value rather than pointers. `ret 8` for the one eight-byte argument; answers `al` 1 on a hit and 0 off the end.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x4E6A30)` prints `0x004E6A30 (rva 0xE6A30)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x4E6A30, 0x20)` opens `push ebp; mov ebp, esp; mov eax, dword ptr [ecx + 0xf88]`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CCountry::CalculateIsAllied) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0xE2190",
+   "kind": "function",
+   "name": "CCountry::GetNumOfAllies",
+   "signature": "int __thiscall CCountry::GetNumOfAllies(CCountry* this)",
+   "no_signature": null,
+   "comment": "project.json already records +0x1064 as `num_of_allies` off CNumOfAlliesTrigger and marks it *likely*; this is the game's own accessor for the same field, which settles it. The entry's own note that it is **not** the list at +0xF88 is right - the two live 0xDC bytes apart and CCountry::RebuildNeighbours maintains both.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x4E2190)` prints `0x004E2190 (rva 0xE2190)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x4E2190, 0x20)` opens `mov eax, dword ptr [ecx + 0x1064]; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CCountry::GetNumOfAllies) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x94660",
+   "kind": "function",
+   "name": "CDiplomacyStatus::HasAlliance",
+   "signature": "bool __thiscall CDiplomacyStatus::HasAlliance(CDiplomacyStatus* this)",
+   "no_signature": null,
+   "comment": "`cmp dword [ecx+0x14], 0; setne al; ret` and nothing else - three instructions, so `luabindExtract`'s two-instruction accessor test does not take it and the Lua half has no field for +0x14 either. **project.json's CDiplomacyStatus +0x14 comment has named this function, with this rva, since FINDINGS-scopetriggers.md** and it has never had an entry: trap 14's third place to look, found by looking.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x494660)` prints `0x00494660 (rva 0x94660)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x494660, 0x20)` opens `cmp dword ptr [ecx + 0x14], 0; setne al; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CDiplomacyStatus::HasAlliance) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x648730",
+   "kind": "function",
+   "name": "CDiplomacyStatus::IsGuaranting",
+   "signature": "bool __thiscall CDiplomacyStatus::IsGuaranting(CDiplomacyStatus* this)",
+   "no_signature": null,
+   "comment": "Reads the guarantee at +0x1C, answers false when it is null, and otherwise compares the relation's +0xC with the status's own +0xC - `setne` here, `sete` in IsGuaranteed at 0x648760, which is the same body otherwise. So the one pointer carries both directions and the +0xC comparison is the direction. Named in project.json's +0x1C comment, with this rva, since FINDINGS-scopetriggers.md; this is the entry it never had.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0xA48730)` prints `0x00A48730 (rva 0x648730)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0xA48730, 0x20)` opens `push ebp; mov ebp, esp`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CDiplomacyStatus::IsGuaranting) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x648760",
+   "kind": "function",
+   "name": "CDiplomacyStatus::IsGuaranteed",
+   "signature": "bool __thiscall CDiplomacyStatus::IsGuaranteed(CDiplomacyStatus* this)",
+   "no_signature": null,
+   "comment": "IsGuaranting's twin at 0x648730, differing in one byte: `sete al` where the other has `setne al`. Same reading of +0x1C, same direction test on +0xC, opposite answer.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0xA48760)` prints `0x00A48760 (rva 0x648760)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0xA48760, 0x20)` opens `push ebp; mov ebp, esp`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CDiplomacyStatus::IsGuaranteed) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x649C90",
+   "kind": "function",
+   "name": "CDiplomacyStatus::IsFightingWarTogether",
+   "signature": "bool __thiscall CDiplomacyStatus::IsFightingWarTogether(CDiplomacyStatus* this)",
+   "no_signature": null,
+   "comment": "The game's own name for the byte project.json records at +0x58 as `co_belligerent`, and the two readings agree: FINDINGS-trade2.md found it set between two countries when either joins the side of a war the other is already on, which is what fighting a war together is. A spelling difference, not a disagreement.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0xA49C90)` prints `0x00A49C90 (rva 0x649C90)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0xA49C90, 0x20)` opens `mov al, byte ptr [ecx + 0x58]; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CDiplomacyStatus::IsFightingWarTogether) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x64A3F0",
+   "kind": "function",
+   "name": "ReturnByteAt0x4C",
+   "signature": "bool __fastcall ReturnByteAt0x4C(void* this@ECX)",
+   "no_signature": null,
+   "comment": "`mov al, byte ptr [ecx+0x4c]; ret` - two instructions, and **class-free on purpose (trap 4)**. luabind registers it as `CDiplomacyStatus::HasMilitaryAccess`, and the same address fills **slot 70 of sixteen graphics classes** - C2dObject, C3dObject, C3dVisibleObject, CAreaCircleObject, CCounterObject, CCounterStack, CHoiAvatar, CMasked3dFlag, CProjectionObject, CProvinceCollisionObject, CProvinceObject, CProvinceWaterObject, CShield3dObject, CShieldObject, CSmallAvatarBase and CUnitArrow. Putting CDiplomacyStatus's name on it would put it on all sixteen. **The field is still safe**: the registration names the class, so the compiler emitted this getter from CDiplomacyStatus's own source and the linker merged it afterwards - a fold moves the risk onto the function's name, never onto the offset. CDiplomacyStatus +0x4C lands as `hasMilitaryAccess` in this same fragment.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0xA4A3F0)` prints `0x00A4A3F0 (rva 0x64A3F0)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0xA4A3F0, 0x20)` opens `mov al, byte ptr [ecx + 0x4c]; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CDiplomacyStatus::HasMilitaryAccess) and 16 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x1010C0",
+   "kind": "function",
+   "name": "CCountry::GetNumberOfControlledProvinces",
+   "signature": "int __thiscall CCountry::GetNumberOfControlledProvinces(CCountry* this)",
+   "no_signature": null,
+   "comment": "`mov eax,[ecx+0xD08]`, which is the `count` member of the CList<int> at +0xD00 - so this is the controlled-province count and not a field of its own; buildFindings folds +0xD08 into the list that contains it. project.json's +0xD00 comment already named this function and its VA.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x5010C0)` prints `0x005010C0 (rva 0x1010C0)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x5010C0, 0x20)` opens `mov eax, dword ptr [ecx + 0xd08]; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CCountry::GetNumberOfControlledProvinces) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x1010D0",
+   "kind": "function",
+   "name": "CCountry::GetNumberOfOwnedProvinces",
+   "signature": "int __thiscall CCountry::GetNumberOfOwnedProvinces(CCountry* this)",
+   "no_signature": null,
+   "comment": "`mov eax,[ecx+0xCF8]`, the `count` member of the CList<int> at +0xCF0. The pair of 0x1010C0 on the next ten bytes, which is what makes the +0xCF0 / +0xD00 split owned against controlled rather than anything else.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x5010D0)` prints `0x005010D0 (rva 0x1010D0)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x5010D0, 0x20)` opens `mov eax, dword ptr [ecx + 0xcf8]; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CCountry::GetNumberOfOwnedProvinces) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x3A660",
+   "kind": "function",
+   "name": "CCountry::GetOwnedProvinces",
+   "signature": "CList<int>* __thiscall CCountry::GetOwnedProvinces(CCountry* this)",
+   "no_signature": null,
+   "comment": "`lea eax,[ecx+0xCF0]`, registered returning `CList<int> const&` - so +0xCF0 is an embedded CList of province **ids**, not pointers, and the three lists at +0xCF0, +0xD00 and +0xD10 are owned, controlled and core in that order.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x43A660)` prints `0x0043A660 (rva 0x3A660)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x43A660, 0x20)` opens `lea eax, [ecx + 0xcf0]; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CCountry::GetOwnedProvinces) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x17AE0",
+   "kind": "function",
+   "name": "CCountry::GetControlledProvinces",
+   "signature": "CList<int>* __thiscall CCountry::GetControlledProvinces(CCountry* this)",
+   "no_signature": null,
+   "comment": "`lea eax,[ecx+0xD00]`. The list CCountry::UpdateIC walks to sum the country's IC, which is the reading FINDINGS-scopetriggers.md settled +0xD00 with; this is the accessor that comment cites, and it has never had an entry.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x417AE0)` prints `0x00417AE0 (rva 0x17AE0)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x417AE0, 0x20)` opens `lea eax, [ecx + 0xd00]; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CCountry::GetControlledProvinces) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0xC3040",
+   "kind": "function",
+   "name": "CCountry::GetCoreProvinces",
+   "signature": "CList<int>* __thiscall CCountry::GetCoreProvinces(CCountry* this)",
+   "no_signature": null,
+   "comment": "`lea eax,[ecx+0xD10]`. The country side of the per-province `cores` list at CProvince +0x344 that the event language's `is_core` and `any_core` triggers walk - so project.json's name `claims` for +0xD10 was EU3 vocabulary for HoI3's cores, and this fragment revises it.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x4C3040)` prints `0x004C3040 (rva 0xC3040)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x4C3040, 0x20)` opens `lea eax, [ecx + 0xd10]; ret`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CCountry::GetCoreProvinces) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x63D780",
+   "kind": "function",
+   "name": "ReturnDwordAt0x30",
+   "signature": "int __fastcall ReturnDwordAt0x30(void* this@ECX)",
+   "no_signature": null,
+   "comment": "`mov eax, dword ptr [ecx+0x30]; ret` - **class-free (trap 4)**, because luabind registers this one address twice: as `CFaction::GetNumberOfMembers` and as `CLicenceTechnologyAction::GetParalell`. No virtual table holds it, so the usual holder count answers zero and says nothing; the registrations are the second holder source and the one that catches this. It is `LeaThisPlus28`'s exact situation - that body is `CFaction::GetMembers` and `CTradeAction::GetRoute` - and it takes the same answer. CFaction +0x30 lands as `NumberOfMembers` in this same fragment.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0xA3D780)` prints `0x00A3D780 (rva 0x63D780)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0xA3D780, 0x20)` opens `mov eax, dword ptr [ecx + 0x30]; ret`. Holders, which is trap 4 run against **both** sources: 2 luabind registrations (CFaction::GetNumberOfMembers, CLicenceTechnologyAction::GetParalell) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0x1235E0",
+   "kind": "function",
+   "name": "CFaction::GetFactionLeader",
+   "signature": "CCountryTag* __thiscall CFaction::GetFactionLeader(CFaction* this)",
+   "no_signature": null,
+   "comment": "Four instructions, and **the faction leader is simply the first member**: `cmp dword [ecx+0x30], 0; mov eax, 0x170CF48; je +3; mov eax,[ecx+0x28]; ret`. +0x30 is `NumberOfMembers` and +0x28 is `Members`, so when the faction has members it returns `Members.first` - and because a CListNode's payload sits at offset 0 and the payload here is a CCountryTag by value, the node pointer *is* a CCountryTag*. With no members it returns the global at 0x170CF48, whose eight bytes read `2d 2d 2d 00 00 00 00 00`: the null tag `---` with id 0. There is no separate leader field on CFaction, which is worth knowing before anyone looks for one.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x5235E0)` prints `0x005235E0 (rva 0x1235E0)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x5235E0, 0x20)` opens `cmp dword ptr [ecx + 0x30], 0; mov eax, 0x170cf48; je 0x5235ee`. Holders, which is trap 4 run against **both** sources: 1 luabind registration (CFaction::GetFactionLeader) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  },
+  {
+   "rva": "0xEDD80",
+   "kind": "function",
+   "name": "CCountry::UpdateSubjectStatus",
+   "signature": "bool __cdecl CCountry::UpdateSubjectStatus(CCountry* country@EDI)",
+   "no_signature": null,
+   "comment": "**What settles CCountry +0xF34 and +0xF38.** 0x4EDD80 to the one bare `ret` at 0x4EDE98, SEH prologue, the country in **EDI** and nothing on the stack - which is why it is `__cdecl` with the receiver placed rather than `__thiscall` (trap 11). It clears +0xF34, writes `'---'` (0x2D2D2D) to +0xF38 and 0 to +0xF3C, then walks the country's own diplomacy array (+0xE28..+0xE2C, indexed by the other country's id) and for each status reads the relation at **+0x18** - the one project.json already names `dependency`. Where it is non-null it calls the relation's vftable slot 7 and compares the answer with **0x298**, which `ghidra/saveTokens.json` gives as token 664 `vassal`; then it checks the relation's +0xC against the status's own +0xC, the same one-pointer-two-directions test IsGuaranting and IsGuaranteed use on +0x1C. On a match it sets +0xF34 to 1 and copies that country's tag out of the database (`[0x1A855A4]`, `+0x16C` indexed by the id) into +0xF38/+0xF3C. So +0xF34 is 'this country is somebody's vassal' and +0xF38 is 'whose', which is exactly what the Lua half calls `isSubject` and `Overlord` and not at all what project.json called `has_faction` and `faction_leader_tag` - faction membership is +0xD8 -> CFaction. Its four callers are CDependency::Activate (0xA477D1, 0xA477EF) and CDependency slot 11 at 0xA47800 (0xA47873, 0xA47891), each calling it once per side, which closes that entry's own 'also calls 0x4EDD80 on each country'.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "`image.both(0x4EDD80)` prints `0x004EDD80 (rva 0xEDD80)`, so the rva here is the module-relative one trap 1 asks for. `image.decode(0x4EDD80, 0x20)` opens `push ebp; mov ebp, esp; push -1`. Holders, which is trap 4 run against **both** sources: 0 luabind registrations (none) and 0 virtual table slots. What would show it wrong: the body decoding as anything but the above; a holder count above one for an entry that carries a class name; or `checkSignatures.py` reading a `ret` immediate that does not match the signature - its baseline is 1,530 entries with none disagreeing, so a new disagreement here is mine, not theirs."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CCountry",
+   "offset": "0x604",
+   "name": "TotalIC",
+   "type": "int",
+   "comment": "base IC written by the daily IC calculation\n\n**Renamed from `base_ic` 2026-10-05: it is anything but base.** The game's own accessor is `CCountry::GetTotalIC` (rva 0x23670 = `mov eax,[ecx+0x604]; ret`), and this entry's own neighbour at +0x60C already describes why that is the right word. CCountry::UpdateIC writes the summed province base to +0x604 **and** +0x60C from one register at 0xF0F9D/0xF0FA3, and then only +0x604 is touched again: scaled by (1000 + countryValues[GLOBAL_IC] + technologyStatus ic_bonus) / 1000 and floored at 1 (0xF0FA9-0xF0FEB), cut to what metal and energy support (0xF14A6), and finally topped up with the resource-free lend-lease IC (0xF14C1). So +0x60C is the base and +0x604 is the total actually delivered. The event keyword agrees from the other side: `CTotalICTrigger::Evaluate` compares its threshold against **+0x604**, so the script's `total_ic` and the Lua API's `TotalIC` are the same field under the same name.",
+   "source": "BiceLib/Hooks/HookedPatches.cpp:73",
+   "revises": "wave 13: the name only. `base_ic` came from BiceLib/Hooks/HookedPatches.cpp:73 and is wrong in the ordinary HoI3 sense of 'base IC' - the raw province sum before modifiers, which is +0x60C. The offset, type and everything the comment already said are unchanged; the Lua half has shown `TotalIC` in Ghidra all along, so this makes the record agree with the decompilation rather than changing either.",
+   "evidence": "The accessor named in the comment was decoded at its own address and is the whole body; `scripts/reconcileFacts.py --accessors` re-derives every one of the Lua half's 207 accessor-derived field offsets from hoi3_tfh.exe, over 173 distinct addresses, and all 207 agree - this offset among them. The name taken is the one the game registered, so after this the two halves are identical at this offset and `buildFindings.py` stops demoting one into the other's comment. What would show it wrong: the accessor body decoding differently, the registration naming a different class, or - for the two renames that rest on a *writer* rather than an accessor, CCountry +0xF34 and +0xF38 - a second writer of the byte that is not CCountry::UpdateSubjectStatus. `fieldchain.py --field 0xF38 --writes` returns four stores, all in the two CDependency slot bodies and that function."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xD00",
+   "name": "ControlledProvinces",
+   "type": "CList<int>",
+   "comment": "the head of a list of `{ province id, ?, next }` nodes - CCountry::UpdateIC walks it and looks each id up in CCurrentGameState +0xB8C to sum the country's IC. **It is the controlled provinces**, settled by the game's own Lua accessor `CCountry::GetControlledProvinces` (VA 0x417AE0 = `lea eax,[ecx+0xD00]; ret`), with `NumberOfControlledProvinces` the CList's own count member at +0xD08 (`CCountry::GetNumberOfControlledProvinces`, VA 0x5010C0). The pair for the owned provinces is +0xCF0 / +0xCF8, which CAnyOwnedProvinceTrigger::Evaluate walks and CCountry::RebuildNeighbours's first province walk uses. The earlier inference from the +0x610 test was right.\n\n**Renamed from `province_ids` and retyped 2026-10-05.** The comment already said the game's own accessor settles it; the name and type now say so too. `lea eax,[ecx+0xD00]` at rva 0x17AE0 is registered as `CList<int> const& CCountry::GetControlledProvinces()`, so the field is the whole embedded CList - `first` at +0xD00, `last` at +0xD04, `count` at +0xD08 (which is what `CCountry::GetNumberOfControlledProvinces`, rva 0x1010C0, returns) and the node byte at +0xD0C.",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "revises": "wave 13: name and type. `province_ids` described the head pointer of a list whose identity the comment had already settled as the controlled provinces, and `void*` hid the CList - which is why +0xD08 looked like a separate field instead of the list's own count. Nothing in the reading changes.",
+   "evidence": "The accessor named in the comment was decoded at its own address and is the whole body; `scripts/reconcileFacts.py --accessors` re-derives every one of the Lua half's 207 accessor-derived field offsets from hoi3_tfh.exe, over 173 distinct addresses, and all 207 agree - this offset among them. The name taken is the one the game registered, so after this the two halves are identical at this offset and `buildFindings.py` stops demoting one into the other's comment. What would show it wrong: the accessor body decoding differently, the registration naming a different class, or - for the two renames that rest on a *writer* rather than an accessor, CCountry +0xF34 and +0xF38 - a second writer of the byte that is not CCountry::UpdateSubjectStatus. `fieldchain.py --field 0xF38 --writes` returns four stores, all in the two CDependency slot bodies and that function."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xD10",
+   "name": "CoreProvinces",
+   "type": "CList<int>",
+   "comment": "The head of a linked list of province ids the country claims, each node's next at +0x8. The alignment revanchism term walks it and counts the provinces whose current owner belongs to the faction being scored. **The game's own name for it is `CoreProvinces`**, from the Lua accessor `CCountry::GetCoreProvinces` (VA 0x4C3040 = `lea eax,[ecx+0xD10]; ret`, registered returning `CList<int>&`) - so these are HoI3's core provinces, the country side of the per-province `cores` list at `CProvince +0x344` that the event language's `is_core` and `any_core` triggers walk.\n\n**Renamed from `claims` and retyped 2026-10-05**, on the authority the comment already cited: `lea eax,[ecx+0xD10]` at rva 0xC3040, registered as `CList<int> const& CCountry::GetCoreProvinces()`. `claims` is EU3's word; HoI3 calls these core provinces, and conflating the two is a real risk because HoI3 also has claims in the peace machinery.",
+   "source": "reversing/findings/FINDINGS-scopetriggers.md",
+   "revises": "wave 13: name and type, both of which the recorded comment already argued for in prose - it says in bold that 'the game's own name for it is CoreProvinces' and then leaves the field called `claims`. This is trap 14's fourth question answered in the same entry: the prose and the key disagreed, and the prose was right.",
+   "evidence": "The accessor named in the comment was decoded at its own address and is the whole body; `scripts/reconcileFacts.py --accessors` re-derives every one of the Lua half's 207 accessor-derived field offsets from hoi3_tfh.exe, over 173 distinct addresses, and all 207 agree - this offset among them. The name taken is the one the game registered, so after this the two halves are identical at this offset and `buildFindings.py` stops demoting one into the other's comment. What would show it wrong: the accessor body decoding differently, the registration naming a different class, or - for the two renames that rest on a *writer* rather than an accessor, CCountry +0xF34 and +0xF38 - a second writer of the byte that is not CCountry::UpdateSubjectStatus. `fieldchain.py --field 0xF38 --writes` returns four stores, all in the two CDependency slot bodies and that function."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xF34",
+   "name": "isSubject",
+   "type": "bool",
+   "comment": "Tested by CCountry::IsSameSide (0xEF940) at 0xEF9BE before it will compare two countries' +0xF3C against each other - so it is 'this country belongs to a faction / has an overlord at +0xF38'. read\n\n**Renamed from `has_faction` 2026-10-05, and it is not about factions.** Its one real writer is `CCountry::UpdateSubjectStatus` (rva 0xEDD80), which sets it to 1 only when one of the country's own diplomacy statuses holds a relation at +0x18 whose slot 7 answers save token 0x298 `vassal` in the direction that makes this country the dependent - and in the same breath writes the overlord's tag to +0xF38. Faction membership is a different field: `CCountry +0xD8` is the `CFaction*`. The game's own predicate is `CCountry::IsSubject` (rva 0xEDEA0 = `mov al,[ecx+0xF34]; ret`). The recorded reading of CCountry::IsSameSide is untouched and still correct - a shared +0xF3C does make two countries the same side; it does so because they share an overlord.",
+   "source": "reversing/findings/FINDINGS-aiplans.md",
+   "revises": "wave 13: the name. `has_faction` was read off CCountry::IsSameSide, which only needed 'belongs to something bigger', and the entry hedged it as 'has an overlord at +0xF38'. Reading the writer settles which: the vassal relation, not the faction. The Lua half has shown `isSubject` in Ghidra all along.",
+   "evidence": "The accessor named in the comment was decoded at its own address and is the whole body; `scripts/reconcileFacts.py --accessors` re-derives every one of the Lua half's 207 accessor-derived field offsets from hoi3_tfh.exe, over 173 distinct addresses, and all 207 agree - this offset among them. The name taken is the one the game registered, so after this the two halves are identical at this offset and `buildFindings.py` stops demoting one into the other's comment. What would show it wrong: the accessor body decoding differently, the registration naming a different class, or - for the two renames that rest on a *writer* rather than an accessor, CCountry +0xF34 and +0xF38 - a second writer of the byte that is not CCountry::UpdateSubjectStatus. `fieldchain.py --field 0xF38 --writes` returns four stores, all in the two CDependency slot bodies and that function."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xF38",
+   "name": "Overlord",
+   "type": "CCountryTag",
+   "comment": "A CCountryTag by value: letters here, id at +0xF3C. CCountry::IsSameSide (0xEF940) and CCountry::IsFriendly (0xEF7C0) treat two countries as the same side when either one's +0xF3C names the other, or when both carry the same +0xF3C - which is what makes it the faction leader or overlord. The letters half is loaded and stored to a scratch local at several points without being compared, so only the id half is load-bearing. read\n\n**Renamed from `faction_leader_tag` 2026-10-05.** `CCountry::UpdateSubjectStatus` (rva 0xEDD80) initialises it to the null tag `'---'` and overwrites it, together with the id half at +0xF3C, with the tag of the country on the other end of a `vassal` relation. The game's own accessor is `CCountry::GetOverlord` (rva 0xEDEB0), which copies +0xF38 and +0xF3C into the caller's eight bytes - which is also the independent witness for the pair being one CCountryTag by value rather than two fields.",
+   "source": "reversing/findings/FINDINGS-aiplans.md",
+   "revises": "wave 13: the name. The entry's own text offered 'faction leader or overlord' and recorded the first; the writer says overlord. Everything else - the CCountryTag by value, letters here and id at +0xF3C, only the id half load-bearing - is unchanged.",
+   "evidence": "The accessor named in the comment was decoded at its own address and is the whole body; `scripts/reconcileFacts.py --accessors` re-derives every one of the Lua half's 207 accessor-derived field offsets from hoi3_tfh.exe, over 173 distinct addresses, and all 207 agree - this offset among them. The name taken is the one the game registered, so after this the two halves are identical at this offset and `buildFindings.py` stops demoting one into the other's comment. What would show it wrong: the accessor body decoding differently, the registration naming a different class, or - for the two renames that rest on a *writer* rather than an accessor, CCountry +0xF34 and +0xF38 - a second writer of the byte that is not CCountry::UpdateSubjectStatus. `fieldchain.py --field 0xF38 --writes` returns four stores, all in the two CDependency slot bodies and that function."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x1184",
+   "name": "StrategicWarfare",
+   "type": "CStrategicWarfare",
+   "comment": "A time series the strategic-warfare screen draws (the `linechart_their_convoy_ic` family). ResolveConvoyRaid appends to it through 0x130600 when a raid is beaten off, with the value `-(STRAT_CONVOY_DAMAGE / victim->convoys_count) / 10` and the current tick as the x value. The class of the series was not read, and whether a successful raid writes a different series was not followed.\n\n**Retyped and renamed 2026-10-05: it is an object, not a pointer.** `CCountry::GetStrategicWarfare` (rva 0x2F280) is `lea eax,[ecx+0x1184]; ret` registered as returning `CStrategicWarfare&`, and a `lea` cannot be a pointer load - so +0x1184 is an embedded CStrategicWarfare and `void*` was wrong. The Lua half gives that class three fields, +0x8 `ConvoyImpact`, +0xC `AlliesImpact`, +0x10 `BombingImpact`, and `CStrategicWarfare::LoadKey` (rva 0x1309B0) has exactly three keys - `convoy`, `alliance`, `ground_bombing` - which is an independent corroboration from the loader side that the object has those three members and nothing else. The recorded reading is otherwise intact: ResolveConvoyRaid at 0x5D1FFB does `lea edi,[country+0x1184]` and calls 0x130600, which allocates an eight-byte node and links it, so the series the strategic-warfare screen draws lives *inside* this object.",
+   "source": "reversing/findings/FINDINGS-convoys.md",
+   "revises": "wave 13: the name and the type. `convoy_damage_statistics` named one series the object owns rather than the field, and `void*` made every read through it an anonymous offset. The appended account of 0x130600 is the recorded one, re-checked at the right address - the first attempt scanned VA 0x9D1250 for it and found nothing, because ResolveConvoyRaid is **rva** 0x1D1250 and TRAPS.md's trap 3 table quotes it as a VA. Trap 1, in the middle of writing up trap 14.",
+   "evidence": "The accessor named in the comment was decoded at its own address and is the whole body; `scripts/reconcileFacts.py --accessors` re-derives every one of the Lua half's 207 accessor-derived field offsets from hoi3_tfh.exe, over 173 distinct addresses, and all 207 agree - this offset among them. The name taken is the one the game registered, so after this the two halves are identical at this offset and `buildFindings.py` stops demoting one into the other's comment. What would show it wrong: the accessor body decoding differently, the registration naming a different class, or - for the two renames that rest on a *writer* rather than an accessor, CCountry +0xF34 and +0xF38 - a second writer of the byte that is not CCountry::UpdateSubjectStatus. `fieldchain.py --field 0xF38 --writes` returns four stores, all in the two CDependency slot bodies and that function."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x11D8",
+   "name": "HighestThreat",
+   "type": "CCountryTag",
+   "comment": "The tag of the country this one feels the most threat from, as a packed three-character tag; initialised to '---' (0x2D2D2D). Written together with +0x11DC by 0x4E21E0, which scans the diplomacy statuses for the largest +0x5C. That function has 65 callers and is not one of the daily pass's, so the pass reads a cache someone else maintains.\n\n**Retyped from `int` and renamed 2026-10-05.** `CCountry::GetHighestThreat` (rva 0x1074F0) is `lea eax,[ecx+0x11D8]; ret` registered as returning `CCountryTag const&`, so +0x11D8 is a CCountryTag by value - letters here, id at +0x11DC - and not an int. That is the same shape the entry already described ('written together with +0x11DC') and the same initialiser ('---', 0x2D2D2D, which is the null tag); the type simply never caught up, and with `int` on it every read of the id half decompiled as an unnamed offset four bytes past a scalar.",
+   "source": "reversing/findings/FINDINGS-politics.md",
+   "revises": "wave 13: the type, and the name to match the game's. The reading - the tag of the country this one feels most threat from, written with +0x11DC by 0x4E21E0 from the largest CDiplomacyStatus +0x5C - is unchanged and is what the type now expresses.",
+   "evidence": "The accessor named in the comment was decoded at its own address and is the whole body; `scripts/reconcileFacts.py --accessors` re-derives every one of the Lua half's 207 accessor-derived field offsets from hoi3_tfh.exe, over 173 distinct addresses, and all 207 agree - this offset among them. The name taken is the one the game registered, so after this the two halves are identical at this offset and `buildFindings.py` stops demoting one into the other's comment. What would show it wrong: the accessor body decoding differently, the registration naming a different class, or - for the two renames that rest on a *writer* rather than an accessor, CCountry +0xF34 and +0xF38 - a second writer of the byte that is not CCountry::UpdateSubjectStatus. `fieldchain.py --field 0xF38 --writes` returns four stores, all in the two CDependency slot bodies and that function."
+  },
+  {
+   "struct": "CProvince",
+   "offset": "0x5C",
+   "name": "MaxInfrastructure",
+   "type": "CFixedPoint",
+   "comment": "The same field project.json records on CMapProvince; both structures carry it because Ghidra has no inheritance between the two. It is written by CProvince's own code - zeroed in CProvince::CProvince at 0x494767 and in the province building reset at 0x496680, computed in CProvince::LoadKey at 0x496152, in SetProvinceBuildingLevel at 0x4A3B0A and in CProvinceBuilding_OnLevelChanged at 0x4B8024 - and the full account is on the CMapProvince entry.\n\n**Confirmed live 2026-10-02** against 10,642 provinces' `infra` keys in `history/provinces/` - 100.00% agree with `infra * 100`. `CMapProvince +0x5C`'s entry, which used to carry the name `ai_front_value`, is now named `infrastructure` to match this one.\n\n*This used to point at a `FINDINGS-infrastructure.md`, which has never existed - not in the tree and not anywhere in git history. The evidence for the name is the sentence above, not a document. Found 2026-10-05, when checkrefs.py learned to read this file; the dead pointer is removed rather than repaired because there is nothing to repair it to.*\n\n**Renamed from `infrastructure` and retyped 2026-10-05: it is the maximum, and the game has a separate accessor for the effective figure.** `CProvince::GetMaxInfrastructure` (rva 0x6C360) copies +0x5C out as a `CFixedPoint`, while `CProvince::GetInfrastructure` (rva 0x94570) is a different and much longer function that does not read +0x5C at all: it takes the province's modifier array at +0x114 and computes `values[MODIFIER_INFRASTRUCTURE] * (1000 + values[LOCAL_INFRASTRUCTURE] + values[GLOBAL_INFRASTRUCTURE]) / 1000`, floors it at a cached constant and clamps it at 1000. Two accessors, two quantities, and only one of them is this field. The clamp at 1000 also fixes the scale: with the recorded live check - 100.00% of 10,642 provinces' `infra` keys agreeing with `infra * 100` - the field is thousandths of full infrastructure, 1000 being 100%, and `infra = 10` in history is the maximum.",
+   "source": "reversing/findings/FINDINGS-aifields.md",
+   "revises": "wave 13: the name and the type. `infrastructure` is ambiguous between two things the game distinguishes by accessor, and the existence of CProvince::GetInfrastructure is what makes it ambiguous rather than merely imprecise. The recorded account of the writers is unchanged. **CMapProvince +0x5C is revised in step** - RTTI has CMapProvince deriving from CProvince at offset 0, so the two records are one field and must not drift apart.",
+   "evidence": "The accessor named in the comment was decoded at its own address and is the whole body; `scripts/reconcileFacts.py --accessors` re-derives every one of the Lua half's 207 accessor-derived field offsets from hoi3_tfh.exe, over 173 distinct addresses, and all 207 agree - this offset among them. The name taken is the one the game registered, so after this the two halves are identical at this offset and `buildFindings.py` stops demoting one into the other's comment. What would show it wrong: the accessor body decoding differently, the registration naming a different class, or - for the two renames that rest on a *writer* rather than an accessor, CCountry +0xF34 and +0xF38 - a second writer of the byte that is not CCountry::UpdateSubjectStatus. `fieldchain.py --field 0xF38 --writes` returns four stores, all in the two CDependency slot bodies and that function."
+  },
+  {
+   "struct": "CMapProvince",
+   "offset": "0x5C",
+   "name": "MaxInfrastructure",
+   "type": "CFixedPoint",
+   "comment": "An int in thousandths that the unit AI uses as \"is this province worth holding a front over\". `CAIUnit::EstimateAreaNeed` requires a neighbour's value to be at least 200 before the province counts as a front (0x4B8830), and gives the province itself the floor weight 500 instead of 1000 when its own value is at or below 300 (0x4B8BF4). Eight more readers across the unit AI and the map code. **Written in exactly one place**: `CProvince::LoadKey`'s default arm, which treats an unknown key as a building name and, when the loaded building's definition `+0x24` is 12, sets `province->+0x5C = building->level(+0x20) * definition->+0x8 / 1000` (0x96132-0x96152). Which building type index 12 is was **not** established - the mod reorders `common/buildings.txt`, so it is not safe to count. The cheapest live check is `dumpStruct.py` on a province and a comparison against the province panel.\n\n**Confirmed live 2026-10-02, and renamed from `ai_front_value`.** Read on every province with an `infra` key in `history/provinces/`, and compared: **10,642 of 10,642 agree** with `infra * 100`, where `infra` is the file's 0-10 value. (A first pass scored 98.43% against the *first* `infra` key in each file; all 167 misses were files that repeat the key, and the engine is **last-wins** - the residual was the test, not the field.) This does not contradict 'an int in thousandths': `infra * 100` and a fraction in thousandths are the same number, since the file's 0-10 is 0-100%. Paris (2613) reads 1000 = infra 10.0 = 100%.\n\n**The old name named a use, not the field.** The unit AI reads infrastructure when deciding whether a province is worth holding a front over, which is why it looked like an AI value. The gain from the rename is that the thresholds become readable in the units a modder sees: the 200 at 0x4B8830 is **infrastructure 2.0** and the 300 at 0x4B8BF4 is **3.0**. A province under 2.0 does not count as a front; under 3.0 it gets the floor weight 500 instead of 1000.\n\n`+0x24 == 12` is untouched by this and is still not a building index - `infra` is building no.21 in the mod's `common/buildings.txt`, so 12 is an id of something else, as the record already says.\n\n**Renamed from `infrastructure` and retyped 2026-10-05, in step with CProvince +0x5C**, which is the same field: RTTI has CMapProvince deriving from CProvince at offset 0, and both structures carry it only because Ghidra has no inheritance. The game's own name is `MaxInfrastructure`, from `CProvince::GetMaxInfrastructure` (rva 0x6C360); the effective infrastructure is a different quantity computed by `CProvince::GetInfrastructure` (rva 0x94570) out of the modifier array at +0x114. The unit AI's use of this field - a neighbour needing at least 200 before a province counts as a front, the floor weight dropping to 500 at or below 300 - is unchanged by the rename and now reads as thresholds on 20% and 30% of full infrastructure, which is what the 1000 clamp in GetInfrastructure says the scale is.",
+   "source": "reversing/findings/FINDINGS-power.md",
+   "revises": "wave 13: the name and the type, following CProvince +0x5C. Keeping the two in step is the point: this entry carries 'the full account' and the other points at it, so a rename on one alone would make the record contradict itself.",
+   "evidence": "The accessor named in the comment was decoded at its own address and is the whole body; `scripts/reconcileFacts.py --accessors` re-derives every one of the Lua half's 207 accessor-derived field offsets from hoi3_tfh.exe, over 173 distinct addresses, and all 207 agree - this offset among them. The name taken is the one the game registered, so after this the two halves are identical at this offset and `buildFindings.py` stops demoting one into the other's comment. What would show it wrong: the accessor body decoding differently, the registration naming a different class, or - for the two renames that rest on a *writer* rather than an accessor, CCountry +0xF34 and +0xF38 - a second writer of the byte that is not CCountry::UpdateSubjectStatus. `fieldchain.py --field 0xF38 --writes` returns four stores, all in the two CDependency slot bodies and that function."
+  },
+  {
+   "struct": "CAIStrategy",
+   "offset": "0x18",
+   "name": "Personality",
+   "type": "CAIStrategy::AIPersonality",
+   "comment": "The game's own name for it, out of the Lua API. `CAIStrategy::GetPersonality` (rva 0x16000) is `mov eax, dword ptr [ecx + 0x18]; ret` - the whole function, so the function *is* the offset. That body is shared - 2 luabind registrations (CAIStrategy::GetPersonality, CDiplomaticAction::GetType) and 101 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CAIStrategy",
+   "offset": "0x148",
+   "name": "WarTargets",
+   "type": "CList<CCountryWarTargetValue*>",
+   "comment": "The game's own name for it, out of the Lua API. `CAIStrategy::GetWarTargets` (rva 0x6BE260) is `lea eax, [ecx + 0x148]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CBrigadeConstructionDefinition",
+   "offset": "0x34",
+   "name": "Type",
+   "type": "CSubUnitDefinition const*",
+   "comment": "The game's own name for it, out of the Lua API. `CBrigadeConstructionDefinition::GetType` (rva 0x712990) is `mov eax, dword ptr [ecx + 0x34]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CConstruction",
+   "offset": "0x40",
+   "name": "Size",
+   "type": "int",
+   "comment": "The game's own name for it, out of the Lua API. `CConstruction::GetSize` (rva 0x83E00) is `mov eax, dword ptr [ecx + 0x40]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xB0",
+   "name": "Transports",
+   "type": "int",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTransports` (rva 0x17C40) is `mov eax, dword ptr [ecx + 0xb0]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CCountry::GetTransports) and 1 virtual table slot - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xB4",
+   "name": "Escorts",
+   "type": "int",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetEscorts` (rva 0x17C30) is `mov eax, dword ptr [ecx + 0xb4]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CCountry::GetEscorts) and 1 virtual table slot - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xB8",
+   "name": "TotalNeededTransports",
+   "type": "int",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTotalNeededTransports` (rva 0x4A2260) is `mov eax, dword ptr [ecx + 0xb8]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CCountry::GetTotalNeededTransports) and 1 virtual table slot - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xBC",
+   "name": "TotalConvoyTransports",
+   "type": "int",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTotalConvoyTransports` (rva 0x4E8200) is `mov eax, dword ptr [ecx + 0xbc]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CCountry::GetTotalConvoyTransports) and 1 virtual table slot - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xC0",
+   "name": "TotalNeededConvoyTransports",
+   "type": "int",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTotalNeededConvoyTransports` (rva 0x4E8210) is `mov eax, dword ptr [ecx + 0xc0]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xD4",
+   "name": "OfficerRatio",
+   "type": "CFixedPoint",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetOfficerRatio` (rva 0x17C60) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0xd4]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x160",
+   "name": "PossibleMinisters",
+   "type": "CList<CMinister*>",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetPossibleMinisters` (rva 0x750630) is `lea eax, [ecx + 0x160]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x170",
+   "name": "HistoricalMinisters",
+   "type": "CList<CMinister*>",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetHistoricalMinisters` (rva 0xF8AD0) is `lea eax, [ecx + 0x170]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x638",
+   "name": "CurrentResearch",
+   "type": "CList<CTechnology const*>",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetCurrentResearch` (rva 0xE01F0) is `lea eax, [ecx + 0x638]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x800",
+   "name": "TradedAwaySansAlliedSupply",
+   "type": "CGoodsPool",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTradedAwaySansAlliedSupply` (rva 0xC8750) is `lea eax, [ecx + 0x800]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x890",
+   "name": "TradedForSansAlliedSupply",
+   "type": "CGoodsPool",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTradedForSansAlliedSupply` (rva 0xC8790) is `lea eax, [ecx + 0x890]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xBD8",
+   "name": "TotalLeadership",
+   "type": "CFixedPoint",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetTotalLeadership` (rva 0xF4E00) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0xbd8]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xCF0",
+   "name": "OwnedProvinces",
+   "type": "CList<int>",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetOwnedProvinces` (rva 0x3A660) is `lea eax, [ecx + 0xcf0]; ret` - the whole function, so the function *is* the offset. The first of the three province CLists - owned at +0xCF0, controlled at +0xD00, core at +0xD10, each 0x10 bytes with its count at +8. CAnyOwnedProvinceTrigger::Evaluate walks this one.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xD70",
+   "name": "AirBases",
+   "type": "CList<CProvince*>",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetAirBases` (rva 0x94690) is `lea eax, [ecx + 0xd70]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xD80",
+   "name": "NavalBases",
+   "type": "CList<CProvince*>",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetNavalBases` (rva 0x946A0) is `lea eax, [ecx + 0xd80]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xDBC",
+   "name": "Rules",
+   "type": "CRule",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetRules` (rva 0xFBC80) is `lea eax, [ecx + 0xdbc]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xDFC",
+   "name": "Government",
+   "type": "CGovernment const*",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetGovernment` (rva 0xE0450) is `mov eax, dword ptr [ecx + 0xdfc]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xF40",
+   "name": "Constructions",
+   "type": "CList<CConstruction*>",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetConstructions` (rva 0xF56B0) is `lea eax, [ecx + 0xf40]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xF78",
+   "name": "Vassals",
+   "type": "CCountryList",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetVassals` (rva 0xE6A10) is `lea eax, [ecx + 0xf78]; ret` - the whole function, so the function *is* the offset. The countries this one is overlord of - the other end of `isSubject`/`Overlord` at +0xF34/+0xF38, which CCountry::UpdateSubjectStatus writes from the same `vassal` relation at CDiplomacyStatus +0x18.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xF88",
+   "name": "Allies",
+   "type": "CCountryList",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetAllies` (rva 0xE6A20) is `lea eax, [ecx + 0xf88]; ret` - the whole function, so the function *is* the offset. **The field FINDINGS-triggereval.md found the `ally` scope walking and correctly declined to name**, because the hex grep trap 14 prescribes cannot see the Lua half - which stores this offset as the decimal 3976. CCountry::RebuildNeighbours appends to it on CDiplomacyStatus +0x14 (`alliance`) being non-null plus a direction test, at 0x4E328E.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xFD8",
+   "name": "Neighbours",
+   "type": "CCountryList",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetNeighbours` (rva 0x21C8E0) is `lea eax, [ecx + 0xfd8]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0xFE8",
+   "name": "ControllerNeighbours",
+   "type": "CCountryList",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetControllerNeighbours` (rva 0x487F30) is `lea eax, [ecx + 0xfe8]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x1028",
+   "name": "SpyingOnUs",
+   "type": "CCountryList",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetSpyingOnUs` (rva 0xE6A60) is `lea eax, [ecx + 0x1028]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x10BC",
+   "name": "accessIdeologyOrganization",
+   "type": "CIdeologyData",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::AccessIdeologyOrganization` (rva 0xC8820) is `lea eax, [ecx + 0x10bc]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x10F4",
+   "name": "accessIdeologyPopularity",
+   "type": "CIdeologyData",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::AccessIdeologyPopularity` (rva 0xC8830) is `lea eax, [ecx + 0x10f4]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x11F8",
+   "name": "SupplyBalanceAverage",
+   "type": "CFixedPoint",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetSupplyBalanceAverage` (rva 0x4E8220) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0x11f8]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CCountry",
+   "offset": "0x1204",
+   "name": "MoneyBalanceAverage",
+   "type": "CFixedPoint",
+   "comment": "The game's own name for it, out of the Lua API. `CCountry::GetMoneyBalanceAverage` (rva 0x4E8240) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0x1204]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x8",
+   "name": "Target",
+   "type": "CCountryTag",
+   "comment": "The game's own name for it, out of the Lua API. `CDiplomacyStatus::GetTarget` (rva 0xC8920) is `push ebp; mov ebp, esp; mov edx, dword ptr [ecx + 8]; mov eax, dword ptr [ebp + 8]; mov ecx, dword ptr [ecx + 0xc]; mov dword ptr [eax], edx; mov dword ptr [eax + 4], ecx` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CAIStrategy::GetCountryTag, CDiplomacyStatus::GetTarget, CDistributionSetting::GetBasePercentage) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout. The other country of the pair, as a CCountryTag by value: letters at +0x8, id at +0xC. The +0xC half is what every one-pointer-two-directions test in this class compares - IsGuaranting and IsGuaranteed on +0x1C, and CCountry::UpdateSubjectStatus on +0x18.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x4C",
+   "name": "hasMilitaryAccess",
+   "type": "bool",
+   "comment": "The game's own name for it, out of the Lua API. `CDiplomacyStatus::HasMilitaryAccess` (rva 0x64A3F0) is `mov al, byte ptr [ecx + 0x4c]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CDiplomacyStatus::HasMilitaryAccess) and 16 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout. The byte `ReturnByteAt0x4C` (rva 0x64A3F0) answers. The function has to stay class-free because sixteen graphics classes hold the same body at slot 70, but the field does not: the registration names CDiplomacyStatus.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x78",
+   "name": "allowDebts",
+   "type": "bool",
+   "comment": "The game's own name for it, out of the Lua API. `CDiplomacyStatus::AllowDebts` (rva 0x64A7E0) is `mov al, byte ptr [ecx + 0x78]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CEU3AI",
+   "offset": "0x30",
+   "name": "ReqProdQueue",
+   "type": "CList<CSubUnitConstructionEntry>",
+   "comment": "The game's own name for it, out of the Lua API. `CEU3AI::GetReqProdQueue` (rva 0x4E8160) is `lea eax, [ecx + 0x30]; ret` - the whole function, so the function *is* the offset. That body is shared - 5 luabind registrations (CEU3AI::GetReqProdQueue, CGovernmentPosition::GetKey, CIdeology::GetKey, CLaw::GetKey, CMinisterType::GetKey) and 16 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CEU3AI",
+   "offset": "0xAA",
+   "name": "hasFilledProdQueue",
+   "type": "bool",
+   "comment": "The game's own name for it, out of the Lua API. `CEU3AI::HasFilledProdQueue` (rva 0x4E8170) is `mov al, byte ptr [ecx + 0xaa]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CEU3AI",
+   "offset": "0xE8",
+   "name": "DeployedSubUnitCounts",
+   "type": "CArray<int>",
+   "comment": "The game's own name for it, out of the Lua API. `CEU3AI::GetDeployedSubUnitCounts` (rva 0x4E8180) is `lea eax, [ecx + 0xe8]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CEU3AI",
+   "offset": "0xF8",
+   "name": "ProductionSubUnitCounts",
+   "type": "CArray<int>",
+   "comment": "The game's own name for it, out of the Lua API. `CEU3AI::GetProductionSubUnitCounts` (rva 0x4E8190) is `lea eax, [ecx + 0xf8]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CEU3AI",
+   "offset": "0x108",
+   "name": "TheatreSubUnitNeedCounts",
+   "type": "CArray<int>",
+   "comment": "The game's own name for it, out of the Lua API. `CEU3AI::GetTheatreSubUnitNeedCounts` (rva 0x3918C0) is `lea eax, [ecx + 0x108]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CEU3AI::GetTheatreSubUnitNeedCounts) and 2 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CFaction",
+   "offset": "0x28",
+   "name": "Members",
+   "type": "CList<CCountryTag>",
+   "comment": "The game's own name for it, out of the Lua API. `CFaction::GetMembers` (rva 0x638F90) is `lea eax, [ecx + 0x28]; ret` - the whole function, so the function *is* the offset. That body is shared - 2 luabind registrations (CFaction::GetMembers, CTradeAction::GetRoute) and 2 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout. The member tags, by value - a CList<CCountryTag> whose nodes are 0x10 bytes with the eight-byte tag at offset 0. `CFaction::GetFactionLeader` (rva 0x1235E0) returns this list's `first` **as** the leader's tag, which is only well typed because the payload sits at offset 0.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CFaction",
+   "offset": "0xAC",
+   "name": "Progress",
+   "type": "CFixedPoint",
+   "comment": "The game's own name for it, out of the Lua API. `CFaction::GetProgress` (rva 0x122BC0) is `lea eax, [ecx + 0xac]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CGovernmentPosition",
+   "offset": "0x50",
+   "name": "isChangeable",
+   "type": "bool",
+   "comment": "The game's own name for it, out of the Lua API. `CGovernmentPosition::IsChangeable` (rva 0x74E120) is `mov al, byte ptr [ecx + 0x50]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CIdeology",
+   "offset": "0x50",
+   "name": "Group",
+   "type": "CIdeologyGroup const*",
+   "comment": "The game's own name for it, out of the Lua API. `CIdeology::GetGroup` (rva 0xC89A0) is `mov eax, dword ptr [ecx + 0x50]; ret` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CIdeology::GetGroup, CLaw::GetGroup, CLawGroup::GetIndex) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CIdeologyGroup",
+   "offset": "0x18",
+   "name": "Key",
+   "type": "CString",
+   "comment": "The game's own name for it, out of the Lua API. `CIdeologyGroup::GetKey` (rva 0x79740) is `lea eax, [ecx + 0x18]; ret` - the whole function, so the function *is* the offset. That body is shared - 4 luabind registrations (CIdeologyGroup::GetKey, CLawGroup::GetKey, CRegion::GetKey, CWarGoal::GetActor) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CLaw",
+   "offset": "0x30",
+   "name": "Key",
+   "type": "CString",
+   "comment": "The game's own name for it, out of the Lua API. `CLaw::GetKey` (rva 0x4E8160) is `lea eax, [ecx + 0x30]; ret` - the whole function, so the function *is* the offset. That body is shared - 5 luabind registrations (CEU3AI::GetReqProdQueue, CGovernmentPosition::GetKey, CIdeology::GetKey, CLaw::GetKey, CMinisterType::GetKey) and 16 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CLaw",
+   "offset": "0x4C",
+   "name": "Index",
+   "type": "int",
+   "comment": "The game's own name for it, out of the Lua API. `CLaw::GetIndex` (rva 0x14BB90) is `mov eax, dword ptr [ecx + 0x4c]; ret` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CGovernmentPosition::GetIndex, CLaw::GetIndex, CMinisterType::GetIndex) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CLaw",
+   "offset": "0x50",
+   "name": "Group",
+   "type": "CLawGroup const*",
+   "comment": "The game's own name for it, out of the Lua API. `CLaw::GetGroup` (rva 0xC89A0) is `mov eax, dword ptr [ecx + 0x50]; ret` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CIdeology::GetGroup, CLaw::GetGroup, CLawGroup::GetIndex) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CLawGroup",
+   "offset": "0x18",
+   "name": "Key",
+   "type": "CString",
+   "comment": "The game's own name for it, out of the Lua API. `CLawGroup::GetKey` (rva 0x79740) is `lea eax, [ecx + 0x18]; ret` - the whole function, so the function *is* the offset. That body is shared - 4 luabind registrations (CIdeologyGroup::GetKey, CLawGroup::GetKey, CRegion::GetKey, CWarGoal::GetActor) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CMilitaryConstruction",
+   "offset": "0x7C",
+   "name": "Brigades",
+   "type": "CList<CBrigadeConstructionDefinition*>",
+   "comment": "The game's own name for it, out of the Lua API. `CMilitaryConstruction::GetBrigades` (rva 0x17D50) is `lea eax, [ecx + 0x7c]; ret` - the whole function, so the function *is* the offset. The CList is 0x10 bytes, so project.json's own `brigades_count` at +0x84 is this list's `count` member and buildFindings folds it into this field's comment rather than laying it down separately. That is already what the generated record does; recording +0x7C here only makes project.json say the same.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CMinisterType",
+   "offset": "0x30",
+   "name": "Key",
+   "type": "CString",
+   "comment": "The game's own name for it, out of the Lua API. `CMinisterType::GetKey` (rva 0x4E8160) is `lea eax, [ecx + 0x30]; ret` - the whole function, so the function *is* the offset. That body is shared - 5 luabind registrations (CEU3AI::GetReqProdQueue, CGovernmentPosition::GetKey, CIdeology::GetKey, CLaw::GetKey, CMinisterType::GetKey) and 16 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CMinisterType",
+   "offset": "0x4C",
+   "name": "Index",
+   "type": "int",
+   "comment": "The game's own name for it, out of the Lua API. `CMinisterType::GetIndex` (rva 0x14BB90) is `mov eax, dword ptr [ecx + 0x4c]; ret` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CGovernmentPosition::GetIndex, CLaw::GetIndex, CMinisterType::GetIndex) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CProvince",
+   "offset": "0x28",
+   "name": "CachedTotalSuppression",
+   "type": "CFixedPoint",
+   "comment": "The game's own name for it, out of the Lua API. `CProvince::GetCachedTotalSuppression` (rva 0xC8500) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0x28]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CProvince",
+   "offset": "0x368",
+   "name": "Continent",
+   "type": "CContinent*",
+   "comment": "The game's own name for it, out of the Lua API. `CProvince::GetContinent` (rva 0xA6BD0) is `mov eax, dword ptr [ecx + 0x368]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CRegion",
+   "offset": "0x18",
+   "name": "Key",
+   "type": "CString",
+   "comment": "The game's own name for it, out of the Lua API. `CRegion::GetKey` (rva 0x79740) is `lea eax, [ecx + 0x18]; ret` - the whole function, so the function *is* the offset. That body is shared - 4 luabind registrations (CIdeologyGroup::GetKey, CLawGroup::GetKey, CRegion::GetKey, CWarGoal::GetActor) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CRegion",
+   "offset": "0x6C",
+   "name": "useForPeace",
+   "type": "bool",
+   "comment": "The game's own name for it, out of the Lua API. `CRegion::UseForPeace` (rva 0x77250) is `mov al, byte ptr [ecx + 0x6c]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CSubUnitDefinition",
+   "offset": "0x37",
+   "name": "isBomber",
+   "type": "bool",
+   "comment": "The game's own name for it, out of the Lua API. `CSubUnitDefinition::IsBomber` (rva 0x62D20) is `mov al, byte ptr [ecx + 0x37]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CSubUnitDefinition",
+   "offset": "0x38",
+   "name": "canParadrop",
+   "type": "bool",
+   "comment": "The game's own name for it, out of the Lua API. `CSubUnitDefinition::CanParadrop` (rva 0x1A3250) is `mov al, byte ptr [ecx + 0x38]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CSubUnitDefinition",
+   "offset": "0xF8",
+   "name": "BuildCostIC",
+   "type": "CFixedPoint",
+   "comment": "The game's own name for it, out of the Lua API. `CSubUnitDefinition::GetBuildCostIC` (rva 0x62D30) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0xf8]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CSubUnitDefinition",
+   "offset": "0x100",
+   "name": "BuildTime",
+   "type": "CFixedPoint",
+   "comment": "The game's own name for it, out of the Lua API. `CSubUnitDefinition::GetBuildTime` (rva 0xC8370) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0x100]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CTechnology",
+   "offset": "0x244",
+   "name": "Index",
+   "type": "int",
+   "comment": "The game's own name for it, out of the Lua API. `CTechnology::GetIndex` (rva 0x17AC0) is `mov eax, dword ptr [ecx + 0x244]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CTechnology",
+   "offset": "0x290",
+   "name": "Folder",
+   "type": "CTechnologyFolder const*",
+   "comment": "The game's own name for it, out of the Lua API. `CTechnology::GetFolder` (rva 0xC8530) is `mov eax, dword ptr [ecx + 0x290]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CTechnology",
+   "offset": "0x314",
+   "name": "canUpgrade",
+   "type": "bool",
+   "comment": "The game's own name for it, out of the Lua API. `CTechnology::CanUpgrade` (rva 0x1187D0) is `mov al, byte ptr [ecx + 0x314]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CTheatre",
+   "offset": "0xA4",
+   "name": "Priority",
+   "type": "CFixedPoint",
+   "comment": "The game's own name for it, out of the Lua API. `CTheatre::GetPriority` (rva 0xAEE90) is `push ebp; mov ebp, esp; mov ecx, dword ptr [ecx + 0xa4]; mov eax, dword ptr [ebp + 8]; mov dword ptr [eax], ecx; pop ebp; ret 4` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CWarGoal",
+   "offset": "0x10",
+   "name": "Country",
+   "type": "CCountryTag",
+   "comment": "The game's own name for it, out of the Lua API. `CWarGoal::GetCountry` (rva 0x79750) is `lea eax, [ecx + 0x10]; ret` - the whole function, so the function *is* the offset. That body is shared - 1 luabind registration (CWarGoal::GetCountry) and 1 virtual table slot - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CWarGoal",
+   "offset": "0x18",
+   "name": "Actor",
+   "type": "CCountryTag",
+   "comment": "The game's own name for it, out of the Lua API. `CWarGoal::GetActor` (rva 0x79740) is `lea eax, [ecx + 0x18]; ret` - the whole function, so the function *is* the offset. That body is shared - 4 luabind registrations (CIdeologyGroup::GetKey, CLawGroup::GetKey, CRegion::GetKey, CWarGoal::GetActor) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CWarGoal",
+   "offset": "0x20",
+   "name": "Recipient",
+   "type": "CCountryTag",
+   "comment": "The game's own name for it, out of the Lua API. `CWarGoal::GetRecipient` (rva 0x771E0) is `lea eax, [ecx + 0x20]; ret` - the whole function, so the function *is* the offset.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  },
+  {
+   "struct": "CWarGoal",
+   "offset": "0x28",
+   "name": "Region",
+   "type": "CRegion const*",
+   "comment": "The game's own name for it, out of the Lua API. `CWarGoal::GetRegion` (rva 0x63B3D0) is `mov eax, dword ptr [ecx + 0x28]; ret` - the whole function, so the function *is* the offset. That body is shared - 3 luabind registrations (CLicenceTechnologyAction::GetSubunit, CSendExpeditionaryForceAction::GetClaimType, CWarGoal::GetRegion) and 0 virtual table slots - so it cannot carry a class name, but the field can: the registration is what names the class, and a linker fold of identical getters says nothing about either class's layout.",
+   "source": "reversing/findings/FINDINGS-factbase.md",
+   "evidence": "The Lua half has had this field all along and project.json has not, which is the whole of what this entry claims. `scripts/reconcileFacts.py --accessors` re-derives it from hoi3_tfh.exe: `luabindExtract.accessor_field` accepts only a two-instruction body - one read of a member and a bare `ret` - or one of three strict by-value shapes, so it either reproduces the registered offset or reports nothing at all. All 207 of the Lua half's accessor-derived fields re-derive, over 173 distinct addresses, this one among them. The name and the class come from the registration, not from the body. What would show it wrong: the body decoding as something other than the text above, or the registration turning out to name a different class - and the risk a shared body does carry is on the function's name, which is why the holder counts are quoted and why nothing here names a function. `mergeFindings --check` is the backstop for the offset already being recorded under another name; it reports none of these as taken."
+  }
+ ],
+ "slots_noted": "Two bodies are deliberately recorded class-free. 0x64A3F0 fills slot 70 of sixteen graphics classes and is also registered as CDiplomacyStatus::HasMilitaryAccess, so it belongs to none of them (trap 4) and no vftable_slots entry would be truthful. 0x63D780 is in no virtual table at all but carries two luabind registrations - CFaction::GetNumberOfMembers and CLicenceTechnologyAction::GetParalell - which is the same fold from the source the holder check has never been run against.",
+ "frontier": [
+  "0x647800",
+  "0x130600",
+  "0x94570"
+ ]
+}

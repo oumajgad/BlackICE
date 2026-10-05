@@ -17,280 +17,251 @@ truth.
 
 ---
 
-## Wave 13 - reconcile the record with itself, and close what wave 12 opened
+## Wave 14 - the evaluation half of the script language, and the structs that cannot land
 
-Planned 2026-10-04. **Every address below was resolved against `project.json` and decoded out of the
-executable while this was written**, and the counts come from scripts rather than recall. The method
-is given with each number so an agent can reproduce it.
+Planned 2026-10-05, immediately after wave 13 landed. **Every address below was resolved against
+`project.json` and decoded out of the executable while this was written**, and the counts come from
+scripts rather than from recall or from an earlier document. The method is given with each number.
 
-**Why this shape.** Wave 12's largest finding was not about the game. It was that `CCountry +0xF88`
-had been `Allies` in the repository the whole time, while wave 11 carried it as an open question and
-wave 12 was planned around settling it - because the standing check was two paths and the fact base
-has three. That was found by accident. **Measured since: 713 fields the generated record holds that
-`project.json` has no field for, across 115 structs, and 108 offsets where the two disagree on the
-name.** So the single highest-value thing available is not another class; it is making the record
-agree with itself, once, with a script that keeps it agreeing.
-
-The other three briefs close wave 12's own remainders, which are unusually well specified because
-each agent named its gap instead of rounding up.
+**Why this shape.** `CANDIDATES.md`'s standing survey calls the evaluation half of the event script
+language the strongest candidate away from the AI, and it is right about the area - BlackICE is an
+enormous event and decision mod and these are the semantics behind every condition in it. But the
+survey's own arithmetic is three waves out of date, and re-measuring it changed what is worth doing
+(see below). What is actually left is **not** 145 unread `Evaluate` bodies; it is the *spine* of the
+trigger forest - how a scope is rebound, and what a forest costs to walk - plus a tooling limit that
+is currently blocking the three most populous classes in the game from having any fields at all.
 
 ### What the verification caught this time, recorded rather than quietly fixed
 
-The plan's rule is that the citations are checked while it is written. Four were wrong:
+Two things, and the first changes a brief.
 
-- **Agent B's frontier mixed a VA into a list declared as rvas.** `0x5010C0` is a VA; the rva is
-  **`0x1010C0`**, which is `mov eax,[ecx+0xd08]; ret` - the controlled-provinces count, exactly as
-  B's *prose* said. Its sibling `0x1010D0` is `mov eax,[ecx+0xcf8]; ret`, the owned count. Trap 1,
-  in a frontier list, which is the worst place for it because the next wave reads frontiers as
-  work items.
-- **Agent A's frontier gives `0x12F100` as "the goods-pool getter the six resource triggers
-  share". There is no such function.** `functionStart` lands at rva `0x12EF98`, and reading the
-  calls out of the first resource trigger's body gives `0x42F100` - rva **`0x2F100`**, which is
-  **`CCountry::GetActingCapitalLocation`, already recorded and `confirmed`**. So the address was
-  wrong *and* the description was. This sharpens brief B rather than costing it anything: see there.
-- Two citations in my own first draft were rvas where the agent had written VAs (`0x47BBE0` for
-  what is rva `0x7BBE0`, and the same mistake on the war-goal chain). The agents' frontier lists
-  were right and my transcription was not.
+- **`CANDIDATES.md` says "a grep of the whole record finds 7 named `Evaluate` bodies in the image".
+  There are now 64.** Measured, not recalled: `[a for a in project.json.addresses if
+  a.name.endswith('::Evaluate')]` answers 64, against 152 trigger keywords in
+  `findings/FINDINGS-script.md`. The survey was written 2026-10-03 and waves 11, 12 and 13 have
+  landed since - wave 13 alone added six. So "the record knows how a condition displays itself and
+  not how it answers" is no longer true of 42% of them, and a brief built on the old number would
+  have gone looking for a hole that is half filled. **This is trap 14's open-list clause exactly: a
+  survey is a claim about the record as it stood when it was written.** `CANDIDATES.md` is corrected.
+- **Wave 13's agent C gave the faction mutation as `0x4F5F30`, which is a virtual address.** Its own
+  document declares VAs, so the rva is **`0xF5F30`** - and that is a real function entry opening
+  `push ebp`, still unrecorded. `0x4F5F30` as an rva decodes as `in eax, 0x5d` and is not an entry.
+  Trap 1, caught by decoding the citation before writing it into a brief.
 
-### Wave 12's loose ends, already closed by the collecting session - do not redo these
+### What wave 13 settled - do not redo these
 
-- `CDiplomacyStatus +0x38 relation` is now `confirmed` with its writer, its ±200000 clamp and the
-  `defines.lua` corroboration; `+0x2C influence_running` is refined to **the `CInfluence*` itself**,
-  one-sided, with the direction question settled by `CInfluence::Activate`.
-- `CCountry::ChangeNeutrality`'s signature storage is complete, so it no longer reads as
-  "certainly wrong" beside its new sibling `ChangeNationalUnity`.
-- `CLAUDE.md` and `ghidra/README.md` now say **`failed: 0` is the pass mark**, and the two failures
-  they used to excuse are explained: both predecessors are **thunks that tail-jump into** their
-  targets, Ghidra had merged thunk and target, and the old byte-level argument was about a third
-  function (`functionStart(0xA7E020)` answers `0xA7DF60`). `CANDIDATES.md`'s wave 12 entry has it.
+- **The trigger spine's slot map is fully recorded**, with signatures: slot 6 `Evaluate`, 7
+  `LoadArgument`, 8 `GetText`, 9 `GetBlockText`, 10 `WalkChildren`, 11 `CountEvaluation`. So is
+  `CEffect`'s. These are a map to read bodies *against*, not something to re-derive.
+- `CContextTrigger::Evaluate` (rva `0x5D1530`), `CAndTrigger::Evaluate` (`0x5D06E0`),
+  `CNotTrigger::Evaluate` (`0x5D12C0`), `COrTrigger::Evaluate` (`0x5D0D00`) are all **recorded and
+  `confirmed`**. Slots 10 and 11 are recorded for the spine too - `WalkChildren` on 4 classes,
+  `CountEvaluation` on 5. **What is unread is what those bodies do**, not what they are called.
+- The six resource triggers are one shape confirmed six ways; `CValueTrigger::TakeScalarValue` keeps
+  the decimal where `CIntEffect`'s multiplies by 1000; there is no `fuel` trigger.
+- `CVariableTrigger::Evaluate` creates the variable on a miss, and a variable worth exactly zero is
+  dropped by the save walker.
+- `CDiplomacyStatus +0x59` has no reader; `surrender_progress` is high-means-surrendering;
+  `remove_brigade` can never match a type token.
 
 ---
 
-### A. Reconcile the three halves of the fact base
+### A. Teach the pipeline to create a struct, and land the classes blocked behind it
 
-**The highest-leverage brief in the wave, and the most mechanical.** The fact base is
-`ghidra/project.json`, the `BiceLib/GameClasses/*.hpp` headers, and **`ghidra/luabind.json` ->
-`ghidra/bicelib_findings.json`** - the Lua half, extracted from the game's own luabind
-registrations, merged by `buildFindings.py`, and therefore **already showing in Ghidra** while not
-being in the hand-maintained record that everyone greps.
+**The highest-leverage brief in the wave, and it unblocks brief B.** `ghidra/mergeFindings.py`
+**refuses a `struct_fields` entry for a struct `project.json` does not already hold, and a fragment
+has no way to create one.** So a whole class's layout cannot be contributed by an agent at all, only
+by a hand edit, and the queue has been accumulating them.
 
-Measured, by comparing the generated record against `project.json`'s own structs:
+What is blocked, all re-verified absent from `project.json` 2026-10-05:
 
 | | |
 | --- | --- |
-| `project.json` | 165 structs, 2,232 fields |
-| the generated record | 245 structs, 2,863 fields |
-| **fields the generated record has and `project.json` has no field for** | **713, across 115 structs** |
-| **offsets where the two give different names** | **108** |
+| **7 `CTrigger` classes** | `CContextTrigger`, `CAndTrigger`, `CNotTrigger`, `CTechnologyTrigger`, `CHasCountryFlagTrigger`, `CTagTrigger`, `CVariableTrigger` |
+| **12 diplomatic classes** | `CRelation`, `CNap`, `CAlliance`, `CGuarantee`, `CEmbargo`, `CAlign`, `CInfluence`, `CDependency`, `CCasusBelli`, `CDiplomacy`, `CDiplomaticActionCommand`, `CNullDiplomaticAction` |
+| **18 Lua-only structs** | 44 fields, of which **13 are `def_readwrite`** - the strongest records in the whole Lua half, because the offset is a constant in the registration. `CGoodsValues`, `CResourceValues` and `CStrategicWarfare` are the ones worth having |
 
-The 713 are the `Allies` case repeated: an answer that is in the repository, that Ghidra shows, and
-that **cannot be found by the grep `TRAPS.md` tells you to run**, because the Lua half stores
-offsets as **decimal integers** (`3976`, not `0xF88`). The biggest clusters are `CAir` 60, `CNavy`
-60, `CArmy` 59, `CCountry` 27, `CShip` 26, `CWing` 26, `CRegiment` 25 - which is a direct answer to
-why the unit classes keep looking unread.
+**The first three are the point.** `CAndTrigger` has **100,464 live instances**, `CNotTrigger`
+28,006, `CContextTrigger` 10,974 - the three most populous classes in the trigger forest - and
+between them they have **no field records at all**, while their `Evaluate`, `WalkChildren` and
+`CountEvaluation` bodies are named and confirmed. Brief B cannot land a field without this.
 
-Most of the 108 are harmless convention differences (`cost` / `Cost`, `country_tag` / `CountryTag`)
-and the brief should say so rather than inflate them. **Some are not**, and those are the prize:
-`CCountry +0x604` is `base_ic` in `project.json` and `TotalIC` in the Lua half, and `+0x60C` is
-`max_ic` against `MaxIC` - both of which wave 12's agent A read as the operands of `total_ic` and
-`enemy_ic_ratio`, so there is a live question about which name is right and a reading that bears on
-it. `CCountry +0x94`/`+0x95` (`mobilised`/`government_in_exile` against `isMobilized`/
-`isGovernmentInExile`) matter to brief B.
+Deliver, in this order:
 
-**What to deliver, in this order:**
+1. **The tooling change.** A fragment needs to be able to declare a struct. Decide the shape - most
+   likely a `structs` key alongside `struct_fields`, carrying a name and optionally a size and an
+   `inherits` - and make `--check` validate it the way it validates everything else. Note
+   `buildFindings` already handles `"inherits"`, and that **`"inherits"` only works for a base at
+   offset 0** (`ghidra/README.md` says so); `CRelation`'s subclasses are exactly that shape.
+2. **A second limit, same file, same kind:** `vftable_slots` is keyed by class with **no way to say
+   which of a class's two tables a slot belongs to**. That is why `CVariables::SaveContents` (rva
+   `0x77060`) and `CVariables::LoadKey` (`0x77080`) are described inside other entries' comments and
+   recorded as neither - they are slots 2 and 4 of `CVariables`' *second* table (`0x11BD724`). Fix or
+   report, your judgement.
+3. **Then land them**, and **verify each layout rather than trusting the prose that describes it**.
+   `CRelation`'s seven fields and `CCasusBelli`'s `+0x24` are written out in
+   `findings/FINDINGS-diploaction.md` section 27 with the addresses of every write;
+   `CCasusBelliType`'s 22 loader offsets are in the same section. Re-derive, do not transcribe - the
+   prose is a lead, and wave 13 found one case where the prose was right and the entry wrong and one
+   the other way round.
 
-1. **The reconciliation, as a document**: the 713 grouped by struct with a verdict per group -
-   *free and trustworthy* (a Lua accessor whose whole body is the `lea`), *free but unchecked*, or
-   *disagrees with something*. Do not try to verify 713 fields; **triage all of them and verify the
-   ones that matter**, and say which you skipped.
-2. **The 108 disagreements, each classified** as convention or substance, with the substantive ones
-   read off the bytes and settled. This is the part where a wrong name is currently reaching Ghidra.
-3. **A script in `scripts/`** that does the comparison, so this never has to be rediscovered. There
-   is a working version in the session scratchpad to start from; it belongs in the repository with
-   the other 39.
-4. **The sixteen tiny accessors agent B put first**, which are two or three instructions each and
-   for which `luabind.json` already holds a name, a class and a signature. All sixteen verified
-   **unrecorded** in `project.json` while this was written, and fifteen are present in the Lua half:
+**Also in this brief, because it is the same kind of work, and both are *reports* rather than
+fixes:** `project.json` holds **four duplicate field records** - `CDiplomacyStatus +0x14` and `+0x1C`
+each hold `void*` **and** the typed pointer, and `merge_fields` keeps the `void*`, so **the
+decompilation gets `void*`** while the record also holds `CAlliance*`. (`CCountry +0xA8C` and
+`+0x10B8` are the same shape and harmless.) They were deliberately not fixed in wave 13 because the
+pairs are not identical - each carries a different comment from a different findings file - so
+deleting one loses a reading. **Say what the merged record should say**; the hand edit is the
+maintainer's.
 
-   | rva | first instruction | what it gives |
-   | --- | --- | --- |
-   | `0xE6A10` | `lea eax,[ecx+0xf78]` | `CCountry::GetVassals` |
-   | `0xE6A20` | `lea eax,[ecx+0xf88]` | `CCountry::GetAllies` - the wave 12 answer |
-   | `0xE6A30` | `push ebp` | `CCountry::CalculateIsAllied` |
-   | `0xE2190` | `mov eax,[ecx+0x1064]` | `CCountry::GetNumOfAllies` |
-   | `0x94660` | `cmp dword [ecx+0x14],0` | `CDiplomacyStatus::HasAlliance` |
-   | `0x648730` / `0x648760` | `push ebp` | `IsGuaranting` / `IsGuaranteed` |
-   | `0x649C90` | `mov al,[ecx+0x58]` | `IsFightingWarTogether` - a third witness for `co_belligerent` |
-   | `0x64A3F0` | `mov al,[ecx+0x4c]` | `HasMilitaryAccess` |
-   | `0x1010C0` / `0x1010D0` | `mov eax,[ecx+0xd08]` / `[ecx+0xcf8]` | the controlled / owned province counts **(corrected from B's frontier)** |
-   | `0x3A660` / `0x17AE0` / `0xC3040` | `lea eax,[ecx+0xcf0]` / `[ecx+0xd00]` / `[ecx+0xd10]` | Owned / Controlled / Core provinces |
-   | `0x63D780` | `mov eax,[ecx+0x30]` | `CFaction::GetNumberOfMembers` |
-   | `0x1235E0` | `cmp dword [ecx+0x30],0` | `CFaction::GetFactionLeader` - **returns the first member** |
+And **five recorded names sit on a body another luabind registration also claims** - `0x16000`,
+`0x944C0`, `0xC8920`, `0x4E9090`, `0x2EF70` - three of which contain an explicit negative the
+registrations contradict. `scripts/reconcileFacts.py` prints them in one command. Report, do not
+rename.
 
-   Note the `lea` bodies are the strongest kind of field evidence there is: the whole function is
-   the offset. **But `CFaction::GetMembers` is already in `project.json` as `LeaThisPlus28`, a
-   fold** - so check the holder count before putting a class name on any of these (trap 4), and
-   expect at least one to have to stay class-free.
+### B. `CContextTrigger` - what `owner = { ... }` actually rebinds
 
-**Also in this brief, because it is the same kind of work:** `mergeFindings.py --check` does not
-compare `struct_fields` **between** incoming fragments, only against `project.json`, so two agents
-naming one offset differently lands both records. Wave 12's agent A caught that by reading a sibling
-fragment by hand. A cross-fragment checker exists in the session scratchpad; promote it, or fold it
-into `--check`.
+**The most mod-facing single thing left in the script language.** `CContextTrigger` derives from
+`CAndTrigger`, has **10,974 live instances**, and is the scope switch - `owner = { ... }`,
+`controller = { ... }`, a bare country tag. Its `Evaluate` (rva `0x5D1530`) and `WalkChildren`
+(`0x5D2470`) and `CountEvaluation` (`0x5D24C0`) are **all recorded and confirmed**, and its
+constructor (`0x5D14A0`) is recorded with the note that it takes a `0x104`-byte scope specification
+by value (`ret 0x108`) - which is why `checkSignatures` skips it.
 
-### B. `CEffect` slot 12, and what a government in exile really reads
+**What is not read is the rebinding**, and `findings/FINDINGS-scopetriggers.md` places only **2 of
+its 153 keys**. The question, which a modder cannot answer from the files: when a condition is
+written inside `owner = { ... }`, what exactly does the inner scope see - and for the keys that take
+a *province* or a *country tag*, which field of `CEventScope` is overwritten and which is left alone?
 
-**Two things, both left by wave 12's agent C and A respectively, and both cheap.**
+`CEventScope`'s own layout is partly recorded: `+0x10` `country_tag`, `+0x14` the id, `+0x18`/`+0x1C`
+the `from` pair, `+0x28` the province. **And there is a live lead on it**: wave 13's agent A found the
+Lua half types `+0x10` as `CCountryTag&`, which is eight bytes with the id at `+0x14`, while the
+record has `char[4]`. If the Lua half is right there is an **unrecorded `CEventScope +0x14`** and the
+scope's tag comparisons read the id half rather than the letters - which is how every other tag
+comparison in this image works. Settle that on the way through; it is one decode.
 
-**Slot 12 is the last unread virtual in the effect family.** 43 of `CEffect`'s 101 concrete classes
-have a thirteenth slot, five bodies supply it, and the grouping is **exactly by scalar middle
-class** - which is the interesting part, because it means the slot is the scalar families' own, not
-`CEffect`'s. All five verified **unrecorded** and all five open `push ebp`:
+`CAndTrigger`, `CNotTrigger` and `COrTrigger` are the forest's spine and brief C also reads them -
+**coordinate: you own `CContextTrigger` and the scope classes, C owns slots 10 and 11.** A field on
+`CAndTrigger` from either of you needs brief A's tooling first; if it is not ready, give the layout as
+prose.
 
-| rva | holders | the middle class it goes with |
-| --- | --- | --- |
-| `0x59D4F0` | 24 | `CIntEffect`'s group - the biggest, so start here |
-| `0x59CB90` | 11 | `CValueEffect`'s group |
-| `0x5BD110` | 4 | |
-| `0x59DC90` | 2 | |
-| `0x59E220` | 2 | |
+### C. What a trigger forest costs, and whether evaluation is cached
 
-Agent C called this the highest-value single item on the effect side. `CEffect`'s own slot map is
-recorded now (slot 11 `Execute`, 9 `GetText`, 8 `GetBlockText`, 10 `GetTargetText`, 6
-`GetKeywordToken`, 7 `TakeScalarValue`), so the table is a map to read this against rather than a
-thing to re-derive. **Note `CEffect` has a `structs` record and `CTrigger` has one, so new fields on
-either can go in a fragment.**
+**`CAndTrigger` has 100,464 live instances** and BlackICE has thousands of decisions and events. If
+every one re-walks its tree on a schedule, that is a measurable cost in a mod this size, and it is
+the kind of thing that shows up as a frame-time complaint nobody can locate.
 
-**Then the six resource triggers, where the plan's own source was wrong and the question got
-better.** `money`, `energy`, `metal`, `rare_materials`, `crude_oil`, `supplies` - one
-32-instruction shape repeated `0x370` bytes apart from rva **`0x5F5E70`** to **`0x5F6FA0`**, both
-verified unrecorded, both `push ebp`. Agent A read them as branching on
-`government_in_exile (CCountry +0x95)` and said they reach the pool through a getter at
-`0x12F100`.
+Slots 10 and 11 are the two to read, both recorded with signatures and **neither read**:
 
-**There is no function at `0x12F100`.** Reading the calls out of the first body gives `0x42F100`,
-which is rva `0x2F100` - **`CCountry::GetActingCapitalLocation`, already recorded and `confirmed`**.
-So the branch does not select a different pool: it looks up an **acting capital**, which is what a
-government in exile has instead of its own. The question to answer is therefore the sharper one:
-**does a government in exile read its host's goods, or its own, and which province's?** That is
-mod-facing and currently unknown in either direction.
+    void __thiscall WalkChildren(CTrigger*, void* collector, CEventScope*, bool polarity, int weight)
+    void __thiscall CountEvaluation(CTrigger*, CEventScope*, int* passed, int* total)
 
-Six leaves for the price of one shape, and the `0x370` stride is the discriminator that says they
-really are one shape - but **verify it on at least two of the six** rather than assuming the stride,
-because a regular stride across six classes is also what a fold looks like from the outside.
+Recorded bodies: `WalkChildren` on `CTrigger` (rva `0x5D0680`), `COrTrigger` (`0x5D1270`),
+`CNotTrigger` (`0x5D1340`), `CContextTrigger` (`0x5D2470`); `CountEvaluation` on `CTrigger`
+(`0x5D06C0`), `CAndTrigger` (`0x5D0CD0`), `COrTrigger` (`0x5D1230`), `CNotTrigger` (`0x5D1380`),
+`CContextTrigger` (`0x5D24C0`).
 
-### C. The diplomatic remainder
+The questions, in order of value:
 
-**Wave 12's agent D closed slot 7 but named its own gap precisely**, which makes this the
-best-specified brief in the wave. Three parts.
+1. **Is any evaluation result cached on the trigger, or is every call a fresh walk?** A cache would
+   be a field, and `CAndTrigger` has no struct record - so if you find one, brief A is what lets it
+   land, and prose is the fallback.
+2. **Who calls `CountEvaluation`, and how often?** Its signature takes `passed` and `total` out
+   parameters, which is tooltip arithmetic ("3 of 5 conditions met"). If it is only ever called from
+   a tooltip builder the cost is paid on hover and does not matter; if a periodic calls it, it does.
+3. **What `WalkChildren`'s `collector` and `weight` are for.** The record notes trigger slot 10's
+   weighted-attribution walk exists to feed `CAIStrategy`'s collector - which is the AI item held out
+   of four waves now - so reading the walk from the *trigger* side gets most of the way into that
+   without touching AI logic.
+4. **`CAndTrigger::Evaluate` is short-circuiting or it is not**, and that is one decode.
 
-**1. The war-goal chain.** All four verified **unrecorded**, all four clean entries:
+**A trap to expect**: `functionStart(0x5D06E0 + 0x400000)` does **not** answer `CAndTrigger::Evaluate`'s
+own entry - verified while this was written - so that body is a trap 2 case. Read extents from the
+vftable, which is the rule anyway.
 
-| rva | VA | what is known |
-| --- | --- | --- |
-| `0x651FB0` | `0xA51FB0` | called with `(status->war (+0x20), actor.tag, actor.id)` - the add itself |
-| `0x649EB0` | `0xA49EB0` | a predicate that must answer true, or the effect returns |
-| `0x649F40` | `0xA49F40` | called `(status, 0)` once a matching casus belli is found |
-| `0x7BBE0` | `0x47BBE0` | called with `ECX = &this->warGoal`; reads `+0x18`, `+0x1C`, `+0xC`, which `BiceLib/GameClasses/CWarGoal.hpp` independently names `actor.tag`, `actor.index`, `casusBelli`. `push ebp; mov ebp, esp; sub esp,0x50` |
+### D. The faction layer
 
-D's reading that *adding a war goal consumes the casus belli that justified it* is explicitly
-**inference** - the removal and the delete are read, the causal account is not. Settle it.
+**Wave 13's agent C named this the single highest-value thing it left.** `CFactionAction::Apply`'s
+only country write, in `0x2157` bytes, is the influence charge - verified two independent ways - so
+**the faction membership change is not in slot 7.** It is in **rva `0xF5F30`** (VA `0x4F5F30`; the
+plan it came from declared VAs and this is the corrected rva), a ~`0x950`-byte `__thiscall` called
+twice from `CFactionAction::Apply` at VAs `0xA319B2` and `0xA31AF5` with
+`ECX = country->faction (+0xD8)` and `(CCountry*, 0, 1)` on the stack, `ret 0xC`. Unrecorded, a real
+entry, opens `push ebp`.
 
-**2. The threat adder, rva `0xF50A0` (VA `0x4F50A0`)**, unrecorded, four callers. This is where
-`LEAVE_NAP_THREAT_COST` lands, and it is the one that produced **a fourth way a define hides from a
-block scan**, to go beside trap 8's three: the value is never loaded, the body does
-`add edi, 0x60` on the register already holding the diplomacy block and passes the **address**.
-`EMBARGO_THREAT_COST` (+0x88) is almost certainly reached the same way - `CEmbargoAction` calls this
-twice and never loads `+0x88`. Confirm that, and the trap gets its fourth case with two witnesses
-instead of one.
+What the record already has to read it against: `CFaction` **has** a struct, 10 fields, including
+`+0x28 Members` and `+0x30 NumberOfMembers`; `CFaction::GetFactionLeader` (rva `0x1235E0`) **returns
+the first member and there is no leader field**; the members list holds `CCountryTag` by value, so a
+node pointer is a `CCountryTag*`. `CFactionAction::Apply`'s gate is read in full, including the new
+clause that **a country may not join a faction while at war with any member**.
 
-**3. The four slot-7 bodies whose writes are unread.** All four **are recorded**, as
-`*::Apply [inferred]` - so this is not a naming job, it is "what does accepting this actually
-change": `CDeclareWarAction` (rva `0x612030`), `CCallAllyAction` (`0x627BA0`), `CFactionAction`
-(`0x630E70`), `CLicenceTechnologyAction` (`0x63B5A0`). D read their extents, defines, call sets and
-message keys but not their `CDiplomacyStatus`/`CCountry` writes, and these are the four that reach
-into the war, faction and technology layers.
-
-**And one thing to report in prose rather than in a fragment.** `mergeFindings.py` **refuses
-`struct_fields` for a struct `project.json` does not hold**, and it holds **none** of
-`CRelation`, `CNap`, `CAlliance`, `CGuarantee`, `CEmbargo`, `CAlign`, `CInfluence`, `CDependency`,
-`CCasusBelli`, `CDiplomacy`, `CDiplomaticActionCommand` or `CNullDiplomaticAction` - all twelve
-verified absent. D described `CRelation`'s layout (`+0x8` first, `+0x10` second, `+0x18`
-start_date, `+0x1C` end_date, `+0x20` a byte, subclass fields from `+0x24`) and it is recorded
-nowhere. **Give the layouts as prose and the collecting session will hand-add the structs**;
-`CRelation` at least is worth having, since nine subclasses write through it.
-
-### D. The claims that rest on writers only
-
-**A brief whose deliverable is corrections, not names.** Four places where something published is
-thinner than it reads, each one the shape of trap 14's own worked example - `CCurrentGameState
-+0xD9D` was called `autosave_blocked` from one gate and is `tutorial_active`, with twelve readers.
-
-**1. `CDiplomacyStatus +0x59 changed`.** Eleven writers, **no reader was ever looked for**. The
-record says so honestly - "the name says what the writers have in common and nothing about what it
-is for; a dirty flag for the diplomacy screen is a guess" - which is exactly the state that wants
-one scan. `CCountry::ChangeRelation` (rva `0xE65C0`, `confirmed`) sets it on both sides, and seven
-of the nine `CRelation::Activate` bodies set it. **`CAlign`'s and `CEmbargo`'s do not**, and why
-they differ is its own small question with a real answer. Find the readers, and if there are none,
-say so **with a positive control** - a field you know is read, scanned the same way.
-
-**2. Which end of `surrender_progress` means "about to surrender".** The scale is read off a clamp
-(`0..1000`, compared as `progress * 100` against `script * 1000`, so effectively `progress / 10`);
-the **direction is not**. `CCountry::GetSurrenderProgress` (rva `0xFCB80`) is recorded `inferred`;
-its divisor at rva **`0xFCC60`** is **unrecorded** and is what the question turns on. It matters
-because BlackICE writes both `surrender_progress = 80` and `= 0.05`, and on one reading the second
-is satisfied by `progress >= 1` out of 1000, i.e. essentially always.
-
-**3. `check_variable`'s side effect.** `CVariableTrigger::Evaluate` asks `CVariables` for the name
-and, **on a miss, creates it** - rva **`0x76FB0`**, unrecorded, `push ebp` - then evaluates
-`0 >= value`. So a condition on a never-set variable is true whenever the threshold is `<= 0`
-**and it mutates the game state from inside a trigger**. Read `0x76FB0` and establish what it
-actually creates and whether the variable then persists into the save. The save is plain text and
-writes variables as `BaseIC=35.000`, so that half is a grep.
-
-**4. `remove_brigade` matches a regiment's historical name, case-sensitively.** The reading is
-solid; what is unknown is **what an unnamed regiment holds in `CSubUnit +0x68`**, which decides
-whether `remove_brigade = <a subunit type>` can ever match - and the mod uses the keyword **6,881
-times**. A decode of `CSubUnit::SetType` found no write to `+0x68`, which is weaker than it sounds.
-**The oracle is the savegame, not the executable**: a `regiment = { }` block writes `name`, so
-grepping the saves for the strings the mod's own `remove_brigade` lines use settles it in one
-command. 45 saves at `%USERPROFILE%\Documents\Paradox Interactive\Hearts of Iron III\BlackICE
-GitHub\save games\` - per mod, **not** the install folder.
-
-**Also free here:** `CEffect +0x14` is touched by none of the three destructors and by nothing in
-`CEffect::LoadKey`. It is not even known to be live. One scan settles it.
+And the open question this finally lets someone answer, which has been on the queue since wave 12:
+**can a faction member lack a bilateral alliance?** That decides whether `ally = { ... }` is genuinely
+wider than `alliance_with`, which is a real difference to a mod. Compare `CCountry +0xF90` (the allies
+count) against `CFaction +0x30` (the members count) and against the pairs whose `CDiplomacyStatus
++0x14` is non-null. `CCountry::CalculateIsAllied` (rva `0xE6A30`) walks `+0xF88` and is the function
+that answers it in the engine.
 
 ---
 
 ## Deliberately not in this wave
 
-**The AI, for the third wave running.** `CAIStrategy`'s collector - rvas `0x4A5270`, `0x4A5A60`,
-`0x4A73C0` - is still the largest single unread thing in the image: the whole of trigger slot 10's
-weighted-attribution walk exists to feed it and nothing is known about what it does with the
-weights. It is out because the standing steer is away from AI logic, not because it stopped being
-the best item in that direction. **Brief A's data makes it cheaper than it was**: the Lua half
-already names `CAIStrategy +0x18 Personality` and `+0x148 WarTargets`, neither of which
-`project.json` holds. Say the word and it swaps in for any brief here.
+**The AI, for the fourth wave running.** `CAIStrategy`'s collector - rvas `0x4A5270`, `0x4A5A60`,
+`0x4A73C0`, all three verified **unrecorded** and all three opening `push ebp` - is still the largest
+single unread thing in the image. It is out because the standing steer is away from AI logic, not
+because it stopped being the best item in that direction, and **brief C reaches the trigger side of
+it without touching it**. Say the word and it swaps in for any brief here.
 
 ## Two live checks, still independent of any wave
 
 Both would **correct a published claim** rather than add one, and both need a session:
 
 - **`CUnit +0x2DC` across an attack decision onto an opposed amphibious landing** - the amphibious
-  sign bug, which rests entirely on one opcode byte (`subsd` where the river arm has `addsd`). The
-  one worth doing first; it is thinner evidence than a published claim should rest on.
+  sign bug, which rests entirely on one opcode byte (`subsd` where the river arm has `addsd`). The one
+  worth doing first; it is thinner evidence than a published claim should rest on.
 - **AI agent units' `plan_air_stance`** - whether anything clears stance 2 faster than `ProcessAI`
   restores it.
 
-And wave 12's, cheaper than either: **whether a faction member can lack a bilateral alliance**,
-which decides whether `ally = { ... }` is genuinely wider than `alliance_with`. Compare
-`CCountry +0xF90` (the allies count) against `CFaction +0x30` (the members count) and against the
-pairs whose `CDiplomacyStatus +0x14` is non-null.
+And a third, cheaper than either and now well specified by wave 13: **does anything keep
+`CCountry +0x9F8 pool_in_exile` in step with the host's pool?** If something does, the separation of
+the exile's goods from its host's is true of the bytes and invisible in play. The savegame is the
+oracle, since a government-in-exile country's `pool` block is plain text.
 
+---
 ## The standing rules for every brief
 
 All learned the hard way; all go in every brief.
 
+- **Demand the report's shape, in these words.** Wave 13 came back in four different shapes and
+  finding "what actually changed in the record" was four different searches:
+
+  > **Open your report with a synopsis of 2-5 sentences** - what you set out to settle, what you
+  > settled, and anything you *corrected* rather than added. No preamble before it.
+  >
+  > **Then a table of every function your fragment touches**, one row each, before the write-up:
+  >
+  > | rva | name | new or revised | confidence | one line |
+  >
+  > Use `revised` for anything that already had a record, and say in the last column what changed
+  > about it. If the fragment touches no function, say so in one line rather than omitting the table.
+  >
+  > **Then the same table for every struct field your fragment touches:**
+  >
+  > | struct | offset | name | type | new or revised |
+  >
+  > Same rule: `revised` for anything that already had a record, and say what changed - a name, a
+  > type, or both. If the fragment touches no field, say so in one line.
+
+  The synopsis is what the maintainer reads and the tables are the index to the record, so all three
+  are the agent's job rather than the collecting session's. **The `revised` rows are the ones to
+  verify off the bytes before merging** - a wrong new name costs little, a wrong overwrite costs a
+  published claim. `CLAUDE.md`'s subagent section carries this too, because this file gets replaced.
+
+  **Both tables are unconditional**, and the field one is not negotiable on the grounds that a brief
+  does not look field-heavy. Wave 13's brief A had no field framing, its function table read
+  **`0 revised`**, and its two biggest results were field overwrites (`CCountry +0x604` and
+  `+0xF34`/`+0xF38`) - nine revisions among 76 field records. Which briefs turn out field-heavy is
+  not knowable when the brief is written, and a wrong **type** is what reaches the decompilation.
 - Give every agent **`TRAPS.md`**, and say the scripts are in `scripts/`, the write-ups in
   `findings/`, and that commands run from `reversing/`.
 - **Addresses in `project.json` and the `GameClasses` headers are rvas against an image base of

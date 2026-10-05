@@ -1,0 +1,260 @@
+{
+ "agent": "wave 13 agent C - the diplomatic remainder",
+ "question": "The war-goal chain (0x651FB0, 0x649EB0, 0x649F40, 0x7BBE0); the threat adder 0xF50A0 and whether EMBARGO_THREAT_COST reaches it by address; and the CDiplomacyStatus / CCountry writes of the four slot-7 bodies CDeclareWarAction, CCallAllyAction, CFactionAction and CLicenceTechnologyAction.",
+ "source": "reversing/findings/FINDINGS-diploaction.md",
+ "addresses": [
+  {
+   "rva": "0x651FB0",
+   "kind": "function",
+   "name": "CWarGoal::AddToWar",
+   "signature": "void __fastcall CWarGoal::AddToWar(CWarGoal* goal@EDI, CWar* war@stack:4, int actorTag@stack:8, int actorId@stack:0xC)",
+   "no_signature": null,
+   "comment": "**The war-goal add itself.** 0xA51FB0 to the single `ret 0xC` at 0xA520E5, 8 int3, then a separate function at 0xA520F0 (`push ebp` prologue, so functionStart agrees); `retsBefore` over the whole body is empty, so no trap 2 and no trap 3 funclet. The goal arrives in **EDI** and the three stack dwords are the war, the actor's tag by value and the actor's id.\n\nSix callers: 0x600193, 0x9BC92F, 0x9BC95B, 0x9BD63F, CDeclareWarAction::Apply at 0xA12675 and CWarGoalBaseAction::Apply at 0xA43647.\n\nWhat it does, end to end:\n\n1. `CWarGoal::IsValid(goal)` (rva 0x79950) at 0xA51FD2 must answer true, or **nothing at all happens** - the body jumps straight to the epilogue. That is the only gate.\n2. 0xA52750(`war + 0x9C`, &actorId) looks up the war's per-country war-goal bucket and 0x9BE8F0 (container in ESI, element in EAX) appends the goal to it. So `CWar +0x9C` is a map from country id to that country's war goals; neither helper is named and both are in the frontier.\n3. `countries[actorId]->diplomacy[goal->receiver.index (+0x24)]->next_wargoal_date (+0x7C) = tick + WARGOAL_ADD_COOLDOWN/1000 months`, through `AddMonths` (rva 0xB8C90, already named) at 0xA520AB.\n\n**That third step corrects the record.** `project.json`'s entry for CWarGoalBaseAction::Apply says \"WARGOAL_ADD_COOLDOWN, diplomacy +0xFC, is not read here\" - true of that body and false of the chain: it is read one call deeper, at 0xA52096, divided by 1000 with the usual `imul 0x10624DD3; sar 6` and spent as a **month** count. BlackICE's own `common/defines.lua:330` says `WARGOAL_ADD_COOLDOWN = 1, -- 1 month`, which agrees with `AddMonths` independently.",
+   "confidence": "confirmed",
+   "evidence": "Decoded 0xA51FB0-0xA520E5 instruction by instruction. EDI is read at 0xA51FD0 (`mov ecx, edi`) and 0xA520C2 (`[edi+0x24]`) with no prior write, so it is a parameter; at the CWarGoalBaseAction::Apply call site `lea edi, [esi+0x28]` at 0xA43643 makes it `&this->warGoal` and the `push edi` four bytes earlier is the callee-save that `pop edi` at 0xA436AB undoes - the three argument pushes are ecx/edx/eax, and 3 dwords is exactly the `ret 0xC`. The /1000 magic: 2^38 / 0x10624DD3 = 1000.0 exactly, and the shift is 32+6. Would be shown wrong if 0xB8C90 were not AddMonths (it is recorded with that name and a signature from two readers) or if diplomacy +0xFC were not WARGOAL_ADD_COOLDOWN (scripts/definesMap.py --block diplomacy prints it at +0xFC; its positive control is that the same listing gives +0x60 LEAVE_NAP_THREAT_COST and +0x88 EMBARGO_THREAT_COST, both of which this fragment confirms by a second route)."
+  },
+  {
+   "rva": "0x79950",
+   "kind": "function",
+   "name": "CWarGoal::IsValid",
+   "signature": "bool __thiscall CWarGoal::IsValid(CWarGoal* this)",
+   "no_signature": null,
+   "comment": "The gate on CWarGoal::AddToWar (rva 0x651FB0), and the AI's own test. 0x479950 to two bare `ret`s in one frame at 0x479A7B (`mov al, 1`) and 0x479A82 (`xor al, al`), 13 int3, then CWarGoal::LoadKey at 0x479A90 - the extent the header already records. `this` in ECX, no stack arguments. Two callers: 0xA51FD2 and 0x89DB95 (inside the AI).\n\nThe body is almost entirely the construction of **two** CEventScopes on the stack (vftable 0x15B8AEC, persistent id 0x18D), each stamped with the goal's `actor` (+0x18/+0x1C) and `receiver` (+0x20/+0x24) and a null `---` tag, of which only the one at `esp+0x58` is used. Then three tests, in order:\n\n    if (this->casusBelli (+0xC) == 0)              return false;\n    if (!casusBelli->slot7())                      return false;   // 0xA92590 `mov al,1; ret` on CCasusBelliType, ReturnFalse on CNullCasusBelliType\n    return casusBelli->slot6(scope);                               // CCasusBelliType::IsValid, the `is_valid` trigger\n\nSo a war goal may be added exactly when it names a real casus belli type whose `is_valid = { ... }` block passes for a scope built from the goal's own actor and receiver. Nothing about the casus belli the actor *holds* is tested here - see CWarGoalBaseAction::Apply for that.",
+   "confidence": "confirmed",
+   "evidence": "Decoded end to end; the only calls in the body are the two indirect virtuals at 0x479A5C (`[vftable+0x1c]`, slot 7) and 0x479A6F (`[vftable+0x18]`, slot 6). CCasusBelliType's vftable at 0x15B58D0 holds 0x416950 at slot 6 and 0xA92590 at slot 7; CNullCasusBelliType's at 0x15B5928 holds 0x598DB0 and 0x592360 (ReturnFalse). Would be shown wrong if the two scopes were not CEventScopes - 0x15B8AEC is CEventScope's vftable in the RTTI export, and CWarGoal's own 0x15BDB34 appears eight bytes away in the neighbouring function, which is the control."
+  },
+  {
+   "rva": "0x16950",
+   "kind": "function",
+   "name": "CCasusBelliType::IsValid",
+   "signature": "bool __thiscall CCasusBelliType::IsValid(CCasusBelliType* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "CCasusBelliType slot 6, one holder (vftable 0x15B58D0; CNullCasusBelliType has its own body at 0x598DB0, so this is not a fold). Seven instructions and no `ret` of its own - it **tail-jumps** into `this->+0x30`'s own slot 6, which is CTrigger::Evaluate:\n\n    push ebp; mov ebp, esp; add ecx, 0x30; mov eax,[ecx]; mov eax,[eax+0x18]; pop ebp; jmp eax\n\n`CCasusBelliType +0x30` is the **`is_valid`** block, save token 0x797, stored there by CCasusBelliType::LoadKey (rva 0x165F0) at 0x41682D. `BiceLib/GameClasses/CWarGoal.hpp` already says \"0x30: a CAndTrigger, the condition under which this pretext may be used\" from the other end; this names the key.\n\ncheckSignatures will skip it: a tail `jmp` has no `ret` to predict.",
+   "confidence": "confirmed",
+   "evidence": "Decoded in place. The key is from the loader's own jump table: base 0x78D at 0x4166F9, byte table at 0x416924, jump table at 0x4168E0; index for token 0x797 is 10, whose target is 0x41682D, which does `lea ecx,[esi+0x30]` and calls the sub-object's `[+0xC]` Load. ghidra/saveTokens.json gives 0x797 = `is_valid`. The control for the whole table read is that the same table gives 0x796 = `on_add` -> +0x24C, which is the object CWarGoal::RunCasusBelliOnAdd independently executes."
+  },
+  {
+   "rva": "0x7BBE0",
+   "kind": "function",
+   "name": "CWarGoal::RunCasusBelliOnAdd",
+   "signature": "void __thiscall CWarGoal::RunCasusBelliOnAdd(CWarGoal* this)",
+   "no_signature": null,
+   "comment": "0x47BBE0 to the bare `ret` at 0x47BC5D, 0x7E bytes. **Only two int3 of padding** before the next function at 0x47BC60 - which `functionStart` happens to find anyway, because 0x47BC60 opens `push ebp` - but it is the trap 2 shape and `retsBefore(0x47BBE0, 0x47BC5D)` is empty, which is the check that settles it. `this` in ECX, no stack arguments. Two callers: CDeclareWarAction::Apply at 0xA1267C and CWarGoalBaseAction::Apply at 0xA4364E.\n\nIt builds a **CEventScope** on its own stack (vftable 0x15B8AEC at [ebp-0x50], persistent id 0x18D at [ebp-0x4C]) whose country is the war goal's `actor` - tag from `this->+0x18` into scope+0x10, index from `this->+0x1C` into scope+0x14, with a null `---` tag written at scope+0x18 - and then calls **slot 11 of the object at `this->casusBelli (+0xC) + 0x24C`**, passing the scope by address.\n\n`CCasusBelliType +0x24C` is the **`on_add`** block (save token 0x796, stored by CCasusBelliType::LoadKey at 0x416812) and slot 11 of a CEffect is `Execute(CEventScope*, int)`, already recorded under `vftable_slots`. So this is \"run the casus belli's `on_add = { ... }` effect, scoped to the country that took the war goal\" - which is how `common/casus_belli.txt` gets to fire effects when a goal is claimed.\n\nThe three fields it reads - `+0x18`/`+0x1C` actor and `+0xC` casusBelli - are exactly the ones `BiceLib/GameClasses/CWarGoal.hpp` derived independently from CWarGoal::LoadKey.",
+   "confidence": "confirmed",
+   "evidence": "Decoded in place, all 0x7E bytes. `[ebp-8]` is built as the four bytes '-','-','-','\\0' (0x2d2d word, then 0x2d, then 0) and copied to [ebp-0x38] = scope+0x18. The vftable 0x15B8AEC is CEventScope's in the RTTI export. `add ecx, 0x24c` at 0x47BC34 then `[ecx]` then `[+0x2c]` is slot 11. Would be shown wrong if +0x24C were not `on_add`: the loader case at 0x416812 does `lea ecx,[esi+0x24c]` and the jump table maps token 0x796 there, and saveTokens.json gives 0x796 = `on_add`."
+  },
+  {
+   "rva": "0x649EB0",
+   "kind": "function",
+   "name": "CasusBelliTypeIsAlways",
+   "signature": "bool __fastcall CasusBelliTypeIsAlways(int typeIndex@EDI) @AL",
+   "no_signature": null,
+   "comment": "0xA49EB0 to the bare `ret` at 0xA49F34, 0x85 bytes, 11 int3, then CCasusBelli::RemoveFromStatus at 0xA49F40. **One caller in the image**, CWarGoalBaseAction::Apply at 0xA4366E. The casus-belli-type index arrives in **EDI** and nothing is on the stack.\n\nIt lazily creates the casus-belli-type database at [0x1A85BD8] (`new(0x1C)`, the 198-database shared init 0x45BD30, then the registrar 0x417350 - the same singleton `GetCasusBelliTypes` (rva 0x16A40) returns), then indexes its pointer vector at `+0xC`/`+0x10`, falling back to element 0 when the index is out of range, and returns `type->+0x1F2 != 0`.\n\n**`CCasusBelliType +0x1F2` is the `always` key** - save token 0x6A2, read through `ParseBool` (rva 0x67B410) by CCasusBelliType::LoadKey at 0x4166A2. So the predicate is \"is this pretext declared `always = yes` in `common/casus_belli.txt`\". The neighbouring bools are `+0x1F0` `is_triggered_only` (token 0x61D), `+0x1F1` (token 0x78D `mutual`) and `+0x1F3` (token 0x7B0 `handles_peace`).\n\n**But at its one call site the predicate cannot change what happens** - see CWarGoalBaseAction::Apply's revised comment. It is class-free on purpose: the receiver is an index, not a CCasusBelliType, so a `CCasusBelliType::` name would be wrong (trap 11).",
+   "confidence": "confirmed",
+   "evidence": "Decoded end to end. EDI is read at 0xA49F0B (`cmp edi, ecx`) and 0xA49F12 (`[edx+edi*4]`) with no prior write. The 40 references to 0x1A85BD8 in .text all sit in the casus-belli family or in GetCasusBelliTypes (rva 0x16A40), which project.json already records as \"the casus-belli-type singleton\" - that is the identification. The `always` placement is from the loader: `add esi, 0x1f2; push esi; call 0xA7B410` at 0x4166A2, reached by `sub edi, 0x674; je; sub edi, 0x2e; jne default`, i.e. token 0x674+0x2e = 0x6A2, which saveTokens.json calls `always`. Its positive control is the same switch's token 0x61D -> +0x1F0 `is_triggered_only`, a key the mod's casus_belli.txt also uses."
+  },
+  {
+   "rva": "0x649F40",
+   "kind": "function",
+   "name": "CCasusBelli::RemoveFromStatus",
+   "signature": "void __fastcall CCasusBelli::RemoveFromStatus(CCasusBelli* casusBelli@EDI, CDiplomacyStatus* status@stack:4, bool notify@stack:8)",
+   "no_signature": null,
+   "comment": "**The casus-belli consumption step.** 0xA49F40 to the single `ret 8` at 0xA4A3A5, 0x466 bytes, 8 int3, then CDiplomacyStatus::ClearCasusBelli at 0xA4A3B0; `retsBefore` over the body is empty. The casus belli arrives in **EDI**; the two stack dwords are the CDiplomacyStatus and a bool.\n\nIts tail, at 0xA4A36A, is the part that always runs:\n\n    status->changed (+0x59) = 1;\n    unlink the node whose payload is this casus belli from status->casus_belli (+0x3C)   // CList_RemoveNode, 0x5D49D0\n\nIt does **not** delete the object - the caller does that, after also unlinking it from the one CDiplomacy relation list at CCurrentGameState +0xB2C.\n\nEverything above that, 0x430 bytes of it, is conditional on the **bool** and raises a message. With `notify` false the body jumps straight from 0xA49F68 to the tail. With it true it reads the casus belli as a CRelation - `+0x8`/`+0xC` first tag and id, `+0x10`/`+0x14` second - and raises a message only when `first.id == gameState->played_country_id (+0xC34)`, the game state's `in_game (+0xDA4)` is set, and `countries[second.id]->NumberOfOwnedProvinces (+0xCF8) > 0`. Its localisation keys are **`WELOSECB`** with `ENEMY` and `CASUS` variables - the game's own words for what this function is, which is what turns the earlier reading of the consumption from inference into a name.\n\nThree callers: CDeclareWarAction::Apply at 0xA126AF, CWarGoalBaseAction::Apply at 0xA436B5 (both with the bool **false**, so neither tells the player) and CCasusBelli slot 11 at 0xA47D54 - the only path that can raise the message.",
+   "confidence": "confirmed",
+   "evidence": "Decoded the prologue, the bool gate and the whole tail in place; the message middle was read for its strings and its three gates rather than instruction by instruction, and that is marked above. EDI is read at 0xA4A006 (`[edi+8]`) with no prior write; `[ebp+0xc]` is the second pushed dword, so at the war-goal call site (`push 0; push ebx; call`) the status is [ebp+8] and the bool is 0. image.asString gives 'WELOSECB', 'ENEMY' and 'CASUS' at 0x15C1028, 0x15BB4C8 and 0x15C1018. Would be shown wrong if the tail were reachable only on one arm - it is not: both the early `je 0xa4a36a` at 0xA49F68 and the fall-through from the message block land there, and it is the only path to the single `ret 8`."
+  },
+  {
+   "rva": "0x64A3B0",
+   "kind": "function",
+   "name": "CDiplomacyStatus::ClearCasusBelli",
+   "signature": "void __fastcall CDiplomacyStatus::ClearCasusBelli(CDiplomacyStatus* status@EDI)",
+   "no_signature": null,
+   "comment": "0xA4A3B0 to the bare `ret` at 0xA4A3E8, 0x39 bytes, 7 int3 after. The status arrives in **EDI** and nothing is on the stack. Sets `changed (+0x59) = 1`, walks `casus_belli (+0x3C)` freeing every **node** (0xB95F9B, `free`) without touching the payloads, then zeroes the head, the tail (+0x40) and the count (+0x44). One caller in the image: CCallAllyAction::Apply at 0xA28958.\n\nThat it frees nodes and not objects is the correct ownership: a CCasusBelli is also in the one CDiplomacy relation list at CCurrentGameState +0xB2C, which owns it.\n\n**A new trap 2 second-cause case.** The eight int3 above this entry are immaculate and `image.functionStart(0xA4A3B0)` still answers 0xA49F40, the function before it, because the entry's first byte is `0xC6` (`mov byte ptr [edi+0x59], 1`) and that is not in functionStart's prologue set. It opens with a store rather than a prologue precisely because its receiver is already in a register, which is a shape this image has a lot of - so expect more `0xC6`.",
+   "confidence": "confirmed",
+   "evidence": "Decoded in place; the one caller is from an exhaustive e8/e9 rel32 scan of .text for the target. functionStart(0xA4A3B0) = 0xA49F40 and image.read(0xA4A3A8, 8) is eight 0xCC - both re-run for this entry. Would be shown wrong if it had no caller and were data; it has one, inside a body whose extent the record already fixes."
+  },
+  {
+   "rva": "0xF50A0",
+   "kind": "function",
+   "name": "SpreadThreat",
+   "signature": "void __stdcall SpreadThreat(CCountry* feared, int* amount, int* scale, CMapProvince* origin)",
+   "no_signature": null,
+   "comment": "**The threat adder, and a breadth-first spread over the province graph rather than a single add.** 0x4F50A0 to the single `ret 0x10` at 0x4F55F8, 0x55B bytes, 5 int3, then a register-convention function at 0x4F5600; `retsBefore` over the body is empty. Four stack dwords, nothing in a register, so plain `__stdcall`.\n\n**Seven call sites in six functions**, not the four the record says: 0x47B280, 0x551565, 0x65B64C, CDeclareWarAction::Apply at 0xA128FC, CNapAction::Apply at 0xA2BFFB, and CEmbargoAction::Apply **twice** at 0xA2F099 and 0xA2F57B.\n\nShape:\n\n1. the base magnitude is `*amount * (1000 + feared->+0xDA8->+0x1C0) / 1000`, **halved** when slot 7 of `feared->faction (+0xD8)` answers false, then scaled by a float global at 0x160A7B4;\n2. `CMapProvince +0x10` is set to 99999 on all `g_CMap (0x1A8557C) +0x21FC` provinces and `CCountry +0x18` is cleared on every country - the distance and visited scratch of the walk. **`+0x10` is the field already recorded as `weather_pressure_distance`**, shared with CWeatherManager::PropagateHighPressure, so it is a general BFS scratch slot and the existing name is narrower than the field;\n3. the walk runs out from `origin` over `CProvinceTemplate +0x90`/`+0x94` (0x14-byte edges), decaying the amount by distance and by `(1000 - feared->+0xDA8->+0x1C8)/1000`, by `*scale/1000` and by the per-edge cost 0x4C4D70 returns;\n4. for each province reached whose controller has not been marked, `controller->diplomacy[feared->id (+0xCA8)]->threat (+0x5C) += amount`, clamped at 0 from below, at 0x4F551B, and the controller is marked.\n\nSo threat is felt **by** whoever holds ground near `origin` **toward** `feared`, which is why CDeclareWarAction passes the actor as `feared` and the *victim's* acting capital as `origin`.\n\n**`amount` and `scale` are read through the pointer, never loaded**, which is trap 8's fourth case and now has three witnesses - see the revised CDeclareWarAction::Apply entry for the third and worst of them.",
+   "confidence": "confirmed",
+   "evidence": "Decoded the prologue, the scaling chain, the write at 0x4F5509-0x4F5524 and the epilogue instruction by instruction; the middle of the walk was read for its shape rather than exhaustively, and that is marked. `[ebp+8]`..`[ebp+0x14]` are all four read before any is overwritten. g_CMap's +0x21FC `province_count` and +0x2200 `provinces` are project.json's own names, and CMapProvince +0x334/+0x338 `controller`/`controller_id` and +0xD4 `path_node_ptr` are too - four recorded fields of one class agreeing on the same register is the identification (trap 12). CDiplomacyStatus +0x5C is already recorded as `threat`, thousandths, from two readers, so this is its writer rather than a new field. Would be shown wrong if the seven sites were not all in those six functions: the scan was an exhaustive e8/e9 rel32 sweep of .text, and its positive control is that it also found all six callers of 0x651FB0 and the three of 0x649F40, both of which the record or this fragment confirms independently."
+  },
+  {
+   "rva": "0x64A400",
+   "kind": "function",
+   "name": "SetMilitaryAccess",
+   "signature": "void __fastcall SetMilitaryAccess(bool granted@CL, CDiplomacyStatus* status@stack:4)",
+   "no_signature": null,
+   "comment": "The one writer of `CDiplomacyStatus::hasMilitaryAccess (+0x4C)`. Opens 0xA4A400, `ret 4`. The bool arrives in **CL** and the status on the stack - no ordinary convention, hence the spelled-out storage (trap 11). Sets `status->changed (+0x59) = 1` and `status->+0x4C = cl`, then, when `gameState->in_game (+0xDA4)` is set, pushes -1 onto the game state's list at `+0xCF8` through 0x45F5E0 - a refresh request, since who may march where has just changed.\n\n**Fifteen callers, and they are what names the field.** `cl = 1` at CMilitaryAccessAction::Apply 0xA23998, COfferMilitaryAccessAction::Apply 0xA25F91 and **CGrantMilitaryAccessEffect::Execute (rva 0x5B69F0, slot 11) at 0x9B6A4E** - the event-script effect whose own name says what the byte is. `cl = 0` at the cancel arms of the same two actions (0xA242BF, 0xA268A9, 0xA268D9), at CDeclareWarAction::Apply (0xA12DB6 and 0xA12DE6, both directions) and CCallAllyAction::Apply (0xA28891, 0xA288C4), and in RunCountryHourlyPass (0x4D9EA7, 0x4D9EC3) and CCountry::UpdateUndeclaredWars (0x4E9BCF, 0x4E9BE6).\n\n**The field names here are wave 13 agent A's**, out of the Lua API (`CDiplomacyStatus::HasMilitaryAccess` rva 0x64A3F0 reads +0x4C, `CDiplomacyStatus::AllowDebts` rva 0x64A7E0 reads +0x78), which agree offset for offset with the save keys `military_access` (token 0x2F0) and `debtaction_action` (token 0x726) that CDiplomacyStatus::LoadKey (rva 0x648190) writes to the same two bytes at 0x4817F1 and 0xA4834F. Two independent halves of the fact base converging on one offset is trap 14's good case; the registration names win and the keys are recorded here.",
+   "confidence": "confirmed",
+   "evidence": "Decoded 0xA4A400-0xA4A4BB in place; the `ret 4` and the rest of the frame were read for the extent only. CL is read at 0xA4A420 with no prior write and every call site sets it immediately before the call with `mov cl,1` or `xor cl,cl` - checked at eleven of the fifteen. The caller list is an exhaustive e8/e9 rel32 scan. 0x9B69F0 is CGrantMilitaryAccessEffect slot 11 per the RTTI vftables (vtable --holding equivalent, run in-process here), which is the name evidence; the save key `military_access` at the same offset (see the struct_fields entry) is the second and independent one."
+  },
+  {
+   "rva": "0x627AD0",
+   "kind": "function",
+   "name": "CCallAllyAction::CCallAllyAction",
+   "signature": "void __fastcall CCallAllyAction::CCallAllyAction(CCallAllyAction* this@EAX, int date@stack:4, CCountryTag actor@stack:8, CCountryTag recipient@stack:0x10, CCountryTag ally@stack:0x18)",
+   "no_signature": null,
+   "comment": "0xA27AD0 to the single `ret 0x1C` at 0xA27B19, 0x4A bytes, 4 int3. The object arrives in **EAX** and seven stack dwords follow - three CCountryTags by value plus the date, which is exactly 0x1C.\n\nIt writes the base layout FINDINGS-diploaction.md section 1 established, in one go: `+0x4 = 0x18D`, `+0x8`/`+0xC` actor tag and id, `+0x10`/`+0x14` recipient tag and id, `+0x18 = 0` (type PROPOSE), `+0x1C` and `+0x20` both the date, `+0x24 = 1` (value), **vftable `0x15FB6F4`** and then `+0x28`/`+0x2C` the third country - the ally being called - which is the extra pair the record notes only CCallAllyAction has.\n\nThree callers and they are the mechanism behind the whole class: **CDeclareWarAction::Apply builds two of these** (0xA12BE4 and a second site) and CCallAllyAction::Apply builds one. The date they pass is `[0x170C2B8]`, the 43,800,000-hour null date. So declaring war is what *manufactures* the call-to-arms offers, and an ally honouring one manufactures the next - which is how a faction is dragged in one country at a time.",
+   "confidence": "confirmed",
+   "evidence": "Decoded all 0x4A bytes. The vftable immediate 0x15FB6F4 is the one FINDINGS-diplomacy.md already attributes to CCallAllyAction (its slot 7 entry names the same table), which is what fixes the class; a constructor writing its own class's table is checkSignatures' own second check. Argument offsets read straight off the [ebp+N] loads: 0xc,0x10,0x14,0x18 into +0x8..+0x14, 0x8 into +0x1C/+0x20, 0x1c/0x20 into +0x28/+0x2C. Would be shown wrong if the object were 0x28 bytes rather than 0x30 - the allocation four bytes before the call at 0xA12BB9 is `push 0x30`."
+  },
+  {
+   "rva": "0x612030",
+   "kind": "function",
+   "name": "CDeclareWarAction::Apply",
+   "signature": "void __thiscall CDeclareWarAction::Apply(CDeclareWarAction* this)",
+   "no_signature": null,
+   "comment": "CDeclareWarAction slot 7, one holder (vftable 0x15FB3F4). 0xA12030 to the single bare `ret` at 0xA147B2, 13 int3, then the separate helper 0xA147C0 which this body itself calls twice; CDeclareWarAction slot 11 is further on at 0xA14BB0. 0x2783 bytes, the largest in the family. `this` in ECX, no stack arguments.\n\nReads its own two defines: WARDEC_WAR_DIPLOMACY_HIT (diplomacy +0x4) at 0xA1281B and WARDEC_INFLUENCE_COST (+0x8) at 0xA1290C, the latter subtracted from `countries[actor]->diplo_influence (+0xA88)` and clamped at 0 (0xA1292A/0xA12938).\n\n**And a third define, by the worst hiding place yet: the block pointer itself.** At 0xA128B9 it calls GetDefines, takes `[eax+0xBC]` - the diplomacy block - and passes that **bare address** to SpreadThreat (rva 0xF50A0) at 0xA128FC, which reads `*amount` from it. Offset 0 of the block is **WARDEC_BELIGERENCY** (25.0 in BlackICE's defines.lua), so declaring war spreads that much threat, with a `*scale` of a stack int set to 1000 at 0xA128B1 and the **victim's** acting capital province (CCountry::GetActingCapitalLocation, rva 0x2F100, on `countries[recipient.id]`) as the origin. This is trap 8's fourth case with no `add reg, N` to scan for at all, which is why a by-address scan would miss it too.\n\n**Its CDiplomacyStatus and CCountry writes, which were not read before:**\n\n| where | write |\n| --- | --- |\n| 0xA1239F | `status->undeclared_war (+0x24) = 0`, having deleted the CUndeclaredWar through its slot 0 - a formal war replaces the undeclared one |\n| 0xA12DB6, 0xA12DE6 | `hasMilitaryAccess (+0x4C) = 0` in **both** directions, through SetMilitaryAccess (rva 0x64A400) |\n| 0xA12E10/0xA12E14 and 0xA12E3E/0xA12E42 | `changed (+0x59) = 1` and `guarantee (+0x1C) = 0`, both directions - war cancels the pair's guarantee |\n| 0xA12E69, 0xA12E96 | `allowDebts (+0x78) = 0`, both directions - war cancels the debt agreement |\n| 0xA1292A, 0xA12938 | `countries[actor]->diplo_influence (+0xA88) -= WARDEC_INFLUENCE_COST`, clamped at 0 |\n\nIt also runs the full war-goal chain - CWarGoal::AddToWar (0xA12675), CWarGoal::RunCasusBelliOnAdd (0xA1267C) and CCasusBelli::RemoveFromStatus (0xA126AF, notify false) - and **builds CCallAllyAction proposals** at two sites through 0xA27AD0, gated on `status->war (+0x20)` being null and on the target's guarantees, which is how the victim's allies are asked to join. CWar::AddAttacker and CWar::AddDefender four times each, CCountry::RebuildNeighbours and 0x4E39C0 and 0x4E70A0 twice each, CCountry::ChangeRelation once, CList_RemoveNode four times, LoadMapSprites once. Keys DECLWAR / WEDECLWAR / DECLWAROTHER, DECLWAR_LIMITED and the four MESS_BADWORDS strings.\n\n**Still not read instruction by instruction**: the message construction and the two-site call-ally gate. The name `Apply` remains ours.",
+   "confidence": "inferred",
+   "evidence": "The write table is from a linear taint pass over 0xA12030-0xA147B2 that seeds on `[reg+0x16C]` (the country array), `[CCountry+0xE28]` (the diplomacy array) and the indexed loads off each, then reports stores through a tainted register; every hit above was then decoded in place. Its positive control is CNapAction::Apply and CGuarantee::Activate, where it finds exactly the +0xA88 subtraction and clamp and the two-direction +0x59/+0x1C writes the record already documents, and nothing else. Being linear it is not flow-sensitive, so a false positive is possible and a write through a register it could not follow would be missed - which is why each one is cited by address. WARDEC_BELIGERENCY at diplomacy +0x0 is from scripts/definesMap.py --block diplomacy; the +0x4C, +0x78 and +0x24 names are settled by CDiplomacyStatus::LoadKey, see struct_fields.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "revises": "Adds what the body writes, which the entry said had not been read, and adds a third define - WARDEC_BELIGERENCY, passed as the bare diplomacy block pointer to the threat spreader - which no scan for a define read could have found. The extent, the two named defines, the call set and the message keys are unchanged and were re-checked."
+  },
+  {
+   "rva": "0x627BA0",
+   "kind": "function",
+   "name": "CCallAllyAction::Apply",
+   "signature": "void __thiscall CCallAllyAction::Apply(CCallAllyAction* this)",
+   "no_signature": null,
+   "comment": "CCallAllyAction slot 7, one holder (vftable 0x15FB6F4). 0xA27BA0 to the bare `ret` at 0xA29D33, 12 int3, then CCallAllyAction slot 11 at 0xA29D40; the `ret` at 0xA284CE is an arm of the same frame. `this` in ECX, no stack arguments. Reads CALLALLY_INFLUENCE_COST (diplomacy +0x1C), WARDEC_WAR_DIPLOMACY_HIT (+0x4) and ALLIANCE_REJECT_RELATION_CHANGE (+0x44) - the only class that borrows two other groups' defines, which fits an ally being dragged into someone else's war.\n\n**Its CDiplomacyStatus and CCountry writes, which were not read before:**\n\n| where | write |\n| --- | --- |\n| 0xA284A2, 0xA284B4 | `countries[actor]->diplo_influence (+0xA88) -= CALLALLY_INFLUENCE_COST`, clamped at 0 |\n| 0xA2871B | `status->undeclared_war (+0x24) = 0`, having deleted the CUndeclaredWar through its slot 0 - the same shape as CDeclareWarAction's |\n| 0xA28891, 0xA288C4 | `hasMilitaryAccess (+0x4C) = 0`, two statuses, through SetMilitaryAccess (rva 0x64A400) |\n| 0xA28958 | **CDiplomacyStatus::ClearCasusBelli** (rva 0x64A3B0) on `countries[...]->diplomacy[this->+0x2C]` - the status against the *third* country the action names. Joining a war empties the whole casus-belli list between those two, rather than spending one |\n\nIt also calls CWar::AddAttacker and CWar::AddDefender once each, CCountry::ChangeRelation twice, 0x4E70A0 three times, 0x4E6640 twice, CountryTagVector_Contains twice, 0xA43FC0 (a remove-by-payload over a list) once, 0xA0DBB0 four times, and **builds one further CCallAllyAction** through 0xA27AD0 - so honouring a call to arms issues the next one along the chain. Keys MILALLHONOUR / WEMILALLHONOUR / OTHERMILALLHONOUR and MILALLDISHONOUR / WEMILALLDISHONOUR / OTHERMILALLDISHONOUR, with VERSUS, VICTIM, FACTION, FACTIONWAROFF and FACTIONWARDEF variables. Note that CDiplomaticActionCommand::Execute exempts this class alone from the seven-day cooldown write.\n\n**Still not read instruction by instruction**: the message construction and which direction each of the two military-access clears applies to. The name `Apply` remains ours.",
+   "confidence": "inferred",
+   "evidence": "Same taint pass and positive control as the CDeclareWarAction entry, with every hit decoded in place: 0xA2870E-0xA2871B is `eax = [ecx+0x24]; cmp eax,ebx; je; mov edi,eax; mov [ecx+0x24],ebx` after an indirect slot-0 call, byte for byte the shape at 0xA12390-0xA1239F. The ClearCasusBelli site was decoded from 0xA2892D: `call CCountryTag::GetCountry; ecx = [[esp+0x4c]+0x2c]; eax = [eax+0xe28]; edi = [eax+ecx*4]; call 0xa4a3b0`. The 0xA27AD0 construction is the same helper CDeclareWarAction uses, identified by the vftable it writes. Would be shown wrong if +0x2C were not the third country's id - CCallAllyAction::CCallAllyAction writes the third CCountryTag there, which is independent of this body.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "revises": "Adds what the body writes, which the entry said had not been read: the undeclared-war teardown, the two military-access clears, and the casus-belli list clear against the third country. The extent, defines, call set and message keys are unchanged and were re-checked."
+  },
+  {
+   "rva": "0x630E70",
+   "kind": "function",
+   "name": "CFactionAction::Apply",
+   "signature": "void __thiscall CFactionAction::Apply(CFactionAction* this)",
+   "no_signature": null,
+   "comment": "CFactionAction slot 7, one holder (vftable 0x15FB874). 0xA30E70 to the bare `ret` at 0xA32FC6, 9 int3, then CFactionAction slot 11 at 0xA32FD0. `this` in ECX, no stack arguments.\n\nIts gate is read in full, at 0xA30E9D-0xA30F09: `this->value (+0x24)` must be set; `countries[actor]->at_war (+0xACC)` must be **clear**; `countries[recipient]->faction (+0xD8)->+0x28` must be non-null; and then it walks that faction's member list and requires `countries[actor]->diplomacy[member]->war (+0x20)` to be null for **every** member - so a country may not join a faction while at war with any of its members. Reads INVITE_FACTION_INFLUENCE_COST (diplomacy +0x90) and JOIN_FACTION_INFLUENCE_COST (+0x8C), which is how the one class serves both directions.\n\n**Its CDiplomacyStatus and CCountry writes, which were not read before: there are none but the influence charge.** 0xA31545/0xA31553 subtract the cost from `countries[...]->diplo_influence (+0xA88)` and clamp at 0, and that is the only write to a CCountry or a CDiplomacyStatus in 0x2157 bytes. **Every other store in the body is to its own frame or to the 0x44-byte CMessageVariables it builds** - which is a finding rather than a gap: the faction membership change is not here.\n\nWhere it is instead: `0x4F5F30`, a ~0x950-byte `__thiscall` called twice (0xA319B2 and 0xA31AF5) with `ECX = country->faction (+0xD8)` and `(CCountry*, 0, 1)` on the stack, `ret 0xC`. It is in the frontier. The body also calls 0x68AC90 once at 0xA32F23, which appends an int to the game state's list at `+0xCFC`/`+0xD00`, and CList_RemoveNode once at 0xA31BFD.\n\nKeys FACTIONINVITEACCEPT, FACTIONJOINACCEPT / FACTIONJOINACCEPTOTHER, FACTIONJOINDECLINCE, FACTIONINVITEDECLINCE, and the FACTIONCOMMENT_ / FACTIONCOMMENTBAD_ prefixes it builds keys from.\n\n**Still not read instruction by instruction**: the message construction and 0x4F5F30. The name `Apply` remains ours.",
+   "confidence": "inferred",
+   "evidence": "The gate was decoded in place at 0xA30E70-0xA30F09. The negative - no other CCountry or CDiplomacyStatus write - rests on two passes over the same extent: the taint pass described on the CDeclareWarAction entry, whose positive control finds the known writes in CNapAction::Apply and CGuarantee::Activate, and a second pass listing **every** memory write in the body with its base register and a provenance walk, which returns 0xA31545/0xA31553 and otherwise only [esp+N], [ebp+N] and the +0x0/+0x14/+0x10/+0x1C/+0x38/+0x3C/+0x40 of freshly allocated 0x44-byte objects, i.e. CMessageVariable's own recorded layout. Would be shown wrong by a write through a register the provenance walk could not follow, or by 0x4F5F30 turning out not to be the membership change - it is called with the faction in ECX, which is as far as this went.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "revises": "Adds the full gate, the statement that the influence charge is the body's only CCountry or CDiplomacyStatus write, and where the faction membership change actually lives. The extent, defines and message keys are unchanged and were re-checked."
+  },
+  {
+   "rva": "0x63B5A0",
+   "kind": "function",
+   "name": "CLicenceTechnologyAction::Apply",
+   "signature": "void __thiscall CLicenceTechnologyAction::Apply(CLicenceTechnologyAction* this)",
+   "no_signature": null,
+   "comment": "CLicenceTechnologyAction slot 7, one holder (vftable 0x15FB994). **A trap 2 case: 0xA3B5A0 to the bare `ret` at 0xA3CD5D, with only two int3 before CLicenceTechnologyAction slot 11 at 0xA3CD60** - so a scan requiring a run of three or more padding bytes crosses the boundary and gives the body 0x1D20 bytes instead of 0x17BE, which attributes slot 11's LICENCE_INFLUENCE_COST read at 0xA3D13E and its tooltip strings (BUYLICENCEDESC, SELLLICENCEDESC, DIP_NO_INFL, ACT_NO_SELF, ENROUTE) to slot 7. `this` in ECX, no stack arguments.\n\nWithin the real extent it reads LICENCE_INFLUENCE_COST (diplomacy +0xB8) once, at 0xA3C36A, and divides through the 64-bit helper 0xB99980 twice - the only member of the family to do arithmetic beyond add-and-clamp, which fits a licence fee.\n\n**Its CDiplomacyStatus and CCountry writes, which were not read before, and they are the interesting part:**\n\n| where | write |\n| --- | --- |\n| 0xA3C38A, 0xA3C398 | on PROPOSE (`type == 0 && value`, gated at 0xA3C355), `countries[actor]->diplo_influence (+0xA88) -= LICENCE_INFLUENCE_COST`, clamped at 0 |\n| 0xA3C5A1 | on ACCEPT, **when the pair have a debt agreement** (`allowDebts`, +0x78): `countries[seller]->diplomacy[buyer]->debt (+0x70) += fee` |\n| 0xA3C5DE, 0xA3C61B | otherwise the fee moves as **money**: `-fee` and `+fee` into `CGoodsPool +0x10` of each side's pool, chosen the way GetPool chooses it - `country->pool_in_exile (+0x9F8)` when `government_in_exile (+0x95)` is set, else `CCountry::GetActingCapitalLocation(country) (rva 0x2F100) -> CMapProvince::pool (+0x15C)` |\n\nSo a licence is paid in cash unless the buyer holds a debt agreement with the seller, in which case it goes on the tab. Which branch is taken is decided by a byte at `[esp+0xf]`, tested at 0xA3C573.\n\n**And it reaches the technology layer by handing over a model**, not a technology: it calls CHistoricalModel::PickBestModel (rva 0x183230) once and CHistoricalModelSet::MakeSubUnit (rva 0x183060) twice, over a loop bounded by `[edi+0x30]`, then CList_FreeAndClear (rva 0x10D1E0) on what it built, plus 0x181F70, 0x182FA0 and 0x145760 - all in the frontier.\n\nKeys LICBUYACCEPT / LICBUYDECLINE with NAME and NUM variables. **Still not read instruction by instruction**: the model loop and the message construction. The name `Apply` remains ours.",
+   "confidence": "inferred",
+   "evidence": "Same taint pass and positive control as the CDeclareWarAction entry; both money arms decoded in place at 0xA3C5A6-0xA3C61B. CCountry +0x95 `government_in_exile`, +0x9F8 `pool_in_exile`, CGoodsPool +0x10 `money` and CMapProvince +0x15C `pool` are all already recorded - the last in BiceLib/GameClasses/CMapProvince.hpp:181 - and the two-branch pool chooser is the shape project.json's own +0x95 comment describes for GetPool, which is the corroboration rather than a fresh reading. CDiplomacyStatus +0x70 `debt` is settled by the loader, see struct_fields. Would be shown wrong if `[esp+0xf]` were not the debt-agreement flag; that byte's own source was not traced, so the branch condition is the one part of this marked as read-by-consequence rather than read.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "revises": "Adds what the body writes: the influence charge on propose, and on accept either the pair's `debt` or a cash transfer of money between the two pools. Also adds that it hands over a historical model through CHistoricalModel::PickBestModel and CHistoricalModelSet::MakeSubUnit. The extent, the trap 2 note, the define and the message keys are unchanged and were re-checked."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x70",
+   "name": "debt",
+   "type": "int",
+   "comment": "What the other country owes the array's owner, thousandths. Named from the loader: CDiplomacyStatus::LoadKey (rva 0x648190) stores the key `debt`, token 0x727, here at 0xA4836E. CLicenceTechnologyAction::Apply adds a licence fee to it at 0xA3C5A1 when the pair have a debt agreement (+0x78) instead of moving money - the only writer found, and no reader was looked for.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "Jump table at 0xA48394 with the byte table at 0xA483A8 and base token 0x726 (`add eax, 0xfffff8da` at 0xA48310 is -0x726); token 0x727 maps to case body 0xA4836E, which is `lea edi,[ebx+0x70]` into 0x67B540. saveTokens.json gives 0x727 = `debt`. Same positive control as +0x4C. Thousandths is from the family convention (trap 7) and is the weakest part of this entry: nothing here divides it by 1000."
+  },
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x74",
+   "name": "daily_repay",
+   "type": "int",
+   "comment": "How much of `debt` (+0x70) is repaid per day, thousandths. Named from the loader: CDiplomacyStatus::LoadKey (rva 0x648190) stores the key `dailyrepay`, token 0x728, here at 0xA48373. No writer or reader was looked for - this is a placement from the save grammar only.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "The same jump table as +0x70; token 0x728 maps to 0xA48373, `lea edi,[ebx+0x74]`, falling through into the same 0x67B540 call. saveTokens.json gives 0x728 = `dailyrepay`. Wrong if the two adjacent cases were swapped, which the two distinct `lea`s rule out."
+  },
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x7C",
+   "name": "next_wargoal_date",
+   "type": "int",
+   "comment": "A tick (hours): the earliest the array's owner may add another war goal against the other country. Named from the loader: CDiplomacyStatus::LoadKey (rva 0x648190) stores the key `next_wargoal_date`, token 0x7A7, here at 0xA4832A through Date_SetFromString (rva 0x4CDA0). **Its one writer is CWarGoal::AddToWar (rva 0x651FB0)** at 0xA520D2, which sets it to the current tick advanced by `WARGOAL_ADD_COOLDOWN / 1000` **months** through AddMonths (rva 0xB8C90). The status written is `countries[actorId]->diplomacy[goal->receiver.index]`, so the cooldown is per aggressor-and-victim pair. No reader was looked for.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "Loader case decoded in place at 0xA4832A-0xA4834C (`lea esi,[ebx+0x7c]` into 0x44CDA0, the same helper the `last_war` and `last_send_diplomat` cases use), reached from the jump table for token 0x7A7 = `next_wargoal_date`. The writer was decoded instruction by instruction. The months reading has two independent supports: 0xB8C90 is recorded as `AddMonths` with a signature from two readers, and BlackICE's own common/defines.lua:330 writes `WARGOAL_ADD_COOLDOWN = 1, -- 1 month`. Wrong if 0xB8C90 added days, in which case the mod's own comment would also be wrong."
+  },
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x50",
+   "name": "next_offer_allowed",
+   "type": "int",
+   "comment": "A tick (hours), set to the proposal's `date + 0xA8` - **exactly seven days** - by CDiplomacyStatus::SetNextOfferAllowed (0xA4A550), whose one caller is CDiplomaticActionCommand::Execute on the PROPOSE path, for every kind of action except `callaction` (0x309). **Likely a per-pair cooldown on diplomatic offers, but no reader was found**, and the setter's own comparison against `tick + 0xA8` is dead - both arms store the same value - so the feature may be partly gutted. The name is read off the one writer's arithmetic, not off a consumer.\n\n**The game's own name for the field is `last_send_diplomat`**: CDiplomacyStatus::LoadKey (rva 0x648190) stores that key, token 0x306, here at 0xA482C1 through Date_SetFromString - which is the key the save corpus shows beside `value` and `threat`. The two names disagree about tense and the code is on the record's side: what is stored is a date seven days in the *future*, not the last time a diplomat went. So the key is noted and the behavioural name kept.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "Loader case decoded in place: `mov ecx,[ebp+8]; add ecx,0x22c; push ecx; lea esi,[ebx+0x50]; call 0x44cda0` at 0xA482C1. Token from `cmp eax,0x306; je 0xa482c1` at 0xA48262; saveTokens.json gives 0x306 = `last_send_diplomat`. Wrong if 0x305 and 0x306 were the other way round - they are two separate `cmp`/`je` pairs landing on +0x54 and +0x50 respectively, and saveTokens.json's 0x305 is `last_war`, which fits +0x54's recorded war-tick writer.",
+   "revises": "Adds the save key `last_send_diplomat` and the loader site, and says why the recorded name is kept in spite of it. The name, type and the whole of the existing reading are unchanged."
+  },
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x54",
+   "name": "war_seen_tick",
+   "type": "int",
+   "comment": "CCountry::UpdateAtWarAndEnemies writes the current tick (`CGameState +0xBDC`) here at 0x4E6C32 for every pair whose `+0x20` (war) is non-null, and only for those. Because the function runs on every diplomatic action and once an hour, the value is refreshed for as long as the war lasts rather than stamped at its start, so it is the last tick at which the pair were seen to be at war and **not** a war-start date.\n\n**The save key is `last_war`** - CDiplomacyStatus::LoadKey (rva 0x648190) stores token 0x305 here at 0xA4823E through Date_SetFromString - which corroborates that reading rather than contradicting it: the game calls it the last war, and the writer keeps it current while the war runs. Still `inferred` because no reader has been looked for.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "Loader case decoded in place: `mov eax,[ebp+8]; add eax,0x22c; push eax; lea esi,[ebx+0x54]; call 0x44cda0` at 0xA4823E, reached by `cmp eax,0x305; je` at 0xA481CF. saveTokens.json gives 0x305 = `last_war`. Same control as +0x50.",
+   "revises": "Adds the save key `last_war` and the loader site as corroboration of the existing reading. The name, type and reading are unchanged."
+  }
+ ],
+ "vftable_slots": {
+  "CDeclareWarAction": {
+   "7": "Apply"
+  },
+  "CCallAllyAction": {
+   "7": "Apply"
+  },
+  "CFactionAction": {
+   "7": "Apply"
+  },
+  "CLicenceTechnologyAction": {
+   "7": "Apply"
+  },
+  "CCasusBelliType": {
+   "6": "IsValid"
+  }
+ },
+ "frontier": [
+  "0x652750",
+  "0x5BE8F0",
+  "0xF5F30",
+  "0x28AC90",
+  "0x4CDA0",
+  "0xC4D70",
+  "0xC4660",
+  "0x5F5E0",
+  "0x183230",
+  "0x183060",
+  "0x181F70",
+  "0x182FA0",
+  "0x145760",
+  "0xE6640",
+  "0xE70A0",
+  "0x643FC0",
+  "0x60DBB0",
+  "0x64D6D0",
+  "0x64DB50",
+  "0x6147C0",
+  "0x616D00",
+  "0x4AD650",
+  "0x4ADE10",
+  "0x647D60",
+  "0x647D20",
+  "0x649CA0",
+  "0x647910",
+  "0x647A00",
+  "0x5B69F0",
+  "0x5B6D30",
+  "0x598DB0",
+  "0x17350",
+  "0x47FEB0",
+  "0x47FFF0",
+  "0x80690",
+  "0x807F0"
+ ],
+ "slots_noted": "0x651FB0, 0x649EB0, 0x649F40, 0x7BBE0, 0xF50A0, 0x64A400, 0x64A3B0, 0x79950 and 0x627AD0 are in no virtual table at all - each was checked against every vftable in the RTTI export before naming. 0x16950 is CCasusBelliType slot 6 only, recorded above; CNullCasusBelliType's slot 6 is a different body (0x598DB0), so there is no fold to worry about. 0x598DB0 and 0x5B6D30 are left unnamed and are in the frontier."
+}
