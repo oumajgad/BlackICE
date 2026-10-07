@@ -148,11 +148,18 @@ The pipeline, in order, and it is idempotent:
      shallow `find` will reach, and the current project is `Hoi3_v12.1.2`. Run against a
      **copy** - the maintainer's is usually open and holds the lock.
 
-**`failed: 0` is the pass mark, as of 2026-10-04.** A second run should report `struct fields: 0`
-and currently reports **6**: five fields that overlap a by-value sub-object and are rewritten
-every run, diagnosed on 2026-10-05 and left for the maintainer because the fix is a modelling
-decision. `ghidra/README.md` names all five. **6 is the settled number** - if it moves, or a
-sixth name joins, that is drift and not this.
+**`failed: 0` and `struct fields: 0` on a second run is the pass mark**, and as of
+2026-10-05 it is actually reachable. It was not before: the apply ran in a period-2 cycle over
+six field declarations on five structs - four consecutive passes gave `6, 5, 6, 5` fields -
+because each phase wrote one side of a by-value sub-object and cleared the other. Two different
+causes, both now fixed: the four `flags_persistent` fields were re-declaring at the parent level
+what Ghidra already models inside `CFlags` and are deleted, and `CLeaderHistory` was 0x44 in
+Ghidra against the record's 0x24, so **a declared `size` is now authoritative downward as well
+as upward**. Three passes after the fix: `7, 0, 0` fields and **no conflicts**.
+
+So a non-zero second run now means something real. `ghidra/README.md` has the whole account,
+and `ghidra/PrintStructs.java` prints what Ghidra actually holds for a structure, which is the
+first thing to run when a field will not settle.
 Any failure is a real one; read the `!` lines for it, which `grep -F '!'` over the headless output
 will show.
 
