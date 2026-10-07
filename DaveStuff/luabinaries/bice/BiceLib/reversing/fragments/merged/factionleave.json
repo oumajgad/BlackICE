@@ -1,0 +1,310 @@
+{
+ "agent": "wave 15 agent C - the faction leave path",
+ "question": "Which object's faction does CDeclareWarAction::Apply test, whose membership changes, under what condition, and is CFaction::AddCountry the only non-CFactionAction route in and out of a faction?",
+ "source": "reversing/findings/FINDINGS-faction.md",
+ "addresses": [
+  {
+   "rva": "0x612030",
+   "kind": "function",
+   "name": "CDeclareWarAction::Apply",
+   "signature": "void __thiscall CDeclareWarAction::Apply(CDeclareWarAction* this)",
+   "no_signature": null,
+   "comment": "CDeclareWarAction slot 7, one holder (vftable 0x15FB3F4). 0xA12030 to the single bare `ret` at 0xA147B2, 13 int3, then the separate helper 0xA147C0 which this body itself calls twice; CDeclareWarAction slot 11 is further on at 0xA14BB0. 0x2783 bytes, the largest in the family. `this` in ECX, no stack arguments.\n\nReads its own two defines: WARDEC_WAR_DIPLOMACY_HIT (diplomacy +0x4) at 0xA1281B and WARDEC_INFLUENCE_COST (+0x8) at 0xA1290C, the latter subtracted from `countries[actor]->diplo_influence (+0xA88)` and clamped at 0 (0xA1292A/0xA12938).\n\n**And a third define, by the worst hiding place yet: the block pointer itself.** At 0xA128B9 it calls GetDefines, takes `[eax+0xBC]` - the diplomacy block - and passes that **bare address** to SpreadThreat (rva 0xF50A0) at 0xA128FC, which reads `*amount` from it. Offset 0 of the block is **WARDEC_BELIGERENCY** (25.0 in BlackICE's defines.lua), so declaring war spreads that much threat, with a `*scale` of a stack int set to 1000 at 0xA128B1 and the **victim's** acting capital province (CCountry::GetActingCapitalLocation, rva 0x2F100, on `countries[recipient.id]`) as the origin. This is trap 8's fourth case with no `add reg, N` to scan for at all, which is why a by-address scan would miss it too.\n\n**Its CDiplomacyStatus and CCountry writes, which were not read before:**\n\n| where | write |\n| --- | --- |\n| 0xA1239F | `status->undeclared_war (+0x24) = 0`, having deleted the CUndeclaredWar through its slot 0 - a formal war replaces the undeclared one |\n| 0xA12DB6, 0xA12DE6 | `hasMilitaryAccess (+0x4C) = 0` in **both** directions, through SetMilitaryAccess (rva 0x64A400) |\n| 0xA12E10/0xA12E14 and 0xA12E3E/0xA12E42 | `changed (+0x59) = 1` and `guarantee (+0x1C) = 0`, both directions - war cancels the pair's guarantee |\n| 0xA12E69, 0xA12E96 | `allowDebts (+0x78) = 0`, both directions - war cancels the debt agreement |\n| 0xA1292A, 0xA12938 | `countries[actor]->diplo_influence (+0xA88) -= WARDEC_INFLUENCE_COST`, clamped at 0 |\n\nIt also runs the full war-goal chain - CWarGoal::AddToWar (0xA12675), CWarGoal::RunCasusBelliOnAdd (0xA1267C) and CCasusBelli::RemoveFromStatus (0xA126AF, notify false) - and **builds CCallAllyAction proposals** at two sites through 0xA27AD0, gated on `status->war (+0x20)` being null and on the target's guarantees, which is how the victim's allies are asked to join. CWar::AddAttacker and CWar::AddDefender four times each, CCountry::RebuildNeighbours and 0x4E39C0 and 0x4E70A0 twice each, CCountry::ChangeRelation once, CList_RemoveNode four times, LoadMapSprites once. Keys DECLWAR / WEDECLWAR / DECLWAROTHER, DECLWAR_LIMITED and the four MESS_BADWORDS strings.\n\n**Still not read instruction by instruction**: the message construction and the two-site call-ally gate. The name `Apply` remains ours.\n\n**The preamble, read instruction by instruction 2026-10-06 (wave 15), and it is a *join*, not a leave.** 0xA12030-0xA121D3 is one guarded loop and the `CFaction::AddCountry` call at 0xA121CE is reached on exactly one path (cfg: 0xA121A5 <- 0xA121A3 fall only). `actor->faction->IsValid()` (slot 7 through [vft+0x1C], at 0xA12089) gates the whole block, so **nothing here happens unless the declaring country is itself in a faction**. It then walks `countries[actor.id]->enemies (+0x1008)` as the 0x14-byte node chain CCountry::UpdateAtWarAndEnemies builds (tag at +0, id at +4, `next` at +0xC) and, for each enemy E:\n\n- skip unless `countries[E.id]->faction->IsValid()` (0xA120EF) and that faction's `Members.count (+0x30)` is positive;\n- skip unless `faction->Members.first->id == countries[E.id]->id` (0xA12129) - **E must lead its own faction.** GetFactionLeader is inlined here, count test and `'---'` arm included, and the `'---'` arm at 0xA12119 is unreachable because the `jle` above has already taken the zero case;\n- let `rf = countries[recipient.id]->faction` (0xA12140); continue the loop unless `rf` is invalid (0xA12151) **or** `rf == E->faction` (0xA12157);\n- store `war = countries[actor.id]->diplomacy[E.id]->war (+0x20)` in the frame slot at `[esp+0x2C]` (0xA12199) - *before* the next test, so both outcomes keep it;\n- if `rf->IsValid()` (0xA1219F) the loop leaves with the war kept and no faction change: the recipient was already in E's faction;\n- otherwise `CFaction::AddCountry(countries[E.id]->faction, countries[recipient.id], 0, 0)` (0xA121CE) and the loop leaves.\n\nSo the slot-7 `IsValid` answering false is on the **recipient's own** faction and **nothing is cleared**: AddCountry's `this` is `countries[E.id]->faction`, which the loop has already proved *valid*, so AddCountry takes its step 5 (`country->faction = this`; `CFaction::AddMember`) and never its step 3. Wave 14 read this call as a leave; it is the opposite. The `[esp+0x24]` tag pair that reading could not place is the **enemy's** id out of the `enemies` node, against the action's own `+0x10`/`+0x14` recipient.\n\n**What the saved war is for, and why this is one rule and not two.** The frame slot is zeroed at 0xA12081 and tested at 0xA124C7. Zero means a **fresh war**: `operator new(0xAC)`, constructed by 0xA4D6D0, linked into `CCurrentGameState +0xC00`, then `CWar::AddAttacker(war, 1, 0, actor)` (0xA125ED) and `CWar::AddDefender(war, 1, 0, recipient)` (0xA12601), and the frame byte at `[esp+0x1F]` set to 1. Non-zero takes 0xA12611 instead, which searches the existing war's `attackers (+0x2C..+0x30)` in 8-byte steps for the **actor's** id and adds the recipient as a **defender** if it is found (0xA12654) or as an **attacker** if it is not (0xA12641) - either way on the side opposite the declarer. **So a declaration against a factionless country by a country already at war with a faction leader starts no war at all: it enlarges the existing one and puts the victim into the enemy faction.** Corroborated in the savegames: across all 45, 183 two-sided `active_war` blocks, **not one has a faction on both sides**, and `Ireland1941_11_02_07` is the negative control - Japan's enemies were the Chinese warlords and CSX (an `allies` member but not its leader), so no faction-leading enemy existed, and the Pearl Harbor declaration produced a **separate** `2nd War of Japanese Aggression` with USA and PHI left in no faction.",
+   "confidence": "inferred",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "revises": "the preamble at 0xA12030-0xA121D3 was unread; wave 14 published its CFaction::AddCountry call at 0xA121CE as a *leave* and that is wrong. Nothing already in the entry is withdrawn - the text is appended.",
+   "evidence": "cfg.py over 0xA12030+0x1B0 gives every edge: the call at 0xA121CE has exactly one predecessor, the fall-through of `test al,al; jne 0xA121D3` at 0xA121A1, where al is slot 7 on esi and esi is `countries[this->+0x14]->+0xD8` set at 0xA12140 and not written again. AddCountry's ecx at 0xA121C1 is `countries[[esp+0x24]]->+0xD8`, and [esp+0x24] is the enemies-node id stored at 0xA120C5 and nowhere else. Shown wrong by: any write to esi between 0xA12140 and 0xA1219F, or a second store to [esp+0x24] - there is neither; or by [esp+0x30] not being `this` (it is: esp = E-4 after the `push edi` at 0xA12080, and `this` went to E+0x2C at 0xA12059)."
+  },
+  {
+   "rva": "0xF6B20",
+   "kind": "function",
+   "name": "CCountry::LeaveFaction",
+   "signature": "void __thiscall CCountry::LeaveFaction(CCountry* this, bool recordInHistory)",
+   "no_signature": null,
+   "comment": "**The counterpart of `CFaction::AddCountry`, and the route out of a faction that does not go through it.** 0x4F6B20 to the single `ret 4` at 0x4F6C80, 0x163 bytes, 10 `int3` above the entry and 13 below the exit, no interior `ret`. `this` is a **CCountry** - it reads `+0xD8` and takes the address of `+0xCA4` - and the one stack argument is a bool.\\n\\nBody: if `this->faction` is non-null and `IsValid()`, `CFaction::RemoveMember(faction, &this->tag)` then `this->faction = CFaction::null()`; then, when `recordInHistory` is set, `operator new(0x18)` built by `CFactionLeave::CFactionLeave(this)` (0x5F08B0) and given the (now null) faction by 0x5F07C0, and handed to the country's history; then the `CCurrentGameState` lazy-singleton boilerplate and the rest of the rebuild.\\n\\n**It matters because the record said there was one gateway.** `CFaction::AddMember` really does have exactly one caller, so *joining* goes through AddCountry alone; `CFaction::RemoveMember` has **seven**, and only 0x4F5F8C (AddCountry's own step 2) and 0x502F07 (the leader promotion) were accounted for. This function is one of the other five, and the four callers it has - 0x4A37ED, 0x4DBE67, `CFactionLeave`'s slot 7 at 0x5F0AA1 and 0x9A236E in the event-effect module - are what actually takes a country out of a faction. AddCountry's step 3 (`IsValid` false -> `faction = CFaction::null()`) is a defensive arm: of its 14 call sites the only one that can reach it with an invalid faction is `CFactionJoin`'s undo arm at 0x5F0855. The name is ours; the body is read end to end.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "Decoded 0x4F6B20..0x4F6C82 instruction by instruction; one `ret 4`, `retsBefore` empty, `functionStart(0x4F6B68)` answers 0x4F6B20. `findRefs --callers 0x00522700` gives the seven RemoveMember callers and `--callers 0x00522650` gives AddMember's single one, which is the positive control for the method. Shown wrong by a `this` that is not a CCountry - but `+0xD8` and `+0xCA4` are a CCountry's faction and tag and no other class has that pair - or by a caller passing something else."
+  },
+  {
+   "rva": "0x1F0600",
+   "kind": "function",
+   "name": "CFactionJoin::CFactionJoin",
+   "signature": "CFactionJoin* __thiscall CFactionJoin::CFactionJoin(CFactionJoin* this, CCountry* country)",
+   "no_signature": null,
+   "comment": "The 0x18-byte object `CFaction::AddCountry` allocates when `recordInHistory` is set (0x4F5FD5/0x4F5FE6). Calls the base constructor 0x5EEA40(country), writes its own vftable 0x15C997C - which the RTTI export names `CFactionJoin` - and returns `this`. `ret 4`. This closes FINDINGS-faction's open item: the faction-change history entry is `CFactionJoin` for a join and `CFactionLeave` for a leave, both derived from `CCountryHistoryEntry` at offset 0.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "The vftable written at 0x5F0616 is 0x15C997C, which the RTTI export gives as CFactionJoin's only table (8 slots, object offset 0); the allocation size at the one call site is 0x18. Shown wrong by the RTTI export naming that address for another class."
+  },
+  {
+   "rva": "0x1F08B0",
+   "kind": "function",
+   "name": "CFactionLeave::CFactionLeave",
+   "signature": "CFactionLeave* __thiscall CFactionLeave::CFactionLeave(CFactionLeave* this, CCountry* country)",
+   "no_signature": null,
+   "comment": "The same object for the other direction, allocated by `CCountry::LeaveFaction` (rva 0xF6B20) at 0x4F6B82/0x4F6B93. Base constructor 0x5EEA40(country), own vftable 0x15C99A0 = `CFactionLeave`, returns `this`, `ret 4`. Byte for byte the same shape as `CFactionJoin::CFactionJoin` with one constant changed, which is what makes the pair of them legible.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "Vftable 0x15C99A0 at 0x5F08C6 against the RTTI export's CFactionLeave (8 slots, offset 0); `operator new(0x18)` at the one call site. Shown wrong the same way."
+  },
+  {
+   "rva": "0x1F07E0",
+   "kind": "function",
+   "name": "CFactionJoin::Apply",
+   "signature": "void __thiscall CFactionJoin::Apply(CFactionJoin* this, bool forward)",
+   "no_signature": null,
+   "comment": "`CFactionJoin` slot 7, which the RTTI export says the class introduces; one holder, `ret 4`, read end to end, 0x7E bytes. The argument is a direction flag.\\n\\n    forward: this->+0x14 = this->country->faction     // remember what to undo\\n             if (this->+0x10 && this->+0x10->IsValid())\\n                 CFaction::AddCountry(this->+0x10, this->country, 0, 0)\\n    reverse: CFaction::AddCountry(this->+0x14, this->country, 0, 0)\\n\\nSo `+0x10` is the faction the entry records and `+0x14` the one to put the country back into - which settles the roles of the two faction pointers FINDINGS-faction could only count. The reverse arm is **unguarded**, so `+0x14` may be the null faction, and that is the one call site in the image that deliberately uses AddCountry's step 3 as a leave. The name `Apply` is ours; `CCountryHistoryEntry`'s slot 7 is unnamed.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "vtable.py --holding 0x5F07E0 gives CFactionJoin slot 7 and nothing else; RTTI's `introduces` list has slot 7 at 0x005f07e0 for the class. Shown wrong by a second holder of the body, which would make it a fold (trap 4)."
+  },
+  {
+   "rva": "0x1F0A70",
+   "kind": "function",
+   "name": "CFactionLeave::Apply",
+   "signature": "void __thiscall CFactionLeave::Apply(CFactionLeave* this, bool forward)",
+   "no_signature": null,
+   "comment": "`CFactionLeave` slot 7, one holder, `ret 4`, read end to end, 0x77 bytes, and the mirror image of `CFactionJoin::Apply`.\\n\\n    forward: this->+0x14 = this->country->faction\\n             CCountry::LeaveFaction(this->country, 0)\\n    reverse: if (this->+0x14 && this->+0x14->IsValid())\\n                 CFaction::AddCountry(this->+0x14, this->country, 0, 0)\\n\\nNote it passes `recordInHistory = 0` to LeaveFaction, so replaying history does not write more history - the same discipline `CFaction::LoadKey`'s `country` case uses.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "vtable.py --holding 0x5F0A70 gives CFactionLeave slot 7 only; RTTI's `introduces` has slot 7 at 0x005f0a70. Shown wrong by a second holder."
+  },
+  {
+   "rva": "0x5A1C60",
+   "kind": "function",
+   "name": "CJoinFactionEffect::Execute",
+   "signature": "void __thiscall CJoinFactionEffect::Execute(CJoinFactionEffect* this, CEventScope* scope, int unused)",
+   "no_signature": null,
+   "comment": "`CJoinFactionEffect` slot 11, one holder (vftable 0x15F4724), the whole of 0x9A1C60 to the `ret 8` at 0x9A1CB3 with 13 `int3` above and 10 below - **the event-script effect `join_faction`, complete in 0x56 bytes.** It walks `this->faction (+0x20)`'s `Members (+0x28)` comparing each node's id half against `scope->country.id (+0x14)` and returns if the country is already a member; otherwise `CFaction::AddCountry(this->faction, countries[scope->country.id], 0, 1)`.\\n\\n**`joinOngoingWars` is 1**, so a scripted `join_faction` runs AddCountry's war sweep: the country is put into every one of the faction leader's unlimited wars at once. The effect does **not** check that its faction is valid, so it is also the shape that would reach AddCountry's step 3 with a null faction.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "Read end to end; vtable.py --holding gives exactly one holder at slot 11, which is CEffect::Execute's slot throughout the record. Shown wrong by a second holder of the body, or by `+0x20` not being a CFaction - but `[[ecx+0x20]+0x28]` is walked as the member list and handed to AddCountry as its receiver."
+  },
+  {
+   "rva": "0x5AEBF0",
+   "kind": "function",
+   "name": "CReleaseVassalEffect::Execute",
+   "signature": "void __thiscall CReleaseVassalEffect::Execute(CReleaseVassalEffect* this, CEventScope* scope, int unused)",
+   "no_signature": null,
+   "comment": "`CReleaseVassalEffect` slot 11, one holder (vftable 0x15F5004), the event-script effect `release_vassal`. SEH frame, entry at 0x9AEBF0 with 11 `int3` above it. **Only partly read** (wave 15 agent C): it resolves a tag through 0x9AF510, refuses it when it spells `REB` (the byte tests at 0x9AEC22/0x9AEC26/0x9AEC2B), and at 0x9AF090-0x9AF0D2 - gated on the releaser's `faction->IsValid()` - calls `CFaction::AddCountry(countries[scope->+0x14]->faction, countries[ebx], 0, 1)`, so **a released vassal joins its liberator's faction and its wars**. The rest of the body, including what it does with the 0x7A120 constant pushed at 0x9AF0E0, was not read.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "vtable.py --holding 0x9AEBF0 gives one holder at slot 11, the family's Execute slot. The AddCountry call's receiver and arguments were read off 0x9AF0AB-0x9AF0D2. Shown wrong by a second holder, or by a path to the call that bypasses the 0x9AF0A5 IsValid - which was not checked on the graph, only read as the preceding test."
+  },
+  {
+   "rva": "0x14BD00",
+   "kind": "function",
+   "name": "CCreateVassalCommand::Execute",
+   "signature": "void __thiscall CCreateVassalCommand::Execute(CCreateVassalCommand* this)",
+   "no_signature": null,
+   "comment": "`CCreateVassalCommand` slot 6, one holder (vftable 0x15C3B24), 16 `int3` above the entry. `CCommand`'s slot 6 is `Execute` throughout the record. **Only the faction block was read** (wave 15 agent C): the command carries two country tags, at `+0x3C`/`+0x40` and `+0x44`/`+0x48`, and at 0x54C300-0x54C34E - gated on `countries[this->+0x48]->faction->IsValid()` - it calls `CFaction::AddCountry(countries[this->+0x48]->faction, countries[this->+0x40], 0, 1)`. So creating a vassal pulls the vassal into the other party's faction and its ongoing wars, which is the same rule `CFactionAction::Apply`'s second call site applies to a subject following its overlord. It goes on at 0x54C378 to test that pair's `CDiplomacyStatus +0x14 alliance`.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "vtable.py --holding gives one holder at slot 6. The call's receiver and arguments were read at 0x54C333-0x54C34E. Shown wrong by a second holder, or by +0x40/+0x48 being the other way round, which the block alone does not settle - which of the two tags is the overlord was not established."
+  },
+  {
+   "rva": "0x14C980",
+   "kind": "function",
+   "name": "CLiberateCountryCommand::Execute",
+   "signature": "void __thiscall CLiberateCountryCommand::Execute(CLiberateCountryCommand* this)",
+   "no_signature": null,
+   "comment": "`CLiberateCountryCommand` slot 6, one holder (vftable 0x15C3BA4). Note there is only **one** `int3` above the entry and the function before it ends `ret 0x14` - the vftable is what makes it an entry (trap 2's cheap resolution). **Only the faction block was read** (wave 15 agent C): gated on an `IsValid` at 0x54CEFC, it calls `CFaction::AddCountry(liberator->faction, countries[liberated.id], 0, 1)` at 0x54CF30 from two tag pairs held in esi and edi, so **a liberated country joins its liberator's faction and its wars**. The body continues into the `CCurrentGameState` singleton boilerplate at 0x54CF35, unread.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "vtable.py --holding gives one holder at slot 6. The call was read at 0x54CF02-0x54CF30. Shown wrong by a second holder, or by esi/edi not being the liberator and the liberated - which register holds which was taken from the call's shape, not from the whole function."
+  },
+  {
+   "rva": "0x19360",
+   "kind": "function",
+   "name": "ApplyCustomGameSettingFaction",
+   "signature": null,
+   "no_signature": "Receiver in **ESI**, one stack argument, `ret 4`. The receiver is the custom-game-setting record (a CCountryTag at +0 and a CFaction* at +0x58) and the argument's class was not identified, so no ordinary signature is written for it.",
+   "comment": "**The game-setup route into a faction**, and the last of wave 14's six unidentified `CFaction::AddCountry` callers. 0x419360 to the `ret 4` at 0x4194B4, 0x155 bytes, 8 `int3` above and 9 below, read end to end; its one caller is `ApplyCustomGameSettings` (rva 0x1D560) at 0x41D857.\\n\\nFor the country named by the setting's own tag at `+0`/`+4`, and then for every country in that country's `Vassals (+0xF78)` that a vector on the argument (`+0x2C`/`+0x30`, 4-byte elements) does not veto, it copies `alignment_x (+0xE4)` and `alignment_y (+0xE8)` from the setting's faction's **leader** - `Members.first`, with GetFactionLeader inlined including the `'---'` arm - and then calls `CFaction::AddCountry(setting->+0x58, country, 0, 0)`. **Both flags zero**, so a lobby faction choice writes no history entry and runs no war sweep, exactly as `CFaction::LoadKey` does. The name is ours, from the single caller.",
+   "confidence": "inferred",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "Read end to end; `functionStart(0x4193CA)` answers 0x419360 and `retsBefore(0x419360, 0x4194AF)` is empty. `findRefs --callers 0x00419360` gives exactly one caller and it is inside ApplyCustomGameSettings. `+0xE4`/`+0xE8` are already `alignment_x`/`alignment_y` in the record. The name would be shown wrong by a second caller from outside the setup path; the body would be shown wrong by `+0x58` not being a CFaction, but it is AddCountry's receiver and its `+0x30` is read as the member count."
+  },
+  {
+   "rva": "0x102F34",
+   "kind": "instruction",
+   "name": "FactionLeaderPromotion",
+   "signature": null,
+   "no_signature": "An address inside a function, not an entry point. The enclosing function is rva 0x102BC0, now bounded at 0x502BC0-0x5033AD; it is still unnamed and still in the frontier.",
+   "comment": "**The one place in the image that changes a faction's leader.** Leadership is positional - `CFaction::GetFactionLeader` returns `Members (+0x28)`'s first node - and `CFaction::AddMember`'s only caller always appends at the tail, so a join can never promote. This block can.\n\nIt sits in the unnamed function at rva 0x102BC0, which sets `country->government_in_exile (+0x95) = 1` and scales `Manpower (+0xBCC)` and `officers (+0xC4)` by the float at 0x160A684 - a country losing its homeland. The block runs only when `faction->IsValid()`, the country's own id equals the leader's (0x502E5F), and `NumberOfMembers > 1`; it then walks the member list skipping any country with `government_in_exile` set and skipping itself, keeps the one with the greatest `max_ic (CCountry +0x60C)`, and promotes it by `CFaction::RemoveMember` (0x502F07) followed by the push-front helper 0x523770 (0x502F34), finishing `faction->+0x38 = 1`.\n\nSo: **when a faction leader goes into exile, the surviving member with the highest max IC takes the lead, and the rest of the order is untouched.** The 45 savegames on this machine agree: 44 of them have GER, ENG and SOV first in `axis`, `allies` and `comintern`, and in the only exception - Ireland1945_01_22_02 - `axis` reads JAP, GER, SLO, ... with Germany simply displaced one place, which is what removing JAP and pushing it to the front produces.\n\n**The enclosing function is now bounded (wave 15 agent C): rva 0x102BC0, 0x502BC0 to the `ret 8` at 0x5033AD, 0x7F0 bytes.** Two stack arguments and nothing in ECX - `[ebp+8]` and a bool at `[ebp+0xC]`, tested against 1 at 0x502BE6 - so it is `ret 8` with both on the stack. The four `ret 8` at 0x50315F, 0x503376, 0x503393 and 0x5033AD are arms of one frame; `retsBefore(0x502BC0, 0x5033AD)` lists the first three and nothing in the body branches past the last.\n\n**And 0x5033AD/0x5033B0 is a new trap 2 pair, with zero padding**: the byte after the `ret 8` is the `mov ecx, [0x1A87818]` that opens a *different* function, which (a) ends in a **bare** `ret` at 0x503650 where every exit of this one cleans eight bytes, and (b) has a caller of its own at 0x68F05F. That is wave 12's independent rule for an unpaddded boundary, and it is what settles the extent - an int3 scan runs 0x2A3 bytes past the end, and a scan stopping at the first `ret` stops 0x24E bytes short of it. The seven callers the entry already claims check out: 0x47ADAF, 0x4DBE6E, 0x50C228, 0x54D8FE, 0x5F1EDD, 0x5F1EF9 and 0x9BB1AB. The body outside the promotion block is still unread, so the function is still unnamed and still in the frontier.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "revises": "adds the enclosing function's extent, which the entry said had not been established, and the trap 2 pair that settles it; nothing already there is withdrawn and the no_signature text is rewritten to point at the bound",
+   "evidence": "Decoded 0x502BC0 forward 0x1400 bytes: the only int3 run is at 0x503651, past a bare `ret` at 0x503650. `findRefs --callers 0x005033B0` gives one caller (0x68F05F), and a scan of every direct branch in 0x502BC0..0x5033AD finds no target above 0x5033AD, so the two stretches are two functions. Shown wrong by a branch from inside into 0x5033B0 or beyond - there is none - or by 0x5033B0 proving to be an exception funclet, which a bare `ret` against four `ret 8` and an independent caller both argue against."
+  },
+  {
+   "rva": "0xFBC10",
+   "kind": "function",
+   "name": "CCountry::RebuildRules",
+   "signature": "void __stdcall CCountry::RebuildRules(CCountry* country)",
+   "no_signature": null,
+   "comment": "0x4FBC10 to the `ret 4` at 0x4FBC76, 0x66 bytes, read end to end, 7 `int3` after it and then `CCountry::GetRules` (rva 0xFBC80, `lea eax,[ecx+0xdbc]; ret`) - which is what identifies the object it works on. It clears four bytes inside `Rules (+0xDBC)` at `+0x18`, `+0x20`, `+0x28` and `+0x30`, frees the list chained through `Rules +0x8` node by node and zeroes `+0x8`/`+0xC`/`+0x10`, and then, **only if `country->faction->IsValid()`**, passes `&faction->rule (CFaction +0x40)` to 0x45E340.\\n\\n**It writes no `CDiplomacyStatus` field, allocates nothing itself and does not read `CCountry +0xE28`.** That half of wave 14's 'a faction join creates no alliance' hole is closed; the repopulation is inside 0x45E340, whose only call is `operator new` and which is in the frontier. The name is ours, from the field the body clears.",
+   "confidence": "inferred",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "Read end to end. The whole body's destinations are `Rules` offsets; a scan of the decoded body for the displacement 0xE28 - the only way from a CCountry to a CDiplomacyStatus - returns nothing, and the same scan over CDeclareWarAction::Apply finds it at 0xA12184 and 0xA121F3, which is the positive control. The name would be shown wrong if 0x45E340 turned out not to rebuild the list this clears."
+  },
+  {
+   "rva": "0xE70A0",
+   "kind": "function",
+   "name": "CCountry::OnDiplomacyChanged",
+   "signature": "void __stdcall CCountry::OnDiplomacyChanged(CCountry* country)",
+   "no_signature": null,
+   "comment": "0x4E70A0 to the `ret 4` at 0x4E718D, 0xEE bytes, read end to end; **it abuts the function above it with no padding at all** (the bytes before the entry are `mov fs:[0],ecx; pop ebx; mov esp,ebp; pop ebp; ret`), so it is an entry only because twenty call sites say so - trap 2.\\n\\nAfter the `CCurrentGameState` lazy-singleton boilerplate it does four things: `0x430050(state + 0xB5C, country)`; `0x5D6230(&country->units (+0xBAC))`, which walks the units checking each one's `+0x124` tag against the country database and the literal `REB`; `CConvoy::ClearPath` (rva 0xC6930) on every node of `convoys (+0xA0)`; `theatres_dirty (+0x580) = 1`; and, when `at_war (+0xACC)` is clear, `0x4D57D0(country)`.\\n\\n**It writes no `CDiplomacyStatus` field and never touches `+0xE28`**, nor does any of the five functions it calls in its own body - which is the other half of wave 14's hole in 'a faction join creates no alliance'. The name is inference from the call sites: all twenty are diplomacy state changes (two in `CDeclareWarAction::Apply`, three in `CCallAllyAction::Apply`, one in `CPeaceAction::Apply`, one in `CFaction::AddCountry` at 0x4F63F5, four in `CCountry`'s own diplomacy block at 0x4E9CE5-0x4E9DB2, two in the vassal transfer at 0xD94A0, six in the event-effect module and one at 0x418DF8 in the setup code beside ApplyCustomGameSettingFaction), and clearing every convoy's path is what a change in who you may pass through implies.",
+   "confidence": "inferred",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "Read end to end; one `ret 4` and `retsBefore` empty inside it. `findRefs --callers 0x004E70A0` gives 20 sites, every one in the diplomacy, action, setup or event-effect code. The 0xE28 scan described on `CCountry::RebuildRules` was run over this body and over 0x430050, 0x5D6230, 0xC6930, 0x4D57D0 and 0x45E340 and returns nothing in any of them, with CDeclareWarAction::Apply as the positive control. The name would be shown wrong by a caller outside diplomacy; the negative would be shown wrong by a CDiplomacyStatus reached at depth 2."
+  }
+ ],
+ "structs": [
+  {
+   "name": "CFactionJoin",
+   "size": "0x18",
+   "inherits": "CCountryHistoryEntry",
+   "vftable_rva": "0x11C997C",
+   "comment": "The country-history entry `CFaction::AddCountry` writes when its `recordInHistory` flag is set - `operator new(0x18)` at 0x4F5FD5, constructed by rva 0x1F0600. Eight slots, and it introduces 2, 6 and 7.",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "RTTI gives the single vftable 0x015C997C at object offset 0 with 8 slots and `CCountryHistoryEntry` as the only base, at offset 0; the size is the 0x18 pushed to `operator new` at the one allocation site. Shown wrong by a base at a non-zero offset or an allocation of another size."
+  },
+  {
+   "name": "CFactionLeave",
+   "size": "0x18",
+   "inherits": "CCountryHistoryEntry",
+   "vftable_rva": "0x11C99A0",
+   "comment": "The same entry for a departure, written by `CCountry::LeaveFaction` (rva 0xF6B20) - `operator new(0x18)` at 0x4F6B82, constructed by rva 0x1F08B0.",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "RTTI gives vftable 0x015C99A0, offset 0, 8 slots, base CCountryHistoryEntry at offset 0; 0x18 from the allocation at 0x4F6B82. Shown wrong the same way."
+  },
+  {
+   "name": "CJoinFactionEffect",
+   "inherits": "CEffect",
+   "vftable_rva": "0x11F4724",
+   "comment": "The event-script effect `join_faction`. Declared here only to host its one field; `size` is deliberately omitted because `CEffect`'s own size is not recorded.",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "RTTI gives the single vftable 0x015F4724 at object offset 0 with 12 slots and `CEffect` as the only base, at offset 0. Shown wrong by a base at a non-zero offset."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CDiplomacyStatus",
+   "offset": "0x20",
+   "name": "war",
+   "type": "CWar*",
+   "comment": "Non-null while the pair are at war. **Inferred, not proven**: CCountry::IsEnemy (rva 0x2F1B0) answers true on nothing but this being non-null plus the two unconditional REB cases, and the daily province pass inlines the same three tests at 0x49EE35 to decide whether revolt risk accumulates. No writer of the field was found. Typed `CWar*` 2026-10-06: `CDeclareWarAction::Apply` loads it at 0xA12191 and hands the same value to `CWar::AddAttacker` (0xA12641) and `CWar::AddDefender` (0xA12654), whose first parameter is already recorded as `CWar*`, and the `attackers` vector at +0x2C/+0x30 is walked through it at 0xA12611 in 8-byte CCountryTag steps.",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "revises": "type only, `void*` -> `CWar*`; the name and the existing comment are kept and the new sentence is appended",
+   "evidence": "`CDeclareWarAction::Apply` loads `[status+0x20]` at 0xA12191 and the same value is the first argument of `CWar::AddAttacker` (0xA12641) and `CWar::AddDefender` (0xA12654), both of which the record already types `CWar* war`; the search at 0xA12611 walks `+0x2C`..`+0x30` in 8-byte steps, which is `CWar::attackers`/`attackers_end` and `sizeof(CCountryTag)`. Shown wrong by either Add* taking something other than a CWar."
+  },
+  {
+   "struct": "CFactionJoin",
+   "offset": "0x10",
+   "name": "faction",
+   "type": "CFaction*",
+   "comment": "The faction the country joined. Written by 0x5F07C0 from `country->faction (+0xD8)` at `CFaction::AddCountry` 0x4F5FFF - which is **after** the step-5 store at 0x4F5FC0, so it is the *new* faction, not the previous one as FINDINGS-faction first said. Replayed forward, slot 7 hands it straight back to AddCountry.",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "Read at the only writer (0x5F07C0, reached from 0x4F6008 with `eax = [edi+0xD8]` loaded at 0x4F5FFF) and at both readers in slot 7 (0x5F080C and 0x5F083A). Shown wrong by a store to +0x10 elsewhere."
+  },
+  {
+   "struct": "CFactionJoin",
+   "offset": "0x14",
+   "name": "previous_faction",
+   "type": "CFaction*",
+   "comment": "What the country's faction was when the entry was replayed forward, so the entry can be undone: slot 7 writes it from `country->faction` at 0x5F0806 on the forward arm and passes it to `CFaction::AddCountry` **unguarded** on the reverse arm at 0x5F0855. It is therefore the one place in the image that uses AddCountry's invalid-faction arm on purpose.",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "The only write is 0x5F0806 and the only read 0x5F0852, both inside CFactionJoin::Apply, which was read end to end. Shown wrong by a reader outside it."
+  },
+  {
+   "struct": "CFactionLeave",
+   "offset": "0x10",
+   "name": "faction",
+   "type": "CFaction*",
+   "comment": "The faction field of the departure entry, written by 0x5F07C0 from `country->faction` at `CCountry::LeaveFaction` 0x4F6B9E - which is **after** the clear at 0x4F6B76, so a `CFactionLeave` records the *null* faction here and keeps the real one in `+0x14`. Slot 7 never reads `+0x10`; slot 2 (0x5F0AF0) does.",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "The write is 0x5F07C0 reached from 0x4F6BA7 with `ecx = [edi+0xD8]` loaded at 0x4F6B9E, after `mov [edi+0xD8], eax` at 0x4F6B76 put `CFaction::null()`'s result there. Shown wrong by a different order in the body, which was read instruction by instruction."
+  },
+  {
+   "struct": "CFactionLeave",
+   "offset": "0x14",
+   "name": "previous_faction",
+   "type": "CFaction*",
+   "comment": "The faction to put the country back into if the entry is undone: slot 7 writes it from `country->faction` at 0x5F0A96 before calling `CCountry::LeaveFaction`, and on the reverse arm passes it to `CFaction::AddCountry` at 0x5F0ADC, **guarded** by its `IsValid` - the opposite of `CFactionJoin`'s reverse arm.",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "The only write is 0x5F0A96 and the reads are 0x5F0AAB, 0x5F0AB4 and 0x5F0AD9, all inside CFactionLeave::Apply, read end to end. Shown wrong by a reader outside it."
+  },
+  {
+   "struct": "CJoinFactionEffect",
+   "offset": "0x20",
+   "name": "faction",
+   "type": "CFaction*",
+   "comment": "The faction the scripted `join_faction` effect names - the whole payload of the effect. `CJoinFactionEffect::Execute` reads it at 0x9A1C66, walks its `Members (+0x28)` to see whether the scoped country is already in, and otherwise hands it to `CFaction::AddCountry` as the receiver.",
+   "source": "reversing/findings/FINDINGS-faction.md",
+   "evidence": "`mov ecx,[ecx+0x20]` at 0x9A1C66 then `mov eax,[ecx+0x28]` and the member walk, with ecx unmodified up to the call at 0x9A1CAA, so the value is AddCountry's `this` and AddCountry's `this` is a CFaction. Shown wrong by a write to ecx between 0x9A1C66 and 0x9A1CAA - there is none - or by CEffect turning out to be 0x24 bytes or more, in which case +0x20 is the base's."
+  }
+ ],
+ "vftable_slots": {
+  "CFactionJoin": {
+   "7": {
+    "name": "Apply",
+    "signature": "void __thiscall Apply(CFactionJoin* this, bool forward)"
+   }
+  },
+  "CFactionLeave": {
+   "7": {
+    "name": "Apply",
+    "signature": "void __thiscall Apply(CFactionLeave* this, bool forward)"
+   }
+  },
+  "CJoinFactionEffect": {
+   "11": {
+    "name": "Execute",
+    "signature": "void __thiscall Execute(CJoinFactionEffect* this, CEventScope* scope, int unused)"
+   }
+  },
+  "CReleaseVassalEffect": {
+   "11": {
+    "name": "Execute",
+    "signature": "void __thiscall Execute(CReleaseVassalEffect* this, CEventScope* scope, int unused)"
+   }
+  },
+  "CCreateVassalCommand": {
+   "6": {
+    "name": "Execute",
+    "signature": "void __thiscall Execute(CCreateVassalCommand* this)"
+   }
+  },
+  "CLiberateCountryCommand": {
+   "6": {
+    "name": "Execute",
+    "signature": "void __thiscall Execute(CLiberateCountryCommand* this)"
+   }
+  }
+ },
+ "frontier": [
+  "0xD94A0",
+  "0x5B8520",
+  "0xA36C0",
+  "0xDAE94",
+  "0x5A21C0",
+  "0x18BC0",
+  "0xE7B00",
+  "0x289EA0",
+  "0x5E340",
+  "0x30050",
+  "0x1D6230",
+  "0xD57D0",
+  "0x1EEA40",
+  "0x1F0860",
+  "0x1F0AF0",
+  "0x1EC840",
+  "0x1EC850",
+  "0x1F07C0",
+  "0x64D6D0",
+  "0x5AF510",
+  "0x102BC0"
+ ],
+ "slots_noted": "CFactionJoin and CFactionLeave each introduce slots 2 and 6 as well (0x5F0860/0x5F0AF0 and 0x5EC840/0x5EC850); both pairs were decoded far enough to see that slot 2 reads `+0x10` through its IsValid, but neither was read and neither is named here. CReleaseVassalEffect, CCreateVassalCommand and CLiberateCountryCommand have further slots that were not looked at."
+}

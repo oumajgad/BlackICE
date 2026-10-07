@@ -1,0 +1,368 @@
+{
+ "agent": "wave 14 agent A - teach the pipeline to create a struct, and land the classes blocked behind it",
+ "question": "A fragment could not declare a struct, so a whole class's layout could only be hand-added. Add the `structs` key, then land the trigger containers and the CRelation family that were waiting for it.",
+ "source": "reversing/findings/FINDINGS-triggereval.md",
+ "structs": [
+  {
+   "name": "CAndTrigger",
+   "vftable_rva": "0x11B589C",
+   "size": "0x40",
+   "inherits": "CTrigger",
+   "comment": "**`and = { ... }`, and the most numerous class in the trigger forest** - 100,464 live instances. It adds **nothing** to CTrigger: `CAndTrigger::CAndTrigger` (rva 0x16010) writes only CTrigger's own members, the last of them a byte at +0x3C, and `CTrigger::LoadKey` asks `operator new` for exactly **0x40** at 0x5C912D. So an `and` block is a bare CTrigger with a different vftable, and everything it does is the child list at +0x8 - which also means there is nowhere on one for an evaluation cache to live.",
+   "evidence": "operator new(0x40) at 0x5C912D feeding the constructor at 0x16010, whose last write is the byte at +0x3C; the constructor ends `ret 4` at 0x16080 with 12 int3 above the entry and 13 below the exit. **Independently derived the same by wave 14 agent C** from six CAndTriggers embedded by value at an exact 0x40 stride (+0x30, +0x70, +0xB0, +0xF0, +0x130, +0x170) in the constructor at rva 0x160B0, and from the inline construction at 0x41612F-0x41614E. Wrong if any write past +0x3C were found in the constructor, or if an allocation were larger than 0x40."
+  },
+  {
+   "name": "COrTrigger",
+   "vftable_rva": "0x11F7C4C",
+   "size": "0x40",
+   "inherits": "CTrigger",
+   "comment": "**`or = { ... }`.** Instruction for instruction the same object as CAndTrigger - its constructor (rva 0x5CB730) writes the same members in the same order and `CTrigger::LoadKey` allocates **0x40** at 0x5C91E2 - so it too adds no field of its own.",
+   "evidence": "operator new(0x40) at 0x5C91E2 feeding the constructor at 0x5CB730, which ends `ret 4` at 0x5CB7A0; the constructor's last write is byte +0x3C. Wrong if the allocation or a constructor write reached past 0x40."
+  },
+  {
+   "name": "CNotTrigger",
+   "vftable_rva": "0x11F7C80",
+   "size": "0x40",
+   "inherits": "CTrigger",
+   "comment": "**`not = { ... }`, 28,006 live instances.** Adds nothing to CTrigger: the constructor at rva 0x5CB7B0 is COrTrigger's byte for byte but for the vftable it finishes with, and `CTrigger::LoadKey` allocates **0x40** at 0x5C9211.",
+   "evidence": "operator new(0x40) at 0x5C9211 feeding the constructor at 0x5CB7B0, which ends `ret 4` at 0x5CB820; last write byte +0x3C. Wrong if the allocation or a constructor write reached past 0x40."
+  },
+  {
+   "name": "CContextTrigger",
+   "vftable_rva": "0x11F7CB4",
+   "size": "0x150",
+   "inherits": "CAndTrigger",
+   "comment": "**A scope that hands its conditions a country to be evaluated against** - a bare country tag, `controller = { ... }`, `owner = { ... }` - and the third most numerous trigger at 10,974 live instances. It is an `and` plus one member: the 0x110-byte CEventScopeSpec embedded at +0x40, which is why 0x40 + 0x110 = **0x150** is the allocation size and the class has no other field.",
+   "evidence": "operator new(0x150) at 0x5CAEA6; the caller then does `sub esp,0x104 / mov ecx,0x41 / rep movsd` and the constructor at 0x5D14A0 ends `ret 0x108` (4 for `this` plus 0x104 for the spec passed by value), copying through EventScopeSpec_Construct (rva 0x5C1B30) into `this+0x40`. Independent agreement with the arithmetic already in CEventScopeSpec's own comment. Wrong if the allocation were not 0x150 or the copy target were not this+0x40."
+  },
+  {
+   "name": "CTagTrigger",
+   "vftable_rva": "0x11F88E4",
+   "size": "0x48",
+   "inherits": "CTrigger",
+   "comment": "**A bare country tag used as a condition** - `GER = { ... }` read as a test rather than as a scope. One CCountryTag of its own, and the size is exactly CTrigger plus it.",
+   "evidence": "operator new(0x48) at 0x5C96D9; CTagTrigger::Evaluate (rva 0x5E8960) reads +0x40 and +0x44 as a tag/id pair. Wrong if either offset were read as anything but the two halves of a CCountryTag."
+  },
+  {
+   "name": "CHasCountryFlagTrigger",
+   "vftable_rva": "0x11F8570",
+   "size": "0x5C",
+   "inherits": "CTrigger",
+   "comment": "**`has_country_flag = <name>`.** One Hoi3CString of its own at +0x40; 0x40 + 0x1C = 0x5C is the allocation size, so the name is the whole of its own data.",
+   "evidence": "operator new(0x5C) at 0x5C9581; CHasCountryFlagTrigger::Evaluate (rva 0x5E20B0) reads +0x40 through the `maxLength >= 0x10` small-string test, which only an Hoi3CString has. Wrong if the allocation were not 0x5C or +0x40 were read as anything else."
+  },
+  {
+   "name": "CVariableTrigger",
+   "vftable_rva": "0x11F8D28",
+   "size": "0x60",
+   "inherits": "CTrigger",
+   "comment": "**`check_variable = { which = <name> value = <n> }`**, 12,815 live instances. The name is an Hoi3CString at +0x40 and the threshold a fixed-point int at +0x5C; 0x5C + 4 = **0x60** is the allocation size, so those two are the whole of its own data.",
+   "evidence": "operator new(0x60) at 0x5C9BC0, which closes the layout the existing CVariableTrigger::Evaluate entry (rva 0x5F01D0) already reads - the name at +0x40 and the threshold at +0x5C. Wrong if the allocation were not 0x60, which would leave room for a field neither Evaluate nor LoadKey touches."
+  },
+  {
+   "name": "CTechnologyTrigger",
+   "vftable_rva": "0x11F839C",
+   "inherits": "CTrigger",
+   "comment": "**`<technology_name> = <level>`, the busiest leaf in the family at 33,204 live instances.** Two fields of its own: the level to beat at +0x40 and the technology itself, resolved at load time into a pointer, at +0x44. No size is recorded: unlike the rest of the family it is not built from an `operator new` inside CTrigger::LoadKey's switch - the keyword falls through to the technology database - so no allocation was found to settle it.",
+   "evidence": "CTechnologyTrigger::Evaluate (rva 0x5DB430), read end to end: `[ecx+0x44] -> +0x244` is the technology's Index and `setge` compares the level table's entry against `[ecx+0x40]`. Wrong if +0x44 were dereferenced at any other offset than CTechnology's own Index."
+  },
+  {
+   "name": "CRelation",
+   "vftable_rva": "0x11FBB00",
+   "size": "0x24",
+   "inherits": "CPersistent",
+   "comment": "**One standing agreement between two countries, and the base of all ten kinds** - CAlliance, CAlign, CCasusBelli, CDependency, CEmbargo, CGuarantee, CInfluence, CNap, CTradeRoute and CWarning. Its own seven dwords end at the `cancel` byte at +0x20, and a subclass's data starts at **+0x24** - confirmed from the other side by CCasusBelli and CNap, which both put their first field exactly there. Slots 6, 7, 10 and 11 of its vftable are `_purecall`, so every kind supplies its own Evaluate, Activate and the two beside them.",
+   "evidence": "CRelation::LoadKey (rva 0x6465D0) has a 9-entry jump table at 0xA4676C over base token 0x299 with five live cases, each storing to one of +0x8/+0xC, +0x10/+0x14, +0x18, +0x1C and +0x20 and ending its own `ret 8`; the four dead slots (tokens 0x29D-0x2A0) fall through to the default. The size is then fixed in both directions by CNap's own LoadKey writing +0x24/+0x28/+0x2C into a 0x30-byte allocation and by CCasusBelli's writing +0x24. Wrong if any subclass were found writing below +0x24."
+  },
+  {
+   "name": "CCasusBelli",
+   "vftable_rva": "0x11FBB9C",
+   "inherits": "CRelation",
+   "comment": "**One pretext for war held against a country pair.** A CRelation plus a single int at +0x24, the index of its type in the casus-belli-type database. No size is recorded: no allocation of one was read, so 0x28 is arithmetic rather than a measurement.",
+   "evidence": "CCasusBelli::LoadKey (rva 0x647910) tests for token 0xD9 (`type`) and forwards every other key to CRelation::LoadKey at 0xA4653D; the one case stores to +0x24 at 0xA479DB. Wrong if a second key or a second offset were found in that body."
+  },
+  {
+   "name": "CNap",
+   "vftable_rva": "0x11FBB68",
+   "size": "0x30",
+   "inherits": "CRelation",
+   "comment": "**A non-aggression pact.** Three dwords of its own past CRelation's 0x24, which is the whole of a 0x30-byte object: the balance of the pact and the two sides' assessed power. It is one of only three kinds that override CRelation's loader, the others being CCasusBelli and CTradeRoute.",
+   "evidence": "CNap::LoadKey (rva 0x646F70) has exactly three cases - tokens 0x72E, 0x72F and 0x766 - storing to +0x2C, +0x28 and +0x24, and forwards everything else to CRelation::LoadKey. 0x24 + 3*4 = 0x30, which is the allocation CNapAction::Apply makes. Wrong if a fourth key were found or if the three offsets were not consecutive."
+  },
+  {
+   "name": "CAlliance",
+   "vftable_rva": "0x11C1C38",
+   "inherits": "CRelation",
+   "comment": "**An alliance between two countries**, the object CDiplomacyStatus +0x14 points at. It inherits CRelation's loader unchanged, so every field a save writes for it is CRelation's; no field of its own was identified.",
+   "evidence": "Slot 4 of its vftable (0x15C1C38) is 0xA465D0, CRelation::LoadKey, so nothing of its own is loaded from a save. Wrong if a key reached an offset at or past +0x24, which would mean a field its loader does not write."
+  },
+  {
+   "name": "CGuarantee",
+   "vftable_rva": "0x11FBB34",
+   "inherits": "CRelation",
+   "comment": "**A guarantee of independence**, the object CDiplomacyStatus +0x1C points at - one pointer carrying both directions, told apart by comparing the relation's +0xC with the status's own. It inherits CRelation's loader unchanged and no field of its own was identified.",
+   "evidence": "Slot 4 of its vftable (0x15FBB34) is 0xA465D0, CRelation::LoadKey. Wrong if a key reached an offset at or past +0x24."
+  },
+  {
+   "name": "CEmbargo",
+   "vftable_rva": "0x11F9FDC",
+   "inherits": "CRelation",
+   "comment": "**A trade embargo**, the object CDiplomacyStatus +0x34 points at. It inherits CRelation's loader unchanged and no field of its own was identified.",
+   "evidence": "Slot 4 of its vftable (0x15F9FDC) is 0xA465D0, CRelation::LoadKey. Wrong if a key reached an offset at or past +0x24."
+  },
+  {
+   "name": "CAlign",
+   "vftable_rva": "0x11FBC04",
+   "inherits": "CRelation",
+   "comment": "**An alignment agreement**, the object CDiplomacyStatus +0x30 points at. It inherits CRelation's loader unchanged and no field of its own was identified.",
+   "evidence": "Slot 4 of its vftable (0x15FBC04) is 0xA465D0, CRelation::LoadKey. Wrong if a key reached an offset at or past +0x24."
+  },
+  {
+   "name": "CInfluence",
+   "vftable_rva": "0x11FBBD0",
+   "inherits": "CRelation",
+   "comment": "**An influence campaign.** It inherits CRelation's loader unchanged and no field of its own was identified; the running total CDiplomacyStatus keeps at its own +0x2C is on the status, not here.",
+   "evidence": "Slot 4 of its vftable (0x15FBBD0) is 0xA465D0, CRelation::LoadKey. Wrong if a key reached an offset at or past +0x24."
+  },
+  {
+   "name": "CDependency",
+   "vftable_rva": "0x11C1C6C",
+   "inherits": "CRelation",
+   "comment": "**A puppet or satellite relationship**, the object CDiplomacyStatus +0x18 points at. It inherits CRelation's loader unchanged and no field of its own was identified.",
+   "evidence": "Slot 4 of its vftable (0x15C1C6C) is 0xA465D0, CRelation::LoadKey. Wrong if a key reached an offset at or past +0x24."
+  },
+  {
+   "name": "CWarning",
+   "vftable_rva": "0x11F9FA8",
+   "inherits": "CRelation",
+   "comment": "**A diplomatic warning.** The tenth CRelation subclass and the one the diplomatic survey's list of twelve leaves out. It inherits CRelation's loader unchanged, and alone in the family its slots 10 and 11 are the shared empty stub at 0x6BF890 rather than bodies of its own, so a warning is recorded and never activates anything.",
+   "evidence": "RTTI gives it CRelation at offset 0; slot 4 of its vftable (0x15F9FA8) is 0xA465D0 and slots 10 and 11 both hold 0xABF890, the stub that fills 1,691 slots. Wrong if either slot held a body of its own."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CContextTrigger",
+   "offset": "0x40",
+   "name": "spec",
+   "type": "CEventScopeSpec",
+   "comment": "**The scope specification the script wrote on the left of `= { ... }`**, embedded by value and the whole of this class's own data. CContextTrigger::Evaluate hands it to CEventScope::MakeScope to build the rebound scope its children are evaluated against.",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The constructor at 0x5D14A0 passes `this+0x40` to EventScopeSpec_Construct (0x5C1B30) at 0x5D150E, and 0x40 + 0x110 = 0x150, the allocation. Wrong if the copy target were any other offset."
+  },
+  {
+   "struct": "CTagTrigger",
+   "offset": "0x40",
+   "name": "tag",
+   "type": "CCountryTag",
+   "comment": "**The country the condition names.** Only the id half at +0x44 is compared - the three characters at +0x40 are loaded into a stack slot that nothing reads again before the exit - so the test is by index and the text is carried for display.",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "CTagTrigger::Evaluate (0x5E8960) reads [ecx+0x40] and [ecx+0x44] as a pair and compares the scope's country_id (+0x14) against the second; the allocation is 0x48, which is 0x40 plus a CCountryTag and nothing else. Wrong if either dword were used apart from the other."
+  },
+  {
+   "struct": "CHasCountryFlagTrigger",
+   "offset": "0x40",
+   "name": "flag",
+   "type": "Hoi3CString",
+   "comment": "**The name of the country flag to look for.** It is resolved at evaluation time, not at load: Evaluate hands the characters to the country's CFlags tree every time it is asked, so a flag name that matches nothing simply answers false.",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "CHasCountryFlagTrigger::Evaluate (0x5E20B0) reads `[this+0x40+0x14] >= 0x10 ? *[this+0x40] : this+0x40`, the Hoi3CString small-string test, and passes the result to slot 2 of CFlags' table; the allocation is 0x5C = 0x40 + 0x1C. Wrong if the allocation left room past 0x5C."
+  },
+  {
+   "struct": "CVariableTrigger",
+   "offset": "0x40",
+   "name": "name",
+   "type": "Hoi3CString",
+   "comment": "**The variable's name**, as the `which = <name>` key wrote it. Resolved against the country's CVariables tree on every evaluation rather than at load - and `check_variable` **creates** the variable when it is missing, so reading one has a side effect.",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "CVariableTrigger::Evaluate (rva 0x5F01D0) passes `&this->+0x40` to the registry's lookup and, on a miss, to CVariables::AddVariable (0x76FB0), whose signature already takes an Hoi3CString* there; the allocation is 0x60 = 0x40 + 0x1C + 4. Wrong if the allocation left room for a field past +0x5C."
+  },
+  {
+   "struct": "CVariableTrigger",
+   "offset": "0x5C",
+   "name": "value",
+   "type": "int",
+   "comment": "**The threshold the variable is compared against, in thousandths** - the test is `variable >= value`. A variable that did not exist is created at 0 and then compared, so `check_variable = { which = x value = 0 }` is true on a variable nobody has ever set.",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "CVariableTrigger::Evaluate (rva 0x5F01D0) compares the found variable's +0x1C against [this+0x5C], and the miss path compares 0 against the same offset; 0x5C + 4 = 0x60 is the allocation at 0x5C9BC0. Wrong if the comparison were against any other offset, or if the allocation were larger."
+  },
+  {
+   "struct": "CTechnologyTrigger",
+   "offset": "0x40",
+   "name": "value",
+   "type": "int",
+   "comment": "**The level the technology has to have reached**, as a plain integer rather than thousandths. The comparison is `>=`, so `<technology> = 1` means 'researched at least once'.",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "CTechnologyTrigger::Evaluate (0x5DB430) ends `cmp edx, [ecx+0x40] / setge al`, where edx is the country's level for this technology. Wrong if the operand were scaled anywhere on the path."
+  },
+  {
+   "struct": "CTechnologyTrigger",
+   "offset": "0x44",
+   "name": "technology",
+   "type": "CTechnology*",
+   "comment": "**The technology itself, resolved to a pointer at load time** rather than kept as a name - which is why this class is bigger than the one-dword leaves around it. Its Index at +0x244 is what indexes the country's level table.",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "CTechnologyTrigger::Evaluate (0x5DB430) does `mov edx,[ecx+0x44] / mov edx,[edx+0x244]` and uses the result as a dword index into `country->+0xDF8->+0x218`. Wrong if +0x244 were not CTechnology's Index, which project.json already records it as."
+  },
+  {
+   "struct": "CRelation",
+   "offset": "0x8",
+   "name": "first",
+   "type": "CCountryTag",
+   "comment": "**The first party to the agreement** (save key `first`). Resolved from the three letters in the save through CCountryDataBase::GetTag, so the tag characters land at +0x8 and the index at +0xC.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CRelation::LoadKey's case for token 0x299 calls CCountryDataBase::GetTag (0x518480) and copies the 8-byte result to +0x8/+0xC at 0xA46656/0xA4665C. Wrong if the two dwords were written from different sources."
+  },
+  {
+   "struct": "CRelation",
+   "offset": "0x10",
+   "name": "second",
+   "type": "CCountryTag",
+   "comment": "**The second party to the agreement** (save key `second`). The same resolution as `first`, into the tag at +0x10 and the index at +0x14.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CRelation::LoadKey's case for token 0x29A calls CCountryDataBase::GetTag (0x518480) and copies the 8-byte result to +0x10/+0x14 at 0xA466BE/0xA466C4. Wrong if the two dwords were written from different sources."
+  },
+  {
+   "struct": "CRelation",
+   "offset": "0x18",
+   "name": "start_date",
+   "type": "int",
+   "comment": "**When the agreement began**, as a tick (save key `start_date`). Parsed from `year.month.day.hour` text by Date_SetFromString, which is the same representation every other date in the simulation uses.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CRelation::LoadKey's case for token 0x29B calls Date_SetFromString (0x44CDA0) over a stack local seeded with 0x29C55C0 and stores the result to +0x18 at 0xA466F8. Wrong if the stored dword came from anywhere but that call."
+  },
+  {
+   "struct": "CRelation",
+   "offset": "0x1C",
+   "name": "end_date",
+   "type": "int",
+   "comment": "**When the agreement expires**, as a tick (save key `end_date`); zero where it does not. Parsed the same way as `start_date`.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CRelation::LoadKey's case for token 0x29C calls Date_SetFromString (0x44CDA0) and stores the result to +0x1C at 0xA4672D - the same four instructions as the +0x18 case with the destination changed. Wrong if the stored dword came from anywhere but that call."
+  },
+  {
+   "struct": "CRelation",
+   "offset": "0x20",
+   "name": "cancel",
+   "type": "uint8_t",
+   "comment": "**Whether the agreement has been cancelled** (save key `cancel`), and the last of CRelation's own bytes - a subclass's data starts at +0x24. Written as a plain comparison against the token `yes`, so any other value, including `no`, leaves it 0.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CRelation::LoadKey's case for token 0x2A1 is `cmp [parse+0x228], 0x1F6 / sete dl / mov [edi+0x20], dl` at 0xA46743-0xA46753, and token 0x1F6 is `yes` in saveTokens.json. Wrong if 0x1F6 were any other keyword."
+  },
+  {
+   "struct": "CCasusBelli",
+   "offset": "0x24",
+   "name": "type",
+   "type": "int",
+   "comment": "**Which pretext this is** - the index of a CCasusBelliType in the database at [0x1A85BD8], not a pointer (save key `type`). A name the database does not hold resolves to the null type at index 0, which is the usual shape here. This is the field a war goal's own casus belli index is matched against.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CCasusBelli::LoadKey builds an Hoi3CString from the value token, looks it up at 0xA479C5, falls back to element 0 of the database when the lookup answers null, and stores `[result+8]` - CCasusBelliType's own index - to +0x24 at 0xA479DB. Wrong if the stored dword were the entry pointer rather than its +0x8."
+  },
+  {
+   "struct": "CNap",
+   "offset": "0x24",
+   "name": "balance",
+   "type": "int",
+   "comment": "**The balance of the pact, in thousandths** (save key `balance`). Read by the fixed-point parser, unlike the two power figures beside it, which are plain integers - so this is the one of CNap's three fields that is scaled.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CNap::LoadKey's case for token 0x766 (`balance`) is `lea edi,[ecx+0x24] / call ParseFixedPoint (0xA7B540)`, whose contract is `*out` in thousandths. Wrong if that call were ParseInt (0x67B470) instead."
+  },
+  {
+   "struct": "CNap",
+   "offset": "0x28",
+   "name": "their_power",
+   "type": "int",
+   "comment": "**The other side's assessed power** (save key `their_power`), a plain integer: it is read with `sscanf(\"%i\")` rather than through the fixed-point parser, so it carries no implicit division by 1000.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CNap::LoadKey's case for token 0x72F passes `this+0x28` and the format string at 0x15FD14C - which is \"%i\" - to sscanf (0xB964D4) at 0xA46FA6-0xA46FCE. Wrong if the format string were anything but \"%i\"."
+  },
+  {
+   "struct": "CNap",
+   "offset": "0x2C",
+   "name": "our_power",
+   "type": "int",
+   "comment": "**This side's assessed power** (save key `our_power`), a plain integer read with `sscanf(\"%i\")` like `their_power`. The last dword of a 0x30-byte object.",
+   "source": "reversing/findings/FINDINGS-diploaction.md",
+   "evidence": "CNap::LoadKey's case for token 0x72E passes `this+0x2C` and the \"%i\" at 0x15FD14C to sscanf (0xB964D4) at 0xA46FBB-0xA46FCE. Wrong if the format string were anything but \"%i\"."
+  }
+ ],
+ "addresses": [
+  {
+   "rva": "0x16010",
+   "kind": "function",
+   "name": "CAndTrigger::CAndTrigger",
+   "signature": "CAndTrigger* __stdcall CAndTrigger::CAndTrigger(CAndTrigger* this@stack:4) @EAX",
+   "no_signature": null,
+   "comment": "**The only constructor of the most numerous class in the game's script language** - 100,464 live CAndTriggers - and it is CTrigger's constructor and nothing else. 0x16010 to the single `ret 4` at 0x16080, 12 int3 above and 13 below.\n\n    this->children_first/last/count (+8/+0xC/+0x10) = 0\n    this->+0x14 = 0\n    this->token (+4) = 0x18D\n    this->vftable = CTrigger's (VA 0x15C34DC)\n    this->arg_is_this/arg_is_from (+0x18/+0x19) = 0     ; one word store\n    __ehvec_ctor(this+0x1C, 0x10, 2, ctor 0x9DB0, dtor 0xC480)\n    this->+0x3C = 0\n    this->vftable = CAndTrigger's (VA 0x15B589C)\n\nSo the two 0x10-byte members at +0x1C and +0x2C are CTrigger's, not the context scope's, and the **last write is the byte at +0x3C**, which with the `operator new(0x40)` at its one call site fixes CTrigger's size at 0x40 from the allocation rather than from its readers. `this` arrives on the stack and comes back in EAX; the compiler emitted the same body again for COrTrigger and CNotTrigger instead of sharing it.\n\nCTrigger::LoadKey at 0x5C9149 is the one caller, and it sets `this->+0x3C = 1` immediately afterwards.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "Read end to end from the entry; `ret 4` at 0x16080 with 13 int3 after it, retsBefore(functionStart, entry) empty, and the body is in no virtual table. The one caller is 0x5C9149, found by findRefs --callers, and the `push 0x40` before its `call operator_new` was read from the raw bytes (`6a 40 e8`) because a forward decode from 0x5C9120 desynchronises on the switch's jump table. Wrong if a second caller allocated a different size."
+  },
+  {
+   "rva": "0x5CB730",
+   "kind": "function",
+   "name": "COrTrigger::COrTrigger",
+   "signature": "COrTrigger* __stdcall COrTrigger::COrTrigger(COrTrigger* this@stack:4) @EAX",
+   "no_signature": null,
+   "comment": "**The only constructor of `or = { ... }`.** 0x5CB730 to the single `ret 4` at 0x5CB7A0, 5 int3 above and 13 below. Instruction for instruction CAndTrigger::CAndTrigger (rva 0x16010) with one difference: the vftable it finishes with is COrTrigger's (VA 0x15F7C4C). It writes nothing past CTrigger's byte at +0x3C, and its one caller - CTrigger::LoadKey at 0x5C9200 - allocates 0x40, so an `or` block has no data of its own.\n\nThe duplication is the compiler's: three separate bodies for three identical constructors, which is why the linker did not fold them.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "Read end to end; `ret 4` at 0x5CB7A0, 13 int3 after, retsBefore empty, in no virtual table. One caller at 0x5C9200 with `push 0x40 / call operator_new` at 0x5C91E2. Wrong if any write reached past +0x3C."
+  },
+  {
+   "rva": "0x5CB7B0",
+   "kind": "function",
+   "name": "CNotTrigger::CNotTrigger",
+   "signature": "CNotTrigger* __stdcall CNotTrigger::CNotTrigger(CNotTrigger* this@stack:4) @EAX",
+   "no_signature": null,
+   "comment": "**The only constructor of `not = { ... }`**, 28,006 live instances. 0x5CB7B0 to the single `ret 4` at 0x5CB820, 13 int3 above and 13 below. The same body again, finishing with CNotTrigger's vftable (VA 0x15F7C80); nothing past +0x3C is written and the one caller - CTrigger::LoadKey at 0x5C922F - allocates 0x40.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "Read end to end; `ret 4` at 0x5CB820, 13 int3 after, retsBefore empty, in no virtual table. One caller at 0x5C922F with `push 0x40 / call operator_new` at 0x5C9211. Wrong if any write reached past +0x3C."
+  },
+  {
+   "rva": "0x5E8960",
+   "kind": "function",
+   "name": "CTagTrigger::Evaluate",
+   "signature": "bool __thiscall CTagTrigger::Evaluate(CTagTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`GER = { ... }` read as a condition: is the scope's country this one.** 0x5E8960 to two `ret 4` at 0x5E898D and 0x5E89AB - one function, the `je 0x5E8990` at 0x5E8976 jumping past the first exit. 10 int3 above; only **2** below, so the boundary is one the 'run of three int3' rule walks past.\n\n    id = this->tag.id (+0x44)\n    if (this->arg_is_this (+0x18))      id = scope->this_scope (+0x38)->country_id (+0x14)\n    else if (this->arg_is_from (+0x19)) id = scope->this_scope (+0x38)->from_country_id (+0x1C)\n    return scope->country_id (+0x14) == id\n\nThree things worth having. **The comparison is by index only** - the three tag characters at +0x40 are copied into a stack slot in every arm and nothing reads them again, so they are carried for display and not for the test. **THIS and FROM are both read through `scope->this_scope`**, not off the scope itself, taking +0x10/+0x14 for THIS and +0x18/+0x1C for FROM. And the two flags at +0x18/+0x19 are CTrigger's own, so `THIS = { ... }` and a literal tag are the same class.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "Read end to end from the vftable entry, so the start is an entry by definition; both exits `ret 4`, which a __thiscall with one stack argument predicts. The body sits in exactly one virtual table (CTagTrigger slot 6), checked against every table in the RTTI export, so it is not a folded stub. Wrong if a third arm read the tag characters, or if +0x38 were anything but CEventScope::this_scope, which project.json already records."
+  },
+  {
+   "rva": "0x5E20B0",
+   "kind": "function",
+   "name": "CHasCountryFlagTrigger::Evaluate",
+   "signature": "bool __thiscall CHasCountryFlagTrigger::Evaluate(CHasCountryFlagTrigger* this, CEventScope* scope)",
+   "no_signature": null,
+   "comment": "**`has_country_flag = <name>`, and it is a test of the flag's value and not of its existence.** 0x5E20B0 to two `ret 4` at 0x5E2100 and 0x5E2108 - one function, the `je 0x5E2103` at 0x5E20F9 jumping past the first. 2 int3 above, 5 below.\n\n    name    = c_str(this->flag (+0x40))\n    country = database[0x1A855A4]->+0x16C[ scope->country_id (+0x14) ]\n    found   = country->flags (+0x180)->vftable[2](name)      ; GuiTypeTree_Find, 0x67DEE0\n    return found != 0 && found->is_set (+0x1C) != 0\n\nSo a flag that exists in the tree with `is_set` clear answers **false** - which matters because `CFlags` never removes a node, it clears the byte. The lookup is done on every evaluation rather than resolved at load, so an unknown flag name is not an error, just a permanent false; that is the same silence the engine gives every other bad name. The scope's own country tag is loaded into a stack slot that nothing reads again, exactly as in CTagTrigger::Evaluate.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "Read end to end from the vftable entry; both exits `ret 4`, which the __thiscall signature predicts. The body is in exactly one virtual table (CHasCountryFlagTrigger slot 6) out of every table in the RTTI export. CCountry +0x180 `flags` and CFlag +0x1C `is_set` are both already in project.json and agree. Wrong if slot 2 of CFlags' table were not the name lookup, or if the final test were on `found` alone."
+  }
+ ],
+ "vftable_slots": {
+  "CTagTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CTagTrigger* this, CEventScope* scope)"
+   }
+  },
+  "CHasCountryFlagTrigger": {
+   "6": {
+    "name": "Evaluate",
+    "signature": "bool __thiscall Evaluate(CHasCountryFlagTrigger* this, CEventScope* scope)"
+   }
+  }
+ },
+ "frontier": [
+  "0x5D13E0",
+  "0x5D1400",
+  "0x64CBA0",
+  "0x4D8A0",
+  "0x77060",
+  "0x77080"
+ ],
+ "slots_noted": "The three constructors sit in no virtual table at all - checked against every table in the RTTI export - so they need no slot record. CVariables::SaveContents (0x77060) and CVariables::LoadKey (0x77080) are left out deliberately: buildFindings.py already names, types and comments both from the RTTI `introduces` list, with the correct CPersistent-subobject `this`, so a project.json entry would be a second record for an address that already has one. CAndTrigger is declared here because CContextTrigger's `inherits` needs it, and because wave 14 agent C reached the same three values from different evidence - which is recorded in this declaration's own `evidence` rather than left in two fragments. If that fragment declares it again, the two agree and either will do. CTradeRoute is not declared: project.json already holds a struct for it, without `inherits`, which only a hand edit can add."
+}

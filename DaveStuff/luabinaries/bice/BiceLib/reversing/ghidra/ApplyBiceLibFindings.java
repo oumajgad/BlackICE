@@ -23,6 +23,15 @@
 // a script cannot be given arguments, run ApplyBiceLibFindingsOverwrite instead; headless,
 // `-postScript ApplyBiceLibFindings.java overwrite`.
 //
+// Pass `organise` to file every recorded type into its folder under /BiceLib - `classes`,
+// `classes/containers`, `vftables`, `vftables/slots`, `enums` - instead of only creating a
+// new one there. Added 2026-10-06, because the tree had drifted to 203 categories over 9046
+// types: 266 of the 309 recorded class structures were sitting at the root, since this
+// script finds an existing type wherever it already lives and Ghidra's RTTI pass gets there
+// first. It moves nothing whose name the findings do not carry, and leaves the SDK/CRT
+// categories and the demangler's own (`_A0x...` and friends) alone - those are recreated by
+// a pass that would undo the move. The constants' comment has the whole account.
+//
 // Addresses are image-base relative, so this still works if the program is rebased.
 //
 //@author BiceLib
@@ -77,6 +86,48 @@ public class ApplyBiceLibFindings extends GhidraScript {
 	private static final CategoryPath VFTABLE_CATEGORY = new CategoryPath(CATEGORY, "vftables");
 
 	/**
+	 * The rest of the tree, added 2026-10-06. Measured before it was written: the project
+	 * held **203 categories over 9046 types**, and the shape was not chaos so much as two
+	 * tools disagreeing in silence.
+	 *
+	 * - `/BiceLib/vftables` held **5592 slot function definitions** and no vftable at all,
+	 *   so the folder's name meant the opposite of what it said. The definitions move to
+	 *   `vftables/slots` and the tables themselves take the name.
+	 * - **266 of the 309 recorded class structures sat at the root** and only 42 in
+	 *   `/BiceLib`, because `structFor` finds an existing type *wherever it already lives*
+	 *   and then edits it in place. Ghidra's RTTI pass runs first and creates most of them
+	 *   at the root, so we were adding fields to them and never moving them.
+	 *
+	 * Hence `organise`: the category is set on **every** run rather than only on the run
+	 * that creates the type, which is the only way this survives the next analysis pass
+	 * inventing a type at the root. Nothing moves unless the name is one the findings
+	 * carry, so what you made by hand stays where you put it - the same courtesy the field
+	 * and signature rules already give.
+	 *
+	 * Two kinds are deliberately left alone, and both for the same reason: the SDK and CRT
+	 * categories are correct and not ours, and the demangler's own categories (`_A0x...`,
+	 * `/VCCountry/__CMessageDialog` and the rest) are **recreated from mangled names by a
+	 * pass that will undo any move**, so emptying them is a fight rather than a fix.
+	 */
+	private static final CategoryPath CLASS_CATEGORY = new CategoryPath(CATEGORY, "classes");
+	private static final CategoryPath CONTAINER_CATEGORY =
+		new CategoryPath(CLASS_CATEGORY, "containers");
+	private static final CategoryPath SLOT_CATEGORY = new CategoryPath(VFTABLE_CATEGORY, "slots");
+	private static final CategoryPath ENUM_CATEGORY = new CategoryPath(CATEGORY, "enums");
+
+	/**
+	 * `CList<CUnit*>`, `CListNode<CCountryTag>`, `CArray<int>` - generated, and numerous.
+	 *
+	 * **Matched after `sanitize`, not before.** Ghidra names cannot hold `<`, `>` or `*`, so
+	 * every one of those becomes `_`: the type is `CList_CAir__`, never `CList<CAir*>`. The
+	 * first version of this matched the C++ spelling and so matched nothing at all, and the
+	 * 55 containers sat in `classes` with everything else. The trailing underscore is what
+	 * keeps the plain `CList` struct - a real class, with the shared head layout - out.
+	 */
+	private static final Pattern CONTAINER =
+		Pattern.compile("^(CList|CListNode|CArray)_[A-Za-z0-9_]*_$");
+
+	/**
 	 * Where this script's text starts and ends in a comment, so a re-run replaces exactly
 	 * that and keeps whatever else is written around it.
 	 */
@@ -90,6 +141,9 @@ public class ApplyBiceLibFindings extends GhidraScript {
 	/** Whether the findings replace what is already there, whoever put it there. */
 	private boolean overwrite;
 
+	/** Whether a recorded type is moved into its category, not just created there. */
+	private boolean organise;
+
 	/** Struct fields this run has placed, so overwriting never clears one of its own. */
 	private final Set<String> placedThisRun = new HashSet<>();
 
@@ -98,7 +152,7 @@ public class ApplyBiceLibFindings extends GhidraScript {
 	private Address base;
 
 	private int named, labelled, signatures, fields, kept, failed, vftables, enums,
-			equates, variables;
+			equates, variables, moved;
 	/** made on the first function that declares locals, and only then */
 	private DecompInterface decompiler;
 	private final List<String> notes = new ArrayList<>();
@@ -119,8 +173,12 @@ public class ApplyBiceLibFindings extends GhidraScript {
 		}
 
 		for (String arg : getScriptArgs()) {
-			if (arg.replaceFirst("^-+", "").equalsIgnoreCase("overwrite")) {
+			String flag = arg.replaceFirst("^-+", "");
+			if (flag.equalsIgnoreCase("overwrite")) {
 				overwrite = true;
+			}
+			else if (flag.equalsIgnoreCase("organise") || flag.equalsIgnoreCase("organize")) {
+				organise = true;
 			}
 		}
 
@@ -130,6 +188,9 @@ public class ApplyBiceLibFindings extends GhidraScript {
 		println("Image base " + base + ", data " + data);
 		println(overwrite ? "Overwriting: the findings replace names, signatures and fields, including yours."
 			: "Keeping your edits: pass 'overwrite' to have the findings replace them.");
+		println(organise
+			? "Organising: every recorded type is moved into its /BiceLib folder."
+			: "Leaving the type tree alone: pass 'organise' to file recorded types into /BiceLib.");
 
 		// Types first, so the signatures and fields below can refer to them.
 		for (JsonElement e : array(root, "enums")) {
@@ -176,7 +237,10 @@ public class ApplyBiceLibFindings extends GhidraScript {
 			}
 		}
 		// Last: a slot's type is the definition of the function filling it, so the functions
-		// have to carry their signatures before these are built.
+		// have to carry their signatures before these are built. The sweep goes first,
+		// because `slotType` has to find a definition that already exists rather than make a
+		// second copy of it in the other folder.
+		sweepSlotDefinitions();
 		for (JsonElement e : array(root, "vftables")) {
 			monitor.checkCancelled();
 			try {
@@ -194,8 +258,8 @@ public class ApplyBiceLibFindings extends GhidraScript {
 		}
 		println("");
 		println(String.format("functions named: %d, labels: %d, signatures: %d, struct fields: %d, " +
-			"enums: %d, equates: %d, virtual tables: %d, locals: %d, %s: %d, failed: %d", named,
-			labelled, signatures, fields, enums, equates, vftables, variables,
+			"enums: %d, equates: %d, virtual tables: %d, locals: %d, moved: %d, %s: %d, failed: %d", named,
+			labelled, signatures, fields, enums, equates, vftables, variables, moved,
 			overwrite ? "replaced" : "left as you had them", kept, failed));
 		if (decompiler != null) {
 			decompiler.dispose();
@@ -577,7 +641,10 @@ public class ApplyBiceLibFindings extends GhidraScript {
 			notes.add("! " + address + " equate: operand " + operand + " is not a constant");
 			return;
 		}
-		DataType type = dtm.getDataType(new DataTypePath(CATEGORY, enumName));
+		// Through findType, not a fixed category: `organise` files enums under
+		// /BiceLib/enums, and looking only in /BiceLib made every equate fail with
+		// "no enum called ModifierId" the first time the flag was used.
+		DataType type = findType(enumName);
 		if (!(type instanceof ghidra.program.model.data.Enum)) {
 			failed++;
 			notes.add("! " + address + " equate: no enum called " + enumName);
@@ -611,7 +678,8 @@ public class ApplyBiceLibFindings extends GhidraScript {
 		String name = sanitizeType(item.get("name").getAsString());
 		DataType existing = findType(name);
 		boolean ours = existing instanceof ghidra.program.model.data.Enum
-			&& (CATEGORY.equals(existing.getCategoryPath())
+			&& (ENUM_CATEGORY.equals(existing.getCategoryPath())
+				|| CATEGORY.equals(existing.getCategoryPath())
 				|| String.valueOf(existing.getDescription()).contains(MARKER));
 		if (existing != null && !overwrite && !ours) {
 			kept++;
@@ -624,13 +692,14 @@ public class ApplyBiceLibFindings extends GhidraScript {
 				+ name + ", so the enum was not made");
 			return;
 		}
-		EnumDataType e = new EnumDataType(CATEGORY, name, item.has("size") ? item.get("size").getAsInt() : 4, dtm);
+		EnumDataType e = new EnumDataType(ENUM_CATEGORY, name, item.has("size") ? item.get("size").getAsInt() : 4, dtm);
 		for (JsonElement v : array(item, "values")) {
 			JsonObject value = v.getAsJsonObject();
 			e.add(value.get("name").getAsString(), value.get("value").getAsLong());
 		}
 		e.setDescription((item.has("comment") ? item.get("comment").getAsString() + "  " : "") + MARKER);
 		if (existing != null) {
+			filed(existing, ENUM_CATEGORY);
 			if (existing.isEquivalent(e)) {
 				return;                                      // already what the findings hold
 			}
@@ -650,6 +719,9 @@ public class ApplyBiceLibFindings extends GhidraScript {
 			if (struct.isNotYetDefined() || struct.getLength() < size) {
 				struct.growStructure(size - (struct.isNotYetDefined() ? 0 : struct.getLength()));
 			}
+			else if (struct.getLength() > size) {
+				shrinkToDeclared(struct, name, size);
+			}
 		}
 		for (JsonElement e : array(item, "fields")) {
 			JsonObject field = e.getAsJsonObject();
@@ -664,6 +736,52 @@ public class ApplyBiceLibFindings extends GhidraScript {
 			}
 			placeField(struct, offset, fname, type, comment, field.get("type").getAsString());
 		}
+	}
+
+	/**
+	 * Cut a structure down to the extent the record declares.
+	 *
+	 * **Why this exists, 2026-10-05.** The script only ever *grew* a structure, so a type
+	 * Ghidra held longer than the record intends silently swallowed whatever field was
+	 * declared after a by-value member of it - and the next run put the swallowed field back
+	 * and lost the member instead. That is what made the apply run in a **period-2 cycle**
+	 * over five structures rather than settling: four passes over an unchanged record gave
+	 * `struct fields: 6, 5, 6, 5`. `CLeaderHistory` is 0x24 by its own fields and was 0x44 in
+	 * Ghidra, so `CLeader`'s `history` at +0x84 covered both `picture` (+0xA8) and
+	 * `trait_gain_tracker` (+0xC4).
+	 *
+	 * The rule is now: **a declared `size` is the authority in both directions.** That is not
+	 * a blunt instrument - of the 41 sized structures in the record exactly one was longer in
+	 * Ghidra - but every component it drops is named in the notes, because a structural change
+	 * nobody can see would be worse than the cycle it fixes. Without `overwrite` it only
+	 * reports.
+	 */
+	private void shrinkToDeclared(Structure struct, String name, int size) {
+		List<String> dropped = new ArrayList<>();
+		for (DataTypeComponent c : struct.getDefinedComponents()) {
+			if (c.getOffset() >= size) {
+				dropped.add("+0x" + Integer.toHexString(c.getOffset()) + " " +
+					(c.getFieldName() == null ? c.getDataType().getName() : c.getFieldName()));
+			}
+		}
+		String what = name + ": record declares 0x" + Integer.toHexString(size) +
+			", Ghidra holds 0x" + Integer.toHexString(struct.getLength());
+		if (!overwrite) {
+			kept++;
+			notes.add(what + "; not shrinking without overwrite" +
+				(dropped.isEmpty() ? "" : " (would drop " + String.join(", ", dropped) + ")"));
+			return;
+		}
+		DataTypeComponent[] defined = struct.getDefinedComponents();
+		for (int i = defined.length - 1; i >= 0; i--) {
+			if (defined[i].getOffset() >= size) {
+				struct.clearAtOffset(defined[i].getOffset());
+			}
+		}
+		struct.setLength(size);
+		notes.add(what + " -> shrunk" + (dropped.isEmpty()
+			? " (the tail was undefined bytes)"
+			: ", dropping " + String.join(", ", dropped)));
 	}
 
 	// ---- virtual tables ---------------------------------------------------------------------
@@ -783,11 +901,26 @@ public class ApplyBiceLibFindings extends GhidraScript {
 		catch (InvalidNameException ex) {
 			return new PointerDataType(VoidDataType.dataType, dtm);
 		}
-		definition.setCategoryPath(VFTABLE_CATEGORY);
-		DataType kept = dtm.getDataType(VFTABLE_CATEGORY, definition.getName());
+		// Under `organise` the slot definitions nest below the tables they belong to; without
+		// it they stay exactly where they were, so a plain `overwrite` run rearranges nothing.
+		// This matters more than it looks: moving them retypes every vftable structure's
+		// fields, which is 1918 placements in one go - churn worth asking for rather than
+		// delivering by surprise.
+		// **Reuse an existing definition wherever it lives, and only choose a folder for a
+		// new one.** Looking only in the folder the flag selects made a plain `overwrite`
+		// run recreate every definition in the old folder and retype all 1918 vftable
+		// fields - so running with the flag and then without it churned thousands of types
+		// each way. `organise` decides where a definition is *created*; it never decides
+		// where one is *found*.
+		DataType kept = dtm.getDataType(SLOT_CATEGORY, definition.getName());
+		if (kept == null) {
+			kept = dtm.getDataType(VFTABLE_CATEGORY, definition.getName());
+		}
 		if (kept != null && kept.isEquivalent(definition)) {
 			return new PointerDataType(kept, dtm);
 		}
+		definition.setCategoryPath(kept != null ? kept.getCategoryPath()
+			: organise ? SLOT_CATEGORY : VFTABLE_CATEGORY);
 		return new PointerDataType(dtm.addDataType(definition, DataTypeConflictHandler.REPLACE_HANDLER), dtm);
 	}
 
@@ -927,7 +1060,7 @@ public class ApplyBiceLibFindings extends GhidraScript {
 
 	/**
 	 * The structure for a class: the one Ghidra ties to the class namespace when one
-	 * exists, so it becomes the type of `this`; otherwise one in /BiceLib.
+	 * exists, so it becomes the type of `this`; otherwise one in the right /BiceLib folder.
 	 */
 	private Structure structFor(String cppName, boolean create) {
 		String name = sanitizeType(cppName);
@@ -936,24 +1069,156 @@ public class ApplyBiceLibFindings extends GhidraScript {
 			// Where the class has no structure yet this hands back a new one that belongs to
 			// nobody: it has to be resolved into the manager, or everything written into it
 			// is dropped when the script ends.
-			return (Structure) dtm.resolve(VariableUtilities.findOrCreateClassStruct(cls, dtm),
+			Structure s = (Structure) dtm.resolve(
+				VariableUtilities.findOrCreateClassStruct(cls, dtm),
 				DataTypeConflictHandler.KEEP_HANDLER);
+			return (Structure) filed(s, categoryFor(name));
 		}
 		DataType existing = findType(name);
 		if (existing instanceof Structure s) {
-			return s;
+			return (Structure) filed(s, categoryFor(name));
 		}
 		if (!create) {
 			return null;
 		}
-		return (Structure) dtm.addDataType(new StructureDataType(CATEGORY, name, 0, dtm),
+		return (Structure) dtm.addDataType(new StructureDataType(categoryFor(name), name, 0, dtm),
 			DataTypeConflictHandler.KEEP_HANDLER);
 	}
 
+	/**
+	 * Move the slot function definitions between `/BiceLib/vftables` and its `slots` child,
+	 * once, before any vftable is applied.
+	 *
+	 * **Without this the category change duplicates them instead of moving them.**
+	 * `slotType` resolves a definition with `addDataType`, which is keyed by category *and*
+	 * name - so changing the target folder creates a second copy and leaves the first
+	 * orphaned, and the first run of `organise` took the project from 9046 types to 12885.
+	 * Sweeping first means `slotType` finds the one that already exists wherever it is.
+	 *
+	 * It runs in both directions, so turning the flag off tidies up after itself, and it
+	 * deletes rather than moves where both folders already hold the name - that is an
+	 * orphan from exactly this bug, and the structures point at the one in the target.
+	 */
+	private void sweepSlotDefinitions() {
+		// **Only forwards.** An earlier version swept back when the flag was absent, so that
+		// turning it off tidied up after itself - but that makes a plain `overwrite` run
+		// silently undo the organisation, and alternating the two churns thousands of types
+		// each way. The flag adds; it does not toggle.
+		if (!organise) {
+			return;
+		}
+		CategoryPath from = VFTABLE_CATEGORY;
+		CategoryPath to = SLOT_CATEGORY;
+		Category source = dtm.getCategory(from);
+		if (source == null) {
+			return;
+		}
+		dtm.createCategory(to);
+		int swept = 0, dropped = 0;   // dropped: left alone, counted, never deleted
+		for (DataType dt : source.getDataTypes()) {
+			// **The interface, not the class.** A definition resolved into the manager comes
+			// back as Ghidra's own DB-backed implementation, so `instanceof
+			// FunctionDefinitionDataType` is false for every one of them, and the first
+			// version of this swept nothing at all while reporting success.
+			//
+			// **Definitions only - never the pointers.** Ghidra creates `X *` beside its
+			// base and does not move it when the base moves, so the old folder keeps a
+			// pointer per slot. Sweeping those as well looked tidier and does not converge:
+			// the vftable pass recreates each one, so every run deleted them again and
+			// re-placed the 666 structure fields that use them. They are generated types
+			// Ghidra manages, and its own "Remove Unused Data Types" clears them; leaving
+			// them is cosmetic, deleting them is a loop.
+			if (!(dt instanceof FunctionDefinition)) {
+				continue;                  // the tables themselves live here and stay
+			}
+			if (dtm.getDataType(to, dt.getName()) != null) {
+				// Both folders hold the name, so this one is dead - but **do not delete it.**
+				// A structure field still points at it through a pointer in this folder, and
+				// removing the definition turns that pointer, and the field, into `-BAD-`.
+				// The vftable pass then re-places the field, resolving a fresh pointer that
+				// re-anchors a definition here, and the next run sweeps it again: 666 fields
+				// churned on every run and nothing converged. Leaving it costs some dead
+				// clutter that Ghidra's own "Remove Unused Data Types" clears.
+				//
+				// This only happens where a move was left half-done, which outside testing
+				// means a run interrupted between the sweep and the vftable pass.
+				dropped++;
+				continue;
+			}
+			try {
+				dt.setCategoryPath(to);
+				swept++;
+			}
+			catch (ghidra.util.exception.DuplicateNameException ex) {
+				// cannot happen - the name was just checked - but swallowing it silently
+				// would hide a leak, so it is counted as kept and said out loud.
+				kept++;
+				notes.add("! slot definition " + dt.getName() + " stays in " + from.getPath());
+			}
+		}
+		if (swept + dropped > 0) {
+			moved += swept;
+			notes.add("slot definitions: " + swept + " moved to " + to.getPath()
+				+ (dropped > 0 ? ", " + dropped + " dead duplicates left alone" : ""));
+		}
+	}
+
+	/** Which /BiceLib folder a recorded type belongs in, from its name alone. */
+	private CategoryPath categoryFor(String name) {
+		if (CONTAINER.matcher(name).matches()) {
+			return CONTAINER_CATEGORY;
+		}
+		if (name.contains("vftable") || name.contains("vtable")) {
+			return VFTABLE_CATEGORY;
+		}
+		return CLASS_CATEGORY;
+	}
+
+	/**
+	 * Move a type into its category, when `organise` says to.
+	 *
+	 * **Only ever called for a name the findings carry**, which is what keeps it off
+	 * anything you made yourself. Ghidra identifies a type by reference and not by path, so
+	 * a move disturbs no field, signature or decompiled line - but a structure Ghidra ties
+	 * to a class namespace is looked up through that namespace, so moving one is the case to
+	 * watch: a second run has to find the moved type rather than create a fresh one beside
+	 * it. That is checked by running the apply twice and seeing `struct fields: 0` with no
+	 * new type, which is the same pass mark everything else here uses.
+	 */
+	private DataType filed(DataType dt, CategoryPath where) {
+		if (!organise || dt == null || where.equals(dt.getCategoryPath())) {
+			return dt;
+		}
+		CategoryPath from = dt.getCategoryPath();
+		try {
+			dtm.createCategory(where);
+			dt.setCategoryPath(where);
+			moved++;
+			if (moved <= 12) {
+				notes.add("moved " + dt.getName() + " from " + from.getPath()
+					+ " to " + where.getPath());
+			}
+		}
+		catch (ghidra.util.exception.DuplicateNameException ex) {
+			// A different type of the same name already sits in the target folder. Leave this
+			// one where it is and say so: silently merging two types of one name is how a
+			// field table ends up describing the wrong object.
+			kept++;
+			notes.add("! " + dt.getName() + " stays in " + from.getPath()
+				+ " - something of that name is already in " + where.getPath());
+		}
+		return dt;
+	}
+
 	private DataType findType(String name) {
-		DataType here = dtm.getDataType(CATEGORY, name);
-		if (here != null) {
-			return here;
+		// The folders we own, nearest first. `findDataTypes` below would find these anyway;
+		// asking directly keeps the common case off a whole-manager search.
+		for (CategoryPath c : new CategoryPath[] { CLASS_CATEGORY, CONTAINER_CATEGORY,
+			VFTABLE_CATEGORY, ENUM_CATEGORY, CATEGORY }) {
+			DataType here = dtm.getDataType(c, name);
+			if (here != null) {
+				return here;
+			}
 		}
 		List<DataType> found = new ArrayList<>();
 		dtm.findDataTypes(name, found);

@@ -219,6 +219,167 @@ knowing: the Ghidra output *does* have a LIKELY tier with 81 members, but those 
 `buildFindings`'s own hardcoded cases (folded bodies, luabind wrappers) - so a real tier exists that
 the record's own `likely` cannot reach, which strengthens B's case rather than weakening it.
 
+## Wave 14 landed, 2026-10-06
+
+Four briefs: the fragment tooling plus the blocked structs, `CContextTrigger`'s scope rebinding, what
+a trigger forest costs, and the faction layer. **27 addresses, 18 new structs and 20 struct fields
+landed**, which generated **121 new fields** off the eight `inherits`-only subclasses. `buildFindings`
+printed no `!` lines; the headless apply gave `struct fields: 450, replaced: 0, failed: 0` and then
+`0 / 0 / 0` on a second pass - **the first wave to settle to the pass mark on its own**.
+
+Where the prose went: `findings/FINDINGS-faction.md` (new), `findings/FINDINGS-triggereval.md`
+§10-16, `findings/FINDINGS-scopetriggers.md` §11-16, `findings/FINDINGS-diploaction.md` §30.
+
+**The four results worth knowing without opening a file:**
+
+- **`ally = { ... }` is enormously wider than `alliance_with`**, and this had been an open question
+  since wave 12. A faction join writes no `CDiplomacyStatus` field at all, and in the 1945 save the
+  whole world holds **7** bilateral alliances against **674** intra-faction country pairs. Two of
+  those 7 are between countries in no faction, so the implication fails both ways. `is_in_faction`
+  is the test for "same side"; `alliance_with` is the test for "we have a treaty".
+- **Nothing in the trigger forest is cached, and `and` short-circuits while the tooltip tally does
+  not.** The cost is one full tree walk per candidate event per country per game day, from
+  `RunDailyEventPass`. Slot 11 - the `"%d / %d"` figure - has exactly **one** root in the image, a
+  triggered-modifier panel gated on a day-of-year change, so tooltips do not double anything.
+- **A scope switch writes five offsets and nothing else**, so `FROM`, `THIS`, the seed, the rebel
+  faction and the combatant provably survive any depth of nesting - while `ally` and `local_enemy`
+  keep the *outer* province and `capital_scope`/`sea_zone` throw the country away.
+- **Faction leadership is positional and cannot be set.** It is the first member; a join always
+  appends. The only promotion path in the image runs when the leader goes into exile, and picks the
+  surviving member with the highest max IC.
+
+### Queued hand edits - the first three are done, 2026-10-06
+
+These came out of wave 14 and are listed here because `mergeFindings`' `structs` key is create-only
+and the duplicates predate the check that would have refused them.
+
+1. ~~**`CTradeRoute` needs `"inherits": "CRelation"`.**~~ **Done 2026-10-06.** RTTI puts `CRelation`
+   at **offset 0** on it and no CRelation field shared an offset with its twelve, so it was safe. Its
+   `+0xC first_id` and `+0x14 second_id` - whose own comments already said "Id half of the CRelation
+   base's `first`/`second`" - are now folded into the inherited 8-byte tags, which the apply reported
+   as `CTradeRoute+0x8 replaced 'first_id' with first`. Generated fields 3036 -> 3040: six inherited
+   minus the two folded.
+2. ~~**`CBuildingConstruction` and `CConvoyConstruction` have wrong `vftable_rva`s.**~~ **Done
+   2026-10-06**, `0x11BDCD4` -> `0x11BDCAC` and `0x11BDD34` -> `0x11BDD04`. Verified off the bytes
+   before the edit: `[0x15BDCA8]` and `[0x15BDD00]` hold `0x1611C8C` and `0x1611C38`, which are
+   `.rdata` complete-object-locator pointers, so each table begins at the next dword - and
+   `[0x15BDCAC]` and `[0x15BDD04]` both hold `0x5501D0`, a real code address and their shared first
+   slot. The recorded values were 10 and 12 slots in.
+3. ~~**Four duplicate field records.**~~ **Done 2026-10-06**, merged to one each, the survivor keeping
+   position zero so the fold order is unchanged. `CDiplomacyStatus +0x14` is now **`CAlliance*`** and
+   `+0x1C` **`CGuarantee*`** - both previously reached the decompilation as `void*`, because
+   `merge_fields` keeps whichever record comes first - each carrying both halves of the account, since
+   the `void*` records held the predicate derivations and the typed ones the `Activate` writers and
+   save blocks. `CCountry +0xA8C` and `+0x10B8` were the harmless shape (same name, same type) and
+   just have their two comments merged; note the **Lua half still wins their name and type**, so they
+   reach Ghidra as `Neutrality`/`NationalUnity` typed `CFixedPoint`, which is item 6's rule and is
+   right here.
+4. **`buildFindings.py` should print a `!!` line for a duplicate `(struct, offset)`**, the way it
+   already does for two address entries on one rva. A one-line `Counter`. **It would print nothing
+   today** - item 3 cleared the last four - which is exactly why it is worth adding now: it is a guard
+   against the duplicates coming back silently, not a backlog report. The reason to add it at all is
+   that a duplicate costs more than a duplicate address entry does, because `merge_fields` quietly
+   keeps whichever comes first and the file then holds two answers with neither run complaining.
+   Refusing rather than reporting is still the wrong call: a wave should not be blocked on a record
+   nobody has had time to merge.
+5. **`buildFindings.py` should report its folds.** A field lying inside a larger typed one is dropped
+   from the generated output and its text moved into the host's comment, and **nothing says so** - the
+   existing overlap warning runs on the post-fold list. Two of wave 14's four agents independently
+   concluded that the twelve `CCountryTag` id-half records would start an apply cycle; both were wrong,
+   and both would have been saved by one printed line. The shape of that output is a judgement call,
+   which is why it is queued rather than done.
+6. ~~**`CEventScope +0x10` reaches Ghidra as a 4-byte `CCountryTag *`** over four bytes of tag
+   letters.~~ **Done 2026-10-06**, by two rules rather than one, because there turned out to be two
+   independent causes. See *The Lua API census* below; the field is now `country_tag char[4]` and
+   `CResearchBonus +0x4` is `CFixedPoint` by value. `CList<CSubUnitConstructionEntry> +0x4` is left
+   alone and that is now a result rather than a gap: it is accessor-derived, where a `T&` can
+   legitimately be a pointer member.
+7. **`reconcileFacts.py`'s wording** for the Lua-only row should say "already in the record, through
+   the Lua half" rather than "need a struct record first", which reads as 44 missing facts and cost an
+   agent a detour.
+
+### The residue - what wave 14 left, in rough order of value
+
+- **The five collector entry points**: `0x4A4F50`, `0x4A51C0`, `0x4A5270`, `0x4A5420`, `0x4A5620`, all
+  unnamed, all in `CAIStrategy`'s region. This is **what the whole slot-10 machinery exists for**, and
+  reading it from the trigger side got as close as the standing steer allows. `0x4A51C0` is the one
+  that takes **text**, which is the shape to know before starting.
+- **`CValueTrigger` and `CIntTrigger`'s slot 7** (`0x5D13E0`, `0x5D1400`, abutting, two different unit
+  conventions - `TokenToFixedPoint` into `+0x40` versus an argument-token test against `0x377`).
+  Neither class has a vftable of its own, so which body belongs to which has to be argued from the
+  derived classes that hold each. Settling it matters out of proportion: **111 of the 156 trigger
+  classes are `new(0x44)`**, one dword at `+0x40`, so one declaration each would place that field on
+  all of them. **The single biggest remaining win in this family.**
+- **`CDeclareWarAction::Apply`'s call at `0xA121CE`** passes `(country, 0, 0)` on a path gated by a
+  slot-7 `IsValid` answering false - so it is a faction *leave*. **It looks like declaring war can
+  eject a country from a faction**, which would be a real rule nobody has written down.
+- **`0x102BC0`**, the capitulation/exile function holding the faction leader promotion. 7 callers,
+  four `ret`s between `0x50315F` and `0x5033AD`; worth a brief of its own.
+- **`CCountryList` has no layout at all** - not a struct record, and not special-cased beside
+  `CUnitList` in the `CList` pass - so `Allies (+0xF88)`, `Vassals (+0xF78)` and the rest decompile as
+  untyped blobs. Giving it the `CList` layout would retire the three hand-added
+  `non_hostile_countries_*` workaround records at `+0xF98`-`+0xFA0` at the same time.
+- **`CCasusBelliType`'s 22 loader offsets**, now landable: token table `0x416924`, jump table
+  `0x4168E0`, base token `0x78D`. Best given to one agent whole.
+- **`CContextEffect`'s struct** - spec at `+0x20`, object `0x130`, same `CEventScopeSpec`. One
+  declaration.
+- **`CTrigger +0x1C[2]`** - a `std::vector`-shaped container of two `0x10`-byte elements; its element
+  ctor/dtor (`0x9DB0`, `0xC480`) are referenced from **200** sites, so naming it needs the container
+  identified rather than the trigger. A displacement scan **cannot** settle it; that was tried and is
+  written up as a trap 12 case.
+- **`CTrigger +0x3C`** - cleared by every container constructor and set to 1 by `CTrigger::LoadKey` at
+  `0x5C915B`. No reader identified.
+- **`scratchpad/triggersizes.py`** pairs 156 trigger class names with their allocation sizes in one
+  command and generalises to any loader that builds its classes with `new`/constructor pairs. Worth
+  promoting to `scripts/` by someone who can name it.
+- **Two holes in wave 14's own negatives, both stated by the agents rather than found later:** slot
+  11's root search cannot see three arguments written with `mov [esp+N]` instead of pushed; and the
+  faction layer's "no alliance is created" rests on `0x4E70A0` and `0x4FBC10` having been skimmed only.
+
+## A live check: does `at_sea` lock a fleet's `carrying` list? - 2026-10-07
+
+**This would be a real bug if it holds, and it is cheap to test in a session.** It came out of
+settling what `CList +0xC` means (`findings/FINDINGS-factbase.md`).
+
+What is established, both ends off instructions:
+
+- **`CList`'s fourth member at `+0xC` is a deferred-deletion lock.** While set, code that would
+  remove a node **marks it and leaves it linked** instead. `CWeatherManager::Tick` reads it at VA
+  `0x4B5CD7` and branches: set -> `mov byte ptr [eax+0xc], 1` on the spent node and skip the
+  unlink; clear -> relink `prev`/`next` and fix `first`/`last`.
+- **`CUnit +0x2E4 carrying` is a `CList<CUnit*>`**, so `0x10` bytes, `+0x2E4`..`+0x2F4`.
+  `CheckTransportOverload` (rva `0x1CFBD0`) reads it twice, `add eax, 0x2e4` and
+  `mov esi, [edi+0x2e4]`.
+- **`CNavy::LoadKey`'s save-token-`0x3FC` (`at_sea`) handler writes a dword there**:
+  `mov dword ptr [ebx + 0x2f0], eax` at `0x1CF6FE`. `+0x2F0` is offset `0xC` inside `carrying`.
+
+So on the face of it, **a fleet restored from a save with `at_sea` set has a non-zero lock on its
+own carried-units list, and would never unlink a node from it again** - the list would still work,
+it would just never shrink. That is exactly the shape of thing nobody notices.
+
+**Why it is a check and not a finding.** A layout where the game deliberately parks a loaded field
+in a container's lock slot is strange enough to want confirming, and three readings are possible:
+the collision is real and is a bug; `carrying` is not `0x10` here (some other list instantiation);
+or one of the two offsets is a few bytes out despite both being instruction-anchored. Nothing
+static separates them, because both claims rest on decoded instructions that are individually
+sound.
+
+**The test, in one session.** Load a save with a fleet at sea carrying at least one unit, then
+watch `CUnit +0x2E4`'s `count` (`+0x2EC`) across an unload:
+
+- if the count **decreases**, the lock is not being set and the collision is not real;
+- if the count **stays** while the carried units are plainly gone, the lock is set and the nodes
+  are being marked rather than unlinked - the bug;
+- and `+0x2F0` can be read directly at the same time: non-zero after loading an at-sea fleet is
+  the lock being set, zero means `at_sea` is not landing where it looks like it does.
+
+A second, cheaper angle: compare a fleet that was **at sea in the save** against one that put to
+sea during play. Only the first goes through `LoadKey`, so only the first should show the symptom.
+
+The record carries the open question on both fields - `CList +0xC no_unlink` and
+`CNavy +0x2F0 at_sea` - rather than a claim, and `at_sea`'s type was corrected from `uint8_t` to
+`int` at the same time, since the write is four bytes wide.
+
 ## The planned next wave is in `WAVE.md`
 
 **It is not in this file any more.** `WAVE.md` holds the wave that is planned and has not launched,
@@ -252,6 +413,17 @@ where a defence stat buys anything, has **exactly one caller in the image** and 
 `CLandCombatant::FireUnit`. So the mechanic is land-only by construction. In BlackICE that means a
 flat 30% chance to be hit per shot for every brigade, ship and wing under air attack, whatever its
 air defence; an AA brigade's `air_defence = 25` is inert and its `air_attack = 22` is the live half.
+
+**And the same question about `sea_defence`, asked by a player a few hours later, has the same
+answer only cleaner**: neither `sea_defence` (+0x160) nor `surface_defence` (+0x174) is read
+in any combat function - 3 definition-pointer reads each, none in the combat classes, and a
+654-function closure from the naval roots with no `+0x160` read in it. The positive control is
+in the same function: the identical filter finds `sea_attack` twice and `hull` three times in
+`CNavalCombatant::Attack`. `hull` is the ship survivability dial, as a straight divisor on
+both kinds of damage. That also closes `findings/FINDINGS-combatmods.md` §9's open question -
+naval does **not** have the land `defences_used` structure, because `CUnit::RollToHit` has one
+caller and it is `CLandCombatant::FireUnit`. All five stats now carry comments on
+`CSubUnitDefinition`, which had none.
 
 Two corrections to the record came out of it, both now in `project.json`:
 

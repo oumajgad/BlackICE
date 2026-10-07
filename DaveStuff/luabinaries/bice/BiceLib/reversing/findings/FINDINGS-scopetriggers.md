@@ -414,6 +414,201 @@ named.
    `CHasCombinedArmsBonus` (`0x607D60`); and the five `GetBlockText` bodies the brief
    offered as a route in - the vftables were cheaper and the rendering side was not needed.
 
+## 11. A scope switch changes three fields and two flags, and nothing else
+
+Read 2026-10-06, wave 14, to answer the one thing a modder cannot get from the files: when a
+condition is written inside `owner = { ... }`, what exactly does the inner scope see?
+
+`CEventScope::MakeScope` (`0x5C1C10`) is the whole of rebinding, decoded end to end from the entry,
+VA `0x9C1C10`-`0x9C1FD4`. The frame is `and esp,-8`, three SEH pushes, `sub esp,0x78`, three register
+pushes, so `esp = A-0x90` and:
+
+| stack slot | what it is |
+| --- | --- |
+| `[esp+0x38]` | a **`0x48`-byte local `CEventScope`** - the answer under construction |
+| `[esp+0x48]` / `[esp+0x4C]` | its `country_tag (+0x10)` / `country_id (+0x14)` |
+| `[esp+0x60]` | its `province (+0x28)` |
+| `[esp+0x74]` / `[esp+0x75]` | its `resolved (+0x3C)` / `unknown_context (+0x3D)` |
+| `[esp+0x18..0x20]`, `[esp+0x28..0x30]` | two zeroed `{begin,end,cap}` triples; only the first is ever filled |
+| `[esp+0x84]` | the saved `fs:[0]` - which is why the writes to `[esp+0x8C]` are the **SEH trylevel**, not a scope field |
+
+`CEventScope::CopyConstruct` (`0x3C850`) fills the local from the **receiver** at the top (VA
+`0x9C1C3A`), each arm writes the local, and the last thing each of the four exits does is
+CopyConstruct the local into `out`.
+
+> **Correction.** The record said MakeScope "copies the receiver into `out` first". That is the same
+> effect by a different mechanism and a worse description of the error paths: **`out` is written
+> exactly once, at an exit, and is never left half-rebound.** `CContextEffect::Execute`'s comment
+> carries the same phrasing and was not revised with it.
+
+Enumerating every store into `[esp+0x38..0x7F]` in the body gives **eleven stores at five distinct
+offsets**: `+0x10`, `+0x14`, `+0x28`, `+0x3C` (only ever cleared) and `+0x3D` (only ever set).
+Nothing else in the object is written anywhere. So the following are inherited **by construction**,
+not by inference:
+
+- **`from_country_tag (+0x18)` / `from_country_id (+0x1C)` / `from_province (+0x30)`** - `FROM`
+  survives every scope switch, *including `FROM = { ... }` itself*: the `from` arm reads those three
+  and writes `+0x10`/`+0x14`/`+0x28`, and never writes back. **A `FROM` condition nested any depth
+  inside scope blocks still names the country the event was raised from.**
+- **`this_scope (+0x38)`** - copied verbatim, so `THIS` always resolves and always means the original.
+- **`combatant (+0x40)`** - so the eight combat conditions keep working inside a country scope, and
+  `enemy = { ... }` remains the only thing in the language that changes it.
+- **`seed (+0x2C)`, `rebel_faction (+0x20)`/`(+0x24)`, `days_in_month (+0x34)`, and the random state
+  `(+0x8)`/`(+0xC)`** - but see §13 for what `ally` and `local_enemy` do to the last of those.
+
+## 12. The eleven forms, and what each does to the *province*
+
+The record's table had the country column. This is the same table with the second column, read off
+the stores - and **`province` was not previously accounted for per arm**.
+
+| form | token | country | province |
+| --- | --- | --- | --- |
+| `GER = { }` (a tag the db knows) | pre-switch, `spec+0x10C != 0` | the literal tag | **cleared to 0** |
+| `1234 = { }` | `0xC` | **cleared to `"---"`/0** | `spec->literal_province (+0x104)` |
+| `owner` | `0x1EC` | province's `owner (+0x32C)` / `owner_id (+0x330)` | **cleared to 0** |
+| `controller` | `0x1ED` | province's `controller (+0x334)` / `controller_id (+0x338)` | **cleared to 0** |
+| `from` | `0x34F` | `from_country (+0x18/+0x1C)` | `from_province (+0x30)` |
+| `ally` | `0x359` | a random entry of `CCountry +0xF88` (`Allies`) | **left alone** |
+| `this` | `0x377` | `this_scope`'s country | `this_scope`'s province; exits at once |
+| `capital_scope` | `0x3B4` | **cleared to `"---"`/0** | `acting_capital_province_id (+0xE24)` |
+| `sea_zone` | `0x3E8` | **cleared to `"---"`/0** | `province->path_node_ptr (+0xD4) ->+0xA4` |
+| `local_enemy` | `0x621` | a random `CUnit +0x124/+0x128` owner in the province with `combats_count (+0x11C) > 0` and owner id != the province's `owner_id (+0x330)` | **left alone** |
+| `overlord` | `0x631` | `Overlord (CCountry +0xF38/+0xF3C)` | **cleared to 0** |
+| anything else | - | left alone, `unknown_context = 1` | left alone |
+
+The `overlord` arm reads the pair at `0x9C1F86`/`0x9C1F8C`. Its destination was still called
+`faction_leader_tag`/`faction_leader_id` in the record after wave 13 renamed `CCountry +0xF38` to
+`Overlord`; **`+0xF3C` is corrected to `overlord_id` here**, and `CFactionAction::Apply`'s subject
+sweep reading the same pair at `0xA31ACE`-`0xA31ADE` is a third witness.
+
+**Two consequences a mod author can act on:**
+
+- **`ally = { ... }` and `local_enemy = { ... }` keep the province they were entered with.** Their
+  shared tail (`0x5C1F05`-`0x5C1F6A`) writes `+0x10` and `+0x14` and nothing else. So a province
+  condition inside them is still about the **outer** province - the same convenience-or-trap
+  `any_neighbor_country` has.
+- **`capital_scope = { ... }` and `sea_zone = { ... }` throw the country away.** A country condition
+  inside either reads country id 0 unless it resolves through `this_scope` - which
+  `EventScope_GetCountryTag` (`0x5C1A40`) does and `neighbour`/`is_core` do not.
+
+## 13. `ally` and `local_enemy` mutate the scope they are handed
+
+The random tail builds a `std::vector<CCountryTag>` (8-byte stride; `push_back` is rva `0x22690`,
+which has MSVC's self-referencing-element guard and an element copy of exactly two dwords), takes
+`count = (end-begin) >> 3`, and on a non-zero count calls the LCG at rva `0x6A2E90` - which is
+`mov eax,[edx]; imul 0x343FD; add 0x269EC3; ...; mov [edx],eax`, i.e. it takes the state **pointer in
+EDX and writes the advanced state back through it**, twice per call. At VA `0x9C1F14` that pointer is
+`lea edx,[esi+8]`, and `esi` is still the **receiver** from `0x9C1C38`.
+
+So **evaluating an `ally` or `local_enemy` context advances `random_state (+0x8)` of the scope the
+condition was given** - the event's own scope, not the stack copy. Every evaluation, and
+`CountEvaluation` (the tooltip tally) goes through the same path.
+
+The empty case clears `resolved (+0x3C)` at `0x5C1F34`; the unknown-key arm falls into the same tail
+with an empty vector, so **an unrecognised context ends with both `unknown_context = 1` and
+`resolved = 0`.**
+
+## 14. How a key becomes a scope: a trial rebinding at parse time (`0x5CAE62`)
+
+`CTrigger::LoadKey`'s unknown-key path is: 153 keyword cases -> region name (`0x5CAE1C`) -> **this
+arm** -> `Unknown trigger-type`. The arm is
+
+    EventScopeSpec_Construct(&spec, parse + 0x20)             ; 0x5C1B30
+    CEventScope trial(seed = 0, arg = 0)                      ; 0x5C1610
+    CEventScope::MakeScope(&trial, &spec, &out)               ; 0x5C1C10
+    if (out.unknown_context (+0x3D) == 0) {
+        new (operator new(0x150)) CContextTrigger(spec by value)  ; 0x5D14A0
+    } else
+        "Unknown trigger-type " <key> " in " <file>            ; trigger.cpp:0x10B
+
+The test is **`unknown_context`, not `resolved`** - and it has to be, because the trial scope is
+freshly constructed with country `"---"`/0 and province 0, on which `owner`, `controller`, `ally`,
+`capital_scope`, `sea_zone` and `local_enemy` all resolve to nothing. The accepted set is exactly
+eleven forms: a tag `CCountryDataBase` knows, a number, and the nine keyword tokens.
+
+**None of the nine shadows a condition keyword.** `scripts/switchmap.py 0x9C8D10` prints 153 cases,
+and none of them is 492, 493, 847, 857, 887, 948, 1000, 1569 or 1585 (`owner`, `controller`, `from`,
+`ally`, `this`, `capital_scope`, `sea_zone`, `local_enemy`, `overlord`). *Positive control*: the same
+output does carry `controlled_by 1556` and `any_core 1709`, so the search is not blind.
+
+So the "153 keys" of the trigger language and the 11 forms of a context scope are **disjoint sets**,
+and the earlier reading of "2 of its 153 keys placed" conflated them. **`CContextTrigger` has eleven
+forms and all eleven are now placed.**
+
+The shared tail at `0x5CADC1` also settles two small things about every trigger: the child-list node
+is **`0x10` bytes, `{payload@+0, prev@+4, next@+8, byte@+0xC}`** (the record had payload and next),
+and **the loader sets the new child's `CTrigger +0x3C` to 1** (`0x5CAE09`) before calling its slot 3
+(`[vftable+0xC]`, `CPersistent::Load`) to read its `{ ... }` block.
+
+## 15. `CEventScope +0x10`/`+0x14`: the record is right and the generated copy is wrong
+
+This was opened expecting an **unrecorded `+0x14`**. Both halves were already recorded: `+0x10
+country_tag char[4]` and `+0x14 country_id int`, with `+0x14`'s own comment already noting that the
+Lua API declares `_Country` at `+0x10` as a `CCountryTag&`. Off the bytes: `CCountryTag` is 8 bytes
+(`tag char[4]`, `id int`; `CCountryTag::GetCountry`, rva `0x2610`, reads only `+4`), every MakeScope
+arm writes the pair from one source tag, and every comparison in the image goes through the **id**
+half (`CountryTagVector_Contains` at `0x21D00`, `CCountry::CalculateIsAllied` at `0xE6A30`). So
+`+0x10`..`+0x17` is one by-value `CCountryTag` and the record's two fields are the accurate
+decomposition of it.
+
+**What is wrong is the generated copy.** `ghidra/bicelib_findings.json` holds `CEventScope +0x10` as
+`_Country` of type **`CCountryTag&`** and demotes the record's into the comment, and
+`buildFindings.py` prefers the Lua name and type - so **Ghidra shows a 4-byte `CCountryTag *` where
+four characters of tag live**, and `scope->_Country` decompiles as a pointer whose value is the ASCII
+of `"GER"`. The clinching evidence is four bytes away: `from_country_tag` at `+0x18` is the *same
+shape* and is typed correctly as `char[4]`, because no Lua accessor is registered on it.
+
+Measured blast radius: **8 generated fields are reference-typed and only this one disagrees with the
+record.** The five `OwnerAI CEU3AI&` back-references at `+0x54` on the AI ministers are genuinely
+pointers and correct. Two - `CList<CSubUnitConstructionEntry> +0x4 TailData` and `CResearchBonus
++0x4 _vWeight CFixedPoint&` - are the same shape as the broken one and are **unsettled**, because
+none of those three classes is in `project.json`. The rule behind it: **a Lua `T&` is right when the
+member really is a pointer and wrong when it is stored by value, and the generator cannot tell them
+apart.** Not fixed here - it is the generator's preference rule, not a `struct_fields` revision, and
+it is the same shape as the `CDiplomacyStatus +0x14` `void*`/`CAlliance*` case.
+
+## 16. `CContextTrigger`'s layout
+
+Given as prose when it was read, because no `structs` fragment key existed yet; the class is now
+declared in `project.json` and this is the derivation.
+
+    CContextTrigger : CAndTrigger : CTrigger          size 0x150   (push 0x150 at 0x5CAEA6)
+      +0x00 .. 0x3F   CTrigger                        0x40         (push 0x44 for CRegionScopeTrigger)
+      +0x40 .. 0x14F  spec  CEventScopeSpec           0x110
+
+and the class has **no other field** - `0x40 + 0x110 = 0x150` exactly. `CContextEffect` is the same
+shape with the spec at **`+0x20`** instead (`lea ecx,[esi+0x20]` at VA `0x99E2C1`), so its object is
+`0x130`; that struct is **not** declared and is a one-line follow-up.
+
+Refinement on `CTrigger` itself: the constructor's `__ehvec_ctor` call (rva `0x796170`) is pushed
+`(array = this+0x1C, size = 0x10, count = 2, ctor = 0x9DB0, dtor = 0xC480)`, so **`+0x1C` is one
+array of two `0x10`-byte elements**, not two separate members. The element's ctor zeroes three dwords;
+its dtor destroys `[+0, +4)` through rva `0x14B50` and frees `[+0]` - a `std::vector`-shaped
+container.
+
+**`CTrigger +0x1C` is not settled** beyond that shape. The attempt was a displacement scan over all
+379 distinct bodies in the 168 trigger vftables, and it is **trap 12 against the person running it**:
+`+0x2C` returned exactly three hits, all slot-11 bodies, which looked like a pattern and is not -
+`mov eax,[eax+0x2C]` there is **vftable + 0x2C, i.e. slot 11 dispatch**, after `mov ecx,[esi]; mov
+eax,[ecx]`. The same scan's `+0x28` hits are mostly `CEventScope::province` on a scope register.
+*Positive control*: it did find the two known writers of `+0x18`/`+0x19` at `0x5D1410`/`0x5D1427`, and
+1,264 sites for `+0x8`. So the method is not blind, it is **unspecific**, and it cannot settle this.
+
+## 17. `CContextEffect` is 0x130, and §16's follow-up is closed
+
+§16 called this a one-line follow-up and it is. Settled 2026-10-06, wave 15.
+
+`push 0x130; call operator_new` at rva `0x59B4D4` inside `CEffect::LoadKey`; the constructor at
+`0x59E250` stores vftable `0x15F445C` and then does `lea eax,[esi+0x20]; call
+EventScopeSpec_Construct (0x5C1B30)`; and the slot that uses it, at `0x59E2B0`, does
+`lea ecx,[esi+0x20]; call CEventScope::MakeScope (0x5C1C10)`.
+
+`0x20 + 0x110 = 0x130`, **so the class has no other field** - the same relation `CContextTrigger` has
+at `+0x40`, shifted by the difference between `CEffect` (`0x20`) and `CTrigger` (`0x40`).
+
+`CEffect`'s own `size` is still unrecorded; `0x20` follows from this and from its own fields ending
+at `+0x1D`, and is worth adding by hand since it is read off an allocation rather than inferred.
+
 ## Frontier
 
 Unnamed and reached from the bodies above. The first group is the one to take first,
@@ -476,3 +671,8 @@ field and declined to name it. The third clause has been added to `TRAPS.md` tra
 So the brief put two readings side by side and the first is right: `ally = { ... }` scopes
 to a random **allied** country. The field is not what `RebuildNeighbours` makes it look
 like, because that function fills nine lists rather than two.
+
+**Wave 15's sections were transcribed the same way**, 2026-10-06, and the `revised` rows of each
+fragment were verified off the bytes by the collecting session before the wave was merged - which
+is what caught the one correction to a published claim that wave made.
+

@@ -10,7 +10,7 @@ Five folders and five documents, and the split is worth knowing before looking f
 | | |
 | --- | --- |
 | `findings/` | the 67 `FINDINGS-*.md` write-ups - the long form of everything that has been read |
-| `scripts/` | the toolkit, 37 scripts. **Commands are run from `reversing/`**, so they read `python scripts/image.py` |
+| `scripts/` | the toolkit, 42 scripts. **Commands are run from `reversing/`**, so they read `python scripts/image.py` |
 | `ghidra/` | the Ghidra side: `project.json`, the build and merge scripts, the headless java |
 | `fragments/` | the parallel-agent staging area - `incoming/`, `merged/`, and the contract in its README |
 | `probes/` | one-off probe scripts from a live session, kept for the record |

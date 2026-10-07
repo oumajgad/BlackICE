@@ -1,0 +1,339 @@
+{
+ "agent": "wave 14 agent C",
+ "question": "what a trigger forest costs - whether any evaluation result is cached, who calls slots 10 and 11 and how often, and whether an AND short-circuits",
+ "source": "reversing/findings/FINDINGS-triggereval.md",
+ "addresses": [
+  {
+   "rva": "0x5D0680",
+   "kind": "function",
+   "name": "CTrigger::WalkChildren",
+   "signature": "void __thiscall CTrigger::WalkChildren(CTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10, the base body: forward the whole argument list to every child and do nothing else.** 0x5D0680 to the single `ret 0x10` at 0x5D06B1. 143 of the 164 trigger classes inherit it, so on a leaf trigger with no children it is a no-op.\n\n**The argument list, corrected.** `project.json` recorded this slot as `(this, CEventScope* scope, int* unknown, int* passed, int* total)`. The count is right - `ret 0x10`, four stack arguments - and the order is not. The scope is the **second**: CContextTrigger::WalkChildren (0x5D2470) rebinds `[ebp+0xC]` and passes the new scope in that position while passing `[ebp+8]` through untouched, and CExistsTrigger's own slot 10 (0x5DABA0) calls `this->Evaluate([ebp+0xC])`. The last two are not counters either: COrTrigger's override divides `[ebp+0x14]` by `children_count (+0x10)`, clamps it to at least 1 and passes that down - an int split among the branches, i.e. a **weight** - and CNotTrigger's override replaces `[ebp+0x10]` with `(byte == 0)`, i.e. a **polarity bool** it inverts.\n\n**What it is for.** A leaf's override reports itself: CExistsTrigger's is `if (polarity && this->Evaluate(scope)) collect(collector, weight, this->+0x44, this->+0x48)` through rva 0x4A5270, which inserts into a map owned by a **CAIStrategy** (its destructor is rva 0x4A3880). So slot 10 is the AI's weighted attribution walk over a trigger tree - which country or province this condition argues for, and how strongly - and not an evaluation helper. The name describes this body rather than the overrides; it is kept because that is what `project.json` already calls the slot.\n\n**Extent, trap 2:** functionStart(0x9D0680) answers 0x9D0663, which is in the middle of an instruction - the previous function ends `ret 0x10` at 0x9D067D..0x9D067F and this prologue is the very next byte, so the backward walk never saw a boundary. retsBefore(0x9D0680, 0x9D06C0) returns exactly one `ret`, and CTrigger's RTTI `introduces` list gives slot 10 as 0x9D0680.\n\n**The two roots of the slot-10 walk**, found 2026-10-06 and both inside ApplyCountryAIStrategies (rva 0x4A62A0): 0x4A63C2 on the trigger embedded at +0xC4 of [esi+0xE40] with (collector=ebx, scope=&[esi+0xE44], polarity=0, weight=0x258) and 0x4A6566 on a trigger embedded at +0x24 of each element of a pointer array with (collector=ebx, scope=&stack scope, polarity=0, weight=0xC8). Both load the vftable as `mov reg,[obj+<offset>]` because the trigger is a by-value sub-object, not a pointer - which is why a scan that only accepted `mov reg,[obj]` found no root at all.\n\n**The flag is `is this condition negated`, 0 at the root and flipped by each NOT - and there is no single convention for honouring it.** Of the 20 slot-10 bodies the 168 CTrigger descendants' tables hold, ten test `byte ptr [ebp+0x10]`, and they do five different things with it:\n\n- **seven fall silent when it is set**, their jump landing in their own epilogue with no call in it: 0x5D5F10 (CControlsTrigger, COwnsTrigger), 0x5DB2F0 CSubUnitTrigger, 0x5E4A50 CHasBuildingTrigger, 0x5EB000 (CUndeclaredWarWithTrigger, CWarWithTrigger), 0x5EF4B0 CVassalOfTrigger, 0x5FCB30 CFactionTrigger.\n- **one falls silent when it is clear**: 0x5DABA0 CExistsTrigger, which therefore reports only a *negated* `exists`. This is the single body the first reading generalised from.\n- **one negates the weight**: 0x5EFB60 CAllianceWithTrigger, `cmp byte [ebp+0x10], 0 / je / neg eax` at 0x5EFBA8-0x5EFBB7 on the weight from [ebp+0x14], and then a second `neg` at 0x5EFC02 so that its two collector calls get opposite signs.\n- **one switches collector**: 0x5DEFA0 CRelationTrigger pushes the same three arguments and then calls 0x4A5270 when the flag is set and 0x4A5420 when it is clear.\n- **one inverts the comparison it reports on**: 0x5DF8A0 COwnedByTrigger, whose two branches at 0x5DF8FC and 0x5DF911 are `jne skip` and `je skip` on the same tag comparison, with the same report through 0x4A4F50 under both.\n\nThe other ten bodies never read it: CNotTrigger flips it, five scope rebinders forward it untouched, 140 classes inherit this base forwarder and CUnitsInProvinceTrigger no-ops. So `report only if set` is true of exactly one leaf and false of nine, and nothing in the walk is uniform except that the root starts at 0.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "revises": true,
+   "evidence": "The two sites decoded in place (0x8A63A5-0x8A63DA, 0x8A6561-0x8A657B); the 334-site +0x28 scan and the 15 four-argument survivors; the ten polarity tests read out of the bodies with each jump target checked against the body's own ret. Shown wrong by a third root, or by a leaf whose polarity jump does not land in its epilogue."
+  },
+  {
+   "rva": "0x5D1340",
+   "kind": "function",
+   "name": "CNotTrigger::WalkChildren",
+   "signature": "void __thiscall CNotTrigger::WalkChildren(CNotTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for a NOT: flip the polarity and hand the same weight down.** 0x5D1340 to the single `ret 0x10` at 0x5D1375.\n\n    flipped = (polarity == 0)                 ; cmp byte [ebp+0x10], 0 ; sete bl\n    for each child: child->WalkChildren(collector, scope, flipped, weight)\n\nThis is what identifies the third argument of slot 10 as a bool: it is read as a byte, compared with zero and passed on as the result of that comparison. A leaf's override uses it as `report only if set` - see CExistsTrigger at 0x5DABA0 - so under an odd number of NOTs a satisfied condition is **not** reported to the collector. 15 `int3` before the entry, 8 after.\n\n**The clause generalising from CExistsTrigger does not hold.** Corrected 2026-10-06. `sete bl` on `cmp byte [ebp+0x10], 0` is right, and so is calling the flag a bool, but `a leaf's override uses it as report only if set` is true of CExistsTrigger and of **no other leaf in the image**: seven leaf bodies fall silent when it is set rather than when it is clear, one negates the weight, one switches collector and one inverts the comparison it reports on. Since the only two root calls pass 0 (see CTrigger::WalkChildren, 0x5D0680), the common case is that a satisfied condition **is** reported at even NOT depth and goes quiet under a NOT - the opposite of what this entry said - and CExistsTrigger is the one that behaves as described. The full table is in 0x5D0680's comment.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "revises": true,
+   "evidence": "0x9D134B `cmp byte ptr [ebp+0x10], 0` / 0x9D1354 `sete bl` decoded; all ten leaf tests decoded with each jump target followed to see whether it is an epilogue (no call between it and the `ret`) or a second report. Shown wrong by a leaf this classification puts in the wrong group, or by a third root call that passes 1."
+  },
+  {
+   "rva": "0x5D06C0",
+   "kind": "function",
+   "name": "CTrigger::CountEvaluation",
+   "signature": "void __thiscall CTrigger::CountEvaluation(CTrigger* this, CEventScope* scope, int* passed, int* total)",
+   "no_signature": null,
+   "comment": "**Slot 11, the base body, and the whole of it.** 0x5D06C0 to the single `ret 0xC` at 0x5D06DD:\n\n    if (this->Evaluate(scope)) ++*passed;\n    ++*total;\n\nIt calls its **own** slot 6 - `[eax+0x18]`, on `ecx`, not on a child - so it is a second, complete evaluation of the trigger rather than a cached reading of an earlier one. 153 of the 164 trigger classes inherit it.\n\nThis confirms the signature `project.json` already records for slot 11, argument for argument.\n\nIt abuts CAndTrigger::Evaluate: the `ret 0xC` at 0x5D06DD is followed with **no padding** by 0x5D06E0's prologue, which is why functionStart(0x9D06E0) lands here (trap 2). 12 `int3` before this entry.\n\n**Slot 11 has exactly one root in the image, and it is a once-a-day panel refresh.** Found 2026-10-06. BuildTriggeredModifierEntry (rva 0x2D1130) zeroes two stack ints at [ebp-0x34] and [ebp-0x38], calls slot 11 on the CAndTrigger embedded at CTriggeredModifier +0x88 at 0x2D13E4, and immediately formats them with the string '%d / %d' (VA 0x15D2D5C) at 0x2D140F. Nothing else enters the chain: a byte-wise scan of .text for both MSVC virtual-call forms through +0x2C gives 1,083 sites, of which 24 have three arguments - three are the slot-11 bodies' own recursions, one is this root, and the other twenty are other classes' slot 11 - the twelve non-trigger ones in the whole 0x5B0000-0x620000 region are the effect side, CEffect's own slot 11 being Execute, as the one decoded in detail shows (FireEvent at 0x5C13E2, two arguments, on the effect embedded at CEvent +0x98) - and findRefs --callers reports **0 direct calls** to each of the five slot-11 bodies. So the tooltip arithmetic the first reading inferred is real, but it is not a tooltip: it is the triggered-modifier panel, gated by RefreshTriggeredModifierPanel (rva 0x2D1CB0) on a visibility byte, on a player country and on the day of the year changing.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "revises": true,
+   "evidence": "findRefs --callers on 0x9D06C0, 0x9D0CD0, 0x9D1230, 0x9D1380 and 0x9D24C0 - all 0, with the positive control that the same tool finds the one direct call to 0x9D0680 from 0x9D24A7 that the record already records; the 1,083-site +0x2C scan; the root decoded end to end with retsBefore(0x6D1130, 0x6D13E4) empty. Shown wrong by a slot-11 call whose three arguments are written with `mov [esp+N]` rather than pushed, which is the one shape the argument count cannot see."
+  },
+  {
+   "rva": "0x5D0CD0",
+   "kind": "function",
+   "name": "CAndTrigger::CountEvaluation",
+   "signature": "void __thiscall CAndTrigger::CountEvaluation(CAndTrigger* this, CEventScope* scope, int* passed, int* total)",
+   "no_signature": null,
+   "comment": "**Slot 11 over the children: how many of this AND's conditions are met.** 0x5D0CD0 to the single `ret 0xC` at 0x5D0CFD. It walks `children_first (+0x8)` and calls each child's **slot 11** - `[eax+0x2c]`, 0x2C/4 = 11 - forwarding all three arguments unchanged, so the counters accumulate over the whole subtree. It never calls slot 6 itself; the leaves do.\n\nThat is the `n of m conditions met` figure the trigger tooltip shows, and it costs a **second** full evaluation of every leaf under the block.\n\n7 `int3` before the entry; it abuts COrTrigger::Evaluate at 0x5D0D00 with none after (trap 2 for that function, not for this one).\n\n**Eight holders**, all slot 11: CAndTrigger, CAnyCoreTrigger, CAnyNeighborCountryTrigger, CAnyNeighborProvinceTrigger, CAnyOwnedProvinceTrigger, CEnemyScopeTrigger, CMTTHModifier and CRegionScopeTrigger. All eight derive from CAndTrigger, so this is inheritance and not a linker fold (trap 4).\n\n**It does not short-circuit, where Evaluate does** - noted 2026-10-06. CAndTrigger::Evaluate stops at the first child whose slot 6 answers 0, but this body has no such test: it calls every child's slot 11 and each leaf's slot 11 calls that leaf's own slot 6. So the tally costs a full evaluation of every condition under the block even when the first one fails.\n\n**Slot 11 has exactly one root in the image, and it is a once-a-day panel refresh.** Found 2026-10-06. BuildTriggeredModifierEntry (rva 0x2D1130) zeroes two stack ints at [ebp-0x34] and [ebp-0x38], calls slot 11 on the CAndTrigger embedded at CTriggeredModifier +0x88 at 0x2D13E4, and immediately formats them with the string '%d / %d' (VA 0x15D2D5C) at 0x2D140F. Nothing else enters the chain: a byte-wise scan of .text for both MSVC virtual-call forms through +0x2C gives 1,083 sites, of which 24 have three arguments - three are the slot-11 bodies' own recursions, one is this root, and the other twenty are other classes' slot 11 - the twelve non-trigger ones in the whole 0x5B0000-0x620000 region are the effect side, CEffect's own slot 11 being Execute, as the one decoded in detail shows (FireEvent at 0x5C13E2, two arguments, on the effect embedded at CEvent +0x98) - and findRefs --callers reports **0 direct calls** to each of the five slot-11 bodies. So the tooltip arithmetic the first reading inferred is real, but it is not a tooltip: it is the triggered-modifier panel, gated by RefreshTriggeredModifierPanel (rva 0x2D1CB0) on a visibility byte, on a player country and on the day of the year changing.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "revises": true,
+   "evidence": "0x9D0CD0-0x9D0CFD decoded: the loop's only exit test is `test esi,esi` on the next node, with no test of a child's return. Shown wrong by a conditional exit inside that loop."
+  },
+  {
+   "rva": "0x4A62A0",
+   "kind": "function",
+   "name": "ApplyCountryAIStrategies",
+   "signature": "void __stdcall ApplyCountryAIStrategies(CAIStrategy* strategy)",
+   "no_signature": null,
+   "comment": "**The answer to who consumes CAIStrategy.** A sweep of all 1295 CCountryTag::GetCountry call sites for a `+0x1DC` access within 0x30 bytes returns exactly one hit, 0x8A62C4, and it is here: `country = GetCountry(&acc[+8])`, then `0x8A3B90(acc, &country[+0x1DC])` (`ai_hard_strategy`) and `0x8A3B90(acc, &country[+0x334])` (`ai_event_strategy`). 0x8A3B90 is the same merge routine CAddAIStrategyEffect::Execute uses, so the two loaded strategies and the `add_ai_strategy` effect all feed one accumulator. One caller, the cache rebuild at 0x4A5C90. See reversing/findings/FINDINGS-ai.md.\n\n*(2026-10-01: the argument type was `AIStrategyCache*`, which is not a declared struct. It is a `CAIStrategy*` - `CCountry +0x48C`.)*\n\n**It is also the only caller of trigger slot 10** - added 2026-10-06. Two sites: 0x4A63C2 first calls slot 6 on [esi+0xE40] and, when that answers true, calls slot 10 on the CAndTrigger embedded at its +0xC4 with (collector=ebx, scope=&[esi+0xE44], polarity=0, weight=0x258); 0x4A6566 does the same per element of a pointer array, on a trigger embedded at the element's +0x24, with a stack CEventScope at [ebp-0x64] and weight=0xC8. The weighted attribution walk the trigger side describes therefore runs exactly as often as this function does - its one caller is the cache rebuild at 0x4A5C90, which has eight callers of its own. The class of the objects holding those embedded triggers was **not** identified; that is AI-side work and was left.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "revises": true,
+   "evidence": "Both sites decoded in place; the slot-10 argument order taken from the record's own three witnesses. Shown wrong by [esi+0xE40]+0xC4 or the array element's +0x24 not being a CTrigger - the call is virtual and the receiver's class was not established from the bytes."
+  },
+  {
+   "rva": "0x2D1CB0",
+   "kind": "function",
+   "name": "RefreshTriggeredModifierPanel",
+   "signature": "void __fastcall RefreshTriggeredModifierPanel(void* panel@EDI)",
+   "no_signature": null,
+   "comment": "**The gate in front of the only root call of trigger slot 11.** 0x2D1CB0 to the bare `ret` at 0x2D1DD4, 7 `int3` before and 11 after, retsBefore empty. The receiver arrives in a register and there is no stack argument, so it is __fastcall with an explicit register rather than a __thiscall (trap 11). One caller, UpdateTutorialAndAuxWindows (rva 0x24FC70), which the record already describes as running every frame and already names 0x2D1CB0 as one of its two unread callees.\n\nThree gates, all of which return without doing anything:\n\n    if ([[recv+0x20] + 0x5B] == 0) return;              ; 0x2D1CDA\n    state = g_CCurrentGameState (VA 0x1A89790)          ; built here if absent\n    if (state->player_id (+0xC34) == 0) return;         ; 0x2D1D68\n    day = (state->tick (+0xBDC) - 0x29C55C0) / 24\n    doy = day - (int)(day / 365.0) * 365.0              ; VA 0x160A550 is 365.0\n    if (doy == recv->+0x74) return;                     ; 0x2D1DB9\n    recv->+0x74 = doy; 0x2D1930(recv)\n\nSo the panel - and with it every trigger tree it walks - is rebuilt **once per game day**, and only while the byte at [[recv+0x20]+0x5B] is set and a country is being played. The `/24` is the same magic-multiply RunHourlyTick uses on the same field. It also lazily constructs the 0xDA8-byte CCurrentGameState when the global is null, which is a get-or-create and not part of the refresh.\n\nThe name is the one thing here that is not read off the bytes: the entry it drives reads a trigger out of CTriggeredModifier +0x88 and sets gui elements called `modifier_name`, `modifier_strip` and `modifier_effect`.",
+   "confidence": "inferred",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "Body decoded end to end 0x6D1CB0-0x6D1DD4; 0x160A550 read as the double 365.0; 0x15CF674 resolved to CCurrentGameState out of the RTTI export; the caller from findRefs --callers and from the record's own entry for UpdateTutorialAndAuxWindows. The name is inferred from the gui element names the chain below it uses - shown wrong if those elements belong to some other window, or if [[recv+0x20]+0x5B] is not a visibility byte."
+  },
+  {
+   "rva": "0x2D1130",
+   "kind": "function",
+   "name": "BuildTriggeredModifierEntry",
+   "signature": "void __fastcall BuildTriggeredModifierEntry(void* panel@EDI, CEventScope* scope@stack:4, CTriggeredModifier* modifier@stack:8, bool present@stack:12)",
+   "no_signature": null,
+   "comment": "**The only root call of trigger slot 11 in the image.** 0x2D1130 to the `ret 0xC` at 0x2D14CC - three stack arguments and a receiver in EDI, so __fastcall with an explicit register (trap 11). 10 `int3` above it; only one below, so the upper boundary is an abutment and the vftable cannot arbitrate it because this body is in no table. One caller: 0x2D1930 at 0x2D1C80, **inside a loop** (`inc [ebp+8]; cmp eax,esi; jl`), so it runs once per listed modifier.\n\nWhat it does with the trigger, at 0x2D13DE-0x2D1415:\n\n    passed = 0; total = 0;                         ; [ebp-0x34], [ebp-0x38]\n    (&modifier->trigger)->CountEvaluation(scope, &passed, &total)   ; slot 11\n    sprintf(buf, \"%d / %d\", passed, total)        ; the string at VA 0x15D2D5C\n\nand the result goes into the gui element `modifier_strip`. The rest of the body sets `modifier_name` (0x2D1160) and `modifier_effect` (0x2D1273) and is skipped when `[recv+0x28]` already holds this modifier (0x2D1155) - **but the CountEvaluation walk is on both paths**, so a refresh re-walks the tree even when the displayed modifier has not changed.\n\nThe receiver of slot 11 is `modifier + 0x88` taken by `lea`, i.e. a by-value sub-object: CTriggeredModifier's constructor (rva 0x5B950) constructs a CAndTrigger there, and CTriggeredModifier and CCovertOpsMission are the only two classes in the image that embed one at +0x88.",
+   "confidence": "inferred",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "Decoded 0x6D1130-0x6D14CC with retsBefore(0x6D1130, 0x6D13E4) empty; the two counters written with 0 immediately before the call and read immediately after it into the '%d / %d' sprintf; the call site and its loop decoded at 0x6D1C41-0x6D1C8E; the +0x88 owner found by scanning all 31 code references to the CAndTrigger vftable for a `lea` of +0x88. The argument types are inferred from use, not from a declaration: shown wrong if [ebp+0xC] is a CCovertOpsMission, which the gui element names argue against."
+  },
+  {
+   "rva": "0x5DABA0",
+   "kind": "function",
+   "name": "CExistsTrigger::WalkChildren",
+   "signature": "void __thiscall CExistsTrigger::WalkChildren(CExistsTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CExistsTrigger.** 0x5DABA0 to the `ret 0x10` at 0x5DABD9. Held by CExistsTrigger's table alone, so this is the class's own body and not a fold. It tests `cmp byte ptr [ebp+0x10], 0` and jumps to its own epilogue when the flag is **clear**, so it reports only a *negated* condition - under an odd number of NOTs, since both root calls pass 0. It is the only leaf in the image that works this way round. Behaviour: if (polarity && this->Evaluate(scope)) collect(collector, this->+0x44, this->+0x48) with the weight in EDX, through 0x4A5270.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CExistsTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5DABD9, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5DB2F0",
+   "kind": "function",
+   "name": "CSubUnitTrigger::WalkChildren",
+   "signature": "void __thiscall CSubUnitTrigger::WalkChildren(CSubUnitTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CSubUnitTrigger.** 0x5DB2F0 to the `ret 0x10` at 0x5DB3A8. Held by CSubUnitTrigger's table alone, so this is the class's own body and not a fold. It tests `cmp byte ptr [ebp+0x10], 0` and jumps to its own epilogue when the flag is **set**, so it reports only an un-negated condition, which is what both root calls pass. Behaviour: reads arg_is_this/arg_is_from (+0x18/+0x19) and this->+0x40/+0x44, resolves a tag through EventScope_GetCountryTag (0x5C1A40) and 0x1D62B0, and reports through an indirect call.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CSubUnitTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5DB3A8, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5DCC20",
+   "kind": "function",
+   "name": "CRegionScopeTrigger::WalkChildren",
+   "signature": "void __thiscall CRegionScopeTrigger::WalkChildren(CRegionScopeTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CRegionScopeTrigger.** 0x5DCC20 to the `ret 0x10` at 0x5DCC9A. Held by CRegionScopeTrigger's table alone, so this is the class's own body and not a fold. It does not test the flag at all - it rebinds the scope and forwards all four arguments down. Behaviour: copies the scope with CEventScope::CopyConstruct (0x3C850) and forwards all four arguments to every child's slot 10 - the scope-rebinding shape, so the flag passes through untouched.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CRegionScopeTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5DCC9A, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5DD240",
+   "kind": "function",
+   "name": "CAnyNeighborProvinceTrigger::WalkChildren",
+   "signature": "void __thiscall CAnyNeighborProvinceTrigger::WalkChildren(CAnyNeighborProvinceTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CAnyNeighborProvinceTrigger.** 0x5DD240 to the `ret 0x10` at 0x5DD45C. Held by CAnyNeighborProvinceTrigger's table alone, so this is the class's own body and not a fold. It does not test the flag at all - it rebinds the scope and forwards all four arguments down. Behaviour: builds a rebound scope per neighbour province (CEventScope::CopyConstruct, and two heap allocations through operator new) and forwards to the children.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CAnyNeighborProvinceTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5DD45C, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5DDA20",
+   "kind": "function",
+   "name": "CAnyOwnedProvinceTrigger::WalkChildren",
+   "signature": "void __thiscall CAnyOwnedProvinceTrigger::WalkChildren(CAnyOwnedProvinceTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CAnyOwnedProvinceTrigger.** 0x5DDA20 to the `ret 0x10` at 0x5DDB64. Held by CAnyOwnedProvinceTrigger's table alone, so this is the class's own body and not a fold. It does not test the flag at all - it rebinds the scope and forwards all four arguments down. Behaviour: the same shape over the owned provinces, with one heap allocation per iteration.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CAnyOwnedProvinceTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5DDB64, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5DEFA0",
+   "kind": "function",
+   "name": "CRelationTrigger::WalkChildren",
+   "signature": "void __thiscall CRelationTrigger::WalkChildren(CRelationTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CRelationTrigger.** 0x5DEFA0 to the `ret 0x10` at 0x5DF1B0. Held by CRelationTrigger's table alone, so this is the class's own body and not a fold. It tests `cmp byte ptr [ebp+0x10], 0` and reports on **both** branches, switching which collector it calls - 0x4A5270 when the flag is set and 0x4A5420 when it is clear, with the same three arguments. Behaviour: reads arg_is_this (+0x18), allocates twice through operator new, and reports through 0x4A5270 and 0x4A5420.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CRelationTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5DF1B0, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5DF8A0",
+   "kind": "function",
+   "name": "COwnedByTrigger::WalkChildren",
+   "signature": "void __thiscall COwnedByTrigger::WalkChildren(COwnedByTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for COwnedByTrigger.** 0x5DF8A0 to the `ret 0x10` at 0x5DF939. Held by COwnedByTrigger's table alone, so this is the class's own body and not a fold. It tests `cmp byte ptr [ebp+0x10], 0` and reports on **both** branches, inverting the tag comparison it reports on: `jne skip` at 0x5DF8FC against `je skip` at 0x5DF911, both ending in the same call. Behaviour: resolves the tag through EventScope_GetCountryTag and reports through 0x4A4F50.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from COwnedByTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5DF939, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5E4A50",
+   "kind": "function",
+   "name": "CHasBuildingTrigger::WalkChildren",
+   "signature": "void __thiscall CHasBuildingTrigger::WalkChildren(CHasBuildingTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CHasBuildingTrigger.** 0x5E4A50 to the `ret 0x10` at 0x5E4AAB. Held by CHasBuildingTrigger's table alone, so this is the class's own body and not a fold. It tests `cmp byte ptr [ebp+0x10], 0` and jumps to its own epilogue when the flag is **set**, so it reports only an un-negated condition, which is what both root calls pass. Behaviour: reads this->+0x40, assigns a string and reports through 0x4A51C0 - the only leaf that hands the collector text.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CHasBuildingTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5E4AAB, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5E6300",
+   "kind": "function",
+   "name": "CAnyNeighborCountryTrigger::WalkChildren",
+   "signature": "void __thiscall CAnyNeighborCountryTrigger::WalkChildren(CAnyNeighborCountryTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CAnyNeighborCountryTrigger.** 0x5E6300 to the `ret 0x10` at 0x5E6389. Held by CAnyNeighborCountryTrigger's table alone, so this is the class's own body and not a fold. It does not test the flag at all - it rebinds the scope and forwards all four arguments down. Behaviour: rebinds the scope per neighbouring country and forwards to the children.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CAnyNeighborCountryTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5E6389, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5E6820",
+   "kind": "function",
+   "name": "CAnyCoreTrigger::WalkChildren",
+   "signature": "void __thiscall CAnyCoreTrigger::WalkChildren(CAnyCoreTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CAnyCoreTrigger.** 0x5E6820 to the `ret 0x10` at 0x5E6934. Held by CAnyCoreTrigger's table alone, so this is the class's own body and not a fold. It does not test the flag at all - it rebinds the scope and forwards all four arguments down. Behaviour: rebinds the scope per core province and forwards to the children.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CAnyCoreTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5E6934, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5EF4B0",
+   "kind": "function",
+   "name": "CVassalOfTrigger::WalkChildren",
+   "signature": "void __thiscall CVassalOfTrigger::WalkChildren(CVassalOfTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CVassalOfTrigger.** 0x5EF4B0 to the `ret 0x10` at 0x5EF595. Held by CVassalOfTrigger's table alone, so this is the class's own body and not a fold. It tests `cmp byte ptr [ebp+0x10], 0` and jumps to its own epilogue when the flag is **set**, so it reports only an un-negated condition, which is what both root calls pass. Behaviour: resolves the tag and reports twice, through 0x4A5620, 0x4A5270 and 0x4A5420.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CVassalOfTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5EF595, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5EFB60",
+   "kind": "function",
+   "name": "CAllianceWithTrigger::WalkChildren",
+   "signature": "void __thiscall CAllianceWithTrigger::WalkChildren(CAllianceWithTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CAllianceWithTrigger.** 0x5EFB60 to the `ret 0x10` at 0x5EFC10. Held by CAllianceWithTrigger's table alone, so this is the class's own body and not a fold. It tests `cmp byte ptr [ebp+0x10], 0` and **negates the weight** when the flag is set (`neg eax` at 0x5EFBB5 on [ebp+0x14]), with a second `neg` at 0x5EFC02 so its two collector calls get opposite signs. Behaviour: resolves the tag and reports through 0x4A5420 and 0x4A5270.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CAllianceWithTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5EFC10, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  },
+  {
+   "rva": "0x5FCB30",
+   "kind": "function",
+   "name": "CFactionTrigger::WalkChildren",
+   "signature": "void __thiscall CFactionTrigger::WalkChildren(CFactionTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)",
+   "no_signature": null,
+   "comment": "**Slot 10 for CFactionTrigger.** 0x5FCB30 to the `ret 0x10` at 0x5FCBA4. Held by CFactionTrigger's table alone, so this is the class's own body and not a fold. It tests `cmp byte ptr [ebp+0x10], 0` and jumps to its own epilogue when the flag is **set**, so it reports only an un-negated condition, which is what both root calls pass. Behaviour: resolves the country through CCountryTag::GetCountry (0x2610) and reports through 0x4A4F50 and 0x4A5270.\n\nThe five collector entry points the leaf slot-10 bodies report through are 0x4A4F50, 0x4A51C0, 0x4A5270, 0x4A5420 and 0x4A5620, all unnamed and all in CAIStrategy's region - the record already has 0x4A5270 inserting into a map a CAIStrategy owns.",
+   "confidence": "confirmed",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The name and the slot come from CFactionTrigger's own virtual table, which holds this address at slot 10 and holds it alone (mergeFindings' inTables over every class in the RTTI export); the extent from the `ret 0x10` at 0x5FCBA4, which matches the four stack arguments the signature declares; the polarity test and the calls from a decode of the whole body. Shown wrong by a second table holding this address, or by a `ret` with a different immediate."
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CTrigger",
+   "offset": "0x14",
+   "name": "children_spare",
+   "type": "uint8_t",
+   "comment": "The fourth member of the child CList at +0x8. CTrigger's constructor zeroes it in the same run as first, last and count - `mov [edi+8],0; mov [edi+0xC],0; mov [edi+0x10],0; mov byte [edi+0x14],0` at rva 0x1610D-0x16116 - which is the shape the record describes for every other CList here: first, last, count and a spare. No slot body of any of the 168 CTrigger descendants reads it.",
+   "source": "reversing/findings/FINDINGS-triggereval.md",
+   "evidence": "The four consecutive stores in the base constructor; and a taint scan of all 379 distinct bodies in the twelve slots of all 168 CTrigger descendants, which finds this-relative reads of +0x8 (16 bodies), +0x18 (49), +0x19 (14), +0x40 (259) and +0x44 (36) - the positive controls - and none of +0x14. Shown wrong by a non-virtual member or any code outside those bodies reading it, which this scan cannot see."
+  }
+ ],
+ "vftable_slots": {
+  "CExistsTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CExistsTrigger::WalkChildren(CExistsTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CSubUnitTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CSubUnitTrigger::WalkChildren(CSubUnitTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CRegionScopeTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CRegionScopeTrigger::WalkChildren(CRegionScopeTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CAnyNeighborProvinceTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CAnyNeighborProvinceTrigger::WalkChildren(CAnyNeighborProvinceTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CAnyOwnedProvinceTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CAnyOwnedProvinceTrigger::WalkChildren(CAnyOwnedProvinceTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CRelationTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CRelationTrigger::WalkChildren(CRelationTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "COwnedByTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall COwnedByTrigger::WalkChildren(COwnedByTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CHasBuildingTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CHasBuildingTrigger::WalkChildren(CHasBuildingTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CAnyNeighborCountryTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CAnyNeighborCountryTrigger::WalkChildren(CAnyNeighborCountryTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CAnyCoreTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CAnyCoreTrigger::WalkChildren(CAnyCoreTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CVassalOfTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CVassalOfTrigger::WalkChildren(CVassalOfTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CAllianceWithTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CAllianceWithTrigger::WalkChildren(CAllianceWithTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  },
+  "CFactionTrigger": {
+   "10": {
+    "name": "WalkChildren",
+    "signature": "void __thiscall CFactionTrigger::WalkChildren(CFactionTrigger* this, void* collector, CEventScope* scope, bool polarity, int weight)"
+   }
+  }
+ },
+ "frontier": [
+  "0x2D1930",
+  "0x5D5F10",
+  "0x5EB000",
+  "0x4A4F50",
+  "0x4A51C0",
+  "0x4A5270",
+  "0x4A5420",
+  "0x4A5620",
+  "0x249F20",
+  "0x9DB0",
+  "0xC480",
+  "0x5B950",
+  "0x1D62B0"
+ ],
+ "slots_noted": "Two slot-10 bodies are deliberately left unnamed because each sits in exactly two sibling classes' tables, which is trap 4's dangerous small fold: 0x5D5F10 is CControlsTrigger and COwnsTrigger slot 10, and 0x5EB000 is CUndeclaredWarWithTrigger and CWarWithTrigger slot 10. Both pairs are siblings under CTrigger with neither deriving from the other, so naming either body for one class would put that name on the other's slot. Both are recorded here in prose and in frontier instead. Also left: 0x2D1930, the loop between RefreshTriggeredModifierPanel and BuildTriggeredModifierEntry - only its entry, its `ret 4` at 0x2D1CA6 and the one call were read, so it gets no name."
+}

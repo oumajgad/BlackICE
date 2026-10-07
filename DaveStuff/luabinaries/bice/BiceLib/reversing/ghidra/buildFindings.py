@@ -692,6 +692,9 @@ def parse_prototype(text):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--import", dest="harvest", help="check a harvest file and write it as project.json")
+    ap.add_argument("--folds", action="store_true",
+                    help="list every field folded into a larger typed one, struct by struct; "
+                         "without it only the count is printed")
     args = ap.parse_args()
     checker = Checker()
     if args.harvest:
@@ -719,6 +722,28 @@ def main():
                   "first and label the second" % (rva, byRva[rva], a.get("name")))
         else:
             byRva[rva] = a.get("name")
+
+    # **The same check for a struct field, and a duplicate there costs more than a duplicate
+    # rva.** Two entries on one address are *merged* - the second becomes an extra label on
+    # the first, which is right when the names come from different halves of the fact base.
+    # Two field records at one `(struct, offset)` are not: `merge_fields` groups by offset
+    # and keeps whichever of the two sorts first by priority, so the file holds two answers,
+    # one of them silently unreachable, and no run says a word. Scoped to `project.json`
+    # alone for the same reason the rva check is - a Lua registration and a project.json note
+    # landing on one offset is the ordinary case the merge exists for, while two records in
+    # one hand-kept array has no benign reading. **It prints nothing today**, the last four
+    # having been merged on 2026-10-06; it is the guard against them coming back, not a
+    # backlog report.
+    for p in project["structs"]:
+        byOffset = {}
+        for fld in p.get("fields", []):
+            at = int(fld["offset"], 16)
+            if at in byOffset:
+                print("!! project.json has two %s fields at +0x%X: %r and %r - merge_fields "
+                      "keeps whichever sorts first by priority and drops the other without a "
+                      "word" % (p["name"], at, byOffset[at], fld.get("name")))
+            else:
+                byOffset[at] = fld.get("name")
 
     enums = set(lua["enum_types"])
     save_tokens = save_token_enum()
@@ -973,16 +998,62 @@ def main():
                       {"offset": 4, "name": "id", "type": "int", "comment": "the country's index", "priority": 0}]
     # Field priority: what the game names wins, BiceLib's own name and notes go into the
     # comment. 0 declared to Lua with def_readwrite, 1 read by a game accessor, 2 a BiceLib
-    # header, 3 BiceLib's other notes.
+    # header, 3 BiceLib's other notes - **and 4 for a registration no script can reach**,
+    # which is below project.json's own notes, so the record wins the type there.
+    #
+    # Added 2026-10-06. Priority 0 is "what the game names wins", and that is right for a
+    # live registration. It is wrong for an abandoned one: nothing ever exercised it, so
+    # its name and type were never checked against reality by anybody. `luausage.json`,
+    # written by scripts/luacensus.py, says which classes a script can obtain an instance
+    # of and which of them anything actually names. Seven classes are reachable by nothing
+    # and named by nothing - CAISubscriber, CConstructSingleUnitCommand, CConvoy,
+    # CEventScope, CList<CCountryTag>, CNullTechnology, CResearchBonus - and the census is
+    # regenerated rather than hand-kept, so this follows the corpus.
+    usage = {}
+    usagePath = os.path.join(HERE, "luausage.json")
+    if os.path.exists(usagePath):
+        for row in json.load(open(usagePath, encoding="utf-8"))["classes"]:
+            usage[row["class"]] = row
+            if row.get("lua"):
+                usage.setdefault(row["lua"], row)
     for c in lua["classes"]:
         s = struct(c["rtti"] or c["cpp"])
         if c["size"]:
             s["size"] = c["size"]
+        verdict = usage.get(c["cpp"]) or usage.get(c["lua"]) or {}
+        reached = verdict.get("reachable", True)
+        anyUse = bool(verdict.get("class_named") or verdict.get("members_used"))
+        dead = bool(verdict) and not reached and not anyUse
         for fld in c["fields"]:
             declared = fld["evidence"].startswith("luabind def_")
-            s["fields"].append({"offset": fld["offset"], "name": fld["name"], "type": fld["type"].replace(" &", "&"),
-                                "comment": ("declared to Lua" if declared else "read by %s" % fld["evidence"].split(" at ")[0].replace("accessor ", "")),
-                                "priority": 0 if declared else 1})
+            spelled = fld["type"].replace(" &", "&")
+            note = ("declared to Lua" if declared
+                    else "read by %s" % fld["evidence"].split(" at ")[0].replace("accessor ", ""))
+            # **A `def_readwrite` getter returns `T&` for a member held by value**, so the
+            # `&` describes luabind's accessor and not the storage - and a reference lands
+            # in Ghidra as a 4-byte pointer over whatever is really there. `CEventScope
+            # +0x10` was a `CCountryTag *` laid over the four characters of a country tag,
+            # while `from_country_tag` four bytes later is the same shape and correctly
+            # `char[4]` for want of an accessor. A `const*` on a def_readwrite member is a
+            # genuine pointer and is left alone - the game's own naming agrees, `_pCategory`
+            # and `pUnit` carrying the p that `_Country` and `_vWeight` do not.
+            if declared and spelled.endswith("&"):
+                spelled = spelled[:-1].strip()
+                note += (", by value - luabind's def_readwrite getter returns `%s`, and the "
+                         "reference is the accessor's, not the member's" % fld["type"])
+            if verdict:
+                if dead:
+                    note += (". **No script can reach this**: %s has no Lua constructor, nothing "
+                             "returns one, and nothing in the 300-file Lua corpus names it or any "
+                             "of its members - so the registration is abandoned and its name and "
+                             "type are unverified by use (scripts/luacensus.py)"
+                             % (c["cpp"] or c["lua"]))
+                elif not reached:
+                    note += (". Reached only because the engine hands it in - no constructor and "
+                             "nothing returns one, but scripts use it (scripts/luacensus.py)")
+            s["fields"].append({"offset": fld["offset"], "name": fld["name"], "type": spelled,
+                                "comment": note,
+                                "priority": (4 if dead else (0 if declared else 1))})
     for p in project["structs"]:
         s = struct(p["name"])
         if p.get("size"):
@@ -992,8 +1063,34 @@ def main():
             s["fields"].append({"offset": int(fld["offset"], 16), "name": fld["name"], "type": fld["type"],
                                 "comment": "%s (%s)" % (fld["comment"], fld["source"]), "priority": 2 if header else 3})
     # Every instantiation of the game's CList has the one layout, recorded once in
-    # project.json as "CList"; CUnitList is a CList with nothing added (RTTI: its only
-    # base, at 0, and no vftable). Lay each one the Lua API names out the same way.
+    # project.json as "CList". Lay each one the Lua API names out the same way.
+    #
+    # **Two of them are named rather than spelled as a template**, so the regex below cannot
+    # reach them and each needs its element by name. They are not special cases of the
+    # generator - the layout and the node are the ordinary ones - only of the spelling:
+    #
+    # - `CUnitList` is a `CList<CUnit*>` with nothing added: RTTI gives it one base,
+    #   `CList<CUnit*>` at offset 0, and no vftable of its own.
+    # - `CCountryList` is a `CList<CCountryTag>`, and the **registration declares that base
+    #   itself** - `luabind.json`'s entry for it carries `"bases": ["CList<CCountryTag>"]`,
+    #   which is read out of the registration's own type rather than inferred. RTTI has no
+    #   `CCountryList` at all, which is also why `"inherits": "CList<CCountryTag>"` in
+    #   `project.json` is not the route: `mergeFindings` checks `inherits` against the RTTI
+    #   export and would refuse a base RTTI does not give the class, and `inherits` copies
+    #   the base's fields verbatim, leaving `first`/`last` as `LinkedListNode*` - an
+    #   `undefined4` payload, which is the untyped blob one level down. **The pass is what
+    #   generates the node type**, so a bare `structs` declaration gives the head and no
+    #   `CListNode<CCountryTag>`.
+    #
+    #   Confirmed off the bytes, 2026-10-06: the six accessors are each `lea eax,[ecx+N];
+    #   ret` (`GetVassals` 0xE6A10 +0xF78, `GetAllies` 0xE6A20 +0xF88, `GetNeighbours`
+    #   0x21C8E0 +0xFD8, `GetControllerNeighbours` 0x487F30 +0xFE8, `GetCurrentAtWarWith`
+    #   0x62D50 +0x1008, `GetSpyingOnUs` 0xE6A60 +0x1028), so the object starts at the
+    #   offset; `CCountry::RebuildNeighbours` and `CCountry::UpdateAtWarAndEnemies` both
+    #   append with `operator new(0x14)` storing tag chars at +0, id at +4, prev at +8, next
+    #   at +0xC and a zero byte at +0x10 - exactly what `list_node` generates for an 8-byte
+    #   element - and write the head as first/last/count at +0/+4/+8.
+    NAMED_LISTS = {"CUnitList": "CUnit*", "CCountryList": "CCountryTag"}
     if "CList" in structs:
         shape = structs["CList"]
         SCALAR_WIDTHS = {"int": 4, "uint": 4, "unsigned int": 4, "float": 4, "undefined4": 4,
@@ -1002,7 +1099,7 @@ def main():
         lists = {f["type"] for s in structs.values() for f in s["fields"]}
         for text in lists:
             base = LX.parse_type(re.sub(r"\[\d+\]$", "", text).replace(" &", "&").replace(" *", "*"), enums)["base"]
-            if base != "CList" and (re.match(r"^CList<.*>$", base) or base == "CUnitList"):
+            if base != "CList" and (re.match(r"^CList<.*>$", base) or base in NAMED_LISTS):
                 s = struct(base)
                 s["size"] = shape["size"]
                 if not s["fields"]:
@@ -1017,7 +1114,7 @@ def main():
                 # CList<CSubUnitTechnology> and 827 CList<int>, which is the same rule the
                 # pointer lists already followed at two more widths. An element whose width
                 # we do not know is left alone.
-                element = "CUnit*" if base == "CUnitList" else base[len("CList<"):-1]
+                element = NAMED_LISTS.get(base) or base[len("CList<"):-1]
                 where = shape["fields"][0]["comment"].split(" (")[-1].rstrip(")")
                 if not list_node(element, where):
                     continue
@@ -1087,8 +1184,43 @@ def main():
         if s["name"] not in extents and s["fields"]:
             extents[s["name"]] = max(f["offset"] + (field_size(f["type"], enums, struct_sizes) or 1)
                                      for f in s["fields"])
+    folds = []
     for s in structs.values():
-        s["fields"] = merge_fields(s["fields"], enums, extents)
+        inside = []
+        s["fields"] = merge_fields(s["fields"], enums, extents, inside)
+        if inside:
+            folds.append((s["name"], inside))
+    # **A field lying inside a larger typed one is folded, not placed** - dropped from the
+    # generated output with its text moved into the host's comment - and until now nothing
+    # said so anywhere. The overlap warning below cannot: it runs on the *post-fold* list, so
+    # a folded field is already gone by the time it looks. Read off `project.json` alone a
+    # folded field is indistinguishable from the overlap that produced the 2026-10-05 apply
+    # cycle, and two of wave 14's four agents independently predicted a cycle that cannot
+    # happen and proposed deleting a correct record on those grounds.
+    #
+    # Marked `~` rather than `!` deliberately: `grep -F '!'` over this output is how failures
+    # are read, and a fold is the design working, not a problem.
+    #
+    # **The count goes in the default run and the list is behind `--folds`**, because there
+    # are 165 of them across 30 structs and 85 of those are the four `CUnit` classes' whole
+    # `plan_*` family folding into `plan (CUnitPlan)` - a detail report in the default output
+    # would be most of it, which is why this was queued rather than written. One line per
+    # structure in offset order, so `--folds | grep CCountry` answers "is this offset
+    # reaching the apply at all" in one command.
+    if folds:
+        total = sum(len(i) for _, i in folds)
+        print("~ %d field%s folded into a larger typed field across %d struct%s - each is "
+              "documentation reached as `host.member`, not a placement, so the apply never "
+              "sees it and can neither conflict nor cycle over it%s"
+              % (total, "" if total == 1 else "s", len(folds),
+                 "" if len(folds) == 1 else "s",
+                 "" if args.folds else " (--folds lists them)"))
+        if args.folds:
+            for name, inside in sorted(folds):
+                print("~ %s: %s" % (name, ", ".join(
+                    "+%#x %s (%s) into +%#x %s (%s)"
+                    % (f["offset"], f["name"], f["type"], h["offset"], h["name"], h["type"])
+                    for f, h in sorted(inside, key=lambda pair: pair[0]["offset"]))))
     # Two fields that overlap are placed in turn, each clearing the other, so an apply never
     # settles and `overwrite` flip-flops the pair for ever. Nothing downstream can spot it.
     for s in structs.values():
@@ -1206,18 +1338,37 @@ def virtual_tables(checker, structs, functions, labels, overrides=None):
             tables.append((name, vft["object_offset"], rva, targets))
     # How many of these tables each body fills: more than one and it is folded or inherited.
     appearances = collections.Counter(t for _, _, _, targets in tables for t in set(targets))
+    # Where a class's slot records apply when they do not say. A class with one table at a
+    # non-zero offset - nothing else of its own - is the only case where offset 0 is wrong.
+    offsets = collections.defaultdict(set)
+    for name, at, _, _ in tables:
+        offsets[name].add(at)
+    primary = {name: (0 if 0 in at else sorted(at)[0]) for name, at in offsets.items()}
 
     out = []
     for name, at, rva, targets in tables:
         family = ancestors(name)
         struct_name = "%s_vftable" % name if at == 0 else "%s_vftable_at%X" % (name, at)
-        by_slot = (overrides or {}).get(name, {})
+        # **Which table a record is about.** A class with two bases has two slot 2s, and
+        # `vftable_slots` is keyed by class alone - so until 2026-10-06 every record was
+        # applied to every table the class has, and 62 slots across 16 classes came out
+        # named for a method that is not in them: `CCombat_vftable_at8` is CSelectable's
+        # table and had slots 1-5 called Save/SaveContents/Load/LoadKey/AfterLoad, and
+        # `CVariables_vftable` is the ternary-tree table and had the same five, one of
+        # them on GuiTypeTree_Find. A bare class name now means the class's primary table;
+        # `"CVariables@0x24"` names one explicitly.
+        by_slot = dict((overrides or {}).get(name) or {}) if at == primary[name] else {}
+        by_slot.update((overrides or {}).get("%s@0x%X" % (name, at)) or {})
         # A base class's slots are its descendants' slots too, so a record written once
-        # against the base names that slot in every table below it. It is the weaker claim
-        # of the two: a name read off the slot's own body wins, since that body is the
-        # override the class actually wrote.
+        # against the base names that slot in every table below it - but only in the table
+        # the base itself sits in. CPersistent's five are at +0x24 on CVariables and at 0
+        # on CCombat, and its records belong in that table and no other. It is the weaker
+        # claim of the two: a name read off the slot's own body wins, since that body is
+        # the override the class actually wrote.
         from_base = {}
         for ancestor in sorted(family - {name}):
+            if base_offset(rtti, name, ancestor) != at:
+                continue
             for slot, record in ((overrides or {}).get(ancestor) or {}).items():
                 from_base.setdefault(slot, (ancestor, record))
         entries, taken = [], collections.Counter()
@@ -1375,11 +1526,15 @@ def field_size(type_text, enums, struct_sizes):
     return SCALAR_SIZES.get(base) or struct_sizes.get(base)
 
 
-def merge_fields(fields, enums, struct_sizes):
+def merge_fields(fields, enums, struct_sizes, folded=None):
     """
     One field per offset, the most authoritative, with the others' names and notes kept
     in its comment; and a field that falls inside a larger typed one folded into it, so
     the script has nothing to refuse.
+
+    `folded`, when a list is passed, collects `(field, host)` for every fold - the only
+    way anything downstream can see one, since the folded field is gone from the output
+    by the time any later pass looks at it.
     """
     by_offset = collections.OrderedDict()
     for f in sorted(fields, key=lambda x: (x["offset"], x["priority"])):
@@ -1402,6 +1557,8 @@ def merge_fields(fields, enums, struct_sizes):
                      and h["priority"] <= f["priority"]), None)
         if host:
             host["comment"] += "\n+0x%X inside it: %s (%s) - %s" % (f["offset"] - host["offset"], f["name"], f["type"], f["comment"])
+            if folded is not None:
+                folded.append((f, host))
             continue
         out.append(f)
     out.sort(key=lambda x: (x["priority"], x["offset"], x["name"]))

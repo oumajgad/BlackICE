@@ -360,9 +360,17 @@ namespace CCountry {
         constexpr uintptr_t land_battles_fought = 0x1080;
         constexpr uintptr_t air_battles_fought = 0x1084;
         constexpr uintptr_t naval_battles_fought = 0x1088;
-        constexpr uintptr_t historical_friends = 0x10A4;     // and _end, _capacity after it
-        constexpr uintptr_t historical_friends_end = 0x10A8;
-        constexpr uintptr_t historical_friends_capacity = 0x10AC;
+        // A CCountryList, not a vector - corrected 2026-10-07 from `_end`/`_capacity`, which is
+        // the shape the rest of this file uses for a real std::vector. Three witnesses, in
+        // reversing/findings/FINDINGS-factbase.md: CCountry::CCountry gives it the list's
+        // {first, last, count, byte} where the five genuine vectors in the same run get three
+        // dwords and no byte; it is handed to the game's own free-the-chain helper, which loops
+        // on node->+0xC; and it is filled by the ordinary operator new(0x14) list append.
+        constexpr uintptr_t historical_friends = 0x10A4;     // the CCountryList head
+        constexpr uintptr_t historical_friends_last = 0x10A8;
+        constexpr uintptr_t historical_friends_count = 0x10AC;
+        constexpr uintptr_t historical_friends_no_unlink = 0x10B0;  // the list's 4th member: while
+        // set, the game marks a spent node instead of unlinking it (reversing/findings/FINDINGS-factbase.md)
         constexpr uintptr_t election = 0x113C;               // a yes/no
         constexpr uintptr_t espionage = 0x1160;              // 0xF8 an entry, one per country
         constexpr uintptr_t espionage_end = 0x1164;

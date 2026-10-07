@@ -1,4 +1,6 @@
-# `air_defence`: parsed, stored, displayed - and never used to defend
+# The defence stats: parsed, stored, displayed - and never used to defend
+
+**`air_defence`, `sea_defence` and `surface_defence`.** The file is named for the first because that is the question that started it; the naval pair was asked a few hours later and is in *`sea_defence` too*, below.
 
 Read 2026-10-05, from `TODO.md`: *"Air defence stat is allegedly bugged. Allegedly it doesnt
 use the fixed point system OR it is 1 magnitude too low (divided by 10 essentially). Figure
@@ -81,8 +83,15 @@ three reads in `CBomberCombatant::ApplyCombatModifiers` that looked like air def
 (`0x1619EC`, `0x161E5E`) are exactly that: the second pairs `+0x124`/`+0x128` as tag letters
 and id and indexes the country array with it.
 
-So the census is by **provenance**: keep a read only where the register was just loaded from
-`CSubUnit + 0x58` or `CUnit + 0xC8`, the two definition pointers. That leaves **10 sites**:
+So the census is by **provenance**: keep a read only where the **nearest write** to the
+register loaded it from `CSubUnit + 0x58` or `CUnit + 0xC8`, the two definition pointers. That
+leaves **7 sites**:
+
+> *Corrected 2026-10-05, later the same day.* This first said 10, from a filter that accepted
+> a `+0x58` load **anywhere** in the preceding 60 instructions without checking whether the
+> register had been overwritten since. It had been, in three cases. See *The filter had a
+> false-positive mode*, below; the negatives are untouched, because a filter that over-reports
+> cannot hide a reader.
 
 | rva of the read | in | what it is |
 | --- | --- | --- |
@@ -91,15 +100,14 @@ So the census is by **provenance**: keep a read only where the register was just
 | `0x3AA009` | `'Overview_Military'` builder (`0x3A9B15`) | the land unit stat panel |
 | `0x3ABE5C` | sibling builder (`0x3AB9E2`) | the naval panel |
 | `0x3ADB42` | sibling builder (`0x3AD681`) | the air panel |
-| `0x346862` | `0x346260` | unread; reached through `CUnit + 0xC8` |
-| `0x4986CA` | `CEU3AI::GenerateUnitObjectives` (`0x4980E0`, confirmed) | AI |
-| `0x49995A` | `0x499770` | AI, unread |
 | `0x321B46`, `0x3242CD` | `BuildUnitStatsTooltip` (`0x31F460`, confirmed) | the unit stats tooltip; see the note below |
 
-Plus one the provenance filter cannot see, already in the record: the AI's per-brigade power
-figure, where an air brigade scores `air_attack + air_defence + 500`. That is the shape of
-read this filter misses - **the definition arrives as an argument** - which is why the ten
-are a lower bound and not a closed set.
+So: **one dead combat read, one slot-40 getter, five display sites.** Plus one the
+provenance filter cannot see, already in the record: the AI's per-brigade power figure, where
+an air brigade scores `air_attack + air_defence + 500`. That is the shape of read this filter
+misses - **the definition arrives as an argument** - which is why the seven are a lower bound
+and not a closed set. (It is also why the `CEU3AI` row that used to be in this table was
+doubly wrong: the AI does read the stat, just not there.)
 
 `functionStart` does not answer for the last two - it returns `0x3208E7` and `0x323CD1`,
 neither of which is an entry (trap 2). They are both inside **`BuildUnitStatsTooltip`**,
@@ -376,6 +384,160 @@ tick; what is wanted is a **read** watchpoint on one bombed regiment's `+0x54` t
 bombing run, and the expected answer is two hits per shot-loop iteration plus the
 `combat_status` refresh.
 
+## `sea_defence` too, and `surface_defence` with it - reported by a player, confirmed
+
+Asked on 2026-10-05 after the air result: another player thinks `sea_defence` is broken as
+well. **They are right, and it is one step worse than `air_defence`** - that one is at least
+read before being thrown away, where neither naval defence stat is read in a combat function
+at all.
+
+Generalising the census to any stat (`dvd_statcensus.py <displacement>`, one command) gives:
+
+| stat | reads with a definition pointer in hand | of those, in the combat classes |
+| --- | --- | --- |
+| `air_defence` +0x128 | 7 | **1** - the dead one in `CBomberCombatant::FireUnit` |
+| `sea_defence` +0x160 | 2 | **0** |
+| `surface_defence` +0x174 | 2 | **0** |
+| `hull` +0x178 | 11 | **5** - three in `CNavalCombatant::Attack`, two in the bomber's `FireUnit` |
+| `sea_attack` +0x168 | 12 | **3** - two in `CNavalCombatant::Attack` |
+| `positioning` +0x184 | 4 | **2** - `UpdatePositioning` and `CSubUnit::PickTarget` |
+| `visibility` +0x15C | 2 | 0, and `ShouldStartNavalCombat` reads it - combat *initiation*, not the fight |
+
+`sea_defence`'s two readers are `CNavy::GetDefenceValue` (slot 40, `0x1D2C5C`) and the naval
+unit stats panel (`0x3ABE3A`). `surface_defence`'s are `BuildUnitStatsTooltip` (`0x324185`)
+and the air panel (`0x3ADAFE`). Display, a getter, and nothing else - the same shape as
+`air_defence`. *(Counts corrected after the filter fix below; they were 3 and 3.)*
+
+The call closure from the naval roots - `CNavalCombat::Tick`, `CCombat::Tick`,
+`CNavalCombatant`'s slot 15, slot 19, `CollectTargets` and `UpdatePositioning`,
+`CSubUnit::PickTarget`, `CCombatant::ApplyLosses`, **654 functions** - agrees: it holds 52
+`[reg + 0x160]` accesses and **not one inside rva `0x160000`-`0x180000`**. All 52 are
+`CUnit::in_game_idler_ptr`, which is `CUnit + 0x160`.
+
+### The positive control, which is what makes this a result rather than a silence
+
+A negative from a provenance filter is worth nothing without showing the filter can see a
+positive in the same place. **It can, three times over, in the same function**: on
+`CNavalCombatant::Attack` the identical filter finds `sea_attack` twice and `hull` three
+times, and on the naval path it finds `positioning` in two more bodies. So if
+`CNavalCombatant::Attack` read `sea_defence` off the same `[+0x58]` pointer it uses for
+`sea_attack` and `hull`, this would have seen it.
+
+### What does protect a ship
+
+From `findings/FINDINGS-combatmods.md` §9's reading of `CNavalCombatant::Attack`, now with the
+defence stats ruled out:
+
+- **`hull` is the naval armour**, and it is a straight divisor rather than the land model's
+  deflection threshold: `strDamage = strDamage * 1000 / hull`, and the same for organisation.
+- **`positioning`** shapes target selection and widens both dice - and it is the *enemy's*
+  stacking position penalty that widens them, so a crowded formation is easier to hit.
+- the **attack side** of the combat-modifier product (`CSubUnit + 0x50`) multiplies the shot
+  count; the defence side (`+0x54`) is the cosmetic one.
+- the hit roll is the same flat `CHANCE_TO_AVOID_HIT_AT_NO_DEF`, read at `0x168116`.
+
+**And that closes an open question in the record.** §9 ends "whether naval has the land
+model's 'defences_used buys a number of shots' structure is not established". It does not:
+`CUnit::RollToHit` (`0x1CD250`) has exactly one caller in the image and it is
+`CLandCombatant::FireUnit`. The defence-slot mechanic is land-only, which is why none of the
+three non-land defence stats has anywhere to be read.
+
+### So the pattern, across all four
+
+`defensiveness` and `toughness` are consumed by `CUnit::RollToHit` on land. `air_defence`,
+`sea_defence` and `surface_defence` have no consumer, and their three paths each substitute a
+flat define. **Whatever was intended, this build has exactly one defence mechanic and it
+belongs to land combat.** For a mod that means the `sea_defence` and `surface_defence` lines
+in `units/*.txt` are documentation, `hull` is the ship survivability dial, and
+`air_defence` is inert everywhere.
+
+## Land, checked the same way - and it is the one that works
+
+Asked on 2026-10-05 after the naval pair: land has been the positive control for three
+negatives, which is a reason to check it rather than a reason to trust it.
+
+**The land chain is live end to end, and the last link is the one that mattered.** By the
+morning's logic it was not enough to show `CLandCombatant::FireUnit` *reads* `defensiveness`
+and `toughness` and *passes* them on - `CBomberCombatant::FireUnit` reads `air_defence` and
+passes it into an `imul`, and that goes nowhere. So `CUnit::RollToHit` (`0x1CD250`) was read
+out, and it **consumes its argument**:
+
+    ecx = defence                       ; [ebp+0xc]
+    esi = defence / 1000                ; whole slots
+    if (Random() % 100 < (defence % 1000) * 100 / 1000) esi++    ; the fraction buys one more
+    esi -= unit->defences_used (+0x15C) ; 0x1CD2C3
+    if (esi <= 0)  chance = CHANCE_TO_AVOID_HIT_AT_NO_DEF   (military +0xC, 0x1CD318)
+    else           chance = BASE_CHANCE_TO_AVOID_HIT        (military +0x8, 0x1CD2DA)
+                   if (unit->slot 15()) chance += country->CTechnologyStatus->+0x8
+                   unit->defences_used++                     ; 0x1CD310
+    chance = min(chance, 99000) / 1000
+    return (Random() % 100) >= chance   ; setge at 0x1CD34D - true is a hit
+
+So the defence value really does buy a number of shots, exactly as `FINDINGS-combat.md` says,
+and it is the **only** thing in the game that selects `BASE_CHANCE_TO_AVOID_HIT` over the
+no-defence one. Land also gets a technology addition to the avoid chance that no other arm
+gets.
+
+### The whole stat block at once
+
+| read in a combat function | not read in any combat function |
+| --- | --- |
+| `defensiveness`, `toughness`, `softness`, `armor`, `soft_attack`, `hard_attack`, `piercing_attack`, `air_attack`, `sea_attack`, `sub_attack`, `convoy_attack`, `shore_bombardment`, `hull`, `positioning`, `distance`, `air_detection`, `sub_detection`, `maximum_speed` | **`air_defence`** (read once and discarded), **`sea_defence`**, **`surface_defence`**, `combat_width`, `max_strength`, `default_organisation`, `default_morale`, `strategic_attack`, `suppression`, `radio_strength`, `visibility`, `surface_detection`, `range`, `transport_capacity`, and the build/cost stats |
+
+`max_strength`, `default_organisation` and `default_morale` being absent is **not** a finding:
+the land shot count uses `CUnit + 0xEC` and `+0xF4`, the per-unit products, not the
+definition's own figures.
+
+Two of the absences are worth a second look, and neither is settled here:
+
+- **`combat_width` has no reader in any combat function** (21 reads, none in the range). That
+  bears on `CCombatant + 0xB0 front_line`'s standing question - "what puts a unit on the front
+  line; combat width is the obvious candidate and is not yet evidence". It is still not
+  evidence, and now there is evidence the other way, at least for a direct read inside the
+  combat classes. The nearest thing to a width *sum* is `0x1D648D`,
+  `mov ecx,[ecx+0x58]; add esi,[ecx+0xE8]` looping over a unit's regiments inside `0x1D6420`,
+  which is in the unit layer rather than the combat one. A lead, not an answer.
+- **`strategic_attack` has none either** (15 reads, none in the range), so strategic bombing's
+  damage does not come from the combat classes. Unread.
+
+### Three of the "combat" readers are display, not simulation
+
+Worth separating, because the table above counts functions by address range and two things in
+that range only draw:
+
+- **`CCombatant::SumSubUnitStrength`** (slot 11, `0x1662F0`) reads `defensiveness`,
+  `toughness`, `soft_attack` and `hard_attack`. Its only consumer is the `combat_status`
+  window. The census attributes those reads to `CCombatant::ApplyLosses` because that is what
+  `functionStart` answers - **trap 2, on the one pair of functions this record has already
+  corrected for it**: `ApplyLosses` ends with `ret 4` at `0x1662ED` and slot 11 starts at
+  `0x1662F0` with no padding, and `image.retsBefore(0x1662F0, 0x1663CD)` is empty while from
+  `ApplyLosses`'s entry it is two. So the read is slot 11's.
+- **`0x16C240` and `0x16C340`** read the same four stats off `CUnit + 0xC8`. Each has exactly
+  one caller - `0x17D0D7` and `0x17D1A7` - and both callers are past
+  `CCombat::UpdateCombatStatusWindow` (`0x17BD70`), in the combat *window* code.
+
+So of `defensiveness`'s four combat-range readers, **one is the simulation** and three draw a
+number. That does not weaken the land result - `CLandCombatant::FireUnit` is the one - but it
+is the difference between "read in combat" and "read by combat".
+
+### The filter had a false-positive mode, and fixing it corrected this file
+
+The provenance test accepted a register whose **nearest** write was not the `+0x58` load: it
+scanned the whole 60-instruction window for any such load and ignored anything that had
+overwritten the register since. The worked example is `0x1672E3` in
+`CNavalCombatant::CollectTargets`, which the scan reported as a combat reader of
+`suppression`: `eax` is loaded from `[edx+0x58]` at `0x1672C0`, consumed at `0x1672C9`, and
+**reloaded from `[edx+0xB0]`** - the sub-unit's `unit_ptr` - at `0x1672CF`, so `[eax+0x130]`
+is `CUnit + 0x130`.
+
+`scripts/statcensus.py` now takes the nearest write only. It removed five spurious
+combat-range rows (`suppression`, `fuel_consumption`, `completion_size`, one `armor`, one
+`sub_attack`) and trimmed every total. **No negative moved**, which is the point worth keeping:
+a filter that over-reports can invent a reader but cannot hide one, so the zero columns for
+`sea_defence` and `surface_defence` and the one-site column for `air_defence` were never at
+risk. What was at risk, and wrong, were the counts and two reader lists this file and three
+field comments had already stated - all corrected.
+
 ## Corrections to the record
 
 ### `CSubUnit + 0x54` (`combat_defend_product`) has a second reader - and it is dead
@@ -567,9 +729,9 @@ annotations fixed the return and the counter.
   provenance filter only sees a definition pointer loaded into a register a few instructions
   earlier. A function taking the definition as an argument is invisible to it - the AI power
   figure is the known example. `likely`, not `confirmed`, for "no consumer anywhere".
-- **`0x346260` and `0x499770`**, two readers named only by address. The first is reached
-  through `CUnit + 0xC8` and sits between `CCombatView::BuildUnitTooltip` and
-  `CConfirmRemoveAll::OnConfirm`, so GUI is the likely neighbourhood; neither has been read.
+- **Which function at `0x3208E7`/`0x323CD1`** `functionStart` means: both reads are inside
+  `BuildUnitStatsTooltip`, measured, but the walk-back answers a non-entry, so the tooltip
+  attribution is by extent rather than by `functionStart`.
 - **Why the ground-attack arm of `FireUnit` reads the air defence off `CUnit + 0xC8`** - the
   unit's own definition - rather than the drawn regiment's. It makes no difference while the
   value is discarded; it would if it were ever wired up.

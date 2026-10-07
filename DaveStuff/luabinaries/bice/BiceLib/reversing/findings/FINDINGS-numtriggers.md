@@ -354,6 +354,172 @@ is churn and needs `replaces`, so both stay, and the fact that one stub serves s
 families is itself the finding. Per trap 4 the body arguably should be class-free; that is a
 candidate correction, not something this wave changed.
 
+## 9. The declarations: `CValueTrigger`, `CIntTrigger` and the 77 leaves
+
+Added 2026-10-06, wave 15. Addresses are **rvas** against `0x400000`.
+
+§1 settled which of the five slot-7 bodies each leaf's base gives it, and therefore what scale its
+operand is on. What it could not do was say so in the record, because `mergeFindings.py` refused a
+`struct_fields` entry for a struct `project.json` did not already hold, and neither base was held.
+The `structs` key closed that, and this is the consequence: **two declarations and one field record
+each put the operand on all 77 leaves**, because `inherits` at offset 0 is exactly this shape.
+
+    CValueTrigger : CTrigger      0x44      value  +0x40   thousandths   (slot 7 = 0x5D13E0)
+    CIntTrigger   : CTrigger      0x44      value  +0x40   raw atoi      (slot 7 = 0x5D1400)
+
+**Saying the units difference out loud is the point.** The same script text `= 0.5` is half a unit
+under one base and zero under the other, and nothing in the `.txt` files distinguishes them: the
+difference is which C++ class the keyword's switch arm built. Both field comments say which they are
+and name the other as the contrast, so a reader who lands on either in Ghidra cannot miss it.
+
+### Membership is derived twice, and the two derivations disagree by one
+
+| derivation | `CValueTrigger` | `CIntTrigger` |
+| --- | --- | --- |
+| RTTI: classes whose **direct base at offset 0** is this one | 40 | **38** |
+| `vtable.py --holding`: tables holding this slot-7 body | 40 | 37 |
+
+The 40 agree name for name. The extra `CIntTrigger` child is **`CIsCoreTrigger`**, whose slot 7 is
+its own body at rva `0x5D6500` - so it inherits the base but **not the base's operand convention**,
+and declaring it `inherits: CIntTrigger` with no field of its own would have put `value: int` on an
+offset that holds something else. It gets its own three fields instead, and the inherited `value` is
+shadowed by the derived class's own record, which is how `buildFindings.merge_fields` resolves that
+case.
+
+`CIsCoreTrigger` is also the only leaf in either family whose extent is not `0x44`, at `0x50` - and
+`0x40 + 4 + 1 + (3 slack) + 8` is `0x50` exactly, so the two facts are the same fact.
+
+**This is why the brief said to derive membership from the tables rather than from §1's counts.** The
+counts were the record's own and were what was being checked.
+
+### Sizes come from allocations, and four leaves have none
+
+`scripts/triggersizes.py` pairs every trigger class with its allocation. `CTrigger::LoadKey` (rva
+`0x5C8D10`, `0x2296` bytes to the single `ret 8` at `0x5CAFA2`) builds one class per keyword as
+`push <size>; call operator_new; push eax; call <constructor>`, and the constructor is not inlined,
+so the class name comes out of the vftable the constructor stores. **157 new/constructor pairs, 155
+distinct classes**, and the distribution reproduces wave 14's exactly:
+
+    0x44 x111   0x48 x16   0x40 x10   0x5C x9   0x4C x5   0x60 x2
+    0x50, 0x64, 0x150 and 0x10, one each
+
+Three traps are in the script's docstring. **The last vftable store wins** - a derived constructor
+has its base's inlined ahead of it, so taking the first match answers `CTrigger` for all 157, which
+the first version did. **capstone stops silently** (trap 9's third form) and the loop resumes one
+byte past every stop; over this body that is one resume. And **the window is the function's real
+extent**, because the trigger constructors sit immediately below `LoadKey` and a longer read picks up
+their allocations as if they were its.
+
+Two of the 157 print `None` and are honest misses rather than unnamed classes: for those arms the
+call after `operator_new` is a helper taking the fresh object, not a constructor -
+`std::string::fromCString` (`0x65A7A0`, the `0x60`) and the unrecorded `0x12A710` (the `0x10`, the
+by-name region lookup on `CMap +0x2A50`). Neither allocation is a trigger.
+
+All 40 `CValueTrigger` leaves and 33 of the 37 `CIntTrigger` leaves are `push 0x44`, so both bases
+are `0x44` and those 73 carry a declared size. **Four have no allocation at all**, because their
+keyword falls through to a database lookup rather than reaching an `operator new` in the switch:
+`CTechnologyTrigger` (already recorded, and its existing comment says exactly this),
+`CBuildingTrigger`, `CGovernmentPositionTrigger` and `CSubUnitTrigger`. **Their size is omitted, not
+guessed** - a declared `size` is authoritative downward, so a guessed `0x44` would silently drop
+whatever Ghidra holds past it, and `CTechnologyTrigger` is the proof that at least one really is
+bigger: it keeps a `CTechnology*` at `+0x44`. `CBuildingTrigger` reads
+`province->+0x310[b->+0x54]->+0x20`, so it holds a building pointer somewhere too; where is not read.
+
+### `is_core` takes five different arguments
+
+`CIsCoreTrigger::LoadArgument`, rva `0x5D6500` to the last of four `ret 0x104` at `0x5D665C`, read
+end to end:
+
+    this->is_rebels (+0x44) = 0;   this->province_id (+0x40) = 0
+    if   (value.type == 0x377)     this->arg_is_this (+0x18) = 1          ; `this`
+    elif (value.type == 0x34F)     this->arg_is_from (+0x19) = 1          ; `from`
+    elif (text == "REB")           this->is_rebels (+0x44) = 1
+    elif (atoi(text) != 0)         this->province_id (+0x40) = atoi(text)
+    else                           this->tag (+0x48) = CCountryDataBase::GetTag(text)
+
+So `is_core = GER`, `is_core = this`, `is_core = from`, `is_core = REB` and `is_core = 1234` are
+**five distinct readings of one keyword**. `REB` - the rebel pseudo-country - is tested as a
+**literal string** against the constant at VA `0x15BE948` and never reaches the country database at
+all, which is why it works for a tag the database does not hold. `CIsCoreTrigger::Evaluate`
+(`0x5D6660`, already recorded) opens `cmp dword ptr [ecx+0x40], 0` and takes the province branch when
+it is set, so `province_id` is what selects between "is *this* province a core of the scope's
+country" and "is the scope's province a core of the country named".
+
+*Reached from the table, not from a walk*: `CIsCoreTrigger`'s table (VA `0x15F8160`) holds the body at
+slot 7 and `vtable.py --holding 0x9D6500` returns exactly one holder, so it is neither a fold (trap
+4) nor a guessed entry (trap 2); the upper bound is slot 6's entry at `0x5D6660`, one `int3` later.
+All four `ret 0x104` unlink the same SEH frame from `[ebp-0xC]`, and none has a branch target past
+it, so there is no cold block (trap 3).
+
+### `CTrigger +0x3C` has two readers, and is still not named
+
+§8's lead carried it as cleared by every container constructor, set to 1 by `CTrigger::LoadKey` at
+`0x5C915B`, with no reader identified and none looked for. Two things are now known and a name is
+still not warranted.
+
+**What writes it.** The write at `0x5C915B` is the **`and` keyword's arm**: `push 0x40; call
+operator_new; push eax; call CAndTrigger::CAndTrigger (0x16010)`, then `mov byte ptr [esi+0x3c], 1`
+on the object just built. Every constructor that builds a trigger in place clears it - including both
+of `CTriggeredModifier`'s embedded `CAndTrigger`s, at `0x5B9E5` and `0x5BA32`. So on this evidence it
+distinguishes a `CAndTrigger` the script wrote the word `and` in front of from one the engine made
+implicitly, **which is a plausible reading and nothing more**.
+
+**What reads it.** A **byte-sized** `+0x3C` scan over `.text` - byte-sized is the discriminator the
+displacement alone is not (trap 12) - gives **295 accesses, 257 of them writes**, and two of the
+reads are in this family:
+
+- **`0x5CAD4F`, inside `CTrigger::LoadKey` itself**: `movzx eax, byte ptr [ebx+0x3c]` pushed as the
+  fourth argument of `0x5CFD60(this, &str, &str, flag)`, in the `region`-scope arm. `0x5CFD60` is
+  **unrecorded**.
+- **`0x5D0171`, in the unrecorded `0x5D0130`**, which is a recursive walk of the trigger tree: it
+  takes `children_first (+8)`, recurses over each child, then `cmp byte ptr [esi+0x3c], 0; je <skip>`
+  and, when set, iterates a vector built out of `+0x1C`/`+0x20` - the `__ehvec_ctor` array
+  `FINDINGS-scopetriggers.md` §16 found at `CTrigger +0x1C` and could not settle. Two callers:
+  itself, and one site at `0x14195C`.
+
+*Positive control for the scan*: the same command at `--displacement 0x18` finds the one known writer
+of `arg_is_this` (`0x5D1410`) **and all five known readers** (`0x5D67AC`, `0x5DF30B`, `0x5DFB6B`,
+`0x5E9009`, `0x5EF5A9`) - exactly the five the record names and no more.
+
+**No field record is made.** Both readers are unnamed functions, and the flag's meaning follows from
+what they do rather than from where it is written. `0x5D0130` is the better of the two to read next,
+because it is also **the first thing found that reads `CTrigger +0x1C` for what it is**.
+
+### Two hand edits, neither urgent
+
+Both are `structs` header keys, which are create-only.
+
+1. **`CTechnologyTrigger`** is recorded `inherits: CTrigger` with its own `+0x40 value: int`. RTTI
+   says its base is `CIntTrigger`, and the units are the same either way, so **nothing is wrong
+   today** - there is no duplicate, because a class that inherits `CTrigger` does not pick up
+   `CIntTrigger`'s field. Changing `inherits` to `CIntTrigger` *and deleting its own `+0x40`* would
+   make it consistent with its 36 siblings; changing only one of the two would create a duplicate
+   record for the offset. It is the record's one remaining inconsistency in this family.
+2. **`CEffect` has no recorded `size`.** `CContextEffect` is `0x130` with a `0x110` spec at `+0x20`,
+   so `CEffect` is **`0x20`** - which also fits its own fields, the last being `use_from` at `+0x1D`
+   with two bytes of slack. Read off an allocation, so worth adding.
+
+### What was left
+
+- **The other three slot-7 bases.** `CBoolTrigger` and `CStringTrigger` are absent from the record
+  and the same one-declaration-per-leaf shape applies - but **the two derivations do not agree for
+  them, and in the opposite direction**: RTTI gives `CBoolTrigger` 26 children and 26 hold
+  `0x5D1480` (clean), while `CStringTrigger` has **6** children against **10** holders of
+  `0x5D1450`, and `CTagTrigger` has **11** against **16** holders of `0x5E8F40`. So for those,
+  classes outside the subtree override slot 7 with the shared body, and `inherits` alone will not
+  cover every holder. That needs the membership read the other way round.
+- **Constructors.** 155 constructor rvas came out of `triggersizes.py` and **none** was recorded as
+  an address entry: that would be 155 signature claims for a name each, and the rva of the relevant
+  one is in every leaf declaration's comment instead.
+- **Keywords in the leaf comments are copied, not settled.** Each leaf's comment names its script
+  keyword where §3 gives one; that is the existing record's claim and was not re-derived. What was
+  verified per leaf is the base, the slot-7 holder and the allocation. The six
+  `last_*_battle_*_losses` leaves carry no keyword because §3 does not spell them individually.
+
+**Wave 15's sections were transcribed the same way**, 2026-10-06, and the `revised` rows of each
+fragment were verified off the bytes by the collecting session before the wave was merged - which
+is what caught the one correction to a published claim that wave made.
+
 ## The six resource triggers, and the exile question
 
 Wave 13 agent B, 2026-10-05. Addresses are **rvas** against `0x400000`.

@@ -248,6 +248,62 @@ from that class's own source and ICF merged it afterwards, so a fold puts the ri
 **function's** name and never on the offset. Record the field `confirmed`; leave the body
 class-free.
 
+### A slot record is about one table, and nothing used to check which
+
+**Found 2026-10-06 (wave 14), and this one had been wrong in the generated record for a long time.**
+Trap 4's shape is "a name that fits one table does not fit the other". This is the same shape arriving
+from the *record's* side rather than the image's.
+
+`vftable_slots` in `project.json` is keyed by class name. `buildFindings.virtual_tables` applied a
+class's slot records inside `for vft in cls["vftables"]` - **every** table the class has - and its
+`from_base` loop copied every ancestor's records in with **no test of where that ancestor sits in the
+object**. So a record meaning "slot 2 of the CPersistent table" was written into the primary table as
+well, and vice versa.
+
+The damage: **62 slots across 16 classes carried a method name that is not in that table.**
+
+- `CVariables_vftable` (the primary) had slot 2 named `SaveContents` with **`GuiTypeTree_Find`**
+  (rva `0x67DEE0`) at the address, and slot 1 named `Save` with `GuiTypeTree_FindByString`
+  (`0x6ACE70`) - **both already in `project.json` under their real names**. `CVariables` reaches
+  CPersistent at `+0x24`, so the genuine `SaveContents` is in `CVariables_vftable_at24`, which also
+  had it.
+- `CCombat_vftable_at8` is **`CSelectable`'s** table - CPersistent is at offset 0 on `CCombat` - and
+  it had slots 1-5 as `Save`/`SaveContents`/`Load`/`LoadKey`/`AfterLoad` plus slot 6
+  `CreateCombatants`. `CSelectable` has no bases and its own slots 2-7 are `_purecall`, so none of
+  those names can belong there. The same six on `CAirCombat`, `CLandCombat`, `CNavalCombat`,
+  `CGroundBombing`, `CLandBombing` and `CNavalBombing`.
+- The reverse direction too: `CUnit`, `CAir`, `CArmy` and `CNavy` reach CPersistent through
+  `CReferenceObject` at `+8`, so for all four the **primary** table was the wrong one and had the five
+  anyway.
+
+**`buildFindings.py`'s own comment four lines above the bug said so** - "CUnit gets there through
+CReferenceObject at +8 ... the primary table's slots 1 to 5 are something else entirely" - and the
+slot pass contradicted it.
+
+**The cheap check, and the fix:** `base_offset(class, ancestor) == object_offset(table)`. A bare class
+key now means the class's primary table (offset 0, or its lone table where it has none at 0), and an
+ancestor's records are applied only to the table at `base_offset`. Verified by diffing the generated
+file slot by slot across the change: **211 tables and 3,485 slots before and after, 251 structs and
+2,513 functions before and after, and 93 slot names changed - every one of them from a method name to
+`vf_N`, none the other way.** That is the safe direction: it only removes names that were false.
+
+An escape hatch exists for a record that really is about a secondary table - a key may be written
+**`"CVariables@0x24"`** - but **nothing in the record needs it today**: all 62 were the missing offset
+test, not a missing way to say which table.
+
+**What this means when you next apply.** Those 93 slots are already in the maintainer's Ghidra under
+their old, wrong names, so the next `overwrite` run renames them to `vf_N`. Expect movement on
+`CCombat`/`CAirCombat`/`CLandCombat`/`CNavalCombat`/`CGroundBombing`/`CLandBombing`/`CNavalBombing`
+`_vftable_at8`, `CProvince`/`CMapProvince_vftable_at8`, `CEU3Application_vftable_at8`,
+`CEU3BitmapFont_vftable_at28`, `CMap_vftable_at8`, `CInGameIdler_vftable_atB0`, and
+`CUnit`/`CAir`/`CArmy`/`CNavy`/`CFlags`/`CVariables`/`CProvinceBuilding_vftable`. **That is the fix
+landing, not a failure.**
+
+And two explicit records in `project.json` were wrong in the same way and are worth knowing about if
+they come back: `CProvince`/`CMapProvince` `{"2": "SaveContents"}` (redundant, and it reached the `+8`
+table) and `CInGameIdler` `{"1": "Update"}`, where `CInGameIdler::Update` is rva `0x2559D0` in the
+primary table and the record also renamed `0x249DD0` in the `CLostDeviceInterface` table at `+0xB0`.
+
 ## 5. A modifier entry is 8 bytes, so the offset is `id * 8`
 
 Country and static modifier arrays are indexed `base + id * 8`, value in the low dword. An

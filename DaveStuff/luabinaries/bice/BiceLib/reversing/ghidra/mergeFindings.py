@@ -19,6 +19,10 @@ same reason: re-dumping the JSON reformats hundreds of lines and buries the real
        "comment": "...", "confidence": "confirmed",
        "evidence": "what was checked, and what would show it wrong"}
      ],
+     "structs": [
+      {"name": "CRelation", "size": "0x24", "inherits": "CPersistent",
+       "vftable_rva": "0x11FBB00", "comment": "...", "evidence": "..."}
+     ],
      "struct_fields": [
       {"struct": "CUnit", "offset": "0x2E4", "name": "carrying",
        "type": "CList<CUnit*>", "comment": "...", "evidence": "..."}
@@ -29,6 +33,37 @@ same reason: re-dumping the JSON reformats hundreds of lines and buries the real
     }
 
 `frontier` is what the function calls that nobody has named - the next wave's queue.
+
+## `structs` - declaring one, which a fragment could not do before 2026-10-06
+
+A `struct_fields` entry is refused for a struct `project.json` does not already hold, and
+until this key existed a fragment had no way to create one - so a whole class's layout
+could only be contributed by a hand edit, and the queue accumulated twelve diplomatic
+classes and seven trigger classes waiting for one. `structs` declares the container; the
+fields still go in `struct_fields`, and a declaration here is what makes them land.
+
+A declaration carries `name` and `evidence`, and may carry:
+
+- **`size`**, a hex string. Authoritative in Ghidra in both directions - see
+  `ghidra/README.md` - so a guess here is worse than none.
+- **`inherits`**, a base whose fields are laid out on this class too. **Offset 0 only**:
+  `buildFindings.py` copies the base's fields in at face value, so a base at +8 would put
+  every one of them eight bytes early. Checked against the RTTI export.
+- **`vftable_rva`**, the class's own table. Checked against RTTI as well, which is how
+  `CBuildingConstruction`'s and `CConvoyConstruction`'s were found to point ten and twelve
+  slots *into* their tables rather than at the start of them.
+
+It is deliberately **create-only**. A struct `project.json` already holds, declared again
+with nothing different, is skipped the way a repeated address entry is; declared with
+something different it is refused, because `size` can sit either side of the `fields`
+array in the file and rewriting a header around it is a hand edit, not a merge.
+
+## Naming one of a class's two virtual tables
+
+`vftable_slots` is keyed by class, and a class with two tables has two slot 2s. Write
+`"CVariables@0x24"` - the class, `@`, and the object offset the table sits at - to mean
+one of them; a bare class name still means the table at offset 0, which is what every
+record written before this meant.
 
 `evidence` is required and is **not** written into project.json - it is the reviewer's
 handle, kept in the merge log. `source` must name a findings document that exists, so
@@ -88,6 +123,14 @@ ADDRESS_KEYS = ("rva", "kind", "name", "signature", "no_signature", "comment",
 OPTIONAL_ADDRESS_KEYS = ("locals",)
 STACK_AT = re.compile(r"^stack:-?0[xX][0-9a-fA-F]+$")
 FIELD_KEYS = ("offset", "name", "type", "comment", "source")
+# A struct declaration, in the order project.json already writes them, so an inserted
+# block reads like the ones around it. `name` is the only one required; `fields` is not
+# here because a declaration never carries fields - those go in `struct_fields`, which is
+# where the duplicate and cross-fragment checks live.
+STRUCT_KEYS = ("name", "vftable_rva", "size", "inherits", "comment", "source")
+# "CVariables@0x24": the class, and the object offset of the table meant. A bare class
+# name means the table at offset 0.
+QUALIFIED_SLOTS = re.compile(r"^([A-Za-z_][\w:<>]*)@(0[xX][0-9a-fA-F]+|\d+)$")
 KINDS = ("function", "instruction", "vftable", "global", "string", "jumptable")
 CONFIDENCES = ("confirmed", "inferred")
 
@@ -119,6 +162,117 @@ def load():
     return json.load(io.open(PROJECT, encoding="utf-8"))
 
 
+def tableOffsets(klass):
+    """the object offsets RTTI gives this class a virtual table at"""
+    record = hoi3.classes().get(klass)
+    if not record:
+        return None
+    return {v.get("object_offset", 0): int(v["address"], 16)
+            for v in record.get("vftables", [])}
+
+
+def baseOffset(name, target, seen=None, at=0):
+    """where `target` sits inside `name`, or None when it is not a base of it
+
+    The same walk buildFindings.base_offset does, repeated here because the merge has to
+    refuse an `inherits` the build would only warn about - and because `inherits` is laid
+    out at face value, so a base at any offset but 0 is a wrong answer and not a near one.
+    """
+    if name == target:
+        return at
+    seen = seen if seen is not None else set()
+    record = hoi3.classes().get(name)
+    if name in seen or not record:
+        return None
+    seen.add(name)
+    for base in record.get("bases") or []:
+        found = baseOffset(base["name"], target, seen, at + base.get("offset", 0))
+        if found is not None:
+            return found
+    return None
+
+
+def declaredStructs(files, said):
+    """every struct the incoming files declare, checked - {name: declaration}
+
+    A declaration is what lets `struct_fields` land for a class project.json has never
+    held. It is create-only; see the module docstring for why a revision of one is a hand
+    edit.
+    """
+    document = load()
+    have = {s["name"]: s for s in document.get("structs", [])}
+    out = {}
+    for path, incoming in files:
+        who = os.path.basename(path)
+        for declaration in incoming.get("structs", []):
+            name = declaration.get("name")
+            where = "%s / struct %s" % (who, name or "?")
+            if not name or not isinstance(name, str):
+                said.append("%s: a struct declaration needs a name" % where)
+                continue
+            if "fields" in declaration:
+                said.append("%s: a declaration carries no fields - put them in "
+                            "struct_fields, which is where the duplicate and "
+                            "cross-fragment checks are" % where)
+            if not declaration.get("evidence"):
+                said.append("%s: no evidence" % where)
+            for key in declaration:
+                if key not in STRUCT_KEYS and key not in ("evidence", "fields"):
+                    said.append("%s: %r is not one of %s"
+                                % (where, key, ", ".join(STRUCT_KEYS)))
+            for key in ("size", "vftable_rva"):
+                if declaration.get(key) is None:
+                    continue
+                try:
+                    value = int(declaration[key], 16)
+                except (TypeError, ValueError):
+                    said.append("%s: %s must be a hex string, e.g. \"0x24\"" % (where, key))
+                    continue
+                if value <= 0:
+                    said.append("%s: %s is not a size" % (where, key))
+            tables = tableOffsets(name)
+            if declaration.get("vftable_rva"):
+                try:
+                    rva = int(declaration["vftable_rva"], 16)
+                except (TypeError, ValueError):
+                    rva = None
+                if rva is not None and not image.mapped(image.toVa(rva)):
+                    said.append("%s: vftable_rva 0x%X is not in the image read as an rva "
+                                "- these are rvas against 0x400000 (trap 1)" % (where, rva))
+                elif rva is not None and tables and rva + 0x400000 not in set(tables.values()):
+                    said.append("%s: RTTI puts %s's table%s at %s, not at 0x%X - a value "
+                                "inside the table rather than at the start of it is how "
+                                "two of these went wrong before"
+                                % (where, name, "" if len(tables) == 1 else "s",
+                                   ", ".join("0x%X" % (a - 0x400000)
+                                             for a in sorted(tables.values())), rva))
+            base = declaration.get("inherits")
+            if base:
+                at = baseOffset(name, base)
+                if at is None and name in hoi3.classes() and base in hoi3.classes():
+                    said.append("%s: RTTI says %s is not a base of %s"
+                                % (where, base, name))
+                elif at:
+                    said.append("%s: %s sits at +%d inside %s, and `inherits` lays a "
+                                "base out at face value - offset 0 only"
+                                % (where, base, at, name))
+            if name in out and out[name] != declaration:
+                said.append("%s: another file declares %s differently" % (where, name))
+            if name in have:
+                mine = {k: have[name].get(k) for k in STRUCT_KEYS if k != "source"}
+                theirs = {k: declaration.get(k) for k in STRUCT_KEYS if k != "source"}
+                if mine == theirs:
+                    continue                    # already there, identically: skip it
+                said.append("%s: project.json already holds that struct, saying %s - "
+                            "declaring one is create-only, and changing a header key is "
+                            "a hand edit (`size` can sit either side of the fields array)"
+                            % (where, json.dumps({k: v for k, v in mine.items()
+                                                  if v is not None})))
+                continue
+            out[name] = declaration
+    return out
+
+
 def problems(document, files):
     """every reason not to land this, as a list of sentences"""
     said = []
@@ -139,6 +293,12 @@ def problems(document, files):
     # agreements. The type is compared as well as the name, for the reason the field check
     # below gives: a field that keeps its name and changes its type said nothing.
     claimedField = {}
+    # Structs this wave creates. Collected before the loop, so a field may name a struct
+    # another fragment in the same wave declares - which is how brief B's trigger fields
+    # land on brief A's trigger structs.
+    declared = declaredStructs(files, said)
+    for name in declared:
+        structs.setdefault(name, {})
 
     for path, incoming in files:
         who = os.path.basename(path)
@@ -209,8 +369,10 @@ def problems(document, files):
                     said.append("%s: that address is slot %d of %s, so the name wants "
                                 "the class on it" % (where, tables[0][1],
                                                      ", ".join(owners)))
-                covered = incoming.get("vftable_slots", {})
-                wanted = set(owners) - set(covered)
+                # A key may name one of a class's tables - "CVariables@0x24" - and that
+                # still covers the class.
+                covered = {k.split("@")[0] for k in incoming.get("vftable_slots", {})}
+                wanted = set(owners) - covered
                 if wanted and not incoming.get("slots_noted"):
                     said.append("%s: it is in %d virtual table%s (%s) - record the slot "
                                 "under vftable_slots, or say why not in slots_noted"
@@ -269,10 +431,15 @@ def problems(document, files):
                             % (where, claimedField[spot][1], spot[0], spot[1],
                                claimedField[spot][0][1], claimedField[spot][0][0]))
             claimedField[spot] = (answer, who)
+            if field.get("struct") in declared and field.get("revises"):
+                said.append("%s: revises nothing - this wave is creating that struct"
+                            % where)
 
             known = structs.get(field.get("struct"))
             if known is None:
-                said.append("%s: no such struct in project.json" % where)
+                said.append("%s: no such struct in project.json, and no `structs` entry "
+                            "in this wave declares it - see the `structs` key in "
+                            "ghidra/mergeFindings.py's docstring" % where)
                 continue
             have = known.get(str(field.get("offset", "")).lower())
             if have is not None:
@@ -291,6 +458,30 @@ def problems(document, files):
                     said.append("%s: revises a field it does not change" % where)
             elif field.get("revises"):
                 said.append("%s: revises nothing - no field is recorded there" % where)
+
+    # A `Class@0xNN` key has to name a table that exists, or the record lands nowhere and
+    # nothing says so.
+    for path, incoming in files:
+        who = os.path.basename(path)
+        for key in incoming.get("vftable_slots", {}):
+            if "@" not in key:
+                continue
+            match = QUALIFIED_SLOTS.match(key)
+            if not match:
+                said.append("%s: vftable_slots key %r does not parse - it is the class, "
+                            "`@`, and the object offset of the table, e.g. "
+                            "CVariables@0x24" % (who, key))
+                continue
+            klass, at = match.group(1), int(match.group(2), 0)
+            tables = tableOffsets(klass)
+            if tables is None:
+                said.append("%s: vftable_slots names %s, which RTTI does not have"
+                            % (who, klass))
+            elif at not in tables:
+                said.append("%s: RTTI gives %s a table at %s, not at +0x%X"
+                            % (who, klass,
+                               ", ".join("+0x%X" % o for o in sorted(tables)) or "none",
+                               at))
     return said
 
 
@@ -403,6 +594,23 @@ def land(files):
     addresses = []
     revisions = []
     fields = []
+    # Only the ones problems() accepted as new: a declaration of a struct project.json
+    # already holds is dropped there, identical or not.
+    existingStructs = {s["name"] for s in document.get("structs", [])}
+    accepted = declaredStructs(files, [])
+    newStructs, seen = [], set()
+    for path, incoming in files:
+        for declaration in incoming.get("structs", []):
+            name = declaration.get("name")
+            if name in existingStructs or name in seen or accepted.get(name) is not declaration:
+                continue
+            seen.add(name)
+            clean = {k: declaration[k] for k in STRUCT_KEYS
+                     if declaration.get(k) is not None}
+            clean["source"] = declaration.get("source") or incoming["source"]
+            clean["fields"] = []
+            newStructs.append({k: clean[k] for k in STRUCT_KEYS + ("fields",)
+                               if k in clean})
 
     for path, incoming in files:
         for entry in incoming.get("addresses", []):
@@ -470,6 +678,20 @@ def land(files):
         raw = raw.replace(
             close, ",\n" + ",\n".join(indent(e, 2) for e in addresses) + close, 1)
 
+    # Before the fields, which anchor on the struct's own block.
+    if newStructs:
+        close = "\n ],\n \"equates\": ["
+        assert raw.count(close) == 1, "could not find the end of the structs array"
+        blocks = []
+        for s in newStructs:
+            text = indent(s, 2)
+            # json.dumps writes an empty array `[]`, and the field insertion below looks
+            # for `"fields": [\n` - so a struct landed with no fields yet would send that
+            # search into the *next* struct's array. Spell it open.
+            assert text.count('"fields": []') == 1, "unexpected rendering of %s" % s["name"]
+            blocks.append(text.replace('"fields": []', '"fields": [\n   ]'))
+        raw = raw.replace(close, ",\n" + ",\n".join(blocks) + close, 1)
+
     for struct, field, revises in fields:
         if revises:
             raw = replaceField(raw, struct, field["offset"], indent(field, 4))
@@ -480,11 +702,22 @@ def land(files):
         if raw.count(opening) != 1:                 # a size or a vftable sits between
             at = raw.index(anchor)
             opening = raw[at:raw.index('"fields": [\n', at) + len('"fields": [\n')]
-        raw = raw.replace(opening, opening + indent(field, 4) + ",\n", 1)
+        # The comma belongs after the new field only when something follows it. A struct
+        # this wave created has an empty array, and `{...},\n   ]` is invalid JSON - which
+        # is the same trailing-comma break the vftable_slots branch above exists for.
+        at = raw.index(opening) + len(opening)
+        separator = "" if raw[at:].lstrip().startswith("]") else ","
+        raw = raw[:at] + indent(field, 4) + separator + "\n" + raw[at:]
 
     io.open(PROJECT, "w", encoding="utf-8", newline="\n").write(raw)
-    json.loads(io.open(PROJECT, encoding="utf-8").read())      # it still parses
-    return len(addresses), len(fields)
+    after = json.loads(io.open(PROJECT, encoding="utf-8").read())   # it still parses
+    # Trap 18's JSON corollary: after a structural edit, assert that what changed changed
+    # and that the counts of everything else did not.
+    assert len(after["structs"]) == len(document["structs"]) + len(newStructs), \
+        "the structs array did not grow by the %d declared" % len(newStructs)
+    assert len(after["addresses"]) == len(document["addresses"]) + len(addresses), \
+        "the addresses array did not grow by the %d landed" % len(addresses)
+    return len(addresses), len(fields), len(newStructs)
 
 
 def main():
@@ -507,17 +740,19 @@ def main():
         raise SystemExit(1)
 
     counts = sum(len(i.get("addresses", [])) for _, i in files)
-    print("%d file%s, %d addresses, %d struct fields - no conflicts"
+    print("%d file%s, %d addresses, %d structs declared, %d struct fields - no conflicts"
           % (len(files), "" if len(files) == 1 else "s", counts,
+             sum(len(i.get("structs", [])) for _, i in files),
              sum(len(i.get("struct_fields", [])) for _, i in files)))
     if args.check:
         return
 
-    landed, fields = land(files)
+    landed, fields, structs = land(files)
     os.makedirs(MERGED, exist_ok=True)
     for path, _ in files:
         os.replace(path, os.path.join(MERGED, os.path.basename(path)))
-    print("landed %d addresses and %d struct fields" % (landed, fields))
+    print("landed %d addresses, %d new structs and %d struct fields"
+          % (landed, structs, fields))
     print("now: python ghidra/buildFindings.py, then apply, and check failed: 0")
 
 

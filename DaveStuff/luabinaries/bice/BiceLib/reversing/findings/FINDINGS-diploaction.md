@@ -1260,7 +1260,8 @@ are hand-adds.
 
 **`CRelation`** (vftable `0x15FBB00`, 12 slots; slots 6, 7, 10 and 11 are `_purecall`). Section 15's
 prose account is now **confirmed from the game's own save grammar**, not described:
-`CRelation::LoadKey` (rva `0x6465D0`, the body nine of its ten subclasses inherit) has exactly five
+`CRelation::LoadKey` (rva `0x6465D0`, the body **seven** of its ten subclasses inherit - corrected
+2026-10-06 from "nine", see §30) has exactly five
 cases, each storing to one offset -
 
 | offset | field | type | key |
@@ -1359,3 +1360,235 @@ both the nap and the embargo sites are ones `functionStart` misattributes. A cal
   only far enough to read their argument lists; `0x47B280` passes a stack int set to 1000 and a value
   read off `[esi+0xc]->+0x1C0`, which is **not** a define, so the "amount is always a define" reading
   holds only for the diplomatic four.
+
+## 30. `CRelation`, `CCasusBelli` and `CNap` re-derived, and the twelve structs landed
+
+Wave 14, 2026-10-06. Section 27 gave these layouts as prose because a fragment could not create a
+struct. That limit is gone (see `fragments/README.md`), so the classes are now in `project.json` -
+and the layouts were **re-derived off the bytes rather than transcribed**, which is what turned up the
+two corrections below.
+
+### `CRelation::LoadKey` - rva `0x6465D0`
+
+A **9-entry jump table at `0xA4676C` over base token `0x299`** - `eax = key + 0xFFFFFD67`,
+`cmp eax, 8`, `ja default`, `jmp [eax*4 + 0xA4676C]` - with **five live cases** and four dead slots
+(tokens `0x29D`-`0x2A0`: `tree`, `tree_definition`, `tree_density`, `texture`) falling through to the
+default. Each case ends its own `ret 8`.
+
+| token | key | store | how |
+| --- | --- | --- | --- |
+| `0x299` | `first` | `+0x8`/`+0xC` at `0xA46656`/`0xA4665C` | `CCountryDataBase::GetTag` (`0x518480`), 8 bytes copied |
+| `0x29A` | `second` | `+0x10`/`+0x14` at `0xA466BE`/`0xA466C4` | the same |
+| `0x29B` | `start_date` | `+0x18` at `0xA466F8` | `Date_SetFromString` (`0x44CDA0`) |
+| `0x29C` | `end_date` | `+0x1C` at `0xA4672D` | the same four instructions |
+| `0x2A1` | `cancel` | `+0x20` at `0xA46753` | `cmp [parse+0x228], 0x1F6 / sete dl` - token `0x1F6` is `yes` |
+
+Section 27 was right about all seven offsets. **Two things in it are wrong:**
+
+- It calls this "the body **nine** of its ten subclasses inherit". Slot 4 of each of the eleven tables
+  says **seven** inherit it - `CAlign`, `CAlliance`, `CDependency`, `CEmbargo`, `CGuarantee`,
+  `CInfluence`, `CWarning` - and **three override it**: `CCasusBelli` (`0x647910`), `CNap`
+  (`0x646F70`) and `CTradeRoute` (`0x64CBA0`). The same seven-and-three split holds for
+  `SaveContents` at slot 2.
+- There is a **tenth subclass the list of twelve leaves out, `CWarning`**, and it is the only one
+  whose slots 10 and 11 are the shared empty stub `0xABF890` rather than bodies of its own - so **a
+  warning is recorded and activates nothing.**
+
+`cancel` being a plain `sete` against `yes` means any other value, **`no` included**, leaves it 0 - so
+there is no way to spell "not cancelled" that differs from omitting the key.
+
+**`CRelation`'s size is `0x24`, fixed from both sides**: its own last byte is at `+0x20`, and two
+different subclasses independently put their first field at `+0x24`.
+
+### `CCasusBelli::LoadKey` - rva `0x647910`
+
+Tests one token, `0xD9` (`type`), and forwards everything else to `CRelation::LoadKey` at
+`0xA4653D`. The case builds an `Hoi3CString` from the value token, looks it up at `0xA479C5` against
+the database at `[0x1A85BD8]`, **falls back to element 0 when the lookup answers null**
+(`mov edx,[esi+0xc] / mov eax,[edx]` - the reserved null entry, exactly the shape this folder's
+step-4 trap describes), and stores `[result+8]` to `+0x24`.
+
+So **`+0x24` is the type's index, an `int`, not a pointer** - which is what makes it comparable with a
+war goal's own casus belli index, and what makes **an unknown pretext name resolve silently to index
+0** rather than erroring.
+
+### `CNap::LoadKey` - rva `0x646F70`
+
+Three cases and nothing else:
+
+| token | key | store | how |
+| --- | --- | --- | --- |
+| `0x766` | `balance` | `+0x24` | `ParseFixedPoint(parse@EAX, out@EDI)` - **thousandths** |
+| `0x72F` | `their_power` | `+0x28` | `sscanf(parse+0x22C, "%i", &this->+0x28)` - plain int |
+| `0x72E` | `our_power` | `+0x2C` | the same |
+
+The format string at `0x15FD14C` is `"%i"`, read out of the image. This closes section 27's "three
+subclass fields looking for offsets", **and adds something that item could not have guessed: only
+`balance` is scaled.** `our_power` and `their_power` go through `sscanf`, so they carry **no implicit
+division by 1000**. `0x24 + 3*4 = 0x30`, which is `CNapAction::Apply`'s allocation, so the three fill
+the object exactly and there is no fourth.
+
+The dispatch arithmetic is worth writing down because it reads wrong at a glance:
+`sub eax,0x72E / je` then `dec eax / je` then **`sub eax,0x37 / je`** - the third test is against
+`key - 0x72F - 0x37`, i.e. **`0x766`, not `0x767`**. Read as `0x767` it answers
+`traded_for_sans_allied`, which looks entirely plausible on a pact and is not what is there.
+
+### What landed, and what is still prose
+
+Eighteen structs were declared, eight of them `inherits`-only (`CAlliance`, `CGuarantee`, `CEmbargo`,
+`CAlign`, `CInfluence`, `CDependency`, `CWarning`, plus `CCasusBelli` and `CNap` which also carry
+fields). Each inherits-only row gets `CRelation`'s six fields and `CPersistent`'s `token` laid out for
+free, which is why **16 declared fields became 121 generated ones**.
+
+Deliberately not declared, each for a stated reason:
+
+- **`size` for `CCasusBelli`, `CTechnologyTrigger` and the eight inherits-only subclasses.** No
+  allocation was read for any of them; `0x28` for `CCasusBelli` is arithmetic. Omitting a `size`
+  rather than guessing matters more than it used to, because **a declared `size` is now authoritative
+  downward as well as upward** in Ghidra.
+- **`CTradeRoute`'s `inherits`.** `project.json` already holds a `CTradeRoute` struct **without**
+  `inherits: CRelation`, so it is the one subclass that does not get CRelation's six fields. The
+  `structs` key is create-only by design, so this is a one-word hand edit and is queued in
+  `CANDIDATES.md`.
+- **`CDiplomacy`.** The arithmetic works - `CCurrentGameState +0xB24` is the embedded `CDiplomacy` and
+  `+0xB2C` is its own `+0x8`, which the record's own comments already say - but confirming the
+  embedding means reading the appender, and its address `0x493E10` is **mid-function**: a decode from
+  VA `0x893E10` is garbage, and `0x893C80`/`0x893E70` is already a known trap-2 pair. One function
+  read away, not guessed at.
+- **`CDiplomaticActionCommand +0x3C` and `CNullDiplomaticAction +0x28`.** One field each, each needing
+  its own function read, on classes with nothing else known.
+- **`CCasusBelliType`'s 22 loader offsets.** Now landable, since the struct exists and a fragment can
+  add fields to it, but it is 22 rows of its own work. The token table is at `0x416924`, the jump
+  table at `0x4168E0`, base token `0x78D`, and the whole thing is reproducible in one command. Best
+  given to one agent whole.
+
+
+## 31. `CSendExpeditionaryForceAction` cannot be used from script, and one instruction decides it
+
+Read 2026-10-06, wave 15, off the maintainer's objection that **the Lua constructor is
+`(CCountryTag, CCountryTag)` and takes no unit, so it is unclear how this is supposed to work at
+all.** The API itself says a unit *is* involved, which is what made the question sharp.
+
+**For a mod author: this registration is unusable.** `CSendExpeditionaryForceAction::IsValid` (rva
+`0x63AD90`) returns false at `0x63ADFB` whenever the action's unit reference does not resolve, and the
+registered two-tag constructor leaves it null with no way to fill it. The command built from such an
+action is posted, drained and then does nothing: `CDiplomaticActionCommand::Execute`'s first step is
+the slot-13 test, and its own recorded entry already says "false and nothing at all happens".
+
+### The unit is not a pointer at `+0x2C`
+
+`GetUnit` (`0x63B380`) copies `this+0x2C`, `+0x30` and `+0x34` into its return buffer at `+0`, `+4`
+and `+8`, then constructs `out+0xC` from the `Hoi3CString` at `this+0x38`. So the member is a
+**`0x28`-byte by-value `CRef<CUnit>` spanning `+0x2C` to `+0x53`** - a cached pointer, the two halves
+of the save file's `id = { type = N id = N }` pair, and a name. Exactly the type luabind registers as
+its return; the `+0x2C` the brief carried was the first dword of it.
+
+Resolving one is `CRef_Resolve` (`0x19A190`, receiver in EAX, 170 callers) or `CRef_ResolveAndCache`
+(`0x2DE10`, receiver in ESI, 155 callers, result cached back into `+0`). Both read `+4` and `+8` as
+the key, pick the registry by `type > 0x1268`, call the recorded `FindPersistentById` (`0x69DA00`),
+and return `result - 8` **or zero**. **Neither is a guard.**
+
+### What the Lua constructor leaves behind
+
+`CSendExpeditionaryForceAction::CSendExpeditionaryForceAction` (`0x639260`, `ret 0x14`) is the
+registered `(CCountryTag, CCountryTag)` form. After filling the `CDiplomaticAction` base the way
+every other factory in the family does - `type = PROPOSE`, `value = 1`, both dates from the tick - it
+writes:
+
+    [this+0x28] = 1                 ClaimType = SEND          0x63933C
+    [this+0x2C] = 0                                            0x639355
+    [this+0x30] = [0x1A8CC94]                                  0x63935D
+    [this+0x34] = [0x1A8CC98]                                  0x639366
+    [this+0x38] = ""
+
+Those two globals are the shared null-`CRef` statics, and **they are permanently zero**: 175 and 161
+occurrences in `.text` between them, not one of which is a write, and they sit past the last byte of
+`.data`'s raw data so no file initialiser touches them either.
+
+*That negative carries its control, and the control failed first.* The same scan against `0x1A89790`,
+the game-state singleton, finds 1,928 writes - but the first attempt reported **zero writes for
+both**, because `findValue` returns the address of the immediate rather than of the instruction. The
+fixed scan decodes backwards from each occurrence until it finds the instruction that covers it.
+
+### Is there any way to set it from Lua? No
+
+The class registers one constructor and exactly three members - `GetTag`, `GetUnit`, `GetClaimType` -
+**and all three are getters.** The only writers of the `CRef` in the whole image are:
+
+- `LoadKey`'s `unit` case (token `0x256`, `0x63B317`), `lea esi,[edi+0x2C]` then `0x1EC150` with the
+  parse context - a save or history block;
+- the copy constructor `0x6394E0`, which is what slot 16's clone uses;
+- the two-tag constructor, which zeroes it.
+
+So the answer is the plain one: **the registration is unusable by construction.** Lua's entry point
+is `CEU3AI::PostAction` (`0x49A750`), read for exactly this reason: it calls the action's slot 6
+(`CDiplomaticAction::MakeCommand`) and pushes the result onto the session channel through
+`country->+0xF1C` slot 18 and `session->+0x38` slot 6 - the same two steps the hourly AI pass at
+`0x682BC2` takes, and notably **not** via `CCountry::AddPendingDiplomaticAction`. There is no gate
+between that post and `CDiplomaticActionCommand::Execute` other than the pump's own turn-stamp and
+double-command checks, **so slot 13 really is the deciding test.**
+
+### What `Apply` would do with a null unit - and why it does not get the chance
+
+Read end to end: `0x6395B0` to the one bare `ret` at `0x63A853`, **1,226 instructions**, `retsBefore`
+empty, 12 `int3`, then slot 11. Three parts.
+
+1. **A message is built**, with `ACTOR`, `RECIPIENT`, `RECPIENT` (the engine's own typo),
+   `MESSAGE_HEAD_CHAN`, `MESSENGER` and `UNIT` substitutions. The `UNIT` one, at `0x639DD1`, takes
+   `&this->unit`, calls `CRef_Resolve`, and then does `mov edx, [eax]` at `0x639DE8` - **the resolved
+   pointer is dereferenced with no null test.** `cfg.py` says the block holding it is entered only by
+   fall-through, and every branch between the function entry and it is a two-way SSO diamond that
+   reconverges, so this is unconditional.
+2. **Then** the ref is resolved again, at `0x639EBB`, through `CRef_ResolveAndCache`, and *this*
+   result is tested - `je 0x63A83F`, straight to the epilogue. **The guard sits `0xEA` bytes after
+   the dereference it should precede.**
+3. **The work**, keyed on the base's `type (+0x18)` and `value (+0x24)`. PROPOSE with `value` set
+   charges `EXPEDITION_INFLUENCE_COST` (diplomacy `+0xAC`), negated, through `0xF4E50` on the actor.
+   ACCEPT with `value` set is the hand-over: `0x1B9A30(unit, 1)`, then - only when `unit->+0x290` is
+   still zero - `unit->+0x28C`/`+0x290` saved from the other country's `+0x124`/`+0x128`, which is how
+   the brigade knows where to go home to; then `0xE0860`, `0xE0830` and `0xE06F0` move it between the
+   two countries' unit lists, and `0x1D3840` runs when `unit->+0x1EC` is set. ACCEPT with `value`
+   clear (`0x63A519`) is the return leg, keyed `OUREXPDEC` and `EXPOTHER`.
+
+So the honest answer to "pick a unit, no-op, or fault?" is **none of the three, because it is
+unreachable** - and if it were reached with a null ref it would fault at `0x639DE8`, since
+`CRef_Resolve` returns 0 and nothing tests it before the load. **That fault is `inferred`**: it
+depends on no persistent object being registered under type 0 and id 0, which cannot be settled
+statically. **The unreachability is `confirmed`.**
+
+The record's earlier `inferred` entry for `Apply` **turns out to have been right about everything it
+claimed** - every call it listed is there, `EXPEDITION_RETURN_TIME` (`+0xB0`) is read,
+`EXPEDITION_RECLAIM_TIME` (`+0xB4`) is not, and the three news keys are as stated. It is now
+`confirmed`.
+
+### TAKE versus SEND, and a negative
+
+The two-tag constructor gets **SEND** (`[this+0x28] = 1`). But **`ClaimType` turns out to be almost
+cosmetic**: a grep of all 1,226 instructions of `Apply` for a `[reg + 0x28]` operand on any base but
+ESP returns **nothing**, while the same grep finds `[reg + 0x18]` and `[reg + 0x24]` at fourteen
+sites - so the scan can see a field read on this object and `ClaimType` is simply not one. Across the
+whole class (`0x63A860`-`0x63B3D8`) `+0x28` is read in exactly two places, both display:
+
+| condition | localisation key, from slot 20 `GetTag` (`0x63B040`) |
+| --- | --- |
+| `value != 0` | `SENDEXPED`, whatever ClaimType says |
+| `value == 0`, `ClaimType == 0` (TAKE) | `RETRIEVEEXPED` |
+| `value == 0`, `ClaimType != 0` (SEND) | `RESENDEXPED` |
+
+Slot 11's tooltip picks `RETRIEVEEXPEDDESC` the same way. **So the bidirectionality the enum seems to
+promise is carried by `value`, the base's proposal/cancellation polarity, and TAKE/SEND only
+distinguishes the two kinds of withdrawal in the text the player reads.** That corrects the natural
+reading of the enum.
+
+### What was left
+
+- **The AI's unit choice**, at `0x682BA8` - the hourly pass that flips PROPOSE to ACCEPT, and the lead
+  for where a real expedition's unit comes from. It is AI decision logic and the standing steer
+  applies.
+- **Whether anything calls a diplomatic action's slot 7 outside `CDiplomaticActionCommand::Execute`.**
+  Slot 7's displacement has 1,043 call sites image-wide, so a targeted search is needed rather than a
+  sweep; the caveat is in `IsValid`'s evidence field.
+- **`CSendExpeditionaryForceAction +0x28 ClaimType`** was deliberately **not** re-recorded: the Lua
+  half already has it at offset 40 in the generated file, and restating it would have made a duplicate
+  `(struct, offset)` record.
+

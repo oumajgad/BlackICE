@@ -58,6 +58,15 @@ says nothing about the call, so it takes a record rather than a name.
 `ghidra/mergeFindings.py` documents. That file has hand-kept formatting and a
 hand-compacted block in it, and several writers would wreck it.
 
+**Name it after the topic, not the wave** - `faction.json`, `command-loadkey.json`,
+`setflag-expedition.json`. Lower case, hyphens between words, no wave number and no agent letter.
+`merged/` is one flat archive of every fragment ever landed, and you look in it for *the faction
+one*, not for *wave 15's third*: a `wave15-` prefix sorts the folder by something you can already
+get from the merge log or from git, and buries the one thing you cannot. **This was written down on
+2026-10-07 because it had not been**, and six of the sixty files had drifted - one in wave 14 and all
+five of wave 15, each agent having reasonably invented its own scheme in the absence of a rule.
+Those six are renamed; nothing referenced them by name.
+
 **Every key in an address entry must be *present*, even when it is empty.** The check is
 `if key not in entry`, over a fixed list that includes **`no_signature`** - so an entry with a
 perfectly good `signature` is still refused, with the unhelpful message "no no_signature", until it
@@ -107,6 +116,64 @@ Two conventions it knows about, which yours should use. A register argument is w
 `unit@ESI` and a stack one `out@stack:4`, and a register argument costs no stack. Where
 the compiler used a register convention no ordinary signature can express, that is what
 `no_signature` is for - do not invent stack parameters to make the arithmetic close.
+
+## You can declare a struct, as of 2026-10-06
+
+The merge used to refuse a `struct_fields` entry for a struct `project.json` did not already hold, so
+a class with no record could not be contributed at all. It now reads a **`structs`** key beside
+`struct_fields`:
+
+    "structs": [
+     {"name": "CRelation", "size": "0x24", "inherits": "CPersistent",
+      "vftable_rva": "0x11FBB00", "comment": "...", "evidence": "..."}
+    ]
+
+`name` and `evidence` are required; `size`, `inherits`, `vftable_rva`, `comment` and `source` are
+optional. **Fields still go in `struct_fields`** - put a `fields` key inside a declaration and it is
+refused, because that is where the duplicate-offset and cross-fragment checks live. A field may name a
+struct **another fragment in the same wave declares**; declarations are collected before the per-file
+pass for exactly that reason.
+
+Four things it refuses, each of which has already caught something real:
+
+- **`inherits` at any offset but 0.** `buildFindings.py` lays a base's fields in at face value, so a
+  base at `+8` would place all of them eight bytes early. Checked against the RTTI export,
+  transitively.
+- **a `vftable_rva` that is not the start of a table** - this found two wrong values already in
+  `project.json` - or that only resolves when read as a VA (trap 1, caught by name).
+- **a redeclaration that differs** from what the record holds. The key is **create-only**: changing a
+  struct's `size` or `inherits` is a hand edit, because `size` may sit on either side of the `fields`
+  array in that file and there is no one textual header to rewrite.
+- **`revises` on a field of a struct this wave creates**, which cannot be revising anything.
+
+**Omit `size` rather than guess it.** A declared `size` is now authoritative **downward** as well as
+upward - the apply shrinks a type Ghidra holds longer than the record says - so a guessed size silently
+drops whatever Ghidra had past it.
+
+**Two things worth checking before you declare a class at all** (both cost a wave 14 agent real time):
+
+- **A class with a Lua registration may already have its fields**, through `luabind.json`, at a
+  priority higher than anything a `project.json` record gets. Eighteen classes and 44 fields looked
+  blocked and were already in `bicelib_findings.json` and in Ghidra; landing them would have created
+  44 duplicate `(struct, offset)` records. **Grep the generated file, not just the record** - and
+  remember it stores offsets in **decimal**. A `structs` declaration for a Lua-named class is worth
+  making only to add a `size`, an `inherits` or a `comment`, never to restate its fields.
+- **An id-half field is folded, not placed.** A field lying inside a larger typed one is removed from
+  the generated output and its text appended to the host's comment, so it never reaches the apply.
+  `ghidra/README.md` has the measurement; the practical consequence is that **a field overlapping a
+  struct member is not the apply-cycle bug it looks like**, and you should not propose deleting one on
+  those grounds.
+
+### Checking a signature you have just written
+
+`python scripts/checkSignatures.py --candidates fragments/incoming/<yours>.json` reads `addresses` out
+of your fragment instead of out of `project.json`, so you get the `ret` check, the class check, the
+storage check and the constructor check on entries the record has never seen. Added 2026-10-06; before
+it, the only way was to write your own checker, which wave 13's agent C did.
+
+The whole-image baseline for the bare command is **1,582 entries checked, none disagree** (2026-10-06;
+it was 1,517 three waves earlier, and it grows as the record does). **"none disagree" is the pass
+mark, not the count** - if you see a disagreement, it is one of yours.
 
 ## Traps
 

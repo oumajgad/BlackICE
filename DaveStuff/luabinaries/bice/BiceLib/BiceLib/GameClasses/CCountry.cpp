@@ -65,7 +65,16 @@ namespace {
     // The flag and variable trees are only as deep as the mod makes them, but nothing
     // here has checked that, and a tree read out of something that is not one has no
     // depth at all. This bounds the recursion either way.
-    const int MAX_TREE_DEPTH = 256;
+    //
+    // **Raised from 256 to 2048 on 2026-10-07.** `depth` counts every link followed, and
+    // two of the three - `low` and `high` - are the binary-search dimension rather than the
+    // key dimension. A ternary search tree built in insertion order can skew, so with
+    // BlackICE's thousands of flags a long low/high chain could plausibly have passed 256
+    // and had the rest of the tree silently dropped. Nobody has measured the real depth;
+    // 2048 is headroom rather than a known bound, and the cap is still here to stop a
+    // runaway read of something that is not a tree. At roughly a hundred bytes a frame this
+    // is about 200 KB of stack at full depth, against the 1 MB a thread gets by default.
+    const int MAX_TREE_DEPTH = 2048;
 
     template <typename T>
     T readValue(uintptr_t address, T fallback = T()) {
@@ -81,23 +90,34 @@ namespace {
             return;
         }
 
+        // The three links, under the names the tree actually uses. They were `parent`,
+        // `sibling` and `child` here until 2026-10-07, which is what `CTernary::NodeOffsets`
+        // called them before `TernarySearchTreeFind` settled the layout - the header was
+        // corrected and this was not, so the build stopped. The mapping is the one the
+        // header's own account implies: the old `parent` was the low link, `child` the
+        // equal link and `sibling` the high link.
+        //
+        // **The visit order is deliberate.** low -> element -> equal -> high is the order
+        // `CVariables::SaveSubtree` walks, which is why a savegame's `variables={}` block
+        // comes out alphabetical - so this produces the keys in the same order the game
+        // writes them, rather than in a shape that only happens to be complete.
         namespace Node = CTernary::NodeOffsets;
         const uintptr_t element = readValue<uint32_t>(nodePtr + Node::element);
-        const uintptr_t parentNode = readValue<uint32_t>(nodePtr + Node::parent);
-        const uintptr_t siblingNode = readValue<uint32_t>(nodePtr + Node::sibling);
-        const uintptr_t childNode = readValue<uint32_t>(nodePtr + Node::child);
+        const uintptr_t lowNode = readValue<uint32_t>(nodePtr + Node::low);
+        const uintptr_t equalNode = readValue<uint32_t>(nodePtr + Node::equal);
+        const uintptr_t highNode = readValue<uint32_t>(nodePtr + Node::high);
 
-        if (parentNode != 0) {
-            traverse(res, parentNode, depth + 1);
+        if (lowNode != 0) {
+            traverse(res, lowNode, depth + 1);
         }
         if (element != 0) {
             res.push_back(element);
         }
-        if (childNode != 0) {
-            traverse(res, childNode, depth + 1);
+        if (equalNode != 0) {
+            traverse(res, equalNode, depth + 1);
         }
-        if (siblingNode != 0) {
-            traverse(res, siblingNode, depth + 1);
+        if (highNode != 0) {
+            traverse(res, highNode, depth + 1);
         }
     }
 }

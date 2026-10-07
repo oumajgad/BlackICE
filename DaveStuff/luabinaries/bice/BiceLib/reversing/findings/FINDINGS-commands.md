@@ -819,3 +819,121 @@ The predecessor was tested in both. The distinction matters less here than it lo
 **single player serialises too** - that is the correction this document carries above - so the
 payload crosses the same writer, tokenizer, factory and clone on both paths. What multiplayer
 adds is the socket, which nothing here has traced, and peers running the same kind table.
+
+## `CSetFlagCommand` writes to the history, not to the flags - 2026-10-06
+
+**The maintainer tried this years ago and the flag never reached the country.** Wave 15 read it, and
+the symptom is exact: `CSetFlagCommand::Execute` never touches `CCountry::flags`.
+
+**For a mod author, in one line: `CSetFlagCommand` cannot be made to work from Lua, and there is no
+registered way to set a country flag at all.** `CFlags` is registered with exactly one member,
+`IsFlagSet`, and `CCountry::GetFlags` returns it - the Lua API can *read* flags and has no setter
+anywhere. The only working route to a country flag is the event language's `set_country_flag`, i.e.
+`CSetCountryFlagEffect::Execute` (rva `0x5A4970`).
+
+### What `Execute` does, instruction by instruction
+
+Slot 6 of the one table (`0x15C3E24`), rva `0x152C30` to the bare `ret` at `0x152E06`, nine `int3`,
+then slot 7 at `0x152E10`; `retsBefore` over the span is empty, so there is no trap-3 tail. `this` in
+ECX, nothing on the stack.
+
+1. `cmp byte ptr [esi+0x60], 0` at `0x152C52` - the bool from the constructor's third argument, and
+   the only branch it controls.
+2. `operator new(0x2C)`, then **`CAddCountryFlagChange::CAddCountryFlagChange`** (`0x1EF220`) if the
+   bool is set or **`CRemoveCountryFlagChange::CRemoveCountryFlagChange`** (`0x1EF2F0`) if it is
+   clear. Both take the `CCountry*`, resolved as
+   `CCountryDataBase ([0x1A855A4]) ->+0x16C[this->country.id (+0x40)]`.
+3. `CountryFlagChange_SetName` (`0x1EF360`) copies the `flagType` string from `this+0x44` into the
+   change's own `Hoi3CString` at `+0x10`.
+4. The lazy `g_CCurrentGameState` singleton boilerplate, skipped whenever `[0x1A89790]` is already
+   non-null, which in a session it always is.
+5. `[change+8] = gameState->tick (+0xBDC)` at `0x152DEA`.
+6. `ecx = country + 0xCCC` - `CCountry::history` - and **slot 6** of it, the already-recorded
+   `CHistoryContainer::AddEntry` (`0x1F4660`).
+
+**And that is the whole function.** It never writes `CCountry::flags (+0x180)`; it never calls
+`CFlags_AddFlag` (`0x4D640`) or `CFlags_SetFlag` (`0x4D6A0`); the only database it touches is the
+country database, for the lookup in step 2.
+
+### Why the entry it files is never applied
+
+`AddEntry` allocates a `0x10`-byte node and splices it into the list in date order, and calls nothing
+on the entry. **The flag write lives one level down, on the change object's slot 7:**
+
+- `CAddCountryFlagChange::Apply` (`0x1EF250`, slot 7, one holder):
+  `CCountry::GetFlags(this->country (+0xC))`, the name's `c_str` from `this+0x10`, then
+  `CFlags_SetFlag` (`0x4D6A0`) when the bool argument is 1 and `CFlags_ClearFlag` (`0x4D6C0`) when it
+  is 0.
+- `CRemoveCountryFlagChange::Apply` (`0x1EF380`) is the same body with the two arms swapped.
+
+Slot 7 on a history entry has exactly two callers, both already recorded:
+`CHistoryContainer::ApplyAll` (`0x1F4830`) and `CHistoryContainer::ApplyRange` (`0x1F47C0`).
+`ApplyRange`'s nine call sites are all inside `ExecuteHistory` (`0x1F4C20`), whose own entry says in
+plain words **"Not on the tick"** - its four call sites are in `ExecuteHistoryToDate` (`0x1F52A0`),
+which runs from `CEU3Application::LoadEverything`, from `ResetGameStateToStartDate`, from
+`CSetHistoryDate` slot 6, and from six lobby/scenario-setup handlers. **All of them precede or
+replace a session.**
+
+So the sequence is complete and each step is cheap to re-check: **the command posts, executes, and
+files a dated record that nothing in a running game will ever read back.**
+
+Two corroborating details worth keeping. **The command genuinely is posted** - the loopback post's
+first gate is command slot 14, which for this class is the three-instruction
+`return this->country.id (+0x40) != 0` at `0x1530C0`, and any real country has a non-zero id. And
+**the entry does reach the savegame**: `CAddCountryFlagChange::SaveContents` (`0x1EF2C0`) writes the
+single key `set_country_flag` (token `0x37D`) with the name, inside the country's `history` block.
+That is the one lasting trace of a `CSetFlagCommand`, and it explains the otherwise odd fact that the
+command's own type id (slot 7, `0x152E10`) is `0x37D` - **the type ids of these commands are drawn
+from the save-token space.**
+
+### The control, and it is the whole argument
+
+`CSetVariableCommand::Execute` (slot 6, rva `0x1532C0`) has the **same field layout at the same
+offsets** - `+0x3C` the `CCountryTag`, `+0x44` the `Hoi3CString`, `+0x60` the payload - and the same
+country lookup. Then it diverges in one respect:
+
+| | `CSetVariableCommand::Execute` | `CSetFlagCommand::Execute` |
+| --- | --- | --- |
+| object reached | `CCountry +0x1AC`, the `CVariables` by value | `CCountry +0xCCC`, the `CCountryHistory` |
+| what it calls | slot 1, the find; then `+0x1C = value` on a hit, `CVariables::AddVariable` (`0x76FB0`) on a miss | slot 6, `AddEntry` |
+| effect in a session | immediate | none |
+
+`CCountry::GetFlags` (`0xCCD30`, `lea eax,[ecx+0x180]`) and `CCountry::GetVariables` (`0xCCD40`,
+`lea eax,[ecx+0x1AC]`) are adjacent two-instruction bodies, both Lua-registered. **The variable
+command reaches the second; the flag command reaches neither.**
+
+### The three hypotheses, settled
+
+1. **"`flagType` is a type, not a name" - false.** `LoadKey`'s `flagType` case is a bare
+   `Hoi3CString::assign` from the raw value text (`0x153024`), and `Execute` hands that string
+   straight through. There is no database lookup anywhere in `Execute`. **`CFlagType` is a red
+   herring** - its `LoadKey` (`0x4450B0`) takes the single key `size`, and it is about flag *images*.
+2. **"The node is created but `is_set` is left clear" - false, because no node is created.**
+3. **"It writes to the wrong `CFlags`" - nearly right, and better than that.** It writes to no
+   `CFlags`. It writes to the object next door but one.
+
+### A correction to the record, found on the way
+
+**Both commands' `LoadKey` switches have three cases, and `definitions.py` undercounted both.** The
+chain is `sub eax, 0x1BF` / `sub eax, 0x8E` / `sub eax, 0x59`, so the tokens are `0x1BF` `flagType`,
+`0x24D` `country`, `0x2A6` `value` - identical on the two classes, down to `CSetVariableCommand`
+using the key spelled **`flagType`** for what is a variable name. The record said
+`CSetFlagCommand::LoadKey` had two keys and `CSetVariableCommand::LoadKey` had one. Each case is now
+recorded with the offset it writes, and each agrees with the matching `SaveContents`, which is an
+independent reading of the same layout.
+
+### The one gap in this account
+
+**Whether a savegame load replays the history.** `ExecuteHistoryToDate`'s callers include six
+lobby/scenario-date handlers, and whether a save loaded from the lobby passes through one of them was
+not settled. If it does, a `CSetFlagCommand` filed during play could in principle be applied on a
+later load - which would make the symptom "the flag never arrives *this session*" rather than
+"never". It does not change the advice.
+
+### Three bodies deliberately left unnamed
+
+All folds, all described here instead: command slot 14 at `0x1530C0` (three holders, one family by
+layout but not by any RTTI base), command slot 0 at `0x153190` (shared with
+`CCgmAlignmentChangeCommand`), and `CHistoryContainer` slot 6/7 - six holders, but all of them the
+`CHistoryContainer` family, so inheritance rather than a fold, and both already recorded on the base.
+

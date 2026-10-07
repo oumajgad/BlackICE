@@ -383,3 +383,188 @@ new conclusion against the record before publishing it is what stopped that one.
 - **Frontier**: `0x647800` (CDependency slot 11, the deactivation twin of `CDependency::Activate`,
   unrecorded), `0x130600` (the eight-byte-node list append inside `CStrategicWarfare`), `0x94570`
   (`CProvince::GetInfrastructure`, the effective-infrastructure computation).
+
+## `CCountryList`, and the thirteen lists on `CCountry` - 2026-10-06
+
+A seam-between-halves finding, which is why it is here: **`CCountryList` had no layout in either half
+of the fact base.** Six `CCountry` accessors return it, it registers zero members, and `project.json`
+had never heard of the name as a type - so `CCountry +0xF78 Vassals`, `+0xF88 Allies`,
+`+0xFD8 Neighbours`, `+0xFE8 ControllerNeighbours`, `+0x1028 SpyingOnUs` and
+`+0xF98 non_hostile_countries` all reached Ghidra as a type with no members, and `+0x1008` reached it
+as a bare `void*`.
+
+**Its element is not inferred: the registration declares it.** `ghidra/luabind.json`'s entry for
+`CCountryList` carries `"bases": ["CList<CCountryTag>"]`, read out of the registration's own type.
+`CList<CCountryTag>` is separately registered under the Lua name `CCountryTagList`, and is one of the
+census's seven dead classes.
+
+### Why the mechanism is the `CList` pass and not a declaration
+
+Three mechanisms were available and they are not equivalent.
+
+- **A `structs` declaration alone** gives the head and nothing else. `first` and `last` would stay
+  `LinkedListNode*`, whose `data` is an `undefined4` - the untyped blob moved one level down rather
+  than removed.
+- **`inherits`** fails twice. `mergeFindings.declaredStructs` walks the RTTI export transitively and
+  refuses a base RTTI does not give the class, and **RTTI has no `CCountryList` at all**
+  (`hoi3.classes()['CCountryList']` is `None`, where `CUnitList` is present with base
+  `CList<CUnit*>` at offset 0). And even if it were allowed, `inherits` copies a base's fields
+  verbatim - `CList`'s links are `LinkedListNode*` and nothing would retype them.
+- **The `CList` pass** is what generates `CListNode<T>` and retypes `first`/`last` to point at it.
+  That is the piece the other two cannot supply, so that is where the change belongs.
+
+The pass already handled one list named rather than spelled as a template - `CUnitList`, by a ternary
+on the base name. A second one is the point at which that becomes a table, so the test now reads
+`base in NAMED_LISTS` and the element comes out of the same dict. The `structs` declaration is still
+worth making for the `size` and the comment, and it carries no fields on purpose.
+
+**The node type already existed.** `CListNode<CCountryTag>` (size `0x14`, `data` at `+0`, `prev` at
+`+8`, `next` at `+0xC`, `flag` at `+0x10`) was already in the generated record, because
+`CFaction +0x28 Members` and `CCombatant +0x54`/`+0x64` are typed `CList<CCountryTag>`.
+`CCountryList` simply joins it; no second definition of those sixteen bytes was created. So the worry
+that the record's `prev@+8 / next@+0xC` "is not the shape the generator emits" was misplaced - the
+real gap was only the name.
+
+**Four independent appends witness the node**, each `operator new(0x14)` storing tag chars at `+0`,
+id at `+4`, old-last at `+8`, zero at `+0xC` and a zero byte at `+0x10`:
+
+| site | list |
+| --- | --- |
+| `0x4E234F`-`0x4E23A0` (`CCountry::RebuildNeighbours` prologue) | `non_hostile_countries +0xF98`, appending **our own tag** before the database loop - which is why we are always in it |
+| `0x4E32E9`-`0x4E338E` | `Allies +0xF88` and `non_hostile_countries` |
+| `0x4E6BD3`-`0x4E6C29` (`CCountry::UpdateAtWarAndEnemies`) | `enemies +0x1008` |
+| `0x4CE97C`-`0x4CE9CC` | `historical_friends +0x10A4` |
+
+**And the head's size comes off an initialiser, not off spacing.** `CCountry::CCountry` (rva
+`0xC8A40`) writes, at `0x4C9883`-`0x4C9A0F`, **thirteen** four-member blocks
+`{first=0, last=0, count=0, flag=0}` - the flag written as a **byte** - at `+0xF78`, `+0xF88`,
+`+0xF98`, `+0xFA8`, `+0xFB8`, `+0xFC8`, `+0xFD8`, `+0xFE8`, `+0xFF8`, `+0x1008`, `+0x1018`, `+0x1028`
+and `+0x10A4`. In the same run `+0x1038`, `+0x1048`, `+0x1058`, `+0x1080` and `+0x1090` get **three
+dwords and no byte**, which is the `std::vector` shape - **so the initialiser distinguishes the two by
+itself**, and that is what makes `0x10` a measurement. `ListFreeNodes_NextAt0xC` (`0x677750`) agrees
+from the other side: given the list in EDI it frees the chain by `node->+0xC` and zeroes exactly
+`+0`, `+4` and `+8`.
+
+The six accessors are each the whole of `lea eax,[ecx+N]; ret`, so the object begins at the offset:
+`GetVassals 0xE6A10 +0xF78`, `GetAllies 0xE6A20 +0xF88`, `GetNeighbours 0x21C8E0 +0xFD8`,
+`GetControllerNeighbours 0x487F30 +0xFE8`, `GetCurrentAtWarWith 0x62D50 +0x1008`,
+`GetSpyingOnUs 0xE6A60 +0x1028`.
+
+*One negative, with its control.* `luabind.json` also registers `CCountryList::IsEnemy` at VA
+`0x5180A0`, and **that address is not a function entry** - it sits inside the displacement of
+`mov ecx,[esp+0x90]` at `0x51809D`, in the body of `0x515CC0`. The control: the six accessor
+addresses from the same extraction all resolve to clean `lea; ret` bodies, so the extractor works and
+this one entry's address is unusable. Nothing was named from it.
+
+### Retiring the hand-rolled triples - the answer is rename, not delete
+
+There are **three** hand-rolled `first`/`last`/`count` triples on `CCountry`, not one:
+
+| triple | before | after the layout lands |
+| --- | --- | --- |
+| `+0xF98`/`+0xF9C`/`+0xFA0` `non_hostile_countries_*` | head `CCountryList`, siblings `void*` and `int` | siblings **fold** |
+| `+0x1008`/`+0x100C`/`+0x1010` `enemies_*` | head `void*` in `project.json`, `CCountryList` in the Lua half | head keeps `CCountryList`, siblings **fold** |
+| `+0x1018`/`+0x101C`/`+0x1020` `undeclared_war_opponents_*` | head `void*`, nothing outranking it | head retyped, siblings then fold |
+
+**Measured, not predicted**: with `CCountryList` sized, `buildFindings.py --folds` reports exactly
+four new folds - `+0xF9C` and `+0xFA0` into `+0xF98`, `+0x100C` and `+0x1010` into `+0x1008` - and
+**no new overlap (`!`) line**.
+
+**So none of them should be deleted, and the `flags_persistent` precedent does not transfer.** Those
+four were deleted because `CPersistent` (`0x8`) at parent `+0x24` ran to `+0x2C` and so ran **past**
+the `0x28`-byte `CFlags` at parent `+0` - a *partial* overlap, which is not foldable and is what
+produced the period-2 cycle. **Every sibling here lies wholly inside its host**, so each is folded,
+never reaches the apply, and cannot conflict or cycle. Deleting one would lose the reading and gain
+nothing.
+
+What they did need was the **rename** at `+0xF98`: `non_hostile_countries_first` named the head
+pointer while its type is the whole list, so the decompiler would have read
+`country->non_hostile_countries_first.count`. The two sibling records need no edit at all - the fold
+copies their text into the host's comment, which is where a reader sees it.
+
+### The thirteen lists, and the four that were missing
+
+Three of the unrecorded ones are filled by `CCountry::RebuildNeighbours`, whose existing entry
+describes them without field records. Each gate was read off the bytes rather than trusted from that
+prose; **the prose was right in all three cases.**
+
+- **`+0xFA8`** (gate `0x4E349F`-`0x4E34DB`): appended when the pair's `CDiplomacyStatus +0x14`
+  (`alliance`) is non-null, **or** `+0x18` (`dependency`) is non-null, **or** our faction (`+0xD8`)
+  answers a virtual true and the other country's `+0xD8` is the same object. The **else-arm of that
+  same test** is where `highest_threat` (`+0x11D8`/`+0x11DC`) is elected by maximum
+  `CDiplomacyStatus +0x5C` (`threat`) - so structurally this is the set excluded from being our
+  highest threat. Type confirmed; name from the rule only.
+- **`+0xFB8`** (gate `0x4E3616`-`0x4E36AC`): the only list built from another, a second pass over
+  `Allies +0xF88` keeping allies that are not governments in exile (`+0x95` zero), whose acting
+  capital is on our continent (`CCountry::GetActingCapitalLocation 0x42F100`, then
+  `CProvince +0x368`), whose `max_ic (+0x60C)` is at least half ours (a literal `sar eax, 1`), and
+  which are at war (`at_war +0xACC`). Type confirmed; name from the four gates.
+- **`+0xFC8`** (gate `0x4E3394`-`0x4E33B7`): `CDiplomacyStatus +0x1C` (`guarantee`) non-null and
+  `guarantee->+0xC == status->+0xC`. That comparison is **byte-identical to the game's own
+  `CDiplomacyStatus::IsGuaranteed`** (rva `0x648760`), whose twin `IsGuaranting` (`0x648730`) differs
+  only `sete`/`setne` - **so the direction is the game's name, not ours.** It agrees with the sibling
+  test ten instructions earlier, which appends to `Vassals +0xF78` when the other country is the
+  dependency's **second** party, i.e. the subordinate. Name: `guarantors`.
+- **`+0xFF8`** is cleared by `RebuildNeighbours` (`0x4E23CE`) and appended to nowhere in it. **The
+  type only is recorded, with no name claimed**, so the apply types it and the next function to touch
+  it decompiles as a list walk. *The negative with its control:* `fieldchain.py --field 0xFFC` finds
+  three sites, two of them stores - the constructor's initialisation and the clear in `0xD2B60` the
+  record already knows about - and one an unrelated `lea esi,[esp+0xFFC]`; the same scan over
+  `+0xFAC` finds that list's genuine writer in `RebuildNeighbours`, so the method can see a writer
+  when one exists.
+
+### The correction: `historical_friends` is a list, not a vector
+
+`CCountry +0x10A4` was recorded `void*` with the comment "The first of a vector, ending at +0x10A8",
+sourced to `BiceLib/GameClasses/CCountry.hpp:313`, whose own comment reads
+`// and _end, _capacity after it`. **Three independent witnesses say it is a `CCountryList`:**
+
+1. the constructor writes `{first, last, count, byte flag}` at `+0x10A4`/`+0x10A8`/`+0x10AC`/`+0x10B0`
+   - and the five genuine vectors in the same run get three dwords and **no** byte;
+2. `lea edi,[ebx+0x10A4]; call 0xA77750` at `0x4CE8BB` hands it to a function that **loops** on
+   `node->+0xC` and frees each node, which is not what a vector's single data block gets;
+3. the fill at `0x4CE97C`-`0x4CE9CC` is the ordinary `operator new(0x14)` list append, copying an
+   8-byte payload out of the tag lookup at `0x518480`.
+
+The receiver is a `CCountry`: the same basic block does `lea edi,[ebx+0xA8C]` at `0x4CEA04`, and
+`+0xA8C` is `neutrality`. **The name is right and untouched** - it comes from the key
+`CCountry::LoadKey` reads. **`BiceLib/GameClasses/CCountry.hpp:363-365` carries the same wrong reading
+and needs the same correction by hand**; a fragment cannot reach the headers, and that is the seam.
+Nothing in BiceLib reads those three constants, so it is dormant rather than a live bug.
+
+### `ListFreeNodes_NextAt0xC` is worth knowing as a tool
+
+**A `lea <reg>,[obj+N]; call 0xA77750` pair is positive evidence that `obj+N` is a `CList` with an
+8-byte element.** Nine of `CCountry`'s thirteen were found that way. It is in no virtual table and no
+luabind registration claims it, but the body serves **any** 8-byte-element list - its 13 call sites
+reach `CCountry` twice over, `[esi+0x910]` on some other class and a stack local - so naming it
+`CCountryList::Clear` would have been trap 4. `CCountry::UpdateAtWarAndEnemies` inlines the same loop
+at `0x4E6A97`-`0x4E6AC6` rather than calling it, so **the call sites are not the whole population of
+the idiom.**
+
+### What the fold report made visible
+
+The reporter added at the same time found **175 folds across 32 structs**, where `ghidra/README.md`
+documented about twelve. Beyond the four this work caused:
+
+- **~85 `plan_*` records on `CUnit`/`CAir`/`CArmy`/`CNavy`, and eight `CCountry` records between
+  `+0x4A1` and `+0x594`, are documentation only** - they fold into `plan (CUnitPlan)` and
+  `Strategy (CAIStrategy)` and never reach the apply. Anyone reading `project.json` would reasonably
+  think they were placed.
+- **A live question, and the best single lead here.** Three records independently name the byte at a
+  `CList`'s own `+0xC`: `CNavy +0x2F0 at_sea` inside `+0x2E4 carrying`, `CWeatherManager +0x14
+  freeze_fronts` inside `+0x8 fronts`, and `CEffect +0x14 unused` inside `+0x8 children` (plus three
+  `CEffect` subclasses). **Either `CList`'s fourth member is not inert and carries per-holder
+  meaning** - in which case typing the whole list by value hides three real flags - **or those three
+  offsets are wrong.** `CWeatherFront +0x18 provinces_flag` is recorded as the flag and folds the
+  same way, which is the control: somebody has already read that byte as the list's own. Not settled.
+
+### Open
+
+**`CCountry +0xFF8`** - a confirmed `CCountryList` with no traced filler; now typed, so the next
+reader gets a list walk. **`CCountry +0x10B4`** - a pair, not a list (no flag byte in the
+constructor's run), cleared at `0x4CEA29`, unidentified. **`CDiplomacyStatus +0x58`** remains unnamed
+and gates `non_hostile_countries`. And `0x4CE8BB`'s enclosing function needs finding another way:
+**`functionStart` answers `0x4CCDA0` and `retsBefore` returns 85 `ret`s**, so it is a trap 2 case -
+the block opens `lea edi,[ebx+0x10A4]` after a `ret 8` with no padding.
+

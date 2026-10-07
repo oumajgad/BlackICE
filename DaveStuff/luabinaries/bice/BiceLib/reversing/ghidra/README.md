@@ -281,8 +281,31 @@ lookup is not doing what it reads as doing. **Not diagnosed.** Until it is, an o
 be caught by looking at the offsets, and the symptom to watch for is the one below: an apply
 reporting the same `struct fields: 1` for ever with a `replaced` line naming the same pair.
 
-**Five live instances of exactly that, and the mechanism, 2026-10-05.** A second headless run
-settles to `struct fields: 6`, not 0, and names the same five replacements every time:
+**Five live instances of exactly that, the mechanism, and the fix - all 2026-10-05.**
+**It is fixed: a second run now reports `struct fields: 0` and `replaced: 0`.** The history is
+kept because the symptom is worth recognising again. Before the fix, a second headless run did
+**not** settle; it ran in a **period-2 cycle**, measured over four consecutive applies of an
+unchanged record:
+
+    pass 1   struct fields: 6   replaced: 5
+    pass 2   struct fields: 5   replaced: 11
+    pass 3   struct fields: 6   replaced: 5
+    pass 4   struct fields: 5   replaced: 11
+
+**Phase A** (odd passes) writes the six sub-object members, clearing the five parents that
+cover them - 5 conflicts, all of the form `replaced 'flags' with flags_persistent`.
+**Phase B** (even passes) writes the five parent by-value fields back, clearing the members
+and then refusing all six - 11 conflicts, 5 clears plus 6 `holds '<parent>', not placing
+<member>`. Each phase destroys exactly what the other needs, so there is no fixed point and
+`struct fields: 0` is unreachable while both declarations exist.
+
+**What that means in practice, and it is not cosmetic: the layout Ghidra holds depends on
+whether you ran the apply an odd or an even number of times.** End on phase A and
+`CCurrentGameState+0xC4` is not named `flags` at all while `+0xE8` is `flags_persistent`; end
+on phase B and `+0xC4` is `flags` and `+0xE8` does not exist. Anything decompiled against
+those five structs reads differently in the two states.
+
+The six declarations and the five parents they fight over:
 
     CCurrentGameState+0xE8  'flags'   -> flags_persistent
     CGameState+0xE8         'flags'   -> flags_persistent
@@ -293,15 +316,20 @@ settles to `struct fields: 6`, not 0, and names the same five replacements every
 
 **There are six, not five** (2026-10-05). The sixth was missing from this list: `CLeader+0xC4
 trait_gain_tracker` is blocked by `CLeader`'s `history` for exactly the same reason `+0xA8
-picture` is, and the apply names all six in its `holds '<x>', not placing '<y>'` notes. That
-also resolves the arithmetic this section and `CLAUDE.md` have carried since 2026-10-04 -
-"struct fields: 6: five fields that overlap" - **six are blocked and five are placed**, which
-is why the number quoted and the number of names listed never agreed.
+picture` is, and the apply names all six in its `holds '<x>', not placing '<y>'` notes. So the
+arithmetic this section and `CLAUDE.md` carried since 2026-10-04 - "struct fields: 6: five
+fields that overlap" - was counting six declarations and listing five names.
 
-**And the settled count alternates between 5 and 6**, it does not sit on 6: four consecutive
-applies of the same record gave 6, 5, 5 and 5, and the two directions of a blocked pair are
-what moves it. So the pass mark to read is `failed: 0` plus *no name outside these six*, not
-the integer.
+*The explanation first offered here for that mismatch, "six are blocked and five are placed",
+is true of phase B only and is not why the numbers disagreed; the cycle above is. Left visible
+rather than deleted, because reaching for a static explanation of a number that was actually
+alternating is the mistake worth seeing.*
+
+**And it alternates 6, 5, 6, 5** - see the cycle above, which supersedes this note. An
+earlier reading of it here said "6, 5, 5, 5"; those four numbers came from four runs with
+*different* record states between them, not from four passes over one, so three of them were
+phase B and the sequence looked like it was converging. One `-postScript` repeated four times
+over an unchanged record is what shows the cycle.
 
 **The shape is: a field held by value, plus a second field that lands inside its extent.**
 `project.json` has no duplicate offsets, so this is not a double definition; it is two
@@ -317,15 +345,56 @@ the authority on how far either reaches.
 
 Four of the five arrived with a correction on 2026-10-04 that moved `flags` to where the
 `CFlags` really begins (`0xE8` -> `0xC4` on the game state, `0xC4` -> `0xA0` on the province).
-That correction was right about the offset; what it left behind is the old offset still
-declared as a parent field. **The fix is to express the sub-object's member once, as a field of
-`CFlags` at `+0x24`, rather than twice** - but that changes how the record models a second base
-and would resize `CFlags`, whose own extent is unrecorded, so it is a modelling decision and
-not a typo. Left for the maintainer.
+That correction was right about the offset; what it left behind was the old offset still
+declared as a parent field.
 
-Until then: **the pass mark is `failed: 0`, and `struct fields: 6` on a settled second run is
-this and not drift.** If the number moves off 6, or a sixth name joins the list, something new
-has overlapped.
+### How it was fixed, 2026-10-05
+
+**First, measure what Ghidra actually holds** - which nothing here had done, and which is why
+this section could only guess at `CFlags`'s extent. `ghidra/PrintStructs.java` was written for
+it and prints a structure's length and components:
+
+    CFlags            0x28   +0x0 vftable, +0x4 root, +0x24 vftable_at24
+    CPersistent       0x8
+    CLeaderHistory    0x44   ... +0x20 leader, +0x40 trait_gain
+    CTraitGainTracker 0x24
+
+That split the five instances into **two different causes**, where this section had assumed
+one.
+
+**The four `flags` instances were a redundant declaration.** `CFlags` is 0x28 and Ghidra's own
+RTTI pass *already* names the second base's vftable at `CFlags+0x24` - which is precisely what
+the four `flags_persistent` fields were saying one level up. A `CPersistent` (0x8) at
+parent+0x24 runs to +0x2C, overlapping the 0x28-byte `CFlags` at parent+0, so the two could
+never both be placed. **The four sibling fields are deleted**, and what they established - that
+the second base is 0x24 in and is the sub-object `SaveContents` calls slot 1 on - now sits in
+the `flags` comment on the same struct, where it cannot collide. `CFlags` carries its measured
+`size: 0x28`. **Nothing is declared at `CFlags+0x24`**: the vftable pass owns that offset, and
+a field there would start a fresh flip-flop for the reason the next note gives.
+
+**The `CLeader` instance was the opposite problem** - not a field too many, but a *type too
+long*. `CLeaderHistory`'s own fields stop at `+0x20`, the record declares `0x24`, and Ghidra
+held `0x44` because of a `trait_gain` component at `+0x40`. A 0x44-byte member at `CLeader+0x84`
+therefore covered `picture` (+0xA8) and `trait_gain_tracker` (+0xC4). The record is right: a
+history object does not contain the leader's portrait name, `picture` is read live on a real
+leader, and the engine reaches the tracker as `[leader + 0xC4]`. So **the apply now enforces a
+declared `size` downward as well as upward** (`shrinkToDeclared`), naming every component it
+drops. Of the 41 sized structures in the record exactly one was longer in Ghidra, so this is
+surgical rather than blunt - that comparison is worth re-running with `PrintStructs.java` if a
+future `size` is added.
+
+**The result**, three consecutive applies after the change:
+
+    pass 1   struct fields: 7   replaced: 0   failed: 0
+    pass 2   struct fields: 0   replaced: 0   failed: 0
+    pass 3   struct fields: 0   replaced: 0   failed: 0
+
+with one note on the first pass, `CLeaderHistory: record declares 0x24, Ghidra holds 0x44 ->
+shrunk, dropping +0x40 trait_gain`, and **no conflict lines at all**.
+
+So: **the pass mark is `failed: 0` and `struct fields: 0` on a second run**, as it was always
+meant to be. A non-zero second run now means something real, and the first thing to do with it
+is `PrintStructs.java` on whatever structure the notes name.
 
 **Do not declare a `vftable` field at +0 in `project.json`.** The script places that pointer
 itself, typed as the class's own virtual table structure, so a field of your own there is
@@ -467,6 +536,314 @@ CERTAIN, LIKELY or TENTATIVE - and the evidence.
   notes. When the harvest was imported the notes did not all write addresses the same
   way, so both readings were tried and the one the code supports was kept; the notes
   have since been converted to module relative addresses throughout.
+
+## A field inside another field is folded, not placed - and that is invisible in `project.json`
+
+**Added 2026-10-06, after two of wave 14's four agents independently predicted a period-2 apply cycle
+that cannot happen.** Both were reading the record correctly and reasoning from it correctly; the
+thing neither could see is in `buildFindings.py`.
+
+`merge_fields` ends with a fold: a field that lies **inside** a larger typed field is removed from the
+generated output and its text appended to the host's comment as `+0xN inside it: ...`. So the record
+may declare a field that **never reaches the apply at all**, and the apply therefore cannot report it,
+cannot conflict over it, and cannot cycle on it.
+
+The live case is the **id half of a `CCountryTag`**. `CCountryTag` is `0x8` bytes - `tag char[4]` at
+`+0`, `id int` at `+4` - and the record holds **twelve** `int` fields sitting four bytes after a
+`CCountryTag` field:
+
+    CCountry +0xCA4 tag / +0xCA8 id            CMapProvince +0x32C owner / +0x330 owner_id
+    CCountry +0xF38 Overlord / +0xF3C overlord_id   CMapProvince +0x334 controller / +0x338 controller_id
+    CCountry +0x11D8 HighestThreat / +0x11DC ...    CUnit +0x124 owner / +0x128 owner_id
+    CTheatre, CAIAgent, CEU3AI, CTradeRoute x3      CUnit +0x28C expeditionary_owner / +0x290 ...
+
+Read off `project.json` alone, each of those is a 4-byte `int` overlapping the back half of an 8-byte
+struct member - exactly the shape that produced the 2026-10-05 cycle. **Measured, none of them
+overlaps anything**, because none of them is generated: a `scope: files` check of the generated file
+shows `CMapProvince +0x330`, `+0x338`, `CUnit +0x128`, `CCountry +0xF3C` and `+0xCA8` all **absent**,
+and `PrintStructs.java` shows Ghidra holding `CMapProvince +0x334 controller` as one `0x8`-byte
+`CCountryTag` with **nothing at `+0x338`**. Three consecutive applies over them report
+`struct fields: 0` and no conflicts.
+
+So, three things follow.
+
+- **An id-half field record is documentation, not a placement.** In the decompiler you reach it as
+  `owner.id`. The record keeps it because the fold copies its comment into the host, which is where a
+  reader actually sees it - so **deleting one loses a reading and gains nothing**. Wave 14's agent D
+  recommended deleting `CCountry +0xF3C` on cycle grounds; that recommendation was declined on this
+  evidence, and the field was **renamed** instead (`faction_leader_id` -> `overlord_id`, wave 13
+  having renamed its tag half without touching it).
+- **`struct fields: 0` does not mean "the whole record landed".** It means nothing new was *placed*.
+  A folded field is outside what that number can see, which is worth remembering before reading the
+  pass mark as a completeness check.
+- **The fold is not reported anywhere.** `buildFindings.py` prints a `!` line for two fields that
+  *overlap* - but that loop runs on the **post-fold** list, so a folded field is already gone and is
+  never mentioned. Printing the folds, even once per struct, would have saved two agents the
+  reasoning; it is queued in `CANDIDATES.md` rather than done here, because the output is noisy and
+  the decision about its shape is the maintainer's.
+
+## Declaring a struct from a fragment
+
+**Added 2026-10-06 (wave 14).** `mergeFindings.py` used to refuse a `struct_fields` entry for a
+struct `project.json` did not already hold, and a fragment had no way to add one - so a whole class's
+layout could only reach the record by hand, and the queue had accumulated 27 of them. It now reads a
+**`structs`** key beside `struct_fields`:
+
+    "structs": [
+     {"name": "CRelation", "size": "0x24", "inherits": "CPersistent",
+      "vftable_rva": "0x11FBB00", "comment": "...", "evidence": "..."}
+    ]
+
+`name` and `evidence` are required; `size`, `inherits`, `vftable_rva`, `comment` and `source` are
+optional and are written in the order `project.json` already uses. **Fields still go in
+`struct_fields`** - a declaration carrying a `fields` key is refused, because that is where the
+duplicate-offset and cross-fragment checks live.
+
+Four checks, three of which have already caught something:
+
+- **`inherits` is offset 0 only.** `buildFindings.py` copies the base's fields in at face value, so a
+  base at `+8` would place every one of them eight bytes early. The merge walks the RTTI export
+  transitively and refuses any other offset by name, and refuses a base RTTI does not give the class
+  at all.
+- **`vftable_rva` is checked against RTTI**, and this found **two wrong values already in the
+  record**: `CBuildingConstruction`'s is `0x11BDCD4` where the table starts at `0x11BDCAC` (ten slots
+  in), and `CConvoyConstruction`'s is `0x11BDD34` against `0x11BDD04` (twelve slots in). The RTTI
+  complete-object-locator pointers sit at `0x15BDCA8` and `0x15BDD00`, so each table begins at the
+  next dword. Both classes have exactly one table in RTTI, so there is no second table to explain it.
+  Queued as a hand fix of two strings. A name RTTI does not know (`Session`, `CommandChannel`) is
+  exempt, which is why the check is a refusal rather than a warning.
+- **Trap 1 is caught directly**: a `vftable_rva` that only resolves when read as a VA is refused with
+  "subtract the image base".
+- **It is create-only.** A struct the record already holds, declared again with nothing different, is
+  skipped the way a repeated address entry is; declared with something different it is refused and the
+  message says why a revision is a hand edit. The reason it is not more than create-only: **`size` can
+  sit on either side of the `fields` array in that file** - `CBomberCombatant` has `fields` then
+  `size`, `CRegiment` has `size` then `fields` - so there is no single textual header to rewrite
+  safely.
+
+Insertion is textual, against the `\n ],\n "equates": [` anchor, mirroring the addresses insertion;
+and `land()` now asserts after writing that the structs and addresses arrays grew by **exactly** what
+was declared. That assertion is trap 18's JSON corollary and is the check that would have caught the
+2026-10-05 accident where a struct object was spliced into the `addresses` array because the anchor
+matched a class's vftable entry first.
+
+## The Lua API census, 2026-10-06 - and the seven abandoned classes
+
+**The maintainer's hypothesis, and it holds:** parts of the Lua API are unfinished, so the Lua half of
+the fact base cannot be trusted uniformly. `buildFindings.py` gave every Lua registration **priority
+0** - "what the game names wins" - which is right for a live registration and wrong for an abandoned
+one, because nothing ever exercised it and its name and type were never checked against reality by
+anybody, including whoever wrote it.
+
+`scripts/luacensus.py` measures it. Two questions, deliberately kept apart:
+
+- **Reachable** - can a script obtain an instance? Constructible from Lua, or returned by a member of
+  a reachable class, or by a free function. Computed to a fixpoint.
+- **Used** - does any script name it? A text census over both Lua corpora the engine loads: **106
+  vanilla files** and **194 mod files**, by the idiom the scripts really use - a method is
+  `obj:GetX()`, so the Lua-visible name is the accessor's own name out of `evidence`, while a
+  `def_readwrite` member is `obj.name`.
+
+    classes registered           125
+      reachable from script       96    (68 used, 28 reachable but nothing calls them)
+      engine-pushed               22    not obtainable, yet scripts use them
+      DEAD                         7    unreachable AND nothing names them
+    members registered           227    (153 used)
+
+**The middle row is a correction to the first version of this census**, which had 29 "unreachable"
+classes and was wrong: it put `CEU3AI`, `CUnit`, `CCurrentGameState` and the five AI ministers in that
+bucket, all of which are plainly live - `GetOwnerAI` and `GetCountryTag` are called constantly. They
+arrive as the **`self` of an engine-called entry point**, which reachability-by-construction cannot
+see. So a class that is unreachable *and* used is evidence the engine hands it in; only unreachable
+*and* unused is dead.
+
+**The seven dead classes:** `CAISubscriber`, `CConstructSingleUnitCommand`, `CConvoy`, `CEventScope`,
+`CList<CCountryTag>`, `CNullTechnology`, `CResearchBonus`. Between them they carry seven members, none
+of which any script names. `CEventScope` is the clearest case: **no constructor, nothing returns one**,
+and the only two mentions of it in the whole API are as an *argument* -
+`bool IsPotential(CDecision&, CEventScope&)` and `bool IsAllowed(CDecision&, CEventScope&)` - on
+`CDecision`, which is **itself** unconstructible and returned by nothing. Two classes that can only be
+reached through each other and through nothing else.
+
+The negative carries its control: `CEventScope`, `CDecision`, `IsPotential`, `IsAllowed` and
+`_nProvince` match **0** files in either corpus under a word-boundary grep, while the same search
+finds `GetCountryTag` in 66 vanilla and 22 mod files, `PostAction` in 23 and 4, `CString` in 12 and
+12. (A single `IsAllowed` hit in the repo is in `tools/wxWidget/.../controls.wx.lua`, a bundled
+wxWidgets sample, which is why the corpus is `script/` and `common/` rather than the whole tree.)
+
+### What changed in the generator, and it is two rules, not one
+
+The tempting story is that deadness caused the bad type. **It did not** - checking all twenty
+`def_readwrite` members shows the correlation is a coincidence of small numbers, and the real cause is
+mechanical:
+
+| the four class-typed `def_readwrite` members | type | |
+| --- | --- | --- |
+| `CResearchBonus._pCategory`, `CSubUnitConstructionEntry.pUnit` | `T const*` | **genuine pointers** - and the game's own naming agrees, both carrying the `p` |
+| `CEventScope._Country`, `CResearchBonus._vWeight` | `T&` | **by-value members**; luabind's `def_readwrite` getter returns a reference, so the `&` is the accessor's and not the member's |
+
+So two independent rules now apply, and each fixes something the other does not:
+
+1. **A trailing `&` on a `def_readwrite` field is stripped.** The member is a `T` by value. Keyed on
+   the `evidence` string, so the six **accessor-derived** `T&` fields are untouched - the five
+   `OwnerAI CEU3AI&` back-references and `CList<…>.TailData` - where a `T&` return legitimately means
+   a pointer member. Without this, `CResearchBonus +0x4` stays a spurious pointer, because
+   `project.json` holds no `CResearchBonus` to outrank it.
+2. **A field on a dead class drops to priority 4**, below `project.json`'s own notes, so the record
+   wins the name and type. Without this, `CEventScope +0x10` would land as an 8-byte by-value
+   `CCountryTag` - defensible, but it would fold `country_id` and leave the struct reading differently
+   from the identical `from_country_tag`/`from_country_id` pair four bytes later.
+
+Both are driven by `ghidra/luausage.json`, **generated** by `scripts/luacensus.py` and consumed by
+`buildFindings.py` if present - absent, the build degrades to the old behaviour rather than failing.
+Each affected field's comment now says which verdict applied and why, so the Lua name and type are
+preserved as information rather than discarded.
+
+**Measured blast radius**, by building with and without the census and diffing field by field:
+**six changes, all on dead classes, nothing live touched.**
+
+    CConvoy     +0x90  DesiredTransports -> transports_wanted   (the record's own name wins)
+    CConvoy     +0x94  DesiredEscorts    -> escorts_wanted
+    CConvoy     +0xA0  isForTradeRoute   -> is_trade
+    CEventScope +0x10  _Country CCountryTag -> country_tag char[4]
+    CEventScope +0x28  _nProvince        -> province
+    CEventScope +0x14  country_id reappears, no longer folded
+
+Three applies after: `struct fields: 40`, then `0`, then `0`, with `replaced: 0` and `failed: 0`.
+
+### What this is good for beyond the one bug
+
+`scripts/luacensus.py --unreachable` splits the no-constructor classes into engine-pushed and dead,
+and `--class CUnit` prints one class with its per-member usage counts. **The 28 reachable-but-unused
+classes are not a problem** - the API is wider than any one mod, and a modder may reach for them
+tomorrow. The seven dead ones are different: no mod can use them however much it wants to, so a
+disagreement between those registrations and the record should always be settled in the record's
+favour.
+
+### The three limits, and why none of them reaches the verdict
+
+**"Used" is an upper bound**, because this is a text census and not a call graph. Two collisions
+inflate it: a member name matching a script's own local function, and a member name registered on
+several classes. Ten names are shared that way - `GetCountryTag`, `GetType`, `GetSize`, `GetIndex`,
+`GetKey`, `GetGroup`, `GetOwnerAI`, `GetPriority` and two more - and **11 classes rest on nothing
+else**: `CBuilding`, `CCountryTag`, `CDiplomaticAction`, `CIdeology`, `CIdeologyGroup`, `CLaw`,
+`CLawGroup`, `CMinisterType`, `CRegion`, `CTechnologyCategory`, `CTechnologyFolder`. `CWarGoal` is the
+plainest: marked used only because `GetCountry` matches 134 files, which will be `CCountry` work on
+other classes. **So read "68 used" as "at most 68".**
+
+**That cannot touch either verdict this feeds.** A collision only ever *adds* matches, so a class with
+zero on its own name and zero on every member genuinely has none - which is the whole DEAD set and the
+whole reachable-but-unused set. And `buildFindings.py` demotes a field only when its class is
+unreachable **and** unmatched, so the soft number is not load-bearing anywhere.
+
+**The engine-pushed route is bounded by the corpus, not by the bytes.** A class arriving as a callback
+argument would have to be received by a function in one of these 300 files and used without ever being
+named - in a type check, a constructor call or a comment. For the seven, nothing names them at all.
+
+## Organising the type tree - the `organise` flag, 2026-10-06
+
+The data type tree had drifted to **203 categories over 6406 types**, with classes at the root,
+classes in `/BiceLib`, vftables outside the folder named after them, and categories like
+`/VCCountry/__CMessageDialog` and `/_A0x1e0c5124`. Measured with `ghidra/PrintTypeTree.java`
+(`--all` for every category, `--dump` for `name<TAB>kind<TAB>category` to join against the record
+offline), the mess turned out to have four causes and only two of them ours.
+
+### What was wrong
+
+| cause | size before | |
+| --- | --- | --- |
+| `/BiceLib/vftables` | 3250 types, **0 structs** | **It held no vftable.** These are the per-slot *function definitions* that let a virtual call decompile with a real signature. The folder's name meant the opposite of what it said |
+| `/` root | 1761 types, 1047 structs | **266 of the 309 recorded class structures were here** |
+| `/BiceLib` | 734 types, 379 structs | where the apply *created* a struct - only 42 of our classes, plus all 320 vftable structs |
+| demangler artefacts | 113 categories / 116 types, plus 43 `_A0x...` / 69 types | Ghidra parsing mangled RTTI and template names |
+
+**The root cause was one line of this script.** `structFor` creates a new structure in `/BiceLib`,
+but `findType` finds an existing one **wherever it already lives** and then edits it in place.
+Ghidra's RTTI pass runs first and creates most game classes at the root, so we were adding fields
+to them and never moving them. It was not chaos so much as two tools disagreeing in silence.
+
+### The scheme
+
+    /                              Ghidra's own; nothing we claim
+    /BiceLib/classes/              the recorded game classes
+    /BiceLib/classes/containers/   the generated CList/CListNode/CArray instantiations
+    /BiceLib/vftables/             the vftable structures
+    /BiceLib/vftables/slots/       the slot function definitions
+    /BiceLib/enums/                the enums
+
+`organise` sets the category on **every** run rather than only on the run that creates the type,
+which is the only way this survives the next analysis pass inventing a type at the root. **It moves
+nothing whose name the findings do not carry**, so what you made by hand stays where you put it -
+the same courtesy the field and signature rules already give.
+
+**Two kinds are deliberately left alone**, both for the same reason: the SDK and CRT categories are
+correct and not ours, and the demangler's own (`_A0x...`, `/VCCountry/__CMessageDialog`) are
+**recreated from mangled names by a pass that would undo the move**, so emptying them is a fight
+rather than a fix.
+
+### The result, measured on a fresh copy of the maintainer's project
+
+    before                                  after
+    /                1761 / 1047 structs    /                       1211 /  729 structs
+    /BiceLib          734 /  379 structs    /BiceLib                 129 /   71
+                                            /BiceLib/classes         714 /  370
+                                            /BiceLib/classes/containers 88 /  55
+    /BiceLib/vftables 3250 /    0 structs   /BiceLib/vftables       1972 /  320 structs
+                                            /BiceLib/vftables/slots 5592
+                                            /BiceLib/enums            17 /   16 enums
+
+**The first `organise` takes three runs to settle**, then is idempotent: `moved: 2273`, then 393,
+then 0, with `struct fields: 0` and `failed: 0` from the third on. The sweep runs before the
+vftable pass and that pass creates definitions after it, which is where the tail comes from. A
+plain `overwrite` run afterwards changes nothing, and the two can be interleaved freely.
+
+### Running it
+
+**In the GUI**, where the Script Manager cannot pass a script arguments, run
+**`ApplyBiceLibFindingsOrganise.java`**. It asks once, then runs the apply **three times by
+itself** and prints `=== organise pass N of 3 ===` between them, so there is no question of
+having run it enough; the last line tells you what the final pass should read. It is the same
+relation `ApplyBiceLibFindingsOverwrite.java` has to `overwrite`, and like that one it exists
+only because of the arguments limitation.
+
+**Headless**, `-postScript ApplyBiceLibFindings.java overwrite organise`, three times - or
+`-postScript ApplyBiceLibFindingsOrganise.java` once, which does the three internally and works
+headless too.
+
+Either way the pass mark is the same as everywhere else here: the last run reading
+`struct fields: 0, moved: 0, failed: 0`. Three `!` notes are expected and are the duplicate-name
+guard working rather than a problem - `bad_alloc` and `fixed_point___int64_48_15_` exist in both
+`/std`//`fpml` and our folder, so they are left where they are instead of being merged into
+something that would then describe the wrong object.
+
+### Four things this cost, each worth knowing before touching it again
+
+- **`instanceof FunctionDefinitionDataType` is false for every definition in the manager.** A type
+  resolved into a `DataTypeManager` comes back as Ghidra's own DB-backed implementation, so the
+  first sweep matched nothing while reporting success. Test the **interface**, `FunctionDefinition`.
+- **Never delete a slot definition to tidy a duplicate.** A structure field points at it through a
+  pointer, so removing it turns the pointer and the field into `-BAD-`; the vftable pass then
+  re-places the field, resolving a fresh pointer that re-anchors a definition in the old folder,
+  and the next run sweeps it again. That churned **666 fields on every run and never converged**.
+  The sweep now moves what it can and leaves a duplicate alone; Ghidra's own *Remove Unused Data
+  Types* clears the ~666 dead definitions and their stale pointers.
+- **`organise` adds, it does not toggle.** An earlier version swept back when the flag was absent,
+  so a plain `overwrite` silently undid the organisation and alternating the two moved thousands
+  of types each way. And `slotType` must **reuse an existing definition wherever it lives** and let
+  the flag decide only where a *new* one is created - looking only in the flag's folder made a
+  plain run recreate every definition in the old one and retype all 1918 vftable fields.
+- **Match container names after `sanitize`, not before.** Ghidra names cannot hold `<`, `>` or `*`,
+  so `CList<CAir*>` is the type `CList_CAir__`. A pattern written against the C++ spelling matched
+  nothing and left all 55 containers in `classes`.
+
+### Why there is no subsystem split
+
+Grouping the classes by area was measured and rejected twice. **Name prefixes** leave 88 of 365 in
+"other" and need a hand-kept mapping that drifts as classes are added. **The findings file that is
+the plurality source of a struct's fields** - already in the record and self-maintaining - gives
+**91 keys, 68 of them holding one or two structs**, with 97 structs carrying no source at all. Both
+reproduce the problem they were meant to solve, so the scheme has no subsystem axis: six folders,
+every placement derivable from the generated record, and nothing to maintain by hand.
 
 ## Rebuilding
 

@@ -3,6 +3,13 @@
     python scripts/checkSignatures.py                  everything, summarised
     python scripts/checkSignatures.py --verbose        and say why each one was skipped
     python scripts/checkSignatures.py --only 0x67B250  one entry
+    python scripts/checkSignatures.py --candidates     the fragments, before they land
+
+`--candidates` reads `addresses` out of `fragments/incoming/*.json` - or out of the files
+named after it - instead of out of `project.json`, which is what an agent needs: the whole
+point of the check is to run it on a signature you have just written, and until 2026-10-06
+`--only` could only reach one that was already recorded. Wave 13's agent C wrote its own
+checker for want of this.
 
 Two claims in the findings are decidable by machine, and both have already been wrong:
 
@@ -30,6 +37,7 @@ you see whether a skip is hiding something.
 """
 
 import argparse
+import glob
 import io
 import json
 import os
@@ -410,10 +418,28 @@ def main():
     parser.add_argument("--verbose", action="store_true",
         help="also list what was skipped, and why")
     parser.add_argument("--only", help="check one rva")
+    parser.add_argument("--candidates", nargs="*", metavar="FILE",
+        help="check the addresses of fragment files instead of project.json; with no "
+             "path, everything in fragments/incoming")
     arguments = parser.parse_args()
 
     project = json.load(io.open(PROJECT, encoding="utf-8"))
     tables = vftables()
+
+    entries = project.get("addresses", [])
+    if arguments.candidates is not None:
+        paths = arguments.candidates or sorted(glob.glob(
+            os.path.join(REVERSING, "fragments", "incoming", "*.json")))
+        if not paths:
+            print("nothing in fragments/incoming")
+            return
+        entries = []
+        for path in paths:
+            entries += json.load(io.open(path, encoding="utf-8")).get("addresses", [])
+        print("%d address%s from %d fragment file%s: %s"
+              % (len(entries), "" if len(entries) == 1 else "es", len(paths),
+                 "" if len(paths) == 1 else "s",
+                 ", ".join(os.path.basename(p) for p in paths)))
 
     wrong = []
     constructors = []
@@ -423,7 +449,7 @@ def main():
     skipped = []
     checked = 0
 
-    for record in project.get("addresses", []):
+    for record in entries:
         if record.get("kind") != "function":
             continue
         rva = str(record.get("rva") or "")

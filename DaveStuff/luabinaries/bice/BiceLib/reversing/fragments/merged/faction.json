@@ -1,0 +1,103 @@
+{
+ "agent": "wave 14 agent D - the faction layer",
+ "question": "What rva 0xF5F30 is, what its two bool arguments select, and what it writes; whether a faction member can lack a bilateral alliance; whether joining a faction can change who leads it.",
+ "source": "reversing/findings/FINDINGS-diploaction.md",
+ "addresses": [
+  {
+   "rva": "0xF5F30",
+   "kind": "function",
+   "name": "CFaction::AddCountry",
+   "signature": "void __thiscall CFaction::AddCountry(CFaction* this, CCountry* country, bool recordInHistory, bool joinOngoingWars)",
+   "no_signature": null,
+   "comment": "**The faction membership change: every country that joins or leaves a faction goes through here.** That is decidable rather than impressionistic - `CFaction::AddMember` (rva 0x122650) has exactly one caller and it is inside this function, and the only other way a tag reaches `Members (+0x28)` is the push-front helper 0x523770, whose two callers are AddMember itself and the leader promotion at 0x502F34, which only reorders members it has just removed. (Whether `CCountry::faction (+0xD8)` is *also* written somewhere that does not touch the list is **not** settled: `fieldchain --field 0xD8 --writes` returns 673 sites, which is trap 12 and no evidence either way.) 0x4F5F30 to the real `ret 0xC` at 0x4F6760, 0x833 bytes: 17 `int3` above the entry, 13 below the `ret`, then an SEH prologue at 0x4F6770; `functionStart(0x4F6700)` also answers 0x4F5F30. `retsBefore(0x4F5F30, 0x4F6761)` returns exactly two more `ret 0xC`, at 0x4F6494 and 0x4F64C3, and both are early exits of the *same* frame - each restores `fs:[0]` from `[esp+0x24C]` and does `mov esp, ebp; pop ebp`. The two diagnostic paths at 0x4F6497 and 0x4F6632 and the shared epilogue at 0x4F674C all sit **past** the first of them, reached by `je` from inside the body, so stopping at 0x4F6494 loses 0x2CC bytes - trap 3.\n\n`this` is the **faction** and the country is the first stack argument: `mov esi, ecx` / `mov edi, [ebp+8]` / `mov [edi+0xD8], esi`. The body is nevertheless compiled into **country.cpp** - both log paths push the literal `'country.cpp'` at 0x15C0DE8 - which is what a `CFaction` method that needs the complete `CCountry` type looks like; `CFaction`'s other members sit together at 0x5224B0-0x5237B7.\n\n**The two flags.** `recordInHistory` ([ebp+0xC]) gates a 0x18-byte object: `operator new(0x18)`, constructed by 0x5F0600(country), given the previous faction by 0x5F07C0, stamped `+8 = CCurrentGameState->tick (+0xBDC)`, and handed to `country->history (+0xCCC)` through slot 6. `joinOngoingWars` ([ebp+0x10]) gates the war sweep below. `CFaction::LoadKey`'s `country` case (token 0x24D, the call at 0x5228B4) passes **(country, 0, 0)**, so loading a save moves members without writing history or touching wars. `CFactionAction::Apply` passes **(country, 0, 1)** at *both* of its call sites - `xor ebx, ebx` at 0xA30E92 is the only write to ebx in its whole 0x2157 bytes - so those two calls are **not** a join/leave pair: 0xA319B2 joins the country the action moves, and 0xA31AF5 then loops the whole country array (`CCurrentGameState +0xBBC`, bounded by slot 6) adding every country whose `+0xF3C` equals the joiner's id - the id half of `Overlord` - to the same faction. **A country's subjects follow it into a faction.**\n\n**What it does, in order.** (1) marks entry `id*0x14 + 0x10` of the vector at `[0x1A8C388]`, a per-country display dirty byte, skipped when that vector is empty. (2) if the country already has a different faction, `CFaction::RemoveMember(old, &country->tag)`. (3) if `this->IsValid()` (slot 7: `CFaction`'s is the folded `mov al,1; ret` at 0xA92590, `CNullFaction`'s the folded `xor al,al; ret` at 0x592360) is **false**, `country->faction = CFaction::null()` and return - so **leaving a faction is calling this with the null faction**. If it is valid but already the country's own faction, it logs `'CCountry: <name> failed to join faction <faction>'` and returns; a null `this` logs `' failed to join faction 0 faction'`. (4) otherwise `country->faction = this` and `CFaction::AddMember(this, &country->tag, 0)` - at the **tail**, never the head. (5) the optional history entry. (6) the optional war sweep. (7) if `CCurrentGameState +0xDA4` (`in_game`) is set: 0x4E70A0(country), `CCountry::RebuildStaticModifiers`, 0x4FBC10(country), then `CAIStrategy::Rebuild` and `CAIStrategy::BuildTheatres` on `country->strategy (+0x48C)` and on every member of `Neighbours (+0xFD8)`.\n\n**The war sweep** (0x4F6183-0x4F6355) walks `CCurrentGameState +0xC00` as a `CListNode<CWar*>` chain (payload at +0, `next` at +8) and for each war with at least one attacker and one defender, using `CountryTagVector_Contains` throughout: skip if the joining country is already an attacker or a defender; if it `isSubject (+0xF34)`, skip any war its `Overlord (+0xF38/+0xF3C)` is not itself in; then if the **faction leader** - `CFaction::GetFactionLeader`, i.e. the first member - is an attacker *and* the war is not `is_limited (CWar +0x70)`, `CWar::AddAttacker(war, 0, 0, ourTag)` plus `CCountry::ChangeRelation(defender, ourTag, -delta)` for every defender; else if the leader is a defender, `CWar::AddDefender` plus the same hit for every attacker. The delta is `GetDefines()->diplomacy (+0xBC)[1]`, negated - entry 1 of that block is `WARDEC_WAR_DIPLOMACY_HIT` on `common/defines.lua`'s key order, so -100 relations with each new enemy (likely, and the only part of this entry resting on the file's ordering rather than on an instruction).\n\n**It writes no `CDiplomacyStatus` field and allocates no relation object.** Listing every memory write in the body with its base register, the only non-frame destinations are `country->faction`, the display dirty byte, `[historyEntry+8]`, the `CCurrentGameState` lazy-singleton boilerplate, and the two one-dword stack allocas that carry `ChangeRelation`'s by-value delta. So **a faction join does not create a bilateral alliance**; `CCountry::RebuildNeighbours` is what puts faction members into `Allies (+0xF88)`, from a second source that never reads `CDiplomacyStatus +0x14`.",
+   "confidence": "confirmed",
+   "evidence": "Extent: the single `ret 0xC` at 0x4F6760 with 13 `int3` after it and a fresh SEH prologue at 0x4F6770; 17 `int3` above the entry after a `ret` at 0x4F5F1E; `retsBefore(0x4F5F30, 0x4F6761)` = {0x4F6494, 0x4F64C3}, both shown to be same-frame exits by their `[esp+0x24C]` SEH unlink. Signature: `ret 0xC` against three pushed dwords at all 14 call sites, receiver in ecx, no return value read by any caller. Semantics: read instruction by instruction; the flag meanings are read off which block each `cmp byte ptr [ebp+0xC/0x10], 0` guards, and corroborated by the two callers that pass different constants (CFaction::LoadKey 0,0 and CFactionAction::Apply 0,1). The write census was produced by decoding the body from the entry and printing every instruction whose first operand is a memory operand, with its base register. **What would show it wrong:** a write to a `CDiplomacyStatus` or an `operator new` of a relation object inside one of the callees (CFaction::AddMember and CFaction::RemoveMember were both read in full and have none; 0x4E70A0 and 0x4FBC10 were only skimmed, so a relation write hiding in those two is the open hole); or a 15th call site passing a non-zero third argument to CFaction::AddMember, which would break the 'always appended at the tail' claim.",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x122650",
+   "kind": "function",
+   "name": "CFaction::AddMember",
+   "signature": "void __stdcall CFaction::AddMember(CFaction* faction, CCountryTag* member, bool atFront)",
+   "no_signature": null,
+   "comment": "0x522650 to three `ret 0xC` at 0x522694, 0x5226E2 and 0x5226F2, 3 `int3` after. Everything on the stack (`[ebp+8]` the faction, `[ebp+0xC]` the tag, `[ebp+0x10]` the flag), `ret 0xC`.\n\nWalks `Members (CFaction +0x28)` comparing each node's `+4` against `member->+4` - the id half - and returns without inserting if the tag is already there, setting only the dirty byte `CFaction +0x38`. Otherwise `atFront` chooses the end: zero appends in place (new 0x14-byte node, `prev` = old tail, `next` = 0, list `last` updated, `count` incremented, `first` written only when the list was empty), non-zero tail-calls the push-front helper at 0x523770. Either way it finishes `faction->+0x38 = 1`.\n\n**Its only caller is `CFaction::AddCountry` (0x4F5FC6), and that call passes `atFront = 0`.** Since `CFaction::GetFactionLeader` returns the list's first node, that settles a mechanic: **joining a faction can never change who leads it** - a new member always arrives behind the incumbent. The front insertion is reached only through 0x523770's *other* caller, the leader promotion at 0x502F34.",
+   "confidence": "confirmed",
+   "evidence": "Read instruction by instruction; node layout (payload 0x10 wide with `prev` at +8 and `next` at +0xC, 0x14 bytes) matches `CListNode<CCountryTag>` as CCountry::CalculateIsAllied already witnesses it, and the (first, last, count, flag) head at +0x28..+0x34 matches project.json's `CList`. `findRefs --callers 0x00522650` returns exactly one call, from 0x4F5FC6, whose three pushes are `0`, `lea ebx,[edi+0xCA4]`, `esi`. Not in luabind.json and in no virtual table, so trap 4 does not apply. **What would show it wrong:** a second caller (an indirect one through a function pointer would not show in `findRefs --callers`), or a call site passing a non-zero third argument.",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x123620",
+   "kind": "function",
+   "name": "CFaction::null",
+   "signature": "CFaction* __cdecl CFaction::null(void)",
+   "no_signature": null,
+   "comment": "The null-faction singleton accessor, the same shape as `CLeader::null`. 0x523620 to the bare `ret` at 0x52368D, 1 `int3`. Reads the pointer slot `g_CNullFaction` at 0x1A855A8 and, when it is null, `operator new(0xD8)`, `CFaction::CFaction(obj, [0x1A878C0])`, then **overwrites the vftable with 0x15C248C** - `CNullFaction`'s, per the RTTI export, `CNullFaction` deriving from `CFaction` with nothing added - caches it and returns it.\n\nThree things fall out. `sizeof(CFaction) == 0xD8`, from the allocation size. `CFaction::AddCountry` stores this return into `country->faction (+0xD8)` whenever the faction it was handed answers false to `IsValid()` (slot 7), so **a country with no faction holds this object rather than a null pointer** - which is why `CCountry::HasFaction` cannot be a null test and why the faction pointer is safe to dereference unconditionally. And **this body is the out-of-line copy of an accessor the compiler inlined about thirty-five times** - `findValue(0x1A855A8)` returns 71 references in matched test/store pairs, and the ones sampled (0x4195A2, 0x4C37B9) are byte-for-byte the same lazy construction - so a `call 0x523620` scan massively undercounts who asks for the null faction. That is trap 8's first case in a different module.",
+   "confidence": "confirmed",
+   "evidence": "Read instruction by instruction. The vftable 0x15C248C resolves to CNullFaction in the RTTI export, whose only base is CFaction at offset 0; CNullFaction's slot 7 is the folded `xor al,al; ret` at 0x592360 against CFaction's `mov al,1; ret` at 0xA92590, which is what makes the IsValid test discriminate. The inlining claim is from `findValue(0x1A855A8)` (71 hits, in pairs) with two of them decoded and found identical to this body. **What would show it wrong:** the allocation size 0xD8 not matching CFaction - the constructor at 0x5224B0 writes nothing above +0xBC plus a Hoi3CString, which fits 0xD8 and would not fit much less; or one of the 71 sites turning out to construct something other than a CNullFaction, which would mean 0x1A855A8 is not this singleton's slot at all.",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x16855A8",
+   "kind": "global",
+   "name": "g_CNullFaction",
+   "signature": null,
+   "no_signature": null,
+   "comment": "The `CFaction*` slot holding the null-faction singleton. Unlike `g_CNullDiplomaticAction`, which is static storage built by a CRT initialiser, this one is a pointer to a heap object constructed on first use - `operator new(0xD8)`, `CFaction::CFaction(obj, [0x1A878C0])`, vftable overwritten with CNullFaction's 0x15C248C, then stored here. `CFaction::null` (rva 0x123620) is the out-of-line copy of that accessor and the compiler **inlined it about thirty-five times**: `findValue(0x1A855A8)` returns 71 references, in matched test/store pairs, and the ones decoded are the identical construction. So the useful way to find code that cares about the null faction is this absolute, not the call.",
+   "confidence": "confirmed",
+   "evidence": "`findValue(0x1A855A8)` returns 71 references in `.text`, in pairs 0x40-0x50 bytes apart; 0x4195A2 and 0x4C37B9 were decoded in full and are byte-for-byte the lazy construction in 0x523620, including the 0xD8 size, the 0x1A878C0 argument and the 0x15C248C vftable store. **What would show it wrong:** one of the 71 sites constructing something other than a CNullFaction, or a reader that reaches the slot through a register, which this scan cannot see.",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x123770",
+   "kind": "function",
+   "name": "CountryTagList_PushFront",
+   "signature": null,
+   "no_signature": "A compiler register convention with no `this`: the `CList<CCountryTag>` head arrives in **ESI** and the `CCountryTag*` to copy in **EAX**, nothing is on the stack and the exits are bare `ret`s. No ordinary signature expresses that pair, and inventing stack parameters to make the arithmetic close is what `no_signature` is for.",
+   "comment": "0x523770 to the two bare `ret`s at 0x5237B1 and 0x5237B7, 8 `int3` after. Allocates a 0x14-byte `CListNode<CCountryTag>`, copies the eight-byte tag into it, sets `prev = 0` and `next` = the old head, then writes the list's `first`, increments `count`, and fixes either the old head's `prev` or - when the list was empty - the list's `last`. The mirror of the append arm inside `CFaction::AddMember`.\n\n**Recorded class-free deliberately.** The body is generic over any `CList<CCountryTag>`, it is in no virtual table and in no luabind registration, and its two callers are `CFaction::AddMember` (0x522684, the `atFront` arm) and the faction leader promotion at 0x502F34 - both on a faction's member list, but two holders is exactly the count trap 4 warns is too easy to read as a pattern, and the list type is not the faction's.",
+   "confidence": "confirmed",
+   "evidence": "Read instruction by instruction; `vtable.py --holding 0x00523770` answers 'in no class's virtual table'; not among luabind.json's 620 registered pointers; `findRefs --callers` returns exactly the two call sites. **What would show it wrong:** a third caller on a list that is not a faction's, which would only strengthen the class-free naming, or a caller that sets up a different register pair.",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  },
+  {
+   "rva": "0x102F34",
+   "kind": "instruction",
+   "name": "FactionLeaderPromotion",
+   "signature": null,
+   "no_signature": "An address inside a function, not an entry point - the enclosing function at rva 0x102BC0 was read only in part and is left in the frontier.",
+   "comment": "**The one place in the image that changes a faction's leader.** Leadership is positional - `CFaction::GetFactionLeader` returns `Members (+0x28)`'s first node - and `CFaction::AddMember`'s only caller always appends at the tail, so a join can never promote. This block can.\n\nIt sits in the unnamed function at rva 0x102BC0, which sets `country->government_in_exile (+0x95) = 1` and scales `Manpower (+0xBCC)` and `officers (+0xC4)` by the float at 0x160A684 - a country losing its homeland. The block runs only when `faction->IsValid()`, the country's own id equals the leader's (0x502E5F), and `NumberOfMembers > 1`; it then walks the member list skipping any country with `government_in_exile` set and skipping itself, keeps the one with the greatest `max_ic (CCountry +0x60C)`, and promotes it by `CFaction::RemoveMember` (0x502F07) followed by the push-front helper 0x523770 (0x502F34), finishing `faction->+0x38 = 1`.\n\nSo: **when a faction leader goes into exile, the surviving member with the highest max IC takes the lead, and the rest of the order is untouched.** The 45 savegames on this machine agree: 44 of them have GER, ENG and SOV first in `axis`, `allies` and `comintern`, and in the only exception - Ireland1945_01_22_02 - `axis` reads JAP, GER, SLO, ... with Germany simply displaced one place, which is what removing JAP and pushing it to the front produces.",
+   "confidence": "confirmed",
+   "evidence": "Read off an aligned decode of 0x502BC0 onward; the loop's maximand is `[countries[id] + 0x60C] * 1000` compared against the running best at `[esp+0x14]`, and `+0x60C` is project.json's `max_ic`. `findRefs --callers 0x00523770` gives exactly two call sites, this one and CFaction::AddMember's, which is what makes 'the one place' decidable rather than a guess. Corroborated independently by the save corpus (45 saves, one leadership change, of exactly the shape a remove-then-push-front produces). **What would show it wrong:** a third caller of 0x523770, or a direct write to `CFaction +0x28` outside the three list mutators - a scan of `[reg+0x28]` stores reached through `CCountry +0xD8` would settle it and was not run.",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  }
+ ],
+ "struct_fields": [
+  {
+   "struct": "CFaction",
+   "offset": "0x38",
+   "name": "members_changed",
+   "type": "bool",
+   "comment": "A one-byte dirty flag, cleared by the constructor (`mov byte ptr [esi+0x38], bl` at 0x522514, between the byte at +0x34 and the dword `icon` at +0x3C, so it is a byte and +0x39..+0x3B is padding) and set to 1 by every mutator of the member list and by nothing else: `CFaction::AddMember` at all three of its exits (0x52268C, 0x5226DA, 0x5226EA), `CFaction::RemoveMember` (0x522744), and the leader promotion at 0x502F39. **Its consumer was not identified** - `fieldchain --holder 0xD8 --field 0x38` finds only two readers in the image and both are dword loads, so neither is this byte, while the same scan over the same holder finds 66 readers of `+0x30` and 40 of `+0x28`, so the method can see this class's fields. Whatever reads it reaches the faction by some path other than `CCountry::faction`.",
+   "evidence": "Writers enumerated by decoding each of the four functions and listing every store whose base register is the faction. Width from the constructor's `mov byte`. The negative on readers carries its own positive control, as above (+0x30 and +0x28 through the same holder chain). **What would show it wrong:** a reader through the faction database or `CIdeologyGroup +0x2C` rather than through a country, which `--holder 0xD8` cannot see; or any write of a value other than 0 or 1, which would make it a counter rather than a flag.",
+   "source": "reversing/findings/FINDINGS-diploaction.md"
+  }
+ ],
+ "vftable_slots": {},
+ "slots_noted": "Nothing new is virtual. 0xF5F30 and 0x123770 are each in no class's virtual table (`vtable.py --holding`), 0x122650 and 0x123620 likewise. `CFaction` slot 7 is identified as `IsValid` in the prose above but its body is the folded `mov al,1; ret` at 0xA92590, shared far too widely to name for this class, and `CNullFaction`'s override is the already-recorded ReturnFalse at 0x592360 - so both are deliberately left unrecorded, per trap 4.",
+ "frontier": [
+  "0x102BC0",
+  "0x1F0600",
+  "0x1F07C0",
+  "0x1F07E0",
+  "0x1F0A70",
+  "0xE70A0",
+  "0xFBC10",
+  "0x122590",
+  "0x28B4C0",
+  "0x19360",
+  "0xD94A0",
+  "0x14BD00",
+  "0x14C980",
+  "0x5A1C60",
+  "0x5AEBF0"
+ ]
+}
