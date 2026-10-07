@@ -23,8 +23,8 @@ every class the game exposes, with what each method takes and what it gives back
 hidden call that a better-informed modder knows about.
 
 The list is not folklore either. `script/LUA API.txt` is the game's own registration code,
-and [`luabindExtract.py`](../../DaveStuff/luabinaries/bice/BiceLib/reversing/ghidra/luabindExtract.py)
-in the reversing folder recovers each function's signature by emulating that registration
+and [`luabindExtract.py`](../../../hoi3-reversing/ghidra/luabindExtract.py)
+in the fact base repository recovers each function's signature by emulating that registration
 and then asking luabind to write the signature out - the same text the game would put in an
 error message. So the argument lists and return types on these pages are the running game's
 own account of itself.

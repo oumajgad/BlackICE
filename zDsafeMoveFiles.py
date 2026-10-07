@@ -30,10 +30,13 @@ def addReversingProbes():
     Copied rather than queued, like the other resources that are not mod content: the
     queue is for the ~66k files walked out of the mod folders, and these are two.
 
-    A missing folder is not a problem worth reporting - the probes are BiceLib's, and
-    the mod deploys without them.
+    A missing folder does not stop a deploy - the probes are BiceLib's, and the mod is
+    fine without them - but it now says so. It used to return in silence, and when the
+    reversing tree moved out of this repository on 2026-10-07 that silence meant a deploy
+    would simply stop placing these files with nothing to show for it.
     """
     if not os.path.isdir(ReversingProbes):
+        print(f"No probe files placed: {ReversingProbes} is not there")
         return
     target = os.path.abspath(os.path.join(BaseModPath, "script"))
     os.makedirs(target, exist_ok=True)
@@ -93,7 +96,10 @@ PreserveInScript = [
 # BiceLib reads them from beside its DLL, which is ./script, but they are not mod content
 # and do not live in ./script - they are kept with the tools that produce them, under
 # version control, and put in place from here.
-ReversingProbes = "./DaveStuff/luabinaries/bice/BiceLib/reversing/probes"
+#
+# Those tools left this repository on 2026-10-07 for one of their own, normally checked out
+# beside it. A deploy without that checkout places no probes and now says so.
+ReversingProbes = "../hoi3-reversing/probes"
 
 PreserveStash = os.path.abspath("./.deploy-preserved")
 
