@@ -181,10 +181,10 @@ something the game declares". That is a much larger set than any list here, and 
 a typo is so easy to miss: `infantry_brigade` and `infanty_brigade` look equally plausible
 and only one of them is a unit.
 
-There is a tool for exactly this. From the reversing folder:
+There is a tool for exactly this. From the `hoi3-reversing` repository beside this one:
 
 ```
-python DaveStuff/luabinaries/bice/BiceLib/reversing/scripts/scriptcheck.py
+python scripts/scriptcheck.py
 ```
 
 It takes every key the events and decisions use, subtracts the keyword lists and every
@@ -197,8 +197,9 @@ the technology database.
 The trigger and effect lists are not folklore. They were read out of the game: the two
 loaders `CTrigger::LoadKey` and `CEffect::LoadKey` are each one giant switch over the save
 token of a key, one case per keyword, and
-[`reversing/findings/FINDINGS-script.md`](../../DaveStuff/luabinaries/bice/BiceLib/reversing/findings/FINDINGS-script.md)
-in the reversing folder has all 243 with their token and the class that implements each.
+[`findings/FINDINGS-script.md`](../../../hoi3-reversing/findings/FINDINGS-script.md)
+in the fact base repository has all 243 with their token and the class that implements
+each.
 
 The lists are therefore complete and fixed: the switches are what the shipped game does,
 and no future edit to the mod can add to them or take away.

@@ -35,9 +35,9 @@
 ## Digging into the engine
 
 The mod ships a DLL, BiceLib, built from work that reverse engineered parts of the game.
-Those notes are extensive and live with the code, in
-[`DaveStuff/luabinaries/bice/BiceLib/reversing/`](../DaveStuff/luabinaries/bice/BiceLib/reversing/).
+Those notes are extensive and live in their own repository beside this one, in
+[`hoi3-reversing/`](../../hoi3-reversing/).
 The one most relevant to modding is
-[`reversing/findings/FINDINGS-script.md`](../DaveStuff/luabinaries/bice/BiceLib/reversing/findings/FINDINGS-script.md),
+[`findings/FINDINGS-script.md`](../../hoi3-reversing/findings/FINDINGS-script.md),
 which is where the trigger and effect lists above came from. The Lua pages come from the
 same place: `luabindExtract.py` recovers every exported function's signature out of the exe.

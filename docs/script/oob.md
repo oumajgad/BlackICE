@@ -304,9 +304,9 @@ them is either a typo or savegame leftovers.
 ---
 
 Formation and brigade keys are read out of the game -
-[`reversing/findings/FINDINGS-oob.md`](../../DaveStuff/luabinaries/bice/BiceLib/reversing/findings/FINDINGS-oob.md) has
+[`findings/FINDINGS-oob.md`](../../../hoi3-reversing/findings/FINDINGS-oob.md) has
 the loaders behind them, and the `CConstruction` family in
-[`CLASSES.md`](../../DaveStuff/luabinaries/bice/BiceLib/reversing/CLASSES.md) covers the three
+[`CLASSES.md`](../../../hoi3-reversing/CLASSES.md) covers the three
 construction blocks, including where each key lands and which class shadows `status`.
 
 Counts are from the 4,508 files in `history/units/`.
