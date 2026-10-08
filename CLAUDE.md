@@ -1,4 +1,7 @@
-# Working in this repository
+# BlackICE: the mod
+
+*These rules are for `BlackICE/`. Opened from the `workspaces/hoi3` root, all four of these
+files arrive at once - apply each to its own folder.*
 
 **BlackICE**, the mod for Hearts of Iron 3: Their Finest Hour. This is the content repository -
 events, decisions, history, units, technologies, interface, localisation and gfx - plus the

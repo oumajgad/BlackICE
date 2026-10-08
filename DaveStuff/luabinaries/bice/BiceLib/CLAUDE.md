@@ -1,4 +1,7 @@
-# Working in this directory
+# BiceLib: the injected DLL
+
+*These rules are for `BlackICE/DaveStuff/luabinaries/bice/BiceLib/`. Opened from the `workspaces/hoi3` root, all four of these
+files arrive at once - apply each to its own folder.*
 
 This is **BiceLib**: the C++ module that loads into a running `hoi3_tfh.exe` and ships with the
 BlackICE mod. The artefact is `BiceLib.dll`. The game **is running** - threads, lifetimes and
