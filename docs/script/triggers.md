@@ -115,7 +115,7 @@ Not conditions as such - these control the event itself rather than testing anyt
 | `neighbour` | True when the target country borders this one. Note the British spelling - `neighbor` is not a keyword and is silently ignored. | `neighbour = ...` | 11 |
 | `neutrality` | Returns true if a country’s effective neutrality value is equal to x or more. | `neutrality = x` | 186 |
 | `non_aggression_pact` | Returns true if the specified country has a non-aggression pact with the current country. | `non_aggression_pact = tag` | 62 |
-| `not` | No parts of the group are valid. # While this should have an implicit AND inside of it, it does not work correctly unless you explicitly state the AND | `not = ...` | 17880 |
+| `not` | No parts of the group are valid: false as soon as any condition inside is true, so `not = { a b }` means neither a nor b. For "not both", put an `and` inside: `not = { and = { a b } }`. See [the overview](README.md#scopes-change-who-the-block-is-about). | `not = ...` | 17880 |
 | `num_in_faction` | Returns true if the number of members belonging to the same faction as the current country is equal to x or more. | `num_in_faction = x` |  |
 | `num_of_allies` | Returns true if the number of allies equals x or more. | `num_of_allies = x` |  |
 | `num_of_cities` | Returns true if the country has x or more cities. | `num_of_cities = x` | 3 |
