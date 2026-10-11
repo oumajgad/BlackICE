@@ -200,6 +200,9 @@ def _node(c, rel, node, tag_keys, province_keys, root):
         return
 
     if node.is_block and low.isdigit():
+        # Inside random_list a number is a weight, `0 = { ... }` included, not a province.
+        if node.parent is not None and node.parent.lkey == "random_list":
+            return
         if not decl.has(Kinds.PROVINCE, low):
             c.report("BV205", rel, node, "Province %s does not exist" % low, at_value=False)
         return

@@ -28,14 +28,29 @@ too.
 
 ## The exe
 
-`dist/BiceValidator.exe` is the window as one 25 MB file, with Python and Qt inside, so
-it runs on a machine with nothing installed. **It is committed, and it is what everyone
-without Python runs.** It still reads the keyword lists and the hidden rules from the
-checkout it sits in, and it finds that checkout by itself. A copy kept somewhere else is
-pointed at a checkout once with *Browse...* and remembers it.
+`dist/BiceValidator.exe` is the window as one 25 MB file, with Python, Qt and the keyword
+lists inside, so it runs on a machine with nothing installed. **It is committed, and it is
+what everyone without Python runs.** It can be copied anywhere. It checks any mod
+folder - one with `events`, `decisions` and `common` in it, such as this checkout or an
+installed copy under the game's `tfh/mod`:
 
-**After changing the tool, rebuild the exe and commit it with the change.** Otherwise
-everyone else keeps running the old one. It needs Python:
+- **Finding the mod.** The exe always opens on the checkout it sits in. *Browse...*
+  switches to another folder for the session. A copy kept outside any checkout opens on
+  the folder it was last pointed at.
+- **Keyword lists.** If the mod has `docs/script`, the exe reads the lists from there, so
+  an edit to the docs counts straight away. If not, it uses the copy built into it. The
+  status bar and *Help > About* say which one a run used, and when the built-in copy was
+  taken.
+- **Hidden rules and known noise.** For this checkout they are the committed
+  `validator.json` and `baseline.json`. For any other mod folder they are kept in
+  `%APPDATA%\BICE Validator\mods\`, so the exe never writes into the game folder.
+
+"Changed files only" asks git, so it works only on a checkout and only where git is
+installed.
+
+**After changing the tool or the keyword pages in `docs/script`, rebuild the exe and
+commit it with the change.** Otherwise everyone else keeps running the old one, and an
+installed copy is checked against the old keyword lists. Rebuilding needs Python:
 
     pip install -r requirements-build.txt
     python build.py
@@ -47,8 +62,11 @@ or `docs/script` changes on master, and keeps the result as the run's artifact. 
 check that the build still works, and it does not replace the committed exe.
 
 `build.py` runs PyInstaller on `BiceValidator.spec` and writes `dist/BiceValidator.exe`.
-It then has the exe validate this checkout through its own worker processes, and fails if
-the exe does not finish. That is what a bundle most often gets wrong: a worker started
+It then tries the exe twice and fails if either run goes wrong:
+
+- it validates this checkout through the exe's own worker processes;
+- it validates a small mod with no `docs/`, which must fall back to the built-in keyword
+  lists. That is what a bundle most often gets wrong: a worker started
 from a frozen exe needs the `freeze_support()` call in `BiceValidator.pyw`, or it starts
 another copy of the program instead of doing its share. `build/` holds PyInstaller's
 scratch files and is git-ignored.

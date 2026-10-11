@@ -22,8 +22,22 @@ DEFAULT_RELEASE_BLOCKING = ["BV001", "BV002", "BV003", "BV004", "BV005", "BV008"
 
 
 def path_for(root):
-    """The config file of the mod checkout at \\p root."""
-    return os.path.join(root, TOOL_IN_MOD, CONFIG_NAME)
+    """The config file for the mod at \\p root.
+
+    In a checkout - one with this tool in it - the file is the committed one, shared by
+    everyone. Any other mod folder, such as an installed copy under the game's tfh/mod,
+    gets one in the user's own application data instead: the game folder is not the
+    validator's to write in, and an installed copy has no tool folder to put it in.
+    """
+    in_mod = os.path.join(root, TOOL_IN_MOD)
+    if os.path.isdir(in_mod):
+        return os.path.join(in_mod, CONFIG_NAME)
+    import hashlib
+    base = os.environ.get("APPDATA") or os.path.expanduser("~")
+    absolute = os.path.normcase(os.path.abspath(root))
+    tag = hashlib.sha1(absolute.encode("utf-8")).hexdigest()[:8]
+    name = "".join(c if c.isalnum() or c in " -_." else "_" for c in os.path.basename(absolute))
+    return os.path.join(base, "BICE Validator", "mods", "%s-%s" % (name, tag), CONFIG_NAME)
 
 
 @dataclass

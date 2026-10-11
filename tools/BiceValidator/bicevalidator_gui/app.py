@@ -55,6 +55,9 @@ class MainWindow(QMainWindow):
         self.result = None
         self.full_run = False
         self.thread = None
+        # Off for the smoke test, which must not leave its test folder as the one the
+        # window remembers.
+        self.persist = True
 
         self.model = ResultsModel(self)
         self.filter = ResultsFilter(self)
@@ -249,9 +252,15 @@ class MainWindow(QMainWindow):
             state = s.value(key)
             if state is not None:
                 splitter.restoreState(state)
-        mod = s.value("mod")
-        if not mod or runner.find_mod_root(mod) is None:
-            mod = guess_mod_root()
+        # The checkout this copy of the tool sits in comes first, whatever was browsed to
+        # last time; a remembered folder is for a copy kept outside any checkout.
+        mod = own_checkout()
+        if mod is None:
+            remembered = s.value("mod")
+            if remembered and runner.find_mod_root(remembered) is not None:
+                mod = remembered
+        if mod is None:
+            mod = runner.find_mod_root(os.getcwd())
         self.set_mod(mod)
         self.code_box.setChecked(s.value("code", True, type=bool))
         self.refs_box.setChecked(s.value("references", False, type=bool))
@@ -260,6 +269,12 @@ class MainWindow(QMainWindow):
         self.show_hidden.setChecked(s.value("showHidden", False, type=bool))
 
     def closeEvent(self, event):
+        if self.thread is not None and self.thread.isRunning():
+            self.thread.quit()
+            self.thread.wait(2000)
+        if not self.persist:
+            super().closeEvent(event)
+            return
         s = self.settings
         s.setValue("geometry", self.saveGeometry())
         s.setValue("mainSplitter", self.main_splitter.saveState())
@@ -271,9 +286,6 @@ class MainWindow(QMainWindow):
         s.setValue("changed", self.changed_box.isChecked())
         s.setValue("showKnown", self.show_known.isChecked())
         s.setValue("showHidden", self.show_hidden.isChecked())
-        if self.thread is not None and self.thread.isRunning():
-            self.thread.quit()
-            self.thread.wait(2000)
         super().closeEvent(event)
 
     # --- running -----------------------------------------------------------------------
@@ -285,8 +297,8 @@ class MainWindow(QMainWindow):
             return
         root = runner.find_mod_root(folder)
         if root is None:
-            QMessageBox.warning(self, "Not a BlackICE checkout",
-                                "No events, decisions and docs/script folders were found in "
+            QMessageBox.warning(self, "Not a mod folder",
+                                "No events, decisions and common folders were found in "
                                 "%s or above it." % folder)
             return
         self.set_mod(root)
@@ -428,8 +440,9 @@ class MainWindow(QMainWindow):
         self._fill_rule_tree(counts)
         if self.result is not None:
             self.statusBar().showMessage(
-                "%d new, %d known, %d hidden  -  %d files in %.1fs"
-                % (len(new), known, hidden, self.result.checked, self.result.seconds))
+                "%d new, %d known, %d hidden  -  %d files in %.1fs  -  keywords from %s"
+                % (len(new), known, hidden, self.result.checked, self.result.seconds,
+                   self.result.keywords_from))
 
     def _reclassify(self):
         if self.result is None:
@@ -561,30 +574,31 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage("Exported %d findings to %s" % (len(shown), path))
 
     def about(self):
+        from bicevalidator.schema import locate_keyword_pages
+        try:
+            _, keywords = locate_keyword_pages(self.mod_edit.text())
+        except (FileNotFoundError, OSError) as error:
+            keywords = str(error)
         QMessageBox.about(self, "BICE Validator",
                           "<b>BICE Validator %s</b><p>Checks BlackICE's script against the "
                           "keyword lists in docs/script, which were read out of the game."
-                          "</p><p>Hidden rules: %s<br>Known noise: %s</p>"
-                          % (__version__, self.config.path, self.config.baseline_path))
+                          "</p><p>Keyword lists: %s<br>Hidden rules: %s<br>Known noise: %s</p>"
+                          % (__version__, keywords, self.config.path,
+                             self.config.baseline_path))
 
 
-def guess_mod_root():
-    """The BlackICE checkout this copy of the tool most likely belongs to.
+def own_checkout():
+    """The checkout this copy of the tool sits in - tools/BiceValidator/dist for the exe -
+    or None for a copy kept anywhere else.
 
-    Tried in order: where the exe sits (a bundled copy unpacks its own files to a
-    temporary folder, so only the exe's location says anything), the current directory,
-    and the source tree when run from it.
+    For the exe that is where the exe file is: a bundled copy unpacks its own code into a
+    temporary folder, so the code's location says nothing.
     """
-    places = []
     if getattr(sys, "frozen", False):
-        places.append(os.path.dirname(sys.executable))
-    places.append(os.getcwd())
-    places.append(os.path.dirname(os.path.abspath(__file__)))
-    for place in places:
-        root = runner.find_mod_root(place)
-        if root is not None:
-            return root
-    return None
+        here = os.path.dirname(os.path.abspath(sys.executable))
+    else:
+        here = os.path.dirname(os.path.abspath(__file__))
+    return runner.find_mod_root(here)
 
 
 def smoke_test(argv):
@@ -600,11 +614,14 @@ def smoke_test(argv):
     os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
     app = QApplication([sys.argv[0]])
     window = MainWindow()
+    window.persist = False
+    opened_on = window.mod_edit.text()
     window.set_mod(mod)
     result = runner.run(mod, [rules.CODE])
     with open(report, "w", encoding="utf-8") as handle:
-        handle.write("files=%d findings=%d seconds=%.1f\n"
-                     % (result.checked, len(result.diagnostics), result.seconds))
+        handle.write("files=%d findings=%d seconds=%.1f keywords=%s opened_on=%s\n"
+                     % (result.checked, len(result.diagnostics), result.seconds,
+                        result.keywords_from, opened_on))
     if len(argv) > 2:
         window.resize(1600, 950)
         window.show()

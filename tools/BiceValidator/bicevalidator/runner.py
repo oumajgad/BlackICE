@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 
 from . import lexer, parser, rules
 from .declarations import Declarations
-from .schema import Schema
+from .schema import Schema, locate_keyword_pages
 from .checks import syntax
 from .checks.script import ScriptChecker
 
@@ -45,15 +45,16 @@ class Result:
     notes: list = field(default_factory=list)     # setup problems worth showing the user
     seconds: float = 0.0
     checked: int = 0                              # files reported on
+    keywords_from: str = ""                       # which copy of the keyword pages was read
 
 
 def find_mod_root(start):
-    """The BlackICE checkout at or above \\p start: the folder with events, decisions and
-    docs/script beside each other."""
+    """The mod at or above \\p start: the folder with events, decisions and common beside
+    each other. A git checkout and an installed copy under tfh/mod both qualify."""
     current = os.path.abspath(start)
     while True:
         if all(os.path.isdir(os.path.join(current, d))
-               for d in ("events", "decisions", os.path.join("docs", "script"))):
+               for d in ("events", "decisions", "common")):
             return current
         parent = os.path.dirname(current)
         if parent == current:
@@ -132,7 +133,8 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
         return cache[rel]
 
     tell(0, 1, "Reading the keyword lists and what the mod declares")
-    schema = Schema(os.path.join(root, "docs", "script"))
+    docs, result.keywords_from = locate_keyword_pages(root)
+    schema = Schema(docs)
     declarations = Declarations(root, load)
     for missing in declarations.missing:
         result.notes.append("Not found, so names it declares are unknown: %s" % missing)

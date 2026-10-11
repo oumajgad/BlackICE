@@ -7,6 +7,10 @@ pages rather than keeping a copy, because a copy drifts from its original and th
 what a modder reads anyway. A test pins the counts, so a page edit that breaks the tables
 is caught rather than quietly shrinking the schema.
 
+The one copy there is lives inside the bundled exe, so that it can check a mod with no
+docs/ folder - an installed copy under tfh/mod. It is taken from docs/script each time the
+exe is built and used only when the mod has no pages of its own (locate_keyword_pages).
+
 What the pages do not say - which keys go directly inside an event, an option or a decision
 - is in STRUCTURE below, and is inferred from how the mod uses them. Findings that rest on
 it say so.
@@ -14,10 +18,45 @@ it say so.
 
 import os
 import re
+import sys
 from dataclasses import dataclass
 
 # How a value is checked. Taken from each keyword's Syntax column.
 BOOL, NUMBER, TAG, PROVINCE, BLOCK, ANY = "yes/no", "number", "tag", "province id", "block", "any"
+
+PAGES = ("triggers", "effects", "scopes")
+# Where BiceValidator.spec puts the pages inside the exe.
+BUNDLED_FOLDER = "keywords"
+
+
+def _has_pages(folder):
+    return all(os.path.isfile(os.path.join(folder, page + ".md")) for page in PAGES)
+
+
+def locate_keyword_pages(root):
+    """(folder, description) of the keyword pages to read for the mod at \\p root.
+
+    The mod's own docs/script first, since that is the source. Then the copy built into
+    the exe. Then, when run from source against a mod without docs, the pages of the
+    checkout the tool itself sits in.
+    """
+    own = os.path.join(root, "docs", "script")
+    if _has_pages(own):
+        return own, "docs/script"
+    bundle = getattr(sys, "_MEIPASS", None)
+    if bundle is not None:
+        folder = os.path.join(bundle, BUNDLED_FOLDER)
+        if _has_pages(folder):
+            stamp = os.path.join(folder, "BUILT.txt")
+            when = open(stamp, encoding="utf-8").read().strip() if os.path.exists(stamp) else ""
+            return folder, "built into the exe" + (" (%s)" % when if when else "")
+    tool_mod = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    tool_mod = os.path.dirname(tool_mod)
+    own = os.path.join(tool_mod, "docs", "script")
+    if _has_pages(own):
+        return own, "docs/script of %s" % tool_mod
+    raise FileNotFoundError("No keyword pages: %s has no docs/script, and this is neither "
+                            "the bundled exe nor a copy run from a BlackICE checkout." % root)
 
 
 @dataclass

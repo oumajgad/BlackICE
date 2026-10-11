@@ -28,25 +28,46 @@ def build():
     return subprocess.run(command, cwd=HERE).returncode
 
 
-def smoke_test():
-    sys.path.insert(0, HERE)
-    from bicevalidator import runner
-    mod = runner.find_mod_root(HERE)
-    if mod is None:
-        print("  smoke test skipped: no BlackICE checkout around %s" % HERE)
-        return 0
+def try_exe(label, mod, expect_keywords):
+    """Have the exe validate \\p mod; True if it finished and read the expected pages."""
     report = os.path.join(tempfile.mkdtemp(prefix="bicevalidator-"), "smoke.txt")
     started = time.time()
-    # A windowed exe returns at once from a plain call; wait for it explicitly.
     result = subprocess.run([EXE, "--smoke-test", mod, report], timeout=600)
     if result.returncode != 0 or not os.path.exists(report):
-        print("  smoke test FAILED: exit code %d, report %s"
-              % (result.returncode, "written" if os.path.exists(report) else "missing"))
-        return 1
+        print("  %s: FAILED, exit code %d, report %s"
+              % (label, result.returncode, "written" if os.path.exists(report) else "missing"))
+        return False
     with open(report, encoding="utf-8") as handle:
-        print("  smoke test: %s  (%.1fs with start-up)" % (handle.read().strip(),
-                                                         time.time() - started))
-    return 0
+        text = handle.read().strip()
+    print("  %s: %s  (%.1fs with start-up)" % (label, text, time.time() - started))
+    if expect_keywords not in text:
+        print("  %s: FAILED, expected keywords from %s" % (label, expect_keywords))
+        return False
+    return True
+
+
+def smoke_test():
+    """Two runs: this checkout, through the exe's worker processes; and a mod with no
+    docs/ folder, like an installed copy, which must fall back to the pages built in."""
+    sys.path.insert(0, HERE)
+    from bicevalidator import runner
+    ok = True
+    mod = runner.find_mod_root(HERE)
+    if mod is None:
+        print("  checkout test skipped: no BlackICE checkout around %s" % HERE)
+    else:
+        ok &= try_exe("this checkout", mod, "docs/script")
+
+    bare = tempfile.mkdtemp(prefix="bicevalidator-bare-")
+    for folder in ("events", "decisions", "common"):
+        os.makedirs(os.path.join(bare, folder))
+    with open(os.path.join(bare, "common", "countries.txt"), "w") as handle:
+        handle.write('GER = "countries/Germany.txt"\n')
+    with open(os.path.join(bare, "events", "test.txt"), "w") as handle:
+        handle.write("country_event = {\n\tid = 1\n\tis_triggered_only = yes\n"
+                     "\toption = { name = A war_with = GER }\n}\n")
+    ok &= try_exe("a mod with no docs", bare, "built into the exe")
+    return 0 if ok else 1
 
 
 def main():
