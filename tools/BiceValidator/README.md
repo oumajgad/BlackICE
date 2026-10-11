@@ -14,6 +14,7 @@ pages directly, so it can't drift from them.
 | | |
 | --- | --- |
 | **Without Python** | double-click `dist/BiceValidator.exe`, see [below](#the-exe) |
+| **In VS Code** | run `dist/install-vscode-extension.ps1` once, see [below](#the-vs-code-extension) |
 | **The window** | double-click `BiceValidator.pyw`, or `python -m bicevalidator_gui` from this folder |
 | **The command line** | `python -m bicevalidator` from this folder |
 | **A release build** | runs by itself, see [below](#in-the-release-build) |
@@ -74,6 +75,65 @@ scratch files and is git-ignored.
 The spec drops the parts of Qt the window never uses (software OpenGL, translations,
 image and SVG plugins), which halves the exe. If a later window needs one of them, take
 it out of `DROP` there.
+
+## The VS Code extension
+
+**BlackICE Script** puts the validator into VS Code:
+
+- **Findings while you type.** The code checks run on the open file about a third of a
+  second after you stop typing, from the unsaved text.
+- **References after every save.** The reference checks run over the whole mod in the
+  background after each save, in about ten seconds.
+- **Windows-1252 by default.** Script files open and save in Windows-1252, so the UTF-8
+  problem behind BV007 can no longer happen in VS Code.
+- **Colouring.** Keys, conditions, effects, scopes, tags, numbers, dates and comments
+  are coloured.
+
+**Installing.** From VS Code's terminal, at the repository root, run
+`.\tools\BiceValidator\dist\install-vscode-extension.ps1`, then reload VS Code
+(*Developer: Reload Window*). If Windows refuses to run scripts, use
+`powershell -ExecutionPolicy Bypass -File` followed by the same path. Run it again after
+`dist/blackice-script.vsix` changes. Without the script, *Extensions > ... > Install from
+VSIX* does the same. The language server is inside the `.vsix`, so nothing else
+needs installing.
+
+**Settings.** The extension has its own settings, under `blackice.validator` in VS
+Code's settings:
+
+- `disabledRules` and `minimumSeverity`;
+- `references` (`onSave` or `off`);
+- `scope`: `workspace` puts every file's findings in the Problems panel, after a
+  background run of about half a minute;
+- `hideKnownNoise`, which hides what `baseline.json` lists.
+
+It does not read `validator.json`.
+
+**How it is built.** The server is `bicevalidator_lsp/`, which uses pygls for the
+protocol and this library for everything else. It is bundled with PyInstaller into
+`bicevalidator-lsp.exe`, a 10 MB console program with no Qt. The extension in `vscode/`
+only starts that exe and connects it to VS Code. The colouring grammar is generated from
+`docs/script`, and the rule list of the `disabledRules` setting from `rules.py`.
+
+**Rebuilding.** This needs Python and Node.js
+(`winget install OpenJS.NodeJS.LTS`):
+
+    pip install -r requirements-build.txt
+    cd vscode
+    python build.py
+
+`build.py` builds the server, makes the grammar, brings `package.json`'s rule list in step,
+bundles the extension and then tries it: it starts the extension in a fresh copy of VS
+Code against a small mod and checks the colouring language, the Windows-1252 reading and
+saving, a finding appearing while typing and going when fixed, and a setting hiding a
+rule. The first run downloads that copy of VS Code, about 350 MB, into
+`vscode/.vscode-test` (git-ignored). Then it writes `dist/blackice-script.vsix`. Commit
+that with the change, like the exe. `python -m unittest discover -s tests -t .` also
+drives the server over the protocol (`tests/test_lsp.py`). Set `BICEVALIDATOR_LSP` to
+the built exe to drive that instead.
+
+To try a change to the server without rebuilding, set `blackice.validator.serverCommand`
+to `["python", "<this folder>/BiceValidatorLsp.py"]` and run *BlackICE: Restart the BICE
+Validator server*.
 
 ## Two modes
 
@@ -138,6 +198,8 @@ build log but does not stop the build. Use `--skip-validation` to build anyway.
 | `bicevalidator/runner.py` | one run: which files, which checks, the process pool |
 | `bicevalidator/release.py` | the release build's check |
 | `bicevalidator_gui/` | the window |
+| `bicevalidator/session.py`, `bicevalidator_lsp/`, `BiceValidatorLsp.py`, `bicevalidator-lsp.spec` | the language server: a mod kept loaded, the protocol, its launcher and its exe |
+| `vscode/` | the VS Code extension, its tests in VS Code, and `build.py` |
 | `BiceValidator.pyw`, `BiceValidator.spec`, `build.py` | the launcher, and building it into an exe |
 | `tests/` | `python -m unittest discover -s tests -t .` |
 

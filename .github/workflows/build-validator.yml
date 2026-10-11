@@ -1,10 +1,10 @@
 name: Build BICE Validator
 
-# Builds tools/BiceValidator into a single BiceValidator.exe that runs without Python,
-# tries it against this checkout, and uploads it as the run's artifact. Runs by itself
-# when the validator changes on master, and can be started by hand from the Actions tab.
-# The exe everyone runs is the one committed in tools/BiceValidator/dist; this is the
-# check that the source still builds into a working one.
+# Builds tools/BiceValidator into BiceValidator.exe, which runs without Python, and the
+# BlackICE Script extension for VS Code, tries both, and uploads them as the run's
+# artifacts. Runs by itself when the validator changes on master, and can be started by
+# hand from the Actions tab. What everyone runs is what is committed in
+# tools/BiceValidator/dist; this is the check that the source still builds into it.
 on:
   workflow_dispatch:
   push:
@@ -17,7 +17,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Check out what the validator reads
@@ -46,7 +46,12 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install PySide6 and PyInstaller
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install PySide6, PyInstaller and pygls
         run: python -m pip install -r tools/BiceValidator/requirements-build.txt
 
       - name: Run the tests
@@ -59,10 +64,24 @@ jobs:
         working-directory: tools/BiceValidator
         run: python build.py
 
+      - name: Build and try the VS Code extension
+        # vscode/build.py builds the language server exe and the extension, starts the
+        # extension in a fresh copy of VS Code against a small mod, then packages it.
+        working-directory: tools/BiceValidator/vscode
+        run: python build.py
+
       - name: Upload the exe
         uses: actions/upload-artifact@v4
         with:
           name: BiceValidator
           path: tools/BiceValidator/dist/BiceValidator.exe
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload the extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: blackice-script
+          path: tools/BiceValidator/dist/blackice-script.vsix
           if-no-files-found: error
           retention-days: 30

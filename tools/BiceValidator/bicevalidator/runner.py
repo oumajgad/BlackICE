@@ -73,6 +73,19 @@ def list_files(root, only=None):
     return sorted(set(out))
 
 
+def check_file(source, parsed, checker, modes=(rules.CODE,)):
+    """The per-file checks for one parsed file: syntax always, and the script checks for
+    events and decisions in code mode. Shared by a run and the language server."""
+    found = syntax.check(source, parsed)
+    if rules.CODE in modes:
+        folder = source.path.split("/", 1)[0]
+        if folder == "events":
+            found += checker.check_events(source, parsed.root)
+        elif folder == "decisions":
+            found += checker.check_decisions(source, parsed.root)
+    return found
+
+
 def _syntax_only(root, rels):
     """The syntax check for a batch of files, in a worker process."""
     out = []
@@ -143,7 +156,12 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
     files = list_files(root)
     report_on = set(files) if only is None else set(files) & set(only)
     need_all = rules.REFERENCES in modes
-    to_read = [f for f in files if f in report_on or (need_all and f.startswith(KEEP))]
+    if rules.CODE in modes:
+        to_read = [f for f in files if f in report_on or (need_all and f.startswith(KEEP))]
+    else:
+        # References alone need only the folders they read; the other 18,000 files would
+        # be parsed for nothing.
+        to_read = [f for f in files if f.startswith(KEEP)]
     total = len(to_read)
     result.checked = len(report_on)
 
@@ -168,14 +186,7 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
         cache.pop(rel, None)
         if rel not in report_on:
             continue
-        found = syntax.check(source, parsed)
-        if rules.CODE in modes:
-            folder = rel.split("/", 1)[0]
-            if folder == "events":
-                found += checker.check_events(source, parsed.root)
-            elif folder == "decisions":
-                found += checker.check_decisions(source, parsed.root)
-        result.diagnostics.extend(found)
+        result.diagnostics.extend(check_file(source, parsed, checker, modes))
 
     if pending is not None:
         pool, futures, batches = pending
