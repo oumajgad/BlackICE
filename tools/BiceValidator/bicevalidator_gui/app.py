@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import sys
 
-from PySide6.QtCore import QObject, QSettings, Qt, QThread, Signal, Slot
+from PySide6.QtCore import QObject, QSettings, Qt, QThread, QTimer, Signal, Slot
 from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
                                QFileDialog, QGroupBox, QHBoxLayout, QHeaderView, QLabel,
@@ -185,6 +185,7 @@ class MainWindow(QMainWindow):
         self.rule_tree.currentItemChanged.connect(self._rule_selected)
         box.addWidget(self.rule_tree)
         column.addWidget(group, 1)
+        self._build_rule_tree()
         self._fill_rule_tree()
 
     def _build_results(self):
@@ -389,35 +390,49 @@ class MainWindow(QMainWindow):
         self.filter.update(severities={level for level, box in self.severity_boxes.items()
                                        if box.isChecked()})
 
-    def _fill_rule_tree(self, counts=None):
-        counts = counts or {}
-        self.rule_tree.blockSignals(True)
-        current = self.filter.rule_only
-        self.rule_tree.clear()
-        everything = QTreeWidgetItem([ALL_RULES, str(sum(counts.values())) if counts else ""])
-        self.rule_tree.addTopLevelItem(everything)
+    def _build_rule_tree(self):
+        """The rule list's rows, made once. They are only ever updated after this
+        (_fill_rule_tree): ticking a rule recounts everything from inside the tick's own
+        signal, and clearing the list there deleted the row Qt was still handling - which
+        crashed the window whenever the ticked rule was also the selected one."""
+        self.all_rules_item = QTreeWidgetItem([ALL_RULES, ""])
+        self.rule_tree.addTopLevelItem(self.all_rules_item)
+        self.rule_items = {}
         for rule in rules.RULES.values():
-            node = QTreeWidgetItem(["%s  %s" % (rule.id, rule.title),
-                                    str(counts.get(rule.id, 0)) if counts else ""])
+            node = QTreeWidgetItem(["%s  %s" % (rule.id, rule.title), ""])
             node.setData(0, Qt.UserRole, rule.id)
             node.setIcon(0, severity_icon(rule.severity))
             node.setToolTip(0, "%s (%s, %s mode, %s)\n\n%s"
                             % (rule.title, rule.severity, rule.mode, rule.confidence,
                                rule.explanation.replace("`", "").replace("**", "")))
             node.setFlags(node.flags() | Qt.ItemIsUserCheckable)
-            node.setCheckState(0, Qt.Unchecked if rule.id in self.config.hidden_rules
-                               else Qt.Checked)
-            if counts and not counts.get(rule.id):
-                node.setForeground(0, self.palette().placeholderText())
+            node.setCheckState(0, Qt.Checked)
             self.rule_tree.addTopLevelItem(node)
-            if rule.id == current:
-                self.rule_tree.setCurrentItem(node)
-        self.rule_tree.blockSignals(False)
+            self.rule_items[rule.id] = node
+
+    def _fill_rule_tree(self, counts=None):
+        """Counts and ticks for the existing rows; never adds or removes one."""
+        counts = counts or {}
+        self.rule_tree.blockSignals(True)
+        try:
+            self.all_rules_item.setText(1, str(sum(counts.values())) if counts else "")
+            normal = self.palette().text()
+            faded = self.palette().placeholderText()
+            for rule_id, node in self.rule_items.items():
+                node.setText(1, str(counts.get(rule_id, 0)) if counts else "")
+                node.setCheckState(0, Qt.Unchecked if rule_id in self.config.hidden_rules
+                                   else Qt.Checked)
+                node.setForeground(0, faded if counts and not counts.get(rule_id) else normal)
+        finally:
+            self.rule_tree.blockSignals(False)
 
     def _rule_ticked(self, node, column):
         rule = node.data(0, Qt.UserRole)
-        if rule:
-            self.set_rule_hidden(rule, node.checkState(0) == Qt.Unchecked)
+        if rule and column == 0:
+            hidden = node.checkState(0) == Qt.Unchecked
+            if hidden != (rule in self.config.hidden_rules):
+                # After the signal has returned, so nothing is redrawn under Qt's feet.
+                QTimer.singleShot(0, lambda: self.set_rule_hidden(rule, hidden))
 
     def _rule_selected(self, node, _previous):
         rule = node.data(0, Qt.UserRole) if node is not None else None
