@@ -1,0 +1,68 @@
+name: Build BICE Validator
+
+# Builds tools/BiceValidator into a single BiceValidator.exe that runs without Python,
+# tries it against this checkout, and uploads it as the run's artifact. Runs by itself
+# when the validator changes on master, and can be started by hand from the Actions tab.
+# The exe everyone runs is the one committed in tools/BiceValidator/dist; this is the
+# check that the source still builds into a working one.
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - 'tools/BiceValidator/**'
+      - 'docs/script/**'
+      - '.github/workflows/build-validator.yml'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out what the validator reads
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          # The smoke test validates the real mod, but only its script folders - not
+          # the gigabytes of textures and models under gfx/, apart from the flags.
+          sparse-checkout: |
+            tools/BiceValidator
+            docs
+            events
+            decisions
+            common
+            history
+            technologies
+            units
+            map
+            interface
+            localisation
+            script
+            gfx/flags
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PySide6 and PyInstaller
+        run: python -m pip install -r tools/BiceValidator/requirements-build.txt
+
+      - name: Run the tests
+        working-directory: tools/BiceValidator
+        run: python -m unittest discover -s tests -t .
+
+      - name: Build and try the exe
+        # build.py builds dist/BiceValidator.exe, then has the exe validate this checkout
+        # through its own worker processes and fails if that does not finish.
+        working-directory: tools/BiceValidator
+        run: python build.py
+
+      - name: Upload the exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: BiceValidator
+          path: tools/BiceValidator/dist/BiceValidator.exe
+          if-no-files-found: error
+          retention-days: 30

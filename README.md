@@ -18,6 +18,14 @@ fires, nothing is logged, and nothing looks broken. Five keys that read perfectl
 reasonably do exactly that; they are listed
 [here](docs/script/triggers.md#keys-that-do-not-work).
 
+### Checking your changes
+Run **`tools/BiceValidator/dist/BiceValidator.exe`** - it needs no Python and finds the
+mod by itself. It catches what the game swallows without a word: a bracket in the wrong
+place (and says where it really went wrong), a key the engine does not know, an effect
+written where only conditions are read, an event fired that does not exist. Tick
+**Changed files only** to see just what you touched. See
+[tools/BiceValidator](tools/BiceValidator/README.md).
+
 ### How to build a test version
 There is a GitHub action which builds the installer: a single
 `BlackICE <version> Setup.exe`. Run it and point it at the base game folder (the

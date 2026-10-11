@@ -191,7 +191,15 @@ def reportRedist(useRedist):
     print("  redist bundled: %.1f MB" % (total / 1048576))
 
 
-def build(version, useRedist, fast):
+def validateMod():
+    """Run BICE Validator's release check. False if the mod has a file the game cannot
+    read past - an unmatched bracket, a key with no value - which would otherwise ship."""
+    sys.path.insert(0, os.path.join(REPO, "tools", "BiceValidator"))
+    from bicevalidator import release  # noqa: E402  - needs the tool on the path first
+    return release.check(REPO)
+
+
+def build(version, useRedist, fast, validate=True):
     iscc = findIscc()
     if iscc is None:
         print("Inno Setup 6 was not found.")
@@ -209,6 +217,13 @@ def build(version, useRedist, fast):
             print(problem)
         print("\nFix BlackICE.iss or releaseCommon.MOD_FOLDERS and build again.")
         return 1
+
+    if validate:
+        if not validateMod():
+            print("\nOr build anyway with --skip-validation.")
+            return 1
+    else:
+        print("  validator: skipped (--skip-validation)")
 
     emptyStaging()
     releaseCommon.writeModFile(version, STAGING)
@@ -273,6 +288,8 @@ def main():
                         help="do not bundle the Microsoft runtimes")
     parser.add_argument("--fast", action="store_true",
                         help="skip compression, for testing the wizard only")
+    parser.add_argument("--skip-validation", action="store_true",
+                        help="build even if BICE Validator finds a file the game cannot read")
     arguments = parser.parse_args()
 
     version = arguments.version
@@ -282,7 +299,8 @@ def main():
         print("No version given.")
         return 1
 
-    return build(version, not arguments.no_redist, arguments.fast)
+    return build(version, not arguments.no_redist, arguments.fast,
+                 validate=not arguments.skip_validation)
 
 
 if __name__ == "__main__":
