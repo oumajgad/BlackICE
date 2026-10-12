@@ -181,8 +181,15 @@ Validator server*.
   whether each keyword sits in a block that reads it.
 - **References**: whether what a file names exists elsewhere in the mod. That covers
   events fired and event ids used twice, country tags, provinces, `load_oob` files,
-  modifiers, localisation keys, flags that are tested but never set, and countries with no
-  flag image.
+  modifiers, localisation keys, flags that are tested but never set, countries with no
+  flag image, and event pictures.
+
+  Event pictures (BV212) are looked for in the mod and in the game's own folders, since
+  the mod uses some of the game's. So that check needs the game install. It is found by
+  itself when the game sits beside the checkout or a few levels above it as
+  `Hearts of Iron 3`. Otherwise name it with `--game`, with *File > Choose game folder*
+  in the window, or with `gameFolder` in VS Code. Without it the check is skipped and the
+  run says so.
 
 Tick either or both in the window, or pass `--mode code|references|all`. "Changed files
 only" (`--changed`) reports on the files git sees as modified or new. Declarations and

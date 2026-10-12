@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 
 from . import lexer, parser, rules
 from .declarations import Declarations
+from .pictures import Pictures
 from .schema import Schema, locate_keyword_pages
 from .checks import syntax
 from .checks.script import ScriptChecker
@@ -117,7 +118,7 @@ def _start_pool(root, rels, workers):
         return None
 
 
-def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
+def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None, game=None):
     """Validate the mod at \\p root.
 
     \\p only limits which files are *reported on* (the changed-files mode); declarations
@@ -126,6 +127,8 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
     \\p progress, if given, is called as progress(done, total, message).
     \\p workers is how many processes check the syntax-only files; None means one fewer
     than there are cores, and 1 keeps everything in this process.
+    \\p game is the game install, for the event pictures the mod does not ship; None
+    finds it beside the mod (pictures.find_game).
     """
     started = time.time()
     modes = set(modes)
@@ -206,7 +209,15 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
     if rules.REFERENCES in modes:
         from .checks import references
         tell(total, total, "Checking references")
-        found = references.check(root, result.files, declarations, schema)
+        # Without the game, every picture the mod takes from it would look missing.
+        pictures = Pictures(root, game)
+        if pictures.game is None:
+            result.notes.append(
+                "Event pictures were not checked (BV212): the game install was not found%s."
+                % (" at %s" % game if game else " beside the mod; name it with --game, or "
+                   "with blackice.validator.gameFolder in VS Code"))
+            pictures = None
+        found = references.check(root, result.files, declarations, schema, pictures)
         result.diagnostics.extend(d for d in found if d.file in report_on
                                   or d.file not in result.files)
 

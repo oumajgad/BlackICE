@@ -181,6 +181,13 @@ _RULES = [
          "Value names something that does not exist",
          "The keyword expects a name of a particular kind - an ideology, a government, a "
          "region, a building, a strategic resource - and this one is not declared."),
+    Rule("BV212", "missing-event-picture", WARNING, REFERENCES, "inferred",
+         "Event picture not found",
+         "No `gfx/pictures/events/<name>.tga` or `.dds` of this name, in the mod or in the "
+         "game's own folders, so the event shows no picture. Often a typo. Where the game "
+         "looks rests on where the mod and the game keep their pictures, not on a reading "
+         "of the game. The check needs the game install, to see the pictures the mod does "
+         "not ship; without it the check is skipped and the run says so."),
 ]
 
 RULES = {rule.id: rule for rule in _RULES}

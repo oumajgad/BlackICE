@@ -273,8 +273,12 @@ class BiceServer(LanguageServer):
                 loop = asyncio.get_running_loop()
                 # One process: the server runs hidden under VS Code, and worker processes
                 # of a console program started without a console can each open a window.
+                game = self.settings.game_folder or None
                 result = await loop.run_in_executor(
-                    self.background, lambda: runner.run(mod.root, modes, workers=1))
+                    self.background, lambda: runner.run(mod.root, modes, workers=1, game=game))
+                for note in result.notes:
+                    self.window_log_message(T.LogMessageParams(
+                        T.MessageType.Warning, "BICE Validator: " + note))
                 grouped = {}
                 for d in result.diagnostics:
                     grouped.setdefault(d.file, []).append(d)
