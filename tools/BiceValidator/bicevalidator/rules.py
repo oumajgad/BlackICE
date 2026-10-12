@@ -293,6 +293,18 @@ _RULES = [
          "Variable set but never tested",
          "Nothing in events, decisions, data files or Lua tests this variable with "
          "`check_variable`. Harmless, but often the other half of a typo."),
+    Rule("BV217", "oob-place-unguarded", WARNING, REFERENCES, "inferred",
+         "Units loaded where nothing checks who holds the province",
+         "`load_oob` puts each unit in the province its file names, whoever holds it - in "
+         "enemy land the unit starts in battle or cut off. So each province the file puts a "
+         "unit in or bases one at should have its controller tested on every way to the "
+         "load: `controls = <id>`, or `<id> = { controller = ... }` or `controlled_by`, in "
+         "the event's trigger, the decision's potential or allow, a `limit` around the load, "
+         "or the same on whatever fires the event, back through the chain. A test under "
+         "`not` does not count, and under `or` only a province every branch tests. Each "
+         "load is checked on its own, so a fallback file needs tests of its own provinces. "
+         "What the game does with a unit in a province someone else holds is the "
+         "maintainer's account; the rule's own reading is of the files."),
 ]
 
 RULES = {rule.id: rule for rule in _RULES}

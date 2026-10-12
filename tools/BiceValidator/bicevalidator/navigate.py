@@ -19,6 +19,7 @@ from .checks.data import RANK_WANTED, UNIT_ARMS
 from .checks.references import FLAG_KEY, NAMED_VALUES, VARIABLE_KEYS
 from .declarations import Kinds
 from .index import MODIFIER_USES, ON_ACTIONS, Source
+from .guards import guards_of, path_guards, unit_places
 from .leaders import date_text, rank_phrase
 from .pictures import PictureError
 
@@ -37,6 +38,7 @@ _PROVINCE_VALUES = {"capital", "location", "base"}
 # Keys whose number is a leader: an order of battle's commander, and the effect.
 _LEADER_VALUES = {"leader", "kill_leader"}
 _NAME_LENGTH = 40
+_PLACES_SHOWN = 15
 _COLOUR = re.compile(r"§.")
 _TITLE_LENGTH = 60
 _DESC_LENGTH = 700
@@ -613,7 +615,45 @@ class Navigator:
         rel = "history/units/" + target.name
         if not os.path.exists(os.path.join(self.session.root, rel)):
             return "**No file** `%s`" % rel
-        return "Order of battle " + self.link(Place(rel, 1))
+        text = "Order of battle " + self.link(Place(rel, 1))
+        places = unit_places(parser.parse(lexer.read(self.session.root, rel).text).root)
+        if not places or target.node is None:
+            return text
+        guarded = self._load_guards(target.node)
+        rows = []
+        for ident, line in places[:_PLACES_SHOWN]:
+            name = plain(self.loc.text("PROV" + ident) or "") or "province"
+            mark = "✓" if ident in guarded else "✗ nothing checks who holds it"
+            rows.append("- %s (%s) %s" % (name, ident, mark))
+        if len(places) > _PLACES_SHOWN:
+            rows.append("- and %d more" % (len(places) - _PLACES_SHOWN))
+        open_ = sum(1 for ident, _ in places if ident not in guarded)
+        text += "\n\nPuts units in %d province%s, %s:\n\n" % (
+            len(places), "" if len(places) == 1 else "s",
+            "each one's controller tested on every way here" if not open_ else
+            "%d with nothing on the way here testing its controller (BV217)" % open_)
+        return text + "\n".join(rows)
+
+    def _load_guards(self, node):
+        """The provinces whose controller is sure where \\p node, a `load_oob`, runs: the
+        limits around it, and what guards its event - back through the chain - or its
+        decision."""
+        guards = set(path_guards(node))
+        top = node
+        while top.parent is not None and top.parent.key is not None:
+            top = top.parent
+        chains = self.index.chains()
+        if top.lkey in S.EVENT_TYPES:
+            ident = top.child("id")
+            if ident is not None and ident.value:
+                guards |= chains.event_guards(ident.value)
+                guards |= guards_of(top.child("trigger"))
+        elif top.lkey in S.DECISION_CATEGORIES:
+            decision = node
+            while decision.parent is not top:
+                decision = decision.parent
+            guards |= guards_of(decision.child("potential")) | guards_of(decision.child("allow"))
+        return guards
 
     def _hover_data_key(self, target):
         spec = target.spec

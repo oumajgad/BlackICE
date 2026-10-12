@@ -201,6 +201,17 @@ Validator server*.
   modifiers, localisation keys, flags and variables that are tested but never set,
   countries with no flag image, and event pictures.
 
+  **Where `load_oob` puts units** (BV217). A loaded unit goes to the province its file
+  names, whoever holds it, so in enemy land it starts in battle or cut off. Each province
+  a file puts a unit in or bases one at should have its controller tested on every way to
+  the load - `controls = <id>`, or `<id> = { controller = ... }` or `controlled_by` - in
+  the event's trigger, the decision's potential or allow, a `limit` around the load, or
+  the same on whatever fires the event, back through the chain of events
+  (`guards.py`, `chains.py`). A test under `not` does not count; under `or`, only a
+  province every branch tests. Each load is checked on its own, so a fallback file needs
+  its own tests. Units in a file's `unit_deployment` go to the pool and are not placed.
+  Hovering the file name after `load_oob =` lists its provinces, each marked tested or not.
+
   **Variables** (BV215, BV216) are matched without case, as the game matches them
   ([`FINDINGS-negatives.md`](../../../hoi3-reversing/findings/FINDINGS-negatives.md),
   section 7). A `check_variable` on one nothing sets does not fail: the game makes it at 0

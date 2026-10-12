@@ -19,6 +19,7 @@ from dataclasses import dataclass, field
 
 from . import lexer, parser, schema as S
 from .chains import Chains
+from .guards import guards_of, path_guards
 from .checks.references import FLAG_KEY, LUA_MIDDLE, LUA_PREFIX, LUA_SUFFIX, MODIFIER_KEYS, \
     VARIABLE_KEYS, VARIABLE_TEXT, VARIABLE_WHICH
 
@@ -61,6 +62,8 @@ class Site:
     verb: str = ""
     source: Source = None   # for a fire, what fires it
     name: str = ""          # the name as written, where it is compared without case
+    guards: frozenset = frozenset()     # for a fire or a load: provinces the limits around
+                                        # it guard (guards.py)
 
 
 @dataclass
@@ -76,6 +79,7 @@ class Event:
     options: list = field(default_factory=list)    # (name as written, line, col)
     triggered_only: bool = False    # `is_triggered_only = yes`
     has_trigger: bool = False
+    guards: frozenset = frozenset()     # provinces its trigger guards (guards.py)
 
     @property
     def fires_itself(self):
@@ -92,6 +96,7 @@ class Decision:
     line: int
     col: int
     end_line: int
+    guards: frozenset = frozenset()     # provinces its potential and allow guard (guards.py)
 
 
 @dataclass
@@ -102,6 +107,7 @@ class FileFacts:
     flags: list = field(default_factory=list)       # (scope, lower name, Site)
     modifiers: list = field(default_factory=list)   # (lower name, Site)
     variables: list = field(default_factory=list)   # (lower name, Site: set, change or check)
+    loads: list = field(default_factory=list)       # (order of battle file, Site of load_oob)
 
 
 def indexes(rel):
@@ -147,9 +153,10 @@ def facts(rel, root):
                 continue
             for decision in category.children:
                 if decision.is_block and decision.key:
-                    out.decisions.append(Decision(decision.key, category.key, rel,
-                                                  decision.line, decision.col,
-                                                  _end_line(decision)))
+                    out.decisions.append(Decision(
+                        decision.key, category.key, rel, decision.line, decision.col,
+                        _end_line(decision), guards_of(decision.child("potential")) |
+                        guards_of(decision.child("allow"))))
                     _names(out, rel, decision, Source("decision", decision.key, rel,
                                                       decision.line))
     elif rel == ON_ACTIONS:
@@ -175,11 +182,16 @@ def _fire(out, rel, node, source):
             or node.parent.key is None:
         return False
     if node.value and node.value.isdigit():
-        out.fires.append((node.value, _value_site(rel, node, "fire", source)))
+        site = _value_site(rel, node, "fire", source)
     elif node.is_block:
         ident = node.child("id")
-        if ident is not None and ident.value and ident.value.isdigit():
-            out.fires.append((ident.value, _value_site(rel, ident, "fire", source)))
+        if not (ident is not None and ident.value and ident.value.isdigit()):
+            return True
+        site = _value_site(rel, ident, "fire", source)
+    else:
+        return True
+    site.guards = path_guards(node)
+    out.fires.append((ident.value if node.is_block else node.value, site))
     return True
 
 
@@ -190,6 +202,11 @@ def _names(out, rel, top, source):
         if low is None or node.op is None:
             continue
         if node is not top and _fire(out, rel, node, source):
+            continue
+        if low == "load_oob" and node.value:
+            site = _value_site(rel, node, "load", source)
+            site.guards = path_guards(node)
+            out.loads.append((node.value, site))
             continue
         if low in VARIABLE_KEYS and node.is_block:
             which = node.child("which")
@@ -232,6 +249,7 @@ def _event(rel, node):
     event.triggered_only = only is not None and (only.value or "").lower() == "yes"
     trigger = node.child("trigger")
     event.has_trigger = trigger is not None and trigger.is_block
+    event.guards = guards_of(trigger)
     return event
 
 
@@ -309,11 +327,13 @@ class ModIndex:
         with self._lock:
             if self._merged is None:
                 events, fires, flags, modifiers, decisions = {}, {}, {}, {}, {}
-                variables = {}
+                variables, loads = {}, {}
                 for rel in sorted(self._files):
                     part = self._files[rel]
                     for name, site in part.variables:
                         variables.setdefault(name, []).append(site)
+                    for name, site in part.loads:
+                        loads.setdefault(name.lower(), []).append(site)
                     for event in part.events:
                         events.setdefault(event.id, []).append(event)
                     for ident, site in part.fires:
@@ -326,7 +346,7 @@ class ModIndex:
                         decisions.setdefault(decision.name.lower(), []).append(decision)
                 self._merged = {"events": events, "fires": fires, "flags": flags,
                                 "modifiers": modifiers, "decisions": decisions,
-                                "variables": variables}
+                                "variables": variables, "loads": loads}
             return self._merged
 
     def file(self, rel):
@@ -343,6 +363,11 @@ class ModIndex:
     def fires(self, ident):
         return self._tables()["fires"].get(ident, [])
 
+    def loads(self, oob):
+        """The Sites of every `load_oob` of order of battle \\p oob (as written after
+        `load_oob =`, compared without case)."""
+        return self._tables()["loads"].get(oob.lower(), [])
+
     def chains(self):
         """Which event fires which, and which can ever happen (chains.Chains), made when
         first asked for after any change."""
@@ -350,7 +375,8 @@ class ModIndex:
         with self._lock:
             found = tables.get("chains")
             if found is None:
-                found = tables["chains"] = Chains(tables["events"], tables["fires"])
+                found = tables["chains"] = Chains(tables["events"], tables["fires"],
+                                                  tables["decisions"])
             return found
 
     def decisions(self, name=None):

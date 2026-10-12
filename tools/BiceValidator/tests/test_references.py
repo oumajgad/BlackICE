@@ -260,6 +260,101 @@ class VariablesTest(unittest.TestCase):
         self.assertIn("Counted", [i.label for i in items])
 
 
+GUARD_EVENTS = dedent("""
+    country_event = {
+        id = 40
+        is_triggered_only = yes
+        option = {
+            name = A
+            any_country = {
+                limit = { tag = GER controls = 1 }
+                load_oob = in_one.txt
+            }
+            any_country = {
+                limit = { tag = GER not = { controls = 1 } }
+                load_oob = in_two.txt
+            }
+            any_country = {
+                limit = { or = { controls = 1 controls = 2 } or = { controls = 2 2 = { controller = { tag = GER } } } }
+                load_oob = in_both.txt
+            }
+        }
+    }
+    country_event = {
+        id = 41
+        is_triggered_only = yes
+        option = { name = A load_oob = in_both.txt }
+    }
+    """)
+
+
+class GuardsTest(unittest.TestCase):
+    """load_oob puts units where its file says: each province should have its controller
+    tested on every way to the load - here by the decision that fires event 41."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = TinyMod()
+        cls.mod.write("events/g.txt", GUARD_EVENTS)
+        cls.mod.write("decisions/g.txt", dedent("""
+            political_decisions = {
+                fire_41 = {
+                    potential = { tag = GER }
+                    allow = { controls = 1 2 = { controlled_by = THIS } }
+                    effect = { country_event = 40 country_event = 41 }
+                }
+            }
+            """))
+        for name, places in (("in_one.txt", "1"), ("in_two.txt", "2"), ("in_both.txt", "1 2")):
+            units = "".join('division = { name = "D%s" location = %s }\n' % (p, p)
+                            for p in places.split())
+            cls.mod.write("history/units/" + name, units + "unit_deployment = { air = { location = 2 } }\n")
+        result = runner.run(cls.mod.root, [rules.REFERENCES], workers=1)
+        cls.found = sorted((d.line, d.message) for d in result.diagnostics if d.rule == "BV217")
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mod.close()
+
+    def test_each_load_against_its_own_tests(self):
+        # The decision tests 1 and 2 before firing either event, so every load is guarded.
+        self.assertEqual(self.found, [])
+
+    def test_without_the_decision(self):
+        mod = TinyMod()
+        try:
+            mod.write("events/g.txt", GUARD_EVENTS)
+            mod.write("decisions/g.txt", "political_decisions = {\n\tfire = { effect = { "
+                                         "country_event = 40 country_event = 41 } }\n}\n")
+            for name, places in (("in_one.txt", "1"), ("in_two.txt", "2"),
+                                 ("in_both.txt", "1 2")):
+                mod.write("history/units/" + name, "".join(
+                    'division = { name = "D%s" location = %s }\n' % (p, p) for p in places.split()))
+            result = runner.run(mod.root, [rules.REFERENCES], workers=1)
+            found = [d.message for d in result.diagnostics if d.rule == "BV217"]
+        finally:
+            mod.close()
+        # in_one is guarded by its limit; the fallback's `not` guards nothing; the first `or`
+        # guards neither province alone, the second guards 2; event 41's load nothing.
+        self.assertEqual(sorted(found), [
+            "in_both.txt puts units in 1 province nothing checks the controller of: 1",
+            "in_both.txt puts units in 2 provinces nothing checks the controller of: 1, 2",
+            "in_two.txt puts units in 1 province nothing checks the controller of: 2",
+        ])
+
+    def test_the_hover_marks_each_province(self):
+        from bicevalidator.session import Session
+        session = Session(self.mod.root)
+        nav = session.navigator
+        parsed = session.parse(GUARD_EVENTS)
+        lines = GUARD_EVENTS.split("\n")
+        line = next(i for i, t in enumerate(lines, 1) if "load_oob = in_two.txt" in t)
+        target = nav.target("events/g.txt", parsed, line, lines[line - 1].index("in_two") + 2)
+        text = nav.hover(target)
+        self.assertIn("Puts units in 1 province, each one's controller tested", text)
+        self.assertIn("(2) ✓", text)
+
+
 class PicturesTest(unittest.TestCase):
     """BV212: a picture is found in the mod or in the game; without the game, not checked."""
 

@@ -185,7 +185,7 @@ def check(root, files, decl, schema, pictures=None):
         if ident not in c.events:
             c.report("BV201", path, node, "Event %s does not exist" % ident)
 
-    _event_chains(c, files)
+    _event_chains(c, files, root)
     elsewhere = _flags_elsewhere(root)
     _flags(c, elsewhere)
     _variables(c, root, elsewhere[2], elsewhere[3])
@@ -342,12 +342,13 @@ def _fire(c, rel, node):
             c.fires.append((rel, ident, ident.value))
 
 
-def _event_chains(c, files):
+def _event_chains(c, files, root):
     """BV213 and BV214: events that can never happen, because nothing that happens fires
-    them (chains.py)."""
+    them (chains.py); and BV217, units loaded where nothing checks who holds the province
+    (guards.py)."""
     from ..chains import Chains
     from ..index import facts, indexes
-    events, fires = {}, {}
+    events, fires, decisions, loads = {}, {}, {}, []
     for rel in sorted(files):
         if not indexes(rel):
             continue
@@ -356,7 +357,11 @@ def _event_chains(c, files):
             events.setdefault(event.id, []).append(event)
         for ident, site in part.fires:
             fires.setdefault(ident, []).append(site)
-    chains = Chains(events, fires)
+        for decision in part.decisions:
+            decisions.setdefault(decision.name.lower(), []).append(decision)
+        loads += part.loads
+    chains = Chains(events, fires, decisions)
+    _unguarded_loads(c, root, chains, loads)
     for event, why, sources in chains.dead():
         site = event.id_site
         context = "%s %s" % (event.type, event.id)
@@ -400,6 +405,55 @@ def _flags(c, elsewhere):
                 continue
             c.report("BV209", rel, node, "%s flag `%s` is set but never tested"
                      % (scope.capitalize(), node.value))
+
+
+def _unguarded_loads(c, root, chains, loads):
+    """BV217: a `load_oob` whose file puts units in provinces whose controller nothing on
+    the way to it has tested."""
+    from ..guards import unit_places
+    from .. import lexer
+    places = {}
+    names = None
+    for oob, site in loads:
+        if oob not in places:
+            rel = "history/units/" + oob
+            places[oob] = unit_places(parser.parse(lexer.read(root, rel).text).root) \
+                if os.path.exists(os.path.join(root, rel)) else []
+        guarded = chains.site_guards(site)
+        open_ = [(ident, line) for ident, line in places[oob] if ident not in guarded]
+        if not open_:
+            continue
+        if names is None:
+            names = _province_names(root)
+        listed = ", ".join("%s (%s)" % (names[i], i) if i in names else i
+                           for i, _ in open_[:4])
+        if len(open_) > 4:
+            listed += " and %d more" % (len(open_) - 4)
+        c.out.append(Diagnostic(
+            "BV217", site.file, site.line, site.col,
+            "%s puts units in %d province%s nothing checks the controller of: %s"
+            % (oob, len(open_), "" if len(open_) == 1 else "s", listed),
+            context="load_oob = %s" % oob,
+            hint="A loaded unit goes where its file says, even into a province an enemy "
+                 "holds. Test each with `controls = <id>` or `<id> = { controller = ... }` in "
+                 "the event's trigger, the decision's allow, a limit around the load, or "
+                 "whatever fires the event - and load a fallback where the test fails. Hover "
+                 "the file name in VS Code for which provinces are tested.",
+            related=[Related("unit placed here", "history/units/" + oob, line, 1)
+                     for _, line in open_[:10]]))
+
+
+def _province_names(root):
+    """Province id -> its English name, from the PROV<id> localisation keys."""
+    names = {}
+    for path in sorted(glob.glob(os.path.join(root, "localisation", "*.csv"))):
+        for line in _read_text(path).splitlines():
+            if line[:4].upper() == "PROV":
+                parts = line.split(";")
+                key = parts[0].strip()
+                if key[4:].isdigit() and len(parts) > 1 and parts[1].strip():
+                    names.setdefault(key[4:], parts[1].strip())
+    return names
 
 
 def _variables(c, root, lua, pieces):

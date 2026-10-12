@@ -30,6 +30,9 @@ BICE Validator in VS Code, for Hearts of Iron 3 script files.
 - **The chain of events**: hovering an event says what fires it and what it fires, and
   *Show Call Hierarchy* (Shift+Alt+H) walks the chain as a tree in both directions. Events
   that can never happen - triggered only and fired by nothing that happens - are reported.
+- **Where `load_oob` puts units**: hovering the file lists its provinces, each marked by
+  whether something on the way to the load tests who holds it, and a load with untested
+  provinces is reported.
 - **Find all references** for events, flags, variables and modifiers.
 - **An outline of events and decisions**, and Ctrl+T to find any of them by id or title.
 - **Event titles** shown after `country_event = <id>`.

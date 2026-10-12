@@ -19,11 +19,14 @@ from collections import defaultdict
 
 
 class Chains:
-    def __init__(self, events, fires):
+    def __init__(self, events, fires, decisions=None):
         """\\p events: id -> [index.Event]; \\p fires: id -> [index.Site], each with its
-        source."""
+        source; \\p decisions: lower name -> [index.Decision], for the provinces their
+        conditions guard."""
         self.events = events
         self.fires = fires
+        self.decisions = decisions or {}
+        self._guards = None
         self.fired_by_event = defaultdict(list)     # source event id -> [(target, Site)]
         self.outside = defaultdict(list)            # source key -> [(target, Site)]
         for target, sites in fires.items():
@@ -108,6 +111,62 @@ class Chains:
                         following.append(target)
             frontier = following
         return seen.get(ident, [])
+
+
+    # --- the provinces whose controller is sure wherever something runs ---------------
+
+    def event_guards(self, ident):
+        """The provinces whose controller has been tested on every way event \\p ident
+        happens (guards.py): its own trigger - which the game tests again when the event
+        is fired - and, common to every way it is reached, what guards the place that fires
+        it and whatever that is in, back through the chain. An event that fires itself
+        has a way with no guards but its trigger."""
+        if self._guards is None:
+            self._guards = self._settle()
+        return self._guards.get(ident, frozenset())
+
+    def _settle(self):
+        # Grown from nothing until nothing changes: a loop adds no guard that its way in
+        # does not give, however the loop runs.
+        known = {ident: frozenset() for ident in self.events}
+        changed = True
+        while changed:
+            changed = False
+            for ident, found in self.events.items():
+                event = found[0]
+                ways = [frozenset()] if event.fires_itself else []
+                ways += [self._way(site, known) for site in self.fires.get(ident, ())]
+                common = frozenset.intersection(*ways) if ways else frozenset()
+                settled = event.guards | common
+                if settled != known[ident]:
+                    known[ident] = settled
+                    changed = True
+        return known
+
+    def _way(self, site, known):
+        source = site.source
+        guards = site.guards
+        if source is None:
+            return guards
+        if source.kind == "event":
+            return guards | known.get(source.name, frozenset())
+        if source.kind == "decision":
+            return guards | self.decision_guards(source.name)
+        return guards
+
+    def decision_guards(self, name):
+        found = self.decisions.get(name.lower())
+        return found[0].guards if found else frozenset()
+
+    def site_guards(self, site):
+        """The provinces whose controller is sure where \\p site runs - a `load_oob`, say:
+        the limits around it, and what guards the event or decision it is in."""
+        source = site.source
+        if source is not None and source.kind == "event":
+            return site.guards | self.event_guards(source.name)
+        if source is not None and source.kind == "decision":
+            return site.guards | self.decision_guards(source.name)
+        return site.guards
 
 
 def _number(ident):
