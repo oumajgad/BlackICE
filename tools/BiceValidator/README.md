@@ -91,7 +91,8 @@ it out of `DROP` there.
 - **Hover.** On a keyword, its description and syntax from `docs/script`. On a fired
   event, its title, description and options. On a localisation key, its English text.
   On a country, a province, a technology, a unit, a building or a modifier, its name and
-  where it is declared. On a flag, how often it is set, tested and cleared.
+  where it is declared. On a flag, how often it is set, tested and cleared; on a variable
+  (`which = ...`), how often it is set, changed and tested, and where Lua may set it.
 - **Event pictures.** Hovering `picture = "Supply-GER"` shows the picture, and completion
   after `picture =` lists every picture with a preview. Pictures are looked for in the
   mod's `gfx/pictures/events` and then in the game's (`tfh/` first). The game is found by
@@ -109,7 +110,8 @@ it out of `DROP` there.
   it fires. An event that never happens says so there too.
 - **Find all references** (Shift+F12). For an event, everything that fires it, including
   `common/on_actions.txt`. For a flag, everywhere it is set, tested or cleared, in the
-  Lua scripts as well. For a modifier, everywhere it is added, tested or removed.
+  Lua scripts as well; for a variable, everywhere it is set, changed or tested, the same
+  way. For a modifier, everywhere it is added, tested or removed.
 - **Outline and Go to Symbol.** The outline lists a file's events by id and title, with
   their options, or its decisions by category. Ctrl+T finds any event or decision in the
   mod by id, name or title.
@@ -196,8 +198,16 @@ Validator server*.
   whether each keyword sits in a block that reads it.
 - **References**: whether what a file names exists elsewhere in the mod. That covers
   events fired and event ids used twice, country tags, provinces, `load_oob` files,
-  modifiers, localisation keys, flags that are tested but never set, countries with no
-  flag image, and event pictures.
+  modifiers, localisation keys, flags and variables that are tested but never set,
+  countries with no flag image, and event pictures.
+
+  **Variables** (BV215, BV216) are matched without case, as the game matches them
+  ([`FINDINGS-negatives.md`](../../../hoi3-reversing/findings/FINDINGS-negatives.md),
+  section 7). A `check_variable` on one nothing sets does not fail: the game makes it at 0
+  and compares, so the finding says whether that test is then always true or always false.
+  The Lua scripts set and read variables too, and build many of the names out of pieces -
+  `buildingtype .. "_count_TECH"` - so a name Lua writes in quotes, or one that starts,
+  ends or has in its middle a piece Lua joins with `..`, counts as set and tested there.
 
   It also follows **the chain of events**. An event happens when the game fires it on its
   own - it has a `trigger` and is not `is_triggered_only` - or when something that happens

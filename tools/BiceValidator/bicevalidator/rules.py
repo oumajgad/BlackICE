@@ -282,6 +282,17 @@ _RULES = [
          "events - so this one never happens either. The chain is followed back as far as "
          "it goes. Whether a trigger can ever be true is not asked, so an event that "
          "passes may still never happen in play; one reported here cannot."),
+    Rule("BV215", "variable-never-set", WARNING, REFERENCES, "confirmed",
+         "Variable tested but never set",
+         "No event, decision, data file or Lua script sets or changes this variable. "
+         "`check_variable` on a variable nothing has set does not fail: it makes the variable "
+         "at 0 and compares 0 with `value`, so the test is always true where `value` is 0 or "
+         "less and always false otherwise (reversing/findings/FINDINGS-numtriggers.md). Often "
+         "a typo in one of the two names. Names are compared without case, as the game does."),
+    Rule("BV216", "variable-never-tested", INFO, REFERENCES, "inferred",
+         "Variable set but never tested",
+         "Nothing in events, decisions, data files or Lua tests this variable with "
+         "`check_variable`. Harmless, but often the other half of a typo."),
 ]
 
 RULES = {rule.id: rule for rule in _RULES}

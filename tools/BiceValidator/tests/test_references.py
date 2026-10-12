@@ -184,6 +184,82 @@ class ChainsTest(unittest.TestCase):
         self.assertEqual(nav.event_item("13").detail, "never happens · events/c.txt")
 
 
+VARIABLE_EVENTS = dedent("""
+    country_event = {
+        id = 30
+        is_triggered_only = yes
+        trigger = {
+            check_variable = { which = Counted value = 1 }
+            check_variable = { which = never_set value = 2 }
+            check_variable = { which = never_set_low value = 0 }
+            check_variable = { which = tank_built value = 1 }
+            check_variable = { which = from_lua value = 1 }
+        }
+        option = {
+            name = A
+            set_variable = { which = counted value = 1 }
+            change_variable = { which = "lonely" value = 1 }
+            set_variable = { which = tested_in_tech value = 1 }
+        }
+    }
+    """)
+
+
+class VariablesTest(unittest.TestCase):
+    """Variables set and tested: names without case, as the game compares them, and Lua's
+    names - in quotes, or built from pieces - counting as both."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = TinyMod()
+        cls.mod.write("events/v.txt", VARIABLE_EVENTS)
+        cls.mod.write("technologies/t.txt",
+                      "tech = { allow = { check_variable = { which = tested_in_tech value = 1 } } }\n")
+        cls.mod.write("script/v.lua", 'local a = GetVariable(CString("from_lua"))\n'
+                                      'local b = CString(kind .. "_built")\n')
+        result = runner.run(cls.mod.root, [rules.REFERENCES], workers=1)
+        cls.found = sorted((d.rule, d.message, d.hint) for d in result.diagnostics
+                           if d.rule in ("BV215", "BV216"))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mod.close()
+
+    def test_set_and_tested(self):
+        self.assertEqual({(r, m) for r, m, _ in self.found}, {
+            ("BV215", "Variable `never_set` is tested but never set"),
+            ("BV215", "Variable `never_set_low` is tested but never set"),
+            ("BV216", "Variable `lonely` is set but never tested"),
+        })
+        hints = {m.split("`")[1]: h for _, m, h in self.found}
+        self.assertIn("always false", hints["never_set"])
+        self.assertIn("always true", hints["never_set_low"])
+
+    def test_the_editor_follows_a_variable(self):
+        from bicevalidator.session import Session
+        session = Session(self.mod.root)
+        nav = session.navigator
+        parsed = session.parse(VARIABLE_EVENTS)
+        lines = VARIABLE_EVENTS.split("\n")
+        line = next(i for i, t in enumerate(lines, 1) if "which = Counted" in t)
+        target = nav.target("events/v.txt", parsed, line, lines[line - 1].index("Counted") + 2)
+        self.assertEqual(target.what, "variable")
+        text = nav.hover(target)
+        self.assertIn("Set 1 time and tested 1 time.", text)
+        self.assertIn("`Counted`, `counted`", text)
+        [where] = nav.definitions(target)
+        self.assertEqual(where.line, next(i for i, t in enumerate(lines, 1)
+                                          if "which = counted" in t))
+        line = next(i for i, t in enumerate(lines, 1) if "tested_in_tech" in t)
+        target = nav.target("events/v.txt", parsed, line,
+                            lines[line - 1].index("tested_in_tech") + 2)
+        self.assertEqual(sorted(p.file for p in nav.references(target)),
+                         ["events/v.txt", "technologies/t.txt"])
+        items, _ = nav.completions("events/v.txt", parsed, line,
+                                   lines[line - 1].index("tested_in_tech") + 1)
+        self.assertIn("Counted", [i.label for i in items])
+
+
 class PicturesTest(unittest.TestCase):
     """BV212: a picture is found in the mod or in the game; without the game, not checked."""
 

@@ -45,8 +45,21 @@ FLAG_TEXT = re.compile(r"(set|clr|has)_(country|global|province)_flag\s*=\s*\"?(
                        re.IGNORECASE)
 # Lua names a flag as a string; any quoted word there counts as a possible use.
 LUA_STRING = re.compile(r"[\"']([\w.\-]+)[\"']")
+# Lua also builds names out of pieces - `buildingtype .. "_count_TECH"`,
+# `"zDsafe_requestedBuilding" .. name` - so a quoted piece joined on with `..` is the end,
+# or the start, of names nothing can list.
+LUA_PREFIX = re.compile(r"[\"']([\w.\-]+)[\"']\s*\.\.")
+LUA_SUFFIX = re.compile(r"\.\.\s*[\"']([\w.\-]+)[\"']")
+LUA_MIDDLE = re.compile(r"\.\.\s*[\"']([\w.\-]+)[\"']\s*\.\.")
 
 LOC_KEY = re.compile(r"^[A-Za-z0-9_.\-]+$")
+
+# The three keywords that name a variable, each `{ which = <name> value = <number> }`, and
+# what each does with it. A variable is a country's, and its name is matched without case
+# (reversing/findings/FINDINGS-negatives.md, section 7).
+VARIABLE_KEYS = {"set_variable": "set", "change_variable": "change", "check_variable": "check"}
+VARIABLE_TEXT = re.compile(r"(set|change|check)_variable\s*=\s*\{([^{}]*)\}", re.IGNORECASE)
+VARIABLE_WHICH = re.compile(r"\bwhich\s*=\s*\"?([\w.\-]+)", re.IGNORECASE)
 
 
 def _strip_comments(text):
@@ -81,9 +94,30 @@ def _flags_elsewhere(root):
             for verb, scope, name in FLAG_TEXT.findall(_strip_comments(_read_text(path))):
                 (tested if verb.lower() == "has" else set_)[scope.lower()].add(name.lower())
     lua = set()
+    pieces = (set(), set(), set())
     for path in glob.glob(os.path.join(root, "script", "**", "*.lua"), recursive=True):
-        lua.update(w.lower() for w in LUA_STRING.findall(_read_text(path)))
-    return set_, tested, lua
+        text = _read_text(path)
+        lua.update(w.lower() for w in LUA_STRING.findall(text))
+        for found, side in ((LUA_PREFIX, 0), (LUA_SUFFIX, 1), (LUA_MIDDLE, 2)):
+            pieces[side].update(p.lower() for p in found.findall(text)
+                                if len(p) >= 3 and any(ch.isalpha() for ch in p))
+    return set_, tested, lua, pieces
+
+
+def _variables_elsewhere(root):
+    """Variable names set (or changed) and tested outside events and decisions: the
+    technologies' and the other data files' conditions and effects."""
+    set_, tested = set(), set()
+    for folder, pattern in (("common", "**/*.txt"), ("technologies", "**/*.txt"),
+                            ("history", "countries/*.txt"), ("units", "*.txt")):
+        for path in glob.glob(os.path.join(root, folder, pattern), recursive=True):
+            text = _read_text(path)
+            if "_variable" not in text:
+                continue
+            for verb, body in VARIABLE_TEXT.findall(_strip_comments(text)):
+                for name in VARIABLE_WHICH.findall(body):
+                    (tested if verb.lower() == "check" else set_).add(name.lower())
+    return set_, tested
 
 
 class _Collector:
@@ -95,6 +129,8 @@ class _Collector:
         self.fires = []             # (file, node, id)
         self.flag_set = defaultdict(dict)     # scope -> name -> (file, node)
         self.flag_tested = defaultdict(dict)
+        self.variable_set = {}                # lower name -> (file, `which` node)
+        self.variable_tested = {}             # lower name -> (file, `which` node, block)
         self.picture_spelling = None          # lower name -> as the file spells it
 
     def picture_names(self):
@@ -150,7 +186,9 @@ def check(root, files, decl, schema, pictures=None):
             c.report("BV201", path, node, "Event %s does not exist" % ident)
 
     _event_chains(c, files)
-    _flags(c, root)
+    elsewhere = _flags_elsewhere(root)
+    _flags(c, elsewhere)
+    _variables(c, root, elsewhere[2], elsewhere[3])
     _flag_images(c, root, decl)
     return c.out
 
@@ -234,6 +272,16 @@ def _node(c, rel, node, tag_keys, province_keys, root):
             return
         if not decl.has(Kinds.PROVINCE, low):
             c.report("BV205", rel, node, "Province %s does not exist" % low, at_value=False)
+        return
+
+    if low in VARIABLE_KEYS and node.is_block:
+        which = node.child("which")
+        if which is not None and which.value:
+            name = which.value.lower()
+            if VARIABLE_KEYS[low] == "check":
+                c.variable_tested.setdefault(name, (rel, which, node))
+            else:
+                c.variable_set.setdefault(name, (rel, which))
         return
 
     value = node.value
@@ -336,8 +384,8 @@ def _event_chains(c, files):
                  "chain."))
 
 
-def _flags(c, root):
-    set_elsewhere, tested_elsewhere, lua = _flags_elsewhere(root)
+def _flags(c, elsewhere):
+    set_elsewhere, tested_elsewhere, lua, _ = elsewhere
     for scope, names in c.flag_tested.items():
         for name, (rel, node) in names.items():
             if name in c.flag_set[scope] or name in set_elsewhere[scope] or name in lua:
@@ -352,6 +400,45 @@ def _flags(c, root):
                 continue
             c.report("BV209", rel, node, "%s flag `%s` is set but never tested"
                      % (scope.capitalize(), node.value))
+
+
+def _variables(c, root, lua, pieces):
+    """BV215 and BV216: a variable tested that nothing sets, and one set that nothing
+    tests. Names are compared without case, as the game compares them. Lua reads and sets
+    variables too, so a name its scripts write in quotes (\\p lua, lower case) counts as
+    both, and so does one that starts, ends or has in its middle a piece Lua builds names
+    from (\\p pieces: prefixes, suffixes and middles)."""
+    set_elsewhere, tested_elsewhere = _variables_elsewhere(root)
+    prefixes, suffixes, middles = pieces
+
+    def in_lua(name):
+        return name in lua or name.startswith(tuple(prefixes)) \
+            or name.endswith(tuple(suffixes)) or any(m in name for m in middles)
+
+    for name, (rel, which, block) in sorted(c.variable_tested.items()):
+        if name in c.variable_set or name in set_elsewhere or in_lua(name):
+            continue
+        value = block.child("value")
+        hint = ("`check_variable` on a variable nothing has set finds nothing, makes it at 0 "
+                "and compares 0 with `value`")
+        number = _number(value.value) if value is not None else 0.0
+        if number is not None:
+            hint += ", so this test is always %s." % ("true" if number <= 0 else "false")
+        else:
+            hint += "."
+        c.report("BV215", rel, which, "Variable `%s` is tested but never set" % which.value,
+                 hint=hint + " Often a typo in one of the two names.")
+    for name, (rel, which) in sorted(c.variable_set.items()):
+        if name in c.variable_tested or name in tested_elsewhere or in_lua(name):
+            continue
+        c.report("BV216", rel, which, "Variable `%s` is set but never tested" % which.value)
+
+
+def _number(text):
+    try:
+        return float(text)
+    except (TypeError, ValueError):
+        return None
 
 
 def _flag_images(c, root, decl):

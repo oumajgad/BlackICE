@@ -16,16 +16,17 @@ from dataclasses import dataclass, field
 from . import lexer, parser, schema as S
 from .checks import script as C
 from .checks.data import RANK_WANTED, UNIT_ARMS
-from .checks.references import FLAG_KEY, NAMED_VALUES
+from .checks.references import FLAG_KEY, NAMED_VALUES, VARIABLE_KEYS
 from .declarations import Kinds
 from .index import MODIFIER_USES, ON_ACTIONS, Source
 from .leaders import date_text, rank_phrase
 from .pictures import PictureError
 
 KEYWORD, BAD_KEY, DECLARED, EVENT, LOC, TAG, PROVINCE, FLAG, MODIFIER, OOB, DECISION, \
-    PICTURE, DATA_KEY, MODEL, MODEL_LEVEL, LEADER = (
+    PICTURE, DATA_KEY, MODEL, MODEL_LEVEL, LEADER, VARIABLE = (
         "keyword", "bad key", "declared", "event", "localisation", "tag", "province", "flag",
-        "modifier", "oob", "decision", "picture", "data key", "model", "model level", "leader")
+        "modifier", "oob", "decision", "picture", "data key", "model", "model level", "leader",
+        "variable")
 
 _KIND_NAMES = {"trigger": "condition", "effect": "effect", "scope": "scope",
                "header": "event header key", "option": "option key",
@@ -352,6 +353,8 @@ class Navigator:
         parent = node.parent
         if low in _LEADER_VALUES and value.isdigit():
             return Target(LEADER, value, token, node, rel=rel)
+        if low == "which" and parent is not None and parent.lkey in VARIABLE_KEYS:
+            return Target(VARIABLE, value, token, node)
         if low in S.EVENT_TYPES and value.isdigit():
             return Target(EVENT, value, token, node)
         if low == "id" and parent is not None and parent.lkey in S.EVENT_TYPES:
@@ -560,6 +563,35 @@ class Navigator:
         if not parts:
             return text + "Written nowhere else in the mod."
         return text + _sentence(parts) + "."
+
+    def _hover_variable(self, target):
+        sites = self.index.variable_sites(target.name)
+        counts = {}
+        for site in sites:
+            counts[site.verb] = counts.get(site.verb, 0) + 1
+        parts = []
+        for verb, word in (("set", "set"), ("change", "changed"), ("check", "tested"),
+                           ("lua", "named in Lua")):
+            if counts.get(verb):
+                parts.append("%s %d time%s" % (word, counts[verb],
+                                                 "" if counts[verb] == 1 else "s"))
+        text = "**variable `%s`** — a country's\n\n" % target.name
+        text += (_sentence(parts) + ".") if parts else "Written nowhere else in the mod."
+        if not (counts.get("set") or counts.get("change") or counts.get("lua")):
+            piece = self.index.lua_piece(target.name)
+            if piece is not None:
+                how = {"starts": "starting with", "ends": "ending in",
+                       "has": "with"}[piece[0]]
+                text += ("\n\nNo file sets it by this name, but the Lua scripts build names "
+                         "%s `%s`, so they may." % (how, piece[1]))
+            else:
+                text += ("\n\nNothing sets it - a `check_variable` on it finds it at 0 "
+                         "(BV215).")
+        spellings = sorted(self.index.variable_spellings(target.name))
+        if len(spellings) > 1:
+            text += "\n\nWritten as %s - the game takes them as one variable, since it " \
+                    "compares names without case." % ", ".join("`%s`" % s for s in spellings)
+        return text
 
     def _hover_modifier(self, target):
         where = self.decl.where(Kinds.MODIFIER, target.name)
@@ -953,6 +985,10 @@ class Navigator:
             sites = self.index.flag_sites(target.kind, target.name)
             setting = [s for s in sites if s.verb == "set"] or sites
             return [Place(s.file, s.line, s.col, s.end) for s in setting]
+        if what == VARIABLE:
+            sites = self.index.variable_sites(target.name)
+            setting = [s for s in sites if s.verb in ("set", "change")] or sites
+            return [Place(s.file, s.line, s.col, s.end) for s in setting]
         if what == DECISION:
             return [Place(d.file, d.line, d.col, d.col + len(d.name))
                     for d in self.index.decisions(target.name)]
@@ -982,6 +1018,8 @@ class Navigator:
             sites += self.index.fires(target.name)
         elif target.what == FLAG:
             sites = self.index.flag_sites(target.kind, target.name)
+        elif target.what == VARIABLE:
+            sites = self.index.variable_sites(target.name)
         elif target.what == MODIFIER:
             sites = list(self.index.modifier_uses(target.name))
             where = self.decl.where(Kinds.MODIFIER, target.name)
@@ -1433,6 +1471,9 @@ class Navigator:
             return [Completion(n, "value", "%s flag" % match.group(2))
                     for n in self.index.flag_names(match.group(2))], False
         parent = chain[-1].lkey if chain else None
+        if key == "which" and parent in VARIABLE_KEYS:
+            return [Completion(n, "value", "variable")
+                    for n in self.index.variable_names()], False
         if key in MODIFIER_USES or (key == "name" and parent in MODIFIER_USES):
             return self._names(Kinds.MODIFIER), False
         if key in NAMED_VALUES:
