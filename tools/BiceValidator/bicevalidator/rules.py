@@ -186,6 +186,44 @@ _RULES = [
          "says does not happen. Often a key that works in a similar block: `strength` and "
          "`organisation` on a regiment, but not on a brigade in the production queue."),
 
+    # --- leaders in orders of battle ----------------------------------------------------
+    # An order of battle's `leader = N` is given leader N whoever he is: nothing in the game
+    # asks his country, rank or arm (reversing/findings/FINDINGS-leaderassign.md, section
+    # 1). So these say what the game will not.
+    Rule("BV309", "leader-below-rank", WARNING, CODE, "confirmed",
+         "Leader below the rank his command wants",
+         "This mod commands a division at rank 1, a corps at rank 2 and an army, army group "
+         "or theatre at rank 3 - the rule BiceLib's load_oob tooltip applies, rank 4 being an "
+         "honour rather than a job. The game itself is looser: it counts a leader's skill "
+         "for a corps from rank 1, an army from rank 2, and an army group or theatre from rank "
+         "3, and below that the unit gets nothing of him in battle and his name is written in "
+         "red. His rank is the one the game gives him, which is not always the one his "
+         "history says: for an order of battle a country's history loads as a game starts, "
+         "his history up to the start date; for one only `load_oob` loads, the rank he holds "
+         "once in service - and a leader whose first rank is dated after the start comes "
+         "into service at rank 1, whatever it says (BV313)."),
+    Rule("BV310", "leader-wrong-arm", WARNING, CODE, "confirmed",
+         "Leader of the wrong arm",
+         "A land unit takes a `land` leader, a fleet a `sea` one and an air unit an `air` one. "
+         "The game gives this one to the unit anyway, and would never choose him for it."),
+    Rule("BV311", "leader-other-country", WARNING, CODE, "confirmed",
+         "Leader of another country",
+         "A country's history loads this order of battle as a game starts, and the leader is "
+         "another country's. The game gives him the unit anyway. Checked only for the files "
+         "a history loads, since what country a `load_oob` runs for is the event's."),
+    Rule("BV312", "leader-given-twice", WARNING, CODE, "confirmed",
+         "Leader given to two units",
+         "Putting a leader on a unit takes him off the unit he had, so the first of the two "
+         "is left without him, and gets the country's best free leader when the file is "
+         "loaded."),
+    Rule("BV313", "leader-rank-not-applied", WARNING, CODE, "confirmed",
+         "Rank in a leader's history that the game does not apply",
+         "A leader's history is folded to the start date as a game is made. After that the "
+         "game reads only the date of his first `rank`: on that day a leader not yet in "
+         "service comes into it **at rank 1, whatever rank is written**, and no later `rank` "
+         "is ever applied (reversing/findings/FINDINGS-leaders.md, section 3). Only a "
+         "promotion in play moves him after that."),
+
     # --- references ----------------------------------------------------------------------
     Rule("BV201", "undefined-event", ERROR, REFERENCES, "confirmed",
          "Event fired that does not exist",
@@ -231,6 +269,19 @@ _RULES = [
          "looks rests on where the mod and the game keep their pictures, not on a reading "
          "of the game. The check needs the game install, to see the pictures the mod does "
          "not ship; without it the check is skipped and the run says so."),
+    Rule("BV213", "event-never-fired", WARNING, REFERENCES, "confirmed",
+         "Event nothing fires",
+         "The event is `is_triggered_only = yes`, so the game never fires it on its own, and "
+         "no event, decision, entry of `common/on_actions.txt` or other file of `common/` "
+         "fires it. It can never happen, except fired by hand from the console. Often an "
+         "event whose firing line was removed, or fires a mistyped id (BV201)."),
+    Rule("BV214", "event-chain-dead", WARNING, REFERENCES, "confirmed",
+         "Event fired only from events that never happen",
+         "Everything that fires this event is itself an event that can never happen - "
+         "triggered only and fired by nothing that happens, or fired only by more such "
+         "events - so this one never happens either. The chain is followed back as far as "
+         "it goes. Whether a trigger can ever be true is not asked, so an event that "
+         "passes may still never happen in play; one reported here cannot."),
 ]
 
 RULES = {rule.id: rule for rule in _RULES}

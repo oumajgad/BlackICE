@@ -101,6 +101,12 @@ it out of `DROP` there.
 - **Go to definition** (F12). Jumps from a fired event to the event, from `load_oob` to
   the file, from a name to its declaration, from a localisation key to its line in the
   table, from a keyword to its row in `docs/script`, and from a flag to where it is set.
+- **The chain of events.** Hovering an event says what fires it, what it fires, and
+  whether it can happen at all; where only a chain leads to it, the shortest one, from the
+  decision or the self-firing event that starts it. *Show Call Hierarchy* (Shift+Alt+H) on
+  an event's id, or anywhere inside an event, a decision or an entry of on_actions, opens
+  the chain as a tree: *incoming* is what fires it, back as far as it goes, *outgoing* what
+  it fires. An event that never happens says so there too.
 - **Find all references** (Shift+F12). For an event, everything that fires it, including
   `common/on_actions.txt`. For a flag, everywhere it is set, tested or cleared, in the
   Lua scripts as well. For a modifier, everywhere it is added, tested or removed.
@@ -109,6 +115,13 @@ it out of `DROP` there.
   mod by id, name or title.
 - **Event titles.** `country_event = 14883` shows the event's title faintly at the end of
   the line. The `eventTitles` setting turns this off.
+- **Province and leader names.** A number that is a province or a leader shows its name
+  faintly after it: `location = 739`, `controls = 739`, `739 = { ... }`, `leader = 9721`,
+  `kill_leader = 9721`. In an order of battle a leader's rank comes with it - the rank the
+  game gives him, below. Hovering a leader shows his country, arm, skill, rank, history and
+  traits, F12 goes to him, and completion after `leader =` offers the file's country's
+  leaders by number or name, those who fit the unit first. The `idNames` setting turns
+  the names off.
 - **Quick fixes** (Ctrl+.). A misspelt key becomes the name it was meant to be,
   `brigade_exists` becomes `brigade_exist`, and `factor 100` gets its `=`.
 - **Completion that knows its block.** Conditions inside `trigger` and `limit`, effects
@@ -136,6 +149,8 @@ Code's settings:
   background run of about half a minute;
 - `hideKnownNoise`, which hides what `baseline.json` lists;
 - `eventTitles`, which shows the titles of fired events;
+- `modelTechnologies`, which names the technology after each level of a model list;
+- `idNames`, which names the province or leader after its number;
 - `gameFolder`, the game install, where event pictures the mod does not ship are found.
 
 It does not read `validator.json`.
@@ -183,6 +198,14 @@ Validator server*.
   events fired and event ids used twice, country tags, provinces, `load_oob` files,
   modifiers, localisation keys, flags that are tested but never set, countries with no
   flag image, and event pictures.
+
+  It also follows **the chain of events**. An event happens when the game fires it on its
+  own - it has a `trigger` and is not `is_triggered_only` - or when something that happens
+  fires it: an event, a decision, `common/on_actions.txt`, or another file of `common/`
+  such as a casus belli's `on_completion`. BV213 is a triggered-only event nothing fires;
+  BV214 one fired only by events that never happen, a loop of them included
+  (`chains.py`). Whether a trigger can ever be true is not asked, so an event that passes
+  may still never happen in play; one reported cannot.
 
   Event pictures (BV212) are looked for in the mod and in the game's own folders, since
   the mod uses some of the game's. So that check needs the game install. It is found by
@@ -246,6 +269,30 @@ types in it agree. In VS Code:
 
 BV307 reports a list whose length does not fit the unit type, which is a list made for
 an older tech tree.
+
+**Leaders.** An order of battle's `leader = N` is given leader N whoever he is - of any
+country, rank or arm, in service or not - so the game says nothing about a leader who
+does not fit
+([`FINDINGS-leaderassign.md`](../../../hoi3-reversing/findings/FINDINGS-leaderassign.md),
+section 1). These rules do:
+
+| Rule | |
+| --- | --- |
+| BV306 | a leader who does not exist |
+| BV309 | a leader below the rank his command wants: a division rank 1, a corps rank 2, an army, army group or theatre rank 3. That is this mod's rule, the one BiceLib's `load_oob` tooltip applies; the hint says where the game's own, looser test fails too, which costs the unit his skill in battle |
+| BV310 | a leader of the wrong arm: a sea or air leader on a land unit, and so on |
+| BV311 | another country's leader, in an order of battle a country's history loads as a game starts |
+| BV312 | one leader given to two units of a file: the first is left without him |
+| BV313 | in `history/leaders`, a dated `rank` the game does not apply as written |
+
+**A leader's rank is the one the game gives him**, which is not always what his history
+says. As a game is made his history is folded to the start date. After that the game
+reads only the date of his first `rank`: on that day a leader not yet in service comes
+into it **at rank 1, whatever rank is written**, and no later `rank` is ever applied
+([`FINDINGS-leaders.md`](../../../hoi3-reversing/findings/FINDINGS-leaders.md), section 3).
+So an order of battle a country's history loads is checked at the start date, and one
+only `load_oob` loads at the rank the leader holds once in service. Only a promotion in
+play moves him after that, which no file can show.
 
 Tick either or both in the window, or pass `--mode code|references|all`. "Changed files
 only" (`--changed`) reports on the files git sees as modified or new. Declarations and

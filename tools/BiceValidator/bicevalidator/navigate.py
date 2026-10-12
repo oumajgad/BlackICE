@@ -15,15 +15,17 @@ from dataclasses import dataclass, field
 
 from . import lexer, parser, schema as S
 from .checks import script as C
+from .checks.data import RANK_WANTED, UNIT_ARMS
 from .checks.references import FLAG_KEY, NAMED_VALUES
 from .declarations import Kinds
-from .index import MODIFIER_USES
+from .index import MODIFIER_USES, ON_ACTIONS, Source
+from .leaders import date_text, rank_phrase
 from .pictures import PictureError
 
 KEYWORD, BAD_KEY, DECLARED, EVENT, LOC, TAG, PROVINCE, FLAG, MODIFIER, OOB, DECISION, \
-    PICTURE, DATA_KEY, MODEL, MODEL_LEVEL = (
+    PICTURE, DATA_KEY, MODEL, MODEL_LEVEL, LEADER = (
         "keyword", "bad key", "declared", "event", "localisation", "tag", "province", "flag",
-        "modifier", "oob", "decision", "picture", "data key", "model", "model level")
+        "modifier", "oob", "decision", "picture", "data key", "model", "model level", "leader")
 
 _KIND_NAMES = {"trigger": "condition", "effect": "effect", "scope": "scope",
                "header": "event header key", "option": "option key",
@@ -31,6 +33,9 @@ _KIND_NAMES = {"trigger": "condition", "effect": "effect", "scope": "scope",
 # Keys whose number is a province outside the condition and effect lists: a country's
 # capital in its history, a unit's place in an order of battle.
 _PROVINCE_VALUES = {"capital", "location", "base"}
+# Keys whose number is a leader: an order of battle's commander, and the effect.
+_LEADER_VALUES = {"leader", "kill_leader"}
+_NAME_LENGTH = 40
 _COLOUR = re.compile(r"§.")
 _TITLE_LENGTH = 60
 _DESC_LENGTH = 700
@@ -46,6 +51,7 @@ class Target:
     node: object
     kind: str = ""      # a declared name's kind, a flag's scope, a model's unit type
     spec: object = None     # for a key of a data file, its schemas.Key
+    rel: str = ""       # the file it is in, where what it says depends on that
 
 
 @dataclass
@@ -70,6 +76,20 @@ class Symbol:
 
 
 @dataclass
+class ChainItem:
+    """An event, a decision, an entry of on_actions or a block of common/, as the chain of
+    events shows it."""
+    kind: str           # "event", "decision", "on_action" or "block"
+    name: str           # the event's id, or the key
+    label: str
+    detail: str
+    file: str
+    line: int
+    col: int
+    end: int
+
+
+@dataclass
 class Completion:
     label: str
     kind: str           # "keyword", "condition", "effect", "scope", "value", "event", ...
@@ -78,6 +98,7 @@ class Completion:
     insert: str = ""    # a snippet; the label when empty
     filter: str = ""
     picture: str = ""   # an event picture, whose preview is made only when it is shown
+    sort: str = ""      # the order to show it in, where it is not the label's
 
 
 def plain(text):
@@ -243,7 +264,7 @@ class Navigator:
         if node is None:
             return None
         if role == "value":
-            return self._value_target(node, token)
+            return self._value_target(node, token, rel)
         return self._key_target(rel, node, token)
 
     def _key_target(self, rel, node, token):
@@ -324,11 +345,13 @@ class Navigator:
                          levels[position] if position < len(levels) else None))
         return rows
 
-    def _value_target(self, node, token):
+    def _value_target(self, node, token, rel=""):
         low, value = node.lkey, node.value
         if low is None or value is None:
             return None
         parent = node.parent
+        if low in _LEADER_VALUES and value.isdigit():
+            return Target(LEADER, value, token, node, rel=rel)
         if low in S.EVENT_TYPES and value.isdigit():
             return Target(EVENT, value, token, node)
         if low == "id" and parent is not None and parent.lkey in S.EVENT_TYPES:
@@ -351,6 +374,9 @@ class Navigator:
             return Target(DECLARED, value, token, node, kind)
         if value.isdigit():
             if low in _PROVINCE_VALUES or low in self._province_keys():
+                return Target(PROVINCE, value, token, node)
+            spec = self._data_key(rel, node) if rel else None
+            if spec is not None and spec.value in ("province", "province id"):
                 return Target(PROVINCE, value, token, node)
             return None
         if self.decl.has(Kinds.TAG, value):
@@ -457,6 +483,37 @@ class Navigator:
             text += "\n\nHistory in " + self.link(Place(history, 1))
         return text
 
+    def _hover_leader(self, target):
+        leaders = self.decl.leaders
+        leader = leaders.get(target.name)
+        if leader is None:
+            return "**Leader %s** does not exist: no file of `history/leaders` has him." \
+                % target.name
+        country = plain(self.loc.text(leader.country) or "")
+        text = "**%s** — leader %s of %s%s, %s" % (
+            leader.name or "no name", leader.ident, leader.country,
+            " (%s)" % country if country else "", leader.arm or "no arm")
+        text += "\n\nSkill %d, at most %d" % (leader.skill, leader.max_skill)
+        text += " · " + rank_phrase(*self._leader_rank(leader, target.rel))
+        start = leaders.start_oob(target.rel) if target.rel else None
+        if start is not None:
+            text += ", as %s's history loads this file on %s" % (start[0],
+                                                                  date_text(start[1]))
+        if leader.ranks:
+            text += "\n\nHis history: " + ", ".join(
+                "%s rank %d" % (date_text(when), value) for when, value, _ in leader.ranks)
+            ignored = leader.ignored_ranks(leaders.start)
+            if ignored:
+                text += " — the game applies only the first after the start, and as rank 1"
+        if leader.traits:
+            text += "\n\nTraits: " + ", ".join(
+                plain(self.loc.text(t) or "") or t for t in leader.traits)
+        return text + "\n\n" + self.link(Place(leader.file, leader.line))
+
+    def _leader_rank(self, leader, rel):
+        """(rank, date or None) of \\p leader as file \\p rel finds him (leaders.rank_in)."""
+        return self.decl.leaders.rank_in(leader, rel)
+
     def _hover_event(self, target):
         events = self.index.events(target.name)
         if not events:
@@ -471,9 +528,7 @@ class Navigator:
             names = [self.text_of(name) or "option" for name, _, _ in event.options]
             text += "\n\nOptions: " + " · ".join("*%s*" % n for n in names)
         text += "\n\nIn " + self.link(Place(event.file, event.line))
-        fired = len(self.index.fires(target.name))
-        text += ", fired from %d place%s." % (fired, "" if fired == 1 else "s") if fired \
-            else ", fired from nowhere in the mod's script."
+        text += "\n\n" + self._chain_text(event)
         if len(events) > 1:
             text += "\n\n**%d events have this id:** %s" % (
                 len(events), ", ".join(self.link(Place(e.file, e.line)) for e in events))
@@ -727,7 +782,148 @@ class Navigator:
         desc = self.loc.text(target.name + "_desc")
         if desc:
             text += "\n\n" + _short(plain(desc), _DESC_LENGTH)
+        fires = self._grouped(self.index.chains().fires_from("decision", target.name), False)
+        if fires:
+            text += "\n\nFires " + _listed([self._event_words(i) for i in fires])
         return text
+
+    # --- which event fires which -------------------------------------------------------
+
+    def _chain_text(self, event):
+        """What fires \\p event, what it fires, and whether it can ever happen."""
+        chains = self.index.chains()
+        lines = []
+        if event.fires_itself:
+            lines.append("Fires on its own when its trigger holds.")
+        callers = self._grouped(chains.fired_from(event.id), True)
+        if callers:
+            lines.append("Fired by " + _listed([self._source_words(s) for s in callers]))
+        elif not event.fires_itself:
+            lines.append("Fired by nothing in the mod.")
+        fires = self._grouped(chains.fires_from("event", event.id), False)
+        if fires:
+            lines.append("Fires " + _listed([self._event_words(i) for i in fires]))
+        if not chains.can_happen(event.id):
+            if event.triggered_only:
+                lines.append("**Never happens**: it is triggered only, and nothing that "
+                             "happens fires it (BV213, BV214).")
+        elif not event.fires_itself:
+            path = chains.path_to(event.id)
+            if len(path) > 2:
+                lines.append("Reached from " + " → ".join(
+                    self._source_words(step) if not isinstance(step, str) else step
+                    for step in path))
+        return "  \n".join(lines)
+
+    @staticmethod
+    def _grouped(pairs_or_sites, by_source):
+        """The distinct sources of \\p pairs_or_sites (Sites), or the distinct targets of
+        (target, Site) pairs, in the order first met."""
+        out = []
+        for item in pairs_or_sites:
+            key = item.source if by_source else item[0]
+            if key is not None and key not in out:
+                out.append(key)
+        return out
+
+    def _event_words(self, ident):
+        title = self.event_title(ident)
+        return "%s *%s*" % (ident, _short(title, 40)) if title else ident
+
+    def _source_words(self, source):
+        if source.kind == "event":
+            return "event " + self._event_words(source.name)
+        if source.kind == "decision":
+            return "decision `%s`" % source.name
+        if source.kind == "on_action":
+            return "`%s` in on_actions" % source.name
+        return "`%s` in %s" % (source.name, source.file)
+
+    def chain_item(self, rel, parsed, line, col):
+        """The ChainItem at \\p line, \\p col: the event or decision named there, or else
+        the event, decision, entry of on_actions or block of common/ the place is in."""
+        target = self.target(rel, parsed, line, col)
+        if target is not None and target.what == EVENT:
+            return self.event_item(target.name)
+        if target is not None and target.what == DECISION:
+            return self.source_item(Source("decision", target.name, rel, target.node.line))
+        part = self.index.file(rel)
+        if part is None:
+            return None
+        for event in part.events:
+            if event.line <= line <= event.end_line:
+                return self.event_item(event.id)
+        for decision in part.decisions:
+            if decision.line <= line <= decision.end_line:
+                return self.source_item(Source("decision", decision.name, rel, decision.line))
+        if rel.startswith("common/"):
+            for node in parsed.root.children:
+                if node.key and node.line <= line <= _last_line(node):
+                    kind = "on_action" if rel == ON_ACTIONS else "block"
+                    return self.source_item(Source(kind, node.key, rel, node.line))
+        return None
+
+    def event_item(self, ident):
+        events = self.index.events(ident)
+        if not events:
+            return None
+        event = events[0]
+        site = event.id_site
+        title = self.event_title(ident)
+        detail = event.file
+        if not self.index.chains().can_happen(ident) and event.triggered_only:
+            detail = "never happens · " + detail
+        return ChainItem("event", ident, "%s %s" % (ident, _short(title, 50)) if title else ident,
+                         detail, event.file, site.line, site.col, site.end)
+
+    def source_item(self, source):
+        if source.kind == "event":
+            return self.event_item(source.name)
+        if source.kind == "decision":
+            found = self.index.decisions(source.name)
+            decision = found[0] if found else None
+            title = self.decision_title(source.name)
+            label = "%s %s" % (source.name, _short(title, 50)) if title else source.name
+            if decision is None:
+                return ChainItem("decision", source.name, label, source.file, source.file,
+                                 source.line, 1, 1)
+            return ChainItem("decision", source.name, label, decision.file, decision.file,
+                             decision.line, decision.col, decision.col + len(decision.name))
+        detail = "on_actions" if source.kind == "on_action" else source.file
+        return ChainItem(source.kind, source.name, source.name, detail, source.file,
+                         source.line, 1, 1 + len(source.name))
+
+    def callers(self, item):
+        """(ChainItem, [Site]) of everything that fires \\p item, an event."""
+        if item.kind != "event":
+            return []
+        groups = {}
+        for site in self.index.chains().fired_from(item.name):
+            if site.source is not None:
+                groups.setdefault(site.source, []).append(site)
+        out = []
+        for source, sites in groups.items():
+            found = self.source_item(source)
+            if found is not None:
+                out.append((found, sites))
+        return out
+
+    def callees(self, item):
+        """(ChainItem, [Site]) of every event \\p item fires."""
+        within = item.file if item.kind in ("on_action", "block") else None
+        groups = {}
+        for target, site in self.index.chains().fires_from(item.kind, item.name, within):
+            groups.setdefault(target, []).append(site)
+        out = []
+        for target, sites in groups.items():
+            found = self.event_item(target)
+            if found is None:
+                # Fired and never defined (BV201): shown where it is fired.
+                site = sites[0]
+                found = ChainItem("event", target, target, "does not exist", site.file,
+                                  site.line, site.col, site.end)
+            out.append((found, sites))
+        return out
 
     # --- where it is declared, and where it is used ------------------------------------
 
@@ -767,6 +963,9 @@ class Navigator:
             return [Place(where[1], where[2])] if where else []
         if what in (MODEL, DATA_KEY):
             return []
+        if what == LEADER:
+            leader = self.decl.leaders.get(target.name)
+            return [Place(leader.file, leader.line)] if leader is not None else []
         kind = Kinds.MODIFIER if what == MODIFIER else target.kind
         where = self.decl.where(kind, target.name) if kind else None
         places = [Place(where[1], where[2])] if where else []
@@ -928,6 +1127,47 @@ class Navigator:
                 out.append((value.line, value.col + _width(value), _short(title, _TITLE_LENGTH)))
         return sorted(out)
 
+    # --- the name of each province and leader named by number --------------------------
+
+    def id_names(self, rel, parsed, first, last):
+        """(line, column after the number, name) for every province and leader named by
+        number between lines \\p first and \\p last: `location = 739`, `leader = 9721`,
+        `controls = 739`, `739 = { ... }`. A leader in an order of battle is given his rank
+        there too. Bare numbers in a list - a region's provinces - are left alone."""
+        out = []
+        for token, (node, role) in owners(parsed).items():
+            del token
+            if role == "value":
+                tok = node.value_tok
+                if not (first <= tok.line <= last) or not (node.value or "").isdigit():
+                    continue
+                target = self._value_target(node, tok, rel)
+            else:
+                tok = node.key_tok
+                if not (first <= tok.line <= last) or node.op is None \
+                        or not (node.key or "").isdigit():
+                    continue
+                target = self._key_target(rel, node, tok)
+            if target is None:
+                continue
+            label = self._id_name(target, rel)
+            if label:
+                out.append((tok.line, tok.col + _width(tok), label))
+        return sorted(out)
+
+    def _id_name(self, target, rel):
+        if target.what == PROVINCE:
+            return _short(plain(self.loc.text("PROV" + target.name) or ""), _NAME_LENGTH)
+        if target.what == LEADER:
+            leader = self.decl.leaders.get(target.name)
+            if leader is None:
+                return ""
+            name = _short(leader.name, _NAME_LENGTH)
+            if rel.startswith("history/units/"):
+                name += ", " + rank_phrase(*self._leader_rank(leader, rel))
+            return name
+        return ""
+
     # --- folding -----------------------------------------------------------------------
 
     @staticmethod
@@ -993,7 +1233,7 @@ class Navigator:
             and tokens[index - 1].kind == lexer.WORD
         if block is not None:
             if after_equals:
-                return self._data_values(rel, block, tokens[index - 1].text, prefix)
+                return self._data_values(rel, block, tokens[index - 1].text, prefix, chain)
             return self._data_keys(block, prefix)
         if after_equals:
             key = tokens[index - 1].text.lower()
@@ -1050,11 +1290,13 @@ class Navigator:
                         return out, True
         return out, more
 
-    def _data_values(self, rel, block, key, prefix):
+    def _data_values(self, rel, block, key, prefix, chain=None):
         spec = block.find(key, self.session.data.takes)
         if spec is None:
             return [], False
         value = spec.value
+        if value == "name:leader" and chain:
+            return self._leader_values(rel, chain, prefix)
         if value == "yes/no":
             return [Completion("yes", "value"), Completion("no", "value")], False
         if value.startswith("one of:"):
@@ -1072,6 +1314,45 @@ class Navigator:
                 if len(out) >= _LIMIT:
                     return out, True
         return out, False
+
+    def _leader_values(self, rel, chain, prefix):
+        """The leaders a unit of an order of battle may be given, by number or name: the
+        file's country's first - from the history that loads it, or else from the leaders
+        the file already names - then those of the unit's arm, then those of the rank it
+        wants, then by skill."""
+        leaders = self.decl.leaders
+        level = chain[-1].lkey
+        arm = UNIT_ARMS.get(level)
+        wanted = RANK_WANTED.get(level, 0)
+        named = [n.value for n in parser.walk(chain[0])
+                 if n.lkey == "leader" and (n.value or "").isdigit()]
+        start = leaders.start_oob(rel)
+        country = start[0] if start is not None else _most_common(
+            [leaders.get(n).country for n in named if leaders.get(n) is not None])
+        used = set(named)
+        low = prefix.lower()
+        found = []
+        for leader in leaders.by_id.values():
+            if low and not (leader.ident.startswith(low) or low in leader.name.lower()):
+                continue
+            if not low and country and leader.country != country:
+                continue
+            rank, since = leaders.rank_in(leader, rel)
+            # Of the ranks the unit takes, the one it wants before any higher; of those below,
+            # the nearest; and a leader the file has already given a unit after every free one.
+            found.append(((leader.country != country, leader.arm != arm, rank < wanted,
+                           leader.ident in used, abs(rank - wanted), -leader.skill,
+                           leader.name),
+                          leader, rank, since))
+        found.sort(key=lambda f: f[0])
+        out = []
+        for order, (_, leader, rank, since) in enumerate(found[:_LIMIT]):
+            detail = "%s, %s %s, %s, skill %d" % (leader.name, leader.country, leader.arm,
+                                                   rank_phrase(rank, since), leader.skill)
+            out.append(Completion(leader.ident, "value", detail,
+                                  filter="%s %s" % (leader.ident, leader.name),
+                                  sort="%04d" % order))
+        return out, len(found) > _LIMIT
 
     def _keys(self, rel, kind, prefix, line):
         if kind is None:
@@ -1214,6 +1495,26 @@ class Navigator:
                 if len(out) >= _LIMIT:
                     return out, True
         return out, False
+
+
+def _listed(words, most=6):
+    if len(words) > most:
+        return ", ".join(words[:most]) + " and %d more." % (len(words) - most)
+    return ", ".join(words) + "."
+
+
+def _last_line(node):
+    if node.close_tok is not None:
+        return node.close_tok.line
+    token = node.value_tok or node.key_tok
+    return token.line if token is not None else node.line
+
+
+def _most_common(values):
+    counts = {}
+    for value in values:
+        counts[value] = counts.get(value, 0) + 1
+    return max(counts, key=counts.get) if counts else None
 
 
 def _declared_kind(value):

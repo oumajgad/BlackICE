@@ -137,11 +137,19 @@ def check(root, files, decl, schema, pictures=None):
             if node.is_pair and node.value and node.value.isdigit() \
                     and node.parent is not None and node.parent.key is not None:
                 c.fires.append(("common/on_actions.txt", node, node.value))
+    # The other files of common/ fire events too: a casus belli's `on_completion`, a
+    # covert operation.
+    for rel in sorted(files):
+        if rel.startswith("common/") and rel != "common/on_actions.txt":
+            for node in parser.walk(files[rel].result.root):
+                if node.lkey in S.EVENT_TYPES:
+                    _fire(c, rel, node)
 
     for path, node, ident in c.fires:
         if ident not in c.events:
             c.report("BV201", path, node, "Event %s does not exist" % ident)
 
+    _event_chains(c, files)
     _flags(c, root)
     _flag_images(c, root, decl)
     return c.out
@@ -216,14 +224,8 @@ def _node(c, rel, node, tag_keys, province_keys, root):
         return
     decl = c.decl
 
-    if low in ("country_event", "province_event") and node.parent is not None \
-            and node.parent.key is not None:
-        if node.value and node.value.isdigit():
-            c.fires.append((rel, node, node.value))
-        elif node.is_block:
-            ident = node.child("id")
-            if ident is not None and ident.value and ident.value.isdigit():
-                c.fires.append((rel, ident, ident.value))
+    if low in S.EVENT_TYPES:
+        _fire(c, rel, node)
         return
 
     if node.is_block and low.isdigit():
@@ -276,6 +278,62 @@ def _node(c, rel, node, tag_keys, province_keys, root):
     if low in province_keys and value.isdigit():
         if not decl.has(Kinds.PROVINCE, value):
             c.report("BV205", rel, node, "Province %s does not exist" % value)
+
+
+def _fire(c, rel, node):
+    """Note the event \\p node fires, if it fires one: `country_event = <id>`, or the block
+    form with an `id`. An event's own `country_event = { ... }` at the top of a file is
+    its definition, not a firing."""
+    if node.op is None or node.parent is None or node.parent.key is None:
+        return
+    if node.value and node.value.isdigit():
+        c.fires.append((rel, node, node.value))
+    elif node.is_block:
+        ident = node.child("id")
+        if ident is not None and ident.value and ident.value.isdigit():
+            c.fires.append((rel, ident, ident.value))
+
+
+def _event_chains(c, files):
+    """BV213 and BV214: events that can never happen, because nothing that happens fires
+    them (chains.py)."""
+    from ..chains import Chains
+    from ..index import facts, indexes
+    events, fires = {}, {}
+    for rel in sorted(files):
+        if not indexes(rel):
+            continue
+        part = facts(rel, files[rel].result.root)
+        for event in part.events:
+            events.setdefault(event.id, []).append(event)
+        for ident, site in part.fires:
+            fires.setdefault(ident, []).append(site)
+    chains = Chains(events, fires)
+    for event, why, sources in chains.dead():
+        site = event.id_site
+        context = "%s %s" % (event.type, event.id)
+        if why == "unfired":
+            c.out.append(Diagnostic(
+                "BV213", event.file, site.line, site.col,
+                "Event %s is triggered only, and nothing fires it" % event.id,
+                context=context,
+                hint="No event, decision, entry of common/on_actions.txt or other file of "
+                     "common/ fires it, so it never happens - unless it is fired by hand "
+                     "from the console."))
+            continue
+        named = ", ".join(sources[:3]) + (" and %d more" % (len(sources) - 3)
+                                          if len(sources) > 3 else "")
+        related = [Related("fired here, from event %s" % s.source.name, s.file, s.line, s.col)
+                   for s in chains.fired_from(event.id)][:10]
+        c.out.append(Diagnostic(
+            "BV214", event.file, site.line, site.col,
+            "Event %s is fired only by event%s %s, which never happen%s"
+            % (event.id, "s" if len(sources) > 1 else "", named,
+               "" if len(sources) > 1 else "s"),
+            context=context, related=related,
+            hint="Each event that fires it is itself triggered only and fired by nothing that "
+                 "happens. Show Call Hierarchy (Shift+Alt+H) on the id in VS Code walks the "
+                 "chain."))
 
 
 def _flags(c, root):

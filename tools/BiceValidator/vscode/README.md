@@ -21,6 +21,13 @@ BICE Validator in VS Code, for Hearts of Iron 3 script files.
 - **Model lists explained**: each level of a `model = { ... }` list shows the technology it
   sets, hover tells what that technology does for the unit type, and a quick action writes
   the list one level a line with the names as comments.
+- **Province and leader names** after their numbers - `location = 739`, `leader = 9721` -
+  with a leader's rank in an order of battle, a hover with his country, skill, rank and
+  traits, and completion of `leader =` by name. A leader below the rank his unit wants, of
+  the wrong arm or country, or given to two units is reported.
+- **The chain of events**: hovering an event says what fires it and what it fires, and
+  *Show Call Hierarchy* (Shift+Alt+H) walks the chain as a tree in both directions. Events
+  that can never happen - triggered only and fired by nothing that happens - are reported.
 - **Find all references** for events, flags and modifiers.
 - **An outline of events and decisions**, and Ctrl+T to find any of them by id or title.
 - **Event titles** shown after `country_event = <id>`.
@@ -46,6 +53,7 @@ All of them are under `blackice.validator`:
 | `hideKnownNoise` | Hide what `tools/BiceValidator/baseline.json` lists as known noise. |
 | `eventTitles` | Show the title of each fired event at the end of its line (default on). |
 | `modelTechnologies` | Show the technology after each level of a model list (default on). |
+| `idNames` | Show the name after a province's or a leader's number (default on). |
 | `gameFolder` | The game install, for event pictures the mod does not ship. Found by itself when empty. |
 | `serverCommand` | Run the server from source instead of the bundled exe. |
 

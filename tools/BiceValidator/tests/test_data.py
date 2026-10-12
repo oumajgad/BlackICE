@@ -121,6 +121,138 @@ class OobTest(unittest.TestCase):
                          "{\n\t\t1\t# 1 early_tech\n\t\t2\t# 2 late_tech\n\t}")
 
 
+LEADERS = dedent("""
+    10 = {
+        name = "Corporal" country = GER type = land skill = 1
+        history = { 1936.1.1 = { rank = 1 } }
+    }
+    11 = {
+        name = "Marshal" country = GER type = land skill = 3
+        history = { 1930.1.1 = { rank = 2 } 1935.1.1 = { rank = 4 } 1940.1.1 = { rank = 2 } }
+    }
+    12 = {
+        name = "Late" country = GER type = land skill = 2
+        history = { 1939.1.1 = { rank = 3 } }
+    }
+    13 = {
+        name = "Admiral" country = GER type = sea skill = 1
+        history = { 1936.1.1 = { rank = 1 } }
+    }
+    14 = {
+        name = "Briton" country = ENG type = land skill = 1
+        history = { 1936.1.1 = { rank = 2 } }
+    }
+    15 = {
+        name = "General" country = GER type = land skill = 2
+        history = { 1936.1.1 = { rank = 2 } }
+    }
+    """)
+
+START_OOB = dedent("""
+    corps = {
+        name = "Led by a corporal"
+        location = 1
+        leader = 10
+        division = { name = "Led by one not in service" leader = 12 }
+        division = { name = "Led by an admiral" leader = 13 }
+        division = { name = "Led by a Briton" leader = 14 }
+        division = { name = "Led by nobody that exists" leader = 99 }
+    }
+    army = {
+        name = "Led by the corporal again"
+        location = 2
+        leader = 10
+    }
+    """)
+
+# Loaded only by load_oob, at a date nothing knows: a leader is taken at the rank he holds
+# once in service, and his country is not asked.
+LATER_OOB = dedent("""
+    corps = { name = "Late, once in service" location = 1 leader = 12 }
+    army = { name = "Briton" location = 1 leader = 14 }
+    """)
+
+
+class LeaderTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = TinyMod()
+        cls.mod.write("common/bookmarks.txt", "bookmark = { name = X date = 1936.1.1 }\n")
+        cls.mod.write("history/countries/GER - Germany.txt", 'capital = 1\noob = "GER_1936.txt"\n')
+        cls.mod.write("history/leaders/GER.txt", LEADERS)
+        cls.mod.write("history/units/GER_1936.txt", START_OOB)
+        cls.mod.write("history/units/later.txt", LATER_OOB)
+        result = runner.run(cls.mod.root, [rules.CODE], workers=1)
+        cls.found = [(d.file, d.rule, d.message) for d in result.diagnostics
+                     if d.rule in ("BV306", "BV309", "BV310", "BV311", "BV312", "BV313")]
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mod.close()
+
+    def messages(self, rule, file):
+        return [m for f, r, m in self.found if r == rule and f == file]
+
+    def test_rank_is_the_one_the_game_gives(self):
+        start = self.messages("BV309", "history/units/GER_1936.txt")
+        self.assertIn('Corporal (10) is rank 1, and the corps Led by a corporal wants rank 2',
+                      start)
+        # His history's 1939 rank 3 is not his on the start date: he has none until then.
+        self.assertIn('Late (12) is rank 0 until 1939.1.1, then rank 1, and the division Led '
+                      'by one not in service wants rank 1', start)
+        self.assertIn('Corporal (10) is rank 1, and the army Led by the corporal again wants '
+                      'rank 3', start)
+        # A file only load_oob loads takes him once in service - at rank 1, not 3.
+        self.assertEqual(self.messages("BV309", "history/units/later.txt"),
+                         ['Late (12) is rank 1 from 1939.1.1, and the corps Late, once in '
+                          'service wants rank 2',
+                          'Briton (14) is rank 2, and the army Briton wants rank 3'])
+
+    def test_arm_country_twice_and_missing(self):
+        start = "history/units/GER_1936.txt"
+        self.assertEqual(self.messages("BV310", start),
+                         ["Admiral (13) is a sea leader, and the division Led by an admiral "
+                          "wants a land one"])
+        self.assertEqual(self.messages("BV311", start),
+                         ["Briton (14) is ENG's leader, and this order of battle is GER's"])
+        self.assertEqual(self.messages("BV311", "history/units/later.txt"), [])
+        self.assertEqual(self.messages("BV312", start),
+                         ["Corporal (10) is given to the army Led by the corporal again here, "
+                          "after the corps Led by a corporal on line 1"])
+        self.assertEqual(self.messages("BV306", start), ["Leader `99` does not exist"])
+
+    def test_ranks_the_history_writes_and_the_game_does_not_apply(self):
+        self.assertEqual(self.messages("BV313", "history/leaders/GER.txt"),
+                         ["Rank 2 on 1940.1.1 is never applied to leader 11",
+                          "Leader 12's first rank is 3, on 1939.1.1; the game puts him in "
+                          "service that day at rank 1"])
+
+    def test_the_editor_names_ids_and_offers_leaders(self):
+        session = Session(self.mod.root)
+        nav = session.navigator
+        rel = "history/units/GER_1936.txt"
+        parsed = session.parse(START_OOB)
+        names = {(line, name) for line, _, name in nav.id_names(rel, parsed, 1, 100)}
+        self.assertIn((4, "Corporal, rank 1"), names)
+        self.assertIn((5, "Late, rank 0 until 1939.1.1, then rank 1"), names)
+        line = START_OOB.split("\n")[4]
+        target = nav.target(rel, parsed, 5, line.index("12") + 1)
+        self.assertEqual(target.what, "leader")
+        text = nav.hover(target)
+        self.assertIn("**Late** — leader 12 of GER", text)
+        self.assertIn("as GER's history loads this file on 1936.1.1", text)
+        self.assertIn("the game applies only the first after the start, and as rank 1", text)
+        self.assertEqual([(p.file, p.line) for p in nav.definitions(target)],
+                         [("history/leaders/GER.txt", 9)])
+        # In the army, after `leader = `: GER's land leaders of rank 3 and up first, then the
+        # nearest below, free ones before those the file already uses (10 and 12), the other
+        # arm last - and only GER's, since GER's history loads the file.
+        line = START_OOB.split("\n")[12]
+        items, _ = nav.completions(rel, parsed, 13, line.index("10") + 1)
+        self.assertEqual([i.label for i in items], ["11", "15", "10", "12", "13"])
+        self.assertIn("Marshal, GER land, rank 4", items[0].detail)
+
+
 class SchemaFeaturesTest(unittest.TestCase):
     def setUp(self):
         self.folder = tempfile.mkdtemp(prefix="bicevalidator-schemas-")

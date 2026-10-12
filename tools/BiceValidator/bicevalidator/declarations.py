@@ -16,6 +16,7 @@ import io
 import os
 
 from . import lexer, parser
+from .leaders import Leaders
 
 
 class Kinds:
@@ -86,6 +87,9 @@ class Declarations:
         self._load()
         if registry is not None:
             self._load_declared(registry)
+        # Every leader with his rank as the game gives it, and the orders of battle a new
+        # game loads - what an order of battle's `leader` is checked against.
+        self.leaders = Leaders(root, self._tree)
 
     def _load_declared(self, registry):
         for kind, declarations in registry.declared_kinds().items():

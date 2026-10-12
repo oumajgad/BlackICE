@@ -17,6 +17,7 @@ import threading
 from dataclasses import dataclass, field
 
 from . import lexer, parser, schema as S
+from .chains import Chains
 from .checks.references import FLAG_KEY, MODIFIER_KEYS
 
 # Which files the index reads: events, decisions, and the one file in common/ that fires
@@ -33,6 +34,16 @@ _FLAG_LINE = re.compile(r"(set|clr|has)_(country|global|province)_flag(\s*=\s*\"
                         re.IGNORECASE)
 
 
+@dataclass(frozen=True)
+class Source:
+    """What a place that fires an event sits in: an event, a decision, an entry of
+    on_actions, or a block of another file of common/ - a casus belli, a covert operation."""
+    kind: str               # "event", "decision", "on_action" or "block"
+    name: str               # the event's id, the decision's or the block's key
+    file: str
+    line: int
+
+
 @dataclass
 class Site:
     """A place a name is written: its file, line and the columns of the name (1-based,
@@ -42,6 +53,7 @@ class Site:
     col: int
     end: int
     verb: str = ""
+    source: Source = None   # for a fire, what fires it
 
 
 @dataclass
@@ -55,6 +67,14 @@ class Event:
     title: str = None       # as written: a localisation key or the text itself
     desc: str = None
     options: list = field(default_factory=list)    # (name as written, line, col)
+    triggered_only: bool = False    # `is_triggered_only = yes`
+    has_trigger: bool = False
+
+    @property
+    def fires_itself(self):
+        """Whether the game fires it on its own when its trigger holds, rather than only
+        when something fires it."""
+        return self.has_trigger and not self.triggered_only
 
 
 @dataclass
@@ -77,15 +97,17 @@ class FileFacts:
 
 
 def indexes(rel):
-    """Whether \\p rel is a file the index reads."""
+    """Whether \\p rel is a file the index reads: events, decisions, and common/, whose
+    files fire events too - on_actions, and the effects of a casus belli or a covert
+    operation."""
     return rel is not None and rel.endswith(".txt") and \
-        (rel.startswith(("events/", "decisions/")) or rel == ON_ACTIONS)
+        rel.startswith(("events/", "decisions/", "common/"))
 
 
-def _value_site(rel, node, verb):
+def _value_site(rel, node, verb, source=None):
     token = node.value_tok
     width = len(token.text) + (2 if token.kind == lexer.STRING else 0)
-    return Site(rel, token.line, token.col, token.col + width, verb)
+    return Site(rel, token.line, token.col, token.col + width, verb, source)
 
 
 def _end_line(node):
@@ -105,32 +127,61 @@ def facts(rel, root):
     if folder == "events":
         for node in root.children:
             if node.is_block and node.lkey in S.EVENT_TYPES:
-                out.events.append(_event(rel, node))
+                event = _event(rel, node)
+                out.events.append(event)
+                _names(out, rel, node, Source("event", event.id, rel, node.line))
+            else:
+                _names(out, rel, node, None)
     elif folder == "decisions":
         for category in root.children:
-            if category.is_block and category.lkey in S.DECISION_CATEGORIES:
-                for decision in category.children:
-                    if decision.is_block and decision.key:
-                        out.decisions.append(Decision(decision.key, category.key, rel,
-                                                      decision.line, decision.col,
-                                                      _end_line(decision)))
-    if rel == ON_ACTIONS:
-        for node in parser.walk(root):
-            if node.is_pair and node.value and node.value.isdigit() \
-                    and node.parent is not None and node.parent.key is not None:
-                out.fires.append((node.value, _value_site(rel, node, "fire")))
-        return out
-    for node in parser.walk(root):
+            if not (category.is_block and category.lkey in S.DECISION_CATEGORIES):
+                _names(out, rel, category, None)
+                continue
+            for decision in category.children:
+                if decision.is_block and decision.key:
+                    out.decisions.append(Decision(decision.key, category.key, rel,
+                                                  decision.line, decision.col,
+                                                  _end_line(decision)))
+                    _names(out, rel, decision, Source("decision", decision.key, rel,
+                                                      decision.line))
+    elif rel == ON_ACTIONS:
+        for action in root.children:
+            source = Source("on_action", action.key or "", rel, action.line)
+            for node in parser.walk(action):
+                if node.is_pair and node.value and node.value.isdigit() \
+                        and node.parent is not None and node.parent.key is not None:
+                    out.fires.append((node.value, _value_site(rel, node, "fire", source)))
+    else:
+        # Another file of common/: only the events it fires. Its flags are found by the
+        # text search the other folders get (_FLAG_FOLDERS).
+        for block in root.children:
+            source = Source("block", block.key or "", rel, block.line)
+            for node in parser.walk(block):
+                _fire(out, rel, node, source)
+    return out
+
+
+def _fire(out, rel, node, source):
+    """Whether \\p node fires an event - which it then adds to \\p out."""
+    if node.lkey not in S.EVENT_TYPES or node.op is None or node.parent is None \
+            or node.parent.key is None:
+        return False
+    if node.value and node.value.isdigit():
+        out.fires.append((node.value, _value_site(rel, node, "fire", source)))
+    elif node.is_block:
+        ident = node.child("id")
+        if ident is not None and ident.value and ident.value.isdigit():
+            out.fires.append((ident.value, _value_site(rel, ident, "fire", source)))
+    return True
+
+
+def _names(out, rel, top, source):
+    """The events fired, the flags and the modifiers named inside \\p top."""
+    for node in parser.walk(top):
         low = node.lkey
         if low is None or node.op is None:
             continue
-        if low in S.EVENT_TYPES and node.parent is not None and node.parent.key is not None:
-            if node.value and node.value.isdigit():
-                out.fires.append((node.value, _value_site(rel, node, "fire")))
-            elif node.is_block:
-                ident = node.child("id")
-                if ident is not None and ident.value and ident.value.isdigit():
-                    out.fires.append((ident.value, _value_site(rel, ident, "fire")))
+        if node is not top and _fire(out, rel, node, source):
             continue
         if node.value is None:
             if low in MODIFIER_USES and node.is_block:
@@ -146,7 +197,6 @@ def facts(rel, root):
         elif low in MODIFIER_USES:
             out.modifiers.append((node.value.lower(),
                                   _value_site(rel, node, low.split("_", 1)[0])))
-    return out
 
 
 def _event(rel, node):
@@ -163,6 +213,10 @@ def _event(rel, node):
             name = option.child("name")
             event.options.append((name.value if name is not None and name.value else "",
                                   option.line, option.col))
+    only = node.child("is_triggered_only")
+    event.triggered_only = only is not None and (only.value or "").lower() == "yes"
+    trigger = node.child("trigger")
+    event.has_trigger = trigger is not None and trigger.is_block
     return event
 
 
@@ -178,8 +232,11 @@ class ModIndex:
         rels = [os.path.relpath(p, root).replace("\\", "/")
                 for folder in ("events", "decisions")
                 for p in glob.glob(os.path.join(root, folder, "**", "*.txt"), recursive=True)]
-        if os.path.exists(os.path.join(root, ON_ACTIONS)):
-            rels.append(ON_ACTIONS)
+        # Of common/, only the files that fire an event are worth parsing.
+        for path in glob.glob(os.path.join(root, "common", "**", "*.txt"), recursive=True):
+            rel = os.path.relpath(path, root).replace("\\", "/")
+            if rel == ON_ACTIONS or "_event" in _read_text(path):
+                rels.append(rel)
         for rel in sorted(rels):
             self._files[rel] = self._from_disk(rel)
 
@@ -260,6 +317,16 @@ class ModIndex:
 
     def fires(self, ident):
         return self._tables()["fires"].get(ident, [])
+
+    def chains(self):
+        """Which event fires which, and which can ever happen (chains.Chains), made when
+        first asked for after any change."""
+        tables = self._tables()
+        with self._lock:
+            found = tables.get("chains")
+            if found is None:
+                found = tables["chains"] = Chains(tables["events"], tables["fires"])
+            return found
 
     def decisions(self, name=None):
         table = self._tables()["decisions"]

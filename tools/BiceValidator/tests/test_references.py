@@ -97,6 +97,93 @@ class ReferencesTest(unittest.TestCase):
                             for d in self.result.diagnostics))
 
 
+CHAIN_EVENTS = dedent("""
+    country_event = {
+        id = 10
+        trigger = { ai = no }
+        option = { name = A country_event = 11 }
+    }
+    country_event = { id = 11 is_triggered_only = yes option = { name = A } }
+    country_event = {
+        id = 12
+        is_triggered_only = yes
+        option = { name = A country_event = 13 }
+    }
+    country_event = { id = 13 is_triggered_only = yes option = { name = A } }
+    country_event = { id = 14 is_triggered_only = yes option = { name = A } }
+    country_event = { id = 15 is_triggered_only = yes option = { name = A } }
+    country_event = { id = 16 is_triggered_only = yes option = { name = A } }
+    country_event = {
+        id = 17
+        is_triggered_only = yes
+        option = { name = A country_event = { id = 18 days = 30 } }
+    }
+    country_event = {
+        id = 18
+        is_triggered_only = yes
+        option = { name = A country_event = 17 }
+    }
+    """)
+
+
+class ChainsTest(unittest.TestCase):
+    """Which events can happen: fired on their own, from a decision, from on_actions, from
+    a casus belli - and not from events that never happen themselves, a loop included."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = TinyMod()
+        cls.mod.write("events/c.txt", CHAIN_EVENTS)
+        cls.mod.write("decisions/d.txt", dedent("""
+            political_decisions = {
+                my_decision = { effect = { country_event = 14 } }
+            }
+            """))
+        cls.mod.write("common/on_actions.txt", "on_war = {\n\t10 = 15\n}\n")
+        cls.mod.write("common/cb_types.txt", dedent("""
+            my_cb = {
+                on_completion = { country_event = 16 country_event = 404 }
+            }
+            """))
+        result = runner.run(cls.mod.root, [rules.REFERENCES], workers=1)
+        cls.found = sorted((d.rule, d.message) for d in result.diagnostics
+                           if d.rule in ("BV201", "BV213", "BV214"))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mod.close()
+
+    def test_what_never_happens(self):
+        self.assertEqual(self.found, [
+            ("BV201", "Event 404 does not exist"),
+            ("BV213", "Event 12 is triggered only, and nothing fires it"),
+            ("BV214", "Event 13 is fired only by event 12, which never happens"),
+            ("BV214", "Event 17 is fired only by event 18, which never happens"),
+            ("BV214", "Event 18 is fired only by event 17, which never happens"),
+        ])
+
+    def test_the_editor_walks_the_chain(self):
+        from bicevalidator.navigate import Target
+        from bicevalidator.session import Session
+        session = Session(self.mod.root)
+        nav = session.navigator
+        text = nav.hover(Target("event", "11", None, None))
+        self.assertIn("Fired by event 10.", text)
+        self.assertIn("**Never happens**", nav.hover(Target("event", "13", None, None)))
+        parsed = session.parse(CHAIN_EVENTS)
+        item = nav.chain_item("events/c.txt", parsed, 4, 3)    # inside event 10
+        self.assertEqual((item.kind, item.name), ("event", "10"))
+        self.assertEqual([(i.name, len(s)) for i, s in nav.callees(item)], [("11", 1)])
+        sixteen = nav.event_item("16")
+        [(cb, sites)] = nav.callers(sixteen)
+        self.assertEqual((cb.kind, cb.name, cb.file), ("block", "my_cb", "common/cb_types.txt"))
+        self.assertEqual([(i.name, i.detail) for i, _ in nav.callees(cb)],
+                         [("16", "events/c.txt"), ("404", "does not exist")])
+        [(decision, _)] = nav.callers(nav.event_item("14"))
+        self.assertEqual((decision.kind, decision.name), ("decision", "my_decision"))
+        self.assertEqual(nav.event_item("13").detail, "never happens · events/c.txt")
+
+
 class PicturesTest(unittest.TestCase):
     """BV212: a picture is found in the mod or in the game; without the game, not checked."""
 
