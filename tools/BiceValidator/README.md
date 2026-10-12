@@ -92,6 +92,12 @@ it out of `DROP` there.
   event, its title, description and options. On a localisation key, its English text.
   On a country, a province, a technology, a unit, a building or a modifier, its name and
   where it is declared. On a flag, how often it is set, tested and cleared.
+- **Event pictures.** Hovering `picture = "Supply-GER"` shows the picture, and completion
+  after `picture =` lists every picture with a preview. Pictures are looked for in the
+  mod's `gfx/pictures/events` and then in the game's (`tfh/` first). The game is found by
+  itself when it sits beside the checkout or a few levels above it, as
+  `Hearts of Iron 3`; otherwise set `gameFolder`. The TGA and DDS files are turned into
+  PNGs in `%TEMP%\bicevalidator-pictures`, because VS Code can show neither.
 - **Go to definition** (F12). Jumps from a fired event to the event, from `load_oob` to
   the file, from a name to its declaration, from a localisation key to its line in the
   table, from a keyword to its row in `docs/script`, and from a flag to where it is set.
@@ -129,7 +135,8 @@ Code's settings:
 - `scope`: `workspace` puts every file's findings in the Problems panel, after a
   background run of about half a minute;
 - `hideKnownNoise`, which hides what `baseline.json` lists;
-- `eventTitles`, which shows the titles of fired events.
+- `eventTitles`, which shows the titles of fired events;
+- `gameFolder`, the game install, where event pictures the mod does not ship are found.
 
 It does not read `validator.json`.
 
@@ -174,8 +181,71 @@ Validator server*.
   whether each keyword sits in a block that reads it.
 - **References**: whether what a file names exists elsewhere in the mod. That covers
   events fired and event ids used twice, country tags, provinces, `load_oob` files,
-  modifiers, localisation keys, flags that are tested but never set, and countries with no
-  flag image.
+  modifiers, localisation keys, flags that are tested but never set, countries with no
+  flag image, and event pictures.
+
+  Event pictures (BV212) are looked for in the mod and in the game's own folders, since
+  the mod uses some of the game's. So that check needs the game install. It is found by
+  itself when the game sits beside the checkout or a few levels above it as
+  `Hearts of Iron 3`. Otherwise name it with `--game`, with *File > Choose game folder*
+  in the window, or with `gameFolder` in VS Code. Without it the check is skipped and the
+  run says so.
+
+### Data files
+
+Every file outside `events/` and `decisions/` is read by a loader of its own: an order of
+battle by the country's and the unit's, a technology by `CTechnology`'s, and so on. In code
+mode each kind of file is checked against a **schema**, one JSON file per kind in
+`bicevalidator/schemas/`. A schema lists, block by block, which keys the loader takes and
+what each one's value is:
+
+| Rule | |
+| --- | --- |
+| BV301 | a block the loader does not take. The worst case: the game takes the key and its `{` and nothing more, so the block's contents are read as keys of the block around it, and its `}` ends that block early |
+| BV308 | a key with a plain value the loader does not take. It is skipped with its value and nothing else is lost, but the line does nothing |
+| BV302 | a key no file of this kind uses, where the loader has not been read |
+| BV303 | a value of the wrong kind |
+| BV304 | a key the block needs, missing: a top-level formation with no `location` is thrown away |
+| BV305 | a key given twice where one is kept |
+| BV306 | a name that does not exist: a province, a country, a unit type, a technology |
+| BV307 | a `model` list whose length does not fit its unit type |
+
+**Where a schema's facts come from.** Most loaders were read out of the game. Each is a
+switch over the keys it knows, and that list of keys is the grammar
+([`FINDINGS-definitions.md`](../../../hoi3-reversing/findings/FINDINGS-definitions.md) lists
+271 of them). Those blocks are
+marked `confirmed`, and their unknown keys are BV301 or BV308. A block whose loader has
+not been read is built from how the mod and the game write it and marked `inferred`, and
+its unknown keys are the softer BV302. Hover a key in VS Code to see which it is. The
+format is in the docstring of `bicevalidator/schemas/__init__.py`. To try a schema before
+putting it in that folder, set `BICEVALIDATOR_SCHEMAS` to the folder it is in. The 47
+schemas, by how much of each rests on a loader read out of the game (each file's
+`source` says which):
+
+| Files | Keys |
+| --- | --- |
+| `history/units/**/*.txt`, `history/provinces/**/*.txt`, `units/models/*.txt`, `common/combat_tactics.txt` | read out of the game |
+| `technologies/*.txt`, `units/*.txt`, `history/countries/*.txt`, `history/leaders/*.txt`, `history/diplomacy/*.txt`, `common/countries/*.txt`, `common/traits.txt`, `common/gainable_traits.txt`, `common/laws.txt`, `common/ideologies.txt`, `common/cb_types.txt`, `common/rebel_types.txt`, `common/covert_ops.txt`, `common/faction_aims.txt`, `common/bookmarks.txt`, the three modifier files of `common/`, `map/terrain.txt`, `map/positions.txt`, `interface/**/*.gfx`, `interface/**/*.gui` | partly read out of the game |
+| `history/wars/*.txt`, the other files of `common/`, `map/region.txt`, `map/continent.txt`, `map/trees.txt`, `map/coastlines.txt` | from usage |
+
+Modifier blocks - laws, ministers, ideologies, event modifiers and the rest - are checked
+against the 142 modifier keys the game has (`modifier_names.json`, from `CModifierValues`
+in the fact base).
+
+**`model` lists.** A brigade in the production queue may give its model as one level
+per technology: `model = { 0 0 3 2 ... }`. The levels go to the technologies that affect
+the unit type, in the order the game reads the technology files: by file name compared
+in lower case, then in each file's order. That order was measured against a BlackICE
+save, which writes every brigade's technologies in its type's order, and all 479 unit
+types in it agree. In VS Code:
+- each level shows its technology after it;
+- hovering a level shows what the technology does for that unit type;
+- hovering `model` shows the whole list;
+- *Write the model one level a line* (Ctrl+.) puts each level on its own line with the
+  technology's name as a comment.
+
+BV307 reports a list whose length does not fit the unit type, which is a list made for
+an older tech tree.
 
 Tick either or both in the window, or pass `--mode code|references|all`. "Changed files
 only" (`--changed`) reports on the files git sees as modified or new. Declarations and
@@ -224,7 +294,8 @@ build log but does not stop the build. Use `--skip-validation` to build anyway.
 | `bicevalidator/lexer.py`, `parser.py` | text to tokens to a tree that keeps going past a broken file |
 | `bicevalidator/schema.py` | the keyword lists, read from `docs/script` |
 | `bicevalidator/declarations.py` | every name the mod declares: tags, technologies, buildings, units, provinces, ... |
-| `bicevalidator/checks/` | `syntax.py`, `script.py` (code mode), `references.py` |
+| `bicevalidator/checks/` | `syntax.py`, `script.py` (events and decisions), `data.py` (every other file, against its schema), `references.py` |
+| `bicevalidator/schemas/` | one JSON schema per kind of data file, and the code that reads them |
 | `bicevalidator/rules.py` | every rule, with the text the details pane shows |
 | `bicevalidator/baseline.py`, `config.py`, `review.py` | known noise, hidden rules, and sorting findings into new, known and hidden |
 | `bicevalidator/runner.py` | one run: which files, which checks, the process pool |
@@ -232,6 +303,7 @@ build log but does not stop the build. Use `--skip-validation` to build anyway.
 | `bicevalidator_gui/` | the window |
 | `bicevalidator/session.py`, `bicevalidator_lsp/`, `BiceValidatorLsp.py`, `bicevalidator-lsp.spec` | the language server: a mod kept loaded, the protocol, its launcher and its exe |
 | `bicevalidator/index.py`, `localisation.py`, `navigate.py` | what the editor asks about: where events, flags and modifiers are, what keys read as, what is at a place in a file |
+| `bicevalidator/pictures.py` | event pictures: which file a name shows, the game install, TGA and DDS to PNG |
 | `vscode/` | the VS Code extension, its tests in VS Code, and `build.py` |
 | `BiceValidator.pyw`, `BiceValidator.spec`, `build.py` | the launcher, and building it into an exe |
 | `tests/` | `python -m unittest discover -s tests -t .` |

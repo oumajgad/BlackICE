@@ -1,0 +1,46 @@
+{
+  "kind": "unit_upgrades",
+  "title": "Unit upgrades",
+  "files": [
+    "common/unit_upgrades.txt"
+  ],
+  "doc": "",
+  "source": "how the mod and the base game write it; the loader (CSubUnitDataBase, 0x5AE1C0, reversing/findings/FINDINGS-startup.md section 7) was not read",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "keys": {
+        "unit_upgrades": {
+          "value": "block:unit_upgrades",
+          "desc": "the upgrade rules"
+        }
+      }
+    },
+    "unit_upgrades": {
+      "confidence": "inferred",
+      "keys": {
+        "upgrade": {
+          "value": "block:upgrade",
+          "desc": "one unit type that may be upgraded to another",
+          "repeat": true
+        }
+      }
+    },
+    "upgrade": {
+      "confidence": "inferred",
+      "keys": {
+        "base": {
+          "value": "unit type",
+          "desc": "the type upgraded from",
+          "required": true
+        },
+        "target": {
+          "value": "unit type",
+          "desc": "the type upgraded to",
+          "required": true
+        }
+      }
+    }
+  }
+}

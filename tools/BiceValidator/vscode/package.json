@@ -2,7 +2,7 @@
   "name": "blackice-script",
   "displayName": "BlackICE Script",
   "description": "BICE Validator in the editor for Hearts of Iron 3 script: findings while you type, hover, go to definition, references, completion, an outline of events, Windows-1252 by default, and colouring.",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "publisher": "blackice",
   "private": true,
   "license": "UNLICENSED",
@@ -46,9 +46,25 @@
     "configurationDefaults": {
       "[blackice-script]": {
         "files.encoding": "windows1252",
-        "files.autoGuessEncoding": false
+        "files.autoGuessEncoding": false,
+        "editor.semanticHighlighting.enabled": true
       }
     },
+    "semanticTokenTypes": [
+      {
+        "id": "dataKey",
+        "description": "A key the loader of this kind of data file takes, by its schema. No super type, so a theme colours it by the scope it is mapped to below - as an event's own keys - and not as its own keyword colour."
+      }
+    ],
+    "semanticTokenScopes": [
+      {
+        "scopes": {
+          "dataKey": [
+            "keyword.control.blackice-script"
+          ]
+        }
+      }
+    ],
     "commands": [
       {
         "command": "blackice.validator.restart",
@@ -107,6 +123,14 @@
               "BV111",
               "BV112",
               "BV113",
+              "BV301",
+              "BV302",
+              "BV303",
+              "BV304",
+              "BV305",
+              "BV306",
+              "BV307",
+              "BV308",
               "BV201",
               "BV202",
               "BV203",
@@ -117,7 +141,8 @@
               "BV208",
               "BV209",
               "BV210",
-              "BV211"
+              "BV211",
+              "BV212"
             ],
             "enumDescriptions": [
               "Closing bracket with nothing open (error)",
@@ -142,6 +167,14 @@
               "Unexpected field inside a keyword's block (warning)",
               "Unrecognised entry at the top of the file (error)",
               "Bare word in a script block (error)",
+              "Block this kind of file does not take (error)",
+              "Key not seen in this kind of file (warning)",
+              "Value of the wrong kind in a data file (warning)",
+              "Required key missing (error)",
+              "Key given twice where only one is kept (warning)",
+              "Name that does not exist (error)",
+              "Model list that does not fit its unit type (warning)",
+              "Key that does nothing here (warning)",
               "Event fired that does not exist (error)",
               "Event id used twice (error)",
               "Order of battle file not found (error)",
@@ -152,7 +185,8 @@
               "Flag tested but never set (warning)",
               "Flag set but never tested (info)",
               "Country without a flag image (error)",
-              "Value names something that does not exist (warning)"
+              "Value names something that does not exist (warning)",
+              "Event picture not found (warning)"
             ]
           }
         },
@@ -196,6 +230,16 @@
           "type": "boolean",
           "default": false,
           "markdownDescription": "Hide findings that the mod's `tools/BiceValidator/baseline.json` lists as known noise - the list the BICE Validator window keeps."
+        },
+        "blackice.validator.gameFolder": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "The Hearts of Iron 3 folder, the one with `hoi3_tfh.exe` in it. Event pictures the mod does not ship are looked for there. Empty finds it by itself: the game an installed mod sits in, a `Hearts of Iron 3` folder beside the mod or a few levels above it, or Steam's usual place."
+        },
+        "blackice.validator.modelTechnologies": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "In a `model = { ... }` list of an order of battle, show after each level the technology it sets. The levels go to the unit type's technologies in the order the technology files are read."
         },
         "blackice.validator.eventTitles": {
           "type": "boolean",

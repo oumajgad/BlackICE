@@ -1,0 +1,43 @@
+{
+  "kind": "occupation_policies",
+  "title": "Occupation policies",
+  "files": [
+    "common/occupation_policies.txt"
+  ],
+  "source": "FINDINGS-definitions.md COccupationPolicy::LoadKey (0x12CEE0: `allow`); FINDINGS-occupation.md (COccupationPolicy : CModifier)",
+  "root": "file",
+  "declares": [
+    {
+      "kind": "occupation policy",
+      "depth": 0
+    }
+  ],
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "each key is an occupation policy (loader 0x52D0A0, not read)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:policy",
+          "desc": "an occupation policy"
+        }
+      ]
+    },
+    "policy": {
+      "confidence": "inferred",
+      "desc": "an occupation policy: `allow`, then falls through to CModifier::LoadKey for any other key - a modifier kind; which names that takes is not read, so an unknown one is reported softly",
+      "keys": {
+        "allow": {
+          "value": "triggers",
+          "desc": "who may choose it",
+          "confidence": "confirmed"
+        }
+      },
+      "include": [
+        "strategic_resources:modifier"
+      ]
+    }
+  }
+}

@@ -62,6 +62,8 @@ def main(argv=None):
     parser.add_argument("--json", action="store_true", help="print findings as JSON")
     parser.add_argument("--rules", action="store_true", help="list the rules and stop")
     parser.add_argument("--workers", type=int, help="processes for the syntax pass")
+    parser.add_argument("--game", help="the Hearts of Iron 3 folder, for event pictures the "
+                                       "mod does not ship (default: found beside the mod)")
     args = parser.parse_args(argv)
 
     if args.rules:
@@ -86,7 +88,8 @@ def main(argv=None):
             sys.stderr.write("\r%5d/%d  %-60s" % (done, total, message[:60]))
             sys.stderr.flush()
 
-    result = runner.run(root, modes, only=only, progress=progress, workers=args.workers)
+    result = runner.run(root, modes, only=only, progress=progress, workers=args.workers,
+                        game=args.game)
     if sys.stderr.isatty():
         sys.stderr.write("\r" + " " * 80 + "\r")
 

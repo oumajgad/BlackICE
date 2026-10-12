@@ -7,9 +7,12 @@ from dataclasses import dataclass, field
 
 from . import lexer, parser, rules
 from .declarations import Declarations
+from .pictures import Pictures
 from .schema import Schema, locate_keyword_pages
 from .checks import syntax
+from .checks.data import DataChecker
 from .checks.script import ScriptChecker
+from .schemas import Registry
 
 # Folders read as script, and the patterns in each. Every one is the same language, so
 # all get the syntax check; events and decisions also get the script check.
@@ -73,9 +76,10 @@ def list_files(root, only=None):
     return sorted(set(out))
 
 
-def check_file(source, parsed, checker, modes=(rules.CODE,)):
-    """The per-file checks for one parsed file: syntax always, and the script checks for
-    events and decisions in code mode. Shared by a run and the language server."""
+def check_file(source, parsed, checker, modes=(rules.CODE,), data=None):
+    """The per-file checks for one parsed file: syntax always, and in code mode the script
+    checks for events and decisions and, given a checks.data.DataChecker, the schema
+    checks for every other kind of file. Shared by a run and the language server."""
     found = syntax.check(source, parsed)
     if rules.CODE in modes:
         folder = source.path.split("/", 1)[0]
@@ -83,19 +87,35 @@ def check_file(source, parsed, checker, modes=(rules.CODE,)):
             found += checker.check_events(source, parsed.root)
         elif folder == "decisions":
             found += checker.check_decisions(source, parsed.root)
+        elif data is not None:
+            found += data.check(source, parsed.root)
     return found
 
 
-def _syntax_only(root, rels):
-    """The syntax check for a batch of files, in a worker process."""
+# The data checker of a worker process, sent once when the process starts.
+_WORKER_DATA = None
+
+
+def _worker_start(data):
+    global _WORKER_DATA
+    _WORKER_DATA = data
+
+
+def _per_file(root, rels, code, data=None):
+    """The checks of a batch of files that are neither events nor decisions, in a worker
+    process: syntax, and in code mode the schema checks."""
+    data = data or _WORKER_DATA
     out = []
     for rel in rels:
         source = lexer.read(root, rel)
-        out.extend(syntax.check(source, parser.parse(source.text)))
+        parsed = parser.parse(source.text)
+        out.extend(syntax.check(source, parsed))
+        if code and data is not None:
+            out.extend(data.check(source, parsed.root))
     return len(rels), out
 
 
-def _start_pool(root, rels, workers):
+def _start_pool(root, rels, workers, code=False, data=None):
     """Hand \\p rels to a process pool in batches; (pool, futures), or None if a pool
     cannot be had here - the run then does everything in this process."""
     try:
@@ -108,16 +128,17 @@ def _start_pool(root, rels, workers):
         workers = workers or max(1, (os.cpu_count() or 2) - 1)
         if workers < 2:
             return None
-        pool = ProcessPoolExecutor(max_workers=workers)
+        pool = ProcessPoolExecutor(max_workers=workers, initializer=_worker_start,
+                                   initargs=(data if code else None,))
         size = max(50, len(rels) // (workers * 4))
         batches = [rels[i:i + size] for i in range(0, len(rels), size)]
-        futures = [pool.submit(_syntax_only, root, batch) for batch in batches]
+        futures = [pool.submit(_per_file, root, batch, code) for batch in batches]
         return pool, futures, batches
     except (OSError, ImportError, NotImplementedError, RuntimeError):
         return None
 
 
-def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
+def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None, game=None):
     """Validate the mod at \\p root.
 
     \\p only limits which files are *reported on* (the changed-files mode); declarations
@@ -126,6 +147,8 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
     \\p progress, if given, is called as progress(done, total, message).
     \\p workers is how many processes check the syntax-only files; None means one fewer
     than there are cores, and 1 keeps everything in this process.
+    \\p game is the game install, for the event pictures the mod does not ship; None
+    finds it beside the mod (pictures.find_game).
     """
     started = time.time()
     modes = set(modes)
@@ -148,10 +171,13 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
     tell(0, 1, "Reading the keyword lists and what the mod declares")
     docs, result.keywords_from = locate_keyword_pages(root)
     schema = Schema(docs)
-    declarations = Declarations(root, load)
+    registry = Registry()
+    declarations = Declarations(root, load, registry)
     for missing in declarations.missing:
         result.notes.append("Not found, so names it declares are unknown: %s" % missing)
     checker = ScriptChecker(schema, declarations)
+    data = DataChecker(registry, declarations, checker, root)
+    code = rules.CODE in modes
 
     files = list_files(root)
     report_on = set(files) if only is None else set(files) & set(only)
@@ -169,7 +195,7 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
     # processes: they are the province histories, nine tenths of every run.
     remote = [f for f in to_read if not f.startswith(KEEP) and f not in cache]
     local = [f for f in to_read if f.startswith(KEEP) or f in cache]
-    pending = _start_pool(root, remote, workers) if len(remote) > 200 else None
+    pending = _start_pool(root, remote, workers, code, data) if len(remote) > 200 else None
     if pending is None:
         local = to_read
 
@@ -186,7 +212,7 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
         cache.pop(rel, None)
         if rel not in report_on:
             continue
-        result.diagnostics.extend(check_file(source, parsed, checker, modes))
+        result.diagnostics.extend(check_file(source, parsed, checker, modes, data))
 
     if pending is not None:
         pool, futures, batches = pending
@@ -196,7 +222,7 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
                     count, found = future.result()
                 except Exception:
                     # A broken pool is not a reason to lose the run: do the batch here.
-                    count, found = _syntax_only(root, batch)
+                    count, found = _per_file(root, batch, code, data)
                 done += count
                 tell(done, total, "province and unit histories")
                 result.diagnostics.extend(found)
@@ -206,7 +232,15 @@ def run(root, modes=(rules.CODE,), only=None, progress=None, workers=None):
     if rules.REFERENCES in modes:
         from .checks import references
         tell(total, total, "Checking references")
-        found = references.check(root, result.files, declarations, schema)
+        # Without the game, every picture the mod takes from it would look missing.
+        pictures = Pictures(root, game)
+        if pictures.game is None:
+            result.notes.append(
+                "Event pictures were not checked (BV212): the game install was not found%s."
+                % (" at %s" % game if game else " beside the mod; name it with --game, or "
+                   "with blackice.validator.gameFolder in VS Code"))
+            pictures = None
+        found = references.check(root, result.files, declarations, schema, pictures)
         result.diagnostics.extend(d for d in found if d.file in report_on
                                   or d.file not in result.files)
 

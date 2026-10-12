@@ -42,10 +42,20 @@ corps = {
 
 A file may hold any number of these, in any combination.
 
-An OOB file is read by the same loader that reads a country's history, so **every key a
-country accepts also works here** - `ideology`, `officers`, laws, `capital` and the rest. It
-works, but a country's starting state belongs in `history/countries/`: a key put here is
-re-applied every time an event loads the file.
+An OOB file is read by the country's own loader, `CCountry::LoadKey` - the one a savegame's
+country block goes through - so **every key that loader takes also works here**:
+`ideology`, `officers`, laws, `capital` and the rest.
+
+That is **not** the loader of a country's history file. `history/countries/` goes through
+`CCountryHistory`, so a line copied from there may not work in an OOB file:
+- **History-only keys** are not taken here: dates, `oob`, `officers_ratio`, `join_faction`,
+  the flag keys, `decision` and technologies given by name.
+- **Some keys take another shape here:** `alignment`, `popularity` and `organization`.
+- **Most of the simple keys work in both:** `capital`, `government`, `ideology`,
+  `neutrality`, `national_unity`, `dissent`, `manpower`, `officers`, `nukes` and the laws.
+
+Even where a key works, a country's starting state belongs in `history/countries/`. A key
+put here is applied again every time an event loads the file.
 
 ## Land formations
 
@@ -149,11 +159,17 @@ starts. It is an ordinary formation block, so the same keys apply; give it a `na
 | `duration` | days to completion |
 | `name` | the finished division's name |
 | `is_reserve` | reserve flag |
-| `is_prioritized` | move it up the queue |
+
+**`is_prioritized` does nothing here**, although a land formation takes it. Neither loader of
+a queued unit has it: `CMilitaryConstruction`'s own keys plus the `CConstruction` keys they
+share (`id`, `cost`, `duration`, `progress`, `status`, `size`, `location`, `country`,
+`builder`). The game's own saves never write it on one. The mod writes it 1,604 times.
 
 Each subunit block takes a `name`, an optional `experience`, and one of the two model forms
-below. `organisation` does **not** work here: organisation starts at zero after construction
-regardless.
+below - and nothing else that does anything: its loader, `CBrigadeConstructionDefinition`,
+knows `name`, `experience`, `historical_model`, `model`, `id` and two upgrade fields that
+saves write. So `strength`, `organisation` and `builder` do **not** work here. Organisation
+starts at zero after construction regardless.
 
 ```
 military_construction = {

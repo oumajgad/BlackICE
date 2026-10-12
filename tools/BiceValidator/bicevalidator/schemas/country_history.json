@@ -1,0 +1,920 @@
+{
+  "kind": "country_history",
+  "title": "Country history",
+  "files": [
+    "history/countries/*.txt"
+  ],
+  "source": "reversing/findings/FINDINGS-history.md; ghidra/project.json CHistoryContainer::LoadKey (0x1FCC10), CCountryHistory::LoadEntry (0x1ECA90), CCountry::LoadKey (0xCCDA0); BiceLib/GameClasses/CCountryHistory.hpp; reversing/findings/FINDINGS-fieldmap.md (CCountry's 126 cases); reversing/findings/FINDINGS-aifields.md section 6",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "confirmed",
+      "desc": "a country's history: one grammar, at the top or postponed to a date",
+      "include": [
+        "country_history:entries"
+      ],
+      "patterns": [
+        {
+          "match": "date",
+          "value": "block:entries",
+          "repeat": true,
+          "desc": "applied on that date: the block holds the same keys as the top of the file, and is only a way of postponing them (CHistoryContainer::LoadKey)"
+        }
+      ]
+    },
+    "entries": {
+      "confidence": "confirmed",
+      "desc": "CCountryHistory::LoadEntry: 33 keys of its own, and names looked up in the technology, category, government position and law databases. A date inside a date block is not a date to it",
+      "keys": {
+        "alignment": {
+          "value": "block:alignment",
+          "desc": "the country's place on the diplomacy triangle, `{ x = .. y = .. }` (CAlignmentPosition)"
+        },
+        "capital": {
+          "value": "province",
+          "desc": "capital province (CCountryCapitalChange)"
+        },
+        "set_country_flag": {
+          "value": "text",
+          "desc": "sets a country flag",
+          "repeat": true
+        },
+        "clr_country_flag": {
+          "value": "text",
+          "desc": "clears a country flag",
+          "repeat": true
+        },
+        "set_global_flag": {
+          "value": "text",
+          "desc": "sets a global flag",
+          "repeat": true
+        },
+        "clr_global_flag": {
+          "value": "text",
+          "desc": "clears a global flag",
+          "repeat": true
+        },
+        "decision": {
+          "value": "text",
+          "desc": "marks a decision as taken (CCountryDecisionChange)",
+          "repeat": true
+        },
+        "remove_decision": {
+          "value": "text",
+          "desc": "unmarks a decision (CCountryRemoveDecisionChange)",
+          "repeat": true
+        },
+        "dissent": {
+          "value": "number",
+          "desc": "dissent"
+        },
+        "government": {
+          "value": "government",
+          "desc": "form of government, from common/governments.txt"
+        },
+        "government_in_exile": {
+          "value": "yes/no",
+          "desc": "makes the country a government in exile (CExileStatusChange)"
+        },
+        "historical_friend": {
+          "value": "tag",
+          "desc": "a country it is historically friendly with",
+          "repeat": true
+        },
+        "ideology": {
+          "value": "ideology",
+          "desc": "the ruling party's ideology"
+        },
+        "join_faction": {
+          "value": "faction",
+          "desc": "joins a faction",
+          "repeat": true
+        },
+        "leave_faction": {
+          "value": "faction",
+          "desc": "leaves a faction",
+          "repeat": true
+        },
+        "leader": {
+          "value": "any",
+          "desc": "a CLeaderChange; what its value is has not been read"
+        },
+        "manpower": {
+          "value": "number",
+          "desc": "manpower in the pool"
+        },
+        "national_unity": {
+          "value": "number",
+          "desc": "national unity"
+        },
+        "neutrality": {
+          "value": "number",
+          "desc": "neutrality"
+        },
+        "nukes": {
+          "value": "number",
+          "desc": "nuclear bombs in store"
+        },
+        "officers": {
+          "value": "number",
+          "desc": "officers in the pool"
+        },
+        "officers_ratio": {
+          "value": "number",
+          "desc": "officer ratio, 1.0 being the full complement"
+        },
+        "oob": {
+          "value": "oob file",
+          "desc": "an order of battle in history/units/ to load",
+          "repeat": true
+        },
+        "organization": {
+          "value": "block:ideology_shares",
+          "desc": "each ideology's party organisation, `ideology = percent`"
+        },
+        "popularity": {
+          "value": "block:ideology_shares",
+          "desc": "each ideology's popularity, `ideology = percent`"
+        },
+        "threat": {
+          "value": "number",
+          "desc": "threat"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies in the national stockpile"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel in the national stockpile"
+        },
+        "money": {
+          "value": "number",
+          "desc": "money in the national stockpile"
+        },
+        "energy": {
+          "value": "number",
+          "desc": "energy in the national stockpile"
+        },
+        "metal": {
+          "value": "number",
+          "desc": "metal in the national stockpile"
+        },
+        "rare_materials": {
+          "value": "number",
+          "desc": "rare_materials in the national stockpile"
+        },
+        "crude_oil": {
+          "value": "number",
+          "desc": "crude_oil in the national stockpile"
+        },
+        "military_government": {
+          "value": "tag",
+          "desc": "sets this occupation policy on that country (COccupationChange); the policies are the blocks of common/occupation_policies.txt",
+          "repeat": true,
+          "confidence": "inferred"
+        },
+        "collaboration_government": {
+          "value": "tag",
+          "desc": "sets this occupation policy on that country (COccupationChange); the policies are the blocks of common/occupation_policies.txt",
+          "repeat": true,
+          "confidence": "inferred"
+        },
+        "full_occupation": {
+          "value": "tag",
+          "desc": "sets this occupation policy on that country (COccupationChange); the policies are the blocks of common/occupation_policies.txt",
+          "repeat": true,
+          "confidence": "inferred"
+        },
+        "total_exploitation": {
+          "value": "tag",
+          "desc": "sets this occupation policy on that country (COccupationChange); the policies are the blocks of common/occupation_policies.txt",
+          "repeat": true,
+          "confidence": "inferred"
+        },
+        "civil_war": {
+          "value": "tag",
+          "desc": "sets this occupation policy on that country (COccupationChange); the policies are the blocks of common/occupation_policies.txt",
+          "repeat": true,
+          "confidence": "inferred"
+        },
+        "soviet_liberation": {
+          "value": "tag",
+          "desc": "sets this occupation policy on that country (COccupationChange); the policies are the blocks of common/occupation_policies.txt",
+          "repeat": true,
+          "confidence": "inferred"
+        }
+      },
+      "patterns": [
+        {
+          "match": "technology",
+          "value": "integer",
+          "desc": "a technology and the level the country has of it (CTechnologyChange)"
+        },
+        {
+          "match": "name:theory",
+          "value": "number",
+          "desc": "a theory and the country's skill in it (CCategoryChange)"
+        },
+        {
+          "match": "name:practical",
+          "value": "number",
+          "desc": "a practical and the country's experience in it (CCategoryChange)"
+        },
+        {
+          "match": "position",
+          "value": "integer",
+          "desc": "a government position and the id of the minister who holds it (CMinisterChange)"
+        },
+        {
+          "match": "law group",
+          "value": "law",
+          "desc": "a law group and the law in force in it (CLawChange)"
+        }
+      ]
+    },
+    "alignment": {
+      "confidence": "inferred",
+      "desc": "a point on the diplomacy triangle. Only the shape the files use is known: a savegame writes CAlignment's `position = { x y }` instead, which is another loader",
+      "keys": {
+        "x": {
+          "value": "number",
+          "desc": "across"
+        },
+        "y": {
+          "value": "number",
+          "desc": "up"
+        }
+      }
+    },
+    "ideology_shares": {
+      "confidence": "inferred",
+      "desc": "ideology = percent, one line per ideology",
+      "patterns": [
+        {
+          "match": "ideology",
+          "value": "number",
+          "desc": "an ideology and its share"
+        }
+      ]
+    },
+    "country_keys": {
+      "confidence": "confirmed",
+      "desc": "CCountry::LoadKey: everything a country's own loader takes - what a savegame's country block holds, and what an order-of-battle file may hold beside its units. The unit, deployment and construction keys belong to the OOB schema",
+      "keys": {
+        "capital": {
+          "value": "province",
+          "desc": "capital province"
+        },
+        "acting_capital": {
+          "value": "province",
+          "desc": "where the government sits when the capital is lost"
+        },
+        "government": {
+          "value": "government",
+          "desc": "form of government"
+        },
+        "ideology": {
+          "value": "ideology",
+          "desc": "the ruling party's ideology"
+        },
+        "neutrality": {
+          "value": "number",
+          "desc": "neutrality"
+        },
+        "effective_neutrality": {
+          "value": "number",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "national_unity": {
+          "value": "number",
+          "desc": "national unity"
+        },
+        "dissent": {
+          "value": "number",
+          "desc": "dissent"
+        },
+        "manpower": {
+          "value": "number",
+          "desc": "manpower in the pool; also kept as the starting manpower"
+        },
+        "officers": {
+          "value": "number",
+          "desc": "officers in the pool"
+        },
+        "nukes": {
+          "value": "number",
+          "desc": "nuclear bombs in store"
+        },
+        "major": {
+          "value": "yes/no",
+          "desc": "marks a major power"
+        },
+        "color": {
+          "value": "colour",
+          "desc": "the country's map colour"
+        },
+        "color2": {
+          "value": "colour",
+          "desc": "its second colour"
+        },
+        "graphical_culture": {
+          "value": "text",
+          "desc": "which graphical culture its units are drawn in"
+        },
+        "government_in_exile": {
+          "value": "yes/no",
+          "desc": "a government in exile"
+        },
+        "mobilize": {
+          "value": "yes/no",
+          "desc": "mobilised"
+        },
+        "election": {
+          "value": "yes/no",
+          "desc": "holds elections"
+        },
+        "history": {
+          "value": "block:file",
+          "desc": "the country's history, read by CCountryHistory: dates and history keys"
+        },
+        "flags": {
+          "value": "block:flags",
+          "desc": "country flags, `name = yes`"
+        },
+        "variables": {
+          "value": "any",
+          "desc": "country variables"
+        },
+        "alignment": {
+          "value": "block:save_alignment",
+          "desc": "the place on the diplomacy triangle, as CAlignment reads it: `position = { x = .. y = .. }`"
+        },
+        "organization": {
+          "value": "block:ideology_data",
+          "desc": "party organisation, as a save writes it"
+        },
+        "popularity": {
+          "value": "block:ideology_data",
+          "desc": "party popularity, as a save writes it"
+        },
+        "technology": {
+          "value": "block:technology",
+          "desc": "every technology and its level, as a save writes it"
+        },
+        "research": {
+          "value": "technology",
+          "desc": "a technology being researched",
+          "repeat": true
+        },
+        "modifier": {
+          "value": "any",
+          "desc": "a timed modifier on the country",
+          "repeat": true
+        },
+        "leader": {
+          "value": "any",
+          "desc": "a leader put in service",
+          "repeat": true
+        },
+        "active_leaders": {
+          "value": "any",
+          "desc": "the leaders in service, by id"
+        },
+        "ministers": {
+          "value": "any",
+          "desc": "ministers"
+        },
+        "convoy": {
+          "value": "any",
+          "desc": "a convoy",
+          "repeat": true
+        },
+        "convoys": {
+          "value": "integer",
+          "desc": "transports in the pool"
+        },
+        "escorts": {
+          "value": "integer",
+          "desc": "escorts in the pool"
+        },
+        "auto_assign_leaders": {
+          "value": "yes/no",
+          "desc": "the AI assigns this country's leaders"
+        },
+        "auto_maintain_convoy": {
+          "value": "yes/no",
+          "desc": "convoys are kept up automatically"
+        },
+        "auto_supply_convoy": {
+          "value": "yes/no",
+          "desc": "supply convoys are made automatically"
+        },
+        "auto_resource_convoy": {
+          "value": "yes/no",
+          "desc": "resource convoys are made automatically"
+        },
+        "unit_names": {
+          "value": "any",
+          "desc": "names given to new units"
+        },
+        "human": {
+          "value": "yes/no",
+          "desc": "played by a person"
+        },
+        "nocategory": {
+          "value": "number",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand; the category of technologies that have none",
+          "confidence": "inferred"
+        },
+        "pool": {
+          "value": "block:goods",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "home": {
+          "value": "block:goods",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "usage": {
+          "value": "block:goods",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "to": {
+          "value": "block:goods",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "back": {
+          "value": "block:goods",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "convoyed_out": {
+          "value": "block:goods",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "traded_away": {
+          "value": "block:goods",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "traded_away_sans_allied": {
+          "value": "block:goods",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "traded_for": {
+          "value": "block:goods",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "traded_for_sans_allied": {
+          "value": "block:goods",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "duration": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "default_templates": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "saved_templates": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "ai_hard_strategy": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "ai_event_strategy": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "ai": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "lendlease_targets": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "lend_lease_from": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "lend_lease_from_yesterday": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "lend_lease_income": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "lend_lease_income_yesterday": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "lend_lease_from_values": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "lend_lease_from_yesterday_values": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "lendlease_distributions": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "lendlease_effectiveness": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "diplo_influence": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "last_election": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "last_rebel_acceptance": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "remove_fow": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "last_surrender": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "war_exhaustion": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "active_mission": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "last_mission": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "last_mission_cancel": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "land_battles_fought": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "air_battles_fought": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "naval_battles_fought": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "slider_locks": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "historical_friends": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "spies": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_warfare": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "prov_vp": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "offmap_vp": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "spiescaught": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "highest_threat": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "cabinet": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "covert_ops_points": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "distribution": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "leadership": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "influence": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "influence_leaders": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "shared_technologies": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "spy_allocation": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "spy_date": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "spy_mission": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "spy_priority": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "building_deployment": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "declarewar": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "allianceaction": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "callaction": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "debtaction_action": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "embargo_action": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "faction_action": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "guaranteeaction": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "licence_technology": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "milaccess": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "nap": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "offer_lendlease": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "offermilaccess": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "peace_action": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "request_lendlease": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "send_expedition": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "share_technology": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        },
+        "trade_action": {
+          "value": "any",
+          "desc": "a pending diplomatic action, as a savegame writes it",
+          "repeat": true
+        }
+      },
+      "patterns": [
+        {
+          "match": "law group",
+          "value": "law",
+          "confidence": "confirmed",
+          "desc": "a law group and the law in force in it: the default arm looks the key up as a law group (FINDINGS-aifields.md section 6)"
+        },
+        {
+          "match": "position",
+          "value": "integer",
+          "confidence": "inferred",
+          "desc": "a government position and its minister's id, as a savegame writes it"
+        },
+        {
+          "match": "name:theory",
+          "value": "number",
+          "confidence": "inferred",
+          "desc": "a theory and the country's skill in it, as a savegame writes it"
+        },
+        {
+          "match": "name:practical",
+          "value": "number",
+          "confidence": "inferred",
+          "desc": "a practical and the country's experience in it, as a savegame writes it"
+        },
+        {
+          "match": "tag",
+          "value": "block:diplomacy_status",
+          "confidence": "inferred",
+          "desc": "what this country has with that one, as a savegame writes it"
+        }
+      ]
+    },
+    "flags": {
+      "confidence": "inferred",
+      "desc": "flag = yes",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "yes/no",
+          "desc": "a flag"
+        }
+      ]
+    },
+    "save_alignment": {
+      "confidence": "confirmed",
+      "desc": "CAlignment::LoadKey: one key",
+      "keys": {
+        "position": {
+          "value": "block:point",
+          "desc": "the point"
+        }
+      }
+    },
+    "point": {
+      "confidence": "inferred",
+      "keys": {
+        "x": {
+          "value": "number",
+          "desc": "across"
+        },
+        "y": {
+          "value": "number",
+          "desc": "up"
+        }
+      }
+    },
+    "ideology_data": {
+      "confidence": "confirmed",
+      "desc": "CIdeologyData::LoadKey: one key",
+      "keys": {
+        "data": {
+          "value": "list:number",
+          "desc": "one figure per ideology, in the order of common/ideologies.txt"
+        }
+      }
+    },
+    "technology": {
+      "confidence": "inferred",
+      "desc": "technology = { level progress ... }",
+      "patterns": [
+        {
+          "match": "technology",
+          "value": "list:number",
+          "repeat": true,
+          "desc": "a technology: its level and its progress. A BlackICE save writes some twice (`cag_design_hidden`), so a repeat is not reported"
+        }
+      ],
+      "keys": {
+        "notech": {
+          "value": "list:number",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        }
+      }
+    },
+    "goods": {
+      "confidence": "confirmed",
+      "desc": "CGoodsPool::LoadKey: the seven goods",
+      "keys": {
+        "supplies": {
+          "value": "number",
+          "desc": "an amount of supplies"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "an amount of fuel"
+        },
+        "money": {
+          "value": "number",
+          "desc": "an amount of money"
+        },
+        "energy": {
+          "value": "number",
+          "desc": "an amount of energy"
+        },
+        "metal": {
+          "value": "number",
+          "desc": "an amount of metal"
+        },
+        "rare_materials": {
+          "value": "number",
+          "desc": "an amount of rare_materials"
+        },
+        "crude_oil": {
+          "value": "number",
+          "desc": "an amount of crude_oil"
+        }
+      }
+    },
+    "diplomacy_status": {
+      "confidence": "confirmed",
+      "desc": "CDiplomacyStatus::LoadKey: what two countries have between them",
+      "keys": {
+        "dailyrepay": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "debt": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "debtaction_action": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "last_send_diplomat": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "last_war": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "military_access": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "next_wargoal_date": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "occupation_policy": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "threat": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "value": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        }
+      }
+    }
+  }
+}

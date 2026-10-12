@@ -1,0 +1,130 @@
+{
+  "kind": "rebel_types",
+  "title": "Rebel types",
+  "files": [
+    "common/rebel_types.txt"
+  ],
+  "source": "FINDINGS-definitions.md and project.json CRebelType::LoadKey (0xBFA40, 17 keys)",
+  "root": "file",
+  "declares": [
+    {
+      "kind": "rebel type",
+      "depth": 0
+    }
+  ],
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "each key is a rebel type (loader 0x4BFED0, not read)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:rebel_type",
+          "desc": "a rebel type"
+        }
+      ]
+    },
+    "rebel_type": {
+      "confidence": "confirmed",
+      "desc": "CRebelType::LoadKey's whole grammar",
+      "keys": {
+        "area": {
+          "value": "text",
+          "desc": "where its units may go - `nation`"
+        },
+        "auto_convert": {
+          "value": "yes/no",
+          "desc": "converts automatically"
+        },
+        "can_enforce_trigger": {
+          "value": "triggers",
+          "desc": "when its demands can be enforced; country scope"
+        },
+        "defect_delay": {
+          "value": "integer",
+          "desc": "months before its units defect"
+        },
+        "defection": {
+          "value": "text",
+          "desc": "who its units defect to: `none`, `any`, or a faction"
+        },
+        "demands_enforced_effect": {
+          "value": "effects",
+          "desc": "what happens when its demands are enforced; country scope"
+        },
+        "ideology": {
+          "value": "text",
+          "desc": "its ideology: `any` or an ideology"
+        },
+        "independence": {
+          "value": "text",
+          "desc": "whether it fights for independence: `none` or `any`"
+        },
+        "is_triggered_only": {
+          "value": "yes/no",
+          "desc": "spawned only by script"
+        },
+        "movement_evaluation": {
+          "value": "block:chance",
+          "desc": "how much it wants each province of its area"
+        },
+        "reinforcing": {
+          "value": "yes/no",
+          "desc": "its units reinforce"
+        },
+        "resilient": {
+          "value": "yes/no",
+          "desc": "resilient"
+        },
+        "siege_won_effect": {
+          "value": "effects",
+          "desc": "what happens when it takes a province; province scope"
+        },
+        "siege_won_trigger": {
+          "value": "triggers",
+          "desc": "whether taking a province counts; province scope"
+        },
+        "smart": {
+          "value": "yes/no",
+          "desc": "moves with some sense"
+        },
+        "spawn_chance": {
+          "value": "block:chance",
+          "desc": "the weight of this type for a province; the highest wins"
+        },
+        "unit": {
+          "value": "unit type",
+          "desc": "the brigade it raises"
+        }
+      }
+    },
+    "chance": {
+      "confidence": "inferred",
+      "desc": "a base `factor` and `modifier` blocks",
+      "keys": {
+        "factor": {
+          "value": "number",
+          "desc": "the base figure"
+        },
+        "modifier": {
+          "value": "block:chance_modifier",
+          "desc": "a factor applied while its conditions hold",
+          "repeat": true
+        }
+      }
+    },
+    "chance_modifier": {
+      "confidence": "inferred",
+      "desc": "a `factor` and conditions; the conditions are not checked here",
+      "keys": {
+        "factor": {
+          "value": "number",
+          "desc": "multiplies the figure while the rest holds",
+          "required": true
+        }
+      },
+      "open": true
+    }
+  }
+}

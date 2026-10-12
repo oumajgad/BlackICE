@@ -1,0 +1,496 @@
+{
+  "kind": "technologies",
+  "title": "Technology",
+  "files": [
+    "technologies/*.txt"
+  ],
+  "doc": "",
+  "source": "CTechnology::LoadKey (0x134AC0, 19 keys) and CTechStatistics::LoadKey (0x137DB0, 47 keys) read out of the game: reversing/findings/FINDINGS-fieldmap.md, reversing/findings/FINDINGS-research.md, BiceLib GameClasses/CTechnology.hpp and CCountryHistory.hpp; a unit type's name takes a CSubUnitDefinition delta (CLASSES.md \"How a technology reaches a unit\"); `tactic_` keys (reversing/findings/FINDINGS-combatview.md section 11); mission blocks (reversing/findings/FINDINGS-navalmissions.md section 10, MissionIndexToOrderToken in ghidra/project.json)",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "confirmed",
+      "desc": "technologies, one block each",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:technology",
+          "desc": "a technology, named by its key"
+        }
+      ]
+    },
+    "technology": {
+      "confidence": "confirmed",
+      "desc": "a technology: its own keys, its country-wide effects, and its effect on each unit type in a block named after the type",
+      "keys": {
+        "allow": {
+          "value": "triggers",
+          "desc": "whether a country may research a level; also decides a one-level technology's place in a default historical model"
+        },
+        "change": {
+          "value": "yes/no",
+          "desc": "no for a doctrine: costs nothing to upgrade and moves a whole level a day"
+        },
+        "on_completion": {
+          "value": "text",
+          "desc": "the technology category (a practical or a theory from common/technology.txt) a level finished raises"
+        },
+        "folder": {
+          "value": "text",
+          "desc": "its folder, from common/technology.txt's `folders`"
+        },
+        "start_year": {
+          "value": "integer",
+          "desc": "the year of its first level"
+        },
+        "first_offset": {
+          "value": "integer",
+          "desc": "years from start_year to the first level"
+        },
+        "additional_offset": {
+          "value": "integer",
+          "desc": "years between levels; 0 makes it a one-level technology"
+        },
+        "max_level": {
+          "value": "integer",
+          "desc": "the highest level"
+        },
+        "difficulty": {
+          "value": "integer",
+          "desc": "research cost: (difficulty x 0.1 + 1) x 125; read as a whole number, so 0.5 is 0"
+        },
+        "is_nuclear": {
+          "value": "yes/no",
+          "desc": "adds the nuclear research modifier to its research bonus"
+        },
+        "activate_unit": {
+          "value": "unit type",
+          "desc": "a unit type a level makes available",
+          "repeat": true
+        },
+        "activate_building": {
+          "value": "building",
+          "desc": "the building it makes available"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether brigades are upgraded to its new levels"
+        },
+        "research_bonus_from": {
+          "value": "block:research_bonus_from",
+          "desc": "categories whose experience lowers the research cost"
+        },
+        "stealable": {
+          "value": "yes/no",
+          "desc": "whether espionage can steal it"
+        },
+        "build_cost_ic_modifier": {
+          "value": "any",
+          "desc": "a per-unit-type build cost modifier; the mod and the base game never use it, and its shape was not read"
+        },
+        "build_cost_mp_modifier": {
+          "value": "any",
+          "desc": "a per-unit-type manpower cost modifier; never used, shape not read"
+        },
+        "build_time_modifier": {
+          "value": "any",
+          "desc": "a per-unit-type build time modifier; never used, shape not read"
+        },
+        "id": {
+          "value": "any",
+          "desc": "an id; no technology file writes one"
+        },
+        "ground_defence_effiency": {
+          "value": "number",
+          "desc": "ground defence efficiency - the engine's own spelling; spelt correctly it does nothing"
+        },
+        "supply_transfer_cost": {
+          "value": "number",
+          "desc": "supply transfer cost, a fraction per level, 0.05 is +5%"
+        },
+        "supply_throughput": {
+          "value": "number",
+          "desc": "supply throughput, a fraction per level, 0.05 is +5%"
+        },
+        "dig_in_cap": {
+          "value": "number",
+          "desc": "the cap on digging in"
+        },
+        "attack_delay": {
+          "value": "number",
+          "desc": "attack delay, in hours"
+        },
+        "division_size": {
+          "value": "number",
+          "desc": "division size"
+        },
+        "refinery_efficiency": {
+          "value": "number",
+          "desc": "refinery efficiency, a fraction per level, 0.05 is +5%"
+        },
+        "radar_efficiency": {
+          "value": "number",
+          "desc": "radar efficiency"
+        },
+        "radio_strength": {
+          "value": "number",
+          "desc": "radio strength"
+        },
+        "encryption": {
+          "value": "number",
+          "desc": "encryption"
+        },
+        "decryption": {
+          "value": "number",
+          "desc": "decryption"
+        },
+        "convoy_build_cost": {
+          "value": "number",
+          "desc": "convoy build cost"
+        },
+        "convoy_build_time": {
+          "value": "number",
+          "desc": "convoy build time"
+        },
+        "escort_build_cost": {
+          "value": "number",
+          "desc": "escort build cost"
+        },
+        "escort_build_time": {
+          "value": "number",
+          "desc": "escort build time"
+        },
+        "attack_movement_speed": {
+          "value": "number",
+          "desc": "speed when attacking, a fraction per level, 0.05 is +5%"
+        },
+        "reinforce_chance": {
+          "value": "number",
+          "desc": "chance of reserves coming up, a fraction per level, 0.05 is +5%"
+        },
+        "unit_cooperation": {
+          "value": "number",
+          "desc": "unit cooperation, a fraction per level, 0.05 is +5%"
+        },
+        "targeting_chance": {
+          "value": "number",
+          "desc": "naval targeting chance"
+        },
+        "targeting_choice": {
+          "value": "number",
+          "desc": "naval targeting choice"
+        },
+        "escort_efficiency": {
+          "value": "number",
+          "desc": "escort efficiency, a fraction per level, 0.05 is +5%"
+        },
+        "naval_base_efficiency": {
+          "value": "number",
+          "desc": "naval base efficiency, a fraction per level, 0.05 is +5%"
+        },
+        "allow_escorts": {
+          "value": "yes/no",
+          "desc": "allows escorts"
+        },
+        "casualty_trickleback": {
+          "value": "number",
+          "desc": "casualty trickleback, a fraction per level, 0.05 is +5%"
+        },
+        "maximum_attrition": {
+          "value": "number",
+          "desc": "maximum attrition, a fraction per level, 0.05 is +5%"
+        },
+        "manpower_gain": {
+          "value": "number",
+          "desc": "manpower gain, a fraction per level, 0.05 is +5%"
+        },
+        "ic_modifier": {
+          "value": "number",
+          "desc": "IC, a fraction per level, 0.05 is +5%"
+        },
+        "ic_efficiency": {
+          "value": "number",
+          "desc": "IC efficiency, a fraction per level, 0.05 is +5%"
+        },
+        "energy_to_oil_conversion": {
+          "value": "number",
+          "desc": "energy to oil conversion, a fraction per level, 0.05 is +5%"
+        },
+        "ic_to_supplies": {
+          "value": "number",
+          "desc": "IC to supplies, a fraction per level, 0.05 is +5%"
+        },
+        "provincial_aa_efficiency": {
+          "value": "number",
+          "desc": "provincial anti-air efficiency, a fraction per level, 0.05 is +5%"
+        },
+        "combat_efficiency": {
+          "value": "number",
+          "desc": "combat efficiency, a fraction per level, 0.05 is +5%"
+        },
+        "research_efficiency": {
+          "value": "number",
+          "desc": "research efficiency, a fraction per level, 0.05 is +5%"
+        },
+        "metal_production": {
+          "value": "number",
+          "desc": "metal production, a fraction per level, 0.05 is +5%"
+        },
+        "rares_production": {
+          "value": "number",
+          "desc": "rare materials production, a fraction per level, 0.05 is +5%"
+        },
+        "energy_production": {
+          "value": "number",
+          "desc": "energy production, a fraction per level, 0.05 is +5%"
+        },
+        "leadership_gain": {
+          "value": "number",
+          "desc": "leadership, a fraction per level, 0.05 is +5%"
+        },
+        "nuclear_production": {
+          "value": "number",
+          "desc": "nuclear production"
+        },
+        "radar_impact": {
+          "value": "number",
+          "desc": "radar impact, a fraction per level, 0.05 is +5%"
+        },
+        "repair_rate": {
+          "value": "number",
+          "desc": "building repair rate, a fraction per level, 0.05 is +5%"
+        },
+        "bomber_targeting": {
+          "value": "number",
+          "desc": "bomber targeting, a fraction per level, 0.05 is +5%"
+        },
+        "fighter_targeting": {
+          "value": "number",
+          "desc": "fighter targeting, a fraction per level, 0.05 is +5%"
+        },
+        "frontline_focus": {
+          "value": "number",
+          "desc": "frontline focus, a fraction per level, 0.05 is +5%"
+        },
+        "reserve_focus": {
+          "value": "number",
+          "desc": "reserve focus, a fraction per level, 0.05 is +5%"
+        },
+        "naval_air_target_chance": {
+          "value": "number",
+          "desc": "naval air target chance, a fraction per level, 0.05 is +5%"
+        },
+        "listening_station": {
+          "value": "yes/no",
+          "desc": "a listening station"
+        },
+        "decay": {
+          "value": "block:decay",
+          "desc": "how fast each technology category's experience decays; the mod never uses it"
+        },
+        "support_attack": {
+          "value": "block:mission",
+          "desc": "the support_attack mission's efficiency and organisation penalty"
+        },
+        "strategic_redeployment": {
+          "value": "block:mission",
+          "desc": "the strategic_redeployment mission's efficiency and organisation penalty"
+        },
+        "move_order": {
+          "value": "block:mission",
+          "desc": "the move_order mission's efficiency and organisation penalty"
+        },
+        "rebase": {
+          "value": "block:mission",
+          "desc": "the rebase mission's efficiency and organisation penalty"
+        },
+        "reserves": {
+          "value": "block:mission",
+          "desc": "the reserves mission's efficiency and organisation penalty"
+        },
+        "patrol": {
+          "value": "block:mission",
+          "desc": "the patrol mission's efficiency and organisation penalty"
+        },
+        "intercept": {
+          "value": "block:mission",
+          "desc": "the intercept mission's efficiency and organisation penalty"
+        },
+        "sortie": {
+          "value": "block:mission",
+          "desc": "the sortie mission's efficiency and organisation penalty"
+        },
+        "convoy_escort": {
+          "value": "block:mission",
+          "desc": "the convoy_escort mission's efficiency and organisation penalty"
+        },
+        "convoy_raid": {
+          "value": "block:mission",
+          "desc": "the convoy_raid mission's efficiency and organisation penalty"
+        },
+        "air_convoy_raid": {
+          "value": "block:mission",
+          "desc": "the air_convoy_raid mission's efficiency and organisation penalty"
+        },
+        "transport": {
+          "value": "block:mission",
+          "desc": "the transport mission's efficiency and organisation penalty"
+        },
+        "invasion": {
+          "value": "block:mission",
+          "desc": "the invasion mission's efficiency and organisation penalty"
+        },
+        "strategic_bomb": {
+          "value": "block:mission",
+          "desc": "the strategic_bomb mission's efficiency and organisation penalty"
+        },
+        "logistical_strike": {
+          "value": "block:mission",
+          "desc": "the logistical_strike mission's efficiency and organisation penalty"
+        },
+        "runway_cratering": {
+          "value": "block:mission",
+          "desc": "the runway_cratering mission's efficiency and organisation penalty"
+        },
+        "installation_strike": {
+          "value": "block:mission",
+          "desc": "the installation_strike mission's efficiency and organisation penalty"
+        },
+        "ground_attack": {
+          "value": "block:mission",
+          "desc": "the ground_attack mission's efficiency and organisation penalty"
+        },
+        "interdiction": {
+          "value": "block:mission",
+          "desc": "the interdiction mission's efficiency and organisation penalty"
+        },
+        "air_intercept": {
+          "value": "block:mission",
+          "desc": "the air_intercept mission's efficiency and organisation penalty"
+        },
+        "carrier_protection": {
+          "value": "block:mission",
+          "desc": "the carrier_protection mission's efficiency and organisation penalty"
+        },
+        "paradrop_mission": {
+          "value": "block:mission",
+          "desc": "the paradrop_mission mission's efficiency and organisation penalty"
+        },
+        "port_strike": {
+          "value": "block:mission",
+          "desc": "the port_strike mission's efficiency and organisation penalty"
+        },
+        "naval_strike": {
+          "value": "block:mission",
+          "desc": "the naval_strike mission's efficiency and organisation penalty"
+        },
+        "rebase_to_carrier": {
+          "value": "block:mission",
+          "desc": "the rebase_to_carrier mission's efficiency and organisation penalty"
+        },
+        "nuke_mission": {
+          "value": "block:mission",
+          "desc": "the nuke_mission mission's efficiency and organisation penalty"
+        },
+        "transport_supplies_mission": {
+          "value": "block:mission",
+          "desc": "the transport_supplies_mission mission's efficiency and organisation penalty"
+        },
+        "rebase_air": {
+          "value": "block:mission",
+          "desc": "the rebase_air mission's efficiency and organisation penalty"
+        },
+        "air_reserve": {
+          "value": "block:mission",
+          "desc": "the air_reserve mission's efficiency and organisation penalty"
+        },
+        "air_superiority": {
+          "value": "block:mission",
+          "desc": "the air_superiority mission's efficiency and organisation penalty"
+        },
+        "join_fleet": {
+          "value": "block:mission",
+          "desc": "the join_fleet mission's efficiency and organisation penalty"
+        },
+        "join_air": {
+          "value": "block:mission",
+          "desc": "the join_air mission's efficiency and organisation penalty"
+        }
+      },
+      "patterns": [
+        {
+          "match": "unit type",
+          "value": "block:unit_effect",
+          "repeat": true,
+          "desc": "what each level does to that unit type: a unit definition holding only the changes, scaled by the level"
+        },
+        {
+          "match": "name:combat tactic",
+          "value": "number",
+          "repeat": true,
+          "confidence": "confirmed",
+          "desc": "a combat tactic's weight, a whole percentage per level (CTechStatistics keeps any `tactic_` key)"
+        },
+        {
+          "match": "name:combined arms group",
+          "value": "number",
+          "confidence": "inferred",
+          "desc": "the combined arms bonus of that group from common/combined_arms.txt, a fraction per level (the country's table of them is read; how the loader fills it was not)"
+        }
+      ]
+    },
+    "unit_effect": {
+      "confidence": "confirmed",
+      "desc": "a technology's effect on one unit type, each figure added per level",
+      "include": [
+        "units:stats"
+      ]
+    },
+    "research_bonus_from": {
+      "confidence": "confirmed",
+      "desc": "category = weight; the country's experience in each category, times its weight, lowers the research cost (at most 90%)",
+      "patterns": [
+        {
+          "match": "name:theory",
+          "value": "number",
+          "desc": "a theory from common/technology.txt and its weight"
+        },
+        {
+          "match": "name:practical",
+          "value": "number",
+          "desc": "a practical from common/technology.txt and its weight"
+        }
+      ]
+    },
+    "decay": {
+      "confidence": "inferred",
+      "desc": "category = figure, a fraction; the tooltip prints one line per category (FINDINGS-techtext.md), the shape is Their Finest Hour's own usage",
+      "patterns": [
+        {
+          "match": "name:theory",
+          "value": "number",
+          "desc": "a theory and the change to its decay"
+        },
+        {
+          "match": "name:practical",
+          "value": "number",
+          "desc": "a practical and the change to its decay"
+        }
+      ]
+    },
+    "mission": {
+      "confidence": "inferred",
+      "desc": "a mission's figures; the two are what the game keeps per mission, the loader of the block was not read",
+      "keys": {
+        "efficiency": {
+          "value": "number",
+          "desc": "mission efficiency, a fraction per level"
+        },
+        "reduction_modifier": {
+          "value": "number",
+          "desc": "the mission's organisation penalty; read and never used in this build (FINDINGS-navalmissions.md section 10)"
+        }
+      }
+    }
+  }
+}

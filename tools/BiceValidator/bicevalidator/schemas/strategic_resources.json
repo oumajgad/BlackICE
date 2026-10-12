@@ -1,0 +1,38 @@
+{
+  "kind": "strategic_resources",
+  "title": "Strategic resources",
+  "files": [
+    "common/strategic_resources.txt"
+  ],
+  "doc": "docs/script/modifiers.md",
+  "source": "FINDINGS-startup.md section 7 (loader 0x460BF0 reads the file); the class hierarchy (CStrategicResource : CModifier, introducing nothing) and FINDINGS-definitions.md (CModifier::LoadKey, inherited by 6 classes, `icon`); the modifier names from the base game's files and docs/script/modifiers.md. Block `modifier` here is the CModifier grammar the other schemas include; the modifier keys are modifier_names.json, the list read out of the game (CModifierValues), which replaced a list pieced together from usage",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "the file's own loader (0x460BF0) was not read; each key is a resource",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:modifier",
+          "desc": "a strategic resource, and the modifier a country holding it gets"
+        }
+      ]
+    },
+    "modifier": {
+      "confidence": "inferred",
+      "desc": "what CModifier::LoadKey reads: `icon`, and any other key as a modifier kind = its value",
+      "keys": {
+        "icon": {
+          "value": "integer",
+          "desc": "the icon the modifier shows, by number",
+          "confidence": "confirmed"
+        }
+      },
+      "include": [
+        "modifier_names:modifiers"
+      ]
+    }
+  }
+}

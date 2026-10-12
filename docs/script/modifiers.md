@@ -7,9 +7,20 @@
 The named values a modifier block can change, grouped as the old notes
 grouped them. Most run from `-1.0` to `1.0`, where `0.2` means +20%.
 
-Unlike triggers and effects these are not one switch in one loader, so there is no
-authoritative list to check this against - this is what the mod is known to use. Treat a
-missing entry as "not written down yet" rather than "does not exist".
+**The game has a fixed list of modifier keys: 142 of them.** The fact base read it out of the
+game as `CModifierValues` in `ghidra/project.json` (`hoi3-reversing`):
+- 107 kinds such as `global_ic`;
+- 32 mission efficiencies, each written as its order's name, such as `convoy_raid`;
+- `suseptibility_axis`, `suseptibility_allies` and `suseptibility_comintern`.
+
+A modifier block takes these and nothing else: event, static and triggered modifiers, laws,
+ministers, ideologies, governments, occupation policies, strategic resources. Any other key
+is dropped without a word. The BICE Validator checks every such block against the list
+(`tools/BiceValidator/bicevalidator/schemas/modifier_names.json`).
+
+This page is a guide to what the mod uses, grouped as the old notes grouped it, and not the
+whole list. Two of its sections are not modifier keys at all - **Technology** and
+**Unit leaders** list a technology's and a trait's own keys - and say so below.
 
 ## Events, ministers, leaders and laws
 
@@ -47,7 +58,6 @@ missing entry as "not written down yet" rather than "does not exist".
 | `carrier_protection` |  |
 | `strategic_bomb` |  |
 | `paradrop_mission` |  |
-| `sw_ _effect` |  |
 | `combat_movement_speed` |  |
 | `org_regain` |  |
 | `soft_attack` |  |
@@ -84,7 +94,7 @@ missing entry as "not written down yet" rather than "does not exist".
 | `suseptibility_axis` |  |
 | `peace_offmap_intel` |  |
 | `suseptibility_allies` |  |
-| `decay` | decay = { chemical_engineering = -0.25 } |
+| `decay` | decay = { chemical_engineering = -0.25 }. A minister type's own key, not a modifier key: it works in `common/minister_types.txt` and nowhere else |
 | `global_supplies` |  |
 | `offmap_land_intel` |  |
 | `offmap_political_intel` |  |
@@ -129,7 +139,12 @@ missing entry as "not written down yet" rather than "does not exist".
 
 ## Technology
 
-| Modifier | Note |
+**These are a technology's own keys, not modifier keys.** They work in a technology in
+`technologies/`. In any modifier block they do nothing. Only `casualty_trickleback`,
+`research_efficiency` and `supply_throughput` are on both lists. The mod has `repair_rate`,
+`ic_efficiency` and `energy_to_oil_conversion` in modifier blocks, where they do nothing.
+
+| Key | Note |
 | --- | --- |
 | `casualty_trickleback` |  |
 | `maximum_attrition` |  |
@@ -155,7 +170,12 @@ missing entry as "not written down yet" rather than "does not exist".
 
 ## Unit leaders
 
-| Modifier | Note |
+**These are a leader trait's own keys, not modifier keys.** They work in `common/traits.txt`
+and `common/gainable_traits.txt`. In any modifier block they do nothing. Only
+`supply_consumption` is on both lists. A trait keeps at most 16 effects and drops the rest
+without a word.
+
+| Key | Note |
 | --- | --- |
 | `xp_gain` |  |
 | `surprise_chance` |  |

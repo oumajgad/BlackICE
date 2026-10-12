@@ -1,0 +1,61 @@
+{
+  "kind": "minister_types",
+  "title": "Minister types",
+  "files": [
+    "common/minister_types.txt"
+  ],
+  "source": "FINDINGS-definitions.md CMinisterType::LoadKey (0x12A9D0: `decay`); FINDINGS-countrymodifier.md (decay is one figure per technology category); CMinisterType : CModifier (class hierarchy)",
+  "root": "file",
+  "declares": [
+    {
+      "kind": "minister type",
+      "depth": 0
+    }
+  ],
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "each key is a minister type (loader 0x52B1A0, not read)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:minister_type",
+          "desc": "a minister type"
+        }
+      ]
+    },
+    "minister_type": {
+      "confidence": "inferred",
+      "desc": "a minister type: `decay`, then falls through to CModifier::LoadKey for any other key - a modifier kind; which names that takes is not read, so an unknown one is reported softly",
+      "keys": {
+        "decay": {
+          "value": "block:decay",
+          "desc": "changes to the decay of technology categories; the base game's own file gives eight types several, one category each, so a second block is taken to add rather than replace (not read)",
+          "confidence": "confirmed",
+          "repeat": true
+        }
+      },
+      "include": [
+        "strategic_resources:modifier"
+      ]
+    },
+    "decay": {
+      "confidence": "inferred",
+      "desc": "one figure per technology category of common/technology.txt",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "name:theory",
+          "value": "number",
+          "desc": "a change to that category's decay"
+        },
+        {
+          "match": "name:practical",
+          "value": "number",
+          "desc": "a change to that category's decay"
+        }
+      ]
+    }
+  }
+}

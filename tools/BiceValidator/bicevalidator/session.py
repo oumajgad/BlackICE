@@ -5,19 +5,22 @@ three seconds too slow for every keystroke. A Session reads them once, checks th
 one file in milliseconds, and reads the declarations again when told a file that declares
 things has changed.
 
-It also keeps what an editor asks about between checks: the localisation, and an index of
-the events, decisions, flags and modifiers (index.py), with the open files' parts taken
-from the text being edited.
+It also keeps what an editor asks about between checks: the localisation, the event
+pictures (pictures.py), and an index of the events, decisions, flags and modifiers
+(index.py), with the open files' parts taken from the text being edited.
 """
 
 import os
 import threading
 
 from . import index as idx, lexer, parser, rules, runner
+from .checks.data import DataChecker
 from .checks.script import ScriptChecker
+from .schemas import Registry
 from .declarations import Declarations
 from .localisation import Localisation
 from .navigate import Navigator
+from .pictures import Pictures
 from .schema import Schema, locate_keyword_pages
 
 # Saving a file under one of these can change what the mod declares.
@@ -29,20 +32,23 @@ class Session:
         self.root = root
         # ScriptChecker keeps per-file state while it works, so checks take turns.
         self._lock = threading.Lock()
+        self.registry = Registry()
         self.reload()
         self.localisation = Localisation(root)
         self.index = idx.ModIndex(root)
+        self.pictures = Pictures(root)
 
     def reload(self):
         """Read the keyword pages and the declarations again."""
         docs, keywords_from = locate_keyword_pages(self.root)
         schema = Schema(docs)
-        declarations = Declarations(self.root)
+        declarations = Declarations(self.root, registry=self.registry)
         with self._lock:
             self.keywords_from = keywords_from
             self.schema = schema
             self.declarations = declarations
             self.checker = ScriptChecker(schema, declarations)
+            self.data = DataChecker(self.registry, declarations, self.checker, self.root)
             self.navigator = Navigator(self)
 
     def files_changed(self, rels):
@@ -51,6 +57,8 @@ class Session:
         for rel in rels:
             if rel.startswith("localisation/") and rel.endswith(".csv"):
                 self.localisation.reload_file(rel)
+            if rel.lower().startswith("gfx/pictures/"):
+                self.pictures.forget()
             self.index.reload_file(rel)
         if any(self.declares(rel) for rel in rels):
             self.reload()
@@ -91,7 +99,7 @@ class Session:
         source = lexer.decode(rel, text.encode("cp1252", errors="replace"))
         parsed = parser.parse(source.text)
         with self._lock:
-            found = runner.check_file(source, parsed, self.checker, (rules.CODE,))
+            found = runner.check_file(source, parsed, self.checker, (rules.CODE,), self.data)
         self.index.update(rel, parsed.root)
         return found, parsed
 

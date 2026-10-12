@@ -6,6 +6,7 @@ import unittest
 from bicevalidator.session import Session
 
 from .helpers import TinyMod, dedent
+from .test_pictures import tga
 
 EVENTS = dedent("""
     country_event = {
@@ -27,6 +28,7 @@ EVENTS = dedent("""
     	id = 2
     	is_triggered_only = yes
     	title = "Second"
+    	picture = "Supply"
     	option = {
     		name = B
     	}
@@ -64,6 +66,8 @@ class NavigateTest(unittest.TestCase):
         cls.mod.write("decisions/d.txt", DECISIONS)
         cls.mod.write("localisation/names.csv", "GER;Germany;;;;;;;;;;;;;x\n"
                                                 "my_decision_title;My decision;;;;;;;;;;;;;x\n")
+        cls.mod.write("gfx/pictures/events/Supply.tga", tga().decode("latin-1"),
+                      encoding="latin-1")
         cls.session = Session(cls.mod.root)
         cls.nav = cls.session.navigator
         cls.parsed = cls.session.parse(EVENTS)
@@ -112,6 +116,23 @@ class NavigateTest(unittest.TestCase):
         self.assertEqual(self.nav.definitions(oob)[0].file, "history/units/real_oob.txt")
         loc = self.target("EVTDESC1")
         self.assertIn("Text", self.nav.hover(loc))
+
+    def test_an_event_picture_is_shown(self):
+        target = self.target("Supply", 1)
+        self.assertEqual((target.what, target.name), ("picture", "Supply"))
+        text = self.nav.hover(target)
+        # A link to a PNG on disk: a picture in base64 would pass the 100,000 characters
+        # VS Code cuts a hover at.
+        self.assertRegex(text, r"!\[Supply\]\(file:///[^)]+\.png\)")
+        self.assertLess(len(text), 1000)
+        self.assertIn("gfx/pictures/events/Supply.tga`, 2 × 2", text)
+        self.assertIn("No file of that name", self.nav.picture_preview("Nowhere"))
+        text = EVENTS.replace('picture = "Supply"', "picture = Sup")
+        parsed = self.session.parse(text)
+        line, col = place(text, "picture = Sup", 13)
+        items, _ = self.nav.completions("events/a.txt", parsed, line, col)
+        # The game's pictures come too where a game is found beside the temporary mod.
+        self.assertIn(("Supply", "Supply"), [(i.label, i.picture) for i in items])
 
     def test_a_keyword_shows_its_page(self):
         target = self.target("set_country_flag")

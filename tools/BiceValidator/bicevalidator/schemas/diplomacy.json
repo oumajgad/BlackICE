@@ -1,0 +1,103 @@
+{
+  "kind": "diplomacy",
+  "title": "Diplomatic history",
+  "files": [
+    "history/diplomacy/*.txt"
+  ],
+  "source": "reversing/findings/FINDINGS-history.md; ghidra/project.json CDiplomaticHistory::LoadKey (0x1F2810, its keys not read), CRelationChange::LoadKey (0x1F2F30), CRelation::LoadKey (0x6465D0); the entry classes in ghidra/hoi3_tfh-class-hierarchy.txt; usage in the mod and the base game",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "agreements between two countries. CDiplomaticHistory's own keys have not been read; these are its six entry classes by name - CAllianceChange, CCasusBelliChange, CGuaranteeChange, CNAPChange, CRelationChange, CVassalChange - and what the files use",
+      "keys": {
+        "alliance": {
+          "value": "block:agreement",
+          "desc": "an alliance",
+          "repeat": true
+        },
+        "guarantee": {
+          "value": "block:agreement",
+          "desc": "`first` guarantees `second`",
+          "repeat": true
+        },
+        "vassal": {
+          "value": "block:agreement",
+          "desc": "`second` is a puppet of `first`",
+          "repeat": true
+        },
+        "nap": {
+          "value": "block:agreement",
+          "desc": "a non-aggression pact",
+          "repeat": true
+        },
+        "casus_belli": {
+          "value": "block:agreement",
+          "desc": "a casus belli; nothing in the mod or the base game uses it",
+          "repeat": true
+        },
+        "relation": {
+          "value": "block:relation",
+          "desc": "a relation value between two countries",
+          "repeat": true
+        }
+      }
+    },
+    "agreement": {
+      "confidence": "inferred",
+      "desc": "two countries and a span of dates. The entry classes' loader has not been read; these are the keys CRelation::LoadKey takes, which every file uses",
+      "keys": {
+        "first": {
+          "value": "tag",
+          "desc": "the first country",
+          "required": true
+        },
+        "second": {
+          "value": "tag",
+          "desc": "the second country",
+          "required": true
+        },
+        "start_date": {
+          "value": "date",
+          "desc": "when it begins"
+        },
+        "end_date": {
+          "value": "date",
+          "desc": "when it ends"
+        },
+        "cancel": {
+          "value": "any",
+          "desc": "a CRelation key; what it does in a history file has not been read"
+        }
+      }
+    },
+    "relation": {
+      "confidence": "confirmed",
+      "desc": "CRelationChange::LoadKey: five keys",
+      "keys": {
+        "first": {
+          "value": "tag",
+          "desc": "the first country",
+          "required": true
+        },
+        "second": {
+          "value": "tag",
+          "desc": "the second country",
+          "required": true
+        },
+        "start_date": {
+          "value": "date",
+          "desc": "when it begins"
+        },
+        "end_date": {
+          "value": "date",
+          "desc": "when it ends"
+        },
+        "value": {
+          "value": "number",
+          "desc": "the relation between the two"
+        }
+      }
+    }
+  }
+}

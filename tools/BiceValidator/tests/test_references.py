@@ -97,6 +97,46 @@ class ReferencesTest(unittest.TestCase):
                             for d in self.result.diagnostics))
 
 
+class PicturesTest(unittest.TestCase):
+    """BV212: a picture is found in the mod or in the game; without the game, not checked."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = TinyMod()
+        events = []
+        for number, picture in enumerate(("InMod", "FromGame", "inmodd", "Nowhere"), 1):
+            events.append("country_event = {\n\tid = %d\n\tis_triggered_only = yes\n"
+                          "\tpicture = \"%s\"\n\toption = { name = \"OK\" }\n}\n"
+                          % (number, picture))
+        cls.mod.write("events/pictures.txt", "".join(events))
+        cls.mod.write("gfx/pictures/events/InMod.tga", "")
+        cls.game = os.path.join(cls.mod.root, "game")
+        for rel in ("hoi3_tfh.exe", "gfx/pictures/events/FromGame.tga"):
+            cls.mod.write("game/" + rel, "")
+        os.makedirs(os.path.join(cls.game, "common"))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mod.close()
+
+    def missing(self, game):
+        result = runner.run(self.mod.root, [rules.REFERENCES], workers=1, game=game)
+        found = {d.message: d.hint for d in result.diagnostics if d.rule == "BV212"}
+        return found, result.notes
+
+    def test_pictures_in_the_mod_and_the_game_are_found(self):
+        found, notes = self.missing(self.game)
+        self.assertEqual(sorted(found), ["Event picture `Nowhere` not found",
+                                         "Event picture `inmodd` not found"])
+        self.assertEqual(found["Event picture `inmodd` not found"], "Did you mean `InMod`?")
+        self.assertFalse(any("BV212" in note for note in notes))
+
+    def test_without_the_game_nothing_is_checked_and_the_run_says_so(self):
+        found, notes = self.missing(os.path.join(self.mod.root, "no-game-here"))
+        self.assertEqual(found, {})
+        self.assertTrue(any("Event pictures were not checked (BV212)" in n for n in notes))
+
+
 class BaselineTest(unittest.TestCase):
     def test_survives_moved_lines_and_counts(self):
         mod = TinyMod()

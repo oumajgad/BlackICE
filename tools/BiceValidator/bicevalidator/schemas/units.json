@@ -1,0 +1,541 @@
+{
+  "kind": "units",
+  "title": "Unit type",
+  "files": [
+    "units/*.txt"
+  ],
+  "doc": "",
+  "source": "CSubUnitDefinition::LoadKey (0x1A3C80, 73 keys) and CUnitAdjuster::LoadKey (0x1D4C10, 4 keys) read out of the game: reversing/findings/FINDINGS-definitions.md, the LoadKey entries of ghidra/project.json, CLASSES.md \"What a unit file's terrain blocks become\", reversing/findings/FINDINGS-unitdef.md; terrain blocks are the categories of map/terrain.txt, the index space of the terrain adjusters (BiceLib GameClasses/CSubUnitDefinition.hpp, read live)",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "confirmed",
+      "desc": "unit types, one block each",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:definition",
+          "desc": "a unit type, named by its key"
+        }
+      ]
+    },
+    "stats": {
+      "confidence": "confirmed",
+      "desc": "every key a unit type's definition takes: the unit file's, and a technology's effect on the type",
+      "keys": {
+        "type": {
+          "value": "one of:land|naval|air",
+          "desc": "land, naval or air"
+        },
+        "sprite": {
+          "value": "text",
+          "desc": "the counter sprite"
+        },
+        "active": {
+          "value": "yes/no",
+          "desc": "whether the type is available from the start, without a technology activating it"
+        },
+        "is_buildable": {
+          "value": "yes/no",
+          "desc": "whether it can be built"
+        },
+        "unit_group": {
+          "value": "name:combined arms group",
+          "desc": "its group in common/combined_arms.txt"
+        },
+        "usable_by": {
+          "value": "list:tag",
+          "desc": "the only countries that may build it"
+        },
+        "available_trigger": {
+          "value": "triggers",
+          "desc": "conditions under which it may be built"
+        },
+        "on_completion": {
+          "value": "text",
+          "desc": "the technology category (a practical or a theory from common/technology.txt) building it gains experience in, and that discounts its cost"
+        },
+        "priority": {
+          "value": "number",
+          "desc": "priority, used to pick the most important brigade of a division"
+        },
+        "minimum_of_type": {
+          "value": "number",
+          "desc": "the least a country must have of it"
+        },
+        "max_percentage_of_type": {
+          "value": "number",
+          "desc": "the most of a country's units it may be, a fraction"
+        },
+        "can_paradrop": {
+          "value": "yes/no",
+          "desc": "whether it may be dropped by air"
+        },
+        "can_be_pride": {
+          "value": "yes/no",
+          "desc": "whether a ship of this type may be the pride of the fleet"
+        },
+        "capital": {
+          "value": "yes/no",
+          "desc": "a capital ship"
+        },
+        "transport": {
+          "value": "yes/no",
+          "desc": "a transport"
+        },
+        "is_armor": {
+          "value": "yes/no",
+          "desc": "armour: picks the tank build speed and counts for has_armour_unit"
+        },
+        "is_bomber": {
+          "value": "yes/no",
+          "desc": "a bomber"
+        },
+        "is_cag": {
+          "value": "yes/no",
+          "desc": "a carrier air group"
+        },
+        "is_mobile": {
+          "value": "yes/no",
+          "desc": "a mobile unit"
+        },
+        "is_rocket": {
+          "value": "yes/no",
+          "desc": "a rocket: picks the rocket build speed"
+        },
+        "is_sub": {
+          "value": "yes/no",
+          "desc": "a submarine"
+        },
+        "land": {
+          "value": "any",
+          "desc": "a key of the loader's switch the mod never uses; what it takes was not read"
+        },
+        "naval": {
+          "value": "any",
+          "desc": "a key of the loader's switch the mod never uses; what it takes was not read"
+        },
+        "air": {
+          "value": "any",
+          "desc": "a key of the loader's switch the mod never uses; what it takes was not read"
+        },
+        "max_strength": {
+          "value": "number",
+          "desc": "strength at full"
+        },
+        "default_organisation": {
+          "value": "number",
+          "desc": "organisation (averaged over a division)"
+        },
+        "default_morale": {
+          "value": "number",
+          "desc": "morale (averaged over a division)"
+        },
+        "officers": {
+          "value": "number",
+          "desc": "officers needed"
+        },
+        "completion_size": {
+          "value": "number",
+          "desc": "how much of a unit one of these counts as while built"
+        },
+        "build_cost_ic": {
+          "value": "number",
+          "desc": "IC a day to build"
+        },
+        "build_cost_manpower": {
+          "value": "number",
+          "desc": "manpower to build"
+        },
+        "build_time": {
+          "value": "number",
+          "desc": "days to build"
+        },
+        "repair_cost_multiplier": {
+          "value": "number",
+          "desc": "read, and then never used: it does nothing (FINDINGS-unitdef.md)"
+        },
+        "maximum_speed": {
+          "value": "number",
+          "desc": "speed; a division moves at its slowest brigade's"
+        },
+        "transport_weight": {
+          "value": "number",
+          "desc": "weight when carried"
+        },
+        "transport_capability": {
+          "value": "number",
+          "desc": "what it can carry"
+        },
+        "supply_consumption": {
+          "value": "number",
+          "desc": "supplies a day"
+        },
+        "fuel_consumption": {
+          "value": "number",
+          "desc": "fuel a day"
+        },
+        "radio_strength": {
+          "value": "number",
+          "desc": "radio strength"
+        },
+        "range": {
+          "value": "number",
+          "desc": "range; a division's is its shortest brigade's"
+        },
+        "distance": {
+          "value": "number",
+          "desc": "distance"
+        },
+        "defensiveness": {
+          "value": "number",
+          "desc": "defensiveness"
+        },
+        "toughness": {
+          "value": "number",
+          "desc": "toughness (counted twice at division level)"
+        },
+        "softness": {
+          "value": "number",
+          "desc": "softness, a fraction"
+        },
+        "air_defence": {
+          "value": "number",
+          "desc": "air defence"
+        },
+        "surface_defence": {
+          "value": "number",
+          "desc": "surface defence"
+        },
+        "sea_defence": {
+          "value": "number",
+          "desc": "sea defence"
+        },
+        "armor_value": {
+          "value": "number",
+          "desc": "armour; a division's is its best brigade's"
+        },
+        "hull": {
+          "value": "number",
+          "desc": "hull"
+        },
+        "visibility": {
+          "value": "number",
+          "desc": "visibility"
+        },
+        "amphibious_invasion_defence": {
+          "value": "number",
+          "desc": "amphibious invasion defence"
+        },
+        "amphibious_invasion_speed": {
+          "value": "number",
+          "desc": "amphibious invasion speed"
+        },
+        "extra_amphibious_defence": {
+          "value": "block:extra_amphibious_defence",
+          "desc": "extra amphibious defence for unit types it carries"
+        },
+        "suppression": {
+          "value": "number",
+          "desc": "suppression"
+        },
+        "soft_attack": {
+          "value": "number",
+          "desc": "soft attack"
+        },
+        "hard_attack": {
+          "value": "number",
+          "desc": "hard attack"
+        },
+        "air_attack": {
+          "value": "number",
+          "desc": "air attack"
+        },
+        "ap_attack": {
+          "value": "number",
+          "desc": "armour piercing; a division's is its best brigade's"
+        },
+        "sea_attack": {
+          "value": "number",
+          "desc": "sea attack"
+        },
+        "sub_attack": {
+          "value": "number",
+          "desc": "submarine attack"
+        },
+        "convoy_attack": {
+          "value": "number",
+          "desc": "convoy attack"
+        },
+        "shore_bombardment": {
+          "value": "number",
+          "desc": "shore bombardment"
+        },
+        "strategic_attack": {
+          "value": "number",
+          "desc": "strategic attack"
+        },
+        "combat_width": {
+          "value": "number",
+          "desc": "frontage; nothing or less makes a support brigade"
+        },
+        "positioning": {
+          "value": "number",
+          "desc": "positioning"
+        },
+        "surface_detection": {
+          "value": "number",
+          "desc": "surface detection"
+        },
+        "air_detection": {
+          "value": "number",
+          "desc": "air detection"
+        },
+        "sub_detection": {
+          "value": "number",
+          "desc": "submarine detection"
+        },
+        "carrier_size": {
+          "value": "number",
+          "desc": "air groups a carrier takes; above nought makes it a carrier"
+        },
+        "night": {
+          "value": "block:adjuster",
+          "desc": "modifiers at night"
+        },
+        "fort": {
+          "value": "block:adjuster",
+          "desc": "modifiers against forts"
+        },
+        "river": {
+          "value": "block:adjuster",
+          "desc": "modifiers across a river"
+        },
+        "amphibious": {
+          "value": "block:adjuster",
+          "desc": "modifiers in an amphibious attack"
+        },
+        "ocean": {
+          "value": "block:adjuster",
+          "desc": "modifiers in ocean terrain"
+        },
+        "mediterranean_sea": {
+          "value": "block:adjuster",
+          "desc": "modifiers in mediterranean_sea terrain"
+        },
+        "north_sea": {
+          "value": "block:adjuster",
+          "desc": "modifiers in north_sea terrain"
+        },
+        "arctic_sea": {
+          "value": "block:adjuster",
+          "desc": "modifiers in arctic_sea terrain"
+        },
+        "fiords_sea": {
+          "value": "block:adjuster",
+          "desc": "modifiers in fiords_sea terrain"
+        },
+        "north_atlantic": {
+          "value": "block:adjuster",
+          "desc": "modifiers in north_atlantic terrain"
+        },
+        "central_atlantic": {
+          "value": "block:adjuster",
+          "desc": "modifiers in central_atlantic terrain"
+        },
+        "south_atlantic": {
+          "value": "block:adjuster",
+          "desc": "modifiers in south_atlantic terrain"
+        },
+        "equator_sea": {
+          "value": "block:adjuster",
+          "desc": "modifiers in equator_sea terrain"
+        },
+        "south_pacific": {
+          "value": "block:adjuster",
+          "desc": "modifiers in south_pacific terrain"
+        },
+        "north_pacific": {
+          "value": "block:adjuster",
+          "desc": "modifiers in north_pacific terrain"
+        },
+        "indian_ocean": {
+          "value": "block:adjuster",
+          "desc": "modifiers in indian_ocean terrain"
+        },
+        "cold_coast": {
+          "value": "block:adjuster",
+          "desc": "modifiers in cold_coast terrain"
+        },
+        "hot_coast": {
+          "value": "block:adjuster",
+          "desc": "modifiers in hot_coast terrain"
+        },
+        "normal_coast": {
+          "value": "block:adjuster",
+          "desc": "modifiers in normal_coast terrain"
+        },
+        "panama_canal": {
+          "value": "block:adjuster",
+          "desc": "modifiers in panama_canal terrain"
+        },
+        "urban": {
+          "value": "block:adjuster",
+          "desc": "modifiers in urban terrain"
+        },
+        "plains": {
+          "value": "block:adjuster",
+          "desc": "modifiers in plains terrain"
+        },
+        "woods": {
+          "value": "block:adjuster",
+          "desc": "modifiers in woods terrain"
+        },
+        "forest": {
+          "value": "block:adjuster",
+          "desc": "modifiers in forest terrain"
+        },
+        "jungle": {
+          "value": "block:adjuster",
+          "desc": "modifiers in jungle terrain"
+        },
+        "arctic": {
+          "value": "block:adjuster",
+          "desc": "modifiers in arctic terrain"
+        },
+        "plains_arctic_woods": {
+          "value": "block:adjuster",
+          "desc": "modifiers in plains_arctic_woods terrain"
+        },
+        "plains_arctic_forest": {
+          "value": "block:adjuster",
+          "desc": "modifiers in plains_arctic_forest terrain"
+        },
+        "desert": {
+          "value": "block:adjuster",
+          "desc": "modifiers in desert terrain"
+        },
+        "highlands": {
+          "value": "block:adjuster",
+          "desc": "modifiers in highlands terrain"
+        },
+        "highlands_woods": {
+          "value": "block:adjuster",
+          "desc": "modifiers in highlands_woods terrain"
+        },
+        "highlands_desert": {
+          "value": "block:adjuster",
+          "desc": "modifiers in highlands_desert terrain"
+        },
+        "highlands_arctic": {
+          "value": "block:adjuster",
+          "desc": "modifiers in highlands_arctic terrain"
+        },
+        "hills": {
+          "value": "block:adjuster",
+          "desc": "modifiers in hills terrain"
+        },
+        "hills_woods": {
+          "value": "block:adjuster",
+          "desc": "modifiers in hills_woods terrain"
+        },
+        "hills_forests": {
+          "value": "block:adjuster",
+          "desc": "modifiers in hills_forests terrain"
+        },
+        "hills_jungle": {
+          "value": "block:adjuster",
+          "desc": "modifiers in hills_jungle terrain"
+        },
+        "hills_desert": {
+          "value": "block:adjuster",
+          "desc": "modifiers in hills_desert terrain"
+        },
+        "hills_arctic": {
+          "value": "block:adjuster",
+          "desc": "modifiers in hills_arctic terrain"
+        },
+        "mountain": {
+          "value": "block:adjuster",
+          "desc": "modifiers in mountain terrain"
+        },
+        "mountain_woods": {
+          "value": "block:adjuster",
+          "desc": "modifiers in mountain_woods terrain"
+        },
+        "mountain_forests": {
+          "value": "block:adjuster",
+          "desc": "modifiers in mountain_forests terrain"
+        },
+        "mountain_jungle": {
+          "value": "block:adjuster",
+          "desc": "modifiers in mountain_jungle terrain"
+        },
+        "mountain_arctic": {
+          "value": "block:adjuster",
+          "desc": "modifiers in mountain_arctic terrain"
+        },
+        "mountain_desert": {
+          "value": "block:adjuster",
+          "desc": "modifiers in mountain_desert terrain"
+        },
+        "bocage": {
+          "value": "block:adjuster",
+          "desc": "modifiers in bocage terrain"
+        },
+        "marsh": {
+          "value": "block:adjuster",
+          "desc": "modifiers in marsh terrain"
+        },
+        "swamp": {
+          "value": "block:adjuster",
+          "desc": "modifiers in swamp terrain"
+        },
+        "town": {
+          "value": "block:adjuster",
+          "desc": "modifiers in town terrain"
+        }
+      }
+    },
+    "definition": {
+      "confidence": "confirmed",
+      "desc": "a unit type",
+      "include": [
+        "units:stats"
+      ]
+    },
+    "adjuster": {
+      "confidence": "confirmed",
+      "desc": "what the unit type gets in one environment (CUnitAdjuster); every figure a fraction, 0.1 is +10%",
+      "keys": {
+        "attack": {
+          "value": "number",
+          "desc": "attack modifier"
+        },
+        "defence": {
+          "value": "number",
+          "desc": "defence modifier"
+        },
+        "movement": {
+          "value": "number",
+          "desc": "movement speed modifier"
+        },
+        "attrition": {
+          "value": "number",
+          "desc": "attrition"
+        }
+      }
+    },
+    "extra_amphibious_defence": {
+      "confidence": "inferred",
+      "desc": "unit type = number; the key is in the loader's switch, the inside of the block was not read",
+      "patterns": [
+        {
+          "match": "unit type",
+          "value": "number",
+          "desc": "extra amphibious defence for that unit type"
+        }
+      ]
+    }
+  }
+}

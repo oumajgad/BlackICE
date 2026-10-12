@@ -1,0 +1,37 @@
+{
+  "kind": "government_positions",
+  "title": "Government positions",
+  "files": [
+    "common/government_positions.txt"
+  ],
+  "source": "FINDINGS-definitions.md, CGovernmentPosition::LoadKey (0x12B910): `changeable`; CGovernmentPosition : CModifier (class hierarchy)",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "each key is a government position (loader 0x52BA90, not read)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:position",
+          "desc": "a cabinet post"
+        }
+      ]
+    },
+    "position": {
+      "confidence": "inferred",
+      "desc": "a cabinet post: `changeable`, then falls through to CModifier::LoadKey for any other key - a modifier kind; which names that takes is not read, so an unknown one is reported softly",
+      "keys": {
+        "changeable": {
+          "value": "yes/no",
+          "desc": "whether the player may change who holds it",
+          "confidence": "confirmed"
+        }
+      },
+      "include": [
+        "strategic_resources:modifier"
+      ]
+    }
+  }
+}

@@ -5,6 +5,7 @@ parsed events, decisions and `common/`, plus a plain text scan of the folders th
 need to be searched (Lua, histories, technologies).
 """
 
+import difflib
 import glob
 import os
 import re
@@ -86,13 +87,20 @@ def _flags_elsewhere(root):
 
 
 class _Collector:
-    def __init__(self, decl):
+    def __init__(self, decl, pictures=None):
         self.decl = decl
+        self.pictures = pictures    # None: the game was not found, so pictures are not checked
         self.out = []
         self.events = {}            # id -> (file, node)
         self.fires = []             # (file, node, id)
         self.flag_set = defaultdict(dict)     # scope -> name -> (file, node)
         self.flag_tested = defaultdict(dict)
+        self.picture_spelling = None          # lower name -> as the file spells it
+
+    def picture_names(self):
+        if self.picture_spelling is None:
+            self.picture_spelling = {n.lower(): n for n in self.pictures.names()}
+        return list(self.picture_spelling)
 
     def report(self, rule, path, node, message, hint="", related=None, at_value=True):
         token = node.value_tok if at_value and node.value_tok is not None else \
@@ -101,8 +109,10 @@ class _Collector:
                                    context=describe(node), hint=hint, related=related or []))
 
 
-def check(root, files, decl, schema):
-    c = _Collector(decl)
+def check(root, files, decl, schema, pictures=None):
+    """The reference findings for the parsed \\p files. \\p pictures, a pictures.Pictures
+    that found the game, lets event pictures be checked too."""
+    c = _Collector(decl, pictures)
     loc = _localisation_keys(root)
     tag_keys = {k for k, entries in schema.keywords.items()
                 if any(e.value == S.TAG for e in entries)}
@@ -153,6 +163,7 @@ def _event_definitions(c, rel, root_node, loc):
                 c.events[ident.value] = (rel, ident)
         for key in ("title", "desc"):
             _loc_value(c, rel, event.child(key), loc)
+        _picture(c, rel, event.child("picture"))
         for option in event.children:
             if option.is_block and option.lkey == "option":
                 _loc_value(c, rel, option.child("name"), loc)
@@ -170,6 +181,22 @@ def _decision_definitions(c, rel, root_node, loc):
                     and decision.key.lower() not in loc:
                 c.report("BV206", rel, decision, "Decision `%s` has no `%s_title` localisation"
                          % (decision.key, decision.key), at_value=False)
+
+
+def _picture(c, rel, node):
+    if c.pictures is None or node is None or not node.value:
+        return
+    if c.pictures.find(node.value) is not None:
+        return
+    hint = ""
+    low = node.value.lower()
+    # A name that differs only in its digits is another picture, not a typo of this one:
+    # evtpicture14688 is not meant to be evtpicture14889.
+    close = [n for n in difflib.get_close_matches(low, c.picture_names(), n=3, cutoff=0.88)
+             if re.sub(r"\d", "", n) != re.sub(r"\d", "", low)]
+    if close:
+        hint = "Did you mean `%s`?" % c.picture_spelling[close[0]]
+    c.report("BV212", rel, node, "Event picture `%s` not found" % node.value, hint=hint)
 
 
 def _loc_value(c, rel, node, loc):

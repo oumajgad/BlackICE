@@ -1,0 +1,128 @@
+{
+  "kind": "country_files",
+  "title": "Country file",
+  "files": [
+    "common/countries/*.txt"
+  ],
+  "source": "BiceLib GameClasses/CCountry.hpp and CLASSES.md (`color`, `graphical_culture`, `major` among CCountry::LoadKey's keys, whose full list of 124 is not written out); project.json CMinister::LoadKey (0x12C630) and BiceLib GameClasses/CMinister.hpp for a minister; the rest from usage",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "the country file's keys; CCountry::LoadKey reads it, and of its 124 keys only these are known to belong here",
+      "keys": {
+        "color": {
+          "value": "colour",
+          "desc": "the country's map colour",
+          "confidence": "confirmed"
+        },
+        "graphical_culture": {
+          "value": "name:graphical culture",
+          "desc": "which set of models and pictures it uses; left out, `Generic`",
+          "confidence": "confirmed"
+        },
+        "major": {
+          "value": "yes/no",
+          "desc": "a major power",
+          "confidence": "confirmed"
+        },
+        "last_election": {
+          "value": "date",
+          "desc": "its last election before the start"
+        },
+        "duration": {
+          "value": "integer",
+          "desc": "months between its elections"
+        },
+        "default_templates": {
+          "value": "block:templates",
+          "desc": "division templates offered in the production screen"
+        },
+        "unit_names": {
+          "value": "block:unit_names",
+          "desc": "names for new units, by unit type"
+        },
+        "ministers": {
+          "value": "block:ministers",
+          "desc": "the people who can hold its cabinet posts"
+        }
+      }
+    },
+    "templates": {
+      "confidence": "inferred",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "list:unit type",
+          "desc": "a template: its brigades, by unit type"
+        }
+      ]
+    },
+    "unit_names": {
+      "confidence": "inferred",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "unit type",
+          "value": "list:text",
+          "desc": "names for new units of this type, in order"
+        }
+      ]
+    },
+    "ministers": {
+      "confidence": "inferred",
+      "desc": "each key is a minister's id",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "integer",
+          "value": "block:minister",
+          "desc": "a minister, by his id"
+        }
+      ]
+    },
+    "minister": {
+      "confidence": "confirmed",
+      "desc": "a minister: CMinister::LoadKey's six keys, then every other key a cabinet post he may hold = his minister type there",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "his name"
+        },
+        "ideology": {
+          "value": "ideology",
+          "desc": "his ideology"
+        },
+        "loyalty": {
+          "value": "number",
+          "desc": "his loyalty"
+        },
+        "picture": {
+          "value": "text",
+          "desc": "his portrait; without one he gets `empty_position`"
+        },
+        "start_date": {
+          "value": "date",
+          "desc": "when he becomes available"
+        },
+        "death_date": {
+          "value": "date",
+          "desc": "when he stops being available"
+        },
+        "type": {
+          "value": "any",
+          "desc": "read and thrown away"
+        }
+      },
+      "patterns": [
+        {
+          "match": "position",
+          "value": "name:minister type",
+          "desc": "a post he may hold, and his type in it; a value that is no minister type loses the posting",
+          "repeat": true
+        }
+      ]
+    }
+  }
+}

@@ -18,10 +18,12 @@ from .checks import script as C
 from .checks.references import FLAG_KEY, NAMED_VALUES
 from .declarations import Kinds
 from .index import MODIFIER_USES
+from .pictures import PictureError
 
-KEYWORD, BAD_KEY, DECLARED, EVENT, LOC, TAG, PROVINCE, FLAG, MODIFIER, OOB, DECISION = (
-    "keyword", "bad key", "declared", "event", "localisation", "tag", "province", "flag",
-    "modifier", "oob", "decision")
+KEYWORD, BAD_KEY, DECLARED, EVENT, LOC, TAG, PROVINCE, FLAG, MODIFIER, OOB, DECISION, \
+    PICTURE, DATA_KEY, MODEL, MODEL_LEVEL = (
+        "keyword", "bad key", "declared", "event", "localisation", "tag", "province", "flag",
+        "modifier", "oob", "decision", "picture", "data key", "model", "model level")
 
 _KIND_NAMES = {"trigger": "condition", "effect": "effect", "scope": "scope",
                "header": "event header key", "option": "option key",
@@ -42,7 +44,8 @@ class Target:
     name: str           # as written
     token: object
     node: object
-    kind: str = ""      # a declared name's kind, a flag's scope
+    kind: str = ""      # a declared name's kind, a flag's scope, a model's unit type
+    spec: object = None     # for a key of a data file, its schemas.Key
 
 
 @dataclass
@@ -74,6 +77,7 @@ class Completion:
     documentation: str = ""
     insert: str = ""    # a snippet; the label when empty
     filter: str = ""
+    picture: str = ""   # an event picture, whose preview is made only when it is shown
 
 
 def plain(text):
@@ -211,6 +215,7 @@ class Navigator:
         self._histories = None
         self._modifiers = None
         self._province_keywords = None
+        self._tech_trees = None
 
     @property
     def schema(self):
@@ -246,6 +251,9 @@ class Navigator:
         low = node.lkey
         parent = node.parent
         if node.op is None:
+            level = self._model_level(node, token)
+            if level is not None:
+                return level
             # A bare item in a list: provinces in a region, tags in a list of countries.
             if name.isdigit():
                 return Target(PROVINCE, name, token, node)
@@ -257,6 +265,14 @@ class Navigator:
             return Target(DECISION, name, token, node)
         if rel == "common/event_modifiers.txt" and parent is not None and parent.key is None:
             return Target(MODIFIER, name, token, node)
+        spec = self._data_key(rel, node)
+        if spec is not None:
+            if spec.value == "model":
+                return Target(MODEL, name, token, node, self._model_unit(node) or "", spec)
+            if spec.match is None or spec.match in ("any", "date", "integer", "number",
+                                                    "modifier name"):
+                return Target(DATA_KEY, name, token, node, spec=spec)
+            # A key that is a name - a technology, a unit type - says more as that name.
         if low.isdigit():
             if parent is not None and parent.lkey == "random_list":
                 return None
@@ -272,6 +288,42 @@ class Navigator:
             return Target(DECLARED, name, token, node, kind)
         return None
 
+    def _data_key(self, rel, node):
+        """The schema's entry for key \\p node of a data file, or None."""
+        if rel.split("/", 1)[0] in ("events", "decisions") or node.key is None:
+            return None
+        schema, block = self.session.data.block_at(rel, _ancestors(node))
+        if block is None:
+            return None
+        return block.find(node.key, self.session.data.takes)
+
+    @staticmethod
+    def _model_unit(model):
+        parent = model.parent
+        return parent.key if parent is not None and parent.key else None
+
+    def _model_level(self, node, token):
+        """A level in a `model = { ... }` list, as a Target naming its unit type."""
+        model = node.parent
+        if model is None or model.lkey != "model" or not model.is_block:
+            return None
+        unit = self._model_unit(model)
+        if unit is None or unit.lower() not in self.decl.unit_techs:
+            return None
+        return Target(MODEL_LEVEL, node.key, token, node, unit)
+
+    def model_rows(self, model):
+        """(position, technology or None, level or None) for every place of a model list
+        and every technology of its unit type, in order."""
+        unit = self._model_unit(model)
+        techs = self.decl.unit_techs.get(unit.lower(), []) if unit else []
+        levels = [c for c in model.children if c.op is None and c.key is not None]
+        rows = []
+        for position in range(max(len(levels), len(techs))):
+            rows.append((position + 1, techs[position] if position < len(techs) else None,
+                         levels[position] if position < len(levels) else None))
+        return rows
+
     def _value_target(self, node, token):
         low, value = node.lkey, node.value
         if low is None or value is None:
@@ -285,6 +337,8 @@ class Navigator:
             return Target(LOC, value, token, node)
         if low == "load_oob":
             return Target(OOB, value, token, node)
+        if low == "picture" and parent is not None and parent.lkey in S.EVENT_TYPES:
+            return Target(PICTURE, value, token, node)
         match = FLAG_KEY.match(low)
         if match:
             return Target(FLAG, value, token, node, match.group(2))
@@ -474,6 +528,197 @@ class Navigator:
             return "**No file** `%s`" % rel
         return "Order of battle " + self.link(Place(rel, 1))
 
+    def _hover_data_key(self, target):
+        spec = target.spec
+        block = spec.block
+        schema = block.schema
+        where = block.desc or "`%s`" % block.name
+        text = "**`%s`** — in %s, %s" % (target.name, where, _a_word(schema.title.lower()))
+        if spec.desc:
+            text += "\n\n" + spec.desc[:1].upper() + spec.desc[1:] + "."
+        text += "\n\nTakes %s." % spec.describe()
+        if spec.required:
+            text += " **Needed.**"
+        if spec.repeat:
+            text += " May be given more than once."
+        text += "\n\n*%s*" % ("Read out of the game." if spec.confidence == "confirmed" else
+                              "Inferred from how the mod and the game write these files.")
+        if schema.doc:
+            text += " " + self.link(Place(schema.doc, 1)).replace(":1]", "]")
+        return text
+
+    def _hover_model(self, target):
+        model = target.node
+        unit = target.kind
+        rows = self.model_rows(model) if model.is_block else []
+        techs = self.decl.unit_techs.get(unit.lower(), []) if unit else []
+        given = len([r for r in rows if r[2] is not None])
+        head = "**Model of `%s`** — one level for each of its %d technologies, in the " \
+               "order the technology files are read." % (unit, len(techs))
+        if not rows:
+            return head
+        if given != len(techs):
+            head += "\n\n**This list has %d levels**: %s" % (given, (
+                "the last %d go to no technology." % (given - len(techs))) if given > len(techs)
+                else "the last %d technologies get level 0." % (len(techs) - given))
+        lines = ["| # | technology | level |", "| --: | --- | --: |"]
+        for position, tech, level in rows:
+            name = "`%s`" % tech if tech else "*none - dropped*"
+            shown = level.key if level is not None else "*0 - not in the list*"
+            lines.append("| %d | %s | %s |" % (position, name, shown))
+        return head + "\n\n" + "\n".join(lines)
+
+    def _hover_model_level(self, target):
+        node = target.node
+        unit = target.kind
+        rows = self.model_rows(node.parent)
+        position = next(i for i, (_, _, level) in enumerate(rows) if level is node)
+        tech = rows[position][1]
+        techs = self.decl.unit_techs.get(unit.lower(), [])
+        if tech is None:
+            return ("**Level %s, place %d** — `%s` has only %d technologies, so this "
+                    "level goes to none." % (node.key, position + 1, unit, len(techs)))
+        name = self.loc.text(tech)
+        text = "**Level %s of `%s`**" % (node.key, tech)
+        if name:
+            text += " — *%s*" % plain(name)
+        text += "\n\nPlace %d of the %d technologies of `%s`." % (position + 1, len(techs), unit)
+        effect = self._tech_effect(tech, unit)
+        if effect:
+            text += "\n\nEach level, for `%s`:\n\n```\n%s\n```" % (unit, "\n".join(effect))
+        where = self.decl.where(Kinds.TECH, tech)
+        if where:
+            text += "\n\n" + self.link(Place(where[1], where[2]))
+        return text
+
+    def _tech_effect(self, tech, unit):
+        """What one level of \\p tech does to \\p unit, as `key = value` lines."""
+        where = self.decl.where(Kinds.TECH, tech)
+        if where is None:
+            return []
+        if self._tech_trees is None:
+            self._tech_trees = {}
+        tree = self._tech_trees.get(where[1])
+        if tree is None:
+            tree = parser.parse(lexer.read(self.session.root, where[1]).text).root
+            self._tech_trees[where[1]] = tree
+        node = next((n for n in tree.children if n.is_block and n.lkey == tech.lower()), None)
+        block = node.child(unit) if node is not None else None
+        if block is None or not block.is_block:
+            return []
+        out = []
+        for child in block.children:
+            if child.is_block:
+                inner = " ".join("%s = %s" % (c.key, c.value) for c in child.children
+                                 if c.is_pair)
+                out.append("%s = { %s }" % (child.key, inner))
+            elif child.is_pair:
+                out.append("%s = %s" % (child.key, child.value))
+        return out[:16]
+
+    # --- which keys a data file's loader takes, for colouring -------------------------
+
+    def data_keys(self, rel, parsed):
+        """(line, column, length) of every key in a data file that its schema names - the
+        keys its loader takes - in file order. A key the loader refuses, a name such as a
+        technology, and anything inside conditions and effects are left out: the grammar
+        colours those."""
+        if rel.split("/", 1)[0] in ("events", "decisions"):
+            return []
+        data = self.session.data
+        schema = data.registry.for_file(rel)
+        if schema is None:
+            return []
+        out = []
+        pending = [(parsed.root, schema.root)]
+        while pending:
+            node, block = pending.pop()
+            for child in node.children or ():
+                if child.key is None or child.op is None:
+                    continue
+                spec = block.find(child.key, data.takes)
+                if spec is None:
+                    continue
+                if block.keys.get(child.lkey) is spec and child.key_tok is not None:
+                    token = child.key_tok
+                    out.append((token.line, token.col, _width(token)))
+                if spec.is_block and child.is_block:
+                    pending.append((child, spec.target))
+        return sorted(out)
+
+    # --- the levels of a model, in the editor ------------------------------------------
+
+    def model_hints(self, parsed, first, last):
+        """(line, column after the level, technology) for every level of every model list
+        between lines \\p first and \\p last."""
+        out = []
+        for node in parser.walk(parsed.root):
+            if node.lkey != "model" or not node.is_block or node.open_tok is None:
+                continue
+            close = node.close_tok.line if node.close_tok is not None else node.line
+            if close < first or node.line > last:
+                continue
+            if self._model_unit(node) is None:
+                continue
+            for _, tech, level in self.model_rows(node):
+                if level is None or not (first <= level.line <= last):
+                    continue
+                token = level.key_tok
+                out.append((token.line, token.col + len(token.text), tech or "none"))
+        return out
+
+    def model_at(self, parsed, line, col):
+        """The model list at \\p line, \\p col - on its key or inside it - or None."""
+        for node in reversed(block_chain(parsed, line, col)):
+            if node.lkey == "model":
+                return node
+        token = token_at(parsed, line, col)
+        if token is not None:
+            node, role = owners(parsed).get(id(token), (None, None))
+            if node is not None and node.lkey == "model" and node.is_block:
+                return node
+        return None
+
+    def annotated_model(self, model, indent):
+        """The text of \\p model's block, from its `{` to its `}`, with one level a line and
+        each line naming its technology - what the numbers mean, kept in the file."""
+        rows = self.model_rows(model)
+        inner = indent + "\t"
+        lines = ["{"]
+        for position, tech, level in rows:
+            if level is not None:
+                note = tech if tech else "no technology here: this level is dropped"
+                lines.append("%s%s\t# %d %s" % (inner, level.key, position, note))
+            else:
+                lines.append("%s# %d %s: not in the list, so level 0" % (inner, position, tech))
+        lines.append(indent + "}")
+        return "\n".join(lines)
+
+    def picture_preview(self, name):
+        """Markdown showing event picture \\p name, as hover and completion show it."""
+        return self._hover_picture(Target(PICTURE, name, None, None))
+
+    def _hover_picture(self, target):
+        pictures = self.session.pictures
+        path = pictures.find(target.name)
+        head = "**Event picture `%s`**" % target.name
+        if path is None:
+            searched = "the mod's `gfx/pictures/events`"
+            if pictures.game:
+                searched += " or the game's"
+            text = "%s\n\nNo file of that name in %s." % (head, searched)
+            if not pictures.game:
+                text += " The game's own pictures were not searched: the game was not " \
+                        "found. Set `blackice.validator.gameFolder` to its folder."
+            return text
+        where = pictures.where(path)
+        try:
+            uri, width, height = pictures.file_uri(path)
+        except (PictureError, OSError) as error:
+            return "%s\n\n`%s` cannot be shown here: %s." % (head, where, error)
+        return "%s\n\n![%s](%s)\n\n`%s`, %d × %d" % (head, target.name, uri, where,
+                                                         width, height)
+
     def _hover_decision(self, target):
         title = self.decision_title(target.name)
         text = "**decision `%s`**" % target.name
@@ -515,6 +760,13 @@ class Navigator:
         if what == DECISION:
             return [Place(d.file, d.line, d.col, d.col + len(d.name))
                     for d in self.index.decisions(target.name)]
+        if what == MODEL_LEVEL:
+            rows = self.model_rows(target.node.parent)
+            tech = next((t for _, t, level in rows if level is target.node), None)
+            where = self.decl.where(Kinds.TECH, tech) if tech else None
+            return [Place(where[1], where[2])] if where else []
+        if what in (MODEL, DATA_KEY):
+            return []
         kind = Kinds.MODIFIER if what == MODIFIER else target.kind
         where = self.decl.where(kind, target.name) if kind else None
         places = [Place(where[1], where[2])] if where else []
@@ -619,7 +871,8 @@ class Navigator:
                                                        "decision"))
                 out.append(symbol)
             return out
-        return _blocks(parsed.root, depth=2)
+        # An order of battle nests theatre > army group > army > corps > division > brigade.
+        return _blocks(parsed.root, depth=6 if rel.startswith("history/units/") else 2)
 
     def _event_symbol(self, node):
         ident = node.child("id")
@@ -728,12 +981,97 @@ class Navigator:
         previous = tokens[index] if index >= 0 else None
         chain = block_chain(parsed, line, col)
         kind = block_kind(rel, chain)
-        if previous is not None and previous.kind == lexer.OP and index >= 1 \
-                and tokens[index - 1].kind == lexer.WORD:
+        block = None
+        if kind is None:
+            # A data file: what its schema says, or conditions and effects inside it.
+            context = self._data_context(rel, chain)
+            if context is not None and context[0] == "script":
+                kind = context[1]
+            elif context is not None:
+                block = context[1]
+        after_equals = previous is not None and previous.kind == lexer.OP and index >= 1 \
+            and tokens[index - 1].kind == lexer.WORD
+        if block is not None:
+            if after_equals:
+                return self._data_values(rel, block, tokens[index - 1].text, prefix)
+            return self._data_keys(block, prefix)
+        if after_equals:
             key = tokens[index - 1].text.lower()
             return self._values(rel, kind, key, chain, prefix)
         return self._keys(rel, kind, prefix, line), kind in (C.TRIGGER, C.EFFECT, C.OPTION,
                                                         C.MODIFIER, C.RANDOM)
+
+    def _data_context(self, rel, chain):
+        """("block", schemas.Block) or ("script", condition or effect kind) for the
+        innermost block of \\p chain in a data file, or None."""
+        data = self.session.data
+        schema = data.registry.for_file(rel)
+        if schema is None:
+            return None
+        block = schema.root
+        script = None
+        for node in chain[1:]:
+            if script is not None:
+                script = child_kind(script, node)
+                if script is None:
+                    return None
+                continue
+            spec = block.find(node.key, data.takes) if node.key else None
+            if spec is None:
+                return None
+            if spec.is_block:
+                block = spec.target
+            elif spec.value in ("triggers", "effects", "chance"):
+                script = {"triggers": C.TRIGGER, "effects": C.EFFECT,
+                          "chance": C.CHANCE}[spec.value]
+            else:
+                return None
+        return ("script", script) if script is not None else ("block", block)
+
+    def _data_keys(self, block, prefix):
+        out = []
+        for spec in block.keys.values():
+            desc = spec.desc[:1].upper() + spec.desc[1:] if spec.desc else ""
+            out.append(Completion(spec.name, "property", spec.describe(), desc,
+                                  _data_snippet(spec.name, spec)))
+        more = False
+        low = prefix.lower()
+        for pattern in block.patterns:
+            kind = _declared_kind(pattern.match)
+            if kind is None or len(prefix) < 2:
+                more = more or kind is not None
+                continue
+            more = True
+            for name_low, (name, _, _) in self.decl.names.get(kind, {}).items():
+                if low in name_low:
+                    out.append(Completion(name, "name", kind, pattern.desc,
+                                          _data_snippet(name, pattern)))
+                    if len(out) >= _LIMIT:
+                        return out, True
+        return out, more
+
+    def _data_values(self, rel, block, key, prefix):
+        spec = block.find(key, self.session.data.takes)
+        if spec is None:
+            return [], False
+        value = spec.value
+        if value == "yes/no":
+            return [Completion("yes", "value"), Completion("no", "value")], False
+        if value.startswith("one of:"):
+            return [Completion(v.strip(), "value") for v in value[7:].split("|")], False
+        if value == "oob file":
+            return self._oob_values(prefix.lower())
+        kind = _declared_kind(value)
+        if kind is None:
+            return [], False
+        low = prefix.lower()
+        out = []
+        for name_low, (name, _, _) in self.decl.names.get(kind, {}).items():
+            if low in name_low:
+                out.append(Completion(name, "value", kind, plain(self.loc.text(name) or "")))
+                if len(out) >= _LIMIT:
+                    return out, True
+        return out, False
 
     def _keys(self, rel, kind, prefix, line):
         if kind is None:
@@ -823,6 +1161,8 @@ class Navigator:
             return out, False
         if key == "load_oob":
             return self._oob_values(low)
+        if key == "picture" and kind == C.EVENT:
+            return self._picture_values(low)
         entry = None
         for wanted in ("trigger", "combat", "effect", "header", "option"):
             entry = entry or self.schema.get(key, wanted)
@@ -855,6 +1195,15 @@ class Navigator:
                 return out, True
         return out, False
 
+    def _picture_values(self, prefix):
+        out = []
+        for name in self.session.pictures.names():
+            if prefix in name.lower():
+                out.append(Completion(name, "file", "event picture", picture=name))
+                if len(out) >= _LIMIT:
+                    return out, True
+        return out, False
+
     def _oob_values(self, prefix):
         folder = os.path.join(self.session.root, "history", "units")
         out = []
@@ -865,6 +1214,38 @@ class Navigator:
                 if len(out) >= _LIMIT:
                     return out, True
         return out, False
+
+
+def _declared_kind(value):
+    """The declarations kind a schema's value or pattern kind names, or None."""
+    if value.startswith("name:"):
+        return value[5:]
+    from .schemas import DECLARED
+    return DECLARED.get(value)
+
+
+def _data_snippet(name, spec):
+    if spec.is_block or spec.value in ("triggers", "effects", "chance", "modifiers"):
+        return "%s = {\n\t$0\n}" % name
+    if spec.is_list or spec.value in ("model", "colour"):
+        return "%s = { $0 }" % name
+    if spec.value == "yes/no":
+        return "%s = ${1|yes,no|}" % name
+    return "%s = $0" % name
+
+
+def _ancestors(node):
+    """The blocks around \\p node, the file's root first, \\p node itself left out."""
+    chain = []
+    current = node.parent
+    while current is not None:
+        chain.append(current)
+        current = current.parent
+    return list(reversed(chain))
+
+
+def _a_word(text):
+    return ("an " if text[:1] in "aeio" else "a ") + text
 
 
 def _sentence(parts):
@@ -905,7 +1286,12 @@ def _blocks(node, depth):
         if child.key is None or child.op is None:
             continue
         if child.is_block:
-            symbol = _symbol(child, child.key, "", "block")
+            # A formation or a brigade is told apart by its name, where it has one.
+            named = child.child("name")
+            if named is not None and named.value:
+                symbol = _symbol(child, plain(named.value) or child.key, child.key, "block")
+            else:
+                symbol = _symbol(child, child.key, "", "block")
             if depth > 1:
                 symbol.children = [s for s in _blocks(child, depth - 1) if s.kind == "block"]
             out.append(symbol)

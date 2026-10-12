@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComb
 from bicevalidator import __version__, review, rules, runner
 from bicevalidator.baseline import Baseline
 from bicevalidator.config import Config
+from bicevalidator.pictures import find_game, is_game
 
 from .details import DetailsPane
 from .model import ResultsFilter, ResultsModel, severity_icon
@@ -29,14 +30,14 @@ class RunWorker(QObject):
     finished = Signal(object)
     failed = Signal(str)
 
-    def __init__(self, root, modes, only):
+    def __init__(self, root, modes, only, game=None):
         super().__init__()
-        self.root, self.modes, self.only = root, modes, only
+        self.root, self.modes, self.only, self.game = root, modes, only, game
 
     @Slot()
     def run(self):
         try:
-            result = runner.run(self.root, self.modes, only=self.only,
+            result = runner.run(self.root, self.modes, only=self.only, game=self.game,
                                 progress=lambda d, t, m: self.progress.emit(d, t, m))
             self.finished.emit(result)
         except Exception as error:     # shown to the user rather than lost in a thread
@@ -58,6 +59,8 @@ class MainWindow(QMainWindow):
         # Off for the smoke test, which must not leave its test folder as the one the
         # window remembers.
         self.persist = True
+        # Notes already shown this session; the same note after every run is noise.
+        self.shown_notes = set()
 
         self.model = ResultsModel(self)
         self.filter = ResultsFilter(self)
@@ -211,9 +214,10 @@ class MainWindow(QMainWindow):
         file_menu = self.menuBar().addMenu("&File")
         run = QAction("&Run", self, shortcut=QKeySequence("F5"), triggered=self.start_run)
         choose = QAction("Choose &mod folder...", self, triggered=self.choose_mod)
+        game = QAction("Choose &game folder...", self, triggered=self.choose_game)
         export = QAction("&Export shown results...", self, triggered=self.export)
         quit_action = QAction("&Quit", self, shortcut=QKeySequence.Quit, triggered=self.close)
-        for action in (run, choose, export):
+        for action in (run, choose, game, export):
             file_menu.addAction(action)
         file_menu.addSeparator()
         file_menu.addAction(quit_action)
@@ -304,6 +308,25 @@ class MainWindow(QMainWindow):
             return
         self.set_mod(root)
 
+    def game_folder(self):
+        """The game install the user chose, or "" to find it beside the mod."""
+        return self.settings.value("game", "") or ""
+
+    def choose_game(self):
+        found = self.game_folder() or find_game(self.mod_edit.text() or os.getcwd()) or ""
+        folder = QFileDialog.getExistingDirectory(
+            self, "Hearts of Iron 3 folder, for the event pictures the mod does not ship",
+            found)
+        if not folder:
+            return
+        if not is_game(folder):
+            QMessageBox.warning(self, "Not the game folder",
+                                "%s has no hoi3_tfh.exe and common folder." % folder)
+            return
+        if self.persist:
+            self.settings.setValue("game", folder)
+        self.shown_notes.clear()
+
     def set_mod(self, root):
         """Point the window at the checkout at \\p root, with its own hidden rules and
         known noise. A run against another checkout is cleared, since its findings and
@@ -346,7 +369,7 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage("Running...")
 
         self.thread = QThread(self)
-        self.worker = RunWorker(root, modes, only)
+        self.worker = RunWorker(root, modes, only, self.game_folder() or None)
         self.worker.moveToThread(self.thread)
         self.thread.started.connect(self.worker.run)
         self.worker.progress.connect(self._progress)
@@ -374,8 +397,10 @@ class MainWindow(QMainWindow):
         self.baseline = Baseline(self.config.baseline_path)
         self.model.set_items(review.classify(result.diagnostics, self.config, self.baseline))
         self._update_counts()
-        if result.notes:
-            QMessageBox.information(self, "Notes from the run", "\n".join(result.notes))
+        new_notes = [n for n in result.notes if n not in self.shown_notes]
+        if new_notes:
+            self.shown_notes.update(new_notes)
+            QMessageBox.information(self, "Notes from the run", "\n\n".join(new_notes))
 
     @Slot(str)
     def _failed(self, message):

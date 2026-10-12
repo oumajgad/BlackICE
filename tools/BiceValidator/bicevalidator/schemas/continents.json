@@ -1,0 +1,27 @@
+{
+  "kind": "continents",
+  "title": "Continents",
+  "files": [
+    "map/continent.txt"
+  ],
+  "source": "CMap's `continent` key names the file (CMap::LoadKey, 0x893B0). CMap::AssignContinents (0x8F260) walks each continent's province list; a province already given a continent keeps the first and the game logs `Province #... assigned to multiple continents.`; a continent named `lake` makes its provinces landlocked water (FINDINGS-seaair.md section 4). The file's own grammar was not read.",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "named lists of provinces; `lake` is special",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:continent",
+          "desc": "a continent; the name `lake` makes its provinces landlocked water"
+        }
+      ]
+    },
+    "continent": {
+      "confidence": "inferred",
+      "desc": "province ids",
+      "list": "province"
+    }
+  }
+}

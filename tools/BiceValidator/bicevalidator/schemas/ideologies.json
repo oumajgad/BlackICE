@@ -1,0 +1,130 @@
+{
+  "kind": "ideologies",
+  "title": "Ideologies",
+  "files": [
+    "common/ideologies.txt"
+  ],
+  "source": "FINDINGS-definitions.md: CIdeologyGroup::LoadKey (0x126E60: `faction`, `position`, every other key an ideology), CIdeology::LoadKey (0x126B80: `color`), CFaction::LoadKey (0x1227E0); CIdeology : CModifier and CFactionModifier : CModifier (class hierarchy)",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "each key is an ideology group (loader 0x527470, not read)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:group",
+          "desc": "an ideology group"
+        }
+      ]
+    },
+    "group": {
+      "confidence": "confirmed",
+      "desc": "an ideology group: `faction`, `position`, and every other key an ideology",
+      "keys": {
+        "faction": {
+          "value": "block:faction",
+          "desc": "the faction this group's countries join"
+        },
+        "position": {
+          "value": "block:position",
+          "desc": "where the faction sits on the diplomacy triangle"
+        }
+      },
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:ideology",
+          "desc": "an ideology of this group"
+        }
+      ]
+    },
+    "ideology": {
+      "confidence": "inferred",
+      "desc": "an ideology: `color`, then falls through to CModifier::LoadKey for any other key - a modifier kind; which names that takes is not read, so an unknown one is reported softly",
+      "keys": {
+        "color": {
+          "value": "colour",
+          "desc": "the ideology's colour, three numbers 0-255",
+          "confidence": "confirmed"
+        }
+      },
+      "include": [
+        "strategic_resources:modifier"
+      ]
+    },
+    "faction": {
+      "confidence": "inferred",
+      "desc": "a faction. The keys are CFaction::LoadKey's eight (0x1227E0), and the six the files use are all among them - but that this block is read by that loader is inference from the match, not a reading",
+      "keys": {
+        "tag": {
+          "value": "text",
+          "desc": "the faction's name, which `faction = ...` elsewhere names"
+        },
+        "icon": {
+          "value": "integer",
+          "desc": "which faction icon"
+        },
+        "influence": {
+          "value": "text",
+          "desc": "the modifier kind that pulls countries towards it - `align_towards_axis` and the like"
+        },
+        "neutrality": {
+          "value": "number",
+          "desc": "the neutrality its members get"
+        },
+        "modifier": {
+          "value": "block:faction_modifier",
+          "desc": "the modifier its members get"
+        },
+        "rule": {
+          "value": "block:rule",
+          "desc": "the faction's rules"
+        },
+        "country": {
+          "value": "any",
+          "desc": "save state: a member, as a savegame writes it"
+        },
+        "progress": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it"
+        }
+      }
+    },
+    "faction_modifier": {
+      "confidence": "inferred",
+      "desc": "the faction's modifier (CFactionModifier, which reads with CModifier::LoadKey)",
+      "keys": {},
+      "include": [
+        "strategic_resources:modifier"
+      ]
+    },
+    "rule": {
+      "confidence": "inferred",
+      "desc": "rules by name = yes: `limited_war`, `allience_wide_guarantee`, `free_resource_gifts` are what the game and the mod use; the loader was not read",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "yes/no",
+          "desc": "a faction rule"
+        }
+      ]
+    },
+    "position": {
+      "confidence": "inferred",
+      "desc": "a point on the triangle. CMapPoint::LoadKey (0x5D2A0) takes exactly `x` and `y` and drops anything else; that this block is a CMapPoint is inference",
+      "keys": {
+        "x": {
+          "value": "number",
+          "desc": "across"
+        },
+        "y": {
+          "value": "number",
+          "desc": "up"
+        }
+      }
+    }
+  }
+}
