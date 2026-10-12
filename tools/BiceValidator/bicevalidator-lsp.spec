@@ -24,6 +24,9 @@ with open(os.path.join(stamp_dir, "BUILT.txt"), "w", encoding="utf-8") as handle
 keyword_pages = [(os.path.join(DOCS, page + ".md"), "keywords")
                  for page in ("triggers", "effects", "scopes")]
 keyword_pages.append((os.path.join(stamp_dir, "BUILT.txt"), "keywords"))
+# The schemas of the data files, beside the module that reads them (schemas/__init__.py).
+keyword_pages.append((os.path.join(HERE, "bicevalidator", "schemas", "*.json"),
+                      os.path.join("bicevalidator", "schemas")))
 
 a = Analysis(
     [os.path.join(HERE, "BiceValidatorLsp.py")],

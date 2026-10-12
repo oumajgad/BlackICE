@@ -15,6 +15,12 @@ BICE Validator in VS Code, for Hearts of Iron 3 script files.
   countries, provinces, technologies, units, buildings, modifiers, flags and OOB files.
 - **Event picture previews** on hover and in completion, from the mod's pictures and the
   game's.
+- **Every kind of data file checked** against what its loader takes - orders of battle,
+  histories, technologies, unit types, the files of `common/`, `map/` and `interface/` -
+  with hover and completion for their keys.
+- **Model lists explained**: each level of a `model = { ... }` list shows the technology it
+  sets, hover tells what that technology does for the unit type, and a quick action writes
+  the list one level a line with the names as comments.
 - **Find all references** for events, flags and modifiers.
 - **An outline of events and decisions**, and Ctrl+T to find any of them by id or title.
 - **Event titles** shown after `country_event = <id>`.
@@ -39,6 +45,7 @@ All of them are under `blackice.validator`:
 | `scope` | `openFiles` (default) or `workspace`, for every file's findings in the Problems panel. |
 | `hideKnownNoise` | Hide what `tools/BiceValidator/baseline.json` lists as known noise. |
 | `eventTitles` | Show the title of each fired event at the end of its line (default on). |
+| `modelTechnologies` | Show the technology after each level of a model list (default on). |
 | `gameFolder` | The game install, for event pictures the mod does not ship. Found by itself when empty. |
 | `serverCommand` | Run the server from source instead of the bundled exe. |
 

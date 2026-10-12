@@ -1,0 +1,54 @@
+{
+  "kind": "laws",
+  "title": "Laws",
+  "files": [
+    "common/laws.txt"
+  ],
+  "source": "project.json CLawGroup::LoadKey (0x129710: no keys of its own, every key a law) and CLaw::LoadKey (0x129380: `allow`, `cost`); CLaw : CModifier (class hierarchy), so other keys are modifier kinds",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "confirmed",
+      "desc": "every key is a law group (CLawGroup's loader; nothing else is accepted at either level)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:law_group",
+          "desc": "a law group"
+        }
+      ]
+    },
+    "law_group": {
+      "confidence": "confirmed",
+      "desc": "a law group: every key is a law's name (CLawGroup::LoadKey has no keys of its own)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:law",
+          "desc": "a law in this group"
+        }
+      ]
+    },
+    "law": {
+      "confidence": "inferred",
+      "desc": "a law: `allow` and `cost`, then falls through to CModifier::LoadKey for any other key - a modifier kind; which names that takes is not read, so an unknown one is reported softly",
+      "keys": {
+        "allow": {
+          "value": "triggers",
+          "desc": "who may adopt the law",
+          "confidence": "confirmed"
+        },
+        "cost": {
+          "value": "number",
+          "desc": "what the law costs to adopt",
+          "confidence": "confirmed"
+        }
+      },
+      "include": [
+        "strategic_resources:modifier"
+      ]
+    }
+  }
+}

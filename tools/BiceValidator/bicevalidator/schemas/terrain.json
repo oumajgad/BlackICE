@@ -1,0 +1,135 @@
+{
+  "kind": "terrain",
+  "title": "Terrain",
+  "files": [
+    "map/terrain.txt"
+  ],
+  "source": "CMap's `terrain_definition` key names the file; CMap's vftable slot 5 parses it (project.json, CMap 0x11BE3EC). A category is a CTerrain, whose LoadKey (0xADA10) names 12 keys; a drawn terrain is a CTerrainGraphical, whose LoadKey (0xAE7E0) names 8 (FINDINGS-definitions.md). The top level - `terrain`, `categories`, and a drawn terrain per palette index of terrain.bmp (FINDINGS-movement.md section 6) - was not read and comes from usage. The names plains, mountain, urban, desert and arctic are tested by the engine (CTerrain::CTerrain).",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "terrain categories, then the drawn terrains of terrain.bmp",
+      "keys": {
+        "terrain": {
+          "value": "integer",
+          "desc": "how many drawn terrains there are (256)"
+        },
+        "categories": {
+          "value": "block:categories",
+          "desc": "the terrain types a province may be"
+        }
+      },
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:graphical",
+          "desc": "a drawn terrain: which category one palette index of terrain.bmp is, and how it is drawn"
+        }
+      ]
+    },
+    "categories": {
+      "confidence": "inferred",
+      "desc": "terrain types, by name",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:category",
+          "desc": "a terrain type; plains, mountain, urban, desert and arctic are tested by name by the engine"
+        }
+      ]
+    },
+    "category": {
+      "confidence": "confirmed",
+      "desc": "a terrain type (CTerrain)",
+      "keys": {
+        "movement_cost": {
+          "value": "number",
+          "desc": "cost of a pixel of it on the walk that measures a province edge; used only when the map cache is rebuilt (FINDINGS-movement.md section 6)"
+        },
+        "is_water": {
+          "value": "yes/no",
+          "desc": "a water terrain"
+        },
+        "inland_sea": {
+          "value": "yes/no",
+          "desc": "an inland sea"
+        },
+        "color": {
+          "value": "colour",
+          "desc": "the terrain map mode's colour"
+        },
+        "attrition": {
+          "value": "number",
+          "desc": "attrition in it"
+        },
+        "attack": {
+          "value": "number",
+          "desc": "combat modifier for attacking into it"
+        },
+        "defence": {
+          "value": "number",
+          "desc": "combat modifier for defending in it"
+        },
+        "attacker": {
+          "value": "any",
+          "desc": "a key of CTerrain's switch; its value was not read"
+        },
+        "defender": {
+          "value": "any",
+          "desc": "a key of CTerrain's switch; its value was not read"
+        },
+        "temperature": {
+          "value": "number",
+          "desc": "added to climate.bmp's temperature (FINDINGS-temperature.md)"
+        },
+        "humidity": {
+          "value": "number",
+          "desc": "humidity; decides what counts as jungle (FINDINGS-weather.md)"
+        },
+        "precipitation": {
+          "value": "number",
+          "desc": "precipitation, for the weather"
+        }
+      }
+    },
+    "graphical": {
+      "confidence": "confirmed",
+      "desc": "a drawn terrain (CTerrainGraphical)",
+      "keys": {
+        "type": {
+          "value": "text",
+          "desc": "the category it is, from `categories`"
+        },
+        "color": {
+          "value": "list:number",
+          "desc": "the palette index or indices of terrain.bmp it stands for"
+        },
+        "priority": {
+          "value": "integer",
+          "desc": "drawing priority"
+        },
+        "has_texture": {
+          "value": "yes/no",
+          "desc": "whether it has a texture of its own"
+        },
+        "tree": {
+          "value": "text",
+          "desc": "a tree from map/trees.txt"
+        },
+        "tree_density": {
+          "value": "number",
+          "desc": "how densely trees are drawn"
+        },
+        "altitude": {
+          "value": "number",
+          "desc": "a key of CTerrainGraphical's switch"
+        },
+        "objects": {
+          "value": "any",
+          "desc": "a key of CTerrainGraphical's switch"
+        }
+      }
+    }
+  }
+}

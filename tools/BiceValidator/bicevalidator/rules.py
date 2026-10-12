@@ -143,6 +143,49 @@ _RULES = [
          "A bare word - most often `factor 100` with its `=` left out - is not read as "
          "anything."),
 
+    # --- data files: orders of battle, histories, technologies, units, common, map ----
+    Rule("BV301", "unknown-data-block", ERROR, CODE, "confirmed",
+         "Block this kind of file does not take",
+         "The loader for this kind of file was read out of the game and does not know this "
+         "key, so it refuses it - and a refused block is worse than a lost line. The loader "
+         "takes the key, the `=` and the `{`, and nothing more, so what is inside is read as "
+         "keys of the block around it, and the refused block's own `}` closes that block "
+         "early. The rest of it, and sometimes of the file, goes unread "
+         "(docs/script/oob.md, \"One wrong key wrecks the rest of the file\")."),
+    Rule("BV302", "unexpected-data-key", WARNING, CODE, "inferred",
+         "Key not seen in this kind of file",
+         "No file of this kind elsewhere in the mod or the game uses this key, and the loader "
+         "has not been read, so the tool cannot be sure the game refuses it. Most often a "
+         "typo; if it is a real key, add it to the kind's schema in "
+         "tools/BiceValidator/bicevalidator/schemas/."),
+    Rule("BV303", "data-value-kind", WARNING, CODE, "inferred",
+         "Value of the wrong kind in a data file",
+         "The key takes a number, a yes/no, a name or a block, and this is something else."),
+    Rule("BV304", "missing-data-key", ERROR, CODE, "confirmed",
+         "Required key missing",
+         "The block needs this key to mean anything. A land formation with no `location`, "
+         "for one, is read in full and then thrown away without a word."),
+    Rule("BV305", "repeated-data-key", WARNING, CODE, "inferred",
+         "Key given twice where only one is kept",
+         "Only one of the two takes effect, and which one is the loader's choice."),
+    Rule("BV306", "unknown-data-name", ERROR, CODE, "confirmed",
+         "Name that does not exist",
+         "The value names a province, a country, a unit type, a technology or another "
+         "thing the mod declares, and nothing of that name is declared."),
+    Rule("BV307", "model-length", WARNING, CODE, "confirmed",
+         "Model list that does not fit its unit type",
+         "A `model = { ... }` list gives one level to each technology that affects the unit "
+         "type, in the order the technology files are read. A list longer or shorter "
+         "than the type's technologies was made for another tech tree, and from the first "
+         "technology added or removed its levels go to the wrong technologies. Regenerate "
+         "it; hover it to see which technology each number sets."),
+    Rule("BV308", "data-key-does-nothing", WARNING, CODE, "confirmed",
+         "Key that does nothing here",
+         "The loader for this kind of file was read out of the game and does not know this "
+         "key. It skips the key and its value, so nothing else is lost - but what the line "
+         "says does not happen. Often a key that works in a similar block: `strength` and "
+         "`organisation` on a regiment, but not on a brigade in the production queue."),
+
     # --- references ----------------------------------------------------------------------
     Rule("BV201", "undefined-event", ERROR, REFERENCES, "confirmed",
          "Event fired that does not exist",

@@ -1,0 +1,99 @@
+{
+  "kind": "positions",
+  "title": "Map positions",
+  "files": [
+    "map/positions.txt"
+  ],
+  "source": "CMap::LoadPositionsFile (0x8FBB0): unit, text_position and city (FINDINGS-mapbuild.md section 7), building_position and building_nudge, handed to CMap::LoadBuildingPositions (0x90390) and LoadBuildingNudges (0x90750), and text_scale on the same switch (FINDINGS-mappoint.md section 7); CMapPoint's keys x and y (FINDINGS-mappoint.md section 2). The switch's whole case list is not in the record, so the block is inferred; text_rotation is from usage.",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "where things are drawn in each province",
+      "patterns": [
+        {
+          "match": "province",
+          "value": "block:province",
+          "desc": "a province, by id"
+        }
+      ]
+    },
+    "province": {
+      "confidence": "inferred",
+      "desc": "where things are drawn in one province",
+      "keys": {
+        "unit": {
+          "value": "block:point",
+          "desc": "the unit point: where counters stand, and the pixel that decides the province's climate. Last of unit and text_position wins on a sea zone",
+          "confidence": "confirmed"
+        },
+        "text_position": {
+          "value": "block:point",
+          "desc": "where the name is drawn; on a sea zone also the unit point",
+          "confidence": "confirmed"
+        },
+        "city": {
+          "value": "block:point",
+          "desc": "the city point",
+          "confidence": "confirmed"
+        },
+        "building_position": {
+          "value": "block:building_position",
+          "desc": "where each building is drawn",
+          "confidence": "confirmed"
+        },
+        "building_nudge": {
+          "value": "block:building_nudge",
+          "desc": "a number per building; what it does is not established",
+          "confidence": "confirmed"
+        },
+        "text_scale": {
+          "value": "number",
+          "desc": "size of the name",
+          "confidence": "confirmed"
+        },
+        "text_rotation": {
+          "value": "number",
+          "desc": "angle of the name",
+          "confidence": "inferred"
+        }
+      }
+    },
+    "point": {
+      "confidence": "confirmed",
+      "desc": "a map point (CMapPoint): two coordinates",
+      "keys": {
+        "x": {
+          "value": "number",
+          "desc": "x, in pixels of provinces.bmp"
+        },
+        "y": {
+          "value": "number",
+          "desc": "y, in pixels, counted from the south"
+        }
+      }
+    },
+    "building_position": {
+      "confidence": "inferred",
+      "desc": "a point per building; a key is looked up in common/buildings.txt",
+      "patterns": [
+        {
+          "match": "building",
+          "value": "block:point",
+          "desc": "where the building is drawn; the naval base's is checked to lie inside the province"
+        }
+      ]
+    },
+    "building_nudge": {
+      "confidence": "inferred",
+      "desc": "a number per building; a key is looked up in common/buildings.txt",
+      "patterns": [
+        {
+          "match": "building",
+          "value": "number",
+          "desc": "the building's nudge; nothing in the mod sets one"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "kind": "combined_arms",
+  "title": "Combined arms groups",
+  "files": [
+    "common/combined_arms.txt"
+  ],
+  "doc": "",
+  "source": "reversing/findings/FINDINGS-builders.md \"Combined arms\" (a group's `base` byte at +0x24 and its `value` at +0x28, read by the builder and CUnit::GetCombinedArmsBonus); the loader itself (CSubUnitDataBase, 0x5AE1C0) was not read, so other keys are not known to be refused",
+  "declares": [
+    {
+      "kind": "combined arms group",
+      "depth": 1
+    }
+  ],
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "keys": {
+        "combined_arms": {
+          "value": "block:combined_arms",
+          "desc": "the groups, in order: a unit type's unit_group names one"
+        }
+      }
+    },
+    "combined_arms": {
+      "confidence": "inferred",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:group",
+          "desc": "a combined arms group, named by its key"
+        }
+      ]
+    },
+    "group": {
+      "confidence": "inferred",
+      "keys": {
+        "base": {
+          "value": "yes/no",
+          "desc": "a base group: without a brigade of one a division has no combined arms bonus"
+        },
+        "value": {
+          "value": "number",
+          "desc": "the bonus the group adds, a fraction"
+        }
+      }
+    }
+  }
+}

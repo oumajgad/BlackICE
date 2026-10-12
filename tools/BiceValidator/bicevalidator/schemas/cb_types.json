@@ -1,0 +1,152 @@
+{
+  "kind": "cb_types",
+  "title": "Casus belli types",
+  "files": [
+    "common/cb_types.txt"
+  ],
+  "source": "FINDINGS-definitions.md and project.json CCasusBelliType::LoadKey (0x165F0, 28 keys); `peace_order` from usage",
+  "root": "file",
+  "declares": [
+    {
+      "kind": "casus belli",
+      "depth": 0
+    }
+  ],
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "`peace_order`, then every key a war goal (loader 0x416AA0, not read)",
+      "keys": {
+        "peace_order": {
+          "value": "list:name:casus belli",
+          "desc": "the order war goals are executed in a peace treaty"
+        }
+      },
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:cb",
+          "desc": "a war goal"
+        }
+      ]
+    },
+    "cb": {
+      "confidence": "confirmed",
+      "desc": "CCasusBelliType::LoadKey's whole grammar",
+      "keys": {
+        "allowed_countries": {
+          "value": "triggers",
+          "desc": "which countries it may target"
+        },
+        "allowed_province": {
+          "value": "triggers",
+          "desc": "which provinces it demands; province scope"
+        },
+        "allowed_regions": {
+          "value": "triggers",
+          "desc": "which regions it demands"
+        },
+        "always": {
+          "value": "yes/no",
+          "desc": "always available"
+        },
+        "country_desc": {
+          "value": "text",
+          "desc": "localisation key describing it for a country"
+        },
+        "handles_peace": {
+          "value": "yes/no",
+          "desc": "yes: this war goal does not make peace with the defeated nation"
+        },
+        "is_civil_war": {
+          "value": "yes/no",
+          "desc": "a civil war"
+        },
+        "is_triggered_only": {
+          "value": "yes/no",
+          "desc": "given only by script or the code"
+        },
+        "is_valid": {
+          "value": "triggers",
+          "desc": "when it may be used"
+        },
+        "is_valid_join": {
+          "value": "triggers",
+          "desc": "used instead of `is_valid` to join a faction at war with this goal"
+        },
+        "months": {
+          "value": "integer",
+          "desc": "how long it lasts; only for triggered ones"
+        },
+        "mutual": {
+          "value": "yes/no",
+          "desc": "the defender may use it too"
+        },
+        "on_add": {
+          "value": "effects",
+          "desc": "when the war goal is added; the actor's scope"
+        },
+        "on_completion": {
+          "value": "effects",
+          "desc": "when the goal is fulfilled; the receiver's scope"
+        },
+        "peace_cost_factor": {
+          "value": "number",
+          "desc": "scales its cost in a peace"
+        },
+        "penalty_factor": {
+          "value": "number",
+          "desc": "scales its penalty"
+        },
+        "prerequisites": {
+          "value": "triggers",
+          "desc": "activates it automatically; not for triggered ones"
+        },
+        "prov_desc": {
+          "value": "text",
+          "desc": "localisation key describing it for a province"
+        },
+        "sprite_index": {
+          "value": "integer",
+          "desc": "which icon"
+        },
+        "threat": {
+          "value": "number",
+          "desc": "threat it generates"
+        },
+        "truce_months": {
+          "value": "integer",
+          "desc": "months of truce after"
+        },
+        "war_name": {
+          "value": "text",
+          "desc": "localisation key of the war's name"
+        },
+        "po_annex": {
+          "value": "yes/no",
+          "desc": "unlocks this peace option"
+        },
+        "po_change_government": {
+          "value": "yes/no",
+          "desc": "unlocks this peace option"
+        },
+        "po_demand_provinces": {
+          "value": "yes/no",
+          "desc": "unlocks this peace option"
+        },
+        "po_demand_region": {
+          "value": "yes/no",
+          "desc": "unlocks this peace option"
+        },
+        "po_install_government": {
+          "value": "yes/no",
+          "desc": "unlocks this peace option"
+        },
+        "po_puppet": {
+          "value": "yes/no",
+          "desc": "unlocks this peace option"
+        }
+      }
+    }
+  }
+}

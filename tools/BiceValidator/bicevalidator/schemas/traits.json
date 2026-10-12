@@ -1,0 +1,210 @@
+{
+  "kind": "traits",
+  "title": "Leader traits",
+  "files": [
+    "common/traits.txt"
+  ],
+  "source": "project.json CTrait::LoadKey (0x1B2A50: `allowed_leader` and 31 effect keys, anything else logged against traits.cpp) and BiceLib GameClasses/CTrait.hpp (the 31 effects by name)",
+  "root": "file",
+  "declares": [
+    {
+      "kind": "trait",
+      "depth": 0
+    }
+  ],
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "each key is a trait (loader 0x5B46B0, not read)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:trait",
+          "desc": "a trait"
+        }
+      ]
+    },
+    "trait": {
+      "confidence": "confirmed",
+      "desc": "a trait: CTrait::LoadKey's whole grammar",
+      "keys": {
+        "allowed_leader": {
+          "value": "list:one of:land|sea|air",
+          "desc": "which leaders may hold it; all three when left out"
+        },
+        "xp_gain": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "surprise_chance": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "supply_consumption": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "defence_modifier": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "offence_modifier": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "combat_move_speed": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "winter_attrition": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "river_attack": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "fort_attack": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "combined_arms_bonus": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "out_of_supply_modifier": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "submarine_attack": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "disengage_timer": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "spread_out": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "spotting_chance": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "defender_softness": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "strategic_attack": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "naval_attack": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "night_attack": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "tactical_attack": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "dissent_impact": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "encirclement_bonus": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "envelopment_bonus": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "experience_bonus": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "fort_defence": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "amph_attack": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "digin_bonus": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "paradrop_mission": {
+          "value": "number",
+          "desc": "an effect; each line adds one, and a trait holds at most sixteen",
+          "repeat": true
+        },
+        "terrain_speed": {
+          "value": "block:terrain_effect",
+          "desc": "an effect in one terrain; `type` first, then `value`",
+          "repeat": true
+        },
+        "terrain_attack": {
+          "value": "block:terrain_effect",
+          "desc": "an effect in one terrain; `type` first, then `value`",
+          "repeat": true
+        },
+        "terrain_defence": {
+          "value": "block:terrain_effect",
+          "desc": "an effect in one terrain; `type` first, then `value`",
+          "repeat": true
+        }
+      }
+    },
+    "terrain_effect": {
+      "confidence": "confirmed",
+      "desc": "an effect in one terrain; the loader reads `type` and then `value`, in that order",
+      "keys": {
+        "type": {
+          "value": "text",
+          "desc": "the terrain",
+          "required": true
+        },
+        "value": {
+          "value": "number",
+          "desc": "the effect",
+          "required": true
+        }
+      }
+    }
+  }
+}

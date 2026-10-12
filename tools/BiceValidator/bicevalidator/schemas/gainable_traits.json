@@ -1,0 +1,53 @@
+{
+  "kind": "gainable_traits",
+  "title": "Gainable traits",
+  "files": [
+    "common/gainable_traits.txt"
+  ],
+  "source": "project.json CGainableTrait::LoadKey (0x73800: `combat`, `hours_required`, `trait`, `trigger`) and BiceLib GameClasses/CTrait.hpp (the six combat tokens)",
+  "root": "file",
+  "declares": [
+    {
+      "kind": "gainable trait",
+      "depth": 0,
+      "field": "trait"
+    }
+  ],
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "the file's own loader (0x473C70) was not read; `gainable_trait` is the only key the game and the mod use",
+      "keys": {
+        "gainable_trait": {
+          "value": "block:gainable_trait",
+          "desc": "one trait and what earning it takes",
+          "repeat": true
+        }
+      }
+    },
+    "gainable_trait": {
+      "confidence": "confirmed",
+      "desc": "CGainableTrait::LoadKey's whole grammar",
+      "keys": {
+        "combat": {
+          "value": "one of:land_combat|naval_combat|air_combat|ground_bombing|land_bombing|naval_bombing",
+          "desc": "the kind of combat that earns it; the loader keeps the token, and the database is looked up by these six",
+          "required": true
+        },
+        "hours_required": {
+          "value": "integer",
+          "desc": "hours of such combat it takes; 0 or less, or left out, and the trait comes with the first such combat"
+        },
+        "trait": {
+          "value": "name:trait",
+          "desc": "the trait it gives; a name traits.txt does not declare makes an empty trait",
+          "required": true
+        },
+        "trigger": {
+          "value": "triggers",
+          "desc": "conditions, in the combat's scope, checked at the end of each combat"
+        }
+      }
+    }
+  }
+}

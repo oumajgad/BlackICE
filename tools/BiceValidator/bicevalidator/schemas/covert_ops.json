@@ -1,0 +1,45 @@
+{
+  "kind": "covert_ops",
+  "title": "Covert operations",
+  "files": [
+    "common/covert_ops.txt"
+  ],
+  "source": "FINDINGS-definitions.md and project.json CCovertOpsMission::LoadKey (0x44DF0: `cost`, `effect`, `is_selectable`, `is_valid`)",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "each key is a covert operation (loader 0x444EE0, not read)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:op",
+          "desc": "a covert operation"
+        }
+      ]
+    },
+    "op": {
+      "confidence": "confirmed",
+      "desc": "CCovertOpsMission::LoadKey's whole grammar",
+      "keys": {
+        "cost": {
+          "value": "number",
+          "desc": "what it costs"
+        },
+        "effect": {
+          "value": "effects",
+          "desc": "what it does"
+        },
+        "is_selectable": {
+          "value": "triggers",
+          "desc": "whether it is offered"
+        },
+        "is_valid": {
+          "value": "triggers",
+          "desc": "whether it may be sent"
+        }
+      }
+    }
+  }
+}

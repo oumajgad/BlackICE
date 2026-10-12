@@ -58,27 +58,87 @@ def _rel(root, path):
     return os.path.relpath(path, root).replace("\\", "/")
 
 
+def tech_files(root):
+    """The technology files in the order the game reads them: by name, compared in lower
+    case. Measured on 2026-10-12 against a BlackICE save, which writes every sub unit's
+    technologies in its type's order: this order gives all 479 unit types in it, where
+    comparing in upper case gets the six aircraft types wrong (`Aircraft_Armament` and
+    `Aircraftsystems` swap)."""
+    paths = glob.glob(os.path.join(root, "technologies", "*.txt"))
+    return [_rel(root, p) for p in sorted(paths, key=lambda p: os.path.basename(p).lower())]
+
+
 class Declarations:
-    def __init__(self, root, load=None):
+    def __init__(self, root, load=None, registry=None):
         """\\p load(rel) -> (source, result) or None lets a caller share its parse cache,
-        so a file both declared from and checked is only read once."""
+        so a file both declared from and checked is only read once. \\p registry, the
+        schemas, adds the names they declare - traits, leaders, tactics and the like."""
         self.root = root
         self._load_file = load or (lambda rel: _parse_file(root, rel))
         self.names = {}     # kind -> {lower name: (written name, file, line)}
         self.missing = []   # files expected and not found
+        # lower unit type -> its technologies, in the order a `model` list gives them
+        # levels (tech_files)
+        self.unit_techs = {}
         for kind in vars(Kinds).values():
             if isinstance(kind, str) and not kind.startswith("_"):
                 self.names.setdefault(kind, {})
         self._load()
+        if registry is not None:
+            self._load_declared(registry)
+
+    def _load_declared(self, registry):
+        for kind, declarations in registry.declared_kinds().items():
+            self.names.setdefault(kind, {})
+            for schema, declaration in declarations:
+                depth = declaration.get("depth", 0)
+                field = declaration.get("field")
+                items = declaration.get("items", False)
+                under = {u.lower() for u in declaration.get("under", [])}
+                for pattern in schema.files:
+                    for path in sorted(glob.glob(os.path.join(self.root, pattern),
+                                                 recursive=True)):
+                        rel = _rel(self.root, path)
+                        tree = self._tree(rel)
+                        if tree is None:
+                            continue
+                        level = [tree]
+                        for _ in range(depth):
+                            level = [c for n in level for c in n.children if c.is_block]
+                        if under:
+                            level = [n for n in level if n.lkey in under]
+                        for node in level:
+                            for c in node.children or ():
+                                if items:
+                                    if c.op is None and c.key is not None:
+                                        self.add(kind, c.key, rel, c.line)
+                                elif field is None:
+                                    if c.key is not None and c.op is not None:
+                                        self.add(kind, c.key, rel, c.line)
+                                elif c.is_block:
+                                    named = c.child(field)
+                                    if named is not None and named.value:
+                                        self.add(kind, named.value, rel, named.line)
+
+    def __getstate__(self):
+        # Sent to the worker processes of a run, which need the names and not the loader.
+        state = dict(self.__dict__)
+        state["_load_file"] = None
+        return state
 
     def add(self, kind, name, file, line):
-        self.names[kind].setdefault(name.lower(), (name, file, line))
+        self.names.setdefault(kind, {}).setdefault(name.lower(), (name, file, line))
+
+    def knows(self, kind):
+        """Whether names of \\p kind are known at all - a schema may declare a kind whose
+        files this mod does not have."""
+        return bool(self.names.get(kind))
 
     def has(self, kind, name):
-        return name.lower() in self.names[kind]
+        return name.lower() in self.names.get(kind, {})
 
     def where(self, kind, name):
-        return self.names[kind].get(name.lower())
+        return self.names.get(kind, {}).get(name.lower())
 
     def resolve_key(self, key):
         """What kind of declared name \\p key is, or None. Province ids are numbers."""
@@ -119,8 +179,16 @@ class Declarations:
                 if c.is_pair and c.key:
                     self.add(Kinds.TAG, c.key, "common/countries.txt", c.line)
 
-        for path in sorted(glob.glob(os.path.join(root, "technologies", "*.txt"))):
-            self._blocks(_rel(root, path), Kinds.TECH)
+        for rel in tech_files(root):
+            tree = self._blocks(rel, Kinds.TECH)
+            for tech in (tree.children if tree is not None else ()):
+                if not (tech.is_block and tech.key):
+                    continue
+                # A technology's effect on a unit type is a block named after the type,
+                # and the type's list of technologies is every such technology in turn.
+                for effect in tech.children:
+                    if effect.is_block and effect.key:
+                        self.unit_techs.setdefault(effect.lkey, []).append(tech.key)
 
         tree = self._tree("common/technology.txt")
         if tree is not None:

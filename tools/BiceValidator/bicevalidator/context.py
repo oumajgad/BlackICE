@@ -5,6 +5,11 @@ it, which is what lets the baseline recognise a known finding after the file has
 """
 
 
+# Blocks of an order of battle, which a reader tells apart by their names.
+_NAMED = {"theatre", "armygroup", "army", "corps", "division", "navy", "air", "regiment",
+          "ship", "wing", "military_construction"}
+
+
 def _label(node):
     if node.key is None:
         return "{}"
@@ -15,6 +20,10 @@ def _label(node):
             ident = node.child("id")
             if ident is not None and ident.value is not None:
                 label += " " + ident.value
+        elif low in _NAMED:
+            name = node.child("name")
+            if name is not None and name.value:
+                label += ' "%s"' % name.value
         elif low == "option":
             name = node.child("name")
             if name is not None and name.value is not None:

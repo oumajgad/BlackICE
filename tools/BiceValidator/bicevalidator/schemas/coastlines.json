@@ -1,0 +1,21 @@
+{
+  "kind": "coastlines",
+  "title": "Coastlines",
+  "files": [
+    "map/coastlines.txt"
+  ],
+  "source": "CMap's `coastlines` key names the file (CMap::LoadKey 0x893B0, CMap +0x217C, FINDINGS-mapbuild.md). What reads its contents was not read; the shape is from usage, which is the same in the base game. Possibly the entries of CMap +0x2A5C that decide whether two countries share strategic resources across continents (FINDINGS-countrymodifier.md section 4) - not established.",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "named lists of regions",
+      "keys": {
+        "strategic_resource_coastlines": {
+          "value": "list:region",
+          "desc": "regions of coast between which strategic resources are shared by sea"
+        }
+      }
+    }
+  }
+}

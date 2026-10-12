@@ -1,0 +1,1222 @@
+{
+  "kind": "gfx",
+  "title": "Interface graphics file",
+  "files": [
+    "interface/**/*.gfx"
+  ],
+  "source": "the fact base: CEU3Graphics::LoadKey (its five keys and the registry each fills, reversing/findings/FINDINGS-gui.md section 1), the object-type and font loaders of FINDINGS-definitions.md and FINDINGS-counters.md (CCounterType, CBillboardType, CWeatherBillboardType, CProjectionType, CFlagType, CMasked3dFlagType, CMaskedSpriteType, CEU3BitmapFont). The sprite kinds' loaders and the base classes' (CSpriteType, C3dObjectType, CObjectType, where `name` is read) are not read: those keys come from the mod's and the base game's files",
+  "root": "file",
+  "declares": [
+    {
+      "kind": "graphic",
+      "depth": 1,
+      "field": "name"
+    }
+  ],
+  "blocks": {
+    "file": {
+      "confidence": "confirmed",
+      "desc": "a .gfx file: CEU3Graphics::LoadKey's five keys",
+      "keys": {
+        "spriteTypes": {
+          "value": "block:sprite_types",
+          "desc": "sprites, found by name",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "objectTypes": {
+          "value": "block:object_types",
+          "desc": "3D object types, found by name",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "bitmapfonts": {
+          "value": "block:bitmapfonts",
+          "desc": "the fonts the interface draws with",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "fonts": {
+          "value": "block:fonts",
+          "desc": "system fonts",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "lightTypes": {
+          "value": "block:light_types",
+          "desc": "lights",
+          "confidence": "confirmed",
+          "repeat": true
+        }
+      }
+    },
+    "sprite_types": {
+      "confidence": "inferred",
+      "desc": "sprites; the reader's keyword list is not read",
+      "keys": {
+        "spriteType": {
+          "value": "block:sprite",
+          "desc": "a picture",
+          "repeat": true
+        },
+        "textSpriteType": {
+          "value": "block:sprite",
+          "desc": "a picture a button's text is drawn on",
+          "repeat": true
+        },
+        "corneredTileSpriteType": {
+          "value": "block:cornered",
+          "desc": "a picture stretched with its corners kept",
+          "repeat": true
+        },
+        "progressbartype": {
+          "value": "block:progressbar",
+          "desc": "a progress bar",
+          "repeat": true
+        },
+        "maskedShieldType": {
+          "value": "block:masked_shield",
+          "desc": "a shield cut to a mask (CMaskedSpriteType)",
+          "repeat": true
+        },
+        "tileSpriteType": {
+          "value": "block:tile",
+          "desc": "a tiled picture",
+          "repeat": true
+        },
+        "PieChartType": {
+          "value": "block:piechart",
+          "desc": "a pie chart",
+          "repeat": true
+        },
+        "scrollingSprite": {
+          "value": "block:scrolling",
+          "desc": "a scrolling picture",
+          "repeat": true
+        },
+        "LineChartType": {
+          "value": "block:linechart",
+          "desc": "a line chart; only the base game uses it",
+          "repeat": true
+        }
+      }
+    },
+    "sprite": {
+      "confidence": "inferred",
+      "desc": "a sprite; CSpriteType's loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "the picture, as a file path; a .tga is looked for as .dds first"
+        },
+        "noOfFrames": {
+          "value": "integer",
+          "desc": "how many frames the picture is cut into, side by side"
+        },
+        "noRefCount": {
+          "value": "yes/no",
+          "desc": "keep the texture loaded"
+        },
+        "loadType": {
+          "value": "text",
+          "desc": "INGAME or FRONTEND: which screens it is loaded for"
+        },
+        "transparenceCheck": {
+          "value": "yes/no",
+          "desc": "yes makes a click on a transparent pixel miss"
+        },
+        "effectFile": {
+          "value": "text",
+          "desc": "the shader, as a file path"
+        },
+        "clicksound": {
+          "value": "text",
+          "desc": "the sound a button drawn with it makes"
+        },
+        "allwaystransparent": {
+          "value": "yes/no",
+          "desc": "yes lets clicks through it"
+        }
+      }
+    },
+    "cornered": {
+      "confidence": "inferred",
+      "desc": "a cornered tile sprite; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "the picture, as a file path; a .tga is looked for as .dds first"
+        },
+        "borderSize": {
+          "value": "block:point",
+          "desc": "the corners kept whole when it is stretched"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size"
+        },
+        "noRefCount": {
+          "value": "yes/no",
+          "desc": "keep the texture loaded"
+        },
+        "loadType": {
+          "value": "text",
+          "desc": "INGAME or FRONTEND: which screens it is loaded for"
+        }
+      }
+    },
+    "progressbar": {
+      "confidence": "inferred",
+      "desc": "a progress bar sprite; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "color": {
+          "value": "list:number",
+          "desc": "the colour of the filled part"
+        },
+        "colortwo": {
+          "value": "list:number",
+          "desc": "the colour of the empty part"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size"
+        },
+        "effectFile": {
+          "value": "text",
+          "desc": "the shader, as a file path"
+        },
+        "textureFile1": {
+          "value": "text",
+          "desc": "the picture, as a file path; a .tga is looked for as .dds first"
+        },
+        "textureFile2": {
+          "value": "text",
+          "desc": "the picture, as a file path; a .tga is looked for as .dds first"
+        },
+        "loadType": {
+          "value": "text",
+          "desc": "INGAME or FRONTEND: which screens it is loaded for"
+        },
+        "horizontal": {
+          "value": "yes/no",
+          "desc": "yes fills it from the side"
+        },
+        "allwaystransparent": {
+          "value": "yes/no",
+          "desc": "yes lets clicks through it"
+        },
+        "noRefCount": {
+          "value": "yes/no",
+          "desc": "keep the texture loaded"
+        }
+      }
+    },
+    "masked_shield": {
+      "confidence": "inferred",
+      "desc": "CMaskedSpriteType: its own three keys are read, its base CSpriteType's are not",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by (base-class key, not read)"
+        },
+        "textureFile1": {
+          "value": "text",
+          "desc": "the shield's frame",
+          "confidence": "confirmed"
+        },
+        "textureFile2": {
+          "value": "text",
+          "desc": "the mask",
+          "confidence": "confirmed"
+        },
+        "effectFile": {
+          "value": "text",
+          "desc": "the shader",
+          "confidence": "confirmed"
+        },
+        "allwaystransparent": {
+          "value": "yes/no",
+          "desc": "yes lets clicks through it"
+        }
+      }
+    },
+    "tile": {
+      "confidence": "inferred",
+      "desc": "a tiled sprite; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "the picture, as a file path; a .tga is looked for as .dds first"
+        },
+        "loadType": {
+          "value": "text",
+          "desc": "INGAME or FRONTEND: which screens it is loaded for"
+        },
+        "noRefCount": {
+          "value": "yes/no",
+          "desc": "keep the texture loaded"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size"
+        }
+      }
+    },
+    "piechart": {
+      "confidence": "inferred",
+      "desc": "a pie chart; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "size": {
+          "value": "number",
+          "desc": "its diameter"
+        }
+      }
+    },
+    "scrolling": {
+      "confidence": "inferred",
+      "desc": "a scrolling sprite; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "textureFile1": {
+          "value": "text",
+          "desc": "the picture, as a file path; a .tga is looked for as .dds first"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size"
+        },
+        "effectFile": {
+          "value": "text",
+          "desc": "the shader, as a file path"
+        },
+        "step": {
+          "value": "number",
+          "desc": "how far it scrolls"
+        },
+        "allwaystransparent": {
+          "value": "yes/no",
+          "desc": "yes lets clicks through it"
+        }
+      }
+    },
+    "linechart": {
+      "confidence": "inferred",
+      "desc": "a line chart; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size"
+        },
+        "linewidth": {
+          "value": "number",
+          "desc": "the width of its line"
+        },
+        "outline": {
+          "value": "yes/no",
+          "desc": "yes draws an outline"
+        },
+        "allwaystransparent": {
+          "value": "yes/no",
+          "desc": "yes lets clicks through it"
+        }
+      }
+    },
+    "object_types": {
+      "confidence": "inferred",
+      "desc": "3D object types; the reader's keyword list is not read. The kinds whose loaders are read are confirmed",
+      "keys": {
+        "billboardType": {
+          "value": "block:billboard",
+          "desc": "a picture that faces the camera",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "weatherBillboardType": {
+          "value": "block:weather_billboard",
+          "desc": "a weather billboard",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "CounterType": {
+          "value": "block:counter",
+          "desc": "a unit counter",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "projectionType": {
+          "value": "block:projection",
+          "desc": "a picture laid on the map",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "flagType": {
+          "value": "block:flag",
+          "desc": "a flag",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "Masked3dFlag": {
+          "value": "block:masked_flag",
+          "desc": "a flag cut to a mask",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "provinceType": {
+          "value": "block:named_object",
+          "desc": "the province mesh's object type",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "provinceWaterType": {
+          "value": "block:named_object",
+          "desc": "the water's object type",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "EMFXActorType": {
+          "value": "block:actor",
+          "desc": "a unit's 3D model",
+          "repeat": true
+        },
+        "mapinfo": {
+          "value": "block:mapinfo",
+          "desc": "a map picture",
+          "repeat": true
+        },
+        "battlearrow": {
+          "value": "block:battlearrow",
+          "desc": "a battle plan arrow",
+          "repeat": true
+        },
+        "arrowType": {
+          "value": "block:arrow",
+          "desc": "a movement arrow",
+          "repeat": true
+        },
+        "animatedmaptext": {
+          "value": "block:animated_text",
+          "desc": "text that moves over the map",
+          "repeat": true
+        },
+        "meshType": {
+          "value": "block:mesh",
+          "desc": "a 3D mesh",
+          "repeat": true
+        },
+        "mapTextType": {
+          "value": "block:named_object",
+          "desc": "map text",
+          "repeat": true
+        },
+        "progressbar3dType": {
+          "value": "block:progressbar3d",
+          "desc": "a progress bar in the map",
+          "repeat": true
+        }
+      }
+    },
+    "billboard": {
+      "confidence": "inferred",
+      "desc": "CBillboardType: its own keys are read, the base class's (where `name` is) are not",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name the game's code finds it by - CObjectType +8, read by the base class's loader, which is not read"
+        },
+        "noOfFrames": {
+          "value": "integer",
+          "desc": "how many frames the picture holds",
+          "confidence": "confirmed"
+        },
+        "font": {
+          "value": "text",
+          "desc": "the font of its caption",
+          "confidence": "confirmed"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "the picture",
+          "confidence": "confirmed"
+        },
+        "effect": {
+          "value": "text",
+          "desc": "the technique of the shader",
+          "confidence": "confirmed"
+        },
+        "effectFile": {
+          "value": "text",
+          "desc": "the shader",
+          "confidence": "confirmed"
+        },
+        "font_size": {
+          "value": "number",
+          "desc": "the size of its caption",
+          "confidence": "confirmed"
+        },
+        "scale": {
+          "value": "number",
+          "desc": "its size",
+          "confidence": "confirmed"
+        },
+        "offset": {
+          "value": "number",
+          "desc": "how far from what it marks it stands",
+          "confidence": "confirmed"
+        },
+        "offset2": {
+          "value": "list:number",
+          "desc": "where its caption goes",
+          "confidence": "confirmed"
+        }
+      }
+    },
+    "weather_billboard": {
+      "confidence": "inferred",
+      "desc": "CWeatherBillboardType: its three keys and CBillboardType's; the base class's are not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name the game's code finds it by - CObjectType +8, read by the base class's loader, which is not read"
+        },
+        "noOfFrames": {
+          "value": "integer",
+          "desc": "how many frames the picture holds",
+          "confidence": "confirmed"
+        },
+        "font": {
+          "value": "text",
+          "desc": "the font of its caption",
+          "confidence": "confirmed"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "a picture; CWeatherBillboardType has a textureFile case of its own, and the base game gives a weather billboard two, the cloud and the rain",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "effect": {
+          "value": "text",
+          "desc": "the technique of the shader",
+          "confidence": "confirmed"
+        },
+        "effectFile": {
+          "value": "text",
+          "desc": "the shader",
+          "confidence": "confirmed"
+        },
+        "font_size": {
+          "value": "number",
+          "desc": "the size of its caption",
+          "confidence": "confirmed"
+        },
+        "scale": {
+          "value": "number",
+          "desc": "its size",
+          "confidence": "confirmed"
+        },
+        "offset": {
+          "value": "number",
+          "desc": "how far from what it marks it stands",
+          "confidence": "confirmed"
+        },
+        "offset2": {
+          "value": "list:number",
+          "desc": "where its caption goes",
+          "confidence": "confirmed"
+        },
+        "animation": {
+          "value": "number",
+          "desc": "CWeatherBillboardType's own key",
+          "confidence": "confirmed"
+        },
+        "simple": {
+          "value": "any",
+          "desc": "CWeatherBillboardType's own key; no file uses it",
+          "confidence": "confirmed"
+        }
+      }
+    },
+    "counter": {
+      "confidence": "inferred",
+      "desc": "CCounterType: its 18 keys are read, the base class's (where `name` is) are not",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name the game's code finds it by - CObjectType +8, read by the base class's loader, which is not read"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "the shader's BackgroundTex",
+          "confidence": "confirmed"
+        },
+        "textureFile2": {
+          "value": "text",
+          "desc": "the shader's MaskTex",
+          "confidence": "confirmed"
+        },
+        "textureFile3": {
+          "value": "text",
+          "desc": "the shader's SizeTex, a strip of noOfFrames frames",
+          "confidence": "confirmed"
+        },
+        "textureFile4": {
+          "value": "text",
+          "desc": "read, and not followed",
+          "confidence": "confirmed"
+        },
+        "effectFile": {
+          "value": "text",
+          "desc": "the shader",
+          "confidence": "confirmed"
+        },
+        "effect": {
+          "value": "text",
+          "desc": "the technique of the shader",
+          "confidence": "confirmed"
+        },
+        "noOfFrames": {
+          "value": "integer",
+          "desc": "frames in the size strip",
+          "confidence": "confirmed"
+        },
+        "scale": {
+          "value": "number",
+          "desc": "half the counter's height, in map units",
+          "confidence": "confirmed"
+        },
+        "level_scale": {
+          "value": "number",
+          "desc": "growth for each step of size",
+          "confidence": "confirmed"
+        },
+        "font": {
+          "value": "text",
+          "desc": "the font of the two texts",
+          "confidence": "confirmed"
+        },
+        "size": {
+          "value": "number",
+          "desc": "the size of the first text",
+          "confidence": "confirmed"
+        },
+        "offset": {
+          "value": "list:number",
+          "desc": "where the flag goes",
+          "confidence": "confirmed"
+        },
+        "offset2": {
+          "value": "list:number",
+          "desc": "where the first text goes",
+          "confidence": "confirmed"
+        },
+        "offset3": {
+          "value": "list:number",
+          "desc": "where the second text goes",
+          "confidence": "confirmed"
+        },
+        "shieldtype": {
+          "value": "list:number",
+          "desc": "that there is a flag, and its width and height",
+          "confidence": "confirmed"
+        },
+        "color1": {
+          "value": "colour",
+          "desc": "selection colour 2",
+          "confidence": "confirmed"
+        },
+        "color2": {
+          "value": "colour",
+          "desc": "selection colour 3",
+          "confidence": "confirmed"
+        },
+        "delayAfterAttackColor": {
+          "value": "colour",
+          "desc": "read, and not followed to a use",
+          "confidence": "confirmed"
+        }
+      }
+    },
+    "projection": {
+      "confidence": "inferred",
+      "desc": "CProjectionType: its 10 keys are read, the base class's are not",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name the game's code finds it by - CObjectType +8, read by the base class's loader, which is not read"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "the picture",
+          "confidence": "confirmed"
+        },
+        "size": {
+          "value": "number",
+          "desc": "its size",
+          "confidence": "confirmed"
+        },
+        "spin": {
+          "value": "number",
+          "desc": "how fast it turns",
+          "confidence": "confirmed"
+        },
+        "pulsating": {
+          "value": "yes/no",
+          "desc": "yes makes it pulse",
+          "confidence": "confirmed"
+        },
+        "pulseLowest": {
+          "value": "number",
+          "desc": "the lowest point of a pulse",
+          "confidence": "confirmed"
+        },
+        "pulseSpeed": {
+          "value": "number",
+          "desc": "how fast it pulses",
+          "confidence": "confirmed"
+        },
+        "additative": {
+          "value": "yes/no",
+          "desc": "yes blends it additively; spelled so",
+          "confidence": "confirmed"
+        },
+        "expanding": {
+          "value": "number",
+          "desc": "how fast it grows",
+          "confidence": "confirmed"
+        },
+        "duration": {
+          "value": "number",
+          "desc": "how long it lasts",
+          "confidence": "confirmed"
+        },
+        "fadeout": {
+          "value": "number",
+          "desc": "how long it takes to fade",
+          "confidence": "confirmed"
+        }
+      }
+    },
+    "flag": {
+      "confidence": "inferred",
+      "desc": "CFlagType: its one key is read, the base class's are not",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name the game's code finds it by - CObjectType +8, read by the base class's loader, which is not read"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size",
+          "confidence": "confirmed"
+        }
+      }
+    },
+    "masked_flag": {
+      "confidence": "inferred",
+      "desc": "CMasked3dFlagType: its 4 keys are read, the base class's are not",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name the game's code finds it by - CObjectType +8, read by the base class's loader, which is not read"
+        },
+        "noOfFrames": {
+          "value": "integer",
+          "desc": "how many frames the picture holds",
+          "confidence": "confirmed"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size",
+          "confidence": "confirmed"
+        },
+        "textureFile1": {
+          "value": "text",
+          "desc": "the picture",
+          "confidence": "confirmed"
+        },
+        "textureFile2": {
+          "value": "text",
+          "desc": "the mask",
+          "confidence": "confirmed"
+        }
+      }
+    },
+    "named_object": {
+      "confidence": "inferred",
+      "desc": "an object type that takes only its name in the files; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name the game's code finds it by - CObjectType +8, read by the base class's loader, which is not read"
+        }
+      }
+    },
+    "actor": {
+      "confidence": "inferred",
+      "desc": "a unit's 3D model; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "actorfile": {
+          "value": "text",
+          "desc": "the model, as a file path"
+        },
+        "scale": {
+          "value": "number",
+          "desc": "its size"
+        },
+        "idle": {
+          "value": "text",
+          "desc": "the animation it plays standing"
+        },
+        "move": {
+          "value": "text",
+          "desc": "the animation it plays moving"
+        },
+        "attack": {
+          "value": "text",
+          "desc": "the animation it plays attacking"
+        },
+        "retargeting": {
+          "value": "yes/no",
+          "desc": "whether its animations are retargeted"
+        },
+        "block_attachment": {
+          "value": "yes/no",
+          "desc": "used once, by the base game"
+        },
+        "animation": {
+          "value": "block:animation",
+          "desc": "an animation it has",
+          "repeat": true
+        }
+      }
+    },
+    "animation": {
+      "confidence": "inferred",
+      "desc": "an animation of a model",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "file": {
+          "value": "text",
+          "desc": "the animation, as a file path"
+        },
+        "defaultanimationtime": {
+          "value": "number",
+          "desc": "how long it plays"
+        }
+      }
+    },
+    "mapinfo": {
+      "confidence": "inferred",
+      "desc": "a map picture; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "the picture, as a file path; a .tga is looked for as .dds first"
+        },
+        "scale": {
+          "value": "number",
+          "desc": "its size"
+        }
+      }
+    },
+    "battlearrow": {
+      "confidence": "inferred",
+      "desc": "a battle plan arrow; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "the picture, as a file path; a .tga is looked for as .dds first"
+        },
+        "textureFile1": {
+          "value": "text",
+          "desc": "the picture, as a file path; a .tga is looked for as .dds first"
+        },
+        "start": {
+          "value": "number",
+          "desc": "where along it its picture starts"
+        },
+        "stop": {
+          "value": "number",
+          "desc": "where along it its picture stops"
+        },
+        "x": {
+          "value": "number",
+          "desc": ""
+        },
+        "y": {
+          "value": "number",
+          "desc": ""
+        },
+        "font": {
+          "value": "text",
+          "desc": "the font of its text"
+        },
+        "scale": {
+          "value": "number",
+          "desc": "its size"
+        },
+        "textureloop": {
+          "value": "number",
+          "desc": "how often the picture repeats along it"
+        },
+        "nofade": {
+          "value": "yes/no",
+          "desc": "yes stops it fading"
+        }
+      }
+    },
+    "arrow": {
+      "confidence": "inferred",
+      "desc": "a movement arrow; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "size": {
+          "value": "number",
+          "desc": "its width"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "the picture, as a file path; a .tga is looked for as .dds first"
+        },
+        "bodytexture": {
+          "value": "text",
+          "desc": "the picture of its body"
+        },
+        "color": {
+          "value": "colour",
+          "desc": "its colour"
+        },
+        "colortwo": {
+          "value": "colour",
+          "desc": "its second colour"
+        },
+        "endat": {
+          "value": "text",
+          "desc": "written `1.0f`, which is not a plain number"
+        },
+        "height": {
+          "value": "number",
+          "desc": "its height"
+        },
+        "type": {
+          "value": "integer",
+          "desc": ""
+        },
+        "heading": {
+          "value": "text",
+          "desc": "written `1.0f`, which is not a plain number"
+        },
+        "effect": {
+          "value": "text",
+          "desc": "the shader, as a file path"
+        }
+      }
+    },
+    "animated_text": {
+      "confidence": "inferred",
+      "desc": "moving map text; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "speed": {
+          "value": "number",
+          "desc": "how fast it moves"
+        },
+        "textblock": {
+          "value": "block:textblock",
+          "desc": "its text"
+        },
+        "position": {
+          "value": "list:number",
+          "desc": "where it is"
+        },
+        "scale": {
+          "value": "number",
+          "desc": "its size"
+        }
+      }
+    },
+    "textblock": {
+      "confidence": "inferred",
+      "desc": "the text of a moving map text",
+      "keys": {
+        "text": {
+          "value": "text",
+          "desc": "the text"
+        },
+        "color": {
+          "value": "colour",
+          "desc": "its colour"
+        },
+        "font": {
+          "value": "text",
+          "desc": "its font"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "where it is"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size"
+        },
+        "format": {
+          "value": "one of:left|centre|center|right",
+          "desc": "how it is aligned"
+        }
+      }
+    },
+    "mesh": {
+      "confidence": "inferred",
+      "desc": "a 3D mesh; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "xfile": {
+          "value": "text",
+          "desc": "the model, as a file path"
+        }
+      }
+    },
+    "progressbar3d": {
+      "confidence": "inferred",
+      "desc": "a progress bar in the map; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "color": {
+          "value": "list:number",
+          "desc": "the colour of the filled part"
+        },
+        "colortwo": {
+          "value": "list:number",
+          "desc": "the colour of the empty part"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size"
+        },
+        "effectFile": {
+          "value": "text",
+          "desc": "the shader, as a file path"
+        }
+      }
+    },
+    "bitmapfonts": {
+      "confidence": "inferred",
+      "desc": "the fonts the interface draws with; the reader is not read",
+      "keys": {
+        "bitmapfont": {
+          "value": "block:bitmapfont",
+          "desc": "a font",
+          "confidence": "confirmed",
+          "repeat": true
+        }
+      }
+    },
+    "bitmapfont": {
+      "confidence": "confirmed",
+      "desc": "a font: CEU3BitmapFont::LoadKey's six keys",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name a .gui file gives as a font",
+          "confidence": "confirmed"
+        },
+        "fontName": {
+          "value": "text",
+          "desc": "the font descriptor in gfx/fonts",
+          "confidence": "confirmed"
+        },
+        "color": {
+          "value": "text",
+          "desc": "its colour, as 0xAARRGGBB",
+          "confidence": "confirmed"
+        },
+        "colorcodes": {
+          "value": "block:colorcodes",
+          "desc": "the colours a text's colour escapes choose",
+          "confidence": "confirmed"
+        },
+        "effect": {
+          "value": "yes/no",
+          "desc": "",
+          "confidence": "confirmed"
+        },
+        "color_override": {
+          "value": "block:colorcodes",
+          "desc": "colours that replace the codes'",
+          "confidence": "confirmed"
+        }
+      }
+    },
+    "colorcodes": {
+      "confidence": "inferred",
+      "desc": "a colour for each escape letter",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "colour",
+          "repeat": true,
+          "desc": "the colour of that escape letter; R and r are two different letters"
+        }
+      ]
+    },
+    "fonts": {
+      "confidence": "inferred",
+      "desc": "system fonts; the reader is not read",
+      "keys": {
+        "font": {
+          "value": "block:font",
+          "desc": "a font",
+          "repeat": true
+        }
+      }
+    },
+    "font": {
+      "confidence": "inferred",
+      "desc": "a system font; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "fontname": {
+          "value": "text",
+          "desc": "the typeface"
+        },
+        "height": {
+          "value": "integer",
+          "desc": "its height"
+        },
+        "charset": {
+          "value": "text",
+          "desc": "its character set"
+        },
+        "color": {
+          "value": "text",
+          "desc": "its colour, as 0xAARRGGBB"
+        }
+      }
+    },
+    "light_types": {
+      "confidence": "inferred",
+      "desc": "lights; the reader is not read",
+      "keys": {
+        "lightType": {
+          "value": "block:light",
+          "desc": "a light",
+          "repeat": true
+        }
+      }
+    },
+    "light": {
+      "confidence": "inferred",
+      "desc": "a light; its loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the name it is found by"
+        },
+        "light": {
+          "value": "text",
+          "desc": "the kind of light"
+        },
+        "diffuse": {
+          "value": "list:number",
+          "desc": ""
+        },
+        "specular": {
+          "value": "list:number",
+          "desc": ""
+        },
+        "ambient": {
+          "value": "list:number",
+          "desc": ""
+        },
+        "direction": {
+          "value": "list:number",
+          "desc": ""
+        },
+        "attenuation": {
+          "value": "list:number",
+          "desc": ""
+        },
+        "falloff": {
+          "value": "number",
+          "desc": ""
+        },
+        "range": {
+          "value": "number",
+          "desc": ""
+        }
+      }
+    },
+    "point": {
+      "confidence": "inferred",
+      "desc": "an { x = y = } pair",
+      "keys": {
+        "x": {
+          "value": "number",
+          "desc": "across"
+        },
+        "y": {
+          "value": "number",
+          "desc": "down"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "kind": "province_history",
+  "title": "Province history",
+  "files": [
+    "history/provinces/**/*.txt"
+  ],
+  "source": "reversing/findings/FINDINGS-history.md; ghidra/project.json CHistoryContainer::LoadKey (0x1FCC10), CProvinceHistory::LoadEntry (0x1FCED0); BiceLib/GameClasses/CCountryHistory.hpp",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "confirmed",
+      "desc": "a province's history: one grammar, at the top or postponed to a date",
+      "include": [
+        "province_history:entries"
+      ],
+      "patterns": [
+        {
+          "match": "date",
+          "value": "block:entries",
+          "repeat": true,
+          "desc": "applied on that date: the block holds the same keys as the top of the file, and is only a way of postponing them (CHistoryContainer::LoadKey)"
+        }
+      ]
+    },
+    "entries": {
+      "confidence": "confirmed",
+      "desc": "CProvinceHistory::LoadEntry: eighteen keys, and anything else is looked up as a building",
+      "keys": {
+        "owner": {
+          "value": "tag",
+          "desc": "the owning country"
+        },
+        "controller": {
+          "value": "tag",
+          "desc": "the country that holds it"
+        },
+        "add_core": {
+          "value": "tag",
+          "desc": "makes it a core of that country",
+          "repeat": true
+        },
+        "remove_core": {
+          "value": "tag",
+          "desc": "takes that country's core off it",
+          "repeat": true
+        },
+        "manpower": {
+          "value": "number",
+          "desc": "manpower it yields"
+        },
+        "leadership": {
+          "value": "number",
+          "desc": "leadership it yields"
+        },
+        "points": {
+          "value": "number",
+          "desc": "victory points"
+        },
+        "revolt": {
+          "value": "any",
+          "desc": "a CRevoltChange; what its value is has not been read"
+        },
+        "revolt_risk": {
+          "value": "number",
+          "desc": "revolt risk"
+        },
+        "strategic_resource": {
+          "value": "strategic resource",
+          "desc": "a strategic resource from common/strategic_resources.txt"
+        },
+        "terrain": {
+          "value": "text",
+          "desc": "its terrain, from map/terrain.txt"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it yields or holds"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it yields or holds"
+        },
+        "money": {
+          "value": "number",
+          "desc": "money it yields or holds"
+        },
+        "energy": {
+          "value": "number",
+          "desc": "energy it yields or holds"
+        },
+        "metal": {
+          "value": "number",
+          "desc": "metal it yields or holds"
+        },
+        "rare_materials": {
+          "value": "number",
+          "desc": "rare_materials it yields or holds"
+        },
+        "crude_oil": {
+          "value": "number",
+          "desc": "crude_oil it yields or holds"
+        }
+      },
+      "patterns": [
+        {
+          "match": "building",
+          "value": "number",
+          "desc": "a building from common/buildings.txt and its level"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "trees",
+  "title": "Trees",
+  "files": [
+    "map/trees.txt"
+  ],
+  "source": "CMap's `tree_definition` key names the file. CTree::LoadKey (0xB1F60) names one key, `texture` (FINDINGS-definitions.md); that CTree is what reads this file is inferred from the name and the key. `tree_density` is a key of CTerrainGraphical, not of CTree.",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "the trees drawn on the map, by name",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:tree",
+          "desc": "a tree; terrain.txt's `tree` names it"
+        }
+      ]
+    },
+    "tree": {
+      "confidence": "inferred",
+      "desc": "a tree (CTree)",
+      "keys": {
+        "texture": {
+          "value": "text",
+          "desc": "the texture file",
+          "confidence": "confirmed"
+        }
+      }
+    }
+  }
+}

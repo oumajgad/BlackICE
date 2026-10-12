@@ -1,0 +1,37 @@
+{
+  "kind": "event_modifiers",
+  "title": "Event modifiers",
+  "files": [
+    "common/event_modifiers.txt"
+  ],
+  "doc": "docs/script/modifiers.md",
+  "source": "Both files are read by LoadModifierDefinitions (0x5A490) into CStaticModifier, whose keys are CModifier's: `icon` and the modifier names (see modifier_names). Loaded after common/ideologies.txt, so the suseptibility_<faction> names exist by then (FINDINGS-startup.md section 7). Names are looked up by add_country_modifier and the like.",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "named modifiers an event, decision or history applies",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:modifier",
+          "desc": "a modifier, by the name scripts apply it with"
+        }
+      ]
+    },
+    "modifier": {
+      "confidence": "confirmed",
+      "desc": "a modifier: `name = number` pairs",
+      "keys": {
+        "icon": {
+          "value": "integer",
+          "desc": "the frame of the modifier icon strip shown for it",
+          "confidence": "confirmed"
+        }
+      },
+      "include": [
+        "modifier_names:modifiers"
+      ]
+    }
+  }
+}

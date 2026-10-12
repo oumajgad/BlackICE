@@ -1,0 +1,70 @@
+{
+  "kind": "combat_tactics",
+  "title": "Combat tactics",
+  "files": [
+    "common/combat_tactics.txt"
+  ],
+  "doc": "",
+  "source": "CCombatTactic::LoadKey (0x38900, 9 keys) read out of the game: reversing/findings/FINDINGS-definitions.md; what each figure does: reversing/findings/FINDINGS-combatview.md section 11",
+  "declares": [
+    {
+      "kind": "combat tactic",
+      "depth": 0
+    }
+  ],
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "confirmed",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:tactic",
+          "desc": "a combat tactic, named by its key"
+        }
+      ]
+    },
+    "tactic": {
+      "confidence": "confirmed",
+      "desc": "a tactic a land battle can pick",
+      "keys": {
+        "trigger": {
+          "value": "triggers",
+          "desc": "when a side may pick it, judged in a scope of both the country and the combatant"
+        },
+        "base": {
+          "value": "number",
+          "desc": "its weight in the pick"
+        },
+        "aggressiveness": {
+          "value": "number",
+          "desc": "the aggressiveness it suits; the further a side's from it, the less likely"
+        },
+        "picture": {
+          "value": "text",
+          "desc": "its picture"
+        },
+        "countered_by": {
+          "value": "name:combat tactic",
+          "desc": "the tactic that cancels it"
+        },
+        "combat_width": {
+          "value": "number",
+          "desc": "change to the battle's width"
+        },
+        "attacker": {
+          "value": "number",
+          "desc": "change to the attacker's damage, a fraction"
+        },
+        "defender": {
+          "value": "number",
+          "desc": "change to the defender's damage, a fraction"
+        },
+        "movement_speed": {
+          "value": "number",
+          "desc": "change to movement speed, a fraction"
+        }
+      }
+    }
+  }
+}

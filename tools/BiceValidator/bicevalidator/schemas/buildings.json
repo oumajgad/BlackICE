@@ -1,0 +1,112 @@
+{
+  "kind": "buildings",
+  "title": "Buildings",
+  "files": [
+    "common/buildings.txt"
+  ],
+  "source": "FINDINGS-definitions.md and project.json CBuilding::LoadKey (0xB6950, 16 keys); the class hierarchy (CBuilding carries a CModifierEntry) and usage for the modifier kinds a building gives its province",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "each key is a building (loader 0x4B75E0, not read)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:building",
+          "desc": "a building"
+        }
+      ]
+    },
+    "building": {
+      "confidence": "inferred",
+      "desc": "CBuilding::LoadKey's sixteen keys; the other keys a building takes are modifier kinds it gives its province, and how they are read was not established, so an unknown one is reported softly",
+      "keys": {
+        "capital": {
+          "value": "yes/no",
+          "desc": "may be built only in a capital",
+          "confidence": "confirmed"
+        },
+        "completion_size": {
+          "value": "number",
+          "desc": "practical experience gained on completion",
+          "confidence": "confirmed"
+        },
+        "confirm": {
+          "value": "any",
+          "desc": "a key of the loader; nothing uses it",
+          "confidence": "confirmed"
+        },
+        "cost": {
+          "value": "number",
+          "desc": "IC cost",
+          "confidence": "confirmed"
+        },
+        "damage_factor": {
+          "value": "number",
+          "desc": "how much bombing damages it",
+          "confidence": "confirmed"
+        },
+        "max_level": {
+          "value": "integer",
+          "desc": "highest level",
+          "confidence": "confirmed"
+        },
+        "not_if_x_exists": {
+          "value": "any",
+          "desc": "a key of the loader; nothing uses it",
+          "confidence": "confirmed"
+        },
+        "on_completion": {
+          "value": "text",
+          "desc": "the technology category whose practical experience it gives",
+          "confidence": "confirmed"
+        },
+        "onmap": {
+          "value": "yes/no",
+          "desc": "drawn on the map",
+          "confidence": "confirmed"
+        },
+        "orientation": {
+          "value": "yes/no",
+          "desc": "drawn turned to the coast",
+          "confidence": "confirmed"
+        },
+        "port": {
+          "value": "yes/no",
+          "desc": "built on the coast",
+          "confidence": "confirmed"
+        },
+        "prerequisites": {
+          "value": "triggers",
+          "desc": "where it may be built",
+          "confidence": "confirmed"
+        },
+        "repair": {
+          "value": "yes/no",
+          "desc": "repairs after damage",
+          "confidence": "confirmed"
+        },
+        "show_for_province": {
+          "value": "yes/no",
+          "desc": "shown in a province's view",
+          "confidence": "confirmed"
+        },
+        "time": {
+          "value": "number",
+          "desc": "days to build",
+          "confidence": "confirmed"
+        },
+        "visibility": {
+          "value": "yes/no",
+          "desc": "visible to other countries",
+          "confidence": "confirmed"
+        }
+      },
+      "include": [
+        "strategic_resources:modifier"
+      ]
+    }
+  }
+}

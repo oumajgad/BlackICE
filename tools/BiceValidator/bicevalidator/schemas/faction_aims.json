@@ -1,0 +1,49 @@
+{
+  "kind": "faction_aims",
+  "title": "Faction aims",
+  "files": [
+    "common/faction_aims.txt"
+  ],
+  "source": "FINDINGS-startup.md sections 7 and 9 (0x543430 reads it into the game state's victory conditions); FINDINGS-definitions.md CVictoryCondition::LoadKey (0x143270: `primary`, `trigger`)",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "each key is a faction (loader 0x543430, not read)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "faction",
+          "value": "block:aims",
+          "desc": "a faction's aims"
+        }
+      ]
+    },
+    "aims": {
+      "confidence": "inferred",
+      "desc": "each key is an aim",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:aim",
+          "desc": "an aim"
+        }
+      ]
+    },
+    "aim": {
+      "confidence": "confirmed",
+      "desc": "CVictoryCondition::LoadKey's whole grammar",
+      "keys": {
+        "primary": {
+          "value": "yes/no",
+          "desc": "a primary aim"
+        },
+        "trigger": {
+          "value": "triggers",
+          "desc": "when it is met"
+        }
+      }
+    }
+  }
+}

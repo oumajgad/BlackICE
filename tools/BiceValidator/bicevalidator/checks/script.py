@@ -40,6 +40,10 @@ DOES_NOTHING = {
 
 # Block keywords that hold more script of the same kind, or a scope's script.
 TRIGGER_GROUPS = {"and", "or", "not"}
+
+# Scopes that also take a setting of their own beside their script: `distance` sets how
+# far `any_nearby_province` looks (CAnyNearbyProvinceEffect, docs/script/effects.md).
+SCOPE_SETTINGS = {"any_nearby_province": {"distance": S.NUMBER}}
 SINGLE_KEYS = {
     EVENT: {"id", "title", "desc", "picture", "is_triggered_only", "fire_only_once", "major",
             "trigger", "mean_time_to_happen"},
@@ -102,6 +106,14 @@ class ScriptChecker:
                 elif decision.key is not None:
                     self._report("BV104", decision, "`%s` directly in `%s`: a category "
                                  "holds decisions, each a block" % (decision.key, category.key))
+        return self.out
+
+    def check_block(self, path, node, kind):
+        """Findings for one block of conditions (\\p kind "triggers") or effects
+        ("effects") inside a data file - a law's `allow`, a technology's `on_completion`."""
+        self.out = []
+        self.path = path
+        self._block(node, {"triggers": TRIGGER, "effects": EFFECT, "chance": CHANCE}[kind])
         return self.out
 
     # --- reporting ---------------------------------------------------------------------
@@ -263,8 +275,12 @@ class ScriptChecker:
 
     def _block(self, block, kind):
         self._bare(block)
+        settings = SCOPE_SETTINGS.get(block.lkey, {})
         for child in block.children:
             if child.op is None and child.key is not None:
+                continue
+            if child.lkey in settings:
+                self._check_value(child, settings[child.lkey])
                 continue
             if child.key is None:
                 if child.is_block:

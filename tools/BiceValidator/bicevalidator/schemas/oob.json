@@ -1,0 +1,3203 @@
+{
+  "kind": "oob",
+  "title": "Order of battle",
+  "files": [
+    "history/units/**/*.txt"
+  ],
+  "doc": "docs/script/oob.md",
+  "source": "the loaders read out of the game: reversing/findings/FINDINGS-oob.md, CLASSES.md (the production queue) and the LoadKey entries of ghidra/project.json",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "confirmed",
+      "keys": {
+        "theatre": {
+          "value": "block:top_formation",
+          "desc": "a land formation",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:top_formation",
+          "desc": "a land formation",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:top_formation",
+          "desc": "a land formation",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:top_formation",
+          "desc": "a land formation",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:top_formation",
+          "desc": "a land formation",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:top_navy",
+          "desc": "a fleet",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:top_air",
+          "desc": "an air formation",
+          "repeat": true
+        },
+        "military_construction": {
+          "value": "block:military_construction",
+          "desc": "a unit in the production queue",
+          "repeat": true
+        },
+        "building_construction": {
+          "value": "block:building_construction",
+          "desc": "a building under construction",
+          "repeat": true
+        },
+        "convoy_construction": {
+          "value": "block:convoy_construction",
+          "desc": "convoys under construction",
+          "repeat": true
+        },
+        "unit_deployment": {
+          "value": "block:unit_deployment",
+          "desc": "a built unit waiting in the deployment pool; one unit per block",
+          "repeat": true
+        }
+      },
+      "include": [
+        "country_history:country_keys"
+      ]
+    },
+    "top_formation": {
+      "confidence": "confirmed",
+      "keys": {
+        "location": {
+          "value": "province",
+          "desc": "province id the formation sits in. A formation at the top of the file without one is read in full and then silently thrown away",
+          "required": true
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; leave it off and the game names the formation"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its unit id rather than letting the game mint one; best left out"
+        },
+        "leader": {
+          "value": "integer",
+          "desc": "id of the commander, from history/leaders/"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "yes makes it a reserve formation"
+        },
+        "is_prioritized": {
+          "value": "yes/no",
+          "desc": "yes gives it priority for reinforcement and upgrades"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether its brigades may be upgraded"
+        },
+        "can_reinforce": {
+          "value": "yes/no",
+          "desc": "whether it may be reinforced"
+        },
+        "expeditionary_owner": {
+          "value": "tag",
+          "desc": "country it is on loan from, for expeditionary forces"
+        },
+        "movement_progress": {
+          "value": "number",
+          "desc": "how far along its move it starts"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it starts with"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it starts with"
+        },
+        "dig_in": {
+          "value": "number",
+          "desc": "entrenchment it starts with"
+        },
+        "regiment": {
+          "value": "block:subunit",
+          "desc": "a brigade",
+          "repeat": true
+        },
+        "ship": {
+          "value": "block:ship",
+          "desc": "a ship",
+          "repeat": true
+        },
+        "wing": {
+          "value": "block:subunit",
+          "desc": "a wing",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:navy",
+          "desc": "a fleet under this formation",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:air",
+          "desc": "an air formation under this formation",
+          "repeat": true
+        },
+        "theatre": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "path": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "track": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "previous": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "possible_retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "disengage": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "arrow_state": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "start_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "end_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "was_paradropped": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "attack_delay": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "combat_hours": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "plan": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "expeditionary_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_enabled": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_setting": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "country_intel": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "parent": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "staging_province": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_redeployment": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "support_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "convoy_raid": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "patrol": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_fleet": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "transport": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "air_intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "carrier_protection": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "ground_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "strategic_bomb": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "port_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "logistical_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        }
+      },
+      "desc": "a land formation"
+    },
+    "formation": {
+      "confidence": "confirmed",
+      "keys": {
+        "location": {
+          "value": "province",
+          "desc": "province id the formation sits in. A formation at the top of the file without one is read in full and then silently thrown away",
+          "required": false
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; leave it off and the game names the formation"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its unit id rather than letting the game mint one; best left out"
+        },
+        "leader": {
+          "value": "integer",
+          "desc": "id of the commander, from history/leaders/"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "yes makes it a reserve formation"
+        },
+        "is_prioritized": {
+          "value": "yes/no",
+          "desc": "yes gives it priority for reinforcement and upgrades"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether its brigades may be upgraded"
+        },
+        "can_reinforce": {
+          "value": "yes/no",
+          "desc": "whether it may be reinforced"
+        },
+        "expeditionary_owner": {
+          "value": "tag",
+          "desc": "country it is on loan from, for expeditionary forces"
+        },
+        "movement_progress": {
+          "value": "number",
+          "desc": "how far along its move it starts"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it starts with"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it starts with"
+        },
+        "dig_in": {
+          "value": "number",
+          "desc": "entrenchment it starts with"
+        },
+        "regiment": {
+          "value": "block:subunit",
+          "desc": "a brigade",
+          "repeat": true
+        },
+        "ship": {
+          "value": "block:ship",
+          "desc": "a ship",
+          "repeat": true
+        },
+        "wing": {
+          "value": "block:subunit",
+          "desc": "a wing",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:navy",
+          "desc": "a fleet under this formation",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:air",
+          "desc": "an air formation under this formation",
+          "repeat": true
+        },
+        "theatre": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "path": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "track": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "previous": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "possible_retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "disengage": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "arrow_state": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "start_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "end_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "was_paradropped": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "attack_delay": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "combat_hours": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "plan": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "expeditionary_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_enabled": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_setting": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "country_intel": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "parent": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "staging_province": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_redeployment": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "support_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "convoy_raid": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "patrol": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_fleet": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "transport": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "air_intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "carrier_protection": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "ground_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "strategic_bomb": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "port_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "logistical_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        }
+      },
+      "desc": "a land formation"
+    },
+    "pooled": {
+      "confidence": "confirmed",
+      "keys": {
+        "location": {
+          "value": "province",
+          "desc": "province id the formation sits in. A formation at the top of the file without one is read in full and then silently thrown away",
+          "required": false
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; leave it off and the game names the formation"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its unit id rather than letting the game mint one; best left out"
+        },
+        "leader": {
+          "value": "integer",
+          "desc": "id of the commander, from history/leaders/"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "yes makes it a reserve formation"
+        },
+        "is_prioritized": {
+          "value": "yes/no",
+          "desc": "yes gives it priority for reinforcement and upgrades"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether its brigades may be upgraded"
+        },
+        "can_reinforce": {
+          "value": "yes/no",
+          "desc": "whether it may be reinforced"
+        },
+        "expeditionary_owner": {
+          "value": "tag",
+          "desc": "country it is on loan from, for expeditionary forces"
+        },
+        "movement_progress": {
+          "value": "number",
+          "desc": "how far along its move it starts"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it starts with"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it starts with"
+        },
+        "dig_in": {
+          "value": "number",
+          "desc": "entrenchment it starts with"
+        },
+        "regiment": {
+          "value": "block:subunit",
+          "desc": "a brigade",
+          "repeat": true
+        },
+        "ship": {
+          "value": "block:ship",
+          "desc": "a ship",
+          "repeat": true
+        },
+        "wing": {
+          "value": "block:subunit",
+          "desc": "a wing",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:navy",
+          "desc": "a fleet under this formation",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:air",
+          "desc": "an air formation under this formation",
+          "repeat": true
+        },
+        "theatre": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "path": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "track": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "previous": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "possible_retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "disengage": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "arrow_state": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "start_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "end_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "was_paradropped": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "attack_delay": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "combat_hours": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "plan": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "expeditionary_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_enabled": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_setting": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "country_intel": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "parent": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "staging_province": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_redeployment": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "support_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "convoy_raid": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "patrol": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_fleet": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "transport": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "air_intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "carrier_protection": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "ground_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "strategic_bomb": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "port_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "logistical_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        }
+      },
+      "desc": "a formation in the deployment pool, which has no location"
+    },
+    "top_navy": {
+      "confidence": "confirmed",
+      "keys": {
+        "location": {
+          "value": "province",
+          "desc": "province id the formation sits in. A formation at the top of the file without one is read in full and then silently thrown away",
+          "required": true
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; leave it off and the game names the formation"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its unit id rather than letting the game mint one; best left out"
+        },
+        "leader": {
+          "value": "integer",
+          "desc": "id of the commander, from history/leaders/"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "yes makes it a reserve formation"
+        },
+        "is_prioritized": {
+          "value": "yes/no",
+          "desc": "yes gives it priority for reinforcement and upgrades"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether its brigades may be upgraded"
+        },
+        "can_reinforce": {
+          "value": "yes/no",
+          "desc": "whether it may be reinforced"
+        },
+        "expeditionary_owner": {
+          "value": "tag",
+          "desc": "country it is on loan from, for expeditionary forces"
+        },
+        "movement_progress": {
+          "value": "number",
+          "desc": "how far along its move it starts"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it starts with"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it starts with"
+        },
+        "dig_in": {
+          "value": "number",
+          "desc": "entrenchment it starts with"
+        },
+        "regiment": {
+          "value": "block:subunit",
+          "desc": "a brigade",
+          "repeat": true
+        },
+        "ship": {
+          "value": "block:ship",
+          "desc": "a ship",
+          "repeat": true
+        },
+        "wing": {
+          "value": "block:subunit",
+          "desc": "a wing",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:navy",
+          "desc": "a fleet under this formation",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:air",
+          "desc": "an air formation under this formation",
+          "repeat": true
+        },
+        "theatre": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "path": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "track": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "previous": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "possible_retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "disengage": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "arrow_state": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "start_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "end_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "was_paradropped": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "attack_delay": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "combat_hours": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "plan": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "expeditionary_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_enabled": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_setting": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "country_intel": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "parent": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "staging_province": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_redeployment": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "support_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "convoy_raid": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "patrol": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_fleet": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "transport": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "air_intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "carrier_protection": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "ground_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "strategic_bomb": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "port_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "logistical_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "base": {
+          "value": "province",
+          "desc": "home port province",
+          "required": true
+        },
+        "at_sea": {
+          "value": "any",
+          "desc": "whether the fleet starts at sea rather than in port"
+        }
+      },
+      "desc": "a fleet"
+    },
+    "navy": {
+      "confidence": "confirmed",
+      "keys": {
+        "location": {
+          "value": "province",
+          "desc": "province id the formation sits in. A formation at the top of the file without one is read in full and then silently thrown away",
+          "required": false
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; leave it off and the game names the formation"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its unit id rather than letting the game mint one; best left out"
+        },
+        "leader": {
+          "value": "integer",
+          "desc": "id of the commander, from history/leaders/"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "yes makes it a reserve formation"
+        },
+        "is_prioritized": {
+          "value": "yes/no",
+          "desc": "yes gives it priority for reinforcement and upgrades"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether its brigades may be upgraded"
+        },
+        "can_reinforce": {
+          "value": "yes/no",
+          "desc": "whether it may be reinforced"
+        },
+        "expeditionary_owner": {
+          "value": "tag",
+          "desc": "country it is on loan from, for expeditionary forces"
+        },
+        "movement_progress": {
+          "value": "number",
+          "desc": "how far along its move it starts"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it starts with"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it starts with"
+        },
+        "dig_in": {
+          "value": "number",
+          "desc": "entrenchment it starts with"
+        },
+        "regiment": {
+          "value": "block:subunit",
+          "desc": "a brigade",
+          "repeat": true
+        },
+        "ship": {
+          "value": "block:ship",
+          "desc": "a ship",
+          "repeat": true
+        },
+        "wing": {
+          "value": "block:subunit",
+          "desc": "a wing",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:navy",
+          "desc": "a fleet under this formation",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:air",
+          "desc": "an air formation under this formation",
+          "repeat": true
+        },
+        "theatre": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "path": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "track": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "previous": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "possible_retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "disengage": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "arrow_state": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "start_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "end_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "was_paradropped": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "attack_delay": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "combat_hours": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "plan": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "expeditionary_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_enabled": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_setting": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "country_intel": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "parent": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "staging_province": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_redeployment": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "support_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "convoy_raid": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "patrol": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_fleet": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "transport": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "air_intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "carrier_protection": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "ground_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "strategic_bomb": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "port_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "logistical_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "base": {
+          "value": "province",
+          "desc": "home port province",
+          "required": false
+        },
+        "at_sea": {
+          "value": "any",
+          "desc": "whether the fleet starts at sea rather than in port"
+        }
+      },
+      "desc": "a fleet"
+    },
+    "pooled_navy": {
+      "confidence": "confirmed",
+      "keys": {
+        "location": {
+          "value": "province",
+          "desc": "province id the formation sits in. A formation at the top of the file without one is read in full and then silently thrown away",
+          "required": false
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; leave it off and the game names the formation"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its unit id rather than letting the game mint one; best left out"
+        },
+        "leader": {
+          "value": "integer",
+          "desc": "id of the commander, from history/leaders/"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "yes makes it a reserve formation"
+        },
+        "is_prioritized": {
+          "value": "yes/no",
+          "desc": "yes gives it priority for reinforcement and upgrades"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether its brigades may be upgraded"
+        },
+        "can_reinforce": {
+          "value": "yes/no",
+          "desc": "whether it may be reinforced"
+        },
+        "expeditionary_owner": {
+          "value": "tag",
+          "desc": "country it is on loan from, for expeditionary forces"
+        },
+        "movement_progress": {
+          "value": "number",
+          "desc": "how far along its move it starts"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it starts with"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it starts with"
+        },
+        "dig_in": {
+          "value": "number",
+          "desc": "entrenchment it starts with"
+        },
+        "regiment": {
+          "value": "block:subunit",
+          "desc": "a brigade",
+          "repeat": true
+        },
+        "ship": {
+          "value": "block:ship",
+          "desc": "a ship",
+          "repeat": true
+        },
+        "wing": {
+          "value": "block:subunit",
+          "desc": "a wing",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:navy",
+          "desc": "a fleet under this formation",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:air",
+          "desc": "an air formation under this formation",
+          "repeat": true
+        },
+        "theatre": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "path": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "track": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "previous": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "possible_retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "disengage": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "arrow_state": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "start_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "end_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "was_paradropped": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "attack_delay": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "combat_hours": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "plan": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "expeditionary_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_enabled": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_setting": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "country_intel": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "parent": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "staging_province": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_redeployment": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "support_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "convoy_raid": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "patrol": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_fleet": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "transport": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "air_intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "carrier_protection": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "ground_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "strategic_bomb": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "port_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "logistical_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "base": {
+          "value": "province",
+          "desc": "home port province",
+          "required": false
+        },
+        "at_sea": {
+          "value": "any",
+          "desc": "whether the fleet starts at sea rather than in port"
+        }
+      },
+      "desc": "a fleet in the deployment pool"
+    },
+    "top_air": {
+      "confidence": "confirmed",
+      "keys": {
+        "location": {
+          "value": "province",
+          "desc": "province id the formation sits in. A formation at the top of the file without one is read in full and then silently thrown away",
+          "required": true
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; leave it off and the game names the formation"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its unit id rather than letting the game mint one; best left out"
+        },
+        "leader": {
+          "value": "integer",
+          "desc": "id of the commander, from history/leaders/"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "yes makes it a reserve formation"
+        },
+        "is_prioritized": {
+          "value": "yes/no",
+          "desc": "yes gives it priority for reinforcement and upgrades"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether its brigades may be upgraded"
+        },
+        "can_reinforce": {
+          "value": "yes/no",
+          "desc": "whether it may be reinforced"
+        },
+        "expeditionary_owner": {
+          "value": "tag",
+          "desc": "country it is on loan from, for expeditionary forces"
+        },
+        "movement_progress": {
+          "value": "number",
+          "desc": "how far along its move it starts"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it starts with"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it starts with"
+        },
+        "dig_in": {
+          "value": "number",
+          "desc": "entrenchment it starts with"
+        },
+        "regiment": {
+          "value": "block:subunit",
+          "desc": "a brigade",
+          "repeat": true
+        },
+        "ship": {
+          "value": "block:ship",
+          "desc": "a ship",
+          "repeat": true
+        },
+        "wing": {
+          "value": "block:subunit",
+          "desc": "a wing",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:navy",
+          "desc": "a fleet under this formation",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:air",
+          "desc": "an air formation under this formation",
+          "repeat": true
+        },
+        "theatre": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "path": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "track": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "previous": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "possible_retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "disengage": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "arrow_state": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "start_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "end_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "was_paradropped": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "attack_delay": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "combat_hours": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "plan": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "expeditionary_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_enabled": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_setting": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "country_intel": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "parent": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "staging_province": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_redeployment": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "support_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "convoy_raid": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "patrol": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_fleet": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "transport": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "air_intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "carrier_protection": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "ground_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "strategic_bomb": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "port_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "logistical_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "base": {
+          "value": "province",
+          "desc": "home airbase province",
+          "required": true
+        }
+      },
+      "desc": "an air formation"
+    },
+    "air": {
+      "confidence": "confirmed",
+      "keys": {
+        "location": {
+          "value": "province",
+          "desc": "province id the formation sits in. A formation at the top of the file without one is read in full and then silently thrown away",
+          "required": false
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; leave it off and the game names the formation"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its unit id rather than letting the game mint one; best left out"
+        },
+        "leader": {
+          "value": "integer",
+          "desc": "id of the commander, from history/leaders/"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "yes makes it a reserve formation"
+        },
+        "is_prioritized": {
+          "value": "yes/no",
+          "desc": "yes gives it priority for reinforcement and upgrades"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether its brigades may be upgraded"
+        },
+        "can_reinforce": {
+          "value": "yes/no",
+          "desc": "whether it may be reinforced"
+        },
+        "expeditionary_owner": {
+          "value": "tag",
+          "desc": "country it is on loan from, for expeditionary forces"
+        },
+        "movement_progress": {
+          "value": "number",
+          "desc": "how far along its move it starts"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it starts with"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it starts with"
+        },
+        "dig_in": {
+          "value": "number",
+          "desc": "entrenchment it starts with"
+        },
+        "regiment": {
+          "value": "block:subunit",
+          "desc": "a brigade",
+          "repeat": true
+        },
+        "ship": {
+          "value": "block:ship",
+          "desc": "a ship",
+          "repeat": true
+        },
+        "wing": {
+          "value": "block:subunit",
+          "desc": "a wing",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:navy",
+          "desc": "a fleet under this formation",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:air",
+          "desc": "an air formation under this formation",
+          "repeat": true
+        },
+        "theatre": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "path": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "track": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "previous": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "possible_retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "disengage": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "arrow_state": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "start_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "end_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "was_paradropped": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "attack_delay": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "combat_hours": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "plan": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "expeditionary_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_enabled": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_setting": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "country_intel": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "parent": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "staging_province": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_redeployment": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "support_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "convoy_raid": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "patrol": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_fleet": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "transport": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "air_intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "carrier_protection": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "ground_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "strategic_bomb": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "port_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "logistical_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "base": {
+          "value": "province",
+          "desc": "home airbase province",
+          "required": false
+        }
+      },
+      "desc": "an air formation"
+    },
+    "pooled_air": {
+      "confidence": "confirmed",
+      "keys": {
+        "location": {
+          "value": "province",
+          "desc": "province id the formation sits in. A formation at the top of the file without one is read in full and then silently thrown away",
+          "required": false
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; leave it off and the game names the formation"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its unit id rather than letting the game mint one; best left out"
+        },
+        "leader": {
+          "value": "integer",
+          "desc": "id of the commander, from history/leaders/"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "yes makes it a reserve formation"
+        },
+        "is_prioritized": {
+          "value": "yes/no",
+          "desc": "yes gives it priority for reinforcement and upgrades"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether its brigades may be upgraded"
+        },
+        "can_reinforce": {
+          "value": "yes/no",
+          "desc": "whether it may be reinforced"
+        },
+        "expeditionary_owner": {
+          "value": "tag",
+          "desc": "country it is on loan from, for expeditionary forces"
+        },
+        "movement_progress": {
+          "value": "number",
+          "desc": "how far along its move it starts"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it starts with"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it starts with"
+        },
+        "dig_in": {
+          "value": "number",
+          "desc": "entrenchment it starts with"
+        },
+        "regiment": {
+          "value": "block:subunit",
+          "desc": "a brigade",
+          "repeat": true
+        },
+        "ship": {
+          "value": "block:ship",
+          "desc": "a ship",
+          "repeat": true
+        },
+        "wing": {
+          "value": "block:subunit",
+          "desc": "a wing",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:navy",
+          "desc": "a fleet under this formation",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:air",
+          "desc": "an air formation under this formation",
+          "repeat": true
+        },
+        "theatre": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "path": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "track": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "previous": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "possible_retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "disengage": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "arrow_state": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "start_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "end_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "was_paradropped": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "attack_delay": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "combat_hours": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "plan": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "expeditionary_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_enabled": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_setting": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "country_intel": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "parent": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "staging_province": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_redeployment": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "support_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "convoy_raid": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "patrol": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_fleet": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "transport": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "air_intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "carrier_protection": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "ground_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "strategic_bomb": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "port_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "logistical_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "base": {
+          "value": "province",
+          "desc": "home airbase province",
+          "required": false
+        }
+      },
+      "desc": "an air formation in the deployment pool"
+    },
+    "carrier_air": {
+      "confidence": "confirmed",
+      "keys": {
+        "location": {
+          "value": "province",
+          "desc": "province id the formation sits in. A formation at the top of the file without one is read in full and then silently thrown away",
+          "required": false
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; leave it off and the game names the formation"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its unit id rather than letting the game mint one; best left out"
+        },
+        "leader": {
+          "value": "integer",
+          "desc": "id of the commander, from history/leaders/"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "yes makes it a reserve formation"
+        },
+        "is_prioritized": {
+          "value": "yes/no",
+          "desc": "yes gives it priority for reinforcement and upgrades"
+        },
+        "can_upgrade": {
+          "value": "yes/no",
+          "desc": "whether its brigades may be upgraded"
+        },
+        "can_reinforce": {
+          "value": "yes/no",
+          "desc": "whether it may be reinforced"
+        },
+        "expeditionary_owner": {
+          "value": "tag",
+          "desc": "country it is on loan from, for expeditionary forces"
+        },
+        "movement_progress": {
+          "value": "number",
+          "desc": "how far along its move it starts"
+        },
+        "supplies": {
+          "value": "number",
+          "desc": "supplies it starts with"
+        },
+        "fuel": {
+          "value": "number",
+          "desc": "fuel it starts with"
+        },
+        "dig_in": {
+          "value": "number",
+          "desc": "entrenchment it starts with"
+        },
+        "regiment": {
+          "value": "block:subunit",
+          "desc": "a brigade",
+          "repeat": true
+        },
+        "ship": {
+          "value": "block:ship",
+          "desc": "a ship",
+          "repeat": true
+        },
+        "wing": {
+          "value": "block:subunit",
+          "desc": "a wing",
+          "repeat": true
+        },
+        "navy": {
+          "value": "block:navy",
+          "desc": "a fleet under this formation",
+          "repeat": true
+        },
+        "air": {
+          "value": "block:air",
+          "desc": "an air formation under this formation",
+          "repeat": true
+        },
+        "theatre": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "armygroup": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "army": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "corps": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "division": {
+          "value": "block:formation",
+          "desc": "a land formation under this one",
+          "repeat": true
+        },
+        "path": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "track": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "previous": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "possible_retreat": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "disengage": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "arrow_state": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "start_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "end_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "was_paradropped": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "attack_delay": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "combat_hours": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "plan": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "expeditionary_date": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_enabled": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "aggression_setting": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "country_intel": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "parent": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "staging_province": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "strategic_redeployment": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "support_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "convoy_raid": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "patrol": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_fleet": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "transport": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "air_intercept": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "carrier_protection": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "rebase_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "ground_attack": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "join_air": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "strategic_bomb": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "port_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "logistical_strike": {
+          "value": "any",
+          "desc": "an order the unit was carrying out, as a savegame writes it",
+          "confidence": "inferred"
+        },
+        "base": {
+          "value": "province",
+          "desc": "home airbase province",
+          "required": false
+        }
+      },
+      "desc": "a carrier's air group"
+    },
+    "subunit": {
+      "confidence": "confirmed",
+      "keys": {
+        "type": {
+          "value": "unit type",
+          "desc": "the brigade type, from units/",
+          "required": true
+        },
+        "historical_model": {
+          "value": "integer",
+          "desc": "which model of that type, 0 the earliest; without it the brigade gets no technology levels at all"
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; usually left off a regiment or wing, always given for a ship"
+        },
+        "experience": {
+          "value": "number",
+          "desc": "starting experience"
+        },
+        "strength": {
+          "value": "number",
+          "desc": "starting strength"
+        },
+        "organisation": {
+          "value": "number",
+          "desc": "starting organisation"
+        },
+        "builder": {
+          "value": "tag",
+          "desc": "the country that built it, for lend-lease"
+        },
+        "home": {
+          "value": "integer",
+          "desc": "home province"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "reserve flag"
+        },
+        "pride": {
+          "value": "yes/no",
+          "desc": "marks a ship as the pride of the fleet"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its id; best left out"
+        },
+        "current_distance": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "sunk_by": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "highest": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        }
+      },
+      "desc": "a brigade",
+      "patterns": [
+        {
+          "match": "technology",
+          "value": "list:number",
+          "desc": "the brigade's level of that technology and its progress, as a savegame writes it"
+        }
+      ]
+    },
+    "ship": {
+      "confidence": "confirmed",
+      "keys": {
+        "type": {
+          "value": "unit type",
+          "desc": "the brigade type, from units/",
+          "required": true
+        },
+        "historical_model": {
+          "value": "integer",
+          "desc": "which model of that type, 0 the earliest; without it the brigade gets no technology levels at all"
+        },
+        "name": {
+          "value": "text",
+          "desc": "its name; usually left off a regiment or wing, always given for a ship"
+        },
+        "experience": {
+          "value": "number",
+          "desc": "starting experience"
+        },
+        "strength": {
+          "value": "number",
+          "desc": "starting strength"
+        },
+        "organisation": {
+          "value": "number",
+          "desc": "starting organisation"
+        },
+        "builder": {
+          "value": "tag",
+          "desc": "the country that built it, for lend-lease"
+        },
+        "home": {
+          "value": "integer",
+          "desc": "home province"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "reserve flag"
+        },
+        "pride": {
+          "value": "yes/no",
+          "desc": "marks a ship as the pride of the fleet"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its id; best left out"
+        },
+        "current_distance": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "sunk_by": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "highest": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "air": {
+          "value": "block:carrier_air",
+          "desc": "the carrier's air group",
+          "repeat": true
+        }
+      },
+      "desc": "a ship",
+      "patterns": [
+        {
+          "match": "technology",
+          "value": "list:number",
+          "desc": "the brigade's level of that technology and its progress, as a savegame writes it"
+        }
+      ]
+    },
+    "military_construction": {
+      "confidence": "confirmed",
+      "keys": {
+        "id": {
+          "value": "any",
+          "desc": "fixes its id; best left out"
+        },
+        "cost": {
+          "value": "number",
+          "desc": "IC a day"
+        },
+        "duration": {
+          "value": "number",
+          "desc": "days to completion"
+        },
+        "progress": {
+          "value": "number",
+          "desc": "days of work already done, so how far along it starts"
+        },
+        "size": {
+          "value": "number",
+          "desc": "how many"
+        },
+        "location": {
+          "value": "province",
+          "desc": "province it is being built in"
+        },
+        "country": {
+          "value": "tag",
+          "desc": "the country building it; left out, the country the file was loaded for"
+        },
+        "builder": {
+          "value": "tag",
+          "desc": "the country building it, for lend-lease"
+        },
+        "status": {
+          "value": "any",
+          "desc": "how much of a day's work it last got: the game overwrites it the next day, so writing it changes only what the queue shows until then"
+        },
+        "name": {
+          "value": "text",
+          "desc": "the finished division's name"
+        },
+        "is_reserve": {
+          "value": "yes/no",
+          "desc": "reserve flag"
+        },
+        "unit": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "target": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "manpower": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "factor": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "accumulated_experiance": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "accumulated_progress": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        }
+      },
+      "desc": "a unit in the production queue",
+      "patterns": [
+        {
+          "match": "unit type",
+          "value": "block:construction_subunit",
+          "repeat": true,
+          "desc": "a brigade being built, keyed by its type"
+        }
+      ]
+    },
+    "construction_subunit": {
+      "confidence": "confirmed",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the brigade's name"
+        },
+        "experience": {
+          "value": "number",
+          "desc": "starting experience"
+        },
+        "historical_model": {
+          "value": "integer",
+          "desc": "which model, by number"
+        },
+        "model": {
+          "value": "model",
+          "desc": "the model by technology level: one level for each technology that affects this unit type, in the order the technology files are read"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its id"
+        },
+        "upgrading_from_subunit": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        },
+        "upgrading_from_subunit_str": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        }
+      },
+      "desc": "a brigade being built"
+    },
+    "building_construction": {
+      "confidence": "confirmed",
+      "keys": {
+        "id": {
+          "value": "any",
+          "desc": "fixes its id; best left out"
+        },
+        "cost": {
+          "value": "number",
+          "desc": "IC a day"
+        },
+        "duration": {
+          "value": "number",
+          "desc": "days to completion"
+        },
+        "progress": {
+          "value": "number",
+          "desc": "days of work already done, so how far along it starts"
+        },
+        "size": {
+          "value": "number",
+          "desc": "how many"
+        },
+        "location": {
+          "value": "province",
+          "desc": "province it is being built in"
+        },
+        "country": {
+          "value": "tag",
+          "desc": "the country building it; left out, the country the file was loaded for"
+        },
+        "builder": {
+          "value": "tag",
+          "desc": "the country building it, for lend-lease"
+        },
+        "status": {
+          "value": "any",
+          "desc": "how much of a day's work it last got: the game overwrites it the next day, so writing it changes only what the queue shows until then"
+        },
+        "building": {
+          "value": "building",
+          "desc": "which building"
+        },
+        "count": {
+          "value": "any",
+          "desc": "save state copied from a savegame: the loader takes it, but there is no reason to write it by hand"
+        }
+      },
+      "desc": "a building under construction"
+    },
+    "convoy_construction": {
+      "confidence": "confirmed",
+      "keys": {
+        "id": {
+          "value": "any",
+          "desc": "fixes its id; best left out"
+        },
+        "cost": {
+          "value": "number",
+          "desc": "IC a day"
+        },
+        "duration": {
+          "value": "number",
+          "desc": "days to completion"
+        },
+        "progress": {
+          "value": "number",
+          "desc": "days of work already done, so how far along it starts"
+        },
+        "size": {
+          "value": "number",
+          "desc": "how many"
+        },
+        "location": {
+          "value": "province",
+          "desc": "province it is being built in"
+        },
+        "country": {
+          "value": "tag",
+          "desc": "the country building it; left out, the country the file was loaded for"
+        },
+        "builder": {
+          "value": "tag",
+          "desc": "the country building it, for lend-lease"
+        },
+        "status": {
+          "value": "any",
+          "desc": "`status = yes` makes the finished convoys escorts; anything else, `no` included, leaves them transports"
+        }
+      },
+      "desc": "convoys under construction"
+    },
+    "unit_deployment": {
+      "confidence": "confirmed",
+      "keys": {
+        "theatre": {
+          "value": "block:pooled",
+          "desc": "the unit waiting to be deployed"
+        },
+        "armygroup": {
+          "value": "block:pooled",
+          "desc": "the unit waiting to be deployed"
+        },
+        "army": {
+          "value": "block:pooled",
+          "desc": "the unit waiting to be deployed"
+        },
+        "corps": {
+          "value": "block:pooled",
+          "desc": "the unit waiting to be deployed"
+        },
+        "division": {
+          "value": "block:pooled",
+          "desc": "the unit waiting to be deployed"
+        },
+        "navy": {
+          "value": "block:pooled_navy",
+          "desc": "a fleet waiting to be deployed"
+        },
+        "air": {
+          "value": "block:pooled_air",
+          "desc": "an air formation waiting to be deployed"
+        },
+        "id": {
+          "value": "any",
+          "desc": "fixes its id"
+        }
+      },
+      "desc": "a unit in the deployment pool"
+    }
+  }
+}

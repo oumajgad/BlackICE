@@ -1,0 +1,27 @@
+{
+  "kind": "regions",
+  "title": "Regions",
+  "files": [
+    "map/region.txt"
+  ],
+  "source": "CMap's `region` key names the file (CMap::LoadKey, 0x893B0). A region holds a vector of province ids (CRegion +0x8..+0xC) and its name; CMap::AssignRegions (0x48FAC0) gives each province its regions; a word that is not a number inside a region's block - `peace` in the base game - is the region's useForPeace (CRegion +0x6C) (FINDINGS-airorders.md section 4). Every region name is also a trigger scope (LoadKeyRegionScopeArm). The file's own grammar, beyond that, was not read.",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "named lists of provinces",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:region",
+          "desc": "a region; its name is a trigger scope and a name of kind region"
+        }
+      ]
+    },
+    "region": {
+      "confidence": "inferred",
+      "desc": "province ids; a word that is not a number (`peace`) marks the region for peace offers",
+      "list": "text"
+    }
+  }
+}

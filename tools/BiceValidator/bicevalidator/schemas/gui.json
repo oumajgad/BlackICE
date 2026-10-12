@@ -1,0 +1,1200 @@
+{
+  "kind": "gui",
+  "title": "Interface window file",
+  "files": [
+    "interface/**/*.gui"
+  ],
+  "source": "the fact base: CGui::LoadKey, CWindowType::LoadKey with its 28 tokens, CGuiType::LoadKey and CEU3DialogGuiType::LoadKey (reversing/findings/FINDINGS-gui.md, FINDINGS-guicontainers.md section 3, FINDINGS-guilive.md section 3); ParseGuiOrientation. The element kinds' own loaders are not read: their keys come from OpenHOI3's reader (lib/OpenHOI3.Content/Gui/CGuiTypes.cs) and from the mod's and the base game's files",
+  "root": "file",
+  "declares": [
+    {
+      "kind": "gui element",
+      "depth": 1,
+      "field": "name"
+    }
+  ],
+  "blocks": {
+    "file": {
+      "confidence": "confirmed",
+      "desc": "a .gui file: CGui::LoadKey reads `guiTypes` and drops every other key in silence, so a file that opens with an element loads nothing",
+      "keys": {
+        "guiTypes": {
+          "value": "block:guitypes",
+          "desc": "the file's elements; the only key a .gui file is read for",
+          "confidence": "confirmed",
+          "repeat": true
+        }
+      }
+    },
+    "guitypes": {
+      "confidence": "inferred",
+      "desc": "the elements of a .gui file, each found by its name",
+      "keys": {
+        "windowType": {
+          "value": "block:window",
+          "desc": "a window",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "eu3dialogtype": {
+          "value": "block:dialog",
+          "desc": "a dialog window (CEU3DialogGuiType)",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "positionType": {
+          "value": "block:position_type",
+          "desc": "a named position the game's code reads",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "iconType": {
+          "value": "block:icon",
+          "desc": "a picture",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "guiButtonType": {
+          "value": "block:button",
+          "desc": "a button",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "checkboxType": {
+          "value": "block:button",
+          "desc": "a checkbox",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "instantTextBoxType": {
+          "value": "block:instanttextbox",
+          "desc": "a text box",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "textBoxType": {
+          "value": "block:textbox",
+          "desc": "a text box",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "scrollbarType": {
+          "value": "block:scrollbar",
+          "desc": "a scrollbar, which list boxes name",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "listBoxType": {
+          "value": "block:listbox",
+          "desc": "a list box",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "editBoxType": {
+          "value": "block:editbox",
+          "desc": "a box the player types in; the base game declares one at the top level",
+          "repeat": true
+        },
+        "OverlappingElementsBoxType": {
+          "value": "block:overlapping",
+          "desc": "a box whose entries overlap",
+          "repeat": true
+        }
+      }
+    },
+    "window": {
+      "confidence": "confirmed",
+      "desc": "a window: CWindowType::LoadKey's 28 keys and CGuiType's 5",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "parent": {
+          "value": "text",
+          "desc": "ParseString",
+          "confidence": "confirmed"
+        },
+        "background": {
+          "value": "text",
+          "desc": "the name of the element drawn as its background",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "its position: an { x = y = } pair of whole numbers",
+          "confidence": "confirmed"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size: an { x = y = } pair of whole numbers; fullScreen overwrites it with the screen's",
+          "confidence": "confirmed"
+        },
+        "verticalScrollbar": {
+          "value": "text",
+          "desc": "ParseString",
+          "confidence": "confirmed"
+        },
+        "horizontalScrollbar": {
+          "value": "text",
+          "desc": "ParseString",
+          "confidence": "confirmed"
+        },
+        "horizontalBorder": {
+          "value": "text",
+          "desc": "ParseString",
+          "confidence": "confirmed"
+        },
+        "verticalBorder": {
+          "value": "text",
+          "desc": "ParseString",
+          "confidence": "confirmed"
+        },
+        "priority": {
+          "value": "integer",
+          "desc": "drawing priority",
+          "confidence": "confirmed"
+        },
+        "moveable": {
+          "value": "integer",
+          "desc": "1 lets the player drag it; read as a number, not yes/no",
+          "confidence": "confirmed"
+        },
+        "fullScreen": {
+          "value": "yes/no",
+          "desc": "yes stretches it to the screen",
+          "confidence": "confirmed"
+        },
+        "click_to_front": {
+          "value": "yes/no",
+          "desc": "yes brings it to the front when clicked",
+          "confidence": "confirmed"
+        },
+        "orientation": {
+          "value": "one of:UPPER_LEFT|UPPER_RIGHT|LOWER_LEFT|LOWER_RIGHT|CENTER|CENTER_UP|CENTER_DOWN",
+          "desc": "the corner or middle of the parent the position is measured from. The game compares the word exactly, capitals and all, and takes anything else for UPPER_LEFT without a word",
+          "confidence": "confirmed"
+        },
+        "upsound": {
+          "value": "text",
+          "desc": "the sound played as it opens",
+          "confidence": "confirmed"
+        },
+        "downsound": {
+          "value": "text",
+          "desc": "the sound played as it closes",
+          "confidence": "confirmed"
+        },
+        "windowType": {
+          "value": "block:window",
+          "desc": "a child window",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "guiButtonType": {
+          "value": "block:button",
+          "desc": "a button",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "multiSpriteButtonType": {
+          "value": "block:button",
+          "desc": "a button variant sharing guiButtonType's type class; neither the mod nor the game uses it",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "3dButtonType": {
+          "value": "block:unused_element",
+          "desc": "a button whose graphic is an objectTypes entry; neither the mod nor the game uses it",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "textBoxType": {
+          "value": "block:textbox",
+          "desc": "a text box",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "instantTextBoxType": {
+          "value": "block:instanttextbox",
+          "desc": "a text box",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "scrollbarType": {
+          "value": "block:scrollbar",
+          "desc": "a scrollbar",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "editBoxType": {
+          "value": "block:editbox",
+          "desc": "a box the player types in",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "iconType": {
+          "value": "block:icon",
+          "desc": "a picture",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "checkboxType": {
+          "value": "block:button",
+          "desc": "a checkbox: a button type that toggles",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "listBoxType": {
+          "value": "block:listbox",
+          "desc": "a list box",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "threeDguiType": {
+          "value": "block:unused_element",
+          "desc": "a screen-aligned 3D element; neither the mod nor the game uses it",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "OverlappingElementsBoxType": {
+          "value": "block:overlapping",
+          "desc": "a box whose entries overlap to fit",
+          "confidence": "confirmed",
+          "repeat": true
+        }
+      }
+    },
+    "dialog": {
+      "confidence": "confirmed",
+      "desc": "a dialog window: a window and `shieldtype`",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "parent": {
+          "value": "text",
+          "desc": "ParseString",
+          "confidence": "confirmed"
+        },
+        "background": {
+          "value": "text",
+          "desc": "the name of the element drawn as its background",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "its position: an { x = y = } pair of whole numbers",
+          "confidence": "confirmed"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size: an { x = y = } pair of whole numbers; fullScreen overwrites it with the screen's",
+          "confidence": "confirmed"
+        },
+        "verticalScrollbar": {
+          "value": "text",
+          "desc": "ParseString",
+          "confidence": "confirmed"
+        },
+        "horizontalScrollbar": {
+          "value": "text",
+          "desc": "ParseString",
+          "confidence": "confirmed"
+        },
+        "horizontalBorder": {
+          "value": "text",
+          "desc": "ParseString",
+          "confidence": "confirmed"
+        },
+        "verticalBorder": {
+          "value": "text",
+          "desc": "ParseString",
+          "confidence": "confirmed"
+        },
+        "priority": {
+          "value": "integer",
+          "desc": "drawing priority",
+          "confidence": "confirmed"
+        },
+        "moveable": {
+          "value": "integer",
+          "desc": "1 lets the player drag it; read as a number, not yes/no",
+          "confidence": "confirmed"
+        },
+        "fullScreen": {
+          "value": "yes/no",
+          "desc": "yes stretches it to the screen",
+          "confidence": "confirmed"
+        },
+        "click_to_front": {
+          "value": "yes/no",
+          "desc": "yes brings it to the front when clicked",
+          "confidence": "confirmed"
+        },
+        "orientation": {
+          "value": "one of:UPPER_LEFT|UPPER_RIGHT|LOWER_LEFT|LOWER_RIGHT|CENTER|CENTER_UP|CENTER_DOWN",
+          "desc": "the corner or middle of the parent the position is measured from. The game compares the word exactly, capitals and all, and takes anything else for UPPER_LEFT without a word",
+          "confidence": "confirmed"
+        },
+        "upsound": {
+          "value": "text",
+          "desc": "the sound played as it opens",
+          "confidence": "confirmed"
+        },
+        "downsound": {
+          "value": "text",
+          "desc": "the sound played as it closes",
+          "confidence": "confirmed"
+        },
+        "windowType": {
+          "value": "block:window",
+          "desc": "a child window",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "guiButtonType": {
+          "value": "block:button",
+          "desc": "a button",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "multiSpriteButtonType": {
+          "value": "block:button",
+          "desc": "a button variant sharing guiButtonType's type class; neither the mod nor the game uses it",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "3dButtonType": {
+          "value": "block:unused_element",
+          "desc": "a button whose graphic is an objectTypes entry; neither the mod nor the game uses it",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "textBoxType": {
+          "value": "block:textbox",
+          "desc": "a text box",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "instantTextBoxType": {
+          "value": "block:instanttextbox",
+          "desc": "a text box",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "scrollbarType": {
+          "value": "block:scrollbar",
+          "desc": "a scrollbar",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "editBoxType": {
+          "value": "block:editbox",
+          "desc": "a box the player types in",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "iconType": {
+          "value": "block:icon",
+          "desc": "a picture",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "checkboxType": {
+          "value": "block:button",
+          "desc": "a checkbox: a button type that toggles",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "listBoxType": {
+          "value": "block:listbox",
+          "desc": "a list box",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "threeDguiType": {
+          "value": "block:unused_element",
+          "desc": "a screen-aligned 3D element; neither the mod nor the game uses it",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "OverlappingElementsBoxType": {
+          "value": "block:overlapping",
+          "desc": "a box whose entries overlap to fit",
+          "confidence": "confirmed",
+          "repeat": true
+        },
+        "shieldtype": {
+          "value": "block:shield",
+          "desc": "a country's shield on the dialog (CEU3DialogGuiType::LoadKey)",
+          "confidence": "confirmed",
+          "repeat": true
+        }
+      }
+    },
+    "button": {
+      "confidence": "inferred",
+      "desc": "a button or a checkbox; its own loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "where it is, in pixels from the corner its orientation names"
+        },
+        "quadTextureSprite": {
+          "value": "text",
+          "desc": "the sprite it is drawn with, a GFX_ name from a .gfx file - not checked: the base game declares some the mod uses"
+        },
+        "buttonText": {
+          "value": "text",
+          "desc": "its caption, a localisation key or plain text"
+        },
+        "buttonFont": {
+          "value": "text",
+          "desc": "the font of its caption; empty for the default"
+        },
+        "orientation": {
+          "value": "one of:UPPER_LEFT|UPPER_RIGHT|LOWER_LEFT|LOWER_RIGHT|CENTER|CENTER_UP|CENTER_DOWN",
+          "desc": "the corner or middle of the parent the position is measured from. The game compares the word exactly, capitals and all, and takes anything else for UPPER_LEFT without a word"
+        },
+        "shortcut": {
+          "value": "text",
+          "desc": "the key that presses it"
+        },
+        "clicksound": {
+          "value": "text",
+          "desc": "the sound it makes, from interface/sound.sfx"
+        },
+        "parent": {
+          "value": "text",
+          "desc": "the element it belongs to"
+        },
+        "rotation": {
+          "value": "number",
+          "desc": "how far it is turned, in radians"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "its size"
+        },
+        "scale": {
+          "value": "number",
+          "desc": "how much it is enlarged"
+        },
+        "format": {
+          "value": "one of:left|centre|center|right",
+          "desc": "where its caption sits"
+        },
+        "tooltip": {
+          "value": "text",
+          "desc": "a tooltip"
+        },
+        "tooltipText": {
+          "value": "text",
+          "desc": "a tooltip's text"
+        },
+        "delayedTooltipText": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip"
+        }
+      }
+    },
+    "icon": {
+      "confidence": "inferred",
+      "desc": "a picture; its own loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "where it is, in pixels from the corner its orientation names"
+        },
+        "spriteType": {
+          "value": "text",
+          "desc": "the sprite it shows, a GFX_ name from a .gfx file - not checked: the base game declares some the mod uses"
+        },
+        "orientation": {
+          "value": "one of:UPPER_LEFT|UPPER_RIGHT|LOWER_LEFT|LOWER_RIGHT|CENTER|CENTER_UP|CENTER_DOWN",
+          "desc": "the corner or middle of the parent the position is measured from. The game compares the word exactly, capitals and all, and takes anything else for UPPER_LEFT without a word"
+        },
+        "rotation": {
+          "value": "number",
+          "desc": "how far it is turned, in radians"
+        },
+        "frame": {
+          "value": "integer",
+          "desc": "which frame of the sprite it shows"
+        },
+        "scale": {
+          "value": "number",
+          "desc": "how much it is enlarged"
+        },
+        "buttonMesh": {
+          "value": "text",
+          "desc": "a mesh drawn instead of a sprite"
+        },
+        "allwaystransparent": {
+          "value": "yes/no",
+          "desc": "yes lets clicks through it"
+        },
+        "tooltip": {
+          "value": "text",
+          "desc": "a tooltip"
+        },
+        "tooltipText": {
+          "value": "text",
+          "desc": "a tooltip's text"
+        },
+        "delayedTooltipText": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip"
+        }
+      }
+    },
+    "textbox": {
+      "confidence": "inferred",
+      "desc": "a text box; its own loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "where it is, in pixels from the corner its orientation names"
+        },
+        "font": {
+          "value": "name:graphic",
+          "desc": "the font, a name a .gfx file declares"
+        },
+        "maxWidth": {
+          "value": "integer",
+          "desc": "the width of the box, in pixels"
+        },
+        "maxHeight": {
+          "value": "integer",
+          "desc": "the height of the box, in pixels"
+        },
+        "text": {
+          "value": "text",
+          "desc": "the text, a localisation key or plain text"
+        },
+        "borderSize": {
+          "value": "block:point",
+          "desc": "the margin inside the box"
+        },
+        "orientation": {
+          "value": "one of:UPPER_LEFT|UPPER_RIGHT|LOWER_LEFT|LOWER_RIGHT|CENTER|CENTER_UP|CENTER_DOWN",
+          "desc": "the corner or middle of the parent the position is measured from. The game compares the word exactly, capitals and all, and takes anything else for UPPER_LEFT without a word"
+        },
+        "format": {
+          "value": "one of:left|centre|center|right",
+          "desc": "how the text is aligned"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "a picture behind the text, as a file path"
+        },
+        "fixedsize": {
+          "value": "yes/no",
+          "desc": "yes keeps the box its size and cuts the text"
+        },
+        "allwaystransparent": {
+          "value": "yes/no",
+          "desc": "yes lets clicks through it"
+        }
+      }
+    },
+    "instanttextbox": {
+      "confidence": "inferred",
+      "desc": "a text box; its own loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "where it is, in pixels from the corner its orientation names"
+        },
+        "font": {
+          "value": "name:graphic",
+          "desc": "the font, a name a .gfx file declares"
+        },
+        "maxWidth": {
+          "value": "integer",
+          "desc": "the width of the box, in pixels"
+        },
+        "maxHeight": {
+          "value": "integer",
+          "desc": "the height of the box, in pixels"
+        },
+        "text": {
+          "value": "text",
+          "desc": "the text, a localisation key or plain text"
+        },
+        "borderSize": {
+          "value": "block:point",
+          "desc": "the margin inside the box"
+        },
+        "orientation": {
+          "value": "one of:UPPER_LEFT|UPPER_RIGHT|LOWER_LEFT|LOWER_RIGHT|CENTER|CENTER_UP|CENTER_DOWN",
+          "desc": "the corner or middle of the parent the position is measured from. The game compares the word exactly, capitals and all, and takes anything else for UPPER_LEFT without a word"
+        },
+        "format": {
+          "value": "one of:left|centre|center|right",
+          "desc": "how the text is aligned"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "a picture behind the text, as a file path"
+        },
+        "fixedsize": {
+          "value": "yes/no",
+          "desc": "yes keeps the box its size and cuts the text"
+        },
+        "allwaystransparent": {
+          "value": "yes/no",
+          "desc": "yes lets clicks through it"
+        }
+      }
+    },
+    "editbox": {
+      "confidence": "inferred",
+      "desc": "a box the player types in; its own loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "where it is, in pixels from the corner its orientation names"
+        },
+        "font": {
+          "value": "name:graphic",
+          "desc": "the font, a name a .gfx file declares"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "the size of the box"
+        },
+        "text": {
+          "value": "text",
+          "desc": "the text it starts with"
+        },
+        "orientation": {
+          "value": "one of:UPPER_LEFT|UPPER_RIGHT|LOWER_LEFT|LOWER_RIGHT|CENTER|CENTER_UP|CENTER_DOWN",
+          "desc": "the corner or middle of the parent the position is measured from. The game compares the word exactly, capitals and all, and takes anything else for UPPER_LEFT without a word"
+        },
+        "borderSize": {
+          "value": "block:point",
+          "desc": "the margin inside the box"
+        },
+        "textureFile": {
+          "value": "text",
+          "desc": "the picture behind the box, as a file path"
+        },
+        "format": {
+          "value": "one of:left|centre|center|right",
+          "desc": "how the text is aligned"
+        },
+        "cursor": {
+          "value": "block:point",
+          "desc": "where the cursor starts"
+        }
+      }
+    },
+    "listbox": {
+      "confidence": "inferred",
+      "desc": "a list box; its own loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "where it is, in pixels from the corner its orientation names"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "the size of the box"
+        },
+        "background": {
+          "value": "text",
+          "desc": "the sprite behind the list; usually empty"
+        },
+        "borderSize": {
+          "value": "block:point",
+          "desc": "the margin inside the box"
+        },
+        "orientation": {
+          "value": "one of:UPPER_LEFT|UPPER_RIGHT|LOWER_LEFT|LOWER_RIGHT|CENTER|CENTER_UP|CENTER_DOWN",
+          "desc": "the corner or middle of the parent the position is measured from. The game compares the word exactly, capitals and all, and takes anything else for UPPER_LEFT without a word"
+        },
+        "scrollbartype": {
+          "value": "name:gui element",
+          "desc": "the scrollbar it uses, the name of a top-level scrollbarType"
+        },
+        "spacing": {
+          "value": "integer",
+          "desc": "the gap between entries, in pixels"
+        },
+        "horisontal": {
+          "value": "integer",
+          "desc": "spelled so in 50 of the base game's list boxes"
+        },
+        "offset": {
+          "value": "block:point",
+          "desc": "where the first entry starts"
+        },
+        "priority": {
+          "value": "integer",
+          "desc": "drawing priority"
+        },
+        "step": {
+          "value": "integer",
+          "desc": "how far one scroll moves"
+        },
+        "allwaystransparent": {
+          "value": "yes/no",
+          "desc": "yes lets clicks through it"
+        }
+      }
+    },
+    "scrollbar": {
+      "confidence": "inferred",
+      "desc": "a scrollbar and the buttons and icons it is made of; its own loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "where it is, in pixels from the corner its orientation names"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "the size of the bar"
+        },
+        "borderSize": {
+          "value": "block:point",
+          "desc": "the margin inside the bar"
+        },
+        "slider": {
+          "value": "text",
+          "desc": "the name of the button inside it that is the handle"
+        },
+        "track": {
+          "value": "text",
+          "desc": "the name of the button inside it that is the track"
+        },
+        "leftbutton": {
+          "value": "text",
+          "desc": "the name of the button inside it that steps down"
+        },
+        "rightbutton": {
+          "value": "text",
+          "desc": "the name of the button inside it that steps up"
+        },
+        "maxValue": {
+          "value": "number",
+          "desc": "the largest value"
+        },
+        "minValue": {
+          "value": "number",
+          "desc": "the smallest value"
+        },
+        "stepSize": {
+          "value": "number",
+          "desc": "how far one press moves"
+        },
+        "startValue": {
+          "value": "number",
+          "desc": "the value it starts at"
+        },
+        "horizontal": {
+          "value": "integer",
+          "desc": "1 for a bar that runs left to right, 0 for up and down"
+        },
+        "priority": {
+          "value": "integer",
+          "desc": "drawing priority"
+        },
+        "lockable": {
+          "value": "yes/no",
+          "desc": "yes lets the player lock it"
+        },
+        "rangelimitminicon": {
+          "value": "text",
+          "desc": "the name of the icon inside it marking the lower limit"
+        },
+        "rangelimitmaxicon": {
+          "value": "text",
+          "desc": "the name of the icon inside it marking the upper limit"
+        },
+        "guiButtonType": {
+          "value": "block:button",
+          "desc": "one of its buttons",
+          "repeat": true
+        },
+        "iconType": {
+          "value": "block:icon",
+          "desc": "an icon inside it",
+          "repeat": true
+        }
+      }
+    },
+    "overlapping": {
+      "confidence": "inferred",
+      "desc": "a box of overlapping entries; its own loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "where it is, in pixels from the corner its orientation names"
+        },
+        "size": {
+          "value": "block:point",
+          "desc": "the size of the box"
+        },
+        "spacing": {
+          "value": "number",
+          "desc": "the gap between entries"
+        },
+        "orientation": {
+          "value": "one of:UPPER_LEFT|UPPER_RIGHT|LOWER_LEFT|LOWER_RIGHT|CENTER|CENTER_UP|CENTER_DOWN",
+          "desc": "the corner or middle of the parent the position is measured from. The game compares the word exactly, capitals and all, and takes anything else for UPPER_LEFT without a word"
+        },
+        "format": {
+          "value": "one of:left|centre|center|right",
+          "desc": "how the entries are aligned"
+        },
+        "allwaystransparent": {
+          "value": "yes/no",
+          "desc": "yes lets clicks through it"
+        }
+      }
+    },
+    "position_type": {
+      "confidence": "inferred",
+      "desc": "a named position; its own loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "the position it holds, which the game's code reads"
+        }
+      }
+    },
+    "shield": {
+      "confidence": "inferred",
+      "desc": "a country's shield on a dialog; its own loader is not read",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the element's name, by which the game's code finds it",
+          "confidence": "confirmed"
+        },
+        "dontRender": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); usually written empty",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip": {
+          "value": "text",
+          "desc": "a tooltip key, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "pdx_tooltip_delayed": {
+          "value": "text",
+          "desc": "the delayed half of a tooltip, read by every element (CGuiType)",
+          "confidence": "confirmed"
+        },
+        "scope": {
+          "value": "text",
+          "desc": "read by every element (CGuiType); no file uses it",
+          "confidence": "confirmed"
+        },
+        "spriteType": {
+          "value": "text",
+          "desc": "the sprite of the shield's frame"
+        },
+        "position": {
+          "value": "block:point",
+          "desc": "where it is, in pixels from the corner its orientation names"
+        },
+        "rotation": {
+          "value": "number",
+          "desc": "how far it is turned, in radians"
+        }
+      }
+    },
+    "unused_element": {
+      "confidence": "inferred",
+      "desc": "an element kind the window loader takes and no file of the mod's or the game's uses; what it holds is not known",
+      "keys": {},
+      "open": true
+    },
+    "point": {
+      "confidence": "inferred",
+      "desc": "an { x = y = } pair, read as whole numbers for a window",
+      "keys": {
+        "x": {
+          "value": "integer",
+          "desc": "across"
+        },
+        "y": {
+          "value": "integer",
+          "desc": "down"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "triggered_modifiers",
+  "title": "Triggered modifiers",
+  "files": [
+    "common/triggered_modifiers.txt"
+  ],
+  "doc": "docs/script/modifiers.md",
+  "source": "LoadTriggeredModifiers (0x5BD90) reads the file into CTriggeredModifier, whose LoadKey (0x5BAC0) takes `potential` and `trigger` (each a CAndTrigger) and passes every other key to CModifier::LoadKey: `icon` and the modifier names (FINDINGS-triggereval.md, CTriggeredModifier). Every entry is tested once a day for every country, in file order, `potential` and then `trigger` (FINDINGS-countrymodifier.md section 3); an entry of the same name as another is a second entry, not a replacement.",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "modifiers that apply to a country while their conditions hold",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:triggered",
+          "repeat": true,
+          "desc": "a triggered modifier; its name is its localisation key"
+        }
+      ]
+    },
+    "triggered": {
+      "confidence": "confirmed",
+      "desc": "a triggered modifier: conditions, then `name = number` pairs",
+      "keys": {
+        "potential": {
+          "value": "triggers",
+          "desc": "country conditions for the modifier to be considered at all; a country failing them is not listed",
+          "confidence": "confirmed"
+        },
+        "trigger": {
+          "value": "triggers",
+          "desc": "country conditions for it to apply; the panel's `n / m` counts these",
+          "confidence": "confirmed"
+        },
+        "icon": {
+          "value": "integer",
+          "desc": "the frame of the modifier icon strip shown for it",
+          "confidence": "confirmed"
+        }
+      },
+      "include": [
+        "modifier_names:modifiers"
+      ]
+    }
+  }
+}

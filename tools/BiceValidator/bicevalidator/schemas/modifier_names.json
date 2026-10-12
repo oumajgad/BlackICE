@@ -1,0 +1,726 @@
+{
+  "kind": "modifier_names",
+  "title": "Modifier names",
+  "files": [],
+  "doc": "docs/script/modifiers.md",
+  "source": "hoi3-reversing: ghidra/project.json struct CModifierValues - 143 entries, read live (CLASSES.md, Modifiers): ids 0-107 from InitModifierDefinitions (0x56E00), 108-139 from InitMissionEfficiencyModifiers (0x183810), 140-142 suseptibility_<faction tag> (FINDINGS-politics.md section 1). A modifier is keyed in script by the definition's save token (CModifierDefinition +0x20), not its name (+4, a localisation key such as MODIFIER_GLOBAL_IC); the token of 0-107 is the field name lower-cased, each one a key of ghidra/saveTokens.json, with casualty_trickleback (TRICKLEBACK) and partisan_efficiency (PARTISAN_EFFICENCY) the two exceptions, and entry 105 (a second NAVAL_INTEL_BOOST) left out because its token is not established. The mission efficiencies are keyed by the order's token, the definition's name less `_eff`. CModifier::LoadKey (0x59620) names one key of its own, `icon`. Claims no file: other schemas include its block `modifier_names:modifiers` wherever a block is `name = number` modifiers.",
+  "root": "modifiers",
+  "blocks": {
+    "modifiers": {
+      "confidence": "confirmed",
+      "desc": "every modifier the game knows; a key that is none of them is dropped",
+      "keys": {
+        "minimum_revolt_risk": {
+          "value": "number",
+          "desc": "modifier 0: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_revolt_risk": {
+          "value": "number",
+          "desc": "modifier 1: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_revolt_risk": {
+          "value": "number",
+          "desc": "modifier 2: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_manpower": {
+          "value": "number",
+          "desc": "modifier 3: a modifier kind the game builds at startup (FINDINGS-manpowergain.md section 2)",
+          "confidence": "confirmed"
+        },
+        "global_manpower": {
+          "value": "number",
+          "desc": "modifier 4: a modifier kind the game builds at startup (FINDINGS-manpowergain.md section 2)",
+          "confidence": "confirmed"
+        },
+        "local_manpower_modifier": {
+          "value": "number",
+          "desc": "modifier 5: a modifier kind the game builds at startup (FINDINGS-manpowergain.md section 2)",
+          "confidence": "confirmed"
+        },
+        "global_manpower_modifier": {
+          "value": "number",
+          "desc": "modifier 6: a modifier kind the game builds at startup (FINDINGS-manpowergain.md section 2)",
+          "confidence": "confirmed"
+        },
+        "attrition": {
+          "value": "number",
+          "desc": "modifier 7: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "war_exhaustion": {
+          "value": "number",
+          "desc": "modifier 8: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "max_war_exhaustion": {
+          "value": "number",
+          "desc": "modifier 9: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "fort_level": {
+          "value": "number",
+          "desc": "modifier 10: a modifier kind the game builds at startup (CLASSES.md, buildings.txt key by key)",
+          "confidence": "confirmed"
+        },
+        "coastal_fort_level": {
+          "value": "number",
+          "desc": "modifier 11: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "infrastructure": {
+          "value": "number",
+          "desc": "modifier 12: a modifier kind the game builds at startup (CLASSES.md, buildings.txt key by key)",
+          "confidence": "confirmed"
+        },
+        "local_infrastructure": {
+          "value": "number",
+          "desc": "modifier 13: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_infrastructure": {
+          "value": "number",
+          "desc": "modifier 14: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "ic": {
+          "value": "number",
+          "desc": "modifier 15: a modifier kind the game builds at startup (CLASSES.md, buildings.txt key by key)",
+          "confidence": "confirmed"
+        },
+        "local_ic": {
+          "value": "number",
+          "desc": "modifier 16: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_ic": {
+          "value": "number",
+          "desc": "modifier 17: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_crude_oil": {
+          "value": "number",
+          "desc": "modifier 18: a modifier kind the game builds at startup (CLASSES.md, buildings.txt key by key)",
+          "confidence": "confirmed"
+        },
+        "global_crude_oil": {
+          "value": "number",
+          "desc": "modifier 19: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_energy": {
+          "value": "number",
+          "desc": "modifier 20: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_energy": {
+          "value": "number",
+          "desc": "modifier 21: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_metal": {
+          "value": "number",
+          "desc": "modifier 22: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_metal": {
+          "value": "number",
+          "desc": "modifier 23: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_rare_materials": {
+          "value": "number",
+          "desc": "modifier 24: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_rare_materials": {
+          "value": "number",
+          "desc": "modifier 25: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_supplies": {
+          "value": "number",
+          "desc": "modifier 26: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_supplies": {
+          "value": "number",
+          "desc": "modifier 27: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_fuel": {
+          "value": "number",
+          "desc": "modifier 28: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_fuel": {
+          "value": "number",
+          "desc": "modifier 29: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_money": {
+          "value": "number",
+          "desc": "modifier 30: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_money": {
+          "value": "number",
+          "desc": "modifier 31: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_leadership": {
+          "value": "number",
+          "desc": "modifier 32: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_leadership": {
+          "value": "number",
+          "desc": "modifier 33: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_leadership_modifier": {
+          "value": "number",
+          "desc": "modifier 34: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_leadership_modifier": {
+          "value": "number",
+          "desc": "modifier 35: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "drift_speed": {
+          "value": "number",
+          "desc": "modifier 36: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "suseptibility": {
+          "value": "number",
+          "desc": "modifier 37: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "incorporate_cost": {
+          "value": "number",
+          "desc": "modifier 38: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "territorial_pride": {
+          "value": "number",
+          "desc": "modifier 39: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "war_consumer_goods_demand": {
+          "value": "number",
+          "desc": "modifier 40: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "peace_consumer_goods_demand": {
+          "value": "number",
+          "desc": "modifier 41: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "espionage_bonus": {
+          "value": "number",
+          "desc": "modifier 42: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "dissent": {
+          "value": "number",
+          "desc": "modifier 43: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "national_unity": {
+          "value": "number",
+          "desc": "modifier 44: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "naval_capacity": {
+          "value": "number",
+          "desc": "modifier 45: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "air_capacity": {
+          "value": "number",
+          "desc": "modifier 46: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "align_towards": {
+          "value": "number",
+          "desc": "modifier 47: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "radar_level": {
+          "value": "number",
+          "desc": "modifier 48: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "supply_consumption": {
+          "value": "number",
+          "desc": "modifier 49: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "peacetime_manpower_rotation": {
+          "value": "number",
+          "desc": "modifier 50: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "unit_recruitment_time": {
+          "value": "number",
+          "desc": "modifier 51: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "unit_start_experience": {
+          "value": "number",
+          "desc": "modifier 52: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "unit_repair": {
+          "value": "number",
+          "desc": "modifier 53: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "counter_intelligence": {
+          "value": "number",
+          "desc": "modifier 54: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "counter_espionage": {
+          "value": "number",
+          "desc": "modifier 55: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "threat_impact": {
+          "value": "number",
+          "desc": "modifier 56: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "threat_resistance": {
+          "value": "number",
+          "desc": "modifier 57: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "peace_offmap_intel": {
+          "value": "number",
+          "desc": "modifier 58: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "offmap_land_intel": {
+          "value": "number",
+          "desc": "modifier 59: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "offmap_naval_intel": {
+          "value": "number",
+          "desc": "modifier 60: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "offmap_industry_intel": {
+          "value": "number",
+          "desc": "modifier 61: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "offmap_political_intel": {
+          "value": "number",
+          "desc": "modifier 62: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "combat_movement_speed": {
+          "value": "number",
+          "desc": "modifier 63: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "attack_reinforce_chance": {
+          "value": "number",
+          "desc": "modifier 64: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "defend_reinforce_chance": {
+          "value": "number",
+          "desc": "modifier 65: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "combat_width": {
+          "value": "number",
+          "desc": "modifier 66: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "org_regain": {
+          "value": "number",
+          "desc": "modifier 67: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "national_unity_effect": {
+          "value": "number",
+          "desc": "modifier 68: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "ruling_party_support": {
+          "value": "number",
+          "desc": "modifier 69: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "land_organisation": {
+          "value": "number",
+          "desc": "modifier 70: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "air_organisation": {
+          "value": "number",
+          "desc": "modifier 71: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "naval_organisation": {
+          "value": "number",
+          "desc": "modifier 72: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "research_efficiency": {
+          "value": "number",
+          "desc": "modifier 73: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "industrial_efficiency": {
+          "value": "number",
+          "desc": "modifier 74: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_anti_air": {
+          "value": "number",
+          "desc": "modifier 75: a modifier kind the game builds at startup (CLASSES.md, buildings.txt key by key)",
+          "confidence": "confirmed"
+        },
+        "local_partisan_support": {
+          "value": "number",
+          "desc": "modifier 76: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "reserves_penalty_size": {
+          "value": "number",
+          "desc": "modifier 77: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "neutrality_change": {
+          "value": "number",
+          "desc": "modifier 78: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "partisan_efficiency": {
+          "value": "number",
+          "desc": "modifier 79: a modifier kind the game builds at startup (the definition's name is misspelt; the token table has partisan_efficiency and no partisan_efficency)",
+          "confidence": "confirmed"
+        },
+        "naval_base_efficiency": {
+          "value": "number",
+          "desc": "modifier 80: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "supply_throughput": {
+          "value": "number",
+          "desc": "modifier 81: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "officer_recruitment": {
+          "value": "number",
+          "desc": "modifier 82: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "neutrality": {
+          "value": "number",
+          "desc": "modifier 83: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "global_resources": {
+          "value": "number",
+          "desc": "modifier 84: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_resources": {
+          "value": "number",
+          "desc": "modifier 85: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "reinforcement_bonus": {
+          "value": "number",
+          "desc": "modifier 86: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "air_build_speed": {
+          "value": "number",
+          "desc": "modifier 87: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "land_build_speed": {
+          "value": "number",
+          "desc": "modifier 88: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "rocket_build_speed": {
+          "value": "number",
+          "desc": "modifier 89: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "tank_build_speed": {
+          "value": "number",
+          "desc": "modifier 90: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "naval_build_speed": {
+          "value": "number",
+          "desc": "modifier 91: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "fuel_conversion": {
+          "value": "number",
+          "desc": "modifier 92: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "casualty_trickleback": {
+          "value": "number",
+          "desc": "modifier 93: a modifier kind the game builds at startup (token 0x533, FINDINGS-fieldmap.md; FINDINGS-manpower.md 'the casualty_trickleback modifier')",
+          "confidence": "confirmed"
+        },
+        "hard_attack": {
+          "value": "number",
+          "desc": "modifier 94: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "soft_attack": {
+          "value": "number",
+          "desc": "modifier 95: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "nuke_research": {
+          "value": "number",
+          "desc": "modifier 96: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "amm_movement_speed": {
+          "value": "number",
+          "desc": "modifier 97: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "winter_effects": {
+          "value": "number",
+          "desc": "modifier 98: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "jungle_effects": {
+          "value": "number",
+          "desc": "modifier 99: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "leader_defence": {
+          "value": "number",
+          "desc": "modifier 100: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "sw_national_unity_effect": {
+          "value": "number",
+          "desc": "modifier 101: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "land_intel_boost": {
+          "value": "number",
+          "desc": "modifier 102: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "naval_intel_boost": {
+          "value": "number",
+          "desc": "modifier 103: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_underground": {
+          "value": "number",
+          "desc": "modifier 104: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "strategic_resource_efficiency": {
+          "value": "number",
+          "desc": "modifier 106: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "local_unit_speed": {
+          "value": "number",
+          "desc": "modifier 107: a modifier kind the game builds at startup",
+          "confidence": "confirmed"
+        },
+        "support_attack": {
+          "value": "number",
+          "desc": "modifier 108: efficiency of the `support_attack` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "strategic_redeployment": {
+          "value": "number",
+          "desc": "modifier 109: efficiency of the `strategic_redeployment` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "move_order": {
+          "value": "number",
+          "desc": "modifier 110: efficiency of the `move_order` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "rebase": {
+          "value": "number",
+          "desc": "modifier 111: efficiency of the `rebase` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "reserves": {
+          "value": "number",
+          "desc": "modifier 112: efficiency of the `reserves` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "patrol": {
+          "value": "number",
+          "desc": "modifier 113: efficiency of the `patrol` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "intercept": {
+          "value": "number",
+          "desc": "modifier 114: efficiency of the `intercept` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "sortie": {
+          "value": "number",
+          "desc": "modifier 115: efficiency of the `sortie` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "convoy_escort": {
+          "value": "number",
+          "desc": "modifier 116: efficiency of the `convoy_escort` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "convoy_raid": {
+          "value": "number",
+          "desc": "modifier 117: efficiency of the `convoy_raid` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "air_convoy_raid": {
+          "value": "number",
+          "desc": "modifier 118: efficiency of the `air_convoy_raid` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "transport": {
+          "value": "number",
+          "desc": "modifier 119: efficiency of the `transport` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "invasion": {
+          "value": "number",
+          "desc": "modifier 120: efficiency of the `invasion` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "strategic_bomb": {
+          "value": "number",
+          "desc": "modifier 121: efficiency of the `strategic_bomb` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "logistical_strike": {
+          "value": "number",
+          "desc": "modifier 122: efficiency of the `logistical_strike` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "runway_cratering": {
+          "value": "number",
+          "desc": "modifier 123: efficiency of the `runway_cratering` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "installation_strike": {
+          "value": "number",
+          "desc": "modifier 124: efficiency of the `installation_strike` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "ground_attack": {
+          "value": "number",
+          "desc": "modifier 125: efficiency of the `ground_attack` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "interdiction": {
+          "value": "number",
+          "desc": "modifier 126: efficiency of the `interdiction` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "air_intercept": {
+          "value": "number",
+          "desc": "modifier 127: efficiency of the `air_intercept` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "carrier_protection": {
+          "value": "number",
+          "desc": "modifier 128: efficiency of the `carrier_protection` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "paradrop_mission": {
+          "value": "number",
+          "desc": "modifier 129: efficiency of the `paradrop_mission` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "port_strike": {
+          "value": "number",
+          "desc": "modifier 130: efficiency of the `port_strike` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "naval_strike": {
+          "value": "number",
+          "desc": "modifier 131: efficiency of the `naval_strike` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "rebase_to_carrier": {
+          "value": "number",
+          "desc": "modifier 132: efficiency of the `rebase_to_carrier` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "nuke_mission": {
+          "value": "number",
+          "desc": "modifier 133: efficiency of the `nuke_mission` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "transport_supplies_mission": {
+          "value": "number",
+          "desc": "modifier 134: efficiency of the `transport_supplies_mission` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "rebase_air": {
+          "value": "number",
+          "desc": "modifier 135: efficiency of the `rebase_air` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "air_reserve": {
+          "value": "number",
+          "desc": "modifier 136: efficiency of the `air_reserve` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "air_superiority": {
+          "value": "number",
+          "desc": "modifier 137: efficiency of the `air_superiority` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "join_fleet": {
+          "value": "number",
+          "desc": "modifier 138: efficiency of the `join_fleet` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "join_air": {
+          "value": "number",
+          "desc": "modifier 139: efficiency of the `join_air` mission or order: one of the 32 mission-efficiency modifiers the engine makes at startup, keyed by the order's own token",
+          "confidence": "confirmed"
+        },
+        "suseptibility_axis": {
+          "value": "number",
+          "desc": "modifier 140: how strongly the country is drawn to faction `axis`: the engine registers `suseptibility_<faction tag>` for each faction of common/ideologies.txt as it loads them (sic, `suseptibility`)",
+          "confidence": "confirmed"
+        },
+        "suseptibility_allies": {
+          "value": "number",
+          "desc": "modifier 141: how strongly the country is drawn to faction `allies`: the engine registers `suseptibility_<faction tag>` for each faction of common/ideologies.txt as it loads them (sic, `suseptibility`)",
+          "confidence": "confirmed"
+        },
+        "suseptibility_comintern": {
+          "value": "number",
+          "desc": "modifier 142: how strongly the country is drawn to faction `comintern`: the engine registers `suseptibility_<faction tag>` for each faction of common/ideologies.txt as it loads them (sic, `suseptibility`)",
+          "confidence": "confirmed"
+        }
+      }
+    }
+  }
+}

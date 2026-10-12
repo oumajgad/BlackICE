@@ -1,0 +1,47 @@
+{
+  "kind": "combat_events",
+  "title": "Combat events",
+  "files": [
+    "common/combat_events.txt"
+  ],
+  "doc": "",
+  "source": "how the base game's common/combat_events.txt writes it. The game's loading stage does not read this file (reversing/findings/FINDINGS-startup.md section 7, a negative without a positive control); it looks like a forerunner of combat_tactics.txt, and BlackICE's copy is empty",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:event",
+          "desc": "a combat event, named by its key"
+        }
+      ]
+    },
+    "event": {
+      "confidence": "inferred",
+      "keys": {
+        "is_attacker": {
+          "value": "yes/no",
+          "desc": "which side it is for"
+        },
+        "combat_width": {
+          "value": "number",
+          "desc": "change to the battle's width"
+        },
+        "attacker": {
+          "value": "number",
+          "desc": "change to the attacker's damage"
+        },
+        "defender": {
+          "value": "number",
+          "desc": "change to the defender's damage"
+        },
+        "movement_speed": {
+          "value": "number",
+          "desc": "change to movement speed"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "kind": "governments",
+  "title": "Governments",
+  "files": [
+    "common/governments.txt"
+  ],
+  "source": "project.json CGovernment::LoadKey (0x124660) and BiceLib GameClasses/CGovernment.hpp: `duration`, `valid_for_new_country`, `election`, then the ideology database, then the government position database, then CModifier::LoadKey",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "each key is a government (loader 0x525470, not read)",
+      "keys": {},
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:government",
+          "desc": "a government"
+        }
+      ]
+    },
+    "government": {
+      "confidence": "inferred",
+      "desc": "a government: three keys, then ideologies and positions by name, then falls through to CModifier::LoadKey for any other key - a modifier kind; which names that takes is not read, so an unknown one is reported softly",
+      "keys": {
+        "duration": {
+          "value": "integer",
+          "desc": "months between elections (atoi of the value)",
+          "confidence": "confirmed"
+        },
+        "valid_for_new_country": {
+          "value": "yes/no",
+          "desc": "whether a released country may take it; defaults to yes",
+          "confidence": "confirmed"
+        },
+        "election": {
+          "value": "yes/no",
+          "desc": "whether it holds elections; defaults to no",
+          "confidence": "confirmed"
+        }
+      },
+      "patterns": [
+        {
+          "match": "ideology",
+          "value": "yes/no",
+          "desc": "`yes` makes the ideology acceptable to this government",
+          "confidence": "confirmed"
+        },
+        {
+          "match": "position",
+          "value": "yes/no",
+          "desc": "`yes` makes elections change that post",
+          "confidence": "confirmed"
+        }
+      ],
+      "include": [
+        "strategic_resources:modifier"
+      ]
+    }
+  }
+}

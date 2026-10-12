@@ -1,0 +1,249 @@
+{
+  "kind": "static_modifiers",
+  "title": "Static modifiers",
+  "files": [
+    "common/static_modifiers.txt"
+  ],
+  "doc": "docs/script/modifiers.md",
+  "source": "Both files are read by LoadModifierDefinitions (0x5A490) into CStaticModifier, whose keys are CModifier's: `icon` and the modifier names (see modifier_names). Loaded after common/ideologies.txt, so the suseptibility_<faction> names exist by then (FINDINGS-startup.md section 7). The 37 names LoadModifierDefinitions looks up are FINDINGS-leadership.md section 7; what each is for, FINDINGS-countrymodifier.md section 2 and FINDINGS-leadership.md section 8. Others are looked up by FindStaticModifierByName (0x123560).",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "modifiers the engine applies by name; the names cannot be changed",
+      "keys": {
+        "overseas": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: a province in another area and on another continent than its controller's capital",
+          "confidence": "confirmed"
+        },
+        "coastal": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "non_coastal": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "coastal_sea": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "no_adjacent_controlled": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "out_of_supply": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "blockaded": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: an overseas province whose area has no port to supply it",
+          "confidence": "confirmed"
+        },
+        "land_province": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "sea_zone": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "manpower": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: times the province's own manpower",
+          "confidence": "confirmed"
+        },
+        "nationalism": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: land its owner holds without a core, ageing over a year",
+          "confidence": "confirmed"
+        },
+        "revolt_risk": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: times the province's revolt risk in points",
+          "confidence": "confirmed"
+        },
+        "non_core": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: a province its owner holds and controls without a core",
+          "confidence": "confirmed"
+        },
+        "war": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: a country at war",
+          "confidence": "confirmed"
+        },
+        "peace": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: a country at peace",
+          "confidence": "confirmed"
+        },
+        "war_exhaustion": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: times the country's war exhaustion",
+          "confidence": "confirmed"
+        },
+        "land_maintenance": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "naval_maintenance": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "base_values": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: added to every country first",
+          "confidence": "confirmed"
+        },
+        "total_blockaded": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "disrupt_production": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "disrupt_research": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "spy_lower_national_unity": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "spy_raise_national_unity": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "spy_lower_neutrality": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "spy_support_resistance": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "dissent": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: times the country's dissent: `global_ic = -0.01` is 1% of IC a point",
+          "confidence": "confirmed"
+        },
+        "neutrality": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: times effective neutrality / 100",
+          "confidence": "confirmed"
+        },
+        "initial_mobilization": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name",
+          "confidence": "confirmed"
+        },
+        "government_in_exile": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: a government in exile",
+          "confidence": "confirmed"
+        },
+        "fractured_government": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: where the game's test (unread) says so",
+          "confidence": "confirmed"
+        },
+        "very_easy_player": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: difficulty, for a played country",
+          "confidence": "confirmed"
+        },
+        "very_easy_ai": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: difficulty, for a computer country",
+          "confidence": "confirmed"
+        },
+        "easy_player": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: difficulty, for a played country",
+          "confidence": "confirmed"
+        },
+        "easy_ai": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: difficulty, for a computer country",
+          "confidence": "confirmed"
+        },
+        "hard_player": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: difficulty, for a played country",
+          "confidence": "confirmed"
+        },
+        "hard_ai": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: difficulty, for a computer country",
+          "confidence": "confirmed"
+        },
+        "very_hard_player": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: difficulty, for a played country",
+          "confidence": "confirmed"
+        },
+        "very_hard_ai": {
+          "value": "block:modifier",
+          "desc": "looked up by the engine by this name: difficulty, for a computer country",
+          "confidence": "confirmed"
+        },
+        "align_towards_axis": {
+          "value": "block:modifier",
+          "desc": "named by a faction's `influence` in common/ideologies.txt and looked up by name (FindStaticModifierByName, project.json)",
+          "confidence": "confirmed"
+        },
+        "align_towards_allies": {
+          "value": "block:modifier",
+          "desc": "named by a faction's `influence` in common/ideologies.txt and looked up by name (FindStaticModifierByName, project.json)",
+          "confidence": "confirmed"
+        },
+        "align_towards_comintern": {
+          "value": "block:modifier",
+          "desc": "named by a faction's `influence` in common/ideologies.txt and looked up by name (FindStaticModifierByName, project.json)",
+          "confidence": "confirmed"
+        }
+      },
+      "patterns": [
+        {
+          "match": "any",
+          "value": "block:modifier",
+          "desc": "a static modifier the engine or the game looks up by name"
+        }
+      ]
+    },
+    "modifier": {
+      "confidence": "confirmed",
+      "desc": "a modifier: `name = number` pairs",
+      "keys": {
+        "icon": {
+          "value": "integer",
+          "desc": "the frame of the modifier icon strip shown for it",
+          "confidence": "confirmed"
+        }
+      },
+      "include": [
+        "modifier_names:modifiers"
+      ]
+    }
+  }
+}

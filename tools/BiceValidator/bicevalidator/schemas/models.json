@@ -1,0 +1,35 @@
+{
+  "kind": "models",
+  "title": "Historical models",
+  "files": [
+    "units/models/*.txt"
+  ],
+  "doc": "",
+  "source": "CSubUnitDataBase::BuildHistoricalModels and CHistoricalModel::LoadKey: reversing/findings/FINDINGS-unitstart.md section 5. The file name must begin with a country tag or the whole file is skipped, and a model's number must be the next one for its type - neither is a key, so neither is checked here",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "confirmed",
+      "desc": "a country's historical models, `<unit type>.<number> = { ... }`",
+      "patterns": [
+        {
+          "match": "unit type.number",
+          "value": "block:model",
+          "desc": "model number N of that unit type for this country"
+        }
+      ],
+      "skips_unknown": true
+    },
+    "model": {
+      "confidence": "confirmed",
+      "desc": "technology = level; a technology left out is not in the model and a brigade of it keeps level 0",
+      "patterns": [
+        {
+          "match": "technology",
+          "value": "number",
+          "desc": "the level of that technology the model gives"
+        }
+      ]
+    }
+  }
+}

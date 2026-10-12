@@ -112,6 +112,31 @@ async function run() {
         pictureText.slice(0, 300));
     console.log("  ok  event picture preview");
 
+    // A model's levels name the technologies they set: as hints, on hover, and rewritten.
+    const queue = await vscode.workspace.openTextDocument(vscode.Uri.file(path.join(root, "history", "units", "queue.txt")));
+    const modelLine = 2;
+    const two = new vscode.Position(modelLine, queue.lineAt(modelLine).text.indexOf("2 }"));
+    const levelHovers = await vscode.commands.executeCommand("vscode.executeHoverProvider", queue.uri, two);
+    const levelText = levelHovers.map((h) => h.contents.map((c) => c.value || c).join("")).join("");
+    assert.ok(levelText.includes("Level 2 of `late_tech`"), levelText);
+    const hints = await vscode.commands.executeCommand("vscode.executeInlayHintProvider", queue.uri,
+        new vscode.Range(0, 0, queue.lineCount, 0));
+    const labels = hints.map((h) => (typeof h.label === "string" ? h.label : h.label.map((p) => p.value).join("")));
+    assert.deepStrictEqual(labels, ["early_tech", "late_tech"]);
+    const rewrites = await vscode.commands.executeCommand("vscode.executeCodeActionProvider", queue.uri,
+        new vscode.Range(two, two), vscode.CodeActionKind.RefactorRewrite.value);
+    assert.ok(rewrites.some((a) => a.title.startsWith("Write the model one level a line")),
+        JSON.stringify(rewrites.map((a) => a.title)));
+    console.log("  ok  model levels name their technologies");
+
+    // The keys the loader takes are coloured as keywords: military_construction and model,
+    // and not the unit type used as a key.
+    const legend = await vscode.commands.executeCommand("vscode.provideDocumentSemanticTokensLegend", queue.uri);
+    const tokens = await vscode.commands.executeCommand("vscode.provideDocumentSemanticTokens", queue.uri);
+    assert.deepStrictEqual(legend.tokenTypes, ["dataKey"]);
+    assert.strictEqual(tokens.data.length, 10, JSON.stringify(Array.from(tokens.data)));
+    console.log("  ok  data file keys coloured");
+
     // The outline names events by id and title.
     const symbols = await vscode.commands.executeCommand("vscode.executeDocumentSymbolProvider", uri);
     assert.deepStrictEqual(symbols.map((s) => s.name), ["1 Göring"]);

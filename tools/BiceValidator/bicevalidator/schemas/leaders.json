@@ -1,0 +1,136 @@
+{
+  "kind": "leaders",
+  "title": "Leaders",
+  "files": [
+    "history/leaders/*.txt"
+  ],
+  "source": "reversing/findings/FINDINGS-history.md, reversing/findings/FINDINGS-leaders.md; ghidra/project.json CLeader::LoadKey (0x17F800), CWarHistory::LoadKey (0x1FC400), CLeaderHistory::LoadEntry (0x1FC4E0)",
+  "root": "file",
+  "declares": [
+    {
+      "kind": "leader",
+      "depth": 0
+    }
+  ],
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "one block per leader, keyed by the leader's id. What reads this level has not been read; every file in the mod and the base game has this shape",
+      "patterns": [
+        {
+          "match": "integer",
+          "value": "block:leader",
+          "repeat": true,
+          "desc": "a leader, keyed by his id - the number an order of battle's `leader` names"
+        }
+      ]
+    },
+    "leader": {
+      "confidence": "confirmed",
+      "desc": "CLeader::LoadKey: fifteen keys",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "his name"
+        },
+        "country": {
+          "value": "tag",
+          "desc": "the country he serves"
+        },
+        "type": {
+          "value": "one of:land|sea|air",
+          "desc": "which arm he commands"
+        },
+        "skill": {
+          "value": "integer",
+          "desc": "his skill: a floor, raised to what his experience earns (CLeader::PostLoad)"
+        },
+        "max_skill": {
+          "value": "integer",
+          "desc": "the highest skill he can reach"
+        },
+        "loyalty": {
+          "value": "number",
+          "desc": "his loyalty"
+        },
+        "picture": {
+          "value": "text",
+          "desc": "his portrait"
+        },
+        "add_trait": {
+          "value": "name:trait",
+          "desc": "gives him a trait from common/traits.txt",
+          "repeat": true
+        },
+        "history": {
+          "value": "block:history",
+          "desc": "his career: dated blocks of rank and the rest"
+        },
+        "rank": {
+          "value": "integer",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "id": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "experience": {
+          "value": "number",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "current_experience": {
+          "value": "number",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "gainable_trait": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        },
+        "trait": {
+          "value": "any",
+          "desc": "save state, as a savegame writes it: the loader takes it, but there is no reason to write it by hand"
+        }
+      }
+    },
+    "history": {
+      "confidence": "confirmed",
+      "desc": "CWarHistory::LoadKey, which a leader's history shares: dates only. A key that is not a number is ignored outright",
+      "patterns": [
+        {
+          "match": "date",
+          "value": "block:history_entry",
+          "repeat": true,
+          "desc": "applied on that date. A leader whose history gives no `rank` is never put in service"
+        }
+      ]
+    },
+    "history_entry": {
+      "confidence": "confirmed",
+      "desc": "CLeaderHistory::LoadEntry: five keys",
+      "keys": {
+        "rank": {
+          "value": "integer",
+          "desc": "his rank from that date; applying it takes a land leader off his unit"
+        },
+        "loyalty": {
+          "value": "number",
+          "desc": "his loyalty from that date"
+        },
+        "skill": {
+          "value": "integer",
+          "desc": "read and kept, and does nothing: CSkillChange's apply is an empty stub in this build (FINDINGS-history.md section 2)"
+        },
+        "add_trait": {
+          "value": "name:trait",
+          "desc": "gives him a trait on that date",
+          "repeat": true
+        },
+        "remove_trait": {
+          "value": "name:trait",
+          "desc": "takes a trait off him on that date",
+          "repeat": true
+        }
+      }
+    }
+  }
+}

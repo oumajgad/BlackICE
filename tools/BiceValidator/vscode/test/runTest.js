@@ -27,6 +27,12 @@ function writeMod() {
     ]));
     write("events/other.txt", 'country_event = {\r\n\tid = 2\r\n\tis_triggered_only = yes\r\n' +
         '\ttitle = "Second"\r\n\tpicture = "Tiny"\r\n\toption = {\r\n\t\tname = B\r\n\t}\r\n}\r\n');
+    // Two technologies that affect infantry_brigade, and a unit in the production queue
+    // whose model gives each a level.
+    write("technologies/a.txt", "early_tech = { infantry_brigade = { soft_attack = 1 } }\r\n" +
+        "late_tech = { infantry_brigade = { hard_attack = 1 } }\r\n");
+    write("history/units/queue.txt", "military_construction = {\r\n\tinfantry_brigade = {\r\n" +
+        "\t\tmodel = { 1 2 }\r\n\t}\r\n}\r\n");
     // A 2 x 1 TGA, red then blue, stored top row first.
     write("gfx/pictures/events/Tiny.tga", Buffer.from([
         0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 0, 24, 0x20, 0, 0, 255, 255, 0, 0]));

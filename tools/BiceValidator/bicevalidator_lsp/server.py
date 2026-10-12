@@ -66,6 +66,7 @@ class Settings:
     scope: str = "openFiles"            # "openFiles" or "workspace"
     hide_known_noise: bool = False
     event_titles: bool = True
+    model_technologies: bool = True     # name the technology after each level of a model
     game_folder: str = ""               # empty: found beside the mod (pictures.find_game)
 
     @classmethod
@@ -80,6 +81,7 @@ class Settings:
         settings.scope = "workspace" if data.get("scope") == "workspace" else "openFiles"
         settings.hide_known_noise = bool(data.get("hideKnownNoise", False))
         settings.event_titles = bool(data.get("eventTitles", True))
+        settings.model_technologies = bool(data.get("modelTechnologies", True))
         settings.game_folder = str(data.get("gameFolder") or "").strip()
         return settings
 
@@ -162,7 +164,16 @@ class BiceServer(LanguageServer):
             self.mods[root] = Mod(root, session)
             asyncio.get_running_loop().run_in_executor(self.background, session.index.warm)
             self.schedule_run(self.mods[root], delay=0)
+            # The editor asked for the colouring as the file opened, before the mod was read,
+            # and does not ask again on its own; tell it to.
+            self.refresh_semantic_tokens()
         return self.mods[root]
+
+    def refresh_semantic_tokens(self):
+        workspace = self.client_capabilities.workspace
+        tokens = workspace.semantic_tokens if workspace is not None else None
+        if tokens is not None and tokens.refresh_support:
+            self.workspace_semantic_tokens_refresh(None)
 
     # --- checking ----------------------------------------------------------------------
 
@@ -418,13 +429,14 @@ async def initialized(ls: BiceServer, params: T.InitializedParams):
 
 @server.feature(T.WORKSPACE_DID_CHANGE_CONFIGURATION)
 async def configuration_changed(ls: BiceServer, params: T.DidChangeConfigurationParams):
-    titles = ls.settings.event_titles
+    titles = (ls.settings.event_titles, ls.settings.model_technologies)
     await ls.refresh_settings()
     ls.publish_all()
     for mod in ls.mods.values():
         ls.schedule_run(mod, delay=0)
     capabilities = ls.client_capabilities.workspace
-    if titles != ls.settings.event_titles and capabilities is not None \
+    if titles != (ls.settings.event_titles, ls.settings.model_technologies) \
+            and capabilities is not None \
             and capabilities.inlay_hint is not None and capabilities.inlay_hint.refresh_support:
         ls.workspace_inlay_hint_refresh(None)
 
@@ -573,16 +585,45 @@ async def workspace_symbols(ls: BiceServer, params: T.WorkspaceSymbolParams):
 
 @server.feature(T.TEXT_DOCUMENT_INLAY_HINT)
 async def inlay_hints(ls: BiceServer, params: T.InlayHintParams):
-    if not ls.settings.event_titles:
+    settings = ls.settings
+    if not (settings.event_titles or settings.model_technologies):
         return []
     found = await ls.at(params.text_document.uri)
     if found is None:
         return []
     navigator, rel, parsed = found
     first, last = params.range.start.line + 1, params.range.end.line + 1
-    return [T.InlayHint(position=T.Position(line - 1, col - 1), label=title,
-                        padding_left=True)
-            for line, col, title in navigator.event_titles(parsed, first, last)]
+    hints = []
+    if settings.event_titles:
+        hints += [T.InlayHint(position=T.Position(line - 1, col - 1), label=title,
+                              padding_left=True)
+                  for line, col, title in navigator.event_titles(parsed, first, last)]
+    if settings.model_technologies:
+        hints += [T.InlayHint(position=T.Position(line - 1, col - 1), label=tech,
+                              padding_left=True, padding_right=True)
+                  for line, col, tech in navigator.model_hints(parsed, first, last)]
+    return hints
+
+
+# Semantic colouring: one token type of the extension's own, which package.json maps to the
+# scope the grammar gives an event's own keys, so a data file's keys look the same.
+SEMANTIC_LEGEND = T.SemanticTokensLegend(token_types=["dataKey"], token_modifiers=[])
+
+
+@server.feature(T.TEXT_DOCUMENT_SEMANTIC_TOKENS_FULL, SEMANTIC_LEGEND)
+async def semantic_tokens(ls: BiceServer, params: T.SemanticTokensParams):
+    found = await ls.at(params.text_document.uri)
+    if found is None:
+        return T.SemanticTokens(data=[])
+    navigator, rel, parsed = found
+    data = []
+    previous_line, previous_col = 0, 0
+    for line, col, length in navigator.data_keys(rel, parsed):
+        line, col = line - 1, col - 1
+        delta_col = col - previous_col if line == previous_line else col
+        data += [line - previous_line, delta_col, length, 0, 0]
+        previous_line, previous_col = line, col
+    return T.SemanticTokens(data=data)
 
 
 @server.feature(T.TEXT_DOCUMENT_FOLDING_RANGE)
@@ -598,14 +639,27 @@ async def folding_ranges(ls: BiceServer, params: T.FoldingRangeParams):
 
 
 @server.feature(T.TEXT_DOCUMENT_CODE_ACTION,
-                T.CodeActionOptions(code_action_kinds=[T.CodeActionKind.QuickFix]))
+                T.CodeActionOptions(code_action_kinds=[T.CodeActionKind.QuickFix,
+                                                       T.CodeActionKind.RefactorRewrite]))
 async def code_actions(ls: BiceServer, params: T.CodeActionParams):
     found = await ls.at(params.text_document.uri)
     if found is None:
         return None
-    navigator = found[0]
+    navigator, rel, parsed = found
     lines = ls.workspace.get_text_document(params.text_document.uri).lines
     actions = []
+    start = params.range.start
+    model = navigator.model_at(parsed, start.line + 1, start.character + 1)
+    if model is not None and model.open_tok is not None and model.close_tok is not None:
+        key_line = lines[model.line - 1] if model.line - 1 < len(lines) else ""
+        indent = key_line[:len(key_line) - len(key_line.lstrip())]
+        span = T.Range(T.Position(model.open_tok.line - 1, model.open_tok.col - 1),
+                       T.Position(model.close_tok.line - 1, model.close_tok.col))
+        actions.append(T.CodeAction(
+            title="Write the model one level a line, naming each technology",
+            kind=T.CodeActionKind.RefactorRewrite,
+            edit=T.WorkspaceEdit(changes={params.text_document.uri: [T.TextEdit(
+                range=span, new_text=navigator.annotated_model(model, indent))]})))
     for diagnostic in params.context.diagnostics:
         if diagnostic.source != SOURCE:
             continue

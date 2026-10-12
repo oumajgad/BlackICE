@@ -1,0 +1,101 @@
+{
+  "kind": "wars",
+  "title": "War history",
+  "files": [
+    "history/wars/*.txt"
+  ],
+  "source": "reversing/findings/FINDINGS-history.md; ghidra/project.json CWarHistory::LoadKey (0x1FC400), CWarGoal::LoadKey (0x79A90); the entry classes in ghidra/hoi3_tfh-class-hierarchy.txt; usage in the mod and the base game",
+  "root": "file",
+  "blocks": {
+    "file": {
+      "confidence": "inferred",
+      "desc": "a war: its name, and dated blocks of who joins and leaves. What reads the top of the file has not been read. If it is CWarHistory::LoadKey alone, a key that is not a date is ignored there, and `name` and `limited_war` at the top would do nothing",
+      "keys": {
+        "name": {
+          "value": "text",
+          "desc": "the war's name"
+        },
+        "limited_war": {
+          "value": "yes/no",
+          "desc": "a limited war"
+        }
+      },
+      "patterns": [
+        {
+          "match": "date",
+          "value": "block:entries",
+          "repeat": true,
+          "desc": "applied on that date"
+        }
+      ]
+    },
+    "entries": {
+      "confidence": "inferred",
+      "desc": "a war's history entry. The handler (CWarHistory slot 9) has not been read; the keys are the seven entry classes by name, as the files use them",
+      "keys": {
+        "add_attacker": {
+          "value": "tag",
+          "desc": "a country joins the attackers (CAddAttackerChange)",
+          "repeat": true
+        },
+        "add_defender": {
+          "value": "tag",
+          "desc": "a country joins the defenders (CAddDefenderChange)",
+          "repeat": true
+        },
+        "rem_attacker": {
+          "value": "tag",
+          "desc": "a country leaves the attackers (CRemoveAttackerChange)",
+          "repeat": true
+        },
+        "rem_defender": {
+          "value": "tag",
+          "desc": "a country leaves the defenders (CRemoveDefenderChange)",
+          "repeat": true
+        },
+        "war_goal": {
+          "value": "block:war_goal",
+          "desc": "a war goal (CAddWarGoalChange)",
+          "repeat": true
+        },
+        "name": {
+          "value": "text",
+          "desc": "the war's name (CNameChange)"
+        },
+        "limited_war": {
+          "value": "yes/no",
+          "desc": "a limited war (CChangeLimited)"
+        }
+      }
+    },
+    "war_goal": {
+      "confidence": "inferred",
+      "desc": "a war goal: the keys of CWarGoal::LoadKey, which a savegame's war goals are read by; that this block is read by it is inference",
+      "keys": {
+        "casus_belli": {
+          "value": "text",
+          "desc": "the casus belli, from common/cb_types.txt",
+          "required": true
+        },
+        "actor": {
+          "value": "tag",
+          "desc": "the country that wants it",
+          "required": true
+        },
+        "receiver": {
+          "value": "tag",
+          "desc": "the country it is wanted from",
+          "required": true
+        },
+        "country": {
+          "value": "tag",
+          "desc": "a third country the goal names"
+        },
+        "region": {
+          "value": "region",
+          "desc": "a region the goal names"
+        }
+      }
+    }
+  }
+}
