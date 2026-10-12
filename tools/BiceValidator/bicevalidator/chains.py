@@ -17,6 +17,8 @@ is again something only play decides.
 
 from collections import defaultdict
 
+from .guards import resolve
+
 
 class Chains:
     def __init__(self, events, fires, decisions=None):
@@ -160,13 +162,16 @@ class Chains:
 
     def site_guards(self, site):
         """The provinces whose controller is sure where \\p site runs - a `load_oob`, say:
-        the limits around it, and what guards the event or decision it is in."""
+        the limits around it, and what guards the event or decision it is in, a switch on
+        a country flag counting where the limits around it require that flag
+        (guards.resolve)."""
         source = site.source
+        guards = site.guards
         if source is not None and source.kind == "event":
-            return site.guards | self.event_guards(source.name)
-        if source is not None and source.kind == "decision":
-            return site.guards | self.decision_guards(source.name)
-        return site.guards
+            guards = guards | self.event_guards(source.name)
+        elif source is not None and source.kind == "decision":
+            guards = guards | self.decision_guards(source.name)
+        return resolve(guards, site.flags)
 
 
 def _number(ident):

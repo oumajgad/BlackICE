@@ -19,7 +19,7 @@ from dataclasses import dataclass, field
 
 from . import lexer, parser, schema as S
 from .chains import Chains
-from .guards import guards_of, path_guards
+from .guards import guards_of, path_flags, path_guards
 from .checks.references import FLAG_KEY, LUA_MIDDLE, LUA_PREFIX, LUA_SUFFIX, MODIFIER_KEYS, \
     VARIABLE_KEYS, VARIABLE_TEXT, VARIABLE_WHICH
 
@@ -64,6 +64,7 @@ class Site:
     name: str = ""          # the name as written, where it is compared without case
     guards: frozenset = frozenset()     # for a fire or a load: provinces the limits around
                                         # it guard (guards.py)
+    flags: frozenset = frozenset()      # for a load: country flags those limits require
 
 
 @dataclass
@@ -206,6 +207,7 @@ def _names(out, rel, top, source):
         if low == "load_oob" and node.value:
             site = _value_site(rel, node, "load", source)
             site.guards = path_guards(node)
+            site.flags = path_flags(node)
             out.loads.append((node.value, site))
             continue
         if low in VARIABLE_KEYS and node.is_block:

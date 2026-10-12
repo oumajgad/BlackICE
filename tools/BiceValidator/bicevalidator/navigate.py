@@ -19,7 +19,7 @@ from .checks.data import RANK_WANTED, UNIT_ARMS
 from .checks.references import FLAG_KEY, NAMED_VALUES, VARIABLE_KEYS
 from .declarations import Kinds
 from .index import MODIFIER_USES, ON_ACTIONS, Source
-from .guards import guards_of, path_guards, unit_places
+from .guards import guards_of, path_flags, path_guards, resolve, unit_places
 from .leaders import date_text, rank_phrase
 from .pictures import PictureError
 
@@ -653,7 +653,7 @@ class Navigator:
             while decision.parent is not top:
                 decision = decision.parent
             guards |= guards_of(decision.child("potential")) | guards_of(decision.child("allow"))
-        return guards
+        return resolve(guards, path_flags(node))
 
     def _hover_data_key(self, target):
         spec = target.spec

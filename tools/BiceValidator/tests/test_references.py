@@ -342,6 +342,50 @@ class GuardsTest(unittest.TestCase):
             "in_two.txt puts units in 1 province nothing checks the controller of: 2",
         ])
 
+    def test_a_switch_on_a_flag_guards_where_the_flag_is_set(self):
+        # The decision needs province 1 only in production mode; the production load asks
+        # for that mode, so it is guarded, and the spawn load is not.
+        mod = TinyMod()
+        try:
+            mod.write("decisions/g.txt", dedent("""
+                political_decisions = {
+                    build = {
+                        allow = {
+                            or = {
+                                not = { has_country_flag = OOB_production }
+                                controls = 1
+                            }
+                        }
+                        effect = { country_event = 50 }
+                    }
+                }
+                """))
+            mod.write("events/g.txt", dedent("""
+                country_event = {
+                    id = 50
+                    is_triggered_only = yes
+                    option = {
+                        name = A
+                        any_country = {
+                            limit = { tag = GER has_country_flag = OOB_production }
+                            load_oob = in_one_build.txt
+                        }
+                        any_country = {
+                            limit = { tag = GER has_country_flag = OOB_spawn }
+                            load_oob = in_one.txt
+                        }
+                    }
+                }
+                """))
+            for name in ("in_one.txt", "in_one_build.txt"):
+                mod.write("history/units/" + name, 'corps = { name = "C" location = 1 }\n')
+            result = runner.run(mod.root, [rules.REFERENCES], workers=1)
+            found = [d.message for d in result.diagnostics if d.rule == "BV217"]
+        finally:
+            mod.close()
+        self.assertEqual(found, ["in_one.txt puts units in 1 province nothing checks the "
+                                 "controller of: 1"])
+
     def test_the_hover_marks_each_province(self):
         from bicevalidator.session import Session
         session = Session(self.mod.root)

@@ -12,7 +12,9 @@ A **guard** is a condition that holds only if a province's controller is as test
 `controls = <id>`, or `<id> = { controller = { ... } }` / `<id> = { controlled_by = ... }`.
 Conditions sit side by side as an AND, so their guards add up; under `or` only a province
 every branch guards is guarded; under `not` nothing is - `not = { controls = 1690 }` says
-the opposite. A country scope - a tag, `this`, `from`, `owner`, `controller` - is looked
+the opposite. One `or` is read as a switch: `or = { not = { has_country_flag = F }
+controls = <id> }` guards the province where F is set, which a load whose `limit` asks
+for F is - how a decision says "in production mode, only while this province is held". A country scope - a tag, `this`, `from`, `owner`, `controller` - is looked
 into, since a guard in it still tests a province; a set like `any_neighbor_country` is not,
 since it is about some other country.
 """
@@ -47,13 +49,83 @@ def _one(node):
     if not node.is_block or low == "not":
         return set()
     if low == "or":
-        branches = [_one(c) for c in node.children if c.key is not None]
-        return set.intersection(*branches) if branches else set()
+        return _either(node)
     if low.isdigit():
         return {low} if _tests_controller(node) else set()
     if low in _COUNTRY_WORDS or _TAG.match(low):
         return set(guards_of(node))
     return set()
+
+
+def _either(node):
+    """The guards of an `or`: what every branch guards. A branch that is only
+    `not = { has_country_flag = F }` is a switch - "unless F is set" - so what the other
+    branches guard is guarded **where F is set**: the item becomes (province, {F, ...}),
+    which counts at a place that sets F itself (resolve)."""
+    switches, branches = set(), []
+    for child in node.children:
+        if child.key is None:
+            continue
+        flag = _switch_flag(child)
+        if flag is not None:
+            switches.add(flag)
+        else:
+            branches.append(_one(child))
+    if not branches:
+        return set()
+    common = set.intersection(*branches)
+    if not switches:
+        return common
+    out = set()
+    for item in common:
+        province, needs = (item, frozenset()) if isinstance(item, str) else item
+        out.add((province, needs | frozenset(switches)))
+    return out
+
+
+def _switch_flag(node):
+    """F, if \\p node is `not = { has_country_flag = F }` and nothing else."""
+    if node.lkey != "not" or not node.is_block:
+        return None
+    inner = [c for c in node.children if c.key is not None]
+    if len(inner) == 1 and inner[0].lkey == "has_country_flag" and inner[0].value:
+        return inner[0].value
+    return None
+
+
+def path_flags(node):
+    """The country flags the `limit`s around \\p node require to be set - plainly, not
+    under an `or` or a `not`."""
+    out = set()
+    parent = node.parent
+    while parent is not None and parent.key is not None:
+        for child in parent.children:
+            if child.lkey == "limit" and child.is_block and child is not node:
+                out |= _set_flags(child)
+        parent = parent.parent
+    return frozenset(out)
+
+
+def _set_flags(block):
+    out = set()
+    for child in block.children:
+        if child.lkey == "has_country_flag" and child.value:
+            out.add(child.value)
+        elif child.lkey == "and" and child.is_block:
+            out |= _set_flags(child)
+    return out
+
+
+def resolve(guards, flags):
+    """The provinces \\p guards guard where the country flags \\p flags are set: each plain
+    province, and each (province, flags needed) whose flags are all among them."""
+    out = set()
+    for item in guards:
+        if isinstance(item, str):
+            out.add(item)
+        elif item[1] <= flags:
+            out.add(item[0])
+    return out
 
 
 def _tests_controller(province):
