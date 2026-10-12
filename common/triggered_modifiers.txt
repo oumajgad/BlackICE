@@ -9959,6 +9959,7 @@ naval_power_I = {
 
 naval_power_II = {
 	potential = {
+		check_variable = { which = BaseIC value = 300 }
 		or = { # Prefab ship facilities
 			or = {
 				1341 = { controlled_by = this }
@@ -9999,10 +10000,10 @@ naval_power_II = {
 				}
 			}
 		}
-		check_variable = { which = BaseIC value = 300 }
 	}
 
 	trigger = {
+		check_variable = { which = BaseIC value = 500 }
 		or = { # Prefab ship facilities
 			or = {
 				1341 = { controlled_by = this }
@@ -10059,13 +10060,12 @@ naval_power_II = {
 				check_variable = { which = copper_ActualBalance value = 1004 }
 			}
 			and = {
-				small_ship_shipyard_count = 5
-				medium_ship_shipyard_count = 5
-				capital_ship_shipyard_count = 5
-				submarine_shipyard_count = 5
+				check_variable = { which = small_ship_shipyard_count value = 5 }
+				check_variable = { which = medium_ship_shipyard_count value = 5 }
+				check_variable = { which = capital_ship_shipyard_count value = 5 }
+				check_variable = { which = submarine_shipyard_count value = 5 }
 			}
 		}
-		check_variable = { which = BaseIC value = 500 }
 	}
 	naval_build_speed = -0.05
 	naval_organisation = 0.025
@@ -10189,10 +10189,10 @@ naval_power_III = {
 				check_variable = { which = copper_ActualBalance value = 1004 }
 			}
 			and = {
-				small_ship_shipyard_count = 10
-				medium_ship_shipyard_count = 10
-				capital_ship_shipyard_count = 10
-				submarine_shipyard_count = 10
+				check_variable = { which = small_ship_shipyard_count value = 10 }
+				check_variable = { which = medium_ship_shipyard_count value = 10 }
+				check_variable = { which = capital_ship_shipyard_count value = 10 }
+				check_variable = { which = submarine_shipyard_count value = 10 }
 			}
 		}
 		check_variable = { which = BaseIC value = 1000 }
@@ -11710,18 +11710,19 @@ Guillet_Training = {
 		}
 		9943 = {
 			controlled_by = ENG
+		}
 		9767 = {
 			controlled_by = ENG
-			}
 		}
+	}
 	global_leadership_modifier = 0.15
 	research_efficiency = 0.05
 	land_organisation = 0.1
 	org_regain = 0.05
 
 	icon = 13
-	}
 }
+
 
 Polish_Mobilisation = {
 	potential = {
@@ -11772,17 +11773,17 @@ Maoist_Resilience = {
 		tag = CHC
 		ai = yes
 		CHI = { ai = yes }
-			not = {
-				year = 1938
-			}
-		trigger = {
-			war_with = CHC
+		not = {
+			year = 1938
 		}
+	}
+	trigger = {
+		war_with = CHC
+	}
 	territorial_pride = 0.2
 	land_organisation = 0.15
 	org_regain = 0.05
 	war_consumer_goods_demand = -0.1
-	}
 }
 
 # MarneMod - Pacific Island Hopping Campaign #
