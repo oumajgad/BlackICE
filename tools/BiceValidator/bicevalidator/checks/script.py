@@ -358,6 +358,10 @@ class ScriptChecker:
         self._report("BV101", node, "`%s` is not %s keyword or a declared name"
                      % (node.key, "a condition" if kind == TRIGGER else "an effect"), hint=hint)
 
+    def suggest(self, key):
+        """The real name \\p key was most likely meant to be, or ""."""
+        return self._closest(key.lower())
+
     def _closest(self, low):
         """The nearest real name to a key nothing declares, for a "did you mean" hint."""
         if low in self._suggestions:

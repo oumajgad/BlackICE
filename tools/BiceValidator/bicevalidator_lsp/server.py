@@ -10,6 +10,11 @@ Two sources feed what a file shows:
 
 For an open file, live findings replace the background run's code findings; reference
 findings always come from the background run.
+
+Everything else - hover, go to definition, references, the outline, completion, the
+titles after fired events - is answered by the library's Navigator (bicevalidator/
+navigate.py), from the session's index; this file only turns its answers into the
+protocol's types.
 """
 
 import asyncio
@@ -21,19 +26,34 @@ from lsprotocol import types as T
 from pygls.lsp.server import LanguageServer
 from pygls.uris import from_fs_path, to_fs_path
 
-from bicevalidator import __version__, lexer, rules, runner
+from bicevalidator import __version__, lexer, navigate as N, rules, runner
 from bicevalidator.baseline import Baseline
 from bicevalidator.config import TOOL_IN_MOD
 from bicevalidator.session import Session
 
 SECTION = "blackice.validator"
 SOURCE = "BICE Validator"
+NEXT_EVENT_ID = "blackice.nextEventId"
 TYPING_DELAY = 0.3      # seconds of quiet before a changed file is checked
 RUN_DELAY = 1.0         # seconds after a save before the background run starts
+WATCH_DELAY = 1.0       # seconds to gather files changed outside the editor, as a git pull
 
 _SEVERITY = {rules.ERROR: T.DiagnosticSeverity.Error,
              rules.WARNING: T.DiagnosticSeverity.Warning,
              rules.INFO: T.DiagnosticSeverity.Information}
+
+_COMPLETION_KINDS = {
+    "condition": T.CompletionItemKind.Function, "combat condition": T.CompletionItemKind.Function,
+    "effect": T.CompletionItemKind.Method, "scope": T.CompletionItemKind.Module,
+    "keyword": T.CompletionItemKind.Keyword, "snippet": T.CompletionItemKind.Snippet,
+    "name": T.CompletionItemKind.Reference, "value": T.CompletionItemKind.Value,
+    "event": T.CompletionItemKind.Event, "file": T.CompletionItemKind.File,
+    "event header key": T.CompletionItemKind.Property,
+    "option key": T.CompletionItemKind.Property,
+}
+_SYMBOL_KINDS = {"event": T.SymbolKind.Event, "option": T.SymbolKind.EnumMember,
+                 "decision": T.SymbolKind.Function, "category": T.SymbolKind.Namespace,
+                 "block": T.SymbolKind.Object, "field": T.SymbolKind.Field}
 
 
 @dataclass
@@ -45,6 +65,7 @@ class Settings:
     references: str = "onSave"          # "onSave" or "off"
     scope: str = "openFiles"            # "openFiles" or "workspace"
     hide_known_noise: bool = False
+    event_titles: bool = True
 
     @classmethod
     def from_client(cls, data):
@@ -57,6 +78,7 @@ class Settings:
         settings.references = "off" if data.get("references") == "off" else "onSave"
         settings.scope = "workspace" if data.get("scope") == "workspace" else "openFiles"
         settings.hide_known_noise = bool(data.get("hideKnownNoise", False))
+        settings.event_titles = bool(data.get("eventTitles", True))
         return settings
 
     def shows(self, diagnostic):
@@ -99,7 +121,13 @@ class BiceServer(LanguageServer):
         self.open = {}          # (root, rel) -> uri, for the files open in the editor
         self.live = {}          # (root, rel) -> [Diagnostic]
         self.timers = {}        # uri -> pending check
+        self.parses = {}        # uri -> (version, parse) of the text last read
+        self.changed = {}       # root -> rels changed outside the editor, not yet read
+        self.watch_task = None
+        # What the editor waits for - a check while typing, a list of references - never
+        # queues behind a run over the whole mod, which has a thread of its own.
         self.executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="bicevalidator")
+        self.background = ThreadPoolExecutor(max_workers=1, thread_name_prefix="bicevalidator-run")
 
     # --- mods --------------------------------------------------------------------------
 
@@ -118,12 +146,18 @@ class BiceServer(LanguageServer):
         """The loaded Mod for \\p root, loading it the first time it is asked for."""
         if root in self.mods and self.mods[root].session is not None:
             return self.mods[root]
-        if root not in self.loading:
+        loading = self.loading.get(root)
+        if loading is None or (loading.done() and (loading.cancelled()
+                                                   or loading.exception() is not None)):
             loop = asyncio.get_running_loop()
-            self.loading[root] = loop.run_in_executor(self.executor, Session, root)
-        session = await self.loading[root]
+            loading = self.loading[root] = loop.run_in_executor(self.executor, Session, root)
+        # Every request waits on this one load. VS Code cancels a request it no longer
+        # needs, and cancelling a task cancels what it awaits - so without the shield the
+        # first cancelled request would cancel the load for everyone, for good.
+        session = await asyncio.shield(loading)
         if root not in self.mods:
             self.mods[root] = Mod(root, session)
+            asyncio.get_running_loop().run_in_executor(self.background, session.index.warm)
             self.schedule_run(self.mods[root], delay=0)
         return self.mods[root]
 
@@ -154,12 +188,67 @@ class BiceServer(LanguageServer):
         if not mod.session.is_script(rel):
             return
         document = self.workspace.get_text_document(uri)
-        text = document.source
+        text, version = document.source, document.version
         loop = asyncio.get_running_loop()
-        found = await loop.run_in_executor(self.executor, mod.session.check_text, rel, text)
+        found, parsed = await loop.run_in_executor(self.executor, mod.session.analyse,
+                                                   rel, text)
         if (root, rel) in self.open:
+            self.parses[uri] = (version, parsed)
             self.live[(root, rel)] = found
             self.publish(mod, rel)
+
+    # --- questions about an open file --------------------------------------------------
+
+    async def at(self, uri):
+        """(navigator, rel, parse of the current text) for \\p uri, or None outside a mod."""
+        root, rel = self.locate(uri)
+        if root is None:
+            return None
+        mod = await self.mod(root)
+        document = self.workspace.get_text_document(uri)
+        cached = self.parses.get(uri)
+        if cached is None or cached[0] != document.version:
+            cached = (document.version, Session.parse(document.source))
+            self.parses[uri] = cached
+        return mod.session.navigator, rel, cached[1]
+
+    def location(self, mod_root, place):
+        path = place.file if os.path.isabs(place.file) else os.path.join(mod_root, place.file)
+        start = T.Position(place.line - 1, max(0, place.col - 1))
+        end = T.Position(place.line - 1, max(start.character, place.end - 1))
+        return T.Location(uri=from_fs_path(path), range=T.Range(start, end))
+
+    # --- files changed outside the editor ----------------------------------------------
+
+    def files_changed(self, uris):
+        for uri in uris:
+            root, rel = self.locate(uri)
+            if root is None or root not in self.mods or (root, rel) in self.open:
+                # An open file's part comes from its text, and its save is handled
+                # by did_save.
+                continue
+            self.changed.setdefault(root, set()).add(rel)
+        if self.changed and (self.watch_task is None or self.watch_task.done()):
+            self.watch_task = asyncio.ensure_future(self._read_changed())
+
+    async def _read_changed(self):
+        try:
+            await asyncio.sleep(WATCH_DELAY)
+            loop = asyncio.get_running_loop()
+            while self.changed:
+                root, rels = self.changed.popitem()
+                mod = self.mods[root]
+                declared = await loop.run_in_executor(self.executor, mod.session.files_changed,
+                                                      sorted(rels))
+                if declared:
+                    for (r, _), open_uri in list(self.open.items()):
+                        if r == root:
+                            self.schedule_check(open_uri, 0)
+                self.schedule_run(mod)
+        except Exception as error:
+            self.window_log_message(T.LogMessageParams(
+                T.MessageType.Error, "BICE Validator: reading changed files failed: %r"
+                % error))
 
     def schedule_run(self, mod, delay=RUN_DELAY):
         """A background run over the whole mod, unless one is already on its way."""
@@ -182,7 +271,7 @@ class BiceServer(LanguageServer):
                 # One process: the server runs hidden under VS Code, and worker processes
                 # of a console program started without a console can each open a window.
                 result = await loop.run_in_executor(
-                    self.executor, lambda: runner.run(mod.root, modes, workers=1))
+                    self.background, lambda: runner.run(mod.root, modes, workers=1))
                 grouped = {}
                 for d in result.diagnostics:
                     grouped.setdefault(d.file, []).append(d)
@@ -320,10 +409,15 @@ async def initialized(ls: BiceServer, params: T.InitializedParams):
 
 @server.feature(T.WORKSPACE_DID_CHANGE_CONFIGURATION)
 async def configuration_changed(ls: BiceServer, params: T.DidChangeConfigurationParams):
+    titles = ls.settings.event_titles
     await ls.refresh_settings()
     ls.publish_all()
     for mod in ls.mods.values():
         ls.schedule_run(mod, delay=0)
+    capabilities = ls.client_capabilities.workspace
+    if titles != ls.settings.event_titles and capabilities is not None \
+            and capabilities.inlay_hint is not None and capabilities.inlay_hint.refresh_support:
+        ls.workspace_inlay_hint_refresh(None)
 
 
 @server.feature(T.TEXT_DOCUMENT_DID_OPEN)
@@ -372,8 +466,190 @@ async def did_close(ls: BiceServer, params: T.DidCloseTextDocumentParams):
         return
     ls.open.pop((root, rel), None)
     ls.live.pop((root, rel), None)
+    ls.parses.pop(uri, None)
     if root in ls.mods:
-        ls.publish(ls.mods[root], rel)
+        mod = ls.mods[root]
+        ls.publish(mod, rel)
+        # The index held the unsaved text; what counts now is the file on disk.
+        loop = asyncio.get_running_loop()
+        await loop.run_in_executor(ls.executor, mod.session.index.reload_file, rel)
+
+
+@server.feature(T.WORKSPACE_DID_CHANGE_WATCHED_FILES)
+async def watched_files_changed(ls: BiceServer, params: T.DidChangeWatchedFilesParams):
+    ls.files_changed([change.uri for change in params.changes])
+
+
+def _range_of(token):
+    width = len(token.text) + (2 if token.kind == lexer.STRING else 0)
+    return T.Range(T.Position(token.line - 1, token.col - 1),
+                   T.Position(token.line - 1, token.col - 1 + width))
+
+
+async def _target(ls, params):
+    found = await ls.at(params.text_document.uri)
+    if found is None:
+        return None, None
+    navigator, rel, parsed = found
+    position = params.position
+    return navigator, navigator.target(rel, parsed, position.line + 1, position.character + 1)
+
+
+@server.feature(T.TEXT_DOCUMENT_HOVER)
+async def hover(ls: BiceServer, params: T.HoverParams):
+    navigator, target = await _target(ls, params)
+    if target is None:
+        return None
+    text = navigator.hover(target)
+    if not text:
+        return None
+    return T.Hover(contents=T.MarkupContent(kind=T.MarkupKind.Markdown, value=text),
+                   range=_range_of(target.token))
+
+
+@server.feature(T.TEXT_DOCUMENT_DEFINITION)
+async def definition(ls: BiceServer, params: T.DefinitionParams):
+    navigator, target = await _target(ls, params)
+    if target is None:
+        return None
+    root = navigator.session.root
+    return [ls.location(root, place) for place in navigator.definitions(target)] or None
+
+
+@server.feature(T.TEXT_DOCUMENT_REFERENCES)
+async def references(ls: BiceServer, params: T.ReferenceParams):
+    navigator, target = await _target(ls, params)
+    if target is None:
+        return None
+    loop = asyncio.get_running_loop()
+    # A flag's references search the Lua scripts and the histories the first time.
+    places = await loop.run_in_executor(
+        ls.executor, navigator.references, target, params.context.include_declaration)
+    if places is None:
+        return None
+    return [ls.location(navigator.session.root, place) for place in places]
+
+
+def _document_symbol(symbol):
+    start = T.Position(symbol.line - 1, max(0, symbol.col - 1))
+    end = T.Position(symbol.end_line - 1, max(0, symbol.end_col - 1))
+    if (end.line, end.character) < (start.line, start.character):
+        end = start
+    return T.DocumentSymbol(name=symbol.name or "?", detail=symbol.detail or None,
+                            kind=_SYMBOL_KINDS.get(symbol.kind, T.SymbolKind.Object),
+                            range=T.Range(start, end), selection_range=T.Range(start, start),
+                            children=[_document_symbol(c) for c in symbol.children] or None)
+
+
+@server.feature(T.TEXT_DOCUMENT_DOCUMENT_SYMBOL)
+async def document_symbols(ls: BiceServer, params: T.DocumentSymbolParams):
+    found = await ls.at(params.text_document.uri)
+    if found is None:
+        return None
+    navigator, rel, parsed = found
+    return [_document_symbol(s) for s in navigator.outline(rel, parsed)]
+
+
+@server.feature(T.WORKSPACE_SYMBOL)
+async def workspace_symbols(ls: BiceServer, params: T.WorkspaceSymbolParams):
+    out = []
+    for mod in list(ls.mods.values()):
+        for symbol in mod.session.navigator.symbols(params.query):
+            place = N.Place(symbol.file, symbol.line, symbol.col, symbol.col)
+            out.append(T.SymbolInformation(
+                name=symbol.name, kind=_SYMBOL_KINDS.get(symbol.kind, T.SymbolKind.Object),
+                location=ls.location(mod.root, place), container_name=symbol.file))
+    return out
+
+
+@server.feature(T.TEXT_DOCUMENT_INLAY_HINT)
+async def inlay_hints(ls: BiceServer, params: T.InlayHintParams):
+    if not ls.settings.event_titles:
+        return []
+    found = await ls.at(params.text_document.uri)
+    if found is None:
+        return []
+    navigator, rel, parsed = found
+    first, last = params.range.start.line + 1, params.range.end.line + 1
+    return [T.InlayHint(position=T.Position(line - 1, col - 1), label=title,
+                        padding_left=True)
+            for line, col, title in navigator.event_titles(parsed, first, last)]
+
+
+@server.feature(T.TEXT_DOCUMENT_FOLDING_RANGE)
+async def folding_ranges(ls: BiceServer, params: T.FoldingRangeParams):
+    found = await ls.at(params.text_document.uri)
+    if found is None:
+        return None
+    navigator, rel, parsed = found
+    lines = ls.workspace.get_text_document(params.text_document.uri).lines
+    return [T.FoldingRange(start_line=first - 1, end_line=last - 1,
+                           kind=T.FoldingRangeKind.Comment if comment else None)
+            for first, last, comment in navigator.folds(parsed, lines)]
+
+
+@server.feature(T.TEXT_DOCUMENT_CODE_ACTION,
+                T.CodeActionOptions(code_action_kinds=[T.CodeActionKind.QuickFix]))
+async def code_actions(ls: BiceServer, params: T.CodeActionParams):
+    found = await ls.at(params.text_document.uri)
+    if found is None:
+        return None
+    navigator = found[0]
+    lines = ls.workspace.get_text_document(params.text_document.uri).lines
+    actions = []
+    for diagnostic in params.context.diagnostics:
+        if diagnostic.source != SOURCE:
+            continue
+        span = diagnostic.range
+        line = lines[span.start.line] if span.start.line < len(lines) else ""
+        word = line[span.start.character:span.end.character]
+        edit = None
+        if diagnostic.code == "BV113" and "missing its =" in diagnostic.message:
+            edit = (T.TextEdit(range=T.Range(span.end, span.end), new_text=" ="),
+                    "Insert the missing `=`")
+        else:
+            better = navigator.replacement(diagnostic.code, word) if word else None
+            if better:
+                edit = (T.TextEdit(range=span, new_text=better), "Change to `%s`" % better)
+        if edit is None:
+            continue
+        actions.append(T.CodeAction(
+            title=edit[1], kind=T.CodeActionKind.QuickFix, diagnostics=[diagnostic],
+            is_preferred=True,
+            edit=T.WorkspaceEdit(changes={params.text_document.uri: [edit[0]]})))
+    return actions or None
+
+
+@server.feature(T.TEXT_DOCUMENT_COMPLETION, T.CompletionOptions(trigger_characters=["="]))
+async def completion(ls: BiceServer, params: T.CompletionParams):
+    found = await ls.at(params.text_document.uri)
+    if found is None:
+        return None
+    navigator, rel, parsed = found
+    position = params.position
+    items, incomplete = navigator.completions(rel, parsed, position.line + 1,
+                                              position.character + 1)
+    out = []
+    for item in items:
+        out.append(T.CompletionItem(
+            label=item.label, kind=_COMPLETION_KINDS.get(item.kind, T.CompletionItemKind.Text),
+            detail=item.detail or None,
+            documentation=T.MarkupContent(kind=T.MarkupKind.Markdown, value=item.documentation)
+            if item.documentation else None,
+            insert_text=item.insert or None,
+            insert_text_format=T.InsertTextFormat.Snippet if item.insert else None,
+            filter_text=item.filter or None))
+    return T.CompletionList(is_incomplete=incomplete, items=out)
+
+
+@server.command(NEXT_EVENT_ID)
+async def next_event_id(ls: BiceServer, uri: str, line: int):
+    """The id to give a new event written at \\p line (0-based) of \\p uri."""
+    root, rel = ls.locate(uri)
+    if root is None:
+        return None
+    mod = await ls.mod(root)
+    return mod.session.index.next_event_id(rel, line + 1)
 
 
 def main():

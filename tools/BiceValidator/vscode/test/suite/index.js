@@ -77,6 +77,53 @@ async function run() {
     const extension = vscode.extensions.getExtension("blackice.blackice-script");
     assert.ok(extension && extension.isActive, "the extension is active");
     console.log("  ok  extension active");
+
+    // A quick fix for the typo.
+    const shown = await waitFor("BV101 back after the setting", () => ours(uri),
+        (ds) => codes(ds).includes("BV101"));
+    const typo = shown.find((d) => String(d.code) === "BV101");
+    const actions = await vscode.commands.executeCommand(
+        "vscode.executeCodeActionProvider", uri, typo.range, vscode.CodeActionKind.QuickFix.value);
+    assert.ok(actions.some((a) => a.title === "Change to `infantry_brigade`"),
+        JSON.stringify(actions.map((a) => a.title)));
+    console.log("  ok  quick fix");
+
+    // Hover and go to definition on an event fired from another file.
+    const fireLine = typoLine + 1;
+    await editor.edit((edit) => edit.insert(new vscode.Position(fireLine, 0), "\t\tcountry_event = 2\r\n"));
+    const onId = new vscode.Position(fireLine, document.lineAt(fireLine).text.indexOf("2"));
+    const hovers = await vscode.commands.executeCommand("vscode.executeHoverProvider", uri, onId);
+    const hoverText = hovers.map((h) => h.contents.map((c) => c.value || c).join("")).join("");
+    assert.ok(hoverText.includes("Second"), hoverText);
+    const targets = await vscode.commands.executeCommand("vscode.executeDefinitionProvider", uri, onId);
+    const target = targets[0].uri || targets[0].targetUri;
+    assert.ok(target.fsPath.endsWith("other.txt"), target.fsPath);
+    console.log("  ok  hover and go to definition");
+
+    // The outline names events by id and title.
+    const symbols = await vscode.commands.executeCommand("vscode.executeDocumentSymbolProvider", uri);
+    assert.deepStrictEqual(symbols.map((s) => s.name), ["1 Göring"]);
+    console.log("  ok  outline");
+
+    // The next free id goes in at the cursor.
+    const idLine = document.lineCount - 1;
+    editor.selection = new vscode.Selection(idLine, 0, idLine, 0);
+    await vscode.commands.executeCommand("blackice.insertNextEventId");
+    assert.strictEqual(document.lineAt(idLine).text, "3");
+    console.log("  ok  next free event id");
+
+    // A file written outside the editor is found without reopening anything.
+    fs.writeFileSync(path.join(root, "events", "third.txt"),
+        'country_event = {\r\n\tid = 3\r\n\tis_triggered_only = yes\r\n\ttitle = "Third"\r\n' +
+        '\toption = {\r\n\t\tname = C\r\n\t}\r\n}\r\n');
+    let third = [];
+    const deadline = Date.now() + 30000;
+    while (third.length === 0 && Date.now() < deadline) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        third = await vscode.commands.executeCommand("vscode.executeWorkspaceSymbolProvider", "Third");
+    }
+    assert.deepStrictEqual(third.map((s) => s.name), ["3 Third"]);
+    console.log("  ok  files changed outside the editor");
 }
 
 module.exports = { run };

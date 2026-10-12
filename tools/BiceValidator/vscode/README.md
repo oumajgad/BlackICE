@@ -11,6 +11,15 @@ BICE Validator in VS Code, for Hearts of Iron 3 script files.
 - **Windows-1252 by default.** Script files open and save in the encoding the game reads,
   so an umlaut can't turn into `Ã¶` by accident.
 - **Colouring** for keys, conditions, effects, scopes, tags, numbers, dates and comments.
+- **Hover and go to definition** for keywords, fired events, localisation keys,
+  countries, provinces, technologies, units, buildings, modifiers, flags and OOB files.
+- **Find all references** for events, flags and modifiers.
+- **An outline of events and decisions**, and Ctrl+T to find any of them by id or title.
+- **Event titles** shown after `country_event = <id>`.
+- **Quick fixes** for misspelt keys and a missing `=`.
+- **Completion** that offers conditions or effects depending on the block, and event ids,
+  countries, flags and modifiers after the `=`.
+- **Folding** by brackets, and *BlackICE: Insert the next free event id*.
 
 It works on any mod folder with `events`, `decisions` and `common` in it, such as a
 checkout of the BlackICE repository or an installed copy under the game's `tfh/mod`.
@@ -27,6 +36,7 @@ All of them are under `blackice.validator`:
 | `references` | `onSave` (default) or `off`. |
 | `scope` | `openFiles` (default) or `workspace`, for every file's findings in the Problems panel. |
 | `hideKnownNoise` | Hide what `tools/BiceValidator/baseline.json` lists as known noise. |
+| `eventTitles` | Show the title of each fired event at the end of its line (default on). |
 | `serverCommand` | Run the server from source instead of the bundled exe. |
 
 The language server is BICE Validator's own, from `tools/BiceValidator` in the BlackICE

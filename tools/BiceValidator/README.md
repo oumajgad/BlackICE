@@ -88,6 +88,30 @@ it out of `DROP` there.
   problem behind BV007 can no longer happen in VS Code.
 - **Colouring.** Keys, conditions, effects, scopes, tags, numbers, dates and comments
   are coloured.
+- **Hover.** On a keyword, its description and syntax from `docs/script`. On a fired
+  event, its title, description and options. On a localisation key, its English text.
+  On a country, a province, a technology, a unit, a building or a modifier, its name and
+  where it is declared. On a flag, how often it is set, tested and cleared.
+- **Go to definition** (F12). Jumps from a fired event to the event, from `load_oob` to
+  the file, from a name to its declaration, from a localisation key to its line in the
+  table, from a keyword to its row in `docs/script`, and from a flag to where it is set.
+- **Find all references** (Shift+F12). For an event, everything that fires it, including
+  `common/on_actions.txt`. For a flag, everywhere it is set, tested or cleared, in the
+  Lua scripts as well. For a modifier, everywhere it is added, tested or removed.
+- **Outline and Go to Symbol.** The outline lists a file's events by id and title, with
+  their options, or its decisions by category. Ctrl+T finds any event or decision in the
+  mod by id, name or title.
+- **Event titles.** `country_event = 14883` shows the event's title faintly at the end of
+  the line. The `eventTitles` setting turns this off.
+- **Quick fixes** (Ctrl+.). A misspelt key becomes the name it was meant to be,
+  `brigade_exists` becomes `brigade_exist`, and `factor 100` gets its `=`.
+- **Completion that knows its block.** Conditions inside `trigger` and `limit`, effects
+  inside `option` and `effect`, an event's own keys inside an event. After the `=` it
+  offers event ids with their titles, countries, flags, modifiers, order of battle files
+  and yes or no, as the key takes.
+- **Folding** by brackets rather than by indentation, and by runs of comment lines.
+- **The next free event id.** *BlackICE: Insert the next free event id* puts in the first
+  id no event uses, after the id of the event above the cursor.
 
 **Installing.** From VS Code's terminal, at the repository root, run
 `.\tools\BiceValidator\dist\install-vscode-extension.ps1`, then reload VS Code
@@ -104,12 +128,20 @@ Code's settings:
 - `references` (`onSave` or `off`);
 - `scope`: `workspace` puts every file's findings in the Problems panel, after a
   background run of about half a minute;
-- `hideKnownNoise`, which hides what `baseline.json` lists.
+- `hideKnownNoise`, which hides what `baseline.json` lists;
+- `eventTitles`, which shows the titles of fired events.
 
 It does not read `validator.json`.
 
+**What it keeps up to date.** The server reads the mod once when the first script file
+opens, in about three seconds. After that, an open file counts as its unsaved text. A file
+changed outside the editor, by a git pull for example, is read again within a second.
+
 **How it is built.** The server is `bicevalidator_lsp/`, which uses pygls for the
-protocol and this library for everything else. It is bundled with PyInstaller into
+protocol and this library for everything else. Hover, definitions, references,
+completion and the outline are answered by `bicevalidator/navigate.py`, from an index of
+the events, decisions, flags and modifiers (`index.py`) and the localisation
+(`localisation.py`). It is bundled with PyInstaller into
 `bicevalidator-lsp.exe`, a 10 MB console program with no Qt. The extension in `vscode/`
 only starts that exe and connects it to VS Code. The colouring grammar is generated from
 `docs/script`, and the rule list of the `disabledRules` setting from `rules.py`.
@@ -199,6 +231,7 @@ build log but does not stop the build. Use `--skip-validation` to build anyway.
 | `bicevalidator/release.py` | the release build's check |
 | `bicevalidator_gui/` | the window |
 | `bicevalidator/session.py`, `bicevalidator_lsp/`, `BiceValidatorLsp.py`, `bicevalidator-lsp.spec` | the language server: a mod kept loaded, the protocol, its launcher and its exe |
+| `bicevalidator/index.py`, `localisation.py`, `navigate.py` | what the editor asks about: where events, flags and modifiers are, what keys read as, what is at a place in a file |
 | `vscode/` | the VS Code extension, its tests in VS Code, and `build.py` |
 | `BiceValidator.pyw`, `BiceValidator.spec`, `build.py` | the launcher, and building it into an exe |
 | `tests/` | `python -m unittest discover -s tests -t .` |

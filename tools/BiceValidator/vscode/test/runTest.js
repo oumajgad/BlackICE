@@ -25,6 +25,8 @@ function writeMod() {
         Buffer.from([0xF6]),
         Buffer.from('ring"\r\n\toption = {\r\n\t\tname = A\r\n\t\tinfanty_brigade = 1\r\n\t}\r\n}\r\n'),
     ]));
+    write("events/other.txt", 'country_event = {\r\n\tid = 2\r\n\tis_triggered_only = yes\r\n' +
+        '\ttitle = "Second"\r\n\toption = {\r\n\t\tname = B\r\n\t}\r\n}\r\n');
     const command = process.env.BLACKICE_SERVER_COMMAND;
     if (command) {
         write(".vscode/settings.json", JSON.stringify(

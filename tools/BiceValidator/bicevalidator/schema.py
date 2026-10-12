@@ -100,7 +100,9 @@ def _value_type(syntax, key=""):
         return BLOCK
     if rhs.startswith("<province id>"):
         return PROVINCE
-    if re.match(r"tag\d?\b", rhs):
+    # `tag2`, `<country tag>`, or a choice of scope words and a tag: `this / from / tag`.
+    if re.match(r"tag\d?\b", rhs) or rhs.startswith("<country tag>") \
+            or re.fullmatch(r"(this|from|random|tag)( / (this|from|random|tag))+", rhs):
         return TAG
     if re.fullmatch(r"x", rhs):
         return NUMBER

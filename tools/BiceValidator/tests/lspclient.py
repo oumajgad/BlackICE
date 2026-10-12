@@ -68,10 +68,15 @@ class LspClient:
 
     # --- protocol ----------------------------------------------------------------------
 
-    def request(self, method, params, timeout=30):
+    def send_request(self, method, params):
+        """Send a request without waiting for its answer; its id."""
         ident = self.next_id
         self.next_id += 1
         self._send({"jsonrpc": "2.0", "id": ident, "method": method, "params": params})
+        return ident
+
+    def request(self, method, params, timeout=30):
+        ident = self.send_request(method, params)
         deadline = time.time() + timeout
         while ident not in self.responses:
             if time.time() > deadline:
