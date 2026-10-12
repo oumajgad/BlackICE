@@ -66,6 +66,7 @@ class Settings:
     scope: str = "openFiles"            # "openFiles" or "workspace"
     hide_known_noise: bool = False
     event_titles: bool = True
+    game_folder: str = ""               # empty: found beside the mod (pictures.find_game)
 
     @classmethod
     def from_client(cls, data):
@@ -79,6 +80,7 @@ class Settings:
         settings.scope = "workspace" if data.get("scope") == "workspace" else "openFiles"
         settings.hide_known_noise = bool(data.get("hideKnownNoise", False))
         settings.event_titles = bool(data.get("eventTitles", True))
+        settings.game_folder = str(data.get("gameFolder") or "").strip()
         return settings
 
     def shows(self, diagnostic):
@@ -156,6 +158,7 @@ class BiceServer(LanguageServer):
         # first cancelled request would cancel the load for everyone, for good.
         session = await asyncio.shield(loading)
         if root not in self.mods:
+            session.pictures.set_game(self.settings.game_folder)
             self.mods[root] = Mod(root, session)
             asyncio.get_running_loop().run_in_executor(self.background, session.index.warm)
             self.schedule_run(self.mods[root], delay=0)
@@ -357,6 +360,8 @@ class BiceServer(LanguageServer):
         except Exception:
             data = None
         self.settings = Settings.from_client(data)
+        for mod in self.mods.values():
+            mod.session.pictures.set_game(self.settings.game_folder)
 
 
 def _end_col(line, start):
@@ -620,7 +625,8 @@ async def code_actions(ls: BiceServer, params: T.CodeActionParams):
     return actions or None
 
 
-@server.feature(T.TEXT_DOCUMENT_COMPLETION, T.CompletionOptions(trigger_characters=["="]))
+@server.feature(T.TEXT_DOCUMENT_COMPLETION,
+                T.CompletionOptions(trigger_characters=["="], resolve_provider=True))
 async def completion(ls: BiceServer, params: T.CompletionParams):
     found = await ls.at(params.text_document.uri)
     if found is None:
@@ -638,8 +644,23 @@ async def completion(ls: BiceServer, params: T.CompletionParams):
             if item.documentation else None,
             insert_text=item.insert or None,
             insert_text_format=T.InsertTextFormat.Snippet if item.insert else None,
-            filter_text=item.filter or None))
+            filter_text=item.filter or None,
+            # A picture's preview is made only for the item VS Code shows the details of.
+            data={"root": navigator.session.root, "picture": item.picture}
+            if item.picture else None))
     return T.CompletionList(is_incomplete=incomplete, items=out)
+
+
+@server.feature(T.COMPLETION_ITEM_RESOLVE)
+async def completion_resolve(ls: BiceServer, item: T.CompletionItem):
+    data = item.data if isinstance(item.data, dict) else {}
+    mod = ls.mods.get(data.get("root"))
+    if mod is not None and data.get("picture"):
+        loop = asyncio.get_running_loop()
+        text = await loop.run_in_executor(ls.executor, mod.session.navigator.picture_preview,
+                                          data["picture"])
+        item.documentation = T.MarkupContent(kind=T.MarkupKind.Markdown, value=text)
+    return item
 
 
 @server.command(NEXT_EVENT_ID)

@@ -5,9 +5,9 @@ three seconds too slow for every keystroke. A Session reads them once, checks th
 one file in milliseconds, and reads the declarations again when told a file that declares
 things has changed.
 
-It also keeps what an editor asks about between checks: the localisation, and an index of
-the events, decisions, flags and modifiers (index.py), with the open files' parts taken
-from the text being edited.
+It also keeps what an editor asks about between checks: the localisation, the event
+pictures (pictures.py), and an index of the events, decisions, flags and modifiers
+(index.py), with the open files' parts taken from the text being edited.
 """
 
 import os
@@ -18,6 +18,7 @@ from .checks.script import ScriptChecker
 from .declarations import Declarations
 from .localisation import Localisation
 from .navigate import Navigator
+from .pictures import Pictures
 from .schema import Schema, locate_keyword_pages
 
 # Saving a file under one of these can change what the mod declares.
@@ -32,6 +33,7 @@ class Session:
         self.reload()
         self.localisation = Localisation(root)
         self.index = idx.ModIndex(root)
+        self.pictures = Pictures(root)
 
     def reload(self):
         """Read the keyword pages and the declarations again."""
@@ -51,6 +53,8 @@ class Session:
         for rel in rels:
             if rel.startswith("localisation/") and rel.endswith(".csv"):
                 self.localisation.reload_file(rel)
+            if rel.lower().startswith("gfx/pictures/"):
+                self.pictures.forget()
             self.index.reload_file(rel)
         if any(self.declares(rel) for rel in rels):
             self.reload()

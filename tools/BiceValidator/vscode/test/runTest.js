@@ -26,7 +26,10 @@ function writeMod() {
         Buffer.from('ring"\r\n\toption = {\r\n\t\tname = A\r\n\t\tinfanty_brigade = 1\r\n\t}\r\n}\r\n'),
     ]));
     write("events/other.txt", 'country_event = {\r\n\tid = 2\r\n\tis_triggered_only = yes\r\n' +
-        '\ttitle = "Second"\r\n\toption = {\r\n\t\tname = B\r\n\t}\r\n}\r\n');
+        '\ttitle = "Second"\r\n\tpicture = "Tiny"\r\n\toption = {\r\n\t\tname = B\r\n\t}\r\n}\r\n');
+    // A 2 x 1 TGA, red then blue, stored top row first.
+    write("gfx/pictures/events/Tiny.tga", Buffer.from([
+        0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 0, 24, 0x20, 0, 0, 255, 255, 0, 0]));
     const command = process.env.BLACKICE_SERVER_COMMAND;
     if (command) {
         write(".vscode/settings.json", JSON.stringify(

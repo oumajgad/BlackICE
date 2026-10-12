@@ -18,10 +18,11 @@ from .checks import script as C
 from .checks.references import FLAG_KEY, NAMED_VALUES
 from .declarations import Kinds
 from .index import MODIFIER_USES
+from .pictures import PictureError
 
-KEYWORD, BAD_KEY, DECLARED, EVENT, LOC, TAG, PROVINCE, FLAG, MODIFIER, OOB, DECISION = (
-    "keyword", "bad key", "declared", "event", "localisation", "tag", "province", "flag",
-    "modifier", "oob", "decision")
+KEYWORD, BAD_KEY, DECLARED, EVENT, LOC, TAG, PROVINCE, FLAG, MODIFIER, OOB, DECISION, \
+    PICTURE = ("keyword", "bad key", "declared", "event", "localisation", "tag", "province",
+               "flag", "modifier", "oob", "decision", "picture")
 
 _KIND_NAMES = {"trigger": "condition", "effect": "effect", "scope": "scope",
                "header": "event header key", "option": "option key",
@@ -74,6 +75,7 @@ class Completion:
     documentation: str = ""
     insert: str = ""    # a snippet; the label when empty
     filter: str = ""
+    picture: str = ""   # an event picture, whose preview is made only when it is shown
 
 
 def plain(text):
@@ -285,6 +287,8 @@ class Navigator:
             return Target(LOC, value, token, node)
         if low == "load_oob":
             return Target(OOB, value, token, node)
+        if low == "picture" and parent is not None and parent.lkey in S.EVENT_TYPES:
+            return Target(PICTURE, value, token, node)
         match = FLAG_KEY.match(low)
         if match:
             return Target(FLAG, value, token, node, match.group(2))
@@ -473,6 +477,31 @@ class Navigator:
         if not os.path.exists(os.path.join(self.session.root, rel)):
             return "**No file** `%s`" % rel
         return "Order of battle " + self.link(Place(rel, 1))
+
+    def picture_preview(self, name):
+        """Markdown showing event picture \\p name, as hover and completion show it."""
+        return self._hover_picture(Target(PICTURE, name, None, None))
+
+    def _hover_picture(self, target):
+        pictures = self.session.pictures
+        path = pictures.find(target.name)
+        head = "**Event picture `%s`**" % target.name
+        if path is None:
+            searched = "the mod's `gfx/pictures/events`"
+            if pictures.game:
+                searched += " or the game's"
+            text = "%s\n\nNo file of that name in %s." % (head, searched)
+            if not pictures.game:
+                text += " The game's own pictures were not searched: the game was not " \
+                        "found. Set `blackice.validator.gameFolder` to its folder."
+            return text
+        where = pictures.where(path)
+        try:
+            uri, width, height = pictures.file_uri(path)
+        except (PictureError, OSError) as error:
+            return "%s\n\n`%s` cannot be shown here: %s." % (head, where, error)
+        return "%s\n\n![%s](%s)\n\n`%s`, %d × %d" % (head, target.name, uri, where,
+                                                         width, height)
 
     def _hover_decision(self, target):
         title = self.decision_title(target.name)
@@ -823,6 +852,8 @@ class Navigator:
             return out, False
         if key == "load_oob":
             return self._oob_values(low)
+        if key == "picture" and kind == C.EVENT:
+            return self._picture_values(low)
         entry = None
         for wanted in ("trigger", "combat", "effect", "header", "option"):
             entry = entry or self.schema.get(key, wanted)
@@ -853,6 +884,15 @@ class Navigator:
             out.append(Completion(event.id, "event", title, filter="%s %s" % (event.id, title)))
             if len(out) >= _LIMIT:
                 return out, True
+        return out, False
+
+    def _picture_values(self, prefix):
+        out = []
+        for name in self.session.pictures.names():
+            if prefix in name.lower():
+                out.append(Completion(name, "file", "event picture", picture=name))
+                if len(out) >= _LIMIT:
+                    return out, True
         return out, False
 
     def _oob_values(self, prefix):

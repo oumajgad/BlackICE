@@ -100,6 +100,18 @@ async function run() {
     assert.ok(target.fsPath.endsWith("other.txt"), target.fsPath);
     console.log("  ok  hover and go to definition");
 
+    // An event's picture is previewed as an image the hover can show.
+    const other = await vscode.workspace.openTextDocument(vscode.Uri.file(path.join(root, "events", "other.txt")));
+    const pictureLine = 4;
+    const onPicture = new vscode.Position(pictureLine, other.lineAt(pictureLine).text.indexOf("Tiny") + 1);
+    const pictureHovers = await vscode.commands.executeCommand("vscode.executeHoverProvider", other.uri, onPicture);
+    const pictureText = pictureHovers.map((h) => h.contents.map((c) => c.value || c).join("")).join("");
+    // A link to a PNG on disk: VS Code cuts a hover at 100,000 characters, which a
+    // picture in base64 passes, and then shows the markdown as text.
+    assert.ok(/!\[Tiny\]\(file:\/\/\/[^)]+\.png\)/.test(pictureText) && pictureText.includes("2 × 1"),
+        pictureText.slice(0, 300));
+    console.log("  ok  event picture preview");
+
     // The outline names events by id and title.
     const symbols = await vscode.commands.executeCommand("vscode.executeDocumentSymbolProvider", uri);
     assert.deepStrictEqual(symbols.map((s) => s.name), ["1 Göring"]);

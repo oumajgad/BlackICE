@@ -35,9 +35,9 @@ async function start(context: ExtensionContext): Promise<void> {
         documentSelector: [{ scheme: "file", language: "blackice-script" }],
         synchronize: {
             configurationSection: "blackice.validator",
-            // Files changed outside the editor - a git pull, a localisation table - so the
-            // server's index and declarations follow them.
-            fileEvents: workspace.createFileSystemWatcher("**/*.{txt,csv,lua}"),
+            // Files changed outside the editor - a git pull, a localisation table, a new
+            // event picture - so the server's index and declarations follow them.
+            fileEvents: workspace.createFileSystemWatcher("**/*.{txt,csv,lua,tga,dds}"),
         },
     };
     client = new LanguageClient("blackice-script", "BlackICE Script", server, clientOptions);

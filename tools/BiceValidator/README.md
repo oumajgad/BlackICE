@@ -92,6 +92,12 @@ it out of `DROP` there.
   event, its title, description and options. On a localisation key, its English text.
   On a country, a province, a technology, a unit, a building or a modifier, its name and
   where it is declared. On a flag, how often it is set, tested and cleared.
+- **Event pictures.** Hovering `picture = "Supply-GER"` shows the picture, and completion
+  after `picture =` lists every picture with a preview. Pictures are looked for in the
+  mod's `gfx/pictures/events` and then in the game's (`tfh/` first). The game is found by
+  itself when it sits beside the checkout or a few levels above it, as
+  `Hearts of Iron 3`; otherwise set `gameFolder`. The TGA and DDS files are turned into
+  PNGs in `%TEMP%\bicevalidator-pictures`, because VS Code can show neither.
 - **Go to definition** (F12). Jumps from a fired event to the event, from `load_oob` to
   the file, from a name to its declaration, from a localisation key to its line in the
   table, from a keyword to its row in `docs/script`, and from a flag to where it is set.
@@ -129,7 +135,8 @@ Code's settings:
 - `scope`: `workspace` puts every file's findings in the Problems panel, after a
   background run of about half a minute;
 - `hideKnownNoise`, which hides what `baseline.json` lists;
-- `eventTitles`, which shows the titles of fired events.
+- `eventTitles`, which shows the titles of fired events;
+- `gameFolder`, the game install, where event pictures the mod does not ship are found.
 
 It does not read `validator.json`.
 
@@ -232,6 +239,7 @@ build log but does not stop the build. Use `--skip-validation` to build anyway.
 | `bicevalidator_gui/` | the window |
 | `bicevalidator/session.py`, `bicevalidator_lsp/`, `BiceValidatorLsp.py`, `bicevalidator-lsp.spec` | the language server: a mod kept loaded, the protocol, its launcher and its exe |
 | `bicevalidator/index.py`, `localisation.py`, `navigate.py` | what the editor asks about: where events, flags and modifiers are, what keys read as, what is at a place in a file |
+| `bicevalidator/pictures.py` | event pictures: which file a name shows, the game install, TGA and DDS to PNG |
 | `vscode/` | the VS Code extension, its tests in VS Code, and `build.py` |
 | `BiceValidator.pyw`, `BiceValidator.spec`, `build.py` | the launcher, and building it into an exe |
 | `tests/` | `python -m unittest discover -s tests -t .` |
