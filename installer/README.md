@@ -34,6 +34,10 @@ the `ISCC` environment variable to override.
 
 - `--no-redist` — build without bundling the Microsoft runtimes. The installer
   still detects and reports what is missing; it just cannot fix it.
+- `--skip-validation` — build even when BICE Validator finds a file the game cannot
+  read past. Before building, the build runs the validator's code mode
+  ([`tools/BiceValidator`](../tools/BiceValidator/README.md)), stops on a new unmatched
+  bracket, unclosed quote or key with no value, and counts everything else in the log.
 - `--fast` — no compression, so a build takes ~30 s instead of a long LZMA2 run.
   For trying out wizard changes only. Such a build is ~2.5 GB, runs unelevated,
   and prints `do not publish`.

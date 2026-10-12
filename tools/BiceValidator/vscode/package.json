@@ -1,0 +1,233 @@
+{
+  "name": "blackice-script",
+  "displayName": "BlackICE Script",
+  "description": "BICE Validator in the editor for Hearts of Iron 3 script: findings while you type, hover, go to definition, references, completion, an outline of events, Windows-1252 by default, and colouring.",
+  "version": "0.2.1",
+  "publisher": "blackice",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "blackice-script",
+        "aliases": [
+          "BlackICE Script",
+          "HoI3 Script"
+        ],
+        "filenamePatterns": [
+          "**/events/**/*.txt",
+          "**/decisions/**/*.txt",
+          "**/common/**/*.txt",
+          "**/history/**/*.txt",
+          "**/technologies/**/*.txt",
+          "**/units/**/*.txt",
+          "**/map/*.txt",
+          "**/interface/**/*.gfx",
+          "**/interface/**/*.gui"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "blackice-script",
+        "scopeName": "source.blackice-script",
+        "path": "./syntaxes/blackice-script.tmLanguage.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[blackice-script]": {
+        "files.encoding": "windows1252",
+        "files.autoGuessEncoding": false
+      }
+    },
+    "commands": [
+      {
+        "command": "blackice.validator.restart",
+        "title": "Restart the BICE Validator server",
+        "category": "BlackICE"
+      },
+      {
+        "command": "blackice.insertNextEventId",
+        "title": "Insert the next free event id",
+        "category": "BlackICE"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "blackice.insertNextEventId",
+          "when": "editorLangId == blackice-script"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "BlackICE Script",
+      "properties": {
+        "blackice.validator.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show BICE Validator findings in the editor."
+        },
+        "blackice.validator.disabledRules": {
+          "type": "array",
+          "default": [],
+          "uniqueItems": true,
+          "markdownDescription": "Rules whose findings are never shown, by id, e.g. `BV209`.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "BV001",
+              "BV002",
+              "BV003",
+              "BV004",
+              "BV005",
+              "BV006",
+              "BV007",
+              "BV008",
+              "BV009",
+              "BV010",
+              "BV101",
+              "BV102",
+              "BV103",
+              "BV104",
+              "BV105",
+              "BV106",
+              "BV107",
+              "BV108",
+              "BV110",
+              "BV111",
+              "BV112",
+              "BV113",
+              "BV201",
+              "BV202",
+              "BV203",
+              "BV204",
+              "BV205",
+              "BV206",
+              "BV207",
+              "BV208",
+              "BV209",
+              "BV210",
+              "BV211"
+            ],
+            "enumDescriptions": [
+              "Closing bracket with nothing open (error)",
+              "Block never closed (error)",
+              "Quoted text never closed (error)",
+              "Key with no value (error)",
+              "Operator with no key (error)",
+              "Quoted text runs over several lines and contains script (warning)",
+              "File saved as UTF-8 (warning)",
+              "File starts with a UTF-8 byte order mark (error)",
+              "Byte with no Windows-1252 character (warning)",
+              "Bare word inside a block of keys (warning)",
+              "Key the engine does not recognise (error)",
+              "Key that looks right and does nothing (error)",
+              "Keyword used where it does not belong (error)",
+              "Key not allowed directly in this block (error)",
+              "Value of the wrong kind (warning)",
+              "Key given twice where only one is kept (warning)",
+              "Event with no option (warning)",
+              "Event that can never fire (warning)",
+              "Keyword that does nothing (warning)",
+              "Unexpected field inside a keyword's block (warning)",
+              "Unrecognised entry at the top of the file (error)",
+              "Bare word in a script block (error)",
+              "Event fired that does not exist (error)",
+              "Event id used twice (error)",
+              "Order of battle file not found (error)",
+              "Country tag that does not exist (error)",
+              "Province id that does not exist (error)",
+              "Localisation key with no text (warning)",
+              "Modifier that does not exist (error)",
+              "Flag tested but never set (warning)",
+              "Flag set but never tested (info)",
+              "Country without a flag image (error)",
+              "Value names something that does not exist (warning)"
+            ]
+          }
+        },
+        "blackice.validator.minimumSeverity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning",
+            "info"
+          ],
+          "default": "info",
+          "description": "Show findings at this severity or worse."
+        },
+        "blackice.validator.references": {
+          "type": "string",
+          "enum": [
+            "onSave",
+            "off"
+          ],
+          "enumDescriptions": [
+            "Check what files name - events, tags, modifiers, flags, localisation - over the whole mod after every save.",
+            "Only the checks of each file on its own."
+          ],
+          "default": "onSave",
+          "description": "Whether to run the reference checks, which need the whole mod."
+        },
+        "blackice.validator.scope": {
+          "type": "string",
+          "enum": [
+            "openFiles",
+            "workspace"
+          ],
+          "enumDescriptions": [
+            "Findings for the files open in the editor.",
+            "Findings for every script file of the mod, in the Problems panel. A run over the whole mod takes about half a minute in the background."
+          ],
+          "default": "openFiles",
+          "description": "Which files' findings to show."
+        },
+        "blackice.validator.hideKnownNoise": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Hide findings that the mod's `tools/BiceValidator/baseline.json` lists as known noise - the list the BICE Validator window keeps."
+        },
+        "blackice.validator.eventTitles": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show the title of the event after `country_event = <id>` and `province_event = <id>`, faintly, at the end of the line."
+        },
+        "blackice.validator.serverCommand": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "Run the language server from somewhere else than the bundled exe, e.g. `[\"python\", \"C:/.../tools/BiceValidator/BiceValidatorLsp.py\"]` to try a change to it from source. Takes effect after *BlackICE: Restart the BICE Validator server*."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node18 --minify",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "node ./test/runTest.js",
+    "package": "vsce package --no-dependencies --skip-license --allow-missing-repository"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/test-electron": "^2.4.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.0"
+  }
+}

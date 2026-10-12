@@ -137,9 +137,19 @@ Scopes nest as deep as you like. `owner`, `controller` and `capital_scope` move 
 province to a country; `any_owned` and `random_owned` move from a country to its
 provinces. [scopes.md](scopes.md) lists them all.
 
-`and`, `or` and `not` group conditions rather than changing scope. One catch inherited
-from the engine: **`not` does not reliably imply an `and` inside it** - if you need more
-than one condition under a `not`, write the `and` explicitly.
+`and`, `or` and `not` group conditions rather than changing scope. **`not` means "none of
+these"**: it is false as soon as any one of its conditions is true. So with more than one
+condition inside it, the two ways of writing it mean different things:
+
+| Written | Means |
+| --- | --- |
+| `not = { a b }` | neither a nor b |
+| `not = { and = { a b } }` | not both a and b |
+
+Older notes said `not` "does not work correctly unless you state the `and`", which is the
+second meaning mistaken for a fix. Write the `and` only when "not both" is what you mean.
+This was read out of the game: `CNotTrigger` stops at the first condition that is true
+([`findings/FINDINGS-triggereval.md`](../../../hoi3-reversing/findings/FINDINGS-triggereval.md)).
 
 ## When a key is wrong, nothing happens
 
