@@ -2,7 +2,7 @@
   "name": "blackice-script",
   "displayName": "BlackICE Script",
   "description": "BICE Validator in the editor for Hearts of Iron 3 script: findings while you type, hover, go to definition, references, completion, an outline of events, Windows-1252 by default, and colouring.",
-  "version": "0.3.1",
+  "version": "0.3.6",
   "publisher": "blackice",
   "private": true,
   "license": "UNLICENSED",
@@ -131,6 +131,11 @@
               "BV306",
               "BV307",
               "BV308",
+              "BV309",
+              "BV310",
+              "BV311",
+              "BV312",
+              "BV313",
               "BV201",
               "BV202",
               "BV203",
@@ -142,7 +147,12 @@
               "BV209",
               "BV210",
               "BV211",
-              "BV212"
+              "BV212",
+              "BV213",
+              "BV214",
+              "BV215",
+              "BV216",
+              "BV217"
             ],
             "enumDescriptions": [
               "Closing bracket with nothing open (error)",
@@ -175,6 +185,11 @@
               "Name that does not exist (error)",
               "Model list that does not fit its unit type (warning)",
               "Key that does nothing here (warning)",
+              "Leader below the rank his command wants (warning)",
+              "Leader of the wrong arm (warning)",
+              "Leader of another country (warning)",
+              "Leader given to two units (warning)",
+              "Rank in a leader's history that the game does not apply (warning)",
               "Event fired that does not exist (error)",
               "Event id used twice (error)",
               "Order of battle file not found (error)",
@@ -186,7 +201,12 @@
               "Flag set but never tested (info)",
               "Country without a flag image (error)",
               "Value names something that does not exist (warning)",
-              "Event picture not found (warning)"
+              "Event picture not found (warning)",
+              "Event nothing fires (warning)",
+              "Event fired only from events that never happen (warning)",
+              "Variable tested but never set (warning)",
+              "Variable set but never tested (info)",
+              "Units loaded where nothing checks who holds the province (warning)"
             ]
           }
         },
@@ -240,6 +260,11 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "In a `model = { ... }` list of an order of battle, show after each level the technology it sets. The levels go to the unit type's technologies in the order the technology files are read."
+        },
+        "blackice.validator.idNames": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show, faintly after a province's or a leader's number, its name - `location = 739`, `leader = 9721`, `controls = 739`, `739 = { ... }`. In an order of battle a leader's rank is given too: the rank the game gives him, which is not always what his history says."
         },
         "blackice.validator.eventTitles": {
           "type": "boolean",

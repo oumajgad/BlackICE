@@ -153,6 +153,17 @@ class LanguageServerTest(unittest.TestCase):
             "command": "blackice.nextEventId", "arguments": [self.uri, 0]})["result"]
         self.assertEqual(ident, 3)
 
+        # The chain of events as a call hierarchy: event 2 is fired by event 1, on line 8.
+        [item] = self.ask("textDocument/prepareCallHierarchy", 11, 10)
+        self.assertEqual(item["name"], "2 Second")
+        [incoming] = self.client.request("callHierarchy/incomingCalls",
+                                         {"item": item})["result"]
+        self.assertEqual(incoming["from"]["name"], "1 Title")
+        self.assertEqual([r["start"]["line"] for r in incoming["fromRanges"]], [7])
+        [outgoing] = self.client.request("callHierarchy/outgoingCalls",
+                                         {"item": incoming["from"]})["result"]
+        self.assertEqual(outgoing["to"]["name"], "2 Second")
+
 
 TWO_EVENTS = dedent("""
     country_event = {

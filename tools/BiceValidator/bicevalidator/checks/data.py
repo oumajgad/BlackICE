@@ -12,8 +12,10 @@ import difflib
 import os
 import re
 
+from .. import parser
 from ..context import describe
 from ..diagnostic import Diagnostic
+from ..leaders import date_text, rank_phrase, read_leader
 from ..schemas import DECLARED, describe_value
 
 _NUMBER = re.compile(r"^[+-]?(\d+(\.\d*)?|\.\d+)$")
@@ -39,6 +41,11 @@ class DataChecker:
         self.path = source.path
         self.schema = schema
         self._block(root_node, schema.root, "this file")
+        leaders = getattr(self.decl, "leaders", None)
+        if leaders is not None and schema.kind == "oob":
+            self._oob_leaders(root_node, leaders)
+        elif leaders is not None and schema.kind == "leaders":
+            self._leader_ranks(root_node, leaders)
         return self.out
 
     # --- reporting ---------------------------------------------------------------------
@@ -275,6 +282,113 @@ class DataChecker:
                                             if len(items) > len(techs) else
                                             "The last %d technologies get level 0."
                                             % (len(techs) - len(items))))
+
+
+    # --- the leaders an order of battle names ------------------------------------------
+
+    def _oob_leaders(self, root_node, leaders):
+        start = leaders.start_oob(self.path)
+        given = {}
+        for unit in parser.walk(root_node):
+            level = unit.lkey
+            if not unit.is_block or level not in UNIT_ARMS:
+                continue
+            node = unit.child("leader")
+            if node is None or not node.value or not node.value.isdigit():
+                continue
+            leader = leaders.get(node.value)
+            if leader is None:
+                continue        # BV306, from the schema's `name:leader`
+            who = "%s (%s)" % (leader.name or "Leader", leader.ident)
+            earlier = given.get(leader.ident)
+            if earlier is not None:
+                self._report("BV312", node, "%s is given to %s here, after %s on line %d"
+                             % (who, _unit(unit), _unit(earlier), earlier.line),
+                             hint="Putting a leader on a unit takes him off the one he had, so "
+                                  "the first keeps none, and gets the country's best free "
+                                  "leader when the file is loaded.", at_value=True)
+            given[leader.ident] = unit
+            arm = UNIT_ARMS[level]
+            if leader.arm and leader.arm != arm:
+                self._report("BV310", node, "%s is %s leader, and %s wants %s one"
+                             % (who, _a(leader.arm), _unit(unit), _a(arm)),
+                             hint="The game gives him to it anyway, and would never choose "
+                                  "him for it itself.", at_value=True)
+                continue
+            if start is not None and leader.country and leader.country != start[0]:
+                self._report("BV311", node, "%s is %s's leader, and this order of battle is "
+                             "%s's" % (who, leader.country, start[0]),
+                             hint="%s's history loads this file as a game starts. The game "
+                                  "gives him the unit anyway." % start[0], at_value=True)
+            wanted = RANK_WANTED.get(level)
+            if wanted is None:
+                continue
+            rank, since = leaders.rank_in(leader, self.path)
+            if rank >= wanted:
+                continue
+            said = "%s is %s," % (who, rank_phrase(rank, since))
+            hint = ("A %s is commanded at rank %d or above, by the rule BiceLib's load_oob "
+                    "tooltip applies. " % (LEVEL_WORDS[level], wanted))
+            if rank < RANK_COUNTED[level]:
+                hint += ("Below rank %d the game itself counts none of his skill for the "
+                         "unit in battle, and writes his name in red." % RANK_COUNTED[level])
+            else:
+                hint += "The game takes him, and counts his skill."
+            self._report("BV309", node, "%s and %s wants rank %d"
+                         % (said, _unit(unit), wanted), hint=hint, at_value=True)
+
+    def _leader_ranks(self, root_node, leaders):
+        start = leaders.start
+        for block in root_node.children or ():
+            if not (block.is_block and block.key and block.key.isdigit()):
+                continue
+            leader = read_leader(block, self.path)
+            ignored = leader.ignored_ranks(start)
+            if not ignored:
+                continue
+            by_line = {}
+            history = block.child("history")
+            for entry in (history.children if history is not None and history.is_block else ()):
+                for child in entry.children or ():
+                    if child.lkey == "rank":
+                        by_line[child.line] = child
+            held, since = leader.rank_in_play(start)
+            for when, value, line, why in ignored:
+                node = by_line.get(line, block)
+                if why == "first":
+                    message = ("Leader %s's first rank is %d, on %s; the game puts him in "
+                               "service that day at rank 1" % (leader.ident, value,
+                                                              date_text(when)))
+                    hint = "Whatever rank is written there, a leader not in service at the " \
+                           "start comes into it at rank 1."
+                else:
+                    message = ("Rank %d on %s is never applied to leader %s"
+                               % (value, date_text(when), leader.ident))
+                    hint = ("After the start the game reads only the date of a leader's first "
+                            "rank, so he stays at rank %d unless he is promoted in play."
+                            % held)
+                self._report("BV313", node, message, hint=hint, at_value=True)
+
+
+# The unit blocks of an order of battle, and the arm of leader each takes.
+UNIT_ARMS = {"theatre": "land", "armygroup": "land", "army": "land", "corps": "land",
+             "division": "land", "navy": "sea", "air": "air"}
+LEVEL_WORDS = {"theatre": "theatre", "armygroup": "army group", "army": "army",
+               "corps": "corps", "division": "division", "navy": "fleet", "air": "air unit"}
+# The rank each land level wants: the maintainer's rule, which BiceLib's load_oob tooltip
+# applies (BiceLib/Hooks/EffectText/LoadOobText.hpp) - rank 4 is an honour, not a job.
+RANK_WANTED = {"division": 1, "corps": 2, "army": 3, "armygroup": 3, "theatre": 3}
+# The rank below which the game itself counts none of a leader's skill for his unit:
+# CUnit::LeaderHasRankForCommand (reversing/findings/FINDINGS-leaderassign.md, section 7).
+RANK_COUNTED = {"division": 0, "corps": 1, "army": 2, "armygroup": 3, "theatre": 3}
+
+
+def _unit(node):
+    name = node.child("name")
+    word = LEVEL_WORDS.get(node.lkey, node.key)
+    if name is not None and name.value:
+        return "the %s %s" % (word, name.value)
+    return "a %s" % word
 
 
 def _pattern_word(match):

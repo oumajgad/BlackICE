@@ -100,6 +100,20 @@ async function run() {
     assert.ok(target.fsPath.endsWith("other.txt"), target.fsPath);
     console.log("  ok  hover and go to definition");
 
+    // The chain of events in the Call Hierarchy view: event 2 is fired by event 1, here -
+    // once the unsaved line has reached the index, after the check's pause for typing.
+    const [chainItem] = await vscode.commands.executeCommand("vscode.prepareCallHierarchy", uri, onId);
+    assert.strictEqual(chainItem.name, "2 Second");
+    let callers = [];
+    const chainDeadline = Date.now() + 30000;
+    while (callers.length === 0 && Date.now() < chainDeadline) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        callers = await vscode.commands.executeCommand("vscode.provideIncomingCalls", chainItem);
+    }
+    assert.deepStrictEqual(callers.map((c) => c.from.name), ["1 Göring"]);
+    assert.strictEqual(callers[0].fromRanges[0].start.line, fireLine);
+    console.log("  ok  chain of events");
+
     // An event's picture is previewed as an image the hover can show.
     const other = await vscode.workspace.openTextDocument(vscode.Uri.file(path.join(root, "events", "other.txt")));
     const pictureLine = 4;

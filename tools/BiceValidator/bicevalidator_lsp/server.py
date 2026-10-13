@@ -29,6 +29,7 @@ from pygls.uris import from_fs_path, to_fs_path
 from bicevalidator import __version__, lexer, navigate as N, rules, runner
 from bicevalidator.baseline import Baseline
 from bicevalidator.config import TOOL_IN_MOD
+from bicevalidator.index import Source
 from bicevalidator.session import Session
 
 SECTION = "blackice.validator"
@@ -67,6 +68,7 @@ class Settings:
     hide_known_noise: bool = False
     event_titles: bool = True
     model_technologies: bool = True     # name the technology after each level of a model
+    id_names: bool = True               # name the province or leader after its number
     game_folder: str = ""               # empty: found beside the mod (pictures.find_game)
 
     @classmethod
@@ -82,6 +84,7 @@ class Settings:
         settings.hide_known_noise = bool(data.get("hideKnownNoise", False))
         settings.event_titles = bool(data.get("eventTitles", True))
         settings.model_technologies = bool(data.get("modelTechnologies", True))
+        settings.id_names = bool(data.get("idNames", True))
         settings.game_folder = str(data.get("gameFolder") or "").strip()
         return settings
 
@@ -429,13 +432,14 @@ async def initialized(ls: BiceServer, params: T.InitializedParams):
 
 @server.feature(T.WORKSPACE_DID_CHANGE_CONFIGURATION)
 async def configuration_changed(ls: BiceServer, params: T.DidChangeConfigurationParams):
-    titles = (ls.settings.event_titles, ls.settings.model_technologies)
+    titles = (ls.settings.event_titles, ls.settings.model_technologies, ls.settings.id_names)
     await ls.refresh_settings()
     ls.publish_all()
     for mod in ls.mods.values():
         ls.schedule_run(mod, delay=0)
     capabilities = ls.client_capabilities.workspace
-    if titles != (ls.settings.event_titles, ls.settings.model_technologies) \
+    if titles != (ls.settings.event_titles, ls.settings.model_technologies,
+                  ls.settings.id_names) \
             and capabilities is not None \
             and capabilities.inlay_hint is not None and capabilities.inlay_hint.refresh_support:
         ls.workspace_inlay_hint_refresh(None)
@@ -551,6 +555,75 @@ async def references(ls: BiceServer, params: T.ReferenceParams):
     return [ls.location(navigator.session.root, place) for place in places]
 
 
+# The chain of events, as VS Code's Call Hierarchy: what fires an event is its caller, the
+# events it fires its callees. Decisions, on_actions entries and blocks of common/ are
+# callers that nothing calls.
+_CHAIN_KINDS = {"event": T.SymbolKind.Event, "decision": T.SymbolKind.Function,
+                "on_action": T.SymbolKind.Interface, "block": T.SymbolKind.Object}
+
+
+def _chain_item(ls, root, item):
+    start = T.Position(item.line - 1, max(0, item.col - 1))
+    end = T.Position(item.line - 1, max(0, item.end - 1))
+    uri = ls.location(root, N.Place(item.file, item.line)).uri
+    return T.CallHierarchyItem(
+        name=item.label, kind=_CHAIN_KINDS.get(item.kind, T.SymbolKind.Object),
+        uri=uri, range=T.Range(start, end), selection_range=T.Range(start, end),
+        detail=item.detail or None,
+        data={"root": root, "kind": item.kind, "name": item.name, "file": item.file,
+              "line": item.line})
+
+
+def _site_range(site):
+    return T.Range(T.Position(site.line - 1, site.col - 1), T.Position(site.line - 1, site.end - 1))
+
+
+async def _chain_navigator(ls, item):
+    data = item.data or {}
+    mod = ls.mods.get(data.get("root"))
+    if mod is None or mod.session is None:
+        return None, None
+    navigator = mod.session.navigator
+    found = navigator.source_item(Source(data["kind"], data["name"], data["file"],
+                                         data["line"]))
+    return navigator, found
+
+
+@server.feature(T.TEXT_DOCUMENT_PREPARE_CALL_HIERARCHY)
+async def prepare_chain(ls: BiceServer, params: T.CallHierarchyPrepareParams):
+    found = await ls.at(params.text_document.uri)
+    if found is None:
+        return None
+    navigator, rel, parsed = found
+    position = params.position
+    item = navigator.chain_item(rel, parsed, position.line + 1, position.character + 1)
+    if item is None:
+        return None
+    return [_chain_item(ls, navigator.session.root, item)]
+
+
+@server.feature(T.CALL_HIERARCHY_INCOMING_CALLS)
+async def chain_callers(ls: BiceServer, params: T.CallHierarchyIncomingCallsParams):
+    navigator, item = await _chain_navigator(ls, params.item)
+    if item is None:
+        return None
+    root = navigator.session.root
+    return [T.CallHierarchyIncomingCall(from_=_chain_item(ls, root, source),
+                                        from_ranges=[_site_range(s) for s in sites])
+            for source, sites in navigator.callers(item)]
+
+
+@server.feature(T.CALL_HIERARCHY_OUTGOING_CALLS)
+async def chain_callees(ls: BiceServer, params: T.CallHierarchyOutgoingCallsParams):
+    navigator, item = await _chain_navigator(ls, params.item)
+    if item is None:
+        return None
+    root = navigator.session.root
+    return [T.CallHierarchyOutgoingCall(to=_chain_item(ls, root, target),
+                                        from_ranges=[_site_range(s) for s in sites])
+            for target, sites in navigator.callees(item)]
+
+
 def _document_symbol(symbol):
     start = T.Position(symbol.line - 1, max(0, symbol.col - 1))
     end = T.Position(symbol.end_line - 1, max(0, symbol.end_col - 1))
@@ -586,7 +659,7 @@ async def workspace_symbols(ls: BiceServer, params: T.WorkspaceSymbolParams):
 @server.feature(T.TEXT_DOCUMENT_INLAY_HINT)
 async def inlay_hints(ls: BiceServer, params: T.InlayHintParams):
     settings = ls.settings
-    if not (settings.event_titles or settings.model_technologies):
+    if not (settings.event_titles or settings.model_technologies or settings.id_names):
         return []
     found = await ls.at(params.text_document.uri)
     if found is None:
@@ -602,6 +675,10 @@ async def inlay_hints(ls: BiceServer, params: T.InlayHintParams):
         hints += [T.InlayHint(position=T.Position(line - 1, col - 1), label=tech,
                               padding_left=True, padding_right=True)
                   for line, col, tech in navigator.model_hints(parsed, first, last)]
+    if settings.id_names:
+        hints += [T.InlayHint(position=T.Position(line - 1, col - 1), label=name,
+                              padding_left=True)
+                  for line, col, name in navigator.id_names(rel, parsed, first, last)]
     return hints
 
 
@@ -703,6 +780,7 @@ async def completion(ls: BiceServer, params: T.CompletionParams):
             insert_text=item.insert or None,
             insert_text_format=T.InsertTextFormat.Snippet if item.insert else None,
             filter_text=item.filter or None,
+            sort_text=item.sort or None,
             # A picture's preview is made only for the item VS Code shows the details of.
             data={"root": navigator.session.root, "picture": item.picture}
             if item.picture else None))

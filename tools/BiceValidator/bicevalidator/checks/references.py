@@ -45,8 +45,21 @@ FLAG_TEXT = re.compile(r"(set|clr|has)_(country|global|province)_flag\s*=\s*\"?(
                        re.IGNORECASE)
 # Lua names a flag as a string; any quoted word there counts as a possible use.
 LUA_STRING = re.compile(r"[\"']([\w.\-]+)[\"']")
+# Lua also builds names out of pieces - `buildingtype .. "_count_TECH"`,
+# `"zDsafe_requestedBuilding" .. name` - so a quoted piece joined on with `..` is the end,
+# or the start, of names nothing can list.
+LUA_PREFIX = re.compile(r"[\"']([\w.\-]+)[\"']\s*\.\.")
+LUA_SUFFIX = re.compile(r"\.\.\s*[\"']([\w.\-]+)[\"']")
+LUA_MIDDLE = re.compile(r"\.\.\s*[\"']([\w.\-]+)[\"']\s*\.\.")
 
 LOC_KEY = re.compile(r"^[A-Za-z0-9_.\-]+$")
+
+# The three keywords that name a variable, each `{ which = <name> value = <number> }`, and
+# what each does with it. A variable is a country's, and its name is matched without case
+# (reversing/findings/FINDINGS-negatives.md, section 7).
+VARIABLE_KEYS = {"set_variable": "set", "change_variable": "change", "check_variable": "check"}
+VARIABLE_TEXT = re.compile(r"(set|change|check)_variable\s*=\s*\{([^{}]*)\}", re.IGNORECASE)
+VARIABLE_WHICH = re.compile(r"\bwhich\s*=\s*\"?([\w.\-]+)", re.IGNORECASE)
 
 
 def _strip_comments(text):
@@ -81,9 +94,30 @@ def _flags_elsewhere(root):
             for verb, scope, name in FLAG_TEXT.findall(_strip_comments(_read_text(path))):
                 (tested if verb.lower() == "has" else set_)[scope.lower()].add(name.lower())
     lua = set()
+    pieces = (set(), set(), set())
     for path in glob.glob(os.path.join(root, "script", "**", "*.lua"), recursive=True):
-        lua.update(w.lower() for w in LUA_STRING.findall(_read_text(path)))
-    return set_, tested, lua
+        text = _read_text(path)
+        lua.update(w.lower() for w in LUA_STRING.findall(text))
+        for found, side in ((LUA_PREFIX, 0), (LUA_SUFFIX, 1), (LUA_MIDDLE, 2)):
+            pieces[side].update(p.lower() for p in found.findall(text)
+                                if len(p) >= 3 and any(ch.isalpha() for ch in p))
+    return set_, tested, lua, pieces
+
+
+def _variables_elsewhere(root):
+    """Variable names set (or changed) and tested outside events and decisions: the
+    technologies' and the other data files' conditions and effects."""
+    set_, tested = set(), set()
+    for folder, pattern in (("common", "**/*.txt"), ("technologies", "**/*.txt"),
+                            ("history", "countries/*.txt"), ("units", "*.txt")):
+        for path in glob.glob(os.path.join(root, folder, pattern), recursive=True):
+            text = _read_text(path)
+            if "_variable" not in text:
+                continue
+            for verb, body in VARIABLE_TEXT.findall(_strip_comments(text)):
+                for name in VARIABLE_WHICH.findall(body):
+                    (tested if verb.lower() == "check" else set_).add(name.lower())
+    return set_, tested
 
 
 class _Collector:
@@ -95,6 +129,8 @@ class _Collector:
         self.fires = []             # (file, node, id)
         self.flag_set = defaultdict(dict)     # scope -> name -> (file, node)
         self.flag_tested = defaultdict(dict)
+        self.variable_set = {}                # lower name -> (file, `which` node)
+        self.variable_tested = {}             # lower name -> (file, `which` node, block)
         self.picture_spelling = None          # lower name -> as the file spells it
 
     def picture_names(self):
@@ -137,12 +173,22 @@ def check(root, files, decl, schema, pictures=None):
             if node.is_pair and node.value and node.value.isdigit() \
                     and node.parent is not None and node.parent.key is not None:
                 c.fires.append(("common/on_actions.txt", node, node.value))
+    # The other files of common/ fire events too: a casus belli's `on_completion`, a
+    # covert operation.
+    for rel in sorted(files):
+        if rel.startswith("common/") and rel != "common/on_actions.txt":
+            for node in parser.walk(files[rel].result.root):
+                if node.lkey in S.EVENT_TYPES:
+                    _fire(c, rel, node)
 
     for path, node, ident in c.fires:
         if ident not in c.events:
             c.report("BV201", path, node, "Event %s does not exist" % ident)
 
-    _flags(c, root)
+    _event_chains(c, files, root)
+    elsewhere = _flags_elsewhere(root)
+    _flags(c, elsewhere)
+    _variables(c, root, elsewhere[2], elsewhere[3])
     _flag_images(c, root, decl)
     return c.out
 
@@ -216,14 +262,8 @@ def _node(c, rel, node, tag_keys, province_keys, root):
         return
     decl = c.decl
 
-    if low in ("country_event", "province_event") and node.parent is not None \
-            and node.parent.key is not None:
-        if node.value and node.value.isdigit():
-            c.fires.append((rel, node, node.value))
-        elif node.is_block:
-            ident = node.child("id")
-            if ident is not None and ident.value and ident.value.isdigit():
-                c.fires.append((rel, ident, ident.value))
+    if low in S.EVENT_TYPES:
+        _fire(c, rel, node)
         return
 
     if node.is_block and low.isdigit():
@@ -232,6 +272,16 @@ def _node(c, rel, node, tag_keys, province_keys, root):
             return
         if not decl.has(Kinds.PROVINCE, low):
             c.report("BV205", rel, node, "Province %s does not exist" % low, at_value=False)
+        return
+
+    if low in VARIABLE_KEYS and node.is_block:
+        which = node.child("which")
+        if which is not None and which.value:
+            name = which.value.lower()
+            if VARIABLE_KEYS[low] == "check":
+                c.variable_tested.setdefault(name, (rel, which, node))
+            else:
+                c.variable_set.setdefault(name, (rel, which))
         return
 
     value = node.value
@@ -278,8 +328,69 @@ def _node(c, rel, node, tag_keys, province_keys, root):
             c.report("BV205", rel, node, "Province %s does not exist" % value)
 
 
-def _flags(c, root):
-    set_elsewhere, tested_elsewhere, lua = _flags_elsewhere(root)
+def _fire(c, rel, node):
+    """Note the event \\p node fires, if it fires one: `country_event = <id>`, or the block
+    form with an `id`. An event's own `country_event = { ... }` at the top of a file is
+    its definition, not a firing."""
+    if node.op is None or node.parent is None or node.parent.key is None:
+        return
+    if node.value and node.value.isdigit():
+        c.fires.append((rel, node, node.value))
+    elif node.is_block:
+        ident = node.child("id")
+        if ident is not None and ident.value and ident.value.isdigit():
+            c.fires.append((rel, ident, ident.value))
+
+
+def _event_chains(c, files, root):
+    """BV213 and BV214: events that can never happen, because nothing that happens fires
+    them (chains.py); and BV217, units loaded where nothing checks who holds the province
+    (guards.py)."""
+    from ..chains import Chains
+    from ..index import facts, indexes
+    events, fires, decisions, loads = {}, {}, {}, []
+    for rel in sorted(files):
+        if not indexes(rel):
+            continue
+        part = facts(rel, files[rel].result.root)
+        for event in part.events:
+            events.setdefault(event.id, []).append(event)
+        for ident, site in part.fires:
+            fires.setdefault(ident, []).append(site)
+        for decision in part.decisions:
+            decisions.setdefault(decision.name.lower(), []).append(decision)
+        loads += part.loads
+    chains = Chains(events, fires, decisions)
+    _unguarded_loads(c, root, chains, loads)
+    for event, why, sources in chains.dead():
+        site = event.id_site
+        context = "%s %s" % (event.type, event.id)
+        if why == "unfired":
+            c.out.append(Diagnostic(
+                "BV213", event.file, site.line, site.col,
+                "Event %s is triggered only, and nothing fires it" % event.id,
+                context=context,
+                hint="No event, decision, entry of common/on_actions.txt or other file of "
+                     "common/ fires it, so it never happens - unless it is fired by hand "
+                     "from the console."))
+            continue
+        named = ", ".join(sources[:3]) + (" and %d more" % (len(sources) - 3)
+                                          if len(sources) > 3 else "")
+        related = [Related("fired here, from event %s" % s.source.name, s.file, s.line, s.col)
+                   for s in chains.fired_from(event.id)][:10]
+        c.out.append(Diagnostic(
+            "BV214", event.file, site.line, site.col,
+            "Event %s is fired only by event%s %s, which never happen%s"
+            % (event.id, "s" if len(sources) > 1 else "", named,
+               "" if len(sources) > 1 else "s"),
+            context=context, related=related,
+            hint="Each event that fires it is itself triggered only and fired by nothing that "
+                 "happens. Show Call Hierarchy (Shift+Alt+H) on the id in VS Code walks the "
+                 "chain."))
+
+
+def _flags(c, elsewhere):
+    set_elsewhere, tested_elsewhere, lua, _ = elsewhere
     for scope, names in c.flag_tested.items():
         for name, (rel, node) in names.items():
             if name in c.flag_set[scope] or name in set_elsewhere[scope] or name in lua:
@@ -294,6 +405,94 @@ def _flags(c, root):
                 continue
             c.report("BV209", rel, node, "%s flag `%s` is set but never tested"
                      % (scope.capitalize(), node.value))
+
+
+def _unguarded_loads(c, root, chains, loads):
+    """BV217: a `load_oob` whose file puts units in provinces whose controller nothing on
+    the way to it has tested."""
+    from ..guards import unit_places
+    from .. import lexer
+    places = {}
+    names = None
+    for oob, site in loads:
+        if oob not in places:
+            rel = "history/units/" + oob
+            places[oob] = unit_places(parser.parse(lexer.read(root, rel).text).root) \
+                if os.path.exists(os.path.join(root, rel)) else []
+        guarded = chains.site_guards(site)
+        open_ = [(ident, line) for ident, line in places[oob] if ident not in guarded]
+        if not open_:
+            continue
+        if names is None:
+            names = _province_names(root)
+        listed = ", ".join("%s (%s)" % (names[i], i) if i in names else i
+                           for i, _ in open_[:4])
+        if len(open_) > 4:
+            listed += " and %d more" % (len(open_) - 4)
+        c.out.append(Diagnostic(
+            "BV217", site.file, site.line, site.col,
+            "%s puts units in %d province%s nothing checks the controller of: %s"
+            % (oob, len(open_), "" if len(open_) == 1 else "s", listed),
+            context="load_oob = %s" % oob,
+            hint="A loaded unit goes where its file says, even into a province an enemy "
+                 "holds. Test each with `controls = <id>` or `<id> = { controller = ... }` in "
+                 "the event's trigger, the decision's allow, a limit around the load, or "
+                 "whatever fires the event - and load a fallback where the test fails. Hover "
+                 "the file name in VS Code for which provinces are tested.",
+            related=[Related("unit placed here", "history/units/" + oob, line, 1)
+                     for _, line in open_[:10]]))
+
+
+def _province_names(root):
+    """Province id -> its English name, from the PROV<id> localisation keys."""
+    names = {}
+    for path in sorted(glob.glob(os.path.join(root, "localisation", "*.csv"))):
+        for line in _read_text(path).splitlines():
+            if line[:4].upper() == "PROV":
+                parts = line.split(";")
+                key = parts[0].strip()
+                if key[4:].isdigit() and len(parts) > 1 and parts[1].strip():
+                    names.setdefault(key[4:], parts[1].strip())
+    return names
+
+
+def _variables(c, root, lua, pieces):
+    """BV215 and BV216: a variable tested that nothing sets, and one set that nothing
+    tests. Names are compared without case, as the game compares them. Lua reads and sets
+    variables too, so a name its scripts write in quotes (\\p lua, lower case) counts as
+    both, and so does one that starts, ends or has in its middle a piece Lua builds names
+    from (\\p pieces: prefixes, suffixes and middles)."""
+    set_elsewhere, tested_elsewhere = _variables_elsewhere(root)
+    prefixes, suffixes, middles = pieces
+
+    def in_lua(name):
+        return name in lua or name.startswith(tuple(prefixes)) \
+            or name.endswith(tuple(suffixes)) or any(m in name for m in middles)
+
+    for name, (rel, which, block) in sorted(c.variable_tested.items()):
+        if name in c.variable_set or name in set_elsewhere or in_lua(name):
+            continue
+        value = block.child("value")
+        hint = ("`check_variable` on a variable nothing has set finds nothing, makes it at 0 "
+                "and compares 0 with `value`")
+        number = _number(value.value) if value is not None else 0.0
+        if number is not None:
+            hint += ", so this test is always %s." % ("true" if number <= 0 else "false")
+        else:
+            hint += "."
+        c.report("BV215", rel, which, "Variable `%s` is tested but never set" % which.value,
+                 hint=hint + " Often a typo in one of the two names.")
+    for name, (rel, which) in sorted(c.variable_set.items()):
+        if name in c.variable_tested or name in tested_elsewhere or in_lua(name):
+            continue
+        c.report("BV216", rel, which, "Variable `%s` is set but never tested" % which.value)
+
+
+def _number(text):
+    try:
+        return float(text)
+    except (TypeError, ValueError):
+        return None
 
 
 def _flag_images(c, root, decl):

@@ -10,6 +10,7 @@ unit files and the Lua scripts - and those are searched as text the first time a
 asks, as the reference checks do (checks/references.py).
 """
 
+import bisect
 import glob
 import os
 import re
@@ -17,7 +18,10 @@ import threading
 from dataclasses import dataclass, field
 
 from . import lexer, parser, schema as S
-from .checks.references import FLAG_KEY, MODIFIER_KEYS
+from .chains import Chains
+from .guards import guards_of, path_flags, path_guards
+from .checks.references import FLAG_KEY, LUA_MIDDLE, LUA_PREFIX, LUA_SUFFIX, MODIFIER_KEYS, \
+    VARIABLE_KEYS, VARIABLE_TEXT, VARIABLE_WHICH
 
 # Which files the index reads: events, decisions, and the one file in common/ that fires
 # events.
@@ -29,8 +33,22 @@ MODIFIER_USES = MODIFIER_KEYS | {"remove_country_modifier", "remove_province_mod
 _FLAG_FOLDERS = (("common", "**/*.txt"), ("technologies", "**/*.txt"),
                  ("history", "countries/*.txt"), ("history", "units/**/*.txt"),
                  ("units", "*.txt"))
+# Folders whose variables the index finds by searching text: the conditions and effects of
+# the data files. common/ is parsed for the events it fires, but not for these.
+_VARIABLE_FOLDERS = (("common", "**/*.txt"), ("technologies", "**/*.txt"),
+                     ("history", "countries/*.txt"), ("units", "*.txt"))
 _FLAG_LINE = re.compile(r"(set|clr|has)_(country|global|province)_flag(\s*=\s*\"?)([\w.\-]+)",
                         re.IGNORECASE)
+
+
+@dataclass(frozen=True)
+class Source:
+    """What a place that fires an event sits in: an event, a decision, an entry of
+    on_actions, or a block of another file of common/ - a casus belli, a covert operation."""
+    kind: str               # "event", "decision", "on_action" or "block"
+    name: str               # the event's id, the decision's or the block's key
+    file: str
+    line: int
 
 
 @dataclass
@@ -42,6 +60,11 @@ class Site:
     col: int
     end: int
     verb: str = ""
+    source: Source = None   # for a fire, what fires it
+    name: str = ""          # the name as written, where it is compared without case
+    guards: frozenset = frozenset()     # for a fire or a load: provinces the limits around
+                                        # it guard (guards.py)
+    flags: frozenset = frozenset()      # for a load: country flags those limits require
 
 
 @dataclass
@@ -55,6 +78,15 @@ class Event:
     title: str = None       # as written: a localisation key or the text itself
     desc: str = None
     options: list = field(default_factory=list)    # (name as written, line, col)
+    triggered_only: bool = False    # `is_triggered_only = yes`
+    has_trigger: bool = False
+    guards: frozenset = frozenset()     # provinces its trigger guards (guards.py)
+
+    @property
+    def fires_itself(self):
+        """Whether the game fires it on its own when its trigger holds, rather than only
+        when something fires it."""
+        return self.has_trigger and not self.triggered_only
 
 
 @dataclass
@@ -65,6 +97,7 @@ class Decision:
     line: int
     col: int
     end_line: int
+    guards: frozenset = frozenset()     # provinces its potential and allow guard (guards.py)
 
 
 @dataclass
@@ -74,18 +107,22 @@ class FileFacts:
     fires: list = field(default_factory=list)       # (event id, Site)
     flags: list = field(default_factory=list)       # (scope, lower name, Site)
     modifiers: list = field(default_factory=list)   # (lower name, Site)
+    variables: list = field(default_factory=list)   # (lower name, Site: set, change or check)
+    loads: list = field(default_factory=list)       # (order of battle file, Site of load_oob)
 
 
 def indexes(rel):
-    """Whether \\p rel is a file the index reads."""
+    """Whether \\p rel is a file the index reads: events, decisions, and common/, whose
+    files fire events too - on_actions, and the effects of a casus belli or a covert
+    operation."""
     return rel is not None and rel.endswith(".txt") and \
-        (rel.startswith(("events/", "decisions/")) or rel == ON_ACTIONS)
+        rel.startswith(("events/", "decisions/", "common/"))
 
 
-def _value_site(rel, node, verb):
+def _value_site(rel, node, verb, source=None):
     token = node.value_tok
     width = len(token.text) + (2 if token.kind == lexer.STRING else 0)
-    return Site(rel, token.line, token.col, token.col + width, verb)
+    return Site(rel, token.line, token.col, token.col + width, verb, source)
 
 
 def _end_line(node):
@@ -105,32 +142,80 @@ def facts(rel, root):
     if folder == "events":
         for node in root.children:
             if node.is_block and node.lkey in S.EVENT_TYPES:
-                out.events.append(_event(rel, node))
+                event = _event(rel, node)
+                out.events.append(event)
+                _names(out, rel, node, Source("event", event.id, rel, node.line))
+            else:
+                _names(out, rel, node, None)
     elif folder == "decisions":
         for category in root.children:
-            if category.is_block and category.lkey in S.DECISION_CATEGORIES:
-                for decision in category.children:
-                    if decision.is_block and decision.key:
-                        out.decisions.append(Decision(decision.key, category.key, rel,
-                                                      decision.line, decision.col,
-                                                      _end_line(decision)))
-    if rel == ON_ACTIONS:
-        for node in parser.walk(root):
-            if node.is_pair and node.value and node.value.isdigit() \
-                    and node.parent is not None and node.parent.key is not None:
-                out.fires.append((node.value, _value_site(rel, node, "fire")))
-        return out
-    for node in parser.walk(root):
+            if not (category.is_block and category.lkey in S.DECISION_CATEGORIES):
+                _names(out, rel, category, None)
+                continue
+            for decision in category.children:
+                if decision.is_block and decision.key:
+                    out.decisions.append(Decision(
+                        decision.key, category.key, rel, decision.line, decision.col,
+                        _end_line(decision), guards_of(decision.child("potential")) |
+                        guards_of(decision.child("allow"))))
+                    _names(out, rel, decision, Source("decision", decision.key, rel,
+                                                      decision.line))
+    elif rel == ON_ACTIONS:
+        for action in root.children:
+            source = Source("on_action", action.key or "", rel, action.line)
+            for node in parser.walk(action):
+                if node.is_pair and node.value and node.value.isdigit() \
+                        and node.parent is not None and node.parent.key is not None:
+                    out.fires.append((node.value, _value_site(rel, node, "fire", source)))
+    else:
+        # Another file of common/: only the events it fires. Its flags are found by the
+        # text search the other folders get (_FLAG_FOLDERS).
+        for block in root.children:
+            source = Source("block", block.key or "", rel, block.line)
+            for node in parser.walk(block):
+                _fire(out, rel, node, source)
+    return out
+
+
+def _fire(out, rel, node, source):
+    """Whether \\p node fires an event - which it then adds to \\p out."""
+    if node.lkey not in S.EVENT_TYPES or node.op is None or node.parent is None \
+            or node.parent.key is None:
+        return False
+    if node.value and node.value.isdigit():
+        site = _value_site(rel, node, "fire", source)
+    elif node.is_block:
+        ident = node.child("id")
+        if not (ident is not None and ident.value and ident.value.isdigit()):
+            return True
+        site = _value_site(rel, ident, "fire", source)
+    else:
+        return True
+    site.guards = path_guards(node)
+    out.fires.append((ident.value if node.is_block else node.value, site))
+    return True
+
+
+def _names(out, rel, top, source):
+    """The events fired, the flags and the modifiers named inside \\p top."""
+    for node in parser.walk(top):
         low = node.lkey
         if low is None or node.op is None:
             continue
-        if low in S.EVENT_TYPES and node.parent is not None and node.parent.key is not None:
-            if node.value and node.value.isdigit():
-                out.fires.append((node.value, _value_site(rel, node, "fire")))
-            elif node.is_block:
-                ident = node.child("id")
-                if ident is not None and ident.value and ident.value.isdigit():
-                    out.fires.append((ident.value, _value_site(rel, ident, "fire")))
+        if node is not top and _fire(out, rel, node, source):
+            continue
+        if low == "load_oob" and node.value:
+            site = _value_site(rel, node, "load", source)
+            site.guards = path_guards(node)
+            site.flags = path_flags(node)
+            out.loads.append((node.value, site))
+            continue
+        if low in VARIABLE_KEYS and node.is_block:
+            which = node.child("which")
+            if which is not None and which.value:
+                site = _value_site(rel, which, VARIABLE_KEYS[low])
+                site.name = which.value
+                out.variables.append((which.value.lower(), site))
             continue
         if node.value is None:
             if low in MODIFIER_USES and node.is_block:
@@ -146,7 +231,6 @@ def facts(rel, root):
         elif low in MODIFIER_USES:
             out.modifiers.append((node.value.lower(),
                                   _value_site(rel, node, low.split("_", 1)[0])))
-    return out
 
 
 def _event(rel, node):
@@ -163,6 +247,11 @@ def _event(rel, node):
             name = option.child("name")
             event.options.append((name.value if name is not None and name.value else "",
                                   option.line, option.col))
+    only = node.child("is_triggered_only")
+    event.triggered_only = only is not None and (only.value or "").lower() == "yes"
+    trigger = node.child("trigger")
+    event.has_trigger = trigger is not None and trigger.is_block
+    event.guards = guards_of(trigger)
     return event
 
 
@@ -173,13 +262,18 @@ class ModIndex:
         self._files = {}            # rel -> FileFacts
         self._merged = None
         self._elsewhere = None      # flag sites outside events and decisions
+        self._variables_other = None    # variable sites outside events and decisions
+        self._lua_pieces = None     # the pieces the Lua scripts build names from
         self._lua = None            # (rel, text) of every Lua script
         self._provinces = None      # province id -> its history file
         rels = [os.path.relpath(p, root).replace("\\", "/")
                 for folder in ("events", "decisions")
                 for p in glob.glob(os.path.join(root, folder, "**", "*.txt"), recursive=True)]
-        if os.path.exists(os.path.join(root, ON_ACTIONS)):
-            rels.append(ON_ACTIONS)
+        # Of common/, only the files that fire an event are worth parsing.
+        for path in glob.glob(os.path.join(root, "common", "**", "*.txt"), recursive=True):
+            rel = os.path.relpath(path, root).replace("\\", "/")
+            if rel == ON_ACTIONS or "_event" in _read_text(path):
+                rels.append(rel)
         for rel in sorted(rels):
             self._files[rel] = self._from_disk(rel)
 
@@ -211,8 +305,11 @@ class ModIndex:
                 self._merged = None
         if rel.startswith(tuple(folder + "/" for folder, _ in _FLAG_FOLDERS)):
             self._elsewhere = None
+        if rel.startswith(tuple(folder + "/" for folder, _ in _VARIABLE_FOLDERS)):
+            self._variables_other = None
         if rel.startswith("script/"):
             self._lua = None
+            self._lua_pieces = None
         if rel.startswith("history/provinces/"):
             self._provinces = None
 
@@ -222,6 +319,7 @@ class ModIndex:
         about a second, which a first "find all references" would otherwise wait for."""
         self._tables()
         self._flags_elsewhere()
+        self._variables_elsewhere()
         self._lua_scripts()
         self.province_file("")
 
@@ -231,8 +329,13 @@ class ModIndex:
         with self._lock:
             if self._merged is None:
                 events, fires, flags, modifiers, decisions = {}, {}, {}, {}, {}
+                variables, loads = {}, {}
                 for rel in sorted(self._files):
                     part = self._files[rel]
+                    for name, site in part.variables:
+                        variables.setdefault(name, []).append(site)
+                    for name, site in part.loads:
+                        loads.setdefault(name.lower(), []).append(site)
                     for event in part.events:
                         events.setdefault(event.id, []).append(event)
                     for ident, site in part.fires:
@@ -244,7 +347,8 @@ class ModIndex:
                     for decision in part.decisions:
                         decisions.setdefault(decision.name.lower(), []).append(decision)
                 self._merged = {"events": events, "fires": fires, "flags": flags,
-                                "modifiers": modifiers, "decisions": decisions}
+                                "modifiers": modifiers, "decisions": decisions,
+                                "variables": variables, "loads": loads}
             return self._merged
 
     def file(self, rel):
@@ -260,6 +364,22 @@ class ModIndex:
 
     def fires(self, ident):
         return self._tables()["fires"].get(ident, [])
+
+    def loads(self, oob):
+        """The Sites of every `load_oob` of order of battle \\p oob (as written after
+        `load_oob =`, compared without case)."""
+        return self._tables()["loads"].get(oob.lower(), [])
+
+    def chains(self):
+        """Which event fires which, and which can ever happen (chains.Chains), made when
+        first asked for after any change."""
+        tables = self._tables()
+        with self._lock:
+            found = tables.get("chains")
+            if found is None:
+                found = tables["chains"] = Chains(tables["events"], tables["fires"],
+                                                  tables["decisions"])
+            return found
 
     def decisions(self, name=None):
         table = self._tables()["decisions"]
@@ -289,6 +409,81 @@ class ModIndex:
                 for match in quoted.finditer(line):
                     sites.append(Site(rel, number, match.start() + 2, match.end(), "lua"))
         return sites
+
+    def variable_names(self):
+        """Every variable written in an event or a decision, once each, as it is first
+        written - the game compares the names without case."""
+        return sorted((sites[0].name or low for low, sites in
+                       self._tables()["variables"].items()), key=str.lower)
+
+    def variable_spellings(self, name):
+        """The ways variable \\p name is written in events, decisions and data files."""
+        sites = self._tables()["variables"].get(name.lower(), []) + \
+            self._variables_elsewhere().get(name.lower(), [])
+        return {s.name for s in sites if s.name}
+
+    def variable_sites(self, name):
+        """Every place variable \\p name is set, changed or tested: events and decisions,
+        then the data files, then the Lua scripts, where it is found only in quotes and the
+        verb is "lua"."""
+        low = name.lower()
+        sites = list(self._tables()["variables"].get(low, []))
+        sites += self._variables_elsewhere().get(low, [])
+        quoted = re.compile(r"[\"']%s[\"']" % re.escape(name), re.IGNORECASE)
+        for rel, text in self._lua_scripts():
+            if low not in text.lower():
+                continue
+            for number, line in enumerate(text.split("\n"), 1):
+                for match in quoted.finditer(line):
+                    sites.append(Site(rel, number, match.start() + 2, match.end(), "lua"))
+        return sites
+
+    def lua_piece(self, name):
+        """("starts", "ends" or "has", piece) if the Lua scripts build names out of a piece
+        \\p name starts with, ends with or has in its middle - `kind .. "_count_TECH"` - so
+        that they may name it though it is written nowhere; else None."""
+        pieces = self._lua_pieces
+        if pieces is None:
+            pieces = {"starts": set(), "ends": set(), "has": set()}
+            for _, text in self._lua_scripts():
+                for pattern, where in ((LUA_PREFIX, "starts"), (LUA_SUFFIX, "ends"),
+                                       (LUA_MIDDLE, "has")):
+                    pieces[where].update(p for p in pattern.findall(text)
+                                         if len(p) >= 3 and any(ch.isalpha() for ch in p))
+            self._lua_pieces = pieces
+        low = name.lower()
+        for where, test in (("starts", low.startswith), ("ends", low.endswith),
+                            ("has", low.__contains__)):
+            for piece in sorted(pieces[where]):
+                if test(piece.lower()):
+                    return where, piece
+        return None
+
+    def _variables_elsewhere(self):
+        table = self._variables_other
+        if table is None:
+            table = {}
+            for folder, pattern in _VARIABLE_FOLDERS:
+                for path in sorted(glob.glob(os.path.join(self.root, folder, pattern),
+                                             recursive=True)):
+                    text = _read_text(path)
+                    if "_variable" not in text:
+                        continue
+                    rel = os.path.relpath(path, self.root).replace("\\", "/")
+                    starts = [0] + [i + 1 for i, ch in enumerate(text) if ch == "\n"]
+                    for block in VARIABLE_TEXT.finditer(text):
+                        verb = block.group(1).lower()
+                        for which in VARIABLE_WHICH.finditer(block.group(2)):
+                            at = block.start(2) + which.start(1)
+                            line = bisect.bisect_right(starts, at)
+                            col = at - starts[line - 1] + 1
+                            if "#" in text[starts[line - 1]:at]:
+                                continue    # in a comment
+                            table.setdefault(which.group(1).lower(), []).append(
+                                Site(rel, line, col, col + len(which.group(1)), verb,
+                                     name=which.group(1)))
+            self._variables_other = table
+        return table
 
     def _flags_elsewhere(self):
         table = self._elsewhere
