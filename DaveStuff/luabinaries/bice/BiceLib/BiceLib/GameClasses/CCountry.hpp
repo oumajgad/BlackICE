@@ -223,11 +223,12 @@ namespace CCountry {
          * ids come from a table `reversing/scripts/saveTokens.py` rebuilds; the keys it gives for
          * the pools BiceLib had already named all agree, which is what makes the three new
          * ones worth trusting. The other thirteen are **not saved at all**, so nothing names them. What is known
-         * of each is below, and **four of them are never used in this build**: `+0x824`,
-         * `+0x848`, `+0x944` and `+0xA64` hold nothing, and the first three are written
-         * nowhere but the constructor and the two daily resets (`0xD34xx` and `0x1033xx`,
-         * which write a constant over every pool). The terms the daily figures spend on
-         * `+0x824`, `+0x848` and `+0xA64` therefore contribute nothing (**read live**).
+         * of each is below, and **three of them are never used in this build**: `+0x824`,
+         * `+0x848` and `+0x944` hold nothing, written nowhere but the constructor and the two
+         * daily resets (`0xD34xx` and `0x1033xx`, which write a constant over every pool).
+         * The terms the daily figures spend on `+0x824` and `+0x848` therefore contribute
+         * nothing (**read live**). `+0xA64` is filled only by a government in exile: see
+         * `received_from_exiles` below.
          *
          * **`+0xA1C` and `+0xA40` are the unit supply draw** (**read**, `0x1BB950`): when a
          * unit takes supply from a country, `+0xA1C` is credited if the unit stands in that
@@ -282,13 +283,21 @@ namespace CCountry {
          * Keep the names and keep the warning: a name is not a claim that a field is live.
          * See reversing/findings/FINDINGS-uinumbers.md.
          *
-         * `+0x944` is written nowhere but the constructor and the daily resets; `+0xA64` has
-         * writes but is empty in practice. Neither has a name.
+         * `+0x944` is written nowhere but the constructor and the daily resets, and has no
+         * name.
+         *
+         * **`+0xA64` is what governments in exile hand this country.** Each day an exile's
+         * own pool (`pool_in_exile`) gives its supplies and fuel to whoever controls the
+         * exile's acting capital: they are added here and to that province's pool, and the
+         * exile's two are zeroed (`0x4DB44E`-`0x4DB48D`, read on the listing). So it is empty
+         * in practice - no country is in exile on a 1936 start - which is why it once looked
+         * unused. It is income in `GetDailyIncome`, likely the ledger line `LEDGER_FROM_EXILES`
+         * "From Exiles" (not traced). See reversing/findings/FINDINGS-surrender.md, C.5.
          */
         constexpr uintptr_t repaid_away = 0x824;        // never written; see above
         constexpr uintptr_t income_from_debt = 0x848;   // never written; see above
         constexpr uintptr_t unused_pool_944 = 0x944;
-        constexpr uintptr_t unused_pool_A64 = 0xA64;
+        constexpr uintptr_t received_from_exiles = 0xA64;  // supplies and fuel only
 
         /**@brief the stockpile a government in exile holds itself, saved as just "pool" -
                   see is_government_in_exile*/
