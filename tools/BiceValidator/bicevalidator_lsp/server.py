@@ -675,6 +675,9 @@ async def inlay_hints(ls: BiceServer, params: T.InlayHintParams):
         hints += [T.InlayHint(position=T.Position(line - 1, col - 1), label=tech,
                               padding_left=True, padding_right=True)
                   for line, col, tech in navigator.model_hints(parsed, first, last)]
+        hints += [T.InlayHint(position=T.Position(line - 1, col - 1), label=label,
+                              padding_left=True)
+                  for line, col, label in navigator.model_file_hints(rel, parsed, first, last)]
     if settings.id_names:
         hints += [T.InlayHint(position=T.Position(line - 1, col - 1), label=name,
                               padding_left=True)

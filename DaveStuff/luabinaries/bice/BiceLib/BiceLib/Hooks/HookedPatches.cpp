@@ -112,3 +112,31 @@ __declspec(naked) void Hooks::Patches::enablePlacingNonResearchedBuildings() {
             jmp[Hooks::Patches::jumpback_enablePlacingNonResearchedBuildings_OriginalReturn] // Dont allow placing if above limit
     }
 }
+
+DWORD Hooks::Patches::jumpback_fixQueuedHistoricalModel_Named;
+DWORD Hooks::Patches::jumpback_fixQueuedHistoricalModel_Append;
+
+// A model entry's shape - the technology, then its level - with level 0. Only +4 is read.
+static DWORD zeroModelEntry[3] = { 0, 0, 0 };
+
+/**
+ * Replaces the end-of-model test in the search `historical_model` runs for each of the
+ * unit type's technologies (CBrigadeConstructionDefinition::LoadKey, 0x483020). The game
+ * skips a technology the model does not name, so every level after it moves up a place in
+ * the line's list; this appends a 0 for it instead, through the game's own append.
+ *
+ * EAX = the next model entry to look at
+ * ESI = the CHistoricalModel (+0x18 the end of its entries)
+ * EDX = the technology looked for
+ */
+__declspec(naked) void Hooks::Patches::fixQueuedHistoricalModel() {
+    _asm {
+        cmp eax, [esi + 0x18]       // the two instructions this replaced:
+        jae notNamed                // every entry looked at, and none was this technology
+        jmp[Hooks::Patches::jumpback_fixQueuedHistoricalModel_Named]
+
+    notNamed:
+        lea esi, zeroModelEntry     // the append reads the level at [esi + 4]
+        jmp[Hooks::Patches::jumpback_fixQueuedHistoricalModel_Append]
+    }
+}

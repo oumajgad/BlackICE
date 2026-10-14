@@ -305,6 +305,29 @@ _RULES = [
          "load is checked on its own, so a fallback file needs tests of its own provinces. "
          "What the game does with a unit in a province someone else holds is the "
          "maintainer's account; the rule's own reading is of the files."),
+    Rule("BV218", "queued-model-out-of-place", WARNING, REFERENCES, "confirmed",
+         "Queued brigade built with levels on the wrong technologies",
+         "`historical_model = N` on a brigade of a `military_construction` does not apply "
+         "the model technology by technology, as it is applied on the map. It walks the "
+         "unit type's technologies in order, takes the level of each one the model names "
+         "and skips the rest, and the line is built with that list by position "
+         "(reversing/findings/FINDINGS-buildqueue.md, section 10; checked against a "
+         "savegame). So a model that leaves out a technology of its type puts every level "
+         "after the gap on the technology before the one it is meant for, and the type's "
+         "last technologies get none. A default model lists every technology and is never "
+         "reported; a model from units/models holds only what its file names, which in this "
+         "mod is usually a few. The country is the line's `country`, or else the one whose "
+         "history loads the file, the tag folder it is in or the tag its name begins with; "
+         "a line none of those settles is not checked."),
+    Rule("BV219", "queued-model-incomplete", ERROR, REFERENCES, "confirmed",
+         "Historical model a production line builds wrong",
+         "The model, in units/models, leaves out a technology of its type that comes before "
+         "ones it names, and an order of battle queues a brigade with it - so that brigade "
+         "is built with the model's levels on the wrong technologies (BV218 marks each one). "
+         "Only a model some queued brigade uses is reported: on the map a model that names "
+         "a few technologies is right, and most of this mod's do. Naming every technology "
+         "of the type up to the last one it gives a level, a left-out one at 0, mends every "
+         "brigade that queues it."),
 ]
 
 RULES = {rule.id: rule for rule in _RULES}

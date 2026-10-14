@@ -291,6 +291,35 @@ types in it agree. In VS Code:
 BV307 reports a list whose length does not fit the unit type, which is a list made for
 an older tech tree.
 
+**`historical_model` in the production queue** (BV218). On the map, `historical_model = N`
+applies the country's model N technology by technology. On a brigade of a
+`military_construction` it does not: the game walks the type's technologies in order,
+takes the level of each one the model names and skips the rest, and the line is built with
+that list by position
+([`FINDINGS-buildqueue.md`](../../../hoi3-reversing/findings/FINDINGS-buildqueue.md),
+section 10, checked against a savegame). So a model that leaves out one of its type's
+technologies puts every level after the gap on the technology before the one it is meant
+for. BlackICE's files in `units/models` name only a few technologies each, which is right on
+the map and wrong in the queue - a queued Bismarck (`historical_model = 4`) is built with
+fifteen of its levels on other technologies. The rule reports every such brigade; hovering
+the number in VS Code shows the model's level and the level built for each technology, and
+F12 opens the model. The model file says the same: hovering `BB_Bismarck.4` shows that table
+and the brigades that queue the model, hovering one of its lines says which technology that
+level is built on in a production line, and each line that lands elsewhere ends in a faint
+`queued → <technology>` (the `modelTechnologies` setting). A model some queued brigade
+uses and builds wrong is marked there as an error, BV219, once, with the brigades that queue
+it; a sparse model nothing queues is right on the map and is not marked. A default model names every technology and is never reported. The
+country is the line's `country`, or the one whose history loads the file, or the tag the
+file's folder or name begins with; a line none of those settles is not checked.
+
+**BiceLib mends this in the game**, and the two rules know it: where `script/bicelib_lua.lua`
+calls `BiceLib.ComplexPatches.fixQueuedHistoricalModel()` (outside a comment), a queued
+brigade gets a 0 for each technology its model leaves out, so every level lands on its own
+technology. BV218 and BV219 then report nothing, the hovers say so and name the call's line,
+and the `queued →` hints are gone. Padding the models with `= 0` lines instead is not the
+same thing: the game scores a model only over the technologies it names when it picks one
+for a unit, so padding changes which model a unit gets.
+
 **Leaders.** An order of battle's `leader = N` is given leader N whoever he is - of any
 country, rank or arm, in service or not - so the game says nothing about a leader who
 does not fit

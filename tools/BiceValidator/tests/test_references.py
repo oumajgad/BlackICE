@@ -399,6 +399,161 @@ class GuardsTest(unittest.TestCase):
         self.assertIn("(2) ✓", text)
 
 
+QUEUED = dedent("""
+    military_construction = {
+        infantry_brigade = { name = "Shifted" historical_model = 2 }
+        infantry_brigade = { name = "Prefix" historical_model = 3 }
+    }
+    military_construction = {
+        country = ENG
+        infantry_brigade = { name = "English default" historical_model = 2 }
+    }
+    """)
+
+
+class QueuedModelTest(unittest.TestCase):
+    """A queued brigade naming a historical model takes the model's levels in its type's
+    order, skipping what the model leaves out, and is built with them by position."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = TinyMod()
+        cls.mod.write("technologies/t.txt", dedent("""
+            tech_a = { infantry_brigade = { soft_attack = 1 } }
+            tech_b = { infantry_brigade = { soft_attack = 1 } }
+            tech_c = { infantry_brigade = { soft_attack = 1 } }
+            """))
+        cls.mod.write("units/models/GER_Infantry.txt", dedent("""
+            infantry_brigade.2 = { tech_b = 2 tech_c = 3 }
+            infantry_brigade.3 = { tech_a = 1 }
+            """))
+        cls.mod.write("history/units/GER/queued.txt", QUEUED)
+        result = runner.run(cls.mod.root, [rules.REFERENCES], workers=1)
+        cls.found = [(d.line, d.message) for d in result.diagnostics if d.rule == "BV218"]
+        cls.models = [(d.file, d.line, d.severity, d.message) for d in result.diagnostics
+                      if d.rule == "BV219"]
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mod.close()
+
+    def test_a_gap_moves_every_level_after_it(self):
+        # tech_a is left out, so tech_b's 2 lands on tech_a and tech_c's 3 on tech_b. The
+        # prefix model and England's default one are built as they read.
+        self.assertEqual(self.found, [
+            (2, "historical_model = 2 builds infantry_brigade with 2 levels on other "
+                "technologies: tech_a 2 (model: none), tech_b 3 (model: 2); 1 of the model's "
+                "levels goes to no technology")])
+
+    def test_the_model_itself_is_marked(self):
+        # Once, on the model a queued brigade uses; the prefix model is right in a queue too.
+        self.assertEqual(self.models, [
+            ("units/models/GER_Infantry.txt", 1, "error",
+             "infantry_brigade.2 is queued by 1 brigade, and a production line builds it with "
+             "2 levels on other technologies and 1 going to no technology")])
+
+    def test_the_hover_shows_what_is_built(self):
+        from bicevalidator.session import Session
+        session = Session(self.mod.root)
+        nav = session.navigator
+        parsed = session.parse(QUEUED)
+        line = QUEUED.split("\n")[1]
+        target = nav.target("history/units/GER/queued.txt", parsed, 2,
+                            line.index("historical_model = 2") + len("historical_model = ") + 1)
+        self.assertEqual(target.what, "queued model")
+        text = nav.hover(target)
+        self.assertIn("GER's model 2", text)
+        self.assertIn("| ✗ | tech_a |  | 2 |", text)
+        self.assertIn("| ✗ | tech_c | 3 | - |", text)
+        [place] = nav.definitions(target)
+        self.assertEqual((place.file, place.line), ("units/models/GER_Infantry.txt", 1))
+
+    def test_the_model_file_says_it_too(self):
+        from bicevalidator import lexer
+        from bicevalidator.session import Session
+        session = Session(self.mod.root)
+        nav = session.navigator
+        rel = "units/models/GER_Infantry.txt"
+        parsed = session.parse(lexer.read(self.mod.root, rel).text)
+        block = nav.target(rel, parsed, 1, 3)
+        self.assertEqual(block.what, "model block")
+        text = nav.hover(block)
+        self.assertIn("GER's model 2 of infantry_brigade", text)
+        self.assertIn("| ✗ | tech_a |  | 2 |", text)
+        self.assertIn("Queued by 1 brigade: [history/units/GER/queued.txt:2]", text)
+        entry = nav.target(rel, parsed, 1, len("infantry_brigade.2 = { ") + 2)
+        self.assertEqual(entry.what, "model entry")
+        self.assertIn("**In a production line it is built on `tech_a`**", nav.hover(entry))
+        # Each misplaced level says where it goes; the prefix model on line 2 says nothing.
+        self.assertEqual([(l, label) for l, _, label in nav.model_file_hints(rel, parsed, 1, 9)],
+                         [(1, "queued → tech_a"), (1, "queued → tech_b")])
+
+
+PATCHED_LUA = dedent("""\
+    -- BiceLib.ComplexPatches.fixQueuedHistoricalModel() is the mend
+    --[[
+    BiceLib.ComplexPatches.fixQueuedHistoricalModel()
+    ]]
+    if mod then
+        BiceLib.ComplexPatches.fixQueuedHistoricalModel()
+    end
+    """)
+
+
+class QueuedModelPatchedTest(unittest.TestCase):
+    """Where script/bicelib_lua.lua calls BiceLib's fixQueuedHistoricalModel, a queued brigade
+    is built as its model says, 0 where it names nothing, and BV218 and BV219 are quiet."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = TinyMod()
+        cls.mod.write("technologies/t.txt", dedent("""
+            tech_a = { infantry_brigade = { soft_attack = 1 } }
+            tech_b = { infantry_brigade = { soft_attack = 1 } }
+            tech_c = { infantry_brigade = { soft_attack = 1 } }
+            """))
+        cls.mod.write("units/models/GER_Infantry.txt", dedent("""
+            infantry_brigade.2 = { tech_b = 2 tech_c = 3 }
+            """))
+        cls.mod.write("history/units/GER/queued.txt", QUEUED)
+        cls.mod.write("script/bicelib_lua.lua", PATCHED_LUA)
+        result = runner.run(cls.mod.root, [rules.REFERENCES], workers=1)
+        cls.found = [d for d in result.diagnostics if d.rule in ("BV218", "BV219")]
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mod.close()
+
+    def test_the_call_is_found_and_comments_do_not_count(self):
+        from bicevalidator.models import patch_call
+        self.assertEqual(patch_call(self.mod.root), ("script/bicelib_lua.lua", 6))
+        other = TinyMod()
+        try:
+            other.write("script/bicelib_lua.lua", PATCHED_LUA.replace(
+                "    BiceLib.ComplexPatches.fixQueuedHistoricalModel()\nend",
+                "    -- BiceLib.ComplexPatches.fixQueuedHistoricalModel()\nend"))
+            self.assertIsNone(patch_call(other.root))
+        finally:
+            other.close()
+
+    def test_nothing_is_reported(self):
+        self.assertEqual(self.found, [])
+
+    def test_the_hovers_and_hints_say_it_lands(self):
+        from bicevalidator import lexer
+        from bicevalidator.session import Session
+        session = Session(self.mod.root)
+        nav = session.navigator
+        rel = "units/models/GER_Infantry.txt"
+        parsed = session.parse(lexer.read(self.mod.root, rel).text)
+        text = nav.hover(nav.target(rel, parsed, 1, 3))
+        self.assertIn("calls BiceLib's `fixQueuedHistoricalModel` (line 6)", text)
+        self.assertNotIn("✗", text)
+        entry = nav.target(rel, parsed, 1, len("infantry_brigade.2 = { ") + 2)
+        self.assertIn("in a production line alike, this is its level", nav.hover(entry))
+        self.assertEqual(nav.model_file_hints(rel, parsed, 1, 9), [])
+
+
 class PicturesTest(unittest.TestCase):
     """BV212: a picture is found in the mod or in the game; without the game, not checked."""
 

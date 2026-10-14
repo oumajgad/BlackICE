@@ -260,6 +260,17 @@ Patches which require some extra logic and hooking.
     * This is needed for when an event gives the player buildings which he should place manually.
     * **Params**: /
     * **Return values**: /
+* **fixQueuedHistoricalModel()**
+    * A brigade queued with `historical_model = N` (a `military_construction` in an order of
+      battle) is built with its technology levels shifted. The game lists the levels of
+      only the technologies the model names and hands them out by position, so each level
+      after a technology the model leaves out lands on the one before the technology
+      meant. Most models in `units/models` leave some out.
+    * This lists a 0 for each technology the model leaves out, which is what the same
+      model gives a unit placed on the map, so every level is built where it belongs.
+    * BICE Validator's BV218 and BV219 report the shift, and stay quiet while this is called.
+    * **Params**: /
+    * **Return values**: /
 
 ## BiceLib.EffectTexts
 Extra variables for what the game shows when an effect fires. **Each of these only adds

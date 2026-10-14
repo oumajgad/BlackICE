@@ -186,6 +186,7 @@ def check(root, files, decl, schema, pictures=None):
             c.report("BV201", path, node, "Event %s does not exist" % ident)
 
     _event_chains(c, files, root)
+    _queued_models(c, root, decl)
     elsewhere = _flags_elsewhere(root)
     _flags(c, elsewhere)
     _variables(c, root, elsewhere[2], elsewhere[3])
@@ -441,6 +442,77 @@ def _unguarded_loads(c, root, chains, loads):
                  "the file name in VS Code for which provinces are tested.",
             related=[Related("unit placed here", "history/units/" + oob, line, 1)
                      for _, line in open_[:10]]))
+
+
+def _queued_models(c, root, decl):
+    """BV218: a brigade of a production line that names a historical model, which the
+    line will build with levels on technologies other than the model's (models.py)."""
+    from ..models import Models, queued_brigades
+    tags = {v[0].upper() for v in decl.names[Kinds.TAG].values()}
+    queued = [q for q in queued_brigades(root, decl.unit_techs, getattr(decl, "leaders", None),
+                                         tags) if q.tag is not None]
+    models = Models(root, decl.unit_techs, tags) if queued else None
+    users = {}          # model -> the queued brigades it is built wrong for
+    for q in queued:
+        built = models.built(q.tag, q.brigade.key, q.number)
+        if built is None or not (built.wrong or built.lost):
+            continue
+        users.setdefault(id(built.model), (built, []))[1].append(q)
+        wrong, lost = built.wrong, built.lost
+        said = ", ".join("%s %s (model: %s)" % (t, got, want or "none")
+                         for t, want, got in wrong[:3])
+        if len(wrong) > 3:
+            said += " and %d more" % (len(wrong) - 3)
+        message = "historical_model = %s builds %s with %d level%s on other technologies" \
+            % (q.which.value, q.brigade.key, len(wrong), "" if len(wrong) == 1 else "s")
+        message += (": " + said) if wrong else ""
+        if lost:
+            message += "; %d of the model's levels go%s to no technology" % (
+                len(lost), "es" if len(lost) == 1 else "")
+        model = built.model
+        gap = built.gap
+        c.out.append(Diagnostic(
+            "BV218", q.file, q.which.line, q.which.value_tok.col if q.which.value_tok else 1,
+            message, context="%s = { ... }" % q.brigade.key,
+            hint="%s's %s model %d (%s:%d, %s) leaves out %s. A queued brigade takes a "
+                 "model's levels in its type's order, skipping what the model leaves out, and "
+                 "is built with them by position, so every level after a gap lands on the "
+                 "technology before the one it is meant for "
+                 "(reversing/findings/FINDINGS-buildqueue.md, section 10). On the map the same "
+                 "model is right. BiceLib mends it: call "
+                 "`BiceLib.ComplexPatches.fixQueuedHistoricalModel()` in "
+                 "script/bicelib_lua.lua. Without it, write the levels out with "
+                 "`model = { ... }` - hover the line in VS Code for each technology."
+                 % (q.tag, q.brigade.key, model.number, model.file, model.line, q.how,
+                    "`%s`, among others" % gap if gap else "technologies of its type"),
+            related=[Related("the model", model.file, model.line, 1)]))
+    # BV219: the same, once on each model, where it would be mended.
+    for built, queued_by in users.values():
+        model = built.model
+        wrong, lost = built.wrong, built.lost
+        message = "%s.%d is queued by %d brigade%s, and a production line builds %s with %d " \
+                  "level%s on other technologies" % (
+                      model.unit, model.number, len(queued_by),
+                      "" if len(queued_by) == 1 else "s",
+                      "it" if len(queued_by) == 1 else "them", len(wrong),
+                      "" if len(wrong) == 1 else "s")
+        if lost:
+            message += " and %d going to no technology" % len(lost)
+        c.out.append(Diagnostic(
+            "BV219", model.file, model.line, 1, message, context=model.unit + ".%d" % model.number,
+            hint="It leaves out `%s`, a technology of %s that comes before ones it names. A "
+                 "queued brigade takes the model's levels in its type's order, skipping what "
+                 "the model leaves out, and is built with them by position "
+                 "(reversing/findings/FINDINGS-buildqueue.md, section 10); on the map the "
+                 "model is right. BiceLib mends it: call "
+                 "`BiceLib.ComplexPatches.fixQueuedHistoricalModel()` in "
+                 "script/bicelib_lua.lua. Padding the model with `= 0` lines instead changes "
+                 "which model the game picks for a unit, since it scores a model only over "
+                 "what it names. Hover the name in VS Code for each technology."
+                 % (built.gap, model.unit),
+            related=[Related("queued here", q.file, q.which.line,
+                             q.which.value_tok.col if q.which.value_tok else 1)
+                     for q in queued_by[:10]]))
 
 
 def _province_names(root):

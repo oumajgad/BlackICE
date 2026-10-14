@@ -56,6 +56,10 @@ into the game** - that step is theirs, and the script that does it (`zDsafeMoveF
 mod's root) clears the destination first, which is why it keeps a `PreserveInScript` list that
 any new file shipped alongside the DLL has to be added to.
 
+**A new Lua function is switched on in the mod's `script/bicelib_lua.lua`**, which may be
+edited for that (the maintainer's word, 2026-10-14). The same division holds for it as for
+the DLL: change it in the repository, never copy it into the game.
+
 **Always run it after changing BiceLib source - do not wait to be asked.** A build that stops at
 `ReleaseDebug/` leaves the mod's `script/` folder holding a stale DLL, which is worse than
 either building or not building, because the thing the maintainer copies across is then not the

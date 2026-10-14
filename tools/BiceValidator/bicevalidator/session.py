@@ -19,6 +19,7 @@ from .checks.script import ScriptChecker
 from .schemas import Registry
 from .declarations import Declarations
 from .localisation import Localisation
+from .models import PATCH_FILE
 from .navigate import Navigator
 from .pictures import Pictures
 from .schema import Schema, locate_keyword_pages
@@ -59,6 +60,10 @@ class Session:
                 self.localisation.reload_file(rel)
             if rel.lower().startswith("gfx/pictures/"):
                 self.pictures.forget()
+            if rel.lower().startswith("units/models/") or rel.lower() == PATCH_FILE:
+                self.navigator.forget_models()
+            if rel.lower().startswith("history/units/"):
+                self.navigator.forget_queued()
             self.index.reload_file(rel)
         if any(self.declares(rel) for rel in rels):
             self.reload()

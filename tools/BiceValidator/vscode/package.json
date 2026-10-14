@@ -2,7 +2,7 @@
   "name": "blackice-script",
   "displayName": "BlackICE Script",
   "description": "BICE Validator in the editor for Hearts of Iron 3 script: findings while you type, hover, go to definition, references, completion, an outline of events, Windows-1252 by default, and colouring.",
-  "version": "0.3.6",
+  "version": "0.3.10",
   "publisher": "blackice",
   "private": true,
   "license": "UNLICENSED",
@@ -152,7 +152,9 @@
               "BV214",
               "BV215",
               "BV216",
-              "BV217"
+              "BV217",
+              "BV218",
+              "BV219"
             ],
             "enumDescriptions": [
               "Closing bracket with nothing open (error)",
@@ -206,7 +208,9 @@
               "Event fired only from events that never happen (warning)",
               "Variable tested but never set (warning)",
               "Variable set but never tested (info)",
-              "Units loaded where nothing checks who holds the province (warning)"
+              "Units loaded where nothing checks who holds the province (warning)",
+              "Queued brigade built with levels on the wrong technologies (warning)",
+              "Historical model a production line builds wrong (error)"
             ]
           }
         },
@@ -259,7 +263,7 @@
         "blackice.validator.modelTechnologies": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "In a `model = { ... }` list of an order of battle, show after each level the technology it sets. The levels go to the unit type's technologies in the order the technology files are read."
+          "markdownDescription": "In a `model = { ... }` list of an order of battle, show after each level the technology it sets. The levels go to the unit type's technologies in the order the technology files are read. In `units/models`, show after each line of a model the technology a production line builds that level on, where it is another one - none while `script/bicelib_lua.lua` calls BiceLib's `fixQueuedHistoricalModel`, which mends that."
         },
         "blackice.validator.idNames": {
           "type": "boolean",

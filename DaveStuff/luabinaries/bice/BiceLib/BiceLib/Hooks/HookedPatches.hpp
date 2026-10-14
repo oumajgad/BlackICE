@@ -15,5 +15,10 @@ namespace Hooks {
 		extern DWORD jumpback_enablePlacingNonResearchedBuildings;
 		extern DWORD jumpback_enablePlacingNonResearchedBuildings_OriginalReturn; // Where it jumps if you are not allowed to place the building
 		void enablePlacingNonResearchedBuildings();
+
+		// A queued line's historical_model
+		extern DWORD jumpback_fixQueuedHistoricalModel_Named;   // the model names the technology: on with the search
+		extern DWORD jumpback_fixQueuedHistoricalModel_Append;  // the game's own append of [esi + 4]
+		void fixQueuedHistoricalModel();
 	}
 }

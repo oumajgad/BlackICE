@@ -700,6 +700,60 @@ __declspec(dllexport) int enablePlacingNonResearchedBuildings(lua_State* L)
     return 0;
 }
 
+/**
+ * Makes `historical_model` on a queued line build every technology at the model's level.
+ *
+ * A brigade of a `military_construction` given `historical_model = N` has its model list
+ * filled by walking the unit type's technologies and appending the level of each one the
+ * model names - and **nothing for one it does not**. The list is later handed out by
+ * position, so every level after a gap lands on the technology before the one meant, and
+ * the type's last technologies get none. A model read from units/models names only what
+ * its file names, so most of them have gaps. On the map the same model is applied by
+ * technology, which is why the same model is right there and wrong in the queue.
+ *
+ * This appends a 0 for a technology the model does not name, which is what the map gives
+ * it, so the list is as long as the type's technologies and every level is in its place.
+ *
+ * One five byte jump at 0x483020, over `cmp eax, [esi+0x18]; jae 0x482FF1`, to a stub
+ * that does that test itself; nothing jumps into those five bytes, and the loop's exit
+ * restores esi. reversing/findings/FINDINGS-buildqueue.md, section 10, has the reading.
+ */
+bool fixQueuedHistoricalModelDone = false;
+__declspec(dllexport) int fixQueuedHistoricalModel(lua_State* L)
+{
+    if (fixQueuedHistoricalModelDone) {
+        return 0;
+    }
+
+    // cmp eax, [esi+0x18]; jae 0x482FF1; mov esi, eax; add eax, 0xC; cmp [esi], edx -
+    // the test replaced and the search it ends, checked before anything is written
+    const DWORD hookAddress = MODULE_BASE + 0x83020;
+    const unsigned char expected[12] = {
+        0x3B, 0x46, 0x18, 0x73, 0xCC, 0x8B, 0xF0, 0x83, 0xC0, 0x0C, 0x39, 0x16 };
+    // mov ebx, [edi+4]; push 0x10 - the append the stub jumps to
+    const unsigned char append[5] = { 0x8B, 0x5F, 0x04, 0x6A, 0x10 };
+    if (!Hooks::bytesAre(hookAddress, expected, 12)
+        || !Hooks::bytesAre(MODULE_BASE + 0x8302E, append, 5)) {
+        ERROR_OUT(std::cout << "Hook 'fixQueuedHistoricalModel' failed: the historical_model "
+            "loop is not what this build expects" << std::endl);
+        fixQueuedHistoricalModelDone = true;
+        return 0;
+    }
+
+    Hooks::Patches::jumpback_fixQueuedHistoricalModel_Named = hookAddress + 5;
+    Hooks::Patches::jumpback_fixQueuedHistoricalModel_Append = MODULE_BASE + 0x8302E;
+
+    if (!Hooks::hook((void*)hookAddress, Hooks::Patches::fixQueuedHistoricalModel, 5, 0)) {
+        ERROR_OUT(std::cout << "Hook 'fixQueuedHistoricalModel' failed" << std::endl);
+    }
+    else {
+        INFO_OUT(std::cout << "Hook 'fixQueuedHistoricalModel' succeeded" << std::endl);
+    }
+
+    fixQueuedHistoricalModelDone = true;
+    return 0;
+}
+
 
 /////////////////////////////////////
 //          BYTE PATCHES           //
@@ -1551,6 +1605,7 @@ void registerComplexPatchFunctions(lua_State* this_state) {
     lua_newtable(this_state);
     registerFunction(this_state, "fixOffMapIC", fixOffMapIC);
     registerFunction(this_state, "enablePlacingNonResearchedBuildings", enablePlacingNonResearchedBuildings);
+    registerFunction(this_state, "fixQueuedHistoricalModel", fixQueuedHistoricalModel);
     lua_settable(this_state, -3);
     return;
 }

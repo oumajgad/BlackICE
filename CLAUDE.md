@@ -38,8 +38,12 @@ of mistakes across all three.
 
 Do not pick work off these or edit them unless told to:
 
-`bugs.md`, `REPO-TODO.md`, `DaveStuff/luabinaries/bice/BiceLib/TODO.md`, and
-`script/bicelib_lua.lua`.
+`bugs.md`, `REPO-TODO.md` and `DaveStuff/luabinaries/bice/BiceLib/TODO.md`.
+
+**`script/bicelib_lua.lua` may be edited** - the maintainer's word, 2026-10-14 - to switch a
+BiceLib function on or off, with a comment saying what it does, as the file's other calls
+have. It was on this list until then. Like the DLL beside it, it is edited in this repository
+and **never copied into the game**: moving it there is the maintainer's step.
 
 ## Things that have cost a session
 

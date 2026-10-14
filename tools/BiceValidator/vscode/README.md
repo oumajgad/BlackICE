@@ -22,7 +22,11 @@ BICE Validator in VS Code, for Hearts of Iron 3 script files.
   with hover and completion for their keys.
 - **Model lists explained**: each level of a `model = { ... }` list shows the technology it
   sets, hover tells what that technology does for the unit type, and a quick action writes
-  the list one level a line with the names as comments.
+  the list one level a line with the names as comments. A queued brigade's
+  `historical_model` hovers as the levels it is really built with, and one built with
+  levels on the wrong technologies is reported. In `units/models`, a model hovers the same
+  table and who queues it, and each of its lines that a production line builds on another
+  technology says which.
 - **Province and leader names** after their numbers - `location = 739`, `leader = 9721` -
   with a leader's rank in an order of battle, a hover with his country, skill, rank and
   traits, and completion of `leader =` by name. A leader below the rank his unit wants, of

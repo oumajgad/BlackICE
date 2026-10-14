@@ -21,13 +21,15 @@ from .declarations import Kinds
 from .index import MODIFIER_USES, ON_ACTIONS, Source
 from .guards import guards_of, path_flags, path_guards, resolve, unit_places
 from .leaders import date_text, rank_phrase
+from .models import Models, queued_brigades, queued_country
 from .pictures import PictureError
 
 KEYWORD, BAD_KEY, DECLARED, EVENT, LOC, TAG, PROVINCE, FLAG, MODIFIER, OOB, DECISION, \
-    PICTURE, DATA_KEY, MODEL, MODEL_LEVEL, LEADER, VARIABLE = (
+    PICTURE, DATA_KEY, MODEL, MODEL_LEVEL, LEADER, VARIABLE, QUEUED_MODEL, MODEL_BLOCK, \
+    MODEL_ENTRY = (
         "keyword", "bad key", "declared", "event", "localisation", "tag", "province", "flag",
         "modifier", "oob", "decision", "picture", "data key", "model", "model level", "leader",
-        "variable")
+        "variable", "queued model", "model block", "model entry")
 
 _KIND_NAMES = {"trigger": "condition", "effect": "effect", "scope": "scope",
                "header": "event header key", "option": "option key",
@@ -240,6 +242,8 @@ class Navigator:
         self._modifiers = None
         self._province_keywords = None
         self._tech_trees = None
+        self._models = None             # models.Models, read the first time it is asked
+        self._queued = None             # the queued brigades naming a model, likewise
 
     @property
     def schema(self):
@@ -274,6 +278,13 @@ class Navigator:
         name = node.key
         low = node.lkey
         parent = node.parent
+        if rel.startswith("units/models/") and node.op is not None and parent is not None:
+            # A model, `<unit type>.<number> = { ... }`, and each of its lines.
+            if parent.key is None and node.is_block and "." in name:
+                return Target(MODEL_BLOCK, name, token, node, rel=rel)
+            if parent.parent is not None and parent.parent.key is None \
+                    and "." in (parent.key or "") and not node.is_block:
+                return Target(MODEL_ENTRY, name, token, node, rel=rel)
         if node.op is None:
             level = self._model_level(node, token)
             if level is not None:
@@ -357,6 +368,10 @@ class Navigator:
             return Target(LEADER, value, token, node, rel=rel)
         if low == "which" and parent is not None and parent.lkey in VARIABLE_KEYS:
             return Target(VARIABLE, value, token, node)
+        if low == "historical_model" and value.isdigit() and parent is not None \
+                and parent.parent is not None \
+                and parent.parent.lkey == "military_construction":
+            return Target(QUEUED_MODEL, value, token, node, rel=rel)
         if low in S.EVENT_TYPES and value.isdigit():
             return Target(EVENT, value, token, node)
         if low == "id" and parent is not None and parent.lkey in S.EVENT_TYPES:
@@ -565,6 +580,168 @@ class Navigator:
         if not parts:
             return text + "Written nowhere else in the mod."
         return text + _sentence(parts) + "."
+
+    def _hover_queued_model(self, target):
+        brigade = target.node.parent
+        line = brigade.parent
+        unit = brigade.key
+        tags = {v[0].upper() for v in self.decl.names[Kinds.TAG].values()}
+        tag, how = queued_country(target.rel, line, brigade, getattr(self.decl, "leaders", None),
+                                  tags)
+        head = "**`historical_model = %s`** on a queued %s" % (target.name, unit)
+        if tag is None:
+            return head + ("\n\nWhose model this is is not known here: the line names no "
+                           "`country`, and nothing says which country loads the file.")
+        models = self._historical_models()
+        number = int(target.name)
+        if not models.exists(tag, unit, number):
+            return head + ("\n\n%s has no model %d of %s - only 0 to %d and what its files "
+                           "add - so the line keeps no levels from it." % (
+                               tag, number, unit, models.most - 1))
+        built = models.built(tag, unit, number)
+        if built is None:
+            return head + ("\n\n%s's model %d is a default one (%s), which names every "
+                           "technology, so the line is built with it as it reads." % (
+                               tag, number, how))
+        model = built.model
+        text = head + "\n\n%s's model %d, %s (%s). " % (tag, number, self.link(
+            Place(model.file, model.line)), how)
+        return text + self._built_table(built)
+
+    @staticmethod
+    def _built_table(built):
+        """What a queued brigade naming the model is built with, technology by technology,
+        after a sentence saying whether that is the model."""
+        if built.patched:
+            return ("In a production line every level lands on its own technology, 0 where the "
+                    "model names none: `%s` calls BiceLib's `fixQueuedHistoricalModel` (line %d)."
+                    % built.patched)
+        if not (built.wrong or built.lost):
+            return "In a production line every level lands on its own technology."
+        text = ("A queued brigade takes the model's levels in the type's order, skipping what "
+                "it leaves out, and is built with them by position:")
+        rows = ["| | technology | model | built |", "| --- | --- | --- | --- |"]
+        for tech, want, got in built.rows:
+            if want is None and got is None:
+                continue
+            mark = "" if (want or "0") == (got or "0") else "✗"
+            rows.append("| %s | %s | %s | %s |" % (mark, tech, want if want is not None else "",
+                                                    got if got is not None else "-"))
+        return text + "\n\n" + "\n".join(rows)
+
+    # --- a model in units/models, as a production line would build it -----------------
+
+    def _file_model(self, rel, block):
+        """(tag, unit, number, Built or None, note) for the model block \\p block of the
+        units/models file \\p rel. The note says why the game would not use this block, or
+        is empty."""
+        unit, _, number = block.key.rpartition(".")
+        tag = os.path.basename(rel)[:3].upper()
+        tags = {v[0].upper() for v in self.decl.names[Kinds.TAG].values()}
+        if tag not in tags:
+            return tag, unit, None, None, ("The game skips this file: its name does not begin "
+                                           "with a country's tag.")
+        if unit.lower() not in self.decl.unit_techs or not number.isdigit():
+            return tag, unit, None, None, "`%s` is no unit type with technologies." % unit
+        number = int(number)
+        models = self._historical_models()
+        model = models.model(tag, unit, number)
+        if model is None:
+            return tag, unit, number, None, (
+                "The game drops this block: %s has models of %s up to %d, and a file may add "
+                "only the next one." % (tag, unit, models.most - 1))
+        if (model.file, model.line) != (rel, block.line):
+            return tag, unit, number, models.built(tag, unit, number), (
+                "A later block replaces this one: %s." % self.link(Place(model.file,
+                                                                          model.line)))
+        return tag, unit, number, models.built(tag, unit, number), ""
+
+    def _hover_model_block(self, target):
+        tag, unit, number, built, note = self._file_model(target.rel, target.node)
+        head = "**`%s`**" % target.name
+        if built is None:
+            return head + "\n\n" + note
+        text = head + " — %s's model %d of %s\n\n" % (tag, number, unit)
+        if note:
+            text += note + "\n\n"
+        text += ("On the map it is applied technology by technology. " +
+                 self._built_table(built))
+        uses = self._queued_uses().get((tag, unit.lower(), number), [])
+        if uses:
+            text += "\n\nQueued by %d brigade%s: " % (len(uses), "" if len(uses) == 1 else "s")
+            text += ", ".join(self.link(Place(q.file, q.which.line)) for q in uses[:8])
+            if len(uses) > 8:
+                text += " and %d more" % (len(uses) - 8)
+        return text
+
+    def _hover_model_entry(self, target):
+        block = target.node.parent
+        tag, unit, number, built, note = self._file_model(target.rel, block)
+        head = "**`%s = %s`**" % (target.name, target.node.value or "")
+        if built is None:
+            return head + "\n\n" + note
+        head += " in %s's model %d of %s" % (tag, number, unit)
+        if target.node.lkey not in [t.lower() for t, _, _ in built.rows]:
+            return head + ("\n\n`%s` is not a technology of %s: the game drops the line."
+                           % (target.name, unit))
+        lands = built.landing().get(target.node.lkey)
+        if lands is None or lands.lower() == target.node.lkey:
+            return head + "\n\nOn the map and in a production line alike, this is its level."
+        return head + ("\n\nOn the map this is its level. **In a production line it is built "
+                       "on `%s`**: the model leaves out `%s`, and a queued brigade takes the "
+                       "model's levels by position." % (lands, built.gap))
+
+    def model_file_hints(self, rel, parsed, first, last):
+        """(line, column after the value, label) for each line of a units/models block whose
+        level a production line builds on another technology, between lines \\p first and
+        \\p last."""
+        if not rel.startswith("units/models/"):
+            return []
+        out = []
+        for block in parsed.root.children:
+            if not (block.is_block and block.key and "." in block.key):
+                continue
+            close = block.close_tok.line if block.close_tok is not None else block.line
+            if close < first or block.line > last:
+                continue
+            _, _, _, built, note = self._file_model(rel, block)
+            if built is None or note:
+                continue
+            landing = built.landing()
+            for entry in block.children:
+                if entry.value_tok is None or not (first <= entry.line <= last):
+                    continue
+                lands = landing.get(entry.lkey)
+                if lands is not None and lands.lower() != entry.lkey:
+                    token = entry.value_tok
+                    out.append((token.line, token.col + _width(token), "queued → " + lands))
+        return out
+
+    def _queued_uses(self):
+        """(TAG, lower unit, number) -> the queued brigades that name that model."""
+        if self._queued is None:
+            tags = {v[0].upper() for v in self.decl.names[Kinds.TAG].values()}
+            found = {}
+            for q in queued_brigades(self.session.root, self.decl.unit_techs,
+                                     getattr(self.decl, "leaders", None), tags):
+                if q.tag is not None:
+                    found.setdefault((q.tag, q.brigade.lkey, q.number), []).append(q)
+            self._queued = found
+        return self._queued
+
+    def forget_queued(self):
+        """An order of battle changed: find the queued brigades again when next asked."""
+        self._queued = None
+
+    def forget_models(self):
+        """A file of units/models changed: read them again when next asked."""
+        self._models = None
+
+    def _historical_models(self):
+        if self._models is None:
+            self._models = Models(self.session.root, self.decl.unit_techs,
+                                  [v[0] for v in self.decl.names[Kinds.TAG].values()])
+        return self._models
 
     def _hover_variable(self, target):
         sites = self.index.variable_sites(target.name)
@@ -1039,6 +1216,14 @@ class Navigator:
             return [Place(where[1], where[2])] if where else []
         if what in (MODEL, DATA_KEY):
             return []
+        if what == QUEUED_MODEL:
+            brigade = target.node.parent
+            tags = {v[0].upper() for v in self.decl.names[Kinds.TAG].values()}
+            tag, _ = queued_country(target.rel, brigade.parent, brigade,
+                                    getattr(self.decl, "leaders", None), tags)
+            model = self._historical_models().model(tag, brigade.key, int(target.name)) \
+                if tag else None
+            return [Place(model.file, model.line)] if model is not None else []
         if what == LEADER:
             leader = self.decl.leaders.get(target.name)
             return [Place(leader.file, leader.line)] if leader is not None else []

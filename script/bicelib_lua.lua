@@ -21,7 +21,7 @@ if not ok then
 end
 if mod then
     BiceLib = mod
-    -- BiceLib.startConsole() -- Creates a console for debug information
+    BiceLib.startConsole() -- Creates a console for debug information
     BiceLib.setModuleBase()
 
     -- Commands
@@ -68,6 +68,10 @@ if mod then
     -- Complex Patches
     BiceLib.ComplexPatches.fixOffMapIC()
     BiceLib.ComplexPatches.enablePlacingNonResearchedBuildings()
+    -- A brigade queued with historical_model gets a level for every technology of its
+    -- type, 0 where the model names none, so none of the levels shifts onto the wrong
+    -- technology. The validator's BV218 and BV219 look for this call.
+    BiceLib.ComplexPatches.fixQueuedHistoricalModel()
 
     -- Effect texts
     -- Fills $UNIT$, $LOCATION$ and $WHERE$ in KILL_LEADER_EFFECT. Switching this off
