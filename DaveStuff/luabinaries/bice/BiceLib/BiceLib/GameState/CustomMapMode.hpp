@@ -62,6 +62,7 @@ namespace CustomMapMode {
         DepotDetour,        // how much of that cost is the route's infrastructure
         SupplyLoad,         // supplies asked of the province over what it can pass on a day
         FuelLoad,
+        SupplyTax,          // what a load of supplies or fuel loses crossing the province
     };
 
     /**@brief DepotDistance's value for a province cut off from every depot*/

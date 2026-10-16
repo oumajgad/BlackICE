@@ -122,6 +122,14 @@ namespace {
     const std::vector<int> LOAD_BANDS = {
         0, 100, 200, 300, 400, 500, 600, 700, 850, 1000 };
 
+    // The tax a load pays crossing a province, in thousandths, lowest first. BlackICE's
+    // SUPPLY_TAX is 0.1, half that on the controller's own ground; mud adds up to 0.9
+    // times as much again, so 0.19 is a fully muddy province held by someone else, and
+    // partisans in occupied land add to that. Technology takes it down, to nothing late in
+    // the game - which is why the bottom bands are fine-grained.
+    const std::vector<int> TAX_BANDS = {
+        0, 25, 40, 50, 60, 75, 100, 125, 150, 190 };
+
     CustomMapMode::Source supply(CustomMapMode::SupplyMeasure measure, const char* name,
         const char* label, CustomMapMode::Scaling scaling, CustomMapMode::Unit unit,
         const char* explanation) {
@@ -147,6 +155,10 @@ namespace {
         else if (measure == CustomMapMode::SupplyMeasure::SupplyLoad
             || measure == CustomMapMode::SupplyMeasure::FuelLoad) {
             source.bands = LOAD_BANDS;
+            source.higherIsWorse = true;
+        }
+        else if (measure == CustomMapMode::SupplyMeasure::SupplyTax) {
+            source.bands = TAX_BANDS;
             source.higherIsWorse = true;
         }
         return source;
@@ -197,6 +209,15 @@ namespace {
             "The same for fuel, which shares the province's capacity figure: how much of "
             "what it can pass on in a day is asked of it today. At 100% the line through "
             "here is full."),
+        supply(Measure::SupplyTax, "supply_tax", "Supply tax",
+            Scaling::Bands, Unit::Amount,
+            "What a load of supplies or fuel loses crossing the province - the same amount "
+            "whatever the size of the load, so a long line of small loads loses the most. "
+            "Half on the controller's own ground; more in mud, unless the ground is frozen; "
+            "more again where partisans are active in occupied land; less with the "
+            "controller's supply technologies. Each shade starts at the tax under it. The "
+            "game's own figure, worked out for each province once a day. Land in no supply "
+            "network is grey."),
         supply(Measure::SupplyTraffic, "supply_traffic", "Supply traffic",
             Scaling::Map, Unit::Amount,
             "Supplies passed on through the province today, on their way out from the "
@@ -477,6 +498,71 @@ namespace {
         return static_cast<int>((load > MAX_LOAD) ? MAX_LOAD : load);
     }
 
+    int depotDistance(uintptr_t province);
+
+    // What a load of supplies or fuel loses crossing a province (RVA 0x9DE80), thousandths
+    // through `out`, and like the capacity worked out only for the daily pass. Not a plain
+    // __stdcall: the province goes in eax and `out` on the stack, and it ends `ret 4`,
+    // keeping ebx, esi, edi and ebp. It only reads: two defines, the province's owner,
+    // controller, mud, frost, suppression and partisan support, and the controller's
+    // technology - which is why it is only asked of land in a supply network, where there
+    // is a controller to read. reversing/findings/FINDINGS-supplynetwork.md, section 7.
+    const uintptr_t SUPPLY_LOSS = 0x9DE80;
+
+    // Indexed by province id, filled like capacities; NO_VALUE where there is no network.
+    int taxes[MAX_PROVINCES] = {};
+    int taxCount = 0;
+
+    /**@brief the game's tax for one province; false if the call faulted*/
+    bool lossOf(uintptr_t function, uintptr_t province, int& out) {
+        int value = 0;
+        int* where = &value;
+        __try {
+            __asm {
+                mov eax, province
+                push where
+                call function       // ret 4 takes `where` back off
+            }
+            out = value;
+            return true;
+        }
+        __except (EXCEPTION_EXECUTE_HANDLER) {
+            return false;
+        }
+    }
+
+    /**@brief fills taxes for every province, by calling the game's function*/
+    void refreshTaxes() {
+        taxCount = 0;
+        const uintptr_t base = Mem::moduleBase("hoi3_tfh.exe");
+        uint32_t array = 0;
+        const int count = provinceVector(array);
+        if (base == 0 || count == 0 || count > MAX_PROVINCES) {
+            return;
+        }
+        for (int id = 1; id < count; id++) {
+            uint32_t province = 0;
+            int tax = 0;
+            if (!Mem::tryRead(array + id * 4, province) || province == 0
+                || depotDistance(province) == CustomMapMode::NO_VALUE
+                || !lossOf(base + SUPPLY_LOSS, province, tax) || tax < 0) {
+                tax = CustomMapMode::NO_VALUE;
+            }
+            taxes[id] = tax;
+        }
+        taxCount = count;
+    }
+
+    /**@brief the tax worked out for \p province today, or NO_VALUE*/
+    int taxOf(uintptr_t province) {
+        int32_t id = 0;
+        if (!Mem::tryRead(province + CMapProvince::Offsets::id, id)
+            || id <= 0 || id >= taxCount) {
+            return CustomMapMode::NO_VALUE;
+        }
+        return taxes[id];
+    }
+
     int depotDistance(uintptr_t province) {
         int32_t depot = 0;
         int32_t distance = 0;
@@ -536,6 +622,7 @@ namespace {
         case Measure::DepotDetour:    return detourOf(province);
         case Measure::SupplyLoad:     return loadOf(province, supplies);
         case Measure::FuelLoad:       return loadOf(province, fuel);
+        case Measure::SupplyTax:      return taxOf(province);
         }
         return CustomMapMode::NO_VALUE;
     }
@@ -658,10 +745,23 @@ namespace {
         return measure == Measure::SupplyLoad || measure == Measure::FuelLoad;
     }
 
-    /**@brief works out the scale for whatever is shown now, and the capacities a load needs*/
+    /**@brief whether the source shown is the tax, which needs the taxes*/
+    bool showsTax() {
+        if (shownKind != CustomMapMode::Kind::Supply) {
+            return false;
+        }
+        const CustomMapMode::Source* source = CustomMapMode::shownSource();
+        return source != nullptr
+            && static_cast<CustomMapMode::SupplyMeasure>(source->where) == Measure::SupplyTax;
+    }
+
+    /**@brief works out the scale for whatever is shown now, and the capacities or taxes it needs*/
     void refreshScale() {
         if (showsLoad()) {
             refreshCapacities();
+        }
+        if (showsTax()) {
+            refreshTaxes();
         }
         const CustomMapMode::Source* source = CustomMapMode::shownSource();
         if (source == nullptr) {
@@ -678,14 +778,16 @@ namespace {
     /**
     @brief whether what is shown has to be worked out again each day
 
-    A map scale over supply, and a load, whose capacities change with the modifiers.
+    A map scale over supply, a load, whose capacities change with the modifiers, and the
+    tax, which changes with the mud.
     */
     bool followsTheDay() {
         if (shownKind != CustomMapMode::Kind::Supply) {
             return false;
         }
         const CustomMapMode::Source* source = CustomMapMode::shownSource();
-        return source != nullptr && (source->scaling == Scaling::Map || showsLoad());
+        return source != nullptr
+            && (source->scaling == Scaling::Map || showsLoad() || showsTax());
     }
 
 }
