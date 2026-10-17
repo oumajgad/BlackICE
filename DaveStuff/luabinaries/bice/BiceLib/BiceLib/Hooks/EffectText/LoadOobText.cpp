@@ -79,6 +79,22 @@ namespace {
     }
 
     /**
+    @brief "an" before a word that starts with a vowel, "a" otherwise
+
+    By the letter, which is right for every block a leader can sit in - army, armygroup,
+    air against corps, division, theatre, navy.
+    */
+    const char* article(const char* word) {
+        switch (word[0]) {
+        case 'a': case 'e': case 'i': case 'o': case 'u':
+        case 'A': case 'E': case 'I': case 'O': case 'U':
+            return "an";
+        default:
+            return "a";
+        }
+    }
+
+    /**
     @brief where a leader is now, as this tooltip should say it
 
     In red, because it is what the file takes away: the unit is about to lose the leader
@@ -226,11 +242,11 @@ namespace {
                 text += line;
                 continue;
             }
-            _snprintf_s(line, sizeof(line), _TRUNCATE, "\n  \xA7Y%s\xA7W to a %s - %s",
+            const char* kind = assignment.kind.empty() ? "unit" : assignment.kind.c_str();
+            _snprintf_s(line, sizeof(line), _TRUNCATE, "\n  \xA7Y%s\xA7W to %s %s - %s",
                 Game::withoutColours(
                     Game::rawChars(found->second + CLeader::Offsets::name)).c_str(),
-                assignment.kind.empty() ? "unit" : assignment.kind.c_str(),
-                leaderNow(found->second).c_str());
+                article(kind), kind, leaderNow(found->second).c_str());
             text += line;
 
             // The rank the job wants against the rank he holds. Said in red because it
@@ -240,8 +256,8 @@ namespace {
             if (wanted > 0 && Mem::tryRead(found->second + CLeader::Offsets::rank, rank)
                 && rank < wanted) {
                 _snprintf_s(line, sizeof(line), _TRUNCATE,
-                    "\n    \xA7Rrank %d, and a %s wants %d\xA7W",
-                    rank, assignment.kind.c_str(), wanted);
+                    "\n    \xA7Rrank %d, and %s %s wants %d\xA7W",
+                    rank, article(kind), kind, wanted);
                 text += line;
             }
         }
