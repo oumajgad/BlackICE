@@ -182,7 +182,6 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"amphibious_training",
 		"amphibious_command_and_control",
 		"airborne_training",
-		"airborne_command_and_control",
 		"artillery_barrage",
 		"artillery_flexiblity",
 		"assault_concentration",
