@@ -18,7 +18,7 @@ CONFIG_NAME = "validator.json"
 # What stops a release build: faults that leave a file unreadable from that point on.
 # Everything else is reported by the build but does not stop it, so adopting the validator
 # does not mean fixing six hundred existing findings first.
-DEFAULT_RELEASE_BLOCKING = ["BV001", "BV002", "BV003", "BV004", "BV005", "BV008"]
+DEFAULT_RELEASE_BLOCKING = ["BV001", "BV002", "BV003", "BV004", "BV005", "BV008", "BV010"]
 
 
 def path_for(root):

@@ -381,8 +381,9 @@ removes the entries for findings that have since been fixed.
 `installer/buildInstaller.py` runs the code mode before it builds. A **new** finding of a
 rule listed in `release_blocking` in `validator.json` stops the build. The list starts as
 the faults that leave a file unreadable from that point on: the bracket, quote, missing
-value and stray `=` rules, and a byte order mark. Every other finding is counted in the
-build log but does not stop the build. Use `--skip-validation` to build anyway.
+value and stray `=` rules, a byte order mark, and a bare word among `key = value` pairs.
+Every other finding is counted in the build log but does not stop the build. To make 
+another rule stop it, add its id to the list. Use `--skip-validation` to build anyway.
 
 ## Layout
 
