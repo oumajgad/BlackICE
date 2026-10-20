@@ -719,11 +719,7 @@ diplomatic_decisions = {
 		}
 	}
 	Panzer_5th_Army_Defending_Tunis_decision = {
-		# By DAN
 		potential = {
-			# Need to cover cases where VIC is created, or if it is not created, and USA performs TORCH
-			# ASSUMING, if VIC not created that ITA can take care of FRA in NW Africa
-			# USA can enter war early, and if VIC not created, land and reinforce French NW Africa
 			tag = GER
 			ITA = {
 				war_with = ENG
@@ -732,78 +728,17 @@ diplomatic_decisions = {
 			not = {
 				has_country_flag = invasion_choice_no
 			}
-			ITA = {
-				controls = 5445
-			}
 			# Tripoli
-			5134 = {
+			5445 = {
 				controller = {
 					faction = axis
 				}
 			}
-			5232 = {
+			# Alger
+			5160 = {
 				controller = {
-					faction = axis
+					faction = allies
 				}
-			}
-			5133 = {
-				controller = {
-					faction = axis
-				}
-			}
-			# Tunis - ITA AI must first take Tunis on its own
-			or = {
-				not = {
-					exists = VIC
-				}
-				exists = VIC
-				VIC = {
-					faction = axis
-				}
-			}
-			or = {
-				5397 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Gabes
-				5134 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Tunis
-				5165 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Annaba
-				5160 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Alger
-				5292 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Oran
-				5412 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Casblanca
-				5479 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Tamanar
 			}
 			not = {
 				has_country_flag = Panzer_5th_Army_Tunis_Defense_German
