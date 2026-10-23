@@ -2563,58 +2563,6 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-	game_start_production_OOBs = {
-		potential = {
-			tag = OMG
-			not = {
-				has_country_flag = game_start_OOB_loaded
-			}
-			has_country_flag = load_starting_OOB_please
-		}
-		allow = {
-			tag = OMG
-			not = {
-				has_country_flag = game_start_OOB_loaded
-			}
-			has_country_flag = load_starting_OOB_please
-		}
-		effect = {
-			set_country_flag = game_start_OOB_loaded
-			FRA = {
-				load_oob = FRA/FRA_1936_game_start_construction.txt
-			}
-			ITA = {
-				load_oob = ITA/ITA_1936_game_start_construction.txt
-			}
-			SWE = {
-				load_oob = SWE_1936_game_start_construction.txt
-			}
-			SPR = {
-				load_oob = SPR/SPR_1936_game_start_construction.txt
-			}
-			POR = {
-				load_oob = POR_1936_game_start_construction.txt
-			}
-			NOR = {
-				load_oob = NOR_1936_game_start_construction.txt
-			}
-			GER = {
-				load_oob = GER/GER_1936_game_start_construction.txt
-			}
-			ENG = {
-				load_oob = ENG/ENG_1936_game_start_construction.txt
-			}
-			USA = {
-				load_oob = USA/USA_1936_game_start_construction.txt
-			}
-			CHI = {
-				load_oob = CHI/CHI_1936_game_start_construction.txt
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
 	trigger_yellow_river_flood = {
 		potential = {
 			tag = OMG
@@ -2861,50 +2809,50 @@ diplomatic_decisions = {
 			set_country_flag = AI_Marines_bonus_tech
 		}
 	}
-	JAP_proper_size_second = {
-		potential = {
-			tag = OMG
-		}
-		allow = {
-			tag = OMG
-			JAP = {
-				has_country_flag = JAP_proper_size
-			}
-			not = {
-				has_country_flag = JAP_proper_size_second_done
-			}
-		}
-		effect = {
-			JAP = {
-				special_forces_increase = 90000
-				mobile_increase = 90000
-				artillery_increase = 90000
-				engineers_increase = 90000
-			}
-			set_country_flag = JAP_proper_size_second_done
-		}
-	}
-	JAP_proper_size_third= {
-		potential = {
-			tag = OMG
-		}
-		allow = {
-			tag = OMG
-			JAP = {
-				has_country_flag = JAP_proper_size
-			}
-			not = {
-				has_country_flag = JAP_proper_size_third_done
-			}
-		}
-		effect = {
-			JAP = {
-				mobile_increase = 90000
-				engineers_increase = 90000
-			}
-			set_country_flag = JAP_proper_size_third_done
-		}
-	}
+	#JAP_proper_size_second = {
+	#	potential = {
+	#		tag = OMG
+	#	}
+	#	allow = {
+	#		tag = OMG
+	#		JAP = {
+	#			has_country_flag = JAP_proper_size
+	#		}
+	#		not = {
+	#			has_country_flag = JAP_proper_size_second_done
+	#		}
+	#	}
+	#	effect = {
+	#		JAP = {
+	#			special_forces_increase = 90000
+	#			mobile_increase = 90000
+	#			artillery_increase = 90000
+	#			engineers_increase = 90000
+	#		}
+	#		set_country_flag = JAP_proper_size_second_done
+	#	}
+	#}
+	#JAP_proper_size_third= {
+	#	potential = {
+	#		tag = OMG
+	#	}
+	#	allow = {
+	#		tag = OMG
+	#		JAP = {
+	#			has_country_flag = JAP_proper_size
+	#		}
+	#		not = {
+	#			has_country_flag = JAP_proper_size_third_done
+	#		}
+	#	}
+	#	effect = {
+	#		JAP = {
+	#			mobile_increase = 90000
+	#			engineers_increase = 90000
+	#		}
+	#		set_country_flag = JAP_proper_size_third_done
+	#	}
+	#}
 	Introduction_event = {
 		potential = {
 			ai = no
@@ -5027,7 +4975,7 @@ diplomatic_decisions = {
 		}
 		allow  = {
             not = {
-                has_country_modifier = MP_reduction
+                has_country_modifier = MP_reduction_timer
             }
 		}
 		effect = {
