@@ -17,11 +17,10 @@ local IntelligenceMissions = {
 }
 
 local isOmgThread = false
--- ##################################
+
 -- # Called by the EXE
--- ##################################
 -- # Happens around 01:00 each day
--- ##################################
+
 function IntelligenceMinister_Tick(minister)
 
 	local isOMG = false

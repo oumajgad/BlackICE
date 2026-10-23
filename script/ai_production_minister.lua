@@ -1,30 +1,28 @@
-
--- ######################
 -- Global Variables
 --    CAREFUL: Variables are remembered from country to country
--- ######################
+
 local ProductionData = {} -- Gets reset each time the tick starts
 -- When adding new ones the main arrays in the Production object need to be updated
 
---	militia_brigade = { 					#### Brigade now as specified in the units folder
---		Index = 3, 							#### Location of where the item is stored in the UnitNeeds, Counts etc.... arrays
---		Serial = 4, 						#### How long should the serial run be (default 1)
---		Size = 3, 							#### How many of this brigade type should be used when building the division (default 1)
---		Support = 1, 						#### How many support brigades to attach to the unit (default 0)
---		SupportVariation = 0				#### Variation of number of Support, positive or negative (default 0)
--- 		SecondaryMain = "motorized_brigade" #### Add one unit of this type to the division always
---		SupportGroup = "Infantry", 			#### What support group to use Look at SupportType for groups
---		Type = "Land", 						#### What is the main type of the unit (Land, Naval, Air)
---		SubType = "Militia", 				#### What is the Subtype of the unitProductionMinister_Tick
---		SupportType = {						#### The SupportGroup that the support unit can be used with
+--	militia_brigade = { 					# Brigade now as specified in the units folder
+--		Index = 3, 							# Location of where the item is stored in the UnitNeeds, Counts etc.... arrays
+--		Serial = 4, 						# How long should the serial run be (default 1)
+--		Size = 3, 							# How many of this brigade type should be used when building the division (default 1)
+--		Support = 1, 						# How many support brigades to attach to the unit (default 0)
+--		SupportVariation = 0				# Variation of number of Support, positive or negative (default 0)
+-- 		SecondaryMain = "motorized_brigade" # Add one unit of this type to the division always
+--		SupportGroup = "Infantry", 			# What support group to use Look at SupportType for groups
+--		Type = "Land", 						# What is the main type of the unit (Land, Naval, Air)
+--		SubType = "Militia", 				# What is the Subtype of the unitProductionMinister_Tick
+--		SupportType = {						# The SupportGroup that the support unit can be used with
 --			"Garrison",
 --			"Militia",
 --			"Marine",
 --			"Infantry",
 --			"Motor",
 --			"Armor"},
---		SubUnit = "cag",					#### Secondary unit that needs to be built for this primary unit
---		SubQuantity = 1},                   #### Quantity of the secondary unit that needs to be built for this primary unit
+--		SubUnit = "cag",					# Secondary unit that needs to be built for this primary unit
+--		SubQuantity = 1},                   # Quantity of the secondary unit that needs to be built for this primary unit
 
 local UnitTypes = {
 	-- Land Units
@@ -1270,10 +1268,8 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 	return final.lendLease, final.consumer, final.production, final.supply, final.reinforce, final.upgrade
 end
 
-
--- ###################################
 -- # Main Method called by the EXE
--- #####################################
+
 function BalanceProductionSliders(ai, ministerCountry, prioSelection,
                                   vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade, bHasReinforceBonus)
 	local liOrigPrio = prioSelection
@@ -1464,10 +1460,8 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 	end
 end
 
-
--- ###################################
 -- # Main Method called by the EXE
--- #####################################
+
 function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
 	--[[
 	-- this implementation is wrong wrong wrong
@@ -1529,12 +1523,9 @@ function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
 	ai:Post( command )
 end
 
-
--- ##################################
 -- # Called by the EXE
--- ##################################
 -- # Happens around 05:00 each day
--- ##################################
+
 function ProductionMinister_Tick(minister)
 	local isOMG = false
 	if tostring(minister:GetCountryTag()) == "OMG" then
@@ -1630,7 +1621,6 @@ function HandleProductionMinister_Tick(minister)
 		UnitTypes = UnitTypes}
 
 	-- Initialize Production Object
-	-- #################
 	ProductionData.ministerTag = minister:GetCountryTag()
 	ProductionData.ministerCountry = ProductionData.ministerTag:GetCountry()
 	ProductionData.icAllocated = ProductionData.ministerCountry:GetICPart(CDistributionSetting._PRODUCTION_PRODUCTION_):Get()
@@ -1638,7 +1628,7 @@ function HandleProductionMinister_Tick(minister)
 	ProductionData.ministerAI = minister:GetOwnerAI()
 	ProductionData.ManpowerTotal = ProductionData.ministerCountry:GetManpower():Get()
 	-- End Initialize Production Object
-	-- #################
+
 
 	if ProductionData.ministerCountry:GetFlags():IsFlagSet("province_request_flag") then
 		-- t = os.clock()
@@ -1701,7 +1691,6 @@ function HandleProductionMinister_Tick(minister)
 	end
 
 	-- Initialize Production Object
-	-- #################
 	for x = 1, table.getn(UnitTypes) do
 		ProductionData.BuildingCounts[x] = 0
 		ProductionData.CurrentCounts[x] = 0
@@ -1724,7 +1713,6 @@ function HandleProductionMinister_Tick(minister)
 	ProductionData.IsAtWar = ProductionData.ministerCountry:IsAtWar()
 	ProductionData.IsNaval = (ProductionData.PortsTotal > 0 and ProductionData.icTotal >= 20)
 	-- End Initialize Production Object
-	-- #################
 
 	-- Build Convoys first above all (they count against Other toward the end
 	ProductionData.icAvailable = ConstructConvoys(ProductionData.icAvailable)
@@ -2275,9 +2263,8 @@ function HandleProductionMinister_Tick(minister)
 	end
 end
 
--- #######################
 -- Helper Build Methods
--- #######################
+
 function ProcessUnits(ic, vaUnitRatio, vaFirePower)
 	--local liLoopCount = table.getn(vaUnitRatio)
 
@@ -2504,14 +2491,9 @@ function GetEliteUnitBuildCount(vaElitUnits)
 	return laNewEliteUnits
 end
 
-
--- #######################
 -- End of Helper Build Methods
--- #######################
 
--- #######################
 -- Building Construction
--- #######################
 function BuildOtherUnits(ic)
 	-- Buildings
 	if ic > 0.1 then
@@ -3200,14 +3182,9 @@ function OverrideProvinces(buildingProvinces, buildingProvincesType)
 
 end
 
--- #######################
 -- End Building Construction
--- #######################
 
-
--- #######################
 -- Convoy Building
--- #######################
 function ConstructConvoys(viIC)
 	if viIC > 0.1 and ProductionData.PortsTotal > 0 then
 		local liNeeded = ProductionData.ministerCountry:GetTotalNeededConvoyTransports()

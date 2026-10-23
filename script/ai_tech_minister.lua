@@ -17,11 +17,9 @@ local _RESEARCH_UNKNOWN_ = 9
 
 local TechnologyData = {}
 
--- ##################################
 -- # Called by the EXE
--- ##################################
 -- # Happens around 03:00 each day
--- ##################################
+
 function TechMinister_Tick(minister, vbSliders, vbResearch)
 
 	local isOMG = false
@@ -55,11 +53,10 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 
 	-- Initialize Production Object
 	--   only the ones that are used for the slider
-	-- #################
+
 	TechnologyData.ministerCountry = TechnologyData.ministerTag:GetCountry()
 	TechnologyData.IsMajor = TechnologyData.ministerCountry:IsMajor()
 	-- End Initialize Production Object
-	-- #################
 
 	local ResearchSlotsAllowed = 0
 
@@ -86,7 +83,6 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 		if ResearchSlotsNeeded >= 0.01 then
 			-- Initialize Production Object
 			--   add the ones used for Tech Research
-			-- #################
 			TechnologyData.TechStatus = TechnologyData.ministerCountry:GetTechnologyStatus()
 			TechnologyData.PortsTotal = TechnologyData.ministerCountry:GetNumOfPorts()
 			TechnologyData.AirfieldsTotal = TechnologyData.ministerCountry:GetNumOfAirfields()
@@ -94,7 +90,6 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 			TechnologyData.IsAtWar = TechnologyData.ministerCountry:IsAtWar()
 			TechnologyData.IsNaval = (TechnologyData.PortsTotal > 0 and TechnologyData.icTotal >= 20)
 			-- End Initialize Production Object
-			-- #################
 
 			local liMaxTechYear = CTechnologyDataBase.GetLatestTechYear() + 1
 			Process_Tech((CCurrentGameState.GetCurrentDate():GetYear()), liMaxTechYear, ResearchSlotsAllowed, ResearchSlotsNeeded, 0)

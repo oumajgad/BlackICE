@@ -2,9 +2,8 @@
 local P = {}
 Support_License = P
 
--- ###########################
 -- Called by the EXE
--- ###########################
+
 function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserverTag, voCommand)
 	local Year = CCurrentGameState.GetCurrentDate():GetYear()
 	local loDiploScoreObj = {
@@ -135,9 +134,8 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 	return loDiploScoreObj.Score
 end
 
--- #######################
 -- Support Methods
--- #######################
+
 function P.ProductionCheck(voType, voProductionData)
 	local lbLicenseRequired = false
 
@@ -355,8 +353,6 @@ function P.CalculateCost(voBuyerInfo, voSellerInfo, voSubUnit)
 	return liCost
 end
 
--- ###############################################
 -- END OF LICENSE Support methods
--- ###############################################
 
 return Support_License

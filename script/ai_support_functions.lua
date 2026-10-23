@@ -1,8 +1,7 @@
 local P = {}
 Support = P
--- ###############################################
+
 -- Generic Support Methods
--- ###############################################
 
 function P.IsFriendDistance(voAI, voFaction, voCountry, viAlignment)
 	local liLowestScore = nil
@@ -327,24 +326,19 @@ function P.AlignmentPush(vsFaction, voForeignMinisterData, vbIdeology, vbIsFacti
 	return true
 end
 
--- ###############################################
 -- End Generic Support Methods
--- ###############################################
 
-
--- ###############################################
 -- Producton support methods
--- ###############################################
 -- Creates the physical unit and places it in the production que
 --	loType = {
---		Name = "infantry_brigade", 				### The unit type
---		Serial = 4, 							### How large of a serial run do you want
---		Size = 1,  								### How many of this unit type do you want in the division
---		Support = 2, 							### How many support units do you want
---		SupportGroup = "Infantry", 				### What support group to use
---		SecondaryMain = "bergsjaeger_brigade", 	### What secondary main unit do you want to attach to this (will attach 1 of them)
---		SubUnit = "cag", 						### Builds this is a seperate unit if the main one is built
---		SubQuantity = 1}  						### How many to build of the seperate unit
+--		Name = "infantry_brigade", 				# The unit type
+--		Serial = 4, 							# How large of a serial run do you want
+--		Size = 1,  								# How many of this unit type do you want in the division
+--		Support = 2, 							# How many support units do you want
+--		SupportGroup = "Infantry", 				# What support group to use
+--		SecondaryMain = "bergsjaeger_brigade", 	# What secondary main unit do you want to attach to this (will attach 1 of them)
+--		SubUnit = "cag", 						# Builds this is a seperate unit if the main one is built
+--		SubQuantity = 1}  						# How many to build of the seperate unit
 
 --  laSupportUnit = {
 --		"anti_air_brigade",
@@ -844,9 +838,8 @@ function P.BuildCustomSupportArray(vaSupportArray, voProductionData)
 	return laUnitArray
 end
 
--- #############################################
 -- Building Type Construction Helper Methods
--- #############################################
+
 function P.Build_RocketTest(...)
 	return P.Build_Building("rocket_test", ...)
 end
@@ -915,9 +908,6 @@ function P.Build_Building(vsBuildingType, vIC, voProductionData, viProvinceID, v
 	return vIC
 end
 
-
--- ###############################################
 -- END OF PRODUCTION methods
--- ###############################################
 
 return Support

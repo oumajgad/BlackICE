@@ -35,18 +35,16 @@ function Fill_ForeignMinisterData(minister, lbDataFilled)
 	return true
 end
 
--- ###################################
 -- # Called by the EXE
--- #####################################
+
 function ForeignMinister_OnWar( agent, countryTag1, countryTag2, war )
 	--if war:IsLimited() then
 		-- dont pull anything else right now, lets wait until we need it
 	--end
 end
 
--- ###################################
 -- # Called by the EXE
--- #####################################
+
 function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 
 	if tostring(minister:GetCountryTag():GetTag()) == "OMG" then
@@ -103,11 +101,9 @@ function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 	return liScore
 end
 
--- ##################################
 -- # Called by the EXE
--- ##################################
 -- # Happens around 13:00 each day
--- ##################################
+
 function ForeignMinister_Tick(minister)
 
 	local isOMG = false
@@ -708,14 +704,12 @@ function ForeignMinister_HandlePeace()
 				end
 			end
 
-			--########################
-			-- We are asked them to allow us the debt
-			-- #######################
+			-- We are asked to allow debt
+
 			-- Allow our Debt
 			if not(loRelation:AllowDebts()) then
-				-- ########################
+
 				-- They asked us to allow them debt
-				-- #######################
 				-- Cancel Their Allow Debt
 				if loReverseRelation:AllowDebts() then
 					local loAction = CDebtAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
