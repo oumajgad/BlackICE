@@ -32,8 +32,6 @@ minimal_training_active_I = {
 	naval_organisation = -0.05
 	air_intercept = -0.025
 	ground_attack = -0.025
-	strategic_attack = -0.025
-	tactical_attack = -0.025
 	org_regain = -0.05
 }
 minimal_training_active_II = {
@@ -65,8 +63,6 @@ minimal_training_active_II = {
 	naval_organisation = -0.1
 	air_intercept = -0.05
 	ground_attack = -0.05
-	strategic_attack = -0.05
-	tactical_attack = -0.05
 	org_regain = -0.1
 }
 minimal_training_active_III = {
@@ -86,8 +82,6 @@ minimal_training_active_III = {
 	naval_organisation = -0.15
 	air_intercept = -0.075
 	ground_attack = -0.075
-	strategic_attack = -0.075
-	tactical_attack = -0.075
 	org_regain = -0.15
 }
 basic_training_active_I = {
@@ -499,7 +493,6 @@ Blitz_effect = {
 	trigger = {
 		has_country_modifier = Paying_for_the_Blitz
 	}
-	strategic_attack = 0.15
 	air_intercept = 0.1
 	air_organisation = 0.1
 	global_ic = -0.05
@@ -8195,18 +8188,18 @@ old_fashioned_army = {
 
 	icon = 5
 }
-FRA_consumer_goods_reduction = {
-	potential = {
-		tag = FRA
-	}
-	trigger = {
-		ai = yes
-		not = { year = 1942 }
-		GER = { ai = no }
-	}
-	peace_consumer_goods_demand = -2
-	war_consumer_goods_demand = -0.2
-}
+#FRA_consumer_goods_reduction = {
+#	potential = {
+#		tag = FRA
+#	}
+#	trigger = {
+#		ai = yes
+#		not = { year = 1942 }
+#		GER = { ai = no }
+#	}
+#	peace_consumer_goods_demand = -2
+#	war_consumer_goods_demand = -0.2
+#}
 
 # JAPANESE ACHIEVEMENTS #
 1911_commercial_achievement = {
@@ -8598,7 +8591,7 @@ republic_still_stands = {
 		4548 = { controlled_by = SPR }
 	}
 	icon = 5
-	manpower = 1
+	global_manpower = 1
 	casualty_trickleback = 0.25
 	war_consumer_goods_demand = -0.25
 	territorial_pride = 0.1
@@ -10776,7 +10769,6 @@ great_air = {
 	air_organisation = 0.075
 	org_regain = 0.075
 	air_intercept = 0.05
-	tactical_attack = 0.05
 
 	icon = 7
 }
@@ -10812,8 +10804,6 @@ air_superpower = {
 	air_organisation = 0.1
 	org_regain = 0.1
 	air_intercept = 0.05
-	tactical_attack = 0.05
-	strategic_attack = 0.05
 
 	icon = 7
 }
@@ -11682,7 +11672,7 @@ Soviet_Italian_Pact = {
 	global_energy = -0.03
 	global_money = 0.1
 	global_supplies = -0.05
-	global_research_efficiency = 0.05
+	research_efficiency = 0.05
 
 	icon = 13
 }
@@ -13719,7 +13709,7 @@ Great_depression_effect = {
 		ai = no
 	}
 	global_supplies = -0.275
-	money = -0.1
+	global_money = -0.1
 	global_manpower_modifier = -0.15
 	peace_consumer_goods_demand = 0.075
 	war_consumer_goods_demand = 0.075
@@ -14410,7 +14400,6 @@ AI_Multiplayer_Bonus = {
 		global_leadership_modifier = 0.2
 		national_unity = 0.1
 		territorial_pride = 0.3
-		repair_rate = 0.2
 
 	icon = 4
 }
@@ -27847,34 +27836,34 @@ IcEffVisual_-99 = {
     trigger = {}
 }
 
-FRA_AI_CG_FIX = {
-	potential = {
-		ai = yes
-		tag = FRA
-	}
-	trigger = {
-		ai = yes
-		tag = FRA
-		GER = { ai = no }
-	}
-	peace_consumer_goods_demand = -1
-	war_consumer_goods_demand = -1
-	icon = 50
-}
-FRA_AI_CG_FIX_AI_GER = {
-	potential = {
-		ai = yes
-		tag = FRA
-	}
-	trigger = {
-		ai = yes
-		tag = FRA
-		GER = { ai = yes }
-	}
-	peace_consumer_goods_demand = -0.5
-	war_consumer_goods_demand = -0.5
-	icon = 50
-}
+#FRA_AI_CG_FIX = {
+#	potential = {
+#		ai = yes
+#		tag = FRA
+#	}
+#	trigger = {
+#		ai = yes
+#		tag = FRA
+#		GER = { ai = no }
+#	}
+#	peace_consumer_goods_demand = -1
+#	war_consumer_goods_demand = -1
+#	icon = 50
+#}
+#FRA_AI_CG_FIX_AI_GER = {
+#	potential = {
+#		ai = yes
+#		tag = FRA
+#	}
+#	trigger = {
+#		ai = yes
+#		tag = FRA
+#		GER = { ai = yes }
+#	}
+#	peace_consumer_goods_demand = -0.5
+#	war_consumer_goods_demand = -0.5
+#	icon = 50
+#}
 
 Late_War_Europe_AI_supply_fix = {
 	potential = {
@@ -27920,7 +27909,6 @@ MEN_vs_SJW_fix = {
 	global_leadership_modifier = 0.25
 	national_unity = 0.05
 	territorial_pride = 0.5
-	repair_rate = 0.05
 
 	icon = 50
 }
