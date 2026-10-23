@@ -145,7 +145,6 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"combined_arms_integration",
 		"homefront_coordination",
 		"airborne_training",
-		"airborne_command_and_control",
 		"artillery_barrage",
 		"artillery_flexiblity",
 		"assault_concentration",

@@ -77,10 +77,13 @@ _RULES = [
          "Byte with no Windows-1252 character",
          "One of the five bytes Windows-1252 leaves undefined. Usually the remains of a "
          "UTF-8 character after a bad conversion."),
-    Rule("BV010", "mixed-block", WARNING, CODE, "inferred",
+    Rule("BV010", "mixed-block", ERROR, CODE, "inferred",
          "Bare word inside a block of keys",
          "A block is either `key = value` pairs or a plain list like `{ 0 0 1 }`. A bare "
-         "word among pairs is usually a key that lost its `= value`, or a typo."),
+         "word among pairs is usually a key that lost its `= value`, a typo, or a number "
+         "split by a space - `-0 6` for `-0.06`. The game does not read past it: a bare `6` "
+         "in `base_values` lost the whole static modifier and crashed every start at "
+         "\"Processing Flags\" (2026-10-19)."),
 
     # --- schema --------------------------------------------------------------------------
     Rule("BV101", "unknown-key", ERROR, CODE, "confirmed",

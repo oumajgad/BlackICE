@@ -197,7 +197,6 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"amphibious_training",
 		"amphibious_command_and_control",
 		"airborne_training",
-		"airborne_command_and_control",
 		"jungle_training",
 		"jungle_command_and_control",
 		"superior_strength",
