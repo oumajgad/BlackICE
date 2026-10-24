@@ -49,7 +49,6 @@ function P.SecretWeaponTechs(voTechnologyData)
 	return ignoreTech, nil
 end
 
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Transport to Land unit distribution
@@ -64,7 +63,6 @@ function P.TransportLandRatio(voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
 
 function P.DiploScore_OfferTrade(voDiploScoreObj)
 	local laTrade = {

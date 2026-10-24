@@ -1,7 +1,6 @@
 local P = {}
 AI_JAP = P
 
--- #######################################
 -- Start of Trade Weights
 function P.TradeWeights(voResourceData)
 	local laResouces = {
@@ -23,7 +22,6 @@ function P.TradeWeights(voResourceData)
 	return laResouces
 end
 
--- #######################################
 -- Static Production Variables overide
 
 -- Techs that are used in the main file to be ignored
@@ -465,9 +463,7 @@ function P.OtherTechs(voTechnologyData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Production Weights
@@ -638,7 +634,6 @@ function P.Build_Fort(vIC, voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
 
 function P.DiploScore_InfluenceNation(voDiploScoreObj)
 	-- Only do this if we are in the axis
@@ -753,7 +748,6 @@ function P.DiploScore_NonAgression(viScore, voAI, voCountryOne, voCountryTwo, vo
 	return viScore
 end
 
---##########################
 -- Foreign Minister Hooks
 function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
 	if voDecision.Name == "marco_polo_bridge_incident" then
@@ -923,6 +917,5 @@ end
 function P.DiploScore_SendExpeditionaryForce(voAI, voActorTag, voRecipientTag, voObserverTag, action)
 	return 0
 end
-
 
 return AI_JAP

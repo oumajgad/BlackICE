@@ -1,7 +1,6 @@
 local P = {}
 AI_GER = P
 
--- #######################################
 -- Start of Trade Weights
 function P.TradeWeights(voResourceData)
 	local laResouces = {
@@ -18,7 +17,6 @@ function P.TradeWeights(voResourceData)
 	return laResouces
 end
 
--- #######################################
 -- Start of Tech Research
 
 -- Tech weights
@@ -496,9 +494,7 @@ function P.OtherTechs(voTechnologyData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
--- #######################################
 -- Production Weights
 --   1.0 = 100% the total needs to equal 1.0
 function P.ProductionWeights(voProductionData)
@@ -974,13 +970,8 @@ function P.Build_Radar(vIC, voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
 
-
--- #######################################
 -- Diplomacy Hooks
-
-
 function P.DiploScore_InfluenceNation(voDiploScoreObj)
 	-- Only do this if we are in the axis
 	if voDiploScoreObj.FactionName == "axis" then
@@ -1097,7 +1088,7 @@ Utils.LUA_DEBUGOUT("GER exp ")
 		return score
 end
 
---##########################
+
 -- Foreign Minister Hooks
 function P.ForeignMinister_Influence(voForeignMinisterData)
 	local laIgnoreWatch -- Ignore this country but monitor them if they are about to join someone else
@@ -1558,7 +1549,5 @@ function P.GreeceCheck(voForeignMinisterData, vaPeaceTags, vbYugoDOW)
 	return false
 end
 
---##########################
 -- Politics Minister Hooks
-
 return AI_GER

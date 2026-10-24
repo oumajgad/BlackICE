@@ -1,8 +1,6 @@
 local P = {}
 AI_USA = P
 
--- #######################################
-
 -- Tech weights
 --   1.0 = 100% the total needs to equal 1.0
 function P.TechWeights(voTechnologyData)
@@ -520,9 +518,7 @@ function P.OtherTechs(voTechnologyData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Production Weights
@@ -1181,7 +1177,6 @@ function P.Build_Fort(ic, voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
 
 function P.ForeignMinister_Alignment(...)
 	return Support.AlignmentPush("allies", ...)
@@ -1373,7 +1368,6 @@ function P.DiploScore_Guarantee(voDiploScoreObj)
 
 end
 
---##########################
 -- Foreign Minister Hooks
 function P.ForeignMinister_Influence(voForeignMinisterData)
 	local laIgnoreWatch -- Ignore this country but monitor them if they are about to join someone else

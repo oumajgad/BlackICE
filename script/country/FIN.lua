@@ -56,7 +56,7 @@ function P.ProductionWeights(voProductionData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- ######################################
+
 function P.LandRatio(voProductionData)
 	local laArray
 	if voProductionData.Year < 1939 then
@@ -155,7 +155,6 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 	return voDiploScoreObj.Score
 end
 
---##########################
 -- Foreign Minister Hooks
 
 function P.ForeignMinister_Alignment(voForeignMinisterData)

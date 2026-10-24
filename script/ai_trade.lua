@@ -1,10 +1,7 @@
 local P = {}
 Support_Trade = P
 
-
--- ###########################
 -- Called by the EXE and handles the Analyzing of offered trades
--- ###########################
 function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeAction, voTradedFrom, voTradedTo)
 
 	local isOMG = false
@@ -733,9 +730,8 @@ function ProposeTrades(vAI, ministerTag)
 	end
 end
 
--- #######################
 -- Support Methods
--- #######################
+
 function P.Trade_IsMajor()
 	local laResouces = {
 		MONEY = {
@@ -1125,14 +1121,10 @@ function P.Can_Click_Button(voTarget, voTradeData)
 
 	return false
 end
--- ###############################################
+
 -- END OF Support methods
--- ###############################################
 
-
--- ###############################################
 -- Custom trade AI
--- ###############################################
 
 CustomTradeAiValues = {}
 

@@ -49,10 +49,7 @@ function P.SecretWeaponTechs(voTechnologyData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
-
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Land ratio distribution
@@ -108,7 +105,7 @@ function P.Build_Fort(ic, voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
+
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	local japTag = CCountryDataBase.GetTag("JAP")
 

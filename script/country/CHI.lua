@@ -18,10 +18,7 @@ function P.TechWeights(voTechnologyData)
 	return laTechWeights
 end
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
-
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Production Weights
@@ -155,7 +152,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
+
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	-- Dont join any faction even if allies. Not meant to still exist during historical joining after Pearl Harbor
 	return 0
@@ -183,6 +180,5 @@ function P.ForeignMinister_Alignment(...)
 		return Support.AlignmentNeutral(...)
 	end
 end
-
 
 return AI_CHI

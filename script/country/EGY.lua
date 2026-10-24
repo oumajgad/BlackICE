@@ -278,7 +278,7 @@ function P.OtherTechs(voTechnologyData)
 	return ignoreTech, preferTech
 end
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
+
 function P.ProductionWeights(minister)
 	local rValue
 
@@ -375,6 +375,5 @@ end
 --		end
 --	end
 --end
-
 
 return AI_EGY

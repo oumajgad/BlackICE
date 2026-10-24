@@ -1,11 +1,9 @@
 local P = {}
 AI_BRA = P
 
--- #######################################
 -- Start of Tech Research
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
 function P.ProductionWeights(voProductionData)
 	local laArray

@@ -1,7 +1,6 @@
 local P = {}
 AI_SOV = P
 
--- #######################################
 -- Tech weights
 --   1.0 = 100% the total needs to equal 1.0
 function P.TechWeights(voTechnologyData)
@@ -477,11 +476,8 @@ function P.OtherTechs(voTechnologyData)
 	return ignoreTech, preferTech
 end
 
-
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Production Weights
@@ -1080,8 +1076,6 @@ function P.Build_RocketTest(ic, voProductionData)
 	return ic, false
 end
 -- END OF PRODUTION OVERIDES
--- #######################################
-
 
 function P.HandleMobilization(minister)
 	local ministerTag = minister:GetCountryTag()
@@ -1215,8 +1209,6 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 	return voDiploScoreObj.Score
 end
 
-
---##########################
 -- Foreign Minister Hooks
 function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 	-- If we are pat of the Comintern then process this

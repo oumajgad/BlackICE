@@ -7,7 +7,6 @@ local P = {}
 AI_NOR = P
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
 -- Transport to Land unit distribution
 -- UNUSED

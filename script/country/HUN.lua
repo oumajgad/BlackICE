@@ -2,7 +2,6 @@ local P = {}
 AI_HUN = P
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
 function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 

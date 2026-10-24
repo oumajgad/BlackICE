@@ -22,7 +22,6 @@ function P.TechWeights(minister)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
 function P.ProductionWeights(voProductionData)
 	local rValue
