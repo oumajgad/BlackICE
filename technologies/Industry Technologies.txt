@@ -126,7 +126,7 @@ supply_production = {
 	allow = {
 	}
 
-	ic_to_supplies = 0.05
+	ic_to_supplies = 0.025
 
 	research_bonus_from = {
 		mechanicalengineering_theory = 0.2
@@ -136,9 +136,9 @@ supply_production = {
 	difficulty = 4
 
 	start_year = 1918
-	first_offset = 1932		# 2nd model is from 1936
+	first_offset = 1934		# 2nd model is from 1936
 	additional_offset = 2	# one new every 2 years
-	max_level = 12
+	max_level = 10
 	folder = industry_folder
 	stealable = no
 }
@@ -10717,9 +10717,58 @@ advanced_resource_substitution = {
 ammo_production = {
 
 	allow = {
+		or = {
+			and = {
+				ammo_production = 0
+				not = { ammo_production = 1 }
+			}
+			and = {
+				ammo_production = 1
+				not = { ammo_production = 2 }
+			}
+			and = {
+				ammo_production = 2
+				not = { ammo_production = 3 }
+			}
+			and = {
+				ammo_production = 3
+				not = { ammo_production = 4 }
+				check_variable = { which = copper_ActualBalance value = 1001 }
+			}
+			and = {
+				ammo_production = 4
+				not = { ammo_production = 5 }
+				check_variable = { which = copper_ActualBalance value = 1001 }
+			}
+			and = {
+				ammo_production = 5
+				not = { ammo_production = 6 }
+				check_variable = { which = copper_ActualBalance value = 1002 }
+			}
+			and = {
+				ammo_production = 6
+				not = { ammo_production = 7 }
+				check_variable = { which = copper_ActualBalance value = 1002 }
+			}
+			and = {
+				ammo_production = 7
+				not = { ammo_production = 8 }
+				check_variable = { which = copper_ActualBalance value = 1003 }
+			}
+			and = {
+				ammo_production = 8
+				not = { ammo_production = 9 }
+				check_variable = { which = copper_ActualBalance value = 1003 }
+			}
+			and = {
+				ammo_production = 9
+				not = { ammo_production = 10 }
+				check_variable = { which = copper_ActualBalance value = 1004 }
+			}
+		}
 	}
 
-	ic_to_supplies = 0.075
+	ic_to_supplies = 0.03
 
 	research_bonus_from = {
 		mechanicalengineering_theory = 0.2
@@ -10729,18 +10778,19 @@ ammo_production = {
 	difficulty = 4
 
 	start_year = 1918
-	first_offset = 1932		# 2nd model is from 1936
+	first_offset = 1934		# 2nd model is from 1936
 	additional_offset = 2	# one new every 2 years
-	max_level = 12
+	max_level = 10
 	folder = industry_folder
 	stealable = no
 }
 food_rations_production = {
 
 	allow = {
+		
 	}
 
-	ic_to_supplies = 0.075
+	ic_to_supplies = 0.03
 
 	research_bonus_from = {
 		mechanicalengineering_theory = 0.2
@@ -10750,9 +10800,9 @@ food_rations_production = {
 	difficulty = 4
 
 	start_year = 1918
-	first_offset = 1932		# 2nd model is from 1936
+	first_offset = 1934		# 2nd model is from 1936
 	additional_offset = 2	# one new every 2 years
-	max_level = 12
+	max_level = 10
 	folder = industry_folder
 	stealable = no
 }
