@@ -1,0 +1,1515 @@
+# Rail terminus -> extra_infra
+#
+# Every rail terminus of level N gives +1 extra_infra to its own province and to every
+# province within N provinces of it, counting adjacency steps. The range only runs
+# through provinces the terminus' controller controls, so it stops at the border.
+# Termini stack: a province in range of three termini gets +3.
+#
+# OMG recalculates the whole map once a week: every extra_infra level is stripped, then
+# handed out again terminus by terminus. Nothing smaller would do - a province changing
+# hands changes what it should have, and script cannot remember who controlled it.
+#
+# Script has no loops and no province variables, so each terminus is walked with nested
+# any_neighbor_province scopes, one nesting level per province of distance, and the
+# rings are kept apart with province flags:
+#   ring k   - from the terminus, walk only through provinces flagged ring 1 .. k-1 and
+#              flag every neighbour not yet seen as ring k. That is an exact
+#              breadth-first distance, so a province is never counted twice or too far.
+#   apply    - walk ring 1 .. N again, giving +1 and clearing the flags on the way in, so
+#              a province reached by two paths only gets it from the first one.
+# The flags are gone again before the next terminus is handled. The country being
+# walked carries the flag extra_infra_walker, which is how a province deep in the walk
+# can ask whether it is controlled by the terminus' country.
+#
+# Generated - one block per terminus level, because the nesting depth is the level.
+
+diplomatic_decisions = {
+	omg_extra_infra_recalc = {
+		potential = {
+			tag = OMG
+			date = 1936.1.10
+			not = { has_country_modifier = omg_extra_infra_timer }
+		}
+		allow = {}
+		effect = {
+			add_country_modifier = {
+				name = omg_extra_infra_timer
+				duration = 7
+			}
+			any_country = {
+				# strip everything
+				any_controlled = {
+					limit = { extra_infra = 1 }
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = { extra_infra = 1 }
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = { extra_infra = 1 }
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = { extra_infra = 1 }
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = { extra_infra = 1 }
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = { extra_infra = 1 }
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = { extra_infra = 1 }
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = { extra_infra = 1 }
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = { extra_infra = 1 }
+					extra_infra = -1
+				}
+				any_controlled = {
+					limit = { extra_infra = 1 }
+					extra_infra = -1
+				}
+				set_country_flag = extra_infra_walker
+				# level 1 terminus: 1 ring
+				any_controlled = {
+					limit = {
+						rail_terminus = 1
+						not = { rail_terminus = 2 }
+					}
+					set_province_flag = extra_infra_seen
+					# ring 1
+					any_neighbor_province = {
+						limit = {
+							controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+							not = { has_province_flag = extra_infra_seen }
+						}
+						set_province_flag = extra_infra_r1
+						set_province_flag = extra_infra_seen
+					}
+					# +1 to every province in range, once each
+					extra_infra = 1
+					clr_province_flag = extra_infra_seen
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						extra_infra = 1
+						clr_province_flag = extra_infra_r1
+						clr_province_flag = extra_infra_seen
+					}
+				}
+				# level 2 terminus: 2 rings
+				any_controlled = {
+					limit = {
+						rail_terminus = 2
+						not = { rail_terminus = 3 }
+					}
+					set_province_flag = extra_infra_seen
+					# ring 1
+					any_neighbor_province = {
+						limit = {
+							controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+							not = { has_province_flag = extra_infra_seen }
+						}
+						set_province_flag = extra_infra_r1
+						set_province_flag = extra_infra_seen
+					}
+					# ring 2
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = {
+								controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+								not = { has_province_flag = extra_infra_seen }
+							}
+							set_province_flag = extra_infra_r2
+							set_province_flag = extra_infra_seen
+						}
+					}
+					# +1 to every province in range, once each
+					extra_infra = 1
+					clr_province_flag = extra_infra_seen
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						extra_infra = 1
+						clr_province_flag = extra_infra_r1
+						clr_province_flag = extra_infra_seen
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							extra_infra = 1
+							clr_province_flag = extra_infra_r2
+							clr_province_flag = extra_infra_seen
+						}
+					}
+				}
+				# level 3 terminus: 3 rings
+				any_controlled = {
+					limit = {
+						rail_terminus = 3
+						not = { rail_terminus = 4 }
+					}
+					set_province_flag = extra_infra_seen
+					# ring 1
+					any_neighbor_province = {
+						limit = {
+							controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+							not = { has_province_flag = extra_infra_seen }
+						}
+						set_province_flag = extra_infra_r1
+						set_province_flag = extra_infra_seen
+					}
+					# ring 2
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = {
+								controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+								not = { has_province_flag = extra_infra_seen }
+							}
+							set_province_flag = extra_infra_r2
+							set_province_flag = extra_infra_seen
+						}
+					}
+					# ring 3
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = {
+									controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+									not = { has_province_flag = extra_infra_seen }
+								}
+								set_province_flag = extra_infra_r3
+								set_province_flag = extra_infra_seen
+							}
+						}
+					}
+					# +1 to every province in range, once each
+					extra_infra = 1
+					clr_province_flag = extra_infra_seen
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						extra_infra = 1
+						clr_province_flag = extra_infra_r1
+						clr_province_flag = extra_infra_seen
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							extra_infra = 1
+							clr_province_flag = extra_infra_r2
+							clr_province_flag = extra_infra_seen
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								extra_infra = 1
+								clr_province_flag = extra_infra_r3
+								clr_province_flag = extra_infra_seen
+							}
+						}
+					}
+				}
+				# level 4 terminus: 4 rings
+				any_controlled = {
+					limit = {
+						rail_terminus = 4
+						not = { rail_terminus = 5 }
+					}
+					set_province_flag = extra_infra_seen
+					# ring 1
+					any_neighbor_province = {
+						limit = {
+							controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+							not = { has_province_flag = extra_infra_seen }
+						}
+						set_province_flag = extra_infra_r1
+						set_province_flag = extra_infra_seen
+					}
+					# ring 2
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = {
+								controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+								not = { has_province_flag = extra_infra_seen }
+							}
+							set_province_flag = extra_infra_r2
+							set_province_flag = extra_infra_seen
+						}
+					}
+					# ring 3
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = {
+									controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+									not = { has_province_flag = extra_infra_seen }
+								}
+								set_province_flag = extra_infra_r3
+								set_province_flag = extra_infra_seen
+							}
+						}
+					}
+					# ring 4
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = {
+										controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+										not = { has_province_flag = extra_infra_seen }
+									}
+									set_province_flag = extra_infra_r4
+									set_province_flag = extra_infra_seen
+								}
+							}
+						}
+					}
+					# +1 to every province in range, once each
+					extra_infra = 1
+					clr_province_flag = extra_infra_seen
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						extra_infra = 1
+						clr_province_flag = extra_infra_r1
+						clr_province_flag = extra_infra_seen
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							extra_infra = 1
+							clr_province_flag = extra_infra_r2
+							clr_province_flag = extra_infra_seen
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								extra_infra = 1
+								clr_province_flag = extra_infra_r3
+								clr_province_flag = extra_infra_seen
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									extra_infra = 1
+									clr_province_flag = extra_infra_r4
+									clr_province_flag = extra_infra_seen
+								}
+							}
+						}
+					}
+				}
+				# level 5 terminus: 5 rings
+				any_controlled = {
+					limit = {
+						rail_terminus = 5
+						not = { rail_terminus = 6 }
+					}
+					set_province_flag = extra_infra_seen
+					# ring 1
+					any_neighbor_province = {
+						limit = {
+							controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+							not = { has_province_flag = extra_infra_seen }
+						}
+						set_province_flag = extra_infra_r1
+						set_province_flag = extra_infra_seen
+					}
+					# ring 2
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = {
+								controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+								not = { has_province_flag = extra_infra_seen }
+							}
+							set_province_flag = extra_infra_r2
+							set_province_flag = extra_infra_seen
+						}
+					}
+					# ring 3
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = {
+									controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+									not = { has_province_flag = extra_infra_seen }
+								}
+								set_province_flag = extra_infra_r3
+								set_province_flag = extra_infra_seen
+							}
+						}
+					}
+					# ring 4
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = {
+										controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+										not = { has_province_flag = extra_infra_seen }
+									}
+									set_province_flag = extra_infra_r4
+									set_province_flag = extra_infra_seen
+								}
+							}
+						}
+					}
+					# ring 5
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = {
+											controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+											not = { has_province_flag = extra_infra_seen }
+										}
+										set_province_flag = extra_infra_r5
+										set_province_flag = extra_infra_seen
+									}
+								}
+							}
+						}
+					}
+					# +1 to every province in range, once each
+					extra_infra = 1
+					clr_province_flag = extra_infra_seen
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						extra_infra = 1
+						clr_province_flag = extra_infra_r1
+						clr_province_flag = extra_infra_seen
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							extra_infra = 1
+							clr_province_flag = extra_infra_r2
+							clr_province_flag = extra_infra_seen
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								extra_infra = 1
+								clr_province_flag = extra_infra_r3
+								clr_province_flag = extra_infra_seen
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									extra_infra = 1
+									clr_province_flag = extra_infra_r4
+									clr_province_flag = extra_infra_seen
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										extra_infra = 1
+										clr_province_flag = extra_infra_r5
+										clr_province_flag = extra_infra_seen
+									}
+								}
+							}
+						}
+					}
+				}
+				# level 6 terminus: 6 rings
+				any_controlled = {
+					limit = {
+						rail_terminus = 6
+						not = { rail_terminus = 7 }
+					}
+					set_province_flag = extra_infra_seen
+					# ring 1
+					any_neighbor_province = {
+						limit = {
+							controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+							not = { has_province_flag = extra_infra_seen }
+						}
+						set_province_flag = extra_infra_r1
+						set_province_flag = extra_infra_seen
+					}
+					# ring 2
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = {
+								controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+								not = { has_province_flag = extra_infra_seen }
+							}
+							set_province_flag = extra_infra_r2
+							set_province_flag = extra_infra_seen
+						}
+					}
+					# ring 3
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = {
+									controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+									not = { has_province_flag = extra_infra_seen }
+								}
+								set_province_flag = extra_infra_r3
+								set_province_flag = extra_infra_seen
+							}
+						}
+					}
+					# ring 4
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = {
+										controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+										not = { has_province_flag = extra_infra_seen }
+									}
+									set_province_flag = extra_infra_r4
+									set_province_flag = extra_infra_seen
+								}
+							}
+						}
+					}
+					# ring 5
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = {
+											controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+											not = { has_province_flag = extra_infra_seen }
+										}
+										set_province_flag = extra_infra_r5
+										set_province_flag = extra_infra_seen
+									}
+								}
+							}
+						}
+					}
+					# ring 6
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = {
+												controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+												not = { has_province_flag = extra_infra_seen }
+											}
+											set_province_flag = extra_infra_r6
+											set_province_flag = extra_infra_seen
+										}
+									}
+								}
+							}
+						}
+					}
+					# +1 to every province in range, once each
+					extra_infra = 1
+					clr_province_flag = extra_infra_seen
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						extra_infra = 1
+						clr_province_flag = extra_infra_r1
+						clr_province_flag = extra_infra_seen
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							extra_infra = 1
+							clr_province_flag = extra_infra_r2
+							clr_province_flag = extra_infra_seen
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								extra_infra = 1
+								clr_province_flag = extra_infra_r3
+								clr_province_flag = extra_infra_seen
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									extra_infra = 1
+									clr_province_flag = extra_infra_r4
+									clr_province_flag = extra_infra_seen
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										extra_infra = 1
+										clr_province_flag = extra_infra_r5
+										clr_province_flag = extra_infra_seen
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											extra_infra = 1
+											clr_province_flag = extra_infra_r6
+											clr_province_flag = extra_infra_seen
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				# level 7 terminus: 7 rings
+				any_controlled = {
+					limit = {
+						rail_terminus = 7
+						not = { rail_terminus = 8 }
+					}
+					set_province_flag = extra_infra_seen
+					# ring 1
+					any_neighbor_province = {
+						limit = {
+							controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+							not = { has_province_flag = extra_infra_seen }
+						}
+						set_province_flag = extra_infra_r1
+						set_province_flag = extra_infra_seen
+					}
+					# ring 2
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = {
+								controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+								not = { has_province_flag = extra_infra_seen }
+							}
+							set_province_flag = extra_infra_r2
+							set_province_flag = extra_infra_seen
+						}
+					}
+					# ring 3
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = {
+									controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+									not = { has_province_flag = extra_infra_seen }
+								}
+								set_province_flag = extra_infra_r3
+								set_province_flag = extra_infra_seen
+							}
+						}
+					}
+					# ring 4
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = {
+										controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+										not = { has_province_flag = extra_infra_seen }
+									}
+									set_province_flag = extra_infra_r4
+									set_province_flag = extra_infra_seen
+								}
+							}
+						}
+					}
+					# ring 5
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = {
+											controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+											not = { has_province_flag = extra_infra_seen }
+										}
+										set_province_flag = extra_infra_r5
+										set_province_flag = extra_infra_seen
+									}
+								}
+							}
+						}
+					}
+					# ring 6
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = {
+												controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+												not = { has_province_flag = extra_infra_seen }
+											}
+											set_province_flag = extra_infra_r6
+											set_province_flag = extra_infra_seen
+										}
+									}
+								}
+							}
+						}
+					}
+					# ring 7
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											any_neighbor_province = {
+												limit = {
+													controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+													not = { has_province_flag = extra_infra_seen }
+												}
+												set_province_flag = extra_infra_r7
+												set_province_flag = extra_infra_seen
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					# +1 to every province in range, once each
+					extra_infra = 1
+					clr_province_flag = extra_infra_seen
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						extra_infra = 1
+						clr_province_flag = extra_infra_r1
+						clr_province_flag = extra_infra_seen
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							extra_infra = 1
+							clr_province_flag = extra_infra_r2
+							clr_province_flag = extra_infra_seen
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								extra_infra = 1
+								clr_province_flag = extra_infra_r3
+								clr_province_flag = extra_infra_seen
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									extra_infra = 1
+									clr_province_flag = extra_infra_r4
+									clr_province_flag = extra_infra_seen
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										extra_infra = 1
+										clr_province_flag = extra_infra_r5
+										clr_province_flag = extra_infra_seen
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											extra_infra = 1
+											clr_province_flag = extra_infra_r6
+											clr_province_flag = extra_infra_seen
+											any_neighbor_province = {
+												limit = { has_province_flag = extra_infra_r7 }
+												extra_infra = 1
+												clr_province_flag = extra_infra_r7
+												clr_province_flag = extra_infra_seen
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				# level 8 terminus: 8 rings
+				any_controlled = {
+					limit = {
+						rail_terminus = 8
+						not = { rail_terminus = 9 }
+					}
+					set_province_flag = extra_infra_seen
+					# ring 1
+					any_neighbor_province = {
+						limit = {
+							controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+							not = { has_province_flag = extra_infra_seen }
+						}
+						set_province_flag = extra_infra_r1
+						set_province_flag = extra_infra_seen
+					}
+					# ring 2
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = {
+								controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+								not = { has_province_flag = extra_infra_seen }
+							}
+							set_province_flag = extra_infra_r2
+							set_province_flag = extra_infra_seen
+						}
+					}
+					# ring 3
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = {
+									controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+									not = { has_province_flag = extra_infra_seen }
+								}
+								set_province_flag = extra_infra_r3
+								set_province_flag = extra_infra_seen
+							}
+						}
+					}
+					# ring 4
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = {
+										controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+										not = { has_province_flag = extra_infra_seen }
+									}
+									set_province_flag = extra_infra_r4
+									set_province_flag = extra_infra_seen
+								}
+							}
+						}
+					}
+					# ring 5
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = {
+											controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+											not = { has_province_flag = extra_infra_seen }
+										}
+										set_province_flag = extra_infra_r5
+										set_province_flag = extra_infra_seen
+									}
+								}
+							}
+						}
+					}
+					# ring 6
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = {
+												controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+												not = { has_province_flag = extra_infra_seen }
+											}
+											set_province_flag = extra_infra_r6
+											set_province_flag = extra_infra_seen
+										}
+									}
+								}
+							}
+						}
+					}
+					# ring 7
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											any_neighbor_province = {
+												limit = {
+													controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+													not = { has_province_flag = extra_infra_seen }
+												}
+												set_province_flag = extra_infra_r7
+												set_province_flag = extra_infra_seen
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					# ring 8
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											any_neighbor_province = {
+												limit = { has_province_flag = extra_infra_r7 }
+												any_neighbor_province = {
+													limit = {
+														controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+														not = { has_province_flag = extra_infra_seen }
+													}
+													set_province_flag = extra_infra_r8
+													set_province_flag = extra_infra_seen
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					# +1 to every province in range, once each
+					extra_infra = 1
+					clr_province_flag = extra_infra_seen
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						extra_infra = 1
+						clr_province_flag = extra_infra_r1
+						clr_province_flag = extra_infra_seen
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							extra_infra = 1
+							clr_province_flag = extra_infra_r2
+							clr_province_flag = extra_infra_seen
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								extra_infra = 1
+								clr_province_flag = extra_infra_r3
+								clr_province_flag = extra_infra_seen
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									extra_infra = 1
+									clr_province_flag = extra_infra_r4
+									clr_province_flag = extra_infra_seen
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										extra_infra = 1
+										clr_province_flag = extra_infra_r5
+										clr_province_flag = extra_infra_seen
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											extra_infra = 1
+											clr_province_flag = extra_infra_r6
+											clr_province_flag = extra_infra_seen
+											any_neighbor_province = {
+												limit = { has_province_flag = extra_infra_r7 }
+												extra_infra = 1
+												clr_province_flag = extra_infra_r7
+												clr_province_flag = extra_infra_seen
+												any_neighbor_province = {
+													limit = { has_province_flag = extra_infra_r8 }
+													extra_infra = 1
+													clr_province_flag = extra_infra_r8
+													clr_province_flag = extra_infra_seen
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				# level 9 terminus: 9 rings
+				any_controlled = {
+					limit = {
+						rail_terminus = 9
+						not = { rail_terminus = 10 }
+					}
+					set_province_flag = extra_infra_seen
+					# ring 1
+					any_neighbor_province = {
+						limit = {
+							controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+							not = { has_province_flag = extra_infra_seen }
+						}
+						set_province_flag = extra_infra_r1
+						set_province_flag = extra_infra_seen
+					}
+					# ring 2
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = {
+								controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+								not = { has_province_flag = extra_infra_seen }
+							}
+							set_province_flag = extra_infra_r2
+							set_province_flag = extra_infra_seen
+						}
+					}
+					# ring 3
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = {
+									controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+									not = { has_province_flag = extra_infra_seen }
+								}
+								set_province_flag = extra_infra_r3
+								set_province_flag = extra_infra_seen
+							}
+						}
+					}
+					# ring 4
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = {
+										controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+										not = { has_province_flag = extra_infra_seen }
+									}
+									set_province_flag = extra_infra_r4
+									set_province_flag = extra_infra_seen
+								}
+							}
+						}
+					}
+					# ring 5
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = {
+											controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+											not = { has_province_flag = extra_infra_seen }
+										}
+										set_province_flag = extra_infra_r5
+										set_province_flag = extra_infra_seen
+									}
+								}
+							}
+						}
+					}
+					# ring 6
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = {
+												controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+												not = { has_province_flag = extra_infra_seen }
+											}
+											set_province_flag = extra_infra_r6
+											set_province_flag = extra_infra_seen
+										}
+									}
+								}
+							}
+						}
+					}
+					# ring 7
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											any_neighbor_province = {
+												limit = {
+													controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+													not = { has_province_flag = extra_infra_seen }
+												}
+												set_province_flag = extra_infra_r7
+												set_province_flag = extra_infra_seen
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					# ring 8
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											any_neighbor_province = {
+												limit = { has_province_flag = extra_infra_r7 }
+												any_neighbor_province = {
+													limit = {
+														controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+														not = { has_province_flag = extra_infra_seen }
+													}
+													set_province_flag = extra_infra_r8
+													set_province_flag = extra_infra_seen
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					# ring 9
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											any_neighbor_province = {
+												limit = { has_province_flag = extra_infra_r7 }
+												any_neighbor_province = {
+													limit = { has_province_flag = extra_infra_r8 }
+													any_neighbor_province = {
+														limit = {
+															controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+															not = { has_province_flag = extra_infra_seen }
+														}
+														set_province_flag = extra_infra_r9
+														set_province_flag = extra_infra_seen
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					# +1 to every province in range, once each
+					extra_infra = 1
+					clr_province_flag = extra_infra_seen
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						extra_infra = 1
+						clr_province_flag = extra_infra_r1
+						clr_province_flag = extra_infra_seen
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							extra_infra = 1
+							clr_province_flag = extra_infra_r2
+							clr_province_flag = extra_infra_seen
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								extra_infra = 1
+								clr_province_flag = extra_infra_r3
+								clr_province_flag = extra_infra_seen
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									extra_infra = 1
+									clr_province_flag = extra_infra_r4
+									clr_province_flag = extra_infra_seen
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										extra_infra = 1
+										clr_province_flag = extra_infra_r5
+										clr_province_flag = extra_infra_seen
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											extra_infra = 1
+											clr_province_flag = extra_infra_r6
+											clr_province_flag = extra_infra_seen
+											any_neighbor_province = {
+												limit = { has_province_flag = extra_infra_r7 }
+												extra_infra = 1
+												clr_province_flag = extra_infra_r7
+												clr_province_flag = extra_infra_seen
+												any_neighbor_province = {
+													limit = { has_province_flag = extra_infra_r8 }
+													extra_infra = 1
+													clr_province_flag = extra_infra_r8
+													clr_province_flag = extra_infra_seen
+													any_neighbor_province = {
+														limit = { has_province_flag = extra_infra_r9 }
+														extra_infra = 1
+														clr_province_flag = extra_infra_r9
+														clr_province_flag = extra_infra_seen
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				# level 10 terminus: 10 rings
+				any_controlled = {
+					limit = {
+						rail_terminus = 10
+					}
+					set_province_flag = extra_infra_seen
+					# ring 1
+					any_neighbor_province = {
+						limit = {
+							controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+							not = { has_province_flag = extra_infra_seen }
+						}
+						set_province_flag = extra_infra_r1
+						set_province_flag = extra_infra_seen
+					}
+					# ring 2
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = {
+								controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+								not = { has_province_flag = extra_infra_seen }
+							}
+							set_province_flag = extra_infra_r2
+							set_province_flag = extra_infra_seen
+						}
+					}
+					# ring 3
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = {
+									controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+									not = { has_province_flag = extra_infra_seen }
+								}
+								set_province_flag = extra_infra_r3
+								set_province_flag = extra_infra_seen
+							}
+						}
+					}
+					# ring 4
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = {
+										controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+										not = { has_province_flag = extra_infra_seen }
+									}
+									set_province_flag = extra_infra_r4
+									set_province_flag = extra_infra_seen
+								}
+							}
+						}
+					}
+					# ring 5
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = {
+											controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+											not = { has_province_flag = extra_infra_seen }
+										}
+										set_province_flag = extra_infra_r5
+										set_province_flag = extra_infra_seen
+									}
+								}
+							}
+						}
+					}
+					# ring 6
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = {
+												controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+												not = { has_province_flag = extra_infra_seen }
+											}
+											set_province_flag = extra_infra_r6
+											set_province_flag = extra_infra_seen
+										}
+									}
+								}
+							}
+						}
+					}
+					# ring 7
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											any_neighbor_province = {
+												limit = {
+													controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+													not = { has_province_flag = extra_infra_seen }
+												}
+												set_province_flag = extra_infra_r7
+												set_province_flag = extra_infra_seen
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					# ring 8
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											any_neighbor_province = {
+												limit = { has_province_flag = extra_infra_r7 }
+												any_neighbor_province = {
+													limit = {
+														controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+														not = { has_province_flag = extra_infra_seen }
+													}
+													set_province_flag = extra_infra_r8
+													set_province_flag = extra_infra_seen
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					# ring 9
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											any_neighbor_province = {
+												limit = { has_province_flag = extra_infra_r7 }
+												any_neighbor_province = {
+													limit = { has_province_flag = extra_infra_r8 }
+													any_neighbor_province = {
+														limit = {
+															controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+															not = { has_province_flag = extra_infra_seen }
+														}
+														set_province_flag = extra_infra_r9
+														set_province_flag = extra_infra_seen
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					# ring 10
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											any_neighbor_province = {
+												limit = { has_province_flag = extra_infra_r7 }
+												any_neighbor_province = {
+													limit = { has_province_flag = extra_infra_r8 }
+													any_neighbor_province = {
+														limit = { has_province_flag = extra_infra_r9 }
+														any_neighbor_province = {
+															limit = {
+																controller = { has_country_flag = extra_infra_walker }	# stops at the border, and at the sea
+																not = { has_province_flag = extra_infra_seen }
+															}
+															set_province_flag = extra_infra_r10
+															set_province_flag = extra_infra_seen
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+					# +1 to every province in range, once each
+					extra_infra = 1
+					clr_province_flag = extra_infra_seen
+					any_neighbor_province = {
+						limit = { has_province_flag = extra_infra_r1 }
+						extra_infra = 1
+						clr_province_flag = extra_infra_r1
+						clr_province_flag = extra_infra_seen
+						any_neighbor_province = {
+							limit = { has_province_flag = extra_infra_r2 }
+							extra_infra = 1
+							clr_province_flag = extra_infra_r2
+							clr_province_flag = extra_infra_seen
+							any_neighbor_province = {
+								limit = { has_province_flag = extra_infra_r3 }
+								extra_infra = 1
+								clr_province_flag = extra_infra_r3
+								clr_province_flag = extra_infra_seen
+								any_neighbor_province = {
+									limit = { has_province_flag = extra_infra_r4 }
+									extra_infra = 1
+									clr_province_flag = extra_infra_r4
+									clr_province_flag = extra_infra_seen
+									any_neighbor_province = {
+										limit = { has_province_flag = extra_infra_r5 }
+										extra_infra = 1
+										clr_province_flag = extra_infra_r5
+										clr_province_flag = extra_infra_seen
+										any_neighbor_province = {
+											limit = { has_province_flag = extra_infra_r6 }
+											extra_infra = 1
+											clr_province_flag = extra_infra_r6
+											clr_province_flag = extra_infra_seen
+											any_neighbor_province = {
+												limit = { has_province_flag = extra_infra_r7 }
+												extra_infra = 1
+												clr_province_flag = extra_infra_r7
+												clr_province_flag = extra_infra_seen
+												any_neighbor_province = {
+													limit = { has_province_flag = extra_infra_r8 }
+													extra_infra = 1
+													clr_province_flag = extra_infra_r8
+													clr_province_flag = extra_infra_seen
+													any_neighbor_province = {
+														limit = { has_province_flag = extra_infra_r9 }
+														extra_infra = 1
+														clr_province_flag = extra_infra_r9
+														clr_province_flag = extra_infra_seen
+														any_neighbor_province = {
+															limit = { has_province_flag = extra_infra_r10 }
+															extra_infra = 1
+															clr_province_flag = extra_infra_r10
+															clr_province_flag = extra_infra_seen
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				clr_country_flag = extra_infra_walker
+			}
+		}
+	}
+}
