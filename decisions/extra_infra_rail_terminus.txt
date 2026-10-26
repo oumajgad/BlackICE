@@ -1,7 +1,7 @@
 # Rail terminus -> extra_infra
 #
-# Every rail terminus of level N gives +1 extra_infra to its own province and to every
-# province within N provinces of it, counting adjacency steps. The range only runs
+# Every rail terminus of level N gives +N extra_infra to its own province and +1 to every
+# other province within N provinces of it, counting adjacency steps. The range only runs
 # through provinces the terminus' controller controls, so it stops at the border.
 # Termini stack: a province in range of three termini gets +3.
 #
@@ -95,7 +95,7 @@ diplomatic_decisions = {
 						set_province_flag = extra_infra_r1
 						set_province_flag = extra_infra_seen
 					}
-					# +1 to every province in range, once each
+					# the terminus' own province gets its level, the rest +1 each, once
 					extra_infra = 1
 					clr_province_flag = extra_infra_seen
 					any_neighbor_province = {
@@ -133,8 +133,8 @@ diplomatic_decisions = {
 							set_province_flag = extra_infra_seen
 						}
 					}
-					# +1 to every province in range, once each
-					extra_infra = 1
+					# the terminus' own province gets its level, the rest +1 each, once
+					extra_infra = 2
 					clr_province_flag = extra_infra_seen
 					any_neighbor_province = {
 						limit = { has_province_flag = extra_infra_r1 }
@@ -192,8 +192,8 @@ diplomatic_decisions = {
 							}
 						}
 					}
-					# +1 to every province in range, once each
-					extra_infra = 1
+					# the terminus' own province gets its level, the rest +1 each, once
+					extra_infra = 3
 					clr_province_flag = extra_infra_seen
 					any_neighbor_province = {
 						limit = { has_province_flag = extra_infra_r1 }
@@ -275,8 +275,8 @@ diplomatic_decisions = {
 							}
 						}
 					}
-					# +1 to every province in range, once each
-					extra_infra = 1
+					# the terminus' own province gets its level, the rest +1 each, once
+					extra_infra = 4
 					clr_province_flag = extra_infra_seen
 					any_neighbor_province = {
 						limit = { has_province_flag = extra_infra_r1 }
@@ -385,8 +385,8 @@ diplomatic_decisions = {
 							}
 						}
 					}
-					# +1 to every province in range, once each
-					extra_infra = 1
+					# the terminus' own province gets its level, the rest +1 each, once
+					extra_infra = 5
 					clr_province_flag = extra_infra_seen
 					any_neighbor_province = {
 						limit = { has_province_flag = extra_infra_r1 }
@@ -525,8 +525,8 @@ diplomatic_decisions = {
 							}
 						}
 					}
-					# +1 to every province in range, once each
-					extra_infra = 1
+					# the terminus' own province gets its level, the rest +1 each, once
+					extra_infra = 6
 					clr_province_flag = extra_infra_seen
 					any_neighbor_province = {
 						limit = { has_province_flag = extra_infra_r1 }
@@ -698,8 +698,8 @@ diplomatic_decisions = {
 							}
 						}
 					}
-					# +1 to every province in range, once each
-					extra_infra = 1
+					# the terminus' own province gets its level, the rest +1 each, once
+					extra_infra = 7
 					clr_province_flag = extra_infra_seen
 					any_neighbor_province = {
 						limit = { has_province_flag = extra_infra_r1 }
@@ -907,8 +907,8 @@ diplomatic_decisions = {
 							}
 						}
 					}
-					# +1 to every province in range, once each
-					extra_infra = 1
+					# the terminus' own province gets its level, the rest +1 each, once
+					extra_infra = 8
 					clr_province_flag = extra_infra_seen
 					any_neighbor_province = {
 						limit = { has_province_flag = extra_infra_r1 }
@@ -1155,8 +1155,8 @@ diplomatic_decisions = {
 							}
 						}
 					}
-					# +1 to every province in range, once each
-					extra_infra = 1
+					# the terminus' own province gets its level, the rest +1 each, once
+					extra_infra = 9
 					clr_province_flag = extra_infra_seen
 					any_neighbor_province = {
 						limit = { has_province_flag = extra_infra_r1 }
@@ -1444,8 +1444,8 @@ diplomatic_decisions = {
 							}
 						}
 					}
-					# +1 to every province in range, once each
-					extra_infra = 1
+					# the terminus' own province gets its level, the rest +1 each, once
+					extra_infra = 10
 					clr_province_flag = extra_infra_seen
 					any_neighbor_province = {
 						limit = { has_province_flag = extra_infra_r1 }
