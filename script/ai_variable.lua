@@ -313,8 +313,8 @@ local function buildingsCountSetup()
 		"medium_aircraft_factory",
 		"heavy_aircraft_factory",
 		"underground",
-		"mass_livestock_building",
 		"weather_fort",
+		"mass_livestock_building",
 		"fake_air_base",
 		"chromite_building",
 		"aluminium_building",
@@ -411,8 +411,8 @@ function BuildingsCount()
 			currentBuildings["medium_aircraft_factory"] = 0
 			currentBuildings["heavy_aircraft_factory"] = 0
 			--currentBuildings["underground"] = 0
-			--currentBuildings["mass_livestock_building"] = 0
 			--currentBuildings["weather_fort"] = 0
+			--currentBuildings["mass_livestock_building"] = 0
 			--currentBuildings["fake_air_base"] = 0
 
 			-- Previous count - Previous as in the count before counting and updating the values this tick
