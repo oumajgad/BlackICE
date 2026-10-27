@@ -313,7 +313,7 @@ local function buildingsCountSetup()
 		"medium_aircraft_factory",
 		"heavy_aircraft_factory",
 		"underground",
-		"desperate_defence",
+		"mass_livestock_building",
 		"weather_fort",
 		"fake_air_base",
 		"chromite_building",
@@ -411,7 +411,7 @@ function BuildingsCount()
 			currentBuildings["medium_aircraft_factory"] = 0
 			currentBuildings["heavy_aircraft_factory"] = 0
 			--currentBuildings["underground"] = 0
-			--currentBuildings["desperate_defence"] = 0
+			--currentBuildings["mass_livestock_building"] = 0
 			--currentBuildings["weather_fort"] = 0
 			--currentBuildings["fake_air_base"] = 0
 
@@ -533,6 +533,7 @@ function ResourceCountInner(countryTag, tag)
 	currentResourceBuildings["zinc_building"] = 0
 	currentResourceBuildings["manganese_building"] = 0
 	currentResourceBuildings["molybdenum_building"] = 0
+	currentResourceBuildings["mass_livestock_building"] = 0
 
 	-- Previous count
 	--Utils.LUA_DEBUGOUT("Getting previous count")
@@ -625,7 +626,8 @@ function StratResourceBalance()
 		"copper";
 		"zinc";
 		"manganese";
-		"molybdenum"
+		"molybdenum";
+		"mass_livestock"
 	}
 
 	-- count daily for players only
@@ -716,7 +718,8 @@ function RealStratResourceBalance()
 		"copper";
 		"zinc";
 		"manganese";
-		"molybdenum"
+		"molybdenum";
+		"mass_livestock"
 	}
 
 	-- count daily for players only
@@ -937,6 +940,7 @@ function ControlledMinesCheck()
 	minesData["zinc_building"] = CBuildingDataBase.GetBuilding("zinc_building")
 	minesData["manganese_building"] = CBuildingDataBase.GetBuilding("manganese_building")
 	minesData["molybdenum_building"] = CBuildingDataBase.GetBuilding("molybdenum_building")
+	minesData["mass_livestock_building"] = CBuildingDataBase.GetBuilding("mass_livestock_building")
 
 	-- Iterate each country (using Cached TAGs)
 	for tag, countryTag in pairs(GetCountryIterCacheDict()) do

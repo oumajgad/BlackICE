@@ -1856,6 +1856,183 @@ country_event = {
 	}
 }
 country_event = {
+	id = 13318
+	trigger = {
+	}
+	is_triggered_only = yes
+	title = "EVTTITLE_STRAT_PROPOSE_MASS_LIVESTOCK"
+	desc = "EVTDESC_STRAT_PROPOSE"
+	picture = "mass_livestock_trade"
+	option = {
+		name = "Let's trade"
+		ai_chance = {
+			factor = 100
+		}
+		relation = { 
+			who = FROM
+			value = 10
+		}
+		FROM = {
+			country_event = 13319
+			set_variable = {
+				which = "pending_trade_wants_to_buy_resource"
+				value = 10
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					faction = allies
+					FROM = {
+						faction = allies
+					}
+				}
+				money = 800
+				FROM = {
+					money = -1000
+				}
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					faction = axis
+					FROM = {
+						faction = axis
+					}
+				}
+				money = 800
+				FROM = {
+					money = -1000
+				}
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					faction = comintern
+					FROM = {
+						faction = comintern
+					}
+				}
+				money = 800
+				FROM = {
+					money = -1000
+				}
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {
+						or = {
+							and = {
+								faction = allies
+								FROM = {
+									faction = allies
+								}
+							}
+							and = {
+								faction = axis
+								FROM = {
+									faction = axis
+								}
+							}
+							and = {
+								faction = comintern
+								FROM = {
+									faction = comintern
+								}
+							}
+						}
+					}
+				}
+				money = 1800
+				FROM = {
+					money = -2000
+				}
+			}
+		}
+	}
+	option = {
+		name = "Not a chance"
+		FROM = {
+			country_event = 13296
+			set_variable = {
+				which = pending_trade_wants_to_buy_from
+				value = 0
+			}
+		}
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = THIS
+                    check_variable = { which = mass_livestock_ActualBalance value = 1002 }
+                    not = { check_variable = { which = mass_livestock_ActualBalance value = 1003 } }
+                }
+                relation = { 
+                    who = FROM
+                    value = -2
+                }
+            }
+        }        
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = THIS
+                    check_variable = { which = mass_livestock_ActualBalance value = 1003 }
+                    not = { check_variable = { which = mass_livestock_ActualBalance value = 1004 } }
+                }
+                relation = { 
+                    who = FROM
+                    value = -3
+                }
+            }
+        }        
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = THIS
+                    check_variable = { which = mass_livestock_ActualBalance value = 1004 }
+                    not = { check_variable = { which = mass_livestock_ActualBalance value = 1005 } }
+                }
+                relation = { 
+                    who = FROM
+                    value = -4
+                }
+            }
+        }        
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = THIS
+                    check_variable = { which = mass_livestock_ActualBalance value = 1005 }
+                }
+                relation = { 
+                    who = FROM
+                    value = -5
+                }
+            }
+        }		
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 13319
+	trigger = {
+	}
+	is_triggered_only = yes
+	title = "Import of Mass Livestock"
+	desc = "Trade deal will last for one year."
+	picture = "mass_livestock_trade"
+	option = {
+		name = "Let's trade"
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
 	id = 6500
 	trigger = {
 		controls = 33

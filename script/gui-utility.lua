@@ -342,7 +342,7 @@ if wx ~= nil then
 	UI.m_panelStratResources = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_StratResources_1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.gSizer_StratResources_1 = wx.wxGridSizer( 10, 7, 0, 0 )
+	UI.gSizer_StratResources_1 = wx.wxGridSizer( 11, 7, 0, 0 )
 
 	UI.m_staticText21_empty = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText21_empty:Wrap( -1 )
@@ -693,6 +693,42 @@ if wx ~= nil then
 
 	UI.m_buttonMolybdenumSaleDeactivate = wx.wxButton( UI.m_panelStratResources, wx.wxID_ANY, "Deactivate", wx.wxDefaultPosition, wx.wxSize( 60,-1 ), 0 )
 	UI.gSizer_StratResources_1:Add( UI.m_buttonMolybdenumSaleDeactivate, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_staticText33_livestock = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Mass Livestock", wx.wxPoint( -1,-1 ), wx.wxDefaultSize, 0 )
+	UI.m_staticText33_livestock:Wrap( -1 )
+
+	UI.gSizer_StratResources_1:Add( UI.m_staticText33_livestock, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlMass_livestockBalance = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlMass_livestockBalance:Enable( False )
+	UI.m_textCtrlMass_livestockBalance:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_StratResources_1:Add( UI.m_textCtrlMass_livestockBalance, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlMass_livestockSales = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlMass_livestockSales:Enable( False )
+	UI.m_textCtrlMass_livestockSales:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_StratResources_1:Add( UI.m_textCtrlMass_livestockSales, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlMass_livestockBuys = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlMass_livestockBuys:Enable( False )
+	UI.m_textCtrlMass_livestockBuys:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_StratResources_1:Add( UI.m_textCtrlMass_livestockBuys, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlMass_livestockSaleActive = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlMass_livestockSaleActive:Enable( False )
+	UI.m_textCtrlMass_livestockSaleActive:SetMinSize( wx.wxSize( 50,-1 ) )
+
+	UI.gSizer_StratResources_1:Add( UI.m_textCtrlMass_livestockSaleActive, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_buttonMass_livestockSaleActivate = wx.wxButton( UI.m_panelStratResources, wx.wxID_ANY, "Activate", wx.wxDefaultPosition, wx.wxSize( 60,-1 ), 0 )
+	UI.gSizer_StratResources_1:Add( UI.m_buttonMass_livestockSaleActivate, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_buttonMass_livestockSaleDeactivate = wx.wxButton( UI.m_panelStratResources, wx.wxID_ANY, "Deactivate", wx.wxDefaultPosition, wx.wxSize( 60,-1 ), 0 )
+	UI.gSizer_StratResources_1:Add( UI.m_buttonMass_livestockSaleDeactivate, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.bSizer_StratResources_1:Add( UI.gSizer_StratResources_1, 1, wx.wxEXPAND, 5 )
@@ -2065,6 +2101,14 @@ if wx ~= nil then
 
 	UI.m_buttonMolybdenumSaleDeactivate:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		DeactivateResourceSelling(true, "molybdenum")
+	end )
+
+	UI.m_buttonMass_livestockSaleActivate:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		DeactivateResourceSelling(false, "mass_livestock")
+	end )
+
+	UI.m_buttonMass_livestockSaleDeactivate:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		DeactivateResourceSelling(true, "mass_livestock")
 	end )
 
 	UI.m_button_FocusGround:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
