@@ -14,7 +14,7 @@ if wx ~= nil then
 
 	UI.bSizer_GlobalMarket_1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_choice_GlobalMarket_ResourceChoices = { "Chromite", "Aluminium", "Rubber", "Tungsten", "Nickel", "Copper", "Zinc", "Manganese", "Molybdenum" }
+	UI.m_choice_GlobalMarket_ResourceChoices = { "Chromite", "Aluminium", "Rubber", "Tungsten", "Nickel", "Copper", "Zinc", "Manganese", "Molybdenum", "Mass Livestock" }
 	UI.m_choice_GlobalMarket_Resource = wx.wxChoice( UI.m_panel_GlobalMarket, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 100,-1 ), UI.m_choice_GlobalMarket_ResourceChoices, 0 )
 	UI.m_choice_GlobalMarket_Resource:SetSelection( 0 )
 	UI.bSizer_GlobalMarket_1:Add( UI.m_choice_GlobalMarket_Resource, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -115,7 +115,7 @@ if wx ~= nil then
 
     function GlobalMarketGridUpdate()
         local selection = UI.m_choice_GlobalMarket_Resource:GetSelection()
-        local resource = string.lower(UI.m_choice_GlobalMarket_Resource:GetString(selection))
+        local resource = string.gsub(string.lower(UI.m_choice_GlobalMarket_Resource:GetString(selection)), " ", "_")
         local result = {}
         local currentDate = CCurrentGameState.GetCurrentDate():GetTotalDays()
         for tag, countryTag in pairs(GetCountryIterCacheDict()) do
