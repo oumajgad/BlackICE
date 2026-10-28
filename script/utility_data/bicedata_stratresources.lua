@@ -12,15 +12,20 @@ BiceData.StratResources = {}
 -- lands in the right place on its own.
 local RESOURCES = {
     "chromite", "aluminium", "rubber", "tungsten", "nickel",
-    "copper", "zinc", "manganese", "molybdenum",
+    "copper", "zinc", "manganese", "molybdenum", "mass_livestock",
 }
 table.sort(RESOURCES)
 
 --- The stockpile balance is stored offset by 1000 so it can hold negative values.
 local BALANCE_OFFSET = 1000
 
+-- Keys that do not read right with only their first letter capitalised.
+local DISPLAY_NAMES = {
+    mass_livestock = "Mass Livestock",
+}
+
 local function displayName(resource)
-    return string.upper(string.sub(resource, 1, 1)) .. string.sub(resource, 2)
+    return DISPLAY_NAMES[resource] or (string.upper(string.sub(resource, 1, 1)) .. string.sub(resource, 2))
 end
 
 --- The strategic resource keys, sorted. Shared with the Global Market page.

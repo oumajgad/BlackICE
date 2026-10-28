@@ -56,6 +56,7 @@ diplomatic_decisions = {
 				has_country_flag = manganese_trades_active
 				has_country_flag = molybdenum_trades_active
 				has_country_flag = nickel_trades_active
+				has_country_flag = mass_livestock_trades_active
 				check_variable = {
 					which = aluminium_trade_buy
 					value = 8
@@ -127,6 +128,7 @@ diplomatic_decisions = {
 				has_country_flag = manganese_trades_active
 				has_country_flag = molybdenum_trades_active
 				has_country_flag = nickel_trades_active
+				has_country_flag = mass_livestock_trades_active
 				check_variable = {
 					which = rubber_trade_buy
 					value = 8
@@ -196,6 +198,7 @@ diplomatic_decisions = {
 				has_country_flag = manganese_trades_active
 				has_country_flag = molybdenum_trades_active
 				has_country_flag = nickel_trades_active
+				has_country_flag = mass_livestock_trades_active
 				check_variable = {
 					which = tungsten_trade_buy
 					value = 8
@@ -265,6 +268,7 @@ diplomatic_decisions = {
 				has_country_flag = manganese_trades_active
 				has_country_flag = molybdenum_trades_active
 				has_country_flag = nickel_trades_active
+				has_country_flag = mass_livestock_trades_active
 				check_variable = {
 					which = chromite_trade_buy
 					value = 8
@@ -334,6 +338,7 @@ diplomatic_decisions = {
 				has_country_flag = manganese_trades_active
 				has_country_flag = molybdenum_trades_active
 				has_country_flag = nickel_trades_active
+				has_country_flag = mass_livestock_trades_active
 				check_variable = {
 					which = copper_trade_buy
 					value = 8
@@ -403,6 +408,7 @@ diplomatic_decisions = {
 				has_country_flag = manganese_trades_active
 				has_country_flag = molybdenum_trades_active
 				has_country_flag = nickel_trades_active
+				has_country_flag = mass_livestock_trades_active
 				check_variable = {
 					which = zinc_trade_buy
 					value = 8
@@ -472,6 +478,7 @@ diplomatic_decisions = {
 				has_country_flag = manganese_trades_active
 				has_country_flag = molybdenum_trades_active
 				has_country_flag = nickel_trades_active
+				has_country_flag = mass_livestock_trades_active
 				check_variable = {
 					which = manganese_trade_buy
 					value = 8
@@ -541,6 +548,7 @@ diplomatic_decisions = {
 				has_country_flag = manganese_trades_active
 				has_country_flag = molybdenum_trades_active
 				has_country_flag = nickel_trades_active
+				has_country_flag = mass_livestock_trades_active
 				check_variable = {
 					which = molybdenum_trade_buy
 					value = 8
@@ -611,6 +619,7 @@ diplomatic_decisions = {
 				has_country_flag = manganese_trades_active
 				has_country_flag = molybdenum_trades_active
 				has_country_flag = nickel_trades_active
+				has_country_flag = mass_livestock_trades_active
 				check_variable = {
 					which = nickel_trade_buy
 					value = 8
@@ -647,6 +656,76 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = nickel_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						tag = THIS
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "ai_trade_timer"
+						duration = 30
+					}
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	strategic_resources_trade_mass_livestock = {
+		potential = {
+			has_country_flag = trades_activation
+			money = 2000
+			not = {
+				has_country_modifier = strategic_resources_break
+				has_country_modifier = trade_cooldown
+				has_country_flag = aluminium_trades_active
+				has_country_flag = rubber_trades_active
+				has_country_flag = tungsten_trades_active
+				has_country_flag = chromite_trades_active
+				has_country_flag = copper_trades_active
+				has_country_flag = zinc_trades_active
+				has_country_flag = manganese_trades_active
+				has_country_flag = molybdenum_trades_active
+				has_country_flag = nickel_trades_active
+				has_country_flag = mass_livestock_trades_active
+				check_variable = {
+					which = mass_livestock_trade_buy
+					value = 8
+				}
+				check_variable = {
+					which = disable_resource_trade_decision
+					value = 1
+				}
+			}
+			or = {
+				ai = no
+				and = {
+					not = {
+						check_variable = {
+							which = "RandomNumber"
+							value = 101
+						}
+					}
+					check_variable = {
+						which = "RandomNumber"
+						value = 90
+					}
+				}
+			}
+		}
+		allow = {
+			not = {
+				has_country_flag = mass_livestock_trades_active
+				check_variable = {
+					which = mass_livestock_ActualBalance
+					value = 1004
+				}
+			}
+		}
+		effect = {
+			set_country_flag = mass_livestock_trades_active
 			OMG = {
 				any_country = {
 					limit = {
@@ -702,6 +781,7 @@ diplomatic_decisions = {
 			clr_country_flag = manganese_trades_active
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
+			clr_country_flag = mass_livestock_trades_active
 			OMG = {
 				any_country = {
 					limit = {
@@ -1110,6 +1190,50 @@ diplomatic_decisions = {
         effect = {
             set_variable = {
                 which = zinc_deactivate_sales
+                value = 0
+            }
+        }
+        ai_will_do = {
+            factor = 1
+        }
+    }
+
+    mass_livestock_disable_export = {
+        potential = {
+            has_country_flag = show_export_ban_decisions
+            not = {
+                check_variable = {
+                    which = mass_livestock_deactivate_sales
+                    value = 1
+                }
+            }
+        }
+        allow = {
+        }
+        effect = {
+            set_variable = {
+                which = mass_livestock_deactivate_sales
+                value = 1
+            }
+        }
+        ai_will_do = {
+            factor = 1
+        }
+    }
+
+    mass_livestock_enable_export = {
+        potential = {
+            has_country_flag = show_export_ban_decisions
+            check_variable = {
+                which = mass_livestock_deactivate_sales
+                value = 1
+            }
+        }
+        allow = {
+        }
+        effect = {
+            set_variable = {
+                which = mass_livestock_deactivate_sales
                 value = 0
             }
         }

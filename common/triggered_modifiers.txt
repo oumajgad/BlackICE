@@ -4775,6 +4775,143 @@ copper_penalty_IV = {
 	icon = 98
 }
 
+# MASS LIVESTOCK #
+mass_livestock_neutral = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 1000 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 1001 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		check_variable = { which = mass_livestock_ActualBalance value = 1000 }
+	}
+
+	icon = 109
+}
+
+mass_livestock_bonus_I = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 1001 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 1002 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		check_variable = { which = mass_livestock_ActualBalance value = 1001 }
+	}
+	global_manpower_modifier = 0.025
+
+	icon = 110
+}
+
+mass_livestock_bonus_II = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 1002 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 1003 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		check_variable = { which = mass_livestock_ActualBalance value = 1002 }
+	}
+	global_manpower_modifier = 0.05
+
+	icon = 110
+}
+
+mass_livestock_bonus_III = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 1003 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 1004 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		check_variable = { which = mass_livestock_ActualBalance value = 1003 }
+	}
+	global_manpower_modifier = 0.075
+
+	icon = 110
+}
+
+mass_livestock_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 1004 }
+	}
+	trigger = {
+		date = 1936.2.1
+		check_variable = { which = mass_livestock_ActualBalance value = 1004 }
+	}
+	global_manpower_modifier = 0.1
+
+	icon = 110
+}
+
+mass_livestock_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 999 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 1000 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		has_country_flag = strat_resource_system_normal
+		check_variable = { which = mass_livestock_ActualBalance value = 999 }
+	}
+	global_manpower_modifier = -0.025
+
+	icon = 111
+}
+
+mass_livestock_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 998 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 999 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		has_country_flag = strat_resource_system_normal
+		check_variable = { which = mass_livestock_ActualBalance value = 998 }
+	}
+	global_manpower_modifier = -0.05
+
+	icon = 111
+}
+
+mass_livestock_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 997 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 998 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		has_country_flag = strat_resource_system_normal
+		check_variable = { which = mass_livestock_ActualBalance value = 997 }
+	}
+	global_manpower_modifier = -0.075
+
+	icon = 111
+}
+
+mass_livestock_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 997 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		has_country_flag = strat_resource_system_normal
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 997 } }
+	}
+	global_manpower_modifier = -0.1
+
+	icon = 111
+}
+
 # CHROMITE #
 chromite_neutral = {
 	potential = {
@@ -16840,37 +16977,6 @@ nylon_bonus = {
 	land_build_speed = -0.1
 	icon = 80
 }
-mass_livestock_bonus = {
-	potential = {}
-	trigger = {
-		or = {
-			or = {
-				7479 = { controlled_by = this }
-                7479 = { controller = { vassal_of = this } }
-				7479 = { controller = { faction = this } }
-			}
-			or = {
-				2776 = { controlled_by = this }
-                2776 = { controller = { vassal_of = this } }
-				2776 = { controller = { faction = this } }
-			}
-			or = {
-				10422 = { controlled_by = this }
-                10422 = { controller = { vassal_of = this } }
-				10422 = { controller = { faction = this } }
-			}
-			any_owned_province = {
-				and = {
-					strategic_resource = mass_livestock
-					controlled_by = this
-				}
-			}
-		}
-	}
-	global_manpower_modifier = 0.2
-	icon = 81
-}
-
 # Techs outdated penalties #
 land_units_retardation_I = {
 	potential = {
