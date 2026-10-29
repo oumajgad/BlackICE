@@ -117,6 +117,13 @@ conscription_law = {
     two_year_draft = {	#36 months draft?
     	cost = 0.1
         allow = {
+			or = {
+				war = yes
+				not = {
+					neutrality = 55
+				}
+				ideology_group = communism
+			}
         }
         reserves_penalty_size = -0
 		peace_consumer_goods_demand = 0.02
@@ -128,6 +135,13 @@ conscription_law = {
     three_year_draft = {	#standing army?
     	cost = 0.1
         allow = {
+			or = {
+				war = yes
+				not = {
+					neutrality = 40
+				}
+				ideology_group = communism
+			}
 		}
         reserves_penalty_size = -0
 		peace_consumer_goods_demand = 0.05
@@ -159,6 +173,9 @@ economic_law = {
     full_civilian_economy = {
     	cost = 0.1
         allow = {
+			not = {
+				war = yes
+			}
         }
         peace_consumer_goods_demand = 0.6
 		war_consumer_goods_demand = 0.35
@@ -538,18 +555,16 @@ conscription_law_two = {
             OR = {
                 war = yes
                 AND = {
-                    NOT = { neutrality = 60 }
-                    national_unity = 70
+					ideology_group = democracy
+                    NOT = { neutrality = 50 }
+                    national_unity = 80
                 }
 				AND = {
 					NOT = { ideology_group = democracy }
-                    NOT = { neutrality = 65 }
+                    NOT = { neutrality = 55 }
 					national_unity = 70
                 }
-				AND = {
-					ideology_group = communism
-					national_unity = 70
-				}
+				ideology_group = communism
             }
         }
 
@@ -567,12 +582,13 @@ conscription_law_two = {
             OR = {
                 war = yes
                 AND = {
-                    NOT = { neutrality = 55 }
+                    ideology_group = democracy
+					NOT = { neutrality = 40 }
                     national_unity = 70
                 }
                 AND = {
 					NOT = { ideology_group = democracy }
-                    NOT = { neutrality = 60 }
+                    NOT = { neutrality = 45 }
 					national_unity = 70
                 }
 				AND = {
