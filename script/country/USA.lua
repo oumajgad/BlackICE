@@ -924,8 +924,8 @@ function P.PrvCoastalFort(voProductionData)
 	-- Provinces to build in
 	local provinces = {
 		--Aleutian
-		9705,
-		9704,
+		9210,
+		9180,
 		8083,
 		8087,
 		8076,
@@ -946,7 +946,7 @@ function P.PrvCoastalFort(voProductionData)
 		10670,
 		10671,
 		10674,
-		9718,
+		9212,
 		6119,
 		10664,
 
@@ -974,8 +974,8 @@ function P.PrvAirBase(voProductionData)
 	-- Provinces to build in
 	local provinces = {
 		--Aleutian
-		9705,
-		9704,
+		9210,
+		9180,
 		8083,
 		8087,
 		8076,
@@ -996,7 +996,7 @@ function P.PrvAirBase(voProductionData)
 		10670,
 		10671,
 		10674,
-		9718,
+		9212,
 		6119,
 		10664,
 
@@ -1024,8 +1024,8 @@ function P.PrvNavalBase(voProductionData)
 	-- Provinces to build in
 	local provinces = {
 		--Aleutian
-		9705,
-		9704,
+		9210,
+		9180,
 		8083,
 		8087,
 		8076,
@@ -1046,7 +1046,7 @@ function P.PrvNavalBase(voProductionData)
 		10670,
 		10671,
 		10674,
-		9718,
+		9212,
 		6119,
 		10664,
 
@@ -1074,8 +1074,8 @@ function P.PrvRadarStation(voProductionData)
 	-- Provinces to build in
 	local provinces = {
 		--Aleutian
-		9705,
-		9704,
+		9210,
+		9180,
 		8083,
 		8087,
 		8076,
@@ -1096,7 +1096,7 @@ function P.PrvRadarStation(voProductionData)
 		10670,
 		10671,
 		10674,
-		9718,
+		9212,
 		6119,
 		10664,
 
@@ -1124,8 +1124,8 @@ function P.PrvAntiAir(voProductionData)
 	-- Provinces to build in
 	local provinces = {
 		--Aleutian
-		9705,
-		9704,
+		9210,
+		9180,
 		8083,
 		8087,
 		8076,
@@ -1146,7 +1146,7 @@ function P.PrvAntiAir(voProductionData)
 		10670,
 		10671,
 		10674,
-		9718,
+		9212,
 		6119,
 		10664,
 
