@@ -186,7 +186,7 @@ class NavigateTest(unittest.TestCase):
     def test_quick_fixes(self):
         self.assertEqual(self.nav.replacement("BV101", "infanty_brigade"), "infantry_brigade")
         self.assertEqual(self.nav.replacement("BV102", "brigade_exists"), "brigade_exist")
-        self.assertIsNone(self.nav.replacement("BV102", "port"))
+        self.assertIsNone(self.nav.replacement("BV102", "fuel"))
 
     def test_folding_follows_the_brackets(self):
         folds = self.nav.folds(self.parsed, EVENTS.split("\n"))

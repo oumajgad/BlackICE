@@ -15,13 +15,13 @@ class SchemaTest(unittest.TestCase):
         cls.schema = schema.Schema(DOCS)
 
     def test_counts_match_the_engine(self):
-        # CTrigger::LoadKey has 152 cases and CEffect::LoadKey 91
-        # (reversing/findings/FINDINGS-script.md).
+        # CTrigger::LoadKey has 153 cases - `port` is the one FINDINGS-script.md's table
+        # lacks (reversing/findings/FINDINGS-triggergrammar.md) - and CEffect::LoadKey 91.
         triggers = self.schema.names("trigger") | self.schema.names("combat")
-        self.assertEqual(len(triggers), 152)
+        self.assertEqual(len(triggers), 153)
         self.assertEqual(len(self.schema.names("effect")), 91)
         self.assertEqual(set(self.schema.bad_keys),
-                         {"brigade_exists", "fuel", "is_threatened", "neighbor", "port"})
+                         {"brigade_exists", "fuel", "is_threatened", "neighbor"})
 
     def test_value_types(self):
         get = self.schema.get

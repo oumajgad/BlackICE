@@ -128,6 +128,7 @@ Not conditions as such - these control the event itself rather than testing anyt
 | `owned_by` | Returns true if the specified country owns the current province. | `owned_by = tag` | 243 |
 | `owns` | Returns true if the country owns the specified province. | `owns = <province id>` | 66 |
 | `popularity` | Returns true if the country’s ruling party has a popularity value equal to x or more. | `popularity = x` | 361 |
+| `port` | Returns true if the current province is coastal - it has a port on the map, whether or not a naval base is built there. Set once when the map loads, where the province's `naval_base` entry in `map/positions.txt` lies over sea; a province on a lake alone answers no. Not the naval base building: for that use `naval_base = <level>`. False for `yes` and `no` alike when the scope has no province. | `port = yes / no` |  |
 | `province_id` | Returns true if current province has the specified ID. | `province_id = <province id>` | 28 |
 | `pure_revolt_risk` | **(unverified)** Revolt risk before modifiers, as opposed to `revolt_risk`. | `pure_revolt_risk = ...` |  |
 | `rare_materials` | Returns true if the amount of rare materials a country has is equal to x or more. | `rare_materials = x` | 2171 |
@@ -204,4 +205,6 @@ kept here because anybody who learnt them from the old notes needs to find that 
 | `fuel` | nothing - there is no fuel condition | `fuel = x` is a real **effect**, so it looks like it should test fuel too. It does not. The old notes said so: "DOES NOT WORK - how silly of me to assume it did" |
 | `is_threatened` | `is_threatend` | the engine's own misspelling is the real keyword |
 | `neighbor` | `neighbour` | the engine uses the British spelling |
-| `port` | `naval_base = <level>, or num_of_ports / total_num_of_ports` | there is no 'port' condition at all. 'port = yes' is real, but it is a property of a building definition in common/buildings.txt, not something an event can test |
+
+The old notes also listed `port` here. That was wrong: `port = yes` is a real province
+condition and tests whether the province is coastal (see the table above).
