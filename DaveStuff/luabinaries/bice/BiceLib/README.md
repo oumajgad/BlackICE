@@ -173,6 +173,21 @@ switched on from `script/bicelib_lua.lua`, which runs once per session.
     * Same as *activateLeaderListShowMaxSkill*, except that this applies to the currently active leader in the leader list
     * **Params**: /
     * **Return values**: /
+* **activateOobLeaderRanks()**
+    * Gives a leader an order of battle puts on a land unit the rank the game itself wants
+      for that unit: division 1, corps 2, army 3, army group and theatre 4. He is raised or
+      lowered to it, and put in service if he is not yet - a leader whose history dates his
+      first rank after today would otherwise be set back to rank 1 on that date.
+    * **Params**: /
+    * **Return values**:
+        1. *ok*: whether the hook went in
+    * **Notes**:
+        * Only while an order of battle file is read - `load_oob`, a new game's history, the
+          custom game setup's reset of its units - and never while a save is loaded.
+        * Fleets, air units, a leader of the wrong arm and **another country's leader** are
+          left as they are.
+        * Safe in multiplayer as long as every player switches it on the same way: it reads
+          only game state, where the order of battle's own units are made.
 
 ## BiceLib.Units
 * **setCorpsUnitLimit(int newLimit, string countryTag)**

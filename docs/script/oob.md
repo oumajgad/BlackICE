@@ -76,7 +76,7 @@ All five take the same keys:
 | `location` | province id the formation sits in. **Leave it out and the formation is read in full and then silently thrown away** - the one key you cannot omit, unless the block is in a [`unit_deployment`](#the-deployment-pool) |
 | `name` | its name. Optional - leave it off and the game names the formation itself |
 | `id` | fixes its unit id, rather than letting the game assign one |
-| `leader` | id of the commander, from `history/leaders/` |
+| `leader` | id of the commander, from `history/leaders/`. The game gives him the formation whoever he is. With BiceLib's `activateOobLeaderRanks` on, a land leader of the file's own country is given the rank the formation takes as the file loads - division 1, corps 2, army 3, army group and theatre 4 - and put in service if he is not yet |
 | `is_reserve` | `yes` makes it a reserve formation |
 | `is_prioritized` | `yes` moves it up the production queue |
 | `can_upgrade` | whether its brigades may be upgraded |

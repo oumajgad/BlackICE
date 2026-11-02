@@ -3,10 +3,12 @@
 #include <Hooks/EffectText/EffectText.hpp>
 #include <GameClasses/CCountry.hpp>
 #include <GameClasses/CLeader.hpp>
+#include <GameClasses/CUnit.hpp>
 #include <GameClasses/GameString.hpp>
 #include <GameState/OobFile.hpp>
 #include <HoiDataStructures.hpp>
 #include <Hooks/Hooks.hpp>
+#include <Hooks/OobLeaderRanks.hpp>
 #include <MemScan.hpp>
 #include <utils.hpp>
 
@@ -55,25 +57,27 @@ namespace {
     uintptr_t capturedEffect = 0;
 
     /**
-    @brief the rank a unit of this kind is commanded by, or 0 where there is no rule
+    @brief the rank a unit of this kind takes, or 0 where there is no rule
 
-    The order of battle's own levels. Ranks are 1 to 4 in the files - `ResetToStarting`
-    is the only thing that writes 0 - so the number is the level, except that **nothing
-    asks for a field marshal**: rank 4 is an honour rather than a job in this mod.
-
-    Fleets and air commands are left alone: their levels do not line up with the land
-    ones, and nothing here knows what they should be. LoadOobText.hpp has the numbers
-    this was chosen against.
+    The game's own exact rank for each land level - the same table the order of battle
+    hook fits leaders to, Hooks::OobLeaderRanks::rankFor - reached through the block's
+    keyword the way the game reaches `oob_level`. Fleets and air units take any rank.
     */
     int rankFor(const std::string& kind) {
         if (kind == "division") {
-            return 1;
+            return Hooks::OobLeaderRanks::rankFor(CUnit::Level::Division);
         }
         if (kind == "corps") {
-            return 2;
+            return Hooks::OobLeaderRanks::rankFor(CUnit::Level::Corps);
         }
-        if (kind == "army" || kind == "armygroup" || kind == "theatre") {
-            return 3;
+        if (kind == "army") {
+            return Hooks::OobLeaderRanks::rankFor(CUnit::Level::Army);
+        }
+        if (kind == "armygroup") {
+            return Hooks::OobLeaderRanks::rankFor(CUnit::Level::ArmyGroup);
+        }
+        if (kind == "theatre") {
+            return Hooks::OobLeaderRanks::rankFor(CUnit::Level::Theatre);
         }
         return 0;
     }
@@ -249,15 +253,28 @@ namespace {
                 article(kind), kind, leaderNow(found->second).c_str());
             text += line;
 
-            // The rank the job wants against the rank he holds. Said in red because it
-            // is a mistake in the file rather than something the player can act on.
+            // The rank the job wants against the rank he holds. Where the order of battle
+            // hook will fit him it says so plainly; otherwise in red, because it is a
+            // mistake in the file rather than something the player can act on. The hook
+            // leaves a leader of the wrong arm alone, so he stays red.
             const int wanted = rankFor(assignment.kind);
             int rank = 0;
+            int type = -1;
             if (wanted > 0 && Mem::tryRead(found->second + CLeader::Offsets::rank, rank)
-                && rank < wanted) {
-                _snprintf_s(line, sizeof(line), _TRUNCATE,
-                    "\n    \xA7Rrank %d, and %s %s wants %d\xA7W",
-                    rank, article(kind), kind, wanted);
+                && rank != wanted) {
+                const bool fitted = Hooks::OobLeaderRanks::installed()
+                    && Mem::tryRead(found->second + CLeader::Offsets::type, type)
+                    && type == static_cast<int>(CLeader::Type::Land);
+                if (fitted) {
+                    _snprintf_s(line, sizeof(line), _TRUNCATE,
+                        "\n    rank %d, made %d for %s %s",
+                        rank, wanted, article(kind), kind);
+                }
+                else {
+                    _snprintf_s(line, sizeof(line), _TRUNCATE,
+                        "\n    \xA7Rrank %d, and %s %s wants %d\xA7W",
+                        rank, article(kind), kind, wanted);
+                }
                 text += line;
             }
         }
