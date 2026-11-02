@@ -188,6 +188,17 @@ switched on from `script/bicelib_lua.lua`, which runs once per session.
           left as they are.
         * Safe in multiplayer as long as every player switches it on the same way: it reads
           only game state, where the order of battle's own units are made.
+* **activateHistoryLeaderRanks()**
+    * A leader whose history dates his first `rank` after the game's start comes into
+      service on that day at the rank the line names. The game makes him rank 1 whatever
+      it says.
+    * **Params**: /
+    * **Return values**:
+        1. *ok*: whether the hook went in
+    * **Notes**:
+        * A later `rank` line, for a leader already in service, is still never applied.
+        * A leader an order of battle has already put in service keeps the rank his unit
+          gave him.
 
 ## BiceLib.Units
 * **setCorpsUnitLimit(int newLimit, string countryTag)**

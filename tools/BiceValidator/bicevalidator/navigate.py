@@ -514,7 +514,8 @@ class Navigator:
             leader.name or "no name", leader.ident, leader.country,
             " (%s)" % country if country else "", leader.arm or "no arm")
         text += "\n\nSkill %d, at most %d" % (leader.skill, leader.max_skill)
-        text += " · " + rank_phrase(*self._leader_rank(leader, target.rel))
+        text += " · " + rank_phrase(*self._leader_rank(leader, target.rel),
+                                    leaders.entry_rank(leader))
         start = leaders.start_oob(target.rel) if target.rel else None
         if start is not None:
             text += ", as %s's history loads this file on %s" % (start[0],
@@ -523,7 +524,10 @@ class Navigator:
             text += "\n\nHis history: " + ", ".join(
                 "%s rank %d" % (date_text(when), value) for when, value, _ in leader.ranks)
             ignored = leader.ignored_ranks(leaders.start)
-            if ignored:
+            if ignored and leaders.history_applied:
+                text += " — the game applies only the first after the start, as BiceLib " \
+                        "gives it"
+            elif ignored:
                 text += " — the game applies only the first after the start, and as rank 1"
         if leader.traits:
             text += "\n\nTraits: " + ", ".join(
@@ -1427,7 +1431,8 @@ class Navigator:
                 return ""
             name = _short(leader.name, _NAME_LENGTH)
             if rel.startswith("history/units/"):
-                name += ", " + rank_phrase(*self._leader_rank(leader, rel))
+                name += ", " + rank_phrase(*self._leader_rank(leader, rel),
+                                           self.decl.leaders.entry_rank(leader))
             return name
         return ""
 
@@ -1582,7 +1587,7 @@ class Navigator:
         """The leaders a unit of an order of battle may be given, by number or name: the
         file's country's first - from the history that loads it, or else from the leaders
         the file already names - then those of the unit's arm, then those of the rank it
-        wants, then by skill."""
+        takes, then by skill."""
         leaders = self.decl.leaders
         level = chain[-1].lkey
         arm = UNIT_ARMS.get(level)
@@ -1601,9 +1606,9 @@ class Navigator:
             if not low and country and leader.country != country:
                 continue
             rank, since = leaders.rank_in(leader, rel)
-            # Of the ranks the unit takes, the one it wants before any higher; of those below,
+            # The rank the unit takes before any other - the game puts no other on it - then
             # the nearest; and a leader the file has already given a unit after every free one.
-            found.append(((leader.country != country, leader.arm != arm, rank < wanted,
+            found.append(((leader.country != country, leader.arm != arm, rank != wanted,
                            leader.ident in used, abs(rank - wanted), -leader.skill,
                            leader.name),
                           leader, rank, since))
@@ -1611,7 +1616,9 @@ class Navigator:
         out = []
         for order, (_, leader, rank, since) in enumerate(found[:_LIMIT]):
             detail = "%s, %s %s, %s, skill %d" % (leader.name, leader.country, leader.arm,
-                                                   rank_phrase(rank, since), leader.skill)
+                                                   rank_phrase(rank, since,
+                                                               leaders.entry_rank(leader)),
+                                                   leader.skill)
             out.append(Completion(leader.ident, "value", detail,
                                   filter="%s %s" % (leader.ident, leader.name),
                                   sort="%04d" % order))

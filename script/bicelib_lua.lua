@@ -48,6 +48,11 @@ if mod then
     -- leader is left as he is.
     BiceLib.Leaders.activateOobLeaderRanks()
 
+    -- A leader whose history dates his first rank after the start comes into service on
+    -- that day at the rank the line names, where the game would make him rank 1 whatever
+    -- it says. The validator's BV313 looks for this call.
+    BiceLib.Leaders.activateHistoryLeaderRanks()
+
     -- Rank Specific traits
     -- BiceLib.Leaders.activateRankSpecificTraits()
     -- BiceLib.Leaders.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)

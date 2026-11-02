@@ -47,6 +47,7 @@
 #include <GameClasses/CCountryDataBase.hpp>
 #include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
+#include <Hooks/HistoryLeaderRanks.hpp>
 #include <Hooks/OobLeaderRanks.hpp>
 #include <Hooks/UnassignSelected.hpp>
 #include <Reversing/Counters.hpp>
@@ -1150,6 +1151,25 @@ __declspec(dllexport) int activateOobLeaderRanks(lua_State* L)
 }
 
 /**
+ * Brings a leader whose history dates his first rank after the start into service at the
+ * rank that line names, where the game gives rank 1 whatever it says. One store in the
+ * daily pass. See Hooks/HistoryLeaderRanks.hpp.
+ */
+__declspec(dllexport) int activateHistoryLeaderRanks(lua_State* L)
+{
+    const bool ok = Hooks::HistoryLeaderRanks::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateHistoryLeaderRanks' failed: %s \n",
+            Hooks::HistoryLeaderRanks::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateHistoryLeaderRanks' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
  * **The type a caller's own text is shown through.** Declared in
  * `interface/messagetypes.txt` and written in `localisation/BiceLib_messages.csv`, where its
  * lines are nothing but `$HEADER$`, `$TEXT$`, `$TEXT2$` and `$TEXT3$` - a message's text
@@ -1570,6 +1590,7 @@ void registerLeaderFunctions(lua_State* this_state) {
     registerFunction(this_state, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
     registerFunction(this_state, "activateCtrlUnassignSelected", activateCtrlUnassignSelected);
     registerFunction(this_state, "activateOobLeaderRanks", activateOobLeaderRanks);
+    registerFunction(this_state, "activateHistoryLeaderRanks", activateHistoryLeaderRanks);
     registerFunction(this_state, "addTraitToLeader", addTraitToLeader);
     registerFunction(this_state, "getLeaderDetails", getLeaderDetails);
     lua_settable(this_state, -3);

@@ -16,7 +16,8 @@ import io
 import os
 
 from . import lexer, parser
-from .leaders import Leaders
+from .leaders import HISTORY_FUNCTION, Leaders
+from .models import bicelib_call
 
 
 class Kinds:
@@ -90,6 +91,7 @@ class Declarations:
         # Every leader with his rank as the game gives it, and the orders of battle a new
         # game loads - what an order of battle's `leader` is checked against.
         self.leaders = Leaders(root, self._tree)
+        self.leaders.history_applied = bicelib_call(root, HISTORY_FUNCTION) is not None
 
     def _load_declared(self, registry):
         for kind, declarations in registry.declared_kinds().items():
