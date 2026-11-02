@@ -27,15 +27,20 @@
  * and **Alt is part of what that text is of** - keyed on the path alone, the key would
  * look broken for up to a second at a time.
  *
- * **A leader whose rank is below the job gets a red line.** The rule is the order of
- * battle's own levels - a division is a major general's, a corps a lieutenant general's,
- * and everything above a corps a general's - and it is the maintainer's choice, made against the
- * numbers rather than assumed: across the mod's own `history/units`, corps are led by a
- * rank 1 leader 613 times of 844, so the warning is meant to fire on those. Fleets and
- * air commands are left out, because their levels do not line up with the land ones.
+ * **A leader whose rank is not the job's gets a line saying so.** The rule is the game's
+ * own exact rank for each land level, from `CUnit::MayTakeLeader` - division 1, corps 2,
+ * army 3, army group and theatre 4 - which is what a player or the automatic choice may put
+ * on such a unit (reversing/findings/FINDINGS-leaderassign.md, section 6). Fleets and air
+ * units take any rank, so they are left out.
  *
- * The engine has no such rule to copy - its only rank defines, `AIR_RANK_1..4` and
- * `NAVAL_RANK_1..4`, are command limits, not level requirements.
+ * Where Hooks/OobLeaderRanks.hpp is switched on the line says what rank he will be made,
+ * since loading the file fits him; otherwise it is red. A leader of the wrong arm stays red
+ * either way, because the hook leaves him alone.
+ *
+ * **This was the maintainer's own rule until 2026-11-01** - everything above a corps at
+ * rank 3, rank 4 an honour rather than a job - chosen against the mod's numbers before the
+ * game's own rule had been read. It was changed to the game's when the hook that fits
+ * leaders was written, so the two cannot disagree.
  *
  * Two stubs: one at the text builder's entry to catch the effect, and one at the last
  * call before it returns, where the built string is in hand and can be replaced. See

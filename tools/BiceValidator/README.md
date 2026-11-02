@@ -329,11 +329,11 @@ section 1). These rules do:
 | Rule | |
 | --- | --- |
 | BV306 | a leader who does not exist |
-| BV309 | a leader below the rank his command wants: a division rank 1, a corps rank 2, an army, army group or theatre rank 3. That is this mod's rule, the one BiceLib's `load_oob` tooltip applies; the hint says where the game's own, looser test fails too, which costs the unit his skill in battle |
+| BV309 | a leader not of the rank his command takes: a division rank 1, a corps rank 2, an army rank 3, an army group or theatre rank 4 - the game's own rule for what may be put on a land unit. Silent for the file's own country's land leaders where `script/bicelib_lua.lua` calls `BiceLib.Leaders.activateOobLeaderRanks()`, which gives them that rank as the file is loaded; the hint says where the game's looser test fails too, which costs the unit his skill in battle |
 | BV310 | a leader of the wrong arm: a sea or air leader on a land unit, and so on |
 | BV311 | another country's leader, in an order of battle a country's history loads as a game starts |
 | BV312 | one leader given to two units of a file: the first is left without him |
-| BV313 | in `history/leaders`, a dated `rank` the game does not apply as written |
+| BV313 | in `history/leaders`, a dated `rank` the game does not apply as written: a first rank after the start, which brings him into service at rank 1, or any later one, which is never applied. Only the later ones where `script/bicelib_lua.lua` calls `BiceLib.Leaders.activateHistoryLeaderRanks()`, which brings him into service at the first rank's own |
 
 **A leader's rank is the one the game gives him**, which is not always what his history
 says. As a game is made his history is folded to the start date. After that the game

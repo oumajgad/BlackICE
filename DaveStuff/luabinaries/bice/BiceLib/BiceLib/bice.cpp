@@ -47,6 +47,8 @@
 #include <GameClasses/CCountryDataBase.hpp>
 #include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
+#include <Hooks/HistoryLeaderRanks.hpp>
+#include <Hooks/OobLeaderRanks.hpp>
 #include <Hooks/UnassignSelected.hpp>
 #include <Reversing/Counters.hpp>
 #include <Gui/LuaBridge.hpp>
@@ -1128,6 +1130,46 @@ __declspec(dllexport) int activateCtrlUnassignSelected(lua_State* L)
 }
 
 /**
+ * Gives a leader an order of battle puts on a land unit the rank the game itself would
+ * want for that unit - division 1, corps 2, army 3, army group and theatre 4 - raising or
+ * lowering him, and puts him in service if he is not yet. Only while an order of battle
+ * file is read (`load_oob`, a new game's history, the custom game setup), never a save;
+ * another country's leader is left alone. See Hooks/OobLeaderRanks.hpp.
+ */
+__declspec(dllexport) int activateOobLeaderRanks(lua_State* L)
+{
+    const bool ok = Hooks::OobLeaderRanks::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateOobLeaderRanks' failed: %s \n",
+            Hooks::OobLeaderRanks::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateOobLeaderRanks' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
+ * Brings a leader whose history dates his first rank after the start into service at the
+ * rank that line names, where the game gives rank 1 whatever it says. One store in the
+ * daily pass. See Hooks/HistoryLeaderRanks.hpp.
+ */
+__declspec(dllexport) int activateHistoryLeaderRanks(lua_State* L)
+{
+    const bool ok = Hooks::HistoryLeaderRanks::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateHistoryLeaderRanks' failed: %s \n",
+            Hooks::HistoryLeaderRanks::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateHistoryLeaderRanks' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
  * **The type a caller's own text is shown through.** Declared in
  * `interface/messagetypes.txt` and written in `localisation/BiceLib_messages.csv`, where its
  * lines are nothing but `$HEADER$`, `$TEXT$`, `$TEXT2$` and `$TEXT3$` - a message's text
@@ -1547,6 +1589,8 @@ void registerLeaderFunctions(lua_State* this_state) {
     registerFunction(this_state, "activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
     registerFunction(this_state, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
     registerFunction(this_state, "activateCtrlUnassignSelected", activateCtrlUnassignSelected);
+    registerFunction(this_state, "activateOobLeaderRanks", activateOobLeaderRanks);
+    registerFunction(this_state, "activateHistoryLeaderRanks", activateHistoryLeaderRanks);
     registerFunction(this_state, "addTraitToLeader", addTraitToLeader);
     registerFunction(this_state, "getLeaderDetails", getLeaderDetails);
     lua_settable(this_state, -3);

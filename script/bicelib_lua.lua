@@ -41,6 +41,18 @@ if mod then
     -- old behaviour exactly.
     BiceLib.Leaders.activateCtrlUnassignSelected()
 
+    -- A leader an order of battle puts on a land unit gets the rank the game wants for
+    -- that unit - division 1, corps 2, army 3, army group and theatre 4 - raised or
+    -- lowered, and is put in service if he is not yet. Only while an order of battle file
+    -- is read (load_oob and a new game's history), never a save; another country's
+    -- leader is left as he is.
+    BiceLib.Leaders.activateOobLeaderRanks()
+
+    -- A leader whose history dates his first rank after the start comes into service on
+    -- that day at the rank the line names, where the game would make him rank 1 whatever
+    -- it says. The validator's BV313 looks for this call.
+    BiceLib.Leaders.activateHistoryLeaderRanks()
+
     -- Rank Specific traits
     -- BiceLib.Leaders.activateRankSpecificTraits()
     -- BiceLib.Leaders.addRankSpecificTrait("rankSpecificTrait_test_active", "rankSpecificTrait_test_inactive", 2, 4)

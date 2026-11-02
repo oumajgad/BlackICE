@@ -208,6 +208,11 @@ class LeaderTest(unittest.TestCase):
                           'service wants rank 2',
                           'Briton (14) is rank 2, and the army Briton wants rank 3'])
 
+    def test_the_rank_is_exact(self):
+        # The game puts only a rank 1 leader on a division: one above it is reported too.
+        self.assertIn('Briton (14) is rank 2, and the division Led by a Briton wants rank 1',
+                      self.messages("BV309", "history/units/GER_1936.txt"))
+
     def test_arm_country_twice_and_missing(self):
         start = "history/units/GER_1936.txt"
         self.assertEqual(self.messages("BV310", start),
@@ -244,13 +249,132 @@ class LeaderTest(unittest.TestCase):
         self.assertIn("the game applies only the first after the start, and as rank 1", text)
         self.assertEqual([(p.file, p.line) for p in nav.definitions(target)],
                          [("history/leaders/GER.txt", 9)])
-        # In the army, after `leader = `: GER's land leaders of rank 3 and up first, then the
-        # nearest below, free ones before those the file already uses (10 and 12), the other
-        # arm last - and only GER's, since GER's history loads the file.
+        # In the army, after `leader = `: GER's land leaders of rank 3 first - there are none -
+        # then the nearest, free ones before those the file already uses (10 and 12), the
+        # other arm last - and only GER's, since GER's history loads the file.
         line = START_OOB.split("\n")[12]
         items, _ = nav.completions(rel, parsed, 13, line.index("10") + 1)
         self.assertEqual([i.label for i in items], ["11", "15", "10", "12", "13"])
         self.assertIn("Marshal, GER land, rank 4", items[0].detail)
+
+
+class FittedLeaderTest(unittest.TestCase):
+    """With BiceLib fitting an order of battle's leaders, BV309 is left only for another
+    country's."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = TinyMod()
+        cls.mod.write("common/bookmarks.txt", "bookmark = { name = X date = 1936.1.1 }\n")
+        cls.mod.write("history/countries/GER - Germany.txt", 'capital = 1\noob = "GER_1936.txt"\n')
+        cls.mod.write("history/leaders/GER.txt", LEADERS)
+        cls.mod.write("history/units/GER_1936.txt", START_OOB)
+        cls.mod.write("history/units/later.txt", LATER_OOB)
+        cls.mod.write("script/bicelib_lua.lua",
+                      "-- BiceLib.Leaders.activateCtrlUnassignSelected()\n"
+                      "BiceLib.Leaders.activateOobLeaderRanks()\n")
+        result = runner.run(cls.mod.root, [rules.CODE], workers=1)
+        cls.found = [(d.file, d.rule, d.message, d.hint) for d in result.diagnostics
+                     if d.rule == "BV309"]
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mod.close()
+
+    def test_only_another_countrys_leader_is_left(self):
+        self.assertEqual([m for f, _, m, _ in self.found],
+                         ['Briton (14) is rank 2, and the division Led by a Briton wants rank 1'])
+        self.assertIn("leaves another country's leader as he is", self.found[0][3])
+
+    def test_the_editor_follows_the_call(self):
+        # The language server hands a changed bicelib_lua.lua to files_changed; BV309 has to
+        # come and go with the call without a restart.
+        session = Session(self.mod.root)
+        rel = "history/units/GER_1936.txt"
+
+        def corporal():
+            return [d for d in session.check_text(rel, START_OOB)
+                    if d.rule == "BV309" and d.message.startswith("Corporal (10)")]
+
+        self.assertEqual(corporal(), [])
+        try:
+            self.mod.write("script/bicelib_lua.lua", "-- nothing switched on\n")
+            self.assertTrue(session.files_changed(["script/bicelib_lua.lua"]))
+            self.assertNotEqual(corporal(), [])
+        finally:
+            self.mod.write("script/bicelib_lua.lua",
+                           "BiceLib.Leaders.activateOobLeaderRanks()\n")
+        self.assertTrue(session.files_changed(["script/bicelib_lua.lua"]))
+        self.assertEqual(corporal(), [])
+
+    def test_a_call_in_a_comment_does_not_count(self):
+        self.mod.write("script/bicelib_lua.lua",
+                       "-- BiceLib.Leaders.activateOobLeaderRanks()\n")
+        try:
+            result = runner.run(self.mod.root, [rules.CODE], workers=1)
+            found = [d for d in result.diagnostics if d.rule == "BV309"]
+            self.assertIn("Corporal (10) is rank 1, and the corps Led by a corporal wants "
+                          "rank 2", [d.message for d in found])
+            self.assertTrue(any("activateOobLeaderRanks()` in script/bicelib_lua.lua would"
+                                in d.hint for d in found))
+        finally:
+            self.mod.write("script/bicelib_lua.lua",
+                           "BiceLib.Leaders.activateOobLeaderRanks()\n")
+
+
+class HistoryRankTest(unittest.TestCase):
+    """With BiceLib putting a leader in service at his history's first rank, BV313 is left
+    only for a later rank, and every rank the validator works out follows it."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = TinyMod()
+        cls.mod.write("common/bookmarks.txt", "bookmark = { name = X date = 1936.1.1 }\n")
+        cls.mod.write("history/countries/GER - Germany.txt", 'capital = 1\noob = "GER_1936.txt"\n')
+        cls.mod.write("history/leaders/GER.txt", LEADERS)
+        cls.mod.write("history/units/GER_1936.txt", START_OOB)
+        cls.mod.write("history/units/later.txt", LATER_OOB)
+        cls.mod.write("script/bicelib_lua.lua", "BiceLib.Leaders.activateHistoryLeaderRanks()\n")
+        result = runner.run(cls.mod.root, [rules.CODE], workers=1)
+        cls.found = [(d.file, d.rule, d.message) for d in result.diagnostics
+                     if d.rule in ("BV309", "BV313")]
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.mod.close()
+
+    def messages(self, rule, file):
+        return [m for f, r, m in self.found if r == rule and f == file]
+
+    def test_only_a_later_rank_is_left(self):
+        self.assertEqual(self.messages("BV313", "history/leaders/GER.txt"),
+                         ["Rank 2 on 1940.1.1 is never applied to leader 11"])
+
+    def test_he_comes_into_service_at_his_historys_rank(self):
+        self.assertIn('Late (12) is rank 0 until 1939.1.1, then rank 3, and the division Led '
+                      'by one not in service wants rank 1',
+                      self.messages("BV309", "history/units/GER_1936.txt"))
+        self.assertIn('Late (12) is rank 3 from 1939.1.1, and the corps Late, once in service '
+                      'wants rank 2', self.messages("BV309", "history/units/later.txt"))
+
+    def test_the_editor_follows_the_call(self):
+        session = Session(self.mod.root)
+        rel = "history/leaders/GER.txt"
+
+        def first_ranks():
+            return [d for d in session.check_text(rel, LEADERS)
+                    if d.rule == "BV313" and "first rank" in d.message]
+
+        self.assertEqual(first_ranks(), [])
+        try:
+            self.mod.write("script/bicelib_lua.lua", "-- nothing switched on\n")
+            self.assertTrue(session.files_changed(["script/bicelib_lua.lua"]))
+            self.assertEqual(len(first_ranks()), 1)
+        finally:
+            self.mod.write("script/bicelib_lua.lua",
+                           "BiceLib.Leaders.activateHistoryLeaderRanks()\n")
+        self.assertTrue(session.files_changed(["script/bicelib_lua.lua"]))
+        self.assertEqual(first_ranks(), [])
 
 
 class SchemaFeaturesTest(unittest.TestCase):
