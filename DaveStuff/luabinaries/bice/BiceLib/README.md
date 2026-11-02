@@ -297,6 +297,19 @@ Patches which require some extra logic and hooking.
     * BICE Validator's BV218 and BV219 report the shift, and stay quiet while this is called.
     * **Params**: /
     * **Return values**: /
+* **fixMaxInfrastructure()**
+    * A province's MaxInfrastructure - the figure areas are made from, a province being in
+      one only above one level - is written by the game from whichever building with the
+      `infrastructure` effect it handles last. `extra_infra` is saved after `infra`, so a
+      loaded province read `extra_infra`'s level x 50, ~1,600 provinces ended up in no area
+      (no supply grouping, no AI front), and a unit bound for one crashed the AI's sealift
+      pass as the save loaded.
+    * This writes `infra`'s own figure after each of the game's three stores, so the areas
+      come out as they would without `extra_infra`. Its bonus to effective infrastructure
+      is untouched. Must be called before a save is loaded.
+    * reversing/findings/FINDINGS-extrainfra.md has the reading.
+    * **Params**: /
+    * **Return values**: true if the three stores were patched
 
 ## BiceLib.EffectTexts
 Extra variables for what the game shows when an effect fires. **Each of these only adds

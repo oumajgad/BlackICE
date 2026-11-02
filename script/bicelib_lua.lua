@@ -84,6 +84,11 @@ if mod then
     -- type, 0 where the model names none, so none of the levels shifts onto the wrong
     -- technology. The validator's BV218 and BV219 look for this call.
     BiceLib.ComplexPatches.fixQueuedHistoricalModel()
+    -- A province's MaxInfrastructure stays its infra building's figure. The game writes
+    -- that of whichever infrastructure building it handles last, so extra_infra left
+    -- ~1,600 provinces in no area after a load and crashed the AI's sealift pass. Has to be
+    -- on before a save is loaded.
+    BiceLib.ComplexPatches.fixMaxInfrastructure()
 
     -- Effect texts
     -- Fills $UNIT$, $LOCATION$ and $WHERE$ in KILL_LEADER_EFFECT. Switching this off

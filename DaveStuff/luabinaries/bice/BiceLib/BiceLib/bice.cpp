@@ -48,6 +48,7 @@
 #include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
 #include <Hooks/HistoryLeaderRanks.hpp>
+#include <Hooks/MaxInfrastructure.hpp>
 #include <Hooks/OobLeaderRanks.hpp>
 #include <Hooks/UnassignSelected.hpp>
 #include <Reversing/Counters.hpp>
@@ -754,6 +755,27 @@ __declspec(dllexport) int fixQueuedHistoricalModel(lua_State* L)
 
     fixQueuedHistoricalModelDone = true;
     return 0;
+}
+
+/**
+ * Keeps a province's MaxInfrastructure the figure of its `infra` building. The game writes
+ * the figure of whichever building with the `infrastructure` effect it handles last, so
+ * BlackICE's `extra_infra` left ~1,600 provinces in no area after every load and crashed
+ * the AI's sealift pass. Three stores, each followed by infra's own figure. Must be on
+ * before a save is loaded. See Hooks/MaxInfrastructure.hpp.
+ */
+__declspec(dllexport) int fixMaxInfrastructure(lua_State* L)
+{
+    const bool ok = Hooks::MaxInfrastructure::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'fixMaxInfrastructure' failed: %s \n",
+            Hooks::MaxInfrastructure::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'fixMaxInfrastructure' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
 }
 
 
@@ -1650,6 +1672,7 @@ void registerComplexPatchFunctions(lua_State* this_state) {
     registerFunction(this_state, "fixOffMapIC", fixOffMapIC);
     registerFunction(this_state, "enablePlacingNonResearchedBuildings", enablePlacingNonResearchedBuildings);
     registerFunction(this_state, "fixQueuedHistoricalModel", fixQueuedHistoricalModel);
+    registerFunction(this_state, "fixMaxInfrastructure", fixMaxInfrastructure);
     lua_settable(this_state, -3);
     return;
 }
