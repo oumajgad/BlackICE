@@ -100,11 +100,21 @@ It writes Windows Error Reporting's per-executable LocalDumps setting:
 ```
 HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting\LocalDumps\hoi3_tfh.exe
     DumpCount = 5
-    DumpType  = 1        mini dump, ~37 MB each
+    DumpType  = 2        full memory, up to 4 GB each    (default: the crashdumps\full task)
+                1        mini dump, ~40 MB each           (that task unticked)
 ```
 
 Scoped to that one executable, so nothing else on the machine is affected, and capped at
-five dumps in `%LOCALAPPDATA%\CrashDumps`.
+five dumps in `%LOCALAPPDATA%\CrashDumps`; Windows deletes the oldest itself.
+
+**Full memory is the default** since 2026-11-02. A mini dump holds the crashing thread's
+stack and not the heap, so it shows where the game crashed but rarely what it was working
+on; the `extra_infra` load crash could only be explained from a full dump, which named the
+units and provinces involved. **The cost is disk space, and only once the game has
+crashed**: a full dump is everything the game holds in memory, at most its 32-bit address
+space - 4 GB with the memory patch, 2 GB without (3.0 GB measured for a game at 3.17 GB).
+With five kept that is **up to about 20 GB**; mini dumps stay around 200 MB for five.
+The task's description and the summary page both say so.
 
 **It must be written to the 64-bit registry view.** The installer is a 32-bit program, so
 a plain `HKLM` write is redirected into `Wow6432Node` — and `LocalDumps` only exists in
@@ -113,8 +123,10 @@ setting that appears present and does nothing. `WerRootKey()` returns `HKLM64` o
 Windows and `HKLM` on 32-bit, where asking for a 64-bit view is an error.
 
 An existing configuration is never overwritten, and the uninstaller only removes the key
-when it holds exactly the two values above — which is how somebody's own setup is told
-apart from ours without storing a marker anywhere.
+when it holds `DumpCount` 5 and one of the two `DumpType`s above — which is how somebody's
+own setup is told apart from ours without storing a marker anywhere. One of ours is moved
+to whichever type the player picks on a reinstall, so an older install's mini dumps become
+full ones unless the box is unticked.
 
 ### The uninstaller's name
 

@@ -132,6 +132,9 @@ Name: "border";   Description: "Borderless window (needs settings.txt edited aft
 Name: "patchexe";  Description: "Patch hoi3_tfh.exe so the game can use 4 GB of memory"; GroupDescription: "Fixes applied to the game:"
 Name: "sprites";   Description: "Move the unused 3D unit sprites aside (frees ~300 MB)"; GroupDescription: "Fixes applied to the game:"
 Name: "crashdumps"; Description: "Let Windows keep a crash dump if the game crashes (up to 5, in %LOCALAPPDATA%\CrashDumps)"; GroupDescription: "Crash reporting:"
+; Ticked by default. Unticked, the dumps are mini dumps (~40 MB each), which say where the
+; game crashed but rarely why. inc\crashdumps.iss has the sizes.
+Name: "crashdumps\full"; Description: "Full memory dumps - what we need to explain a crash. Up to 4 GB each, so up to ~20 GB of disk for the 5 kept, used only when the game crashes"; GroupDescription: "Crash reporting:"
 Name: "desktop";   Description: "Create a desktop shortcut that launches {#ModName} directly"; GroupDescription: "Shortcuts:"
 Name: "startmenu"; Description: "Create a Start menu entry"; GroupDescription: "Shortcuts:"
 
@@ -385,7 +388,7 @@ begin
   begin
     WizardForm.StatusLabel.Caption := 'Switching on Windows crash dumps...';
     Message := '';
-    EnableCrashDumps(Message);
+    EnableCrashDumps(WizardIsTaskSelected('crashdumps\full'), Message);
     Summary := Summary + 'Crash dumps' + #13#10 + '  ' + Message + #13#10 + #13#10;
   end;
 
