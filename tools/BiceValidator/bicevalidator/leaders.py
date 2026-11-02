@@ -9,6 +9,11 @@ later `rank` is ever applied (reversing/findings/FINDINGS-leaders.md, section 3,
 part of the daily pass"; reversing/findings/FINDINGS-leaderassign.md, section 2). Only a
 promotion in play - by the player, the AI or an effect - moves him after that.
 
+**BiceLib mends the first of those** where `script/bicelib_lua.lua` calls
+`BiceLib.Leaders.activateHistoryLeaderRanks()`: he is then put in service at the rank his
+first line names, held to 1 to 4. A later `rank` is still never applied. Leaders.
+history_applied says which, and every rank worked out here follows it.
+
 An order of battle's `leader = N` is given leader N whoever he is - of any country, rank or
 arm, in service or not (FINDINGS-leaderassign.md, section 1). So nothing in the game reports
 a leader who does not fit; the checks in checks/data.py do.
@@ -22,6 +27,11 @@ from dataclasses import dataclass, field
 _DATE = re.compile(r"^(\d{1,4})\.(\d{1,2})\.(\d{1,2})$")
 # The one start the game offers when a mod has no bookmarks of its own.
 DEFAULT_START = (1936, 1, 1)
+
+# The BiceLib call that puts a leader in service at his history's first rank
+HISTORY_FUNCTION = "activateHistoryLeaderRanks"
+LOWEST_RANK = 1
+HIGHEST_RANK = 4
 
 
 def parse_date(text):
@@ -60,7 +70,15 @@ class Leader:
                 rank = value
         return rank
 
-    def rank_in_play(self, start):
+    def entry_rank(self, history_applied=False):
+        """The rank he comes into service at after the start: 1, or with BiceLib's
+        activateHistoryLeaderRanks the rank his first line names, held to 1 to 4."""
+        first = self.first_rank()
+        if not history_applied or first is None:
+            return LOWEST_RANK
+        return min(max(first[1], LOWEST_RANK), HIGHEST_RANK)
+
+    def rank_in_play(self, start, history_applied=False):
         """(rank, date or None): the rank he holds once in service in a game started on
         \\p start, and the date he enters service if that is after the start."""
         rank = self.rank_at(start)
@@ -69,7 +87,7 @@ class Leader:
         first = self.first_rank()
         if first is None:
             return 0, None
-        return 1, first[0]
+        return self.entry_rank(history_applied), first[0]
 
     def ignored_ranks(self, start):
         """(date, rank, line, why) of every dated rank that does not do what it says in a
@@ -91,6 +109,9 @@ class Leaders:
     def __init__(self, root, tree):
         """\\p tree(rel) is a parsed file's root node, or None if it does not exist."""
         self.by_id = {}
+        # Whether the mod calls BiceLib's activateHistoryLeaderRanks; set by Declarations,
+        # and again by a Session when script/bicelib_lua.lua changes.
+        self.history_applied = False
         self.starts = self._starts(tree)
         self.start = self.starts[0]
         for path in sorted(glob.glob(os.path.join(root, "history", "leaders", "*.txt"))):
@@ -125,15 +146,19 @@ class Leaders:
     def rank_in(self, leader, rel):
         """(rank, date or None) of \\p leader where file \\p rel names him. In an order of
         battle a country's history loads as a game starts, the rank he has then - 0, with
-        the date he comes into service at rank 1, if that is later. Anywhere else, the rank
-        he holds once in service, with the date he comes into it if that is after the
+        the date he comes into service at entry_rank, if that is later. Anywhere else, the
+        rank he holds once in service, with the date he comes into it if that is after the
         start. rank_phrase says either."""
         start = self.start_oob(rel)
         if start is not None:
             rank = leader.rank_at(start[1])
             first = leader.first_rank()
             return rank, (first[0] if rank == 0 and first is not None else None)
-        return leader.rank_in_play(self.start)
+        return leader.rank_in_play(self.start, self.history_applied)
+
+    def entry_rank(self, leader):
+        """The rank \\p leader comes into service at after the start, in this mod."""
+        return leader.entry_rank(self.history_applied)
 
     @staticmethod
     def _starts(tree):
@@ -148,10 +173,11 @@ class Leaders:
         return sorted(set(dates)) or [DEFAULT_START]
 
 
-def rank_phrase(rank, since):
-    """`rank 2`, `rank 1 from 1940.1.1`, or `rank 0 until 1940.1.1, then rank 1`."""
+def rank_phrase(rank, since, then=LOWEST_RANK):
+    """`rank 2`, `rank 1 from 1940.1.1`, or `rank 0 until 1940.1.1, then rank 1` - \\p then
+    being the rank he comes into service at, Leaders.entry_rank."""
     if since is not None and rank == 0:
-        return "rank 0 until %s, then rank 1" % date_text(since)
+        return "rank 0 until %s, then rank %d" % (date_text(since), then)
     if since is not None:
         return "rank %d from %s" % (rank, date_text(since))
     return "rank %d" % rank
