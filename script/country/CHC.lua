@@ -19,10 +19,7 @@ function P.TechWeights(voTechnologyData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
-
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Production Weights
@@ -115,7 +112,6 @@ function P.Build_CoastalFort(ic, voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
 
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	-- If we are not part of the same ideology as the requesting country do not even consider it

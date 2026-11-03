@@ -54,7 +54,8 @@ G_StratResourceListGlobal = {
 	"copper";		-- 6
 	"zinc";			-- 7
 	"manganese";	-- 8
-	"molybdenum"	-- 9
+	"molybdenum";	-- 9
+	"mass_livestock"	-- 10
 }
 
 

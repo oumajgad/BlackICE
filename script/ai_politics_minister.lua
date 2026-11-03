@@ -182,12 +182,9 @@ defaultLandTraining["SCH"] = 30
 defaultLandTraining["SWE"] = 30
 defaultLandTraining["USA"] = 30
 
-
--- ##################################
 -- # Called by the EXE
--- ##################################
 -- # Happens around 17:00 each day
--- ##################################
+
 function PoliticsMinister_Tick(minister)
 
 	local isOMG = false
@@ -479,9 +476,9 @@ function OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinis
 		end
 	end
  end
---################
+
 -- Office Management sub-methods
---################
+
 function MinisterOfSecurity(ai, ministerTag, ministerCountry, vaMinisters, voPosition)
 	local laPersonalityScore = {}
 
@@ -669,14 +666,11 @@ function ChiefOfAir(ai, ministerTag, ministerCountry, vaMinisters, voPosition)
 
 	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ChiefOfAir")
 end
---################
+
 -- End of Office Management sub-methods
---################
 
-
---################
 -- Law sub-methods
---################
+
 function ConscriptionLaw(ministerTag, ministerCountry, voCurrentLaw)
 	local liIndex = voCurrentLaw:GetIndex() + 1
 	local loNewLaw = nil
@@ -888,6 +882,5 @@ function ConscriptionLaws2(ministerTag, ministerCountry, voCurrentLaw)
 
 	return nil
 end
---################
+
 -- End of Law sub-methods
---################

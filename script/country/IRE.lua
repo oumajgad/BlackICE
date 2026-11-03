@@ -277,10 +277,7 @@ function P.OtherTechs(voTechnologyData)
 	return ignoreTech, preferTech
 end
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
-
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Production Weights
@@ -333,7 +330,6 @@ function P.Build_CoastalFort(ic, voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
 
 function P.DiploScore_GiveMilitaryAccess(viScore, voAI, voCountry)
 	-- We stay out of everything

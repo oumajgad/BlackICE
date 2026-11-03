@@ -68,6 +68,11 @@ namespace CLeader {
            its own Load and Save. **Read live**: a CLeaderHistory by its own RTTI*/
         constexpr uintptr_t history = 0x84;
 
+        /**@brief the history's dated entries, a list (HDS::ListOffsets) - `history` plus
+                  CLeaderHistory's own +0xC. The daily pass walks it from here for the first
+                  CRankChange. reversing/findings/FINDINGS-leaders.md, section 3*/
+        constexpr uintptr_t history_entries = 0x90;
+
         /**@brief the leader's portrait, a std::string, saved as `picture`. **Read live**:
            `L54027`, and `empty_position` on the null leader*/
         constexpr uintptr_t picture = 0xA8;

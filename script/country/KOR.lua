@@ -50,10 +50,7 @@ function P.SecretWeaponTechs(voTechnologyData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
-
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Land ratio distribution
@@ -101,8 +98,6 @@ end
 
 -- Do not build coastal forts
 
-
 -- END OF PRODUTION OVERIDES
--- #######################################
 
 return AI_KOR

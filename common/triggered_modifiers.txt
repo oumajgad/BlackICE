@@ -4775,6 +4775,150 @@ copper_penalty_IV = {
 	icon = 98
 }
 
+# MASS LIVESTOCK #
+mass_livestock_neutral = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 1000 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 1001 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		check_variable = { which = mass_livestock_ActualBalance value = 1000 }
+	}
+
+	icon = 109
+}
+
+mass_livestock_bonus_I = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 1001 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 1002 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		check_variable = { which = mass_livestock_ActualBalance value = 1001 }
+	}
+	global_manpower_modifier = 0.015
+	supply_consumption = -0.01
+
+	icon = 110
+}
+
+mass_livestock_bonus_II = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 1002 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 1003 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		check_variable = { which = mass_livestock_ActualBalance value = 1002 }
+	}
+	global_manpower_modifier = 0.03
+	supply_consumption = -0.02
+
+	icon = 110
+}
+
+mass_livestock_bonus_III = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 1003 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 1004 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		check_variable = { which = mass_livestock_ActualBalance value = 1003 }
+	}
+	global_manpower_modifier = 0.045
+	supply_consumption = -0.03
+
+	icon = 110
+}
+
+mass_livestock_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 1004 }
+	}
+	trigger = {
+		date = 1936.2.1
+		check_variable = { which = mass_livestock_ActualBalance value = 1004 }
+	}
+	global_manpower_modifier = 0.06
+	supply_consumption = -0.04
+
+	icon = 110
+}
+
+mass_livestock_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 999 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 1000 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		has_country_flag = strat_resource_system_normal
+		check_variable = { which = mass_livestock_ActualBalance value = 999 }
+	}
+	global_manpower_modifier = -0.01
+	supply_consumption = 0.005
+
+	icon = 111
+}
+
+mass_livestock_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 998 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 999 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		has_country_flag = strat_resource_system_normal
+		check_variable = { which = mass_livestock_ActualBalance value = 998 }
+	}
+	global_manpower_modifier = -0.02
+	supply_consumption = 0.01
+
+	icon = 111
+}
+
+mass_livestock_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = mass_livestock_ActualBalance value = 997 }
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 998 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		has_country_flag = strat_resource_system_normal
+		check_variable = { which = mass_livestock_ActualBalance value = 997 }
+	}
+	global_manpower_modifier = -0.03
+	supply_consumption = 0.015
+	icon = 111
+}
+
+mass_livestock_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 997 } }
+	}
+	trigger = {
+		date = 1936.2.1
+		has_country_flag = strat_resource_system_normal
+		not = { check_variable = { which = mass_livestock_ActualBalance value = 997 } }
+	}
+	global_manpower_modifier = -0.04
+	supply_consumption = 0.02
+
+	icon = 111
+}
+
 # CHROMITE #
 chromite_neutral = {
 	potential = {
@@ -8248,7 +8392,7 @@ Great_Patriotic_War_achievement = {
 		2041 = { controller = { faction = axis } } #Warszawa
 	}
 	unit_recruitment_time = -0.1
-	global_manpower_modifier = 0.25
+	global_manpower_modifier = 0.1
 
 	icon = 15
 }
@@ -8609,7 +8753,7 @@ post_spanish_civil_war_effect_year_one = {
 		has_country_modifier = SPA_postwar_timer_II
 	}
 	icon = 5
-	global_manpower_modifier = -0.25
+	global_manpower_modifier = -0.15
 	industrial_efficiency = -0.05
 	peace_consumer_goods_demand = 0.05
 	war_consumer_goods_demand = 0.25
@@ -8630,7 +8774,7 @@ post_spanish_civil_war_effect_year_two = {
 		has_country_modifier = SPA_postwar_timer_II
 	}
 	icon = 5
-	global_manpower_modifier = -0.15
+	global_manpower_modifier = -0.05
 	industrial_efficiency = -0.05
 	peace_consumer_goods_demand = 0.05
 	war_consumer_goods_demand = 0.25
@@ -9175,7 +9319,7 @@ state_of_emergency = {
 		not = { has_country_flag = arsenal_of_democracy }
 		war = no
 	}
-	global_manpower_modifier = 0.15
+	global_manpower_modifier = 0.075
 	global_ic = -0.05
 
 	icon = 37
@@ -9189,7 +9333,7 @@ state_of_emergency_no = {
 		not = { has_country_flag = arsenal_of_democracy }
 		war = no
 	}
-	global_manpower_modifier = -0.15
+	global_manpower_modifier = -0.075
 	global_ic = 0.05
 	global_resources = 0.075
 	peace_consumer_goods_demand = -0.1
@@ -9205,7 +9349,7 @@ arsenal_of_democracy = {
 		has_country_flag = arsenal_of_democracy
 		war = no
 	}
-	global_manpower_modifier = 0.5
+	global_manpower_modifier = 0.25
 	global_ic = 0.25
 
 	icon = 38
@@ -9682,8 +9826,8 @@ agricultural_giant = {
 			}
         }
 	}
-	global_supplies = 0.2
-	global_manpower_modifier = 0.2
+	global_supplies = 0.1
+	global_manpower_modifier = 0.1
 
 	icon = 29
 }
@@ -10940,6 +11084,11 @@ collectivated_agricultural_industry = {
 	}
 	trigger = {
 		has_country_flag  = collectivated_agricultural_industry
+		not = {
+			any_owned_province = {
+				strategic_resource = automotive_industry
+			}
+		}
 	}
 	global_manpower_modifier = -0.15
 	industrial_efficiency = 0.02
@@ -15157,7 +15306,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_III_II = {
 		check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 4}
 		not = { check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 5} }
 	}
-	global_manpower_modifier = 0.15
+	global_manpower_modifier = 0.1
 	naval_base_efficiency = 0.1
 	supply_throughput = 0.1
 	icon = 31
@@ -15195,7 +15344,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_IV_II = {
 	trigger = {
 		check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 5}
 	}
-	global_manpower_modifier = 0.2
+	global_manpower_modifier = 0.1
 	naval_base_efficiency = 0.15
 	supply_throughput = 0.15
 	icon = 31
@@ -16586,7 +16735,7 @@ black_soil_bonus = {
 			}
 		}
 	}
-	global_manpower_modifier = 0.3
+	global_manpower_modifier = 0.05
 	icon = 70
 }
 helium_bonus = {
@@ -16835,37 +16984,6 @@ nylon_bonus = {
 	land_build_speed = -0.1
 	icon = 80
 }
-mass_livestock_bonus = {
-	potential = {}
-	trigger = {
-		or = {
-			or = {
-				7479 = { controlled_by = this }
-                7479 = { controller = { vassal_of = this } }
-				7479 = { controller = { faction = this } }
-			}
-			or = {
-				2776 = { controlled_by = this }
-                2776 = { controller = { vassal_of = this } }
-				2776 = { controller = { faction = this } }
-			}
-			or = {
-				10422 = { controlled_by = this }
-                10422 = { controller = { vassal_of = this } }
-				10422 = { controller = { faction = this } }
-			}
-			any_owned_province = {
-				and = {
-					strategic_resource = mass_livestock
-					controlled_by = this
-				}
-			}
-		}
-	}
-	global_manpower_modifier = 0.2
-	icon = 81
-}
-
 # Techs outdated penalties #
 land_units_retardation_I = {
 	potential = {
@@ -24783,550 +24901,2802 @@ triggered_mod_supplies_factory_core_1 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 1 }
 		not = { check_variable = { which = "supplies_factory_count" value = 2 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 1 }
 		not = { check_variable = { which = "supplies_factory_count" value = 2 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.01
 	icon = 46
 }
 triggered_mod_supplies_factory_core_2 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 2 }
 		not = { check_variable = { which = "supplies_factory_count" value = 3 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 2 }
 		not = { check_variable = { which = "supplies_factory_count" value = 3 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.02
 	icon = 46
 }
 triggered_mod_supplies_factory_core_3 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 3 }
 		not = { check_variable = { which = "supplies_factory_count" value = 4 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 3 }
 		not = { check_variable = { which = "supplies_factory_count" value = 4 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.03
 	icon = 46
 }
 triggered_mod_supplies_factory_core_4 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 4 }
 		not = { check_variable = { which = "supplies_factory_count" value = 5 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 4 }
 		not = { check_variable = { which = "supplies_factory_count" value = 5 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.04
 	icon = 46
 }
 triggered_mod_supplies_factory_core_5 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 5 }
 		not = { check_variable = { which = "supplies_factory_count" value = 6 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 5 }
 		not = { check_variable = { which = "supplies_factory_count" value = 6 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.05
 	icon = 46
 }
 triggered_mod_supplies_factory_core_6 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 6 }
 		not = { check_variable = { which = "supplies_factory_count" value = 7 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 6 }
 		not = { check_variable = { which = "supplies_factory_count" value = 7 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.06
 	icon = 46
 }
 triggered_mod_supplies_factory_core_7 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 7 }
 		not = { check_variable = { which = "supplies_factory_count" value = 8 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 7 }
 		not = { check_variable = { which = "supplies_factory_count" value = 8 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.07
 	icon = 46
 }
 triggered_mod_supplies_factory_core_8 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 8 }
 		not = { check_variable = { which = "supplies_factory_count" value = 9 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 8 }
 		not = { check_variable = { which = "supplies_factory_count" value = 9 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.08
 	icon = 46
 }
 triggered_mod_supplies_factory_core_9 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 9 }
 		not = { check_variable = { which = "supplies_factory_count" value = 10 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 9 }
 		not = { check_variable = { which = "supplies_factory_count" value = 10 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.09
 	icon = 46
 }
 triggered_mod_supplies_factory_core_10 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 10 }
 		not = { check_variable = { which = "supplies_factory_count" value = 11 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 10 }
 		not = { check_variable = { which = "supplies_factory_count" value = 11 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.1
 	icon = 46
 }
 triggered_mod_supplies_factory_core_11 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 11 }
 		not = { check_variable = { which = "supplies_factory_count" value = 12 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 11 }
 		not = { check_variable = { which = "supplies_factory_count" value = 12 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.11
 	icon = 46
 }
 triggered_mod_supplies_factory_core_12 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 12 }
 		not = { check_variable = { which = "supplies_factory_count" value = 13 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 12 }
 		not = { check_variable = { which = "supplies_factory_count" value = 13 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.12
 	icon = 46
 }
 triggered_mod_supplies_factory_core_13 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 13 }
 		not = { check_variable = { which = "supplies_factory_count" value = 14 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 13 }
 		not = { check_variable = { which = "supplies_factory_count" value = 14 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.13
 	icon = 46
 }
 triggered_mod_supplies_factory_core_14 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 14 }
 		not = { check_variable = { which = "supplies_factory_count" value = 15 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 14 }
 		not = { check_variable = { which = "supplies_factory_count" value = 15 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.14
 	icon = 46
 }
 triggered_mod_supplies_factory_core_15 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 15 }
 		not = { check_variable = { which = "supplies_factory_count" value = 16 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 15 }
 		not = { check_variable = { which = "supplies_factory_count" value = 16 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.15
 	icon = 46
 }
 triggered_mod_supplies_factory_core_16 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 16 }
 		not = { check_variable = { which = "supplies_factory_count" value = 17 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 16 }
 		not = { check_variable = { which = "supplies_factory_count" value = 17 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.16
 	icon = 46
 }
 triggered_mod_supplies_factory_core_17 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 17 }
 		not = { check_variable = { which = "supplies_factory_count" value = 18 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 17 }
 		not = { check_variable = { which = "supplies_factory_count" value = 18 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.17
 	icon = 46
 }
 triggered_mod_supplies_factory_core_18 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 18 }
 		not = { check_variable = { which = "supplies_factory_count" value = 19 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 18 }
 		not = { check_variable = { which = "supplies_factory_count" value = 19 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.18
 	icon = 46
 }
 triggered_mod_supplies_factory_core_19 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 19 }
 		not = { check_variable = { which = "supplies_factory_count" value = 20 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 19 }
 		not = { check_variable = { which = "supplies_factory_count" value = 20 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.19
 	icon = 46
 }
 triggered_mod_supplies_factory_core_20 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 20 }
 		not = { check_variable = { which = "supplies_factory_count" value = 21 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 20 }
 		not = { check_variable = { which = "supplies_factory_count" value = 21 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.2
 	icon = 46
 }
 triggered_mod_supplies_factory_core_21 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 21 }
 		not = { check_variable = { which = "supplies_factory_count" value = 22 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 21 }
 		not = { check_variable = { which = "supplies_factory_count" value = 22 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.21
 	icon = 46
 }
 triggered_mod_supplies_factory_core_22 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 22 }
 		not = { check_variable = { which = "supplies_factory_count" value = 23 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 22 }
 		not = { check_variable = { which = "supplies_factory_count" value = 23 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.22
 	icon = 46
 }
 triggered_mod_supplies_factory_core_23 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 23 }
 		not = { check_variable = { which = "supplies_factory_count" value = 24 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 23 }
 		not = { check_variable = { which = "supplies_factory_count" value = 24 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.23
 	icon = 46
 }
 triggered_mod_supplies_factory_core_24 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 24 }
 		not = { check_variable = { which = "supplies_factory_count" value = 25 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 24 }
 		not = { check_variable = { which = "supplies_factory_count" value = 25 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.24
 	icon = 46
 }
 triggered_mod_supplies_factory_core_25 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 25 }
 		not = { check_variable = { which = "supplies_factory_count" value = 26 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 25 }
 		not = { check_variable = { which = "supplies_factory_count" value = 26 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.25
 	icon = 46
 }
 triggered_mod_supplies_factory_core_26 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 26 }
 		not = { check_variable = { which = "supplies_factory_count" value = 27 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 26 }
 		not = { check_variable = { which = "supplies_factory_count" value = 27 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.26
 	icon = 46
 }
 triggered_mod_supplies_factory_core_27 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 27 }
 		not = { check_variable = { which = "supplies_factory_count" value = 28 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 27 }
 		not = { check_variable = { which = "supplies_factory_count" value = 28 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.27
 	icon = 46
 }
 triggered_mod_supplies_factory_core_28 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 28 }
 		not = { check_variable = { which = "supplies_factory_count" value = 29 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 28 }
 		not = { check_variable = { which = "supplies_factory_count" value = 29 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.28
 	icon = 46
 }
 triggered_mod_supplies_factory_core_29 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 29 }
 		not = { check_variable = { which = "supplies_factory_count" value = 30 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 29 }
 		not = { check_variable = { which = "supplies_factory_count" value = 30 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.29
 	icon = 46
 }
 triggered_mod_supplies_factory_core_30 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 30 }
 		not = { check_variable = { which = "supplies_factory_count" value = 31 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 30 }
 		not = { check_variable = { which = "supplies_factory_count" value = 31 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.3
 	icon = 46
 }
 triggered_mod_supplies_factory_core_31 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 31 }
 		not = { check_variable = { which = "supplies_factory_count" value = 32 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 31 }
 		not = { check_variable = { which = "supplies_factory_count" value = 32 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.31
 	icon = 46
 }
 triggered_mod_supplies_factory_core_32 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 32 }
 		not = { check_variable = { which = "supplies_factory_count" value = 33 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 32 }
 		not = { check_variable = { which = "supplies_factory_count" value = 33 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.32
 	icon = 46
 }
 triggered_mod_supplies_factory_core_33 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 33 }
 		not = { check_variable = { which = "supplies_factory_count" value = 34 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 33 }
 		not = { check_variable = { which = "supplies_factory_count" value = 34 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.33
 	icon = 46
 }
 triggered_mod_supplies_factory_core_34 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 34 }
 		not = { check_variable = { which = "supplies_factory_count" value = 35 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 34 }
 		not = { check_variable = { which = "supplies_factory_count" value = 35 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.34
 	icon = 46
 }
 triggered_mod_supplies_factory_core_35 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 35 }
 		not = { check_variable = { which = "supplies_factory_count" value = 36 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 35 }
 		not = { check_variable = { which = "supplies_factory_count" value = 36 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.35
 	icon = 46
 }
 triggered_mod_supplies_factory_core_36 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 36 }
 		not = { check_variable = { which = "supplies_factory_count" value = 37 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 36 }
 		not = { check_variable = { which = "supplies_factory_count" value = 37 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.36
 	icon = 46
 }
 triggered_mod_supplies_factory_core_37 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 37 }
 		not = { check_variable = { which = "supplies_factory_count" value = 38 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 37 }
 		not = { check_variable = { which = "supplies_factory_count" value = 38 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.37
 	icon = 46
 }
 triggered_mod_supplies_factory_core_38 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 38 }
 		not = { check_variable = { which = "supplies_factory_count" value = 39 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 38 }
 		not = { check_variable = { which = "supplies_factory_count" value = 39 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.38
 	icon = 46
 }
 triggered_mod_supplies_factory_core_39 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 39 }
 		not = { check_variable = { which = "supplies_factory_count" value = 40 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 39 }
 		not = { check_variable = { which = "supplies_factory_count" value = 40 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.39
 	icon = 46
 }
 triggered_mod_supplies_factory_core_40 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 40 }
 		not = { check_variable = { which = "supplies_factory_count" value = 41 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 40 }
 		not = { check_variable = { which = "supplies_factory_count" value = 41 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.4
 	icon = 46
 }
 triggered_mod_supplies_factory_core_41 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 41 }
 		not = { check_variable = { which = "supplies_factory_count" value = 42 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 41 }
 		not = { check_variable = { which = "supplies_factory_count" value = 42 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.41
 	icon = 46
 }
 triggered_mod_supplies_factory_core_42 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 42 }
 		not = { check_variable = { which = "supplies_factory_count" value = 43 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 42 }
 		not = { check_variable = { which = "supplies_factory_count" value = 43 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.42
 	icon = 46
 }
 triggered_mod_supplies_factory_core_43 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 43 }
 		not = { check_variable = { which = "supplies_factory_count" value = 44 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 43 }
 		not = { check_variable = { which = "supplies_factory_count" value = 44 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.43
 	icon = 46
 }
 triggered_mod_supplies_factory_core_44 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 44 }
 		not = { check_variable = { which = "supplies_factory_count" value = 45 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 44 }
 		not = { check_variable = { which = "supplies_factory_count" value = 45 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.44
 	icon = 46
 }
 triggered_mod_supplies_factory_core_45 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 45 }
 		not = { check_variable = { which = "supplies_factory_count" value = 46 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 45 }
 		not = { check_variable = { which = "supplies_factory_count" value = 46 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.45
 	icon = 46
 }
 triggered_mod_supplies_factory_core_46 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 46 }
 		not = { check_variable = { which = "supplies_factory_count" value = 47 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 46 }
 		not = { check_variable = { which = "supplies_factory_count" value = 47 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.46
 	icon = 46
 }
 triggered_mod_supplies_factory_core_47 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 47 }
 		not = { check_variable = { which = "supplies_factory_count" value = 48 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 47 }
 		not = { check_variable = { which = "supplies_factory_count" value = 48 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.47
 	icon = 46
 }
 triggered_mod_supplies_factory_core_48 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 48 }
 		not = { check_variable = { which = "supplies_factory_count" value = 49 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 48 }
 		not = { check_variable = { which = "supplies_factory_count" value = 49 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.48
 	icon = 46
 }
 triggered_mod_supplies_factory_core_49 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 49 }
 		not = { check_variable = { which = "supplies_factory_count" value = 50 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 49 }
 		not = { check_variable = { which = "supplies_factory_count" value = 50 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.49
 	icon = 46
 }
 triggered_mod_supplies_factory_core_50 = {
 	potential = {
 		check_variable = { which = "supplies_factory_count" value = 50 }
 		not = { check_variable = { which = "supplies_factory_count" value = 51 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
 	trigger = {
 		check_variable = { which = "supplies_factory_count" value = 50 }
 		not = { check_variable = { which = "supplies_factory_count" value = 51 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
 	}
+	global_supplies = 0.5
+	icon = 46
+}
+triggered_mod_supplies_factory_core_51 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 51 }
+		not = { check_variable = { which = "supplies_factory_count" value = 52 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 51 }
+		not = { check_variable = { which = "supplies_factory_count" value = 52 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.51
+	icon = 46
+}
+triggered_mod_supplies_factory_core_52 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 52 }
+		not = { check_variable = { which = "supplies_factory_count" value = 53 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 52 }
+		not = { check_variable = { which = "supplies_factory_count" value = 53 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.52
+	icon = 46
+}
+triggered_mod_supplies_factory_core_53 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 53 }
+		not = { check_variable = { which = "supplies_factory_count" value = 54 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 53 }
+		not = { check_variable = { which = "supplies_factory_count" value = 54 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.53
+	icon = 46
+}
+triggered_mod_supplies_factory_core_54 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 54 }
+		not = { check_variable = { which = "supplies_factory_count" value = 55 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 54 }
+		not = { check_variable = { which = "supplies_factory_count" value = 55 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.54
+	icon = 46
+}
+triggered_mod_supplies_factory_core_55 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 55 }
+		not = { check_variable = { which = "supplies_factory_count" value = 56 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 55 }
+		not = { check_variable = { which = "supplies_factory_count" value = 56 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.55
+	icon = 46
+}
+triggered_mod_supplies_factory_core_56 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 56 }
+		not = { check_variable = { which = "supplies_factory_count" value = 57 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 56 }
+		not = { check_variable = { which = "supplies_factory_count" value = 57 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.56
+	icon = 46
+}
+triggered_mod_supplies_factory_core_57 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 57 }
+		not = { check_variable = { which = "supplies_factory_count" value = 58 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 57 }
+		not = { check_variable = { which = "supplies_factory_count" value = 58 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.57
+	icon = 46
+}
+triggered_mod_supplies_factory_core_58 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 58 }
+		not = { check_variable = { which = "supplies_factory_count" value = 59 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 58 }
+		not = { check_variable = { which = "supplies_factory_count" value = 59 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.58
+	icon = 46
+}
+triggered_mod_supplies_factory_core_59 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 59 }
+		not = { check_variable = { which = "supplies_factory_count" value = 60 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 59 }
+		not = { check_variable = { which = "supplies_factory_count" value = 60 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.59
+	icon = 46
+}
+triggered_mod_supplies_factory_core_60 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 60 }
+		not = { check_variable = { which = "supplies_factory_count" value = 61 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 60 }
+		not = { check_variable = { which = "supplies_factory_count" value = 61 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.6
+	icon = 46
+}
+triggered_mod_supplies_factory_core_61 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 61 }
+		not = { check_variable = { which = "supplies_factory_count" value = 62 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 61 }
+		not = { check_variable = { which = "supplies_factory_count" value = 62 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.61
+	icon = 46
+}
+triggered_mod_supplies_factory_core_62 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 62 }
+		not = { check_variable = { which = "supplies_factory_count" value = 63 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 62 }
+		not = { check_variable = { which = "supplies_factory_count" value = 63 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.62
+	icon = 46
+}
+triggered_mod_supplies_factory_core_63 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 63 }
+		not = { check_variable = { which = "supplies_factory_count" value = 64 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 63 }
+		not = { check_variable = { which = "supplies_factory_count" value = 64 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.63
+	icon = 46
+}
+triggered_mod_supplies_factory_core_64 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 64 }
+		not = { check_variable = { which = "supplies_factory_count" value = 65 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 64 }
+		not = { check_variable = { which = "supplies_factory_count" value = 65 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.64
+	icon = 46
+}
+triggered_mod_supplies_factory_core_65 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 65 }
+		not = { check_variable = { which = "supplies_factory_count" value = 66 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 65 }
+		not = { check_variable = { which = "supplies_factory_count" value = 66 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.65
+	icon = 46
+}
+triggered_mod_supplies_factory_core_66 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 66 }
+		not = { check_variable = { which = "supplies_factory_count" value = 67 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 66 }
+		not = { check_variable = { which = "supplies_factory_count" value = 67 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.66
+	icon = 46
+}
+triggered_mod_supplies_factory_core_67 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 67 }
+		not = { check_variable = { which = "supplies_factory_count" value = 68 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 67 }
+		not = { check_variable = { which = "supplies_factory_count" value = 68 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.67
+	icon = 46
+}
+triggered_mod_supplies_factory_core_68 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 68 }
+		not = { check_variable = { which = "supplies_factory_count" value = 69 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 68 }
+		not = { check_variable = { which = "supplies_factory_count" value = 69 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.68
+	icon = 46
+}
+triggered_mod_supplies_factory_core_69 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 69 }
+		not = { check_variable = { which = "supplies_factory_count" value = 70 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 69 }
+		not = { check_variable = { which = "supplies_factory_count" value = 70 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.69
+	icon = 46
+}
+triggered_mod_supplies_factory_core_70 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 70 }
+		not = { check_variable = { which = "supplies_factory_count" value = 71 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 70 }
+		not = { check_variable = { which = "supplies_factory_count" value = 71 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.7
+	icon = 46
+}
+triggered_mod_supplies_factory_core_71 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 71 }
+		not = { check_variable = { which = "supplies_factory_count" value = 72 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 71 }
+		not = { check_variable = { which = "supplies_factory_count" value = 72 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.71
+	icon = 46
+}
+triggered_mod_supplies_factory_core_72 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 72 }
+		not = { check_variable = { which = "supplies_factory_count" value = 73 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 72 }
+		not = { check_variable = { which = "supplies_factory_count" value = 73 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.72
+	icon = 46
+}
+triggered_mod_supplies_factory_core_73 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 73 }
+		not = { check_variable = { which = "supplies_factory_count" value = 74 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 73 }
+		not = { check_variable = { which = "supplies_factory_count" value = 74 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.73
+	icon = 46
+}
+triggered_mod_supplies_factory_core_74 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 74 }
+		not = { check_variable = { which = "supplies_factory_count" value = 75 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 74 }
+		not = { check_variable = { which = "supplies_factory_count" value = 75 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.74
+	icon = 46
+}
+triggered_mod_supplies_factory_core_75 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 75 }
+		not = { check_variable = { which = "supplies_factory_count" value = 76 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 75 }
+		not = { check_variable = { which = "supplies_factory_count" value = 76 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.75
+	icon = 46
+}
+triggered_mod_supplies_factory_core_76 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 76 }
+		not = { check_variable = { which = "supplies_factory_count" value = 77 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 76 }
+		not = { check_variable = { which = "supplies_factory_count" value = 77 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.76
+	icon = 46
+}
+triggered_mod_supplies_factory_core_77 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 77 }
+		not = { check_variable = { which = "supplies_factory_count" value = 78 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 77 }
+		not = { check_variable = { which = "supplies_factory_count" value = 78 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.77
+	icon = 46
+}
+triggered_mod_supplies_factory_core_78 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 78 }
+		not = { check_variable = { which = "supplies_factory_count" value = 79 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 78 }
+		not = { check_variable = { which = "supplies_factory_count" value = 79 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.78
+	icon = 46
+}
+triggered_mod_supplies_factory_core_79 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 79 }
+		not = { check_variable = { which = "supplies_factory_count" value = 80 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 79 }
+		not = { check_variable = { which = "supplies_factory_count" value = 80 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.79
+	icon = 46
+}
+triggered_mod_supplies_factory_core_80 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 80 }
+		not = { check_variable = { which = "supplies_factory_count" value = 81 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 80 }
+		not = { check_variable = { which = "supplies_factory_count" value = 81 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.8
+	icon = 46
+}
+triggered_mod_supplies_factory_core_81 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 81 }
+		not = { check_variable = { which = "supplies_factory_count" value = 82 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 81 }
+		not = { check_variable = { which = "supplies_factory_count" value = 82 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.81
+	icon = 46
+}
+triggered_mod_supplies_factory_core_82 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 82 }
+		not = { check_variable = { which = "supplies_factory_count" value = 83 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 82 }
+		not = { check_variable = { which = "supplies_factory_count" value = 83 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.82
+	icon = 46
+}
+triggered_mod_supplies_factory_core_83 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 83 }
+		not = { check_variable = { which = "supplies_factory_count" value = 84 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 83 }
+		not = { check_variable = { which = "supplies_factory_count" value = 84 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.83
+	icon = 46
+}
+triggered_mod_supplies_factory_core_84 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 84 }
+		not = { check_variable = { which = "supplies_factory_count" value = 85 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 84 }
+		not = { check_variable = { which = "supplies_factory_count" value = 85 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.84
+	icon = 46
+}
+triggered_mod_supplies_factory_core_85 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 85 }
+		not = { check_variable = { which = "supplies_factory_count" value = 86 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 85 }
+		not = { check_variable = { which = "supplies_factory_count" value = 86 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.85
+	icon = 46
+}
+triggered_mod_supplies_factory_core_86 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 86 }
+		not = { check_variable = { which = "supplies_factory_count" value = 87 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 86 }
+		not = { check_variable = { which = "supplies_factory_count" value = 87 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.86
+	icon = 46
+}
+triggered_mod_supplies_factory_core_87 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 87 }
+		not = { check_variable = { which = "supplies_factory_count" value = 88 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 87 }
+		not = { check_variable = { which = "supplies_factory_count" value = 88 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.87
+	icon = 46
+}
+triggered_mod_supplies_factory_core_88 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 88 }
+		not = { check_variable = { which = "supplies_factory_count" value = 89 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 88 }
+		not = { check_variable = { which = "supplies_factory_count" value = 89 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.88
+	icon = 46
+}
+triggered_mod_supplies_factory_core_89 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 89 }
+		not = { check_variable = { which = "supplies_factory_count" value = 90 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 89 }
+		not = { check_variable = { which = "supplies_factory_count" value = 90 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.89
+	icon = 46
+}
+triggered_mod_supplies_factory_core_90 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 90 }
+		not = { check_variable = { which = "supplies_factory_count" value = 91 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 90 }
+		not = { check_variable = { which = "supplies_factory_count" value = 91 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.9
+	icon = 46
+}
+triggered_mod_supplies_factory_core_91 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 91 }
+		not = { check_variable = { which = "supplies_factory_count" value = 92 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 91 }
+		not = { check_variable = { which = "supplies_factory_count" value = 92 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.91
+	icon = 46
+}
+triggered_mod_supplies_factory_core_92 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 92 }
+		not = { check_variable = { which = "supplies_factory_count" value = 93 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 92 }
+		not = { check_variable = { which = "supplies_factory_count" value = 93 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.92
+	icon = 46
+}
+triggered_mod_supplies_factory_core_93 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 93 }
+		not = { check_variable = { which = "supplies_factory_count" value = 94 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 93 }
+		not = { check_variable = { which = "supplies_factory_count" value = 94 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.93
+	icon = 46
+}
+triggered_mod_supplies_factory_core_94 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 94 }
+		not = { check_variable = { which = "supplies_factory_count" value = 95 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 94 }
+		not = { check_variable = { which = "supplies_factory_count" value = 95 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.94
+	icon = 46
+}
+triggered_mod_supplies_factory_core_95 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 95 }
+		not = { check_variable = { which = "supplies_factory_count" value = 96 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 95 }
+		not = { check_variable = { which = "supplies_factory_count" value = 96 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.95
+	icon = 46
+}
+triggered_mod_supplies_factory_core_96 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 96 }
+		not = { check_variable = { which = "supplies_factory_count" value = 97 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 96 }
+		not = { check_variable = { which = "supplies_factory_count" value = 97 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.96
+	icon = 46
+}
+triggered_mod_supplies_factory_core_97 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 97 }
+		not = { check_variable = { which = "supplies_factory_count" value = 98 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 97 }
+		not = { check_variable = { which = "supplies_factory_count" value = 98 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.97
+	icon = 46
+}
+triggered_mod_supplies_factory_core_98 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 98 }
+		not = { check_variable = { which = "supplies_factory_count" value = 99 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 98 }
+		not = { check_variable = { which = "supplies_factory_count" value = 99 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.98
+	icon = 46
+}
+triggered_mod_supplies_factory_core_99 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 99 }
+		not = { check_variable = { which = "supplies_factory_count" value = 100 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 99 }
+		not = { check_variable = { which = "supplies_factory_count" value = 100 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 0.99
+	icon = 46
+}
+triggered_mod_supplies_factory_core_100 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 100 }
+		not = { check_variable = { which = "supplies_factory_count" value = 101 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 100 }
+		not = { check_variable = { which = "supplies_factory_count" value = 101 } }
+		not = { any_owned_province = { strategic_resource = black_soil } }
+	}
+	global_supplies = 1
+	icon = 46
+}
+
+# SUPPLIES FACTORY COUNT, OWNS A BLACK SOIL (FERTILE SOIL) PROVINCE #
+triggered_mod_supplies_factory_fertile_core_1 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 1 }
+		not = { check_variable = { which = "supplies_factory_count" value = 2 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 1 }
+		not = { check_variable = { which = "supplies_factory_count" value = 2 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.015
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_2 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 2 }
+		not = { check_variable = { which = "supplies_factory_count" value = 3 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 2 }
+		not = { check_variable = { which = "supplies_factory_count" value = 3 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.03
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_3 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 3 }
+		not = { check_variable = { which = "supplies_factory_count" value = 4 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 3 }
+		not = { check_variable = { which = "supplies_factory_count" value = 4 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.045
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_4 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 4 }
+		not = { check_variable = { which = "supplies_factory_count" value = 5 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 4 }
+		not = { check_variable = { which = "supplies_factory_count" value = 5 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.06
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_5 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 5 }
+		not = { check_variable = { which = "supplies_factory_count" value = 6 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 5 }
+		not = { check_variable = { which = "supplies_factory_count" value = 6 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.075
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_6 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 6 }
+		not = { check_variable = { which = "supplies_factory_count" value = 7 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 6 }
+		not = { check_variable = { which = "supplies_factory_count" value = 7 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.09
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_7 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 7 }
+		not = { check_variable = { which = "supplies_factory_count" value = 8 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 7 }
+		not = { check_variable = { which = "supplies_factory_count" value = 8 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.105
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_8 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 8 }
+		not = { check_variable = { which = "supplies_factory_count" value = 9 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 8 }
+		not = { check_variable = { which = "supplies_factory_count" value = 9 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.12
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_9 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 9 }
+		not = { check_variable = { which = "supplies_factory_count" value = 10 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 9 }
+		not = { check_variable = { which = "supplies_factory_count" value = 10 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.135
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_10 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 10 }
+		not = { check_variable = { which = "supplies_factory_count" value = 11 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 10 }
+		not = { check_variable = { which = "supplies_factory_count" value = 11 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.15
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_11 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 11 }
+		not = { check_variable = { which = "supplies_factory_count" value = 12 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 11 }
+		not = { check_variable = { which = "supplies_factory_count" value = 12 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.165
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_12 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 12 }
+		not = { check_variable = { which = "supplies_factory_count" value = 13 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 12 }
+		not = { check_variable = { which = "supplies_factory_count" value = 13 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.18
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_13 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 13 }
+		not = { check_variable = { which = "supplies_factory_count" value = 14 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 13 }
+		not = { check_variable = { which = "supplies_factory_count" value = 14 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.195
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_14 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 14 }
+		not = { check_variable = { which = "supplies_factory_count" value = 15 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 14 }
+		not = { check_variable = { which = "supplies_factory_count" value = 15 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.21
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_15 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 15 }
+		not = { check_variable = { which = "supplies_factory_count" value = 16 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 15 }
+		not = { check_variable = { which = "supplies_factory_count" value = 16 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.225
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_16 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 16 }
+		not = { check_variable = { which = "supplies_factory_count" value = 17 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 16 }
+		not = { check_variable = { which = "supplies_factory_count" value = 17 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.24
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_17 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 17 }
+		not = { check_variable = { which = "supplies_factory_count" value = 18 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 17 }
+		not = { check_variable = { which = "supplies_factory_count" value = 18 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.255
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_18 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 18 }
+		not = { check_variable = { which = "supplies_factory_count" value = 19 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 18 }
+		not = { check_variable = { which = "supplies_factory_count" value = 19 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.27
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_19 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 19 }
+		not = { check_variable = { which = "supplies_factory_count" value = 20 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 19 }
+		not = { check_variable = { which = "supplies_factory_count" value = 20 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.285
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_20 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 20 }
+		not = { check_variable = { which = "supplies_factory_count" value = 21 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 20 }
+		not = { check_variable = { which = "supplies_factory_count" value = 21 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.3
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_21 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 21 }
+		not = { check_variable = { which = "supplies_factory_count" value = 22 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 21 }
+		not = { check_variable = { which = "supplies_factory_count" value = 22 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.315
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_22 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 22 }
+		not = { check_variable = { which = "supplies_factory_count" value = 23 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 22 }
+		not = { check_variable = { which = "supplies_factory_count" value = 23 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.33
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_23 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 23 }
+		not = { check_variable = { which = "supplies_factory_count" value = 24 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 23 }
+		not = { check_variable = { which = "supplies_factory_count" value = 24 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.345
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_24 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 24 }
+		not = { check_variable = { which = "supplies_factory_count" value = 25 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 24 }
+		not = { check_variable = { which = "supplies_factory_count" value = 25 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.36
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_25 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 25 }
+		not = { check_variable = { which = "supplies_factory_count" value = 26 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 25 }
+		not = { check_variable = { which = "supplies_factory_count" value = 26 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.375
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_26 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 26 }
+		not = { check_variable = { which = "supplies_factory_count" value = 27 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 26 }
+		not = { check_variable = { which = "supplies_factory_count" value = 27 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.39
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_27 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 27 }
+		not = { check_variable = { which = "supplies_factory_count" value = 28 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 27 }
+		not = { check_variable = { which = "supplies_factory_count" value = 28 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.405
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_28 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 28 }
+		not = { check_variable = { which = "supplies_factory_count" value = 29 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 28 }
+		not = { check_variable = { which = "supplies_factory_count" value = 29 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.42
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_29 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 29 }
+		not = { check_variable = { which = "supplies_factory_count" value = 30 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 29 }
+		not = { check_variable = { which = "supplies_factory_count" value = 30 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.435
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_30 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 30 }
+		not = { check_variable = { which = "supplies_factory_count" value = 31 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 30 }
+		not = { check_variable = { which = "supplies_factory_count" value = 31 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.45
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_31 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 31 }
+		not = { check_variable = { which = "supplies_factory_count" value = 32 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 31 }
+		not = { check_variable = { which = "supplies_factory_count" value = 32 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.465
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_32 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 32 }
+		not = { check_variable = { which = "supplies_factory_count" value = 33 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 32 }
+		not = { check_variable = { which = "supplies_factory_count" value = 33 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.48
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_33 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 33 }
+		not = { check_variable = { which = "supplies_factory_count" value = 34 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 33 }
+		not = { check_variable = { which = "supplies_factory_count" value = 34 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.495
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_34 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 34 }
+		not = { check_variable = { which = "supplies_factory_count" value = 35 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 34 }
+		not = { check_variable = { which = "supplies_factory_count" value = 35 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.51
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_35 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 35 }
+		not = { check_variable = { which = "supplies_factory_count" value = 36 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 35 }
+		not = { check_variable = { which = "supplies_factory_count" value = 36 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.525
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_36 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 36 }
+		not = { check_variable = { which = "supplies_factory_count" value = 37 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 36 }
+		not = { check_variable = { which = "supplies_factory_count" value = 37 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.54
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_37 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 37 }
+		not = { check_variable = { which = "supplies_factory_count" value = 38 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 37 }
+		not = { check_variable = { which = "supplies_factory_count" value = 38 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.555
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_38 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 38 }
+		not = { check_variable = { which = "supplies_factory_count" value = 39 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 38 }
+		not = { check_variable = { which = "supplies_factory_count" value = 39 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.57
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_39 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 39 }
+		not = { check_variable = { which = "supplies_factory_count" value = 40 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 39 }
+		not = { check_variable = { which = "supplies_factory_count" value = 40 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.585
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_40 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 40 }
+		not = { check_variable = { which = "supplies_factory_count" value = 41 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 40 }
+		not = { check_variable = { which = "supplies_factory_count" value = 41 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.6
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_41 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 41 }
+		not = { check_variable = { which = "supplies_factory_count" value = 42 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 41 }
+		not = { check_variable = { which = "supplies_factory_count" value = 42 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.615
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_42 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 42 }
+		not = { check_variable = { which = "supplies_factory_count" value = 43 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 42 }
+		not = { check_variable = { which = "supplies_factory_count" value = 43 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.63
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_43 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 43 }
+		not = { check_variable = { which = "supplies_factory_count" value = 44 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 43 }
+		not = { check_variable = { which = "supplies_factory_count" value = 44 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.645
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_44 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 44 }
+		not = { check_variable = { which = "supplies_factory_count" value = 45 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 44 }
+		not = { check_variable = { which = "supplies_factory_count" value = 45 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.66
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_45 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 45 }
+		not = { check_variable = { which = "supplies_factory_count" value = 46 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 45 }
+		not = { check_variable = { which = "supplies_factory_count" value = 46 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.675
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_46 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 46 }
+		not = { check_variable = { which = "supplies_factory_count" value = 47 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 46 }
+		not = { check_variable = { which = "supplies_factory_count" value = 47 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.69
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_47 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 47 }
+		not = { check_variable = { which = "supplies_factory_count" value = 48 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 47 }
+		not = { check_variable = { which = "supplies_factory_count" value = 48 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.705
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_48 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 48 }
+		not = { check_variable = { which = "supplies_factory_count" value = 49 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 48 }
+		not = { check_variable = { which = "supplies_factory_count" value = 49 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.72
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_49 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 49 }
+		not = { check_variable = { which = "supplies_factory_count" value = 50 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 49 }
+		not = { check_variable = { which = "supplies_factory_count" value = 50 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.735
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_50 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 50 }
+		not = { check_variable = { which = "supplies_factory_count" value = 51 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 50 }
+		not = { check_variable = { which = "supplies_factory_count" value = 51 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.75
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_51 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 51 }
+		not = { check_variable = { which = "supplies_factory_count" value = 52 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 51 }
+		not = { check_variable = { which = "supplies_factory_count" value = 52 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.765
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_52 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 52 }
+		not = { check_variable = { which = "supplies_factory_count" value = 53 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 52 }
+		not = { check_variable = { which = "supplies_factory_count" value = 53 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.78
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_53 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 53 }
+		not = { check_variable = { which = "supplies_factory_count" value = 54 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 53 }
+		not = { check_variable = { which = "supplies_factory_count" value = 54 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.795
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_54 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 54 }
+		not = { check_variable = { which = "supplies_factory_count" value = 55 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 54 }
+		not = { check_variable = { which = "supplies_factory_count" value = 55 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.81
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_55 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 55 }
+		not = { check_variable = { which = "supplies_factory_count" value = 56 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 55 }
+		not = { check_variable = { which = "supplies_factory_count" value = 56 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.825
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_56 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 56 }
+		not = { check_variable = { which = "supplies_factory_count" value = 57 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 56 }
+		not = { check_variable = { which = "supplies_factory_count" value = 57 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.84
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_57 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 57 }
+		not = { check_variable = { which = "supplies_factory_count" value = 58 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 57 }
+		not = { check_variable = { which = "supplies_factory_count" value = 58 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.855
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_58 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 58 }
+		not = { check_variable = { which = "supplies_factory_count" value = 59 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 58 }
+		not = { check_variable = { which = "supplies_factory_count" value = 59 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.87
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_59 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 59 }
+		not = { check_variable = { which = "supplies_factory_count" value = 60 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 59 }
+		not = { check_variable = { which = "supplies_factory_count" value = 60 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.885
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_60 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 60 }
+		not = { check_variable = { which = "supplies_factory_count" value = 61 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 60 }
+		not = { check_variable = { which = "supplies_factory_count" value = 61 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.9
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_61 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 61 }
+		not = { check_variable = { which = "supplies_factory_count" value = 62 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 61 }
+		not = { check_variable = { which = "supplies_factory_count" value = 62 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.915
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_62 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 62 }
+		not = { check_variable = { which = "supplies_factory_count" value = 63 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 62 }
+		not = { check_variable = { which = "supplies_factory_count" value = 63 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.93
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_63 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 63 }
+		not = { check_variable = { which = "supplies_factory_count" value = 64 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 63 }
+		not = { check_variable = { which = "supplies_factory_count" value = 64 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.945
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_64 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 64 }
+		not = { check_variable = { which = "supplies_factory_count" value = 65 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 64 }
+		not = { check_variable = { which = "supplies_factory_count" value = 65 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.96
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_65 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 65 }
+		not = { check_variable = { which = "supplies_factory_count" value = 66 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 65 }
+		not = { check_variable = { which = "supplies_factory_count" value = 66 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.975
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_66 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 66 }
+		not = { check_variable = { which = "supplies_factory_count" value = 67 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 66 }
+		not = { check_variable = { which = "supplies_factory_count" value = 67 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 0.99
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_67 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 67 }
+		not = { check_variable = { which = "supplies_factory_count" value = 68 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 67 }
+		not = { check_variable = { which = "supplies_factory_count" value = 68 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.005
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_68 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 68 }
+		not = { check_variable = { which = "supplies_factory_count" value = 69 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 68 }
+		not = { check_variable = { which = "supplies_factory_count" value = 69 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.02
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_69 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 69 }
+		not = { check_variable = { which = "supplies_factory_count" value = 70 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 69 }
+		not = { check_variable = { which = "supplies_factory_count" value = 70 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.035
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_70 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 70 }
+		not = { check_variable = { which = "supplies_factory_count" value = 71 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 70 }
+		not = { check_variable = { which = "supplies_factory_count" value = 71 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.05
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_71 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 71 }
+		not = { check_variable = { which = "supplies_factory_count" value = 72 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 71 }
+		not = { check_variable = { which = "supplies_factory_count" value = 72 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.065
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_72 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 72 }
+		not = { check_variable = { which = "supplies_factory_count" value = 73 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 72 }
+		not = { check_variable = { which = "supplies_factory_count" value = 73 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.08
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_73 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 73 }
+		not = { check_variable = { which = "supplies_factory_count" value = 74 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 73 }
+		not = { check_variable = { which = "supplies_factory_count" value = 74 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.095
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_74 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 74 }
+		not = { check_variable = { which = "supplies_factory_count" value = 75 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 74 }
+		not = { check_variable = { which = "supplies_factory_count" value = 75 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.11
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_75 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 75 }
+		not = { check_variable = { which = "supplies_factory_count" value = 76 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 75 }
+		not = { check_variable = { which = "supplies_factory_count" value = 76 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.125
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_76 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 76 }
+		not = { check_variable = { which = "supplies_factory_count" value = 77 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 76 }
+		not = { check_variable = { which = "supplies_factory_count" value = 77 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.14
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_77 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 77 }
+		not = { check_variable = { which = "supplies_factory_count" value = 78 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 77 }
+		not = { check_variable = { which = "supplies_factory_count" value = 78 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.155
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_78 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 78 }
+		not = { check_variable = { which = "supplies_factory_count" value = 79 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 78 }
+		not = { check_variable = { which = "supplies_factory_count" value = 79 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.17
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_79 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 79 }
+		not = { check_variable = { which = "supplies_factory_count" value = 80 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 79 }
+		not = { check_variable = { which = "supplies_factory_count" value = 80 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.185
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_80 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 80 }
+		not = { check_variable = { which = "supplies_factory_count" value = 81 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 80 }
+		not = { check_variable = { which = "supplies_factory_count" value = 81 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.2
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_81 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 81 }
+		not = { check_variable = { which = "supplies_factory_count" value = 82 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 81 }
+		not = { check_variable = { which = "supplies_factory_count" value = 82 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.215
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_82 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 82 }
+		not = { check_variable = { which = "supplies_factory_count" value = 83 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 82 }
+		not = { check_variable = { which = "supplies_factory_count" value = 83 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.23
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_83 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 83 }
+		not = { check_variable = { which = "supplies_factory_count" value = 84 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 83 }
+		not = { check_variable = { which = "supplies_factory_count" value = 84 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.245
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_84 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 84 }
+		not = { check_variable = { which = "supplies_factory_count" value = 85 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 84 }
+		not = { check_variable = { which = "supplies_factory_count" value = 85 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.26
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_85 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 85 }
+		not = { check_variable = { which = "supplies_factory_count" value = 86 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 85 }
+		not = { check_variable = { which = "supplies_factory_count" value = 86 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.275
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_86 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 86 }
+		not = { check_variable = { which = "supplies_factory_count" value = 87 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 86 }
+		not = { check_variable = { which = "supplies_factory_count" value = 87 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.29
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_87 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 87 }
+		not = { check_variable = { which = "supplies_factory_count" value = 88 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 87 }
+		not = { check_variable = { which = "supplies_factory_count" value = 88 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.305
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_88 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 88 }
+		not = { check_variable = { which = "supplies_factory_count" value = 89 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 88 }
+		not = { check_variable = { which = "supplies_factory_count" value = 89 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.32
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_89 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 89 }
+		not = { check_variable = { which = "supplies_factory_count" value = 90 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 89 }
+		not = { check_variable = { which = "supplies_factory_count" value = 90 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.335
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_90 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 90 }
+		not = { check_variable = { which = "supplies_factory_count" value = 91 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 90 }
+		not = { check_variable = { which = "supplies_factory_count" value = 91 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.35
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_91 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 91 }
+		not = { check_variable = { which = "supplies_factory_count" value = 92 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 91 }
+		not = { check_variable = { which = "supplies_factory_count" value = 92 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.365
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_92 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 92 }
+		not = { check_variable = { which = "supplies_factory_count" value = 93 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 92 }
+		not = { check_variable = { which = "supplies_factory_count" value = 93 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.38
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_93 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 93 }
+		not = { check_variable = { which = "supplies_factory_count" value = 94 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 93 }
+		not = { check_variable = { which = "supplies_factory_count" value = 94 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.395
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_94 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 94 }
+		not = { check_variable = { which = "supplies_factory_count" value = 95 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 94 }
+		not = { check_variable = { which = "supplies_factory_count" value = 95 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.41
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_95 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 95 }
+		not = { check_variable = { which = "supplies_factory_count" value = 96 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 95 }
+		not = { check_variable = { which = "supplies_factory_count" value = 96 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.425
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_96 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 96 }
+		not = { check_variable = { which = "supplies_factory_count" value = 97 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 96 }
+		not = { check_variable = { which = "supplies_factory_count" value = 97 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.44
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_97 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 97 }
+		not = { check_variable = { which = "supplies_factory_count" value = 98 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 97 }
+		not = { check_variable = { which = "supplies_factory_count" value = 98 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.455
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_98 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 98 }
+		not = { check_variable = { which = "supplies_factory_count" value = 99 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 98 }
+		not = { check_variable = { which = "supplies_factory_count" value = 99 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.47
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_99 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 99 }
+		not = { check_variable = { which = "supplies_factory_count" value = 100 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 99 }
+		not = { check_variable = { which = "supplies_factory_count" value = 100 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.485
+	icon = 46
+}
+triggered_mod_supplies_factory_fertile_core_100 = {
+	potential = {
+		check_variable = { which = "supplies_factory_count" value = 100 }
+		not = { check_variable = { which = "supplies_factory_count" value = 101 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	trigger = {
+		check_variable = { which = "supplies_factory_count" value = 100 }
+		not = { check_variable = { which = "supplies_factory_count" value = 101 } }
+		any_owned_province = { strategic_resource = black_soil }
+	}
+	global_supplies = 1.5
 	icon = 46
 }
 
@@ -25688,558 +28058,6 @@ triggered_mod_hospital_core_30 = {
 	}
 	casualty_trickleback = 0.2
 	icon = 47
-}
-
-# RAIL TERMINUS COUNT #
-triggered_mod_rail_terminus_core_1 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 1 }
-		not = { check_variable = { which = "rail_terminus_count" value = 2 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 1 }
-		not = { check_variable = { which = "rail_terminus_count" value = 2 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_2 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 2 }
-		not = { check_variable = { which = "rail_terminus_count" value = 3 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 2 }
-		not = { check_variable = { which = "rail_terminus_count" value = 3 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_3 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 3 }
-		not = { check_variable = { which = "rail_terminus_count" value = 4 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 3 }
-		not = { check_variable = { which = "rail_terminus_count" value = 4 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_4 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 4 }
-		not = { check_variable = { which = "rail_terminus_count" value = 5 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 4 }
-		not = { check_variable = { which = "rail_terminus_count" value = 5 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_5 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 5 }
-		not = { check_variable = { which = "rail_terminus_count" value = 6 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 5 }
-		not = { check_variable = { which = "rail_terminus_count" value = 6 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_6 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 6 }
-		not = { check_variable = { which = "rail_terminus_count" value = 7 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 6 }
-		not = { check_variable = { which = "rail_terminus_count" value = 7 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_7 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 7 }
-		not = { check_variable = { which = "rail_terminus_count" value = 8 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 7 }
-		not = { check_variable = { which = "rail_terminus_count" value = 8 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_8 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 8 }
-		not = { check_variable = { which = "rail_terminus_count" value = 9 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 8 }
-		not = { check_variable = { which = "rail_terminus_count" value = 9 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_9 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 9 }
-		not = { check_variable = { which = "rail_terminus_count" value = 10 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 9 }
-		not = { check_variable = { which = "rail_terminus_count" value = 10 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_10 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 10 }
-		not = { check_variable = { which = "rail_terminus_count" value = 11 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 10 }
-		not = { check_variable = { which = "rail_terminus_count" value = 11 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_11 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 11 }
-		not = { check_variable = { which = "rail_terminus_count" value = 12 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 11 }
-		not = { check_variable = { which = "rail_terminus_count" value = 12 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_12 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 12 }
-		not = { check_variable = { which = "rail_terminus_count" value = 13 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 12 }
-		not = { check_variable = { which = "rail_terminus_count" value = 13 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_13 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 13 }
-		not = { check_variable = { which = "rail_terminus_count" value = 14 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 13 }
-		not = { check_variable = { which = "rail_terminus_count" value = 14 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_14 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 14 }
-		not = { check_variable = { which = "rail_terminus_count" value = 15 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 14 }
-		not = { check_variable = { which = "rail_terminus_count" value = 15 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_15 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 15 }
-		not = { check_variable = { which = "rail_terminus_count" value = 16 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 15 }
-		not = { check_variable = { which = "rail_terminus_count" value = 16 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_16 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 16 }
-		not = { check_variable = { which = "rail_terminus_count" value = 17 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 16 }
-		not = { check_variable = { which = "rail_terminus_count" value = 17 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_17 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 17 }
-		not = { check_variable = { which = "rail_terminus_count" value = 18 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 17 }
-		not = { check_variable = { which = "rail_terminus_count" value = 18 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_18 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 18 }
-		not = { check_variable = { which = "rail_terminus_count" value = 19 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 18 }
-		not = { check_variable = { which = "rail_terminus_count" value = 19 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_19 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 19 }
-		not = { check_variable = { which = "rail_terminus_count" value = 20 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 19 }
-		not = { check_variable = { which = "rail_terminus_count" value = 20 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_20 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 20 }
-		not = { check_variable = { which = "rail_terminus_count" value = 21 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 20 }
-		not = { check_variable = { which = "rail_terminus_count" value = 21 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_21 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 21 }
-		not = { check_variable = { which = "rail_terminus_count" value = 22 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 21 }
-		not = { check_variable = { which = "rail_terminus_count" value = 22 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_22 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 22 }
-		not = { check_variable = { which = "rail_terminus_count" value = 23 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 22 }
-		not = { check_variable = { which = "rail_terminus_count" value = 23 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_23 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 23 }
-		not = { check_variable = { which = "rail_terminus_count" value = 24 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 23 }
-		not = { check_variable = { which = "rail_terminus_count" value = 24 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_24 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 24 }
-		not = { check_variable = { which = "rail_terminus_count" value = 25 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 24 }
-		not = { check_variable = { which = "rail_terminus_count" value = 25 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_25 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 25 }
-		not = { check_variable = { which = "rail_terminus_count" value = 26 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 25 }
-		not = { check_variable = { which = "rail_terminus_count" value = 26 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_26 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 26 }
-		not = { check_variable = { which = "rail_terminus_count" value = 27 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 26 }
-		not = { check_variable = { which = "rail_terminus_count" value = 27 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_27 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 27 }
-		not = { check_variable = { which = "rail_terminus_count" value = 28 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 27 }
-		not = { check_variable = { which = "rail_terminus_count" value = 28 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_28 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 28 }
-		not = { check_variable = { which = "rail_terminus_count" value = 29 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 28 }
-		not = { check_variable = { which = "rail_terminus_count" value = 29 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_29 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 29 }
-		not = { check_variable = { which = "rail_terminus_count" value = 30 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 29 }
-		not = { check_variable = { which = "rail_terminus_count" value = 30 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_30 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 30 }
-		not = { check_variable = { which = "rail_terminus_count" value = 31 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 30 }
-		not = { check_variable = { which = "rail_terminus_count" value = 31 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_31 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 31 }
-		not = { check_variable = { which = "rail_terminus_count" value = 32 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 31 }
-		not = { check_variable = { which = "rail_terminus_count" value = 32 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_32 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 32 }
-		not = { check_variable = { which = "rail_terminus_count" value = 33 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 32 }
-		not = { check_variable = { which = "rail_terminus_count" value = 33 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_33 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 33 }
-		not = { check_variable = { which = "rail_terminus_count" value = 34 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 33 }
-		not = { check_variable = { which = "rail_terminus_count" value = 34 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_34 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 34 }
-		not = { check_variable = { which = "rail_terminus_count" value = 35 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 34 }
-		not = { check_variable = { which = "rail_terminus_count" value = 35 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_35 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 35 }
-		not = { check_variable = { which = "rail_terminus_count" value = 36 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 35 }
-		not = { check_variable = { which = "rail_terminus_count" value = 36 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_36 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 36 }
-		not = { check_variable = { which = "rail_terminus_count" value = 37 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 36 }
-		not = { check_variable = { which = "rail_terminus_count" value = 37 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_37 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 37 }
-		not = { check_variable = { which = "rail_terminus_count" value = 38 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 37 }
-		not = { check_variable = { which = "rail_terminus_count" value = 38 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_38 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 38 }
-		not = { check_variable = { which = "rail_terminus_count" value = 39 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 38 }
-		not = { check_variable = { which = "rail_terminus_count" value = 39 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_39 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 39 }
-		not = { check_variable = { which = "rail_terminus_count" value = 40 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 39 }
-		not = { check_variable = { which = "rail_terminus_count" value = 40 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_40 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 40 }
-		not = { check_variable = { which = "rail_terminus_count" value = 41 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 40 }
-		not = { check_variable = { which = "rail_terminus_count" value = 41 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_41 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 41 }
-		not = { check_variable = { which = "rail_terminus_count" value = 42 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 41 }
-		not = { check_variable = { which = "rail_terminus_count" value = 42 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_42 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 42 }
-		not = { check_variable = { which = "rail_terminus_count" value = 43 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 42 }
-		not = { check_variable = { which = "rail_terminus_count" value = 43 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_43 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 43 }
-		not = { check_variable = { which = "rail_terminus_count" value = 44 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 43 }
-		not = { check_variable = { which = "rail_terminus_count" value = 44 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_44 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 44 }
-		not = { check_variable = { which = "rail_terminus_count" value = 45 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 44 }
-		not = { check_variable = { which = "rail_terminus_count" value = 45 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_45 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 45 }
-		not = { check_variable = { which = "rail_terminus_count" value = 46 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 45 }
-		not = { check_variable = { which = "rail_terminus_count" value = 46 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_46 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 46 }
-		not = { check_variable = { which = "rail_terminus_count" value = 47 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 46 }
-		not = { check_variable = { which = "rail_terminus_count" value = 47 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_47 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 47 }
-		not = { check_variable = { which = "rail_terminus_count" value = 48 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 47 }
-		not = { check_variable = { which = "rail_terminus_count" value = 48 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_48 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 48 }
-		not = { check_variable = { which = "rail_terminus_count" value = 49 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 48 }
-		not = { check_variable = { which = "rail_terminus_count" value = 49 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_49 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 49 }
-		not = { check_variable = { which = "rail_terminus_count" value = 50 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 49 }
-		not = { check_variable = { which = "rail_terminus_count" value = 50 } }
-	}
-	icon = 30
-}
-triggered_mod_rail_terminus_core_50 = {
-	potential = {
-		check_variable = { which = "rail_terminus_count" value = 50 }
-		not = { check_variable = { which = "rail_terminus_count" value = 51 } }
-	}
-	trigger = {
-		check_variable = { which = "rail_terminus_count" value = 50 }
-		not = { check_variable = { which = "rail_terminus_count" value = 51 } }
-	}
-	icon = 30
 }
 
 IcEffVisual_0 = {
@@ -28179,7 +29997,7 @@ The_Hirohito_effect = {
 		tag = JAP
 	}
 	trigger = {}
-	global_manpower_modifier = 0.2
+	global_manpower_modifier = 0.05
 	territorial_pride = 0.05
 	global_revolt_risk = -1
 	national_unity = 0.08

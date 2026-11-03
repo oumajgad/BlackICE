@@ -1,9 +1,8 @@
-
 local P = {}
 AI_SIK = P
 
 -- END OF PRODUTION OVERIDES
--- #######################################
+
 
 function P.DiploScore_Alliance(voDiploScoreObj)
 	-- Make sure we are not in a faction already and China is the one asking

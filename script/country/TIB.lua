@@ -1,9 +1,7 @@
-
 local P = {}
 AI_TIB = P
 
 -- END OF PRODUTION OVERIDES
--- #######################################
 
 function P.DiploScore_GiveMilitaryAccess(viScore, voAI, voCountry)
 	-- We stay out of everything

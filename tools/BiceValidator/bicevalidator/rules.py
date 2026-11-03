@@ -193,18 +193,22 @@ _RULES = [
     # An order of battle's `leader = N` is given leader N whoever he is: nothing in the game
     # asks his country, rank or arm (reversing/findings/FINDINGS-leaderassign.md, section
     # 1). So these say what the game will not.
-    Rule("BV309", "leader-below-rank", WARNING, CODE, "confirmed",
-         "Leader below the rank his command wants",
-         "This mod commands a division at rank 1, a corps at rank 2 and an army, army group "
-         "or theatre at rank 3 - the rule BiceLib's load_oob tooltip applies, rank 4 being an "
-         "honour rather than a job. The game itself is looser: it counts a leader's skill "
-         "for a corps from rank 1, an army from rank 2, and an army group or theatre from rank "
-         "3, and below that the unit gets nothing of him in battle and his name is written in "
-         "red. His rank is the one the game gives him, which is not always the one his "
-         "history says: for an order of battle a country's history loads as a game starts, "
-         "his history up to the start date; for one only `load_oob` loads, the rank he holds "
-         "once in service - and a leader whose first rank is dated after the start comes "
-         "into service at rank 1, whatever it says (BV313)."),
+    Rule("BV309", "leader-wrong-rank", WARNING, CODE, "confirmed",
+         "Leader not of the rank his command takes",
+         "The game puts a leader on a land unit only at one rank: a division 1, a corps 2, an "
+         "army 3, an army group or theatre 4 (CUnit::MayTakeLeader, "
+         "reversing/findings/FINDINGS-leaderassign.md, section 6). An order of battle "
+         "gives him the unit anyway. Below rank 1 for a corps, 2 for an army and 3 above that "
+         "the unit also gets nothing of him in battle and his name is written in red. His "
+         "rank is the one the game gives him, which is not always the one his history says: "
+         "for an order of battle a country's history loads as a game starts, his history up "
+         "to the start date; for one only `load_oob` loads, the rank he holds once in service "
+         "- and a leader whose first rank is dated after the start comes into service at "
+         "rank 1, whatever it says (BV313). **Where script/bicelib_lua.lua calls "
+         "`BiceLib.Leaders.activateOobLeaderRanks()`** the game gives the file's own "
+         "country's land leaders that rank as it loads the file, and this is reported only "
+         "for another country's. Until 2026-11-01 this rule was the mod's own: everything "
+         "above a corps at rank 3."),
     Rule("BV310", "leader-wrong-arm", WARNING, CODE, "confirmed",
          "Leader of the wrong arm",
          "A land unit takes a `land` leader, a fleet a `sea` one and an air unit an `air` one. "
@@ -225,7 +229,9 @@ _RULES = [
          "game reads only the date of his first `rank`: on that day a leader not yet in "
          "service comes into it **at rank 1, whatever rank is written**, and no later `rank` "
          "is ever applied (reversing/findings/FINDINGS-leaders.md, section 3). Only a "
-         "promotion in play moves him after that."),
+         "promotion in play moves him after that. **Where script/bicelib_lua.lua calls "
+         "`BiceLib.Leaders.activateHistoryLeaderRanks()`** he comes into service at the first "
+         "line's rank, so only a later `rank` is reported."),
 
     # --- references ----------------------------------------------------------------------
     Rule("BV201", "undefined-event", ERROR, REFERENCES, "confirmed",

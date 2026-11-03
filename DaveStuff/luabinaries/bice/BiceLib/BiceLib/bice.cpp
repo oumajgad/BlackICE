@@ -47,6 +47,9 @@
 #include <GameClasses/CCountryDataBase.hpp>
 #include <Hooks/Tooltips/CombatUnitStats.hpp>
 #include <Hooks/Tooltips/ManpowerText.hpp>
+#include <Hooks/HistoryLeaderRanks.hpp>
+#include <Hooks/MaxInfrastructure.hpp>
+#include <Hooks/OobLeaderRanks.hpp>
 #include <Hooks/UnassignSelected.hpp>
 #include <Reversing/Counters.hpp>
 #include <Gui/LuaBridge.hpp>
@@ -754,6 +757,27 @@ __declspec(dllexport) int fixQueuedHistoricalModel(lua_State* L)
     return 0;
 }
 
+/**
+ * Keeps a province's MaxInfrastructure the figure of its `infra` building. The game writes
+ * the figure of whichever building with the `infrastructure` effect it handles last, so
+ * BlackICE's `extra_infra` left ~1,600 provinces in no area after every load and crashed
+ * the AI's sealift pass. Three stores, each followed by infra's own figure. Must be on
+ * before a save is loaded. See Hooks/MaxInfrastructure.hpp.
+ */
+__declspec(dllexport) int fixMaxInfrastructure(lua_State* L)
+{
+    const bool ok = Hooks::MaxInfrastructure::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'fixMaxInfrastructure' failed: %s \n",
+            Hooks::MaxInfrastructure::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'fixMaxInfrastructure' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
 
 /////////////////////////////////////
 //          BYTE PATCHES           //
@@ -1122,6 +1146,46 @@ __declspec(dllexport) int activateCtrlUnassignSelected(lua_State* L)
     else {
         Hooks::UnassignSelected::setActive(true);
         INFO_OUT(printf("Hook 'activateCtrlUnassignSelected' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
+ * Gives a leader an order of battle puts on a land unit the rank the game itself would
+ * want for that unit - division 1, corps 2, army 3, army group and theatre 4 - raising or
+ * lowering him, and puts him in service if he is not yet. Only while an order of battle
+ * file is read (`load_oob`, a new game's history, the custom game setup), never a save;
+ * another country's leader is left alone. See Hooks/OobLeaderRanks.hpp.
+ */
+__declspec(dllexport) int activateOobLeaderRanks(lua_State* L)
+{
+    const bool ok = Hooks::OobLeaderRanks::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateOobLeaderRanks' failed: %s \n",
+            Hooks::OobLeaderRanks::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateOobLeaderRanks' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
+ * Brings a leader whose history dates his first rank after the start into service at the
+ * rank that line names, where the game gives rank 1 whatever it says. One store in the
+ * daily pass. See Hooks/HistoryLeaderRanks.hpp.
+ */
+__declspec(dllexport) int activateHistoryLeaderRanks(lua_State* L)
+{
+    const bool ok = Hooks::HistoryLeaderRanks::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'activateHistoryLeaderRanks' failed: %s \n",
+            Hooks::HistoryLeaderRanks::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'activateHistoryLeaderRanks' succeeded \n"));
     }
     lua_pushboolean(L, ok);
     return 1;
@@ -1547,6 +1611,8 @@ void registerLeaderFunctions(lua_State* this_state) {
     registerFunction(this_state, "activateLeaderListShowMaxSkill", activateLeaderListShowMaxSkill);
     registerFunction(this_state, "activateLeaderListShowMaxSkillSelected", activateLeaderListShowMaxSkillSelected);
     registerFunction(this_state, "activateCtrlUnassignSelected", activateCtrlUnassignSelected);
+    registerFunction(this_state, "activateOobLeaderRanks", activateOobLeaderRanks);
+    registerFunction(this_state, "activateHistoryLeaderRanks", activateHistoryLeaderRanks);
     registerFunction(this_state, "addTraitToLeader", addTraitToLeader);
     registerFunction(this_state, "getLeaderDetails", getLeaderDetails);
     lua_settable(this_state, -3);
@@ -1606,6 +1672,7 @@ void registerComplexPatchFunctions(lua_State* this_state) {
     registerFunction(this_state, "fixOffMapIC", fixOffMapIC);
     registerFunction(this_state, "enablePlacingNonResearchedBuildings", enablePlacingNonResearchedBuildings);
     registerFunction(this_state, "fixQueuedHistoricalModel", fixQueuedHistoricalModel);
+    registerFunction(this_state, "fixMaxInfrastructure", fixMaxInfrastructure);
     lua_settable(this_state, -3);
     return;
 }

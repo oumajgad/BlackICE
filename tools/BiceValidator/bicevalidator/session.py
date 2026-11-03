@@ -14,12 +14,13 @@ import os
 import threading
 
 from . import index as idx, lexer, parser, rules, runner
-from .checks.data import DataChecker
+from .checks.data import FIT_FUNCTION, DataChecker
 from .checks.script import ScriptChecker
 from .schemas import Registry
 from .declarations import Declarations
+from .leaders import HISTORY_FUNCTION
 from .localisation import Localisation
-from .models import PATCH_FILE
+from .models import PATCH_FILE, bicelib_call
 from .navigate import Navigator
 from .pictures import Pictures
 from .schema import Schema, locate_keyword_pages
@@ -54,8 +55,17 @@ class Session:
 
     def files_changed(self, rels):
         """\\p rels changed on disk: read again whatever this session keeps of them. True
-        if the declarations were read again, which can change any file's findings."""
+        if the declarations were read again, or which BiceLib calls the mod makes, either of
+        which can change any file's findings."""
+        patched = False
         for rel in rels:
+            if rel.lower() == PATCH_FILE and getattr(self, "data", None) is not None:
+                # BV309 is silent where BiceLib fits an order of battle's leaders, and BV313
+                # where it puts a leader in service at his history's rank.
+                self.data.fitted = bicelib_call(self.root, FIT_FUNCTION)
+                self.declarations.leaders.history_applied = \
+                    bicelib_call(self.root, HISTORY_FUNCTION) is not None
+                patched = True
             if rel.startswith("localisation/") and rel.endswith(".csv"):
                 self.localisation.reload_file(rel)
             if rel.lower().startswith("gfx/pictures/"):
@@ -68,7 +78,7 @@ class Session:
         if any(self.declares(rel) for rel in rels):
             self.reload()
             return True
-        return False
+        return patched
 
     def relpath(self, path):
         """\\p path relative to the mod, with forward slashes; None if it is outside it."""

@@ -1,8 +1,6 @@
 local P = {}
 AI_FRA = P
 
--- #######################################
-
 -- Tech weights
 --   1.0 = 100% the total needs to equal 1.0
 function P.TechWeights(voTechnologyData)
@@ -450,10 +448,7 @@ function P.OtherTechs(voTechnologyData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
-
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Production Weights
@@ -875,7 +870,6 @@ function P.Build_Underground(vIC, voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
 
 function P.DiploScore_OfferTrade(voDiploScoreObj)
 	local laTrade = {
@@ -976,7 +970,6 @@ function P.HandleMobilization(minister)
 	end
 end
 
---##########################
 -- Foreign Minister Hooks
 function P.ForeignMinister_Influence(voForeignMinisterData)
 	local laIgnoreWatch -- Ignore this country but monitor them if they are about to join someone else
@@ -1049,6 +1042,5 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 
 	return laWatch, laIgnoreWatch, laIgnore
 end
-
 
 return AI_FRA

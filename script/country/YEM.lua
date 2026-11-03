@@ -279,8 +279,6 @@ function P.OtherTechs(minister)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
-
 
 function P.ProductionWeights(minister)
 	local rValue

@@ -402,10 +402,9 @@ function DiploScore_PeaceAction(voAI, voActorTag, voRecipientTag, voObserverTag,
 	end
 end
 
--- #######################
 -- Called by the EXE
 --    This only fires if humans are sending the AI EXP forces
--- #######################
+
 function DiploScore_SendExpeditionaryForce(voAI, voActorTag, voRecipientTag, voObserverTag, action)
 	if voObserverTag == voActorTag then
 		return 0
@@ -501,9 +500,8 @@ function DiploScore_RequestLendLease(voAI, voMinisterTag, voSenderTag)
 	return Utils.CallScoredCountryAI(voMinisterTag, "DiploScore_RequestLendLease", liScore, voAI, voSenderTag )
 end
 
--- #######################
 -- Military Access
--- #######################
+
 function DiploScore_DemandMilitaryAccess(voAI, voActorTag, voRecipientTag, voObserverTag)
 	-- Actor and Observer are same thing when demanding
 	local liScore = Generate_MilitaryAccess_Score(voAI, voActorTag, voRecipientTag)
@@ -604,12 +602,8 @@ function Generate_MilitaryAccess_Score(voAI, voActorTag, voRecipientTag)
 
 	return liScore
 end
--- #######################
 
-
--- ############################
 --  Methods that are called directly from ai_foreign_minister.lua and never by the EXE
--- ############################
 
 -- Calculates score of the requested country for influencing
 function DiploScore_InfluenceNation(voForeignMinisterData, voTargetCountryTag)
@@ -690,7 +684,7 @@ function DiploScore_InfluenceNation(voForeignMinisterData, voTargetCountryTag)
 		end
 
 		-- Political checks
-		-- ################
+
 		loDiploScoreObj.Score = loDiploScoreObj.Score - loDiploScoreObj.RelationObj:GetThreat():Get() / 5
 		loDiploScoreObj.Score = loDiploScoreObj.Score + loDiploScoreObj.RelationObj:GetValue():GetTruncated() / 3
 
@@ -703,7 +697,6 @@ function DiploScore_InfluenceNation(voForeignMinisterData, voTargetCountryTag)
 		if loDiploScoreObj.RelationObj:AllowDebts() then
 			loDiploScoreObj.Score = loDiploScoreObj.Score + 5
 		end
-		-- ################
 
 		-- We are neighbors
 		if loDiploScoreObj.IsNeighbour then

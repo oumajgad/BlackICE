@@ -1,8 +1,6 @@
 local P = {}
 AI_ENG = P
 
--- #######################################
-
 -- Tech weights
 --   1.0 = 100% the total needs to equal 1.0
 function P.TechWeights(voTechnologyData)
@@ -545,10 +543,7 @@ function P.OtherTechs(voTechnologyData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
-
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Production Weights
@@ -936,16 +931,10 @@ function P.Build_Infrastructure(vIC, voProductionData)
 	return vIC, false
 end
 
-
 -- END OF PRODUTION OVERIDES
--- #######################################
 
--- #######################################
 -- Intelligence Hooks
-
-
 -- End of Intelligence Hooks
--- #######################################
 
 function P.DiploScore_Embargo(voDiploScoreObj)
 	-- If Japan then do some special checks
@@ -1035,7 +1024,6 @@ function P.DiploScore_InfluenceNation(voDiploScoreObj)
 	return voDiploScoreObj.Score
 end
 
---##########################
 -- Foreign Minister Hooks
 function P.ForeignMinister_Influence(voForeignMinisterData)
 	local laIgnoreWatch -- Ignore this country but monitor them if they are about to join someone else

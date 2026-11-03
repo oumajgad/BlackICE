@@ -32,6 +32,16 @@ namespace CMapProvince {
          * both throughput pointers and both drawn pointers all carry the name the save
          * gives them.
          */
+        /**
+         * **`MaxInfrastructure`**: what areas are made from - a province is in one only above
+         * 100 - and what the unit AI's front thresholds read. Thousandths of full
+         * infrastructure, `infra` 4 reading 400. **Written by every building with the
+         * `infrastructure` effect, the last one winning**, which is why BlackICE's
+         * `extra_infra` broke it and Hooks/MaxInfrastructure.hpp exists.
+         * reversing/findings/FINDINGS-extrainfra.md.
+         */
+        constexpr uintptr_t MaxInfrastructure = 0x5C;
+
         constexpr uintptr_t strategic_resource = 0x18;    // saved as "strategic_resource"
         constexpr uintptr_t last_convoy_attack = 0x1C;    // a date; only saved once it is set
         constexpr uintptr_t out_of_supply_days = 0x20;    // only saved above zero

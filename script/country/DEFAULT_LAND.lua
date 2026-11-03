@@ -1,15 +1,11 @@
-
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Handle special Build Unit, the @@@ is the Unit type in string format
 -- Build_@@@@@(ic, voProductionData, viUnitsNeeded)
 
--- #####################
 -- Exepected Returns
 -- IC = How much IC is left after execution
 -- Boolean = Flag indicating weather to execute generic code as well for the building type
--- #####################
 -- Build_Underground(ic, voProductionData)
 -- Build_NuclearReactor(ic, voProductionData)
 -- Build_RocketTest(ic, voProductionData)
@@ -23,8 +19,6 @@
 
 -- must return how much IC is left
 
-
--- #######################################
 -- Diplomacy Hooks
 -- These all must return a numeric score (100 being 100% chance of success)
 
@@ -43,8 +37,6 @@
 -- DiploScore_Debt(voDiploScoreObj)
 -- EvaluateLimitedWar(viScore, minister, target, warDesirability)
 
-
---##########################
 -- Foreign Minister Hooks
 
 -- ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
@@ -54,7 +46,6 @@
 -- ForeignMinister_Influence(voForeignMinisterData)
 -- ForeignMinister_ProposeWar(voForeignMinisterData)
 
---##########################
 -- Politics Minister Hooks
 
 -- HandleMobilization(minister)
@@ -74,7 +65,6 @@
 -- Call_ArmamentMinister(ministerCountry, vaMinisters)
 -- Call_MinisterOfSecurity(ministerCountry, vaMinisters)
 
--- #######################################
 -- Intelligence Hooks
 
 -- Intel_Home(voIntelligenceData)
@@ -83,12 +73,9 @@
 -- Intel_Priority_Ally(voIntelligenceData, voIntelCountry)
 -- Intel_Mission_Ally(voIntelligenceData, voIntelCountry)
 
-
 local P = {}
 AI_DEFAULT_LAND = P
 
-
--- #######################################
 -- Start of Tech Research
 
 -- Tech weights
@@ -392,7 +379,6 @@ function P.OtherTechs(voTechnologyData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
 -- Land Brigades vs Air Units ratio
 --   If Air Ratio is met AI will shift its Air IC to build land units
@@ -705,8 +691,6 @@ function P.ConvoyRatio(voProductionData)
 
 	return laArray
 end
-
-
 
 -- Do not build Rocket Sites
 function P.Build_RocketTest(ic, voProductionData)

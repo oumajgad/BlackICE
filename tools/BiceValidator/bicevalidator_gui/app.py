@@ -423,7 +423,8 @@ class MainWindow(QMainWindow):
         self.all_rules_item = QTreeWidgetItem([ALL_RULES, ""])
         self.rule_tree.addTopLevelItem(self.all_rules_item)
         self.rule_items = {}
-        for rule in rules.RULES.values():
+        # By id: rules.py keeps them grouped by mode, which puts BV3xx before BV2xx.
+        for rule in sorted(rules.RULES.values(), key=lambda r: r.id):
             node = QTreeWidgetItem(["%s  %s" % (rule.id, rule.title), ""])
             node.setData(0, Qt.UserRole, rule.id)
             node.setIcon(0, severity_icon(rule.severity))

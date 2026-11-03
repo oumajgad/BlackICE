@@ -343,9 +343,13 @@ namespace CCountry {
         constexpr uintptr_t color = 0xC30;                   // a CPersistent of its own
         constexpr uintptr_t has_color = 0xC4C;               // set when "color" is read
         constexpr uintptr_t history = 0xCCC;                 // a CPersistent of its own
-        constexpr uintptr_t active_leaders = 0xE00;          // and _end, _capacity after it
-        constexpr uintptr_t active_leaders_end = 0xE04;
-        constexpr uintptr_t active_leaders_capacity = 0xE08;
+        /**
+         * **The leaders in service**, a list (HDS::ListOffsets) - not a vector, as this
+         * said until 2026-11-01: `ActivateRankedLeaders` (`0xDDCD0`) appends 0x10-byte
+         * nodes through the last node at `+0xE04` and counts them at `+0xE08`.
+         * reversing/findings/FINDINGS-leaderassign.md, section 2.
+         */
+        constexpr uintptr_t active_leaders = 0xE00;
         constexpr uintptr_t active_mission = 0xE38;          // a CPersistent of its own
         constexpr uintptr_t graphical_culture = 0xF20;       // AfterLoad gives it "Generic"
         /**
@@ -465,6 +469,23 @@ namespace CCountry {
 
         /**@brief fills both neighbour sets, and the two CCountryList they stand for*/
         constexpr uintptr_t RebuildNeighbours = 0xE21E0;
+
+        /**
+         * **Reads the order of battle named at `oob_file` into the country**, as a piece
+         * of its save block: `void __stdcall LoadOobFile(CCountry* country)`, `ret 4`.
+         * Called by the `load_oob` effect, a new game's history, and the custom game
+         * setup's reset of its units stage - never by a save.
+         * reversing/findings/FINDINGS-leaderassign.md, section 3.1.
+         */
+        constexpr uintptr_t LoadOobFile = 0xFFED0;
+
+        /**
+         * **Puts a leader in service**: appends him to `active_leaders` and, with the flag
+         * set, files a `CLeaderChange` dated today in the country's history.
+         * `void __stdcall AddActiveLeader(CCountry* country, CLeader* leader, bool record)`,
+         * `ret 0xC`. reversing/findings/FINDINGS-leaderassign.md, section 2.
+         */
+        constexpr uintptr_t AddActiveLeader = 0xDDB80;
     }
 
     /**

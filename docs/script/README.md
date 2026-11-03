@@ -164,7 +164,7 @@ there. Nothing is logged and nothing looks broken.
 
 So a typo does not announce itself. It makes an event quietly do less than it says.
 
-The old notes these pages replace contained five such keys, all of which read perfectly
+The old notes these pages replace contained four such keys, all of which read perfectly
 reasonably and none of which does anything:
 
 | Looks right | Actually works |
@@ -172,7 +172,6 @@ reasonably and none of which does anything:
 | `brigade_exists` | `brigade_exist` |
 | `is_threatened` | `is_threatend` |
 | `neighbor` | `neighbour` |
-| `port = yes` | `naval_base = <level>`, or `num_of_ports` |
 | `fuel = x` as a condition | nothing - it is a real effect, but there is no fuel condition |
 
 Two of those are the engine's own spelling mistakes, kept because fixing them would break

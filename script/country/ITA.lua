@@ -1,8 +1,6 @@
-
 local P = {}
 AI_ITA = P
 
--- #######################################
 -- Start of Trade Weights
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
@@ -317,12 +315,8 @@ function P.OtherTechs(voTechnologyData)
 	return ignoreTech, preferTech
 end
 
-
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
-
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Production Weights
@@ -635,7 +629,6 @@ function P.Build_CoastalFort(vIC, voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
 
 --function P.HandlePuppets(minister)
 --	local ministerTag =  minister:GetCountryTag()
@@ -728,7 +721,6 @@ function P.DiploScore_Alliance(voDiploScoreObj)
 	return voDiploScoreObj.Score
 end
 
---##########################
 -- Foreign Minister Hooks
 function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
 	return voDecision.Score

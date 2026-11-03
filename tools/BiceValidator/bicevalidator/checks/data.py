@@ -15,7 +15,8 @@ import re
 from .. import parser
 from ..context import describe
 from ..diagnostic import Diagnostic
-from ..leaders import date_text, rank_phrase, read_leader
+from ..leaders import HISTORY_FUNCTION, date_text, rank_phrase, read_leader
+from ..models import PATCH_FILE, bicelib_call
 from ..schemas import DECLARED, describe_value
 
 _NUMBER = re.compile(r"^[+-]?(\d+(\.\d*)?|\.\d+)$")
@@ -31,6 +32,9 @@ class DataChecker:
         self.decl = declarations
         self.script = script_checker
         self.root = root
+        # (file, line) where the mod switches on BiceLib's fitting of an order of battle's
+        # leaders to their units' ranks, or None
+        self.fitted = bicelib_call(root, FIT_FUNCTION) if root else None
 
     def check(self, source, root_node):
         """Findings for the parsed file, or [] if no schema reads it."""
@@ -323,19 +327,27 @@ class DataChecker:
             wanted = RANK_WANTED.get(level)
             if wanted is None:
                 continue
-            rank, since = leaders.rank_in(leader, self.path)
-            if rank >= wanted:
+            # BiceLib fits a land leader of the file's own country as the file is loaded.
+            # A file only load_oob loads has no country here, and is taken to name its own.
+            own = start is None or not leader.country or leader.country == start[0]
+            if self.fitted is not None and own:
                 continue
-            said = "%s is %s," % (who, rank_phrase(rank, since))
-            hint = ("A %s is commanded at rank %d or above, by the rule BiceLib's load_oob "
-                    "tooltip applies. " % (LEVEL_WORDS[level], wanted))
+            rank, since = leaders.rank_in(leader, self.path)
+            if rank == wanted:
+                continue
+            said = "%s is %s," % (who, rank_phrase(rank, since, leaders.entry_rank(leader)))
+            hint = ("The game itself puts only a rank %d leader on a %s, and will not give "
+                    "this one to it. " % (wanted, LEVEL_WORDS[level]))
             if rank < RANK_COUNTED[level]:
-                hint += ("Below rank %d the game itself counts none of his skill for the "
-                         "unit in battle, and writes his name in red." % RANK_COUNTED[level])
+                hint += ("Below rank %d it also counts none of his skill for the unit in "
+                         "battle, and writes his name in red. " % RANK_COUNTED[level])
+            if self.fitted is None:
+                hint += ("`BiceLib.Leaders.%s()` in %s would give him the rank as the file "
+                         "is loaded." % (FIT_FUNCTION, PATCH_FILE))
             else:
-                hint += "The game takes him, and counts his skill."
+                hint += "BiceLib's %s leaves another country's leader as he is." % FIT_FUNCTION
             self._report("BV309", node, "%s and %s wants rank %d"
-                         % (said, _unit(unit), wanted), hint=hint, at_value=True)
+                         % (said, _unit(unit), wanted), hint=hint.strip(), at_value=True)
 
     def _leader_ranks(self, root_node, leaders):
         start = leaders.start
@@ -352,15 +364,19 @@ class DataChecker:
                 for child in entry.children or ():
                     if child.lkey == "rank":
                         by_line[child.line] = child
-            held, since = leader.rank_in_play(start)
+            held, since = leader.rank_in_play(start, leaders.history_applied)
             for when, value, line, why in ignored:
                 node = by_line.get(line, block)
+                if why == "first" and leaders.history_applied:
+                    # BiceLib puts him in service at this rank.
+                    continue
                 if why == "first":
                     message = ("Leader %s's first rank is %d, on %s; the game puts him in "
                                "service that day at rank 1" % (leader.ident, value,
                                                               date_text(when)))
-                    hint = "Whatever rank is written there, a leader not in service at the " \
-                           "start comes into it at rank 1."
+                    hint = ("Whatever rank is written there, a leader not in service at the "
+                            "start comes into it at rank 1. `BiceLib.Leaders.%s()` in %s "
+                            "would give him this one." % (HISTORY_FUNCTION, PATCH_FILE))
                 else:
                     message = ("Rank %d on %s is never applied to leader %s"
                                % (value, date_text(when), leader.ident))
@@ -370,14 +386,20 @@ class DataChecker:
                 self._report("BV313", node, message, hint=hint, at_value=True)
 
 
+# The BiceLib call that fits an order of battle's leaders, made in models.PATCH_FILE
+FIT_FUNCTION = "activateOobLeaderRanks"
+
 # The unit blocks of an order of battle, and the arm of leader each takes.
 UNIT_ARMS = {"theatre": "land", "armygroup": "land", "army": "land", "corps": "land",
              "division": "land", "navy": "sea", "air": "air"}
 LEVEL_WORDS = {"theatre": "theatre", "armygroup": "army group", "army": "army",
                "corps": "corps", "division": "division", "navy": "fleet", "air": "air unit"}
-# The rank each land level wants: the maintainer's rule, which BiceLib's load_oob tooltip
-# applies (BiceLib/Hooks/EffectText/LoadOobText.hpp) - rank 4 is an honour, not a job.
-RANK_WANTED = {"division": 1, "corps": 2, "army": 3, "armygroup": 3, "theatre": 3}
+# The rank each land level takes: the game's own exact rank, CUnit::MayTakeLeader
+# (reversing/findings/FINDINGS-leaderassign.md, section 6) - what a player or the automatic
+# choice may put on such a unit. BiceLib fits an order of battle's leaders to it
+# (BiceLib/Hooks/OobLeaderRanks.hpp) and its load_oob tooltip says so. Until 2026-11-01 this
+# was the maintainer's own rule, everything above a corps at rank 3.
+RANK_WANTED = {"division": 1, "corps": 2, "army": 3, "armygroup": 4, "theatre": 4}
 # The rank below which the game itself counts none of a leader's skill for his unit:
 # CUnit::LeaderHasRankForCommand (reversing/findings/FINDINGS-leaderassign.md, section 7).
 RANK_COUNTED = {"division": 0, "corps": 1, "army": 2, "armygroup": 3, "theatre": 3}

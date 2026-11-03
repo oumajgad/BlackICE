@@ -20,7 +20,6 @@ function P.TechWeights(voTechnologyData)
 end
 
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
 function P.AirTechs(voTechnologyData)
 	local ignoreTech = {"all"};
@@ -58,12 +57,8 @@ function P.OtherTechs(voTechnologyData)
 	return ignoreTech, nil
 end
 
-
 -- END OF TECH RESEARCH OVERIDES
--- #######################################
 
-
--- #######################################
 -- Production Overides the main LUA with country specific ones
 
 -- Land ratio distribution
@@ -106,6 +101,5 @@ function P.ConvoyRatio(voProductionData)
 end
 
 -- END OF PRODUTION OVERIDES
--- #######################################
 
 return AI_MEN

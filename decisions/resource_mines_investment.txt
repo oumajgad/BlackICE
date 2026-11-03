@@ -27,6 +27,7 @@ diplomatic_decisions = {
 						zinc_building = 1
 						manganese_building = 1
 						molybdenum_building = 1
+						mass_livestock_building = 1
 					}
 				}
 				owner = {
@@ -52,6 +53,7 @@ diplomatic_decisions = {
 								zinc_building = 1
 								manganese_building = 1
 								molybdenum_building = 1
+								mass_livestock_building = 1
 							}
 						}
 					secede_province = THIS
@@ -82,6 +84,7 @@ diplomatic_decisions = {
 					zinc_building = 1
 					manganese_building = 1
 					molybdenum_building = 1
+					mass_livestock_building = 1
 				}
 			}
 			ai = no
@@ -1038,6 +1041,121 @@ diplomatic_decisions = {
 				}
 			}
 			clr_country_flag = copper_building_expansion
+		}
+	}
+	# MASS LIVESTOCK EXPANSION #
+	mass_livestock_expansion = {
+		potential = {
+			not = {
+				has_country_modifier = mines_postpone
+				has_country_flag = mass_livestock_building_expansion
+				has_country_modifier = mass_livestock_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
+			}
+			check_variable = {
+				which = mass_livestock_building_count
+				value = 1
+			}
+			any_owned_province = {
+				strategic_resource = mass_livestock
+				mass_livestock_building = 1
+				not = {
+					mass_livestock_building = 10
+				}
+			}
+		}
+		allow = {
+			money = 2000
+		}
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = BlackICE
+					}
+					money = -2000
+					add_country_modifier = {
+						name = mass_livestock_building_construction
+						duration = 180
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = THIS
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
+					money = -2000
+					add_country_modifier = {
+						name = mass_livestock_building_construction
+						duration = 360
+					}
+				}
+			}
+			set_country_flag = mass_livestock_building_expansion
+		}
+	}
+	mass_livestock_expansion_launch = {
+		potential = {
+			check_variable = {
+				which = mass_livestock_building_count
+				value = 1
+			}
+			has_country_flag = mass_livestock_building_expansion
+			not = {
+				has_country_modifier = mass_livestock_building_construction
+			}
+		}
+		allow = {
+			check_variable = {
+				which = mass_livestock_building_count
+				value = 1
+			}
+			has_country_flag = mass_livestock_building_expansion
+			not = {
+				has_country_modifier = mass_livestock_building_construction
+			}
+			money = 2000
+		}
+		effect = {
+			random_owned = {
+				limit = {
+					strategic_resource = mass_livestock
+					mass_livestock_building = 1
+					not = {
+						mass_livestock_building = 10
+					}
+				}
+				mass_livestock_building = 1
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = THIS
+						has_country_flag = BlackICE
+					}
+					money = -2000
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = THIS
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
+					money = -2000
+				}
+			}
+			clr_country_flag = mass_livestock_building_expansion
 		}
 	}
 	# CHROMITE EXPANSION #

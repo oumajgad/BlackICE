@@ -32,7 +32,7 @@ _DEFINE = re.compile(r"\bHISTORICAL_MODEL_MAX\s*=\s*(\d+)")
 
 # Where the mod switches BiceLib's patches on, and the call that mends a queued model
 PATCH_FILE = "script/bicelib_lua.lua"
-_PATCH_CALL = re.compile(r"[.:]\s*fixQueuedHistoricalModel\s*\(")
+PATCH_FUNCTION = "fixQueuedHistoricalModel"
 _LONG_COMMENT = re.compile(r"--\[(=*)\[.*?\]\1\]", re.S)
 _LINE_COMMENT = re.compile(r"--[^\n]*")
 
@@ -218,8 +218,13 @@ def queued_country(rel, construction, brigade, leaders, tags):
 
 
 def patch_call(root):
-    """(file, line) where the mod calls BiceLib's fixQueuedHistoricalModel, or None. A call
-    inside a Lua comment does not count."""
+    """(file, line) where the mod calls BiceLib's fixQueuedHistoricalModel, or None."""
+    return bicelib_call(root, PATCH_FUNCTION)
+
+
+def bicelib_call(root, function):
+    """(file, line) where script/bicelib_lua.lua calls BiceLib's \\p function, or None. A
+    call inside a Lua comment does not count."""
     path = os.path.join(root, *PATCH_FILE.split("/"))
     if not os.path.exists(path):
         return None
@@ -228,7 +233,7 @@ def patch_call(root):
     # Blank the comments out keeping their newlines, so a match's line is the file's.
     text = _LONG_COMMENT.sub(lambda m: re.sub(r"[^\n]", " ", m.group(0)), text)
     text = _LINE_COMMENT.sub(lambda m: " " * len(m.group(0)), text)
-    found = _PATCH_CALL.search(text)
+    found = re.search(r"[.:]\s*%s\s*\(" % re.escape(function), text)
     if found is None:
         return None
     return PATCH_FILE, text.count("\n", 0, found.start()) + 1

@@ -128,6 +128,11 @@ namespace CUnit {
         constexpr int Corps = 3;
         constexpr int Division = 4;   // also what a lone brigade is held as
         constexpr int Navy = 5;
+
+        /**@brief an air unit; written from the `air` block's key like the rest, by
+                  CUnit_OobLevelForToken (`0x1B8C70`). Any other key gives 7.
+                  reversing/findings/FINDINGS-leaderassign.md, section 3.1*/
+        constexpr int Air = 6;
     }
 
     /**
@@ -147,6 +152,14 @@ namespace CUnit {
     namespace GameFunction {
         constexpr uintptr_t supplyConsumption = 0x1BB560;
         constexpr uintptr_t fuelConsumption = 0x1BB7A0;
+
+        /**
+         * **Puts a leader on a unit**, or takes one off given `CLeader::null()`:
+         * `void __thiscall SetLeader(CUnit* unit, CLeader* leader, bool resetTraitHours,
+         * bool organisationHit)`, `ret 0xC`. It checks nothing of the leader against the
+         * unit. reversing/findings/FINDINGS-leaderassign.md, section 9.
+         */
+        constexpr uintptr_t SetLeader = 0x1BFC10;
     }
 
     /**@brief what the unit's own regiments consume, in thousandths - 2910 is 2.91
