@@ -156,6 +156,14 @@ namespace CCountry {
         constexpr uintptr_t global_modifier = 0xD90;
 
         /**
+         * **What the country's research has come to**, a CTechnologyStatus* (see
+         * CSubUnitDefinition.hpp). Built by the CCountry constructor, `0x29C` bytes; the
+         * conversions read their technology bonuses out of it.
+         * reversing/findings/FINDINGS-ic.md.
+         */
+        constexpr uintptr_t technology_status = 0xDF8;
+
+        /**
          * **The country's leaders**, a list (HDS::ListOffsets), which is what
          * HDS::walkList reads.
          *
@@ -508,6 +516,17 @@ namespace CCountry {
     std::vector<std::string> getFlags(uintptr_t country);
     /**@brief the country's non zero variables, by value*/
     std::vector<HDS::CVariable> getVars(uintptr_t country);
+
+    /**
+    @brief one of the country's variables by name, in thousandths, or 0 where it has none
+
+    The search the game's own `TernarySearchTreeFind` (rva `0x67E030`) makes - the name
+    folded to lower case a character at a time, so `BaseIC` and `baseic` are one variable -
+    but **only reads**. The game's own lookups for a variable create it when it is missing,
+    which from inside a daily hook would be a change to the game no command made. A variable
+    that was never set and one set to 0 both read 0, as `check_variable` treats them.
+    */
+    [[nodiscard]] int32_t variableValue(uintptr_t country, const char* name);
 
     /**
     @brief every country in the game, read from the game state each time

@@ -203,6 +203,37 @@ std::vector<HDS::CVariable> CCountry::getVars(uintptr_t countryPtr) {
     return res;
 }
 
+int32_t CCountry::variableValue(uintptr_t countryPtr, const char* name) {
+    namespace Node = CTernary::NodeOffsets;
+    if (name == nullptr || name[0] == '\0') {
+        return 0;
+    }
+
+    uintptr_t node = readValue<uint32_t>(countryPtr + Offsets::variables + CTernary::Offsets::root);
+    const char* key = name;
+    for (int steps = 0; node != 0 && steps < MAX_TREE_DEPTH; steps++) {
+        char wanted = *key;
+        if (wanted >= 'A' && wanted <= 'Z') {
+            wanted = static_cast<char>(wanted - 'A' + 'a');
+        }
+        const int difference =
+            static_cast<int>(static_cast<signed char>(wanted))
+            - static_cast<int>(readValue<int8_t>(node + Node::character));
+        if (difference == 0) {
+            if (key[1] == '\0') {
+                const uintptr_t element = readValue<uint32_t>(node + Node::element);
+                return element == 0 ? 0 : readValue<int32_t>(element + CVariables::ElementOffsets::value);
+            }
+            key++;
+            node = readValue<uint32_t>(node + Node::equal);
+        }
+        else {
+            node = readValue<uint32_t>(node + (difference > 0 ? Node::high : Node::low));
+        }
+    }
+    return 0;
+}
+
 std::vector<uintptr_t> CCountry::all() {
     std::vector<uintptr_t> out;
 

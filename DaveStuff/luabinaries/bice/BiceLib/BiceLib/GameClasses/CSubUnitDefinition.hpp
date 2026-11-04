@@ -244,8 +244,18 @@ namespace CSubUnitDefinition {
  */
 namespace CTechnologyStatus {
     namespace Offsets {
+        /**@brief thousandths: what technology adds to the fuel a unit of crude oil makes -
+                  `CCountry::ConvertCrudeOilToFuel` scales by (1000 + this) / 1000 (**read**,
+                  reversing/findings/FINDINGS-distribute.md, section 4)*/
+        constexpr uintptr_t fuel_refining_bonus = 0x20;
+
         /**@brief the game's `GetIcModifier`, registered to Lua (**named**)*/
         constexpr uintptr_t ic_modifier = 0x90;
+
+        /**@brief thousandths: what technology adds to the crude oil a unit of energy
+                  makes, on top of a base of 100 - `CCountry::GetOilConversionRate`
+                  (**read**, reversing/findings/FINDINGS-distribute.md, section 6)*/
+        constexpr uintptr_t oil_conversion_bonus = 0x98;
 
         /**@brief added to the technology category discount by `0xE1AC0`; the neighbour of
                   the one above, and **not** the same figure*/

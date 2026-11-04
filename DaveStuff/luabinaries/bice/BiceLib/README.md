@@ -88,6 +88,18 @@ switched on from `script/bicelib_lua.lua`, which runs once per session.
         1. *offmapIC*: integer / nil if the countryTag wasn't found
     * **Notes**:
         * requires the offmap IC patch to be active
+* **getCountryResourceConversion(string countryTag)**:
+    * What a country may convert today under `customResourceConversion` - the caps a
+      player's own amounts are held to, worked out by the same code the patch uses
+    * **Params**:
+        1. *countryTag*: The TAG to ask about
+    * **Return values**:
+        1. a table, all in stockpile units, or *nil* if the tag wasn't found or the patch is not on:
+            * *oil_rate*: the crude oil one energy makes
+            * *energy_cap*: the most energy it may spend a day
+            * *energy_floor*: the energy industry needs today, which is never converted
+            * *crude_cap*: the most crude oil it may refine a day
+            * *played*: whether a person plays it, so that its own settings apply
 * **getProvinceDetails(number provinceId)**:
     * Gets details of a province
     * **Params**:
@@ -310,6 +322,40 @@ Patches which require some extra logic and hooking.
     * reversing/findings/FINDINGS-extrainfra.md has the reading.
     * **Params**: /
     * **Return values**: true if the three stores were patched
+* **customResourceConversion()**
+    * The game converts energy into crude oil and crude oil into fuel by the country's IC,
+      and only past thresholds no file can move. This lets a **played** country set both
+      itself through country variables, which an event, a decision or the overlay can set.
+      A country nobody plays, or one that has not switched a conversion on, converts as the
+      game does.
+    * Amounts are in stockpile units (`value = 50` is 50 a day), and **0 means off or no
+      limit**, because a save drops a variable that is exactly 0:
+
+          zzDsafe_usesCustomOilConversion          1: energy into crude oil is the player's
+          zzDsafe_CustomConversion_energyPerDay    energy to spend a day
+          zzDsafe_CustomConversion_energyKeep      never take energy below this
+          zzDsafe_CustomConversion_oilTarget       convert only while crude oil is below this
+
+          zzDsafe_usesCustomFuelConversion         1: crude oil into fuel is the player's
+          zzDsafe_CustomConversion_crudePerDay     crude oil to spend a day
+          zzDsafe_CustomConversion_crudeKeep       never take crude oil below this
+          zzDsafe_CustomConversion_fuelTarget      convert only while fuel is below this
+
+    * Capped at the game's own capacity - `0.05 x IC` crude oil made, `IC / 2` crude oil
+      refined - and energy is never taken below the `2 x IC` industry needs that day, which
+      would cut that day's IC. The yields stay the game's: technology, and the
+      `FUEL_CONVERSION` modifier for fuel.
+    * **Energy into crude oil stays shut until a synthetic industry**, as in the game:
+      `hidden_coal_to_oil_base_counter` starts every country at a rate of -0.9, and only
+      `hidden_coal_to_oil_activate` (events 48998 and 93673) opens it. Settings made before
+      then wait for it.
+    * Set in game by the covert operation `set_resource_conversion` in the capital, which
+      fires events 1553 (which conversion) and 1554 / 1555 (presets), and to any value on
+      the overlay's **Resource Conversion** page.
+    * Hooks/ResourceConversion.hpp has the details; reversing/findings/FINDINGS-distribute.md,
+      sections 4, 6 and 7, has the reading.
+    * **Params**: /
+    * **Return values**: true if both conversions were patched
 
 ## BiceLib.EffectTexts
 Extra variables for what the game shows when an effect fires. **Each of these only adds

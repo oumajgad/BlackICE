@@ -1223,3 +1223,26 @@ mark_province_request_oil_well = {
 		}
 	}
 }
+
+# The player's own resource conversion: fires the event that chooses which of the two
+# daily conversions to set (events/covert_ops_events.txt, 1553). The values it sets are
+# read by BiceLib's customResourceConversion, switched on in script/bicelib_lua.lua.
+set_resource_conversion = {
+	cost = 0
+	is_valid = {
+		is_capital = yes
+		FROM = {
+			ai = no
+		}
+		THIS = {
+			controlled_by = FROM
+			owned_by = FROM
+		}
+	}
+	is_selectable = {}
+	effect = {
+		FROM = {
+			country_event = 1553
+		}
+	}
+}

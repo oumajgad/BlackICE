@@ -149,11 +149,21 @@ namespace CCurrentGameState {
         constexpr uintptr_t provinces_by_supply_order = 0x54;
 
         /**
-         * One entry per country id, non zero for a country somebody is playing. From
-         * `DaveStuff/mem/classes/CCurrentGameState.py`, and confirmed live: the entry
-         * for the country being played reads 1.
+         * **Who is played by a person**: a vector of one dword per country, non zero for a
+         * country somebody is playing. This is the vector's begin and `+0xBD0` its end -
+         * a pointer to the entries, not the entries themselves. From
+         * `DaveStuff/mem/classes/CCurrentGameState.py`, and confirmed live: the entry for
+         * the country being played reads 1.
+         *
+         * The `ai` trigger reads it by the country's id (`CIsAiTrigger::Evaluate`,
+         * `0x5ED3B0`: `mov ecx,[ecx+0xBCC]; cmp [ecx+eax*4], ebx`), and
+         * `CGameState::AssignHumanControllers` (`0x2868F0`) sizes it from begin and end
+         * and walks it beside the country vector. It is the same on every machine of a
+         * multiplayer game, which is what lets a daily hook ask it. Use isPlayed.
+         * reversing/findings/FINDINGS-distribute.md, section 7.
          */
         constexpr uintptr_t played_countries_array = 0xBCC;
+        constexpr uintptr_t played_countries_array_end = 0xBD0;
 
         /**
          * The player's country, a CCountryTag: three characters, a NUL, then the id, the
@@ -257,4 +267,13 @@ namespace CCurrentGameState {
     is not a place on the map.
     */
     uintptr_t province(int id);
+
+    /**
+    @brief whether a person plays the country with id \p countryId
+
+    What the `ai = no` trigger answers, off Offsets::played_countries_array and bounded by
+    its end. False when there is no game or the id is outside the vector. The same on every
+    machine of a multiplayer game, unlike the local player's tag.
+    */
+    bool isPlayed(int countryId);
 }

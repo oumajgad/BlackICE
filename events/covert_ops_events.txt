@@ -211,3 +211,180 @@ country_event = {
 		}
 	}
 }
+
+# The player's own resource conversion, fired by the covert operation
+# set_resource_conversion in the capital. The variables are read by BiceLib's
+# customResourceConversion (DaveStuff/luabinaries/bice/BiceLib/BiceLib/Hooks/ResourceConversion.hpp):
+# a day's amount, capped at what the country's IC allows. The utility's Resource
+# Conversion page sets the same variables to any value, and the limits beside them.
+# Every value is in stockpile units, and 0 means off: a save drops a variable that is 0.
+
+# Which conversion to set
+country_event = {
+	id = 1553
+	is_triggered_only = yes
+	title = "EVTNAME1553"
+	desc = "EVTDESC1553"
+	picture = "industry"
+	option = {
+		name = "EVTOPTA1553"
+		country_event = 1554
+	}
+	option = {
+		name = "EVTOPTB1553"
+		country_event = 1555
+	}
+	option = {
+		name = "EVTOPTC1553"
+	}
+}
+
+# Energy into crude oil
+country_event = {
+	id = 1554
+	is_triggered_only = yes
+	title = "EVTNAME1554"
+	desc = "EVTDESC1554"
+	picture = "industry"
+	option = {
+		name = "EVTOPTA1554"
+		set_variable = {
+			which = zzDsafe_usesCustomOilConversion
+			value = 0
+		}
+	}
+	option = {
+		name = "EVTOPTB1554"
+		set_variable = {
+			which = zzDsafe_usesCustomOilConversion
+			value = 1
+		}
+		set_variable = {
+			which = zzDsafe_CustomConversion_energyPerDay
+			value = 0
+		}
+	}
+	option = {
+		name = "EVTOPTC1554"
+		set_variable = {
+			which = zzDsafe_usesCustomOilConversion
+			value = 1
+		}
+		set_variable = {
+			which = zzDsafe_CustomConversion_energyPerDay
+			value = 10
+		}
+	}
+	option = {
+		name = "EVTOPTD1554"
+		set_variable = {
+			which = zzDsafe_usesCustomOilConversion
+			value = 1
+		}
+		set_variable = {
+			which = zzDsafe_CustomConversion_energyPerDay
+			value = 25
+		}
+	}
+	option = {
+		name = "EVTOPTE1554"
+		set_variable = {
+			which = zzDsafe_usesCustomOilConversion
+			value = 1
+		}
+		set_variable = {
+			which = zzDsafe_CustomConversion_energyPerDay
+			value = 50
+		}
+	}
+	option = {
+		name = "EVTOPTF1554"
+		set_variable = {
+			which = zzDsafe_usesCustomOilConversion
+			value = 1
+		}
+		set_variable = {
+			which = zzDsafe_CustomConversion_energyPerDay
+			value = 99999
+		}
+	}
+	option = {
+		name = "EVTOPTG1554"
+		country_event = 1553
+	}
+}
+
+# Crude oil into fuel
+country_event = {
+	id = 1555
+	is_triggered_only = yes
+	title = "EVTNAME1555"
+	desc = "EVTDESC1555"
+	picture = "industry"
+	option = {
+		name = "EVTOPTA1555"
+		set_variable = {
+			which = zzDsafe_usesCustomFuelConversion
+			value = 0
+		}
+	}
+	option = {
+		name = "EVTOPTB1555"
+		set_variable = {
+			which = zzDsafe_usesCustomFuelConversion
+			value = 1
+		}
+		set_variable = {
+			which = zzDsafe_CustomConversion_crudePerDay
+			value = 0
+		}
+	}
+	option = {
+		name = "EVTOPTC1555"
+		set_variable = {
+			which = zzDsafe_usesCustomFuelConversion
+			value = 1
+		}
+		set_variable = {
+			which = zzDsafe_CustomConversion_crudePerDay
+			value = 10
+		}
+	}
+	option = {
+		name = "EVTOPTD1555"
+		set_variable = {
+			which = zzDsafe_usesCustomFuelConversion
+			value = 1
+		}
+		set_variable = {
+			which = zzDsafe_CustomConversion_crudePerDay
+			value = 25
+		}
+	}
+	option = {
+		name = "EVTOPTE1555"
+		set_variable = {
+			which = zzDsafe_usesCustomFuelConversion
+			value = 1
+		}
+		set_variable = {
+			which = zzDsafe_CustomConversion_crudePerDay
+			value = 50
+		}
+	}
+	option = {
+		name = "EVTOPTF1555"
+		set_variable = {
+			which = zzDsafe_usesCustomFuelConversion
+			value = 1
+		}
+		set_variable = {
+			which = zzDsafe_CustomConversion_crudePerDay
+			value = 99999
+		}
+	}
+	option = {
+		name = "EVTOPTG1555"
+		country_event = 1553
+	}
+}

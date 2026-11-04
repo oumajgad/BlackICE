@@ -80,3 +80,26 @@ int CCurrentGameState::currentTick() {
     }
     return tick;
 }
+
+bool CCurrentGameState::isPlayed(int countryId) {
+    const uintptr_t state = current();
+    if (state == 0 || countryId < 0) {
+        return false;
+    }
+    uint32_t begin = 0;
+    uint32_t end = 0;
+    if (!Mem::tryRead(state + Offsets::played_countries_array, begin)
+        || !Mem::tryRead(state + Offsets::played_countries_array_end, end)
+        || begin == 0 || end < begin) {
+        return false;
+    }
+    const uint32_t entry = begin + static_cast<uint32_t>(countryId) * 4;
+    if (entry >= end) {
+        return false;
+    }
+    uint32_t played = 0;
+    if (!Mem::tryRead(entry, played)) {
+        return false;
+    }
+    return played != 0;
+}

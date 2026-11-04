@@ -49,6 +49,7 @@
 #include <Hooks/Tooltips/ManpowerText.hpp>
 #include <Hooks/HistoryLeaderRanks.hpp>
 #include <Hooks/MaxInfrastructure.hpp>
+#include <Hooks/ResourceConversion.hpp>
 #include <Hooks/OobLeaderRanks.hpp>
 #include <Hooks/UnassignSelected.hpp>
 #include <Reversing/Counters.hpp>
@@ -173,6 +174,36 @@ __declspec(dllexport) int getCountryOffmapIc(lua_State* L)
         return 1;
     }
     lua_pushnil(L);
+    return 1;
+}
+
+
+/**
+ * What a country may convert today under customResourceConversion, in stockpile units:
+ * `oil_rate` the crude oil one energy makes, `energy_cap` the energy it may spend,
+ * `energy_floor` what industry needs and is never converted, `crude_cap` the crude oil it
+ * may refine, `played` whether its own settings apply. nil when the patch is not on or
+ * the tag names nothing. See Hooks/ResourceConversion.hpp.
+ */
+__declspec(dllexport) int getCountryResourceConversion(lua_State* L)
+{
+    std::string searchTag = luaL_checklstring(L, 1, NULL);
+    Hooks::ResourceConversion::Capacity capacity;
+    if (!Hooks::ResourceConversion::capacity(CCountry::findByTag(searchTag), capacity)) {
+        lua_pushnil(L);
+        return 1;
+    }
+    lua_createtable(L, 0, 5);
+    lua_pushnumber(L, static_cast<lua_Number>(capacity.oilRate) / 1000.0);
+    lua_setfield(L, -2, "oil_rate");
+    lua_pushnumber(L, static_cast<lua_Number>(capacity.energyCap) / 1000.0);
+    lua_setfield(L, -2, "energy_cap");
+    lua_pushnumber(L, static_cast<lua_Number>(capacity.energyFloor) / 1000.0);
+    lua_setfield(L, -2, "energy_floor");
+    lua_pushnumber(L, static_cast<lua_Number>(capacity.crudeCap) / 1000.0);
+    lua_setfield(L, -2, "crude_cap");
+    lua_pushboolean(L, capacity.played);
+    lua_setfield(L, -2, "played");
     return 1;
 }
 
@@ -773,6 +804,27 @@ __declspec(dllexport) int fixMaxInfrastructure(lua_State* L)
     }
     else {
         INFO_OUT(printf("Hook 'fixMaxInfrastructure' succeeded \n"));
+    }
+    lua_pushboolean(L, ok);
+    return 1;
+}
+
+/**
+ * Lets a played country set its own daily conversion of energy into crude oil and of
+ * crude oil into fuel, through `zzDsafe_` country variables an event, a decision or the
+ * overlay sets; capped at the game's own capacity, and energy never taken below what
+ * industry needs. A country nobody plays converts as the game does. See
+ * Hooks/ResourceConversion.hpp.
+ */
+__declspec(dllexport) int customResourceConversion(lua_State* L)
+{
+    const bool ok = Hooks::ResourceConversion::install();
+    if (!ok) {
+        ERROR_OUT(printf("Hook 'customResourceConversion' failed: %s \n",
+            Hooks::ResourceConversion::status()));
+    }
+    else {
+        INFO_OUT(printf("Hook 'customResourceConversion' succeeded \n"));
     }
     lua_pushboolean(L, ok);
     return 1;
@@ -1595,6 +1647,7 @@ void registerGameInfoFunctions(lua_State* this_state) {
     registerFunction(this_state, "getCountryFlags", getCountryFlags);
     registerFunction(this_state, "getCountryVariables", getCountryVariables);
     registerFunction(this_state, "getCountryOffmapIc", getCountryOffmapIc);
+    registerFunction(this_state, "getCountryResourceConversion", getCountryResourceConversion);
     registerFunction(this_state, "getCountryActiveEventModifiers", getCountryActiveEventModifiers);
     registerFunction(this_state, "getCountryGeneralModifiers", getCountryGeneralModifiers);
     lua_settable(this_state, -3);
@@ -1673,6 +1726,7 @@ void registerComplexPatchFunctions(lua_State* this_state) {
     registerFunction(this_state, "enablePlacingNonResearchedBuildings", enablePlacingNonResearchedBuildings);
     registerFunction(this_state, "fixQueuedHistoricalModel", fixQueuedHistoricalModel);
     registerFunction(this_state, "fixMaxInfrastructure", fixMaxInfrastructure);
+    registerFunction(this_state, "customResourceConversion", customResourceConversion);
     lua_settable(this_state, -3);
     return;
 }

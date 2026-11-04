@@ -89,6 +89,12 @@ if mod then
     -- ~1,600 provinces in no area after a load and crashed the AI's sealift pass. Has to be
     -- on before a save is loaded.
     BiceLib.ComplexPatches.fixMaxInfrastructure()
+    -- A played country that sets zzDsafe_usesCustomOilConversion or
+    -- zzDsafe_usesCustomFuelConversion converts energy into crude oil, or crude oil into
+    -- fuel, by its own zzDsafe_CustomConversion_ variables instead of the game's IC rule
+    -- and thresholds - never above the game's own capacity, and never into the energy
+    -- industry needs that day. The AI converts as the game does.
+    BiceLib.ComplexPatches.customResourceConversion()
 
     -- Effect texts
     -- Fills $UNIT$, $LOCATION$ and $WHERE$ in KILL_LEADER_EFFECT. Switching this off
