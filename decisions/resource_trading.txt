@@ -1,24 +1,5 @@
 diplomatic_decisions = {
-	strategic_resources_trading_start = {
-		potential = {
-			not = {
-				has_country_flag = trades_activation
-			}
-			is_subject = no
-		}
-		allow = {
-			not = {
-				has_country_flag = trades_activation
-			}
-		}
-		effect = {
-			set_country_flag = trades_activation
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	strategic_resources_trading_puppet_reset = {
+	strategic_resources_trading_setup = {
 		potential = {
 			tag = OMG
 		}
@@ -28,11 +9,23 @@ diplomatic_decisions = {
 		effect = {
 			OMG = {
 				any_country = {
+					# Puppets are not allowed to trade (their resource go to their master, who can trade them)
 					limit = {
 						has_country_flag = trades_activation
 						is_subject = yes
 					}
 					clr_country_flag = trades_activation
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						not = {
+							has_country_flag = trades_activation
+							is_subject = yes
+						}
+					}
+					set_country_flag = trades_activation
 				}
 			}
 		}
