@@ -1,6 +1,7 @@
 #include <Hooks/Tooltips/ParadropLine.hpp>
 
 #include <GameClasses/CSubUnitDefinition.hpp>
+#include <GameClasses/GameMessage.hpp>
 #include <GameClasses/GameString.hpp>
 #include <GameState/Localisation.hpp>
 #include <HoiDataStructures.hpp>
@@ -29,6 +30,30 @@ namespace {
     /**@brief the design, a CList of CSubUnitDefinition*, on the CDivisionDesigner*/
     const uintptr_t DESIGN = 0x1B4;
 
+    /**
+     * **`MakeCountrySubUnitDefinition(country, type, out)`**, `__stdcall`, `ret 0xC`: the
+     * type's figures at the country's current levels, copied into `out`. The design's
+     * definitions are the database's own, with no research in them, and technology does move
+     * `transport_weight`. Checked through the brigade picker's own call to it.
+     */
+    const uintptr_t MAKE_COUNTRY_DEFINITION = 0x107500;
+    const uintptr_t MAKE_COUNTRY_DEFINITION_CALLER = 0x3ED3A4;
+    typedef void* (__stdcall* MakeCountryDefinition)(uintptr_t country, uintptr_t type, void* out);
+
+    /**
+     * **`CSubUnitDefinition(this, name, index)`**, `__stdcall`, `ret 0xC`. `out` above has to
+     * be a constructed definition, because the copy into it assigns strings and vectors.
+     * Checked through `UpdateDesign`'s own call to it, which passes `---` and 0 to a block of
+     * `DEFINITION_SIZE` bytes.
+     */
+    const uintptr_t CONSTRUCT_DEFINITION = 0x1A3510;
+    const uintptr_t CONSTRUCT_DEFINITION_CALLER = 0x3E6B9B;
+    typedef void* (__stdcall* ConstructDefinition)(void* self, const void* name, int index);
+    const size_t DEFINITION_SIZE = 0x228;
+
+    /**@brief a unit's figures are thousandths; the boarding test compares whole ones*/
+    const int THOUSAND = 1000;
+
     /**@brief more than any division holds; a list longer than this is not the design*/
     const int MAX_BRIGADES = 64;
 
@@ -42,6 +67,27 @@ namespace {
 
     DWORD copyCall = 0;
     DWORD copyResume = 0;
+    MakeCountryDefinition makeCountryDefinition = nullptr;
+    ConstructDefinition constructDefinition = nullptr;
+
+    /**
+     * **The one definition the country's versions are made into**, constructed by the game's
+     * own constructor the first time it is wanted and then reused: each make assigns over it.
+     * Never destroyed, so whatever it holds lives as long as the process, which is one
+     * definition's worth.
+     */
+    alignas(8) unsigned char countryDefinition[DEFINITION_SIZE];
+    bool countryDefinitionMade = false;
+
+    /**
+     * **The last weight worked out, and what it was worked out for.** The tooltip is asked
+     * for again while the mouse rests on it, and each make builds and destroys a regiment,
+     * so the same design for the same country is answered from here. Research finished
+     * while the tooltip is up shows from the next change to the design.
+     */
+    std::vector<uintptr_t> weighedBrigades;
+    uintptr_t weighedCountry = 0;
+    int weighedWeight = -1;
 
     bool installedFlag = false;
     const char* statusText = "not installed";
@@ -55,6 +101,45 @@ namespace {
         }
         const std::string name = Localisation::text(key.c_str());
         return name.empty() ? key : name;
+    }
+
+    /**
+    @brief the design's transport weight at the player's levels, whole, or -1 where unknown
+
+    What `CAir::MayLoad` compares against a plane's room: the sum of the brigades'
+    `transport_weight`, cut to a whole number. Each brigade's is its type made at the
+    country's levels, as the picker's columns are.
+    */
+    int designWeight(const std::vector<uintptr_t>& brigades) {
+        const uintptr_t country = Game::playerCountry();
+        if (country == 0) {
+            return -1;
+        }
+        if (country == weighedCountry && brigades == weighedBrigades) {
+            return weighedWeight;
+        }
+
+        if (!countryDefinitionMade) {
+            const Game::String name("---");
+            constructDefinition(countryDefinition, name.raw(), 0);
+            countryDefinitionMade = true;
+        }
+
+        int total = 0;
+        for (uintptr_t type : brigades) {
+            makeCountryDefinition(country, type, countryDefinition);
+            int weight = 0;
+            if (!Mem::tryRead(reinterpret_cast<uintptr_t>(countryDefinition)
+                    + CSubUnitDefinition::Offsets::weight, weight)) {
+                return -1;
+            }
+            total += weight;
+        }
+
+        weighedBrigades = brigades;
+        weighedCountry = country;
+        weighedWeight = total / THOUSAND;
+        return weighedWeight;
     }
 
     /**
@@ -85,11 +170,19 @@ namespace {
             }
         }
 
+        std::string weight;
+        const int whole = designWeight(brigades);
+        if (whole >= 0) {
+            weight = " (Weight: " + std::to_string(whole) + ")";
+        }
+
         std::string text;
         if (blockers.empty()) {
-            text = std::string("This unit ") + GREEN + "can" + WHITE + " be paradropped";
+            text = std::string("This unit ") + GREEN + "can" + WHITE + " be paradropped"
+                + weight;
         } else {
-            text = std::string("This unit ") + RED + "can not" + WHITE + " be paradropped:";
+            text = std::string("This unit ") + RED + "can not" + WHITE + " be paradropped"
+                + weight + ":";
             for (const std::string& name : blockers) {
                 text += "\n";
                 text += INDENT;
@@ -147,8 +240,19 @@ bool Hooks::Tooltips::ParadropLine::install() {
         return false;
     }
 
+    if (!Hooks::isCallTo(base + MAKE_COUNTRY_DEFINITION_CALLER, base + MAKE_COUNTRY_DEFINITION)
+        || !Hooks::isCallTo(base + CONSTRUCT_DEFINITION_CALLER, base + CONSTRUCT_DEFINITION)) {
+        statusText = "the functions the weight is made with are not where this build "
+            "expects";
+        ERROR_OUT(printf("ParadropLine: MakeCountrySubUnitDefinition or the definition "
+            "constructor is not where expected\n"));
+        return false;
+    }
+
     copyCall = static_cast<DWORD>(base + COPY_CALL);
     copyResume = static_cast<DWORD>(base + COPY_RESUME);
+    makeCountryDefinition = reinterpret_cast<MakeCountryDefinition>(base + MAKE_COUNTRY_DEFINITION);
+    constructDefinition = reinterpret_cast<ConstructDefinition>(base + CONSTRUCT_DEFINITION);
 
     if (!Hooks::hook(reinterpret_cast<void*>(base + COPY_SITE), &terrainTextCopied, 5, 0)) {
         statusText = "could not make the code writable";

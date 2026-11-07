@@ -7,15 +7,25 @@
  * no tooltip at all in the original. So the one tooltip the designer has room in -
  * `terrainbonus`, the terrain summary - starts with a line saying so:
  *
- *     This unit can be paradropped
+ *     This unit can be paradropped (Weight: 15)
  *
  * or, with the brigades that stop it listed under it, each once, in the design's order:
  *
- *     This unit can not be paradropped:
+ *     This unit can not be paradropped (Weight: 20):
  *        Artillery
  *        Engineers
  *
  * with only "can" and "can not" coloured, green and red.
+ *
+ * ## The weight
+ *
+ * What the boarding test sets against a plane's room: the brigades' `transport_weight`
+ * summed and cut to a whole number (`SumTransportWeight` and `/ 1000` in `CAir::MayLoad`).
+ * **The design's definitions are the database's own, with no research in them** - the
+ * picker looks its researched copy's key up in the unit database before making a line - and
+ * technology moves `transport_weight`, so each brigade is made at the player's levels with
+ * the game's own `MakeCountrySubUnitDefinition`, as the picker's columns are. That makes a
+ * regiment and destroys it, so the answer is kept until the design or the country changes.
  *
  * ## The rule
  *
